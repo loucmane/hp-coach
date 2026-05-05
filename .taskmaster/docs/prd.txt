@@ -1,0 +1,834 @@
+# HP-Coach — Product Requirements Document
+
+**Status:** v0.1 draft
+**Last updated:** 2026-05-05
+**Authors:** project dev + Claude (design dialogue)
+
+---
+
+## 1. Vision & audience
+
+### 1.1 Vision
+
+HP-Coach is a coaching tool that takes a Swedish högskoleprov candidate from **0.0 to 2.0** with a curriculum that **assumes zero prior knowledge** and a UX **explicitly designed for neurodivergent users**, primarily ADHD-PI.
+
+The differentiator vs. existing HP services is not the question bank (the same questions are publicly available) — it is the **structured pedagogy behind the exam**: a root system for ORD, question-type taxonomies for LÄS/ELF, error-pattern catalogs for KVA/NOG. We are not building a better drilling app; we are building a system that teaches the *structure* required to beat the exam.
+
+### 1.2 Primary user (current)
+
+- **Dogfood user:** the project dev. ADHD-PI. Absolute beginner in the HP context. Goal: 2.0. Uses the app daily throughout the build phase. MVP correctness is measured by "the dev opens the app every day and the score moves".
+
+### 1.3 Secondary users (post-MVP)
+
+- Swedish students with similar profiles:
+  - Low baseline knowledge, high ambition (1.8+)
+  - Neurodivergence (ADHD, autism, dyslexia) or other executive-function challenges
+  - Willing to spend months, not weeks, preparing
+- Secondarily: students without neurodivergence who prefer a structured pedagogical approach over pure drilling
+
+### 1.4 Non-users
+
+- Students already at 1.5+ who only want light review (our learning curve is too steep)
+- Students seeking "tips & tricks" content
+- Last-minute crammers
+
+### 1.5 Success metrics
+
+- **MVP (dogfood phase):** dev opens the app ≥ 5 days/week for 8 weeks; measurable score increase across two consecutive mock exams
+- **Post-MVP (external):** TBD — depends on business-model decision (see § 9)
+
+---
+
+## 2. Design pillars (load-bearing)
+
+Three pillars against which every feature and UX decision is tested. Proposals that violate any pillar are rejected or reframed.
+
+### 2.1 Assume zero prior knowledge
+
+Every section needs the full pedagogical arc: **concept → worked examples → blocked drilling → interleaved retention → mock integration**. Drilling without concept teaching will not get a user from 0.0 to 2.0.
+
+Concrete consequences:
+- ORD: morphology/etymology lessons before vocabulary drilling
+- XYZ: full algebra refresher before problem-solving
+- NOG: data-sufficiency reasoning taught from scratch
+- KVA: quantitative-comparison logic taught from scratch
+- LÄS/ELF: active reading protocols per question type
+- DTK: tactical protocols (skim, estimate, skip)
+- MEK: syntactic + semantic constraint detection
+
+### 2.2 Goal: 2.0 (perfect score)
+
+No weak spots tolerated. Adaptive difficulty and gap detection are **central, not optional**. Progress must be measured granularly per Lager 1 element (not just "questions completed").
+
+### 2.3 Neurodivergent-friendly UX
+
+Specifically designed around ADHD-PI:
+- **Frictionless task initiation** ("one button, no choices")
+- **Visible time and progress** (compensates for time-blindness)
+- **No choice paralysis** — system picks the next task by default
+- **Forgiveness on missed days** — no streak shame, no rejection-sensitive design patterns
+- **Working-memory aids** — formula sheet and scratchpad always one tap away
+- **Variable session length** — 10-min low-energy mode, hyperfocus mode, mock-exam mode
+- **Distraction-resistant focus mode** — hide everything except the current question
+- **Keyboard-first** — Cmd+K palette is a hard requirement (§ 6.4), not a nice-to-have
+
+---
+
+## 3. Pedagogical architecture (three layers)
+
+The pedagogy is the product's core. It is built in three separated layers to enable parallel development, isolated QA, and a working adaptive layer.
+
+### 3.1 Layer 1 — Frameworks (manually authored, machine-readable)
+
+Structured JSON files in `frameworks/`. Every element has a stable ID against which questions and errors are tagged.
+
+**ORD — `frameworks/ord_roots.json`**
+- Latin/Greek roots + formal/archaic register
+- Built **bottom-up from the corpus** with morphological decomposition + frequency analysis
+- Goal: empirical coverage metric (e.g. *"187 roots cover 84.3 % of historical ORD questions"*)
+- Schema: `{ id, root, latin_greek_origin, meaning, example_words: [...], corpus_frequency }`
+
+**MEK — `frameworks/mek_protocol.json`**
+- Syntactic + semantic constraint-detection protocol
+- Two-step attack: (1) which connector *can* logically work given sentence structure, (2) which one *best* matches the register
+- Schema: `{ id, constraint_type: "syntactic" | "semantic", rule, examples: [...] }`
+
+**LÄS — `frameworks/las_taxonomy.json`** and **ELF — `frameworks/elf_taxonomy.json`**
+- 6–8 question types per language, each with its own attack protocol
+- Types: literal retrieval, inference, tone/purpose, logical completion, author opinion, conclusion, word-meaning-in-context
+- Includes **distractor analysis rules**: why the second-best option is a trap, which signal in the text to follow
+- Schema: `{ id, question_type, attack_protocol: [...], common_distractors: [{ pattern, why_it_traps }] }`
+
+**KVA — `frameworks/kva_traps.json`**, **NOG — `frameworks/nog_traps.json`**, **XYZ — `frameworks/xyz_traps.json`**
+- Error-pattern catalog with stable IDs
+- Example: `KVA-NEG-001 = "missed that the variable can be negative, which flips the inequality"`
+- 10–15 patterns per section (covers the majority of historical errors)
+- Schema: `{ id, pattern_description, why_it_occurs, common_traps, countermeasure, example_questions: [question_ids] }`
+
+**DTK — `frameworks/dtk_tactics.json`**
+- Tactical protocols, not error patterns
+- Skim strategy, when to estimate vs calculate, skip threshold, fast table-reading techniques
+- Schema: `{ id, tactic, when_to_apply, example }`
+
+### 3.2 Layer 2 — Per-question explanations (LLM-generated *within* Layer 1)
+
+For every question in `data/hp_question_bank.json`:
+- Explanation of the correct answer with references to relevant Layer 1 IDs
+- Distractor analysis per wrong option (why it traps, which Layer 1 pattern it matches)
+- Generated with the LLM using Layer 1 as context, **not free-form text**
+
+**QA queue (critical):**
+- The first ~50–100 explanations per section are reviewed manually before the pipeline is approved
+- LLMs lie confidently about math — without QA, the dogfood user risks learning wrong answers
+- Status per explanation: `unreviewed | approved | rejected | edited`
+
+**Per-explanation schema:**
+```json
+{
+  "question_id": "var-2026-kvant1-q05",
+  "correct_answer_explanation": "...",
+  "layer1_refs": ["KVA-NEG-001"],
+  "distractor_analysis": [
+    { "option": "A", "trap_id": "KVA-NEG-001", "explanation": "..." }
+  ],
+  "qa_status": "approved",
+  "qa_reviewer": "dev",
+  "qa_date": "2026-..."
+}
+```
+
+### 3.3 Layer 3 — Adaptive logic (frontend, runs per session)
+
+- Counts occurrences of each Layer 1 ID in the user's errors
+- Triggers on pattern repetition (e.g. 3 errors on the same ID within 7 days)
+- Interrupts the normal session and runs a **targeted review** (Screen 9, § 4)
+- Feeds into the curriculum scheduler (§ 5.5)
+
+**Dependency:** cannot be built before Layer 1 is structured AND Layer 2 produces tagged data.
+
+### 3.4 Pedagogical content plan (architecture vs content)
+
+§ 3.1–3.3 provide the *delivery system* for pedagogy. The actual *content* — worked examples, lesson narratives, instructional scaffolding — must be authored as a separate workstream. For a true 0.0 user (someone who may not know what a linear equation is) this is the longest pole in the project, and it is content work, not code.
+
+**Content gap per section:**
+
+- **ORD — minimal gap.** The root lexicon entries (root + origin + meaning + example words) *are* the lessons. Each lesson card renders one root entry. No extra curriculum authoring beyond the lexicon itself.
+- **KVA — minimal gap.** The trap catalog entries (pattern + why it occurs + countermeasure + examples) *are* the lessons.
+- **DTK — minimal gap.** The tactics doc *is* the lesson set.
+- **NOG — small gap.** Trap catalog covers individual error patterns, but the *meta-skill* — how to evaluate sufficiency without solving — needs its own ~20–30 lessons covering the four-answer structure and the "judge don't solve" mindset.
+- **MEK — medium gap.** The two-step protocol (syntactic → semantic) is described as architecture. Missing: ~30–50 worked examples on real corpus sentences, each annotated with the protocol applied.
+- **LÄS / ELF — medium gap.** Taxonomy lists question types; each type needs its own attack-protocol curriculum (literal retrieval: scan/locate/verify; inference: implied vs stated, find textual evidence; tone/purpose; logical completion; etc.).
+- **XYZ — largest gap.** "Full algebra refresher" is named but not scoped. For a true 0.0 user this is a substantial textbook: numbers/operations/fractions/percentages, variables, linear equations, inequalities (including sign-flip on negative multiplication), quadratics, exponents/roots, geometry basics, probability/combinatorics, functions/graphs, word-problem translation. Estimated 50–100 lessons. **This is the longest pole.**
+
+**Authorship approach: LLM-generated, structurally reviewed per section.**
+
+All concept content (lesson cards, worked examples, attack protocols, algebra refresher) is generated by an LLM within the constraints of Layer 1 frameworks. Review is **structural per section**, not line-by-line: the dev validates that the lesson set covers the section's territory, scaffolds correctly for an absolute beginner, and aligns with the relevant Layer 1 elements. Individual lessons are not hand-edited.
+
+**Quality gate (stronger than purely structural review):**
+
+For each generated lesson, run a *teach-back test* — Model B (different family from the generator) answers N test questions whose answers should be derivable *only* from the lesson content. Pass rate ≥ threshold → lesson is pedagogically structurally sound. Below threshold → regenerate. This converts "is the lesson clear" from a subjective question into a measurable one. Threshold and N are tuned per section during Phase 1.5.
+
+**Per-section content scope (LLM generates within these bounds):**
+
+- **XYZ algebra refresher:** numbers / operations / fractions / percentages, variables and expressions, linear equations, inequalities (including sign-flip on negative multiplication), quadratics and factoring, exponents and roots, geometry basics (area, volume, Pythagoras, similar triangles), probability and combinatorics (basic), functions and graphs, word-problem translation. Estimated 50–100 lessons.
+- **NOG sufficiency reasoning:** the four-answer structure, the "judge don't solve" mindset, common reasoning patterns (linear, geometric, algebraic, statistical). Estimated 20–30 lessons.
+- **MEK worked-examples library:** 30–50 corpus sentences with the syntactic-then-semantic protocol applied step by step.
+- **LÄS / ELF attack protocols:** per-question-type protocols (literal retrieval, inference, tone/purpose, logical completion, etc.) with training examples drawn from the corpus.
+- **ORD / KVA / DTK:** content emerges directly from Layer 1 (root lexicon entries / trap catalog / tactics doc) — no separate generation step.
+
+**Phase placement (parallel content workstream):**
+
+- **Phase 1 (weeks 2–6):** Layer 1 also produces ORD/KVA/DTK lesson content for free
+- **Weeks 4–8 (parallel with code Phase 2):** XYZ algebra-curriculum scoping + adaptation (largest task)
+- **Phase 2–3 (weeks 7–10):** NOG sufficiency curriculum; MEK worked-examples library
+- **Phase 3–4 (weeks 9–12):** LÄS/ELF attack-protocol curricula
+
+This is a tracked content workstream separate from the code phases in § 8. Risk flagged in § 9.13.
+
+---
+
+## 4. UX flows (screen-by-screen)
+
+UI copy below is shown in Swedish — it is the actual product string. Surrounding doc text is English by convention.
+
+### Screen 1 — First launch
+
+Two questions:
+- *"Hur många dagar till provet?"*
+- *"Hur mycket tid har du per dag?"* (buttons: 10 / 20 / 40 / 60+ min)
+
+Then: *"Första passet är en verbal halva på ~160 min. Du kommer att klara den dåligt. Det är poängen — du har inte pluggat än."*
+
+No login, no section picker, no registration.
+
+### Screen 2 — Diagnostic mock (split)
+
+- **Day 1:** verbal half (~160 min, 80 questions: ORD/LÄS/MEK/ELF)
+- **Day 2:** quant half (~160 min, 80 questions: XYZ/KVA/NOG/DTK)
+
+Real exam conditions: one question at a time, timer, no per-question feedback, no aids.
+
+### Screen 3 — Diagnostic results
+
+Summary only: per-section breakdown (e.g. *"ORD 12/40, MEK 5/20, LÄS 8/20, ELF 6/20"*) plus one sentence: *"Här är var du står. Det här är planen, i den här ordningen."* No shame language.
+
+**Important — diagnostic feedback is a special case.** This screen does *not* expose per-question feedback or Layer 1 IDs. The user has not yet been introduced to any framework element, so Layer 1 references would be jargon. Diagnostic mistakes are stored and tagged in the mistake queue but only surface in detailed review *after* the user has completed Screen 4.5 (section onboarding) for the corresponding section. Until then they sit tagged `diagnostic-pending-review`. This establishes the baseline for Layer 3 without creating premature jargon exposure.
+
+### Screen 4 — Daily home (the most-used screen)
+
+**A single big "Fortsätt" button.** Above it, one line: *"Idag: 10 min ORD repetition · 30 min KVA grunder · 5 min repetera gårdagens fel."*
+
+No choice. No section tiles. No "pick from these recommendations". Small *"Avancerat"* link at the bottom for settings.
+
+### Screen 4.5 — Section onboarding (one-time *per new section*)
+
+Triggered the first time the user encounters a section. Format:
+
+> *"Idag börjar du med KVA — kvantitativa jämförelser."*
+>
+> **Vad sektionen testar:** [...]
+>
+> **Den unika logiken:** [...]
+>
+> **Vanligaste fällan:** [`KVA-NEG-001`] [...]
+
+Single button: *"Okej, börja."* Then into the learn phase (Screen 5).
+
+This is a recurring UX pattern for domain transitions — important signal for ADHD-PI mental context-switching.
+
+### Screen 5 — Lesson card (concept mode)
+
+One concept per screen. Example: *"Roten **cur-** / **curr-** = att löpa, gå."* Plus three example words. Lots of whitespace, one thing at a time. *"Begripit?"* button + *"Visa fler exempel"*.
+
+**Lesson → drill transition (state machine):**
+
+Lesson cards are organized into **concept clusters** (3–5 cards per cluster — e.g. a group of related ORD roots, or a family of XYZ algebraic identities). Each cluster moves through the following states for a given user; the curriculum scheduler reads this state to decide what to serve next:
+
+- `untaught` — cluster has not yet been introduced; appears only when prerequisite ordering says it should
+- `learning` — user is being served lesson cards for this cluster (Screen 5)
+- `practicing` — user has finished all lesson cards in the cluster and is in **blocked drill** (Screen 6) on questions tagged with cluster elements only
+- `retaining` — user is in **interleaved retention**, mixed with other `retaining` clusters in the same session
+- `mastered` — cluster enters long-tail spaced review, low frequency
+
+**Transition criteria:**
+
+- Each lesson card ends with a **micro-check** (1–3 immediate-recall questions on that card). The card is marked `seen` only when the micro-check is passed.
+- A cluster moves from `learning → practicing` when every card in it has been `seen`.
+- A cluster moves from `practicing → retaining` when the user reaches **≥ 80 % accuracy on the most recent 10 blocked-drill questions** for that cluster.
+- A cluster moves from `retaining → mastered` when accuracy stays **≥ 80 % across two consecutive retention sessions**.
+
+This state machine is the contract between Screen 5/6 and the curriculum scheduler (§ 5.5).
+
+### Screen 6 — Drill question
+
+- Question text large, centered
+- Options A–D (or A–E for KVA)
+- Three constants at the bottom: timer (visible, non-shaming), scratchpad button, formula-sheet button
+- *"Svara"* button
+
+Keyboard: 1–4 (or 1–5) selects an option; Enter submits; Esc opens Cmd+K.
+
+### Screen 7 — Post-answer feedback
+
+Shown in **normal drill mode only** — not in mock or diagnostic modes, both of which suppress per-question feedback by design (see § 5.10). Layer 1 IDs are surfaced only for sections the user has already been onboarded to (Screen 4.5); for cross-section drilling that may include not-yet-onboarded sections, fall back to plain explanations without trap IDs.
+
+Large: ✓ or ✗.
+
+Directly below:
+> *"Rätt svar: C. Detta är en KVA-fälla av typen* **`KVA-NEG-001`** *— variabeln kan vara negativ, vilket vänder olikheten."*
+
+Expandable section: *"Varför inte de andra?"* — distractor analysis per option with Layer 1 IDs.
+
+(v0: no on-demand "Förklara mer" LLM button — only pre-generated explanations; see § 7.)
+
+*"Nästa"* button or auto-advance after 3 sec.
+
+### Screen 8 — Session end
+
+*"Klart. 23 frågor, 17 rätt. Imorgon: ORD-repetition + ELF-grunder."*
+
+**No streak counter.** No shame language. If the user skips tomorrow, they skip tomorrow.
+
+### Screen 9 — Adaptive review (auto-triggered)
+
+3 errors on the same Layer 1 ID within 7 days → app interrupts the normal session: *"Du har missat `KVA-NEG-001` tre gånger. Vi tar 5 min på det mönstret nu."* Mini-lesson + 5 targeted questions. Then back to the normal session.
+
+### Screen 10 — Weekly overview (opt-in)
+
+- Trend graph (estimated score over time)
+- Estimated current score
+- Weakest Layer 1 IDs this week
+- Per-section mastery
+
+Must be clicked to open. Never pushed.
+
+### Screen 11 — Mock exam mode
+
+- **Mobile:** halves as *"Övningsmock"* (160 min)
+- **Desktop:** full 4-hour mock as *"Fullständigt prov"*
+- Pedagogically motivated: the real exam is taken in halves
+- Real conditions: timer, no aids, no per-question feedback
+- Post-mock: full analysis mapped to Layer 1 IDs; all errors fed into the mistake queue
+
+### Screen 12 — Cmd+K command palette (always available)
+
+Globally available via `Cmd+K` / `Ctrl+K`. Searches across:
+- Sections and drill modes ("KVA drill", "ORD repetition")
+- Settings ("Mörkt läge", "Pomodoro 25/5")
+- Layer 1 elements ("root *cur-*", "trap `KVA-NEG-001`")
+- Recent errors ("yesterday's missed questions")
+- Mock mode
+
+Keyboard navigation, fuzzy search, max 200 ms response time.
+
+---
+
+## 5. Functional requirements per component
+
+### 5.1 Parser (`parser/`, Python)
+
+**One-time script.** Not part of the deployed app.
+
+**Requirements:**
+- F5.1.1 Input: `hp_databas.json` (existing)
+- F5.1.2 Output: `data/hp_question_bank.json` (structured questions) + `data/images/{exam_id}/{section}_{q_id}.png` (DTK images + math regions)
+- F5.1.3 Per-section parsers (ORD/MEK/KVA/NOG high-quality; LÄS/ELF medium; XYZ/DTK require image fallback — see § 5.2)
+- F5.1.4 Image extraction via PyMuPDF (`fitz`) — embedded images AND rendered question regions for math-garbled XYZ questions
+- F5.1.5 Idempotent: rerunnable, only writes new/changed questions
+- F5.1.6 Per-question schema: `{ question_id, exam_id, section, q_number, question_text, options: [], answer_key, image_paths: [], layer1_tags: [], difficulty: number | null, source: "official" | "synthetic" }` — `layer1_tags` filled by tagging script after Layer 1 exists. `difficulty` is initially seeded by question position within its exam (later questions skew harder per HP design) and refined by LLM tagging in `tag_with_frameworks.py`; the scheduler uses it to order practice when no user-performance data exists yet (cold start). `source` is `"official"` for parsed past-exam questions and `"synthetic"` for generator output (§ 5.15); the frontend displays a visible marker for synthetic questions.
+- F5.1.7 Tested on `var-2026` first before running across all 27 exams
+- F5.1.8 Never overwrites `hp_databas.json`
+
+### 5.2 LLM-assisted math cleanup (`parser/math_cleanup.py`)
+
+**Requirements:**
+- F5.2.1 Input: garbled XYZ question text + rendered PNG of the question
+- F5.2.2 Output: LaTeX-formatted question (renders cleanly with KaTeX)
+- F5.2.3 Bounded scope: ~12 XYZ questions × 27 exams ≈ 324 questions
+- F5.2.4 Manual spot-check on ≥ 10 % of output before approval
+
+### 5.3 Layer 1 frameworks (`frameworks/`, JSON)
+
+**Per-file requirements:**
+- F5.3.1 Structured JSON with stable IDs (versioned if changed)
+- F5.3.2 Machine-readable — Layer 3 can look up an ID and get the pattern + countermeasure
+- F5.3.3 ORD root lexicon built **empirically bottom-up** from the corpus (semi-automated with LLM morphology tagging + manual review)
+- F5.3.4 KVA/NOG trap catalogs built **manually** from analyzing ~100 questions per section (parallelizable with parser dev — does not depend on parser completion)
+- F5.3.5 MEK, DTK, LÄS, ELF built after the full parser is done (need passages/questions as stress-test material)
+
+### 5.4 Layer 2 explanation pipeline (`pipeline/explanations.py`)
+
+**Requirements:**
+- F5.4.1 LLM prompt includes Layer 1 as context + question text + answer key
+- F5.4.2 Output follows strict schema (§ 3.2) — references Layer 1 IDs, not free-form text
+- F5.4.3 QA queue: first 50–100 per section reviewed manually
+- F5.4.4 QA status stored per explanation; only `approved` is exposed to the frontend
+- F5.4.5 Re-runnable on framework changes (regenerates explanations for affected questions)
+
+### 5.5 Curriculum scheduler (frontend, `app/src/scheduler/`)
+
+**MVP (rules-based):**
+- F5.5.1 Per-session prioritization: (a) due SRS first, (b) section with weakest mastery, (c) review of last 7 days' errors
+- F5.5.2 Output: ordered list of `(section, mode, duration)` segments that the *"Fortsätt"* button runs through
+- F5.5.3 Daily total respects the user's onboarding-time choice (10/20/40/60+ min)
+- F5.5.4 Block mode during learn phase, interleaved during retention phase (per section-mastery threshold)
+- F5.5.5 Per-cluster state machine drives selection: `untaught → learning → practicing → retaining → mastered` (transition thresholds defined in § 4 / Screen 5). The scheduler reads each cluster's state from the `framework_progress` table (§ 5.14) and selects accordingly:
+  - `learning` → serve lesson cards (Screen 5) until cluster completes
+  - `practicing` → serve blocked drill on this cluster only (Screen 6)
+  - `retaining` → interleave with other `retaining` clusters in the same session
+  - `mastered` → low-frequency spaced review only
+- F5.5.6 Cold-start ordering (before user-performance data exists): use `difficulty` (§ 5.1.6) ascending within a section, prerequisite ordering across sections (e.g. ORD roots before vocabulary drilling, algebra refresher before XYZ problem-solving)
+
+**Design doc before implementation:** `docs/curriculum-scheduler.md` is written **before** Phase 3 coding begins (§ 8). The scheduler is the product's hardest single problem; architectural decisions are made on paper, not in real time.
+
+### 5.6 Drill engine (frontend, `app/src/drill/`)
+
+**Requirements:**
+- F5.6.1 Renders Screen 6 (question + options + scratchpad/formula/timer)
+- F5.6.2 Scratchpad: always available, persistent for the session, with a clear button
+- F5.6.3 Formula sheet: contextual (XYZ formulas for XYZ questions, etc.)
+- F5.6.4 Timer: visible but non-shaming (no red countdown under 30 sec)
+- F5.6.5 Keyboard: 1–5 selects an option, Enter submits, Esc opens Cmd+K, ? opens formula sheet
+- F5.6.6 Math via KaTeX for all LaTeX questions
+- F5.6.7 Images via `image_paths` from question data (DTK + rendered math)
+- F5.6.8 In **diagnostic and mock modes**, the drill engine renders only the question and options — no scratchpad, no formula sheet, no Layer 1 tags, and no Screen 7 feedback after submission. See § 5.10 for the post-test review pathway.
+
+### 5.7 Feedback engine (frontend, `app/src/feedback/`)
+
+**Requirements:**
+- F5.7.1 Renders Screen 7 after an answer
+- F5.7.2 Loads pre-generated explanation from `data/explanations/`
+- F5.7.3 Shows Layer 1 IDs visibly and clickably (opens a mini-modal with the framework element)
+- F5.7.4 Distractor analysis section is expandable
+- F5.7.5 Logs attempt + tag results to local DB (for Layer 3 and the scheduler)
+
+### 5.8 SRS engine (frontend, `app/src/srs/`)
+
+**Requirements:**
+- F5.8.1 Anki-style expanding intervals (1d → 3d → 7d → 14d → 30d → 90d)
+- F5.8.2 Primary use: ORD vocabulary. **Card direction mirrors the exam:** front = Swedish word, back = meaning + synonyms + composing roots. The exam tests recognition (word → meaning), so SRS must train in that direction. A secondary, lower-frequency card type goes the other way (root → example words containing it) to reinforce morphological decoding from Layer 1.
+- F5.8.3 Secondary: XYZ formulas, KVA/NOG patterns (as flashcards)
+- F5.8.4 SRS state stored in local DB
+- F5.8.5 Can be cleared/exported separately
+
+### 5.9 Mistake queue (frontend, `app/src/mistakes/`)
+
+**Requirements:**
+- F5.9.1 Auto-add every wrong answer with its Layer 1 tag
+- F5.9.2 Expanding intervals for re-test (independent of SRS — mistakes are question-specific, not concept-specific)
+- F5.9.3 Triggers Screen 9 (adaptive review) on 3 errors on the same Layer 1 ID within 7 days
+- F5.9.4 Visualizable in Screen 10
+
+### 5.10 Mock exam mode (frontend, `app/src/mock/`)
+
+**Requirements:**
+- F5.10.1 Two modes: *"Övningsmock"* (half, 160 min, mobile-OK) and *"Fullständigt prov"* (4 hours, desktop-recommended)
+- F5.10.2 Real conditions: no scratchpad popups, no formula sheet, no per-question feedback
+- F5.10.3 Auto-trigger every 2–3 weeks as a recommendation (not forced)
+- F5.10.4 Post-mock analysis: per-section, per-Layer 1 ID, all errors fed into the mistake queue
+- F5.10.5 **Diagnostic and mock review is summary-only at first** — per-section scores, total time, completion stats. Layer 1 IDs are *not* exposed in this initial review. Detailed per-question review of mistakes is gated: only available after the user has completed Screen 4.5 (section onboarding) for the relevant section. Until then, mistakes sit in the mistake queue tagged `diagnostic-pending-review` (or `mock-pending-review` for periodic mocks where some sections have not yet been onboarded).
+
+### 5.11 Progress / mastery view (frontend, `app/src/progress/`)
+
+**Requirements:**
+- F5.11.1 Screen 10 per § 4
+- F5.11.2 Estimated score based on rolling 30-day performance
+- F5.11.3 Per-section mastery (% of Layer 1 IDs above threshold)
+- F5.11.4 Top 5 weakest Layer 1 IDs
+- F5.11.5 Trend graph with data points from mock exams + daily drilling
+
+### 5.12 Cmd+K command palette (frontend, `app/src/command-palette/`)
+
+Hard requirement — see § 6.4.
+
+### 5.13 Settings (Avancerat) (frontend, `app/src/settings/`)
+
+**Requirements:**
+- F5.13.1 Hidden by default; reachable via *"Avancerat"* link on the home screen or Cmd+K
+- F5.13.2 Time-boxing: flex-with-min-commit (default) / Pomodoro 25/5 / target (set goal, get warning)
+- F5.13.3 Variety: auto (default) / blocked / interleaved
+- F5.13.4 Daily time goal (10/20/40/60+ min)
+- F5.13.5 Theme: system (default) / light / dark
+- F5.13.6 Export/import all data as JSON
+
+### 5.14 Local data layer (frontend, `app/src/db/`)
+
+**Stack:** SQLite-WASM via SQLocal + Drizzle ORM, persisted to OPFS.
+
+**Tables (proposal, finalize during implementation):**
+- `users` (single local row: preferences, target date)
+- `sessions` (start, end, summary)
+- `attempts` (question_id, answer, correct, time_taken, session_id)
+- `mistakes` (question_id, layer1_ids, expand_state, last_seen)
+- `srs_state` (item_id, ease, interval, due_date)
+- `mastery` (section, layer1_id, score, last_updated)
+- `framework_progress` (layer1_id, status: `untaught | learning | practicing | retaining | mastered`, last_transition_at) — states must match Screen 5 / F5.5.5 state machine exactly
+
+**Requirements:**
+- F5.14.1 Persistent across browser restarts (OPFS)
+- F5.14.2 Export: full DB as a JSON file (against storage-clear loss)
+- F5.14.3 Import: restore from export
+- F5.14.4 Versioned migrations (Drizzle migrations)
+
+**Schema-design open question (resolved during Phase 0):** `mastery` and `framework_progress` both track per `layer1_id`. Either `framework_progress.status` is *derived* from `mastery.score` via threshold lookup (in which case `framework_progress` is a view, not a stored table), or the two are independent — `mastery.score` as a continuous metric used for ordering, `framework_progress.status` as a discrete state-machine state with explicit timestamped transitions. The state-machine variant is preferred for auditability (you can answer *"when did this cluster transition to retaining?"*); the derived variant is preferred for simplicity. Resolved during the Phase 0 DB schema sprint; both options are compatible with the rest of the spec.
+
+### 5.15 Synthetic question generator (Layer 4) — `pipeline/synthetic/`
+
+Layer 4 generates synthetic questions to extend the corpus beyond the 2160 official questions. **Architecture: dual-model verification with manual review only on conflicts.** This is an automated pipeline, not a human-heavy QA queue.
+
+**Pipeline (applies to all sections):**
+
+1. **Model A** generates question + step-by-step solution + answer key, seeded by Layer 1 elements (root, trap, taxonomy entry, tactic, dataset shape)
+2. **Model B** — *different model family from A* — independently solves the question without seeing A's solution
+3. **Automatic comparison** of B's answer against A's answer key
+4. **Match** → tagged `verified_match`, added to question bank with `source: "synthetic"`
+5. **Conflict** → flagged for manual review (status: `flagged`)
+6. Approved synthetic questions appended to `data/hp_question_bank.json` with full Layer 1 tags from the seed
+
+**Per-section approach:**
+
+| Section | Generation seed | Verification | Manual involvement |
+|---------|-----------------|--------------|---------------------|
+| ORD | Root + meaning/synonym set | Cross-model semantic agreement | Spot-check only |
+| MEK | Connector class + sentence pattern | Cross-model agreement on best fit | Spot-check only |
+| KVA | Trap ID from catalog | Dual-model math + trap-aware prompt | Conflicts only |
+| NOG | Trap ID + sufficiency pattern | Dual-model verification of sufficiency judgment | Conflicts only |
+| XYZ | Trap ID + algebra topic | Dual-model math + trap-aware prompt | Conflicts only |
+| LÄS / ELF | Taxonomy type + topic seed | Dual-model on answer correctness; manual spot-check on tone matching to HP register | Conflicts + monthly tone audit |
+| DTK | Tactic + dataset shape | Generate structured JSON dataset (not image); frontend renders programmatically; verification deterministic against raw data | Conflicts only |
+
+**Critical DTK design choice:** the generator emits **structured JSON datasets**, not rendered images. The frontend renders programmatically — charts via the charting library and maps via SVG/Leaflet (see § 7.2). This sidesteps image-generation flakiness, makes verification deterministic against raw data, and gives screen-reader accessibility for free.
+
+**Requirements:**
+
+- F5.15.1 Input: a Layer 1 element ID (root, trap, taxonomy entry, tactic, dataset shape) + target generation count
+- F5.15.2 Output: synthetic questions with `source: "synthetic"`, `exam_id: "synthetic-{section}-batch-{n}"`, full `layer1_tags` from seed, plus per-question metadata (seed ID, model A identifier, model B identifier, verification status)
+- F5.15.3 Each synthetic question gets a pre-generated Layer 2 explanation through the same pipeline as official questions (§ 5.4)
+- F5.15.4 Frontend marks synthetic questions visibly (small label *"Övningsfråga"*) so the user knows they are not from a past exam
+- F5.15.5 Synthetic questions are opt-in via Settings at first; default off until verified-match rate ≥ 80 % per section. Once a section crosses that threshold, default on for that section.
+- F5.15.6 Models A and B must be from **different model families** (e.g. Claude as A and GPT-4 as B; or different Claude tiers with sufficiently different system prompts forcing distinct reasoning approaches). Same-model self-verification is forbidden — it eliminates the independence the architecture relies on.
+- F5.15.7 Verification model B receives the relevant Layer 1 trap catalog as explicit prompt context with a "double-check for these traps" instruction. This mitigates shared-bias failures on trick questions (§ 9.11).
+- F5.15.8 Pipeline is rerunnable: trap-pattern catalogs and prompt templates are versioned. Regenerating with updated frameworks marks prior synthetic questions for re-verification.
+
+### 5.16 Lesson content pipeline (`pipeline/lessons/`)
+
+Generates and validates concept lessons (the lesson cards rendered by Screen 5) following the LLM-generated-with-structural-review approach in § 3.4.
+
+**Requirements:**
+
+- F5.16.1 Input: a Layer 1 element ID or a curriculum-scope descriptor (e.g. *"XYZ: linear inequalities lesson set"*) + audience parameter (absolute beginner, ADHD-PI-friendly tone, dense whitespace, one concept per card).
+- F5.16.2 Output: structured lesson cards in `data/lessons/{section}/{cluster_id}/*.json`, each with title, concept body, examples, and the 1–3 micro-check questions defined in Screen 5.
+- F5.16.3 **Teach-back test as the primary quality gate.** For each generated lesson, Model B (different family from the generator, per F5.15.6) attempts to answer N test questions whose answers should be derivable *only* from the lesson body. Pass rate ≥ threshold → lesson approved. Below threshold → regenerate. Default N = 5 questions, threshold = 80 % pass; tuned per section during the corresponding content-authoring phase (§ 3.4).
+- F5.16.4 **Structural review by the dev** runs after the teach-back gate passes — confirms scaffolding order across the cluster, scope coverage, and ADHD-PI-friendly density. Section-level approval, not line-by-line edits.
+- F5.16.5 Lessons are versioned. When Layer 1 frameworks update, affected lesson clusters are flagged for regeneration; users who already had `learning` or `mastered` state on those clusters are not forcibly demoted but are invited to revisit the updated material.
+- F5.16.6 The teach-back test reuses the dual-model infrastructure from § 5.15. A failed teach-back test produces a diagnostic — *which* test questions Model B got wrong — that is fed back into the regeneration prompt. This converts the gate into a corrective signal, not just a pass/fail.
+
+---
+
+## 6. Non-functional requirements
+
+### 6.1 ADHD-PI UX (hard requirements)
+
+- **NF6.1.1** The home screen has exactly one (1) primary CTA. No section tiles, no choice lists at the top level.
+- **NF6.1.2** No streak counter that visibly decrements when days are missed.
+- **NF6.1.3** No "you've been gone for X days" shame messages.
+- **NF6.1.4** Scratchpad and formula sheet always one tap away during drill.
+- **NF6.1.5** Session length is always visible (not hidden).
+- **NF6.1.6** Distraction-resistant focus mode (Cmd+. or similar): hides all chrome except the current question.
+
+### 6.2 Performance
+
+- **NF6.2.1** Sub-100 ms response on all user interactions
+- **NF6.2.2** 60 fps for all scrolling and animation
+- **NF6.2.3** App load < 2 sec on 4G
+- **NF6.2.4** SQLite queries < 50 ms typical
+
+### 6.3 Accessibility
+
+- **NF6.3.1** WCAG 2.2 AA compliance (Radix primitives provide this out of the box)
+- **NF6.3.2** Keyboard navigation reaches everything — no mouse-only flows
+- **NF6.3.3** Screen-reader support via semantic HTML + ARIA where necessary
+- **NF6.3.4** Reduced-motion mode respects `prefers-reduced-motion`
+
+### 6.4 Cmd+K command palette (hard requirement, not "nice to have")
+
+For ADHD-PI users, fast keyboard navigation to the right section or drill mode is **directly tied** to whether the app gets used in a stressful study moment. This is a cornerstone feature, not polish.
+
+- **NF6.4.1** Globally available via `Cmd+K` / `Ctrl+K`, regardless of view
+- **NF6.4.2** Searchable across: sections, drill modes, settings, Layer 1 elements, recent errors, mock
+- **NF6.4.3** Fuzzy search with max 200 ms response time
+- **NF6.4.4** Keyboard-first (arrows, Enter, Esc) — mouse never required
+- **NF6.4.5** Visual pattern: Linear/Raycast-style (dark overlay, list, categories)
+
+### 6.5 Local-first & privacy
+
+- **NF6.5.1** No authentication, no accounts, no cloud sync in v0
+- **NF6.5.2** All data stored locally (OPFS via SQLite-WASM)
+- **NF6.5.3** No telemetry by default; opt-in if added
+- **NF6.5.4** No third-party cookies or trackers
+
+### 6.6 Mobile & offline
+
+- **NF6.6.1** PWA: installable, works offline after first load
+- **NF6.6.2** Service worker caches app shell + question data + framework JSON
+- **NF6.6.3** Responsive from 360 px (mobile) to 2560 px (desktop)
+- **NF6.6.4** Mobile mock = halves (Övningsmock); full mock mode is desktop-only
+
+### 6.7 Theme
+
+- **NF6.7.1** Light + dark mode (system-aware default)
+- **NF6.7.2** OKLCH-based color palette (perceptually uniform, modern CSS color space)
+- **NF6.7.3** Restrained palette: 1 accent + 1 neutral scale + semantic (success/warning/error)
+
+### 6.8 Browser support
+
+- **NF6.8.1** Latest Chrome, Safari, Firefox (current + previous major)
+- **NF6.8.2** Edge by Chromium-extension
+- **NF6.8.3** No IE support, no pre-OPFS fallback
+
+### 6.9 Language
+
+- **NF6.9.1** Product UI text in Swedish
+- **NF6.9.2** ELF questions and content remain in English (per the exam design)
+- **NF6.9.3** No i18n infrastructure in v0 (single product language = Swedish)
+
+---
+
+## 7. Technical stack
+
+### 7.1 Architecture: pure frontend + static data files
+
+- **Parser** (Python, run once locally) produces `data/hp_question_bank.json`, `data/explanations/*.json`, `data/images/*.png`
+- **Frontend** (Vite + React, deployed as a static SPA) consumes those files
+- **No backend** in v0
+- LLM calls ("explain more"): **no runtime LLM in v0**; only pre-generated Layer 2 explanations (matches the QA pipeline in § 3.2). On-demand LLM = v0.5 via a Cloudflare Worker proxy if/when added.
+
+### 7.2 Stack
+
+```
+Framework      Vite 6 + React 19 + TypeScript 5.6
+Styling        Tailwind CSS v4 (Oxide engine)
+Components     shadcn/ui (Radix primitives + Tailwind, copy-paste)
+Icons          Lucide
+Typography     Inter (or Geist) — paid fonts (Söhne / Reckless / ABC Diatype) considered later
+Math           KaTeX via react-katex
+Charts         Recharts (React + SVG, deterministic from JSON datasets — used for DTK)
+Maps           SVG generated from coordinate data (Leaflet.js fallback if complexity demands it)
+Motion         Motion (formerly Framer Motion) — used sparingly
+State          Zustand + TanStack Query
+Local DB       SQLite-WASM via SQLocal + Drizzle ORM (OPFS persistence)
+Lint/Format    Biome
+Tests          Vitest + Playwright
+PWA            vite-plugin-pwa
+Deploy         Vercel or Cloudflare Pages
+```
+
+### 7.3 Design details (not stack, but polish-critical)
+
+- Disciplined typographic scale (12/14/16/20/24/32/48), body line-height 1.5–1.6
+- Spacing rhythm (4/8/12/16/24/32/48/64)
+- Motion 150–250 ms, ease-out for entries / ease-in for exits
+- View Transitions API for page transitions
+- Empty states, loading states, error states all designed — not fallback defaults
+
+### 7.4 Repo layout
+
+```
+hpfetcher/
+├── bygg_hp_databas.py            # existing (PDF scraper)
+├── hp_databas.json               # existing (raw data)
+├── parser/                       # Python (one-time)
+│   ├── parse_section.py
+│   ├── extract_images.py
+│   ├── math_cleanup.py
+│   └── tag_with_frameworks.py
+├── frameworks/                   # Layer 1 (manual + empirical)
+│   ├── ord_roots.json
+│   ├── mek_protocol.json
+│   ├── las_taxonomy.json
+│   ├── elf_taxonomy.json
+│   ├── kva_traps.json
+│   ├── nog_traps.json
+│   ├── xyz_traps.json
+│   └── dtk_tactics.json
+├── pipeline/
+│   ├── explanations.py           # Layer 2 (per-question explanations + QA queue)
+│   ├── synthetic/                # Layer 4 (dual-model question generation, § 5.15)
+│   └── lessons/                  # Lesson content generator + teach-back gate (§ 5.16)
+├── data/                         # output data consumed by the frontend
+│   ├── hp_question_bank.json
+│   ├── explanations/
+│   └── images/
+├── app/                          # frontend (Vite + React)
+│   ├── src/
+│   │   ├── drill/
+│   │   ├── feedback/
+│   │   ├── srs/
+│   │   ├── mistakes/
+│   │   ├── mock/
+│   │   ├── progress/
+│   │   ├── command-palette/
+│   │   ├── scheduler/
+│   │   ├── settings/
+│   │   └── db/
+│   ├── public/
+│   └── package.json
+└── docs/
+    ├── curriculum-scheduler.md   # written before Phase 3
+    └── ...
+```
+
+---
+
+## 8. Sequence / phase plan
+
+### Phase 0 — Foundation (week 1–2)
+
+- Parser MVP run on `var-2026` (1 exam, all 5 files parsed to structured JSON)
+- PyMuPDF image extraction works for DTK
+- Frontend skeleton: Vite + React + Tailwind v4 + shadcn/ui installed
+- SQLocal + Drizzle set up with first schema
+- Hello-world drill flow: question shown → answer received → feedback displayed (mock data, no pedagogy yet)
+
+**Parallel (can start now, independent):**
+- KVA/NOG trap catalog manually against raw PDF text (~100 questions → patterns identified)
+
+### Phase 1 — Layer 1 content (weeks 2–6, parallel with Phase 0+2)
+
+- ORD root lexicon: empirical bottom-up from the corpus (semi-automated with LLM morphology tagging + manual review)
+- KVA/NOG trap catalogs completed
+- XYZ trap catalog
+- MEK protocol
+- DTK tactics
+- LÄS/ELF taxonomy (after the full parser is done — needs passages as stress-test material)
+
+**Output:** all `frameworks/*.json` structured and versioned.
+
+### Phase 2 — End-to-end drill loop (weeks 4–7)
+
+- Parser run on all 27 exams
+- Questions tagged with Layer 1 IDs (`tag_with_frameworks.py`)
+- Screen 4 (home), 4.5 (section onboarding), 5 (lesson cards), 6 (drill), 7 (feedback)
+- Mistake queue stored + visualized
+- SRS engine for ORD
+
+### Phase 3 — Curriculum scheduler + adaptive logic (weeks 7–10)
+
+- **Week 7:** write `docs/curriculum-scheduler.md` (design doc, no code)
+- Implement scheduler per MVP rules (§ 5.5)
+- Layer 3 adaptive trigger logic (Screen 9)
+- Cmd+K command palette (§ 6.4)
+
+### Phase 4 — Layer 2 explanations + mock mode (weeks 9–14)
+
+Layer 2 QA volume is **per-section, not all-at-once**. A solo dev who is also dogfooding cannot review 400+ explanations in a single phase. Sequenced:
+
+- **Phase 4a (weeks 9–10):** Layer 2 pipeline + QA for **ORD only** (~50 reviews). Validates the pipeline. Mock-mode UI built (Screens 1–3 diagnostic flow + Screen 11) using mock data.
+- **Phase 4b (weeks 10–12):** Layer 2 QA for **KVA + NOG** (~100 reviews). These are the highest-leverage drill sections (clear traps, deterministic patterns). Diagnostic mock and Övningsmock go live with real explanations for ORD/KVA/NOG. Full desktop mock available at end of 4b.
+- **Phase 4c (weeks 12–14, overlapping with Phase 5):** Layer 2 QA for **MEK, XYZ, DTK, LÄS, ELF** (~250 reviews). Spread across the dogfood phase — explanations are added per section as QA completes. Sections without QA-approved Layer 2 fall back to a section-level pre-canned explanation (*"Rätt svar är X. [generic section-level explanation]"*) until reviewed. **Layer 4 synthetic generator** (§ 5.15) ships in this phase for **ORD, MEK, KVA, NOG, XYZ, and DTK** using dual-model verification — manual review only on conflicts.
+- Screen 10 (progress / mastery) integrates throughout 4a–4c.
+
+**Total Phase 4 effort:** ~400 explanation reviews × 5–10 min/review = 30–60 hours of focused QA work spread over 5+ weeks. This is a real risk (§ 9.10).
+
+### Phase 5 — Polish + dogfood iteration (week 12+)
+
+- Daily dogfood usage
+- Iteration based on actual usage
+- Settings (Avancerat)
+- Export/import
+- Theme polish, motion polish
+- Layer 2 expansion to all sections
+- **Layer 4 synthetic generator for LÄS / ELF** — verification on answer correctness plus a monthly manual tone audit against HP register (§ 5.15)
+
+### Milestones
+
+- **M1 (week 2):** parser works on `var-2026`, frontend skeleton stands
+- **M2 (week 6):** Layer 1 done for at least ORD/KVA/NOG
+- **M3 (week 7):** drill loop works end-to-end for one section
+- **M4 (week 10):** dev can begin dogfooding
+- **M5 (week 12+):** continuous use + iteration
+
+---
+
+## 9. Open questions
+
+### 9.1 Curriculum scheduler design doc
+**Status:** not yet written
+**Action:** `docs/curriculum-scheduler.md` is the first deliverable in Phase 3, **before** the scheduler is coded. The scheduler is the product's hardest single problem; architectural decisions are made on paper, not in real time.
+
+### 9.2 Legal: UHR copyright + commercial service
+**Status:** unresolved
+**Background:** UHR owns the HP material. allakando.se publishes with permission. It is **unclear** whether a third party can build a commercial service on top of the material without its own permission.
+**Action:** **must be resolved before public launch to other users, not after.** Does not affect dogfood phase (single user, no distribution). Affects every choice after MVP.
+
+### 9.3 Hosting choice
+**Status:** open (Vercel vs Cloudflare Pages)
+**Action:** decide in Phase 0; both work; Cloudflare has friendlier pricing if scaling occurs, Vercel has better Vite DX.
+
+### 9.4 Typography
+**Status:** Inter (or Geist) for MVP
+**Considered later:** paid fonts (Söhne, Reckless, ABC Diatype) which lift typography from "polished startup" to "design-firm-level". Aesthetic choice, not technical; replaceable later without refactor.
+
+### 9.5 Onboarding: "minutes per day" question
+**Status:** preliminarily resolved
+**Resolution:** buttons (10/20/40/60+ min) rather than a free-text field. Final decision during Phase 4.
+
+### 9.6 Backup / sync strategy beyond dogfood
+**Status:** open
+**Background:** local-first means that if browser storage is cleared, all data is lost. Export/import (§ 5.13) covers dogfood. Multi-device sync is a separate question.
+**Action:** designed in v1 (post-MVP); possible solutions include BYOC (bring-your-own-cloud) or a paid sync service.
+
+### 9.7 Business model post-MVP
+**Status:** undecided
+**Questions:** free / freemium / subscription / one-time purchase? How does it balance against the legal question (§ 9.2)?
+
+### 9.8 ELF data completeness
+**Status:** known risk
+**Background:** ELF texts are published with a delay for copyright reasons (CLAUDE.md § "Viktigt om datan"). Older exams may have incomplete ELF data.
+**Action:** ELF section is deprioritized in Phase 1; review ELF coverage before Phase 4.
+
+### 9.9 Layer 1 content authoring time
+**Status:** unestimated risk
+**Background:** Frameworks (root lexicon, trap catalogs, taxonomies, MEK/DTK protocols) are manual content work. The technical sprint can outpace the content sprint. Phase 1 treats this as "parallel" to Phase 0/2 but assigns no hours. ORD root lexicon is the largest single content task — likely the longest pole.
+**Action:** Time-box the first deliverable (KVA + NOG trap catalogs against ~100 questions each) at the end of week 2; reassess Phase 1 schedule based on actual hours spent. If content authoring is dominating, consider LLM-assisted drafting with manual approval (similar to Layer 2 QA pattern) for the lower-priority sections.
+
+### 9.10 Layer 2 QA effort distribution
+**Status:** flagged in Phase 4 (§ 8)
+**Background:** ~400 explanations × 5–10 min/review = 30–60 h of focused review for a solo dev who is also the primary user. Risk of pipeline backlog blocking sections from showing rich feedback.
+**Action:** Phase 4 is split into 4a/4b/4c (§ 8) as the mitigation. Sections without QA-approved Layer 2 fall back to section-level pre-canned explanations until reviewed. Reassess if 4a (ORD, ~50 reviews) takes substantially longer than 1 week — that's the canary for the rest of the schedule.
+
+### 9.11 Synthetic generation residual risks
+**Status:** scoped in § 5.15; specific risks tracked here
+
+§ 5.15 commits to dual-model verification across all sections, with manual review only on conflicts. Known residual risks:
+
+- **KVA / NOG (shared-bias risk):** dual-model verification is robust against random errors but not against shared cognitive biases. KVA/NOG questions specifically exploit shortcuts that LLMs often share with humans (anchoring, treating "I don't know" as "can't be determined", solving instead of judging sufficiency). Both models can fall for the same trap simultaneously. **Mitigation:** F5.15.7 — verification model receives the trap catalog as explicit prompt context with a "double-check for these traps" instruction. Track verified-match rate per trap ID; trap IDs with consistent silent failures escalate to manual-review-required.
+- **LÄS / ELF (tone risk):** dual-model verification covers answer correctness but not tone matching to HP register (formal Swedish journalistic style for LÄS; neutral journalistic English for ELF). **Mitigation:** monthly manual tone audit on a random sample of approved synthetic questions until the dev is satisfied with style consistency. If audit reveals systematic drift, halt LÄS/ELF generation pending prompt revision.
+- **DTK:** the JSON-dataset-not-image approach (§ 5.15) sidesteps the original concern. Verification is deterministic against raw data. Residual risk is limited to the LLM generating implausible data shapes, which dual-model catches.
+
+**Action:** track per-section verified-match rates and conflict rates over the first 100 generated questions per section. Halt generation for any section where verified-match rate drops below 80 % or where audit reveals systematic style/tone drift. The `source: "official" | "synthetic"` field (§ 5.1.6) and the visible *"Övningsfråga"* label (F5.15.4) keep the user informed about which questions came from where.
+
+### 9.12 Pre-2013 exam data
+**Status:** unavailable from current source
+**Background:** `hp_databas.json` covers 2013–2026 (27 sittings) sourced from allakando.se. Earlier years (2011–2012 and earlier) are not in the allakando archive.
+**Action:** if the question pool needs expansion, investigate alternative sources — UHR's own archives, third-party uploads, or scanned past-paper repositories. Not blocking for MVP.
+
+### 9.13 Pedagogical content authoring effort
+**Status:** scoped in § 3.4, unestimated
+**Background:** § 3.4 separates the *delivery system* (architecture, in PRD) from the *content* (lessons, especially the XYZ algebra refresher). For a true 0.0 user, content authoring is the longest pole in the project. Not visible in § 8 phases because phases are code-centric.
+**Action:** track content as a separate workstream from the code workstream. Time-box the XYZ algebra-curriculum scoping at end of week 4; reassess if public-domain adaptation is viable. NOG and MEK lessons can lag XYZ since drilling pools are smaller per section. ORD/KVA/DTK content is free-rolled with Layer 1.
+
+---
+
+## 10. Acceptance: what "MVP done" means
+
+MVP is done when:
+
+1. The dev has taken a diagnostic mock and received a plan
+2. The dev can open the app, press *"Fortsätt"*, and get a pedagogically coherent session
+3. A session includes at least one of: concept lesson, drill, feedback with Layer 1 tag
+4. Adaptive logic has triggered at least once (3 errors on the same ID)
+5. The dev has used the app ≥ 5 days/week for 4 consecutive weeks
+6. Two mock exams completed with measurable improvement between them
+
+All other features are polish beyond this.
