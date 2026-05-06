@@ -1,106 +1,83 @@
-# HP-Coach — Proven
+# CLAUDE.md
 
-Webtjänst för att studera till det svenska högskoleprovet (HP).
-Målgruppen är svenska studenter som vill ha ett högt resultat.
-Tjänsten ska kunna användas av andra, inte bara mig.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Språk
+## What this is
 
-- **Användarvänd text** (UI, feedback, förklaringar) är på svenska — målgruppen är svenska studenter.
-- **Kod, kommentarer, commit-meddelanden, samtal med Claude** kan vara på engelska eller svenska.
-- **ELF-sektionens innehåll** är på engelska per provets design — översätt aldrig ELF-texter.
-- Befintlig svensk text i `bygg_hp_databas.py` (utskrifter, docstrings) — behåll den, byt inte ut i onödan.
+HP-Coach: a coaching tool for the Swedish högskoleprov (HP). Differentiator: zero-knowledge curriculum + ADHD-PI-friendly UX, targeting 2.0 (perfect score).
 
----
+## Source of truth
 
-## Nuläge
+For product decisions, architecture, and scope, read **`.taskmaster/docs/prd.txt`** first. It owns:
 
-### Klart
-- `bygg_hp_databas.py` — scraper som laddar ner alla prov från allakando.se
-- `hp_databas.json` — råtext från 27 HP-provtillfällen (var-2013 t.o.m. var-2026)
-  - 135 PDF-filer extraherade: facit + 2 verbala pass + 2 kvantitativa pass per tillfälle
-  - ~2,7 MB, format: `{ "var-2026": { "facit": "...", "verb1": "...", "verb2": "...", "kvant1": "...", "kvant2": "..." } }`
+- Vision and audience (§ 1)
+- Design pillars (§ 2): zero prior knowledge, target 2.0, neurodivergent-friendly UX
+- Three-layer pedagogical architecture (§ 3): Layer 1 frameworks → Layer 2 explanations → Layer 3 adaptive logic, plus Layer 4 synthetic generator (§ 5.15) and § 5.16 lesson content pipeline
+- Screen-by-screen UX flows (§ 4)
+- Functional + non-functional requirements (§§ 5–6) — Cmd+K palette is a hard requirement (§ 6.4)
+- Technical stack (§ 7): Vite + React 19 + TS + Tailwind v4 + shadcn/ui + SQLocal/Drizzle, local-first, no backend in v0
+- Phase plan (§ 8)
+- Open questions and risks (§ 9)
+- MVP acceptance criteria (§ 10)
 
-### Nästa steg (i ordning)
-**Inget av detta är byggt ännu — bara `bygg_hp_databas.py` och `hp_databas.json` finns.**
+For tracked work, see `.taskmaster/tasks/tasks.json` (53 parent tasks, 265 subtasks). Use the taskmaster MCP tools (`get_tasks`, `next_task`, `get_task`, `expand_task`, `set_task_status`) rather than editing the file by hand.
 
-1. **Parser** — extrahera strukturerade frågor ur `hp_databas.json` + bilder ur PDF:erna för DTK
-2. **Backend** — FastAPI + PostgreSQL
-3. **Frontend** — React + KaTeX (matematik) + Vite
+Persistent memory across Claude sessions lives in `~/.claude/projects/-home-loucmane-dev-hpfetcher/memory/` — see `MEMORY.md` for the index. Notable: user profile (ADHD-PI, dogfood user, target 2.0), design pillars, pedagogical architecture, language and batching conventions.
 
----
+## Repo layout
 
-## Köra scrapern (om något behöver hämtas om)
+```
+hpfetcher/
+├── bygg_hp_databas.py            # PDF scraper (existing, complete)
+├── hp_databas.json               # scraped raw text from 27 exams (~2.7 MB; data, not artifact)
+├── parser/                       # planned, Phase 0–2
+├── frameworks/                   # Layer 1 JSON (planned, Phase 1)
+├── pipeline/
+│   ├── explanations.py           # Layer 2 (per-question explanations + QA queue)
+│   ├── synthetic/                # Layer 4 (dual-model question generation)
+│   └── lessons/                  # § 5.16 lesson generator + teach-back gate
+├── data/                         # parser output: hp_question_bank.json, explanations/, images/
+├── app/                          # frontend (Vite + React, planned, Phase 0)
+└── docs/                         # design docs (e.g. curriculum-scheduler.md, written before Phase 3)
+```
+
+## Running the scraper
 
 ```bash
 source venv/bin/activate
-pip install requests pdfplumber   # om beroenden saknas
-python3 bygg_hp_databas.py        # resumable — redan hämtade filer hoppas över
+pip install requests pdfplumber  # if missing
+python3 bygg_hp_databas.py        # resumable — already-fetched files are skipped
 ```
 
-Scraper-arkitektur: allt ligger i `bygg_hp_databas.py`. `CATALOG`-dicten är källan till sanning för vad som ska hämtas. Lägg till nya prov där — resten av skriptet är data-drivet. `hp_databas.json` är data, inte genererad artefakt — radera den inte om du inte tänker göra en full re-scrape.
+The scraper is data-driven from the `CATALOG` dict in `bygg_hp_databas.py`. Add new exams there; the rest of the script handles them.
 
-URL-stavfel i `CATALOG` (t.ex. `Hogksoleprovet`, `Hogkoleprovet`) är avsiktliga och matchar de riktiga URL:erna — rätta dem inte.
+## Non-obvious things to know
 
----
+- **URL typos in `CATALOG`** (`Hogksoleprovet`, `Hogkoleprovet`, `Hogskolepovet`) are *intentional* — they match real allakando.se filenames. Don't "fix" them.
+- **`hp_databas.json` is data, not a build artifact.** Don't delete unless you intend a full ~30-min re-scrape.
+- **Failed scraper downloads** are stored as bracketed error strings (`"[HTTP 404: ...]"`); these are truthy and won't auto-retry on rerun. Delete the relevant entry from the JSON to force a retry.
+- **Parser output goes to `data/hp_question_bank.json`** — never overwrite `hp_databas.json`.
+- **Test parsers on `var-2026` first** before running across all 27 exams (Phase 0 milestone).
+- **ELF data completeness varies** — older exams may have incomplete ELF section text due to the 1-week post-exam embargo at scrape time (PRD § 9.8).
+- **`exam_id` format**: `var-2026`, `host-2025`, `var-2022-1`/`var-2022-2` (years with multiple sittings), `host-ver1-2019`/`host-ver2-2019` (years with multiple versions).
 
-## Provets struktur
+## Section codes (HP exam structure)
 
-HP har två halvor à 160 min, vardera 80 frågor:
+Two halves, ~160 min and 80 questions each.
 
-**Verbal del (VERB)**
-| Del | Frågor | Testar |
-|-----|--------|--------|
-| ORD | 40 | Synonymer — ofta ovanlig/arkaisk vokabulär |
-| LÄS | 20 | Svensk läsförståelse med inferensfrågor |
-| MEK | 20 | Meningskomplettering (fyll i luckor) |
-| ELF | 20 | Engelsk läsförståelse |
+**Verbal:** ORD (synonyms, 40q), LÄS (Swedish reading, 20q), MEK (sentence completion, 20q), ELF (English reading, 20q).
 
-**Kvantitativ del (KVANT)**
-| Del | Frågor | Testar |
-|-----|--------|--------|
-| XYZ | 12 | Algebra och ekvationslösning |
-| KVA | 12 | Kvantitativa jämförelser: Kvantitet I vs II — A>B, B>A, A=B, eller otillräcklig info |
-| NOG | 12 | Datasufficiency: räcker påstående (1) och/eller (2) för att lösa problemet? |
-| DTK | 12 | Diagram, tabeller och kartor — kräver bilder från PDF |
+**Quant:** XYZ (algebra, 12q), KVA (quantitative comparisons, 12q), NOG (data sufficiency, 12q), DTK (data interpretation with diagrams/tables/maps, 12q).
 
-**Poängsättning:** 0,0–2,0 per halva. Totalpoäng = medel av båda halvorna. 2,0 är perfekt, 1,8+ är topp-percentil. Ingen minuspoäng — svara alltid på allt.
+Score: 0.0–2.0 per half; total = mean of halves; 2.0 is perfect, 1.8+ is top percentile; no penalty for wrong answers (always answer everything).
 
----
+## Conventions
 
-## Parser — förväntad parsing-kvalitet per sektion
+- **Dev artifacts** (PRDs, code, comments, READMEs, conversation, taskmaster tasks) → **English**.
+- **Product strings** (UI, lesson copy, feedback shown to students) → **Swedish**.
+- **ELF section content** stays **English** by exam design — never translate.
+- Pre-existing Swedish in `bygg_hp_databas.py` (`print` strings, docstrings) — keep as-is, don't churn.
 
-> **OBS:** Tabellen är förväntningar baserade på manuell granskning av råtexten, inte mätta resultat. Uppdatera stjärnorna när parsern är skriven och testad.
+## Legal note
 
-| Sektion | Kvalitet | Notering |
-|---------|----------|----------|
-| ORD | ★★★★★ | Tydligt mönster: `1. ord: A alt B alt...` |
-| MEK | ★★★★★ | Tydligt mönster |
-| KVA | ★★★★★ | Tydligt mönster |
-| NOG | ★★★★☆ | Bra, men statement-parsing kräver omsorg |
-| XYZ | ★★★★☆ | Matematik renderas ibland garblad (exp, bråk) — konvertera till LaTeX |
-| LÄS | ★★★☆☆ | Text finns men passage↔fråga-koppling måste parsas |
-| ELF | ★★★☆☆ | Samma som LÄS, på engelska |
-| DTK | ★☆☆☆☆ | Frågor finns men diagram saknas — extrahera som bilder ur PDF med pdfplumber eller PyMuPDF (fitz) |
-
-Parser-output ska sparas i `hp_fragebank.json` — skriv aldrig över `hp_databas.json`.
-Testa alltid parsern mot ett enda provtillfälle (`var-2026`) innan du kör alla 27.
-
----
-
-## Designprinciper för webtjänsten
-
-- Snabb feedback per fråga — inte bara rätt/fel utan varför
-- Progresstracking per sektion och per användare
-- Adaptiv svårighet — prioritera svaga områden
-- Facit är auktoritativt — alla svar valideras mot `facit`-fältet i databasen
-
----
-
-## Viktigt om datan
-
-- Frågorna är upphovsrättsskyddade av UHR (Universitets- och högskolerådet)
-- Källan är allakando.se som publicerar proven med tillstånd
-- ELF-texter publiceras bara en vecka efter provet av upphovsrättsskäl — äldre kan vara ofullständiga
-- DTK-frågor utan bilder är oanvändbara för drilling — bildextraktion är högprioriterat
-- `exam_id`-format: `var-2026`, `host-2025`, `var-2022-1`, `var-2022-2`, `host-ver1-2019`
+HP material is copyrighted by UHR (Universitets- och högskolerådet). allakando.se publishes with permission. Whether a third-party can build a commercial service on top of the material without separate permission is **unresolved** (PRD § 9.2) and must be addressed before public launch to other users. Does not affect the dogfood phase (single user, no distribution). The repo is private for this reason.
