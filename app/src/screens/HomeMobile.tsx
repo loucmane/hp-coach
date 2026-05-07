@@ -9,27 +9,49 @@
 // - One orchestrated entrance: date → headline → CTA → link, staggered via
 //   the `.reveal` keyframe in index.css. No scattered micro-interactions.
 // - Tabular nums on the day-counter so digits don't shift between renders.
+//
+// Wiring:
+// - Coach voice from useCoachStore (defaults to taktiker on first run)
+// - Date + days-remaining from useExamStore + lib/dates
+// - Tests can pin all of this via the optional props for deterministic
+//   rendering; production callers pass nothing.
 
+import { MobileFrame, type TabKey } from '@/components/MobileFrame'
 import { Btn, CoachLine, Mono } from '@/components/primitives'
-import { MobileFrame } from '@/components/MobileFrame'
-import { VOICE, type CoachKey } from '@/lib/voice'
+import { formatSwedishHeader } from '@/lib/dates'
+import { type CoachKey, VOICE } from '@/lib/voice'
+import { useCoachStore } from '@/stores/coachStore'
+import { useDaysRemaining, useSitting } from '@/stores/examStore'
 
 type HomeMobileProps = {
+  /** Override coach (tests / preview); defaults to store value. */
   coach?: CoachKey
   showStreak?: boolean
+  /** Override "now" so screenshots / tests render a stable date. */
+  now?: Date
   onContinue?: () => void
   onAvancerat?: () => void
+  onTabChange?: (id: TabKey) => void
 }
 
 export function HomeMobile({
-  coach = 'taktiker',
+  coach: coachProp,
   showStreak = false,
+  now,
   onContinue,
   onAvancerat,
-}: HomeMobileProps) {
+  onTabChange,
+}: HomeMobileProps = {}) {
+  const storeCoach = useCoachStore((s) => s.coach)
+  const coach = coachProp ?? storeCoach
   const voice = VOICE[coach]
+
+  const sitting = useSitting()
+  const days = useDaysRemaining(now)
+  const today = now ?? new Date()
+
   return (
-    <MobileFrame tabs activeTab="home">
+    <MobileFrame tabs activeTab="home" onTabChange={onTabChange}>
       {/* paddingBottom reserves space for the absolute-positioned BottomTabs */}
       <div
         style={{
@@ -51,7 +73,7 @@ export function HomeMobile({
           }}
         >
           <div>
-            <Mono>Onsdag · 6 maj</Mono>
+            <Mono>{formatSwedishHeader(today)}</Mono>
             <div
               style={{
                 fontFamily: 'var(--font-mono)',
@@ -61,7 +83,7 @@ export function HomeMobile({
                 fontVariantNumeric: 'tabular-nums',
               }}
             >
-              172 dagar kvar · höstprov 26
+              {days} dagar kvar · {sitting.label.toLowerCase()}
             </div>
           </div>
           {showStreak && (
@@ -110,6 +132,7 @@ export function HomeMobile({
             </Btn>
           </div>
           <button
+            type="button"
             onClick={onAvancerat}
             className="reveal"
             style={{

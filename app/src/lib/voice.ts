@@ -34,8 +34,7 @@ export const VOICE: Record<CoachKey, CoachVoice> = {
   },
   professor: {
     onboardHandoff: {
-      title:
-        'Första passet är en verbal halva på cirka 160 minuter. Räkna med ett lågt resultat.',
+      title: 'Första passet är en verbal halva på cirka 160 minuter. Räkna med ett lågt resultat.',
       body: 'Det är diagnostiskt motiverat. Utan tidigare studier har en högre mätning inget prediktivt värde.',
     },
     sectionOnboard:
@@ -44,7 +43,8 @@ export const VOICE: Record<CoachKey, CoachVoice> = {
     feedbackRight: 'Rätt. Notera även varför distraktorerna inte fungerar.',
     sessionEnd:
       'Passet är avslutat. 23 frågor, 17 rätta. Imorgon: ORD-repetition samt introduktion till ELF.',
-    adaptive: 'Mönstret har återkommit tre gånger på sju dagar. En kort repetition är pedagogiskt motiverad.',
+    adaptive:
+      'Mönstret har återkommit tre gånger på sju dagar. En kort repetition är pedagogiskt motiverad.',
     homeLine:
       'Dagens program: 10 min ORD-repetition, 30 min KVA-grunder, 5 min felanalys från förra passet.',
     cta: 'Påbörja',

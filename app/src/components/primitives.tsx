@@ -48,6 +48,7 @@ export function Btn({
   const v = BTN_VARIANTS[variant]
   return (
     <button
+      type="button"
       className="hpc-btn"
       style={{
         height: s.h,
@@ -87,16 +88,40 @@ type CardProps = {
 }
 
 export function Card({ children, padded = true, onClick, style, className }: CardProps) {
+  // When clickable, render as <button> so keyboard + AT users get the affordance
+  // for free; otherwise stay as a presentational <div>.
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        className={className}
+        style={{
+          background: 'var(--panel)',
+          border: '1px solid var(--hairline)',
+          borderRadius: 'var(--radius)',
+          padding: padded ? 'var(--pad-lg)' : 0,
+          cursor: 'pointer',
+          textAlign: 'inherit',
+          font: 'inherit',
+          color: 'inherit',
+          display: 'block',
+          width: '100%',
+          ...style,
+        }}
+      >
+        {children}
+      </button>
+    )
+  }
   return (
     <div
-      onClick={onClick}
       className={className}
       style={{
         background: 'var(--panel)',
         border: '1px solid var(--hairline)',
         borderRadius: 'var(--radius)',
         padding: padded ? 'var(--pad-lg)' : 0,
-        cursor: onClick ? 'pointer' : undefined,
         ...style,
       }}
     >
@@ -117,6 +142,7 @@ export function L1Chip({ id, size = 'md', locked = false, onClick }: L1ChipProps
   const sz = size === 'sm' ? { fz: 10.5, py: 2, px: 6 } : { fz: 11, py: 3, px: 7 }
   return (
     <button
+      type="button"
       title={locked ? 'Inte upplåst än' : id}
       onClick={(e) => {
         e.stopPropagation()
