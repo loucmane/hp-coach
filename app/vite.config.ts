@@ -1,12 +1,16 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import { VitePWA } from 'vite-plugin-pwa'
 import path from 'node:path'
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
+import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
+// Plugin order matters: TanStackRouterVite must run BEFORE @vitejs/plugin-react
+// so the route tree generator sees raw .tsx files before they're transformed.
 export default defineConfig({
   plugins: [
+    TanStackRouterVite({ target: 'react', autoCodeSplitting: true }),
     react(),
     tailwindcss(),
     VitePWA({

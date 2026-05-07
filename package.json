@@ -1,0 +1,19 @@
+{
+  "name": "hpfetcher",
+  "private": true,
+  "version": "0.0.0",
+  "description": "HP-Coach repo root — owns git hooks for the app/ workspace.",
+  "scripts": {
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "app/src/**/*.{ts,tsx,js,jsx,json}": [
+      "pnpm --dir app exec biome check --write --no-errors-on-unmatched"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10"
+  }
+}

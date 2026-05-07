@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<title>HP-Coach — Hi-fi prototype</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif&family=DM+Sans:wght@400;500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: oklch(0.97 0.011 78);
+    --panel: oklch(0.99 0.008 80);
+    --panel2: oklch(0.945 0.014 78);
+    --ink: oklch(0.18 0.011 70);
+    --ink2: oklch(0.32 0.012 70);
+    --muted: oklch(0.51 0.017 70);
+    --hairline: oklch(0.88 0.014 78);
+    --hairline2: oklch(0.93 0.012 78);
+    --accent: oklch(0.61 0.13 42);
+    --accent-soft: oklch(0.91 0.05 50);
+    --ok: oklch(0.55 0.10 145);
+    --ok-soft: oklch(0.92 0.04 145);
+    --warn: oklch(0.65 0.13 70);
+    --bad: oklch(0.55 0.16 25);
+    --bad-soft: oklch(0.93 0.05 25);
+    --font-display: 'Newsreader', Georgia, serif;
+    --font-display-w: 500;
+    --font-display-track: -0.02em;
+    --font-display-lead: 1.05;
+    --font-ui: 'Inter Tight', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --pad-sm: 10px; --pad-md: 14px; --pad-lg: 18px;
+    --radius: 18px;
+    /* alias underscore vars used by JS */
+    --okSoft: var(--ok-soft);
+    --badSoft: var(--bad-soft);
+    --accentSoft: var(--accent-soft);
+  }
+  * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--font-ui); }
+  button { font-family: inherit; }
+  details > summary { list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+  /* react-styled scrollbars subtle */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="voice.jsx"></script>
+<script type="text/babel" src="screens-mobile.jsx"></script>
+<script type="text/babel" src="screens-desktop.jsx"></script>
+<script type="text/babel" src="overlays.jsx"></script>
+<script type="text/babel" src="coach-voice-spec.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+</body>
+</html>
