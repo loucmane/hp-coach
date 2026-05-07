@@ -1,0 +1,38 @@
+{
+  "name": "worker",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "HP-Coach API — Hono on Cloudflare Workers, D1 (SQLite-at-edge) via Drizzle, Clerk-verified JWTs.",
+  "scripts": {
+    "dev": "wrangler dev --port 8787",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:prod": "wrangler deploy --env production",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check src",
+    "lint:fix": "biome check src --write",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:generate": "drizzle-kit generate",
+    "db:apply:staging": "wrangler d1 migrations apply hpc-staging --env staging --remote",
+    "db:apply:prod": "wrangler d1 migrations apply hpc-prod --env production --remote",
+    "db:apply:local": "wrangler d1 migrations apply hpc-staging --local",
+    "secrets:put:staging": "wrangler secret put CLERK_SECRET_KEY --env staging",
+    "secrets:put:prod": "wrangler secret put CLERK_SECRET_KEY --env production"
+  },
+  "dependencies": {
+    "@clerk/backend": "^1.0.0",
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.6.14"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.14",
+    "@cloudflare/workers-types": "^4.20241218.0",
+    "@hono/zod-validator": "^0.4.1",
+    "drizzle-kit": "^0.31.10",
+    "typescript": "~5.8.3",
+    "vitest": "^4.1.5",
+    "wrangler": "^3.99.0",
+    "zod": "^3.24.1"
+  }
+}

@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignUpRouteImport } from './routes/sign-up'
+import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as DrillRouteImport } from './routes/drill'
 import { Route as DevRouteImport } from './routes/dev'
@@ -16,6 +18,16 @@ import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AvanceratRouteImport } from './routes/avancerat'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SignUpRoute = SignUpRouteImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignInRoute = SignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgressRoute = ProgressRouteImport.update({
   id: '/progress',
   path: '/progress',
@@ -54,6 +66,8 @@ export interface FileRoutesByFullPath {
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
   '/progress': typeof ProgressRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +76,8 @@ export interface FileRoutesByTo {
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
   '/progress': typeof ProgressRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,12 +87,30 @@ export interface FileRoutesById {
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
   '/progress': typeof ProgressRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/avancerat' | '/coach' | '/dev' | '/drill' | '/progress'
+  fullPaths:
+    | '/'
+    | '/avancerat'
+    | '/coach'
+    | '/dev'
+    | '/drill'
+    | '/progress'
+    | '/sign-in'
+    | '/sign-up'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/avancerat' | '/coach' | '/dev' | '/drill' | '/progress'
+  to:
+    | '/'
+    | '/avancerat'
+    | '/coach'
+    | '/dev'
+    | '/drill'
+    | '/progress'
+    | '/sign-in'
+    | '/sign-up'
   id:
     | '__root__'
     | '/'
@@ -85,6 +119,8 @@ export interface FileRouteTypes {
     | '/dev'
     | '/drill'
     | '/progress'
+    | '/sign-in'
+    | '/sign-up'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -94,10 +130,26 @@ export interface RootRouteChildren {
   DevRoute: typeof DevRoute
   DrillRoute: typeof DrillRoute
   ProgressRoute: typeof ProgressRoute
+  SignInRoute: typeof SignInRoute
+  SignUpRoute: typeof SignUpRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sign-up': {
+      id: '/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof SignUpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/progress': {
       id: '/progress'
       path: '/progress'
@@ -150,6 +202,8 @@ const rootRouteChildren: RootRouteChildren = {
   DevRoute: DevRoute,
   DrillRoute: DrillRoute,
   ProgressRoute: ProgressRoute,
+  SignInRoute: SignInRoute,
+  SignUpRoute: SignUpRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

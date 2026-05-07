@@ -1,19 +1,23 @@
-// Root route — top-level layout for every page.
+// Root route — top-level layout + auth gate for every page.
 //
 // Renders the 390x844 phone-frame artboard container that all mobile
-// screens live inside. Real device deployment will swap this for a
-// fullscreen container; for the dogfood phase we keep the artboard
-// presentation everywhere so design and behaviour stay synced.
+// screens live inside. Wraps the outlet in a Clerk auth gate: signed-in
+// users see the screen; signed-out users see <SignIn /> (except on the
+// /sign-in and /sign-up routes themselves, which are public).
 
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut } from '@clerk/clerk-react'
+import { createRootRoute, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
+import { Mono } from '@/components/primitives'
 import { TweaksLauncher } from '@/components/TweaksLauncher'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
 
 export const Route = createRootRoute({
   component: RootShell,
 })
+
+const PUBLIC_ROUTES = new Set<string>(['/sign-in', '/sign-up'])
 
 function RootShell() {
   const palette = useUiStore((s) => s.palette)
@@ -49,9 +53,64 @@ function RootShell() {
           position: 'relative',
         }}
       >
-        <Outlet />
+        <ClerkLoading>
+          <SplashLoading />
+        </ClerkLoading>
+        <ClerkLoaded>
+          <AuthRouter />
+        </ClerkLoaded>
       </div>
       <TweaksLauncher />
+    </div>
+  )
+}
+
+function AuthRouter() {
+  const location = useLocation()
+  const isPublic = PUBLIC_ROUTES.has(location.pathname)
+  return (
+    <>
+      {isPublic ? (
+        <Outlet />
+      ) : (
+        <>
+          <SignedIn>
+            <Outlet />
+          </SignedIn>
+          <SignedOut>
+            <RedirectToSignIn />
+          </SignedOut>
+        </>
+      )}
+    </>
+  )
+}
+
+// Tiny redirect helper — client-side, not Clerk's <RedirectToSignIn />, so
+// the SPA stays inside its router without bouncing through Clerk's hosted
+// page when we don't need to.
+function RedirectToSignIn() {
+  const navigate = useNavigate()
+  useEffect(() => {
+    navigate({ to: '/sign-in' })
+  }, [navigate])
+  return <SplashLoading />
+}
+
+// Tiny splash for Clerk's initial JWT bootstrap (~50–200ms). Matches the
+// Sand palette so it feels like part of the artboard, not a generic blank.
+function SplashLoading() {
+  return (
+    <div
+      style={{
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'var(--bg)',
+      }}
+    >
+      <Mono>laddar…</Mono>
     </div>
   )
 }

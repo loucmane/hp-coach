@@ -1,0 +1,62 @@
+# HP-Coach API — Hono on Cloudflare Workers
+#
+# Two environments: staging (default `wrangler dev`/`deploy --env staging`)
+# and production. Each binds its own D1 + KV. R2 is created lazily later
+# (parser output upload — task 32+).
+#
+# Secrets: `wrangler secret put CLERK_SECRET_KEY --env staging|production`.
+# Local dev reads worker/.dev.vars (gitignored) for the same key.
+
+name = "hpc-api"
+main = "src/index.ts"
+compatibility_date = "2026-05-07"
+compatibility_flags = ["nodejs_compat"]
+
+# ── Default (used by `wrangler dev`) ───────────────────────────────────
+# Mirrors the staging env so local-dev shape matches staging shape.
+[[d1_databases]]
+binding = "DB"
+database_name = "hpc-staging"
+database_id = "REPLACE_AFTER_WRANGLER_D1_CREATE_STAGING"
+migrations_dir = "drizzle"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "REPLACE_AFTER_WRANGLER_KV_CREATE_STAGING"
+
+[vars]
+ENVIRONMENT = "dev"
+
+# ── Staging ───────────────────────────────────────────────────────────
+[env.staging]
+name = "hpc-api-staging"
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "hpc-staging"
+database_id = "REPLACE_AFTER_WRANGLER_D1_CREATE_STAGING"
+migrations_dir = "drizzle"
+
+[[env.staging.kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "REPLACE_AFTER_WRANGLER_KV_CREATE_STAGING"
+
+# ── Production ────────────────────────────────────────────────────────
+[env.production]
+name = "hpc-api"
+
+[env.production.vars]
+ENVIRONMENT = "production"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "hpc-prod"
+database_id = "REPLACE_AFTER_WRANGLER_D1_CREATE_PROD"
+migrations_dir = "drizzle"
+
+[[env.production.kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "REPLACE_AFTER_WRANGLER_KV_CREATE_PROD"
