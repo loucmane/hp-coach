@@ -32,6 +32,12 @@ export const users = sqliteTable('users', {
 })
 
 // ── sessions — drill / mock / lesson / adaptive_review ─────────────────
+//
+// Mid-session resume contract: while `endedAt` is null, this row IS the
+// session. `position` is the index into the session's plan (0-based), so
+// a device swap during exercise resumes at the exact step. `currentQuestionId`
+// is the precise pointer inside that step (optional — null for lessons,
+// set during drill/mock).
 export const sessions = sqliteTable('sessions', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   userId: integer('user_id')
@@ -43,6 +49,10 @@ export const sessions = sqliteTable('sessions', {
   kind: text('kind').notNull(),
   // Sections involved (CSV: 'ord,kva') — full normalization can come later.
   sections: text('sections'),
+  // Resume pointer — index into the session's plan / item list (0-based).
+  position: integer('position').notNull().default(0),
+  // Resume pointer at finer grain — current question id within the step.
+  currentQuestionId: text('current_question_id'),
 })
 
 // ── attempts — one row per question answered ──────────────────────────

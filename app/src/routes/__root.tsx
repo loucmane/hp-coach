@@ -9,6 +9,7 @@ import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut } from '@clerk/clerk-rea
 import { createRootRoute, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
+import { useHydratePrefs } from '@/api/useSyncedPrefs'
 import { Mono } from '@/components/primitives'
 import { TweaksLauncher } from '@/components/TweaksLauncher'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
@@ -75,7 +76,7 @@ function AuthRouter() {
       ) : (
         <>
           <SignedIn>
-            <Outlet />
+            <SignedInTree />
           </SignedIn>
           <SignedOut>
             <RedirectToSignIn />
@@ -84,6 +85,14 @@ function AuthRouter() {
       )}
     </>
   )
+}
+
+// Hydration of server prefs into local stores happens here, inside <SignedIn>
+// — useUserPrefs requires a Clerk session, so this hook is only safe to mount
+// after we've confirmed the user is authenticated.
+function SignedInTree() {
+  useHydratePrefs()
+  return <Outlet />
 }
 
 // Tiny redirect helper — client-side, not Clerk's <RedirectToSignIn />, so

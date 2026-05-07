@@ -23,6 +23,7 @@ import { requireAuth } from './middleware/auth'
 import { rateLimit } from './middleware/rateLimit'
 import { healthRoute } from './routes/health'
 import { meRoute } from './routes/me'
+import { sessionsRoute } from './routes/sessions'
 import type { Env, Vars } from './types'
 
 const app = new Hono<{ Bindings: Env; Variables: Vars }>()
@@ -62,6 +63,7 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .use('*', requireAuth)
   .use('*', rateLimit)
   .route('/me', meRoute)
+  .route('/sessions', sessionsRoute)
 
 // Chained route registration → preserves route types in `typeof routes`.
 const routes = app

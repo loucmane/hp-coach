@@ -3982,8 +3982,9 @@
           "55",
           "58"
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-05-07T11:57:43.807Z"
       },
       {
         "id": "60",
@@ -3997,13 +3998,26 @@
         ],
         "status": "deferred",
         "subtasks": []
+      },
+      {
+        "id": "61",
+        "title": "[deferred to Phase 1] Live cross-device sync via Cloudflare Durable Objects",
+        "description": "Push channel so a write on one signed-in device propagates to the user's other devices within a second, not 30 seconds.",
+        "details": "Today's cross-device story uses TanStack Query's refetchOnWindowFocus + a 30s refetchInterval on useActiveSession (added in task 59). That's 'calm sync' — fine for dogfood, perceptibly slow for real use. Phase 1 promotes this to push:\n\nArchitecture: one Durable Object per Clerk user (id = clerkUserId). The Worker subscribes each device's WebSocket / SSE connection on sign-in. Mutating endpoints (POST /api/sessions, PATCH /api/sessions/:id, PATCH /api/me/prefs, future POST /api/sessions/:id/attempts) broadcast a small {type, key} message via the DO; subscribers invalidate the corresponding TanStack Query keys.\n\nFallback: SSE first (one-way, simpler, works through proxies). WebSocket only if bidirectional commands turn up. Heartbeat every 25s; auto-reconnect with backoff.\n\nUI: subtle live-status dot in the bottom-tab bar — green when connected, yellow when reconnecting. Don't block the UI on disconnect.",
+        "testStrategy": "Two Playwright contexts signed in as the same Clerk user. Context A starts a session and increments position; context B observes the active-session widget within ≤ 2s without an explicit refetch trigger. Disconnect/reconnect resilience: drop the WebSocket on B, wait 5s, observe reconnection without losing state.",
+        "priority": "medium",
+        "dependencies": [
+          "59"
+        ],
+        "status": "deferred",
+        "subtasks": []
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2026-05-07T11:39:15.546Z",
-      "taskCount": 60,
-      "completedCount": 9,
+      "lastModified": "2026-05-07T13:55:00.000Z",
+      "taskCount": 61,
+      "completedCount": 10,
       "tags": [
         "master"
       ]

@@ -6,8 +6,9 @@
 // behind a feature flag in any public build.
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-
+import { useActiveSession, useStartSession, useUpdateSession } from '@/api/hooks/useSessions'
 import { useUpdateUserPrefs, useUserPrefs } from '@/api/hooks/useUserPrefs'
+import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Btn, Eyebrow, Hairline, Mono, Stack } from '@/components/primitives'
 import {
@@ -33,17 +34,15 @@ const DENSITY_KEYS: Density[] = ['compact', 'regular', 'comfy']
 
 function DevPanel() {
   const navigate = useNavigate()
+  // Read from local stores (instant), write through useSyncedPrefs (server +
+  // local rollback on failure). The store values stay aligned with the
+  // server because useHydratePrefs runs in __root.
   const coach = useCoachStore((s) => s.coach)
-  const setCoach = useCoachStore((s) => s.setCoach)
-
   const palette = useUiStore((s) => s.palette)
-  const setPalette = useUiStore((s) => s.setPalette)
   const mode = useUiStore((s) => s.mode)
-  const toggleMode = useUiStore((s) => s.toggleMode)
   const font = useUiStore((s) => s.font)
-  const setFont = useUiStore((s) => s.setFont)
   const density = useUiStore((s) => s.density)
-  const setDensity = useUiStore((s) => s.setDensity)
+  const synced = useSyncedPrefs()
 
   return (
     <MobileFrame tabs={false}>
@@ -70,7 +69,14 @@ function DevPanel() {
             {COACHES.map((c) => {
               const on = coach === c
               return (
-                <button key={c} type="button" onClick={() => setCoach(c)} style={pickerStyle(on)}>
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => {
+                    void synced.setCoach(c)
+                  }}
+                  style={pickerStyle(on)}
+                >
                   <div
                     style={{
                       display: 'flex',
@@ -106,7 +112,9 @@ function DevPanel() {
                 key={k}
                 paletteKey={k}
                 active={palette === k}
-                onClick={() => setPalette(k)}
+                onClick={() => {
+                  void synced.setPalette(k)
+                }}
               />
             ))}
           </div>
@@ -117,14 +125,18 @@ function DevPanel() {
             <Btn
               variant={mode === 'light' ? 'primary' : 'secondary'}
               size="sm"
-              onClick={() => mode !== 'light' && toggleMode()}
+              onClick={() => {
+                if (mode !== 'light') void synced.setMode('light')
+              }}
             >
               Ljus
             </Btn>
             <Btn
               variant={mode === 'dark' ? 'primary' : 'secondary'}
               size="sm"
-              onClick={() => mode !== 'dark' && toggleMode()}
+              onClick={() => {
+                if (mode !== 'dark') void synced.setMode('dark')
+              }}
             >
               Mörk
             </Btn>
@@ -138,7 +150,14 @@ function DevPanel() {
             {FONT_KEYS.map((k) => {
               const on = font === k
               return (
-                <button key={k} type="button" onClick={() => setFont(k)} style={pickerStyle(on)}>
+                <button
+                  key={k}
+                  type="button"
+                  onClick={() => {
+                    void synced.setFont(k)
+                  }}
+                  style={pickerStyle(on)}
+                >
                   <div
                     style={{
                       display: 'flex',
@@ -172,7 +191,9 @@ function DevPanel() {
                 key={d}
                 variant={density === d ? 'primary' : 'secondary'}
                 size="sm"
-                onClick={() => setDensity(d)}
+                onClick={() => {
+                  void synced.setDensity(d)
+                }}
               >
                 {DENSITIES[d].label}
               </Btn>
@@ -184,6 +205,12 @@ function DevPanel() {
 
         <Section label="API self-check">
           <ApiSelfCheck />
+        </Section>
+
+        <Hairline />
+
+        <Section label="Session resume">
+          <SessionResumeCheck />
         </Section>
       </div>
     </MobileFrame>
@@ -269,6 +296,83 @@ function ApiSelfCheck() {
             mut ok
           </span>
         )}
+      </div>
+    </div>
+  )
+}
+
+// ── Session resume ────────────────────────────────────────────────────
+// Demonstrates + tests mid-exercise device-swap continuity. Reads the
+// current active session, lets us start one, advance position, and end
+// it. Refetches every 30s while focused so a swap from another device
+// reflects within that window.
+function SessionResumeCheck() {
+  const active = useActiveSession()
+  const start = useStartSession()
+  const update = useUpdateSession()
+
+  return (
+    <div data-testid="session-resume">
+      <div
+        style={{
+          padding: 12,
+          background: 'var(--panel-2)',
+          border: '1px solid var(--hairline)',
+          borderRadius: 12,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 12,
+          color: 'var(--ink-2)',
+        }}
+      >
+        {active.isLoading && <span data-testid="session-loading">laddar session…</span>}
+        {active.isError && (
+          <span data-testid="session-error" style={{ color: 'var(--bad)' }}>
+            error: {String(active.error)}
+          </span>
+        )}
+        {active.data === null && <span data-testid="session-none">ingen aktiv session</span>}
+        {active.data && (
+          <span data-testid="session-active">
+            id={active.data.id} · kind={active.data.kind} · pos={active.data.position}
+          </span>
+        )}
+      </div>
+      <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <Btn
+          variant="secondary"
+          size="sm"
+          disabled={start.isPending || !!active.data}
+          onClick={() => start.mutate({ kind: 'drill', sections: 'ord' })}
+        >
+          start drill
+        </Btn>
+        <Btn
+          variant="secondary"
+          size="sm"
+          disabled={!active.data || update.isPending}
+          onClick={() => {
+            if (active.data) {
+              update.mutate({
+                id: active.data.id,
+                patch: { position: (active.data.position ?? 0) + 1 },
+              })
+            }
+          }}
+        >
+          pos++
+        </Btn>
+        <Btn
+          variant="secondary"
+          size="sm"
+          disabled={!active.data || update.isPending}
+          onClick={() => {
+            if (active.data) {
+              update.mutate({ id: active.data.id, patch: { end: true } })
+            }
+          }}
+        >
+          end session
+        </Btn>
       </div>
     </div>
   )
