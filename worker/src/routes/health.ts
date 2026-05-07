@@ -9,9 +9,8 @@ import { Hono } from 'hono'
 import { getDb } from '../db/client'
 import type { Env } from '../types'
 
-export const healthRoute = new Hono<{ Bindings: Env }>()
-
-healthRoute.get('/', async (c) => {
+// Chained registration so the GET / signature flows into AppType.
+export const healthRoute = new Hono<{ Bindings: Env }>().get('/', async (c) => {
   const startedAt = Date.now()
   let dbOk = false
   try {

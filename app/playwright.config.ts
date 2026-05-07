@@ -28,10 +28,21 @@ export default defineConfig({
       use: { ...devices['iPhone 13'], defaultBrowserType: 'chromium' },
     },
   ],
-  webServer: {
-    command: 'pnpm build && pnpm preview --port 4173',
-    url: 'http://localhost:4173',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  // Two web servers boot in parallel: the SPA's production preview and
+  // the worker's wrangler dev server. The api.spec.ts E2E hits both —
+  // worker for /api/me/prefs, SPA for the UI calling the typed client.
+  webServer: [
+    {
+      command: 'pnpm build && pnpm preview --port 4173',
+      url: 'http://localhost:4173',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+    {
+      command: 'pnpm --dir ../worker dev',
+      url: 'http://localhost:8787/health',
+      reuseExistingServer: !process.env.CI,
+      timeout: 60_000,
+    },
+  ],
 })

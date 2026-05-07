@@ -30,18 +30,26 @@ export default async function globalSetup() {
   await clerkSetup({ publishableKey, secretKey })
 
   // 2. Idempotent test-user creation. Clerk treats `+clerk_test@…` as a
-  //    test pattern (auto-verifying with code 424242). If the user exists
-  //    from a previous run, `createUser` errors with form_identifier_exists
-  //    — we swallow that and move on.
+  //    test pattern (auto-verifying with code 424242). We first check if
+  //    the user already exists via getUserList(emailAddress=…); if so we
+  //    skip the create. Avoids relying on error-message string matching.
   const clerk = createClerkClient({ secretKey })
-  try {
-    await clerk.users.createUser({
-      emailAddress: [email],
-      skipPasswordRequirement: true,
-    })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : String(err)
-    if (!/already|exists|identifier/i.test(message)) {
+  const existing = await clerk.users.getUserList({ emailAddress: [email] })
+  if (existing.totalCount === 0) {
+    try {
+      await clerk.users.createUser({
+        emailAddress: [email],
+        skipPasswordRequirement: true,
+      })
+    } catch (err) {
+      // Clerk's ClerkAPIResponseError exposes a `.errors` array with codes;
+      // log and rethrow so test failures surface the cause clearly.
+      type ClerkApiErr = Error & { errors?: Array<{ code: string; message: string }> }
+      const e = err as ClerkApiErr
+      console.error('[global-setup] Clerk createUser failed:', {
+        message: e.message,
+        errors: e.errors,
+      })
       throw err
     }
   }

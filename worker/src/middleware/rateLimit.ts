@@ -15,10 +15,7 @@ import type { Env, Vars } from '../types'
 const LIMIT = 60
 const WINDOW_SECONDS = 60
 
-export const rateLimit: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = async (
-  c,
-  next,
-) => {
+export const rateLimit: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = async (c, next) => {
   const userId = c.get('userId')
   if (!userId) {
     await next()

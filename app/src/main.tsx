@@ -1,8 +1,10 @@
 import { ClerkProvider } from '@clerk/clerk-react'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
+import { queryClient } from './api/queryClient'
 import './index.css'
 import { routeTree } from './routeTree.gen'
 
@@ -42,7 +44,9 @@ createRoot(rootEl).render(
       signInFallbackRedirectUrl="/"
       signUpFallbackRedirectUrl="/"
     >
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </ClerkProvider>
   </StrictMode>,
 )

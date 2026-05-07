@@ -3,10 +3,13 @@
 // First real cross-device data: HomeMobile (and Onboarding) read/write
 // these via the typed API client. Coach voice, palette/font/density,
 // target sitting, and daily minutes all live here.
+//
+// Chained route registration is required for Hono RPC types to flow
+// through to the SPA's typed client.
 
+import { zValidator } from '@hono/zod-validator'
 import { eq } from 'drizzle-orm'
 import { Hono } from 'hono'
-import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
@@ -14,18 +17,6 @@ import { users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import type { Env, Vars } from '../types'
 
-export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
-
-// GET /api/me/prefs — current user prefs. Lazy-creates the row.
-meRoute.get('/prefs', async (c) => {
-  const db = getDb(c.env.DB)
-  const id = await ensureUserRow(db, c.var.userId)
-  const [row] = await db.select().from(users).where(eq(users.id, id)).limit(1)
-  if (!row) return c.json({ error: { code: 'not_found', message: 'User row missing' } }, 500)
-  return c.json({ prefs: row })
-})
-
-// PATCH /api/me/prefs — partial update. Validates each field's enum.
 const PrefsPatch = z
   .object({
     daysToExam: z.number().int().min(0).max(2000).nullable().optional(),
@@ -40,10 +31,20 @@ const PrefsPatch = z
   })
   .strict()
 
-meRoute.patch('/prefs', zValidator('json', PrefsPatch), async (c) => {
-  const patch = c.req.valid('json')
-  const db = getDb(c.env.DB)
-  const id = await ensureUserRow(db, c.var.userId)
-  const [row] = await db.update(users).set(patch).where(eq(users.id, id)).returning()
-  return c.json({ prefs: row })
-})
+export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
+  // GET /api/me/prefs — current user prefs. Lazy-creates the row.
+  .get('/prefs', async (c) => {
+    const db = getDb(c.env.DB)
+    const id = await ensureUserRow(db, c.var.userId)
+    const [row] = await db.select().from(users).where(eq(users.id, id)).limit(1)
+    if (!row) return c.json({ error: { code: 'not_found', message: 'User row missing' } }, 500)
+    return c.json({ prefs: row })
+  })
+  // PATCH /api/me/prefs — partial update. Each field validated with Zod.
+  .patch('/prefs', zValidator('json', PrefsPatch), async (c) => {
+    const patch = c.req.valid('json')
+    const db = getDb(c.env.DB)
+    const id = await ensureUserRow(db, c.var.userId)
+    const [row] = await db.update(users).set(patch).where(eq(users.id, id)).returning()
+    return c.json({ prefs: row })
+  })

@@ -7,6 +7,12 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
+    /* Worker types for the cross-package AppType import in src/api/client.ts.
+       The reference is type-only — nothing from @cloudflare/workers-types is
+       bundled into the SPA. Letting it resolve here avoids "Cannot find name
+       D1Database" errors when tsc walks AppType through the worker's source. */
+    "types": ["@cloudflare/workers-types"],
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,

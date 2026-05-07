@@ -7,6 +7,7 @@
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
+import { useUpdateUserPrefs, useUserPrefs } from '@/api/hooks/useUserPrefs'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Btn, Eyebrow, Hairline, Mono, Stack } from '@/components/primitives'
 import {
@@ -178,8 +179,98 @@ function DevPanel() {
             ))}
           </Stack>
         </Section>
+
+        <Hairline />
+
+        <Section label="API self-check">
+          <ApiSelfCheck />
+        </Section>
       </div>
     </MobileFrame>
+  )
+}
+
+// ── API self-check ────────────────────────────────────────────────────
+// Live readout of /api/me/prefs through the typed Hono client. Doubles as
+// the E2E target that proves the SPA → Worker → D1 chain end-to-end.
+function ApiSelfCheck() {
+  const prefs = useUserPrefs()
+  const update = useUpdateUserPrefs()
+
+  return (
+    <div data-testid="api-self-check">
+      <div
+        style={{
+          padding: 12,
+          background: 'var(--panel-2)',
+          border: '1px solid var(--hairline)',
+          borderRadius: 12,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 12,
+          color: 'var(--ink-2)',
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-all',
+        }}
+      >
+        {prefs.isLoading && <span data-testid="api-loading">laddar prefs…</span>}
+        {prefs.isError && (
+          <span data-testid="api-error" style={{ color: 'var(--bad)' }}>
+            error: {String(prefs.error)}
+          </span>
+        )}
+        {prefs.data && (
+          <span data-testid="api-ok">
+            ok · id={prefs.data.id} · coach={prefs.data.coach} · palette={prefs.data.palette}
+          </span>
+        )}
+      </div>
+      <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <Btn
+          variant="secondary"
+          size="sm"
+          onClick={() => update.mutate({ coach: 'kompis' })}
+          disabled={update.isPending}
+        >
+          set coach=kompis
+        </Btn>
+        <Btn
+          variant="secondary"
+          size="sm"
+          onClick={() => update.mutate({ coach: 'taktiker' })}
+          disabled={update.isPending}
+        >
+          set coach=taktiker
+        </Btn>
+        {update.isError && (
+          <span
+            data-testid="mut-error"
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              letterSpacing: 'var(--font-mono-track)',
+              textTransform: 'uppercase',
+              color: 'var(--bad)',
+            }}
+          >
+            mut error
+          </span>
+        )}
+        {update.isSuccess && (
+          <span
+            data-testid="mut-ok"
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              letterSpacing: 'var(--font-mono-track)',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+            }}
+          >
+            mut ok
+          </span>
+        )}
+      </div>
+    </div>
   )
 }
 

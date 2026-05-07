@@ -1,16 +1,20 @@
 // HP-Coach API entry. Hono on Cloudflare Workers.
 //
 // Routes:
-//   GET  /health           — public liveness + D1 round-trip
-//   GET  /api/me/prefs     — authenticated; returns current user's prefs row
+//   GET  /                 — small JSON descriptor (public)
+//   GET  /health           — liveness + D1 round-trip (public)
+//   GET  /api/me/prefs     — authenticated; current user's prefs row
 //   PATCH /api/me/prefs    — authenticated; partial update of prefs
 //
 // Middleware order: cors → JSON error formatter → (per-route) requireAuth
 // + rateLimit. The Clerk JWT verify is mounted only on routes that need
 // it; /health stays public.
 //
-// `AppType` is exported for the SPA's typed client (hono/client). Adding
-// a new route automatically flows the types into the frontend.
+// **AppType inference requires chained route registration.** We compose
+// the entire app as a single chained expression so `typeof routes`
+// surfaces every endpoint to the SPA's typed Hono client (hono/client).
+// Adding a new endpoint here flows its request/response types into the
+// frontend at compile time — no code-gen, no spec drift.
 
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
@@ -23,19 +27,14 @@ import type { Env, Vars } from './types'
 
 const app = new Hono<{ Bindings: Env; Variables: Vars }>()
 
-// CORS — the SPA on Pages will live on a different origin from the Worker.
-// We allow the configured frontend origin(s) only; Authorization is the
-// auth header we need to forward.
 app.use(
   '*',
   cors({
     origin: (origin) => {
-      // Allow dev origins (vite dev) + any *.pages.dev for previews.
       if (!origin) return undefined
       if (origin.startsWith('http://localhost:5173')) return origin
       if (origin.startsWith('http://localhost:4173')) return origin
       if (/\.pages\.dev$/.test(new URL(origin).hostname)) return origin
-      // Production domain TBD; add it here when DNS is wired.
       return undefined
     },
     allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -45,7 +44,6 @@ app.use(
   }),
 )
 
-// Centralised error → JSON mapper. Hono routes that throw fall through here.
 app.onError((err, c) => {
   console.error('unhandled', err)
   return c.json(
@@ -59,26 +57,23 @@ app.onError((err, c) => {
   )
 })
 
-// Public routes
-app.route('/health', healthRoute)
-
-// Authenticated routes — every route below this line gets requireAuth + rateLimit.
+// Authed sub-app: every /api/* route runs through Clerk verify + rate limit.
 const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
-authed.use('*', requireAuth)
-authed.use('*', rateLimit)
-authed.route('/me', meRoute)
+  .use('*', requireAuth)
+  .use('*', rateLimit)
+  .route('/me', meRoute)
 
-app.route('/api', authed)
+// Chained route registration → preserves route types in `typeof routes`.
+const routes = app
+  .get('/', (c) =>
+    c.json({
+      name: 'hpc-api',
+      environment: c.env.ENVIRONMENT,
+      routes: ['/health', '/api/me/prefs'],
+    }),
+  )
+  .route('/health', healthRoute)
+  .route('/api', authed)
 
-// Root: small JSON descriptor so a curl to the bare worker domain returns
-// something useful instead of a 404.
-app.get('/', (c) =>
-  c.json({
-    name: 'hpc-api',
-    environment: c.env.ENVIRONMENT,
-    routes: ['/health', '/api/me/prefs'],
-  }),
-)
-
-export default app
-export type AppType = typeof app
+export default routes
+export type AppType = typeof routes

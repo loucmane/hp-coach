@@ -9,7 +9,7 @@
 
 import { eq } from 'drizzle-orm'
 
-import { type Db } from '../db/client'
+import type { Db } from '../db/client'
 import { users } from '../db/schema'
 
 export async function ensureUserRow(db: Db, clerkUserId: string): Promise<number> {
@@ -20,9 +20,6 @@ export async function ensureUserRow(db: Db, clerkUserId: string): Promise<number
     .limit(1)
   if (existing[0]) return existing[0].id
 
-  const inserted = await db
-    .insert(users)
-    .values({ clerkUserId })
-    .returning({ id: users.id })
+  const inserted = await db.insert(users).values({ clerkUserId }).returning({ id: users.id })
   return inserted[0].id
 }
