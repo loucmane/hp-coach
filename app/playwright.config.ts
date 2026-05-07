@@ -1,11 +1,12 @@
 import { defineConfig, devices } from '@playwright/test'
 
 // Playwright is the E2E layer. Vitest covers component logic; Playwright
-// covers real-browser flows (router transitions, OPFS persistence later,
+// covers real-browser flows (router transitions, Clerk-authenticated pages,
 // keyboard shortcuts like Cmd+K).
 //
-// We boot the Vite dev server once per `pnpm test:e2e` run and tear it
-// down after. CI uses the production build via `vite preview` for fidelity.
+// `globalSetup` boots @clerk/testing once per run so signed-in fixtures
+// can hit Clerk's Frontend API with a pre-issued testing token. Webserver
+// command builds + previews so we exercise the production bundle.
 export default defineConfig({
   testDir: './tests-e2e',
   timeout: 30_000,
@@ -13,6 +14,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   reporter: [['html', { open: 'never' }], ['list']],
+  globalSetup: './tests-e2e/global-setup.ts',
   use: {
     baseURL: 'http://localhost:4173',
     trace: 'on-first-retry',
