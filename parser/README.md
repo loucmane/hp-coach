@@ -33,25 +33,21 @@ python3 parser/test_parser.py          # smoke tests
 
 ## Coverage (all 27 exams in CATALOG)
 
-| Status | Exams | Notes |
-|---|---|---|
-| ✅ Fully working (ORD + MEK + answer keys) | **22** | ~880 fully-parsed Qs |
-| ❌ Facit reflow-broken | 2 | host-2022, host-2023 — number/letter on non-adjacent text runs (needs bbox extraction) |
-| ❌ Glyph-encoded text | 3 | host-2016, host-2017, host-2018 — custom CMap PyMuPDF can't decode (needs OCR or pdftotext) |
+**27/27 exams ✅** — 1,080 fully-parsed Qs (ORD + MEK), 4,320 answer keys.
 
-By section, across the 22 working exams:
+By section, across all 27 exams:
 
 | Section | Coverage   | Notes                                                |
 |---------|------------|------------------------------------------------------|
-| ORD     | 440/440 ✅ | Block-based 2-column geometry recovery               |
-| MEK     | 440/440 ✅ | Single-column long stems                             |
-| LÄS     | 0/440 (key)| Multi-page reading passages — TODO                   |
-| ELF     | 0/440 (key)| Multi-page English passages — TODO                   |
-| XYZ     | 0/528 (key)| Math typography — TODO                               |
-| KVA     | 0/440 (key)| 2-col quantitative comparisons — TODO                |
-| NOG     | 0/264 (key)| Data sufficiency — TODO                              |
-| DTK     | 0/528 (key)| Diagrams + image extraction — TODO                   |
-| **All** | **3,520 answer keys** | facit fully parsed across all 22 working exams |
+| ORD     | 540/540 ✅ | Block-based 2-column geometry recovery               |
+| MEK     | 540/540 ✅ | Single-column long stems                             |
+| LÄS     | 0/540 (key)| Multi-page reading passages — TODO                   |
+| ELF     | 0/540 (key)| Multi-page English passages — TODO                   |
+| XYZ     | 0/648 (key)| Math typography — TODO                               |
+| KVA     | 0/540 (key)| 2-col quantitative comparisons — TODO                |
+| NOG     | 0/324 (key)| Data sufficiency — TODO                              |
+| DTK     | 0/648 (key)| Diagrams + image extraction — TODO                   |
+| **All** | **4,320 answer keys** | every facit parsed across the corpus       |
 
 Stub records carry `parsing_status: "answer_only"` so the drill engine
 can still grade attempts even before prompt extraction lands.
@@ -74,7 +70,7 @@ interface Question {
 
 ## Facit layouts
 
-Two patterns appear in the wild — the parser tries A first, falls back to B:
+Four extraction strategies, tried in increasing cost order:
 
 - **Layout A** (var-2026 era): 4-column grid — header rows declare the
   4 columns (Verbal del al / Kvantitativ del ny / Verbal del ne /
@@ -82,9 +78,17 @@ Two patterns appear in the wild — the parser tries A first, falls back to B:
 - **Layout B** (host-2021 era): per-provpass blocks — each provpass
   gets its own header (`Provpass 2 (= DYS 1)`) followed by its section
   type and 40 question/answer pairs in a single column.
+- **Layout C** (host-2022, host-2023): bbox-aware — text reflow places
+  numbers and letters on non-adjacent runs; we use `get_text("words")`
+  positions to pair each digit token with its row-mate letter token.
+- **OCR fallback** (host-2016/17/18): some PDFs have a broken ToUnicode
+  CMap that returns +29-shifted glyph codes. PyMuPDF and pdftotext
+  both choke. We render each page at 300 DPI and run tesseract
+  (`-l swe+eng`); the OCR'd text usually parses cleanly via Layout A.
 
-Older exams (var-2018-1 and earlier) skip the per-page section header on
-ORD / MEK pages; we detect those structurally by question-number range.
+Older exams (var-2018-1 and earlier) also skip the per-page section
+header on ORD / MEK pages; the section parser detects those
+structurally by question-number range.
 
 ## Future branches
 
@@ -93,5 +97,3 @@ ORD / MEK pages; we detect those structurally by question-number range.
 | `parser-las-elf` | LÄS + ELF prompts/options + multi-page passage extraction |
 | `parser-quant`   | XYZ + KVA + NOG prompts; LLM cleanup pass for math typography |
 | `parser-dtk-images` | DTK images via `page.get_images()` + clip rendering |
-| `parser-encoded-facit` | OCR / pdftotext fallback for host-2016–2018 |
-| `parser-bbox-facit` | bbox-aware extraction for host-2022, host-2023 |
