@@ -127,28 +127,68 @@ def parse_mek(pages: list[fitz.Page]) -> list[dict]:
 
 
 # ── page selection ─────────────────────────────────────────────────────────
-# Each provpass PDF has cover + per-section pages. We find section pages by
-# matching the per-section header on the page, e.g. "ORD – Ordförståelse".
+# Each provpass PDF has cover + per-section pages. Modern exams (var-2017+)
+# print a section header on each page ("ORD – Ordförståelse", "MEK –
+# Meningskomplettering"). Older exams (var-2018-1 and earlier) often skip
+# the header — questions start at the top of the page directly.
+#
+# We try both:
+#   1. Header-text match (modern exams, fastest path)
+#   2. Structural detection — find pages whose question blocks have numbers
+#      in the section's expected range (older exams)
+#
+# The build script post-filters to its own section's number range, so a
+# misclassified page (e.g. a LÄS page handed to parse_ord) emits questions
+# that get dropped at the schema-merge step. Worst case is wasted parsing,
+# never wrong data.
 
 SECTION_HEADERS = {
     "ORD": ("ORD – Ordförståelse", "ORD"),
     "MEK": ("MEK – Meningskomplettering", "MEK"),
 }
 
+# Where each section's question numbers fall within its provpass.
+SECTION_RANGES = {
+    "ORD": range(1, 11),
+    "LÄS": range(11, 21),
+    "MEK": range(21, 31),
+    "ELF": range(31, 41),
+}
+
+
+def _page_question_numbers(page: fitz.Page) -> set[int]:
+    """Return the set of question numbers (1-40) whose stem block lives on
+    this page. Used by the structural section detector."""
+    nums: set[int] = set()
+    for x0, y0, _x1, _y1, text, _bno, btype in page.get_text("blocks"):
+        if btype != 0:
+            continue
+        m = QUESTION_HEAD_RE.match(text.strip())
+        if m:
+            nums.add(int(m.group(1)))
+    return nums
+
 
 def find_section_pages(doc: fitz.Document, section: str) -> list[fitz.Page]:
-    """Return all pages whose top-of-page header begins the given section."""
+    """Return all pages whose contents belong to the given section."""
     primary, _short = SECTION_HEADERS[section]
+    expected = SECTION_RANGES[section]
     pages: list[fitz.Page] = []
     for pno in range(doc.page_count):
         page = doc[pno]
         text = page.get_text()
-        # Exam pages: look for the section header near top, or fall back to
-        # the short tag (used on continuation pages, e.g. "MEK\nUppgifter").
+        # Method 1: explicit header on the page (modern exams).
         if primary in text:
             pages.append(page)
-        elif pages and text.lstrip().split("\n", 2)[1:2] == [section]:
-            # Continuation page — first non-empty line after page-number is short tag.
+            continue
+        # Method 2: continuation page — first non-empty line is the short tag.
+        if pages and text.lstrip().split("\n", 2)[1:2] == [section]:
+            pages.append(page)
+            continue
+        # Method 3: structural — page contains question blocks whose numbers
+        # fall in this section's range. Catches header-less older layouts.
+        nums = _page_question_numbers(page)
+        if nums and nums.issubset(set(expected)):
             pages.append(page)
     return pages
 

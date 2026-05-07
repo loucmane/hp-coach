@@ -19,8 +19,8 @@ OUT = ROOT / "data" / "parsed" / "var-2026.json"
 
 
 def test_dataset_built():
-    """build_var2026.py must have been run before this test executes."""
-    assert OUT.exists(), f"Run `python3 parser/build_var2026.py` first ({OUT})"
+    """build.py must have been run on var-2026 before this test executes."""
+    assert OUT.exists(), f"Run `python3 parser/build.py var-2026` first ({OUT})"
 
 
 def test_total_question_count():
