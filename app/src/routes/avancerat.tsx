@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { MobileFrame } from '@/components/MobileFrame'
 
-import { StubBody } from './drill'
+import { StubBody } from '@/components/StubBody'
 
 export const Route = createFileRoute('/avancerat')({
   component: AvanceratStub,

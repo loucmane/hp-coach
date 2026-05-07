@@ -1,9 +1,8 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
 import { MobileFrame } from '@/components/MobileFrame'
+import { StubBody } from '@/components/StubBody'
 import { TAB_ROUTE } from '@/lib/nav'
-
-import { StubBody } from './drill'
 
 export const Route = createFileRoute('/progress')({
   component: ProgressStub,

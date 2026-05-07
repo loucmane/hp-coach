@@ -21,6 +21,7 @@ import { cors } from 'hono/cors'
 
 import { requireAuth } from './middleware/auth'
 import { rateLimit } from './middleware/rateLimit'
+import { attemptsRoute } from './routes/attempts'
 import { healthRoute } from './routes/health'
 import { meRoute } from './routes/me'
 import { sessionsRoute } from './routes/sessions'
@@ -64,6 +65,7 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .use('*', rateLimit)
   .route('/me', meRoute)
   .route('/sessions', sessionsRoute)
+  .route('/attempts', attemptsRoute)
 
 // Chained route registration → preserves route types in `typeof routes`.
 const routes = app
@@ -71,7 +73,7 @@ const routes = app
     c.json({
       name: 'hpc-api',
       environment: c.env.ENVIRONMENT,
-      routes: ['/health', '/api/me/prefs'],
+      routes: ['/health', '/api/me/prefs', '/api/sessions', '/api/attempts'],
     }),
   )
   .route('/health', healthRoute)

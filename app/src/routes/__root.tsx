@@ -10,6 +10,7 @@ import { createRootRoute, Outlet, useLocation, useNavigate } from '@tanstack/rea
 import { useEffect } from 'react'
 
 import { useHydratePrefs } from '@/api/useSyncedPrefs'
+import { CommandPalette } from '@/components/CommandPalette'
 import { Mono } from '@/components/primitives'
 import { TweaksLauncher } from '@/components/TweaksLauncher'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
@@ -62,6 +63,7 @@ function RootShell() {
         </ClerkLoaded>
       </div>
       <TweaksLauncher />
+      <CommandPalette />
     </div>
   )
 }
