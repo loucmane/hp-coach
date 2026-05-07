@@ -1,7 +1,7 @@
 # HP-Coach — Product Requirements Document
 
-**Status:** v0.1 draft
-**Last updated:** 2026-05-05
+**Status:** v0.2 draft (2026-05-07 architecture pivot to multi-device cloud)
+**Last updated:** 2026-05-07
 **Authors:** project dev + Claude (design dialogue)
 
 ---
@@ -451,24 +451,28 @@ Hard requirement — see § 6.4.
 - F5.13.5 Theme: system (default) / light / dark
 - F5.13.6 Export/import all data as JSON
 
-### 5.14 Local data layer (frontend, `app/src/db/`)
+### 5.14 Cloud data layer (`worker/src/db/`)
 
-**Stack:** SQLite-WASM via SQLocal + Drizzle ORM, persisted to OPFS.
+**Stack:** Cloudflare D1 (managed SQLite) via Drizzle ORM. Migrations driven by `drizzle-kit generate` and applied via `wrangler d1 migrations apply`. Schema definitions live in `worker/src/db/schema.ts` and are imported (read-only) by the frontend through a typed Hono client so request/response shapes stay in sync without duplication.
 
 **Tables (proposal, finalize during implementation):**
-- `users` (single local row: preferences, target date)
-- `sessions` (start, end, summary)
-- `attempts` (question_id, answer, correct, time_taken, session_id)
-- `mistakes` (question_id, layer1_ids, expand_state, last_seen)
-- `srs_state` (item_id, ease, interval, due_date)
-- `mastery` (section, layer1_id, score, last_updated)
-- `framework_progress` (layer1_id, status: `untaught | learning | practicing | retaining | mastered`, last_transition_at) — states must match Screen 5 / F5.5.5 state machine exactly
+- `users` — one row per Clerk user; `clerk_user_id` (unique) is the foreign-key target for everything user-scoped. Holds preferences (target sitting, daily minutes, coach voice, palette/font/density/theme).
+- `sessions` (user_id, started_at, ended_at, summary, plan)
+- `attempts` (user_id, session_id, question_id, answer, correct, time_taken)
+- `mistakes` (user_id, question_id, layer1_ids, expand_state, last_seen)
+- `srs_state` (user_id, item_id, ease, interval, due_at)
+- `mastery` (user_id, section, layer1_id, score, last_updated)
+- `framework_progress` (user_id, layer1_id, status: `untaught | learning | practicing | retaining | mastered`, last_transition_at) — states must match Screen 5 / F5.5.5 state machine exactly
 
 **Requirements:**
-- F5.14.1 Persistent across browser restarts (OPFS)
-- F5.14.2 Export: full DB as a JSON file (against storage-clear loss)
-- F5.14.3 Import: restore from export
-- F5.14.4 Versioned migrations (Drizzle migrations)
+- F5.14.1 **Multi-device sync:** the same Clerk user sees the same state on every signed-in device, within the propagation window of the next API request.
+- F5.14.2 **Authorization on the server:** every query is scoped by `user_id = currentClerkUser`. The client cannot bypass this; the API enforces it via a Hono middleware that rejects requests without a verified Clerk JWT.
+- F5.14.3 Export: user-triggered full export of own data as JSON, downloadable in the browser (belt + suspenders against vendor lock or account loss).
+- F5.14.4 Import: restore from export (overwrite or merge — final UX TBD; technical capability required).
+- F5.14.5 Versioned migrations (drizzle-kit generate → wrangler d1 migrations apply). Migrations run against a staging D1 first, then production.
+- F5.14.6 Daily logical backup: nightly `wrangler d1 export` to R2 (retain 30 days).
+
+**Offline (Phase 1+):** v0 ships online-only. A Phase-1 cache layer (Dexie/IndexedDB on the client) hydrates from the API on sign-in and queues mutations while offline, draining to the API on reconnect. Conflict policy (last-write-wins by default for single-user data; deeper merge for `mistakes` to preserve attempt history) is designed during that phase.
 
 **Schema-design open question (resolved during Phase 0):** `mastery` and `framework_progress` both track per `layer1_id`. Either `framework_progress.status` is *derived* from `mastery.score` via threshold lookup (in which case `framework_progress` is a view, not a stored table), or the two are independent — `mastery.score` as a continuous metric used for ordering, `framework_progress.status` as a discrete state-machine state with explicit timestamped transitions. The state-machine variant is preferred for auditability (you can answer *"when did this cluster transition to retaining?"*); the derived variant is preferred for simplicity. Resolved during the Phase 0 DB schema sprint; both options are compatible with the rest of the spec.
 
@@ -596,12 +600,18 @@ For ADHD-PI users, fast keyboard navigation to the right section or drill mode i
 
 ## 7. Technical stack
 
-### 7.1 Architecture: pure frontend + static data files
+### 7.1 Architecture: edge-first cloud with offline-capable SPA
 
-- **Parser** (Python, run once locally) produces `data/hp_question_bank.json`, `data/explanations/*.json`, `data/images/*.png`
-- **Frontend** (Vite + React, deployed as a static SPA) consumes those files
-- **No backend** in v0
-- LLM calls ("explain more"): **no runtime LLM in v0**; only pre-generated Layer 2 explanations (matches the QA pipeline in § 3.2). On-demand LLM = v0.5 via a Cloudflare Worker proxy if/when added.
+**Updated 2026-05-07 (architecture pivot from local-first OPFS):** multi-device progress tracking is a hard product requirement (a user studies on their laptop and on their phone, both see the same state). Single-browser persistence (SQLocal/OPFS) cannot meet that requirement. The chosen architecture is:
+
+- **Parser** (Python, run once locally) still produces `data/hp_question_bank.json`, `data/explanations/*.json`, `data/images/*.png`. These are **content** (uniform across users) — uploaded to R2 and served statically.
+- **API** (Hono on Cloudflare Workers) — typed RPC layer that owns reads/writes against the cloud DB and gates every request through Clerk JWT verification.
+- **Cloud DB** — Cloudflare D1 (managed SQLite at the edge), the single source of truth for per-user state (sessions, attempts, mistakes, srs_state, mastery, framework_progress, user prefs).
+- **Frontend** (Vite + React, deployed as a static SPA on Cloudflare Pages) consumes the API via TanStack Query. No browser SQLite as source of truth.
+- **Offline (Phase 1+):** optional local cache via Dexie/IndexedDB with a mutation queue that drains on reconnect. Out of scope for v0; an online-only SPA with PWA install + service-worker shell-cache is the v0 target. Export/import (§ 5.13.6) is the v0 belt-and-suspenders for users who want a manual offline backup.
+- **Auth** — Clerk. Email + Google OAuth + magic link, MFA / passkeys / WebAuthn supported, audit logs, leaked-password detection. Sign-in screen at `/auth`; route guard at `__root.tsx` redirects signed-out users.
+- **Authorization** — server-side. Every D1 query is scoped by `users.id = currentUser` derived from the verified Clerk JWT. The client cannot lie about identity; bypassing the API is impossible.
+- **LLM calls ("explain more"):** **no runtime LLM in v0**; only pre-generated Layer 2 explanations (matches the QA pipeline in § 3.2). On-demand LLM = v0.5 via the same Cloudflare Worker boundary if/when added.
 
 ### 7.2 Stack
 
@@ -615,12 +625,17 @@ Math           KaTeX via react-katex
 Charts         Recharts (React + SVG, deterministic from JSON datasets — used for DTK)
 Maps           SVG generated from coordinate data (Leaflet.js fallback if complexity demands it)
 Motion         Motion (formerly Framer Motion) — used sparingly
-State          Zustand + TanStack Query
-Local DB       SQLite-WASM via SQLocal + Drizzle ORM (OPFS persistence)
+State          Zustand (UI) + TanStack Query (server state)
+Auth           Clerk (SOC2 / ISO 27001, MFA + passkeys + WebAuthn, audit logs, brute-force lockout, leaked-password check)
+API            Hono on Cloudflare Workers (typed RPC; hono/client for end-to-end types)
+Cloud DB       Cloudflare D1 via Drizzle ORM (drizzle-orm/d1)
+Object storage Cloudflare R2 (parser output: hp_question_bank.json, explanations, images)
+KV / sessions  Cloudflare Workers KV (rate-limit counters, ephemeral cache)
 Lint/Format    Biome
 Tests          Vitest + Playwright
-PWA            vite-plugin-pwa
-Deploy         Vercel or Cloudflare Pages
+PWA            vite-plugin-pwa (shell-cache only; mutation queue deferred to Phase 1)
+Hosting        Cloudflare Pages (frontend) + Cloudflare Workers (API). One vendor, one CLI (wrangler), one bill.
+Tooling        wrangler (CF), drizzle-kit (migrations against D1)
 ```
 
 ### 7.3 Design details (not stack, but polish-critical)
@@ -655,12 +670,14 @@ hpfetcher/
 │   ├── explanations.py           # Layer 2 (per-question explanations + QA queue)
 │   ├── synthetic/                # Layer 4 (dual-model question generation, § 5.15)
 │   └── lessons/                  # Lesson content generator + teach-back gate (§ 5.16)
-├── data/                         # output data consumed by the frontend
+├── data/                         # parser output (uploaded to R2; not served from disk)
 │   ├── hp_question_bank.json
 │   ├── explanations/
 │   └── images/
-├── app/                          # frontend (Vite + React)
+├── app/                          # frontend (Vite + React, → Cloudflare Pages)
 │   ├── src/
+│   │   ├── api/                  # typed Hono client + TanStack Query hooks
+│   │   ├── auth/                 # Clerk wiring + sign-in route + guards
 │   │   ├── drill/
 │   │   ├── feedback/
 │   │   ├── srs/
@@ -669,9 +686,18 @@ hpfetcher/
 │   │   ├── progress/
 │   │   ├── command-palette/
 │   │   ├── scheduler/
-│   │   ├── settings/
-│   │   └── db/
+│   │   └── settings/
 │   ├── public/
+│   └── package.json
+├── worker/                       # API (Hono on Cloudflare Workers)
+│   ├── src/
+│   │   ├── index.ts              # Hono app entry
+│   │   ├── routes/               # /sessions, /attempts, /mistakes, /prefs, …
+│   │   ├── middleware/           # Clerk JWT verify, rate limit, error handler
+│   │   ├── db/                   # Drizzle schema + queries (shared via path with app/)
+│   │   └── lib/
+│   ├── drizzle/                  # drizzle-kit migrations against D1
+│   ├── wrangler.toml             # Workers + D1 + R2 + KV bindings
 │   └── package.json
 └── docs/
     ├── curriculum-scheduler.md   # written before Phase 3
@@ -682,13 +708,23 @@ hpfetcher/
 
 ## 8. Sequence / phase plan
 
-### Phase 0 — Foundation (week 1–2)
+### Phase 0 — Foundation (week 1–3)
 
+**Parser + frontend skeleton:**
 - Parser MVP run on `var-2026` (1 exam, all 5 files parsed to structured JSON)
 - PyMuPDF image extraction works for DTK
 - Frontend skeleton: Vite + React + Tailwind v4 + shadcn/ui installed
-- SQLocal + Drizzle set up with first schema
-- Hello-world drill flow: question shown → answer received → feedback displayed (mock data, no pedagogy yet)
+- TanStack Router (file-based) + Zustand stores for UI state
+
+**Cloud foundation (added 2026-05-07 architecture pivot):**
+- Cloudflare account + Wrangler CLI bootstrapped; secrets stored in `wrangler.toml` env + GitHub Actions secrets
+- Hono API skeleton on Workers with health route + Clerk JWT verify middleware
+- D1 database provisioned; first Drizzle schema migrated via `wrangler d1 migrations apply`
+- Clerk account + sign-in / sign-up routes in the SPA; route guards on every authenticated route
+- Typed API client (`hono/client`) wired through TanStack Query
+
+**End-to-end smoke:**
+- Hello-world authenticated flow: sign in with Clerk → API call → write to D1 → read back → render in SPA
 
 **Parallel (can start now, independent):**
 - KVA/NOG trap catalog manually against raw PDF text (~100 questions → patterns identified)
@@ -762,8 +798,7 @@ Layer 2 QA volume is **per-section, not all-at-once**. A solo dev who is also do
 **Action:** **must be resolved before public launch to other users, not after.** Does not affect dogfood phase (single user, no distribution). Affects every choice after MVP.
 
 ### 9.3 Hosting choice
-**Status:** open (Vercel vs Cloudflare Pages)
-**Action:** decide in Phase 0; both work; Cloudflare has friendlier pricing if scaling occurs, Vercel has better Vite DX.
+**Status:** **resolved 2026-05-07.** Cloudflare-everything: Pages (frontend) + Workers (API) + D1 (DB) + R2 (object storage) + KV (rate-limit / ephemeral cache). Auth via Clerk. Reasoning: matches the multi-device requirement on day one, edge perf from Sweden, ~3-4× cheaper than Vercel + Neon at scale, single vendor for compute/storage/DB simplifies ops for a solo founder. Trade-off: D1 is SQLite (smaller ecosystem than Postgres) and we accept some Cloudflare-stack lock — see § 9.14.
 
 ### 9.4 Typography
 **Status:** Inter (or Geist) for MVP
@@ -774,9 +809,7 @@ Layer 2 QA volume is **per-section, not all-at-once**. A solo dev who is also do
 **Resolution:** buttons (10/20/40/60+ min) rather than a free-text field. Final decision during Phase 4.
 
 ### 9.6 Backup / sync strategy beyond dogfood
-**Status:** open
-**Background:** local-first means that if browser storage is cleared, all data is lost. Export/import (§ 5.13) covers dogfood. Multi-device sync is a separate question.
-**Action:** designed in v1 (post-MVP); possible solutions include BYOC (bring-your-own-cloud) or a paid sync service.
+**Status:** **resolved 2026-05-07** by the architecture pivot. Cloud DB on D1 is the source of truth — multi-device sync is automatic (every device authenticated as the same Clerk user reads/writes the same rows). User-triggered JSON export/import (§ 5.13.6) remains as belt-and-suspenders for users who want a manual offline backup or who want to leave the platform. Operations: nightly `wrangler d1 export` to R2 with 30-day retention (F5.14.6).
 
 ### 9.7 Business model post-MVP
 **Status:** undecided
@@ -817,6 +850,22 @@ Layer 2 QA volume is **per-section, not all-at-once**. A solo dev who is also do
 **Status:** scoped in § 3.4, unestimated
 **Background:** § 3.4 separates the *delivery system* (architecture, in PRD) from the *content* (lessons, especially the XYZ algebra refresher). For a true 0.0 user, content authoring is the longest pole in the project. Not visible in § 8 phases because phases are code-centric.
 **Action:** track content as a separate workstream from the code workstream. Time-box the XYZ algebra-curriculum scoping at end of week 4; reassess if public-domain adaptation is viable. NOG and MEK lessons can lag XYZ since drilling pools are smaller per section. ORD/KVA/DTK content is free-rolled with Layer 1.
+
+### 9.14 Vendor lock — Cloudflare + Clerk
+**Status:** new (introduced 2026-05-07 by the architecture pivot)
+**Background:** the cloud foundation puts compute, DB, object storage, KV, and rate limiting on Cloudflare; auth on Clerk. Both are SOC2/ISO 27001 vendors with strong track records, but they are real lock points.
+**Mitigations baked into the design:**
+- D1 is SQLite-flavored with a dialect that ports to Postgres with mechanical schema edits (Drizzle's `sqliteTable` → `pgTable`). Exit cost: ~1 engineer-week if forced to migrate.
+- The API is plain Hono. Hono runs on Workers, Bun, Node, Deno, Vercel, AWS Lambda — moving compute is a deploy-target change, not a rewrite.
+- R2 has zero egress fees, so leaving with all parser output is cheap. S3-compatible API, so target swaps are mechanical.
+- Clerk JWT verification is handled by a single middleware. Replacing Clerk with Auth.js or Supabase Auth is a middleware swap; sessions stay the same.
+- F5.14.3/4 (export/import) gives users portability of their own data regardless of vendor decisions.
+**Action:** monitor Cloudflare and Clerk pricing/policy changes quarterly. If Cloudflare announces D1 egress fees or Clerk breaks a free-tier promise we'll lean on, evaluate the exit ramp.
+
+### 9.15 Offline support
+**Status:** v0 ships online-only; Phase 1 work
+**Background:** the architecture pivot made multi-device sync the day-one capability and pushed offline writes into Phase 1. The PWA shell still installs and the app loads from cache, but mutation calls require connectivity in v0.
+**Action:** in Phase 1, layer Dexie/IndexedDB on the client as a write-through cache. Mutations queue locally and drain via a background sync worker on reconnect. Conflict policy: last-write-wins for single-row state (prefs, mastery), append-only for `attempts`/`mistakes` (no conflicts possible). Acceptance: a user on a flight can answer questions, the app reports "offline (queued)", and on reconnect everything reconciles without prompting.
 
 ---
 

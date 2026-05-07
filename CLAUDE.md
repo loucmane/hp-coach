@@ -15,12 +15,12 @@ For product decisions, architecture, and scope, read **`.taskmaster/docs/prd.txt
 - Three-layer pedagogical architecture (§ 3): Layer 1 frameworks → Layer 2 explanations → Layer 3 adaptive logic, plus Layer 4 synthetic generator (§ 5.15) and § 5.16 lesson content pipeline
 - Screen-by-screen UX flows (§ 4)
 - Functional + non-functional requirements (§§ 5–6) — Cmd+K palette is a hard requirement (§ 6.4)
-- Technical stack (§ 7): Vite + React 19 + TS + Tailwind v4 + shadcn/ui + SQLocal/Drizzle, local-first, no backend in v0
+- Technical stack (§ 7): Vite + React 19 + TS + Tailwind v4 + shadcn/ui frontend on **Cloudflare Pages**; **Hono on Cloudflare Workers** API; **Cloudflare D1** (SQLite-at-edge) via Drizzle ORM; **Clerk** for auth (MFA / passkeys / WebAuthn); R2 for object storage; KV for rate limits. *Architecture pivoted 2026-05-07 from local-first OPFS — multi-device sync is now a hard product requirement.*
 - Phase plan (§ 8)
 - Open questions and risks (§ 9)
 - MVP acceptance criteria (§ 10)
 
-For tracked work, see `.taskmaster/tasks/tasks.json` (53 parent tasks, 265 subtasks). Use the taskmaster MCP tools (`get_tasks`, `next_task`, `get_task`, `expand_task`, `set_task_status`) rather than editing the file by hand.
+For tracked work, see `.taskmaster/tasks/tasks.json` (60 parent tasks: 4 done, 1 cancelled, 1 deferred, 54 pending). Use the taskmaster MCP tools (`get_tasks`, `next_task`, `get_task`, `expand_task`, `set_task_status`) rather than editing the file by hand. *(Description / dependency edits and adding new tasks still require hand-editing tasks.json — the MCP only exposes status changes and PRD re-parsing.)*
 
 Persistent memory across Claude sessions lives in `~/.claude/projects/-home-loucmane-dev-hpfetcher/memory/` — see `MEMORY.md` for the index. Notable: user profile (ADHD-PI, dogfood user, target 2.0), design pillars, pedagogical architecture, language and batching conventions.
 
@@ -36,8 +36,9 @@ hpfetcher/
 │   ├── explanations.py           # Layer 2 (per-question explanations + QA queue)
 │   ├── synthetic/                # Layer 4 (dual-model question generation)
 │   └── lessons/                  # § 5.16 lesson generator + teach-back gate
-├── data/                         # parser output: hp_question_bank.json, explanations/, images/
-├── app/                          # frontend (Vite + React, planned, Phase 0)
+├── data/                         # parser output (uploaded to R2 in production)
+├── app/                          # frontend → Cloudflare Pages (Vite + React)
+├── worker/                       # API → Cloudflare Workers (Hono + Drizzle on D1)
 └── docs/                         # design docs (e.g. curriculum-scheduler.md, written before Phase 3)
 ```
 
@@ -70,6 +71,28 @@ Two halves, ~160 min and 80 questions each.
 **Quant:** XYZ (algebra, 12q), KVA (quantitative comparisons, 12q), NOG (data sufficiency, 12q), DTK (data interpretation with diagrams/tables/maps, 12q).
 
 Score: 0.0–2.0 per half; total = mean of halves; 2.0 is perfect, 1.8+ is top percentile; no penalty for wrong answers (always answer everything).
+
+## Cloud / dev workflow (post-pivot)
+
+```bash
+# Frontend (Vite SPA, deploys to Cloudflare Pages)
+cd app
+pnpm dev          # vite dev server
+pnpm test         # vitest
+pnpm test:e2e     # playwright
+pnpm build        # production build
+
+# API (Hono on Cloudflare Workers; planned in worker/)
+cd worker
+pnpm dev          # wrangler dev — local Workers runtime
+pnpm deploy       # wrangler deploy — push to staging or prod (env=staging|prod)
+pnpm db:generate  # drizzle-kit generate — emit SQL migrations
+pnpm db:apply     # wrangler d1 migrations apply hpc-staging (or hpc-prod)
+```
+
+**Secrets:** Clerk publishable key in `app/.env.local` (`VITE_CLERK_PUBLISHABLE_KEY`); Clerk secret + any third-party tokens via `wrangler secret put` so they never hit the repo. CI uses `CLOUDFLARE_API_TOKEN` + `CLERK_SECRET_KEY` from GitHub Actions secrets.
+
+**Migration discipline:** every schema change → `db:generate` → review the SQL diff in PR → apply to staging first → smoke-test there → apply to prod. Never edit migration SQL by hand once it's been applied to a real database.
 
 ## Conventions
 

@@ -148,15 +148,15 @@
       },
       {
         "id": "3",
-        "title": "Set up SQLocal + Drizzle ORM with OPFS persistence",
-        "description": "Initialize local database layer using SQLite-WASM via SQLocal and Drizzle ORM as specified",
-        "details": "npm i sqlocal drizzle-orm; npm i -D drizzle-kit @libsql/client; Create src/db/index.ts with sqlocal('hp-coach.db', { useOPFS: true }); Define initial schema with drizzle.schema including users, sessions tables; Implement db migrations with drizzle-kit generate:sqlite; Test OPFS persistence across page reloads",
-        "testStrategy": "Insert test data, reload page, verify data persists; Migration runs without errors; Queries execute <50ms",
+        "title": "[CANCELLED] Set up SQLocal + Drizzle ORM with OPFS persistence",
+        "description": "[Superseded 2026-05-07 by tasks 54-58.] Original scope: local database layer using SQLite-WASM via SQLocal and Drizzle ORM with OPFS persistence. Cancelled because the architecture pivoted to a cloud DB (Cloudflare D1) — multi-device sync was promoted to a hard product requirement and OPFS-as-source-of-truth cannot meet it. The phase-0d-db-layer branch documents the implementation that was tried; tasks 54-58 cover the new path.",
+        "details": "Cancelled. See PRD § 7.1 architecture pivot 2026-05-07. Successor tasks: 54 (Cloudflare + Wrangler), 55 (Clerk auth), 56 (Hono API), 57 (D1 + Drizzle migrations), 58 (typed API client).",
+        "testStrategy": "n/a (cancelled)",
         "priority": "high",
         "dependencies": [
           "1"
         ],
-        "status": "done",
+        "status": "cancelled",
         "subtasks": [
           {
             "id": 1,
@@ -373,13 +373,15 @@
       {
         "id": "6",
         "title": "Create Screen 1 - First launch onboarding",
-        "description": "Implement initial user onboarding with days-to-exam and daily time commitment input",
-        "details": "Create src/screens/Onboarding.tsx; Use shadcn Input, Button, Card; Store user prefs in users table via Drizzle; Swedish copy: 'Hur många dagar till provet?', buttons [10/20/40/'60+']; Transition to diagnostic mock; Implement View Transitions API for smooth navigation",
-        "testStrategy": "Form submits correctly; Data persists in DB; Navigation to Screen 2 works; Responsive on mobile",
+        "description": "Implement initial user onboarding with days-to-exam and daily time commitment input. Persists to D1 via the API client.",
+        "details": "Create src/screens/Onboarding.tsx; use shadcn Input/Button/Card primitives. Persist user prefs to the `users` row via the API client (PUT /api/me/prefs). Swedish copy: 'Hur många dagar till provet?', buttons [10/20/40/60+]. Transition to diagnostic mock. Implement View Transitions API for smooth navigation. Coach handoff handled at the end of the flow.",
+        "testStrategy": "Form submits correctly; data persists in D1 (verifiable via worker integration test); navigation to Screen 2 works; responsive on mobile; signing in on a second device reads the saved prefs back unchanged",
         "priority": "high",
         "dependencies": [
           "2",
-          "3"
+          "55",
+          "57",
+          "58"
         ],
         "status": "pending",
         "subtasks": [
@@ -1701,13 +1703,13 @@
       },
       {
         "id": "24",
-        "title": "Complete Drizzle schema for all tables",
-        "description": "Finalize users, sessions, attempts, mistakes, srs_state, mastery, framework_progress",
-        "details": "schema.ts: framework_progress with status enum ['untaught','learning','practicing','retaining','mastered']; Generate/run migrations; Add indexes on layer1_id, due_date",
-        "testStrategy": "All tables queryable; Migrations idempotent; Indexes speed up mistake queries",
+        "title": "Complete Drizzle (D1) schema for all tables",
+        "description": "Finalize users, sessions, attempts, mistakes, srs_state, mastery, framework_progress in worker/src/db/schema.ts against Cloudflare D1.",
+        "details": "All tables include user_id (FK to users.id) so server-side authorization scopes every query. framework_progress uses status enum ['untaught','learning','practicing','retaining','mastered']. Generate migrations with drizzle-kit; apply with `wrangler d1 migrations apply hpc-prod`. Add indexes on (user_id, layer1_id) and (user_id, due_at) for mistake / srs hotpaths. Same SQLite dialect we already use; this just promotes the schema from the cancelled OPFS layer to the D1 path.",
+        "testStrategy": "All tables queryable from a Hono route handler; migrations idempotent on a fresh D1 db; user_id FK rejects orphan inserts; indexes show in EXPLAIN for mistake-queue queries",
         "priority": "high",
         "dependencies": [
-          "3",
+          "57",
           "23"
         ],
         "status": "pending",
@@ -1998,10 +2000,10 @@
       },
       {
         "id": "28",
-        "title": "Implement DB export/import JSON",
-        "description": "Full database backup/restore via JSON file (F5.13.6)",
-        "details": "src/db/export.ts: Drizzle dump to JSON; src/db/import.ts: Bulk insert with transaction; File download via FileSaver.js",
-        "testStrategy": "Export 1MB+ DB; Import restores exactly; No data loss",
+        "title": "User-triggered cloud DB export / import as JSON",
+        "description": "Belt-and-suspenders: user can download all of their own data (per-Clerk-user rows from D1) as JSON, and re-import it. Lock-in mitigation, vendor-loss insurance, and personal backup.",
+        "details": "Server: GET /api/me/export streams a Hono response with all rows scoped by current Clerk user. POST /api/me/import accepts the JSON and bulk-inserts in a transaction (mode TBD: overwrite vs merge — start with overwrite + confirmation gate). Client: triggers download via Blob + a.click; import via file picker. Operationally separate from the nightly wrangler d1 export to R2 (F5.14.6) — this one is user-controlled, that one is operations-controlled.",
+        "testStrategy": "Export round-trip: sign in as user A, generate sample data, download JSON, wipe rows for user A, import the JSON, verify all rows restored exactly. Cross-user isolation: user B's export must contain zero of user A's rows. Tests in worker integration suite.",
         "priority": "medium",
         "dependencies": [
           "24"
@@ -3896,13 +3898,107 @@
             "parentId": "undefined"
           }
         ]
+      },
+      {
+        "id": "54",
+        "title": "Cloudflare account + Wrangler bootstrap",
+        "description": "Provision the Cloudflare account, install Wrangler, and configure the workspace so subsequent tasks (55–58) can deploy.",
+        "details": "Create Cloudflare account; enable Workers + D1 + R2 + KV + Pages on the account. `pnpm add -Dw wrangler` at repo root. Create `worker/wrangler.toml` with placeholder bindings (D1: `hpc-prod`, KV: `hpc_kv`, R2: `hpc-content`). Create CF API token (Wrangler scope) and store in `.env.example` as documentation, plus GitHub Actions secret `CLOUDFLARE_API_TOKEN`. Login: `wrangler login` (or use API token in CI). Create empty Worker entry: `worker/src/index.ts` returning `new Response('hpc-api ok')`. Verify with `wrangler dev` locally and `wrangler deploy` to a staging route.",
+        "testStrategy": "`wrangler dev` boots locally on http://localhost:8787 and returns 'hpc-api ok'; `wrangler deploy` succeeds with the staging route reachable; CI secret detected; account dashboard shows Workers + D1 + R2 + KV all enabled",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "55",
+        "title": "Clerk auth integration (sign-in / sign-up + route guards)",
+        "description": "Drop in Clerk for production-grade auth — MFA, passkeys, WebAuthn, audit logs, brute-force lockout, leaked-password check — and gate the SPA routes behind it.",
+        "details": "Create Clerk account; create application 'HP-Coach'. `pnpm --dir app add @clerk/clerk-react`. In `main.tsx` wrap RouterProvider with `<ClerkProvider publishableKey>`. Create `app/src/auth/` with: a `/sign-in` route, a `/sign-up` route (Clerk's prebuilt components), and a route guard hook that uses `<SignedIn>` / `<SignedOut>` to redirect to `/sign-in` for protected routes. Server side: install `@clerk/backend`, write a Hono middleware that verifies the bearer JWT on every API request and exposes `c.var.userId` (Clerk user id). Add `CLERK_PUBLISHABLE_KEY` (frontend env), `CLERK_SECRET_KEY` (worker secret via `wrangler secret put`). Configure social login (Google) and magic-link email in the Clerk dashboard; require email verification.",
+        "testStrategy": "Unauthenticated visit to `/` redirects to `/sign-in`; sign-in via email magic link succeeds; `/api/me` returns 401 without bearer token, 200 with valid Clerk JWT; signing in on a second device shares the same Clerk user id; MFA enrollment completes for an opted-in user",
+        "priority": "high",
+        "dependencies": [
+          "54"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "56",
+        "title": "Hono API skeleton on Cloudflare Workers",
+        "description": "Stand up the typed RPC layer that owns every read/write against the cloud DB. Hono on Workers, Clerk JWT-verified, with structured error handling and rate limiting.",
+        "details": "`worker/src/index.ts` mounts a Hono app. Routes scaffolded under `worker/src/routes/`: `health`, `me/prefs`, `me/export`, `sessions`, `attempts`, `mistakes`, `framework_progress`. Middleware order: cors → rate-limit (Cloudflare KV-backed counter, 60 rps per Clerk user) → Clerk JWT verify → request logger → handler. Errors normalised to `{ error: { code, message } }` JSON via Hono's error handler. End-to-end types: install `hono` + `@hono/zod-validator`, validate all inputs; export an `AppType` for the SPA's typed client (task 58). Wrangler.toml binds D1, KV, R2 via interface declared in `worker/src/types.ts`.",
+        "testStrategy": "GET /health returns 200; missing/invalid JWT returns 401; rate-limit returns 429 after threshold; Zod validation rejects malformed bodies; integration tests via Miniflare exercise each route under a fake authenticated user",
+        "priority": "high",
+        "dependencies": [
+          "54",
+          "55"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "57",
+        "title": "Cloudflare D1 database + Drizzle migrations",
+        "description": "Provision the production + staging D1 databases, port the Drizzle schema, and wire migrations through Wrangler.",
+        "details": "`wrangler d1 create hpc-prod` and `hpc-staging`. Bind both to the worker (env=production / env=staging). Move `app/src/db/schema.ts` (drafted on the cancelled task 3 branch) to `worker/src/db/schema.ts`. Add a `user_id` foreign key to every per-user table (sessions, attempts, mistakes, srs_state, mastery, framework_progress) so server-side authorization can scope queries. `drizzle.config.ts`: dialect=sqlite, out=./worker/drizzle. `pnpm db:generate` emits 0000_initial.sql; `wrangler d1 migrations apply hpc-staging` and verify on staging before applying to prod. Drizzle handle in worker: `drizzle(c.env.DB, { schema })` from `drizzle-orm/d1`. Indexes: (user_id, layer1_id), (user_id, due_at), (user_id, started_at).",
+        "testStrategy": "`wrangler d1 execute hpc-staging --command 'SELECT name FROM sqlite_master'` lists all 7 tables; cross-user select returns zero rows for the wrong user_id; EXPLAIN on the mistake-queue query uses the (user_id, layer1_id) index; migrations idempotent on re-apply",
+        "priority": "high",
+        "dependencies": [
+          "54",
+          "56"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "58",
+        "title": "Typed API client + TanStack Query hooks",
+        "description": "Generate a fully typed client from Hono's AppType and expose it as TanStack Query hooks the screens can call directly.",
+        "details": "`pnpm --dir app add hono` (peer of @hono/client). Create `app/src/api/client.ts` that imports `AppType` from `worker/src/index.ts` (path import via tsconfig path) and instantiates `hc<AppType>(BASE_URL, { headers: () => ({ Authorization: `Bearer ${await clerk.session.getToken()}` }) })`. Hooks live in `app/src/api/hooks/`: useUserPrefs, useSetUserPrefs, useSessions, useStartSession, useEndSession, useRecordAttempt, useMistakes, useFrameworkProgress. Mutations invalidate the relevant query keys. Optimistic updates for prefs only; the rest goes server-first to avoid cross-device confusion. TanStack Query default: 5-minute stale time on read queries, refetchOnWindowFocus=true.",
+        "testStrategy": "Component test renders <ProvenComponent /> wrapped in a QueryClient and asserts useUserPrefs returns the row. End-to-end Playwright: change a pref on device A simulator, navigate on device B simulator (different localStorage), see the new value after the refetch window",
+        "priority": "high",
+        "dependencies": [
+          "55",
+          "56",
+          "57"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "59",
+        "title": "Refactor screens + Zustand stores to use the API client",
+        "description": "Replace the placeholder local-store state in Zustand with API-backed reads/writes. The cloud DB becomes the source of truth; Zustand owns only ephemeral UI state.",
+        "details": "Sweep app/src/stores/{coachStore,examStore,uiStore}.ts. coachStore.coach: read from useUserPrefs, write via useSetUserPrefs. examStore.sittingId: same pattern. uiStore (palette/mode/font/density): keep persisted to localStorage AND mirror to user prefs server-side (settings sync without blocking the toggle). HomeMobile.tsx already reads from these stores via hooks, so the screen file barely changes. Onboarding writes initial prefs through useSetUserPrefs. Stub routes (drill/coach/progress/avancerat) get sign-in protection via the Clerk route guard.",
+        "testStrategy": "Vitest: store hooks return the API-backed values when wrapped in a QueryClientProvider with mocked fetch. Playwright: sign in as user A, set coach to 'professor', sign out, sign in as user B, see default 'taktiker'. Sign back in as A from a fresh browser context, see 'professor' restored",
+        "priority": "high",
+        "dependencies": [
+          "55",
+          "58"
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": "60",
+        "title": "[deferred to Phase 1] Offline cache + mutation queue (Dexie)",
+        "description": "Layer Dexie/IndexedDB on the SPA as a write-through cache so the app keeps working offline and queues mutations until reconnect.",
+        "details": "PRD § 9.15 commits this to Phase 1, not v0. When activated: Dexie store mirroring the read query keys; TanStack Query `persister` plugin for cache rehydration; mutation queue table writes pending mutations on offline error and drains via a Service Worker background-sync handler on reconnect. Conflict policy: last-write-wins for single-row state (prefs, mastery), append-only for attempts/mistakes (no conflicts possible). Network-status indicator in the bottom tab bar.",
+        "testStrategy": "Acceptance: a user on a flight can answer questions, the app reports 'offline (queued)', and on reconnect everything reconciles without prompting. E2E with Playwright `context.setOffline(true)` covering submit-then-reconnect.",
+        "priority": "medium",
+        "dependencies": [
+          "59"
+        ],
+        "status": "deferred",
+        "subtasks": []
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2026-05-06T15:21:27.805Z",
-      "taskCount": 53,
-      "completedCount": 5,
+      "lastModified": "2026-05-07T11:45:00.000Z",
+      "taskCount": 60,
+      "completedCount": 4,
       "tags": [
         "master"
       ]
