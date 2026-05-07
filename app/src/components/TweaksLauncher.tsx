@@ -5,11 +5,12 @@
 // when the URL has `?dev=1` (so we can also test it in a preview build).
 // In a public production build it ships as `null`.
 //
-// Also installs a global Cmd/Ctrl+K shortcut that jumps to /dev. Real
-// Cmd+K palette (PRD § 6.4) lands in a later phase — this is the proto.
+// Cmd+K is owned by `<CommandPalette />` (PRD § 6.4). The /dev route is
+// available there as the "Dev panel" command, plus this floating button
+// for mouse access. We deliberately don't bind any keyboard shortcut here
+// to avoid a double-handler conflict on the same keystroke.
 
-import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
-import { useEffect } from 'react'
+import { Link, useRouterState } from '@tanstack/react-router'
 
 // In a production preview, the launcher should still be reachable for a
 // session if you opened the app with `?dev=1`. Once you do, it sticks via
@@ -34,22 +35,7 @@ function isDevSurface() {
 }
 
 export function TweaksLauncher() {
-  const navigate = useNavigate()
   const here = useRouterState({ select: (s) => s.location.pathname })
-
-  // Cmd/Ctrl+K → /dev (or back to / if already there). Fires from any route.
-  useEffect(() => {
-    if (!isDevSurface()) return
-    const onKey = (e: KeyboardEvent) => {
-      const meta = e.metaKey || e.ctrlKey
-      if (meta && e.key.toLowerCase() === 'k') {
-        e.preventDefault()
-        navigate({ to: here === '/dev' ? '/' : '/dev' })
-      }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [navigate, here])
 
   if (!isDevSurface()) return null
   if (here === '/dev') return null
@@ -99,7 +85,7 @@ export function TweaksLauncher() {
           color: 'var(--muted)',
         }}
       >
-        ⌘K
+        dev
       </kbd>
     </Link>
   )

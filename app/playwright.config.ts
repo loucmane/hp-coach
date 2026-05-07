@@ -10,7 +10,12 @@ import { defineConfig, devices } from '@playwright/test'
 export default defineConfig({
   testDir: './tests-e2e',
   timeout: 30_000,
-  fullyParallel: true,
+  // All E2E tests authenticate as the same Clerk test user and write
+  // through the live worker → D1 staging. Running them in parallel races
+  // on the shared session/attempts/prefs rows. Until we stand up per-test
+  // users (or a /test-reset endpoint), serialize.
+  fullyParallel: false,
+  workers: 1,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   reporter: [['html', { open: 'never' }], ['list']],

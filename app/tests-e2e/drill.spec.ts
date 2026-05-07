@@ -62,12 +62,15 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }) => 
 
 test('Cmd+K palette — open via keyboard, navigate to drill', async ({ page }) => {
   await page.goto('/')
-  // Cmd+K opens the palette globally.
-  await page.keyboard.press('Meta+k')
+  // Wait for the home shell to fully mount (React listeners attached) before
+  // dispatching the keystroke. The bottom tabs are a stable landmark here.
+  await expect(page.getByRole('button', { name: 'Hem', exact: true })).toBeVisible({
+    timeout: 10_000,
+  })
+  await page.keyboard.press('Control+K')
   const cmdk = page.getByTestId('cmdk')
   await expect(cmdk).toBeVisible({ timeout: 3_000 })
 
-  // The "Starta ORD-övning" command should be present and routable.
   await page.getByTestId('cmdk-item-drill-ord').click()
   await expect(page).toHaveURL(/\/drill$/)
   await expect(page.getByTestId('drill-idle')).toBeVisible({ timeout: 5_000 })

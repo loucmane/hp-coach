@@ -62,6 +62,13 @@ const COMMANDS: Command[] = [
     keywords: ['tema', 'palette', 'font', 'tweaks', 'theme'],
     action: ({ navigate }) => navigate({ to: '/avancerat' }),
   },
+  {
+    id: 'dev',
+    label: 'Dev panel',
+    hint: '/dev',
+    keywords: ['dev', 'debug', 'panel', 'tweaks'],
+    action: ({ navigate }) => navigate({ to: '/dev' }),
+  },
 ]
 
 export function CommandPalette() {

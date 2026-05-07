@@ -34,7 +34,9 @@ authedTest('Daily Home renders with iconic CTA and tabs', async ({ page }) => {
 authedTest('Fortsätt routes to /drill', async ({ page }) => {
   await page.getByRole('button', { name: 'Fortsätt' }).click()
   await authedExpect(page).toHaveURL(/\/drill$/)
-  await authedExpect(page.getByText(/drill-skärmar landar här/i)).toBeVisible()
+  // The drill route now mounts the real engine; idle state is the
+  // visible landing for an unstarted drill.
+  await authedExpect(page.getByTestId('drill-idle')).toBeVisible({ timeout: 10_000 })
 })
 
 authedTest(
@@ -74,12 +76,14 @@ authedTest('palette swatch click applies the new palette to <html>', async ({ pa
   authedExpect(await page.evaluate(() => document.documentElement.dataset.palette)).toBe('sage')
 })
 
-authedTest('floating launcher links to /dev and Cmd+K toggles it', async ({ page }) => {
+authedTest('floating launcher links to /dev and Cmd+K opens the palette', async ({ page }) => {
   await page.goto('/?dev=1')
   await page.getByRole('link', { name: /öppna design-tweaks/i }).click()
   await authedExpect(page).toHaveURL(/\/dev$/)
+  // Cmd+K is now owned by <CommandPalette>: opens the palette overlay
+  // instead of toggling /dev. Pressing it again closes the overlay.
   await page.keyboard.press('Control+K')
-  await authedExpect(page).toHaveURL(/\/(\?dev=1)?$/)
+  await authedExpect(page.getByTestId('cmdk')).toBeVisible({ timeout: 3_000 })
   await page.keyboard.press('Control+K')
-  await authedExpect(page).toHaveURL(/\/dev$/)
+  await authedExpect(page.getByTestId('cmdk')).toBeHidden({ timeout: 3_000 })
 })

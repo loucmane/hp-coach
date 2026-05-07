@@ -36,7 +36,8 @@ export function DrillResult({ summary, onReplay, onHome }: Props) {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        padding: '36px 22px 24px',
+        // Clear the bottom tabs (~80px) so "Öva igen" stays clickable.
+        padding: '36px 22px 100px',
         overflowY: 'auto',
       }}
     >

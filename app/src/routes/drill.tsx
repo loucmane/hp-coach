@@ -222,7 +222,9 @@ function IdleBody({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        padding: '40px 22px 24px',
+        // 100px bottom — clears the absolutely-positioned BottomTabs (~80px)
+        // so the start button isn't intercepted by the tab strip.
+        padding: '40px 22px 100px',
       }}
       data-testid="drill-idle"
     >
