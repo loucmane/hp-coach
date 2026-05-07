@@ -10,7 +10,7 @@
 // upsert just bumps errorCount), but once we add SRS spacing the
 // counter will drive the next-review-at calculation.
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMemo } from 'react'
 
 import { useDueMistakes, useRecordMistake, useResolveMistake } from '@/api/hooks/useMistakes'
@@ -37,6 +37,13 @@ function RepetitionScreen() {
     return m
   }, [due.data])
 
+  // Treat "loaded with zero rows" as the empty state. While `due.data`
+  // is undefined (still loading) we leave the start button alive and
+  // let pickQuestions's empty-array path catch any race where the
+  // user clicks before data arrives.
+  const dueCount = due.data?.length
+  const isEmpty = dueCount === 0
+
   return (
     <SessionPlayer
       sessionKind="adaptive_review"
@@ -49,14 +56,46 @@ function RepetitionScreen() {
       idleEyebrow="Repetition"
       idleHeadline="Dina missar"
       idleSubcopy={
-        due.data && due.data.length > 0
-          ? `Repetera ${Math.min(due.data.length, DEFAULT_REPLAY_LENGTH)} frågor du svarat fel på.`
+        dueCount && dueCount > 0
+          ? `Repetera ${Math.min(dueCount, DEFAULT_REPLAY_LENGTH)} frågor du svarat fel på.`
           : 'Du har inga missar att repetera just nu.'
       }
-      idleMeta={
-        due.data && due.data.length > 0 ? `${due.data.length} aktiva missar i kön` : undefined
-      }
+      idleMeta={dueCount && dueCount > 0 ? `${dueCount} aktiva missar i kön` : undefined}
       emptyCopy="Inga missar att repetera. När du svarar fel i en övning landar frågan här."
+      disableStart={isEmpty}
+      disableStartLabel="Inget att repetera"
+      idleSecondaryCta={
+        isEmpty ? (
+          <Link
+            to="/drill"
+            data-testid="repetition-fallback-link"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '14px 18px',
+              background: 'var(--panel)',
+              border: '1px solid var(--hairline)',
+              borderRadius: 'calc(var(--radius) * 0.6)',
+              textDecoration: 'none',
+              color: 'var(--ink)',
+              fontSize: 15,
+            }}
+          >
+            <span>Öva istället</span>
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 11,
+                letterSpacing: 'var(--font-mono-track)',
+                color: 'var(--ink-2)',
+              }}
+            >
+              ORD →
+            </span>
+          </Link>
+        ) : null
+      }
       onCorrect={(q) => {
         const id = qidToMistakeId.get(q.qid)
         if (id !== undefined) resolveMistake.mutate({ id })

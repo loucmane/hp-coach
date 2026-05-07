@@ -75,6 +75,14 @@ export type SessionPlayerProps = {
   /** Optional extra content rendered on the idle screen, after the meta
    *  line. Used by /drill to surface a "repetera missar" hint. */
   idleExtra?: ReactNode
+  /** Disable the primary "Starta övning" button — used when the consumer
+   *  knows there's nothing to start (e.g. /repetition with empty queue). */
+  disableStart?: boolean
+  /** Replacement label shown on the disabled primary button. */
+  disableStartLabel?: string
+  /** Secondary CTA rendered just above the primary button. Used to give
+   *  the user a way out when the primary action is disabled. */
+  idleSecondaryCta?: ReactNode
 }
 
 export function SessionPlayer(props: SessionPlayerProps) {
@@ -274,6 +282,9 @@ function IdleBody({
   stale,
   onEndStale,
   emptyAttempted,
+  disableStart,
+  disableStartLabel,
+  idleSecondaryCta,
 }: IdleBodyProps) {
   return (
     <div
@@ -314,7 +325,7 @@ function IdleBody({
 
       {idleExtra && <div style={{ marginTop: 20 }}>{idleExtra}</div>}
 
-      {emptyAttempted && emptyCopy && (
+      {(emptyAttempted || disableStart) && emptyCopy && (
         <div
           data-testid="drill-empty"
           style={{
@@ -358,8 +369,23 @@ function IdleBody({
 
       <div style={{ flex: 1 }} />
 
-      <Btn full size="xl" onClick={onStart} disabled={starting} data-testid="drill-start">
-        {starting ? 'Startar…' : 'Starta övning'}
+      {idleSecondaryCta && (
+        <div style={{ marginBottom: 10 }} data-testid="drill-secondary-cta">
+          {idleSecondaryCta}
+        </div>
+      )}
+      <Btn
+        full
+        size="xl"
+        onClick={onStart}
+        disabled={starting || !!disableStart}
+        data-testid="drill-start"
+      >
+        {starting
+          ? 'Startar…'
+          : disableStart
+            ? (disableStartLabel ?? 'Inget att starta')
+            : 'Starta övning'}
       </Btn>
     </div>
   )
