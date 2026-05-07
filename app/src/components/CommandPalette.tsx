@@ -39,6 +39,13 @@ const COMMANDS: Command[] = [
     action: ({ navigate }) => navigate({ to: '/drill' }),
   },
   {
+    id: 'repetition',
+    label: 'Repetition (missar)',
+    hint: 'Repetera fel svar',
+    keywords: ['repetition', 'missar', 'fel', 'review', 'replay'],
+    action: ({ navigate }) => navigate({ to: '/repetition' }),
+  },
+  {
     id: 'home',
     label: 'Hem',
     keywords: ['hem', 'home'],

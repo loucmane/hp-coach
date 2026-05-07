@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInRouteImport } from './routes/sign-in'
+import { Route as RepetitionRouteImport } from './routes/repetition'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as DrillRouteImport } from './routes/drill'
 import { Route as DevRouteImport } from './routes/dev'
@@ -26,6 +27,11 @@ const SignUpRoute = SignUpRouteImport.update({
 const SignInRoute = SignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RepetitionRoute = RepetitionRouteImport.update({
+  id: '/repetition',
+  path: '/repetition',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProgressRoute = ProgressRouteImport.update({
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
   '/progress': typeof ProgressRoute
+  '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
   '/progress': typeof ProgressRoute
+  '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
   '/progress': typeof ProgressRoute
+  '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/dev'
     | '/drill'
     | '/progress'
+    | '/repetition'
     | '/sign-in'
     | '/sign-up'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/dev'
     | '/drill'
     | '/progress'
+    | '/repetition'
     | '/sign-in'
     | '/sign-up'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/dev'
     | '/drill'
     | '/progress'
+    | '/repetition'
     | '/sign-in'
     | '/sign-up'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   DevRoute: typeof DevRoute
   DrillRoute: typeof DrillRoute
   ProgressRoute: typeof ProgressRoute
+  RepetitionRoute: typeof RepetitionRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
 }
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/sign-in'
       fullPath: '/sign-in'
       preLoaderRoute: typeof SignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/repetition': {
+      id: '/repetition'
+      path: '/repetition'
+      fullPath: '/repetition'
+      preLoaderRoute: typeof RepetitionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/progress': {
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   DevRoute: DevRoute,
   DrillRoute: DrillRoute,
   ProgressRoute: ProgressRoute,
+  RepetitionRoute: RepetitionRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
 }
