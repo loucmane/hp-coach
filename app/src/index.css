@@ -3,9 +3,18 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ── HP-Coach design tokens — Sand palette (default), light mode ────────── */
+/* ── HP-Coach design tokens — Sand light no-flash fallback ──────────────────
+ *
+ * Real theme values (4 palettes × light/dark, 4 font pairings, 3 densities)
+ * live in src/lib/tokens.ts and are written to <html> by `applyThemeToDocument`
+ * (uiStore subscription). The :root values below are the Sand-light
+ * defaults — they only show through if JS hasn't run yet, matching the
+ * inline anti-FOUC script in index.html.
+ *
+ * Don't touch palette numbers here — change them in tokens.ts and
+ * regenerate by hand if needed. The snapshot test pins the source.
+ */
 :root {
-  /* Surface + ink */
   --bg: oklch(0.97 0.011 78);
   --panel: oklch(0.99 0.008 80);
   --panel-2: oklch(0.955 0.012 78);
@@ -15,20 +24,15 @@
   --muted-2: oklch(0.68 0.014 70);
   --hairline: oklch(0.88 0.012 70);
   --hairline-2: oklch(0.92 0.012 70);
-
-  /* Accent (terracotta) */
   --accent: oklch(0.61 0.13 42);
   --accent-ink: oklch(0.99 0.008 80);
   --accent-soft: oklch(0.91 0.05 50);
-
-  /* Semantic */
   --ok: oklch(0.55 0.10 145);
   --warn: oklch(0.65 0.13 70);
   --bad: oklch(0.55 0.16 25);
   --ok-soft: oklch(0.93 0.04 145);
   --bad-soft: oklch(0.93 0.05 25);
 
-  /* Type */
   --font-display: "Newsreader", "Times New Roman", Georgia, serif;
   --font-display-w: 500;
   --font-display-track: -0.022em;
@@ -38,7 +42,6 @@
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --font-mono-track: 0.04em;
 
-  /* Density (regular default) */
   --pad: 18px;
   --pad-lg: 22px;
   --gap: 14px;
@@ -67,27 +70,6 @@
   --color-foreground: var(--ink);
   --color-border: var(--hairline);
   --color-ring: var(--accent);
-}
-
-/* Dark mode: same Sand palette, dark variant */
-.dark {
-  --bg: oklch(0.16 0.008 70);
-  --panel: oklch(0.20 0.010 70);
-  --panel-2: oklch(0.235 0.011 70);
-  --ink: oklch(0.96 0.008 78);
-  --ink-2: oklch(0.82 0.010 78);
-  --muted: oklch(0.62 0.014 70);
-  --muted-2: oklch(0.48 0.014 70);
-  --hairline: oklch(0.30 0.012 70);
-  --hairline-2: oklch(0.26 0.012 70);
-  --accent: oklch(0.72 0.12 42);
-  --accent-ink: oklch(0.16 0.008 70);
-  --accent-soft: oklch(0.32 0.06 50);
-  --ok: oklch(0.72 0.11 145);
-  --warn: oklch(0.78 0.12 70);
-  --bad: oklch(0.70 0.14 25);
-  --ok-soft: oklch(0.28 0.04 145);
-  --bad-soft: oklch(0.30 0.06 25);
 }
 
 @theme inline {

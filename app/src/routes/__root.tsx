@@ -8,19 +8,21 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
-import { applyUiToDocument, useUiStore } from '@/stores/uiStore'
+import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
 
 export const Route = createRootRoute({
   component: RootShell,
 })
 
 function RootShell() {
-  const theme = useUiStore((s) => s.theme)
+  const palette = useUiStore((s) => s.palette)
+  const mode = useUiStore((s) => s.mode)
+  const font = useUiStore((s) => s.font)
   const density = useUiStore((s) => s.density)
 
   useEffect(() => {
-    applyUiToDocument(theme, density)
-  }, [theme, density])
+    applyThemeToDocument(palette, mode, font, density)
+  }, [palette, mode, font, density])
 
   return (
     <div

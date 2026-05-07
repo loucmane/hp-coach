@@ -1,49 +1,73 @@
-// UI shell store: theme + density.
+// UI shell store: palette, theme mode, font pairing, density.
 //
-// Theme drives the .dark class on <html>; density drives the four
-// --pad/--gap/--radius CSS vars. Both apply via a small effect in
-// the App root so the cascade picks them up before any render.
-//
-// Persisted to localStorage under `hpc-ui` so a user's preferred
-// theme and density stick across reloads.
+// Four axes that together pick one of 4×2×4×3 = 96 visual combinations.
+// Persisted to localStorage under `hpc-ui` so a user's preferences stick
+// across reloads. The same key is read by the anti-FOUC inline script in
+// index.html so first paint matches the saved combo.
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import { DENSITY, type Density, type ThemeMode } from '@/lib/tokens'
+import {
+  buildThemeVars,
+  DEFAULT_THEME,
+  type Density,
+  type FontKey,
+  type PaletteKey,
+  type ThemeMode,
+} from '@/lib/tokens'
 
 type UiState = {
-  theme: ThemeMode
+  palette: PaletteKey
+  mode: ThemeMode
+  font: FontKey
   density: Density
-  setTheme: (theme: ThemeMode) => void
+  setPalette: (palette: PaletteKey) => void
+  setMode: (mode: ThemeMode) => void
+  setFont: (font: FontKey) => void
   setDensity: (density: Density) => void
-  toggleTheme: () => void
+  toggleMode: () => void
 }
 
 export const useUiStore = create<UiState>()(
   persist(
     (set) => ({
-      theme: 'light',
-      density: 'regular',
-      setTheme: (theme) => set({ theme }),
+      palette: DEFAULT_THEME.palette,
+      mode: DEFAULT_THEME.mode,
+      font: DEFAULT_THEME.font,
+      density: DEFAULT_THEME.density,
+      setPalette: (palette) => set({ palette }),
+      setMode: (mode) => set({ mode }),
+      setFont: (font) => set({ font }),
       setDensity: (density) => set({ density }),
-      toggleTheme: () => set((s) => ({ theme: s.theme === 'light' ? 'dark' : 'light' })),
+      toggleMode: () => set((s) => ({ mode: s.mode === 'light' ? 'dark' : 'light' })),
     }),
     { name: 'hpc-ui' },
   ),
 )
 
 /**
- * Apply theme + density to the live document. Call once from a top-level
- * effect; subscribes to the store so changes propagate immediately.
+ * Write the active theme combination to <html>. Theme/mode/font/density
+ * each update independently; this re-applies all of them so we never end
+ * up with a half-applied state. Cheap — one style assignment per var.
+ *
+ * Also toggles the `.dark` class so any code that looks at it (Tailwind
+ * dark variant fallback, third-party widgets) keeps working.
  */
-export function applyUiToDocument(theme: ThemeMode, density: Density) {
+export function applyThemeToDocument(
+  palette: PaletteKey,
+  mode: ThemeMode,
+  font: FontKey,
+  density: Density,
+) {
   if (typeof document === 'undefined') return
-  document.documentElement.classList.toggle('dark', theme === 'dark')
-  const d = DENSITY[density]
   const root = document.documentElement
-  root.style.setProperty('--pad', d.pad)
-  root.style.setProperty('--pad-lg', d.padLg)
-  root.style.setProperty('--gap', d.gap)
-  root.style.setProperty('--radius', d.radius)
+  const vars = buildThemeVars(palette, mode, font, density)
+  for (const [name, value] of Object.entries(vars)) {
+    root.style.setProperty(name, value)
+  }
+  root.classList.toggle('dark', mode === 'dark')
+  root.dataset.palette = palette
+  root.dataset.font = font
+  root.dataset.density = density
 }

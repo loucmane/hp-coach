@@ -47,9 +47,27 @@ test('Bottom tabs route between sections', async ({ page }) => {
   await expect(page).toHaveURL(/\/$/)
 })
 
-test('/dev exposes coach voice and theme switchers', async ({ page }) => {
+test('/dev exposes coach + palette + font + density switchers', async ({ page }) => {
   await page.goto('/dev')
-  await expect(page.getByRole('button', { name: 'Kompis' })).toBeVisible()
+  // Coach voices
+  await expect(page.getByRole('button', { name: /Kompis/ })).toBeVisible()
+  // Palette swatches
+  await expect(page.getByRole('button', { name: 'Palett: Sage' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Palett: Ink' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Palett: Rose' })).toBeVisible()
+  // Mode + font + density
   await expect(page.getByRole('button', { name: 'Mörk' })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Kompakt' })).toBeVisible()
+  await expect(page.getByRole('button', { name: /Hyperlegible/ })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Comfy', exact: true })).toBeVisible()
+})
+
+test('palette swatch click applies the new palette to <html>', async ({ page }) => {
+  await page.goto('/dev')
+  await page.getByRole('button', { name: 'Palett: Sage' }).click()
+  // Sage light bg is the prototype's exact value.
+  const bg = await page.evaluate(() =>
+    getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(),
+  )
+  expect(bg).toBe('oklch(0.965 0.012 175)')
+  expect(await page.evaluate(() => document.documentElement.dataset.palette)).toBe('sage')
 })

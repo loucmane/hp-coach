@@ -1,14 +1,23 @@
 // HP-Coach design tokens — typed source of truth.
 //
-// Values mirror the OKLCH variables in src/index.css (Sand palette).
-// Use this when you need a token in JS land (canvas, charts, sparklines,
-// inline SVG fills computed at runtime). The CSS layer remains canonical
-// for styling — keep it in sync. A snapshot test in tokens.test.ts pins
-// both palettes so silent drift fails CI.
+// Four palettes (Sand, Sage, Ink, Rose) × light/dark = 8 OKLCH variants.
+// Four font pairings (Literary, Geometric, Editorial, Hyperlegible).
+// Three densities (Compact, Regular, Comfy).
+//
+// Ported from the prototype's tokens.jsx so production matches the design
+// canvas exactly. The CSS file in src/index.css ships Sand-light values
+// as a no-flash fallback; everything beyond that is written to <html>
+// inline by `applyThemeToDocument` (uiStore subscription) so we never
+// need 8 root selectors. Snapshot tests in tokens.test.ts pin every
+// value — silent drift fails CI.
 
 export type ThemeMode = 'light' | 'dark'
 
-export type SandPalette = {
+export type PaletteKey = 'sand' | 'sage' | 'ink' | 'rose'
+export type FontKey = 'literary' | 'geometric' | 'editorial' | 'hyperlegible'
+export type Density = 'compact' | 'regular' | 'comfy'
+
+export type SandShape = {
   // Surfaces
   bg: string
   panel: string
@@ -31,66 +40,313 @@ export type SandPalette = {
   badSoft: string
 }
 
-export const SAND_LIGHT: SandPalette = {
-  bg: 'oklch(0.97 0.011 78)',
-  panel: 'oklch(0.99 0.008 80)',
-  panel2: 'oklch(0.955 0.012 78)',
-  ink: 'oklch(0.18 0.011 70)',
-  ink2: 'oklch(0.32 0.013 70)',
-  muted: 'oklch(0.51 0.017 70)',
-  muted2: 'oklch(0.68 0.014 70)',
-  hairline: 'oklch(0.88 0.012 70)',
-  hairline2: 'oklch(0.92 0.012 70)',
-  accent: 'oklch(0.61 0.13 42)',
-  accentInk: 'oklch(0.99 0.008 80)',
-  accentSoft: 'oklch(0.91 0.05 50)',
-  ok: 'oklch(0.55 0.10 145)',
-  warn: 'oklch(0.65 0.13 70)',
-  bad: 'oklch(0.55 0.16 25)',
-  okSoft: 'oklch(0.93 0.04 145)',
-  badSoft: 'oklch(0.93 0.05 25)',
+type Palette = { label: string; light: SandShape; dark: SandShape }
+
+export const PALETTES: Record<PaletteKey, Palette> = {
+  sand: {
+    label: 'Sand',
+    light: {
+      bg: 'oklch(0.97 0.011 78)',
+      panel: 'oklch(0.99 0.008 80)',
+      panel2: 'oklch(0.955 0.012 78)',
+      ink: 'oklch(0.18 0.011 70)',
+      ink2: 'oklch(0.32 0.013 70)',
+      muted: 'oklch(0.51 0.017 70)',
+      muted2: 'oklch(0.68 0.014 70)',
+      hairline: 'oklch(0.88 0.012 70)',
+      hairline2: 'oklch(0.92 0.012 70)',
+      accent: 'oklch(0.61 0.13 42)',
+      accentInk: 'oklch(0.99 0.008 80)',
+      accentSoft: 'oklch(0.91 0.05 50)',
+      ok: 'oklch(0.55 0.10 145)',
+      warn: 'oklch(0.65 0.13 70)',
+      bad: 'oklch(0.55 0.16 25)',
+      okSoft: 'oklch(0.93 0.04 145)',
+      badSoft: 'oklch(0.93 0.05 25)',
+    },
+    dark: {
+      bg: 'oklch(0.16 0.008 70)',
+      panel: 'oklch(0.20 0.010 70)',
+      panel2: 'oklch(0.235 0.011 70)',
+      ink: 'oklch(0.96 0.008 78)',
+      ink2: 'oklch(0.82 0.010 78)',
+      muted: 'oklch(0.62 0.014 70)',
+      muted2: 'oklch(0.48 0.014 70)',
+      hairline: 'oklch(0.30 0.012 70)',
+      hairline2: 'oklch(0.26 0.012 70)',
+      accent: 'oklch(0.72 0.12 42)',
+      accentInk: 'oklch(0.16 0.008 70)',
+      accentSoft: 'oklch(0.32 0.06 50)',
+      ok: 'oklch(0.72 0.11 145)',
+      warn: 'oklch(0.78 0.12 70)',
+      bad: 'oklch(0.70 0.14 25)',
+      okSoft: 'oklch(0.28 0.04 145)',
+      badSoft: 'oklch(0.30 0.06 25)',
+    },
+  },
+  sage: {
+    label: 'Sage',
+    light: {
+      bg: 'oklch(0.965 0.012 175)',
+      panel: 'oklch(0.99 0.008 175)',
+      panel2: 'oklch(0.95 0.013 175)',
+      ink: 'oklch(0.20 0.020 200)',
+      ink2: 'oklch(0.34 0.022 200)',
+      muted: 'oklch(0.50 0.020 200)',
+      muted2: 'oklch(0.66 0.018 200)',
+      hairline: 'oklch(0.87 0.014 175)',
+      hairline2: 'oklch(0.92 0.012 175)',
+      accent: 'oklch(0.52 0.085 195)',
+      accentInk: 'oklch(0.99 0.008 175)',
+      accentSoft: 'oklch(0.90 0.04 195)',
+      ok: 'oklch(0.55 0.10 155)',
+      warn: 'oklch(0.65 0.12 70)',
+      bad: 'oklch(0.55 0.15 25)',
+      okSoft: 'oklch(0.92 0.04 155)',
+      badSoft: 'oklch(0.93 0.05 25)',
+    },
+    dark: {
+      bg: 'oklch(0.18 0.014 200)',
+      panel: 'oklch(0.22 0.016 200)',
+      panel2: 'oklch(0.255 0.018 200)',
+      ink: 'oklch(0.96 0.008 175)',
+      ink2: 'oklch(0.82 0.012 175)',
+      muted: 'oklch(0.62 0.018 200)',
+      muted2: 'oklch(0.48 0.018 200)',
+      hairline: 'oklch(0.30 0.018 200)',
+      hairline2: 'oklch(0.26 0.018 200)',
+      accent: 'oklch(0.70 0.10 195)',
+      accentInk: 'oklch(0.18 0.014 200)',
+      accentSoft: 'oklch(0.32 0.05 195)',
+      ok: 'oklch(0.72 0.11 155)',
+      warn: 'oklch(0.78 0.12 70)',
+      bad: 'oklch(0.70 0.13 25)',
+      okSoft: 'oklch(0.28 0.04 155)',
+      badSoft: 'oklch(0.30 0.06 25)',
+    },
+  },
+  ink: {
+    label: 'Ink',
+    light: {
+      bg: 'oklch(0.97 0.008 250)',
+      panel: 'oklch(0.99 0.005 250)',
+      panel2: 'oklch(0.945 0.010 250)',
+      ink: 'oklch(0.19 0.040 260)',
+      ink2: 'oklch(0.32 0.045 260)',
+      muted: 'oklch(0.50 0.025 260)',
+      muted2: 'oklch(0.68 0.018 260)',
+      hairline: 'oklch(0.88 0.014 250)',
+      hairline2: 'oklch(0.93 0.010 250)',
+      accent: 'oklch(0.36 0.13 265)',
+      accentInk: 'oklch(0.99 0.005 250)',
+      accentSoft: 'oklch(0.92 0.05 100)' /* lemon */,
+      ok: 'oklch(0.55 0.10 150)',
+      warn: 'oklch(0.78 0.13 95)',
+      bad: 'oklch(0.55 0.16 25)',
+      okSoft: 'oklch(0.93 0.04 150)',
+      badSoft: 'oklch(0.93 0.05 25)',
+    },
+    dark: {
+      bg: 'oklch(0.17 0.020 260)',
+      panel: 'oklch(0.21 0.024 260)',
+      panel2: 'oklch(0.245 0.028 260)',
+      ink: 'oklch(0.96 0.008 250)',
+      ink2: 'oklch(0.82 0.012 250)',
+      muted: 'oklch(0.62 0.020 260)',
+      muted2: 'oklch(0.48 0.020 260)',
+      hairline: 'oklch(0.31 0.022 260)',
+      hairline2: 'oklch(0.27 0.022 260)',
+      accent: 'oklch(0.78 0.15 95)' /* lemon as accent in dark */,
+      accentInk: 'oklch(0.17 0.020 260)',
+      accentSoft: 'oklch(0.34 0.08 95)',
+      ok: 'oklch(0.72 0.11 150)',
+      warn: 'oklch(0.78 0.13 95)',
+      bad: 'oklch(0.70 0.14 25)',
+      okSoft: 'oklch(0.28 0.04 150)',
+      badSoft: 'oklch(0.30 0.06 25)',
+    },
+  },
+  rose: {
+    label: 'Rose',
+    light: {
+      bg: 'oklch(0.97 0.011 25)',
+      panel: 'oklch(0.99 0.008 25)',
+      panel2: 'oklch(0.95 0.013 25)',
+      ink: 'oklch(0.19 0.014 20)',
+      ink2: 'oklch(0.33 0.016 20)',
+      muted: 'oklch(0.51 0.020 20)',
+      muted2: 'oklch(0.68 0.016 20)',
+      hairline: 'oklch(0.88 0.014 20)',
+      hairline2: 'oklch(0.93 0.011 20)',
+      accent: 'oklch(0.58 0.14 15)',
+      accentInk: 'oklch(0.99 0.008 25)',
+      accentSoft: 'oklch(0.91 0.05 15)',
+      ok: 'oklch(0.55 0.10 145)',
+      warn: 'oklch(0.65 0.13 70)',
+      bad: 'oklch(0.55 0.16 25)',
+      okSoft: 'oklch(0.93 0.04 145)',
+      badSoft: 'oklch(0.93 0.05 25)',
+    },
+    dark: {
+      bg: 'oklch(0.17 0.012 20)',
+      panel: 'oklch(0.21 0.014 20)',
+      panel2: 'oklch(0.245 0.016 20)',
+      ink: 'oklch(0.96 0.008 25)',
+      ink2: 'oklch(0.82 0.012 25)',
+      muted: 'oklch(0.62 0.018 20)',
+      muted2: 'oklch(0.48 0.018 20)',
+      hairline: 'oklch(0.30 0.016 20)',
+      hairline2: 'oklch(0.26 0.016 20)',
+      accent: 'oklch(0.72 0.13 15)',
+      accentInk: 'oklch(0.17 0.012 20)',
+      accentSoft: 'oklch(0.32 0.06 15)',
+      ok: 'oklch(0.72 0.11 145)',
+      warn: 'oklch(0.78 0.12 70)',
+      bad: 'oklch(0.70 0.14 25)',
+      okSoft: 'oklch(0.28 0.04 145)',
+      badSoft: 'oklch(0.30 0.06 25)',
+    },
+  },
 }
 
-export const SAND_DARK: SandPalette = {
-  bg: 'oklch(0.16 0.008 70)',
-  panel: 'oklch(0.20 0.010 70)',
-  panel2: 'oklch(0.235 0.011 70)',
-  ink: 'oklch(0.96 0.008 78)',
-  ink2: 'oklch(0.82 0.010 78)',
-  muted: 'oklch(0.62 0.014 70)',
-  muted2: 'oklch(0.48 0.014 70)',
-  hairline: 'oklch(0.30 0.012 70)',
-  hairline2: 'oklch(0.26 0.012 70)',
-  accent: 'oklch(0.72 0.12 42)',
-  accentInk: 'oklch(0.16 0.008 70)',
-  accentSoft: 'oklch(0.32 0.06 50)',
-  ok: 'oklch(0.72 0.11 145)',
-  warn: 'oklch(0.78 0.12 70)',
-  bad: 'oklch(0.70 0.14 25)',
-  okSoft: 'oklch(0.28 0.04 145)',
-  badSoft: 'oklch(0.30 0.06 25)',
+export type FontPairing = {
+  label: string
+  display: string
+  displayWeight: number
+  displayTracking: string
+  displayLeading: number
+  ui: string
+  uiTracking: string
+  mono: string
+  monoTracking: string
 }
 
-export const PALETTE: Record<ThemeMode, SandPalette> = {
-  light: SAND_LIGHT,
-  dark: SAND_DARK,
+export const FONTS: Record<FontKey, FontPairing> = {
+  literary: {
+    label: 'Literary',
+    display: '"Newsreader", "Times New Roman", Georgia, serif',
+    displayWeight: 500,
+    displayTracking: '-0.022em',
+    displayLeading: 1.06,
+    ui: '"Inter Tight", "Inter", system-ui, sans-serif',
+    uiTracking: '-0.01em',
+    mono: '"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace',
+    monoTracking: '0.04em',
+  },
+  geometric: {
+    label: 'Geometric',
+    display: '"Geist", "Inter", system-ui, sans-serif',
+    displayWeight: 500,
+    displayTracking: '-0.025em',
+    displayLeading: 1.05,
+    ui: '"Geist", "Inter", system-ui, sans-serif',
+    uiTracking: '-0.012em',
+    mono: '"Geist Mono", ui-monospace, monospace',
+    monoTracking: '0.02em',
+  },
+  editorial: {
+    label: 'Editorial',
+    display: '"Instrument Serif", "Times New Roman", Georgia, serif',
+    displayWeight: 400,
+    displayTracking: '-0.015em',
+    displayLeading: 1.02,
+    ui: '"DM Sans", system-ui, sans-serif',
+    uiTracking: '-0.008em',
+    mono: '"JetBrains Mono", ui-monospace, monospace',
+    monoTracking: '0.04em',
+  },
+  hyperlegible: {
+    label: 'Hyperlegible',
+    display: '"Atkinson Hyperlegible", system-ui, sans-serif',
+    displayWeight: 700,
+    displayTracking: '-0.01em',
+    displayLeading: 1.1,
+    ui: '"Atkinson Hyperlegible", system-ui, sans-serif',
+    uiTracking: '0em',
+    mono: '"JetBrains Mono", ui-monospace, monospace',
+    monoTracking: '0.04em',
+  },
 }
 
-// Density scale — keeps with the editorial Sand grammar.
-// `regular` is the prototype default. `compact` trims gaps for users who
-// prefer denser screens (toggled from /dev or settings).
-export type Density = 'regular' | 'compact'
+export type DensityVars = {
+  label: string
+  pad: number
+  padLg: number
+  gap: number
+  gapLg: number
+  radius: number
+  title: number
+}
 
-export const DENSITY: Record<Density, { pad: string; padLg: string; gap: string; radius: string }> =
-  {
-    regular: { pad: '18px', padLg: '22px', gap: '14px', radius: '18px' },
-    compact: { pad: '14px', padLg: '18px', gap: '10px', radius: '14px' },
+export const DENSITIES: Record<Density, DensityVars> = {
+  compact: { label: 'Compact', pad: 14, padLg: 18, gap: 10, gapLg: 14, radius: 14, title: 26 },
+  regular: { label: 'Regular', pad: 18, padLg: 22, gap: 14, gapLg: 18, radius: 18, title: 30 },
+  comfy: { label: 'Comfy', pad: 22, padLg: 26, gap: 18, gapLg: 22, radius: 22, title: 34 },
+}
+
+/**
+ * Build the full set of CSS variables for a given theme combination.
+ * Output is a flat `Record<string, string>` of `--name → value`.
+ *
+ * The CSS variable names match the prototype convention 1:1, so any code
+ * that reads `var(--bg)`, `var(--accent)`, `var(--font-display)` etc. just
+ * works regardless of which palette/font/density is active.
+ */
+export function buildThemeVars(
+  palette: PaletteKey,
+  mode: ThemeMode,
+  fontKey: FontKey,
+  density: Density,
+): Record<string, string> {
+  const colors = PALETTES[palette][mode]
+  const f = FONTS[fontKey]
+  const d = DENSITIES[density]
+
+  const vars: Record<string, string> = {
+    // colors
+    '--bg': colors.bg,
+    '--panel': colors.panel,
+    '--panel-2': colors.panel2,
+    '--ink': colors.ink,
+    '--ink-2': colors.ink2,
+    '--muted': colors.muted,
+    '--muted-2': colors.muted2,
+    '--hairline': colors.hairline,
+    '--hairline-2': colors.hairline2,
+    '--accent': colors.accent,
+    '--accent-ink': colors.accentInk,
+    '--accent-soft': colors.accentSoft,
+    '--ok': colors.ok,
+    '--warn': colors.warn,
+    '--bad': colors.bad,
+    '--ok-soft': colors.okSoft,
+    '--bad-soft': colors.badSoft,
+    // typography
+    '--font-display': f.display,
+    '--font-display-w': String(f.displayWeight),
+    '--font-display-track': f.displayTracking,
+    '--font-display-lead': String(f.displayLeading),
+    '--font-ui': f.ui,
+    '--font-ui-track': f.uiTracking,
+    '--font-mono': f.mono,
+    '--font-mono-track': f.monoTracking,
+    // density
+    '--pad': `${d.pad}px`,
+    '--pad-lg': `${d.padLg}px`,
+    '--gap': `${d.gap}px`,
+    '--gap-lg': `${d.gapLg}px`,
+    '--radius': `${d.radius}px`,
+    '--title-size': `${d.title}px`,
+    // metadata
+    '--scheme': mode,
   }
+  return vars
+}
 
-// Typography stack — mirrors the @import in index.css. Exported for cases
-// where charts/SVG render text outside the cascade.
-export const FONTS = {
-  display: '"Newsreader", "Times New Roman", Georgia, serif',
-  ui: '"Inter Tight", "Inter", system-ui, sans-serif',
-  mono: '"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace',
-} as const
+/** Default theme: matches the prototype canvas defaults so first paint is calm. */
+export const DEFAULT_THEME = {
+  palette: 'sand' as PaletteKey,
+  mode: 'light' as ThemeMode,
+  font: 'literary' as FontKey,
+  density: 'regular' as Density,
+}

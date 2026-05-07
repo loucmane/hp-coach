@@ -1,9 +1,11 @@
 import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
+import { DEFAULT_THEME } from '@/lib/tokens'
+
 import { useCoachStore } from './coachStore'
 import { useDaysRemaining, useExamStore } from './examStore'
-import { applyUiToDocument, useUiStore } from './uiStore'
+import { applyThemeToDocument, useUiStore } from './uiStore'
 
 beforeEach(() => {
   // Wipe persisted state between tests so localStorage from a previous run
@@ -12,10 +14,13 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  // Reset every store between tests so cross-test bleed never confuses state.
+  // Reset every store so cross-test bleed never confuses state.
   useCoachStore.setState({ coach: 'taktiker' })
   useExamStore.setState({ sittingId: 'host-2026' })
-  useUiStore.setState({ theme: 'light', density: 'regular' })
+  useUiStore.setState({ ...DEFAULT_THEME })
+  // Clear any inline vars or .dark class set during applyThemeToDocument.
+  document.documentElement.removeAttribute('style')
+  document.documentElement.classList.remove('dark')
 })
 
 describe('useCoachStore', () => {
@@ -47,23 +52,50 @@ describe('useExamStore + useDaysRemaining', () => {
 })
 
 describe('useUiStore', () => {
-  it('toggleTheme flips light <-> dark', () => {
-    useUiStore.getState().toggleTheme()
-    expect(useUiStore.getState().theme).toBe('dark')
-    useUiStore.getState().toggleTheme()
-    expect(useUiStore.getState().theme).toBe('light')
+  it('defaults match the prototype canvas defaults', () => {
+    const s = useUiStore.getState()
+    expect(s.palette).toBe('sand')
+    expect(s.mode).toBe('light')
+    expect(s.font).toBe('literary')
+    expect(s.density).toBe('regular')
   })
 
-  it('applyUiToDocument writes density vars to <html>', () => {
-    act(() => applyUiToDocument('light', 'compact'))
+  it('toggleMode flips light <-> dark', () => {
+    useUiStore.getState().toggleMode()
+    expect(useUiStore.getState().mode).toBe('dark')
+    useUiStore.getState().toggleMode()
+    expect(useUiStore.getState().mode).toBe('light')
+  })
+
+  it('setPalette swaps the palette', () => {
+    useUiStore.getState().setPalette('rose')
+    expect(useUiStore.getState().palette).toBe('rose')
+  })
+
+  it('setFont and setDensity swap their respective axes', () => {
+    useUiStore.getState().setFont('hyperlegible')
+    useUiStore.getState().setDensity('comfy')
+    expect(useUiStore.getState().font).toBe('hyperlegible')
+    expect(useUiStore.getState().density).toBe('comfy')
+  })
+
+  it('applyThemeToDocument writes vars + classes + datasets to <html>', () => {
+    act(() => applyThemeToDocument('sage', 'dark', 'geometric', 'compact'))
     const root = document.documentElement
+    // Sage dark bg from the prototype's tokens.jsx
+    expect(root.style.getPropertyValue('--bg')).toBe('oklch(0.18 0.014 200)')
     expect(root.style.getPropertyValue('--pad')).toBe('14px')
-    expect(root.style.getPropertyValue('--gap')).toBe('10px')
-    expect(root.classList.contains('dark')).toBe(false)
-    act(() => applyUiToDocument('dark', 'regular'))
+    expect(root.style.getPropertyValue('--font-display')).toContain('Geist')
     expect(root.classList.contains('dark')).toBe(true)
-    expect(root.style.getPropertyValue('--pad')).toBe('18px')
-    // Reset so other tests don't see the .dark class
-    act(() => applyUiToDocument('light', 'regular'))
+    expect(root.dataset.palette).toBe('sage')
+    expect(root.dataset.font).toBe('geometric')
+    expect(root.dataset.density).toBe('compact')
+  })
+
+  it('applyThemeToDocument removes .dark when mode is light', () => {
+    act(() => applyThemeToDocument('sand', 'dark', 'literary', 'regular'))
+    expect(document.documentElement.classList.contains('dark')).toBe(true)
+    act(() => applyThemeToDocument('sand', 'light', 'literary', 'regular'))
+    expect(document.documentElement.classList.contains('dark')).toBe(false)
   })
 })
