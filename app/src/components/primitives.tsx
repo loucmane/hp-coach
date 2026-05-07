@@ -48,6 +48,7 @@ export function Btn({
   const v = BTN_VARIANTS[variant]
   return (
     <button
+      className="hpc-btn"
       style={{
         height: s.h,
         padding: `0 ${s.px}px`,
@@ -65,7 +66,6 @@ export function Btn({
         gap: 8,
         cursor: 'pointer',
         width: full ? '100%' : undefined,
-        transition: 'background .15s cubic-bezier(.16,1,.3,1), opacity .15s',
         ...style,
       }}
       {...rest}
@@ -255,6 +255,7 @@ type CoachLineProps = {
   coach?: CoachKey
   as?: 'headline' | 'title' | 'body' | 'small'
   style?: CSSProperties
+  className?: string
 }
 
 const COACHLINE_SIZES = {
@@ -264,10 +265,17 @@ const COACHLINE_SIZES = {
   small: { fontSize: 14, lineHeight: 1.5 },
 }
 
-export function CoachLine({ children, coach = 'taktiker', as = 'body', style }: CoachLineProps) {
+export function CoachLine({
+  children,
+  coach = 'taktiker',
+  as = 'body',
+  style,
+  className,
+}: CoachLineProps) {
   const s = COACHLINE_SIZES[as]
   return (
     <div
+      className={className}
       style={{
         display: 'flex',
         flexDirection: 'column',
