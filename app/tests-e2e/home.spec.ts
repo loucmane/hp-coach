@@ -71,3 +71,17 @@ test('palette swatch click applies the new palette to <html>', async ({ page }) 
   expect(bg).toBe('oklch(0.965 0.012 175)')
   expect(await page.evaluate(() => document.documentElement.dataset.palette)).toBe('sage')
 })
+
+test('floating launcher links to /dev and Cmd+K toggles it', async ({ page, browserName: _ }) => {
+  await page.goto('/?dev=1')
+  // Click the floating launcher pill.
+  await page.getByRole('link', { name: /öppna design-tweaks/i }).click()
+  await expect(page).toHaveURL(/\/dev$/)
+  // Cmd/Ctrl+K from /dev should send us back to /. Prefer Ctrl on chromium
+  // (Mac-style Meta works there too but Ctrl is universal on the test image).
+  await page.keyboard.press('Control+K')
+  await expect(page).toHaveURL(/\/(\?dev=1)?$/)
+  // And once more sends us back into /dev.
+  await page.keyboard.press('Control+K')
+  await expect(page).toHaveURL(/\/dev$/)
+})

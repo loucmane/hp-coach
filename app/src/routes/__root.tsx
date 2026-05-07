@@ -8,6 +8,7 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
+import { TweaksLauncher } from '@/components/TweaksLauncher'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
 
 export const Route = createRootRoute({
@@ -50,6 +51,7 @@ function RootShell() {
       >
         <Outlet />
       </div>
+      <TweaksLauncher />
     </div>
   )
 }
