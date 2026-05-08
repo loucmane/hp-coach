@@ -368,6 +368,13 @@ def _looks_garbled(text: str) -> bool:
     """
     if "$" in text or "b l" in text:
         return True
+    # Digit-only multi-token text: "0 1", "1 2", "5 11 1". These are
+    # almost always stacked fractions where the dividing rule got lost
+    # (the original was `0/1`, `1/2`, etc.). Real numeric options are
+    # single tokens or have units / operators ("5 cm", "x = 5", "1/3").
+    stripped = text.strip()
+    if stripped and all(t.isdigit() for t in stripped.split()) and len(stripped.split()) >= 2:
+        return True
     tokens = text.split()
     if len(tokens) < 5:
         return False
@@ -383,14 +390,41 @@ def _looks_garbled(text: str) -> bool:
     return longest_run >= 4
 
 
+_FIGURE_LABEL_RE = re.compile(
+    r"\b(vinkeln|vinklarna|punkten|punkterna|sträckan|sträckorna|sidan|sidorna|"
+    r"linjen|linjerna|kurvan|kurvorna|trianglarna|triangeln|"
+    r"rektangeln|kvadraten|cirkeln|cirklarna|"
+    r"fyrhörningen|femhörningen|sexhörningen|månghörningen|polygonen|"
+    r"hörnet|hörnen|axeln|grafen|diagrammet)\s+"
+    # Label: 1-5 letters/digits. Catches "v" (single), "BC" (two-letter
+    # vertex pair), "ABCD" (quadrilateral), "L1" / "L2" (subscripted
+    # line names). The trailing `\b` ensures we don't bleed into the
+    # next word.
+    r"([a-zA-ZÅÄÖåäö][a-zA-Z0-9ÅÄÖåäö]{0,4})\b",
+    re.IGNORECASE,
+)
+
+
 def _references_figure(prompt: str) -> bool:
     """True if the question prompt clearly references a diagram or
     chart we can't render.
 
-    Strongest standalone signals (any of these = figure):
-      - "inritad" / "ritad" — "drawn in", always means a diagram
-      - "figuren visar" / "ovanstående" / "nedanstående figur"
-      - "koordinatsystem" with a definite article ("i koordinatsystemet")
+    Three signal layers:
+
+    1. Standalone keywords (always = figure):
+       "inritad" / "ritad i", "figuren visar", "som figuren",
+       "ovanstående" / "nedanstående", "koordinatsystemet".
+
+    2. Labeled-entity pattern (`vinkeln v`, `punkten P`, `linjen L1`,
+       `triangeln ABC`): a geometric noun followed by a single-letter
+       label. The label is what the figure draws — without the
+       picture, the question can't be answered.
+
+    3. Weak signal: figure-domain noun near "nedan" / "ovan".
+
+    The labeled-entity catch is what saves us from "Hur stor är
+    vinkeln v?" — short prompt, no obvious figure keyword, but the
+    bare "v" is a labeled angle that only exists in the diagram.
     """
     p = prompt.lower()
     standalone = (
@@ -404,7 +438,8 @@ def _references_figure(prompt: str) -> bool:
     )
     if any(s in p for s in standalone):
         return True
-    # Weaker signal: domain noun near "nedan" / "ovan".
+    if _FIGURE_LABEL_RE.search(prompt):
+        return True
     if "nedan" not in p and "ovan" not in p:
         return False
     return any(pat in p for pat in _FIGURE_REFERENCE_PATTERNS)
