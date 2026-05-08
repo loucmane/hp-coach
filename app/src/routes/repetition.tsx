@@ -69,7 +69,7 @@ function RepetitionScreen() {
           ? `Repetera ${Math.min(dueCount, DEFAULT_REPLAY_LENGTH)} frågor du svarat fel på.`
           : 'Du har inga missar att repetera just nu.'
       }
-      idleMeta={dueCount && dueCount > 0 ? `${dueCount} aktiva missar i kön` : undefined}
+      idleMeta={dueCount && dueCount > 0 ? `${dueCount} att repetera nu` : undefined}
       emptyCopy="Inga missar att repetera. När du svarar fel i en övning landar frågan här."
       disableStart={startDisabled}
       disableStartLabel={disabledLabel}

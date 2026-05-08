@@ -85,6 +85,13 @@ export const mistakes = sqliteTable('mistakes', {
   errorCount7d: integer('error_count_7d').default(1),
   lastErrorAt: integer('last_error_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
   nextReviewAt: integer('next_review_at', { mode: 'timestamp' }),
+  // SM-2-lite ladder position. 0 means "never reviewed since being
+  // logged" (also applies to legacy rows from before this branch) —
+  // treated as due-now in the queue. After a wrong answer this resets
+  // to RELEARN_MINUTES (10). After each correct it doubles up the
+  // ladder, capped at MAX_INTERVAL_MINUTES (30 days). One more correct
+  // at the cap flips status='resolved' (graduation). See lib/srs.ts.
+  intervalMinutes: integer('interval_minutes').notNull().default(0),
 })
 
 // ── srs_state — per ORD root / formula / trap pattern ─────────────────

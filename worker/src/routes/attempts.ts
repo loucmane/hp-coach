@@ -27,7 +27,12 @@ const AttemptBody = z
     questionId: z.string().min(1).max(60),
     selectedAnswer: z.string().min(1).max(8),
     correct: z.boolean(),
-    timeTakenMs: z.number().int().min(0).max(60 * 60 * 1000).optional(),
+    timeTakenMs: z
+      .number()
+      .int()
+      .min(0)
+      .max(60 * 60 * 1000)
+      .optional(),
   })
   .strict()
 

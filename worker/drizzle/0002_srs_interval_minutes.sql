@@ -1,0 +1,1 @@
+ALTER TABLE `mistakes` ADD `interval_minutes` integer DEFAULT 0 NOT NULL;

@@ -75,13 +75,7 @@ const routes = app
     c.json({
       name: 'hpc-api',
       environment: c.env.ENVIRONMENT,
-      routes: [
-        '/health',
-        '/api/me/prefs',
-        '/api/sessions',
-        '/api/attempts',
-        '/api/mistakes',
-      ],
+      routes: ['/health', '/api/me/prefs', '/api/sessions', '/api/attempts', '/api/mistakes'],
     }),
   )
   .route('/health', healthRoute)

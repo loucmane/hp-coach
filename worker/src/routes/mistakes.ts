@@ -1,13 +1,19 @@
-// /api/mistakes — wrong-answer ledger + replay queue.
+// /api/mistakes — wrong-answer ledger + spaced replay queue.
 //
-// MVP semantics (one-bit-per-question):
-//   - Each (userId, questionId) has at most one row.
-//   - status="active"  → still in the replay queue
-//   - status="resolved"→ user got it right in replay; falls out of the queue
-//   - errorCount7d     → bumped each time the user gets it wrong; lets us
-//                        rank "frequent stumbles" first when picking 10
-//   - nextReviewAt     → reserved column, set to null in this MVP. A later
-//                        SRS branch will populate it (1d/2d/4d/8d cadence).
+// Per-row semantics (one mistake per (userId, questionId)):
+//
+//   - status="active"  → live in the queue. The user will see it again
+//                        once nextReviewAt has passed.
+//   - status="resolved"→ graduated out — got it right at the cap step.
+//   - errorCount7d     → bumped each wrong answer; ranks "frequent
+//                        stumbles" first when we tie-break the queue.
+//   - intervalMinutes  → current rung of the SM-2-lite ladder. See
+//                        lib/srs.ts for the doubling schedule and the
+//                        graduation rule.
+//   - nextReviewAt     → derived from intervalMinutes on every write.
+//                        The /due endpoint filters by `≤ now`, so a
+//                        mistake stays "out of view" until its rung
+//                        elapses.
 //
 // Why upsert vs separate rows per attempt:
 //   The mistakes table is a *replay queue*, not an audit log. The audit
@@ -20,13 +26,14 @@
 // don't leak existence either way.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, desc, eq, sql } from 'drizzle-orm'
+import { and, desc, eq, isNull, lte, or, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
 import { mistakes } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { nextOnCorrect, nextOnWrong } from '../lib/srs'
 import type { Env, Vars } from '../types'
 
 const RecordBody = z
@@ -57,10 +64,16 @@ const DueQuery = z
 
 export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // POST /api/mistakes — record a wrong answer; upsert if already present.
+  // Schedule: a wrong answer always resets the SRS ladder back to the
+  // 10-minute relearn rung, regardless of how far the user had climbed
+  // before. Binary feedback can't tell "almost right" apart from "off
+  // by a mile", so a partial reset would be guesswork.
   .post('/', zValidator('json', RecordBody), async (c) => {
     const body = c.req.valid('json')
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
+
+    const wrong = nextOnWrong()
 
     // Look for an existing row first. We could use INSERT … ON CONFLICT
     // but Drizzle's D1 dialect doesn't expose a clean upsert helper, and
@@ -79,6 +92,8 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
           status: 'active',
           errorCount7d: (existing.errorCount7d ?? 0) + 1,
           lastErrorAt: new Date(),
+          intervalMinutes: wrong.intervalMinutes,
+          nextReviewAt: wrong.nextReviewAt,
           // Layer 1 tags: keep whichever set is non-empty. Server is the
           // source of truth once tagging starts (task 38).
           layer1Ids: body.layer1Ids ?? existing.layer1Ids ?? null,
@@ -96,37 +111,55 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         layer1Ids: body.layer1Ids ?? null,
         status: 'active',
         errorCount7d: 1,
+        intervalMinutes: wrong.intervalMinutes,
+        nextReviewAt: wrong.nextReviewAt,
       })
       .returning()
     return c.json({ mistake: row }, 201)
   })
 
   // GET /api/mistakes/due — replay queue for this user.
-  // Sort: most-frequent stumbles first (errorCount desc), then most recent
-  // (lastErrorAt desc) — surfaces "the things you keep getting wrong".
+  //
+  // Filter: status='active' AND (nextReviewAt IS NULL OR nextReviewAt ≤ now).
+  // The NULL branch handles legacy rows from before the SRS branch;
+  // they're treated as "due now" so the user sees them on their next
+  // visit and the ladder gets bootstrapped naturally.
+  //
+  // Sort: most-overdue first (nextReviewAt asc, NULL before non-NULL),
+  // then most-frequent stumbles (errorCount desc) as the tiebreaker.
+  // This keeps the queue from accumulating — long-overdue items rise
+  // to the top instead of being buried under recent mistakes.
   .get('/due', zValidator('query', DueQuery), async (c) => {
     const { section, limit } = c.req.valid('query')
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
+    const now = new Date()
 
-    const conds = [eq(mistakes.userId, userId), eq(mistakes.status, 'active')]
+    const dueClause = or(isNull(mistakes.nextReviewAt), lte(mistakes.nextReviewAt, now))
+    const conds = dueClause
+      ? [eq(mistakes.userId, userId), eq(mistakes.status, 'active'), dueClause]
+      : [eq(mistakes.userId, userId), eq(mistakes.status, 'active')]
     if (section) {
       // questionId format: "var-2026-verb1-ORD-001". Section is the 4th
       // hyphen-segment; LIKE on "%-{section}-%" pins it without ambiguity.
-      conds.push(sql`${mistakes.questionId} LIKE ${'%-' + section + '-%'}`)
+      conds.push(sql`${mistakes.questionId} LIKE ${`%-${section}-%`}`)
     }
 
     const rows = await db
       .select()
       .from(mistakes)
       .where(and(...conds))
-      .orderBy(desc(mistakes.errorCount7d), desc(mistakes.lastErrorAt))
+      // SQLite sorts NULL first under ASC by default, which is what we
+      // want here — legacy rows surface immediately.
+      .orderBy(mistakes.nextReviewAt, desc(mistakes.errorCount7d))
       .limit(limit)
     return c.json({ mistakes: rows })
   })
 
-  // PATCH /api/mistakes/:id — { resolve: true } graduates a mistake out
-  // of the replay queue. Reserved for "right answer during replay".
+  // PATCH /api/mistakes/:id — { resolve: true } reports a correct
+  // answer in /repetition. The server advances the row up the ladder
+  // (or graduates it to status='resolved' if it was at the cap). The
+  // client doesn't need to know the doubling schedule; we own that.
   .patch('/:id', zValidator('param', IdParam), zValidator('json', PatchBody), async (c) => {
     const { id } = c.req.valid('param')
     const body = c.req.valid('json')
@@ -134,18 +167,41 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     const userId = await ensureUserRow(db, c.var.userId)
 
     if (!body.resolve) {
-      // Future: bump nextReviewAt for SRS spacing. Today we only support
-      // resolve:true, so an empty patch is a 400.
       return c.json({ error: { code: 'bad_request', message: 'No-op patch' } }, 400)
+    }
+
+    // Read the current rung so we can compute the next one — D1 doesn't
+    // expose row-level conditional updates, and we need both branches
+    // (advance vs graduate) anyway.
+    const [existing] = await db
+      .select()
+      .from(mistakes)
+      .where(and(eq(mistakes.id, id), eq(mistakes.userId, userId)))
+      .limit(1)
+    if (!existing) {
+      return c.json({ error: { code: 'not_found', message: 'Mistake not found' } }, 404)
+    }
+
+    const outcome = nextOnCorrect(existing.intervalMinutes ?? 0)
+
+    if (outcome.graduated) {
+      const [row] = await db
+        .update(mistakes)
+        .set({ status: 'resolved' })
+        .where(eq(mistakes.id, id))
+        .returning()
+      return c.json({ mistake: row })
     }
 
     const [row] = await db
       .update(mistakes)
-      .set({ status: 'resolved' })
-      .where(and(eq(mistakes.id, id), eq(mistakes.userId, userId)))
+      .set({
+        // status stays 'active' — the row is still in the queue, just
+        // not visible until nextReviewAt elapses.
+        intervalMinutes: outcome.intervalMinutes,
+        nextReviewAt: outcome.nextReviewAt,
+      })
+      .where(eq(mistakes.id, id))
       .returning()
-    if (!row) {
-      return c.json({ error: { code: 'not_found', message: 'Mistake not found' } }, 404)
-    }
     return c.json({ mistake: row })
   })
