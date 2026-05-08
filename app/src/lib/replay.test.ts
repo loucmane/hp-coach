@@ -5,18 +5,25 @@
 //   4) Skips stub questions (parsing_status="answer_only")
 //   5) Preserves the server-provided ordering (most-frequent first)
 
-import { describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 
 import type { Mistake } from '@/api/hooks/useMistakes'
-import { ALL_QUESTIONS } from '@/data/questions'
+import { loadBank } from '@/data/questions'
 
 import { pickReplayQuestions } from './replay'
 
-const ordQids = ALL_QUESTIONS.filter((q) => q.section === 'ORD' && q.parsing_status === 'complete')
-  .map((q) => q.qid)
-  .slice(0, 5)
+// Resolved once per file from the lazy bank — keeps test bodies tight.
+let ordQids: string[]
+let stubQid: string
 
-const stubQid = ALL_QUESTIONS.find((q) => q.parsing_status === 'answer_only')?.qid ?? ''
+beforeAll(async () => {
+  const bank = await loadBank()
+  ordQids = bank
+    .filter((q) => q.section === 'ORD' && q.parsing_status === 'complete')
+    .map((q) => q.qid)
+    .slice(0, 5)
+  stubQid = bank.find((q) => q.parsing_status === 'answer_only')?.qid ?? ''
+})
 
 function mistake(questionId: string, errorCount = 1): Mistake {
   return {
@@ -32,9 +39,9 @@ function mistake(questionId: string, errorCount = 1): Mistake {
 }
 
 describe('pickReplayQuestions', () => {
-  it('resolves due qids to fully-parsed Question objects', () => {
+  it('resolves due qids to fully-parsed Question objects', async () => {
     const due = ordQids.map((q) => mistake(q))
-    const items = pickReplayQuestions(due, 10)
+    const items = await pickReplayQuestions(due, 10)
     expect(items.length).toBe(ordQids.length)
     for (const it of items) {
       expect(it.question.parsing_status).toBe('complete')
@@ -42,31 +49,31 @@ describe('pickReplayQuestions', () => {
     }
   })
 
-  it('caps at the requested count', () => {
+  it('caps at the requested count', async () => {
     const due = ordQids.map((q) => mistake(q))
-    const items = pickReplayQuestions(due, 2)
+    const items = await pickReplayQuestions(due, 2)
     expect(items.length).toBe(2)
   })
 
-  it('skips qids that no longer resolve in the bank', () => {
+  it('skips qids that no longer resolve in the bank', async () => {
     const due = [mistake('var-2026-verb1-ORD-999'), mistake(ordQids[0])]
-    const items = pickReplayQuestions(due, 10)
+    const items = await pickReplayQuestions(due, 10)
     expect(items.length).toBe(1)
     expect(items[0].question.qid).toBe(ordQids[0])
   })
 
-  it('skips stub (answer_only) questions', () => {
+  it('skips stub (answer_only) questions', async () => {
     if (!stubQid) return // no stubs in fixture, nothing to assert
     const due = [mistake(stubQid), mistake(ordQids[0])]
-    const items = pickReplayQuestions(due, 10)
+    const items = await pickReplayQuestions(due, 10)
     const ids = items.map((i) => i.question.qid)
     expect(ids).not.toContain(stubQid)
     expect(ids).toContain(ordQids[0])
   })
 
-  it('preserves server-provided ordering', () => {
+  it('preserves server-provided ordering', async () => {
     const due = [mistake(ordQids[3]), mistake(ordQids[0]), mistake(ordQids[2])]
-    const items = pickReplayQuestions(due, 10)
+    const items = await pickReplayQuestions(due, 10)
     expect(items.map((i) => i.question.qid)).toEqual([ordQids[3], ordQids[0], ordQids[2]])
   })
 })

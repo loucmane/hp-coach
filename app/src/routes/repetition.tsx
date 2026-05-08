@@ -37,21 +37,30 @@ function RepetitionScreen() {
     return m
   }, [due.data])
 
-  // Treat "loaded with zero rows" as the empty state. While `due.data`
-  // is undefined (still loading) we leave the start button alive and
-  // let pickQuestions's empty-array path catch any race where the
-  // user clicks before data arrives.
+  // Three button states. We gate on "do we actually have data yet?"
+  // rather than `isPending` alone — the latter goes false on error
+  // (e.g. a transient 401 during Clerk JWT refresh) which would let
+  // the user click an enabled-looking button with `due.data===undefined`,
+  // landing them in pickReplayQuestions with an empty list.
+  //
+  //   - data missing (loading or errored) → "Laddar…", disabled.
+  //   - 0 rows                            → "Inget att repetera", disabled.
+  //   - N>0 rows                          → "Starta övning" enabled.
   const dueCount = due.data?.length
+  const noData = !due.data
   const isEmpty = dueCount === 0
+  const startDisabled = noData || isEmpty
+  const disabledLabel = noData ? 'Laddar…' : 'Inget att repetera'
 
   return (
     <SessionPlayer
       sessionKind="adaptive_review"
       sections="ORD"
       activeTab="drill"
-      pickQuestions={() => {
+      pickQuestions={async () => {
         const dueRows = due.data ?? []
-        return pickReplayQuestions(dueRows, DEFAULT_REPLAY_LENGTH).map((r) => r.question)
+        const items = await pickReplayQuestions(dueRows, DEFAULT_REPLAY_LENGTH)
+        return items.map((r) => r.question)
       }}
       idleEyebrow="Repetition"
       idleHeadline="Dina missar"
@@ -62,8 +71,8 @@ function RepetitionScreen() {
       }
       idleMeta={dueCount && dueCount > 0 ? `${dueCount} aktiva missar i kön` : undefined}
       emptyCopy="Inga missar att repetera. När du svarar fel i en övning landar frågan här."
-      disableStart={isEmpty}
-      disableStartLabel="Inget att repetera"
+      disableStart={startDisabled}
+      disableStartLabel={disabledLabel}
       idleSecondaryCta={
         isEmpty ? (
           <Link

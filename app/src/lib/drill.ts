@@ -3,8 +3,12 @@
 // MVP: random pick of N fully-parsed questions in a single section.
 // Adaptive selection (mistake replay, weakest L1 cluster, SRS-due) lands
 // in later branches once we have the data to drive it.
+//
+// Async because the underlying bank is now fetched lazily on first
+// call (see data/questions.ts). After the first load it's cached at
+// module scope, so subsequent picks resolve in microseconds.
 
-import { ALL_QUESTIONS, type Question, questionsInSection, type Section } from '@/data/questions'
+import { loadBank, type Question, questionsInSection, type Section } from '@/data/questions'
 
 export const DEFAULT_DRILL_LENGTH = 10
 
@@ -17,12 +21,13 @@ export type DrillPlan = {
  * Pick `count` distinct questions from `section`. Uses Math.random by
  * default; tests pass a seeded RNG to make selection deterministic.
  */
-export function pickDrillQuestions(
+export async function pickDrillQuestions(
   section: Section,
   count: number = DEFAULT_DRILL_LENGTH,
   rng: () => number = Math.random,
-): Question[] {
-  const pool = questionsInSection(ALL_QUESTIONS, section)
+): Promise<Question[]> {
+  const bank = await loadBank()
+  const pool = questionsInSection(bank, section)
   if (pool.length === 0) return []
   // Fisher–Yates over a copy, then slice.
   const shuffled = [...pool]

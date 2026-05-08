@@ -99,28 +99,39 @@ export function SessionPlayer(props: SessionPlayerProps) {
   const [questionStartedAt, setQuestionStartedAt] = useState(0)
   const [sessionId, setSessionId] = useState<number | null>(null)
   const [emptyAttempted, setEmptyAttempted] = useState(false)
+  // Tracks the full "user clicked Start" → "first question rendered"
+  // window. startSession.isPending alone misses the pickQuestions phase,
+  // which can include the very first dataset fetch (~6 MB) on a cold
+  // load — that's long enough for a double-click to fire begin() twice.
+  const [starting, setStarting] = useState(false)
 
   const begin = useCallback(async () => {
-    const picked = await props.pickQuestions()
-    if (picked.length === 0) {
-      setEmptyAttempted(true)
-      return
+    if (starting) return
+    setStarting(true)
+    try {
+      const picked = await props.pickQuestions()
+      if (picked.length === 0) {
+        setEmptyAttempted(true)
+        return
+      }
+      const session = await startSession.mutateAsync({
+        kind: props.sessionKind,
+        sections: props.sections,
+      })
+      setSessionId(session.id)
+      setPlan(picked)
+      setPicks(new Array(picked.length).fill(null))
+      setIndex(0)
+      setPhase('answering')
+      setQuestionStartedAt(Date.now())
+      updateSession.mutate({
+        id: session.id,
+        patch: { position: 0, currentQuestionId: picked[0]?.qid ?? null },
+      })
+    } finally {
+      setStarting(false)
     }
-    const session = await startSession.mutateAsync({
-      kind: props.sessionKind,
-      sections: props.sections,
-    })
-    setSessionId(session.id)
-    setPlan(picked)
-    setPicks(new Array(picked.length).fill(null))
-    setIndex(0)
-    setPhase('answering')
-    setQuestionStartedAt(Date.now())
-    updateSession.mutate({
-      id: session.id,
-      patch: { position: 0, currentQuestionId: picked[0]?.qid ?? null },
-    })
-  }, [props, startSession, updateSession])
+  }, [starting, props, startSession, updateSession])
 
   const onPick = useCallback(
     (letter: AnswerLetter) => {
@@ -197,7 +208,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
       >
         <IdleBody
           {...props}
-          starting={startSession.isPending}
+          starting={starting || startSession.isPending}
           onStart={begin}
           stale={stale}
           onEndStale={() => {
