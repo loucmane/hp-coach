@@ -26,11 +26,26 @@ describe('HomeMobile', () => {
     expect(screen.getByText(/— coach · kompis/i)).toBeInTheDocument()
   })
 
-  it('hides the streak badge by default and shows it when showStreak', () => {
+  it('hides the streak badge by default and when streakDays is 0', () => {
     const { rerender } = render(<HomeMobile />)
-    expect(screen.queryByText('14 dagar')).not.toBeInTheDocument()
-    rerender(<HomeMobile showStreak />)
-    expect(screen.getByText('14 dagar')).toBeInTheDocument()
+    expect(screen.queryByTestId('home-streak')).not.toBeInTheDocument()
+    rerender(<HomeMobile streakDays={0} />)
+    expect(screen.queryByTestId('home-streak')).not.toBeInTheDocument()
+  })
+
+  it('auto-shows the streak badge with the real day count', () => {
+    render(<HomeMobile streakDays={12} />)
+    expect(screen.getByTestId('home-streak')).toHaveTextContent('12 dagar')
+  })
+
+  it('uses the singular form for a 1-day streak', () => {
+    render(<HomeMobile streakDays={1} />)
+    expect(screen.getByTestId('home-streak')).toHaveTextContent('1 dag')
+  })
+
+  it('respects an explicit showStreak override (force-show at 0)', () => {
+    render(<HomeMobile showStreak streakDays={0} />)
+    expect(screen.getByTestId('home-streak')).toHaveTextContent('0 dagar')
   })
 
   it('fires onContinue when the CTA is clicked', async () => {

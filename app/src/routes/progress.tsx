@@ -1,18 +1,25 @@
+// /progress — Framsteg tab.
+//
+// Wired to /api/me/stats. The screen renders muted placeholders while
+// the query is in-flight so the layout doesn't snap on hydration.
+
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
+import { useStats } from '@/api/hooks/useStats'
 import { MobileFrame } from '@/components/MobileFrame'
-import { StubBody } from '@/components/StubBody'
 import { TAB_ROUTE } from '@/lib/nav'
+import { ProgressMobile } from '@/screens/ProgressMobile'
 
 export const Route = createFileRoute('/progress')({
-  component: ProgressStub,
+  component: ProgressRoute,
 })
 
-function ProgressStub() {
+function ProgressRoute() {
   const navigate = useNavigate()
+  const stats = useStats()
   return (
     <MobileFrame tabs activeTab="progress" onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}>
-      <StubBody label="Framsteg" copy="Veckovy + adaptiv lista landar här i Phase 0c." />
+      <ProgressMobile stats={stats.data} loading={stats.isPending} />
     </MobileFrame>
   )
 }

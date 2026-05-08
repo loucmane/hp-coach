@@ -26,7 +26,13 @@ import { useDaysRemaining, useSitting } from '@/stores/examStore'
 type HomeMobileProps = {
   /** Override coach (tests / preview); defaults to store value. */
   coach?: CoachKey
+  /** Force the streak badge on or off. Default is auto: show iff
+   *  streakDays > 0. Pass `false` to hide even with an active streak,
+   *  `true` to render even at 0 (mostly useful for tests / previews). */
   showStreak?: boolean
+  /** Current consecutive-days streak. The badge shows this number;
+   *  also the auto-show signal when `showStreak` is undefined. */
+  streakDays?: number
   /** Override "now" so screenshots / tests render a stable date. */
   now?: Date
   /** Mistakes due for review right now. When > 0 we surface a small
@@ -41,7 +47,8 @@ type HomeMobileProps = {
 
 export function HomeMobile({
   coach: coachProp,
-  showStreak = false,
+  showStreak,
+  streakDays,
   now,
   dueCount,
   onContinue,
@@ -50,6 +57,10 @@ export function HomeMobile({
   onTabChange,
 }: HomeMobileProps = {}) {
   const hasDue = (dueCount ?? 0) > 0
+  // Auto-mode: show the badge once the user has built any streak;
+  // explicit `showStreak` overrides in either direction.
+  const renderStreak = showStreak ?? (streakDays !== undefined && streakDays > 0)
+  const streakValue = streakDays ?? 0
   const storeCoach = useCoachStore((s) => s.coach)
   const coach = coachProp ?? storeCoach
   const voice = VOICE[coach]
@@ -94,8 +105,9 @@ export function HomeMobile({
               {days} dagar kvar · {sitting.label.toLowerCase()}
             </div>
           </div>
-          {showStreak && (
+          {renderStreak && (
             <div
+              data-testid="home-streak"
               style={{
                 padding: '4px 8px',
                 border: '1px solid var(--hairline)',
@@ -106,7 +118,7 @@ export function HomeMobile({
                 fontVariantNumeric: 'tabular-nums',
               }}
             >
-              14 dagar
+              {streakValue} {streakValue === 1 ? 'dag' : 'dagar'}
             </div>
           )}
         </div>
