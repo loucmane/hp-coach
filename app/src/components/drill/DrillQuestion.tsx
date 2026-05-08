@@ -11,6 +11,7 @@
 
 import { type CSSProperties, useEffect, useRef } from 'react'
 
+import { MathText } from '@/components/MathText'
 import type { AnswerLetter, Option, Question } from '@/data/questions'
 
 type Props = {
@@ -103,7 +104,7 @@ export function DrillQuestion({ question, picked, graded, onPick }: Props) {
           fontWeight: hasContext ? 500 : 400,
         }}
       >
-        {question.prompt}
+        <MathText>{question.prompt}</MathText>
       </div>
       <div
         style={{
@@ -199,7 +200,9 @@ function OptionRow({
       >
         {opt.letter}
       </span>
-      <span style={{ flex: 1 }}>{opt.text}</span>
+      <span style={{ flex: 1 }}>
+        <MathText>{opt.text}</MathText>
+      </span>
       {state === 'correct' && <Badge kind="check" />}
       {state === 'incorrect' && <Badge kind="cross" />}
     </button>

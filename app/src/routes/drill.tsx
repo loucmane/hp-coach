@@ -14,9 +14,9 @@ import type { Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
 
 // Sections the drill currently supports. We only list the ones that
-// have fully-parsed questions in the bundled dataset; XYZ/KVA/NOG/DTK
-// land when their parsers ship.
-const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF'] as const
+// have fully-parsed questions in the bundled dataset; DTK lands when
+// its image-rendering pipeline ships.
+const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG'] as const
 type DrillSection = (typeof DRILL_SECTIONS)[number]
 
 type DrillSearch = { section?: DrillSection }
@@ -27,6 +27,19 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
     return { section: raw as DrillSection }
   }
   return {}
+}
+
+// Rough drill-time estimates per section. Match the section's pacing
+// from real exams so the idle-screen hint isn't lying. ORD is fastest
+// (single headword); reading/quant sections take longer per question.
+const SECTION_DURATIONS: Record<DrillSection, number> = {
+  ORD: 3,
+  LÄS: 10,
+  MEK: 5,
+  ELF: 10,
+  XYZ: 8,
+  KVA: 6,
+  NOG: 12,
 }
 
 const SECTION_COPY: Record<DrillSection, { headline: string; subcopy: string }> = {
@@ -42,6 +55,18 @@ const SECTION_COPY: Record<DrillSection, { headline: string; subcopy: string }> 
   ELF: {
     headline: 'ELF',
     subcopy: '10 frågor om engelsk läsförståelse från riktiga prov.',
+  },
+  XYZ: {
+    headline: 'XYZ',
+    subcopy: '10 frågor om matematisk problemlösning från riktiga prov.',
+  },
+  KVA: {
+    headline: 'KVA',
+    subcopy: '10 kvantitativa jämförelser från riktiga prov.',
+  },
+  NOG: {
+    headline: 'NOG',
+    subcopy: '10 frågor om kvantitativa resonemang från riktiga prov.',
   },
 }
 
@@ -69,7 +94,7 @@ function DrillScreen() {
       idleEyebrow="Övning"
       idleHeadline={copy.headline}
       idleSubcopy={copy.subcopy}
-      idleMeta={`~ ${section === 'LÄS' || section === 'ELF' ? '10' : '3'} minuter · 1 poäng per rätt`}
+      idleMeta={`~ ${SECTION_DURATIONS[section]} minuter · 1 poäng per rätt`}
       emptyCopy={`Inga ${section}-frågor klara att öva på just nu.`}
       idleExtra={dueCount > 0 ? <RepetitionHint count={dueCount} /> : null}
       onWrong={(q) => {

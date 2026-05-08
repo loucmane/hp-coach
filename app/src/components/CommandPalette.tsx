@@ -60,6 +60,27 @@ const COMMANDS: Command[] = [
     action: ({ navigate }) => navigate({ to: '/drill', search: { section: 'ELF' } }),
   },
   {
+    id: 'drill-xyz',
+    label: 'Starta XYZ-övning',
+    hint: '10 algebrafrågor · ~8 min',
+    keywords: ['drill', 'övning', 'xyz', 'matematik', 'algebra', 'math'],
+    action: ({ navigate }) => navigate({ to: '/drill', search: { section: 'XYZ' } }),
+  },
+  {
+    id: 'drill-kva',
+    label: 'Starta KVA-övning',
+    hint: '10 kvantitativa jämförelser · ~6 min',
+    keywords: ['drill', 'övning', 'kva', 'jämförelse', 'comparison'],
+    action: ({ navigate }) => navigate({ to: '/drill', search: { section: 'KVA' } }),
+  },
+  {
+    id: 'drill-nog',
+    label: 'Starta NOG-övning',
+    hint: '10 frågor om kvantitativa resonemang · ~12 min',
+    keywords: ['drill', 'övning', 'nog', 'resonemang', 'sufficiency'],
+    action: ({ navigate }) => navigate({ to: '/drill', search: { section: 'NOG' } }),
+  },
+  {
     id: 'repetition',
     label: 'Repetition (missar)',
     hint: 'Repetera fel svar',

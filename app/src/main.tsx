@@ -7,6 +7,9 @@ import { createRoot } from 'react-dom/client'
 import { queryClient } from './api/queryClient'
 import { loadBank, type Question } from './data/questions'
 import './index.css'
+// KaTeX CSS — ships once globally so any <InlineMath> in the tree
+// can render without per-component-style imports.
+import 'katex/dist/katex.min.css'
 import { routeTree } from './routeTree.gen'
 
 // Pre-warm the question bank as soon as the SPA boots. The fetch runs

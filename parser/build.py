@@ -44,6 +44,12 @@ sys.path.insert(0, str(ROOT))
 
 from parser.parse_facit import parse_facit  # noqa: E402
 from parser.parse_passages import parse_elf, parse_las  # noqa: E402
+from parser.parse_quant import (  # noqa: E402
+    find_quant_section_pages,
+    parse_kva,
+    parse_nog,
+    parse_xyz,
+)
 from parser.parse_section import find_section_pages, parse_mek, parse_ord  # noqa: E402
 
 PDF_ROOT = ROOT / "data" / "pdfs"
@@ -123,6 +129,22 @@ def parse_provpass(exam_id: str, pdf_path: Path, provpass: str) -> list[dict]:
                 # Context is optional — only LÄS / ELF / DTK populate it.
                 if q.get("context") is not None:
                     rec["context"] = q["context"]
+                rec["parsing_status"] = "complete"
+
+    # Quant-side parsers (XYZ + KVA + NOG; DTK still image-bound).
+    if provpass.startswith("kvant"):
+        for section, parser in (
+            ("XYZ", parse_xyz),
+            ("KVA", parse_kva),
+            ("NOG", parse_nog),
+        ):
+            pages = find_quant_section_pages(doc, section)
+            for q in parser(pages):
+                rec = records.get(q["number"])
+                if rec is None or rec["section"] != section:
+                    continue
+                rec["prompt"] = q["prompt"]
+                rec["options"] = q["options"]
                 rec["parsing_status"] = "complete"
 
     doc.close()
