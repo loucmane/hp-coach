@@ -145,6 +145,8 @@ def parse_mek(pages: list[fitz.Page]) -> list[dict]:
 SECTION_HEADERS = {
     "ORD": ("ORD – Ordförståelse", "ORD"),
     "MEK": ("MEK – Meningskomplettering", "MEK"),
+    "LÄS": ("Svensk läsförståelse – LÄS", "LÄS"),
+    "ELF": ("Engelsk läsförståelse – ELF", "ELF"),
 }
 
 # Where each section's question numbers fall within its provpass.

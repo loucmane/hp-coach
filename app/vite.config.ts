@@ -17,6 +17,12 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        // The bundled question dataset (~6 MB across 27 exams) blows
+        // past Workbox's 2 MB default. Bumping to 10 MB keeps PWA
+        // precache working until we move the dataset to R2 (planned
+        // when we add LÄS/ELF passages and DTK images push us past
+        // ~10 MB).
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
       },
       manifest: {
         name: 'HP-Coach',

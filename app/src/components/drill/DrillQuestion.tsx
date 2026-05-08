@@ -9,7 +9,7 @@
 // generous breathing room above. Options are full-width pills so the touch
 // targets are forgiving even on small screens.
 
-import type { CSSProperties } from 'react'
+import { type CSSProperties, useEffect, useRef } from 'react'
 
 import type { AnswerLetter, Option, Question } from '@/data/questions'
 
@@ -23,6 +23,17 @@ type Props = {
 }
 
 export function DrillQuestion({ question, picked, graded, onPick }: Props) {
+  // Scroll back to the top whenever a new question loads. Without this
+  // a long LÄS passage on Q1 leaves the inner overflow-y region
+  // mid-scroll, so Q2 visually starts halfway down the screen.
+  // We deliberately key on `qid` (not the whole question prop) so a
+  // pick→graded transition on the SAME question doesn't re-scroll.
+  const scrollerRef = useRef<HTMLDivElement>(null)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: qid identity is the trigger
+  useEffect(() => {
+    if (scrollerRef.current) scrollerRef.current.scrollTop = 0
+  }, [question.qid])
+
   if (!question.options || question.parsing_status !== 'complete') {
     return (
       <div
@@ -37,36 +48,69 @@ export function DrillQuestion({ question, picked, graded, onPick }: Props) {
       </div>
     )
   }
+  // LÄS/ELF/DTK questions carry a `context` (passage). The whole
+  // question scrolls as a single column — passage flows into prompt,
+  // prompt flows into options. This keeps the entire reading task
+  // visible as you scroll instead of trapping you in a tiny passage
+  // box at the top with the options in their own micro-scroll below
+  // (the original layout — caught by user feedback).
+  //
+  // ORD/MEK have no context and keep the original centered display
+  // layout because their prompts are single-word headwords.
+  const hasContext = !!question.context
+  const promptIsShort = !question.prompt || question.prompt.length <= 18
+
   return (
     <div
+      ref={scrollerRef}
       style={{
-        display: 'flex',
-        flexDirection: 'column',
         height: '100%',
+        overflowY: 'auto',
+        // Faint divider on the bottom so the passage doesn't visually
+        // touch the Nästa button when scrolled to the end.
+        paddingBottom: 8,
       }}
     >
+      {hasContext && (
+        <div
+          data-testid="drill-context"
+          style={{
+            margin: '14px 22px 4px',
+            padding: '16px 18px',
+            background: 'var(--panel-2)',
+            border: '1px solid var(--hairline)',
+            borderRadius: 'calc(var(--radius) * 0.5)',
+            fontFamily: 'var(--font-body, var(--font-display))',
+            fontSize: 14,
+            lineHeight: 1.55,
+            color: 'var(--ink)',
+            whiteSpace: 'pre-wrap',
+          }}
+        >
+          {question.context}
+        </div>
+      )}
       <div
         data-testid="drill-prompt"
         style={{
-          padding: '32px 22px 24px',
-          textAlign: 'center',
+          padding: hasContext ? '18px 22px 14px' : '32px 22px 24px',
+          textAlign: hasContext ? 'left' : 'center',
           fontFamily: 'var(--font-display)',
-          fontSize: question.prompt && question.prompt.length > 18 ? 24 : 32,
-          lineHeight: 1.18,
+          fontSize: hasContext ? 18 : promptIsShort ? 32 : 24,
+          lineHeight: hasContext ? 1.3 : 1.18,
           color: 'var(--ink)',
           letterSpacing: '-0.01em',
+          fontWeight: hasContext ? 500 : 400,
         }}
       >
         {question.prompt}
       </div>
       <div
         style={{
-          flex: 1,
           padding: '0 22px',
           display: 'flex',
           flexDirection: 'column',
           gap: 10,
-          overflowY: 'auto',
         }}
       >
         {question.options.map((opt) => (

@@ -34,9 +34,30 @@ const COMMANDS: Command[] = [
   {
     id: 'drill-ord',
     label: 'Starta ORD-övning',
-    hint: '10 frågor · ~3 min',
+    hint: '10 synonymfrågor · ~3 min',
     keywords: ['drill', 'övning', 'ord', 'synonym'],
-    action: ({ navigate }) => navigate({ to: '/drill' }),
+    action: ({ navigate }) => navigate({ to: '/drill', search: { section: 'ORD' } }),
+  },
+  {
+    id: 'drill-las',
+    label: 'Starta LÄS-övning',
+    hint: '10 läsförståelsefrågor · ~10 min',
+    keywords: ['drill', 'övning', 'läs', 'lasa', 'svensk', 'reading'],
+    action: ({ navigate }) => navigate({ to: '/drill', search: { section: 'LÄS' } }),
+  },
+  {
+    id: 'drill-mek',
+    label: 'Starta MEK-övning',
+    hint: '10 meningskompletteringar · ~3 min',
+    keywords: ['drill', 'övning', 'mek', 'mening', 'komplettering'],
+    action: ({ navigate }) => navigate({ to: '/drill', search: { section: 'MEK' } }),
+  },
+  {
+    id: 'drill-elf',
+    label: 'Starta ELF-övning',
+    hint: '10 English reading questions · ~10 min',
+    keywords: ['drill', 'övning', 'elf', 'english', 'engelsk', 'reading'],
+    action: ({ navigate }) => navigate({ to: '/drill', search: { section: 'ELF' } }),
   },
   {
     id: 'repetition',

@@ -16,6 +16,7 @@ by the drill engine):
     "prompt":     str | null,           # null on stub records
     "options":    [{"letter":..., "text":...}] | null,
     "answer":     "A" | "B" | "C" | "D" | "E",
+    "context":    str | null,           # passage for LÄS / ELF / DTK; null otherwise
     "parsing_status": "complete" | "answer_only"
   }
 
@@ -42,6 +43,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from parser.parse_facit import parse_facit  # noqa: E402
+from parser.parse_passages import parse_elf, parse_las  # noqa: E402
 from parser.parse_section import find_section_pages, parse_mek, parse_ord  # noqa: E402
 
 PDF_ROOT = ROOT / "data" / "pdfs"
@@ -99,12 +101,18 @@ def parse_provpass(exam_id: str, pdf_path: Path, provpass: str) -> list[dict]:
                 "prompt": None,
                 "options": None,
                 "answer": None,
+                "context": None,
                 "parsing_status": "answer_only",
             }
 
-    # Verbal-side parsers (ORD + MEK).
+    # Verbal-side parsers (ORD + MEK + LÄS + ELF).
     if provpass.startswith("verb"):
-        for section, parser in (("ORD", parse_ord), ("MEK", parse_mek)):
+        for section, parser in (
+            ("ORD", parse_ord),
+            ("MEK", parse_mek),
+            ("LÄS", parse_las),
+            ("ELF", parse_elf),
+        ):
             pages = find_section_pages(doc, section)
             for q in parser(pages):
                 rec = records.get(q["number"])
@@ -112,6 +120,9 @@ def parse_provpass(exam_id: str, pdf_path: Path, provpass: str) -> list[dict]:
                     continue  # belt-and-braces guard against misclassification
                 rec["prompt"] = q["prompt"]
                 rec["options"] = q["options"]
+                # Context is optional — only LÄS / ELF / DTK populate it.
+                if q.get("context") is not None:
+                    rec["context"] = q["context"]
                 rec["parsing_status"] = "complete"
 
     doc.close()

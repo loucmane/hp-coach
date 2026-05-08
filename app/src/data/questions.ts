@@ -39,6 +39,9 @@ export type Question = {
   prompt: string | null
   options: Option[] | null
   answer: AnswerLetter
+  /** Passage / image-context the question refers to.
+   *  Used by LÄS, ELF, and DTK; null for ORD/MEK/XYZ/KVA/NOG. */
+  context: string | null
   /** "complete" — full prompt + options parsed; "answer_only" — stub. */
   parsing_status: 'complete' | 'answer_only'
 }

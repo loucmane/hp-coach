@@ -72,6 +72,8 @@ test('Cmd+K palette — open via keyboard, navigate to drill', async ({ page }) 
   await expect(cmdk).toBeVisible({ timeout: 3_000 })
 
   await page.getByTestId('cmdk-item-drill-ord').click()
-  await expect(page).toHaveURL(/\/drill$/)
+  // /drill, optionally followed by `?section=…` (Cmd+K command always
+  // passes section explicitly).
+  await expect(page).toHaveURL(/\/drill(\?.*)?$/)
   await expect(page.getByTestId('drill-idle')).toBeVisible({ timeout: 5_000 })
 })

@@ -1,40 +1,79 @@
-// /drill — random ORD drill, 10 questions per session.
+// /drill — random drill of N questions, parameterised by section via
+// the `?section=…` search param. Defaults to ORD when omitted.
 //
-// Thin route: composes <SessionPlayer> with a random picker and a
-// "record-mistake on wrong" side effect. The state machine, lifecycle,
-// and UI live in <SessionPlayer>; this file is just config.
+// Thin route: composes <SessionPlayer> with a random picker, the
+// "record-mistake on wrong" side effect, and section-specific copy.
+// The state machine, lifecycle, and UI live in <SessionPlayer>; this
+// file is just config.
 
 import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
+import type { Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
 
+// Sections the drill currently supports. We only list the ones that
+// have fully-parsed questions in the bundled dataset; XYZ/KVA/NOG/DTK
+// land when their parsers ship.
+const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF'] as const
+type DrillSection = (typeof DRILL_SECTIONS)[number]
+
+type DrillSearch = { section?: DrillSection }
+
+function validateSearch(input: Record<string, unknown>): DrillSearch {
+  const raw = input.section
+  if (typeof raw === 'string' && (DRILL_SECTIONS as readonly string[]).includes(raw)) {
+    return { section: raw as DrillSection }
+  }
+  return {}
+}
+
+const SECTION_COPY: Record<DrillSection, { headline: string; subcopy: string }> = {
+  ORD: { headline: 'ORD', subcopy: '10 synonymfrågor från riktiga prov.' },
+  LÄS: {
+    headline: 'LÄS',
+    subcopy: '10 frågor om svensk läsförståelse från riktiga prov.',
+  },
+  MEK: {
+    headline: 'MEK',
+    subcopy: '10 meningskompletteringar från riktiga prov.',
+  },
+  ELF: {
+    headline: 'ELF',
+    subcopy: '10 frågor om engelsk läsförståelse från riktiga prov.',
+  },
+}
+
 export const Route = createFileRoute('/drill')({
+  validateSearch,
   component: DrillScreen,
 })
 
 function DrillScreen() {
+  const { section: sectionFromUrl } = Route.useSearch()
+  const section: DrillSection = sectionFromUrl ?? 'ORD'
+
   const recordMistake = useRecordMistake()
   const due = useDueMistakes()
   const dueCount = due.data?.length ?? 0
 
+  const copy = SECTION_COPY[section]
+
   return (
     <SessionPlayer
       sessionKind="drill"
-      sections="ORD"
+      sections={section}
       activeTab="drill"
-      pickQuestions={() => pickDrillQuestions('ORD', DEFAULT_DRILL_LENGTH)}
+      pickQuestions={() => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)}
       idleEyebrow="Övning"
-      idleHeadline="ORD"
-      idleSubcopy="10 synonymfrågor från riktiga prov."
-      idleMeta="~ 3 minuter · 1 poäng per rätt"
-      emptyCopy="Inga ORD-frågor klara att öva på just nu."
+      idleHeadline={copy.headline}
+      idleSubcopy={copy.subcopy}
+      idleMeta={`~ ${section === 'LÄS' || section === 'ELF' ? '10' : '3'} minuter · 1 poäng per rätt`}
+      emptyCopy={`Inga ${section}-frågor klara att öva på just nu.`}
       idleExtra={dueCount > 0 ? <RepetitionHint count={dueCount} /> : null}
       onWrong={(q) => {
-        // Fire-and-forget: a failed mistake-write doesn't block the UX,
-        // and the user can keep drilling. The local-grading is the
-        // source of truth for the result screen.
+        // Fire-and-forget: a failed mistake-write doesn't block the UX.
         recordMistake.mutate({ questionId: q.qid })
       }}
     />

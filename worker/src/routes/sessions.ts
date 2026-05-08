@@ -10,7 +10,7 @@
 // surfaces as 404, not 403, by design.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, eq, isNull } from 'drizzle-orm'
+import { and, desc, eq, isNull } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
@@ -40,6 +40,12 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // GET /api/sessions/active — current in-flight session for this user.
   // Returns { session: null } if none, so the client can branch cleanly
   // on a typed shape rather than a 404.
+  //
+  // Ordered by startedAt DESCENDING — the user's most-recent-started
+  // session is the one they want to resume, not the oldest dangling
+  // row from a cancelled flow weeks ago. Multiple active sessions are
+  // a soft anomaly we tolerate (POST doesn't auto-end), but resume
+  // should always converge on the freshest one.
   .get('/active', async (c) => {
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
@@ -47,7 +53,7 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       .select()
       .from(sessions)
       .where(and(eq(sessions.userId, userId), isNull(sessions.endedAt)))
-      .orderBy(sessions.startedAt)
+      .orderBy(desc(sessions.startedAt))
       .limit(1)
     return c.json({ session: row ?? null })
   })
