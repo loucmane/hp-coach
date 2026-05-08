@@ -46,4 +46,30 @@ describe('HomeMobile', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Avancerat' }))
     expect(onAvancerat).toHaveBeenCalledTimes(1)
   })
+
+  it('hides the repetition link when nothing is due', () => {
+    const { rerender } = render(<HomeMobile />)
+    expect(screen.queryByTestId('home-repetition-link')).not.toBeInTheDocument()
+    rerender(<HomeMobile dueCount={0} />)
+    expect(screen.queryByTestId('home-repetition-link')).not.toBeInTheDocument()
+  })
+
+  it('renders the singular form when exactly one mistake is due', () => {
+    render(<HomeMobile dueCount={1} />)
+    const link = screen.getByTestId('home-repetition-link')
+    expect(link).toHaveTextContent(/^1 miss att repetera$/)
+  })
+
+  it('renders the plural form when multiple mistakes are due', () => {
+    render(<HomeMobile dueCount={7} />)
+    const link = screen.getByTestId('home-repetition-link')
+    expect(link).toHaveTextContent(/^7 missar att repetera$/)
+  })
+
+  it('fires onRepetition when the queue link is clicked', async () => {
+    const onRepetition = vi.fn()
+    render(<HomeMobile dueCount={3} onRepetition={onRepetition} />)
+    await userEvent.click(screen.getByTestId('home-repetition-link'))
+    expect(onRepetition).toHaveBeenCalledTimes(1)
+  })
 })

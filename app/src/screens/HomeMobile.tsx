@@ -29,8 +29,13 @@ type HomeMobileProps = {
   showStreak?: boolean
   /** Override "now" so screenshots / tests render a stable date. */
   now?: Date
+  /** Mistakes due for review right now. When > 0 we surface a small
+   *  link next to "Avancerat" so the user can jump straight into the
+   *  SRS queue from the home screen. Pass undefined or 0 to hide. */
+  dueCount?: number
   onContinue?: () => void
   onAvancerat?: () => void
+  onRepetition?: () => void
   onTabChange?: (id: TabKey) => void
 }
 
@@ -38,10 +43,13 @@ export function HomeMobile({
   coach: coachProp,
   showStreak = false,
   now,
+  dueCount,
   onContinue,
   onAvancerat,
+  onRepetition,
   onTabChange,
 }: HomeMobileProps = {}) {
+  const hasDue = (dueCount ?? 0) > 0
   const storeCoach = useCoachStore((s) => s.coach)
   const coach = coachProp ?? storeCoach
   const voice = VOICE[coach]
@@ -131,26 +139,60 @@ export function HomeMobile({
               {voice.cta}
             </Btn>
           </div>
-          <button
-            type="button"
-            onClick={onAvancerat}
+          {/* Trailing row: SRS queue link on the left (only when due > 0),
+              Avancerat on the right. The row keeps a fixed height so the
+              CTA's vertical position doesn't jump when the queue is empty. */}
+          <div
             className="reveal"
             style={{
-              alignSelf: 'flex-end',
               marginTop: 14,
-              background: 'transparent',
-              border: 'none',
-              color: 'var(--muted)',
-              fontSize: 12,
-              fontFamily: 'inherit',
-              cursor: 'pointer',
-              textDecoration: 'underline',
-              textUnderlineOffset: 3,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               animationDelay: '240ms',
             }}
           >
-            Avancerat
-          </button>
+            {hasDue ? (
+              <button
+                type="button"
+                onClick={onRepetition}
+                data-testid="home-repetition-link"
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  padding: 0,
+                  color: 'var(--ink-2)',
+                  fontSize: 12,
+                  fontFamily: 'inherit',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: 3,
+                }}
+              >
+                <strong style={{ color: 'var(--ink)', fontWeight: 600 }}>{dueCount}</strong>{' '}
+                {dueCount === 1 ? 'miss' : 'missar'} att repetera
+              </button>
+            ) : (
+              <span />
+            )}
+            <button
+              type="button"
+              onClick={onAvancerat}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                padding: 0,
+                color: 'var(--muted)',
+                fontSize: 12,
+                fontFamily: 'inherit',
+                cursor: 'pointer',
+                textDecoration: 'underline',
+                textUnderlineOffset: 3,
+              }}
+            >
+              Avancerat
+            </button>
+          </div>
         </div>
       </div>
     </MobileFrame>
