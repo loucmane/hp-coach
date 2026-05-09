@@ -54,6 +54,7 @@ from parser.parse_section import find_section_pages, parse_mek, parse_ord  # noq
 
 PDF_ROOT = ROOT / "data" / "pdfs"
 OUT_ROOT = ROOT / "data" / "parsed"
+FIG_ROOT = ROOT / "data" / "figures"
 
 # Provpass → section → question-number range. Fixed across exams (the
 # HP exam structure has been stable for years).
@@ -108,6 +109,7 @@ def parse_provpass(exam_id: str, pdf_path: Path, provpass: str) -> list[dict]:
                 "options": None,
                 "answer": None,
                 "context": None,
+                "figure": None,
                 "parsing_status": "answer_only",
             }
 
@@ -146,6 +148,20 @@ def parse_provpass(exam_id: str, pdf_path: Path, provpass: str) -> list[dict]:
                 rec["prompt"] = q["prompt"]
                 rec["options"] = q["options"]
                 rec["parsing_status"] = "complete"
+                # Vector figures (Phase B): write SVG to disk and store
+                # the relative URL on the record. The SPA fetches the
+                # file at drill time so the JSON bundle stays small.
+                fig = q.get("figure")
+                if fig:
+                    FIG_ROOT.mkdir(parents=True, exist_ok=True)
+                    qid_str = rec["qid"]
+                    (FIG_ROOT / f"{qid_str}.svg").write_text(
+                        fig["svg"], encoding="utf-8"
+                    )
+                    rec["figure"] = {
+                        "src": f"figures/{qid_str}.svg",
+                        "aspect_ratio": fig["aspect_ratio"],
+                    }
 
     doc.close()
     return [records[n] for n in sorted(records)]

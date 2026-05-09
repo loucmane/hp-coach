@@ -100,6 +100,7 @@ pnpm db:apply     # wrangler d1 migrations apply hpc-staging (or hpc-prod)
 - **Product strings** (UI, lesson copy, feedback shown to students) → **Swedish**.
 - **ELF section content** stays **English** by exam design — never translate.
 - Pre-existing Swedish in `bygg_hp_databas.py` (`print` strings, docstrings) — keep as-is, don't churn.
+- **Commit messages** — describe *what changed and why*, no `Co-Authored-By: Claude …` trailer, no "🤖 Generated with Claude Code" footer. The git author already records who typed the commit; the trailer/footer are noise.
 
 ## Legal note
 

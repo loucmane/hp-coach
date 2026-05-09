@@ -20,7 +20,18 @@ export default defineConfig({
         // runtime, NOT precached — a fresh-install user shouldn't
         // download 6 MB before they've even decided to drill. The HTTP
         // cache + loadBank()'s in-memory Promise covers warm hits.
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        //
+        // Figures (public/figures/*.svg) are also lazy-fetched by
+        // QuestionFigure.tsx, so excluded from precache. Including
+        // them would add ~3 MB to the install bundle AND make Vite's
+        // dev-time precache scan choke when the parser regenerates
+        // the figure set with different filenames between requests
+        // (stale paths from a previous scan → ENOENT in the CSS
+        // analysis plugin).
+        globPatterns: [
+          '**/*.{js,css,html,ico,png,woff2}',
+          'vite.svg', // app icon — keep precached
+        ],
       },
       manifest: {
         name: 'HP-Coach',

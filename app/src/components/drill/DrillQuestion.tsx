@@ -10,7 +10,7 @@
 // targets are forgiving even on small screens.
 
 import { type CSSProperties, useEffect, useRef } from 'react'
-
+import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { MathText } from '@/components/MathText'
 import type { AnswerLetter, Option, Question } from '@/data/questions'
 
@@ -106,6 +106,7 @@ export function DrillQuestion({ question, picked, graded, onPick }: Props) {
       >
         <MathText>{question.prompt}</MathText>
       </div>
+      {question.figure && <QuestionFigure figure={question.figure} />}
       <div
         style={{
           padding: '0 22px',

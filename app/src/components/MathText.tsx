@@ -1,20 +1,50 @@
 // MathText — render a string with inline LaTeX segments fenced by
 // the parser's private-use Unicode delimiters (U+E000 / U+E001).
 //
-// The quant parser emits LaTeX inline (e.g. "x² - 15" → "x^{2} - 15")
+// The quant parser emits LaTeX inline (e.g. "x² - 15" → "x^{2} - 15")
 // when it detects superscripts. Plain-text questions never contain
 // the delimiters, so they pass through unchanged with zero overhead.
 // We deliberately don't use the conventional `$...$` because HP source
 // PDFs occasionally contain a literal `$` glyph inside stacked-
 // fraction renderings — that would collide and break KaTeX parsing.
+//
+// We call `katex.renderToString` directly (instead of <InlineMath />
+// from react-katex) so we can pass `output: 'html'`. Without it,
+// KaTeX emits a side-by-side <span class="katex-mathml"> for screen
+// readers AND a visible <span class="katex-html">; both contribute
+// to .textContent, so each `L_{1}` shows up TWICE when the user
+// selects+copies the prompt — once as "L1" (from the MathML
+// <mi>L</mi><mn>1</mn>) and once as "L 1​" (from the visible HTML
+// with a U+200B). Visually fine, but ugly in copy/paste and noisy
+// for any consumer that walks the DOM as text.
+//
+// Trade-off: dropping MathML loses the structured math representation
+// for assistive tech. We compensate by setting `aria-label` to the
+// raw LaTeX on the wrapping span — not perfect spoken English, but
+// unambiguous and far better than the doubled glyphs.
 
-import { InlineMath } from 'react-katex'
+import katex from 'katex'
 
 const MATH_OPEN = ''
 const MATH_CLOSE = ''
 
 type Props = {
   children: string | null | undefined
+}
+
+function renderMath(latex: string): string {
+  try {
+    return katex.renderToString(latex, {
+      output: 'html',
+      throwOnError: false,
+      strict: 'ignore',
+    })
+  } catch {
+    // throwOnError:false should cover this, but belt-and-braces in
+    // case a future KaTeX version starts throwing through a different
+    // path (e.g. macro expansion).
+    return latex
+  }
 }
 
 export function MathText({ children }: Props) {
@@ -53,8 +83,16 @@ export function MathText({ children }: Props) {
     <>
       {segments.map((seg, idx) =>
         seg.math ? (
-          // biome-ignore lint/suspicious/noArrayIndexKey: stable order, no reordering
-          <InlineMath key={idx} math={seg.text} />
+          <span
+            // biome-ignore lint/suspicious/noArrayIndexKey: stable order, no reordering
+            key={idx}
+            role="math"
+            aria-label={seg.text}
+            // KaTeX-emitted HTML on parser-controlled input — no user
+            // text ever reaches `seg.text`.
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: trusted parser output
+            dangerouslySetInnerHTML={{ __html: renderMath(seg.text) }}
+          />
         ) : (
           // biome-ignore lint/suspicious/noArrayIndexKey: stable order, no reordering
           <span key={idx}>{seg.text}</span>

@@ -13,6 +13,8 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 SRC="$REPO_ROOT/data/parsed"
 DEST="$REPO_ROOT/app/public/data"
+FIG_SRC="$REPO_ROOT/data/figures"
+FIG_DEST="$REPO_ROOT/app/public/figures"
 
 if [ ! -d "$SRC" ]; then
   echo "Parser output missing at $SRC."
@@ -34,3 +36,15 @@ if [ "$copied" -eq 0 ]; then
   exit 1
 fi
 echo "synced $copied dataset(s)"
+
+# Quant figures (Phase B vector pipeline). The drill fetches each
+# SVG on demand via QuestionFigure.tsx, so these need to land beside
+# the JSON in the public/ tree. Mirror the whole directory — `cp -R`
+# is safe because the parser writes deterministic per-qid filenames.
+if [ -d "$FIG_SRC" ]; then
+  rm -rf "$FIG_DEST"
+  mkdir -p "$FIG_DEST"
+  cp -R "$FIG_SRC"/. "$FIG_DEST"/
+  fig_count=$(find "$FIG_DEST" -maxdepth 1 -name '*.svg' | wc -l | tr -d ' ')
+  echo "synced $fig_count figure(s) → app/public/figures/"
+fi

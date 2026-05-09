@@ -31,6 +31,16 @@ export type Option = {
   text: string
 }
 
+/** Vector figure attached to a quant question — rendered inline as
+ *  an SVG with strokes themed via `currentColor`. The parser writes
+ *  the SVG to `data/figures/{qid}.svg`; the SPA fetches it on demand
+ *  so the JSON bundle stays small. `aspect_ratio` lets us reserve
+ *  layout space before the SVG arrives, preventing CLS during fetch. */
+export type QuestionFigureMeta = {
+  src: string
+  aspect_ratio: number
+}
+
 export type Question = {
   qid: string
   exam_id: string
@@ -43,6 +53,9 @@ export type Question = {
   /** Passage / image-context the question refers to.
    *  Used by LÄS, ELF, and DTK; null for ORD/MEK/XYZ/KVA/NOG. */
   context: string | null
+  /** Vector diagram (XYZ/KVA/NOG only); null for text-only questions
+   *  and for everything in the verbal half. */
+  figure?: QuestionFigureMeta | null
   /** "complete" — full prompt + options parsed; "answer_only" — stub. */
   parsing_status: 'complete' | 'answer_only'
 }
