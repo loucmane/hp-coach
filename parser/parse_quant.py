@@ -129,18 +129,28 @@ _GREEK_GLYPH_MAP = {"r": "π"}
 _MMABINARY_FONT_TOKEN = "mmabinary"
 _MMABINARY_GLYPH_MAP = {"$": "·"}
 
+# MMaNegate is the negation-symbol math font. The single observed
+# glyph is `!` → `≠` (not-equals, U+2260), seen in the precondition
+# `x ≠ 0` that prefixes division-style XYZ questions like
+# `x ≠ 0  Vad är x då y/x − 1 = 1/x?`. Without this mapping the
+# precondition reads as a meaningless `x ! 0` in the parsed prompt.
+_MMANEGATE_FONT_TOKEN = "mmanegate"
+_MMANEGATE_GLYPH_MAP = {"!": "≠"}
+
 
 def _remap_glyphs(text: str, font: str) -> str:
     """Return `text` with math-font codepoints replaced by their
     intended Unicode characters. Unknown chars pass through unchanged
-    so a future MMaGreek / MMaBinary glyph we haven't catalogued
-    doesn't get silently dropped — it'll surface as a Latin letter in
-    the parsed text and we can add it to the table."""
+    so a future MMaGreek / MMaBinary / MMaNegate glyph we haven't
+    catalogued doesn't get silently dropped — it'll surface as a
+    Latin letter in the parsed text and we can add it to the table."""
     font_lower = font.lower()
     if _GREEK_FONT_TOKEN in font_lower:
         return "".join(_GREEK_GLYPH_MAP.get(ch, ch) for ch in text)
     if _MMABINARY_FONT_TOKEN in font_lower:
         return "".join(_MMABINARY_GLYPH_MAP.get(ch, ch) for ch in text)
+    if _MMANEGATE_FONT_TOKEN in font_lower:
+        return "".join(_MMANEGATE_GLYPH_MAP.get(ch, ch) for ch in text)
     return text
 
 
