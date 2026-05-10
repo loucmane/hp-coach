@@ -1,0 +1,28 @@
+{
+  "var-2017-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778409611569,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Att zw > xy kan kännas som att en av faktorerna i zw (säg w) måste vara större än en faktor i xy (säg x).",
+        "why_wrong": "Produkten zw kan vara större än xy även om alla enskilda värden är blandade. Med negativa tal kan |w| vara större än |x| utan att w > x — tecknen kompliserar."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att tro att om zw > xy, så är −z > −y eller liknande enkel-faktor-jämförelse.",
+        "why_wrong": "Att produkten är större säger inget om förhållandet mellan enskilda faktorer. zw > xy kan uppfyllas med många olika kombinationer av tecken/storlek hos enskilda termer."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Korsbyte (xz vs yw) kan kännas som en symmetrisk omskrivning av zw > xy.",
+        "why_wrong": "Korsbytet ändrar produkternas faktorer — xz är inte en omskrivning av zw. Det krävs faktorisering eller annan algebraisk koppling som saknas."
+      }
+    ],
+    "pitfall": "Påståenden om ENSKILDA negativa variabler (a > b → −a < −b) är säkra. Påståenden om PRODUKTER (zw > xy → ?) kräver mer information — produktens ojämlikhet säger inget om enskilda faktorer.",
+    "solution_path": "Multiplikation med −1 vänder ojämlikhetens riktning. Om zw > xy, så är −zw < −xy, vilket är samma sak som −xy > −zw. Att tecknen är negativa påverkar inte påståendets sanning — det är bara en omskrivning.",
+    "technique": "Multiplikation av en ojämlikhet med ett NEGATIVT tal (här: −1) vänder ojämlikhetens riktning. Det är den ENDA strukturella effekten av negativa tecken på en ojämlikhet."
+  }
+}

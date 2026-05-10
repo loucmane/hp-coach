@@ -1,0 +1,116 @@
+{
+  "var-2014-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778409420394,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "13 är magiska konstanten delad på 3 — alltså rutans CENTRUMVÄRDE i en klassisk magisk kvadrat. Det kan kännas som det 'rätta' tal som x, y, z skulle utgöra om de var medelvärdet.",
+        "why_wrong": "x + y + z är SUMMAN, inte medelvärdet. Centrumvärdet 13 är värdet i en ruta; summan av tre rutor på en linje är S = 3 × 13 = 39."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "26 = 2 × 13 — kan kännas rimligt som '2 × centrumvärde' om man räknar två av tre rutor.",
+        "why_wrong": "x, y och z är TRE rutor. Tre rutor på en linje summeras till 3 × 13 = 39, inte 26."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "52 = 4 × 13 låter som 'lite mer än hela linjen' — kanske om man räknar linjen + en extra ruta.",
+        "why_wrong": "Det är exakt tre värden som efterfrågas (x, y, z) på en hel rad/kolumn/diagonal. Summan blir alltid 3 × magiska konstanten."
+      }
+    ],
+    "pitfall": "x + y + z syftar på SUMMAN av tre värden, inte på en enskild ruta. Dela inte magiska konstanten med 3 om summan av tre värden eftersöks.",
+    "solution_path": "I en magisk kvadrat är summan av varje rad, kolumn och diagonal lika — den magiska konstanten S. Om x, y och z bildar en hel rad, kolumn eller diagonal är x + y + z = S = 39 (utläst från en av de redan kända summorna i figuren).",
+    "technique": "Magisk kvadrat: alla rader, kolumner och båda diagonaler summerar till samma konstant S. Centrumvärdet (i en 3×3) är alltid S/3."
+  },
+  "var-2014-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778409420394,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du flyttar fel — gör 1 = y/x − 1/x = (y−1)/x och sen löser ut med fel teckenhantering — landar 1 − y.",
+        "why_wrong": "Korrekt steg: y-x=1, alltså x=y-1 (positiv y minus 1). 1-y skulle kräva att x har motsatt tecken."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man av misstag tar genomsnitt eller delar med 2 efter lösning hamnar \\frac{y-1}{2}.",
+        "why_wrong": "Det finns ingen division med 2 i ekvationen. Den enda nämnaren är x, och den försvinner när man multiplicerar båda led med x."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Kombinera teckenfelet (B) med extradivisionen (C).",
+        "why_wrong": "Båda fel samtidigt — varken tecken eller faktor 2 finns i den enkla omskrivningen y-x=1\\Rightarrow x=y-1."
+      }
+    ],
+    "pitfall": "Glöm inte att multiplicera HELA högerledet med x — varje term som har x i nämnaren tappar den, men termer utan x (som '−1') multipliceras MED x. Slarv här ger felaktiga tecken.",
+    "solution_path": "Multiplicera båda led med x för att bli av med nämnarna: y-x=1, vilket ger x=y-1 direkt.",
+    "technique": "För ekvationer med x i nämnaren: multiplicera båda led med x för att eliminera bråken, sen lös som vanlig linjär ekvation. Förutsättningen x ≠ 0 är viktig."
+  },
+  "var-2014-verb1-ORD-006": {
+    "_meta": {
+      "generated_at": 1778409611569,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'Sporadiskt' kan förväxlas med ett 'lätt eller enkelt' tillvägagångssätt om man bara tar fasta på det informella tonläget.",
+        "why_wrong": "Sporadiskt beskriver FREKVENSEN (sällan, oregelbundet), inte hur något görs. En komplicerad metod kan användas sporadiskt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Sporadiskt och slumpmässigt har båda en undertone av oförutsägbarhet.",
+        "why_wrong": "Sporadiskt = sällan; slumpmässigt = oförutsägbart. Något kan ske ofta-men-slumpmässigt, eller sällan-men-regelbundet — orden mäter olika dimensioner."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Sporadisk + 'av skilda slag' delar förleden 's' och båda låter som någon form av variation.",
+        "why_wrong": "'Skilda slag' beskriver VARIATIONEN i typ; sporadiskt beskriver VARIATIONEN i tid. Olika dimensioner."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Impulsiva handlingar är ofta sporadiska — orden hänger ofta ihop i vardagsspråk.",
+        "why_wrong": "Impulsivitet = utan förvarning; sporadiskt = utan regelbundenhet. En noggrant planerad sällan-händelse är sporadisk men inte impulsiv."
+      }
+    ],
+    "pitfall": "Frekvens-ord (sporadiskt, periodiskt, regelbundet) blandas lätt ihop med kvalitets-ord (slumpmässigt, impulsivt, varierat). Avgör först VILKEN dimension ordet beskriver.",
+    "solution_path": "Sporadiskt kommer från grekiskans sporadikos (utspridd, från sporá = utsädd) och betyder att något händer oregelbundet och sällan — alltså vid enstaka tillfällen, inte i ett fast mönster.",
+    "technique": "Grekiska tids-/frekvens-rotord: sporád- (utspridd), period- (omloppstid), chrono- (tid), -lig- (binda — som i 'regelbunden')."
+  },
+  "var-2014-verb2-ORD-006": {
+    "_meta": {
+      "generated_at": 1778409611569,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Förleden 'inne-' kan associeras med att vara omsluten av något.",
+        "why_wrong": "'Inne-' i innevarande syftar på 'inom denna tidsram', inte fysisk inneslutning. Tid, inte rum."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Något 'innevarande' kan kännas som det som 'tillhör' nuet.",
+        "why_wrong": "Tillhörande är ägorelaterat (vem äger vad); innevarande är tidsrelaterat (när). Olika dimensioner."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det som pågår nu är ofta också modernt — orden överlappar i vardagsspråk.",
+        "why_wrong": "Modern är värderande (nytt-och-bra); innevarande är neutralt (för-tillfället). Innevarande recession är inte 'modern'."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Vilande och innevarande kan båda föra tankarna till ett 'nuvarande tillstånd'.",
+        "why_wrong": "Vilande = inaktivt, pausat; innevarande = AKTIVT pågående. Riktningen är motsatt."
+      }
+    ],
+    "pitfall": "Förleden 'inne-' i innevarande syftar på TID (inom nu), inte på RUM (inomhus). Misstolkning ger geografi-svar istället för tids-svar.",
+    "solution_path": "Innevarande är ett gammaldags svenskt ord — 'inne' (vid pågående tillfälle) + 'varande' (existerande). Det syftar på det som SKER NU eller pågår — alltså pågående. 'Innevarande år' = året vi befinner oss i.",
+    "technique": "Gammaldags svenska tids-adverbial: innevarande (pågående), kommande (framtida), gångna (förflutna), tilldragna (inträffade)."
+  }
+}

@@ -30,6 +30,32 @@
     "solution_path": "Benjamin är länken som binder ihop de två påståendena. (1) ger ordningen C>A>B; (2) ger B>D>E. Var för sig saknas information om hälften av personerna. Tillsammans bildar de en obruten kedja via Benjamin: C>A>B>D>E — Cecilia är äldst.",
     "technique": "Hitta den gemensamma personen som länkar samman de båda påståendenas ordningar — när kedjan blir obruten är frågan löst."
   },
+  "host-2020-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778408942654,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att svara med ingången utan att tillämpa funktionen alls.",
+        "why_wrong": "Funktionsuttrycket 3x+1 ska tillämpas — bara att kopiera ingången ignorerar både multiplikationen och additionen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om man räknar 3\\cdot\\frac{1}{3}-1 (subtraktion av misstag) blir det 1-1=0 — men 0 finns inte; nästa rimliga miss är \\frac{2}{3}.",
+        "why_wrong": "Funktionen lägger TILL 1, inte drar ifrån. Rätt blir 1+1=2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att lägga till bara ingången istället för 1: 3\\cdot\\frac{1}{3}+\\frac{1}{3}=1+\\frac{1}{3}=\\frac{4}{3}.",
+        "why_wrong": "Det är konstanten 1 som adderas, inte ingången. Funktionen är 3x+1, inte 3x+x."
+      }
+    ],
+    "pitfall": "Bråkingång + heltalssvar: studenter förväntar sig ofta att svaret förblir på bråkform. Här blir ingången naturligt heltal efter multiplikationen, så alternativen i bråkform (1/3, 2/3, 4/3) är frestande visuella matchningar.",
+    "solution_path": "Sätt in \\frac{1}{3} på x:s plats i funktionen: f\\left(\\frac{1}{3}\\right)=3\\cdot\\frac{1}{3}+1=1+1=2, vilket motsvarar \\frac{6}{3}.",
+    "technique": "Funktionsvärden: byt ut variabeln mot ingången, behåll alla operatorer och konstanter. Här har du redan svaret som heltal (2); presentationen 6/3 är bara ett alternativt format."
+  },
   "host-2020-verb1-LÄS-011": {
     "_meta": {
       "generated_at": 1778408443638,
@@ -86,5 +112,67 @@
     "pitfall": "Förväxla inte gourmand med gourmet — gourmand handlar om APTIT, gourmet om SMAKKUNSKAP.",
     "solution_path": "Gourmand är ett franskt lånord besläktat med gourmet — båda har matrot. Skillnaden: gourmand betonar matglädje och förkärlek för att äta; gourmet syftar på finsmakaren. På svenska används gourmand vanligen synonymt med matglad.",
     "technique": "Franska lånord på gour-: gourmet (finsmakare), gourmand (matälskare), gourmandise (delikatess) — alla kretsar kring mat."
+  },
+  "host-2020-verb1-ORD-005": {
+    "_meta": {
+      "generated_at": 1778408942654,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Seminarier inleds ofta med en presentation eller kort dialog.",
+        "why_wrong": "Inledningsmomentet är inte hela formatet — själva seminariet är den fördjupade diskussionen som följer."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Studenter associerar 'seminarium' med uppsatser och muntliga presentationer.",
+        "why_wrong": "En kort presentation är en del av många akademiska sammanhang; seminariet är formen där presentationen DISKUTERAS, inte presentationen själv."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Seminarier hålls ofta i mindre grupper och kan kännas som individanpassad undervisning.",
+        "why_wrong": "Seminariet är till sin natur GRUPP-baserat — flera deltagare som diskuterar tillsammans. Individuell undervisning är handledning, inte seminarium."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Ett 'seminarrum' är ett rum, så seminariet kan blandas ihop med platsen.",
+        "why_wrong": "Ordet seminarium beskriver EVENEMANGET, inte rummet. Ett seminarium kan hållas var som helst."
+      }
+    ],
+    "pitfall": "Förväxla inte aktiviteten (seminarium = diskussion) med platsen den hålls i (seminarrum) eller en del av den (presentationen).",
+    "solution_path": "Seminarium kommer från latinets seminarium (plantskola) och syftar idag på en strukturerad gruppdiskussion i akademisk eller professionell kontext — alltså en kunskapshöjande diskussion. Kärnan är samtalet, inte föreläsningen.",
+    "technique": "Akademiska latinska lånord beskriver oftast FORMATET av en aktivitet: föreläsning (auditorisk), seminarium (diskuterande), kollokvium (informell akademisk samtal), tutorial (handledning)."
+  },
+  "host-2020-verb1-ORD-008": {
+    "_meta": {
+      "generated_at": 1778408942654,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'Väsen' kan kännas som något fundamentalt — om man saknar väsen blir man innehållslös.",
+        "why_wrong": "Väsensskild beskriver SKILLNAD i väsen, inte FRÅNVARO av väsen. Båda föremål har väsen; de är bara olika."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Folktro använder 'väsen' om övernaturliga varelser, vilket kan föra tankarna till det overkliga.",
+        "why_wrong": "Här används 'väsen' i sin filosofiska betydelse (essens, kärna), inte i folktro-betydelsen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Något väsensskilt kan ofta kännas främmande — vilket lätt blandas ihop med motbjudande.",
+        "why_wrong": "Väsensskild är värderingsneutralt — det säger inget om hur man känner för det som är olikt, bara att skillnaden är fundamental."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Att vara skild från något kan associeras med att stå utanför det betydelsefulla.",
+        "why_wrong": "Skild betyder åtskild/olik, inte oviktig. Väsensskild kan beskriva skillnaden mellan två betydelsefulla saker."
+      }
+    ],
+    "pitfall": "Bryt sammansatta ord i deras leder: väsen + skild = skild i väsen = fundamentalt olik. Tolka inte 'skild' som 'frånvarande'.",
+    "solution_path": "Väsensskild är en sammansättning av väsen (essens, grundläggande natur) + skild (åtskild, olik). Något väsensskilt är därför olikt på en grundläggande nivå — annorlunda i sin essens.",
+    "technique": "Sammansatta svenska adjektiv på -skild (väsensskild, artskild, könsskild) betyder alltid 'olika i avseende på X', där X är det första ledet."
   }
 }

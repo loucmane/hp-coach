@@ -1,0 +1,85 @@
+{
+  "var-2022-2-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778409864453,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du minns att 5^{0}=1 men missar 5^{-2} kan hela första termen kännas som bara 5, varpå +5 ignoreras.",
+        "why_wrong": "5^{-2} är \\frac{1}{25} (inte 0 eller 1) — den påverkar produkten. Och de avslutande +5 hör till uttrycket."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du tar potensdelen som 1 (försumma exponenter helt) blir det 1+5=6.",
+        "why_wrong": "5^{0} är 1, men hela produkten är 5\\cdot 5^{0}\\cdot 5^{-2}=\\frac{1}{5}, inte 1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "5 + 5 = 10 är frestande om man hoppar över alla potenser och bara ser två 5:or.",
+        "why_wrong": "Multiplikationskedjan med exponenter är hela första termen, inte bara siffran 5."
+      }
+    ],
+    "pitfall": "5^{0}=1 är lätt; 5^{-2}=\\frac{1}{25} kräver att man minns negativa exponenter. Glömmer man den ena får man fel produktvärde.",
+    "solution_path": "Räkna ut potensprodukten först: 5\\cdot 5^{0}\\cdot 5^{-2}=5^{1+0-2}=5^{-1}=\\frac{1}{5}=0{,}2. Lägg sen till 5: 0{,}2+5=5{,}2.",
+    "technique": "Potenslagar: a^{m}\\cdot a^{n}=a^{m+n}. Räkna ihop exponenterna först (inklusive negativa), och tolka sen resultatet som ett decimaltal."
+  },
+  "var-2022-2-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778409864453,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man tror att kvadrater 'kancellerar varandra' när de subtraheras kan svaret kännas som 0.",
+        "why_wrong": "Bara x^{2} och y^{2} kancellerar — kvar blir 2xy-(-2xy)=4xy, inte 0."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om man stannar vid xy=1 och svarar med själva produkten blir svaret 1.",
+        "why_wrong": "Uttrycket reducerar till 4xy, inte xy. Det är koefficienten 4 som är poängen med kvadrats-skillnaden."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Att räkna 2xy (bara en av kvadreringstermerna) ger 2.",
+        "why_wrong": "Båda kvadreringarnas korstermer (+2xy och +2xy efter minustecken) bidrar — totalt 4xy, inte 2xy."
+      }
+    ],
+    "pitfall": "När du subtraherar (x-y)^{2} blir TECKNET PÅ KORSPRODUKTEN +2xy (två minus blir plus). Att glömma detta ger 0 istället för 4xy.",
+    "solution_path": "Använd kvadreringsregeln på båda termerna: (x+y)^{2}-(x-y)^{2}=(x^{2}+2xy+y^{2})-(x^{2}-2xy+y^{2})=4xy. Med xy=1 blir det 4\\cdot 1=4.",
+    "technique": "Kvadreringsregeln: (a+b)^{2}=a^{2}+2ab+b^{2} och (a-b)^{2}=a^{2}-2ab+b^{2}. Skillnaden mellan dem är alltid 4ab — en användbar identitet."
+  },
+  "var-2022-2-verb1-ORD-008": {
+    "_meta": {
+      "generated_at": 1778409864453,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Något man gör 'av intresse' är frivilligt — vilket kan kännas likt att göra något 'av hävd'.",
+        "why_wrong": "Av intresse = av nyfikenhet/lust; av hävd = av historisk vana, oavsett om man finner det intressant eller ej. Drivkraften är olika."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Lojalitet och tradition är båda långsiktiga åtaganden — orden hänger ofta ihop i kulturella sammanhang.",
+        "why_wrong": "Lojalitet är RIKTAD mot någon (människa, organisation); hävd är OPERSONLIG kontinuitet av en sedvänja. Att slänga skor på en pinne av hävd är inte lojalitet mot någon."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om man missuppfattar 'hävd' som 'på fri hand' kan misstag kännas rimligt.",
+        "why_wrong": "Hävd är raka motsatsen till misstag — det är just det att handlingen är ETABLERAD och AVSIKTLIG som gör den till hävd."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Om man förknippar hävd med att kräva sin rätt kan själviskhet kännas förenligt.",
+        "why_wrong": "Hävd kan visserligen handla om rättigheter, men 'av hävd' i adverbiell användning beskriver TIDSÄRENDE motiv (för att det alltid varit så) — inte personlig vinning."
+      }
+    ],
+    "pitfall": "Hävd har två betydelser: (1) långvarig sedvänja och (2) juridiskt anspråk. I 'av hävd' är det den första (sedvänjan) som gäller — inte juridik.",
+    "solution_path": "'Av hävd' är ett svenskt idiomatiskt uttryck — hävd betyder ursprungligen rättighet eller anspråk vunnet genom långvarigt bruk. Att göra något 'av hävd' är att göra det enligt etablerad sed — alltså av tradition.",
+    "technique": "Svenska idiom på 'av X' (av hävd, av princip, av nödvändighet, av vana) anger MOTIVET eller GRUNDEN för en handling — inte själva handlingen."
+  }
+}

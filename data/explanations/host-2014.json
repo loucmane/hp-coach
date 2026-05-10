@@ -1,0 +1,85 @@
+{
+  "host-2014-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778408942654,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att addera bråk genom att lägga ihop täljare och nämnare var för sig: \\frac{1}{3}+\\frac{1}{4}=\\frac{2}{7}, och sen ta 1-\\frac{2}{7}.",
+        "why_wrong": "Bråk adderas över gemensam nämnare, inte genom att lägga ihop täljare och nämnare separat. Rätt summa är \\frac{7}{12}."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Samma fälla som A — om \\frac{1}{3}+\\frac{1}{4} räknas som \\frac{2}{7}, fastnar siffran 7 i nämnaren.",
+        "why_wrong": "Nämnarna multipliceras inte heller direkt — gemensam nämnare för 3 och 4 är 12, inte 7."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "\\frac{7}{12} är den korrekta summan av \\frac{1}{3}+\\frac{1}{4} — det är frestande att stanna där.",
+        "why_wrong": "Frågan söker x, alltså KOMPLEMENTET som gör att summan blir 1. x = 1 − \\frac{7}{12}=\\frac{5}{12}, inte själva summan."
+      }
+    ],
+    "pitfall": "På formen 'a + x = 1' (eller likheten med summa = helt tal): kontrollera om du letar efter SUMMAN av de kända termerna eller efter den OKÄNDA termen — det är den vanligaste fällan här.",
+    "solution_path": "Lös ut x genom att flytta över: x = 1 − \\frac{1}{3} − \\frac{1}{4}. Med gemensam nämnare 12 blir det \\frac{12}{12}-\\frac{4}{12}-\\frac{3}{12}=\\frac{5}{12}.",
+    "technique": "För att lösa ekvationer med bråk: hitta gemensam nämnare först, sen addera/subtrahera över den nämnaren — täljare för sig, nämnare oförändrad."
+  },
+  "host-2014-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778408942654,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "15 ligger nära 18 numeriskt och kan kännas som ett rimligt 'nästan-svar'.",
+        "why_wrong": "15 = 3·5, men 5 finns inte i primfaktoriseringen av 6 eller 9. Talet 18 är till exempel delbart med både 6 och 9 men inte med 15."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som '9 + 18 = 27' eller '3 × 9' kan 27 kännas som den naturliga större mångfalden.",
+        "why_wrong": "27 = 3³ kräver tre faktorer av 3. 6 = 2·3 och 9 = 3² ger tillsammans bara TVÅ faktorer av 3 — alltså är 18 (= 2·3²) garanterat, inte 27. Talet 18 självt är inte delbart med 27."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "6 · 9 = 54 ligger nära 72, och 72 = 8 · 9 är onekligen delbart med både 6 och 9. Det är frestande att tänka 'större tal = säkrare'.",
+        "why_wrong": "Frågan letar efter det tal som x MÅSTE vara delbart med, inte ett tal som x KAN vara delbart med. x = 18 uppfyller villkoret men är inte delbart med 72."
+      }
+    ],
+    "pitfall": "MÅSTE-vara-delbart vs KAN-vara-delbart är frågans kärna. Större tal i alternativen är ofta KAN-svar, inte MÅSTE-svar.",
+    "solution_path": "Det minsta gemensamma multiplet (MGM) av 6 och 9 är 18. Varje tal som är delbart med både 6 och 9 är därför delbart med 18 — så 18 MÅSTE dela x.",
+    "technique": "Vid frågor om garanterad delbarhet — beräkna minsta gemensamma multipel (MGM) av de givna talen. Det är det MINSTA tal som måste dela x; alla större kandidater är spekulativa."
+  },
+  "host-2014-verb1-ORD-006": {
+    "_meta": {
+      "generated_at": 1778408942654,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'Spel' kan associeras med taktik och manövrer, vilket leder tankarna till hemliga förhandlingar.",
+        "why_wrong": "Idiomet handlar om att spela för en publik, inte bakom kulisserna. Synlighet är hela poängen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "'Spel' har också betydelsen 'spelande' i betydelsen vadslagning.",
+        "why_wrong": "Här syftar 'spel' på teaterspel/skådespel, inte hasardspel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Repetition kan associeras med teatervärlden via 'spela in en pjäs'.",
+        "why_wrong": "Repetition är förberedelser BORTOM publikens åsyn — det är raka motsatsen till att spela för galleriet."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Galleriet kan låta exklusivt — som ett konstgalleri.",
+        "why_wrong": "'Galleriet' i idiomet är de billigaste platserna i en teater, alltså den BREDA publiken — motsatsen till exklusivitet."
+      }
+    ],
+    "pitfall": "Ordet 'spel' har många betydelser (skådespel, vadslagning, taktik). I idiom är det ofta skådespel-betydelsen som gäller.",
+    "solution_path": "Idiomet 'spela för galleriet' kommer från teaterns värld — där 'galleriet' är publikplatserna högst upp. Att spela för galleriet är att överdriva för att imponera på publiken — alltså publikfrieri.",
+    "technique": "Svenska idiom från teatervärlden — 'spela för galleriet', 'gå i taket', 'kliva ur rollen' — bär ofta sin metafor öppet om man tänker på scenen."
+  }
+}

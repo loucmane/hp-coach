@@ -1,0 +1,147 @@
+{
+  "var-2013-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778409420394,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du läser av att B och G har samma horisontella position tror du att avståndet bara är vertikalt — då blir det 4 (en av kateterna).",
+        "why_wrong": "B och G är förskjutna både horisontellt och vertikalt — den raka linjen mellan dem är hypotenusan, inte en kateter."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Att medelvärdes-tänka mellan 4 och 5 ger 4,5 — frestande som 'ungefär'-svar.",
+        "why_wrong": "Pythagoras ger ett EXAKT värde när kateterna är heltal i ett taltrippel (3-4-5). Medelvärdes-uppskattningar gäller inte här."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du missminns kateterna som 4 och 4 (båda översta segmenten) får du \\sqrt{32}\\approx 5{,}66, vilket avrundas till 5,5.",
+        "why_wrong": "Kateterna är 3 (vertikalt — radskillnad) och 4 (horisontellt — kolumnskillnad). Inte 4 och 4."
+      }
+    ],
+    "pitfall": "Identifiera kateternas RIKTNINGAR (horisontell vs vertikal) korrekt innan du tillämpar Pythagoras — fel sidlängder ger fel hypotenusa.",
+    "solution_path": "B och G ligger på olika rader i figuren och bildar hypotenusan i en rätvinklig triangel med horisontalt och vertikalt avstånd. Pythagoras med katederna 3 och 4 ger \\sqrt{3^{2}+4^{2}}=\\sqrt{25}=5 längdenheter — det klassiska 3-4-5 taltrippelet.",
+    "technique": "Pythagoreiska taltripplar att memorera: 3-4-5, 5-12-13, 8-15-17. När en HP-uppgift ger heltalsavstånd för katetrarna är hypotenusan ofta en av dessa kända tredje-tal."
+  },
+  "var-2013-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778409420394,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du av misstag läser sidlängden i större kvadraten som x istället för x+y, blandas variablerna ihop och du får 2xy+x^{2}.",
+        "why_wrong": "Den mindre kvadratens sida är x; den större har sidan x+y. Det är y, inte x, som är 'det extra' — så det är y^{2}, inte x^{2}, som överlever."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns konjugatregeln eller kvadreringsregeln med fel tecken hamnar 2xy med minustecken: y^{2}-2xy.",
+        "why_wrong": "(x+y)^{2}=x^{2}+2xy+y^{2} har ALLA termer positiva. Det är konjugatregeln (a+b)(a-b)=a^{2}-b^{2} som har minustecknen — men den är inte tillämplig här."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Konjugatregeln (a+b)(a-b)=a^{2}-b^{2} ger den eleganta formen y^{2}-x^{2} — om man tror sidan är y och x.",
+        "why_wrong": "Sidan i den större kvadraten är x+y, INTE y. Konjugatregeln gäller bara om de två tal vi tar skillnaden mellan är (x+y) och (x−y), eller (x+y) och (y−x)."
+      }
+    ],
+    "pitfall": "Identifiera SIDORNA i de två formerna innan du subtraherar — den större har sidan x+y (inte y), och den mindre har sidan x. Felidentifierad sida = fel formel.",
+    "solution_path": "Den större kvadratens sida är x + y, så dess area är (x+y)^{2}=x^{2}+2xy+y^{2}. Den mindre kvadratens area är x^{2}. Skillnaden blir (x^{2}+2xy+y^{2})-x^{2}=2xy+y^{2}.",
+    "technique": "Kvadreringsregeln: (a+b)^{2}=a^{2}+2ab+b^{2}. När den skillnad du söker innehåller (x+y)^{2}-x^{2}, försvinner x^{2} och kvar blir 2xy+y^{2}."
+  },
+  "var-2013-verb1-ORD-008": {
+    "_meta": {
+      "generated_at": 1778409420394,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "En brukare kan ses som någon som 'använder' en organisations tjänster, vilket kan associeras med medlemskap.",
+        "why_wrong": "Ledamot är ett aktivt deltagande i en organisations beslutsfattande; brukare är passivt mottagande av tjänster. Riktningen är motsatt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Inom kommunen finns både brukare och medlare — ord som låter administrativa.",
+        "why_wrong": "Medlare är en NEUTRAL TREDJE PART mellan andra parter; brukaren är själva PARTEN som tar emot tjänsten. Olika roller."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Hantlangare 'brukar' ge handräckning — orden kan kännas relaterade.",
+        "why_wrong": "Hantlangare GER hjälp; brukare TAR EMOT tjänster. Givare vs mottagare."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "I äldre svenska kan 'bruka' associeras med jord — alltså trädgårdsmästare.",
+        "why_wrong": "Jordbrukare är specifik; brukare i HP-test är typiskt vårdens term. En trädgårdsmästare är dessutom yrkesman, inte 'brukare av tjänster'."
+      }
+    ],
+    "pitfall": "Brukare har dubbel betydelse (jord-brukare vs tjänstebrukare). Kontexten (uppdragsgivare? brukar­medverkan?) avgör vilken — i abstrakt frågeläge: vårdens innebörd.",
+    "solution_path": "Brukare har två huvudbetydelser i modern svenska — 'användare' inom vård/omsorg (alltså vårdtagare) och 'jordbrukare'. I HP-sammanhang är vårdsektorns betydelse den vanligare.",
+    "technique": "Svenska 'brukare' i samhälls-/vårdsammanhang = den som använder offentliga tjänster. Synonym: 'användare', 'vårdtagare', 'klient' beroende på kontext."
+  },
+  "var-2013-verb2-ORD-001": {
+    "_meta": {
+      "generated_at": 1778409420394,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Skoputsare och piccolo delar arvet av yrken kring betjäning och hotell.",
+        "why_wrong": "Skoputsaren är en specifik yrkesman med ett enda hantverk; piccolons uppdrag är generella småärenden runt hotellet."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Piccolo betyder 'liten' på italienska — vilket kan associeras med barn och därmed barnpassning.",
+        "why_wrong": "Det är yrkesutövaren som är ung (en pojke), inte den som tas hand om. Piccolon arbetar PÅ HOTELL, inte i privata hem med barn."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Mattknytare är ett antikt yrke och 'piccolo' låter också gammaldags.",
+        "why_wrong": "Mattknytaren är knuten till mattproduktion (textilhantverk); piccolon till tjänsteyrket på hotell. Helt olika branscher."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Cykelbud springer också ärenden — funktionellt liknar piccolons småuppdrag.",
+        "why_wrong": "Cykelbudet rör sig MELLAN fastigheter (postutdelning); piccolon håller sig PÅ ett hotell. Olika rörelsemönster och anställningar."
+      }
+    ],
+    "pitfall": "Piccolo i musiksammanhang är en LITEN flöjt — samma rotord (liten), helt olika betydelse. Kontexten på HP-frågan (yrkesord) avgör vilken.",
+    "solution_path": "Piccolo är ett italienskt lånord — bokstavligt 'liten'. På hotell betecknar det en ung anställd som bär bagage och utför småärenden — alltså hotellpojke (eng: bellhop).",
+    "technique": "Italienska lånord i hotell/restaurangsvenska: piccolo (springpojke), maître (överkypare), concièrge (portier). Alla är specifika hotellrolls-ord."
+  },
+  "var-2013-verb2-ORD-006": {
+    "_meta": {
+      "generated_at": 1778409420394,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Äldre upplagor och kasserade trycksaker delar 'gammalt-tryck'-egenskapen.",
+        "why_wrong": "Äldre upplaga är en GILTIG tidigare version (kanske värdefull för samlare); makulatur är OGILTIG från början, slängd. Värderingen är motsatt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Båda är text-relaterade ord från förlagsvärlden.",
+        "why_wrong": "Manuskript är OPUBLICERAT material i författarens händer; makulatur är REDAN TRYCKT material som kasseras. Före vs efter tryck."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Ogranskat textmaterial låter som något 'preliminärt' i en tryckprocess.",
+        "why_wrong": "Ogranskat material är TEXT-FAS (innan ändringar gjorts); makulatur är TRYCK-FAS (efter att fel uppstått). Olika moment i produktionen."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Arkiverade årgångar är också gamla tryck och delar tidsdimensionen.",
+        "why_wrong": "Arkiverat material är BEVARAT med avsikt; makulatur är BORTKASTAT med avsikt. Ändringen är att makulatur aldrig nådde slutanvändaren."
+      }
+    ],
+    "pitfall": "Förleden 'maku-' (fläck) markerar redan att ordet är NEGATIVT värderat — fläckat, smutsigt, oanvändbart.",
+    "solution_path": "Makulatur är ett tryckeritekniskt ord från latinets macula (fläck) — det betecknar tryckta papper som blivit oanvändbara på grund av tryckfel, skador eller överproduktion. Alltså kasserade trycksaker.",
+    "technique": "Tryckteknikens latinska lånord: makulera (kassera, fr. macula = fläck), imprimatur (tryckes-tillstånd, lat. = 'må det tryckas'), addenda (tillägg)."
+  }
+}

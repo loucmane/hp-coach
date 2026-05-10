@@ -1,0 +1,28 @@
+{
+  "host-2016-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778408942654,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Att halvera båda delarna ger 6π + 8 — det kan kännas rätt om man läser figuren som hälften så stor som den faktiskt är.",
+        "why_wrong": "Sidan är 4 cm (inte 2 cm) och sektorn är 270° (inte 135°). Båda måtten ska användas i fullt format."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om sektorn räknas som 135° (hälften av 270°) blir den 6π, men kvadraten räknas rätt: 6π + 16.",
+        "why_wrong": "Sektorn täcker 270° (eller 3/4 cirkel), vilket motsvarar att den saknade kvarten ligger inne i kvadraten. Hela 12π hör hit."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Sektorn räknas rätt (12π) men man tar bara halva kvadratens area (8) — kanske för att man tror att kvadraten 'överlappar' sektorn till hälften.",
+        "why_wrong": "Kvadraten och sektorn ligger BREDVID varandra (delar bara medelpunkt M); de överlappar inte. Båda areorna räknas i sin helhet."
+      }
+    ],
+    "pitfall": "Avgör vilken DEL av cirkeln sektorn täcker — 90°, 180°, 270°? — innan du räknar areor. Här är 270° (3/4) den dominerande fällan; 90° eller 135° ger fel resultat.",
+    "solution_path": "Figuren består av två delar som adderas. Kvadratens area är 4^{2}=16 cm². Cirkelsektorn täcker 270° (3/4 av en hel cirkel) med radie 4, alltså \\frac{3}{4}\\cdot\\pi\\cdot 4^{2}=12\\pi cm². Totalt: 12\\pi+16 cm².",
+    "technique": "Vid sammansatta figurer: beräkna varje grundform (kvadrat, sektor, triangel) för sig och addera. Cirkelsektorns area = (vinkel/360°) · π · r²."
+  }
+}

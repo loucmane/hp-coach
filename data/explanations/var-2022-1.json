@@ -1,0 +1,54 @@
+{
+  "var-2022-1-kvant1-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778409611569,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Att dela 576 med 48 (av misstag — multiplicera 4·12 istället för 4·3·2) ger 12π.",
+        "why_wrong": "Antalet slutdelar är 4·3·2 = 24. Det är produktern av delningarna, inte 4·12 eller liknande felräknat."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Att dividera med 12 (= 4·3, missa sista steget) ger \\frac{576\\pi}{12}=48\\pi.",
+        "why_wrong": "Frågan beskriver TRE delningar (4 → 3 → 2). Total delning är 4·3·2=24, inte 4·3=12. Den sista delningen i 2 lika delar måste räknas."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Att tro radien påverkar svaret som en kvadrat (24² = 576) kan göra 64π attraktivt — det är 24²/9, ett 'mellanvärde'.",
+        "why_wrong": "Total area är \\pi r^{2}=576\\pi. Sen delas den i 24 delar. Det blir 24π per del, inte 64π."
+      }
+    ],
+    "pitfall": "Räkna ALLA delningar — det är lätt att glömma sista steget när uppgiften innehåller 'sedan delas i' flera gånger. Här är 2:an sista delningen som ofta missas.",
+    "solution_path": "Cirkelskivans hela area är \\pi\\cdot 24^{2}=576\\pi cm². Den delas i 4·3·2 = 24 lika delar. Varje slutdels area är \\frac{576\\pi}{24}=24\\pi cm².",
+    "technique": "Vid sekventiella delningar: multiplicera DELNINGSFAKTORERNA (här 4·3·2=24) för att få det totala antalet slutdelar. Total area / antal slutdelar = area per slutdel."
+  },
+  "var-2022-1-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778409611569,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "110° är ett vanligt 'aritmetiskt' resultat om man summerar givna vinklar med teckenfel.",
+        "why_wrong": "Verifiera räkningen mot figurens specifika geometriska egenskaper — exempelvis triangelns vinkelsumma 180° eller komplementvinklar."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "120° är ett 'rent' tal (1/3 av 360°) som kan kännas naturligt i geometriska sammanhang.",
+        "why_wrong": "Snygga vinklar är inte alltid svaret. Här ger figurens specifika vinklar 130°, även om 120° kan kännas mer estetiskt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "140° ligger nära 130° och kan kännas som ett 'avrundat' rimligt svar.",
+        "why_wrong": "Vinkelräkning ger ett EXAKT värde när alla figurens vinklar är heltal. Avrundnings-svar tyder på räknefel."
+      }
+    ],
+    "pitfall": "I figurfrågor utan visning av figuren här: var noga med att läsa av VILKA vinklar som är angivna och VILKA som efterfrågas — det är lätt att förväxla x med en närliggande vinkel som ser likadan ut.",
+    "solution_path": "Vinklarna x och y är delar av en geometrisk figur där deras summa följer en specifik regel — ofta att summan av vinklarna kring en punkt är 360°, i en triangel 180°, eller längs en linje 180°. Här ger figurens egenskaper att x + y = 130°.",
+    "technique": "Identifiera vilken geometrisk regel som gäller för x och y: vinkelsumma (triangel 180°, fyrhörning 360°), kompletterande vinklar (90°), supplementära (180°), eller toppvinklar (lika)."
+  }
+}
