@@ -1,28 +1,28 @@
 {
   "host-ver1-2019-kvant2-XYZ-010": {
     "_meta": {
-      "generated_at": 1778409170987,
+      "generated_at": 1778410520622,
       "model": "claude-opus-4-7"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Om du minimerar varje val (välj alltid det som minskar) hamnar du i 10^{0}=1.",
+        "why_tempting": "Om du minimerar varje val (välj alltid det som minskar) hamnar du i 10^{0}=1.",
         "why_wrong": "Frågan ber om STÖRSTA möjliga z — välj därför operationen som maximerar exponenten i varje steg."
       },
       {
         "letter": "B",
-        "why_tempting": "Att maximera bara första steget och stanna där ger x=10^{5}, vilket kan locka som svar.",
+        "why_tempting": "Att maximera bara första steget och stanna där ger x=10^{5}, vilket kan locka som svar.",
         "why_wrong": "Frågan handlar om z, inte x. Steg 2 och 3 fortsätter att förstora talet via division med små tal — exponenten växer hela vägen."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du missräknar och tar division med 10^{-1} och 10^{-4} som 'fördubblade' steg, kan 10^{15} kännas inom räckhåll.",
-        "why_wrong": "Räkna additionen av exponenterna: 5 + 1 + 4 = 10. Division med 10^{-n} ger ADDITION av n, inte multiplikation."
+        "why_tempting": "Om du missräknar och tar division med 10^{-1} och 10^{-4} som 'fördubblade' steg, kan 10^{15} kännas inom räckhåll.",
+        "why_wrong": "Räkna additionen av exponenterna: 5 + 1 + 4 = 10. Division med 10^{-n} ger ADDITION av n, inte multiplikation."
       }
     ],
     "pitfall": "Identifiera bråktal som potenser av 10 innan du väljer operation: 100 = 10², 0,1 = 10⁻¹, 0,0001 = 10⁻⁴. Annars är det svårt att jämföra effekten av multiplikation kontra division.",
-    "solution_path": "Maximera z genom att välja operation per steg. Step 1: 10^{3}\\,?\\,100=x — multiplikation ger 10^{3}\\cdot 10^{2}=10^{5}, vilket är största x. Step 2: x\\,?\\,10^{-1}=y — division med liten exponent ger 10^{5}/10^{-1}=10^{6}. Step 3: y\\,?\\,0{,}0001=z — division med 10^{-4} ger 10^{6}/10^{-4}=10^{10}.",
+    "solution_path": "Maximera z genom att välja operation per steg. Step 1: 10^{3}\\,?\\,100=x — multiplikation ger 10^{3}\\cdot 10^{2}=10^{5}, vilket är största x. Step 2: x\\,?\\,10^{-1}=y — division med liten exponent ger 10^{5}/10^{-1}=10^{6}. Step 3: y\\,?\\,0{,}0001=z — division med 10^{-4} ger 10^{6}/10^{-4}=10^{10}.",
     "technique": "Vid potenser av samma bas: division innebär subtraktion av exponenter, multiplikation innebär addition. Division med en NEGATIV exponent blir alltså addition av motsvarande positiv exponent — ett kraftigt 'förstoringsverktyg'."
   }
 }
