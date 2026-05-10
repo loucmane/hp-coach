@@ -92,10 +92,12 @@ export function ExplanationPanel({ qid, correct }: Props) {
     >
       <Header correct={correct} expanded={expanded} onToggle={() => setExpanded((v) => !v)} />
       {expanded &&
-        (state.kind === 'loading' ? (
-          <LoadingSkeleton />
-        ) : (
+        (state.kind === 'ready' ? (
           <Body explanation={state.explanation} qid={qid} />
+        ) : (
+          // idle (initial mount, useEffect hasn't fired yet) and loading
+          // both render the skeleton; missing/error returned null earlier.
+          <LoadingSkeleton />
         ))}
     </div>
   )
