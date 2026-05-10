@@ -15,6 +15,8 @@ SRC="$REPO_ROOT/data/parsed"
 DEST="$REPO_ROOT/app/public/data"
 FIG_SRC="$REPO_ROOT/data/figures"
 FIG_DEST="$REPO_ROOT/app/public/figures"
+EXPL_SRC="$REPO_ROOT/data/explanations"
+EXPL_DEST="$REPO_ROOT/app/public/explanations"
 
 if [ ! -d "$SRC" ]; then
   echo "Parser output missing at $SRC."
@@ -47,4 +49,19 @@ if [ -d "$FIG_SRC" ]; then
   cp -R "$FIG_SRC"/. "$FIG_DEST"/
   fig_count=$(find "$FIG_DEST" -maxdepth 1 -name '*.svg' | wc -l | tr -d ' ')
   echo "synced $fig_count figure(s) → app/public/figures/"
+fi
+
+# Layer 2 explanations (per-question coaching content). Generated
+# offline by pipeline/explanations/generate.py; one JSON file per
+# exam keyed by qid, plus an _index.json listing covered qids. The
+# SPA's loadExplanation() fetches them lazily; missing explanations
+# are non-fatal — the panel just doesn't mount. Mirroring the whole
+# directory keeps source-of-truth in data/ and the SPA's view in
+# public/ in lock-step, the same pattern as figures.
+if [ -d "$EXPL_SRC" ]; then
+  rm -rf "$EXPL_DEST"
+  mkdir -p "$EXPL_DEST"
+  cp -R "$EXPL_SRC"/. "$EXPL_DEST"/ 2>/dev/null || true
+  expl_count=$(find "$EXPL_DEST" -maxdepth 1 -name '*.json' ! -name '_index.json' | wc -l | tr -d ' ')
+  echo "synced $expl_count explanation file(s) → app/public/explanations/"
 fi

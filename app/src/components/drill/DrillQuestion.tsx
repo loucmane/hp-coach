@@ -10,6 +10,7 @@
 // targets are forgiving even on small screens.
 
 import { type CSSProperties, useEffect, useRef } from 'react'
+import { ExplanationPanel } from '@/components/drill/ExplanationPanel'
 import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { MathText } from '@/components/MathText'
 import type { AnswerLetter, Option, Question } from '@/data/questions'
@@ -125,6 +126,9 @@ export function DrillQuestion({ question, picked, graded, onPick }: Props) {
           />
         ))}
       </div>
+      {graded && picked != null && (
+        <ExplanationPanel qid={question.qid} correct={picked === question.answer} />
+      )}
     </div>
   )
 }
