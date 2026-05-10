@@ -1,4 +1,186 @@
 {
+  "host-ver2-2019-kvant1-KVA-013": {
+    "solution_path": "2⁶ = 64. 3⁴ = 81. 81 > 64 — B.",
+    "technique": "Direkt utvärdering av små potenser.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 2⁶ = 96 eller liknande felräkning.",
+        "why_wrong": "2⁶ = 64; 3⁴ = 81; II vinner."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att potenserna är lika.",
+        "why_wrong": "64 ≠ 81."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver räknare.",
+        "why_wrong": "Båda potenser är trivialt utvärderingsbara."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant1-KVA-014": {
+    "solution_path": "I: 1/4 + 1/16 + 1/64 = 16/64 + 4/64 + 1/64 = 21/64. II: 85/256 = 21,25/64. 85/256 - 21/64 = 85/256 - 84/256 = 1/256. II > I — B.",
+    "technique": "Bråk-summor: gemensam nämnare 256.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 21/64 = 84/256 ≈ 85/256.",
+        "why_wrong": "Skillnaden 1/256 är liten men reell; II vinner med marginal."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att de är lika.",
+        "why_wrong": "84/256 ≠ 85/256; differens 1/256."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att talen är otydliga.",
+        "why_wrong": "Direkt jämförelse via 256-nämnare."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant1-KVA-015": {
+    "solution_path": "Båda trianglar är 3-4-5-typ (skalenligt 6-8-10 och 9-12-15). Båda är rätvinkliga; största vinkel = 90° i båda. Lika — C.",
+    "technique": "Skalenliga trianglar har samma vinklar.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att större triangel har större vinklar.",
+        "why_wrong": "Vinklar är skalfria; båda har största vinkel 90°."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 9-12-15 har mer \"rymd\" och därmed större vinklar.",
+        "why_wrong": "Inte alls; vinklarna är invarianter under skalning."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver räkna båda.",
+        "why_wrong": "Skalfaktor 1,5 mellan dem ger samma vinklar."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant1-KVA-016": {
+    "solution_path": "I: 3(x+y) + 3(-x-y) = 3x + 3y - 3x - 3y = 0. II: -3. 0 > -3 — A.",
+    "technique": "Distribuera; konstantvärde avslöjas.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel på distributionen och få I < 0.",
+        "why_wrong": "I = 0 entydigt; > -3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att I = -3.",
+        "why_wrong": "I = 0, inte -3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att x och y påverkar.",
+        "why_wrong": "Båda variabler kancellerar; I är konstant 0."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant1-KVA-017": {
+    "solution_path": "Konvolym = πr²h/3. I: π·9·4/3 = 12π. II: π·16·3/3 = 16π. 16π > 12π — B.",
+    "technique": "Konvolym: r²h-faktorn; större r dominerar.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att högre kon ger större volym.",
+        "why_wrong": "I har högre kon (4 cm) men mindre radie; r² väger tyngst."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att volymerna är lika.",
+        "why_wrong": "12π ≠ 16π."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att π gör jämförelsen otydlig.",
+        "why_wrong": "π faktoreras; jämförelsen är 12 vs 16."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant1-KVA-021": {
+    "solution_path": "x% av y = 50; x% av z = 60. y/z = 50/60 = 5/6. y < z. Men y kan vara 5 eller 50 eller 5000 — beroende på x. y vs 60 är fritt. D.",
+    "technique": "Procent låser förhållandet, inte absoluta värden.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att y > 60 av \"mer än 60% av något\".",
+        "why_wrong": "y kan vara 1 eller 1000; absoluta storleken är fri."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta y < 60 specifikt.",
+        "why_wrong": "För x = 1, y = 5000; för x = 100, y = 50."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid y = 60 av symmetri.",
+        "why_wrong": "Likhet är ett av tre fall."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant1-KVA-022": {
+    "solution_path": "2P + L + 5S = 10S → 2P + L = 5S. 4P + 2L = 10S → 2(2P + L) = 10S → 2P + L = 5S (samma villkor). Bara en ekvation, två obekanta — kostnaden för 2P vs 1L är fri. D.",
+    "technique": "Beroende ekvationer: en av två villkor är överflödig.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att två ekvationer betyder två villkor.",
+        "why_wrong": "Den andra är 2 ggr den första; bara ett oberoende villkor."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att L > 2P.",
+        "why_wrong": "Från 2P + L = 5S kan L vara stor (P liten) eller liten (P stor)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 2P = L specifikt.",
+        "why_wrong": "Likhet kräver 2P = L men det är ett av många fall."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
   "host-ver2-2019-kvant1-XYZ-001": {
     "_meta": {
       "generated_at": 1778415638489,
@@ -310,6 +492,188 @@
     "pitfall": null,
     "solution_path": "x+y = 2m och y+z = 2n. Subtrahera: x-z=2m-2n=2(m-n).",
     "technique": "Medel + subtraktion: 2m − 2n = 2(m − n)."
+  },
+  "host-ver2-2019-kvant2-KVA-013": {
+    "solution_path": "4/x - 1/2 = 2 → 4/x = 5/2 → x = 8/5 = 1,6. 1,6 > 1 — A.",
+    "technique": "Bråkekvation: isolera 4/x och invertera.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel och få x < 1.",
+        "why_wrong": "4/x = 5/2 ⇒ x = 8/5 = 1,6."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x = 1.",
+        "why_wrong": "1,6 ≠ 1; x = 1,6."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att lösningen är otydlig.",
+        "why_wrong": "Standardlösning, x = 1,6 entydigt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant2-KVA-014": {
+    "solution_path": "Pris 500. Kupong A först: 500 - 100 = 400, sedan B: 400·0,8 = 320. Total rabatt: 500 - 320 = 180. Kupong B först: 500·0,8 = 400, sedan A: 400 - 100 = 300. Total rabatt: 500 - 300 = 200. 200 > 180 — B.",
+    "technique": "Sammansatta rabatter: ordning spelar roll vid mix av kr-rabatt och %-rabatt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att I:s ordning ger större rabatt.",
+        "why_wrong": "A först ger 180 kr rabatt; B först ger 200 kr — B-A ordning vinner."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att rabatterna är lika.",
+        "why_wrong": "180 ≠ 200; ordningen spelar roll."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta om kupongerna är specifika.",
+        "why_wrong": "Båda är fullt definierade; rabatterna är fasta tal."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant2-KVA-016": {
+    "solution_path": "x < -1, så x är negativ. I: 1 - x = 1 + |x| > 0. II: x - 1 = -|x| - 1 < 0. I > II — A.",
+    "technique": "Tecknet på x: substituera |x| och hantera tecken.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att x - 1 är större när x är negativ.",
+        "why_wrong": "x < -1 ger x - 1 < -2; 1 - x > 2; I > II tydligt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att uttrycken är \"speglade\" och lika.",
+        "why_wrong": "Speglingen är i värde, inte i tecken; I = -II skiljer sig markant från lika."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att x:s exakta värde påverkar.",
+        "why_wrong": "För alla x < -1 är I > 0 > II."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant2-KVA-018": {
+    "solution_path": "f(1) = -3 + 5 = 2. f(-1) = 3 + 5 = 8. I = 2/8 = 1/4. II = 8/2 = 4. 4 > 1/4 — B.",
+    "technique": "Sätt in värden; jämför kvoter direkt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att I = f(1)/f(-1) > f(-1)/f(1).",
+        "why_wrong": "2/8 = 1/4 = 0,25; 8/2 = 4; II > I tydligt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att kvoter är reciproka och lika.",
+        "why_wrong": "a/b och b/a är reciproker; lika bara om a = b. Här a = 2 ≠ 8 = b."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta f mer noggrant.",
+        "why_wrong": "f är fullständigt definierad; båda värden är direkta."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant2-KVA-019": {
+    "solution_path": "I: 3³ + 3³ + 3³ = 3·3³ = 3⁴ = 81. II: 3⁴ = 81. Lika — C.",
+    "technique": "Distribuera basväxling: 3·3ⁿ = 3ⁿ⁺¹.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att summan av tre kuber är mer än 3⁴.",
+        "why_wrong": "3·3³ = 3⁴ exakt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 3⁴ > 3·3³.",
+        "why_wrong": "De är samma sak."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att exponentregler är otydliga.",
+        "why_wrong": "aⁿ + aⁿ + aⁿ = 3aⁿ = aⁿ⁺¹ när a = 3."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant2-KVA-020": {
+    "solution_path": "Tid Kalle = 60/22 ≈ 2,73 h. Tid Bosse = 54/18 = 3 h. 3 > 2,73 — B.",
+    "technique": "Tid = sträcka/hastighet; jämför direkt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att Kalles längre sträcka tar längre tid.",
+        "why_wrong": "Kalle är snabbare; tid 2,73 h; Bosse 3 h."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att tiderna är lika.",
+        "why_wrong": "2,73 ≠ 3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver räknare.",
+        "why_wrong": "Direkta divisioner ger entydigt resultat."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
+  },
+  "host-ver2-2019-kvant2-KVA-021": {
+    "solution_path": "I: 8x cm (åttahörning, åtta lika sidor). II: rätvinklig triangel med längsta sida 5x; om triangeln är 3x-4x-5x: omkrets = 12x. 12x > 8x — B.",
+    "technique": "Rätvinklig triangel: 3-4-5-storlek; omkrets 12.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att åttahörning har större omkrets.",
+        "why_wrong": "8x < 12x; trianglarnas form ger större total."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att omkretsarna är ungefär lika.",
+        "why_wrong": "8x och 12x är klart åtskilda."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att triangeln kanske inte är 3-4-5.",
+        "why_wrong": "Längsta sida 5x → standardform 3-4-5; triangeln måste vara 3x-4x-5x för att fungera. Strikt minimal omkrets är 12x."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424837152
+    }
   },
   "host-ver2-2019-kvant2-XYZ-001": {
     "_meta": {

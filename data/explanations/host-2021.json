@@ -1,4 +1,212 @@
 {
+  "host-2021-kvant1-KVA-013": {
+    "solution_path": "(x + y + z)/3 = 12 → x + y + z = 36. y + z = 30, så x = 6. 6 < 9 — B.",
+    "technique": "Medelvärde gånger antal = summa; subtrahera kända termer.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få x = 12 (som om medelvärdet var x självt).",
+        "why_wrong": "x = 36 - 30 = 6, inte 12 eller 9."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x = 9 (= medelvärdet av summan i något sammanhang).",
+        "why_wrong": "9 vore lika med II, men korrekt x är 6."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man saknar info om y och z separat.",
+        "why_wrong": "Bara summan y + z används; x bestäms entydigt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant1-KVA-014": {
+    "solution_path": "I: 1+1/4=5/4. II: 10/8=5/4. Lika — C.",
+    "technique": "Bråkomvandling: 5/4 = 10/8 är samma tal i olika form.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 1 + 1/4 är \"större\" än 10/8 av visuell intuition.",
+        "why_wrong": "5/4 och 10/8 är samma rationella tal."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 10/8 = 1,25 < 1 + 1/4.",
+        "why_wrong": "1 + 1/4 = 1,25 också; båda är 1,25."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att olika nämnare gör likheten otydlig.",
+        "why_wrong": "10/8 förkortar till 5/4 = 1 + 1/4 entydigt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant1-KVA-016": {
+    "solution_path": "I: 12·25 = 300 cm². II: 8·64/2 = 256 cm². 300 > 256 — A.",
+    "technique": "Trianglar har faktor 1/2 i area; jämför direkta produkter mot rektangelarea.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att 8·64 = 512 > 300 och glömma faktorn 1/2.",
+        "why_wrong": "Triangelns area är 8·64/2 = 256, inte 512."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att areorna \"balanserar\" eftersom 12·25 ≈ 8·64/2.",
+        "why_wrong": "300 vs 256; skillnaden 44 cm² är inte försumbar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta orientering.",
+        "why_wrong": "Båda areor är fullständigt definierade."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant1-KVA-017": {
+    "solution_path": "2(2x + 4) = 2x + 4 → 4x + 8 = 2x + 4 → 2x = -4 → x = -2. -2 < 0 — B.",
+    "technique": "Linjär ekvation: distribuera, samla x på en sida.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel på distributionen och få x = +2 eller > 0.",
+        "why_wrong": "Korrekt: 4x + 8 = 2x + 4 → 2x = -4 → x = -2 (negativ)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x = 0 (om man tror ekvationen ger likhet trivialt).",
+        "why_wrong": "Vid x = 0 blir vänster 8, höger 4 — inte lika; lösningen är x = -2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att ekvationen kan ha flera lösningar.",
+        "why_wrong": "Linjär ekvation har exakt en lösning; här x = -2."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant1-KVA-018": {
+    "solution_path": "f(x)=x^{2}-2x-3. f(3) = 9 - 6 - 3 = 0. f(-1) = 1 + 2 - 3 = 0. Lika (båda är nollställen) — C.",
+    "technique": "Faktorisering: x^{2}-2x-3=(x-3)(x+1) — 3 och -1 är båda nollställen.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna f(3) = 9 - 6 - 3 = 0 men tro att f(-1) ger ett positivt värde.",
+        "why_wrong": "f(-1) = 1 + 2 - 3 = 0 också; båda är nollställen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att f(-1) är negativt och f(3) positivt.",
+        "why_wrong": "Båda är 0; -1 och 3 är polynomets båda rötter."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta funktionens form bättre.",
+        "why_wrong": "Polynomet är fullt specificerat; värdena är direkta."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant1-KVA-019": {
+    "solution_path": "70% av 105 = 0,7·105 = 73,5. 73,5 > 73 — A.",
+    "technique": "Procent: multiplicera direkt, jämför med målet.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 70% av 100 = 70 < 73.",
+        "why_wrong": "Basen är 105, inte 100; 0,7·105 = 73,5 > 73."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 70·1,05 = 73,5 ≈ 73 och kalla likhet.",
+        "why_wrong": "73,5 ≠ 73; differensen 0,5 är liten men reell."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att procentekvationer kräver räknare.",
+        "why_wrong": "0,7·105 = 73,5 räknas direkt i huvudet."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant1-KVA-020": {
+    "solution_path": "F(5) = 1+2+3+4 = 10. G(11) = 2+4+6+8+10 = 30. G(11)/2 = 15. 15 > 10 — B.",
+    "technique": "Triangulartal: summa av 1 till n-1 är n(n-1)/2; även summor är n·(n/2 + 1).",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna G(11) = 30 men dela med 2 för att få 15 — och felaktigt jämföra mot F(5) = 10.",
+        "why_wrong": "15 > 10 ger II > I; F är klart mindre."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att I och II är nära varandra.",
+        "why_wrong": "10 vs 15 — skillnad på 5, klart åtskilda."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man missar exakta gränser.",
+        "why_wrong": "F(5) = sum av positiva heltal < 5 = 1+2+3+4; G(11) = 2+4+6+8+10. Båda fullt definierade."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant1-KVA-021": {
+    "solution_path": "I: π (omkrets/diameter på cirkel). II: 4 (omkrets/sidlängd på kvadrat). 4 > π ≈ 3,14 — B.",
+    "technique": "Standardkonstanter: π ≈ 3,14, kvadratens omkrets/sida = 4.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att π är större än 4 (som \"specialkonstant\").",
+        "why_wrong": "π ≈ 3,14, klart mindre än 4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att π och 4 är \"approximativt lika\".",
+        "why_wrong": "4 - π ≈ 0,86 — märkbar skillnad."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att kvoterna är situationsberoende.",
+        "why_wrong": "Båda kvoter är universella konstanter, oberoende av storlek."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
   "host-2021-kvant1-XYZ-001": {
     "_meta": {
       "generated_at": 1778414728638,
@@ -284,6 +492,188 @@
     "pitfall": null,
     "solution_path": "En linje delar en rektangel i två lika delar om den går genom rektangelns CENTRUM. Av figurens hörn beräknas centrum, och alternativ C passerar den punkten.",
     "technique": "Linje delar rektangel i lika delar ⇔ linjen går genom rektangelns mittpunkt (centrum)."
+  },
+  "host-2021-kvant2-KVA-013": {
+    "solution_path": "3·(2/x − 1/6) = 3/2 → 2/x − 1/6 = 1/2 → 2/x = 1/2 + 1/6 = 2/3 → x = 3. 3 > 1/3 — A.",
+    "technique": "Lös för x: isolera bråket, lös ut.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel och få x = 1/3.",
+        "why_wrong": "Korrekt: 2/x = 2/3 ger x = 3, inte 1/3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att x = 1/3 av symmetri.",
+        "why_wrong": "x = 3 är 9 ggr större än 1/3 = II."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att ekvationen är otydlig.",
+        "why_wrong": "Lös steg för steg: distribuera, isolera, lös. x = 3 entydigt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant2-KVA-015": {
+    "solution_path": "75% av kvinnorna är högerhänta → 25% är vänsterhänta = 12 → kvinnor = 48. Män = 100 - 48 = 52. 52 > 48 — B.",
+    "technique": "Procent och absoluttal: lös procentekvationen för totala antalet.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 12 vänsterhänta kvinnor signalerar liten kvinnlig grupp som matchas av män.",
+        "why_wrong": "12 = 25% av kvinnor → 48 kvinnor; 52 män är fler."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 50/50 fördelning.",
+        "why_wrong": "48 ≠ 52; även om det är nära, är skillnaden bestämd."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver mer info om män.",
+        "why_wrong": "Totala = 100 ger män = 100 - kvinnor = 52 entydigt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant2-KVA-017": {
+    "solution_path": "x/y = 5 → x = 5y. 20% av x = 0,2·5y = y. Lika med y — C.",
+    "technique": "Procent och proportion: 20% av (5y) = y entydigt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 20% av x är mycket mindre än y.",
+        "why_wrong": "Om x = 5y, så är 20% av x = y exakt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 20% av x > y av \"viktning\".",
+        "why_wrong": "0,2·5y = y; ingen viktning, exakt likhet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta x och y separat.",
+        "why_wrong": "Förhållandet x/y = 5 räcker; 20% av x = y följer entydigt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant2-KVA-018": {
+    "solution_path": "3x - 1 = 5x + 3 → -2x = 4 → x = -2. -2 < 0 — B.",
+    "technique": "Skärningspunkt: lika y, lös ut x.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få x = +2.",
+        "why_wrong": "3x - 1 = 5x + 3 ger -2 = 2x → x = -2 (negativ)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x = 0 där båda linjer skär y-axeln.",
+        "why_wrong": "L₁ vid x = 0 är y = -1, L₂ är y = 3 — olika; skärningspunkten är inte där."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att två linjer kanske inte korsar.",
+        "why_wrong": "Olika lutningar (3 ≠ 5) garanterar exakt en skärningspunkt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant2-KVA-020": {
+    "solution_path": "y² - x² = (y-x)(y+x) = 9. Med y = x+1, (1)(2x+1) = 9 → 2x+1 = 9 → x = 4, y = 5. 5 < 6 — B.",
+    "technique": "Skillnad-av-kvadrater faktorisering: y² - x² = (y-x)(y+x).",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få y = 6.",
+        "why_wrong": "2x + 1 = 9 → x = 4, y = 5; inte 6."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att y = 6 av \"9 = 6 - något\".",
+        "why_wrong": "Faktorisering ger entydigt y = 5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att flera fall är möjliga.",
+        "why_wrong": "Bara en heltalslösning (4, 5) finns för efterföljande positiva heltal."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant2-KVA-021": {
+    "solution_path": "Låt R = ringar, A = armband, H = halsband. A = 2R; H = R + 3 = A - 2 = 2R - 2 → R + 3 = 2R - 2 → R = 5, A = 10, H = 8. H = 8 — C.",
+    "technique": "Tre okända, tre ekvationer: lös linjärt steg för steg.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få fler halsband än 8.",
+        "why_wrong": "Systemet ger entydigt H = 8."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att H < 8 av asymmetri.",
+        "why_wrong": "H = 8 exakt; lika med II."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att tre villkor inte räcker.",
+        "why_wrong": "Tre linjära villkor på tre obekanta ger entydig lösning."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
+  },
+  "host-2021-kvant2-KVA-022": {
+    "solution_path": "Median av 10 värden = medelvärde av 5:e och 6:e. Om största värdet tas bort, kvarstår 9 värden; medianen blir det 5:e värdet (av de 9 sorterade), vilket är det 5:e i ursprungsordningen. Det kan vara ≤ 25 eller = 25 — D.",
+    "technique": "Median efter borttagning: ändras vanligen, men inte alltid förutsägbart.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att borttagning av största värdet sänker medianen.",
+        "why_wrong": "Den 5:e ursprungliga är ≤ 25 (kan vara mindre, kan vara 25)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att medianen är oförändrad.",
+        "why_wrong": "Den ändras typiskt; ny median = 5:e ursprungliga, som var ≤ ursprungsmedianen 25."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att medianen alltid är 25 om det 5:e värdet var 25.",
+        "why_wrong": "Det 5:e ursprungliga kan vara mindre än 25; likhet inträffar ibland."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621014
+    }
   },
   "host-2021-kvant2-XYZ-001": {
     "_meta": {

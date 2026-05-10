@@ -1,4 +1,160 @@
 {
+  "host-2016-kvant1-KVA-013": {
+    "solution_path": "-7(x+1)=-8x → -7x-7=-8x → x=7. 7 > 0 — A.",
+    "technique": "Lös linjär ekvation: samla x på en sida.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel och få x=-7.",
+        "why_wrong": "Förflytta -8x till vänster: -7x + 8x = 7, alltså x = 7, positivt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x = 0 vid förenkling.",
+        "why_wrong": "x = 0 ger -7=0, falskt; lösningen är x = 7, inte 0."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att en linjär ekvation kan ha flera lösningar.",
+        "why_wrong": "En linjär ekvation har exakt en lösning; här x = 7."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317528
+    }
+  },
+  "host-2016-kvant1-KVA-016": {
+    "solution_path": "Medelvärden: (x+y+z)/3=w/3 → x+y+z=w; (y+z+w)/3=x/3 → y+z+w=x. Subtrahera: x-w=w-x → x=w, så y + z = 0. Men y och z individuellt är fria; båda kan vara större eller mindre. D.",
+    "technique": "Två lineära villkor på fyra variabler löser sällan ut alla — kvarstående frihet ger D.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att förenkla y + z = 0 och tro att y > 0 och z < 0.",
+        "why_wrong": "Tecknet är fritt; även y = z = 0 är giltigt med x = w = 0."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att y < z av symmetri.",
+        "why_wrong": "Symmetri ger ingen rangordning; y och z är utbytbara."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid y = z = 0 (uppfyller y + z = 0) och kallar likhet.",
+        "why_wrong": "Det är ett av oändligt många fall; y = 5, z = -5 fungerar lika bra."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317528
+    }
+  },
+  "host-2016-kvant1-KVA-017": {
+    "solution_path": "I: 9\\cdot 8-7\\cdot 4=72-28=44. II: (9\\cdot 2-7)\\cdot 4=11\\cdot 4=44. Lika — C.",
+    "technique": "Räkna ut båda explicit; misstänk paritet om båda landar nära varandra.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 9·8 = 72 i I men missa att II:s parentes (9·2-7) ger 11.",
+        "why_wrong": "(18-7)·4 = 44 — exakt samma värde som 72 - 28."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att II är \"krångligare\" och därmed annorlunda värde.",
+        "why_wrong": "Krångligheten är ytlig; värdet är 44 i båda."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att uttryck på olika form måste ha olika värde.",
+        "why_wrong": "Räkna ut båda — algebraisk identitet syns först då."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317528
+    }
+  },
+  "host-2016-kvant1-KVA-020": {
+    "solution_path": "Rektangel area 40: längsta sida kan vara 40/1 = 40 eller \\sqrt{40}\\approx 6{,}3; brett intervall. Triangel area 20: bh/2=20 → bh = 40, längsta sida går från ~6,3 (likbent rätvinklig) uppåt utan gräns. Båda intervall överlappar — D.",
+    "technique": "Area låser inte sidlängderna; intervallets ändpunkter avgör D.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att rektangel \"alltid är större\" än triangel med halv area-faktor.",
+        "why_wrong": "Båda kan ha godtyckligt långa sidor; rangordningen är inte unik."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att triangel med halv ytfaktor måste ha längre sidor.",
+        "why_wrong": "Inte nödvändigtvis — sidlängderna beror på proportioner som inte är fixerade."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid specialfall där sidorna råkar matcha.",
+        "why_wrong": "Likhet inträffar i ett enskilt utfall; båda olikheter kan också uppstå."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317528
+    }
+  },
+  "host-2016-kvant1-KVA-021": {
+    "solution_path": "Skärning: 2x-10=-x/3+11 → 6x-30=-x+33 → 7x=63 → x=9 (a). y = 2·9 − 10 = 8 (b). a = 9 > b = 8 — A.",
+    "technique": "Skärningspunkt: lika y-värden; lös ut x, sätt in för y.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel på algebran och få x=8, y=9.",
+        "why_wrong": "Korrekt lösning: 2x − 10 = -x/3 + 11 ger x = 9, y = 8."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x = y vid skärningspunkt på linjen y = x.",
+        "why_wrong": "Linjen y = x är inte involverad här; skärningen ger olika värden a = 9 ≠ b = 8."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att skärningspunkten behöver fler villkor.",
+        "why_wrong": "Två linjära ekvationer i två obekanta har exakt en lösning."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317528
+    }
+  },
+  "host-2016-kvant1-KVA-022": {
+    "solution_path": "Lika talsystemsvärden: 210_{5}=2\\cdot 25+1\\cdot 5+0=55. 110111_{2}=32+16+4+2+1=55. Båda 55 — C.",
+    "technique": "Konvertera båda till bas 10 och jämför.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 210₅ som 210 i bas 10 och få 210 > något i bas 2.",
+        "why_wrong": "210₅ är 2·25 + 5 = 55, inte 210."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att fler \"ettor\" i basen 2 ger större tal.",
+        "why_wrong": "110111₂ = 32+16+4+2+1 = 55, exakt lika med 210₅."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att talsystemsbyte är otydligt.",
+        "why_wrong": "Standarddefinition: d_n d_{n-1}\\dots d_0)_b=\\sum d_i b^i."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317528
+    }
+  },
   "host-2016-kvant1-XYZ-001": {
     "_meta": {
       "generated_at": 1778414059975,
@@ -258,6 +414,136 @@
     "pitfall": null,
     "solution_path": "FECD's area är \\frac{1}{9} av ABCD. Med FE parallell med AB är förhållandet av höjder mellan FECD och ABCD också 1/9 (om de delar samma bredd). Givet x i figuren och proportioner: x = 24 cm.",
     "technique": "Areaskalning av rektanglar med en gemensam sida: areaforhållandet = höjdforhållandet (övriga dimensionen konstant)."
+  },
+  "host-2016-kvant2-KVA-016": {
+    "solution_path": "f(x)=3\\cdot 4^{x}. I: f(0)-f(-1)=3-3/4=9/4. II: f(1)-f(0)=12-3=9. 9 > 9/4 — B.",
+    "technique": "Exponentialdifferenser växer multiplikativt — senare differens är tillväxtfaktorn gånger den tidigare.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att differenser av en växande funktion krymper i tid.",
+        "why_wrong": "Exponentialer växer; differenser växer också, här med faktorn 4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att differenserna är samma av \"konsistens\".",
+        "why_wrong": "4^x växer geometriskt: differensen f(1)-f(0) är 4 ggr större än f(0)-f(-1)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta f mer noggrant.",
+        "why_wrong": "f är fullständigt definierad; båda differenser räknas direkt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317528
+    }
+  },
+  "host-2016-kvant2-KVA-018": {
+    "solution_path": "För x > 0: 1/(x+1)<1/x eftersom x+1 > x. Så x+1/(x+1)<x+1/x — B.",
+    "technique": "Bråk med större positiv nämnare ⇒ mindre värde; lägg till samma x på båda sidor utan effekt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 1/(x+1) > 1/x på något sätt.",
+        "why_wrong": "Större nämnare ⇒ mindre kvot; 1/(x+1) < 1/x för alla x > 0."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att x + 1/(x+1) ≈ x + 1/x för stora x.",
+        "why_wrong": "Ojämlikheten är strikt: 1/(x+1) < 1/x oavsett x > 0."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att ojämlikheten kan vända för vissa x > 0.",
+        "why_wrong": "Den vänder aldrig — funktionen 1/x är strängt avtagande på (0, ∞)."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317528
+    }
+  },
+  "host-2016-kvant2-KVA-020": {
+    "solution_path": "x^{2}-y=7y-x^{2} → 2x^{2}=8y → x^{2}=4y. Med y > 0 ger x=\\pm 2\\sqrt{y}. Jämför x och 2y: vid y = 1, x = ±2, 2y = 2 — likhet eller -2 < 2; vid y = 4, x = ±4, 2y = 8 — x < 2y. D.",
+    "technique": "Lös ut en variabel kvadratiskt; tecken på roten ger två fall, så D är ofta svaret.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att ta x = +2√y och bara titta på det positiva fallet.",
+        "why_wrong": "x kan vara negativt också; teckenfriheten ger båda riktningarna."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 2y växer kvadratiskt snabbare och därför är större.",
+        "why_wrong": "Vid y = 1 är |x| = 2y; båda riktningarna kan inträffa beroende på y."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid y = 1 där x = 2 och 2y = 2 (likhet) och kallar det entydigt.",
+        "why_wrong": "Likhet är bara ett av flera utfall; för y = 4 är |x| = 4 < 8 = 2y."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317528
+    }
+  },
+  "host-2016-kvant2-KVA-021": {
+    "solution_path": "Summa omkretsar n cirklar: n\\cdot 2\\pi r=2\\pi nr. Stora cirkelns omkrets: 2\\pi R=2\\pi nr. Lika — C.",
+    "technique": "Omkrets är linjär i radien; multiplikation med n ger samma resultat som radien R = nr.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att summan av många små cirklar är större än en stor.",
+        "why_wrong": "För omkrets gäller exakt linjärt sammanhang: n\\cdot 2\\pi r=2\\pi nr=2\\pi R."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att en stor cirkels omkrets dominerar.",
+        "why_wrong": "Den dominerar för area (kvadratisk skalning), inte för omkrets (linjär)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta r eller n.",
+        "why_wrong": "Likheten är identisk i alla värden av r, n med R = nr."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317528
+    }
+  },
+  "host-2016-kvant2-KVA-022": {
+    "solution_path": "Låt p = pojkar, f = flickor. Pojke har p−1 bröder och f systrar: p-1=f. Flicka har p bröder och f−1 systrar: p=2(f-1). Från första: f = p−1; sätt in: p = 2(p-2) → p = 4, f = 3. I: 2p = 8. II: 3f = 9. 9 > 8 — B.",
+    "technique": "Syskonräkning: räkna utgående från den enskilde syskonet, inte från familjeplanet.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få fler pojkar än flickor.",
+        "why_wrong": "Systemet ger p = 4, f = 3; 2p = 8, 3f = 9 — flickkoefficienten vinner."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 2 ggr pojkar = 3 ggr flickor av symmetri.",
+        "why_wrong": "Värdena är 8 och 9, inte lika; faktorerna 2 och 3 är skilda."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att flera fall är förenliga med villkoret.",
+        "why_wrong": "Bara en heltalslösning finns: p = 4, f = 3."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317528
+    }
   },
   "host-2016-kvant2-XYZ-001": {
     "_meta": {

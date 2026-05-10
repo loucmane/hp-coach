@@ -1,4 +1,186 @@
 {
+  "host-2013-kvant1-KVA-013": {
+    "solution_path": "Skillnaden 69\\cdot 116-68\\cdot 117=69\\cdot 116-68\\cdot 116-68=116-68=48, alltså är I större än II. Bryt ut den gemensamma faktorn istället för att räkna båda produkterna i huvudet — det avslöjar tecknet på ett par sekunder.",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att se att 117 > 116 och dra slutsatsen att 68·117 vinner.",
+        "why_wrong": "Den extra ettan i 69 mot 68 ger 116 extra; den extra ettan i 117 mot 116 ger bara 68 extra. I vinner med 48."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att summan av faktorerna är samma (69+116=68+117=185) och därför produkterna också.",
+        "why_wrong": "För en fast summa maximeras produkten när faktorerna ligger närmast varandra; 69·116 har mindre spridning än 68·117 och blir därmed större."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att två så lika produkter kräver räknare för att jämföras.",
+        "why_wrong": "Bryt ut faktorerna och teckenfrågan blir helt deterministisk — ingen brist på information."
+      }
+    ],
+    "technique": "Jämför produkter genom att bryta ut den gemensamma faktorn — slipp räkna båda sidorna.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778423798258
+    }
+  },
+  "host-2013-kvant1-KVA-014": {
+    "solution_path": "Villkoret ger xy=zw men säger ingenting direkt om xw mot yz. Testa två fall: med x=2,y=10,z=10,w=2 blir xw=4<yz=100; med x=10,y=2,z=2,w=10 blir xw=100>yz=4. Båda riktningarna är möjliga, så svaret är D.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att se xy=zw och hoppa till att alla parvisa produkter är lika eller att I dominerar.",
+        "why_wrong": "Likheten gäller bara för paret (x,y) mot (z,w) — inte för korsprodukten (x,w) mot (y,z), som beror på de individuella storlekarna."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att gå på spegelvändningen och anta att korsade par är omvänt rangordnade.",
+        "why_wrong": "Spegelvändningen är inte symmetrisk i procentvillkoret; båda riktningarna går att konstruera som testfallen visar."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att xy=zw och drar slutsatsen att andra omkastningar också ger likhet.",
+        "why_wrong": "Likhet kräver specialfall (t.ex. x=z, y=w). I allmänhet är xw\\neq yz."
+      }
+    ],
+    "technique": "När ett villkor ger en produktlikhet, testa konkreta värden i båda riktningarna innan du konkluderar.",
+    "pitfall": "Att tolka xy = zw som om alla parvisa produkter mellan x,y,z,w blir lika — ett vanligt språkligt felsteg.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778423798258
+    }
+  },
+  "host-2013-kvant1-KVA-016": {
+    "solution_path": "Villkoret x=-y tillåter alla tre utfall: vid y=0 blir x=0=y (lika), vid y=1 blir x=-1<y (II>I), och vid y=-1 blir x=1>y (I>II). Information saknas.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du minns regeln som \"-y är negativt\" landar du på att x alltid är negativt och y alltid positivt — fel om y < 0.",
+        "why_wrong": "-y är bara negativt när y > 0; för negativa y är x positiv och I > II."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Första instinkten är att negativtecknet alltid gör I mindre än II.",
+        "why_wrong": "Negativtecknet beter sig olika beroende på y:s tecken — riktningen vänder helt om y är negativ."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är lätt att låsa sig vid att y=0 ger likhet och anta att det gäller alltid.",
+        "why_wrong": "Likhet inträffar bara i det enskilda fallet y = 0; alla andra y skapar skillnad åt något håll."
+      }
+    ],
+    "technique": "Identifiera när information är otillräcklig genom att testa både y = 0 och y med olika tecken.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778423798258
+    }
+  },
+  "host-2013-kvant1-KVA-018": {
+    "solution_path": "(-10)^{11} har udda exponent och blir negativt; (-11)^{10} har jämn exponent och blir positivt. Ett positivt tal är alltid större än ett negativt, alltså II > I.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att jämföra basernas storlek — 11 > 10 — och tro att basen \"11\" gör II större men missa exponenten 11 i I.",
+        "why_wrong": "Storleken på basen är irrelevant när teckenparitet skiljer kvantiteterna åt; tecknet vinner alltid över magnitud i den här jämförelsen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att exponenterna 10 och 11 är så nära varandra att uttrycken är ungefär lika.",
+        "why_wrong": "Magnituden spelar ingen roll här — den ena är negativ och den andra positiv, så de kan aldrig vara lika."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man måste räkna ut båda potenserna för att jämföra.",
+        "why_wrong": "Tecknet är helt bestämt av paritet hos exponenten; ingen ytterligare information behövs."
+      }
+    ],
+    "technique": "Vid (-a)^{n}: kolla pariteten hos n innan du försöker räkna magnituden.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778423798258
+    }
+  },
+  "host-2013-kvant1-KVA-019": {
+    "solution_path": "Rektangelns omkrets 2(l+b)=36 ger l+b=18, så längsta sidan kan ligga var som helst i intervallet [9, 18). II = 4·3 = 12. Längsta sidan kan vara mindre (t.ex. l=10, b=8), lika med 12, eller större (t.ex. l=15, b=3) — D.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tänka att en rektangel med omkrets 36 är \"stor\" och längsta sidan måste vara > 12.",
+        "why_wrong": "Längsta sidan kan vara bara strax över 9 — t.ex. en rektangel 10×8 har längsta sidan 10, mindre än 12."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid kvadratfallet (9\\times 9) där längsta sidan är 9, mindre än 12.",
+        "why_wrong": "Kvadraten är bara ett av många möjliga val; en lång smal rektangel ger längsta sidan upp mot 18."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att låsa fast vid den specifika rektangel där längsta sidan = 12 (då blir kortsidan 6) och kalla det entydigt.",
+        "why_wrong": "Likhet är bara ett av oändligt många utfall — utan ytterligare villkor kan längsta sidan ligga både under och över 12."
+      }
+    ],
+    "technique": "En enskild omkrets eller area låser inte sidlängderna — testa intervallets ändpunkter.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778423798258
+    }
+  },
+  "host-2013-kvant1-KVA-020": {
+    "solution_path": "Två summor av positiva tal kan vara lika med vilken kombination som helst av antal termer. Exempelvis ger 1+1+1=3 (n=3) och 3=3 (m=1) lika summor med n>m; och 2=2 (n=1) mot 1+1=2 (m=2) ger n<m. Information saknas.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att intuitivt tänka att fler termer ger större summa, så lika summa kräver fler i den ena.",
+        "why_wrong": "Termernas storlek är fri — ett enda stort tal kan väga upp många små, så antalet är inte entydigt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Första instinkten är att om summorna är lika så måste den med färre termer ha större tal, vilket på något sätt ger m > n.",
+        "why_wrong": "Inget i villkoret rangordnar n och m — båda riktningarna är fullt möjliga."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att anta att lika summor måste komma från lika många termer.",
+        "why_wrong": "Antalet termer och summan är oberoende; lika summor kan byggas av helt olika antal positiva tal."
+      }
+    ],
+    "technique": "En summa-likhet säger inget om antalet termer — testa olika partitionsvarianter.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778423798258
+    }
+  },
+  "host-2013-kvant1-KVA-022": {
+    "solution_path": "x(1-x)>0 kräver att båda faktorerna har samma tecken; eftersom 1−x och x inte kan vara samtidigt negativa här, gäller 0<x<1. I det intervallet är x>x^{2} (t.ex. 0,5 > 0,25), alltså I > II.",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att blanda ihop med fallet x > 1, där x^{2}>x.",
+        "why_wrong": "Här begränsar villkoret x till intervallet (0,1) där kvadrering krymper talet, inte växer det."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att x = 1 ger likhet och tror att det gäller över hela definitionsmängden.",
+        "why_wrong": "x = 1 är utesluten av villkoret x(1-x)>0 (då blir vänsterledet noll, inte strikt positivt)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man inte vet x:s tecken eller intervall.",
+        "why_wrong": "Olikheten x(1-x)>0 fastslår entydigt att 0 < x < 1, inget annat värde går."
+      }
+    ],
+    "technique": "För x mot x^{2}: tre regimer — krymper i (0,1), lika vid 0 och 1, växer utanför.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778423798258
+    }
+  },
   "host-2013-kvant1-XYZ-001": {
     "_meta": {
       "generated_at": 1778408443638,
@@ -258,6 +440,110 @@
     "pitfall": "När du får 'varken A eller B', räkna FÖRST ut |A∪B| = 1 − varken, sätt sedan in i union-formeln.",
     "solution_path": "Använd inklusion-exklusion: 60% kan minst ett språk (100% − 40% varken). Det ger |T\\cup F|=|T|+|F|-|T\\cap F|, alltså 60=47+43-x och x = 30%.",
     "technique": "Inklusion-exklusion för två mängder: |A∪B| = |A| + |B| − |A∩B|. Använd 'varken' = 1 − |A∪B| för att få |A∪B|."
+  },
+  "host-2013-kvant2-KVA-016": {
+    "solution_path": "Sätt in b=a+1 i båda. I: ab-2a^{2}=a(a+1)-2a^{2}=a-a^{2}. II: a(b-2a)=a(a+1-2a)=a(1-a)=a-a^{2}. Lika.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att utveckla I men inte II och tro att I:s -2a^{2}-term gör skillnad.",
+        "why_wrong": "När du distribuerar a i II får du exakt samma uttryck — algebran trollar bort skillnaden."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som \"ta hand om -2a först\" kan du missa att I och II är samma sak omskrivet.",
+        "why_wrong": "Båda uttrycken är identiska efter substitution; tecknet på resultatet beror på a men I = II i alla fall."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta tecknet på a för att kunna jämföra.",
+        "why_wrong": "Det behövs inte — uttrycken är algebraiskt identiska, så likheten gäller oavsett a."
+      }
+    ],
+    "technique": "Substituera villkoret in i båda kvantiteterna och förenkla — algebraisk likhet syns ofta först då.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778423798258
+    }
+  },
+  "host-2013-kvant2-KVA-020": {
+    "solution_path": "Tre varv på 18 m ger omkretsen 18/3=6 m, alltså diametern 6/\\pi\\approx 1{,}91 m. Det är mindre än 2 m, så II > I.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att blanda omkrets och diameter — om du tror omkretsen är 2 m är diametern större än 6/π.",
+        "why_wrong": "Omkretsen är \\pi d, inte d, så diametern är alltid omkretsen dividerat med π ≈ 3,14."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 6/π ≈ 2 och kalla det jämnt.",
+        "why_wrong": "6/π är ungefär 1,91 — märkbart mindre än 2. Approximationen π ≈ 3 är för grov här."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta hjulets bredd eller annan dimension.",
+        "why_wrong": "Sträckan per varv är hjulets omkrets — inget mer behövs för att räkna ut diametern."
+      }
+    ],
+    "technique": "Rullande hjul: sträcka per varv = omkrets = \\pi d; lös ut diametern direkt.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778423798258
+    }
+  },
+  "host-2013-kvant2-KVA-021": {
+    "solution_path": "I: x(y+z)+x^{2}+yz=xy+xz+x^{2}+yz. II: (x+z)(y+x)=xy+x^{2}+zy+zx. Termvis identiska — C.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel på en av termerna — t.ex. missa zx i II — och tro att I har en extra term.",
+        "why_wrong": "Vid noggrann distribution dyker varje term i I upp exakt en gång i II."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som \"(x+z)(y+x) ≈ xy + zx\" missar du de två extra termerna och underskattar II.",
+        "why_wrong": "Hela utvecklingen ger fyra termer: xy+x^{2}+zy+zx — exakt vad I har."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta tecken eller storlek på x, y, z.",
+        "why_wrong": "Likheten är algebraisk — den gäller för alla värden på variablerna."
+      }
+    ],
+    "technique": "Distribuera båda sidor fullständigt och jämför term för term innan du gissar olikhet.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778423798258
+    }
+  },
+  "host-2013-kvant2-KVA-022": {
+    "solution_path": "Punkterna (2, 2) och (2, 4) är vertikala. För en rätvinklig triangel kan rätvinkeln sitta vid (2, 2) (då måste a-segmentet vara horisontellt, alltså a=2), vid (2, 4) (a=4), eller vid (−1, a) (skalärprodukten ger ekvation utan reell lösning). Två giltiga värden a=2 och a=4 ger I=II respektive I>II — D.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att fixera vid fallet a = 4 där den högra horisontella linjen från (2, 4) till (−1, 4) ger rätvinkeln vid (2, 4).",
+        "why_wrong": "Det är ett av två giltiga fall — det andra (a = 2, rätvinkel vid (2, 2)) ger likhet, så A är inte entydigt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att gissa att a är mindre än 2 baserat på något geometriskt intuitivt skäl.",
+        "why_wrong": "Båda lösningarna a = 2 och a = 4 ligger ≥ 2 — ingen av dem ger I < II."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid fallet rätvinkel-vid-(2,2) som ger a = 2 = II och tror att det är det enda.",
+        "why_wrong": "Rätvinkeln kan lika gärna sitta vid (2, 4), vilket ger a = 4 ≠ 2."
+      }
+    ],
+    "technique": "I geometriska KVA: räkna alla möjliga konfigurationer (var sitter rätvinkeln/vinkeln/punkten?) innan du svarar.",
+    "pitfall": "Att låsa fast vid den första giltiga konfigurationen och missa att flera punktplaceringar uppfyller villkoret.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778423798258
+    }
   },
   "host-2013-kvant2-XYZ-001": {
     "_meta": {

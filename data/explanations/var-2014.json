@@ -1,4 +1,238 @@
 {
+  "var-2014-kvant1-KVA-013": {
+    "solution_path": "Bollar i lådor 1-6, röd vänster om vit, minst en tom emellan. Möjliga par (r, w): (1,3), (1,4), (1,5), (1,6), (2,4), (2,5), (2,6), (3,5), (3,6), (4,6) = 10 sätt. 12 > 10 — B.",
+    "technique": "Kombinatorik: räkna par (i, j) med j > i + 1.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna alla par utan tom-låda-villkoret och få 15.",
+        "why_wrong": "Med villkoret minst en tom mellan blir det 10 par."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 12.",
+        "why_wrong": "12 är just II; antalet är 10, inte 12."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man måste enumerera alla.",
+        "why_wrong": "Symmetrisk räkning ger 10 entydigt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant1-KVA-014": {
+    "solution_path": "I: |22 - (-4)| = 26. II: |3 - (-21)| = 24. 26 > 24 — A.",
+    "technique": "Avstånd på axel: absolutbelopp av differens.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel och få I < II.",
+        "why_wrong": "26 > 24; I är längre."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att avstånden är lika.",
+        "why_wrong": "26 ≠ 24."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att y påverkar.",
+        "why_wrong": "y kancellerar i samma horisontalavstånd."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant1-KVA-015": {
+    "solution_path": "Två cirklar skär i två punkter ⇒ |R - r| < d < R + r där d = avstånd mellan medelpunkter. R kan vara större eller mindre än d. D.",
+    "technique": "Skärningsvillkor på cirklar: triangelolikhet på radier och avstånd.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att R alltid > d.",
+        "why_wrong": "Bara om R + r > d > R - r; R kan ligga både under och över d."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att d > R.",
+        "why_wrong": "Inte alltid; för stor R är d < R."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid R = d som specialfall.",
+        "why_wrong": "Likhet är ett av flera fall; D fångar alla."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant1-KVA-016": {
+    "solution_path": "I: 2⁶/8 = 64/8 = 8. II: 8. Lika — C.",
+    "technique": "Förenkla potenser: 2⁶/2³ = 2³ = 8.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 2⁶ = 64 och tro att 64/8 > 8.",
+        "why_wrong": "64/8 = 8 exakt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att en åttondel är liten.",
+        "why_wrong": "2⁶ är stor (64); en åttondel är 8 = II."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att uttrycken är otydliga.",
+        "why_wrong": "2⁶/8 = 8 entydigt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant1-KVA-017": {
+    "solution_path": "Sortera: 1, 5, 5, 6, 8. Median = 5 (mittersta). Medelvärde = (5+1+6+5+8)/5 = 25/5 = 5. Lika — C.",
+    "technique": "Median av 5 sorterade tal = mittersta; medelvärde = summa/5.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en har 5 och den andra annat värde.",
+        "why_wrong": "Båda är 5 exakt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att medelvärdet > median.",
+        "why_wrong": "Här lika; data symmetrisk kring 5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att data är otydlig.",
+        "why_wrong": "5 tal givna; båda mått räknas direkt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant1-KVA-018": {
+    "solution_path": "(x + y)² = x² + 2xy + y² > x² + y² eftersom xy > 0 (båda positiva). B.",
+    "technique": "Kvadratutveckling: (a+b)² = a² + 2ab + b² > a² + b² när ab > 0.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att x² + y² är \"stort\" och dominerar.",
+        "why_wrong": "(x + y)² lägger till 2xy > 0; alltid större."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att uttrycken är lika om x = y = 0.",
+        "why_wrong": "x, y > 0, så likhet utesluten."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att tecknet på x, y är fritt.",
+        "why_wrong": "Båda > 0; ojämlikheten är strikt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant1-KVA-019": {
+    "solution_path": "x = 3y - 3. För y = 0, x = -3 (II > I). För y = 2, x = 3 (I > II). För y = 3/2, x = 1,5 = y (lika). D.",
+    "technique": "Linjär relation med fri variabel: rangordning fri.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 3y - 3 alltid > y.",
+        "why_wrong": "För y < 3/2 är 3y - 3 < y."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att y > 3y - 3.",
+        "why_wrong": "För y > 3/2 är 3y - 3 > y."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid y = 3/2 → likhet.",
+        "why_wrong": "Ett av tre fall."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant1-KVA-020": {
+    "solution_path": "I: (x/3)/4 = x/12. II: (x/4)/3 = x/12. Lika — C.",
+    "technique": "Multiplikation av bråk är kommutativ: x/(a·b) = x/(b·a).",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att I > II av ord-ordning.",
+        "why_wrong": "Båda är x/12."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att II > I.",
+        "why_wrong": "Lika exakt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att x:s värde påverkar.",
+        "why_wrong": "Likheten är algebraisk."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant1-KVA-021": {
+    "solution_path": "x = 2y, båda negativa. I: 5x - y = 10y - y = 9y (negativ). II: 2x + 4y = 4y + 4y = 8y (negativ). 9y < 8y eftersom y < 0 (multiplicera med negativt y vänder olikheten 9 > 8). B.",
+    "technique": "Multiplicera med negativ y: ojämlikheten vänder.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 9y > 8y av storleksintuition.",
+        "why_wrong": "För y < 0 är 9y mer negativt än 8y; alltså 9y < 8y."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att uttrycken är lika.",
+        "why_wrong": "9y ≠ 8y."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta y.",
+        "why_wrong": "Tecknet på y är fixerat (negativ); riktningen entydig."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
   "var-2014-kvant1-XYZ-001": {
     "_meta": {
       "generated_at": 1778415854589,
@@ -258,6 +492,136 @@
     "pitfall": null,
     "solution_path": "För 8 på varandra följande heltal är medianen medel av 4:e och 5:e. Median = −1,5 ger 4:e = −2, 5:e = −1. Smallest = −2 − 3 = −5.",
     "technique": "Median av jämnt antal heltal i följd = halvt-emellan-värde."
+  },
+  "var-2014-kvant2-KVA-014": {
+    "solution_path": "I tolkas som √11 ≈ 3,32 (parser-fel, missande √). II: 3 + 2 = 5. 5 > 3,32 — B.",
+    "technique": "√n: ofta avskuren av parsern; tolka kontext.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att I = 11 direkt.",
+        "why_wrong": "Om I = 11 vore svaret A; här är I = √11."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att √11 ≈ 3 + 2.",
+        "why_wrong": "√11 ≈ 3,32; klart < 5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att I:s värde är obestämt.",
+        "why_wrong": "√11 är fast värde; jämförelsen entydig."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant2-KVA-015": {
+    "solution_path": "Cirkelarea = πr² = 9π → r² = 9 → r = 3. Kvadratarea = s² = 3 → s = √3 ≈ 1,73. 3 > 1,73 — A.",
+    "technique": "Lös ut radie/sida ur area; jämför.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att kvadratens sida är större.",
+        "why_wrong": "r = 3, s = √3 ≈ 1,73; r > s."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att radien och sidan är samma.",
+        "why_wrong": "9 ≠ 3; areorna är olika."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver fler dimensioner.",
+        "why_wrong": "Båda figurer är fullständigt definierade av area."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant2-KVA-017": {
+    "solution_path": "y = x². För alla reella x är x² ≥ 0 > -1. A.",
+    "technique": "Kvadrat ≥ 0; alltid > -1.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att x² < -1 för negativa x.",
+        "why_wrong": "x² ≥ 0 oavsett x:s tecken."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att x² = -1 för någon x.",
+        "why_wrong": "Inga reella x ger x² < 0."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta x.",
+        "why_wrong": "För alla reella x gäller y > -1."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant2-KVA-018": {
+    "solution_path": "P(summa ≥ 10): (4,6), (5,5), (5,6), (6,4), (6,5), (6,6) = 6 utfall. P(summa ≤ 4): (1,1), (1,2), (1,3), (2,1), (2,2), (3,1) = 6 utfall. Lika — C.",
+    "technique": "Symmetri kring 7 för två tärningar.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att höga summor är \"mindre vanliga\" på något sätt.",
+        "why_wrong": "Symmetrin kring 7 ger samma antal utfall för 10+ och 4-."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att låga summor är vanligare.",
+        "why_wrong": "Symmetrin: P(summa = s) = P(summa = 14 - s)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver räkna alla.",
+        "why_wrong": "Symmetrin avslöjar likheten utan full enumerering."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
+  },
+  "var-2014-kvant2-KVA-022": {
+    "solution_path": "y - x = z - y = 1 → x = y - 1, z = y + 1. x + y + z = (y-1) + y + (y+1) = 3y. Lika — C.",
+    "technique": "Aritmetisk följd: summa av tre på varandra följande tal = 3·mittersta.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att x + y + z > 3y av \"fler termer\".",
+        "why_wrong": "Symmetri ger exakt 3y."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att summan är mindre än 3y.",
+        "why_wrong": "3y exakt; ingen riktning."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att y:s värde påverkar.",
+        "why_wrong": "Likheten är algebraisk; gäller för alla y."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778425152538
+    }
   },
   "var-2014-kvant2-XYZ-001": {
     "_meta": {

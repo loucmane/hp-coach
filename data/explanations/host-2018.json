@@ -1,4 +1,134 @@
 {
+  "host-2018-kvant1-KVA-013": {
+    "solution_path": "För x > 1 är x^{n} strängt växande i n; alltså x^{5}>x^{4} — A.",
+    "technique": "För bas > 1: större exponent = större värde. För 0 < bas < 1: omvänt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att lägre exponent ger större värde, från negativ-exponent-fall.",
+        "why_wrong": "För x > 1 är x⁵ = x · x⁴ > x⁴ eftersom x > 1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x = 1 → likhet, men x > 1 utesluter det.",
+        "why_wrong": "Vid x = 1 är de lika, men villkoret x > 1 garanterar strikt växande."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att vissa x > 1 vänder olikheten.",
+        "why_wrong": "Olikheten gäller för alla x > 1 utan undantag."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
+  },
+  "host-2018-kvant1-KVA-015": {
+    "solution_path": "Tolkning: 1/28+1/14+1/7+1/4+1/2. Gemensam nämnare 28: 1/28+2/28+4/28+7/28+14/28=28/28=1. 1 > 55/56 — A.",
+    "technique": "Bråk med olika nämnare: gemensam nämnare → summera täljare.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 55/56 ≈ 1 och tro att I också är ungefär 55/56.",
+        "why_wrong": "I är exakt 1; II är 55/56 = 1 - 1/56, alltså strikt mindre."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att teleskopisk summa råkar bli 55/56.",
+        "why_wrong": "Här är summan exakt 1 vid valet av nämnare 1, 2, 4, 7, 14, 28."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att fortgående bråk är otydliga utan räknare.",
+        "why_wrong": "Gemensam nämnare ger en exakt summa."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
+  },
+  "host-2018-kvant1-KVA-020": {
+    "solution_path": "21\\%\\cdot 2482=0{,}21\\cdot 2482; 42\\%\\cdot 1241=0{,}42\\cdot 1241=0{,}21\\cdot 2482 eftersom 0,42·1241 = 0,21·2·1241 = 0,21·2482. Lika — C.",
+    "technique": "Procent symmetri: a\\%\\text{ av }b=2a\\%\\text{ av }b/2.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tänka 21% < 42% och tro att I är mindre.",
+        "why_wrong": "Men 2482 är dubbelt 1241 — multiplikationen kompenserar exakt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 42% av något är större av \"större procent\".",
+        "why_wrong": "Halva 1241 går mot dubbla 2482 — exakt balans."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att procentekvationer kräver räknare.",
+        "why_wrong": "Strukturen är symmetrisk; multiplicera bara dubbel/halv för att se likheten."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
+  },
+  "host-2018-kvant1-KVA-021": {
+    "solution_path": "f(-a)-f(a)=(-4a+15)-(4a+15)=-8a. För a > 0 är -8a < 0 — B.",
+    "technique": "Linjär funktion: f(-a) - f(a) = -2ka för f(x) = kx + m.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel på tecknen och få +8a > 0.",
+        "why_wrong": "(-4a + 15) - (4a + 15) = -8a; tecknet är negativt för positivt a."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att f(-a) = -f(a) av symmetri.",
+        "why_wrong": "Det skulle gälla för udda funktioner, men f(x) = 4x + 15 har konstantterm 15 — bryter symmetrin... men dock tar vi differensen, så 15 kancellerar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att tecknet på m påverkar.",
+        "why_wrong": "m kancellerar i differensen; bara k och tecknet på a betyder något."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
+  },
+  "host-2018-kvant1-KVA-022": {
+    "solution_path": "David = Frida + 8. Edvin = 11. I: 11 + Frida. II: David = Frida + 8. I − II = 11 − 8 = 3 > 0, så I > II — A.",
+    "technique": "Differens av två summor med gemensam term: bara icke-gemensamma termer återstår.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att David, som är \"äldst\", har högre summa.",
+        "why_wrong": "David är 8 år äldre än Frida; Edvin är 11 år. Edvin + Frida = Frida + 11 > Frida + 8 = David."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att åldrarna \"kanske jämnar ut\".",
+        "why_wrong": "Skillnaden är 11 - 8 = 3 år, oberoende av Fridas ålder."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att Fridas ålder behöver kännas.",
+        "why_wrong": "Fridas ålder försvinner i differensen; svaret beror inte på den."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
+  },
   "host-2018-kvant1-XYZ-001": {
     "_meta": {
       "generated_at": 1778414413083,
@@ -284,6 +414,188 @@
     "pitfall": null,
     "solution_path": "\\frac{72}{8}=9, ett heltal. Övriga alternativ ger icke-heltal.",
     "technique": "Heltalsfrågor med rotor: produkten av {MO}\\sqrt{{a}}\\cdot\\sqrt{{b}}=\\sqrt{{ab}}{MC}; heltal ENDAST om ab är perfekt kvadrat."
+  },
+  "host-2018-kvant2-KVA-014": {
+    "solution_path": "5 positiva + 5 negativa heltal: medelvärdet kan vara positivt (om de positiva är större i belopp), negativt (omvänt) eller 0 (symmetri). D.",
+    "technique": "Medelvärde av blandade tecken: tecknet bestäms av summan, som är fri.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att lika många positiva som negativa kancellerar exakt.",
+        "why_wrong": "Bara om beloppen råkar matcha; t.ex. 1, 1, 1, 1, 1, -10, -10, -10, -10, -10 → medelvärde -9."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att tecknet på medelvärdet är negativt eftersom \"negativa väger\".",
+        "why_wrong": "Båda tecken är möjliga; t.ex. {10, 10, 10, 10, 10, -1, -1, -1, -1, -1} → +9."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid det symmetriska fallet och tror likhet.",
+        "why_wrong": "Likhet är ett av tre möjliga utfall; D fångar alla."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
+  },
+  "host-2018-kvant2-KVA-015": {
+    "solution_path": "Cirkelomkrets: \\pi\\cdot 1=\\pi\\approx 3{,}14. Triangel-omkrets: 3·1 = 3. π > 3 — A.",
+    "technique": "π ≈ 3,14 — håll i minnet att cirkelns omkrets-på-diameter alltid > 3.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tänka 3·1 = 3 som \"mer rakt\" och därför mer omkrets.",
+        "why_wrong": "π > 3, så cirkeln vinner med liten marginal."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att π ≈ 3.",
+        "why_wrong": "π ≈ 3,14 — skillnaden 0,14 räcker."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta exakt π.",
+        "why_wrong": "Bara π > 3 räcker, vilket är välkänt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
+  },
+  "host-2018-kvant2-KVA-016": {
+    "solution_path": "x och y är efter varandra: y = x + 1. I: 2x. II: x + y = 2x + 1. 2x + 1 > 2x — B.",
+    "technique": "Två efterföljande heltal: y = x + 1; använd substitution.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 2x dominerar för stora x.",
+        "why_wrong": "2x + 1 > 2x för alla heltal x; skillnaden är konstant 1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 2x = x + y av \"lika summor\".",
+        "why_wrong": "Bara om y = x, men y = x + 1 ≠ x."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att x:s storlek påverkar.",
+        "why_wrong": "Skillnaden 1 är oberoende av x; svaret är entydigt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
+  },
+  "host-2018-kvant2-KVA-017": {
+    "solution_path": "I: 0,00541 km = 5,41 m = 5410 mm. II: 5{,}41\\cdot 10^{3}=5410 mm. Lika — C.",
+    "technique": "Enhetskonvertering: 1 km = 10⁶ mm; multiplicera båda till samma enhet.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att km > mm av \"större enhet\".",
+        "why_wrong": "5,41 · 10³ mm = 5410 mm = 0,00541 km; båda är samma längd."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att II är större eftersom 10³ ser dramatiskt ut.",
+        "why_wrong": "5,41 · 10³ är 5410, vilket är 5,41 m, inte mer."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att olika enheter gör jämförelsen otydlig.",
+        "why_wrong": "Konvertering är entydig: 1 km = 10⁶ mm."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
+  },
+  "host-2018-kvant2-KVA-018": {
+    "solution_path": "3x/(4y)=5 → 3x = 20y → x = 20y/3. För x och y positiva heltal måste y vara delbart med 3: y = 3 ger x = 20. y = 6 ger x = 40. x kan bli 20, 40, 60, ... — fritt val. D.",
+    "technique": "En proportionell ekvation x/y = konstant lämnar gemensam skala fri.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna y = 1 och x = 20/3, men y måste vara heltal.",
+        "why_wrong": "Heltalslösningar börjar vid y = 3, x = 20; men y kan vara 3k."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att x = 20 är minsta värdet.",
+        "why_wrong": "x = 20 är ett av oändligt många fall; x = 40 är också giltigt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid x = 20 och tror likhet.",
+        "why_wrong": "Det är ett av flera giltiga värden; x kan vara större eller lika med 20."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
+  },
+  "host-2018-kvant2-KVA-021": {
+    "solution_path": "I: 1/3+1/24=8/24+1/24=9/24=3/8. II: 1/4+1/8=2/8+1/8=3/8. Lika — C.",
+    "technique": "Bråk med olika nämnare: gemensam nämnare och summera.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 1/3 + 1/24 fel och få 9/27 eller liknande.",
+        "why_wrong": "Korrekt: 1/3 = 8/24, plus 1/24 = 9/24 = 3/8."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 1/4 + 1/8 = 3/8 men I = 1/3 ≈ 0,33 ≠ 3/8 = 0,375.",
+        "why_wrong": "I är just 3/8 (= 9/24), inte 1/3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att flera nämnare gör jämförelsen otydlig.",
+        "why_wrong": "Gemensam nämnare 24 löser allt; båda blir 9/24."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
+  },
+  "host-2018-kvant2-KVA-022": {
+    "solution_path": "Tid = volym/hastighet. I: 200/15 ≈ 13,3 min. II: 200/10 = 20 min. 20 > 13,3 — B.",
+    "technique": "Tid och hastighet är omvänt proportionella vid fast volym.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att högre hastighet ger längre tid.",
+        "why_wrong": "Tvärtom — t = V/v, så större v ger mindre t."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att tiderna är \"ungefär lika\".",
+        "why_wrong": "200/15 ≈ 13,3 vs 200/10 = 20 — skillnaden är ca 7 min, betydande."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver mer info om badkaret.",
+        "why_wrong": "Volym och hastighet ger entydig tid; ingenting saknas."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317530
+    }
   },
   "host-2018-kvant2-XYZ-001": {
     "_meta": {

@@ -1,4 +1,108 @@
 {
+  "host-2020-kvant1-KVA-013": {
+    "solution_path": "I: 3/7+5/8=24/56+35/56=59/56>1. 59/56 > 1 — A.",
+    "technique": "Bråk med olika nämnare: gemensam nämnare 7·8 = 56.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att 3/7 < 1/2 och 5/8 < 1, så summan är < 1.",
+        "why_wrong": "3/7 ≈ 0,43 men 5/8 = 0,625; summan 1,053 ligger strax över 1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att summan blir exakt 1.",
+        "why_wrong": "59/56 är något större än 1; skillnaden är 3/56 ≈ 0,054."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att jämförelsen mot 1 är otydlig.",
+        "why_wrong": "Räkna ut: 24/56 + 35/56 = 59/56 > 56/56 = 1."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
+  },
+  "host-2020-kvant1-KVA-014": {
+    "solution_path": "P(tre femmor) = (1/6)^{3}=1/216. P(summa = 15) räknas: 15 = 6+6+3 (3 ordningar), 6+5+4 (6 ordningar), 5+5+5 (1 sätt) = 10/216. 10/216 > 1/216 — B.",
+    "technique": "Kombinatoriska sannolikheter: räkna gynnsamma utfall direkt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att tre lika är \"specifik\" och därmed större chans.",
+        "why_wrong": "Tre femmor är bara 1 utfall av 216; summa 15 har 10 utfall."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att alla specifika utfall är lika sannolika.",
+        "why_wrong": "Tre femmor är *ett* utfall, summa 15 är *flera* — sannolikheterna skiljer."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att summan kräver mer komplicerad räkning.",
+        "why_wrong": "Multinomialräkning räcker; båda sannolikheterna är fullt bestämda."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
+  },
+  "host-2020-kvant1-KVA-017": {
+    "solution_path": "1 matsked = 3 tsk = 15 krm (kryddmått). I: 8 krm + 1 msk = 8 + 15 = 23 krm. II: 2 tsk + 10 krm = 10 + 10 = 20 krm. 23 > 20 — A.",
+    "technique": "Konvertera båda sidor till samma minsta enhet och jämför direkt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att blanda krm och tsk och tro att 2 tsk är 10 krm — då summa = 20.",
+        "why_wrong": "Den delen stämmer (II = 20), men I = 23, inte mindre."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att proportioner är symmetriska.",
+        "why_wrong": "I har en hel matsked (15 krm); II har bara 10 krm via tsk-konvertering."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att enheterna är otydliga.",
+        "why_wrong": "Konvertering är linjär och deterministisk: 1 msk = 15 krm."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
+  },
+  "host-2020-kvant1-KVA-019": {
+    "solution_path": "Omkrets 2\\pi r=25\\pi → r = 12,5 cm. 12,5 > 10 — A.",
+    "technique": "Cirkel: omkrets 2\\pi r, dela direkt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 25/π ≈ 8 (som om diametern var 25).",
+        "why_wrong": "Omkrets 25π har radie 25π/(2π) = 12,5 cm."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 25π är knappt över 10 cm.",
+        "why_wrong": "25π/2 = 12,5; π faktoreras bort i jämförelsen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att π gör beräkningen osäker.",
+        "why_wrong": "π faktoreras ut: 2πr = 25π ⇒ r = 12,5 utan π-beroende."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
+  },
   "host-2020-kvant1-NOG-023": {
     "_meta": {
       "generated_at": 1778408443638,
@@ -289,6 +393,214 @@
     "pitfall": null,
     "solution_path": "Alla tre potenser av 1 är 1: 1+1+1=3.",
     "technique": "Potenser av 1: alla värden = 1 (oavsett exponent). Använd den för att förenkla snabbt."
+  },
+  "host-2020-kvant2-KVA-013": {
+    "solution_path": "x% av y = 73 → xy/100 = 73 → xy = 7300. x% av z = 37 → xz = 3700. Med samma x: y/z = 73/37 = 2 (ungefär), alltså y > z — A.",
+    "technique": "Procent med gemensam bas: jämförelse blir direkt på resultaten.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att större resultatvärde betyder mindre y.",
+        "why_wrong": "Tvärtom: större procentresultat (73 vs 37) kräver större bas (y vs z), båda multiplicerade med samma x."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att y och z är \"olika fall\" och därmed lika.",
+        "why_wrong": "73 ≠ 37, så y ≠ z; specifikt y = 2z ungefär."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att x:s värde behövs.",
+        "why_wrong": "x kancellerar i kvoten y/z = 73/37; svaret är entydigt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
+  },
+  "host-2020-kvant2-KVA-014": {
+    "solution_path": "Medelvärde av sidlängder = (a + b + c)/3 = omkrets/3. Lika — C.",
+    "technique": "Definitionen av medelvärde är summa/antal — för triangel är det omkrets/3.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att omkretsen är \"större\" än medelvärdet.",
+        "why_wrong": "Omkretsen är 3 ggr medelvärdet; omkrets/3 = medelvärdet exakt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att medelvärdet vinner pga \"centralisering\".",
+        "why_wrong": "Definitionsmässigt är de identiska."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta sidlängderna.",
+        "why_wrong": "Identiteten gäller för alla trianglar."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
+  },
+  "host-2020-kvant2-KVA-016": {
+    "solution_path": "Albins ålder = 2(Edvin + Levi). Jämför mot 3·Edvin. Skillnaden: 2(E+L) − 3E = 2L − E. Tecknet beror på om Levi > Edvin/2 eller inte — fritt. D.",
+    "technique": "Två okända (Edvin, Levi) och ett villkor: rangordning kvarstår fri.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att Albin \"alltid är äldst\".",
+        "why_wrong": "Albin = 2(E + L); om L är mycket mindre än E är Albin < 3E."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 3E vinner när Edvin är dominerande.",
+        "why_wrong": "Om Levi är stor (säg L >> E) är 2(E+L) > 3E."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid likhet 2L = E.",
+        "why_wrong": "Det är ett av tre fall; den specifika likheten är inte garanterad."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
+  },
+  "host-2020-kvant2-KVA-017": {
+    "solution_path": "För x > 1 ger x^{y+1}=1 att y + 1 = 0, så y = -1. -1 < 0 — B.",
+    "technique": "För bas > 1 är endast exponent 0 ger 1; så y = -1 entydigt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att y > 0 ger x^{y+1}>1 och därmed > 1, men frågan är ekvation = 1.",
+        "why_wrong": "För att x^(y+1) = 1 med x > 1 krävs y + 1 = 0, alltså y < 0."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta y = 0 → likhet.",
+        "why_wrong": "y = 0 ger x^1 = x > 1, inte 1. Så y = 0 löser inte ekvationen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta x exakt.",
+        "why_wrong": "För alla x > 1 är y = -1 entydigt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
+  },
+  "host-2020-kvant2-KVA-018": {
+    "solution_path": "25% av K₁ = 20% av K₂ → 0,25·A₁ = 0,20·A₂ → A₂/A₁ = 5/4 → A₂ > A₁, alltså K₂ > K₁ — B.",
+    "technique": "Överlappande areor: lika area-överlapp ger proportionalitet i procent.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att större procent (25%) på K₁ betyder större K₁.",
+        "why_wrong": "Tvärtom: lika täckt area (i absoluta cm²) kommer från större procent på den mindre kvadraten."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att kvadraterna är lika eftersom överlappet är symmetriskt.",
+        "why_wrong": "Procentsatserna 25% och 20% skiljer sig — areorna kan inte vara lika."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta absoluta storlekar.",
+        "why_wrong": "Förhållandet bestäms entydigt av procentsatserna."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
+  },
+  "host-2020-kvant2-KVA-019": {
+    "solution_path": "I: 3{,}13(\\pi+3{,}15). II: 3{,}15(3{,}13+\\pi). Distribuera: I = 3,13π + 3,13·3,15; II = 3,15·3,13 + 3,15π. Skillnaden II − I = (3,15 − 3,13)π = 0,02π > 0, så II > I — B.",
+    "technique": "Distribuera båda; gemensamma termer kancellerar och skillnaden blir ren.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att ordningen i parentesen ger I företräde.",
+        "why_wrong": "Distribution visar att skillnaden = (3,15 − 3,13)π > 0; II vinner."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att uttrycken är \"speglade\" och därför lika.",
+        "why_wrong": "Spegling förutsätter att 3,13 = 3,15, vilket inte stämmer."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att π gör jämförelsen otydlig.",
+        "why_wrong": "π faktoreras i differensen; tecknet på (3,15 − 3,13) ger entydigt svar."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
+  },
+  "host-2020-kvant2-KVA-021": {
+    "solution_path": "Linje genom origo: f(x) = kx. f(a) = ka, f(-a) = -ka. Tecknet beror på k:s tecken — fritt. D.",
+    "technique": "Linjär graf genom origo: värdet vid −a är negativ-värdet vid a, men tecknet av k är obestämt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att anta att f växer (k > 0) och därmed f(a) > f(-a).",
+        "why_wrong": "k kan vara negativt; då är f(-a) = -ka > 0 > ka = f(a)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att f(-a) är \"mindre\" som negativ ingång.",
+        "why_wrong": "Bara om k > 0; annars vänder ojämlikheten."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid k = 0 → båda är 0, likhet.",
+        "why_wrong": "k = 0 är ett specialfall; tre utfall är möjliga."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
+  },
+  "host-2020-kvant2-KVA-022": {
+    "solution_path": "Medelvärdet av 4 värden = (-5 + x + y + 3)/4 = -1 → x + y - 2 = -4 → x + y = -2. -2 < -1 — B.",
+    "technique": "Lös ut summan ur medelvärdesekvationen direkt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få x + y = 0.",
+        "why_wrong": "(-5 + 3) = -2; medelvärde -1 ger summa -4 totalt; så x + y = -2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x + y = -1 (lika med medelvärdet).",
+        "why_wrong": "Medelvärdet är -1, men summan av x + y är -2 efter justering för -5 och 3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att x och y individuellt behövs.",
+        "why_wrong": "Bara summan x + y behövs, och den är entydig."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424621013
+    }
   },
   "host-2020-kvant2-XYZ-001": {
     "_meta": {

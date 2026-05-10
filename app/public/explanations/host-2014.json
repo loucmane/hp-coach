@@ -1,4 +1,160 @@
 {
+  "host-2014-kvant1-KVA-013": {
+    "solution_path": "P(grön ur 5 grön + 4 blå) = 5/9; P(blå ur 6 grön + 5 blå) = 5/11. 5/9>5/11 eftersom täljaren är samma och I har mindre nämnare — A.",
+    "technique": "Lika täljare ⇒ den med mindre nämnare är större.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att låta sig luras av att den andra korgen har fler bollar och tro att blåvinsten där måste vara större.",
+        "why_wrong": "Fler bollar betyder större nämnare, vilket sänker sannolikheten — inte tvärtom."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att \"5 av båda\" gör chanserna lika.",
+        "why_wrong": "Talen 5 är samma men nämnarna 9 och 11 skiljer sig — kvoterna kan inte vara lika."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man måste veta hur korgarna byggdes.",
+        "why_wrong": "Båda fördelningar är fullt specificerade, så sannolikheterna går att räkna exakt."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317526
+    }
+  },
+  "host-2014-kvant1-KVA-014": {
+    "solution_path": "Båda uttrycken är x^{ab} eftersom (x^{a})^{b}=x^{ab}=(x^{b})^{a}. Lika oavsett a, b — C.",
+    "technique": "Potens av potens: (x^{a})^{b}=x^{ab}, multiplikationen är kommutativ.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du minns regeln som (x^{a})^{b}=x^{a+b} kan du tro att I \"bygger på\" annat sätt än II.",
+        "why_wrong": "Reglen är multiplikation av exponenter, inte addition; ordningen i ab spelar ingen roll."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att den ena ordningen ger ett större resultat när x > 1.",
+        "why_wrong": "Båda ger x^{ab} oavsett vilken exponent som hamnar \"ytterst\"."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta vilket av a och b som är störst.",
+        "why_wrong": "Likheten gäller för alla reella a, b — inget mer behövs."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317526
+    }
+  },
+  "host-2014-kvant1-KVA-015": {
+    "solution_path": "A minskar med 1000/år, B ökar med 1500/år; differensen krymper med 2500/år. Initialt skiljer 15000, så tiden är 15000/2500=6 år. 6 > 5, alltså A.",
+    "technique": "Närmar/avlägsnar sig: kombinera relativhastigheten direkt.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 15000/3000 = 5 om man av misstag dubblerar A:s minskning till 1500.",
+        "why_wrong": "A minskar med 1000, inte 1500; den korrekta relativfarten är 2500/år, inte 3000."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att 5 är ett rent svar och tror att tidshorisonten råkar bli exakt 5.",
+        "why_wrong": "15000/2500 är 6, inte 5 — gapet är för stort för att stängas på 5 år."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man saknar information om städernas tillväxt över tid.",
+        "why_wrong": "Tillväxten är linjär och fullständigt specificerad; ingen ytterligare data behövs."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317526
+    }
+  },
+  "host-2014-kvant1-KVA-018": {
+    "solution_path": "L₁ : y = kx + m₁ och L₂ : y = k₂x + m₂ med k_{1}>k_{2}. Linjernas riktningskoefficienter säger inget om deras y-skärningar — m₁ och m₂ är fria parametrar. D.",
+    "technique": "Riktningskoefficient och konstantterm är oberoende parametrar i linjär funktion.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att associera \"större lutning\" med \"större y-värde överallt\" och dra slutsatsen att m₁ > m₂.",
+        "why_wrong": "Lutningen påverkar bara hur snabbt y växer, inte var linjen skär y-axeln."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att linjer korsar varandra \"uppåt mot vänster\" och m₂ är därför större.",
+        "why_wrong": "Inget i villkoret om k:n förbinder dem med m:n; båda riktningarna är möjliga."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att likhet av m skulle inträffa \"i symmetri\".",
+        "why_wrong": "Det finns ingen symmetri som tvingar m₁ = m₂; tre olika utfall är möjliga."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317526
+    }
+  },
+  "host-2014-kvant1-KVA-020": {
+    "solution_path": "Vinkelsumman i triangel är 180°: x+y+z=180. Med x=y+z blir 2x=180, så x=90 och därmed y+z=90. Eftersom y, z är positiva vinklar (kan vara 0+90 utesluts) gäller z<90. B.",
+    "technique": "Vinkelsumman 180° + given relation ger fixt värde på en vinkel, intervall på de andra.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att läsa x = y + z och dra slutsatsen att z är \"den största\" eftersom den är \"halv av x\".",
+        "why_wrong": "z är hälften av x bara om y = z; annars kan z ligga var som helst i (0°, 90°)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid specialfallet y = z = 45°, då z = 45° < 90°, men antar likhet i något steg.",
+        "why_wrong": "z = 90° kräver y = 0°, vilket inte är en giltig vinkel; z når aldrig 90°."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att y och z är fria och att z kan vara vad som helst.",
+        "why_wrong": "Villkoret x = y + z tillsammans med x + y + z = 180° låser y + z = 90° — z är begränsad."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317526
+    }
+  },
+  "host-2014-kvant1-KVA-021": {
+    "solution_path": "För -4\\le x\\le -3 och -5\\le y\\le -2 maximeras |xy| vid extrempunkterna. Minsta värdet av xy (alltså mest negativa eller minsta positiva) — eftersom båda är negativa är xy positivt. Minsta produkten: ta minsta absoluta värden i båda intervall: |-3|\\cdot|-2|=6. C.",
+    "technique": "Produkt av två intervall: minimum/maximum hittas i hörnen.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna (-4)(-5)=20 och tro att det är minsta.",
+        "why_wrong": "Det är största produkten — båda absolutvärden tas maximalt. Minsta hittar du på motsatt hörn."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (-4)(-2)=8 eller (-3)(-5)=15 ligger i mitten.",
+        "why_wrong": "Minsta positiva produkten kräver att båda absolutvärden är minimala samtidigt: 3\\cdot 2=6."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver mer info om hur x och y väljs gemensamt.",
+        "why_wrong": "Intervallen är oberoende; minimum av produkten ligger entydigt i ett hörn."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317526
+    }
+  },
   "host-2014-kvant1-XYZ-001": {
     "_meta": {
       "generated_at": 1778410518741,
@@ -206,6 +362,32 @@
     "pitfall": null,
     "solution_path": "Addera alla tre ekvationerna: 2(x+y+z)=7{,}5+12{,}5+10=30, alltså x+y+z=15. Medelvärde = 15/3=5.",
     "technique": "Tre ekvationer i tre variabler där bara summan/medelvärdet eftersöks: addera alla ekvationer, {MO}x+y+z{MC} dyker upp som 1/2 av högerledssumman."
+  },
+  "host-2014-kvant2-KVA-014": {
+    "solution_path": "355/113\\approx 3{,}1416, alltså strax över π. 355/113>3{,}1>3{,}1. Korrekt: I = 355/113 ≈ 3,1415, vilket är något större än 3,1. A.",
+    "technique": "Approximation 355/113 ≈ π — använd den när π dyker upp implicit.",
+    "pitfall": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel och få 355/113 ≈ 3,0 istället för 3,14.",
+        "why_wrong": "113·3 = 339, så 355/113 är klart över 3, och faktiskt nära π."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid grov approximation 355/113 ≈ 3 och kallar likhet med 3,1.",
+        "why_wrong": "355/113 är 3,141..., inte 3,1 — skillnaden är liten men reell, och I > II."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver räknare för att jämföra.",
+        "why_wrong": "355/113 är en välkänd π-approximation; kvoten är fullt deterministisk."
+      }
+    ],
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778424317526
+    }
   },
   "host-2014-kvant2-XYZ-001": {
     "_meta": {
