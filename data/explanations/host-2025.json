@@ -1,0 +1,28 @@
+{
+  "host-2025-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778408443638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "102° är redan markerat i figuren och kan kännas som korresponderande vinkel till v.",
+        "why_wrong": "Korresponderande vinklar ligger på samma sida av samma transversal — v skapas där två transversaler skär varandra, inte där en transversal skär en parallell linje."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att 37°+102°=139° och tar det som svar.",
+        "why_wrong": "102° måste först omvandlas till sin inre triangelvinkel (78°) innan adderingen — annars räknas yttre och inre vinkel mot varandra."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten kan vara att v är supplementvinkeln till 37°, alltså 180°-37°=143°.",
+        "why_wrong": "Supplementregeln gäller för vinklar på SAMMA räta linje. v ligger där två olika transversaler möts — supplement gäller inte här."
+      }
+    ],
+    "pitfall": "Avgör för varje given vinkel om den är inre eller yttre triangelvinkel innan du adderar — felklassificering av 102° är dominanten i den här uppgiften.",
+    "solution_path": "v är yttervinkeln vid toppen av triangeln som L₂ och de två transversalerna bildar — och en yttervinkel är alltid summan av de två motstående inre vinklarna. Här är de inre vinklarna 37° (direkt) och 180°-102°=78° (eftersom 102° är yttervinkeln vid den högra basen). Alltså v=37°+78°=115°.",
+    "technique": "Yttervinkel = summa av två motstående inre vinklar. Identifiera triangeln som transversalerna och en parallell linje bildar."
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "host-2020-kvant1-NOG-023": {
+    "_meta": {
+      "generated_at": 1778408443638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "(1) säger att Cecilia är äldre än både Alvar och Benjamin, vilket nästan låter som att Cecilia är äldst.",
+        "why_wrong": "(1) säger inget om Dessi eller Elina — någon av dem KAN vara äldre än Cecilia. Ensamt placerar (1) inte Cecilia över alla fyra andra."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "(2) ger en konkret rangordning B>D>E, vilket kan kännas som en stark ledtråd.",
+        "why_wrong": "(2) säger inget om Cecilia eller Alvar — Cecilia kan vara äldre än Benjamin eller yngre än Elina. Otillräckligt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tänka 'båda var för sig' när båda påståendena verkar peka mot Cecilia.",
+        "why_wrong": "Inget av påståendena ENSAMT placerar Cecilia över ALLA fyra andra — det krävs att man kopplar ihop kedjorna via Benjamin."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Påståendena nämner olika namn och kan se oförenliga ut vid första anblick.",
+        "why_wrong": "De har Benjamin gemensamt — och Benjamin är länken som binder ihop de två kedjorna till en obruten ordning. Tillsammans räcker de."
+      }
+    ],
+    "pitfall": "Rusa inte till D ('var för sig') när båda påståendena nämner personen du tror är svaret. Verifiera att VARJE påstående ensamt placerar den över ALLA andra.",
+    "solution_path": "Benjamin är länken som binder ihop de två påståendena. (1) ger ordningen C>A>B; (2) ger B>D>E. Var för sig saknas information om hälften av personerna. Tillsammans bildar de en obruten kedja via Benjamin: C>A>B>D>E — Cecilia är äldst.",
+    "technique": "Hitta den gemensamma personen som länkar samman de båda påståendenas ordningar — när kedjan blir obruten är frågan löst."
+  },
+  "host-2020-verb1-LÄS-011": {
+    "_meta": {
+      "generated_at": 1778408443638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Sardinien nämns flera gånger i texten i samband med jämförelser mellan moderna och forntida populationer.",
+        "why_wrong": "Texten säger att de FORNTIDA västgötska bönderna delar DNA-profil med dagens sardinier — inte att dagens sardinier liknar dagens västgötar. Alternativet vänder på riktningen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Avhandlingen utvecklar nya metoder för DNA-analys av forntida material — det låter som ett rimligt huvudresultat.",
+        "why_wrong": "Att utveckla metoder är METODEN, inte avhandlingens slutsats. Frågan letar efter vad metoderna VISADE, inte vad de är."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Jordbruket är ett centralt tema i texten och nämns i samband med migration.",
+        "why_wrong": "Texten kopplar genetisk variation till MIGRATION och GENFLÖDE mellan grupper — inte till förändringar i jordbruket. Alternativet förvränger orsakssambandet."
+      }
+    ],
+    "pitfall": "Två återkommande fällor i frågetypen: plausibla men INVERTERADE påståenden (B), och förväxling mellan METOD och RESULTAT (C).",
+    "solution_path": "Avhandlingens kärnresultat är att den skandinaviska stenåldersbefolkningen var genetiskt heterogen — något som motbevisar tidigare antaganden. Texten lyfter fram att de tre nya västgötska individerna bekräftar att grupper med 'väldigt olika härkomst levde i dagens Skandinavien för 5 000 år sedan'.",
+    "technique": "På LÄS-frågor om 'mest intressant resultat' eller 'huvudresultat' — leta efter den slutsats texten själv markerar som ny eller motsägande tidigare uppfattning."
+  },
+  "host-2020-verb1-ORD-001": {
+    "_meta": {
+      "generated_at": 1778408443638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Munter och matglad ligger nära på känsloskalan — båda är positiva tillstånd.",
+        "why_wrong": "Munter beskriver allmän glädje, gourmand syftar specifikt på relationen till mat."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du har hört gourmand i kontexter som 'finsmakare' kan 'kunnig' kännas rätt.",
+        "why_wrong": "Det är gourmet som betyder finsmakare. Gourmand handlar om aptit, inte sakkunskap."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Ordet låter franskt och pampigt och kan associeras med temperament.",
+        "why_wrong": "Argsint har ingen koppling till ordstammen, som handlar om mat (jfr engelskans gormandize, 'frossa')."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Gourmand och 'omtyckt' kan båda föra tankarna till en populär eller uppskattad person.",
+        "why_wrong": "Ordet syftar på personens egen relation till mat — inte hur andra ser på personen."
+      }
+    ],
+    "pitfall": "Förväxla inte gourmand med gourmet — gourmand handlar om APTIT, gourmet om SMAKKUNSKAP.",
+    "solution_path": "Gourmand är ett franskt lånord besläktat med gourmet — båda har matrot. Skillnaden: gourmand betonar matglädje och förkärlek för att äta; gourmet syftar på finsmakaren. På svenska används gourmand vanligen synonymt med matglad.",
+    "technique": "Franska lånord på gour-: gourmet (finsmakare), gourmand (matälskare), gourmandise (delikatess) — alla kretsar kring mat."
+  }
+}
