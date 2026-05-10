@@ -25,6 +25,578 @@
     "solution_path": "Förenkla parentesen först: 4 − 3 = 1. Sen är hela uttrycket 1\\cdot(x+2y)=x+2y.",
     "technique": "Förenkla först — leta efter beräkningsbara konstanter inom parenteser innan du distribuerar. Att räkna ut 4 − 3 = 1 sparar all distribution."
   },
+  "host-2022-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 3-2=1 och tro det är svaret.",
+        "why_wrong": "Beräkna potenserna FÖRST: 3³ = 27, 2³ = 8. Sen subtrahera."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta (3-2)^{3}=1, eller annan slarvig kombination → 3.",
+        "why_wrong": "Differensen av kuber är inte kuben av differensen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 3+2+1=6 av räknemiss.",
+        "why_wrong": "19 är korrekt: 27 − 8 = 19."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "3^{3}-2^{3}=27-8=19.",
+    "technique": "Differens av potenser: räkna varje potens separat, sen subtrahera."
+  },
+  "host-2022-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa tecknen och få −10 (10 av räknemiss).",
+        "why_wrong": "Räkna noggrant: 1,6 / 0,2 = 8. Med negativ: x = −8, inte −10."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 1{,}6 (ena sidan).",
+        "why_wrong": "Det är RHS, inte x. Lös ut x genom division med −0,2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 2 av tecken-flipp.",
+        "why_wrong": "x är negativ (−8), inte +2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Samla x: 0{,}4x-0{,}6x=1{,}8-0{,}2 → -0{,}2x=1{,}6, alltså x = −8.",
+    "technique": "Linjär ekvation med decimaler: behandla som vanlig linjär ekvation; multiplicera ev. båda led med 10 för att förenkla."
+  },
+  "host-2022-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa tecken på interceptet (tro +2).",
+        "why_wrong": "Linjen skär y-axeln vid −2 (under origo)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att blanda lutning 3 med 1/3.",
+        "why_wrong": "Lutningen är 3 (brant uppåt), inte 1/3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid att tro lutningen är negativ.",
+        "why_wrong": "Lutningen är POSITIV 3 — linjen går brant uppåt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Linjen y = 3x − 2 har lutning 3 och y-skärning −2. Alternativ C visar denna konfiguration.",
+    "technique": "Match linje till graf: jämför lutning (Δy/Δx) och y-skärning (vid x=0)."
+  },
+  "host-2022-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\frac{10}{50}+\\frac{2}{3} och få ungefärligt 2/7.",
+        "why_wrong": "Sannolikhet räknas som total svarta över total kulor, inte sum av andelar."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\frac{7}{10} (felaktig ratio).",
+        "why_wrong": "7/10 = 0,7. Korrekt: 70/140 = 0,5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 5/7 av annan räknemiss.",
+        "why_wrong": "5/7 ≈ 0,71. Räkna noggrant: 70/140 = 1/2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "B har \\frac{2}{3}\\cdot 90=60 svarta. A har 10. Total: 140 kulor, 70 svarta. P=\\frac{70}{140}=\\frac{1}{2}.",
+    "technique": "Sammanslagen sannolikhet: total gynnsamma / total utfall över alla källor."
+  },
+  "host-2022-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna räknemiss på en av termerna och få 3.",
+        "why_wrong": "Båda termerna ger 50; subtraktionen ger 0."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att tappa subtraktion och få 20.",
+        "why_wrong": "f(x) involverar SUBTRAKTION mellan termerna. 50 - 50 = 0."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 100 (50+50).",
+        "why_wrong": "Det är ADDITION; men funktionen har minus mellan termerna. Resultatet 0."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "f(2)=5(8+2)-10(4+1)=50-50=0.",
+    "technique": "Funktionsvärde: räkna varje del av f separat, sen utför operationen mellan dem."
+  },
+  "host-2022-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel proportion och få 56.",
+        "why_wrong": "Räkna noggrant: AE = 60 cm baserat på likformighetsproportionerna."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta avrundning åt 64.",
+        "why_wrong": "Resultatet är exakt 60 cm."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 68 av annan räknemiss.",
+        "why_wrong": "AE = 60 cm enligt likformighetsförhållandet."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Likformighet: motsvarande sidor i samma proportion. Av figuren: AE=60 cm.",
+    "technique": "Likformighet: motsvarande sidor i konstant förhållande. Sätt upp proportion, lös ut okänd."
+  },
+  "host-2022-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 26 funkar (delbart med 2).",
+        "why_wrong": "26 = 4·6+2, inte 4n+1. Total måste vara 4n+1."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 27 (delbart med 3).",
+        "why_wrong": "27 = 4·6+3, inte 4n+1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 28 (delbart med 4).",
+        "why_wrong": "28 = 4·7, inte 4n+1. Total ska vara 4n+1."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Total = 3e + e + 1 (Albert) = 4e + 1. Total måste ha formen 4n+1. Av alternativen: 29 = 4·7+1 ✓.",
+    "technique": "Förhållande-uppgifter med 'plus en själv': total = (förhållande+1) · enhet + 1; total måste vara av specifik form."
+  },
+  "host-2022-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 7^{2}-(-7)^{2}=0 och tro alla x-termer kanellera till 49x.",
+        "why_wrong": "Använd konjugatregeln korrekt: differensen ger 14, summan ger 2x. Produkt: 28x."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x^{2} (av att tro båda kvadrater eliminerar x-termen).",
+        "why_wrong": "Båda kvadrater ger x²+14x+49 och x²−14x+49; differensen är 28x, inte x²."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid x^{2}-7x+49 av att glömma utveckla.",
+        "why_wrong": "Differensen mellan dessa två KVADRATER är 28x — INGEN x²-term."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Använd konjugatregeln: ((x+7)+(x-7))((x+7)-(x-7))=2x\\cdot 14=28x.",
+    "technique": "Differens av kvadrater (som inte är konjugatet): {MO}(a+b)^{{2}}-(a-b)^{{2}}=4ab{MC}. Här är 4·x·7 = 28x."
+  },
+  "host-2022-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna sidan som 18 (felaktig sammansättning).",
+        "why_wrong": "Längden är 4r = 12, inte 18 (3 + 3 cirklar?). Två cirklar tangerar varandra inom rektangeln, totalt 4r längd."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 12\\cdot 12=144 av att tro båda dimensioner är 4r.",
+        "why_wrong": "Bredden är 2r = 6 (cirkelns diameter), inte 12."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 162 av räknemiss.",
+        "why_wrong": "6·12 = 72 exakt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Varje cirkel: area = 9π → r = 3. Rektangelns mått: bredd = 2r = 6, längd = 4r = 12 (två cirklar plus tangering). Area = 6\\cdot 12=72 cm².",
+    "technique": "Cirklar tangerande inuti rektangel: bredd = diameter; längd = (antal cirklar) · diameter."
+  },
+  "host-2022-kvant1-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna kub utan att invertera och få -\\frac{8}{27}.",
+        "why_wrong": "Du måste invertera först (1/x = −2/3 ⇒ x = −3/2), SEN kuba."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att tappa minustecken och få +8/27.",
+        "why_wrong": "x är negativ, x³ också negativ (udda exponent)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid +27/8 av tecken-flipp.",
+        "why_wrong": "x = −3/2 är negativ; x³ = −27/8."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Invertera: x=-\\frac{3}{2}. x^{3}=\\left(-\\frac{3}{2}\\right)^{3}=-\\frac{27}{8}.",
+    "technique": "Inverst förhållande: lös ut x från 1/x = a → x = 1/a; behandla tecknet konsekvent."
+  },
+  "host-2022-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 9/4 av annan kombination.",
+        "why_wrong": "Resultatet är 9/6 (= 3/2 = 1,5), inte 9/4 (= 2,25)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 9/12 (felaktigt sliver av 18/12).",
+        "why_wrong": "18/12 förkortas till 3/2 (som är 9/6), inte 9/12."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 9/19.",
+        "why_wrong": "Bråkaddition kräver gemensam nämnare; nämnare adderas inte. 18/12, inte 9/19."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Gemensam nämnare 12: \\frac{4}{12}+\\frac{9}{12}+\\frac{5}{12}=\\frac{18}{12}=\\frac{3}{2}=\\frac{9}{6}.",
+    "technique": "Bråkaddition: gemensam nämnare, addera täljare."
+  },
+  "host-2022-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel y och få (−4, −1) (genom att substituera x=0 i båda).",
+        "why_wrong": "Skärningen kräver att lösa systemet, inte avläsa intercepts."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att gissa (1, 0) — y=0 vid x=1 i andra linjen.",
+        "why_wrong": "Det är x-axelskärningen för y = x−1, inte skärningen mellan båda linjerna."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid (2, −4) av att substituera fel.",
+        "why_wrong": "Skärningen är (3, 2) — räkna systemet noggrant."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt lika: 2x-4=x-1 → x = 3, sedan y = x − 1 = 2. Punkt (3, 2).",
+    "technique": "Linje-skärning: lös linjernas y-uttryck mot varandra för x, sätt sedan in x i en av ekvationerna för y."
+  },
+  "host-2022-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel multiplicering och få 7/8.",
+        "why_wrong": "Räkna noggrant: 45x = 35x+70 → x = 7 (heltal)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 7/4 av tappa multiplicera.",
+        "why_wrong": "Multiplicera båda led med 7 för att eliminera bråket. Resultat: x = 7."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 5 av räknemiss.",
+        "why_wrong": "5·5+10 = 35; 45·5/7 = 225/7 ≈ 32. Inte lika. x = 7 är korrekt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Multiplicera båda led med 7: 45x=35x+70, alltså 10x=70 och x = 7.",
+    "technique": "Ekvation med bråk: multiplicera båda led med nämnaren för att eliminera bråk."
+  },
+  "host-2022-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att avrunda 7% till 'ungefär 1/15' och få 1.",
+        "why_wrong": "Räkna exakt: 7% = 0,07; 0,07·15 = 1,05."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta avrundning åt 1,1.",
+        "why_wrong": "Resultatet är exakt 1,05."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 1,15 av räknemiss.",
+        "why_wrong": "0,07·15 = 1,05 exakt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "0{,}07\\cdot 15=1{,}05.",
+    "technique": "Procent: a% = a/100; multiplicera direkt."
+  },
+  "host-2022-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel summa och få medel 4 → diff 1.",
+        "why_wrong": "Summan är 18, dela med 6 = 3. Medel = median här."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 2 av att räkna median som 4 (felaktigt).",
+        "why_wrong": "Median av 6 tal är medel av de två mittersta: (2+4)/2 = 3, inte 4."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 3 utan att räkna ut differensen.",
+        "why_wrong": "Diff = 0 (medel = median här). 3 är värdet på båda, inte differensen."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Median: \\frac{2+4}{2}=3. Medel: \\frac{-1+1+2+4+5+7}{6}=\\frac{18}{6}=3. Differens 0.",
+    "technique": "Median av jämnt antal tal: medelvärdet av de två mittersta i sorterad ordning."
+  },
+  "host-2022-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel grundvinkel och få 80°.",
+        "why_wrong": "Räkna noggrant från figuren: 5x = 100°."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 120°.",
+        "why_wrong": "Den specifika konfigurationen ger 100°, inte 120°."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 140° av räknemiss.",
+        "why_wrong": "5x = 100°."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figurens vinkelförhållanden ger 5x=100°.",
+    "technique": "Vinkelräkning från figur: använd vinkelsumma + kompletterande/supplementära vinklar."
+  },
+  "host-2022-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att konstant funktion 'växer'.",
+        "why_wrong": "f(x) = 2 ger samma värde för alla x. Inte STRIKT större."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att kvadratiska funktioner uppåt går = växer.",
+        "why_wrong": "f(x) = x² − 2x + 1 = (x−1)². f(1) = 0, f(0) = 1. f(1) < f(0)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid f(x) = −2x+2: f(1)=0, f(0)=2. f(1) < f(0).",
+        "why_wrong": "Negativ lutning ⇒ f(1) < f(0). Inte uppfyllt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "För B: f(1)=-1 och f(0)=-2. -1>-2, så villkoret är uppfyllt.",
+    "technique": "Strikt växande mellan x=0 och x=1: lutningen mellan punkterna måste vara positiv."
+  },
+  "host-2022-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att utveckla bara två parenteser och stanna vid 4 termer + e + f.",
+        "why_wrong": "Du måste utveckla med ALLA tre parenteser. e och f är inte separata termer; de måste multipliceras med varje term ur (a+b)(c+d)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att tappa en av parenteserna och få 8 termer av (a+b)(c+d)·1 form.",
+        "why_wrong": "(a+b)(c+d)(e+f) ger 2³ = 8 termer."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid ace+bdf (bara ytterhörn).",
+        "why_wrong": "Alla 8 kombinationer behövs; ace och bdf är två av dem."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Tre parenteser med vardera 2 termer ger 2^{3}=8 termer i utveckling. Alla kombinationer: ace, acf, ade, adf, bce, bcf, bde, bdf.",
+    "technique": "Distributiv lag: produkten av n parenteser med vardera m termer ger m^n termer i utveckling."
+  },
+  "host-2022-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa π och räkna \\sqrt{27}\\approx 5{,}2 → diameter 10 → 1,5? Räknemissar.",
+        "why_wrong": "Inkludera π: r² = 27/π ≈ 8,6, r ≈ 2,9, diameter ≈ 5,9 ≈ 6."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att räkna RADIE istället för diameter och få 4,5 (felaktigt).",
+        "why_wrong": "Diametern är dubbla radien. r ≈ 3, diameter ≈ 6 cm."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 9 av räknemiss.",
+        "why_wrong": "Diameter 9 ger r 4,5 → area π·20,25 ≈ 64 — inte 27."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "r=\\sqrt{27/\\pi}\\approx 3 cm, alltså diameter ≈ 6 cm.",
+    "technique": "Diameter från cirkelarea: r = √(A/π); diameter = 2r."
+  },
+  "host-2022-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa minustecken och få −1/2.",
+        "why_wrong": "Räkna noggrant: x = 1/6 (positiv)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta -\\frac{1}{6} av tecken-fel.",
+        "why_wrong": "x = 1/3 − 1/6 = 1/6 (positiv)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{1}{2} av räknefel.",
+        "why_wrong": "Om x = 1/2: 1/3 − 1/2 = −1/6, inte 1/6. Fel."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Räkna höger: \\frac{1}{2}-\\frac{1}{3}=\\frac{3-2}{6}=\\frac{1}{6}. Då x = \\frac{1}{3}-\\frac{1}{6}=\\frac{2-1}{6}=\\frac{1}{6}.",
+    "technique": "Lös ut x ur a − x = b: x = a − b. Räkna båda sidor först."
+  },
+  "host-2022-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\frac{50}{130}\\cdot 430 (gram per meter).",
+        "why_wrong": "Det skulle ge gram, inte meter. Använd m/g (130/50)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\frac{50}{430}\\cdot 130 (felaktig kombination).",
+        "why_wrong": "50 ska vara nämnare, inte täljare i hastighetsfaktorn. Och 430 ska multipliceras, inte stå i nämnare."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{430}{130}\\cdot 50 (omvänd).",
+        "why_wrong": "Det skulle ge gram, inte meter. Räkna enheter: m/g · g = m."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Längd per gram: \\frac{130}{50} m/g. För 430 g: \\frac{130}{50}\\cdot 430.",
+    "technique": "Proportionellt samband: bestäm enheten av faktorn (m/g eller g/m), multiplicera med rätt mängd för rätt utfallsenhet."
+  },
+  "host-2022-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778414892961,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att 4·2^x = 2^(2x) (multiplicera exponenten).",
+        "why_wrong": "4 = 2² är en POTENS av basen. Multiplikation av potenser ADDERAR exponenter, inte multiplicerar."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 4^{x-1}.",
+        "why_wrong": "Vänsterledet är 4·2^x; 4^(x-1) skulle vara annan funktion av x."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 8^{x} av att tro att 4·2 = 8.",
+        "why_wrong": "4·2^x ≠ (4·2)^x = 8^x. Lagen är 2² · 2^x = 2^(x+2)."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "4=2^{2}, så 4\\cdot 2^{x}=2^{2}\\cdot 2^{x}=2^{x+2}.",
+    "technique": "Förenkla potens-uttryck: skriv om koefficienter som potenser av samma bas, addera exponenter."
+  },
   "host-2022-verb2-ORD-001": {
     "_meta": {
       "generated_at": 1778410520622,

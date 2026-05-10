@@ -1,4 +1,628 @@
 {
+  "var-2015-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att alla små tal med 3 är delbara.",
+        "why_wrong": "13: siffersumma 4, ej delbart."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 91 (verkar oddt).",
+        "why_wrong": "91 = 7·13, ej delbart med 3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 455.",
+        "why_wrong": "4+5+5 = 14, ej delbart med 3."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Siffersumma 819: 8+1+9=18, delbart med 3.",
+    "technique": "Delbarhet med 3: siffersumman måste vara delbar med 3."
+  },
+  "var-2015-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna omkrets (4x) istället.",
+        "why_wrong": "Frågan är om area, inte omkrets."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att vända olikheten: 3x² > 10.",
+        "why_wrong": "Texten säger 'mindre än'."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 6x² (felaktig area).",
+        "why_wrong": "L·B = 3x·x = 3x², inte 6x²."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Längd 3x, bredd x. Area = 3x². Villkor: 3x² < 10.",
+    "technique": "Översätt textinformation: identifiera operation (multiplikation för area), tecken för olikhet."
+  },
+  "var-2015-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna √(84-10) = √74 ≈ 8,6 → 4.",
+        "why_wrong": "Roten av differensen ≠ differensen av rotor. Räkna varje rot separat."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 8.",
+        "why_wrong": "≈ 6, inte 8."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 10.",
+        "why_wrong": "≈ 6."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\sqrt{84}-\\sqrt{10}\\approx 9{,}17-3{,}16\\approx 6.",
+    "technique": "Differens av rotor: räkna varje rot separat (inte rot av differensen)."
+  },
+  "var-2015-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 110 av räknemiss.",
+        "why_wrong": "150."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 190.",
+        "why_wrong": "150."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 230.",
+        "why_wrong": "150."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Initialt: 40 vita, 10 svarta. Nytt förhållande 1:4 (vita:svarta) ⇒ 40 vita matchas med 160 svarta. Lägg till 160-10=150.",
+    "technique": "Förhållande-byte: bestäm målfördelning, räkna behov av tillägg av en färg."
+  },
+  "var-2015-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 110 av räknemiss.",
+        "why_wrong": "x² − 1 = 120, inte 110."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 111.",
+        "why_wrong": "120."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 121 (utan att subtrahera 1).",
+        "why_wrong": "−1 ska subtraheras: 121 − 1 = 120."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "(x+1)(x-1)=x^{2}-1=121-1=120.",
+    "technique": "Konjugatregeln: (a+b)(a−b) = a²−b²."
+  },
+  "var-2015-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro x = 1 (där 4 = 1/4 är samma? Nej).",
+        "why_wrong": "4¹ = 4 och 4⁻¹ = 1/4. 4 ≠ 1/4. Inte lösning."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta −1/4.",
+        "why_wrong": "0."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 1/4.",
+        "why_wrong": "0."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "4^x = 4^(-x) ⇒ x = −x ⇒ 2x = 0 ⇒ x = 0.",
+    "technique": "Exponentialekvation: a^p = a^q ⇒ p = q (för a ≠ 1)."
+  },
+  "var-2015-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro a = 1.",
+        "why_wrong": "4·1 − 8 = −4; x² = −4 har inga reella lösningar (inte EN). a = 2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 3.",
+        "why_wrong": "4·3 − 8 = 4; x² = 4 har TVÅ lösningar. a = 2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 4.",
+        "why_wrong": "4·4 − 8 = 8; x² = 8 har två lösningar."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Exakt en lösning ⇒ x^{2}=0 ⇒ 4a-8=0 ⇒ a = 2.",
+    "technique": "x² = k har en lösning bara om k = 0 (då x = 0)."
+  },
+  "var-2015-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro b − a = 90°.",
+        "why_wrong": "Inte säkert; villkoret a ≠ 90 utesluter spec relations."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 2d + c − a = 180°.",
+        "why_wrong": "Olika kombination; verifiera figurens vinkelpar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid a + c = 90°.",
+        "why_wrong": "Inte säkert generellt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av vinkelförhållandena vid skärningen: 2a + b − c = 180°.",
+    "technique": "Vinkelsatser: identifiera vinkelpar (vertikala, supplementära) i specifik konfiguration."
+  },
+  "var-2015-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro största = 10 (samma som vidden).",
+        "why_wrong": "Vidden är b−a, inte b. Räkna ekvationerna."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 15.",
+        "why_wrong": "13."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 18.",
+        "why_wrong": "13."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Tal: a, 8, b med a+8+b=24 och b−a = 10. Lös: a = 3, b = 13.",
+    "technique": "Tre tal med medel + vidd + median: ställ upp tre ekvationer, lös."
+  },
+  "var-2015-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 4π - 2.",
+        "why_wrong": "Räkna sektor noggrant."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 4π - 4.",
+        "why_wrong": "π - 2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid π.",
+        "why_wrong": "π - 2 (med subtraktion)."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Cirkelsegment area = sektor − triangel. Med given konfiguration: \\pi-2 cm².",
+    "technique": "Cirkelsegment = sektor minus triangel-mellan-radier."
+  },
+  "var-2015-kvant1-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 25% och få 4.",
+        "why_wrong": "0,25%, inte 25%. Faktorn är 0,0025."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 4/10.",
+        "why_wrong": "4/100, inte 4/10."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 4/1000.",
+        "why_wrong": "4/100, inte 4/1000."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "0{,}0025\\cdot 16=0{,}04=\\frac{4}{100}.",
+    "technique": "Procent: a% = a/100; 0,25% = 0,25/100 = 1/400."
+  },
+  "var-2015-kvant1-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna a = 3.",
+        "why_wrong": "a = 5."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 4.",
+        "why_wrong": "5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 6.",
+        "why_wrong": "5."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "f(0) = C = 4. f(3) = 4·a³ = 500 ⇒ a³ = 125 ⇒ a = 5.",
+    "technique": "Exponentialfunktion C·a^x: f(0) = C; lös a från andra punkt."
+  },
+  "var-2015-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel summa och få 3.",
+        "why_wrong": "7x = 35 → x = 5."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 4.",
+        "why_wrong": "5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 7.",
+        "why_wrong": "5."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\frac{4x+3x}{12}=\\frac{35}{12} → 7x = 35 → x = 5.",
+    "technique": "Bråkekvation: gemensam nämnare, samla x, lös."
+  },
+  "var-2015-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 5·9 = 45 (mindre extremfall).",
+        "why_wrong": "7·9 = 63 är större. Närmare = bättre."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 5·11 = 55.",
+        "why_wrong": "7·9 = 63 är max."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 5·13 = 65.",
+        "why_wrong": "5+13 = 18, inte 16. Använd 7+9 = 16."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "För maximerad produkt med fast summa, talen ska vara så NÄRA varandra som möjligt. Närmast (udda + udda): 7 och 9. Produkt: 63.",
+    "technique": "Maximal produkt med fast summa: tal så nära varandra som möjligt."
+  },
+  "var-2015-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro 4/7 ≈ 0,6 är störst.",
+        "why_wrong": "5/6 ≈ 0,83 är större."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 7/12.",
+        "why_wrong": "5/6 är störst."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 2/3 (≈ 0,67).",
+        "why_wrong": "5/6 (≈ 0,83) är större."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Räkna varje: A = 4/7 ≈ 0,57; B = \\frac{1}{2}+\\frac{1}{3}=\\frac{5}{6}\\approx 0{,}83; C = 7/12 ≈ 0,58; D = 2/3 ≈ 0,67. B störst.",
+    "technique": "Bråkjämförelse: räkna ut decimalvärdet eller jämför mot 1/2."
+  },
+  "var-2015-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 70° (komplement).",
+        "why_wrong": "110°."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 90°.",
+        "why_wrong": "110°."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 130°.",
+        "why_wrong": "110°."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av parallellitet: x = 110°.",
+    "technique": "Parallellvinkelsatser."
+  },
+  "var-2015-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna x = 2.",
+        "why_wrong": "x = 4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 6.",
+        "why_wrong": "4."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 8.",
+        "why_wrong": "4."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "(2^{2})^{x}=2^{2x}=4^{4}=2^{8} → 2x = 8 → x = 4.",
+    "technique": "Exponentialekvation med samma bas."
+  },
+  "var-2015-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna -1/2 av approx.",
+        "why_wrong": "−8/15 ≈ −0,53, inte −1/2 = −0,5."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta −8/3.",
+        "why_wrong": "−8/15."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid −4/5.",
+        "why_wrong": "−8/15."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\frac{24}{5}-\\frac{16}{3}=\\frac{72-80}{15}=-\\frac{8}{15}.",
+    "technique": "Bråk subtraktion: gemensam nämnare först."
+  },
+  "var-2015-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro AD = π·radien.",
+        "why_wrong": "AD är linjär, inte cirkulär."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 14√2.",
+        "why_wrong": "Det är diagonalen i kvadrat, inte sexhörning."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 84/π.",
+        "why_wrong": "AD = 2·sida = 28."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sida = 84/6 = 14 cm. I regelbunden sexhörning är diagonal AD = 2·sida = 28 cm.",
+    "technique": "Regelbunden sexhörning: längsta diagonalen = 2·sida."
+  },
+  "var-2015-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 2·41 = 82 av annan tolkning.",
+        "why_wrong": "≈ 12."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 8.",
+        "why_wrong": "12."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 156 (utan rot).",
+        "why_wrong": "√156 ≈ 12."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\sqrt{8\\cdot 20-4}=\\sqrt{156}\\approx 12{,}5\\approx 12.",
+    "technique": "Approximativ rotutdragning: räkna värdet under roten, ta sqrt."
+  },
+  "var-2015-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro tredje = (x+y+z)/3 (medelvärdet).",
+        "why_wrong": "Det är inte ett tal i listan; det är medelvärdet."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 3(x-y-z).",
+        "why_wrong": "Bryt inte ut 3 över alla termer."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid x - (y+z)/2.",
+        "why_wrong": "Det är inte rätt formel."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Summa = 3x. Tredje = 3x-y-z.",
+    "technique": "Hitta saknat värde i medelvärde: total summa minus kända termer."
+  },
+  "var-2015-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro x = 0.",
+        "why_wrong": "Om x = 0, då w = y. Men x ≠ w är inget villkor; hmm. Egentligen: alla 'olika tal' = inget par är lika. Om x = 0 och y ≠ 0, w = y ≠ x = 0 är OK. Men z är säkert 0 i kontext."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta y = 0.",
+        "why_wrong": "Om y = 0, då x = w (motsäger 'olika tal')."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid w = 0.",
+        "why_wrong": "w = x + y. Om w = 0, x = −y, vilket är möjligt. Men z är säkraste."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "x − w = −y betyder w = x + y. xyz = 0 betyder minst en är 0. Eftersom alla TAL är OLIKA, kan x ≠ y ≠ w (men z kan vara den som är 0). → z = 0.",
+    "technique": "Logik med 'olika tal': eliminera alternativ som motsäger villkor."
+  },
+  "var-2015-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna y = -3 utan att lösa k.",
+        "why_wrong": "−9, inte −3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 0.",
+        "why_wrong": "−9."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 6.",
+        "why_wrong": "−9."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "k = 2. y=2(-3)-3=-9.",
+    "technique": "Linje med okänd k: substituera given punkt för att lösa k."
+  },
+  "var-2015-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tappa minustecknet i exponenten.",
+        "why_wrong": "x⁻³ = 8 → x = 1/2; x³ = 8 ger x = 2 (annat svar)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 2.",
+        "why_wrong": "x = 1/2 (med negativ exponent)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 8.",
+        "why_wrong": "x³ är 1/8, så x = 1/2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Om x^{-3}=8: \\frac{1}{x^{3}}=8 → x^{3}=\\frac{1}{8} → x = 1/2.",
+    "technique": "Negativ exponent: x⁻ⁿ = 1/xⁿ; lös ut x via inversion och rotning."
+  },
   "var-2015-verb1-ORD-006": {
     "_meta": {
       "generated_at": 1778410520667,

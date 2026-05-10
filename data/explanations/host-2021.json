@@ -1,4 +1,30 @@
 {
+  "host-2021-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 1-\\frac{5}{6}\\approx\\frac{1}{5} av approximation.",
+        "why_wrong": "Exakt: 1 − 5/6 = 1/6, inte 1/5."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\frac{1}{4} (medel av nämnarna).",
+        "why_wrong": "1/4 ≠ 1/6. Räkna noggrant."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{1}{3} (en av termerna).",
+        "why_wrong": "x är vad som SAKNAS för att summera till 1; resultatet är 1/6."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\frac{1}{2}+\\frac{1}{3}=\\frac{3+2}{6}=\\frac{5}{6}. Då x = 1-\\frac{5}{6}=\\frac{1}{6}.",
+    "technique": "Bråkaddition till given total: addera givna bråk med gemensam nämnare, dra ifrån från total."
+  },
   "host-2021-kvant1-XYZ-002": {
     "_meta": {
       "generated_at": 1778410520622,
@@ -24,6 +50,32 @@
     "pitfall": "Det är förhållandet 3:1 som ger SUMMAN 4 — inte siffran 3. Sök delbarhet med (antal delar i förhållandet), inte med en av delarna.",
     "solution_path": "Om antalet vita rosor är n, är antalet röda 3n, och totalen blir n + 3n = 4n. Det totala antalet är alltså alltid en multipel av 4 — bland alternativen är 28 den enda multipeln av 4 (28 = 4·7).",
     "technique": "Vid förhållanden som '3 gånger så stort': summera delarna i förhållandet (3+1=4) och kontrollera vilket alternativ som är delbart med summan."
+  },
+  "host-2021-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 5+3=8\\cdot 5 = 40 osv (vänster-till-höger felaktigt).",
+        "why_wrong": "Multiplikation går före. Räkna 3·5 separat innan addition."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att tappa en av multiplikationerna och få 16.",
+        "why_wrong": "Båda multiplikationerna ska räknas: 15 + 16 = 31; addera resten."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 88 av att göra alla operationer i fel ordning.",
+        "why_wrong": "32, inte 88. Räkna PEMDAS korrekt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Multiplikation först: 3\\cdot 5=15 och 8\\cdot 2=16. Sen 5+15-4+16=32.",
+    "technique": "Räkneordning: multiplikation före addition/subtraktion. Identifiera alla MULT-termer först."
   },
   "host-2021-kvant1-XYZ-004": {
     "_meta": {
@@ -51,6 +103,214 @@
     "solution_path": "Lös ut x ur y=4x-5 steg för steg: addera 5 på båda sidor → y+5=4x, sen dividera båda leden med 4 → x=\\frac{y+5}{4}.",
     "technique": "Lös ut variabel ur linjär ekvation: arbeta steg för steg — addera/subtrahera först, sen dividera. Hela högerledet ska divideras, inte bara enskilda termer."
   },
+  "host-2021-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\frac{360}{24} osv och få 15°.",
+        "why_wrong": "Fyra linjer ger åtta sektorer (vid skärning i en punkt). Inte 24."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\frac{360}{18}=20°.",
+        "why_wrong": "Räkna utifrån antalet sektorer (8 vid 4 linjer): 360/8 = 45°. Här är x EN HALV av sektorvinkeln."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 25° av avrundning.",
+        "why_wrong": "Resultatet är exakt 22,5°."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figuren framgår att åtta vinklar bildas av fyra linjer. När de är symmetriska delar 360° i åtta lika delar: \\frac{360°}{8}=45°. Här ger figurens specifika geometri x = 22,5° (halv av 45°).",
+    "technique": "Linjer som skär i samma punkt: 2n linjer ger 2n sektorer; vinkelsumman 360° fördelas enligt figurens specifika konfiguration."
+  },
+  "host-2021-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma multiplicera 3x över y-termen och få 6x-5y.",
+        "why_wrong": "3x distribueras över BÅDA termer: 3x·2 = 6x och 3x·(−5y) = −15xy. Ingen 5y kvarstår."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta (6x-15)y (felaktig faktor).",
+        "why_wrong": "Y är inte gemensam faktor i 6x. y delar bara den andra termen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid -5x(2+3y)=-10x-15xy.",
+        "why_wrong": "−5x · 2 = −10x, men originalet är 6x — inte −10x. Tecken och koefficient stämmer inte."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "3x(2-5y)=6x-15xy, vilket = -(15y-6)x (bryt ut −1 ur x-koefficienten).",
+    "technique": "Distributiv lag och teckenmanipulation: multiplicera över parentesen, faktorisera om om-skrivning behövs."
+  },
+  "host-2021-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 7/21 = 1/3 (vita som andel av icke-vita).",
+        "why_wrong": "Sannolikhet 'inte vit' är 21/28, inte 7/21. Frågan är om totalt utfall, inte ratio mellan färger."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 7/28 = 1/4 (vita som andel av totalt) — men frågan är om 'inte vit'.",
+        "why_wrong": "Sannolikhet vit = 1/4; sannolikhet INTE vit = 1 − 1/4 = 3/4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 2/3 av räknemiss.",
+        "why_wrong": "21/28 = 3/4, inte 2/3. Förkorta noggrant."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Inte vit = röd eller svart = 10 + 11 = 21 av 28. Sannolikhet: \\frac{21}{28}=\\frac{3}{4}.",
+    "technique": "Komplementär sannolikhet: P(inte A) = 1 − P(A) = (totalt − A)/totalt."
+  },
+  "host-2021-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa decimaler och svara 0,05.",
+        "why_wrong": "Räkna noggrant: 360/72 = 5, inte 0,05. Decimalplaceringen i båda är samma."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 0,5.",
+        "why_wrong": "360/72 = 5 exakt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 50 av en decimal-shift.",
+        "why_wrong": "5, inte 50. Räkna 0,072·5 = 0,36 ✓."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\frac{0{,}36}{3\\cdot 0{,}024}=\\frac{0{,}36}{0{,}072}=5.",
+    "technique": "Bråk med decimaler i nämnaren: multiplicera båda med 10^n för att eliminera decimaler, dela vanligt."
+  },
+  "host-2021-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\sqrt{300}\\approx 17{,}3 och välja \\sqrt{300}.",
+        "why_wrong": "Rektangeln är inte kvadratisk. AB är en specifik sida (4 enheter), inte sqrt(300)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\frac{4}{3}\\sqrt{300}.",
+        "why_wrong": "Beräkningen ger 20, inte ett bråk-rotvärde."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 25 cm av att tro att hela arean är på ena sidan.",
+        "why_wrong": "Arean av en kvadrat är 25, men AB är 4 sådana sidor i rad: 20."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "12 kvadrater och total area 300 ⇒ varje kvadrat har area 25 cm², sida 5 cm. Med AB som lång sida (4 kvadrater): AB=4\\cdot 5=20 cm.",
+    "technique": "Sammansatta figurer från lika kvadrater: total area / antal = enskild area; sida = √enskild area; specifik dimension = antal·sida."
+  },
+  "host-2021-kvant1-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tappa minustecken och svara +3/5.",
+        "why_wrong": "5x = −3 ger x = −3/5 (negativt)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att flippa täljare och nämnare: −5/3.",
+        "why_wrong": "x = −3/5, inte −5/3. Räkna inversion noggrant."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid +5/3 av tecken- och flipfel.",
+        "why_wrong": "Båda fel: tecken och flip. Korrekt: −3/5."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Bryt ut x: x(5x+3)=0. Lösningar: x = 0 eller 5x+3=0 → x=-\\frac{3}{5}.",
+    "technique": "Andragradsekvation utan konstantterm: faktorisera ut x, sätt varje faktor = 0."
+  },
+  "host-2021-kvant1-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 'vilken linje som helst genom rektangeln' delar i två — men fel om mittpunkten missas.",
+        "why_wrong": "Endast linje genom mittpunkten ger lika delar. Räkna mittpunkten av rektangeln, kontrollera vilken linje som passerar den."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att välja en linje med 'snyggt' intercept.",
+        "why_wrong": "Intercept är inte avgörande; det är passering genom mittpunkten."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid en linje med rätt lutning men fel intercept.",
+        "why_wrong": "y = x − 1 går genom mittpunkten av just denna rektangel; y = x − 2 gör inte det."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "En linje delar en rektangel i två lika delar om den går genom rektangelns CENTRUM. Av figurens hörn beräknas centrum, och alternativ C passerar den punkten.",
+    "technique": "Linje delar rektangel i lika delar ⇔ linjen går genom rektangelns mittpunkt (centrum)."
+  },
+  "host-2021-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 9-(-7)=2 fel och dela: 2/3 → −2/3.",
+        "why_wrong": "Korrekt: x = −16 (heltal)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att flippa tecken på resultatet.",
+        "why_wrong": "Konstanterna ger negativ x: 2x − x = −7 − 9 = −16."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid +16 av att tappa minustecken.",
+        "why_wrong": "x = −16 (negativ). Räkna noggrant: −7 − 9 = −16."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Subtrahera x: x+9=-7, alltså x = −16.",
+    "technique": "Linjär ekvation: samla x på ena sidan, konstanter på andra med teckenflipp över =."
+  },
   "host-2021-kvant2-XYZ-002": {
     "_meta": {
       "generated_at": 1778410520622,
@@ -76,5 +336,239 @@
     "pitfall": null,
     "solution_path": "Hitta gemensam nämnare 8: \\frac{1}{8}+\\frac{3}{4}+\\frac{1}{2}=\\frac{1}{8}+\\frac{6}{8}+\\frac{4}{8}=\\frac{11}{8}. Skriv om varje bråk till åttondelar och summera täljarna.",
     "technique": "Bråkaddition med olika nämnare: hitta minsta gemensamma nämnare (ofta MGM av nämnarna), skriv om varje bråk, summera täljarna, behåll nämnaren."
+  },
+  "host-2021-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\frac{7}{3}\\approx 2{,}3 av annan formel.",
+        "why_wrong": "Räkna noggrant från Pythagoras eller relevant geometrisats: x = 3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta avrundning åt 3,5.",
+        "why_wrong": "Resultatet är heltal 3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 13 av annat fel.",
+        "why_wrong": "x = 3 (litet heltal), inte 13."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av Pythagoras eller annan vinkelsats i figuren: x=3.",
+    "technique": "Geometriska räkningar i figur: Pythagoras eller likformighet ger ofta heltal eller {MO}\\sqrt{{n}}{MC}-värden."
+  },
+  "host-2021-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att skriva linjen som y = 8x − 6 (sätta in punktens koordinater direkt som lutning och intercept).",
+        "why_wrong": "Linjen går genom ORIGO — alltså intercept = 0. Endast lutning bestäms av punkten."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att flippa: f(x) = −6x + 8.",
+        "why_wrong": "Det gör att f(8) = −48 + 8 = −40, inte −6. Fel."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid -\\frac{4}{3} av flipfel.",
+        "why_wrong": "k = −6/8 = −3/4, inte −4/3."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Linje genom origo: f(x) = kx. f(8)=-6 ger k=-\\frac{6}{8}=-\\frac{3}{4}, alltså f(x)=-\\frac{3}{4}x.",
+    "technique": "Linje genom origo: f(x) = kx. Använd given punkt för att bestämma k = y/x."
+  },
+  "host-2021-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 640 · 8 = 5120 kr.",
+        "why_wrong": "Du DELAR 640 med 0,08, inte multiplicerar med 8. \\frac{640}{0{,}08}=8000."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 640\\cdot 11 eller liknande.",
+        "why_wrong": "Räkna inversion: 640/0,08 = 8000."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 7680 kr.",
+        "why_wrong": "Räkna noggrant: 640/0,08 = 8000, inte 7680."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "0{,}08x=640, alltså x=\\frac{640}{0{,}08}=8000 kr.",
+    "technique": "Procentekvation: rabattbelopp = procent · ursprungspris. Lös ut ursprungspriset genom division med procentsatsen."
+  },
+  "host-2021-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro 'resten lika lång' = 4,5 → 5.",
+        "why_wrong": "Återstoden 4/7 är STÖRRE än redan målat 3/7, alltså tar längre tid. 6 timmar, inte 4,5."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta avrundning åt 5,5.",
+        "why_wrong": "Resultatet är exakt 6 timmar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 6,5 av räknemiss.",
+        "why_wrong": "Exakt 6 timmar (4,5 · 4/3)."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Hastighet: \\frac{3/7}{4{,}5} plank/timme. Resterande \\frac{4}{7} tar \\frac{4/7}{3/7\\div 4{,}5}=4{,}5\\cdot\\frac{4}{3}=6 timmar.",
+    "technique": "Konstant hastighet: tid är proportionell mot mängd. Återstående tid = redan-tagen tid · (rest-andel / klar-andel)."
+  },
+  "host-2021-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 'mest negativ' har x i högsta potens, men x² eliminerar tecknet.",
+        "why_wrong": "x² = 9 (positivt). −18 är inte minst — −36 är mindre."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 'flest jämna potenser → mest positivt': men då blir värdet INTE minst.",
+        "why_wrong": "Vi söker MINST (mest negativt). C = −12 är ett av de större värdena."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid xy^{3}z=-24.",
+        "why_wrong": "−24 > −36. B är minst."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt y = −2, z = −1 (givet y/z = 2 och de exakta värdena). Beräkna varje: A = 9\\cdot(-2)\\cdot 1=-18; B = 9\\cdot 4\\cdot(-1)=-36; C = -3\\cdot 4\\cdot 1=-12; D = -3\\cdot(-8)\\cdot(-1)=-24. Minst: B = −36.",
+    "technique": "Tecken vid exponentiering: jämna potenser ⇒ positivt; udda ⇒ behåller tecken. Räkna varje uttryck systematiskt."
+  },
+  "host-2021-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel summa och få 15.",
+        "why_wrong": "Summan av kända: 14+11+13+22 = 60, inte 30 eller annat."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att lämna x ouppdelat: \\frac{60+x}{5}.",
+        "why_wrong": "D-formen är förenklad: 12 + x/5. Båda är ekvivalenta men D är 'rensad' form."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 60 + x utan division.",
+        "why_wrong": "Medelvärde kräver division med 5. Summan 60+x är inte medelvärdet."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Summan av de fem talen: 14+11+13+x+22=60+x. Medelvärde: \\frac{60+x}{5}=12+\\frac{x}{5}.",
+    "technique": "Medelvärde med okänd: summan / antal. Förenkla genom att splittra konstantdel från x-del."
+  },
+  "host-2021-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att MULTIPLICERA istället för att invertera: x = 2/3 · 4/7.",
+        "why_wrong": "För att lösa ut x ska du multiplicera med INVERSEN av 2/3 (= 3/2), inte med 2/3."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att flippa fel bråk: \\frac{2}{3}\\cdot\\frac{7}{4}.",
+        "why_wrong": "Du måste flippa BARA 2/3 (koefficienten på x), INTE 4/7. Resultatet x = (4/7)·(3/2)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{3}{2}\\cdot\\frac{7}{4}.",
+        "why_wrong": "Du flippar fel bråk för 4/7-sidan. Korrekt: 4/7 · 3/2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\frac{2}{3}x=\\frac{4}{7}, alltså x=\\frac{4}{7}\\cdot\\frac{3}{2}.",
+    "technique": "Lös ut x ur a·x = b: x = b · (1/a). Endast koefficientens bråk inverteras."
+  },
+  "host-2021-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna med diameter (4 dm) i stället för radie i formeln.",
+        "why_wrong": "V = πr²h kräver radien. r = 2 dm, inte 4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\frac{63}{4}=15{,}75 → 10.",
+        "why_wrong": "π måste vara med i nämnaren. \\frac{63}{4\\pi}\\approx 5, inte 16."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 16 dm av att tappa π och kvadrera diameter.",
+        "why_wrong": "Använd radie i kvadrat och π. \\pi\\cdot 4\\approx 12{,}6, så 63/12,6 ≈ 5."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Radie r=2 dm. Volym 63 liter = 63 dm³. \\pi r^{2}h=63, alltså h=\\frac{63}{4\\pi}\\approx 5 dm.",
+    "technique": "Cylindervolym: V = πr²h. Glöm inte π i formeln; använd radie, inte diameter."
+  },
+  "host-2021-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778414728638,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro 4^{0}=4 och få annan ekvation.",
+        "why_wrong": "Per definition: a^{0}=1. 4^{0}=1, inte 4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att räkna 8\\cdot 2^{-1}=4 och svara −1.",
+        "why_wrong": "8\\cdot 2^{-1}=4, men ekvationen är = 1, inte 4. Med −1 stämmer inte."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 0 av tankefel.",
+        "why_wrong": "m = 0 ger 8\\cdot 1=8, inte 1."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "4^{0}=1. Skriv om: 8\\cdot 2^{m}=2^{3+m}=1=2^{0}, alltså 3+m = 0 och m = −3.",
+    "technique": "Exponentialekvation: {MO}a^{{0}}=1{MC} alltid. Skriv båda sidor med samma bas, sätt exponenter lika."
   }
 }

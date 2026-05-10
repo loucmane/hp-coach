@@ -1,4 +1,550 @@
 {
+  "host-2017-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att glömma division med 2 och rapportera summan \\frac{2}{3} förkortad till \\frac{1}{4}.",
+        "why_wrong": "Medelvärde = summa/antal. Två tal kräver division med 2 efter additionen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\frac{1}{5} av att 'plocka mittenvärdet' utan beräkning.",
+        "why_wrong": "Räkna exakt: 1/3 ≈ 0,33, inte 1/5 = 0,2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid att 'addera nämnaren' (2+6=8) → 1/8.",
+        "why_wrong": "Bråkaddition kräver gemensam nämnare; addera täljare. Nämnare adderas inte."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Gemensam nämnare 6: \\frac{1}{2}=\\frac{3}{6}. Summa \\frac{3}{6}+\\frac{1}{6}=\\frac{4}{6}=\\frac{2}{3}. Medelvärde = summa/2 = \\frac{1}{3}.",
+    "technique": "Medelvärde av två bråk: addera med gemensam nämnare, dela summan med 2."
+  },
+  "host-2017-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 'medelvärdet av tider' (9+18)/2 ≈ 13 min och avrunda till 12.",
+        "why_wrong": "Tider adderas inte vid samtidigt arbete; hastigheter adderas. Använd 1/t-formeln."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 'tre gånger så lång tid för tre gånger så många' (9·3=27 → 15).",
+        "why_wrong": "Det krävs SAMARBETE — tiden minskar när båda jobbar samtidigt. Räkna sammanlagd hastighet, dela mängden med den."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 21 min av annan räknemiss.",
+        "why_wrong": "Korrekt sammanlagd hastighet ger 18 min för 75 drinkar — exakt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Hastighet: Kalle \\frac{25}{9} drinkar/min, Jakob \\frac{25}{18}. Tillsammans \\frac{50+25}{18}=\\frac{75}{18} per minut. Tid för 75 drinkar: \\frac{75}{75/18}=18 min.",
+    "technique": "Sammansatt hastighetsproblem: hastigheter adderas, tid = uppgift/sammanlagd hastighet."
+  },
+  "host-2017-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\frac{5+8}{2}\\cdot 2=13 eller liknande och få 15.",
+        "why_wrong": "Triangelarea = (kateter multiplicerade)/2, inte (kateter adderade)·1. Korrekt: 40/2 = 20."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att räkna 5\\cdot 8\\cdot ?/4 = 10 → 35 efter slarv.",
+        "why_wrong": "Faktorn för triangel är 1/2 (inte 1/4). Resultatet är 20, inte 35."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 5\\cdot 8=40 och tappa division med 2.",
+        "why_wrong": "Triangel = halv rektangel. Multiplicera kateter, dela med 2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sidlängderna: \\sqrt{25}=5 och \\sqrt{64}=8. Rätvinklig triangel med kateter 5 och 8: area = \\frac{5\\cdot 8}{2}=20 cm².",
+    "technique": "Rätvinklig triangel: area = (kateter multiplicerade)/2. Kateter är ofta sidor av kvadrater."
+  },
+  "host-2017-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att ADDERA exponenterna: 3+2 = 5 → x⁵.",
+        "why_wrong": "Vid (x^{m})^{n} MULTIPLICERAS exponenterna, inte adderas. Addition gäller x^{m}\\cdot x^{n}."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som 'kvadrera båda exponentvärden' blir det 3²=9 → x⁹? Eller 8.",
+        "why_wrong": "Exponenterna multipliceras (3·2 = 6), inte kvadreras. x^{6}."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta x⁹ (3·3 felaktigt).",
+        "why_wrong": "3·2 = 6, inte 3·3 = 9. Den yttre exponenten är 2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Potens av potens multiplicerar exponenter: (x^{3})^{2}=x^{6}.",
+    "technique": "Potens av potens: {MO}(x^{{m}})^{{n}}=x^{{mn}}{MC}."
+  },
+  "host-2017-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa tecken och få −7 istället för 7.",
+        "why_wrong": "Båda sidorna ska flyttas konsekvent. 60+24=84 (positiv), 47-35=12 (positiv) → x = 7."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\frac{60-24}{12}=3.",
+        "why_wrong": "Konstanterna ADDERAS (eftersom de flyttas till samma sida): 60 + 24 = 84, inte 36."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att \\frac{36}{12}=3 efter felgrov flyttning.",
+        "why_wrong": "Räkna noggrant: x = 84/12 = 7."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Samla x-termer: -12x=-84, alltså x = 7.",
+    "technique": "Linjär ekvation: samla x-termer på ena sidan, konstanter på andra. Båda får tecknet flippat när de korsar likhetstecknet."
+  },
+  "host-2017-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att blanda 1000 (10³) med 10⁴ av räknefel.",
+        "why_wrong": "1 m³ = 1000 liter exakt. 10^{2}\\cdot 10^{3}=10^{5}, inte 10⁶."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att fördubbla exponenterna: 10⁸.",
+        "why_wrong": "Addera, inte fördubbla. 2 + 3 = 5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du blandar m³ med liter via en helt fel faktor (10¹²) blir resultatet 10¹².",
+        "why_wrong": "Faktorn är 10³ (m³ till liter), inte 10¹⁰. Kontrollera enhetsomvandlingen."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "1 m³ = 1000 liter = 10^{3} liter. Så 4{,}7\\cdot 10^{2} m³ = 4{,}7\\cdot 10^{2}\\cdot 10^{3}=4{,}7\\cdot 10^{5} liter.",
+    "technique": "Volym-omvandling: 1 m³ = 1000 dm³ = 1000 liter. Använd 10³-faktorn när du går från m³ till liter."
+  },
+  "host-2017-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 'motsatt lutning' (−2) gör linjer parallella.",
+        "why_wrong": "Motsatt lutning ger linjer som korsar varandra (i en punkt). Parallella linjer har SAMMA lutning."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 'k = 0 (horisontell)' undviker korsning.",
+        "why_wrong": "Horisontell linje y = 6 skär y = 2x + 3 i x = 1,5 — så de skär varandra. Parallellitet kräver matchning."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 'k = 1 (45°-linje)' utan att jämföra.",
+        "why_wrong": "Lutningen måste vara EXAKT samma som den andra linjens (2). k = 1 ger korsning."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Två linjer skär inte varandra om de är PARALLELLA — alltså samma lutning. Här k = 2 (samma som andra linjen).",
+    "technique": "Parallella linjer = samma lutning, OLIKA y-skärning. Om y-skärningarna också matchar är linjerna identiska."
+  },
+  "host-2017-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel täljare och få 2/5.",
+        "why_wrong": "2/3 · 6/20 = 12/60 = 1/5. 2/5 skulle kräva annan täljare-nämnare-kombination."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\frac{5}{18} av annan multiplikation.",
+        "why_wrong": "Förkorta steg-för-steg: 12/60 förkortas med 12 till 1/5, inte 5/18."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{5}{36}.",
+        "why_wrong": "Räkna noggrant; resultatet är 1/5 efter förkortning."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Förenkla: \\frac{2\\cdot\\frac{1}{3}}{4\\cdot\\frac{5}{6}}=\\frac{2/3}{20/6}=\\frac{2}{3}\\cdot\\frac{6}{20}=\\frac{12}{60}=\\frac{1}{5}.",
+    "technique": "Sammansatt bråk: lös täljare och nämnare separat, multiplicera täljare med inversen av nämnare, förkorta."
+  },
+  "host-2017-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma division med 4 och svara −96/.. → −55.",
+        "why_wrong": "Korrekt: −96/4 = −24, inte −55."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att tappa minustecken: 25−121 räknas som +96 → ab = +24.",
+        "why_wrong": "25 < 121, så differensen är NEGATIV. ab är negativ."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\sqrt{25}\\cdot\\sqrt{121}=5\\cdot 11=55.",
+        "why_wrong": "Det skulle gälla för (a+b)·(a−b), inte ab. Använd identiteten (a+b)^{2}-(a-b)^{2}=4ab."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Subtrahera kvadraterna: (a+b)^{2}-(a-b)^{2}=4ab, alltså 4ab=25-121=-96 och ab = −24.",
+    "technique": "Identitet: {MO}(a+b)^{{2}}-(a-b)^{{2}}=4ab{MC}. Och {MO}(a+b)^{{2}}+(a-b)^{{2}}=2(a^{{2}}+b^{{2}}){MC}."
+  },
+  "host-2017-kvant1-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna +1 istället för -1/4 efter teckenslarv.",
+        "why_wrong": "Konjugatregeln: a²−b². 1/2 i kvadrat blir 1/4, INTE 1."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att räkna FOIL utan att utnyttja konjugatregeln, vilket lätt ger korsterm-fel.",
+        "why_wrong": "Korstermerna i konjugat tar ut varandra: \\frac{x}{4}\\cdot(-\\frac{1}{2})+\\frac{1}{2}\\cdot\\frac{x}{4}=0."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att tro -x+1-form.",
+        "why_wrong": "Det finns ingen x-term i resultatet — bara x² och konstanten."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Konjugatregeln: \\left(\\frac{x}{4}+\\frac{1}{2}\\right)\\left(\\frac{x}{4}-\\frac{1}{2}\\right)=\\frac{x^{2}}{16}-\\frac{1}{4}.",
+    "technique": "Konjugatregel: {MO}(a+b)(a-b)=a^{{2}}-b^{{2}}{MC}. Korstermerna kanellera, kvar är skillnaden av kvadrater."
+  },
+  "host-2017-kvant1-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 90°-2y av glöm-att-halvera.",
+        "why_wrong": "Den likbenta triangeln BDE har basvinklar (180°−y)/2 = 90° − y/2, INTE 90° − 2y."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 180°-y (rät linje minus y).",
+        "why_wrong": "180° − y är supplementvinkel till y, men x är basvinkel i triangel BDE — inte direkt supplement."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{180°-2y}{2}=90°-y.",
+        "why_wrong": "y, inte 2y, är toppvinkeln i likbent triangel. Basvinkeln blir 90° − y/2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Triangeln BDE är likbent (DE = BD). Med vinkelförhållanden från parallella AC och DE och vinkeln y given följer x=90°-\\frac{y}{2}.",
+    "technique": "Likbent triangel + parallell linje: använd alternativ vinkel-sats för parallella, sen 'basvinklarna är lika' i den likbenta triangeln."
+  },
+  "host-2017-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 48\\cdot 1{,}5 och få 72.",
+        "why_wrong": "x = 48/0,75, inte 48·1,5. \\frac{48}{0{,}75}=\\frac{48\\cdot 4}{3}=64."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 48+24=72 (genom att lägga till 50% av 48).",
+        "why_wrong": "Att lägga till 25% (resterande till 100%) av x kräver att man känner x först. Räkna direkt: 48/0,75 = 64."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 48+\\frac{48}{1{,}5}=80.",
+        "why_wrong": "Det är ingen meningsfull operation. x = 48/0,75 = 64."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "0{,}75x=48, alltså x=\\frac{48}{0{,}75}=64.",
+    "technique": "Procentekvation a%·x = b: x = b/(a/100). Om a är 'lätt' procent (25, 50, 75), använd bråkform: 75% = 3/4, så x = 4b/3."
+  },
+  "host-2017-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att blanda olika vinkelpar och välja 105-x=y av godtyckligt skäl.",
+        "why_wrong": "Det finns ingen sats som säger att (105 − x) = y ska gälla för parallellitet. Det specifika villkoret beror på vinkelpositioner i figuren."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta x+105=180, om man använder fel vinkelpositionering.",
+        "why_wrong": "Det här villkoret kanske gäller för en annan vinkel än y; figuren specificerar att y är den som är konsekutiv med 105°."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid x+y=180 (typisk supplement utan figurkontroll).",
+        "why_wrong": "x och y är inte nödvändigtvis konsekutiva mellan parallella; villkoret involverar y och 105°."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "För parallellitet krävs lika alternativvinklar (eller likbelägna). Av figuren framgår att 105° och y är konsekutiva (på samma sida av transversal), vilket ger y+105=180 som villkor.",
+    "technique": "Parallella linjer ⇔ alternativvinklar lika eller konsekutiva (samma sida) summerar till 180°. Identifiera vilket par av vinklar figurerar."
+  },
+  "host-2017-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma +b-termen och få 12-3 = 9 +2 → 11.",
+        "why_wrong": "Definitionen är ab − a + b. b adderas i slutet. 12-3+4=13, inte 11."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 12 (bara produkten).",
+        "why_wrong": "Operatorn lägger till −a och +b utöver produkten. Räkna alla tre termer."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 3+4+\\text{produkt}=14.",
+        "why_wrong": "Tecknen i definitionen är (−a, +b), så summan av modifieringar är b − a = 1, inte a + b = 7."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Använd definitionen: 3\\star 4=3\\cdot 4-3+4=12-3+4=13.",
+    "technique": "Definierad operator: substituera värden direkt i operatorns formel. Var noga med tecknen i varje term."
+  },
+  "host-2017-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att 'addera täljare och nämnare separat' och få 18/40.",
+        "why_wrong": "Bråkaddition kräver gemensam nämnare; addera bara täljare. 18/40 är fel."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\frac{10}{11} efter ostandard räkning.",
+        "why_wrong": "49/20 ≈ 2,45; 10/11 ≈ 0,91. Helt olika."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{23}{10}.",
+        "why_wrong": "49/20 = 2,45; 23/10 = 2,30. Skiljer sig med 0,15."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Gemensam nämnare 20: \\frac{15}{20}+\\frac{10}{20}+\\frac{24}{20}=\\frac{49}{20}.",
+    "technique": "Bråkaddition: minsta gemensamma nämnare (här 20), omvandla, addera täljare."
+  },
+  "host-2017-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro 'vilket som helst tre-tals-summa funkar'.",
+        "why_wrong": "53 är inte delbar med 3 (5+3=8). Tre-tals-summan måste vara multipel av 3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att kolla siffersumman på 62: 6+2 = 8 — inte delbar med 3.",
+        "why_wrong": "Korrekt: delbarhetstest ger 8 → inte delbar med 3. 62 fungerar inte."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 'sista siffra 9' (multipel av 3?).",
+        "why_wrong": "79: 7+9 = 16. Inte delbar med 3."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Summan av tre på varandra följande heltal är n+(n+1)+(n+2)=3n+3=3(n+1) — alltså DELBAR MED 3. Av alternativen är endast 45 delbar med 3.",
+    "technique": "Tre på varandra följande heltal: summan = 3·mittentalet — alltid delbar med 3."
+  },
+  "host-2017-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa en dag och summera bara 350+700+1400+350 = 2800.",
+        "why_wrong": "Fyra dagar med fördubbling: 350·15 = 5250, inte 2800."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att summera bara dag 1-3: 350(1+2+4)=2450, sen dubbla till 4900.",
+        "why_wrong": "Fjärde dagens 2800 ska adderas. Total: 2450+2800 = 5250."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 350\\cdot 16 av att tro att fjärde dagen är 8·350.",
+        "why_wrong": "Sista dagen är 2800 (8·350), och totalsumman är 350·15 = 5250."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Geometrisk följd: 350, 700, 1400, 2800. Summa: 350(1+2+4+8)=350\\cdot 15=5250.",
+    "technique": "Geometrisk summa: {MO}a+ar+ar^{{2}}+ar^{{3}}=a\\frac{{r^{{4}}-1}}{{r-1}}{MC}; för r = 2: {MO}a(2^{{4}}-1)=15a{MC}."
+  },
+  "host-2017-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att '50 i bas 8 = 32' av 5\\cdot 8-8=32 av räknefel.",
+        "why_wrong": "5·8 + 0 = 40, inte 32."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 'bara läsa 50' → 50.",
+        "why_wrong": "50 är skrivet i bas 8, alltså INTE samma som 50 i bas 10. Beräkna med 8^{n}-vikter."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 5\\cdot 8+\\text{nåt}=62.",
+        "why_wrong": "5·8+0 = 40 exakt. Inga ytterligare termer."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "I bas 8 betyder talet 50 = 5\\cdot 8^{1}+0\\cdot 8^{0}=40.",
+    "technique": "Basomvandling: tal d_k...d_0 i bas b = {MO}\\sum_i d_i\\cdot b^{{i}}{MC}."
+  },
+  "host-2017-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna -3x+4=2 (om man missar negativ) → x = 2/3, eller annan slarvfeed → 1.",
+        "why_wrong": "1/9 = 3⁻², INTE 3². Tecken på exponenten matter."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 3=3+\\text{flytta} → x = 3.",
+        "why_wrong": "Räkna noggrant: −3x = −6 → x = 2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid -3x=12 → x = −4 (av flytt-fel) eller +4.",
+        "why_wrong": "+4 flyttas till höger ger −4 där, sen +(−2) = −6. x = 2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\frac{1}{9}=3^{-2}. Sätt exponenter lika: -3x+4=-2, alltså -3x=-6 och x = 2.",
+    "technique": "Exponentialekvation: omvandla båda sidor till samma bas, sätt exponenter lika."
+  },
+  "host-2017-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa det dubbla minustecknet och få 2-3=-1.",
+        "why_wrong": "h(2) = −3 (negativ). Att SUBTRAHERA en negativ = ADDERA. 2-(-3)=2+3=5."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 2+(-3)+något=1.",
+        "why_wrong": "Använd minustecken-regeln: minus och minus tar ut → +. Differensen är +5."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att räkna h(2)=3 (positivt) och få 2-3=-1, eller skipping → 3.",
+        "why_wrong": "h(z) = 3(1−z), vid z=2: 3·(−1) = −3. Det negativa kvarstår."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "g(2)=2(2-1)=2; h(2)=3(1-2)=-3. Differens: 2-(-3)=5.",
+    "technique": "Funktionsoperationer: räkna varje funktionsvärde separat, applicera operatorn (här minus)."
+  },
+  "host-2017-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778414240798,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att underskatta — välja a=12, b=13, d=15, e=17 (orealistiska låga).",
+        "why_wrong": "Vi vill MAXIMERA e, så minimera a, b, d. Lägsta möjliga: a=1, b=2 (olika positiva heltal), d=16 (>15 och olika)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att glömma 'olika' krav och välja a=b=1, d=15: 65-1-1-15-15 = 33 → 28.",
+        "why_wrong": "Talen ska vara OLIKA. a=1, b=2 är minimala distinkta positiva."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid att tro 'd måste vara 17 minst', men d kan vara 16.",
+        "why_wrong": "d > 15, alltså minst 16 (heltal). Då e = 65 − 1 − 2 − 15 − 16 = 31."
+      }
+    ],
+    "pitfall": "'Olika positiva heltal' = distinkta tal ≥ 1; minsta möjliga är 1, 2, 3, ...",
+    "solution_path": "Summan = 5\\cdot 13=65. Med median 15 är talen a<b<15<d<e. Minimera a, b, d för att maximera e: a=1, b=2, d=16 ger e = 65-1-2-15-16=31.",
+    "technique": "Maximera ett tal givet medel + median: minimera ALLA andra under sina constraints (heltal, distinkthet, ordning)."
+  },
   "host-2017-verb1-ORD-004": {
     "_meta": {
       "generated_at": 1778410518741,

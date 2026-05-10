@@ -51,6 +51,370 @@
     "solution_path": "Det minsta gemensamma multiplet (MGM) av 6 och 9 är 18. Varje tal som är delbart med både 6 och 9 är därför delbart med 18 — så 18 MÅSTE dela x.",
     "technique": "Vid frågor om garanterad delbarhet — beräkna minsta gemensamma multipel (MGM) av de givna talen. Det är det MINSTA tal som måste dela x; alla större kandidater är spekulativa."
   },
+  "host-2014-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att bara ta differensen mellan två avläsningar (t.ex. 50−30=20) utan att tänka på vilken vinkelsats som gäller.",
+        "why_wrong": "Differens passar inte här — vinkelsatserna mellan parallella linjer ger LIKHET eller SUPPLEMENT (180−), inte godtyckliga differenser."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som 'halva av 50 är 25' eller blandar med vertikalvinkelregeln.",
+        "why_wrong": "Halvering kommer in vid bisektriser, inte vid alternativa vinklar. Här är x lika med en avläst vinkel direkt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta avrundning åt 'rättnumret': 35 ligger nära både 30 och 40.",
+        "why_wrong": "Vinkeln är exakt 30° baserat på den givna konfigurationen — ingen avrundning behövs."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figuren framgår att x är en alternatvinkel eller likbelägen vinkel till en känd vinkel mot transversalen. Med parallella linjer ger likbelägna/alternativa vinklar likhet, vilket leder till x = 30°.",
+    "technique": "Vinklar mellan parallella linjer: alternativa vinklar och likbelägna vinklar är LIKA; konsekutiva vinklar (på samma sida av transversal) summerar till 180°."
+  },
+  "host-2014-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 'tidsförhållandet 7:4 ≈ 2' och tro att det räcker med 2 till.",
+        "why_wrong": "Rätt beräkning är via maskindagar: 28/4 = 7 totalt. Med 4 redan på plats, 3 till."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som 'dubbla antalet halverar tiden' blir det 4 till för halverad tid → fast tiden går från 7 till 4 dagar (inte halv), så svaret är inte 4.",
+        "why_wrong": "Halvera tiden skulle kräva fördubbling (från 4 till 8 maskiner = 4 fler). Men här går tiden från 7 till 4 (inte halv), så det krävs färre än 4 till."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta största alternativet om man tror 'mer maskiner alltid bättre'.",
+        "why_wrong": "5 fler ger 9 maskiner totalt — då skulle det gå snabbare än 4 dagar (28/9 ≈ 3,1 dagar). Onödigt mycket."
+      }
+    ],
+    "pitfall": "Frågan 'hur många FLER' kräver ett extra subtraktionssteg efter du räknat totala antalet — glöm inte det.",
+    "solution_path": "Beräkna totala maskindagar: 4\\cdot 7=28. För att klara på 4 dagar: 28/4=7 maskiner. Eftersom 4 redan finns behövs 7-4=3 fler.",
+    "technique": "Inverst proportionellt arbete: maskiner · tid = konstant arbete. Beräkna totalvärdet, dela med ny tidsram, dra ifrån redan tillgängliga maskiner."
+  },
+  "host-2014-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att läsa fel y-skärning som negativ när linjen tydligt skär ovanför origo.",
+        "why_wrong": "Mätpunkterna ligger övervägande i positiva y-värden vid lågt x — y-skärning är POSITIV, inte −4."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som 'positiv lutning för minskande funktioner' gör du tvärtom-fel.",
+        "why_wrong": "Positiv lutning betyder att y ÖKAR med x; mätpunkterna här minskar med växande x. Lutningen är negativ."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att kombinera fel lutning med rätt intercept (positiv, men positiv lutning).",
+        "why_wrong": "Lutningen ska vara NEGATIV (linjen går nedåt). Intercept +4 är rätt; lutning −1, inte +1."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av spridningen i koordinatsystemet syns att linjen lutar nedåt (negativ lutning) och skär y-axeln nära 4. Det matchar y=-x+4 bäst.",
+    "technique": "Bästa rät linje genom punkter: bedöm tecken på lutning (uppåt/nedåt), läs av approximativ y-skärning, matcha mot alternativen."
+  },
+  "host-2014-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 2{,}1\\cdot 3{,}9 fel: 7,19 dyker upp om man tappar decimaler eller stannar vid 7+0,19.",
+        "why_wrong": "Korrekt: 2{,}1\\cdot 3{,}9=2{,}1\\cdot 4-2{,}1\\cdot 0{,}1=8{,}4-0{,}21=8{,}19, inte 7,19."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som 'multiplicera exponenter' blir 10^{3}\\cdot 10^{3}=10^{9}.",
+        "why_wrong": "Vid multiplikation av tiopotenser ADDERAS exponenterna: 3+3=6, inte 3·3=9."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att kombinera båda felen (fel mantissa + fel exponent).",
+        "why_wrong": "Båda är fel. Mantissa = 8,19, exponent = 6."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Multiplicera mantissor och addera exponenter: 2{,}1\\cdot 3{,}9=8{,}19 och 10^{3}\\cdot 10^{3}=10^{6}. Resultat: 8{,}19\\cdot 10^{6}.",
+    "technique": "Grundpotensform: multiplicera mantissor (vanlig multiplikation), addera exponenter. Justera om mantissan inte ligger i [1, 10)."
+  },
+  "host-2014-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att blanda ihop med konjugatregeln: (x+y)(x-y)=x^{2}-y^{2}.",
+        "why_wrong": "Vi har (x+y)^{2}-x^{2}, inte (x+y)(x-y). Det är en kvadrat minus en kvadrat med ANDRA INNEHÅLL."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som 'differens = (skillnad)²' blir det (y-x)^{2}.",
+        "why_wrong": "Areadifferens är inte kvadraten på sidodifferensen. (y-x)^{2}=y^{2}-2xy+x^{2}, vilket inte matchar."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 'förkorta x²' direkt och svara y² utan korstermen.",
+        "why_wrong": "Utvecklingen av (x+y)^{2} har en kvadrattermin 2xy mellan x² och y². Den kvarstår efter subtraktion."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Areorna: (x+y)^{2} och x^{2}. Differens: (x+y)^{2}-x^{2}=x^{2}+2xy+y^{2}-x^{2}=2xy+y^{2}.",
+    "technique": "Kvadraten på en summa: {MO}(a+b)^{{2}}=a^{{2}}+2ab+b^{{2}}{MC}. Korstermen 2ab är ofta lätt att glömma."
+  },
+  "host-2014-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 30/12 eller liknande och få 2,5.",
+        "why_wrong": "Du delar med 3 (antal variabler) efter du har x+y+z=15. 15/3=5."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid summan av ekvationerna /2=15 och tror att det är medelvärdet.",
+        "why_wrong": "15 är summan av x, y, z. Medelvärdet är summan delad med 3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att glömma divisionen helt: x+y+z=30/2=15, sen tappa /3 och svara 10 (medelvärde av högerleden).",
+        "why_wrong": "Medelvärde av talen 7,5; 12,5; 10 är inte medelvärdet av x, y, z. Här krävs hela kedjan."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Addera alla tre ekvationerna: 2(x+y+z)=7{,}5+12{,}5+10=30, alltså x+y+z=15. Medelvärde = 15/3=5.",
+    "technique": "Tre ekvationer i tre variabler där bara summan/medelvärdet eftersöks: addera alla ekvationer, {MO}x+y+z{MC} dyker upp som 1/2 av högerledssumman."
+  },
+  "host-2014-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att lösa fel kvadratisk ekvation och få y=2 (4+2=6, för litet).",
+        "why_wrong": "6 ligger UNDER 12; villkoret är inte uppfyllt. Pröva högre y."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att stanna vid y=3 (9+3=12) — som är gränsfallet.",
+        "why_wrong": "Olikheten är STRIKT (12 < y²+y), så y²+y = 12 räknas inte. y=3 räcker inte."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 'lite större = lite större' och tar y=5 utan att kolla övre gränsen.",
+        "why_wrong": "y=5 ger 25+5=30, exakt vid övre gräns. Strikt olikhet < 30 utesluter detta."
+      }
+    ],
+    "pitfall": "STRIKT olikhet (< och >) utesluter gränspunkterna. Likhet (≤, ≥) inkluderar dem.",
+    "solution_path": "Pröva heltal: y=3 ger 9+3=12 (inte strikt större). y=4: 16+4=20 (mellan 12 och 30 ✓). y=5: 25+5=30 (inte strikt mindre). Så y=4.",
+    "technique": "Heltalsolikhet med kvadrat: testa heltal sekventiellt eller lös {MO}y^{{2}}+y-c=0{MC} för båda gränserna och välj heltal mellan rötterna."
+  },
+  "host-2014-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel tecken på täljaren: -18-5=-23 ger andra k.",
+        "why_wrong": "6\\cdot(-3)+5=-13, inte −23. Endast x'et multipliceras med −3, inte konstanten 5."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att tappa minustecken: -13=6+k ger k = −19, eller liknande. −6 är lätt att kombinera fel.",
+        "why_wrong": "Nämnaren 2x+k med x=−3 ger -6+k, INTE +6+k."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att 'ta differensen mellan två synliga heltal' och svara −5.",
+        "why_wrong": "Korrekt aritmetik: -13+6=-7=k. −5 stämmer inte med ekvationen."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt in x = −3: f(-3)=\\frac{6\\cdot(-3)+5}{2\\cdot(-3)+k}=\\frac{-13}{-6+k}=1. Lös ut k: -13=-6+k, alltså k = −7.",
+    "technique": "Funktion med okänd parameter: substituera den givna inputen, sätt funktionen lika med givet output, lös ut parametern."
+  },
+  "host-2014-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 'kvartcirkel' utan att kolla bråkförhållande och svara 90°.",
+        "why_wrong": "Kvartcirkel har båge \\frac{1}{4}\\cdot 2\\pi=\\frac{\\pi}{2}. Här är bågen 2π/3, vilket är en TREDJEDEL av omkretsen, inte en fjärdedel."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som 'avrunda mot rena siffror' blir det 100°.",
+        "why_wrong": "Resultatet är exakt 120° — ingen avrundning. \\frac{2\\pi/3}{2\\pi}=\\frac{1}{3} och 1/3 av 360° är exakt 120°."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att MULTIPLICERA andelen 1/3 mot 720 istället för 360 (full 'rotation').",
+        "why_wrong": "En full vinkel är 360°, inte 720°. Sektorvinkeln räknas mot hela cirkelns 360°."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sektorvinkeln är båglängd / omkrets · 360°: \\frac{2\\pi/3}{2\\pi}\\cdot 360°=\\frac{1}{3}\\cdot 360°=120°.",
+    "technique": "Cirkelsektor: vinkel/360° = båge/omkrets = sektor-area/cirkel-area. Använd den proportion som matchar givna värden."
+  },
+  "host-2014-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma att lägga till 5 i täljaren och bara använda r.",
+        "why_wrong": "Antalet röda är r+5 (de fem nya inkluderade). Täljaren måste reflektera den uppdaterade mängden."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid r+5 i täljaren men glömmer 7 i nämnaren och skriver r+b+5.",
+        "why_wrong": "Totalen ökar med 5 röda OCH 7 blå = 12 totalt. Nämnaren ska vara r+b+12, inte r+b+5."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 'r/r+b+12' utan att lägga till 5 i röda.",
+        "why_wrong": "Antalet röda är inte längre r — det är r+5. Båda termerna i sannolikhetsbråket har uppdaterats."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Efter tillägg är antalet röda r+5 och totalt r+b+5+7=r+b+12. Sannolikhet röd = \\frac{r+5}{r+b+12}.",
+    "technique": "Sannolikhet efter förändring: uppdatera både gynnsamma utfall (täljare) och totala utfall (nämnare) med alla tillägg."
+  },
+  "host-2014-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att x+z är 130° genom felräkning av en inre vinkel.",
+        "why_wrong": "Beräkningen kräver yttervinkelsatsen plus rätt inre vinkel; 130° kommer inte ut av denna konfiguration."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta avrundning åt snygga siffror som 140°.",
+        "why_wrong": "Korrekt summa är 190° baserat på vinkelförhållandena i figuren."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som 'inre vinkelsumma 180°' blir det 180°.",
+        "why_wrong": "x+z är YTTERvinklar (eller blandning), inte inre vinkelsumma. Resultatet ÖVERSTIGER 180°."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figuren följer att x och z är yttervinklar mot triangelns två baser. Yttervinkelsumman till tre hörn på en triangel är 360°. Här är x+z = 360° − en specifik inre vinkel = 190°.",
+    "technique": "Yttervinkelsumman på en triangel = 360° (när varje hörn räknas en gång). Alternativt: yttervinkel = summa av två motstående inre."
+  },
+  "host-2014-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna täljaren fel — t.ex. 1-(-1)+1-(-1)=3 (genom att glömma ett tecken) → 3/(−2) = −3/2.",
+        "why_wrong": "Räkna varje potens noggrant: (-1)^{1}=-1, (-1)^{2}=1, (-1)^{3}=-1, (-1)^{4}=1. Alla fyra termer blir +1, summa 4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att räkna täljaren = 2 av tecken-slarv → 2/−2 = −1.",
+        "why_wrong": "Täljaren är 4, inte 2. Kvot −2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att tro att 'ingenting kvarstår' efter alla teckenbyten = 0.",
+        "why_wrong": "Tecknen alternerar med (-1)^{n}, men subtraktionerna i uttrycket flippar dem TILLBAKA — alla fyra termer blir positiva (1+1+1+1)."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt in x = −1: täljaren (-1)^{4}-(-1)^{3}+(-1)^{2}-(-1)=1+1+1+1=4. Nämnaren -1-1=-2. Kvot: 4/(-2)=-2.",
+    "technique": "Värdering av polynom vid x = −1: räkna varje potens individuellt ({MO}(-1)^{{n}}{MC} alternerar 1, −1, 1, −1) och håll koll på subtraktionstecken."
+  },
+  "host-2014-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro 'kombimodell - båda' = 45 - 25 = 20, eller 'dragkula - båda' = 35 - 25 = 10 — och välja 10 som 'enda dragkula'.",
+        "why_wrong": "Frågan är om bilar som SAKNAR båda. Det är komplementet till unionen, inte differensen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att kasta in 25 (siffran för båda) som svaret.",
+        "why_wrong": "25 är antalet med BÅDA; frågan vill ha antalet UTAN BÅDA. Helt olika storheter."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 'medelvärde av 45 och 35' = 40 minus något... 30.",
+        "why_wrong": "Använd inklusion-exklusion strikt: 75 − (kombimodell + dragkula − båda) = 75 − 55 = 20."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Antalet med MINST en av egenskaperna: 45+35-25=55 (inklusion-exklusion). Resten saknar båda: 75-55=20.",
+    "technique": "Två-mängds-Venn: 'antal utan båda' = totalt − |A∪B| = totalt − (|A| + |B| − |A∩B|)."
+  },
+  "host-2014-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att flippa kvotriktningen: 'kvoten av A och B' = B/A istället för A/B.",
+        "why_wrong": "'Kvoten av 30z OCH 2w' = 30z/2w (täljare nämns först). Felflip ger w istället för z på sidan, vilket inte stämmer i ekvationen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att 'siffrorna förkortas' och tappa variablerna: xy = zw eller liknande.",
+        "why_wrong": "Siffrorna 3·5 = 15 och 30/2 = 15 förkortas — men variablerna kvarstår: xy på ena sidan, z/w på andra. Multiplicera med w för att få xyw = z."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att skriva svaret som xy = w/z eftersom man ser 'xy' och 'kvot'.",
+        "why_wrong": "Det sätter w i täljaren — men vänsterledet xy multipliceras med w (när man flyttar över) för att matcha z. Korrekt: xyw = z."
+      }
+    ],
+    "pitfall": "'Kvoten av A och B' har en konventionell ordning — A i täljaren, B i nämnaren. Vänd inte på det.",
+    "solution_path": "Översätt orden: 'produkten av 3x och 5y' = 3x\\cdot 5y=15xy. 'Kvoten av 30z och 2w' = \\frac{30z}{2w}=\\frac{15z}{w}. Sätt lika: 15xy=\\frac{15z}{w}, multiplicera båda led med w/15: xyw=z.",
+    "technique": "Översättning av text till algebra: 'produkten av A och B' = AB; 'kvoten av A och B' = A/B (täljaren nämns först). Förkorta numeriska faktorer i ett separat steg."
+  },
   "host-2014-verb1-ORD-006": {
     "_meta": {
       "generated_at": 1778410518741,

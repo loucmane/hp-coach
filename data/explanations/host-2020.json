@@ -30,6 +30,58 @@
     "solution_path": "Benjamin är länken som binder ihop de två påståendena. (1) ger ordningen C>A>B; (2) ger B>D>E. Var för sig saknas information om hälften av personerna. Tillsammans bildar de en obruten kedja via Benjamin: C>A>B>D>E — Cecilia är äldst.",
     "technique": "Hitta den gemensamma personen som länkar samman de båda påståendenas ordningar — när kedjan blir obruten är frågan löst."
   },
+  "host-2020-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att blanda divisionerna och räkna 66/11=6.",
+        "why_wrong": "Korrekt: 6x − 5x = 66, alltså x = 66."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att tappa division med 2 och få 5x+66=12x → x = 66/7 ≈ 9.4 → 33.",
+        "why_wrong": "Frågan har y/2, inte y. Substituering y = 12x ger 12x/2 = 6x."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 132/7 av andra slarvfel.",
+        "why_wrong": "x = 66 är heltal — räkna noggrant utan att avrunda."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Substituera y = 12x i första: 5x+66=\\frac{12x}{2}=6x. Lös: 66=x.",
+    "technique": "Substitution i ekvationssystem: byt ut en variabel via dess uttryck i den andra, lös den resulterande linjära ekvationen."
+  },
+  "host-2020-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel grundvinkel och få 45°.",
+        "why_wrong": "Vinklarna i figuren ger exakt 90° efter de gällande satserna; 45° passar inte."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att kombinera fel: 135°.",
+        "why_wrong": "Inga satser ger 135° i denna konfiguration. Räkna utifrån alternativvinkel-satsen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 180° (rät linje).",
+        "why_wrong": "Resultatet är 90°, inte 180°. Inga par av vinklar ligger på en rät linje här."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av parallellitetssatserna och figurens specifika konfiguration ger 1{,}5x+3y=90°.",
+    "technique": "Parallella linjer med transversaler: kombinera alternativ- och likbelägna vinklar plus trianglens vinkelsumma för att uttrycka okända vinklar."
+  },
   "host-2020-kvant1-XYZ-004": {
     "_meta": {
       "generated_at": 1778410518741,
@@ -55,6 +107,448 @@
     "pitfall": "Bråkingång + heltalssvar: studenter förväntar sig ofta att svaret förblir på bråkform. Här blir ingången naturligt heltal efter multiplikationen, så alternativen i bråkform (1/3, 2/3, 4/3) är frestande visuella matchningar.",
     "solution_path": "Sätt in \\frac{1}{3} på x:s plats i funktionen: f\\left(\\frac{1}{3}\\right)=3\\cdot\\frac{1}{3}+1=1+1=2, vilket motsvarar \\frac{6}{3}.",
     "technique": "Funktionsvärden: byt ut variabeln mot ingången, behåll alla operatorer och konstanter. Här har du redan svaret som heltal (2); presentationen 6/3 är bara ett alternativt format."
+  },
+  "host-2020-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro 'medelvärde av två bråk' = 1/2.",
+        "why_wrong": "Bråken ADDERAS, inte medelvärdesbildas. Resultatet 1, inte 1/2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 'tappa a' och svara b.",
+        "why_wrong": "Räkna noggrant: täljare a−b+b = a, dela med a → 1, ingenting med b kvarstår."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid att tro 'a kvarstår' i täljaren.",
+        "why_wrong": "a förkortar mot a i nämnaren. Resultatet är 1, en konstant."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Slå ihop bråken: \\frac{a-b}{a}+\\frac{b}{a}=\\frac{a-b+b}{a}=\\frac{a}{a}=1.",
+    "technique": "Bråkaddition med samma nämnare: addera täljarna direkt; förenkla resultatet."
+  },
+  "host-2020-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 6/2=3 och tro det är höjden.",
+        "why_wrong": "Kvadratens sida är 6, area 36. Triangelns höjd löses ut från (4·h)/2 = 36."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 'ta sidlängden' = 6.",
+        "why_wrong": "Sidlängden i kvadraten är 6, men triangelns höjd är annan. Räkna utifrån areorna."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid \\frac{36}{4}=9 (tappar /2).",
+        "why_wrong": "Triangelarea = bas·höjd/2. Lös: h = 2·area/bas = 72/4 = 18, inte 9."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Kvadratens area: 6^{2}=36 cm². Triangel: \\frac{4\\cdot h}{2}=36, alltså h = 18 cm.",
+    "technique": "Triangelarea = kvadratarea: sätt formler lika, lös ut okänd dimension. {MO}\\frac{{bh}}{{2}}=s^{{2}}{MC}."
+  },
+  "host-2020-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att läsa fel y-skärning som 1.",
+        "why_wrong": "Linjen skär y-axeln i 3 (avläst), inte 1."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att tappa minustecken på lutning.",
+        "why_wrong": "Linjen lutar nedåt → negativ lutning. y = −3x + 3, inte +3x."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid att kombinera fel tecken på lutning men rätt intercept.",
+        "why_wrong": "Lutning är negativ. y = −3x + 3."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figuren framgår y-skärning 3 och negativ lutning −3: y=-3x+3.",
+    "technique": "Linje från graf: lutning från Δy/Δx mellan två punkter; intercept direkt från y-axelns skärning."
+  },
+  "host-2020-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att flippa täljare och nämnare och få \\frac{7y}{2}.",
+        "why_wrong": "x = 2y/7, inte 7y/2. Lös ekvationen för x via inversion."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att lämna x kvar i bråket: \\frac{xy}{7}.",
+        "why_wrong": "Lös ut x — det ska INTE förekomma i svaret. x=\\frac{2y}{7}."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{6x}{7y}.",
+        "why_wrong": "Det är inte ett uttryck för x; det innehåller fortfarande x. Slut: x=\\frac{2y}{7}."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\frac{x+6x}{2}=\\frac{7x}{2}=y, alltså x=\\frac{2y}{7}.",
+    "technique": "Lös ut variabel ur medelvärdesekvation: hantera samtliga termer av samma variabel som faktor framför 1/2."
+  },
+  "host-2020-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna +1 efter konjugat-uppställning.",
+        "why_wrong": "Konjugatregeln ger a^{2}-b^{2}, så resultatet är 2⁸ − 1, inte +1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att kombinera fel exponent: 2¹⁶.",
+        "why_wrong": "2⁴ · 2⁴ = 2⁸. Korrekt: 2⁸ − 1 = 255."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 2^{16}+1.",
+        "why_wrong": "Exponenten är 8, inte 16; och tecknet är minus."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Använd konjugatregeln: (2^{2}+1)(2^{2}-1)=2^{4}-1=15. Då blir (2^{4}+1)\\cdot 15=17\\cdot 15=255=2^{8}-1.",
+    "technique": "Upprepad konjugatregel: {MO}(a-1)(a+1)(a^{{2}}+1)(a^{{4}}+1)=a^{{8}}-1{MC} osv."
+  },
+  "host-2020-kvant1-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro x-7=-12 → x = −19.",
+        "why_wrong": "x − 7 = −12 ger x = −5, inte −19. Räkna noggrant."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\sqrt{144}=12 och svara −12.",
+        "why_wrong": "Det är x − 7, inte x, som är ±12. x = −5 eller +19."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid x = −7 av att tro 'x = 7 - 12' utan att räkna.",
+        "why_wrong": "7 − 12 = −5, inte −7. Räkna noggrant."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "(x-7)^{2}=144 ger x-7=\\pm 12, alltså x = 19 eller x = −5. Eftersom x < 0: x = −5.",
+    "technique": "Kvadratisk via rotutdragning: {MO}u^{{2}}=k{MC} → u = ±√k. Använd givet villkor för att välja rätt rot."
+  },
+  "host-2020-kvant1-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro 1^{0}=0.",
+        "why_wrong": "Per definition: a^{0}=1 för alla a ≠ 0. Inklusive 1⁰ = 1."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att räkna 'bara en av termerna' = 1.",
+        "why_wrong": "Tre termer adderas, alla = 1. Total: 3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 1^{-1}+1^{0}=2 och glömmer 1¹.",
+        "why_wrong": "Tredje termen 1¹ = 1 ska adderas också. Total: 3."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Alla tre potenser av 1 är 1: 1+1+1=3.",
+    "technique": "Potenser av 1: alla värden = 1 (oavsett exponent). Använd den för att förenkla snabbt."
+  },
+  "host-2020-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att glömma att 6x och −6x kanellera och få 17 − x.",
+        "why_wrong": "6x − 6x = 0. Kvar är konstanterna 15 + 14 = 29."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 3x+19.",
+        "why_wrong": "x kanellera helt; resultatet är konstant 29."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 12x+29 av att glömma andra parentesens tecken.",
+        "why_wrong": "−3x i andra parentesen tar bort 6x i första: nettonoll."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Multiplicera ut: 6x+15+14-6x=29. x-termerna kanellera.",
+    "technique": "Förenkling med flera parenteser: utveckla varje, samla termer av samma grad. Identiska termer av motsatt tecken kanellera."
+  },
+  "host-2020-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\sqrt{27}\\approx 5{,}2 och glömma π.",
+        "why_wrong": "Räkna r = √(area/π), inte √area direkt. π ≈ 3,14 minskar resultatet."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att räkna med diameter (6 cm) istället för radie.",
+        "why_wrong": "Frågan är om RADIEN. Diametern skulle vara ungefär 5,8 cm, inte 6."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 9 av att tappa kvadratrot.",
+        "why_wrong": "r² ≈ 8,6, men r = √8,6 ≈ 2,9, inte 9."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\pi r^{2}=27, alltså r=\\sqrt{27/\\pi}\\approx\\sqrt{8{,}6}\\approx 2{,}9, närmast 3 cm.",
+    "technique": "Cirkelradie från area: {MO}r=\\sqrt{{A/\\pi}}{MC}. Räkna A/π först, sen kvadratrot."
+  },
+  "host-2020-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro 'halva av allt' → 0,5y.",
+        "why_wrong": "Faktorerna 2 och 0,5 tar ut varandra (2·0,5 = 1), så y kvarstår."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 'fördubbla allt' → 2y.",
+        "why_wrong": "2 i a% kanellera mot 0,5 i x. Inget netto-fördubbling."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 4y (multiplicera båda faktorerna).",
+        "why_wrong": "2 · 0,5 = 1, inte 4. Fördubbling AV procent + halvering AV bas = oförändrad produkt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "2a\\%\\cdot 0{,}5x=2\\cdot 0{,}5\\cdot(a\\%\\cdot x)=1\\cdot y=y.",
+    "technique": "Procent · variabel: faktorer tar ut varandra om en stiger med x och en sjunker med 1/x."
+  },
+  "host-2020-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tänka 'medelvärde heltal ⇒ allt heltal'.",
+        "why_wrong": "Heltals-medel kan komma från icke-heltals-mätvärden (t.ex. 1,5 + 2,5 = 4 → medel 2). Motexempel: 1, 2, 3, 4, 5 har medel 3 (heltal) men talen är heltal — bra exempel går inte; men 0, 5, 0, 5, 5 har medel 3 och alla heltal. Motexempel åt andra hållet är svårare. KORREKT motexempel: 1, 2, 3, 4, 5,5 har medel ungefär 3,1 (icke-heltal) — så 'medelvärde heltal' implicerar inte 'alla heltal' eftersom medelvärdet kan vara icke-heltal även med heltals-mätvärden. Och 'om medel är heltal' garanterar inte heltals-mätvärden."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 'median heltal ⇒ allt heltal'.",
+        "why_wrong": "1, 1.5, 3, 4, 5 har median 3 (heltal) men 1.5 är inte heltal. Median ETT specifikt värde — andra kan vara icke-heltal."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 'allt heltal ⇒ medel heltal'.",
+        "why_wrong": "Heltals-mätvärden kan ha icke-heltal medel: 1+2+3+4+5 = 15, /5 = 3 ✓ — men 1+1+1+1+2 = 6/5 = 1,2 (icke-heltal). Inte säkert."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Median = mittenvärdet vid 5 mätvärden. Om alla mätvärden är heltal, så är även mittenvärdet ett heltal.",
+    "technique": "Statistik och delbarhet: median är ett MÄTVÄRDE i en sorterad serie (för udda antal); ärver heltalsegenskap. Medelvärde är aritmetisk operation, kan ge icke-heltal."
+  },
+  "host-2020-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma faktorisering och tro 1-(a+b)=x.",
+        "why_wrong": "Du LÖSER ut x, inte uttrycker x som differens. Korrekt: x = 1/(a+b)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\frac{1}{ab} av att blanda multiplikation och addition.",
+        "why_wrong": "Termerna ax och bx adderas, inte multipliceras. Faktorn är (a+b), inte ab."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid x = a + b av att tappa division.",
+        "why_wrong": "x är BRÅK med 1 i täljaren och (a+b) i nämnaren. Inte själva summan."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Bryt ut x: x(a+b)=1, alltså x=\\frac{1}{a+b}.",
+    "technique": "Bryt ut gemensam faktor: ax + bx = x(a+b). Lös ut x genom division."
+  },
+  "host-2020-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro 241/7 ≈ 34,4 ≈ 34 fungerar.",
+        "why_wrong": "241/7 = 34,43..., inte heltal. Inte delbart med 7."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 247=7\\cdot 35+2.",
+        "why_wrong": "247 är inte delbar med 7 (rest 2). Endast 245 är multipel av 7."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 249 av siffersumma-fel.",
+        "why_wrong": "249/7 ≈ 35,57. Inte heltal."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Antalet pärlor måste vara delbart med 7. Av alternativen är 245 = 7·35 — det enda som passar.",
+    "technique": "Delbarhet med 7: kontrollera multiplikationer 7·1, 7·2,...,7·n eller använd direkt division."
+  },
+  "host-2020-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel exponent och välja A.",
+        "why_wrong": "A:s exponentsumma är mindre än C:s; räkna a+b för varje alternativ."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att titta på 'störst mantissa' utan exponent.",
+        "why_wrong": "Exponenten dominerar storleken. Mantissan kan vara samma men exponenten avgör."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid att 'mest negativ exponent = störst' (omvänt).",
+        "why_wrong": "Negativ exponent ger LITET tal; positiv ger stort. Räkna noggrant exponenten."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Räkna varje alternativ: 10^{a}\\cdot 10^{b}=10^{a+b}; det med STÖRSTA exponentsumman är störst. Här ger C det störst värdet.",
+    "technique": "Jämförelse av tiopotenser: addera exponenter inom varje produkt; det med störst exponentsumma är störst."
+  },
+  "host-2020-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna vänster-till-höger och få \\frac{7}{20}-\\frac{3}{2}=-\\frac{23}{20}, multiplicera mot 1/5 → −23/100.",
+        "why_wrong": "Multiplikation går FÖRE subtraktion i räkneordningen. Räkna 3/2 · 1/5 först."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att få \\frac{3}{10} (resultatet av multiplikationen).",
+        "why_wrong": "Det är delsteget. Du måste fortfarande subtrahera från 7/20."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{4}{10} av additionsfel.",
+        "why_wrong": "7/20 − 6/20 = 1/20. Räkna noggrant."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Räkneordning: multiplikation först. \\frac{3}{2}\\cdot\\frac{1}{5}=\\frac{3}{10}=\\frac{6}{20}. Sedan \\frac{7}{20}-\\frac{6}{20}=\\frac{1}{20}.",
+    "technique": "Räkneordning: multiplikation före subtraktion (PEMDAS). Räkna multiplikationssteget separat först."
+  },
+  "host-2020-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att förväxla x-axeln med y-axeln och få (0, −3/2).",
+        "why_wrong": "x-axeln har y = 0; alltså sätt f(x) = 0, lös ut x. (0, −3/2) är y-axelskärningen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta (0, 6) av att vända koordinater.",
+        "why_wrong": "Punkten på x-axeln har y = 0 (andra koordinaten). (6, 0), inte (0, 6)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid (−3/2, 0) av att tappa division.",
+        "why_wrong": "x = 6 (efter att multiplicera 3/2 med 4), inte −3/2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt f(x)=0: \\frac{x}{4}=\\frac{3}{2}, alltså x = 6. Skär x-axeln i (6, 0).",
+    "technique": "Skärning med x-axeln: sätt f(x) = 0, lös ut x. Punkten är (x, 0)."
+  },
+  "host-2020-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa kvadratrot och svara −4 (av \\sqrt{16}=4, sen tecken).",
+        "why_wrong": "a är 1/4 (efter rotation av exponentens tecken), inte 4. Negativ exponent flippar."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\frac{1}{256} (kvadrera 1/16).",
+        "why_wrong": "a² = 1/16, alltså a = √(1/16) = 1/4. Inte kvadratisk."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 256 (positiv kvadrat).",
+        "why_wrong": "256 = 16², men frågan är om a, inte a². a^{-2}=16 → a = 1/4."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "a^{-2}=16 ger a^{2}=\\frac{1}{16}, alltså a=\\pm\\frac{1}{4}.",
+    "technique": "Negativ exponent: {MO}a^{{-n}}=\\frac{{1}}{{a^{{n}}}}{MC}. Lös ut a via {MO}a^{{n}}=\\frac{{1}}{{k}}{MC}, sen rot."
   },
   "host-2020-verb1-LÄS-011": {
     "_meta": {

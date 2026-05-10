@@ -1,4 +1,550 @@
 {
+  "host-ver1-2019-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 5{,}3-4{,}7=0{,}6 och tappa exponent.",
+        "why_wrong": "Skillnaden i exponent gör att 5,3·10³ är mycket större än 4,7·10². Differens i samma exponent först."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 4{,}83\\cdot 10^{2} av räknemiss.",
+        "why_wrong": "4830 i grundpotensform är 4,83·10³, inte 10²."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 6{,}0\\cdot 10^{1}=60.",
+        "why_wrong": "60 är inte differensen mellan 5300 och 470 (= 4830). Exponenten matter."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Skriv om: 5{,}3\\cdot 10^{3}=5300; 4{,}7\\cdot 10^{2}=470. Differens: 4830 = 4{,}83\\cdot 10^{3}.",
+    "technique": "Subtraktion av tiopotenser med olika exponenter: omvandla till samma exponent först."
+  },
+  "host-ver1-2019-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro 'liten siffra fungerar' och svara 3.",
+        "why_wrong": "40% av 3 = 1,2 (icke-heltal)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 4 (mitt-värde).",
+        "why_wrong": "40% av 4 = 1,6 (icke-heltal)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 6 (delbar med 2).",
+        "why_wrong": "40% av 6 = 2,4 (icke-heltal)."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "40% av x = 2x/5. För heltal måste x vara delbar med 5. Av alternativen: 5.",
+    "technique": "40% = 2/5; multiplikation med x ger heltal endast om x delbart med 5."
+  },
+  "host-ver1-2019-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna underdimensionerat och få 5.",
+        "why_wrong": "Räkna med shoelace-formeln eller dela upp i kända polygoner: area = 10."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 6.",
+        "why_wrong": "Areaen är 10 enheter."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 8.",
+        "why_wrong": "Räkna noggrant: 10."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figurens hörn räknas femhörningens area till 10 areaenheter.",
+    "technique": "Polygon area: dela upp i trianglar/rektanglar eller använd shoelace."
+  },
+  "host-ver1-2019-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro 3⁵ är delbart med 5.",
+        "why_wrong": "3⁵ = 243; 243/5 ≈ 48,6, inte delbart."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 185/5 = 37 — verkar delbart.",
+        "why_wrong": "185/5 = 37 är delbart, men 185/5 är inte vad alternativ C uttrycker — det uttryck är ett bråk, inte en multipel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 5⁰+5¹+5² = 31.",
+        "why_wrong": "31 inte delbart med 5."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "157+158=315=5\\cdot 63, delbart med 5. Andra alternativ ger inte heltalsdelning.",
+    "technique": "Delbarhet med 5: tal slutar på 0 eller 5."
+  },
+  "host-ver1-2019-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa tecken och få −1/7.",
+        "why_wrong": "x = 3, inte ett bråk."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta +1/7.",
+        "why_wrong": "x = 3 (heltal)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 1.",
+        "why_wrong": "3·1 − 5 = −2; 2·1 + 4 = 6. Inte lika. x = 3 är korrekt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "5x-5=2x+4 → 3x=9, alltså x = 3.",
+    "technique": "Linjär ekvation: utveckla, samla, lös."
+  },
+  "host-ver1-2019-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få 50°.",
+        "why_wrong": "v = 67°."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta avrundning åt 63°.",
+        "why_wrong": "Resultatet är 67°."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 77°.",
+        "why_wrong": "v = 67°."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figurens vinkelförhållanden: v = 67°.",
+    "technique": "Vinkelräkning från figur."
+  },
+  "host-ver1-2019-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 2Ab av att tappa division.",
+        "why_wrong": "h = 2A/b, inte 2Ab."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\frac{Ab}{2} (felaktig flipp).",
+        "why_wrong": "Multiplicera med 2 (inte dela), och dela med b."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{b}{2A}.",
+        "why_wrong": "Helt fel form; det är inversen."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Multiplicera båda led med 2/b: h=\\frac{2A}{b}.",
+    "technique": "Lös ut variabel ur formel: isolera, använd inverser."
+  },
+  "host-ver1-2019-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja linje med största lutning utan intercept.",
+        "why_wrong": "Båda krävs; A maximerar produkten."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta linje med största intercept.",
+        "why_wrong": "Räkna k·m för varje, A vinner."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid linje med snyggaste utseende.",
+        "why_wrong": "A maximerar k·m utifrån avlästa värden."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figurens linjer: alternativ A har största produkt k·m.",
+    "technique": "Maximera produkt av linjeparametrar: beräkna k och m för varje linje, multiplicera."
+  },
+  "host-ver1-2019-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna r linjärt och få 4.",
+        "why_wrong": "Area skalar med r²; faktor 4 i area = faktor 2 i r. Här 9π → 36π betyder r går från 3 till 6, inte 4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 9 (skala 3).",
+        "why_wrong": "Skalfaktorn för r är 2 (sqrt(4))."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 12 (skala 4 i r).",
+        "why_wrong": "r-skalfaktor = √(area-faktor) = √4 = 2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Cirkel A: area = 9π. Cirkel B är 4× → 36π → r_B=\\sqrt{36}=6 cm.",
+    "technique": "Skalning av cirkelarea: A = πr² → A skalas med r²; r-skala = √(area-skala)."
+  },
+  "host-ver1-2019-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 'minst 17 jämna' och svara 17.",
+        "why_wrong": "Säkerhets-värsta-fall: kan vara alla udda + 17 jämna."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 47 (60+ någon halv).",
+        "why_wrong": "Räkna i värsta fallet: 60 + 17 = 77."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 63 av räknefel.",
+        "why_wrong": "77 är säker minimum."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Värsta fallet: stryk ALLA 60 udda först (max 60 'misslyckade'). Sen behöver 17 jämna strykas — totalt 77.",
+    "technique": "Värsta-fall-resonemang: anta motståndare placerar fientliga objekt först."
+  },
+  "host-ver1-2019-kvant1-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\sqrt{32xy^{2}}=2y\\sqrt{8xy}.",
+        "why_wrong": "Förenkla rotorder: 32 = 16·2, så √32 = 4√2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 6y√x.",
+        "why_wrong": "4y, inte 6y."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 8y√x.",
+        "why_wrong": "4y√(2x), inte 8y√x."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av faktorisering: \\sqrt{32xy^{2}}=4y\\sqrt{2x}.",
+    "technique": "Förenkla rotor: bryt ut perfekta kvadrater under roten."
+  },
+  "host-ver1-2019-kvant1-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel summa och få 6.",
+        "why_wrong": "x = 8."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 10.",
+        "why_wrong": "x = 8 exakt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 12.",
+        "why_wrong": "x = 8."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "x+y+z = 45; y+z+14 = 51 → y+z = 37. Då x = 45-37=8.",
+    "technique": "Två medelvärdesekvationer: subtrahera summorna för att hitta saknad term."
+  },
+  "host-ver1-2019-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel cm-omvandling.",
+        "why_wrong": "1 m = 1000 mm, så 8 500 000 mm = 8500 m = 850 000 cm = 8,5·10⁵ cm, inte 10³ cm."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta dm-relaterat.",
+        "why_wrong": "8 500 000 mm = 85 000 dm = 8,5·10⁴ dm, inte 10⁵."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid mil (1 mil = 10 km).",
+        "why_wrong": "8,5 km = 0,85 mil, inte 8,5 mil."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "8 500 000 mm = 8{,}5\\cdot 10^{6} mm = 8500 m = 8,5 km.",
+    "technique": "Längdomvandling: 1 km = 1000 m = 100 000 cm = 1 000 000 mm."
+  },
+  "host-ver1-2019-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa tecken på intercept.",
+        "why_wrong": "Intercept är +3 (positiv)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att tappa minus på lutning.",
+        "why_wrong": "Lutningen är NEGATIV −1,5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid båda fel.",
+        "why_wrong": "Lutning −1,5; intercept +3."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figuren: lutning −1,5 och intercept +3.",
+    "technique": "Linje från graf: lutning från Δy/Δx; intercept vid x=0."
+  },
+  "host-ver1-2019-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro x<y → z negativ.",
+        "why_wrong": "x och y positiva ⇒ z = x/y > 0 alltid."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta x = y → z = x.",
+        "why_wrong": "x = y → z = 1, inte z = x."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid x ≠ y → z < 1.",
+        "why_wrong": "Om x > y kan z > 1, inte < 1."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Om x > y och båda positiva, så z = x/y > 1.",
+    "technique": "Kvot av positiva tal: z > 1 ⇔ täljare > nämnare."
+  },
+  "host-ver1-2019-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 'genomsnitt' som ekvation: (31-x)/2 = 3.",
+        "why_wrong": "3 är ÅLDERSSKILLNADEN, inte medelvärdet. Använd Emils ålder direkt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 2x = 31.",
+        "why_wrong": "Det utelämnar +3 från Stures ålder."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid x+3 = 31.",
+        "why_wrong": "Det är bara Stures ålder = 31, vilket är fel — sammanlagd är 31."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "x + (x+3) = 31, alltså x+x+3=31.",
+    "technique": "Översätt textinformation: 'sammanlagd' = SUMMA av båda åldrar."
+  },
+  "host-ver1-2019-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel och få −7.",
+        "why_wrong": "x = −15."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta +7.",
+        "why_wrong": "x är negativ."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 15 (positiv).",
+        "why_wrong": "x = −15."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av exponentiella relationen och givet villkor: x = −15.",
+    "technique": "Exponentialekvation: skriv båda i samma bas, sätt exponenter lika."
+  },
+  "host-ver1-2019-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 1/4 (25%).",
+        "why_wrong": "33% ≈ 1/3, inte 1/4 (25%)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 1/2 (50%).",
+        "why_wrong": "33% är 1/3, inte 1/2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 2/3.",
+        "why_wrong": "2/3 = 67%; vi söker 33%."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "65% är längre än Ida; 32% längre än Albert. Mellan Ida och Albert (Ida kortare): 65-32=33\\%\\approx\\frac{1}{3}.",
+    "technique": "Procent-mellan: skillnaden mellan två procentintervall ger andelen i det specifika intervallet."
+  },
+  "host-ver1-2019-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 1/4 (lika antal fordon).",
+        "why_wrong": "Frågan är om HJUL, inte fordon."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 1/3.",
+        "why_wrong": "4/20 = 1/5, inte 1/3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 1/2.",
+        "why_wrong": "1/2 är inte 4/20."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Bilar: 4\\cdot 4=16 hjul. MC: 2\\cdot 2=4 hjul. Total: 20. Sannolikhet MC: \\frac{4}{20}=\\frac{1}{5}.",
+    "technique": "Sannolikhet: gynnsamma hjul / total hjul, INTE fordon."
+  },
+  "host-ver1-2019-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro (-2, -10) ligger på linjen.",
+        "why_wrong": "3·(−2) − 5 = −11, inte −10."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta (0, 3).",
+        "why_wrong": "3·0 − 5 = −5, inte 3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid (3, 5).",
+        "why_wrong": "3·3 − 5 = 4, inte 5."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt in (5, 10): 3\\cdot 5-5=10 ✓.",
+    "technique": "Punkt på linje: substituera koordinater, kontrollera likhet."
+  },
+  "host-ver1-2019-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 1:√3 av att vända.",
+        "why_wrong": "Frågan är om LÅNG : diagonal, inte kort : diagonal."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 2:3.",
+        "why_wrong": "√2 ≈ 1,41 och √3 ≈ 1,73; förhållandet är inte heltal."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid √2:2.",
+        "why_wrong": "Diagonalen är √3, inte 2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Diagonal: \\sqrt{(\\sqrt{2})^{2}+1^{2}}=\\sqrt{3}. Förhållandet lång : diagonal = √2 : √3.",
+    "technique": "A4-papper: aspect ratio √2:1; diagonal från Pythagoras."
+  },
   "host-ver1-2019-kvant2-XYZ-010": {
     "_meta": {
       "generated_at": 1778410520622,
@@ -24,5 +570,57 @@
     "pitfall": "Identifiera bråktal som potenser av 10 innan du väljer operation: 100 = 10², 0,1 = 10⁻¹, 0,0001 = 10⁻⁴. Annars är det svårt att jämföra effekten av multiplikation kontra division.",
     "solution_path": "Maximera z genom att välja operation per steg. Step 1: 10^{3}\\,?\\,100=x — multiplikation ger 10^{3}\\cdot 10^{2}=10^{5}, vilket är största x. Step 2: x\\,?\\,10^{-1}=y — division med liten exponent ger 10^{5}/10^{-1}=10^{6}. Step 3: y\\,?\\,0{,}0001=z — division med 10^{-4} ger 10^{6}/10^{-4}=10^{10}.",
     "technique": "Vid potenser av samma bas: division innebär subtraktion av exponenter, multiplikation innebär addition. Division med en NEGATIV exponent blir alltså addition av motsvarande positiv exponent — ett kraftigt 'förstoringsverktyg'."
+  },
+  "host-ver1-2019-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få 3/5.",
+        "why_wrong": "5/6, inte 3/5."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 2/3.",
+        "why_wrong": "Räkna noggrant gemensam nämnare."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 4/5.",
+        "why_wrong": "5/6."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Förenkla genom gemensam nämnare: resultatet är 5/6.",
+    "technique": "Sammansatt bråk: gemensam nämnare för alla termer, sen invertera om nämnaren."
+  },
+  "host-ver1-2019-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna rektangeln som kvadrat: x².",
+        "why_wrong": "Omkrets 360 ger annan dimension; area är 180x−x²."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 90x (halv av omkretsen).",
+        "why_wrong": "Halva omkretsen är 180, inte 90. Och area är inte enbart linjär."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 90x + x².",
+        "why_wrong": "Tecknet på x² är NEGATIVT (eftersom y minskar med x)."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Omkrets: 2x+2y=360 → y = 180−x. Area: x(180-x)=180x-x^{2}.",
+    "technique": "Rektangel med given omkrets: andra sidan = (omkrets/2) − första sida; area = produkt."
   }
 }

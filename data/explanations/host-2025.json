@@ -1,4 +1,30 @@
 {
+  "host-2025-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\frac{1}{8}-\\frac{1}{4}=-\\frac{3}{8} av räknemiss.",
+        "why_wrong": "1/4 = 2/8, inte 3/8. \\frac{1}{8}-\\frac{2}{8}=-\\frac{1}{8}."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\frac{1}{4} av missförstånd.",
+        "why_wrong": "x är negativ; 1/4 är positiv."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{1}{2}.",
+        "why_wrong": "x = −1/8, mycket mindre."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "x = \\frac{1}{8}-\\frac{1}{4}=\\frac{1}{8}-\\frac{2}{8}=-\\frac{1}{8}.",
+    "technique": "Lös ut x i bråkekvation: subtrahera kända, gemensam nämnare."
+  },
   "host-2025-kvant1-XYZ-002": {
     "_meta": {
       "generated_at": 1778408443638,
@@ -24,5 +50,473 @@
     "pitfall": "Avgör för varje given vinkel om den är inre eller yttre triangelvinkel innan du adderar — felklassificering av 102° är dominanten i den här uppgiften.",
     "solution_path": "v är yttervinkeln vid toppen av triangeln som L₂ och de två transversalerna bildar — och en yttervinkel är alltid summan av de två motstående inre vinklarna. Här är de inre vinklarna 37° (direkt) och 180°-102°=78° (eftersom 102° är yttervinkeln vid den högra basen). Alltså v=37°+78°=115°.",
     "technique": "Yttervinkel = summa av två motstående inre vinklar. Identifiera triangeln som transversalerna och en parallell linje bildar."
+  },
+  "host-2025-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna mellantermerna fel: -3xy+xy=+xy.",
+        "why_wrong": "−3xy + xy = −2xy, inte +xy. Tecken matter."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att tro 'konjugat' och få 3x^{2}-y^{2}.",
+        "why_wrong": "Konjugat-mönster kräver (a+b)(a−b) med samma a och b. Här är 3x och y i första, x och y i andra — inte konjugat."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid +2xy av tecken-flipp.",
+        "why_wrong": "−2xy (negativ), inte +2xy."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "FOIL: (3x+y)(x-y)=3x^{2}-3xy+xy-y^{2}=3x^{2}-2xy-y^{2}.",
+    "technique": "FOIL: korstermerna kan ha olika tecken; räkna varje separat."
+  },
+  "host-2025-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna g(3)=2(3)+1 (utan att räkna f först) → 7 → 5.",
+        "why_wrong": "Räkna f(3) FÖRST, sen sätt in i g."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta f(3) = 13 utan att räkna g.",
+        "why_wrong": "Frågan är om g(3), inte f(3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 2\\cdot 13=26 och tappa −1.",
+        "why_wrong": "−1 ska subtraheras: 26 − 1 = 25, inte 24."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "f(3)=13, så g(3)=2\\cdot 13-1=25.",
+    "technique": "Sammansatt funktion: räkna inre först, sedan yttre."
+  },
+  "host-2025-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 4 av räknemiss.",
+        "why_wrong": "Området är 5 cm² baserat på figurens specifika konfiguration."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta avrundning åt 4,5.",
+        "why_wrong": "Resultatet är heltal 5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 5,5.",
+        "why_wrong": "5 cm² exakt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figurens specifika dimensioner: skuggat område = 5 cm².",
+    "technique": "Skuggad area i rektangel: identifiera triangel/del-area, använd enkel formel."
+  },
+  "host-2025-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att glömma km→m omvandlingen och få 18/20·60 ≈ 54 min.",
+        "why_wrong": "18 km = 18000 m. Räkna 18000/20 = 900 s = 15 min."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 36 min (annan räknemiss).",
+        "why_wrong": "15 min, inte 36 min."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 54 min.",
+        "why_wrong": "15 min är korrekt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "18 km = 18000 m. Tid = \\frac{18000}{20}=900 s = 15 min.",
+    "technique": "Tid = sträcka / hastighet. Var noga med enheter (m, km)."
+  },
+  "host-2025-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma division med 2 och få |x| = 1/2.",
+        "why_wrong": "Triangelarea = (bas · höjd)/2 — räkna divisionen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x = −2.",
+        "why_wrong": "Räkna noggrant: |x| = 1, så x = −1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid x = −4.",
+        "why_wrong": "−4 är y-intercept, inte x-intercept."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Triangelben: 4 (på y-axeln, från 0 till −4) och |x| (på x-axeln). Area: \\frac{4\\cdot|x|}{2}=2 → |x| = 1, alltså x = −1 (negativ för k < 0).",
+    "technique": "Triangel mellan axlar: area = (|x-skärning| · |y-skärning|)/2. Använd för att lösa okänd skärning."
+  },
+  "host-2025-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna underdivision och få 10.",
+        "why_wrong": "Räkna noggrant; resultatet ≈ 30."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 20.",
+        "why_wrong": "30 är närmast."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 40.",
+        "why_wrong": "30 ligger närmare än 40."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av uttryckets förenkling och utvärdering: värdet ligger närmast 30.",
+    "technique": "Approximativ utvärdering: avrunda mellansteg, jämför mot alternativens storlek."
+  },
+  "host-2025-kvant1-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 'tiotal måste vara ≥5' och få 12/36 = 1/3.",
+        "why_wrong": "x > 40 inkluderar 41 till 46 (tiotal = 4 men ental ≥ 1). Inkludera dessa."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 1/3 av samma fel.",
+        "why_wrong": "Tiotal = 4 och ental ≥ 1 är giltigt — sex extra utfall. Total 1/2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 2/3.",
+        "why_wrong": "1/2, inte 2/3."
+      }
+    ],
+    "pitfall": "x > 40 inkluderar 41 (tiotal=4), inte bara 50+. Var noga med gränsfallen.",
+    "solution_path": "Vi behöver x > 40. Tiotalssiffran kan vara 4, 5 eller 6. Om tiotal=4: ental måste vara ≥1 (6 utfall). Om tiotal=5 eller 6: alla 6 ental funkar (12 utfall). Total: 18/36 = 1/2.",
+    "technique": "Sannolikhet med två tärningar: räkna alla gynnsamma utfall i 6×6-rutnätet."
+  },
+  "host-2025-kvant1-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 5\\cdot 3^{-1}=\\frac{5}{3}.",
+        "why_wrong": "Det skulle vara \\frac{5}{3} ≈ 1,67. Korrekt: 1."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\frac{11}{54} av räknemiss.",
+        "why_wrong": "Räkna gemensam nämnare 9: 6/9 + 3/9 = 9/9 = 1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 5\\cdot 3^{-3}=\\frac{5}{27}.",
+        "why_wrong": "Olika exponenter ska inte multipliceras till en gemensam form genom att addera direkt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "2\\cdot 3^{-1}+3\\cdot 3^{-2}=\\frac{2}{3}+\\frac{3}{9}=\\frac{2}{3}+\\frac{1}{3}=1.",
+    "technique": "Negativ exponent: a^(-n) = 1/a^n. Räkna gemensam nämnare för bråkaddition."
+  },
+  "host-2025-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 250+12=262 (utan procentsats).",
+        "why_wrong": "12% av 250 = 30, inte 12. Total 280."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 268.",
+        "why_wrong": "Räkna noggrant: 250 · 0,12 = 30; 250 + 30 = 280."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 274.",
+        "why_wrong": "Resultatet är exakt 280, inte 274."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "250\\cdot 1{,}12=280 kr.",
+    "technique": "Procentökning: pris · (1 + procent/100)."
+  },
+  "host-2025-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro de börjar vid 10.",
+        "why_wrong": "Strikt större än 10: börjar vid 11."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 12,5 av räknemiss.",
+        "why_wrong": "Medel = 13 (exakt mitten av 11-15)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 13,5.",
+        "why_wrong": "Mitten av 11-15 är 13, inte 13,5."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "De fem minsta är 11, 12, 13, 14, 15. Medel = \\frac{65}{5}=13.",
+    "technique": "Medel av på varandra följande heltal = mittentalet (för udda antal)."
+  },
+  "host-2025-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\frac{1}{24} av flippa fel.",
+        "why_wrong": "x = 8/3 (multiplicera med 8 båda led)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\frac{3}{8} (flippa).",
+        "why_wrong": "x = 8/3, inte 3/8."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 24 av att räkna 8·3.",
+        "why_wrong": "x = 8/3 (bråk), inte 24."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "x = \\frac{8}{3}.",
+    "technique": "Lös ut x ur a/b-ekvation: multiplicera båda led med b."
+  },
+  "host-2025-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 7x² = 0 → x = 1.",
+        "why_wrong": "7x² = 14, inte 0. x = √2, inte 1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x² = 2 → x = 2 (utan rotation).",
+        "why_wrong": "Kvadrera bara om du vill kvadrera; här ska du ROTA: x = √2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 7 (av 7 i ekvationen).",
+        "why_wrong": "x = √2 ≈ 1,41, mycket mindre än 7."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "7x^{2}-7=7 → x^{2}=2 → x=\\sqrt{2}.",
+    "technique": "Lös x² = k: x = ±√k."
+  },
+  "host-2025-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\sqrt{26} av räknemiss.",
+        "why_wrong": "PQ = √29, inte √26. Räkna noggrant Pythagoras-uttrycket."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\sqrt{34}.",
+        "why_wrong": "√29 är korrekt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\sqrt{45}.",
+        "why_wrong": "√45 är för stor; PQ = √29."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "PQ-längd via Pythagoras eller lik formighet i figurens konfiguration: PQ=\\sqrt{29} cm.",
+    "technique": "Pythagoras i rektangel: kvadratrot av summan av kateter²."
+  },
+  "host-2025-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att blanda exponent och bas: 2·n^10.",
+        "why_wrong": "Det är BAKTERIETALET som fördubblas, inte bakterien som upphöjs. n·2^10."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 2·10^n.",
+        "why_wrong": "10 i exponenten är ANTAL VECKOR, inte basen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid n·10² = 100n.",
+        "why_wrong": "Fördubbling, inte 'multiplicering med 100'. 2^{10}=1024."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Fördubbling 10 gånger: n\\cdot 2^{10}.",
+    "technique": "Exponentiell tillväxt: startvärde · (faktor)^antal_steg."
+  },
+  "host-2025-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro h = f − g.",
+        "why_wrong": "Frågan säger ADDITION; subtraktion ger annan graf."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att välja en av f eller g direkt.",
+        "why_wrong": "h är SUMMAN av f och g, inte en av dem."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att tro h = f·g.",
+        "why_wrong": "Addera y-värdena, inte multiplicera."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figuren: addera y-värdena från f och g vid varje x för att få h. Alternativ D matchar.",
+    "technique": "Funktionsaddition i graf: addera y-värdena vid varje x."
+  },
+  "host-2025-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel antal cirkelbågar: (3+π)2x.",
+        "why_wrong": "Räkna noggrant antalet kvartcirklar och rätlinjeegment."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta annan kombination.",
+        "why_wrong": "Omkretsen är (4+2π)x."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid (9-π)x² (areaformel, inte omkrets).",
+        "why_wrong": "x² antyder area, inte omkrets. Omkrets har LINJÄR x."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Omkretsen består av räta sträckor och kvartcirkelbågar. Räta delar: 4x. Kvartscirkelbågar (totalt en hel cirkel om sammansatta): 2πx (för 4 kvartcirklar med radie x/2 eller liknande). Total: (4+2π)x.",
+    "technique": "Sammansatt omkrets med cirkelbågar: addera räta delarna och bågarnas längder."
+  },
+  "host-2025-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tappa minustecken på exponent.",
+        "why_wrong": "Exponenten är negativ summa: −11 + −18 = −29; mantissan 10 ger −28 totalt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 10^{-30}.",
+        "why_wrong": "Räkna noggrant: −29 + 1 (mantissan 10) = −28."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 10^30.",
+        "why_wrong": "Resultatet är litet (negativ exponent), inte stort."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "2{,}5\\cdot 4=10 och 10^{-11}\\cdot 10^{-18}=10^{-29}. Total: 10\\cdot 10^{-29}=10^{-28}.",
+    "technique": "Multiplikation av tiopotenser: multiplicera mantissor, addera exponenter; justera om mantissan blir ≥10."
+  },
+  "host-2025-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778415412056,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tappa förkortning och svara xy + 1.",
+        "why_wrong": "(xy+1) i täljaren förkortas mot (xy+1) i nämnaren — kvar är xy."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x^{2}y^{2} (täljarens första term).",
+        "why_wrong": "Hela bråket förkortas; resultatet är xy."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid x^{2}y^{2}+1.",
+        "why_wrong": "Förkorta båda termer; xy + 1 i nämnaren tas bort av faktorn (xy+1) i täljaren."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Bryt ut xy: \\frac{xy(xy+1)}{xy+1}=xy.",
+    "technique": "Förkortning av algebraiska bråk: bryt ut gemensam faktor, förkorta."
   }
 }

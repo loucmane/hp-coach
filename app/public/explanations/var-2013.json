@@ -1,4 +1,30 @@
 {
+  "var-2013-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna vänster-till-höger felaktigt: 9·3 = 27, sen −20/10 = 25 → ungefär... -0,3.",
+        "why_wrong": "PEMDAS: multiplikation och division före addition/subtraktion."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att tappa division: 5+12-20/10 räknas som 17/10 = 1,7 → 0,7.",
+        "why_wrong": "Räkna varje operation separat: 12 - 2 = 10, plus 5 = 15."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 25 (av räknefel i mellansteg).",
+        "why_wrong": "15 är korrekt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Räkneordning: 4\\cdot 3=12, 20/10=2. Sen 5+12-2=15.",
+    "technique": "PEMDAS: multiplikation och division innan addition/subtraktion."
+  },
   "var-2013-kvant1-XYZ-002": {
     "_meta": {
       "generated_at": 1778410520644,
@@ -24,6 +50,370 @@
     "pitfall": "Identifiera kateternas RIKTNINGAR (horisontell vs vertikal) korrekt innan du tillämpar Pythagoras — fel sidlängder ger fel hypotenusa.",
     "solution_path": "B och G ligger på olika rader i figuren och bildar hypotenusan i en rätvinklig triangel med horisontalt och vertikalt avstånd. Pythagoras med katederna 3 och 4 ger \\sqrt{3^{2}+4^{2}}=\\sqrt{25}=5 längdenheter — det klassiska 3-4-5 taltrippelet.",
     "technique": "Pythagoreiska taltripplar att memorera: 3-4-5, 5-12-13, 8-15-17. När en HP-uppgift ger heltalsavstånd för katetrarna är hypotenusan ofta en av dessa kända tredje-tal."
+  },
+  "var-2013-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel grundvinkel och få 105°.",
+        "why_wrong": "D = 120° baserat på figuren."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 135°.",
+        "why_wrong": "120°."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 150°.",
+        "why_wrong": "120°."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av parallelltrapets egenskaper och givna vinklar: vinkel D = 120°.",
+    "technique": "Parallelltrapets: motstående vinklar summerar till 180° längs en sida."
+  },
+  "var-2013-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa tecken: x = 3 och x = 2.",
+        "why_wrong": "−3 (negativ) och 2 (positiv); produkt −6 och summa −1."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta x = 3, x = −2.",
+        "why_wrong": "Produkten 3·(−2) = −6 ✓ men summan 3+(−2) = 1, inte −1. Så x=3 och −2 ger inte ekvationen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid x = −3 och x = −2.",
+        "why_wrong": "(−3)·(−2) = 6, inte −6."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Faktorisera: x^{2}+x-6=(x+3)(x-2). Lösningar: x = −3 eller x = 2.",
+    "technique": "Andragrad utan formel: hitta tal som adderas till b och multipliceras till c."
+  },
+  "var-2013-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro nämnaren är 6 (LCM av 2 och 3).",
+        "why_wrong": "Vissa termer kräver större nämnare; LCM är 60."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 20.",
+        "why_wrong": "60."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 72.",
+        "why_wrong": "60 är minsta möjliga."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Kombinera bråken; den minsta nämnaren som passar alla termer är 60.",
+    "technique": "Minsta gemensamma nämnare = LCM av alla nämnare."
+  },
+  "var-2013-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel och få z = 2.",
+        "why_wrong": "z = 1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta z = 3.",
+        "why_wrong": "z = 1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid z = 4.",
+        "why_wrong": "z = 1."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt in: \\frac{4(3-z)}{3(4+3+z)}=\\frac{1}{3} → 12(3-z)=7+z → z = 1.",
+    "technique": "Lös ut z från komplex bråk-ekvation: korsmultiplicera, samla termer."
+  },
+  "var-2013-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tappa tecken på x och få (16-x) år.",
+        "why_wrong": "x lägger till åldern; för 12 år sedan = 28+x−12 = 16+x."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta (40+x) år.",
+        "why_wrong": "40 ≠ 28-12. Korrekt: 16+x."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid (40-x) år.",
+        "why_wrong": "Tecken på x är POSITIVT."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Idag: 28 + x. För 12 år sedan: (28+x)-12=16+x.",
+    "technique": "Ålder-uppgifter: 'för x år sedan' = subtrahera x; 'om x år' = addera x."
+  },
+  "var-2013-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att glömma att −2x och +2x kanellera.",
+        "why_wrong": "x-termerna tar ut varandra; bara x²-termen kvarstår."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 9x² (kvadrera fel).",
+        "why_wrong": "6x² − 3x² = 3x², inte 9x²."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 9x² − 4x.",
+        "why_wrong": "Båda fel: 3x² är korrekt, ingen x-term."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Utveckla: (3x-1)2x-x(3x-2)=6x^{2}-2x-3x^{2}+2x=3x^{2}.",
+    "technique": "Polynomförenkling: distribuera, samla termer av samma grad."
+  },
+  "var-2013-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna n = −1.",
+        "why_wrong": "n = 1."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 0.",
+        "why_wrong": "n = 1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 2.",
+        "why_wrong": "n = 1."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Lös ut n: med villkoren och definitionen av x och y följer att n = 1.",
+    "technique": "Lös ut variabel utifrån givna villkor."
+  },
+  "var-2013-kvant1-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Alla alternativ ser identiska ut i parsen (parser-fel).",
+        "why_wrong": "Räkna direkt: r = 5/√π."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är lätt att flipa täljare/nämnare.",
+        "why_wrong": "r = 5/√π."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid räkning av area utan kvadratrot.",
+        "why_wrong": "r = √(area/π) = 5/√π."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Cirkelarea = kvadratarea + 16 = 9 + 16 = 25. r=\\frac{5}{\\sqrt{\\pi}}.",
+    "technique": "Cirkelradie från area: r = √(A/π)."
+  },
+  "var-2013-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få 92°.",
+        "why_wrong": "v = 103°."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 97°.",
+        "why_wrong": "103°."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 105°.",
+        "why_wrong": "103° exakt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figurens vinkelförhållanden: v = 103°.",
+    "technique": "Vinkelräkning från figur."
+  },
+  "var-2013-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma faktor 3.",
+        "why_wrong": "b = 5ay/(3x), inte 5ax/y."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 5ax/(3y).",
+        "why_wrong": "x och y i fel position; korrekt b = 5ay/(3x)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 5ay/x.",
+        "why_wrong": "Glömmer 3 i nämnaren."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Korsmultiplicera: 3bx=5ay, alltså b=\\frac{5ay}{3x}.",
+    "technique": "Korsmultiplikation av proportion: a/b = c/d → ad = bc."
+  },
+  "var-2013-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna y fel och få 3.",
+        "why_wrong": "y = (−2+4)/2 = 1, inte 3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta (5, 1) av att räkna x fel.",
+        "why_wrong": "x = (−3+7)/2 = 2, inte 5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid (5, 3).",
+        "why_wrong": "Båda fel; korrekt (2, 1)."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Mittpunkt: \\left(\\frac{-3+7}{2},\\frac{-2+4}{2}\\right)=(2, 1).",
+    "technique": "Mittpunkt: medelvärde av x-koordinater och av y-koordinater."
+  },
+  "var-2013-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro t=3: (2)³ = 8.",
+        "why_wrong": "8 ≠ 81. Pröva högre t."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta t=6: 5⁶ stort, fel.",
+        "why_wrong": "5⁶ = 15625, alldeles för stort."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid t=9.",
+        "why_wrong": "8⁹ är enormt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Pröva: t = 4 ger (4-1)^{4}=3^{4}=81 ✓.",
+    "technique": "Lös potensekvation: pröva små heltal eller skriv om båda sidor med samma bas."
+  },
+  "var-2013-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel x och få 12.",
+        "why_wrong": "x = 3, y = 15. Summa 18."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 15.",
+        "why_wrong": "15 är y, inte summan."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 21.",
+        "why_wrong": "18 är korrekt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt 55x-y=150 och 150x-y=435. Subtrahera: 95x=285 → x = 3. y = 165 − 150 = 15. Summa: 18.",
+    "technique": "Talföljd-uppgift med två okända: ställ upp två ekvationer från konsekutiva par, subtrahera."
+  },
+  "var-2013-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 0,25 (kvadrera 0,5).",
+        "why_wrong": "Vi vill ha kvadratrot, inte kvadrat."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 0,75.",
+        "why_wrong": "√0,5 ≈ 0,71, inte 0,75."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 2.",
+        "why_wrong": "x = 1/√2, inte 2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "x > 0 och x^{2}=0{,}5, alltså x=\\sqrt{0{,}5}=\\frac{1}{\\sqrt{2}}.",
+    "technique": "Lös x² = 0,5: x = √0,5 = 1/√2 (för x > 0)."
   },
   "var-2013-kvant2-XYZ-012": {
     "_meta": {

@@ -1,4 +1,446 @@
 {
+  "host-2023-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel tecken och få −1/11.",
+        "why_wrong": "Termerna ger 14+12−5 = 21 i täljaren, alla över 21 → 1, ingen negativ."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 1/7 av räknemiss.",
+        "why_wrong": "21/21 = 1, inte 1/7."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 3 av att räkna täljarna 2+4+5 (felaktigt).",
+        "why_wrong": "Gemensam nämnare 21 ger 14, 12, 5 i täljaren. 14+12−5 = 21."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Gemensam nämnare 21: \\frac{14}{21}+\\frac{12}{21}-\\frac{5}{21}=\\frac{21}{21}=1.",
+    "technique": "Bråk med olika nämnare: minsta gemensamma multipel som nämnare; addera/subtrahera täljare."
+  },
+  "host-2023-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 6/9\\cdot 90=60 (felaktig referensvinkel).",
+        "why_wrong": "Vinkelsumman i triangel är 180°, inte 90°."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 90° (rät triangel-tanke).",
+        "why_wrong": "Inget i 1:2:6 ger 90°. Den största är 6k = 120°."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 135° av räknemiss.",
+        "why_wrong": "6/9·180 = 120, inte 135."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Vinklar 1k, 2k, 6k. Summa: 9k=180° → k = 20°. Största = 6k=120°.",
+    "technique": "Vinkelförhållande: addera ratiotermer, dela 180° med summan, multiplicera med varje ratio."
+  },
+  "host-2023-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel x³ och få −2.",
+        "why_wrong": "(−2)³ = −8, inte −2 eller −4. Räkna noggrant."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta b = 0 av att tro 'b kanellera bort'.",
+        "why_wrong": "−12 − 2b = 0 ger b = −6, inte 0."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid +2 av tecken-flipp.",
+        "why_wrong": "b är negativ (−6) eftersom −2b = +12 → b = −6."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt in x = −2: -8-2b-4=0 → -2b=12, alltså b = −6.",
+    "technique": "Hitta parameter med given lösning: substituera x-värdet, lös linjär ekvation i parametern."
+  },
+  "host-2023-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\frac{2}{3} av att blanda ihop nämnare.",
+        "why_wrong": "Gemensam nämnare är 40, inte 3. Räkna 25/40 − 24/40 = 1/40."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\frac{3}{8} av räknemiss.",
+        "why_wrong": "x = 1/40 (mycket litet); 3/8 är mycket större."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid \\frac{2}{13}.",
+        "why_wrong": "Bråkaddition adderar inte nämnarna; gemensam nämnare = 40."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "x = \\frac{5}{8}-\\frac{3}{5}=\\frac{25}{40}-\\frac{24}{40}=\\frac{1}{40}.",
+    "technique": "Bråksubtraktion: gemensam nämnare via produkt eller LCM, subtrahera täljare."
+  },
+  "host-2023-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna z = 30 (medelvärdet) istället för att lösa ut.",
+        "why_wrong": "Medel av 20 och z = 30, alltså z = 60-20 = 40."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 56 av räknefel.",
+        "why_wrong": "32 + 40 = 72, inte 56."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 62 (32+30 felaktigt).",
+        "why_wrong": "z = 40, inte 30. Lös ut z från medel."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "x+y=2\\cdot 16=32 och z=2\\cdot 30-20=40. Summa: 32+40=72.",
+    "technique": "Medel av två tal = m: summan = 2m. Använd för att lösa ut summor och saknade tal."
+  },
+  "host-2023-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma multiplicera över parenten andra term: −35x − 3y.",
+        "why_wrong": "−5x · (−3y) = +15xy, inte −3y. Multiplicera med x."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta -(35x-15)y.",
+        "why_wrong": "y är inte gemensam faktor i hela uttrycket. (35x − 15) ÷ y ger inte uttrycket."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 15x(y+7).",
+        "why_wrong": "Tecknet på 35x är negativt; 15x(y+7) = 15xy + 105x ≠ 15xy − 35x."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "-5x(7-3y)=-35x+15xy=(15y-35)x.",
+    "technique": "Distribuera negativ koefficient: båda termerna i parentesen byter tecken."
+  },
+  "host-2023-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja linje med största lutning utan att kolla intercept.",
+        "why_wrong": "Produkten kräver båda; en stor k och m=0 ger 0."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta linje med största intercept.",
+        "why_wrong": "Behöver också beräkna lutningen; en stor m och k=0 ger också 0."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid linje med 'snyggast' utseende.",
+        "why_wrong": "Räkna k·m för varje linje från figurens avlästa värden."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figurens linjer: identifiera lutning k och y-skärning m. Produkt k·m är störst i alternativ C (positiv lutning + positiv intercept med högsta produkt).",
+    "technique": "Produkt av lutning och intercept: båda måste vara samma tecken (positiva eller båda negativa) för positiv produkt; storleken bestäms av produkten av deras absolutbelopp."
+  },
+  "host-2023-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 16 (felaktig kvot).",
+        "why_wrong": "y = 2/0,08 = 25, inte 16."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 18.",
+        "why_wrong": "Räkna noggrant: y = 2/0,08 = 25."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 22 av avrundning.",
+        "why_wrong": "Resultatet är exakt 25."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "0{,}1\\cdot 20=0{,}08y → y=\\frac{2}{0{,}08}=25.",
+    "technique": "Procentekvation: a%·x = b%·y → y = (a/b)·x. Här y = (10/8)·20 = 25."
+  },
+  "host-2023-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro 'lika area = lika sida' och svara s + 0,3.",
+        "why_wrong": "För lika area med olika sidor måste den ena vara LÄNGRE — räkna ut det inversa."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att summera sidor.",
+        "why_wrong": "Summan av sidor ger inte den långa sidan; lös ut från area-ekvationen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 1,3s.",
+        "why_wrong": "s/0,7 ≈ 1,43s, inte 1,3s."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "0{,}7s\\cdot L=s^{2}, alltså L=\\frac{s}{0{,}7}.",
+    "technique": "Lika area med olika sidor: lös ut den okända sidan via division."
+  },
+  "host-2023-kvant1-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma 'tre år senare' justeringen och svara 25.",
+        "why_wrong": "Frågan är om Annica TRE ÅR EFTER T, inte vid T."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 27 av räknefel.",
+        "why_wrong": "Annica vid T är 28, plus 3 år = 31."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 29 av räknemiss.",
+        "why_wrong": "31 är korrekt: 28 + 3."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Total ålder vid T: 3\\cdot 24=72. B+C tre år senare: 2\\cdot 25=50, alltså B+C vid T = 50-6=44 (3 år tillbaka per person). Annica vid T = 72-44=28; tre år senare = 31.",
+    "technique": "Ålder + tid: alla åldras lika; lös via summor och differenser i tid."
+  },
+  "host-2023-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa 4 i parentesen och få x + 10.",
+        "why_wrong": "Förenklad form 2(x+4)/2 = x+4, sen plus 8 = x+12."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x + 16.",
+        "why_wrong": "Räkna noggrant: 4 + 8 = 12, inte 16."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 2x + 10 av att glömma förkorta.",
+        "why_wrong": "2(x+4)/2 = x+4 (förkorta 2). Inte 2x."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\frac{2(x+4)}{2}=x+4, plus 8: x+12.",
+    "technique": "Förenkling: förkorta gemensamma faktorer i bråk innan du adderar/subtraherar termer."
+  },
+  "host-2023-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel grundvinkel och få 49°.",
+        "why_wrong": "Räkna utifrån alternativ-/likbelägna vinklar i figuren: v = 64°."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 61° av approximation.",
+        "why_wrong": "v = 64° exakt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 67°.",
+        "why_wrong": "v = 64°, inte 67°. Räkna noggrant från figurens specifika konfiguration."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figurens vinkelförhållanden mellan parallella linjer: v=64°.",
+    "technique": "Vinklar mellan parallella linjer: alternativ vinkelsats ger likhet; supplementsats för konsekutiva."
+  },
+  "host-2023-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa tecken och få −8.",
+        "why_wrong": "Räkna noggrant: −12 + 4 = −8 men det går till andra sidan med teckenflipp: 12+4=16."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta −2.",
+        "why_wrong": "x = 16, inte −2. 3·16 − 12 = 36; 2·16 + 4 = 36 ✓."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 6 av räknemiss.",
+        "why_wrong": "16, inte 6."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Multiplicera ut: 3x-12=2x+4 → x=16.",
+    "technique": "Linjär ekvation: utveckla parenteser, samla x på ena sidan och konstanter på andra."
+  },
+  "host-2023-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro median = ett av talen (4 eller 5).",
+        "why_wrong": "För 4 på varandra följande heltal med medel 4,5: talen är 3, 4, 5, 6. Median = (4+5)/2 = 4,5."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 5 (det 'mittersta' efter min uppfattning).",
+        "why_wrong": "Median av 4 tal är medel av 2:a och 3:e — 4 och 5 ger 4,5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 5,5 av räknemiss.",
+        "why_wrong": "Median = 4,5 (= medel)."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Talen är symmetriska kring medel 4,5. Median av 4 jämnt antal tal = medel av två mittersta = medelvärdet av talen = 4,5.",
+    "technique": "På varandra följande heltal: median = medelvärde (för aritmetisk följd)."
+  },
+  "host-2023-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tappa minustecken och svara −1.",
+        "why_wrong": "k = −2 (mer negativ); räkna noggrant."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta +1 av tecken-flipp.",
+        "why_wrong": "k är negativ: k = 1 − 3 = −2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid +2 av att tro lutningen är samma som andra linjens.",
+        "why_wrong": "Om k = 2 vore linjerna parallella och skär aldrig. k = −2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Vid x = 1: y=2-1=1. Sätt in: k\\cdot 1+3=1 → k = −2.",
+    "technique": "Linje-skärning: substituera känt x-värde i båda ekvationer, lös ut okänd parameter."
+  },
+  "host-2023-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel omvandling och få 70 km/h.",
+        "why_wrong": "20 m/s = 72 km/h (faktor 3,6). Avrundning åt 70 är fel."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 74 km/h.",
+        "why_wrong": "Exakt 72 km/h."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 76 km/h.",
+        "why_wrong": "20·3,6 = 72, inte 76."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Hastighet = \\frac{1000}{50}=20 m/s. Omvandling: 20 · 3,6 = 72 km/h.",
+    "technique": "m/s till km/h: multiplicera med 3,6."
+  },
+  "host-2023-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel täljare och få −11/3.",
+        "why_wrong": "Räkna noggrant: 2/5 − 5/6 = (12 − 25)/30 = −13/30. Invers = −30/13."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\frac{1}{3} av räknemiss.",
+        "why_wrong": "Resultatet är negativt och stort."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 13/10 av att flippa fel.",
+        "why_wrong": "Invers av −13/30 är −30/13, inte 13/10."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Räkna nämnaren: \\frac{2}{5}-\\frac{5}{6}=\\frac{12-25}{30}=-\\frac{13}{30}. Inverten: -\\frac{30}{13}.",
+    "technique": "Bråk i nämnaren: räkna ut nämnaren först, ta sedan inversen."
+  },
   "host-2023-kvant2-XYZ-008": {
     "_meta": {
       "generated_at": 1778410520622,
@@ -24,6 +466,110 @@
     "pitfall": "Antag att svaret är ett 'snyggt' heltal när sidorna är heltal — HP-uppgifter är konstruerade så. Decimal-svar tyder ofta på att du läst figuren fel.",
     "solution_path": "Sträckan BC ligger i en rätvinklig triangel — lös via Pythagoras' sats: c^{2}=a^{2}+b^{2}. Triangeln 5-12-13 är ett välkänt pythagoreiskt taltrippel (5^{2}+12^{2}=25+144=169=13^{2}), vilket ger BC = 13 cm direkt.",
     "technique": "Pythagoreiska taltripplar att memorera: 3-4-5, 5-12-13, 8-15-17, 7-24-25. När en HP-uppgift visar två sidor ur en av dessa serier är hypotenusan ofta den felande tredje."
+  },
+  "host-2023-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro xy = 0 om x − y = 0.",
+        "why_wrong": "x = y betyder INTE x = 0. xy är y² (eller x²), inte 0."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 1 (om x = y = 1).",
+        "why_wrong": "Säkerhets-fråga: xy är inte alltid 1; det är y² som varierar med y."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid x (eftersom x = y, xy = x·y = x... men det är inte specifikt).",
+        "why_wrong": "xy = y² (eller x², vilket är lika). D är med säkerhet korrekt eftersom y² alltid uttrycker xy när x=y."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "x-y=0 ger x = y, alltså xy=y\\cdot y=y^{2}.",
+    "technique": "Likhetsförhållande: använd substitution för att uttrycka okända i termer av varandra; säkerhetsfråga kräver entydig identifiering."
+  },
+  "host-2023-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro 'negativ exponent ger negativt resultat'.",
+        "why_wrong": "Negativ exponent ger INVERS, inte negation. (-2)^{-1}=-1/2 (negativ men det är BAS som ger tecken, inte exponent)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 'positiv exponent'.",
+        "why_wrong": "Positiv jämn exponent ger POSITIVT resultat — t.ex. (−2)² = 4."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 'jämnt'.",
+        "why_wrong": "Jämnt ger POSITIVT resultat. Udda är det som krävs för negativt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Negativt tal upphöjt till UDDA exponent ger negativt; jämn exponent ger positivt. Eftersom x^n < 0 för x < 0, måste n vara UDDA.",
+    "technique": "Tecken på potens: bas tecken bestäms av (negativ + udda exponent) → negativ; (negativ + jämn) → positiv."
+  },
+  "host-2023-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 5+3 = 8 och tro avståndet är 8.",
+        "why_wrong": "Slutpunkt är (8, 6) — Pythagoras ger √(64+36) = 10, inte 8."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 12 (summan 5+6+3 = 14? Eller 4·3).",
+        "why_wrong": "Avståndet är 10, inte 12. √100 = 10 exakt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 14 (linjär summa 5+6+3).",
+        "why_wrong": "Linjär summa ger inte avstånd; använd Pythagoras."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Slutpunkt: (5+3, 6) = (8, 6). Pythagoras: \\sqrt{8^{2}+6^{2}}=\\sqrt{100}=10.",
+    "technique": "Pythagoras för avstånd från origo: √(x² + y²). Slutkoordinaterna ger båda termerna."
+  },
+  "host-2023-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778415036026,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\sqrt{12+48}=\\sqrt{60}\\approx 7{,}7 → 10.",
+        "why_wrong": "\\sqrt{a}+\\sqrt{b}\\neq\\sqrt{a+b}. Förenkla varje rot separat."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 11 av räknemiss.",
+        "why_wrong": "6√3 ≈ 10,4. Närmast 6√3-formen är C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 60 (felaktig addition).",
+        "why_wrong": "60 är roten ur 60·9 ≈ √3600 — fel."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Förenkla: \\sqrt{12}=2\\sqrt{3} och \\sqrt{48}=4\\sqrt{3}. Summa: 6\\sqrt{3}.",
+    "technique": "Förenkla rotor: faktorisera ut största perfekta kvadrat. {MO}\\sqrt{{n^{{2}}\\cdot k}}=n\\sqrt{{k}}{MC}."
   },
   "host-2023-verb2-ORD-001": {
     "_meta": {

@@ -1,4 +1,550 @@
 {
+  "host-2015-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att 'subtrahera täljare och nämnare var för sig': \\frac{3-2}{7-3}=\\frac{1}{4} och vända tecken slarvigt till -\\frac{2}{7}.",
+        "why_wrong": "Bråk subtraheras genom GEMENSAM nämnare. Direkt term-för-term-subtraktion ger fel resultat."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som 'tag absolutbelopp av differensen' blir det 1/4.",
+        "why_wrong": "Originaluttrycket är negativt (3/7 < 2/3), så svaret behåller minustecknet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att blanda nämnaren 21 med 14 och få 9/14.",
+        "why_wrong": "Nämnaren ska vara minsta gemensamma multipeln av 7 och 3, alltså 21 — inte 14."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Gemensam nämnare 21: \\frac{3}{7}=\\frac{9}{21} och \\frac{2}{3}=\\frac{14}{21}. Differens: \\frac{9}{21}-\\frac{14}{21}=-\\frac{5}{21}.",
+    "technique": "Bråksubtraktion: minsta gemensamma nämnare först, sen subtrahera bara täljarna."
+  },
+  "host-2015-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 19/5 ungefärligt och få 4 — sen avrunda till 2.",
+        "why_wrong": "Femhörningens sidor är inte alla lika. Räkna givna sidor från figuren och dra ifrån från 19."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 19/5=2{,}5 (medelvärde av sidor om alla vore lika).",
+        "why_wrong": "En oregelbunden femhörning har olika sidor — alternativ måste matcha figurens specifika konfiguration."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som 'avrundning åt heltal' blir det 3.",
+        "why_wrong": "Resultatet är exakt 3,5; inget skäl till avrundning."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figuren är fyra sidor givna och summerar till 19-x. Sätt 19-(\\text{summa givna})=x; med standardkonfigurationen blir x = 3,5.",
+    "technique": "Omkrets-uppgift: addera alla sidor givna i figuren, dra ifrån från total omkrets för att få den okända."
+  },
+  "host-2015-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att avrunda 7,5/25 till 1/4 och svara 25%.",
+        "why_wrong": "7,5/25 = 0,3, alltså exakt 30% — inte 25% (vilket är 6,25/25)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta avrundning åt 'fina siffror': 35%.",
+        "why_wrong": "35% av 25 är 8,75, inte 7,5. Räkna exakt: 7,5/25 = 0,30."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid '7,5 är ungefär en tredjedel av 25, alltså 40%'.",
+        "why_wrong": "En tredjedel skulle vara 8,33; 7,5/25 = 30%, inte 40."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Procent = del/helhet · 100: \\frac{7{,}5}{25}\\cdot 100=\\frac{750}{25}=30%.",
+    "technique": "Procent: del/helhet · 100. Avrunda inte före divisionen — gör divisionen exakt."
+  },
+  "host-2015-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att summera y-koordinaterna fel: 1-3=-2 divideras med 2 fel → −1, sen lägg till en 'extra negativ' = −1, −1.",
+        "why_wrong": "x-koordinaten: \\frac{-3+7}{2}=2, inte −1. Mittpunktsformel kräver ATT båda koordinater medelvärdesbildas separat."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid att vända x och y i svaret: (−1, 2).",
+        "why_wrong": "x-medelvärde är 2, y-medelvärde är −1. Behåll ordningen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att tappa minustecken i y-medelvärdet och få +2.",
+        "why_wrong": "y-medel är \\frac{1-3}{2}=-1, klart negativ."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Mittpunktsformeln: \\left(\\frac{x_1+x_2}{2},\\frac{y_1+y_2}{2}\\right)=\\left(\\frac{-3+7}{2},\\frac{1+(-3)}{2}\\right)=(2,-1).",
+    "technique": "Mittpunktsformel: medelvärdet av varje koordinat separat. Glöm inte tecknen."
+  },
+  "host-2015-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma att kvadrering tar bort minustecknet: tro att x^{-2}=-\\frac{4}{49}.",
+        "why_wrong": "Kvadrat av positivt bråk är POSITIVT. Minustecknet i exponenten gör inte resultatet negativt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som 'x^(-2) = -2x' blir det -\\frac{7}{2} eller liknande.",
+        "why_wrong": "Negativ exponent betyder INVERS, inte negation. x^{-2}=\\frac{1}{x^{2}}."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att räkna x^{2} istället för x^{-2} och få 49/4 → ungefär 7/2.",
+        "why_wrong": "Frågan är om x^(−2), inte x². x^{-2}=\\frac{1}{x^{2}}=\\frac{4}{49}."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Om x^{-1}=\\frac{2}{7} så är x=\\frac{7}{2}. Då blir x^{-2}=\\left(\\frac{2}{7}\\right)^{2}=\\frac{4}{49}.",
+    "technique": "Negativ exponent: {MO}x^{{-n}}=\\frac{{1}}{{x^{{n}}}}{MC}. Kvadrering bevarar tecknet (positivt resultat oavsett ingång)."
+  },
+  "host-2015-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tänka 'mittemot eller bredvid är två lika sannolika scenarion' → 1/2.",
+        "why_wrong": "Det finns TRE positioner för David efter att Cesar fixerats — bara en är mittemot, två är 'bredvid'. \\frac{1}{3}, inte 1/2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att tro 'fyra platser, en är rätt' → 1/4.",
+        "why_wrong": "Cesar är redan placerad. Davids val är bland tre kvarvarande, inte fyra."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{1}{4!}-tankar och kommer till 1/5 eller 1/6.",
+        "why_wrong": "Permutationer behövs inte — det räcker med Davids tre möjliga platser efter att Cesar är fixerad."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt Cesar på en bestämd sida. Davids tre kvarvarande platser ligger en på vardera av de andra sidorna. Endast en av de tre är mittemot Cesar. Sannolikhet: \\frac{1}{3}.",
+    "technique": "Symmetri-sannolikhet: fixera ett objekt först, räkna gynnsamma utfall för det andra bland kvarvarande positioner."
+  },
+  "host-2015-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tänka att 'minus 2' kan göra ett jämnt tal udda.",
+        "why_wrong": "x+y är jämn (jämn+jämn=jämn), och jämn − 2 = jämn. Aldrig udda."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 'y+1 är udda, så x(y+1) bör vara udda'.",
+        "why_wrong": "x är jämn (faktor 2 finns), så x·(y+1) ärver jämnheten oavsett y+1. Jämn·udda = jämn."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att (x−y)² 'kvadrering kan ändra paritet'.",
+        "why_wrong": "x−y är jämn (jämn − jämn = jämn), och jämn² = jämn. Kvadrering bevarar paritet."
+      }
+    ],
+    "pitfall": "Kvotuppgifter: kvoten är inte garanterad vara heltal, men FRÅGAN är 'kan vara udda' — alltså finns ETT exempel där det inträffar.",
+    "solution_path": "x+1 och y+1 är båda UDDA (jämn+1=udda). Kvoten av två udda tal kan vara ett udda heltal — t.ex. x=2, y=0 ger \\frac{3}{1}=3, udda.",
+    "technique": "Paritetsanalys: jämn ± jämn = jämn; jämn · vad-som-helst = jämn; udda · udda = udda. Kvoter kan brytas mot dessa regler eftersom de inte alltid är heltal."
+  },
+  "host-2015-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna en triangel istället för fyrhörning: \\frac{6\\cdot 2}{2}=6.",
+        "why_wrong": "ABCD är fyrhörning, inte triangel. Romb-arean är diagonal·diagonal/2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att räkna 'cirklarnas yta' istället för fyrhörningen och får ungefär 28.",
+        "why_wrong": "Cirkelyta = πr² ≈ 28 men frågan är om FYRHÖRNINGEN, inte cirklarna."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att räkna 6·6/(något) och kombinera fel: 27.",
+        "why_wrong": "Diagonal-formeln för romb: \\frac{d_1\\cdot d_2}{2}=18, exakt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Avståndet mellan parallella linjerna är 2r = 6 cm. Avståndet mellan medelpunkterna B och D är också 2r = 6 cm. Fyrhörningen ABCD är en romb där diagonalerna är 6 cm vardera; area = \\frac{6\\cdot 6}{2}=18 cm².",
+    "technique": "Romb från cirklar mellan parallella linjer: båda diagonalerna är 2r, area = 2r²."
+  },
+  "host-2015-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma att vända olikheten vid division med negativ: x<1.",
+        "why_wrong": "Vid multiplikation eller division med ett NEGATIVT tal vänder olikhetsriktningen. −2x < −2 blir x > 1, inte x < 1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att stanna vid -2x<-2 och dela med 2 (positiv): -x<-1 → x < 2.",
+        "why_wrong": "Du måste dela med −2 (koefficienten på x), inte +2. Korrekt: x > 1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du minns regeln som 'x > halva' blir det x > 2.",
+        "why_wrong": "−2/−2 = 1, inte 2. Räkna exakt: \\frac{-2}{-2}=1."
+      }
+    ],
+    "pitfall": "Den vanligaste fallgropen i HP-olikheter är just teckenvändningen. Markera koefficienten på x — om den är negativ MÅSTE olikheten vändas.",
+    "solution_path": "Subtrahera 3 från båda led: -2x<-2. Dela med −2 OCH vänd olikheten: x>1.",
+    "technique": "Linjär olikhet: vänd tecknet vid multiplikation/division med negativt tal. Annars lös som vanlig linjär ekvation."
+  },
+  "host-2015-kvant1-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att räkna fel tecken på vänsterledet och få något bråk-svar som −1/21.",
+        "why_wrong": "Vänsterledet förenklas helt till 0 (-p+p=0). Inga negativa bråksvar uppstår."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som 'sätt in och lös p direkt' utan korrekt teckenhantering blir 14 ett möjligt slarv-svar.",
+        "why_wrong": "\\frac{p}{2}=5 ger p = 10, inte 14."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att räkna fel parentes: (12-p)(-\\frac{1}{2})+1=12 av slarv → p = 12.",
+        "why_wrong": "(12-p)(-\\frac{1}{2})=-6+\\frac{p}{2}, sen plus 1 = \\frac{p}{2}-5. Sätt = 0: p = 10."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt in x=-\\frac{1}{2} i båda led: vänster 2p\\cdot(-\\frac{1}{2})+p=-p+p=0; höger (12-p)(-\\frac{1}{2})+1=-6+\\frac{p}{2}+1=\\frac{p}{2}-5. Lika: 0=\\frac{p}{2}-5, alltså p = 10.",
+    "technique": "Lös ut parameter givet en känd lösning: substituera x-värdet i båda led, lös sedan ut p från resulterande linjär ekvation i p."
+  },
+  "host-2015-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att flytta termer fel och få x=5 eller liknande heltal.",
+        "why_wrong": "När båda konstanterna 30 är desamma försvinner de helt. Ekvationen reducerar till x = 0."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som 'sätt sidor lika' utan att utveckla parenteser kan 6 (eller 5) verka svar.",
+        "why_wrong": "5(x+6) = 6(x+5) ser symmetriskt ut, men efter utveckling försvinner konstanterna och bara x = 0 löser."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att MULTIPLICERA siffrorna 5·6 och få 30.",
+        "why_wrong": "Multiplikation av sidor är inte lösningssteg här. Algebraisk lösning ger x = 0."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Multiplicera ut: 5x+30=6x+30. Konstanter försvinner: 5x=6x, alltså x=0.",
+    "technique": "Linjär ekvation där konstanttermerna kan kanellera: utveckla först, identifiera identiska konstanter, lös resterande."
+  },
+  "host-2015-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tänka att 'höga potenser slutar med fler nollor' och svara 0.",
+        "why_wrong": "Tio krävs för slutnolla; 5 ensam slutar alltid på 5 (eftersom 5·5 = 25, 5·25 = 125, och så vidare)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som 'alla potenser slutar på 1 till slut' kan 1 verka rimligt.",
+        "why_wrong": "Det är 1 som har konstant entalssiffra 1, inte 5. 5^{n} slutar på 5 för alla n ≥ 1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att blanda ihop 5⁵ = 3125 och välja 9 från fel ihågkomst.",
+        "why_wrong": "3125 slutar på 5, inte 9. Mönstret för 5^n är konstant entalssiffra 5."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Alla potenser av 5 (för exponent ≥ 1) slutar på siffran 5 — varje gångning med 5 lämnar entalssiffra 5. Så 5^{33} har entalssiffra 5.",
+    "technique": "Entalssiffra för {MO}5^{{n}}{MC}: alltid 5 (för n ≥ 1). För andra baser: räkna ut cykeln av entalssiffror."
+  },
+  "host-2015-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 0,4 − 0,25 = 0,15 och tro att det är 0 om man avrundar.",
+        "why_wrong": "0,15 är inte 0; det är 3/20. Avrundning till 0 är drastisk."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 0,4 − 0,1 = 0,3 om de blandar 1/4 med 1/10.",
+        "why_wrong": "1/4 = 0,25, inte 0,1. Korrekt subtraktion: 0,40 − 0,25 = 0,15 = 3/20."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att förkorta fel: \\frac{3}{20}\\approx\\frac{1}{8} (men 1/8 = 0,125, inte 0,15).",
+        "why_wrong": "Bråket 3/20 förkortas inte till 1/8 — gemensamma faktorer saknas. Behåll 3/20."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "0,4 = 2/5. Gemensam nämnare 20: \\frac{2}{5}-\\frac{1}{4}=\\frac{8}{20}-\\frac{5}{20}=\\frac{3}{20}.",
+    "technique": "Decimal/bråk-blandning: omvandla decimaler till bråk eller bråk till decimaler, gör subtraktionen i en form, ange svaret i den efterfrågade."
+  },
+  "host-2015-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att glömma den givna y-skärningen 4 och bara svara x − 4.",
+        "why_wrong": "Punkten (0, 4) ger y-skärning = 4, inte −4. f(x) = x + 4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som 'samma lutning' (parallell istället för vinkelrät) blir lutningen −1.",
+        "why_wrong": "Vinkelrät = lutningar med produkt −1. Parallell = samma lutning. Här gäller vinkelrät, så lutning är 1 (positiv)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att kombinera fel lutning med fel intercept.",
+        "why_wrong": "Lutning 1 (vinkelrät mot −1), intercept 4 (från given punkt). Båda måste stämma."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Vinkelräta linjer har lutningar vars produkt är −1. g har lutning −1, så f har lutning 1. Med y-skärning 4: f(x)=x+4.",
+    "technique": "Vinkelrätt mot linje med lutning k: ny lutning = −1/k. Använd given punkt för att bestämma m i y = (−1/k)x + m."
+  },
+  "host-2015-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att MULTIPLICERA exponenterna istället för att addera: (k+1)\\cdot k=k(k+1).",
+        "why_wrong": "Vid x^{m}\\cdot x^{n}=x^{m+n}, alltså ADDERA exponenterna. Multiplikation av exponenter sker vid (x^{m})^{n}."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 'förkorta' till bara x.",
+        "why_wrong": "Nej, exponenterna adderas. Resultatet x^{2k+1} är inte x⁰ (bara om 2k+1 = 0, alltså k = −1/2)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du minns regeln som 'subtrahera exponenter' (delningsregeln) blir det x^{(k+1)-k}=x^{1}=x, men felskrivet som 2k−1.",
+        "why_wrong": "Subtraktion gäller DIVISION, inte multiplikation. Här är det multiplikation, så addera."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Vid multiplikation av potenser med samma bas adderas exponenterna: x^{k+1}\\cdot x^{k}=x^{(k+1)+k}=x^{2k+1}.",
+    "technique": "Potenslagar: {MO}x^{{m}}\\cdot x^{{n}}=x^{{m+n}}{MC}; {MO}x^{{m}}/x^{{n}}=x^{{m-n}}{MC}; {MO}(x^{{m}})^{{n}}=x^{{mn}}{MC}."
+  },
+  "host-2015-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att x och y har samma SUMMA i en konstant produktrelation.",
+        "why_wrong": "Konstant produkt (xy = 36) ger inte konstant summa. T.ex. (x, y) = (4, 9) eller (6, 6) — båda uppfyller, men summorna skiljer sig."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid att 'kvoten är konstant' när det egentligen är produkten.",
+        "why_wrong": "x/y = 1 betyder x = y; det inträffar bara för x = y = 6 i konstantproduktrelationen, inte alltid."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att kvadrera summan: (x+y)^{2}=36.",
+        "why_wrong": "36 är PRODUKTEN xy, inte kvadrat-av-summan. Kvadrering byter relationen helt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av sambandet xy = 36 (avläst från figurens villkor) följer direkt \\frac{36}{x}=y, vilket är alternativ C.",
+    "technique": "Konstant produkt xy = c: y = c/x är ett rakt omskrivet samband. Andra alternativ (summa, kvot, kvadrat) gäller inte i allmänhet."
+  },
+  "host-2015-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att glömma att vända teckenparentesen -(2-9x): blir -2-9x istället för -2+9x.",
+        "why_wrong": "När en parentes föregås av minus byter ALLA termer inuti tecken. -(2-9x)=-2+9x, inte −2−9x."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du minns regeln som 'distribuera positivt' i alla parenteser kan 30x dyka upp.",
+        "why_wrong": "Tre 'är negativ' i -3(5x-3): ger -15x+9. Distribuera tecken konsekvent."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att räkna fel konstantsumma och tappa minustecken på x.",
+        "why_wrong": "Korrekt: x-koefficienten är −10 (negativ), konstanten +15."
+      }
+    ],
+    "pitfall": "-(...) byter tecken på ALLA termer i parentesen — vanligaste teckenslarvet i HP.",
+    "solution_path": "Multiplicera ut: 8-3(5x-3)-4x-(2-9x)=8-15x+9-4x-2+9x. Samla termer: konstanter 8+9-2=15; x-termer -15-4+9=-10. Resultat: -10x+15.",
+    "technique": "Förenkling med parenteser och tecken: distribuera FÖRST (multiplicera ut alla parenteser), samla SEDAN termer av samma typ."
+  },
+  "host-2015-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna (60+15)/8-typ-formler och få 8 min.",
+        "why_wrong": "Tider adderas inte vid samtidigt arbete; HASTIGHETER adderas. Använd 1/t-formeln."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 'medelvärdet' av tider: (60+15)/2 ≈ 37 → halva → 10.",
+        "why_wrong": "Aritmetiska medelvärdet av tider ger inte rätt svar; det är HARMONISKA medelvärdet (1/(1/60 + 1/15)) som behövs."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 14 min som 'lite mer än 12'.",
+        "why_wrong": "Resultatet är exakt 12 min: \\frac{1}{1/60+1/15}=\\frac{1}{5/60}=12."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Hastigheter adderas: liten pump \\frac{1}{60} tank/min, stor pump \\frac{1}{15}=\\frac{4}{60}. Tillsammans \\frac{5}{60}=\\frac{1}{12} tank/min, alltså 12 min för full tank.",
+    "technique": "Samtidigt arbete: hastigheter adderas. Total hastighet = 1/t₁ + 1/t₂ + … ; total tid = 1/(total hastighet)."
+  },
+  "host-2015-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att blanda Mm (Mega = 10⁶) och Gm (Giga = 10⁹).",
+        "why_wrong": "384 Mm = 384·10⁶ m, inte 384 000 Mm. 3{,}84\\cdot 10^{8}=384 Mm, inte 384 000."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 'se meter direkt' och svara 384 km.",
+        "why_wrong": "384 km = 384·10³ m = 3,84·10⁵, inte 3,84·10⁸. Felaktig faktor 1000."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid Tm (Tera = 10¹²) och tror att det är ett bra ungefär: 384 Tm.",
+        "why_wrong": "Tera = 10¹², men 384 milj m = 10⁸. För stor enhet."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "384 miljoner meter = 3{,}84\\cdot 10^{8} m = 0,384·10⁹ m = 0,384 Gm (Giga = 10⁹).",
+    "technique": "SI-prefix: kilo 10³, mega 10⁶, giga 10⁹, tera 10¹². Match grundpotensformen mot prefixets exponent."
+  },
+  "host-2015-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna (180+165)/2-typ utan vägning och få ungefär 4.",
+        "why_wrong": "Det totala medelvärdet 175 är NÄRMARE pojkarnas 180 — det indikerar att pojkarna väger mer (är fler eller med högre vikt). Med 10 pojkar måste antalet flickor vara mindre."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 'differensens kvot' = (180-175)/(175-165) = 5/10 = 0,5 → 6 flickor.",
+        "why_wrong": "Faktor är rätt typ av tankegång (omvänd till differenser), men exakt: 5/10 ger pojkar:flickor = 1:2 omvänt → 5 flickor mot 10 pojkar — alltså 5, inte 6."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 'jämnt med pojkarna' = 7 ± nåt.",
+        "why_wrong": "Pojkar är 10, flickor blir 5. Inte 7."
+      }
+    ],
+    "pitfall": "Snabbcheck via differenser: total ligger 5 från pojkarnas, 10 från flickornas → pojke:flicka-vikt = 10:5 = 2:1 → om 10 pojkar, 5 flickor.",
+    "solution_path": "Vägt medelvärde: \\frac{10\\cdot 180+x\\cdot 165}{10+x}=175. Multiplicera: 1800+165x=1750+175x, alltså 50=10x och x = 5.",
+    "technique": "Vägt medelvärde: medeltalets ANDELAR från varje grupp summerar till totalmedelvärdet. Lös ekvationen {MO}n_1 m_1 + n_2 m_2 = (n_1+n_2)\\bar{{m}}{MC}."
+  },
+  "host-2015-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778413851094,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 'mittenvinkeln' (4k = 60°) och tro det är största.",
+        "why_wrong": "Förhållandet 3:4:5 betyder att den med ratio 5 är största. 5\\cdot 15=75°, inte 60°."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid '90° är vanligaste största' i en triangel.",
+        "why_wrong": "3:4:5 är NÄRA Pythagoras (för sidor) men för vinklar är det 45°, 60°, 75°. Ingen rät vinkel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att räkna 12k = 180 + extra och få 105°.",
+        "why_wrong": "105° + de andra två skulle ge >180°. Korrekt: k = 15, 5k = 75°."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt vinklarna 3k, 4k, 5k. Summan: 12k=180°, alltså k = 15°. Största = 5\\cdot 15=75°.",
+    "technique": "Vinkelförhållande i triangel: addera ratiotermerna, dela 180° med summan för att få enheten k, multiplicera med varje ratio."
+  },
   "host-2015-verb1-ORD-007": {
     "_meta": {
       "generated_at": 1778410518741,

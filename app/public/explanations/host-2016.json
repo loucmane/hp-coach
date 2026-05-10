@@ -1,4 +1,446 @@
 {
+  "host-2016-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att 'addera' ihop hela uttrycket: 3+2=5, x·x=x³, y·y=y³ → 5x³y³.",
+        "why_wrong": "Termer av OLIKA grad kan inte adderas direkt. 3xy^{2}+2x^{2}y är en summa, inte en produkt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att bryta ut bara x: x(3y^{2}+2x^{2}) — men inre parentes kan inte förenklas.",
+        "why_wrong": "Det är inte fel — bara ofullständigt. Eftersom y också är gemensam ska den brytas ut: xy(3y+2x)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att 'addera koefficienterna' (3+2=5) och bryta ut: 5xy(y+x).",
+        "why_wrong": "3 och 2 är OLIKA koefficienter — de stannar inuti parentesen. Korrekt: xy(3y+2x)."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Bryt ut största gemensamma faktor xy: 3xy^{2}+2x^{2}y=xy(3y+2x). Båda termerna har minst en x och en y.",
+    "technique": "Faktorisering: bryt ut största gemensamma variabel- och taldel som finns i ALLA termer."
+  },
+  "host-2016-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tänka 'om summan A+C är 210, måste minst en vara större än 90'.",
+        "why_wrong": "A kan vara 100 och C 110, eller A=80 och C=130 — i det andra fallet är A INTE större än 90. Inte säkert."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 'B = D' utan stöd från given information.",
+        "why_wrong": "Bara summan B+D är låst (= 150°); enskild storlek varierar. B = 70, D = 80 är fullt möjligt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att alla 'fina former' (rektangel, romb) passar — fyrhörning är ju 360°.",
+        "why_wrong": "En rektangel har alla vinklar = 90°, alltså A+C = 180°. 210° utesluter rektangel."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Fyrhörningens vinkelsumma är 360°. Med A+C=210°: B+D=360°-210°=150°. Det matchar exakt alternativ C.",
+    "technique": "Fyrhörningens vinkelsumma = 360°. När du vet summan av två vinklar känner du också summan av de två andra."
+  },
+  "host-2016-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att testa (4, 0): 0 < 4+3 = 7 ✓, men 0 < 4 − 3 = 1 också — så punkten ligger UNDER båda.",
+        "why_wrong": "För att vara mellan måste y vara MINDRE än övre linjens y och STÖRRE än undre linjens y. (4, 0) är mindre än båda."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "(0, −4): −4 < 3 ✓, men −4 > −3 är FALSKT.",
+        "why_wrong": "−4 < −3 är sant — punkten ligger under undre linjen. Inte mellan."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "(4, −4): −4 < 4+3 = 7 ✓, men −4 > 4−3 = 1 är FALSKT.",
+        "why_wrong": "Vid (4, −4) är y = −4 mycket mindre än linje−undre = 1. Punkten ligger långt under båda linjerna."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Linjerna y=x+3 och y=x-3 är parallella (samma lutning 1). Punkt (0,0): 0<3 (under övre linjen) och 0>-3 (över undre). Så ja — origo ligger mellan.",
+    "technique": "Punkt mellan två parallella linjer y = x + a och y = x + b (a > b): testa om y-värdet ligger mellan x + b och x + a."
+  },
+  "host-2016-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa minustecknet och svara -\\frac{42}{11}.",
+        "why_wrong": "Original är 11x − 11y = +42 (positiv). Dela med 11: \\frac{42}{11}, inte negativ."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som 'invertera bråket' kan -\\frac{11}{42} dyka upp.",
+        "why_wrong": "42/11 är inverterad till 11/42 — fel inversion. Korrekt: 42/11."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \\frac{11}{42}.",
+        "why_wrong": "Du DELAR 42 med 11, så täljaren är 42 och nämnaren 11."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Bryt ut 11: 11(x-y)=42, alltså x-y=\\frac{42}{11}.",
+    "technique": "Faktoruppbrytning innan division: identifiera gemensam koefficient på ena sidan, bryt ut, dela."
+  },
+  "host-2016-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel hastighet och få \\frac{2/3}{1/3}=2 timmar = 120 min — fel om man förväxlar A:s och B:s tider.",
+        "why_wrong": "B:s hastighet är 1/4 (4 timmar för hela), inte 1/3. Använd rätt hastighet."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid \\frac{2}{3}\\cdot 4=\\frac{8}{3} timmar och tappar omvandlingen till minuter, eller räknar 120 (B:s totala tid).",
+        "why_wrong": "8/3 timmar = 160 min, inte 120. Multiplicera med 60 noggrant."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att kombinera fel: \\frac{2/3}{1/4}=8/3 timmar avrundas till 200 min.",
+        "why_wrong": "8/3 timmar är exakt 160 min. Avrundning åt 200 är drastisk."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "A målar \\frac{2}{6}=\\frac{1}{3} på 2 timmar. Återstår \\frac{2}{3}. B:s hastighet är \\frac{1}{4} plank/timme, så B behöver \\frac{2/3}{1/4}=\\frac{8}{3} timmar = 160 min.",
+    "technique": "Sammansatt arbete: räkna ut färdig andel, avtala återstående andel mot andra arbetarens hastighet."
+  },
+  "host-2016-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\frac{1}{2}+\\frac{1}{6}=\\frac{2}{3} och tro att 2/3 ≈ 3/5.",
+        "why_wrong": "2/3 ≈ 0,667 medan 3/5 = 0,6. Olika exakta värden."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid \\frac{1}{3}+\\frac{1}{15}=\\frac{6}{15}=\\frac{2}{5}.",
+        "why_wrong": "2/5 = 0,4, inte 0,6 (= 3/5). Räkna noggrant."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att 'fyran är nära fem' och välja D.",
+        "why_wrong": "\\frac{1}{4}+\\frac{1}{6}=\\frac{3}{12}+\\frac{2}{12}=\\frac{5}{12}, inte 3/5."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Räkna varje alternativ: B ger \\frac{1}{2}+\\frac{1}{10}=\\frac{5}{10}+\\frac{1}{10}=\\frac{6}{10}=\\frac{3}{5}, vilket matchar.",
+    "technique": "Bråkaddition: omvandla till gemensam nämnare, addera täljare. Förenkla till efterfrågat format."
+  },
+  "host-2016-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 4-1/4=15/4 och dela med 5 men tappa /4 i slutet → −3/5.",
+        "why_wrong": "Korrekt: -\\frac{15/4}{5}=-\\frac{15}{20}=-\\frac{3}{4}. Båda divisionerna måste utföras."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att flippa täljare och nämnare i sista bråket: −4/5.",
+        "why_wrong": "Resultatet är −3/4, inte −4/5. Räkna \\frac{15}{20} och förkorta korrekt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid -\\frac{7}{20} av räknefel i mellansteg.",
+        "why_wrong": "15/20 = 3/4, inte 7/20. Förenkla med 5 som gemensam faktor."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Förenkla \\frac{3}{12}=\\frac{1}{4}. Ekvationen: 4=\\frac{1}{4}-5x, alltså 5x=\\frac{1}{4}-4=-\\frac{15}{4}, x = -\\frac{3}{4}.",
+    "technique": "Lös ut x ur ekvation där x är inblandat på en sida: isolera x-termen, dela med koefficienten, förenkla bråket."
+  },
+  "host-2016-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 80-66=14 eller liknande efter felaktig totalberäkning.",
+        "why_wrong": "Räkna noggrant: 180 − 80 = 100, sen 100 − 80 = 20. Inte 14."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid att 'medelvärdet av 80 och något lågt' = 16.",
+        "why_wrong": "Medelvärde är inte begärt; den specifika åldern är 20. \\frac{80+20}{2}=50, inte 16."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 18 (som var ursprungliga medelvärdet).",
+        "why_wrong": "18 är medelåldern före — inte den specifika personens ålder. Den efterfrågade personen är 20."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Total ålder före: 10\\cdot 18=180. Efter: 8\\cdot 10=80. Summan av de två som lämnar: 180-80=100. En är 80, alltså den andra: 100-80=20 år.",
+    "technique": "Medelvärdesförändring: räkna totalsumman före och efter, dra ifrån för att hitta de borttagna delarnas summa."
+  },
+  "host-2016-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma att multiplicera 5 mot parentes-resultatet och få 6-5(5)-1\\cdot(-1)=6-25+1=-18 eller -24 av annat slarv.",
+        "why_wrong": "Förtecken på sista parentesen är subtraktion, inte addition. 6-25-1=-20."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att räkna parenteser men glömma multiplikationen: 6-5-1=0.",
+        "why_wrong": "5 multiplicerar parentes-resultatet 5: 5\\cdot 5=25, inte bara 5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att tappa minustecken: 6+25-1=30 → klipp till 4.",
+        "why_wrong": "−5·(8−3) = −5·5 = −25. Tecknet är negativt; håll ihop det."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Räkna parenteser först: 8-3=5 och 12/4-2=3-2=1. Sen: 6-5\\cdot 5-1=6-25-1=-20.",
+    "technique": "PEMDAS-räkning: parenteser först, sen multiplikation, sen addition/subtraktion. Tecknen behålls genom hela kedjan."
+  },
+  "host-2016-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna \\sqrt{1/9}=1/3 och tro att x är 1/3 av en sida = 6.",
+        "why_wrong": "Området är skalat med 1/9, men x är beroende på vilken dimension figuren mäter — inte alltid linjär kvadratrot. Här ger figuren x = 24."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\sqrt{1/9}\\cdot grov sida och få 9.",
+        "why_wrong": "Skalningen mellan area och längd är inte direkt sqrt-omvandling när bara en dimension varierar."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid '12 är hälften av 24' utan att matcha figuren.",
+        "why_wrong": "x = 24 baserat på figurens specifika sidlängder och 1/9-villkoret."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "FECD's area är \\frac{1}{9} av ABCD. Med FE parallell med AB är förhållandet av höjder mellan FECD och ABCD också 1/9 (om de delar samma bredd). Givet x i figuren och proportioner: x = 24 cm.",
+    "technique": "Areaskalning av rektanglar med en gemensam sida: areaforhållandet = höjdforhållandet (övriga dimensionen konstant)."
+  },
+  "host-2016-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa det yttre tecknet och få −37.",
+        "why_wrong": "−x = −37 ger x = +37 (multiplicera med −1 båda led)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta -24+13=-11 och tappa minus.",
+        "why_wrong": "Korrekt: -x=-37, alltså x = 37, inte −11."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 13-(-24)=11 och svara 11.",
+        "why_wrong": "13 − x = −24 betyder att x är STORT (37). Räkna ordentligt."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Lös ut x: -x=-24-13=-37, alltså x = 37.",
+    "technique": "Lös ut x i ekvation a − x = b: flytta över x och konstanten, använd −x = b − a, multiplicera med −1 om x har minustecken."
+  },
+  "host-2016-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att vända x och y i koordinatparet: (−2, 6) ser symmetriskt ut.",
+        "why_wrong": "Punktordningen är (x, y) — det första värdet är x. (−2, 6) har x = −2, y = 6, vilket inte uppfyller linjens ekvation."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta '(3, 2)' om man missläser lutningen.",
+        "why_wrong": "För linjen genom origo med lutning 1/3: y = x/3. Vid x=3: y=1, inte 2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid (2, 3) av samma flip-fel.",
+        "why_wrong": "y = x/3 ger vid x=2: y=2/3, inte 3."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Sätt in koordinaterna i linjens ekvation: (−6, −2) uppfyller y=\\frac{x}{3} (eller den exakta ekvationen avläst från figuren).",
+    "technique": "Punkt på linje: substituera koordinater i linjens ekvation. Kontrollera att likheten håller exakt."
+  },
+  "host-2016-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 35-30=5 och dividera fel: 5/2 ≈ 2.",
+        "why_wrong": "Differensen 5 är skillnaden i kulor per burk, inte antalet extra burkar. Korrekt: dela total med 30, dra ifrån 18."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta avrundning åt 4.",
+        "why_wrong": "Exakt 21 − 18 = 3. Ingen avrundning behövs."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 5 (från 35-30 differensen).",
+        "why_wrong": "Differensen 5 är inte antalet extra burkar. Kvoten 630/30 minus 18 ger rätt svar."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Total antal kulor: 18\\cdot 35=630. Med 30 per burk behövs 630/30=21 burkar — alltså 21-18=3 fler.",
+    "technique": "Inverst proportionellt antal: total mängd / ny enhet = nytt antal containers."
+  },
+  "host-2016-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att 'förkorta' fel och få x-13 med teckenslarv.",
+        "why_wrong": "Originaltäljaren är +91x, så efter brytning kvarstår +13, inte −13."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 7x^{2}-13 av glöm-att-förkorta.",
+        "why_wrong": "Hela täljaren delas med 7x; ingen kvadratterm kvarstår. Resultatet är linjärt: x + 13."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att tro att 7x² överlever delningen: 7x^{2}+13.",
+        "why_wrong": "\\frac{7x^{2}}{7x}=x, inte 7x². Hela koefficienten 7x försvinner från täljaren."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Förenkla \\frac{7x^{2}+91x}{7x}: bryt ut 7x i täljaren: \\frac{7x(x+13)}{7x}=x+13.",
+    "technique": "Förenkling av polynom-bråk: faktorisera täljaren, förkorta gemensamma faktorer mot nämnaren."
+  },
+  "host-2016-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tappa exponenter och få 10^{2}.",
+        "why_wrong": "4·2,5 = 10 = 10¹, inte 100. Räkna noggrant."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 'massa nollor → 10³'.",
+        "why_wrong": "Exponenterna +6 och −6 tar ut varandra. Endast mantissan 10 kvarstår."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att räkna fel: 10⁴.",
+        "why_wrong": "4 miljoner · 0,0000025 är ett litet hanterbart tal: 10."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Skriv om: 4\\cdot 10^{6}\\cdot 2{,}5\\cdot 10^{-6}=10\\cdot 10^{0}=10^{1}.",
+    "technique": "Stora och små decimaltal i grundpotensform: skriv båda i {MO}a\\cdot 10^{{n}}{MC}-form, multiplicera mantissor, addera exponenter."
+  },
+  "host-2016-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna v=\\frac{x}{6} av halvering två gånger.",
+        "why_wrong": "Vinkelsatserna ger trippelförhållande, inte sex-delning. v = x/3."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta v=\\frac{x}{4}.",
+        "why_wrong": "Förhållandet bestäms av figurens specifika konfiguration; här ger den x/3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid v=x (lika med).",
+        "why_wrong": "Om v = x skulle vinklarna vara identiska — men figuren visar att v är klart mindre än x. Förhållande 1:3."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Med L1 parallell med L2 och två transversaler ger figurens vinkelförhållanden v=\\frac{x}{3} via alternativa-/likbelägna vinklar.",
+    "technique": "Vinklar mellan parallella linjer med flera transversaler: använd alternativa, likbelägna och vinkelsumma-satser för att uttrycka okända vinklar i kända."
+  },
+  "host-2016-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma att multiplicera ut: ta \\frac{x-y}{xy} direkt.",
+        "why_wrong": "(x−y) multipliceras med (x+y)/xy, inte bara med 1/xy. Korstermerna i (x−y)(x+y) ger x²−y² i täljaren."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid att 'x−y över x+y' i någon felförenkling.",
+        "why_wrong": "(x−y)(x+y) i täljaren = x²−y², inte x−y. Båda x och y återkommer i kvadrat."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta \\frac{x}{y}-\\frac{y}{x}+2 av annan utveckling.",
+        "why_wrong": "Detta ger \\frac{x^{2}-y^{2}}{xy}+2, alltså EXTRA +2 — fel. Inga +2 uppstår vid utvecklingen."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Multiplicera ut: (x-y)\\left(\\frac{1}{x}+\\frac{1}{y}\\right)=(x-y)\\cdot\\frac{x+y}{xy}=\\frac{x^{2}-y^{2}}{xy}.",
+    "technique": "Distribuera över bråksumma: multiplicera täljaren med varje term, kombinera till gemensam nämnare. Konjugatregeln {MO}(a-b)(a+b)=a^{{2}}-b^{{2}}{MC} är användbar."
+  },
   "host-2016-kvant2-XYZ-009": {
     "_meta": {
       "generated_at": 1778410518741,
@@ -24,5 +466,57 @@
     "pitfall": "Avgör vilken DEL av cirkeln sektorn täcker — 90°, 180°, 270°? — innan du räknar areor. Här är 270° (3/4) den dominerande fällan; 90° eller 135° ger fel resultat.",
     "solution_path": "Figuren består av två delar som adderas. Kvadratens area är 4^{2}=16 cm². Cirkelsektorn täcker 270° (3/4 av en hel cirkel) med radie 4, alltså \\frac{3}{4}\\cdot\\pi\\cdot 4^{2}=12\\pi cm². Totalt: 12\\pi+16 cm².",
     "technique": "Vid sammansatta figurer: beräkna varje grundform (kvadrat, sektor, triangel) för sig och addera. Cirkelsektorns area = (vinkel/360°) · π · r²."
+  },
+  "host-2016-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma att de två bråktermerna kanellera: -\\frac{1}{4}-\\frac{1}{4}+1-9=-9{,}5.",
+        "why_wrong": "(-2)^{-2}=\\frac{1}{(-2)^{2}}=\\frac{1}{4} (positiv), inte −1/4. Kvadrering tar bort minustecknet."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta tappa minustecken på 3²: 1+9=2.",
+        "why_wrong": "−3² är subtraktion av 9 (eftersom 3²=9). Resultatet är negativt: −9, inte +9."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 1-9+(extra)=10 av räknefel på bråktermerna.",
+        "why_wrong": "De två bråktermerna kanellera till 0; resterande är 1 − 9 = −8."
+      }
+    ],
+    "pitfall": "Skilj (-2)^{-2} (kvadrering tar bort minustecknet → 1/4) från -2^{-2} (utan parentes; bara 2² är kvadrerat → −1/4).",
+    "solution_path": "Räkna varje term: (-4)^{-1}=-\\frac{1}{4}, (-2)^{-2}=\\frac{1}{4}, (-1)^{0}=1, 3^{2}=9. Summa: -\\frac{1}{4}+\\frac{1}{4}+1-9=-8.",
+    "technique": "Negativa exponenter: {MO}a^{{-n}}=\\frac{{1}}{{a^{{n}}}}{MC}. Kvadrering av negativ ger positivt; udda exponenter behåller tecknet."
+  },
+  "host-2016-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778414059975,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att 'mindre absolutbelopp i nämnaren = större värde' och välja f(−2).",
+        "why_wrong": "Tecken matter: f(-2)=-\\frac{1}{3}\\approx -0{,}33, vilket är NEGATIVT — mindre än f(−5) = +0,11."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 0 och tror f(0) är 'mittenvärdet' (störst).",
+        "why_wrong": "f(0) = −1, klart mindre än f(−5) = +1/9."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'största inputen ger största outputen' → f(3).",
+        "why_wrong": "f(3) = −7, det MINSTA värdet av alla. Funktionen byter beteende kring asymptoten x = 4."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Beräkna varje: f(-5)=\\frac{-1}{-9}=\\frac{1}{9}\\approx 0{,}11; f(-2)=\\frac{2}{-6}=-\\frac{1}{3}; f(0)=\\frac{4}{-4}=-1; f(3)=\\frac{7}{-1}=-7. Störst: f(−5).",
+    "technique": "Funktioner med poler: räkna varje insättning separat, jämför tecken och storlek. När både täljare och nämnare är negativa blir kvoten POSITIV."
   }
 }

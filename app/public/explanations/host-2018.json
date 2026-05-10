@@ -1,0 +1,574 @@
+{
+  "host-2018-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma parentesen runt summan: 14\\cdot 46+35.",
+        "why_wrong": "Utan parentes räknas 14·46 först, sen +35 — ger ANNAT värde än 14·(46+35). Räkneordning ändras."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\frac{14}{46+35} (kvot istället för produkt).",
+        "why_wrong": "'Produkt' = multiplikation, inte division. Bråk uttrycker kvot."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 14(46+35) utan multiplikationspunkt.",
+        "why_wrong": "Egentligen samma som C i innehåll, men parentes utan operator betyder fortfarande multiplikation. Konventionellt skrivs · för tydlighet."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "'Produkt' = multiplikation; 'summa' kräver parentes: 14\\cdot(46+35).",
+    "technique": "Översättning av text till uttryck: 'produkt av' kräver tydlig multiplikation, 'summa av' kräver parentes runt summen."
+  },
+  "host-2018-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna procent som 0,02 istället för 0,002 → 0,02·50 = 1 → 0,01.",
+        "why_wrong": "0,2% har EN extra nolla efter kommat: 0,2/100 = 0,002 (tre decimaler), inte 0,02."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att tappa en decimal helt och svara 1.",
+        "why_wrong": "0,002·50 = 0,1, inte 1. Ett tiotal från sann."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 0{,}2\\cdot 50=10 utan att dela med 100.",
+        "why_wrong": "Procent kräver division med 100. Glömma det ger faktor 100 fel."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "0,2% = \\frac{0{,}2}{100}=0{,}002. Sen 0{,}002\\cdot 50=0{,}1.",
+    "technique": "Procent: a% = a/100. Var noga med decimaler — 0,X% har EN extra nolla jämfört med X%."
+  },
+  "host-2018-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tappa minustecknet på lutningen.",
+        "why_wrong": "Linjen lutar nedåt (avtagande y med växande x), så lutningen är negativ. -\\frac{1}{2}, inte +1/2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att kasta om Δy och Δx: −2 istället för −1/2.",
+        "why_wrong": "Lutning = Δy/Δx, inte Δx/Δy. Räkna lodrät förändring DELAT med vågrät."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 'positiv lutning' = +2.",
+        "why_wrong": "Linjen lutar nedåt → negativ lutning. Storlek 1/2, inte 2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figuren framgår lutningen genom Δy/Δx mellan två avlästa punkter. Här ger linjen lutning -\\frac{1}{2}.",
+    "technique": "Lutning från graf: läs två punkter på linjen, beräkna {MO}\\frac{{\\Delta y}}{{\\Delta x}}{MC}, ta tecken efter lutningens riktning."
+  },
+  "host-2018-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 'utan' parentes ger asymmetri och svara x = y+1.",
+        "why_wrong": "Utvecklingen lämnar EXAKT samma form på båda sidor, så x = y direkt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta x = −y av teckenslarv.",
+        "why_wrong": "Båda termerna xy och övriga är POSITIVA i utvecklingen — inga teckenflippar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid x = 1/y av att invertera istället för att lika.",
+        "why_wrong": "x = y, inte 1/y. Räkna utvecklingen noggrant."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Multiplicera ut båda led: xy+x=xy+y. Subtrahera xy: x=y.",
+    "technique": "Symmetrisk ekvation: utveckla båda sidor, kanellera identiska termer. Det som blir kvar bestämmer relationen."
+  },
+  "host-2018-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 2\\cdot 150-2=298 av off-by-one-fel.",
+        "why_wrong": "Formeln är a_n=a_1+(n-1)d; med a_1=1, d=2 ger a_{150}=1+149\\cdot 2=299, inte 298."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 2\\cdot 150=300 utan justering.",
+        "why_wrong": "Korrekt formel inkluderar -1-justeringen. 300 är off-by-one."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 2\\cdot 150+1=301.",
+        "why_wrong": "Den linjära följden ger a_{150}=299, inte 301."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Aritmetisk talföljd med första värde a_1 och differens d. Av figurens första två termer: a_n=a_1+(n-1)d. Här ger a_{150}=299 (linjär extrapolation).",
+    "technique": "Aritmetisk talföljd: {MO}a_n=a_1+(n-1)d{MC}. Identifiera {MO}a_1{MC} och d från första två termer i figuren."
+  },
+  "host-2018-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 16/9 x = 0 → x = 0.",
+        "why_wrong": "4/3 ≠ 0. Korrekt: \\frac{16}{9}x=\\frac{4}{3}, inte 0."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\frac{1}{2} av räknemiss.",
+        "why_wrong": "x = 3/4, inte 1/2. Räkna inversen noggrant."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \\frac{4}{3} och tror det är x.",
+        "why_wrong": "4/3 är (16/9)·x — du måste fortfarande dela bort 16/9. \\frac{4/3}{16/9}=\\frac{3}{4}."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Lägg till 2/3: \\frac{16}{9}x=\\frac{4}{3}. Multiplicera med \\frac{9}{16}: x=\\frac{4}{3}\\cdot\\frac{9}{16}=\\frac{36}{48}=\\frac{3}{4}.",
+    "technique": "Lös ut x ur ekvation a·x = b: x = b/a, vilket = b·(1/a). Förkorta i samma steg."
+  },
+  "host-2018-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel diagonal och få 3 cm.",
+        "why_wrong": "3 cm skulle vara fel storlek; figuren ger \\sqrt{18}\\approx 4{,}24."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta avrundning åt 3,5 cm.",
+        "why_wrong": "Resultatet är exakt \\sqrt{18} (ungefär 4,24). 3,5 är för litet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 'hypotenusa = sum av kateter' eller liknande heltal.",
+        "why_wrong": "Pythagoras ger kvadratrotvärden, inte alltid hela tal. Här \\sqrt{18}."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av Pythagoras eller given proportionalitet i figuren: x=\\sqrt{18}=3\\sqrt{2} cm.",
+    "technique": "Pythagoras: hypotenusa² = a² + b². Resultatet är ofta {MO}\\sqrt{{n}}{MC}-formig och inte hel."
+  },
+  "host-2018-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att 'ibland' är jämnt delbart och välja 0,25.",
+        "why_wrong": "Aldrig är jämnt delbart — sannolikheten är 0, inte 0,25."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta '50/50' utan att tänka på paritet.",
+        "why_wrong": "Jämn + udda = udda; 'på varandra följande' garanterar olika paritet → summa udda."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 1 (säkert delbar) av missförstånd.",
+        "why_wrong": "Säkert UDDA = säkert INTE jämnt delbar. Sannolikhet 0."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Två på varandra följande heltal är ETT JÄMNT och ETT UDDA. Summan a+b=2a+1 (efter substituering b = a+1) är alltid UDDA — ALDRIG delbar med 2. Sannolikhet = 0.",
+    "technique": "Paritet i sannolikhet: 'på varandra följande heltal' = ett jämnt och ett udda; deras summa är UDDA."
+  },
+  "host-2018-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa enhetsomvandling och få 30 cm³ direkt.",
+        "why_wrong": "Räkna 20\\cdot 5\\cdot 300=30000 cm³, inte 30 cm³. Faktor 1000 mellan."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 30\\cdot 10=300 cm³ av annan räknemiss.",
+        "why_wrong": "Volymen är 30 000 cm³ = 30 dm³ (1 dm³ = 1000 cm³)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 300 dm³ av kombinerade fel.",
+        "why_wrong": "30 dm³, inte 300. 30 000 cm³ / 1000 = 30 dm³."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Omvandla till cm: 2 dm = 20 cm; 3 m = 300 cm. Volym: 20\\cdot 5\\cdot 300=30000 cm³ = 30 dm³.",
+    "technique": "Volym med blandade enheter: omvandla ALLA dimensioner till samma enhet före multiplikation."
+  },
+  "host-2018-kvant1-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att vända olikheten utan skäl: x > 12.",
+        "why_wrong": "Vid linjär olikhet utan negativ multiplikation/division ändras inte riktningen. x < 12."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att subtrahera fel: x < −4 efter felflyttning.",
+        "why_wrong": "Korrekt: x − 8 < 4 → x < 12, INTE x < −4."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid x > −4 av kombinerade fel.",
+        "why_wrong": "x < 12 är korrekt. Tecknet < behålls eftersom inga negativa multiplikationer."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Subtrahera 2x: x-8<4. Lägg till 8: x<12.",
+    "technique": "Linjär olikhet: behandla som linjär ekvation; vänd olikhet ENDAST vid multiplikation eller division med negativt tal."
+  },
+  "host-2018-kvant1-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro 'addition ger heltal' när bägge tal är 72-relaterade.",
+        "why_wrong": "\\sqrt{72}+\\sqrt{9} eller liknande är inte heltal — 72 är inte perfekt kvadrat."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta \\sqrt{72}-\\sqrt{8}=\\sqrt{72}-2\\sqrt{2}, vilket inte heller är heltal.",
+        "why_wrong": "Båda termer involverar √2 men inte i jämna multiplar — resultatet är irrationellt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid produkt av rotor: \\sqrt{72}\\cdot\\sqrt{9}=3\\sqrt{72}.",
+        "why_wrong": "3√72 = 3·6√2 = 18√2 — inte heltal eftersom 72 inte är perfekt kvadrat."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "\\frac{72}{8}=9, ett heltal. Övriga alternativ ger icke-heltal.",
+    "technique": "Heltalsfrågor med rotor: produkten av {MO}\\sqrt{{a}}\\cdot\\sqrt{{b}}=\\sqrt{{ab}}{MC}; heltal ENDAST om ab är perfekt kvadrat."
+  },
+  "host-2018-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma att 'x' utan exponent har exponent 1 och få x^{6}.",
+        "why_wrong": "x = x¹. Total: 2+1+4 = 7."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta MULTIPLIKATION av exponenter: 2·1·4 = 8.",
+        "why_wrong": "Multiplikation av samma bas ADDERAR exponenter. x^{2}\\cdot x\\cdot x^{4}=x^{7}."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid att kvadrera: 2² · 4² → x¹⁶.",
+        "why_wrong": "Kvadrering är inte begärt. Bara multiplikation. Total exponent = 7."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Addera exponenter: x^{2}\\cdot x\\cdot x^{4}=x^{2+1+4}=x^{7}.",
+    "technique": "Potenslag: {MO}x^{{a}}\\cdot x^{{b}}\\cdot x^{{c}}=x^{{a+b+c}}{MC}."
+  },
+  "host-2018-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att blanda ihop x-y-koordinater och tro att (−1, 2) är saknad.",
+        "why_wrong": "(−1, 2) finns markerad i figuren; (−2, 1) är den som saknas."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att välja en symmetrisk punkt utan att kolla.",
+        "why_wrong": "(1, −2) finns; varje punkt måste kontrolleras mot figuren."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid att (2, −1) ser saknad ut — men den finns.",
+        "why_wrong": "Endast (−2, 1) saknas. Övriga punkter finns markerade."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figuren är fyra punkter markerade. Punkten (−2, 1) saknas — alla andra finns.",
+    "technique": "Punkt-i-figur-uppgifter: kontrollera varje koordinatpar systematiskt mot figuren."
+  },
+  "host-2018-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att avläsa fel grundvinkel och få 50°.",
+        "why_wrong": "Räkna noggrant från figurens givna vinklar; resultatet är 70°."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta avrundning åt 60°.",
+        "why_wrong": "Vinkeln är exakt 70°."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 80° av flertaliga felräkningar.",
+        "why_wrong": "x = 70°, baserat på figurens specifika konfiguration."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Av figuren följer av alternativ-/likbelägna vinklar mellan parallella linjer att x = 70°.",
+    "technique": "Vinklar mellan parallella linjer: alternativa lika, likbelägna lika, konsekutiva summerar till 180°."
+  },
+  "host-2018-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att MULTIPLICERA istället för att dela: \\frac{4}{9}\\cdot\\frac{8}{3}=\\frac{32}{27}.",
+        "why_wrong": "För division av bråk: invertera nämnaren och multiplicera. Inte multiplicera direkt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att flippa båda och få \\frac{32}{27} men förkortat fel till \\frac{27}{32}.",
+        "why_wrong": "Korrekt: 1/6 efter förkortning. Räkna noggrant."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 6 (osökt invers).",
+        "why_wrong": "Resultatet är 1/6, inte 6. Nämnaren är större."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Dela bråk: \\frac{4/9}{8/3}=\\frac{4}{9}\\cdot\\frac{3}{8}=\\frac{12}{72}=\\frac{1}{6}.",
+    "technique": "Division av bråk: {MO}\\frac{{a/b}}{{c/d}}=\\frac{{a}}{{b}}\\cdot\\frac{{d}}{{c}}=\\frac{{ad}}{{bc}}{MC}."
+  },
+  "host-2018-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma division med 2 och svara 1 (fjärdedel av summan).",
+        "why_wrong": "Medelvärde = summa/antal. För x+y = 6 är medelvärde 6/2 = 3, inte 1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att räkna x+y/2=3 fel = 6.",
+        "why_wrong": "Medel av x och y = (x+y)/2 = 6/2 = 3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 9 (medel av 5,15,17,23).",
+        "why_wrong": "Medel av de fyra givna är 60/4 = 15, inte 9. Och frågan är om x och y, inte de givna."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Total: 11\\cdot 6=66. Givna fyra summa: 5+15+17+23=60. Då x+y=6, medelvärde = 3.",
+    "technique": "Medelvärde med okända: total = medel · antal; lös ut summan av okända, dela med deras antal."
+  },
+  "host-2018-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att kvadrera båda termer: 6^{2}:7^{2}=36:49.",
+        "why_wrong": "36:49 är förhållandet av AREOR (kvadrater), inte sidor. För linjär förhållande behåll 6:7."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 'lägga till samma siffra' och få 67:76.",
+        "why_wrong": "67/76 ≠ 6/7. \\frac{67}{76}\\approx 0{,}88 medan \\frac{6}{7}\\approx 0{,}857."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 330:390.",
+        "why_wrong": "330/390 = 11/13, inte 6/7. Förkorta korrekt: 330:390 = 11:13."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Förenkla 120:140: dela båda med 20 → 6:7. Matchar.",
+    "technique": "Förhållande-uppgifter: dela båda termer med GCD för enklaste form, jämför med given."
+  },
+  "host-2018-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma att teckenflippa parentesen: x-y-x-y blir +y+x.",
+        "why_wrong": "−(y+x) = −y − x (BÅDA termerna byter tecken). Inte +y + x."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att tappa y-termer: x-x=0 men sista −y kvar → −y? Eller 2x.",
+        "why_wrong": "x och −x kanellera, men det är två y-termer kvar. -y-y=-2y, inte 2x."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid att tro att allt kanellera till 0.",
+        "why_wrong": "x-termerna tar ut varandra, men y-termerna är bägge negativa: −2y, inte 0."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Distribuera minustecknet: x-(y+x)-y=x-y-x-y=-2y.",
+    "technique": "Distribuera minustecken: {MO}-(a+b)=-a-b{MC}. Båda termerna i parentesen byter tecken."
+  },
+  "host-2018-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 32^{2}=1024 (kvadrat av mitten).",
+        "why_wrong": "Mitten i kvadrat är ETT MER än min·max: n(n+2)=n^{2}+2n=(n+1)^{2}-1=1024-1=1023."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 33\\cdot 32=1056.",
+        "why_wrong": "Det är max · mid, inte min · max. Frågan är om 31 · 33."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid avrundning till 1100.",
+        "why_wrong": "Exakt 31 · 33 = 1023."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "3n+3=96, alltså n = 31. Talen: 31, 32, 33. Produkt min·max = 31\\cdot 33=1023.",
+    "technique": "Tre på varandra följande heltal: medlar n, summan = 3n+3. Min·max = (n)(n+2) = (n+1)²−1."
+  },
+  "host-2018-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 3a+3-3a=3 men sen tappa det och svara 1.",
+        "why_wrong": "Differensen är exakt 3 (lutningen på den linjära funktionen)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att lämna a kvar i svaret.",
+        "why_wrong": "a-termerna kanellera: skillnaden mellan f vid a+1 och f vid a är konstant = 3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att tro att 'm' kvarstår.",
+        "why_wrong": "m kanellera också (samma m i båda termer). Endast 3 kvarstår."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Räkna: f(a+1)-f(a)=(3(a+1)+m)-(3a+m)=3a+3+m-3a-m=3.",
+    "technique": "Skillnad i linjär funktion: {MO}f(a+h)-f(a)=k\\cdot h{MC}, där k är lutningen. Här k=3, h=1, så 3."
+  },
+  "host-2018-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att MULTIPLICERA istället för att subtrahera och få -1{,}4\\cdot 10^{14}.",
+        "why_wrong": "Differens, inte produkt. Och tecken: 1,2·10¹⁶ är STÖRRE än 4·10¹⁵, så differensen är POSITIV."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta -1{,}4\\cdot 10^{2} av annan teckenflipp.",
+        "why_wrong": "Resultatet är positivt 400 = 4·10²."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 40 av exponentslarv.",
+        "why_wrong": "4·10² = 400, inte 40. Räkna exponenten: 15−13 = 2."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Skriv om: 1{,}2\\cdot 10^{16}=12\\cdot 10^{15}. Differens: 12\\cdot 10^{15}-4\\cdot 10^{15}=8\\cdot 10^{15}. Dela: \\frac{8\\cdot 10^{15}}{2\\cdot 10^{13}}=4\\cdot 10^{2}=400.",
+    "technique": "Differens av tiopotenser: omvandla till samma exponent först, subtrahera mantissor, dela på samma sätt."
+  },
+  "host-2018-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": 1778414413083,
+      "model": "claude-opus-4-7"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att ADDERA istället för att subtrahera cirkelytan.",
+        "why_wrong": "Skuggat område är kvadrat MINUS cirkelsektor — inte plus."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att tappa kvartfaktorn på cirkeln.",
+        "why_wrong": "Det är en KVARTcirkel, så area = πr²/4, inte πr²."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid x^{2}+4 (additionsfel).",
+        "why_wrong": "Operationen är subtraktion av cirkelområdet från kvadrats area."
+      }
+    ],
+    "pitfall": null,
+    "solution_path": "Skuggad area = (kvadrat med sida 2x) − (kvartcirkel med radie x) = (2x)^{2}-\\frac{1}{4}\\pi x^{2}=4x^{2}-\\frac{\\pi x^{2}}{4}, vilket matchar D.",
+    "technique": "Sammansatt area: identifiera de geometriska delarna, addera och subtrahera enligt vad som ingår i skuggad region."
+  }
+}
