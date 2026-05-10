@@ -1450,5 +1450,377 @@
     "pitfall": null,
     "solution_path": "En hjärtefråga är en angelägen fråga — något man bryr sig djupt om, ofta politiskt eller personligt. Sammansättningen 'hjärta' (känslocentrum) + 'fråga' = en fråga som ligger en VARMT om hjärtat. Markerar engagemang, inte ämnets natur.",
     "technique": "Sammansättningar med hjärte- (hjärtefråga, hjärtevän, hjärtegod) signalerar DJUPT, KÄNSLOMÄSSIGT engagemang — inte ämnets natur utan personens hållning."
+  },
+  "var-2026-kvant1-NOG-023": {
+    "solution_path": "Båda påståendena behövs: (1) ger Susanne∉trummor och elbas∈{Jenny,Lina}; (2) ger Jenny∉trummor och gitarr∈{Susanne,Lina}. Tillsammans tvingar de fram Jenny=elbas, Susanne=gitarr, Lina=trummor — varje annan kombination motsäger något av påståendena.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1) ensamt räcker när två namn pekas ut.",
+        "why_wrong": "Med bara (1) kan både Jenny och Lina spela elbas — fördelningen av gitarr och trummor blir tvetydig."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2) räcker eftersom gitarrspelaren ringas in.",
+        "why_wrong": "Med bara (2) kan elbasen tilldelas antingen Jenny eller Susanne, så lösningen är inte unik."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tolkar varje påstående som självständigt komplett landar du här.",
+        "why_wrong": "Inget av påståendena ensamt utesluter alla alternativa tilldelningar — de behövs båda."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två villkor om uteslutning aldrig räcker hela vägen.",
+        "why_wrong": "Tillsammans låser de varje person till exakt ett instrument, så svaret blir entydigt."
+      }
+    ],
+    "technique": "Pröva alla tilldelningar mot bägge villkor och se efter när bara en kombination överlever.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
+  },
+  "var-2026-kvant1-NOG-024": {
+    "solution_path": "Båda villkoren ger oändligt många möjliga tal: (1) säger n+3 är delbart med 5 (n=2,7,12,...), (2) säger n är udda. Tillsammans får du fortfarande n∈{7,17,27,...} — ingen unik lösning. Klasstorleken är inte fastlåst.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en delbarhetsregel räcker för att fixera ett enda tal.",
+        "why_wrong": "(1) ger oändligt många kandidater (2, 7, 12, 17, ...) — delbarhet med 5 låser inte storleken."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid \"udda\" som om det vore ett unikt egenskapssvar.",
+        "why_wrong": "Att antalet är udda lämnar oändligt många möjligheter: 1, 3, 5, 7, ..."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att två villkor tillsammans måste räcka.",
+        "why_wrong": "Skärningen \"udda och n+3 delbart med 5\" innehåller fortfarande 7, 17, 27, ... — fortfarande tvetydigt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett ensamt smalnar av till en lösning landar du här.",
+        "why_wrong": "Inget av villkoren plockar ut ett enskilt tal — vart och ett tillåter oändligt många."
+      }
+    ],
+    "technique": "Räkna kandidater, inte villkor: ett villkor räcker bara om det lämnar exakt en möjlighet.",
+    "pitfall": "När en uppgift inte sätter en övre gräns kan modulo-villkor ge oändligt många lösningar — de är aldrig ensamt tillräckliga.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
+  },
+  "var-2026-kvant1-NOG-025": {
+    "solution_path": "Med (2) räcker det: översta hyllan är tom, salladen ligger under mjölkpaketet, så mjölken kan inte ligga på nedersta (då finns ingen hylla under) eller översta (tom) — alltså mellersta. (1) lämnar däremot öppet om mjölk+ketchup står på översta eller mellersta hyllan.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att den mest detaljerade utsagan vinner.",
+        "why_wrong": "(1) säger inget om vilken av översta eller mellersta som hyser mjölk+ketchup — två lägen är möjliga."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att kombinera all information.",
+        "why_wrong": "(2) ensamt placerar mjölken; (1) tillför inte ny tvingande information."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är att (1) också måste räcka eftersom den nämner mjölken direkt.",
+        "why_wrong": "(1) ger plats åt mjölken som \"översta eller mellersta\" — inte unikt."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Om du missar att översta är tom missar du att mellersta är tvingad.",
+        "why_wrong": "Med översta tom och sallad-under-mjölk finns bara ett konsistent val: mjölk på mellersta."
+      }
+    ],
+    "technique": "Eliminera positioner via geometriska bivillkor (under/över/tom) tills bara en kvarstår.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
+  },
+  "var-2026-kvant1-NOG-026": {
+    "solution_path": "Båda krävs: (1) ger x∈{21,28,35,42,49,56}, (2) ger x∈{24,29,34,39,44,49,54,59}. Endast 49 ligger i båda mängderna, så lösningen blir unik först när villkoren kombineras.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att delbarhet med 7 räcker när intervallet är litet.",
+        "why_wrong": "Sex multipler av 7 ligger mellan 21 och 56 — inte unikt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att resten 4 mod 5 räcker.",
+        "why_wrong": "Åtta tal mellan 21 och 59 har resten 4 vid division med 5 — fortfarande flera."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att varje delbarhetsvillkor ensamt fixerar talet landar du här.",
+        "why_wrong": "Inget villkor ensamt smalnar av kandidaterna till ett — bara skärningen gör det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två modulo-villkor lämnar flera lösningar i intervallet.",
+        "why_wrong": "Genom kinesiska restsatsen blir det en lösning per 35:e tal — i (20,60) blir det exakt 49."
+      }
+    ],
+    "technique": "Skär två modulo-villkor och kontrollera intervallet: en lösning per minsta gemensamma multipel.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
+  },
+  "var-2026-kvant1-NOG-027": {
+    "solution_path": "Vart för sig räcker: (1) ger längre katet \\sqrt{16-4}=2\\sqrt{3}, area \\frac{1}{2}\\cdot 2\\cdot 2\\sqrt{3}=2\\sqrt{3} cm²; (2) ger 30-60-90-triangel med kateterna 2 och 2\\sqrt{3}, samma area. Båda låser triangeln upp till spegling och därmed arean entydigt.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att se Pythagoras direkt och missa att (2) har samma struktur.",
+        "why_wrong": "30-60-90-triangeln med hypotenusa 4 har låsta katetlängder 2 och 2√3 — alltså samma area som (1)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid trigonometrin och missar Pythagoras-spåret.",
+        "why_wrong": "Två sidor i en rätvinklig triangel ger den tredje via Pythagoras; (1) ger lika låst area som (2)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera uppgifterna när trianglar är inblandade.",
+        "why_wrong": "Båda fixerar samma triangel oberoende av varandra — extra information behövs inte."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Om du tror att en vinkel + en sida aldrig räcker landar du här.",
+        "why_wrong": "I en rätvinklig triangel räcker hypotenusan + en spetsig vinkel för att låsa båda kateterna."
+      }
+    ],
+    "technique": "I en rätvinklig triangel räcker hypotenusan + en katet ELLER hypotenusan + en spetsig vinkel för att fixera arean.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
+  },
+  "var-2026-kvant1-NOG-028": {
+    "solution_path": "Med (2) får vi totalt antal hårda direkt: 10+6=16, så mjuka=35−16=19. (1) säger inget om hur de 15 madrasserna med bredd 120 cm fördelas mellan hårda och mjuka, så fördelningen kan inte räknas ut.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att information om 90 cm-gruppen smittar av sig på 120 cm-gruppen.",
+        "why_wrong": "(1) säger inget om hur de 15 madrasserna med bredd 120 cm fördelar sig på hård/mjuk."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att lägga ihop båda uppgifterna när det handlar om en korstabell.",
+        "why_wrong": "(2) ger redan totalantalet hårda; (1) tillför inget när vi söker totalt antal mjuka."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du läser (1) som komplett \"halva av 20 är mjuka, så halva av allt är mjuka\" landar du här.",
+        "why_wrong": "(1) avslöjar inte 120 cm-fördelningen och kan inte ensamt ge antalet mjuka."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att en korstabell alltid kräver båda raderna ifyllda.",
+        "why_wrong": "(2) ger hela kolumnen \"hårda\" och totalsumman 35 ger automatiskt antalet mjuka."
+      }
+    ],
+    "technique": "I korstabeller räcker en hel rad eller kolumn + totalen för att räkna ut motsatt summa.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
+  },
+  "var-2026-kvant2-NOG-023": {
+    "solution_path": "Båda krävs: (1) sätter den tomma koppen i mitten men lämnar varm/kall i ändarna oklart; (2) placerar kallt längst till höger men låter den tomma vandra mellan vänster och mitten. Tillsammans ger de varm–tom–kall entydigt från vänster till höger.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en låst mittposition räcker när bara tre saker ska ordnas.",
+        "why_wrong": "(1) lämnar två spegelbilder: V-T-K och K-T-V — ordningen är inte unik."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid att (2) ger två placeringar och tror det räcker.",
+        "why_wrong": "Med bara (2) kan den tomma koppen stå antingen längst till vänster eller i mitten."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du läser bägge som självständigt kompletta landar du här.",
+        "why_wrong": "Vart för sig lämnar de minst två giltiga ordningar — bara skärningen är unik."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att kvalitativa villkor inte kan låsa en ordning.",
+        "why_wrong": "Mittposition + ändposition räcker för att fixera de tre platserna entydigt."
+      }
+    ],
+    "technique": "Räkna giltiga permutationer mot varje villkor och leta efter när antalet faller till exakt 1.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
+  },
+  "var-2026-kvant2-NOG-024": {
+    "solution_path": "Vart för sig räcker: (1) ger n+5=1{,}25n alltså n=20; (2) ger \\frac{3}{10}n=6 alltså n=20. Båda låser antalet utan stöd från det andra.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att fastna i procenträkningen i (1) och tro att det är den enda vägen.",
+        "why_wrong": "(2) räcker också: 6 tomtar är 30 % av samlingen, så hela samlingen är 20."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många föredrar konkreta tal (6 stycken) och avfärdar procentvillkoret.",
+        "why_wrong": "(1) ger n=20 lika entydigt via en linjär ekvation."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda när bägge talar om samma okända.",
+        "why_wrong": "Båda ensamma fixerar n=20 — extra information behövs inte."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att en enda procentutsaga inte räcker.",
+        "why_wrong": "En procentökning + den absoluta ändringen räcker för att lösa ut totalen."
+      }
+    ],
+    "technique": "Översätt \"x % fler\" och \"andelen är y\" till linjära ekvationer i samma okända.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
+  },
+  "var-2026-kvant2-NOG-025": {
+    "solution_path": "Båda behövs: (1) ger 400 totalt, 250 stora och 100 lakrits, men inte hur lakritsen fördelas på stora/små. (2) ger 100 små med choklad, så små-lakrits=150−100=50, alltså stora-lakrits=100−50=50.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att tre marginalsummor räcker i en korstabell.",
+        "why_wrong": "(1) ger radsummor och totalt antal lakrits men låser inte den enskilda cellen stora-lakrits."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att en fjärdedel-andel räcker när \"100 stycken\" finns med.",
+        "why_wrong": "(2) ger ingen totalsumma och ingen storleksfördelning — cellens värde är inte beräkningsbart."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker eftersom de innehåller många siffror landar du här.",
+        "why_wrong": "Cellen stora-lakrits kräver att man drar bort små-lakrits från totala lakritsen — ingendera utsagan ger båda."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två partiella tabeller aldrig fyller hela schemat.",
+        "why_wrong": "Tillsammans ger de alla fyra cellsummor — stora-lakrits=50 entydigt."
+      }
+    ],
+    "technique": "I en 2×2-korstabell behövs både rad/kolumnsummor OCH minst en cell för att låsa de övriga.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
+  },
+  "var-2026-kvant2-NOG-026": {
+    "solution_path": "(1) räcker: nytt pris 350 + sänkning 150 ger ordinarie pris 500, så sänkningen är 150/500=30 %. (2) är bara en hypotetisk räkning — den säger inget om varans faktiska ordinarie pris.",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att se siffran 25 % i (2) och tro att det är svaret.",
+        "why_wrong": "(2) påstår bara att 150/600=25 % — det är en matematisk identitet, inte information om det verkliga priset."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att (1) och (2) tillsammans måste räcka.",
+        "why_wrong": "(2) tillför ingen ny information, så det är bara (1) som gör jobbet — inte kombinationen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tar (2) på allvar som en självständig procentutsaga landar du här.",
+        "why_wrong": "(2) är ett hypotetiskt påstående och låser inte det verkliga ordinarie priset."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att (1) inte räcker eftersom procenttalet inte syns direkt.",
+        "why_wrong": "Ordinarie pris 350+150=500 är en lätträknad slutsats; sänkningen 150/500=30 %."
+      }
+    ],
+    "technique": "Skilj på faktiska utsagor (\"priset är X\") och hypotetiska (\"om priset varit X, då hade...\") — de senare bär ingen information om verkligheten.",
+    "pitfall": "En \"hypotetisk\" utsaga som bara verifierar en räkneidentitet (150 är 25 % av 600) är aldrig informationsbärande för uppgiften.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
+  },
+  "var-2026-kvant2-NOG-027": {
+    "solution_path": "(1) räcker: samma sträcka d=v\\cdot t=4v\\cdot 2 ger t=8 timmar — hastigheten v stryks. (2) ger sträckan men inte hastigheten på någondera halvan, så restiden förblir okänd.",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att avståndet 200 km måste vara nyckeln när tid söks.",
+        "why_wrong": "Utan hastighet på minst en halva låser sig tiden inte; (2) saknar hastighetsinformation."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera hastighet och avstånd.",
+        "why_wrong": "(1) räcker ensamt eftersom v försvinner i ekvationen — tilläggsinformationen i (2) är överflödig."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att avstånd alltid räcker när det handlar om resa landar du här.",
+        "why_wrong": "(2) saknar de absoluta hastigheterna; bara relationen mellan halvorna är inte nog."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att ingen av utsagorna duger när hastigheten är okänd.",
+        "why_wrong": "(1):s hypotetiska \"4v under 2 h\" låser produkten v·t — och därmed restiden."
+      }
+    ],
+    "technique": "När hastighet är okänd men sträckan är fast, sätt upp v·t=v'·t' och se om v försvinner.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
+  },
+  "var-2026-kvant2-NOG-028": {
+    "solution_path": "Båda krävs: (1) säger att fjärde värdet i sorterad ordning är 13 — alltså att x eller y är 13. (2) säger x<y. Om x=13 måste y>13, men då blir fjärde värdet min(y,19)>13, vilket motsäger medianen. Alltså y=13.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att medianvillkoret ensamt fixerar y.",
+        "why_wrong": "Med bara (1) kan antingen x=13 (och y godtyckligt <13) eller y=13 (och x<13) — båda lägen ger median 13."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att x<y räcker för att rangordna serien.",
+        "why_wrong": "(2) säger inget om värdet — bara om relationen mellan x och y."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att medianvillkoret ensamt räcker missar du symmetrin x↔y.",
+        "why_wrong": "(1) ensamt lämnar två fall öppna; (2) behövs för att utesluta x=13."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två obekanta i en serie aldrig låses.",
+        "why_wrong": "Median + ordningsvillkor på okända räcker här för att tvinga y=13 entydigt."
+      }
+    ],
+    "technique": "Räkna ut vilken position medianen sitter på och se vilka okända som tvingas att ta det värdet.",
+    "pitfall": "Med en ojämn lista är medianen mittenelementet — kontrollera om den okända *måste* ligga där, eller bara *kan*.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778426062030
+    }
   }
 }

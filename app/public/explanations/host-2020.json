@@ -1507,5 +1507,315 @@
     "pitfall": null,
     "solution_path": "En hemställan är en begäran — en formell ansökan eller framställning, ofta till myndighet. Sammansatt av hem- (i meningen 'å mig själv') + ställan (av ställa) = 'placera framför sig'. I förvaltningsspråk: hemställa = begära formellt.",
     "technique": "Sammansatta hem- + verbsubst (hemställan, hemkomst, hemställa) — formella tjänstemäns­ord; hemställa = formellt begära."
+  },
+  "host-2020-kvant1-NOG-024": {
+    "solution_path": "Båda krävs: ek+alm=50 % och ek+lönn=70 %, summan 2·ek+(alm+lönn)=120 %; alm+lönn=100 %−ek, så ek=20 %.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en summa räcker.",
+        "why_wrong": "(1) ger en relation utan att isolera ek."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s större procentandel räcker.",
+        "why_wrong": "(2) ger en annan relation utan att isolera ek."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett ger en linjär ekvation i tre obekanta."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att tre obekanta kräver tre villkor.",
+        "why_wrong": "Totalsumman 100 % är det implicita tredje villkoret."
+      }
+    ],
+    "technique": "Tre obekanta + två summa-relationer + total 100 % = sluten system.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-2020-kvant1-NOG-025": {
+    "solution_path": "Båda krävs men räcker ändå inte. Tillsammans ger de summan av de sex yttre talen (−180) men inget om det 4:e talet (medianen).",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att medel av tre minsta räcker.",
+        "why_wrong": "(1) säger inget om de fyra största — där medianen ligger."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att medel av tre största räcker.",
+        "why_wrong": "(2) säger inget om medianen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att de sex yttre talen ger medianen.",
+        "why_wrong": "Det 4:e talet är inte de \"tre minsta\" eller \"tre största\" — det fattas."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Inget villkor täcker det 4:e talet."
+      }
+    ],
+    "technique": "I 7-tal-serier ligger medianen på 4:e plats — ej i \"tre minsta\" eller \"tre största\".",
+    "pitfall": "Medel av endpoints ger inte medianen.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-2020-kvant1-NOG-026": {
+    "solution_path": "Båda krävs: (1) ger Lisa=25, Thea=30. (2) ger båda=25. Inkl-exkl: minst en=25+30−25=30, ingen=40−30=10.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att två totaler räcker.",
+        "why_wrong": "(1) ger inte snittet — utan det kan ingen-räknas inte ut."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att snittet räcker.",
+        "why_wrong": "(2) saknar yttre totaler."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett saknar antingen totaler eller snittet."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att problemet inte är välställt.",
+        "why_wrong": "Inkl-exkl ger en sluten räkning."
+      }
+    ],
+    "technique": "Inkl-exkl: |A∪B|=|A|+|B|−|A∩B|; sedan komplement.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-2020-kvant1-NOG-027": {
+    "solution_path": "Vart för sig räcker. (1): tider 36 och 45 s/längd; minsta gemensamma multiplum av 72 och 90 (hela varv) är 360 s, då Viktor simt 10 längder = 250 m. (2): hastighetsförhållande 5:4 ger samma 10 längder för Viktor.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att absoluta tider är direktare.",
+        "why_wrong": "(2):s förhållande ger samma resultat via lika argument."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att förhållandet räcker.",
+        "why_wrong": "(1) räcker lika bra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda räcker ensamma."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan båda hastigheterna går det inte.",
+        "why_wrong": "Förhållandet av tider per längd är invariant — endera (1) eller (2) räcker."
+      }
+    ],
+    "technique": "Möte vid startpunkten = LCM av varvtider; förhållandet räcker.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-2020-kvant1-NOG-028": {
+    "solution_path": "Båda krävs men räcker ändå inte. (n,m)=(30,60) ger m>n, men (n,m)=(150,60) ger m<n — båda uppfyller (1) och båda blir delbara med 13 om man väljer n=390, m=780 alt n=390, m=60 (omöjligt). Två fall existerar med både m>n och m<n.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att m delbart med 60 alltid är större än n delbart med 30.",
+        "why_wrong": "Stort n kan vara större än litet m — t.ex. n=150, m=60."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att gemensam delbarhet räcker.",
+        "why_wrong": "(2) säger inget om storleken."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda gemensamma villkoren tillåter både m>n och m<n."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Inget villkor begränsar absolutvärden."
+      }
+    ],
+    "technique": "Pröva både små och stora värden av n innan du landar på ordning.",
+    "pitfall": "Delbarhet pekar inte ut storlek — bara struktur.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-2020-kvant2-NOG-023": {
+    "solution_path": "Båda krävs: (2) ger huvud=20/4=5. (1) ger ben=7·5=35. Total=5+20+35=60 kg.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s relation räcker.",
+        "why_wrong": "(1) saknar absolutvärde."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s direkta tal räcker.",
+        "why_wrong": "(2) saknar bens vikt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett saknar antingen ben eller huvud."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att tre vikter kräver tre absoluta värden.",
+        "why_wrong": "En relation + en absolut + magen ger alla tre."
+      }
+    ],
+    "technique": "Kedja av relationer + en absolut vikt = sluten system.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-2020-kvant2-NOG-024": {
+    "solution_path": "Båda krävs: tillsammans ger A1=13, B1=17 (från A1+B1=30), A2=19 (från A2+B1=36), B2=23. Summa=72.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att rad 1 + en hörn-cell räcker.",
+        "why_wrong": "(1) saknar A2 — totalen kan inte räknas ut."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att en diagonal räcker.",
+        "why_wrong": "(2) saknar B2 utan stöd från (1)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett saknar minst en cell."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att fyra celler kräver fyra värden.",
+        "why_wrong": "Två summor + två celler räcker — fyra ekvationer i fyra obekanta."
+      }
+    ],
+    "technique": "I korstabeller: räkna ekvationer vs celler — fyra oberoende ger sluten lösning.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-2020-kvant2-NOG-026": {
+    "solution_path": "(1) räcker: röd-vit angränsar och varken är överst, så de hamnar på platser 1-2 eller 2-3. Då återstår {blå, grå} för positionerna {3,4} eller {1,4}, och blå<grå tvingar grå till topp. (2) lämnar tre möjliga toppar.",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att (2):s två villkor räcker.",
+        "why_wrong": "(2) tillåter olika placeringar för blå-röd-paret med varierande topp."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(1) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(2) ger tre möjliga toppfärger."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att fyra klossar kräver fler villkor.",
+        "why_wrong": "(1):s tre villkor räcker exakt."
+      }
+    ],
+    "technique": "Räkna giltiga konfigurationer mot ALLA villkor — ofta krymper de ner till en topplåsning.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-2020-kvant2-NOG-027": {
+    "solution_path": "Vart för sig räcker. Figuren ger A:s relation till andra punkter; (1):s area=30 areaenheter och (2):s AC=13 längdenheter ger båda en sluten geometrisk räkning för A.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att arean räcker mer direkt.",
+        "why_wrong": "Längden AC ger samma slutsats via Pythagoras eller liknande räkning."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att en längd är direktare.",
+        "why_wrong": "Arean räcker lika bra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda räcker ensamma."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att en mätning aldrig räcker för en punkt i 2D.",
+        "why_wrong": "I figuren är A:s position parametrisk på en linje, så ett tal räcker."
+      }
+    ],
+    "technique": "Med en figurberoende parametrisering räcker en mätning för att fixera positionen.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-2020-kvant2-NOG-028": {
+    "solution_path": "Vart för sig räcker. (1) är en ekvation i x med en unik positiv heltalslösning. (2): k/x=k för alla k≠0 tvingar x=1.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s ekvation är den enda fungerande.",
+        "why_wrong": "(2):s identitetsvillkor ger lika unik lösning."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s identitet räcker.",
+        "why_wrong": "(1):s ekvation räcker lika bra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda räcker ensamma — kombinationen tillför inget."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att en identitet inte är konstruktiv.",
+        "why_wrong": "k/x=k för alla k tvingar x=1 entydigt."
+      }
+    ],
+    "technique": "Identitet \"X(k)=Y(k) för alla k\" ger en specifik x.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
   }
 }

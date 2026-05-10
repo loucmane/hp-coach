@@ -1476,5 +1476,284 @@
     "pitfall": null,
     "solution_path": "En parlör är en liten ordbok — kompakt språkguide för resenärer med vanliga fraser och vokabulär. Franska parler (tala). 'Engelsk parlör' = liten engelskbok med fraser för svenska turister. Skiljs från fullständig ordbok genom sin kompakta, praktiska form.",
     "technique": "Franska språkrelaterade böcker (parlör, vokabulär, lexikon) — bär kvar fransk klang och specifik bok-funktion."
+  },
+  "host-2017-kvant1-NOG-023": {
+    "solution_path": "Vart för sig räcker. Hushållsost: 19,52/0,488=40 kr/kg. (1): prästost=40+49=89 kr/kg. (2): prästost=89 kr/kg. Båda ger 488 g·89 kr/kg=43,43 kr.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s differens är direktare.",
+        "why_wrong": "(2):s direkta pris ger samma resultat."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s direkta pris räcker.",
+        "why_wrong": "(1) räcker lika bra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda räcker ensamma."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan båda gränserna går det inte.",
+        "why_wrong": "Antingen relation eller direkt pris räcker."
+      }
+    ],
+    "technique": "Per-kg-pris + en relation eller absolut pris låser kostnaden.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778428305952
+    }
+  },
+  "host-2017-kvant1-NOG-024": {
+    "solution_path": "Båda krävs: tre alarm med intervall 3, 0,5 och 2,5 h har LCM=15 h, så nästa gemensam ringning är 18:00+15 h=09:00 nästa dag.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att två alarm + ett kort intervall räcker.",
+        "why_wrong": "(1) saknar tredje alarmets intervall."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s 2,5 h räcker.",
+        "why_wrong": "(2) saknar andra alarmets intervall."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett saknar minst ett alarm."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan exakt tider går det inte.",
+        "why_wrong": "Tre intervall ger LCM."
+      }
+    ],
+    "technique": "Gemensam ringning = LCM av alla intervall.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778428305952
+    }
+  },
+  "host-2017-kvant1-NOG-025": {
+    "solution_path": "(2) räcker: h=6, h/b=2/3 → b=9; nya: 11/14. (1) säger bara att omkretsen ökar med 20 cm, vilket alltid gäller när bas+höjd ökar med 5 vardera — ingen ny information.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att omkretsökningen räcker.",
+        "why_wrong": "Identitet: ökning av båda sidor med 5 ger alltid omkretsökning 20 cm."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(2) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att (1) också räcker landar du här.",
+        "why_wrong": "(1) är trivialt sann."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att avfärda problemet utan original-omkretsen.",
+        "why_wrong": "(2) ger båda dimensionerna direkt."
+      }
+    ],
+    "technique": "Skilj på låsande relationer och identiteter (additionsreglerna).",
+    "pitfall": "En \"ökning med 20\" kan vara en konsekvens som inte tillför ny information.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778428305952
+    }
+  },
+  "host-2017-kvant1-NOG-026": {
+    "solution_path": "Båda krävs: (1) ger {15, 24, 33, 42, 51, 60}, (2) ger multipler av 7 (14, 21, ...). Skärningen är endast 42 (4+2=6, 42=6·7).",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att siffersumma räcker.",
+        "why_wrong": "(1) ger 6 kandidater."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att delbarhet med 7 räcker.",
+        "why_wrong": "(2) ger 13 multipler av 7 mellan 10 och 99."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett ger flera kandidater."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att skärningen är tom.",
+        "why_wrong": "42 uppfyller båda."
+      }
+    ],
+    "technique": "Skär två villkor (siffersumma + delbarhet) — snittet ger ofta exakt en kandidat.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778428305952
+    }
+  },
+  "host-2017-kvant1-NOG-027": {
+    "solution_path": "(2) räcker: B>A+D+F och E>A+D+F, så B och E är båda större än vart och ett av A, D, F (eftersom positiva tyngder). De två tyngsta är B och E. (1) ger bara en delordning av tre.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en kedja av tre räcker.",
+        "why_wrong": "(1) säger inget om B, C, E."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(2) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(1) saknar information om hälften av stenarna."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att summan A+D+F inte räcker.",
+        "why_wrong": "Summan är en undre gräns på B och E enskilt — de är de tyngsta."
+      }
+    ],
+    "technique": "Summan av flera är en undre gräns på enskilda större element.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778428305952
+    }
+  },
+  "host-2017-kvant2-NOG-024": {
+    "solution_path": "Båda krävs men räcker ändå inte. (1) ger fördelningen av plockning, (2) ger 850 g över. Men hur mycket av hinken som faktiskt användes till pajen är inte specificerat — bara hinkens totala mängd kan räknas ut.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att fördelningen räcker.",
+        "why_wrong": "(1) ger andelar utan absolutvärden."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att kvarvarande mängd räcker.",
+        "why_wrong": "(2) säger inget om hur mycket som var i början."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Tillsammans ger de bara hinkens innehåll, inte pajens."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Inget villkor specificerar pajens andel."
+      }
+    ],
+    "technique": "Skilj på \"hinkens innehåll\" och \"vad som användes\" — de är två olika storheter.",
+    "pitfall": "Information om hinkens innehåll låser inte vad som tagits ur den.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778428305952
+    }
+  },
+  "host-2017-kvant2-NOG-025": {
+    "solution_path": "(1) räcker: 43 % stora i vita kartongen ger 800·0,57=456 små gem. (2) ger total 1140 små men inte hur de fördelas mellan vit och grå.",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att totalsumman små räcker.",
+        "why_wrong": "(2) ger inte fördelningen mellan kartongerna."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(1) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(2) saknar fördelningen."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan båda totalerna går det inte.",
+        "why_wrong": "Procentandel + totalantalet i vita räcker."
+      }
+    ],
+    "technique": "Procentandel + totalantalet i en kategori = absolutvärde.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778428305952
+    }
+  },
+  "host-2017-kvant2-NOG-026": {
+    "solution_path": "Båda krävs: (2) ger Beas hastighet via 7,5 km på de 30 minuter som (1) säger Anna kom före: v_B=15 km/h, så Bea cyklar 30 km på 2 h. Anna cyklar samma sträcka 0,5 h kortare = 1,5 h, alltså v_A=20 km/h.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att tidsskillnaden räcker.",
+        "why_wrong": "(1) säger inget om hastigheter eller relativ position."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s avstånd räcker.",
+        "why_wrong": "(2) saknar tidsskillnad."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett saknar antingen tid eller avstånd."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan båda hastigheterna går det inte.",
+        "why_wrong": "Tillsammans ger båda Beas hastighet och Annas tid."
+      }
+    ],
+    "technique": "Tidsskillnad + sträckskillnad vid Annas ankomst → båda hastigheter.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778428305952
+    }
+  },
+  "host-2017-kvant2-NOG-028": {
+    "solution_path": "Båda krävs men räcker ändå inte. Tillsammans ger b+c=a+d=11, b+d=13, a+c=9, men flera tripler (a,b,c,d) av olika positiva heltal uppfyller systemet (t.ex. (8,10,1,3) och (7,9,2,4)).",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att summan b+d räcker.",
+        "why_wrong": "(1) saknar koppling till a och c."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s a+c räcker.",
+        "why_wrong": "(2) ger ingen direkt information om d."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att två par-summor + ursprung-villkoret räcker.",
+        "why_wrong": "Systemet är underbestämt — fyra obekanta, tre ekvationer."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Båda summorna lämnar flera kvartetter."
+      }
+    ],
+    "technique": "Räkna obekanta vs ekvationer — tre ekvationer i fyra obekanta är underbestämt.",
+    "pitfall": "Tre par-summor i fyra obekanta är aldrig fullt lösbart.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778428305952
+    }
   }
 }

@@ -1606,5 +1606,346 @@
     "pitfall": null,
     "solution_path": "En instans är en beslutsnivå — ett hierarkiskt steg i en organisations beslutsfattande, ofta inom rättsväsende eller förvaltning. Latinets instantia (det som står i, position). I rätt: 'rätten i första instans' = den första domstolen som prövar.",
     "technique": "Latinska 'inst-/stant-' rotord (instans, instans, ständig) — bär bilden av POSITION eller STÅENDE PUNKT i organisation."
+  },
+  "host-ver1-2019-kvant1-NOG-023": {
+    "solution_path": "Båda krävs: vit=3 och svart=5 låser dessa. Blå måste vara intill svart, alltså blå=4. Resten {röd, grön} delar 1 och 2; grön<röd ger grön=1, röd=2.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att tre intill-relationer räcker.",
+        "why_wrong": "(1) lämnar svart, blå öppna för flera positioner."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att en svart-låsning räcker.",
+        "why_wrong": "(2) säger inget om vit eller blå."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett lämnar positioner obestämda."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att fem positioner kräver fler villkor.",
+        "why_wrong": "Två villkor + intill-relationer räcker."
+      }
+    ],
+    "technique": "Lås en position + använd intill-relationer för att smitta av sig på grannplatserna.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-ver1-2019-kvant1-NOG-025": {
+    "solution_path": "(1) räcker: y+z=36, x+w=60 → totala summan=96, medel=24. (2) ger bara differensen mellan paren — totalsumman saknas.",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att differensen 24 räcker.",
+        "why_wrong": "(2) ger inte total summa."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(1) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(2) saknar absolutvärden."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att fyra obekanta kräver fyra villkor.",
+        "why_wrong": "Två par-medel räcker för medelvärde via linjäritet."
+      }
+    ],
+    "technique": "Medelvärde av fyra = medel(par1) + medel(par2)/2 — när båda paren har sina medel.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-ver1-2019-kvant1-NOG-026": {
+    "solution_path": "Vart för sig räcker via parallellogramvillkor. (1): A+B=180° → A=180°−116°=64°. (2): A=C=64° (motstående).",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att intilliggande vinkel räcker.",
+        "why_wrong": "Motstående vinkel ger samma A — båda räcker."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att motstående vinkel räcker.",
+        "why_wrong": "(1) räcker lika bra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda räcker ensamma."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan parallellogramvillkor går det inte.",
+        "why_wrong": "Parallellogramreglerna är givna i uppgiften — varje vinkel räcker."
+      }
+    ],
+    "technique": "Parallellogram: motstående lika, intilliggande supplementära.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-ver1-2019-kvant1-NOG-027": {
+    "solution_path": "Vart för sig räcker. Med ekvationen xy/(400·300)=k låser endera (1):s y=300 eller (2):s x+y=700 ut x via en sluten räkning.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s direkta y räcker.",
+        "why_wrong": "(2):s summa ger lika unik x."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att summan räcker.",
+        "why_wrong": "(1):s direkta y räcker lika bra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda räcker ensamma."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två obekanta kräver två oberoende ekvationer.",
+        "why_wrong": "Ekvationen xy/(400·300)=k är redan en relation; ett villkor till räcker."
+      }
+    ],
+    "technique": "Två obekanta + en proportion + ett enda värde låser båda.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-ver1-2019-kvant1-NOG-028": {
+    "solution_path": "(2) räcker: xZx=0 för alla x utesluter +, ·, / och tvingar Z=−. (1) lämnar både + och − möjliga (båda har x op 0=x).",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s identitet räcker.",
+        "why_wrong": "Både + och − uppfyller xZ0=x."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(2) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(1) lämnar två kandidater."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan exempel går det inte.",
+        "why_wrong": "(2):s identitet utesluter alla utom subtraktion."
+      }
+    ],
+    "technique": "Identitet \"X op X = 0\" identifierar subtraktion entydigt bland +,−,·,/.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-ver1-2019-kvant2-NOG-023": {
+    "solution_path": "Båda krävs: (2) ger kvar=0,6V (efter 20 % sedan 1/4 av resten = 0,8V·3/4). (1) ger kvar=42, så V=70.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att slutläget räcker.",
+        "why_wrong": "(1) säger inget om hur mycket som tagits."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att procentkedjan räcker.",
+        "why_wrong": "(2) saknar absolut värde."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett saknar antingen procent eller absolutvärde."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att problemet inte är välställt.",
+        "why_wrong": "Procentkedja + absolut slutlag = sluten ekvation."
+      }
+    ],
+    "technique": "Procentkedjor multipliceras till en sammansatt faktor; lös bakåt med absolutvärdet.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-ver1-2019-kvant2-NOG-024": {
+    "solution_path": "Båda krävs: (1) ger 1/2 av stora=vita och 1/2 av vita=stora — symmetri som binder vita-stora-cellen. (2) ger 20 stora, så vita-stora=10, vita totalt=20, rosa totalt=80, P(rosa)=80/100=0,8.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att två symmetri-villkor räcker.",
+        "why_wrong": "(1) ger relationer utan absolutvärden."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att totala antalen räcker.",
+        "why_wrong": "(2) ger inte fördelningen mellan rosa och vita."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett saknar antingen absoluta antal eller fördelning."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan färgfördelning går det inte.",
+        "why_wrong": "Symmetrin + absolut antal stora ger vita-totalen."
+      }
+    ],
+    "technique": "Symmetrivillkor i 2×2 + absolut antal i en kategori = sluten Venn.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-ver1-2019-kvant2-NOG-025": {
+    "solution_path": "Båda krävs men räcker ändå inte. Två av talen är 3 och 30; de tre övriga summerar till 117 men kan fördelas så att medianen blir t.ex. 30 (om alla är ≥30) eller 39 (om de andra är 39, 39, 39).",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en av talen räcker.",
+        "why_wrong": "(1) ger ett tal — fyra fattas."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s tal räcker.",
+        "why_wrong": "(2) ger ett tal — fyra fattas."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att två tal + summan räcker.",
+        "why_wrong": "Tre obekanta kvar — medianen kan flytta."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett ger bara ett tal av fem."
+      }
+    ],
+    "technique": "Median kräver hela serien sorterad; två tal + summa räcker INTE i 5-talsserier.",
+    "pitfall": "Medel + två tal låser inte de tre okända i en 5-talsserie.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-ver1-2019-kvant2-NOG-026": {
+    "solution_path": "(1) räcker: Marie<Harald<Anna och Marie ej först → David före Marie. Ordning: David, Marie, Harald, Anna. (2) lämnar flera permutationer giltiga.",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att (2):s tre villkor räcker.",
+        "why_wrong": "(2) säger inget om Marie-Harald-relationen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(1) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(2) lämnar flera ordningar."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att fyra personer kräver fler villkor.",
+        "why_wrong": "Tre kedjevillkor + en uteslutning räcker."
+      }
+    ],
+    "technique": "Konsekutiv kedja + en uteslutning av första platsen ger total ordning av fyra.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-ver1-2019-kvant2-NOG-027": {
+    "solution_path": "Vart för sig räcker. (1): k=4h → andel k=4/5=80 %. (2): andel h=20 % → andel k=80 %.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s förhållande räcker mer direkt.",
+        "why_wrong": "(2):s procentandel ger samma 80 % via komplement."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s direkta procent räcker.",
+        "why_wrong": "(1) räcker lika bra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda räcker ensamma."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan absolutvärden går det inte.",
+        "why_wrong": "Andel kräver inget absolutvärde — bara förhållandet."
+      }
+    ],
+    "technique": "Förhållande räcker för andel; absolutvärden behövs inte.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
+  },
+  "host-ver1-2019-kvant2-NOG-028": {
+    "solution_path": "(1) räcker: 29+n delbart med 9 i intervallet 30-38 ger 36, alltså n=7. (2) lämnar n∈{1,4,7} — tre kandidater.",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att delbarhet med 3 räcker.",
+        "why_wrong": "(2) lämnar tre möjliga n."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(1) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(2) saknar tillräcklig låsning."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att smala intervall + delbarhet aldrig räcker.",
+        "why_wrong": "Med större delare (9) blir kandidaterna ofta exakt en."
+      }
+    ],
+    "technique": "Större delare ⇒ färre kandidater i fast intervall.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427829964
+    }
   }
 }

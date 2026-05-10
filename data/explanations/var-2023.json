@@ -1528,5 +1528,377 @@
     "pitfall": null,
     "solution_path": "Vag betyder obestämd — odefinierad, otydligt formulerad. Latinets vagus (kringströvande, oklart placerad). En vag beskrivning saknar skarpa konturer; man vet ungefär men inte säkert.",
     "technique": "Latinska 'vag-/vac-' rotord (vag, vagabondera, vakuum) — bär bilden av OFASTHET eller TOMRUM, något som inte fixerats."
+  },
+  "var-2023-kvant1-NOG-023": {
+    "solution_path": "Båda krävs: (1) tvingar M-K-F-E till en kedja, men spegelvänd ordning är möjlig. (2) sätter B=5 och E mellan F och B, alltså E=4, F=3 — vilket fixerar kedjan till M-K-F-E-B. Matematikboken hamnar på position 1.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en lång kedja i (1) räcker.",
+        "why_wrong": "(1) tillåter spegelvänd ordning och olika placeringar för B."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s två villkor räcker.",
+        "why_wrong": "(2) säger inget om M:s position."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett lämnar minst två permutationer giltiga."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att fem böcker kräver fler villkor.",
+        "why_wrong": "En kedja + en yttre fixering räcker för en unik permutation."
+      }
+    ],
+    "technique": "Kombinera \"intill\"-kedjor med en fixerad ändposition — det räcker för fem objekt.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
+  },
+  "var-2023-kvant1-NOG-024": {
+    "solution_path": "Båda krävs: (1) ger x+z=17 men x är okänd. (2) ger y=−4. Tillsammans: x+y=1 och y=−4 ger x=5, så z=17−5=12.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s ekvation ensamt ger z.",
+        "why_wrong": "x+z=17 löser inte z utan x."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att y=−4 räcker.",
+        "why_wrong": "Utan x+y kan z inte beräknas från ursprungsekvationen ensam."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett lämnar minst en obekant odefinierad."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att tre obekanta i en ekvation aldrig löses.",
+        "why_wrong": "Tre kompletterande villkor (ursprungsekvation + (1) + (2)) ger en sluten lösning."
+      }
+    ],
+    "technique": "Räkna obekanta vs ekvationer: tre obekanta kräver tre oberoende ekvationer.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
+  },
+  "var-2023-kvant1-NOG-025": {
+    "solution_path": "Båda krävs men räcker ändå inte. Olja=15, lit=30, total delbart med 5 → akvarell delbart med 5; (2) säger 15<akvarell<30. Då återstår 20 och 25 — två giltiga värden.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att fixa olja och lit räcker.",
+        "why_wrong": "(1) ger fortfarande oändligt många akvarell-värden delbara med 5."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att en strikt ordning räcker.",
+        "why_wrong": "(2) saknar absoluta värden — vart och ett av (15, ∞) eller (0,olja) är möjligt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att två villkor ger en sluten lösning.",
+        "why_wrong": "Två kandidater (20 och 25) överlever båda villkoren."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Inget villkor ensamt smalnar av till ett tal."
+      }
+    ],
+    "technique": "Räkna alltid antal kandidater efter skärningen — \"två kvar\" är fortfarande otillräckligt.",
+    "pitfall": "Smala intervall + delbarhetsvillkor lämnar ofta 1-3 kandidater; verifiera att det blir exakt 1.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
+  },
+  "var-2023-kvant1-NOG-026": {
+    "solution_path": "Båda krävs: (1) ger stjärnor=hjärtan och stora=små. (2) ger stjärnor=24 och stora-stjärnor=10. Tillsammans: hjärtan=24, stora=24, små-stjärnor=14, stora-hjärtan=14, små-hjärtan=24−14=10.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att två likhetsvillkor räcker.",
+        "why_wrong": "(1) saknar absoluta antal — alla räkningar blir relativa."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s konkreta tal räcker.",
+        "why_wrong": "(2) säger inget om hjärtan-totalen eller fördelningen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett ger antingen relationer utan absoluta tal eller absoluta tal utan relationer."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att tabellen aldrig låses utan fler celler.",
+        "why_wrong": "Likhet på rader+kolumner + en cell räcker för att räkna ut alla fyra."
+      }
+    ],
+    "technique": "Symmetrivillkor (rader/kolumner lika) + en konkret cell låser hela 2×2-tabellen.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
+  },
+  "var-2023-kvant1-NOG-027": {
+    "solution_path": "(1) räcker: Maria mot Ove fixerar kvadraten, och \"höger om Nils\" är då Maria (eftersom Ove sitter mittemot Nils kan inte vara höger om honom). Med Ove utesluten är glasögonbäraren Maria. (2) lämnar valet mellan Maria och Ove öppet (båda kan ha glasögon).",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att Petras position och två uteslutningar räcker.",
+        "why_wrong": "(2) eliminerar Petra och Nils men låter Maria och Ove kvarstå."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(1) räcker ensamt; (2) tillför inget."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(2) lämnar två kandidater för glasögonen."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan koordinater går det inte.",
+        "why_wrong": "Mittemot-relation + \"höger om\"-villkor + uteslutning räcker vid en kvadrat."
+      }
+    ],
+    "technique": "På ett kvadratiskt bord: mitt-emot + en \"höger om\"-relation pekar ut grannskapet entydigt.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
+  },
+  "var-2023-kvant1-NOG-028": {
+    "solution_path": "Det centrala är att 50 liter=20 % av B_före, så B_före=250. Vart för sig räcker. (1): total 450 ger A_före=200. (2): A_efter=B_efter/2=150, så A_före=200.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att totalvolymen räcker som direkt fakta.",
+        "why_wrong": "(2):s halverings-relation efter överföringen ger samma A_före=200."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s halverings-fakta räcker.",
+        "why_wrong": "(1):s totalsumma räcker lika tillräckligt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda räcker ensamma — extra information behövs inte."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att procentökning ensam aldrig låser värden.",
+        "why_wrong": "Procentökningen kombinerad med absolut volym (50 l) ger B_före, sedan räcker varje av (1) och (2)."
+      }
+    ],
+    "technique": "20 %-ökning ger absolutmängd: 50 l=0,2·B_före → B_före=250.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
+  },
+  "var-2023-kvant2-NOG-023": {
+    "solution_path": "Båda krävs men räcker ändå inte. Båda villkoren ger samma relation: barn-på-land=vuxna-i-vatten. Det räcker inte för att fixera ett enskilt cellvärde — barn-i-vatten kan ta många olika värden.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att likhet mellan två celler räcker.",
+        "why_wrong": "Cellpariteten ger en relation men inte absolutvärden."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att en total räcker.",
+        "why_wrong": "(2) ger samma relation som (1) — ingen ny information."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att två villkor i en korstabell räcker.",
+        "why_wrong": "Båda är ekvivalenta — i praktiken bara en ekvation, inte två."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Ingen av dem ensam, eller tillsammans, ger ett absolut värde för barn-i-vatten."
+      }
+    ],
+    "technique": "Kontrollera om två villkor är logiskt ekvivalenta innan du räknar dem som två.",
+    "pitfall": "Två formuleringar av SAMMA relation = ett villkor, inte två.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
+  },
+  "var-2023-kvant2-NOG-024": {
+    "solution_path": "Båda krävs: (1) sätter zebran till höger; (2) sätter giraffen till vänster. Då tvingas antilopen till mitten.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att två relationer i (1) räcker.",
+        "why_wrong": "(1) sätter zebran till höger men låter giraff och antilop konkurrera om vänster och mitten."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att två relationer i (2) räcker.",
+        "why_wrong": "(2) sätter giraffen till vänster men låter zebra och antilop konkurrera om mitten och höger."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett fixerar bara en ändposition — mitten är inte unik."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan numeriska ordningar går det inte.",
+        "why_wrong": "Två motsatta ändvillkor räcker för en unik permutation av tre."
+      }
+    ],
+    "technique": "Två motsatta ändvillkor (en till vänster, en till höger) tvingar tredje objektet till mitten.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
+  },
+  "var-2023-kvant2-NOG-025": {
+    "solution_path": "Båda krävs: (1) ger x∈{29,34,39,44,49,54,59} (rest 4 vid /5), (2) ger x∈{27,36,45,54} (delbart med 9). Skärningen är {54} entydigt.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en modulo-villkor räcker när intervallet är litet.",
+        "why_wrong": "(1) lämnar 7 kandidater i intervallet."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att delbarhet med 9 räcker.",
+        "why_wrong": "(2) lämnar 4 kandidater."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Inget villkor ensamt smalnar av till exakt en lösning."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två modulo-villkor lämnar flera lösningar.",
+        "why_wrong": "Skärningen ger en lösning per minsta gemensamma multipel — i (25,60) blir det 54."
+      }
+    ],
+    "technique": "Skär två modulo-villkor: en lösning per LCM, kontrollera intervallet.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
+  },
+  "var-2023-kvant2-NOG-026": {
+    "solution_path": "(2) räcker: C tom + lilla ej i B → lilla i A → stora i B. (1) lämnar stora i B eller C utan att låsa.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att två uteslutningar i (1) räcker.",
+        "why_wrong": "(1) lämnar stora i B eller C — inte unikt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(2) räcker ensamt; (1) är överflödig."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(1) lämnar två möjliga lägen för stora skatten."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan en bekräftelse går det inte.",
+        "why_wrong": "(2):s två villkor (en bekräftelse + en negation) räcker för en unik tilldelning."
+      }
+    ],
+    "technique": "Negationer tvingas till ett unikt val när alla utom ett alternativ utesluts.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
+  },
+  "var-2023-kvant2-NOG-027": {
+    "solution_path": "(2) räcker: n-3=n/2 ger n=6. (1) ger relationen systrar=2·bröder men inget absolut antal.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s förhållande räcker.",
+        "why_wrong": "Förhållande systrar:bröder=2:1 ger inga absolutvärden."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(2) räcker ensamt; (1) tillför ingen ny information."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(1) saknar absolutvärde — många (b,s)-par fungerar."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att hypotetiska \"3 färre\" inte är konstruktivt.",
+        "why_wrong": "n−3=n/2 är en sluten linjär ekvation med unik lösning."
+      }
+    ],
+    "technique": "Hypotetisk \"x färre = halva\"-utsagor ger sluten linjär ekvation i n.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
+  },
+  "var-2023-kvant2-NOG-028": {
+    "solution_path": "Vart för sig räcker. (1): (a+5+b+9)/2=10{,}5 → a+b=7 → medel=3,5. (2): (a+b-1+3)/3=3 → a+b=7 → medel=3,5.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s direkta medelvärde är den enda fungerande.",
+        "why_wrong": "(2) ger samma a+b=7 via en lite längre räkning."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s tre tal räcker bättre.",
+        "why_wrong": "(1):s två tal räcker lika bra — båda är linjära ekvationer i a+b."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda räcker ensamma — extra information behövs inte."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två obekanta kräver två oberoende ekvationer.",
+        "why_wrong": "Vi söker bara summan a+b — en enda ekvation som isolerar den räcker."
+      }
+    ],
+    "technique": "När bara summan a+b söks räcker varje ekvation som direkt isolerar a+b.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778427342052
+    }
   }
 }

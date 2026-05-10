@@ -1502,5 +1502,377 @@
     "pitfall": null,
     "solution_path": "Patina är åldrad yta — den karakteristiska förändring (oxidering, slitage, beläggning) som tid och användning ger föremål, särskilt metaller och möbler. Italienska patina (ursprungligen tunna oxiderade ytlager). Värderas ofta positivt: ger karaktär.",
     "technique": "Italienska konst- och möbelord (patina, terracotta, fresco) — bär kvar specifika hantverksrelaterade betydelser; patina = YTAS HISTORIA."
+  },
+  "var-2016-kvant1-NOG-023": {
+    "solution_path": "(1) räcker: rabattbelopp/rabattprocent ger ordinarie pris. p1=595/0,35=1700, p2=945/0,45=2100, skillnad=400 kr. (2) ger en prisskillnad efter rabatt men inte ordinarie.",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att slutpriserna räcker.",
+        "why_wrong": "(2) ger differens efter rabatt — ordinarie är inte direkt utläsbart."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(1) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(2) saknar låsning av båda priserna."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan båda procenttal går det inte.",
+        "why_wrong": "Rabattbelopp/procent ger ordinarie pris direkt."
+      }
+    ],
+    "technique": "Ordinarie pris = rabattbelopp / rabattandel.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
+  },
+  "var-2016-kvant1-NOG-024": {
+    "solution_path": "Båda krävs: total=1+...+6=21. Ask1=9, ask2=8 → ask3=4 g, vilket bara kan vara paret {1, 3}.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en ask räcker.",
+        "why_wrong": "(1) ger bara ask1; ask2 och ask3 är fortfarande fria."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2):s ask räcker.",
+        "why_wrong": "(2) saknar ask1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett ger bara en av tre asksummor."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två summor inte ger paret.",
+        "why_wrong": "4 g i en ask kan bara vara {1, 3} bland tillgängliga vikter."
+      }
+    ],
+    "technique": "Total summa + två asksummor = tredje asksumma; verifiera att den unikt motsvarar ett par.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
+  },
+  "var-2016-kvant1-NOG-025": {
+    "solution_path": "Båda krävs: (1) ger n>15, (2) ger n<17, så n=16 entydigt.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en undre gräns räcker.",
+        "why_wrong": "(1) lämnar alla n>15."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att en övre gräns räcker.",
+        "why_wrong": "(2) lämnar alla n<17."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett saknar den andra gränsen."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två ojämlikheter inte räcker.",
+        "why_wrong": "Två stränga ojämlikheter med skillnad 2 låser till ett heltal."
+      }
+    ],
+    "technique": "Två stränga olikheter på heltal kan lämna exakt ett värde i sniittet.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
+  },
+  "var-2016-kvant1-NOG-026": {
+    "solution_path": "Båda krävs men räcker ändå inte. Två ekvationer s/v_m−s/v_b=90 och v_b−v_m=10 har tre obekanta (s, v_b, v_m) — sträckan är inte unikt bestämd.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att tidsskillnaden räcker.",
+        "why_wrong": "(1) saknar hastigheter."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att hastighetsskillnaden räcker.",
+        "why_wrong": "(2) saknar tider."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att två villkor räcker.",
+        "why_wrong": "Tre obekanta kvarstår."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett saknar minst en parameter."
+      }
+    ],
+    "technique": "Räkna obekanta vs ekvationer; skillnader ensamma räcker inte för absoluta värden.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
+  },
+  "var-2016-kvant1-NOG-027": {
+    "solution_path": "(2) räcker: x/y=12,5 ger direkt x=12,5·y, dvs x är 1250 % av y. (1) ger x=3/8 och x>y, men y är fri (0<y<3/8) — andelen varierar.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att x=3/8 + x>y räcker.",
+        "why_wrong": "y kan ta många värden under 3/8 — andelen är inte fix."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(2) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(1) saknar absolutvärde för y."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan båda värdena går det inte.",
+        "why_wrong": "Kvoten x/y räcker — absolutvärden behövs inte."
+      }
+    ],
+    "technique": "Procentandel x av y = (x/y)·100 % — bara förhållandet behövs.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
+  },
+  "var-2016-kvant1-NOG-028": {
+    "solution_path": "Vart för sig räcker. (1): L+22=4(L−2) → L=10. (2): L+38=2(L+14) → L=10.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s villkor är direktare.",
+        "why_wrong": "(2) ger samma L=10."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2) räcker.",
+        "why_wrong": "(1) räcker lika bra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda räcker ensamma."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att hypotetiska tider inte räcker.",
+        "why_wrong": "Hypotetiska multiplar ger sluten linjär ekvation."
+      }
+    ],
+    "technique": "Ålder + relation vid framtida/förfluten tid = sluten ekvation.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
+  },
+  "var-2016-kvant2-NOG-023": {
+    "solution_path": "(1) räcker: 2 svarta valpar + tiken=3=1/3 av hundarna → totalt=9 hundar, valpar=8. (2) ger bara andel utan absoluta antal.",
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att 75 % räcker.",
+        "why_wrong": "(2) saknar absoluta tal."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(1) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(2) saknar absolutvärden."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan färgfördelning går det inte.",
+        "why_wrong": "(1) ger total via fraktion + absolut antal."
+      }
+    ],
+    "technique": "Absolut delgrupp + dess fraktion av totalen = totalantal.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
+  },
+  "var-2016-kvant2-NOG-024": {
+    "solution_path": "Båda krävs: rektangelns sidor är AD och DE. AE=r (E på cirkelbåge). Pythagoras: r²=(r−CF)²+DE²=(r−8)²+5² → r=89/16, båglängd=π·89/32 cm.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att DE räcker.",
+        "why_wrong": "(1) saknar CF."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att CF räcker.",
+        "why_wrong": "(2) saknar DE."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett saknar minst en sida."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan vinklar går det inte.",
+        "why_wrong": "Pythagoras + två sidor räcker för r."
+      }
+    ],
+    "technique": "I cirkelsektor med inskriven rektangel: Pythagoras AE²=AD²+DE² ger r.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
+  },
+  "var-2016-kvant2-NOG-025": {
+    "solution_path": "Vart för sig räcker. (1): index=65 → invånare=27 650 000·0,65. (2): \"35 % lägre\" → index=65, samma.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s direkta indextal är den enda fungerande.",
+        "why_wrong": "(2) ger samma index via procentminskning."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att (2) är direktare.",
+        "why_wrong": "(1) räcker lika bra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Båda räcker ensamma."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan båda procentsatserna går det inte.",
+        "why_wrong": "Index 65 ⇔ 35 % lägre — ekvivalenta utsagor."
+      }
+    ],
+    "technique": "Index och procentminskning är ekvivalenta — varje räcker.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
+  },
+  "var-2016-kvant2-NOG-026": {
+    "solution_path": "Båda krävs: (1) ger K=10, M=7, kvinnor-kaffe=2, kvinnor-choklad>5. (2) ger män-te=(2/7)·7=2 och chok_K=3·2=6. Kvinnor-te=10−6−2=2, total te=4.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att kvinnor-fördelningen räcker.",
+        "why_wrong": "(1) säger inget om mäns dryckesval."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att fraktionerna i (2) räcker.",
+        "why_wrong": "(2) saknar absoluta antal kvinnor och män."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Vart och ett saknar minst en kategori."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att tre drycker × två kön kräver fler villkor.",
+        "why_wrong": "Tillsammans täcker villkoren alla 6 cellerna i tabellen."
+      }
+    ],
+    "technique": "Två komplementära korstabell-villkor (rader+kolumner) räcker för cellerna.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
+  },
+  "var-2016-kvant2-NOG-027": {
+    "solution_path": "Båda krävs men räcker ändå inte. (1) ger d=69 men a, b, c kan kombineras så att 0, 1, 2 eller 3 av dem också är 69 så länge summan är 207. (2) säger \"minst 2\" är 69 men kan vara 2, 3 eller 4. Tillsammans: minst 2 (inkl d), men det exakta antalet är fortfarande tvetydigt.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att d=69 räcker.",
+        "why_wrong": "Inget i (1) säger något om resten."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att \"minst 2\" räcker.",
+        "why_wrong": "(2) ger inte exakt antal."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Antal exakt 69 kan vara 2, 3 eller 4."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "Inget villkor specifierar exakt antal."
+      }
+    ],
+    "technique": "\"Minst N är X\" är inte exakt antal — kontrollera om frågan kräver exakt.",
+    "pitfall": "Median/medelvärde ensamma låser inte hur många exakt motsvarar ett specifikt värde.",
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
+  },
+  "var-2016-kvant2-NOG-028": {
+    "solution_path": "(2) räcker: en jämn-lapp är blå, och blå<grön — om blå=4 skulle grön>4 omöjligt, så blå=2 och grön=4. (1) ger bara att grön=4 utan att låsa lapp 2.",
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s summavillkor räcker.",
+        "why_wrong": "(1) ger grön=4 men inte färg på lapp 2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "(2) räcker ensamt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+        "why_wrong": "(1) saknar information om lapp 2:s färg."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att utan numerisk ordning går det inte.",
+        "why_wrong": "Två villkor om jämn-lappar + ordning ger låsning."
+      }
+    ],
+    "technique": "Kombinera \"en av X är Y\" med ordningsvillkor för att smalna av.",
+    "pitfall": null,
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": 1778429079240
+    }
   }
 }
