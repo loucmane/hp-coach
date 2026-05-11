@@ -78,8 +78,8 @@
     }
   },
   "host-2020-kvant1-KVA-019": {
-    "solution_path": "Omkrets 2\\pi r=25\\pi → r = 12,5 cm. 12,5 > 10 — A.",
-    "technique": "Cirkel: omkrets 2\\pi r, dela direkt.",
+    "solution_path": "Omkrets 2\\pi r=25\\pi → r = 12,5 cm. 12,5 > 10 — A.",
+    "technique": "Cirkel: omkrets 2\\pi r, dela direkt.",
     "pitfall": null,
     "distractors": [
       {
@@ -100,7 +100,8 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424621013
+      "generated_at": 1778424621013,
+      "fixed_at": 1778498574277
     }
   },
   "host-2020-kvant1-NOG-023": {
@@ -239,10 +240,6 @@
     "technique": "Bråkaddition med samma nämnare: addera täljarna direkt; förenkla resultatet."
   },
   "host-2020-kvant1-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778414576370,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
@@ -262,7 +259,12 @@
     ],
     "pitfall": null,
     "solution_path": "Kvadratens area: 6^{2}=36 cm². Triangel: \\frac{4\\cdot h}{2}=36, alltså h = 18 cm.",
-    "technique": "Triangelarea = kvadratarea: sätt formler lika, lös ut okänd dimension. {MO}\\frac{{bh}}{{2}}=s^{{2}}{MC}."
+    "technique": "Triangelarea = kvadratarea: sätt formler lika, lös ut okänd dimension. \\frac{bh}{2}=s^{2}.",
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7",
+      "fixed_at": 1778498287388
+    }
   },
   "host-2020-kvant1-XYZ-007": {
     "_meta": {
@@ -317,10 +319,6 @@
     "technique": "Lös ut variabel ur medelvärdesekvation: hantera samtliga termer av samma variabel som faktor framför 1/2."
   },
   "host-2020-kvant1-XYZ-010": {
-    "_meta": {
-      "generated_at": 1778414576370,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "B",
@@ -340,13 +338,14 @@
     ],
     "pitfall": null,
     "solution_path": "Använd konjugatregeln: (2^{2}+1)(2^{2}-1)=2^{4}-1=15. Då blir (2^{4}+1)\\cdot 15=17\\cdot 15=255=2^{8}-1.",
-    "technique": "Upprepad konjugatregel: {MO}(a-1)(a+1)(a^{{2}}+1)(a^{{4}}+1)=a^{{8}}-1{MC} osv."
-  },
-  "host-2020-kvant1-XYZ-011": {
+    "technique": "Upprepad konjugatregel: (a-1)(a+1)(a^{2}+1)(a^{4}+1)=a^{8}-1 osv.",
     "_meta": {
       "generated_at": 1778414576370,
-      "model": "claude-opus-4-7"
-    },
+      "model": "claude-opus-4-7",
+      "fixed_at": 1778498287388
+    }
+  },
+  "host-2020-kvant1-XYZ-011": {
     "distractors": [
       {
         "letter": "A",
@@ -366,7 +365,12 @@
     ],
     "pitfall": null,
     "solution_path": "(x-7)^{2}=144 ger x-7=\\pm 12, alltså x = 19 eller x = −5. Eftersom x < 0: x = −5.",
-    "technique": "Kvadratisk via rotutdragning: {MO}u^{{2}}=k{MC} → u = ±√k. Använd givet villkor för att välja rätt rot."
+    "technique": "Kvadratisk via rotutdragning: u^{2}=k → u = ±√k. Använd givet villkor för att välja rätt rot.",
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7",
+      "fixed_at": 1778498287388
+    }
   },
   "host-2020-kvant1-XYZ-012": {
     "_meta": {
@@ -473,13 +477,13 @@
     }
   },
   "host-2020-kvant2-KVA-017": {
-    "solution_path": "För x > 1 ger x^{y+1}=1 att y + 1 = 0, så y = -1. -1 < 0 — B.",
+    "solution_path": "För x > 1 ger x^{y+1}=1 att y + 1 = 0, så y = -1. -1 < 0 — B.",
     "technique": "För bas > 1 är endast exponent 0 ger 1; så y = -1 entydigt.",
     "pitfall": null,
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att y > 0 ger x^{y+1}>1 och därmed > 1, men frågan är ekvation = 1.",
+        "why_tempting": "Det är lätt att tro att y > 0 ger x^{y+1}>1 och därmed > 1, men frågan är ekvation = 1.",
         "why_wrong": "För att x^(y+1) = 1 med x > 1 krävs y + 1 = 0, alltså y < 0."
       },
       {
@@ -495,7 +499,8 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424621013
+      "generated_at": 1778424621013,
+      "fixed_at": 1778498574277
     }
   },
   "host-2020-kvant2-KVA-018": {
@@ -525,7 +530,7 @@
     }
   },
   "host-2020-kvant2-KVA-019": {
-    "solution_path": "I: 3{,}13(\\pi+3{,}15). II: 3{,}15(3{,}13+\\pi). Distribuera: I = 3,13π + 3,13·3,15; II = 3,15·3,13 + 3,15π. Skillnaden II − I = (3,15 − 3,13)π = 0,02π > 0, så II > I — B.",
+    "solution_path": "I: 3{,}13(\\pi+3{,}15). II: 3{,}15(3{,}13+\\pi). Distribuera: I = 3,13π + 3,13·3,15; II = 3,15·3,13 + 3,15π. Skillnaden II − I = (3,15 − 3,13)π = 0,02π > 0, så II > I — B.",
     "technique": "Distribuera båda; gemensamma termer kancellerar och skillnaden blir ren.",
     "pitfall": null,
     "distractors": [
@@ -547,7 +552,8 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424621013
+      "generated_at": 1778424621013,
+      "fixed_at": 1778498574277
     }
   },
   "host-2020-kvant2-KVA-021": {
@@ -629,10 +635,6 @@
     "technique": "Förenkling med flera parenteser: utveckla varje, samla termer av samma grad. Identiska termer av motsatt tecken kanellera."
   },
   "host-2020-kvant2-XYZ-003": {
-    "_meta": {
-      "generated_at": 1778414576370,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
@@ -652,7 +654,12 @@
     ],
     "pitfall": null,
     "solution_path": "\\pi r^{2}=27, alltså r=\\sqrt{27/\\pi}\\approx\\sqrt{8{,}6}\\approx 2{,}9, närmast 3 cm.",
-    "technique": "Cirkelradie från area: {MO}r=\\sqrt{{A/\\pi}}{MC}. Räkna A/π först, sen kvadratrot."
+    "technique": "Cirkelradie från area: r=\\sqrt{A/\\pi}. Räkna A/π först, sen kvadratrot.",
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7",
+      "fixed_at": 1778498287388
+    }
   },
   "host-2020-kvant2-XYZ-004": {
     "_meta": {
@@ -837,10 +844,6 @@
     "technique": "Skärning med x-axeln: sätt f(x) = 0, lös ut x. Punkten är (x, 0)."
   },
   "host-2020-kvant2-XYZ-012": {
-    "_meta": {
-      "generated_at": 1778414576370,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
@@ -860,7 +863,12 @@
     ],
     "pitfall": null,
     "solution_path": "a^{-2}=16 ger a^{2}=\\frac{1}{16}, alltså a=\\pm\\frac{1}{4}.",
-    "technique": "Negativ exponent: {MO}a^{{-n}}=\\frac{{1}}{{a^{{n}}}}{MC}. Lös ut a via {MO}a^{{n}}=\\frac{{1}}{{k}}{MC}, sen rot."
+    "technique": "Negativ exponent: a^{-n}=\\frac{1}{a^{n}}. Lös ut a via a^{n}=\\frac{1}{k}, sen rot.",
+    "_meta": {
+      "generated_at": 1778414576370,
+      "model": "claude-opus-4-7",
+      "fixed_at": 1778498287388
+    }
   },
   "host-2020-verb1-LÄS-011": {
     "_meta": {

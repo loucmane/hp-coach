@@ -26,19 +26,19 @@
     }
   },
   "host-2014-kvant1-KVA-014": {
-    "solution_path": "Båda uttrycken är x^{ab} eftersom (x^{a})^{b}=x^{ab}=(x^{b})^{a}. Lika oavsett a, b — C.",
-    "technique": "Potens av potens: (x^{a})^{b}=x^{ab}, multiplikationen är kommutativ.",
+    "solution_path": "Båda uttrycken är x^{ab} eftersom (x^{a})^{b}=x^{ab}=(x^{b})^{a}. Lika oavsett a, b — C.",
+    "technique": "Potens av potens: (x^{a})^{b}=x^{ab}, multiplikationen är kommutativ.",
     "pitfall": null,
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Om du minns regeln som (x^{a})^{b}=x^{a+b} kan du tro att I \"bygger på\" annat sätt än II.",
+        "why_tempting": "Om du minns regeln som (x^{a})^{b}=x^{a+b} kan du tro att I \"bygger på\" annat sätt än II.",
         "why_wrong": "Reglen är multiplikation av exponenter, inte addition; ordningen i ab spelar ingen roll."
       },
       {
         "letter": "B",
         "why_tempting": "Snabbsvar är ofta att den ena ordningen ger ett större resultat när x > 1.",
-        "why_wrong": "Båda ger x^{ab} oavsett vilken exponent som hamnar \"ytterst\"."
+        "why_wrong": "Båda ger x^{ab} oavsett vilken exponent som hamnar \"ytterst\"."
       },
       {
         "letter": "D",
@@ -48,7 +48,8 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424317526
+      "generated_at": 1778424317526,
+      "fixed_at": 1778498574266
     }
   },
   "host-2014-kvant1-KVA-015": {
@@ -78,7 +79,7 @@
     }
   },
   "host-2014-kvant1-KVA-018": {
-    "solution_path": "L₁ : y = kx + m₁ och L₂ : y = k₂x + m₂ med k_{1}>k_{2}. Linjernas riktningskoefficienter säger inget om deras y-skärningar — m₁ och m₂ är fria parametrar. D.",
+    "solution_path": "L₁ : y = kx + m₁ och L₂ : y = k₂x + m₂ med k_{1}>k_{2}. Linjernas riktningskoefficienter säger inget om deras y-skärningar — m₁ och m₂ är fria parametrar. D.",
     "technique": "Riktningskoefficient och konstantterm är oberoende parametrar i linjär funktion.",
     "pitfall": null,
     "distractors": [
@@ -100,7 +101,8 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424317526
+      "generated_at": 1778424317526,
+      "fixed_at": 1778498574266
     }
   },
   "host-2014-kvant1-KVA-020": {
@@ -130,7 +132,7 @@
     }
   },
   "host-2014-kvant1-KVA-021": {
-    "solution_path": "För -4\\le x\\le -3 och -5\\le y\\le -2 maximeras |xy| vid extrempunkterna. Minsta värdet av xy (alltså mest negativa eller minsta positiva) — eftersom båda är negativa är xy positivt. Minsta produkten: ta minsta absoluta värden i båda intervall: |-3|\\cdot|-2|=6. C.",
+    "solution_path": "För -4\\le x\\le -3 och -5\\le y\\le -2 maximeras |xy| vid extrempunkterna. Minsta värdet av xy (alltså mest negativa eller minsta positiva) — eftersom båda är negativa är xy positivt. Minsta produkten: ta minsta absoluta värden i båda intervall: |-3|\\cdot|-2|=6. C.",
     "technique": "Produkt av två intervall: minimum/maximum hittas i hörnen.",
     "pitfall": null,
     "distractors": [
@@ -142,7 +144,7 @@
       {
         "letter": "B",
         "why_tempting": "Snabbsvar är ofta att (-4)(-2)=8 eller (-3)(-5)=15 ligger i mitten.",
-        "why_wrong": "Minsta positiva produkten kräver att båda absolutvärden är minimala samtidigt: 3\\cdot 2=6."
+        "why_wrong": "Minsta positiva produkten kräver att båda absolutvärden är minimala samtidigt: 3\\cdot 2=6."
       },
       {
         "letter": "D",
@@ -152,7 +154,8 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424317526
+      "generated_at": 1778424317526,
+      "fixed_at": 1778498574266
     }
   },
   "host-2014-kvant1-XYZ-001": {
@@ -312,10 +315,6 @@
     "technique": "Grundpotensform: multiplicera mantissor (vanlig multiplikation), addera exponenter. Justera om mantissan inte ligger i [1, 10)."
   },
   "host-2014-kvant1-XYZ-008": {
-    "_meta": {
-      "generated_at": 1778413621013,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
@@ -335,13 +334,14 @@
     ],
     "pitfall": null,
     "solution_path": "Areorna: (x+y)^{2} och x^{2}. Differens: (x+y)^{2}-x^{2}=x^{2}+2xy+y^{2}-x^{2}=2xy+y^{2}.",
-    "technique": "Kvadraten på en summa: {MO}(a+b)^{{2}}=a^{{2}}+2ab+b^{{2}}{MC}. Korstermen 2ab är ofta lätt att glömma."
-  },
-  "host-2014-kvant1-XYZ-009": {
+    "technique": "Kvadraten på en summa: (a+b)^{2}=a^{2}+2ab+b^{2}. Korstermen 2ab är ofta lätt att glömma.",
     "_meta": {
       "generated_at": 1778413621013,
-      "model": "claude-opus-4-7"
-    },
+      "model": "claude-opus-4-7",
+      "fixed_at": 1778498287379
+    }
+  },
+  "host-2014-kvant1-XYZ-009": {
     "distractors": [
       {
         "letter": "A",
@@ -361,10 +361,15 @@
     ],
     "pitfall": null,
     "solution_path": "Addera alla tre ekvationerna: 2(x+y+z)=7{,}5+12{,}5+10=30, alltså x+y+z=15. Medelvärde = 15/3=5.",
-    "technique": "Tre ekvationer i tre variabler där bara summan/medelvärdet eftersöks: addera alla ekvationer, {MO}x+y+z{MC} dyker upp som 1/2 av högerledssumman."
+    "technique": "Tre ekvationer i tre variabler där bara summan/medelvärdet eftersöks: addera alla ekvationer, x+y+z dyker upp som 1/2 av högerledssumman.",
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7",
+      "fixed_at": 1778498287379
+    }
   },
   "host-2014-kvant2-KVA-014": {
-    "solution_path": "355/113\\approx 3{,}1416, alltså strax över π. 355/113>3{,}1>3{,}1. Korrekt: I = 355/113 ≈ 3,1415, vilket är något större än 3,1. A.",
+    "solution_path": "355/113\\approx 3{,}1416, alltså strax över π. 355/113>3{,}1>3{,}1. Korrekt: I = 355/113 ≈ 3,1415, vilket är något större än 3,1. A.",
     "technique": "Approximation 355/113 ≈ π — använd den när π dyker upp implicit.",
     "pitfall": null,
     "distractors": [
@@ -386,14 +391,11 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424317526
+      "generated_at": 1778424317526,
+      "fixed_at": 1778498574266
     }
   },
   "host-2014-kvant2-XYZ-001": {
-    "_meta": {
-      "generated_at": 1778413621013,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
@@ -413,7 +415,12 @@
     ],
     "pitfall": "STRIKT olikhet (< och >) utesluter gränspunkterna. Likhet (≤, ≥) inkluderar dem.",
     "solution_path": "Pröva heltal: y=3 ger 9+3=12 (inte strikt större). y=4: 16+4=20 (mellan 12 och 30 ✓). y=5: 25+5=30 (inte strikt mindre). Så y=4.",
-    "technique": "Heltalsolikhet med kvadrat: testa heltal sekventiellt eller lös {MO}y^{{2}}+y-c=0{MC} för båda gränserna och välj heltal mellan rötterna."
+    "technique": "Heltalsolikhet med kvadrat: testa heltal sekventiellt eller lös y^{2}+y-c=0 för båda gränserna och välj heltal mellan rötterna.",
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7",
+      "fixed_at": 1778498287379
+    }
   },
   "host-2014-kvant2-XYZ-003": {
     "_meta": {
@@ -520,10 +527,6 @@
     "technique": "Yttervinkelsumman på en triangel = 360° (när varje hörn räknas en gång). Alternativt: yttervinkel = summa av två motstående inre."
   },
   "host-2014-kvant2-XYZ-010": {
-    "_meta": {
-      "generated_at": 1778413621013,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "B",
@@ -543,7 +546,12 @@
     ],
     "pitfall": null,
     "solution_path": "Sätt in x = −1: täljaren (-1)^{4}-(-1)^{3}+(-1)^{2}-(-1)=1+1+1+1=4. Nämnaren -1-1=-2. Kvot: 4/(-2)=-2.",
-    "technique": "Värdering av polynom vid x = −1: räkna varje potens individuellt ({MO}(-1)^{{n}}{MC} alternerar 1, −1, 1, −1) och håll koll på subtraktionstecken."
+    "technique": "Värdering av polynom vid x = −1: räkna varje potens individuellt ((-1)^{n} alternerar 1, −1, 1, −1) och håll koll på subtraktionstecken.",
+    "_meta": {
+      "generated_at": 1778413621013,
+      "model": "claude-opus-4-7",
+      "fixed_at": 1778498287379
+    }
   },
   "host-2014-kvant2-XYZ-011": {
     "_meta": {
