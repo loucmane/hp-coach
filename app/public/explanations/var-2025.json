@@ -1872,7 +1872,7 @@
     }
   },
   "var-2025-kvant2-NOG-028": {
-    "solution_path": "Båda krävs men räcker ändå inte. Med (1): 4 möjliga par bevarar median 0. Med (2): paret får inte summera till −2 (annars oförändrat medelvärde). Då återstår två möjligheter, {−10, 6} eller {−8, 7} — paret kan inte avgöras unikt.",
+    "solution_path": "Med (1) ensam: median 0 bevaras endast om 0 är kvar och två tal från {−10,−8,6,7} tas bort så att medianen av de återstående tre är 0. Fyra par fungerar: (−10,6), (−10,7), (−8,6), (−8,7) — inte unikt. Med (2) ensam: ursprungligt medelvärde −1; medelvärdet ändras om paret summerar till ≠ −2. Många par uppfyller det — inte unikt. Tillsammans: från (1):s fyra par utesluter (2) bara (−8,6) (summa −2), kvar tre par: (−10,6), (−10,7), (−8,7). Paret kan fortfarande inte avgöras unikt — E.",
     "distractors": [
       {
         "letter": "A",
@@ -1899,7 +1899,8 @@
     "pitfall": "Ekvivalenta sammansättningar med samma summa (här x+y=−4 och x+y=−1) ger samma medelvärdeändring och kan inte separeras enbart via medelvärdet.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778426454211
+      "generated_at": 1778426454211,
+      "fixed_at": 1778500764310
     }
   },
   "var-2025-verb1-LÄS-011": {
