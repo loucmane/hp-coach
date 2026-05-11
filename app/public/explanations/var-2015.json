@@ -1,7 +1,7 @@
 {
   "var-2015-kvant1-KVA-013": {
     "solution_path": "I: 0,99⁹⁹ < 1 (bas < 1, positiv exponent ger litet tal). II: 1,1¹¹ > 1. II > I — B.",
-    "technique": "Bas < 1 ⇒ aⁿ minskar. Bas > 1 ⇒ aⁿ ökar. 1,1¹¹ ≈ 2,85.",
+    "technique": "För potenser jämför mot 1: bas mindre än 1 ger a^n mindre än 1, bas större än 1 ger a^n större än 1 — så fort en kvantitet ligger under och en över 1 är den senare större. Här II är större än I ⇒ B.",
     "pitfall": null,
     "distractors": [
       {
@@ -22,7 +22,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425152539
+      "generated_at": 1778425152539,
+      "pedagogy_regenerated_at": 1778506405219,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2015-kvant1-KVA-014": {
@@ -79,7 +81,7 @@
   },
   "var-2015-kvant1-KVA-017": {
     "solution_path": "Inkludering-uteslutning. Stora bollar utan röda = 30 - 15 = 15. Röda utan stora = 30 - 15 = 15. Lika — C.",
-    "technique": "Mängdstorlek - snittet = enbart ena egenskapen.",
+    "technique": "Inkludering-uteslutning: \"enbart A\" = |A| − |A ∩ B|; om båda mängderna har samma storlek och samma snitt blir de \"enbart\"-delarna lika — här ger 30 − 15 lika med 30 − 15, alltså C.",
     "pitfall": null,
     "distractors": [
       {
@@ -100,7 +102,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425152539
+      "generated_at": 1778425152539,
+      "pedagogy_regenerated_at": 1778506405219,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2015-kvant1-KVA-018": {
@@ -573,7 +577,7 @@
   },
   "var-2015-kvant2-KVA-016": {
     "solution_path": "x - y = y - x → 2(x - y) = 0 → x = y. I: 0. II: x = y; vilket värde? Fri. D.",
-    "technique": "Likhet x = y följer, men det enskilda värdet är fritt.",
+    "technique": "När en ekvation tvingar x = y men inte fixerar det enskilda värdet, är jämförelsen mot ett konkret tal (här 0) inte avgörbar — informationen är otillräcklig (D).",
     "pitfall": null,
     "distractors": [
       {
@@ -594,7 +598,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425152539
+      "generated_at": 1778425152539,
+      "pedagogy_regenerated_at": 1778506405219,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2015-kvant2-KVA-017": {
@@ -650,8 +656,8 @@
     }
   },
   "var-2015-kvant2-KVA-022": {
-    "solution_path": "P, Q ensiffriga olika. R = QP (10Q + P). P·P = R = 10Q + P. P(P-1) = 10Q. P-1 måste vara 10Q/P. Testa P: P=5 → 5·4 = 20 = 10Q → Q = 2. R = 25 = 5·5 ✓. Eller P = 6 → 30 = 10Q → Q = 3, R = 36 = 6·6 ✓. P = 5, Q = 2: 5 > 2. P = 6, Q = 3: 6 > 3. Generellt P > Q. A.",
-    "technique": "Kvadratiska tal med specifik struktur: P² = 10Q + P.",
+    "solution_path": "R = 10Q + P (tvåsiffrigt), och P·P = R ger P^2 − P = 10Q, alltså P(P − 1) = 10Q. För ensiffriga P ≤ 9 ger P = 5 lösningen P = 5, Q = 2 (R = 25) och P = 6 ger P = 6, Q = 3 (R = 36). I båda fallen är P större än Q — A.",
+    "technique": "En tvåsiffrig ekvation P^2 = 10Q + P med ensiffriga siffror ger P(P − 1) = 10Q; eftersom 10Q växer mycket snabbare i Q än vad P^2 gör i P för små siffror, blir P större än Q i alla giltiga lösningar — alltså A.",
     "pitfall": null,
     "distractors": [
       {
@@ -672,7 +678,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425152539
+      "generated_at": 1778425152539,
+      "pedagogy_regenerated_at": 1778506405219,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2015-kvant2-XYZ-001": {
@@ -754,30 +762,30 @@
     "technique": "Bråkjämförelse: räkna ut decimalvärdet eller jämför mot 1/2."
   },
   "var-2015-kvant2-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778415987299,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 70° (komplement).",
-        "why_wrong": "110°."
+        "why_tempting": "Det är lätt att ta likbelägen vinkel och svara 70° direkt.",
+        "why_wrong": "70° är likbelägen men x ligger på andra sidan av tvärgående — supplementregeln ger 110^\\circ."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 90°.",
-        "why_wrong": "110°."
+        "why_tempting": "Snabbsvar är ofta 90° om man antar att linjerna är vinkelräta.",
+        "why_wrong": "Parallellt betyder inte vinkelrätt mot tvärgående — figuren har en sned tvärgående, alltså inte 90°."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 130°.",
-        "why_wrong": "110°."
+        "why_tempting": "Första instinkten är att addera istället för subtrahera och få 130°.",
+        "why_wrong": "Supplementsumman är 180^\\circ-70^\\circ=110^\\circ, inte 60°+70°."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av parallellitet: x = 110°.",
-    "technique": "Parallellvinkelsatser."
+    "solution_path": "Identifiera den vinkel på AB som ligger på samma sida av tvärgående som x på CD. Antingen är de likbelägna (samma värde) eller supplementära (summa 180°). Här ger figurens 70°-vinkel ett supplement-par mot x: x = 180^\\circ-70^\\circ = 110^\\circ.",
+    "technique": "Parallella linjer + tvärgående: likbelägna, alternatvinkel och sambokade vinklar låter dig flytta varje vinkel mellan linjerna utan att tappa bok.",
+    "_meta": {
+      "generated_at": 1778415987299,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2015-kvant2-XYZ-005": {
     "_meta": {

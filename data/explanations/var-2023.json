@@ -105,7 +105,7 @@
   },
   "var-2023-kvant1-KVA-020": {
     "solution_path": "Medelvärde av x, y, z = x → (x + y + z)/3 = x → y + z = 2x. Lika — C.",
-    "technique": "Medelvärde-villkor ger relation; sätt in.",
+    "technique": "När medelvärdet av tre tal är lika med ett av dem följer direkt att de övriga två summerar till 2·det talet — här ger (x+y+z)/3 = x att y + z = 2x, alltså lika (C).",
     "pitfall": null,
     "distractors": [
       {
@@ -126,7 +126,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425598322
+      "generated_at": 1778425598322,
+      "pedagogy_regenerated_at": 1778506563465,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2023-kvant1-KVA-021": {
@@ -182,56 +184,30 @@
     "technique": "Förenkling: kombinera lika termer först, sen distribuera."
   },
   "var-2023-kvant1-XYZ-002": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 39°.",
-        "why_wrong": "49°."
+        "why_tempting": "Det är lätt att räkna med en 10°-felavläsning och få 39°.",
+        "why_wrong": "39° vs 49° är 10° fel — kontrollera vinkelsumman 180° före du svarar; rätt värde är 49^\\circ."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 51°.",
-        "why_wrong": "49°."
+        "why_tempting": "Snabbsvar är ofta 51° om man tar komplementvinkeln till 39° istället.",
+        "why_wrong": "51° är 90°-39°, alltså ett komplement; v ligger i triangelns vinkelsumma och blir 49^\\circ."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 61°.",
-        "why_wrong": "49°."
+        "why_tempting": "Många stannar vid 61° om de tar fel triangel i den sammansatta figuren.",
+        "why_wrong": "61° kommer av att man räknar i fel deltriangel; rätt triangel ger v=49^\\circ."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figuren: v = 49°.",
-    "technique": "Vinkelräkning."
-  },
-  "var-2023-kvant1-XYZ-003": {
+    "solution_path": "Identifiera den triangel där v är en inre vinkel och två andra vinklar är markerade. Vinkelsumman ger v=180^\\circ-(a+b), alternativt yttervinkelregeln om en av vinklarna ligger utanför triangeln. Kedjan från figurens vinklar slutar på v=49^\\circ.",
+    "technique": "Trianglar i sammansatt figur: använd vinkelsumma 180° plus yttervinkelregeln för att gå från kända vinklar till en innesluten okänd.",
     "_meta": {
       "generated_at": 1778416807595,
       "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att räkna 1/7.",
-        "why_wrong": "1/8."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 1/4.",
-        "why_wrong": "1/8."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 1/2.",
-        "why_wrong": "1/8."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Av ekvationen: x = 1/8.",
-    "technique": "Lös x."
+    }
   },
   "var-2023-kvant1-XYZ-004": {
     "_meta": {
@@ -390,30 +366,30 @@
     "technique": "Areaskalning: 1:4 i area = 1:2 i sida."
   },
   "var-2023-kvant1-XYZ-011": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa minustecken.",
-        "why_wrong": "−1/2."
+        "why_tempting": "Det är lätt att tappa minustecknet och välja en stigande linje.",
+        "why_wrong": "Lutningen är -\\frac{1}{2}, alltså fallande åt höger — A stiger eller har fel tecken."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta annan lutning.",
-        "why_wrong": "−1/2."
+        "why_tempting": "Snabbsvar är ofta en linje med lutning -2 om man glömmer att dividera ekvationen med 2.",
+        "why_wrong": "Efter division med 2 är lutningen -\\frac{1}{2}, inte -2 — den måste vara flack."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid annan linje.",
-        "why_wrong": "D."
+        "why_tempting": "Första instinkten är att välja den linje som korsar samma intercept.",
+        "why_wrong": "Parallella linjer kräver bara samma lutning, inte samma intercept — kolla att k matchar, m får vara olika."
       }
     ],
     "pitfall": null,
-    "solution_path": "Lutning −1/2; alternativ D matchar.",
-    "technique": "Parallell linje = samma lutning."
+    "solution_path": "Parallellitet låser endast lutningen, så bara k måste matcha. Isolering ger 2y+x=-1\\Rightarrow y=-\\frac{1}{2}x-\\frac{1}{2}, alltså är lutningen k=-\\frac{1}{2}. Sök bland graferna den med samma negativa, flacka lutning — alternativ D.",
+    "technique": "Parallella linjer = samma lutning: skriv om till y=kx+m och matcha bara k — intercept m får skilja sig.",
+    "_meta": {
+      "generated_at": 1778416807595,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2023-kvant1-XYZ-012": {
     "_meta": {
@@ -599,7 +575,7 @@
   },
   "var-2023-kvant2-KVA-020": {
     "solution_path": "2^(x-1) = 32 → x - 1 = 5 → x = 6. II: 5·x⁰ = 5·1 = 5. 6 > 5 — A.",
-    "technique": "Lös exponent-ekvation; x⁰ = 1 alltid.",
+    "technique": "Lös exponentekvationen genom att matcha baser (2^(x−1) = 2^5 ger x = 6); kombinerat med identiteten x^0 = 1 blir II = 5, så I är större (A).",
     "pitfall": null,
     "distractors": [
       {
@@ -620,7 +596,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425598322
+      "generated_at": 1778425598322,
+      "pedagogy_regenerated_at": 1778506563465,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2023-kvant2-KVA-021": {

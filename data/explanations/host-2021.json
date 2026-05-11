@@ -1,7 +1,7 @@
 {
   "host-2021-kvant1-KVA-013": {
     "solution_path": "(x + y + z)/3 = 12 → x + y + z = 36. y + z = 30, så x = 6. 6 < 9 — B.",
-    "technique": "Medelvärde gånger antal = summa; subtrahera kända termer.",
+    "technique": "Medelvärde gånger antal = totalsumma — subtrahera de kända termerna för att isolera den okända; här ger x = 36 − 30 = 6 mindre än 9, alltså B.",
     "pitfall": null,
     "distractors": [
       {
@@ -22,7 +22,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424621014
+      "generated_at": 1778424621014,
+      "pedagogy_regenerated_at": 1778506283655,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "host-2021-kvant1-KVA-014": {
@@ -1630,26 +1632,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s relation ger svarta direkt.",
-        "why_wrong": "(1) ger summan svarta+gula men inte enskilda värden."
+        "why_tempting": "Det är lätt att tolka (1) som att 100 vita ensamt räcker eftersom det ger ett absolut tal.",
+        "why_wrong": "(1) låser bara summan svarta+gula=300, inte fördelningen — svarta kan vara 50, 100, 200 …"
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(2) räcker ensamt."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet — men det förutsätter att (2) inte räcker ensamt.",
+        "why_wrong": "(2) ger gula=100 och svarta=2·gula=200 utan stöd från (1)."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(1) saknar fördelningen mellan svarta och gula."
+        "why_tempting": "Om du tolkade båda påståendena som var för sig tillräckliga skulle du landa här.",
+        "why_wrong": "(1) ensam saknar fördelningen mellan svarta och gula — bara summan är låst."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att tre färger kräver tre villkor.",
-        "why_wrong": "(2):s direkta proportion mellan gula och svarta är allt som behövs för svarta."
+        "why_tempting": "Det är frestande att läsa båda som otillräckliga när tre färger är inblandade.",
+        "why_wrong": "(2):s direkta proportion svarta=2·gula låser svarta=200 ensamt."
       }
     ],
-    "technique": "Direkt proportion mellan två kategorier + ett absolut tal räcker.",
+    "technique": "Typfall: en kategori låses först när en utsaga ger BÅDE en absolut mängd OCH en direkt proportion till den efterfrågade — summor av två kategorier räcker aldrig ensamma.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -1661,26 +1663,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att båglängden ensam räcker.",
+        "why_tempting": "Det är lätt att tro att bara båglängden (1) ensamt räcker — den är direktare kopplad till r.",
         "why_wrong": "(2):s korda ger lika unik radie via figurens vinkel."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att kordan är direktare.",
-        "why_wrong": "(1):s båge räcker lika bra."
+        "why_tempting": "Snabbsvar är ofta att kordan i (2) ensam räcker eftersom den är en konkret längd.",
+        "why_wrong": "(1):s båglängd räcker lika bra via båge=r·θ."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet — men vart för sig räcker.",
+        "why_wrong": "Varje längd ger r entydigt; extra information behövs inte."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan vinkeln går det inte.",
-        "why_wrong": "Vinkeln är given i figuren — varje längd-mätning räcker."
+        "why_tempting": "Det är frestande att tro att båda är otillräckliga när vinkeln inte är numeriskt utskriven.",
+        "why_wrong": "Vinkeln är låst av figuren — varje längdmätning räcker."
       }
     ],
-    "technique": "Med en känd centralvinkel ger båge ELLER korda radien entydigt.",
+    "technique": "Regel för cirkelgeometri-NOG: när en centralvinkel är given i figuren räcker ETT av båglängd eller korda ensamt — båge=r·θ och korda=2r·sin(θ/2) är båda inverterbara i r.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -1693,26 +1695,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att y<25 smittar av sig på x.",
+        "why_tempting": "Det är lätt att tro att y<25 ensam räcker som smitta på x.",
         "why_wrong": "(1) säger inget om x — x kan vara godtyckligt stort."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att summan <25 räcker.",
-        "why_wrong": "Negativa y kan dominera; x kan vara stort."
+        "why_tempting": "Snabbsvar är ofta att summan x+y<25 räcker ensamt.",
+        "why_wrong": "Negativa y kan dominera; x kan vara stort medan summan ändå understiger 25."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två villkor måste låsa x.",
-        "why_wrong": "Båda är ojämlikheter — x kan fortfarande vara stort om y är mycket negativt."
+        "why_tempting": "Första instinkten är att två villkor tillsammans måste låsa x.",
+        "why_wrong": "Båda är bara ojämlikheter — y=−100, x=100 uppfyller dem och visar att x kan vara ≥25."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Inget villkor begränsar x ovanifrån."
+        "why_tempting": "Om du tolkade båda påståendena som var för sig tillräckliga skulle du landa här.",
+        "why_wrong": "Inget villkor ensamt begränsar x ovanifrån."
       }
     ],
-    "technique": "Pröva extrema värden (mycket negativa) innan du landar på ordning.",
+    "technique": "Regel för olikhets-NOG: ojämlikheter binder INTE absoluta tal — för en ja/nej-fråga om x, testa alltid extremvärden (särskilt mycket negativa) innan du landar på sufficiens.",
     "pitfall": "Utan tecken-villkor på y kan x dominera summan.",
     "_meta": {
       "model": "claude-opus-4-7",

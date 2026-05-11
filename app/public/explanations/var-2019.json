@@ -27,7 +27,7 @@
   },
   "var-2019-kvant1-KVA-015": {
     "solution_path": "f(0) = -3. f(2) = 4 - 4 - 3 = -3. Lika — C.",
-    "technique": "Sätt in värden; båda råkar ge -3.",
+    "technique": "En parabel f(x) = x^2 + bx + c är symmetrisk kring x = −b/2; värden vid spegelpunkter sammanfaller — här x = 0 och x = 2 ligger spegelvänt kring x = 1, alltså f(0) lika med f(2) (C).",
     "pitfall": null,
     "distractors": [
       {
@@ -48,7 +48,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425376100
+      "generated_at": 1778425376100,
+      "pedagogy_regenerated_at": 1778506526553,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2019-kvant1-KVA-016": {
@@ -312,30 +314,30 @@
     "technique": "Tre-personers-summor: addera/subtrahera ekvationer för att isolera den efterfrågade."
   },
   "var-2019-kvant1-XYZ-008": {
-    "_meta": {
-      "generated_at": 1778416425462,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 28°.",
-        "why_wrong": "42°."
+        "why_tempting": "Det är lätt att ta en delvinkel som x och svara 28°.",
+        "why_wrong": "28° är en av de markerade vinklarna, inte den slutsumma vinkelsumman ger; rätt kedja ger 42^\\circ."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 32°.",
-        "why_wrong": "42°."
+        "why_tempting": "Snabbsvar är ofta 32° om man räknar med en avläsning som är 10° fel.",
+        "why_wrong": "32° vs 42° är typiskt en 10°-felavläsning — kontrollera summan med vinkelsumma 180° före du svarar."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 38°.",
-        "why_wrong": "42°."
+        "why_tempting": "Första instinkten är att ta supplementvinkeln till en deltvinkel och få 38°.",
+        "why_wrong": "38° är 180°-142° om man räknar mot fel vinkelpar; rätt vinkelpar ger x=42^\\circ."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figurens vinkelförhållanden: x = 42°.",
-    "technique": "Vinkelräkning från figur."
+    "solution_path": "Hitta den triangel där två vinklar är markerade ur figuren. Vinkelsumman ger den tredje via 180^\\circ-(a+b), och en alternat- eller likbelägen vinkel flyttar den till x. Kedjan från figurens vinklar landar på x=42^\\circ.",
+    "technique": "Trianglar och tvärgående: vinkelsumma 180° plus alternat-/likbelägna vinklar låter dig kedja en okänd vinkel till två kända — börja alltid med den triangel som har två kända vinklar.",
+    "_meta": {
+      "generated_at": 1778416425462,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2019-kvant1-XYZ-009": {
     "_meta": {
@@ -1668,26 +1670,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s procentminskning är direktare.",
-        "why_wrong": "(2):s direkta fraktion ger samma N=150."
+        "why_tempting": "Det är lätt att tro att bara (1):s procentminskning räcker ensamt eftersom den jämför före/efter direkt.",
+        "why_wrong": "(2):s direkta fraktion ger samma N=150 — även den räcker ensam."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s fraktion räcker.",
-        "why_wrong": "(1) räcker lika bra."
+        "why_tempting": "Snabbsvar är ofta att (2):s konkreta fraktion 7/25 räcker ensamt.",
+        "why_wrong": "(1) räcker lika bra: 28 % av efter = 42 → efter=150."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet när två procentformuleringar är på spel.",
+        "why_wrong": "Båda räcker var för sig eftersom de refererar till samma efter-läge."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att procent och fraktion har olika referenstal.",
-        "why_wrong": "Båda refererar till N (efter-läget) — samma referens."
+        "why_tempting": "Det är frestande att läsa båda som otillräckliga när procent och fraktion verkar ha olika referenser.",
+        "why_wrong": "Båda refererar till N (efter-läget) — samma referens ger samma N=150."
       }
     ],
-    "technique": "Skala-procent + absolut ändring låser totalen.",
+    "technique": "Regel för NOG om absolut ändring: när en känd absolut ändring (här +42) också beskrivs via en procentsats av samma totalmängd räcker varje formulering ensamt — båda ger en linjär ekvation i totalen.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",

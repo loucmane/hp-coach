@@ -520,30 +520,30 @@
     "technique": "Proportion: korsmultiplicera."
   },
   "var-2018-1-kvant2-XYZ-008": {
-    "_meta": {
-      "generated_at": 1778416310926,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tappa intercept.",
-        "why_wrong": "Intercept +2 (positiv)."
+        "why_tempting": "Det är lätt att tappa tecknet på intercept och välja en linje som korsar y-axeln vid -2.",
+        "why_wrong": "Intercept är +2, alltså korsar grafen y-axeln på den övre halvan, inte den nedre."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att tappa lutning.",
-        "why_wrong": "Lutning 1/2."
+        "why_tempting": "Snabbsvar är ofta att välja grafen med lutning 1 och missa halveringen.",
+        "why_wrong": "Lutningen är \\frac{1}{2}, inte 1 — grafen stiger ett steg upp per två steg höger, inte 1:1."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid annan graf.",
-        "why_wrong": "A matchar y = x/2 + 2."
+        "why_tempting": "Första instinkten är att välja den graf som ‘ser brantast ut’.",
+        "why_wrong": "En lutning på 1/2 är flack, inte brant; A passar k=\\frac{1}{2},\\ m=+2."
       }
     ],
     "pitfall": null,
-    "solution_path": "f(x) = x/2 + 2 har lutning 1/2 och intercept 2. Alternativ A matchar.",
-    "technique": "Match linje till graf."
+    "solution_path": "Funktionen f(x)=\\frac{x}{2}+2 har lutning k=\\frac{1}{2} (positiv, alltså stigande åt höger) och y-intercept m=+2. Sök grafen som både stiger sakta och korsar y-axeln vid 2 — det är alternativ A.",
+    "technique": "Linje från ekvation: lutning k ger linjens stigning, intercept m ger var den korsar y-axeln — kontrollera båda tecknen mot figurens riktning innan du matchar.",
+    "_meta": {
+      "generated_at": 1778416310926,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2018-1-kvant2-XYZ-010": {
     "_meta": {
@@ -1228,26 +1228,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s procentvillkor är låsande.",
-        "why_wrong": "60 % kvar följer automatiskt av räknesätten — ingen ny information."
+        "why_tempting": "Det är lätt att tolka (1) som ensamt tillräcklig när procentvillkoren ser låsande ut.",
+        "why_wrong": "60 % kvar följer aritmetiskt av räknesätten — utsagan är sann för alla rulllängder."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(2) räcker ensamt; (1) är trivialt."
+        "why_wrong": "(2) räcker ensamt; (1) tillför inget eftersom den är trivialt sann."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att (1) är en låsande utsaga landar du här.",
-        "why_wrong": "(1):s slutsats stämmer för alla rulllängder."
+        "why_tempting": "Om du tolkade båda som var för sig tillräckliga skulle du landa här.",
+        "why_wrong": "(1) ensam fastställer ingen rullängd — endast (2) har det absoluta talet 8 m."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att avfärda problemet utan procentvillkoret.",
-        "why_wrong": "(2):s 8 m absolut är allt som behövs."
+        "why_tempting": "Det är frestande att läsa båda som otillräckliga när (1) verkar lägga till en restriktion.",
+        "why_wrong": "(2):s 8 m absolut räcker: 8 m = 4/10 av rullen → 20 m totalt."
       }
     ],
-    "technique": "Skilj på låsande procentvillkor och triviala identiteter — räkna efter.",
+    "technique": "Regel: en procentkedja som tautologiskt summerar till en fast andel kvar (1/5 + 4/5·1/4 = 2/5 sålt → 3/5 kvar) är en identitet och kan aldrig vara ensamt tillräcklig — den saknar ett absolut tal.",
     "pitfall": "En procentkedja som råkar bli en identitet är inte informationsbärande.",
     "_meta": {
       "model": "claude-opus-4-7",

@@ -130,8 +130,8 @@
     }
   },
   "var-2013-kvant1-KVA-022": {
-    "solution_path": "5x + 10y = 270 (positiva heltal). x + 2y = 54. Max x: y = 1 → x = 52. Max y: x = 2 (smallest even för x+2y=54) → 2y = 52 → y = 26. Eller x = 4 → y = 25. Faktiskt max y vid minimal x: 5x + 10y = 270 ger x udda; x = 1 inte heltal då 10y = 265 inte heltal. x = 2 → y = 26. Max x = 52 > Max y = 26 — A.",
-    "technique": "Linjär diofantisk: enumerera ändpunkter.",
+    "solution_path": "Att maximera x och y i x + 2y = 54 (5x + 10y = 270 ÷ 5) sker vid motsatt ändpunkt: max x när y = 1 ger x = 52, max y när x minimeras till 2 (för 5x heltal) ger y = 26. 52 är större än 26 — A.",
+    "technique": "För linjär diofantisk ekvation ax + by = c jämför man max-värden genom att maximera den ena variabeln och minimera den andra inom heltalsvillkoren; här ger max x = 52 större än max y = 26 verdict A.",
     "pitfall": null,
     "distractors": [
       {
@@ -152,7 +152,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425152537
+      "generated_at": 1778425152537,
+      "pedagogy_regenerated_at": 1778506457414,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2013-kvant1-XYZ-001": {
@@ -258,32 +260,6 @@
     "pitfall": null,
     "solution_path": "Faktorisera: x^{2}+x-6=(x+3)(x-2). Lösningar: x = −3 eller x = 2.",
     "technique": "Andragrad utan formel: hitta tal som adderas till b och multipliceras till c."
-  },
-  "var-2013-kvant1-XYZ-005": {
-    "_meta": {
-      "generated_at": 1778415733600,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro nämnaren är 6 (LCM av 2 och 3).",
-        "why_wrong": "Vissa termer kräver större nämnare; LCM är 60."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 20.",
-        "why_wrong": "60."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 72.",
-        "why_wrong": "60 är minsta möjliga."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Kombinera bråken; den minsta nämnaren som passar alla termer är 60.",
-    "technique": "Minsta gemensamma nämnare = LCM av alla nämnare."
   },
   "var-2013-kvant1-XYZ-006": {
     "_meta": {
@@ -598,30 +574,30 @@
     }
   },
   "var-2013-kvant2-XYZ-001": {
-    "_meta": {
-      "generated_at": 1778415733600,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel och få 92°.",
-        "why_wrong": "v = 103°."
+        "why_tempting": "Det är lätt att hoppa över ett vinkelsteg och hamna på 92°.",
+        "why_wrong": "92° kommer av att man räknar en triangels inre vinkel istället för yttervinkeln — yttervinkelregeln ger 103^\\circ."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 97°.",
-        "why_wrong": "103°."
+        "why_tempting": "Snabbsvar är ofta 97° om man avrundar de avlästa vinklarna.",
+        "why_wrong": "Skillnaden 97° vs 103° ryms inom en 5°-felavläsning; kontrollera summan med yttervinkelregeln för att slippa avrundningsfel."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 105°.",
-        "why_wrong": "103° exakt."
+        "why_tempting": "Första instinkten är att räkna in ett supplementsteg för mycket och få 105°.",
+        "why_wrong": "105° är 180° minus 75° — använder fel vinkelpar; rätt yttervinkel ger v=103^\\circ."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figurens vinkelförhållanden: v = 103°.",
-    "technique": "Vinkelräkning från figur."
+    "solution_path": "Identifiera trianglarna som möts vid v. Vinkelsumman 180^\\circ-(a+b) ger den interna grannvinkeln, och yttervinkelregeln säger att v = summan av de två icke-angränsande inre vinklarna i den triangeln. Kedjan från figurens kända vinklar ger v = 103^\\circ.",
+    "technique": "Trianglar i samma figur: använd vinkelsumma 180° plus yttervinkelregeln för att slingra mellan de inre vinklarna och den utåtriktade vinkeln v.",
+    "_meta": {
+      "generated_at": 1778415733600,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2013-kvant2-XYZ-004": {
     "_meta": {
@@ -1004,28 +980,30 @@
   "var-2013-verb1-ORD-009": {
     "_meta": {
       "generated_at": 1778420433327,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7",
+      "regenerated_at": 1778506138202,
+      "regen_source": "manual_pedagogy_review_ord_2026_05_11"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Att genmäla kan kännas som att återge något.",
-        "why_wrong": "Återge är ATT UPPREPA något (sagt av annan); genmäla är att SVARA på något (eget motsvar). Reproduktion vs svar."
+        "why_tempting": "Det är lätt att höra 'gen-' som 'igen' och då blir genmäla = säga om → återge. Falsk vän med 'genljud, genklang'.",
+        "why_wrong": "Återge är ATT UPPREPA något redan sagt; genmäla är ATT GE EGET MOTSVAR. Reproduktion av andras ord vs egen respons."
       },
       {
         "letter": "B",
-        "why_tempting": "Att genmäla kan tolkas som att hindra ett påstående.",
-        "why_wrong": "Hindra är ATT STOPPA fysiskt; genmäla är ATT SVARA verbalt. Stopp vs svar."
+        "why_tempting": "Första instinkten är att läsa 'gen-' som motstånd (jfr 'genstörig, motvilja') — och då blir handlingen att hejda eller hindra.",
+        "why_wrong": "Hindra är ATT STOPPA något fysiskt eller före det sker; genmäla är ATT SVARA verbalt EFTER att något sagts. Förhindrande vs respons."
       },
       {
         "letter": "D",
-        "why_tempting": "Att genmäla kan associeras med att anklaga någon.",
-        "why_wrong": "Anklaga är ATT BESKYLLA någon; genmäla är ATT SVARA på något. Beskyllning vs respons."
+        "why_tempting": "Snabbsvar är ofta att läsa 'genmäla' som en skarp verbal motsättning — och då glider tonen från svar till anklagelse.",
+        "why_wrong": "Anklaga är ATT BESKYLLA någon för en gärning; genmäla är ATT SVARA på en utsaga. Initierande beskyllning vs reaktivt svar."
       },
       {
         "letter": "E",
-        "why_tempting": "Att genmäla kan tolkas som att ersätta ett påstående.",
-        "why_wrong": "Ersätta är ATT BYTA UT; genmäla är ATT SVARA. Substitution vs respons."
+        "why_tempting": "Många stannar vid en annan tolkning av 'gen-' — som 'i stället för' (jfr genväg, genfödelse) — och då glider ordet mot 'ersätta'.",
+        "why_wrong": "Ersätta är ATT BYTA UT en sak mot en annan; genmäla är ATT SVARA på ett påstående. Substitution vs verbal respons."
       }
     ],
     "pitfall": null,
@@ -1440,26 +1418,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s direkta tal är direktare.",
-        "why_wrong": "(2) ger samma 42 via procent."
+        "why_tempting": "Det är lätt att tro att bara (1):s direkta tal räcker ensamt eftersom totalsumman står utskriven.",
+        "why_wrong": "(2) ger samma barn=42 via procent + absoluta tal — även (2) räcker ensam."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2) räcker.",
-        "why_wrong": "(1) räcker lika bra."
+        "why_tempting": "Snabbsvar är ofta att (2) räcker ensamt eftersom den blandar konkreta tal och procent.",
+        "why_wrong": "(1) räcker lika bra: 4/7·210=120 herr → barn=42."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
+        "why_tempting": "Första instinkten är att kombinera båda när två olika räknesätt är på spel.",
+        "why_wrong": "Båda räcker var för sig — extra information behövs inte."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan total går det inte.",
-        "why_wrong": "Endera total + fraktioner eller absoluta tal + procent ger barn."
+        "why_tempting": "Det är frestande att läsa båda som otillräckliga när total saknas i (2).",
+        "why_wrong": "I (2) löser ekvationen tot=168+0,2·tot ut total ensamt, och därmed barn."
       }
     ],
-    "technique": "Total + två fraktioner ELLER absoluta tal + procent = sluten lösning.",
+    "technique": "Regel för uppdelnings-NOG: en kategori låses när du har ETT av (totalsumma + alla andra kategorier) eller (alla andra kategorier + den efterfrågades andel av totalen) — två oberoende vägar mot samma slutsumma.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",

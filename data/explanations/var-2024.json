@@ -27,7 +27,7 @@
   },
   "var-2024-kvant1-KVA-014": {
     "solution_path": "9:e jämna efter 15: 16, 18, 20, 22, 24, 26, 28, 30, 32. J = 32. 7:e udda efter 18: 19, 21, 23, 25, 27, 29, 31. U = 31. J - U = 1 > 0 — A.",
-    "technique": "Räkna efterföljande udda/jämna heltal.",
+    "technique": "n-te udda eller jämna talet efter k beräknas direkt: jämna efter 15 → 16 + 2(n−1), så 9:e = 32; udda efter 18 → 19 + 2(n−1), så 7:e = 31. 32 är större än 31 — A.",
     "pitfall": null,
     "distractors": [
       {
@@ -48,7 +48,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425598324
+      "generated_at": 1778425598324,
+      "pedagogy_regenerated_at": 1778506563468,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2024-kvant1-KVA-015": {
@@ -157,7 +159,7 @@
   },
   "var-2024-kvant1-KVA-020": {
     "solution_path": "L₁ lutning = (2-3)/(1-(-1)) = -1/2. L₂ vinkelrät: 2. -1/2 < 2 — B.",
-    "technique": "Vinkelrätta lutningar är negativa reciproker.",
+    "technique": "Vinkelräta linjer har lutningar som är negativa reciproker (k1·k2 = −1); här ger L1 lutning −1/2 och L2 lutning 2, så L2 är större (B).",
     "pitfall": null,
     "distractors": [
       {
@@ -178,7 +180,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425598324
+      "generated_at": 1778425598324,
+      "pedagogy_regenerated_at": 1778506563468,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2024-kvant1-KVA-021": {
@@ -234,30 +238,30 @@
     }
   },
   "var-2024-kvant1-XYZ-001": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 6.",
-        "why_wrong": "7."
+        "why_tempting": "Det är lätt att räkna med fel ben och få 6.",
+        "why_wrong": "6 cm kommer av att man tar fel sida som hypotenusa; rätt uppställning ger x=7 cm."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 8.",
-        "why_wrong": "7."
+        "why_tempting": "Snabbsvar är ofta 8 om man avrundar Pythagoras uppåt.",
+        "why_wrong": "Pythagoras ger ett heltal här — x=7 cm, inte 8."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 9.",
-        "why_wrong": "7."
+        "why_tempting": "Första instinkten är att addera båda sidor och få 9.",
+        "why_wrong": "Pythagoras kvadrerar sidorna; ren addition överskattar — x=\\sqrt{c^2-a^2}=7 cm."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figuren: x = 7 cm.",
-    "technique": "Pythagoras eller likformighet."
+    "solution_path": "Kvadratens sida ger ett ben i den rätvinkliga triangeln, och figurens andra mått ger hypotenusan eller motsatt ben. Pythagoras: x^2 = c^2 - a^2 med figurens längder, vilket slutar på x = 7 cm.",
+    "technique": "Pythagoras eller likformighet i sammansatt figur: när en triangel delar en sida med en kvadrat låser kvadratens sidlängd ett ben i Pythagoras-uppställningen.",
+    "_meta": {
+      "generated_at": 1778416807595,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2024-kvant1-XYZ-002": {
     "_meta": {
@@ -338,30 +342,30 @@
     "technique": "Distribuera och kanellera."
   },
   "var-2024-kvant1-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 25°.",
-        "why_wrong": "32°."
+        "why_tempting": "Det är lätt att räkna med en vinkel som är 7° för liten och få 25°.",
+        "why_wrong": "25° kommer av en avläsningsfel eller att man hoppar över ett vinkelsteg; rätt summa ger 32^\\circ."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 57°.",
-        "why_wrong": "32°."
+        "why_tempting": "Snabbsvar är ofta 57° om man tar supplementvinkeln till 123° istället.",
+        "why_wrong": "57° är komplementet till 33°, inte x; vinkelsumman i rätt triangel ger 32^\\circ."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 58°.",
-        "why_wrong": "32°."
+        "why_tempting": "Många stannar vid 58° om de räknar komplement istället för inre vinkel.",
+        "why_wrong": "58° = 90°-32°, alltså komplementet — x är själv 32^\\circ, inte dess komplement."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figuren: x = 32°.",
-    "technique": "Vinkelräkning."
+    "solution_path": "Identifiera den triangel där x är en inre vinkel och två andra är markerade. Vinkelsumman ger x=180^\\circ-(a+b); alternativt fungerar yttervinkelregeln om en av vinklarna är yttre. Figurens vinklar kedjar ihop till x=32^\\circ.",
+    "technique": "Trianglar i sammansatt figur: kombinera vinkelsumma 180° med yttervinkelregeln så att kedjan från kända vinklar når x.",
+    "_meta": {
+      "generated_at": 1778416807595,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2024-kvant1-XYZ-008": {
     "_meta": {
@@ -469,7 +473,7 @@
   },
   "var-2024-kvant2-KVA-013": {
     "solution_path": "3x > y. Beroende på tecken på x och y kan x vara större, mindre eller lika med y. D.",
-    "technique": "Ojämlikhet 3x > y låser inte x vs y direkt.",
+    "technique": "En ojämlikhet typ 3x större än y låser inte x mot y — pröva två konkreta par: x=1, y=2 ger I mindre än II, och x=10, y=1 ger I större än II, alltså informationen är otillräcklig (D).",
     "pitfall": null,
     "distractors": [
       {
@@ -490,7 +494,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425598324
+      "generated_at": 1778425598324,
+      "pedagogy_regenerated_at": 1778506563468,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2024-kvant2-KVA-015": {
@@ -521,7 +527,7 @@
   },
   "var-2024-kvant2-KVA-017": {
     "solution_path": "10 heltal, median 25 (= medel av 5:e och 6:e). Ta bort min och max → 8 kvar; ny median = medel av 4:e och 5:e i sorterad ordning, vilket motsvarar 5:e och 6:e i ursprung. Lika — C.",
-    "technique": "Symmetrisk borttagning av extremvärden bevarar median.",
+    "technique": "Tar man bort min och max ur ett jämnt antal sorterade tal flyttas medianpositionen inte — den ligger fortfarande mellan samma två tal som tidigare, alltså lika med ursprungsmedianen (här 25 ⇒ C).",
     "pitfall": null,
     "distractors": [
       {
@@ -542,7 +548,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425598324
+      "generated_at": 1778425598324,
+      "pedagogy_regenerated_at": 1778506563468,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2024-kvant2-KVA-018": {
@@ -650,30 +658,30 @@
     "technique": "Linjär ekvation."
   },
   "var-2024-kvant2-XYZ-002": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel y.",
-        "why_wrong": "(1, −5)."
+        "why_tempting": "Det är lätt att blanda ihop x och y och välja (-5, 1).",
+        "why_wrong": "(-5, 1) är (1, -5) med koordinaterna byta — vid x=-5 ger linjen ett helt annat y."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta (-3, -2).",
-        "why_wrong": "(1, −5)."
+        "why_tempting": "Snabbsvar är ofta (-3, -2) om man tar en punkt nära linjen utan att räkna.",
+        "why_wrong": "(-3, -2) ligger nära men inte på linjen; sätt in i y=kx+m och du ser att y inte stämmer."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid (3, -3).",
-        "why_wrong": "(1, −5)."
+        "why_tempting": "Första instinkten är (3, -3) om man tror linjen är y=-x.",
+        "why_wrong": "Linjen i figuren har annan lutning eller intercept än y=-x — endast (1, -5) löser ekvationen."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figuren: linjen passerar (1, −5).",
-    "technique": "Punkt på linje."
+    "solution_path": "Läs av två gallerpunkter ur figuren för att låsa linjens ekvation y=kx+m. Sätt in varje alternativs x-värde och kontrollera att y stämmer — (1, -5) är det enda alternativ där y matchar linjens värde vid x=1.",
+    "technique": "Punkt på linje från graf: läs av två tydliga punkter ur figuren, bestäm linjens k och m, och stoppa in varje alternativ — den som uppfyller y=kx+m ligger på linjen.",
+    "_meta": {
+      "generated_at": 1778416807595,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2024-kvant2-XYZ-003": {
     "_meta": {
@@ -780,30 +788,30 @@
     "technique": "Identifiera korrekt uttryck."
   },
   "var-2024-kvant2-XYZ-009": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna 5 (= 3+2).",
-        "why_wrong": "5 ≠ 1."
+        "why_tempting": "Det är lätt att tro att y=x+2 funkar eftersom punkten har positiva koordinater.",
+        "why_wrong": "y=3+2=5 vid x=3, men frågan kräver y=1 — fel intercept ger fel y."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 7 (= 2·3+1).",
-        "why_wrong": "7 ≠ 1."
+        "why_tempting": "Snabbsvar är ofta y=2x+1 eftersom konstanten 1 matchar y.",
+        "why_wrong": "y=2\\cdot 3+1=7 vid x=3, inte 1 — intercept 1 utan rätt lutning räcker inte."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 10 (= 3·3+1).",
-        "why_wrong": "10 ≠ 1."
+        "why_tempting": "Första instinkten är y=3x+1 eftersom x och konstanten ‘ser ut att passa’.",
+        "why_wrong": "y=3\\cdot 3+1=10 vid x=3, långt från 1 — att siffrorna förekommer i ekvationen betyder inte att de uppfyller den."
       }
     ],
     "pitfall": null,
-    "solution_path": "y = −x+4: vid x=3, y = 1 ✓.",
-    "technique": "Punkt på linje."
+    "solution_path": "En punkt ligger på linjen omm dess (x,y) uppfyller ekvationen. För alternativ A vid x=3: y=-x+4=-3+4=1 ✓, vilket matchar punktens y=1. Övriga alternativ ger ett annat y vid x=3 och kan strykas.",
+    "technique": "Punkt på linje = sätt in koordinaten: stoppa in (x,y) i varje alternativs ekvation; den som uppfyller likheten går genom punkten.",
+    "_meta": {
+      "generated_at": 1778416807595,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2024-kvant2-XYZ-010": {
     "_meta": {
@@ -1793,26 +1801,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att x+y=w pekar ut w.",
-        "why_wrong": "Om x och y är negativa blir w mindre än dem."
+        "why_tempting": "Det är lätt att tro att x+y=w pekar ut w som störst när man antar positiva tal — då räcker (1) ensamt.",
+        "why_wrong": "Om x och y är negativa blir w mindre än dem — (1) ensam räcker inte."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att ett medelvärde fixerar z relativt x och y.",
-        "why_wrong": "(2) säger bara z=(x+y)/2 — z hamnar mellan x och y, men jämförelse med w saknas."
+        "why_tempting": "Snabbsvar är ofta att (2):s medelvärde z=(x+y)/2 ensam räcker eftersom z då hamnar mellan x och y.",
+        "why_wrong": "(2) säger inget om w — jämförelse med fjärde talet saknas, så villkoret är otillräckligt."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två linjära samband i fyra obekanta måste räcka.",
-        "why_wrong": "Tre obekanta kvarstår; tecknen är fria och styr ordningen."
+        "why_tempting": "Första instinkten är att två linjära samband i fyra obekanta tillsammans måste räcka.",
+        "why_wrong": "Tre frihetsgrader kvarstår; tecknen är fria och styr ordningen även när båda kombineras."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker eftersom både ger linjära samband landar du här.",
-        "why_wrong": "Inget av dem ensamt — eller tillsammans — fixerar tecknet på x+y."
+        "why_tempting": "Om du tolkade båda som var för sig tillräckliga skulle du landa här.",
+        "why_wrong": "Inget av dem ensamt — eller tillsammans — fixerar tecknet på x+y, så ordningen pendlar."
       }
     ],
-    "technique": "Pröva både positiva och negativa värden innan du landar på ordning.",
+    "technique": "Regel för ordnings-NOG i fyra obekanta: två linjära samband räcker aldrig — utan teckenvillkor är ordningen fri, och du måste pröva både positiva och negativa värden för att avgöra sufficiens.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",

@@ -105,7 +105,7 @@
   },
   "var-2014-kvant1-KVA-017": {
     "solution_path": "Sortera: 1, 5, 5, 6, 8. Median = 5 (mittersta). Medelvärde = (5+1+6+5+8)/5 = 25/5 = 5. Lika — C.",
-    "technique": "Median av 5 sorterade tal = mittersta; medelvärde = summa/5.",
+    "technique": "För en liten symmetrisk mätserie sammanfaller ofta median och medelvärde — räkna båda separat (sortera för medianen, summera/n för medelvärdet) och jämför; här ger 5 lika med 5 ⇒ C.",
     "pitfall": null,
     "distractors": [
       {
@@ -126,7 +126,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425152538
+      "generated_at": 1778425152538,
+      "pedagogy_regenerated_at": 1778506405216,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2014-kvant1-KVA-018": {
@@ -468,30 +470,30 @@
     "technique": "Vinklar runt en punkt: summa = 360°."
   },
   "var-2014-kvant1-XYZ-011": {
-    "_meta": {
-      "generated_at": 1778415854589,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 4:e tal som −1,5 och svara −6.",
-        "why_wrong": "Median av jämnt antal är medel; −2 och −1 ger medianen −1,5. Smallest är −2 − 3 = −5."
+        "why_tempting": "Det är lätt att tro att medianen -1{,}5 ÄR ett av talen och räkna bakåt fyra steg till -6.",
+        "why_wrong": "Medianen av jämnt antal är medel av två tal, så den landar mellan dem; rätt minsta blir -5, inte -6."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta −4.",
-        "why_wrong": "−5 är smallest av åtta heltal i följd där 4:e = −2."
+        "why_tempting": "Snabbsvar är ofta -4 om man tar bara 2,5 steg bakåt istället för 3.",
+        "why_wrong": "Från 4:e talet -2 är det 3 steg ner till det första, alltså -2-3=-5."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid −3.",
-        "why_wrong": "−5."
+        "why_tempting": "Många stannar vid -3 efter att tolkat ‘minst’ som det 5:e talet.",
+        "why_wrong": "-3 är 2:a eller 3:e talet, inte det minsta; det minsta är -5."
       }
     ],
     "pitfall": null,
-    "solution_path": "För 8 på varandra följande heltal är medianen medel av 4:e och 5:e. Median = −1,5 ger 4:e = −2, 5:e = −1. Smallest = −2 − 3 = −5.",
-    "technique": "Median av jämnt antal heltal i följd = halvt-emellan-värde."
+    "solution_path": "Medianen av 8 heltal i följd är medelvärdet av 4:e och 5:e talet. -1{,}5 ligger mellan -2 och -1, alltså är 4:e talet -2 och det minsta tre steg tidigare: -2-3=-5.",
+    "technique": "Median av jämnt antal i följd: medianen ligger mitt mellan två heltal, vilket innebär att den landar på halvt-värde och fixerar de två mittersta talen direkt.",
+    "_meta": {
+      "generated_at": 1778415854589,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2014-kvant2-KVA-014": {
     "solution_path": "I tolkas som √11 ≈ 3,32 (parser-fel, missande √). II: 3 + 2 = 5. 5 > 3,32 — B.",
@@ -547,7 +549,7 @@
   },
   "var-2014-kvant2-KVA-017": {
     "solution_path": "y = x². För alla reella x är x² ≥ 0 > -1. A.",
-    "technique": "Kvadrat ≥ 0; alltid > -1.",
+    "technique": "En kvadrat x^2 är alltid större än eller lika med 0; jämfört med ett negativt tal är den alltså strikt större — här ger y = x^2 mot −1 verdict A.",
     "pitfall": null,
     "distractors": [
       {
@@ -568,7 +570,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425152538
+      "generated_at": 1778425152538,
+      "pedagogy_regenerated_at": 1778506405216,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2014-kvant2-KVA-018": {

@@ -27,7 +27,7 @@
   },
   "var-2022-1-kvant1-KVA-016": {
     "solution_path": "I: medelvärde av (1+1+5+5)/4 = 12/4 = 3. II: medelvärde av (2+4+8+10)/4 = 24/4 = 6, hälften = 3. Lika — C.",
-    "technique": "Medelvärde av \"dubblerad\" serie = ursprungsmedelvärde.",
+    "technique": "Medelvärde är linjärt: k·mean(serie) = mean(k·serie). Det gör att \"hälften av medelvärdet av (2,4,8,10)\" = \"medelvärdet av (1,2,4,5)\" = 3, lika med I = 3 — alltså C.",
     "pitfall": null,
     "distractors": [
       {
@@ -48,12 +48,14 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425376102
+      "generated_at": 1778425376102,
+      "pedagogy_regenerated_at": 1778506526556,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2022-1-kvant1-KVA-019": {
-    "solution_path": "Anna + Beda + Clara = 66. Beda = 19. Clara > 22 (mer än en tredjedel = 22). Så Clara ≥ 23. Anna = 66 - 19 - Clara ≤ 66 - 19 - 23 = 24. Men Clara kan vara 23, 24, ..., 47. Anna kan vara 0, 1, ..., 24. 24 ligger i intervallet. D.",
-    "technique": "Inkluderingsuteslutning + nedre gräns på Clara.",
+    "solution_path": "Anna + 19 + Clara = 66, så Anna = 47 − Clara. Clara är mer än en tredjedel = 22, alltså Clara är minst 23, vilket ger Anna högst 24. Eftersom Anna kan vara allt från 0 upp till 24, ligger 24 inom intervallet — informationen är otillräcklig, D.",
+    "technique": "När en ojämlikhet (Clara större än 22) bara ger nedre gräns på en av variablerna, blir den andra ett intervall; om jämförvärdet ligger i intervallet är informationen otillräcklig — D.",
     "pitfall": null,
     "distractors": [
       {
@@ -74,7 +76,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425376102
+      "generated_at": 1778425376102,
+      "pedagogy_regenerated_at": 1778506526556,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2022-1-kvant1-KVA-022": {
@@ -1601,8 +1605,8 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att ursprungspriset är nyckeln.",
-        "why_wrong": "(1) säger inget om höjningen."
+        "why_tempting": "Det är lätt att tro att ursprungspriset i (1) räcker ensamt som nyckel.",
+        "why_wrong": "(1) säger inget om hur stor höjningen var — totalförändringen i procent är okänd."
       },
       {
         "letter": "C",
@@ -1611,16 +1615,16 @@
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(1) saknar höjningen helt."
+        "why_tempting": "Om du tolkade båda som var för sig tillräckliga skulle du landa här.",
+        "why_wrong": "(1) ensam saknar höjningen — vart för sig stupar (1)."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan ursprungspriset går det inte.",
+        "why_tempting": "Det är frestande att läsa båda som otillräckliga när ursprungspriset verkar saknas i (2).",
         "why_wrong": "Procentuella ändringar multipliceras: 0,8·1,25 ger total faktor oavsett ursprung."
       }
     ],
-    "technique": "Procentuella ändringar i serie multipliceras — ursprungspriset stryks.",
+    "technique": "Regel för procent-i-serie-NOG: när bara den totala procentändringen efterfrågas multipliceras faktorerna (0,8·1,25) — ursprungspriset stryks och är aldrig ensamt tillräckligt.",
     "pitfall": "Total procent ändring beror INTE på ursprungspriset.",
     "_meta": {
       "model": "claude-opus-4-7",
@@ -1694,26 +1698,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att den första hypotetiken är direktare.",
-        "why_wrong": "(2):s minskning ger samma n=22 via en linjär ekvation."
+        "why_tempting": "Det är lätt att tro att (1):s hypotetiska tillägg räcker ensamt och (2):s minskning inte gör det.",
+        "why_wrong": "(2) ger samma n=22 via en linjär ekvation — även den räcker ensam."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2) räcker som ensam.",
-        "why_wrong": "(1) räcker lika bra."
+        "why_tempting": "Snabbsvar är ofta att (2):s minskning räcker ensamt och (1) inte gör det.",
+        "why_wrong": "(1) räcker lika bra: 2=(n+2)/12 → n=22."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet eftersom båda är hypotetiska.",
+        "why_wrong": "Båda räcker var för sig — varje hypotetik ger en sluten ekvation."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att hypotetiska \"om-utsagor\" inte är konstruktiva.",
-        "why_wrong": "Hypotetiska absoluta tal (2 äpplen) ger sluten ekvation."
+        "why_tempting": "Det är frestande att läsa båda som otillräckliga eftersom de bara beskriver tänkta scenarier.",
+        "why_wrong": "Ett hypotetiskt absolut tal (2 äpplen) + andel av ny total räcker — varje villkor löser n entydigt."
       }
     ],
-    "technique": "Hypotetik + absolut tal = sluten linjär ekvation i n.",
+    "technique": "Regel för hypotetisk NOG: när en utsaga ger ett absolut tillägg/avdrag (här 2 äpplen) plus en bråkdel av en ny total räcker den ensamt — den blir en linjär ekvation i n.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",

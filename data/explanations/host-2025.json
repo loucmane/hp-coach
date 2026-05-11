@@ -416,8 +416,8 @@
     "technique": "Negativ exponent: a^(-n) = 1/a^n. Räkna gemensam nämnare för bråkaddition."
   },
   "host-2025-kvant2-KVA-013": {
-    "solution_path": "Erik var 14 när Johanna var 7: Erik är 7 år äldre. Johanna var 10 när Mikael var 15: Mikael är 5 år äldre än Johanna; alltså 5 + 7 = 2 år äldre Erik... vänta. Mikael 5 år äldre än Johanna; Erik 7 år äldre. Så Mikael = Johanna + 5; Erik = Johanna + 7; Erik = Mikael + 2. När Mikael 18, Erik = 20. Lika — C.",
-    "technique": "Åldersrelationer: skriv ut alla i termer av en gemensam person.",
+    "solution_path": "Skriv alla i förhållande till en gemensam person: Erik är 7 år äldre än Johanna (14 − 7); Mikael är 5 år äldre än Johanna (15 − 10); alltså är Erik 2 år äldre än Mikael. När Mikael är 18 är Erik 20 — lika med II, C.",
+    "technique": "Åldersrelationer: skriv alla åldrar i termer av en gemensam person så blir åldersskillnaderna fasta — här ger Erik = Mikael + 2, så vid Mikael = 18 är Erik 20 (lika ⇒ C).",
     "pitfall": null,
     "distractors": [
       {
@@ -438,7 +438,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424837150
+      "generated_at": 1778424837150,
+      "pedagogy_regenerated_at": 1778506344245,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "host-2025-kvant2-KVA-015": {
@@ -1774,30 +1776,31 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att se x=y+z och anta y,z positiva, vilket gör x störst.",
-        "why_wrong": "Tecknen är okända — för negativa y och z är x faktiskt minst, inte störst."
+        "why_tempting": "Det är lätt att tro att (1):s x=y+z ensam räcker om man antar y,z positiva — då blir x störst.",
+        "why_wrong": "Tecknen är inte låsta — för negativa y och z blir x faktiskt minst, så (1) räcker inte ensam."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att x=-2y låser ordningen mellan x och y.",
-        "why_wrong": "Ordningen mellan x och y beror på tecknet på y; (2) säger inget om z."
+        "why_tempting": "Snabbsvar är ofta att (2):s x=−2y ensam räcker eftersom den låser x:y.",
+        "why_wrong": "(2) säger inget om z och tecknet på y styr ordningen mellan x och y — otillräcklig."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två linjära samband i tre obekanta måste låsa ordningen.",
-        "why_wrong": "Två ekvationer låser förhållandet (x:y:z = −2:1:−3) men tecknet på y skalar hela tripeln åt motsatt håll."
+        "why_tempting": "Första instinkten är att två linjära samband tillsammans måste låsa ordningen i tre obekanta.",
+        "why_wrong": "Tillsammans låser de bara förhållandet x:y:z=−2:1:−3, men tecknet på y flippar tripeln."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett ger en sluten ordning landar du här.",
-        "why_wrong": "Ingen av dem ensamt fixerar något — och tillsammans fastställs bara förhållandet, inte tecknen."
+        "why_tempting": "Om du tolkade båda som var för sig tillräckliga för en sluten ordning landar du här.",
+        "why_wrong": "Inget av dem ensamt fixerar något — och inte heller tillsammans, eftersom y:s tecken är fritt."
       }
     ],
-    "technique": "Pröva två motsatta tecken på den styrande variabeln innan du landar på ordning.",
-    "pitfall": "När bara linjära samband ges utan teckenvillkor: pröva alltid både y>0 och y<0.",
+    "technique": "Regel för ordnings-NOG utan teckenvillkor: när bara linjära samband ges, pröva motsatta tecken på den styrande variabeln — om ordningen flippar är båda otillräckliga.",
+    "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778426243221
+      "generated_at": 1778426243221,
+      "fixed_at": 1778506809101
     }
   },
   "host-2025-verb1-LÄS-011": {

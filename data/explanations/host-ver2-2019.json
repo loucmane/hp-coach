@@ -1,7 +1,7 @@
 {
   "host-ver2-2019-kvant1-KVA-013": {
     "solution_path": "2⁶ = 64. 3⁴ = 81. 81 > 64 — B.",
-    "technique": "Direkt utvärdering av små potenser.",
+    "technique": "För potenser med olika bas och exponent: utvärdera båda direkt när siffrorna är hanterbara — här 2^6 = 64 mot 3^4 = 81 ger II större än I (B).",
     "pitfall": null,
     "distractors": [
       {
@@ -22,7 +22,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424837152
+      "generated_at": 1778424837152,
+      "pedagogy_regenerated_at": 1778506344249,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "host-ver2-2019-kvant1-KVA-014": {
@@ -53,7 +55,7 @@
   },
   "host-ver2-2019-kvant1-KVA-015": {
     "solution_path": "Båda trianglar är 3-4-5-typ (skalenligt 6-8-10 och 9-12-15). Båda är rätvinkliga; största vinkel = 90° i båda. Lika — C.",
-    "technique": "Skalenliga trianglar har samma vinklar.",
+    "technique": "Vinklar är skalinvarianta — likformiga trianglar (här 6-8-10 och 9-12-15, båda 3-4-5-skala) har identiska vinklar, alltså är I lika med II (C).",
     "pitfall": null,
     "distractors": [
       {
@@ -74,12 +76,14 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424837152
+      "generated_at": 1778424837152,
+      "pedagogy_regenerated_at": 1778506344249,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "host-ver2-2019-kvant1-KVA-016": {
     "solution_path": "I: 3(x+y) + 3(-x-y) = 3x + 3y - 3x - 3y = 0. II: -3. 0 > -3 — A.",
-    "technique": "Distribuera; konstantvärde avslöjas.",
+    "technique": "När uttrycket innehåller a(x+y) + a(−x−y) eller liknande symmetrisk struktur kancellerar variablerna helt — konstanten kvar (här 0) jämförs direkt: 0 är större än −3 ⇒ A.",
     "pitfall": null,
     "distractors": [
       {
@@ -100,7 +104,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424837152
+      "generated_at": 1778424837152,
+      "pedagogy_regenerated_at": 1778506344249,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "host-ver2-2019-kvant1-KVA-017": {
@@ -260,56 +266,56 @@
     "technique": "Modulär aritmetik: kontrollera båda villkor med modulo-operatorn."
   },
   "host-ver2-2019-kvant1-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro 30 funkar.",
-        "why_wrong": "35% av 30 = 10,5 (icke-heltal)."
+        "why_tempting": "Det är lätt att tro 30 funkar eftersom 35% av 30 ser ‘rund’ ut.",
+        "why_wrong": "35\\%\\cdot 30 = 10{,}5 — inte ett heltal eftersom 30 inte är delbart med 20."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 35.",
-        "why_wrong": "35% av 35 = 12,25 (icke-heltal)."
+        "why_tempting": "Snabbsvar är ofta 35 eftersom siffran matchar procenttalet.",
+        "why_wrong": "35\\%\\cdot 35 = 12{,}25 — kravet är delbarhet med 20, inte att talet ska likna procentsatsen."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 45.",
-        "why_wrong": "35% av 45 = 15,75 (icke-heltal)."
+        "why_tempting": "Många stannar vid 45 efter att ha kontrollerat de mindre alternativen ytligt.",
+        "why_wrong": "35\\%\\cdot 45 = 15{,}75 — 45 är inte delbart med 20, vilket är det enda som garanterar heltal här."
       }
     ],
     "pitfall": null,
-    "solution_path": "35% = 7/20. För heltal måste x vara delbart med 20. Av alternativen: 40.",
-    "technique": "35% = 7/20; multipel av 20 ger heltal."
+    "solution_path": "Heltalsvillkoret styrs av nämnaren när procenten skrivs förkortat: 35\\%=\\frac{35}{100}=\\frac{7}{20}. För att \\frac{7}{20}\\cdot x ska vara heltal måste x vara delbart med 20, eftersom täljaren 7 är primt mot 20. Bland alternativen är endast 40 delbart med 20.",
+    "technique": "Procent som bråk: 35\\%=\\frac{7}{20} — när p% av x ska bli heltal måste x vara delbart med förenklade bråkets nämnare.",
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    }
   },
   "host-ver2-2019-kvant1-XYZ-005": {
-    "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel och få 50°.",
-        "why_wrong": "v = 67°."
+        "why_tempting": "Det är lätt att avläsa fel sida av yttervinkeln och få 50°.",
+        "why_wrong": "50° är yttervinkelns komplement, inte yttervinkeln själv — rätt regel ger v = 67^\\circ."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta avrundning åt 63°.",
-        "why_wrong": "Resultatet är 67°."
+        "why_tempting": "Snabbsvar är ofta 63° om man avrundar fel led i kedjan.",
+        "why_wrong": "63° kommer av att en deltvinkel räknats utan yttervinkelregeln; rätt summering ger 67^\\circ."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 77°.",
-        "why_wrong": "v = 67°."
+        "why_tempting": "Första instinkten är att ta supplementvinkeln till 67° och hamna på 113°…men då fastnar man oftare på 77°.",
+        "why_wrong": "77° är 10° fel från 67° — typiskt om man räknar 180^\\circ - (a+b) med ett vinkelpar i fel triangel."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figurens vinkelförhållanden: v = 67°.",
-    "technique": "Vinkelräkning från figur."
+    "solution_path": "Identifiera den triangel där två vinklar är kända ur figuren. Vinkelsumman ger den tredje via 180^\\circ-(a+b), och en yttervinkel = summan av de två icke-angränsande inre vinklarna. Den kedjan landar på v = 67^\\circ.",
+    "technique": "Trianglar i samma figur: använd vinkelsumma 180° plus yttervinkelregeln för att slingra runt mellan de inre och yttre vinklarna.",
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    }
   },
   "host-ver2-2019-kvant1-XYZ-006": {
     "_meta": {
@@ -703,30 +709,30 @@
     "technique": "Längdomvandling."
   },
   "host-ver2-2019-kvant2-XYZ-002": {
-    "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa tecken på intercept.",
-        "why_wrong": "Intercept +3."
+        "why_tempting": "Det är lätt att tappa tecken på m och skriva −3.",
+        "why_wrong": "Linjen skär y-axeln på den positiva sidan, alltså m = +3, inte −3."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att tappa minus på lutning.",
-        "why_wrong": "Lutning −1,5."
+        "why_tempting": "Snabbsvar är ofta att tappa minustecknet på lutningen.",
+        "why_wrong": "En linje som faller åt höger har k<0; k=+1{,}5 ger en stigande linje, fel riktning."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid båda fel.",
-        "why_wrong": "Lutning −1,5; intercept +3."
+        "why_tempting": "Första instinkten är att hugga både k och m positivt när man räknar belopp.",
+        "why_wrong": "Tecknen är k=-1{,}5 och m=+3 — D blandar fel tecken med fel intercept i båda leden."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figuren: lutning −1,5, intercept +3.",
-    "technique": "Linje från graf."
+    "solution_path": "Avläs y-axelsskärningen — linjen skär y-axeln i 3, så m=3. Linjen lutar nedåt åt höger, alltså är k negativt; lutningens belopp läses som Δy/Δx på två gallerpunkter och blir 1,5. Ekvationen är y = -1{,}5x + 3, alternativ B.",
+    "technique": "Linje från graf: läs av intercept m direkt på y-axeln, och bestäm tecknet på lutningen k från om linjen lutar uppåt eller nedåt åt höger.",
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    }
   },
   "host-ver2-2019-kvant2-XYZ-003": {
     "_meta": {
@@ -781,56 +787,56 @@
     "technique": "Översätt 'sammanlagd' = summan av båda."
   },
   "host-ver2-2019-kvant2-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 1/4.",
-        "why_wrong": "33%."
+        "why_tempting": "Det är lätt att räkna 65\\%-32\\%=33\\% och fel-runda nedåt till 1/4.",
+        "why_wrong": "33\\% ligger på 1/3, inte 1/4 — 1/4 är 25%."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 1/2.",
-        "why_wrong": "33%."
+        "why_tempting": "Snabbsvar är ofta att man bara tar 32% och fördubblar till ungefär hälften.",
+        "why_wrong": "Hälften = 50%, men spannet Ida–Albert är 33%; 1/2 motsvarar ingen av trösklarna."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2/3.",
-        "why_wrong": "33%."
+        "why_tempting": "Många stannar vid 65% och tolkar det som andelen mellan trösklarna.",
+        "why_wrong": "65% är andelen längre än Ida, inte andelen mellan Ida och Albert — det leder till 33\\%."
       }
     ],
     "pitfall": null,
-    "solution_path": "65−32 = 33% ≈ 1/3.",
-    "technique": "Procent-mellan."
-  },
-  "host-ver2-2019-kvant2-XYZ-007": {
+    "solution_path": "Vänd andelarna till percentil-position. 65% längre än Ida betyder att 100-65=35 procent är kortare eller lika med Ida; 32% längre än Albert betyder att 100-32=68 procent är kortare eller lika med Albert. Andelen mellan dem är 68\\%-35\\%=33\\%\\approx\\frac{1}{3}.",
+    "technique": "Procent över/under en gräns: om p% är längre än X är (100−p)% kortare än X — vänd andelen innan du jämför två trösklar.",
     "_meta": {
       "generated_at": 1778415638489,
       "model": "claude-opus-4-7"
-    },
+    }
+  },
+  "host-ver2-2019-kvant2-XYZ-007": {
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna fordon istället.",
-        "why_wrong": "Frågan är hjul."
+        "why_tempting": "Det är lätt att räkna fordon istället för hjul: 2 MC av 8 fordon ger 1/4.",
+        "why_wrong": "Frågan väljer ett HJUL, inte ett fordon — viktningen med 2 vs 4 hjul flyttar svaret från \\frac{1}{4} till \\frac{1}{5}."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 1/3.",
-        "why_wrong": "4/20 = 1/5."
+        "why_tempting": "Snabbsvar är ofta 1/3 från ‘2 MC mot 4 bilar ≈ 1/3’.",
+        "why_wrong": "Andelen MC är \\frac{2}{6}=\\frac{1}{3} men hjul-viktningen halverar den till 1/5."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 1/2.",
-        "why_wrong": "1/5."
+        "why_tempting": "Första instinkten är 1/2 om man förväntar sig ‘ungefär hälften’.",
+        "why_wrong": "Bilarnas 16 hjul dominerar — endast \\frac{4}{20} av hjulen sitter på en motorcykel."
       }
     ],
     "pitfall": null,
-    "solution_path": "Bilar 16 hjul, MC 4 hjul. P(MC) = 4/20 = 1/5.",
-    "technique": "Sannolikhet räknat på rätt enhet."
+    "solution_path": "Räkna alla hjul: 4\\cdot 4 + 2\\cdot 2 = 16+4 = 20 totalt. Gynnsamma utfall är hjulen på motorcyklarna: 2\\cdot 2 = 4. Sannolikheten blir \\frac{4}{20}=\\frac{1}{5}.",
+    "technique": "Sannolikhet via gynnsamma/möjliga: räkna utfall i den enhet frågan handlar om (hjul, inte fordon) — vikta varje typ med antalet hjul.",
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    }
   },
   "host-ver2-2019-kvant2-XYZ-008": {
     "_meta": {
@@ -859,30 +865,30 @@
     "technique": "Punkt på linje: substitution."
   },
   "host-ver2-2019-kvant2-XYZ-009": {
-    "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "1:√3.",
-        "why_wrong": "Frågan är lång:diagonal."
+        "why_tempting": "Det är lätt att blanda ihop kort:diagonal och svara 1:\\sqrt{3}.",
+        "why_wrong": "Frågan begär lång:diagonal, alltså \\sqrt{2}:\\sqrt{3}, inte 1:\\sqrt{3}."
       },
       {
         "letter": "B",
-        "why_tempting": "2:3.",
-        "why_wrong": "√2 och √3, inte 2 och 3."
+        "why_tempting": "Snabbsvar är ofta 2:3 om man tappar kvadratrötterna.",
+        "why_wrong": "Förhållandet är mellan \\sqrt{2} och \\sqrt{3} — det går inte att kvadrera ena ledet utan att kvadrera andra."
       },
       {
         "letter": "C",
-        "why_tempting": "√2:2.",
-        "why_wrong": "Diagonal är √3, inte 2."
+        "why_tempting": "Många stannar vid \\sqrt{2}:2 om de förväxlar diagonalen med dubbla korta sidan.",
+        "why_wrong": "Diagonalen är \\sqrt{3} (≈1,73), inte 2 — den växer enligt Pythagoras, inte enligt dubbleringen."
       }
     ],
     "pitfall": null,
-    "solution_path": "A4: lång:diagonal = √2:√3.",
-    "technique": "A4-diagonal."
+    "solution_path": "A4 har lång:kort = \\sqrt{2}:1. Diagonalen via Pythagoras: d=\\sqrt{(\\sqrt{2})^2+1^2}=\\sqrt{3}. Alltså är lång:diagonal = \\sqrt{2}:\\sqrt{3}, alternativ D.",
+    "technique": "Diagonal i rektangel via Pythagoras: när sidornas förhållande är a:b blir lång:diagonal = a:\\sqrt{a^2+b^2}.",
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    }
   },
   "host-ver2-2019-kvant2-XYZ-010": {
     "_meta": {
@@ -909,32 +915,6 @@
     "pitfall": null,
     "solution_path": "Värsta-bästa val: maximera genom att DIVIDERA i varje steg där det ökar och MULTIPLICERA där det också ökar. Slutvärde z = 10¹⁰.",
     "technique": "Optimera kedjeekvationer: välj operation per steg för att maximera resultatet."
-  },
-  "host-ver2-2019-kvant2-XYZ-011": {
-    "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att få 3/5.",
-        "why_wrong": "5/6."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 2/3.",
-        "why_wrong": "5/6."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Många stannar vid 4/5.",
-        "why_wrong": "5/6."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Resultatet: 5/6.",
-    "technique": "Sammansatt bråk."
   },
   "host-ver2-2019-kvant2-XYZ-012": {
     "_meta": {

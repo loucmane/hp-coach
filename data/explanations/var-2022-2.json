@@ -105,7 +105,7 @@
   },
   "var-2022-2-kvant1-KVA-021": {
     "solution_path": "16 < x < 25, x ej delbart med 3 eller 5. Möjliga: 17, 19, 22, 23 = 4 tal. y delbart med 2: 18, 20, 22, 24 = 4 tal. Lika — C.",
-    "technique": "Räkna giltiga heltal i intervallet via villkor.",
+    "technique": "För räkning av heltal i ett intervall under villkor: enumerera kandidaterna och filtrera — här ger båda villkoren 4 giltiga tal (17, 19, 22, 23 mot 18, 20, 22, 24), alltså lika antal (C).",
     "pitfall": null,
     "distractors": [
       {
@@ -126,7 +126,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425376103
+      "generated_at": 1778425376103,
+      "pedagogy_regenerated_at": 1778506526558,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2022-2-kvant1-XYZ-001": {
@@ -182,30 +184,30 @@
     "technique": "Bråkaddition."
   },
   "var-2022-2-kvant1-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 3.",
-        "why_wrong": "4."
+        "why_tempting": "Det är lätt att glömma att radien räknas dubbelt om kordan korsar centrum, och svara 3.",
+        "why_wrong": "3 cm kommer av att man missar en radie i Pythagoras-uppställningen — rätt summa ger x=4 cm."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta √7.",
-        "why_wrong": "4."
+        "why_tempting": "Snabbsvar är ofta \\sqrt{7} om man räknar r^2+(2r)^2=1+4=5 fel som 7.",
+        "why_wrong": "Pythagoras-uppställningen här ger ett heltal x=4, inte en kvadratrot."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 3√2.",
-        "why_wrong": "4."
+        "why_tempting": "Första instinkten är 3\\sqrt{2} om man förväxlar diagonalen i en kvadrat med Pythagoras här.",
+        "why_wrong": "Diagonalen i en sida-3 kvadrat är 3\\sqrt{2} ≈ 4,24 — men figurens triangel ger exakt 4 cm."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figurens dimensioner: x = 4 cm.",
-    "technique": "Pythagoras eller likformighet."
+    "solution_path": "Markera radien r=1 cm från M till varje tangerings- eller skärningspunkt — det skapar en rätvinklig triangel med en sida som matchar figurens kända mått. Pythagoras på den triangeln ger x^2 = a^2 - b^2 med figurens längder, vilket slutar på x = 4 cm.",
+    "technique": "Cirkel + rät vinkel: radie vinkelrätt mot tangent eller korda ger en rätvinklig triangel där Pythagoras låser den okända sidan.",
+    "_meta": {
+      "generated_at": 1778416807595,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2022-2-kvant1-XYZ-005": {
     "_meta": {
@@ -546,8 +548,8 @@
     }
   },
   "var-2022-2-kvant2-KVA-019": {
-    "solution_path": "x < y. I - II = (x+y) - (x-y) = 2y. Tecknet på 2y beror på y. Om y > 0: I > II. Om y < 0: II > I. Om y = 0 (x < 0 då): lika. D.",
-    "technique": "Skillnaden mellan summa och differens = 2y; tecknet på y avgör.",
+    "solution_path": "I − II = (x + y) − (x − y) = 2y, så jämförelsen hänger helt på tecknet på y. Eftersom villkoret x mindre än y inte fixerar y:s tecken (t.ex. y = 1 ger I större, y = −1 med x = −2 ger II större), är jämförelsen inte avgörbar — D.",
+    "technique": "När skillnaden mellan två kvantiteter reduceras till en fri parameter (här 2y), avgör tecknet på den parametern verdikten; om parametern kan vara både positiv och negativ är informationen otillräcklig — D.",
     "pitfall": null,
     "distractors": [
       {
@@ -568,12 +570,14 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425376103
+      "generated_at": 1778425376103,
+      "pedagogy_regenerated_at": 1778506526558,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2022-2-kvant2-KVA-020": {
     "solution_path": "Areor: π·25 + π·400 = 425π. π·100 + π·225 = 325π. 425π > 325π — A.",
-    "technique": "Cirkelarea proportionell mot r²; summan är fri.",
+    "technique": "Eftersom area ∝ r^2 är konvex i r, dominerar ytterligheter över mellanvärden i en summa — här ger 5^2 + 20^2 = 425 större än 10^2 + 15^2 = 325, alltså A.",
     "pitfall": null,
     "distractors": [
       {
@@ -594,7 +598,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425376103
+      "generated_at": 1778425376103,
+      "pedagogy_regenerated_at": 1778506526558,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2022-2-kvant2-KVA-022": {
@@ -728,30 +734,30 @@
     "technique": "Lös ut b ur proportion."
   },
   "var-2022-2-kvant2-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna 145°.",
-        "why_wrong": "130°."
+        "why_tempting": "Det är lätt att räkna ett 15°-steg för mycket och få 145°.",
+        "why_wrong": "145° kommer av att man adderar en extra 15°-vinkel i kedjan; rätt summa är 130^\\circ."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 150°.",
-        "why_wrong": "130°."
+        "why_tempting": "Snabbsvar är ofta 150° om man tar en likbelägen vinkel istället för yttervinkel.",
+        "why_wrong": "150° är en supplement-vinkel till 30°, inte yttervinkeln till figurens triangel — den är 130^\\circ."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 160°.",
-        "why_wrong": "130°."
+        "why_tempting": "Första instinkten är att avrunda till närmsta tiotal och hamna på 160°.",
+        "why_wrong": "160° är 50° fel om man tar fel par av inre vinklar; yttervinkelregeln ger 130^\\circ."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figuren: v = 130°.",
-    "technique": "Vinkelräkning."
+    "solution_path": "Identifiera vinkelparet vid v i figuren. Antingen är v en yttervinkel till en triangel med kända inre vinklar (v=a+b), eller v är supplement till en avläsbar vinkel (v=180^\\circ-c). Kedjan från figurens vinklar slutar på v=130^\\circ.",
+    "technique": "Yttervinkel + supplementvinklar: en yttervinkel till en triangel = summan av de två icke-angränsande inre vinklarna, och rakvinkelsumman 180° fyller resten.",
+    "_meta": {
+      "generated_at": 1778416807595,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2022-2-kvant2-XYZ-008": {
     "_meta": {
@@ -1694,26 +1700,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att A>F implicerar A>E indirekt.",
-        "why_wrong": "(1) säger inget om Elsa."
+        "why_tempting": "Det är lätt att tro att A>F i (1) ensam räcker som en transitiv smitta på A vs E.",
+        "why_wrong": "(1) säger inget om Elsa — Alma kan vara längre eller kortare än henne."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att F<E är relevant.",
-        "why_wrong": "(2) säger inget om Alma."
+        "why_tempting": "Snabbsvar är ofta att (2):s F<E ensam räcker när den nämner Elsa.",
+        "why_wrong": "(2) säger inget om Alma — ingen koppling till henne."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två villkor om Freja kopplar ihop A och E.",
-        "why_wrong": "Båda är kopplade till Freja men A och E är fria gentemot varandra."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet — två villkor om Freja borde koppla A och E.",
+        "why_wrong": "Båda är kopplade till Freja men A och E är fria gentemot varandra: båda större än F räcker inte."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Inget villkor binder A och E direkt."
+        "why_tempting": "Om du tolkade båda som var för sig tillräckliga skulle du landa här.",
+        "why_wrong": "Inget villkor ensamt binder A och E direkt — vart för sig stupar båda."
       }
     ],
-    "technique": "Relationer via en mellanperson (X>Y, Z>Y) ger ingen ordning mellan X och Z.",
+    "technique": "Regel för ordnings-NOG via mellanled: när två personer båda jämförs mot en tredje (A>F och E>F) lämnas ordningen mellan A och E öppen — sådana villkor är otillräckliga, även tillsammans.",
     "pitfall": "\"Båda större än samma referens\" lämnar ordningen mellan dem öppen.",
     "_meta": {
       "model": "claude-opus-4-7",

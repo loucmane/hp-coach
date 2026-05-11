@@ -1,7 +1,7 @@
 {
   "host-ver1-2019-kvant1-KVA-013": {
     "solution_path": "5,7·10⁰ = 5,7·1 = 5,7. Lika med II = 5,7 — C.",
-    "technique": "10⁰ = 1; multiplicera direkt.",
+    "technique": "a^0 = 1 för alla a inte lika med 0; uttrycket a·10^0 är alltså identiskt lika med a — här ger 5,7 lika med 5,7, C.",
     "pitfall": null,
     "distractors": [
       {
@@ -22,7 +22,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424837151
+      "generated_at": 1778424837151,
+      "pedagogy_regenerated_at": 1778506344247,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "host-ver1-2019-kvant1-KVA-014": {
@@ -53,7 +55,7 @@
   },
   "host-ver1-2019-kvant1-KVA-015": {
     "solution_path": "I: triangel 3-4-5 är rätvinklig (3² + 4² = 5²); största vinkel = 90°. II: liksidig triangel; alla vinklar 60°. 90° > 60° — A.",
-    "technique": "Pythagoras 3-4-5 ger rätvinklig triangel; liksidig har 60°.",
+    "technique": "Största vinkeln ligger mittemot största sidan; en 3-4-5-triangel är rätvinklig (90°), en liksidig har 60° — alltså är I större än II (A).",
     "pitfall": null,
     "distractors": [
       {
@@ -74,12 +76,14 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424837151
+      "generated_at": 1778424837151,
+      "pedagogy_regenerated_at": 1778506344247,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "host-ver1-2019-kvant1-KVA-016": {
     "solution_path": "I: 4(a+1) - 4(a-1) = 4a + 4 - 4a + 4 = 8. II: 4(a-1) + 4(1-a) = 4a - 4 + 4 - 4a = 0. 8 > 0 — A.",
-    "technique": "Distribuera och kollapsa; konstantvärden avslöjas.",
+    "technique": "När uttrycken är linjärkombinationer av samma variabel, distribuera så att variabeln kancellerar — kvarvarande konstanter avgör; här ger I = 8 mot II = 0 verdict A.",
     "pitfall": null,
     "distractors": [
       {
@@ -100,7 +104,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424837151
+      "generated_at": 1778424837151,
+      "pedagogy_regenerated_at": 1778506344247,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "host-ver1-2019-kvant1-KVA-017": {
@@ -286,30 +292,30 @@
     "technique": "Linjär ekvation: utveckla, samla, lös."
   },
   "host-ver1-2019-kvant1-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel och få 50°.",
-        "why_wrong": "v = 67°."
+        "why_tempting": "Det är lätt att glömma yttervinkelsteget och få 50°.",
+        "why_wrong": "50° hoppar över ett mellansteg — yttervinkeln till en triangel = summan av de två icke-angränsande inre vinklarna, vilket leder till v = 67^\\circ."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta avrundning åt 63°.",
-        "why_wrong": "Resultatet är 67°."
+        "why_tempting": "Snabbsvar är ofta 63° om man räknar med fel vinkelpar.",
+        "why_wrong": "63° kommer av att man tar fel triangel — rätt kedja genom yttervinkeln ger 67^\\circ."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 77°.",
-        "why_wrong": "v = 67°."
+        "why_tempting": "Första instinkten är att addera istället för subtrahera och få 77°.",
+        "why_wrong": "77° kommer av tecknet fel i vinkelsumman; rätt riktning ger v = 67^\\circ."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figurens vinkelförhållanden: v = 67°.",
-    "technique": "Vinkelräkning från figur."
+    "solution_path": "Sök en kedja från givna vinklar till v via triangelns vinkelsumma. Lös trianglarna: figurens kända vinklar ger v genom 180^\\circ - (a+b) där a och b läses direkt ur figuren — kedjan landar på v = 67^\\circ.",
+    "technique": "Vinkelräkning i sammansatt figur: använd vinkelsumma 180° i triangel plus yttervinkelregeln för att slingra vinkeln från det kända till det sökta.",
+    "_meta": {
+      "generated_at": 1778415638489,
+      "model": "claude-opus-4-7"
+    }
   },
   "host-ver1-2019-kvant1-XYZ-007": {
     "_meta": {

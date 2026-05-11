@@ -520,8 +520,8 @@
     }
   },
   "var-2016-kvant2-KVA-020": {
-    "solution_path": "Erik om 20 år = E + 20 = 4·D (Davids nuvarande). Vi har en obekant + en relation. E nuvarande är Eriks ålder, men ej känd direkt. Antag E = 4D - 20. Erik och David syskon ⇒ ingen exakt åldersrelation utan mer info; men frågan är D vs 4. Med E ≥ 0 (rimligt åldersantagande), 4D - 20 ≥ 0 → D ≥ 5. D kan vara 5+, alltid ≥ 5 > 4. A.",
-    "technique": "Åldersgåtor: lös ut och tillämpa rimliga gränser.",
+    "solution_path": "Låt E vara Eriks nuvarande ålder; om 20 år har E blivit E + 20 = 4·D, alltså E = 4D − 20. För att E är minst 0 (Erik existerar) krävs D är minst 5. Eftersom D är minst 5 är D större än 4 i alla giltiga fall — A.",
+    "technique": "I åldersgåtor med ojämlikheter: skriv villkoret som E = f(D) och pålägg den implicita gränsen E är minst 0 — det ger en nedre gräns på D som ofta avgör jämförelsen; här D är minst 5 större än 4 ⇒ A.",
     "pitfall": null,
     "distractors": [
       {
@@ -542,7 +542,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425152540
+      "generated_at": 1778425152540,
+      "pedagogy_regenerated_at": 1778506405222,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2016-kvant2-KVA-021": {
@@ -1652,26 +1654,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s direkta indextal är den enda fungerande.",
-        "why_wrong": "(2) ger samma index via procentminskning."
+        "why_tempting": "Det är lätt att tro att bara (1):s direkta indextal räcker ensamt.",
+        "why_wrong": "(2):s '35 % lägre' är samma utsaga som index=65 — även den räcker ensam."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2) är direktare.",
-        "why_wrong": "(1) räcker lika bra."
+        "why_tempting": "Snabbsvar är ofta att (2):s procentminskning är direktare och ensamt räcker.",
+        "why_wrong": "(1):s index=65 räcker lika bra: 27 650 000·0,65."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
+        "why_wrong": "Båda räcker var för sig eftersom de uttrycker exakt samma minskning."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan båda procentsatserna går det inte.",
-        "why_wrong": "Index 65 ⇔ 35 % lägre — ekvivalenta utsagor."
+        "why_tempting": "Det är frestande att läsa båda som otillräckliga när inga absoluta invånartal för 2000 ges.",
+        "why_wrong": "Index 65 ⇔ 35 % lägre — varje villkor räcker när basårets 27 650 000 är given."
       }
     ],
-    "technique": "Index och procentminskning är ekvivalenta — varje räcker.",
+    "technique": "Regel för index-NOG: ett indextal och 'X % lägre än basåret' är ekvivalenta formuleringar — varje räcker ensamt när basårets absoluta värde är känt.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",

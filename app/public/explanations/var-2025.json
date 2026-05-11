@@ -79,7 +79,7 @@
   },
   "var-2025-kvant1-KVA-020": {
     "solution_path": "Adam: 45/27 = 5/3 h. David: 40/25 = 8/5 h. 5/3 ≈ 1,667; 8/5 = 1,6. 1,667 > 1,6 — A.",
-    "technique": "Tid = sträcka/medelhastighet.",
+    "technique": "För att jämföra tider på olika cykelturer: tid = sträcka/medelhastighet → jämför kvoterna direkt eller korsmultiplicera; här ger 45/27 = 5/3 större än 40/25 = 8/5, alltså A.",
     "pitfall": null,
     "distractors": [
       {
@@ -100,7 +100,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425598325
+      "generated_at": 1778425598325,
+      "pedagogy_regenerated_at": 1778506563470,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2025-kvant1-KVA-022": {
@@ -338,30 +340,30 @@
     "technique": "Division av tiopotenser."
   },
   "var-2025-kvant1-XYZ-009": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa minustecken.",
-        "why_wrong": "−2 lutning."
+        "why_tempting": "Det är lätt att tappa minustecknet och välja en stigande linje med lutning 2.",
+        "why_wrong": "Lutningen är -2, alltså fallande åt höger — A stiger eller har fel tecken."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta lutning -1/2.",
-        "why_wrong": "−2."
+        "why_tempting": "Snabbsvar är ofta en linje med lutning -\\frac{1}{2} om man förväxlar koefficienten 2 med 1/2.",
+        "why_wrong": "Efter isolering är k=-2, alltså brant; -\\frac{1}{2} vore flack och negativ — fel branthet."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid annan graf.",
-        "why_wrong": "C."
+        "why_tempting": "Första instinkten är att välja en linje med rätt lutning men fel intercept.",
+        "why_wrong": "Lutning -2 räcker inte — y-skärning +2 måste också stämma; C matchar båda."
       }
     ],
     "pitfall": null,
-    "solution_path": "y = −2x+2; lutning −2, intercept +2.",
-    "technique": "Linje från ekvation."
+    "solution_path": "Isolera y: y+2x-2=0\\Rightarrow y=-2x+2, alltså k=-2 (brant fallande) och m=+2 (skär y-axeln uppåt). Sök grafen med dessa två egenskaper — alternativ C.",
+    "technique": "Linje från ekvation: isolera y till formen y=kx+m, läs av k (lutning) och m (intercept), matcha mot grafens riktning och y-skärning.",
+    "_meta": {
+      "generated_at": 1778416807595,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2025-kvant1-XYZ-010": {
     "_meta": {
@@ -754,30 +756,30 @@
     "technique": "Lös linjär."
   },
   "var-2025-kvant2-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 100.",
-        "why_wrong": "110."
+        "why_tempting": "Det är lätt att glömma ett litet hörnstycke och få 100.",
+        "why_wrong": "100 cm² är 10 cm² för litet — kontrollera att alla delar är med innan du summerar; total 110 cm²."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 105.",
-        "why_wrong": "110."
+        "why_tempting": "Snabbsvar är ofta 105 om man räknar med fel sidlängd i en triangel.",
+        "why_wrong": "5 cm² fel kommer typiskt av en sida som lästs 1 cm fel — sanna areadelar summerar till 110 cm²."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 115.",
-        "why_wrong": "110."
+        "why_tempting": "Första instinkten är att dubbelräkna en överlappande del och få 115.",
+        "why_wrong": "115 cm² är 5 för stort — ett område har räknats två gånger; korrekt summa är 110 cm²."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av figurens hörn: area = 110 cm².",
-    "technique": "Polygon area."
+    "solution_path": "Oregelbundna polygoner saknar en enskild formel — den transferbara tekniken är att dekomponera i rektanglar och rätvinkliga trianglar. Med figurens sidlängder summerar del-areorna till A_{tot} = 110 cm².",
+    "technique": "Polygon-area via dekomponering: dela sexhörningen i rektanglar och rätvinkliga trianglar; addera (eller subtrahera) areorna istället för att försöka en formel.",
+    "_meta": {
+      "generated_at": 1778416807595,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2025-kvant2-XYZ-007": {
     "_meta": {
@@ -832,30 +834,30 @@
     "technique": "Funktionskomposition."
   },
   "var-2025-kvant2-XYZ-009": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna fel sidor.",
-        "why_wrong": "A är korrekt."
+        "why_tempting": "Det är lätt att gissa rätvinklighet ur ‘ser ut som 90°’.",
+        "why_wrong": "Visuell uppskattning räcker inte — endast sidornas a^2+b^2=c^2 bevisar 90°-vinkeln. B uppfyller inte."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta annan triangel.",
-        "why_wrong": "A."
+        "why_tempting": "Snabbsvar är ofta att välja triangeln med 3-4-5-lika proportioner.",
+        "why_wrong": "Om C:s sidor inte exakt uppfyller a^2+b^2=c^2 är den inte rätvinklig — endast A passar."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid felaktiga sidor.",
-        "why_wrong": "A."
+        "why_tempting": "Första instinkten är att välja en likbent triangel.",
+        "why_wrong": "Likbenthet säger inget om rätvinklighet — testa a^2+b^2=c^2 på sidlängderna istället."
       }
     ],
     "pitfall": null,
-    "solution_path": "Av sidlängderna i alternativ A: Pythagoras stämmer (a² + b² = c²).",
-    "technique": "Pythagoras-test."
+    "solution_path": "Läs av sidlängderna i varje alternativ och kvadrera. För alternativ A stämmer Pythagoras-likheten: a^2+b^2=c^2 där c är den längsta sidan. Övriga alternativ ger olikhet och kan strykas.",
+    "technique": "Pythagoras-test för rätvinklighet: en triangel är rätvinklig omm den längsta sidan c uppfyller a^2+b^2=c^2 — testa varje alternativ med dess avlästa sidlängder.",
+    "_meta": {
+      "generated_at": 1778416807595,
+      "model": "claude-opus-4-7"
+    }
   },
   "var-2025-kvant2-XYZ-010": {
     "_meta": {
@@ -1872,27 +1874,27 @@
     }
   },
   "var-2025-kvant2-NOG-028": {
-    "solution_path": "Med (1) ensam: median 0 bevaras endast om 0 är kvar och två tal från {−10,−8,6,7} tas bort så att medianen av de återstående tre är 0. Fyra par fungerar: (−10,6), (−10,7), (−8,6), (−8,7) — inte unikt. Med (2) ensam: ursprungligt medelvärde −1; medelvärdet ändras om paret summerar till ≠ −2. Många par uppfyller det — inte unikt. Tillsammans: från (1):s fyra par utesluter (2) bara (−8,6) (summa −2), kvar tre par: (−10,6), (−10,7), (−8,7). Paret kan fortfarande inte avgöras unikt — E.",
+    "solution_path": "Inget villkor avgör paret entydigt — inte heller tillsammans. (1) ensamt: median 0 bevaras av fyra par från {−10,−8,6,7} (par med 0 kvar). (2) ensamt: ursprungligt medel −1, så medelvärdet ändras om paret summerar ≠ −2 — många par uppfyller det. Tillsammans utesluts bara (−8, 6) (summa −2), kvar tre par som fortfarande inte går att skilja.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att medianvillkoret räcker när 0 är ett tydligt center.",
-        "why_wrong": "(1) tillåter fyra par som alla bevarar medianen 0."
+        "why_tempting": "Det är lätt att tro att medianvillkoret i (1) ensam räcker när 0 är ett tydligt center.",
+        "why_wrong": "(1) tillåter fyra par som alla bevarar medianen 0 — alltså otillräcklig."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att medelvärdesvillkoret är restriktivare.",
-        "why_wrong": "(2) ger en summa-restriktion x+y≠−2 som lämnar många lösningar."
+        "why_tempting": "Snabbsvar är ofta att medelvärdesvillkoret i (2) ensam räcker eftersom det är restriktivare.",
+        "why_wrong": "(2) ger bara x+y≠−2 och lämnar många lösningar — otillräcklig ensam."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två statistiska villkor måste låsa paret.",
-        "why_wrong": "Skärningen lämnar fortfarande {−10, 6} och {−8, 7} — inte unikt."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet — två statistiska villkor måste väl låsa paret.",
+        "why_wrong": "Tillsammans kvarstår {−10,6}, {−10,7} och {−8,7} — inte unikt."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du missar att fyra par passar (1) ensamt landar du här.",
-        "why_wrong": "Median-bevarande lämnar 4 par; medel-ändring lämnar fler — inget villkor är ensamt tillräckligt."
+        "why_tempting": "Om du tolkade båda som var för sig tillräckliga och missade att fyra par passar (1) skulle du landa här.",
+        "why_wrong": "Median-bevarande lämnar 4 par, medel-ändring lämnar fler — inget villkor är ensamt tillräckligt."
       }
     ],
     "technique": "Räkna alltid antalet kandidater efter varje villkor — är det >1, är villkoret otillräckligt.",

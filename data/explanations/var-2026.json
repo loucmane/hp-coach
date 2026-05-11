@@ -157,7 +157,7 @@
   },
   "var-2026-kvant1-KVA-022": {
     "solution_path": "f(a) = 0, m > 0, a > 0. ka + m = 0 → k = -m/a < 0 (eftersom m > 0, a > 0). k < 0 — B.",
-    "technique": "Linjär funktion med positivt y-skär och positivt nollställe måste avta.",
+    "technique": "En linjär funktion med positivt y-skär (m större än 0) och positivt nollställe (a större än 0) måste avta — lutningen k = −m/a är därför mindre än 0, alltså B.",
     "pitfall": null,
     "distractors": [
       {
@@ -178,7 +178,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425598327
+      "generated_at": 1778425598327,
+      "pedagogy_regenerated_at": 1778506563472,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2026-kvant1-XYZ-001": {
@@ -443,7 +445,7 @@
   },
   "var-2026-kvant2-KVA-016": {
     "solution_path": "1,5x = 0,5y → y = 3x. 3x = y. Lika — C.",
-    "technique": "Procent ger linjär relation; 3x = y entydigt.",
+    "technique": "Procentvärden översätts direkt till linjär ekvation: 150 % av x = 50 % av y ger 1,5x = 0,5y → y = 3x; så kvantiteterna 3x och y är lika (C).",
     "pitfall": null,
     "distractors": [
       {
@@ -464,7 +466,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425598327
+      "generated_at": 1778425598327,
+      "pedagogy_regenerated_at": 1778506563472,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
     }
   },
   "var-2026-kvant2-KVA-017": {
@@ -1648,26 +1652,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att fastna i procenträkningen i (1) och tro att det är den enda vägen.",
-        "why_wrong": "(2) räcker också: 6 tomtar är 30 % av samlingen, så hela samlingen är 20."
+        "why_tempting": "Det är lätt att tolka (1) som ensamt tillräcklig och avfärda (2):s konkreta tal.",
+        "why_wrong": "(2) räcker också: 6 tomtar är 30 % av samlingen, så n=20 entydigt."
       },
       {
         "letter": "B",
-        "why_tempting": "Många föredrar konkreta tal (6 stycken) och avfärdar procentvillkoret.",
-        "why_wrong": "(1) ger n=20 lika entydigt via en linjär ekvation."
+        "why_tempting": "Snabbsvar är ofta att konkreta tal (6 stycken) i (2) ensam räcker och procentvillkor är ofullständigt.",
+        "why_wrong": "(1) räcker lika entydigt: n+5=1,25n → n=20."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda när bägge talar om samma okända.",
-        "why_wrong": "Båda ensamma fixerar n=20 — extra information behövs inte."
+        "why_wrong": "Båda räcker var för sig och fixerar n=20 ensamt — extra information behövs inte."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att en enda procentutsaga inte räcker.",
-        "why_wrong": "En procentökning + den absoluta ändringen räcker för att lösa ut totalen."
+        "why_tempting": "Det är frestande att läsa båda som otillräckliga när en utsaga är procentbaserad och den andra fraktion + absolut.",
+        "why_wrong": "En procentökning + absolut ändring räcker för att lösa ut totalen; även 6 = 3/10·n gör det."
       }
     ],
-    "technique": "Översätt \"x % fler\" och \"andelen är y\" till linjära ekvationer i samma okända.",
+    "technique": "Regel för NOG om totalmängd: när en utsaga ger en procentförändring + absolut ändring, ELLER en bråkdel + absolut tal som motsvarar resterande del, räcker den ensamt — varje formulering ger en linjär ekvation i n.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
