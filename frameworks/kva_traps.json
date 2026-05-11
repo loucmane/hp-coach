@@ -3,7 +3,7 @@
   "family": "kva_traps",
   "version": 1,
   "authored_at": "2026-05-11",
-  "notes": "v0 — synthesized from 8 extracted candidates + corpus pass over 328 KVA explanations. KVA option taxonomy (A=I>II, B=II>I, C=I=II, D=otillräcklig info) is the foundational meta-rule and is NOT cataloged as a trap; it is assumed. Entries are organized roughly: 001–012 = D-verdict / free-parameter traps (highest leverage — students consistently pick A/B/C when D is correct), 013–022 = sign / parity / direction traps, 023–038 = computation-shortcut and domain-formula traps.",
+  "notes": "v0 — synthesized from 8 extracted candidates + corpus pass over 328 KVA explanations. KVA option taxonomy (A=I>II, B=II>I, C=I=II, D=otillräcklig info) is the foundational meta-rule and is NOT cataloged as a trap; it is assumed. Entries are organized roughly: 001–012 = D-svaret / free-parameter traps (highest leverage — students consistently pick A/B/C when D is correct), 013–022 = sign / parity / direction traps, 023–038 = computation-shortcut and domain-formula traps.",
   "entries": [
     {
       "id": "KVA-TRAP-001",
@@ -22,7 +22,7 @@
       "id": "KVA-TRAP-002",
       "pattern_description": "Student treats a sum-equality (e.g. y + z = 0, or x + y = k) as if it pinned down each individual term.",
       "why_it_occurs": "Equations 'feel' like they should determine the variables. But one equation in two unknowns only fixes a linear combination — each term is still free along the constraint line.",
-      "common_distractor_signature": "Picks A or B based on a chosen specific solution (e.g. setting y = -z and assuming z > 0), missing that the sign of the free variable can flip the verdict.",
+      "common_distractor_signature": "Picks A or B based on a chosen specific solution (e.g. setting y = -z and assuming z > 0), missing that the sign of the free variable can flip the svaret.",
       "countermeasure": "Räkna frihetsgrader: antal okända − antal oberoende ekvationer. Om resultatet > 0 är minst en variabel fri, och då måste du testa minst två tecken-varianter innan du vågar säga A/B/C.",
       "example_questions": [
         "host-2015-kvant1-KVA-014",
@@ -104,7 +104,7 @@
       "id": "KVA-TRAP-008",
       "pattern_description": "Geometric problem with a 'distinguishing' feature (e.g. 'rätvinklig triangel', 'likbent') has multiple valid configurations — student commits to one.",
       "why_it_occurs": "'En rätvinklig triangel' sounds like ONE triangle. But the right angle could be at any of three vertices, and 'likbent' has three choices for which side is the base — each configuration gives different angles/sides.",
-      "common_distractor_signature": "Picks A/B/C by drawing the most symmetric or 'obvious' configuration, missing that other configurations satisfy the same description but yield a different verdict.",
+      "common_distractor_signature": "Picks A/B/C by drawing the most symmetric or 'obvious' configuration, missing that other configurations satisfy the same description but yield a different svaret.",
       "countermeasure": "Vid geometriska beskrivningar: lista ALLA möjliga konfigurationer av den utmärkande egenskapen (var sitter rätvinkeln? vilken sida är basen?) innan du svarar. Två giltiga config → D.",
       "example_questions": [
         "host-2013-kvant2-KVA-022",
@@ -156,7 +156,7 @@
     {
       "id": "KVA-TRAP-012",
       "pattern_description": "Speed/distance/time problem where one quantity lies in an interval — student grabs an endpoint instead of testing the whole range.",
-      "why_it_occurs": "Word problems with a hastighetsintervall feel solvable: 'mellan 50 och 60 km/h' is a concrete-sounding range. Students compute with one endpoint and compare; if the target value lies INSIDE the resulting time/distance interval, the verdict is D.",
+      "why_it_occurs": "Word problems with a hastighetsintervall feel solvable: 'mellan 50 och 60 km/h' is a concrete-sounding range. Students compute with one endpoint and compare; if the target value lies INSIDE the resulting time/distance interval, the svaret is D.",
       "common_distractor_signature": "Picks A or B by computing with the midpoint or one endpoint, missing that the other endpoint flips the comparison.",
       "countermeasure": "Vid hastighet/tid/sträcka-intervall: räkna båda ändpunkterna. Om målvärdet ligger i intervallet [v_min, v_max] eller [t_min, t_max] → D.",
       "example_questions": [
@@ -184,7 +184,7 @@
       "id": "KVA-TRAP-014",
       "pattern_description": "Multiplying or dividing an inequality by a variable expression with unknown sign — student keeps the direction.",
       "why_it_occurs": "Inequalities feel like equations during algebraic manipulation. Students multiply both sides by y (or 1/y) without first checking sign(y); if y could be negative, the inequality flips.",
-      "common_distractor_signature": "Picks A or B by treating the inequality as preserved through the operation, missing that the answer depends on sign(y) — actual verdict often D.",
+      "common_distractor_signature": "Picks A or B by treating the inequality as preserved through the operation, missing that the answer depends on sign(y) — actual svaret often D.",
       "countermeasure": "Innan du multiplicerar/delar en olikhet med ett uttryck: är tecknet känt? Om nej, bryt i fall (positivt / negativt) — om verdikten skiljer sig → D.",
       "example_questions": [
         "var-2014-kvant1-KVA-021",
@@ -209,8 +209,8 @@
     },
     {
       "id": "KVA-TRAP-016",
-      "pattern_description": "Slope k and y-intercept m are independent — student infers one from the other.",
-      "why_it_occurs": "Both k and m describe 'where the line is'. Students conflate 'steep line' with 'high y-intercept' or vice versa, treating one as a proxy for the other.",
+      "pattern_description": "Slope k and y-y-skärning m are independent — student infers one from the other.",
+      "why_it_occurs": "Both k and m describe 'where the line is'. Students conflate 'steep line' with 'high y-y-skärning' or vice versa, treating one as a proxy for the other.",
       "common_distractor_signature": "Picks A/B by transferring info about k onto m (or vice versa), e.g. 'positiv lutning' is taken to imply 'positiv m'.",
       "countermeasure": "y = kx + m har TVÅ oberoende parametrar. Information om k säger inget om m och tvärtom — markera vilken du faktiskt har innan du svarar.",
       "example_questions": [
@@ -338,7 +338,7 @@
       "id": "KVA-TRAP-025",
       "pattern_description": "Composite discounts mixing percent and absolute (kr) — student assumes order doesn't matter.",
       "why_it_occurs": "Percent operations alone are commutative (10% then 20% = 20% then 10%). Mixing kr-rabatt with %-rabatt breaks commutativity — applying kr first then % differs from % first then kr.",
-      "common_distractor_signature": "Picks C (lika) when the two orderings actually give different final prices — verdict is A or B depending on direction.",
+      "common_distractor_signature": "Picks C (lika) when the two orderings actually give different final prices — svaret is A or B depending on direction.",
       "countermeasure": "Vid sammansatta rabatter: om någon är i kronor (inte procent), spelar ordningen ALLTID roll — räkna båda ordningarna explicit.",
       "example_questions": [
         "host-ver1-2019-kvant2-KVA-014",
@@ -351,7 +351,7 @@
       "id": "KVA-TRAP-026",
       "pattern_description": "Quantities given in different units — student compares the raw numbers without converting.",
       "why_it_occurs": "Numbers look bigger or smaller depending on unit (1000 m vs 1 km vs 100 cm). Students miss that '50 m/s vs 100 km/h' requires conversion before comparing.",
-      "common_distractor_signature": "Picks A or B based on the raw number, missing that the unit changes the magnitude — actual verdict often the opposite.",
+      "common_distractor_signature": "Picks A or B based on the raw number, missing that the unit changes the magnitude — actual svaret often the opposite.",
       "countermeasure": "Vid jämförelse mellan olika enheter: konvertera ALLTID till samma minsta enhet först. Memorera: m/s → km/h multiplicera med 3,6.",
       "example_questions": [
         "host-2018-kvant2-KVA-017",
@@ -383,7 +383,7 @@
       "id": "KVA-TRAP-028",
       "pattern_description": "Probability — student compares without explicitly counting both gynnsamma and totala utfall.",
       "why_it_occurs": "Probabilities feel intuitable. Students eyeball 'most likely' instead of computing favorable/total for both options, often missing complementary or combinatorial structure.",
-      "common_distractor_signature": "Picks A/B by intuition, missing that the explicit count gives the opposite verdict — or picks C without checking the exact numbers.",
+      "common_distractor_signature": "Picks A/B by intuition, missing that the explicit count gives the opposite svaret — or picks C without checking the exact numbers.",
       "countermeasure": "Sannolikhet = gynnsamma / totala. Räkna BÅDA explicit för varje sida innan du jämför — använd komplementhändelse (1 − P(motsatsen)) om direkt räkning är svår.",
       "example_questions": [
         "host-2015-kvant1-KVA-016",
@@ -427,7 +427,7 @@
       "id": "KVA-TRAP-031",
       "pattern_description": "Age problem with multiple people — student gets lost in 'tidigare/senare' time-shifts.",
       "why_it_occurs": "Age problems compress multiple time points and relations. Students mix 'ålder då' with 'ålder nu' and lose track of which Δ applies to whom.",
-      "common_distractor_signature": "Picks A/B by anchoring on the wrong time point or applying Δ to only one person — verdict often inverted.",
+      "common_distractor_signature": "Picks A/B by anchoring on the wrong time point or applying Δ to only one person — svaret often inverted.",
       "countermeasure": "Skriv alla åldrar i termer av EN gemensam person + tid: 'idag = X', 'tidigare = X − Δ'. Skillnaderna är konstanta över tid; använd det.",
       "example_questions": [
         "host-2017-kvant1-KVA-020",
@@ -440,9 +440,9 @@
     },
     {
       "id": "KVA-TRAP-032",
-      "pattern_description": "Quadratic with two roots — student picks one root and proceeds, missing that the other could give a different verdict.",
+      "pattern_description": "Quadratic with two roots — student picks one root and proceeds, missing that the other could give a different svaret.",
       "why_it_occurs": "Once one root is found, the student stops solving. But x² = a (or x² − 2x − 3 = 0) has TWO roots; if the comparison depends on which root x equals, the answer may be D.",
-      "common_distractor_signature": "Picks A/B based on one root (often the positive one), missing the negative branch that flips the verdict → D.",
+      "common_distractor_signature": "Picks A/B based on one root (often the positive one), missing the negative branch that flips the svaret → D.",
       "countermeasure": "Vid kvadratisk ekvation: skriv ut BÅDA rötterna (faktorisera eller pq-formel). Om båda rötterna ger olika svar på frågan → D.",
       "example_questions": [
         "host-2021-kvant1-KVA-018",
