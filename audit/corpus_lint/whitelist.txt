@@ -1,0 +1,41 @@
+# Whitelist — legitimate Swedish words wordfreq doesn't reliably score
+# One word per line, comments allowed via leading #.
+#
+# Categories: HP-specific vocab, technical/mathematical terms, obscure
+# but real Swedish words, common compounds wordfreq misses.
+#
+# Maintained manually. Adding here means: "this word is correct;
+# the linter should not flag it." Be conservative — only add after
+# confirming the word is real modern Swedish (SAOL or comparable
+# reference).
+
+# Math / quant terminology
+rättvinklig
+rätvinklig
+sidofråga
+likbent
+likadan
+likformig
+sannolikhet
+kvadratrot
+kvadratrötter
+kvantitet
+kvantiteter
+
+# HP-specific exam vocabulary
+provpass
+delprov
+provtid
+svarsalternativ
+facit
+
+# Section codes (already excluded by tokenizer's caps filter normally,
+# but safety net)
+xyz
+kva
+nog
+dtk
+ord
+mek
+elf
+läs

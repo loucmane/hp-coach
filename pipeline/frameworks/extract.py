@@ -188,7 +188,7 @@ def cluster_explanations(
     *,
     field: str = 'technique',
     secondary_field: str = 'pitfall',
-    jaccard_threshold: float = 0.5,
+    jaccard_threshold: float = 0.35,
 ):
     """Cluster explanations in `section` by content-token overlap on
     the named fields. Returns a list of {theme, qids, sample_texts}.

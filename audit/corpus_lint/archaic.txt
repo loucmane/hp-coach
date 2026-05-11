@@ -1,0 +1,59 @@
+# Pre-1906 spelling reform Swedish — words that look real but are
+# archaic. Modern Swedish replaced these. Linter flags them regardless
+# of wordfreq score (wordfreq's training data includes historical text,
+# so these score positive but shouldn't appear in modern HP-Coach
+# corpus).
+#
+# Format: one word (or stem) per line. The linter does prefix match
+# for stems ending in `-`.
+
+# 1906 reform: af → av, lif → liv, fv → v
+af
+afkall
+afund
+afseende
+afseendet
+afgöra
+afgörande
+afsked
+lif
+lifvet
+lifvets
+lefva
+lefver
+lefde
+lefverne
+hafva
+hafver
+
+# qv → kv
+qvinna
+qvinnan
+qvinnor
+qvinnliga
+
+# fv → v / fr → v
+öfver
+öfverallt
+öfvergå
+öfvergick
+
+# höflig → hövlig (the one the user caught)
+höflig
+höfliga
+höfligt
+höflighet
+höfligare
+
+# dt → tt (1906 reform)
+# NOTE: 'godtycke' is MODERN Swedish (fossilized compound) — do NOT add.
+# 'godt' alone is archaic but doesn't appear in corpus.
+rödt
+
+# Other Germanic / pre-reform forms (rare in modern Swedish)
+hjelp
+hjelpa
+hjelpsam
+qvar
+qvälla
+

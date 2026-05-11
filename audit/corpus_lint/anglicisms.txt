@@ -1,0 +1,74 @@
+# Known English-bleed patterns. LLM occasionally generates English
+# words inside otherwise-Swedish sentences. Persona pass found 67
+# instances of "Many" → "Många" and "First instinkten" type issues.
+#
+# Format: one English word per line. The linter flags any occurrence
+# of these as standalone tokens (case-insensitive).
+#
+# CAVEAT — regex matches are NOISY. LÄS explanations legitimately
+# quote English text (e.g. "'the Jacobean lutenists'" in a music-
+# history passage). Single-word matches will fire on those too.
+# This list is INPUT to the Phase F Opus audit, not a definitive
+# fix list. The agent reads context and decides if each instance is
+# a real anglicism vs a quotation.
+#
+# Note: real English in ELF section is excluded by tokenizer
+# (skip_elf=True). These flags fire only for English appearing in
+# non-ELF sections (mostly LÄS passages quoting English titles).
+
+# Articles / determiners
+the
+many
+some
+much
+first
+last
+several
+another
+
+# Common verbs
+is
+are
+was
+were
+have
+has
+had
+
+# Pronouns
+this
+that
+these
+those
+which
+where
+when
+
+# Conjunctions / linking
+and
+but
+because
+therefore
+however
+
+# Adjectives often seen in bleed
+similar
+different
+important
+specific
+general
+
+# Other frequent bleeds
+something
+nothing
+everything
+anything
+
+# From persona-pass findings
+# (removed `instinkten` — definite form of Swedish 'instinkt' is real
+# Swedish; the persona-pass bug was COMBINATION "First instinkten",
+# not the word alone)
+overall
+clearly
+actually
+basically
