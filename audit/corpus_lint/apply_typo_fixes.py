@@ -61,14 +61,21 @@ def build_replacements(fix_list: list[dict]) -> list[tuple[re.Pattern, str, str]
 
 
 def apply_to_text(text: str, replacements: list, counts: dict) -> str:
-    """Apply each replacement, preserving case based on the match."""
+    """Apply each replacement, preserving case based on the match.
+
+    Three cases handled:
+    - ALL CAPS (`HÖFLIG` → `HÖVLIG`)
+    - Capitalized (`Höflig` → `Hövlig`)
+    - lowercase (`höflig` → `hövlig`)
+    """
     if not isinstance(text, str):
         return text
     for pat, correct, label in replacements:
         def _repl(m, _correct=correct):
             matched = m.group(0)
-            # Preserve case: if matched starts uppercase, use uppercase correct
-            if matched and matched[0].isupper():
+            if matched.isupper() and len(matched) > 1:
+                return _correct.upper()
+            elif matched and matched[0].isupper():
                 return _correct[0].upper() + _correct[1:]
             return _correct
         new_text, n = pat.subn(_repl, text)
