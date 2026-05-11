@@ -1,17 +1,27 @@
 {
   "qids": [
-    "var-2014-kvant2-XYZ-002",
     "host-2017-kvant2-XYZ-010",
-    "var-2017-kvant1-XYZ-005",
-    "var-2023-kvant2-XYZ-005",
-    "host-2017-kvant1-XYZ-011"
+    "var-2017-kvant1-XYZ-005"
   ],
   "notes": {
-    "var-2014-kvant2-XYZ-002": "Parser truncated prompt — missing (x^2)^4 numerator; option D has bleed from another question's text. Surfaced by v2 (round 37 soft bottleneck). Fix at parser level or in source PDF.",
-    "host-2017-kvant2-XYZ-010": "Prompt parser-corrupted: 'Vad är x om 3 = ? -3x+4 1 9' — symbols scrambled. Surfaced by v3 (round 18 soft bottleneck). The 0.0 persona could only solve by reverse-engineering from the solution text; an actual student would bail.",
-    "var-2017-kvant1-XYZ-005": "Figure-dependent question with no figure rendered. The conjugate-rule technique is teachable but the question itself is unsolvable as presented. Surfaced by v3 (round 20). Either supply the figure or delete the entry.",
-    "var-2023-kvant2-XYZ-005": "Parser garbled absolute-value bars: 'b (1)/(2) + (2)/(5) lb (1)/(2) - (2)/(5) l' — looks like '|...|' bars got mangled into 'l...l' and a leading 'b'. Surfaced by v3 (round 58, transfer test). Need parser fix for vertical-bar handling.",
-    "host-2017-kvant1-XYZ-011": "Same vertical-bar parser bug as var-2023-kvant2-XYZ-005: 'Vad är b \\frac{x}{4} + \\frac{1}{2} lb \\frac{x}{4} - \\frac{1}{2} l?' should be |x/4 + 1/2| · |x/4 − 1/2| (conjugate product → (x/4)² − (1/2)² = x²/16 − 1/4). Found via corpus-wide grep after v3."
+    "host-2017-kvant2-XYZ-010": "Prompt parser-corrupted: 'Vad är x om 3 = ? -3x+4 1 9' — symbols scrambled. Surfaced by v3 (round 18 soft bottleneck). Different parser bug than the paren-corruption class; needs source-PDF re-parse.",
+    "var-2017-kvant1-XYZ-005": "Figure-dependent question with no figure rendered. 'Vilket uttryck gäller för arean av rektangeln R?' — needs the rectangle figure. Either supply the figure or delete the entry."
   },
+  "paren_corruption_class_fixed_at": "2026-05-11",
+  "paren_corruption_qids_patched": [
+    "host-2014-kvant2-XYZ-002",
+    "host-2017-kvant1-XYZ-011",
+    "host-2020-kvant1-XYZ-004",
+    "host-2021-kvant2-KVA-013",
+    "host-2025-kvant2-KVA-022",
+    "var-2014-kvant2-XYZ-009",
+    "var-2019-kvant1-XYZ-006",
+    "var-2023-kvant2-XYZ-005",
+    "var-2024-kvant2-XYZ-003",
+    "var-2025-kvant2-KVA-020",
+    "var-2026-kvant1-KVA-019",
+    "var-2026-kvant1-XYZ-002"
+  ],
+  "paren_corruption_notes": "PDF→text parser misread '(' as 'b' and ')' as 'l' in certain Times-style PDFs (font-shape confusion). Pattern detected via corpus-wide grep for `\\bb\\s+\\\\frac`, `\\blb\\s+`, `\\sl\\s+\\\\frac`, etc. 12 entries hand-patched against their explanations and answer keys. Future parser fix should normalize this at extraction time.",
   "surfaced_by": "trajectory simulation v2 + v3 (2026-05-11)"
 }

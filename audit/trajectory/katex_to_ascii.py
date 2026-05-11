@@ -45,6 +45,14 @@ STRUCTURAL = [
 
 # SYMBOL rules — single-token Unicode substitutions, no braces involved.
 SYMBOLS = [
+    # `\left(` and `\right)` are size-modifier wrappers — strip cleanly so
+    # they don't leak through the catch-all as "left " / "right ".
+    (re.compile(r'\\left\s*\('), '('),
+    (re.compile(r'\\right\s*\)'), ')'),
+    (re.compile(r'\\left\s*\['), '['),
+    (re.compile(r'\\right\s*\]'), ']'),
+    (re.compile(r'\\left\s*\|'), '|'),
+    (re.compile(r'\\right\s*\|'), '|'),
     (re.compile(r'\\cdot'), '·'),
     (re.compile(r'\\times'), '×'),
     (re.compile(r'\\div'), '÷'),
