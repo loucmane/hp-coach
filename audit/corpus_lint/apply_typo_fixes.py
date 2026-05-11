@@ -60,6 +60,22 @@ def build_replacements(fix_list: list[dict]) -> list[tuple[re.Pattern, str, str]
     return out
 
 
+def build_phrase_replacements(phrase_list: list[dict]) -> list[tuple[re.Pattern, str, str]]:
+    """Build phrase-level (multi-word) replacements with case preservation.
+
+    Phrases match boundary-anchored at both ends but allow internal
+    spaces and hyphens. Case logic mirrors apply_to_text: ALL CAPS,
+    Capitalized, lowercase.
+    """
+    out = []
+    for fix in phrase_list:
+        phrase = fix['phrase']
+        correct = fix['correct']
+        pat = re.compile(r'(?<!\w)' + re.escape(phrase) + r'(?!\w)', re.IGNORECASE)
+        out.append((pat, correct, phrase))
+    return out
+
+
 def apply_to_text(text: str, replacements: list, counts: dict) -> str:
     """Apply each replacement, preserving case based on the match.
 
@@ -116,9 +132,14 @@ def main():
 
     fixes = json.loads(Path(args.fix_list).read_text())
     fix_list = fixes['fix']
-    print(f'Loaded {len(fix_list)} verified fixes from {args.fix_list}')
+    phrase_list = fixes.get('phrase_fix', [])
+    print(f'Loaded {len(fix_list)} verified word fixes + {len(phrase_list)} phrase fixes from {args.fix_list}')
 
-    replacements = build_replacements(fix_list)
+    # Phrase replacements run FIRST (greedy multi-token match), then
+    # single-word replacements. Order matters because a phrase like
+    # "sluten system" must be caught as a phrase before the word-level
+    # `sluten` check (which wouldn't fire here anyway, but principle).
+    replacements = build_phrase_replacements(phrase_list) + build_replacements(fix_list)
 
     counts = defaultdict(int)
     files_changed = []

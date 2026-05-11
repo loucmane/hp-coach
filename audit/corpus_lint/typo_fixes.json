@@ -65,7 +65,26 @@
     {"typo": "mitetn", "correct": "mitten", "freq": 1, "note": "et↔te swap"},
 
     {"typo": "höflig", "correct": "hövlig", "freq": 2, "note": "pre-1906 archaic spelling; modern is hövlig — user-flagged"},
-    {"typo": "inflytanderik", "correct": "inflytelserik", "freq": 4, "note": "malformed LLM compound; correct adjective form is inflytelserik — user-flagged"}
+    {"typo": "inflytanderik", "correct": "inflytelserik", "freq": 4, "note": "malformed LLM compound; correct adjective form is inflytelserik — user-flagged"},
+
+    {"typo": "MÄNNISKLIG", "correct": "MÄNSKLIG", "freq": 1, "note": "malformed adjective — should drop the iska — Pass-1 batch 000"},
+    {"typo": "OPENT", "correct": "ÖPPET", "freq": 1, "note": "diacritic-stripped typo (Ö dropped to O, double-P missing) — Pass-1 batch 000"},
+    {"typo": "HOPPSAMLING", "correct": "HOPSAMLING", "freq": 1, "note": "double-P typo; hopsamling is the correct noun form of `hop` — Pass-1 batch 000"},
+    {"typo": "specifierad", "correct": "specificerad", "freq": 1, "note": "missing -ic-; correct loanword form is specificerad — Pass-1 batch 000"},
+    {"typo": "icke-vakanten", "correct": "icke-varken-andelen", "freq": 1, "note": "corrupted compound; meant icke-varken-andelen (=`those not in 'neither'`) — Pass-1 batch 000"},
+    {"typo": "steghet", "correct": "branthet", "freq": 1, "note": "invented noun; intended meaning is `steepness` = `branthet` — Pass-1 batch 000"}
+  ],
+
+  "phrase_fix_comment": "Multi-token replacements. Same case-preservation logic as `fix` array, but matches a phrase rather than a single word boundary. Applied AFTER single-word fixes.",
+
+  "phrase_fix": [
+    {"phrase": "sluten system", "correct": "slutet system", "freq": 11, "note": "system is neuter → adjective takes -t (slutet) — Pass-1 batch 000 + corpus-wide grep"},
+    {"phrase": "Gammelt nordiskt", "correct": "Gammalt nordiskt", "freq": 12, "note": "ord is neuter → Gammalt; `Gammelt` is Danish/Norwegian or stylistic error — Pass-1 batch 000 + corpus-wide grep"},
+    {"phrase": "Engångs ankomst", "correct": "Engångsankomst", "freq": 1, "note": "särskrivning — closed compound required — Pass-1 batch 000"},
+    {"phrase": "engelska klang", "correct": "engelsk klang", "freq": 1, "note": "klang is en-word → adjective adverb agreement: engelsk klang — Pass-1 batch 000"},
+    {"phrase": "är OF olika", "correct": "är AV olika", "freq": 1, "note": "anglicism — OF leaked through as English preposition — Pass-1 batch 000"},
+    {"phrase": "BAKAT MAT", "correct": "BAKAD MAT", "freq": 1, "note": "mat is en-word → adjective form bakad, not bakat — Pass-1 batch 000"},
+    {"phrase": "Beslutar vs offer", "correct": "Beslutsfattare vs offer", "freq": 1, "note": "verb form used as noun → noun form is beslutsfattare — Pass-1 batch 000"}
   ],
 
   "skip": [
