@@ -132,6 +132,15 @@ def main():
                 continue
             entry = data[idx]
             current = entry.get('prompt', '')
+            # Strip PUA chars to compare logically — the parser wraps math
+            # spans in U+E000/U+E001 and so do patched outputs once they
+            # round-trip through json.
+            def normalize(s):
+                return s.replace('', '').replace('', '')
+            already_patched = normalize(current) == normalize(info['new_prompt'])
+            if already_patched:
+                print(f'  · {qid}: already patched (skip)')
+                continue
             if current != info['old_prompt']:
                 print(f'  ✗ {qid}: current prompt does not match expected old_prompt')
                 print(f'    current : {current!r}')
