@@ -241,32 +241,6 @@
     "solution_path": "Total: 13{,}5+46{,}5+120=180. Andel fett: \\frac{13{,}5}{180}=7{,}5\\%.",
     "technique": "Procent: del/total · 100."
   },
-  "var-2017-kvant1-XYZ-003": {
-    "_meta": {
-      "generated_at": 1778416194027,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att räkna 24 (utan att inkludera alla sträckor).",
-        "why_wrong": "36."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 32.",
-        "why_wrong": "36."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 40.",
-        "why_wrong": "36."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Av figurens geometri: total 36 m.",
-    "technique": "Sträcka i parallellitetskonfig: utnyttja kongruenta sträckor."
-  },
   "var-2017-kvant1-XYZ-004": {
     "_meta": {
       "generated_at": 1778416194027,
@@ -452,56 +426,30 @@
   "var-2017-kvant1-XYZ-012": {
     "_meta": {
       "generated_at": 1778416194027,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7",
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro m=1/2, n=2 funkar.",
-        "why_wrong": "1/2 + 2 = 2,5; 1/2·2 = 1. Inte lika."
+        "why_tempting": "Det är lätt att tro att m = 1/2, n = 2 fungerar eftersom 1/2 + 2 = 2,5 ≈ 1/2 · 2 = 1.",
+        "why_wrong": "Sätt in: m + n = 2,5 men mn = 1 — inte lika, så likheten gäller inte."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta m=n=1.",
-        "why_wrong": "1+1 = 2; 1·1 = 1. Inte lika."
+        "why_tempting": "Snabbsvar är ofta de enklaste värdena: m = n = 1.",
+        "why_wrong": "m + n = 2 men mn = 1 — inte lika; m = n = 1 löser inte ekvationen."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid m=1/2, n=−1/2.",
-        "why_wrong": "1/2 − 1/2 = 0; 1/2·(−1/2) = −1/4. Inte lika."
+        "why_tempting": "Första instinkten är att testa motsatta tecken: m = 1/2, n = −1/2.",
+        "why_wrong": "m + n = 0 men mn = −1/4 — inte lika; och negativ exponent skapar problem för likheten."
       }
     ],
-    "pitfall": null,
-    "solution_path": "m+n = mn. Pröva m = n = 2: 4 = 4 ✓.",
-    "technique": "Lös ekvationssystem: substituera kandidatvärden, kontrollera båda sidor."
-  },
-  "var-2017-kvant2-KVA-013": {
-    "solution_path": "I: (10/3)·3·5·26 = 10·5·26 = 1300. II: 13·15 = 195. 1300 > 195 — A.",
-    "technique": "Förkorta först (10/3)·3 = 10 — då blir I = 10·5·26 = 1300 och II = 13·15 = 195; storleksordningarna skiljer sig så I är klart större (A).",
-    "pitfall": null,
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att tro att 13·15 ≈ 1300.",
-        "why_wrong": "13·15 = 195, klart mindre."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att de är lika.",
-        "why_wrong": "Skillnaden ~ 1100."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Det är frestande att tro att man behöver räknare.",
-        "why_wrong": "Bryt ut faktorer; jämförelsen blir enkel."
-      }
-    ],
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778425152541,
-      "pedagogy_regenerated_at": 1778506526551,
-      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
-    }
+    "pitfall": "Blanda inte ihop x^m \\cdot x^n (addera exponenter) med (x^m)^n (multiplicera exponenter) — det är två olika regler som ofta nöter mot varandra.",
+    "solution_path": "Ekvationen x^m \\cdot x^n = (x^m)^n blir x^{m+n} = x^{mn}. Eftersom x > 1 kräver likhet att exponenterna är lika: m + n = mn. Testa alternativen: m = n = 2 ger 2 + 2 = 4 och 2·2 = 4 ✓.",
+    "technique": "Exponentregler: x^m \\cdot x^n = x^{m+n} (samma bas, addera exponenter) och (x^m)^n = x^{mn} (potens av potens, multiplicera exponenter)."
   },
   "var-2017-kvant2-KVA-015": {
     "solution_path": "Av talen {3, 5, 7, 11, 13} delar 6 = 2·3 jämnt bara med x = 3 (1/5), medan 39 = 3·13 delas jämnt med x = 3 och x = 13 (2/5). 2/5 är större än 1/5 — B.",
@@ -660,32 +608,6 @@
       "model": "claude-opus-4-7",
       "generated_at": 1778425152541
     }
-  },
-  "var-2017-kvant2-XYZ-001": {
-    "_meta": {
-      "generated_at": 1778416194027,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att räkna 3.",
-        "why_wrong": "4."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 5.",
-        "why_wrong": "4."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 40/3.",
-        "why_wrong": "4."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Lös: gemensam nämnare för bråkekvation. x = 4.",
-    "technique": "Bråkekvation: gemensam nämnare, lös."
   },
   "var-2017-kvant2-XYZ-002": {
     "distractors": [
@@ -1606,34 +1528,36 @@
     }
   },
   "var-2017-kvant1-NOG-025": {
-    "solution_path": "Vart för sig räcker. Värsta fall \"minst en av X\" = (icke-X) + 1. (1): 12=champinjon+1 → kantareller=30−11=19. (2): 20=kantarell+1 → kantarell=19. (Egentligen ger (2) kantarell=19 direkt.)",
+    "solution_path": "Tänk dig att du i värsta fall plockar alla av FEL typ först innan du får rätt typ. Utsaga (1): 12 plock krävs för minst en kantarell ⇒ värsta fallet är 11 champinjoner + 1 kantarell ⇒ 11 champinjoner, alltså 30 − 11 = 19 kantareller. Räcker ensamt. Utsaga (2): 20 plock krävs för minst en champinjon ⇒ 19 kantareller + 1 champinjon ⇒ 19 kantareller direkt. Räcker ensamt. D.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s villkor är direktare.",
-        "why_wrong": "(2) ger samma resultat via det andra värsta fallet."
+        "why_tempting": "Det är lätt att tro att (1):s ·12 plock för kantarell· är den mer direkta vägen.",
+        "why_wrong": "(2) ger samma resultat lika direkt: 20 plock för en champinjon = 19 kantareller redan i korgen."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s större tal räcker.",
-        "why_wrong": "(1) räcker lika bra."
+        "why_tempting": "Snabbsvar är ofta att det större talet (20 plock) är mer informativt.",
+        "why_wrong": "(1):s ·12 plock· säger lika mycket — bara om motsatt typ: 11 champinjoner, alltså 19 kantareller."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
+        "why_tempting": "Första instinkten är att kombinera båda värsta-fall-villkoren för säkerhet.",
+        "why_wrong": "Båda räcker var för sig — kombinationen ger samma 19 kantareller och är onödig."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att värsta-fall-resonemang inte ger absoluta tal.",
-        "why_wrong": "Värsta fallet låser den motsatta kategorin entydigt."
+        "why_tempting": "Det är frestande att tro att värsta-fall-resonemang är för vagt för ett exakt tal.",
+        "why_wrong": "Värsta-fall-räkning ger ett ENTYDIGT antal (kort: ·k plock för en X· ⇒ k − 1 av motsatt typ)."
       }
     ],
-    "technique": "Värsta fall \"minst en av X\" = (icke-X) + 1 — direkt invertibelt.",
-    "pitfall": null,
+    "technique": "·Värsta fall för minst en av typ X· = (antal av motsatt typ) + 1. Vänd på det: om värsta fallet kräver k plock för en X, finns det exakt k − 1 motsatta-typer i korgen.",
+    "pitfall": "·Minst 12 plock för en kantarell· betyder att efter 11 plock kan man fortfarande sakna kantarell — det innebär att de 11 första är champinjoner, dvs det finns exakt 11 champinjoner.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778428305952
+      "generated_at": 1778428305952,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "var-2017-kvant1-NOG-026": {

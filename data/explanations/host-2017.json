@@ -370,33 +370,6 @@
       "fixed_at": 1778498287384
     }
   },
-  "host-2017-kvant1-XYZ-011": {
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att räkna +1 istället för -1/4 efter teckenslarv.",
-        "why_wrong": "Konjugatregeln: a²−b². 1/2 i kvadrat blir 1/4, INTE 1."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att räkna FOIL utan att utnyttja konjugatregeln, vilket lätt ger korsterm-fel.",
-        "why_wrong": "Korstermerna i konjugat tar ut varandra: \\frac{x}{4}\\cdot(-\\frac{1}{2})+\\frac{1}{2}\\cdot\\frac{x}{4}=0."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Många stannar vid att tro -x+1-form.",
-        "why_wrong": "Det finns ingen x-term i resultatet — bara x² och konstanten."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Konjugatregeln: \\left(\\frac{x}{4}+\\frac{1}{2}\\right)\\left(\\frac{x}{4}-\\frac{1}{2}\\right)=\\frac{x^{2}}{16}-\\frac{1}{4}.",
-    "technique": "Konjugatregel: (a+b)(a-b)=a^{2}-b^{2}. Korstermerna kanellera, kvar är skillnaden av kvadrater.",
-    "_meta": {
-      "generated_at": 1778414240798,
-      "model": "claude-opus-4-7",
-      "fixed_at": 1778498287384
-    }
-  },
   "host-2017-kvant1-XYZ-012": {
     "_meta": {
       "generated_at": 1778414240798,
@@ -1497,65 +1470,36 @@
     }
   },
   "host-2017-kvant1-NOG-024": {
-    "solution_path": "Båda krävs: tre alarm med intervall 3, 0,5 och 2,5 h har LCM=15 h, så nästa gemensam ringning är 18:00+15 h=09:00 nästa dag.",
+    "solution_path": "Ett alarm ringer var 3:e timme — och två andra med okända intervall. För att räkna nästa gemensamma ringning behövs alla tre intervallen. Utsaga (1): andra alarmet ringer var 0,5 h. Tredje saknas — räcker inte. Utsaga (2): tredje alarmet ringer var 2,5 h. Andra saknas — räcker inte. Tillsammans: omvandla till halvtimmar (3 h = 6, 0,5 h = 1, 2,5 h = 5); MGM(6, 1, 5) = 30 halvtimmar = 15 h. 18:00 + 15 h = 09:00 nästa dag. C.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att två alarm + ett kort intervall räcker.",
-        "why_wrong": "(1) saknar tredje alarmets intervall."
+        "why_tempting": "Det är lätt att tro att två kortare intervall (3 h och 0,5 h) räcker för att räkna ut MGM.",
+        "why_wrong": "(1) saknar tredje alarmets intervall — utan det kan MGM:n inte räknas."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s 2,5 h räcker.",
-        "why_wrong": "(2) saknar andra alarmets intervall."
+        "why_tempting": "Snabbsvar är ofta att 2,5 h är det ovanligaste intervallet och därför styr.",
+        "why_wrong": "(2) saknar andra alarmets intervall — samma problem som (1) men för andra alarmet."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar minst ett alarm."
+        "why_tempting": "Om du tror att ett intervall i taget räcker landar du här.",
+        "why_wrong": "Du behöver alla tre intervallen för att räkna MGM — varje utsaga saknar en bit."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan exakt tider går det inte.",
-        "why_wrong": "Tre intervall ger LCM."
+        "why_tempting": "Det är frestande att tro att utan exakta klockslag går det inte.",
+        "why_wrong": "Starttiden 18:00 är given, och MGM(intervaller) ger förskjutningen till nästa gemensam ringning."
       }
     ],
-    "technique": "Gemensam ringning = LCM av alla intervall.",
-    "pitfall": null,
+    "technique": "Tre periodiska händelser ringer samtidigt nästa gång efter MGM (minsta gemensamma multipel) av deras intervall. Lägg till MGM:n till starttiden.",
+    "pitfall": "Omvandla alla intervall till samma TIDSENHET (t.ex. halvtimmar) innan du räknar MGM — annars blir produkten av decimaltal svår.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778428305952
-    }
-  },
-  "host-2017-kvant1-NOG-025": {
-    "solution_path": "(2) räcker: h=6, h/b=2/3 → b=9; nya: 11/14. (1) säger bara att omkretsen ökar med 20 cm, vilket alltid gäller när bas+höjd ökar med 5 vardera — ingen ny information.",
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att omkretsökningen räcker.",
-        "why_wrong": "Identitet: ökning av båda sidor med 5 ger alltid omkretsökning 20 cm."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(2) räcker ensamt."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Om du tror att (1) också räcker landar du här.",
-        "why_wrong": "(1) är trivialt sann."
-      },
-      {
-        "letter": "E",
-        "why_tempting": "Det är frestande att avfärda problemet utan original-omkretsen.",
-        "why_wrong": "(2) ger båda dimensionerna direkt."
-      }
-    ],
-    "technique": "Skilj på låsande relationer och identiteter (additionsreglerna).",
-    "pitfall": "En \"ökning med 20\" kan vara en konsekvens som inte tillför ny information.",
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778428305952
+      "generated_at": 1778428305952,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2017-kvant1-NOG-026": {

@@ -25,32 +25,6 @@
       "generated_at": 1778425376098
     }
   },
-  "var-2018-1-kvant1-KVA-017": {
-    "solution_path": "a^b = 16 med a, b > 1 heltal. Lösningar: (2, 4), (4, 2). I: b^a. (2,4): 4² = 16. (4,2): 2⁴ = 16. Lika — C.",
-    "technique": "Symmetri i a^b = 16: båda lösningar ger b^a = 16.",
-    "pitfall": null,
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att I > 16.",
-        "why_wrong": "Båda lösningar ger b^a = 16 exakt."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att I < 16.",
-        "why_wrong": "Båda är just 16."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Det är frestande att tro att flera lösningar ger olika svar.",
-        "why_wrong": "Båda lösningar ger samma värde."
-      }
-    ],
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778425376098
-    }
-  },
   "var-2018-1-kvant1-KVA-018": {
     "solution_path": "I: 0 - (-x) = x > 0 (x positivt). II: 0 - x = -x < 0. I > II — A.",
     "technique": "Subtraktion av negativ = addition; tecken-effekt.",
@@ -311,32 +285,6 @@
     "solution_path": "Total = hemma + borta = 4b + b = 5b. Delbart med 5: 245 ✓.",
     "technique": "Förhållande-uppgift: total måste vara delbart med summan av förhållandetermerna."
   },
-  "var-2018-1-kvant1-XYZ-008": {
-    "_meta": {
-      "generated_at": 1778416310926,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att räkna 3.",
-        "why_wrong": "x = 2."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 2/2.",
-        "why_wrong": "x = 2 (heltal)."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 3/3.",
-        "why_wrong": "x = 2."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Av figurens villkor: x = 2.",
-    "technique": "Lös x utifrån figur."
-  },
   "var-2018-1-kvant1-XYZ-009": {
     "_meta": {
       "generated_at": 1778416310926,
@@ -466,32 +414,6 @@
     "pitfall": null,
     "solution_path": "\\sqrt{7}\\cdot\\sqrt{7}=7, heltal.",
     "technique": "Multiplikation av samma rot: √a·√a = a."
-  },
-  "var-2018-1-kvant2-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778416310926,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att räkna 1500.",
-        "why_wrong": "4500."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 3000.",
-        "why_wrong": "4500."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 6000.",
-        "why_wrong": "4500."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Av figurens dimensioner: area = 4500 cm².",
-    "technique": "Fyrhörningsarea: dela i trianglar eller använd specifik formel."
   },
   "var-2018-1-kvant2-XYZ-007": {
     "_meta": {
@@ -1317,34 +1239,36 @@
     }
   },
   "var-2018-1-kvant1-NOG-027": {
-    "solution_path": "(1) räcker: n+4 delbart med 8 ⇒ n ≡ 4 (mod 8) ⇒ n+12 ≡ 16 ≡ 0 (mod 8). Ja. (2) ger bara att n inte är delbart med 8 — n+12 kan vara eller inte vara.",
+    "solution_path": "Sökt: kan n + 12 delas i grupper om 8 (= delbart med 8)? Utsaga (1): n + 4 är delbart med 8. Då är n + 12 = (n + 4) + 8 också delbart med 8 (för att 8 är en multipel av 8). Ja. Räcker ensamt. Utsaga (2): n inte delbart med 8. Testa n = 1 (inte delbart) → n + 12 = 13 (inte delbart). Testa n = 4 (inte delbart) → n + 12 = 16 (delbart). Olika utfall — räcker inte. A.",
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att icke-delbarhet säger något om +12.",
-        "why_wrong": "n=1 ej delbart med 8, n+12=13 ej delbart; n=4 ej delbart, n+12=16 delbart. Inte unikt."
+        "why_tempting": "Det är lätt att tro att ·n är inte delbart med 8· säger något säkert om n + 12.",
+        "why_wrong": "n = 1 och n = 4 är båda inte delbara med 8, men n + 12 = 13 respektive 16 ger MOTSATTA utfall."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(1) räcker ensamt."
+        "why_tempting": "Första instinkten är att kombinera båda för att vara säker.",
+        "why_wrong": "(1) räcker ensamt — (2) tillför ingen extra information eftersom delbarheten redan är fastställd."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(2) ger inte unikt svar."
+        "why_tempting": "Om du tror att varje utsaga ger ett entydigt svar landar du här.",
+        "why_wrong": "(2) ger inte entydigt svar — beroende på vilket n är n + 12 ibland delbart, ibland inte."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att modulo-villkor inte avgör delbarhet efter ändring.",
-        "why_wrong": "Modulo bevaras: om n≡4 (mod 8) så n+12≡0 (mod 8)."
+        "why_tempting": "Det är frestande att tro att delbarhetsvillkor på n + 4 inte säger något om n + 12.",
+        "why_wrong": "Skillnaden mellan n + 4 och n + 12 är exakt 8 — alltså bevaras delbarheten med 8."
       }
     ],
-    "technique": "Modulo-aritmetik bevaras under konstantadditioner: kontrollera bara restern efter ändringen.",
-    "pitfall": null,
+    "technique": "Delbarhet bevaras under addition av multipler: om n + 4 är delbart med 8, så är n + 4 + 8 = n + 12 också delbart med 8 (eftersom 8 är delbart med 8).",
+    "pitfall": "Att lägga till 8 till ett tal ändrar INTE om talet är delbart med 8 — det är som att stega framåt med exakt en hel ·grupp om 8·.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778428305952
+      "generated_at": 1778428305952,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "var-2018-1-verb1-LÄS-011": {

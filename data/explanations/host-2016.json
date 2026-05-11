@@ -26,29 +26,31 @@
     }
   },
   "host-2016-kvant1-KVA-016": {
-    "solution_path": "Medelvärden: (x+y+z)/3=w/3 → x+y+z=w; (y+z+w)/3=x/3 → y+z+w=x. Subtrahera: x-w=w-x → x=w, så y + z = 0. Men y och z individuellt är fria; båda kan vara större eller mindre. D.",
-    "technique": "Två lineära villkor på fyra variabler löser sällan ut alla — kvarstående frihet ger D.",
-    "pitfall": null,
+    "solution_path": "(x+y+z)/3 = w/3 ger ekvation (1): x + y + z = w. Och (y+z+w)/3 = x/3 ger (2): y + z + w = x. Subtrahera (2) från (1): (x + y + z) − (y + z + w) = w − x, dvs x − w = w − x, alltså 2x = 2w → x = w. Sätt in i (1): w + y + z = w → y + z = 0. Men y och z var för sig är fortfarande fria — t.ex. y = 5, z = −5 fungerar, liksom y = −1, z = 1. D.",
+    "technique": "Två lineära villkor på fyra variabler räcker inte för att bestämma alla — det blir två frihetsgrader kvar, så enskilda variabler kan vara olika stora.",
+    "pitfall": "Att y + z = 0 betyder INTE att y = z = 0 — det betyder bara att de är motsatta tal. Ena kan vara större än den andra eller mindre.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att förenkla y + z = 0 och tro att y > 0 och z < 0.",
-        "why_wrong": "Tecknet är fritt; även y = z = 0 är giltigt med x = w = 0."
+        "why_tempting": "Det är lätt att direkt välja y = 5, z = −5 och dra slutsatsen y > z.",
+        "why_wrong": "Det är ett av oändligt många fall — y = −5, z = 5 fungerar lika bra (y + z = 0 fortfarande)."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att y < z av symmetri.",
-        "why_wrong": "Symmetri ger ingen rangordning; y och z är utbytbara."
+        "why_tempting": "Snabbsvar är ofta att gissa y < z av ren symmetri.",
+        "why_wrong": "Symmetri ger ingen rangordning — y och z är utbytbara i ekvationerna."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid y = z = 0 (uppfyller y + z = 0) och kallar likhet.",
-        "why_wrong": "Det är ett av oändligt många fall; y = 5, z = -5 fungerar lika bra."
+        "why_wrong": "y = z = 0 är ett giltigt fall, men y = 5, z = −5 är också giltigt — alla tre relationer är möjliga."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424317528
+      "generated_at": 1778424317528,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2016-kvant1-KVA-017": {
@@ -79,32 +81,33 @@
     }
   },
   "host-2016-kvant1-KVA-020": {
-    "solution_path": "Rektangel area 40: längsta sida kan vara 40/1 = 40 eller \\sqrt{40}\\approx 6{,}3; brett intervall. Triangel area 20: bh/2=20 → bh = 40, längsta sida går från ~6,3 (likbent rätvinklig) uppåt utan gräns. Båda intervall överlappar — D.",
-    "technique": "När arean låser produkten men inte den enskilda sidan, hamna i intervalljämförelse: om båda kvantiteters intervall överlappar är informationen otillräcklig (D).",
-    "pitfall": null,
+    "solution_path": "Rektangel med area 40: en 1×40-rektangel har längsta sida 40, en 8×5-rektangel har längsta sida 8 — alltså kan längsta sidan vara mellan ca √40 ≈ 6,3 (kvadrat) och godtyckligt stor. Triangel med area 20: en 10×4-rätvinklig triangel har längsta sida = hypotenusan √(116) ≈ 10,8, en mycket platt triangel kan ha längsta sida 100. Båda intervall är ·≥ 6,3 och uppåt· — överlapp överallt. D.",
+    "technique": "När arean är fix men formen är fri kan ·längsta sidan· variera från ett minimum (mest kompakt form) upp till godtyckligt stort (mycket avlång form). Jämför två sådana intervall — om de överlappar är informationen otillräcklig.",
+    "pitfall": "Bara för att rektangeln har dubbel area betyder inte att den har längre sidor — sidorna beror på formen, och båda figurerna kan göras godtyckligt avlånga.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att rektangel \"alltid är större\" än triangel med halv area-faktor.",
-        "why_wrong": "Båda kan ha godtyckligt långa sidor; rangordningen är inte unik."
+        "why_tempting": "Det är lätt att tänka ·större area = större sidor· och anta att rektangeln vinner.",
+        "why_wrong": "En platt triangel med area 20 kan ha sidor mycket längre än en kvadratisk rektangel med area 40."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att triangel med halv ytfaktor måste ha längre sidor.",
-        "why_wrong": "Inte nödvändigtvis — sidlängderna beror på proportioner som inte är fixerade."
+        "why_tempting": "Snabbsvar är ofta att triangel ·alltid har längre sidor· eftersom h × b ger samma sak med halv area.",
+        "why_wrong": "Triangelns sidor kan också vara små (likbent rätvinklig ger den minsta möjliga längsta sidan)."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid specialfall där sidorna råkar matcha.",
-        "why_wrong": "Likhet inträffar i ett enskilt utfall; båda olikheter kan också uppstå."
+        "why_tempting": "Många stannar vid specialfall där sidlängderna råkar matcha.",
+        "why_wrong": "Likhet är möjligt men inte tvingande — båda olikheter förekommer också i intervallen."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778424317528,
       "fixed_at": 1778498574270,
-      "pedagogy_regenerated_at": 1778506283643,
-      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
+      "pedagogy_regenerated_at": 1778510870035,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11",
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2016-kvant1-KVA-021": {
@@ -528,31 +531,32 @@
     }
   },
   "host-2016-kvant2-KVA-022": {
-    "solution_path": "Räkna ur den enskilde syskonets perspektiv: en pojke har p−1 bröder och f systrar, så p−1 = f; en flicka har p bröder och f−1 systrar, så p = 2(f−1). Systemet ger entydigt p = 4, f = 3, alltså I = 2p = 8 och II = 3f = 9. II > I — B.",
-    "technique": "Skriv villkoret från ETT syskons synvinkel (inte familjens) och lös systemet; här ger 2p = 8 mindre än 3f = 9 entydigt B.",
-    "pitfall": null,
+    "solution_path": "Låt p = antal pojkar, f = antal flickor. En pojke har p−1 bröder och f systrar; villkor (1): p − 1 = f. En flicka har p bröder och f−1 systrar; villkor (2): p = 2(f − 1). Sätt in f = p − 1 i (2): p = 2(p − 2) = 2p − 4 → p = 4, alltså f = 3. I = 2p = 8, II = 3f = 9. II > I, alltså B.",
+    "technique": "I syskon-problem: räkna från EN persons synvinkel — en pojke räknar p−1 bröder (alla andra pojkar utom honom själv) och f systrar. Då blir villkoret en ekvation per könstyp.",
+    "pitfall": "Glöm inte −1: när en pojke räknar bröder räknar han INTE sig själv. Samma sak för flickor och systrar.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel och få fler pojkar än flickor.",
-        "why_wrong": "Systemet ger p = 4, f = 3; 2p = 8, 3f = 9 — flickkoefficienten vinner."
+        "why_tempting": "Det är lätt att gissa att pojkar är fler eftersom faktorn 2 är mindre än 3 (väger upp).",
+        "why_wrong": "Räkningen ger p = 4, f = 3 — och 2·4 = 8 < 3·3 = 9, så II vinner trots ·större faktor·."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att 2 ggr pojkar = 3 ggr flickor av symmetri.",
-        "why_wrong": "Värdena är 8 och 9, inte lika; faktorerna 2 och 3 är skilda."
+        "why_tempting": "Snabbsvar är ofta att 2p = 3f gäller av symmetri mellan villkoren.",
+        "why_wrong": "Värdena 8 och 9 är inte lika — koefficienterna 2 och 3 plus heltalskravet ger entydigt p = 4, f = 3."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att flera fall är förenliga med villkoret.",
-        "why_wrong": "Bara en heltalslösning finns: p = 4, f = 3."
+        "why_tempting": "Det är frestande att tro att flera familjestorlekar är förenliga med villkoret.",
+        "why_wrong": "Ekvationssystemet har EXAKT en heltalslösning (p = 4, f = 3) — inga andra positiva heltal fungerar."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778424317528,
-      "pedagogy_regenerated_at": 1778506283643,
-      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
+      "pedagogy_regenerated_at": 1778510870035,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11",
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2016-kvant2-XYZ-001": {
@@ -580,32 +584,6 @@
     "pitfall": null,
     "solution_path": "Lös ut x: -x=-24-13=-37, alltså x = 37.",
     "technique": "Lös ut x i ekvation a − x = b: flytta över x och konstanten, använd −x = b − a, multiplicera med −1 om x har minustecken."
-  },
-  "host-2016-kvant2-XYZ-002": {
-    "_meta": {
-      "generated_at": 1778414059975,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att vända x och y i koordinatparet: (−2, 6) ser symmetriskt ut.",
-        "why_wrong": "Punktordningen är (x, y) — det första värdet är x. (−2, 6) har x = −2, y = 6, vilket inte uppfyller linjens ekvation."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta '(3, 2)' om man missläser lutningen.",
-        "why_wrong": "För linjen genom origo med lutning 1/3: y = x/3. Vid x=3: y=1, inte 2."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid (2, 3) av samma flip-fel.",
-        "why_wrong": "y = x/3 ger vid x=2: y=2/3, inte 3."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Sätt in koordinaterna i linjens ekvation: (−6, −2) uppfyller y=\\frac{x}{3} (eller den exakta ekvationen avläst från figuren).",
-    "technique": "Punkt på linje: substituera koordinater i linjens ekvation. Kontrollera att likheten håller exakt."
   },
   "host-2016-kvant2-XYZ-003": {
     "_meta": {
@@ -711,33 +689,6 @@
     "pitfall": null,
     "solution_path": "Med L1 parallell med L2 och två transversaler ger figurens vinkelförhållanden v=\\frac{x}{3} via alternativa-/likbelägna vinklar.",
     "technique": "Vinklar mellan parallella linjer med flera transversaler: använd alternativa, likbelägna och vinkelsumma-satser för att uttrycka okända vinklar i kända."
-  },
-  "host-2016-kvant2-XYZ-008": {
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att glömma att multiplicera ut: ta \\frac{x-y}{xy} direkt.",
-        "why_wrong": "(x−y) multipliceras med (x+y)/xy, inte bara med 1/xy. Korstermerna i (x−y)(x+y) ger x²−y² i täljaren."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Många stannar vid att 'x−y över x+y' i någon felförenkling.",
-        "why_wrong": "(x−y)(x+y) i täljaren = x²−y², inte x−y. Båda x och y återkommer i kvadrat."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Snabbsvar är ofta \\frac{x}{y}-\\frac{y}{x}+2 av annan utveckling.",
-        "why_wrong": "Detta ger \\frac{x^{2}-y^{2}}{xy}+2, alltså EXTRA +2 — fel. Inga +2 uppstår vid utvecklingen."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Multiplicera ut: (x-y)\\left(\\frac{1}{x}+\\frac{1}{y}\\right)=(x-y)\\cdot\\frac{x+y}{xy}=\\frac{x^{2}-y^{2}}{xy}.",
-    "technique": "Distribuera över bråksumma: multiplicera täljaren med varje term, kombinera till gemensam nämnare. Konjugatregeln (a-b)(a+b)=a^{2}-b^{2} är användbar.",
-    "_meta": {
-      "generated_at": 1778414059975,
-      "model": "claude-opus-4-7",
-      "fixed_at": 1778498287382
-    }
   },
   "host-2016-kvant2-XYZ-009": {
     "_meta": {
@@ -1657,66 +1608,37 @@
       "generated_at": 1778429079240
     }
   },
-  "host-2016-kvant2-NOG-027": {
-    "solution_path": "(1) räcker: rektangelns höjd AB är 8 cm (samma som CD). Triangel AED har bas AD=4 och höjd AB=8, area=16 cm². (2) säger inget om AB — höjden saknas.",
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att tro att E:s position är avgörande.",
-        "why_wrong": "Arean av AED beror inte på var E ligger på BC, bara på höjden AB."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(1) räcker ensamt."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(2) saknar AB."
-      },
-      {
-        "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan E:s position går det inte.",
-        "why_wrong": "AED:s höjd är AB oberoende av E:s exakta läge på BC."
-      }
-    ],
-    "technique": "I rektangel: en triangel med bas på en sida och toppunkt på motsatt sida har höjd = rektangelns höjd, oberoende av toppunktens position.",
-    "pitfall": "Ej fastna i E:s position när höjden är samma.",
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778429079240
-    }
-  },
   "host-2016-kvant2-NOG-028": {
-    "solution_path": "Vart för sig räcker. Totalt röda=56. (1): A-röda=3·A-gröna=21, B-röda=56−21=35. (2): A=28, B=39, B-röda=39−4=35.",
+    "solution_path": "Givet: 67 bollar totalt, 11 gröna, alltså 56 röda. I A finns 7 gröna, alltså 4 gröna i B. Sökt: röda i B. Utsaga (1): A har 3·7 = 21 röda ⇒ B har 56 − 21 = 35 röda. Räcker ensamt. Utsaga (2): A + B = 67, B = A + 11 ⇒ A = 28, B = 39 ⇒ B-röda = 39 − 4 = 35. Räcker ensamt. Båda räcker var för sig, D.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s direkta proportion är den enda fungerande.",
-        "why_wrong": "(2):s storleksskillnad ger samma resultat."
+        "why_tempting": "Det är lätt att tro att (1):s direkta antalsproportion är den enda fungerande vägen.",
+        "why_wrong": "(2):s storleksskillnad mellan lådorna ger också tillräckligt: A + B = 67 och B − A = 11 ger entydigt A = 28, B = 39."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s differens räcker.",
-        "why_wrong": "(1) räcker lika bra."
+        "why_tempting": "Snabbsvar är ofta att (2):s explicita lådstorlek räcker bättre än (1):s proportion.",
+        "why_wrong": "(1) räcker också — A-röda = 21 direkt ur ·3 gånger så många·, så B-röda = 56 − 21 = 35."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
+        "why_tempting": "Första instinkten är att kombinera båda för att vara säker.",
+        "why_wrong": "Båda räcker var för sig — det är onödigt att kombinera, och därför är D (inte C) korrekt verdict."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan båda lådorna går det inte.",
-        "why_wrong": "Total + en cell + en relation per låda räcker."
+        "why_tempting": "Det är frestande att tro att utan båda lådornas storlekar går det inte att låsa.",
+        "why_wrong": "Det räcker med totalsumman 67 + 11 gröna + 7 gröna i A + EN tilläggsutsaga per fall."
       }
     ],
-    "technique": "Total + en cell per låda + en relation = sluten system.",
-    "pitfall": null,
+    "technique": "När totalsumman och en delkomponent är kända, räcker en ENSKILD extra ekvation om den andra okänd-variabeln för att låsa systemet — varje sådan utsaga räknas separat som tillräcklig.",
+    "pitfall": "·Tre gånger så många röda som gröna i A· (1) och ·11 fler bollar i B än A· (2) är två OLIKA vägar till samma svar — testa båda separat innan du antar att de behöver kombineras.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778429079240
+      "generated_at": 1778429079240,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2016-verb1-LÄS-011": {

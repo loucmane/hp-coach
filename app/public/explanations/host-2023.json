@@ -521,32 +521,6 @@
       "generated_at": 1778424621017
     }
   },
-  "host-2023-kvant2-KVA-017": {
-    "solution_path": "x² + y² = z² (Pythagoras), x, y, z > 0. Då är z² > y² ⇒ z > y — B.",
-    "technique": "Pythagoras: hypotenusan är alltid längre än någon katet.",
-    "pitfall": null,
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att y > z om x är litet.",
-        "why_wrong": "Även för litet x är z² ≥ y² + 0 = y², och eftersom x > 0 strikt, är z > y."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta likhet om x = 0.",
-        "why_wrong": "x > 0 villkor utesluter x = 0; därmed strikt z > y."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Det är frestande att tro att x:s storlek påverkar riktningen.",
-        "why_wrong": "Riktningen z > y gäller för alla x > 0."
-      }
-    ],
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778424621017
-    }
-  },
   "host-2023-kvant2-KVA-018": {
     "solution_path": "A:s ordpris = 0,80·B. I: 0,95·0,80·B = 0,76B. II: 0,75·B. 0,76 > 0,75 — A.",
     "technique": "Sammansatta procentsatser: multiplicera faktorerna.",
@@ -706,28 +680,30 @@
   "host-2023-kvant2-XYZ-002": {
     "_meta": {
       "generated_at": 1778415036026,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7",
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel grundvinkel och få 49°.",
-        "why_wrong": "Räkna utifrån alternativ-/likbelägna vinklar i figuren: v = 64°."
+        "why_tempting": "Det är lätt att räkna fel och tro att v + den givna vinkeln summerar till 113° i stället för att vara lika.",
+        "why_wrong": "Alternatvinklar är LIKA stora, inte komplement — 49° kommer från en feltolkning."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 61° av approximation.",
-        "why_wrong": "v = 64° exakt."
+        "why_tempting": "Första instinkten är att uppskatta visuellt — 61° ser nära ut.",
+        "why_wrong": "Vinklarna i figuren är exakt angivna; läs av siffran, inte ögonmåttet."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 67°.",
-        "why_wrong": "v = 64°, inte 67°. Räkna noggrant från figurens specifika konfiguration."
+        "why_tempting": "Många stannar vid att avläsa fel grad-tal från figuren — 67° är nära 64°.",
+        "why_wrong": "Den markerade vinkeln på L{M0}_1{M1} är 64°, och alternatvinkeln v är exakt lika stor."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figurens vinkelförhållanden mellan parallella linjer: v=64°.",
-    "technique": "Vinklar mellan parallella linjer: alternativ vinkelsats ger likhet; supplementsats för konsekutiva."
+    "pitfall": "Förväxla inte alternatvinklar (Z-mönster, lika) med likbelägna vinklar (F-mönster, också lika) eller med konsekutiva vinklar (samma sida om transversalen, summerar till 180°).",
+    "solution_path": "Vinkeln v ligger på L_2 och har samma transversal som en vinkel på L_1. Eftersom linjerna är parallella är alternatvinklarna lika: vinkeln på L_1 = 64° i figuren, alltså v = 64°.",
+    "technique": "När en transversal korsar två parallella linjer är alternatvinklar (på olika sidor om transversalen, mellan linjerna) lika stora — leta efter Z-mönstret."
   },
   "host-2023-kvant2-XYZ-003": {
     "_meta": {
@@ -832,32 +808,6 @@
     "pitfall": null,
     "solution_path": "Hastighet = \\frac{1000}{50}=20 m/s. Omvandling: 20 · 3,6 = 72 km/h.",
     "technique": "m/s till km/h: multiplicera med 3,6."
-  },
-  "host-2023-kvant2-XYZ-007": {
-    "_meta": {
-      "generated_at": 1778415036026,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att räkna fel täljare och få −11/3.",
-        "why_wrong": "Räkna noggrant: 2/5 − 5/6 = (12 − 25)/30 = −13/30. Invers = −30/13."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta \\frac{1}{3} av räknemiss.",
-        "why_wrong": "Resultatet är negativt och stort."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 13/10 av att flippa fel.",
-        "why_wrong": "Invers av −13/30 är −30/13, inte 13/10."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Räkna nämnaren: \\frac{2}{5}-\\frac{5}{6}=\\frac{12-25}{30}=-\\frac{13}{30}. Inverten: -\\frac{30}{13}.",
-    "technique": "Bråk i nämnaren: räkna ut nämnaren först, ta sedan inversen."
   },
   "host-2023-kvant2-XYZ-008": {
     "_meta": {
@@ -1075,13 +1025,14 @@
         "why_wrong": "Störa är ATT AVBRYTA; dementera är ATT FÖRNEKA innehåll. Avbrytande vs innehållsåtgärd."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Att dementera betyder att förneka — officiellt tillbakavisa ett påstående, ofta ett felaktigt rykte. Från franska \\textit{démentir} (förneka, motsäga), av latinets de- (bort) + \\textit{mentiri} (ljuga). Pressbruk: dementi = officiell förnekelse. Associationen till \"demens\" (galenskap) är folketymologi — inte den faktiska källan.",
+    "pitfall": "",
+    "solution_path": "Att dementera betyder att förneka — officiellt tillbakavisa ett påstående, ofta ett felaktigt rykte. Från franska démentir (förneka, motsäga), av latinets de- (bort) + mentiri (ljuga). Pressbruk: dementi = officiell förnekelse. Associationen till \"demens\" (galenskap) är folketymologi — inte den faktiska källan.",
     "technique": "Franska låneord via medier (dementera, debattera, lansera) — fackuttryck inom press och politik; det franska ursprunget är nyckeln, inte den klingande latinska \"demens\"-associationen.",
     "_meta": {
       "generated_at": 1778421029271,
       "model": "claude-opus-4-7",
-      "fixed_at": 1778500764306
+      "fixed_at": 1778509169153,
+      "fix_note": "persona_fix: stripped literal \\textit{} LaTeX from prose"
     }
   },
   "host-2023-verb1-ORD-004": {
@@ -1676,34 +1627,36 @@
     }
   },
   "host-2023-kvant1-NOG-025": {
-    "solution_path": "Båda krävs: (2) ger via vt=2v(t-7{,}5/60) att t=15 min, men hastigheten saknas. (1) ger v=15 km/h. Tillsammans: sträcka=15·15/60=3,75 km.",
+    "solution_path": "Sökt: sträckan AB. Kalla normaltiden t, normalhastigheten v. Utsaga (1): v = 15 km/h. Saknar tiden — räcker inte. Utsaga (2): med dubbel hastighet tar resan t − 7,5 min. Sträckan samma: v·t = 2v·(t − 7,5/60). Dividera med v: t = 2t − 0,25 ⇒ t = 0,25 h = 15 min. Räcker inte ensamt — hastigheten saknas. Tillsammans: sträcka = 15 · 0,25 = 3,75 km. C.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att hastigheten räcker.",
-        "why_wrong": "(1) saknar tid — utan tid kan sträckan inte räknas ut."
+        "why_tempting": "Det är lätt att tro att hastigheten räcker för att räkna sträckan.",
+        "why_wrong": "(1) ger bara v = 15 km/h — utan tiden kan sträckan = v·t inte beräknas."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att den hypotetiska hastighetsändringen räcker.",
-        "why_wrong": "(2) ger bara tiden — inte hastigheten."
+        "why_tempting": "Snabbsvar är ofta att (2):s hypotetiska tidsbesparing räcker för att låsa allt.",
+        "why_wrong": "(2) ger bara tiden (t = 15 min) — själva hastigheten v stryks bort och förblir okänd."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Sträcka=v·t kräver båda; ingen utsaga ger båda."
+        "why_tempting": "Om du blandar ihop tid och hastighet kan du tro att båda räcker var för sig.",
+        "why_wrong": "Sträcka = v·t kräver båda värden samtidigt — varken (1) eller (2) ensamt ger båda."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att (2):s hypotetiska villkor inte är konstruktivt.",
-        "why_wrong": "Det löser ut tiden t entydigt eftersom v stryks."
+        "why_tempting": "Det är frestande att tro att en ·hypotetisk· utsaga inte kan vara konstruktiv.",
+        "why_wrong": "(2):s hypotetik är fullt giltig algebra — den löser ut tiden t entydigt och kompletterar (1)."
       }
     ],
-    "technique": "Hypotetiska hastighetsändringar (2v, ½v) eliminerar v och låser t.",
-    "pitfall": null,
+    "technique": "Hypotetisk hastighetsändring (·dubbelt så fort·) eliminerar HASTIGHETEN ur ekvationen och låser TIDEN — sedan behövs hastigheten från en annan utsaga för att räkna sträckan.",
+    "pitfall": "I (2): det är ÄR samma sträcka som körs, bara med dubbel hastighet och kortare tid. Sätt v·t = 2v·(t − Δt) och dividera bort v — då löser sig t själv.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778427342052
+      "generated_at": 1778427342052,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2023-kvant1-NOG-026": {

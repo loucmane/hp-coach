@@ -156,29 +156,31 @@
     }
   },
   "host-2022-kvant1-KVA-021": {
-    "solution_path": "Linje genom (-10, -1) med positiv lutning skär y-axeln vid y = -1 + 10k för någon k > 0. y kan vara liten (k = 0,01) eller stor (k = 100); därmed > 0 eller < 0. D.",
-    "technique": "Linje med en punkt + lutning > 0: y-skärning fri, beror på k.",
-    "pitfall": null,
+    "solution_path": "Linjen passerar (−10, −1) med positiv lutning k > 0. Y-skärningen m är y-värdet vid x = 0: m = −1 + 10k. För liten k (t.ex. k = 0,05) är m = −0,5 < 0. För stor k (t.ex. k = 1) är m = 9 > 0. Y-skärningen kan alltså vara negativ, noll eller positiv — D.",
+    "technique": "En linje y = kx + m går genom (x₀, y₀) ⇒ y₀ = k·x₀ + m. Lös ut m: m = y₀ − k·x₀. För en linje genom (−10, −1) blir y-skärningen m = −1 − k·(−10) = 10k − 1.",
+    "pitfall": "·Positiv lutning· säger bara att linjen lutar uppåt — det säger inget om VAR den korsar y-axeln. En brant linje (stor k) startar långt ovanför x-axeln; en flack linje (liten k) startar nedanför.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att positiv lutning innebär positiv y-skärning.",
-        "why_wrong": "Linjen passerar (-10, -1); för liten lutning är y-skärning negativ."
+        "why_tempting": "Det är lätt att associera ·positiv lutning· med ·positiv y-skärning·.",
+        "why_wrong": "Linjen passerar (−10, −1) som ligger nere till vänster — en flack linje (k nära 0) skär y-axeln nedanför origo."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att y-skärning < 0 av kontextet.",
-        "why_wrong": "För stor lutning (k > 0,1) är y-skärning > 0."
+        "why_tempting": "Snabbsvar är ofta att y-skärning < 0 eftersom (−10, −1) är negativ.",
+        "why_wrong": "För stor lutning (k = 1) blir m = 9, så y-skärningen kan absolut vara positiv."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid y-skärning = 0 specifikt.",
-        "why_wrong": "Det är ett av tre fall; lutningen är inte fixerad."
+        "why_tempting": "Många stannar vid specifikt fall där y-skärning = 0 (k = 0,1).",
+        "why_wrong": "Det är ett av oändligt många fall — lutningen är inte fixerad."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424621016
+      "generated_at": 1778424621016,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2022-kvant1-KVA-022": {
@@ -258,32 +260,6 @@
     "pitfall": null,
     "solution_path": "3^{3}-2^{3}=27-8=19.",
     "technique": "Differens av potenser: räkna varje potens separat, sen subtrahera."
-  },
-  "host-2022-kvant1-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tappa tecken på interceptet (tro +2).",
-        "why_wrong": "Linjen skär y-axeln vid −2 (under origo)."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att blanda lutning 3 med 1/3.",
-        "why_wrong": "Lutningen är 3 (brant uppåt), inte 1/3."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid att tro lutningen är negativ.",
-        "why_wrong": "Lutningen är POSITIV 3 — linjen går brant uppåt."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Linjen y = 3x − 2 har lutning 3 och y-skärning −2. Alternativ C visar denna konfiguration.",
-    "technique": "Match linje till graf: jämför lutning (Δy/Δx) och y-skärning (vid x=0)."
   },
   "host-2022-kvant1-XYZ-005": {
     "_meta": {
@@ -573,7 +549,7 @@
     }
   },
   "host-2022-kvant2-KVA-020": {
-    "solution_path": "xy = 36 med positiva heltal. Möjliga par: (1,36), (2,18), (3,12), (4,9), (6,6). Summan x + y kan vara 37, 20, 15, 13, 12 — alla ≤ 18 (jämför med II = 18). 37 > 18, 12 < 18, så D.",
+    "solution_path": "xy = 36 med positiva heltal. Faktorparen: (1,36), (2,18), (3,12), (4,9), (6,6). Summan x + y blir 37, 20, 15, 13, 12 respektive. Vid (1,36) är summan 37 > 18 (I > II); vid (6,6) är summan 12 < 18 (II > I). Båda riktningar möjliga — D.",
     "technique": "AM-GM eller direkt enumeration: x + y kan ligga både över och under 18.",
     "pitfall": null,
     "distractors": [
@@ -595,7 +571,9 @@
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424621016
+      "generated_at": 1778424621016,
+      "fixed_at": 1778509169151,
+      "fix_note": "persona_fix: corrected factual slip (sums NOT all <= 18)"
     }
   },
   "host-2022-kvant2-KVA-021": {
@@ -1557,37 +1535,6 @@
     "pitfall": null,
     "solution_path": "Att raljera betyder att skämta ironiskt — driva med någon eller något på ett spotskt, lättsamt sätt. Franska railler (skämta, gyckla med). 'Raljera över politiken' = ironiskt driva med politiken.",
     "technique": "Franska skämt-/ironi-verb (raljera, persiflera, ironisera) — alla bär bilden av LÄTTSAMT HÅN eller IRONISK kommentar."
-  },
-  "host-2022-kvant1-NOG-023": {
-    "solution_path": "Båda krävs: (1) ger August totalt 24+1=25 blommor, (2) ger 3/5 av Augusts bukett som blåklockor — alltså 15. Vart för sig saknas antingen totalen eller andelen.",
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att Julias siffror + relationen räcker.",
-        "why_wrong": "(1) ger Augusts totalsumma men inte fördelningen mellan prästkragar och blåklockor."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att andelen 3/5 räcker.",
-        "why_wrong": "(2) ger en fraktion utan totalsumma."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar antingen totalen eller fraktionen."
-      },
-      {
-        "letter": "E",
-        "why_tempting": "Det är frestande att tro att två partiella beskrivningar inte räcker.",
-        "why_wrong": "Total + fraktion = produkt — exakt 15 blåklockor."
-      }
-    ],
-    "technique": "Total + fraktion låser absolutvärdet via multiplikation.",
-    "pitfall": null,
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778427342052
-    }
   },
   "host-2022-kvant1-NOG-024": {
     "solution_path": "(2) räcker: svarta=18 och röda=2/3·18=12, så svarta−röda=6. (1) ger bara totalsumman 30 utan fördelning.",

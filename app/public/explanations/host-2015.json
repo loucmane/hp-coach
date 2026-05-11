@@ -446,32 +446,6 @@
     "solution_path": "Subtrahera 3 från båda led: -2x<-2. Dela med −2 OCH vänd olikheten: x>1.",
     "technique": "Linjär olikhet: vänd tecknet vid multiplikation/division med negativt tal. Annars lös som vanlig linjär ekvation."
   },
-  "host-2015-kvant1-XYZ-012": {
-    "_meta": {
-      "generated_at": 1778413851094,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är frestande att räkna fel tecken på vänsterledet och få något bråk-svar som −1/21.",
-        "why_wrong": "Vänsterledet förenklas helt till 0 (-p+p=0). Inga negativa bråksvar uppstår."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Om du minns regeln som 'sätt in och lös p direkt' utan korrekt teckenhantering blir 14 ett möjligt slarv-svar.",
-        "why_wrong": "\\frac{p}{2}=5 ger p = 10, inte 14."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att räkna fel parentes: (12-p)(-\\frac{1}{2})+1=12 av slarv → p = 12.",
-        "why_wrong": "(12-p)(-\\frac{1}{2})=-6+\\frac{p}{2}, sen plus 1 = \\frac{p}{2}-5. Sätt = 0: p = 10."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Sätt in x=-\\frac{1}{2} i båda led: vänster 2p\\cdot(-\\frac{1}{2})+p=-p+p=0; höger (12-p)(-\\frac{1}{2})+1=-6+\\frac{p}{2}+1=\\frac{p}{2}-5. Lika: 0=\\frac{p}{2}-5, alltså p = 10.",
-    "technique": "Lös ut parameter givet en känd lösning: substituera x-värdet i båda led, lös sedan ut p från resulterande linjär ekvation i p."
-  },
   "host-2015-kvant2-KVA-013": {
     "solution_path": "I: 4\\cdot 6-3\\cdot 5=24-15=9. II: 3(3\\cdot 2-5)=3\\cdot 1=3. 9 > 3 — A.",
     "technique": "Räkneordning: multiplikation före subtraktion, parenteser först.",
@@ -526,30 +500,32 @@
     }
   },
   "host-2015-kvant2-KVA-016": {
-    "solution_path": "Villkoret är k\\neq 0. I: x. II: x·k. Om x = 0 är båda 0 (lika). Om x ≠ 0, k ≠ 0, kan k vara > 1, < 1, negativ — alla riktningar möjliga. D.",
-    "technique": "Multiplikation med fri parameter k ≠ 0: tre tecken-utfall, plus ett k = 1-fall för likhet.",
-    "pitfall": null,
+    "solution_path": "Villkoret är bara k ≠ 0; ingen begränsning på x eller k. Testa: om x = 2, k = 3 är x = 2, xk = 6 ⇒ II > I. Om x = 2, k = 0,5 är x = 2, xk = 1 ⇒ I > II. Om x = 0 är båda 0 ⇒ likhet. Tre olika utfall är möjliga — D.",
+    "technique": "När en variabel multipliceras med en fri parameter k ≠ 0 har du tre olika utfall beroende på k:s tecken och storlek — testa konkreta värden för att se vilka som är möjliga.",
+    "pitfall": "·k ≠ 0· låter restriktivt men är väldigt brett: k kan vara stort, smått (mellan 0 och 1), negativt — varje fall ger en annan relation mellan x och xk.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att \"k ≠ 0\" automatiskt gör x·k större än x.",
-        "why_wrong": "Multiplikation med ett tal mellan 0 och 1 minskar |x·k|; med negativ k vänds tecknet."
+        "why_tempting": "Det är lätt att tänka ·multiplikation gör större·, så x > xk.",
+        "why_wrong": "Bara om |k| < 1 och x positivt; med k = 2 och x = 1 blir xk = 2 > x."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att k > 1 alltid och därför x·k > x.",
-        "why_wrong": "k är inte begränsat uppåt eller nedåt; alla värden utom 0 är tillåtna."
+        "why_tempting": "Snabbsvar är ofta att k > 1 alltid och därför xk > x.",
+        "why_wrong": "k är inte begränsat — k = 0,5 ger xk < x, och negativa k vänder helt om tecknet."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid specialfallet k = 1 och tror likhet alltid.",
-        "why_wrong": "k = 1 ger likhet, men inget i villkoret tvingar k = 1."
+        "why_tempting": "Många stannar vid specialfallet k = 1 (likhet) eller x = 0 (också likhet).",
+        "why_wrong": "Dessa är giltiga FALL men inget i villkoret tvingar k = 1 eller x = 0 — andra utfall är också möjliga."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778424317527,
-      "fixed_at": 1778498574268
+      "fixed_at": 1778498574268,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2015-kvant2-KVA-017": {
@@ -659,30 +635,32 @@
     }
   },
   "host-2015-kvant2-KVA-022": {
-    "solution_path": "n linjer skär varandra i högst \\binom{n}{2}=n(n-1)/2 punkter. För n = 8: 8\\cdot 7/2=28. 28 > 24 — A.",
-    "technique": "Maximalt antal skärningar för n linjer: \\binom{n}{2} (varje par i högst en punkt).",
-    "pitfall": null,
+    "solution_path": "Två linjer ger 1 skärning (= 2·1/2). Tre linjer ger 3 skärningar (= 3·2/2). Mönstret är att VARJE PAR av linjer ger en skärningspunkt — och för n linjer finns det n(n−1)/2 par. För n = 8: 8·7/2 = 28 skärningspunkter. 28 > 24, så A.",
+    "technique": "Maximalt antal skärningar för n linjer = antal par av linjer = n(n−1)/2. Varje par korsar i högst en punkt, och antalet par är n·(n−1) delat med 2 (för att räkna varje par bara en gång).",
+    "pitfall": "Multiplicera inte n med antalet skärningar i ett mindre fall (·3 linjer = 3, alltså 8 linjer = 8·3 = 24·) — det mönstret växer snabbare än linjärt.",
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna 8·3 = 24 om man försöker generalisera 3 → 3·1 = 3.",
-        "why_wrong": "Mönstret är n(n-1)/2, inte 3n; för n = 8 ger det 28."
+        "why_tempting": "Det är lätt att räkna 8 · 3 = 24 om du försöker generalisera ·3 linjer → 3·.",
+        "why_wrong": "Mönstret är n(n−1)/2, inte 3n — för n = 8 ger det 28, inte 24."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att 8 linjer ger 24 (8·3).",
-        "why_wrong": "För 3 linjer var det 3 = 3·2/2; för 8 är det 8·7/2 = 28."
+        "why_tempting": "Snabbsvar är ofta att 8 linjer ger exakt 8·3 = 24.",
+        "why_wrong": "Jämför med 3 linjer: 3 = 3·2/2, inte 3·1; mönstret är n(n−1)/2."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att man behöver veta linjernas placering.",
-        "why_wrong": "Maxvärdet uppnås när alla par korsar varandra utan tre genom samma punkt."
+        "why_wrong": "Maxvärdet uppnås när inga två linjer är parallella OCH inga tre går genom samma punkt — den övre gränsen är entydigt 28."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778424317527,
-      "fixed_at": 1778498574268
+      "fixed_at": 1778498574268,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2015-kvant2-XYZ-001": {
@@ -1724,34 +1702,36 @@
     }
   },
   "host-2015-kvant1-NOG-028": {
-    "solution_path": "Båda krävs: (1) ger p=2n+4, (2) ger p=3n−1. Tillsammans: n=5, p=14.",
+    "solution_path": "Kalla antal gäster n och antal pajer p. Utsaga (1): varje gäst får 2 pajer och 4 blir över ⇒ p = 2n + 4. EN ekvation i två okända — räcker inte. Utsaga (2): varje gäst skulle få 3 pajer men det fattas 1 ⇒ p + 1 = 3n, dvs p = 3n − 1. EN ekvation i två okända — räcker inte. Tillsammans: 2n + 4 = 3n − 1 ⇒ n = 5, p = 14. C.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en relation räcker.",
-        "why_wrong": "(1) ger en ekvation i två obekanta."
+        "why_tempting": "Det är lätt att tro att ·fyra över· är en koncret räknesats som låser p.",
+        "why_wrong": "(1) ger bara p = 2n + 4 — en linje med oändligt många (n, p)-lösningar."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2) räcker.",
-        "why_wrong": "(2) ger en ekvation i två obekanta."
+        "why_tempting": "Snabbsvar är ofta att ·fattas en· är mer informativt än ·fyra över·.",
+        "why_wrong": "(2) är också en enskild ekvation i två okända (p = 3n − 1) — räcker inte ensamt."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Två obekanta kräver två oberoende ekvationer."
+        "why_tempting": "Om du tror att varje utsaga räknar både n och p landar du här.",
+        "why_wrong": "Två obekanta kräver två OBEROENDE ekvationer — varje utsaga ger bara en."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan total går det inte.",
-        "why_wrong": "Två relationer ger ett sluten system."
+        "why_tempting": "Det är frestande att tro att utan ett uttryckligt totalt antal går det inte.",
+        "why_wrong": "Två oberoende ekvationer i två okända ger alltid sluten lösning — n = 5, p = 14."
       }
     ],
-    "technique": "Två linjära relationer p=f(n) och p=g(n) → sluten lösning.",
-    "pitfall": null,
+    "technique": "Vid ord-baserade NOG-problem: översätt VARJE utsaga till en ekvation i samma variabler. Två okända kräver två oberoende ekvationer.",
+    "pitfall": "·Fyra över· betyder att du har FÖR MÅNGA (lägg till 4 till behovet). ·Fattas en· betyder att du har FÖR FÅ (dra av 1 från behovet). Tecknet är lätt att blanda ihop.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778429079240
+      "generated_at": 1778429079240,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2015-kvant2-NOG-023": {
@@ -2612,29 +2592,31 @@
     }
   },
   "host-2015-verb1-MEK-028": {
-    "solution_path": "Studien tar fasta på två aspekter (synvinklar). Perioden var en brytningstid (skiftesperiod mellan gammalt och nytt). Och privat filantropi (välgörenhet) är det som föregår välfärdsstaten — den fasta historikersamlingen.",
+    "solution_path": "Texten beskriver en historisk studie. ·Aspekter· (synvinklar/sidor) är det neutrala ord man använder för ·studie av två X·. ·Brytningstid· är när gammalt och nytt möts — passar perfekt om perioden då välfärdsstaten började ersätta gamla ordningar. ·Filantropi· (privat välgörenhet) är just det som gick före välfärdsstatens institutioner. Alla tre i samma välfärdshistoriska sammanhang — B.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'perspektiv' som nästan synonym till aspekter.",
-        "why_wrong": "Perspektiv är synvinkel — okej men sämre passform; 'samordning' är fel om en konflikttid mellan synsätt; och antroposofi är Steiner-rörelsen, inget med välfärdsstatens förlopp."
+        "why_tempting": "Det är lätt att läsa ·perspektiv· som nästan synonym till aspekter.",
+        "why_wrong": "·Perspektiv· är okej men sämre passform till ·studie av två X·; och ·samordning· är fel om en konflikttid mellan synsätt; antroposofi är en specifik filosofisk rörelse (Steiner), inget med välfärdsstaten."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'förhållanden' som neutralt-historisk term.",
-        "why_wrong": "Förhållanden är allmänt — aspekter passar bättre 'studie av två X'; och 'sammansmältning' är fel om brytningstid; diakoni är kyrklig social omsorg, inte privat välgörenhet generellt."
+        "why_tempting": "Många stannar vid ·förhållanden· som ett neutralt historiskt ord.",
+        "why_wrong": "·Förhållanden· är för allmänt — ·aspekter· passar bättre för ·studie av två X·; och ·sammansmältning· motsäger ·brytningstid·; diakoni är specifikt kyrklig social omsorg, inte privat välgörenhet generellt."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta 'angreppspunkter' om akademisk metod.",
-        "why_wrong": "Angreppspunkter är konkret metod-hörnsten — inte 'två sidor' av en historisk realitet; 'övergångsålder' är fel register (pubertet); autonomi är självstyre, inte vad välfärdsstaten ersätter."
+        "why_tempting": "Snabbsvar är ofta ·angreppspunkter· i akademiska texter.",
+        "why_wrong": "·Angreppspunkter· är konkreta metodhörnstenar, inte ·sidor· av en historisk realitet; ·övergångsålder· är fel sakfält (medicin/biologi); autonomi (självstyre) är inte vad välfärdsstaten ersätter."
       }
     ],
-    "technique": "Treblanksdrag i historiografisk register: 'aspekter–brytningstid–filantropi' är alla i samma välfärdshistoriska narrativ — andra alternativ blandar register.",
-    "pitfall": "Test hela alternativet samtidigt — de tre orden bildar en samlad historieframställning, inte tre lösryckta synonymval.",
+    "technique": "Treblanksuppgifter med historisk text: testa alla tre orden mot tidsepok och sakfält samtidigt. Ord från andra epoker eller andra fackområden (medicin, teknik) avslöjar fel alternativ.",
+    "pitfall": "·Övergångsålder· (D) är inte fel ord generellt — det betyder pubertet eller klimakteriet. Men det passar inte i en text om välfärdshistoria. Kolla att varje ord sitter i RÄTT sakfält.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778441441254
+      "generated_at": 1778441441254,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2015-verb1-MEK-029": {
@@ -2917,32 +2899,6 @@
       }
     ],
     "technique": "Stäm av betydelsenyans: reellt (verkligt) ≠ ideellt (idealiskt) ≠ partiellt (delvis) — homofona '-ellt'-ord, helt olika rotord.",
-    "pitfall": null,
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778441441254
-    }
-  },
-  "host-2015-verb2-MEK-030": {
-    "solution_path": "Lagerlöfs senare romaner har en reducerad form (nedskalad) jämfört med tidigare 'episka rymd'. Det glansfulla och heroiska (storslagna) ersätts av anspråkslösa miljöer. Stilen blir intim — det är stilbegreppet som hela textens kontrast bygger på.",
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'lyrisk' som motsats till episk.",
-        "why_wrong": "Lyrisk är poetisk-känslosam — men texten beskriver enklare form, inte mer känslosam; 'exalterade' är upprymda, fel ton; och språkkänslan är delaspekt, inte hela stilen."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Många stannar vid 'svulstig' som motsats till anspråkslös.",
-        "why_wrong": "Svulstig är överlastad — texten beskriver Lagerlöfs SENARE verk som mer återhållna, inte svulstiga; och 'facila' (lättvindiga) är fel beskrivning av glans."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Snabbsvar är ofta 'grundad' som realistisk-jordnära.",
-        "why_wrong": "Grundad är vag (välunderbyggd) — passar inte form; och 'spektakulära' är okej men 'handlingen blir intim och dialektnära' — handlingen är inte språkdrag, stilen är."
-      }
-    ],
-    "technique": "Treblanksdrag i litteraturkritisk register: 'reducerad form / heroiska / stilen' följer en konsekvent narratologisk vokabulär — andra alternativ blandar in stilfigur, känsla, plot.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",

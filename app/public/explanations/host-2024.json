@@ -25,32 +25,6 @@
       "generated_at": 1778424837148
     }
   },
-  "host-2024-kvant1-KVA-016": {
-    "solution_path": "I: (3/5 - 4/7)·32 = (21/35 - 20/35)·32 = (1/35)·32 = 32/35. 32/35 < 1 — B.",
-    "technique": "Bråk-skillnad: gemensam nämnare först, multiplicera sedan.",
-    "pitfall": null,
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att räkna 3/5 - 4/7 = 1/2 av räknemiss.",
-        "why_wrong": "Korrekt: 21/35 - 20/35 = 1/35; 1/35·32 = 32/35."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att 32/35 = 1.",
-        "why_wrong": "32/35 ≈ 0,914, klart < 1."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Det är frestande att tro att fraktionen är otydlig.",
-        "why_wrong": "Direktberäkning ger 32/35 entydigt."
-      }
-    ],
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778424837148
-    }
-  },
   "host-2024-kvant1-KVA-017": {
     "solution_path": "Kalle ger x/2, Pelle ger y/2; Olles total = x/2 + y/2 = (x+y)/2. Medelvärdet av Kalles och Pelles ursprungliga = (x+y)/2. Lika — C.",
     "technique": "Halverade-summan = medelvärde: (x+y)/2 är samma uttryck.",
@@ -104,31 +78,32 @@
     }
   },
   "host-2024-kvant1-KVA-020": {
-    "solution_path": "Sortera de sex talen. De fyra största större än 12 fixerar a₃, a₄ större än 12; de fyra minsta mindre än 15 fixerar a₃, a₄ mindre än 15. Medianen (a₃ + a₄)/2 är därför fri i intervallet (12, 15) och kan ligga både över och under 13,5 — informationen är otillräcklig, D.",
-    "technique": "När villkoren bara fångar mittpartiet i ett intervall och målvärdet (13,5) ligger inuti det, är medianen inte tvingad åt något håll — informationen är otillräcklig (D).",
-    "pitfall": null,
+    "solution_path": "Sortera värdena a₁ ≤ a₂ ≤ ... ≤ a₆. ·De fyra största· (a₃, a₄, a₅, a₆) är alla > 12 ⇒ a₃ > 12. ·De fyra minsta· (a₁, a₂, a₃, a₄) är alla < 15 ⇒ a₄ < 15. Medianen = (a₃ + a₄)/2 ligger alltså mellan 12 och 15 — den kan vara 13 (under 13,5), 14 (över) eller exakt 13,5. D.",
+    "technique": "I en sorterad serie av 6 tal är medianen (a₃ + a₄)/2 — de två mittersta talen. ·De fyra största· är positionerna 3-6, och ·de fyra minsta· är positionerna 1-4.",
+    "pitfall": "Villkoret ·de fyra största > 12· tvingar bara a₃ > 12 (inte alla sex talen). Och ·de fyra minsta < 15· tvingar bara a₄ < 15. Mittpartiet är fritt inom (12, 15).",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att medianen är 13,5 av symmetri.",
-        "why_wrong": "Medianen är fri i (12, 15); 13,5 är mittpunkten men inte tvingande."
+        "why_tempting": "Det är lätt att tro att medianen alltid ligger nära mittpunkten 13,5 av intervallet.",
+        "why_wrong": "Medianen kan ligga både över och under 13,5 — t.ex. (13 + 14)/2 = 13,5, men också (12,5 + 13)/2 = 12,75."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att medianen < 13,5.",
-        "why_wrong": "Den kan vara större (t.ex. 14) eller mindre (t.ex. 13)."
+        "why_tempting": "Snabbsvar är ofta att medianen ·alltid är låg· när 4 av 6 är > 12.",
+        "why_wrong": "Medianen är (a₃ + a₄)/2 där a₃ > 12 och a₄ < 15 — den kan vara så låg som strax över 12 eller så hög som strax under 15."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid medianen = 13,5.",
-        "why_wrong": "Det är ett av oändligt många fall."
+        "why_tempting": "Många stannar vid att 13,5 är mittpunkten av 12 och 15 och kallar det likhet.",
+        "why_wrong": "Mittpunkten är ett möjligt värde men inte tvingat — alla värden i (12, 15) är möjliga."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778424837148,
-      "pedagogy_regenerated_at": 1778506283661,
-      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
+      "pedagogy_regenerated_at": 1778510870035,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11",
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2024-kvant1-KVA-022": {
@@ -212,28 +187,30 @@
   "host-2024-kvant1-XYZ-004": {
     "_meta": {
       "generated_at": 1778415183309,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7",
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 360/24 = 15°.",
-        "why_wrong": "Tre linjer ger 6 sektorer; här är x specifik vinkel ur figuren = 20°."
+        "why_tempting": "Det är lätt att räkna ett steg för lite och stanna på 15°.",
+        "why_wrong": "Kontrollräkna: när du sätter in x = 15° i ekvationen från figuren stämmer inte 360°-summan."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta avrundning åt 25°.",
-        "why_wrong": "x = 20° exakt."
+        "why_tempting": "Snabbsvar är ofta mellanvärdet 25° när man inte slutför algebran.",
+        "why_wrong": "x = 25° ger en summa som överstiger 360° runt punkten."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 30°.",
-        "why_wrong": "Räkna utifrån figurens specifika vinklar."
+        "why_tempting": "Om du minns regeln som '90° delat på 3 linjer = 30°' landar du här.",
+        "why_wrong": "Linjerna är inte vinkelräta — det är de specifika vinklarna i figuren som styr, inte en jämn fördelning."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Tre linjer ger sex sektorer. Med figurens specifika vinklar: x = 20°.",
-    "technique": "Linjer som skär i samma punkt: använd vinkelsummorna kring punkten (360°) och kompletterande vinklar."
+    "pitfall": "Tänk på skillnaden: kompletterande vinklar summerar till 90°, supplementvinklar till 180°. En rät linje ger 180° (supplement), inte 90°.",
+    "solution_path": "Tre linjer i samma punkt skapar sex vinklar som tillsammans är 360°, och varje vinkel har en lika stor vertikalvinkel mittemot. Sätt upp ekvationen med de markerade vinklarna i figuren och lös ut x — det ger x = 20°.",
+    "technique": "När linjer korsas i en punkt summerar alla vinklar runt punkten till 360°, och vertikalvinklar (mittemot varandra) är lika stora."
   },
   "host-2024-kvant1-XYZ-005": {
     "_meta": {
@@ -580,29 +557,33 @@
     }
   },
   "host-2024-kvant2-KVA-022": {
-    "solution_path": "(x + y)/2 = 1 → x + y = 2. (x + 4)/2 = y → x + 4 = 2y. Subtrahera: 4 = 2y - y - x + x → 4 = y. Och x = 2 - y = -2... wait. x + y = 2, x + 4 = 2y → från första y = 2 - x; sätt in: x + 4 = 2(2-x) = 4 - 2x → 3x = 0 → x = 0. Alltså x = 0, lika med II = 0 — C.",
-    "technique": "Två linjära villkor på två obekanta: lös via substitution.",
-    "pitfall": null,
+    "solution_path": "Medelvärdet av x och y = 1 ger (x + y)/2 = 1, alltså x + y = 2 ⇒ y = 2 − x. Medelvärdet av x och 4 = y ger (x + 4)/2 = y, alltså x + 4 = 2y. Sätt in y = 2 − x: x + 4 = 2(2 − x) = 4 − 2x → 3x = 0 → x = 0. Alltså I = II = 0, C.",
+    "technique": "Två linjära ekvationer i två obekanta har en entydig lösning (om de är oberoende). Använd substitution: lös ut en variabel ur en ekvation, sätt in i den andra.",
+    "pitfall": "Skriv om båda medelvärdes-villkoren som vanliga ekvationer (multiplicera med 2) innan du löser — så slipper du räkna med bråk i mellansteget.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel och få x > 0.",
-        "why_wrong": "x = 0 entydigt; lika med II."
+        "why_tempting": "Det är lätt att räkna fel någonstans och få ett positivt x.",
+        "why_wrong": "Substitutionen ger entydigt 3x = 0 → x = 0 (inte > 0)."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att x < 0 av \"negativ förskjutning\".",
-        "why_wrong": "x = 0; varken positivt eller negativt."
+        "why_tempting": "Snabbsvar är ofta att x < 0 om man tolkar ·medelvärde = 4· som något negativt.",
+        "why_wrong": "Räkningen ger x = 0 exakt, inte negativt."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att två villkor inte räcker.",
-        "why_wrong": "Två linjära ekvationer i två obekanta ger entydig lösning."
+        "why_tempting": "Det är frestande att tro att två villkor inte räcker för att bestämma båda obekanta.",
+        "why_wrong": "Två oberoende linjära ekvationer i två obekanta ger ALLTID en entydig lösning — här x = 0, y = 2."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424837148
+      "generated_at": 1778424837148,
+      "fixed_at": 1778509169145,
+      "fix_note": "persona_fix: cleaned wait-backtrack artifact",
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2024-kvant2-XYZ-001": {
@@ -838,32 +819,6 @@
     "pitfall": null,
     "solution_path": "Faktor 1: 2\\sqrt{3}+3\\sqrt{3}=5\\sqrt{3}. Faktor 2: 4\\sqrt{3}-\\sqrt{3}=3\\sqrt{3}. Produkt: 5\\sqrt{3}\\cdot 3\\sqrt{3}=15\\cdot 3=45.",
     "technique": "Multiplikation av rotor: kombinera först termer av samma rot, multiplicera sedan ut."
-  },
-  "host-2024-kvant2-XYZ-011": {
-    "_meta": {
-      "generated_at": 1778415183309,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att gissa 2/3.",
-        "why_wrong": "x = 1 är heltal."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 3/2.",
-        "why_wrong": "x = 1."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 2.",
-        "why_wrong": "x = 1, inte 2."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Av figurens villkor: x = 1.",
-    "technique": "Lös enkel ekvation utifrån figurens information."
   },
   "host-2024-kvant2-XYZ-012": {
     "_meta": {
@@ -1785,37 +1740,6 @@
     ],
     "technique": "I 2×2-tabeller: radsummor + kolumnsummor ensamma räcker INTE för cellerna — du behöver en cell.",
     "pitfall": "Klassisk falsk-tillräcklighet: marginalerna ger oss alla summor men inte enskilda celler.",
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778426615279
-    }
-  },
-  "host-2024-kvant2-NOG-026": {
-    "solution_path": "Båda krävs: (2) ger Agnes 20 min och Eva 12 min (3/5 av 20); (1) ger samma medelhastighet. Tillsammans löser ekvationen v·(20−12)/60=2 ut v=15 km/h, så Agnes cyklar 5 km. Vart för sig saknas antingen tid eller hastighet.",
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att samma hastighet räcker när skillnaden 2 km nämns.",
-        "why_wrong": "(1) säger inget om tid — utan tid kan sträckan inte räknas ut."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att tider och förhållanden räcker.",
-        "why_wrong": "(2) ger ingen hastighet — sträckan beror på en obekant."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Om du tror att vart och ett ensamt ger sträckan landar du här.",
-        "why_wrong": "Sträcka=hastighet·tid kräver båda; ingen utsaga ger båda ensam."
-      },
-      {
-        "letter": "E",
-        "why_tempting": "Det är frestande att avfärda problemet eftersom hastighet inte ges direkt.",
-        "why_wrong": "Tillsammans ger båda en ekvation i v som har en unik lösning."
-      }
-    ],
-    "technique": "Sträcka=hastighet·tid kräver båda — ett villkor i vardera räcker tillsammans.",
-    "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778426615279

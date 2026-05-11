@@ -103,32 +103,6 @@
       "generated_at": 1778425598327
     }
   },
-  "var-2026-kvant1-KVA-019": {
-    "solution_path": "I: 1/3 - 1/2 = -1/6. II: (1/2)·(-1/3) = -1/6. Lika — C.",
-    "technique": "Distribuera och förenkla.",
-    "pitfall": null,
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att I är mer negativ.",
-        "why_wrong": "Båda -1/6."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att II är mer negativ.",
-        "why_wrong": "Lika."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Det är frestande att tro att uttrycken är otydliga.",
-        "why_wrong": "Direktberäkning."
-      }
-    ],
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778425598327
-    }
-  },
   "var-2026-kvant1-KVA-020": {
     "solution_path": "I: 2π·5 = 10π ≈ 31,4. II: 2(5,5 + 10) = 31. 31,4 > 31 — A.",
     "technique": "Cirkel- och rektangelomkrets: båda räknas direkt.",
@@ -364,32 +338,6 @@
     "pitfall": "Skilj på 'tiotalssiffran' (siffran på tiotalsplatsen) och 'tiotal' (kvoten talet/10 avrundat nedåt). HP frågar nästan alltid efter den specifika siffran.",
     "solution_path": "44\\cdot 625=27500. Tiotalssiffran är 0 (siffran på platsen tio från höger).",
     "technique": "Sifferplats-frågor: räkna ut produkten exakt eller använd faktoruppdelning för att se hur många slutnollor uppstår innan du avläser begärd plats."
-  },
-  "var-2026-kvant1-XYZ-009": {
-    "_meta": {
-      "generated_at": 1778413273816,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att glömma minustecknet när man flyttar över x: 2y=2+x ger y=\\frac{1}{2}x+1, en linje som lutar UPPÅT.",
-        "why_wrong": "Vänsterledet 2y+x betyder att x har ett positivt tecken där — flytta över ger −x i högerledet, alltså negativ lutning."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Om du delar fel i sista steget — glömmer dela konstanten 2 också — får du m=2 istället för m=1.",
-        "why_wrong": "Hela högerledet ska delas med 2: y=\\frac{-x+2}{2}=-\\frac{1}{2}x+1, inte +2."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att kombinera fel tecken med fel intercept (negativt och nedförsbacke).",
-        "why_wrong": "Från ekvationen är intercept exakt +1 (positiv), inte negativ. Lutning −1/2 ger nedåtlutande linje genom (0, 1)."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Skriv om till lutningsform: 2y=-x+2, alltså y=-\\frac{1}{2}x+1. Linjen lutar nedåt med lutning −1/2 och skär y-axeln i 1 — det är figuren i alternativ B.",
-    "technique": "Linje i implicit form ax+by=c: lös ut y för att läsa av lutning och y-skärning. Tecknet på x flyttas över när du flyttar termen."
   },
   "var-2026-kvant1-XYZ-010": {
     "_meta": {
@@ -652,32 +600,6 @@
     "pitfall": null,
     "solution_path": "Räkna täljaren först: \\frac{1}{4}+\\frac{1}{5}=\\frac{5+4}{20}=\\frac{9}{20}. Att dela med 1/6 = att multiplicera med 6: \\frac{9}{20}\\cdot 6=\\frac{54}{20}=\\frac{27}{10}.",
     "technique": "Sammansatt bråk: lös täljare och nämnare var för sig, dela sedan = multiplicera med inversen av nämnaren."
-  },
-  "var-2026-kvant2-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778410520687,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "53° är nära 56° och kan kännas som ett 'avrundat' rimligt svar.",
-        "why_wrong": "Geometri med heltalsvinklar ger EXAKTA värden, inte avrundningar. Skillnaden 56° vs 53° är aldrig en avrundningsfråga — bara fel tillämpning av vinkelegenskaper."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Om man tillämpar fel vinkelegenskap (säger ko-interiora istället för alternat-interna) får man ett komplement: 180° − 56° = 124°, eller någon mellanversion som 66°.",
-        "why_wrong": "Alternat-interna vinklar är LIKA (inte komplementära) mellan parallella linjer. Felklassificering ger fel sida av 90°."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "71° kan kännas som ett 'rimligt vinkelvärde' om man räknar fel supplementvinkel.",
-        "why_wrong": "Verifiera mot triangelns vinkelsumma 180° — vinklarna måste tillsammans summera dit. 71° + andra givna vinklar bör inte överskrida 180°."
-      }
-    ],
-    "pitfall": "Alternat vs korresponderande vs ko-interiort — alla tre fungerar för parallella linjer men ger olika relationer (lika vs lika vs supplementära). Felidentifiering är den dominanta fällan.",
-    "solution_path": "I figuren bildas v som en alternat-vinkel eller som en del av en triangel vid linjernas skärning. Genom att tillämpa vinkelsumma i triangel (180°) och egenskapen att alternat-interna vinklar mellan parallella linjer är lika stora kommer man till v = 56°.",
-    "technique": "Parallella linjer + transversal: alternat-interna vinklar är lika; korresponderande är lika; ko-interiora summerar till 180°. Identifiera VILKEN typ av vinkelpar v utgör med en given vinkel."
   },
   "var-2026-kvant2-XYZ-007": {
     "_meta": {
@@ -1555,34 +1477,36 @@
     }
   },
   "var-2026-kvant1-NOG-027": {
-    "solution_path": "Vart för sig räcker: (1) ger längre katet \\sqrt{16-4}=2\\sqrt{3}, area \\frac{1}{2}\\cdot 2\\cdot 2\\sqrt{3}=2\\sqrt{3} cm²; (2) ger 30-60-90-triangel med kateterna 2 och 2\\sqrt{3}, samma area. Båda låser triangeln upp till spegling och därmed arean entydigt.",
+    "solution_path": "Sökt: arean av triangeln. Utsaga (1): hypotenusa 4 cm, kort katet 2 cm. Pythagoras: lång katet² = 4^2 - 2^2 = 12 ⇒ lång katet = √12. Area = (1/2)·2·√12 = √12 ≈ 3,46 cm². Räcker ensamt. Utsaga (2): hypotenusa 4 cm, vinkel 60° mot kort katet. Då är triangeln en 30-60-90-triangel där sidorna förhåller sig som 1 : √3 : 2 (kort : lång : hypotenusa). Med hypotenusa 4 blir kort katet = 2 och lång katet = 2√3. Samma area. Båda räcker var för sig, D.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att se Pythagoras direkt och missa att (2) har samma struktur.",
-        "why_wrong": "30-60-90-triangeln med hypotenusa 4 har låsta katetlängder 2 och 2√3 — alltså samma area som (1)."
+        "why_tempting": "Det är lätt att tänka att Pythagoras (två sidor) är ·det rätta sättet· och att vinkelvägen är klent.",
+        "why_wrong": "30-60-90-triangeln med hypotenusa 4 har låsta katetlängder (2 och 2√3) — alltså samma area som (1)."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid trigonometrin och missar Pythagoras-spåret.",
-        "why_wrong": "Två sidor i en rätvinklig triangel ger den tredje via Pythagoras; (1) ger lika låst area som (2)."
+        "why_tempting": "Snabbsvar är ofta att trigonometri (sin/cos) är mer kraftfullt än Pythagoras.",
+        "why_wrong": "Två sidor i en rätvinklig triangel räcker via Pythagoras — det ger lika låst area som vinkelvägen."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera uppgifterna när trianglar är inblandade.",
-        "why_wrong": "Båda fixerar samma triangel oberoende av varandra — extra information behövs inte."
+        "why_tempting": "Första instinkten är att kombinera båda när det handlar om en triangel.",
+        "why_wrong": "Båda utsagor fixerar samma triangel oberoende av varandra — kombinationen är onödig."
       },
       {
         "letter": "E",
-        "why_tempting": "Om du tror att en vinkel + en sida aldrig räcker landar du här.",
-        "why_wrong": "I en rätvinklig triangel räcker hypotenusan + en spetsig vinkel för att låsa båda kateterna."
+        "why_tempting": "Om du tror att en vinkel + en sida inte kan räcka i en triangel landar du här.",
+        "why_wrong": "I en RÄTVINKLIG triangel räcker hypotenusan + en spetsig vinkel: de andra två vinklarna och båda kateterna är då bestämda."
       }
     ],
-    "technique": "I en rätvinklig triangel räcker hypotenusan + en katet ELLER hypotenusan + en spetsig vinkel för att fixera arean.",
-    "pitfall": null,
+    "technique": "I en rätvinklig triangel räcker hypotenusan + EN extra uppgift (en katet ELLER en spetsig vinkel) för att låsa alla sidor och därmed arean.",
+    "pitfall": "I en rätvinklig triangel är det FAKTAEKVIVALENT att veta två sidor eller veta en sida + en spetsig vinkel — båda låser hela triangeln.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778426062030
+      "generated_at": 1778426062030,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "var-2026-kvant1-NOG-028": {

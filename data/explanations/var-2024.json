@@ -79,32 +79,6 @@
       "generated_at": 1778425598324
     }
   },
-  "var-2024-kvant1-KVA-016": {
-    "solution_path": "a ≠ -1, b < 0. a/b: tecknet på a/b beror på a:s tecken (a kan vara > 0 eller < 0). Storleksintervallet är fritt; jämförelse mot 1 obestämd. D.",
-    "technique": "Bråk med fri täljare och negativ nämnare: tre fall möjliga.",
-    "pitfall": null,
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att a/b alltid > 1.",
-        "why_wrong": "För a > 0, b < 0 är a/b < 0 < 1; så A bara för specifika a."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att a/b < 1.",
-        "why_wrong": "För a < b (båda negativa) är a/b > 1."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Många stannar vid a/b = 1.",
-        "why_wrong": "Likhet är ett av tre utfall."
-      }
-    ],
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778425598324
-    }
-  },
   "var-2024-kvant1-KVA-018": {
     "solution_path": "I: 50% av tal > 1000, så > 500. II: 75% av tal < 800, så < 600. I > 500, II < 600 — kan båda riktningar. För specifika värden kan I > II eller II > I. D.",
     "technique": "Två obestämda intervall: jämförelse fri.",
@@ -158,31 +132,32 @@
     }
   },
   "var-2024-kvant1-KVA-020": {
-    "solution_path": "L₁ lutning = (2-3)/(1-(-1)) = -1/2. L₂ vinkelrät: 2. -1/2 < 2 — B.",
-    "technique": "Vinkelräta linjer har lutningar som är negativa reciproker (k1·k2 = −1); här ger L1 lutning −1/2 och L2 lutning 2, så L2 är större (B).",
-    "pitfall": null,
+    "solution_path": "Lutning för L₁: (\\frac{2-3}{1-(-1)}) = (\\frac{-1}{2}) = −0,5. L₂ är vinkelrät, så k₁ · k₂ = −1 ⇒ k₂ = −1/(−0,5) = 2. Riktningskoefficienten för L₂ (= 2) är större än för L₁ (= −0,5), B.",
+    "technique": "Lutning mellan två punkter (x_1,y_1) och (x_2,y_2) är (y_2-y_1)/(x_2-x_1). Vinkelräta linjer har lutningar vars PRODUKT är −1: k₁ · k₂ = −1.",
+    "pitfall": "·Vinkelräta lutningar· är inte motsatser (−k₁) utan NEGATIVA INVERSER: om k₁ = −1/2 är k₂ = +2, inte +1/2.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att L₁ > L₂.",
-        "why_wrong": "-1/2 < 2; II vinner."
+        "why_tempting": "Det är lätt att tro att L₁ ·var först· och därför har större riktningskoefficient.",
+        "why_wrong": "Ordningen i bokstavering säger inget om lutning — L₁ har k = −0,5 och L₂ har k = 2."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att lutningarna är lika.",
-        "why_wrong": "Vinkelräta linjer har olika lutningar."
+        "why_tempting": "Snabbsvar är ofta att vinkelräta linjer ·har samma absolutbelopp på lutningen·.",
+        "why_wrong": "Lutningarna måste MULTIPLICERAS till −1, inte ha samma storlek — |−1/2| ≠ |2|."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att man behöver mer info om L₂.",
-        "why_wrong": "Vinkelrätt + origo bestämmer L₂ entydigt."
+        "why_tempting": "Det är frestande att tro att man behöver veta var L₂ skär axlarna.",
+        "why_wrong": "Vinkelrätt mot L₁ + genom origo räcker för att bestämma L₂:s lutning entydigt: k₂ = 2."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778425598324,
-      "pedagogy_regenerated_at": 1778506563468,
-      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
+      "pedagogy_regenerated_at": 1778510870035,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11",
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "var-2024-kvant1-KVA-021": {
@@ -444,32 +419,6 @@
     "pitfall": null,
     "solution_path": "För C ska ha 1 röd + 1 vit: plocka röd från A (P = 2/3) och vit från B (P = 2/3). A och B kvarstående har också 1 röd + 1 vit. Total: \\frac{2}{3}\\cdot\\frac{2}{3}=\\frac{4}{9}.",
     "technique": "Komposit sannolikhet: multiplicera oberoende villkor."
-  },
-  "var-2024-kvant1-XYZ-012": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att räkna 2⁶.",
-        "why_wrong": "2⁷."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 2¹¹.",
-        "why_wrong": "2⁷."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 2¹².",
-        "why_wrong": "2⁷."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "2(2^{5}+2^{5})=2\\cdot 2\\cdot 2^{5}=2^{7}.",
-    "technique": "Faktorisera potensaddition."
   },
   "var-2024-kvant2-KVA-013": {
     "solution_path": "3x > y. Beroende på tecken på x och y kan x vara större, mindre eller lika med y. D.",
@@ -760,32 +709,6 @@
     "pitfall": null,
     "solution_path": "Julia: 10 km/h. Anna: 5 km/h. Tillsammans 15 km/h. Tid: \\frac{12}{15}=\\frac{4}{5} h = 48 min.",
     "technique": "Möte-rörelse: addera hastigheter, dela sträcka med summan."
-  },
-  "var-2024-kvant2-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att räkna 49.",
-        "why_wrong": "49 ≠ 7."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 7-1 = 6.",
-        "why_wrong": "6 ≠ 7."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Många stannar vid annan kombination.",
-        "why_wrong": "D."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Av alternativens utvärdering: D ger 7.",
-    "technique": "Identifiera korrekt uttryck."
   },
   "var-2024-kvant2-XYZ-009": {
     "distractors": [
@@ -1671,37 +1594,6 @@
       "generated_at": 1778426782198
     }
   },
-  "var-2024-kvant2-NOG-024": {
-    "solution_path": "(1) räcker: i figuren är u och w relaterade genom en parallellitets- eller bivinkelregel som låter u beräknas direkt från w=65°. (2):s v=50° relaterar inte till u utan ytterligare information från figuren.",
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att tro att v=50° också är en låsande vinkel.",
-        "why_wrong": "(2):s v ligger inte på samma sida av tvärlinjen som u — den binder inte u direkt."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda när vinklar och figurer blandas.",
-        "why_wrong": "(1) räcker ensamt; (2) tillför ingen ny information."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker eftersom båda är konkreta vinklar landar du här.",
-        "why_wrong": "(2) saknar geometrisk koppling till u."
-      },
-      {
-        "letter": "E",
-        "why_tempting": "Det är frestande att avfärda problemet utan flera vinklar givna.",
-        "why_wrong": "(1):s w och u är direkt kopplade i figuren — en låsning räcker."
-      }
-    ],
-    "technique": "I figurer: identifiera vilken vinkel som är direkt kopplad till den efterfrågade via parallellitet eller bivinkel.",
-    "pitfall": null,
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778426782198
-    }
-  },
   "var-2024-kvant2-NOG-025": {
     "solution_path": "Vart för sig räcker. (1): \\tfrac{3}{7}V=1200 → V=2800 liter. (2): \\tfrac{4}{7}V-200=\\tfrac{1}{2}V → V=2800.",
     "distractors": [
@@ -2530,29 +2422,31 @@
     }
   },
   "var-2024-verb1-MEK-028": {
-    "solution_path": "Varje språk uttrycker en egen 'världsbild' (uppfattning om världen). Lägger ett 'raster' (siktrutnät, struktur som filtrerar) över verkligheten. Och verkligheten 'tolkas'. Tre kollokationer i språkfilosofisk register.",
+    "solution_path": "Tanken är att språk inte avbildar verkligheten direkt, utan formar hur vi ser den. ·Världsbild· är just det helhetliga sättet att uppfatta världen — ett ord som passar varje språk. ·Raster· (rutnät, struktur som filtrerar) är hur språket sorterar verkligheten. Och verkligheten ·tolkas· (inte bara beskrivs neutralt). Alla tre i samma språkfilosofiska sammanhang — B.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'tidsanda' som epok-ande.",
-        "why_wrong": "Tidsanda är 'tidens karaktär' — fel kategori; språk uttrycker inte tidsanda; och 'lager' är fel — det är RASTER (siktrutnät); 'förvrängs' är värderande, för negativt."
+        "why_tempting": "Det är lätt att läsa ·tidsanda· som ·en epokande· som varje språk uttrycker.",
+        "why_wrong": "Tidsanda är ·en specifik tids karaktär· — fel kategori; språk uttrycker inte tidsanda. Och ·förvrängs· är värderande (negativt), texten är neutralt-beskrivande."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'livsstil' som modernt.",
-        "why_wrong": "Livsstil är 'sätt att leva' — fel rektion för språk; och 'filter' är okej semantiskt men raster är specifikare; 'beskrivs' är vagt."
+        "why_tempting": "Många stannar vid ·livsstil· som modernt och greppbart ord.",
+        "why_wrong": "Livsstil är ·sätt att leva· — det är inte något varje SPRÅK uttrycker. Och ·beskrivs· är för vagt; texten kräver det starkare ·tolkas·."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta 'synvinkel' som perspektiv.",
-        "why_wrong": "Synvinkel är okej men 'världsbild' är mer omfattande språkfilosofiskt; och 'mönster' är okej men 'nyanseras' är fel — texten kräver tolkning, inte bara nyans."
+        "why_tempting": "Snabbsvar är ofta ·synvinkel· som lätt-greppbart perspektivord.",
+        "why_wrong": "·Synvinkel· är OK men ·världsbild· är mer omfattande och passar bättre om en hel uppfattning. Och ·nyanseras· är för svagt — texten säger att verkligheten TOLKAS (mer aktivt än att bara nyanseras)."
       }
     ],
-    "technique": "Treblanksdrag i språkfilosofisk register: världsbild / raster / tolkas — alla i samma Whorf-debatt-vokabulär.",
-    "pitfall": null,
+    "technique": "Treblanksuppgift med abstrakt teoriinnehåll: identifiera huvudtanken (här: språket formar, inte bara beskriver, världen) och välj alla tre orden från det sammanhanget.",
+    "pitfall": "Andra ord i alternativen (lager, filter, mönster) ligger nära ·raster· semantiskt, men kombinationen med ·världsbild· och ·tolkas· i B är den enda som ger en samlad språkfilosofisk text.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778444668093
+      "generated_at": 1778444668093,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "var-2024-verb1-MEK-029": {

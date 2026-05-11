@@ -196,3 +196,17 @@ var-2016-kvant2-KVA-017	parser_corruption — prompt shows 49^{2}=7^{2x} but mat
 host-2020-kvant2-KVA-021	dogfood_pass: parser_corrupted_display (figure_missing)
 var-2019-kvant1-KVA-013	dogfood_pass: parser_corrupted_display (prompt_truncated)
 var-2016-kvant1-KVA-019	dogfood_pass: parser_corrupted_display (figure_missing)
+host-2021-kvant2-KVA-013	persona_pass: tier1_parser_blocked (prompt is SEVERELY mangled: '3b \frac{2}{x} - \frac{1}{6} l = \frac{3}{2}' — the '3b' and 'l' are stray characters; shou)
+host-2023-kvant2-KVA-017	persona_pass: tier1_parser_blocked (prompt is severely mangled: 'x > 0 \frac{y}{z} \frac{>}{>} \frac{0}{0} x^{2} + y^{2} = z^{2}' — the '\frac{y}{z} \frac{>)
+host-2024-kvant1-KVA-016	persona_pass: tier1_parser_blocked (prompt is BADLY mangled: 'b \frac{3}{5} - \frac{4}{7} l·32' — 'b' and 'l' are stray (probably ( and )). Should be '(3/5 )
+host-2025-kvant1-KVA-019	persona_pass: tier1_parser_blocked (prompt is severely mangled: 'Kvanttiet II: 2 2' — should be 2√2 but the √ is dropped, leaving just '2 2' which I read as)
+var-2014-kvant2-KVA-014	persona_pass: tier1_parser_blocked (prompt: 'Kvantitet I: 11 Kvantitet II: 3 + 2' — clearly the parser dropped √ from both quantities. Should be '√11' vs '√)
+var-2017-kvant2-KVA-013	persona_pass: tier1_parser_blocked (prompt: '\frac{10}{3} 3^{·} 5^{·} 26' — the '3^{·}' is weird, looks like '3 superscript dot'. Should probably be '·' (mu)
+var-2018-1-kvant1-KVA-017	persona_pass: tier1_parser_blocked (prompt: 'a och b är positiva heltal större än 1 som uppfyller att a 16' — 'a 16' is parser garbage; should be 'a^b = 16')
+var-2019-kvant2-KVA-014	persona_pass: tier1_parser_blocked (prompt: '14 + 36' vs '10' — clearly parser dropped √ from both numbers. Should be √14 + √36 vs 10)
+var-2022-1-kvant2-KVA-021	persona_pass: tier1_parser_blocked (prompt: 'n är ett heltal sådant att -10 # n # 10' — '#' is corrupted ≤)
+var-2024-kvant1-KVA-016	persona_pass: tier1_parser_blocked (prompt 'a #-1' — # is corrupted ≠ probably. 'a ≠ -1' likely)
+var-2025-kvant2-KVA-021	persona_pass: tier1_parser_blocked (solution: '1Z2 = 1/2; (1/2)Z3 = (1/2)/3 = 1/6. Wait, 1/6 < 1/3, men ans = B (II > I). Re-check: I = 1/6, II = 1/3, II > )
+var-2026-kvant1-KVA-019	persona_pass: tier1_parser_blocked (prompt: 'Kvanttiet II: \frac{1}{2} ·b- \frac{1}{3} l' — 'b' and 'l' are parens again, plus raw \frac. Should be '(1/2)·()
+host-2025-kvant2-KVA-022	parser_corruption (phase E): b...l paren corruption
+var-2016-kvant1-KVA-015	parser_corruption (phase E): ^...h paren corruption

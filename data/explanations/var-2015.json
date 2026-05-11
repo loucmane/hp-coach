@@ -28,29 +28,31 @@
     }
   },
   "var-2015-kvant1-KVA-014": {
-    "solution_path": "x = y+z+w; w = z+y+x. Subtrahera: x - w = w - x → x = w → y + z = 0 (men x kvar). Båda y och z fria; rangordning fri. D.",
-    "technique": "Två villkor på fyra obekanta: två frihetsgrader kvar.",
-    "pitfall": null,
+    "solution_path": "Subtrahera ekvationerna: (x = y + z + w) − (w = z + y + x) ger x − w = w − x ⇒ 2x = 2w ⇒ x = w. Sätt in: w = y + z + w ⇒ y + z = 0, alltså y = −z. Om z > 0 är y < z; om z < 0 är y > z; om z = 0 är y = z. Tre olika utfall är möjliga — D.",
+    "technique": "Subtrahera två ekvationer för att eliminera gemensamma termer. När resultatet är ·y + z = 0· betyder det y = −z — och då beror jämförelsen mellan y och z helt på vilket tecken z har.",
+    "pitfall": "·y + z = 0· låter som ett starkt villkor men ger BARA y = −z — det säger inget om tecknet på z, och därmed inte heller om ordningen mellan y och z.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att y > z av asymmetri.",
-        "why_wrong": "Inget rangordnar dem; båda riktningar möjliga."
+        "why_tempting": "Det är lätt att välja en specifik instans (t.ex. z = −3, y = 3) och dra slutsatsen y > z.",
+        "why_wrong": "Det är ett av tre möjliga utfall — andra val av z ger motsatt ordning."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att z > y.",
-        "why_wrong": "Symmetri ger ingen riktning."
+        "why_tempting": "Snabbsvar är ofta att z > y eftersom z står efter y i alfabetet eller liknande.",
+        "why_wrong": "Det finns ingen ordningsregel som tvingar — z = 3, y = −3 fungerar lika bra som motsatt."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid y = z = 0 specifikt.",
-        "why_wrong": "Ett av oändligt fall; D korrekt."
+        "why_tempting": "Många stannar vid y = z = 0 (uppfyller y + z = 0) och kallar det likhet.",
+        "why_wrong": "Det är giltigt, men y = 5, z = −5 är också giltigt — alla tre relationer förekommer."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778425152539
+      "generated_at": 1778425152539,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "var-2015-kvant1-KVA-016": {
@@ -370,28 +372,30 @@
   "var-2015-kvant1-XYZ-008": {
     "_meta": {
       "generated_at": 1778415987299,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7",
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro b − a = 90°.",
-        "why_wrong": "Inte säkert; villkoret a ≠ 90 utesluter spec relations."
+        "why_tempting": "Det är lätt att tro att b − a = 90° om man drar paralleller till rätvinkliga konfigurationer.",
+        "why_wrong": "Eftersom a ≠ 90° gäller inte 90°-relationen — testa a = 60° i figuren och se att b − a varierar."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 2d + c − a = 180°.",
-        "why_wrong": "Olika kombination; verifiera figurens vinkelpar."
+        "why_tempting": "Första instinkten är att försöka spegla A:s form (2-koefficient + skillnad) och testa C också.",
+        "why_wrong": "2d + c − a = 180° kräver en symmetri som inte finns mellan vinklarna i den här figuren."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid a + c = 90°.",
-        "why_wrong": "Inte säkert generellt."
+        "why_tempting": "Om du minns regeln som 'komplementvinklar' (90°) kan a + c = 90° lura.",
+        "why_wrong": "Det är supplement (180°), inte komplement (90°), som gäller vid en rät linje — och även där är det a + grannvinkel, inte a + c."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av vinkelförhållandena vid skärningen: 2a + b − c = 180°.",
-    "technique": "Vinkelsatser: identifiera vinkelpar (vertikala, supplementära) i specifik konfiguration."
+    "pitfall": "När frågan säger ·med säkerhet korrekt· måste relationen gälla för ALLA värden på a — testa med ett konkret värde och utesluta alternativ som bara fungerar för vissa specialfall (som a = 90°).",
+    "solution_path": "Identifiera vilka av vinklarna a, b, c, d som är vertikalvinklar (lika) och vilka som är supplement (summerar till 180°). Sätt upp ekvationen med a + supplement = 180° och uttryck b och c i termer av a — det leder till sambandet 2a + b − c = 180°. Testa även med ett specifikt värde (t.ex. a = 50°) för att verifiera att alternativ A alltid gäller medan B–D inte gör det.",
+    "technique": "Vinklar vid skärningspunkten av två linjer: motstående vinklar (vertikalvinklar) är lika, närliggande vinklar är supplement (summerar till 180°)."
   },
   "var-2015-kvant1-XYZ-009": {
     "_meta": {
@@ -422,28 +426,30 @@
   "var-2015-kvant1-XYZ-010": {
     "_meta": {
       "generated_at": 1778415987299,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7",
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 4π - 2.",
-        "why_wrong": "Räkna sektor noggrant."
+        "why_tempting": "Det är lätt att räkna med hela cirkelns area πr² = 4π i stället för sektorn — då hamnar man på 4π − 2.",
+        "why_wrong": "Sektorn är bara en kvarts cirkel (90°), inte hela; använd 1/4·πr², inte πr²."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 4π - 4.",
-        "why_wrong": "π - 2."
+        "why_tempting": "Snabbsvar är ofta att dubbla triangelarean: 4π − 4 ser symmetriskt ut.",
+        "why_wrong": "Triangelns area är 2, inte 4 — kateterna är 2 (inte 4) eftersom radien är 2."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid π.",
-        "why_wrong": "π - 2 (med subtraktion)."
+        "why_tempting": "Om du missar triangelsubtraktionen helt landar du på enbart sektor-arean π.",
+        "why_wrong": "π är hela sektorns area, men segmentet är BARA delen utanför triangeln — du måste subtrahera."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Cirkelsegment area = sektor − triangel. Med given konfiguration: \\pi-2 cm².",
-    "technique": "Cirkelsegment = sektor minus triangel-mellan-radier."
+    "pitfall": "Skilj på sektor (·tårtbit·, mellan två radier och bågen) och segment (mellan korda och båge) — segmentet är alltid mindre.",
+    "solution_path": "Sektorn i figuren är en kvartscirkel (90°) med radien 2 cm: sektor-area = (\\frac{1}{4})·π·2^2 = π cm^2. Triangeln mellan de två radierna är rätvinklig: area = (\\frac{1}{2})·2·2 = 2 cm^2. Cirkelsegmentet blir π − 2 cm^2.",
+    "technique": "Cirkelsegment (området mellan en korda och bågen) = sektor-area − triangel-area, där triangeln spänner ut av sektorns två radier."
   },
   "var-2015-kvant1-XYZ-011": {
     "_meta": {
@@ -786,32 +792,6 @@
       "generated_at": 1778415987299,
       "model": "claude-opus-4-7"
     }
-  },
-  "var-2015-kvant2-XYZ-005": {
-    "_meta": {
-      "generated_at": 1778415987299,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att räkna x = 2.",
-        "why_wrong": "x = 4."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 6.",
-        "why_wrong": "4."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 8.",
-        "why_wrong": "4."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "(2^{2})^{x}=2^{2x}=4^{4}=2^{8} → 2x = 8 → x = 4.",
-    "technique": "Exponentialekvation med samma bas."
   },
   "var-2015-kvant2-XYZ-006": {
     "_meta": {
@@ -1864,34 +1844,36 @@
     }
   },
   "var-2015-kvant2-NOG-025": {
-    "solution_path": "Båda krävs: (1) ger relationen 5n=2v+40 (där V=nv). (2) ger n=20 → v=30, V=600 kr.",
+    "solution_path": "Kalla antal personer n och summa V. Var och en får V/n. Utsaga (1): om 8 personer avstår får de (n − 8) övriga 20 kr mer var: V/(n−8) − V/n = 20. Förenkla: V·8/(n·(n−8)) = 20 ⇒ V = 2,5·n·(n−8). En relation mellan V och n — räcker inte ensamt. Utsaga (2): n = 20. Ensamt ger det inget belopp. Tillsammans: V = 2,5 · 20 · 12 = 600 kr. C.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att hypotetiken räcker.",
-        "why_wrong": "(1) ger en relation utan absolut tal."
+        "why_tempting": "Det är lätt att tro att hypotetiken om 8 avstående räcker som låsning.",
+        "why_wrong": "(1) ger bara en relation V = 2,5·n·(n−8) — utan att veta n är V inte fastställd."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att totala antalet räcker.",
-        "why_wrong": "(2) saknar belopp per person."
+        "why_tempting": "Snabbsvar är ofta att antalet personer (20) räcker som låsning.",
+        "why_wrong": "(2) ger n = 20 men inget belopp per person — summan V kan vara vilket positivt tal som helst."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar minst en parameter."
+        "why_tempting": "Om du tror att varje utsaga ger ett siffersvar landar du här.",
+        "why_wrong": "Varken (1) ensamt (bara relation) eller (2) ensamt (bara antal) räcker — du behöver båda."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan total summa går det inte.",
-        "why_wrong": "Totalsumma härleds via n·v."
+        "why_tempting": "Det är frestande att tro att utan en uttryckligen given totalsumma går det inte att räkna ut summan.",
+        "why_wrong": "Totalsumman härleds via V = n·v, där v räknas ut ur (1) med n från (2)."
       }
     ],
-    "technique": "Hypotetisk omfördelning + antal personer = sluten ekvation i belopp.",
-    "pitfall": null,
+    "technique": "Hypotetisk omfördelning ger en RELATION mellan antal personer och belopp per person — kombinerad med ett absolut antal låser den hela summan.",
+    "pitfall": "I (1): de 20 kr ÖKAR per person när 8 personer avstår — så det är V/(n−8) − V/n = 20, inte V/n − V/(n−8). Räkningstecknet matters.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778429079240
+      "generated_at": 1778429079240,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "var-2015-kvant2-NOG-026": {
@@ -2820,7 +2802,7 @@
     }
   },
   "var-2015-verb2-MEK-023": {
-    "solution_path": "Hudcancer är 'den snabbast ökande' cancerformen — fast epidemiologisk fras; texten ger 'accelererar' som cue. Vetenskapligt 'grundade' rekommendationer (vilande på vetenskap). Och 'oetiskt' (mot etik) att uppmana till canceregent. Tre kollokationer i medicinsk-etisk debatt-register.",
+    "solution_path": "Hudcancer är 'den snabbast ökande' cancerformen — fast epidemiologisk fras; texten ger 'accelererar' som cue. Vetenskapligt 'grundade' rekommendationer (vilande på vetenskap). Och 'oetiskt' (mot etik) att uppmana till cancerogent. Tre kollokationer i medicinsk-etisk debatt-register.",
     "distractors": [
       {
         "letter": "A",
@@ -3048,32 +3030,6 @@
     ],
     "technique": "When the passage names a species as 'indicator', the main point is the species' diagnostic function.",
     "pitfall": null,
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778446701571
-    }
-  },
-  "var-2015-verb1-ELF-032": {
-    "solution_path": "The passage on Vacuum is partially missing — but the question option B referencing quantum mechanics is the standard physics framing where 'empty space' is no longer treated as truly empty. Answer B.",
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "It's easy to read 'vacuum' as referring to vacuum technology in vehicles.",
-        "why_wrong": "The scientific framing in the passage is conceptual, not industrial — vehicles are not the topic."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Many stop at 'empty space' and credit Newton.",
-        "why_wrong": "Newton didn't discover empty space; the vacuum concept predates and runs beyond his physics."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "First instinct on 'vacuum' is to call it under-researched.",
-        "why_wrong": "Quantum mechanics has actively investigated and challenged the classical vacuum — far from under-researched."
-      }
-    ],
-    "technique": "When the passage frames a classical concept being questioned by modern physics, the right answer names the modern field doing the questioning.",
-    "pitfall": "The Vacuum passage is incomplete in the parsed data — explanation relies on the visible option-by-option contrast rather than direct citation.",
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778446701571

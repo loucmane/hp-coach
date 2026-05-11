@@ -130,31 +130,32 @@
     }
   },
   "var-2013-kvant1-KVA-022": {
-    "solution_path": "Att maximera x och y i x + 2y = 54 (5x + 10y = 270 ÷ 5) sker vid motsatt ändpunkt: max x när y = 1 ger x = 52, max y när x minimeras till 2 (för 5x heltal) ger y = 26. 52 är större än 26 — A.",
-    "technique": "För linjär diofantisk ekvation ax + by = c jämför man max-värden genom att maximera den ena variabeln och minimera den andra inom heltalsvillkoren; här ger max x = 52 större än max y = 26 verdict A.",
-    "pitfall": null,
+    "solution_path": "Förenkla 5x + 10y = 270 ⇒ x + 2y = 54. Max x: minimera y till y = 1 ⇒ x = 52. Max y: minimera x. För att y = (54 − x)/2 ska bli heltal måste 54 − x vara jämnt, dvs x är jämnt. Minsta jämna positiva heltal är x = 2 ⇒ y = 26. Max x = 52 > max y = 26, alltså A.",
+    "technique": "För en ekvation 5x + 10y = 270 (förenkla: x + 2y = 54): för att maximera x sätt y minimalt (y = 1). För att maximera y behöver x göra rätt så att y blir HELTAL — leta efter delbarhetsvillkoret.",
+    "pitfall": "·Positiva heltal· (inte bara positiva) tvingar dig att kolla DELBARHET — i x + 2y = 54 måste x vara jämnt för att y ska bli heltal, så det minsta möjliga x är 2, inte 1.",
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att y > x med koefficient 10 vs 5.",
-        "why_wrong": "Större koefficient på y betyder att y kan vara mindre, inte större."
+        "why_tempting": "Det är lätt att tro att större koefficient (10 på y) betyder större maxvärde för y.",
+        "why_wrong": "Tvärtom: större koefficient betyder att y BIDRAR mer per enhet, så y behöver vara mindre. Räkningen ger max y = 26 < max x = 52."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att max x = max y.",
-        "why_wrong": "52 ≠ 26; ojämlika."
+        "why_tempting": "Snabbsvar är ofta att max x = max y av symmetri.",
+        "why_wrong": "Koefficienterna 5 och 10 bryter symmetrin — y vägs dubbelt så tungt, så max y är hälften så stort som max x."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att problemet har många lösningar.",
-        "why_wrong": "Max x och max y är fasta tal; jämförelsen entydig."
+        "why_tempting": "Det är frestande att tro att flera kombinationer gör jämförelsen oklar.",
+        "why_wrong": "Max x och max y är två FASTA tal (52 och 26) — jämförelsen mellan dem är entydig."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778425152537,
-      "pedagogy_regenerated_at": 1778506457414,
-      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
+      "pedagogy_regenerated_at": 1778510870035,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11",
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "var-2013-kvant1-XYZ-001": {
@@ -212,28 +213,30 @@
   "var-2013-kvant1-XYZ-003": {
     "_meta": {
       "generated_at": 1778415733600,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7",
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel grundvinkel och få 105°.",
-        "why_wrong": "D = 120° baserat på figuren."
+        "why_tempting": "Det är lätt att avläsa fel vinkel A och räkna 180° − 75° = 105°.",
+        "why_wrong": "Den angivna vinkeln i figuren leder till 120°, inte 105°."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 135°.",
-        "why_wrong": "120°."
+        "why_tempting": "Första instinkten är att gissa nära 135° om man minns rektangelns 90° men adderar lite.",
+        "why_wrong": "Trapetsen är inte rektangulär — vinkeln D bestäms helt av A via 180°-regeln."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 150°.",
-        "why_wrong": "120°."
+        "why_tempting": "Om du minns regeln som 'fyrhörning summerar till 360°, dela på 2' kan du hamna på 150°.",
+        "why_wrong": "Vinkelsumman 360° gäller alla fyra hörnen tillsammans, inte ett par åt gången."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av parallelltrapets egenskaper och givna vinklar: vinkel D = 120°.",
-    "technique": "Parallelltrapets: motstående vinklar summerar till 180° längs en sida."
+    "pitfall": "Endast vinklarna på samma sneda sida summerar till 180°. Motstående hörn (A och C) har inget sådant samband i en allmän parallelltrapets.",
+    "solution_path": "I parallelltrapetsen ABCD är AB ∥ CD. Vinklarna A och D ligger på samma sneda sida (AD), så de är konsekutiva och summerar till 180°. Avläs vinkeln A från figuren — i det här fallet 60° — och då blir D = 180° − 60° = 120°.",
+    "technique": "En parallelltrapets är en fyrhörning där två sidor är parallella. Vinklarna på samma icke-parallella sida summerar till 180°."
   },
   "var-2013-kvant1-XYZ-004": {
     "_meta": {
@@ -260,32 +263,6 @@
     "pitfall": null,
     "solution_path": "Faktorisera: x^{2}+x-6=(x+3)(x-2). Lösningar: x = −3 eller x = 2.",
     "technique": "Andragrad utan formel: hitta tal som adderas till b och multipliceras till c."
-  },
-  "var-2013-kvant1-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778415733600,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att räkna fel och få z = 2.",
-        "why_wrong": "z = 1."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta z = 3.",
-        "why_wrong": "z = 1."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid z = 4.",
-        "why_wrong": "z = 1."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Sätt in: \\frac{4(3-z)}{3(4+3+z)}=\\frac{1}{3} → 12(3-z)=7+z → z = 1.",
-    "technique": "Lös ut z från komplex bråk-ekvation: korsmultiplicera, samla termer."
   },
   "var-2013-kvant1-XYZ-007": {
     "_meta": {
@@ -1759,7 +1736,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid att lön nämns.",
+        "why_tempting": "Många stannar vid att lön nämns.",
         "why_wrong": "Lönerna är en del — men ”besvärlig lönebildning” fångar inte uppvärderingen av forskning över klinisk vård."
       },
       {
@@ -1785,7 +1762,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att ”mångfald av infall” nämns.",
+        "why_tempting": "Många stannar vid att ”mångfald av infall” nämns.",
         "why_wrong": "Mångfalden är prioriterad ”framför att skapa en väl sammanhållen utställning” — kritik, inte beröm."
       },
       {
@@ -1811,7 +1788,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid övergången till 1960- och 70-talet.",
+        "why_tempting": "Många stannar vid övergången till 1960- och 70-talet.",
         "why_wrong": "Texten kallar inte utställningen otidsenlig — den kritiserar dess konceptuella fokus, inte dess tidsanknytning."
       },
       {
@@ -1837,7 +1814,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid att färgvarianterna skiljer sig åt i flera egenskaper.",
+        "why_tempting": "Många stannar vid att färgvarianterna skiljer sig åt i flera egenskaper.",
         "why_wrong": "Det är en bakgrundsobservation — inte själva labbets syfte."
       },
       {
@@ -1863,7 +1840,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid skogsbränder som omformande.",
+        "why_tempting": "Många stannar vid skogsbränder som omformande.",
         "why_wrong": "Det är miljön som formar populationen — inte tvärtom; den meningen vänder orsakssambandet."
       },
       {
@@ -1889,7 +1866,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att kommunister och socialister samarbetade.",
+        "why_tempting": "Många stannar vid att kommunister och socialister samarbetade.",
         "why_wrong": "Tvärtom — de använde arbetslöshetsföreningarna som slagträ i en intern strid."
       },
       {
@@ -1915,7 +1892,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid arbetarrörelsens dominans.",
+        "why_tempting": "Många stannar vid arbetarrörelsens dominans.",
         "why_wrong": "Texten säger inte att arbetarrörelsen saknade resurser — den hade tvärtom kontrollen."
       },
       {
@@ -1941,7 +1918,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid att olika grenar samverkade.",
+        "why_tempting": "Många stannar vid att olika grenar samverkade.",
         "why_wrong": "Tvärtom — de använde rörelsen i intern strid, inte för att bygga broar."
       },
       {
@@ -1967,7 +1944,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid det tvåfalt formulerade syftet.",
+        "why_tempting": "Många stannar vid det tvåfalt formulerade syftet.",
         "why_wrong": "Recensenten har inga invändningar mot syftet — bara mot generaliserbarheten."
       },
       {
@@ -1993,7 +1970,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att företag ”inte hittar personal”.",
+        "why_tempting": "Många stannar vid att företag ”inte hittar personal”.",
         "why_wrong": "Företagens behov nämns men avfärdas som mindre viktigt än det fjärde argumentet om avhopp."
       },
       {
@@ -2019,7 +1996,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid skolans framtid som tema.",
+        "why_tempting": "Många stannar vid skolans framtid som tema.",
         "why_wrong": "Pedagogiken framställs som otillräcklig — inte som det som avgör allt."
       },
       {
@@ -2045,7 +2022,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid att disciplinering nämns.",
+        "why_tempting": "Många stannar vid att disciplinering nämns.",
         "why_wrong": "Disciplinerande läsning är en användning av läsning — inte en förklaring till varför läsning är sparsam."
       },
       {
@@ -2071,7 +2048,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid Ewalds dystra bild av grundskolan.",
+        "why_tempting": "Många stannar vid Ewalds dystra bild av grundskolan.",
         "why_wrong": "Ewald studerade grundskolan — inte förskolan; författaren generaliserar inte."
       },
       {
@@ -2097,7 +2074,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid kollektivavtal som lösning.",
+        "why_tempting": "Många stannar vid kollektivavtal som lösning.",
         "why_wrong": "Svaranden utgår uttryckligen från att det inte finns kollektivavtal."
       },
       {
@@ -2123,7 +2100,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid generalprincipen om att arbetsgivaren leder.",
+        "why_tempting": "Många stannar vid generalprincipen om att arbetsgivaren leder.",
         "why_wrong": "Den principen tillämpas i bristen på avtal — den är inte ett skäl för att avtal saknas."
       },
       {
@@ -2149,7 +2126,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid Norra Ishavets is.",
+        "why_tempting": "Många stannar vid Norra Ishavets is.",
         "why_wrong": "Mer atlantvatten skulle om något minska istäcket — kopplingen till primärproduktion går via närsalter."
       },
       {
@@ -2175,7 +2152,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid isen och dess roll.",
+        "why_tempting": "Många stannar vid isen och dess roll.",
         "why_wrong": "Isproduktion transporterar bort koldioxid neråt — inte mellan luft och hav."
       },
       {
@@ -2201,7 +2178,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att is smälter och frigör färskvatten.",
+        "why_tempting": "Många stannar vid att is smälter och frigör färskvatten.",
         "why_wrong": "Smältning är vad som händer när isen försvinner — inte själva funktionen av liggande is."
       },
       {
@@ -2227,7 +2204,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid de inledande frågorna.",
+        "why_tempting": "Många stannar vid de inledande frågorna.",
         "why_wrong": "Texten svarar inte på dem — den säger uttryckligen att en säker slutsats inte går att dra."
       },
       {

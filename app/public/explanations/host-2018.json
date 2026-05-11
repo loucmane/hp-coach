@@ -528,31 +528,32 @@
     }
   },
   "host-2018-kvant2-KVA-018": {
-    "solution_path": "3x/(4y)=5 → 3x = 20y → x = 20y/3. För x och y positiva heltal måste y vara delbart med 3: y = 3 ger x = 20. y = 6 ger x = 40. x kan bli 20, 40, 60, ... — fritt val. D.",
-    "technique": "En proportion x/y = konstant fixerar förhållandet men inte den enskilda skalan; jämför man ett enskilt värde (x mot ett tal) är informationen otillräcklig — D.",
-    "pitfall": null,
+    "solution_path": "\\frac{3x}{4y} = 5. Multiplicera båda sidor med 4y: 3x = 20y. Dela med 3: x = 20y/3. För x ska vara heltal måste y vara delbart med 3. Minsta y = 3 ger x = 20; y = 6 ger x = 40; y = 9 ger x = 60. x kan alltså vara 20, 40, 60, ... — flera värden, ingen entydig jämförelse med 20. D.",
+    "technique": "När ett bråk = ett tal: korsmultiplicera (multiplicera båda sidor med nämnaren). När resultatet ska vara HELTAL: räkna ut vilka värden av nämnaren som ger heltal i täljaren.",
+    "pitfall": "·Positiva heltal· stänger bara ute y = 0, ½, 1 (inte delbart med 3) — men y = 3, 6, 9, ... ger fortfarande oändligt många lösningar.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna y = 1 och x = 20/3, men y måste vara heltal.",
-        "why_wrong": "Heltalslösningar börjar vid y = 3, x = 20; men y kan vara 3k."
+        "why_tempting": "Det är lätt att börja med y = 1 och få x = 20/3, sedan dra slutsatsen att x < 20.",
+        "why_wrong": "y = 1 ger inte heltal för x — det första giltiga fallet är y = 3, x = 20 (lika), men större värden är också möjliga."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att x = 20 är minsta värdet.",
-        "why_wrong": "x = 20 är ett av oändligt många fall; x = 40 är också giltigt."
+        "why_tempting": "Snabbsvar är ofta att x = 20 är minsta värdet och därför II ≥ I, dvs ·x större·.",
+        "why_wrong": "·Minsta värdet 20· stämmer (när y = 3) men det betyder också att x KAN vara exakt 20 — relationen är inte entydigt ·II > I·."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid x = 20 och tror likhet.",
-        "why_wrong": "Det är ett av flera giltiga värden; x kan vara större eller lika med 20."
+        "why_tempting": "Många stannar vid första lösningen y = 3, x = 20 och kallar det entydigt likhet.",
+        "why_wrong": "Det är ETT av oändligt många fall — y = 6 ger x = 40, vilket också uppfyller alla villkor."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778424317530,
-      "pedagogy_regenerated_at": 1778506283649,
-      "pedagogy_regen_source": "manual_kva_review_2026_05_11"
+      "pedagogy_regenerated_at": 1778510870035,
+      "pedagogy_regen_source": "manual_kva_review_2026_05_11",
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2018-kvant2-KVA-021": {
@@ -628,85 +629,6 @@
     "pitfall": null,
     "solution_path": "Addera exponenter: x^{2}\\cdot x\\cdot x^{4}=x^{2+1+4}=x^{7}.",
     "technique": "Potenslag: x^{a}\\cdot x^{b}\\cdot x^{c}=x^{a+b+c}.",
-    "_meta": {
-      "generated_at": 1778414413083,
-      "model": "claude-opus-4-7",
-      "fixed_at": 1778498287386
-    }
-  },
-  "host-2018-kvant2-XYZ-002": {
-    "_meta": {
-      "generated_at": 1778414413083,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att blanda ihop x-y-koordinater och tro att (−1, 2) är saknad.",
-        "why_wrong": "(−1, 2) finns markerad i figuren; (−2, 1) är den som saknas."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att välja en symmetrisk punkt utan att kolla.",
-        "why_wrong": "(1, −2) finns; varje punkt måste kontrolleras mot figuren."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid att (2, −1) ser saknad ut — men den finns.",
-        "why_wrong": "Endast (−2, 1) saknas. Övriga punkter finns markerade."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Av figuren är fyra punkter markerade. Punkten (−2, 1) saknas — alla andra finns.",
-    "technique": "Punkt-i-figur-uppgifter: kontrollera varje koordinatpar systematiskt mot figuren."
-  },
-  "host-2018-kvant2-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778414413083,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att avläsa fel grundvinkel och få 50°.",
-        "why_wrong": "Räkna noggrant från figurens givna vinklar; resultatet är 70°."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta avrundning åt 60°.",
-        "why_wrong": "Vinkeln är exakt 70°."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 80° av flertaliga felräkningar.",
-        "why_wrong": "x = 70°, baserat på figurens specifika konfiguration."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Av figuren följer av alternativ-/likbelägna vinklar mellan parallella linjer att x = 70°.",
-    "technique": "Vinklar mellan parallella linjer: alternativa lika, likbelägna lika, konsekutiva summerar till 180°."
-  },
-  "host-2018-kvant2-XYZ-005": {
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att MULTIPLICERA istället för att dela: \\frac{4}{9}\\cdot\\frac{8}{3}=\\frac{32}{27}.",
-        "why_wrong": "För division av bråk: invertera nämnaren och multiplicera. Inte multiplicera direkt."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att flippa båda och få \\frac{32}{27} men förkortat fel till \\frac{27}{32}.",
-        "why_wrong": "Korrekt: 1/6 efter förkortning. Räkna noggrant."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 6 (osökt invers).",
-        "why_wrong": "Resultatet är 1/6, inte 6. Nämnaren är större."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Dela bråk: \\frac{4/9}{8/3}=\\frac{4}{9}\\cdot\\frac{3}{8}=\\frac{12}{72}=\\frac{1}{6}.",
-    "technique": "Division av bråk: \\frac{a/b}{c/d}=\\frac{a}{b}\\cdot\\frac{d}{c}=\\frac{ad}{bc}.",
     "_meta": {
       "generated_at": 1778414413083,
       "model": "claude-opus-4-7",
@@ -1673,34 +1595,36 @@
     }
   },
   "host-2018-kvant1-NOG-028": {
-    "solution_path": "Båda krävs men räcker ändå inte. Inkl-exkl: total=19+13+11−båda=43−båda. Utan \"båda\" kan total inte fixeras.",
+    "solution_path": "Inkludering-uteslutning: antal med MINST EN av paket/fotbroms = 19 + 13 − (antal med båda). Plus de 11 som har varken, ger total = 32 − (båda) + 11 = 43 − (båda). Utsaga (1) ger paket och fotbroms men inte ·båda· eller ·varken·. Utsaga (2) ger varken men inte ·båda·. Tillsammans saknar vi fortfarande antalet med BÅDA — total kan vara 43 − 0 = 43 eller 43 − 13 = 30 (om alla 13 fotbromsar också har paket). E.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att två totaler räcker.",
-        "why_wrong": "(1) säger inget om \"varken\" eller \"båda\"."
+        "why_tempting": "Det är lätt att tro att de två antalstotalerna (19 och 13) räcker.",
+        "why_wrong": "(1) saknar både ·varken· och ·båda· — minst två okända i Venn-räkningen."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att \"varken\" räcker.",
-        "why_wrong": "(2) saknar yttre summor."
+        "why_tempting": "Snabbsvar är ofta att ·varken·-talet räcker när det är så specifikt.",
+        "why_wrong": "(2) ger bara 11 utan att veta hur många som har minst en — yttre summor saknas."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två yttre summor + varken räcker.",
-        "why_wrong": "Snittet \"båda\" saknas — totalen kan ta många värden."
+        "why_tempting": "Första instinkten är att två yttre summor + ·varken· måste räcka.",
+        "why_wrong": "Snittet (antal med båda) saknas — totalen kan ta många värden mellan 30 och 43."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Inget villkor binder båda-cellen."
+        "why_tempting": "Om du tolkar varje utsaga som självständigt tillräcklig landar du här.",
+        "why_wrong": "Inget villkor binder ·båda·-cellen — utan den är totalen fri inom ett intervall."
       }
     ],
-    "technique": "Inkl-exkl kräver yttre summor + varken + båda — minst tre av fyra.",
-    "pitfall": "Yttre summor + varken räcker INTE — du behöver också snittet.",
+    "technique": "För att räkna totalt antal i en Venn-uppsättning av två mängder krävs FYRA tal: antal i A, antal i B, antal i båda (snittet), och antal i varken. Saknas snittet eller varken låses totalen inte.",
+    "pitfall": "Yttre summor + ·varken· räcker INTE — du behöver också snittet (antal med båda) för att låsa totalen. Tre av fyra Venn-tal låser inte sista.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778428305952
+      "generated_at": 1778428305952,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2018-kvant2-NOG-023": {

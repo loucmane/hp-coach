@@ -364,32 +364,6 @@
     "solution_path": "Gör gemensam nämnare och addera först: \\frac{7}{8}+\\left(-\\frac{3}{4}\\right)=\\frac{7}{8}-\\frac{6}{8}=\\frac{1}{8}. Medelvärde = summan delat med 2: \\frac{1/8}{2}=\\frac{1}{16}.",
     "technique": "Medelvärde av två tal: addera (med korrekt tecken), dela med 2. Vid bråk: gemensam nämnare i additionssteget."
   },
-  "host-2013-kvant1-XYZ-010": {
-    "_meta": {
-      "generated_at": 1778413454804,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att blanda ihop x'et och y'et: \\frac{1}{x}-\\frac{1}{xy} ser ut att vara samma sak.",
-        "why_wrong": "Första termen: \\frac{1}{xy}, inte \\frac{1}{x} — y kvarstår eftersom 'x' i täljaren inte tar bort y i nämnaren."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Om du minns regeln som 'förkorta x' blir det första termen 1/y, sen subtrahera 1/(xy).",
-        "why_wrong": "Endast den ANDRA termen förkortar bort x. Första termen har 1 i täljaren och kan inte förkortas: \\frac{1}{xy} kvarstår intakt."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att vända ordningen i subtraktionen.",
-        "why_wrong": "Tecknen MÅSTE följa originalets ordning: 1 är positiv, x är negativ. Så \\frac{1}{xy}-\\frac{1}{y}, inte tvärtom."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Dela upp täljaren term-för-term: \\frac{1-x}{xy}=\\frac{1}{xy}-\\frac{x}{xy}=\\frac{1}{xy}-\\frac{1}{y}. x'et i andra termens täljare och nämnare förkortas.",
-    "technique": "Bråk med flertermig täljare: dela upp täljaren och fördela nämnaren — varje term får full nämnare, sen förkortar man."
-  },
   "host-2013-kvant1-XYZ-011": {
     "_meta": {
       "generated_at": 1778413454804,
@@ -521,29 +495,31 @@
     }
   },
   "host-2013-kvant2-KVA-022": {
-    "solution_path": "Punkterna (2, 2) och (2, 4) är vertikala. För en rätvinklig triangel kan rätvinkeln sitta vid (2, 2) (då måste a-segmentet vara horisontellt, alltså a=2), vid (2, 4) (a=4), eller vid (−1, a) (skalärprodukten ger ekvation utan reell lösning). Två giltiga värden a=2 och a=4 ger I=II respektive I>II — D.",
+    "solution_path": "Punkterna (2,2) och (2,4) ligger lodrätt över varandra (samma x-värde). Rätvinkeln kan sitta vid (2,2): då måste benet till (−1,a) vara vågrätt, dvs a = 2. Eller vid (2,4): då måste benet vara vågrätt på höjden 4, dvs a = 4. Två giltiga värden ger I = 2 (lika med II) respektive I = 4 (större än II) — informationen räcker inte.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att fixera vid fallet a = 4 där den högra horisontella linjen från (2, 4) till (−1, 4) ger rätvinkeln vid (2, 4).",
-        "why_wrong": "Det är ett av två giltiga fall — det andra (a = 2, rätvinkel vid (2, 2)) ger likhet, så A är inte entydigt."
+        "why_tempting": "Det är lätt att fastna vid fallet a = 4 (rätvinkel vid (2,4)) och dra slutsatsen att I alltid > II.",
+        "why_wrong": "Det är ett av två giltiga fall — om rätvinkeln istället sitter vid (2,2) får man a = 2, dvs I = II."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att gissa att a är mindre än 2 baserat på något geometriskt intuitivt skäl.",
-        "why_wrong": "Båda lösningarna a = 2 och a = 4 ligger ≥ 2 — ingen av dem ger I < II."
+        "why_tempting": "Snabbsvar är ofta att gissa a < 2 utan att räkna konfigurationen.",
+        "why_wrong": "Båda giltiga värden (a = 2 och a = 4) är ≥ 2 — inget gör I mindre än II."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid fallet rätvinkel-vid-(2,2) som ger a = 2 = II och tror att det är det enda.",
-        "why_wrong": "Rätvinkeln kan lika gärna sitta vid (2, 4), vilket ger a = 4 ≠ 2."
+        "why_tempting": "Många stannar vid fallet rätvinkel-vid-(2,2) → a = 2 = II och kallar likhet.",
+        "why_wrong": "Rätvinkeln kan lika gärna sitta vid (2,4), vilket ger a = 4 ≠ 2 och bryter likheten."
       }
     ],
-    "technique": "I geometriska KVA: räkna alla möjliga konfigurationer (var sitter rätvinkeln/vinkeln/punkten?) innan du svarar.",
-    "pitfall": "Att låsa fast vid den första giltiga konfigurationen och missa att flera punktplaceringar uppfyller villkoret.",
+    "technique": "I geometriska KVA-problem: pröva ALLA möjliga placeringar av den utmärkande egenskapen (här: var rätvinkeln sitter) innan du svarar — flera giltiga konfigurationer betyder D.",
+    "pitfall": "·Rätvinkeln· i en rätvinklig triangel är 90°-vinkeln — den kan sitta vid VILKET som helst av de tre hörnen. Räkna alla tre fallen.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778423798258
+      "generated_at": 1778423798258,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2013-kvant2-XYZ-001": {
@@ -1327,34 +1303,36 @@
     "technique": "Franska scenord (estrad, podium, scen) — bär kvar fransk klang och specifika scen-element."
   },
   "host-2013-kvant1-NOG-023": {
-    "solution_path": "Båda krävs: (1) ger män-hatt=2. (2) ger kvinnor-hatt=4·(män-hatt−1)=4. Total med hatt=6.",
+    "solution_path": "Sökt: antal med hatt = (män med hatt) + (kvinnor med hatt). Utsaga (1): en fjärdedel av 8 män har hatt = 2 män med hatt. Bara män, inget om kvinnor. Utsaga (2): om en man med hatt kliver av blir kvinnor med hatt = 4·(män med hatt − 1) — en RELATION mellan kvinnor och män med hatt, men inga absolutvärden. Tillsammans: män-hatt = 2 (från 1), så kvinnor-hatt = 4·(2−1) = 4. Total = 2 + 4 = 6. C.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en fraktion räcker.",
-        "why_wrong": "(1) säger inget om kvinnor-hatt."
+        "why_tempting": "Det är lätt att tro att en fraktion (·en fjärdedel av männen·) räcker för att räkna alla med hatt.",
+        "why_wrong": "(1) ger bara män med hatt = 2 — inget om de 14 kvinnornas hattar."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att en relation räcker.",
-        "why_wrong": "(2) ger relation, inte absolut antal."
+        "why_tempting": "Snabbsvar är ofta att (2):s ·fyra gånger så många kvinnor som män· låter som en låsning.",
+        "why_wrong": "(2) är en RELATION mellan två okända (män med hatt och kvinnor med hatt) — utan att veta männens antal låses inget."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar antingen absolut tal eller relation."
+        "why_tempting": "Om du blandar ihop att ·varje utsaga ger ett tal· kan du gissa att båda räcker ensamma.",
+        "why_wrong": "Varken (1) eller (2) räcker isolerat — (1) saknar kvinnorna, (2) saknar absoluttalen."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att hypotetiken inte räcker.",
-        "why_wrong": "Hypotetiken kombinerad med absolut tal ger båda totaler."
+        "why_tempting": "Det är frestande att tro att hypotetiska scenarier i (2) gör beräkningen omöjlig.",
+        "why_wrong": "Tillsammans är (1) + (2) tillräckliga — det hypotetiska steget i (2) är en helt giltig algebraisk länk."
       }
     ],
-    "technique": "Hypotetisk borttagning + absolut antal låser cellrelationer.",
-    "pitfall": null,
+    "technique": "I NOG-frågor med befolkningsräkning: en utsaga som bara ger en RELATION (fraktion eller multipel) saknar absolut antal, och vice versa — kombinera ofta dem för att låsa båda dimensioner.",
+    "pitfall": "Utsaga (2) är en HYPOTETISK formulering (·om en kliver av·) — det är fortfarande bara en relation mellan två okända storheter, inte en absolutangivelse.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778429079240
+      "generated_at": 1778429079240,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2013-kvant1-NOG-024": {
@@ -1389,34 +1367,36 @@
     }
   },
   "host-2013-kvant1-NOG-025": {
-    "solution_path": "Båda krävs men räcker ändå inte. (1) ger en relation mellan c och b utan absoluta värden. (2) säger d=a+b, vilket är yttervinkelsatsen — trivialt sant och bär ingen ny information.",
+    "solution_path": "Sökt: storleken på d i grader. Utsaga (1): c = b/4 — en RELATION mellan c och b utan absoluta värden. Räcker inte för att räkna d. Utsaga (2): d = a + b — detta ÄR yttervinkelsatsen och gäller alltid, även utan utsaga (2). Den tillför ingen ny information. Tillsammans: (1) ger en relation, (2) är trivial — fortfarande inga absolutvärden på a eller b. E.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en relation räcker.",
-        "why_wrong": "(1) saknar absolutvärden."
+        "why_tempting": "Det är lätt att tro att en relation mellan vinklar räcker när det är så få okända.",
+        "why_wrong": "(1) ger bara c = b/4 — utan ett absolutvärde på någon vinkel kan d inte räknas ut."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2) bekräftar yttervinkeln.",
-        "why_wrong": "(2) är en geometrisk identitet utan informationsvärde."
+        "why_tempting": "Snabbsvar är ofta att (2) ·verkar bekräfta yttervinkeln· och därför vara informativt.",
+        "why_wrong": "(2) är just yttervinkelsatsen — den är alltid sann och tillför inget nytt."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Identiteten i (2) tillför inget."
+        "why_wrong": "(2) bidrar med noll information, så kombinationen ger samma som (1) ensam — vilket inte räcker."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Identiteter ger inga värden."
+        "why_tempting": "Om du tror att varje utsaga ·måste· vara informativ landar du här.",
+        "why_wrong": "Geometriska identiteter (som yttervinkelsatsen) är trivialt sanna och ger inga numeriska värden."
       }
     ],
-    "technique": "Skilj på låsande villkor och triviala satser (yttervinkelsatsen).",
-    "pitfall": "Geometriska identiteter är aldrig informationsbärande.",
+    "technique": "Yttervinkelsatsen säger: en yttervinkel till en triangel är ALLTID lika med summan av de två icke-närliggande inre vinklarna (d = a + b). Det är en regel som gäller överallt — så ett påstående som upprepar regeln tillför ingen ny information.",
+    "pitfall": "Ett påstående som beskriver en KÄND geometrisk sats (yttervinkelsatsen, Pythagoras, vinkelsumman = 180°) i en triangel ger aldrig ny information — det är alltid sant.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778429079240
+      "generated_at": 1778429079240,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2013-kvant1-NOG-026": {
@@ -1709,7 +1689,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "First instinkten är att hänga upp svaret på den ”mänskliga kontexten” som nämns sent i texten.",
+        "why_tempting": "Första instinkten är att hänga upp svaret på den ”mänskliga kontexten” som nämns sent i texten.",
         "why_wrong": "Det är inte djurens konflikter som har en mänsklig kontext — det är beskrivningarna av dem."
       }
     ],
@@ -1761,7 +1741,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "First instinkten är att tolka hennes ironi om e-böcker som värdeomdöme.",
+        "why_tempting": "Första instinkten är att tolka hennes ironi om e-böcker som värdeomdöme.",
         "why_wrong": "Hon säger uttryckligen ”säga vad man vill om e-böcker” — hon tar inte ställning till deras litterära värde."
       }
     ],
@@ -1865,7 +1845,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "First instinkten är att associera värdegrund med politisk debatt.",
+        "why_tempting": "Första instinkten är att associera värdegrund med politisk debatt.",
         "why_wrong": "Författarna nämner inte politisk debatt som problem — problemet ligger i texten själv."
       }
     ],
@@ -1886,7 +1866,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att texten talar om läroplaner.",
+        "why_tempting": "Många stannar vid att texten talar om läroplaner.",
         "why_wrong": "Texten säger uttryckligen att policy och modeller inte räcker — det är just det den vänder sig mot."
       },
       {
@@ -1929,29 +1909,31 @@
     }
   },
   "host-2013-verb2-LÄS-011": {
-    "solution_path": "Recensenten läser Infans som en jagcentrerad förlossningsdepression där barnsligheten ligger hos den dysfunktionella föräldern — vilket motsäger manifestets tes om barnet som det civiliserades motpol. Infans gestaltar alltså inte manifestets tes; den motsäger den.",
+    "solution_path": "I sista delen säger recensenten att Infans blir ·ett slags genmäle mot manifestet·: i Infans ligger barnsligheten hos den DYSFUNKTIONELLA föräldern, inte hos barnet. Det motsäger direkt manifestets tes om barnet som det civiliserades motpol. Recensenten avfärdar uttryckligen läsningen av Infans ·i ljuset av manifestets barnslighetsvurm·. Alternativ A.",
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tolka kortromanen som en förenkling.",
-        "why_wrong": "Texten säger att böckerna inte är samstämmiga — det är inte förenkling utan motsägelse."
+        "why_tempting": "Det är lätt att tolka kortromanen som en förenklad version av manifestets idéer.",
+        "why_wrong": "Recensenten säger att böckerna inte är samstämmiga — det är en motsägelse, inte en förenkling."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att de två böckerna kom samtidigt och tänker konstnärlig parallell.",
-        "why_wrong": "Recensenten avfärdar uttryckligen läsningen av Infans i ”ljuset av manifestets barnslighetsvurm”."
+        "why_tempting": "Första instinkten är att två böcker som kom samtidigt gestaltar samma tes på olika sätt.",
+        "why_wrong": "Recensenten avfärdar uttryckligen denna läsning: ·det ligger nära till hands att läsa den i ljuset av manifestets barnslighetsvurm, men faktum är att böckerna inte är särskilt samstämmiga·."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att jämföra ”elegans” och säga att Infans saknar den.",
-        "why_wrong": "Texten kommenterar inte Infans form jämfört med manifestets — frågan är om innehållsligt förhållande."
+        "why_tempting": "Snabbsvar är ofta att jämföra böckernas form — manifestet är elegant, Infans är irriterande.",
+        "why_wrong": "Texten jämför inte formerna direkt — frågan handlar om hur böckerna FÖRHÅLLER SIG till varandras innehåll, inte deras stil."
       }
     ],
-    "technique": "När recensenten kallar något ”genmäle” — då pekar texten på en motsägelse, inte en illustration.",
-    "pitfall": null,
+    "technique": "När en recensent kallar en bok ett ·genmäle· (= motsvar, motargument) till en annan, signalerar texten att de två böckerna INTE är samstämmiga — de motsäger varandra.",
+    "pitfall": "Att två böcker ges ut ·parallellt· av samma författare betyder INTE att de är samstämmiga — recensenten kan mycket väl peka på en motsägelse mellan dem.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778440239758
+      "generated_at": 1778440239758,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2013-verb2-LÄS-012": {
@@ -2371,29 +2353,31 @@
     }
   },
   "host-2013-verb1-MEK-028": {
-    "solution_path": "Hus 'förses med' takstommar — den fasta kollokationen för byggnadsutrustning. Takstolar är bärande element (det är hela deras funktion), och placeras på ett inbördes centrumavstånd — alltså avstånd dem emellan. Tre tekniska termer som måste sitta exakt i sin byggteknik-jargong.",
+    "solution_path": "Det mest specifika ledet är tredje blanken (om avståndet mellan takstolar). ·Inbördes· betyder ·mellan varandra· — det är just det fasta uttrycket man använder om avstånd mellan parallella element. Då kommer hela kedjan: hus FÖRSES med (vanlig kollokation för utrustning), takstolar är BÄRANDE (deras funktion = bära tak), och INBÖRDES avstånd. Alternativ D.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tänka att hus 'utrustats med' takstommar.",
-        "why_wrong": "Utrustas används mer för fordon/utrymmen; 'sammanhållande' element är fel funktion — takstolar bär, de håller inte ihop."
+        "why_tempting": "Det är lätt att tänka att hus ·utrustats med· takstommar — utrusta används också om byggnader.",
+        "why_wrong": "·Utrustats· är vanligare om fordon och utrymmen; och ·sammanhållande· är fel funktion för takstolar — de BÄR taket, inte håller ihop det."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid 'förbundits' som låter byggtekniskt, eftersom hus förbinds.",
-        "why_wrong": "Förbindas tar 'med' i annan betydelse (mellan delar, inte 'utrustats'); och 'utvalt element' säger ingenting om funktion — det är bara att man valt dem."
+        "why_tempting": "Första instinkten är att ·förbundits med· låter strukturellt-byggrelaterat.",
+        "why_wrong": "Förbinda används om delar som kopplas samman, inte om utrustning; och ·utvalt element· säger inget om funktionen — bara att de blivit valda."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att hus 'utförts med' takstommar — utförande är byggterm.",
-        "why_wrong": "Utförts med passar mer beskrivande än om byggdetalj; 'inbyggt element' är tautologiskt — allt i ett hus är inbyggt; och 'standardiserat avstånd' missar pointen om avståndet mellan takstolar."
+        "why_tempting": "Om du minns regeln som ·hus utförs med material· landar du här.",
+        "why_wrong": "·Utförts med· passar bättre om utförande av arbete än om en konkret byggnadsdel; och ·inbyggt element· är överflödigt (allt i ett hus är inbyggt); ·standardiserat avstånd· missar pointen om relationen MELLAN takstolarna."
       }
     ],
-    "technique": "Treblanksdrag i fackspråk: byggtekniken har egna fasta kollokationer (förses med, bärande, inbördes) — testa alla tre samtidigt mot byggjargongen.",
-    "pitfall": "Det räcker inte att två led passar — det tredje (övergripande/gemensamt/standardiserat) avslöjar fel kombinationer.",
+    "technique": "Treblanksuppgifter med fackområde (här bygg): alla tre orden måste passa i samma yrkessfärs fasta uttryck. Testa det MEST specifika ledet först — ofta avslöjar det fel alternativ snabbast.",
+    "pitfall": "Lockas inte av att första ordet låter ·byggtekniskt· — alla fyra första ord (utrustats, förbundits, utförts, försetts) går att försvara isolerat. Det är kombinationen av alla tre som låser svaret.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778441073416
+      "generated_at": 1778441073416,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2013-verb1-MEK-029": {
@@ -2501,29 +2485,31 @@
     }
   },
   "host-2013-verb2-MEK-023": {
-    "solution_path": "Texten talar om endemism och skyddsvärde — och säger att andra områden har 'samma höga ____' i denna egenskap. Dignitet är värdighet/rang/anseende, det abstrakta måttet på betydelse som passar 'samma höga ____'. Den nominaliserade kvalitetsskalan.",
+    "solution_path": "Frasen ·samma höga ___· kräver ett substantiv som beskriver ett MÅTT eller en RANG (·hög skyddsvärde·, ·hög rang·). Dignitet betyder just ·värdighet/rang/anseende· — det är den abstrakta värde-skalan som passar in. Texten signalerar formell stil med ord som ·endemism· och ·skyddsvärde·, vilket gör formellt-litterära ord (dignitet) naturligare än konkreta tekniska. Alternativ C.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'division' som en kategori/klass.",
-        "why_wrong": "Division är militär eller matematisk uppdelning, inte ett mått på naturskyddsvärde."
+        "why_tempting": "Det är lätt att läsa ·division· som ·en kategori/klass· i biologin (zoologisk indelning).",
+        "why_wrong": "Division betyder uppdelning eller militärenhet — det är inget mått på naturvärde, så ·hög division· är inte en naturlig fras."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid 'komponent' som låter neutralt och tekniskt.",
-        "why_wrong": "En komponent är en beståndsdel — man säger inte 'hög komponent', det är inget mått."
+        "why_tempting": "Snabbsvar är ofta ·komponent· eftersom det låter neutralt och vetenskapligt.",
+        "why_wrong": "En komponent är en BESTÅNDSDEL — man kan inte ha en ·hög komponent· i en abstrakt värdebemärkelse."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta 'expansion' när det handlar om biologisk mångfald.",
-        "why_wrong": "Expansion är utvidgning över tid; men frågan handlar om att rangordna områdens betydelse, inte deras tillväxt."
+        "why_tempting": "Om du minns regeln som ·biologi handlar om mångfaldens utbredning· kan du gissa ·expansion·.",
+        "why_wrong": "Expansion är utvidgning över TID — frågan handlar om att rangordna områdens BETYDELSE, inte deras tillväxt."
       }
     ],
-    "technique": "Avgör register: dignitet är en formell-litterär term för rang — texten signalerar formell stil med 'endemism', 'skyddsvärde', vilket låser registret.",
-    "pitfall": null,
+    "technique": "Hitta vilken TYP av substantiv blanken kräver: är det ett VÄRDE/RANG (abstrakt mått), en KONKRET kategori, en HANDLING eller en TIDSPROCESS? Det styr vilket alternativ som passar.",
+    "pitfall": "·Hög + substantiv· kräver att substantivet är en SKALA eller ett VÄRDE — inte en sak eller process. Konkreta substantiv (komponent, division, expansion) får ·hög· att låta fel.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778441073416
+      "generated_at": 1778441073416,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2013-verb2-MEK-024": {

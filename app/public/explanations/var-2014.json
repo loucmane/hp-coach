@@ -261,58 +261,6 @@
     "solution_path": "1-\\frac{1}{10}=\\frac{9}{10}=0{,}9, ungefär 1.",
     "technique": "Bråk-approximation: 9/10 är närmare 1 än 1/9."
   },
-  "var-2014-kvant1-XYZ-002": {
-    "_meta": {
-      "generated_at": 1778410520644,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "13 är magiska konstanten delad på 3 — alltså rutans CENTRUMVÄRDE i en klassisk magisk kvadrat. Det kan kännas som det 'rätta' tal som x, y, z skulle utgöra om de var medelvärdet.",
-        "why_wrong": "x + y + z är SUMMAN, inte medelvärdet. Centrumvärdet 13 är värdet i en ruta; summan av tre rutor på en linje är S = 3 × 13 = 39."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "26 = 2 × 13 — kan kännas rimligt som '2 × centrumvärde' om man räknar två av tre rutor.",
-        "why_wrong": "x, y och z är TRE rutor. Tre rutor på en linje summeras till 3 × 13 = 39, inte 26."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "52 = 4 × 13 låter som 'lite mer än hela linjen' — kanske om man räknar linjen + en extra ruta.",
-        "why_wrong": "Det är exakt tre värden som efterfrågas (x, y, z) på en hel rad/kolumn/diagonal. Summan blir alltid 3 × magiska konstanten."
-      }
-    ],
-    "pitfall": "x + y + z syftar på SUMMAN av tre värden, inte på en enskild ruta. Dela inte magiska konstanten med 3 om summan av tre värden eftersöks.",
-    "solution_path": "I en magisk kvadrat är summan av varje rad, kolumn och diagonal lika — den magiska konstanten S. Om x, y och z bildar en hel rad, kolumn eller diagonal är x + y + z = S = 39 (utläst från en av de redan kända summorna i figuren).",
-    "technique": "Magisk kvadrat: alla rader, kolumner och båda diagonaler summerar till samma konstant S. Centrumvärdet (i en 3×3) är alltid S/3."
-  },
-  "var-2014-kvant1-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778415854589,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att ADDERA istället för att subtrahera.",
-        "why_wrong": "Skuggad = triangel MINUS cirkel."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att räkna fel triangelarea (5x²).",
-        "why_wrong": "Triangel-area är 0,5·bas·höjd, inte 5x²."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 5x² + πy².",
-        "why_wrong": "Båda fel."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Triangelns area = 0{,}5x^{2} (om bas och höjd är x). Cirkelarea = \\pi y^{2}. Skuggat = differens = 0{,}5x^{2}-\\pi y^{2}.",
-    "technique": "Skuggad area mellan figurer: räkna varje area, subtrahera vad som räknas dubbelt."
-  },
   "var-2014-kvant1-XYZ-005": {
     "_meta": {
       "generated_at": 1778415854589,
@@ -493,32 +441,6 @@
     "_meta": {
       "generated_at": 1778415854589,
       "model": "claude-opus-4-7"
-    }
-  },
-  "var-2014-kvant2-KVA-014": {
-    "solution_path": "I tolkas som √11 ≈ 3,32 (parser-fel, missande √). II: 3 + 2 = 5. 5 > 3,32 — B.",
-    "technique": "√n: ofta avskuren av parsern; tolka kontext.",
-    "pitfall": null,
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att I = 11 direkt.",
-        "why_wrong": "Om I = 11 vore svaret A; här är I = √11."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att √11 ≈ 3 + 2.",
-        "why_wrong": "√11 ≈ 3,32; klart < 5."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Det är frestande att tro att I:s värde är obestämt.",
-        "why_wrong": "√11 är fast värde; jämförelsen entydig."
-      }
-    ],
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778425152538
     }
   },
   "var-2014-kvant2-KVA-015": {
@@ -890,28 +812,30 @@
   "var-2014-kvant2-XYZ-012": {
     "_meta": {
       "generated_at": 1778415854589,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7",
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna AC = 6/7.",
-        "why_wrong": "AC = 3/2, inte 6/7."
+        "why_tempting": "Det är lätt att tro att svaret skulle vara större än diametern (2 cm) — men optionen är dessutom feltryckt.",
+        "why_wrong": "AC måste vara mindre än 2 cm (diametern) i den här konfigurationen; 3/2 cm stämmer."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 1 cm.",
-        "why_wrong": "3/2."
+        "why_tempting": "Om du minns att radien är 1 cm är det frestande att gissa AC = 1 cm.",
+        "why_wrong": "AC är inte en radie utan en katet i triangel ABC — den behöver beräknas via Pythagoras, inte avläsas direkt."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 5/2.",
-        "why_wrong": "3/2."
+        "why_tempting": "Snabbsvar är ofta 5/2 cm om du adderar för många radier i Pythagoras-uppställningen.",
+        "why_wrong": "5/2 cm = 2,5 cm överstiger diametern; geometriskt omöjligt i denna figur."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av geometrin med given halvcirkel och rätvinklig triangel: AC = 3/2 cm.",
-    "technique": "Geometri med cirkel och triangel: använd Pythagoras eller likformighet."
+    "pitfall": "Tolka AB = AM som ett LÄNGDVILLKOR, inte en parallellitet — det betyder att triangel ABM är likbent och att A ligger på mittpunktsnormalen till MB.",
+    "solution_path": "Eftersom M är medelpunkt och radien är 1 är MB = MC = 1. Villkoret AB = AM ger en isoceles triangel ABM, vilket fixerar A:s läge på höjden över MB. I rätvinkliga triangeln ABC bestäms AC via Pythagoras: med given konfiguration ger detta AC = 3/2 cm.",
+    "technique": "Halvcirkel med inskriven rätvinklig triangel: använd Thales sats (vinkel mot diameter är 90°) plus Pythagoras i den rätvinkliga triangeln."
   },
   "var-2014-verb1-ORD-001": {
     "_meta": {
@@ -1884,7 +1808,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid att begreppet uppfattades som nedvärderande.",
+        "why_tempting": "Många stannar vid att begreppet uppfattades som nedvärderande.",
         "why_wrong": "Widegren delar inte upp ansvaret mellan konstnärer och recensenter — hon ser problemet i begreppet i sig, men ändå dess potential."
       },
       {
@@ -1910,7 +1834,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att begreppet kopplas till genus.",
+        "why_tempting": "Många stannar vid att begreppet kopplas till genus.",
         "why_wrong": "Metaforen handlar inte om frånvaron av moralisk värdering — den handlar om dubbelheten i utrymmet."
       },
       {
@@ -1936,7 +1860,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att SOF kritiserar vilka jägare som anlitas.",
+        "why_tempting": "Många stannar vid att SOF kritiserar vilka jägare som anlitas.",
         "why_wrong": "Det är inte lagstiftningens krav — det är SOF:s kritik mot praxis."
       },
       {
@@ -1962,7 +1886,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid att planering är önskvärd.",
+        "why_tempting": "Många stannar vid att planering är önskvärd.",
         "why_wrong": "Resurssnålhet är inte SOF:s argument — det är strängare regler och begränsning."
       },
       {
@@ -1988,7 +1912,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att deltagaren kanske är omedveten om placebo.",
+        "why_tempting": "Många stannar vid att deltagaren kanske är omedveten om placebo.",
         "why_wrong": "Frågan handlade inte om medvetenhet om placeboeffekten utan om medvetenhet om signalen."
       },
       {
@@ -2014,7 +1938,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid att andra experimentet är mest sofistikerat.",
+        "why_tempting": "Många stannar vid att andra experimentet är mest sofistikerat.",
         "why_wrong": "Också andra experimentets inlärningssekvens hade olika temperaturer — där är skillnaden trivial."
       },
       {
@@ -2040,7 +1964,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att trivsel undersöks.",
+        "why_tempting": "Många stannar vid att trivsel undersöks.",
         "why_wrong": "Trivseln är en undersökt fråga — inte ett antagande hon utgår från."
       },
       {
@@ -2066,7 +1990,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid Hansens fokus på pedagoger.",
+        "why_tempting": "Många stannar vid Hansens fokus på pedagoger.",
         "why_wrong": "Bara Hansen fokuserar på yrkeskategorier — Calander och Söderlund gör inte det."
       },
       {
@@ -2092,7 +2016,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid att samarbetsformerna jämförs.",
+        "why_tempting": "Många stannar vid att samarbetsformerna jämförs.",
         "why_wrong": "Samarbetsformen är en variabel hon jämför — inte själva bedömningsgrunden för kunskapsnivå."
       },
       {
@@ -2118,7 +2042,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid pedagogiska metoder.",
+        "why_tempting": "Många stannar vid pedagogiska metoder.",
         "why_wrong": "Texten talar om samarbetsformer — inte om olika pedagogiska metoder som faktor."
       },
       {
@@ -2144,7 +2068,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att kompromissen anses tvivelaktig.",
+        "why_tempting": "Många stannar vid att kompromissen anses tvivelaktig.",
         "why_wrong": "Texten talar inte om att exakthet offras — tvärtom är det exakthetskravet som tvingar fram det tunga språket."
       },
       {
@@ -2170,7 +2094,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid att direktivets mål bevaras.",
+        "why_tempting": "Många stannar vid att direktivets mål bevaras.",
         "why_wrong": "Författaren kommenterar inte att förordningens ambitioner uppfylls bättre — utan hur arbetet bedrevs."
       },
       {
@@ -2196,7 +2120,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid att boken visar identitetens modernitet.",
+        "why_tempting": "Många stannar vid att boken visar identitetens modernitet.",
         "why_wrong": "Det är vad recensenten ser i boken — inte Johnsons uttalade avsikt."
       },
       {
@@ -2222,7 +2146,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid bokens innehållsliga insikter.",
+        "why_tempting": "Många stannar vid bokens innehållsliga insikter.",
         "why_wrong": "Texten talar inte om ”oväntade slutsatser” — historiska fakta beskrivs som intressanta men inte överraskande."
       },
       {
@@ -2248,7 +2172,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid framgångsexemplen.",
+        "why_tempting": "Många stannar vid framgångsexemplen.",
         "why_wrong": "Texten lyfter både framgångar och misslyckanden — inte att arbetet generellt är mer framgångsrikt."
       },
       {
@@ -2274,7 +2198,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att länsstyrelserna ansvarar.",
+        "why_tempting": "Många stannar vid att länsstyrelserna ansvarar.",
         "why_wrong": "Länsstyrelsernas roll kom efter besluten — de var inte orsaken till fördröjningen."
       },
       {
@@ -2300,7 +2224,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid att Lönnroth sammanfattar tidigare forskning.",
+        "why_tempting": "Många stannar vid att Lönnroth sammanfattar tidigare forskning.",
         "why_wrong": "Det är bokens uttalade mål — men hans egen analytiska ambition är något annat."
       },
       {
@@ -2326,7 +2250,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid att boken är skriven för allmänheten.",
+        "why_tempting": "Många stannar vid att boken är skriven för allmänheten.",
         "why_wrong": "Recensenten kritiserar inte att den är mindre komplex — bara att referenserna är tunna."
       },
       {
@@ -2352,7 +2276,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Many stannar vid den rojalistiska diktningen.",
+        "why_tempting": "Många stannar vid den rojalistiska diktningen.",
         "why_wrong": "Den nämns som ett exempel — inte som karakteristik av all 1700-talsdiktning."
       },
       {
@@ -2378,7 +2302,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Many stannar vid akademikerns saknad av notapparat.",
+        "why_tempting": "Många stannar vid akademikerns saknad av notapparat.",
         "why_wrong": "Det är en separat kritik mot boken som helhet — inte mot tolkningen av epistel 82."
       },
       {

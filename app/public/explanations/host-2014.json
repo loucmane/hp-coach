@@ -79,30 +79,32 @@
     }
   },
   "host-2014-kvant1-KVA-018": {
-    "solution_path": "L₁ : y = kx + m₁ och L₂ : y = k₂x + m₂ med k_{1}>k_{2}. Linjernas riktningskoefficienter säger inget om deras y-skärningar — m₁ och m₂ är fria parametrar. D.",
-    "technique": "Riktningskoefficient och konstantterm är oberoende parametrar i linjär funktion.",
-    "pitfall": null,
+    "solution_path": "Ekvationerna är L_1: y = k_1 x + m_1 och L_2: y = k_2 x + m_2 med k_1 > k_2. Villkoret säger bara att L_1 är brantare, inte var linjerna korsar y-axeln. Två brantare-än-en-annan linjer kan ha vilken som helst inbördes ordning på m-värdena, så D.",
+    "technique": "En linje y = kx + m har LUTNING k (hur brant linjen lutar) och SKÄRNING m (var den korsar y-axeln). Lutning och skärning är oberoende — den ena säger inget om den andra.",
+    "pitfall": "Förväxla inte ·brantare lutning· (k) med ·högre upp på y-axeln· (m) — de är två olika egenskaper.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att associera \"större lutning\" med \"större y-värde överallt\" och dra slutsatsen att m₁ > m₂.",
-        "why_wrong": "Lutningen påverkar bara hur snabbt y växer, inte var linjen skär y-axeln."
+        "why_tempting": "Det är lätt att associera ·större lutning· med ·alltid högre upp· och dra slutsatsen m₁ > m₂.",
+        "why_wrong": "Lutningen påverkar hur snabbt y växer med x, inte var linjen skär y-axeln vid x = 0."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att linjer korsar varandra \"uppåt mot vänster\" och m₂ är därför större.",
-        "why_wrong": "Inget i villkoret om k:n förbinder dem med m:n; båda riktningarna är möjliga."
+        "why_tempting": "Första instinkten är att brantare linje ·startar lägre·, så m₂ > m₁.",
+        "why_wrong": "Inget i villkoret kopplar k-värden till m-värden — båda riktningarna är möjliga."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att likhet av m skulle inträffa \"i symmetri\".",
-        "why_wrong": "Det finns ingen symmetri som tvingar m₁ = m₂; tre olika utfall är möjliga."
+        "why_tempting": "Om du minns regeln som ·linjer med olika lutning skär varandra· kanske du tror att m är lika.",
+        "why_wrong": "Skärningspunkten mellan linjerna ligger på en specifik x-koordinat, inte vid x = 0 — m₁ och m₂ är fortfarande fria."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778424317526,
-      "fixed_at": 1778498574266
+      "fixed_at": 1778498574266,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2014-kvant1-KVA-020": {
@@ -132,30 +134,32 @@
     }
   },
   "host-2014-kvant1-KVA-021": {
-    "solution_path": "För -4\\le x\\le -3 och -5\\le y\\le -2 maximeras |xy| vid extrempunkterna. Minsta värdet av xy (alltså mest negativa eller minsta positiva) — eftersom båda är negativa är xy positivt. Minsta produkten: ta minsta absoluta värden i båda intervall: |-3|\\cdot|-2|=6. C.",
-    "technique": "Produkt av två intervall: minimum/maximum hittas i hörnen.",
-    "pitfall": null,
+    "solution_path": "Intervallen är -4 \\le x \\le -3 och -5 \\le y \\le -2. Eftersom x och y båda är negativa är xy positivt. Hörnvärden: (−4)(−5) = 20, (−4)(−2) = 8, (−3)(−5) = 15, (−3)(−2) = 6. Det MINSTA värdet är 6 (när absolutbeloppen är minst), vilket är exakt II. C.",
+    "technique": "Produkt av två negativa tal är positiv. Produkten av två intervall hittar sitt min/max i ett av de fyra hörnen — testa alla fyra och välj rätt.",
+    "pitfall": "·Minsta värdet· av en POSITIV produkt = när faktorernas absolutbelopp är som minst. Det är inte samma sak som ·mest negativt·.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna (-4)(-5)=20 och tro att det är minsta.",
-        "why_wrong": "Det är största produkten — båda absolutvärden tas maximalt. Minsta hittar du på motsatt hörn."
+        "why_tempting": "Det är lätt att räkna (−4)(−5) = 20 och tro att det är minsta.",
+        "why_wrong": "20 är det STÖRSTA värdet (när absolutbeloppen är som störst), inte det minsta."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (-4)(-2)=8 eller (-3)(-5)=15 ligger i mitten.",
-        "why_wrong": "Minsta positiva produkten kräver att båda absolutvärden är minimala samtidigt: 3\\cdot 2=6."
+        "why_tempting": "Snabbsvar är ofta ett mellanvärde som (−4)(−2) = 8 eller (−3)(−5) = 15.",
+        "why_wrong": "Båda dessa ligger mellan min och max — inget av dem är det minsta värdet."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att man behöver mer info om hur x och y väljs gemensamt.",
-        "why_wrong": "Intervallen är oberoende; minimum av produkten ligger entydigt i ett hörn."
+        "why_tempting": "Det är frestande att tro att man behöver veta hur x och y väljs gemensamt.",
+        "why_wrong": "Intervallen är oberoende och minsta värdet finns entydigt i hörnet (−3, −2)."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778424317526,
-      "fixed_at": 1778498574266
+      "fixed_at": 1778498574266,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2014-kvant1-XYZ-001": {
@@ -288,32 +292,6 @@
     "solution_path": "Av spridningen i koordinatsystemet syns att linjen lutar nedåt (negativ lutning) och skär y-axeln nära 4. Det matchar y=-x+4 bäst.",
     "technique": "Bästa rät linje genom punkter: bedöm tecken på lutning (uppåt/nedåt), läs av approximativ y-skärning, matcha mot alternativen."
   },
-  "host-2014-kvant1-XYZ-007": {
-    "_meta": {
-      "generated_at": 1778413621013,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att räkna 2{,}1\\cdot 3{,}9 fel: 7,19 dyker upp om man tappar decimaler eller stannar vid 7+0,19.",
-        "why_wrong": "Korrekt: 2{,}1\\cdot 3{,}9=2{,}1\\cdot 4-2{,}1\\cdot 0{,}1=8{,}4-0{,}21=8{,}19, inte 7,19."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Om du minns regeln som 'multiplicera exponenter' blir 10^{3}\\cdot 10^{3}=10^{9}.",
-        "why_wrong": "Vid multiplikation av tiopotenser ADDERAS exponenterna: 3+3=6, inte 3·3=9."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att kombinera båda felen (fel mantissa + fel exponent).",
-        "why_wrong": "Båda är fel. Mantissa = 8,19, exponent = 6."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Multiplicera mantissor och addera exponenter: 2{,}1\\cdot 3{,}9=8{,}19 och 10^{3}\\cdot 10^{3}=10^{6}. Resultat: 8{,}19\\cdot 10^{6}.",
-    "technique": "Grundpotensform: multiplicera mantissor (vanlig multiplikation), addera exponenter. Justera om mantissan inte ligger i [1, 10)."
-  },
   "host-2014-kvant1-XYZ-008": {
     "distractors": [
       {
@@ -422,32 +400,6 @@
       "fixed_at": 1778498287379
     }
   },
-  "host-2014-kvant2-XYZ-003": {
-    "_meta": {
-      "generated_at": 1778413621013,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel tecken på täljaren: -18-5=-23 ger andra k.",
-        "why_wrong": "6\\cdot(-3)+5=-13, inte −23. Endast x'et multipliceras med −3, inte konstanten 5."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Många stannar vid att tappa minustecken: -13=6+k ger k = −19, eller liknande. −6 är lätt att kombinera fel.",
-        "why_wrong": "Nämnaren 2x+k med x=−3 ger -6+k, INTE +6+k."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att 'ta differensen mellan två synliga heltal' och svara −5.",
-        "why_wrong": "Korrekt aritmetik: -13+6=-7=k. −5 stämmer inte med ekvationen."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Sätt in x = −3: f(-3)=\\frac{6\\cdot(-3)+5}{2\\cdot(-3)+k}=\\frac{-13}{-6+k}=1. Lös ut k: -13=-6+k, alltså k = −7.",
-    "technique": "Funktion med okänd parameter: substituera den givna inputen, sätt funktionen lika med givet output, lös ut parametern."
-  },
   "host-2014-kvant2-XYZ-004": {
     "_meta": {
       "generated_at": 1778413621013,
@@ -499,32 +451,6 @@
     "pitfall": null,
     "solution_path": "Efter tillägg är antalet röda r+5 och totalt r+b+5+7=r+b+12. Sannolikhet röd = \\frac{r+5}{r+b+12}.",
     "technique": "Sannolikhet efter förändring: uppdatera både gynnsamma utfall (täljare) och totala utfall (nämnare) med alla tillägg."
-  },
-  "host-2014-kvant2-XYZ-009": {
-    "_meta": {
-      "generated_at": 1778413621013,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att x+z är 130° genom felräkning av en inre vinkel.",
-        "why_wrong": "Beräkningen kräver yttervinkelsatsen plus rätt inre vinkel; 130° kommer inte ut av denna konfiguration."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta avrundning åt snygga siffror som 140°.",
-        "why_wrong": "Korrekt summa är 190° baserat på vinkelförhållandena i figuren."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Om du minns regeln som 'inre vinkelsumma 180°' blir det 180°.",
-        "why_wrong": "x+z är YTTERvinklar (eller blandning), inte inre vinkelsumma. Resultatet ÖVERSTIGER 180°."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Av figuren följer att x och z är yttervinklar mot triangelns två baser. Yttervinkelsumman till tre hörn på en triangel är 360°. Här är x+z = 360° − en specifik inre vinkel = 190°.",
-    "technique": "Yttervinkelsumman på en triangel = 360° (när varje hörn räknas en gång). Alternativt: yttervinkel = summa av två motstående inre."
   },
   "host-2014-kvant2-XYZ-010": {
     "distractors": [
@@ -1259,34 +1185,36 @@
     }
   },
   "host-2014-kvant1-NOG-024": {
-    "solution_path": "Båda krävs: (1) ger m∪l=17+21−15=23 (har minst en). (2) ger varken=5. Klass=23+5=28.",
+    "solution_path": "Sökt: antalet elever i klassen. Givet: 15 har båda. Utsaga (1): 17 har miniräknare, 21 har linjal. Antal med minst en = 17 + 21 − 15 = 23 (de 15 som har båda räknades två gånger, dra av en gång). Men de utan något saknas. Utsaga (2): 5 har varken. Tillsammans: total = 23 + 5 = 28. C.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att två totaler + snittet räcker.",
-        "why_wrong": "(1) saknar \"varken\"."
+        "why_tempting": "Det är lätt att tro att två totaler + snittet räcker för att räkna alla elever.",
+        "why_wrong": "(1) ger bara antalet med MINST EN sak (23) — de 5 som inte har något saknas helt."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att \"varken\" räcker.",
-        "why_wrong": "(2) saknar yttre summor."
+        "why_tempting": "Snabbsvar är ofta att ·varken·-talet räcker för att räkna klassen.",
+        "why_wrong": "(2) säger bara att 5 elever saknar båda — inget om hur många som har miniräknare eller linjal."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar antingen varken eller yttre summor."
+        "why_tempting": "Om du tror att varje utsaga ensam ger total landar du här.",
+        "why_wrong": "Varken (1) ensamt (saknar ·varken·) eller (2) ensamt (saknar antal med varje sak) räcker — du behöver båda."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att Venn aldrig låses utan total.",
-        "why_wrong": "Total beräknas via inkl-exkl."
+        "why_tempting": "Det är frestande att tro att Venn-diagram aldrig låser totalen utan ett uttryckligt totaltal.",
+        "why_wrong": "Totalen räknas exakt via formeln 17 + 21 − 15 + 5 = 28."
       }
     ],
-    "technique": "Inkl-exkl + varken = total.",
-    "pitfall": null,
+    "technique": "Mängdräkning (inklusion-exklusion): antalet som har MINST EN av två saker = (antal med A) + (antal med B) − (antal med båda). Och totalen = (minst en) + (varken).",
+    "pitfall": "·17 + 21· dubbelräknar de som har båda — dra alltid bort snittet en gång. Och glöm inte att lägga till de som inte har något (·varken·) för att få totalen.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778429079240
+      "generated_at": 1778429079240,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2014-kvant1-NOG-025": {
@@ -1352,34 +1280,36 @@
     }
   },
   "host-2014-kvant1-NOG-028": {
-    "solution_path": "(1) räcker: B+24=2(B+10) ger B=4. (2) säger A+10=B+10+14, vilket är ekvivalent med givna A=B+14 — trivialt sant och bär ingen ny information.",
+    "solution_path": "Givet: A = B + 14. Utsaga (1): om 10 år är A dubbelt så gammal som B. Om 10 år: A + 10 = 2(B + 10). Sätt in A = B + 14: B + 14 + 10 = 2B + 20 ⇒ B + 24 = 2B + 20 ⇒ B = 4. Räcker ensamt. Utsaga (2): om 10 år är A 14 år äldre än B, dvs (A + 10) − (B + 10) = 14 ⇒ A − B = 14 — samma som det givna. Trivialt. A.",
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att (2):s framtid räcker.",
-        "why_wrong": "(2) är samma som ursprungsvillkoret."
+        "why_tempting": "Det är lätt att tro att (2):s framtidsformulering är ny information.",
+        "why_wrong": "(2) säger bara att A − B = 14 även i framtiden — vilket trivialt följer av att A − B = 14 idag."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(1) räcker ensamt."
+        "why_tempting": "Första instinkten är att kombinera båda framtidsutsagor för säkerhet.",
+        "why_wrong": "(1) räcker ensamt — (2) tillför inte mer eftersom den är samma som det redan givna villkoret."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(2) är trivialt."
+        "why_tempting": "Om du tolkar varje utsaga som självständig låsning landar du här.",
+        "why_wrong": "(2) är inte självständigt informativ — den är en konsekvens av A = B + 14."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan båda framtiderna går det inte.",
-        "why_wrong": "(1):s framtidsmultipel ger sluten ekvation."
+        "why_tempting": "Det är frestande att tro att en framtidsutsaga aldrig låser ett nuvarande värde.",
+        "why_wrong": "(1):s framtidsmultipel är en ny algebraisk ekvation som kombinerat med A = B + 14 ger sluten lösning."
       }
     ],
-    "technique": "Skilj på låsande villkor och triviala konsekvenser av ursprungsekvationer.",
-    "pitfall": "En framtidsformulering kan vara samma villkor i ny dräkt.",
+    "technique": "I åldersproblem: en FRAMTIDA villkorsformulering (·om x år·) kan ibland innehålla samma information som det givna villkoret — då är den TRIVIAL och tillför inget.",
+    "pitfall": "Skillnaden i ålder mellan två personer är KONSTANT över tid — om Alice är 14 år äldre än Bengt idag är hon också 14 år äldre om 10 år. Sådana ·omformuleringar· tillför inget nytt.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778429079240
+      "generated_at": 1778429079240,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2014-kvant2-NOG-023": {
@@ -1407,37 +1337,6 @@
       }
     ],
     "technique": "Total borttagna − en kategori − annan kategori = tredje kategorins andel.",
-    "pitfall": null,
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778429079240
-    }
-  },
-  "host-2014-kvant2-NOG-024": {
-    "solution_path": "Vart för sig räcker. (1): proportionalitet av motsvarande sidor är ett av likformighetsvillkoren. (2): alla tre vinklar lika är också tillräckligt (AAA).",
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att sidor är direktare.",
-        "why_wrong": "Vinklar (AAA) ger likformighet via vinkelsumman."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att vinklar räcker.",
-        "why_wrong": "Sidor (proportional) räcker också."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
-      },
-      {
-        "letter": "E",
-        "why_tempting": "Det är frestande att tro att man behöver både sidor och vinklar.",
-        "why_wrong": "Endera räcker (SAS, SSS, AAA-likformighet)."
-      }
-    ],
-    "technique": "Likformighetsvillkor: AAA, SAS-proportional, SSS-proportional — varje räcker.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2141,29 +2040,31 @@
     }
   },
   "host-2014-verb1-MEK-023": {
-    "solution_path": "Stubbinkort hår får mannen att 'på håll' synas helt skallig (på avstånd). Att 'besitta' ett häftigt humör är en formell-litterär kollokation, och 'omskrivning' är euformell för rykte om brutala metoder. Alla tre orden bär samma berättarstil — sakligt nedtonad och lite ironisk.",
+    "solution_path": "Mannen är ·tystlåten och kraftigt byggd· med ·stubinkort hår· (= mycket kort hår). Andra blanken: man ·besitter· ett humör — det är den fasta frasen (besitta = ha som egenskap). Tredje blanken: ·omskrivning· är ett mildare uttryck (eufemism = omskrivning för något obehagligt). Första: ·på håll· (= på avstånd) passar med ·tycktes vara skallig·. Alla tre i samma sakliga, lätt ironiska stil — C.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'ibland' som passande för 'tycktes vara skallig'.",
-        "why_wrong": "Ibland skulle innebära att han ibland var skallig — men det rör sig om en visuell illusion på avstånd, inte ett tillstånd som varierar; 'förena humör' är dessutom fel kollokation."
+        "why_tempting": "Det är lätt att läsa ·ibland· som passande till ·tycktes vara skallig·.",
+        "why_wrong": "·Ibland· skulle innebära att han ibland var skallig — men det är en visuell illusion på avstånd, inte ett tillstånd som varierar. Och ·förena ett humör· är fel kollokation."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid 'till synes' eftersom det också handlar om utseende.",
-        "why_wrong": "Till synes är passande för 'skenbart skallig' men 'uppbåda humör' är fel kollokation — man uppbådar krafter/styrka, inte ett humörsdrag man redan har."
+        "why_tempting": "Många stannar vid ·till synes· eftersom det också handlar om utseende.",
+        "why_wrong": "·Till synes· är okej för ·skenbart skallig·, men ·uppbåda ett humör· är fel — man uppbådar krafter eller mod, inte ett humörsdrag man redan har."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta 'verkligen' eftersom det är vanligt.",
-        "why_wrong": "Verkligen säger att han FAKTISKT är skallig — vilket motsäger 'tystlåten...med så kort hår att han'; och 'anta ett humör' är fel verb — man har/besitter, antar gör man en uppgift."
+        "why_tempting": "Snabbsvar är ofta ·verkligen· eftersom det är vanligt och betyder ·på riktigt·.",
+        "why_wrong": "·Verkligen vara skallig· motsäger att han har stubinkort hår — han är inte helt skallig, bara nästan. Och ·anta ett humör· är fel verb — det säger man om en roll eller uppgift, inte ett karaktärsdrag."
       }
     ],
-    "technique": "Treblanksdrag med berättarstil: hela alternativet måste sitta i samma litterära register — ett ord som skär (verkligen, ibland) avslöjar fel alternativ.",
-    "pitfall": "Lockas inte av att 'till synes' liknar 'på håll' semantiskt — kollokationerna i andra blanken skiljer ut sig.",
+    "technique": "Treblanksuppgifter med berättartext: testa varje fast fras separat (·att ___ ett humör· = vad sägs på svenska?) — en enda fel kollokation utesluter hela alternativet.",
+    "pitfall": "Testa hela alternativet samtidigt — alla tre orden måste sitta. ·Anta ett humör· (D) eller ·uppbåda ett humör· (B) är fel verb — man HAR eller BESITTER ett humör.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778441249505
+      "generated_at": 1778441249505,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2014-verb1-MEK-024": {
@@ -2271,29 +2172,31 @@
     }
   },
   "host-2014-verb1-MEK-028": {
-    "solution_path": "Bonden idkat 'idoga' (uthålligt-flitiga) arbete med översilningsängar för slåtter — som ger djurfoder. Och man dikade myrar för slåtter — myrar är de våta gräsmarker som dränerades till foderängar. Alla tre orden samlas i jordbrukshistorisk register.",
+    "solution_path": "Texten handlar om människor som ·erövrat och nyttjat· något — uthålligt jordbruksarbete. ·Idoga· (= uthålligt-flitiga) passar arbetare bättre än ·sträva· (mödosamt) eller ·kärva· (hårda). ·Djurfoder· kopplar till ·slåtter· (gräsklippning för hö) — på äldre tids ängar och dränerade våtmarker. Och ·myrar· (våta gräsmarker) är det som dikades ut till foderängar. Alla tre i samma agrara sammanhang — B.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'sträva' (mödosamt) och 'spannmål' eftersom det är klassiskt jordbruk.",
-        "why_wrong": "Sträva som adjektiv passar mer arbetet än arbetaren; och översilningsängar producerade gräs/hö (djurfoder), inte spannmål; och 'åkermark' är fel — man dikade våtmark, inte åker."
+        "why_tempting": "Det är lätt att tänka på spannmål och åkermark när det handlar om historiskt jordbruk.",
+        "why_wrong": "·Sträva· passar inte människor som agenter (sträva är ett verb om handling, inte ett adjektiv om arbetare); och ·spannmål från slåtter· är fel — slåtter ger gräs/hö, inte säd."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'flitiga' som synonym till idog.",
-        "why_wrong": "Flitiga är okej men 'träråvara' från slåtter är fel — slåtter ger gräs, inte trä; och 'skogar' dikar man inte för slåtter."
+        "why_tempting": "Många stannar vid ·flitiga· (synonym till idoga) och fortsätter med skogsbruk.",
+        "why_wrong": "·Träråvara från slåtter· är fel — slåtter ger gräs, inte trä; och skogar dränerades inte historiskt på samma sätt."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta 'kärva' (hårda) tider/arbeten.",
-        "why_wrong": "Kärva passar miljön men inte arbetet specifikt; 'energigrödor' är modern term som inte passar äldre tider; och man dikade inte sjöar för slåtter."
+        "why_tempting": "Snabbsvar är ofta ·kärva tider/förhållanden· i historiska texter.",
+        "why_wrong": "·Kärva· beskriver miljö, inte arbetet specifikt; ·energigrödor· är modernt begrepp (1900-talet) som inte passar äldre tid; sjöar dränerades sällan för slåtter."
       }
     ],
-    "technique": "Treblanksdrag i agrarhistorisk register: alla tre orden måste sitta i samma tidsepok och praktik — försök förankra i 'översilningsäng' som gav slåtter/foder.",
-    "pitfall": "Flitiga ≈ idoga semantiskt — men andra och tredje ledet (djurfoder, myrar) avgör.",
+    "technique": "Treblanksuppgifter där fackspråk styr: hitta SAKEN texten handlar om (här: vatten-dränerande jordbruk i äldre tid) och välj alla tre orden från samma sakliga sammanhang.",
+    "pitfall": "·Flitiga· (C) ligger nära ·idoga· i betydelse, men de andra leden (träråvara från slåtter? skogar som dränerades?) gör hela kombinationen fel. Testa alltid alla tre samtidigt.",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778441249505
+      "generated_at": 1778441249505,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2014-verb1-MEK-029": {
@@ -2323,29 +2226,31 @@
     }
   },
   "host-2014-verb1-MEK-030": {
-    "solution_path": "Att hålla sig för god för belöningssystemet bryter mot konvenansen — det socialt etablerade umgängesnormen, att man tar emot vad gruppen ger. Konvenans är just ordet för osynliga sociala spelregler.",
+    "solution_path": "·Bryta mot ___· kräver ett substantiv som är en NORM eller REGEL. Konvenans betyder ·det socialt passande, god ton· — gammaldags ord för osynliga umgängesregler. Det är just sådana sociala normer man kan BRYTA MOT. Alternativ A.",
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att läsa 'legitimiteten' som passande för socialt system.",
-        "why_wrong": "Legitimitet är giltighet/rättmätighet — man bryter inte mot legitimiteten utan urholkar den; fel rektion."
+        "why_tempting": "Det är lätt att läsa ·legitimiteten· som passande för socialt system.",
+        "why_wrong": "Legitimitet är giltighet eller rättmätighet — man bryter inte MOT legitimiteten utan urholkar den. Fel verb."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'diskrepansen' som något socialt avvikande.",
-        "why_wrong": "Diskrepans är skillnad/avvikelse — det är inte något man bryter mot, det är något som finns."
+        "why_tempting": "Många stannar vid ·diskrepansen· som något socialt avvikande.",
+        "why_wrong": "Diskrepans är skillnad eller avvikelse — det är inte en regel man kan bryta mot, utan en omständighet som finns."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta 'generositeten' eftersom det handlar om att ge/ta.",
-        "why_wrong": "Generositet är personlig egenskap — de osjälviska var ju överdrivet generösa; man bryter inte mot generositet genom att vara osjälvisk."
+        "why_tempting": "Snabbsvar är ofta ·generositeten· eftersom kontexten handlar om att ge eller ta.",
+        "why_wrong": "Generositet är en personlig egenskap, inte en social norm — man bryter inte mot generositet genom att vara osjälvisk."
       }
     ],
-    "technique": "Identifiera kollokationen: 'bryta mot konvenansen' är den fasta frasen för sociala normöverträdelser — andra '-en'-ord (legitimitet, diskrepans) har andra rektioner.",
-    "pitfall": null,
+    "technique": "I MEK med en blank: identifiera den fasta frasen (kollokationen) som leder fram till blanken. ·Bryta mot ___· kräver något man kan ÖVERTRÄDA — en regel, lag, norm eller konvention.",
+    "pitfall": "Andra ·-en·-ord ser likadana ut men har andra fasta fraser: man bryter inte mot legitimiteten (man urholkar den), inte mot diskrepansen (den finns), inte mot generositeten (det är en personlig egenskap).",
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778441249505
+      "generated_at": 1778441249505,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2014-verb2-MEK-021": {

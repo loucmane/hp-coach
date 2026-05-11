@@ -470,58 +470,6 @@
     "solution_path": "Bryt ut x: x(5x+3)=0. Lösningar: x = 0 eller 5x+3=0 → x=-\\frac{3}{5}.",
     "technique": "Andragradsekvation utan konstantterm: faktorisera ut x, sätt varje faktor = 0."
   },
-  "host-2021-kvant1-XYZ-012": {
-    "_meta": {
-      "generated_at": 1778414728638,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att 'vilken linje som helst genom rektangeln' delar i två — men fel om mittpunkten missas.",
-        "why_wrong": "Endast linje genom mittpunkten ger lika delar. Räkna mittpunkten av rektangeln, kontrollera vilken linje som passerar den."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att välja en linje med 'snyggt' intercept.",
-        "why_wrong": "Intercept är inte avgörande; det är passering genom mittpunkten."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid en linje med rätt lutning men fel intercept.",
-        "why_wrong": "y = x − 1 går genom mittpunkten av just denna rektangel; y = x − 2 gör inte det."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "En linje delar en rektangel i två lika delar om den går genom rektangelns CENTRUM. Av figurens hörn beräknas centrum, och alternativ C passerar den punkten.",
-    "technique": "Linje delar rektangel i lika delar ⇔ linjen går genom rektangelns mittpunkt (centrum)."
-  },
-  "host-2021-kvant2-KVA-013": {
-    "solution_path": "3·(2/x − 1/6) = 3/2 → 2/x − 1/6 = 1/2 → 2/x = 1/2 + 1/6 = 2/3 → x = 3. 3 > 1/3 — A.",
-    "technique": "Lös för x: isolera bråket, lös ut.",
-    "pitfall": null,
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att räkna fel och få x = 1/3.",
-        "why_wrong": "Korrekt: 2/x = 2/3 ger x = 3, inte 1/3."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att x = 1/3 av symmetri.",
-        "why_wrong": "x = 3 är 9 ggr större än 1/3 = II."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Det är frestande att tro att ekvationen är otydlig.",
-        "why_wrong": "Lös steg för steg: distribuera, isolera, lös. x = 3 entydigt."
-      }
-    ],
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778424621014
-    }
-  },
   "host-2021-kvant2-KVA-015": {
     "solution_path": "75% av kvinnorna är högerhänta → 25% är vänsterhänta = 12 → kvinnor = 48. Män = 100 - 48 = 52. 52 > 48 — B.",
     "technique": "Procent och absoluttal: lös procentekvationen för totala antalet.",
@@ -601,29 +549,31 @@
     }
   },
   "host-2021-kvant2-KVA-020": {
-    "solution_path": "y² - x² = (y-x)(y+x) = 9. Med y = x+1, (1)(2x+1) = 9 → 2x+1 = 9 → x = 4, y = 5. 5 < 6 — B.",
-    "technique": "Skillnad-av-kvadrater faktorisering: y² - x² = (y-x)(y+x).",
-    "pitfall": null,
+    "solution_path": "Eftersom y och x är på varandra följande heltal: y = x + 1. Då blir y^2 - x^2 = (x+1)^2 - x^2 = x^2 + 2x + 1 - x^2 = 2x + 1. Sätt 2x + 1 = 9 → 2x = 8 → x = 4, alltså y = 5. Och 5 < 6, så B.",
+    "technique": "För två på varandra följande heltal: sätt y = x + 1 och expandera. (x+1)^2 - x^2 = 2x + 1 — den udda differensen är alltid lika med 2x + 1.",
+    "pitfall": "·På varandra följande· betyder att skillnaden är exakt 1 — det är denna lilla skillnad som gör att differensen mellan kvadraterna alltid är 2x + 1 (ett udda tal).",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel och få y = 6.",
-        "why_wrong": "2x + 1 = 9 → x = 4, y = 5; inte 6."
+        "why_tempting": "Det är lätt att gissa att y = 6 eftersom 9 ·ser ut som 36 − 25· vid en överraskande misskalkyl.",
+        "why_wrong": "36 − 25 = 11, inte 9 — så y kan inte vara 6 om x = 5. Räkningen ger entydigt y = 5."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att y = 6 av \"9 = 6 - något\".",
-        "why_wrong": "Faktorisering ger entydigt y = 5."
+        "why_tempting": "Snabbsvar är ofta att y ≈ 6 om man uppskattar √9 + något lite.",
+        "why_wrong": "y = √(x² + 9), inte √9 — och med x = 4 blir y = √25 = 5, inte 6."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att flera fall är möjliga.",
-        "why_wrong": "Bara en heltalslösning (4, 5) finns för efterföljande positiva heltal."
+        "why_tempting": "Det är frestande att tro att flera par positiva heltal kan lösa ekvationen.",
+        "why_wrong": "Bara EN lösning finns för positiva heltal i ordningen — y = 5, x = 4."
       }
     ],
     "_meta": {
       "model": "claude-opus-4-7",
-      "generated_at": 1778424621014
+      "generated_at": 1778424621014,
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     }
   },
   "host-2021-kvant2-KVA-021": {
@@ -834,32 +784,6 @@
     "pitfall": null,
     "solution_path": "Sätt y = −2, z = −1 (givet y/z = 2 och de exakta värdena). Beräkna varje: A = 9\\cdot(-2)\\cdot 1=-18; B = 9\\cdot 4\\cdot(-1)=-36; C = -3\\cdot 4\\cdot 1=-12; D = -3\\cdot(-8)\\cdot(-1)=-24. Minst: B = −36.",
     "technique": "Tecken vid exponentiering: jämna potenser ⇒ positivt; udda ⇒ behåller tecken. Räkna varje uttryck systematiskt."
-  },
-  "host-2021-kvant2-XYZ-009": {
-    "_meta": {
-      "generated_at": 1778414728638,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel summa och få 15.",
-        "why_wrong": "Summan av kända: 14+11+13+22 = 60, inte 30 eller annat."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att lämna x ouppdelat: \\frac{60+x}{5}.",
-        "why_wrong": "D-formen är förenklad: 12 + x/5. Båda är ekvivalenta men D är 'rensad' form."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Många stannar vid 60 + x utan division.",
-        "why_wrong": "Medelvärde kräver division med 5. Summan 60+x är inte medelvärdet."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Summan av de fem talen: 14+11+13+x+22=60+x. Medelvärde: \\frac{60+x}{5}=12+\\frac{x}{5}.",
-    "technique": "Medelvärde med okänd: summan / antal. Förenkla genom att splittra konstantdel från x-del."
   },
   "host-2021-kvant2-XYZ-011": {
     "_meta": {
@@ -1876,37 +1800,6 @@
       "generated_at": 1778427829964
     }
   },
-  "host-2021-kvant2-NOG-028": {
-    "solution_path": "Vart för sig räcker. Nya röda r, nya gröna g; nytt förhållande röd:grön=1:2 ger g=2r−1. (1) ger r+g=5 → r=2. (2) ger en separat ekvation som också isolerar r entydigt.",
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s totalsumma 5 är den direkta vägen.",
-        "why_wrong": "(2) ger lika unik lösning på r."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s villkor är direktare.",
-        "why_wrong": "(1) räcker lika bra."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
-      },
-      {
-        "letter": "E",
-        "why_tempting": "Det är frestande att tro att två obekanta kräver två oberoende ekvationer.",
-        "why_wrong": "Förhållandevillkoret är redan en ekvation; ett till räcker."
-      }
-    ],
-    "technique": "Förhållande efter ändring + ett absolut tal låser ändringen.",
-    "pitfall": null,
-    "_meta": {
-      "model": "claude-opus-4-7",
-      "generated_at": 1778427829964
-    }
-  },
   "host-2021-verb1-LÄS-011": {
     "solution_path": "Norberg kritiserar 'att lägga sig platta inför kritiken' eftersom det är 'ohederligt' och innebär att man 'undviker att förklara företagets, kanske i grunden legitima, skäl'. Direkt medgivande utan förklaring bör undvikas.",
     "distractors": [
@@ -2662,7 +2555,7 @@
     }
   },
   "host-2021-verb1-MEK-030": {
-    "solution_path": "Rasismen kan vara flagrant (uppenbar, skamlös) eller subtil (förfinad, dold) — det är fasta dichotomin för rasism-uttryck. Båda är samhällsdebatt-fackord, antonymer på synlighetsskalan.",
+    "solution_path": "Rasismen kan vara flagrant (uppenbar, skamlös) eller subtil (förfinad, dold) — det är fasta dikotomin för rasism-uttryck. Båda är samhällsdebatt-fackord, antonymer på synlighetsskalan.",
     "distractors": [
       {
         "letter": "A",
@@ -2732,7 +2625,7 @@
         "why_wrong": "Faller mellan stolarna = förbisedd (inget tar ansvar) — det är passivt om aktör-frånvaro, men texten beskriver närvaro av FEL TYP av forskning, inte att man tappar bort något; och 'formaliseras' är fel verb."
       }
     ],
-    "technique": "Tvåblanksdrag med idiom: 'lyser med sin frånvaro' = är påtagligt frånvarande — andra fraser har egna idiomatiska betydelser; 'identifieras' är fastnabbande.",
+    "technique": "Tvåblanksdrag med idiom: 'lyser med sin frånvaro' = är påtagligt frånvarande — andra fraser har egna idiomatiska betydelser; 'identifieras' är fastnaglande.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",

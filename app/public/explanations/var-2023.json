@@ -708,28 +708,30 @@
   "var-2023-kvant2-XYZ-004": {
     "_meta": {
       "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7",
+      "pedagogy_regenerated_at": 1778510870035,
+      "regen_source": "persona_pass_phase_e_2026_05_11"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna 45°.",
-        "why_wrong": "36°."
+        "why_tempting": "Det är lätt att gissa 45° som ett ·rent· mellanvärde när man inte räknar diagonalerna.",
+        "why_wrong": "45° är inte en naturlig vinkel i en regelbunden femhörning — alla vinklar är multiplar av 36°."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 54°.",
-        "why_wrong": "36°."
+        "why_tempting": "Snabbsvar är ofta 108°/2 = 54° när man halverar hörnvinkeln.",
+        "why_wrong": "Diagonalen halverar inte hörnvinkeln symmetriskt i en femhörning — den delar 108° i 36° + 72°."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 72°.",
-        "why_wrong": "36°."
+        "why_tempting": "Om du minns att 360°/5 = 72° kan du tro att x = 72°.",
+        "why_wrong": "72° är centrumvinkeln för varje sida, inte den vinkel som diagonalerna skapar vid hörnet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figuren: x = 36°.",
-    "technique": "Femhörningsvinklar: total 540°."
+    "pitfall": "Räkna inte 540°/5 = 108° och sätt direkt x = 108° — x är en vinkel inne i en triangel som diagonalerna skapar, inte en hörnvinkel.",
+    "solution_path": "Diagonalerna i en regelbunden femhörning bildar en likbent triangel där två sidor är diagonaler och en vinkel är ett hörn av femhörningen (108°). Vinkeln x är en av basvinklarna eller spetsvinkeln i en sådan triangel. Om x är spetsvinkeln i en av de smala trianglarna: 108° − 2·36° = 36°, så x = 36°.",
+    "technique": "Regelbunden femhörning: varje inre vinkel är 108° (eftersom 540°/5 = 108°). När du drar diagonaler bildas likbenta trianglar — använd vinkelsumman 180° i varje triangel."
   },
   "var-2023-kvant2-XYZ-005": {
     "_meta": {
@@ -756,32 +758,6 @@
     "pitfall": null,
     "solution_path": "Konjugat: \\frac{1}{4}-\\frac{4}{25}=\\frac{25-16}{100}=\\frac{9}{100}.",
     "technique": "Konjugatregel."
-  },
-  "var-2023-kvant2-XYZ-007": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
-    "distractors": [
-      {
-        "letter": "B",
-        "why_tempting": "Det är lätt att räkna 14.",
-        "why_wrong": "13."
-      },
-      {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 17.",
-        "why_wrong": "13."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Många stannar vid 18.",
-        "why_wrong": "13."
-      }
-    ],
-    "pitfall": null,
-    "solution_path": "Av figuren: x ≈ 13.",
-    "technique": "Approximation av geometriskt värde."
   },
   "var-2023-kvant2-XYZ-008": {
     "_meta": {
