@@ -1,21 +1,29 @@
 """
-Hand-patch the 12 parsed entries corrupted by the PDF→text parser
-reading `(` → `b` and `)` → `l`. Each fix is hand-verified against
-the question's existing answer + explanation.
+Hand-patch parsed entries with parser-extraction bugs surfaced by the
+trajectory simulation. Each fix is hand-verified against the
+question's existing answer + explanation.
 
-The parser bug is at the PDF-extraction level (likely font-shape
-confusion with certain Times-style PDFs). Until the parser is fixed
-at source, this script patches the parsed JSON in-place.
+Two bug classes handled here:
+
+1. PAREN_PATCHES — `(` misread as `b`, `)` as `l` (font-shape confusion
+   in Times-style PDFs). 12 entries.
+
+2. MISSING_OPERAND_PATCHES — math operand or sqrt symbol stripped
+   from the prompt, leaving the question literally missing its core
+   expression. 3 entries surfaced by step 3 (full-seed50 trajectory).
+
+The parser bugs are at the PDF-extraction level. Until the parser is
+fixed at source, this script patches the parsed JSON in-place.
 
 IMPORTANT: `data/parsed/` is gitignored (parser-regeneratable). The
 patched JSON files do NOT get committed. This script IS committed —
 re-run it after any `bygg_hp_databas.py` / parser regeneration to
 re-apply the fixes.
 
-    python3 audit/trajectory/patch_paren_corruption.py --apply
+    python3 audit/trajectory/patch_parser_bugs.py --apply
 
-After running, the affected qids are removed from known_broken.json's
-core list (kept as a `paren_corruption_qids_patched` annotation for audit).
+After running, the affected qids appear in known_broken.json's
+*_patched annotations for audit.
 """
 import json
 import sys
@@ -24,9 +32,8 @@ from pathlib import Path
 
 # qid → (original prompt, corrected prompt, exam_file)
 # All corrections cross-checked against the explanation's solution_path
-# and the answer key. See _v3_findings.md and patch_paren_corruption.md
-# for full reasoning.
-PATCHES = {
+# and the answer key. See _v3_findings.md for full reasoning.
+PAREN_PATCHES = {
     'host-2014-kvant2-XYZ-002': {
         # Answer C = -125/8 = (-5/2)^3. Prompt lost the fraction body
         # and the exponent. Reconstructed as standard HP form.
@@ -109,65 +116,144 @@ PATCHES = {
 }
 
 
-def main():
-    dry_run = '--apply' not in sys.argv
-    print(f'Mode: {"DRY RUN" if dry_run else "APPLY"}')
-    print()
+# Missing-operand/sqrt parser bugs — surfaced by step 3
+# (full-seed50 trajectory). Math operand or sqrt wrapper stripped from
+# prompt or option. Some entries also have option-text bleed from
+# neighboring questions. Supports an optional `options` list for
+# letter-specific text fixes.
+MISSING_OPERAND_PATCHES = {
+    'var-2014-kvant2-XYZ-002': {
+        # Solution: (x^2)^4 / x^5 = x^8/x^5 = x^3. The (x^2)^4 numerator
+        # was stripped, leaving "Vad blir ? x^5". Option D has bleed from
+        # a NOG sampling-occasions question.
+        'old_prompt': 'Vad blir ? \xee\x80\x80x^{5}\xee\x80\x81',
+        'new_prompt': 'Vad blir \xee\x80\x80\\frac{(x^{2})^{4}}{x^{5}}\xee\x80\x81?',
+        'options': [
+            {
+                'letter': 'D',
+                'old_text': '\xee\x80\x80x^{11}\xee\x80\x81 Senare delen av april3. Senare delen av maj 6. Slutet av september Provtagningstillf\xc3\xa4llen:',
+                'new_text': '\xee\x80\x80x^{11}\xee\x80\x81',
+            },
+        ],
+        'file': 'data/parsed/var-2014.json',
+    },
+    'host-ver2-2019-kvant1-XYZ-010': {
+        # Solution: sqrt(12 x y^4 z^3) = 2 y^2 z sqrt(3 x z).
+        # Prompt is missing the outer \sqrt{} wrapper. Option D has
+        # bleed about "av arean av cirkeln B".
+        'old_prompt': 'x, y och z \xc3\xa4r positiva tal. Vilket svarsalternativ motsvarar 12\xee\x80\x80xy^{4}\xee\x80\x81 \xee\x80\x80z^{3}\xee\x80\x81 ?',
+        'new_prompt': 'x, y och z \xc3\xa4r positiva tal. Vilket svarsalternativ motsvarar \xee\x80\x80\\sqrt{12xy^{4}z^{3}}\xee\x80\x81?',
+        'options': [
+            {
+                'letter': 'D',
+                'old_text': '6\xee\x80\x80y^{2}\xee\x80\x81 z 2xz 1  av arean av cirkeln B. 4',
+                'new_text': '6\xee\x80\x80y^{2}z\\sqrt{2xz}\xee\x80\x81',
+            },
+        ],
+        'file': 'data/parsed/host-ver2-2019.json',
+    },
+    'var-2026-kvant2-XYZ-005': {
+        # Solution: (1/4 + 1/5) / (1/6) = (9/20) * 6 = 54/20 = 27/10.
+        # Prompt is missing the compound-fraction numerator.
+        'old_prompt': 'Vad \xc3\xa4r ? \xee\x80\x80\\frac{1}{6}\xee\x80\x81',
+        'new_prompt': 'Vad \xc3\xa4r \xee\x80\x80\\frac{\\frac{1}{4} + \\frac{1}{5}}{\\frac{1}{6}}\xee\x80\x81?',
+        'file': 'data/parsed/var-2026.json',
+    },
+}
 
-    # Group by file
+
+def normalize(s):
+    """Strip PUA wrap chars for logical equality across round-trips."""
+    return s.replace('\ue000', '').replace('\ue001', '')
+
+
+def apply_patch_dict(patches_dict, label, dry_run, today='2026-05-11'):
+    """Apply a dict of patches. Each entry: {old_prompt, new_prompt, file,
+    optional options: [{letter, old_text, new_text}, ...]}.
+    Returns (n_applied, n_skipped_already_patched).
+    """
     by_file = {}
-    for qid, info in PATCHES.items():
+    for qid, info in patches_dict.items():
         by_file.setdefault(info['file'], []).append((qid, info))
 
+    n_applied = 0
+    n_skipped = 0
     for file_path, patches in by_file.items():
         path = Path(file_path)
         data = json.loads(path.read_text())
-        # Build qid → entry index
         qid_to_idx = {q['qid']: i for i, q in enumerate(data)}
         changed = 0
         for qid, info in patches:
             idx = qid_to_idx.get(qid)
             if idx is None:
-                print(f'  ✗ {qid}: not found in {file_path}')
+                print(f'  \u2717 {qid}: not found in {file_path}')
                 continue
             entry = data[idx]
-            current = entry.get('prompt', '')
-            # Strip PUA chars to compare logically — the parser wraps math
-            # spans in U+E000/U+E001 and so do patched outputs once they
-            # round-trip through json.
-            def normalize(s):
-                return s.replace('', '').replace('', '')
-            already_patched = normalize(current) == normalize(info['new_prompt'])
-            if already_patched:
-                print(f'  · {qid}: already patched (skip)')
+            current_prompt = entry.get('prompt', '')
+
+            prompt_match = normalize(current_prompt) == normalize(info['new_prompt'])
+            opts_match = True
+            if 'options' in info:
+                opts = entry.get('options', [])
+                for op in info['options']:
+                    current_text = next(
+                        (o.get('text', '') for o in opts if o.get('letter') == op['letter']),
+                        '',
+                    )
+                    if normalize(current_text) != normalize(op['new_text']):
+                        opts_match = False
+                        break
+            if prompt_match and opts_match:
+                print(f'  \u00b7 {qid}: already patched (skip)')
+                n_skipped += 1
                 continue
-            if current != info['old_prompt']:
-                print(f'  ✗ {qid}: current prompt does not match expected old_prompt')
-                print(f'    current : {current!r}')
+
+            if current_prompt != info['old_prompt']:
+                print(f'  \u2717 {qid}: current prompt does not match expected')
+                print(f'    current : {current_prompt!r}')
                 print(f'    expected: {info["old_prompt"]!r}')
                 continue
+
             if not dry_run:
                 entry['prompt'] = info['new_prompt']
-                # Annotate the meta field for audit trail
+                if 'options' in info:
+                    for op_patch in info['options']:
+                        for o in entry.get('options', []):
+                            if o.get('letter') == op_patch['letter']:
+                                if o.get('text', '') == op_patch['old_text']:
+                                    o['text'] = op_patch['new_text']
+                                break
                 meta = entry.setdefault('_meta', {})
-                meta['paren_corruption_patched_at'] = '2026-05-11'
-                meta['paren_corruption_source'] = 'trajectory_v3_audit'
+                meta[f'{label}_patched_at'] = today
+                meta[f'{label}_source'] = 'trajectory_audit'
             changed += 1
-            print(f'  ✓ {qid}: ready to patch')
-            print(f'    old: {info["old_prompt"][:120]}')
-            print(f'    new: {info["new_prompt"][:120]}')
+            n_applied += 1
+            print(f'  \u2713 {qid}: patched')
 
         if changed and not dry_run:
             path.write_text(json.dumps(data, ensure_ascii=False, indent=2))
-            print(f'  → wrote {file_path} ({changed} entries)')
-        elif changed:
-            print(f'  (dry-run; {file_path} unchanged)')
+            print(f'  \u2192 wrote {file_path} ({changed} entries)')
+
+    return n_applied, n_skipped
+
+
+def main():
+    dry_run = '--apply' not in sys.argv
+    print(f'Mode: {"DRY RUN" if dry_run else "APPLY"}')
+
+    print('\n\u2501\u2501\u2501 Class 1: paren-corruption \u2501\u2501\u2501')
+    a1, s1 = apply_patch_dict(PAREN_PATCHES, 'paren_corruption', dry_run)
+    print(f'  ({a1} new, {s1} already patched)')
+
+    print('\n\u2501\u2501\u2501 Class 2: missing-operand/sqrt \u2501\u2501\u2501')
+    a2, s2 = apply_patch_dict(MISSING_OPERAND_PATCHES, 'missing_operand', dry_run)
+    print(f'  ({a2} new, {s2} already patched)')
 
     print()
     if dry_run:
-        print('Dry run complete. Re-run with --apply to write changes.')
+        print(f'Dry run: {a1+a2} new patches ready. Re-run with --apply.')
     else:
-        print('Patches applied. Re-run technique_index.py and trajectory tests.')
+        print(f'Applied: {a1+a2} new patches.')
 
 
 if __name__ == '__main__':

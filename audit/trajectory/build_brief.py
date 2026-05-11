@@ -115,10 +115,32 @@ def main():
             baseline.extend(random.sample(pool, min(n, len(pool))))
     baseline = baseline[:preset['baseline']]
 
+    # Mirror-pair filter — host-ver1-2019 and host-ver2-2019 are
+    # byte-identical exams. Two questions are mirrors if their qids
+    # normalize to the same string after stripping the version marker.
+    # Step 3 surfaced 16 template-fatigue soft bottlenecks because the
+    # filter was only applied to transfer-pair selection; practice
+    # could still double-dip the same surface across versions.
+    def mirror_key(qid):
+        return qid.replace('host-ver1-2019', 'X').replace('host-ver2-2019', 'X')
+
+    def is_mirror_pair(a, b):
+        return mirror_key(a) == mirror_key(b)
+
     # ── Practice ──────────────────────────────────────────────────────
+    # Dedup by mirror-key so we never practice both versions of the same
+    # exam question.
     practice_pool = [q for q in eligible if q not in baseline]
-    by_sec = defaultdict(list)
+    seen_mirrors = set()
+    deduped_pool = []
     for q in practice_pool:
+        k = mirror_key(q)
+        if k in seen_mirrors:
+            continue
+        seen_mirrors.add(k)
+        deduped_pool.append(q)
+    by_sec = defaultdict(list)
+    for q in deduped_pool:
         by_sec[by_qid[q]['section']].append(q)
 
     # Scale per-section quota with the preset
@@ -137,10 +159,6 @@ def main():
     practice = practice[:preset['practice']]
 
     # ── Transfer pairs ────────────────────────────────────────────────
-    def is_mirror_pair(a, b):
-        a_norm = a.replace('host-ver1-2019', 'X').replace('host-ver2-2019', 'X')
-        b_norm = b.replace('host-ver1-2019', 'X').replace('host-ver2-2019', 'X')
-        return a_norm == b_norm
 
     practiced_set = set(practice)
     used_as_transfer = set()

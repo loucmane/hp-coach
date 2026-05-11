@@ -1,11 +1,17 @@
 {
   "qids": [
     "host-2017-kvant2-XYZ-010",
-    "var-2017-kvant1-XYZ-005"
+    "host-ver2-2019-kvant1-XYZ-010",
+    "var-2014-kvant2-XYZ-002",
+    "var-2017-kvant1-XYZ-005",
+    "var-2026-kvant2-XYZ-005"
   ],
   "notes": {
     "host-2017-kvant2-XYZ-010": "Prompt parser-corrupted: 'Vad är x om 3 = ? -3x+4 1 9' — symbols scrambled. Surfaced by v3 (round 18 soft bottleneck). Different parser bug than the paren-corruption class; needs source-PDF re-parse.",
-    "var-2017-kvant1-XYZ-005": "Figure-dependent question with no figure rendered. 'Vilket uttryck gäller för arean av rektangeln R?' — needs the rectangle figure. Either supply the figure or delete the entry."
+    "var-2017-kvant1-XYZ-005": "Figure-dependent question with no figure rendered. 'Vilket uttryck gäller för arean av rektangeln R?' — needs the rectangle figure. Either supply the figure or delete the entry.",
+    "var-2014-kvant2-XYZ-002": "Auto-flagged by trajectory harvest on 2026-05-11. Reason: Prompt has missing math expression (parser strip) — operand or sqrt symbol stripped; solution shows the answer but I cannot reverse-engineer what was asked",
+    "host-ver2-2019-kvant1-XYZ-010": "Auto-flagged by trajectory harvest on 2026-05-11. Reason: Prompt has missing math expression (parser strip) — operand or sqrt symbol stripped; solution shows the answer but I cannot reverse-engineer what was asked",
+    "var-2026-kvant2-XYZ-005": "Auto-flagged by trajectory harvest on 2026-05-11. Reason: Prompt has missing math expression (parser strip) — operand or sqrt symbol stripped; solution shows the answer but I cannot reverse-engineer what was asked"
   },
   "paren_corruption_class_fixed_at": "2026-05-11",
   "paren_corruption_qids_patched": [
@@ -23,5 +29,6 @@
     "var-2026-kvant1-XYZ-002"
   ],
   "paren_corruption_notes": "PDF→text parser misread '(' as 'b' and ')' as 'l' in certain Times-style PDFs (font-shape confusion). Pattern detected via corpus-wide grep for `\\bb\\s+\\\\frac`, `\\blb\\s+`, `\\sl\\s+\\\\frac`, etc. 12 entries hand-patched against their explanations and answer keys. Future parser fix should normalize this at extraction time.",
-  "surfaced_by": "trajectory simulation v2 + v3 (2026-05-11)"
+  "surfaced_by": "trajectory simulation v2 + v3 (2026-05-11)",
+  "last_auto_harvest": "2026-05-11"
 }
