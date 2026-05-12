@@ -6,8 +6,14 @@
 // Phase A responsive: when the viewport is reader/studio (≥768px), the
 // iOS-specific decorative chrome (status bar showing 09:41, home
 // indicator pill) is hidden — they don't make sense at tablet/desktop
-// where the device IS the desktop, not a previewed phone. Bottom tabs
-// stay because they're real navigation, not decoration.
+// where the device IS the desktop, not a previewed phone.
+//
+// Phase A.5 wide-canvas update: the BottomTabs nav bar used to be
+// absolute-positioned to the bottom of the (then-fixed-height) artboard.
+// With A.5's content-driven canvas, the artboard no longer has a
+// reliable bottom anchor. At reader/studio we render the tabs as a
+// `position: fixed` floating pill centered at the bottom of the
+// viewport. Phase B replaces this with a proper top nav.
 
 import type { CSSProperties, ReactNode } from 'react'
 
@@ -113,13 +119,28 @@ const TABS: ReadonlyArray<{
 function BottomTabs({
   active = 'home',
   onChange,
+  floating = false,
 }: {
   active?: TabKey
   onChange?: (id: TabKey) => void
+  /** When true (reader/studio), render as a viewport-anchored floating
+   *  pill. When false (phone), render absolute-bottom inside the
+   *  device artboard. */
+  floating?: boolean
 }) {
-  return (
-    <div
-      style={{
+  const positionStyle: CSSProperties = floating
+    ? {
+        position: 'fixed',
+        bottom: 'clamp(16px, 2vh, 32px)',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        background: 'var(--panel)',
+        border: '1px solid var(--hairline)',
+        borderRadius: 999,
+        boxShadow: '0 10px 30px -8px rgba(0,0,0,0.25)',
+        zIndex: 30,
+      }
+    : {
         position: 'absolute',
         bottom: 0,
         left: 0,
@@ -127,9 +148,17 @@ function BottomTabs({
         paddingBottom: 28,
         background: 'var(--panel)',
         borderTop: '1px solid var(--hairline)',
-      }}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-around', padding: '8px 0 4px' }}>
+      }
+  return (
+    <div style={positionStyle}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: floating ? 'center' : 'space-around',
+          gap: floating ? 4 : 0,
+          padding: floating ? '6px 10px' : '8px 0 4px',
+        }}
+      >
         {TABS.map(({ id, label, Icon }) => {
           const on = active === id
           return (
@@ -140,19 +169,20 @@ function BottomTabs({
               aria-current={on ? 'page' : undefined}
               style={{
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: floating ? 'row' : 'column',
                 alignItems: 'center',
-                gap: 4,
-                background: 'transparent',
+                gap: floating ? 6 : 4,
+                background: on && floating ? 'var(--panel-2)' : 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                padding: '6px 12px',
+                padding: floating ? '8px 14px' : '6px 12px',
+                borderRadius: floating ? 999 : 0,
                 color: on ? 'var(--ink)' : 'var(--muted-2)',
                 fontFamily: 'inherit',
               }}
             >
-              <Icon s={20} />
-              <span style={{ fontSize: 10, fontWeight: 500 }}>{label}</span>
+              <Icon s={floating ? 16 : 20} />
+              <span style={{ fontSize: floating ? 12 : 10, fontWeight: 500 }}>{label}</span>
             </button>
           )
         })}
@@ -185,22 +215,32 @@ export function MobileFrame({
   const viewport = useViewport()
   const showIosChrome = viewport === 'phone'
 
+  // On phone the artboard has a fixed device height so the absolute-
+  // bottom tabs anchor visually. At reader/studio the canvas is
+  // content-driven, so we let MobileFrame's outer be content-sized
+  // (height: auto) and render the tabs as a fixed-position floating
+  // pill instead. `flex: 1` on the children wrapper keeps screen
+  // content flexible inside whatever height MobileFrame ends up with.
+  const isPhone = viewport === 'phone'
   return (
     <div
       style={{
         width: '100%',
-        height: '100%',
+        height: isPhone ? '100%' : 'auto',
+        minHeight: isPhone ? undefined : 'calc(100vh - 64px)',
         background: 'var(--bg)',
         position: 'relative',
-        overflow: 'hidden',
+        overflow: isPhone ? 'hidden' : 'visible',
         display: 'flex',
         flexDirection: 'column',
         ...style,
       }}
     >
       {showIosChrome && <StatusBar />}
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>{children}</div>
-      {tabs && <BottomTabs active={activeTab} onChange={onTabChange} />}
+      <div style={{ flex: 1, position: 'relative', overflow: isPhone ? 'hidden' : 'visible' }}>
+        {children}
+      </div>
+      {tabs && <BottomTabs active={activeTab} onChange={onTabChange} floating={!isPhone} />}
       {showIosChrome && <HomeIndicator />}
     </div>
   )

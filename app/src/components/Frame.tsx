@@ -1,126 +1,98 @@
-// Frame — phase A responsive shell orchestrator.
+// Frame — Phase A.5 wide-canvas shell.
 //
-// Replaces the hard-coded 390×844 artboard in __root.tsx with a three-
-// mode canvas that picks layout based on viewport:
+// Replaces Phase A's 640px artboard-on-desktop with a content-sized
+// canvas at reader / studio. Three modes picked by viewport:
 //
 //   phone   (<768px)   → full-bleed; child rendered at 100×100%
-//                        (no surrounding chrome; the device IS the artboard)
-//   reader  (768–1279) → centered card, max-width var(--frame-max-w)
-//                        with surrounding background; iOS chrome inside
-//                        MobileFrame quietly hides itself (it's
-//                        viewport-aware too)
-//   studio  (≥1280)    → same centered card + optional left/right rails
-//                        gated by uiStore.studioRails (default off, opt-in
-//                        via Avancerat). Rails carry low-priority context
-//                        (keyboard shortcuts hint, session progress).
+//                        (no surrounding chrome — the device IS the
+//                        artboard). Unchanged from Phase A.
 //
-// Why not just CSS media queries? — three reasons:
-//   1. The studio rails carry React content (KeyboardHintsRail,
-//      SessionProgressRail) — they're not just style swaps.
-//   2. studioRails is a user preference, not a viewport fact. CSS can't
-//      read from zustand.
-//   3. SSR/hydration: we want the first paint at phone width to be
-//      identical to the pre-Frame build (no surprise card chrome flash).
+//   reader  (768–1279) → centered card, max-width var(--canvas-max-w-reader)
+//                        (960px). NO min-height — content drives the
+//                        canvas height, so screens that don't fill 844px
+//                        (auth, idle states) don't strand their content
+//                        at the top of a tall empty card. Subtle border
+//                        + shadow preserve the editorial card aesthetic.
 //
-// MobileFrame.tsx (the iOS-chrome implementation) is unchanged in API
-// — it just learns to hide status bar / home indicator at reader+.
-// That keeps every existing `<MobileFrame tabs activeTab=...>` callsite
-// working.
+//   studio  (≥1280)    → no card. Canvas is a centered region with
+//                        max-width var(--canvas-max-w) — min(1440px,
+//                        calc(100vw - 96px)). No shadow, no border, no
+//                        min-height. The --panel-2 background gives
+//                        the canvas its own visual zone, but the look is
+//                        "wide page" not "phone shrunken into a desktop".
+//                        Screens use container queries inside this
+//                        canvas to render multi-column layouts (see
+//                        StudyDesk, HomeMobile dashboard).
+//
+// The leftRail / rightRail props remain on the type for API
+// compatibility but are no longer rendered. The Study Desk pattern
+// delivers multi-column content *inside* the canvas via Sidebar /
+// Switcher / container queries instead. Removing the rails altogether
+// would break existing call-sites; keeping them as a no-op is the
+// cheapest migration path.
 
 import type { ReactNode } from 'react'
 
 import { useViewport } from '@/hooks/useViewport'
-import { useUiStore } from '@/stores/uiStore'
 
 type FrameProps = {
   children: ReactNode
-  /**
-   * Optional content for the left rail. Studio mode only; ignored
-   * elsewhere. Default: nothing (rail is hidden even when studioRails
-   * is on).
-   */
+  /** @deprecated (Phase A.5) — rails are no longer rendered. The Study
+   *  Desk layout uses in-canvas multi-column composition instead. The
+   *  prop is kept so existing callers don't break. */
   leftRail?: ReactNode
-  /**
-   * Optional content for the right rail. Studio mode only; same
-   * default behavior as leftRail.
-   */
+  /** @deprecated (Phase A.5) — see leftRail. */
   rightRail?: ReactNode
 }
 
-export function Frame({ children, leftRail, rightRail }: FrameProps) {
+export function Frame({ children }: FrameProps) {
   const viewport = useViewport()
-  const studioRails = useUiStore((s) => s.studioRails)
 
   if (viewport === 'phone') {
-    // The device is the artboard. No surrounding chrome — child fills
-    // the viewport. The CSS class hpc-frame-phone sets `height: 100vh;
-    // height: 100dvh;` so iOS Safari's collapsing URL bar doesn't pull
-    // content up (modern browsers use dvh; older ones fall back to vh).
+    // Phone is the canonical artboard. CSS class .hpc-frame-phone sets
+    // `height: 100vh; height: 100dvh;` so iOS Safari's collapsing URL
+    // bar doesn't pull content up (modern browsers use dvh; older
+    // browsers fall back to vh).
     return <div className="hpc-frame hpc-frame-phone">{children}</div>
   }
 
-  // reader + studio share the centered-card baseline. Studio adds rails.
-  const showRails = viewport === 'studio' && studioRails && (leftRail || rightRail)
+  const isStudio = viewport === 'studio'
+  const maxWidth = isStudio ? 'var(--canvas-max-w)' : 'var(--canvas-max-w-reader)'
 
+  // Reader keeps the card aesthetic (border + shadow) at a wider 960px
+  // canvas. Studio drops the card and renders a wide page-region.
+  // Both share the centered layout + --panel-2 backdrop.
   return (
     <div
-      className={`hpc-frame ${viewport === 'studio' ? 'hpc-frame-studio' : 'hpc-frame-reader'}`}
+      className={`hpc-frame ${isStudio ? 'hpc-frame-studio' : 'hpc-frame-reader'}`}
       style={{
         minHeight: '100vh',
         display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        gap: 'var(--frame-rail-gap)',
-        padding: 'clamp(16px, 3vh, 48px) clamp(16px, 4vw, 48px)',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: 'clamp(16px, 3vh, 48px) var(--gutter-lg)',
         background: 'var(--panel-2)',
       }}
     >
-      {showRails && leftRail && (
-        <aside
-          aria-label="Sidopanel"
-          style={{
-            width: 'var(--frame-rail-w)',
-            flexShrink: 0,
-            position: 'sticky',
-            top: 'clamp(16px, 3vh, 48px)',
-          }}
-        >
-          {leftRail}
-        </aside>
-      )}
-
       <div
-        className="hpc-frame-card"
+        className="hpc-frame-canvas"
         style={{
           width: '100%',
-          maxWidth: 'var(--frame-max-w)',
-          minHeight: 'min(844px, calc(100vh - 64px))',
-          maxHeight: 'calc(100vh - 64px)',
+          maxWidth,
           background: 'var(--bg)',
-          borderRadius: 'calc(var(--radius) * 1.6)',
-          overflow: 'hidden',
-          border: '1px solid var(--hairline)',
-          boxShadow: '0 30px 60px -20px rgba(0,0,0,0.18)',
+          // Reader keeps the card chrome; studio strips it. Both
+          // share content-driven height (no min-height) — that's the
+          // Phase A.5 fix for the off-center auth bug.
+          borderRadius: isStudio ? 0 : 'calc(var(--radius) * 1.6)',
+          border: isStudio ? 'none' : '1px solid var(--hairline)',
+          boxShadow: isStudio ? 'none' : '0 30px 60px -20px rgba(0,0,0,0.18)',
           position: 'relative',
-          flexShrink: 1,
+          // Allow internal scrolling at the screen level; the canvas
+          // itself flexes to its content.
         }}
       >
         {children}
       </div>
-
-      {showRails && rightRail && (
-        <aside
-          aria-label="Sidopanel"
-          style={{
-            width: 'var(--frame-rail-w)',
-            flexShrink: 0,
-            position: 'sticky',
-            top: 'clamp(16px, 3vh, 48px)',
-          }}
-        >
-          {rightRail}
-        </aside>
-      )}
     </div>
   )
 }

@@ -22,9 +22,21 @@ type Props = {
   /** When true, options reveal correct/incorrect state and become readonly. */
   graded: boolean
   onPick: (letter: AnswerLetter) => void
+  /** Phase A.5 — when DrillQuestion is rendered inside StudyDesk, the
+   *  Study Desk's PedagogyPanel handles the explanation as a side
+   *  column. Pass `renderExplanation={false}` to suppress the inline
+   *  ExplanationPanel and avoid double-rendering. Defaults to true
+   *  for backward compat with phone-mode callers. */
+  renderExplanation?: boolean
 }
 
-export function DrillQuestion({ question, picked, graded, onPick }: Props) {
+export function DrillQuestion({
+  question,
+  picked,
+  graded,
+  onPick,
+  renderExplanation = true,
+}: Props) {
   // Scroll back to the top whenever a new question loads. Without this
   // a long LÄS passage on Q1 leaves the inner overflow-y region
   // mid-scroll, so Q2 visually starts halfway down the screen.
@@ -142,7 +154,7 @@ export function DrillQuestion({ question, picked, graded, onPick }: Props) {
           />
         ))}
       </div>
-      {graded && picked != null && (
+      {renderExplanation && graded && picked != null && (
         <ExplanationPanel qid={question.qid} correct={picked === question.answer} />
       )}
     </div>

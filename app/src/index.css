@@ -74,11 +74,22 @@
   --gap-fluid: clamp(12px, 0.75rem + 0.5vw, 22px);
   --gap-lg-fluid: clamp(16px, 1rem + 0.6vw, 28px);
 
-  /* Frame chrome sizes (Phase A — Frame component reads these) */
+  /* Frame chrome sizes (Phase A / A.5 — Frame component reads these) */
   --frame-tabbar: 88px; /* bottom-tab reserved on phone; 0 on reader/studio */
-  --frame-max-w: 640px; /* reader/studio focus column max-width */
-  --frame-rail-w: 280px; /* studio left/right rail width */
-  --frame-rail-gap: clamp(20px, 1.5vw, 36px); /* rail-to-focus gap */
+  --frame-max-w: 640px; /* narrow focus column max-width (rarely used after A.5) */
+  --frame-rail-w: 280px; /* studio left/right rail width (deprecated post-A.5) */
+  --frame-rail-gap: clamp(20px, 1.5vw, 36px); /* rail-to-focus gap (deprecated) */
+
+  /* ── Phase A.5 wide-canvas widths ─────────────────────────────────────
+   * Reader (768–1279) and Studio (≥1280) each get a content canvas
+   * that scales with the viewport instead of the old 640px artboard.
+   * Studio's max is clamped against the viewport so ultra-wide monitors
+   * cap at 1440px (beyond that we'd lose the readable-line-length
+   * advantage of column composition).
+   */
+  --canvas-max-w-reader: 960px;
+  --canvas-max-w: min(1440px, calc(100vw - 96px));
+  --gutter-lg: clamp(24px, 3vw, 96px); /* canvas-to-viewport-edge */
 
   /* shadcn compat aliases (unused for our screens but safe to keep so shadcn defaults don't error) */
   --background: var(--bg);
@@ -139,6 +150,7 @@
   --container-sm: 480px;
   --container-md: 640px;
   --container-lg: 960px;
+  --container-xl: 1280px;
 }
 
 * {
@@ -210,16 +222,15 @@ body {
   background: var(--bg);
 }
 
-/* Reader/studio share the centered-card aesthetic. Inline styles in
-   Frame.tsx own the layout; this rule ensures the card content fills
-   its container so MobileFrame's height: 100% works inside it. */
-.hpc-frame-card {
+/* Phase A.5 — reader and studio canvases are content-driven (no
+   forced min-height), so we don't need the old flex-column wiring
+   that the .hpc-frame-card class provided. Inline styles in
+   Frame.tsx own all canvas dimensions now. The class is kept as a
+   selector-only hook in case future styles want to target the canvas
+   without inspecting viewport state. */
+.hpc-frame-canvas {
   display: flex;
   flex-direction: column;
-}
-.hpc-frame-card > * {
-  flex: 1;
-  min-height: 0;
 }
 
 /* ── Button — micro press affordance ───────────────────────────────────── */

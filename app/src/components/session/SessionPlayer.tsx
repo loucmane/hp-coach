@@ -48,7 +48,9 @@ import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { DrillResult } from '@/components/drill/DrillResult'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
+import { StudyDesk } from '@/components/StudyDesk'
 import type { AnswerLetter, Question } from '@/data/questions'
+import { useViewport } from '@/hooks/useViewport'
 import { TAB_ROUTE } from '@/lib/nav'
 
 type Phase = 'idle' | 'answering' | 'graded' | 'done'
@@ -91,6 +93,11 @@ export function SessionPlayer(props: SessionPlayerProps) {
   const startSession = useStartSession()
   const updateSession = useUpdateSession()
   const submitAttempt = useSubmitAttempt()
+  // Phase A.5 — needs to be read at the top of the component before
+  // any early returns (idle / done branches below) so React's
+  // hook-rule isn't violated when the phase transitions through
+  // different render paths.
+  const viewport = useViewport()
 
   const [phase, setPhase] = useState<Phase>('idle')
   const [plan, setPlan] = useState<Question[]>([])
@@ -234,6 +241,12 @@ export function SessionPlayer(props: SessionPlayerProps) {
 
   const q = plan[index]
   const picked = picks[index]
+  // Phase A.5 — reader/studio render the Study Desk (question +
+  // pedagogy side-by-side). Phone keeps the single-column DrillQuestion
+  // (the prototype's canonical layout). `viewport` is hoisted above
+  // any early returns at the top of the component; we just consume
+  // it here.
+  const useStudyDesk = viewport !== 'phone'
   return (
     <MobileFrame tabs={false}>
       <div
@@ -247,7 +260,16 @@ export function SessionPlayer(props: SessionPlayerProps) {
       >
         <DrillProgress current={index + 1} total={plan.length} section={q.section} />
         <div style={{ flex: 1, minHeight: 0, marginTop: 12 }}>
-          <DrillQuestion question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
+          {useStudyDesk ? (
+            <StudyDesk question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
+          ) : (
+            <DrillQuestion
+              question={q}
+              picked={picked}
+              graded={phase === 'graded'}
+              onPick={onPick}
+            />
+          )}
         </div>
         <div
           style={{
