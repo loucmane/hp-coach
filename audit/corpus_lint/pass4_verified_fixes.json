@@ -1,17 +1,18 @@
 {
-  "count": 1229,
+  "count": 1325,
   "by_class": {
-    "wordchoice": 325,
-    "spelling": 47,
-    "inflection": 321,
-    "style": 96,
-    "malformed": 254,
-    "sarskrivning": 40,
+    "wordchoice": 324,
+    "spelling": 52,
+    "inflection": 328,
+    "style": 97,
+    "malformed": 283,
+    "sarskrivning": 42,
     "anglicism": 135,
-    "register": 10,
-    "word_choice": 1
+    "register": 11,
+    "word_choice": 1,
+    "cascade": 52
   },
-  "cascade_risk_count": 414,
+  "cascade_risk_count": 464,
   "fixes": [
     {
       "qid": "host-2013-kvant1-KVA-014",
@@ -1745,7 +1746,7 @@
     },
     {
       "qid": "host-2017-verb2-MEK-022",
-      "class": "style",
+      "class": "malformed",
       "snippet": "texten säger BÅDA system finns parallellt",
       "final_fix": "texten säger att BÅDA systemen finns parallellt",
       "original_suggested_fix": "texten säger att båda systemen finns parallellt",
@@ -1753,7 +1754,7 @@
       "original_sentence": "Alternativt = antingen-eller — texten säger BÅDA system finns parallellt; och 'obönhörligen slår' är dramatiskt, men inte den neurologiska poängen.",
       "cascade_risks": [],
       "corpus_count": 1,
-      "priority": "medium",
+      "priority": "high",
       "verdict": "propose-alternative",
       "reasoning": "Fix is correct (add 'att', use 'systemen' since 'båda' triggers definite plural), but preserve the existing emphasis-capitalisation on BÅDA that this corpus style uses throughout."
     },
@@ -3442,7 +3443,7 @@
       "original_sentence": "Det budgetansvar 'vederbörande' (den berörda personen, den det gäller) ska ha — det är formella ordet för 'den ansvarige personen'. Och om det finns potential (möjlighet, kraft i något) att sänka kostnader. Båda i förvaltningsadministrativ register.",
       "cascade_risks": [],
       "corpus_count": 1,
-      "priority": "medium",
+      "priority": "high",
       "verdict": "fix-OK",
       "reasoning": "'Register' är neutrum (ett register) → adjektivet kräver -t-form. Korrekt genuskongruens."
     },
@@ -5158,8 +5159,7 @@
       "original_sentence": "Det är lätt att tro att en av talen räcker.",
       "cascade_risks": [
         "determiner-prefix",
-        "determiner-internal",
-        "definite-form-swap"
+        "determiner-internal"
       ],
       "corpus_count": 3,
       "priority": "high",
@@ -5168,7 +5168,7 @@
     },
     {
       "qid": "host-ver1-2019-verb1-LÄS-015",
-      "class": "wordchoice",
+      "class": "malformed",
       "snippet": "Snabbsvar är ofta att hopsumma FN-insatsen med Françafrique-politik.",
       "final_fix": "Snabbsvar är ofta att klumpa ihop FN-insatsen med Françafrique-politik.",
       "original_suggested_fix": "att klumpa ihop / att slå ihop",
@@ -5182,7 +5182,7 @@
     },
     {
       "qid": "host-ver1-2019-verb1-MEK-022",
-      "class": "style",
+      "class": "inflection",
       "snippet": "Kontraktet är specifika hyresavtalet — men lagen är det generella",
       "final_fix": "Kontraktet är det specifika hyresavtalet",
       "original_suggested_fix": "Kontraktet är det specifika hyresavtalet",
@@ -5320,7 +5320,7 @@
     },
     {
       "qid": "host-ver1-2019-verb1-MEK-030",
-      "class": "style",
+      "class": "malformed",
       "snippet": "kunskaperna förvärvas (förvärvs/inhämtas)",
       "final_fix": "kunskaperna förvärvas (inhämtas)",
       "original_suggested_fix": "kunskaperna förvärvas (inhämtas)",
@@ -5424,7 +5424,7 @@
     },
     {
       "qid": "host-ver1-2019-verb2-MEK-023",
-      "class": "style",
+      "class": "inflection",
       "snippet": "Tre kollokationer i Shepard-typisk berättarregistret.",
       "final_fix": "Tre kollokationer i det Shepard-typiska berättarregistret.",
       "original_suggested_fix": "i det Shepard-typiska berättarregistret",
@@ -5652,15 +5652,13 @@
     },
     {
       "qid": "host-ver2-2019-kvant1-KVA-016",
-      "class": "inflection",
+      "class": "anglicism",
       "snippet": "Båda variabler kancellerar",
       "final_fix": "Båda variablerna tar ut varandra",
       "original_suggested_fix": "Båda variablerna tar ut varandra",
       "location": "distractor_D_why_wrong",
       "original_sentence": "Båda variabler kancellerar; I är konstant 0.",
-      "cascade_risks": [
-        "definite-form-swap"
-      ],
+      "cascade_risks": [],
       "corpus_count": 1,
       "priority": "high",
       "verdict": "fix-OK",
@@ -6777,7 +6775,7 @@
     },
     {
       "qid": "var-2014-verb2-ORD-003",
-      "class": "spelling",
+      "class": "malformed",
       "snippet": "Latinska 'remin-' rotord (reminiscens, reminera)",
       "final_fix": "ersätt 'reminera' med 'reminisera'",
       "original_suggested_fix": "ersätt 'reminera' med 'reminisera' eller 'erinra'",
@@ -6961,7 +6959,7 @@
     },
     {
       "qid": "var-2015-verb1-MEK-023",
-      "class": "wordchoice",
+      "class": "malformed",
       "snippet": "filmig-poetisk berättarröst",
       "final_fix": "filmisk-poetisk berättarröst",
       "original_suggested_fix": "filmig-poetisk → filmisk-poetisk",
@@ -7059,7 +7057,7 @@
     },
     {
       "qid": "var-2015-verb1-ORD-008",
-      "class": "wordchoice",
+      "class": "malformed",
       "snippet": "passar maten genom hela mundvik",
       "final_fix": "för in maten i munnen",
       "original_suggested_fix": "för in maten i munnen (or: passerar maten genom hela munhålan)",
@@ -7669,7 +7667,7 @@
     },
     {
       "qid": "var-2016-verb1-ORD-003",
-      "class": "anglicism",
+      "class": "spelling",
       "snippet": "slås ofta i orkestermusic",
       "final_fix": "orkestermusic → orkestermusik",
       "original_suggested_fix": "orkestermusic → orkestermusik",
@@ -7945,7 +7943,7 @@
     },
     {
       "qid": "var-2017-kvant1-KVA-013",
-      "class": "wordchoice",
+      "class": "anglicism",
       "snippet": "proportioner kancellerar",
       "final_fix": "proportioner kancellerar → proportionerna tar ut varandra",
       "original_suggested_fix": "proportionerna tar ut varandra",
@@ -8079,7 +8077,7 @@
     },
     {
       "qid": "var-2017-kvant1-XYZ-011",
-      "class": "style",
+      "class": "register",
       "snippet": "Hmm: 25/36 är båda inte är sexor (varje INTE sexa)",
       "final_fix": "Hmm: 25/36 är båda inte är sexor (varje INTE sexa) → 25/36 är sannolikheten att inget av kasten blir en sexa.",
       "original_suggested_fix": "Rewrite without 'Hmm' and fix grammar — e.g. '25/36 är sannolikheten att inget av kasten blir en sexa.'",
@@ -9148,7 +9146,7 @@
     },
     {
       "qid": "var-2019-verb1-MEK-028",
-      "class": "wordchoice",
+      "class": "inflection",
       "snippet": "Tvåblanksdrag i etologisk-kognitiv register",
       "final_fix": "etologiskt-kognitivt register",
       "original_suggested_fix": "etologiskt-kognitivt register (register är neutrum)",
@@ -11068,7 +11066,7 @@
     },
     {
       "qid": "var-2025-verb1-ORD-002",
-      "class": "malformed",
+      "class": "spelling",
       "snippet": "inte Etisk.",
       "final_fix": "inte etisk.",
       "original_suggested_fix": "inte etisk.",
@@ -12809,10 +12807,10 @@
     },
     {
       "qid": "host-2017-verb1-LÄS-019",
-      "class": "malformed",
+      "class": "style",
       "snippet": "hitta texten själv om var DEN ENA startar",
-      "final_fix": "hitta texten själv om var den ena startar",
-      "original_suggested_fix": "Undvik ALL-CAPS.",
+      "final_fix": "hitta i texten själv var den ena startar",
+      "original_suggested_fix": "hitta i texten själv var DEN ENA startar",
       "location": "technique",
       "original_sentence": "Vid 'skillnad mellan X och Y'-frågor: hitta texten själv om var DEN ENA startar ('utformad för att... i anslutning till konkreta problem').",
       "cascade_risks": [
@@ -12821,7 +12819,7 @@
       "corpus_count": 1,
       "priority": "medium",
       "verdict": "fix-OK",
-      "reasoning": "Tar bort ALL-CAPS; observera att en separat fix nedan adresserar prepositions-felet i samma fras."
+      "reasoning": "Saknad preposition 'i' och redundant 'om' framför indirekt fråga 'var' rensas; ALL-CAPS bör också gemeniseras (jfr förgående post)."
     },
     {
       "qid": "host-2017-verb1-LÄS-019",
@@ -13542,15 +13540,13 @@
     },
     {
       "qid": "host-2021-kvant1-XYZ-006",
-      "class": "inflection",
+      "class": "style",
       "snippet": "3x distribueras över BÅDA termer",
       "final_fix": "3x distribueras över *båda termerna*",
       "original_suggested_fix": "Använd kursivering.",
       "location": "distractor_A_why_wrong",
       "original_sentence": "3x distribueras över BÅDA termer: 3x·2 = 6x och 3x·(−5y) = −15xy. Ingen 5y kvarstår.",
-      "cascade_risks": [
-        "definite-form-swap"
-      ],
+      "cascade_risks": [],
       "corpus_count": 1,
       "priority": "medium",
       "verdict": "propose-alternative",
@@ -14218,7 +14214,7 @@
     },
     {
       "qid": "host-2023-verb1-ORD-008",
-      "class": "anglicism",
+      "class": "sarskrivning",
       "snippet": "Sammansatta 'av-' verbal-konstruktioner",
       "final_fix": "Sammansatta 'av-' verbkonstruktioner",
       "original_suggested_fix": "Sammansatta 'av-' verbalkonstruktioner",
@@ -14890,6 +14886,20 @@
       "priority": "medium",
       "verdict": "propose-alternative",
       "reasoning": "Suggested fix innehåller en meta-parentes; rendera som hela meningsbytet med korrekt neutrumkongruens."
+    },
+    {
+      "qid": "host-ver1-2019-verb1-MEK-030",
+      "class": "sarskrivning",
+      "snippet": "specifika kunskaps-termen",
+      "final_fix": "specifika kunskapstermen",
+      "original_suggested_fix": "kunskapstermen",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "Med status är social-rang — säger inte kvalitet; och 'tillägnas' är okej men 'förvärvas' är mer specifika kunskaps-termen.",
+      "cascade_risks": [],
+      "corpus_count": 2,
+      "priority": "medium",
+      "verdict": "fix-wrong",
+      "reasoning": "Suggested fix drops adjektivet 'specifika' som behövs i sammanhanget ('mer specifika [X]'); rätt fix är att bara stänga sammansättningen och behålla 'specifika'."
     },
     {
       "qid": "host-ver1-2019-verb1-ORD-006",
@@ -15743,7 +15753,8 @@
       "original_sentence": "Placeboeffekten mättes via medveten smärtskattning — det är stimulin, inte upplevelsen, som var omedveten.",
       "cascade_risks": [
         "determiner-prefix",
-        "determiner-internal"
+        "determiner-internal",
+        "definite-form-swap"
       ],
       "corpus_count": 1,
       "priority": "medium",
@@ -16143,6 +16154,20 @@
     },
     {
       "qid": "var-2016-verb1-MEK-025",
+      "class": "wordchoice",
+      "snippet": "tom/blek/glåmig",
+      "final_fix": "blek, eländig (or 'blek och ihålig')",
+      "original_suggested_fix": "blek, glåmig",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "Glåmigt är 'tom/blek/glåmig' (om utseende) — fel kollokation; månsken är inte glåmigt i texten utan farligt.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "medium",
+      "verdict": "fix-wrong",
+      "reasoning": "Att inkludera 'glåmig' i en gloss för 'glåmigt' är cirkulärt; att enbart ta bort 'tom' löser inte cirkulariteten — riktig glosa behöver synonymer som inte upprepar lemmat (t.ex. 'blek, eländig')."
+    },
+    {
+      "qid": "var-2016-verb1-MEK-025",
       "class": "inflection",
       "snippet": "Tarvligt är 'vulgärt-låg'",
       "final_fix": "Tarvligt är 'vulgärt, lågt'",
@@ -16199,7 +16224,7 @@
     },
     {
       "qid": "var-2016-verb1-MEK-029",
-      "class": "inflection",
+      "class": "wordchoice",
       "snippet": "medicinhistorisk-vetenskapsfilosofiskt register",
       "final_fix": "medicinhistoriskt och vetenskapsfilosofiskt register",
       "original_suggested_fix": "medicinhistoriskt och vetenskapsfilosofiskt register",
@@ -16831,7 +16856,7 @@
     },
     {
       "qid": "var-2019-verb1-MEK-025",
-      "class": "malformed",
+      "class": "style",
       "snippet": "eng. 'prescribe' kommer att översättas till 'ordinera' i svensk medicinsk svenska",
       "final_fix": "eng. 'prescribe' översätts till 'ordinera' i svensk medicinsk kontext",
       "original_suggested_fix": "översätts till 'ordinera' i svensk medicinsk kontext (futurum + dubbelt 'svenska' är klumpigt)",
@@ -17266,6 +17291,20 @@
       "priority": "medium",
       "verdict": "propose-alternative",
       "reasoning": "'Enhetligas' is not an established passive verb; 'förenhetligas' is standard and fits the modal-verb constraint (infinitive after 'ska'). Strip the slash alternatives."
+    },
+    {
+      "qid": "var-2022-2-verb1-MEK-023",
+      "class": "wordchoice",
+      "snippet": "entydiga' (klart enstämmiga)",
+      "final_fix": "entydiga' (otvetydiga, samstämmiga)",
+      "original_suggested_fix": "entydiga (otvetydiga, klart samstämmiga)",
+      "location": "solution_path",
+      "original_sentence": "Blodsocker = glukos (druvsocker) — fast medicinsk fackterm. Etiologin (sjukdomsorsaken) är oklar. Och resultaten är inte 'entydiga' (klart enstämmiga). Tre kollokationer i medicinsk forskningsregister.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "medium",
+      "verdict": "fix-wrong",
+      "reasoning": "The fix drops the closing quote that was part of the snippet, breaking the quote pairing in the sentence. Keep the apostrophe and replace only the gloss content."
     },
     {
       "qid": "var-2022-2-verb1-MEK-026",
@@ -18038,7 +18077,7 @@
     },
     {
       "qid": "var-2025-verb2-ORD-008",
-      "class": "wordchoice",
+      "class": "malformed",
       "snippet": "hålla till godo är RESIGNERAT NÖJANDE",
       "final_fix": "hålla till godo är RESIGNERAD BELÅTENHET",
       "original_suggested_fix": "hålla till godo är resignerat accepterande / resignerad belåtenhet",
@@ -18192,8 +18231,8 @@
       "snippet": "straffrätt-register",
       "final_fix": "straffrättsregister",
       "original_suggested_fix": "straffrättsregister",
-      "location": "technique",
-      "original_sentence": "Treblanksdrag i straffrätt-register: uppsåtligen / av oaktsamhet / belagd med — fast straffrättslig kollokation.",
+      "location": "solution_path",
+      "original_sentence": "Den som 'uppsåtligen' (med uppsåt, avsiktligt) eller 'av oaktsamhet' (vårdslöst) bryter mot — fast straffrättslig fackparskoll. Och om gärningen är 'belagd med straff' — fast juridisk fras. Tre kollokationer i straffrätt-register.",
       "cascade_risks": [],
       "corpus_count": 7,
       "priority": "medium",
@@ -18227,6 +18266,1412 @@
       "priority": "medium",
       "verdict": "propose-alternative",
       "reasoning": "The suggestion drifts to 'upprusta' (different prefix) and the hyphenated 'upp-rätt-' is itself non-standard; a clean version keeps the shared stem 'upprätt-' and lists three distinct infinitives."
+    },
+    {
+      "qid": "host-2013-kvant2-XYZ-004",
+      "class": "malformed",
+      "snippet": "(här 120 = x + y).. Korrekt subtraktion",
+      "final_fix": "(här 120 = x + y). Korrekt subtraktion",
+      "original_suggested_fix": "(här 120 = x + y). Korrekt subtraktion",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "Yttervinkel = summan av de motstående inre vinklarna (här 120 = x + y).. Korrekt subtraktion ger 60−x, inte 30−x.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Clean substring replacement that removes the doubled period; resulting sentence is well-formed."
+    },
+    {
+      "qid": "host-2013-verb2-MEK-023",
+      "class": "cascade",
+      "snippet": "Frasen ·samma höga ___· kräver ett substantiv",
+      "final_fix": "Frasen ”samma höga ___” kräver ett substantiv",
+      "original_suggested_fix": "Replace middle-dot · quote-pairs throughout entry with proper Swedish quotes ('...' or ”...”), e.g. Frasen 'samma höga ___' kräver ett substantiv ...",
+      "location": "solution_path",
+      "original_sentence": "Frasen ·samma höga ___· kräver ett substantiv som beskriver ett MÅTT eller en RANG (högt skyddsvärde, ·hög rang·). Dignitet betyder just ·värdighet/rang/anseende· — det är den abstrakta värde-skalan som passar in. Texten signalerar formell stil med ord som ·endemism· och ·skyddsvärde·, vilket gör formellt-litterära ord (dignitet) naturligare än konkreta tekniska. Alternativ C.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-wrong",
+      "reasoning": "Suggested_fix is a meta-instruction, not a substring replacement; cannot be applied verbatim. The correct concrete substitution is to replace the middle-dot pair around 'samma höga ___' with proper Swedish quotes."
+    },
+    {
+      "qid": "host-2013-verb2-MEK-023",
+      "class": "cascade",
+      "snippet": "·Hög + substantiv· kräver att substantivet är en SKALA",
+      "final_fix": "'Hög + substantiv' kräver att substantivet är en SKALA",
+      "original_suggested_fix": "'Hög + substantiv' kräver att substantivet är en SKALA",
+      "location": "pitfall",
+      "original_sentence": "·Hög + substantiv· kräver att substantivet är en SKALA eller ett VÄRDE — inte en sak eller process. Konkreta substantiv (komponent, division, expansion) får ·hög· att låta fel.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Clean substring swap of middle-dot quotes for ASCII single quotes; preserves grammar and meaning."
+    },
+    {
+      "qid": "host-2014-verb2-LÄS-014",
+      "class": "malformed",
+      "snippet": "tidsproblem — alternativet inverterar.",
+      "final_fix": "Texten beskriver tidsproblem — alternativet inverterar.",
+      "original_suggested_fix": "Texten beskriver tidsproblem — alternativet inverterar.",
+      "location": "distractor_D_why_wrong",
+      "original_sentence": "tidsproblem — alternativet inverterar.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds the missing subject+verb to a stranded fragment; resulting sentence is grammatical Swedish in style consistent with sibling entries."
+    },
+    {
+      "qid": "host-2014-verb2-LÄS-016",
+      "class": "malformed",
+      "snippet": "båda målgruppernas tilltal — alternativet importerar fel diskriminant.",
+      "final_fix": "Texten talar om båda målgruppernas tilltal — alternativet importerar fel diskriminant.",
+      "original_suggested_fix": "Texten talar om båda målgruppernas tilltal — alternativet importerar fel diskriminant.",
+      "location": "distractor_B_why_wrong",
+      "original_sentence": "båda målgruppernas tilltal — alternativet importerar fel diskriminant.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds subject+verb 'Texten talar om' to a stranded fragment; matches the standard 'Texten ...' opener used elsewhere in this corpus."
+    },
+    {
+      "qid": "host-2014-verb2-MEK-029",
+      "class": "cascade",
+      "snippet": "Det räcker att ett ord företagsmässigt — det avslöjar fel hela alternativet.",
+      "final_fix": "Det räcker att ett ord är företagsmässigt — det avslöjar fel hela alternativet.",
+      "original_suggested_fix": "Det räcker att ett ord är företagsmässigt — det avslöjar fel hela alternativet.",
+      "location": "pitfall",
+      "original_sentence": "Det räcker att ett ord företagsmässigt — det avslöjar fel hela alternativet.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Inserts the missing copula 'är'; resulting sentence is grammatical and reads naturally."
+    },
+    {
+      "qid": "host-2014-verb2-MEK-029",
+      "class": "cascade",
+      "snippet": "(ologisk parning); och arkaiskt-byråkratiskt; 'startats upp' är dessutom",
+      "final_fix": "(ologisk parning); och 'bedrivits' är arkaiskt-byråkratiskt; 'startats upp' är dessutom",
+      "original_suggested_fix": "Restore the subject for 'arkaiskt-byråkratiskt' — e.g. \"'bedrivits' är arkaiskt-byråkratiskt\" — the adjective phrase is stranded with no head it modifies.",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "Trivialt betyder banalt — det matchar inte 'omöjligt' (ologisk parning); och arkaiskt-byråkratiskt; 'startats upp' är dessutom ett företagsuttryck.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-wrong",
+      "reasoning": "Suggested_fix is a meta-instruction, not a substring replacement; needs concretization. Concrete fix: insert the subject 'bedrivits' är so the predicative adjective has a head."
+    },
+    {
+      "qid": "host-2014-verb2-MEK-029",
+      "class": "cascade",
+      "snippet": "ursprungsmönster — säger inget om genomförbarhet",
+      "final_fix": "Arketypiskt betyder ursprungsmönster — säger inget om genomförbarhet",
+      "original_suggested_fix": "Arketypiskt betyder ursprungsmönster — säger inget om genomförbarhet",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "ursprungsmönster — säger inget om genomförbarhet; och 'fått sin grund' är ologiskt — en världsstyrelse kommer till stånd, den 'får inte sin grund' genom ett avtal som en sak.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores deleted leading gloss head; resulting sentence is grammatical and matches the parallel structure used in other distractor explanations."
+    },
+    {
+      "qid": "host-2015-verb1-MEK-021",
+      "class": "cascade",
+      "snippet": "båda kollokationerna (munkorden, allmosor) är fasta — tiggarmunkskonceptet",
+      "final_fix": "båda kollokationerna (munkorden, allmosor) är fasta — tiggarmunkskonceptet hänger på just dessa två termer",
+      "original_suggested_fix": "Complete the trailing clause, e.g. '— tiggarmunkskonceptet hänger på just dessa två termer.' The sentence currently ends mid-thought.",
+      "location": "technique",
+      "original_sentence": "Tvåblanksdrag i kyrkohistoriskt register: båda kollokationerna (munkorden, allmosor) är fasta — tiggarmunkskonceptet",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-wrong",
+      "reasoning": "Suggested_fix is a meta-instruction. Concrete replacement that adds the missing predicate is the right shape."
+    },
+    {
+      "qid": "host-2015-verb2-ORD-007",
+      "class": "cascade",
+      "snippet": "en invigning i ämbete — den ceremoniella inträdet i en ny befattning",
+      "final_fix": "en invigning i ämbete — det ceremoniella inträdet i en ny befattning",
+      "original_suggested_fix": "en invigning i ämbete — det ceremoniella inträdet i en ny befattning",
+      "location": "solution_path",
+      "original_sentence": "En installation är en invigning i ämbete — den ceremoniella inträdet i en ny befattning, ofta akademisk, kyrklig eller politisk. Latinets installare (placera i). 'Installation av en biskop' = formell invigning. Skiljs från teknisk installation (uppsättning av utrustning).",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Correct gender agreement: 'inträde' is neuter (ett inträde → inträdet) so demonstrative must be 'det'. Clean substring swap."
+    },
+    {
+      "qid": "host-2016-verb1-MEK-027",
+      "class": "inflection",
+      "snippet": "läsa 'kärlek' till opera som starkt",
+      "final_fix": "läsa 'kärlek' till opera som stark",
+      "original_suggested_fix": "läsa 'kärlek' till opera som stark",
+      "location": "distractor_B_why_tempting",
+      "original_sentence": "Det är lätt att läsa 'kärlek' till opera som starkt.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "'Kärlek' is en-word (utrum); predicative adjective must be 'stark', not neuter 'starkt'. Clean agreement fix."
+    },
+    {
+      "qid": "host-2016-verb1-MEK-029",
+      "class": "malformed",
+      "snippet": "vad jägaren gör DÖD säl, inte vad levande sälen gör",
+      "final_fix": "vad jägaren gör med en död säl, inte vad den levande sälen gör",
+      "original_suggested_fix": "vad jägaren gör med en död säl, inte vad den levande sälen gör",
+      "location": "distractor_D_why_wrong",
+      "original_sentence": "Skinna är att flå (ta skinnet AV) — vad jägaren gör DÖD säl, inte vad levande sälen gör; och 'beteendets utveckling' är fel objekt — utvecklingen rör antalet, inte beteendet.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds missing preposition+article and the missing definite article before 'levande sälen'; result is grammatical native Swedish."
+    },
+    {
+      "qid": "host-2016-verb2-LÄS-013",
+      "class": "malformed",
+      "snippet": "inte politisk protest — alternativet importerar fel motiv.",
+      "final_fix": "Texten talar inte om politisk protest — alternativet importerar fel motiv.",
+      "original_suggested_fix": "Texten talar inte om politisk protest — alternativet importerar fel motiv.",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "inte politisk protest — alternativet importerar fel motiv.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds subject+verb to a stranded fragment in the standard 'Texten talar (inte) om ...' shape used in sibling entries."
+    },
+    {
+      "qid": "host-2016-verb2-MEK-029",
+      "class": "malformed",
+      "snippet": "(ålägga någon en uppgift) — men oberoende är inte en plikt",
+      "final_fix": "Ålagt betyder pålagt som plikt (ålägga någon en uppgift) — men oberoende är inte en plikt",
+      "original_suggested_fix": "Ålagt betyder pålagt som plikt (ålägga någon en uppgift) — men oberoende är inte en plikt",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "(ålägga någon en uppgift) — men oberoende är inte en plikt; fel kollokation; och 'bejaka oberoende' är vagt — odla är kollokationen.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores leading gloss head so parenthetical attaches to a real clause; grammatical and matches sibling-entry style."
+    },
+    {
+      "qid": "host-2017-verb1-LÄS-013",
+      "class": "malformed",
+      "snippet": "Texten som FELAKTIGT — alternativet representerar vad veteran sade",
+      "final_fix": "Texten framställer det som FELAKTIGT — alternativet representerar vad veteranen sade",
+      "original_suggested_fix": "Texten framställer det som FELAKTIGT — alternativet representerar vad veteranen sade",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "Texten som FELAKTIGT — alternativet representerar vad veteran sade, inte verkligheten; det är just Spivaks NAIVITET att tro veteranen; alternativet missar nivån.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Inserts missing verb 'framställer det' and the definite suffix on 'veteran' → 'veteranen'; both required for grammatical Swedish."
+    },
+    {
+      "qid": "host-2017-verb1-LÄS-015",
+      "class": "malformed",
+      "snippet": "Texten kanonfrågor — alternativet importerar fel relation.",
+      "final_fix": "Texten talar inte om kanonfrågor — alternativet importerar fel relation.",
+      "original_suggested_fix": "Texten talar inte om kanonfrågor — alternativet importerar fel relation.",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "Texten kanonfrågor — alternativet importerar fel relation.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Inserts missing finite verb in the standard 'Texten talar (inte) om ...' shape; preserves meaning and matches sibling entries."
+    },
+    {
+      "qid": "host-2017-verb2-ORD-006",
+      "class": "style",
+      "snippet": "= 'som följd av' = 'som följd av'",
+      "final_fix": "= 'som följd av'",
+      "original_suggested_fix": "remove the duplicated gloss (single 'som följd av' suffices)",
+      "location": "solution_path",
+      "original_sentence": "Följaktligen betyder därför — som logisk följd av det tidigare sagda. Bildat av 'följakteligen' (äldre form, ur följa + -akt(ig) + -ligen) = 'som följd av' = 'som följd av'. Markerar logisk slutsats eller konsekvens; mer formellt än 'därför'.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-wrong",
+      "reasoning": "Suggested_fix is a meta-instruction. Concrete substring replacement: collapse the duplicated gloss to a single occurrence."
+    },
+    {
+      "qid": "host-2018-verb1-MEK-028",
+      "class": "cascade",
+      "snippet": "Båda i administrativt register..",
+      "final_fix": "Båda i administrativt register.",
+      "original_suggested_fix": "Båda i administrativt register.",
+      "location": "solution_path",
+      "original_sentence": "Det är av yttersta vikt — den fasta byråkratiska kollokationen för 'mycket angeläget'. Och man upprättar en policy (formellt fastställer) — det är förvaltningstermen. Båda i administrativt register..",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes the doubled period; clean and unambiguous punctuation fix."
+    },
+    {
+      "qid": "host-2020-verb2-LÄS-018",
+      "class": "cascade",
+      "snippet": "hitta den specifika definition författaren ger",
+      "final_fix": "hitta den specifika definitionen författaren ger",
+      "original_suggested_fix": "hitta den specifika definitionen författaren ger",
+      "location": "technique",
+      "original_sentence": "Vid 'vad menar X med Y'-frågor: hitta den specifika definition författaren ger ('akademiska belöningssystemet').",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores definite-form agreement on the noun after 'den specifika'; resulting NP is correct native Swedish."
+    },
+    {
+      "qid": "host-2020-verb2-MEK-023",
+      "class": "inflection",
+      "snippet": "Acceleration är att fart ökar",
+      "final_fix": "Acceleration är att farten ökar",
+      "original_suggested_fix": "Acceleration är att farten ökar",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "Acceleration är att fart ökar — direkt motsats till avstannande; men texten säger 'till och med', som måste FÖRSTÄRKA avstannandet, inte vända riktning.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Definite form 'farten' is the natural Swedish realization for an abstract physical-property subject; clean substring fix."
+    },
+    {
+      "qid": "host-2020-verb2-MEK-029",
+      "class": "spelling",
+      "snippet": "Nisse rekognoserar",
+      "final_fix": "Nisse rekognoscerar",
+      "original_suggested_fix": "Nisse rekognoscerar",
+      "location": "solution_path",
+      "original_sentence": "Nisse rekognoserar (utforskar marken systematiskt) före planeringen — det är militär-/förberedelsetermen för att kartlägga terräng. Och de bygger spångar (broar över våtmark/bäckar) för framkomlighet. Båda i fältarbetsregister.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "SAOL-standard spelling has -sc-; clean spelling correction."
+    },
+    {
+      "qid": "host-2020-verb2-MEK-029",
+      "class": "spelling",
+      "snippet": "rekognosera (utforska terräng)",
+      "final_fix": "rekognoscera (utforska terräng)",
+      "original_suggested_fix": "rekognoscera (utforska terräng)",
+      "location": "technique",
+      "original_sentence": "Tvåblanksdrag i fältarbetsregister: rekognosera (utforska terräng) + spång (gångbro över våt mark) — fackliga friluftsord; andra alternativ kommer från militär/skogsbruk/konspiration.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Same SAOL-standard spelling fix; restores internal consistency with corresponding ORD entry."
+    },
+    {
+      "qid": "host-2021-kvant1-XYZ-008",
+      "class": "malformed",
+      "snippet": "inte 7/21. inte förhållande mellan färger",
+      "final_fix": "inte 7/21. Det är inte förhållandet mellan färger.",
+      "original_suggested_fix": "inte 7/21. Det är inte förhållandet mellan färger.",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "Sannolikhet 'inte vit' är 21/28, inte 7/21. inte förhållande mellan färger",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds subject+verb and definite form to second sentence, plus the missing trailing period; result is grammatical."
+    },
+    {
+      "qid": "host-2021-kvant2-KVA-018",
+      "class": "malformed",
+      "snippet": "3x - 1 = 5x + 3 ger -2 = 2x → x = -2",
+      "final_fix": "3x - 1 = 5x + 3 ger -4 = 2x → x = -2",
+      "original_suggested_fix": "3x - 1 = 5x + 3 ger -4 = 2x → x = -2",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "3x - 1 = 5x + 3 ger -2 = 2x → x = -2 (negativ).",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Verifying the algebra: 3x-1=5x+3 → -1-3=5x-3x → -4=2x → x=-2. The suggested replacement '-4 = 2x' is the correct intermediate step and is internally consistent with the final answer x=-2."
+    },
+    {
+      "qid": "host-2021-verb2-MEK-023",
+      "class": "inflection",
+      "snippet": "växtproduktion är cirkulärt",
+      "final_fix": "växtproduktion är cirkulär",
+      "original_suggested_fix": "växtproduktion är cirkulär",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "Belägga är okej för markanvändning men 'belägga monumentala trädgårdar' är fel ordval; och 'krukor' är för småskaligt för adelsodling; växtproduktion är cirkulärt.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "'Växtproduktion' is en-word (utrum); predicative adjective must agree as 'cirkulär'. Clean agreement fix."
+    },
+    {
+      "qid": "host-2022-kvant1-NOG-026",
+      "class": "malformed",
+      "snippet": "samt att Frida vikt 50 servetter",
+      "final_fix": "samt att Frida vek 50 servetter",
+      "original_suggested_fix": "samt att Frida har vikt 50 servetter (or: vek 50 servetter)",
+      "location": "solution_path",
+      "original_sentence": "Båda krävs: (1) ger Jan slutar 11:05 (start 10:25 + 40 min) och därmed Frida också, samt att Frida vikt 50 servetter. (2) ger att Frida hade 10 färdiga vid 10:25, alltså 40 servetter på 40 min → 1 min/servett. Frida startade 10:15.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-wrong",
+      "reasoning": "Suggested_fix offers two alternatives; need to pick one. 'Vek 50 servetter' (preterite) is the cleanest, matching the surrounding past-tense narrative ('hade 10 färdiga', 'startade 10:15')."
+    },
+    {
+      "qid": "host-2022-verb1-MEK-021",
+      "class": "cascade",
+      "snippet": "Hitta idiomet: är den fasta juridiska metaforen för oavsiktlig undantagsmöjlighet",
+      "final_fix": "Hitta idiomet: \"kryphål\" är den fasta juridiska metaforen för oavsiktlig undantagsmöjlighet",
+      "original_suggested_fix": "Hitta idiomet: \"kryphål\" är den fasta juridiska metaforen för oavsiktlig undantagsmöjlighet",
+      "location": "technique",
+      "original_sentence": "Hitta idiomet: är den fasta juridiska metaforen för oavsiktlig undantagsmöjlighet — andra fack-/byggord (sidospår, lönnfack, skyddsnät) har egna fixerade roller.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores the missing subject 'kryphål' (key word for this MEK item); clean substring substitution that fixes the stranded predicate."
+    },
+    {
+      "qid": "host-2022-verb1-ORD-007",
+      "class": "malformed",
+      "snippet": "Att blidka kan upplevas som att be någon ångra.",
+      "final_fix": "Att blidka kan upplevas som att be någon ångra sig.",
+      "original_suggested_fix": "Att blidka kan upplevas som att be någon ångra sig.",
+      "location": "distractor_A_why_tempting",
+      "original_sentence": "Att blidka kan upplevas som att be någon ångra.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds the required reflexive 'sig' to 'ångra'; matches usage in sibling field and is correct Swedish."
+    },
+    {
+      "qid": "host-2022-verb2-ORD-008",
+      "class": "malformed",
+      "snippet": "'ihärdigt yrka, inte ge sig'..",
+      "final_fix": "'ihärdigt yrka, inte ge sig'.",
+      "original_suggested_fix": "'ihärdigt yrka, inte ge sig'.",
+      "location": "solution_path",
+      "original_sentence": "Enträgen betyder outtröttlig — fortsätter och fortsätter trots motgång eller hinder. Etymologiskt besläktat med 'tränga' (pressa på) — 'ihärdigt yrka, inte ge sig'.. Markerar uthållig insats över tid utan att ge upp.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes doubled period at sentence boundary; clean punctuation fix."
+    },
+    {
+      "qid": "host-2023-verb1-LÄS-015",
+      "class": "malformed",
+      "snippet": "Texten säger uttryckligen att MBKT MBKT är inte vad patienter med två depressioner behöver",
+      "final_fix": "Texten säger uttryckligen att MBKT inte är vad patienter med två depressioner behöver",
+      "original_suggested_fix": "Texten säger uttryckligen att MBKT inte är vad patienter med två depressioner behöver",
+      "location": "distractor_B_why_wrong",
+      "original_sentence": "Texten säger uttryckligen att MBKT MBKT är inte vad patienter med två depressioner behöver, eftersom det är just bearbetning de behöver; alternativet inverterar.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes doubled 'MBKT MBKT' and correctly reorders 'inte' before the finite verb as required in att-clauses."
+    },
+    {
+      "qid": "host-2023-verb1-ORD-009",
+      "class": "inflection",
+      "snippet": "Klander kan upplevas som omild.",
+      "final_fix": "Klander kan upplevas som omilt.",
+      "original_suggested_fix": "Klander kan upplevas som omilt.",
+      "location": "distractor_D_why_tempting",
+      "original_sentence": "Klander kan upplevas som omild.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "'Klander' is a neuter (ett-) noun, so the predicative adjective takes neuter form 'omilt'."
+    },
+    {
+      "qid": "host-2024-kvant1-NOG-023",
+      "class": "cascade",
+      "snippet": "Det är lätt att Det är lätt att se siffran 20 % och tro att det binder något konkret..",
+      "final_fix": "Det är lätt att se siffran 20 % och tro att det binder något konkret.",
+      "original_suggested_fix": "Det är lätt att se siffran 20 % och tro att det binder något konkret.",
+      "location": "distractor_B_why_tempting",
+      "original_sentence": "Det är lätt att Det är lätt att se siffran 20 % och tro att det binder något konkret..",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes duplicated lead-in and the stray double period; result is a clean idiomatic sentence."
+    },
+    {
+      "qid": "host-2024-kvant1-XYZ-003",
+      "class": "malformed",
+      "snippet": "Snabbsvar är ofta att räkna nämnarna addera: 15+30=45",
+      "final_fix": "Snabbsvar är ofta att addera nämnarna: 15+30=45",
+      "original_suggested_fix": "Snabbsvar är ofta att addera nämnarna: 15+30=45",
+      "location": "distractor_C_why_tempting",
+      "original_sentence": "Snabbsvar är ofta att räkna nämnarna addera: 15+30=45 → 1/45 → 2,2% → svar 15.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Replaces ungrammatical 'räkna nämnarna addera' with the intended 'addera nämnarna'; rest of sentence remains coherent."
+    },
+    {
+      "qid": "host-2024-kvant1-XYZ-005",
+      "class": "cascade",
+      "snippet": "13/16 = 26/32; 25/32 < 26/32. 13/16 = 26/32; 25/32 < 26/32. B:s ordning är fel — rätt svar är D.",
+      "final_fix": "13/16 = 26/32; 25/32 < 26/32. B:s ordning är fel — rätt svar är D.",
+      "original_suggested_fix": "13/16 = 26/32; 25/32 < 26/32. B:s ordning är fel — rätt svar är D.",
+      "location": "distractor_B_why_wrong",
+      "original_sentence": "13/16 = 26/32; 25/32 < 26/32. 13/16 = 26/32; 25/32 < 26/32. B:s ordning är fel — rätt svar är D.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes the duplicated identical first sentence; meaning preserved and reasoning chain intact."
+    },
+    {
+      "qid": "host-2024-verb2-ORD-006",
+      "class": "cascade",
+      "snippet": "händelsevis är AV SLUMP. (en gång). Frekvens vs orsak.",
+      "final_fix": "händelsevis är AV SLUMP (en gång). Frekvens vs orsak.",
+      "original_suggested_fix": "händelsevis är AV SLUMP (en gång). Frekvens vs orsak.",
+      "location": "distractor_E_why_wrong",
+      "original_sentence": "Då och då är IBLAND/EMELLANÅT; händelsevis är AV SLUMP. (en gång). Frekvens vs orsak.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes the stray period before the parenthetical so '(en gång)' becomes an inline gloss rather than a fragment."
+    },
+    {
+      "qid": "host-2025-verb1-LÄS-014",
+      "class": "cascade",
+      "snippet": "berättelse som rättmätig och Hoffmanns ära som orättvist",
+      "final_fix": "berättelse som rättmätig och Hoffmanns ära som orättvis",
+      "original_suggested_fix": "berättelse som rättmätig och Hoffmanns ära som orättvis",
+      "location": "solution_path",
+      "original_sentence": "Texten säger att 'det publiceras än idag böcker där Hoffmann förbehållslöst anges som upptäckare' och kritiserar detta. Författaren framställer Eichengrüns berättelse som rättmätig och Hoffmanns ära som orättvist.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "'ära' is utrum, so the predicative adjective must be en-form 'orättvis', parallel to 'rättmätig' on the coordinated NP."
+    },
+    {
+      "qid": "host-2025-verb1-ORD-008",
+      "class": "inflection",
+      "snippet": "Avslöjat maskopi kan vara pinsamt.",
+      "final_fix": "Avslöjad maskopi kan vara pinsamt.",
+      "original_suggested_fix": "Avslöjad maskopi kan vara pinsamt.",
+      "location": "distractor_C_why_tempting",
+      "original_sentence": "Avslöjat maskopi kan vara pinsamt.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "'maskopi' is utrum (en maskopi), so the attributive participle must be en-form 'avslöjad'."
+    },
+    {
+      "qid": "host-2025-verb2-MEK-026",
+      "class": "malformed",
+      "snippet": "skogsvårdens fackterm Hela texten (skogsskador, väder) låser",
+      "final_fix": "skogsvårdens fackterm. Hela texten (skogsskador, väder) låser",
+      "original_suggested_fix": "skogsvårdens fackterm. Hela texten (skogsskador, väder) låser",
+      "location": "solution_path",
+      "original_sentence": "Granbarkborre-angrepp = skogsvårdens fackterm Hela texten (skogsskador, väder) låser fackvalet.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Inserts the missing sentence break between two run-together clauses; no other disturbance."
+    },
+    {
+      "qid": "host-2025-verb2-ORD-002",
+      "class": "malformed",
+      "snippet": "'i botten av' eller 'underifrån.",
+      "final_fix": "'i botten av' eller 'underifrån'.",
+      "original_suggested_fix": "'i botten av' eller 'underifrån'.",
+      "location": "technique",
+      "original_sentence": "Sammansatta under- + verb (underrätta, underhålla, underordna) — under-:et är ofta riktningsmarkör för 'i botten av' eller 'underifrån.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Closes the unbalanced single quote before the terminal period; quotation marks now balanced symmetrically."
+    },
+    {
+      "qid": "host-ver2-2019-kvant2-XYZ-002",
+      "class": "malformed",
+      "snippet": "Första instinkten är att att ta både k och m som positiva",
+      "final_fix": "Första instinkten är att ta både k och m som positiva",
+      "original_suggested_fix": "Första instinkten är att ta både k och m som positiva",
+      "location": "distractor_D_why_tempting",
+      "original_sentence": "Första instinkten är att att ta både k och m som positiva när man räknar belopp.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes the doubled infinitive marker 'att att'; result is canonical Swedish syntax."
+    },
+    {
+      "qid": "host-ver2-2019-verb2-MEK-028",
+      "class": "cascade",
+      "snippet": "ådra' sig skuld (åta sig, dra på sig)",
+      "final_fix": "ådra sig skuld (dra på sig)",
+      "original_suggested_fix": "ådra sig skuld (dra på sig)",
+      "location": "solution_path",
+      "original_sentence": "Personen är inte 'i stånd' (i tillstånd att kunna) att välja — fast modal-konstruktion. Den otillräkneliga (juridiskt: ej tillräknelig, olämplig att ställas till svars) personen kan inte 'ådra' sig skuld (åta sig, dra på sig). Tre fackord i straffrätt-register.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Drops the wrong gloss 'åta sig' (which means 'commit to/undertake', not 'incur') and the stray apostrophe; aligns with the parallel host-ver1 entry."
+    },
+    {
+      "qid": "host-ver2-2019-verb2-MEK-028",
+      "class": "cascade",
+      "snippet": "'anta skuld' är fel verb (man antar antagande)",
+      "final_fix": "'anta skuld' är fel verb ('anta' betyder förmoda, inte ta på sig)",
+      "original_suggested_fix": "'anta skuld' är fel verb ('anta' betyder förmoda, inte ta på sig)",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "På plats = närvarande — fel kollokation; man säger inte 'på plats att välja'; och 'ansvarsfri' är okej men 'anta skuld' är fel verb (man antar antagande).",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Replaces the circular gloss 'man antar antagande' with the explanatory 'anta betyder förmoda, inte ta på sig'; matches the parallel host-ver1 phrasing."
+    },
+    {
+      "qid": "host-ver2-2019-verb2-MEK-028",
+      "class": "cascade",
+      "snippet": "'oskyldig' är fel kategori (oskuld vs otillräknelighet är skilda begrepp)",
+      "final_fix": "'oskyldig' är fel kategori (oskyldighet vs otillräknelighet är skilda begrepp)",
+      "original_suggested_fix": "'oskyldig' är fel kategori (oskyldighet vs otillräknelighet är skilda begrepp)",
+      "location": "distractor_B_why_wrong",
+      "original_sentence": "På vippen = nästan/precis — fel kollokation; och 'oskyldig' är fel kategori (oskuld vs otillräknelighet är skilda begrepp); 'tillskriva sig skuld' är okej men paret faller.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "'oskuld' is the wrong nominalization (innocence-as-virginity); 'oskyldighet' is the correct abstract noun paired with 'oskyldig'."
+    },
+    {
+      "qid": "host-ver2-2019-verb2-MEK-029",
+      "class": "cascade",
+      "snippet": "Anekdot är liten anekdotisk berättelse",
+      "final_fix": "En anekdot är en kort berättelse",
+      "original_suggested_fix": "En anekdot är en kort berättelse",
+      "location": "distractor_B_why_wrong",
+      "original_sentence": "Anekdot är liten anekdotisk berättelse — fel kollokation för slagord; 'Unna dig att njuta' är inte en anekdot, det är en kort fras.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes the circular gloss ('anekdot är ... anekdotisk berättelse'), adds the indefinite articles, and matches the parallel host-ver1 phrasing."
+    },
+    {
+      "qid": "var-2013-verb1-MEK-030",
+      "class": "cascade",
+      "snippet": "Det är lätt att läsa 'distraherar' som distraherar.",
+      "final_fix": "Det är lätt att läsa 'distraherar' som 'avleda uppmärksamhet'.",
+      "original_suggested_fix": "Det är lätt att läsa 'distraherar' som 'avleda uppmärksamhet'.",
+      "location": "distractor_B_why_tempting",
+      "original_sentence": "Det är lätt att läsa 'distraherar' som distraherar.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Replaces the tautology (gloss = lemma) with an actual paraphrase, restoring the why_tempting semantics."
+    },
+    {
+      "qid": "var-2013-verb2-MEK-028",
+      "class": "cascade",
+      "snippet": "direkt motsats till 'meningslöst vid'; fel riktning.",
+      "final_fix": "direkt motsats till 'meningslöst vidgad'; fel riktning.",
+      "original_suggested_fix": "direkt motsats till 'meningslöst vidgad'; fel riktning.",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "Tolkningar är okej men 'definitioner' är specifika facktermer; och 'utstakad' är 'med markerade gränser' — direkt motsats till 'meningslöst vid'; fel riktning.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores the truncated 'vidgad'; pairs the bounded 'utstakad' against its proper antonym, matching the solution_path's quoted form."
+    },
+    {
+      "qid": "var-2014-kvant2-XYZ-004",
+      "class": "cascade",
+      "snippet": "teckenbyte och få 2a²b + 3a²b².",
+      "final_fix": "Glömma teckenbytet och få 2a²b + 3a²b².",
+      "original_suggested_fix": "Glömma teckenbytet och få 2a²b + 3a²b².",
+      "location": "distractor_A_why_tempting",
+      "original_sentence": "teckenbyte och få 2a²b + 3a²b².",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds the missing matrix verb 'Glömma' and shifts 'teckenbyte' to definite 'teckenbytet'; produces a coherent why_tempting opener."
+    },
+    {
+      "qid": "var-2014-verb1-LÄS-015",
+      "class": "inflection",
+      "snippet": "det är stimulus, inte upplevelsen, som var omedvetet.",
+      "final_fix": "det är stimulus, inte upplevelsen, som var omedveten.",
+      "original_suggested_fix": "det är stimulus, inte upplevelsen, som var omedveten.",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "Placeboeffekten mättes via medveten smärtskattning — det är stimulus, inte upplevelsen, som var omedvetet.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Both 'stimulus' and 'upplevelsen' are en-words, so the predicative adjective must be en-form 'omedveten', not neuter 'omedvetet'."
+    },
+    {
+      "qid": "var-2014-verb1-LÄS-017",
+      "class": "cascade",
+      "snippet": "Snabbsvar är ofta att Bronfenbrenners modell som hem-skola.",
+      "final_fix": "Snabbsvar är ofta att Bronfenbrenners modell handlar om hem–skola.",
+      "original_suggested_fix": "Snabbsvar är ofta att Bronfenbrenners modell handlar om hem–skola.",
+      "location": "distractor_D_why_tempting",
+      "original_sentence": "Snabbsvar är ofta att Bronfenbrenners modell som hem-skola.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds the missing matrix verb 'handlar om' and upgrades the hyphen to an en-dash; restores a finite sentence."
+    },
+    {
+      "qid": "var-2014-verb1-MEK-025",
+      "class": "cascade",
+      "snippet": "oväntat lustigt som tystade samtalet.",
+      "final_fix": "Barnet sade något oväntat lustigt som tystade samtalet.",
+      "original_suggested_fix": "Barnet sade något oväntat lustigt som tystade samtalet.",
+      "location": "solution_path",
+      "original_sentence": "oväntat lustigt som tystade samtalet. Och skämtet gav 'tillträde till' de vuxnas konversation — fast preposition. Båda i barnberättarröst-register.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores a plausible subject + verb head ('Barnet sade något') so the leading adverb-adjective is no longer a stranded fragment."
+    },
+    {
+      "qid": "var-2014-verb1-ORD-001",
+      "class": "cascade",
+      "snippet": "I många kyrkor är oblaten ta bort meningen 'I många kyrkor är oblaten mer formellt en mässlös rond.'.",
+      "final_fix": "Remove the embedded editor instruction. End the sentence after 'Latinets oblata (offergåva).' (drop the entire 'I många kyrkor är oblaten...' sentence).",
+      "original_suggested_fix": "Remove the embedded editor instruction. End the sentence after 'Latinets oblata (offergåva).' (drop the entire 'I många kyrkor är oblaten...' sentence).",
+      "location": "solution_path",
+      "original_sentence": "En oblat är nattvardsbröd — det tunna, runda brödet som används vid nattvarden i kristen tradition. Latinets oblata (offergåva). I många kyrkor är oblaten ta bort meningen 'I många kyrkor är oblaten mer formellt en mässlös rond.'.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "propose-alternative",
+      "reasoning": "Suggested_fix is a meta-instruction, not a substring replacement; the actionable fix is to replace the snippet with an empty string (i.e. delete the leaked editor-instruction sentence so the field ends after 'Latinets oblata (offergåva).')."
+    },
+    {
+      "qid": "var-2014-verb1-ORD-005",
+      "class": "cascade",
+      "snippet": "(trojka, tsar, duma) — bär ofta bilden av specifika antal eller positioner",
+      "final_fix": "Ryska politiska lånord (trojka, tsar, duma) — bär ofta bilden av specifika antal eller positioner",
+      "original_suggested_fix": "Ryska politiska lånord (trojka, tsar, duma) — bär ofta bilden av specifika antal eller positioner",
+      "location": "technique",
+      "original_sentence": "(trojka, tsar, duma) — bär ofta bilden av specifika antal eller positioner; trojka = trio i ledarskap.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds the missing head noun phrase so the parenthetical now modifies a stated category; sentence becomes a complete proposition."
+    },
+    {
+      "qid": "var-2014-verb1-ORD-009",
+      "class": "cascade",
+      "snippet": "överförs till mätbara mängder med med 'väl tilltagen' som underton",
+      "final_fix": "överförs till mätbara mängder med 'väl tilltagen' som underton",
+      "original_suggested_fix": "överförs till mätbara mängder med 'väl tilltagen' som underton",
+      "location": "technique",
+      "original_sentence": "Adjektiv från 'rund' (rundlig, rund, runda av) — bilden av RUNDHET överförs till mätbara mängder med med 'väl tilltagen' som underton.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes the doubled preposition 'med med' (classic cascade artifact); rest of the sentence is unchanged."
+    },
+    {
+      "qid": "var-2014-verb2-MEK-027",
+      "class": "cascade",
+      "snippet": "sekventiellt, inte samtidigt; och 'implicita' (underförstådda) är fel",
+      "final_fix": "Växelvis betyder sekventiellt, inte samtidigt; och 'implicita' (underförstådda) är fel",
+      "original_suggested_fix": "Växelvis betyder sekventiellt, inte samtidigt; och 'implicita' (underförstådda) är fel",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "sekventiellt, inte samtidigt; och 'implicita' (underförstådda) är fel — empiriska undersökningar är explicita.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores the missing subject + verb 'Växelvis betyder' so the stranded adverb is no longer a fragment; aligns with the entry's standard X-betyder-Y framing."
+    },
+    {
+      "qid": "var-2014-verb2-ORD-003",
+      "class": "cascade",
+      "snippet": "ersätt 'reminera' med 'reminisera' — bär bilden av MINNAS TILLBAKA",
+      "final_fix": "Latinska 'remin-' rotord (reminiscens, reminisera) — bär bilden av MINNAS TILLBAKA",
+      "original_suggested_fix": "Latinska 'remin-' rotord (reminiscens, reminisera) — bär bilden av MINNAS TILLBAKA, ofta med flyktig karaktär.",
+      "location": "technique",
+      "original_sentence": "ersätt 'reminera' med 'reminisera' — bär bilden av MINNAS TILLBAKA, ofta med flyktig karaktär.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "propose-alternative",
+      "reasoning": "Snippet ends at 'MINNAS TILLBAKA' but suggested_fix re-appends ', ofta med flyktig karaktär.' which is still present in the trailing original-sentence span; applying it verbatim would duplicate that tail. Final_fix trims the suggested replacement to match the snippet width."
+    },
+    {
+      "qid": "var-2014-verb2-ORD-005",
+      "class": "cascade",
+      "snippet": "AGGRESSIVT känsloutbrott; delirium är KOGNITIVT förvirringstillstånd.",
+      "final_fix": "Raseri är AGGRESSIVT känsloutbrott; delirium är KOGNITIVT förvirringstillstånd.",
+      "original_suggested_fix": "Raseri är AGGRESSIVT känsloutbrott; delirium är KOGNITIVT förvirringstillstånd.",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "AGGRESSIVT känsloutbrott; delirium är KOGNITIVT förvirringstillstånd. Aggression vs förvirring.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores the missing subject + copula 'Raseri är' so the predicative 'AGGRESSIVT' is now anchored; parallels the second clause's 'delirium är KOGNITIVT'."
+    },
+    {
+      "qid": "var-2015-kvant1-XYZ-003",
+      "class": "cascade",
+      "snippet": "differensen av rötter Räkna varje rot separat.",
+      "final_fix": "Det är differensen av rötter — räkna varje rot separat.",
+      "original_suggested_fix": "Det är differensen av rötter — räkna varje rot separat.",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "differensen av rötter Räkna varje rot separat.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds the missing subject/copula 'Det är', supplies a dash connector, and lowercases the following imperative — yields a coherent why_wrong sentence."
+    },
+    {
+      "qid": "var-2015-kvant2-XYZ-010",
+      "class": "cascade",
+      "snippet": "Om x = 0, då w = y. Ta bort 'hmm.' (interjektionen) Om x = 0 och y ≠ 0, w = y ≠ x = 0 är OK. i sammanhanget",
+      "final_fix": "Om x = 0, då w = y. Om x = 0 och y ≠ 0, är w = y ≠ x = 0, vilket är OK i sammanhanget.",
+      "original_suggested_fix": "Om x = 0, då w = y. Om x = 0 och y ≠ 0, är w = y ≠ x = 0, vilket är OK i sammanhanget.",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "Om x = 0, då w = y. Ta bort 'hmm.' (interjektionen) Om x = 0 och y ≠ 0, w = y ≠ x = 0 är OK. i sammanhanget",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes the leaked editor instruction, fixes V2 word order ('är w = y'), joins the stranded 'i sammanhanget' with a 'vilket är' connector, and terminates with one period."
+    },
+    {
+      "qid": "var-2015-verb1-LÄS-014",
+      "class": "cascade",
+      "snippet": "det är ett kontraargument från förbundet, vilket inte finns i texten, vilket inte finns i texten; alternativet importerar fel argument.",
+      "final_fix": "det är ett kontraargument från förbundet, vilket inte finns i texten; alternativet importerar fel argument.",
+      "original_suggested_fix": "det är ett kontraargument från förbundet, vilket inte finns i texten; alternativet importerar fel argument.",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "AD säger uttryckligen att 'företaget har inte behövt fler anställda' — alltså AD accepterade just det MEN drog motsatt slutsats; det är ett kontraargument från förbundet, vilket inte finns i texten, vilket inte finns i texten; alternativet importerar fel argument.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes the duplicated 'vilket inte finns i texten' clause (double-paste cascade); result is a single clean relative clause."
+    },
+    {
+      "qid": "var-2016-kvant1-NOG-025",
+      "class": "cascade",
+      "snippet": "olikheter låser till ett heltal.",
+      "final_fix": "Två stränga olikheter låser n till ett heltal.",
+      "original_suggested_fix": "Två stränga olikheter låser n till ett heltal.",
+      "location": "distractor_E_why_wrong",
+      "original_sentence": "olikheter låser till ett heltal.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Reconstruction yields grammatical native Swedish with subject and object restored; 'n' as the locked variable is consistent with NOG-style reasoning."
+    },
+    {
+      "qid": "var-2016-kvant1-XYZ-003",
+      "class": "cascade",
+      "snippet": "smårektanglarna (10·30 = 300) och stanna där.",
+      "final_fix": "Det är lätt att summera smårektanglarna (10·30 = 300) och stanna där.",
+      "original_suggested_fix": "Det är lätt att summera smårektanglarna (10·30 = 300) och stanna där.",
+      "location": "distractor_A_why_tempting",
+      "original_sentence": "smårektanglarna (10·30 = 300) och stanna där.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores a finite-clause head; result is fluent native Swedish describing a tempting shortcut."
+    },
+    {
+      "qid": "var-2016-verb1-LÄS-018",
+      "class": "cascade",
+      "snippet": "sidofördelningen, inte variation i form; alternativet missar definitionen.",
+      "final_fix": "Texten talar om sidofördelningen, inte om variation i form; alternativet missar definitionen.",
+      "original_suggested_fix": "Texten talar om sidofördelningen, inte om variation i form; alternativet missar definitionen.",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "sidofördelningen, inte variation i form; alternativet missar definitionen.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds the missing subject+verb 'Texten talar om' and parallel preposition 'om' before 'variation'; grammatical and idiomatic."
+    },
+    {
+      "qid": "var-2016-verb1-MEK-023",
+      "class": "cascade",
+      "snippet": "spårningens fackterm (or: 'jakttermen' / 'jaktterminologins fackterm', depending on context) är 'idealisk'",
+      "final_fix": "spårningens fackterm är 'idealisk'",
+      "original_suggested_fix": "spårningens fackterm är 'idealisk'",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "Förnämsta är 'finaste' — okej men spårningens fackterm (or: 'jakttermen' / 'jaktterminologins fackterm', depending on context) är 'idealisk'; och 'avspeglar' är att 'visa sig som spegelbild', okej men fel kollokation (avtecknar är bättre).",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Cleanly strips an English editorial annotation that leaked into the corpus; surrounding sentence remains grammatical."
+    },
+    {
+      "qid": "var-2016-verb1-MEK-024",
+      "class": "cascade",
+      "snippet": "Kognitiva är Kognitiva är relaterat till tanke",
+      "final_fix": "Kognitiva är relaterat till tanke",
+      "original_suggested_fix": "Kognitiva är relaterat till tanke",
+      "location": "distractor_D_why_wrong",
+      "original_sentence": "Kognitiva är Kognitiva är relaterat till tanke och varseblivning — tinnitus är ett hörselsystemfenomen, inte kognitivt; och 'motiven' är psykologiskt, fel.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes a verbatim duplication of 'Kognitiva är'; surrounding clause continues grammatically into 'och varseblivning ...'."
+    },
+    {
+      "qid": "var-2016-verb1-ORD-002",
+      "class": "malformed",
+      "snippet": "ett uttalat lovord Franskans éloge (lovtal).",
+      "final_fix": "En eloge är ett uttalat lovord. Franskans éloge (lovtal).",
+      "original_suggested_fix": "En eloge är ett uttalat lovord. Franskans éloge (lovtal).",
+      "location": "solution_path",
+      "original_sentence": "ett uttalat lovord Franskans éloge (lovtal). Används ofta i fasta uttryck: 'ge någon en eloge' = öppet berömma.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores the missing definitional head 'En eloge är' and a sentence boundary before 'Franskans'; result is well-formed Swedish."
+    },
+    {
+      "qid": "var-2016-verb1-ORD-007",
+      "class": "cascade",
+      "snippet": "Bedjande är ATT BÖNFALLA om något; ATT SÄGA JA. Be vs ge.",
+      "final_fix": "Bedjande är ATT BÖNFALLA om något; bejakande är ATT SÄGA JA. Be vs ge.",
+      "original_suggested_fix": "Bedjande är ATT BÖNFALLA om något; bejakande är ATT SÄGA JA. Be vs ge.",
+      "location": "distractor_E_why_wrong",
+      "original_sentence": "Bedjande är ATT BÖNFALLA om något; ATT SÄGA JA. Be vs ge.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores the parallel subject 'bejakande är' in the X-vs-Y contrast pattern used throughout this ORD family; grammatical."
+    },
+    {
+      "qid": "var-2016-verb1-ORD-008",
+      "class": "cascade",
+      "snippet": "är ETISK svikt mot någon som litat; EKONOMISKT utnyttjande av någons trångmål.",
+      "final_fix": "Missbruk av förtroende är ETISK svikt mot någon som litat; ocker är EKONOMISKT utnyttjande av någons trångmål. Etik vs ekonomi.",
+      "original_suggested_fix": "Missbruk av förtroende är ETISK svikt mot någon som litat; ocker är EKONOMISKT utnyttjande av någons trångmål. Etik vs ekonomi.",
+      "location": "distractor_D_why_wrong",
+      "original_sentence": "Missbruk av förtroende är ETISK svikt mot någon som litat; EKONOMISKT utnyttjande av någons trångmål. Etik vs ekonomi.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores both head subjects in the X-vs-Y contrast; output is grammatical and matches the family's pattern."
+    },
+    {
+      "qid": "var-2016-verb2-MEK-029",
+      "class": "cascade",
+      "snippet": "fel betydelse — säger inte ryktesskada; fel kollokation.",
+      "final_fix": "Föranstaltade är 'arrangerade/iscensatte' — fel betydelse, säger inget om ryktesskada; fel kollokation.",
+      "original_suggested_fix": "Föranstaltade är 'arrangerade/iscensatte' — fel betydelse, säger inget om ryktesskada; fel kollokation.",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "fel betydelse — säger inte ryktesskada; fel kollokation.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores the definitional head and fixes the non-idiomatic 'säger inte ryktesskada' to 'säger inget om ryktesskada'; fluent native Swedish."
+    },
+    {
+      "qid": "var-2016-verb2-ORD-003",
+      "class": "spelling",
+      "snippet": "gordisk knut är SVÅRLÖST trasselig fråga",
+      "final_fix": "gordisk knut är SVÅRLÖST trasslig fråga",
+      "original_suggested_fix": "gordisk knut är SVÅRLÖST trasslig fråga",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "Huvudfråga är CENTRAL frågeställning (klart definierad); gordisk knut är SVÅRLÖST trasselig fråga (oklar struktur). Klart definierad vs trasslig.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "'trasslig' is the standard Swedish form (cf. trassel, trasslig); confirmed by the tail tagline 'Klart definierad vs trasslig.' in the same entry."
+    },
+    {
+      "qid": "var-2016-verb2-ORD-003",
+      "class": "cascade",
+      "snippet": "Svag punkt är SÅRBAR del; HELHETLIGT SVÅRLÖST problem.",
+      "final_fix": "Svag punkt är SÅRBAR del; gordisk knut är HELHETLIGT SVÅRLÖST problem. Sårbarhet vs komplexitet.",
+      "original_suggested_fix": "Svag punkt är SÅRBAR del; gordisk knut är HELHETLIGT SVÅRLÖST problem. Sårbarhet vs komplexitet.",
+      "location": "distractor_D_why_wrong",
+      "original_sentence": "Svag punkt är SÅRBAR del; HELHETLIGT SVÅRLÖST problem. Sårbarhet vs komplexitet.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores 'gordisk knut är' subject and the X-vs-Y tagline; grammatical and consistent with the family's distractor template."
+    },
+    {
+      "qid": "var-2016-verb2-ORD-003",
+      "class": "cascade",
+      "snippet": "Förbannelse är ÖDESBESTÄMD olycka; JORDISK svårlös situation.",
+      "final_fix": "Förbannelse är ÖDESBESTÄMD olycka; gordisk knut är JORDISK svårlös situation. Övernaturligt vs jordiskt.",
+      "original_suggested_fix": "Förbannelse är ÖDESBESTÄMD olycka; gordisk knut är JORDISK svårlös situation. Övernaturligt vs jordiskt.",
+      "location": "distractor_E_why_wrong",
+      "original_sentence": "Förbannelse är ÖDESBESTÄMD olycka; JORDISK svårlös situation. Övernaturligt vs jordiskt.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Same X-vs-Y pattern restoration; subject 'gordisk knut är' inserted, tagline appended; output is grammatical."
+    },
+    {
+      "qid": "var-2016-verb2-ORD-003",
+      "class": "cascade",
+      "snippet": "Missförstånd är KOMMUNIKATIONSFEL (kan redas ut); OLÖSBARA (svåra att lösa).",
+      "final_fix": "Missförstånd är KOMMUNIKATIONSFEL (kan redas ut); gordiska knutar är OLÖSBARA (svåra att lösa). Klargörbart vs olösbart.",
+      "original_suggested_fix": "Missförstånd är KOMMUNIKATIONSFEL (kan redas ut); gordiska knutar är OLÖSBARA (svåra att lösa). Klargörbart vs olösbart.",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "Missförstånd är KOMMUNIKATIONSFEL (kan redas ut); OLÖSBARA (svåra att lösa). Klargörbart vs olösbart.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores 'gordiska knutar är' (plural, agreeing with plural adjective OLÖSBARA); number agreement is correct, output is native Swedish."
+    },
+    {
+      "qid": "var-2017-kvant2-NOG-028",
+      "class": "spelling",
+      "snippet": "prod=(kvarvarande neg)·(strukten pos)=neg",
+      "final_fix": "prod=(kvarvarande neg)·(strukna pos)=neg",
+      "original_suggested_fix": "prod=(kvarvarande neg)·(strukna pos)=neg",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "(2) ger samma slutsats via faktoruppdelning: prod=(kvarvarande neg)·(strukten pos)=neg.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "'strukna' is the correct supinum/perfekt particip plural of 'stryka' (matches the entry's own solution_path); 'strukten' is not a Swedish form."
+    },
+    {
+      "qid": "var-2017-verb2-MEK-029",
+      "class": "cascade",
+      "snippet": "och ''i praktiken' är vagt.",
+      "final_fix": "och 'i praktiken' är vagt.",
+      "original_suggested_fix": "och 'i praktiken' är vagt.",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "Kommande är 'framtida' — fel kollokation för studieobjekt; och ''i praktiken' är vagt.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes a stray doubled opening single-quote; resulting sentence's quoting and punctuation balance correctly."
+    },
+    {
+      "qid": "var-2018-1-verb2-MEK-028",
+      "class": "wordchoice",
+      "snippet": "Delta är specifikt 'fjälldelta' med greninflöden",
+      "final_fix": "Delta är specifikt 'floddelta' med greninflöden",
+      "original_suggested_fix": "Delta är specifikt 'floddelta' med greninflöden",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "Delta är specifikt 'fjälldelta' med greninflöden — okej semantiskt; men 'landhöjning' är fel process (Sverige har landhöjning men det är inte vad SKAPAR nytt land hos floder, det är sediment); 'jungfruligt' är romantiskt.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "'floddelta' is the established Swedish geographical term for a river delta; 'fjälldelta' is not standard and contradicts the sentence's discussion of floder/sediment."
+    },
+    {
+      "qid": "var-2018-1-verb2-MEK-028",
+      "class": "malformed",
+      "snippet": "det är inte vad SKAPAR nytt land hos floder",
+      "final_fix": "det är inte vad SOM SKAPAR nytt land hos floder",
+      "original_suggested_fix": "det är inte vad SOM SKAPAR nytt land hos floder",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "Delta är specifikt 'fjälldelta' med greninflöden — okej semantiskt; men 'landhöjning' är fel process (Sverige har landhöjning men det är inte vad SKAPAR nytt land hos floder, det är sediment); 'jungfruligt' är romantiskt.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Inserts the obligatory subject relativiser 'som' required after 'vad' when 'vad' is the subject of the relative clause; standard Swedish."
+    },
+    {
+      "qid": "var-2019-kvant2-NOG-024",
+      "class": "cascade",
+      "snippet": "är det tredje fixerat",
+      "final_fix": "Det tredje är då fixerat.",
+      "original_suggested_fix": "Det tredje är då fixerat.",
+      "location": "distractor_E_why_wrong",
+      "original_sentence": "är det tredje fixerat",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Reformulates the fragment into a finite, capitalised, period-terminated sentence with native word order; the inserted 'då' is a plausible discourse anaphor."
+    },
+    {
+      "qid": "var-2019-verb1-LÄS-018",
+      "class": "malformed",
+      "snippet": "Snabbsvar är ofta att aktivt medborgarskap",
+      "final_fix": "Snabbsvar är ofta att aktivt medborgarskap räcker som formellt utövande.",
+      "original_suggested_fix": "Snabbsvar är ofta att aktivt medborgarskap räcker som formellt uttövande.",
+      "location": "distractor_D_why_tempting",
+      "original_sentence": "Snabbsvar är ofta att aktivt medborgarskap",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "propose-alternative",
+      "reasoning": "Completion is plausible but introduces the non-word 'uttövande'; the correct Swedish noun is 'utövande' (from utöva, single t)."
+    },
+    {
+      "qid": "var-2019-verb1-MEK-028",
+      "class": "style",
+      "snippet": "fast psykologiskt begrepp. etologiskt-kognitivt register",
+      "final_fix": "fast psykologiskt begrepp. Båda i etologiskt-kognitivt register.",
+      "original_suggested_fix": "End the solution_path before 'etologiskt-kognitivt register' or rewrite as a full sentence (e.g. 'Båda i etologiskt-kognitivt register.'). The trailing fragment starts lowercase and has no terminating punctuation.",
+      "location": "solution_path",
+      "original_sentence": "Djurens 'förberedelser' (preventiva åtgärder inför kommande) — fast vardagsord. Och inre 'föreställningar' (mentala bilder/koncept) om framtid — fast psykologiskt begrepp. etologiskt-kognitivt register",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "propose-alternative",
+      "reasoning": "Original suggested_fix is a meta-instruction, not a substring replacement; concrete clean substitution is to capitalise and terminate the tag as a full sentence."
+    },
+    {
+      "qid": "var-2022-1-verb1-MEK-029",
+      "class": "cascade",
+      "snippet": "så vi kan 'förutse' (förutse konsekvenser)",
+      "final_fix": "så vi kan 'förutse' (se framåt i tiden, ana konsekvenser)",
+      "original_suggested_fix": "Replace the circular gloss with a non-circular paraphrase, e.g. 'förutse' (se framåt i tiden, ana konsekvenser).",
+      "location": "solution_path",
+      "original_sentence": "Handlingsbetingelser är 'stabila' (oförändrade över tid) så vi kan 'förutse' (förutse konsekvenser). Båda är kollokationer i samtidsanalytisk-register.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "propose-alternative",
+      "reasoning": "Original is a meta-instruction; the concrete substring replacement that fixes the circular gloss while preserving the lead-in 'så vi kan' is the bracketed paraphrase."
+    },
+    {
+      "qid": "var-2022-1-verb1-ORD-006",
+      "class": "malformed",
+      "snippet": "hålla låda är Generositet vs pratsamhet/talträngdhet/mångordighet.",
+      "final_fix": "hålla låda är ATT PRATA UTAN UPPEHÅLL (egen handling utan mottagare). Generositet vs pratsamhet/talträngdhet/mångordighet.",
+      "original_suggested_fix": "Insert the missing predicate, e.g. 'hålla låda är ATT PRATA UTAN UPPEHÅLL (egen handling utan mottagare). Generositet vs pratsamhet/talträngdhet/mångordighet.'",
+      "location": "distractor_C_why_wrong",
+      "original_sentence": "Bjuda på fest är SOCIAL handling med mottagare; hålla låda är Generositet vs pratsamhet/talträngdhet/mångordighet.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "propose-alternative",
+      "reasoning": "Original is a meta-instruction; the substantive replacement (unquoted) yields a grammatical sentence and matches the parallel structure of the preceding clause 'Bjuda på fest är SOCIAL handling med mottagare'."
+    },
+    {
+      "qid": "var-2022-1-verb2-ORD-008",
+      "class": "inflection",
+      "snippet": "klingar färgrika och bär kvar 1800-tals klang",
+      "final_fix": "klingar färgrikt och bär kvar 1800-tals klang",
+      "original_suggested_fix": "'klingar färgrikt' (adverb) — 'klinga' is a verb of manner so the modifier should be adverbial, not adjectival plural.",
+      "location": "technique",
+      "original_sentence": "Gammaldags positiva karaktärsord (spjuver, fyr, fågel) — klingar färgrika och bär kvar 1800-tals klang av älskvärd individ.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "propose-alternative",
+      "reasoning": "Original is a meta-instruction with English commentary; the clean substring replacement is to change the adjective-plural 'färgrika' to the manner adverb 'färgrikt' modifying 'klingar'."
+    },
+    {
+      "qid": "var-2022-1-verb2-ORD-010",
+      "class": "malformed",
+      "snippet": "bestörtning är Anfall vs förlamning / paralys.",
+      "final_fix": "bestörtning är PASSIVERANDE chock (handlingsförlamning). Anfall vs förlamning/paralys.",
+      "original_suggested_fix": "Insert the missing predicate, e.g. 'bestörtning är PASSIVERANDE chock (handlingsförlamning). Anfall vs förlamning/paralys.'",
+      "location": "distractor_A_why_wrong",
+      "original_sentence": "Aggression är ETT AKTIVT angreppsläge; bestörtning är Anfall vs förlamning / paralys.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "propose-alternative",
+      "reasoning": "Original is a meta-instruction; the substantive replacement gives the missing predicate and pulls the tagline into its own sentence, paralleling the preceding 'Aggression är ETT AKTIVT angreppsläge' clause."
+    },
+    {
+      "qid": "var-2022-2-kvant2-XYZ-006",
+      "class": "cascade",
+      "snippet": "den raka vinkeln på 180° fyller resten fyller resten.",
+      "final_fix": "den raka vinkeln på 180° fyller resten.",
+      "original_suggested_fix": "Remove the duplicated 'fyller resten' so it reads '...den raka vinkeln på 180° fyller resten.'",
+      "location": "technique",
+      "original_sentence": "Yttervinkel + supplementvinklar: en yttervinkel till en triangel = summan av de två icke-angränsande inre vinklarna, och den raka vinkeln på 180° fyller resten fyller resten.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "propose-alternative",
+      "reasoning": "Original suggested_fix is phrased as a meta-instruction; the concrete substring replacement that deduplicates 'fyller resten' yields a grammatical sentence."
+    },
+    {
+      "qid": "var-2022-2-verb2-ORD-003",
+      "class": "wordchoice",
+      "snippet": "Spontan handlar i ett rakt infall (snabbt beslut); villrådig handlar i ett uteblivet beslut",
+      "final_fix": "Spontan handlar OM ett rakt infall (snabbt beslut); villrådig handlar OM ett uteblivet beslut",
+      "original_suggested_fix": "Spontan handlar OM ett rakt infall (snabbt beslut); villrådig handlar OM ett uteblivet beslut",
+      "location": "distractor_B_why_wrong",
+      "original_sentence": "Spontan handlar i ett rakt infall (snabbt beslut); villrådig handlar i ett uteblivet beslut (inget beslut). Snabbt vs ingen beslutsamhet.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "'handla i' is non-idiomatic here; 'handla om' ('be about/concern') yields a grammatical definitional reading aligned with the surrounding gloss style."
+    },
+    {
+      "qid": "var-2023-verb1-LÄS-020",
+      "class": "style",
+      "snippet": "Vid 'vad förenar Båda texterna'-frågor",
+      "final_fix": "Vid 'vad förenar båda texterna'-frågor",
+      "original_suggested_fix": "Vid 'vad förenar båda texterna'-frågor",
+      "location": "technique",
+      "original_sentence": "Vid 'vad förenar Båda texterna'-frågor: leta efter ett tema som finns AKTIVT i båda — inte bara ett som låter rimligt.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "'Båda' is not sentence-initial inside the quoted phrase and should be lowercase; clean substring fix with no cascade risk."
+    },
+    {
+      "qid": "var-2023-verb2-LÄS-020",
+      "class": "malformed",
+      "snippet": "Recensenten vill mer, inte mindre, fält",
+      "final_fix": "Recensenten vill ha mer, inte mindre, av fältet",
+      "original_suggested_fix": "Recensenten vill ha mer, inte mindre, av fältet",
+      "location": "distractor_D_why_wrong",
+      "original_sentence": "Recensenten vill mer, inte mindre, fält — och berömmer Berglunds källkritik som nyhet; missar nivån.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores the missing object verb 'ha' (vilja ha) and the preposition 'av' plus definite 'fältet'; resulting clause is idiomatic native Swedish."
+    },
+    {
+      "qid": "var-2024-verb1-MEK-028",
+      "class": "malformed",
+      "snippet": "Det är lätt att läsa ·tidsanda som en epokanda som varje språk uttrycker.",
+      "final_fix": "Det är lätt att läsa ·tidsanda· som en epokanda som varje språk uttrycker.",
+      "original_suggested_fix": "Det är lätt att läsa ·tidsanda· som en epokanda som varje språk uttrycker.",
+      "location": "distractor_A_why_tempting",
+      "original_sentence": "Det är lätt att läsa ·tidsanda som en epokanda som varje språk uttrycker.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Adds the missing closing · so the delimiter pair around 'tidsanda' is balanced; no other grammar impact."
+    },
+    {
+      "qid": "var-2024-verb1-ORD-001",
+      "class": "cascade",
+      "snippet": "dispyt är att STRIDA om något. om något. Olika handlingar med 'dis-'.",
+      "final_fix": "dispyt är att STRIDA om något. Olika handlingar med 'dis-'.",
+      "original_suggested_fix": "dispyt är att STRIDA om något. Olika handlingar med 'dis-'.",
+      "location": "distractor_E_why_wrong",
+      "original_sentence": "Distinktion är att skilja UT något; dispyt är att STRIDA om något. om något. Olika handlingar med 'dis-'.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes a duplicated 'om något.' fragment; the resulting sentence ('...STRIDA om något. Olika handlingar med dis-.') is clean Swedish."
+    },
+    {
+      "qid": "var-2025-verb2-MEK-030",
+      "class": "cascade",
+      "snippet": "vad ämne ska innehålla",
+      "final_fix": "vad ämnet ska innehålla",
+      "original_suggested_fix": "vad ämnet ska innehålla",
+      "location": "solution_path",
+      "original_sentence": "Läroplanen 'stipulerar' (fastställer formellt, föreskriver) vad ämne ska innehålla — fast formell juridisk fackterm. Och man 'bejakar' (godkänner positivt) tanken att kunskap kan mätas. Båda i läroplans-register.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Subject of the embedded clause needs definite form ('ämnet') since it refers to the specific school subject the curriculum stipulates; definiteness chain restored."
+    },
+    {
+      "qid": "var-2025-verb2-ORD-003",
+      "class": "cascade",
+      "snippet": "kan associeras med 'välgjort' eller 'välmenat' kan associeras med 'välgjort' eller 'välmenat'",
+      "final_fix": "kan associeras med 'välgjort' eller 'välmenat'",
+      "original_suggested_fix": "kan associeras med 'välgjort' eller 'välmenat'",
+      "location": "distractor_A_why_tempting",
+      "original_sentence": "Efterleden '-värt' i klandervärt kan associeras med 'välgjort' eller 'välmenat' kan associeras med 'välgjort' eller 'välmenat'.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Removes a duplicated clause (classic copy/edit artefact); the resulting sentence reads naturally as a single statement."
+    },
+    {
+      "qid": "var-2025-verb2-ORD-009",
+      "class": "cascade",
+      "snippet": "Ansträngning är KROPPSARBETE eller mental insats; Aktiv handling vs uthärdad plåga.",
+      "final_fix": "Ansträngning är KROPPSARBETE eller mental insats; vånda är uthärdad plåga. Aktiv handling vs uthärdad plåga.",
+      "original_suggested_fix": "Ansträngning är KROPPSARBETE eller mental insats; vånda är uthärdad plåga. Aktiv handling vs uthärdad plåga.",
+      "location": "distractor_E_why_wrong",
+      "original_sentence": "Ansträngning är KROPPSARBETE eller mental insats; Aktiv handling vs uthärdad plåga.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Restores the missing parallel clause about 'vånda' so the contrast summary 'Aktiv handling vs uthärdad plåga' has a referent; reconstruction matches the ORD pair pattern used elsewhere in the entry."
+    },
+    {
+      "qid": "var-2026-verb2-ORD-003",
+      "class": "cascade",
+      "snippet": "(upprätthålla, upprätta, upprätta på nytt)",
+      "final_fix": "(upprätthålla, upprätta, återupprätta)",
+      "original_suggested_fix": "(upprätthålla, upprätta, återupprätta)",
+      "location": "technique",
+      "original_sentence": "Sammansatta verb med upprätt- (upprätthålla, upprätta, upprätta på nytt) kretsar kring att ETABLERA eller BEVARA i upprätt/fungerande skick.",
+      "cascade_risks": [
+        "cascade"
+      ],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-OK",
+      "reasoning": "Replaces the awkward periphrasis 'upprätta på nytt' with the lexicalized verb 'återupprätta', removing duplicate listing of 'upprätta' and giving three distinct verbs as the surrounding text promises."
     }
   ]
 }

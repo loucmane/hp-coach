@@ -71,32 +71,42 @@ def is_allcaps_removal(snippet: str, final_fix: str) -> bool:
     return False
 
 
-def load_input_batches() -> dict[str, dict]:
-    """Index pass4_input_*.json entries by qid+snippet for lookup of location/etc."""
-    idx = {}
-    for p in sorted(QUALITY_DIR.glob('pass4_input_*.json')):
-        try:
-            data = json.loads(p.read_text())
-        except json.JSONDecodeError:
-            continue
-        for entry in data.get('entries', []) or []:
-            key = (entry.get('qid'), entry.get('snippet'))
-            idx[key] = entry
-    return idx
-
-
 def load_outputs() -> list[dict]:
-    """Flatten all pass4_output_*.json entries."""
+    """Flatten all pass4_output_*.json + pass4c2_output_*.json entries.
+
+    Cycle-2 outputs (pass4c2_*) come AFTER cycle-1 in the merged list. Most
+    cycle-2 fixes target different (qid, snippet) pairs than cycle-1; the
+    dedup at apply-build time silently drops any overlaps that match by key.
+    """
     out = []
-    for p in sorted(QUALITY_DIR.glob('pass4_output_*.json')):
-        try:
-            data = json.loads(p.read_text())
-        except json.JSONDecodeError:
-            print(f'WARN: could not parse {p.name}')
-            continue
-        for entry in data.get('entries', []) or []:
-            out.append({**entry, '_source_file': p.name})
+    for pattern in ('pass4_output_*.json', 'pass4c2_output_*.json'):
+        for p in sorted(QUALITY_DIR.glob(pattern)):
+            try:
+                data = json.loads(p.read_text())
+            except json.JSONDecodeError:
+                print(f'WARN: could not parse {p.name}')
+                continue
+            for entry in data.get('entries', []) or []:
+                out.append({**entry, '_source_file': p.name})
     return out
+
+
+def load_input_batches() -> dict[tuple[str, str], dict]:
+    """Index pass4 + pass4c2 input entries by (qid, snippet)."""
+    idx = {}
+    for pattern in ('pass4_input_*.json', 'pass4c2_input_*.json'):
+        for p in sorted(QUALITY_DIR.glob(pattern)):
+            try:
+                data = json.loads(p.read_text())
+            except json.JSONDecodeError:
+                continue
+            for entry in data.get('entries', []) or []:
+                key = (entry.get('qid'), entry.get('snippet'))
+                # Cycle-1 entries arrive first; cycle-2 entries override only
+                # if the (qid, snippet) is genuinely new — otherwise cycle-1's
+                # location info is preserved.
+                idx.setdefault(key, entry)
+    return idx
 
 
 def main():
@@ -139,14 +149,16 @@ def main():
         }
 
         # ── Verdict filter ──
-        if verdict == 'fix-wrong':
-            rejected.append({**record, 'drop_reason': 'verdict=fix-wrong'})
+        # Treat final_fix as the source of truth regardless of verdict label.
+        # Verifier sometimes labels propose-alternative-with-concrete-target as
+        # fix-wrong (semantics: "original suggested_fix was wrong, here's
+        # mine"). What matters is whether final_fix is non-empty, ≠ snippet,
+        # and ≠ original_suggested_fix-that-was-rejected.
+        original_sf = (o.get('original_suggested_fix') or '').strip()
+        if verdict == 'fix-wrong' and (not final_fix or final_fix.strip() == original_sf):
+            # Pure veto: agent rejected the fix and provided no replacement.
+            rejected.append({**record, 'drop_reason': 'verdict=fix-wrong (no replacement)'})
             drop_counts['fix_wrong'] += 1
-            continue
-
-        if verdict not in ('fix-OK', 'propose-alternative'):
-            rejected.append({**record, 'drop_reason': f'unknown verdict: {verdict}'})
-            drop_counts['unknown_verdict'] += 1
             continue
 
         if not final_fix:

@@ -1,10 +1,9 @@
 {
-  "count": 75,
+  "count": 76,
   "drop_counts": {
-    "duplicate": 35,
-    "noop": 1,
-    "fix_wrong": 10,
-    "allcaps_policy": 29
+    "duplicate": 39,
+    "noop": 7,
+    "allcaps_policy": 30
   },
   "rejected": [
     {
@@ -17,8 +16,7 @@
       "original_sentence": "Det är lätt att tro att en av talen räcker.",
       "cascade_risks": [
         "determiner-prefix",
-        "determiner-internal",
-        "definite-form-swap"
+        "determiner-internal"
       ],
       "corpus_count": 3,
       "priority": "high",
@@ -28,7 +26,7 @@
     },
     {
       "qid": "host-ver1-2019-verb1-LÄS-015",
-      "class": "wordchoice",
+      "class": "malformed",
       "snippet": "Snabbsvar är ofta att hopsumma FN-insatsen med Françafrique-politik.",
       "final_fix": "Snabbsvar är ofta att klumpa ihop FN-insatsen med Françafrique-politik.",
       "original_suggested_fix": "att klumpa ihop / att slå ihop",
@@ -43,7 +41,7 @@
     },
     {
       "qid": "host-ver1-2019-verb1-MEK-022",
-      "class": "style",
+      "class": "inflection",
       "snippet": "Kontraktet är specifika hyresavtalet — men lagen är det generella",
       "final_fix": "Kontraktet är det specifika hyresavtalet",
       "original_suggested_fix": "Kontraktet är det specifika hyresavtalet",
@@ -76,7 +74,7 @@
     },
     {
       "qid": "host-ver1-2019-verb1-MEK-030",
-      "class": "style",
+      "class": "malformed",
       "snippet": "kunskaperna förvärvas (förvärvs/inhämtas)",
       "final_fix": "kunskaperna förvärvas (inhämtas)",
       "original_suggested_fix": "kunskaperna förvärvas (inhämtas)",
@@ -91,7 +89,7 @@
     },
     {
       "qid": "host-ver1-2019-verb2-MEK-023",
-      "class": "style",
+      "class": "inflection",
       "snippet": "Tre kollokationer i Shepard-typisk berättarregistret.",
       "final_fix": "Tre kollokationer i det Shepard-typiska berättarregistret.",
       "original_suggested_fix": "i det Shepard-typiska berättarregistret",
@@ -106,15 +104,13 @@
     },
     {
       "qid": "host-ver2-2019-kvant1-KVA-016",
-      "class": "inflection",
+      "class": "anglicism",
       "snippet": "Båda variabler kancellerar",
       "final_fix": "Båda variablerna tar ut varandra",
       "original_suggested_fix": "Båda variablerna",
       "location": "distractor_D_why_wrong",
       "original_sentence": "Båda variabler kancellerar; I är konstant 0.",
-      "cascade_risks": [
-        "definite-form-swap"
-      ],
+      "cascade_risks": [],
       "corpus_count": 1,
       "priority": "high",
       "verdict": "propose-alternative",
@@ -185,7 +181,7 @@
     },
     {
       "qid": "var-2014-verb2-ORD-003",
-      "class": "spelling",
+      "class": "malformed",
       "snippet": "Latinska 'remin-' rotord (reminiscens, reminera)",
       "final_fix": "reminisera",
       "original_suggested_fix": "ersätt 'reminera' med 'reminisera'",
@@ -230,7 +226,7 @@
     },
     {
       "qid": "var-2015-verb1-MEK-023",
-      "class": "wordchoice",
+      "class": "malformed",
       "snippet": "filmig-poetisk berättarröst",
       "final_fix": "filmisk-poetisk berättarröst",
       "original_suggested_fix": "filmisk-poetisk berättarröst",
@@ -260,7 +256,7 @@
     },
     {
       "qid": "var-2015-verb1-ORD-008",
-      "class": "wordchoice",
+      "class": "malformed",
       "snippet": "passar maten genom hela mundvik",
       "final_fix": "för in maten i munnen",
       "original_suggested_fix": "passerar / för in",
@@ -305,7 +301,7 @@
     },
     {
       "qid": "var-2016-verb1-ORD-003",
-      "class": "anglicism",
+      "class": "spelling",
       "snippet": "slås ofta i orkestermusic",
       "final_fix": "slås ofta i orkestermusik",
       "original_suggested_fix": "slås ofta i orkestermusik",
@@ -320,7 +316,7 @@
     },
     {
       "qid": "var-2017-kvant1-KVA-013",
-      "class": "wordchoice",
+      "class": "anglicism",
       "snippet": "proportioner kancellerar",
       "final_fix": "proportioner kancellerar → proportionerna tar ut varandra",
       "original_suggested_fix": "proportionerna tar ut varandra",
@@ -350,7 +346,7 @@
     },
     {
       "qid": "var-2017-kvant1-XYZ-011",
-      "class": "style",
+      "class": "register",
       "snippet": "Hmm: 25/36 är båda inte är sexor (varje INTE sexa)",
       "final_fix": "Hmm: 25/36 är båda inte är sexor (varje INTE sexa) → 25/36 är sannolikheten att inget av kasten blir en sexa.",
       "original_suggested_fix": "Remove 'Hmm' and resolve the grammar",
@@ -376,11 +372,11 @@
       "priority": "high",
       "verdict": "fix-wrong",
       "reasoning": "Slash-form 'villkor / bivillkor' is not appropriate inside body text; pick one term — 'bivillkor' is the precise technical term.",
-      "drop_reason": "verdict=fix-wrong"
+      "drop_reason": "duplicate (qid, snippet)"
     },
     {
       "qid": "var-2019-verb1-MEK-028",
-      "class": "wordchoice",
+      "class": "inflection",
       "snippet": "Tvåblanksdrag i etologisk-kognitiv register",
       "final_fix": "etologiskt-kognitivt register",
       "original_suggested_fix": "etologiskt-kognitivt register",
@@ -395,7 +391,7 @@
     },
     {
       "qid": "var-2025-verb1-ORD-002",
-      "class": "malformed",
+      "class": "spelling",
       "snippet": "inte Etisk.",
       "final_fix": "inte etisk.",
       "original_suggested_fix": "inte etisk.",
@@ -490,10 +486,10 @@
     },
     {
       "qid": "host-2017-verb1-LÄS-019",
-      "class": "malformed",
+      "class": "style",
       "snippet": "hitta texten själv om var DEN ENA startar",
-      "final_fix": "hitta i texten själv var den ena startar",
-      "original_suggested_fix": "hitta i texten själv var DEN ENA startar",
+      "final_fix": "hitta texten själv om var den ena startar",
+      "original_suggested_fix": "Undvik ALL-CAPS.",
       "location": "technique",
       "original_sentence": "Vid 'skillnad mellan X och Y'-frågor: hitta texten själv om var DEN ENA startar ('utformad för att... i anslutning till konkreta problem').",
       "cascade_risks": [
@@ -502,8 +498,8 @@
       "corpus_count": 1,
       "priority": "medium",
       "verdict": "fix-OK",
-      "reasoning": "Saknad preposition 'i' och redundant 'om' framför indirekt fråga 'var' rensas; ALL-CAPS bör också gemeniseras (jfr förgående post).",
-      "drop_reason": "duplicate (qid, snippet)"
+      "reasoning": "Tar bort ALL-CAPS; observera att en separat fix nedan adresserar prepositions-felet i samma fras.",
+      "drop_reason": "all-caps removal contradicts locked plan"
     },
     {
       "qid": "host-2017-verb1-LÄS-020",
@@ -608,7 +604,7 @@
     },
     {
       "qid": "host-2017-verb2-MEK-022",
-      "class": "style",
+      "class": "malformed",
       "snippet": "texten säger BÅDA system finns parallellt",
       "final_fix": "texten säger att båda systemen finns parallellt",
       "original_suggested_fix": "Undvik ALL-CAPS.",
@@ -616,7 +612,7 @@
       "original_sentence": "Alternativt = antingen-eller — texten säger BÅDA system finns parallellt; och 'obönhörligen slår' är dramatiskt, men inte den neurologiska poängen.",
       "cascade_risks": [],
       "corpus_count": 1,
-      "priority": "medium",
+      "priority": "high",
       "verdict": "propose-alternative",
       "reasoning": "Beyond ALL-CAPS, the sentence is missing 'att' and the noun needs definite plural 'systemen' to match 'båda' (which selects definite form).",
       "drop_reason": "duplicate (qid, snippet)"
@@ -803,15 +799,13 @@
     },
     {
       "qid": "host-2021-kvant1-XYZ-006",
-      "class": "inflection",
+      "class": "style",
       "snippet": "3x distribueras över BÅDA termer",
       "final_fix": "3x distribueras över båda termerna",
       "original_suggested_fix": "över båda termerna",
       "location": "distractor_A_why_wrong",
       "original_sentence": "3x distribueras över BÅDA termer: 3x·2 = 6x och 3x·(−5y) = −15xy. Ingen 5y kvarstår.",
-      "cascade_risks": [
-        "definite-form-swap"
-      ],
+      "cascade_risks": [],
       "corpus_count": 1,
       "priority": "medium",
       "verdict": "fix-OK",
@@ -843,7 +837,7 @@
       "original_sentence": "Det budgetansvar 'vederbörande' (den berörda personen, den det gäller) ska ha — det är formella ordet för 'den ansvarige personen'. Och om det finns potential (möjlighet, kraft i något) att sänka kostnader. Båda i förvaltningsadministrativ register.",
       "cascade_risks": [],
       "corpus_count": 1,
-      "priority": "medium",
+      "priority": "high",
       "verdict": "fix-OK",
       "reasoning": "'Register' is neutrum, so the adjective takes -t ('förvaltningsadministrativt'); adding the indefinite article 'ett' fixes the bare-noun marginality.",
       "drop_reason": "duplicate (qid, snippet)"
@@ -880,7 +874,7 @@
     },
     {
       "qid": "host-2023-verb1-ORD-008",
-      "class": "anglicism",
+      "class": "sarskrivning",
       "snippet": "Sammansatta 'av-' verbal-konstruktioner",
       "final_fix": "Sammansatta 'av-' verbkonstruktioner",
       "original_suggested_fix": "Sammansatta 'av-' verbkonstruktioner (eller: verbala konstruktioner)",
@@ -987,7 +981,7 @@
       "priority": "medium",
       "verdict": "fix-wrong",
       "reasoning": "Suggested fix is not a textual substitution; the all-caps style is a deliberate emphasis convention in the corpus and not a defect — no change needed.",
-      "drop_reason": "verdict=fix-wrong"
+      "drop_reason": "final_fix == snippet (no-op)"
     },
     {
       "qid": "host-2025-verb2-ORD-004",
@@ -1002,7 +996,7 @@
       "priority": "medium",
       "verdict": "fix-wrong",
       "reasoning": "Suggested fix is meta-instruction, not a textual substitution; all-caps emphasis is a corpus convention, not a defect.",
-      "drop_reason": "verdict=fix-wrong"
+      "drop_reason": "final_fix == snippet (no-op)"
     },
     {
       "qid": "host-2025-verb2-ORD-005",
@@ -1017,7 +1011,7 @@
       "priority": "medium",
       "verdict": "fix-wrong",
       "reasoning": "Same as above — meta-instruction without a concrete replacement; all-caps emphasis is intentional style.",
-      "drop_reason": "verdict=fix-wrong"
+      "drop_reason": "final_fix == snippet (no-op)"
     },
     {
       "qid": "host-2025-verb2-ORD-009",
@@ -1032,22 +1026,7 @@
       "priority": "medium",
       "verdict": "fix-wrong",
       "reasoning": "Meta-instruction; all-caps emphasis is intentional and consistent across the corpus.",
-      "drop_reason": "verdict=fix-wrong"
-    },
-    {
-      "qid": "host-ver1-2019-verb1-MEK-030",
-      "class": "sarskrivning",
-      "snippet": "specifika kunskaps-termen",
-      "final_fix": "specifika kunskapstermen",
-      "original_suggested_fix": "kunskapstermen",
-      "location": "distractor_A_why_wrong",
-      "original_sentence": "Med status är social-rang — säger inte kvalitet; och 'tillägnas' är okej men 'förvärvas' är mer specifika kunskaps-termen.",
-      "cascade_risks": [],
-      "corpus_count": 2,
-      "priority": "medium",
-      "verdict": "fix-wrong",
-      "reasoning": "Suggested fix drops adjektivet 'specifika' som behövs i sammanhanget ('mer specifika [X]'); rätt fix är att bara stänga sammansättningen och behålla 'specifika'.",
-      "drop_reason": "verdict=fix-wrong"
+      "drop_reason": "final_fix == snippet (no-op)"
     },
     {
       "qid": "host-ver1-2019-verb2-MEK-021",
@@ -1066,7 +1045,7 @@
       "priority": "medium",
       "verdict": "fix-wrong",
       "reasoning": "'(få får, …)' är språkligt klumpig homonymupprepning; den andra föreslagna varianten 'få utvalda' (från samma qid) är klart bättre — välj den.",
-      "drop_reason": "verdict=fix-wrong"
+      "drop_reason": "duplicate (qid, snippet)"
     },
     {
       "qid": "host-ver1-2019-verb2-MEK-028",
@@ -1081,7 +1060,7 @@
       "priority": "medium",
       "verdict": "fix-wrong",
       "reasoning": "The flagged snippet 'fel kollokation' is correct as-is in this entry; the reasoning even concedes 'No add'. Nothing to substitute.",
-      "drop_reason": "verdict=fix-wrong"
+      "drop_reason": "final_fix == snippet (no-op)"
     },
     {
       "qid": "var-2014-verb1-LÄS-015",
@@ -1093,7 +1072,8 @@
       "original_sentence": "Placeboeffekten mättes via medveten smärtskattning — det är stimulin, inte upplevelsen, som var omedveten.",
       "cascade_risks": [
         "determiner-prefix",
-        "determiner-internal"
+        "determiner-internal",
+        "definite-form-swap"
       ],
       "corpus_count": 1,
       "priority": "medium",
@@ -1102,23 +1082,8 @@
       "drop_reason": "duplicate (qid, snippet)"
     },
     {
-      "qid": "var-2016-verb1-MEK-025",
-      "class": "wordchoice",
-      "snippet": "tom/blek/glåmig",
-      "final_fix": "blek, eländig (or 'blek och ihålig')",
-      "original_suggested_fix": "blek, glåmig",
-      "location": "distractor_C_why_wrong",
-      "original_sentence": "Glåmigt är 'tom/blek/glåmig' (om utseende) — fel kollokation; månsken är inte glåmigt i texten utan farligt.",
-      "cascade_risks": [],
-      "corpus_count": 1,
-      "priority": "medium",
-      "verdict": "fix-wrong",
-      "reasoning": "Att inkludera 'glåmig' i en gloss för 'glåmigt' är cirkulärt; att enbart ta bort 'tom' löser inte cirkulariteten — riktig glosa behöver synonymer som inte upprepar lemmat (t.ex. 'blek, eländig').",
-      "drop_reason": "verdict=fix-wrong"
-    },
-    {
       "qid": "var-2016-verb1-MEK-029",
-      "class": "inflection",
+      "class": "wordchoice",
       "snippet": "medicinhistorisk-vetenskapsfilosofiskt register",
       "final_fix": "medicinhistoriskt-vetenskapsfilosofiskt register",
       "original_suggested_fix": "medicinhistoriskt-vetenskapsfilosofiskt register",
@@ -1133,7 +1098,7 @@
     },
     {
       "qid": "var-2019-verb1-MEK-025",
-      "class": "malformed",
+      "class": "style",
       "snippet": "eng. 'prescribe' kommer att översättas till 'ordinera' i svensk medicinsk svenska",
       "final_fix": "eng. 'prescribe' översätts till 'ordinera' i svensk medicinsk kontext",
       "original_suggested_fix": "översätts till 'ordinera' i svensk medicinsk kontext",
@@ -1147,23 +1112,8 @@
       "drop_reason": "duplicate (qid, snippet)"
     },
     {
-      "qid": "var-2022-2-verb1-MEK-023",
-      "class": "wordchoice",
-      "snippet": "entydiga' (klart enstämmiga)",
-      "final_fix": "entydiga' (otvetydiga, samstämmiga)",
-      "original_suggested_fix": "entydiga (otvetydiga, klart samstämmiga)",
-      "location": "solution_path",
-      "original_sentence": "Blodsocker = glukos (druvsocker) — fast medicinsk fackterm. Etiologin (sjukdomsorsaken) är oklar. Och resultaten är inte 'entydiga' (klart enstämmiga). Tre kollokationer i medicinsk forskningsregister.",
-      "cascade_risks": [],
-      "corpus_count": 1,
-      "priority": "medium",
-      "verdict": "fix-wrong",
-      "reasoning": "The fix drops the closing quote that was part of the snippet, breaking the quote pairing in the sentence. Keep the apostrophe and replace only the gloss content.",
-      "drop_reason": "verdict=fix-wrong"
-    },
-    {
       "qid": "var-2025-verb2-ORD-008",
-      "class": "wordchoice",
+      "class": "malformed",
       "snippet": "hålla till godo är RESIGNERAT NÖJANDE",
       "final_fix": "hålla till godo är RESIGNERAT ACCEPTERANDE",
       "original_suggested_fix": "... resignerat accepterande / resignerad belåtenhet",
@@ -1184,13 +1134,75 @@
       "snippet": "straffrätt-register",
       "final_fix": "straffrättsregister",
       "original_suggested_fix": "straffrättsregister",
-      "location": "technique",
-      "original_sentence": "Treblanksdrag i straffrätt-register: uppsåtligen / av oaktsamhet / belagd med — fast straffrättslig kollokation.",
+      "location": "solution_path",
+      "original_sentence": "Den som 'uppsåtligen' (med uppsåt, avsiktligt) eller 'av oaktsamhet' (vårdslöst) bryter mot — fast straffrättslig fackparskoll. Och om gärningen är 'belagd med straff' — fast juridisk fras. Tre kollokationer i straffrätt-register.",
       "cascade_risks": [],
       "corpus_count": 7,
       "priority": "medium",
       "verdict": "fix-OK",
       "reasoning": "Same compound rule applies; solid form with linking -s- is standard.",
+      "drop_reason": "duplicate (qid, snippet)"
+    },
+    {
+      "qid": "host-2017-verb2-ORD-009",
+      "class": "inflection",
+      "snippet": "Ledband är BINDVÄVAD",
+      "final_fix": "Ledband är BINDVÄV",
+      "original_suggested_fix": "Ledband är BINDVÄV (or 'BINDVÄVNAD')",
+      "location": "distractor_D_why_wrong",
+      "original_sentence": "Ledband är BINDVÄVAD; extremiteter är HELA LEMMARNA. Vävnad vs helhet.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "high",
+      "verdict": "fix-wrong",
+      "reasoning": "Suggested_fix offers two alternatives in one string, not a clean substitution. Picking 'BINDVÄV' matches the contrast 'Vävnad vs helhet' and the SAOL noun; substring replacement is unambiguous.",
+      "drop_reason": "duplicate (qid, snippet)"
+    },
+    {
+      "qid": "var-2015-verb1-LÄS-017",
+      "class": "style",
+      "snippet": "('paradigmskifte', 'allt vanligare').'",
+      "final_fix": "('paradigmskifte', 'allt vanligare').",
+      "original_suggested_fix": "('paradigmskifte', 'allt vanligare').",
+      "location": "technique",
+      "original_sentence": "Vid 'vad ligger bakom X'-frågor: hitta diskursförändringen texten beskriver ('paradigmskifte', 'allt vanligare').'",
+      "cascade_risks": [
+        "determiner-internal"
+      ],
+      "corpus_count": 1,
+      "priority": "high",
+      "verdict": "fix-OK",
+      "reasoning": "Clean removal of stray trailing apostrophe after the closing period; resulting sentence terminates correctly.",
+      "drop_reason": "duplicate (qid, snippet)"
+    },
+    {
+      "qid": "var-2016-kvant1-KVA-014",
+      "class": "malformed",
+      "snippet": "bråken",
+      "final_fix": "bråken",
+      "original_suggested_fix": "Det är frestande att tro att man inte kan ordna bråken alls.",
+      "location": "distractor_D_why_tempting",
+      "original_sentence": "bråken",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "cycle2",
+      "verdict": "fix-wrong",
+      "reasoning": "Snippet is the entire field, not a substring; the suggested fix fabricates an entire explanation rather than replacing a string — cannot be verified as a clean substitution.",
+      "drop_reason": "final_fix == snippet (no-op)"
+    },
+    {
+      "qid": "var-2026-kvant2-XYZ-005",
+      "class": "malformed",
+      "snippet": "fel inverterad gradigt",
+      "final_fix": "felaktigt inverterad",
+      "original_suggested_fix": "felaktigt inverterad",
+      "location": "distractor_C_why_tempting",
+      "original_sentence": "Första instinkten kan vara att dela 9/20 med 6 istället för med 1/6: \\frac{9}{20\\cdot 6}=\\frac{9}{120}=\\frac{3}{40}, fel inverterad gradigt.",
+      "cascade_risks": [],
+      "corpus_count": 1,
+      "priority": "high",
+      "verdict": "fix-OK",
+      "reasoning": "'Gradigt' is a non-word; the replacement is grammatical adverb+participle and conveys the intended meaning that the inversion step was applied wrongly, fitting the surrounding fraction-arithmetic explanation.",
       "drop_reason": "duplicate (qid, snippet)"
     }
   ]

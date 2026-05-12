@@ -2,26 +2,27 @@
 
 ## Counts
 
-- **Verified, ready to apply**:  1,229
-- **Rejected/filtered**:         75
-  - fix-wrong (verifier veto):    10
-  - all-caps removal blocked:     29
-  - duplicate (qid, snippet):     35
-  - no-op (fix == snippet):       1
+- **Verified, ready to apply**:  1,325
+- **Rejected/filtered**:         76
+  - fix-wrong (verifier veto):    0
+  - all-caps removal blocked:     30
+  - duplicate (qid, snippet):     39
+  - no-op (fix == snippet):       7
   - empty final_fix:              0
   - missing context:              0
-- **Cascade-risk flags in verified**: 414
+- **Cascade-risk flags in verified**: 464
 
 ## By class
 
-- `wordchoice`: 325
-- `inflection`: 321
-- `malformed`: 254
+- `inflection`: 328
+- `wordchoice`: 324
+- `malformed`: 283
 - `anglicism`: 135
-- `style`: 96
-- `spelling`: 47
-- `sarskrivning`: 40
-- `register`: 10
+- `style`: 97
+- `spelling`: 52
+- `cascade`: 52
+- `sarskrivning`: 42
+- `register`: 11
 - `word_choice`: 1
 
 ## Sample verified fixes (first 20)
