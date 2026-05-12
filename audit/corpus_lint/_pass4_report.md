@@ -2,23 +2,23 @@
 
 ## Counts
 
-- **Verified, ready to apply**:  1,325
-- **Rejected/filtered**:         76
+- **Verified, ready to apply**:  1,590
+- **Rejected/filtered**:         124
   - fix-wrong (verifier veto):    0
   - all-caps removal blocked:     30
-  - duplicate (qid, snippet):     39
-  - no-op (fix == snippet):       7
+  - duplicate (qid, snippet):     63
+  - no-op (fix == snippet):       31
   - empty final_fix:              0
   - missing context:              0
 - **Cascade-risk flags in verified**: 464
 
 ## By class
 
+- `style`: 362
 - `inflection`: 328
 - `wordchoice`: 324
 - `malformed`: 283
 - `anglicism`: 135
-- `style`: 97
 - `spelling`: 52
 - `cascade`: 52
 - `sarskrivning`: 42

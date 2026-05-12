@@ -79,7 +79,7 @@ def load_outputs() -> list[dict]:
     dedup at apply-build time silently drops any overlaps that match by key.
     """
     out = []
-    for pattern in ('pass4_output_*.json', 'pass4c2_output_*.json'):
+    for pattern in ('pass4_output_*.json', 'pass4c2_output_*.json', 'pass4c3_output_*.json'):
         for p in sorted(QUALITY_DIR.glob(pattern)):
             try:
                 data = json.loads(p.read_text())
@@ -94,7 +94,7 @@ def load_outputs() -> list[dict]:
 def load_input_batches() -> dict[tuple[str, str], dict]:
     """Index pass4 + pass4c2 input entries by (qid, snippet)."""
     idx = {}
-    for pattern in ('pass4_input_*.json', 'pass4c2_input_*.json'):
+    for pattern in ('pass4_input_*.json', 'pass4c2_input_*.json', 'pass4c3_input_*.json'):
         for p in sorted(QUALITY_DIR.glob(pattern)):
             try:
                 data = json.loads(p.read_text())
