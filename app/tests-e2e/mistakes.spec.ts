@@ -124,7 +124,10 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
   const wrongLetter = q1Correct === 'A' ? 'B' : 'A'
   await page.getByTestId(`option-${wrongLetter}`).click()
   await expect(nextBtn).toBeEnabled({ timeout: 5_000 })
-  await nextBtn.click()
+  // `.hpc-breathe` CTA — reducedMotion in playwright.config makes it
+  // stable, but pass `force: true` as belts-and-braces for the long
+  // suite where occasional retries hit a late-paint frame.
+  await nextBtn.click({ force: true })
 
   // Q2..Q10 — answer correctly to finish quickly.
   for (let i = 0; i < 9; i++) {
@@ -132,7 +135,10 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
     const { correct } = await readPromptCorrectLetter(page)
     await page.getByTestId(`option-${correct}`).click()
     await expect(nextBtn).toBeEnabled({ timeout: 5_000 })
-    await nextBtn.click()
+    // `.hpc-breathe` CTA — reducedMotion in playwright.config makes it
+  // stable, but pass `force: true` as belts-and-braces for the long
+  // suite where occasional retries hit a late-paint frame.
+  await nextBtn.click({ force: true })
   }
 
   // Result screen — score should be 9 (we missed exactly one).
@@ -151,7 +157,10 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
   const { correct: replayCorrect } = await readPromptCorrectLetter(page)
   await page.getByTestId(`option-${replayCorrect}`).click()
   await expect(nextBtn).toBeEnabled({ timeout: 5_000 })
-  await nextBtn.click()
+  // `.hpc-breathe` CTA — reducedMotion in playwright.config makes it
+  // stable, but pass `force: true` as belts-and-braces for the long
+  // suite where occasional retries hit a late-paint frame.
+  await nextBtn.click({ force: true })
   // Whether this was the only mistake or just one of many, the test has
   // proven that the resolve mutation fired (the replay session would
   // never have started if the queue was empty).

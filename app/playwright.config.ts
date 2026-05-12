@@ -24,6 +24,14 @@ export default defineConfig({
     baseURL: 'http://localhost:4173',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    // Phase A.8 EDITION CTAs use the `.hpc-breathe` animation (opacity
+    // + scale micro-cycle). Playwright's element-stability check never
+    // settles on an animating bounding box, so clicks time out. The CSS
+    // already disables `.hpc-breathe` under prefers-reduced-motion, so
+    // just enable that mode in tests. The `.reveal` first-paint stagger
+    // also collapses under this preference, which actually speeds tests
+    // up — first-paint waits drop a few hundred ms.
+    reducedMotion: 'reduce',
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
