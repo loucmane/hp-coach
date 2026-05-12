@@ -71,13 +71,10 @@ export function PedagogyPanel({ qid, graded, correct }: Props) {
     }
   }, [qid])
 
-  if (state.kind === 'missing' || state.kind === 'error') {
-    // Same posture as ExplanationPanel — missing / transport-error
-    // both render nothing rather than a half-broken card. Drill stays
-    // usable.
-    if (state.kind === 'error') {
-      console.warn(`[PedagogyPanel] failed to load ${qid}:`, state.message)
-    }
+  if (state.kind === 'error') {
+    // Transport error (5xx etc.) — log silently and render nothing
+    // rather than a half-broken card. Drill stays usable.
+    console.warn(`[PedagogyPanel] failed to load ${qid}:`, state.message)
     return null
   }
 
@@ -105,6 +102,8 @@ export function PedagogyPanel({ qid, graded, correct }: Props) {
       {graded ? (
         state.kind === 'ready' ? (
           <PostGradeBody explanation={state.explanation} qid={qid} correct={correct} />
+        ) : state.kind === 'missing' ? (
+          <MissingExplanation qid={qid} correct={correct} />
         ) : (
           <SkeletonBody />
         )
@@ -114,6 +113,71 @@ export function PedagogyPanel({ qid, graded, correct }: Props) {
         <WaitingPlaceholder />
       )}
     </aside>
+  )
+}
+
+// ── Missing-explanation state ──────────────────────────────────────
+//
+// Phase A.8.1: when Layer 2 hasn't been backfilled for this qid we
+// used to render nothing — the pedagogy column went silently empty,
+// leaving the user with no idea why they got the answer wrong. Show
+// a graceful placeholder card instead, with a flag-this CTA that
+// writes a 'rejected' feedback entry so we can prioritize the next
+// regen wave. The post-A.6 corpus regen will close the gap; this
+// placeholder makes the gap visible and actionable until then.
+
+function MissingExplanation({ qid, correct }: { qid: string; correct: boolean }) {
+  const [flagged, setFlagged] = useState<boolean>(() => getFeedback(qid)?.status === 'rejected')
+  const flag = () => {
+    submitFeedback({
+      qid,
+      status: 'rejected',
+      model: 'missing-explanation',
+      generated_at: 0,
+      reviewed_at: Date.now(),
+    })
+    setFlagged(true)
+  }
+  return (
+    <>
+      <Eyebrow style={{ color: correct ? 'var(--ok)' : 'var(--muted)' }}>
+        {correct ? 'Bra jobbat' : 'Förklaring saknas'}
+      </Eyebrow>
+      <p
+        style={{
+          margin: 0,
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(15px, 0.9rem + 0.3vw, 18px)',
+          lineHeight: 1.55,
+          color: 'var(--ink-2)',
+          maxWidth: '34ch',
+        }}
+      >
+        Den här frågan har inte fått en pedagogisk genomgång än. Vi prioriterar backfill efter hur
+        ofta varje fråga flaggas — markera den så hamnar den högre i kön.
+      </p>
+      <button
+        type="button"
+        onClick={flag}
+        disabled={flagged}
+        data-testid="pedagogy-flag-missing"
+        style={{
+          alignSelf: 'flex-start',
+          background: 'transparent',
+          border: '1px solid var(--hairline)',
+          padding: '8px 12px',
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
+          letterSpacing: 'var(--font-mono-track)',
+          textTransform: 'uppercase',
+          color: flagged ? 'var(--muted)' : 'var(--ink)',
+          cursor: flagged ? 'default' : 'pointer',
+          borderRadius: 4,
+        }}
+      >
+        {flagged ? '✓ Markerad — tack' : 'Markera som saknad'}
+      </button>
+    </>
   )
 }
 
@@ -269,9 +333,9 @@ function StepList({ steps }: { steps: ExplanationStep[] }) {
       <div
         data-testid="pedagogy-solution"
         style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(15px, 0.9rem + 0.3vw, 18px)',
-          lineHeight: 1.55,
+          fontFamily: 'var(--font-ui)',
+          fontSize: 'clamp(15px, 0.9rem + 0.3vw, 17px)',
+          lineHeight: 1.6,
           color: 'var(--ink)',
         }}
       >
@@ -288,7 +352,9 @@ function StepList({ steps }: { steps: ExplanationStep[] }) {
         listStyle: 'none',
         display: 'flex',
         flexDirection: 'column',
-        gap: 12,
+        // A.8.1 — generous step-to-step gap so each step reads as its
+        // own moment in the worked example, not as a list item.
+        gap: 20,
       }}
     >
       {steps.map((step) => (
@@ -303,46 +369,56 @@ function StepCard({ step }: { step: ExplanationStep }) {
     <li
       data-testid={`pedagogy-step-${step.n}`}
       style={{
-        background: 'var(--panel-2)',
-        border: '1px solid var(--hairline-2)',
-        borderRadius: 'calc(var(--radius) * 0.5)',
-        padding: '14px 16px',
+        // A.8.1 — drop the card chrome on individual steps (matches
+        // the EDITION rule). Each step is articulated by a hairline
+        // rule on the leading edge + a hanging mono step number,
+        // like a footnote in a typeset book.
+        position: 'relative',
+        paddingLeft: 38,
         display: 'flex',
         flexDirection: 'column',
-        gap: 6,
+        gap: 8,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
-        <span
+      <span
+        aria-hidden
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 4,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 12,
+          letterSpacing: 'var(--font-mono-track)',
+          color: 'var(--accent)',
+          fontWeight: 600,
+          fontVariantNumeric: 'tabular-nums',
+        }}
+      >
+        {String(step.n).padStart(2, '0')}
+      </span>
+      {step.title && (
+        <div
           style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 11,
-            letterSpacing: 'var(--font-mono-track)',
-            textTransform: 'uppercase',
-            color: 'var(--accent)',
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(16px, 0.9rem + 0.3vw, 19px)',
+            fontWeight: 500,
+            color: 'var(--ink)',
+            letterSpacing: '-0.01em',
+            lineHeight: 1.3,
           }}
         >
-          Steg {step.n}
-        </span>
-        {step.title && (
-          <span
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 14,
-              fontWeight: 500,
-              color: 'var(--ink)',
-            }}
-          >
-            {step.title}
-          </span>
-        )}
-      </div>
+          {step.title}
+        </div>
+      )}
       <div
         style={{
-          fontFamily: 'var(--font-display)',
+          // A.8.1 — sans body for step text (matches options),
+          // generous leading for pedagogical readability.
+          fontFamily: 'var(--font-ui)',
           fontSize: 'clamp(14px, 0.875rem + 0.2vw, 16px)',
-          lineHeight: 1.55,
-          color: 'var(--ink)',
+          lineHeight: 1.65,
+          color: 'var(--ink-2)',
+          letterSpacing: 'var(--font-ui-track)',
         }}
       >
         <MathText>{step.text}</MathText>
@@ -355,62 +431,61 @@ function StepCard({ step }: { step: ExplanationStep }) {
 
 function DistractorBlock({ distractors }: { distractors: Explanation['distractors'] }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
       <Mono>Varför inte de andra</Mono>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {distractors.map((d) => (
+          // A.8.1 — drop card chrome (border + radius + bg). Each
+          // distractor is a typographic block: letter prefix in
+          // mono, two short lines underneath (lockar/men fel).
           <div
             key={d.letter}
             data-testid={`pedagogy-distractor-${d.letter}`}
             style={{
-              padding: '10px 12px',
-              border: '1px solid var(--hairline-2)',
-              borderRadius: 'calc(var(--radius) * 0.4)',
-              background: 'var(--panel-2)',
+              position: 'relative',
+              paddingLeft: 28,
               display: 'flex',
-              gap: 10,
+              flexDirection: 'column',
+              gap: 4,
             }}
           >
             <span
+              aria-hidden
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 22,
-                height: 22,
-                borderRadius: 11,
-                background: 'var(--bg)',
-                border: '1px solid var(--hairline)',
+                position: 'absolute',
+                left: 0,
+                top: 2,
                 fontFamily: 'var(--font-mono)',
                 fontSize: 11,
-                fontWeight: 600,
+                letterSpacing: 'var(--font-mono-track)',
                 color: 'var(--muted)',
-                flexShrink: 0,
+                fontWeight: 600,
+                textTransform: 'lowercase',
               }}
             >
-              {d.letter}
+              {d.letter.toLowerCase()}.
             </span>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
-              <div
-                style={{
-                  fontSize: 13,
-                  color: 'var(--ink-2)',
-                  fontFamily: 'var(--font-display)',
-                }}
-              >
-                <strong style={{ color: 'var(--ink)', fontWeight: 600 }}>Lockar för att: </strong>
-                <MathText>{d.why_tempting}</MathText>
-              </div>
-              <div
-                style={{
-                  fontSize: 13,
-                  color: 'var(--ink)',
-                  fontFamily: 'var(--font-display)',
-                }}
-              >
-                <strong style={{ fontWeight: 600 }}>Men fel för: </strong>
-                <MathText>{d.why_wrong}</MathText>
-              </div>
+            <div
+              style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: 13,
+                lineHeight: 1.5,
+                color: 'var(--ink-2)',
+              }}
+            >
+              <span style={{ color: 'var(--muted)' }}>Lockar för att </span>
+              <MathText>{d.why_tempting}</MathText>
+            </div>
+            <div
+              style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: 13,
+                lineHeight: 1.5,
+                color: 'var(--ink)',
+              }}
+            >
+              <span style={{ color: 'var(--muted)' }}>Men fel för att </span>
+              <MathText>{d.why_wrong}</MathText>
             </div>
           </div>
         ))}

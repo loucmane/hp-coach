@@ -222,52 +222,70 @@ function OptionRow({
       style={{
         display: 'flex',
         alignItems: 'baseline',
-        gap: 'clamp(16px, 1.5vw, 28px)',
-        // Phase A.8 EDITION: drop the pill chrome (border + radius +
-        // panel background). Options become typographic rows on the
-        // page itself — letter index in mono, word in display serif.
-        // Hover state is a single 1px ink underline on the word, NOT
-        // a background fill. Selected / correct / incorrect states
-        // use color cues, not container chrome.
-        padding: 'clamp(10px, 1vh, 14px) 0',
-        minHeight: 44, // WCAG 2.5.5 tap target on phone
+        gap: 'clamp(18px, 1.5vw, 28px)',
+        // Phase A.8 refinement: options ARE the action surface — they
+        // need to feel selectable without becoming pill-chromed cards.
+        // Move:
+        //   - Sans-serif body (Inter Tight) for option text, not the
+        //     hero serif. Creates typographic contrast between the
+        //     headword (display serif) and the action affordance,
+        //     and fixes "options look like regular text" feedback.
+        //   - 1px hairline rule between rows; left edge ink-accent
+        //     marker on hover/picked that shifts in 200ms.
+        //   - Hover bg tint at 5% --ink as a quiet "this is clickable"
+        //     cue. Removed when graded (no longer interactive).
+        padding:
+          'clamp(14px, 1.4vh, 18px) clamp(12px, 1vw, 16px) clamp(14px, 1.4vh, 18px) clamp(18px, 1.4vw, 24px)',
+        minHeight: 52,
         textAlign: 'left',
-        background: 'transparent',
+        background: styles.bg,
         border: 'none',
+        borderTop: '1px solid var(--hairline-2)',
         borderRadius: 0,
         color: styles.textColor,
         cursor: disabled ? 'default' : 'pointer',
-        fontFamily: 'var(--font-display)',
-        fontSize: 'clamp(18px, 1rem + 0.5vw, 22px)',
-        lineHeight: 1.3,
-        letterSpacing: '-0.015em',
-        transition: 'color 200ms',
+        fontFamily: 'var(--font-ui)',
+        fontSize: 'clamp(15px, 0.875rem + 0.3vw, 18px)',
+        lineHeight: 1.4,
+        letterSpacing: 'var(--font-ui-track)',
+        fontWeight: state === 'picked' || state === 'correct' ? 500 : 400,
+        position: 'relative',
+        transition: 'color 200ms, background-color 150ms, font-weight 0ms',
         opacity: state === 'idle' && disabled ? 0.45 : 1,
         width: '100%',
       }}
     >
+      {/* Leading ink-accent rail — invisible at idle, ink at picked,
+       *  accent at correct, bad at incorrect. Provides a visible
+       *  selection cue without resorting to pill chrome. */}
+      <span
+        aria-hidden
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: '15%',
+          bottom: '15%',
+          width: 3,
+          background: styles.rail,
+          transition: 'background 200ms',
+        }}
+      />
       <span
         style={{
           fontFamily: 'var(--font-mono)',
           fontSize: 12,
-          fontWeight: 500,
+          fontWeight: 600,
           letterSpacing: 'var(--font-mono-track)',
           color: styles.letterColor,
           textTransform: 'lowercase',
-          minWidth: '1.4em',
+          minWidth: '1.6em',
           flexShrink: 0,
+          fontVariantNumeric: 'tabular-nums',
         }}
       >
         {opt.letter.toLowerCase()}.
       </span>
-      <span
-        style={{
-          flex: 1,
-          textDecoration: state === 'picked' ? 'underline' : 'none',
-          textDecorationThickness: 1,
-          textUnderlineOffset: 4,
-        }}
-      >
+      <span style={{ flex: 1, minWidth: 0 }}>
         <MathText>{opt.text}</MathText>
       </span>
       {state === 'correct' && (
@@ -303,16 +321,38 @@ function OptionRow({
 function optionStyles(state: RowState): {
   textColor: string
   letterColor: string
+  bg: string
+  rail: string
 } {
   switch (state) {
     case 'picked':
-      return { textColor: 'var(--ink)', letterColor: 'var(--ink)' }
+      return {
+        textColor: 'var(--ink)',
+        letterColor: 'var(--ink)',
+        bg: 'color-mix(in oklch, var(--ink) 4%, transparent)',
+        rail: 'var(--ink)',
+      }
     case 'correct':
-      return { textColor: 'var(--ink)', letterColor: 'var(--accent)' }
+      return {
+        textColor: 'var(--ink)',
+        letterColor: 'var(--accent)',
+        bg: 'color-mix(in oklch, var(--accent) 8%, transparent)',
+        rail: 'var(--accent)',
+      }
     case 'incorrect':
-      return { textColor: 'var(--muted)', letterColor: 'var(--bad)' }
+      return {
+        textColor: 'var(--muted)',
+        letterColor: 'var(--bad)',
+        bg: 'transparent',
+        rail: 'var(--bad)',
+      }
     default:
-      return { textColor: 'var(--ink)', letterColor: 'var(--muted)' }
+      return {
+        textColor: 'var(--ink)',
+        letterColor: 'var(--muted)',
+        bg: 'transparent',
+        rail: 'transparent',
+      }
   }
 }
 
