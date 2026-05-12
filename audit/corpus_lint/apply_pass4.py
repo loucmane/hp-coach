@@ -81,18 +81,83 @@ def find_file_for_qid(qid: str) -> Path | None:
 DISTRACTOR_RX = re.compile(r'^distractor_([A-Z])_(why_tempting|why_wrong)$', re.IGNORECASE)
 
 
+# Verifier sometimes wrote final_fix as a transformation arrow "X → Y" instead
+# of just the target text. Extract the target side when we see this pattern.
+ARROW_RX = re.compile(r'^(?P<src>.+?)\s*→\s*(?P<tgt>.+)$', re.DOTALL)
+
+
+def normalize_final_fix(snippet: str, final_fix: str) -> tuple[str, str, bool]:
+    """Clean up final_fix forms that aren't pure replacement targets.
+
+    Returns (clean_final_fix, status, self_ref). self_ref=True means the
+    snippet is a substring of final_fix, so the apply must use a
+    word-boundary regex to stay idempotent.
+
+    status='ok' / 'arrow_extracted' / 'identity'.
+    """
+    if not final_fix:
+        return snippet, 'identity', False
+
+    # Arrow form: "snippet → target" — extract target side
+    m = ARROW_RX.match(final_fix.strip())
+    if m:
+        tgt = m.group('tgt').strip()
+        if tgt and tgt != snippet:
+            final_fix = tgt
+
+    if snippet == final_fix:
+        return snippet, 'identity', False
+
+    self_ref = snippet in final_fix
+    return final_fix, 'arrow_extracted' if m else 'ok', self_ref
+
+
+def replace_once(text: str, snippet: str, final_fix: str, self_ref: bool) -> tuple[str, bool]:
+    """Replace first occurrence of snippet → final_fix in text.
+
+    When self_ref=True (snippet is a substring of final_fix, e.g. "båda
+    termer" → "båda termerna"), use word-boundary regex to refuse to match
+    inside an already-applied target. Otherwise use plain str.replace.
+
+    Returns (new_text, changed).
+    """
+    if snippet not in text:
+        return text, False
+    if not self_ref:
+        return text.replace(snippet, final_fix, 1), True
+    # Self-ref path: require word boundary at the end of the snippet
+    # (start boundary is implied by the leading word char of the snippet
+    # being matched literally).
+    end_is_word = bool(re.match(r'\w', snippet[-1], flags=re.UNICODE))
+    pattern = re.escape(snippet)
+    if end_is_word:
+        pattern += r'(?!\w)'
+    new_text, n = re.subn(pattern, lambda _m: final_fix, text, count=1, flags=re.UNICODE)
+    return new_text, n > 0
+
+
 def apply_to_entry(entry: dict, location: str, snippet: str, final_fix: str) -> tuple[bool, str]:
     """Apply one fix to one entry, in-place. Returns (changed, status)."""
+    # Normalise final_fix to extract arrow-targets and detect self-ref
+    final_fix_clean, norm_status, self_ref = normalize_final_fix(snippet, final_fix)
+    if norm_status == 'identity':
+        return False, 'identity'
+    final_fix = final_fix_clean
+
     # solution_path / technique / pitfall — direct fields
     if location in ('solution_path', 'technique', 'pitfall'):
         v = entry.get(location)
         if not isinstance(v, str):
             return False, 'field_not_string'
-        if snippet not in v:
-            if final_fix in v:
-                return False, 'already_applied'
+        # Idempotency: if final_fix is already present in the field, treat as
+        # already-applied even if snippet is still findable (covers meta-text
+        # fixes where snippet stays inside the rewritten passage).
+        if final_fix in v:
+            return False, 'already_applied'
+        new_v, changed = replace_once(v, snippet, final_fix, self_ref)
+        if not changed:
             return False, 'snippet_not_found'
-        entry[location] = v.replace(snippet, final_fix, 1)
+        entry[location] = new_v
         return True, 'applied'
 
     # distractor_<letter>_<sub>
@@ -107,27 +172,34 @@ def apply_to_entry(entry: dict, location: str, snippet: str, final_fix: str) -> 
                 v = d.get(sub)
                 if not isinstance(v, str):
                     return False, 'field_not_string'
-                if snippet not in v:
-                    if final_fix in v:
-                        return False, 'already_applied'
+                if final_fix in v:
+                    return False, 'already_applied'
+                new_v, changed = replace_once(v, snippet, final_fix, self_ref)
+                if not changed:
                     return False, 'snippet_not_found'
-                d[sub] = v.replace(snippet, final_fix, 1)
+                d[sub] = new_v
                 return True, 'applied'
         return False, 'distractor_not_found'
 
     # Unknown location format — scan all candidate fields
     for f in ('solution_path', 'technique', 'pitfall'):
         v = entry.get(f)
-        if isinstance(v, str) and snippet in v:
-            entry[f] = v.replace(snippet, final_fix, 1)
+        if not isinstance(v, str):
+            continue
+        new_v, changed = replace_once(v, snippet, final_fix, self_ref)
+        if changed:
+            entry[f] = new_v
             return True, 'applied_fallback_scan'
     for d in entry.get('distractors') or []:
         if not isinstance(d, dict):
             continue
         for sub in ('why_tempting', 'why_wrong'):
             v = d.get(sub)
-            if isinstance(v, str) and snippet in v:
-                d[sub] = v.replace(snippet, final_fix, 1)
+            if not isinstance(v, str):
+                continue
+            new_v, changed = replace_once(v, snippet, final_fix, self_ref)
+            if changed:
+                d[sub] = new_v
                 return True, 'applied_fallback_scan'
     return False, 'unknown_location_no_match'
 
