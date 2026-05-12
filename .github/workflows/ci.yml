@@ -57,6 +57,16 @@ jobs:
           CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
           EOF
 
+      # wrangler dev uses a local SQLite (under .wrangler/state/v3/d1/)
+      # as the D1 binding when --remote isn't passed. CI starts cold so
+      # that DB is empty — the worker 500s with "D1_ERROR: no such
+      # table: users" on every authenticated request. Apply migrations
+      # against the local DB so the schema is in place before Playwright
+      # spins up the worker.
+      - name: Apply D1 migrations (local)
+        working-directory: worker
+        run: pnpm db:apply:local
+
       - name: Typecheck
         run: pnpm typecheck
 
