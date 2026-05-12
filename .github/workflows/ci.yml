@@ -32,7 +32,16 @@ jobs:
           cache: pnpm
           cache-dependency-path: app/pnpm-lock.yaml
 
-      - name: Install
+      - name: Install (app)
+        run: pnpm install --frozen-lockfile
+
+      # Worker deps are required for `app` typecheck — app/src/api/client.ts
+      # imports `AppType` from ../../../worker/src/index for the typed hc()
+      # client. The reference is type-only (nothing from worker bundles
+      # into the SPA), but tsc walks the worker source and needs its
+      # node_modules (hono, drizzle-orm, zod, @clerk/backend) to resolve.
+      - name: Install (worker)
+        working-directory: worker
         run: pnpm install --frozen-lockfile
 
       - name: Typecheck
