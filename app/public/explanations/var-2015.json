@@ -7,7 +7,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro att 0,99⁹⁹ ≈ 1.",
-        "why_wrong": "0,99⁹⁹ ≈ 0,37; 1,1¹¹ ≈ 2,85. II vinner brett."
+        "why_wrong": "0,99⁹⁹ ≈ 0,37; 1,1¹¹ ≈ 2,85. II vinner klart."
       },
       {
         "letter": "C",
@@ -82,8 +82,8 @@
     }
   },
   "var-2015-kvant1-KVA-017": {
-    "solution_path": "Inkludering-uteslutning. Stora bollar utan röda = 30 - 15 = 15. Röda utan stora = 30 - 15 = 15. Lika — C.",
-    "technique": "Inkludering-uteslutning: \"enbart A\" = |A| − |A ∩ B|; om båda mängderna har samma storlek och samma snitt blir de \"enbart\"-delarna lika — här ger 30 − 15 lika med 30 − 15, alltså C.",
+    "solution_path": "Inklusion-exklusion. Stora bollar utan röda = 30 - 15 = 15. Röda utan stora = 30 - 15 = 15. Lika — C.",
+    "technique": "Inklusion-exklusion: \"enbart A\" = |A| − |A ∩ B|; om båda mängderna har samma storlek och samma snitt blir de \"enbart\"-delarna lika — här ger 30 − 15 lika med 30 − 15, alltså C.",
     "pitfall": null,
     "distractors": [
       {
@@ -200,7 +200,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 91 (verkar oddt).",
+        "why_tempting": "Snabbsvar är ofta 91 (verkar udda).",
         "why_wrong": "91 = 7·13, ej delbart med 3."
       },
       {
@@ -248,7 +248,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att räkna √(84-10) = √74 ≈ 8,6 → 4.",
-        "why_wrong": "Roten av differensen ≠ differensen av rotor. Räkna varje rot separat."
+        "why_wrong": "Det är differensen av rötter — räkna varje rot separat."
       },
       {
         "letter": "C",
@@ -263,7 +263,7 @@
     ],
     "pitfall": null,
     "solution_path": "\\sqrt{84}-\\sqrt{10}\\approx 9{,}17-3{,}16\\approx 6.",
-    "technique": "Differens av rotor: räkna varje rot separat (inte rot av differensen)."
+    "technique": "Differens av rötter: räkna varje rot separat (inte rot av differensen)."
   },
   "var-2015-kvant1-XYZ-004": {
     "_meta": {
@@ -393,7 +393,7 @@
         "why_wrong": "Det är supplement (180°), inte komplement (90°), som gäller vid en rät linje — och även där är det a + grannvinkel, inte a + c."
       }
     ],
-    "pitfall": "När frågan säger ·med säkerhet korrekt· måste relationen gälla för ALLA värden på a — testa med ett konkret värde och utesluta alternativ som bara fungerar för vissa specialfall (som a = 90°).",
+    "pitfall": "När frågan säger \"med säkerhet korrekt\" måste relationen gälla för ALLA värden på a — testa med ett konkret värde och utesluta alternativ som bara fungerar för vissa specialfall (som a = 90°).",
     "solution_path": "Identifiera vilka av vinklarna a, b, c, d som är vertikalvinklar (lika) och vilka som är supplement (summerar till 180°). Sätt upp ekvationen med a + supplement = 180° och uttryck b och c i termer av a — det leder till sambandet 2a + b − c = 180°. Testa även med ett specifikt värde (t.ex. a = 50°) för att verifiera att alternativ A alltid gäller medan B–D inte gör det.",
     "technique": "Vinklar vid skärningspunkten av två linjer: motstående vinklar (vertikalvinklar) är lika, närliggande vinklar är supplement (summerar till 180°)."
   },
@@ -447,7 +447,7 @@
         "why_wrong": "π är hela sektorns area, men segmentet är BARA delen utanför triangeln — du måste subtrahera."
       }
     ],
-    "pitfall": "Skilj på sektor (·tårtbit·, mellan två radier och bågen) och segment (mellan korda och båge) — segmentet är alltid mindre.",
+    "pitfall": "Skilj på sektor (\"tårtbit\", mellan två radier och bågen) och segment (mellan korda och båge) — segmentet är alltid mindre.",
     "solution_path": "Sektorn i figuren är en kvartscirkel (90°) med radien 2 cm: sektor-area = (\\frac{1}{4})·π·2^2 = π cm^2. Triangeln mellan de två radierna är rätvinklig: area = (\\frac{1}{2})·2·2 = 2 cm^2. Cirkelsegmentet blir π − 2 cm^2.",
     "technique": "Cirkelsegment (området mellan en korda och bågen) = sektor-area − triangel-area, där triangeln spänner ut av sektorns två radier."
   },
@@ -531,7 +531,7 @@
   },
   "var-2015-kvant2-KVA-014": {
     "solution_path": "60 pojkar, 30 flickor (total 90). 40 vänsterhänta totalt. Vänsterhänta pojkar kan vara 10-40, beroende på vänsterhänta flickor (0-30). 20 ligger inom [10, 40], så D.",
-    "technique": "Två-vägs-tabell: utan hänthet per kön är fördelningen fri.",
+    "technique": "Tvåvägstabell: händighet.",
     "pitfall": null,
     "distractors": [
       {
@@ -787,7 +787,7 @@
     ],
     "pitfall": null,
     "solution_path": "Identifiera den vinkel på AB som ligger på samma sida av tvärgående som x på CD. Antingen är de likbelägna (samma värde) eller supplementära (summa 180°). Här ger figurens 70°-vinkel ett supplement-par mot x: x = 180^\\circ-70^\\circ = 110^\\circ.",
-    "technique": "Parallella linjer + tvärgående: likbelägna, alternatvinkel och sambokade vinklar låter dig flytta varje vinkel mellan linjerna utan att tappa bok.",
+    "technique": "Parallella linjer + tvärgående: likbelägna vinklar, alternatvinklar och samhörande vinklar låter dig flytta varje vinkel mellan linjerna utan att tappa bort.",
     "_meta": {
       "generated_at": 1778415987299,
       "model": "claude-opus-4-7"
@@ -817,7 +817,7 @@
     ],
     "pitfall": null,
     "solution_path": "\\frac{24}{5}-\\frac{16}{3}=\\frac{72-80}{15}=-\\frac{8}{15}.",
-    "technique": "Bråk subtraktion: gemensam nämnare först."
+    "technique": "Bråksubtraktion: gemensam nämnare först."
   },
   "var-2015-kvant2-XYZ-007": {
     "_meta": {
@@ -906,7 +906,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro x = 0.",
-        "why_wrong": "Om x = 0, då w = y. Men x ≠ w är inget villkor; hmm. Egentligen: alla 'olika tal' = inget par är lika. Om x = 0 och y ≠ 0, w = y ≠ x = 0 är OK. Men z är säkert 0 i kontext."
+        "why_wrong": "Om x = 0, då w = y. Om x = 0 och y ≠ 0, är w = y ≠ x = 0, vilket är OK i sammanhanget."
       },
       {
         "letter": "B",
@@ -1159,7 +1159,7 @@
     ],
     "pitfall": "'Snart' har dubbel betydelse på svenska: tidsligt ('inom kort') och graderande ('nästan'). I det här idiomet är det den graderande betydelsen.",
     "solution_path": "'Snart sagt' är ett svenskt idiomatiskt uttryck — bokstavligt 'sagt nästan, ofullständigt'. Det betyder 'praktiskt taget' eller 'i stort sett' — alltså så gott som.",
-    "technique": "Svenska reservation-adverbial: snart sagt (nästan), så gott som (nästan), praktiskt taget (i praktiken), nära nog (nästan). Alla mjukar upp ett påstående."
+    "technique": "Svenska reservationsadverbial: snart sagt (nästan), så gott som (nästan), praktiskt taget (i praktiken), nära nog (nästan). Alla mjukar upp ett påstående."
   },
   "var-2015-verb1-ORD-007": {
     "_meta": {
@@ -1170,7 +1170,7 @@
       {
         "letter": "A",
         "why_tempting": "Aktualiteter sprider information.",
-        "why_wrong": "Information är ALLMÄN fakta-överföring; aktualitet är SPECIFIKT dagsaktuell nyhet. Allmänt vs aktuellt."
+        "why_wrong": "Information är ALLMÄN faktaöverföring; aktualitet är SPECIFIKT dagsaktuell nyhet. Allmänt vs aktuellt."
       },
       {
         "letter": "B",
@@ -1211,7 +1211,7 @@
       {
         "letter": "D",
         "why_tempting": "Mun är central både för att äta och bita.",
-        "why_wrong": "Bita är att ANGRIPA med tänderna; inmundiga är att ÄTA (passar maten genom hela mundvik). Bett vs ätande."
+        "why_wrong": "Bita är att ANGRIPA med tänderna; inmundiga är att ÄTA (för in maten i munnen). Bett vs ätande."
       },
       {
         "letter": "E",
@@ -1220,7 +1220,7 @@
       }
     ],
     "pitfall": null,
-    "solution_path": "Att inmundiga betyder att äta — formellt eller spädsamt ord för att förtära mat. Sammansatt av in- (in i) + 'mun' + -diga (verbändelse) = 'föra in i munnen'. Klingar gammaldags och högtidligt; används ofta skämtsamt eller i formella sammanhang.",
+    "solution_path": "Att inmundiga betyder att äta — formellt eller sirligt ord för att förtära mat. Sammansatt av in- (in i) + 'mun' + -diga (verbändelse) = 'föra in i munnen'. Klingar gammaldags och högtidligt; används ofta skämtsamt eller i formella sammanhang.",
     "technique": "Gammaldags högtidliga verb (inmundiga, sortera, expediera) — formell registerstil; ofta lekfullt använda i moderna sammanhang."
   },
   "var-2015-verb1-ORD-009": {
@@ -1251,7 +1251,7 @@
       }
     ],
     "pitfall": null,
-    "solution_path": "Krum betyder böjd — krökt, ej rak. Gammalt nordiskt ord, samma rot som engelska crooked, tysk krumm. 'En krum nyckel' = en böjd nyckel. Konkret om form, ofta om åldersböjda människor eller knepiga formationer.",
+    "solution_path": "Krum betyder böjd — krökt, ej rak. Gammalt nordiskt ord, samma rot som engelska crooked, tyska krumm. 'En krum nyckel' = en böjd nyckel. Konkret om form, ofta om åldersböjda människor eller knepiga formationer.",
     "technique": "Gammelnordiska formord (krum, slank, pörte) — beskriver fysisk geometri, ofta överförda till bildligt bruk om personlighet eller stil."
   },
   "var-2015-verb1-ORD-010": {
@@ -1283,7 +1283,7 @@
     ],
     "pitfall": null,
     "solution_path": "Tirader är mångordiga yttranden — långa, ofta upphetsade tal med många ord men begränsat innehåll. Italienskans tirata (utdragen sträng), via franska. 'Hen drog en tirad om...' = höll ett långt, utbroderande tal.",
-    "technique": "Italienska/franska retorik-ord (tirader, deklamation, harangue) — alla namnger RETORISKA former; tirad = långt, upprört yttrande."
+    "technique": "Italienska/franska retorik-ord (tirader, deklamation, harang) — alla namnger RETORISKA former; tirad = långt, upprört yttrande."
   },
   "var-2015-verb2-ORD-001": {
     "_meta": {
@@ -1387,11 +1387,11 @@
       {
         "letter": "A",
         "why_tempting": "Skimning kan låta som ett ljustekniskt fenomen.",
-        "why_wrong": "Skuggning är OPTISK fenomen (ljus och mörker); skimning är KORTBEDRÄGERI (data­kopiering). Helt olika domäner."
+        "why_wrong": "Skuggning är OPTISK fenomen (ljus och mörker); skimning är KORTBEDRÄGERI (datakopiering). Helt olika domäner."
       },
       {
         "letter": "B",
-        "why_tempting": "Skimming kan associeras med att 'skumma' eller välja ut.",
+        "why_tempting": "Skimning kan associeras med att 'skumma' eller välja ut.",
         "why_wrong": "Bortsortering är ATT VÄLJA UT (urval); skimning är ATT KOPIERA DATA olovligt. Urval vs bedrägeri."
       },
       {
@@ -1406,7 +1406,7 @@
       }
     ],
     "pitfall": null,
-    "solution_path": "Skimning är kortbedrägeri — att olovligt kopiera magnetremsan på ett betalkort för att senare göra falska transaktioner. Engelskans skim (skumma, skiktlys av tunn yta). Specifikt teknisk-juridisk term inom IT- och bankbrottslighet.",
+    "solution_path": "Skimning är kortbedrägeri — att olovligt kopiera magnetremsan på ett betalkort för att senare göra falska transaktioner. Engelskans skim (skumma, skala av tunt ytskikt). Specifikt teknisk-juridisk term inom IT- och bankbrottslighet.",
     "technique": "Engelska tekniska brottsmetoder (skimning, phishing, hacking) — direkt importerade som facktermer i svenska språket; behåller sin specifika tekniska betydelse."
   },
   "var-2015-verb2-ORD-005": {
@@ -1433,7 +1433,7 @@
       {
         "letter": "E",
         "why_tempting": "Absurda påståenden kan upplevas som osanna.",
-        "why_wrong": "Osann är FAKTAFEL (mot verkligheten); absurd är LOGISKT MOTSÄGELSE (mot sig själv). Empiriskt fel vs logiskt fel."
+        "why_wrong": "Osann är FAKTAFEL (mot verkligheten); absurd är LOGISK MOTSÄGELSE (mot sig själv). Empiriskt fel vs logiskt fel."
       }
     ],
     "pitfall": null,
@@ -1490,7 +1490,7 @@
       {
         "letter": "C",
         "why_tempting": "Att hysa någon kan låta lättsamt.",
-        "why_wrong": "Skämta med är att SKOJA verbalt; hysa är att HUSERA fysiskt. Skoj vs boende."
+        "why_wrong": "Skämta med är att SKOJA verbalt; hysa är att INHYSA fysiskt. Skoj vs boende."
       },
       {
         "letter": "E",
@@ -1500,7 +1500,7 @@
     ],
     "pitfall": null,
     "solution_path": "Att hysa betyder att ge husrum åt — låta någon eller något bo eller finnas hos en. Av 'hus'. Konkret: 'hysa flyktingar' = ge dem boende. Bildligt: 'hysa förhoppningar' = bära förhoppningar inom sig.",
-    "technique": "Verb från 'hus' (hysa, husera, bebo) — alla rör boende; hysa = upplåta plats åt någon."
+    "technique": "Verb från 'hus' (hysa, inhysa, bebo) — alla rör boende; hysa = upplåta plats åt någon."
   },
   "var-2015-verb2-ORD-008": {
     "_meta": {
@@ -1556,12 +1556,12 @@
       },
       {
         "letter": "E",
-        "why_tempting": "Taktilt kan låta som något mil­jörelaterat.",
+        "why_tempting": "Taktilt kan låta som något miljörelaterat.",
         "why_wrong": "Miljöpåverkan är YTTRE faktorer; taktil är INRE perception av beröring. Yttre påverkan vs inre sinne."
       }
     ],
     "pitfall": null,
-    "solution_path": "Taktil betyder som avser känsel och beröring — det som rör beröringssinnet. Latinets tactus (beröring), av tangere (röra vid). Används i psykologi, design, robotteknik om allt som rör tactual perception.",
+    "solution_path": "Taktil betyder som avser känsel och beröring — det som rör beröringssinnet. Latinets tactus (beröring), av tangere (röra vid). Används i psykologi, design, robotteknik om allt som rör taktil perception.",
     "technique": "Latinska 'tact-' rotord (taktil, intakt, kontakt) — alla bär bilden av BERÖRING — fysisk eller bildlig kontakt."
   },
   "var-2015-verb2-ORD-010": {
@@ -1573,7 +1573,7 @@
       {
         "letter": "A",
         "why_tempting": "'Chim-' kan klinga som något hästrelaterat.",
-        "why_wrong": "Liten häst är HÄSTPRESTANDA (specifikt djur); chimär är INBILLNING (immateriellt). Helt olika kategorier."
+        "why_wrong": "Liten häst är PONNY (specifikt djur); chimär är INBILLNING (immateriellt). Helt olika kategorier."
       },
       {
         "letter": "C",
@@ -1627,11 +1627,11 @@
     }
   },
   "var-2015-kvant1-NOG-024": {
-    "solution_path": "Vart för sig räcker. (1): n/2−1/2=7 → n=15. (2): 6/30 jordgubbar/sek på 75 sek = 15.",
+    "solution_path": "Var för sig räcker. (1): n/2−1/2=7 → n=15. (2): 6/30 jordgubbar/sek på 75 sek = 15.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s halv-uppgift är direktare.",
+        "why_tempting": "Det är lätt att tro att (1):s halv-uppgift är mer direkt.",
         "why_wrong": "(2):s tempovärde ger samma 15."
       },
       {
@@ -1751,11 +1751,11 @@
     }
   },
   "var-2015-kvant1-NOG-028": {
-    "solution_path": "Vart för sig räcker. (1): p=f=12, 10 har moped, pojk-moped=6 → flick-moped=4. (2): två likheter ger p=f=12 och flick-moped=4.",
+    "solution_path": "Var för sig räcker. (1): p=f=12, 10 har moped, pojk-moped=6 → flick-moped=4. (2): två likheter ger p=f=12 och flick-moped=4.",
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s direkta tal är direktare.",
+        "why_tempting": "Det är lätt att tro att (1):s direkta tal är mer direkt.",
         "why_wrong": "(2) ger samma flick-moped=4 via två likheter."
       },
       {
@@ -1868,7 +1868,7 @@
       }
     ],
     "technique": "Hypotetisk omfördelning ger en RELATION mellan antal personer och belopp per person — kombinerad med ett absolut antal låser den hela summan.",
-    "pitfall": "I (1): de 20 kr ÖKAR per person när 8 personer avstår — så det är V/(n−8) − V/n = 20, inte V/n − V/(n−8). Räkningstecknet matters.",
+    "pitfall": "I (1): de 20 kr ÖKAR per person när 8 personer avstår — så det är V/(n−8) − V/n = 20, inte V/n − V/(n−8). Räknetecknet matters.",
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778429079240,
@@ -1939,7 +1939,7 @@
     }
   },
   "var-2015-kvant2-NOG-028": {
-    "solution_path": "Vart för sig räcker. 20a+5b=125 ger heltalslösningar (a, b)∈{(6,1), (5,5), (4,9), ...}. (1): b<5 → bara (6,1). (2): a>5 → bara (6,1).",
+    "solution_path": "Var för sig räcker. 20a+5b=125 ger heltalslösningar (a, b)∈{(6,1), (5,5), (4,9), ...}. (1): b<5 → bara (6,1). (2): a>5 → bara (6,1).",
     "distractors": [
       {
         "letter": "A",
@@ -1988,7 +1988,7 @@
         "why_wrong": "Rekonstruktionen tjänar HJÄLMUTVECKLINGEN, inte tvärtom; alternativet flyttar ändamål."
       }
     ],
-    "technique": "Vid 'huvudmål med forskning'-frågor: hitta forskarens egna formulering ('utveckla en hjälm med högre energiupptag').",
+    "technique": "Vid 'huvudmål med forskning'-frågor: hitta forskarens egen formulering ('utveckla en hjälm med högre energiupptag').",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2001,7 +2001,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro att filmade olyckor är fokus.",
-        "why_wrong": "Bara ett exempel nämns — ingen generell forskningsbas av filmade fall; alternativet over-reaches."
+        "why_wrong": "Bara ett exempel nämns — ingen generell forskningsbas av filmade fall; alternativet sträcker sig för långt."
       },
       {
         "letter": "B",
@@ -2011,7 +2011,7 @@
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta att alla trafikolyckor täcks.",
-        "why_wrong": "Texten gör inte ett sådant generaliserat påstående — den ger bara enskilda exempel; alternativet over-reaches."
+        "why_wrong": "Texten gör inte ett sådant generaliserat påstående — den ger bara enskilda exempel; alternativet sträcker sig för långt."
       }
     ],
     "technique": "Vid 'framgår det av texten'-frågor: kontrollera att det finns explicit info — annars är 'Nej' rätt svar.",
@@ -2027,7 +2027,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro att lagligheten är stridens fokus.",
-        "why_wrong": "Båda parter tycks i stort vara överens om att lagens existens — striden gäller om den TILLÄMPADES korrekt; alternativet flyttar nivån."
+        "why_wrong": "Båda parter tycks i stort vara överens om lagens existens — striden gäller om den TILLÄMPADES korrekt; alternativet flyttar nivån."
       },
       {
         "letter": "B",
@@ -2053,7 +2053,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro att överbemanningens argument inte ifrågasätts.",
-        "why_wrong": "AD säger uttryckligen att 'företaget har inte behövt fler anställda' — alltså AD accepterade just det MEN drog motsatt slutsats; det är förbundets kontraargument om motsatsen alternativet talar om, vilket inte finns i texten; alternativet importerar fel argument."
+        "why_wrong": "AD säger uttryckligen att 'företaget har inte behövt fler anställda' — alltså AD accepterade just det MEN drog motsatt slutsats; det är ett kontraargument från förbundet, vilket inte finns i texten; alternativet importerar fel argument."
       },
       {
         "letter": "B",
@@ -2100,7 +2100,7 @@
     }
   },
   "var-2015-verb1-LÄS-016": {
-    "solution_path": "Texten beskriver lokala mål, skriftliga omdömen och marknadsföring som 'fördes lärarna bort från relevans och sammanhang' — uppgifter som inte är klassrumsnära men ändå tar tid. Det är meningslösa uppgifter sett från läraruppdraget.",
+    "solution_path": "Texten beskriver lokala mål, skriftliga omdömen och marknadsföring som 'förde lärarna bort från relevans och sammanhang' — uppgifter som inte är klassrumsnära men ändå tar tid. Det är meningslösa uppgifter sett från läraruppdraget.",
     "distractors": [
       {
         "letter": "B",
@@ -2375,7 +2375,7 @@
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta att svenskan stärks.",
-        "why_wrong": "Texten säger inte att svenskan stärks — bara att den inte är hotad; alternativet over-reaches."
+        "why_wrong": "Texten säger inte att svenskan stärks — bara att den inte är hotad; alternativet sträcker sig för långt."
       }
     ],
     "technique": "Vid 'viktig skillnad'-frågor: hitta den explicita avvisningen ('det håller jag inte med om').",
@@ -2417,7 +2417,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro att långsiktighet är nyckeln.",
-        "why_wrong": "Texten talar om OPRESS följsamhet, inte tidsperspektiv — alternativet flyttar dimension."
+        "why_wrong": "Texten talar om långsiktig följsamhet, inte tidsperspektiv — alternativet flyttar dimension."
       },
       {
         "letter": "B",
@@ -2474,7 +2474,7 @@
       {
         "letter": "C",
         "why_tempting": "Många stannar vid 'patienternas talan'.",
-        "why_wrong": "Texten är inte primärt patientadvocat — den argumenterar för en behandlingsmetod; alternativet flyttar fokus."
+        "why_wrong": "Texten är inte primärt patientförespråkare — den argumenterar för en behandlingsmetod; alternativet flyttar fokus."
       },
       {
         "letter": "D",
@@ -2495,17 +2495,17 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att läsa 'opinion' som folkmotion.",
-        "why_wrong": "Opinion är 'allmän åsiktsuppfattning' — fel rektion; man får inte 'opinion FÖR önskemål', man får gehör."
+        "why_wrong": "Opinion är 'allmän åsikt' — fel kollokation; man får inte 'opinion FÖR önskemål', man får gehör."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid 'verkan' som effekt.",
-        "why_wrong": "Verkan är 'effekt/resultat' — fel rektion; man får verkan AV ngt, inte FÖR önskemål."
+        "why_wrong": "Verkan är 'effekt/resultat' — fel kollokation; man får verkan AV ngt, inte FÖR önskemål."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta 'utlopp' som utlopp för känsla.",
-        "why_wrong": "Utlopp är 'utgångsväg' (för känsla/energi) — fel rektion; det är inte ett utlopp för önskemål utan att önskemålet accepteras."
+        "why_wrong": "Utlopp är 'utgångsväg' (för känsla/energi) — fel kollokation; det är inte ett utlopp för önskemål utan att önskemålet accepteras."
       }
     ],
     "technique": "Hitta idiomet: 'få gehör för X' = lyckas bli hörd och accepterad — fast idiom; andra ord (opinion, verkan, utlopp) tar andra prepositioner.",
@@ -2534,7 +2534,7 @@
         "why_wrong": "Habanero är het peppar — fel område; man skrittar inte på en chili."
       }
     ],
-    "technique": "Tvåblanksdrag i ridsport-/mode-register: skimmel (vit-grå häst) + matcha (passa färgmässigt) — fast hästfärg + mode-verb.",
+    "technique": "Tvåluckorsmening i ridsport-/mode-register: skimmel (vit-grå häst) + matcha (passa färgmässigt) — fast hästfärg + mode-verb.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2542,7 +2542,7 @@
     }
   },
   "var-2015-verb1-MEK-023": {
-    "solution_path": "En akustisk gitarr (icke-elektrisk, mjuk klang) — fast musikterm. Kulörta (färgglada, mångfärgade) bollar. Och en flodvåg som 'väller' fram (strömmar fram i massa). Tre kollokationer i filmig-poetisk berättarröst.",
+    "solution_path": "En akustisk gitarr (icke-elektrisk, mjuk klang) — fast musikterm. Kulörta (färgglada, mångfärgade) bollar. Och en flodvåg som 'väller' fram (strömmar fram i massa). Tre kollokationer i filmisk-poetisk berättarröst.",
     "distractors": [
       {
         "letter": "A",
@@ -2586,7 +2586,7 @@
         "why_wrong": "Existerande är vagt — 'verksamma' är specifikt om partifunktioner; och 'vara i besittning av' är att äga, fel kollokation för förmåner."
       }
     ],
-    "technique": "Tvåblanksdrag i förvaltnings-byråkratisk register: verksamma (aktiva tjänstgörande) + 'komma i åtnjutande av' (få förmånen att) — fasta administrativa kollokationer.",
+    "technique": "Tvåblanksdrag i förvaltnings-byråkratiskt register: verksamma (aktiva tjänstgörande) + 'komma i åtnjutande av' (få förmånen att) — fasta administrativa kollokationer.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2604,12 +2604,12 @@
       {
         "letter": "B",
         "why_tempting": "Många stannar vid 'plausibelt' som rimligt.",
-        "why_wrong": "Plausibelt är 'sannolikt riktigt' — fel rektion; lösenord är inte plausibla."
+        "why_wrong": "Plausibelt är 'sannolikt riktigt' — fel kollokation; lösenord är inte plausibla."
       },
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta 'veritabelt' som verkligt.",
-        "why_wrong": "Veritabelt är 'sannerligen/verkligen' — adverbiellt; fel rektion."
+        "why_wrong": "Veritabelt är 'sannerligen/verkligen' — adverbiellt; fel kollokation."
       }
     ],
     "technique": "IT-säkerhet-MEK: komplext (med många tecken-typer) är fast lösenordsterm — andra '-belt/-rt'-adjektiv har egna fält.",
@@ -2698,7 +2698,7 @@
     }
   },
   "var-2015-verb1-MEK-029": {
-    "solution_path": "Beslutet innebar 'i realiteten' (i verkligheten, faktiskt) ekonomiskt värde — fast formell fras för 'i faktisk verkan'. Beslutet 'grundades' (vilade på) naturresurser. Båda i förvaltnings-litterär register.",
+    "solution_path": "Beslutet innebar 'i realiteten' (i verkligheten, faktiskt) ekonomiskt värde — fast formell fras för 'i faktisk verkan'. Beslutet 'grundades' (vilade på) naturresurser. Båda i förvaltnings-litterärt register.",
     "distractors": [
       {
         "letter": "B",
@@ -2708,15 +2708,15 @@
       {
         "letter": "C",
         "why_tempting": "Många stannar vid 'i genomsnitt' som statistik.",
-        "why_wrong": "I genomsnitt är 'medelvärde' — fel rektion; ett beslut är inte 'i genomsnitt'; och 'inverkade på' är fel rektion."
+        "why_wrong": "I genomsnitt är 'medelvärde' — fel kollokation; ett beslut är inte 'i genomsnitt'; och 'inverkade på' är fel kollokation."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta 'överraskande' som adverbial.",
-        "why_wrong": "Överraskande är dramatiskt — fel ton; och 'fattades på' är fel rektion (beslut fattas, inte fattas på)."
+        "why_wrong": "Överraskande är dramatiskt — fel ton; och 'fattades på' är fel kollokation (beslut fattas, inte fattas på)."
       }
     ],
-    "technique": "Tvåblanksdrag i förvaltning-litterär register: 'i realiteten' + 'grundades på' — fasta formelle uttryck.",
+    "technique": "Tvåblanksdrag i förvaltnings-litterärt register: 'i realiteten' + 'grundades på' — fasta formella uttryck.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2750,7 +2750,7 @@
     }
   },
   "var-2015-verb2-MEK-021": {
-    "solution_path": "Reklamfilm kan vara en 'språngbräda' (avstamp för karriärsteg) — fast karriär-metafor. Texten ger 'man kan bli mer känd genom reklam' som cue.",
+    "solution_path": "Reklamfilm kan vara en 'språngbräda' (avstamp för karriärsteg) — fast karriär-metafor. Texten ger 'man kan bli mer känd genom reklam' som ledtråd.",
     "distractors": [
       {
         "letter": "A",
@@ -2791,7 +2791,7 @@
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta 'negligera' som motsatsen.",
-        "why_wrong": "Negligera är att 'försumma/ignorera' — texten beskriver INTE försummelse utan passiv accepterande; och 'uppdrag' är formellt, fel ton."
+        "why_wrong": "Negligera är att 'försumma/ignorera' — texten beskriver INTE försummelse utan passivt accepterande; och 'uppdrag' är formellt, fel ton."
       }
     ],
     "technique": "Tvåblanksdrag i ledarskaps-register: acceptera (passivt godta) + utmaningar (svåra positiva uppgifter) — fasta organisationspsykologi-termer.",
@@ -2802,7 +2802,7 @@
     }
   },
   "var-2015-verb2-MEK-023": {
-    "solution_path": "Hudcancer är 'den snabbast ökande' cancerformen — fast epidemiologisk fras; texten ger 'accelererar' som cue. Vetenskapligt 'grundade' rekommendationer (vilande på vetenskap). Och 'oetiskt' (mot etik) att uppmana till cancerogent. Tre kollokationer i medicinsk-etisk debatt-register.",
+    "solution_path": "Hudcancer är 'den snabbast ökande' cancerformen — fast epidemiologisk fras; texten ger 'accelererar' som ledtråd. Vetenskapligt 'grundade' rekommendationer (vilande på vetenskap). Och uppmana till något cancerframkallande beteende. Tre kollokationer i medicinsk-etiskt debatt-register.",
     "distractors": [
       {
         "letter": "A",
@@ -2812,7 +2812,7 @@
       {
         "letter": "B",
         "why_tempting": "Många stannar vid 'den allvarligaste' som värdebedömning.",
-        "why_wrong": "Allvarligaste är subjektivt — accelererande är fakta från statistik; och 'granskade rekommendationer' är fel rektion; 'ohälsosamt' är vagt."
+        "why_wrong": "Allvarligaste är subjektivt — accelererande är fakta från statistik; och 'granskade rekommendationer' är fel kollokation; 'ohälsosamt' är vagt."
       },
       {
         "letter": "D",
@@ -2820,7 +2820,7 @@
         "why_wrong": "Komplicerade är 'svår att förstå/behandla' — inte vad textens 'accelererar' beskriver; och 'bevisade' är för stark; 'obefogat' är vagt."
       }
     ],
-    "technique": "Treblanksdrag i medicinsk-etisk register: 'snabbast ökande' / 'grundade' / 'oetiskt' — alla i samma vetenskaplig-etik-debatt.",
+    "technique": "Treblanksdrag i medicinsk-etiskt register: 'snabbast ökande' / 'grundade' / 'oetiskt' — alla i samma vetenskaplig-etik-debatt.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2828,17 +2828,17 @@
     }
   },
   "var-2015-verb2-MEK-024": {
-    "solution_path": "Bergspartierna har tempererat (medelhöga temperaturer) klimat — fast klimatzon-term. Större delen 'utgörs av' lågland — fast 'består av'-konstruktion. Båda i geografisk register.",
+    "solution_path": "Bergspartierna har tempererat (medelhöga temperaturer) klimat — fast klimatzon-term. Större delen 'utgörs av' lågland — fast 'består av'-konstruktion. Båda i geografiskt register.",
     "distractors": [
       {
         "letter": "B",
         "why_tempting": "Det är lätt att läsa 'atlantiskt' som kustnära klimat.",
-        "why_wrong": "Atlantiskt klimat är specifikt västeuropeisk kustklimat — men centralamerika är inte atlantiskt så; och 'infattar' är fel rektion (man infattar i ram)."
+        "why_wrong": "Atlantiskt klimat är specifikt västeuropeiskt kustklimat — men Centralamerika är inte atlantiskt så; och 'infattar' är fel kollokation (man infattar i ram)."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid 'termiskt' som värme-relaterat.",
-        "why_wrong": "Termiskt är 'värme-' (termisk energi) — inte klimatzon; fel kategori; och 'ingår i' är fel rektion."
+        "why_wrong": "Termiskt är 'värme-' (termisk energi) — inte klimatzon; fel kategori; och 'ingår i' är fel kollokation."
       },
       {
         "letter": "D",
@@ -2846,7 +2846,7 @@
         "why_wrong": "Arktiskt är polarklimat — inte i tropikerna; logisk motsägelse; och 'förenar' är fel verb."
       }
     ],
-    "technique": "Tvåblanksdrag i geografisk register: tempererat (medelhögt klimat) + 'utgörs av' (består av) — fasta geografikollokationer.",
+    "technique": "Tvåblanksdrag i geografiskt register: tempererat (medelhögt klimat) + 'utgörs av' (består av) — fasta geografikollokationer.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2895,7 +2895,7 @@
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta 'möblemang' som möbler.",
-        "why_wrong": "Möblemang är konkret saker — fel rektion; och 'estetiska' är estetik, fel kategori."
+        "why_wrong": "Möblemang är konkreta saker — fel kollokation; och 'estetiska' är estetik, fel kategori."
       }
     ],
     "technique": "Tvåblanksdrag i arbetsmiljö-register: funktionalitet (bruksvärde) + spatiös (rymlig) — fasta moderna kontorsdesign-termer.",
@@ -2906,7 +2906,7 @@
     }
   },
   "var-2015-verb2-MEK-027": {
-    "solution_path": "Folktinget är fortfarande 'det nuvarande' (rådande, det nu existerande). Det är 'en relikt' (lämning från förgången tid) — fast histo-/arkeologi-term. Och det krävs mer 'nytänkande' (innovation). Tre kollokationer i modernise-debatt-register.",
+    "solution_path": "Folktinget är fortfarande 'det nuvarande' (rådande, det nu existerande). Det är 'en relikt' (lämning från förgången tid) — fast historie-/arkeologi-term. Och det krävs mer 'nytänkande' (innovation). Tre kollokationer i moderniserings-debatt-register.",
     "distractors": [
       {
         "letter": "A",
@@ -2916,7 +2916,7 @@
       {
         "letter": "B",
         "why_tempting": "Många stannar vid 'det gamla' som motsatsen till nytt.",
-        "why_wrong": "Det gamla är 'visioner än det gamla' tautologi; och 'en fornlämning' är okej men paret faller; 'kampanjer' är aktivitetsord, fel kategori."
+        "why_wrong": "Det gamla är okej semantiskt, men konstruktionen 'visioner än det gamla' är tautologi; och 'en fornlämning' är okej men paret faller; 'kampanjer' är aktivitetsord, fel kategori."
       },
       {
         "letter": "C",
@@ -2937,7 +2937,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att läsa 'dramatisera' som litterärt verb.",
-        "why_wrong": "Dramatisera är att 'göra dramatiskt' — säger ton, inte att samla till litet format; fel rektion."
+        "why_wrong": "Dramatisera är att 'göra dramatiskt' — säger ton, inte att samla till litet format; fel kollokation."
       },
       {
         "letter": "C",

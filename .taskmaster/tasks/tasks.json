@@ -2225,7 +2225,7 @@
         "testStrategy": "Processes var-2026 → structured JSON; Images extracted to data/images/",
         "priority": "high",
         "dependencies": [],
-        "status": "in-progress",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2233,9 +2233,10 @@
             "description": "Create the parser directory and install the required Python dependencies for the parser MVP.",
             "dependencies": [],
             "details": "Run mkdir parser; then install pymupdf==1.24.9 using pip. Ensure the environment is ready for Python script execution.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verify that the parser directory exists and pymupdf is installed and importable in Python.",
-            "parentId": "undefined"
+            "parentId": "undefined",
+            "updatedAt": "2026-05-12T15:46:56.897Z"
           },
           {
             "id": 2,
@@ -2245,9 +2246,10 @@
               1
             ],
             "details": "Create parser/parse_section.py and define functions or classes for handling different sections of the document. Each handler should be responsible for extracting relevant data from its section.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test that each handler can be called and returns structured data for a given section.",
-            "parentId": "undefined"
+            "parentId": "undefined",
+            "updatedAt": "2026-05-12T15:46:56.905Z"
           },
           {
             "id": 3,
@@ -2257,9 +2259,10 @@
               2
             ],
             "details": "Define the structure of data/hp_question_bank.json including fields for questions, answers, metadata, and any other required information. Implement code to serialize parsed data into this schema.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Validate that the generated JSON conforms to the defined schema and contains expected fields.",
-            "parentId": "undefined"
+            "parentId": "undefined",
+            "updatedAt": "2026-05-12T15:46:56.963Z"
           },
           {
             "id": 4,
@@ -2269,9 +2272,10 @@
               3
             ],
             "details": "Add logic to compare the current state of the input with the last processed state (e.g., using file hashes or timestamps) and skip processing if no changes are detected.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test that unchanged inputs do not trigger reprocessing and that changes are correctly detected and processed.",
-            "parentId": "undefined"
+            "parentId": "undefined",
+            "updatedAt": "2026-05-12T15:46:56.968Z"
           },
           {
             "id": 5,
@@ -2281,12 +2285,13 @@
               4
             ],
             "details": "Extend the parser to identify and extract images from the document, saving them to data/images/ with appropriate naming and organization.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verify that images are correctly extracted and stored in the specified directory, and that their paths are referenced in the output JSON.",
-            "parentId": "undefined"
+            "parentId": "undefined",
+            "updatedAt": "2026-05-12T15:46:56.974Z"
           }
         ],
-        "updatedAt": "2026-05-07T12:20:14.008Z"
+        "updatedAt": "2026-05-12T15:46:56.974Z"
       },
       {
         "id": "32",
@@ -2443,7 +2448,7 @@
         "testStrategy": "JSON valid; Covers majority historical errors; Empirical validation against corpus",
         "priority": "high",
         "dependencies": [],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2503,7 +2508,8 @@
             "testStrategy": "Versioning present; changes documented; validation confirms coverage of majority historical KVA errors.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-05-12T15:46:08.065Z"
       },
       {
         "id": "35",
@@ -2951,7 +2957,7 @@
         "testStrategy": "Patterns explain ≥70% of analyzed XYZ errors; stable IDs; JSON schema validates",
         "priority": "high",
         "dependencies": [],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -3011,7 +3017,8 @@
             "testStrategy": "Independent review confirms ≥70% error explanation; IDs unchanged; file ready for downstream use (e.g., parser dev).",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-05-12T15:46:08.092Z"
       },
       {
         "id": "42",
@@ -3021,7 +3028,7 @@
         "testStrategy": "Protocol applicable to real corpus sentences; clear two-step decomposition for ≥30 worked sentences",
         "priority": "medium",
         "dependencies": [],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -3082,7 +3089,8 @@
             "testStrategy": "Protocol successfully applied to new sentences; JSON complete and self-documenting; meets test strategy for ≥30 worked examples",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-05-12T15:46:08.107Z"
       },
       {
         "id": "43",
@@ -3092,7 +3100,7 @@
         "testStrategy": "Tactics cover all DTK question shapes in corpus; each tactic has ≥2 example questions",
         "priority": "medium",
         "dependencies": [],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -3154,7 +3162,8 @@
             "testStrategy": "Tactics cover all DTK question shapes in corpus; meets parent task test strategy fully.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-05-12T15:46:08.114Z"
       },
       {
         "id": "44",
@@ -4019,9 +4028,9 @@
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2026-05-09T10:44:19.465Z",
+      "lastModified": "2026-05-12T15:46:56.974Z",
       "taskCount": 61,
-      "completedCount": 13,
+      "completedCount": 18,
       "tags": [
         "master"
       ]

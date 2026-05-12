@@ -952,6 +952,18 @@ _FIGURE_REFERENCE_PATTERNS = (
 )
 
 
+# Swedish thousands separator: 1 200, 97 200, 1 234 567 etc. Match
+# a leading 1-3 digit chunk followed by one or more " <3-digit>" groups.
+_SWE_THOUSANDS_RE = re.compile(r'^\d{1,3}(?: \d{3})+$')
+
+# LaTeX command body: strip `\foo{...}` (with nested braces handled
+# imperfectly — good enough for the 4-char-run heuristic). Single-pass
+# strip of `\WORD{...}` content; called before counting single-char
+# tokens because `\frac{b b}{a + x 2x}` legitimately contains many
+# 1-char tokens that aren't garbage.
+_LATEX_BODY_RE = re.compile(r'\\[a-zA-Z]+\{[^{}]*\}')
+
+
 def _looks_garbled(text: str) -> bool:
     """Heuristic — does this prompt/option text look like the parser
     chewed through a stacked fraction or `\\big(` bracket and emitted
@@ -964,33 +976,53 @@ def _looks_garbled(text: str) -> bool:
         we're looking at one of those.
       - Literal "b l" — pieces of `\\big(` / `\\big)` brackets that
         PyMuPDF emits as separate spans we then re-join with spaces.
-      - Long consecutive run of single-character tokens. A chewed
-        fraction looks like "x 5 5 5 b l 3" — six 1-char tokens in
-        a row. Legitimate equations like "x = 2 + 3" have at most
-        2 in a row before hitting an operator or a multi-char term.
+      - Long consecutive run of single-character tokens OUTSIDE
+        LaTeX command bodies. A chewed fraction looks like
+        "x 5 5 5 b l 3" — six 1-char tokens in a row. Legitimate
+        equations like "x = 2 + 3" have at most 2 in a row before
+        hitting an operator or a multi-char term.
 
     Math operators (+, -, =, /, ·, *) don't count toward the run
-    because "x = 2 + 3" is a real equation, not garbage. Short texts
-    (<5 tokens) bypass the check entirely — single-digit integer
-    options like "2" are obviously fine.
+    because "x = 2 + 3" is a real equation, not garbage.
+
+    Carve-outs:
+      - LaTeX command bodies (`\\frac{b b}{...}`) are stripped before
+        counting — the 1-char tokens inside are legitimate math.
+      - Swedish thousands-separator numbers (`1 200`, `97 200`) pass
+        the digit-only multi-token check.
+      - Short texts (<5 tokens) bypass the run check entirely —
+        single-digit integer options like "2" are obviously fine.
     """
     if "$" in text or "b l" in text:
         return True
-    # Digit-only multi-token text: "0 1", "1 2", "5 11 1". These are
-    # almost always stacked fractions where the dividing rule got lost
-    # (the original was `0/1`, `1/2`, etc.). Real numeric options are
-    # single tokens or have units / operators ("5 cm", "x = 5", "1/3").
+    # Digit-only multi-token text: "0 1", "1 2", "5 11 1" are stacked
+    # fractions where the dividing rule got lost. EXCEPT for Swedish
+    # thousands-separator numbers ("1 200", "97 200").
     stripped = text.strip()
     if stripped and all(t.isdigit() for t in stripped.split()) and len(stripped.split()) >= 2:
-        return True
-    tokens = text.split()
+        if not _SWE_THOUSANDS_RE.match(stripped):
+            return True
+    # Strip LaTeX command bodies before counting single-char runs.
+    # `\frac{b b}{a + x 2x}` is legit math whose 1-char tokens shouldn't
+    # trip the chewed-fraction heuristic.
+    text_for_run = text
+    while True:
+        new = _LATEX_BODY_RE.sub(' ', text_for_run)
+        if new == text_for_run:
+            break
+        text_for_run = new
+    tokens = text_for_run.split()
     if len(tokens) < 5:
         return False
-    operators = set("+-=/·*×÷")
+    # Operators + comparison + punctuation reset the run because they
+    # mark a syntactic break that no chewed-fraction would land on.
+    # The original "x 5 5 5 b l 3" garbage has letters/digits-only,
+    # no operators between them.
+    operators_or_punct = set("+-=/·*×÷<>≤≥≠≈–—.,?!;:()[]")
     longest_run = 0
     run = 0
     for t in tokens:
-        if len(t) == 1 and t not in operators:
+        if len(t) == 1 and t not in operators_or_punct:
             run += 1
             longest_run = max(longest_run, run)
         else:

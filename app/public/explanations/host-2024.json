@@ -78,9 +78,9 @@
     }
   },
   "host-2024-kvant1-KVA-020": {
-    "solution_path": "Sortera värdena a₁ ≤ a₂ ≤ ... ≤ a₆. ·De fyra största· (a₃, a₄, a₅, a₆) är alla > 12 ⇒ a₃ > 12. ·De fyra minsta· (a₁, a₂, a₃, a₄) är alla < 15 ⇒ a₄ < 15. Medianen = (a₃ + a₄)/2 ligger alltså mellan 12 och 15 — den kan vara 13 (under 13,5), 14 (över) eller exakt 13,5. D.",
-    "technique": "I en sorterad serie av 6 tal är medianen (a₃ + a₄)/2 — de två mittersta talen. ·De fyra största· är positionerna 3-6, och ·de fyra minsta· är positionerna 1-4.",
-    "pitfall": "Villkoret ·de fyra största > 12· tvingar bara a₃ > 12 (inte alla sex talen). Och ·de fyra minsta < 15· tvingar bara a₄ < 15. Mittpartiet är fritt inom (12, 15).",
+    "solution_path": "Sortera värdena a₁ ≤ a₂ ≤ ... ≤ a₆. \"De fyra största\" (a₃, a₄, a₅, a₆) är alla > 12 ⇒ a₃ > 12. \"De fyra minsta\" (a₁, a₂, a₃, a₄) är alla < 15 ⇒ a₄ < 15. Medianen = (a₃ + a₄)/2 ligger alltså mellan 12 och 15 — den kan vara 13 (under 13,5), 14 (över) eller exakt 13,5. D.",
+    "technique": "I en sorterad serie av 6 tal är medianen (a₃ + a₄)/2 — de två mittersta talen. \"De fyra största\" är positionerna 3-6, och \"de fyra minsta\" är positionerna 1-4.",
+    "pitfall": "Villkoret \"de fyra största > 12\" tvingar bara a₃ > 12 (inte alla sex talen). Och \"de fyra minsta < 15\" tvingar bara a₄ < 15. Mittpartiet är fritt inom (12, 15).",
     "distractors": [
       {
         "letter": "A",
@@ -89,7 +89,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att medianen ·alltid är låg· när 4 av 6 är > 12.",
+        "why_tempting": "Snabbsvar är ofta att medianen \"alltid är låg\" när 4 av 6 är > 12.",
         "why_wrong": "Medianen är (a₃ + a₄)/2 där a₃ > 12 och a₄ < 15 — den kan vara så låg som strax över 12 eller så hög som strax under 15."
       },
       {
@@ -156,7 +156,7 @@
     ],
     "pitfall": null,
     "solution_path": "Samla x: 12x-6x=18+54 → 6x=72, alltså x = 12.",
-    "technique": "Linjär ekvation: samla variabel på en sida, konstanter på den andra; teckenflipp över =."
+    "technique": "Linjär ekvation: samla variabel på en sida, konstanter på den andra; teckenbyte över =."
   },
   "host-2024-kvant1-XYZ-003": {
     "_meta": {
@@ -171,8 +171,8 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att räkna nämnarna addera: 15+30=45 → 1/45 → 2,2% → svar 15.",
-        "why_wrong": "Bråk addera täljarna, inte nämnarna. Resultatet är 3x/30 = x/10."
+        "why_tempting": "Snabbsvar är ofta att addera nämnarna: 15+30=45 → 1/45 → 2,2% → svar 15.",
+        "why_wrong": "I bråkaddition adderar man täljarna, inte nämnarna. Resultatet är 3x/30 = x/10."
       },
       {
         "letter": "D",
@@ -208,7 +208,7 @@
         "why_wrong": "Linjerna är inte vinkelräta — det är de specifika vinklarna i figuren som styr, inte en jämn fördelning."
       }
     ],
-    "pitfall": "Tänk på skillnaden: kompletterande vinklar summerar till 90°, supplementvinklar till 180°. En rät linje ger 180° (supplement), inte 90°.",
+    "pitfall": "Tänk på skillnaden: komplementvinklar summerar till 90°, supplementvinklar till 180°. En rät linje ger 180° (supplement), inte 90°.",
     "solution_path": "Tre linjer i samma punkt skapar sex vinklar som tillsammans är 360°, och varje vinkel har en lika stor vertikalvinkel mittemot. Sätt upp ekvationen med de markerade vinklarna i figuren och lös ut x — det ger x = 20°.",
     "technique": "När linjer korsas i en punkt summerar alla vinklar runt punkten till 360°, och vertikalvinklar (mittemot varandra) är lika stora."
   },
@@ -226,12 +226,12 @@
       {
         "letter": "B",
         "why_tempting": "Snabbsvar är ofta att räkna fel ordning på 13/16 och 25/32.",
-        "why_wrong": "13/16 = 26/32; 25/32 < 26/32. B har rätt — vänta, ans är D, så B är fel ordning."
+        "why_wrong": "13/16 = 26/32; 25/32 < 26/32. 13/16 = 26/32; 25/32 < 26/32. B:s ordning är fel — rätt svar är D."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid 7/8 < 13/16 antagligen utan jämförelse.",
-        "why_wrong": "7/8 = 28/32 > 13/16 = 26/32. Ordningen är reverserad i C."
+        "why_wrong": "7/8 = 28/32 > 13/16 = 26/32. Ordningen är omvänd i C."
       }
     ],
     "pitfall": null,
@@ -257,7 +257,7 @@
       {
         "letter": "D",
         "why_tempting": "Många stannar vid 16 = s².",
-        "why_wrong": "s² = 16 ger s = 4 (rotat), inte 16."
+        "why_wrong": "s² = 16 ger s = 4 (efter rotutdragning), inte 16."
       }
     ],
     "pitfall": null,
@@ -288,7 +288,7 @@
     ],
     "pitfall": null,
     "solution_path": "\\frac{3x+3y-5y+5x}{2}=\\frac{8x-2y}{2}=4x-y.",
-    "technique": "Sammansättning av termer i bråk: utveckla parenteser, samla termer, dela med nämnaren."
+    "technique": "Sammandragning av termer i bråk: utveckla parenteser, samla termer, dela med nämnaren."
   },
   "host-2024-kvant1-XYZ-009": {
     "_meta": {
@@ -314,7 +314,7 @@
     ],
     "pitfall": null,
     "solution_path": "y=x-7. Om x < 0: y = (negativ) − 7 < 0. Säkert negativ.",
-    "technique": "Säkerhetsfrågor: testa varje villkor i båda riktningar med konkreta värden."
+    "technique": "Säkerhetsfrågor: testa varje villkor i båda riktningarna med konkreta värden."
   },
   "host-2024-kvant1-XYZ-010": {
     "_meta": {
@@ -568,7 +568,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att x < 0 om man tolkar ·medelvärde = 4· som något negativt.",
+        "why_tempting": "Snabbsvar är ofta att x < 0 om man tolkar \"medelvärde = 4\" som något negativt.",
         "why_wrong": "Räkningen ger x = 0 exakt, inte negativt."
       },
       {
@@ -631,7 +631,7 @@
       {
         "letter": "D",
         "why_tempting": "Många stannar vid 10(t+3) = 10t+30.",
-        "why_wrong": "Tar bort både rätt struktur — start är 10, tillväxt 3."
+        "why_wrong": "Förvränger hela strukturen — start är 10, tillväxt 3."
       }
     ],
     "pitfall": null,
@@ -651,7 +651,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta −b av att räkna a − b = −b − b = −2b men halvera fel.",
+        "why_tempting": "Snabbsvar är ofta −b — man räknar a − b = −b − b = −2b och halverar sedan fel.",
         "why_wrong": "−b − b = −2b, inte −b."
       },
       {
@@ -683,12 +683,12 @@
       {
         "letter": "D",
         "why_tempting": "Många stannar vid sista alternativet utan beräkning.",
-        "why_wrong": "Avståndet 540 km matchar P i kartan."
+        "why_wrong": "Avståndet 540 km motsvarar P på kartan."
       }
     ],
     "pitfall": null,
     "solution_path": "Avstånd: 6\\cdot 90=540 km. P är stationen 540 km från T.",
-    "technique": "Avstånd = hastighet · tid. Identifiera matchande station."
+    "technique": "Avstånd = hastighet · tid. Identifiera den station som motsvarar avståndet."
   },
   "host-2024-kvant2-XYZ-006": {
     "_meta": {
@@ -751,7 +751,7 @@
       {
         "letter": "B",
         "why_tempting": "Det är lätt att tro att 'något kvarstår' och svara xy + ay + bx.",
-        "why_wrong": "Alla korstermer kanellera. Endast ab kvarstår."
+        "why_wrong": "Alla korstermer tar ut varandra. Endast ab kvarstår."
       },
       {
         "letter": "C",
@@ -761,11 +761,11 @@
       {
         "letter": "D",
         "why_tempting": "Många stannar vid ab + bx + ay − 2xy.",
-        "why_wrong": "Räkna noggrant: alla bx, ay, xy kanellera. Bara ab kvarstår."
+        "why_wrong": "Räkna noggrant: alla bx, ay, xy tar ut varandra. Bara ab kvarstår."
       }
     ],
     "pitfall": null,
-    "solution_path": "Utveckla alla termer: xy+xb-xy+ya-xy+ab-ay-bx+xy=ab. Alla x- och y-termer kanellera.",
+    "solution_path": "Utveckla alla termer: xy+xb-xy+ya-xy+ab-ay-bx+xy=ab. Alla x- och y-termer tar ut varandra.",
     "technique": "Faktorisering: uttrycket är (xy)+x(b-y)+y(a-x)+(a-x)(b-y) = ab efter förenkling. Identifiera mönstret tidigt."
   },
   "host-2024-kvant2-XYZ-009": {
@@ -818,7 +818,7 @@
     ],
     "pitfall": null,
     "solution_path": "Faktor 1: 2\\sqrt{3}+3\\sqrt{3}=5\\sqrt{3}. Faktor 2: 4\\sqrt{3}-\\sqrt{3}=3\\sqrt{3}. Produkt: 5\\sqrt{3}\\cdot 3\\sqrt{3}=15\\cdot 3=45.",
-    "technique": "Multiplikation av rotor: kombinera först termer av samma rot, multiplicera sedan ut."
+    "technique": "Multiplikation av rötter: kombinera först termer av samma rot, multiplicera sedan ut."
   },
   "host-2024-kvant2-XYZ-012": {
     "_meta": {
@@ -859,17 +859,17 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Att hysa agg kan utlöpa i kritik.",
+        "why_tempting": "Att hysa agg kan utmynna i kritik.",
         "why_wrong": "Kritisera är ATT FRAMFÖRA SYNPUNKTER; hysa agg är ATT BÄRA HAT inombords. Yttre tal vs inre känsla."
       },
       {
         "letter": "D",
         "why_tempting": "Den som hyser agg kan irritera andra.",
-        "why_wrong": "Irritera är ATT GÖRA ANDRA STÖRDA; hysa agg är ATT VARA FIENTLIG inombords. Effekt på andra vs inre tillstånd."
+        "why_wrong": "Irritera är ATT STÖRA ANDRA; hysa agg är ATT VARA FIENTLIG inombords. Effekt på andra vs inre tillstånd."
       },
       {
         "letter": "E",
-        "why_tempting": "Aggsbärande kan leda till skada.",
+        "why_tempting": "Den som hyser agg kan vilja skada.",
         "why_wrong": "Göra illa är AKTIV SKADA på någon; hysa agg är PASSIV bitterhet inombords. Aktivt vs passivt."
       }
     ],
@@ -917,7 +917,7 @@
       {
         "letter": "B",
         "why_tempting": "Yrsel kan bero på trötthet.",
-        "why_wrong": "Trött är UTMATTAD (energilös); vimmelkantig är YR (orienterings­svikt). Energinivå vs balans."
+        "why_wrong": "Trött är UTMATTAD (energilös); vimmelkantig är YR (orienteringssvikt). Energinivå vs balans."
       },
       {
         "letter": "C",
@@ -927,7 +927,7 @@
       {
         "letter": "D",
         "why_tempting": "Yrsel kan göra någon klumpig.",
-        "why_wrong": "Klumpig är BRIST PÅ MOTORIK; vimmelkantig är YR (kan vara skicklig men yr just nu). Motorik vs balans­tillstånd."
+        "why_wrong": "Klumpig är BRIST PÅ MOTORIK; vimmelkantig är YR (kan vara skicklig men yr just nu). Motorik vs balanstillstånd."
       },
       {
         "letter": "E",
@@ -937,7 +937,7 @@
     ],
     "pitfall": null,
     "solution_path": "Vimmelkantig betyder yr — som upplever yrsel eller är förvirrat snurrig. Sammansatt av 'vimmel' (förvirrat surr) + 'kantig' (av kanta) = 'snurrigt vacklande'. Beskriver fysisk yrsel eller mental förvirring.",
-    "technique": "Sammansatta -kantig adjektiv (vimmelkantig, sneglikantig, snäv-kantig) — utgår från grundordets karaktär + 'kantig' = 'lutande/vacklande åt det hållet'."
+    "technique": "Sammansatta -kantig adjektiv (vimmelkantig, fyrkantig, spetskantig) — utgår från grundordets karaktär + 'kantig' = 'lutande/vacklande åt det hållet'."
   },
   "host-2024-verb1-ORD-004": {
     "_meta": {
@@ -962,12 +962,12 @@
       },
       {
         "letter": "E",
-        "why_tempting": "Krill är små vatten­djur — kan klinga som grodyngel.",
-        "why_wrong": "Grodyngel är GRODA-LARV (amfibier); krill är VUXET KRÄFTDJUR (leddjur). Olika djurklasser."
+        "why_tempting": "Krill är små vattendjur — kan klinga som grodyngel.",
+        "why_wrong": "Grodyngel är GRODLARV (amfibier); krill är VUXET KRÄFTDJUR (leddjur). Olika djurklasser."
       }
     ],
     "pitfall": null,
-    "solution_path": "Krill är ett kräftdjur — små räk-liknande havs­varelser som lever i stora svärmar och utgör grunden för många havsdjurs föda (val, sälar, fiskar). Norska kril (smultron, små bytesdjur). Ekologiskt centrala i polartrakter.",
+    "solution_path": "Krill är ett kräftdjur — små räkliknande havsdjur som lever i stora svärmar och utgör grunden för många havsdjurs föda (val, sälar, fiskar). Norska krill (småfisk, yngel). Ekologiskt centrala i polartrakter.",
     "technique": "Marinbiologiska facktermer (krill, plankton, korall) — namnger SPECIFIKA HAVSORGANISMER med specifik plats i ekosystemet."
   },
   "host-2024-verb1-ORD-005": {
@@ -998,7 +998,7 @@
       }
     ],
     "pitfall": null,
-    "solution_path": "Restriktiv betyder återhållsam — utövar restriktioner, sätter gränser, är försiktig och hållbar. Latinets restringere (binda tillbaka). Markerar inställning eller policy som begränsar handlingsfriheten.",
+    "solution_path": "Restriktiv betyder återhållsam — utövar restriktioner, sätter gränser, är försiktig och måttfull. Latinets restringere (binda tillbaka). Markerar inställning eller policy som begränsar handlingsfriheten.",
     "technique": "Latinska 'restrict-' rotord (restriktiv, restriktion, restriktivt) — bär bilden av BINDA TILLBAKA, BEGRÄNSA."
   },
   "host-2024-verb1-ORD-006": {
@@ -1087,7 +1087,7 @@
       {
         "letter": "E",
         "why_tempting": "Empati kan tolkas som ömsesidighet.",
-        "why_wrong": "Ömsesidighet är ÖMSESIDIG RELATION; empati är ENRIKTAD inlevelse (en person sätter sig in i annans). Mutual vs envägs."
+        "why_wrong": "Ömsesidighet är ÖMSESIDIG RELATION; empati är ENKELRIKTAD inlevelse (en person sätter sig in i en annans perspektiv). Ömsesidig vs envägs."
       }
     ],
     "pitfall": null,
@@ -1154,7 +1154,7 @@
     ],
     "pitfall": null,
     "solution_path": "Taktfull betyder finkänslig — har social känsla och kan hantera känsliga situationer utan att stöta sig. Sammansatt av takt (i meningen 'finess, känsla för rätt sätt') + -full = 'rik på social finess'. Markerar empatisk klokskap.",
-    "technique": "Sammansatta -full adjektiv (taktfull, kärleksfull, fyndig) — markerar 'rik på' den substantiverade kvaliteten."
+    "technique": "Sammansatta -full adjektiv (taktfull, kärleksfull, hoppfull) — markerar 'rik på' den substantiverade kvaliteten."
   },
   "host-2024-verb2-ORD-001": {
     "_meta": {
@@ -1185,7 +1185,7 @@
     ],
     "pitfall": null,
     "solution_path": "Att haverera betyder att gå sönder — drabbas av allvarligt fel, ofta plötsligt. Lågtyska havarie (sjöskada). Ursprungligen om fartyg som strandar; idag om alla typer av allvarliga sammanbrott (motorer, datorer, planer).",
-    "technique": "Lågtyska sjöfartsord (haveri, ankra, last) — bär kvar maritim klang men används bildligt om allmän fördärv."
+    "technique": "Lågtyska sjöfartsord (haveri, ankra, last) — bär kvar maritim klang men används bildligt om allmänt fördärv."
   },
   "host-2024-verb2-ORD-002": {
     "_meta": {
@@ -1206,7 +1206,7 @@
       {
         "letter": "C",
         "why_tempting": "Bestående positioner kan vara ordinarie.",
-        "why_wrong": "Ordinarie är NORMAL/STADGAD (vanlig); bestående är VARAKTIG (fortvarande). Normal vs uthållig."
+        "why_wrong": "Ordinarie är NORMAL/STADGAD (vanlig); bestående är VARAKTIG (kvarstående). Normal vs uthållig."
       },
       {
         "letter": "E",
@@ -1263,7 +1263,7 @@
       {
         "letter": "B",
         "why_tempting": "Sankmark kan vara ojämn med gropar.",
-        "why_wrong": "Gropig är OJÄMN topografi; sank är VATTEN­MÄTTAD mark. Jämnhet vs fuktighet."
+        "why_wrong": "Gropig är OJÄMN topografi; sank är VATTENMÄTTAD mark. Jämnhet vs fuktighet."
       },
       {
         "letter": "D",
@@ -1277,8 +1277,8 @@
       }
     ],
     "pitfall": null,
-    "solution_path": "Sank betyder sumpig — vatten­fylld eller fuktig, så att marken sviker under foten. Gammelt nordiskt ord. 'Sankmark' = blöt mark där det är svårt att gå. Bildligt: 'gå i sank' = misslyckas.",
-    "technique": "Gammelnordiska markord (sank, brant, hed) — beskriver MARKETS GRUND-EGENSKAPER (fuktighet, topografi, vegetation)."
+    "solution_path": "Sank betyder sumpig — vattenfylld eller fuktig, så att marken sviker under foten. Gammalt nordiskt ord. 'Sankmark' = blöt mark där det är svårt att gå. Bildligt: 'gå i sank' = misslyckas.",
+    "technique": "Fornnordiska markord (sank, brant, hed) — beskriver MARKETS GRUND-EGENSKAPER (fuktighet, topografi, vegetation)."
   },
   "host-2024-verb2-ORD-005": {
     "_meta": {
@@ -1309,7 +1309,7 @@
     ],
     "pitfall": null,
     "solution_path": "Mothugg betyder häftig kritik — ett kraftigt verbalt motangrepp eller invändning. Sammansatt av mot- (motsatsriktning) + hugg (slag) = 'slag tillbaka'. Bildligt om kritik som svar på något: 'få mothugg' = mötas av kritik.",
-    "technique": "Sammansatta mot- + verbsubst (mothugg, motsvar, motgång) — bär bilden av MOTANGREPP eller MOTSTRÄVIGHET."
+    "technique": "Sammansatta mot- + verbsubst (mothugg, motangrepp, motgång) — bär bilden av MOTANGREPP eller MOTSTRÄVIGHET."
   },
   "host-2024-verb2-ORD-006": {
     "_meta": {
@@ -1330,12 +1330,12 @@
       {
         "letter": "C",
         "why_tempting": "Händelser kan ske i tur och ordning.",
-        "why_wrong": "I tur och ordning är SEKVENTIELLT (planerat); händelsevis är OFRÅNVÄRT av slump. Ordning vs slump."
+        "why_wrong": "I tur och ordning är SEKVENTIELLT (planerat); händelsevis är SLUMPMÄSSIGT (av slump). Ordning vs slump."
       },
       {
         "letter": "E",
         "why_tempting": "Händelsevis kan tolkas som 'då och då'.",
-        "why_wrong": "Då och då är OFTA OREGELBUNDET; händelsevis är AV SLUMP (en gång). Frekvens vs orsak."
+        "why_wrong": "Då och då är IBLAND/EMELLANÅT; händelsevis är AV SLUMP (en gång). Frekvens vs orsak."
       }
     ],
     "pitfall": null,
@@ -1387,17 +1387,17 @@
       {
         "letter": "B",
         "why_tempting": "Porösa argument kan kännas innehållslösa.",
-        "why_wrong": "Innehållslös är UTAN SUBSTANS; porös är MED HÅLRUM (har struktur men släpper igenom). Tomt vs porstrukturerat."
+        "why_wrong": "Innehållslös är UTAN SUBSTANS; porös är MED HÅLRUM (har struktur men släpper igenom). Tomt vs poröst."
       },
       {
         "letter": "C",
-        "why_tempting": "Porös och kompakt är besläktade material­egenskaper.",
+        "why_tempting": "Porös och kompakt är besläktade materialegenskaper.",
         "why_wrong": "Kompakt är RAKA MOTSATSEN — utan hålrum, tät; porös är med många hålrum. Motsatta strukturer."
       },
       {
         "letter": "E",
         "why_tempting": "Porösa material kan vara elastiska.",
-        "why_wrong": "Fjädrande är ELASTISKT (ger efter och återgår); porös är HÅLAKTIG. Elasticitet vs porstruktur."
+        "why_wrong": "Fjädrande är ELASTISKT (ger efter och återgår); porös är full av hål. Elasticitet vs porositet."
       }
     ],
     "pitfall": null,
@@ -1463,7 +1463,7 @@
       }
     ],
     "pitfall": null,
-    "solution_path": "Att förlora målföret betyder att bli stum — tappa förmågan att tala, ofta av chock eller känsla. 'Målföre' är gammaldags ord för 'tal-förmåga'. Idiomet markerar momentan språklöshet.",
+    "solution_path": "Att förlora målföret betyder att bli stum — tappa förmågan att tala, ofta av chock eller känsla. 'Målföre' är gammaldags ord för 'talförmåga'. Idiomet markerar momentan språklöshet.",
     "technique": "Idiom med 'förlora' + arkaiskt subst (förlora målföret, förlora besinningen, förlora fattningen) — verb + arkaiskt ord ger fast uttryck."
   },
   "host-2024-kvant1-NOG-023": {
@@ -1471,7 +1471,7 @@
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att se siffran 20 % och tro det binder något konkret.",
+        "why_tempting": "Det är lätt att Det är lätt att se siffran 20 % och tro att det binder något konkret..",
         "why_wrong": "1/5 är per definition 20 % — utsagan är trivialt sann för alla n."
       },
       {
@@ -1529,7 +1529,7 @@
     }
   },
   "host-2024-kvant1-NOG-025": {
-    "solution_path": "Båda krävs: använd att vinkelsumman i triangeln är u+v+w=180°. Adderar du (1) och (2) får du 2u+v+w=216°, så u=36° när v+w=180°−u substitueras. Vart för sig saknar man halva systemet.",
+    "solution_path": "Båda krävs: använd att vinkelsumman i triangeln är u+v+w=180°. Adderar du (1) och (2) får du 2u+v+w=216°, så u=36° när v+w=180°−u substitueras. Var för sig saknar man halva systemet.",
     "distractors": [
       {
         "letter": "A",
@@ -1606,7 +1606,7 @@
       {
         "letter": "D",
         "why_tempting": "Om du tror att (1):s två villkor räcker landar du här.",
-        "why_wrong": "(1) klär av varm choklad från vit men låter te och kaffe konkurrera."
+        "why_wrong": "(1) utesluter varm choklad från vit men låter te och kaffe konkurrera."
       },
       {
         "letter": "E",
@@ -1632,7 +1632,7 @@
       {
         "letter": "B",
         "why_tempting": "Snabbsvar är ofta att två delbarhetsvillkor räcker.",
-        "why_wrong": "Utan intervall finns oändligt många multiplum av 8 som inte är delbara med 3."
+        "why_wrong": "Utan intervall finns oändligt många multipler av 8 som inte är delbara med 3."
       },
       {
         "letter": "C",
@@ -1653,7 +1653,7 @@
     }
   },
   "host-2024-kvant2-NOG-023": {
-    "solution_path": "Vart för sig räcker. (1): svart=mellanstor + vit<röd → röd>svart>vit, alltså röd störst. (2): vit minst + svart<röd → röd>svart>vit, alltså röd störst.",
+    "solution_path": "Var för sig räcker. (1): svart=mellanstor + vit<röd → röd>svart>vit, alltså röd störst. (2): vit minst + svart<röd → röd>svart>vit, alltså röd störst.",
     "distractors": [
       {
         "letter": "A",
@@ -1870,12 +1870,12 @@
       {
         "letter": "C",
         "why_tempting": "Många stannar vid att intresset för dilemman skapas.",
-        "why_wrong": "Texten talar inte om motivationsboost specifikt — alternativet importerar fel effekt."
+        "why_wrong": "Texten talar inte om motivationshöjning specifikt — alternativet importerar fel effekt."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta att modeller utvecklas av elever.",
-        "why_wrong": "Texten säger att läraren leder, eleverna äger DISKUSSIONEN — inte modellen i sig; alternativet over-reaches."
+        "why_wrong": "Texten säger att läraren leder, eleverna äger DISKUSSIONEN — inte modellen i sig; alternativet sträcker sig för långt."
       }
     ],
     "technique": "Vid 'fördel som framhålls'-frågor: hitta den explicita effekt-mening som binder samman med skolan i stort.",
@@ -1912,7 +1912,7 @@
     }
   },
   "host-2024-verb1-LÄS-015": {
-    "solution_path": "Moula säger 'det ämnesorienterade tänkandet och skolämnen som är viktiga för ett teknologiskt avancerat samhälle prioriteras. Skolan måste också ge eleverna redskap för livet'. Han ser dagens prioritering som för begränsad — viktigt kunskap saknas.",
+    "solution_path": "Moula säger 'det ämnesorienterade tänkandet och skolämnen som är viktiga för ett teknologiskt avancerat samhälle prioriteras. Skolan måste också ge eleverna redskap för livet'. Han ser dagens prioritering som för begränsad — viktig kunskap saknas.",
     "distractors": [
       {
         "letter": "A",
@@ -2005,7 +2005,7 @@
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta att verksamheten inte konkurrerar.",
-        "why_wrong": "Texten säger att den 'snedvrider konkurrensen' — den är ALLT FÖR konkurrenskraftig på fel sätt; alternativet inverterar."
+        "why_wrong": "Texten säger att den 'snedvrider konkurrensen' — den är ALLTFÖR konkurrenskraftig på fel sätt; alternativet inverterar."
       }
     ],
     "technique": "Vid 'skäl till X'-frågor: hitta texten själv om vad som skadar något ('skadar förtroendet').",
@@ -2051,13 +2051,13 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid de få oppfyllda undantagen.",
+        "why_tempting": "Många stannar vid de få uppfyllda undantagen.",
         "why_wrong": "Det är inte att GENOMFÖRANDET uteblev utan att vissa MÅL inte nåddes; alternativet flyttar dimension."
       },
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta blandad bedömning.",
-        "why_wrong": "Texten är mer positiv än 'inkonsekvent och försiktig' — den anser reformen lyckad; alternativet är negativt skev."
+        "why_wrong": "Texten är mer positiv än 'inkonsekvent och försiktig' — den anser reformen lyckad; alternativet är negativt skevt."
       }
     ],
     "technique": "Vid 'framställer X'-frågor: hitta värdeladdade omdömen i texten ('framsynt', 'med ett par undantag uppfyllts').",
@@ -2103,7 +2103,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att appararterna förenklar.",
+        "why_tempting": "Många stannar vid att apparaterna förenklar.",
         "why_wrong": "Texten talar inte om bekvämlighet utan om främlingskap; alternativet importerar fel motiv."
       },
       {
@@ -2129,7 +2129,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid kontrastet mot psykodynamik.",
+        "why_tempting": "Många stannar vid kontrasten mot psykodynamik.",
         "why_wrong": "Det är den TRADITIONELLA innebörden, inte den nya; alternativet flyttar period."
       },
       {
@@ -2203,7 +2203,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro att neuropsykiatri = grund.",
-        "why_wrong": "Texten talar inte om att en specifik perspektiv ska genomsyra all vård — alternativet over-reaches."
+        "why_wrong": "Texten talar inte om att ett specifikt perspektiv ska genomsyra all vård — alternativet sträcker sig för långt."
       },
       {
         "letter": "B",
@@ -2238,7 +2238,7 @@
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att presterna inte borde rapporterat.",
+        "why_tempting": "Snabbsvar är ofta att prästerna inte borde rapporterat.",
         "why_wrong": "Texten talar inte om vem som SKULLE rapportera — alternativet importerar fel kritik."
       }
     ],
@@ -2291,7 +2291,7 @@
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta plakatets upphävande.",
-        "why_wrong": "Citatet förklarar 1700-talets motstånd, inte 1858-upphävandet; alternativet flyttar period."
+        "why_wrong": "Citatet förklarar 1700-talets motstånd, inte upphävandet 1858; alternativet flyttar period."
       }
     ],
     "technique": "Vid 'vad bidrar citatet att förklara'-frågor: hitta vilken fråga som föregår citatet ('åtgärderna gav inga omfattande resultat').",
@@ -2302,7 +2302,7 @@
     }
   },
   "host-2024-verb2-LÄS-020": {
-    "solution_path": "Texten säger att 'staten såg kyrkan som ett redskap för att kontrollera och styra folket' — alltså LYDNAD var målet. Men oförutsedda konsekvensen blev att läsarna 'representerade en ny syn... frigörelse och revolt mot mänskligt förtryck'. Lydnadsmål, ifrågasättanderesultat.",
+    "solution_path": "Texten säger att 'staten såg kyrkan som ett redskap för att kontrollera och styra folket' — alltså LYDNAD var målet. Men oförutsedda konsekvensen blev att läsarna 'representerade en ny syn... frigörelse och revolt mot mänskligt förtryck'. Lydnad var målet, ifrågasättande blev resultatet.",
     "distractors": [
       {
         "letter": "A",
@@ -2312,7 +2312,7 @@
       {
         "letter": "C",
         "why_tempting": "Många stannar vid att gudstron var målet.",
-        "why_wrong": "Religiösitet var del av lydnaden; resultatet var INTE mindre religiösa människor — alternativet inverterar resultatet."
+        "why_wrong": "Religiositet var del av lydnaden; resultatet var INTE mindre religiösa människor — alternativet inverterar resultatet."
       },
       {
         "letter": "D",
@@ -2328,7 +2328,7 @@
     }
   },
   "host-2024-verb1-MEK-021": {
-    "solution_path": "Stipendier för vidareutbildning — den fasta termen för ekonomisk bidrag till studier. Texten ger dig kontexten (resa, utbildning, läroverk) som låser fackvalet.",
+    "solution_path": "Stipendier för vidareutbildning — den fasta termen för ekonomiskt bidrag till studier. Texten ger dig kontexten (resa, utbildning, läroverk) som låser fackvalet.",
     "distractors": [
       {
         "letter": "A",
@@ -2364,7 +2364,7 @@
       {
         "letter": "B",
         "why_tempting": "Många stannar vid 'rymligt' som stort.",
-        "why_wrong": "Rymligt är 'med plats' (rumsligt) — fel rektion för dokument; och 'innovationer' är nyskapelser, inte rekommendationer."
+        "why_wrong": "Rymligt är 'med plats' (rumsligt) — fel kollokation för dokument; och 'innovationer' är nyskapelser, inte rekommendationer."
       },
       {
         "letter": "C",
@@ -2385,7 +2385,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att läsa 'sänder' om plats.",
-        "why_wrong": "'I sänder' är 'åt gången/i taget' — fel rektion; säger inget om plats; och 'i förvaltning' är formellt myndighetsspråk, inte gerilla-handling."
+        "why_wrong": "'I sänder' är 'åt gången/i taget' — fel kollokation; säger inget om plats; och 'i förvaltning' är formellt myndighetsspråk, inte gerilla-handling."
       },
       {
         "letter": "B",
@@ -2421,7 +2421,7 @@
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta 'huvudsakligen' som mestadels.",
-        "why_wrong": "Huvudsakligen är 'till stor del' — fel rektion; DQ är binärt, inte gradfråga."
+        "why_wrong": "Huvudsakligen är 'till stor del' — fel kollokation; DQ är binärt, inte gradfråga."
       }
     ],
     "technique": "Stäm av betydelsenyans: obönhörligen (utan undantag/ofrånkomligen) är fast regel-adverb — andra '-ligen'-ord (tämligen, synbarligen) har gradsförsvagande betydelser.",
@@ -2432,7 +2432,7 @@
     }
   },
   "host-2024-verb1-MEK-025": {
-    "solution_path": "Fosforister och polyfemister var två fraktioner (partigrupper, falanger) inom skolan. Och det rådde rivalitet — den fasta kollokationen 'råda + tillstånd'. Båda i litteraturhistorisk register.",
+    "solution_path": "Fosforister och polyfemister var två fraktioner (partigrupper, falanger) inom skolan. Och det rådde rivalitet — den fasta kollokationen 'råda + tillstånd'. Båda i litteraturhistoriskt register.",
     "distractors": [
       {
         "letter": "A",
@@ -2450,7 +2450,7 @@
         "why_wrong": "Versioner är olika utföranden — fraktioner är gruppstrukturer; fel kategori; och 'skedde rivalitet' är fel verb."
       }
     ],
-    "technique": "Tvåblanksdrag i litteraturhistorisk register: 'fraktioner' (partigrupper) + 'rådde rivalitet' (rådde + tillstånd) — andra ord skär mot litt-hist-vokabulär.",
+    "technique": "Tvåblanksdrag i litteraturhistoriskt register: 'fraktioner' (partigrupper) + 'rådde rivalitet' (rådde + tillstånd) — andra ord skär mot litt-hist-vokabulär.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2489,17 +2489,17 @@
       {
         "letter": "B",
         "why_tempting": "Det är lätt att läsa 'digitaliserades' som modernisering.",
-        "why_wrong": "Digitaliserades är att övergå till digital form — för specifik 1970-tals fanns inte ännu; och 'jaktregleringar' är lagar, inte mätmetoder."
+        "why_wrong": "Digitaliserades är att övergå till digital form — för specifikt 1970-tal fanns inte ännu; och 'jaktregleringar' är lagar, inte mätmetoder."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid 'prioriterades' som lyftes upp.",
-        "why_wrong": "Prioriterades är okej men 'vandringsmönster' är ett av flera mätobjekt, inte själva metoderna; fel rektion."
+        "why_wrong": "Prioriterades är okej men 'vandringsmönster' är ett av flera mätobjekt, inte själva metoderna; fel kollokation."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta 'rationaliserades' som strömlinjeformat.",
-        "why_wrong": "Rationaliserades är att effektivisera — men texten säger arbetet OCKSÅ inkluderade NYA metoder, inte bara förenklade existerande; och 'populationsstammar' är konstigt ord."
+        "why_wrong": "Rationaliserades är att effektivisera — men texten säger arbetet OCKSÅ inkluderade NYA metoder, inte bara förenklade existerande; och 'populationsstammar' är ett konstigt ord."
       }
     ],
     "technique": "Tvåblanksdrag i viltvårdsregister: intensifierades + inventeringsmetoder — fasta termer för populationskartläggning.",
@@ -2514,13 +2514,13 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'resultat' som vag.",
+        "why_tempting": "Det är lätt att läsa 'resultat' som vagt.",
         "why_wrong": "Resultat är slutmått, inte relation — texten beskriver SAMBAND; och 'uppvisar' är fel verb; 'risk att personer får' bryter logiken (rökare har omvänd risk, dvs MINDRE)."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid 'relationer' som kvasisynonymt.",
-        "why_wrong": "Relationer är okej semantiskt — men 'samband' är specifika epidemiologi-termen; och 'farligare för rökare' är inverterat fel (omvänd samband betyder mindre risk)."
+        "why_wrong": "Relationer är okej semantiskt — men 'samband' är den specifika epidemiologitermen; och 'farligare för rökare' är inverterat fel (Omvänt samband betyder mindre risk)."
       },
       {
         "letter": "D",
@@ -2529,7 +2529,7 @@
       }
     ],
     "technique": "Treblanksdrag i epidemiologi-register: samband (statistisk relation) + innebär + ovanligare — fasta korrelationsord.",
-    "pitfall": "Omvänd samband betyder MINDRE av Y vid mer av X — välj 'ovanligare', inte 'farligare/sannolikare'.",
+    "pitfall": "Omvänt samband betyder MINDRE av Y vid mer av X — välj 'ovanligare', inte 'farligare/sannolikare'.",
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778442720560
@@ -2551,10 +2551,10 @@
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta 'kräva' om uppgifter.",
-        "why_wrong": "Kräva är att begära/fordra — fel rektion; sekretess gäller inte begäran utan utlämning."
+        "why_wrong": "Kräva är att begära/fordra — fel kollokation; sekretess gäller inte begäran utan utlämning."
       }
     ],
-    "technique": "Juridisk sekretessterminologi: 'röja' (avslöja konfidentiell info) är fackterm — andra verb (hävda, dölja, kräva) har egna juridiska rektioner.",
+    "technique": "Juridisk sekretessterminologi: 'röja' (avslöja konfidentiell info) är fackterm — andra verb (hävda, dölja, kräva) har egna juridiska kollokationer.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2562,7 +2562,7 @@
     }
   },
   "host-2024-verb1-MEK-030": {
-    "solution_path": "Klättrare upplever strapatser (svåra påfrestningar/mödor) — fast term för dramatiska resfortarbeten. Och utsikten är vidunderlig (förunderligt stor/imponerande) — litterär förstärkning. Båda är äventyrslitterära register.",
+    "solution_path": "Klättrare upplever strapatser (svåra påfrestningar/mödor) — fast term för dramatiska resmödor. Och utsikten är vidunderlig (förunderligt stor/imponerande) — litterär förstärkning. Båda är äventyrslitterära register.",
     "distractors": [
       {
         "letter": "A",
@@ -2580,7 +2580,7 @@
         "why_wrong": "Dramatik är skenbart bra — men strapatser är mer specifikt (fysiskt-mödo); och 'förskönande utsikt' är fel — utsikten är inte 'förskönande' utan storslagen i sig."
       }
     ],
-    "technique": "Tvåblanksdrag i äventyrslitterär register: strapatser (mödor) + vidunderlig (förunderlig) — fasta termer i klättrar-/upptäckarlitteratur.",
+    "technique": "Tvåblanksdrag i äventyrslitterärt register: strapatser (mödor) + vidunderlig (förunderlig) — fasta termer i klättrar-/upptäckarlitteratur.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2645,7 +2645,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att läsa 'språkmelodi' som prosodi.",
-        "why_wrong": "Språkmelodi är ETT av elementen texten räknar upp — inte överbegreppet; ologisk självreferens; och 'sammanhanget' är vag, 'karaktär' är vag."
+        "why_wrong": "Språkmelodi är ETT av elementen texten räknar upp — inte överbegreppet; ologisk självreferens; och 'sammanhanget' är vagt, 'karaktär' är vag."
       },
       {
         "letter": "B",
@@ -2655,7 +2655,7 @@
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta 'språkutveckling' om unga tonåringar.",
-        "why_wrong": "Språkutveckling är hur språk växer hos individ — fel ämne; texten beskriver kommunikation, inte utvecklingsstadier; 'barnet' är fel rektion; 'tydlighet' är vag."
+        "why_wrong": "Språkutveckling är hur språk växer hos en individ — fel ämne; texten beskriver kommunikation, inte utvecklingsstadier; 'barnet' är fel kollokation; 'tydlighet' är vag."
       }
     ],
     "technique": "Treblanksdrag i kommunikationsteori-register: språkförståelse / lyssnaren / innebörd — alla samtidigt i samma kommunikationsteori-vokabulär.",
@@ -2676,12 +2676,12 @@
       {
         "letter": "C",
         "why_tempting": "Många stannar vid 'avkrävas' som krävs av.",
-        "why_wrong": "Avkrävas är att fordras — fel rektion; man kräver inte AV aktiviteten, det är aktiviteten som ORSAKAR."
+        "why_wrong": "Avkrävas är att fordras — fel kollokation; man kräver inte AV aktiviteten, det är aktiviteten som ORSAKAR."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta 'utgöra' som vara/utgöras av.",
-        "why_wrong": "Utgöra är 'vara' — men aktiviteten utgör inte bristen, den orsakar; fel rektion; och 'försumbar andel' är direkt motsats till textens 'mer och mer'."
+        "why_wrong": "Utgöra är 'vara' — men aktiviteten utgör inte bristen, den orsakar; fel kollokation; och 'försumbar andel' är direkt motsats till textens 'mer och mer'."
       }
     ],
     "technique": "Identifiera kollokationen: 'tillskrivas' = attribueras kausalt till — fast rektion för orsaksbeskrivning; andra verb har egna logiska strukturer.",
@@ -2697,17 +2697,17 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att läsa 'avleda' som härleda.",
-        "why_wrong": "Avleda är att leda bort/distrahera — fel verb; och 'avleda från' = härröra inte är samma sak grammatiskt."
+        "why_wrong": "Avleda är att leda bort/distrahera — fel verb; och 'avleda från' och 'härröra från' är inte samma sak grammatiskt."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid 'framstå' som synligt.",
-        "why_wrong": "Framstå är att 'visa sig vara' — men benen 'framstår inte från en grav' grammatiskt; fel rektion."
+        "why_wrong": "Framstå är att 'visa sig vara' — men benen 'framstår inte från en grav' grammatiskt; fel kollokation."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta 'ankomma' som komma in i.",
-        "why_wrong": "Ankomma är att 'komma fram till en plats' — men ankommer benen INTE från graven, de KOMMER FRÅN den; fel rektion."
+        "why_wrong": "Ankomma är att 'komma fram till en plats' — men ankommer benen INTE från graven, de KOMMER FRÅN den; fel kollokation."
       }
     ],
     "technique": "Identifiera kollokationen: 'härröra från' = ha sitt ursprung i — fast arkeologi-/historisk fackterm; andra verb har egna prepositioner.",
@@ -2718,7 +2718,7 @@
     }
   },
   "host-2024-verb2-MEK-026": {
-    "solution_path": "Diversifieringen (mångfaldigande, breddande) av texttyper — det är ordet för att olika varianter uppstår och divergerar. Och färre råd kan generaliseras (göras allmänt giltiga) från en typ till annan. Båda är språkvård-/lingvistik-register.",
+    "solution_path": "Diversifieringen (mångfaldigande, breddande) av texttyper — det är ordet för att olika varianter uppstår och divergerar. Och färre råd kan generaliseras (göras allmänt giltiga) från en typ till annan. Båda är språkvårds-/lingvistikregister.",
     "distractors": [
       {
         "letter": "A",
@@ -2736,7 +2736,7 @@
         "why_wrong": "Popularisering är att göra populär — men texterna blir inte mer populära, de blir fler och mer olika; fel betydelse."
       }
     ],
-    "technique": "Tvåblanksdrag i lingvistik-register: diversifiering (mångfaldigande) + generalisera (göra allmänt) — fasta språkvård-termer.",
+    "technique": "Tvåblanksdrag i lingvistik-register: diversifiering (mångfaldigande) + generalisera (göra allmänt) — fasta språkvårdstermer.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2744,25 +2744,25 @@
     }
   },
   "host-2024-verb2-MEK-027": {
-    "solution_path": "Metoden följde 'vedertagen' (allmänt accepterad, etablerad) statistisk teori — det är ordet för 'sedan länge erkänd och i bruk'. Texten ger dig 'fortfarande fungerar bra i praktiken' som cue för väletablerad teori.",
+    "solution_path": "Metoden följde 'vedertagen' (allmänt accepterad, etablerad) statistisk teori — det är ordet för 'sedan länge erkänd och i bruk'. Texten ger dig 'fortfarande fungerar bra i praktiken' som ledtråd för väletablerad teori.",
     "distractors": [
       {
         "letter": "B",
         "why_tempting": "Det är lätt att läsa 'bokstavlig' som strikt-konkret.",
-        "why_wrong": "Bokstavlig är 'ord för ord' — fel rektion för 'teori'; man har inte 'bokstavlig teori'."
+        "why_wrong": "Bokstavlig är 'ord för ord' — fel kollokation för 'teori'; man har inte 'bokstavlig teori'."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid 'varaktig' som hållbar.",
-        "why_wrong": "Varaktig är 'tidshållfast' — passar mer praktisk effekt; vedertagen är 'allmänt erkänd' — passar bättre teorin själv."
+        "why_wrong": "Varaktig är 'tidsbeständig' — passar mer praktisk effekt; vedertagen är 'allmänt erkänd' — passar bättre teorin själv."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta 'uttömmande' som heltäckande.",
-        "why_wrong": "Uttömmande är 'allomfattande' — fel rektion; en teori är inte 'uttömmande' i denna mening."
+        "why_wrong": "Uttömmande är 'allomfattande' — fel kollokation; en teori är inte 'uttömmande' i denna mening."
       }
     ],
-    "technique": "Stäm av betydelsenyans: vedertagen (allmänt accepterad-etablerad) är fast forskningskonst-term — andra adjektiv (bokstavlig, varaktig, uttömmande) har egna rektioner.",
+    "technique": "Stäm av betydelsenyans: vedertagen (allmänt accepterad-etablerad) är fast vetenskaplig fackterm — andra adjektiv (bokstavlig, varaktig, uttömmande) har egna kollokationer.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2770,17 +2770,17 @@
     }
   },
   "host-2024-verb2-MEK-028": {
-    "solution_path": "Inbrott + mord = graverande (försvårande, strafftyngande) omständighet — juridisk fackterm. Brottet var oprovocerat (offret hade inte provocerat) och offret kunde inte värja sig (försvara sig). Tre fasta juridiska kollokationer.",
+    "solution_path": "Inbrott + mord = graverande (försvårande, straffskärpande) omständighet — juridisk fackterm. Brottet var oprovocerat (offret hade inte provocerat) och offret kunde inte värja sig (försvara sig). Tre fasta juridiska kollokationer.",
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att läsa 'försvårande' som synonym till graverande.",
-        "why_wrong": "Försvårande är okej semantiskt men 'graverande' är den fasta juridiska termen; och 'oplanerat' är fel — det är ologisk att samtidigt vara oplanerat och nattligt inbrott; 'skyla sig' är fel rektion (man skyler sig fysiskt mot väder)."
+        "why_wrong": "Försvårande är okej semantiskt men 'graverande' är den fasta juridiska termen; och 'oplanerat' är fel — det är ologiskt att samtidigt vara oplanerat och nattligt inbrott; 'skyla sig' är fel kollokation (man skyler sig fysiskt mot väder)."
       },
       {
         "letter": "B",
         "why_tempting": "Många stannar vid 'betungande' som tyngande.",
-        "why_wrong": "Betungande är 'kostsamt-bördigt' (om skatter/arbete) — fel rektion för brott; 'omotiverat' är okej men 'hävda sig' är fel (det är att försvara sin position, inte sin person)."
+        "why_wrong": "Betungande är 'kostsamt eller tyngande' (om skatter/arbete) — fel kollokation för brott; 'omotiverat' är okej men 'hävda sig' är fel (det är att försvara sin position, inte sin person)."
       },
       {
         "letter": "D",
@@ -2822,7 +2822,7 @@
     }
   },
   "host-2024-verb2-MEK-030": {
-    "solution_path": "Studenter upplever en diskrepans (skillnad, avvikelse) mellan utbildning och praktik — det är abstraktan för 'inkongruens mellan två förväntningar'. Hela texten är just denna gap-känsla.",
+    "solution_path": "Studenter upplever en diskrepans (skillnad, avvikelse) mellan utbildning och praktik — det är det abstrakta begreppet för 'inkongruens mellan två förväntningar'. Hela texten är just denna gap-känsla.",
     "distractors": [
       {
         "letter": "A",
@@ -2832,12 +2832,12 @@
       {
         "letter": "B",
         "why_tempting": "Många stannar vid 'distorsion' som förvrängning.",
-        "why_wrong": "Distorsion är förvridning (ofta visuellt/akustiskt) — fel rektion för upplevd kunskapsskillnad."
+        "why_wrong": "Distorsion är förvridning (ofta visuellt/akustiskt) — fel kollokation för upplevd kunskapsskillnad."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta 'distinktion' som skillnad.",
-        "why_wrong": "Distinktion är skillnadsdragning (begreppslig) — inte upplevd gap mellan teori och praktik; diskrepans är mer specifika 'oöverensstämmelse'."
+        "why_wrong": "Distinktion är skillnadsdragning (begreppslig) — inte upplevt gap mellan teori och praktik; diskrepans är mer specifikt 'oöverensstämmelse'."
       }
     ],
     "technique": "Stäm av betydelsenyans: diskrepans (gap mellan förväntning och utfall) ≠ distinktion (begreppslig skillnad) ≠ dispyt (tvist) ≠ distorsion (förvrängning).",
