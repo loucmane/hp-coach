@@ -123,7 +123,34 @@ friction in a downstream check.
 
 ---
 
-## 6. ELF (English reading) section — Swedish lint does NOT apply
+## 6. `the` inside quoted English citations (2 known sites)
+
+**Context.** Two LÄS entries discuss English-language music/literary
+criticism and quote source titles verbatim:
+
+- `var-2014-verb1-LÄS-012` — Sedgwick's `'epistemology of the closet'`
+- `var-2016-verb1-LÄS-011` — `'the Jacobean lutenists'` and
+  `'Lutenists of the Golden Age'`
+
+The Swedish solution_path quotes these English phrases as proper
+nouns / book titles. The lint hook (`audit/corpus_lint/lint_entry.py`)
+flags `the` as an English-bleed anglicism in both, which is a known
+false positive — `the` IS English, but here it sits inside a
+single-quoted citation, which is correct Swedish-academic style.
+
+**Decision.** Keep `the` in `anglicisms.txt` (it's the strongest
+signal for real English-bleed). Accept these 2 known false-positive
+flags. The hook runs in `--lint warn` mode by default; both entries
+save with the warning logged but no content change.
+
+**If you later add quote-aware skip to lint_entry**, these are the
+test cases to confirm the new rule preserves: both lines have
+`'<EN phrase>'` (single quotes) with at least 3 English tokens
+inside. Add a guard that skips tokens inside such spans.
+
+---
+
+## 7. ELF (English reading) section — Swedish lint does NOT apply
 
 **Context.** ELF rationales are intentionally in English by exam
 design — the section tests English reading comprehension. The
