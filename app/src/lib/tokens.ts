@@ -285,22 +285,56 @@ export const DENSITIES: Record<Density, DensityVars> = {
 }
 
 /**
+ * Build a fluid clamp() between a stepwise base (mobile, 390px viewport) and
+ * an aspirational max (reader/studio, ~1440px viewport).
+ *
+ * The interpolation hits the max around 1440px viewport width — beyond that
+ * the value plateaus, preventing pad/gap from inflating on ultra-wide
+ * monitors where it'd just look spongy.
+ *
+ * Slope tuning: (max - base) * 100 / (1440 - 390) ≈ 0.0952 per vw. For a
+ * 22px → 36px scale that's about 1.33vw of slope. We use a slightly tighter
+ * 0.7vw so the fluid effect is felt but not theatrical.
+ */
+function fluidPx(base: number, max: number): string {
+  const slope = ((max - base) / (1440 - 390)) * 100 // % of vw
+  // Base in rem (assuming 16px html font-size) so the user's browser zoom
+  // affects the floor too. base/16 = rem equivalent.
+  const baseRem = (base / 16).toFixed(4)
+  return `clamp(${base}px, ${baseRem}rem + ${slope.toFixed(2)}vw, ${max}px)`
+}
+
+/**
  * Build the full set of CSS variables for a given theme combination.
  * Output is a flat `Record<string, string>` of `--name → value`.
  *
  * The CSS variable names match the prototype convention 1:1, so any code
  * that reads `var(--bg)`, `var(--accent)`, `var(--font-display)` etc. just
  * works regardless of which palette/font/density is active.
+ *
+ * `useFluid` (Phase A responsive) — when true, density vars use clamp()
+ * so spacing scales smoothly across viewport widths. When false, the
+ * canonical mobile baseline applies at every width (current behavior).
  */
 export function buildThemeVars(
   palette: PaletteKey,
   mode: ThemeMode,
   fontKey: FontKey,
   density: Density,
+  useFluid = true,
 ): Record<string, string> {
   const colors = PALETTES[palette][mode]
   const f = FONTS[fontKey]
   const d = DENSITIES[density]
+
+  // Density-vars fluid maxes — scale by ~1.4–1.6× from baseline. Title
+  // gets a more dramatic stretch (it's a headline; bigger viewports want
+  // bigger headlines) than pad/gap (chrome should not balloon).
+  const pad = useFluid ? fluidPx(d.pad, Math.round(d.pad * 1.55)) : `${d.pad}px`
+  const padLg = useFluid ? fluidPx(d.padLg, Math.round(d.padLg * 1.8)) : `${d.padLg}px`
+  const gap = useFluid ? fluidPx(d.gap, Math.round(d.gap * 1.55)) : `${d.gap}px`
+  const gapLg = useFluid ? fluidPx(d.gapLg, Math.round(d.gapLg * 1.55)) : `${d.gapLg}px`
+  const title = useFluid ? fluidPx(d.title, Math.round(d.title * 1.6)) : `${d.title}px`
 
   const vars: Record<string, string> = {
     // colors
@@ -330,15 +364,16 @@ export function buildThemeVars(
     '--font-ui-track': f.uiTracking,
     '--font-mono': f.mono,
     '--font-mono-track': f.monoTracking,
-    // density
-    '--pad': `${d.pad}px`,
-    '--pad-lg': `${d.padLg}px`,
-    '--gap': `${d.gap}px`,
-    '--gap-lg': `${d.gapLg}px`,
+    // density (fluid-aware)
+    '--pad': pad,
+    '--pad-lg': padLg,
+    '--gap': gap,
+    '--gap-lg': gapLg,
     '--radius': `${d.radius}px`,
-    '--title-size': `${d.title}px`,
+    '--title-size': title,
     // metadata
     '--scheme': mode,
+    '--fluid': useFluid ? '1' : '0',
   }
   return vars
 }
@@ -349,4 +384,6 @@ export const DEFAULT_THEME = {
   mode: 'light' as ThemeMode,
   font: 'literary' as FontKey,
   density: 'regular' as Density,
+  useFluid: true,
+  studioRails: false,
 }

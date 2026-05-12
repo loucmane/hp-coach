@@ -37,12 +37,16 @@ describe('design tokens', () => {
     expect(DENSITIES).toMatchSnapshot()
   })
 
-  it('buildThemeVars(default) emits the full var set', () => {
+  it('buildThemeVars(default, stepwise) emits the full var set', () => {
+    // Snapshot the stepwise (useFluid=false) version — fluid output
+    // varies with the clamp formula and isn't a stable enough snapshot
+    // target. The fluid behavior is tested separately below.
     const vars = buildThemeVars(
       DEFAULT_THEME.palette,
       DEFAULT_THEME.mode,
       DEFAULT_THEME.font,
       DEFAULT_THEME.density,
+      false,
     )
     expect(vars).toMatchSnapshot()
   })
@@ -54,10 +58,19 @@ describe('design tokens', () => {
     expect(sand['--accent']).not.toBe(sage['--accent'])
   })
 
-  it('buildThemeVars writes density px values', () => {
-    const compact = buildThemeVars('sand', 'light', 'literary', 'compact')
-    const comfy = buildThemeVars('sand', 'light', 'literary', 'comfy')
+  it('buildThemeVars writes density px values when useFluid=false', () => {
+    const compact = buildThemeVars('sand', 'light', 'literary', 'compact', false)
+    const comfy = buildThemeVars('sand', 'light', 'literary', 'comfy', false)
     expect(compact['--pad']).toBe('14px')
     expect(comfy['--pad']).toBe('22px')
+    expect(compact['--fluid']).toBe('0')
+    expect(comfy['--fluid']).toBe('0')
+  })
+
+  it('buildThemeVars emits clamp() density when useFluid=true (default)', () => {
+    const regular = buildThemeVars('sand', 'light', 'literary', 'regular')
+    expect(regular['--pad'].startsWith('clamp(')).toBe(true)
+    expect(regular['--pad']).toContain('18px') // baseline value still present as floor
+    expect(regular['--fluid']).toBe('1')
   })
 })

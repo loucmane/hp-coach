@@ -2,8 +2,16 @@
 // Ported from the design prototype's <Phone /> wrapper + <BottomTabs />.
 // Encapsulates the artboard scaffolding so screen components only own the
 // content area and don't re-implement the iOS shell.
+//
+// Phase A responsive: when the viewport is reader/studio (≥768px), the
+// iOS-specific decorative chrome (status bar showing 09:41, home
+// indicator pill) is hidden — they don't make sense at tablet/desktop
+// where the device IS the desktop, not a previewed phone. Bottom tabs
+// stay because they're real navigation, not decoration.
 
 import type { CSSProperties, ReactNode } from 'react'
+
+import { useViewport } from '@/hooks/useViewport'
 
 import { Chart, Home, Pencil, User } from './icons'
 
@@ -170,6 +178,13 @@ export function MobileFrame({
   onTabChange,
   style,
 }: MobileFrameProps) {
+  // Phase A: iOS-decorative chrome (status bar + home indicator) only
+  // makes sense on phone. At reader/studio the surrounding Frame
+  // already provides the canvas; adding a 09:41 status bar there
+  // would look like a kid's homework. Tabs stay — they're navigation.
+  const viewport = useViewport()
+  const showIosChrome = viewport === 'phone'
+
   return (
     <div
       style={{
@@ -183,10 +198,10 @@ export function MobileFrame({
         ...style,
       }}
     >
-      <StatusBar />
+      {showIosChrome && <StatusBar />}
       <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>{children}</div>
       {tabs && <BottomTabs active={activeTab} onChange={onTabChange} />}
-      <HomeIndicator />
+      {showIosChrome && <HomeIndicator />}
     </div>
   )
 }

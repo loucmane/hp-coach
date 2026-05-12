@@ -58,6 +58,8 @@ describe('useUiStore', () => {
     expect(s.mode).toBe('light')
     expect(s.font).toBe('literary')
     expect(s.density).toBe('regular')
+    expect(s.useFluid).toBe(true)
+    expect(s.studioRails).toBe(false)
   })
 
   it('toggleMode flips light <-> dark', () => {
@@ -79,8 +81,18 @@ describe('useUiStore', () => {
     expect(useUiStore.getState().density).toBe('comfy')
   })
 
-  it('applyThemeToDocument writes vars + classes + datasets to <html>', () => {
-    act(() => applyThemeToDocument('sage', 'dark', 'geometric', 'compact'))
+  it('toggleStudioRails flips the studio side-rails preference', () => {
+    expect(useUiStore.getState().studioRails).toBe(false)
+    useUiStore.getState().toggleStudioRails()
+    expect(useUiStore.getState().studioRails).toBe(true)
+    useUiStore.getState().toggleStudioRails()
+    expect(useUiStore.getState().studioRails).toBe(false)
+  })
+
+  it('applyThemeToDocument writes vars + classes + datasets to <html> (stepwise)', () => {
+    // useFluid=false: density vars are plain pixel values, matching
+    // the pre-Phase-A canonical stepwise behavior.
+    act(() => applyThemeToDocument('sage', 'dark', 'geometric', 'compact', false))
     const root = document.documentElement
     // Sage dark bg from the prototype's tokens.jsx
     expect(root.style.getPropertyValue('--bg')).toBe('oklch(0.18 0.014 200)')
@@ -90,6 +102,21 @@ describe('useUiStore', () => {
     expect(root.dataset.palette).toBe('sage')
     expect(root.dataset.font).toBe('geometric')
     expect(root.dataset.density).toBe('compact')
+    expect(root.dataset.fluid).toBe('off')
+  })
+
+  it('applyThemeToDocument emits clamp() padding when fluid is on (default)', () => {
+    // useFluid defaults true (Phase A responsive default). Density
+    // padding should be a clamp() between the stepwise baseline and a
+    // 1.5×-ish max — actual numbers tested by checking it starts with
+    // 'clamp(' and contains the baseline value.
+    act(() => applyThemeToDocument('sand', 'light', 'literary', 'regular'))
+    const root = document.documentElement
+    const pad = root.style.getPropertyValue('--pad')
+    expect(pad.startsWith('clamp(')).toBe(true)
+    // The regular density baseline is 18px; it must appear as the lower bound.
+    expect(pad).toContain('18px')
+    expect(root.dataset.fluid).toBe('on')
   })
 
   it('applyThemeToDocument removes .dark when mode is light', () => {

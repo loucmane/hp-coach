@@ -3,7 +3,7 @@
 // + the OKLCH design tokens in src/index.css. No emoji icons; no animation
 // overshoot; type, ink, and accent are the only expressive variables.
 
-import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react'
+import { type ButtonHTMLAttributes, Children, type CSSProperties, type ReactNode } from 'react'
 
 import { COACH_LABELS, type CoachKey } from '@/lib/voice'
 
@@ -333,6 +333,134 @@ export function CoachLine({
         }}
       >
         — Coach · {COACH_LABELS[coach]}
+      </div>
+    </div>
+  )
+}
+
+// ── Every-Layout primitives (Phase A responsive) ──────────────────────
+//
+// Three additions ported from Heydon Pickering's "Every Layout" patterns,
+// adapted to container queries (Tailwind v4 @container) so they respond
+// to their own width — not the viewport's. A Cluster inside a 480px
+// rail at desktop renders identically to a Cluster on a 480px phone.
+
+// Cluster — wrap-friendly horizontal grouping. When children don't fit
+// on one line, they wrap. Useful for the option row's letter + text +
+// status icon, the home-screen link group, stat-row labels.
+export function Cluster({
+  gap = 'var(--gap)',
+  align = 'center',
+  justify = 'flex-start',
+  style,
+  children,
+}: {
+  gap?: string | number
+  align?: CSSProperties['alignItems']
+  justify?: CSSProperties['justifyContent']
+  style?: CSSProperties
+  children: ReactNode
+}) {
+  return (
+    <div
+      className="@container"
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap,
+        alignItems: align,
+        justifyContent: justify,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
+// Sidebar — content + sidebar that stacks below threshold. The
+// non-sidebar child grows; the sidebar stays at its intrinsic width.
+// When the *container* is below threshold, both children stack vertically.
+// Useful for Studio rails when the user resizes a wide window narrower.
+export function Sidebar({
+  side = 'right',
+  threshold = '480px',
+  sidebarWidth = '280px',
+  gap = 'var(--gap-lg)',
+  sidebar,
+  children,
+  style,
+}: {
+  side?: 'left' | 'right'
+  threshold?: string
+  sidebarWidth?: string
+  gap?: string
+  sidebar: ReactNode
+  children: ReactNode
+  style?: CSSProperties
+}) {
+  // Container query at `threshold`: row above, column below. Tailwind
+  // v4's `@min-[XXX]:` arbitrary-value container variant handles this
+  // inline without needing a custom selector.
+  const sidebarEl = (
+    <div style={{ flexBasis: sidebarWidth, flexGrow: 1, minWidth: 0 }}>{sidebar}</div>
+  )
+  const mainEl = <div style={{ flexBasis: 0, flexGrow: 999, minInlineSize: '50%' }}>{children}</div>
+  return (
+    <div className="@container" style={{ ...style }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap,
+          alignItems: 'flex-start',
+        }}
+      >
+        {side === 'left' ? sidebarEl : mainEl}
+        {side === 'left' ? mainEl : sidebarEl}
+      </div>
+      <style>
+        {`@container (max-width: ${threshold}) {
+          .hpc-sidebar-collapse { flex-direction: column; }
+        }`}
+      </style>
+    </div>
+  )
+}
+
+// Switcher — flex children switch from horizontal to vertical at a
+// container threshold. Used for the question-card option row when
+// option text is long enough to push past the card's width.
+//
+// Difference vs. Cluster: Switcher's children each take equal width
+// in the horizontal layout; Cluster's children are intrinsically sized.
+export function Switcher({
+  threshold = '32rem',
+  gap = 'var(--gap)',
+  style,
+  children,
+}: {
+  threshold?: string
+  gap?: string | number
+  style?: CSSProperties
+  children: ReactNode
+}) {
+  return (
+    <div className="@container" style={{ ...style }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap,
+          alignItems: 'stretch',
+        }}
+      >
+        {Children.map(children, (child) => (
+          // React.Children.map auto-assigns stable keys based on the
+          // original element identity, so we don't have to index-key
+          // anonymous ReactNodes ourselves.
+          <div style={{ flexGrow: 1, flexBasis: `calc((${threshold} - 100%) * 999)` }}>{child}</div>
+        ))}
       </div>
     </div>
   )
