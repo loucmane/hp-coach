@@ -105,6 +105,12 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
   // `pnpm exec playwright test mistakes --project=mobile` (it passes
   // in isolation; the suite-wide order is the trigger).
   test.skip(testInfo.project.name === 'mobile', 'mobile-emulation Clerk-refresh flake under full suite')
+  // CI is slower than local (fresh D1 SQLite, cold worker, no warm
+  // Clerk JWT cache). The default 30s test timeout is tight for an
+  // 11-question end-to-end flow that hits POST /api/sessions × 2,
+  // POST /api/attempts × 11, PATCH /api/sessions × 11, POST
+  // /api/mistakes × 1, PATCH /api/mistakes × 1. Bump to 90s in CI.
+  if (process.env.CI) test.setTimeout(90_000)
   // ── Phase 1: drill, intentionally miss Q1 ──────────────────────────────
   await page.goto('/drill')
   await awaitAppReady(page)
