@@ -6,6 +6,7 @@
 import { SignIn } from '@clerk/clerk-react'
 import { createFileRoute } from '@tanstack/react-router'
 
+import { AuthLayout } from '@/components/AuthLayout'
 import { MobileFrame } from '@/components/MobileFrame'
 import { clerkAppearance } from '@/lib/clerkAppearance'
 
@@ -16,19 +17,9 @@ export const Route = createFileRoute('/sign-in')({
 function SignInScreen() {
   return (
     <MobileFrame tabs={false}>
-      <div
-        style={{
-          height: '100%',
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '0 16px',
-          overflowY: 'auto',
-        }}
-      >
+      <AuthLayout>
         <SignIn routing="path" path="/sign-in" signUpUrl="/sign-up" appearance={clerkAppearance} />
-      </div>
+      </AuthLayout>
     </MobileFrame>
   )
 }
