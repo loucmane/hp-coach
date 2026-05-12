@@ -124,36 +124,52 @@ for (const v of VIEWPORTS) {
   })
 }
 
-// ── Phase A.5 desktop-pedagogy contract ─────────────────────────────
+// ── Phase A.7 editorial-pass contracts ──────────────────────────────
 //
-// At studio (1440×900) the Home screen renders a 3-tile dashboard.
-// The Study Desk question/pedagogy side-by-side is hard to drive
-// without auth flowing through drill, so we limit this test to the
-// Home dashboard structure: hero + plan + activity tiles.
+// Phase A.5's 3-tile dashboard was dropped in favour of the editorial
+// masthead. Tests target the masthead testids and the new DesktopNav
+// chrome instead.
 
-test('Home dashboard renders 3 tiles at studio (1440×900)', async ({ page }) => {
+test('DesktopNav renders at reader / studio, BottomTabs at phone', async ({ page }) => {
+  // Studio
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+  await expect(page.getByRole('button', { name: 'Fortsätt' })).toBeVisible({
+    timeout: 10_000,
+  })
+  await expect(page.getByTestId('desktop-nav')).toBeVisible()
+  // The phone tab-bar buttons have lowercase labels — DesktopNav uses
+  // small-caps UPPERCASE rendered text. Distinguishing via testid.
+  await expect(page.getByTestId('desktop-nav-home')).toBeVisible()
+
+  // Phone — DesktopNav hidden, phone tabs visible.
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.reload()
+  await expect(page.getByRole('button', { name: 'Fortsätt' })).toBeVisible({
+    timeout: 10_000,
+  })
+  await expect(page.getByTestId('desktop-nav')).toHaveCount(0)
+  // Phone keeps the artboard-anchored BottomTabs row.
+  await expect(page.getByRole('button', { name: 'Hem', exact: true })).toBeVisible()
+})
+
+test('Home masthead renders the typographic event at studio', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
   await expect(page.getByRole('button', { name: 'Fortsätt' })).toBeVisible({
     timeout: 10_000,
   })
 
-  await expect(page.getByTestId('home-dashboard')).toBeVisible()
-  await expect(page.getByTestId('home-tile-hero')).toBeVisible()
+  // The home tile plan sits to the right of the masthead at reader+.
+  // It's the only remaining tile (3-tile bento dropped in Phase A.7).
   await expect(page.getByTestId('home-tile-plan')).toBeVisible()
-  await expect(page.getByTestId('home-tile-activity')).toBeVisible()
-})
 
-test('Home stays single-column at phone (390×844)', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/')
-  await expect(page.getByRole('button', { name: 'Fortsätt' })).toBeVisible({
-    timeout: 10_000,
-  })
-
-  // The dashboard testid only fires on reader/studio. Phone keeps the
-  // original single-hero composition.
-  await expect(page.getByTestId('home-dashboard')).toHaveCount(0)
+  // Masthead headline (one of the hour-greetings: god morgon/dag/etc.)
+  const h1 = page.locator('h1').first()
+  await expect(h1).toBeVisible()
+  const fontSize = await h1.evaluate((el) => parseFloat(getComputedStyle(el).fontSize))
+  // At 1440p the clamp() should land between 100-128px.
+  expect(fontSize).toBeGreaterThan(80)
 })
 
 test('Auth brand pane visible at studio, hidden at phone', async ({ page: rawPage }) => {

@@ -120,17 +120,19 @@ export function DrillQuestion({
           // Three regimes, each clamp()ed so the prompt scales smoothly
           // across phone → studio without per-breakpoint rewrites:
           //   - context (LÄS/ELF/DTK): 18→20px (small, paragraph-density)
-          //   - short headword (ORD): 32→44px (the bold single word)
-          //   - long stem (MEK, KVA): 24→30px (the middle ground)
+          //   - short headword (ORD): hero scale via --type-headword
+          //     (48→96px) — this IS the typographic event of the screen
+          //   - long stem (MEK, KVA): 24→36px (middle ground; can't go
+          //     to hero scale because the prompt is a full sentence)
           fontSize: hasContext
             ? 'clamp(16px, 0.875rem + 0.4vw, 20px)'
             : promptIsShort
-              ? 'clamp(28px, 4vw + 16px, 44px)'
-              : 'clamp(22px, 1rem + 1.2vw, 30px)',
-          lineHeight: hasContext ? 1.3 : 1.18,
+              ? 'var(--type-headword)'
+              : 'clamp(24px, 1.25rem + 1vw, 36px)',
+          lineHeight: hasContext ? 1.3 : promptIsShort ? 1 : 1.2,
           color: 'var(--ink)',
-          letterSpacing: '-0.01em',
-          fontWeight: hasContext ? 500 : 400,
+          letterSpacing: promptIsShort ? '-0.025em' : '-0.01em',
+          fontWeight: hasContext ? 500 : promptIsShort ? 500 : 400,
         }}
       >
         <MathText>{question.prompt}</MathText>
