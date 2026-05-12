@@ -74,6 +74,28 @@
   --gap-fluid: clamp(12px, 0.75rem + 0.5vw, 22px);
   --gap-lg-fluid: clamp(16px, 1rem + 0.6vw, 28px);
 
+  /* ── Phase A.7 hero-scale typography ──────────────────────────────────
+   * Three named display sizes that compose the editorial language.
+   * Each clamp() interpolates between a phone-appropriate floor and a
+   * 1440p ceiling so the headline reaches "open-book" scale at desktop
+   * without typesetting awkwardly on a 390px viewport.
+   *
+   *   --type-hero        — home greeting "GOD MORGON.", primary
+   *                        typographic event of a screen
+   *   --type-pull-quote  — auth right-pane editorial pull-quote
+   *                        ("FÖRSTÅ STRUKTUREN.")
+   *   --type-headword    — drill ORD/MEK headword set as the question's
+   *                        hero. Slightly smaller than --type-hero so
+   *                        the section-masthead chip above it still
+   *                        feels like the eyebrow, not a competing
+   *                        title.
+   *
+   * Slopes tuned so the ceiling lands around 1440px viewport — anything
+   * wider plateaus rather than ballooning. */
+  --type-hero: clamp(72px, 6vw + 32px, 128px);
+  --type-pull-quote: clamp(56px, 4.5vw + 24px, 112px);
+  --type-headword: clamp(48px, 4vw + 16px, 96px);
+
   /* Frame chrome sizes (Phase A / A.5 — Frame component reads these) */
   --frame-tabbar: 88px; /* bottom-tab reserved on phone; 0 on reader/studio */
   --frame-max-w: 640px; /* narrow focus column max-width (rarely used after A.5) */
@@ -168,6 +190,34 @@ body {
   letter-spacing: var(--font-ui-track);
 }
 
+/* ── Phase A.7 paper grain ─────────────────────────────────────────────
+ * Single-octave SVG noise tile at 0.025 opacity on top of --bg.
+ * Adds analog warmth without becoming wallpaper. Tile is 200x200
+ * which is large enough that the same noise pattern never visibly
+ * repeats inside the viewport on a normal monitor.
+ *
+ * The texture renders BEHIND all content via the body ::before
+ * pseudo-element. Pointer-events are disabled so it never
+ * interferes with clicks or focus. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url('/textures/paper-grain.svg');
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  opacity: 0.025;
+  mix-blend-mode: multiply;
+}
+
+/* Ensure all real content stacks above the grain. */
+#root, body > * {
+  position: relative;
+  z-index: 1;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -187,11 +237,14 @@ body {
 }
 
 /* ── Page-load reveal — used by screens with one orchestrated entrance ─── */
-/* Subtle fade + 6px rise. Compose via inline `animationDelay` for stagger. */
+/* Subtle fade + 8px rise. Phase A.7 stretched the rise from 6px → 8px
+ * and pushed the staggered animation-delay inline values from
+ * 0/80/160/240 to 0/120/240/360 so the storytelling lands more
+ * deliberately at editorial scale (the 128px hero arriving in step). */
 @keyframes hpc-reveal {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -200,11 +253,36 @@ body {
 }
 
 .reveal {
-  animation: hpc-reveal 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hpc-reveal 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── CTA breathing — Phase A.7 ────────────────────────────────────────
+ * Primary CTAs (the "Fortsätt" button on Home, the "Nästa" button on
+ * Drill) get a slow opacity + micro-scale breath so they feel alive
+ * without becoming distracting. 6s loop is long enough that the
+ * animation is below conscious attention but registers in peripheral
+ * vision. Reduced-motion preference disables it entirely. */
+@keyframes hpc-breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.97;
+    transform: scale(1.004);
+  }
+}
+
+.hpc-breathe {
+  animation: hpc-breathe 6s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal {
+    animation: none;
+  }
+  .hpc-breathe {
     animation: none;
   }
 }

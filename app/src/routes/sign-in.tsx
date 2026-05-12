@@ -17,7 +17,17 @@ export const Route = createFileRoute('/sign-in')({
 function SignInScreen() {
   return (
     <MobileFrame tabs={false}>
-      <AuthLayout>
+      <AuthLayout
+        cardLabel="Logga in"
+        crossLink={
+          <>
+            Inget konto?{' '}
+            <a href="/sign-up" style={{ color: 'var(--ink)', textDecoration: 'underline' }}>
+              → börja här
+            </a>
+          </>
+        }
+      >
         <SignIn routing="path" path="/sign-in" signUpUrl="/sign-up" appearance={clerkAppearance} />
       </AuthLayout>
     </MobileFrame>

@@ -1,7 +1,8 @@
-// Top-of-screen progress strip for an in-progress drill.
-// Mono "01 / 10" + a thin rule that fills proportionally. Uppercase
-// hairline kicker keeps it visually quiet so the headword owns the
-// composition.
+// Top-of-screen progress strip for an in-progress drill — Phase A.7
+// editorial chrome. The section code ("ORD ·") renders in `--accent`
+// so the section-masthead language has a distinctive identity moment
+// without needing a chip or background fill. The progress count and
+// the ruler bar stay quiet so the headword below owns the composition.
 
 import { Mono } from '@/components/primitives'
 
@@ -19,11 +20,25 @@ export function DrillProgress({ current, total, section }: Props) {
         display: 'flex',
         flexDirection: 'column',
         gap: 8,
-        padding: '0 22px',
+        padding: '0 var(--pad-lg)',
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-        <Mono>{section} · Övning</Mono>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: 'var(--font-mono-track)',
+            textTransform: 'uppercase',
+            display: 'inline-flex',
+            alignItems: 'baseline',
+            gap: 6,
+          }}
+        >
+          <span style={{ color: 'var(--accent)', fontWeight: 600 }}>{section}</span>
+          <span style={{ color: 'var(--muted)' }}>·</span>
+          <span style={{ color: 'var(--muted)' }}>Övning</span>
+        </span>
         <Mono style={{ color: 'var(--ink-2)', fontVariantNumeric: 'tabular-nums' }}>
           {String(current).padStart(2, '0')} / {String(total).padStart(2, '0')}
         </Mono>
@@ -40,7 +55,7 @@ export function DrillProgress({ current, total, section }: Props) {
           style={{
             height: '100%',
             width: `${pct}%`,
-            background: 'var(--ink)',
+            background: 'var(--accent)',
             transition: 'width 320ms cubic-bezier(0.2, 0.7, 0.3, 1)',
           }}
         />

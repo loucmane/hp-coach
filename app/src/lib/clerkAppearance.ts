@@ -37,14 +37,12 @@ export const clerkAppearance: Appearance = {
       boxShadow: 'none',
       padding: '20px 16px',
     },
-    // Header (logo + title) — Clerk's default has a lot of vertical air;
-    // tighten so the form is visible above the fold.
-    headerTitle: {
-      fontFamily: 'var(--font-display)',
-      fontSize: 22,
-      letterSpacing: '-0.01em',
-    },
-    headerSubtitle: { fontSize: 13 },
+    // Phase A.7 — disable Clerk's default header. AuthLayout supplies
+    // the pull-quote ("FÖRSTÅ STRUKTUREN.") as the only typographic
+    // event; Clerk's "Sign in to hp-coach" / "Welcome back…" would
+    // compete with it. The card title is replaced by a small-caps
+    // monospace label rendered by AuthLayout above the Clerk card.
+    header: { display: 'none' },
     // Social buttons row (Google etc.) — full width pills.
     socialButtonsBlockButton: { width: '100%' },
     // Form inputs and primary button.
