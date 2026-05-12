@@ -39,6 +39,7 @@ import anthropic
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from pipeline.explanations.prompts import build_system_prompt, build_user_message  # noqa: E402
 from pipeline.explanations.schema import EXPLANATION_TOOL, validate_explanation  # noqa: E402
+from audit.corpus_lint.lint_entry import lint_entry, format_failures  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 PARSED_DIR = ROOT / "data" / "parsed"
@@ -214,6 +215,14 @@ def main() -> int:
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"override model (default: {DEFAULT_MODEL})")
     parser.add_argument("--thinking-budget", type=int, default=DEFAULT_THINKING_BUDGET)
     parser.add_argument("--max-tokens", type=int, default=DEFAULT_MAX_TOKENS)
+    parser.add_argument(
+        "--lint",
+        choices=("off", "warn", "strict"),
+        default="warn",
+        help="Swedish-quality lint mode after each generation: "
+             "off (skip), warn (log + save anyway; default), "
+             "strict (drop the explanation and count as error if lint fails).",
+    )
     args = parser.parse_args()
 
     if not (args.exam or args.section or args.qids or args.all):
@@ -265,6 +274,8 @@ def main() -> int:
     n_done = 0
     n_skipped = 0
     n_errors = 0
+    n_lint_warn = 0
+    n_lint_drop = 0
 
     for exam_id, qs in by_exam.items():
         existing = load_existing(exam_id)
@@ -281,17 +292,40 @@ def main() -> int:
                 n_errors += 1
                 print(f"  ERROR on {qid}: {e}", file=sys.stderr)
                 continue
+
+            # ── Swedish-quality lint hook ──
+            lint_msg = ''
+            if args.lint != "off":
+                lint_result = lint_entry(explanation, qid=qid)
+                if not lint_result["passed"]:
+                    lint_msg = format_failures(lint_result)
+                    if args.lint == "strict":
+                        n_lint_drop += 1
+                        # Track cost (we paid for it) but DROP the artifact.
+                        total_cost += usage["cost_usd"]
+                        total_in += usage["input_tokens"]
+                        total_out += usage["output_tokens"]
+                        print(
+                            f"  ✗ {qid} DROPPED — {lint_msg} "
+                            f"(${usage['cost_usd']:.4f}; running ${total_cost:.2f})",
+                            file=sys.stderr,
+                        )
+                        continue
+                    # warn mode: save anyway, log the warning
+                    n_lint_warn += 1
+
             existing[qid] = explanation
             save_exam(exam_id, existing)
             n_done += 1
             total_cost += usage["cost_usd"]
             total_in += usage["input_tokens"]
             total_out += usage["output_tokens"]
+            tail = f" — {lint_msg}" if lint_msg else ""
             print(
                 f"  ✓ {qid} "
                 f"({usage['input_tokens']} in / {usage['output_tokens']} out, "
                 f"${usage['cost_usd']:.4f}; "
-                f"running ${total_cost:.2f})"
+                f"running ${total_cost:.2f}){tail}"
             )
 
     write_index()
@@ -300,6 +334,9 @@ def main() -> int:
     print(f"  generated:  {n_done}")
     print(f"  skipped:    {n_skipped} (already exist; pass --force to regenerate)")
     print(f"  errors:     {n_errors}")
+    if args.lint != "off":
+        print(f"  lint warn:  {n_lint_warn} (saved with anglicism/archaic flag)")
+        print(f"  lint drop:  {n_lint_drop} (dropped by --lint strict)")
     print(f"  tokens:     {total_in} in / {total_out} out")
     print(f"  total cost: ${total_cost:.2f}")
     return 0 if n_errors == 0 else 3
