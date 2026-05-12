@@ -92,7 +92,7 @@
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta att f(-a) = -f(a) av symmetri.",
-        "why_wrong": "Det skulle gälla för udda funktioner, men f(x) = 4x + 15 har konstantterm 15 — bryter symmetrin... men dock tar vi differensen, så 15 kancellerar."
+        "why_wrong": "Det skulle gälla för udda funktioner, men f(x) = 4x + 15 har konstantterm 15 — men eftersom vi tar differensen, så 15 kancellerar."
       },
       {
         "letter": "D",
@@ -140,7 +140,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att glömma parentesen runt summan: 14\\cdot 46+35.",
-        "why_wrong": "Utan parentes räknas 14·46 först, sen +35 — ger ANNAT värde än 14·(46+35). Räkneordning ändras."
+        "why_wrong": "Utan parentes räknas 14·46 först, sen +35 — ger ett annat värde än 14·(46+35). Räkneordning ändras."
       },
       {
         "letter": "B",
@@ -171,12 +171,12 @@
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta att tappa en decimal helt och svara 1.",
-        "why_wrong": "0,002·50 = 0,1, inte 1. Ett tiotal från sann."
+        "why_wrong": "0,002·50 = 0,1, inte 1. Tio gånger för litet."
       },
       {
         "letter": "D",
         "why_tempting": "Många stannar vid 0{,}2\\cdot 50=10 utan att dela med 100.",
-        "why_wrong": "Procent kräver division med 100. Glömma det ger faktor 100 fel."
+        "why_wrong": "Procent kräver division med 100. Att glömma det ger en faktor 100 fel."
       }
     ],
     "pitfall": null,
@@ -224,11 +224,11 @@
       {
         "letter": "B",
         "why_tempting": "Snabbsvar är ofta x = −y av teckenslarv.",
-        "why_wrong": "Båda termerna xy och övriga är POSITIVA i utvecklingen — inga teckenflippar."
+        "why_wrong": "Båda termerna xy och övriga är POSITIVA i utvecklingen — inga teckenbyten."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid x = 1/y av att invertera istället för att lika.",
+        "why_tempting": "Många stannar vid x = 1/y av att invertera istället för att sätta lika.",
         "why_wrong": "x = y, inte 1/y. Räkna utvecklingen noggrant."
       }
     ],
@@ -303,7 +303,7 @@
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 'hypotenusa = sum av kateter' eller liknande heltal.",
+        "why_tempting": "Många stannar vid 'hypotenusa = summan av kateter' eller liknande heltal.",
         "why_wrong": "Pythagoras ger kvadratrotvärden, inte alltid hela tal. Här \\sqrt{18}."
       }
     ],
@@ -339,7 +339,7 @@
       }
     ],
     "pitfall": null,
-    "solution_path": "Två på varandra följande heltal är ETT JÄMNT och ETT UDDA. Summan a+b=2a+1 (efter substituering b = a+1) är alltid UDDA — ALDRIG delbar med 2. Sannolikhet = 0.",
+    "solution_path": "Två på varandra följande heltal är ETT JÄMNT och ETT UDDA. Summan a+b=2a+1 (efter substitutionen b = a+1) är alltid UDDA — ALDRIG delbar med 2. Sannolikhet = 0.",
     "technique": "Paritet i sannolikhet: 'på varandra följande heltal' = ett jämnt och ett udda; deras summa är UDDA."
   },
   "host-2018-kvant1-XYZ-010": {
@@ -404,17 +404,17 @@
       {
         "letter": "B",
         "why_tempting": "Snabbsvar är ofta \\sqrt{72}-\\sqrt{8}=\\sqrt{72}-2\\sqrt{2}, vilket inte heller är heltal.",
-        "why_wrong": "Båda termer involverar √2 men inte i jämna multiplar — resultatet är irrationellt."
+        "why_wrong": "Båda termerna involverar √2 men inte i jämna multiplar — resultatet är irrationellt."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid produkt av rotor: \\sqrt{72}\\cdot\\sqrt{9}=3\\sqrt{72}.",
+        "why_tempting": "Många stannar vid produkt av rötter: \\sqrt{72}\\cdot\\sqrt{9}=3\\sqrt{72}.",
         "why_wrong": "3√72 = 3·6√2 = 18√2 — inte heltal eftersom 72 inte är perfekt kvadrat."
       }
     ],
     "pitfall": null,
     "solution_path": "D är \\sqrt{72}/\\sqrt{8}=\\sqrt{72/8}=\\sqrt{9}=3, ett heltal. Övriga alternativ behåller en faktor \\sqrt{2} eller liknande och blir irrationella.",
-    "technique": "Heltalsfrågor med rotor: kvoten \\sqrt{a}/\\sqrt{b}=\\sqrt{a/b} ger heltal bara om {MO}a/b{MC} blir en perfekt kvadrat. Sök det alternativ där täljarens och nämnarens kvadratrötter förkortas.",
+    "technique": "Heltalsfrågor med rötter: kvoten \\sqrt{a}/\\sqrt{b}=\\sqrt{a/b} ger heltal bara om {MO}a/b{MC} blir en perfekt kvadrat. Sök det alternativ där täljarens och nämnarens kvadratrötter förkortas.",
     "_meta": {
       "generated_at": 1778414413083,
       "model": "claude-opus-4-7",
@@ -528,7 +528,7 @@
     }
   },
   "host-2018-kvant2-KVA-018": {
-    "solution_path": "\\frac{3x}{4y} = 5. Multiplicera båda sidor med 4y: 3x = 20y. Dela med 3: x = 20y/3. För x ska vara heltal måste y vara delbart med 3. Minsta y = 3 ger x = 20; y = 6 ger x = 40; y = 9 ger x = 60. x kan alltså vara 20, 40, 60, ... — flera värden, ingen entydig jämförelse med 20. D.",
+    "solution_path": "\\frac{3x}{4y} = 5. Multiplicera båda sidor med 4y: 3x = 20y. Dela med 3: x = 20y/3. För att x ska vara heltal måste y vara delbart med 3. Minsta y = 3 ger x = 20; y = 6 ger x = 40; y = 9 ger x = 60. x kan alltså vara 20, 40, 60, ... — flera värden, ingen entydig jämförelse med 20. D.",
     "technique": "När ett bråk = ett tal: korsmultiplicera (multiplicera båda sidor med nämnaren). När resultatet ska vara HELTAL: räkna ut vilka värden av nämnaren som ger heltal i täljaren.",
     "pitfall": "·Positiva heltal· stänger bara ute y = 0, ½, 1 (inte delbart med 3) — men y = 3, 6, 9, ... ger fortfarande oändligt många lösningar.",
     "distractors": [
@@ -669,7 +669,7 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att kvadrera båda termer: 6^{2}:7^{2}=36:49.",
+        "why_tempting": "Det är lätt att kvadrera båda termerna: 6^{2}:7^{2}=36:49.",
         "why_wrong": "36:49 är förhållandet av AREOR (kvadrater), inte sidor. För linjärt förhållande behåll 6:7."
       },
       {
@@ -685,13 +685,13 @@
     ],
     "pitfall": null,
     "solution_path": "Förenkla 120:140: dela båda med 20 → 6:7. Matchar.",
-    "technique": "Förhållande-uppgifter: dela båda termer med GCD för enklaste form, jämför med given."
+    "technique": "Förhållande-uppgifter: dela båda termerna med GCD för enklaste form, jämför med given."
   },
   "host-2018-kvant2-XYZ-008": {
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att glömma att teckenflippa parentesen: x-y-x-y blir +y+x.",
+        "why_tempting": "Det är lätt att glömma att byta tecken i parentesen: x-y-x-y blir +y+x.",
         "why_wrong": "−(y+x) = −y − x (BÅDA termerna byter tecken). Inte +y + x."
       },
       {
@@ -755,7 +755,7 @@
       {
         "letter": "C",
         "why_tempting": "Många stannar vid att tro att 'm' kvarstår.",
-        "why_wrong": "m kancellerar också (samma m i båda termer). Endast 3 kvarstår."
+        "why_wrong": "m kancellerar också (samma m i båda termerna). Endast 3 kvarstår."
       }
     ],
     "pitfall": null,
@@ -780,7 +780,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta -1{,}4\\cdot 10^{2} av annan teckenflipp.",
+        "why_tempting": "Snabbsvar är ofta -1{,}4\\cdot 10^{2} av annat teckenfel.",
         "why_wrong": "Resultatet är positivt 400 = 4·10²."
       },
       {
@@ -847,7 +847,7 @@
       }
     ],
     "pitfall": null,
-    "solution_path": "Att moralisera betyder att predika rätt och fel — uppvisa moraliska ståndpunkter på ett påträngande sätt. Av moral. Markerar oftast nedlåtande ton: någon som upphöjd uppmanar andra till etiska val.",
+    "solution_path": "Att moralisera betyder att predika rätt och fel — uppvisa moraliska ståndpunkter på ett påträngande sätt. Av moral. Markerar oftast nedlåtande ton: någon som upphöjt uppmanar andra till etiska val.",
     "technique": "Verb från abstrakta substantiv (moralisera, dramatisera, idealisera) — markerar AKTIV PRAKTISERING av abstraktionen, ofta med nedlåtande ton."
   },
   "host-2018-verb1-ORD-002": {
@@ -926,7 +926,7 @@
       {
         "letter": "C",
         "why_tempting": "Mausoleum kan associeras med ruiner.",
-        "why_wrong": "Slottsruin är RAS av slott; mausoleum är AKTIV gravbyggnad (ofta intakt). Förfall vs intakt."
+        "why_wrong": "Slottsruin är RESTER av slott; mausoleum är AKTIV gravbyggnad (ofta intakt). Förfall vs intakt."
       },
       {
         "letter": "D",
@@ -971,8 +971,8 @@
       }
     ],
     "pitfall": null,
-    "solution_path": "Inskränkt betyder begränsad — antingen i omfattning (inskränkta resurser) eller i mentalt synfält (en inskränkt person = trångsynt). Av 'skränka' (gränsa). Markerar att gränser är drag eller tankar är trånga.",
-    "technique": "Sammansatta in- + 'skränka/skränkt' (inskränkt, inskränkning, inskränka) — bär bilden av SAMMANSNÄRJD eller BEGRÄNSAD."
+    "solution_path": "Inskränkt betyder begränsad — antingen i omfattning (inskränkta resurser) eller i mentalt synfält (en inskränkt person = trångsynt). Av 'skränka' (gränsa). Markerar att gränser är snäva eller tankar är trånga.",
+    "technique": "Sammansatta in- + 'skränka/skränkt' (inskränkt, inskränkning, inskränka) — bär bilden av SAMMANSNÖRD eller BEGRÄNSAD."
   },
   "host-2018-verb1-ORD-006": {
     "_meta": {
@@ -1045,7 +1045,7 @@
       {
         "letter": "A",
         "why_tempting": "Signum kan associeras med framtoning.",
-        "why_wrong": "Framtoning är HEL FRAMTRÄDELSE; signum är SPECIFIK utmärkande detalj. Helhet vs detalj."
+        "why_wrong": "Framtoning är HELT FRAMTRÄDANDE; signum är SPECIFIK utmärkande detalj. Helhet vs detalj."
       },
       {
         "letter": "B",
@@ -1158,7 +1158,7 @@
     ],
     "pitfall": null,
     "solution_path": "Febril betyder hektisk — i intensiv, otålig aktivitet, som om man hade feber. Latinets febris (feber). Bilden: någon med feber är ofta orolig och hetsig; febril aktivitet är aktivitet i sådant tillstånd.",
-    "technique": "Latinska 'febr-' rotord (febril, feberhet, febriliteten) — alla bär bilden av FEBER och dess hektiska tillstånd."
+    "technique": "Latinska 'febr-' rotord (febril, febrilitet, feberhetta) — alla bär bilden av FEBER och dess hektiska tillstånd."
   },
   "host-2018-verb2-ORD-002": {
     "_meta": {
@@ -1205,7 +1205,7 @@
       {
         "letter": "B",
         "why_tempting": "Puritaner kan upplevas som enstöringar.",
-        "why_wrong": "Enstöring är SOCIAL ISOLERAD; puritan är ETISK MÄNNISKA (kan vara mycket social inom sin grupp). Social vs Etisk."
+        "why_wrong": "Enstöring är SOCIALT ISOLERAD; puritan är ETISK MÄNNISKA (kan vara mycket social inom sin grupp). Social vs Etisk."
       },
       {
         "letter": "D",
@@ -1250,7 +1250,7 @@
       }
     ],
     "pitfall": null,
-    "solution_path": "Att försumma något betyder att strunta i det — låta bli att göra det man borde, slarva med ansvar. Av 'försumma' (medeltidssvensk verbalbildning från 'sömnighet' eller 'sumpa'). Markerar moraliskt klandervärt försumlighet.",
+    "solution_path": "Att försumma något betyder att strunta i det — låta bli att göra det man borde, slarva med ansvar. Av 'försumma' (medeltidssvensk verbalbildning från 'sömnighet' eller 'sumpa'). Markerar moraliskt klandervärd försumlighet.",
     "technique": "Sammansatta för- + verb (försumma, försena, förbise) — för-:et betonar UTEBLIVEN handling där den borde gjorts."
   },
   "host-2018-verb2-ORD-005": {
@@ -1417,7 +1417,7 @@
       {
         "letter": "B",
         "why_tempting": "Kokettera kan tolkas som att skämma ut sig.",
-        "why_wrong": "Skämma ut sig är ATT TAPPA värdighet (oavsiktligt); kokettera är AVSIKTLIGT POSE. Misstag vs avsiktlig pose."
+        "why_wrong": "Skämma ut sig är ATT TAPPA värdighet (oavsiktligt); kokettera är AVSIKTLIG POSE. Misstag vs avsiktlig pose."
       },
       {
         "letter": "C",
@@ -1436,8 +1436,8 @@
       }
     ],
     "pitfall": null,
-    "solution_path": "Att kokettera betyder att göra sig intressant — flörta eller pose för uppmärksamhet, ofta lite tillgjort. Franska coqueter (uppträda kokett, av coq = tupp — bilden från tuppens stoltsering). Markerar avsiktlig uppvisning för att fånga uppmärksamhet.",
-    "technique": "Franska 'coquet-' rotord (kokettera, kokett, koketteri) — alla bär bilden av UPPVISNING-baserad self-presentation."
+    "solution_path": "Att kokettera betyder att göra sig intressant — flörta eller posera för uppmärksamhet, ofta lite tillgjort. Franska coqueter (uppträda kokett, av coq = tupp — bilden från tuppens stoltserande). Markerar avsiktlig uppvisning för att fånga uppmärksamhet.",
+    "technique": "Franska 'coquet-' rotord (kokettera, kokett, koketteri) — alla bär bilden av UPPVISNINGS-baserad självpresentation."
   },
   "host-2018-kvant1-NOG-023": {
     "solution_path": "(2) räcker: gul=15, brun=0,4·15=6, skillnad=9 cm. (1) ger bara summan utan fördelning.",
@@ -1619,7 +1619,7 @@
       }
     ],
     "technique": "För att räkna totalt antal i en Venn-uppsättning av två mängder krävs FYRA tal: antal i A, antal i B, antal i båda (snittet), och antal i varken. Saknas snittet eller varken låses totalen inte.",
-    "pitfall": "Yttre summor + ·varken· räcker INTE — du behöver också snittet (antal med båda) för att låsa totalen. Tre av fyra Venn-tal låser inte sista.",
+    "pitfall": "Yttre summor + ·varken· räcker INTE — du behöver också snittet (antal med båda) för att låsa totalen. Tre av fyra Venn-tal låser inte det sista.",
     "_meta": {
       "model": "claude-opus-4-7",
       "generated_at": 1778428305952,
@@ -1787,7 +1787,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att barn fördomar.",
+        "why_tempting": "Många stannar vid att barn har fördomar.",
         "why_wrong": "Texten jämför inte barn med vuxna — alternativet importerar fel jämförelse."
       },
       {
@@ -1830,7 +1830,7 @@
     }
   },
   "host-2018-verb1-LÄS-014": {
-    "solution_path": "Den synliga texten säger inte direkt om mellankrigstiden — men logiken i analysen (Sovjet som hot, kommunism som ondska) tyder på att kritiken är konstant men argumenten utvecklas över tid. Sympatin följdes av kritik, är det troliga svaret enligt domsmönstret.",
+    "solution_path": "Den synliga texten säger inte direkt om mellankrigstiden — men logiken i analysen (Sovjet som hot, kommunism som ondska) tyder på att kritiken är konstant men argumenten utvecklas över tid. Sympatin följdes av kritik, är det troliga svaret enligt argumentationsmönstret.",
     "distractors": [
       {
         "letter": "B",
@@ -1948,7 +1948,7 @@
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta avskaffning av princip.",
+        "why_tempting": "Snabbsvar är ofta avskaffande av princip.",
         "why_wrong": "Texten antyder inte sådan uppmaning — alternativet sträcker sig för långt."
       }
     ],
@@ -2105,10 +2105,10 @@
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta samhällsdebattör.",
-        "why_wrong": "Det var hans utombokslige rykte, inte läroböckernas bild — alternativet flyttar källa."
+        "why_wrong": "Det var hans utomskoliga rykte, inte läroböckernas bild — alternativet flyttar källa."
       }
     ],
-    "technique": "Vid 'bild i läroböckerna'-frågor: hitta vad SKOLAN gjorde, inte den utomliga uppfattningen.",
+    "technique": "Vid 'bild i läroböckerna'-frågor: hitta vad SKOLAN gjorde, inte den utomskoliga uppfattningen.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
@@ -2116,7 +2116,7 @@
     }
   },
   "host-2018-verb2-LÄS-015": {
-    "solution_path": "Texten antyder att klyftan mellan skola och utombliga uppfattning fanns 'vid förra sekelskiftet' och fortfarande '100 år senare' — men implicerar att förändring genom decennier har fördjupats. Fler sidor lyfts fram över tid.",
+    "solution_path": "Texten antyder att klyftan mellan skola och utomskolig uppfattning fanns 'vid förra sekelskiftet' och fortfarande '100 år senare' — men implicerar att förändring genom decennier har fördjupats. Fler sidor lyfts fram över tid.",
     "distractors": [
       {
         "letter": "A",
@@ -2178,7 +2178,7 @@
       {
         "letter": "C",
         "why_tempting": "Många stannar vid att rådet tar ställning.",
-        "why_wrong": "Det är RÅDETS debattinlägg, inte författarens egen — alternativet flyttar källa."
+        "why_wrong": "Det är RÅDETS debattinlägg, inte författarens eget — alternativet flyttar källa."
       },
       {
         "letter": "D",
@@ -2324,7 +2324,7 @@
     }
   },
   "host-2018-verb1-MEK-026": {
-    "solution_path": "Personer med bipolär sjukdom mår inte dåligt i euforiska perioder (manisk upprymdhet) — det är facktermen för den maniska polen. Och fördröjningen drabbar adekvat (rätt, lämplig) behandling. Båda är psykiatriskt fackspråk.",
+    "solution_path": "Personer med bipolär sjukdom mår inte dåligt i euforiska perioder (manisk upprymdhet) — det är facktermen för den maniska polen. Och fördröjningen drabbar den adekvata behandlingen. Båda är psykiatriskt fackspråk.",
     "distractors": [
       {
         "letter": "A",
@@ -2376,12 +2376,12 @@
     }
   },
   "host-2018-verb1-MEK-028": {
-    "solution_path": "Det är av yttersta vikt — den fasta byråkratiska kollokationen för 'mycket angeläget'. Och man upprättar en policy (formellt fastställer) — det är förvaltningstermen. Båda i administrativ register.",
+    "solution_path": "Det är av yttersta vikt — den fasta byråkratiska kollokationen för 'mycket angeläget'. Och man upprättar en policy (formellt fastställer) — det är förvaltningstermen. Båda i administrativt register..",
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att läsa 'ambition' som målsättning.",
-        "why_wrong": "'Av yttersta ambition' är inte vedertagen fras; ambition har man, vikt är något något har; och 'säkerställa policy' är okej men 'av yttersta ambition' bryter."
+        "why_wrong": "'Av yttersta ambition' är inte vedertagen fras; ambition har man, vikt är något som något annat har; och 'säkerställa policy' är okej men 'av yttersta ambition' bryter."
       },
       {
         "letter": "B",
@@ -2576,7 +2576,7 @@
         "why_wrong": "Mönstergillt är förebildligt — positivt laddat, fel kritik; och 'normala' är neutralt, missar 'triviala' (klart nedlåtande)."
       }
     ],
-    "technique": "Tvåblanksdrag i konstkritiskt register: spekulativt (gissande) + triviala (banala) bär kontrasten mellan djup och ytan.",
+    "technique": "Tvåblanksdrag i konstkritiskt register: spekulativt (gissande) + triviala (banala) bär kontrasten mellan djupet och ytan.",
     "pitfall": null,
     "_meta": {
       "model": "claude-opus-4-7",
