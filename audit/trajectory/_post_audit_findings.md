@@ -63,18 +63,42 @@ Same seed (50), same size preset (full), same persona spec
 These are signals from the post-audit run, NOT regressions from
 pre-audit:
 
-### host-ver1-2019 verbal cluster (12/17 soft bottlenecks)
+### host-ver1-2019 verbal cluster (12/17 soft bottlenecks) — investigated
 
-12 of 17 soft bottlenecks land in `host-ver1-2019-verb1` and `verb2`
-entries (mostly LÄS, ELF, MEK). The pattern: "no usable technique
-extracted (template fatigue or passage cut off or vacuous
-reasoning)". Worth checking whether the audit pipeline produced a
-quality dip in this specific exam year's verbal section, or whether
-the issue pre-existed and the cleaner corpus surfaced it more
-prominently.
+**Update (2026-05-12, post-merge):** investigated and concluded this is
+NOT a host-ver1-2019 regression. Three things checked:
 
-Quick check: grep host-ver1-2019 entries vs other exam years for
-solution_path length and technique field presence.
+1. **Solution_path / technique length** — the 14 cluster entries are
+   slightly LONGER than the corpus median (sol ~210 vs 192, tech ~120
+   vs 116). Not terse-output explanations.
+
+2. **Pitfall coverage** — all 14 lack `pitfall`. Looked across all 27
+   exams: pitfall coverage is universally 3-18% (~7% avg). The schema
+   prompt instructs the model to emit pitfall ONLY when the trap is
+   structurally distinct from the technique, with null as the correct
+   default. So host-ver1-2019's lack-of-pitfall is by design and
+   matches every other exam.
+
+3. **What the persona actually complained about** — sampling the 14
+   entries by hand:
+   - LÄS techniques are generic strategies ("look for the recurring
+     theme") that don't transfer to specific transfer-test questions
+   - ELF techniques are appropriately specific but the persona has
+     weak English baseline → expected difficulty
+   - MEK techniques use internal jargon (`Treblanksdrag`,
+     `litterär kritik-register`, `kollokation`) the persona hasn't
+     been taught yet → expected friction
+
+The trajectory persona just happened to sample a stretch of
+host-ver1-2019-verb1 in sequence (the random seed = 50). It would
+have flagged any 12-entry stretch of MEK/ELF in any exam similarly.
+
+**Action.** No regen needed. Real signals to chase if pursued later:
+- Decide if MEK internal jargon (`Treblanksdrag`, `register`-suffixes)
+  should be defined inline once per entry, OR if those terms are
+  considered prerequisite-vocabulary the student has acquired by
+  practice round 100.
+- Persona calibration is the bigger lever (next section).
 
 ### Figure-dependent hard bottlenecks (5 of 12)
 
