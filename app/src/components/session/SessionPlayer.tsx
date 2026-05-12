@@ -34,7 +34,7 @@
 // same kind is still hanging open from another tab/device.
 
 import { useNavigate } from '@tanstack/react-router'
-import { type ReactNode, useCallback, useState } from 'react'
+import { type CSSProperties, type ReactNode, useCallback, useEffect, useState } from 'react'
 
 import { useSubmitAttempt } from '@/api/hooks/useAttempts'
 import {
@@ -47,6 +47,7 @@ import { DrillProgress } from '@/components/drill/DrillProgress'
 import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { DrillResult } from '@/components/drill/DrillResult'
 import { MobileFrame } from '@/components/MobileFrame'
+import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
 import { StudyDesk } from '@/components/StudyDesk'
 import type { AnswerLetter, Question } from '@/data/questions'
@@ -202,39 +203,131 @@ export function SessionPlayer(props: SessionPlayerProps) {
 
   const onHome = useCallback(() => navigate({ to: '/' }), [navigate])
 
+  // Phase A.8 — keyboard handlers (EDITION's "stolen ideas" from
+  // ATLAS + TERMINAL):
+  //   - a/b/c/d/e: commit the answer directly while in `answering`
+  //   - Enter / Space: advance from `graded` to the next question
+  //   - Esc: leave the drill (back to home, via the done state)
+  // These ride on top of the existing click/tap flow — they're
+  // desktop-first, but harmless on phone (touch keyboards rarely fire
+  // these keys). The active-element guard avoids hijacking keystrokes
+  // inside form fields (Cmd+K palette input, etc.). The hook is at
+  // the top of the component (above the early returns for idle/done)
+  // so React's hook-rule isn't violated — the body just does nothing
+  // when the phase is idle/done.
+  useEffect(() => {
+    if (phase !== 'answering' && phase !== 'graded') return
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      const target = e.target as HTMLElement | null
+      if (
+        target &&
+        (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
+      )
+        return
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (phase === 'answering') {
+        const key = e.key.toUpperCase()
+        if (['A', 'B', 'C', 'D', 'E'].includes(key)) {
+          e.preventDefault()
+          onPick(key as AnswerLetter)
+        }
+      } else if (phase === 'graded') {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onNext()
+        }
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        if (sessionId !== null) {
+          updateSession.mutate({ id: sessionId, patch: { end: true } })
+        }
+        setPhase('done')
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [phase, onPick, onNext, sessionId, updateSession])
+
   if (phase === 'idle') {
     const stale =
       activeSession.data && activeSession.data.kind === props.sessionKind
         ? activeSession.data
         : null
+    const isPhone = viewport === 'phone'
+    const idleBody = (
+      <IdleBody
+        {...props}
+        isPhone={isPhone}
+        starting={starting || startSession.isPending}
+        onStart={begin}
+        stale={stale}
+        onEndStale={() => {
+          if (stale) updateSession.mutate({ id: stale.id, patch: { end: true } })
+        }}
+        emptyAttempted={emptyAttempted}
+      />
+    )
+    if (isPhone) {
+      return (
+        <MobileFrame
+          tabs
+          activeTab={props.activeTab}
+          onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
+        >
+          {idleBody}
+        </MobileFrame>
+      )
+    }
+    // Desktop idle gets the same Page chrome as the active drill phase
+    // — running head + status line — so the chapter-opening composition
+    // sits inside the editorial frame instead of floating in an
+    // unchromed canvas. The section pulled from props.sections (or a
+    // sensible fallback) lets the running head identify what the user
+    // is about to drill.
+    const sectionLabel = (props.sections || props.activeTab).toString().toUpperCase()
     return (
-      <MobileFrame
-        tabs
-        activeTab={props.activeTab}
-        onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
-      >
-        <IdleBody
-          {...props}
-          starting={starting || startSession.isPending}
-          onStart={begin}
-          stale={stale}
-          onEndStale={() => {
-            if (stale) updateSession.mutate({ id: stale.id, patch: { end: true } })
+      <MobileFrame tabs={false}>
+        <Page
+          runningHead={['HP · Coach', sectionLabel]}
+          status={{
+            mode: 'Övning',
+            context: 'redo',
+            hints: ['esc hem', '⌘k palett'],
           }}
-          emptyAttempted={emptyAttempted}
-        />
+        >
+          {idleBody}
+        </Page>
       </MobileFrame>
     )
   }
 
   if (phase === 'done') {
+    const isPhone = viewport === 'phone'
+    if (isPhone) {
+      return (
+        <MobileFrame
+          tabs
+          activeTab={props.activeTab}
+          onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
+        >
+          <DrillResult summary={{ questions: plan, picks }} onReplay={onReplay} onHome={onHome} />
+        </MobileFrame>
+      )
+    }
+    const sectionLabel = (props.sections || props.activeTab).toString().toUpperCase()
     return (
-      <MobileFrame
-        tabs
-        activeTab={props.activeTab}
-        onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
-      >
-        <DrillResult summary={{ questions: plan, picks }} onReplay={onReplay} onHome={onHome} />
+      <MobileFrame tabs={false}>
+        <Page
+          runningHead={['HP · Coach', sectionLabel]}
+          status={{
+            mode: 'Klar',
+            context: 'resultat',
+            hints: ['esc hem', '⌘k palett'],
+          }}
+        >
+          <DrillResult summary={{ questions: plan, picks }} onReplay={onReplay} onHome={onHome} />
+        </Page>
       </MobileFrame>
     )
   }
@@ -247,56 +340,78 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // any early returns at the top of the component; we just consume
   // it here.
   const useStudyDesk = viewport !== 'phone'
-  return (
-    <MobileFrame tabs={false}>
+  // Phase A.8 EDITION: status-line context and folio carry the
+  // section + question count, so DrillProgress (the visible eyebrow)
+  // can be tight against the headword instead of orphaned at the top
+  // of the canvas. The Page's bottom status line shows the running
+  // progress bar.
+  const drillBody = (
+    <div
+      style={{
+        height: useStudyDesk ? undefined : '100%',
+        flex: useStudyDesk ? 1 : undefined,
+        display: 'flex',
+        flexDirection: 'column',
+        paddingTop: useStudyDesk ? 0 : 16,
+        paddingBottom: useStudyDesk ? 0 : 22,
+      }}
+    >
+      {/* Phone-only: DrillProgress sits as the top chrome since
+       *  Page is a no-op at phone. At desktop the status line at the
+       *  bottom shows section + progress, so we let DrillQuestion
+       *  bring its own section-eyebrow tight to the headword. */}
+      {!useStudyDesk && (
+        <DrillProgress current={index + 1} total={plan.length} section={q.section} />
+      )}
+      <div style={{ flex: 1, minHeight: 0, marginTop: useStudyDesk ? 0 : 12 }}>
+        {useStudyDesk ? (
+          <StudyDesk question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
+        ) : (
+          <DrillQuestion question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
+        )}
+      </div>
       <div
         style={{
-          height: '100%',
+          padding: useStudyDesk
+            ? 'clamp(16px, 2vh, 24px) clamp(48px, 5vw, 88px) clamp(16px, 2vh, 24px)'
+            : '12px var(--pad-lg) 0',
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: 16,
-          paddingBottom: 22,
+          gap: 8,
+          // Desktop right-aligns the Nästa CTA; phone keeps full-width
+          // for thumb reach.
+          alignItems: useStudyDesk ? 'flex-end' : 'stretch',
         }}
       >
-        <DrillProgress current={index + 1} total={plan.length} section={q.section} />
-        <div style={{ flex: 1, minHeight: 0, marginTop: 12 }}>
-          {useStudyDesk ? (
-            <StudyDesk question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
-          ) : (
-            <DrillQuestion
-              question={q}
-              picked={picked}
-              graded={phase === 'graded'}
-              onPick={onPick}
-            />
-          )}
-        </div>
-        <div
-          style={{
-            padding: '12px var(--pad-lg) 0',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 8,
-            // At desktop, right-align the Nästa CTA so the headword
-            // stays the visual climax of the screen. On phone the
-            // full-width button is the right ergonomic for thumb
-            // reach.
-            alignItems: useStudyDesk ? 'flex-end' : 'stretch',
-          }}
+        <Btn
+          full={!useStudyDesk}
+          size="lg"
+          onClick={onNext}
+          disabled={phase !== 'graded'}
+          data-testid="drill-next"
+          style={useStudyDesk ? { minWidth: 200 } : undefined}
+          className="hpc-btn hpc-breathe"
         >
-          <Btn
-            full={!useStudyDesk}
-            size="lg"
-            onClick={onNext}
-            disabled={phase !== 'graded'}
-            data-testid="drill-next"
-            style={useStudyDesk ? { minWidth: 200 } : undefined}
-            className="hpc-btn hpc-breathe"
-          >
-            {index === plan.length - 1 ? 'Avsluta' : 'Nästa'} →
-          </Btn>
-        </div>
+          {index === plan.length - 1 ? 'Avsluta' : 'Nästa'} →
+        </Btn>
       </div>
+    </div>
+  )
+
+  return (
+    <MobileFrame tabs={false}>
+      <Page
+        runningHead={['HP · Coach', q.section]}
+        folio={{ current: index + 1, total: plan.length }}
+        status={{
+          mode: 'Övning',
+          context: `${q.section.toLowerCase()} · fråga ${index + 1}`,
+          progress: (index + 1) / plan.length,
+          hints: ['esc tillbaka', '⌘k palett'],
+        }}
+      >
+        {drillBody}
+      </Page>
     </MobileFrame>
   )
 }
@@ -308,6 +423,10 @@ type IdleBodyProps = SessionPlayerProps & {
   stale: { id: number; kind: string; position: number } | null
   onEndStale: () => void
   emptyAttempted: boolean
+  /** Phase A.8.2 — phone keeps the tight artboard composition; desktop
+   *  uses the chapter-opening composition (hero headline, marginalia
+   *  keyboard hints, bottom-right CTA). */
+  isPhone: boolean
 }
 
 function IdleBody({
@@ -325,48 +444,156 @@ function IdleBody({
   disableStart,
   disableStartLabel,
   idleSecondaryCta,
+  isPhone,
 }: IdleBodyProps) {
   return (
     <div
       data-testid="drill-idle"
       style={{
-        height: '100%',
+        // Phase A.8.2 — height: 100% was ignored inside a flex column
+        // (the parent's flex-basis: auto wins), so the inner flex:1
+        // spacer collapsed and the CTA sat ~280px from the top of a
+        // 900px viewport with 600px of empty space below. flex:1 here
+        // makes the body actually fill the parent column.
+        flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        // Bottom reserves the BottomTabs band; the var collapses to 0
-        // on reader/studio where there is no bottom tab bar.
-        padding: 'clamp(28px, 3vw + 16px, 56px) var(--pad-lg) var(--frame-tabbar)',
+        // Phone keeps the tight pass-and-tabs padding. Desktop opens
+        // into a chapter page: comfortable top margin so the eyebrow +
+        // headword sit a third of the way down, with the CTA anchored
+        // at the bottom of the page.
+        padding: isPhone
+          ? 'clamp(28px, 3vw + 16px, 56px) var(--pad-lg) var(--frame-tabbar)'
+          : 'clamp(48px, 8vh, 96px) clamp(28px, 4vw, 64px) clamp(32px, 5vh, 56px)',
       }}
     >
-      <Eyebrow>{idleEyebrow}</Eyebrow>
       <div
         style={{
-          marginTop: 18,
-          fontFamily: 'var(--font-display)',
-          // Hero idle headline scales 32→44px so the "10 synonymfrågor…"
-          // line carries the same compositional weight on every viewport.
-          fontSize: 'clamp(32px, 3vw + 22px, 44px)',
-          lineHeight: 1.05,
-          color: 'var(--ink)',
-          letterSpacing: '-0.02em',
+          display: 'flex',
+          flexDirection: isPhone ? 'column' : 'row',
+          alignItems: isPhone ? 'stretch' : 'flex-start',
+          gap: isPhone ? 0 : 'clamp(32px, 4vw, 64px)',
         }}
       >
-        {idleHeadline}
-      </div>
-      <div
-        style={{
-          marginTop: 8,
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(16px, 0.875rem + 0.4vw, 20px)',
-          lineHeight: 1.35,
-          color: 'var(--ink-2)',
-        }}
-      >
-        {idleSubcopy}
-      </div>
-      {idleMeta && <Mono style={{ marginTop: 20 }}>{idleMeta}</Mono>}
+        {/* ── Headline column ──────────────────────────────────── */}
+        <div style={{ flex: isPhone ? undefined : 1, minWidth: 0 }}>
+          <Eyebrow>{idleEyebrow}</Eyebrow>
+          <div
+            style={{
+              marginTop: isPhone ? 18 : 22,
+              fontFamily: 'var(--font-display)',
+              // Phase A.8.2: hero scale at desktop so the section name
+              // ("KVA", "ORD", "Repetition") becomes the chapter title.
+              // Phone keeps the compact 32→44px range.
+              fontSize: isPhone
+                ? 'clamp(32px, 3vw + 22px, 44px)'
+                : 'clamp(56px, 5vw + 16px, 112px)',
+              lineHeight: 1.02,
+              color: 'var(--ink)',
+              letterSpacing: '-0.03em',
+              fontWeight: 400,
+            }}
+          >
+            {idleHeadline}
+          </div>
+          {/* Hairline under the headword — book-chapter cue, sized
+           *  to the word above (~2.5em). */}
+          {!isPhone && (
+            <div
+              aria-hidden
+              style={{
+                marginTop: 18,
+                width: '2.5em',
+                maxWidth: 80,
+                height: 1,
+                background: 'var(--ink)',
+                opacity: 0.4,
+              }}
+            />
+          )}
+          <div
+            style={{
+              marginTop: isPhone ? 8 : 26,
+              maxWidth: isPhone ? undefined : '38ch',
+              fontFamily: 'var(--font-display)',
+              fontSize: isPhone
+                ? 'clamp(16px, 0.875rem + 0.4vw, 20px)'
+                : 'clamp(18px, 0.95rem + 0.4vw, 22px)',
+              lineHeight: isPhone ? 1.35 : 1.5,
+              color: 'var(--ink-2)',
+            }}
+          >
+            {idleSubcopy}
+          </div>
+          {idleMeta && (
+            <Mono style={{ marginTop: isPhone ? 20 : 28, display: 'block' }}>{idleMeta}</Mono>
+          )}
+          {idleExtra && <div style={{ marginTop: 20 }}>{idleExtra}</div>}
+        </div>
 
-      {idleExtra && <div style={{ marginTop: 20 }}>{idleExtra}</div>}
+        {/* ── Desktop marginalia: keyboard hints + session card ── */}
+        {!isPhone && (
+          <aside
+            data-testid="drill-idle-marginalia"
+            style={{
+              width: 'clamp(220px, 22vw, 280px)',
+              flexShrink: 0,
+              borderLeft: '1px solid var(--hairline)',
+              paddingLeft: 24,
+              marginTop: 28,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 22,
+            }}
+          >
+            <div>
+              <Mono style={{ display: 'block', marginBottom: 10 }}>Tangentbord</Mono>
+              <ul
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  listStyle: 'none',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 8,
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: 13,
+                  color: 'var(--ink-2)',
+                  lineHeight: 1.45,
+                }}
+              >
+                <li>
+                  <kbd style={kbdStyle}>a–e</kbd> svar
+                </li>
+                <li>
+                  <kbd style={kbdStyle}>enter</kbd> nästa fråga
+                </li>
+                <li>
+                  <kbd style={kbdStyle}>esc</kbd> avbryt
+                </li>
+                <li>
+                  <kbd style={kbdStyle}>⌘k</kbd> paletten
+                </li>
+              </ul>
+            </div>
+            <div>
+              <Mono style={{ display: 'block', marginBottom: 10 }}>Anteckning</Mono>
+              <p
+                style={{
+                  margin: 0,
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 14,
+                  lineHeight: 1.55,
+                  color: 'var(--ink-2)',
+                  fontStyle: 'italic',
+                }}
+              >
+                Inga poängavdrag för fel — gissa hellre än att lämna en fråga obesvarad.
+              </p>
+            </div>
+          </aside>
+        )}
+      </div>
 
       {(emptyAttempted || disableStart) && emptyCopy && (
         <div
@@ -379,6 +606,7 @@ function IdleBody({
             borderRadius: 'calc(var(--radius) * 0.5)',
             fontSize: 14,
             color: 'var(--ink-2)',
+            maxWidth: isPhone ? undefined : 520,
           }}
         >
           {emptyCopy}
@@ -397,6 +625,7 @@ function IdleBody({
             display: 'flex',
             flexDirection: 'column',
             gap: 8,
+            maxWidth: isPhone ? undefined : 520,
           }}
         >
           <Mono>Tidigare övning</Mono>
@@ -410,26 +639,55 @@ function IdleBody({
         </div>
       )}
 
-      <div style={{ flex: 1 }} />
+      {/* Pushes the CTA to the bottom of the page. With flex:1 on the
+       *  outer container above, the spacer now actually grows. */}
+      <div style={{ flex: 1, minHeight: isPhone ? 0 : 48 }} />
 
-      {idleSecondaryCta && (
-        <div style={{ marginBottom: 10 }} data-testid="drill-secondary-cta">
-          {idleSecondaryCta}
-        </div>
-      )}
-      <Btn
-        full
-        size="xl"
-        onClick={onStart}
-        disabled={starting || !!disableStart}
-        data-testid="drill-start"
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: isPhone ? 'column' : 'row',
+          alignItems: isPhone ? 'stretch' : 'center',
+          justifyContent: isPhone ? 'stretch' : 'flex-end',
+          gap: 12,
+        }}
       >
-        {starting
-          ? 'Startar…'
-          : disableStart
-            ? (disableStartLabel ?? 'Inget att starta')
-            : 'Starta övning'}
-      </Btn>
+        {idleSecondaryCta && (
+          <div
+            style={isPhone ? { marginBottom: 10 } : { marginRight: 'auto' }}
+            data-testid="drill-secondary-cta"
+          >
+            {idleSecondaryCta}
+          </div>
+        )}
+        <Btn
+          full={isPhone}
+          size="xl"
+          onClick={onStart}
+          disabled={starting || !!disableStart}
+          data-testid="drill-start"
+          style={isPhone ? undefined : { minWidth: 260 }}
+        >
+          {starting
+            ? 'Startar…'
+            : disableStart
+              ? (disableStartLabel ?? 'Inget att starta')
+              : 'Starta övning →'}
+        </Btn>
+      </div>
     </div>
   )
+}
+
+const kbdStyle: CSSProperties = {
+  display: 'inline-block',
+  padding: '2px 6px',
+  marginRight: 8,
+  fontFamily: 'var(--font-mono)',
+  fontSize: 11,
+  letterSpacing: 'var(--font-mono-track)',
+  background: 'var(--panel-2)',
+  border: '1px solid var(--hairline)',
+  borderRadius: 4,
+  color: 'var(--ink)',
 }

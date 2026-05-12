@@ -19,7 +19,6 @@ import type { CSSProperties, ReactNode } from 'react'
 
 import { useViewport } from '@/hooks/useViewport'
 
-import { DesktopNav } from './DesktopNav'
 import { Chart, Home, Pencil, User } from './icons'
 
 // ── Status bar (iOS-style: time left, signal/wifi/battery right) ─────
@@ -220,8 +219,8 @@ export function MobileFrame({
   tabs = true,
   activeTab = 'home',
   onTabChange,
-  streakDays,
-  onAvancerat,
+  streakDays: _streakDays, // Phase A.8 unused (Page handles status-line streak)
+  onAvancerat: _onAvancerat, // Phase A.8 unused (status-line + screen own this)
   forceLayout,
   style,
 }: MobileFrameProps) {
@@ -252,22 +251,15 @@ export function MobileFrame({
       }}
     >
       {showIosChrome && <StatusBar />}
-      {tabs && !isPhone && (
-        <DesktopNav
-          active={activeTab}
-          onTabChange={onTabChange}
-          streakDays={streakDays}
-          onAvancerat={onAvancerat}
-        />
-      )}
+      {/* Phase A.8 — DesktopNav removed; the <Page> shell each screen
+       *  wraps in provides the editorial running-head + status-line
+       *  chrome at reader/studio. Phone keeps its bottom-tab nav
+       *  (touch needs a visible nav target). */}
       <div
         style={{
           flex: 1,
           position: 'relative',
           overflow: isPhone ? 'hidden' : 'visible',
-          // At reader/studio the inner wrapper is itself a flex column
-          // so children with `flex: 1` (AuthLayout, screen wrappers)
-          // can grow inside it.
           ...(isPhone ? {} : { display: 'flex', flexDirection: 'column' }),
         }}
       >

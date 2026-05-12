@@ -24,7 +24,6 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 10
           run_install: false
 
       - uses: actions/setup-node@v4
@@ -33,8 +32,40 @@ jobs:
           cache: pnpm
           cache-dependency-path: app/pnpm-lock.yaml
 
-      - name: Install
+      - name: Install (app)
         run: pnpm install --frozen-lockfile
+
+      # Worker deps are required for `app` typecheck — app/src/api/client.ts
+      # imports `AppType` from ../../../worker/src/index for the typed hc()
+      # client. The reference is type-only (nothing from worker bundles
+      # into the SPA), but tsc walks the worker source and needs its
+      # node_modules (hono, drizzle-orm, zod, @clerk/backend) to resolve.
+      - name: Install (worker)
+        working-directory: worker
+        run: pnpm install --frozen-lockfile
+
+      # The worker's wrangler dev server (started by Playwright's webServer
+      # config in app/playwright.config.ts) reads CLERK_SECRET_KEY from
+      # worker/.dev.vars to verify JWT tokens. The file is gitignored; in
+      # CI we materialise it from the GitHub Actions secret so /api/*
+      # routes can authenticate the test user. Without this the worker
+      # 401s every API call and api/drill/mistakes e2e tests fail.
+      - name: Write worker/.dev.vars
+        working-directory: worker
+        run: |
+          cat > .dev.vars <<EOF
+          CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
+          EOF
+
+      # wrangler dev uses a local SQLite (under .wrangler/state/v3/d1/)
+      # as the D1 binding when --remote isn't passed. CI starts cold so
+      # that DB is empty — the worker 500s with "D1_ERROR: no such
+      # table: users" on every authenticated request. Apply migrations
+      # against the local DB so the schema is in place before Playwright
+      # spins up the worker.
+      - name: Apply D1 migrations (local)
+        working-directory: worker
+        run: pnpm db:apply:local
 
       - name: Typecheck
         run: pnpm typecheck
@@ -61,6 +92,14 @@ jobs:
 
       - name: E2E (Playwright)
         run: pnpm test:e2e
+        env:
+          # Clerk dev-instance creds + the +clerk_test magic email used by
+          # global-setup.ts to bootstrap a testing token and idempotently
+          # create the E2E user. Set via `gh secret set` on this repo; the
+          # local equivalent lives in app/.env.local (gitignored).
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+          E2E_TEST_EMAIL: ${{ secrets.E2E_TEST_EMAIL }}
 
       - name: Upload Playwright report on failure
         if: failure()

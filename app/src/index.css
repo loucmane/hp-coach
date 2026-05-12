@@ -311,6 +311,24 @@ body::before {
   flex-direction: column;
 }
 
+/* ── Drill option row — Phase A.8 hover affordance ──────────────────────
+ * Options dropped pill chrome in EDITION; hover gives them a quiet
+ * "this is clickable" cue without re-introducing card chrome. Light
+ * bg tint + a subtle ink-accent on the leading rail. */
+.hpc-option:not(:disabled):hover {
+  background: color-mix(in oklch, var(--ink) 3%, transparent);
+}
+.hpc-option:not(:disabled):hover > span:first-of-type {
+  background: var(--muted-2);
+}
+.hpc-option:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.hpc-option:last-of-type {
+  border-bottom: 1px solid var(--hairline-2);
+}
+
 /* ── Button — micro press affordance ───────────────────────────────────── */
 /* Single CTA screens (Daily Home) carry weight; the press needs to feel
    confirmed without shouting. 150ms ease, 1% scale, opacity-only on hover. */
