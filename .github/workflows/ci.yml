@@ -69,6 +69,14 @@ jobs:
 
       - name: E2E (Playwright)
         run: pnpm test:e2e
+        env:
+          # Clerk dev-instance creds + the +clerk_test magic email used by
+          # global-setup.ts to bootstrap a testing token and idempotently
+          # create the E2E user. Set via `gh secret set` on this repo; the
+          # local equivalent lives in app/.env.local (gitignored).
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+          E2E_TEST_EMAIL: ${{ secrets.E2E_TEST_EMAIL }}
 
       - name: Upload Playwright report on failure
         if: failure()
