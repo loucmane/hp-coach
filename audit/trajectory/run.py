@@ -53,7 +53,7 @@ def cmd_prep(args):
     run_step('Rebuild technique index', ['python3', str(SCRIPT_DIR / 'technique_index.py')])
     # 2. Apply parser patches (idempotent; checks for matches before writing)
     run_step('Apply parser patches', [
-        'python3', str(SCRIPT_DIR / 'patch_paren_corruption.py'), '--apply',
+        'python3', str(SCRIPT_DIR / 'patch_parser_bugs.py'), '--apply',
     ])
     # 3. Build brief
     run_step('Build brief', [
