@@ -59,18 +59,21 @@ export function Frame({ children }: FrameProps) {
   const isStudio = viewport === 'studio'
   const maxWidth = isStudio ? 'var(--canvas-max-w)' : 'var(--canvas-max-w-reader)'
 
-  // Reader keeps the card aesthetic (border + shadow) at a wider 960px
-  // canvas. Studio drops the card and renders a wide page-region.
-  // Both share the centered layout + --panel-2 backdrop.
+  // Phase A.7 fix — height stacking is now flat. Frame outer is a
+  // flex column with min-height: 100dvh; the canvas inside grows to
+  // fill the remaining space below the (MobileFrame-rendered)
+  // DesktopNav. No more min-height + padding sum overflowing the
+  // viewport. Canvas keeps the card chrome at reader; studio strips
+  // it entirely so the wide page feels open, not stuck in an
+  // oversized card.
   return (
     <div
       className={`hpc-frame ${isStudio ? 'hpc-frame-studio' : 'hpc-frame-reader'}`}
       style={{
-        minHeight: '100vh',
+        minHeight: '100dvh',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        padding: 'clamp(16px, 3vh, 48px) var(--gutter-lg)',
+        alignItems: 'stretch',
         background: 'var(--panel-2)',
       }}
     >
@@ -79,16 +82,15 @@ export function Frame({ children }: FrameProps) {
         style={{
           width: '100%',
           maxWidth,
+          margin: '0 auto',
           background: 'var(--bg)',
-          // Reader keeps the card chrome; studio strips it. Both
-          // share content-driven height (no min-height) — that's the
-          // Phase A.5 fix for the off-center auth bug.
-          borderRadius: isStudio ? 0 : 'calc(var(--radius) * 1.6)',
-          border: isStudio ? 'none' : '1px solid var(--hairline)',
-          boxShadow: isStudio ? 'none' : '0 30px 60px -20px rgba(0,0,0,0.18)',
+          borderRadius: 0,
+          border: isStudio ? 'none' : 'none',
+          boxShadow: 'none',
           position: 'relative',
-          // Allow internal scrolling at the screen level; the canvas
-          // itself flexes to its content.
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         {children}

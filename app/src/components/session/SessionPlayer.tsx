@@ -277,16 +277,23 @@ export function SessionPlayer(props: SessionPlayerProps) {
             display: 'flex',
             flexDirection: 'column',
             gap: 8,
+            // At desktop, right-align the Nästa CTA so the headword
+            // stays the visual climax of the screen. On phone the
+            // full-width button is the right ergonomic for thumb
+            // reach.
+            alignItems: useStudyDesk ? 'flex-end' : 'stretch',
           }}
         >
           <Btn
-            full
+            full={!useStudyDesk}
             size="lg"
             onClick={onNext}
             disabled={phase !== 'graded'}
             data-testid="drill-next"
+            style={useStudyDesk ? { minWidth: 200 } : undefined}
+            className="hpc-btn hpc-breathe"
           >
-            {index === plan.length - 1 ? 'Avsluta' : 'Nästa'}
+            {index === plan.length - 1 ? 'Avsluta' : 'Nästa'} →
           </Btn>
         </div>
       </div>

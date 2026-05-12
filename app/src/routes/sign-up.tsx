@@ -19,8 +19,18 @@ function SignUpScreen() {
   return (
     <MobileFrame tabs={false}>
       <AuthLayout
-        brandTitle="Börja här"
-        brandKicker="Skapa ett konto för att börja träna inför högskoleprovet med strukturerad coachning."
+        cardLabel="Börja här"
+        pullQuoteLine1="EN KURS"
+        pullQuoteLine2="I PROVET."
+        subline="Strukturerad pedagogik istället för ett frågebanksverktyg."
+        crossLink={
+          <>
+            Har redan konto?{' '}
+            <a href="/sign-in" style={{ color: 'var(--ink)', textDecoration: 'underline' }}>
+              → logga in
+            </a>
+          </>
+        }
       >
         <SignUp routing="path" path="/sign-up" signInUrl="/sign-in" appearance={clerkAppearance} />
       </AuthLayout>

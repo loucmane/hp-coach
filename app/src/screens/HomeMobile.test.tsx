@@ -22,8 +22,10 @@ describe('HomeMobile', () => {
 
   it('renders the kompis voice when coach=kompis', () => {
     render(<HomeMobile forceLayout="phone" coach="kompis" />)
+    // Phase A.7 dropped the CoachLine byline ("— COACH · KOMPIS") in
+    // favour of a clean editorial masthead. The CTA still reflects
+    // the coach's voice, which is the binding contract.
     expect(screen.getByRole('button', { name: 'Kör igång' })).toBeInTheDocument()
-    expect(screen.getByText(/— coach · kompis/i)).toBeInTheDocument()
   })
 
   it('hides the streak badge by default and when streakDays is 0', () => {

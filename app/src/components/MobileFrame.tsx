@@ -19,6 +19,7 @@ import type { CSSProperties, ReactNode } from 'react'
 
 import { useViewport } from '@/hooks/useViewport'
 
+import { DesktopNav } from './DesktopNav'
 import { Chart, Home, Pencil, User } from './icons'
 
 // ── Status bar (iOS-style: time left, signal/wifi/battery right) ─────
@@ -194,10 +195,23 @@ function BottomTabs({
 // ── Frame ────────────────────────────────────────────────────────────
 type MobileFrameProps = {
   children: ReactNode
-  /** Render the bottom tab bar; pass false for full-bleed flows (onboarding, drill). */
+  /** Render the navigation chrome; pass false for full-bleed flows
+   *  (onboarding, drill). On phone this becomes BottomTabs; on
+   *  reader/studio this becomes a top DesktopNav. */
   tabs?: boolean
   activeTab?: TabKey
   onTabChange?: (id: TabKey) => void
+  /** Streak count to display in the desktop nav's trailing slot.
+   *  Ignored on phone (the artboard tab bar has no streak slot —
+   *  the home screen renders its own streak badge instead). */
+  streakDays?: number
+  /** Avancerat link in the desktop nav's trailing slot (only when
+   *  streakDays is 0/undefined — they're mutually exclusive). */
+  onAvancerat?: () => void
+  /** Test-only — override viewport detection so the wrapping screen
+   *  and MobileFrame agree on which nav chrome to render. Production
+   *  callers omit this and rely on useViewport(). */
+  forceLayout?: 'phone' | 'reader' | 'studio'
   style?: CSSProperties
 }
 
@@ -206,28 +220,29 @@ export function MobileFrame({
   tabs = true,
   activeTab = 'home',
   onTabChange,
+  streakDays,
+  onAvancerat,
+  forceLayout,
   style,
 }: MobileFrameProps) {
-  // Phase A: iOS-decorative chrome (status bar + home indicator) only
-  // makes sense on phone. At reader/studio the surrounding Frame
-  // already provides the canvas; adding a 09:41 status bar there
-  // would look like a kid's homework. Tabs stay — they're navigation.
-  const viewport = useViewport()
-  const showIosChrome = viewport === 'phone'
-
-  // On phone the artboard has a fixed device height so the absolute-
-  // bottom tabs anchor visually. At reader/studio the canvas is
-  // content-driven, so we let MobileFrame's outer be content-sized
-  // (height: auto) and render the tabs as a fixed-position floating
-  // pill instead. `flex: 1` on the children wrapper keeps screen
-  // content flexible inside whatever height MobileFrame ends up with.
+  // Phase A.7 — viewport drives nav chrome AND iOS decorations:
+  //   phone:           iOS chrome + BottomTabs (anchored in artboard)
+  //   reader/studio:   DesktopNav at top, no iOS chrome, no
+  //                    floating bottom pill (the Phase A.5 pill
+  //                    was the wrong UX language at desktop)
+  const detectedViewport = useViewport()
+  const viewport = forceLayout ?? detectedViewport
   const isPhone = viewport === 'phone'
+  const showIosChrome = isPhone
   return (
     <div
       style={{
         width: '100%',
-        height: isPhone ? '100%' : 'auto',
-        minHeight: isPhone ? undefined : 'calc(100vh - 64px)',
+        // Phone: explicit 100% (artboard owns its own height).
+        // Reader/Studio: flex grow as a child of Frame's canvas, so
+        // long children (AuthLayout's two-pane row) can vertically
+        // fill the available space and center their content inside it.
+        ...(isPhone ? { height: '100%' } : { flex: 1 }),
         background: 'var(--bg)',
         position: 'relative',
         overflow: isPhone ? 'hidden' : 'visible',
@@ -237,10 +252,28 @@ export function MobileFrame({
       }}
     >
       {showIosChrome && <StatusBar />}
-      <div style={{ flex: 1, position: 'relative', overflow: isPhone ? 'hidden' : 'visible' }}>
+      {tabs && !isPhone && (
+        <DesktopNav
+          active={activeTab}
+          onTabChange={onTabChange}
+          streakDays={streakDays}
+          onAvancerat={onAvancerat}
+        />
+      )}
+      <div
+        style={{
+          flex: 1,
+          position: 'relative',
+          overflow: isPhone ? 'hidden' : 'visible',
+          // At reader/studio the inner wrapper is itself a flex column
+          // so children with `flex: 1` (AuthLayout, screen wrappers)
+          // can grow inside it.
+          ...(isPhone ? {} : { display: 'flex', flexDirection: 'column' }),
+        }}
+      >
         {children}
       </div>
-      {tabs && <BottomTabs active={activeTab} onChange={onTabChange} floating={!isPhone} />}
+      {tabs && isPhone && <BottomTabs active={activeTab} onChange={onTabChange} floating={false} />}
       {showIosChrome && <HomeIndicator />}
     </div>
   )
