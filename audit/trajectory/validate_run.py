@@ -34,7 +34,38 @@ TARGETS = {
         'level_min': 0.6,
         'bottleneck_or_soft_min': 3,  # higher bar with more rounds + soft signal
     },
+    'v3': {
+        'baseline_min': 1, 'baseline_max': 3,
+        'level_min': 0.6,
+        'bottleneck_or_soft_min': 3,
+    },
+    'full': {
+        'baseline_min': 1, 'baseline_max': 3,
+        'level_min': 0.6,
+        'bottleneck_or_soft_min': 3,
+    },
 }
+
+# Fallback for ad-hoc run names (e.g. 'post-audit-seed50') — they're
+# typically `full` runs. Resolve by checking the meta sidecar if present.
+def resolve_targets(name: str) -> dict:
+    """Pick the closest target preset. Order:
+       1. exact name in TARGETS (mvp / v2 / v3 / full)
+       2. size hint from /tmp/trajectory/<name>_meta.json
+       3. fallback: 'full' (the strictest large-run preset)
+    """
+    if name in TARGETS:
+        return TARGETS[name]
+    meta_path = Path(f'/tmp/trajectory/{name}_meta.json')
+    if meta_path.exists():
+        try:
+            meta = json.loads(meta_path.read_text())
+            size = meta.get('size') or meta.get('preset')
+            if size in TARGETS:
+                return TARGETS[size]
+        except json.JSONDecodeError:
+            pass
+    return TARGETS['full']
 
 
 def check(name, ok, detail=''):
@@ -50,7 +81,7 @@ def main(name):
         sys.exit(2)
 
     run = json.loads(run_path.read_text())
-    targets = TARGETS.get(name, TARGETS['v2'])
+    targets = resolve_targets(name)
 
     print('=' * 60)
     print(f'Trajectory {name.upper()} — validation')
