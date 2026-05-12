@@ -87,17 +87,18 @@ export function PedagogyPanel({ qid, graded, correct }: Props) {
       data-state={graded ? 'post-grade' : 'waiting'}
       data-correct={correct}
       style={{
-        background: 'var(--panel)',
-        border: '1px solid var(--hairline)',
-        borderRadius: 'calc(var(--radius) * 0.75)',
-        padding: 'clamp(16px, 1.5vw + 12px, 28px)',
+        // Phase A.8 EDITION: drop the card chrome (border + radius
+        // + background) — pedagogy panel becomes marginalia,
+        // articulated by a single 1px hairline on its leading edge.
+        // No box; just a column of text in the right margin.
+        borderLeft: '1px solid var(--hairline)',
+        paddingLeft: 'clamp(20px, 1.5vw + 12px, 36px)',
+        paddingTop: 'clamp(28px, 4vh, 56px)',
+        paddingRight: 0,
+        paddingBottom: 0,
         display: 'flex',
         flexDirection: 'column',
-        gap: 18,
-        // The panel anchors to the top of its column so step cards
-        // align with the question's first option. Container queries
-        // inside still let it adapt if it's somehow narrower than
-        // expected.
+        gap: 16,
         containerType: 'inline-size',
       }}
     >

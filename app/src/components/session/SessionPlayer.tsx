@@ -34,7 +34,7 @@
 // same kind is still hanging open from another tab/device.
 
 import { useNavigate } from '@tanstack/react-router'
-import { type ReactNode, useCallback, useState } from 'react'
+import { type ReactNode, useCallback, useEffect, useState } from 'react'
 
 import { useSubmitAttempt } from '@/api/hooks/useAttempts'
 import {
@@ -47,6 +47,7 @@ import { DrillProgress } from '@/components/drill/DrillProgress'
 import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { DrillResult } from '@/components/drill/DrillResult'
 import { MobileFrame } from '@/components/MobileFrame'
+import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
 import { StudyDesk } from '@/components/StudyDesk'
 import type { AnswerLetter, Question } from '@/data/questions'
@@ -202,6 +203,52 @@ export function SessionPlayer(props: SessionPlayerProps) {
 
   const onHome = useCallback(() => navigate({ to: '/' }), [navigate])
 
+  // Phase A.8 — keyboard handlers (EDITION's "stolen ideas" from
+  // ATLAS + TERMINAL):
+  //   - a/b/c/d/e: commit the answer directly while in `answering`
+  //   - Enter / Space: advance from `graded` to the next question
+  //   - Esc: leave the drill (back to home, via the done state)
+  // These ride on top of the existing click/tap flow — they're
+  // desktop-first, but harmless on phone (touch keyboards rarely fire
+  // these keys). The active-element guard avoids hijacking keystrokes
+  // inside form fields (Cmd+K palette input, etc.). The hook is at
+  // the top of the component (above the early returns for idle/done)
+  // so React's hook-rule isn't violated — the body just does nothing
+  // when the phase is idle/done.
+  useEffect(() => {
+    if (phase !== 'answering' && phase !== 'graded') return
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      const target = e.target as HTMLElement | null
+      if (
+        target &&
+        (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
+      )
+        return
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (phase === 'answering') {
+        const key = e.key.toUpperCase()
+        if (['A', 'B', 'C', 'D', 'E'].includes(key)) {
+          e.preventDefault()
+          onPick(key as AnswerLetter)
+        }
+      } else if (phase === 'graded') {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onNext()
+        }
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        if (sessionId !== null) {
+          updateSession.mutate({ id: sessionId, patch: { end: true } })
+        }
+        setPhase('done')
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [phase, onPick, onNext, sessionId, updateSession])
+
   if (phase === 'idle') {
     const stale =
       activeSession.data && activeSession.data.kind === props.sessionKind
@@ -247,56 +294,78 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // any early returns at the top of the component; we just consume
   // it here.
   const useStudyDesk = viewport !== 'phone'
-  return (
-    <MobileFrame tabs={false}>
+  // Phase A.8 EDITION: status-line context and folio carry the
+  // section + question count, so DrillProgress (the visible eyebrow)
+  // can be tight against the headword instead of orphaned at the top
+  // of the canvas. The Page's bottom status line shows the running
+  // progress bar.
+  const drillBody = (
+    <div
+      style={{
+        height: useStudyDesk ? undefined : '100%',
+        flex: useStudyDesk ? 1 : undefined,
+        display: 'flex',
+        flexDirection: 'column',
+        paddingTop: useStudyDesk ? 0 : 16,
+        paddingBottom: useStudyDesk ? 0 : 22,
+      }}
+    >
+      {/* Phone-only: DrillProgress sits as the top chrome since
+       *  Page is a no-op at phone. At desktop the status line at the
+       *  bottom shows section + progress, so we let DrillQuestion
+       *  bring its own section-eyebrow tight to the headword. */}
+      {!useStudyDesk && (
+        <DrillProgress current={index + 1} total={plan.length} section={q.section} />
+      )}
+      <div style={{ flex: 1, minHeight: 0, marginTop: useStudyDesk ? 0 : 12 }}>
+        {useStudyDesk ? (
+          <StudyDesk question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
+        ) : (
+          <DrillQuestion question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
+        )}
+      </div>
       <div
         style={{
-          height: '100%',
+          padding: useStudyDesk
+            ? 'clamp(16px, 2vh, 24px) clamp(48px, 5vw, 88px) clamp(16px, 2vh, 24px)'
+            : '12px var(--pad-lg) 0',
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: 16,
-          paddingBottom: 22,
+          gap: 8,
+          // Desktop right-aligns the Nästa CTA; phone keeps full-width
+          // for thumb reach.
+          alignItems: useStudyDesk ? 'flex-end' : 'stretch',
         }}
       >
-        <DrillProgress current={index + 1} total={plan.length} section={q.section} />
-        <div style={{ flex: 1, minHeight: 0, marginTop: 12 }}>
-          {useStudyDesk ? (
-            <StudyDesk question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
-          ) : (
-            <DrillQuestion
-              question={q}
-              picked={picked}
-              graded={phase === 'graded'}
-              onPick={onPick}
-            />
-          )}
-        </div>
-        <div
-          style={{
-            padding: '12px var(--pad-lg) 0',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 8,
-            // At desktop, right-align the Nästa CTA so the headword
-            // stays the visual climax of the screen. On phone the
-            // full-width button is the right ergonomic for thumb
-            // reach.
-            alignItems: useStudyDesk ? 'flex-end' : 'stretch',
-          }}
+        <Btn
+          full={!useStudyDesk}
+          size="lg"
+          onClick={onNext}
+          disabled={phase !== 'graded'}
+          data-testid="drill-next"
+          style={useStudyDesk ? { minWidth: 200 } : undefined}
+          className="hpc-btn hpc-breathe"
         >
-          <Btn
-            full={!useStudyDesk}
-            size="lg"
-            onClick={onNext}
-            disabled={phase !== 'graded'}
-            data-testid="drill-next"
-            style={useStudyDesk ? { minWidth: 200 } : undefined}
-            className="hpc-btn hpc-breathe"
-          >
-            {index === plan.length - 1 ? 'Avsluta' : 'Nästa'} →
-          </Btn>
-        </div>
+          {index === plan.length - 1 ? 'Avsluta' : 'Nästa'} →
+        </Btn>
       </div>
+    </div>
+  )
+
+  return (
+    <MobileFrame tabs={false}>
+      <Page
+        runningHead={['HP · Coach', q.section]}
+        folio={{ current: index + 1, total: plan.length }}
+        status={{
+          mode: 'Övning',
+          context: `${q.section.toLowerCase()} · fråga ${index + 1}`,
+          progress: (index + 1) / plan.length,
+          hints: ['esc tillbaka', '⌘k palett'],
+        }}
+      >
+        {drillBody}
+      </Page>
     </MobileFrame>
   )
 }
