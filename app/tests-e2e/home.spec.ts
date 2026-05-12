@@ -7,6 +7,18 @@
 //
 // The signed-in fixture relies on globalSetup running clerkSetup() once at
 // the top of the run (see tests-e2e/global-setup.ts).
+//
+// Phase A.8.3 — selectors updated for the EDITION composition:
+//   - Custom Swedish card label "Logga in" replaces Clerk's default
+//     "Sign in to hp-coach" (Clerk title is hidden via clerkAppearance).
+//   - Home dropped the CoachLine "— coach · taktiker" attribution.
+//   - DesktopBody dropped the bottom Hem/Övning/Coach/Framsteg tabs;
+//     they live in PhoneBody only. Tests that depend on them are
+//     restricted to the `mobile` project via `test.skip(viewport)`.
+//   - CTA buttons run `.hpc-breathe` (opacity + scale cycle) which makes
+//     Playwright's stability check time out. We pass `{ force: true }`
+//     to clicks on those buttons — the user perceives them as clickable;
+//     the bounding box is stable enough in practice.
 
 import { expect, test } from '@playwright/test'
 import { expect as authedExpect, test as authedTest } from './fixtures'
@@ -15,24 +27,34 @@ import { expect as authedExpect, test as authedTest } from './fixtures'
 test('unauthenticated visit to / redirects to /sign-in', async ({ page }) => {
   await page.goto('/')
   await expect(page).toHaveURL(/\/sign-in$/, { timeout: 10_000 })
-  await expect(page.getByText(/sign in/i).first()).toBeVisible()
+  // The Clerk default header "Sign in to hp-coach" is suppressed via
+  // clerkAppearance. Our AuthLayout shows "Logga in" as the card label.
+  await expect(page.getByText(/logga in/i).first()).toBeVisible()
 })
 
 // ── Signed-in ──────────────────────────────────────────────────────────
-authedTest('Daily Home renders with iconic CTA and tabs', async ({ page }) => {
+authedTest('Daily Home renders with iconic CTA', async ({ page }) => {
   const cta = page.getByRole('button', { name: 'Fortsätt' })
   await authedExpect(cta).toBeVisible()
-  await authedExpect(page.getByText(/— COACH · TAKTIKER/i)).toBeVisible()
-  await authedExpect(page.getByRole('button', { name: 'Hem' })).toBeVisible()
-  await authedExpect(page.getByRole('button', { name: 'Övning' })).toBeVisible()
-  await authedExpect(page.getByRole('button', { name: 'Coach' })).toBeVisible()
-  await authedExpect(page.getByRole('button', { name: 'Framsteg' })).toBeVisible()
   await cta.focus()
   await authedExpect(cta).toBeFocused()
 })
 
+authedTest('Bottom tabs visible on phone (Hem/Övning/Coach/Framsteg)', async ({ page }, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile',
+    'BottomTabs render only at phone viewport (EDITION dropped them on desktop)',
+  )
+  await authedExpect(page.getByRole('button', { name: 'Hem' })).toBeVisible()
+  await authedExpect(page.getByRole('button', { name: 'Övning' })).toBeVisible()
+  await authedExpect(page.getByRole('button', { name: 'Coach' })).toBeVisible()
+  await authedExpect(page.getByRole('button', { name: 'Framsteg' })).toBeVisible()
+})
+
 authedTest('Fortsätt routes to /drill', async ({ page }) => {
-  await page.getByRole('button', { name: 'Fortsätt' }).click()
+  // `.hpc-breathe` animation makes the button never "stable" by
+  // Playwright's default check. `force: true` skips that check.
+  await page.getByRole('button', { name: 'Fortsätt' }).click({ force: true })
   await authedExpect(page).toHaveURL(/\/drill$/)
   // The drill route now mounts the real engine; idle state is the
   // visible landing for an unstarted drill.
@@ -41,17 +63,36 @@ authedTest('Fortsätt routes to /drill', async ({ page }) => {
 
 authedTest(
   'Avancerat link routes to /avancerat (and tabs are hidden there)',
-  async ({ page }) => {
-    await page.getByRole('button', { name: 'Avancerat' }).click()
+  async ({ page }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== 'mobile',
+      'Avancerat link lives in PhoneBody trailing row; DesktopBody dropped it (Phase A.8 EDITION)',
+    )
+    await page.getByRole('button', { name: 'Avancerat' }).click({ force: true })
     await authedExpect(page).toHaveURL(/\/avancerat$/)
     await authedExpect(page.getByRole('button', { name: 'Hem', exact: true })).toHaveCount(0)
   },
 )
 
-authedTest('Bottom tabs route between sections', async ({ page }) => {
-  await page.getByRole('button', { name: 'Framsteg', exact: true }).click()
+authedTest('Bottom tabs route between sections', async ({ page }, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile',
+    'BottomTabs render only at phone viewport (EDITION dropped them on desktop)',
+  )
+  // BottomTabs share aria-current="page" with the active tab and there
+  // are multiple Hem renders during a route transition (the active tab
+  // briefly overlaps the new route's chrome). Filter the locator down
+  // to the tab that's NOT currently the page so the click always
+  // targets the intended bar.
+  await page
+    .getByRole('button', { name: 'Framsteg', exact: true })
+    .filter({ hasNot: page.locator('[aria-current="page"]') })
+    .click({ force: true })
   await authedExpect(page).toHaveURL(/\/progress$/)
-  await page.getByRole('button', { name: 'Hem', exact: true }).click()
+  await page
+    .getByRole('button', { name: 'Hem', exact: true })
+    .filter({ hasNot: page.locator('[aria-current="page"]') })
+    .click({ force: true })
   await authedExpect(page).toHaveURL(/\/$/)
 })
 
@@ -69,11 +110,16 @@ authedTest('/dev exposes coach + palette + font + density switchers', async ({ p
 authedTest('palette swatch click applies the new palette to <html>', async ({ page }) => {
   await page.goto('/dev')
   await page.getByRole('button', { name: 'Palett: Sage' }).click()
+  // The palette switch fires a PATCH /api/me/prefs and only then runs
+  // applyThemeToDocument(). In CI the round-trip can take several
+  // hundred ms, so we wait for the data-palette attribute to flip
+  // before reading --bg (otherwise we sometimes read the previous
+  // palette's value).
+  await authedExpect(page.locator('html[data-palette="sage"]')).toHaveCount(1, { timeout: 10_000 })
   const bg = await page.evaluate(() =>
     getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(),
   )
   authedExpect(bg).toBe('oklch(0.965 0.012 175)')
-  authedExpect(await page.evaluate(() => document.documentElement.dataset.palette)).toBe('sage')
 })
 
 authedTest('floating launcher links to /dev and Cmd+K opens the palette', async ({ page }) => {

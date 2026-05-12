@@ -96,9 +96,13 @@ export const PALETTES: Record<PaletteKey, Palette> = {
       muted2: 'oklch(0.66 0.018 200)',
       hairline: 'oklch(0.87 0.014 175)',
       hairline2: 'oklch(0.92 0.012 175)',
-      accent: 'oklch(0.52 0.085 195)',
+      // Phase A.8 — bumped chroma from 0.085 → 0.13 so Sage has the
+      // same accent strength as Sand (0.13), Ink (0.13), Rose (0.14).
+      // Phase A.7 audit flagged this as the reason Home in Sage mode
+      // read as monochrome — accent was too washed-out to land.
+      accent: 'oklch(0.52 0.13 195)',
       accentInk: 'oklch(0.99 0.008 175)',
-      accentSoft: 'oklch(0.90 0.04 195)',
+      accentSoft: 'oklch(0.90 0.06 195)',
       ok: 'oklch(0.55 0.10 155)',
       warn: 'oklch(0.65 0.12 70)',
       bad: 'oklch(0.55 0.15 25)',
@@ -115,9 +119,10 @@ export const PALETTES: Record<PaletteKey, Palette> = {
       muted2: 'oklch(0.48 0.018 200)',
       hairline: 'oklch(0.30 0.018 200)',
       hairline2: 'oklch(0.26 0.018 200)',
-      accent: 'oklch(0.70 0.10 195)',
+      // Phase A.8 — match the light-mode chroma bump.
+      accent: 'oklch(0.70 0.13 195)',
       accentInk: 'oklch(0.18 0.014 200)',
-      accentSoft: 'oklch(0.32 0.05 195)',
+      accentSoft: 'oklch(0.32 0.07 195)',
       ok: 'oklch(0.72 0.11 155)',
       warn: 'oklch(0.78 0.12 70)',
       bad: 'oklch(0.70 0.13 25)',

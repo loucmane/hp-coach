@@ -9,7 +9,7 @@
 // generous breathing room above. Options are full-width pills so the touch
 // targets are forgiving even on small screens.
 
-import { type CSSProperties, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { ExplanationPanel } from '@/components/drill/ExplanationPanel'
 import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { MathText } from '@/components/MathText'
@@ -109,21 +109,43 @@ export function DrillQuestion({
           {question.context}
         </div>
       )}
+      {/* Phase A.8 EDITION: section eyebrow sits 8–16px ABOVE the
+       *  headword as one typographic unit. Replaces the 200px-orphan
+       *  DrillProgress band that Phase A.7 had floating at the top
+       *  of the canvas. The status line at the bottom of the page
+       *  already carries the running progress bar; the eyebrow just
+       *  identifies the section + word type. */}
+      {!hasContext && promptIsShort && (
+        <div
+          data-testid="drill-section-eyebrow"
+          style={{
+            padding: 'clamp(28px, 4vh, 56px) var(--pad-lg) 6px',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: 'var(--font-mono-track)',
+            textTransform: 'uppercase',
+            display: 'flex',
+            gap: 6,
+            alignItems: 'baseline',
+          }}
+        >
+          <span style={{ color: 'var(--accent)', fontWeight: 600 }}>{question.section}</span>
+          <span style={{ color: 'var(--muted)' }}>·</span>
+          <span style={{ color: 'var(--muted)' }}>synonymer</span>
+        </div>
+      )}
       <div
         data-testid="drill-prompt"
         style={{
           padding: hasContext
             ? '18px var(--pad-lg) 14px'
-            : 'clamp(28px, 3vw + 16px, 48px) var(--pad-lg) clamp(20px, 2vw + 12px, 32px)',
-          textAlign: hasContext ? 'left' : 'center',
+            : promptIsShort
+              ? '0 var(--pad-lg) clamp(20px, 2vw + 12px, 32px)'
+              : 'clamp(28px, 3vw + 16px, 48px) var(--pad-lg) clamp(20px, 2vw + 12px, 32px)',
+          // EDITION rule: flush-left composition. No more center-axis
+          // headword floating in space.
+          textAlign: 'left',
           fontFamily: 'var(--font-display)',
-          // Three regimes, each clamp()ed so the prompt scales smoothly
-          // across phone → studio without per-breakpoint rewrites:
-          //   - context (LÄS/ELF/DTK): 18→20px (small, paragraph-density)
-          //   - short headword (ORD): hero scale via --type-headword
-          //     (48→96px) — this IS the typographic event of the screen
-          //   - long stem (MEK, KVA): 24→36px (middle ground; can't go
-          //     to hero scale because the prompt is a full sentence)
           fontSize: hasContext
             ? 'clamp(16px, 0.875rem + 0.4vw, 20px)'
             : promptIsShort
@@ -196,130 +218,144 @@ function OptionRow({
       disabled={disabled}
       data-testid={`option-${opt.letter}`}
       data-state={state}
+      className="hpc-option"
       style={{
         display: 'flex',
-        alignItems: 'center',
-        gap: 14,
-        // Padding + min-height keep the tap target ≥44px (WCAG 2.5.5)
-        // on phone and grow into a comfortable 64px on tablet+. Fluid
-        // formula stays well above the 44px floor at every viewport.
-        padding: 'clamp(12px, 1vh, 16px) clamp(14px, 1vw + 12px, 20px)',
-        minHeight: 'clamp(56px, 9vh, 64px)',
+        alignItems: 'baseline',
+        gap: 'clamp(18px, 1.5vw, 28px)',
+        // Phase A.8 refinement: options ARE the action surface — they
+        // need to feel selectable without becoming pill-chromed cards.
+        // Move:
+        //   - Sans-serif body (Inter Tight) for option text, not the
+        //     hero serif. Creates typographic contrast between the
+        //     headword (display serif) and the action affordance,
+        //     and fixes "options look like regular text" feedback.
+        //   - 1px hairline rule between rows; left edge ink-accent
+        //     marker on hover/picked that shifts in 200ms.
+        //   - Hover bg tint at 5% --ink as a quiet "this is clickable"
+        //     cue. Removed when graded (no longer interactive).
+        padding:
+          'clamp(14px, 1.4vh, 18px) clamp(12px, 1vw, 16px) clamp(14px, 1.4vh, 18px) clamp(18px, 1.4vw, 24px)',
+        minHeight: 52,
         textAlign: 'left',
         background: styles.bg,
-        border: `1px solid ${styles.border}`,
-        borderRadius: 'calc(var(--radius) * 0.6)',
-        color: styles.color,
+        border: 'none',
+        borderTop: '1px solid var(--hairline-2)',
+        borderRadius: 0,
+        color: styles.textColor,
         cursor: disabled ? 'default' : 'pointer',
-        fontFamily: 'inherit',
-        fontSize: 'clamp(14px, 0.875rem + 0.2vw, 17px)',
-        lineHeight: 1.35,
-        transition: 'background 200ms, border-color 200ms, color 200ms',
-        opacity: state === 'idle' && disabled ? 0.55 : 1,
+        fontFamily: 'var(--font-ui)',
+        fontSize: 'clamp(15px, 0.875rem + 0.3vw, 18px)',
+        lineHeight: 1.4,
+        letterSpacing: 'var(--font-ui-track)',
+        fontWeight: state === 'picked' || state === 'correct' ? 500 : 400,
+        position: 'relative',
+        transition: 'color 200ms, background-color 150ms, font-weight 0ms',
+        opacity: state === 'idle' && disabled ? 0.45 : 1,
+        width: '100%',
       }}
     >
+      {/* Leading ink-accent rail — invisible at idle, ink at picked,
+       *  accent at correct, bad at incorrect. Provides a visible
+       *  selection cue without resorting to pill chrome. */}
+      <span
+        aria-hidden
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: '15%',
+          bottom: '15%',
+          width: 3,
+          background: styles.rail,
+          transition: 'background 200ms',
+        }}
+      />
       <span
         style={{
-          width: 30,
-          height: 30,
-          borderRadius: 15,
-          flexShrink: 0,
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
           fontFamily: 'var(--font-mono)',
           fontSize: 12,
           fontWeight: 600,
           letterSpacing: 'var(--font-mono-track)',
-          background: styles.letterBg,
           color: styles.letterColor,
-          border: `1px solid ${styles.letterBorder}`,
+          textTransform: 'lowercase',
+          minWidth: '1.6em',
+          flexShrink: 0,
+          fontVariantNumeric: 'tabular-nums',
         }}
       >
-        {opt.letter}
+        {opt.letter.toLowerCase()}.
       </span>
-      <span style={{ flex: 1 }}>
+      <span style={{ flex: 1, minWidth: 0 }}>
         <MathText>{opt.text}</MathText>
       </span>
-      {state === 'correct' && <Badge kind="check" />}
-      {state === 'incorrect' && <Badge kind="cross" />}
+      {state === 'correct' && (
+        <span
+          style={{
+            color: 'var(--accent)',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 12,
+            letterSpacing: 'var(--font-mono-track)',
+            textTransform: 'uppercase',
+          }}
+        >
+          rätt
+        </span>
+      )}
+      {state === 'incorrect' && (
+        <span
+          style={{
+            color: 'var(--bad)',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 12,
+            letterSpacing: 'var(--font-mono-track)',
+            textTransform: 'uppercase',
+          }}
+        >
+          fel
+        </span>
+      )}
     </button>
   )
 }
 
 function optionStyles(state: RowState): {
-  bg: CSSProperties['background']
-  border: string
-  color: string
-  letterBg: string
+  textColor: string
   letterColor: string
-  letterBorder: string
+  bg: string
+  rail: string
 } {
   switch (state) {
     case 'picked':
       return {
-        bg: 'var(--panel)',
-        border: 'var(--ink)',
-        color: 'var(--ink)',
-        letterBg: 'var(--ink)',
-        letterColor: 'var(--bg)',
-        letterBorder: 'var(--ink)',
+        textColor: 'var(--ink)',
+        letterColor: 'var(--ink)',
+        bg: 'color-mix(in oklch, var(--ink) 4%, transparent)',
+        rail: 'var(--ink)',
       }
     case 'correct':
       return {
-        bg: 'color-mix(in oklch, var(--accent) 18%, var(--panel))',
-        border: 'var(--accent)',
-        color: 'var(--ink)',
-        letterBg: 'var(--accent)',
-        letterColor: 'var(--accent-ink)',
-        letterBorder: 'var(--accent)',
+        textColor: 'var(--ink)',
+        letterColor: 'var(--accent)',
+        bg: 'color-mix(in oklch, var(--accent) 8%, transparent)',
+        rail: 'var(--accent)',
       }
     case 'incorrect':
       return {
-        bg: 'color-mix(in oklch, oklch(0.55 0.16 25) 14%, var(--panel))',
-        border: 'oklch(0.55 0.16 25)',
-        color: 'var(--ink)',
-        letterBg: 'oklch(0.55 0.16 25)',
-        letterColor: 'var(--bg)',
-        letterBorder: 'oklch(0.55 0.16 25)',
+        textColor: 'var(--muted)',
+        letterColor: 'var(--bad)',
+        bg: 'transparent',
+        rail: 'var(--bad)',
       }
     default:
       return {
-        bg: 'var(--panel)',
-        border: 'var(--hairline)',
-        color: 'var(--ink)',
-        letterBg: 'transparent',
-        letterColor: 'var(--ink-2)',
-        letterBorder: 'var(--hairline)',
+        textColor: 'var(--ink)',
+        letterColor: 'var(--muted)',
+        bg: 'transparent',
+        rail: 'transparent',
       }
   }
 }
 
-function Badge({ kind }: { kind: 'check' | 'cross' }) {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 18 18"
-      fill="none"
-      role="img"
-      aria-label={kind === 'check' ? 'Rätt' : 'Fel'}
-    >
-      <title>{kind === 'check' ? 'Rätt' : 'Fel'}</title>
-      {kind === 'check' ? (
-        <path
-          d="M3.5 9.5l3.5 3.5 7.5-8"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      ) : (
-        <>
-          <path d="M4 4l10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          <path d="M14 4L4 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </>
-      )}
-    </svg>
-  )
-}
+// Phase A.8 dropped the SVG check/cross Badge in favour of text labels
+// ("rätt" / "fel" in mono small-caps) on the OptionRow itself. The
+// editorial register avoids decorative iconography.

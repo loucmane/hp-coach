@@ -22,6 +22,7 @@
 // with each other is the opposite of "one bold gesture per screen".
 
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
+import { Page } from '@/components/Page'
 import { Btn, Hairline, Mono } from '@/components/primitives'
 import { useViewport } from '@/hooks/useViewport'
 import { formatSwedishHeader } from '@/lib/dates'
@@ -75,6 +76,14 @@ export function HomeMobile({
   const viewport = forceLayout ?? detectedViewport
   const isPhone = viewport === 'phone'
 
+  // Status-line hints for the EDITION shell. The streak chip migrates
+  // here as a small mono cue; Avancerat lives in the right-hand hints
+  // slot alongside the keyboard prompts.
+  const statusHints = [
+    renderStreak ? `streak ${streakValue}${streakValue === 1 ? ' d' : ' d'}` : null,
+    '⌘k palett',
+  ].filter(Boolean) as string[]
+
   return (
     <MobileFrame
       tabs
@@ -84,45 +93,51 @@ export function HomeMobile({
       onAvancerat={onAvancerat}
       forceLayout={forceLayout}
     >
-      <div
-        style={{
-          flex: isPhone ? undefined : 1,
-          height: isPhone ? '100%' : undefined,
-          display: 'flex',
-          flexDirection: 'column',
-          color: 'var(--ink)',
-          paddingBottom: isPhone ? 'var(--frame-tabbar)' : 0,
+      <Page
+        runningHead={['HP · Coach', 'Hem']}
+        status={{
+          mode: 'Hem',
+          context: `${days} dagar till ${sitting.label.toLowerCase()}`,
+          hints: statusHints,
         }}
       >
-        {isPhone ? (
-          <PhoneBody
-            today={today}
-            days={days}
-            sittingLabel={sitting.label}
-            coach={coach}
-            voice={voice}
-            renderStreak={renderStreak}
-            streakValue={streakValue}
-            hasDue={hasDue}
-            dueCount={dueCount}
-            onContinue={onContinue}
-            onAvancerat={onAvancerat}
-            onRepetition={onRepetition}
-          />
-        ) : (
-          <DesktopBody
-            today={today}
-            days={days}
-            sittingLabel={sitting.label}
-            coach={coach}
-            voice={voice}
-            hasDue={hasDue}
-            dueCount={dueCount}
-            onContinue={onContinue}
-            onRepetition={onRepetition}
-          />
-        )}
-      </div>
+        <div
+          style={{
+            flex: isPhone ? undefined : 1,
+            height: isPhone ? '100%' : undefined,
+            display: 'flex',
+            flexDirection: 'column',
+            color: 'var(--ink)',
+            paddingBottom: isPhone ? 'var(--frame-tabbar)' : 0,
+          }}
+        >
+          {isPhone ? (
+            <PhoneBody
+              today={today}
+              days={days}
+              sittingLabel={sitting.label}
+              coach={coach}
+              voice={voice}
+              renderStreak={renderStreak}
+              streakValue={streakValue}
+              hasDue={hasDue}
+              dueCount={dueCount}
+              onContinue={onContinue}
+              onAvancerat={onAvancerat}
+              onRepetition={onRepetition}
+            />
+          ) : (
+            <DesktopBody
+              coach={coach}
+              voice={voice}
+              hasDue={hasDue}
+              dueCount={dueCount}
+              onContinue={onContinue}
+              onRepetition={onRepetition}
+            />
+          )}
+        </div>
+      </Page>
     </MobileFrame>
   )
 }
@@ -235,9 +250,6 @@ function PhoneBody({
 // ── Desktop body (reader / studio) ─────────────────────────────────
 
 type DesktopBodyProps = {
-  today: Date
-  days: number
-  sittingLabel: string
   coach: CoachKey
   voice: (typeof VOICE)[CoachKey]
   hasDue: boolean
@@ -246,176 +258,149 @@ type DesktopBodyProps = {
   onRepetition: (() => void) | undefined
 }
 
-function DesktopBody({
-  today,
-  days,
-  sittingLabel,
-  voice,
-  hasDue,
-  dueCount,
-  onContinue,
-  onRepetition,
-}: DesktopBodyProps) {
+function DesktopBody({ voice, hasDue, dueCount, onContinue, onRepetition }: DesktopBodyProps) {
   const greeting = parseGreeting(voice.homeLine)
+  // Phase A.8 EDITION: drop the kicker row (the running head + status
+  // line now carry date/days/sitting). Drop the card-chrome'd
+  // Dagens plan tile — plan info migrates to right-margin marginalia
+  // (no border, no radius, articulated by a single 1px ink hairline
+  // on the cell's left edge). Hero is flush-left, the only
+  // typographic event of the screen.
   return (
     <div
       style={{
         flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        padding: 'clamp(32px, 4vh, 64px) clamp(32px, 5vw, 80px) clamp(48px, 6vh, 96px)',
+        display: 'grid',
+        // Two columns: hero column on left (1.7fr) and marginalia on
+        // right (1fr, max 320px). The whole thing flush-left to the
+        // canvas; no center-axis.
+        gridTemplateColumns: 'minmax(0, 1.7fr) minmax(240px, 320px)',
+        gap: 'clamp(48px, 5vw, 96px)',
+        alignItems: 'center',
+        padding: 'clamp(48px, 8vh, 120px) clamp(48px, 5vw, 88px)',
       }}
     >
       <div
-        className="reveal"
         style={{
-          animationDelay: '0ms',
           display: 'flex',
-          gap: 14,
-          alignItems: 'baseline',
-          flexWrap: 'wrap',
+          flexDirection: 'column',
+          gap: 'clamp(28px, 3vh, 48px)',
         }}
       >
-        <Mono>{formatSwedishHeader(today)}</Mono>
-        <span aria-hidden style={{ color: 'var(--muted)' }}>
-          ·
-        </span>
-        <span
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 11,
-            letterSpacing: 'var(--font-mono-track)',
-            textTransform: 'uppercase',
-            color: 'var(--muted)',
-            fontVariantNumeric: 'tabular-nums',
-          }}
+        <Masthead
+          headline={greeting.headline}
+          subline={greeting.subline}
+          delay="120ms"
+          scale="var(--type-hero)"
+          alignLeft
+        />
+        <div
+          className="reveal"
+          style={{ animationDelay: '240ms', width: 'fit-content', minWidth: 280 }}
         >
-          {days} dagar kvar
-        </span>
-        <span aria-hidden style={{ color: 'var(--muted)' }}>
-          ·
-        </span>
-        <span
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 11,
-            letterSpacing: 'var(--font-mono-track)',
-            textTransform: 'uppercase',
-            color: 'var(--muted)',
-          }}
-        >
-          {sittingLabel}
-        </span>
+          <Btn
+            variant="primary"
+            size="xl"
+            onClick={onContinue}
+            style={{ height: 64, fontSize: 17, padding: '0 36px' }}
+            className="hpc-btn hpc-breathe"
+            trailing={
+              <span aria-hidden style={{ marginLeft: 12 }}>
+                →
+              </span>
+            }
+          >
+            {voice.cta}
+          </Btn>
+        </div>
       </div>
 
+      <PlanMarginalia hasDue={hasDue} dueCount={dueCount} onRepetition={onRepetition} />
+    </div>
+  )
+}
+
+// ── Plan marginalia (right column on desktop, no card chrome) ────
+
+function PlanMarginalia({
+  hasDue,
+  dueCount,
+  onRepetition,
+}: {
+  hasDue: boolean
+  dueCount: number | undefined
+  onRepetition: (() => void) | undefined
+}) {
+  return (
+    <aside
+      data-testid="home-plan-marginalia"
+      className="reveal"
+      style={{
+        animationDelay: '300ms',
+        // EDITION rule: marginalia articulated by a 1px ink hairline
+        // on the cell's leading edge, not a card border. The rule is
+        // the "designer was here" cue — and it acts as a baseline
+        // anchor for the hero composition to its left.
+        borderLeft: '1px solid var(--hairline)',
+        paddingLeft: 'clamp(20px, 1.5vw + 12px, 36px)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 14,
+        alignSelf: 'center',
+        maxWidth: 280,
+      }}
+    >
+      <Mono>Dagens plan</Mono>
       <div
         style={{
-          flex: 1,
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1.6fr) minmax(0, 1fr)',
-          gap: 'clamp(40px, 4vw, 80px)',
-          alignItems: 'center',
-          marginTop: 'clamp(24px, 4vh, 56px)',
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(18px, 1rem + 0.5vw, 24px)',
+          lineHeight: 1.25,
+          color: 'var(--ink)',
+          letterSpacing: '-0.015em',
         }}
       >
+        Ord — 10 frågor
+        <br />
+        <span style={{ color: 'var(--muted)', fontSize: '0.7em' }}>~10 min</span>
+      </div>
+      {hasDue && dueCount ? (
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 28,
+            marginTop: 8,
+            fontFamily: 'var(--font-display)',
+            fontSize: 14,
+            lineHeight: 1.45,
+            color: 'var(--ink-2)',
           }}
         >
-          <Masthead
-            headline={greeting.headline}
-            subline={greeting.subline}
-            delay="120ms"
-            scale="var(--type-hero)"
-          />
-          <div className="reveal" style={{ animationDelay: '240ms', maxWidth: 480, width: '100%' }}>
-            <Btn
-              variant="primary"
-              size="xl"
-              full
-              onClick={onContinue}
-              style={{ height: 72, fontSize: 19 }}
-              className="hpc-btn hpc-breathe"
-            >
-              {voice.cta}
-            </Btn>
-          </div>
+          <strong style={{ color: 'var(--ink)', fontWeight: 500 }}>{dueCount}</strong>{' '}
+          {dueCount === 1 ? 'miss' : 'missar'} att repetera.
         </div>
-
-        <aside
-          data-testid="home-tile-plan"
-          className="reveal"
+      ) : null}
+      {hasDue && (
+        <button
+          type="button"
+          onClick={onRepetition}
+          data-testid="home-repetition-link"
           style={{
-            animationDelay: '300ms',
-            background: 'var(--panel)',
-            border: '1px solid var(--hairline)',
-            borderRadius: 'calc(var(--radius) * 0.75)',
-            padding: 'clamp(20px, 1.5vw + 12px, 32px)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 18,
-            maxWidth: 380,
+            background: 'transparent',
+            border: 'none',
+            padding: 0,
+            color: 'var(--ink)',
+            fontSize: 12,
+            fontFamily: 'var(--font-mono)',
+            letterSpacing: 'var(--font-mono-track)',
+            textTransform: 'uppercase',
+            cursor: 'pointer',
+            textAlign: 'left',
+            width: 'fit-content',
           }}
         >
-          <Mono>Dagens plan</Mono>
-          <div aria-hidden style={{ width: 24, height: 1, background: 'var(--ink)' }} />
-          <div
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(20px, 1rem + 0.8vw, 28px)',
-              lineHeight: 1.2,
-              color: 'var(--ink)',
-              letterSpacing: '-0.015em',
-            }}
-          >
-            ORD · 10 frågor
-            <span style={{ color: 'var(--muted)', fontSize: '0.65em' }}>{'  '}~10 min</span>
-          </div>
-          {hasDue && dueCount ? (
-            <div
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 16,
-                lineHeight: 1.4,
-                color: 'var(--ink-2)',
-              }}
-            >
-              <strong style={{ color: 'var(--ink)', fontWeight: 500 }}>{dueCount}</strong>{' '}
-              {dueCount === 1 ? 'miss' : 'missar'} att repetera
-            </div>
-          ) : (
-            <div style={{ fontSize: 13, color: 'var(--muted)', fontFamily: 'var(--font-display)' }}>
-              Inga missar att repetera idag.
-            </div>
-          )}
-          {hasDue && (
-            <button
-              type="button"
-              onClick={onRepetition}
-              data-testid="home-repetition-link"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                padding: 0,
-                marginTop: 'auto',
-                color: 'var(--ink)',
-                fontSize: 13,
-                fontFamily: 'var(--font-mono)',
-                letterSpacing: 'var(--font-mono-track)',
-                textTransform: 'uppercase',
-                cursor: 'pointer',
-                textAlign: 'left',
-              }}
-            >
-              → Repetera
-            </button>
-          )}
-        </aside>
-      </div>
-    </div>
+          → Repetera
+        </button>
+      )}
+    </aside>
   )
 }
 
@@ -426,12 +411,22 @@ function Masthead({
   subline,
   delay,
   scale,
+  alignLeft = false,
 }: {
   headline: string
   subline?: string
   delay: string
   scale: string
+  /** EDITION rule: hero typography is flush-left at desktop, not
+   *  centered. The hairline rule beneath the headline starts at the
+   *  same baseline x position. */
+  alignLeft?: boolean
 }) {
+  // Reserved for future use — the alignLeft flag is read by callers
+  // through the masthead's wrapping container. The h1 inside doesn't
+  // need a text-align since `inline-block` + container alignment is
+  // handled at the wrapping flex column.
+  void alignLeft
   // Split on the first space so we can render the first word as the
   // "rule-anchor" — the hard 1px rule beneath the headline matches
   // the width of just the first word, not the full row. That's the
