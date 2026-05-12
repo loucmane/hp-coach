@@ -44,6 +44,19 @@ jobs:
         working-directory: worker
         run: pnpm install --frozen-lockfile
 
+      # The worker's wrangler dev server (started by Playwright's webServer
+      # config in app/playwright.config.ts) reads CLERK_SECRET_KEY from
+      # worker/.dev.vars to verify JWT tokens. The file is gitignored; in
+      # CI we materialise it from the GitHub Actions secret so /api/*
+      # routes can authenticate the test user. Without this the worker
+      # 401s every API call and api/drill/mistakes e2e tests fail.
+      - name: Write worker/.dev.vars
+        working-directory: worker
+        run: |
+          cat > .dev.vars <<EOF
+          CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
+          EOF
+
       - name: Typecheck
         run: pnpm typecheck
 

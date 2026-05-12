@@ -110,11 +110,16 @@ authedTest('/dev exposes coach + palette + font + density switchers', async ({ p
 authedTest('palette swatch click applies the new palette to <html>', async ({ page }) => {
   await page.goto('/dev')
   await page.getByRole('button', { name: 'Palett: Sage' }).click()
+  // The palette switch fires a PATCH /api/me/prefs and only then runs
+  // applyThemeToDocument(). In CI the round-trip can take several
+  // hundred ms, so we wait for the data-palette attribute to flip
+  // before reading --bg (otherwise we sometimes read the previous
+  // palette's value).
+  await authedExpect(page.locator('html[data-palette="sage"]')).toHaveCount(1, { timeout: 10_000 })
   const bg = await page.evaluate(() =>
     getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(),
   )
   authedExpect(bg).toBe('oklch(0.965 0.012 175)')
-  authedExpect(await page.evaluate(() => document.documentElement.dataset.palette)).toBe('sage')
 })
 
 authedTest('floating launcher links to /dev and Cmd+K opens the palette', async ({ page }) => {
