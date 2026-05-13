@@ -409,6 +409,12 @@ export function SessionPlayer(props: SessionPlayerProps) {
           progress: (index + 1) / plan.length,
           hints: ['esc tillbaka', '⌘k palett'],
         }}
+        // A.6V — at studio the drill uses dual-scroll columns inside
+        // StudyDesk. `bound` tells the Page shell to bind itself to
+        // 100dvh + clip overflow so the columns can claim their own
+        // scroll regions. At phone (which short-circuits Page early)
+        // this is a no-op.
+        bound={useStudyDesk}
       >
         {drillBody}
       </Page>

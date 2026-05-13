@@ -68,9 +68,16 @@ type Props = {
   status: StatusLineProps
   children: ReactNode
   style?: CSSProperties
+  /** When true, bind the page to the viewport (height: 100dvh,
+   *  overflow: hidden) instead of letting it grow with content. Used
+   *  by the drill flow at studio so the StudyDesk's columns can scroll
+   *  independently — without this, the page body scroll wins and both
+   *  columns scroll together. Default false: most pages grow with
+   *  content and use page-body scroll. */
+  bound?: boolean
 }
 
-export function Page({ runningHead, folio, status, children, style }: Props) {
+export function Page({ runningHead, folio, status, children, style, bound = false }: Props) {
   const viewport = useViewport()
   // Phone keeps its iOS-artboard chrome (status bar + BottomTabs from
   // MobileFrame). Adding EDITION's running head + status line on top
@@ -84,10 +91,16 @@ export function Page({ runningHead, folio, status, children, style }: Props) {
   return (
     <div
       data-testid="page-shell"
+      data-bound={bound ? 'true' : 'false'}
       style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
+        // bound=true: the whole page is bound to the viewport so that
+        // page-content can clip overflow and let downstream columns
+        // scroll independently. Default (bound=false): flex inside an
+        // already-flexing parent (the Frame canvas), grow with content,
+        // page-body owns scroll for tall pages.
+        ...(bound
+          ? { height: '100dvh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }
+          : { flex: 1, display: 'flex', flexDirection: 'column' }),
         color: 'var(--ink)',
         ...style,
       }}
@@ -100,6 +113,10 @@ export function Page({ runningHead, folio, status, children, style }: Props) {
           minHeight: 0,
           display: 'flex',
           flexDirection: 'column',
+          // bound=true: clip overflow at the content layer so children
+          // with overflowY:auto can claim the scroll. Default keeps
+          // visible so pages can grow naturally.
+          ...(bound ? { overflow: 'hidden' } : {}),
         }}
       >
         {children}
