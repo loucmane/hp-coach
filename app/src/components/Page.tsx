@@ -36,6 +36,7 @@
 
 import type { CSSProperties, ReactNode } from 'react'
 
+import { EditionStrip } from '@/components/EditionStrip'
 import { useViewport } from '@/hooks/useViewport'
 
 type FolioLite = {
@@ -92,7 +93,7 @@ export function Page({ runningHead, folio, status, children, style }: Props) {
         ...style,
       }}
     >
-      <RunningHeadBand runningHead={headText} folio={folio} isPhone={false} />
+      <RunningHeadBand runningHead={headText} isPhone={false} />
       <div
         data-testid="page-content"
         style={{
@@ -104,22 +105,14 @@ export function Page({ runningHead, folio, status, children, style }: Props) {
       >
         {children}
       </div>
-      <StatusLine status={status} isPhone={false} />
+      <StatusLine status={status} folio={folio} isPhone={false} />
     </div>
   )
 }
 
 // ── Running head + folio ──────────────────────────────────────────
 
-function RunningHeadBand({
-  runningHead,
-  folio,
-  isPhone,
-}: {
-  runningHead: string
-  folio?: FolioLite
-  isPhone: boolean
-}) {
+function RunningHeadBand({ runningHead, isPhone }: { runningHead: string; isPhone: boolean }) {
   return (
     <header
       style={{
@@ -172,51 +165,34 @@ function RunningHeadBand({
       >
         {runningHead}
       </span>
-      {folio && <Folio current={folio.current} total={folio.total} />}
+      {/* Phase A.6V Edition Strip — picker for mode + palette + edition.
+       *  Replaces the old Folio in the running head; folio moves down to
+       *  the status line where page-count metadata fits the vim-mode
+       *  bar register. See docs/edition-strip.md. */}
+      {!isPhone && <EditionStrip />}
     </header>
   )
 }
 
-function Folio({ current, total }: FolioLite) {
-  // Editorial folio: "pp. 12 / 80" set in mono, with a 1px hairline
-  // beneath that's exactly as wide as the digits. This is the
-  // EDITION signature element per the design strategist's pitch.
-  const totalWidth = `${String(total).length * 0.6 + 0.4}em`
-  return (
-    <span
-      data-testid="folio"
-      style={{
-        display: 'inline-flex',
-        flexDirection: 'column',
-        alignItems: 'flex-end',
-        gap: 4,
-        fontFamily: 'var(--font-mono)',
-        fontSize: 11,
-        letterSpacing: 'var(--font-mono-track)',
-        color: 'var(--muted)',
-        fontVariantNumeric: 'tabular-nums',
-        paddingBottom: 14,
-      }}
-    >
-      <span>
-        pp. {current} / {total}
-      </span>
-      <span
-        aria-hidden
-        style={{
-          width: totalWidth,
-          height: 1,
-          background: 'var(--muted)',
-          opacity: 0.6,
-        }}
-      />
-    </span>
-  )
-}
+// Phase A.6V — the editorial Folio component used to live here and
+// render in the top-right of the running head with a hairline-under-
+// digits signature. It moved INTO the StatusLine below as a compact
+// inline `pp. X / Y` so the running head could host the EditionStrip
+// picker. The under-rule signature now belongs to the picker's
+// active-word indicator (mirrors the same trick on a different
+// typographic surface).
 
 // ── Status line ───────────────────────────────────────────────────
 
-function StatusLine({ status, isPhone }: { status: StatusLineProps; isPhone: boolean }) {
+function StatusLine({
+  status,
+  folio,
+  isPhone,
+}: {
+  status: StatusLineProps
+  folio?: FolioLite
+  isPhone: boolean
+}) {
   return (
     <footer
       data-testid="status-line"
@@ -274,6 +250,17 @@ function StatusLine({ status, isPhone }: { status: StatusLineProps; isPhone: boo
           flexShrink: 0,
         }}
       >
+        {/* Folio relocated here from the running head (Phase A.6V).
+         *  Page-count metadata fits the vim-mode register better than
+         *  the chrome up top, and the running head is now the picker's
+         *  domain. Compact inline form — no under-rule — since the
+         *  status line already establishes a single typographic
+         *  baseline for everything in it. */}
+        {folio && !isPhone && (
+          <span data-testid="folio" style={{ color: 'var(--muted)' }}>
+            pp. {folio.current} / {folio.total}
+          </span>
+        )}
         {status.hints?.map((hint) => (
           <span key={hint} style={{ color: 'var(--muted)' }}>
             {hint}
