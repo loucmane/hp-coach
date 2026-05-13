@@ -55,21 +55,20 @@ export function StyleC({
           height: '100dvh',
           display: 'grid',
           gridTemplateRows: 'auto 1fr auto',
-          background: 'oklch(0.82 0.014 70)' /* shows through 1px gaps */,
+          // Background bleeds through the 1px grid gaps to draw pane
+          // borders — using var(--hairline) here means the cockpit
+          // adopts whatever the theme provides (light AND dark mode).
+          background: 'var(--hairline)',
           rowGap: 1,
-          color: 'oklch(0.14 0.013 70)',
-          // Token overrides scoped to this variant via CSS custom props.
-          // Allows --accent etc. to be different in C without polluting
-          // the rest of the app.
-          '--ink': 'oklch(0.14 0.013 70)',
-          '--ink-2': 'oklch(0.28 0.014 70)',
-          '--muted': 'oklch(0.45 0.018 70)',
-          '--muted-2': 'oklch(0.55 0.012 70)',
-          '--hairline': 'oklch(0.82 0.014 70)',
-          '--bg': 'oklch(0.99 0.005 78)',
-          '--panel-2': 'oklch(0.96 0.008 78)',
+          color: 'var(--ink)',
+          // Variant-specific token overrides: ONLY the accent / alert
+          // hues. We deliberately do NOT override --bg/--ink/--muted/
+          // --hairline/--panel-2 — those come from the active theme so
+          // dark mode lights up correctly. The cockpit's character
+          // comes from the layout + typography + alert palette, not
+          // from forcing a fixed paper color.
           '--accent': 'oklch(0.55 0.18 145)' /* terminal green */,
-          '--bad': 'oklch(0.55 0.20 25)' /* alert red */,
+          '--bad': 'oklch(0.6 0.22 25)' /* alert red */,
           '--warn': 'oklch(0.72 0.16 80)' /* amber */,
         } as React.CSSProperties
       }
