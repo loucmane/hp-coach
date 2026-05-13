@@ -85,14 +85,18 @@ export function StyleB({
 
       {/* 2-column workbook spread: question page left, pedagogy page right.
        *  Same structure as Variant A's 2-column composition — sticky left,
-       *  scrolling right. The aesthetic is workbook, not editorial. */}
+       *  scrolling right. The aesthetic is workbook, not editorial.
+       *
+       *  Grid top-padding is zero so the question column's natural-top
+       *  matches its sticky-top (= header height) and pins without drift.
+       *  Internal section padding gives the visual breath. */}
       <main
         style={{
           flex: 1,
           width: '100%',
           maxWidth: 1320,
           margin: '0 auto',
-          padding: 'clamp(36px, 5vh, 56px) clamp(32px, 5vw, 64px) clamp(120px, 14vh, 180px)',
+          padding: '0 clamp(32px, 5vw, 64px) clamp(120px, 14vh, 180px)',
           display: 'grid',
           gridTemplateColumns: 'minmax(0, 0.7fr) minmax(0, 1fr)',
           gap: 'clamp(40px, 4vw, 72px)',
@@ -102,13 +106,17 @@ export function StyleB({
          *  Stripped of decorative chrome (no hole-punch circles, no
          *  spine border). The single workbook signature kept here is
          *  the checkbox option marks. Everything else is clean
-         *  editorial — header, prompt, options, done. */}
+         *  editorial — header, prompt, options, done.
+         *
+         *  sticky-top matches the running head's height so the question
+         *  pins immediately at scrollY=0 — no scroll-drift. */}
         <section
           style={{
             position: 'sticky',
-            top: 'clamp(80px, 9vh, 112px)',
+            top: 'clamp(42px, 1.8vh + 22px, 56px)',
+            paddingTop: 'clamp(28px, 4vh, 48px)',
             alignSelf: 'start',
-            maxHeight: 'calc(100dvh - 160px)',
+            maxHeight: 'calc(100dvh - 100px)',
             overflowY: 'auto',
             scrollbarWidth: 'none',
           }}
@@ -263,8 +271,10 @@ export function StyleB({
           )}
         </section>
 
-        {/* ── RIGHT PAGE — pedagogy ────────────────────────────────── */}
-        <section style={{ minWidth: 0 }}>
+        {/* ── RIGHT PAGE — pedagogy ──────────────────────────────────
+         *  paddingTop matches the question column's internal padding so
+         *  both columns align at the top of the canvas. */}
+        <section style={{ minWidth: 0, paddingTop: 'clamp(28px, 4vh, 48px)' }}>
           {!graded ? (
             <p
               style={{

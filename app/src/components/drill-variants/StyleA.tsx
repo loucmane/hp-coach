@@ -77,7 +77,11 @@ export function StyleA({
         </span>
       </header>
 
-      {/* Content grid — wide gap = page margin of a printed book. */}
+      {/* Content grid — wide gap = page margin of a printed book.
+       *  No top padding here: the question column needs to land at
+       *  exactly the header's bottom edge so sticky-top can match
+       *  natural-top and pin without scroll-drift. Internal section
+       *  padding provides the breath instead. */}
       <main
         style={{
           flex: 1,
@@ -87,18 +91,22 @@ export function StyleA({
           maxWidth: 1320,
           margin: '0 auto',
           width: '100%',
-          padding: 'clamp(48px, 6vh, 96px) clamp(48px, 6vw, 96px) clamp(160px, 18vh, 220px)',
+          padding: '0 clamp(48px, 6vw, 96px) clamp(160px, 18vh, 220px)',
         }}
       >
-        {/* Question column — sticky, quiet. */}
+        {/* Question column — sticky, quiet.
+         *  sticky-top = header height (clamp(46, 2vh+24, 60)) so the
+         *  question pins immediately at scrollY=0 with zero drift.
+         *  paddingTop inside the section gives the visual breath. */}
         <section
           style={{
             position: 'sticky',
-            top: 'clamp(80px, 9vh, 112px)',
+            top: 'clamp(46px, 2vh + 24px, 60px)',
             alignSelf: 'start',
-            maxHeight: 'calc(100dvh - 160px)',
+            maxHeight: 'calc(100dvh - 100px)',
             overflowY: 'auto',
             scrollbarWidth: 'none',
+            paddingTop: 'clamp(28px, 4vh, 48px)',
           }}
           className="hpc-scrollbar-ghost"
         >
@@ -261,10 +269,13 @@ export function StyleA({
           )}
         </section>
 
-        {/* Pedagogy column — the hero. Newsreader at reading size. */}
+        {/* Pedagogy column — the hero. Newsreader at reading size.
+         *  paddingTop matches the question column's internal padding
+         *  so the two columns align at the top. */}
         <section
           style={{
             maxWidth: '65ch',
+            paddingTop: 'clamp(28px, 4vh, 48px)',
             opacity: graded ? 1 : 0.3,
             transition: 'opacity 280ms cubic-bezier(0.16, 1, 0.3, 1)',
           }}
