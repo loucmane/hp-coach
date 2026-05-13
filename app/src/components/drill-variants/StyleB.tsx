@@ -14,6 +14,7 @@
 
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
+import { EditionStrip } from '@/components/EditionStrip'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
 import { useExplanation } from './useExplanation'
@@ -75,16 +76,10 @@ export function StyleB({
         }}
       >
         <span>HP · Coach · Övningshäfte</span>
-        <span
-          style={{
-            fontSize: 10,
-            letterSpacing: '0.08em',
-            fontVariantNumeric: 'tabular-nums',
-            textTransform: 'none',
-          }}
-        >
-          sida 1 av 1
-        </span>
+        {/* Phase A.6V Edition Strip — replaces the static 'sida 1 av 1'
+         *  marginal. Workbook header was already mono lowercase; the
+         *  picker reads native here. */}
+        <EditionStrip />
       </header>
 
       {/* 2-column workbook spread: question page left, pedagogy page right.

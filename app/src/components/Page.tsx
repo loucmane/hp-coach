@@ -168,8 +168,11 @@ function RunningHeadBand({ runningHead, isPhone }: { runningHead: string; isPhon
       {/* Phase A.6V Edition Strip — picker for mode + palette + edition.
        *  Replaces the old Folio in the running head; folio moves down to
        *  the status line where page-count metadata fits the vim-mode
-       *  bar register. See docs/edition-strip.md. */}
-      {!isPhone && <EditionStrip />}
+       *  bar register. paddingBottom: 14 to align with the wordmark's
+       *  matching paddingBottom so the band's hairline reads cleanly
+       *  below both. Variants with tighter chrome render the strip
+       *  with paddingBottom: 0 (the default). See docs/edition-strip.md. */}
+      {!isPhone && <EditionStrip paddingBottom={14} />}
     </header>
   )
 }

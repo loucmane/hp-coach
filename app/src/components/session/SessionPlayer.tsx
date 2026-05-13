@@ -390,9 +390,12 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // when useStudyDesk is true we bypass Page entirely and let the
   // variant fill the artboard.
   //
-  // The EditionStrip picker is still reachable on every other Page-
-  // wrapped surface (drill idle, drill done, home, repetition,
-  // progress, dev). The drill flow itself is a focus mode.
+  // Each variant embeds <EditionStrip /> into its OWN running head,
+  // so the picker is reachable mid-drill. Switching editions live
+  // (editorial → workbook → cockpit) swaps the entire variant under
+  // the user; the click happens in the variant's chrome and the next
+  // render is the new variant's chrome with the strip in the same
+  // slot. Continuous picker presence; no chrome stacking.
   if (useStudyDesk) {
     return (
       <MobileFrame tabs={false}>

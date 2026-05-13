@@ -56,7 +56,14 @@ function ruleWidth(word: string): string {
   return `${word.length * 0.6 + 0.4}em`
 }
 
-export function EditionStrip() {
+type Props = {
+  /** Bottom padding (px). Page.tsx's running head needs 14px so the
+   *  picker baselines align with the wordmark; variants with tighter
+   *  chrome (StyleB workbook 10px, StyleC cockpit 8px) pass 0. */
+  paddingBottom?: number
+}
+
+export function EditionStrip({ paddingBottom = 0 }: Props = {}) {
   const mode = useUiStore((s) => s.mode)
   const palette = useUiStore((s) => s.palette)
   const setPalette = useUiStore((s) => s.setPalette)
@@ -76,10 +83,7 @@ export function EditionStrip() {
         fontFamily: 'var(--font-mono)',
         fontSize: 11,
         letterSpacing: 'var(--font-mono-track)',
-        // Strip sits in the running-head band; band itself has bottom
-        // padding of 14px on the wordmark side, so we match that on
-        // the strip side to keep baselines aligned.
-        paddingBottom: 14,
+        paddingBottom,
       }}
     >
       {/* Mode glyph — ◐ for light, ◑ for dark. The user is "here"

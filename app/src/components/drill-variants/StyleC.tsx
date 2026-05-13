@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
+import { EditionStrip } from '@/components/EditionStrip'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
 import { useExplanation } from './useExplanation'
@@ -97,7 +98,13 @@ export function StyleC({
           <span style={{ color: 'var(--muted)' }}>{'>'}</span>{' '}
           <span style={{ color: 'var(--accent)' }}>{question.qid}</span>
         </span>
-        <span style={{ fontVariantNumeric: 'tabular-nums' }}>pp. 1 / 1</span>
+        {/* Phase A.6V Edition Strip — picker replaces the static folio
+         *  in cockpit's top breadcrumb. EditionStrip is already mono
+         *  11px so it lands in cockpit's existing typographic register
+         *  without overriding the variant's accent-green identity
+         *  (cockpit owns --accent locally; palette accents in the strip
+         *  use their hard-coded oklch values, untouched by the override). */}
+        <EditionStrip />
       </div>
 
       {/* Main grid — 2 columns, 1px gap shows hairline color */}

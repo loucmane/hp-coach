@@ -11,6 +11,7 @@
 
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
+import { EditionStrip } from '@/components/EditionStrip'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
 import { useExplanation } from './useExplanation'
@@ -62,24 +63,11 @@ export function StyleA({
         }}
       >
         <span>HP · COACH · {question.section}</span>
-        <span
-          style={{
-            display: 'inline-flex',
-            flexDirection: 'column',
-            alignItems: 'flex-end',
-            gap: 4,
-            letterSpacing: '0.08em',
-            color: 'var(--muted)',
-            fontVariantNumeric: 'tabular-nums',
-            textTransform: 'none',
-          }}
-        >
-          <span>pp. 1 / 1</span>
-          <span
-            aria-hidden
-            style={{ width: '2.4em', height: 1, background: 'var(--muted)', opacity: 0.5 }}
-          />
-        </span>
+        {/* Phase A.6V Edition Strip — replaces the static folio. The
+         *  picker carries more value than 'pp. 1 / 1' here (which
+         *  the variant doesn't even know the real value of), and
+         *  reads in the same mono register the folio used. */}
+        <EditionStrip />
       </header>
 
       {/* Content grid — wide gap = page margin of a printed book.
