@@ -11,6 +11,7 @@
 
 import { useEffect, useRef } from 'react'
 import { ExplanationPanel } from '@/components/drill/ExplanationPanel'
+import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { MathText } from '@/components/MathText'
 import type { AnswerLetter, Option, Question } from '@/data/questions'
@@ -157,7 +158,11 @@ export function DrillQuestion({
           fontWeight: hasContext ? 500 : promptIsShort ? 500 : 400,
         }}
       >
-        <MathText>{question.prompt}</MathText>
+        {question.section === 'KVA' && question.prompt ? (
+          <KvaPrompt prompt={question.prompt} />
+        ) : (
+          <MathText>{question.prompt}</MathText>
+        )}
       </div>
       {question.figure && <QuestionFigure figure={question.figure} />}
       <div
