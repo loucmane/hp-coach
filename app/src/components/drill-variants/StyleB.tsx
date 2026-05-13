@@ -72,7 +72,10 @@ export function StyleB({
         </span>
       </header>
 
-      {/* Pinned question strip — the entire question compressed into one band. */}
+      {/* B v2 — generous "chapter opening" composition pre-grade,
+       *  compresses to a single quiet summary line post-grade so the
+       *  pedagogy below has room. The opener is sticky so the user
+       *  can re-anchor on the prompt at any point during the read. */}
       <section
         style={{
           position: 'sticky',
@@ -80,99 +83,159 @@ export function StyleB({
           zIndex: 9,
           background: 'var(--bg)',
           borderBottom: '1px solid var(--hairline)',
-          padding: '18px clamp(24px, 4vw, 48px)',
-          maxWidth: 880,
+          padding: graded
+            ? '18px clamp(24px, 4vw, 48px) 16px'
+            : 'clamp(28px, 4vh, 48px) clamp(24px, 4vw, 48px) clamp(20px, 3vh, 32px)',
+          maxWidth: 760,
           margin: '0 auto',
           width: '100%',
+          transition: 'padding 280ms cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
+        {/* Eyebrow — section ID. Always present. */}
+        <p
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--muted)',
+            margin: 0,
+            marginBottom: graded ? 8 : 14,
+            transition: 'margin-bottom 280ms cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+        >
+          {question.section} · fråga 1 / 1
+        </p>
+
+        {/* Prompt — generous when answering, compressed when graded.
+         *  Display serif, real reading size — this is the question
+         *  asked, not a navigation breadcrumb. */}
         <h1
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(17px, 0.95rem + 0.3vw, 19px)',
-            lineHeight: 1.4,
-            letterSpacing: '-0.008em',
+            fontSize: graded
+              ? 'clamp(17px, 0.9rem + 0.35vw, 20px)'
+              : 'clamp(22px, 1.1rem + 0.6vw, 30px)',
+            lineHeight: graded ? 1.35 : 1.25,
+            letterSpacing: '-0.018em',
             fontWeight: 500,
             margin: 0,
-            marginBottom: 14,
+            marginBottom: graded ? 10 : 28,
             whiteSpace: 'pre-wrap',
+            color: graded ? 'var(--ink-2)' : 'var(--ink)',
+            transition:
+              'font-size 280ms cubic-bezier(0.16, 1, 0.3, 1), margin-bottom 280ms, color 280ms',
           }}
         >
           <MathText>{question.prompt ?? ''}</MathText>
         </h1>
-        {question.options && (
-          <div
+
+        {/* Options — flat hairline rows (matches Editorial register).
+         *  Pre-grade: full list with letter + text. Post-grade: a
+         *  single quiet summary row showing the picked answer + the
+         *  correct one if different. */}
+        {!graded && question.options && (
+          <ol
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-              gap: 8,
+              listStyle: 'none',
+              padding: 0,
+              margin: 0,
+              borderTop: '1px solid color-mix(in oklch, var(--hairline) 60%, transparent)',
             }}
           >
             {question.options.map((opt) => {
               const isPicked = picked === opt.letter
-              const isCorrect = graded && opt.letter === question.answer
-              const isWrong = graded && isPicked && !correct
-              const bg = isCorrect
-                ? 'color-mix(in oklch, var(--accent) 12%, transparent)'
-                : isPicked && !graded
-                  ? 'var(--ink)'
-                  : isPicked
-                    ? 'transparent'
-                    : 'transparent'
-              const fg =
-                isPicked && !graded ? 'var(--bg)' : isWrong ? 'var(--muted-2)' : 'var(--ink)'
-              const bdr = isCorrect
-                ? 'var(--accent)'
-                : isWrong
-                  ? 'var(--bad)'
-                  : isPicked
-                    ? 'var(--ink)'
-                    : 'var(--hairline)'
               return (
-                <button
+                <li
                   key={opt.letter}
-                  type="button"
-                  disabled={graded}
-                  onClick={() => onPick(opt.letter)}
                   style={{
-                    all: 'unset',
-                    cursor: graded ? 'default' : 'pointer',
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    gap: 10,
-                    padding: '10px 14px',
-                    background: bg,
-                    color: fg,
-                    border: `1px solid ${bdr}`,
-                    borderRadius: 4,
-                    minHeight: 40,
-                    transition: 'background 150ms, border-color 150ms, color 150ms',
+                    borderBottom: '1px solid color-mix(in oklch, var(--hairline) 60%, transparent)',
                   }}
                 >
-                  <span
+                  <button
+                    type="button"
+                    onClick={() => onPick(opt.letter)}
                     style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 11,
-                      letterSpacing: '0.04em',
-                      fontWeight: 600,
+                      all: 'unset',
+                      cursor: 'pointer',
+                      display: 'grid',
+                      gridTemplateColumns: '32px 1fr',
+                      gap: 16,
+                      alignItems: 'baseline',
+                      padding: '14px 0',
+                      width: '100%',
+                      borderLeft: `2px solid ${isPicked ? 'var(--ink)' : 'transparent'}`,
+                      paddingLeft: 12,
+                      marginLeft: -14,
+                      transition: 'border-color 180ms cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                   >
-                    {opt.letter.toLowerCase()}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 16,
-                      lineHeight: 1.3,
-                      letterSpacing: '-0.005em',
-                      fontWeight: 500,
-                    }}
-                  >
-                    <MathText>{opt.text}</MathText>
-                  </span>
-                </button>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 12,
+                        letterSpacing: '0.04em',
+                        fontWeight: isPicked ? 600 : 500,
+                        color: isPicked ? 'var(--ink)' : 'var(--muted)',
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
+                      {opt.letter.toLowerCase()}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: 'clamp(16px, 0.9rem + 0.3vw, 18px)',
+                        lineHeight: 1.45,
+                        letterSpacing: '-0.005em',
+                        fontWeight: isPicked ? 500 : 400,
+                        color: 'var(--ink)',
+                      }}
+                    >
+                      <MathText>{opt.text}</MathText>
+                    </span>
+                  </button>
+                </li>
               )
             })}
+          </ol>
+        )}
+        {graded && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: 14,
+              fontFamily: 'var(--font-mono)',
+              fontSize: 12,
+              letterSpacing: '0.06em',
+            }}
+          >
+            <span style={{ color: correct ? 'var(--accent)' : 'var(--bad)' }}>
+              ditt svar: [{(picked ?? '').toLowerCase()}] {correct ? 'rätt' : 'fel'}
+            </span>
+            {!correct && (
+              <span style={{ color: 'var(--accent)' }}>
+                facit: [{question.answer.toLowerCase()}]
+              </span>
+            )}
+            <span style={{ marginLeft: 'auto', color: 'var(--muted)' }}>
+              <button
+                type="button"
+                onClick={onReset}
+                style={{
+                  all: 'unset',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  fontSize: 'inherit',
+                  letterSpacing: 'inherit',
+                  color: 'var(--muted)',
+                }}
+              >
+                ← börja om
+              </button>
+            </span>
           </div>
         )}
       </section>
