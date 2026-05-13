@@ -97,7 +97,11 @@ export function StyleB({
           gap: 'clamp(40px, 4vw, 72px)',
         }}
       >
-        {/* ── LEFT PAGE — the question ────────────────────────────── */}
+        {/* ── LEFT PAGE — the question ──────────────────────────────
+         *  Stripped of decorative chrome (no hole-punch circles, no
+         *  spine border). The single workbook signature kept here is
+         *  the checkbox option marks. Everything else is clean
+         *  editorial — header, prompt, options, done. */}
         <section
           style={{
             position: 'sticky',
@@ -106,47 +110,10 @@ export function StyleB({
             maxHeight: 'calc(100dvh - 160px)',
             overflowY: 'auto',
             scrollbarWidth: 'none',
-            // Three-hole-punch + spine treatment: a vertical hairline
-            // on the LEFT side of the left page with three circles.
-            paddingLeft: 36,
-            borderLeft: '1px solid var(--hairline)',
           }}
           className="hpc-scrollbar-ghost"
         >
-          {/* Hole punches on the spine */}
-          <span
-            aria-hidden
-            style={{
-              position: 'absolute',
-              left: -10,
-              top: 24,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 'clamp(120px, 18vh, 180px)',
-              alignItems: 'center',
-              width: 16,
-            }}
-          >
-            {[0, 1, 2].map((i) => (
-              <span
-                // biome-ignore lint/suspicious/noArrayIndexKey: decorative
-                key={i}
-                style={{
-                  width: 14,
-                  height: 14,
-                  borderRadius: '50%',
-                  border: '1.5px solid var(--hairline)',
-                  background: 'color-mix(in oklch, var(--panel-2) 60%, transparent)',
-                  display: 'block',
-                }}
-              />
-            ))}
-          </span>
-
-          <SectionHeader
-            label="FRÅGA 1"
-            meta={SECTION_LABEL[question.section] ?? question.section}
-          />
+          <SectionHeader label="FRÅGA" meta={SECTION_LABEL[question.section] ?? question.section} />
 
           <h1
             style={{
@@ -163,7 +130,11 @@ export function StyleB({
             <MathText>{question.prompt ?? ''}</MathText>
           </h1>
 
-          {/* Options as checkbox-prefixed rows. */}
+          {/* Options as checkbox rows. Single button per row makes the
+           *  whole row clickable, not just the tiny checkbox. The
+           *  checkbox label is the letter — the checkbox IS the
+           *  affordance, so the letter lives inside it (workbook
+           *  metaphor: filling in the answer box). */}
           {question.options && (
             <ol style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {question.options.map((opt) => {
@@ -171,29 +142,7 @@ export function StyleB({
                 const isCorrect = graded && opt.letter === question.answer
                 const isWrong = graded && isPicked && !correct
                 return (
-                  <li
-                    key={opt.letter}
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: '24px 22px 1fr',
-                      gap: 12,
-                      alignItems: 'baseline',
-                      padding: '10px 0',
-                      opacity: graded && !isPicked && !isCorrect ? 0.4 : 1,
-                      transition: 'opacity 200ms',
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 12,
-                        letterSpacing: '0.04em',
-                        fontWeight: 600,
-                        color: 'var(--muted)',
-                      }}
-                    >
-                      {opt.letter.toLowerCase()}.
-                    </span>
+                  <li key={opt.letter} style={{ margin: 0 }}>
                     <button
                       type="button"
                       onClick={() => onPick(opt.letter)}
@@ -202,50 +151,65 @@ export function StyleB({
                       style={{
                         all: 'unset',
                         cursor: graded ? 'default' : 'pointer',
-                        width: 18,
-                        height: 18,
-                        border: `1.5px solid ${
-                          isCorrect
+                        display: 'grid',
+                        gridTemplateColumns: '26px 1fr',
+                        gap: 14,
+                        alignItems: 'baseline',
+                        padding: '10px 0',
+                        width: '100%',
+                        opacity: graded && !isPicked && !isCorrect ? 0.45 : 1,
+                        transition: 'opacity 200ms',
+                      }}
+                    >
+                      <span
+                        aria-hidden
+                        style={{
+                          width: 22,
+                          height: 22,
+                          border: `1.5px solid ${
+                            isCorrect
+                              ? 'var(--accent)'
+                              : isWrong
+                                ? 'var(--bad)'
+                                : isPicked
+                                  ? 'var(--ink)'
+                                  : 'var(--muted-2)'
+                          }`,
+                          borderRadius: 3,
+                          background: isCorrect
                             ? 'var(--accent)'
-                            : isWrong
-                              ? 'var(--bad)'
-                              : isPicked
-                                ? 'var(--ink)'
-                                : 'var(--muted-2)'
-                        }`,
-                        borderRadius: 3,
-                        background: isCorrect
-                          ? 'var(--accent)'
-                          : isPicked
-                            ? 'var(--ink)'
-                            : 'transparent',
-                        color: 'var(--bg)',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 13,
-                        fontWeight: 700,
-                        fontFamily: 'var(--font-mono)',
-                        transition: 'background 180ms, border-color 180ms, color 180ms',
-                      }}
-                    >
-                      {isCorrect ? '✓' : isWrong ? '✗' : isPicked ? '✓' : ''}
+                            : isPicked
+                              ? 'var(--ink)'
+                              : 'transparent',
+                          color: isCorrect || isPicked ? 'var(--bg)' : 'var(--muted)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 12,
+                          fontWeight: 700,
+                          letterSpacing: '0.02em',
+                          transition: 'background 180ms, border-color 180ms, color 180ms',
+                        }}
+                      >
+                        {opt.letter.toLowerCase()}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: 'clamp(15px, 0.85rem + 0.3vw, 17px)',
+                          lineHeight: 1.45,
+                          letterSpacing: '-0.005em',
+                          fontWeight: isPicked || isCorrect ? 500 : 400,
+                          color: 'var(--ink)',
+                          textDecoration: isWrong ? 'line-through' : 'none',
+                          textDecorationColor: 'var(--bad)',
+                          textDecorationThickness: 1.5,
+                        }}
+                      >
+                        <MathText>{opt.text}</MathText>
+                      </span>
                     </button>
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: 'clamp(15px, 0.85rem + 0.3vw, 17px)',
-                        lineHeight: 1.45,
-                        letterSpacing: '-0.005em',
-                        fontWeight: isPicked || isCorrect ? 500 : 400,
-                        color: 'var(--ink)',
-                        textDecoration: isWrong ? 'line-through' : 'none',
-                        textDecorationColor: 'var(--bad)',
-                        textDecorationThickness: 1.5,
-                      }}
-                    >
-                      <MathText>{opt.text}</MathText>
-                    </span>
                   </li>
                 )
               })}
