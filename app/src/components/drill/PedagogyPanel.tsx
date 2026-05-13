@@ -346,14 +346,22 @@ function splitProseIntoSteps(prose: string): ExplanationStep[] {
  */
 export function StepList({ steps }: { steps: ExplanationStep[] }) {
   // Track which detail steps the user has individually expanded.
-  // A.6V design: once a detail is revealed it stays revealed — no
-  // toggle back (we don't want the student second-guessing themselves
-  // into hiding insight they've already absorbed).
+  // A.6V update: toggle direction — once you reveal a detail you can
+  // also collapse it back. Per-step + nuclear-collapse-all at the
+  // bottom. Original "no toggle back" was too rigid; users want to
+  // simplify the panel back to scannable after they've absorbed a
+  // detail they no longer need spread out.
   const [expandedDetails, setExpandedDetails] = useState<Set<number>>(() => new Set())
   const expandDetail = (n: number) =>
     setExpandedDetails((prev) => {
       const next = new Set(prev)
       next.add(n)
+      return next
+    })
+  const collapseDetail = (n: number) =>
+    setExpandedDetails((prev) => {
+      const next = new Set(prev)
+      next.delete(n)
       return next
     })
 
@@ -376,10 +384,30 @@ export function StepList({ steps }: { steps: ExplanationStep[] }) {
     )
   }
 
-  // Count remaining collapsed details — when zero, hide the bottom CTA.
-  const collapsedDetailCount = steps.filter(
-    (s) => (s.tier ?? 'essential') === 'detail' && !expandedDetails.has(s.n),
-  ).length
+  // Three states for the bottom CTA:
+  //   - some collapsed → "show all details" (expand-all)
+  //   - none collapsed AND some expanded → "collapse all details"
+  //   - no detail steps at all → no CTA
+  const allDetailNs = steps.filter((s) => (s.tier ?? 'essential') === 'detail').map((s) => s.n)
+  const collapsedDetailCount = allDetailNs.filter((n) => !expandedDetails.has(n)).length
+  const expandedDetailCount = allDetailNs.length - collapsedDetailCount
+
+  let cta: React.ReactNode = null
+  if (collapsedDetailCount > 0) {
+    cta = (
+      <RevealAllDetailsCTA
+        count={collapsedDetailCount}
+        onClick={() => setExpandedDetails(new Set(allDetailNs))}
+      />
+    )
+  } else if (expandedDetailCount > 0) {
+    cta = (
+      <CollapseAllDetailsCTA
+        count={expandedDetailCount}
+        onClick={() => setExpandedDetails(new Set())}
+      />
+    )
+  }
 
   return (
     <div>
@@ -402,23 +430,18 @@ export function StepList({ steps }: { steps: ExplanationStep[] }) {
       >
         {steps.map((step) => {
           const tier = step.tier ?? 'essential'
-          if (tier === 'essential' || expandedDetails.has(step.n)) {
+          if (tier === 'essential') {
             return <StepCard key={step.n} step={step} />
+          }
+          if (expandedDetails.has(step.n)) {
+            // Expanded detail — render the full card with a small
+            // "collapse" affordance in the top-right.
+            return <StepCard key={step.n} step={step} onCollapse={() => collapseDetail(step.n)} />
           }
           return <StepPreview key={step.n} step={step} onExpand={() => expandDetail(step.n)} />
         })}
       </ol>
-      {collapsedDetailCount > 0 && (
-        <RevealAllDetailsCTA
-          count={collapsedDetailCount}
-          onClick={() => {
-            const allDetailNs = steps
-              .filter((s) => (s.tier ?? 'essential') === 'detail')
-              .map((s) => s.n)
-            setExpandedDetails(new Set(allDetailNs))
-          }}
-        />
-      )}
+      {cta}
     </div>
   )
 }
@@ -557,10 +580,66 @@ function RevealAllDetailsCTA({ count, onClick }: { count: number; onClick: () =>
   )
 }
 
+/** Bottom CTA when all details are currently expanded — collapses them
+ *  all back to preview-card state. The mirror of RevealAllDetailsCTA. */
+function CollapseAllDetailsCTA({ count, onClick }: { count: number; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      data-testid="pedagogy-collapse-all-details"
+      style={{
+        marginTop: 'clamp(16px, 2.5vw, 24px)',
+        width: '100%',
+        padding: '12px 16px',
+        background: 'transparent',
+        border: '1px dashed var(--hairline)',
+        borderRadius: 'calc(var(--radius) * 0.4)',
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
+        alignItems: 'flex-start',
+        textAlign: 'left',
+        color: 'inherit',
+        fontFamily: 'inherit',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(14px, 0.85rem + 0.25vw, 16px)',
+          fontWeight: 500,
+          color: 'var(--ink)',
+        }}
+      >
+        Korta ner förklaringen
+      </span>
+      <span
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
+          letterSpacing: 'var(--font-mono-track)',
+          color: 'var(--muted)',
+          textTransform: 'uppercase',
+        }}
+      >
+        Dölj alla {count} detaljerade steg ↗
+      </span>
+    </button>
+  )
+}
+
 /** Single numbered step card. Exported alongside StepList so callers
  *  (currently just ExplanationPanel on phone) can compose ad-hoc step
- *  layouts without a parallel implementation. */
-export function StepCard({ step }: { step: ExplanationStep }) {
+ *  layouts without a parallel implementation.
+ *
+ *  Phase A.6V update: `onCollapse` is optional. When provided
+ *  (i.e. the card is an EXPANDED detail step), renders a small
+ *  "stäng" affordance in the top-right so the user can re-collapse
+ *  this single step back to its preview state. Essential steps
+ *  don't get a collapse handle. */
+export function StepCard({ step, onCollapse }: { step: ExplanationStep; onCollapse?: () => void }) {
   return (
     <li
       data-testid={`pedagogy-step-${step.n}`}
@@ -592,6 +671,31 @@ export function StepCard({ step }: { step: ExplanationStep }) {
       >
         {String(step.n).padStart(2, '0')}
       </span>
+      {onCollapse && (
+        <button
+          type="button"
+          onClick={onCollapse}
+          data-testid={`pedagogy-step-${step.n}-collapse`}
+          aria-label="Dölj detta steg"
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: 2,
+            background: 'transparent',
+            border: 0,
+            padding: '2px 6px',
+            cursor: 'pointer',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            letterSpacing: 'var(--font-mono-track)',
+            color: 'var(--muted)',
+            textTransform: 'uppercase',
+            opacity: 0.7,
+          }}
+        >
+          dölj ↗
+        </button>
+      )}
       {step.title && (
         <div
           style={{
