@@ -74,25 +74,63 @@ export function KvaPrompt({ prompt }: Props) {
         gap: 'clamp(14px, 1.5vw + 6px, 24px)',
       }}
     >
-      {condition && (
-        <div
-          data-testid="kva-condition"
-          style={{
-            // The condition (e.g. "b = a + 1") is the framing of the
-            // problem; smaller than the quantities themselves but
-            // still display-weight serif so it reads as part of the
-            // composition, not a label.
-            fontSize: 'clamp(18px, 1.125rem + 0.5vw, 28px)',
-            lineHeight: 1.3,
-            color: 'var(--ink-2, var(--ink))',
-            fontWeight: 400,
-          }}
-        >
-          <MathText>{condition}</MathText>
-        </div>
-      )}
+      {condition && <KvaCondition condition={condition} />}
       <Quantity label="Kvantitet I" body={kvI} testId="kva-i" />
       <Quantity label="Kvantitet II" body={kvII} testId="kva-ii" />
+    </div>
+  )
+}
+
+/** Heuristic — is this "condition" a single equation or a prose setup? */
+export function isProseCondition(text: string): boolean {
+  // Compact equation forms ("b = a + 1", "x > 0", "xy ≠ 0") are short
+  // and dense in operators. Prose setups ("Linjen y = ¾x+m, där m ≠ 0,
+  // skär x-axeln i punkten P …") are sentence-shaped — they contain
+  // mid-string commas, lowercase Swedish keywords like "där", "skär",
+  // "och", or run past ~60 characters. The cutoffs are deliberately
+  // generous: a false positive renders prose-style at full prompt
+  // scale (fine for either); a false negative buries a paragraph in
+  // small type (worse). When in doubt, treat as prose.
+  if (text.length >= 60) return true
+  if (/,\s+\S/.test(text)) return true
+  // Common Swedish prose connectors that don't appear in pure equations.
+  // `\b` won't match around Swedish vowels (ä/å/ö are non-word chars in
+  // JS regex by default), so anchor against whitespace / string ends
+  // explicitly. The `u` flag isn't enough here — \b semantics don't
+  // change in Unicode mode.
+  return /(^|\s)(där|skär|är|och|samt|när|då|som)(\s|[.,!?]|$)/i.test(text)
+}
+
+function KvaCondition({ condition }: { condition: string }) {
+  const prose = isProseCondition(condition)
+  return (
+    <div
+      data-testid="kva-condition"
+      data-prose={prose ? 'true' : 'false'}
+      style={
+        prose
+          ? {
+              // Prose setup: a sentence introducing the problem
+              // (lines, points, constraints). Treat as a normal body
+              // paragraph at the inherited prompt scale — don't demote
+              // it to "small condition" type.
+              fontSize: 'inherit',
+              lineHeight: 1.35,
+              color: 'var(--ink)',
+              fontWeight: 400,
+            }
+          : {
+              // Compact equation condition ("b = a + 1"): sits as a
+              // smaller framing line above the comparison. Smaller-but-
+              // distinct so the eye knows where to start.
+              fontSize: 'clamp(18px, 1.125rem + 0.5vw, 28px)',
+              lineHeight: 1.3,
+              color: 'var(--ink-2, var(--ink))',
+              fontWeight: 400,
+            }
+      }
+    >
+      <MathText>{condition}</MathText>
     </div>
   )
 }
