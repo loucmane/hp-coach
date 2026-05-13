@@ -132,31 +132,34 @@ export function StyleA({
                 const isPicked = picked === opt.letter
                 const isCorrect = graded && opt.letter === question.answer
                 const isWrong = graded && isPicked && !correct
+                // var(--ok) is the SEMANTIC green ("this is correct") — stable
+                // across all palettes. var(--accent) is the DECORATIVE palette
+                // identity (sand-tan, sage-green, ink-lemon, rose-pink) and
+                // varies per theme. Use --ok for correctness; --bad for wrong.
                 const railColor = isCorrect
-                  ? 'var(--accent)'
+                  ? 'var(--ok)'
                   : isWrong
                     ? 'var(--bad)'
                     : isPicked
                       ? 'var(--ink)'
                       : 'transparent'
-                // Explicit state label for graded rows. Color matches
-                // the rail; uppercase mono small-caps is the editorial
-                // metadata register. Three cases:
-                //   - picked-and-correct → "rätt"        (accent)
-                //   - picked-but-wrong   → "ditt svar"   (bad)
-                //   - correct, not picked → "facit"      (accent)
+                // Three explicit state labels (uppercase mono small-caps,
+                // editorial metadata register):
+                //   - picked-and-correct → "rätt"        (ok-green)
+                //   - picked-but-wrong   → "ditt svar"   (bad-red)
+                //   - correct, not picked → "rätt svar"  (ok-green)
                 //   - untouched          → no label (and dimmed)
                 let label: string | null = null
                 let labelColor = 'var(--muted)'
                 if (isPicked && isCorrect) {
                   label = 'rätt'
-                  labelColor = 'var(--accent)'
+                  labelColor = 'var(--ok)'
                 } else if (isWrong) {
                   label = 'ditt svar'
                   labelColor = 'var(--bad)'
                 } else if (isCorrect) {
-                  label = 'facit'
-                  labelColor = 'var(--accent)'
+                  label = 'rätt svar'
+                  labelColor = 'var(--ok)'
                 }
                 return (
                   <li

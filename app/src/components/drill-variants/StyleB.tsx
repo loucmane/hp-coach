@@ -175,9 +175,12 @@ export function StyleB({
                         style={{
                           width: 22,
                           height: 22,
+                          // var(--ok) = semantic green (stable across palettes).
+                          // var(--accent) is decorative palette identity and
+                          // can be lemon/rose/tan — wrong color for correctness.
                           border: `1.5px solid ${
                             isCorrect
-                              ? 'var(--accent)'
+                              ? 'var(--ok)'
                               : isWrong
                                 ? 'var(--bad)'
                                 : isPicked
@@ -186,7 +189,7 @@ export function StyleB({
                           }`,
                           borderRadius: 3,
                           background: isCorrect
-                            ? 'var(--accent)'
+                            ? 'var(--ok)'
                             : isPicked
                               ? 'var(--ink)'
                               : 'transparent',
@@ -232,11 +235,11 @@ export function StyleB({
                 fontFamily: 'var(--font-mono)',
                 fontSize: 11,
                 letterSpacing: '0.08em',
-                color: correct ? 'var(--accent)' : 'var(--bad)',
+                color: correct ? 'var(--ok)' : 'var(--bad)',
                 textTransform: 'uppercase',
               }}
             >
-              {correct ? '✓ Rätt svar' : `✗ Fel — facit (${question.answer.toLowerCase()})`}
+              {correct ? '✓ Rätt svar' : `✗ Fel — rätt svar är (${question.answer.toLowerCase()})`}
             </p>
           )}
 
