@@ -372,29 +372,46 @@ export function SessionPlayer(props: SessionPlayerProps) {
       </div>
       <div
         style={{
-          // Sticky-bottom at desktop so the Nästa / Avsluta CTA stays
-          // visible while the student reads through the pedagogy. Pins
-          // ~60px above viewport bottom (right above the sticky status
-          // line). Phone keeps the static full-width CTA — the bottom
-          // tab bar already occupies that real estate.
+          // Desktop: sticky-bottom fade band. The band itself carries
+          // a transparent→bg gradient (top→bottom) so pedagogy text
+          // scrolling up through the band fades into the page color
+          // before it ever reaches the CTA — no more hard "button
+          // covering text" edge. Same trick Apple Books and Stripe
+          // Press use at the bottom of their reading views.
+          //
+          // Phone: static, no gradient — the bottom tab bar already
+          // owns that area and full-width thumb-reach CTA is right.
           position: useStudyDesk ? 'sticky' : 'static',
-          bottom: useStudyDesk ? 'clamp(56px, 6vh, 72px)' : undefined,
+          bottom: useStudyDesk ? 'clamp(48px, 5.5vh, 64px)' : undefined,
           zIndex: useStudyDesk ? 5 : undefined,
+          // Tall enough to let the gradient breathe (~80-120px of
+          // fade) plus button height + bottom breath. Without the
+          // height the gradient would compress to nothing.
+          height: useStudyDesk ? 'clamp(140px, 18vh, 200px)' : undefined,
           padding: useStudyDesk
-            ? 'clamp(16px, 2vh, 24px) clamp(48px, 5vw, 88px) clamp(16px, 2vh, 24px)'
+            ? '0 clamp(48px, 5vw, 88px) clamp(12px, 1.5vh, 20px)'
             : '12px var(--pad-lg) 0',
           display: 'flex',
+          // Column with bottom-right anchor: gradient fades from
+          // transparent at top, button sits in the solid-bg zone
+          // at the bottom-right corner.
           flexDirection: 'column',
           gap: 8,
-          // Desktop right-aligns the Nästa CTA; phone keeps full-width
-          // for thumb reach.
           alignItems: useStudyDesk ? 'flex-end' : 'stretch',
-          // The wrapper itself stays transparent — pedagogy text
-          // scrolls past behind the (mostly-empty) left half of the
-          // bar. Only the right-aligned button is opaque, and the Btn
-          // brings its own chrome (border + bg). The result is a
-          // floating CTA pill rather than a heavy second chrome bar.
-          pointerEvents: 'none',
+          justifyContent: useStudyDesk ? 'flex-end' : undefined,
+          // Gradient mask — transparent at top, var(--bg) by 75%.
+          // Below 75% it's pure bg so the button has a clean canvas
+          // around it. linear-gradient over the page bg is sturdier
+          // than backdrop-filter blur for this purpose: text fades to
+          // fully invisible rather than blurring through, which means
+          // no risk of half-readable text crowding the button.
+          background: useStudyDesk
+            ? 'linear-gradient(to bottom, transparent 0%, var(--bg) 75%)'
+            : undefined,
+          // The band itself ignores pointer events so wheel/clicks
+          // pass through to the pedagogy column behind it. Only the
+          // Btn opts back in.
+          pointerEvents: useStudyDesk ? 'none' : undefined,
         }}
       >
         <Btn
