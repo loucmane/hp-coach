@@ -9,6 +9,7 @@
 //
 // Stripe Press × Apple Books reading register.
 
+import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
@@ -101,20 +102,23 @@ export function StyleA({
           }}
           className="hpc-scrollbar-ghost"
         >
-          <h1
+          <div
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(20px, 1rem + 0.6vw, 24px)',
               lineHeight: 1.35,
               letterSpacing: '-0.012em',
               fontWeight: 500,
-              margin: 0,
               marginBottom: 28,
-              whiteSpace: 'pre-wrap',
+              color: 'var(--ink)',
             }}
           >
-            <MathText>{question.prompt ?? ''}</MathText>
-          </h1>
+            {question.section === 'KVA' && question.prompt ? (
+              <KvaPrompt prompt={question.prompt} />
+            ) : (
+              <MathText>{question.prompt ?? ''}</MathText>
+            )}
+          </div>
           {question.options && (
             <ol
               style={{

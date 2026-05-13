@@ -8,6 +8,7 @@
 
 import { useEffect, useState } from 'react'
 
+import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
@@ -140,7 +141,11 @@ export function StyleC({
                 color: 'var(--ink)',
               }}
             >
-              <MathText>{question.prompt ?? ''}</MathText>
+              {question.section === 'KVA' && question.prompt ? (
+                <KvaPrompt prompt={question.prompt} />
+              ) : (
+                <MathText>{question.prompt ?? ''}</MathText>
+              )}
             </div>
           </div>
 

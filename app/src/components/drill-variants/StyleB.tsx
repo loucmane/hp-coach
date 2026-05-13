@@ -12,6 +12,7 @@
 // page = the explanation (scrolls, what teaches you). Spine in
 // the middle.
 
+import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
@@ -115,20 +116,28 @@ export function StyleB({
         >
           <SectionHeader label="FRÅGA" meta={SECTION_LABEL[question.section] ?? question.section} />
 
-          <h1
+          {/* Prompt — section-specific rendering. KVA splits the
+           *  "Kvantitet I: / Kvantitet II:" structure into 3 rows
+           *  with mono small-caps eyebrows (same as the baseline
+           *  DrillQuestion uses). Other sections render the raw
+           *  prompt at display scale. */}
+          <div
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(20px, 1rem + 0.6vw, 26px)',
               lineHeight: 1.3,
               letterSpacing: '-0.015em',
               fontWeight: 500,
-              margin: 0,
               marginBottom: 24,
-              whiteSpace: 'pre-wrap',
+              color: 'var(--ink)',
             }}
           >
-            <MathText>{question.prompt ?? ''}</MathText>
-          </h1>
+            {question.section === 'KVA' && question.prompt ? (
+              <KvaPrompt prompt={question.prompt} />
+            ) : (
+              <MathText>{question.prompt ?? ''}</MathText>
+            )}
+          </div>
 
           {/* Options as checkbox rows. Single button per row makes the
            *  whole row clickable, not just the tiny checkbox. The
