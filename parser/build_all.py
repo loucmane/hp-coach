@@ -130,6 +130,33 @@ def main() -> None:
     print(f"  answer keys:     {total_keys}")
     print(f"  manifest:        {INDEX_PATH.relative_to(ROOT)}")
 
+    # Post-parse typo sweep. The parser produces tokens like 'kvanttiet'
+    # (KVA template ti↔tt swap), 'otlilräcklig' (option-D il↔li swap),
+    # and ~60 other letter-swap typos that the original Phase D.1 pass
+    # (commit 574b88e) curated and verified. Run the apply-script every
+    # time we re-parse so freshly-generated data/parsed/ AND
+    # app/public/data/ stay clean. Idempotent — re-runs on already-fixed
+    # data are no-ops.
+    print()
+    print("== post-parse typo sweep ==")
+    typo_script = ROOT / "audit" / "corpus_lint" / "apply_typo_fixes.py"
+    if typo_script.exists():
+        import subprocess
+        result = subprocess.run(
+            [sys.executable, str(typo_script), "--apply"],
+            capture_output=True,
+            text=True,
+        )
+        # Surface just the summary line; the per-typo counts live in the
+        # script's stdout if the user wants to inspect.
+        for line in result.stdout.splitlines():
+            if "TOTAL" in line or "Files changed" in line:
+                print(f"  {line.strip()}")
+        if result.returncode != 0:
+            print(f"  ✗ typo sweep failed: {result.stderr.strip()[:200]}")
+    else:
+        print(f"  ⚠ {typo_script.relative_to(ROOT)} not found — skipping")
+
     if failures:
         sys.exit(1)
 
