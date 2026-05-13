@@ -123,10 +123,32 @@ function RunningHeadBand({
   return (
     <header
       style={{
+        // Sticky-top mirror of the sticky status line at the bottom.
+        // Together they form the editorial "chrome envelope":
+        //   ┌───── running head (frosted) ─────┐
+        //   │     content scrolls in middle    │
+        //   └───── status line (frosted) ──────┘
+        // Without this, scrolling lifts the question column UP from
+        // its natural position (running-head + grid padding ≈ 96px)
+        // toward the sticky top (32px) — visible as "the left column
+        // moves a little". Pinning the running head removes that
+        // gap; the question now lands exactly under the chrome and
+        // stays there.
+        position: isPhone ? 'static' : 'sticky',
+        top: 0,
+        zIndex: 10,
         padding: isPhone
           ? '12px var(--pad-lg) 10px'
           : 'clamp(20px, 2vh, 32px) clamp(28px, 4vw, 64px) 0',
         borderBottom: '1px solid var(--hairline)',
+        // Frosted glass — pedagogy text blurs through as it scrolls
+        // underneath, matching the bottom status line's treatment.
+        background: isPhone ? 'transparent' : 'color-mix(in oklch, var(--bg) 88%, transparent)',
+        backdropFilter: isPhone ? undefined : 'saturate(140%) blur(10px)',
+        WebkitBackdropFilter: isPhone ? undefined : 'saturate(140%) blur(10px)',
+        // Downward shadow — mirrors the status line's upward shadow.
+        // Articulates the chrome as a layer above the scrolling body.
+        boxShadow: isPhone ? undefined : '0 8px 24px -16px rgba(0, 0, 0, 0.12)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'baseline',

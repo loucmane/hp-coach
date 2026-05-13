@@ -92,7 +92,10 @@ function StandardLayout({ question, picked, graded, onPick }: Props) {
         // Bottom padding clears the sticky status line (~40px) +
         // breathing room so the last pedagogy step doesn't tuck
         // under the bar.
-        padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) clamp(80px, 12vh, 120px)',
+        // Bottom clearance: status line (~40px sticky) + sticky CTA
+        // (~80px) + breath. Without this the last pedagogy step would
+        // tuck under the pinned CTA before the user could read it.
+        padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) clamp(160px, 22vh, 220px)',
         // NO overflow set. Body owns scroll; sticky descendants
         // anchor to the viewport directly. Setting overflow:auto here
         // would create a (non-scrolling, because nothing constrains
@@ -102,11 +105,15 @@ function StandardLayout({ question, picked, graded, onPick }: Props) {
       <div
         style={{
           minWidth: 0,
-          // Sticky against the page body's scroll. Top offset gives
-          // the question a small breath of paper at the top of the
-          // viewport — not flush, not floating awkwardly low.
+          // Sticky against the page body's scroll. The `top` value
+          // matches the running-head's bottom edge so the question
+          // pins immediately at scroll-start — without this, the
+          // question would scroll UP from its natural position
+          // (running-head + grid padding ≈ 96px) until it reached
+          // the sticky threshold, reading as "the left column moves
+          // a little before settling".
           position: 'sticky',
-          top: 'clamp(16px, 2vh, 32px)',
+          top: 'clamp(72px, 9vh, 104px)',
           // `align-self: start` keeps the grid cell from stretching
           // the sticky box to the row height — without this, the box
           // would be as tall as the pedagogy column and have nothing
@@ -114,10 +121,9 @@ function StandardLayout({ question, picked, graded, onPick }: Props) {
           alignSelf: 'start',
           // Cap so a tall question (long LÄS prompt) scrolls inside
           // its own column rather than extending past viewport.
-          // 80px = 16px top breath + 40px sticky status line + 24px
-          // clearance; the running head scrolls away so it doesn't
-          // count against the budget.
-          maxHeight: 'calc(100dvh - 80px)',
+          // Budget = running head (72-104) + status line (40) +
+          // sticky CTA (80) + breath = ~210-240px.
+          maxHeight: 'calc(100dvh - 240px)',
           overflowY: 'auto',
           // Hide the scrollbar in the column itself — the column is
           // a sticky panel, not a scroll surface. If the question
@@ -155,15 +161,21 @@ function StandardLayout({ question, picked, graded, onPick }: Props) {
 // you're consulting" while pedagogy slides past as the main column.
 
 function PassageLayout({ question, picked, graded, onPick }: Props) {
-  const stickyTop = 'clamp(16px, 2vh, 32px)'
-  const stickyMaxH = 'calc(100dvh - 80px)'
+  // Sticky top matches the running-head's bottom edge so context
+  // columns pin immediately at scroll-start (no scroll-up gap).
+  // Max-height budgets running head + status line + sticky CTA.
+  const stickyTop = 'clamp(72px, 9vh, 104px)'
+  const stickyMaxH = 'calc(100dvh - 240px)'
   return (
     <div
       style={{
         display: 'grid',
         gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr)',
         gap: 'clamp(20px, 2vw, 40px)',
-        padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) clamp(80px, 12vh, 120px)',
+        // Bottom clearance: status line (~40px sticky) + sticky CTA
+        // (~80px) + breath. Without this the last pedagogy step would
+        // tuck under the pinned CTA before the user could read it.
+        padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) clamp(160px, 22vh, 220px)',
         // NO overflow set — body scroll + sticky descendants.
       }}
     >

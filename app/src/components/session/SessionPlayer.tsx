@@ -372,6 +372,14 @@ export function SessionPlayer(props: SessionPlayerProps) {
       </div>
       <div
         style={{
+          // Sticky-bottom at desktop so the Nästa / Avsluta CTA stays
+          // visible while the student reads through the pedagogy. Pins
+          // ~60px above viewport bottom (right above the sticky status
+          // line). Phone keeps the static full-width CTA — the bottom
+          // tab bar already occupies that real estate.
+          position: useStudyDesk ? 'sticky' : 'static',
+          bottom: useStudyDesk ? 'clamp(56px, 6vh, 72px)' : undefined,
+          zIndex: useStudyDesk ? 5 : undefined,
           padding: useStudyDesk
             ? 'clamp(16px, 2vh, 24px) clamp(48px, 5vw, 88px) clamp(16px, 2vh, 24px)'
             : '12px var(--pad-lg) 0',
@@ -381,6 +389,12 @@ export function SessionPlayer(props: SessionPlayerProps) {
           // Desktop right-aligns the Nästa CTA; phone keeps full-width
           // for thumb reach.
           alignItems: useStudyDesk ? 'flex-end' : 'stretch',
+          // The wrapper itself stays transparent — pedagogy text
+          // scrolls past behind the (mostly-empty) left half of the
+          // bar. Only the right-aligned button is opaque, and the Btn
+          // brings its own chrome (border + bg). The result is a
+          // floating CTA pill rather than a heavy second chrome bar.
+          pointerEvents: 'none',
         }}
       >
         <Btn
@@ -389,7 +403,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
           onClick={onNext}
           disabled={phase !== 'graded'}
           data-testid="drill-next"
-          style={useStudyDesk ? { minWidth: 200 } : undefined}
+          style={useStudyDesk ? { minWidth: 200, pointerEvents: 'auto' } : undefined}
           className="hpc-btn hpc-breathe"
         >
           {index === plan.length - 1 ? 'Avsluta' : 'Nästa'} →
