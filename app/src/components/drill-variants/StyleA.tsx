@@ -139,6 +139,25 @@ export function StyleA({
                     : isPicked
                       ? 'var(--ink)'
                       : 'transparent'
+                // Explicit state label for graded rows. Color matches
+                // the rail; uppercase mono small-caps is the editorial
+                // metadata register. Three cases:
+                //   - picked-and-correct → "rätt"        (accent)
+                //   - picked-but-wrong   → "ditt svar"   (bad)
+                //   - correct, not picked → "facit"      (accent)
+                //   - untouched          → no label (and dimmed)
+                let label: string | null = null
+                let labelColor = 'var(--muted)'
+                if (isPicked && isCorrect) {
+                  label = 'rätt'
+                  labelColor = 'var(--accent)'
+                } else if (isWrong) {
+                  label = 'ditt svar'
+                  labelColor = 'var(--bad)'
+                } else if (isCorrect) {
+                  label = 'facit'
+                  labelColor = 'var(--accent)'
+                }
                 return (
                   <li
                     key={opt.letter}
@@ -155,7 +174,7 @@ export function StyleA({
                         all: 'unset',
                         cursor: graded ? 'default' : 'pointer',
                         display: 'grid',
-                        gridTemplateColumns: '24px 1fr',
+                        gridTemplateColumns: '24px 1fr auto',
                         gap: 14,
                         alignItems: 'baseline',
                         padding: '14px 0',
@@ -164,7 +183,7 @@ export function StyleA({
                         paddingLeft: 10,
                         marginLeft: -12,
                         transition: 'border-color 180ms cubic-bezier(0.16, 1, 0.3, 1)',
-                        opacity: graded && !isPicked && !isCorrect ? 0.5 : 1,
+                        opacity: graded && !isPicked && !isCorrect ? 0.45 : 1,
                       }}
                     >
                       <span
@@ -187,10 +206,32 @@ export function StyleA({
                           letterSpacing: '-0.005em',
                           fontWeight: isPicked ? 500 : 400,
                           color: isWrong ? 'var(--muted-2)' : 'var(--ink)',
+                          // Strikethrough on wrong-picked text makes the
+                          // "this was the wrong choice" reading instant —
+                          // even before the eye gets to the bad-rail.
+                          textDecoration: isWrong ? 'line-through' : 'none',
+                          textDecorationColor: 'var(--bad)',
+                          textDecorationThickness: 1.5,
                         }}
                       >
                         <MathText>{opt.text}</MathText>
                       </span>
+                      {label && (
+                        <span
+                          style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 10,
+                            letterSpacing: '0.14em',
+                            textTransform: 'uppercase',
+                            fontWeight: 600,
+                            color: labelColor,
+                            whiteSpace: 'nowrap',
+                            paddingLeft: 8,
+                          }}
+                        >
+                          {label}
+                        </span>
+                      )}
                     </button>
                   </li>
                 )
