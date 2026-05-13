@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
+import { useProgressiveReveal } from './useProgressiveReveal'
 
 export function StyleC({
   question,
@@ -22,6 +23,7 @@ export function StyleC({
   onReset,
 }: VariantData) {
   const steps = explanation ? resolveSteps(explanation) : []
+  const reveal = useProgressiveReveal(steps)
   const [elapsed, setElapsed] = useState(0)
   // Tick the elapsed counter every second while still answering.
   useEffect(() => {
@@ -314,42 +316,148 @@ export function StyleC({
             ) : (
               explanation && (
                 <>
-                  {steps.map((step) => (
-                    <article key={step.n} style={{ marginBottom: 18 }}>
-                      {step.title && (
-                        <h3
+                  {steps.map((step) => {
+                    const isDetail = (step.tier ?? 'essential') === 'detail'
+                    const isCollapsed = reveal.isCollapsedDetail(step)
+                    // Collapsed detail in mono terminal-row style:
+                    //   [03]  step.title                            [+] more
+                    if (isCollapsed) {
+                      return (
+                        <button
+                          key={step.n}
+                          type="button"
+                          onClick={() => reveal.expandDetail(step.n)}
                           style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: 14,
-                            lineHeight: 1.3,
-                            letterSpacing: '0.04em',
-                            textTransform: 'uppercase',
-                            fontWeight: 600,
-                            margin: 0,
+                            all: 'unset',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'baseline',
+                            justifyContent: 'space-between',
+                            gap: 12,
                             marginBottom: 6,
+                            padding: '4px 0',
+                            borderBottom: '1px dashed var(--hairline)',
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 12,
+                            lineHeight: 1.35,
+                            color: 'var(--ink-2)',
+                            width: '100%',
+                          }}
+                        >
+                          <span>
+                            <span style={{ color: 'var(--muted)', marginRight: 8 }}>
+                              [{String(step.n).padStart(2, '0')}]
+                            </span>
+                            {step.title ?? step.text.slice(0, 60)}
+                          </span>
+                          <span style={{ color: 'var(--accent)', whiteSpace: 'nowrap' }}>
+                            [+] more
+                          </span>
+                        </button>
+                      )
+                    }
+                    return (
+                      <article key={step.n} style={{ marginBottom: 18, position: 'relative' }}>
+                        {isDetail && (
+                          <button
+                            type="button"
+                            onClick={() => reveal.collapseDetail(step.n)}
+                            style={{
+                              all: 'unset',
+                              cursor: 'pointer',
+                              position: 'absolute',
+                              top: 0,
+                              right: 0,
+                              fontFamily: 'var(--font-mono)',
+                              fontSize: 11,
+                              letterSpacing: '0.04em',
+                              color: 'var(--muted)',
+                            }}
+                          >
+                            [-] hide
+                          </button>
+                        )}
+                        {step.title && (
+                          <h3
+                            style={{
+                              fontFamily: 'var(--font-mono)',
+                              fontSize: 14,
+                              lineHeight: 1.3,
+                              letterSpacing: '0.04em',
+                              textTransform: 'uppercase',
+                              fontWeight: 600,
+                              margin: 0,
+                              marginBottom: 6,
+                              color: 'var(--ink)',
+                              paddingRight: isDetail ? 60 : 0,
+                            }}
+                          >
+                            <span style={{ color: 'var(--accent)', marginRight: 8 }}>
+                              [{String(step.n).padStart(2, '0')}]
+                            </span>
+                            <MathText>{step.title}</MathText>
+                          </h3>
+                        )}
+                        <div
+                          style={{
+                            fontFamily: 'var(--font-display)',
+                            fontSize: 16,
+                            lineHeight: 1.55,
+                            letterSpacing: '-0.005em',
                             color: 'var(--ink)',
                           }}
                         >
-                          <span style={{ color: 'var(--accent)', marginRight: 8 }}>
-                            [{String(step.n).padStart(2, '0')}]
-                          </span>
-                          <MathText>{step.title}</MathText>
-                        </h3>
+                          <MathText>{step.text}</MathText>
+                        </div>
+                      </article>
+                    )
+                  })}
+
+                  {/* Bottom Progressive Reveal CTA — mono terminal row. */}
+                  {reveal.totalDetailCount > 0 && (
+                    <div
+                      style={{
+                        marginTop: 12,
+                        marginBottom: 16,
+                        padding: '10px 0',
+                        borderTop: '1px solid var(--hairline)',
+                        borderBottom: '1px solid var(--hairline)',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {reveal.collapsedDetailCount > 0 ? (
+                        <button
+                          type="button"
+                          onClick={reveal.expandAll}
+                          style={{
+                            all: 'unset',
+                            cursor: 'pointer',
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 12,
+                            letterSpacing: '0.06em',
+                            color: 'var(--accent)',
+                          }}
+                        >
+                          [+] jag förstår fortfarande inte ({reveal.collapsedDetailCount} steg till)
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={reveal.collapseAll}
+                          style={{
+                            all: 'unset',
+                            cursor: 'pointer',
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 12,
+                            letterSpacing: '0.06em',
+                            color: 'var(--muted)',
+                          }}
+                        >
+                          [-] korta ner förklaringen
+                        </button>
                       )}
-                      <div
-                        style={{
-                          fontFamily: 'var(--font-display)',
-                          fontSize: 16,
-                          lineHeight: 1.55,
-                          letterSpacing: '-0.005em',
-                          color: 'var(--ink)',
-                          paddingLeft: step.title ? 0 : 0,
-                        }}
-                      >
-                        <MathText>{step.text}</MathText>
-                      </div>
-                    </article>
-                  ))}
+                    </div>
+                  )}
 
                   {explanation.distractors.length > 0 && (
                     <section

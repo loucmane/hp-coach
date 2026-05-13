@@ -12,6 +12,7 @@
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
+import { useProgressiveReveal } from './useProgressiveReveal'
 
 export function StyleB({
   question,
@@ -23,6 +24,7 @@ export function StyleB({
   onReset,
 }: VariantData) {
   const steps = explanation ? resolveSteps(explanation) : []
+  const reveal = useProgressiveReveal(steps)
   return (
     <div
       style={{
@@ -201,28 +203,27 @@ export function StyleB({
         ) : (
           explanation && (
             <div style={{ animation: 'hpc-reveal 220ms cubic-bezier(0.16, 1, 0.3, 1) both' }}>
-              {steps.map((step) => (
-                <article
-                  key={step.n}
-                  style={{
-                    position: 'relative',
-                    marginBottom: 'clamp(36px, 5vh, 56px)',
-                  }}
-                >
-                  {/* Hanging step number + em-dash separator — the signature. */}
-                  {step.title && (
-                    <h3
+              {steps.map((step) => {
+                const isDetail = (step.tier ?? 'essential') === 'detail'
+                const isCollapsed = reveal.isCollapsedDetail(step)
+                // Collapsed detail = a single-row preview: "03 ── title  →  se mer"
+                if (isCollapsed) {
+                  return (
+                    <button
+                      key={step.n}
+                      type="button"
+                      onClick={() => reveal.expandDetail(step.n)}
                       style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: 'clamp(22px, 1.1rem + 0.5vw, 28px)',
-                        lineHeight: 1.2,
-                        letterSpacing: '-0.018em',
-                        fontWeight: 500,
-                        margin: 0,
-                        marginBottom: 16,
+                        all: 'unset',
+                        cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'baseline',
-                        gap: 10,
+                        gap: 12,
+                        marginBottom: 'clamp(20px, 3vh, 32px)',
+                        paddingBottom: 14,
+                        borderBottom:
+                          '1px dashed color-mix(in oklch, var(--hairline) 60%, transparent)',
+                        width: '100%',
                       }}
                     >
                       <span
@@ -231,39 +232,187 @@ export function StyleB({
                           fontSize: 12,
                           letterSpacing: '0.06em',
                           fontWeight: 600,
-                          color: 'var(--ink)',
+                          color: 'var(--muted)',
                           fontVariantNumeric: 'tabular-nums',
                         }}
                       >
                         {String(step.n).padStart(2, '0')}
                       </span>
+                      <span style={{ color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>
+                        ──
+                      </span>
+                      <span
+                        style={{
+                          flex: 1,
+                          fontFamily: 'var(--font-display)',
+                          fontSize: 'clamp(17px, 0.95rem + 0.35vw, 20px)',
+                          lineHeight: 1.4,
+                          letterSpacing: '-0.012em',
+                          fontWeight: 500,
+                          color: 'var(--ink-2)',
+                        }}
+                      >
+                        <MathText>{step.title ?? step.text.slice(0, 80)}</MathText>
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: 14,
+                          fontStyle: 'italic',
+                          color: 'var(--muted)',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        se mer ↘
+                      </span>
+                    </button>
+                  )
+                }
+                return (
+                  <article
+                    key={step.n}
+                    style={{
+                      position: 'relative',
+                      marginBottom: 'clamp(36px, 5vh, 56px)',
+                    }}
+                  >
+                    {isDetail && (
+                      <button
+                        type="button"
+                        onClick={() => reveal.collapseDetail(step.n)}
+                        style={{
+                          all: 'unset',
+                          cursor: 'pointer',
+                          position: 'absolute',
+                          top: 4,
+                          right: 0,
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 11,
+                          letterSpacing: '0.1em',
+                          textTransform: 'uppercase',
+                          color: 'var(--muted)',
+                        }}
+                      >
+                        dölj ↗
+                      </button>
+                    )}
+                    {/* Hanging step number + em-dash separator — the signature. */}
+                    {step.title && (
+                      <h3
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: 'clamp(22px, 1.1rem + 0.5vw, 28px)',
+                          lineHeight: 1.2,
+                          letterSpacing: '-0.018em',
+                          fontWeight: 500,
+                          margin: 0,
+                          marginBottom: 16,
+                          display: 'flex',
+                          alignItems: 'baseline',
+                          gap: 10,
+                          paddingRight: isDetail ? 56 : 0,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 12,
+                            letterSpacing: '0.06em',
+                            fontWeight: 600,
+                            color: 'var(--ink)',
+                            fontVariantNumeric: 'tabular-nums',
+                          }}
+                        >
+                          {String(step.n).padStart(2, '0')}
+                        </span>
+                        <span
+                          style={{
+                            color: 'var(--muted)',
+                            fontFamily: 'var(--font-mono)',
+                            fontWeight: 400,
+                          }}
+                        >
+                          ──
+                        </span>
+                        <span>
+                          <MathText>{step.title}</MathText>
+                        </span>
+                      </h3>
+                    )}
+                    <div
+                      style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: 'clamp(18px, 0.95rem + 0.45vw, 22px)',
+                        lineHeight: 1.75,
+                        letterSpacing: '-0.008em',
+                        color: 'var(--ink-2)',
+                      }}
+                    >
+                      <MathText>{step.text}</MathText>
+                    </div>
+                  </article>
+                )
+              })}
+
+              {/* Bottom Progressive Reveal CTA */}
+              {reveal.totalDetailCount > 0 && (
+                <div
+                  style={{
+                    marginTop: 16,
+                    marginBottom: 56,
+                    paddingTop: 28,
+                    borderTop: '1px dashed color-mix(in oklch, var(--hairline) 60%, transparent)',
+                    textAlign: 'center',
+                  }}
+                >
+                  {reveal.collapsedDetailCount > 0 ? (
+                    <button
+                      type="button"
+                      onClick={reveal.expandAll}
+                      style={{
+                        all: 'unset',
+                        cursor: 'pointer',
+                        fontFamily: 'var(--font-display)',
+                        fontSize: 18,
+                        fontStyle: 'italic',
+                        color: 'var(--ink)',
+                        borderBottom: '1px solid var(--ink)',
+                        paddingBottom: 3,
+                      }}
+                    >
+                      Jag förstår fortfarande inte
                       <span
                         style={{
                           color: 'var(--muted)',
+                          marginLeft: 10,
+                          fontStyle: 'normal',
                           fontFamily: 'var(--font-mono)',
-                          fontWeight: 400,
+                          fontSize: 12,
+                          letterSpacing: '0.06em',
                         }}
                       >
-                        ──
+                        ({reveal.collapsedDetailCount} steg till)
                       </span>
-                      <span>
-                        <MathText>{step.title}</MathText>
-                      </span>
-                    </h3>
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={reveal.collapseAll}
+                      style={{
+                        all: 'unset',
+                        cursor: 'pointer',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 11,
+                        letterSpacing: '0.12em',
+                        textTransform: 'uppercase',
+                        color: 'var(--muted)',
+                      }}
+                    >
+                      ← Korta ner förklaringen
+                    </button>
                   )}
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 'clamp(18px, 0.95rem + 0.45vw, 22px)',
-                      lineHeight: 1.75,
-                      letterSpacing: '-0.008em',
-                      color: 'var(--ink-2)',
-                    }}
-                  >
-                    <MathText>{step.text}</MathText>
-                  </div>
-                </article>
-              ))}
+                </div>
+              )}
 
               {/* Distractors */}
               {explanation.distractors.length > 0 && (
