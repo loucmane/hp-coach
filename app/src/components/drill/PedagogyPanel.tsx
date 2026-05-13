@@ -282,8 +282,12 @@ function PostGradeBody({
 // ── Step rendering ─────────────────────────────────────────────────
 
 /** Reconcile the structured-steps path (A.6+) with the prose-only path
- *  (pre-A.6). Returns an array of ExplanationStep ready for rendering. */
-function resolveSteps(explanation: Explanation): ExplanationStep[] {
+ *  (pre-A.6). Returns an array of ExplanationStep ready for rendering.
+ *
+ *  Exported so the phone ExplanationPanel can render the same
+ *  step-card composition as desktop (Phase A.6V.5 — phone bifurcation
+ *  fix). */
+export function resolveSteps(explanation: Explanation): ExplanationStep[] {
   if (explanation.steps && explanation.steps.length > 0) {
     return explanation.steps
   }
@@ -324,7 +328,15 @@ function splitProseIntoSteps(prose: string): ExplanationStep[] {
   return [{ n: 1, text: prose }]
 }
 
-function StepList({ steps }: { steps: ExplanationStep[] }) {
+/** Render an ordered list of explanation steps as the canonical
+ *  numbered-card composition used in Study Desk's PedagogyPanel.
+ *
+ *  Exported so the phone ExplanationPanel can reuse the same look,
+ *  rather than maintaining a parallel renderer (Phase A.6V.5).
+ *  Single-step explanations render as a plain prose block instead of
+ *  a numbered card — the card framing is overkill when there's
+ *  only one. */
+export function StepList({ steps }: { steps: ExplanationStep[] }) {
   if (steps.length === 0) return null
   if (steps.length === 1) {
     // Single step — render as a plain prose block, not a numbered
@@ -354,7 +366,11 @@ function StepList({ steps }: { steps: ExplanationStep[] }) {
         flexDirection: 'column',
         // A.8.1 — generous step-to-step gap so each step reads as its
         // own moment in the worked example, not as a list item.
-        gap: 20,
+        // A.6V.5 — softened via clamp() so phone widths (where steps
+        // stack inside the expanded ExplanationPanel accordion) get
+        // tighter vertical rhythm; the same component renders happily
+        // at studio width too.
+        gap: 'clamp(14px, 2.5vw, 20px)',
       }}
     >
       {steps.map((step) => (
@@ -364,7 +380,10 @@ function StepList({ steps }: { steps: ExplanationStep[] }) {
   )
 }
 
-function StepCard({ step }: { step: ExplanationStep }) {
+/** Single numbered step card. Exported alongside StepList so callers
+ *  (currently just ExplanationPanel on phone) can compose ad-hoc step
+ *  layouts without a parallel implementation. */
+export function StepCard({ step }: { step: ExplanationStep }) {
   return (
     <li
       data-testid={`pedagogy-step-${step.n}`}

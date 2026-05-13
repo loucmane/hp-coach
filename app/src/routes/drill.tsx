@@ -10,7 +10,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
-import type { Section } from '@/data/questions'
+import { findQuestion, loadBank, type Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
 
 // Sections the drill currently supports. We only list the ones that
@@ -19,14 +19,23 @@ import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
 const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG'] as const
 type DrillSection = (typeof DRILL_SECTIONS)[number]
 
-type DrillSearch = { section?: DrillSection }
+type DrillSearch = { section?: DrillSection; qid?: string }
 
 function validateSearch(input: Record<string, unknown>): DrillSearch {
+  const out: DrillSearch = {}
   const raw = input.section
   if (typeof raw === 'string' && (DRILL_SECTIONS as readonly string[]).includes(raw)) {
-    return { section: raw as DrillSection }
+    out.section = raw as DrillSection
   }
-  return {}
+  // A.6V.4 — `?qid=` direct-link. When present, the drill flow loads
+  // ONLY this one question (single-element plan). Lets the user jump
+  // straight to a specific question for variant-comparison passes or
+  // ad-hoc debugging without re-drilling a full session.
+  const qid = input.qid
+  if (typeof qid === 'string' && qid.length > 0 && qid.length < 80) {
+    out.qid = qid
+  }
+  return out
 }
 
 // Rough drill-time estimates per section. Match the section's pacing
@@ -76,7 +85,7 @@ export const Route = createFileRoute('/drill')({
 })
 
 function DrillScreen() {
-  const { section: sectionFromUrl } = Route.useSearch()
+  const { section: sectionFromUrl, qid } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
 
   const recordMistake = useRecordMistake()
@@ -84,19 +93,33 @@ function DrillScreen() {
   const dueCount = due.data?.length ?? 0
 
   const copy = SECTION_COPY[section]
+  // Direct-link mode: when `?qid=` is set, short-circuit the random
+  // picker and return a single-question plan. SessionPlayer already
+  // handles single-question plans (the state machine doesn't care
+  // about plan length). Bad qids surface as a runtime error from
+  // findQuestion, which SessionPlayer's empty-state catches.
+  const pickQuestions = qid
+    ? () => loadBank().then((b) => [findQuestion(b, qid)])
+    : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
 
   return (
     <SessionPlayer
       sessionKind="drill"
       sections={section}
       activeTab="drill"
-      pickQuestions={() => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)}
-      idleEyebrow="Övning"
-      idleHeadline={copy.headline}
-      idleSubcopy={copy.subcopy}
-      idleMeta={`~ ${SECTION_DURATIONS[section]} minuter · 1 poäng per rätt`}
-      emptyCopy={`Inga ${section}-frågor klara att öva på just nu.`}
-      idleExtra={dueCount > 0 ? <RepetitionHint count={dueCount} /> : null}
+      pickQuestions={pickQuestions}
+      idleEyebrow={qid ? 'Direktlänk' : 'Övning'}
+      idleHeadline={qid ? qid : copy.headline}
+      idleSubcopy={qid ? 'En specifik fråga via ?qid= — för granskning eller debug.' : copy.subcopy}
+      idleMeta={
+        qid
+          ? '1 fråga · ingen sessionsgrad'
+          : `~ ${SECTION_DURATIONS[section]} minuter · 1 poäng per rätt`
+      }
+      emptyCopy={
+        qid ? `Hittade inte frågan ${qid}.` : `Inga ${section}-frågor klara att öva på just nu.`
+      }
+      idleExtra={!qid && dueCount > 0 ? <RepetitionHint count={dueCount} /> : null}
       onWrong={(q) => {
         // Fire-and-forget: a failed mistake-write doesn't block the UX.
         recordMistake.mutate({ questionId: q.qid })

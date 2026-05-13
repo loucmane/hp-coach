@@ -1,0 +1,135 @@
+{
+  "host-2013-kvant1-NOG-026": {
+    "_meta": {
+      "generated_at": 1778672275077,
+      "model": "claude-opus-4-7-via-max-subscription · bake-off-A"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att läsa '24 år yngre' som konkret nog att räkna ut åldern — siffran 24 ser ut som ett svar i sig.",
+        "why_wrong": "24 är en SKILLNAD, inte en ålder. Påstående (1) berättar bara att Anna är 24 år äldre, men inte hur gamla de faktiskt är. Karin kan vara 10 eller 50 — båda passar (1). Steg 4 visar räkneexemplen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 'Anna är dubbelt så gammal som Karin' eftersom förhållandet känns mer konkret än en skillnad — det säger något om vem som är vem.",
+        "why_wrong": "Ett förhållande räcker inte heller: Karin kan vara 5 eller 11 eller 20, och Anna är alltid 2·Karin + 13. Två okända, en ekvation — samma problem som med (1). Steg 6 visar att förhållandet matchar oändligt många åldrar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du översätter både (1) och (2) men aldrig testar dem var för sig, kan det se ut som om båda ensamma räcker — varje ger ju 'en formel'.",
+        "why_wrong": "D kräver att VARDERA påståendet ensamt ger en unik lösning. Här ger varken (1) eller (2) det — båda är ekvationer med två obekanta. Bara TILLSAMMANS bildar de ett lösbart system (steg 7). D är reserverat för fall där två oberoende absoluta värden ges, inte två relationer."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'frågar om ett konkret tal, men jag ser bara relationer — alltså omöjligt'.",
+        "why_wrong": "Två oberoende ekvationer med två obekanta GÅR alltid att lösa (så länge ekvationerna inte är samma ekvation skriven på två sätt). A − K = 24 och A = 2K + 13 är olika typer av relationer (skillnad vs. linjär förhållande), så systemet är lösbart. E gäller bara när påståendena är redundanta eller motsägelsefulla."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Konkreta siffror i påståendena (här '24' och 'dubbelt') lurar studenter att tro att informationen räcker. Räkna antalet ekvationer och antalet obekanta istället för att titta på hur 'fyllig' påståendet ser ut språkligt.",
+    "solution_path": "Båda påståendena behövs: (1) ger åldersskillnaden Anna − Karin = 24 år, (2) ger förhållandet i 2014 där Anna är dubbelt så gammal som Karin. Sätt ihop dem och du löser ut Karin = 11 år 2001 — svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Anna och Karin fyller år samma dag (4 juli). Frågan är: hur gammal var Karin den 4 juli 2001? Vi måste ta reda på Karins ålder vid EN specifik tidpunkt — inte skillnaden, inte förhållandet, utan ett konkret tal.",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Kalla Karins ålder den 4 juli 2001 för K, Annas för A. Eftersom de fyller år samma dag åldras de likadant — varje år som går läggs 1 till båda. Det är nyckelinsikten som låter oss översätta påståendena till ekvationer.",
+        "title": "Sätt upp variablerna"
+      },
+      {
+        "n": 3,
+        "text": "'Den 4 juli 2007 var Karin 24 år yngre än Anna.' År 2007 har båda blivit 6 år äldre, så Karins ålder är K+6 och Annas är A+6. 'Karin är 24 år yngre' betyder att Karins ålder + 24 = Annas ålder, alltså K+6 + 24 = A+6, vilket förenklas till A − K = 24. Annas är alltid 24 år äldre än Karin — åldersskillnaden ändras aldrig.",
+        "title": "Översätt påstående (1) till en ekvation"
+      },
+      {
+        "n": 4,
+        "text": "Vet vi K? Nej. Vi vet bara skillnaden: A − K = 24. Karin kan vara 10 (då Anna är 34), 25 (då Anna är 49), eller 50 (då Anna är 74). Alla är möjliga utifrån (1). En ekvation, två obekanta — alltid otillräckligt för en unik lösning. (1) ensamt går bort.",
+        "title": "Test (1) ensamt — räcker det?"
+      },
+      {
+        "n": 5,
+        "text": "'Den 4 juli 2014 kommer Anna att vara dubbelt så gammal som Karin.' År 2014 har båda blivit 13 år äldre. 'Anna är dubbelt så gammal' betyder Anna = 2·Karin, alltså A+13 = 2(K+13). Multiplicera ut parentesen: A+13 = 2K + 26, vilket förenklas till A = 2K + 13.",
+        "title": "Översätt påstående (2) till en ekvation"
+      },
+      {
+        "n": 6,
+        "text": "Återigen: vet vi K? Nej. Vi har bara en relation mellan A och K vid en framtida tidpunkt. K kan vara 5 (då A=23), 11 (då A=35), 20 (då A=53), osv. En ekvation, två obekanta — fortfarande otillräckligt. (2) ensamt går också bort.",
+        "title": "Test (2) ensamt — räcker det?"
+      },
+      {
+        "n": 7,
+        "text": "Nu har vi TVÅ ekvationer och TVÅ obekanta: A − K = 24 och A = 2K + 13. Substituera den andra in i den första: (2K + 13) − K = 24, vilket ger K + 13 = 24, alltså K = 11. Unik lösning. Tillsammans ger (1) och (2) ett komplett ekvationssystem — svaret är C. Insikten: NOG testar om påståendena ger TILLRÄCKLIGT med oberoende relationer för att låsa fast ALLA obekanta, inte bara om de innehåller siffror.",
+        "title": "Test (1) + (2) tillsammans — slutsats"
+      }
+    ],
+    "technique": "NOG-systemstrategin: översätt varje påstående till en ekvation FÖRST, testa sedan om varje ger en unik lösning ensamt. Två oberoende ekvationer + två obekanta = lösbart system; en ekvation med två obekanta = alltid otillräckligt; två ekvationer som säger samma sak = också otillräckligt."
+  },
+  "host-2013-kvant2-KVA-016": {
+    "_meta": {
+      "generated_at": 1778672275077,
+      "model": "claude-opus-4-7-via-max-subscription · bake-off-A"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att se -2a^{2}-termen i Kvantitet I och tro att den gör I större eftersom II 'bara' har en parentes utan tydligt minustecken framför.",
+        "why_wrong": "När du faktiskt distribuerar a in i II:s parentes (steg 6) får du exakt samma -a^{2}-term som i I. Algebran är identisk — formen ljuger om innehållet."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som 'parentes med minus inuti ger negativt bidrag' kan du tro att II:s a(b - 2a) drar ner II under I.",
+        "why_wrong": "Båda uttrycken har samma negativa term (-a^{2}) efter förenkling — ingen är 'mer negativt' än den andra. Multiplicera ut och se."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är lätt att tro att man behöver veta tecknet på a eller ett specifikt värde innan man kan jämföra.",
+        "why_wrong": "Det behövs inte: uttrycken är algebraiskt identiska, så likheten gäller oavsett vad a är (positivt, negativt, noll). När båda kvantiteterna förenklas till exakt samma uttryck är D fel — D är reserverat för fall där villkoret är otillräckligt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Två uttryck som SER olika ut innan förenkling kan vara identiska efter algebran. KVA väljer ofta att skriva I och II i olika form (utvecklat vs. parentes) för att fresta studenter att gissa A eller B utifrån formen istället för att räkna.",
+    "solution_path": "Substituera b = a + 1 i båda kvantiteterna och förenkla. Båda blir a - a^{2} — alltså lika, svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du får villkoret b = a + 1 (b är alltid ett mer än a). Två uttryck att jämföra. Båda innehåller både a och b — det är b vi ska göra oss av med så att vi kan jämföra direkt.",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "När du har ett villkor och två uttryck med flera variabler, byt ut villkorets variabel överallt. Då har du bara EN variabel kvar (a) och kan jämföra utan att gissa värden. Detta är Substitutionsstrategin — KVA:s vanligaste teknik.",
+        "title": "Välj strategi"
+      },
+      {
+        "n": 3,
+        "text": "Kvantitet I är ab - 2a^{2}. Eftersom b = a+1 blir ab samma sak som a·(a+1). Hela uttrycket: a(a+1) - 2a^{2}. Vi har gjort oss av med b.",
+        "title": "Byt ut b i Kvantitet I"
+      },
+      {
+        "n": 4,
+        "text": "Multiplikation betyder att gångra varje term inuti parentesen med a: a \\cdot (a+1) = a \\cdot a + a \\cdot 1 = a^{2} + a. Kvantitet I blir nu a^{2} + a - 2a^{2}.",
+        "title": "Multiplicera ut parentesen i I"
+      },
+      {
+        "n": 5,
+        "text": "a^{2} - 2a^{2} = -a^{2} (en kvadrat minus två kvadrater blir minus en kvadrat — precis som med vanliga tal). Kvantitet I förenklas till a - a^{2}.",
+        "title": "Slå ihop liknande termer i I"
+      },
+      {
+        "n": 6,
+        "text": "Kvantitet II är a(b - 2a). Byt ut b: a(a + 1 - 2a) = a(1 - a). Multiplicera ut: a \\cdot 1 - a \\cdot a = a - a^{2}.",
+        "title": "Samma drill för Kvantitet II"
+      },
+      {
+        "n": 7,
+        "text": "Kvantitet I = a - a^{2}. Kvantitet II = a - a^{2}. Identiska, oavsett vad a är — svaret är C. KVA testar nästan alltid om du faktiskt gör algebran eller bara tittar på formen; A och B är ofta visuella fällor när uttrycken ser olika ut men förenklas till samma sak.",
+        "title": "Jämför och dra slutsats"
+      }
+    ],
+    "technique": "Substitutionsstrategin: när du har ett villkor (t.ex. b = a + 1) och två kvantiteter med flera variabler, byt ut villkorets variabel överallt och förenkla. Då har du bara en variabel kvar och kan jämföra direkt — utan att gissa värden."
+  }
+}

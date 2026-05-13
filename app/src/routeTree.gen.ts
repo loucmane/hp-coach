@@ -18,6 +18,7 @@ import { Route as DevRouteImport } from './routes/dev'
 import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AvanceratRouteImport } from './routes/avancerat'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DevExplanationBakeOffRouteImport } from './routes/dev.explanation-bake-off'
 
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
@@ -64,40 +65,48 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevExplanationBakeOffRoute = DevExplanationBakeOffRouteImport.update({
+  id: '/explanation-bake-off',
+  path: '/explanation-bake-off',
+  getParentRoute: () => DevRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
-  '/dev': typeof DevRoute
+  '/dev': typeof DevRouteWithChildren
   '/drill': typeof DrillRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/dev/explanation-bake-off': typeof DevExplanationBakeOffRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
-  '/dev': typeof DevRoute
+  '/dev': typeof DevRouteWithChildren
   '/drill': typeof DrillRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/dev/explanation-bake-off': typeof DevExplanationBakeOffRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
-  '/dev': typeof DevRoute
+  '/dev': typeof DevRouteWithChildren
   '/drill': typeof DrillRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/dev/explanation-bake-off': typeof DevExplanationBakeOffRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/repetition'
     | '/sign-in'
     | '/sign-up'
+    | '/dev/explanation-bake-off'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/repetition'
     | '/sign-in'
     | '/sign-up'
+    | '/dev/explanation-bake-off'
   id:
     | '__root__'
     | '/'
@@ -133,13 +144,14 @@ export interface FileRouteTypes {
     | '/repetition'
     | '/sign-in'
     | '/sign-up'
+    | '/dev/explanation-bake-off'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AvanceratRoute: typeof AvanceratRoute
   CoachRoute: typeof CoachRoute
-  DevRoute: typeof DevRoute
+  DevRoute: typeof DevRouteWithChildren
   DrillRoute: typeof DrillRoute
   ProgressRoute: typeof ProgressRoute
   RepetitionRoute: typeof RepetitionRoute
@@ -212,14 +224,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dev/explanation-bake-off': {
+      id: '/dev/explanation-bake-off'
+      path: '/explanation-bake-off'
+      fullPath: '/dev/explanation-bake-off'
+      preLoaderRoute: typeof DevExplanationBakeOffRouteImport
+      parentRoute: typeof DevRoute
+    }
   }
 }
+
+interface DevRouteChildren {
+  DevExplanationBakeOffRoute: typeof DevExplanationBakeOffRoute
+}
+
+const DevRouteChildren: DevRouteChildren = {
+  DevExplanationBakeOffRoute: DevExplanationBakeOffRoute,
+}
+
+const DevRouteWithChildren = DevRoute._addFileChildren(DevRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AvanceratRoute: AvanceratRoute,
   CoachRoute: CoachRoute,
-  DevRoute: DevRoute,
+  DevRoute: DevRouteWithChildren,
   DrillRoute: DrillRoute,
   ProgressRoute: ProgressRoute,
   RepetitionRoute: RepetitionRoute,
