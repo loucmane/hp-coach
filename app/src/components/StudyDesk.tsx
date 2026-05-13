@@ -78,7 +78,14 @@ function StandardLayout({ question, picked, graded, onPick }: Props) {
         // uses minmax + auto-fit semantics via a manual breakpoint —
         // we'd love a pure @container query but inline styles don't
         // support those. The fallback under 960px just stacks.
-        gridTemplateColumns: 'minmax(0, 1.4fr) minmax(0, 1fr)',
+        //
+        // Phase A.6V update: flipped the ratio. Was 1.4fr : 1fr
+        // (question wider than pedagogy), now 1.15fr : 1.25fr —
+        // pedagogy slightly wider. The question column carries a
+        // short headword + 5 option pills (sparse). The pedagogy
+        // column carries 12+ step cards + distractors + technique +
+        // pitfall (dense). Dense content benefits from width.
+        gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 1.25fr)',
         gap: 'clamp(20px, 2vw, 40px)',
         padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) 100px',
         overflowY: 'auto',
