@@ -237,6 +237,16 @@ body::before {
   background: transparent;
 }
 
+/* Used on sticky-pinned columns (StudyDesk's question column) whose
+ * internal overflow:auto exists only as a safety net for very tall
+ * content — showing track chrome on a column that's effectively a
+ * panel competes with the page-body scrollbar and reads as visual
+ * noise. Pairs with inline `scrollbar-width: none` for Firefox. */
+.hpc-scrollbar-ghost::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 @layer base {
   body {
     @apply bg-bg text-ink;

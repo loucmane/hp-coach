@@ -199,9 +199,24 @@ function StatusLine({ status, isPhone }: { status: StatusLineProps; isPhone: boo
     <footer
       data-testid="status-line"
       style={{
+        // Sticky-bottom: the vim-mode bar is navigation context;
+        // losing it on scroll loses the affordance the bar exists for.
+        // Sticky (not fixed) so it stays within the canvas's max-width
+        // bounds instead of going full-bleed; backdrop blur + 88% bg
+        // tint creates the editorial "content slides under frosted
+        // bar" effect rather than a hard-edged opaque footer.
+        position: 'sticky',
+        bottom: 0,
+        zIndex: 10,
         padding: isPhone ? '8px var(--pad-lg)' : '10px clamp(28px, 4vw, 64px)',
         borderTop: '1px solid var(--hairline)',
-        background: 'color-mix(in oklch, var(--bg) 96%, var(--ink) 4%)',
+        background: 'color-mix(in oklch, var(--bg) 88%, transparent)',
+        backdropFilter: 'saturate(140%) blur(10px)',
+        WebkitBackdropFilter: 'saturate(140%) blur(10px)',
+        // Faint upward shadow articulates the bar as a layer above
+        // content sliding underneath. Editorial detail — barely
+        // perceptible at rest, comes alive on motion.
+        boxShadow: '0 -8px 24px -16px rgba(0, 0, 0, 0.12)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
