@@ -144,11 +144,20 @@ def main():
     counts = defaultdict(int)
     files_changed = []
 
-    # Walk all three corpus sources
+    # Walk all corpus sources, including the SPA-served copy.
+    #
+    # app/public/data was missed by the original Phase D.1 pass (commit
+    # 574b88e). The Phase B parser re-run (2ca24eb, "Scale parser to all
+    # 27 exams") regenerated those files from scratch without rerunning
+    # the typo pass, so 'Kvanttiet' (294 instances) and 'otlilräcklig'
+    # (294 instances) came back at the parser source. Cover it here too;
+    # parser/build_all.py invokes this script as a post-parse step
+    # (Phase D.1.5) so future re-parses stay clean.
     targets = [
         ('data/explanations', '*.json'),
         ('data/parsed', '*.json'),
         ('frameworks', '*.json'),
+        ('app/public/data', '*.json'),
     ]
     for dirpath, pattern in targets:
         d = ROOT / dirpath
