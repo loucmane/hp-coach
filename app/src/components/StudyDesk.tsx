@@ -88,10 +88,16 @@ function StandardLayout({ question, picked, graded, onPick }: Props) {
         gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 1.25fr)',
         gap: 'clamp(20px, 2vw, 40px)',
         padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) 100px',
-        overflowY: 'auto',
+        // A.6V dual-scroll: the OUTER container is fixed-height (no
+        // overflow); each column scrolls independently. Asymmetric
+        // content shape — short reference question vs. long reading
+        // pedagogy — benefits from the question staying persistently
+        // visible while the user scrolls into the explanation. Same
+        // pattern as Notion / Linear / Stripe Press editorial layouts.
+        overflow: 'hidden',
       }}
     >
-      <div style={{ minWidth: 0 }}>
+      <div style={{ minWidth: 0, height: '100%', minHeight: 0 }}>
         <DrillQuestion
           question={question}
           picked={picked}
@@ -100,7 +106,17 @@ function StandardLayout({ question, picked, graded, onPick }: Props) {
           renderExplanation={false}
         />
       </div>
-      <div style={{ minWidth: 0, position: 'sticky', top: 'clamp(8px, 1vh, 24px)' }}>
+      <div
+        style={{
+          minWidth: 0,
+          height: '100%',
+          minHeight: 0,
+          overflowY: 'auto',
+          // Subtle padding so the pedagogy panel's first line doesn't
+          // hug the column top when the user scrolls back to it.
+          paddingTop: 'clamp(8px, 1vh, 24px)',
+        }}
+      >
         <PedagogyPanel qid={question.qid} graded={graded} correct={picked === question.answer} />
       </div>
     </div>
@@ -127,17 +143,19 @@ function PassageLayout({ question, picked, graded, onPick }: Props) {
         gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr)',
         gap: 'clamp(20px, 2vw, 40px)',
         padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) 100px',
-        overflowY: 'auto',
+        // A.6V dual-scroll: each of the three columns scrolls
+        // independently. The passage stays visible while the student
+        // works through options; the question stays visible while
+        // they read the pedagogy walk-through.
+        overflow: 'hidden',
       }}
     >
       <aside
         data-testid="passage-column"
         style={{
           minWidth: 0,
-          position: 'sticky',
-          top: 'clamp(8px, 1vh, 24px)',
-          alignSelf: 'flex-start',
-          maxHeight: 'calc(100vh - 120px)',
+          height: '100%',
+          minHeight: 0,
           overflowY: 'auto',
           padding: '16px 18px',
           background: 'var(--panel-2)',
@@ -152,7 +170,7 @@ function PassageLayout({ question, picked, graded, onPick }: Props) {
       >
         {question.context}
       </aside>
-      <div style={{ minWidth: 0 }}>
+      <div style={{ minWidth: 0, height: '100%', minHeight: 0 }}>
         {/* DrillQuestion still renders the passage internally as a
          *  fallback (it doesn't know we're hiding it). We hide its
          *  passage via a small CSS override targeting the testid. */}
@@ -167,7 +185,15 @@ function PassageLayout({ question, picked, graded, onPick }: Props) {
           renderExplanation={false}
         />
       </div>
-      <div style={{ minWidth: 0, position: 'sticky', top: 'clamp(8px, 1vh, 24px)' }}>
+      <div
+        style={{
+          minWidth: 0,
+          height: '100%',
+          minHeight: 0,
+          overflowY: 'auto',
+          paddingTop: 'clamp(8px, 1vh, 24px)',
+        }}
+      >
         <PedagogyPanel qid={question.qid} graded={graded} correct={picked === question.answer} />
       </div>
     </div>
