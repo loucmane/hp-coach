@@ -21,6 +21,7 @@ import { Frame } from '@/components/Frame'
 import { Mono } from '@/components/primitives'
 import { ShareDebugButton } from '@/components/ShareDebugButton'
 import { TweaksLauncher } from '@/components/TweaksLauncher'
+import { isWelcomed } from '@/lib/welcome'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
 
 export const Route = createRootRoute({
@@ -81,8 +82,22 @@ function AuthRouter() {
 // Hydration of server prefs into local stores happens here, inside <SignedIn>
 // — useUserPrefs requires a Clerk session, so this hook is only safe to mount
 // after we've confirmed the user is authenticated.
+//
+// Phase A.6V — also gates the first-time welcome picker. If the user
+// hasn't clicked through /welcome yet, redirect them there before
+// rendering the rest of the app. Existing dogfood state in `hpc-ui`
+// implies welcomed, so we treat the `hpc-welcomed` flag as the
+// canonical signal (one-way: set on continue, never cleared).
 function SignedInTree() {
   useHydratePrefs()
+  const navigate = useNavigate()
+  const location = useLocation()
+  useEffect(() => {
+    if (location.pathname === '/welcome') return
+    if (!isWelcomed()) {
+      navigate({ to: '/welcome' })
+    }
+  }, [navigate, location.pathname])
   return <Outlet />
 }
 
