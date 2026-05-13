@@ -382,11 +382,38 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // `drillLayout` is read at the top of the component (above the
   // idle/done early returns) — see docs/edition-strip.md.
   const useStudyDesk = viewport !== 'phone'
-  // Phase A.8 EDITION: status-line context and folio carry the
-  // section + question count, so DrillProgress (the visible eyebrow)
-  // can be tight against the headword instead of orphaned at the top
-  // of the canvas. The Page's bottom status line shows the running
-  // progress bar.
+  // Phase A.6V — at desktop, the picked drill layout (StyleA/B/C) is
+  // a full-bleed experience that owns its own running head, status
+  // line, and CTA. Wrapping it in Page.tsx's chrome would double-
+  // chrome the page (two running heads, two status lines, two CTAs
+  // stacked) and squash the variant inside a constrained canvas. So
+  // when useStudyDesk is true we bypass Page entirely and let the
+  // variant fill the artboard.
+  //
+  // The EditionStrip picker is still reachable on every other Page-
+  // wrapped surface (drill idle, drill done, home, repetition,
+  // progress, dev). The drill flow itself is a focus mode.
+  if (useStudyDesk) {
+    return (
+      <MobileFrame tabs={false}>
+        {renderLayoutByEdition({
+          layout: drillLayout,
+          question: q,
+          picked,
+          graded: phase === 'graded',
+          correct: picked === q.answer,
+          onPick,
+          onAdvance: onNext,
+        })}
+      </MobileFrame>
+    )
+  }
+
+  // Phase A.8 EDITION (phone path): status-line context and folio
+  // carry the section + question count, so DrillProgress (the
+  // visible eyebrow) can be tight against the headword instead of
+  // orphaned at the top of the canvas. The Page's bottom status line
+  // shows the running progress bar.
   const drillBody = (
     <div
       style={{
