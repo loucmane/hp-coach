@@ -14,6 +14,10 @@ import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as RepetitionRouteImport } from './routes/repetition'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as ExplanationBakeOffRouteImport } from './routes/explanation-bake-off'
+import { Route as DrillStyleCRouteImport } from './routes/drill-style-c'
+import { Route as DrillStyleBRouteImport } from './routes/drill-style-b'
+import { Route as DrillStyleARouteImport } from './routes/drill-style-a'
+import { Route as DrillBakeOffRouteImport } from './routes/drill-bake-off'
 import { Route as DrillRouteImport } from './routes/drill'
 import { Route as DevRouteImport } from './routes/dev'
 import { Route as CoachRouteImport } from './routes/coach'
@@ -43,6 +47,26 @@ const ProgressRoute = ProgressRouteImport.update({
 const ExplanationBakeOffRoute = ExplanationBakeOffRouteImport.update({
   id: '/explanation-bake-off',
   path: '/explanation-bake-off',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DrillStyleCRoute = DrillStyleCRouteImport.update({
+  id: '/drill-style-c',
+  path: '/drill-style-c',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DrillStyleBRoute = DrillStyleBRouteImport.update({
+  id: '/drill-style-b',
+  path: '/drill-style-b',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DrillStyleARoute = DrillStyleARouteImport.update({
+  id: '/drill-style-a',
+  path: '/drill-style-a',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DrillBakeOffRoute = DrillBakeOffRouteImport.update({
+  id: '/drill-bake-off',
+  path: '/drill-bake-off',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DrillRoute = DrillRouteImport.update({
@@ -77,6 +101,10 @@ export interface FileRoutesByFullPath {
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
+  '/drill-bake-off': typeof DrillBakeOffRoute
+  '/drill-style-a': typeof DrillStyleARoute
+  '/drill-style-b': typeof DrillStyleBRoute
+  '/drill-style-c': typeof DrillStyleCRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
@@ -89,6 +117,10 @@ export interface FileRoutesByTo {
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
+  '/drill-bake-off': typeof DrillBakeOffRoute
+  '/drill-style-a': typeof DrillStyleARoute
+  '/drill-style-b': typeof DrillStyleBRoute
+  '/drill-style-c': typeof DrillStyleCRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
@@ -102,6 +134,10 @@ export interface FileRoutesById {
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
+  '/drill-bake-off': typeof DrillBakeOffRoute
+  '/drill-style-a': typeof DrillStyleARoute
+  '/drill-style-b': typeof DrillStyleBRoute
+  '/drill-style-c': typeof DrillStyleCRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
@@ -116,6 +152,10 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/drill'
+    | '/drill-bake-off'
+    | '/drill-style-a'
+    | '/drill-style-b'
+    | '/drill-style-c'
     | '/explanation-bake-off'
     | '/progress'
     | '/repetition'
@@ -128,6 +168,10 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/drill'
+    | '/drill-bake-off'
+    | '/drill-style-a'
+    | '/drill-style-b'
+    | '/drill-style-c'
     | '/explanation-bake-off'
     | '/progress'
     | '/repetition'
@@ -140,6 +184,10 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/drill'
+    | '/drill-bake-off'
+    | '/drill-style-a'
+    | '/drill-style-b'
+    | '/drill-style-c'
     | '/explanation-bake-off'
     | '/progress'
     | '/repetition'
@@ -153,6 +201,10 @@ export interface RootRouteChildren {
   CoachRoute: typeof CoachRoute
   DevRoute: typeof DevRoute
   DrillRoute: typeof DrillRoute
+  DrillBakeOffRoute: typeof DrillBakeOffRoute
+  DrillStyleARoute: typeof DrillStyleARoute
+  DrillStyleBRoute: typeof DrillStyleBRoute
+  DrillStyleCRoute: typeof DrillStyleCRoute
   ExplanationBakeOffRoute: typeof ExplanationBakeOffRoute
   ProgressRoute: typeof ProgressRoute
   RepetitionRoute: typeof RepetitionRoute
@@ -195,6 +247,34 @@ declare module '@tanstack/react-router' {
       path: '/explanation-bake-off'
       fullPath: '/explanation-bake-off'
       preLoaderRoute: typeof ExplanationBakeOffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drill-style-c': {
+      id: '/drill-style-c'
+      path: '/drill-style-c'
+      fullPath: '/drill-style-c'
+      preLoaderRoute: typeof DrillStyleCRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drill-style-b': {
+      id: '/drill-style-b'
+      path: '/drill-style-b'
+      fullPath: '/drill-style-b'
+      preLoaderRoute: typeof DrillStyleBRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drill-style-a': {
+      id: '/drill-style-a'
+      path: '/drill-style-a'
+      fullPath: '/drill-style-a'
+      preLoaderRoute: typeof DrillStyleARouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drill-bake-off': {
+      id: '/drill-bake-off'
+      path: '/drill-bake-off'
+      fullPath: '/drill-bake-off'
+      preLoaderRoute: typeof DrillBakeOffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/drill': {
@@ -241,6 +321,10 @@ const rootRouteChildren: RootRouteChildren = {
   CoachRoute: CoachRoute,
   DevRoute: DevRoute,
   DrillRoute: DrillRoute,
+  DrillBakeOffRoute: DrillBakeOffRoute,
+  DrillStyleARoute: DrillStyleARoute,
+  DrillStyleBRoute: DrillStyleBRoute,
+  DrillStyleCRoute: DrillStyleCRoute,
   ExplanationBakeOffRoute: ExplanationBakeOffRoute,
   ProgressRoute: ProgressRoute,
   RepetitionRoute: RepetitionRoute,
