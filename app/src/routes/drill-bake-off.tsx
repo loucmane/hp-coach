@@ -48,11 +48,11 @@ const VARIANTS: Variant[] = [
   {
     slug: 'b',
     href: '/drill-style-b',
-    label: 'B · Reader Single-Column',
-    tagline: 'Sidofältet dör · fråga som pinned strip · pedagogik 720px reading column',
+    label: 'B · Workbook',
+    tagline: 'Övningshäfte-estetik · spine med hålslag · checkbox-alternativ · dubbla rules',
     thesis:
-      'Döda 2-kolumn-splitten. Frågan blir en tunn pinned-strip överst (~140px) med inline option-pills. Pedagogiken är EN bred reading-column under, 22px Newsreader / 1.75. Inga flytande knappar. Inline "Nästa →" i slutet. Status line har 2-rad state-machine.',
-    signature: '01 ── Pythagoras i två rörelser  (hängande mono-nummer + em-dash)',
+      'Sidan från ett HP-övningshäfte: tre hålslag i ryggen, vertikal margin-linje, allcaps mono-rubriker (FRÅGA 1 / FÖRKLARING / VARFÖR INTE DE ANDRA / TEKNIK / FÄLLA), kryssruta-alternativ (☐ → ☑ vid val), dubbel-rule sektionsdividerare, "✓ Klar — nästa fråga" footer. Verktygsregistret, inte publikationsregistret.',
+    signature: 'Spine med hålslag + dubbel-rule sektionsdividerare + kryssruta-alternativ',
   },
   {
     slug: 'c',

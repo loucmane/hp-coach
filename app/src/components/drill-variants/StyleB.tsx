@@ -1,18 +1,33 @@
-// Style B — Reader Single-Column.
+// Style B v4 — Workbook.
 //
-// Thesis: kill the sidebar. The 2-column split fights reading flow.
-// The question becomes a compact pinned strip at the top (one tight
-// band with prompt + option pills inline), the pedagogy is one wide,
-// generous reading column below. Maximum measure, maximum line-height,
-// maximum focus. No floating CTA — inline at end of pedagogy +
-// keyboard hint in status line.
+// Visual metaphor: a page from a printed HP study booklet. Three
+// hole punches at the spine, vertical margin line, all-caps mono
+// section headers, checkbox option marks, double-rule dividers,
+// "Klar! → nästa" footer. The aesthetic of an actual paper exam
+// practice booklet — what a student would scribble on with a
+// pencil — but fully interactive.
 //
-// Substack × Khan Academy × Notion reading register.
+// This is genuinely different from A (Editorial 2-column) and C
+// (Cockpit Terminal). The workbook has PERSONALITY: it's the
+// "education tool" register, not the "refined publication" or
+// "power-user interface" registers. It looks like a tool for
+// learning, not for reading or operating.
 
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
 import { useProgressiveReveal } from './useProgressiveReveal'
+
+const SECTION_LABEL: Record<string, string> = {
+  ORD: 'SYNONYMER',
+  LÄS: 'LÄSFÖRSTÅELSE',
+  MEK: 'MENINGSKOMPLETTERING',
+  ELF: 'ENGLISH READING',
+  XYZ: 'ALGEBRA',
+  KVA: 'KVANTITATIV JÄMFÖRELSE',
+  NOG: 'SUFFICIENS',
+  DTK: 'DIAGRAM, TABELLER & KARTOR',
+}
 
 export function StyleB({
   question,
@@ -35,7 +50,7 @@ export function StyleB({
         flexDirection: 'column',
       }}
     >
-      {/* Running head — solid bg, sticky. */}
+      {/* Chrome strip — minimal, mono, workbook header. */}
       <header
         style={{
           position: 'sticky',
@@ -43,595 +58,553 @@ export function StyleB({
           zIndex: 11,
           background: 'var(--bg)',
           borderBottom: '1px solid var(--hairline)',
-          padding: 'clamp(16px, 1.8vh, 24px) clamp(24px, 4vw, 48px) 10px',
+          padding: 'clamp(16px, 1.8vh, 24px) clamp(32px, 5vw, 64px) 10px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'baseline',
           gap: 16,
-          maxWidth: 880,
-          margin: '0 auto',
-          width: '100%',
           fontFamily: 'var(--font-mono)',
           fontSize: 11,
-          letterSpacing: '0.14em',
+          letterSpacing: '0.16em',
           textTransform: 'uppercase',
-          color: 'var(--ink)',
+          color: 'var(--muted)',
         }}
       >
-        <span>HP · COACH · {question.section}</span>
+        <span>HP · Coach · Övningshäfte</span>
         <span
           style={{
             fontSize: 10,
             letterSpacing: '0.08em',
-            color: 'var(--muted)',
             fontVariantNumeric: 'tabular-nums',
             textTransform: 'none',
           }}
         >
-          pp. 1 / 1
+          sida 1 av 1
         </span>
       </header>
 
-      {/* B v2 — generous "chapter opening" composition pre-grade,
-       *  compresses to a single quiet summary line post-grade so the
-       *  pedagogy below has room. The opener is sticky so the user
-       *  can re-anchor on the prompt at any point during the read. */}
-      <section
-        style={{
-          position: 'sticky',
-          top: 'clamp(48px, 6vh, 70px)',
-          zIndex: 9,
-          background: 'var(--bg)',
-          borderBottom: '1px solid var(--hairline)',
-          padding: graded
-            ? '18px clamp(24px, 4vw, 48px) 16px'
-            : 'clamp(28px, 4vh, 48px) clamp(24px, 4vw, 48px) clamp(20px, 3vh, 32px)',
-          maxWidth: 760,
-          margin: '0 auto',
-          width: '100%',
-          transition: 'padding 280ms cubic-bezier(0.16, 1, 0.3, 1)',
-        }}
-      >
-        {/* Eyebrow — section ID. Always present. */}
-        <p
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 11,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'var(--muted)',
-            margin: 0,
-            marginBottom: graded ? 8 : 14,
-            transition: 'margin-bottom 280ms cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-        >
-          {question.section} · fråga 1 / 1
-        </p>
-
-        {/* Prompt — generous when answering, compressed when graded.
-         *  Display serif, real reading size — this is the question
-         *  asked, not a navigation breadcrumb. */}
-        <h1
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: graded
-              ? 'clamp(17px, 0.9rem + 0.35vw, 20px)'
-              : 'clamp(22px, 1.1rem + 0.6vw, 30px)',
-            lineHeight: graded ? 1.35 : 1.25,
-            letterSpacing: '-0.018em',
-            fontWeight: 500,
-            margin: 0,
-            marginBottom: graded ? 10 : 28,
-            whiteSpace: 'pre-wrap',
-            color: graded ? 'var(--ink-2)' : 'var(--ink)',
-            transition:
-              'font-size 280ms cubic-bezier(0.16, 1, 0.3, 1), margin-bottom 280ms, color 280ms',
-          }}
-        >
-          <MathText>{question.prompt ?? ''}</MathText>
-        </h1>
-
-        {/* Options — flat hairline rows (matches Editorial register).
-         *  Pre-grade: full list with letter + text. Post-grade: a
-         *  single quiet summary row showing the picked answer + the
-         *  correct one if different. */}
-        {!graded && question.options && (
-          <ol
-            style={{
-              listStyle: 'none',
-              padding: 0,
-              margin: 0,
-              borderTop: '1px solid color-mix(in oklch, var(--hairline) 60%, transparent)',
-            }}
-          >
-            {question.options.map((opt) => {
-              const isPicked = picked === opt.letter
-              return (
-                <li
-                  key={opt.letter}
-                  style={{
-                    borderBottom: '1px solid color-mix(in oklch, var(--hairline) 60%, transparent)',
-                  }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => onPick(opt.letter)}
-                    style={{
-                      all: 'unset',
-                      cursor: 'pointer',
-                      display: 'grid',
-                      gridTemplateColumns: '32px 1fr',
-                      gap: 16,
-                      alignItems: 'baseline',
-                      padding: '14px 0',
-                      width: '100%',
-                      borderLeft: `2px solid ${isPicked ? 'var(--ink)' : 'transparent'}`,
-                      paddingLeft: 12,
-                      marginLeft: -14,
-                      transition: 'border-color 180ms cubic-bezier(0.16, 1, 0.3, 1)',
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 12,
-                        letterSpacing: '0.04em',
-                        fontWeight: isPicked ? 600 : 500,
-                        color: isPicked ? 'var(--ink)' : 'var(--muted)',
-                        fontVariantNumeric: 'tabular-nums',
-                      }}
-                    >
-                      {opt.letter.toLowerCase()}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: 'clamp(16px, 0.9rem + 0.3vw, 18px)',
-                        lineHeight: 1.45,
-                        letterSpacing: '-0.005em',
-                        fontWeight: isPicked ? 500 : 400,
-                        color: 'var(--ink)',
-                      }}
-                    >
-                      <MathText>{opt.text}</MathText>
-                    </span>
-                  </button>
-                </li>
-              )
-            })}
-          </ol>
-        )}
-        {graded && (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'baseline',
-              gap: 14,
-              fontFamily: 'var(--font-mono)',
-              fontSize: 12,
-              letterSpacing: '0.06em',
-            }}
-          >
-            <span style={{ color: correct ? 'var(--accent)' : 'var(--bad)' }}>
-              ditt svar: [{(picked ?? '').toLowerCase()}] {correct ? 'rätt' : 'fel'}
-            </span>
-            {!correct && (
-              <span style={{ color: 'var(--accent)' }}>
-                facit: [{question.answer.toLowerCase()}]
-              </span>
-            )}
-            <span style={{ marginLeft: 'auto', color: 'var(--muted)' }}>
-              <button
-                type="button"
-                onClick={onReset}
-                style={{
-                  all: 'unset',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  fontSize: 'inherit',
-                  letterSpacing: 'inherit',
-                  color: 'var(--muted)',
-                }}
-              >
-                ← börja om
-              </button>
-            </span>
-          </div>
-        )}
-      </section>
-
-      {/* Pedagogy — one generous reading column. */}
+      {/* The workbook page. Wide content area, left-spine treatment. */}
       <main
         style={{
           flex: 1,
-          maxWidth: 760,
-          margin: '0 auto',
           width: '100%',
-          padding: 'clamp(40px, 6vh, 80px) clamp(24px, 4vw, 48px) clamp(120px, 14vh, 180px)',
+          maxWidth: 1080,
+          margin: '0 auto',
+          padding: 'clamp(40px, 5vh, 64px) clamp(24px, 4vw, 48px) clamp(80px, 10vh, 120px)',
+          display: 'grid',
+          gridTemplateColumns: 'auto 1fr',
+          gap: 'clamp(28px, 4vw, 56px)',
+          alignItems: 'start',
         }}
       >
-        {!graded ? (
-          <p
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 19,
-              lineHeight: 1.75,
-              color: 'var(--muted)',
-              fontStyle: 'italic',
-              opacity: 0.7,
-            }}
-          >
-            Förklaringen visas när du svarat.
-          </p>
-        ) : (
-          explanation && (
-            <div style={{ animation: 'hpc-reveal 220ms cubic-bezier(0.16, 1, 0.3, 1) both' }}>
-              {steps.map((step) => {
-                const isDetail = (step.tier ?? 'essential') === 'detail'
-                const isCollapsed = reveal.isCollapsedDetail(step)
-                // Collapsed detail = a single-row preview: "03 ── title  →  se mer"
-                if (isCollapsed) {
+        {/* Spine — vertical margin line + three hole punches.
+         *  Signature workbook detail. The hole punches are subtle
+         *  outlined circles (not filled) to read as paper detail,
+         *  not as decoration. */}
+        <aside
+          aria-hidden
+          style={{
+            position: 'sticky',
+            top: 'clamp(80px, 9vh, 112px)',
+            alignSelf: 'start',
+            width: 28,
+            height: 'fit-content',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 'clamp(140px, 22vh, 200px)',
+            paddingTop: 20,
+          }}
+        >
+          {[0, 1, 2].map((i) => (
+            <span
+              // biome-ignore lint/suspicious/noArrayIndexKey: decorative hole punches
+              key={i}
+              style={{
+                width: 14,
+                height: 14,
+                borderRadius: '50%',
+                border: '1.5px solid var(--hairline)',
+                background: 'color-mix(in oklch, var(--panel-2) 60%, transparent)',
+              }}
+            />
+          ))}
+        </aside>
+
+        {/* The actual workbook content. Left-bordered by a soft
+         *  vertical rule that runs the full length of the page. */}
+        <article
+          style={{
+            position: 'relative',
+            paddingLeft: 'clamp(24px, 3vw, 40px)',
+            borderLeft: '1px solid var(--hairline)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(28px, 4vh, 48px)',
+          }}
+        >
+          {/* ── FRÅGA section ────────────────────────────────────── */}
+          <section>
+            <SectionHeader
+              label="FRÅGA 1"
+              meta={`${SECTION_LABEL[question.section] ?? question.section}  ·  ${question.qid}`}
+            />
+
+            <h1
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(22px, 1.1rem + 0.6vw, 28px)',
+                lineHeight: 1.3,
+                letterSpacing: '-0.015em',
+                fontWeight: 500,
+                margin: 0,
+                marginBottom: 28,
+                whiteSpace: 'pre-wrap',
+              }}
+            >
+              <MathText>{question.prompt ?? ''}</MathText>
+            </h1>
+
+            {/* Options as checkbox-prefixed rows. */}
+            {question.options && (
+              <ol style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {question.options.map((opt) => {
+                  const isPicked = picked === opt.letter
+                  const isCorrect = graded && opt.letter === question.answer
+                  const isWrong = graded && isPicked && !correct
                   return (
-                    <button
-                      key={step.n}
-                      type="button"
-                      onClick={() => reveal.expandDetail(step.n)}
+                    <li
+                      key={opt.letter}
                       style={{
-                        all: 'unset',
-                        cursor: 'pointer',
-                        display: 'flex',
+                        display: 'grid',
+                        gridTemplateColumns: '32px 24px 1fr',
+                        gap: 14,
                         alignItems: 'baseline',
-                        gap: 12,
-                        marginBottom: 'clamp(20px, 3vh, 32px)',
-                        paddingBottom: 14,
-                        borderBottom:
-                          '1px dashed color-mix(in oklch, var(--hairline) 60%, transparent)',
-                        width: '100%',
+                        padding: '10px 0',
+                        opacity: graded && !isPicked && !isCorrect ? 0.4 : 1,
+                        transition: 'opacity 200ms',
                       }}
                     >
                       <span
                         style={{
                           fontFamily: 'var(--font-mono)',
-                          fontSize: 12,
-                          letterSpacing: '0.06em',
+                          fontSize: 13,
+                          letterSpacing: '0.04em',
                           fontWeight: 600,
                           color: 'var(--muted)',
-                          fontVariantNumeric: 'tabular-nums',
                         }}
                       >
-                        {String(step.n).padStart(2, '0')}
+                        {opt.letter.toLowerCase()}.
                       </span>
-                      <span style={{ color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>
-                        ──
-                      </span>
-                      <span
-                        style={{
-                          flex: 1,
-                          fontFamily: 'var(--font-display)',
-                          fontSize: 'clamp(17px, 0.95rem + 0.35vw, 20px)',
-                          lineHeight: 1.4,
-                          letterSpacing: '-0.012em',
-                          fontWeight: 500,
-                          color: 'var(--ink-2)',
-                        }}
-                      >
-                        <MathText>{step.title ?? step.text.slice(0, 80)}</MathText>
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: 'var(--font-display)',
-                          fontSize: 14,
-                          fontStyle: 'italic',
-                          color: 'var(--muted)',
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        se mer ↘
-                      </span>
-                    </button>
-                  )
-                }
-                return (
-                  <article
-                    key={step.n}
-                    style={{
-                      position: 'relative',
-                      marginBottom: 'clamp(36px, 5vh, 56px)',
-                    }}
-                  >
-                    {isDetail && (
                       <button
                         type="button"
-                        onClick={() => reveal.collapseDetail(step.n)}
+                        onClick={() => onPick(opt.letter)}
+                        disabled={graded}
+                        aria-label={`Välj ${opt.letter}`}
+                        style={{
+                          all: 'unset',
+                          cursor: graded ? 'default' : 'pointer',
+                          width: 20,
+                          height: 20,
+                          border: `1.5px solid ${
+                            isCorrect
+                              ? 'var(--accent)'
+                              : isWrong
+                                ? 'var(--bad)'
+                                : isPicked
+                                  ? 'var(--ink)'
+                                  : 'var(--muted-2)'
+                          }`,
+                          borderRadius: 3,
+                          background: isCorrect
+                            ? 'var(--accent)'
+                            : isPicked
+                              ? 'var(--ink)'
+                              : 'transparent',
+                          color: 'var(--bg)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: 14,
+                          fontWeight: 700,
+                          fontFamily: 'var(--font-mono)',
+                          transition: 'background 180ms, border-color 180ms, color 180ms',
+                        }}
+                      >
+                        {isCorrect ? '✓' : isWrong ? '✗' : isPicked ? '✓' : ''}
+                      </button>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: 'clamp(17px, 0.95rem + 0.3vw, 19px)',
+                          lineHeight: 1.4,
+                          letterSpacing: '-0.005em',
+                          fontWeight: isPicked || isCorrect ? 500 : 400,
+                          color: 'var(--ink)',
+                          textDecoration: isWrong ? 'line-through' : 'none',
+                          textDecorationColor: 'var(--bad)',
+                          textDecorationThickness: 1.5,
+                        }}
+                      >
+                        <MathText>{opt.text}</MathText>
+                      </span>
+                    </li>
+                  )
+                })}
+              </ol>
+            )}
+
+            {graded && (
+              <p
+                style={{
+                  marginTop: 20,
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 12,
+                  letterSpacing: '0.08em',
+                  color: correct ? 'var(--accent)' : 'var(--bad)',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {correct ? '✓ Rätt svar' : `✗ Fel — facit är (${question.answer.toLowerCase()})`}
+              </p>
+            )}
+          </section>
+
+          {graded && <DoubleRule />}
+
+          {/* ── FÖRKLARING section ──────────────────────────────── */}
+          {graded && explanation && (
+            <>
+              <section>
+                <SectionHeader label="FÖRKLARING" meta={`${steps.length} steg`} />
+                {steps.map((step) => {
+                  const isDetail = (step.tier ?? 'essential') === 'detail'
+                  const isCollapsed = reveal.isCollapsedDetail(step)
+                  if (isCollapsed) {
+                    return (
+                      <button
+                        key={step.n}
+                        type="button"
+                        onClick={() => reveal.expandDetail(step.n)}
                         style={{
                           all: 'unset',
                           cursor: 'pointer',
-                          position: 'absolute',
-                          top: 4,
-                          right: 0,
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: 11,
-                          letterSpacing: '0.1em',
-                          textTransform: 'uppercase',
-                          color: 'var(--muted)',
-                        }}
-                      >
-                        dölj ↗
-                      </button>
-                    )}
-                    {/* Hanging step number + em-dash separator — the signature. */}
-                    {step.title && (
-                      <h3
-                        style={{
-                          fontFamily: 'var(--font-display)',
-                          fontSize: 'clamp(22px, 1.1rem + 0.5vw, 28px)',
-                          lineHeight: 1.2,
-                          letterSpacing: '-0.018em',
-                          fontWeight: 500,
-                          margin: 0,
-                          marginBottom: 16,
-                          display: 'flex',
+                          display: 'grid',
+                          gridTemplateColumns: '36px 1fr auto',
+                          gap: 14,
                           alignItems: 'baseline',
-                          gap: 10,
-                          paddingRight: isDetail ? 56 : 0,
+                          padding: '8px 0',
+                          marginBottom: 8,
+                          borderBottom:
+                            '1px dashed color-mix(in oklch, var(--hairline) 70%, transparent)',
+                          width: '100%',
                         }}
                       >
                         <span
                           style={{
                             fontFamily: 'var(--font-mono)',
                             fontSize: 12,
-                            letterSpacing: '0.06em',
-                            fontWeight: 600,
-                            color: 'var(--ink)',
+                            color: 'var(--muted)',
                             fontVariantNumeric: 'tabular-nums',
+                            fontWeight: 600,
                           }}
                         >
-                          {String(step.n).padStart(2, '0')}
+                          {String(step.n).padStart(2, '0')}.
                         </span>
                         <span
                           style={{
-                            color: 'var(--muted)',
-                            fontFamily: 'var(--font-mono)',
-                            fontWeight: 400,
+                            fontFamily: 'var(--font-display)',
+                            fontSize: 16,
+                            lineHeight: 1.4,
+                            color: 'var(--ink-2)',
+                            fontWeight: 500,
                           }}
                         >
-                          ──
+                          <MathText>{step.title ?? step.text.slice(0, 80)}</MathText>
                         </span>
-                        <span>
-                          <MathText>{step.title}</MathText>
+                        <span
+                          style={{
+                            fontFamily: 'var(--font-display)',
+                            fontSize: 13,
+                            fontStyle: 'italic',
+                            color: 'var(--muted)',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          se mer ↘
                         </span>
-                      </h3>
-                    )}
-                    <div
+                      </button>
+                    )
+                  }
+                  return (
+                    <article
+                      key={step.n}
                       style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: 'clamp(18px, 0.95rem + 0.45vw, 22px)',
-                        lineHeight: 1.75,
-                        letterSpacing: '-0.008em',
-                        color: 'var(--ink-2)',
+                        position: 'relative',
+                        marginBottom: 'clamp(24px, 3vh, 36px)',
+                        display: 'grid',
+                        gridTemplateColumns: '36px 1fr',
+                        gap: 14,
                       }}
                     >
-                      <MathText>{step.text}</MathText>
-                    </div>
-                  </article>
-                )
-              })}
-
-              {/* Bottom Progressive Reveal CTA */}
-              {reveal.totalDetailCount > 0 && (
-                <div
-                  style={{
-                    marginTop: 16,
-                    marginBottom: 56,
-                    paddingTop: 28,
-                    borderTop: '1px dashed color-mix(in oklch, var(--hairline) 60%, transparent)',
-                    textAlign: 'center',
-                  }}
-                >
-                  {reveal.collapsedDetailCount > 0 ? (
-                    <button
-                      type="button"
-                      onClick={reveal.expandAll}
-                      style={{
-                        all: 'unset',
-                        cursor: 'pointer',
-                        fontFamily: 'var(--font-display)',
-                        fontSize: 18,
-                        fontStyle: 'italic',
-                        color: 'var(--ink)',
-                        borderBottom: '1px solid var(--ink)',
-                        paddingBottom: 3,
-                      }}
-                    >
-                      Jag förstår fortfarande inte
                       <span
                         style={{
-                          color: 'var(--muted)',
-                          marginLeft: 10,
-                          fontStyle: 'normal',
                           fontFamily: 'var(--font-mono)',
-                          fontSize: 12,
-                          letterSpacing: '0.06em',
+                          fontSize: 13,
+                          fontWeight: 700,
+                          color: 'var(--ink)',
+                          fontVariantNumeric: 'tabular-nums',
+                          paddingTop: 2,
                         }}
                       >
-                        ({reveal.collapsedDetailCount} steg till)
+                        {String(step.n).padStart(2, '0')}.
                       </span>
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={reveal.collapseAll}
-                      style={{
-                        all: 'unset',
-                        cursor: 'pointer',
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 11,
-                        letterSpacing: '0.12em',
-                        textTransform: 'uppercase',
-                        color: 'var(--muted)',
-                      }}
-                    >
-                      ← Korta ner förklaringen
-                    </button>
-                  )}
-                </div>
-              )}
+                      <div style={{ position: 'relative' }}>
+                        {isDetail && (
+                          <button
+                            type="button"
+                            onClick={() => reveal.collapseDetail(step.n)}
+                            style={{
+                              all: 'unset',
+                              cursor: 'pointer',
+                              position: 'absolute',
+                              top: 0,
+                              right: 0,
+                              fontFamily: 'var(--font-mono)',
+                              fontSize: 10,
+                              letterSpacing: '0.12em',
+                              textTransform: 'uppercase',
+                              color: 'var(--muted)',
+                            }}
+                          >
+                            dölj ↗
+                          </button>
+                        )}
+                        {step.title && (
+                          <h3
+                            style={{
+                              fontFamily: 'var(--font-display)',
+                              fontSize: 'clamp(18px, 0.95rem + 0.4vw, 22px)',
+                              lineHeight: 1.25,
+                              letterSpacing: '-0.012em',
+                              fontWeight: 500,
+                              margin: 0,
+                              marginBottom: 8,
+                              paddingRight: isDetail ? 48 : 0,
+                              color: 'var(--ink)',
+                            }}
+                          >
+                            <MathText>{step.title}</MathText>
+                          </h3>
+                        )}
+                        <div
+                          style={{
+                            fontFamily: 'var(--font-display)',
+                            fontSize: 'clamp(16px, 0.9rem + 0.3vw, 18px)',
+                            lineHeight: 1.65,
+                            letterSpacing: '-0.005em',
+                            color: 'var(--ink-2)',
+                          }}
+                        >
+                          <MathText>{step.text}</MathText>
+                        </div>
+                      </div>
+                    </article>
+                  )
+                })}
 
-              {/* Distractors */}
-              {explanation.distractors.length > 0 && (
-                <section style={{ marginTop: 80 }}>
-                  <h2
+                {reveal.totalDetailCount > 0 && (
+                  <div
                     style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 22,
-                      lineHeight: 1.2,
-                      letterSpacing: '-0.018em',
-                      fontWeight: 500,
-                      margin: 0,
-                      marginBottom: 28,
+                      marginTop: 16,
+                      paddingTop: 20,
+                      borderTop: '1px dashed color-mix(in oklch, var(--hairline) 70%, transparent)',
                     }}
                   >
-                    Varför inte de andra
-                  </h2>
-                  {explanation.distractors.map((d) => (
-                    <div
-                      key={d.letter}
-                      style={{
-                        marginBottom: 24,
-                        display: 'grid',
-                        gridTemplateColumns: '32px 1fr',
-                        gap: 8,
-                      }}
-                    >
-                      <span
+                    {reveal.collapsedDetailCount > 0 ? (
+                      <button
+                        type="button"
+                        onClick={reveal.expandAll}
                         style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: 12,
-                          letterSpacing: '0.04em',
-                          fontWeight: 600,
+                          all: 'unset',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 12,
+                          padding: '6px 0',
+                          fontFamily: 'var(--font-display)',
+                          fontSize: 17,
+                          fontStyle: 'italic',
                           color: 'var(--ink)',
                         }}
                       >
-                        {d.letter.toLowerCase()}.
-                      </span>
-                      <div>
-                        <p
+                        <span
                           style={{
-                            fontFamily: 'var(--font-display)',
-                            fontSize: 18,
-                            lineHeight: 1.55,
-                            margin: 0,
-                            marginBottom: 4,
-                            color: 'var(--ink)',
+                            width: 18,
+                            height: 18,
+                            border: '1.5px solid var(--ink)',
+                            borderRadius: 3,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        />
+                        Jag förstår fortfarande inte
+                        <span
+                          style={{
+                            color: 'var(--muted)',
+                            marginLeft: 4,
+                            fontStyle: 'normal',
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 12,
+                            letterSpacing: '0.06em',
                           }}
                         >
-                          <span
-                            style={{
-                              fontFamily: 'var(--font-mono)',
-                              fontSize: 11,
-                              letterSpacing: '0.12em',
-                              textTransform: 'uppercase',
-                              fontWeight: 600,
-                              color: 'var(--muted)',
-                              marginRight: 8,
-                            }}
-                          >
-                            LOCKAR
-                          </span>
-                          <MathText>{d.why_tempting}</MathText>
-                        </p>
-                        <p
+                          ({reveal.collapsedDetailCount} steg till)
+                        </span>
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={reveal.collapseAll}
+                        style={{
+                          all: 'unset',
+                          cursor: 'pointer',
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 11,
+                          letterSpacing: '0.12em',
+                          textTransform: 'uppercase',
+                          color: 'var(--muted)',
+                        }}
+                      >
+                        ← Korta ner förklaringen
+                      </button>
+                    )}
+                  </div>
+                )}
+              </section>
+
+              <DoubleRule />
+
+              {/* ── VARFÖR INTE DE ANDRA ─────────────────────────── */}
+              {explanation.distractors.length > 0 && (
+                <>
+                  <section>
+                    <SectionHeader label="VARFÖR INTE DE ANDRA?" />
+                    {explanation.distractors.map((d) => (
+                      <div
+                        key={d.letter}
+                        style={{
+                          marginBottom: 20,
+                          display: 'grid',
+                          gridTemplateColumns: '36px 1fr',
+                          gap: 14,
+                        }}
+                      >
+                        <span
                           style={{
-                            fontFamily: 'var(--font-display)',
-                            fontSize: 18,
-                            lineHeight: 1.55,
-                            margin: 0,
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 13,
+                            fontWeight: 700,
                             color: 'var(--ink)',
+                            paddingTop: 2,
                           }}
                         >
-                          <span
+                          {d.letter.toLowerCase()}.
+                        </span>
+                        <div>
+                          <p
                             style={{
-                              fontFamily: 'var(--font-mono)',
-                              fontSize: 11,
-                              letterSpacing: '0.12em',
-                              textTransform: 'uppercase',
-                              fontWeight: 600,
-                              color: 'var(--muted)',
-                              marginRight: 8,
+                              fontFamily: 'var(--font-display)',
+                              fontSize: 16,
+                              lineHeight: 1.55,
+                              margin: 0,
+                              marginBottom: 4,
+                              color: 'var(--ink-2)',
                             }}
                           >
-                            FEL
-                          </span>
-                          <MathText>{d.why_wrong}</MathText>
-                        </p>
+                            <span
+                              style={{
+                                fontFamily: 'var(--font-mono)',
+                                fontSize: 10,
+                                letterSpacing: '0.14em',
+                                textTransform: 'uppercase',
+                                fontWeight: 700,
+                                color: 'var(--muted)',
+                                marginRight: 10,
+                              }}
+                            >
+                              FRESTAR
+                            </span>
+                            <MathText>{d.why_tempting}</MathText>
+                          </p>
+                          <p
+                            style={{
+                              fontFamily: 'var(--font-display)',
+                              fontSize: 16,
+                              lineHeight: 1.55,
+                              margin: 0,
+                              color: 'var(--ink-2)',
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontFamily: 'var(--font-mono)',
+                                fontSize: 10,
+                                letterSpacing: '0.14em',
+                                textTransform: 'uppercase',
+                                fontWeight: 700,
+                                color: 'var(--muted)',
+                                marginRight: 10,
+                              }}
+                            >
+                              FEL
+                            </span>
+                            <MathText>{d.why_wrong}</MathText>
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </section>
+                    ))}
+                  </section>
+
+                  <DoubleRule />
+                </>
               )}
 
-              {/* Technique + Pitfall — underlines, not chips. */}
+              {/* ── TEKNIK ────────────────────────────────────────── */}
               {explanation.technique && (
-                <section style={{ marginTop: 'clamp(48px, 6vh, 72px)' }}>
-                  <h3
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 11,
-                      letterSpacing: '0.12em',
-                      textTransform: 'uppercase',
-                      fontWeight: 600,
-                      color: 'var(--muted)',
-                      margin: 0,
-                      marginBottom: 8,
-                    }}
-                  >
-                    Teknik
-                  </h3>
+                <section>
+                  <SectionHeader label="TEKNIK" />
                   <p
                     style={{
                       fontFamily: 'var(--font-display)',
-                      fontSize: 18,
-                      lineHeight: 1.55,
+                      fontSize: 17,
+                      lineHeight: 1.6,
                       margin: 0,
                       color: 'var(--ink)',
-                      borderBottom: '1px solid var(--accent)',
-                      paddingBottom: 4,
-                      display: 'inline-block',
-                      maxWidth: '90%',
+                      paddingLeft: 14,
+                      borderLeft: '2px solid var(--accent)',
                     }}
                   >
                     <MathText>{explanation.technique}</MathText>
                   </p>
                 </section>
               )}
+
+              {/* ── FÄLLA ─────────────────────────────────────────── */}
               {explanation.pitfall && (
-                <section style={{ marginTop: 32 }}>
-                  <h3
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 11,
-                      letterSpacing: '0.12em',
-                      textTransform: 'uppercase',
-                      fontWeight: 600,
-                      color: 'var(--muted)',
-                      margin: 0,
-                      marginBottom: 8,
-                    }}
-                  >
-                    Fälla
-                  </h3>
+                <section>
+                  <SectionHeader label="FÄLLA" />
                   <p
                     style={{
                       fontFamily: 'var(--font-display)',
-                      fontSize: 18,
-                      lineHeight: 1.55,
+                      fontSize: 17,
+                      lineHeight: 1.6,
                       margin: 0,
                       color: 'var(--ink)',
                       fontStyle: 'italic',
-                      borderBottom: '1px solid var(--bad)',
-                      paddingBottom: 4,
-                      display: 'inline-block',
-                      maxWidth: '90%',
+                      paddingLeft: 14,
+                      borderLeft: '2px solid var(--bad)',
                     }}
                   >
                     <MathText>{explanation.pitfall}</MathText>
@@ -639,98 +612,161 @@ export function StyleB({
                 </section>
               )}
 
-              {/* End-mark + inline CTA */}
-              <div style={{ marginTop: 56 }}>
-                <span
-                  aria-hidden
+              <DoubleRule />
+
+              {/* "Klar!" footer — checkbox row, workbook style. */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <button
+                  type="button"
+                  onClick={onReset}
                   style={{
-                    display: 'block',
-                    width: '100%',
-                    height: 1,
-                    background: 'var(--hairline)',
-                    opacity: 0.6,
-                    marginBottom: 28,
+                    all: 'unset',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 14,
+                    padding: '10px 0',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 18,
+                    fontWeight: 500,
+                    color: 'var(--ink)',
                   }}
-                />
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <button
-                    type="button"
-                    onClick={onReset}
+                >
+                  <span
                     style={{
-                      all: 'unset',
-                      cursor: 'pointer',
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 18,
-                      fontWeight: 500,
-                      color: 'var(--ink)',
+                      width: 22,
+                      height: 22,
+                      border: '1.5px solid var(--ink)',
+                      borderRadius: 3,
                       display: 'inline-flex',
-                      alignItems: 'baseline',
-                      gap: 10,
-                      borderBottom: '1px solid var(--ink)',
-                      paddingBottom: 2,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: 14,
+                      fontWeight: 700,
+                      fontFamily: 'var(--font-mono)',
+                      color: 'var(--ink)',
                     }}
                   >
-                    Nästa fråga →
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 14,
-                        color: 'var(--muted)',
-                      }}
-                    >
-                      ↵
-                    </span>
-                  </button>
-                </div>
+                    ✓
+                  </span>
+                  Klar — nästa fråga
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 13,
+                      color: 'var(--muted)',
+                      marginLeft: 4,
+                    }}
+                  >
+                    ↵
+                  </span>
+                </button>
               </div>
-            </div>
-          )
-        )}
+            </>
+          )}
+        </article>
       </main>
 
-      {/* Status line — two-row state machine borrowed from Cockpit. */}
+      {/* Status line — workbook footer. */}
       <footer
         style={{
           position: 'sticky',
           bottom: 0,
           zIndex: 10,
-          background: 'var(--panel-2)',
+          background: 'var(--bg)',
           borderTop: '1px solid var(--hairline)',
-          padding: '8px clamp(24px, 4vw, 48px) 10px',
+          padding: '10px clamp(32px, 5vw, 64px)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 16,
           fontFamily: 'var(--font-mono)',
           fontSize: 11,
-          letterSpacing: '0.06em',
+          letterSpacing: '0.14em',
           color: 'var(--muted)',
         }}
       >
-        <div
+        <span style={{ color: graded ? 'var(--accent)' : 'var(--muted)' }}>
+          -- {graded ? 'GRADERAD' : 'ÖVNING'} -- · {question.section.toLowerCase()}
+        </span>
+        <span style={{ display: 'inline-flex', gap: 14 }}>
+          <span>esc tillbaka</span>
+          <span>⌘k palett</span>
+          {graded && <span style={{ color: 'var(--ink)' }}>↵ nästa</span>}
+        </span>
+      </footer>
+    </div>
+  )
+}
+
+// ── Section header — workbook-style mono caps + meta line ──────────
+function SectionHeader({ label, meta }: { label: string; meta?: string }) {
+  return (
+    <div style={{ marginBottom: 24 }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          gap: 16,
+          marginBottom: 6,
+        }}
+      >
+        <h2
           style={{
-            maxWidth: 880,
-            margin: '0 auto',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: 16,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 13,
+            letterSpacing: '0.18em',
+            fontWeight: 700,
+            color: 'var(--ink)',
+            margin: 0,
           }}
         >
-          <span style={{ color: graded ? 'var(--accent)' : 'var(--muted)' }}>
-            -- {graded ? 'GRADERAD' : 'ÖVNING'} -- · {question.section.toLowerCase()} · fråga 1/1
+          {label}
+        </h2>
+        {meta && (
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 10,
+              letterSpacing: '0.1em',
+              color: 'var(--muted)',
+              textTransform: 'uppercase',
+            }}
+          >
+            {meta}
           </span>
-          <span style={{ display: 'inline-flex', gap: 14 }}>
-            {graded ? (
-              <span style={{ color: 'var(--ink)' }}>
-                [{(picked ?? '').toLowerCase()}] {correct ? 'rätt' : 'fel'} · ↵ nästa →
-              </span>
-            ) : (
-              <>
-                <span>a / b / c / d välj</span>
-                <span>esc tillbaka</span>
-                <span>⌘k palett</span>
-              </>
-            )}
-          </span>
-        </div>
-      </footer>
+        )}
+      </div>
+      <span
+        aria-hidden
+        style={{
+          display: 'block',
+          width: '100%',
+          height: 1,
+          background: 'var(--ink)',
+          opacity: 0.85,
+        }}
+      />
+    </div>
+  )
+}
+
+// ── Double rule — workbook section divider ──────────────────────────
+function DoubleRule() {
+  return (
+    <div
+      aria-hidden
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 3,
+        paddingTop: 4,
+        paddingBottom: 4,
+      }}
+    >
+      <span style={{ display: 'block', height: 1, background: 'var(--hairline)' }} />
+      <span style={{ display: 'block', height: 1, background: 'var(--hairline)' }} />
     </div>
   )
 }
