@@ -92,10 +92,12 @@ function StandardLayout({ question, picked, graded, onPick }: Props) {
         // Bottom padding clears the sticky status line (~40px) +
         // breathing room so the last pedagogy step doesn't tuck
         // under the bar.
-        // Bottom clearance: status line (~40px sticky) + sticky CTA
-        // (~80px) + breath. Without this the last pedagogy step would
-        // tuck under the pinned CTA before the user could read it.
-        padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) clamp(160px, 22vh, 220px)',
+        // Bottom clearance for status line (~40px sticky) + floating
+        // CTA (~50px) + sticky offset (60-84px) + breath. The CTA is
+        // a frosted-glass control so mid-scroll pedagogy intentionally
+        // blurs through behind it; padding only matters at max-scroll
+        // when sticky releases and CTA lands in natural flow.
+        padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) clamp(140px, 16vh, 180px)',
         // NO overflow set. Body owns scroll; sticky descendants
         // anchor to the viewport directly. Setting overflow:auto here
         // would create a (non-scrolling, because nothing constrains
@@ -172,10 +174,12 @@ function PassageLayout({ question, picked, graded, onPick }: Props) {
         display: 'grid',
         gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr)',
         gap: 'clamp(20px, 2vw, 40px)',
-        // Bottom clearance: status line (~40px sticky) + sticky CTA
-        // (~80px) + breath. Without this the last pedagogy step would
-        // tuck under the pinned CTA before the user could read it.
-        padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) clamp(160px, 22vh, 220px)',
+        // Bottom clearance for status line (~40px sticky) + floating
+        // CTA (~50px) + sticky offset (60-84px) + breath. The CTA is
+        // a frosted-glass control so mid-scroll pedagogy intentionally
+        // blurs through behind it; padding only matters at max-scroll
+        // when sticky releases and CTA lands in natural flow.
+        padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) clamp(140px, 16vh, 180px)',
         // NO overflow set — body scroll + sticky descendants.
       }}
     >

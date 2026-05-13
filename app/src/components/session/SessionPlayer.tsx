@@ -372,56 +372,53 @@ export function SessionPlayer(props: SessionPlayerProps) {
       </div>
       <div
         style={{
-          // Desktop: sticky-bottom fade band. The band itself carries
-          // a transparent→bg gradient (top→bottom) so pedagogy text
-          // scrolling up through the band fades into the page color
-          // before it ever reaches the CTA — no more hard "button
-          // covering text" edge. Same trick Apple Books and Stripe
-          // Press use at the bottom of their reading views.
-          //
-          // Phone: static, no gradient — the bottom tab bar already
-          // owns that area and full-width thumb-reach CTA is right.
+          // Desktop: a sticky-bottom flex container that does
+          // nothing but right-align the floating CTA control. No
+          // background, no height, no padding chrome — the Btn
+          // itself carries all the visual weight as a frosted-glass
+          // artifact, consistent with the running head + status
+          // line treatment. Phone: static, full-width.
           position: useStudyDesk ? 'sticky' : 'static',
-          bottom: useStudyDesk ? 'clamp(48px, 5.5vh, 64px)' : undefined,
+          bottom: useStudyDesk ? 'clamp(60px, 6vh, 84px)' : undefined,
           zIndex: useStudyDesk ? 5 : undefined,
-          // Tall enough to let the gradient breathe (~80-120px of
-          // fade) plus button height + bottom breath. Without the
-          // height the gradient would compress to nothing.
-          height: useStudyDesk ? 'clamp(140px, 18vh, 200px)' : undefined,
-          padding: useStudyDesk
-            ? '0 clamp(48px, 5vw, 88px) clamp(12px, 1.5vh, 20px)'
-            : '12px var(--pad-lg) 0',
+          padding: useStudyDesk ? '0 clamp(28px, 4vw, 64px)' : '12px var(--pad-lg) 0',
           display: 'flex',
-          // Column with bottom-right anchor: gradient fades from
-          // transparent at top, button sits in the solid-bg zone
-          // at the bottom-right corner.
           flexDirection: 'column',
           gap: 8,
           alignItems: useStudyDesk ? 'flex-end' : 'stretch',
-          justifyContent: useStudyDesk ? 'flex-end' : undefined,
-          // Gradient mask — transparent at top, var(--bg) by 75%.
-          // Below 75% it's pure bg so the button has a clean canvas
-          // around it. linear-gradient over the page bg is sturdier
-          // than backdrop-filter blur for this purpose: text fades to
-          // fully invisible rather than blurring through, which means
-          // no risk of half-readable text crowding the button.
-          background: useStudyDesk
-            ? 'linear-gradient(to bottom, transparent 0%, var(--bg) 75%)'
-            : undefined,
-          // The band itself ignores pointer events so wheel/clicks
-          // pass through to the pedagogy column behind it. Only the
-          // Btn opts back in.
+          // Bare wrapper ignores pointer events so wheel + clicks
+          // pass through the empty left/center area to the
+          // pedagogy underneath. Btn opts back in.
           pointerEvents: useStudyDesk ? 'none' : undefined,
         }}
       >
         <Btn
           full={!useStudyDesk}
-          size="lg"
+          size="md"
           onClick={onNext}
           disabled={phase !== 'graded'}
           data-testid="drill-next"
-          style={useStudyDesk ? { minWidth: 200, pointerEvents: 'auto' } : undefined}
-          className="hpc-btn hpc-breathe"
+          className="hpc-btn"
+          style={
+            useStudyDesk
+              ? {
+                  pointerEvents: 'auto',
+                  minWidth: 168,
+                  // Frosted-glass control — same vibrancy treatment as
+                  // the running head + status line chrome. Text
+                  // scrolling behind blurs through the 12% translucent
+                  // dark glass instead of being abruptly clipped by a
+                  // solid button edge. The button reads as an
+                  // intentional editorial control, not an overlay
+                  // patched on top of reading content.
+                  background: 'color-mix(in oklch, var(--ink) 92%, transparent)',
+                  backdropFilter: 'saturate(150%) blur(16px)',
+                  WebkitBackdropFilter: 'saturate(150%) blur(16px)',
+                  // Soft floating shadow — depth signal without heaviness.
+                  boxShadow: '0 18px 40px -16px rgba(0, 0, 0, 0.28)',
+                }
+              : undefined
+          }
         >
           {index === plan.length - 1 ? 'Avsluta' : 'Nästa'} →
         </Btn>
