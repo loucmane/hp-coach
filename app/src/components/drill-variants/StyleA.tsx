@@ -13,17 +13,22 @@ import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
+import { useExplanation } from './useExplanation'
 import { useProgressiveReveal } from './useProgressiveReveal'
 
 export function StyleA({
   question,
-  explanation,
+  explanation: explanationProp,
   picked,
   graded,
   correct,
   onPick,
   onReset,
 }: VariantData) {
+  // Self-load if the caller didn't preload (e.g., when used inside
+  // SessionPlayer instead of via DrillVariantShell).
+  const fetched = useExplanation(question.qid)
+  const explanation = explanationProp ?? fetched
   const steps = explanation ? resolveSteps(explanation) : []
   const reveal = useProgressiveReveal(steps)
   return (

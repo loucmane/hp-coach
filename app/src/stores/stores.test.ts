@@ -56,8 +56,14 @@ describe('useUiStore', () => {
     const s = useUiStore.getState()
     expect(s.palette).toBe('sand')
     expect(s.mode).toBe('light')
+    // Phase A.6V Edition Strip — defaults now come from the
+    // Editorial edition bundle: literary font, comfy density, StyleA
+    // drill layout. `edition` itself isn't stored — the active
+    // edition is derived from (font, density, drillLayout) via
+    // resolveEdition / useActiveEdition. See docs/edition-strip.md.
     expect(s.font).toBe('literary')
-    expect(s.density).toBe('regular')
+    expect(s.density).toBe('comfy')
+    expect(s.drillLayout).toBe('a')
     expect(s.useFluid).toBe(true)
     expect(s.studioRails).toBe(false)
   })

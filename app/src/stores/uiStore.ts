@@ -14,8 +14,12 @@ import {
   buildThemeVars,
   DEFAULT_THEME,
   type Density,
+  type DrillLayoutKey,
+  EDITIONS,
+  type EditionKey,
   type FontKey,
   type PaletteKey,
+  resolveEdition,
   type ThemeMode,
 } from '@/lib/tokens'
 
@@ -24,12 +28,19 @@ type UiState = {
   mode: ThemeMode
   font: FontKey
   density: Density
+  drillLayout: DrillLayoutKey
   useFluid: boolean
   studioRails: boolean
   setPalette: (palette: PaletteKey) => void
   setMode: (mode: ThemeMode) => void
   setFont: (font: FontKey) => void
   setDensity: (density: Density) => void
+  setDrillLayout: (drillLayout: DrillLayoutKey) => void
+  /** Atomically write font + density + drillLayout from the EDITIONS
+   *  bundle for the named edition. Use this from the Edition Strip's
+   *  click handler. Cmd+K still has surgical per-axis setters for
+   *  divergence moments. */
+  setEdition: (edition: EditionKey) => void
   toggleMode: () => void
   setUseFluid: (useFluid: boolean) => void
   setStudioRails: (studioRails: boolean) => void
@@ -43,12 +54,18 @@ export const useUiStore = create<UiState>()(
       mode: DEFAULT_THEME.mode,
       font: DEFAULT_THEME.font,
       density: DEFAULT_THEME.density,
+      drillLayout: DEFAULT_THEME.drillLayout,
       useFluid: DEFAULT_THEME.useFluid,
       studioRails: DEFAULT_THEME.studioRails,
       setPalette: (palette) => set({ palette }),
       setMode: (mode) => set({ mode }),
       setFont: (font) => set({ font }),
       setDensity: (density) => set({ density }),
+      setDrillLayout: (drillLayout) => set({ drillLayout }),
+      setEdition: (edition) => {
+        const b = EDITIONS[edition]
+        set({ font: b.font, density: b.density, drillLayout: b.drillLayout })
+      },
       toggleMode: () => set((s) => ({ mode: s.mode === 'light' ? 'dark' : 'light' })),
       setUseFluid: (useFluid) => set({ useFluid }),
       setStudioRails: (studioRails) => set({ studioRails }),
@@ -57,6 +74,13 @@ export const useUiStore = create<UiState>()(
     { name: 'hpc-ui' },
   ),
 )
+
+/** Selector — returns the active edition name if (font, density,
+ *  drillLayout) exactly match one of EDITIONS, otherwise 'custom'.
+ *  Used by EditionStrip to show the `· egen` divergence indicator. */
+export function useActiveEdition(): EditionKey | 'custom' {
+  return useUiStore((s) => resolveEdition(s.font, s.density, s.drillLayout))
+}
 
 /**
  * Write the active theme combination to <html>. Theme/mode/font/density/

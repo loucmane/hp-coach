@@ -17,6 +17,53 @@ export type PaletteKey = 'sand' | 'sage' | 'ink' | 'rose'
 export type FontKey = 'literary' | 'geometric' | 'editorial' | 'hyperlegible'
 export type Density = 'compact' | 'regular' | 'comfy'
 
+// Phase A.6V — Drill page layout selector. Three layouts the user can
+// switch between via the Edition Strip in the running head:
+//   'a' = Editorial Pure (2-col, sticky question, Newsreader pedagogy)
+//   'b' = Workbook (2-col, FRÅGA/FÖRKLARING headers, checkbox options)
+//   'c' = Cockpit Terminal (panel composition, mono throughout)
+export type DrillLayoutKey = 'a' | 'b' | 'c'
+
+// "Edition" is a bundled visual identity that ties together font +
+// density + drill layout — the three axes that change with the kind
+// of work you're doing. Palette and mode are orthogonal (kept as
+// separate axes the user picks independently).
+//
+// Names are placeholders carried over from the bake-off variant
+// working titles. See docs/edition-strip.md for the rationale and
+// the rename plan.
+export type EditionKey = 'editorial' | 'workbook' | 'cockpit'
+
+export type EditionBundle = {
+  font: FontKey
+  density: Density
+  drillLayout: DrillLayoutKey
+}
+
+export const EDITIONS: Record<EditionKey, EditionBundle> = {
+  editorial: { font: 'literary', density: 'comfy', drillLayout: 'a' },
+  workbook: { font: 'editorial', density: 'regular', drillLayout: 'b' },
+  cockpit: { font: 'hyperlegible', density: 'compact', drillLayout: 'c' },
+}
+
+/** Returns the matching edition name if the (font, density, drillLayout)
+ *  tuple exactly matches one of the EDITIONS entries; otherwise returns
+ *  'custom'. Used by the Edition Strip to surface a `· egen` indicator
+ *  when the user has nudged any sub-axis outside the active bundle. */
+export function resolveEdition(
+  font: FontKey,
+  density: Density,
+  drillLayout: DrillLayoutKey,
+): EditionKey | 'custom' {
+  for (const key of Object.keys(EDITIONS) as EditionKey[]) {
+    const b = EDITIONS[key]
+    if (b.font === font && b.density === density && b.drillLayout === drillLayout) {
+      return key
+    }
+  }
+  return 'custom'
+}
+
 export type SandShape = {
   // Surfaces
   bg: string
@@ -391,12 +438,16 @@ export function buildThemeVars(
   return vars
 }
 
-/** Default theme: matches the prototype canvas defaults so first paint is calm. */
+/** Default theme: matches the prototype canvas defaults so first paint is calm.
+ *  font + density + drillLayout = EDITIONS.editorial so the resolved edition
+ *  on first paint is 'editorial' (matches the picker's first-time landing). */
 export const DEFAULT_THEME = {
   palette: 'sand' as PaletteKey,
   mode: 'light' as ThemeMode,
-  font: 'literary' as FontKey,
-  density: 'regular' as Density,
+  font: EDITIONS.editorial.font,
+  density: EDITIONS.editorial.density,
+  drillLayout: EDITIONS.editorial.drillLayout,
+  edition: 'editorial' as EditionKey,
   useFluid: true,
   studioRails: false,
 }

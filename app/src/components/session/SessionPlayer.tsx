@@ -46,15 +46,50 @@ import {
 import { DrillProgress } from '@/components/drill/DrillProgress'
 import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { DrillResult } from '@/components/drill/DrillResult'
+import { StyleA } from '@/components/drill-variants/StyleA'
+import { StyleB } from '@/components/drill-variants/StyleB'
+import { StyleC } from '@/components/drill-variants/StyleC'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
-import { StudyDesk } from '@/components/StudyDesk'
 import type { AnswerLetter, Question } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
 import { TAB_ROUTE } from '@/lib/nav'
+import { useUiStore } from '@/stores/uiStore'
 
 type Phase = 'idle' | 'answering' | 'graded' | 'done'
+
+/** Dispatch the right StyleX variant given the active edition's
+ *  drillLayout. Studio + reader only — phone short-circuits earlier
+ *  and renders the existing DrillQuestion. The `onAdvance` prop
+ *  becomes the variant's "Nästa fråga →" / "✓ Klar" handler. */
+function renderLayoutByEdition(args: {
+  layout: 'a' | 'b' | 'c'
+  question: Question
+  picked: AnswerLetter | null
+  graded: boolean
+  correct: boolean
+  onPick: (letter: AnswerLetter) => void
+  onAdvance: () => void
+}) {
+  const data = {
+    question: args.question,
+    explanation: null /* loaded inside the variant via the existing hook */,
+    picked: args.picked,
+    graded: args.graded,
+    correct: args.correct,
+    onPick: args.onPick,
+    onReset: args.onAdvance /* variants render this as "Nästa fråga →" */,
+  }
+  switch (args.layout) {
+    case 'b':
+      return <StyleB {...data} />
+    case 'c':
+      return <StyleC {...data} />
+    default:
+      return <StyleA {...data} />
+  }
+}
 
 export type SessionPlayerProps = {
   /** Kind to pass to POST /api/sessions. */
@@ -99,6 +134,10 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // hook-rule isn't violated when the phase transitions through
   // different render paths.
   const viewport = useViewport()
+  // Phase A.6V Edition Strip — same hook-rule reason: must be read
+  // above the idle/done early returns. See docs/edition-strip.md.
+  // Drives which drill layout (StyleA/B/C) renders in `answering`.
+  const drillLayout = useUiStore((s) => s.drillLayout)
 
   const [phase, setPhase] = useState<Phase>('idle')
   const [plan, setPlan] = useState<Question[]>([])
@@ -334,11 +373,14 @@ export function SessionPlayer(props: SessionPlayerProps) {
 
   const q = plan[index]
   const picked = picks[index]
-  // Phase A.5 — reader/studio render the Study Desk (question +
-  // pedagogy side-by-side). Phone keeps the single-column DrillQuestion
-  // (the prototype's canonical layout). `viewport` is hoisted above
-  // any early returns at the top of the component; we just consume
-  // it here.
+  // Phone keeps the single-column DrillQuestion (mobile-tested
+  // prototype baseline). Reader/studio dispatch to the
+  // user-selected drill layout via the Edition Strip:
+  //   'a' = StyleA (Editorial Pure)
+  //   'b' = StyleB (Workbook)
+  //   'c' = StyleC (Cockpit Terminal)
+  // `drillLayout` is read at the top of the component (above the
+  // idle/done early returns) — see docs/edition-strip.md.
   const useStudyDesk = viewport !== 'phone'
   // Phase A.8 EDITION: status-line context and folio carry the
   // section + question count, so DrillProgress (the visible eyebrow)
@@ -365,7 +407,15 @@ export function SessionPlayer(props: SessionPlayerProps) {
       )}
       <div style={{ flex: 1, minHeight: 0, marginTop: useStudyDesk ? 0 : 12 }}>
         {useStudyDesk ? (
-          <StudyDesk question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
+          renderLayoutByEdition({
+            layout: drillLayout,
+            question: q,
+            picked,
+            graded: phase === 'graded',
+            correct: picked === q.answer,
+            onPick,
+            onAdvance: onNext,
+          })
         ) : (
           <DrillQuestion question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
         )}
