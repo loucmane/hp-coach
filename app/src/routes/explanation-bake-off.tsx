@@ -29,7 +29,7 @@ import { Btn, Eyebrow, Hairline, Mono } from '@/components/primitives'
 import type { Explanation } from '@/data/explanations'
 import { useViewport } from '@/hooks/useViewport'
 
-export const Route = createFileRoute('/dev/explanation-bake-off')({
+export const Route = createFileRoute('/explanation-bake-off')({
   component: ExplanationBakeOff,
 })
 

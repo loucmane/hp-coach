@@ -13,12 +13,12 @@ import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as RepetitionRouteImport } from './routes/repetition'
 import { Route as ProgressRouteImport } from './routes/progress'
+import { Route as ExplanationBakeOffRouteImport } from './routes/explanation-bake-off'
 import { Route as DrillRouteImport } from './routes/drill'
 import { Route as DevRouteImport } from './routes/dev'
 import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AvanceratRouteImport } from './routes/avancerat'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DevExplanationBakeOffRouteImport } from './routes/dev.explanation-bake-off'
 
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
@@ -38,6 +38,11 @@ const RepetitionRoute = RepetitionRouteImport.update({
 const ProgressRoute = ProgressRouteImport.update({
   id: '/progress',
   path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExplanationBakeOffRoute = ExplanationBakeOffRouteImport.update({
+  id: '/explanation-bake-off',
+  path: '/explanation-bake-off',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DrillRoute = DrillRouteImport.update({
@@ -65,48 +70,43 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DevExplanationBakeOffRoute = DevExplanationBakeOffRouteImport.update({
-  id: '/explanation-bake-off',
-  path: '/explanation-bake-off',
-  getParentRoute: () => DevRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
-  '/dev': typeof DevRouteWithChildren
+  '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
+  '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dev/explanation-bake-off': typeof DevExplanationBakeOffRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
-  '/dev': typeof DevRouteWithChildren
+  '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
+  '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dev/explanation-bake-off': typeof DevExplanationBakeOffRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
-  '/dev': typeof DevRouteWithChildren
+  '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
+  '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dev/explanation-bake-off': typeof DevExplanationBakeOffRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -116,11 +116,11 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/drill'
+    | '/explanation-bake-off'
     | '/progress'
     | '/repetition'
     | '/sign-in'
     | '/sign-up'
-    | '/dev/explanation-bake-off'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -128,11 +128,11 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/drill'
+    | '/explanation-bake-off'
     | '/progress'
     | '/repetition'
     | '/sign-in'
     | '/sign-up'
-    | '/dev/explanation-bake-off'
   id:
     | '__root__'
     | '/'
@@ -140,19 +140,20 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/drill'
+    | '/explanation-bake-off'
     | '/progress'
     | '/repetition'
     | '/sign-in'
     | '/sign-up'
-    | '/dev/explanation-bake-off'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AvanceratRoute: typeof AvanceratRoute
   CoachRoute: typeof CoachRoute
-  DevRoute: typeof DevRouteWithChildren
+  DevRoute: typeof DevRoute
   DrillRoute: typeof DrillRoute
+  ExplanationBakeOffRoute: typeof ExplanationBakeOffRoute
   ProgressRoute: typeof ProgressRoute
   RepetitionRoute: typeof RepetitionRoute
   SignInRoute: typeof SignInRoute
@@ -187,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/progress'
       fullPath: '/progress'
       preLoaderRoute: typeof ProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explanation-bake-off': {
+      id: '/explanation-bake-off'
+      path: '/explanation-bake-off'
+      fullPath: '/explanation-bake-off'
+      preLoaderRoute: typeof ExplanationBakeOffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/drill': {
@@ -224,32 +232,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dev/explanation-bake-off': {
-      id: '/dev/explanation-bake-off'
-      path: '/explanation-bake-off'
-      fullPath: '/dev/explanation-bake-off'
-      preLoaderRoute: typeof DevExplanationBakeOffRouteImport
-      parentRoute: typeof DevRoute
-    }
   }
 }
-
-interface DevRouteChildren {
-  DevExplanationBakeOffRoute: typeof DevExplanationBakeOffRoute
-}
-
-const DevRouteChildren: DevRouteChildren = {
-  DevExplanationBakeOffRoute: DevExplanationBakeOffRoute,
-}
-
-const DevRouteWithChildren = DevRoute._addFileChildren(DevRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AvanceratRoute: AvanceratRoute,
   CoachRoute: CoachRoute,
-  DevRoute: DevRouteWithChildren,
+  DevRoute: DevRoute,
   DrillRoute: DrillRoute,
+  ExplanationBakeOffRoute: ExplanationBakeOffRoute,
   ProgressRoute: ProgressRoute,
   RepetitionRoute: RepetitionRoute,
   SignInRoute: SignInRoute,
