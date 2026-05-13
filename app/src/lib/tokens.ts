@@ -239,13 +239,21 @@ export const FONTS: Record<FontKey, FontPairing> = {
     monoTracking: '0.04em',
   },
   geometric: {
+    // Phase A.8.4 EDITION-fit:
+    // Old: Geist for both display AND body → no contrast between hero
+    // and supporting text. Reading a KVA prompt felt monotone — every
+    // word in geometric sans, no typographic event.
+    // New: Geist 600 stays as the display protagonist (geometric
+    // confidence at hero scale); body switches to Inter Tight (neutral
+    // grotesque, already loaded by literary). Different families,
+    // both modern sans, clear role split.
     label: 'Geometric',
     display: '"Geist", "Inter", system-ui, sans-serif',
-    displayWeight: 500,
+    displayWeight: 600,
     displayTracking: '-0.025em',
     displayLeading: 1.05,
-    ui: '"Geist", "Inter", system-ui, sans-serif',
-    uiTracking: '-0.012em',
+    ui: '"Inter Tight", "Inter", system-ui, sans-serif',
+    uiTracking: '-0.01em',
     mono: '"Geist Mono", ui-monospace, monospace',
     monoTracking: '0.02em',
   },
