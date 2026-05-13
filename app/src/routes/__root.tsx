@@ -19,6 +19,7 @@ import { useHydratePrefs } from '@/api/useSyncedPrefs'
 import { CommandPalette } from '@/components/CommandPalette'
 import { Frame } from '@/components/Frame'
 import { Mono } from '@/components/primitives'
+import { ShareDebugButton } from '@/components/ShareDebugButton'
 import { TweaksLauncher } from '@/components/TweaksLauncher'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
 
@@ -49,6 +50,7 @@ function RootShell() {
           <AuthRouter />
         </ClerkLoaded>
       </Frame>
+      <ShareDebugButton />
       <TweaksLauncher />
       <CommandPalette />
     </>
