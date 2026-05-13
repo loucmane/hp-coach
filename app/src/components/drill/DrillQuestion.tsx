@@ -40,7 +40,7 @@ export function DrillQuestion({ question, picked, graded, onPick }: Props) {
     return (
       <div
         style={{
-          padding: 22,
+          padding: 'var(--pad-lg)',
           color: 'var(--muted)',
           fontFamily: 'var(--font-mono)',
           fontSize: 12,
@@ -62,6 +62,10 @@ export function DrillQuestion({ question, picked, graded, onPick }: Props) {
   const hasContext = !!question.context
   const promptIsShort = !question.prompt || question.prompt.length <= 18
 
+  // Container-type on the scroller lets descendants respond to its
+  // width — important on reader/studio where the card width changes
+  // independently of the viewport. The clamp() formulas below quietly
+  // scale prompt + option sizes across phone (390) → studio (1440+).
   return (
     <div
       ref={scrollerRef}
@@ -71,19 +75,20 @@ export function DrillQuestion({ question, picked, graded, onPick }: Props) {
         // Faint divider on the bottom so the passage doesn't visually
         // touch the Nästa button when scrolled to the end.
         paddingBottom: 8,
+        containerType: 'inline-size',
       }}
     >
       {hasContext && (
         <div
           data-testid="drill-context"
           style={{
-            margin: '14px 22px 4px',
+            margin: '14px var(--pad-lg) 4px',
             padding: '16px 18px',
             background: 'var(--panel-2)',
             border: '1px solid var(--hairline)',
             borderRadius: 'calc(var(--radius) * 0.5)',
             fontFamily: 'var(--font-body, var(--font-display))',
-            fontSize: 14,
+            fontSize: 'clamp(14px, 0.8125rem + 0.3vw, 16px)',
             lineHeight: 1.55,
             color: 'var(--ink)',
             whiteSpace: 'pre-wrap',
@@ -95,10 +100,21 @@ export function DrillQuestion({ question, picked, graded, onPick }: Props) {
       <div
         data-testid="drill-prompt"
         style={{
-          padding: hasContext ? '18px 22px 14px' : '32px 22px 24px',
+          padding: hasContext
+            ? '18px var(--pad-lg) 14px'
+            : 'clamp(28px, 3vw + 16px, 48px) var(--pad-lg) clamp(20px, 2vw + 12px, 32px)',
           textAlign: hasContext ? 'left' : 'center',
           fontFamily: 'var(--font-display)',
-          fontSize: hasContext ? 18 : promptIsShort ? 32 : 24,
+          // Three regimes, each clamp()ed so the prompt scales smoothly
+          // across phone → studio without per-breakpoint rewrites:
+          //   - context (LÄS/ELF/DTK): 18→20px (small, paragraph-density)
+          //   - short headword (ORD): 32→44px (the bold single word)
+          //   - long stem (MEK, KVA): 24→30px (the middle ground)
+          fontSize: hasContext
+            ? 'clamp(16px, 0.875rem + 0.4vw, 20px)'
+            : promptIsShort
+              ? 'clamp(28px, 4vw + 16px, 44px)'
+              : 'clamp(22px, 1rem + 1.2vw, 30px)',
           lineHeight: hasContext ? 1.3 : 1.18,
           color: 'var(--ink)',
           letterSpacing: '-0.01em',
@@ -110,7 +126,7 @@ export function DrillQuestion({ question, picked, graded, onPick }: Props) {
       {question.figure && <QuestionFigure figure={question.figure} />}
       <div
         style={{
-          padding: '0 22px',
+          padding: '0 var(--pad-lg)',
           display: 'flex',
           flexDirection: 'column',
           gap: 10,
@@ -170,8 +186,11 @@ function OptionRow({
         display: 'flex',
         alignItems: 'center',
         gap: 14,
-        padding: '14px 16px',
-        minHeight: 60,
+        // Padding + min-height keep the tap target ≥44px (WCAG 2.5.5)
+        // on phone and grow into a comfortable 64px on tablet+. Fluid
+        // formula stays well above the 44px floor at every viewport.
+        padding: 'clamp(12px, 1vh, 16px) clamp(14px, 1vw + 12px, 20px)',
+        minHeight: 'clamp(56px, 9vh, 64px)',
         textAlign: 'left',
         background: styles.bg,
         border: `1px solid ${styles.border}`,
@@ -179,7 +198,7 @@ function OptionRow({
         color: styles.color,
         cursor: disabled ? 'default' : 'pointer',
         fontFamily: 'inherit',
-        fontSize: 15,
+        fontSize: 'clamp(14px, 0.875rem + 0.2vw, 17px)',
         lineHeight: 1.35,
         transition: 'background 200ms, border-color 200ms, color 200ms',
         opacity: state === 'idle' && disabled ? 0.55 : 1,

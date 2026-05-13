@@ -1,9 +1,15 @@
 // Root route — top-level layout + auth gate for every page.
 //
-// Renders the 390x844 phone-frame artboard container that all mobile
-// screens live inside. Wraps the outlet in a Clerk auth gate: signed-in
-// users see the screen; signed-out users see <SignIn /> (except on the
-// /sign-in and /sign-up routes themselves, which are public).
+// Phase A: the hard-coded 390×844 phone artboard is now a responsive
+// <Frame> that picks layout based on viewport — phone (full-bleed),
+// reader (centered card 640px max), studio (centered card + optional
+// rails). Existing screens that wrap their content in MobileFrame still
+// work because MobileFrame is now viewport-aware too (iOS decorative
+// chrome auto-hides at reader+).
+//
+// Wraps the outlet in a Clerk auth gate: signed-in users see the
+// screen; signed-out users see <SignIn /> (except on the /sign-in
+// and /sign-up routes themselves, which are public).
 
 import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut } from '@clerk/clerk-react'
 import { createRootRoute, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
@@ -11,6 +17,7 @@ import { useEffect } from 'react'
 
 import { useHydratePrefs } from '@/api/useSyncedPrefs'
 import { CommandPalette } from '@/components/CommandPalette'
+import { Frame } from '@/components/Frame'
 import { Mono } from '@/components/primitives'
 import { TweaksLauncher } from '@/components/TweaksLauncher'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
@@ -26,45 +33,25 @@ function RootShell() {
   const mode = useUiStore((s) => s.mode)
   const font = useUiStore((s) => s.font)
   const density = useUiStore((s) => s.density)
+  const useFluid = useUiStore((s) => s.useFluid)
 
   useEffect(() => {
-    applyThemeToDocument(palette, mode, font, density)
-  }, [palette, mode, font, density])
+    applyThemeToDocument(palette, mode, font, density, useFluid)
+  }, [palette, mode, font, density, useFluid])
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'var(--panel-2)',
-        padding: '32px 16px',
-      }}
-    >
-      <div
-        style={{
-          width: 390,
-          height: 844,
-          maxHeight: 'calc(100vh - 64px)',
-          background: 'var(--bg)',
-          borderRadius: 36,
-          overflow: 'hidden',
-          border: '1px solid var(--hairline)',
-          boxShadow: '0 30px 60px -20px rgba(0,0,0,0.18)',
-          position: 'relative',
-        }}
-      >
+    <>
+      <Frame>
         <ClerkLoading>
           <SplashLoading />
         </ClerkLoading>
         <ClerkLoaded>
           <AuthRouter />
         </ClerkLoaded>
-      </div>
+      </Frame>
       <TweaksLauncher />
       <CommandPalette />
-    </div>
+    </>
   )
 }
 

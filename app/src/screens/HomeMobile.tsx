@@ -77,14 +77,14 @@ export function HomeMobile({
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          paddingBottom: 88,
+          paddingBottom: 'var(--frame-tabbar)',
           color: 'var(--ink)',
         }}
       >
         <div
           className="reveal"
           style={{
-            padding: '20px 22px 0',
+            padding: 'clamp(16px, 1.2vw + 12px, 28px) var(--pad-lg) 0',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
@@ -129,7 +129,7 @@ export function HomeMobile({
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            padding: '0 22px',
+            padding: '0 var(--pad-lg)',
           }}
         >
           <CoachLine

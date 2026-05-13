@@ -82,7 +82,7 @@ export function ExplanationPanel({ qid, correct }: Props) {
       data-state={state.kind}
       data-correct={correct}
       style={{
-        margin: '6px 22px 16px',
+        margin: '6px var(--pad-lg) 16px',
         padding: 0,
         background: 'var(--panel)',
         border: '1px solid var(--hairline)',

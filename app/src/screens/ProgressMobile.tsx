@@ -24,8 +24,10 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        // 100px clears the absolutely-positioned BottomTabs.
-        padding: '36px 22px 100px',
+        // Bottom padding reserves the BottomTabs band on phone; on
+        // reader/studio the var collapses to 0 (no tab bar) so the
+        // content sits flush against the card edge.
+        padding: 'clamp(28px, 2vw + 20px, 56px) var(--pad-lg) var(--frame-tabbar)',
         overflowY: 'auto',
         color: 'var(--ink)',
       }}
@@ -111,7 +113,10 @@ function BigNumber({ value, loading }: { value: number | undefined; loading?: bo
       data-testid="progress-streak"
       style={{
         fontFamily: 'var(--font-display)',
-        fontSize: 64,
+        // Fluid: 48 on phone, ~72 by tablet+. Stays readable at studio
+        // sizes without the streak dominating the card. Tabular nums
+        // keep digit-count transitions from shifting the baseline.
+        fontSize: 'clamp(48px, 8vw, 72px)',
         lineHeight: 1,
         color: 'var(--ink)',
         letterSpacing: '-0.02em',
@@ -129,13 +134,18 @@ type Row = {
 }
 
 function StatList({ rows, loading }: { rows: Row[]; loading?: boolean }) {
+  // Grid with auto-fit minmax: rows render as a single column on phone
+  // (346px content width can't fit two 280px cells) and naturally
+  // reflow to two columns on reader+ (640px card width). No media
+  // query needed — the layout responds to its own container's width.
   return (
     <div
       style={{
         marginTop: 14,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 10,
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        columnGap: 24,
+        rowGap: 10,
       }}
     >
       {rows.map((r) => (

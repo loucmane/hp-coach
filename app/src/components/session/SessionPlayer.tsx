@@ -251,7 +251,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
         </div>
         <div
           style={{
-            padding: '12px 22px 0',
+            padding: '12px var(--pad-lg) 0',
             display: 'flex',
             flexDirection: 'column',
             gap: 8,
@@ -304,8 +304,9 @@ function IdleBody({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        // 100px clears the absolutely-positioned BottomTabs.
-        padding: '40px 22px 100px',
+        // Bottom reserves the BottomTabs band; the var collapses to 0
+        // on reader/studio where there is no bottom tab bar.
+        padding: 'clamp(28px, 3vw + 16px, 56px) var(--pad-lg) var(--frame-tabbar)',
       }}
     >
       <Eyebrow>{idleEyebrow}</Eyebrow>
@@ -313,7 +314,9 @@ function IdleBody({
         style={{
           marginTop: 18,
           fontFamily: 'var(--font-display)',
-          fontSize: 36,
+          // Hero idle headline scales 32→44px so the "10 synonymfrågor…"
+          // line carries the same compositional weight on every viewport.
+          fontSize: 'clamp(32px, 3vw + 22px, 44px)',
           lineHeight: 1.05,
           color: 'var(--ink)',
           letterSpacing: '-0.02em',
@@ -325,7 +328,7 @@ function IdleBody({
         style={{
           marginTop: 8,
           fontFamily: 'var(--font-display)',
-          fontSize: 18,
+          fontSize: 'clamp(16px, 0.875rem + 0.4vw, 20px)',
           lineHeight: 1.35,
           color: 'var(--ink-2)',
         }}
