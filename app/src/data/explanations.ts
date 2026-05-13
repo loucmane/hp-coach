@@ -29,6 +29,24 @@ export type DistractorExplanation = {
   why_wrong: string
 }
 
+/** A single step in a multi-step solution walkthrough. Phase A.6 adds
+ *  this structured representation to Layer 2 content; Phase A.5's
+ *  PedagogyPanel renders these as numbered cards when present and
+ *  falls back to prose-splitting `solution_path` when absent. */
+export type ExplanationStep = {
+  /** 1-indexed ordinal. The generator writes steps in order; the
+   *  renderer relies on `n` for the display number rather than
+   *  array index so we can support sparse / re-ordered arrays
+   *  defensively. */
+  n: number
+  /** Optional micro-heading (e.g., "Sätt upp ekvationen"). Renderer
+   *  shows it as an Eyebrow above the step body. */
+  title?: string
+  /** Step body. Math wrapped in U+E000 / U+E001 like solution_path;
+   *  render via <MathText>. */
+  text: string
+}
+
 /** Generation metadata — surfaced to the SPA so a future QA UI can
  *  show which model wrote each explanation and when. Optional in the
  *  type because v1 generation may have written explanations without
@@ -41,8 +59,20 @@ export type ExplanationMeta = {
 export type Explanation = {
   /** 2-4 sentences. INSIGHT-FIRST: the first sentence states the
    *  single thing the student needed to know. Math wrapped in
-   *  U+E000 / U+E001 markers — render via <MathText>. */
+   *  U+E000 / U+E001 markers — render via <MathText>.
+   *  KEPT after Phase A.6 as a single-string fallback for callers
+   *  that don't want to render step cards (e.g., the phone-mode
+   *  ExplanationPanel collapsed view). When `steps[]` is present
+   *  this should still be filled with a concise prose summary. */
   solution_path: string
+  /** Phase A.6 — structured step-by-step walkthrough. Optional
+   *  because (a) Phase A.5 ships before A.6 regen, so much of the
+   *  corpus still has only `solution_path`; (b) some sections
+   *  (ORD) collapse to a single step and may omit the array entirely.
+   *  When present, the Study Desk pedagogy panel renders these as
+   *  numbered cards; when absent, falls back to splitting
+   *  `solution_path` heuristically. */
+  steps?: ExplanationStep[]
   /** One per WRONG option; correct option is skipped. */
   distractors: DistractorExplanation[]
   /** One sentence naming the recurring pattern. */
@@ -51,6 +81,11 @@ export type Explanation = {
    *  there's no trap orthogonal to the technique itself. The UI hides
    *  the pitfall callout entirely when this is null. */
   pitfall: string | null
+  /** Phase A.6 — Layer 1 framework id this question belongs to.
+   *  When present, the pedagogy panel surfaces a chip linking to
+   *  the framework lesson. Optional so pre-A.6 explanations don't
+   *  break. */
+  framework_id?: string
   /** Generation provenance; not always present on older entries. */
   _meta?: ExplanationMeta
 }
