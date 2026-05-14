@@ -727,192 +727,639 @@
   },
   "host-2025-kvant1-NOG-023": {
     "_meta": {
-      "generated_at": 1778426243221,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att 18 mönstrat + 25 totalt räcker.",
-        "why_wrong": "(1) säger inget om hård/mjuk-fördelningen inom någon av grupperna."
+        "why_tempting": "Det är frestande att läsa '18 mönstrat' som rikedom av information — siffran är konkret och säger något om hela säcken.",
+        "why_wrong": "Steg 5 visar att enbart kolumnsumman (mönstrat = 18) lämnar fri variation i hur de 18 splittas på hård/mjuk. (1) ger noll info om hårdhetsaxeln."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att den explicita fördelningen 5+2 räcker.",
-        "why_wrong": "(2) täcker bara enfärgat; vi vet inget om de 18 mönstrade paketens hårdhet."
+        "why_tempting": "Många stannar vid '5 hårda + 2 mjuka' eftersom siffrorna ser ut som den exakta fördelning frågan efterlyser.",
+        "why_wrong": "Steg 7 visar att (2) bara täcker enfärgat-kolumnen (totalt 7 paket). De 18 mönstrade paketens hårdhet förblir helt okänd."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två tabellrader tillsammans måste fylla schemat.",
-        "why_wrong": "Båda utsagorna ger samma information om enfärgat-gruppen — mönstrat-fördelningen är fortfarande okänd."
+        "why_tempting": "Första instinkten är att två tabellrader tillsammans alltid 'fyller schemat' — kolumnsumman från (1) plus uppdelningen från (2) känns komplett.",
+        "why_wrong": "Steg 8: båda påståendena belyser samma kolumn (enfärgat). Den andra kolumnen (mönstrat) saknar fortfarande sin hård/mjuk-uppdelning."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett ensamt fixerar antalet hårda landar du här.",
-        "why_wrong": "Inget villkor avslöjar antalet hårda i mönstrat-gruppen — totala antalet hårda kan inte räknas ut."
+        "why_tempting": "Om du tror att vart och ett ensamt fixerar antalet hårda, landar du här.",
+        "why_wrong": "D kräver att VARDERA påståendet ensamt ger unikt svar. Steg 5 och steg 7 visar att inget av dem gör det. D är reserverat för fall där (1) ensamt ger ett tal OCH (2) ensamt ger samma (eller annat) tal."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Inget av villkoren – inte heller tillsammans – avslöjar fördelningen hård/mjuk inom de mönstrade paketen. (1) ger bara antalet mönstrat (18) och därmed enfärgat (7); (2) ger fördelningen i den enfärgade gruppen (5 hårda) men säger inget om de mönstrade.",
-    "technique": "I korstabeller — kontrollera att informationen täcker BÅDA grupperingarna, inte bara en av två kategoriaxlar."
+    "framework_id": null,
+    "pitfall": "Den klassiska NOG-tabell-fällan: att tro att kolumnsummor och en kolumnuppdelning räcker när målet är en radsumma. Botemedlet: skriv ut tabellen, ringa in den efterfrågade summan, och kolla att informationen rör BÅDA rutorna i den summan — inte bara den ena.",
+    "solution_path": "Båda påståendena låser bara den ENFÄRGADE gruppen (totalt 7 paket, varav 5 hårda). Antalet hårda paket bland de 18 mönstrade förblir okänt — kan vara 0 till 18. Svaret är E.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Det finns 25 paket totalt. Varje paket har två oberoende egenskaper: hårdhet (hård eller mjuk) och papperstyp (enfärgat eller mönstrat). Vi söker ETT tal: antalet hårda paket i hela säcken.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "I NOG räknas information som tillräcklig endast om den låser fast EN unik siffra. Om informationen är förenlig med flera olika svar är den otillräcklig — även när vi vet en hel del.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "Tänk dig en tabell med raderna 'hård / mjuk' och kolumnerna 'enfärgat / mönstrat'. Summan av alla fyra rutor är 25. Vi vill ha radsumman 'hård' (de två rutorna 'hård+enfärgat' och 'hård+mönstrat' adderade).",
+        "tier": "essential",
+        "title": "Rita 2×2-tabellen"
+      },
+      {
+        "n": 4,
+        "text": "'18 paket är mönstrade.' Det fixerar kolumnsumman: mönstrat = 18, alltså enfärgat = 25 − 18 = 7. Men kolumnsumman säger inget om hur de 18 mönstrade splittar sig på hård/mjuk.",
+        "tier": "essential",
+        "title": "Översätt påstående (1)"
+      },
+      {
+        "n": 5,
+        "text": "Vi vet bara att mönstrat = 18 och enfärgat = 7. Hårda mönstrade kan vara 0, 5, 10 eller hela 18. Då blir antalet hårda totalt 0+? till 18+? — flera möjliga värden. (1) räcker inte.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 6,
+        "text": "'Av de enfärgade är 5 hårda och 2 mjuka.' Det fixerar HELA enfärgat-kolumnen: 5 hårda enfärgade, 2 mjuka enfärgade, totalt 5 + 2 = 7 enfärgade paket.",
+        "tier": "essential",
+        "title": "Översätt påstående (2)"
+      },
+      {
+        "n": 7,
+        "text": "Vi vet 5 hårda enfärgade och att enfärgat = 7. Men vi vet inte hur många mönstrade det finns (kan vara 25 − 7 = 18 om vi antar att alla räknats, men (2) ger inte den totalsumman explicit). Och vi vet ingenting om hårdhetsfördelningen bland mönstrade. (2) räcker inte.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 8,
+        "text": "Tillsammans: mönstrat = 18, enfärgat = 7, varav 5 hårda enfärgade + 2 mjuka enfärgade. Tabellen ser ut så här: 'hård enfärgat' = 5, 'mjuk enfärgat' = 2, 'mönstrat total' = 18. Men 'hård mönstrat' är fortfarande h (okänt), med 0 \\leq h \\leq 18.",
+        "tier": "essential",
+        "title": "Test (1) + (2) tillsammans"
+      },
+      {
+        "n": 9,
+        "text": "Totalt antal hårda = 5 + h. Eftersom h kan vara vad som helst från 0 till 18, kan totalt antal hårda vara 5, 6, … 23. Det är en INTERVALL, inte ett enskilt värde. Otillräckligt.",
+        "tier": "essential",
+        "title": "Vad kan vi säga om totalen?"
+      },
+      {
+        "n": 10,
+        "text": "Vi har fyllt i kolumnsumman och en hel kolumn — men inget hjälper oss att splitta den andra kolumnen. För det skulle vi behöva en RADSUMMA (totalt hårda eller totalt mjuka) eller en ruta i mönstrat-kolumnen. Ingen av påståendena ger något av detta.",
+        "tier": "detail",
+        "title": "Varför fastnar tabellen?"
+      },
+      {
+        "n": 11,
+        "text": "Varken (1), (2) eller båda tillsammans bestämmer antalet hårda paket entydigt. Svaret är E — ej genom de båda påståendena. Insikten i en mening: i 2×2-tabeller måste informationen täcka BÅDA grupperingsaxlarna, inte bara en.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Tabell-täckningsregeln: i NOG-frågor med två oberoende kategoriaxlar (hård/mjuk × enfärgat/mönstrat), behöver du information som faktiskt splittar BÅDA axlarna. Triggern: så fort frågan har två egenskaper per element, rita 2×2-tabellen och pricka av vilka rutor varje påstående fyller — om en hel kolumn (eller rad) saknas splittas inte målsumman."
   },
   "host-2025-kvant1-NOG-024": {
     "_meta": {
-      "fixed_at": 1778498574281,
-      "generated_at": 1778426243221,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att medelhastigheten ensam ger en jämförelse.",
-        "why_wrong": "(1) säger inget alls om Therese — vinnaren kan inte avgöras."
+        "why_tempting": "Det är frestande att se 'medelhastighet 1,91 m/s' som ett rikt mått och tro att hastighet räcker — fart känns ju som direkt vinst-information.",
+        "why_wrong": "Steg 6: medelhastighet 1,91 m/s säger BARA något om Sarah. Utan Thereses tid eller fart kan vi inte avgöra vem som var snabbast."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att en tid i sekunder är direkt jämförbar.",
-        "why_wrong": "(2) ger ingen information om Sarah — utan båda tiderna kan ingen jämförelse göras."
+        "why_tempting": "Många stannar vid 'Therese 50,6 s' eftersom 50 s är en konkret världsklass-tid och känns avgörande.",
+        "why_wrong": "Steg 8: Thereses tid är meningslös utan jämförelsetal från Sarah. Om Sarah simmat 48 s skulle Sarah vunnit; om Sarah simmat 55 s skulle Therese vunnit."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att en hastighet eller en tid ensamt avslöjar vinnaren landar du här.",
-        "why_wrong": "Tävling kräver två deltagares tider; varken (1) eller (2) ger båda."
+        "why_tempting": "Om du tror att fart och tid är 'samma sak' (båda mäter prestation) kan det kännas som att var och en ensamt räcker.",
+        "why_wrong": "Fart och tid mäter SAMMA simmare på olika sätt — men varken (1) eller (2) ger båda simmarna. Steg 6 och 8 visar att jämförelse-information saknas."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att hastighet och tid inte kan jämföras direkt.",
-        "why_wrong": "Med fast sträcka 100 m räknas hastighet om till tid och kan jämföras: 52,4 s mot 50,6 s."
+        "why_tempting": "Snabbsvar är ofta 'olika enheter (m/s vs s) — kan inte jämföras'.",
+        "why_wrong": "Steg 5 visar att medelhastighet och tid är ENKLA att räkna om: tid = sträcka/fart. När man har sträckan (100 m) blir m/s direkt en tid i sekunder."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (1) ger Sarahs tid till 100/1{,}91\\approx 52{,}4 s, men inget om Therese. (2) ger Thereses tid 50,6 s men inget om Sarah. Tillsammans: Therese 50,6 s < Sarah 52,4 s — Therese vann.",
-    "technique": "Vid jämförelser av två lopp: omvandla hastighet till tid (t=s/v) och jämför enheter direkt."
+    "framework_id": null,
+    "pitfall": "NOG-fällan med olika enheter: 1,91 m/s (fart) och 50,6 s (tid) kan kännas ojämförbara och få dig att klassa infon som otillräcklig. Botemedlet: kom ihåg t = s/v — när sträckan är känd är fart och tid utbytbara.",
+    "solution_path": "(1) ger Sarahs tid via t = \\text{sträcka}/\\text{fart} = 100/1{,}91 \\approx 52{,}4 s. (2) ger Thereses tid 50,6 s. Var för sig vet vi bara en simmares tid; tillsammans kan vi jämföra och se att Therese var snabbare. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Sarah och Therese simmar 100 m frisim mot varandra. Vi vill veta vem som vann — alltså vem som hade KORTARE tid. Vi behöver kunna jämföra de två tiderna (eller motsvarande mått).",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "I NOG räknas informationen som tillräcklig om den ger ETT entydigt svar. Här ett av två: 'Sarah vann' eller 'Therese vann'. Om informationen inte avgör vem, är den otillräcklig.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "Vinnaren är den med kortast tid över 100 m. Vi behöver alltså två jämförbara storheter: antingen två tider, två medelhastigheter, eller en av varje (då räknar vi om).",
+        "tier": "essential",
+        "title": "Vinst-villkoret i tid"
+      },
+      {
+        "n": 4,
+        "text": "'Sarahs medelhastighet var 1,91 m/s.' Medelhastighet = sträcka / tid, så 1{,}91 = 100 / t_S där t_S är Sarahs tid. Det säger ENBART något om Sarah — inget om Therese.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 5,
+        "text": "Lös t_S = 100 / 1{,}91. Snabbuppskattning: 100/2 = 50, och 1,91 är något mindre än 2, så t_S är något över 50. Mer exakt: 100/1{,}91 \\approx 52{,}36 sekunder. Men det enskilda värdet behöver vi inte — det räcker att veta att Sarahs tid är BESTÄMD av (1).",
+        "tier": "detail",
+        "title": "Räkna Sarahs tid"
+      },
+      {
+        "n": 6,
+        "text": "Vi vet Sarahs tid (cirka 52,4 s) men ingenting om Therese. Therese kan ha simmat 45 s (Therese vinner) eller 60 s (Sarah vinner). Båda utfall är förenliga med (1). Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 7,
+        "text": "'Thereses tid var 50,6 sekunder.' Det fixerar Thereses tid direkt — men inte Sarahs.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 8,
+        "text": "Vi vet Thereses tid (50,6 s) men ingenting om Sarah. Sarah kan ha simmat 48 s (Sarah vinner) eller 55 s (Therese vinner). Båda utfall är förenliga med (2). Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 9,
+        "text": "Tillsammans har vi BÅDA tiderna: Sarah \\approx 52{,}4 s, Therese 50,6 s. Direkt jämförelse: 50,6 < 52,4, så Therese var snabbare. Entydigt svar: Therese vann.",
+        "tier": "essential",
+        "title": "Test (1) + (2) tillsammans"
+      },
+      {
+        "n": 10,
+        "text": "Kortast tid vinner i ett tävlingslopp (mer hastighet → mindre tid). Therese har mindre tid → Therese vinner. Inget tecken är vänt.",
+        "tier": "detail",
+        "title": "Verifiera tecknet"
+      },
+      {
+        "n": 11,
+        "text": "(1) ensamt och (2) ensamt ger båda bara en simmares tid; tillsammans ger de båda tiderna och låter oss jämföra. Svaret är C — tillräcklig i (1) tillsammans med (2). Insikten i en mening: när frågan handlar om jämförelse mellan TVÅ aktörer, behöver du information om båda.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Jämförelsestrategin: när NOG frågar 'vem vann / vilket är störst / vilken är dyrast' behöver du två jämförbara mått (kan vara samma enhet eller olika enheter du kan räkna om). Triggern: så fort frågan jämför TVÅ aktörer, lista vad som krävs om vardera och kolla att båda kolumnerna fylls."
   },
   "host-2025-kvant1-NOG-025": {
     "_meta": {
-      "fixed_at": 1778498574281,
-      "generated_at": 1778426243221,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att en relation y=6x \"låser ihop\" summan.",
-        "why_wrong": "x+y=7x kräver att x är känt — (2) ger inget värde."
+        "why_tempting": "Det är frestande att tycka att y = 6x är en 'ren' och 'enkel' ekvation och därför mer informativ än bråk-ekvationen i (1).",
+        "why_wrong": "Steg 8: y = 6x ger x+y = 7x som beror på x. En relation mellan två variabler är inte samma sak som ett värde."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två ekvationer alltid behövs för två obekanta.",
-        "why_wrong": "Vi söker bara summan x+y, inte x och y separat — (1) ger den direkt."
+        "why_tempting": "Första instinkten är 'två villkor + två obekanta = lös systemet och hitta x och y'.",
+        "why_wrong": "Steg 6: (1) ger redan x+y = 14 direkt. Vi behöver inte lösa för x och y separat när frågan bara vill ha deras summa. C är överarbete."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du läser (2) som om x=1 vore underförstått landar du här.",
-        "why_wrong": "(2) saknar absolut värde för x — summan kan vara vilket multiplum av 7 som helst."
+        "why_tempting": "Om du tror att varje 'fin' algebraisk ekvation ger ett unikt värde landar du här.",
+        "why_wrong": "Steg 8 visar att (2) inte är tillräcklig ensamt. D kräver att VARDERA påståendet ensamt ger unik lösning — (2) gör det inte."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att två obekanta aldrig låses från en enda ekvation.",
-        "why_wrong": "Vi behöver inte x och y separat; (1) ger summan direkt utan att lösa för dem."
+        "why_tempting": "Snabbsvar är ofta 'två okända, behöver två oberoende ekvationer — kanske går inte'.",
+        "why_wrong": "Steg 4: (1) ensam ger x+y = 14 direkt. Vi söker inte (x, y) — bara summan, och den är låst av (1)."
       }
     ],
-    "pitfall": "När frågan är en linjärkombination räcker ofta EN ekvation som direkt isolerar den kombinationen.",
-    "solution_path": "(1) räcker direkt: \\frac{x+y}{2}+3=10\\Rightarrow x+y=14. (2) ger y=6x men x är okänd, så x+y=7x kan inte beräknas.",
-    "technique": "Sök efter den efterfrågade kombinationen (här x+y) i ekvationen, inte de individuella obekantna."
+    "framework_id": null,
+    "pitfall": "Fällan att alltid lösa systemet helt: två okända får dig att vilja hitta x och y separat. Botemedlet: kolla ALLTID först om frågan kan besvaras direkt från villkoret — utan att behöva separera variablerna.",
+    "solution_path": "(1): (x+y)/2 + 3 = 10 \\Rightarrow (x+y)/2 = 7 \\Rightarrow x+y = 14 — entydigt. (2): y = 6x ger inget enskilt värde på x+y (beror på x). Endast (1) räcker — svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi söker ett enskilt tal: värdet av summan x+y. Vi söker INTE x och y var för sig — bara deras summa. Det är en viktig detalj som ändrar vilken information som räcker.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Tillräcklig = informationen leder till EN unik siffra för x+y. Om vi får oändligt många möjliga värden är den otillräcklig — även om vi kan uttrycka x+y i andra variabler.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "Påstående: \\frac{x+y}{2} + 3 = 10. Lägg märke till att x+y står som en ENDA klump i ekvationen — vi behöver inte plocka isär det till x och y separat.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 4,
+        "text": "Subtrahera 3 från båda sidor: \\frac{x+y}{2} = 7. Multiplicera båda sidor med 2: x+y = 14. Klart.",
+        "tier": "essential",
+        "title": "Lös (1) för x+y"
+      },
+      {
+        "n": 5,
+        "text": "När frågan söker en LINJÄRKOMBINATION (x+y) och påståendet innehåller exakt samma kombination, kan vi lösa direkt utan att hitta x och y var för sig. Detta är NOG:s favorit-trick — man kan lösa MINDRE än alla okända.",
+        "tier": "detail",
+        "title": "Varför fungerade detta?"
+      },
+      {
+        "n": 6,
+        "text": "(1) ger x+y = 14 entydigt. Det räcker — vi har ETT värde för det vi söker. (1) räcker ensamt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 7,
+        "text": "Påstående: y = 6x. Det är ett FÖRHÅLLANDE mellan x och y, inte ett konkret tal. y är 6 gånger så stort som x — men x kan vara vad som helst.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 8,
+        "text": "Sätt in y = 6x i x+y: x + 6x = 7x. Värdet av x+y är 7x — beror på x. Om x = 1, x+y = 7; om x = 2, x+y = 14; om x = 10, x+y = 70. Oändligt många möjliga värden. (2) räcker inte.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 9,
+        "text": "(2) säger något om x:s och y:s RELATION men inte deras STORLEK. Utan ett ankarvärde för någondera kan summan svänga fritt. En ekvation med två obekanta = oändligt många lösningar.",
+        "tier": "detail",
+        "title": "Vad missar (2)?"
+      },
+      {
+        "n": 10,
+        "text": "Nej. Eftersom (1) ensamt redan ger ett unikt svar (x+y = 14), tillför (2) ingenting i NOG-meningen. Svaret är 'tillräcklig i (1) men ej i (2)' — A.",
+        "tier": "essential",
+        "title": "Behöver vi (2) tillsammans med (1)?"
+      },
+      {
+        "n": 11,
+        "text": "Kontrollera (1): (14)/2 + 3 = 7 + 3 = 10. ✓ Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 12,
+        "text": "Endast (1) räcker. Svaret är A. Insikten i en mening: när NOG söker en LINJÄRKOMBINATION (typ x+y, 2x-y, x^2 + y^2), kan ett enda smart villkor räcka — du behöver inte alltid hitta varje variabel för sig.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Linjärkombinations-snabbspår: i NOG, när frågan söker x+y (eller någon annan kombination), läs villkoren med ögon för exakt den kombinationen. Ofta löses uppgiften snabbare genom att INTE bryta isär variablerna. Triggern: 'vad är värdet av [uttryck med flera variabler]?' → leta efter ett villkor som innehåller hela uttrycket."
   },
   "host-2025-kvant1-NOG-026": {
     "_meta": {
-      "generated_at": 1778426243221,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att \"≥1 av B,D fick medalj\" smalnar av till en bestämd uppsättning.",
-        "why_wrong": "(1) lämnar Anki helt öppen — de tre medaljerna kan gå till {B,D,Anki} eller {B,D,Cissi}."
+        "why_tempting": "Det är frestande att läsa (1) som rik information eftersom Ellen explicit utesluts (E=–) och B/D pekas ut.",
+        "why_wrong": "Steg 5 och 6: (1) tillåter både {A,B,D} (Anki=M) och {B,C,D} (Anki=–). Att Ellen är ute låser inte A:s status."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid \"≥1 av A,C fick medalj\" och tror Anki därmed pekas ut.",
-        "why_wrong": "(2) tillåter att bara Cissi (inte Anki) får medalj från det paret."
+        "why_tempting": "Många stannar vid (2) eftersom 'minst en av Anki och Cissi' nämner Anki direkt — det känns som att frågan styrs av (2).",
+        "why_wrong": "Steg 9 och 10: (2) tillåter både {A,C,D} (Anki=M) och {C,D,E} (Anki=–). 'Minst en av A och C' betyder INTE 'Anki' — det kan vara Cissi som räddar villkoret."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att fyra villkor tillsammans måste låsa lösningen.",
-        "why_wrong": "Båda villkoren går att uppfylla i två konkreta scenarier — ett med Anki och ett utan."
+        "why_tempting": "Första instinkten är att två logikvillkor TILLSAMMANS borde låsa ner ett 3-av-5-scenario till en unik konfiguration.",
+        "why_wrong": "Steg 11 och 12 visar två olika scenarier ({A,B,C} och {B,C,D}) som båda uppfyller alla fyra delvillkoren från (1)+(2). Anki:s status är fortfarande fri."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du räknar antalet villkor istället för deras gemensamma effekt landar du här.",
-        "why_wrong": "Antal villkor är inte samma som låsning: Ankis status kan inte fastställas i något av lägena."
+        "why_tempting": "Snabbsvar är ofta 'båda påståendena innehåller flera deluttalanden — så var och en ensamt borde räcka'.",
+        "why_wrong": "Steg 7 och 10 visar att varken (1) eller (2) ensamt räcker. D kräver att VAR OCH EN ensamt ger unikt svar."
       }
     ],
-    "pitfall": "Logikvillkor av typen \"minst en av X, Y\" rensar inte bort den andra entiteten — den som inte nämns kan hamna båda vägarna.",
-    "solution_path": "Båda villkoren tillåter både fall: t.ex. {Anki, Bosse, Danne} (Anki ja) och {Cissi, Bosse, Danne} (Anki nej) uppfyller (1) och (2) samtidigt. Frågan kan inte avgöras med given information.",
-    "technique": "Pröva ett \"ja\"-fall och ett \"nej\"-fall för den efterfrågade entiteten — lever båda kvar är lösningen tvetydig."
+    "framework_id": null,
+    "pitfall": "'Minst en av X och Y' låter starkt men är ett svagt villkor (uppfyllt av X ensam, Y ensam, eller båda). Botemedlet: skriv alltid ut alla tillåtna konfigurationer för 'minst en'-villkor och se om någondera variabel är fri i något scenario.",
+    "solution_path": "Även med båda påståendena går det att konstruera scenarier där Anki har medalj OCH scenarier där Anki inte har medalj — till exempel {Anki, Bosse, Cissi} respektive {Bosse, Cissi, Danne}. Båda passar alla villkor. Otillräckligt → svaret är E.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Fem personer: Anki, Bosse, Cissi, Danne, Ellen. Exakt tre av dem fick medalj. Frågan är: fick Anki medalj? Vi vill ha ETT entydigt svar — ja eller nej.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Här krävs att informationen utesluter ett av de två svaren. Om båda 'Anki har medalj' och 'Anki har inte medalj' är förenliga med villkoren, är informationen otillräcklig.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "Skriv M för 'medalj' och – för 'ingen medalj'. Vi söker ett scenario med exakt tre M och två – bland (A, B, C, D, E). Frågan: är A:s status låst till M eller låst till –?",
+        "tier": "essential",
+        "title": "Notation"
+      },
+      {
+        "n": 4,
+        "text": "'Minst en av Bosse och Danne fick medalj.' Det betyder att B eller D (eller båda) har M. 'Ellen fick ingen medalj.' Det betyder E = –.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 5,
+        "text": "Försök bygga ett scenario där Anki har medalj och alla (1)-villkor stämmer. {A, B, D} med medalj: A=M, B=M, D=M, C=–, E=–. Kollar: (1) säger E=– ✓ och minst en av B/D har M ✓. Tre med medalj ✓. Anki har medalj. Detta scenario fungerar.",
+        "tier": "essential",
+        "title": "Test (1) ensamt — sök Anki=M"
+      },
+      {
+        "n": 6,
+        "text": "Försök ett scenario där Anki INTE har medalj. {B, C, D} med medalj: A=–, B=M, C=M, D=M, E=–. Kollar: E=– ✓, minst en av B/D har M ✓ (båda har faktiskt). Tre med medalj ✓. Anki har INGEN medalj. Detta scenario fungerar också.",
+        "tier": "essential",
+        "title": "Test (1) ensamt — sök Anki=–"
+      },
+      {
+        "n": 7,
+        "text": "(1) ensamt är förenligt med både 'Anki har medalj' och 'Anki har inte medalj'. Otillräckligt.",
+        "tier": "essential",
+        "title": "Slutsats om (1) ensamt"
+      },
+      {
+        "n": 8,
+        "text": "'Minst en av Anki och Cissi fick medalj' — A eller C (eller båda) har M. 'Minst en av Bosse och Ellen fick ingen medalj' — B eller E (eller båda) saknar M.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 9,
+        "text": "Scenario {A, C, D}: A=M ✓ (uppfyller 'minst en av A/C'), B=–, så minst en av B/E saknar M ✓. Tre med medalj ✓. Anki har medalj. Fungerar.",
+        "tier": "essential",
+        "title": "Test (2) ensamt — sök Anki=M"
+      },
+      {
+        "n": 10,
+        "text": "Scenario {C, D, E}: C=M (uppfyller 'minst en av A/C'), A=–, B=– (uppfyller 'minst en av B/E saknar M'). Tre med medalj ✓. Anki har INGEN medalj. Fungerar också. → (2) ensamt otillräckligt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt — sök Anki=–"
+      },
+      {
+        "n": 11,
+        "text": "Scenario {A, B, C}: A=M ✓ (av (2) — minst en av A/C). B=M ✓ (av (1) — minst en av B/D). E=– ✓ (av (1) — Ellen ingen medalj), och minst en av B/E saknar M (E=– räcker) ✓. Tre med medalj ✓. Anki har medalj. Båda villkor uppfyllda.",
+        "tier": "essential",
+        "title": "Test (1) + (2) tillsammans — sök Anki=M"
+      },
+      {
+        "n": 12,
+        "text": "Scenario {B, C, D}: A=–, B=M ✓ (av (1)), E=– ✓ (Ellen ingen medalj), C=M (av (2) — minst en av A/C, här C). Minst en av B/E saknar M: E=– ✓. Tre med medalj ✓. Anki har INGEN medalj. Båda villkor uppfyllda.",
+        "tier": "essential",
+        "title": "Test (1) + (2) tillsammans — sök Anki=–"
+      },
+      {
+        "n": 13,
+        "text": "Även med (1) och (2) tillsammans kan Anki ha medalj ({A,B,C}) eller inte ha medalj ({B,C,D}). Inget unikt svar. Svaret är E — ej genom de båda påståendena. Insikten i en mening: 'minst en av X och Y' är ett SVAGT villkor som lämnar många scenarier öppna — testa båda utfallen genom att konstruera scenarier.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Fallkonstruktions-strategin: i logik-NOG, försök konstruera ETT scenario med svaret JA och ETT scenario med svaret NEJ. Lyckas du med båda är informationen otillräcklig. Triggern: så fort en NOG-fråga handlar om 'fick X medalj / är X med / blev X vald', räkna inte symboliskt — bygg konkreta exempel."
   },
   "host-2025-kvant1-NOG-027": {
     "_meta": {
-      "generated_at": 1778426243221,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att \"varken Göran eller Roger är kassör\" pekar ut sekreteraren via uteslutning.",
-        "why_wrong": "(1) låser Stig till kassör men lämnar sekreterar-rollen mellan Göran och Roger."
+        "why_tempting": "Det är frestande att räkna deluttalanden — (1) har två meningar ('varken G/R kassör' + 'Stig ej sekreterare') och känns informationsrik.",
+        "why_wrong": "Steg 5: (1) låser Stig som kassör men lämnar Göran och Roger fria på ordförande/sekreterare. Två möjliga sekreterare — inte unikt."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda när tre roller och tre personer är inblandade.",
-        "why_wrong": "(2) ensamt låser alla tre rollerna; (1) tillför inget när Stig redan är låst som kassör."
+        "why_tempting": "Första instinkten i logik-NOG är att 'kombinera alla ledtrådar' — använd både (1) och (2) tillsammans för säkerhets skull.",
+        "why_wrong": "Steg 7: (2) räcker ensamt. Att lägga till (1) tillför ingenting (steg 11 visar att (1) blir redundant). C är överarbete."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att (1) räcker eftersom det utesluter två av tre landar du här.",
-        "why_wrong": "(1) låser kassören men lämnar sekreteraren öppen."
+        "why_tempting": "Om du tror att båda påståendena är konstruerade för att fungera självständigt landar du här.",
+        "why_wrong": "Steg 5: (1) lämnar två möjliga sekreterare. D kräver att VAR OCH EN ensamt ger unik lösning — (1) gör inte det."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att negationsvillkor aldrig räcker för en unik tilldelning.",
-        "why_wrong": "(2) kombinerar två negationer + en bekräftelse till en unik fördelning."
+        "why_tempting": "Snabbsvar är ofta 'permutationer är komplicerade — kanske går det inte att lösa'.",
+        "why_wrong": "Steg 7 visar att (2) entydigt fastställer Göran som sekreterare. E gäller bara när varken (1), (2) eller båda räcker — här gör (2) det."
       }
     ],
-    "pitfall": null,
-    "solution_path": "(2) räcker: Göran och Stig är inte ordförande, så Roger är ordförande; Stig är kassör enligt utsagan, så Göran måste vara sekreterare. (1) låser bara Stig som kassör men lämnar Göran/Roger fria mellan ordförande och sekreterare.",
-    "technique": "I tilldelningsproblem: leta efter utsagor som täcker alla tre roller, inte bara en av dem."
+    "framework_id": null,
+    "pitfall": "'Varken X eller Y väljs till Z' missuppfattas ofta som svag information. Botemedlet: i ett 3-personers-system betyder 'varken X eller Y på Z' att den TREDJE personen får Z (enda kvar) — vilket är en STARK låsning.",
+    "solution_path": "(1) ger 'Stig = kassör' (han är ej sekr och varken G/R är kassör), men lämnar G och R fria på ordförande/sekreterare. (2) säger 'R = ordförande' (G och S ej ordf) och 'S = kassör' — då måste G vara sekreterare. Endast (2) räcker — svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Tre personer (Göran, Roger, Stig) ska få varsin av tre poster (ordförande, sekreterare, kassör) — alltså en permutation. Vi söker EN unik person på sekreterarposten.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Tillräcklig = informationen pekar ut EN unik permutation av personer-mot-poster, eller åtminstone låser sekreterarposten till EN person.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "3 personer × 3 poster = 3! = 6 permutationer. Vi behöver villkor som filtrerar bort 5 av dem (eller minst alla som har olika sekreterare).",
+        "tier": "essential",
+        "title": "Räkna möjliga permutationer"
+      },
+      {
+        "n": 4,
+        "text": "'Varken Göran eller Roger väljs till kassör.' Då måste Stig vara kassör (det är de enda tre). 'Stig väljs inte till sekreterare' — stämmer ju automatiskt (Stig är ju kassör). Det andra villkoret är redundant givet det första.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 5,
+        "text": "(1) fixerar: Stig = kassör. Göran och Roger delar ordförande och sekreterare — men i vilken ordning? Två möjligheter: (Göran=ordf, Roger=sekr) eller (Göran=sekr, Roger=ordf). Sekreteraren är antingen Göran eller Roger. Inte unikt → (1) otillräckligt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 6,
+        "text": "'Varken Göran eller Stig väljs till ordförande.' Då måste Roger vara ordförande. 'Stig väljs till kassör' — fixerar Stig på kassörsposten.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 7,
+        "text": "Från (2): Roger = ordförande, Stig = kassör. Den enda posten kvar är sekreterare, och den enda person som inte fått en post är Göran. Alltså: Göran = sekreterare. Entydigt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt — eliminera"
+      },
+      {
+        "n": 8,
+        "text": "(2) ger TVÅ låsta personer (Roger och Stig) på två poster. När 2 av 3 poster är låsta hos 2 av 3 personer, är den tredje given automatiskt — det finns bara en person och en post kvar.",
+        "tier": "detail",
+        "title": "Varför är (2) starkare än (1)?"
+      },
+      {
+        "n": 9,
+        "text": "Lista: Roger ordförande, Göran sekreterare, Stig kassör. Kontrollera mot (2): Roger ordförande (varken G/S ordförande ✓), Stig kassör ✓. Alla villkor uppfyllda och unika. (2) räcker.",
+        "tier": "essential",
+        "title": "Test (2) ensamt — kontroll"
+      },
+      {
+        "n": 10,
+        "text": "Nej — (2) ensamt ger redan unik lösning. Svaret är 'tillräcklig i (2) men ej i (1)'.",
+        "tier": "essential",
+        "title": "Behöver vi (1) tillsammans med (2)?"
+      },
+      {
+        "n": 11,
+        "text": "I lösningen (G=sekr, R=ordf, S=kassör): Varken G eller R kassör ✓, Stig ej sekreterare ✓. (1) är förenligt med lösningen — men (1) ensamt räckte inte för att hitta den.",
+        "tier": "detail",
+        "title": "Verifiera (1) mot lösningen från (2)"
+      },
+      {
+        "n": 12,
+        "text": "Endast (2) räcker — svaret är B. Insikten i en mening: i NOG-permutationsfrågor räknas låsningar — varje villkor som binder en person till en post (eller utesluter en person från ALLA andra poster) minskar antalet möjliga permutationer; målet är att komma ner till en.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Permutations-låsstrategin: i NOG med n personer och n poster, räkna hur många positioner varje villkor LÅSER. När n−1 positioner är låsta är den sista automatisk. Triggern: 'vem väljs till X?' med poster och personer → lista låsningar per påstående, sikta på n−1 eller fler."
   },
   "host-2025-kvant1-NOG-028": {
     "_meta": {
-      "fixed_at": 1778499304880,
-      "generated_at": 1778426243221,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att den krångligare ekvationen i (1) är den enda som låser värdet.",
-        "why_wrong": "(2):s direkta differens A-B=20 räcker när vi redan vet A=2B."
+        "why_tempting": "Det är frestande att tycka att (1) känns 'tyngre' (manipulerar antal med −10 och faktor 3) och därför måste vara den som räcker.",
+        "why_wrong": "Steg 10 visar att (2) ensamt räcker — så A (bara (1)) underskattar (2)."
       },
       {
         "letter": "B",
-        "why_tempting": "Många föredrar enkla differenser och avfärdar (1).",
-        "why_wrong": "(1) ger en fungerande ekvation i b — leder till samma b=20."
+        "why_tempting": "Många stannar vid (2) eftersom den är enklare att räkna på (A − B = 20) och tror att (1) är onödigt avancerat.",
+        "why_wrong": "Steg 7 visar att (1) ensamt också räcker. B (bara (2)) underskattar (1)."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera två ekvationer för att lösa två okända.",
-        "why_wrong": "Det finns bara EN okänd b — A=2B sätter den andra. (1) eller (2) räcker var för sig."
+        "why_tempting": "Första instinkten är att 'samla all info för säkerhet' och välja båda tillsammans.",
+        "why_wrong": "Steg 7 och 10 visar att vart och ett ensamt räcker. C är överarbete — och D är det rätta svaret eftersom det berättar mer (var för sig)."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att två förhållanden aldrig kan låsa absoluta värden.",
-        "why_wrong": "Förhållandet A=2B + en absolut differens räcker för att hitta båda värdena."
+        "why_tempting": "Snabbsvar är ofta 'två obekanta + ett villkor per påstående = otillräckligt'.",
+        "why_wrong": "Felräkning av obekanta: bakgrunden A = 2B är redan EN ekvation. Med ett ytterligare villkor har vi 2 ekvationer + 2 obekanta = unik lösning. Steg 3 visar att totalen är 3B, så vi behöver bara hitta B."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Var för sig räcker. Sätt B=b, A=2b. (1) ger 2b-10=3(b-10)\\Rightarrow b=20. (2) ger 2b=b+20\\Rightarrow b=20. Båda vägar leder till summan 60.",
-    "technique": "Förhållande A:B + ett absolut tal (differens, summa, korrigerad fördelning) räcker alltid för att låsa värdena."
+    "framework_id": null,
+    "pitfall": "Det är lätt att 'glömma' bakgrundsvillkoret när man bedömer påståendena enskilt och därför klassa båda som otillräckliga (en ekvation, två obekanta). Botemedlet: skriv ner bakgrundsekvationen FÖRST, sedan jämför varje påstående mot 'räcker detta tillsammans med bakgrunden?'.",
+    "solution_path": "Bakgrund: A = 2B. (1) ger A - 10 = 3(B - 10) \\Rightarrow B = 20, total 60. (2) ger A - B = 20 \\Rightarrow B = 20, total 60. Var och en ensamt räcker — svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Påse A har dubbelt så många äpplen som påse B (det är BAKGRUND, gäller redan). Vi söker totalsumman A + B. Det krävs entydigt en siffra.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Tillräcklig = informationen ger ETT värde på A + B. Eftersom A = 2B redan är känt har vi en obekant (B, sedan A = 2B och A + B = 3B); ett villkor till räcker om det är oberoende av A = 2B.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "Låt B = antal äpplen i påse B. Då är A = 2B (bakgrund). Totalt: A + B = 2B + B = 3B. Hitta B → hitta totalen.",
+        "tier": "essential",
+        "title": "Sätt upp variabler"
+      },
+      {
+        "n": 4,
+        "text": "'Tar man bort 10 från vardera, har A tre gånger så många som B.' Det betyder A - 10 = 3(B - 10) — antalet i A efter borttagning är 3 gånger antalet i B efter borttagning.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 5,
+        "text": "Sätt in A = 2B: 2B - 10 = 3(B - 10). Multiplicera ut höger sida: 2B - 10 = 3B - 30. Lägg 30 till båda sidor: 2B + 20 = 3B. Subtrahera 2B: B = 20.",
+        "tier": "essential",
+        "title": "Lös (1) tillsammans med bakgrunden"
+      },
+      {
+        "n": 6,
+        "text": "3(B - 10) = 3 \\cdot B - 3 \\cdot 10 = 3B - 30 — multiplicera 3 separat in i varje term inuti parentesen.",
+        "tier": "detail",
+        "title": "Distributiva lagen i steg 5"
+      },
+      {
+        "n": 7,
+        "text": "Med B = 20: A = 40, totalt A + B = 60. Unikt. (1) räcker ensamt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt — slutsats"
+      },
+      {
+        "n": 8,
+        "text": "'Påse A innehåller 20 fler äpplen än påse B.' Det betyder A - B = 20, eller A = B + 20.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 9,
+        "text": "Bakgrund A = 2B, (2) säger A = B + 20. Sätt lika: 2B = B + 20. Subtrahera B: B = 20.",
+        "tier": "essential",
+        "title": "Lös (2) tillsammans med bakgrunden"
+      },
+      {
+        "n": 10,
+        "text": "Med B = 20: A = 40, totalt A + B = 60. Unikt. (2) räcker ensamt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt — slutsats"
+      },
+      {
+        "n": 11,
+        "text": "Kolla (1) med A=40, B=20: ta bort 10 → A=30, B=10. Är 30 = 3·10? ✓ Kolla (2): A − B = 40 − 20 = 20 ✓. Kolla bakgrunden: A = 2B = 2·20 = 40 ✓. Allt stämmer.",
+        "tier": "detail",
+        "title": "Verifiera båda"
+      },
+      {
+        "n": 12,
+        "text": "Båda påståendena ger var för sig samma unika svar (totalsumma 60). Svaret är D — tillräcklig i (1) och (2) var för sig. Insikten i en mening: när BAKGRUNDEN redan ger en ekvation (A=2B), räcker det med ett enda oberoende villkor till för att låsa systemet — och båda (1) och (2) är sådana villkor.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Bakgrunds-räknestrategin i NOG: läs ALLTID frågans bakgrund som en gratis ekvation (här A = 2B). Då blir varje påstående 'en ekvation till' — och en ekvation till räcker oftast för 2 obekanta. Triggern: bakgrund med förhållande/dubbelt/hälften → räkna med en obekant kvar, inte två."
   },
   "host-2025-kvant1-XYZ-001": {
     "_meta": {
@@ -2430,159 +2877,651 @@
   },
   "host-2025-kvant2-NOG-023": {
     "_meta": {
-      "generated_at": 1778426243221,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att \"Dylan=marsvin + kanin∈{B,C}\" räcker.",
-        "why_wrong": "(1) säger inget om Conny vs Astrid — minst två tilldelningar passar."
+        "why_tempting": "Det är frestande att tycka att (1) räcker eftersom det LÅSER en person (Dylan) och pekar på den specifika kaninen.",
+        "why_wrong": "Steg 5: kaninen är 'Bellas eller Connys' — fortfarande två möjligheter. Och Astrid/Conny:s split mellan hamster/undulat står öppen."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2) räcker eftersom Conny pekas ut.",
-        "why_wrong": "(2) säger inget om Dylan vs Astrid bland marsvin/hamster."
+        "why_tempting": "Många stannar vid (2) av samma anledning — Conny låses och kaninen pekas mot B eller D.",
+        "why_wrong": "Steg 7: 'Bellas eller Dylans' kanin lämnar två val, och Astrid/Dylan:s split mellan hamster/marsvin är öppen. Inte unikt."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du läser båda som självständigt kompletta landar du här.",
-        "why_wrong": "Ingen av dem ensamt smalnar av kaninen till en specifik person."
+        "why_tempting": "Om du tror att båda påståendena är ekvivalent starka och var för sig knäcker hela schemat landar du här.",
+        "why_wrong": "Steg 5 och 7 visar att INGET ensamt räcker. D kräver att VARDERA ensamt ger unik lösning — det gör de inte."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att två par av binära val aldrig låses.",
-        "why_wrong": "Skärningen av två kandidatmängder kan ge exakt ett namn — som här."
+        "why_tempting": "Snabbsvar är ofta 'för många möjligheter, går aldrig att låsa till en'.",
+        "why_wrong": "Steg 9: kombination av (1)+(2) eliminerar Conny som kanin-ägare (han har undulat), vilket kollapsar (1)-disjunktionen till Bella=kanin. Tillsammans räcker det."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (1) låser Dylan=marsvin men kaninen kan vara Bellas eller Connys. (2) låser Conny=undulat men kaninen kan vara Bellas eller Dylans. Skärningen av kaninkandidaterna är {Bella}, så Astrid får hamstern.",
-    "technique": "Skär kandidatmängder från olika villkor och kontrollera om snittet blir entydigt."
+    "framework_id": null,
+    "pitfall": "Att räkna varje påstående för sig och inte korsrefererar låsningarna. Botemedlet: gör en gemensam zippning-tabell när båda påståendena är tillgängliga och pricka av låsningar från båda källorna.",
+    "solution_path": "Tillsammans: (1) ger Dylan = marsvin, (2) ger Conny = undulat. (1) säger kaninen är Bellas eller Connys — men Conny har undulat, så Bella har kanin. Det lämnar hamstern till Astrid. Endast tillsammans ger entydigt — svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Fyra personer (Astrid, Bella, Conny, Dylan) ska kopplas till fyra husdjur (hamster, kanin, marsvin, undulat) — en-till-en. Vi söker hela permutationen (vem har vad).",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Tillräcklig = informationen pekar ut EN unik koppling person-till-djur. Om det finns mer än en konfiguration som passar är det otillräckligt.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "4 personer × 4 djur = 4! = 24 möjliga zip-ningar. Vi behöver villkor som filtrerar bort 23 av dem.",
+        "tier": "essential",
+        "title": "Räkna möjliga permutationer"
+      },
+      {
+        "n": 4,
+        "text": "'Dylan har marsvin.' Låser Dylan = marsvin. 'Kaninen är Bellas eller Connys.' Kaninen tillhör B eller C (alltså inte A och inte D).",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 5,
+        "text": "Med Dylan=marsvin: Astrid, Bella, Conny har hamster, kanin, undulat i någon ordning. (1) säger kaninen är B eller C. Möjligheter: B=kanin, sedan A/C delar hamster/undulat (2 sätt); eller C=kanin, sedan A/B delar hamster/undulat (2 sätt). Totalt 4 möjliga zippningar. Inte unikt — (1) räcker inte.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 6,
+        "text": "'Conny har undulat.' Låser Conny = undulat. 'Kaninen är Bellas eller Dylans.' Kaninen tillhör B eller D.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 7,
+        "text": "Med Conny=undulat: A, B, D har hamster, kanin, marsvin i någon ordning. Kaninen är B eller D. Möjligheter: B=kanin, sedan A/D delar hamster/marsvin (2 sätt); eller D=kanin, sedan A/B delar hamster/marsvin (2 sätt). Totalt 4 zippningar. Inte unikt — (2) räcker inte.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 8,
+        "text": "Från (1): Dylan = marsvin. Från (2): Conny = undulat. Det lämnar hamster och kanin till Astrid och Bella i någon ordning.",
+        "tier": "essential",
+        "title": "Test (1) + (2) tillsammans — lås det säkra"
+      },
+      {
+        "n": 9,
+        "text": "(1) säger kaninen är Bellas eller Connys. Conny är låst till undulat (från 2), så Conny kan inte ha kanin. Då är Bella = kanin (det enda kvar av (1)-villkoret).",
+        "tier": "essential",
+        "title": "Tillsammans — lös kanin-frågan"
+      },
+      {
+        "n": 10,
+        "text": "Med Dylan=marsvin, Conny=undulat, Bella=kanin är den enda kvarvarande personen Astrid och det enda kvarvarande djuret hamster. Astrid = hamster. Klart.",
+        "tier": "essential",
+        "title": "Tillsammans — den sista"
+      },
+      {
+        "n": 11,
+        "text": "(2) säger också kaninen är Bellas eller Dylans. Bella har kanin ✓. Inget bryts.",
+        "tier": "detail",
+        "title": "Verifiera mot (2)"
+      },
+      {
+        "n": 12,
+        "text": "Var för sig lämnar (1) och (2) flera möjliga zippningar. Tillsammans korslåser de varandra: Dylan=marsvin + Conny=undulat tvingar Bella till kanin (eftersom Conny inte kan ha kanin). Svaret är C. Insikten i en mening: i logik-NOG kombineras villkor genom att utesluta — en låsning från (2) kan eliminera den ena halvan av en disjunktion i (1).",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Disjunktions-elimination i logik-NOG: när ett villkor är 'X är A:s eller B:s' (disjunktion) och ett annat villkor låser bort A eller B från det aktuella djuret, kollapsar disjunktionen till en enda möjlighet. Triggern: spotta alla 'eller'-villkor och leta efter andra påståenden som utesluter en av sidorna."
   },
   "host-2025-kvant2-NOG-024": {
     "_meta": {
-      "generated_at": 1778426243221,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tycka att den direkta procentsatsen i (1) är den enda fungerande.",
-        "why_wrong": "(2):s ökning ger samma totalsumma efter en räkning på två steg."
+        "why_tempting": "Det är frestande att se '20% av antalet' i (1) som den ENDA direkta procent-räkningen och gå förbi (2) som om den vore mer komplex.",
+        "why_wrong": "Steg 8: (2) ger också entydigt N = 20 via ett mellansteg (gamla antalet 16, plus 4 nya). 'Komplexare' betyder inte 'otillräcklig'."
       },
       {
         "letter": "B",
-        "why_tempting": "Många föredrar tillväxttänket och avfärdar (1).",
-        "why_wrong": "(1):s direkta procentbild är lika tillräcklig — 4 är 20 % → 20 totalt."
+        "why_tempting": "Många stannar vid (2) eftersom 'senaste tillskottet 25%' låter mer konkret och historiskt rikt.",
+        "why_wrong": "Steg 4: (1) ger N = 20 i ett steg. Båda räcker — välj D, inte B."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda när det gäller procent.",
-        "why_wrong": "Båda fixerar svaret 20 ensamma — extra information behövs inte."
+        "why_tempting": "Första instinkten är 'jag tar båda för säkerhets skull'.",
+        "why_wrong": "Steg 4 och 8: vart och ett ensamt räcker. C är överarbete — D är rätt eftersom det berättar att båda var för sig räcker."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att procentsatser utan baslinje aldrig räcker.",
-        "why_wrong": "Procentvärde + absolut antal räcker alltid för att räkna ut totalen."
+        "why_tempting": "Snabbsvar är ofta 'procent-uppgifter är luriga, kanske finns det inget unikt svar'.",
+        "why_wrong": "Steg 4 och 8 ger båda N = 20. E gäller bara när varken (1), (2) eller båda räcker — här gör båda det."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Var för sig räcker. (1): 4 motsvarar 20 % → totalen är 20. (2): 4 nya = 25 % ökning, alltså 4 = 0,25·gamla, så gamla=16 och nuvarande=20. Båda låser samlingen till 20.",
-    "technique": "Procent + ett absolut antal räcker alltid: lös ut totalen genom att skala upp."
+    "framework_id": null,
+    "pitfall": "Klassisk procent-fälla: tro att 'växte med 25%' betyder att slutvärdet är 25% av startvärdet (det är slutvärdet som är 125% av startvärdet, dvs 5/4 av det). Botemedlet: rita en pil från start → slut och skriv ut '×1,25' ovanpå, så ser du procenten som en faktor inte ett tal.",
+    "solution_path": "(1): 4 är 20% av N \\Rightarrow N = 20. (2): 4 nya gav 25% tillväxt, så 4 är 25% av det tidigare antalet \\Rightarrow tidigare = 16, nu = 16 + 4 = 20. Båda räcker var för sig — svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Johan har en samling studsbollar. Vi söker ETT tal: nuvarande totalantal, kalla det N.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Tillräcklig = informationen ger N entydigt. Om N kan vara flera värden är den otillräcklig.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "'Fyra studsbollar motsvarar 20% av antalet.' Det är ekvationen 4 = 0{,}20 \\cdot N, eller ekvivalent 4 = N/5.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 4,
+        "text": "4 = N/5 \\Rightarrow N = 20. Entydigt — (1) ensamt räcker.",
+        "tier": "essential",
+        "title": "Lös (1)"
+      },
+      {
+        "n": 5,
+        "text": "20% betyder 20/100 = 1/5 = 0,20. När vi säger 'X% av N' menar vi (X/100) \\cdot N. För 20%: en femtedel av N.",
+        "tier": "detail",
+        "title": "Procent som bråk"
+      },
+      {
+        "n": 6,
+        "text": "'Senaste tillskottet var fyra studsbollar, vilket gjorde att samlingen växte med 25%.' Det 'gamla' antalet (innan tillskottet) växer med 25%. 4 är 25% av det gamla: 4 = 0{,}25 \\cdot N_{gammal}.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 7,
+        "text": "4 = 0{,}25 \\cdot N_{gammal} \\Rightarrow N_{gammal} = 4 / 0{,}25 = 16. Det är antalet INNAN de fyra nya.",
+        "tier": "essential",
+        "title": "Lös (2) — gamla antalet"
+      },
+      {
+        "n": 8,
+        "text": "Nuvarande N = N_{gammal} + 4 = 16 + 4 = 20. Entydigt — (2) ensamt räcker.",
+        "tier": "essential",
+        "title": "Lös (2) — nuvarande antalet"
+      },
+      {
+        "n": 9,
+        "text": "När en samling växer med 25% går den från X till X + 0{,}25 X = 1{,}25 X. Tillväxten är 0{,}25 X. Här är tillväxten 4 bollar, så 0{,}25 X = 4 \\Rightarrow X = 16.",
+        "tier": "detail",
+        "title": "Vad betyder '25% tillväxt'?"
+      },
+      {
+        "n": 10,
+        "text": "Steg 4 visade att (1) ger N = 20 entydigt. Räcker.",
+        "tier": "essential",
+        "title": "Test (1) ensamt — slutsats"
+      },
+      {
+        "n": 11,
+        "text": "Steg 8 visade att (2) ger N = 20 entydigt. Räcker. (Samma svar som (1) — vilket är konsistent, eftersom problemet har ett facit.)",
+        "tier": "essential",
+        "title": "Test (2) ensamt — slutsats"
+      },
+      {
+        "n": 12,
+        "text": "Båda påståendena ger var för sig samma unika svar (N = 20 studsbollar). Svaret är D — tillräcklig i (1) och (2) var för sig. Insikten i en mening: i NOG, kolla ALLTID båda påståendena oberoende — ibland innehåller frågan två separata vägar till samma svar, vilket triggar svaret D.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Procent-snabbspår i NOG: lär dig se '4 motsvarar p% av N' som ekvationen {MO}4 = (p/100) N{MC} och lös direkt. För tillväxt: 'samlingen växte med p%' = tillskottet är p% av STARTVÄRDET (inte slutvärdet). Triggern: ord som 'av', 'utgör', 'motsvarar' = direkt procentekvation; 'växte med', 'minskade med' = ekvation mot startvärdet."
+  },
+  "host-2025-kvant2-NOG-025": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att se u + v + w = 180° som ett konkret kvantitativt villkor — siffran 180° känns avgörande.",
+        "why_wrong": "Steg 5 och 7: 180° är triangelvinkelsumman, alltid sant. Tautologier ger ingen information om parallellism."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är 'geometriska bevis behöver flera villkor — säkrast med båda'.",
+        "why_wrong": "Steg 9: (2) ensamt räcker. (1) är redundant (samma sak som 'triangeln är en triangel')."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att båda påståendena innehåller separat parallellitets-information landar du här.",
+        "why_wrong": "Steg 6: (1) säger inget om parallellism — det är sant i alla scenarier där tre linjer bildar en triangel. D kräver att VARDERA ensamt räcker."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'utan måttsatta vinklar går det inte att avgöra parallellism'.",
+        "why_wrong": "Steg 9: man behöver inte konkreta gradtal — det räcker att veta att v = w. Parallellitetskriteriet är symboliskt, inte numeriskt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Konkreta tal i geometri-villkor (180°, 90°, 360°) får dig att tro att informationen är specifik — men det är ofta tautologier. Botemedlet: fråga 'gäller detta påstående i ALLA möjliga konfigurationer?'. Om ja → ingen information.",
+    "solution_path": "I den givna figuren skär en transversal de två linjerna och bildar vinklarna u, v, w i triangelformation. (1): u + v + w = 180° är ALLTID sant i en triangel (vinkelsumman) — säger inget specifikt om parallellitet. (2): v = w ger att de motsvarande/alternerande vinklarna vid L₁ och L₂ är lika, vilket är parallellitetskriteriet. Endast (2) räcker — svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Två linjer L₁ och L₂ ritas tillsammans med en tredje linje (transversal) som skär båda. Vinklarna u, v, w är markerade i figuren — typiskt så bildar de en triangel mellan de tre linjerna. Frågan är ja/nej: är L₁ ∥ L₂?",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Tillräcklig = informationen avgör entydigt mellan 'L₁ ∥ L₂' och 'L₁ ej ∥ L₂'. Om både utfall är möjliga är den otillräcklig.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "Två linjer är parallella om och endast om en transversal som skär båda skapar lika ALTERNATA vinklar (eller lika MOTSVARANDE vinklar). Kortform: när 'samma vinkel dyker upp på samma sida av transversalen vid båda linjerna' → linjerna är parallella.",
+        "tier": "essential",
+        "title": "Parallellitetskriteriet"
+      },
+      {
+        "n": 4,
+        "text": "I varje triangel: summan av de tre innevinklarna = 180°. Detta är en GRUND-sats och gäller ALLA trianglar, parallella linjer eller ej.",
+        "tier": "detail",
+        "title": "Triangelvinkelsumman"
+      },
+      {
+        "n": 5,
+        "text": "u + v + w = 180°. I figuren bildar u, v, w innevinklarna i triangeln mellan L₁, L₂ och transversalen — så det är samma sak som triangelvinkelsumman. (1) säger alltså bara 'triangeln är en triangel'.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 6,
+        "text": "(1) är sant i ALLA scenarier med en triangel — oavsett om L₁ och L₂ är parallella eller ej. Faktum: om L₁ ∥ L₂, möts de aldrig och vi har ingen triangel alls. Påståendet ger ingen specifik info om parallellism. Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 7,
+        "text": "Villkor som är sanna för alla möjliga konfigurationer kallas tautologier. De ser informativa ut (har ett konkret tal — 180°) men ger ingen ny information. Steg 4 visar att u+v+w = 180° är en konsekvens av att tre linjer bildar en triangel.",
+        "tier": "detail",
+        "title": "Varför är (1) ett 'noll-villkor'?"
+      },
+      {
+        "n": 8,
+        "text": "v = w. I figuren ligger v och w vid de två linjerna (v vid L₁, w vid L₂, eller spegelvänt), kopplade till transversalen. Om de är lika är de motsvarande/alternerande vinklar — vilket är parallellitetskriteriet.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 9,
+        "text": "Om v = w och de är alternerande vinklar vid transversalen, så är L₁ ∥ L₂ (per parallellitetskriteriet i steg 3). Detta är entydigt — om vinklarna är lika OCH ligger som alternerande, måste linjerna vara parallella.",
+        "tier": "essential",
+        "title": "Test (2) ensamt — JA-scenario"
+      },
+      {
+        "n": 10,
+        "text": "Om L₁ INTE vore parallell med L₂ skulle de mötas och bilda triangeln — då är v och w olika (de skiljs av en triangelvinkel). Bara när linjerna är parallella kollapsar triangeln och v = w. Slutsatsen är entydig: v = w \\Rightarrow L_1 \\parallel L_2.",
+        "tier": "essential",
+        "title": "Test (2) ensamt — kan det vara NEJ?"
+      },
+      {
+        "n": 11,
+        "text": "Nej. (2) ger redan ett entydigt svar (parallella). (1) tillför bara triangelvinkelsumman, som inte är ny information. Svaret är 'tillräcklig i (2) men ej i (1)' — B.",
+        "tier": "essential",
+        "title": "Behövs (1) tillsammans med (2)?"
+      },
+      {
+        "n": 12,
+        "text": "(1) är en tautologi (triangelvinkelsumman); (2) är parallellitetskriteriet. Endast (2) räcker — svaret är B. Insikten i en mening: vinkelsumman 180° i en triangel är ALLTID sant och därför värdelös som NOG-villkor; leta efter villkor som verkligen särskiljer 'parallellt' från 'ej parallellt'.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Tautologi-detektorn för geometri-NOG: kolla om ett påstående är en grund-sats (vinkelsumma, motstående vinklar, yttervinkelsatsen) som är sann i ALLA geometriska konfigurationer. Om det är det är det inforfattigt — sök påståenden som specifikt skiljer det aktuella fallet från andra. Triggern: '180°', '360°', 'summa av vinklar' → kolla om det är en allmän sats innan du räknar det som information."
   },
   "host-2025-kvant2-NOG-026": {
     "_meta": {
-      "generated_at": 1778426243221,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att kombinationen femkronor + femtiolappar = 200 kr ringar in mynten.",
-        "why_wrong": "(2) blandar mynt och sedlar och ger flera giltiga (n, a)-par."
+        "why_tempting": "Det är frestande att tycka att (2) — som specifikt nämner 'femkronor och femtiolappar' — är skräddarsydd för att lösa frågan.",
+        "why_wrong": "Steg 9: 5n + 50f = 200 har flera lösningar (n = 10, 20, 30). En ekvation, två obekanta — otillräckligt."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två villkor alltid behövs för två okända.",
-        "why_wrong": "(1) eliminerar redan båda obekanta via myntvärdet 120 och förhållandet 1:1."
+        "why_tempting": "Första instinkten är att 'fyra obekanta (n, f, h, plus 'antal mynt') kräver flera villkor' — alltså båda.",
+        "why_wrong": "Steg 7: (1) ensamt ger entydigt n = 20. Bakgrunden 'lika många enkronor som femkronor' minskade systemet redan. C är överarbete."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du läser (2) som en ny sluten ekvation landar du här.",
-        "why_wrong": "(2) introducerar en NY okänd (femtiolappar) — en ekvation, två okända, ingen unik lösning."
+        "why_tempting": "Om du tror att båda påståendena är konstruerade att räcka var för sig landar du här.",
+        "why_wrong": "Steg 9: (2) räcker INTE ensamt. D kräver att VARDERA ensamt ger unik lösning."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att avfärda problemet eftersom flera myntsorter blandas.",
-        "why_wrong": "Totalt värde + sedelvärde + 1:1-förhållandet låser myntantalen entydigt."
+        "why_tempting": "Snabbsvar är ofta 'för många okända — kanske går det inte alls'.",
+        "why_wrong": "Steg 5: (1) ger redan entydigt antal mynt = 40 genom att isolera myntvärdet via subtraktion. E är fel."
       }
     ],
-    "pitfall": null,
-    "solution_path": "(1) räcker: mynten är värda 420−300=120 kr; med n enkronor och n femkronor blir n+5n=6n=120 så n=20 och totalt antal mynt=40. (2) ger en ekvation i två okända (femkronor och femtiolappar) — flera lösningar passar.",
-    "technique": "Skilj på \"hur många obekanta?\" och \"hur många ekvationer?\" — räkna båda innan slutsats."
+    "framework_id": null,
+    "pitfall": "Det är frestande att vilja räkna ut ALLA okända (n, f, h) — men frågan kan ofta besvaras genom att bara räkna DET som behövs. Botemedlet: skriv ner exakt vad målet är (antal mynt = 2n) och kolla vilka villkor som låser just det, ignorera resten.",
+    "solution_path": "Låt n = antal enkronor = antal femkronor. Myntvärde = n + 5n = 6n. (1): myntvärde = 420 − 300 = 120, så 6n = 120 \\Rightarrow n = 20, totalt mynt = 40. Unikt. (2): 5n + 50 f = 200 har flera heltalslösningar. Endast (1) räcker — svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Sparbössan har två sorters mynt (1-kronor, 5-kronor) och två sorters sedlar (50-, 100-lappar). Vi vet att antalet 1-kronor = antalet 5-kronor (kalla det n). Vi söker det TOTALA ANTALET MYNT, alltså 2n.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Tillräcklig = informationen ger ETT värde på 2n entydigt. Om n kan vara flera heltal är den otillräcklig.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "Låt n = antal enkronor = antal femkronor. Låt f = antal femtiolappar, h = antal hundralappar. Myntvärde = n \\cdot 1 + n \\cdot 5 = 6n. Sedelvärde = 50f + 100h. Totalvärde = 6n + 50f + 100h.",
+        "tier": "essential",
+        "title": "Sätt upp variabler"
+      },
+      {
+        "n": 4,
+        "text": "'Sammanlagda värdet är 420 kr. Värdet av sedlarna är 300 kr.' Det ger 6n + 50f + 100h = 420 OCH 50f + 100h = 300. Subtrahera: myntvärdet är 6n = 420 - 300 = 120.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 5,
+        "text": "6n = 120 \\Rightarrow n = 20. Antal mynt = 2n = 40. Entydigt.",
+        "tier": "essential",
+        "title": "Lös (1) för n"
+      },
+      {
+        "n": 6,
+        "text": "Vi behöver inte veta hur sedelvärdet 300 är splittat mellan 50- och 100-lappar. Skulle frågan ha gällt antalet sedlar hade vi behövt mer; men för antalet MYNT räcker det att vi kan separera ut myntvärdet (120 kr).",
+        "tier": "detail",
+        "title": "Varför räcker det här?"
+      },
+      {
+        "n": 7,
+        "text": "(1) ger entydigt n = 20, antal mynt = 40. Räcker.",
+        "tier": "essential",
+        "title": "Test (1) ensamt — slutsats"
+      },
+      {
+        "n": 8,
+        "text": "'Sammanlagda värdet av femkronorna och femtiolapparna är 200 kr.' Femkronornas värde är 5n, femtiolapparnas värde är 50f. Alltså 5n + 50f = 200, eller n + 10f = 40 (dela med 5).",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 9,
+        "text": "n + 10f = 40 har flera positiva heltalslösningar: n = 30, f = 1; n = 20, f = 2; n = 10, f = 3. Antal mynt = 2n blir 60, 40 eller 20. Flera möjliga svar — (2) räcker inte.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 10,
+        "text": "En ekvation (n + 10f = 40) i två obekanta (n, f) har en oändlig linjär lösningsmängd — och flera är positiva heltal. (2) säger inget om h (100-lapparna) och inget om totalsumman.",
+        "tier": "detail",
+        "title": "Varför så många lösningar?"
+      },
+      {
+        "n": 11,
+        "text": "Nej — (1) ensamt ger redan entydigt antal mynt (40). Svaret är 'tillräcklig i (1) men ej i (2)' — A.",
+        "tier": "essential",
+        "title": "Behövs (2) tillsammans med (1)?"
+      },
+      {
+        "n": 12,
+        "text": "Endast (1) räcker. Svaret är A. Insikten i en mening: när bakgrunden ger en relation (lika många enkronor som femkronor) räcker EN värdesekvation för mynten — och (1) levererar exakt det genom att isolera myntvärdet.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Isolerings-strategin i NOG-värdesproblem: när du har totalvärde + ett delvärde, subtrahera för att få det andra delvärdet — och titta bara på det som målet faktiskt frågar efter (här: mynt, inte sedlar). Triggern: 'totalvärde är X, värdet av Y är Z' → räkna ut värdet av icke-Y direkt."
   },
   "host-2025-kvant2-NOG-027": {
     "_meta": {
-      "generated_at": 1778426243221,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att 14 katt och 10 bara-katt räcker för hund.",
-        "why_wrong": "(1) ger 4 med båda men säger inget om bara-hund eller varken — hundtotalen kan inte räknas."
+        "why_tempting": "Det är frestande att se (1) som rik info eftersom den specificerar exakt antal i en Venn-ruta (10 har katt men inte hund).",
+        "why_wrong": "Steg 5: (1) låser BK = 10 och B = 4, men lämnar BH + V = 31 utan uppdelning. Hund-antalet är fortfarande fritt."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att en proportion 1:6 räcker.",
-        "why_wrong": "(2) ger en relation utan absolutvärde — många (4,24), (5,30) etc. passar."
+        "why_tempting": "Många stannar vid (2) eftersom den ger en KVANTITATIV RELATION (1:6) som känns avancerad.",
+        "why_wrong": "Steg 7: en relation utan ankarvärde ger en ekvation med två obekanta — flera lösningar."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett ger en sluten lösning landar du här.",
-        "why_wrong": "Ingen av utsagorna ensam ger båda \"båda\" och \"varken\" — bara kombinationen."
+        "why_tempting": "Om du tror att Venn-villkor är 'kompletta' var för sig (eftersom Venn känns symmetriskt) landar du här.",
+        "why_wrong": "Steg 5 och 7: varken (1) eller (2) ensamt räcker. D kräver att VARDERA ensamt ger unik lösning."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att inkl-exkl alltid kräver hela tabellen given.",
-        "why_wrong": "Med 45 totalt och två ekvationer i \"båda\" och \"varken\" låses tabellen entydigt."
+        "why_tempting": "Snabbsvar är ofta 'för många okända rutor — fyra rutor, för få ekvationer'.",
+        "why_wrong": "Steg 8-10: tillsammans har vi 14 (katt-totalt) + BK=10 + V=6B + totalsumma=45 — fyra ekvationer, fyra obekanta (BK, B, BH, V). Systemet löses entydigt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (1) ger bara-katt=10 alltså båda=4, men säger inget om \"varken\" eller \"bara hund\". (2) ger båda=varken/6 men inga absoluta tal. Tillsammans: båda=4 → varken=24 → 45-10-4-24=7 har bara hund, alltså 11 har hund.",
-    "technique": "I Venn-uppgifter: räkna hur många av {bara A, bara B, båda, varken} som behöver bestämmas, och kontrollera att villkoren räcker."
+    "framework_id": null,
+    "pitfall": "Relativa villkor (typ '1/6 av varken') är frestande att klassa som starka — men de behöver ett konkret ankarvärde för att bli löstbara. Botemedlet: räkna alltid antalet OBEROENDE absoluta värden i påståendena; kvoter ensamma är värdelösa.",
+    "solution_path": "Bygg Venn-diagrammet (bara katt / både / bara hund / varken). (1) ger 'bara katt = 10' (och därmed 'både = 4'). (2) ger 'både = (1/6) · varken'. Tillsammans: både = 4 → varken = 24, bara hund = 45 − 10 − 4 − 24 = 7, totalt hund = 7 + 4 = 11. Var för sig räcker inget av påståendena. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "45 familjer i området. 14 av dem har katt. Vi söker antalet familjer med hund. Detta är ett klassiskt mängd/Venn-problem: 'har katt' och 'har hund' är två (möjligen överlappande) egenskaper.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Tillräcklig = informationen pekar ut ETT entydigt antal hund-familjer. Om flera värden är förenliga med villkoren är den otillräcklig.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "Fyra rutor: 'bara katt' (BK), 'både katt och hund' (B), 'bara hund' (BH), 'varken' (V). Det gäller: BK + B = 14 (totalt katt), BK + B + BH + V = 45 (totalsumma). Total hund = B + BH.",
+        "tier": "essential",
+        "title": "Rita Venn-diagrammet"
+      },
+      {
+        "n": 4,
+        "text": "'10 familjer har katt men inte hund.' Det är BK = 10. Och eftersom BK + B = 14, så B = 14 − 10 = 4 — antalet 'både katt och hund' är 4.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 5,
+        "text": "Från (1) vet vi BK = 10, B = 4. Då är 14 katt-familjer placerade. Återstår: BH + V = 45 − 14 = 31. Men vi vet inte fördelningen mellan BH och V — kan vara (BH=0, V=31), (BH=15, V=16), (BH=31, V=0) etc. Total hund = B + BH = 4 + BH, vilket varierar. Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 6,
+        "text": "'Antalet familjer som har både katt och hund är en sjättedel av antalet familjer som varken har katt eller hund.' Det är B = V/6, eller V = 6B.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 7,
+        "text": "Från (2): V = 6B. Total: BK + B + BH + V = 45, dvs BK + B + BH + 6B = 45, dvs BK + BH + 7B = 45. Vi vet också BK + B = 14, dvs BK = 14 − B. Sätt in: (14 − B) + BH + 7B = 45 → BH + 6B = 31. En ekvation, två obekanta (B, BH) — flera lösningar. T.ex. B=1, BH=25 (hund=26); B=3, BH=13 (hund=16); B=5, BH=1 (hund=6). Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 8,
+        "text": "Från (1): B = 4. Från (2): V = 6B = 6 · 4 = 24. Nu vet vi BK = 10, B = 4, V = 24. Återstår BH.",
+        "tier": "essential",
+        "title": "Test (1) + (2) tillsammans — lås B"
+      },
+      {
+        "n": 9,
+        "text": "Total: BK + B + BH + V = 45 → 10 + 4 + BH + 24 = 45 → 38 + BH = 45 → BH = 7. Klart.",
+        "tier": "essential",
+        "title": "Tillsammans — lås BH"
+      },
+      {
+        "n": 10,
+        "text": "Total hund = B + BH = 4 + 7 = 11 familjer. Entydigt.",
+        "tier": "essential",
+        "title": "Räkna total hund"
+      },
+      {
+        "n": 11,
+        "text": "Kolla totalsumman: 10 + 4 + 7 + 24 = 45 ✓. Kolla (1): 'katt men inte hund' = BK = 10 ✓. Kolla (2): B = 4, V = 24, 24/6 = 4 = B ✓. Alla villkor stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 12,
+        "text": "Varken (1) eller (2) ensamt räcker (en saknar 'både'-värdet, den andra saknar fixpunkt för B). Tillsammans låser de hela Venn-diagrammet. Svaret är C — tillräcklig i (1) tillsammans med (2). Insikten i en mening: i Venn-NOG behöver du oftast två 'ankare' — ett som låser en absolut ruta, ett som relaterar två rutor till varandra.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Venn-NOG-strategin: rita alltid de fyra rutorna (bara A, bara B, både, varken) och totalsumman. Kontrollera att informationen ger nog för att låsa alla fyra rutor — eller åtminstone det aktuella målet. Triggern: 'X familjer/personer, varav Y har en egenskap' → fyra-rutors-Venn direkt."
   },
   "host-2025-kvant2-NOG-028": {
     "_meta": {
-      "fixed_at": 1778506809101,
-      "generated_at": 1778426243221,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s x=y+z ensam räcker om man antar y,z positiva — då blir x störst.",
-        "why_wrong": "Tecknen är inte låsta — för negativa y och z blir x faktiskt minst, så (1) räcker inte ensam."
+        "why_tempting": "Det är frestande att se x = y + z och dra slutsatsen 'x är summan, alltså störst'.",
+        "why_wrong": "Steg 4: om y eller z är negativ blir summan mindre än någondera. Att x är summan betyder inte att x är störst — det beror på tecknen."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s x=−2y ensam räcker eftersom den låser x:y.",
-        "why_wrong": "(2) säger inget om z och tecknet på y styr ordningen mellan x och y — otillräcklig."
+        "why_tempting": "Många stannar vid x = -2y och tror att 'dubbelt' bestämmer storleksordningen.",
+        "why_wrong": "Steg 6: tecknet på y avgör hela ordningen, och z är dessutom helt fri ensamt — alla tre kan ligga var som helst."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två linjära samband tillsammans måste låsa ordningen i tre obekanta.",
-        "why_wrong": "Tillsammans låser de bara förhållandet x:y:z=−2:1:−3, men tecknet på y kastar om tripeln."
+        "why_tempting": "Första instinkten är att två ekvationer + tre obekanta = 'reducerar till en frihetsgrad, vilket borde räcka'.",
+        "why_wrong": "Steg 8-10: även med x = -2y, z = -3y kvar finns y fri, och y:s TECKEN bestämmer vem som är störst. Frihetsgraden är inte bara storlek utan också tecken."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tolkade båda som var för sig tillräckliga för en sluten ordning landar du här.",
-        "why_wrong": "Inget av dem ensamt fixerar något — och inte heller tillsammans, eftersom y:s tecken är fritt."
+        "why_tempting": "Snabbsvar är ofta 'algebraiska samband är generellt informativa — så var och en ensamt räcker'.",
+        "why_wrong": "Steg 4 och 6: vart och ett ensamt ger olika svar för olika test-värden. D kräver entydighet i båda fallen."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Kombinationen ger z=−3y och x=−2y, men y:s tecken bestämmer ordningen: om y=1 blir (x,y,z)=(−2,1,−3) och y störst; om y=−1 blir (2,−1,3) och z störst. Inget villkor – inte heller tillsammans – fixerar tecknet på y.",
-    "technique": "Regel för ordnings-NOG utan teckenvillkor: när bara linjära samband ges, pröva motsatta tecken på den styrande variabeln — om ordningen flippar är båda otillräckliga."
+    "framework_id": null,
+    "pitfall": "Att glömma att negativa tal flippar ordningar: 'dubbelt så mycket' (x = -2y) kan göra x mycket större ELLER mycket mindre än y, beroende på tecken. Botemedlet: när minustecknet finns med, testa minst ett positivt och ett negativt fall.",
+    "solution_path": "Tillsammans ger (1) och (2) sambandet z = -3y. Tecknet på y avgör allt: om y > 0 är y störst (resten är negativa); om y < 0 är z störst (positiv och störst). Utan tecknet på y kan vi inte avgöra. Otillräckligt även tillsammans — svaret är E.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Tre tal x, y, z. Vi söker vilket som är STÖRST. Det är en ja/nej-fråga med tre möjliga svar (x, y, eller z är störst) — entydigt om informationen pekar ut precis ett.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Tillräcklig = informationen avgör entydigt vilket av talen är störst. Om flera utfall är möjliga (eller om talen kan vara lika) är den otillräcklig.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "x = y + z. Det är ETT linjärt samband mellan tre okända — ingen av dem är låst, alla kan svänga.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 4,
+        "text": "Med x = y + z: ta y = 1, z = 1, x = 2 → x störst. Ta y = 5, z = -1, x = 4 → y störst. Ta y = -1, z = 10, x = 9 → z störst. Tre olika svar är möjliga. Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 5,
+        "text": "x = -2y. Det är ett samband mellan x och y; z är helt fri.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 6,
+        "text": "Ta y = 1, x = -2, z = 100 → z störst. Ta y = -1, x = 2, z = 0 → x störst. Ta y = -5, x = 10, z = -100 → x störst. Olika utfall möjliga — och z är obegränsat. Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 7,
+        "text": "Från (2): x = -2y. Sätt in i (1): -2y = y + z \\Rightarrow z = -3y. Nu uttrycks både x och z i y: x = -2y, z = -3y.",
+        "tier": "essential",
+        "title": "Kombinera (1) och (2)"
+      },
+      {
+        "n": 8,
+        "text": "Om y = 1: x = -2, z = -3. Ordning: y = 1 > x = -2 > z = -3. y är störst. Om y = 5: x = -10, z = -15. y = 5 störst igen. Mönster: när y > 0 är y störst.",
+        "tier": "essential",
+        "title": "Tillsammans — testa y > 0"
+      },
+      {
+        "n": 9,
+        "text": "Om y = -1: x = 2, z = 3. Ordning: z = 3 > x = 2 > y = -1. z är störst. Om y = -5: x = 10, z = 15. z = 15 störst igen. Mönster: när y < 0 är z störst.",
+        "tier": "essential",
+        "title": "Tillsammans — testa y < 0"
+      },
+      {
+        "n": 10,
+        "text": "Om y = 0: x = 0, z = 0. Alla tre är 0 — ingen är 'störst' (alla lika). Ytterligare ett möjligt utfall.",
+        "tier": "essential",
+        "title": "Tillsammans — testa y = 0"
+      },
+      {
+        "n": 11,
+        "text": "När du multiplicerar ett positivt tal med −2 blir resultatet negativt. När du multiplicerar ett negativt tal med −2 blir resultatet positivt. Det är precis denna teckenväxling som gör att 'störst' växlar mellan y och z beroende på y:s tecken.",
+        "tier": "detail",
+        "title": "Varför multiplikation med negativt tal flippar tecken"
+      },
+      {
+        "n": 12,
+        "text": "Med båda (1) och (2) finns minst tre olika svar beroende på y:s tecken: y störst (y > 0), z störst (y < 0), eller alla lika (y = 0). Inget unikt svar. Otillräckligt.",
+        "tier": "essential",
+        "title": "Slutsats om tillsammans"
+      },
+      {
+        "n": 13,
+        "text": "Varken (1), (2) eller båda tillsammans bestämmer entydigt vilket tal som är störst. Svaret är E — ej genom de båda påståendena. Insikten i en mening: när tre okända binds av två linjära relationer återstår ÅTMINSTONE en frihetsgrad — och fri-tecken på y räcker för att flippa 'störst' mellan flera kandidater.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Tecken-test-strategin: i NOG där 'störst', 'minst' eller ordning frågas, testa ALLTID minst två teckenfall för varje fri variabel (positiv, negativ, noll). Om svaret växlar mellan testen är informationen otillräcklig. Triggern: 'vilket är störst/minst' utan tecken-villkor → börja med y > 0, y < 0, y = 0."
   },
   "host-2025-kvant2-XYZ-001": {
     "_meta": {

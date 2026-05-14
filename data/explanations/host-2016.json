@@ -691,6 +691,113 @@
     "solution_path": "Båda krävs men räcker ändå inte. (1) ger låg-mellan=53 men inte stadiernas storlekar var för sig; (2) ger pojkar-låg=pojkar-mellan men inget absolut. Pojkar-totalen är fri.",
     "technique": "Räkna obekanta vs ekvationer — om antalet obekanta överstiger ekvationerna är systemet underbestämt."
   },
+  "host-2016-kvant1-NOG-025": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att y^{2} = 400 fastlåser y, och med 'något om x' i (2) kan kännas redundant. Snabbläsning: 'y är 20, klart att xy < 25 med litet x'.",
+        "why_wrong": "Steg 4 visar att y = -20 också löser y^{2} = 400, och steg 5 visar att utan information om x kan xy bli vad som helst — även 2000. (1) ensamt räcker inte."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som 'litet x ger litet xy' kan 0{,}5 < x < 1 kännas som garanten.",
+        "why_wrong": "Steg 7 visar att y kan vara hur stort som helst när bara (2) gäller — y = 1000 och x = 0{,}9 ger xy = 900. (2) ensamt räcker inte."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett ger 'nyttig information om sitt eget intervall' kan det kännas som om båda räcker ensamt.",
+        "why_wrong": "D kräver att vardera påståendet ENSAMT låser fast svaret. Steg 5 och steg 7 visar att båda lämnar både JA och NEJ som möjligheter. D är reserverat för fall där (1) ensamt OCH (2) ensamt var för sig ger samma entydiga svar — inte fallet här."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'två okända, en ekvation och en ojämlikhet — knappast tillräckligt'.",
+        "why_wrong": "För en JA/NEJ-fråga räcker informationen så fort alla möjliga värden ger samma svar. Steg 9–10 visar att de två möjliga y-värdena (20 och −20) båda ger xy < 25 i hela x-intervallet. Tillsammans räcker det — E är fel."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att tro att y^{2} = 400 betyder y = 20. Botemedlet: skriv alltid ut y = \\pm \\sqrt{400} = \\pm 20 explicit och behandla de två tecknen som två separata fall — innan du säger något om produkten xy.",
+    "solution_path": "(1) ger y = \\pm 20 — kan inte avgöra utan att veta x. (2) ger 0,5 < x < 1 — säger inget om y. Tillsammans: oavsett tecken på y blir xy i intervallet (−20, −10) eller (10, 20), och båda fallen ger xy < 25. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan är en JA/NEJ-fråga: är produkten xy mindre än 25? Vi behöver information som låter oss svara JA eller NEJ entydigt — om informationen lämnar både JA och NEJ som möjligheter är den otillräcklig.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "NOG (numerisk och grafisk) frågar inte efter ett konkret tal i sig — utan om informationen RÄCKER för att låsa fast svaret. För en ja/nej-fråga räcker informationen om varje möjlighet som passar påståendet ger samma svar.",
+        "tier": "detail",
+        "title": "Vad betyder 'tillräcklig' i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "(1) säger y^{2} = 400. Kvadrera betyder att gångra ett tal med sig självt: y^{2} = y \\cdot y. Vi söker alla y där y \\cdot y = 400.",
+        "tier": "essential",
+        "title": "Översätt påstående (1)"
+      },
+      {
+        "n": 4,
+        "text": "Två tal multiplicerade med sig själva ger 400: 20 \\cdot 20 = 400 och (-20) \\cdot (-20) = 400 (negativt gånger negativt blir positivt). Alltså y = 20 eller y = -20 — TVÅ möjliga värden, inte ett.",
+        "tier": "detail",
+        "title": "Lös y² = 400"
+      },
+      {
+        "n": 5,
+        "text": "Med bara (1) vet vi y = \\pm 20, men x är HELT okänt. Konkret: om y = 20 och x = 100 blir xy = 2000 (svar NEJ); om y = 20 och x = 1 blir xy = 20 (svar JA). Frågan får både JA och NEJ — otillräckligt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 6,
+        "text": "(2) säger 0{,}5 < x < 1 — x ligger strikt mellan en halv och ett. Påståendet säger ingenting om y.",
+        "tier": "essential",
+        "title": "Översätt påstående (2)"
+      },
+      {
+        "n": 7,
+        "text": "Med bara (2) är y fritt. Om y = 1 och x = 0{,}9 blir xy = 0{,}9 (JA). Om y = 1000 och x = 0{,}9 blir xy = 900 (NEJ). Båda svaren möjliga — otillräckligt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 8,
+        "text": "Nu vet vi y = \\pm 20 OCH 0{,}5 < x < 1. Vi delar upp i två fall efter tecknet på y och kollar om båda ger samma svar på frågan.",
+        "tier": "essential",
+        "title": "Test (1) + (2) tillsammans"
+      },
+      {
+        "n": 9,
+        "text": "När y är positivt bevarar multiplikation med ett positivt x storleksordningen. 0{,}5 < x < 1 ger 0{,}5 \\cdot 20 < xy < 1 \\cdot 20, dvs. 10 < xy < 20. Alltså är xy < 25 — JA.",
+        "tier": "essential",
+        "title": "Fall 1: y = 20 (positivt)"
+      },
+      {
+        "n": 10,
+        "text": "Negativt gånger positivt blir negativt. Med y = -20 och 0{,}5 < x < 1 blir xy i intervallet 1 \\cdot (-20) < xy < 0{,}5 \\cdot (-20), dvs. -20 < xy < -10. Alla negativa tal är mindre än 25 — JA.",
+        "tier": "essential",
+        "title": "Fall 2: y = −20 (negativt)"
+      },
+      {
+        "n": 11,
+        "text": "I FALL 1 ligger xy i (10, 20) — alla värden där är xy < 25. I FALL 2 ligger xy i (−20, −10) — alla värden där är också xy < 25. Båda fallen ger samma svar: JA.",
+        "tier": "detail",
+        "title": "Verifiera båda fallen"
+      },
+      {
+        "n": 12,
+        "text": "Varken (1) eller (2) ensamt räcker, men tillsammans ger de samma svar (JA) oavsett tecken på y. Svaret är C — tillräckligt i (1) tillsammans med (2). Insikten i en mening: när ett påstående ger två rottecken, kolla att BÅDA rötterna leder till samma ja/nej-svar innan du säger 'tillräcklig'.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Ja/nej-strategin i NOG: när frågan är 'är X mindre än ett tal?' räcker informationen så snart ALLA tillåtna värdekombinationer ger samma svar. Triggern att memorera: kvadrater i påståenden ger ofta ±rot — testa båda rötterna separat och se om svaret håller i båda fallen."
+  },
   "host-2016-kvant1-NOG-026": {
     "_meta": {
       "generated_at": 1778429079240,
@@ -752,6 +859,119 @@
     "pitfall": null,
     "solution_path": "Var för sig räcker. (1): 3x−7=5 → x=4. (2): x²+x=5x → x(x−4)=0; x>0 → x=4.",
     "technique": "Vid kvadratisk: använd x>0 för att utesluta nollösningen."
+  },
+  "host-2016-kvant1-NOG-028": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att läsa (1) som 'får framför, katt bak, räv bredvid katt' och tro att hela ordningen låses fast. (1) känns informationsrik.",
+        "why_wrong": "Steg 6 visar att (1) tillåter katten på sida 4 ELLER sida 5 — uppslaget fastställs, men inte vänster/höger inom uppslaget. Otillräckligt för en unik sida."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du tror att (2) ensamt bara säger 'katt bakom get' utan att låsa positionen, kan det kännas som om (1):s uppslags-villkor behövs för att räkna ihop till svaret.",
+        "why_wrong": "Steg 9–11 visar att (2) ensamt tvingar fram katten på sida 4 — räv- och älg-villkoren räknar bort alla andra möjligheter. (2) är redan tillräckligt, så (1) behövs inte."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Vänster-till-höger-läsning ger ett intryck av två informationstunga påståenden och man kan tro att vart och ett räcker.",
+        "why_wrong": "D kräver att VARDERA påståendet ensamt låser fast en unik sida. Steg 7 visar att (1) lämnar två möjligheter — alltså är (1) inte tillräckligt ensamt. D är fel."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Första instinkten är att korta logikpussel med många villkor inte räcker — speciellt när inget pris-tal nämns.",
+        "why_wrong": "Steg 11 visar att räkne-argumentet på lediga sidor bakom katten är skarpt: endast katt = 4 lämnar tillräckligt med sidor för räv och älg. (2) ensamt räcker — E är fel."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att stanna vid uppslags-nivå och inte gå ner till sid-nivå. Botemedlet: när frågan ber om en specifik SIDA (inte ett uppslag), måste du alltid kontrollera att informationen skiljer vänster- och högersidan inom uppslaget åt — annars är två sidor möjliga och informationen är otillräcklig.",
+    "solution_path": "(1) tvingar katt+räv till uppslag 2 (sidorna 4–5), men låser inte vilken av sidorna 4 eller 5 katten ligger på — otillräckligt. (2) tvingar får+get till uppslag 1, sedan räv+älg bakom katten, vilket entydigt landar katten på sida 4. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "En bok har sex sidor numrerade 1 till 6: sida 1 = framsida (hund), sidorna 2–3 = uppslag 1, sidorna 4–5 = uppslag 2, sida 6 = baksida. Sex djur, ett per sida. Vi vet att hund är på sida 1; de fem övriga djuren (katt, räv, får, get, älg) fyller sidorna 2–6. Frågan: vilken SIDA är katten på (1–6)?",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Vi måste hitta katten på en UNIK sida. Om informationen lämnar flera möjliga sidor är den otillräcklig. Logikpussel som detta löses genom att testa varje påstående för sig och se om sidan blir entydig.",
+        "tier": "detail",
+        "title": "Vad betyder 'tillräcklig' i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "Ett uppslag är två motstående sidor man ser samtidigt när boken är öppen. Uppslag 1 = sidorna 2 och 3; uppslag 2 = sidorna 4 och 5. Framsidan (1) och baksidan (6) är inga uppslag — de står ensamma.",
+        "tier": "detail",
+        "title": "Vad är 'samma uppslag'?"
+      },
+      {
+        "n": 4,
+        "text": "(1) ger två villkor: A) katt och räv är på samma uppslag, så paret katt+räv fyller antingen sidorna {2, 3} eller sidorna {4, 5}. B) får är närmare framsidan än katten — alltså sidnumret för får är mindre än sidnumret för katten.",
+        "tier": "essential",
+        "title": "Översätt påstående (1)"
+      },
+      {
+        "n": 5,
+        "text": "Om katt+räv fyller sidorna {2, 3}, måste får ligga på en sida med lägre nummer än katten. Lägsta lediga sida (efter att hund tagit 1 och katt+räv tagit 2 och 3) är sida 4 — men 4 > både 2 och 3, så får hamnar BAKOM katten. Motsägelse: detta fall är omöjligt.",
+        "tier": "essential",
+        "title": "Test (1) — fall katt+räv på uppslag 1"
+      },
+      {
+        "n": 6,
+        "text": "Om katt+räv fyller sidorna {4, 5}, är sidorna 2, 3 och 6 lediga för får, get, älg. För att får ska vara närmare framsidan än katten måste får ligga på sida 2 eller 3. Det fungerar — men katten kan vara på sida 4 ELLER sida 5. Inget i (1) skiljer dem åt.",
+        "tier": "essential",
+        "title": "Test (1) — fall katt+räv på uppslag 2"
+      },
+      {
+        "n": 7,
+        "text": "(1) ger två möjliga sidor för katten: 4 eller 5. Otillräckligt — vi får inte en unik sida.",
+        "tier": "essential",
+        "title": "Slutsats om (1) ensamt"
+      },
+      {
+        "n": 8,
+        "text": "(2) ger tre villkor: A) får och get på samma uppslag (paret fyller {2, 3} eller {4, 5}). B) katt närmare baksidan än get (sida(katt) > sida(get)). C) räv och älg båda längre bak i boken än katten (sida(räv) > sida(katt) OCH sida(älg) > sida(katt)).",
+        "tier": "essential",
+        "title": "Översätt påstående (2)"
+      },
+      {
+        "n": 9,
+        "text": "Om får+get fyller sidorna {4, 5}, är sidorna 2, 3 och 6 lediga för katt, räv, älg. Katt måste ha sidnummer större än get (som är på 4 eller 5), så katten måste ligga på sida 6. Men då måste räv OCH älg ligga på sidor > 6 — och det finns ingen sida 7. Motsägelse: detta fall är omöjligt.",
+        "tier": "essential",
+        "title": "Test (2) — fall får+get på uppslag 2"
+      },
+      {
+        "n": 10,
+        "text": "Om får+get fyller sidorna {2, 3}, är sidorna 4, 5 och 6 lediga för katt, räv, älg. Katt måste ligga på en sida med högre nummer än get (max 3), så katten måste vara på 4, 5 eller 6. Men räv och älg måste BÅDA ligga på sidor större än katten.",
+        "tier": "essential",
+        "title": "Test (2) — fall får+get på uppslag 1"
+      },
+      {
+        "n": 11,
+        "text": "Om katt = 5, behöver räv och älg båda ligga på sidor > 5, dvs. på sida 6 — men det finns bara EN sida 6. Omöjligt. Om katt = 6, behöver räv och älg ligga på sidor > 6 — finns inte. Omöjligt. Återstår katt = 4, då fyller räv och älg sidorna 5 och 6 (i någon ordning).",
+        "tier": "essential",
+        "title": "Räkna lediga sidor bakom katten"
+      },
+      {
+        "n": 12,
+        "text": "Lösningen: sida 1 = hund, sidorna 2–3 = får och get (någon ordning), sida 4 = katt, sidorna 5–6 = räv och älg (någon ordning). Alla villkor i (2) uppfylls: får och get delar uppslag, katt (4) > get (≤ 3), räv (≥ 5) > katt (4), älg (≥ 5) > katt (4). Sidan för katten är ENTYDIG: sida 4.",
+        "tier": "detail",
+        "title": "Verifiera (2)"
+      },
+      {
+        "n": 13,
+        "text": "(1) lämnar två möjliga sidor (4 eller 5) — otillräckligt. (2) tvingar katten på sida 4 — tillräckligt ensamt. Svaret är B — tillräckligt i (2) men ej i (1). Insikten i en mening: när påståenden räknar 'före/efter' i en kort sekvens, räkna alltid hur många djur som måste rymmas i utrymmet före och efter — antalet sidor måste matcha antalet djur.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Räkna-platser-strategin: i NOG-pussel med få platser och 'före/efter'-villkor, räkna hur många objekt som måste rymmas på sidorna BAKOM (eller framför) en given position. Om antalet objekt överstiger antalet lediga sidor, är positionen omöjlig. Triggern att memorera: 'minst två objekt bakom X' tvingar X till en tidig position med minst två sidor kvar efter."
   },
   "host-2016-kvant1-XYZ-001": {
     "_meta": {
@@ -2467,6 +2687,101 @@
     "solution_path": "Båda krävs: (1) ger Eva=6, Torsten=4. (2) ger Eva-unika=4, Torsten-unika=2, så snittet=2. Olika sorter totalt=4+2+2=8.",
     "technique": "Antal i varje grupp + andel \"unik\" ger snittet."
   },
+  "host-2016-kvant2-NOG-025": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att 1/11-formuleringen i (1) är 'finare' eftersom den direkt relaterar till A (det vi söker), medan (2) verkar gå omvägen via B.",
+        "why_wrong": "Steg 8 visar att (2) ensamt ger B = 90 → A = 99 på två rader. (2) är lika kraftfull som (1) — D, inte A."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid att (2) verkar mer direkt: gåvan = 1/10 av B → räkna ut B → klart. Och om man inte hinner kolla (1):s bråkjustering kan (1) kännas knepig.",
+        "why_wrong": "Steg 6 visar att (1) också ger entydigt A = 99 via \\frac{1}{11}A = 9. (1) är tillräcklig — så B är fel."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du inte är säker på att vardera räcker ensamt är det säkert att 'spela försiktigt' och säga 'jag behöver båda'.",
+        "why_wrong": "Steg 6 och steg 8 visar att vart och ett av påståendena tillsammans med baselinen A = B + 9 bildar ett enda 2x2-system med unik lösning. C är reserverat för fall där INGET påstående räcker ensamt — inte fallet här."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'bråkdelar utan ett enda konkret tal — knappast tillräckligt'.",
+        "why_wrong": "Det finns ett konkret tal — gåvan på 9 bilder. I kombination med en bråkdel låser det fast antalet, eftersom \\frac{1}{11}A = 9 (eller \\frac{1}{10}B = 9) är en ekvation i en obekant. Steg 6 och steg 8 löser den ekvationen — E är fel."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att tro att '1/11 färre än efter' och '1/10 av före' säger samma sak och bara levererar en ekvation tillsammans. Botemedlet: räkna ut värdet från varje påstående SEPARAT innan du sammanställer — om båda självständigt ger 99, räcker varje ensamt och svaret är D.",
+    "solution_path": "Låt A vara antalet efter gåvan. (1) ger B = A - \\frac{1}{11}A → A = 99. (2) ger 9 = \\frac{1}{10}B → B = 90 och A = B + 9 = 99. Båda räcker ensamma — svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Kristian hade några idolbilder. På födelsedagen fick han 9 nya i gåva. Frågan: hur många hade han TOTALT EFTER gåvan? Vi söker ett konkret tal.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "NOG frågar om informationen RÄCKER för att få EN unik siffra. Vi måste pröva (1) ensamt, (2) ensamt och, om ingen räcker, båda tillsammans. För svaret D krävs att VARDERA räcker var för sig.",
+        "tier": "detail",
+        "title": "Vad betyder 'tillräcklig' i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "Kalla antalet idolbilder EFTER gåvan för A och antalet FÖRE gåvan för B. Vi vet redan att A = B + 9 (gåvan lade till 9). Det är ett uttryck med två obekanta — vi behöver ett villkor till från (1) eller (2).",
+        "tier": "essential",
+        "title": "Sätt upp variablerna"
+      },
+      {
+        "n": 4,
+        "text": "(1) säger 'före gåvan hade han 1/11 färre än efter'. 'Färre än efter' betyder att vi tar antalet efter och drar bort en bråkdel av det: B = A - \\frac{1}{11}A.",
+        "tier": "essential",
+        "title": "Översätt påstående (1)"
+      },
+      {
+        "n": 5,
+        "text": "Slå ihop till en bråkdel av A: B = A - \\frac{1}{11}A = \\frac{11}{11}A - \\frac{1}{11}A = \\frac{10}{11}A. Med andra ord: före gåvan hade han 10/11 av antalet efter gåvan.",
+        "tier": "detail",
+        "title": "Förenkla (1)"
+      },
+      {
+        "n": 6,
+        "text": "Vi har A = B + 9 och B = \\frac{10}{11}A. Sätt in: A = \\frac{10}{11}A + 9. Subtrahera \\frac{10}{11}A från båda sidor: A - \\frac{10}{11}A = 9 → \\frac{1}{11}A = 9 → A = 99. (1) ger ETT entydigt svar — tillräckligt ensamt.",
+        "tier": "essential",
+        "title": "Lös (1) med A = B + 9"
+      },
+      {
+        "n": 7,
+        "text": "(2) säger 'gåvan motsvarar 1/10 av antalet FÖRE gåvan'. Gåvan är 9 bilder, så 9 = \\frac{1}{10}B — där B är antalet före gåvan.",
+        "tier": "essential",
+        "title": "Översätt påstående (2)"
+      },
+      {
+        "n": 8,
+        "text": "Multiplicera båda sidor med 10: B = 90. Sedan ger A = B + 9 = 99. (2) ger också ETT entydigt svar — tillräckligt ensamt.",
+        "tier": "essential",
+        "title": "Lös (2) direkt"
+      },
+      {
+        "n": 9,
+        "text": "Kolla att A = 99, B = 90 klarar BÅDA påståendena. (1): 99 \\cdot \\frac{10}{11} = 90, dvs. B = 90 ✓. (2): \\frac{1}{10} \\cdot 90 = 9 ✓. Båda berättelserna passar samma fakta — det är därför båda räcker var för sig.",
+        "tier": "detail",
+        "title": "Verifiera båda lösningarna"
+      },
+      {
+        "n": 10,
+        "text": "Vart och ett av påståendena leder ensamt till A = 99. Svaret är D — tillräckligt i (1) och (2) var för sig. Insikten i en mening: när två påståenden beskriver samma situation från olika håll (en gång som bråkdel av EFTER, en gång som bråkdel av FÖRE) ger de varsin oberoende men ekvivalent ekvation — båda räcker.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Procent-av-vilken-bas-strategin: när ett påstående säger 'X är 1/N färre/mer än Y', skriv ALLTID upp basen explicit (är det före- eller eftervärdet?). Med ett konkret tal (här gåvan = 9) blir påståendet en ekvation i en obekant och räcker ensamt. Triggern: konkret tal + bråkdel av en obekant → en ekvation, en obekant → unik lösning."
+  },
   "host-2016-kvant2-NOG-026": {
     "_meta": {
       "generated_at": 1778429079240,
@@ -2497,6 +2812,119 @@
     "pitfall": null,
     "solution_path": "(1) räcker: x+y=2x ⇔ y=x, vilket är exakt (1). (2) ger bara x=6 utan information om y.",
     "technique": "Förenkla påståendet algebraiskt: x+y=2x ⇔ y=x."
+  },
+  "host-2016-kvant2-NOG-027": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att fokusera på E:s läge — det är ju E som är det 'rörliga' elementet — och tro att (2) ('BE = EC') är nyckeln, medan (1):s \\frac{19}{8} verkar krånglig och 'kanske inte direkt om arean'.",
+        "why_wrong": "Steg 6 visar att arean är HELT OKÄNSLIG för var E ligger på BC, så länge E stannar på BC. Att veta E är mittpunkten ger ingen ny information om arean."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man inte ser att arean är oberoende av E:s position kan man tro att man behöver BÅDA: (1) för bredden CD och (2) för att 'fixera' E.",
+        "why_wrong": "Steg 9 visar att (1) ensamt redan ger arean = 19 utan att veta något om E. Steg 6 förklarar varför: triangelns höjd beror inte på var hörnet E ligger längs den parallella sidan. (1) räcker ensamt, så C är fel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att 'BE = EC' fixerar triangeln helt och hållet (specifik form) kan det kännas som att (2) ensamt skulle ge en konkret area.",
+        "why_wrong": "Steg 11 visar att (2) inte säger ett ord om CD — bredden i rektangeln — och utan bredden kan arean vara vad som helst. (2) ger inte unikt svar ensamt, så D är fel."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Första instinkten är 'bråk plus mittpunkt — knepigt; kanske går det inte alls'.",
+        "why_wrong": "Steg 8–9 räknar igenom (1): AD = 4 (från rektangeln) plus (1):s villkor ger CD = \\frac{19}{2} och därmed arean 19. Räknebart, alltså inte E."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att tro att man behöver veta E:s exakta läge för att räkna ut triangelns area. Botemedlet: rita upp två extrema lägen av E (E = B och E = C) och kolla att areorna blir lika — då är det tydligt att E:s position inte styr arean, bara rektangelns bredd gör det.",
+    "solution_path": "I rektangel ABCD är AD = BC = 4, så (1) ger CD = \\frac{19}{8} \\cdot 4 = \\frac{19}{2}. Triangel AED har basen AD = 4 och höjden CD (höjden från E är konstant lika med avståndet mellan de parallella sidorna). Arean = \\frac{1}{2} \\cdot 4 \\cdot \\frac{19}{2} = 19. (1) räcker ensamt; (2) säger inget om CD. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "ABCD är en rektangel (hörnen i ordning runt figuren). E är en punkt någonstans på sidan BC. Vi vet att BC = 4 cm. Frågan: vad är arean av triangeln med hörnen A, E och D?",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Vi söker ett KONKRET tal för arean. Påståendena räcker när de tillsammans med det vi redan vet (rektangel, BC = 4) låser fast arean entydigt.",
+        "tier": "detail",
+        "title": "Vad betyder 'tillräcklig' i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "I en rektangel är motstående sidor lika långa. ABCD med hörnen i ordning ger sidorna AB, BC, CD och DA. Motstående par: AB = CD och BC = AD. Vi vet BC = 4, alltså är också AD = 4.",
+        "tier": "detail",
+        "title": "Vad vet vi om sidorna?"
+      },
+      {
+        "n": 4,
+        "text": "Arean av en triangel är \\frac{1}{2} \\cdot bas \\cdot h\\\"ojd. Höjden är det VINKELRÄTA avståndet från det tredje hörnet till basen (den linje vi ritar basen längs).",
+        "tier": "detail",
+        "title": "Triangelarea — basformeln"
+      },
+      {
+        "n": 5,
+        "text": "Välj AD som bas (vi vet redan att AD = 4). Höjden är det vinkelräta avståndet från E till linjen AD. E ligger på BC, och BC är parallell med AD (motstående sidor i rektangeln). Avståndet mellan två parallella sidor i en rektangel är BREDDEN — alltså sidan CD (eller lika långa AB).",
+        "tier": "essential",
+        "title": "Identifiera bas och höjd för AED"
+      },
+      {
+        "n": 6,
+        "text": "Var som helst E befinner sig på BC är dess vinkelräta avstånd till AD samma tal — nämligen CD. Att flytta E längs BC ändrar formen på triangeln men inte dess area, eftersom basen AD och höjden CD är desamma.",
+        "tier": "essential",
+        "title": "Nyckelinsikt: höjden beror inte på var E ligger"
+      },
+      {
+        "n": 7,
+        "text": "Arean av AED = \\frac{1}{2} \\cdot AD \\cdot CD = \\frac{1}{2} \\cdot 4 \\cdot CD = 2 \\cdot CD. Vi behöver alltså bara KÄNNA TILL CD för att få ett konkret tal.",
+        "tier": "essential",
+        "title": "Räkna areaformeln"
+      },
+      {
+        "n": 8,
+        "text": "(1) säger CD = \\frac{19}{8} \\cdot AD. Vi vet redan att AD = 4, så CD = \\frac{19}{8} \\cdot 4 = \\frac{76}{8} = \\frac{19}{2} cm.",
+        "tier": "essential",
+        "title": "Översätt påstående (1)"
+      },
+      {
+        "n": 9,
+        "text": "Med CD = \\frac{19}{2} blir arean 2 \\cdot \\frac{19}{2} = 19 kvadratcentimeter. (1) räcker ensamt för ett entydigt svar.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 10,
+        "text": "(2) säger BE = EC. Det betyder att E är mittpunkten på BC — alltså att både BE och EC är 2 cm långa.",
+        "tier": "essential",
+        "title": "Översätt påstående (2)"
+      },
+      {
+        "n": 11,
+        "text": "(2) berättar VAR på BC E ligger, men säger ingenting om bredden CD. Och steg 6 visade att arean inte beror på var E ligger — bara på CD. Så (2) bidrar med ingenting nytt om arean. Konkret: om CD = 1, blir arean 2; om CD = 100, blir arean 200 — alla möjliga. Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 12,
+        "text": "Sätt AD = 4, CD = \\frac{19}{2}, placera E var som helst på BC. Rektangelns area är 4 \\cdot \\frac{19}{2} = 38. Triangel AED tar alltid exakt halva rektangelarean när basen är en hel sida och tredje hörnet är på den motstående sidan: \\frac{38}{2} = 19 ✓.",
+        "tier": "detail",
+        "title": "Verifiera (1)"
+      },
+      {
+        "n": 13,
+        "text": "(1) räcker ensamt (ger CD → ger arean = 19). (2) räcker inte ensamt (E:s position påverkar inte arean, och CD är okänt). Svaret är A — tillräckligt i (1) men ej i (2). Insikten i en mening: när triangelns tredje hörn ligger på en linje PARALLELL med basen, är arean konstant oavsett hörnets exakta läge på den linjen — så 'var ligger E?' är irrelevant information.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Triangel-på-parallell-bas-strategin: om triangelns tredje hörn ligger på en linje parallell med basen, är arean konstant — höjden är avståndet mellan de parallella linjerna, inte 'från hörnet till basen' i någon mer komplicerad mening. Triggern: en punkt 'på sidan' av en rektangel/parallellogram betyder ofta 'positionen är irrelevant för arean'."
   },
   "host-2016-kvant2-NOG-028": {
     "_meta": {

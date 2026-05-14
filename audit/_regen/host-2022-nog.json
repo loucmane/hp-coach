@@ -1,0 +1,1316 @@
+{
+  "host-2022-kvant1-NOG-023": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(1) ger Julias bukett (24 blommor) och att August har 25, men inte Augusts fördelning. (2) ger andelen blåklockor men inte antalet. Tillsammans: \\tfrac{3}{5} \\cdot 25 = 15 blåklockor. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Julia och August har varsin bukett med bara prästkragar och blåklockor. Vi söker ett UNIKT TAL — exakt hur många blåklockor August har. Inte en andel, inte ett intervall, ett konkret heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' i NOG?",
+        "text": "NOG frågar inte 'är svaret rätt' utan 'räcker informationen för att låsa fast ETT unikt svar?'. Om flera tal är förenliga med påståendet är det otillräckligt — även om vi vet en hel del.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sätt upp variablerna",
+        "text": "Kalla Augusts totala antal blommor för T och hans antal blåklockor för B. Då gäller 0 \\le B \\le T. Vi vill hitta B.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt påstående (1)",
+        "text": "Julia har 10 prästkragar och 14 blåklockor, alltså 10 + 14 = 24 blommor totalt. 'August har plockat en blomma mer än Julia' betyder T = 24 + 1 = 25.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt — räcker det?",
+        "text": "(1) ger T = 25 men säger ingenting om HUR de 25 blommorna fördelas mellan prästkragar och blåklockor i Augusts bukett. B kan vara vilket heltal som helst från 0 till 25. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkret motexempel för (1)",
+        "text": "Med T = 25: August kan ha 0 blåklockor och 25 prästkragar, eller 12 blåklockor och 13 prästkragar, eller 25 blåklockor och 0 prästkragar. Alla matchar (1). B är inte unikt.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Översätt påstående (2)",
+        "text": "'\\tfrac{3}{5} av blommorna i Augusts bukett är blåklockor' betyder B = \\tfrac{3}{5} \\cdot T. Det är en RELATION mellan B och T, inte ett konkret tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Test (2) ensamt — räcker det?",
+        "text": "(2) ger B = \\tfrac{3}{5} T men säger ingenting om T. Om T = 5 är B = 3; om T = 10 är B = 6; om T = 25 är B = 15. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Bivillkor: B måste vara heltal",
+        "text": "Eftersom B är antal blommor måste B vara ett heltal. B = \\tfrac{3}{5} T kräver alltså att T är delbart med 5. Det begränsar T till {5, 10, 15, 20, 25, ...} men låser inte värdet.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Test (1) + (2) tillsammans",
+        "text": "Från (1): T = 25. Från (2): B = \\tfrac{3}{5} T. Sätt in T = 25: B = \\tfrac{3}{5} \\cdot 25 = 15. Vi får ett unikt svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Kontroll: 15 är ett heltal (bra), 15 \\le 25 (bra). Augusts bukett: 15 blåklockor + 10 prästkragar = 25 blommor totalt. Stämmer med båda påståenden.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Varken (1) eller (2) ensamt räcker — (1) saknar andelen, (2) saknar totalen. Tillsammans bildar de en bestämd produkt och svaret är 15. Det matchar alternativ C — tillräckligt i (1) tillsammans med (2). Insikten i en mening: en andel + en total = ett unikt antal; varken ensam räcker.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (1) ensamt räcker eftersom Julias bukett är fullständigt specificerad — 10 + 14 = 24 är så konkret att det smittar av sig på Augusts.",
+        "why_wrong": "Steg 5–6 visar att T = 25 inte säger något om fördelningen i Augusts bukett. Konkret information om JULIA är inte konkret information om AUGUST."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelbild: tro att (2) ensamt räcker eftersom \\tfrac{3}{5} låter som en bestämd andel.",
+        "why_wrong": "En andel utan en total ger oändligt många heltalsantal — steg 8 listar tre olika B-värden som alla matchar (2)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda påståenden känns 'kompletta' kan det verka som om vartdera ensamt ger ett unikt svar.",
+        "why_wrong": "D kräver att VARDERA påståendet ensamt ger unik lösning. Steg 5 och 8 visar att ingendera gör det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'jag ser bara relationer, alltså omöjligt'.",
+        "why_wrong": "Tillsammans ger (1) och (2) ett enkelt räkneuttryck \\tfrac{3}{5} \\cdot 25 = 15 (steg 10). Informationen räcker — bara inte var för sig."
+      }
+    ],
+    "technique": "Andel-gånger-total-strategin: när frågan söker ett antal och du har EN andel och EN total i olika påståenden, multiplicera dem för att låsa antalet. Triggern: 'hur många X' och du ser 'andel X = p' i ett påstående och 'total = N' i ett annat — svaret är p \\cdot N, och du behöver båda påståenden.",
+    "pitfall": "Det är lätt att blanda ihop Julias och Augusts buketter eftersom (1) presenterar Julias fördelning i detalj. Botemedlet: stryk under VEM frågan handlar om och behandla varje persons bukett som en egen okänd tills påståendena bygger bron."
+  },
+  "host-2022-kvant1-NOG-024": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(2) ensamt räcker: svarta = 18 och röda = \\tfrac{2}{3} \\cdot 18 = 12, så skillnaden är 6. (1) ger bara totalsumman 30 utan fördelning. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "I asken finns bara svarta och röda kulor. Vi söker SKILLNADEN: hur många FLER svarta än röda. Det är ett konkret heltal vi vill låsa fast.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' i NOG?",
+        "text": "NOG handlar inte om att lösa problemet — det handlar om att avgöra OM informationen räcker för en unik lösning. Vi får testa varje påstående isolerat, sedan tillsammans.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sätt upp variablerna",
+        "text": "Kalla antalet svarta kulor för S och antalet röda för R. Vi söker S − R. Båda är icke-negativa heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt påstående (1)",
+        "text": "'Sammanlagt 30 kulor i asken' betyder S + R = 30. Det är EN ekvation med TVÅ obekanta.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt — räcker det?",
+        "text": "S + R = 30. Skillnaden S − R kan vara vad som helst beroende på fördelningen. Konkret: S = 20, R = 10 ger S − R = 10; S = 25, R = 5 ger S − R = 20; S = 15, R = 15 ger S − R = 0. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Översätt påstående (2)",
+        "text": "'18 svarta kulor' ger S = 18. 'Antalet röda är \\tfrac{2}{3} av antalet svarta' ger R = \\tfrac{2}{3} S. Två oberoende villkor i (2).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut R från (2)",
+        "text": "Sätt S = 18 i R = \\tfrac{2}{3} S: R = \\tfrac{2}{3} \\cdot 18. \\tfrac{2}{3} \\cdot 18 = \\tfrac{2 \\cdot 18}{3} = \\tfrac{36}{3} = 12. Alltså R = 12.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut skillnaden från (2)",
+        "text": "S − R = 18 − 12 = 6. Unikt tal. (2) ensamt låser fast skillnaden.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Test (2) ensamt — räcker det?",
+        "text": "Ja. Påstående (2) ger båda värdena oberoende av (1), och därmed skillnaden 6. Vi behöver inte ens veta totalsumman.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Konsistenskoll med (1)",
+        "text": "Om båda påståenden gäller samtidigt: S + R = 18 + 12 = 30, vilket stämmer med (1). Påståendena motsäger inte varandra — men det är (2) som ensamt ger svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "(1) ensamt: otillräckligt (en ekvation, två obekanta). (2) ensamt: tillräckligt (två villkor → S och R bestämda → skillnaden 6). Det matchar alternativ B — tillräckligt i (2) men ej i (1). Insikten i en mening: ett påstående som ger ETT absolut värde + ETT förhållande till det värdet räcker; ett påstående som bara ger en summa räcker inte.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att 'totalt 30' räcker eftersom totalsumman låter som ett kraftfullt tal.",
+        "why_wrong": "Steg 5 visar att samma summa 30 är förenlig med skillnader från 0 till 30. En total fixerar inte hur saker fördelar sig."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du inte testar (2) ensamt först kan du tro att man behöver totalsumman från (1) för att lösa systemet.",
+        "why_wrong": "Steg 7–8 visar att (2) ger BÅDE S = 18 OCH R = 12 utan att behöva (1). C kräver att (1) bidrar med något nytt — det gör den inte här."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda påståenden ser informativa ut är D ('var för sig räcker') ett snabbsvar.",
+        "why_wrong": "D kräver att VARDERA påståendet ensamt ger unik lösning. Steg 5 visar att (1) inte gör det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'något saknas' när problemet ser komplicerat ut.",
+        "why_wrong": "(2) ger ett komplett system (steg 8). Skillnaden är låst till 6 — inte 'omöjligt'."
+      }
+    ],
+    "technique": "Två-villkor-i-ett-påstående-fallet: ett enskilt NOG-påstående kan innehålla flera satser (här: 'S = 18' OCH 'R = 2/3 S'). Behandla varje sats som ett separat villkor när du räknar ekvationer mot obekanta. Triggern: ett påstående med två meningar eller kommatecken som separerar oberoende fakta — räkna villkor, inte påståenden.",
+    "pitfall": "Det är vanligt att studenter tror att 'mer information = bättre' och att (1) alltid bidrar. Botemedlet: räkna villkoren i (2) först; om de räcker, är (1) överflödig och svaret är B, inte C."
+  },
+  "host-2022-kvant1-NOG-025": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(1) ger att Cedergren är under Andersson. (2) ger att Berg är under Dahlman. Tillsammans finns flera giltiga placeringar (t.ex. Andersson eller Dahlman på tredje våningen). Svaret är E.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Fyra familjer (Andersson, Berg, Cedergren, Dahlman) i ett trevåningshus. Plan 1: en familj. Plan 2: två familjer. Plan 3: en familj. Vi söker UNIKT vilken familj som bor på tredje (översta) våningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' i NOG?",
+        "text": "Vi måste kunna namnge EN och bara EN familj på våning 3. Om mer än en familj kan stå där efter att vi använt påståendena är informationen otillräcklig.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'bor nedanför'?",
+        "text": "'X bor nedanför Y' betyder att X:s våningsnummer är STRIKT MINDRE än Y:s. Det innebär INTE 'direkt under' — bara att X är på en lägre våning.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Översätt påstående (1)",
+        "text": "'Cedergren bor nedanför Andersson' → C:s våning < A:s våning. Det utesluter C på våning 3 och utesluter A på våning 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt — räcker det?",
+        "text": "Med bara villkoret C < A kan Andersson hamna på våning 2 ELLER 3. Berg och Dahlman har inga restriktioner. Ingen unik familj på våning 3. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkret motexempel för (1)",
+        "text": "Scenario A: C på 1, A och B på 2, D på 3. Scenario B: B på 1, A och D på 2, C kan inte vara på 3 (måste vara under A) — då på 1, omöjligt två på 1. Korrigera: C på 1, A på 3, B och D på 2 — våning 3 = Andersson. Tre olika våning-3-familjer är möjliga med bara (1).",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Översätt påstående (2)",
+        "text": "'Berg bor nedanför Dahlman' → B:s våning < D:s våning. Det utesluter B på 3 och utesluter D på 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Test (2) ensamt — räcker det?",
+        "text": "Med bara B < D kan Dahlman hamna på 2 eller 3. Cedergren och Andersson har inga restriktioner. Ingen unik familj på våning 3. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Test (1) + (2) tillsammans — konstruera möjligheter",
+        "text": "Båda villkoren: C < A och B < D. På våning 1 sitter en familj som måste vara 'under' någon — kandidater för våning 1: C eller B (eller båda). På våning 3 sitter en familj som måste vara 'över' någon — kandidater: A eller D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Två arrangemang som båda funkar",
+        "text": "Arrangemang I: våning 1 = C, våning 2 = B och A, våning 3 = D. Kontroll: C < A (1 < 2, ja), B < D (2 < 3, ja). Giltigt. Arrangemang II: våning 1 = B, våning 2 = C och D, våning 3 = A. Kontroll: C < A (2 < 3, ja), B < D (1 < 2, ja). Också giltigt. Våning 3 = Dahlman i I, men Andersson i II. Inte unikt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Varför räcker det inte ens tillsammans?",
+        "text": "De två kedjorna C < A och B < D är OBEROENDE — det finns inget villkor som kopplar ihop dem. Antingen Andersson eller Dahlman kan stå överst, beroende på vem som delar våning 2.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Varken (1) eller (2) ensamt räcker, och tillsammans lämnar de minst två giltiga arrangemang (steg 10). Svaret är E — informationen räcker inte ens tillsammans. Insikten i en mening: två oberoende ordningsvillkor på 4 element i 3 fack räcker sällan för unik placering — leta efter en koppling som binder kedjorna.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1) ensamt räcker eftersom C < A nästan tvingar Andersson uppåt.",
+        "why_wrong": "Steg 6 visar att A kan hamna på 2 eller 3, och B och D är helt fria. Andersson är inte tvunget på 3."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelbild: tro att (2) räcker eftersom B < D nästan tvingar Dahlman uppåt.",
+        "why_wrong": "Steg 8 visar att D kan hamna på 2 eller 3, och C och A är fria. Dahlman är inte tvunget på 3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att två 'nedanför'-villkor tillsammans måste låsa fast en topp.",
+        "why_wrong": "Steg 10 visar två giltiga arrangemang där våning 3 är Dahlman i ett fall och Andersson i det andra. Kedjorna är oberoende och kan 'växla' positioner."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda påståenden känns symmetriskt informativa är D ('var för sig räcker') ett bekvämt snabbsvar.",
+        "why_wrong": "Steg 5 och 8 visar att INGENDERA påståendet ensamt räcker. D är dubbelt fel."
+      }
+    ],
+    "technique": "Oberoende-kedjors-regel: två separata 'X < Y'-villkor på olika variabler bildar oberoende kedjor som kan placeras på flera sätt i begränsade fack. För unik placering behövs en KOPPLING (t.ex. 'A bor över B' eller en absolut placering). Triggern: ordningsvillkor som inte delar variabler → testa minst två konkreta arrangemang.",
+    "pitfall": "Det är vanligt att tro att 'nedanför' betyder 'direkt under', vilket skulle ge starkare restriktioner. Botemedlet: 'nedanför' i NOG betyder alltid bara LÄGRE VÅNING — inte angränsande. Markera det innan du börjar testa scenarier."
+  },
+  "host-2022-kvant1-NOG-026": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(1) ger Jans starttid och hastighet, vilket låser tiden då båda är klara (11.05). (2) ger att Frida hunnit 10 servetter när Jan startar. Tillsammans: Fridas hastighet och starttid 10.15. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frida och Jan viker 100 servetter tillsammans, lika många var (alltså 50 var). Båda jobbar med konstant egen hastighet utan paus och blir klara samtidigt. Vi söker den exakta KLOCKTIDEN då Frida börjar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' i NOG?",
+        "text": "Vi behöver låsa fast EN klocktid. Om flera starttider är förenliga med påståendena är informationen otillräcklig.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sätt upp variablerna",
+        "text": "Låt Fridas starttid vara t_F, Jans starttid t_J. Fridas hastighet r_F servetter/minut, Jans r_J. Båda viker 50 servetter och slutar samtidigt vid tid T. Då gäller t_F + 50/r_F = T = t_J + 50/r_J.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt påstående (1)",
+        "text": "Jan börjar 10.25 (t_J = 10\\!:\\!25) och tar 40 minuter på 50 servetter. Hans hastighet: r_J = 50/40 = 1{,}25 servetter/minut. Slut-tid: 10.25 + 40 min = 11.05.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt — räcker det?",
+        "text": "Från (1) vet vi att T = 11.05 och att Frida måste vara klar 11.05. Hon viker 50 servetter under tiden T - t_F med någon hastighet vi inte känner. t_F kan vara vad som helst före 11.05. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkret motexempel för (1)",
+        "text": "Om Frida är jättesnabb kanske hon börjar 11.00 och hinner 50 servetter på 5 minuter. Om hon är långsam kanske hon börjar 09.00. Båda förenliga med (1).",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Översätt påstående (2)",
+        "text": "'När Jan börjar har Frida precis vikt 10 servetter.' Det betyder att vid Jans starttid (t_J) har Frida producerat exakt 10 servetter sedan hon själv började. Alltså r_F \\cdot (t_J - t_F) = 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Test (2) ensamt — räcker det?",
+        "text": "(2) ger en relation mellan Fridas hastighet och tidsskillnaden, men säger varken vad t_J eller r_F är. T är okänt. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konkret motexempel för (2)",
+        "text": "Frida kan vika 1 servett/minut och börja 10 min före Jan, eller 2 servetter/minut och börja 5 min före Jan. Båda matchar r_F \\cdot (t_J - t_F) = 10.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Test (1) + (2) tillsammans — räkna Fridas hastighet",
+        "text": "Från (1): t_J = 10\\!:\\!25 och T = 11\\!:\\!05. Frida arbetar utan avbrott från t_F till T. Vid t_J har hon vikt 10 servetter; hon ska vika 50 totalt; alltså viker hon 40 till mellan t_J och T. Tiden mellan 10.25 och 11.05 är 40 minuter. Hastighet: r_F = 40/40 = 1 servett/minut.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Räkna Fridas starttid",
+        "text": "Frida hade vikt 10 servetter vid 10.25 med hastighet 1 servett/minut. Det tog henne 10/1 = 10 minuter. Hon började alltså 10 minuter före 10.25, dvs. 10.15.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "Frida startar 10.15, viker 1/min, slutar efter 50 min → 11.05. Jan startar 10.25, viker 1,25/min, slutar efter 40 min → 11.05. Båda klara samtidigt, ja. Vid 10.25 har Frida vikt (10.25 − 10.15) · 1 = 10 servetter. Stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Varken (1) eller (2) ensamt räcker (steg 5 och 8). Tillsammans låser de fast Fridas hastighet (steg 10) och därmed hennes starttid 10.15 (steg 11). Det matchar alternativ C — tillräckligt i (1) tillsammans med (2). Insikten i en mening: hastighetsproblem med 'klara samtidigt'-villkor är system av ekvationer — räkna okända (start, hastighet, tid) mot ekvationer du faktiskt har.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (1) ensamt räcker eftersom Jans data är så exakt — start 10.25, 40 minuter, 50 servetter. Det känns komplett.",
+        "why_wrong": "Komplett för JAN. Steg 5–6 visar att Fridas hastighet är helt obekant utan (2), så hennes starttid kan vara vad som helst före 11.05."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelbild: tro att (2) räcker eftersom '10 servetter när Jan börjar' låter som en konkret förankring.",
+        "why_wrong": "(2) saknar både t_J och r_F (steg 8–9). Utan Jans starttid finns ingen absolut tidpunkt att förankra Fridas start mot."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda påståenden ser informativa ut är D ('var för sig räcker') ett frestande snabbsvar.",
+        "why_wrong": "D kräver att vartdera påståendet ensamt ger unik lösning. Steg 5 och 8 visar att ingendera gör det. Här är båda nödvändiga, inte var och en sin egen."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'för många okända' när problemet ser komplext ut.",
+        "why_wrong": "Steg 10–12 visar att systemet faktiskt är lösbart när båda påståenden används. Tre okända (Fridas start, Fridas hastighet, sluttid) mot tre villkor ger unik lösning."
+      }
+    ],
+    "technique": "Hastighet-relation-strategin för 'klara samtidigt': skriv ned att båda personernas arbete (arbete = hastighet \\cdot tid) börjar olika men slutar samma. Använd första påståendet för att låsa sluttiden, andra påståendet för att låsa förhållandet mellan starttiderna, och räkna baklänges till den okända starttiden.",
+    "pitfall": "Det är lätt att blanda ihop Fridas TID I ARBETE med klocktiden hon börjar. Botemedlet: skriv ALLTID klocktid (10.15) och tidsåtgång (50 min) på olika rader; sluttid = starttid + tidsåtgång."
+  },
+  "host-2022-kvant1-NOG-027": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(1) ensamt: y kan vara vad som helst. (2) ensamt: x okänt. Tillsammans: x = y/2 där y är heltal — x kan vara heltal (y = 4 \\Rightarrow x = 2) eller inte (y = 3 \\Rightarrow x = 1{,}5). Svaret är E.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan är en JA/NEJ-fråga: är x ett heltal? I NOG räcker informationen om den med säkerhet ger antingen 'ja' eller 'nej' — den får INTE lämna båda möjligheter öppna.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' för en ja/nej-fråga?",
+        "text": "För numeriska NOG-frågor letar vi efter ett unikt tal. För ja/nej letar vi efter ett unikt SVAR. Om vi kan konstruera ett scenario som ger 'ja' OCH ett som ger 'nej', är påståendet otillräckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad är ett heltal?",
+        "text": "Heltal: …, −2, −1, 0, 1, 2, … — tal utan decimaldel. 1,5 är inte heltal; 3 är heltal; även 0 och negativa tal är heltal.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Översätt påstående (1)",
+        "text": "y = 2x. Detta är en relation mellan x och y, ingen begränsning på vilken TYP av tal de är. Båda kan vara reella tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt — räcker det?",
+        "text": "Från (1) ensamt: om x = 2 så är y = 4 och x är heltal — JA. Om x = 1{,}5 så är y = 3 och x är inte heltal — NEJ. Båda scenarier uppfyller (1). Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Översätt påstående (2)",
+        "text": "'y är ett heltal.' Det säger NÅGOT om y men ingenting om x — det finns ingen länk mellan dem i (2) ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Test (2) ensamt — räcker det?",
+        "text": "Utan koppling till y kan x vara heltal eller inte. Konkret: y = 5, x = 7 — x heltal, JA. y = 5, x = 1,4 — x inte heltal, NEJ. Båda förenliga med (2). Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Test (1) + (2) tillsammans — kombinera",
+        "text": "Från (1): y = 2x, dvs x = y/2. Från (2): y är heltal. Då är x = (heltal)/2. Det kan vara antingen ett heltal (om y är jämn) eller en halv (om y är udda).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konkret motexempel även tillsammans",
+        "text": "Scenario A: y = 4 (heltal). Då x = 4/2 = 2 — heltal, JA. Scenario B: y = 3 (heltal). Då x = 3/2 = 1{,}5 — inte heltal, NEJ. Båda uppfyller (1) OCH (2).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Varför räcker det inte tillsammans?",
+        "text": "Villkoret 'y heltal' låter x bli vilken halv eller heltal som helst. Det saknas information om y är JÄMN — utan det kan x:s typ inte bestämmas.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Vad skulle behövts?",
+        "text": "Ett tredje villkor som 'y är jämn' skulle ge ett ja-svar (då är y = 2k och x = k är heltal). Ett villkor 'y är udda' skulle ge ett nej-svar. Inget av dessa finns.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Varken (1) eller (2) ensamt räcker, och tillsammans lämnar de minst ett ja-scenario och ett nej-scenario (steg 9). Svaret är E — informationen räcker inte ens tillsammans. Insikten i en mening: i ja/nej-frågor med heltalsvillkor — leta alltid efter paritets-information (jämn/udda), inte bara heltal-information.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att y = 2x 'binder' x till heltal eftersom formen liknar 'x dubblat'.",
+        "why_wrong": "Steg 5 visar att x kan vara 1,5 och fortfarande uppfylla y = 2x (då y = 3). Relationen säger inget om VILKEN typ av tal x är."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att 'y heltal' smittar av sig på x — språkligt känns heltal som en stark egenskap.",
+        "why_wrong": "Utan en koppling mellan x och y kan x:s typ vara vad som helst (steg 7). (2) ensamt har ingen brygga till x."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att 'y heltal' + 'y = 2x' tillsammans ger x = y/2 som ett unikt heltal.",
+        "why_wrong": "Steg 8–9 visar att y/2 är heltal bara om y är jämn — det villkoret saknas. y = 3 är ett heltal och ger x = 1{,}5, alltså 'nej'."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda påståenden ser informativa ut är D ett bekvämt snabbsvar — 'båda räcker var för sig'.",
+        "why_wrong": "Steg 5 och 7 visar att ingendera räcker ensamt. D är dubbelt fel — och kraven för D är högre än för C, som redan misslyckas."
+      }
+    ],
+    "technique": "Paritets-luckans-regel för heltals-NOG: 'y är heltal' + 'y = 2x' räcker INTE för att x ska vara heltal — det krävs att y är JÄMN. Triggern: villkor med en faktor 2 (eller annan heltalsfaktor) som kopplar x och y — räkna ut vilket paritetsvillkor som faktiskt skulle stänga frågan.",
+    "pitfall": "Det är vanligt att blanda ihop 'heltal' (utan decimaldel) med 'jämn heltal' (delbar med 2). Botemedlet: när en delning med 2 är inblandad, fråga 'är täljaren JÄMN?' — det är paritets-villkoret, inte heltals-villkoret, som avgör."
+  },
+  "host-2022-kvant1-NOG-028": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(1) ger två giltiga ordningar (D-C-B-E-A och D-E-B-C-A) — otillräckligt. (2) ger den UNIKA ordningen D-E-B-C-A. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Fem bokstäver A, B, C, D, E står på rad. Vi söker den UNIKA ordningen från vänster till höger. Det finns 5 positioner (1, 2, 3, 4, 5).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' i NOG?",
+        "text": "Vi behöver låsa fast EN ordning. Om mer än en ordning är förenlig med ett påstående är det otillräckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'intill'?",
+        "text": "'X står intill Y' betyder att X och Y har positioner som skiljer med exakt 1 — de är grannar. 'B intill både C och E' betyder B är granne med C OCH granne med E — alltså B har två grannar, en på vardera sidan.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Översätt påstående (1)",
+        "text": "D är på position 1 (längst vänster). A är på position 5 (längst höger). B är intill både C och E, dvs B har C på ena sidan och E på andra. Mellan D och A finns positionerna 2, 3, 4 för B, C, E.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna ut B:s position från (1)",
+        "text": "Eftersom B har grannar på BÅDA sidor måste B stå på position 3 (mittenpos). Annars skulle B vara grannar med en yttre bokstav (A eller D), inte C OCH E.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Test (1) ensamt — räkna alla möjligheter",
+        "text": "Med D-_-B-_-A som mall finns två val: positionerna 2 och 4 ska fyllas med C och E. Möjlighet 1: D-C-B-E-A. Möjlighet 2: D-E-B-C-A. Båda matchar (1). Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Översätt påstående (2)",
+        "text": "Varken D eller E står längst till höger (position 5). C står intill både A OCH B. B står intill både C OCH E. Tre villkor.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Använd 'C intill A och B'",
+        "text": "C har grannar A och B, en på vardera sidan. Det ger blocket A-C-B eller B-C-A. Båda är spegelvarianter av samma trippel.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Använd 'B intill C och E'",
+        "text": "B har grannar C och E. Kombinerat med steg 8: blocket utvidgas till A-C-B-E eller E-B-C-A (spegelbild). Detta är ett block med 4 bokstäver i rad; D ligger någonstans utanför.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Placera D",
+        "text": "Variant 1: A-C-B-E som ett block. D måste vara på position 1 eller 5. Om D på position 5: A-C-B-E-D — men då är D längst till höger (förbjudet av 'D ej längst höger'). Om D på position 1: D-A-C-B-E — men då är E längst till höger (förbjudet av 'E ej längst höger'). VARIANT 1 utesluts.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Testa spegelvarianten",
+        "text": "Variant 2: E-B-C-A som ett block. D måste vara på position 1 eller 5. Om D på position 5: E-B-C-A-D — D längst höger, FÖRBJUDET. Om D på position 1: D-E-B-C-A — rightmost = A, OK; D inte längst höger, OK; E inte längst höger, OK. GILTIGT.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera den unika lösningen",
+        "text": "D-E-B-C-A: D på 1, E på 2, B på 3, C på 4, A på 5. Kontroll: C grannar = B och A (position 3 och 5) — JA. B grannar = E och C (position 2 och 4) — JA. D ej längst höger (position 1) — JA. E ej längst höger (position 2) — JA. Allt stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 13,
+        "title": "Test (2) ensamt — räcker det?",
+        "text": "Steg 10–11 visar att endast ETT arrangemang (D-E-B-C-A) klarar alla tre villkoren i (2). Unikt — (2) räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 14,
+        "title": "Slutsats",
+        "text": "(1) ger två giltiga ordningar (steg 6) — otillräckligt. (2) ger den unika ordningen D-E-B-C-A (steg 11–13). Det matchar alternativ B — tillräckligt i (2) men ej i (1). Insikten i en mening: 'ej längst höger'-villkor är ofta den brytande detaljen som väljer mellan spegelbilder.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (1) räcker eftersom DDA tvångsmässigt placerar D på 1 och A på 5, och B i mitten — det känns som tre lås.",
+        "why_wrong": "Tre positioner låses, men ordningen C-E vs E-C på positionerna 2 och 4 är fortfarande fri (steg 6). Två giltiga arrangemang."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att man behöver båda påståenden för att låsa C/E-ordningen från (1).",
+        "why_wrong": "Steg 13 visar att (2) ensamt redan låser den unika ordningen — (1) behövs inte. C kräver att INGEN ensam räcker, men (2) gör det."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda påståenden ser informativa ut är D ('var för sig räcker') ett snabbsvar.",
+        "why_wrong": "D kräver att VARDERA påståendet ensamt ger unik lösning. Steg 6 visar att (1) ger TVÅ ordningar, inte en — så (1) räcker inte ensamt."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'för många villkor, ingen ordning passar' när problemet ser krångligt ut.",
+        "why_wrong": "Steg 11–12 visar att D-E-B-C-A passar alla villkor i (2). Det finns en lösning — bara via (2) ensamt."
+      }
+    ],
+    "technique": "Block-och-spegel-strategin för ordnings-NOG: när två 'X intill Y och Z'-villkor kedjas ihop bildar bokstäverna ett block; spegelbilden ger två kandidater. Använd övriga villkor (typ 'ej längst höger') för att välja mellan spegelvarianterna. Triggern: två 'intill-båda'-satser → bygg block och testa båda riktningar.",
+    "pitfall": "Det är vanligt att glömma att 'intill BÅDA' kräver två grannar, vilket utesluter ändpositioner. Botemedlet: när du läser 'B intill både C och E' — stryk omedelbart ut ändpositionerna för B."
+  },
+  "host-2022-kvant2-NOG-023": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(1) ger en sida = 7 cm, (2) ger omkrets = 20 cm. Tillsammans: andra sidan = (20 - 2 \\cdot 7)/2 = 3 cm, area = 7 \\cdot 3 = 21 cm². Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "R är en rektangel. Vi söker dess AREA — ett konkret tal i cm². En rektangel har två par lika långa sidor; vi behöver känna båda olika sidlängderna för att räkna area.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' i NOG?",
+        "text": "Vi behöver ett unikt arealvärde. Om flera rektanglar med olika area är förenliga med påståendena är informationen otillräcklig.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sätt upp variablerna",
+        "text": "Kalla sidlängderna a och b (positiva tal). Area = a \\cdot b. Omkrets = 2a + 2b = 2(a+b).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt påstående (1)",
+        "text": "'En sida i R är 7 cm' ger oss att ETT av talen a eller b är 7. Säg a = 7. Vi vet ingenting om b.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt — räcker det?",
+        "text": "Med a = 7 kan b vara vad som helst. Area = 7 \\cdot b varierar med b. Konkret: b = 1 → area = 7; b = 10 → area = 70; b = 100 → area = 700. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Översätt påstående (2)",
+        "text": "'R har omkretsen 20 cm' ger 2(a+b) = 20, dvs a + b = 10. En ekvation med två obekanta.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Test (2) ensamt — räcker det?",
+        "text": "Med a + b = 10 kan paret (a, b) vara t.ex. (1, 9), (2, 8), (5, 5). Areorna 9, 16, 25 — allt olika. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Test (1) + (2) tillsammans",
+        "text": "Från (1): a = 7. Sätt in i (2): 7 + b = 10, dvs b = 3. Nu är båda sidorna kända.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna ut arean",
+        "text": "Area = a \\cdot b = 7 \\cdot 3 = 21 cm². Unikt värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Kontroll av (1): en sida är 7 cm — JA, a = 7. Kontroll av (2): omkrets = 2(7+3) = 20 cm — JA. Båda stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "(1) ensamt: otillräckligt (en obekant sida kvar). (2) ensamt: otillräckligt (en ekvation, två obekanta). Tillsammans: en känd sida + omkrets-ekvation → andra sidan b = 3 → area = 21 cm². Det matchar alternativ C — tillräckligt i (1) tillsammans med (2). Insikten i en mening: en rektangels area kräver två oberoende villkor som låser BÅDA sidorna; en sida eller omkretsen ensamt räcker aldrig.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att 'en sida = 7 cm' räcker eftersom siffran 7 är konkret och placerad direkt på rektangeln.",
+        "why_wrong": "Steg 5 visar att samma sida 7 fungerar med oändligt många b-värden. En sida låser inte form, bara längd."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att omkretsen ensamt räcker — den känns som ett 'totalmått' på rektangeln.",
+        "why_wrong": "Steg 7 visar tre rektanglar med samma omkrets 20 men areorna 9, 16 och 25. Omkrets fixerar SUMMAN av sidorna, inte produkten."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda påståenden ser informativa ut är D ('var för sig räcker') ett snabbsvar.",
+        "why_wrong": "Steg 5 och 7 visar att ingendera räcker ensamt. D är dubbelt fel."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'för få mått' när rektangelproblem ser tunna ut.",
+        "why_wrong": "Tillsammans ger (1) och (2) exakt två oberoende villkor på två obekanta — ett 2x2-system med unik lösning (steg 8–9). E är fel."
+      }
+    ],
+    "technique": "Två-villkor-låser-rektangel-regeln: en rektangels area kräver att BÅDA sidlängderna är låsta. En sida + omkrets, eller två sidor, eller diagonal + omkrets, är typiska låsningar. Triggern: hur många sidor är kända (eller indirekt bestämda)? Två oberoende linjära villkor på (a, b) → unik area.",
+    "pitfall": "Det är vanligt att tro att omkretsen 'innehåller' arean — den gör det inte. Botemedlet: omkrets är LINJÄR i sidorna (a + b), area är PRODUKT (a · b); samma summa kan ge många olika produkter."
+  },
+  "host-2022-kvant2-NOG-024": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(1): 4x = -8 \\Rightarrow x = -2 < 0 — ja. (2): x^{5} < 0 \\Rightarrow x < 0 (udda exponent bevarar tecken) — ja. Båda räcker var för sig. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Ja/nej-fråga: är x < 0? Vi behöver kunna ge ett UNIKT svar — antingen alltid 'ja' eller alltid 'nej'. Räcker (1) ensam? Räcker (2) ensam?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' för ja/nej-fråga?",
+        "text": "Påståendet är tillräckligt om alla x som uppfyller det ger samma svar. Påståendet är otillräckligt om vi kan hitta ett x som uppfyller det men ger 'ja', och ett annat som ger 'nej'.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Översätt påstående (1)",
+        "text": "4x = -8 är en linjär ekvation i x. Dela båda sidor med 4 för att isolera x.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lös (1) för x",
+        "text": "4x = -8 \\Rightarrow x = -8/4 = -2. Att dela något negativt (−8) med något positivt (4) ger ett negativt tal — det är en grundläggande regel för tecken vid division.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt — räcker det?",
+        "text": "(1) ger x = -2 entydigt. Är -2 < 0? Ja. Svaret är 'ja' med säkerhet. (1) räcker ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Översätt påstående (2)",
+        "text": "x^{5} < 0 betyder att x upphöjt till 5 är ett negativt tal. x^{5} = x \\cdot x \\cdot x \\cdot x \\cdot x — fem faktorer.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder upphöjt till 5?",
+        "text": "x^{5} är x gångrat med sig själv fem gånger. Exempel: 2^{5} = 2 \\cdot 2 \\cdot 2 \\cdot 2 \\cdot 2 = 32. (-1)^{5} = (-1)(-1)(-1)(-1)(-1) = -1.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Teckenregel för udda exponent",
+        "text": "Vid udda antal negativa faktorer blir produkten negativ. Vid jämnt antal blir den positiv. Eftersom 5 är udda har x^{5} samma tecken som x. x^{5} < 0 \\Leftrightarrow x < 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Test (2) ensamt — räcker det?",
+        "text": "Från (2): x^{5} < 0 → x < 0 (steg 8). Svaret på frågan är JA med säkerhet, för alla x som uppfyller (2). Räcker ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Konkretisera (2)",
+        "text": "Exempel: x = -1 → x^{5} = -1 < 0, ja x < 0. x = -0{,}1 → x^{5} = -0{,}00001 < 0, ja x < 0. x = 0 → x^{5} = 0, INTE < 0 — så x = 0 är uteslutet. x = 1 → x^{5} = 1, INTE < 0 — uteslutet. Allt funkar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "(1) ensamt räcker (steg 5: x = −2 < 0). (2) ensamt räcker (steg 9: x^5 < 0 betyder x < 0). Det matchar alternativ D — tillräckligt i (1) och (2) var för sig. Insikten i en mening: vid UDDA exponenter (1, 3, 5, …) bevaras tecknet, så ett tecken-villkor på x^udda är lika starkt som tecken-villkor på x.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att bara (1) räcker eftersom 4x = -8 ger ett rent tal medan x^5 < 0 ser abstrakt ut.",
+        "why_wrong": "Steg 8–9 visar att x^5 < 0 är ekvivalent med x < 0 — exakt så starkt som behövs. (2) räcker också ensam."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelbild: tro att bara (2) räcker eftersom x^{5} < 0 ser ut att ge tecken-information mer direkt.",
+        "why_wrong": "Steg 4–5 visar att (1) ger x = −2 exakt, vilket också besvarar 'är x < 0' med ett tydligt ja. Båda räcker."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man inte testar var för sig kan det kännas som om båda behövs för säkerhet.",
+        "why_wrong": "C kräver att INGEN ensam räcker. Steg 5 och 9 visar motsatsen — båda räcker själva, så svaret är D, inte C."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'för komplicerat' när uppgifter med exponenter dyker upp.",
+        "why_wrong": "Båda påståenden ger faktiskt ett tydligt svar. E gäller bara när informationen är otillräcklig — inte här."
+      }
+    ],
+    "technique": "Udda-exponent-bevarar-tecken-regeln: för udda n är x^{n} negativt om och endast om x är negativt. För jämna n är x^{n} alltid icke-negativt. Triggern: tecken-fråga på en potens — kolla exponentens paritet, inte värdet.",
+    "pitfall": "Det är lätt att blanda ihop udda och jämna exponenter. Om frågan hade varit x^{4} < 0 hade det varit OMÖJLIGT (jämn exponent → alltid \\ge 0). Botemedlet: testa exponentens paritet innan du drar slutsatser om tecken."
+  },
+  "host-2022-kvant2-NOG-025": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(1) ger två ekvationer i tre obekanta (otillräckligt). (2) ger en total och en klass (otillräckligt). Tillsammans bildar de fyra oberoende ekvationer i fyra obekanta och ger 1A = 25. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Skolan har fyra klasser: 1A, 1B, 2A, 2B. Vi söker det UNIKA antalet barn i 1A — ett enskilt heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' i NOG?",
+        "text": "Antalet 1A-barn måste vara entydigt bestämt. Om flera värden är förenliga med påståendena är informationen otillräcklig.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sätt upp variablerna",
+        "text": "Beteckna antalen som a (1A), b (1B), c (2A), d (2B). Fyra okända, alla icke-negativa heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt påstående (1)",
+        "text": "'1A + 1B = 51 sammanlagt' ger a + b = 51. '1A + 2A = 53 sammanlagt' ger a + c = 53. Två ekvationer.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt — räkna ekvationer mot obekanta",
+        "text": "Två ekvationer (a + b = 51, a + c = 53) i fyra obekanta (a, b, c, d). Underbestämt — vi kan inte lösa a entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkret motexempel för (1)",
+        "text": "Med a = 20: b = 31, c = 33, d valfritt. Med a = 30: b = 21, c = 23, d valfritt. Båda förenliga med (1). Otillräckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Översätt påstående (2)",
+        "text": "'2B = 24' ger d = 24. 'Totalt 103 barn i fyra klasserna' ger a + b + c + d = 103. Två ekvationer.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Test (2) ensamt — räkna ekvationer mot obekanta",
+        "text": "Sätt d = 24 i totalen: a + b + c = 79. Det är EN ekvation kvar i TRE obekanta. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konkret motexempel för (2)",
+        "text": "Med d = 24 och a + b + c = 79: a = 10, b = 30, c = 39 fungerar; a = 25, b = 26, c = 28 fungerar också. Olika a-värden. Otillräckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Test (1) + (2) tillsammans — fyra ekvationer",
+        "text": "Vi har nu: a + b = 51, a + c = 53, d = 24, a + b + c + d = 103. Fyra ekvationer i fyra obekanta — räcker för unik lösning om de är oberoende.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Lös systemet — substitution",
+        "text": "Från (1): b = 51 − a och c = 53 − a. Sätt in i totalen: a + (51 - a) + (53 - a) + 24 = 103. Förenkla vänster: a + 51 - a + 53 - a + 24 = 128 - a. Ekvation: 128 - a = 103.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Räkna ut a",
+        "text": "128 - a = 103 \\Rightarrow a = 128 - 103 = 25. 1A har 25 barn.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Verifiera",
+        "text": "Med a = 25: b = 51 − 25 = 26, c = 53 − 25 = 28, d = 24. Kontrollera totalen: 25 + 26 + 28 + 24 = 103. JA. Alla villkor uppfylls.",
+        "tier": "detail"
+      },
+      {
+        "n": 14,
+        "title": "Slutsats",
+        "text": "(1) ensamt: två ekvationer i fyra obekanta — otillräckligt. (2) ensamt: två ekvationer (varav en låser endast d) — otillräckligt. Tillsammans: fyra oberoende ekvationer, fyra obekanta, unik lösning a = 25. Det matchar alternativ C — tillräckligt i (1) tillsammans med (2). Insikten i en mening: räkna ALLTID ekvationer mot obekanta i NOG; språkliga ledtrådar lurar, algebrans kärna är antalet oberoende villkor.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (1) räcker eftersom två ekvationer 'känns som ett system'.",
+        "why_wrong": "Steg 5 visar att två ekvationer i FYRA obekanta är underbestämt. (1) säger ingenting om d (klass 2B), så a kan inte låsas."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att (2) räcker eftersom totalen 103 låter som ett 'globalt' lås.",
+        "why_wrong": "Steg 8 visar att efter d = 24 kvarstår en ekvation i tre obekanta (a, b, c). Totalen ensam separerar inte klasserna."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda påståenden ser informativa ut är D ('var för sig räcker') ett snabbsvar.",
+        "why_wrong": "Steg 5 och 8 visar att INGENDERA räcker ensamt. D är dubbelt fel."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'för många klasser, för få tal' när man räknar variabler i hast.",
+        "why_wrong": "Steg 10–12 visar att tillsammans bildar (1) och (2) ett komplett 4×4-system med unik lösning a = 25. E är fel."
+      }
+    ],
+    "technique": "Räkna-ekvationer-mot-obekanta-regeln: för n obekanta behövs n oberoende linjära ekvationer för unik lösning. Triggern i NOG: lista ALLA okända (här fyra klasstal), räkna varje sats som en ekvation, och avgör om summan av (1) + (2) faktiskt täcker antalet okända.",
+    "pitfall": "Det är vanligt att räkna 'antal påståenden' i stället för 'antal ekvationer'. Botemedlet: bryt ut varje delsats (kommaseparerad) som en egen ekvation; '2B = 24' OCH 'totalt 103' i samma påstående räknas som TVÅ separata villkor."
+  },
+  "host-2022-kvant2-NOG-026": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(1) upprepar bara förutsättningen (\\tfrac{4}{5} = 80\\%) och ger inget nytt. (2) ger glas A = 12 cl, så glas B = 12 / 0{,}80 = 15 cl. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Glas A rymmer 80 % av glas B:s rymd. Vi söker glas B:s VOLYM i absoluta mått (cl). Förutsättningen ger en relation; vi behöver ett konkret tal från någonstans.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' i NOG?",
+        "text": "Vi vill att glas B:s volym ska låsas till ETT värde. Om flera värden är förenliga med påståendet är det otillräckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sätt upp variablerna",
+        "text": "Kalla glas A:s totala rymd för A och glas B:s totala rymd för B (båda i cl). Förutsättningen: A = 0{,}80 \\cdot B, dvs A = \\tfrac{4}{5} B.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt påstående (1)",
+        "text": "'När glas A är helt fyllt innehåller det \\tfrac{4}{5} av det som ryms i glas B' säger A = \\tfrac{4}{5} B. Men \\tfrac{4}{5} = 0{,}80 — det är EXAKT samma som förutsättningen 'A rymmer 80 % av B'.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt — räcker det?",
+        "text": "Påståendet upprepar bara förutsättningen utan att tillföra ett konkret tal. B kan fortfarande vara vad som helst: B = 5 cl, B = 100 cl, alla förenliga. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkret motexempel för (1)",
+        "text": "Om B = 10 cl är A = 8 cl. Om B = 50 cl är A = 40 cl. Båda matchar (1). B är inte unikt.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Översätt påstående (2) — del 1",
+        "text": "'Glas A innehåller 6 cl och är halvfullt.' Halvfullt = 50 % av A:s rymd. Alltså är 0{,}50 \\cdot A = 6 → A = 12 cl.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Översätt påstående (2) — del 2",
+        "text": "'Glas B är fyllt till 75 %.' Det säger något om hur MYCKET som finns i B just nu, men frågan handlar om glas B:s RYMD (totala kapacitet). Med A = 12 och förutsättningen A = 0{,}80 \\cdot B kan vi räkna ut B direkt — 75 %-uppgiften behövs inte ens.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Räkna ut B från (2)",
+        "text": "Från A = 0{,}80 \\cdot B och A = 12: 12 = 0{,}80 \\cdot B, dela båda sidor med 0,80: B = 12 / 0{,}80 = 15 cl. Unikt värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Test (2) ensamt — räcker det?",
+        "text": "Ja. Steg 7 och 9 visar att (2) ensamt ger A = 12 cl och därmed B = 15 cl. '75 %-fyllt'-uppgiften är överflödig men inte motsägelsefull.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Kontroll: A = 12 cl, B = 15 cl. A/B = 12/15 = 0{,}80 = 80\\% — stämmer med förutsättningen. Glas A halvfullt = 6 cl — stämmer. Glas B 75 %-fyllt = 11,25 cl (extra info, behövs inte för svaret).",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "(1) upprepar bara förutsättningen utan att ge ett konkret tal — otillräckligt. (2) ger ett konkret tal (A = 12 cl) och bryggan via förutsättningen ger B = 15 cl — tillräckligt. Det matchar alternativ B — tillräckligt i (2) men ej i (1). Insikten i en mening: ett påstående som BARA OMFORMULERAR förutsättningen tillför ingen ny information; leta alltid efter ett ABSOLUT TAL i påståendena.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (1) räcker eftersom \\tfrac{4}{5} ser ut som en konkret andel.",
+        "why_wrong": "Steg 4 visar att \\tfrac{4}{5} = 80\\%, som redan står i frågan. (1) tillför noll ny information."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man inte ser att (1) bara upprepar förutsättningen kan det kännas som om båda påståenden behövs.",
+        "why_wrong": "Steg 9 visar att (2) ensamt ger B = 15 cl. (1) är redan känd — den behövs inte. C kräver att (1) bidrar med något nytt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda påståenden låter informativa är D ('var för sig räcker') ett snabbsvar.",
+        "why_wrong": "Steg 5 visar att (1) inte räcker ensamt. D kräver att VARDERA räcker — det gör inte (1)."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'för många procentsiffror, något måste vara fel' när problemet är tätt med andelar.",
+        "why_wrong": "Steg 9 ger ett klart svar: B = 15 cl. Informationen räcker — i (2)."
+      }
+    ],
+    "technique": "Förutsättning-upprepning-fällan: NOG-påståenden som matematiskt är ekvivalenta med frågans förutsättning tillför ingen ny information. Triggern: räkna om alla bråk till procent (\\tfrac{4}{5} = 80\\%, \\tfrac{3}{4} = 75\\%) och jämför med vad frågan redan ger.",
+    "pitfall": "Det är lätt att blanda ihop 'glas B fyllt till 75 %' (hur mycket VÄTSKA i glaset just nu) med 'glas B:s rymd' (kapaciteten). Botemedlet: stryk under VAD frågan söker — kapacitet, innehåll just nu, eller andel — innan du använder talen."
+  },
+  "host-2022-kvant2-NOG-027": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(1) ger två relationer som tillsammans med totalen 1 600 kr låser skoaffären till 1 000 kr. (2) ger bara en olikhet och räcker inte. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Åke handlar i tre affärer (bokhandel, klädaffär, skoaffär) för totalt 1 600 kr. Vi söker det UNIKA belopp Åke handlar för i SKOAFFÄREN — ett konkret tal i kronor.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' i NOG?",
+        "text": "Skoaffärens belopp måste låsas till ett enda tal. Om flera tal är förenliga med påståendena är informationen otillräcklig.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sätt upp variablerna",
+        "text": "Kalla bokhandelsbeloppet B, klädaffärsbeloppet K, skoaffärsbeloppet S (alla i kronor, alla icke-negativa). Förutsättningen: B + K + S = 1 600.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt påstående (1)",
+        "text": "'Bok = en femtedel av sko': B = \\tfrac{S}{5}. 'Kläd = dubbelt så mycket som bok': K = 2B = \\tfrac{2S}{5}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt — sätt in i totalen",
+        "text": "Sätt B och K från (1) i totalen: \\tfrac{S}{5} + \\tfrac{2S}{5} + S = 1\\,600. Detta är en ekvation i enda obekant S.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Förenkla vänster sida",
+        "text": "Slå ihop bråken: \\tfrac{S}{5} + \\tfrac{2S}{5} = \\tfrac{3S}{5}. Plus S = \\tfrac{5S}{5}: totalt \\tfrac{3S + 5S}{5} = \\tfrac{8S}{5}. Så \\tfrac{8S}{5} = 1\\,600.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut S",
+        "text": "Multiplicera båda sidor med 5: 8S = 8\\,000. Dela med 8: S = 1\\,000. Skoaffären: 1 000 kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Test (1) ensamt — räcker det?",
+        "text": "Ja. Steg 5–7 visar att (1) tillsammans med förutsättningen 'totalt 1 600' ger ett unikt S = 1 000. (1) räcker ensamt (förutsättningen räknas som given).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera (1)",
+        "text": "Med S = 1 000: B = 1\\,000/5 = 200 kr, K = 2 \\cdot 200 = 400 kr. Totalt: 200 + 400 + 1 000 = 1 600 kr. Stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Översätt påstående (2)",
+        "text": "'Det sammanlagda beloppet i bokhandeln och klädaffären är MER ÄN HÄLFTEN av vad han handlar för i skoaffären' ger en OLIKHET: B + K > \\tfrac{S}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Test (2) ensamt — räcker det?",
+        "text": "Från totalen: B + K = 1 600 − S. Olikheten blir 1\\,600 - S > \\tfrac{S}{2}. Multiplicera med 2: 3\\,200 - 2S > S \\Rightarrow 3\\,200 > 3S \\Rightarrow S < \\tfrac{3\\,200}{3} \\approx 1\\,066{,}7. S har ett intervall, inte ett unikt värde. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Konkret motexempel för (2)",
+        "text": "S = 500: B + K = 1 100 > 250 (sko/2), OK. S = 1 000: B + K = 600 > 500, OK. S = 1 050: B + K = 550 > 525, OK. Olika S-värden, alla matchar (2). Otillräckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "(1) räcker ensam (steg 7: S = 1 000). (2) ger bara en olikhet och låser inte S (steg 11–12). Det matchar alternativ A — tillräckligt i (1) men ej i (2). Insikten i en mening: LIKHETER låser värden; OLIKHETER ger intervall — i NOG räcker olikheter sällan ensamma för ett unikt tal.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att tro att (2) räcker eftersom 'mer än hälften' låter som en stark proportionsbegränsning.",
+        "why_wrong": "Steg 11 visar att (2) bara ger S < 1 066,7 — ett intervall, inte ett tal. Olikheter låser sällan unika belopp."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man inte testar (1) först kan det kännas som om båda behövs eftersom (2) ger 'kompletterande' information.",
+        "why_wrong": "Steg 7 visar att (1) ensamt redan ger S = 1 000. (2) bekräftar (1 000 < 1 066,7) men tillför inget nytt. C kräver att (1) inte räcker själv."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda påståenden ser informativa ut är D ('var för sig räcker') ett snabbsvar.",
+        "why_wrong": "Steg 11 visar att (2) inte räcker. D kräver att VARDERA räcker — (2) gör det inte."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'för få konkreta tal' när andelar dominerar problemet.",
+        "why_wrong": "Steg 7 ger ett tydligt unikt svar (S = 1 000) från (1) ensam — informationen räcker, bara inte i (2)."
+      }
+    ],
+    "technique": "Likhet-vs-olikhet-regeln i NOG: ekvationer (=) bidrar med EN dimension av låsning per ekvation; olikheter (<, >) ger intervall och bidrar bara om gränsen råkar sammanfalla med ett enskilt giltigt heltal. Triggern: när ett påstående innehåller 'mer än', 'mindre än', 'minst' — räkna med ATT det troligen ger ett intervall, inte ett tal.",
+    "pitfall": "Det är vanligt att blanda ihop 'hälften' (en olikhet) med 'halva beloppet' (en likhet). Botemedlet: läs ALLTID jämförelseorden ('mer än', 'lika med', 'minst') ordagrant och skriv ner motsvarande matematiska symbol (>, =, ≥) innan du börjar räkna."
+  },
+  "host-2022-kvant2-NOG-028": {
+    "_meta": {
+      "model": "claude-opus-4-7",
+      "generated_at": "2026-05-14",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "solution_path": "(1) Emma = 173 (medianen) men avgör inte mellan Marie och Petra. (2) Marie kan vara antingen längst eller kortast och fortfarande lämna medianen oförändrad. Tillsammans: vi vet att Emma är median, men inte vem av M/P som är längst. Svaret är E.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Emma, Marie och Petra är alla OLIKA långa, och medianlängden är 173 cm. Vi söker EN UNIK person som är längst. Möjliga svar: Emma, Marie eller Petra.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'tillräcklig' i NOG?",
+        "text": "Vi måste namnge EN och bara EN person som längst. Om flera är möjliga är informationen otillräcklig.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad är median av tre tal?",
+        "text": "Median av tre olika tal är det MELLERSTA värdet när de ordnas i storleksordning. Eftersom alla tre är olika finns det exakt en mellerstaperson. Medianen = 173 betyder att en av de tre är 173 cm, en är kortare och en är längre.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Översätt påstående (1) — del 1",
+        "text": "'Emma är 173 cm'. Eftersom medianen är 173 och alla är olika långa måste Emma vara MEDIANEN (mellerstapersonen). En av Marie/Petra är längre än 173, den andra är kortare.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Översätt påstående (1) — del 2",
+        "text": "'Mindre än 10 cm i längd mellan Emma och den som är längst.' Den längsta är antingen Marie eller Petra (eftersom Emma är median). Den längsta personens längd är i intervallet (173, 183) cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Test (1) ensamt — räcker det?",
+        "text": "(1) säger att Emma = 173 och att den längsta är någon mellan 173 och 183 cm. Men VEM av Marie/Petra som är längst är inte angivet. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konkret motexempel för (1)",
+        "text": "Scenario A: Emma 173, Marie 180, Petra 165. Längst: Marie. Scenario B: Emma 173, Marie 165, Petra 180. Längst: Petra. Båda matchar (1). Längsta personen är inte unikt bestämd.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Översätt påstående (2)",
+        "text": "'Om Marie hade varit 5 cm kortare skulle medianen ändå ha varit 173 cm.' Tolka: minska Maries längd med 5, omsortera, och se till att den nya mellersta fortfarande är 173. Det säger något om VAR Marie står i ordningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Test (2) ensamt — analysera Maries position",
+        "text": "Tre fall för Marie i den ursprungliga ordningen:\n• Marie KORTAST (Marie < median): efter −5 är Marie fortfarande kortast → medianen ändras inte (= 173 om en av de andra två = 173).\n• Marie MEDIAN (Marie = 173): efter −5 blir Marie 168, hon är inte längre median; någon annan blir median. Då måste den andra två innehålla ett värde 173 — men de är inte median ursprungligen, så det kan ha varit en annan. Här blir det mer subtilt.\n• Marie LÄNGST (Marie > median): efter −5 måste Marie fortfarande vara > 173 för att medianen ska behållas. Det kräver Marie > 178.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Test (2) ensamt — räcker det?",
+        "text": "(2) är förenligt med både 'Marie längst' (om Marie > 178) och 'Marie kortast' (vilken Marie som helst < 173). Vem som är längst (Marie eller någon annan) är inte bestämt. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Konkret motexempel för (2)",
+        "text": "Scenario X: Emma 173, Marie 180, Petra 165. Marie minus 5 = 175 > 173 (median = 173 fortfarande Emma). Marie längst. Scenario Y: Emma 175, Marie 165, Petra 173. Median = 173 (Petra). Marie minus 5 = 160 → ordning 160, 173, 175 → median fortfarande 173. Petra längst — inte Marie. Båda matchar (2).",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Test (1) + (2) tillsammans",
+        "text": "Från (1): Emma = 173 (median); längst är Marie eller Petra, mellan 173 och 183.\nFrån (2): Marie kan vara antingen längst (Marie > 178) eller kortast (Marie < 173).\nKombinera: Scenario A2: Emma 173, Marie 180 (> 178, längst), Petra 165 (kortast). Scenario B2: Emma 173, Marie 165 (kortast), Petra 180 (längst, < 183). Bägge passar (1) OCH (2).",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Varför räcker det inte tillsammans?",
+        "text": "Påståendena säger ingenting som tvingar fram VEM av Marie/Petra som är längst. Maries position kan vara längst ELLER kortast; spegelfallet för Petra är också möjligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 14,
+        "title": "Slutsats",
+        "text": "Varken (1) eller (2) ensamt räcker, och tillsammans lämnar de minst två scenarier där olika personer är längst (steg 12). Svaret är E — informationen räcker inte ens tillsammans. Insikten i en mening: 'median oförändrad efter en ändring' är förenligt med både längst-position och kortast-position; det diskriminerar inte mellan ändarna.",
+        "tier": "essential"
+      }
+    ],
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (1) räcker eftersom Emma = 173 fastnaglar henne som median och 'mindre än 10 cm'-villkoret känns specifikt.",
+        "why_wrong": "Steg 7 visar att Marie och Petra är utbytbara — vem som är 'den längsta' kan vara antingen. (1) säger inget om M vs P."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att (2) räcker eftersom 'medianen oförändrad efter −5' verkar ge stark info om Maries plats.",
+        "why_wrong": "Steg 9–11 visar att Marie kan vara längst ELLER kortast och fortfarande lämna medianen oförändrad. (2) lokaliserar inte unikt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att två villkor TILLSAMMANS låser positionen — det är ofta så i NOG.",
+        "why_wrong": "Steg 12 visar två giltiga scenarier (Marie längst, Petra längst) som BÅDA passar (1) OCH (2). Tillsammans räcker inte."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda påståenden ser informativa ut är D ('var för sig räcker') ett snabbsvar.",
+        "why_wrong": "Steg 6 och 10 visar att INGENDERA räcker ensamt. D är dubbelt fel — och stränger krav än C, som redan misslyckas."
+      }
+    ],
+    "technique": "Median-bevarings-fällan: 'om X ändras med Δ så är medianen oförändrad' säger BARA att X inte är medianen efter ändringen — inte var X står i ordningen. Det är förenligt med både 'X längst (med marginal > Δ)' och 'X kortast'. Triggern: median-villkor + perturbation → testa både ändpunkter.",
+    "pitfall": "Det är vanligt att tolka 'medianen oförändrad' som 'X måste vara mediananen' eller 'X måste vara ändpunkt'. Botemedlet: rita upp de tre lägena (kortast / median / längst) och testa konkret om perturbationen behåller mellerstapersonen — gör det för minst två konkreta scenarier."
+  }
+}
