@@ -1,0 +1,380 @@
+{
+  "var-2013-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du minns regeln som 'räkna från vänster till höger' rakt av, kan slumpmässig räkning av termerna ge ett litet negativt tal som −0,3.",
+        "why_wrong": "Steg 2 låser fast: · och / går FÖRE + och −, oavsett ordning i texten. Vänster-till-höger gäller bara mellan operationer av samma prioritet."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Vänster-till-höger-läsning ger (5+4)·3 = 27, sedan 27 − 20 = 7, sedan 7/10 = 0,7. Det ser ut som ett 'riktigt' decimaltal och blir lätt slutsvaret om man hoppar över prioriteringen.",
+        "why_wrong": "Steg 2 säger att · och / ska göras innan + och −. Att räkna 5+4 först bryter mot prioriteringsordningen — steg 4 och 5 visar den rätta vägen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att räkna ALL multiplikation och division först men sedan blanda ihop tecknen och addera istället för att subtrahera den sista termen: 5 + 12 + 2 + 6 = 25.",
+        "why_wrong": "Sista termen är 20/10 = 2 som ska SUBTRAHERAS, inte adderas. Steg 8 visar 17 − 2 = 15, inte ett tjugotal."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Klassisk fälla: läsa vänster till höger som man läser text. Botemedlet — innan du börjar räkna, markera först alla · och / i uttrycket (mentalt eller med penna) och lös dem som 'små öar'. Sedan blir resten triviala plus och minus.",
+    "solution_path": "Multiplikation och division före addition och subtraktion: 4·3 = 12 och 20/10 = 2 räknas först, sedan blir 5 + 12 − 2 = 15. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Det här är ett rent räkneproblem: ett uttryck med +, −, · och / blandat. Vi ska räkna ut det korrekta värdet. Inga variabler, inga okända — bara prioriteringsreglerna.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Räkneoperationer har en bestämd ordning: först allt inom parenteser, sedan multiplikation och division (· och /) från vänster till höger, sist addition och subtraktion (+ och −) från vänster till höger. Här finns inga parenteser, så vi börjar direkt med · och /.",
+        "tier": "detail",
+        "title": "Vad säger prioriteringsreglerna?"
+      },
+      {
+        "n": 3,
+        "text": "I uttrycket 5 + 4·3 − 20/10 finns en multiplikation (4·3) och en division (20/10). De ska räknas FÖRST, innan vi rör vid plus- eller minustecknen.",
+        "tier": "essential",
+        "title": "Identifiera multiplikationen och divisionen"
+      },
+      {
+        "n": 4,
+        "text": "4·3 betyder 4 + 4 + 4 = 12. Multiplikation är upprepad addition — gångra ihop dem och du får 12.",
+        "tier": "essential",
+        "title": "Räkna 4·3"
+      },
+      {
+        "n": 5,
+        "text": "20/10 betyder '20 delat med 10', alltså hur många gånger 10 ryms i 20. Svaret är 2.",
+        "tier": "detail",
+        "title": "Räkna 20/10"
+      },
+      {
+        "n": 6,
+        "text": "Byt ut 4·3 mot 12 och 20/10 mot 2. Då blir uttrycket: 5 + 12 − 2. Nu finns bara addition och subtraktion kvar — de räknas från vänster till höger.",
+        "tier": "essential",
+        "title": "Ersätt i uttrycket"
+      },
+      {
+        "n": 7,
+        "text": "5 + 12 = 17. Vi tar termerna i tur och ordning från vänster.",
+        "tier": "detail",
+        "title": "Räkna 5 + 12"
+      },
+      {
+        "n": 8,
+        "text": "17 − 2 = 15. Och det är värdet på hela uttrycket.",
+        "tier": "detail",
+        "title": "Räkna 17 − 2"
+      },
+      {
+        "n": 9,
+        "text": "Snabbkoll: 4·3 = 12 (rimligt), 20/10 = 2 (rimligt), 5 + 12 − 2 = 15. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera mentalt"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är C — 15. Insikten i en mening: när uttrycket blandar +/− och ·/, gör ALLTID · och / först, även om de står långt bak i uttrycket.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Räknepriotitet (PEMDAS / 'parenteser, exponenter, multiplikation/division, addition/subtraktion'): när uttrycket är blandat — gå igenom det i två svep. Första svepet: räkna ut varje · och / där de står. Andra svepet: lös det förenklade uttrycket från vänster till höger. Triggern: 'flera räknesätt utan parenteser' → två svep."
+  },
+  "var-2013-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att läsa av talparet (3, 2) ur ekvationen men glömma tecknen — om man bara letar efter 'två tal med produkt 6' landar man på 3 och 2 utan negativa.",
+        "why_wrong": "Steg 6 kräver att produkten är −6 (med minustecken), inte +6. 3·2 = 6 ger fel konstanttall; vi behöver ett av talen negativt för att produkten ska bli −6."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 'jag behöver ett positivt och ett negativt tal' men gissar fel vilket som är vilket: x = 3 och x = −2.",
+        "why_wrong": "Det talparet ger summan 3 + (−2) = 1 (rätt summa!) men i FAKTORISERINGEN blir det (x − 3)(x + 2), vilket utvecklas till x² − x − 6 — fel mittentecken. Tecknen i faktorerna är ALLTID motsatta till tecknen på rötterna; rot 3 → faktor (x−3), rot −2 → faktor (x+2)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du minns regeln som 'båda lösningarna har samma tecken som konstanttermen' (felaktigt extraherad ur fall där c > 0), landar du på två negativa tal.",
+        "why_wrong": "Steg 6 visar att produkten ska vara −6, alltså MÅSTE de två talen ha olika tecken. Två negativa tal multiplicerade ger en positiv produkt — bryter mot c = −6."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "En kurva skär x-axeln där y = 0, alltså där x^{2} + x - 6 = 0. Faktorisera till (x+3)(x-2) = 0 → x = −3 eller x = 2. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi har en parabel (kurvan y = x² + x − 6) och vill veta var den skär x-axeln. Vi behöver hitta de x-värden där kurvan passerar y = 0.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "X-axeln är linjen där y = 0 (den horisontella mittlinjen i koordinatsystemet). En kurva 'skär' x-axeln på de punkter där dess y-värde råkar bli noll. Att hitta de punkterna är samma sak som att lösa ekvationen y = 0 för den givna formeln.",
+        "tier": "detail",
+        "title": "Vad betyder 'skär x-axeln'?"
+      },
+      {
+        "n": 3,
+        "text": "Vi ersätter y med 0 i formeln: 0 = x^{2} + x - 6, eller lika gärna x^{2} + x - 6 = 0. Det är en andragradsekvation.",
+        "tier": "essential",
+        "title": "Sätt y = 0"
+      },
+      {
+        "n": 4,
+        "text": "x^{2} betyder x gångrat med sig självt: x \\cdot x. Om x = 4 är x^{2} = 16. Om x = −3 är x^{2} = 9 (negativ · negativ = positiv).",
+        "tier": "detail",
+        "title": "Vad är x²?"
+      },
+      {
+        "n": 5,
+        "text": "För en andragradsekvation av formen x² + bx + c = 0 söker vi två tal vars SUMMA är b och vars PRODUKT är c. Här är b = 1 och c = −6: vi söker två tal som summan 1 och produkten −6.",
+        "tier": "essential",
+        "title": "Strategi: faktorisera"
+      },
+      {
+        "n": 6,
+        "text": "Talparet 3 och −2 fungerar: 3 + (−2) = 1 (rätt summa) och 3·(−2) = −6 (rätt produkt). Det är de två talen vi behöver.",
+        "tier": "detail",
+        "title": "Hitta talen"
+      },
+      {
+        "n": 7,
+        "text": "Med talen 3 och −2 kan vi faktorisera: x^{2} + x - 6 = (x + 3)(x - 2). Kontrollera genom att multiplicera tillbaka: (x+3)(x−2) = x² − 2x + 3x − 6 = x² + x − 6 ✓.",
+        "tier": "essential",
+        "title": "Skriv om till produktform"
+      },
+      {
+        "n": 8,
+        "text": "En produkt är 0 BARA om minst en faktor är 0. Så (x+3)(x−2) = 0 betyder att antingen x+3 = 0 eller x−2 = 0 — inget mellanting.",
+        "tier": "detail",
+        "title": "Nollproduktsregeln"
+      },
+      {
+        "n": 9,
+        "text": "x + 3 = 0 → x = −3. Och x − 2 = 0 → x = 2. Två lösningar, precis vad uppgiften lovade.",
+        "tier": "essential",
+        "title": "Lös varje faktor"
+      },
+      {
+        "n": 10,
+        "text": "Sätt in x = −3: (−3)² + (−3) − 6 = 9 − 3 − 6 = 0 ✓. Sätt in x = 2: 2² + 2 − 6 = 4 + 2 − 6 = 0 ✓. Båda x-värden ger y = 0, så de ligger på x-axeln.",
+        "tier": "detail",
+        "title": "Verifiera i originalformeln"
+      },
+      {
+        "n": 11,
+        "text": "Skärningspunkterna är x = −3 och x = 2. Svaret är C. Insikten i en mening: 'skär x-axeln' = 'sätt y = 0 och lös' — och faktoriseringen av x² + x − 6 ger (x+3)(x−2) via talparet 3, −2.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Faktoriseringsstrategi för x² + bx + c = 0: leta två tal vars summa är b och vars produkt är c. Skriv om till (x + p)(x + q) = 0 och använd nollproduktsregeln. Triggern: 'andragradsekvation där b och c är små heltal' → faktorisering är snabbare än kvadratkomplettering eller pq-formel."
+  },
+  "var-2013-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att tro att 'gå bakåt i tiden från då-åldern' betyder att x ska subtraheras — alltså 28 − 12 − x = 16 − x.",
+        "why_wrong": "Steg 3 visar att 28 är åldern för x år sedan, INTE idag. För att gå till en ANNAN tidpunkt måste vi gå via nu-åldern. x ska adderas in i ankarpunkten, inte subtraheras från slutsvaret."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Vänster-till-höger-läsning av siffrorna 28 och 12 ger 28 + 12 = 40, och om man bara klistrar på +x landar man på (40 + x).",
+        "why_wrong": "28 + 12 hade varit hennes ålder OM 12 år (om 28 var åldern idag). Men 28 är åldern för x år sedan, inte idag — och vi vill bakåt 12 år, inte framåt. Steg 5 visar att vi ska subtrahera 12, inte addera."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta '28 + 12 = 40, så svaret innehåller 40 — och x ska bort'.",
+        "why_wrong": "Resultatet får inte sluta i ett fixt tal (40 − x). Lottas ålder för 12 år sedan beror på vad x är, och hon BLIR ÄLDRE när x växer — koefficienten på x ska vara +1, inte −1."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Lottas ålder idag är 28 + x. För 12 år sedan var hon (28 + x) − 12 = 16 + x år. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "En åldersfråga med en variabel. Givet: för x år sedan var Lotta 28. Sökt: hennes ålder för 12 år sedan. Vi behöver gå via Lottas nuvarande ålder för att kunna räkna baklänges till en annan tidpunkt.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Det är ett uttryck för en tidpunkt som ligger x år bakåt i tiden från idag. Om vi inte vet vad x är, så vet vi heller inte exakt vilket år det var — men vi vet RELATIONEN mellan då-åldern och nu-åldern.",
+        "tier": "detail",
+        "title": "Vad betyder 'för x år sedan'?"
+      },
+      {
+        "n": 3,
+        "text": "Om Lotta var 28 år för x år sedan, så har det gått x år sedan dess. Hon har åldrats med x år. Hennes ålder idag = 28 + x.",
+        "tier": "essential",
+        "title": "Räkna ut Lottas ålder idag"
+      },
+      {
+        "n": 4,
+        "text": "Att gå framåt i tiden betyder att man blir äldre. Om någon var Y år tillbaka i tiden och det har gått T år sedan dess, är hon Y + T år idag. Ren addition.",
+        "tier": "detail",
+        "title": "Varför adderar man tiden som gått?"
+      },
+      {
+        "n": 5,
+        "text": "Från idag (ålder 28 + x) går vi 12 år bakåt. Att gå bakåt i tiden betyder att man var yngre. Subtrahera 12: (28 + x) − 12.",
+        "tier": "essential",
+        "title": "Räkna ut Lottas ålder för 12 år sedan"
+      },
+      {
+        "n": 6,
+        "text": "(28 + x) − 12 = 28 + x − 12 = 16 + x. Vi tar 28 − 12 = 16 och behåller +x.",
+        "tier": "detail",
+        "title": "Förenkla uttrycket"
+      },
+      {
+        "n": 7,
+        "text": "Säg x = 5. Då var hon 28 för 5 år sedan, alltså är hon 28 + 5 = 33 idag. För 12 år sedan var hon 33 − 12 = 21. Och 16 + x = 16 + 5 = 21 ✓.",
+        "tier": "detail",
+        "title": "Kontrollera med ett konkret exempel"
+      },
+      {
+        "n": 8,
+        "text": "Säg x = 10. Då var hon 28 för 10 år sedan, alltså är hon 28 + 10 = 38 idag. För 12 år sedan var hon 38 − 12 = 26. Och 16 + x = 16 + 10 = 26 ✓.",
+        "tier": "detail",
+        "title": "Kontrollera med ett annat exempel"
+      },
+      {
+        "n": 9,
+        "text": "Lottas ålder för 12 år sedan beror på vad x är, men i alla fall är hon 16 + x år gammal. Uttrycket fångar både absolutdelen (16) och variabeldelen (x) på rätt sätt.",
+        "tier": "essential",
+        "title": "Tolka resultatet"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är A — (16 + x) år. Insikten i en mening: vid åldersfrågor med variabler, gå alltid via 'ålder idag' som ankarpunkt — sedan blir alla andra tidpunkter +/− från det.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Åldersstrategi: räkna alltid om till 'ålder idag' först, oavsett vilken tidpunkt frågan handlar om. Sedan adderar du (för framtid) eller subtraherar du (för dåtid) skillnaden i år. Triggern: 'för x år sedan / om y år' i en åldersfråga → gör 'nu-åldern' till ankaret."
+  },
+  "var-2013-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du glömmer att vända tecknet på −2x när minusparentesen distribueras, blir x-termerna -2x - 2x = -4x istället för 0. Resultatet ser ut som 3x^{2} - 4x.",
+        "why_wrong": "Steg 8 påminner: minustecknet framför parentesen vänder TECKNET på varje term inuti. −(−2x) = +2x, inte −2x. När båda x-termerna har rätt tecken tar de ut varandra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är lätt att 'addera' 3x²:orna istället för att subtrahera, om man bara klumpar ihop alla x^{2}-termer: 6x^{2} + 3x^{2} = 9x^{2}.",
+        "why_wrong": "Det är en subtraktion mellan parenteserna, inte addition. Steg 9 visar att andra parentesens 3x^{2} blir -3x^{2} efter minusdistribuering — 6x^{2} - 3x^{2} = 3x^{2}."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att kombinera båda fel: addera istället för subtrahera de kvadratiska termerna OCH glömma att vända x-termens tecken — det ger 9x^{2} - 4x.",
+        "why_wrong": "Två fel på samma gång. Steg 8 och steg 9 visar att båda räkneoperationer ska vara subtraktion (för minustecknet framför parentesen) — inte addition."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att vända tecknet på den FÖRSTA termen i andra parentesen men glömma den ANDRA. Botemedlet: skriv ut alla led explicit (6x² − 2x − 3x² + 2x) innan du börjar samla — då syns alla fyra tecken tydligt och inget glöms.",
+    "solution_path": "Multiplicera ut båda parenteserna: (3x − 1)·2x = 6x^{2} - 2x och x(3x − 2) = 3x^{2} - 2x. Skillnaden är 6x^{2} - 2x - 3x^{2} + 2x = 3x^{2}. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi har ett uttryck med två parenteser som ska multipliceras ut och dras från varandra. Målet är att förenkla till ett enkelt polynom — inget värde att lösa för, bara algebraisk omskrivning.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "När en variabel står direkt framför eller bakom en parentes är multiplikation underförstådd. 2x · (3x − 1) betyder '2x gångrat med hela parentesens innehåll'. Multiplikationstecknet utelämnas men finns där.",
+        "tier": "detail",
+        "title": "Vad betyder 'x bredvid en parentes'?"
+      },
+      {
+        "n": 3,
+        "text": "Den distributiva lagen säger: a(b - c) = a \\cdot b - a \\cdot c — gångra a separat med varje term inuti parentesen. Vi kommer använda den två gånger i denna uppgift.",
+        "tier": "detail",
+        "title": "Den distributiva lagen"
+      },
+      {
+        "n": 4,
+        "text": "Gångra 2x med varje term inuti: (3x − 1)·2x = 3x·2x + (−1)·2x = 6x^{2} - 2x. Tänk: 3x · 2x = 3·2·x·x = 6x^{2}, och −1 · 2x = −2x.",
+        "tier": "essential",
+        "title": "Multiplicera ut (3x − 1)·2x"
+      },
+      {
+        "n": 5,
+        "text": "x · x = x^{2} per definition. När du gångrar samma variabel med sig själv ökar exponenten med 1.",
+        "tier": "detail",
+        "title": "Vad är x · x?"
+      },
+      {
+        "n": 6,
+        "text": "Gångra x med varje term inuti: x · 3x + x · (−2) = 3x^{2} - 2x. Tänk: x · 3x = 3·x·x = 3x^{2}, och x · (−2) = −2x.",
+        "tier": "essential",
+        "title": "Multiplicera ut x(3x − 2)"
+      },
+      {
+        "n": 7,
+        "text": "Vi har nu (3x − 1)·2x − x(3x − 2) = (6x^{2} - 2x) − (3x^{2} - 2x). Notera minustecknet FRAMFÖR andra parentesen — det vänder tecknet på allt inuti.",
+        "tier": "essential",
+        "title": "Skriv hela uttrycket"
+      },
+      {
+        "n": 8,
+        "text": "−(3x^{2} - 2x) = -3x^{2} + 2x. Minustecknet 'gångras in' i båda termerna: negativ av en negativ blir positiv, så −(−2x) = +2x.",
+        "tier": "detail",
+        "title": "Distribuera minustecknet"
+      },
+      {
+        "n": 9,
+        "text": "Uttrycket är nu 6x^{2} - 2x - 3x^{2} + 2x. Termer med x^{2} hör ihop: 6x^{2} - 3x^{2} = 3x^{2}. Termer med x hör ihop: −2x + 2x = 0.",
+        "tier": "essential",
+        "title": "Samla termer av samma sort"
+      },
+      {
+        "n": 10,
+        "text": "Termer med samma variabel-del kan slås ihop genom att addera koefficienterna (talen framför). 6x^{2} och 3x^{2} är liknande; 2x och x^{2} är INTE liknande (olika exponent).",
+        "tier": "detail",
+        "title": "Vad betyder 'liknande termer'?"
+      },
+      {
+        "n": 11,
+        "text": "Resultatet är 3x^{2} + 0 = 3x^{2}. Notera att x-termerna tar ut varandra helt — de var där bara för att lura oss.",
+        "tier": "essential",
+        "title": "Sista förenkling"
+      },
+      {
+        "n": 12,
+        "text": "Svaret är A — 3x^{2}. Insikten i en mening: när du subtraherar en parentes, vänd ALLA tecken inuti den först, sedan samla liknande termer i ordning.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Subtraktionsstrategin för parenteser: när du har 'uttryck A − uttryck B' med B i parentes — MULTIPLICERA UT båda först, vänd tecknet på varje term i B, och samla sedan liknande termer i ordning. Triggern: 'minustecken framför parentes med flera termer' → tecken-vändning är obligatorisk."
+  }
+}
