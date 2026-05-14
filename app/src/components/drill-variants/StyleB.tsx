@@ -14,6 +14,7 @@
 
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
+import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { EditionStrip } from '@/components/EditionStrip'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
@@ -128,6 +129,47 @@ export function StyleB({
            *  with mono small-caps eyebrows (same as the baseline
            *  DrillQuestion uses). Other sections render the raw
            *  prompt at display scale. */}
+          {/* LÄS / ELF passage — workbook reading panel. Bordered
+           *  background tile gives the passage its own zone on the
+           *  left page, matching the workbook's "facing-pages spread"
+           *  metaphor. Mono small-caps eyebrow names it as a passage
+           *  the way a workbook would: PASSAGE / LÄSTEXT. */}
+          {question.context && (
+            <div
+              data-testid="drill-context"
+              style={{
+                marginBottom: 24,
+                border: '1px solid var(--hairline)',
+                background: 'var(--panel-2)',
+              }}
+            >
+              <div
+                style={{
+                  padding: '6px 12px',
+                  borderBottom: '1px solid var(--hairline)',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 10,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'var(--muted)',
+                }}
+              >
+                {question.section === 'ELF' ? 'Passage' : 'Lästext'}
+              </div>
+              <div
+                style={{
+                  padding: '12px 14px',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(14px, 0.8rem + 0.3vw, 16px)',
+                  lineHeight: 1.55,
+                  color: 'var(--ink)',
+                  whiteSpace: 'pre-wrap',
+                }}
+              >
+                {question.context}
+              </div>
+            </div>
+          )}
           <div
             style={{
               fontFamily: 'var(--font-display)',
@@ -145,6 +187,14 @@ export function StyleB({
               <MathText>{question.prompt ?? ''}</MathText>
             )}
           </div>
+
+          {/* Inline vector figure — XYZ/KVA/NOG diagrams. Sits between
+           *  prompt and options. */}
+          {question.figure && (
+            <div style={{ marginBottom: 24 }}>
+              <QuestionFigure figure={question.figure} />
+            </div>
+          )}
 
           {/* Options as checkbox rows. Single button per row makes the
            *  whole row clickable, not just the tiny checkbox. The

@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
+import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { EditionStrip } from '@/components/EditionStrip'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
@@ -127,7 +128,14 @@ export function StyleC({
           }}
         >
           {/* Question pane */}
-          <div style={{ padding: '14px 18px', background: 'var(--bg)' }}>
+          <div
+            style={{
+              padding: '14px 18px',
+              background: 'var(--bg)',
+              overflowY: 'auto',
+              minHeight: 0,
+            }}
+          >
             <div
               style={{
                 fontFamily: 'var(--font-mono)',
@@ -141,6 +149,46 @@ export function StyleC({
             >
               [{question.section}-{String(question.number).padStart(3, '0')}] q1/1
             </div>
+            {/* LÄS / ELF passage — terminal-panel framed reading block.
+             *  Mono "PASSAGE" header in caps matches cockpit's command-
+             *  surface register. Body is set in display serif so a 3000-
+             *  char Swedish passage doesn't read as code. */}
+            {question.context && (
+              <div
+                data-testid="drill-context"
+                style={{
+                  marginBottom: 12,
+                  border: '1px solid var(--hairline)',
+                  background: 'var(--panel-2)',
+                }}
+              >
+                <div
+                  style={{
+                    padding: '6px 12px',
+                    borderBottom: '1px solid var(--hairline)',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 10,
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    color: 'var(--muted)',
+                  }}
+                >
+                  {question.section === 'ELF' ? 'PASSAGE' : 'LÄSTEXT'}
+                </div>
+                <div
+                  style={{
+                    padding: '10px 12px',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 13,
+                    lineHeight: 1.55,
+                    color: 'var(--ink)',
+                    whiteSpace: 'pre-wrap',
+                  }}
+                >
+                  {question.context}
+                </div>
+              </div>
+            )}
             <div
               style={{
                 fontFamily: 'var(--font-mono)',
@@ -158,6 +206,12 @@ export function StyleC({
                 <MathText>{question.prompt ?? ''}</MathText>
               )}
             </div>
+            {/* Inline figure — XYZ/KVA/NOG diagrams. */}
+            {question.figure && (
+              <div style={{ marginTop: 14 }}>
+                <QuestionFigure figure={question.figure} />
+              </div>
+            )}
           </div>
 
           {/* Options pane */}

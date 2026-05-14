@@ -11,6 +11,7 @@
 
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
+import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { EditionStrip } from '@/components/EditionStrip'
 import { MathText } from '@/components/MathText'
 import type { VariantData } from './DrillVariantShell'
@@ -103,6 +104,27 @@ export function StyleA({
           }}
           className="hpc-scrollbar-ghost"
         >
+          {/* LÄS / ELF passage — rendered as a quiet, indented lead-in
+           *  block. Editorial register: no panel chrome, just a hairline
+           *  rule on the left like marginalia quoting from a longer
+           *  source. Whitespace preserved so paragraph breaks survive. */}
+          {question.context && (
+            <div
+              data-testid="drill-context"
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(15px, 0.875rem + 0.3vw, 17px)',
+                lineHeight: 1.65,
+                color: 'var(--ink-2)',
+                marginBottom: 24,
+                paddingLeft: 14,
+                borderLeft: '1px solid var(--hairline)',
+                whiteSpace: 'pre-wrap',
+              }}
+            >
+              {question.context}
+            </div>
+          )}
           <div
             style={{
               fontFamily: 'var(--font-display)',
@@ -120,6 +142,11 @@ export function StyleA({
               <MathText>{question.prompt ?? ''}</MathText>
             )}
           </div>
+          {/* Inline vector figure — XYZ/KVA/NOG questions that come with
+           *  a parser-extracted SVG diagram. Sits between prompt and
+           *  options, matching DrillQuestion's order. QuestionFigure
+           *  handles its own width-fit and aspect-ratio reservation. */}
+          {question.figure && <QuestionFigure figure={question.figure} />}
           {question.options && (
             <ol
               style={{
