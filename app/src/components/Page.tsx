@@ -36,6 +36,7 @@
 
 import type { CSSProperties, ReactNode } from 'react'
 
+import { EditionStrip } from '@/components/EditionStrip'
 import { useViewport } from '@/hooks/useViewport'
 
 type FolioLite = {
@@ -92,7 +93,7 @@ export function Page({ runningHead, folio, status, children, style }: Props) {
         ...style,
       }}
     >
-      <RunningHeadBand runningHead={headText} folio={folio} isPhone={false} />
+      <RunningHeadBand runningHead={headText} isPhone={false} />
       <div
         data-testid="page-content"
         style={{
@@ -104,29 +105,43 @@ export function Page({ runningHead, folio, status, children, style }: Props) {
       >
         {children}
       </div>
-      <StatusLine status={status} isPhone={false} />
+      <StatusLine status={status} folio={folio} isPhone={false} />
     </div>
   )
 }
 
 // ── Running head + folio ──────────────────────────────────────────
 
-function RunningHeadBand({
-  runningHead,
-  folio,
-  isPhone,
-}: {
-  runningHead: string
-  folio?: FolioLite
-  isPhone: boolean
-}) {
+function RunningHeadBand({ runningHead, isPhone }: { runningHead: string; isPhone: boolean }) {
   return (
     <header
       style={{
+        // Sticky-top mirror of the sticky status line at the bottom.
+        // Together they form the editorial "chrome envelope":
+        //   ┌───── running head (frosted) ─────┐
+        //   │     content scrolls in middle    │
+        //   └───── status line (frosted) ──────┘
+        // Without this, scrolling lifts the question column UP from
+        // its natural position (running-head + grid padding ≈ 96px)
+        // toward the sticky top (32px) — visible as "the left column
+        // moves a little". Pinning the running head removes that
+        // gap; the question now lands exactly under the chrome and
+        // stays there.
+        position: isPhone ? 'static' : 'sticky',
+        top: 0,
+        zIndex: 10,
         padding: isPhone
           ? '12px var(--pad-lg) 10px'
           : 'clamp(20px, 2vh, 32px) clamp(28px, 4vw, 64px) 0',
         borderBottom: '1px solid var(--hairline)',
+        // Frosted glass — pedagogy text blurs through as it scrolls
+        // underneath, matching the bottom status line's treatment.
+        background: isPhone ? 'transparent' : 'color-mix(in oklch, var(--bg) 88%, transparent)',
+        backdropFilter: isPhone ? undefined : 'saturate(140%) blur(10px)',
+        WebkitBackdropFilter: isPhone ? undefined : 'saturate(140%) blur(10px)',
+        // Downward shadow — mirrors the status line's upward shadow.
+        // Articulates the chrome as a layer above the scrolling body.
+        boxShadow: isPhone ? undefined : '0 8px 24px -16px rgba(0, 0, 0, 0.12)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'baseline',
@@ -150,58 +165,59 @@ function RunningHeadBand({
       >
         {runningHead}
       </span>
-      {folio && <Folio current={folio.current} total={folio.total} />}
+      {/* Phase A.6V Edition Strip — picker for mode + palette + edition.
+       *  Replaces the old Folio in the running head; folio moves down to
+       *  the status line where page-count metadata fits the vim-mode
+       *  bar register. paddingBottom: 14 to align with the wordmark's
+       *  matching paddingBottom so the band's hairline reads cleanly
+       *  below both. Variants with tighter chrome render the strip
+       *  with paddingBottom: 0 (the default). See docs/edition-strip.md. */}
+      {!isPhone && <EditionStrip paddingBottom={14} />}
     </header>
   )
 }
 
-function Folio({ current, total }: FolioLite) {
-  // Editorial folio: "pp. 12 / 80" set in mono, with a 1px hairline
-  // beneath that's exactly as wide as the digits. This is the
-  // EDITION signature element per the design strategist's pitch.
-  const totalWidth = `${String(total).length * 0.6 + 0.4}em`
-  return (
-    <span
-      data-testid="folio"
-      style={{
-        display: 'inline-flex',
-        flexDirection: 'column',
-        alignItems: 'flex-end',
-        gap: 4,
-        fontFamily: 'var(--font-mono)',
-        fontSize: 11,
-        letterSpacing: 'var(--font-mono-track)',
-        color: 'var(--muted)',
-        fontVariantNumeric: 'tabular-nums',
-        paddingBottom: 14,
-      }}
-    >
-      <span>
-        pp. {current} / {total}
-      </span>
-      <span
-        aria-hidden
-        style={{
-          width: totalWidth,
-          height: 1,
-          background: 'var(--muted)',
-          opacity: 0.6,
-        }}
-      />
-    </span>
-  )
-}
+// Phase A.6V — the editorial Folio component used to live here and
+// render in the top-right of the running head with a hairline-under-
+// digits signature. It moved INTO the StatusLine below as a compact
+// inline `pp. X / Y` so the running head could host the EditionStrip
+// picker. The under-rule signature now belongs to the picker's
+// active-word indicator (mirrors the same trick on a different
+// typographic surface).
 
 // ── Status line ───────────────────────────────────────────────────
 
-function StatusLine({ status, isPhone }: { status: StatusLineProps; isPhone: boolean }) {
+function StatusLine({
+  status,
+  folio,
+  isPhone,
+}: {
+  status: StatusLineProps
+  folio?: FolioLite
+  isPhone: boolean
+}) {
   return (
     <footer
       data-testid="status-line"
       style={{
+        // Sticky-bottom: the vim-mode bar is navigation context;
+        // losing it on scroll loses the affordance the bar exists for.
+        // Sticky (not fixed) so it stays within the canvas's max-width
+        // bounds instead of going full-bleed; backdrop blur + 88% bg
+        // tint creates the editorial "content slides under frosted
+        // bar" effect rather than a hard-edged opaque footer.
+        position: 'sticky',
+        bottom: 0,
+        zIndex: 10,
         padding: isPhone ? '8px var(--pad-lg)' : '10px clamp(28px, 4vw, 64px)',
         borderTop: '1px solid var(--hairline)',
-        background: 'color-mix(in oklch, var(--bg) 96%, var(--ink) 4%)',
+        background: 'color-mix(in oklch, var(--bg) 88%, transparent)',
+        backdropFilter: 'saturate(140%) blur(10px)',
+        WebkitBackdropFilter: 'saturate(140%) blur(10px)',
+        // Faint upward shadow articulates the bar as a layer above
+        // content sliding underneath. Editorial detail — barely
+        // perceptible at rest, comes alive on motion.
+        boxShadow: '0 -8px 24px -16px rgba(0, 0, 0, 0.12)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -237,6 +253,17 @@ function StatusLine({ status, isPhone }: { status: StatusLineProps; isPhone: boo
           flexShrink: 0,
         }}
       >
+        {/* Folio relocated here from the running head (Phase A.6V).
+         *  Page-count metadata fits the vim-mode register better than
+         *  the chrome up top, and the running head is now the picker's
+         *  domain. Compact inline form — no under-rule — since the
+         *  status line already establishes a single typographic
+         *  baseline for everything in it. */}
+        {folio && !isPhone && (
+          <span data-testid="folio" style={{ color: 'var(--muted)' }}>
+            pp. {folio.current} / {folio.total}
+          </span>
+        )}
         {status.hints?.map((hint) => (
           <span key={hint} style={{ color: 'var(--muted)' }}>
             {hint}

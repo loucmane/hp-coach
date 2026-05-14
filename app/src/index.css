@@ -105,12 +105,19 @@
   /* ── Phase A.5 wide-canvas widths ─────────────────────────────────────
    * Reader (768–1279) and Studio (≥1280) each get a content canvas
    * that scales with the viewport instead of the old 640px artboard.
-   * Studio's max is clamped against the viewport so ultra-wide monitors
-   * cap at 1440px (beyond that we'd lose the readable-line-length
-   * advantage of column composition).
+   *
+   * Phase A.6V update: studio cap raised from 1440px → 1800px. The
+   * 1440 cap was chosen for editorial book-style line length, but on
+   * 2560px screens it produced ~560px empty gutters each side — too
+   * stark to read as intentional. 1800px is the "wide editorial"
+   * standard (Stripe Press, Linear docs, GitHub repos) — at 2560px
+   * the gutters drop to ~380px each, breathing room without
+   * abandonment. Inner column widths under StudyDesk's 1.15:1.25
+   * grid stay within readable-line-length on the pedagogy panel
+   * (~780-820px = 80 chars at 16px sans).
    */
   --canvas-max-w-reader: 960px;
-  --canvas-max-w: min(1440px, calc(100vw - 96px));
+  --canvas-max-w: min(1800px, calc(100vw - 96px));
   --gutter-lg: clamp(24px, 3vw, 96px); /* canvas-to-viewport-edge */
 
   /* shadcn compat aliases (unused for our screens but safe to keep so shadcn defaults don't error) */
@@ -228,6 +235,16 @@ body::before {
 }
 ::-webkit-scrollbar-track {
   background: transparent;
+}
+
+/* Used on sticky-pinned columns (StudyDesk's question column) whose
+ * internal overflow:auto exists only as a safety net for very tall
+ * content — showing track chrome on a column that's effectively a
+ * panel competes with the page-body scrollbar and reads as visual
+ * noise. Pairs with inline `scrollbar-width: none` for Firefox. */
+.hpc-scrollbar-ghost::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 @layer base {

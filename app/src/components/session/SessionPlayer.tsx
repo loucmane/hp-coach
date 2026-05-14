@@ -46,15 +46,39 @@ import {
 import { DrillProgress } from '@/components/drill/DrillProgress'
 import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { DrillResult } from '@/components/drill/DrillResult'
+import { DispatchedVariant } from '@/components/drill-variants/DispatchedVariant'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
-import { StudyDesk } from '@/components/StudyDesk'
 import type { AnswerLetter, Question } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
 import { TAB_ROUTE } from '@/lib/nav'
 
 type Phase = 'idle' | 'answering' | 'graded' | 'done'
+
+/** Build the props payload that DispatchedVariant expects. Centralised
+ *  so the legacy /drill-style-{a,b,c} routes and SessionPlayer share
+ *  the same dispatch logic. The `onAdvance` callback maps to the
+ *  variant's `onReset` slot — which each variant renders as the
+ *  "Nästa fråga →" / "✓ Klar" CTA. */
+function variantPropsFor(args: {
+  question: Question
+  picked: AnswerLetter | null
+  graded: boolean
+  correct: boolean
+  onPick: (letter: AnswerLetter) => void
+  onAdvance: () => void
+}) {
+  return {
+    question: args.question,
+    explanation: null /* loaded inside the variant via the existing hook */,
+    picked: args.picked,
+    graded: args.graded,
+    correct: args.correct,
+    onPick: args.onPick,
+    onReset: args.onAdvance,
+  }
+}
 
 export type SessionPlayerProps = {
   /** Kind to pass to POST /api/sessions. */
@@ -99,6 +123,9 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // hook-rule isn't violated when the phase transitions through
   // different render paths.
   const viewport = useViewport()
+  // Phase A.6V — DispatchedVariant reads drillLayout from the store
+  // directly when it renders the picked variant, so SessionPlayer no
+  // longer needs to thread it through. See docs/edition-strip.md.
 
   const [phase, setPhase] = useState<Phase>('idle')
   const [plan, setPlan] = useState<Question[]>([])
@@ -334,17 +361,46 @@ export function SessionPlayer(props: SessionPlayerProps) {
 
   const q = plan[index]
   const picked = picks[index]
-  // Phase A.5 — reader/studio render the Study Desk (question +
-  // pedagogy side-by-side). Phone keeps the single-column DrillQuestion
-  // (the prototype's canonical layout). `viewport` is hoisted above
-  // any early returns at the top of the component; we just consume
-  // it here.
+  // Phone keeps the single-column DrillQuestion (mobile-tested
+  // prototype baseline). Reader/studio dispatch to the
+  // user-selected drill layout via <DispatchedVariant /> below.
   const useStudyDesk = viewport !== 'phone'
-  // Phase A.8 EDITION: status-line context and folio carry the
-  // section + question count, so DrillProgress (the visible eyebrow)
-  // can be tight against the headword instead of orphaned at the top
-  // of the canvas. The Page's bottom status line shows the running
-  // progress bar.
+  // Phase A.6V — at desktop, the picked drill layout (StyleA/B/C) is
+  // a full-bleed experience that owns its own running head, status
+  // line, and CTA. Wrapping it in Page.tsx's chrome would double-
+  // chrome the page (two running heads, two status lines, two CTAs
+  // stacked) and squash the variant inside a constrained canvas. So
+  // when useStudyDesk is true we bypass Page entirely and let the
+  // variant fill the artboard.
+  //
+  // Each variant embeds <EditionStrip /> into its OWN running head,
+  // so the picker is reachable mid-drill. Switching editions live
+  // (editorial → workbook → cockpit) swaps the entire variant under
+  // the user; the click happens in the variant's chrome and the next
+  // render is the new variant's chrome with the strip in the same
+  // slot. Continuous picker presence; no chrome stacking.
+  if (useStudyDesk) {
+    return (
+      <MobileFrame tabs={false}>
+        <DispatchedVariant
+          {...variantPropsFor({
+            question: q,
+            picked,
+            graded: phase === 'graded',
+            correct: picked === q.answer,
+            onPick,
+            onAdvance: onNext,
+          })}
+        />
+      </MobileFrame>
+    )
+  }
+
+  // Phase A.8 EDITION (phone path): status-line context and folio
+  // carry the section + question count, so DrillProgress (the
+  // visible eyebrow) can be tight against the headword instead of
+  // orphaned at the top of the canvas. The Page's bottom status line
+  // shows the running progress bar.
   const drillBody = (
     <div
       style={{
@@ -365,32 +421,69 @@ export function SessionPlayer(props: SessionPlayerProps) {
       )}
       <div style={{ flex: 1, minHeight: 0, marginTop: useStudyDesk ? 0 : 12 }}>
         {useStudyDesk ? (
-          <StudyDesk question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
+          <DispatchedVariant
+            {...variantPropsFor({
+              question: q,
+              picked,
+              graded: phase === 'graded',
+              correct: picked === q.answer,
+              onPick,
+              onAdvance: onNext,
+            })}
+          />
         ) : (
           <DrillQuestion question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
         )}
       </div>
       <div
         style={{
-          padding: useStudyDesk
-            ? 'clamp(16px, 2vh, 24px) clamp(48px, 5vw, 88px) clamp(16px, 2vh, 24px)'
-            : '12px var(--pad-lg) 0',
+          // Desktop: a sticky-bottom flex container that does
+          // nothing but right-align the floating CTA control. No
+          // background, no height, no padding chrome — the Btn
+          // itself carries all the visual weight as a frosted-glass
+          // artifact, consistent with the running head + status
+          // line treatment. Phone: static, full-width.
+          position: useStudyDesk ? 'sticky' : 'static',
+          bottom: useStudyDesk ? 'clamp(60px, 6vh, 84px)' : undefined,
+          zIndex: useStudyDesk ? 5 : undefined,
+          padding: useStudyDesk ? '0 clamp(28px, 4vw, 64px)' : '12px var(--pad-lg) 0',
           display: 'flex',
           flexDirection: 'column',
           gap: 8,
-          // Desktop right-aligns the Nästa CTA; phone keeps full-width
-          // for thumb reach.
           alignItems: useStudyDesk ? 'flex-end' : 'stretch',
+          // Bare wrapper ignores pointer events so wheel + clicks
+          // pass through the empty left/center area to the
+          // pedagogy underneath. Btn opts back in.
+          pointerEvents: useStudyDesk ? 'none' : undefined,
         }}
       >
         <Btn
           full={!useStudyDesk}
-          size="lg"
+          size="md"
           onClick={onNext}
           disabled={phase !== 'graded'}
           data-testid="drill-next"
-          style={useStudyDesk ? { minWidth: 200 } : undefined}
-          className="hpc-btn hpc-breathe"
+          className="hpc-btn"
+          style={
+            useStudyDesk
+              ? {
+                  pointerEvents: 'auto',
+                  minWidth: 168,
+                  // Frosted-glass control — same vibrancy treatment as
+                  // the running head + status line chrome. Text
+                  // scrolling behind blurs through the 12% translucent
+                  // dark glass instead of being abruptly clipped by a
+                  // solid button edge. The button reads as an
+                  // intentional editorial control, not an overlay
+                  // patched on top of reading content.
+                  background: 'color-mix(in oklch, var(--ink) 92%, transparent)',
+                  backdropFilter: 'saturate(150%) blur(16px)',
+                  WebkitBackdropFilter: 'saturate(150%) blur(16px)',
+                  // Soft floating shadow — depth signal without heaviness.
+                  boxShadow: '0 18px 40px -16px rgba(0, 0, 0, 0.28)',
+                }
+              : undefined
+          }
         >
           {index === plan.length - 1 ? 'Avsluta' : 'Nästa'} →
         </Btn>
