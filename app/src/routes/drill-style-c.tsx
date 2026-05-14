@@ -1,9 +1,13 @@
-// /drill-style-c — Variant C (Cockpit Terminal) preview.
+// /drill-style-c — qid-anchored drill, default Cockpit.
+//
+// See /drill-style-a for the full rationale.
 
 import { createFileRoute } from '@tanstack/react-router'
+import { useEffect } from 'react'
 
+import { DispatchedVariant } from '@/components/drill-variants/DispatchedVariant'
 import { DrillVariantShell } from '@/components/drill-variants/DrillVariantShell'
-import { StyleC } from '@/components/drill-variants/StyleC'
+import { useUiStore } from '@/stores/uiStore'
 
 type Search = { qid?: string }
 
@@ -16,5 +20,11 @@ export const Route = createFileRoute('/drill-style-c')({
 
 function StyleCRoute() {
   const { qid } = Route.useSearch()
-  return <DrillVariantShell qid={qid}>{(data) => <StyleC {...data} />}</DrillVariantShell>
+  const setDrillLayout = useUiStore((s) => s.setDrillLayout)
+  useEffect(() => {
+    setDrillLayout('c')
+  }, [setDrillLayout])
+  return (
+    <DrillVariantShell qid={qid}>{(data) => <DispatchedVariant {...data} />}</DrillVariantShell>
+  )
 }

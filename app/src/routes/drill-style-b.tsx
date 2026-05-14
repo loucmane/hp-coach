@@ -1,9 +1,13 @@
-// /drill-style-b — Variant B (Reader Single-Column) preview.
+// /drill-style-b — qid-anchored drill, default Workbook.
+//
+// See /drill-style-a for the full rationale.
 
 import { createFileRoute } from '@tanstack/react-router'
+import { useEffect } from 'react'
 
+import { DispatchedVariant } from '@/components/drill-variants/DispatchedVariant'
 import { DrillVariantShell } from '@/components/drill-variants/DrillVariantShell'
-import { StyleB } from '@/components/drill-variants/StyleB'
+import { useUiStore } from '@/stores/uiStore'
 
 type Search = { qid?: string }
 
@@ -16,5 +20,11 @@ export const Route = createFileRoute('/drill-style-b')({
 
 function StyleBRoute() {
   const { qid } = Route.useSearch()
-  return <DrillVariantShell qid={qid}>{(data) => <StyleB {...data} />}</DrillVariantShell>
+  const setDrillLayout = useUiStore((s) => s.setDrillLayout)
+  useEffect(() => {
+    setDrillLayout('b')
+  }, [setDrillLayout])
+  return (
+    <DrillVariantShell qid={qid}>{(data) => <DispatchedVariant {...data} />}</DrillVariantShell>
+  )
 }

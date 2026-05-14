@@ -46,25 +46,22 @@ import {
 import { DrillProgress } from '@/components/drill/DrillProgress'
 import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { DrillResult } from '@/components/drill/DrillResult'
-import { StyleA } from '@/components/drill-variants/StyleA'
-import { StyleB } from '@/components/drill-variants/StyleB'
-import { StyleC } from '@/components/drill-variants/StyleC'
+import { DispatchedVariant } from '@/components/drill-variants/DispatchedVariant'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
 import type { AnswerLetter, Question } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
 import { TAB_ROUTE } from '@/lib/nav'
-import { useUiStore } from '@/stores/uiStore'
 
 type Phase = 'idle' | 'answering' | 'graded' | 'done'
 
-/** Dispatch the right StyleX variant given the active edition's
- *  drillLayout. Studio + reader only — phone short-circuits earlier
- *  and renders the existing DrillQuestion. The `onAdvance` prop
- *  becomes the variant's "Nästa fråga →" / "✓ Klar" handler. */
-function renderLayoutByEdition(args: {
-  layout: 'a' | 'b' | 'c'
+/** Build the props payload that DispatchedVariant expects. Centralised
+ *  so the legacy /drill-style-{a,b,c} routes and SessionPlayer share
+ *  the same dispatch logic. The `onAdvance` callback maps to the
+ *  variant's `onReset` slot — which each variant renders as the
+ *  "Nästa fråga →" / "✓ Klar" CTA. */
+function variantPropsFor(args: {
   question: Question
   picked: AnswerLetter | null
   graded: boolean
@@ -72,22 +69,14 @@ function renderLayoutByEdition(args: {
   onPick: (letter: AnswerLetter) => void
   onAdvance: () => void
 }) {
-  const data = {
+  return {
     question: args.question,
     explanation: null /* loaded inside the variant via the existing hook */,
     picked: args.picked,
     graded: args.graded,
     correct: args.correct,
     onPick: args.onPick,
-    onReset: args.onAdvance /* variants render this as "Nästa fråga →" */,
-  }
-  switch (args.layout) {
-    case 'b':
-      return <StyleB {...data} />
-    case 'c':
-      return <StyleC {...data} />
-    default:
-      return <StyleA {...data} />
+    onReset: args.onAdvance,
   }
 }
 
@@ -134,10 +123,9 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // hook-rule isn't violated when the phase transitions through
   // different render paths.
   const viewport = useViewport()
-  // Phase A.6V Edition Strip — same hook-rule reason: must be read
-  // above the idle/done early returns. See docs/edition-strip.md.
-  // Drives which drill layout (StyleA/B/C) renders in `answering`.
-  const drillLayout = useUiStore((s) => s.drillLayout)
+  // Phase A.6V — DispatchedVariant reads drillLayout from the store
+  // directly when it renders the picked variant, so SessionPlayer no
+  // longer needs to thread it through. See docs/edition-strip.md.
 
   const [phase, setPhase] = useState<Phase>('idle')
   const [plan, setPlan] = useState<Question[]>([])
@@ -375,12 +363,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
   const picked = picks[index]
   // Phone keeps the single-column DrillQuestion (mobile-tested
   // prototype baseline). Reader/studio dispatch to the
-  // user-selected drill layout via the Edition Strip:
-  //   'a' = StyleA (Editorial Pure)
-  //   'b' = StyleB (Workbook)
-  //   'c' = StyleC (Cockpit Terminal)
-  // `drillLayout` is read at the top of the component (above the
-  // idle/done early returns) — see docs/edition-strip.md.
+  // user-selected drill layout via <DispatchedVariant /> below.
   const useStudyDesk = viewport !== 'phone'
   // Phase A.6V — at desktop, the picked drill layout (StyleA/B/C) is
   // a full-bleed experience that owns its own running head, status
@@ -399,15 +382,16 @@ export function SessionPlayer(props: SessionPlayerProps) {
   if (useStudyDesk) {
     return (
       <MobileFrame tabs={false}>
-        {renderLayoutByEdition({
-          layout: drillLayout,
-          question: q,
-          picked,
-          graded: phase === 'graded',
-          correct: picked === q.answer,
-          onPick,
-          onAdvance: onNext,
-        })}
+        <DispatchedVariant
+          {...variantPropsFor({
+            question: q,
+            picked,
+            graded: phase === 'graded',
+            correct: picked === q.answer,
+            onPick,
+            onAdvance: onNext,
+          })}
+        />
       </MobileFrame>
     )
   }
@@ -437,15 +421,16 @@ export function SessionPlayer(props: SessionPlayerProps) {
       )}
       <div style={{ flex: 1, minHeight: 0, marginTop: useStudyDesk ? 0 : 12 }}>
         {useStudyDesk ? (
-          renderLayoutByEdition({
-            layout: drillLayout,
-            question: q,
-            picked,
-            graded: phase === 'graded',
-            correct: picked === q.answer,
-            onPick,
-            onAdvance: onNext,
-          })
+          <DispatchedVariant
+            {...variantPropsFor({
+              question: q,
+              picked,
+              graded: phase === 'graded',
+              correct: picked === q.answer,
+              onPick,
+              onAdvance: onNext,
+            })}
+          />
         ) : (
           <DrillQuestion question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
         )}
