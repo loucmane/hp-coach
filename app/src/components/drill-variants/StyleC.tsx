@@ -199,6 +199,10 @@ export function StyleC({
                 </div>
               </div>
             )}
+            {/* Prompt block — measure-capped at 70ch (mono runs wider
+             *  per char than serif, so the absolute char count can be
+             *  higher for the same visual reading width). Same haiku-
+             *  machine fix as Editorial / Workbook. */}
             <div
               style={{
                 fontFamily: 'var(--font-mono)',
@@ -208,6 +212,7 @@ export function StyleC({
                 fontWeight: 500,
                 whiteSpace: 'pre-wrap',
                 color: 'var(--ink)',
+                maxWidth: '70ch',
               }}
             >
               {question.section === 'KVA' && question.prompt ? (

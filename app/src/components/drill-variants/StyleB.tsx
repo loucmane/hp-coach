@@ -178,6 +178,9 @@ export function StyleB({
               </div>
             </div>
           )}
+          {/* Prompt block — measure-capped at 60ch so prose stays in a
+           *  comfortable workbook reading column even when the grid
+           *  track is wider. Same haiku-machine fix as Editorial. */}
           <div
             style={{
               fontFamily: 'var(--font-display)',
@@ -187,6 +190,7 @@ export function StyleB({
               fontWeight: 500,
               marginBottom: 24,
               color: 'var(--ink)',
+              maxWidth: '60ch',
             }}
           >
             {question.section === 'KVA' && question.prompt ? (
