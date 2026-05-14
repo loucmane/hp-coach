@@ -1340,265 +1340,731 @@
     "solution_path": "The passage says 'the process is relatively understated and free from noisy squabbles' — albatross divorce is less dramatic than the human equivalent. Answer A.",
     "technique": "When the passage names albatross separation as 'understated and free from noisy squabbles', the right answer is less dramatic than human."
   },
-  "var-2026-verb1-LÄS-011": {
+  "var-2026-verb1-ELF-040": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att fastna vid att texten även nämner undervisningsformen — kateder kontra deliberativ — som ett delprojekt.",
-        "why_wrong": "Undervisningsformen är ett av två delspår, inte huvudmålet; sträcker sig för långt genom att ta delfrågan för helheten."
+        "why_tempting": "Left-to-right reading gives a list of crimes — apple-stealing, highwayman, murderer, house-breaker — all lumped together. It is easy to infer 'so they all get the same punishment' from 'they all get the same label'.",
+        "why_wrong": "The passage is about LABELLING, not punishment. It says the term 'criminal' didn't distinguish between offences; it says nothing about whether judges handed out similar sentences. Step 5 keeps the label/punishment distinction clean."
       },
       {
         "letter": "B",
-        "why_tempting": "Texten kretsar kring samhällskunskap och medborgarkompetens, så det låter rimligt.",
-        "why_wrong": "Texten utvärderar inte ämnets lämplighet; den utvärderar reformens effekt — påståendet ligger vid sidan om frågan."
+        "why_tempting": "It's easy to read the 'starving waif stealing an apple' as the author making a poverty-causes-crime point — that is a very common reading of Dickensian-sounding examples.",
+        "why_wrong": "The waif is brought in to show that even a starving child got the same LABEL as a murderer, not to argue that hunger explains crime. The passage offers no causal claim about money or poverty — Step 3's paraphrase carries no such claim."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct is to spot 'morally bankrupt' and assume the passage is ranking crimes by their moral weight — moral crimes versus non-moral ones.",
+        "why_wrong": "'Morally bankrupt' is applied to EVERY criminal, not to a subset. The passage flattens the moral hierarchy ('apple-thief = murderer in the public eye'); D inverts that by implying some crimes were rated worse than others. Step 5 catches the inversion."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Vivid examples (a starving waif, a highwayman) are bait — they pull attention to a sub-claim (poverty? punishment?) that the passage never actually argues. The public-opinion sentence is usually a single generalising clause; trust that, not the examples.",
+    "solution_path": "The 18th Century Criminals passage closes by stating that anyone who committed a crime was 'already morally bankrupt and was starting a spiral down into a life of villainy'. That is a one-directional, downward trajectory — exactly C: criminals are unlikely to change for the better.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "The prompt is 'Which of the following statements best reflects public opinion on crime in 18th century Britain?' — so you are not looking for the author's view but for the general 18th-century attitude the passage reports. Watch for phrases like 'it was generally held that…' or 'people believed…' — those mark public opinion.",
+        "tier": "essential",
+        "title": "Understand the question"
+      },
+      {
+        "n": 2,
+        "text": "The reporting verb sits in the closing sentence: 'it was generally held that anyone who would stoop to commit a crime was already morally bankrupt and was starting a spiral down into a life of villainy, if they weren't already there.' That is the passage's explicit summary of contemporary belief.",
+        "tier": "essential",
+        "title": "Locate the public-opinion sentence"
+      },
+      {
+        "n": 3,
+        "text": "People at the time thought any criminal — even a first-time offender — was already a bad person on the way down. Crime wasn't seen as a mistake you could recover from; it was treated as a sign you were headed deeper into a life of crime. In one phrase: criminals were considered irredeemable.",
+        "tier": "essential",
+        "title": "Paraphrase in plain English"
+      },
+      {
+        "n": 4,
+        "text": "'Morally bankrupt' = with no moral worth left, beyond reform. 'Spiral down' = a continuing, accelerating decline. 'Villainy' = serious wrongdoing or criminality. 'A starving waif' = a poor, neglected child. 'Stoop to' = lower oneself to. Together these words paint criminals as fallen people who keep falling — not as people who might recover.",
+        "tier": "detail",
+        "title": "Vocabulary check"
+      },
+      {
+        "n": 5,
+        "text": "Walk each option against the paraphrase. A says all criminal acts need similar punishment — the passage talks about how criminals were LABELLED, not about punishment policy. B says lack of money causes crime — the apple-stealing waif is mentioned as someone who got the same branding as a murderer, not to argue poverty was the cause. C says criminals were unlikely to change for the better — matches 'spiral down into a life of villainy' directly. D says morally tinged crimes were considered worse than others — the opposite of the text, which says EVERY criminal was seen as morally bankrupt regardless of the crime.",
+        "tier": "essential",
+        "title": "Match against the options"
+      },
+      {
+        "n": 6,
+        "text": "The answer is C. 'It was generally held' + 'spiral down into a life of villainy' = an 18th-century public opinion that criminals are unlikely to improve.",
+        "tier": "essential",
+        "title": "Conclusion"
+      }
+    ],
+    "technique": "Public-opinion ELF items reward locating the reporting phrase ('it was generally held', 'people believed', 'the common view was'). Trigger: a generalising verb in the passage anchors the right option; descriptive vocabulary ('morally bankrupt', 'spiral down') tells you the DIRECTION of that opinion."
+  },
+  "var-2026-verb1-LÄS-011": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att fastna vid att texten också nämner undervisningsformen — kateder kontra deliberativ — som en av två aspekter forskarna tittar på.",
+        "why_wrong": "Undervisningsformen är uttryckligen ett av två delspår (\"För det andra…\"), inte huvudmålet. Steg 5 visar att alternativ A tar en delfråga och behandlar den som hela syftet."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid att texten kretsar kring samhällskunskap och medborgar­kompetens och tänker att studien handlar om ämnets lämplighet.",
+        "why_wrong": "Texten utvärderar inte om samhällskunskap är ett LÄMPLIGT ämne för att lära ut medborgarkompetens — den utgår från att det redan är så och frågar om reformens effekter. B ligger vid sidan om syftesmeningen i steg 2."
       },
       {
         "letter": "C",
-        "why_tempting": "Engagemang är ett ord som figurerar i texten och låter centralt.",
-        "why_wrong": "Riktningen är inverterad: texten frågar hur reformen påverkar engagemanget, inte hur engagemanget påverkar kunskaperna."
+        "why_tempting": "Första instinkten är att \"engagemang\" och \"kunskaper\" båda nämns i texten och låter centrala — så de hör nog ihop som fråga.",
+        "why_wrong": "Riktningen är inverterad. Texten frågar hur REFORMEN påverkar engagemanget (reform → engagemang), inte hur engagemanget påverkar kunskaperna (engagemang → kunskaper). C kastar om orsakspilen."
       }
     ],
-    "pitfall": "Delprojekt (undervisningsmängd, undervisningsform) kan se ut som svar — kontrollera mot den övergripande syftesmeningen.",
-    "solution_path": "Forskningens uttalade syfte är att se om Gy 11-reformen påverkar yrkesprogramelevernas medborgarkompetens — alltså sambandet mellan skolreform och samhällsengagemang. Andra stycket inleder rakt ut med att undersöka om reformen påverkar elevernas demokratiska värderingar och politiska engagemang.",
-    "technique": "Vid 'huvudsakligt mål'-frågor: leta efter syftesmeningen som forskarna själva formulerar, ofta med ord som 'syftet är att undersöka om…'."
+    "framework_id": null,
+    "pitfall": "Delspår (här: undervisningsmängd och undervisningsform) kan se ut som svar eftersom de tar plats i texten. Botemedlet: fråga \"vad är det här ett delspår OF?\" och leta efter den övergripande ramen som binder ihop delspåren.",
+    "solution_path": "Forskningsprojektets uttalade syfte är att undersöka om gymnasiereformen Gy 11 påverkar yrkesprogramelevernas medborgarkompetens — alltså om skolförändringen påverkar elevernas samhällsengagemang. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta HUVUDSYFTET med forskningsprojektet — inte ett delspår, inte en biaspekt, utan vad forskarna själva pekar ut som projektets övergripande mål.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Forskarna formulerar syftet rakt ut i tredje stycket: \"Det övergripande syftet med vårt forskningsprojekt är att undersöka om reformen av gymnasieskolan påverkar yrkesprogramelevernas medborgarkompetens.\"",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: forskarna vill veta om skolreformen Gy 11 ändrar elevernas förmåga och vilja att delta i samhället — deras värderingar, kunskaper och politiska engagemang.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Texten räknar själv upp innehållet: demokratiska värderingar, tillit till egna färdigheter, kommunikativa förmågor, politiska kunskaper och politiskt engagemang. Samhällsengagemang fångar kärnan av detta — alltså vad eleverna kan och vill göra som medborgare.",
+        "tier": "detail",
+        "title": "Vad betyder medborgarkompetens?"
+      },
+      {
+        "n": 5,
+        "text": "A handlar bara om undervisningsformen — det är ett delspår (\"För det andra…\"), inte huvudmålet. B handlar om ämnet samhällskunskaps lämplighet — det utvärderas inte. C vänder pilen åt fel håll (engagemang → kunskaper), medan texten frågar reform → engagemang. D matchar syftesmeningen exakt: reform → samhällsengagemang.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är D. Studien undersöker om gymnasiereformen påverkar elevernas samhällsengagemang. Insikten i en mening: vid huvudsyfte-frågor — leta efter forskarnas egen syftesmening, inte efter delspår eller exempel.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid frågor om en studies HUVUDMÅL — sök forskarnas egen syftesmening, ofta inledd med \"Det övergripande syftet är att undersöka om…\". Triggern: \"vilket är huvudmålet\" → leta efter ordet \"syfte\" i texten, inte efter delspår eller exempel."
   },
   "var-2026-verb1-LÄS-012": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Demokratin är textens röda tråd och kan tyckas vara reformens drivkraft.",
-        "why_wrong": "Reformen drar tvärtom ned på det demokratiska uppdraget — påståendet inverterar riktningen."
+        "why_tempting": "Många stannar vid att texten talar mycket om demokrati och medborgar­kompetens — det känns som temat.",
+        "why_wrong": "Demokrati och medborgarfostran beskrivs som det reformen TONADE NER, inte det den lyfte upp. Som steg 2 visar är riktningsorden \"mindre fokus\" (medborgarfostran) och \"tydligare fokus\" (yrkesliv) — B går åt fel håll."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'fortsatta studier' och tolkar in teoretiska ämnen.",
-        "why_wrong": "Studieförberedelsen nämns men exemplifieras inte; det enda konkreta exemplet rör yrkesprogrammens halvering — sträcker sig för långt utöver vad texten säger."
+        "why_tempting": "Det är frestande att läsa \"fortsatta studier\" och tolka det som fördjupning i teoretiska ämnen.",
+        "why_wrong": "\"Fortsatta studier\" står som en av två förberedelsevägar (\"yrkesliv eller fortsatta studier\") — det är förberedelseuppdraget som lyfts, inte teoretiska ämnen som sådana. Texten nämner inte teoretisk ämnes­betoning som reformens fokus."
       },
       {
         "letter": "D",
-        "why_tempting": "Det fostrande uppdraget är textens centrala begrepp.",
-        "why_wrong": "Reformen MINSKAR fostransfokuset — alternativet motsäger texten direkt."
+        "why_tempting": "Första instinkten kan vara att \"fostrande\" låter centralt eftersom ordet återkommer i texten.",
+        "why_wrong": "Det fostrande uppdraget är just det som reformen FLYTTADE FOKUS BORT FRÅN. Steg 2 är otvetydigt: \"mindre fokus läggs på skolans medborgarfostrande uppdrag\". D är raka motsatsen till svaret."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten beskriver Gy 11 som en förskjutning bort från medborgarfostran mot att förbereda eleverna för yrkeslivet eller fortsatta studier — yrkeslivet nämns först och konkretiseras med halverad samhällskunskap på yrkesprogrammen. Det är arbetslivsförberedelsen som står i fokus.",
-    "technique": "Vid 'vad stod i fokus'-frågor: leta efter de konkreta exemplen (här: halverad poäng på yrkesprogrammen) som visar var reformens tyngd ligger."
+    "framework_id": null,
+    "pitfall": "Det är lätt att låta textens TEMA (medborgarkompetens) skugga vad reformen faktiskt prioriterade. Botemedlet: skilj på vad texten DISKUTERAR (medborgar­fostran som koncept) och vad reformen VALDE (yrkesförberedelse).",
+    "solution_path": "Texten säger uttryckligen att Gy 11 lägger mindre vikt på det medborgar­fostrande uppdraget och MER vikt på att förbereda eleverna för yrkesliv eller fortsatta studier. Det yrkesförberedande står alltså i fokus. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta vad som verkar ha STÅTT I FOKUS när skolreformen Gy 11 utformades — alltså vilken prioritet reformen själv signalerar.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Reformens fokus beskrivs i andra styckets slut: \"Reformen av gymnasie­skolan (Gy 11) innebar en förändring så till vida att mindre fokus numera läggs på skolans medborgarfostrande uppdrag medan ett tydligare fokus läggs på att förbereda eleverna antingen för yrkeslivet och fortsatt yrkesutbildning eller för fortsatta studier.\"",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: reformen flyttar tyngdpunkten BORT från fostrande/demokratiuppdraget och MOT förberedelse för arbete eller vidareutbildning. Den konkreta åtgärden — samhällskunskap halverad från 100 till 50 poäng på yrkesprogrammen — bekräftar riktningen.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "\"Medborgarfostrande\" betyder att skolan utvecklar eleverna till deltagande medborgare — diskutera samhällsfrågor, värdera, ta ställning. Det är det som GICK NER i reformen, inte det som gick upp. Detta är viktigt eftersom det filtrerar bort B och D direkt.",
+        "tier": "detail",
+        "title": "Vad menas med medborgarfostrande?"
+      },
+      {
+        "n": 5,
+        "text": "A \"elevernas framtida arbetsliv\" matchar exakt det som ÖKADE i fokus — \"förbereda eleverna för yrkeslivet\". B \"en stärkt demokrati\" är en konsekvens av det medborgarfostrande uppdraget, som MINSKADE. C \"teoretiska ämnen\" nämns inte som reformens drivkraft. D \"fostrande uppdrag\" är raka motsatsen — det är just det som tonades ner.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är A. Reformen flyttade fokus mot yrkesförberedelse, med konkret bevisning i halveringen av samhällskunskapstimmarna på yrkesprogrammen. Insikten i en mening: riktningsord (\"mindre fokus\" kontra \"tydligare fokus\") avgör vad som ÖKADE i en reform — leta efter kontrastparet, inte efter enskilda ord.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid frågor om en reforms fokus — leta efter kontrastpar med riktningsord (\"mindre fokus på X medan tydligare fokus på Y\"). Y är svaret. Triggern: \"vad stod i fokus\" → leta efter ordet \"fokus\" eller \"tyngdpunkt\" och spåra åt vilket håll riktningen pekar."
   },
   "var-2026-verb1-LÄS-013": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tolka kritiken mot Storytels datainsamling som ett rop på reglering.",
-        "why_wrong": "Nilsson kräver inga regler — han vill bara att debatten ska handla om läsning, inte ljudbok; sträcker sig för långt från observation till politisk åtgärd."
+        "why_tempting": "Det är frestande att läsa Storytel-avsnittet om datainsamling och tänka att Nilsson kräver reglering.",
+        "why_wrong": "Nilsson säger uttryckligen att \"detta talar man aldrig om\" och att debatten åtminstone borde handla om det — han efterlyser en annan debatt, inte lagstiftning. A går steget längre än vad texten faktiskt föreslår."
       },
       {
         "letter": "B",
-        "why_tempting": "Texten är kritisk mot ljudboksbranschen och nämner Storytels affärsmodell.",
-        "why_wrong": "Nilsson kritiserar formatets natur, inte vilken litteratur förlagen satsar på — sträcker sig för långt genom att fokusera på fel kritik."
+        "why_tempting": "Många stannar vid Nilssons referens till deckare och \"konsumerat\" ljudböcker och drar slutsatsen att han kritiserar ljudboksförlagens kvalitetsval.",
+        "why_wrong": "Citatet om deckare kommer från Jakob Nilssons text — Ola Nilsson kritiserar inte vad förlagen ger ut, utan idén att lyssnande på ljudbok kan ersätta läsning. B blandar ihop ett citerat påstående med Nilssons egen position."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att han avfärdar hela debatten.",
-        "why_wrong": "Han VILL ha debatt — bara om rätt sak (läsning, inte ljudbok); inverterar hans poäng."
+        "why_tempting": "Snabbsvar är ofta att Nilssons ton är skarp och att han verkar trött på debatten — alltså tycker han nog att den är meningslös.",
+        "why_wrong": "Att skriva ett inlägg ÄR att delta i debatten. Som steg 2 visar gör Nilsson en tydlig poäng inom debatten (lyssning ≠ läsning) och föreslår till och med en kompletterande riktning (Storytels datapolitik). Det är raka motsatsen till att tycka debatten är meningslös."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Ola Nilssons bärande tes är att lyssning aldrig kan ersätta läsning — han skriver explicit att lyssningen 'aldrig kan ersätta den rikedom som läsandet av en bok ger' och att man inte ska kalla ljudbok för läsning. Det är en värdehierarki där den tryckta boken står överst.",
-    "technique": "Vid 'sammanfatta författarens signal'-frågor: leta efter den explicita värdedomen, inte de exempel som omger den."
+    "framework_id": null,
+    "pitfall": "Det är lätt att förväxla \"texten nämner X\" med \"texten argumenterar för/emot X\". Botemedlet: kontrollera om författaren bara beskriver fenomenet eller faktiskt värderar det — bara värderingar räknas som signaler.",
+    "solution_path": "Ola Nilssons hela inlägg argumenterar för att läsning är en aktiv förvandling som lyssning inte kan ersätta — och att man inte ska kalla ljudbokslyssnande för läsning. Det är ett tydligt ställnings­tagande för boken över ljudboken. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill ha den TOTALA SIGNALEN i Ola Nilssons inlägg — inte ett enskilt argument utan vad hela texten sammantaget vill säga.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Nilssons positionssats kommer mot slutet: \"Jag har inget principiellt emot ljudboksformatet, bara man inte kallar det läsning, för det är det inte.\" Och tidigare: lyssning kan aldrig \"ersätta den rikedom som läsandet av en bok ger\".",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: Nilsson tycker att läsning är något kvalitativt annat och bättre — boken har \"gravitation\", kräver fokus och arbete, ger en förvandling som ljudboken inte kan ge. Han säger inte att man ska förbjuda ljudboken, bara att den inte är samma sak och inte ersätter läsningen.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Nilsson använder evighetsmaskiner, guldmakeri och vatten-till-vin som bilder för att läsning utan att läsa är en omöjlig lockelse — något som lovar för mycket. Bilderna förstärker att boken erbjuder något ljudboken BARA SER UT ATT erbjuda. Hela texten lutar åt: boken vinner.",
+        "tier": "detail",
+        "title": "Vad gör de tre tematiska parallellerna?"
+      },
+      {
+        "n": 5,
+        "text": "A \"marknaden behöver regleras\" — Nilsson nämner Storytels datainsamling men föreslår inte reglering; han säger att debatten borde handla om detta. B \"satsar inte på kvalitetslitteratur\" — texten säger inget om vilken litteratur ljudboksförlagen väljer. C \"bättre att läsa än lyssna\" — exakt vad steg 2 och 3 visar. D \"meningslöst att debattera\" — Nilsson DELTAR i debatten, så han kan rimligen inte tycka att den är meningslös.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är C. Ola Nilssons inlägg sammanfattas bäst som en argumentation för bokens överlägsenhet jämfört med ljudboken. Insikten i en mening: vid \"vad signalerar texten\" — sök författarens positionssats (ofta med \"jag\" eller modala ord) och avfärda alternativ som handlar om frågor texten BERÖR men inte tar ställning till.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid \"vad signalerar författaren\"-frågor — sök positionssatsen där författaren tar ställning, ofta med \"jag\" eller modala verb (\"borde\", \"bara\"). Alternativ som handlar om frågor texten berör men inte tar ställning till är fällor. Triggern: \"vad signalerar texten\" → sök den enda meningen där författaren använder första person eller en värdering."
   },
   "var-2026-verb1-LÄS-014": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att importera ett standardargument om audio som 'multimodal inlärning'.",
-        "why_wrong": "Åberg säger inget om att andra sinnen aktiveras eller om inlärning — sträcker sig för långt utöver texten."
+        "why_tempting": "Det är frestande att tänka att ljudboken \"aktiverar\" hörseln på ett sätt boken inte gör, och att Åberg därför pratar om sinnen.",
+        "why_wrong": "Åberg jämför inte sinnen — han jämför KOGNITIV ANSTRÄNGNING. Han citerar studien som visar att läsning gav bättre minnesbehållning och spekulerar att det kan bero på att vi tränar mer på läsning. Sinnen kommer aldrig upp."
       },
       {
         "letter": "C",
-        "why_tempting": "Det låter som ett rimligt motargument att innehållet är viktigare än formen.",
-        "why_wrong": "Åberg gör tvärtom en poäng OM formen (att lyssning kräver eget arbete) — alternativet kringgår hans faktiska invändning."
+        "why_tempting": "Vänster-till-höger-läsning ger lätt intrycket att Åbergs hela mittpunkt är \"båda är litteratur, sluta bråka om format\".",
+        "why_wrong": "Åbergs explicita poäng är att presentationen MEDFÖR ARBETE i båda fallen — han bryr sig just om HUR vi processar texten, inte om att kalla det irrelevant. Som steg 4 visar går hans argumentation rakt in i process­skillnaderna, inte runt dem."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid att Åberg säger 'jag skulle aldrig säga att jag läst en ljudbok'.",
-        "why_wrong": "Han säger uttryckligen att sysslorna inte är så väsensskilda och citerar forskning om att hjärnan hanterar dem nästan identiskt — påståendet inverterar hans linje."
+        "why_tempting": "Om du minns regeln som \"två saker som båda är värdefulla men olika\", låter D rimligt — Åberg sägs ju själv inte likställa dem helt.",
+        "why_wrong": "Åberg säger uttryckligen \"jag tillhör inte dem som tycker att lyssning och läsning alltid går att likställa\" — men han fortsätter direkt med \"men samtidigt — är sysslorna verkligen så väsensskilda?\" D fångar bara första halvan av Åbergs nyansering och missar att han argumenterar för LIKHET, inte väsensskillnad."
       }
     ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "Åberg medger att Nilssons gravitationspoäng är 'visserligen korrekt' men kontrar med att det också krävs arbete för att lyssna — att hänga med i en text någon annan styr över kan vara minst lika svårt som att läsa själv. Lyssning är alltså också en arbetsinsats, inte ett bekvämt fuskformat.",
-    "technique": "Vid 'hur svarar X på Y'-frågor i debattext: leta efter motargumentet som direkt kontrar motpartens nyckelord (här: 'arbete', 'gravitation')."
+    "solution_path": "Daniel Åberg ifrågasätter Nilssons \"gravitations\"-bild genom att hävda att lyssnande också kräver arbete — kanske till och med svårare arbete, eftersom någon annan styr tempot. Hans poäng är att de två aktiviteterna är mer lika än Nilsson gör gällande. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta hur Åberg svarar på en SPECIFIK metafor från Nilsson — att den tryckta boken har \"gravitation\" som ljudboken saknar. Vi ska alltså hitta Åbergs direkta motbild.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Nilsson menar att boken kräver eget aktivt arbete: bladet vänds inte av sig självt, du måste föra texten framåt. \"Gravitation\" är alltså metaforen för bokens tröghet och krav på fokus.",
+        "tier": "detail",
+        "title": "Vad är Nilssons gravitation?"
+      },
+      {
+        "n": 3,
+        "text": "Åberg adresserar gravitationen direkt i tredje stycket: \"Ola Nilssons påpekande att läsning till skillnad från lyssning kräver att man på egen hand för texten framåt är visserligen korrekt, men gör det verkligen att det blir svårare att läsa än att lyssna? Kan det inte lika gärna vara tvärtom?\"",
+        "tier": "essential",
+        "title": "Hitta Åbergs svar"
+      },
+      {
+        "n": 4,
+        "text": "På vardagssvenska: ja, läsning kräver att DU driver texten — men lyssning kräver att du hänger med när NÅGON ANNAN driver texten i en takt du inte väljer. Det är också arbete, och kanske svårare. \"Borde det inte vara en lika svår konst att bli en god lyssnare som en god läsare?\"",
+        "tier": "essential",
+        "title": "Parafrasera Åbergs invändning"
+      },
+      {
+        "n": 5,
+        "text": "A \"andra sinnen / underlättar inlärningen\" — Åberg säger inte detta, tvärtom citerar han studien som visar att läsning ger bättre minnes­behållning. B \"lyssning kräver också arbetsinsats\" — exakt Åbergs kontring i steg 3-4. C \"innehållet, inte presentationen\" — Åberg diskuterar processen, inte innehållet kontra form. D \"helt olika aktiviteter\" — raka motsatsen, Åberg argumenterar för att de är mer LIKA än Nilsson säger.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är B. Åbergs kontring av gravitations-metaforen är att lyssning också kräver en arbetsinsats — inte helt olik den att läsa. Insikten i en mening: vid replikfrågor — sök det stycke där den andra författaren tar upp den specifika punkt frågan handlar om, och parafrasera kontringen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid frågor om hur författare B svarar på författare A — leta efter det stycke där B citerar eller refererar A:s specifika ord (här: \"Ola Nilssons påpekande\"). Strax därefter står B:s motargument. Triggern: \"hur svarar X på Y:s påstående\" → sök X:s användning av Y:s nyckelord."
   },
   "var-2026-verb1-LÄS-015": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tolka 'studenterna saknade verktygen' som att studenter har skilda förutsättningar.",
-        "why_wrong": "Åberg pekar på en gemensam brist (alla skolas mer i läsning), inte på individuella skillnader — sträcker sig för långt och missar den strukturella poängen."
+        "why_tempting": "Det är lätt att läsa \"studenterna saknade verktyg\" och tänka individuella skillnader — vissa har verktygen, andra inte.",
+        "why_wrong": "Åberg talar om HELA STUDENTGRUPPENS gemensamma skolbakgrund (\"vi skolas\") — inte om enskilda studenters olika förutsättningar. Steg 3 visar att det är en strukturell träningsfråga, inte en individvariation."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid Willingham-citatet om att hjärnan hanterar dem 'i stort sett identiskt'.",
-        "why_wrong": "Det är Willinghams hjärnpåstående, inte Åbergs poäng om jämförelsestudien — sammanblandar två olika argument."
+        "why_tempting": "Snabbsvar är ofta att Willingham säger att hjärnan hanterar läsning och lyssning identiskt — då måste Åbergs poäng vara att processerna är lika.",
+        "why_wrong": "Det är Willinghams kognitiva slutsats, inte Åbergs tolkning av JÄMFÖRELSE­STUDIEN. Studien gav en TYDLIG SKILLNAD i resultat — och Åberg förklarar den skillnaden med ojämn träning, inte med likhet. C blandar ihop Willinghams generella påstående med Åbergs tolkning av en specifik studie."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att tolka 'de som läst kom ihåg betydligt mer' som ett bevis.",
-        "why_wrong": "Det är just den läsning Åberg ifrågasätter — han avvisar att studien BEVISAR läsningens överlägsenhet; inverterar hans tes."
+        "why_tempting": "Första instinkten är: studien visar att läsning ger bättre minne, alltså är läsning bättre — och Åberg refererar studien, alltså står han för slutsatsen.",
+        "why_wrong": "Åberg ställer denna tolkning som en MÖJLIGHET (\"då är väl läsning trots allt bättre?\") och avfärdar den omedelbart: \"Kanske, men inte nöd­vändigtvis.\" Hans poäng är att studien INTE bevisar det. D missar Åbergs tolkningsvändning."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Åberg lyfter fram att skillnaden i prestation lika gärna kan bottna i att vi 'skolas betydligt mer i att lära oss läsa' än att lyssna — alltså att resultatet speglar läsningens privilegierade ställning i utbildningen, inte en inneboende överlägsenhet. Det är en konsekvens av läsningens höga status, inte ett bevis på dess inneboende styrka.",
-    "technique": "Vid 'vad vill X säga om resultat Y'-frågor: skilj på själva forskningsresultatet och författarens omtolkning av det."
+    "framework_id": null,
+    "pitfall": "Det är lätt att blanda ihop refererat innehåll (vad studien visade) med författarens tolkning (vad författaren menar att resultatet betyder). Botemedlet: markera meningar med \"jag\", \"skulle kunna\", \"kanske\" — det är där tolkningen bor, inte i citaten.",
+    "solution_path": "Åberg refererar Willinghams jämförelsestudie där läsande studenter mindes mer än lyssnande studenter. Hans tolkning är att läsning är så centralt i skolan att studenterna helt enkelt SAKNADE RÄTT VERKTYG för aktivt lyssnande — alltså är resultatet en träningseffekt, inte ett bevis för läsningens överlägsenhet. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill ha ÅBERGS TOLKNING av studiens resultat — inte resultatet i sig, utan vad Åberg läser ut ur det.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Åbergs egen tolkning kommer omedelbart efter han presenterat resultatet, i näst sista stycket: \"Skillnaden i prestation skulle också kunna bottna i att vi skolas betydligt mer i att lära oss läsa och tolka skriven text än vi lär oss att på allvar lyssna på och minnas det vi hör — studenterna saknade helt enkelt de rätta verktygen för att bäst komma ihåg och förstå vad de lyssnade på.\"",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: studenterna hade tränats på läsning i hela sin skoltid men knappast på aktivt lyssnande. Att läsningen gav bättre resultat BEHÖVER inte betyda att läsning är bättre — det kan lika gärna betyda att studenterna är BÄTTRE TRÄNADE PÅ LÄSNING. Skillnaden ligger i tränings­bakgrunden, inte i metoden.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "I alternativ A betyder \"hög status\" att skolan prioriterar läsning — lägger ner mer tid och resurser på att lära ut den. Det är precis Åbergs förklaringsmodell: läsning får extra träningstid, alltså extra prestation. Det är inte status som i \"prestige\", utan status som i \"vilken plats den har i utbildningen\".",
+        "tier": "detail",
+        "title": "Vad betyder \"läsningens höga status\"?"
+      },
+      {
+        "n": 5,
+        "text": "A \"följd av läsningens höga status i skolan\" — exakt Åbergs träningseffekt­tolkning. B \"skilda förutsättningar\" — Åberg pratar om DELAD bakgrund (alla skolas mer i läsning), inte individuella skillnader. C \"likartade processer\" — det är vad Willingham säger om hjärnan generellt, men studiens RESULTAT (skillnad) tolkar Åberg som träning, inte likhet. D \"bevisar att läsning är bäst\" — raka motsatsen till Åbergs poäng; han avfärdar uttryckligen denna slutsats med \"Kanske, men inte nödvändigtvis\".",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är A. Åberg tolkar studiens resultat som en effekt av att läsning är så centralt i skolundervisningen — studenterna är bättre tränade på läsning, alltså blir resultatet inte ett rättvist test. Insikten i en mening: vid \"vad vill X säga med Y\" — leta efter författarens egen förklaringsmodell, ofta inledd med \"skulle också kunna bottna i\" eller \"kanske beror det på\".",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid frågor om hur en författare TOLKAR ett refererat resultat — gå till meningen där författaren kommenterar resultatet, ofta inledd med \"skulle också kunna bero på\", \"kanske\", \"men\". Triggern: \"vad vill X få sagt om resultatet\" → leta efter författarens egen förklarings­alternativ, inte studiens råresultat."
   },
   "var-2026-verb1-LÄS-016": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa varje sista mening som en sammanfattning.",
-        "why_wrong": "Meningen sammanfattar inget av Åbergs argument — den distanserar sig från dem; sträcker sig för långt genom standardtolkning."
+        "why_tempting": "Det är frestande att tänka att en sista mening i en text automatiskt är en sammanfattning.",
+        "why_wrong": "Sammanfattningar samlar ihop argument; den här meningen UNDERMINERAR sina egna argument genom att kalla dem spekulation. Som steg 3 visar är rörelsen från position till metakommentar — det är inte ihopsamling."
       },
       {
         "letter": "B",
-        "why_tempting": "Första instinkten är att Åberg balanserar sin kritik genom att medge spekulation.",
-        "why_wrong": "Hans text är redan nyanserad ('läsning är livsviktigt'); den extra meningen ger ingen ny nyansering — fyller en annan funktion."
+        "why_tempting": "Många stannar vid att Åbergs text DÄR EMOT är klart Nilsson-kritisk, så den sista meningen kan se ut som en nyansering.",
+        "why_wrong": "Åbergs text är redan nyanserad löpande (\"missförstå mig inte\", \"men samtidigt\"). Meningen lägger inte till nyans inom argumentationen; den lämnar argumentet och kommenterar genren. B identifierar fel funktion."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att meningen är försonande mot Nilsson.",
-        "why_wrong": "Den är snarare lätt sarkastisk — 'det gjorde nog Nilsson också' är inte att de är överens, utan att båda spekulerar; missar tonen."
+        "why_tempting": "Snabbsvar är ofta att \"båda spekulerar\" låter som att de står på samma sida.",
+        "why_wrong": "Att båda spekulerar betyder bara att båda har osäker grund — inte att de har samma åsikt. Steg 4 visar att meningen är en metakommentar om DEBATT­FORMEN (\"vi gissar allihop\"), inte en försoning. C läser in mer enighet än vad texten faktiskt antyder."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Sista meningen lyder ungefär 'nu spekulerar jag mest, men det tycker jag att Ola Nilsson gjorde också' — Åberg träder ut ur sin egen argumentation och ironiserar lätt över både sig själv och motparten. Det skapar distans till hela diskussionen snarare än att summera, nyansera eller försona.",
-    "technique": "Vid frågor om en menings funktion: läs tonen — ironi och distans signaleras ofta av en självmedveten hedge ('nu spekulerar jag mest')."
+    "framework_id": null,
+    "pitfall": "Den retoriska funktionen är inte alltid synonym med textens position. En författare kan ARGUMENTERA mot Nilsson men AVSLUTA med distans — de två rör sig på olika nivåer. Botemedlet: skilj på position (vad argumenteras) och funktion (vad meningen GÖR med läsaren).",
+    "solution_path": "Åbergs sista mening — \"Ja, nu spekulerar jag mest, men det tycker jag nog att Ola Nilsson gjorde i sin artikel också\" — är ett självmedvetet steg tillbaka från sina egna resonemang och en lika lätt knuff åt Nilsson. Den skapar distans till hela diskussionen. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta vilken FUNKTION den sista meningen fyller — alltså vad den GÖR retoriskt, inte bara vad den säger.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Sista meningen i Åbergs text: \"Ja, nu spekulerar jag mest, men det tycker jag nog att Ola Nilsson gjorde i sin artikel också.\" Den följer direkt efter hans träningseffekt-tolkning av Willingham-studien.",
+        "tier": "essential",
+        "title": "Hitta meningen"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: Åberg säger \"jag erkänner att jag bara gissar — fast det gjorde Nilsson också\". Han backar undan från ETT bestämt påstående (min tolkning är sann) och placerar både sig själv och Nilsson på samma spekulationsnivå.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Att ta \"distans\" till en diskussion betyder att gå ett steg åt sidan, inte argumentera vidare utan reflektera över själva diskussionens karaktär. När Åberg säger \"vi spekulerar båda\" zoomar han ut från ljudbok-vs-bok och kommenterar debattens grund. Det är en distanserings­gest, inte en sammanfattning eller en argumentation.",
+        "tier": "detail",
+        "title": "Vad är retorisk distans?"
+      },
+      {
+        "n": 5,
+        "text": "A \"sammanfattar resonemang\" — meningen sammanfattar inte argumenten, den BACKAR från dem. B \"nyanserar ensidig argumentation\" — Åbergs text är redan nyanserad (\"missförstå mig inte\", \"men samtidigt\"); meningen lägger inte till nyans utan distanserar sig. C \"egentligen överens\" — meningen säger inte att de är överens, bara att båda spekulerar; det är en metakommentar om debattformen, inte ett påstående om konsensus. D \"skapar distans\" — exakt det metasteg som steg 3 och 4 beskriver.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är D. Sista meningen lyfter Åberg ur debatten och placerar både honom och Nilsson på spekulationsnivå — en distanserande gest. Insikten i en mening: meningar med \"jag medger / vi alla / kanske bara\" är ofta metakommentarer om själva debatten snarare än argument inom den.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid funktionsfrågor om en specifik mening — fråga vad meningen GÖR, inte bara vad den SÄGER. Sista meningar som vidkänner spekulation eller kallar fram metanivå (\"jag medger / vi spekulerar\") fungerar oftast som distanserande, inte sammanfattande. Triggern: \"vilken funktion fyller meningen\" → leta efter meta-signaler (\"jag erkänner\", \"vi gör alla\")."
   },
   "var-2026-verb1-LÄS-017": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att blanda ihop aluminium- och järnhalterna med dammbyggen.",
-        "why_wrong": "Texten säger att aluminiumhalterna är 'naturligt höga' och järnet 'ökande' — inget kausalt samband med kraftverksdammarna; sträcker sig för långt."
+        "why_tempting": "Det är frestande att läsa \"höga halter aluminium och järn\" och tro att dessa metaller är orsaken till nedgången.",
+        "why_wrong": "Texten säger att aluminium- och järnhalter är NATURLIGT höga — inte att de orsakats av dammar. De är en SEPARAT mekanism för fosforns biologiska otillgänglighet (en andra problem), inte orsaken till nedgången i halterna. B blandar ihop två olika resonemang."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att texten handlar om fiskodling.",
-        "why_wrong": "Fiskodling är textens potentiella LÖSNING, inte orsaken till näringsförändringen — kausalriktningen inverteras."
+        "why_tempting": "Många stannar vid att texten handlar mycket om fiskodling och drar slutsatsen att fiskodlingen tär på näringen.",
+        "why_wrong": "Fiskodling presenteras i hela texten som ett potentiellt POSITIVT tillskott av näring, inte som ett uttag. C inverterar fiskodlingens roll i textens resonemang."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att klimatet ökar växtligheten även vid stränderna.",
-        "why_wrong": "Texten kopplar klimatet till skogens näringsbehov, inte till strandvegetationen; strandzonen är tvärtom utslagen i reglerade vatten — alternativet sträcker sig för långt."
+        "why_tempting": "Snabbsvar är ofta att varmare klimat → mer växter → mer strandvegetation. Det låter logiskt.",
+        "why_wrong": "Texten kopplar varmare klimat till SKOGENS näringsbehov, inte till strandvegetationens utbredning. Strandvegetationen (litoralen) beskrivs snarare som UTSLAGEN av vattenreglering, inte som utbredd. D bygger en kedja som texten inte gör."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten anger att den generella nedgången i näringshalter knyts till 'ett ökat näringsbehov i våra skogar påskyndat av ett varmare klimat' — alltså att skogens växtlighet tar upp mer näring. Det är skogen som suger näringen, klimatet är bara en accelerator.",
-    "technique": "Vid 'orsak till förändring X'-frågor: hitta verbformen som direkt kopplar X till sin orsak ('knyts till', 'beror på') och parafrasera den."
+    "framework_id": null,
+    "pitfall": "Vetenskapliga texter har ofta flera parallella mekanismer (här: skogens upptag, mindre erosion, aluminium/järn-bindning). Det är lätt att blanda ihop dem. Botemedlet: håll reda på VAD varje mekanism förklarar — denna fråga handlar om nedgången i halter, inte om varför fosforn binds upp.",
+    "solution_path": "Texten anger två orsaker till sjunkande näringshalter i norrländska vatten — ökat näringsbehov i skogarna (påskyndat av varmare klimat) och minskad erosion när kalfjället täcks av växter. Alternativ A fångar den första: skogens växtlighet tar upp mer näring. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta vad TEXTEN ANGER som orsak till de förändrade närings­halterna i Vindelälven och liknande norrländska vatten. Vi söker en uttrycklig orsaksformulering, inte ett rimligt antagande.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Förklaringen kommer i första styckets slut: \"Den förhärskande teorin idag är att denna generella nedgång i näringshalter kan knytas till ett ökat näringsbehov i våra skogar påskyndat av ett varmare klimat och till minskad erosion då allt mer av kalfjället täcks av växter.\"",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: skogen runt vattendragen växer mer (delvis för att klimatet är varmare) och behöver mer näring — det näringsbehovet fångar upp näring som annars skulle hamnat i vattnet. Dessutom rinner mindre näring ut från fjället eftersom växter binder marken.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "När växter (träd, buskar, fjällvegetation) växer drar de in fosfor, kväve och andra närsalter ur marken — växten BINDER näringen i sina rötter, stam, blad. Mindre näring blir då kvar att rinna ut med vattnet. Det är exakt det texten beskriver med \"ökat näringsbehov i våra skogar\".",
+        "tier": "detail",
+        "title": "Vad betyder att näring \"tas upp av växtligheten\"?"
+      },
+      {
+        "n": 5,
+        "text": "A \"näring tas upp av skogens växtlighet\" — matchar \"ökat näringsbehov i våra skogar\" rakt av. B \"kraftverksdammar har ökat järn/aluminium\" — texten säger att järn och aluminium förekommer NATURLIGT (\"naturligt höga halter\"), inte att dammar orsakade ökningen. C \"fiskodlingar har krävt mer näring\" — fiskodling beskrivs tvärtom som en näringskälla, inte som något som tär på näringen. D \"varmare klimat → strandvegeta­tionens utbredning\" — strandvegetationen FÖRSVINNER vid reglering, den utbreder sig inte; och klimateffekten i texten gäller skogen, inte stranden.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är A. Den ökade upptagningen av näring i skogens växtlighet (påskyndad av varmare klimat) är textens uttryckliga orsaksförklaring. Insikten i en mening: vid \"vad anges som orsak\" — sök forskartextens egna kausalord (\"kan knytas till\", \"beror på\", \"orsakas av\") och kopiera den orsaken; rimliga gissningar utanför textens formulering är fällor.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid \"vad anges som orsak\"-frågor — sök kausalmarkörer i texten (\"kan knytas till\", \"beror på\", \"orsakas av\", \"den förhärskande teorin är\"). Den första kausalsatsen efter sådana ord är oftast svaret. Triggern: \"vad ANGES som orsak\" → leta efter forskartextens egna orsakskonstruktion, inte efter externt rimliga förklaringar."
   },
   "var-2026-verb1-LÄS-018": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att aluminiumet i pelagialen är den direkta orsaken.",
-        "why_wrong": "Aluminiumet är mekanismen, inte orsaken — det blir avgörande just därför att litoralen är tom; sträcker sig för långt genom att stanna i mekanismen."
+        "why_tempting": "Det är lätt att läsa \"reagerar med aluminium och järn\" och dra slutsatsen att en ökning av aluminium är orsaken.",
+        "why_wrong": "Aluminium- och järnhalterna beskrivs som NATURLIGT förekommande, inte som något som ökat. De är passiva reaktanter — det aktiva problemet är att fosforn saknar ETT BÄTTRE BINDNINGSMÅL (organiskt material). B förväxlar reaktant med orsak."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att fosfor i sediment ofta är bunden organiskt.",
-        "why_wrong": "Texten säger tvärtom — det är problem att organiskt material SAKNAS i litoralen; alternativet inverterar."
+        "why_tempting": "Det är frestande att tänka \"bunden i organiskt material\" eftersom ordet organiskt återkommer i texten.",
+        "why_wrong": "Texten säger att fosforn INTE binds i organiskt material i Ströms Vattudal (för att det organiska materialet saknas i litoralen) — och ATT den inte binds där är just problemet. C inverterar logiken; om fosforn vore bunden i organiskt material skulle den vara biologiskt TILLGÄNGLIG."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att fiskodlingen styr fosfortillgängligheten.",
-        "why_wrong": "Pilotstudien visade att låg tillgänglighet rådde 'oberoende av' om mätningen gjordes vid fiskodlingen — det fanns mer fosfor där, men inte mer tillgänglig sådan."
+        "why_tempting": "Snabbsvar är ofta att om totalmängden fosfor är större vid fiskodlingen, så är det fiskodlingens koncentration som är problemet.",
+        "why_wrong": "Texten säger att TOTALMÄNGDEN fosfor är större under odlingen — men frågan gäller TILLGÄNGLIGHET, inte mängd. Bindningsmekanismen (aluminium/järn) är densamma uppströms, nedströms och under odlingen. D blandar ihop kvantitet med biotillgänglighet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Den specifika kvalifikationen står i andra stycket: om det inte finns organiskt material i litoralen där fosforn kan binda, reagerar fosforn istället med aluminium och järn ute i pelagialen och blir biologiskt otillgänglig. Avsaknaden av strandzonens vegetation är alltså den utlösande orsaken.",
-    "technique": "Vid orsaksfrågor med flera mekanismer: hitta den utlösande premissen ('om X inte finns, då…') snarare än det första steget i kedjan."
+    "framework_id": null,
+    "pitfall": "Det är lätt att ta reaktanten (aluminium/järn) för orsaken bara för att den nämns mest aktivt i meningen. Botemedlet: fråga \"vad SAKNAS som skulle förändrat utfallet?\" — det är där orsaken bor, inte hos den kemiska reaktanten.",
+    "solution_path": "Texten förklarar: om det INTE finns organiskt material i litoralen (strandzonen) som fosfor kan bindas till, reagerar fosforn istället med aluminium och järn ute i pelagialen och blir biologiskt otill­gänglig. Det är litoralvegetationens avsaknad som driver problemet. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta varför mycket av fosforn i Ströms Vattudal är BIOLOGISKT OTILLGÄNGLIG — alltså låst, inte tillgänglig för växter och alger att använda.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Förklaringen kommer i mitten av första stora stycket: \"Om det inte finns tillgängligt organiskt material i litoralen (strandzonen) som fosfor kan bindas in i, så kommer fosforn att reagera med detta aluminium och järn ute i pelagialen och bli biologiskt otillgänglig.\"",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: fosforn har två möjliga \"hem\" — den kan binda till organiskt material vid stranden (bra, då är den biologiskt användbar) eller reagera med aluminium/järn i den öppna vatten­massan (dåligt, då är den låst). Om strandhabitatet är förstört finns inget organiskt material att binda till — fosforn hamnar i fel \"hem\".",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Litoralen är strandzonen — det grunda området närmast stranden där vegetationen normalt sitter. I kraftverksdammar slås den ut av upprepad torrläggning när vattennivån regleras. När litoralen är tom på vegetation finns ingen organisk substans där fosforn kan binda — den drivs ut i pelagialen och låses i metaller.",
+        "tier": "detail",
+        "title": "Vad är litoralen och varför är den tom?"
+      },
+      {
+        "n": 5,
+        "text": "A \"avsaknaden av vegetation i litoralen\" — exakt textens orsaks­kedja: ingen litoral-vegetation → inget organiskt material → fosforn binds i metaller istället. B \"den ökande halten aluminium\" — texten säger att aluminiumhalten är NATURLIGT hög, inte att den ökar; och aluminium är reaktanten, inte primärorsaken. C \"bunden i organiskt material\" — det är raka motsatsen, det är just AVSAKNADEN av sådan bindning som är problemet. D \"koncentrerats till bottnen vid fiskodlingen\" — texten säger att totalmängden är större under odlingen, men frågan handlar om TILLGÄNGLIGHET, inte mängd.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är A. När strandvegetationen är borta saknas organiskt material att binda fosforn till — den hamnar i pelagialen och låses i aluminium/järn. Insikten i en mening: vid orsaksfrågor med \"om-så\"-konstruktioner — negationen i \"om\"-satsen är ofta orsaken (här: \"OM det inte finns material\" → svaret är AVSAKNADEN av materialet).",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid orsaksfrågor med \"om-så\"-konstruktioner i texten — den NEGATIVA betingelsen i \"om\"-satsen är ofta orsaken. \"Om det INTE finns X, så händer Y\" betyder att avsaknaden av X orsakar Y. Triggern: \"vad orsakar Y\" → sök \"om inte\"-satser i texten."
   },
   "var-2026-verb1-LÄS-019": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tolka regleringen som en förstärkare av all påverkan i dammen.",
-        "why_wrong": "Förhållandet är tvärtom: regleringen orsakar bristen, fiskodlingen lindrar — alternativet inverterar riktningen."
+        "why_tempting": "Det är frestande att tänka att fiskodling normalt sett är miljö­skadlig (övergödning) och att reglering kunde göra det värre.",
+        "why_wrong": "Texten gör en ANNORLUNDA värdering: i en kraftverksdamm där litoralen är utslagen är fiskodlingens näringstillförsel POSITIV. Steg 2 visar att forskarna kallar det en \"miljötjänst\". A importerar en värdering som inte gäller i textens kontext."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att vattenregleringen 'gör fiskodlingen möjlig' eller positiv.",
-        "why_wrong": "Texten ger regleringen NEGATIVA effekter (utslagen litoral); B förutsätter motsatsen."
+        "why_tempting": "Om du minns regeln som \"de två är på samma sida\" — alltså båda bidrar till samma utfall — låter B rimligt: reglering hjälper fiskodling.",
+        "why_wrong": "Regleringen GÖR ingenting positivt i texten — den slår ut litoralen och skapar näringsbrist. Den kan inte \"påskynda fiskodlingens positiva effekter\" eftersom den själv går åt motsatt håll. B bygger en allians som texten inte beskriver."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att fiskodling annars beskrivs som miljöproblem.",
-        "why_wrong": "I just denna miljö är det tvärtom — fiskodlingen motverkar regleringens effekt, inte tvärtom; alternativet flyttar polerna fel."
+        "why_tempting": "Vänster-till-höger-läsning ger lätt intrycket att fiskodling \"motverkar\" någonting i texten — och regleringen är det som närmast omtalas.",
+        "why_wrong": "Fiskodlingen motverkar VATTENREGLERINGENS NEGATIVA effekter, inte positiva. Steg 2 visar att regleringen orsakar näringsbrist; fiskodlingen motverkar bristen. C får riktningen rätt men tecknet fel."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Vattenregleringen slår ut litoralen och skapar näringsbrist; fiskodlingen tillför kontinuerligt biologiskt tillgänglig näring, vilket i sin tur kan ersätta den föda som litoralen normalt skulle ge. Fiskodlingen kompenserar alltså för regleringens negativa effekter — texten kallar det 'miljötjänst'.",
-    "technique": "Vid 'relation mellan X och Y'-frågor: identifiera vem som orsakar problemet och vem som lindrar det innan du väljer riktningen."
+    "framework_id": null,
+    "pitfall": "Det är lätt att importera en värdering från en annan kontext (\"fiskodling är dåligt\") och låta den styra läsningen. Botemedlet: läs textens egen värdering i den specifika situationen — i en näringsfattig kraftverksdamm är näringstillförsel just det som behövs.",
+    "solution_path": "Vattenreglering skadar litoralen och ger näringsbrist i kraftverks­dammar (negativ effekt). Fiskodling tillför näring och kan ersätta den litorala födobasen — alltså KOMPENSERA för regleringens skada. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta relationen mellan TVÅ saker — vattenreglering och fiskodling — när det gäller näringen i en kraftverksdamm. Vi söker alltså hur den ena påverkar det den andra gör (positivt eller negativt, och åt vilket håll).",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Sambandet beskrivs när texten introducerar undantaget från oligotrofi-problemet: \"Ett undantag från sådana ekosystemeffekter i dessa onaturligt oligotrofa vatten tycks nu skönjas i magasin som länge har haft öppen fiskodling… vatten där det kontinuerligt och under lång tid har tillförts organiskt tillgänglig näring.\" Och tydligare: \"fiskodlingen kan utföra en miljötjänst.\"",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: vattenregleringen är dålig för näringen — den slår ut strandzonen och dammen blir näringsfattig. Fiskodlingen är bra för näringen — den tillför organiskt material. De drar alltså åt MOTSATT håll, och fiskodlingens positiva effekt kompenserar för regleringens negativa.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Att kompensera för en negativ effekt betyder att JÄMNA UT eller MOTVERKA den, så att slutresultatet närmar sig det normala igen. I texten är vattenregleringens skada att näring försvinner; fisk­odlingen återinför näring — det är just kompensation, inte att den FÖRSTÄRKER något.",
+        "tier": "detail",
+        "title": "Vad betyder \"kompensera för\"?"
+      },
+      {
+        "n": 5,
+        "text": "A \"reglering förvärrar fiskodlingens negativa effekter\" — fiskodlingen presenteras som POSITIV i texten, inte negativ. B \"reglering påskyndar fiskodlingens positiva effekter\" — regleringen påskyndar ingenting positivt, den slår ut litoralen. C \"fiskodling motverkar regleringens positiva effekter\" — regleringen har inga positiva näringseffekter i texten. D \"fiskodling kompenserar för regleringens negativa effekter\" — exakt den motsats-balans som steg 3 beskriver.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är D. Vattenregleringen drar näringen NER och fiskodlingen drar den UPP igen — en kompensation. Insikten i en mening: vid relations-frågor med två faktorer — bestäm tecknet på vardera (positiv eller negativ) och hur de samspelar (förstärkning, försvagning, kompensation).",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid relations-frågor med två faktorer — bestäm tecknet på vardera (positiv/negativ effekt på det aktuella systemet) och välj sedan alternativet där tecknen är konsekventa. Triggern: \"hur är relationen mellan X och Y\" → märk X och Y med + eller − för utfallet, och sök alternativet som matchar."
   },
   "var-2026-verb1-LÄS-020": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att haka upp sig på att Östersjön och näringsöverskott nämns mot slutet.",
-        "why_wrong": "Östersjön kommer in som en bonuseffekt, inte som textens kärnfråga — sträcker sig för långt genom att fokusera på ett sidospår."
+        "why_tempting": "Det är frestande att läsa flera Östersjö-nämningar och tänka att Östersjöns näringsöverskott är textens problem.",
+        "why_wrong": "Östersjön nämns som AVRINNINGSOMRÅDE och som kontrast (\"miljötjänst\" fungerar både norr och söder), inte som textens fråga. Som steg 2 visar är problemområdet de norrländska inlandsvattnen, inte havet."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att texten handlar om vilda fiskbestånd och deras tillväxt.",
-        "why_wrong": "Fiskbestånden är ett SYMTOM på näringsbristen, inte den centrala frågeställningen; alternativet stannar i symptomen."
+        "why_tempting": "Många stannar vid \"tusenbröder\" och \"vilda fiskbestånd\" och tror att fisken är textens centrum.",
+        "why_wrong": "Fiskbestånden är en KONSEKVENS av näringsläget, ett delspår — men textens analytiska fokus är vattnets näring (mätningar, sediment­studier, näringsteorier). Steg 2 visar att hela utredningen kretsar kring näringshalter, inte fiskpopulationer."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid frasen 'utnyttjas bäst' som låter pragmatisk.",
-        "why_wrong": "Frågan är inte hur befintlig näring används effektivare utan hur näringsbrist motverkas; sträcker sig för långt mot en optimerings-fråga texten inte ställer."
+        "why_tempting": "Snabbsvar är ofta att \"hur utnyttja näringen bäst\" är textens fråga eftersom den diskuterar Robin Hood-effekten och fiskfoder.",
+        "why_wrong": "Texten frågar inte hur befintlig näring SKA FÖRDELAS — den frågar hur näring kan TILLFÖRAS vatten där den saknas. D vänder pilen från näringsbrist till resursoptimering."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Hela texten kretsar kring att näringshalterna i svenska inlandsvatten har sjunkit till kritiskt låga nivåer och hur fiskodling kan användas för att återföra biologiskt tillgänglig näring. Den centrala frågan är därför hur våra inlandsvatten kan bli mer näringsrika.",
-    "technique": "Vid 'central frågeställning'-frågor: parafrasera abstract — vilken brist eller fråga föranleder hela artikeln?"
+    "framework_id": null,
+    "pitfall": "Delspår (fiskbestånd, ekonomi, Östersjön) kan se ut som centrumfrågor eftersom de tar plats. Botemedlet: fråga \"binder den HÄR frågan ihop första och andra halvan av texten?\" — om inte, är det ett delspår.",
+    "solution_path": "Textens röda tråd är problemet med näringsbrist i svenska inlandsvatten (särskilt norrländska kraftverksdammar) och om/hur fiskodling kan öka näringen där. Det är frågan om hur dessa vatten kan bli MER närings­rika. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta vilken FRÅGESTÄLLNING som driver hela texten — den övergripande problemformuleringen, inte ett enskilt resultat eller delavsnitt.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Textens första halva diagnostiserar problemet: \"halterna närsalter\" har sjunkit till \"kritiskt låga nivåer\" i norrländska vatten, vattenreglering förvärrar det, fosforn blir biologiskt otillgänglig. Andra halvan introducerar lösningen: fiskodling som kan tillföra biologiskt tillgänglig näring och utgöra en \"miljötjänst\".",
+        "tier": "essential",
+        "title": "Hitta tematiska tråden"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: våra norrländska vatten har för LITE näring — det är ekosystem-skadligt. Forskarna undersöker om fiskodling (som tillför näring) kan vara svaret. Hela texten handlar om att näringsfattigdomen är problemet och näringsTILLFÖRSEL är den utvärderade lösningen.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Texten definierar det själv: minskande halter närsalter — alltså att vatten BLIR näringsfattigare. Det är detta som är textens nyckel­problem; rubriken \"fiskodling vid vattenkraftverk\" pekar mot lösningen, men problemet är näringsbrist i regleringsdammar.",
+        "tier": "detail",
+        "title": "Vad betyder \"oligotrofiering\"?"
+      },
+      {
+        "n": 5,
+        "text": "A \"minska Östersjöns näringsöverskott\" — Östersjön nämns men som ett OMRÅDE där överskott historiskt funnits, inte som textens fråga; tvärtom används Östersjöns avrinning som potentiell näringskälla för inlandsvatten. B \"hur kan svenska inlandsvatten bli mer näringsrika\" — exakt vad steg 2 och 3 visar. C \"vilda fiskbestånd\" är ETT delspår (följdeffekt av näringen), inte hela textens fråga. D \"hur kan näringen utnyttjas bäst\" — alternativet vänder pilen åt fel håll; texten frågar hur näringen kan ÖKAS, inte hur befintlig näring ska fördelas.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är B. Hela texten kretsar kring att norrländska inlandsvatten har för lite näring och hur den bristen kan motverkas. Insikten i en mening: vid \"vilken frågeställning står i centrum\" — diagnosen i första halvan och lösningen i andra halvan ska peka på samma fråga; delspår (fiskbestånd, miljötjänst, ekonomi) är följder, inte frågan.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid \"vilken frågeställning står i centrum\"-frågor — kolla att både första halvans DIAGNOS och andra halvans LÖSNINGSFÖRSLAG handlar om samma fråga. Det som binder ihop dem ÄR centrumfrågan. Triggern: \"frågeställning i centrum\" → diagnostiken (problemet) + lösnings­förslaget (svaret) → den fråga båda förhåller sig till."
   },
   "var-2026-verb1-MEK-021": {
     "_meta": {
@@ -2796,6 +3262,336 @@
     ],
     "technique": "Tyska sich-lånord: när huvudordet är ett reflexivt verb av tysk typ (erinra sig, befinna sig, förfoga över, ångra sig), behåll 'sig' som obligatoriskt och tolka det som inåtriktad mental handling. Erinra sig = vända blicken inåt mot minnet."
   },
+  "var-2026-verb2-ELF-031": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "It's easy to grab a noun that sounds vaguely economic and ends in -ity. 'Durability' has the right shape but the wrong meaning.",
+        "why_wrong": "Durability describes how long an object lasts; you cannot live through 'years of durability'. The collocation does not exist in English. Step 4's gloss exposes the misfit."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "First instinct can be 'prosperity' if you skim only the phrase 'the economy was recovering' and miss the contrastive 'but'.",
+        "why_wrong": "The sentence sets up a contrast: the economy was recovering, BUT there had been many years of ___. The 'but' demands the opposite of recovery — Step 3 shows the gap names the hardship the recovery is climbing out of."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Left-to-right reading gives 'losing its status' and 'bomb-ed-out buildings' — a sense of disadvantage that the word 'liability' captures in finance.",
+        "why_wrong": "'Liability' means a debt or a handicap, not a period of economic hardship. You don't say 'years of liability' the way you say 'years of austerity'. Step 5's plug-in shows the collocation is wrong."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "'But' in the preceding clause is a polarity flip. If the sentence before the gap is positive ('the economy was recovering'), the gap is almost certainly the negative counterpart that 'but' introduces.",
+    "solution_path": "Gap 31 sits in 'The economy was recovering, but there had been many years of ___, and some commodities were still rationed.' The surrounding sentences describe postwar slump, bombed-out buildings, and rationing — the textbook setting for 'austerity', answer A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "The gap is a noun governed by 'years of' inside the phrase 'there had been many years of ___, and some commodities were still rationed.' So the missing word is a noun naming the economic condition that goes with rationing in postwar Britain.",
+        "tier": "essential",
+        "title": "Understand the gap"
+      },
+      {
+        "n": 2,
+        "text": "Before the gap: 'Britain was in a postwar slump. Many bombed-out buildings had yet to be reconstructed.' After the gap: 'some commodities were still rationed' and 'Britain was losing its status as a global power'. Every surrounding signal points to scarcity and belt-tightening.",
+        "tier": "essential",
+        "title": "Read around the gap"
+      },
+      {
+        "n": 3,
+        "text": "The gap is the cause-or-condition that explains why rationing was still in force. So the word names the broader economic regime — government-imposed thrift after the war — that the rationing is one symptom of.",
+        "tier": "essential",
+        "title": "Identify the relationship"
+      },
+      {
+        "n": 4,
+        "text": "'Austerity' = a period of severe economic restraint, often with cuts to spending and tight rationing — the exact term for postwar Britain in the late 1940s and early 1950s. 'Durability' = lasting quality of an object. 'Prosperity' = wealth, the opposite of what is described. 'Liability' = a debt or a disadvantage.",
+        "tier": "detail",
+        "title": "Vocabulary check"
+      },
+      {
+        "n": 5,
+        "text": "Plug each option into 'many years of ___, and some commodities were still rationed'. (A) 'years of austerity' — historically exact, pairs naturally with rationing. (B) 'years of durability' — durability is a property of objects, not an economic period; ungrammatical here. (C) 'years of prosperity' — directly contradicts 'postwar slump' and 'rationed'. (D) 'years of liability' — liability is not a period one lives through; the collocation 'years of liability' does not exist.",
+        "tier": "essential",
+        "title": "Plug and test"
+      },
+      {
+        "n": 6,
+        "text": "The answer is A. 'Postwar slump' + 'rationing' + 'years of ___' is the standard set-up for 'austerity' in any British history piece.",
+        "tier": "essential",
+        "title": "Conclusion"
+      }
+    ],
+    "technique": "Cloze nouns after 'years of ___' name a sustained CONDITION the speaker lived through. Trigger: 'years of ___' + rationing / shortages / belt-tightening = 'austerity' is the historian's default word."
+  },
+  "var-2026-verb2-ELF-032": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Many stop at 'embodied' and 'formidable' earlier in the paragraph and want a strong-sounding adjective; 'strong possibility' is also a common collocation in general English.",
+        "why_wrong": "A 'strong possibility' implies high real-world likelihood. The passage explicitly says Britain was 'visibly and rapidly declining' — the possibility was not strong, it was a fantasy. Step 2's surrounding context rules A out."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "First instinct can be 'realistic' if you read 'embodied' as 'made the idea tangible' — Bond gives the wish a face.",
+        "why_wrong": "'Realistic possibility' means likely in reality. The passage frames Bond as 'escapist wish fulfilment' — the opposite of realistic. Step 3's reality-vs-fantasy axis makes B impossible."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "If you remember the rule as 'critics write nuanced things', a vague abstract word like 'complex' can feel safe — academic prose often hedges.",
+        "why_wrong": "Complexity is not the dimension the passage is on. The writers are contrasting fiction (Bond's world) with reality (declining Britain), not arguing the possibility has many sub-parts. Step 4's gloss shows 'complex' adds no relevant content."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "When a passage juxtaposes 'wish' or 'escapist' with 'declining' or 'losing', it is constructing a fantasy-vs-reality axis. Adjectives that name strength or realism will always be the wrong side of that axis — even if they sound impressive.",
+    "solution_path": "Gap 32 sits in 'Bond embodied the ___ possibility that England might once again be placed at the centre of world affairs during a period when its world-power status was visibly and rapidly declining.' Bond is a fantasy figure offering an escapist make-believe — the possibility is fictional, not real. That is C — imaginary.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "The gap is an adjective modifying 'possibility', inside a quote describing what Bond 'embodied'. So you need an adjective that captures the KIND of possibility a fiction-al hero offers — real, hopeful, doubtful, made-up?",
+        "tier": "essential",
+        "title": "Understand the gap"
+      },
+      {
+        "n": 2,
+        "text": "Before the gap: 'his books provided an escapist form of wish fulfilment.' After the gap: 'during a period when its world-power status was visibly and rapidly declining.' Both framings stress that Bond's restored Britain was not real — it was a fantasy compensating for actual decline.",
+        "tier": "essential",
+        "title": "Read around the gap"
+      },
+      {
+        "n": 3,
+        "text": "The gap names the gap (no pun intended) between reality (Britain declining) and the books' premise (Britain central again). The adjective has to label the books' premise as fictitious — a possibility that exists only in the story-world.",
+        "tier": "essential",
+        "title": "Identify the relationship"
+      },
+      {
+        "n": 4,
+        "text": "'Imaginary' = existing only in the imagination; not real. 'Strong' = forceful, but doesn't capture fiction vs reality. 'Realistic' = close to reality — the opposite of what the passage describes. 'Complex' = having many parts — neutral on whether the possibility is real or not.",
+        "tier": "detail",
+        "title": "Vocabulary check"
+      },
+      {
+        "n": 5,
+        "text": "Plug each option in. (A) 'strong possibility that England might once again be placed at the centre' — would mean Bond's restored Britain was likely, contradicting 'wish fulfilment' and 'declining'. (B) 'realistic possibility' — same contradiction, even sharper. (C) 'imaginary possibility that England might once again be placed at the centre' — captures the fantasy compensation exactly: fiction repairs what reality cannot. (D) 'complex possibility' — adds nothing the passage cares about; complexity is not the issue.",
+        "tier": "essential",
+        "title": "Plug and test"
+      },
+      {
+        "n": 6,
+        "text": "The answer is C. 'Escapist wish fulfilment' + 'rapidly declining' = an IMAGINARY restoration, not a real one.",
+        "tier": "essential",
+        "title": "Conclusion"
+      }
+    ],
+    "technique": "Cloze adjectives before 'possibility' are evaluating the TRUTH-STATUS of a claim. Trigger: 'wish fulfilment' or 'escapist' or 'fantasy' anywhere nearby = the adjective is on the fictional side ('imaginary', 'hypothetical', 'fanciful'), not the real side ('strong', 'realistic')."
+  },
+  "var-2026-verb2-ELF-033": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to associate Bond — a Cold-War creation — with 'backward' or dated. 'Globe-trotting tale of British exceptionalism' can read like nostalgic and so 'backward'.",
+        "why_wrong": "The 'anything but' clause then has to mean the film was forward-looking — but the very next sentences describe production chaos, not a forward-looking film. Step 5 shows the contrast doesn't land."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "'Globe-trotting tale' literally is adventurous — Bond movies are action-adventure films, so the adjective is almost a default.",
+        "why_wrong": "If the premise seemed adventurous, 'anything but' would say the production was dull. But the production was chaotic, not dull; the contrast misses. Step 3's parsing of 'anything but' keeps you honest."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Left-to-right reading gives 'British exceptionalism' — a fancy-sounding phrase — and 'sophisticated' picks up the same register.",
+        "why_wrong": "If the premise seemed sophisticated, 'anything but' would say the production was crude. But the production described — multiple drafts, five writers, name changes — IS the picture of a sophisticated, much-revised process. The contrast collapses. Step 5 catches it."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "'Anything but' flips polarity, but only on the adjective in the gap. Students sometimes apply the flip to the wrong half of the sentence. Anchor the contrast: gap-adjective vs. the evidence that follows 'anything but'.",
+    "solution_path": "Gap 33 sits in 'But if the premise for this globe-trotting tale of British exceptionalism seems ___, the making of the film was anything but.' The 'anything but' construction means the gap is the OPPOSITE of what the production was. The next sentences describe a chaotic production (multiple title changes, five writers, several screenplay iterations) — so the premise must seem simple. That is D — straightforward.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "The gap is an adjective after 'seems', inside an 'if A, B was anything but' construction. So the adjective in the gap is the OPPOSITE of whatever B (the film's making) actually was.",
+        "tier": "essential",
+        "title": "Understand the gap"
+      },
+      {
+        "n": 2,
+        "text": "Before the gap: 'the premise for this globe-trotting tale of British exceptionalism' — and the premise was described earlier as 'bring Bond out of retirement to track down a scientist', a simple action-film plot. After the gap: 'the making of the film was anything but. Its title was changed several times. The screenplay went through several iterations; five people are credited as writers.' That is the opposite of simple.",
+        "tier": "essential",
+        "title": "Read around the gap"
+      },
+      {
+        "n": 3,
+        "text": "The 'anything but' construction is a contrast device. 'If A seems X, B was anything but X' means: A looks X from the outside; B (the related thing) is the opposite of X. Since the film's production was complicated and messy, the premise must seem its opposite — simple, easy, clear.",
+        "tier": "essential",
+        "title": "Identify the relationship"
+      },
+      {
+        "n": 4,
+        "text": "'Straightforward' = simple, direct, easy to understand. 'Backward' = pointing to the past, or old-fashioned. 'Adventurous' = full of risk and excitement (a feature, not a level of complexity). 'Sophisticated' = refined, complex — which would make the contrast collapse, since the film's production was ALSO complicated.",
+        "tier": "detail",
+        "title": "Vocabulary check"
+      },
+      {
+        "n": 5,
+        "text": "Plug each option into 'the premise seems ___, the making of the film was anything but'. (A) 'seems backward' — backward and 'anything but' would mean the film was modern; the writer never makes that point. (B) 'seems adventurous' — and 'anything but' would mean a dull production; the production was actually difficult, not boring. (C) 'seems sophisticated' — and 'anything but' would mean an unsophisticated production; but the evidence given (five writers, multiple drafts) is exactly what a sophisticated production looks like — the contrast fails. (D) 'seems straightforward' — and 'anything but' means the making was tangled and complicated; that matches the title changes, screenplay iterations, and five-writer chaos perfectly.",
+        "tier": "essential",
+        "title": "Plug and test"
+      },
+      {
+        "n": 6,
+        "text": "The answer is D. The 'anything but' trick reverses the gap: the production was complicated, so the premise must seem its opposite — straightforward.",
+        "tier": "essential",
+        "title": "Conclusion"
+      }
+    ],
+    "technique": "Cloze adjectives inside an 'if X seems ___, Y was anything but' frame are the OPPOSITE of what Y is shown to be. Trigger: 'seems ___, … was anything but' — solve for the antonym of the next sentences."
+  },
+  "var-2026-verb2-ELF-034": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Many stop at #MeToo and Phoebe Waller-Bridge later in the paragraph and import a tone of regret — 'reluctantly' feels apologetic, which matches that tone.",
+        "why_wrong": "'Reluctantly' would say the franchise didn't want to write Bond girls as sexual props but had to. There is no such evidence; the franchise designed them that way. Step 5's plug-in exposes the mismatch."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "It's easy to soften the claim — 'occasionally many characters have been props' — to be charitable to the franchise. 'Occasionally' is a softer hedge.",
+        "why_wrong": "The sentence already quantifies with 'many' and uses the present perfect for a long-standing pattern, not an occasional one. 'Occasionally' contradicts 'many of the female characters have been' — Step 3's grammar check rules it out."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "If you remember the rule as 'sentence-initial adverbs often link cause and effect', 'consequently' is the default first guess for a transition adverb.",
+        "why_wrong": "'Consequently' needs a cause in the sentence before. The previous sentence says 'the clearest evidence of change may be found … of women' — that is a topic announcement, not a cause. So 'consequently' has nothing to point back to. Step 5's plug-in shows D leaves the sentence dangling."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Sentence-initial adverbs followed by a comma look like connectives but most of them are frame-setters, not cause-effect links. Resist the urge to guess 'Consequently' / 'Therefore' without finding the cause they would refer to.",
+    "solution_path": "Gap 34 opens the sentence '___, many of the female characters have been mere sexual props, often sporting provocative names.' The present-perfect 'have been' covers the franchise's whole past; the next sentences contrast it with present-day reform (Phoebe Waller-Bridge, #MeToo). The adverb names the long past before the shift — that is B — Historically.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "The gap is a sentence-initial adverb followed by a comma. These adverbs typically tell you the FRAME within which the rest of the sentence is true — habitually, exceptionally, as a consequence, across time. So the missing word labels the time-frame or manner of the claim that follows.",
+        "tier": "essential",
+        "title": "Understand the gap"
+      },
+      {
+        "n": 2,
+        "text": "Before the gap: 'the clearest evidence of change may be found not in the film's depiction of Bond, but of women.' After the gap: 'many of the female characters have been mere sexual props…' and then 'In the wake of #MeToo, Phoebe Waller-Bridge was tasked with… making its female figures more realistic.' That is a then-vs-now structure — the gap names 'then'.",
+        "tier": "essential",
+        "title": "Read around the gap"
+      },
+      {
+        "n": 3,
+        "text": "The paragraph is contrasting the franchise's past with its post-#MeToo revision. The sentence with the gap summarises the past; the present perfect 'have been' is the tense of long-standing patterns. The adverb has to name 'across the franchise's history' — i.e. up to now.",
+        "tier": "essential",
+        "title": "Identify the relationship"
+      },
+      {
+        "n": 4,
+        "text": "'Historically' = throughout the history of something, across the past — the standard adverb for franchise-long patterns. 'Reluctantly' = unwillingly. 'Occasionally' = sometimes, now and then. 'Consequently' = as a result.",
+        "tier": "detail",
+        "title": "Vocabulary check"
+      },
+      {
+        "n": 5,
+        "text": "Plug each option in. (A) 'Reluctantly, many of the female characters have been mere sexual props' — reluctance implies someone forced into it; the studios were not reluctant to write Bond girls. (B) 'Historically, many of the female characters have been mere sexual props' — names the franchise-long past that #MeToo is now reforming; the contrast fits perfectly. (C) 'Occasion-ally, many of the female characters have been mere sexual props' — but the sentence says MANY characters across the franchise, not 'occasionally'. (D) 'Consequently' — demands a preceding cause; the sentence before names evidence, not a cause.",
+        "tier": "essential",
+        "title": "Plug and test"
+      },
+      {
+        "n": 6,
+        "text": "The answer is B. The present perfect 'have been' + a follow-up about modern reform = a 'Historically, X — but now, Y' structure.",
+        "tier": "essential",
+        "title": "Conclusion"
+      }
+    ],
+    "technique": "Cloze sentence-initial adverbs with a comma usually frame the sentence's TIME or MANNER. Trigger: present-perfect 'have been' + a follow-up about recent reform (#MeToo, new directors, etc.) = 'Historically' is almost always the right frame."
+  },
+  "var-2026-verb2-ELF-035": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "First instinct can be 'sayings' if you parse 'abound' as 'are common' and read the follow-up as a piece of common wisdom about the franchise.",
+        "why_wrong": "Sayings are short proverbial phrases ('A stitch in time saves nine'); they don't take a that-clause asserting a specific fact about a film. Step 4's gloss separates sayings from circulating claims."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "'Arguments abound that …' is a real English collocation; if you read the follow-up as a debated point, B can feel close.",
+        "why_wrong": "Arguments are reasoned cases; the follow-up is a plain factual assertion ('MI6 has given the 007 codename to a black woman'), not a reasoning step. The register is fan speculation, not academic argument. Step 5's plug-in highlights the mismatch."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Left-to-right reading mixes 'abound' with the action-movie context and reaches for 'incidents' as a thematic fit.",
+        "why_wrong": "'Incidents' names events that actually happened; you can't have 'incidents that MI6 has given the codename' — giving a codename isn't an incident, and the construction breaks grammatically. Step 5's plug-in shows D doesn't fit the syntax."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Plug-and-test is essential for cloze nouns: many options share a vague semantic field ('speculation', 'claims', 'rumours', 'arguments') but only a few survive the collocation rules of the surrounding verbs. 'X abound that …' is one such rigid frame.",
+    "solution_path": "Gap 35 opens the sentence '___ abound that, following Bond's retirement, MI6 has given the 007 codename to a black woman.' The construction is 'X abound that …' — a plural noun naming unconfirmed claims circulating about an upcoming film. That is C — Rumours.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "The gap is a plural noun, subject of 'abound', followed by a 'that'-clause naming an unconfirmed claim about a future film. So the missing word names the kind of communication that spreads informally and gets reported as 'X that …'.",
+        "tier": "essential",
+        "title": "Understand the gap"
+      },
+      {
+        "n": 2,
+        "text": "Before the gap: the paragraph is discussing changes to Bond films — how women are now written, what producers are trying. After the gap: 'that, following Bond's retirement, MI6 has given the 007 codename to a black woman.' This is a specific unconfirmed claim about a plot decision — exactly the kind of thing that circulates as fan speculation.",
+        "tier": "essential",
+        "title": "Read around the gap"
+      },
+      {
+        "n": 3,
+        "text": "'X abound that …' is a fixed-shape collocation: X is a plural noun for an informal claim, and 'abound' means 'are everywhere'. The most common fillers in English are 'Rumours abound that …' and 'Reports abound that …'. Both name informal information circulating about a not-yet-official fact.",
+        "tier": "essential",
+        "title": "Identify the relationship"
+      },
+      {
+        "n": 4,
+        "text": "'Rumours' = unverified claims passed informally between people. 'Sayings' = short fixed sentences expressing common wisdom (proverbs). 'Arguments' = reasoned cases for a position. 'Incidents' = events that happen — concrete occurrences, not claims about future events.",
+        "tier": "detail",
+        "title": "Vocabulary check"
+      },
+      {
+        "n": 5,
+        "text": "Plug each option into '___ abound that … MI6 has given the 007 codename to a black woman'. (A) 'Sayings abound that …' — sayings are fixed phrases, not assertions of fact; ungrammatical here. (B) 'Arguments abound that …' — possible English, but an 'argument' is a reasoned case FOR something, not a circulating unverified claim. The follow-up doesn't read as a reasoned case. (C) 'Rumours abound that …' — natural and exact: this is the collocation for circulating speculation. (D) 'Incidents abound that …' — incidents are events, not claims; 'incidents that MI6 has given' is not English.",
+        "tier": "essential",
+        "title": "Plug and test"
+      },
+      {
+        "n": 6,
+        "text": "The answer is C. 'Rumours abound that …' + unconfirmed future-plot claim = the canonical English collocation.",
+        "tier": "essential",
+        "title": "Conclusion"
+      }
+    ],
+    "technique": "'___ abound that …' is a fixed English collocation that almost always takes 'rumours' or 'reports' as its subject. Trigger: '___ abound that …' + unconfirmed assertion about a future or behind-the-scenes development = 'Rumours'."
+  },
   "var-2026-verb2-ELF-036": {
     "_meta": {
       "generated_at": 1778447640471,
@@ -2928,263 +3724,663 @@
   },
   "var-2026-verb2-LÄS-011": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att budbärare av döden påminner oss om döden.",
-        "why_wrong": "De är 'tidens' budbärare, inte dödens — de gör motsatsen, suddar ut spåren av de döda; alternativet vänder funktionen."
+        "why_tempting": "Det är frestande att associera \"tidens budbärare\" med påminnelser om tidens gång och därmed om döden.",
+        "why_wrong": "Texten är specifik: budbärarna STRYKER UT, RADERAR, suddar bort spår och imfigurer. Och deras intalan är att döden INTE gäller oss. Steg 2 visar att deras funktion är raka motsatsen till påminnelse."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid ordet 'budbärare' och associerar till dödsänglar.",
-        "why_wrong": "Texten talar om att de stryker ut minnesfigurer och avtryck — inte om att hämta människor; sträcker sig för långt utanför texten."
+        "why_tempting": "Om du minns regeln som \"dödens budbärare hämtar de döda\", låter B rimligt — det är en vanlig kulturell bild.",
+        "why_wrong": "Texten gör budbärarna till tidens, inte dödens, agenter — och deras uppgift är inte att hämta utan att RENSA EFTER. Steg 4 visar att de är propagandister, inte dödsänglar. B importerar en symbol som texten inte använder."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är att läsa propagandan som en lögn om döden själv.",
-        "why_wrong": "Lögnen handlar inte om att döden är lycklig, utan att 'allt är som det ska' — att döden inte gäller oss; missar vad som sägs."
+        "why_tempting": "Snabbsvar är ofta att texten har en lugnande ton mot slutet (\"allt är som det ska\") och att det handlar om att förskönra döden.",
+        "why_wrong": "Lugnandet är att döden INTE GÄLLER OSS — alltså ett förnekande, inte ett försköndande. Texten beskriver detta som en lögn från ett \"propa­gandaministerium\" — det är manipulation till glömska, inte ett påstående om dödens lycka. D missar att lugnandet är ett bedrägeri om relevans, inte om värde."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Tidens budbärare beskrivs explicit som propagandaministerium från en ockupationsmakt, vars uppgift är att 'intala oss att allt är som det ska' — alltså att tysta minnet av döden och de döda. De vill få oss att glömma.",
-    "technique": "Vid metafortolkning: leta efter den explicita uppgiftsbeskrivningen i texten ('med uppgift att…'), inte ordens första association."
+    "framework_id": null,
+    "pitfall": "Det är lätt att läsa figurativ prosa som om symbolerna betyder vad de gör i andra texter (\"budbärare\" = hämtare, \"död\" = slut). Botemedlet: läs vad texten själv säger att de gör — texten är sin egen ordbok för sina figurer.",
+    "solution_path": "Tidens \"budbärare\" beskrivs som agenter som STRYKER UT spår av Gunnar — reflexer, imfigurer, avtryck — och som intalar oss att döden inte gäller oss. Deras roll är att få oss att glömma den döde och döden själv. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta rollen hos tidens \"nitiska budbärare och handgångna män\" — vad de GÖR i berättarrösternas liv enligt texten.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Budbärarna beskrivs i mitten av andra stycket: \"tiden och dess nitiska budbärare och handgångna män oavbrutet söker hindra oss. De stryker ut reflexerna i fönstrens glas, imfigurerna i badrummens speglar, avtrycken efter försvunna kroppsdelar i sängkläder, soffkuddar och klädesplagg.\" Och: de ska \"intala oss att allt är som det ska och att allt vad döden mumlar genom nätterna inte gäller oss\".",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: tidens budbärare är aktiva radergummin. De suddar ut de små materiella minnen efter Gunnar (en reflex i ett glas, en imfigur i en spegel, ett avtryck i en kudde) — alla de spår som håller den döde närvarande. Och de berättar samtidigt en lugnande lögn: oroa er inte, döden gäller inte er.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Texten kallar dem utsända från \"en ockupationsmakts propaganda­ministerium\" med uppgift att återställa \"de himmelska ekvationernas kalla ordning\" — alltså en avförmänskligad logik där levande människor är \"oönskat okända faktorer\". Deras uppdrag är att tysta den känslomässiga närvaron av de döda. Det stämmer exakt med alternativ C: få oss att glömma.",
+        "tier": "detail",
+        "title": "Vad menas med \"rationalitetens kalla ordning\"?"
+      },
+      {
+        "n": 5,
+        "text": "A \"påminner oss om döden\" — raka motsatsen; de stryker ut påminnelser. B \"hämtar oss när det är dags att dö\" — texten beskriver INTE budbärarna som dödens hantlangare som hämtar oss; deras roll är att radera, inte att hämta. C \"vill få oss att glömma döden och de döda\" — exakt det steg 2 och 3 beskriver: utradering av spår + intalande att döden inte gäller. D \"lura oss att döden är ett lyckligt slut\" — de förskönar inte döden, de PROPAGERAR för dess osynlighet.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är C. Tidens budbärare suddar ut spåren efter den döde och intalar oss att döden inte är vår sak — deras roll är glömskan. Insikten i en mening: i lyrisk prosa — slå ihop verben som beskriver karaktärernas handlingar (\"stryker ut\", \"intala oss\") och fråga vad VERBEN tillsammans gör. Det är funktionen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "I lyrisk prosa — slå ihop verben som beskriver karaktärernas handlingar och fråga vad de tillsammans utgör. Här: \"stryker ut\", \"intalar\", \"återställa\" — alla pekar mot utplåning och tystande, alltså glömska. Triggern: \"vilken roll spelar X\" → kollektivverben kring X."
   },
   "var-2026-verb2-LÄS-012": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att läsa texten som en kontrast mellan livets ljusa och mörka sidor.",
-        "why_wrong": "Texten saknar 'små glädjeämnen' som motpol — sorgen är inte ställd mot vardagslycka utan mot tidens utsuddning; missar polerna."
+        "why_tempting": "Det är frestande att tänka \"texten handlar om sorg, alltså är motpolen glädje\".",
+        "why_wrong": "Sorgen efter Gunnar är förvisso central, men textens motpol är inte vardagsglädje — utan tidens utplåning av människan. Steg 2 visar att kontrasten är värme mot kyla, inte sorg mot glädje. B väljer ett abstrakt motsatspar som inte finns i texten."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att texten handlar om döden.",
-        "why_wrong": "Ungdomlig hoppfullhet finns inte alls i texten — sträcker sig för långt och importerar en kontrast som inte är där."
+        "why_tempting": "Många stannar vid att texten handlar om döden och tänker att motpolen ska vara liv eller ungdom.",
+        "why_wrong": "Texten visar inga ungdomsgestalter eller hoppfulla figurer — bara minnesbärare i en bistert sorglig värld. C antar en åldersmässig motsättning som texten inte har; motpolerna är värme/känsla mot rationalitet."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att läsa 'ockupationsmakt' som ett samhällsproblem.",
-        "why_wrong": "Ockupationsmakten är en metafor för tiden, inte ett konkret samhällsklimat; övertolkar bilden bokstavligt."
+        "why_tempting": "Snabbsvar är ofta att \"ockupationsmakt\" och \"hårdhet\" pekar mot ett samhällskritiskt motsatspar mellan instinkt och samhälle.",
+        "why_wrong": "\"Ockupationsmakt\" är textens METAFOR för tidens ordning — inte ett konkret samhälle. Det handlar inte om socialt klimat utan om en metafysisk kamp. D läser metaforen för bokstavligt och får fel sorts motsatspar."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten ställer 'vi arbetar för att hålla oss kvar vid varandra' mot 'tidens kalla rationalitet' och 'de himmelska ekvationernas kalla ordning'. Polerna är alltså mänsklig samhörighet kontra tidens opersonliga rationalitet.",
-    "technique": "Vid pol-frågor: leta efter de exakta nyckelorden i texten ('värme/känsla' kontra 'kall/rationalitet') och matcha alternativen mot dem."
+    "framework_id": null,
+    "pitfall": "Det är lätt att läsa metaforer som om de syftar på vardagliga sociala motsättningar (ockupation = krig, hård = samhället). Botemedlet: läs metaforen i textens egen mening — \"ockupationsmakt\" här är tiden, inte ett konkret regim.",
+    "solution_path": "Texten ställer två krafter mot varandra: människors känslomässiga fasthållande vid varandra (sorgen efter Gunnar, gemenskapen, minnesarbetet) mot tidens \"kalla ordning\" — \"de himmelska ekvationernas\" rationalitet som vill radera människan. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta vilka TVÅ POLER som tycks stå mot varandra i texten — alltså vilken motsättning som driver berättelsen.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Pol 1 (människor): \"Vi arbetar för att hålla oss kvar vid varandra\" — minnet av Gunnar, försök att fasthålla närvaron. Pol 2 (tiden/rationaliteten): \"tiden och dess nitiska budbärare … vill återställa världen till den plats av rationalitet där människors liv alltid utgör oönskat okända faktorer … de himmelska ekvationernas kalla ordning\".",
+        "tier": "essential",
+        "title": "Hitta båda polerna"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: på ena sidan står människornas värme och vilja att minnas, hålla ihop, ge plats åt sorgen. På den andra står en kall, rationell ordning som vill skala bort människan ur ekvationen. Texten framställer det som kamp mellan mänskligt fasthållande och tidens kyliga \"matematik\".",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Bildens innebörd är en värld där allt är förutsägbart, beräkneligt, städat — och där människor är besvärliga \"okända faktorer\" som stör. Texten kontrasterar denna kyla mot människornas värme när de håller kvar Gunnar i kön, på promenaden, i tv-rutan. Det är just A:s motsatspar: känslor mot kall rationalitet.",
+        "tier": "detail",
+        "title": "Vad är \"de himmelska ekvationernas kalla ordning\"?"
+      },
+      {
+        "n": 5,
+        "text": "A \"människors känslor — tidens kalla rationalitet\" — exakt textens huvudkontrast som steg 2-3 visar. B \"vardagsglädje — sorg\" — sorgen finns där men dess motpol är inte glädje utan tidens utplåning. C \"ungdomlig hoppfullhet — insikt om döden\" — texten gestaltar inte ungdom kontra dödsinsikt; alla karaktärer verkar vara vuxna och sorgsna. D \"överlevnadsinstinkt — hårt samhällsklimat\" — texten talar inte om samhällsklimat utan om en metafysisk/tids-ordning; kategorin är fel sort.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är A. Textens dramatiska spänning ligger mellan människornas varma fasthållande vid varandra och tidens \"kalla\" rationella ordning. Insikten i en mening: vid \"två poler\"-frågor i lyrisk prosa — sök textens egna kontrastord (\"kall\", \"varm\", \"oavbrutet\", \"vi mot dem\") och para ihop dem.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid \"två poler\"-frågor i lyrisk prosa — sök textens egna kontrastord (\"kall\" mot \"hålla kvar\", \"ordning\" mot \"oönskade faktorer\") och para ihop dem. Alternativ som handlar om abstrakta motsatspar (glädje/sorg, ung/gammal) utan textuell förankring är fällor. Triggern: \"två poler\" → leta efter adjektiv-par som beskriver två krafter."
   },
   "var-2026-verb2-LÄS-013": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att associera 'kunskapsbaserade riktlinjer' med personalutbildning.",
-        "why_wrong": "Riktlinjerna riktar sig mot vården som bedrivs, inte mot utbildningens upplägg — sträcker sig för långt mot ett område texten inte tar upp."
+        "why_tempting": "Det är frestande att läsa \"välutbildad personal\" och \"utbildning\" och tro att riktlinjernas syfte är personalutbildning.",
+        "why_wrong": "\"Välutbildad personal\" nämns som ETT av flera områden riktlinjerna lyfter, inte som riktlinjernas syfte. Som steg 2 visar är syftet att normera den faktiska vårdpraxisen — utbildningen är en av flera kvalitetsfaktorer, inte målet."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att riktlinjer ofta används för utvärdering.",
-        "why_wrong": "Texten säger inget om utvärderingsfunktion — det är en plausibel sidoeffekt, inte uttalat syfte; sträcker sig för långt utanför texten."
+        "why_tempting": "Många stannar vid att texten talar om att \"mäta\" personcentrerad vård och kopplar riktlinjerna till utvärdering.",
+        "why_wrong": "Mätning av personcentrerad vård är ett FORSKNINGSMOTIV som Sandman nämner separat — riktlinjerna i sig handlar om att normera VÅRDEN, inte att producera mätinstrument. C blandar ihop två olika spår i texten."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att riktlinjer från forskare gynnar forskningen.",
-        "why_wrong": "Riktlinjerna är ett RESULTAT av forskningen, inte ett verktyg för att stärka den; inverterar riktningen."
+        "why_tempting": "Snabbsvar är ofta att riktlinjerna togs fram av forskare och därför stärker forskningen.",
+        "why_wrong": "Att forskare bidrog med kunskap är riktlinjernas INPUT — kunskapen kanaliserades INTO vården, inte tillbaka till forskningen. Som steg 2 visar är slutprodukten kunskap som ska användas i vården; forskningen är källan, inte målet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Riktlinjerna togs fram efter att forskare bedömt 'var det fanns störst behov att normera vården', och de listar konkreta vardagsbehov: vård i livets slutskede, mat, fall, munhälsa, urininkontinens. Syftet är alltså att höja och normera den dagliga vårdkvaliteten.",
-    "technique": "Vid syftesfrågor om institutionella verktyg: läs vilka konkreta brister verktyget riktar sig mot — det avslöjar målet."
+    "framework_id": null,
+    "pitfall": "Det är lätt att blanda ihop riktlinjernas UPPHOV (forskning) och deras EFFEKT (vården) — eller med ett bredare TEMA i texten (personal, ledarskap). Botemedlet: rama in den specifika mening där riktlinjerna ges en målbeskrivning, och ignorera vad som sägs om grannfenomen.",
+    "solution_path": "Texten säger att riktlinjerna togs fram med utgångspunkt i forskares bedömning av var behovet att NORMERA vården var störst — och att de tillgodoser GRUNDLÄGGANDE BEHOV (mat, fall, livets slut, etc.). Syftet är alltså att säkra kvaliteten i den dagliga vården. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta SYFTET med de nationella riktlinjerna — alltså vad de är till för. Vi söker textens egen motivering, inte vad riktlinjer i allmänhet brukar göra.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Riktlinjerna introduceras i tredje stycket: \"Arbetet startade med utgångspunkt i forskares och verksamhetsföreträdares bedömning av inom vilka områden det fanns kunskap att sammanställa och var det fanns störst behov att normera vården. Det resulterade i kunskaps­baserade riktlinjer för att tillgodose grundläggande behov inom områden som exempelvis vård i livets slutskede, mat och ätande, fall, munhälsa, urininkontinens och förstoppning.\"",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: forskarna kollade var vården behövde tydligast regler för att fungera bra, och tog fram riktlinjer för det. Riktlinjerna handlar om VARDAGLIGA vårdmoment — mat, sömn, fall, munvård — alltså om att den dagliga vården av patienten ska hålla kvalitet.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Att normera = att sätta upp normer/standarder för hur något ska göras. Här: bestämma hur god vård SKA se ut i konkreta vardags­situationer. Det är just \"säkerställa kvaliteten i den dagliga vården\" — kvaliteten är inte ett biresultat utan riktlinjernas huvudpoäng.",
+        "tier": "detail",
+        "title": "Vad betyder \"normera vården\"?"
+      },
+      {
+        "n": 5,
+        "text": "A \"förbättra utbildningen av ny vårdpersonal\" — texten nämner personalkompetens som en bredare fråga, men riktlinjerna handlar om VÅRDPRAXIS, inte utbildningsprogram. B \"säkerställa kvaliteten i den dagliga vården\" — exakt vad steg 2-3 visar. C \"underlätta utvärderingen av vården\" — utvärdering nämns inte som syfte. D \"stärka forskningen\" — forskningens kunskap är INPUTEN till riktlinjerna, inte målet; målet är vården, inte forskningen.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är B. Riktlinjerna ska säkra kvaliteten i den dagliga vården genom att normera vardagliga vårdmoment. Insikten i en mening: vid \"vad är syftet med X\" — sök meningen där X presenteras och leta efter målverb (\"för att tillgodose\", \"för att normera\"); kring­kontexten är ofta input eller följder, inte syftet.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid \"vad är syftet med X\"-frågor — sök målverbet i den mening där X presenteras (\"för att tillgodose / för att säkra / för att normera\"). Stödord runt presentationen är ofta input (forskning) eller följder (utvärdering), inte själva syftet. Triggern: \"syftet med X\" → leta efter \"för att\"-konstruktion direkt vid X."
   },
   "var-2026-verb2-LÄS-014": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'explorativ' som experimentell.",
-        "why_wrong": "Texten kontrasterar inte experiment och teori — den kontrasterar kartläggning och tillämpning; missar polerna."
+        "why_tempting": "Det är frestande att tänka att vetenskap rör sig från observation till teoribyggande — det är en klassisk vetenskapsbild.",
+        "why_wrong": "Sandmans rörelse går åt motsatt håll. Som steg 2 visar är slutmålet PRAKTISK tillämpning — produkter, implementering, intervention — inte teoribyggande. A applicerar en generisk vetenskaps-rörelse på fel disciplin."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid 'kartlägga olika fenomen' som ett senare stadium.",
-        "why_wrong": "Kartläggning är just det som varit (utforskning), inte dit fältet ska — alternativet inverterar tidsriktningen."
+        "why_tempting": "Snabbsvar är ofta att forskningen rör sig mot \"kartläggning\" eftersom \"riktlinjer\" kan låta som strukturering.",
+        "why_wrong": "Kartläggning är vad forskningen GJORDE hittills (med intervjuer och observationer) — alltså FRÅN-änden, inte TILL-änden. B vänder tidsriktningen på övergången."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att forskning generellt går från beskrivning till analys.",
-        "why_wrong": "Sandman ramar in övergången som mot konkret intervention och produkter, inte mot ren analys; sträcker sig för långt genom standardformel."
+        "why_tempting": "Många stannar vid \"konklusiv kunskap\" och \"säga: så här ska vi göra\" och tolkar slutfasen som analytisk.",
+        "why_wrong": "Sandmans \"konklusiva kunskap\" är inte en analytisk djupdykning — det är handlingsinriktad kunskap (\"så här ska vi göra\"). Det är tillämpning, inte ny analys. Som steg 2 visar är slutmålet INTERVENTION, alltså att GÖRA, inte att ANALYSERA mer."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Sandman säger att forskningen 'till dags dato främst varit explorativ' — kartläggande — och att man nu måste arbeta med 'innovation, implementering och intervention' för att få fortsatt finansiering. Det är en övergång från utforskning till tillämpning.",
-    "technique": "Vid 'från X till Y'-frågor: matcha textens egna tidsmarkörer ('till dags dato', 'i dag måste man…') mot alternativen."
+    "framework_id": null,
+    "pitfall": "Det är lätt att tolka in vanliga forskningsrörelser (observation → teori) istället för textens specifika rörelse (kartläggning → intervention). Botemedlet: använd textens egna ord för båda ändpunkter — \"explorativ\" och \"intervention\" pekar inte mot teori utan mot praktisk tillämpning.",
+    "solution_path": "Sandman beskriver omvårdnadsforskningen som hittills \"främst EXPLORATIV\" — kartläggande, beskrivande. Men nu krävs \"innovation, implementering och intervention\" — alltså omsättning till praktik. Övergången är från utforskning till tillämpning. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan beskriver att forskningen befinner sig i en ÖVERGÅNGSFAS och vill veta vilken övergång det är — vad rör sig forskningen FRÅN och TILL?",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "FRÅN: \"Enligt Per-Olof Sandman har omvårdnadsforskningen till dags dato främst varit explorativ. Intervjuer och observationer har använts för att kartlägga olika fenomen.\" TILL: \"ska man få pengar till forskning i dag måste man enligt Per-Olof Sandman arbeta med innovation, implementering och intervention.\"",
+        "tier": "essential",
+        "title": "Hitta båda ändpunkterna"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: hittills har forskningen UTFORSKAT — kartlagt, beskrivit, samlat in fakta genom intervjuer och observationer. Nu krävs att forskningen TILLÄMPAR — utvecklar produkter och metoder, implementerar dem, intervenerar i vården. Rörelsen är från att förstå till att förändra.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Explorativ forskning UTFORSKAR — \"vad finns där?\" Den producerar beskrivningar och kartor över fenomen. Interventionsforskning TILLÄMPAR — \"vad händer om vi ändrar något?\" Den producerar verktyg och behandlingsmetoder. Sandmans poäng är att forskningen rör sig från första typen till andra.",
+        "tier": "detail",
+        "title": "Vad betyder explorativ kontra interventionsforskning?"
+      },
+      {
+        "n": 5,
+        "text": "A \"experiment till teori\" — vänd: forskningen rör sig MOT mer praktik (intervention), inte mot teori; och hittills var det inte experiment utan kartläggning. B \"exempel till kartläggning\" — vänd: kartläggning är ändpunkt A (varifrån), inte slutmålet. C \"beskrivning till analys\" — \"analys\" är fel typ av slutmål; Sandman talar om tillämpning (produkter, intervention), inte ny analytisk fördjupning. D \"utforskning till tillämpning\" — exakt explorativ → intervention som steg 2-3 visar.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är D. Omvårdnadsforskningen går från explorativ utforskning till tillämpning genom innovation, implementering och intervention. Insikten i en mening: vid övergångsfrågor med ändpunkter — leta efter två tidsmarkörer i texten (\"till dags dato\" + \"i dag/i framtiden\") och para ihop forskningstyperna på vardera sidan.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid övergångsfrågor — sök två tidsmarkörer (\"hittills / till dags dato\" och \"i dag / nu\") och para ihop forskningstyperna på vardera sidan. Försök sedan namnge båda i samma kategori-system (här: utforskning vs. tillämpning). Triggern: \"övergångsfas\" → leta efter tidsadverb som flaggar före/efter."
   },
   "var-2026-verb2-LÄS-015": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'givet mönster' som det löpande bandet.",
-        "why_wrong": "Den personliga relationen var just oviktig — alternativet inverterar; det fanns ingen utveckling av relationen alls."
+        "why_tempting": "Det är frestande att tänka att en \"industriell\" modell ändå har en mönsterstyrd relation — strukturerade scheman, möten enligt rutin.",
+        "why_wrong": "Sandman är otvetydig: det fanns INGEN personlig relation och den ansågs inte viktig. Steg 2 visar att utbytbarheten är poängen — det är raka motsatsen till en utvecklad relation. A läser in en ordning som modellen specifikt SAKNADE."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att patienten objektifierades.",
-        "why_wrong": "Texten ställer inte vårdarens behov mot patientens — den säger att vården var uppgiftsstyrd, inte vårdar-egoistisk; sträcker sig för långt."
+        "why_tempting": "Om du minns regeln som \"industriellt system gynnar arbetaren över kunden\", låter B rimligt — vårdarens behov framför patientens.",
+        "why_wrong": "Texten talar INTE om en sådan rivalitet — den säger att vårdare OCH patienter reagerade mot modellen (\"både patienter och vårdare reagerade mot\"). Det handlade om en sak: utbytbara funktioner. B importerar en konflikt som texten inte beskriver."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att industriell vård liknar övervakning.",
-        "why_wrong": "Texten säger inget om övervakning som funktion — den fokuserar på uppgiftsuppdelning; importerar fel begrepp."
+        "why_tempting": "Snabbsvar är ofta att \"industriell\" ger associationer till övervakning och kontroll på en fabrik.",
+        "why_wrong": "\"Löpande bandet\" är en bild för UPPGIFTSUTFÖRANDE, inte för övervakning. Vårdarna utförde konkret praktisk vård (mat, hygien, etc.) — bara utan personlig relation. Som steg 2 visar är \"uppgifter som skulle utföras\" formeln, inte \"övervakning\". D skiftar typ av arbete."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Sandman beskriver 70- och 80-talets vård som organiserad enligt 'industrins modell, det löpande bandet' — alla vårdare var utbytbara och 'allt handlade om uppgifter som skulle utföras'. Vårdarens arbete var alltså begränsat till bestämda uppgifter.",
-    "technique": "Vid 'vad utmärkte X'-frågor: leta efter den konkreta metaforen i texten (här: 'löpande bandet') och översätt den bokstavligt."
+    "framework_id": null,
+    "pitfall": "Det är lätt att projicera associationer från ordet \"industriell\" (kontroll, övervakning, hierarki) på vårdmodellen. Botemedlet: läs vad texten KONKRET säger att modellen innebar — här: uppgiftsfokus och utbytbarhet, inte hierarki eller övervakning.",
+    "solution_path": "På 70- och 80-talen organiserades omvårdnaden enligt \"löpande bandet\" — alla vårdare utbytbara, allt handlade om uppgifter som skulle utföras, inte om personliga relationer. Vårdarens arbete BEGRÄNSADES till bestämda uppgifter. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta vad som UTMÄRKTE den \"industriella\" omvårdnaden på 70- och 80-talen — alltså den karaktäristiska egenskap som definierade modellen.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Sandman beskriver perioden i ett par stycken: \"På 1970- och 1980-talet organiserades omvårdnadsarbetet enligt industrins modell, det löpande bandet.\" Och: \"Att omvårdnadens organisation byggde på idén om det löpande bandet gjorde att det inte var viktigt med personliga relationer, allt handlade om uppgifter som skulle utföras. Det betydde att alla vårdare var utbytbara.\"",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: vårdarna var som arbetare vid ett löpande band — varje vårdare gjorde sina inrutade arbetsmoment, ingen personlig relation behövdes, vem som helst kunde steppa in. Patienten behandlades som ett objekt på bandet. Arbetet var alltså AVGRÄNSAT TILL UPPGIFTER, inte till relationer.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Sandman säger att perioden hade ett \"väldigt instrumentellt och objektifierande synsätt\" — patienten sågs som ett objekt, inte som ett subjekt. Det betyder konkret: man INTERAGERADE inte med patienten som en person utan VERKSTÄLLDE rutinmässiga vårdmoment PÅ kroppen. Det är just det \"begränsat till bestämda uppgifter\" fångar.",
+        "tier": "detail",
+        "title": "Vad betyder \"objektifierande synsätt\"?"
+      },
+      {
+        "n": 5,
+        "text": "A \"personlig relation enligt mönster\" — raka motsatsen, det fanns ingen personlig relation alls; den modellen kom senare. B \"patientens behov inte viktigare än vårdarens\" — texten talar inte om en rivalitet mellan patient- och vårdarbehov; det handlade om utbytbara uppgifter. C \"begränsades till bestämda uppgifter\" — exakt \"allt handlade om uppgifter som skulle utföras\" från steg 2. D \"övervaka snarare än ta hand om\" — \"övervaka\" är inte den modell som beskrivs; uppgiftsutförande är konkret praktiskt vårdarbete, inte övervakning på avstånd.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är C. Den industriella modellen kännetecknades av att vårdarens arbete begränsades till specifika uppgifter — patienten som objekt, vårdaren som utbytbar utförare. Insikten i en mening: vid \"vad utmärkte X\"-frågor — sök adjektiv och verb som direkt beskriver karaktären (\"industriell\", \"löpande bandet\", \"utbytbara\") och översätt dem till alternativens språk.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid \"vad utmärkte X\"-frågor — sök adjektiv och verb i texten som direkt beskriver X (\"industriell\", \"löpande bandet\", \"utbytbara\", \"uppgifter\") och översätt deras INNEHÅLL till alternativens språk. Triggern: \"vad utmärkte X\" → identifiera den centrala metaforen (här: löpande bandet) och spåra dess implikationer."
   },
   "var-2026-verb2-LÄS-016": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att importera personalomsättning som standardproblem.",
-        "why_wrong": "Texten säger uttryckligen att personalomsättningen 'inte heller är lika hög som tidigare' — alternativet motsäger texten direkt."
+        "why_tempting": "Det är lätt att associera \"ledarskap behövs\" med personalproblem, och personalomsättning är en typ av personalproblem.",
+        "why_wrong": "Sandman säger explicit att personalomsättningen INTE är så hög som tidigare. Som steg 2 visar är det bemanningstätheten (för få personer per uppgift) som är problemet, inte att folk slutar och byts ut."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att uppgiftsfokuserad vård är ett tema.",
-        "why_wrong": "Det är ett historiskt problem (70-/80-talet) som dröjer kvar, men inte det Sandman pekar på som ledarskapets aktuella drivkraft; missar tidsperspektivet."
+        "why_tempting": "Många stannar vid Sandmans observation att vården ofta är \"uppgifts- och inte personcentrerad\" och kopplar ledarskapet till detta.",
+        "why_wrong": "Den uppgiftsfokuserade vården är en bred problembild som Sandman kommenterar tidigare i texten, men hans specifika ledarskapsfras kopplas direkt till BEMANNINGEN: \"Ledarskapet ställs också på sin spets i relation till personaltätheten.\" C plockar fel grannfråga."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att vårdtagarnas förväntningar driver kraven.",
-        "why_wrong": "Förväntningarna nämns kort, men ledarskapsbehovet binds explicit till bemanningssituationen; sträcker sig för långt mot en sidofaktor."
+        "why_tempting": "Snabbsvar är ofta att vårdtagarna förväntar sig mer i dag och att ledarskapet ska möta dessa förväntningar.",
+        "why_wrong": "Vårdtagarnas förväntningar är inte vad Sandman pekar på som driv­kraften. Han pekar på personalens förmåga att i praktiken leverera den vård de teoretiskt kan — alltså ett INTERNT genomförande­problem, inte ett externt förväntningstryck. D förskjuter agenten."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Sandman lyfter ledarskapet specifikt 'i relation till personaltätheten i omvårdnaden' och varnar för att personalen i framtiden 'inte har förutsättningar att genomföra' god vård. Det är bemanningssituationen som gör ledarskapet kritiskt.",
-    "technique": "Vid 'extra viktigt nu'-frågor: leta efter den temporala bryggan ('idag', 'i framtiden', 'ställs på sin spets i relation till…') som motiverar varför just nu."
+    "framework_id": null,
+    "pitfall": "Sandman beskriver flera problem (uppgiftsfokus, övermedicinering, bemanning, ledarskapsbrist). Det är lätt att blanda ihop dem. Botemedlet: pinpointa exakt VILKEN MENING som motiverar X — här gör Sandman kopplingen själv (\"ledarskapet ställs på sin spets i relation till personaltätheten\").",
+    "solution_path": "Sandman pekar på en risk: i framtiden kan vården ha välutbildad personal som i teorin vet hur demensvården borde fungera men som INTE HAR FÖRUTSÄTTNINGAR att genomföra det — alltså låga bemannings­tal i relation till förväntningarna. Ledarskapet blir centralt just för att navigera denna bemanningssituation. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta vad som gör LEDARSKAPET extra viktigt I DAG — alltså den aktuella situationsfaktor som Sandman pekar ut.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Sandman tar upp ledarskapets vikt i två steg. Först: \"vi behöver starka ledare som går före och visar, som upprätthåller idén om den goda vården\". Och avgörande mot slutet: \"Ledarskapet ställs också på sin spets i relation till personaltätheten i omvårdnaden. Det finns en risk att vi i framtiden har en väldigt välutbildad vårdpersonal som i teorin vet hur demensvården borde fungera men som inte har förutsättningar att genomföra det.\"",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: personalen kan i teorin vården, men det är för lite folk på golvet för att hinna göra det rätt. Det är just denna obalans — kunskap minus bemanning — som gör ledarskapet kritiskt: ledaren måste hålla ihop verksamheten när tiden inte räcker.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Bemanningssituation = hur många personer som finns på arbetet i förhållande till uppgifterna och förväntningarna. Sandman nämner tidigare \"låga bemanningstal i relation till de förväntningar som finns på personalen\" — det är problembilden. Ledaren ska navigera denna spänning.",
+        "tier": "detail",
+        "title": "Vad menas med bemanningssituation?"
+      },
+      {
+        "n": 5,
+        "text": "A \"ökad personalomsättning\" — Sandman säger tvärtom att person­alomsättningen INTE är så hög som tidigare. B \"den rådande bemanningssituationen\" — exakt det steg 2 pekar ut: ledarskapet ställs på sin spets just i relation till personaltätheten. C \"övergången till uppgiftsfokuserad vård\" — den uppgiftsfokuserade vården beskrivs som ett TIDIGARE problem (70-80-tal) och som delvis återkommande, men ledarskapets aktuella vikt kopplas till bemanningen, inte till vårdmodellen. D \"förväntningar från vård­tagarna\" — vårdtagarnas förväntningar nämns inte som drivande för ledarskapsfrågan.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är B. Den rådande bemanningssituationen — välutbildad personal men för få på golvet — är vad som gör ledarskapet extra viktigt. Insikten i en mening: vid \"varför är X viktigt I DAG\"-frågor — sök den aktuella situationsbeskrivning Sandman ger \"i dag/i framtiden\" och leta i samma stycke som ledarskapsfrasen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid \"varför är X extra viktigt i dag\" — sök den AKTUELLA situations­beskrivning som ges i samma textstycke som X. Sandman talar generellt om ledarskap, men gör en specifik koppling till \"personaltätheten i omvårdnaden\". Triggern: \"varför viktigt I DAG\" → leta efter tidsadverb och dagsfärsk situationsbeskrivning."
   },
   "var-2026-verb2-LÄS-017": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att läsa ungdomsarbetslösheten som ett uppvigligande hot.",
-        "why_wrong": "Arbetslösheten är just något som DRIVER mot uppror (40 % av rebeller drevs av den) — alternativet inverterar riktningen."
+        "why_tempting": "Det är frestande att tänka att hög ungdomsarbetslöshet är ett negativt fenomen och därför hindrar något — kanske även en arabisk vår.",
+        "why_wrong": "Texten kopplar UNGDOMSARBETSLÖSHET till rebellrörelse — \"40 procent av dem som gått med i rebellrörelser\" angav arbetslösheten som drivkraft. Det är alltså en TÄNDVÄTSKA för uppror, inte ett hinder. B förväxlar driver med hinder."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att inkomstklyftor föder missnöje.",
-        "why_wrong": "Inkomstskillnaderna ses också som en drivkraft mot uppror, inte en bromskloss; samma inverteringsfälla."
+        "why_tempting": "Många stannar vid att stora inkomstklyftor leder till stabila samhällen och därför skulle förhindra uppror.",
+        "why_wrong": "Tvärtom — texten säger att \"de enorma inkomstskillnaderna leder till stora spänningar\" och att en eventuell afrikansk vår skulle \"drivas av en längtan efter välfärd\". Ekonomiska skillnader är en POTENTIELL DRIVER för uppror, inte ett hinder. C inverterar rollen."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att korruption hindrar förändring.",
-        "why_wrong": "Korruption nämns som en del av missnöjet (skuld läggs på regeringarna), inte som hindret mot folkrörelse; missar logiken."
+        "why_tempting": "Vänster-till-höger-läsning ger ofta att korruption stabiliserar regimer och därför hindrar uppror.",
+        "why_wrong": "Texten säger att både fattiga och rika invånare \"lägger en stor del av skulden på de egna regeringarna\" — alltså bygger korruption på MISSNÖJE, som är upprorsbränsle. D antar en stabiliseringseffekt som texten inte stödjer."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Den 'viktigaste skillnaden' som talar emot en afrikansk vår är att länder söder om Sahara saknar de homogena samhällen Egypten och Tunisien har — Nigeria med sina 170 språkgrupper får tjäna som exempel. Etnisk splittring är hindret.",
-    "technique": "Vid 'talar emot X'-frågor: skilj på drivkrafter (för X) och strukturella hinder (mot X) — texten markerar dem ofta med 'men' eller 'den viktigaste skillnaden är'."
+    "framework_id": null,
+    "pitfall": "Det är lätt att tänka \"allt dåligt är ett hinder\". Botemedlet: fråga om fenomenet PUSHAR mot X (är driver) eller BLOCKERAR X (är hinder). Negativa fenomen kan vara drivkrafter; det är riktningen som räknas.",
+    "solution_path": "Texten anger den ETNISKA/SPRÅKLIGA splittringen som den viktigaste skillnaden mot Nordafrika — Nigeria med 170 språkgrupper saknar en samlad rörelse som kan utmana makten. Det är detta som talar EMOT en afrikansk vår söder om Sahara. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta vad TEXTEN ANGER som ett argument MOT att en afrikansk vår är trolig — den specifika faktor som hindrar.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Argumentet kommer i andra stycket: \"Men mycket skiljer nord från syd, och den viktigaste skillnaden är att länder som Egypten och Tunisien är långt mer homogena samhällen än vad majoriteten av de afrikanska länderna är. Till exempel rymmer Nigeria 170 språk­grupper och i landet finns ännu så länge ingen större samlad rörelse som förmår utmana makten.\"",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: arabiska våren funkade delvis för att Egypten och Tunisien är ganska enhetliga samhällen — folk kunde samlas i en rörelse. Söder om Sahara är länderna etniskt och språkligt mycket mer uppsplittrade. När folk inte ens delar språk är det svårt att bygga en samlad rörelse som kan utmana regeringen.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Ett homogent samhälle har relativt få etniska/språkliga grupper — alla delar någorlunda gemensam grund. Ett splittrat samhälle har många separata grupper med olika språk och identitet. För att starta ett uppror behövs en SAMLAD rörelse — det är mycket lättare i ett homogent samhälle. Det är därför etnisk splittring talar EMOT en afrikansk vår.",
+        "tier": "detail",
+        "title": "Vad är skillnaden mellan homogen och splittrad?"
+      },
+      {
+        "n": 5,
+        "text": "A \"etniskt splittrade samhällen\" — exakt textens \"viktigaste skillnad\" och dess Nigeria-exempel. B \"växande ungdoms­arbetslöshet\" — texten anger detta som något som DRIVER unga MOT rebellrörelser, alltså som en potentiell DRIVKRAFT för uppror, inte ett argument emot. C \"stora ekonomiska skillnader\" — också en POTENTIELL driver (\"längtan efter välfärd\"), inte ett hinder. D \"korrupta makthavare\" — texten nämner att invånare lägger skulden på egna regeringar; det är också potentiell drivkraft för uppror, inte hinder.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är A. Etnisk/språklig splittring i sub-Sahara hindrar bildandet av en samlad upprorsrörelse. Insikten i en mening: vid \"vad talar emot X\"-frågor — separera DRIVKRAFTER för X (de pekar mot X som möjligt) från HINDER för X (de pekar bort från X). Här ska bara hindrena väljas.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid \"vad talar EMOT X\"-frågor — separera fenomen som DRIVER X (de ökar sannolikheten) från fenomen som HINDRAR X (de minskar sannolik­heten). I texten är ungdomsarbetslöshet och inkomstklyftor drivers — bara etnisk splittring är hindret. Triggern: \"vad talar emot X\" → fråga \"gör detta X mer eller mindre sannolikt?\""
   },
   "var-2026-verb2-LÄS-018": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att uppfatta inledningens 'vissa hotbilder överrepresenterade' som textens huvudtes.",
-        "why_wrong": "Mediabilden är en sidokommentar; det konkreta åtgärdsförslaget mot fattigdom rör jordbruksattityden — sträcker sig för långt mot en bipoäng."
+        "why_tempting": "Det är frestande att läsa kritiken mot mediabilden (\"hotbilder överrepresenterade\") och tänka att korrigerad mediabild är textens lösning på fattigdomen.",
+        "why_wrong": "Mediakritiken är en INRAMNINGSANMÄRKNING, inte ett fattigdoms­bekämpningsförslag. Texten kopplar inte mediabilden till fattigdoms­minskning. B blandar ihop ett perifert observerande med textens huvudåtgärd."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att inkomstskillnader och spänningar är ett huvudtema.",
-        "why_wrong": "Texten beskriver problemet men föreslår inte minskade klyftor som åtgärden; övertolkar problembeskrivningen som lösning."
+        "why_tempting": "Många stannar vid Saviour Mwanbwa och inkomstskillnaderna och tror att inkomstutjämning är textens åtgärdsförslag.",
+        "why_wrong": "Texten BESKRIVER inkomstskillnader som ett problem (skapar spänningar) men föreslår inget åtgärdsförslag som direkt utjämnar dem. Den konkreta åtgärden som lyfts är Mo Ibrahims jordbruksförslag. C förväxlar problemobservation med åtgärdsförslag."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att demokrati framstår som lösningen.",
-        "why_wrong": "Demokrati nämns kring den arabiska våren, men inte som det viktiga ledet i fattigdomsbekämpningen; importerar fel åtgärdsfält."
+        "why_tempting": "Snabbsvar är ofta att textens öppning om en \"afrikansk vår\" antyder att demokratisering är textens lösning.",
+        "why_wrong": "Texten ifrågasätter just om en afrikansk vår är trolig — den argumenterar INTE för demokratisering som väg ut ur fattigdomen. Som steg 2-3 visar är åtgärdsförslaget jordbrukssatsning, inte politisk reform. D byter ut åtgärdsspår."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten lyfter Mo Ibrahim-stiftelsens entydiga slutsats: vägen ur fattigdom går via jordbruket, men jordbruksarbete är inte eftertraktat — därför krävs upplysningskampanjer som ändrar ungdomarnas syn på det moderna jordbrukets jobb. Att förändra synen är det viktiga ledet.",
-    "technique": "Vid 'viktigt led i bekämpning av X'-frågor: leta efter det konkreta åtgärdsförslag texten själv pekar på (här: Mo Ibrahims rapport)."
+    "framework_id": null,
+    "pitfall": "Det är lätt att blanda ihop problembeskrivningar (inkomstskillnader, korruption, mediabias) med åtgärdsförslag. Botemedlet: skilj på \"X är problem\" och \"Y föreslås göra mot problemet\" — bara Y är åtgärd.",
+    "solution_path": "Mo Ibrahim-stiftelsens slutsats — som texten lyfter fram — är att fattigdomens utvägar går via JORDBRUKET, inte städernas arbets­marknad. Men ungdomar vill inte in i jordbruket; därför krävs upplysningskampanjer som ändrar synen på jordbruket. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta vad texten LYFTER FRAM som ett viktigt led i fattigdomsbekämpningen söder om Sahara — alltså ett konkret lösningsförslag som textens röst stödjer.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Mo Ibrahim-stiftelsens slutsats refereras: \"Förslagen är entydiga: fattigdomens utvägar går inte nödvändigtvis via städernas arbets­marknad, utan via jordbruket.\" Men: \"att arbeta inom jordbruket är inte särskilt eftertraktat eftersom det är så förknippat med generationers slit. Därför anser Mo Ibrahim Foundation att det krävs upplysningskampanjer om vilka slags nya arbetstillfällen som kommer att erbjudas inom det moderna, industrialiserade afrikanska jordbruket.\"",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: lösningen ligger i moderna jordbruksjobb (transport, förpackning, växtförädling), men ungdomarna har en negativ bild av jordbruk som slit och fattigdom. För att de ska gå dit måste man FÖRÄNDRA DERAS SYN — upplysningskampanjer om de nya möjligheterna. Det handlar alltså om en attitydförändring kring jordbruket.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Ett \"viktigt led\" är ett konkret moment i en lösningskedja. Här: lösningskedjan är moderniserat jordbruk → ungdomssysselsättning → minskad fattigdom. Det LED som texten konkret föreslår är attityd­förändringen, eftersom DET är det som låser upp resten av kedjan. Utan attitydförändring stannar ungdomarna i staden i arbetslöshet.",
+        "tier": "detail",
+        "title": "Vad menas med \"viktigt led\"?"
+      },
+      {
+        "n": 5,
+        "text": "A \"förändra ungdomars syn på jordbruket\" — exakt det Mo Ibrahim anser krävs, enligt textens citat. B \"nyansera mediala bilden\" — texten nämner att hotbilder är överrepresenterade i media, men det är en BIASKRITIK, inte en fattigdomsåtgärd. C \"minska inkomst­skillnaderna\" — texten beskriver inkomstskillnader som problem men föreslår inget åtgärdsförslag specifikt om att minska dem. D \"påverka samhället i demokratisk riktning\" — texten talar om diktaturer och möjlig vår, men kopplar inte demokratisering till fattigdoms­bekämpning.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är A. Texten lyfter Mo Ibrahim-förslaget att ändra ungdomars syn på jordbruket — via upplysningskampanjer om moderna jordbruksjobb. Insikten i en mening: vid \"vad lyfts fram som åtgärd\" — sök stiftelser/forskare som texten refererar med åtgärdsformuleringar (\"förslagen är entydiga\", \"det krävs\").",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid \"vad lyfts fram som åtgärd\"-frågor — sök citerade förslagsröster (stiftelser, forskare, institutioner) som texten ger talutrymme. Här är Mo Ibrahim-stiftelsens \"förslagen är entydiga\" en stark åtgärdsmarkör. Triggern: \"åtgärd / led i bekämpningen\" → leta efter förslagsröster som texten lyfter fram."
   },
   "var-2026-verb2-LÄS-019": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa Johns träkolshuggning som en bidragande orsak.",
-        "why_wrong": "Texten korrigerar honom — det är den rika världens utsläpp, inte de fattigas markanvändning, som driver klimatet; sträcker sig för långt genom Johns första missuppfattning."
+        "why_tempting": "Det är lätt att läsa Johns första svar (\"det är mitt fel, jag hugger ner träd\") och tro att textens resonemang är att fattigas levnads­sätt orsakar klimatet.",
+        "why_wrong": "Texten KORRIGERAR Johns första hypotes — klimatexperten förklarar för honom att den rika världens koldioxidutsläpp är orsaken. Som steg 2 visar är texten på Johns andra svar: \"alltid den fattige som drabbas\". A speglar den uppfattning texten avfärdar."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att Afrika beskrivs som hårt drabbat.",
-        "why_wrong": "Texten säger inte att Afrika drabbas hårdast som kontinent, utan att de fattigaste drabbas hårdast — sträcker sig för långt mot en kontinent-jämförelse texten inte gör."
+        "why_tempting": "Många stannar vid \"Afrika\" i rubriken och nämningar av afrikansk fattigdom och tror att textens tes är att Afrika är värst drabbad.",
+        "why_wrong": "Afrika är textens SCEN, inte dess tes. Tesen är socioekonomisk — fattiga drabbas värst, oavsett kontinent. John och Ruth representerar fattiga generellt, inte \"Afrika\" som ett geografiskt undantag. B blandar ihop fall (Afrika) med tema (orättvisa)."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att modernt jordbruk är klimatets räddning.",
-        "why_wrong": "Det moderna jordbruket lyfts mot fattigdom, inte mot klimatförändring; blandar två separata åtgärdsspår."
+        "why_tempting": "Snabbsvar är ofta att Mo Ibrahim-förslaget om moderniserat jordbruk är textens lösning, så det moderniserade jordbruket måste vara klimat­lösningen också.",
+        "why_wrong": "Moderniserat jordbruk lyfts som FATTIGDOMS-åtgärd, inte som klimat­åtgärd. Texten kopplar inte jordbruksmoderniseringen till att BROMSA klimatförändringarna. C blandar ihop två olika åtgärdsspår (fattigdom kontra klimat)."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Avsnittet om John kulminerar i hans egen replik: 'det är alltid den fattige som drabbas' — efter att ha hört om den rika världens utsläpp. Texten driver poängen att de minst skyldiga drabbas hårdast; reportern speglar det explicit.",
-    "technique": "Vid 'överensstämmer bäst med textens resonemang'-frågor: hitta den explicita slutsats reportern formulerar (här via Johns röst) och parafrasera den."
+    "framework_id": null,
+    "pitfall": "Det är lätt att ta en figurs FÖRSTA hypotes (Johns självanklagelse) för textens egen tes. Botemedlet: läs till slutet av dialogen — textens position är den figurens FÖRSTA hypotes blir KORRIGERAD till.",
+    "solution_path": "Texten driver tydligt en orättviselinje: rika världens koldioxid­utsläpp orsakar klimatförändringen, men det är fattiga som John och Ruth i Kenya som drabbas värst. John själv säger: \"Det är alltid den fattige som drabbas.\" Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta vilket alternativ som bäst stämmer med textens sätt att RESONERA om det förändrade klimatet — alltså den övergripande hållning texten kommunicerar.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Resonemanget kulminerar i John-passagen: John tror först att han själv orsakar klimatförändringen genom kolframställningen, men klimat­experten förklarar \"den rika världens koldioxidutsläpp och växthuseffekten\". John svarar: \"Jag tänker att det alltid är den fattige som drabbas.\" Och tidigare: \"de allra fattigaste drabbas värst eftersom de varken har marginaler … eller kunskap\".",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: rika länder släpper ut, klimatet ändras, fattiga länder och fattiga människor drabbas hårdast. Det är orättvist — de som inte orsakat problemet bär dess konsekvenser. Det är textens moraliska linje, sammanfattad i Johns egen mening.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "A säger att fattigas BRIST på kunskap och resurser BIDRAR till klimatförändringen — alltså att fattigdom är en ORSAK. D säger att fattigdom gör en till FÖRSTA OFFER — alltså att fattigdom är en DRABBNING. Texten korrigerar uttryckligen John på just denna punkt: han trodde först att han orsakade klimatet, men experten förklarade att den rika världen gör det. Riktningen är från RIK orsakar till FATTIG drabbas.",
+        "tier": "detail",
+        "title": "Vad är skillnaden mellan A och D?"
+      },
+      {
+        "n": 5,
+        "text": "A \"fattigas brist på resurser bidrar till klimatförändringen\" — raka motsatsen; texten korrigerar John som först trodde detta, och klargör att rika världen orsakar det. B \"Afrika drabbas hårdast\" — Afrika nämns, men textens TES är inte en kontinental ranking utan en SOCIO-ekonomisk: fattiga drabbas, oavsett kontinent. C \"klimat­förändringar kan bromsas med moderniserat jordbruk\" — moderniserat jordbruk lyfts som fattigdomsåtgärd, inte som klimat­åtgärd. D \"de minst skyldiga drabbas hårdast\" — exakt textens orättviselinje, med John som personifiering.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är D. Texten argumenterar för en orättvisa: rika orsakar, fattiga drabbas. Insikten i en mening: vid \"resonemang om X\"-frågor — sök textens egna värderingsuttryck (Johns kommentar, klimatexpertens förklaring) och para ihop dem; det är inte enskilda fakta utan textens HÅLLNING som söks.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid \"textens resonemang om X\"-frågor — sök textens egna värderings­uttryck och vändpunkter (här: Johns andra svar efter expertens korrigering). Korrigeringen avslöjar vad texten avfärdar och vad den stöder. Triggern: \"resonemang om X\" → sök vändpunkter där texten korrigerar eller bekräftar en uppfattning."
   },
   "var-2026-verb2-LÄS-020": {
     "_meta": {
-      "generated_at": 1778436257640,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att uppfatta diskussionen om skatteflykt och regeringar som en ansvarsfråga.",
-        "why_wrong": "Ansvar nämns men är ett av flera spår; texten söker drivkrafter och hinder för framtiden, inte att fördela skuld; sträcker sig för långt."
+        "why_tempting": "Det är frestande att tänka att texten är polemisk om vem som har skuld — rika världen, korrupta regeringar — och därför handlar om ansvar.",
+        "why_wrong": "Ansvarsfrågor TAS UPP men inte som textens huvudtema. Texten väger inte olika ansvarskandidater mot varandra; den utforskar olika faktorer i framtiden. Som steg 2 visar är öppning och avslutning framtidsorienterade, inte skuldfrågande. A plockar ett delspår."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid den unga generationens roll som textens huvudaktörer.",
-        "why_wrong": "Ungdomsgenerationen är ett av flera teman, inte textens helhet — sträcker sig för långt genom att lyfta ett tema till hela frågan."
+        "why_tempting": "Många stannar vid Sandman-resonemanget om Sandman… vänta, fel text. Här: vid Mo Ibrahims förslag eller medelklassen i Lusaka och tänker att texten frågar vem som ska leda.",
+        "why_wrong": "Ledarskap som specifik fråga är inte centralt. Texten talar om regeringar, stiftelser, statsvetare — men dessa är RÖSTER om framtiden, inte kandidater för ledarskap. B förskjuter fokus till en metanivå som texten inte explicit driver."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att enighet och splittring framstår som textens kärna.",
-        "why_wrong": "Etnisk splittring nämns som hinder mot uppror, men inte som textens centrala fråga om enighet — missar nivån."
+        "why_tempting": "Vänster-till-höger-läsning ger ofta att den etniska splittringen (170 språk i Nigeria) gör enhet till textens huvudfråga.",
+        "why_wrong": "Splittringen är en faktor som påverkar EN av framtidsfrågorna (om en afrikansk vår är möjlig). Texten frågar inte hur den ska överbryggas. Som steg 2 visar är paraplyet vad som AVGÖR framtiden — splittring är en av flera avgörande faktorer, inte paraplyet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten öppnar med frågan om en afrikansk vår och slutar med 'det nya Afrika för alla' — emellanåt rör den ungdom, jordbruk, klimat och demokrati som faktorer som ska forma framtiden. Den övergripande frågan är vad som avgör Afrikas framtid.",
-    "technique": "Vid 'frågan kring vilken texten kretsar'-frågor: hitta öppningens fråga och kontrollera att slutet återanknyter — det avgränsar textens fokus."
+    "framework_id": null,
+    "pitfall": "Det är lätt att lyfta upp ett INTRESSANT delspår (skuld, ledning, splittring) till paraplyfråga eftersom delspåret är dramatiskt. Botemedlet: testa om alla DELAVSNITT anknyter till alternativet — om bara hälften gör det är alternativet ett delspår, inte paraplyet.",
+    "solution_path": "Texten frågar i öppningen om en afrikansk vår är att vänta, granskar ungdomsarbetslöshet, etnisk splittring, klimatförändring, jordbruks­framtid — alla under paraplyet \"vad kommer att forma Afrikas framtid\". Avslutningen ekar: \"då finns det nya Afrika för alla\". Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan vill veta vilken ÖVERGRIPANDE FRÅGA som texten som helhet kretsar kring — alltså den paraply­fråga som alla delavsnitt anknyter till.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Texten öppnar med \"Kommer vi att få se en afrikansk vår?\" — en framtidsfråga. Sedan: ungdomsarbetslöshet, etniska skillnader, ekonomiska klyftor, klimatförändring, jordbrukets roll, demografisk fördubbling till 2050. Den avslutar: \"då finns det nya Afrika för alla\" — en vision om framtiden.",
+        "tier": "essential",
+        "title": "Spåra textens stora rörelse"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: vilken sorts Afrika kommer att finnas i framtiden? Texten samlar olika faktorer (ungdomar, ekonomi, klimat, jordbruk, politik) som var och en kan dra åt olika håll. Den övergripande frågan handlar inte om ett av spåren utan om DET SAMMANLAGDA UTFALLET — Afrikas framtid.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Texten BESKRIVER skulden (rika länders utsläpp, korrupta regeringar), FÖRESLÅR ledning (Mo Ibrahim-stiftelsen), och NAMNGER faktorer som skiljer kontinenter — men ingen av dessa är dess huvudfråga. Skuld, ledning, enhet är var och en delfaktorer i en större framtidsfråga. Det binder ihop dem.",
+        "tier": "detail",
+        "title": "Vad är inte centrum?"
+      },
+      {
+        "n": 5,
+        "text": "A \"vem bär ansvaret\" — texten tar UPP ansvarsfrågor (egna regeringar, rika världen) men ger ingen sammanhållen ansvars­diskussion; det är inte paraplyet. B \"vem ska leda nya Afrika\" — ledarskap berörs inte specifikt som centrumfråga. C \"vad avgör Afrikas framtid\" — exakt paraplyet som steg 2-3 ringar in: alla delar är faktorer i framtidens utfall. D \"vad kan ena Afrikas befolkningar\" — splittring nämns som hinder för en arabisk vår, men enhet är ett delspår, inte paraplyet.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är C. Texten är en framtidsundersökning — vad blir av Afrika när alla dessa krafter spelar ut? Insikten i en mening: vid \"vilken fråga kretsar texten kring\" — kontrollera att texten INLEDS och AVSLUTAS i samma paraply, och att delavsnitten alla är faktorer i den paraplyfrågan.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vid \"vilken fråga kretsar texten kring\"-frågor — kontrollera att textens ÖPPNING och AVSLUTNING befinner sig under samma paraply, och att delavsnitten alla är faktorer i den paraplyfrågan. Här: öppningen \"kommer en afrikansk vår?\", avslutningen \"det nya Afrika för alla\" — båda framtidsfrågor. Triggern: \"vilken fråga i centrum\" → jämför öppning och avslutning."
   },
   "var-2026-verb2-MEK-021": {
     "_meta": {
