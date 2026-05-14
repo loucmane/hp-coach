@@ -33,6 +33,10 @@ export function StyleA({
   const explanation = explanationProp ?? fetched
   const steps = explanation ? resolveSteps(explanation) : []
   const reveal = useProgressiveReveal(steps)
+  // LÄS / ELF have multi-paragraph passages that need a book-width
+  // reading column. Toggles the grid template + canvas max-width
+  // below so the passage column expands and pedagogy compresses.
+  const hasLongContext = !!question.context
   return (
     <div
       style={{
@@ -80,9 +84,20 @@ export function StyleA({
         style={{
           flex: 1,
           display: 'grid',
-          gridTemplateColumns: 'minmax(0, 0.65fr) minmax(640px, 0.95fr)',
+          // LÄS / ELF carry 1500–4000 char passages. The default 0.65 :
+          // 0.95fr ratio (with a 640px minmax on pedagogy) puts the
+          // passage in a ~350px column = ~25ch, hostile to read. For
+          // reading-comprehension sections we flip the ratio so the
+          // passage gets a book-width column (~55–65ch) and widen the
+          // overall canvas so pedagogy still has real estate on the
+          // right. For math / vocab sections we keep the original
+          // pedagogy-leaning layout — that's where step explanations
+          // need the room.
+          gridTemplateColumns: hasLongContext
+            ? 'minmax(0, 1.1fr) minmax(0, 0.55fr)'
+            : 'minmax(0, 0.65fr) minmax(640px, 0.95fr)',
           gap: 'clamp(56px, 5vw, 96px)',
-          maxWidth: 1320,
+          maxWidth: hasLongContext ? 1500 : 1320,
           margin: '0 auto',
           width: '100%',
           padding: '0 clamp(48px, 6vw, 96px) clamp(160px, 18vh, 220px)',

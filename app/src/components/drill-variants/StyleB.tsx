@@ -46,6 +46,8 @@ export function StyleB({
   const explanation = explanationProp ?? fetched
   const steps = explanation ? resolveSteps(explanation) : []
   const reveal = useProgressiveReveal(steps)
+  // LÄS / ELF widen the question column for comfortable reading width.
+  const hasLongContext = !!question.context
   return (
     <div
       style={{
@@ -94,11 +96,17 @@ export function StyleB({
         style={{
           flex: 1,
           width: '100%',
-          maxWidth: 1320,
+          // For LÄS/ELF (long passage) widen the canvas + flip the
+          // ratio so the passage column gets book width and pedagogy
+          // still has real estate on the right. See StyleA for the
+          // same trick — identical rationale.
+          maxWidth: hasLongContext ? 1500 : 1320,
           margin: '0 auto',
           padding: '0 clamp(32px, 5vw, 64px) clamp(120px, 14vh, 180px)',
           display: 'grid',
-          gridTemplateColumns: 'minmax(0, 0.7fr) minmax(0, 1fr)',
+          gridTemplateColumns: hasLongContext
+            ? 'minmax(0, 1.2fr) minmax(0, 0.6fr)'
+            : 'minmax(0, 0.7fr) minmax(0, 1fr)',
           gap: 'clamp(40px, 4vw, 72px)',
         }}
       >

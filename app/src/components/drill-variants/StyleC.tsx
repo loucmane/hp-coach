@@ -117,12 +117,22 @@ export function StyleC({
           minHeight: 0,
         }}
       >
-        {/* Column 1: question + options */}
+        {/* Column 1: question + options.
+         *
+         *  Rows are `1fr auto` so the question pane (top) takes the
+         *  remaining height with overflowY:auto for long LÄS/ELF
+         *  passages, and the options pane (bottom) sizes to its
+         *  content — 4–5 option rows = ~220px — and stays anchored
+         *  at the bottom edge of the column, always visible.
+         *
+         *  Before, this was `auto 1fr`, which let the question pane
+         *  grow unbounded with a 3000-char passage; the options pane
+         *  got squeezed to zero height and disappeared off-screen. */}
         <div
           style={{
             background: 'var(--bg)',
             display: 'grid',
-            gridTemplateRows: 'auto 1fr',
+            gridTemplateRows: 'minmax(0, 1fr) auto',
             rowGap: 1,
             minHeight: 0,
           }}
