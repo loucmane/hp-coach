@@ -26,10 +26,21 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, tes
   const idle = page.getByTestId('drill-idle')
   await expect(idle).toBeVisible({ timeout: 10_000 })
 
-  // Clean any stale active drill from a previous run.
-  if (await page.getByTestId('drill-stale-warning').isVisible().catch(() => false)) {
+  // Clean any stale active drill from a previous run. The earlier
+  // version checked `isVisible()` with no timeout — on slower CI
+  // runners the stale-warning hadn't always finished rendering by
+  // the time the probe fired, so the cleanup was silently skipped,
+  // drill-start no-op'd against an active session, and drill-next
+  // never appeared (test timed out at 10s on Q1). Give the idle
+  // surface up to 2s to settle into one of its two terminal states
+  // before deciding which path to take.
+  const stale = page.getByTestId('drill-stale-warning')
+  await stale
+    .waitFor({ state: 'visible', timeout: 2_000 })
+    .catch(() => null)
+  if (await stale.isVisible().catch(() => false)) {
     await page.getByRole('button', { name: 'Avsluta tidigare' }).click()
-    await expect(page.getByTestId('drill-stale-warning')).toBeHidden({ timeout: 5_000 })
+    await expect(stale).toBeHidden({ timeout: 5_000 })
   }
 
   await page.getByTestId('drill-start').click()
