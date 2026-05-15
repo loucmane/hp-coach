@@ -259,28 +259,46 @@ def _items_tight_bbox(flat: list[dict]) -> fitz.Rect:
 
 
 def _largest_y_cluster(flat: list[dict]) -> list[dict]:
-    """Split items into y-clusters at gaps of MIN_CLUSTER_GAP and
-    return the cluster with the most items (the densest one).
-    Single-cluster lists pass through unchanged.
+    """Split items into y-clusters at vertical bbox-edge gaps of
+    MIN_CLUSTER_GAP and return the cluster with the most items (the
+    densest one). Single-cluster lists pass through unchanged.
 
     Why density rather than total area or vertical span: a real HP
     figure has dozens-to-hundreds of strokes packed close together;
     the noise we want to drop is typically 1-5 stray rectangles
     elsewhere on the page (fraction-bar lines, option-marker
     underlines). Density is the most reliable separator.
+
+    Why bbox-edge gap (y0 - max_y1_so_far) instead of midpoint-edge gap:
+    a tall stroke that spans the figure (e.g. a diagonal AC line going
+    from a square's top-left to its bottom-right) has its midpoint at
+    the figure's center. If we sort by midpoint, that one item sits
+    between the top-region cluster (labels above the square) and the
+    bottom-region cluster (labels below) and the midpoint-gap can read
+    as > MIN_CLUSTER_GAP on both sides, splitting the figure into three
+    clusters — and the top labels get dropped because the bottom labels
+    happen to outnumber them. Switching to bbox-edge gap fixes this:
+    the diagonal's TOP edge (y0) is at the square's top, so the gap
+    from the label cluster ABOVE the square to the diagonal is
+    essentially zero. Everything stays in one cluster.
+
+    The noise case (fraction bar from a previous question's text drawn
+    far above the figure) is unaffected: its bbox still sits at a
+    distinct y-range with a clean gap.
     """
     if len(flat) < 2:
         return flat
-    flat_sorted = sorted(flat, key=lambda f: (f["bbox"].y0 + f["bbox"].y1) / 2)
+    flat_sorted = sorted(flat, key=lambda f: f["bbox"].y0)
 
     clusters: list[list[dict]] = [[flat_sorted[0]]]
+    cluster_max_y1 = flat_sorted[0]["bbox"].y1
     for f in flat_sorted[1:]:
-        prev_y = (clusters[-1][-1]["bbox"].y0 + clusters[-1][-1]["bbox"].y1) / 2
-        cur_y = (f["bbox"].y0 + f["bbox"].y1) / 2
-        if cur_y - prev_y > MIN_CLUSTER_GAP:
+        if f["bbox"].y0 - cluster_max_y1 > MIN_CLUSTER_GAP:
             clusters.append([f])
+            cluster_max_y1 = f["bbox"].y1
         else:
             clusters[-1].append(f)
+            cluster_max_y1 = max(cluster_max_y1, f["bbox"].y1)
 
     if len(clusters) == 1:
         return clusters[0]
