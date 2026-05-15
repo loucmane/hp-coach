@@ -1,0 +1,1442 @@
+{
+  "host-2016-kvant1-KVA-013": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel tecken — om du distribuerar -7 men glömmer minustecknet kan du landa på x = -7.",
+        "why_wrong": "Steg 2 visar att -7(x+1) = -7x - 7 (båda termerna negativa). Lös ekvationen och du får x = +7, inte -7."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 'koefficienterna -7 och -8 är nära varandra, så x måste vara nära 0'.",
+        "why_wrong": "Steg 5 är specifik: x = 7, inte 0. Skillnaden mellan koefficienterna (1) styr lutningen — inte värdet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Vid många KVA-frågor med variabler är D ('otillräckligt') ett vanligt val.",
+        "why_wrong": "Steg 8: en linjär ekvation med x ger en unik lösning. Det finns ingen frihetsgrad kvar — D är fel."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Lös -7(x+1) = -8x: distribuera till -7x - 7 = -8x, flytta x-termer: x = 7. Kvantitet I (x = 7) är större än Kvantitet II (0). Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har ekvationen -7(x+1) = -8x. Den definierar x till ett enda värde. Du ska jämföra det värdet (Kvantitet I) med 0 (Kvantitet II).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Den distributiva lagen säger a(b+c) = ab + ac. Här gör vi det med a = -7: -7(x+1) = -7 \\cdot x + (-7) \\cdot 1 = -7x - 7.",
+        "tier": "detail",
+        "title": "Distributiva lagen"
+      },
+      {
+        "n": 3,
+        "text": "Ekvationen blir: -7x - 7 = -8x.",
+        "tier": "essential",
+        "title": "Distribuera vänster sida"
+      },
+      {
+        "n": 4,
+        "text": "Addera 8x till båda sidor: -7x + 8x - 7 = -8x + 8x → x - 7 = 0.",
+        "tier": "essential",
+        "title": "Samla x-termerna"
+      },
+      {
+        "n": 5,
+        "text": "Addera 7 till båda sidor: x = 7.",
+        "tier": "essential",
+        "title": "Isolera x"
+      },
+      {
+        "n": 6,
+        "text": "Sätt in x = 7 i originalet: -7(7+1) = -7 \\cdot 8 = -56 och -8 \\cdot 7 = -56 ✓. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 7,
+        "text": "Kvantitet I = x = 7. Kvantitet II = 0. 7 > 0, alltså är I större än II.",
+        "tier": "essential",
+        "title": "Jämför kvantiteterna"
+      },
+      {
+        "n": 8,
+        "text": "Ekvationen -7(x+1) = -8x har EXAKT EN lösning (x = 7). Det är inte en olikhet eller ett system med fri parameter — alltså är x entydigt bestämt och en jämförelse är möjlig.",
+        "tier": "detail",
+        "title": "Varför inte D (otillräckligt)?"
+      },
+      {
+        "n": 9,
+        "text": "Ekvationen är linjär i x och har samma koefficienter på båda sidor förutom konstanten −7. Det ger en unik lösning, ingen tvetydighet.",
+        "tier": "detail",
+        "title": "Sanity-check"
+      },
+      {
+        "n": 10,
+        "text": "x = 7 > 0, alltså är Kvantitet I större än Kvantitet II — svaret är A. Insikten i en mening: när KVA ger en ekvation som låser x till ett enda värde, lös ekvationen och jämför sedan; D är bara aktuellt när lösningen kan variera.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "KVA-ekvationsstrategin: när villkoret är en ekvation som låser x till ett värde, lös den och jämför sedan kvantiteterna direkt. D är fel när variabeln är entydigt bestämd."
+  },
+  "host-2016-kvant1-KVA-016": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du läser villkoren snabbt kan det kännas som om 'y kommer först i (z, y, ...)' eller liknande — men positionsordningen i medelvärdet säger inget om storlek.",
+        "why_wrong": "Steg 7 visar tre konkreta utfall: y kan vara större, mindre, eller lika med z. Inget av dem är universellt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Symmetrin i villkoren får det att kännas som att 'z är liksom dolt' jämfört med y.",
+        "why_wrong": "Steg 9: motexempel med y = -5, z = 5 ger z > y; motexempel med y = 5, z = -5 ger y > z. Ingen riktning är fast."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "y = -z kan misstolkas som y = z (förväxling av tecken).",
+        "why_wrong": "Steg 6 visar y = -z, inte y = z. De är lika BARA i specialfallet y = z = 0; annars är de motsatta."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att se 'symmetri' i villkoren och anta att y och z måste vara lika. Botemedlet: lös systemet med substitution och leta efter MOTEXEMPEL — om det finns två tilldelningar som uppfyller villkoren men ger olika jämförelser, är svaret D.",
+    "solution_path": "Översätt villkoren: x + y + z = w och y + z + w = x. Subtrahera: w − x = (x + y + z) − (y + z + w) = x − w, alltså 2(w − x) = 0 → w = x. Sätt in: x + y + z = x → y + z = 0 → y = −z. Värdena är motsatta tecken; jämförelsen beror på y:s tecken. Otillräckligt — svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har två medelvärdesvillkor: medelvärdet av (x, y, z) är w/3, och medelvärdet av (y, z, w) är x/3. Du ska jämföra y med z.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Medelvärdet av tre tal är summan dividerad med 3. 'Medelvärdet är w/3' betyder: \\frac{x+y+z}{3} = \\frac{w}{3}.",
+        "tier": "detail",
+        "title": "Vad är medelvärde?"
+      },
+      {
+        "n": 3,
+        "text": "\\frac{x+y+z}{3} = \\frac{w}{3}. Multiplicera båda sidor med 3: x + y + z = w.",
+        "tier": "essential",
+        "title": "Skriv om villkor 1"
+      },
+      {
+        "n": 4,
+        "text": "\\frac{y+z+w}{3} = \\frac{x}{3} → y + z + w = x.",
+        "tier": "essential",
+        "title": "Skriv om villkor 2"
+      },
+      {
+        "n": 5,
+        "text": "Ekv. 1: x + y + z = w. Ekv. 2: y + z + w = x. Subtrahera Ekv. 2 från Ekv. 1: (x + y + z) - (y + z + w) = w - x → x - w = w - x → 2x = 2w → x = w.",
+        "tier": "essential",
+        "title": "Subtrahera ekvationerna"
+      },
+      {
+        "n": 6,
+        "text": "I Ekv. 1: x + y + z = w blir x + y + z = x → y + z = 0 → y = -z.",
+        "tier": "essential",
+        "title": "Sätt in x = w"
+      },
+      {
+        "n": 7,
+        "text": "y och z är motsatta tal. Om y = 3, då är z = -3 → y > z. Om y = -3, då är z = 3 → y < z. Om y = 0, då är z = 0 → y = z.",
+        "tier": "essential",
+        "title": "Vad betyder y = −z?"
+      },
+      {
+        "n": 8,
+        "text": "Kvantitet I (y) och Kvantitet II (z) kan ge alla tre utfall: I > II, II > I, och I = II. Vi vet inte vilket utan ytterligare info om y.",
+        "tier": "essential",
+        "title": "Jämförelsen beror på y:s tecken"
+      },
+      {
+        "n": 9,
+        "text": "Exempel 1: y = 5, z = -5, x = w = 0 → båda villkoren stämmer, y > z. Exempel 2: y = -5, z = 5, x = w = 0 → båda stämmer, y < z. Olika svar med samma villkor → otillräckligt.",
+        "tier": "detail",
+        "title": "Konkreta exempel"
+      },
+      {
+        "n": 10,
+        "text": "Informationen är otillräcklig för att avgöra om y eller z är större — svaret är D. Insikten i en mening: KVA-otillräcklighet visas snabbast med två konkreta exempel som ger MOTSATTA jämförelser och båda uppfyller villkoren.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "KVA-ekvationssystem-strategin: när villkoren ger ett ekvationssystem, lös det algebraiskt; om systemet ger en RELATION (t.ex. y = -z) snarare än fasta värden, är jämförelsen ofta otillräcklig. Stämmer relationen sant för både större och mindre? Då är svaret D."
+  },
+  "host-2016-kvant1-KVA-017": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 'fler operationer i Kvantitet II' gör den större.",
+        "why_wrong": "Steg 3 och steg 5 visar att båda blir 44. Antalet operationer i uttrycket säger inget om storleken."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 'parentes-uttryck räknas alltid med större värden inne i' — felaktigt.",
+        "why_wrong": "Steg 4: parentesen inne ger 11, vilket multipliceras med 4 till 44. Lika med Kvantitet I."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Vid många KVA-frågor är D ('otillräcklig information') ett vanligt fallbackval.",
+        "why_wrong": "Båda uttrycken är konkreta numeriska räkneuttryck utan variabler. Det finns INGEN tvetydighet — räkna och svara."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Räkna ut båda kvantiteterna. Kvantitet I: 9·8 − 7·4 = 72 − 28 = 44. Kvantitet II: (9·2 − 7)·4 = 11·4 = 44. De är lika. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har två numeriska uttryck och ska jämföra deras värden. Kvantitet I: 9 \\cdot 8 - 7 \\cdot 4. Kvantitet II: (9 \\cdot 2 - 7) \\cdot 4.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Räkneordningen är: parenteser först, sedan multiplikation/division, sedan addition/subtraktion. För Kvantitet I betyder det att 9·8 och 7·4 räknas ut före subtraktionen.",
+        "tier": "detail",
+        "title": "Räkneordning"
+      },
+      {
+        "n": 3,
+        "text": "9 \\cdot 8 = 72 och 7 \\cdot 4 = 28. Sedan 72 - 28 = 44.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet I"
+      },
+      {
+        "n": 4,
+        "text": "Inom parentesen: 9 \\cdot 2 = 18, sedan 18 - 7 = 11.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet II — parentes först"
+      },
+      {
+        "n": 5,
+        "text": "11 \\cdot 4 = 44.",
+        "tier": "essential",
+        "title": "Multiplicera"
+      },
+      {
+        "n": 6,
+        "text": "Kvantitet I = 44 och Kvantitet II = 44. De är lika.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 7,
+        "text": "Lägg märke till: Kvantitet I = 9·8 − 7·4. Faktorisera: 9·8 = 9·(2·4) = (9·2)·4 = 18·4. Så Kvantitet I = 18·4 - 7·4 = (18-7)·4 = 11·4 — exakt Kvantitet II. De är algebraiskt identiska.",
+        "tier": "detail",
+        "title": "Algebraisk insikt"
+      },
+      {
+        "n": 8,
+        "text": "Steg 7 använder den distributiva lagen: (a - b) \\cdot c = ac - bc. Här: a = 18, b = 7, c = 4. Båda uttrycken är två sidor av samma identitet.",
+        "tier": "detail",
+        "title": "Distributiva lagen baklänges"
+      },
+      {
+        "n": 9,
+        "text": "44 = 44 ✓. Båda uppställningarna ger samma värde, och steg 7 förklarar varför algebraiskt.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 10,
+        "text": "Kvantiteterna är lika — svaret är C. Insikten i en mening: två numeriska uttryck som ser olika ut kan vara algebraiskt identiska; räkna ut värdet OCH leta efter den distributiva lagen som binder dem ihop.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "KVA-räkne-strategin: när båda kvantiteter är konkreta numeriska uttryck — räkna ut dem direkt och jämför. Leta efter den distributiva lagen om uttrycken ser strukturellt lika ut; ofta är de identiska efter förenkling."
+  },
+  "host-2016-kvant1-KVA-019": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 'Kvantitet I har x i nämnaren' gör den större om x är 'större' än y.",
+        "why_wrong": "Steg 2 låser x = y. Båda nämnare blir samma. Steg 4–5: båda kvantiteter blir 1."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelversionen kan kännas 'mer balanserad' eller större, men det är en illusion.",
+        "why_wrong": "Steg 7: villkoret x = y gör spegel-uttrycken identiska. Båda är 1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Med två variabler är D ofta frestande att välja som default.",
+        "why_wrong": "Steg 9: villkoret låser x = y, så variation är begränsad. Beräkningen ger alltid 1 — inget rum för tvetydighet."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Villkoret x − y = y − x ger 2x = 2y → x = y. Sätt in i båda kvantiteterna: Kvantitet I = \\frac{2x + y}{3x} = \\frac{3x}{3x} = 1 och samma för Kvantitet II. Lika. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har två villkor: x ≠ 0 och x − y = y − x. Du ska jämföra \\frac{2x + y}{3x} (Kvantitet I) med \\frac{2y + x}{3y} (Kvantitet II).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "x - y = y - x. Addera x till båda sidor: 2x - y = y. Addera y till båda sidor: 2x = 2y → x = y.",
+        "tier": "essential",
+        "title": "Lös villkoret"
+      },
+      {
+        "n": 3,
+        "text": "Eftersom x = y och x ≠ 0, är även y ≠ 0. Det betyder att nämnaren i båda kvantiteterna (3x respektive 3y) inte är 0 — uttrycken är definierade.",
+        "tier": "detail",
+        "title": "Implikation: x ≠ 0 betyder y ≠ 0"
+      },
+      {
+        "n": 4,
+        "text": "Kvantitet I = \\frac{2x + y}{3x} = \\frac{2x + x}{3x} = \\frac{3x}{3x} = 1.",
+        "tier": "essential",
+        "title": "Sätt in y = x i Kvantitet I"
+      },
+      {
+        "n": 5,
+        "text": "Kvantitet II = \\frac{2y + x}{3y} = \\frac{2y + y}{3y} = \\frac{3y}{3y} = 1.",
+        "tier": "essential",
+        "title": "Sätt in x = y i Kvantitet II"
+      },
+      {
+        "n": 6,
+        "text": "Båda kvantiteter blir 1. Lika.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 7,
+        "text": "Notera att Kvantitet I och II är spegelvarianter av samma uttryck (byt x ↔ y). När villkoret x = y håller, blir spegeln identisk. Det är därför de blir lika oavsett VILKET värde x = y har (utom 0).",
+        "tier": "detail",
+        "title": "Algebraisk symmetri"
+      },
+      {
+        "n": 8,
+        "text": "x = y = 5: Kvantitet I = \\frac{2 \\cdot 5 + 5}{3 \\cdot 5} = \\frac{15}{15} = 1 ✓. Kvantitet II = \\frac{2 \\cdot 5 + 5}{3 \\cdot 5} = 1 ✓.",
+        "tier": "detail",
+        "title": "Verifiera med konkret tal"
+      },
+      {
+        "n": 9,
+        "text": "Villkoret x - y = y - x har EN lösning: x = y. När x och y är låsta att vara lika, blir båda kvantiteter automatiskt lika med 1. Ingen tvetydighet, alltså inte D.",
+        "tier": "detail",
+        "title": "Varför inte D?"
+      },
+      {
+        "n": 10,
+        "text": "Båda kvantiteter är lika med 1 — svaret är C. Insikten i en mening: ekvationen x − y = y − x betyder x = y; substitution gör spegel-uttryck identiska.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Symmetri-substitutionsstrategin för KVA: när villkoret är en likhet som binder ihop variablerna (t.ex. x − y = y − x → x = y), substituera in i kvantiteterna; om de blir spegelversioner av varandra under villkoret är de lika med absolut säkerhet."
+  },
+  "host-2016-kvant1-KVA-020": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 'större area betyder större sida' — rektangelns area är 40, dubbelt så stor som triangelns 20.",
+        "why_wrong": "Steg 6: triangelns längsta sida kan vara MYCKET större än rektangelns om triangeln är 'platt och bred'. Större area implicerar inte större maxsida."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Vissa elever tänker 'triangel är spetsigare, alltså längre sidor' baserat på en mental bild av en hög, smal triangel.",
+        "why_wrong": "Steg 8 visar konkreta motexempel åt båda hållen. Triangelns längsta sida är inte alltid större."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 'både areor är 'liknande' — kanske blir sidorna också det'.",
+        "why_wrong": "Steg 8: båda kvantiteters längsta sidor kan göras stora eller små oberoende av varandra. Inget garanterar likhet."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att tro att större area måste betyda större sidor. Botemedlet: kom ihåg att area = bas × höjd (eller produkter av sidor), så en LITEN area kan kombineras med EN STOR sida om den andra dimensionen är liten — utan extra villkor är allt möjligt.",
+    "solution_path": "En rektangel med area 40 cm² kan ha valfri sidlängd så länge produkten är 40 — längsta sidan är obegränsad uppåt och nedåt (\\geq \\sqrt{40}). Samma sak för en triangel med area 20. Båda kvantiteter kan göras större eller mindre än den andra. Otillräckligt — svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du jämför längsta sidan i två figurer: en rektangel med area 40 cm² (Kvantitet I) och en triangel med area 20 cm² (Kvantitet II). Du vet INGA andra mått.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Rektangel med sidor a och b har area = a · b. Längsta sidan är max(a, b) — kalla den a.",
+        "tier": "detail",
+        "title": "Rektangelns area-formel"
+      },
+      {
+        "n": 3,
+        "text": "Om a · b = 40 och a är längsta sidan: om b = 1, a = 40. Om b = 0,1, a = 400. Om b = 0,001, a = 40 000. Längsta sidan kan göras GODTYCKLIGT stor genom att göra den korta sidan tunn.",
+        "tier": "essential",
+        "title": "Hur stor kan rektangelns längsta sida vara?"
+      },
+      {
+        "n": 4,
+        "text": "Det minsta möjliga är när a = b (kvadrat): a^{2} = 40 → a = \\sqrt{40} \\approx 6{,}32. Längsta sidan är alltså minst \\sqrt{40}.",
+        "tier": "essential",
+        "title": "Hur LITEN kan rektangelns längsta sida vara?"
+      },
+      {
+        "n": 5,
+        "text": "Triangel med bas b och höjd h har area = \\frac{1}{2} \\cdot b \\cdot h. Längsta sidan kan vara basen, eller en av sidobenen.",
+        "tier": "detail",
+        "title": "Triangelns area-formel"
+      },
+      {
+        "n": 6,
+        "text": "Med area 20 och bas b: höjden h = \\frac{40}{b}. Om b = 100, h ≈ 0,4 — och triangelns längsta sida är minst 100 (basen själv). Om b = 1000, längsta sida är minst 1000. Obegränsat uppåt.",
+        "tier": "essential",
+        "title": "Hur stor kan triangelns längsta sida vara?"
+      },
+      {
+        "n": 7,
+        "text": "Den korta gränsen är en liksidig triangel: med area 20, sidlängd s, area = \\frac{\\sqrt{3}}{4} s^{2} = 20 → s^{2} = \\frac{80}{\\sqrt{3}} \\approx 46{,}2 → s ≈ 6{,}8 cm. Längsta sidan är minst ungefär 6,8 cm.",
+        "tier": "essential",
+        "title": "Hur LITEN kan triangelns längsta sida vara?"
+      },
+      {
+        "n": 8,
+        "text": "Exempel 1: rektangel 10×4 (längsta sida 10), triangel liksidig med längsta sida 6,8 → Kvantitet I > II. Exempel 2: rektangel kvadrat (sidan 6,32), triangel med bas 100 (längsta sida ≥ 100) → Kvantitet II > I. Båda riktningar är möjliga.",
+        "tier": "essential",
+        "title": "Kan både kvantiteter göras större än den andra?"
+      },
+      {
+        "n": 9,
+        "text": "Med bara area angiven har båda figurerna oändligt många möjliga former. Längsta sidan i båda kan göras valfritt stor, så jämförelsen är inte fastslagen.",
+        "tier": "detail",
+        "title": "Otillräckligt — varför"
+      },
+      {
+        "n": 10,
+        "text": "Informationen är otillräcklig — svaret är D. Insikten i en mening: area ensam bestämmer inte en figurs maxsida; bara area + förhållande mellan sidor eller area + en sida ger entydiga svar.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Figur-fri-parameter-strategin: när bara EN egenskap (area, omkrets, vinkel) anges för en figur, kvarstår oändligt många frihetsgrader. Längsta sidan/diagonalen är då obegränsad — leta efter motexempel i båda riktningar och svara D."
+  },
+  "host-2016-kvant1-KVA-021": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna fel och få a = 8 och b = 9 (omkastad ordning).",
+        "why_wrong": "Steg 4 och 5 är specifika: x = 9 (a-koordinaten) och y = 8 (b-koordinaten). 9 > 8 → a > b."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabb-uppskattning kan ge a ≈ b ≈ 8 eller 9 om man inte räknar exakt.",
+        "why_wrong": "Steg 7: a = 9, b = 8 — skillnaden är exakt 1. Inte lika."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Två linjer kan kännas 'osäkra' om man inte tänker på lutningarna.",
+        "why_wrong": "Steg 8: lutningarna 2 och -1/3 är olika, så linjerna är inte parallella — de skär varandra i exakt en punkt. Ingen tvetydighet."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Hitta skärningspunkten: sätt 2x − 10 = -\\frac{x}{3} + 11. Lös: \\frac{7x}{3} = 21 → x = 9. y = 2 \\cdot 9 - 10 = 8. Så P = (9, 8) → a = 9, b = 8. a > b → svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Två linjer: y = 2x - 10 och y = -\\frac{x}{3} + 11. De skär varandra i en punkt P = (a, b). Du ska jämföra a (x-koordinaten) med b (y-koordinaten).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "I skärningspunkten har båda linjer samma y-värde för samma x. Vi sätter ekvationerna lika: 2x - 10 = -\\frac{x}{3} + 11.",
+        "tier": "detail",
+        "title": "Vad betyder skärningspunkt?"
+      },
+      {
+        "n": 3,
+        "text": "2x + \\frac{x}{3} = 11 + 10 → \\frac{6x + x}{3} = 21 → \\frac{7x}{3} = 21.",
+        "tier": "essential",
+        "title": "Lös för x"
+      },
+      {
+        "n": 4,
+        "text": "Multiplicera båda sidor med 3: 7x = 63. Dela med 7: x = 9. Alltså a = 9.",
+        "tier": "essential",
+        "title": "Isolera x"
+      },
+      {
+        "n": 5,
+        "text": "Sätt in x = 9 i någon av ekvationerna. Första: y = 2 \\cdot 9 - 10 = 18 - 10 = 8. Alltså b = 8.",
+        "tier": "essential",
+        "title": "Räkna ut y"
+      },
+      {
+        "n": 6,
+        "text": "y = -\\frac{9}{3} + 11 = -3 + 11 = 8 ✓. Båda ekvationerna ger samma y för x = 9 — skärningspunkten är konsistent.",
+        "tier": "detail",
+        "title": "Verifiera med andra ekvationen"
+      },
+      {
+        "n": 7,
+        "text": "a = 9, b = 8. a > b → Kvantitet I (a) är större än Kvantitet II (b).",
+        "tier": "essential",
+        "title": "Jämför a och b"
+      },
+      {
+        "n": 8,
+        "text": "Två icke-parallella linjer skär varandra i EXAKT EN punkt. Lutningarna 2 och -\\frac{1}{3} är olika, så linjerna är inte parallella → unik skärningspunkt → unika a och b.",
+        "tier": "detail",
+        "title": "Varför inte D?"
+      },
+      {
+        "n": 9,
+        "text": "y = 2x - 10 passerar (0, -10) och (5, 0). y = -\\frac{x}{3} + 11 passerar (0, 11) och (33, 0). Båda är linjära och har olika lutning — de korsar varandra ungefär där x ≈ 9, y ≈ 8 ✓.",
+        "tier": "detail",
+        "title": "Sanity-check med graf"
+      },
+      {
+        "n": 10,
+        "text": "a = 9 > b = 8 — svaret är A. Insikten i en mening: för att hitta skärningen mellan två räta linjer, sätt deras y-uttryck lika och lös för x; sätt sedan in i en av ekvationerna för y.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Skärningspunkts-strategin: sätt linjernas y-uttryck lika med varandra, lös för x, och sätt in i en av ekvationerna för y. Två icke-parallella räta linjer har alltid exakt en skärningspunkt."
+  },
+  "host-2016-kvant1-KVA-022": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att 'fler siffror i basen två = större tal'.",
+        "why_wrong": "Steg 6 visar att fler siffror i bas två bara kompenserar för mindre bas. Här blir både I och II = 55. Antalet siffror säger inget om talets storlek."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 'större bas, större tal' — bas två har mindre värde per position än bas fem.",
+        "why_wrong": "Steg 5–6: bas två med sex siffror här ger samma värde (55) som bas fem med tre siffror. Bas och längd kompenserar varandra; här exakt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Olika baser kan kännas 'svårt att jämföra' utan att räkna.",
+        "why_wrong": "Steg 3 och steg 6 ger entydiga värden: båda kvantiteter är 55. Ingen tvetydighet — D är fel."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Konvertera båda till bas tio. 210_{\\text{fem}} = 2 \\cdot 25 + 1 \\cdot 5 + 0 = 55. 110111_{\\text{två}} = 32 + 16 + 4 + 2 + 1 = 55. Lika. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du jämför 210_{\\text{fem}} (talet 210 skrivet med basen fem) och 110111_{\\text{två}} (talet 110111 skrivet med basen två). För att jämföra måste du översätta båda till samma bas — enklast till bas tio.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "I bas b betyder siffran på position k (räknat från höger, börjat med 0) talet siffran \\cdot b^{k}. T.ex. 203_{\\text{fem}} = 2 \\cdot 5^{2} + 0 \\cdot 5^{1} + 3 \\cdot 5^{0} = 50 + 0 + 3 = 53 (precis som ledtråden anger).",
+        "tier": "detail",
+        "title": "Vad är positionssystem?"
+      },
+      {
+        "n": 3,
+        "text": "210_{\\text{fem}}: siffrorna är 2, 1, 0 från vänster. 2 \\cdot 5^{2} + 1 \\cdot 5^{1} + 0 \\cdot 5^{0} = 2 \\cdot 25 + 1 \\cdot 5 + 0 = 50 + 5 = 55.",
+        "tier": "essential",
+        "title": "Konvertera 210_fem till bas tio"
+      },
+      {
+        "n": 4,
+        "text": "2^{0} = 1, 2^{1} = 2, 2^{2} = 4, 2^{3} = 8, 2^{4} = 16, 2^{5} = 32, 2^{6} = 64. Dessa behövs för bas två.",
+        "tier": "detail",
+        "title": "Räkna potenser av 2"
+      },
+      {
+        "n": 5,
+        "text": "110111_{\\text{två}}: siffrorna är 1, 1, 0, 1, 1, 1 från vänster (sex siffror). Position från höger: 0–5. 1 \\cdot 2^{5} + 1 \\cdot 2^{4} + 0 \\cdot 2^{3} + 1 \\cdot 2^{2} + 1 \\cdot 2^{1} + 1 \\cdot 2^{0}.",
+        "tier": "essential",
+        "title": "Konvertera 110111_två till bas tio"
+      },
+      {
+        "n": 6,
+        "text": "= 32 + 16 + 0 + 4 + 2 + 1 = 55.",
+        "tier": "essential",
+        "title": "Räkna ut summan"
+      },
+      {
+        "n": 7,
+        "text": "Kvantitet I = 55. Kvantitet II = 55. Lika.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 8,
+        "text": "Ledtråden säger 53_{\\text{tio}} = 110101_{\\text{två}}. 110101_{\\text{två}} = 32 + 16 + 4 + 1 = 53 ✓. Vår 110111_{\\text{två}} har en 1 mer (på position 1) → 53 + 2 = 55 ✓.",
+        "tier": "detail",
+        "title": "Sanity-check via ledtrådarna"
+      },
+      {
+        "n": 9,
+        "text": "203_{\\text{fem}} = 53 enligt ledtråden. 210_{\\text{fem}} skiljer från 203_{\\text{fem}} med 7 (en 1:a i position 1 istället för 3:a i position 0): 53 - 3 + 5 = 55 ✓. Stämmer.",
+        "tier": "detail",
+        "title": "Annan sanity-check"
+      },
+      {
+        "n": 10,
+        "text": "Båda kvantiteter är lika med 55 — svaret är C. Insikten i en mening: tal i olika baser jämförs genom konvertering till en gemensam bas (oftast tio); använd siffra \\cdot bas^{position}-formeln.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Bas-konverteringsstrategin: skriv om alla tal i bas tio med formeln \\sum_{k} d_{k} \\cdot b^{k} (d_k är siffran på position k, b är basen). När båda kvantiteter är i bas tio är jämförelsen rak."
+  },
+  "host-2016-kvant2-KVA-013": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få y < 8 om man delar fel.",
+        "why_wrong": "Steg 3: 500/20 = 25, vilket är klart större än x = 8. Inget val av räknemetod kan ge y < x."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 'de är båda förenklingar — kanske blir de lika'.",
+        "why_wrong": "Steg 5: 8 ≠ 25. Olika tal, olika kvantiteter."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Vid garbliga prompts kan D kännas som ett 'säkert' val.",
+        "why_wrong": "Steg 7: båda är räkneuttryck utan variabler. Räkna ut och jämför — inte tvetydigt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Räkna ut: x = \\frac{16}{2} = 8, y = \\frac{500}{20} = 25. Kvantitet II (y = 25) är större än Kvantitet I (x = 8). Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har två tal: x = \\frac{16}{2} och y = \\frac{500}{20} (rekonstruerade från den något garbliga prompten). Jämför x och y.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "x = \\frac{16}{2} = 8.",
+        "tier": "essential",
+        "title": "Räkna ut x"
+      },
+      {
+        "n": 3,
+        "text": "y = \\frac{500}{20} = 25. (Förenkla: \\frac{500}{20} = \\frac{50}{2} = 25.)",
+        "tier": "essential",
+        "title": "Räkna ut y"
+      },
+      {
+        "n": 4,
+        "text": "Båda delbara med 10: \\frac{500}{20} = \\frac{50}{2}. Båda delbara med 2: \\frac{50}{2} = 25. (Eller direkt: 500 ÷ 20 = 25.)",
+        "tier": "detail",
+        "title": "Förkortningssteg för 500/20"
+      },
+      {
+        "n": 5,
+        "text": "x = 8, y = 25. 25 > 8, alltså är Kvantitet II större än Kvantitet I.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 6,
+        "text": "Storleksskillnaden är dramatisk — 25 är cirka tre gånger 8. Inget tvivel om vilken som är större.",
+        "tier": "detail",
+        "title": "Sanity-check storleksordningen"
+      },
+      {
+        "n": 7,
+        "text": "Båda kvantiteter är konkreta tal utan variabler. Beräkningen ger entydiga värden — ingen tvetydighet.",
+        "tier": "detail",
+        "title": "Varför inte D?"
+      },
+      {
+        "n": 8,
+        "text": "y/x = 25/8 ≈ 3,125 → y är cirka 3,1 gånger större än x. Tydligt y > x.",
+        "tier": "detail",
+        "title": "Alternativ uträkning"
+      },
+      {
+        "n": 9,
+        "text": "500/20 = ? 20 \\cdot 25 = 500 ✓. 16/2 = 8 ✓.",
+        "tier": "detail",
+        "title": "Verifiera divisionen"
+      },
+      {
+        "n": 10,
+        "text": "Kvantitet II > Kvantitet I — svaret är B. Insikten i en mening: när båda kvantiteter är räkneuttryck, räkna ut och jämför direkt; sanity-check storleksordningen så att du inte slarvar med en faktor 10.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Räkneuttrycks-jämförelse: när båda kvantiteter är aritmetiska bråk, räkna ut decimalvärdet (eller heltalsdelen) och jämför. Storleksskillnaden är ofta så tydlig att exakt räkning räcker."
+  },
+  "host-2016-kvant2-KVA-014": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att 'x är större, alltså är x − y större än något annat'.",
+        "why_wrong": "Steg 5 visar att x − y faktiskt ÄR z per konstruktion — inte 'större än'. Det är en geometrisk identitet."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att blanda ihop hålet med rektangelns korta sida (y) och tro att z = y.",
+        "why_wrong": "Steg 4–5: hålets sida är skillnaden mellan rektangelns sidor (x − y), inte den korta sidan (y) själv."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Geometriska konstruktionsfrågor kan kännas tvetydiga om figuren är skissartad.",
+        "why_wrong": "Steg 8: konstruktionen är en låst geometrisk identitet. Givet 'fyra identiska rektanglar bildar kvadrat med kvadratiskt hål', är z = x − y oavsett storlek."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Fyra identiska rektanglar (med sidorna x och y) bildar en stor kvadrat med ett hål i mitten. Hålet har sidan z = x − y (avståndet som rektangeln 'sticker över' den inre kanten). Alltså Kvantitet I (x − y) = Kvantitet II (z). Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Fyra identiska rektanglar med sidorna x och y (där x är längre och y är kortare) fogas samman till en stor kvadrat med ett kvadratiskt hål i mitten. Hålets sida heter z. Du ska jämföra x − y med z.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Fyra rektanglar placeras runt ett centralt hål — varje rektangel ligger längs en sida av den stora kvadraten, med lång sida x parallell med kvadratens kant. Rektanglarna är roterade 90° relativt varandra.",
+        "tier": "detail",
+        "title": "Hur ser konstruktionen ut?"
+      },
+      {
+        "n": 3,
+        "text": "En stor kvadratens sida består av en rektangels långa sida (x) plus en annan rektangels korta sida (y). Alltså stora sidan = x + y.",
+        "tier": "essential",
+        "title": "Identifiera stora kvadratens sida"
+      },
+      {
+        "n": 4,
+        "text": "Hålet i mitten har en sida som motsvarar längden av rektangelns långa sida (x) minus två gånger den korta? Nej — det är skillnaden mellan rektangelns långa och korta sida. Hålets sida z = x − y.",
+        "tier": "essential",
+        "title": "Identifiera hålets sida"
+      },
+      {
+        "n": 5,
+        "text": "Den stora kvadraten har sida x + y. Drar du bort en korta y från ena sidan av rektangeln längs varje hörn, blir hålet kvar med sida (x + y) - 2y = x - y. Alltså z = x - y.",
+        "tier": "detail",
+        "title": "Verifiera med en skiss"
+      },
+      {
+        "n": 6,
+        "text": "Kvantitet I = x − y. Kvantitet II = z = x − y. De är lika.",
+        "tier": "essential",
+        "title": "Jämför kvantiteterna"
+      },
+      {
+        "n": 7,
+        "text": "Ta x = 5, y = 2. Stora kvadratens sida = 7, hålets sida = 5 - 2 = 3. Då är Kvantitet I = 5 - 2 = 3 och Kvantitet II = z = 3. Lika ✓.",
+        "tier": "detail",
+        "title": "Konkret exempel"
+      },
+      {
+        "n": 8,
+        "text": "Konstruktionen är en låst geometrisk identitet — så fort du vet att fyra identiska rektanglar ska forma en kvadrat med kvadratiskt hål, är z = x − y per konstruktion. Inga frihetsgrader.",
+        "tier": "detail",
+        "title": "Varför inte D?"
+      },
+      {
+        "n": 9,
+        "text": "Hålet bildas av att rektanglarna 'sticker över' den centrala punkten. Skillnaden i sidlängd (x − y) är exakt det överskott som blir hålets sida — det är konstruktionens kärna.",
+        "tier": "detail",
+        "title": "Geometrisk intuition"
+      },
+      {
+        "n": 10,
+        "text": "x − y = z, alltså är Kvantitet I lika med Kvantitet II — svaret är C. Insikten i en mening: i klassiska 'fyra rektanglar runt ett hål'-konstruktioner är hålets sida alltid skillnaden mellan rektangelns sidor.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Geometrisk identitet-strategin för komplexa figurer: identifiera vilka sträckor som motsvarar samma längd i konstruktionen. Här är hålets sida lika med rektangelns långsida minus rektangelns kortsida — en återkommande identitet i 'pinwheel'-figurer."
+  },
+  "host-2016-kvant2-KVA-015": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Vid snabb avläsning kan 7,56/7 se 'snyggare' ut och kännas större.",
+        "why_wrong": "Steg 2 och 3 räknar exakt: 1,08 < 1,09. Visuell snygghet säger inget om storlek."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Båda värden är nära 1 — frestande att tro att de är 'i princip lika'.",
+        "why_wrong": "Steg 5: skillnaden är 0,01. 'Nästan lika' är inte 'lika'. I KVA är allt som inte är exakt lika antingen större eller mindre."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Decimaler kan upplevas som svåra att hantera utan att slarva.",
+        "why_wrong": "Steg 7: gemensam nämnare 100 ger heltalsjämförelse 108 vs 109 — entydigt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Räkna ut decimaler. Kvantitet I = \\frac{7{,}56}{7} = 1{,}08. Kvantitet II = \\frac{98{,}1}{90} \\approx 1{,}09. II > I — svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du jämför \\frac{7{,}56}{7} (Kvantitet I) med \\frac{98{,}1}{90} (Kvantitet II). Värdena ligger båda nära 1; precision i decimalerna är nyckeln.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "\\frac{7{,}56}{7}: 7 \\cdot 1 = 7 och resten 0,56; 0,56 / 7 = 0,08. Så \\frac{7{,}56}{7} = 1{,}08.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet I"
+      },
+      {
+        "n": 3,
+        "text": "\\frac{98{,}1}{90}: multiplicera täljare och nämnare med 10 för att få bort decimalen: \\frac{981}{900}. Förkorta med 9: \\frac{981}{900} = \\frac{109}{100} = 1{,}09.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet II — förenkla först"
+      },
+      {
+        "n": 4,
+        "text": "981 / 9: 9 \\cdot 100 = 900, 981 − 900 = 81, 81/9 = 9 → 981/9 = 109 ✓. 900/9 = 100. Så \\frac{981}{900} = \\frac{109}{100}.",
+        "tier": "detail",
+        "title": "Verifiera förkortningen"
+      },
+      {
+        "n": 5,
+        "text": "Kvantitet I = 1,08. Kvantitet II = 1,09. 1,09 > 1,08 → II > I.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 6,
+        "text": "Skillnaden är 0,01 — bara 1 procent. Men i KVA är ALLA skillnader avgörande; det är därför vi räknar ut exakta decimaler istället för att approximera.",
+        "tier": "detail",
+        "title": "Skillnaden är liten — varför den ändå räknas"
+      },
+      {
+        "n": 7,
+        "text": "Kvantitet I = \\frac{7{,}56}{7} = \\frac{756}{700} = \\frac{108}{100}. Kvantitet II = \\frac{981}{900} = \\frac{109}{100}. Med samma nämnare (100): 108 < 109 → I < II.",
+        "tier": "detail",
+        "title": "Alternativ metod: gemensam nämnare"
+      },
+      {
+        "n": 8,
+        "text": "Båda är 'lite mer än 1'. För 7,56/7: kvoten är drygt 1 eftersom 7,56 > 7 med 0,56 = 0,08 \\cdot 7. För 98,1/90: kvoten är drygt 1 med 98,1 > 90 med 8,1 = 0,09 \\cdot 90. Båda är mycket nära, men 0,09 > 0,08.",
+        "tier": "detail",
+        "title": "Sanity-check"
+      },
+      {
+        "n": 9,
+        "text": "Båda är konkreta numeriska kvoter — beräkningen ger entydiga decimaltal. Ingen tvetydighet.",
+        "tier": "detail",
+        "title": "Varför inte D?"
+      },
+      {
+        "n": 10,
+        "text": "Kvantitet II > Kvantitet I — svaret är B. Insikten i en mening: när bråk har olika nämnare, omvandla till samma nämnare (eller decimaltal) innan jämförelse — även små decimalskillnader är avgörande.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Decimal- eller gemensam-nämnare-strategin för bråkjämförelse: konvertera till samma form (decimal eller samma nämnare) innan jämförelse. Vid små skillnader är decimaler ofta tydligast."
+  },
+  "host-2016-kvant2-KVA-016": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att 'båda är f(...)-f(...)-skillnader, alltså lika'.",
+        "why_wrong": "Steg 9: exponentialfunktionen växer snabbare för större x, så skillnaden f(1) − f(0) är dramatiskt större än f(0) − f(−1). Inte symmetriskt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Båda är 'skillnader över en enhet i x'; man kan tro att skillnaderna är ekvivalenta.",
+        "why_wrong": "Steg 6–7: 2,25 ≠ 9. Likhet gäller bara för LINJÄRA funktioner; exponentialfunktioner har växande differenser."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Vid f(x)-funktioner är D ofta ett 'säkert' val.",
+        "why_wrong": "Funktionen är fullständigt definierad och alla tre x-värden ger entydiga f-värden. Räkna ut och jämför — inte tvetydigt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att tro att f(b) − f(a) är samma för alla a, b med samma avstånd (b - a = 1). Det gäller BARA för linjära funktioner. Botemedlet: vid exponentiella funktioner — räkna ALLTID ut värdena explicit; skillnader är inte konstanta.",
+    "solution_path": "Räkna ut funktionsvärdena: f(0) = 3, f(-1) = \\frac{3}{4}, f(1) = 12. Kvantitet I = 3 - \\frac{3}{4} = \\frac{9}{4}. Kvantitet II = 12 - 3 = 9. II > I — svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Funktionen är f(x) = 3 \\cdot 4^{x}. Du ska jämföra f(0) - f(-1) (Kvantitet I) med f(1) - f(0) (Kvantitet II).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "4^{x} betyder 4 multiplicerat med sig själv x gånger. 4^{0} = 1 (alltid). 4^{1} = 4. 4^{-1} = \\frac{1}{4} (invertera när exponenten är negativ).",
+        "tier": "detail",
+        "title": "Vad är 4^{x}?"
+      },
+      {
+        "n": 3,
+        "text": "f(0) = 3 \\cdot 4^{0} = 3 \\cdot 1 = 3.",
+        "tier": "essential",
+        "title": "Räkna f(0)"
+      },
+      {
+        "n": 4,
+        "text": "f(-1) = 3 \\cdot 4^{-1} = 3 \\cdot \\frac{1}{4} = \\frac{3}{4}.",
+        "tier": "essential",
+        "title": "Räkna f(−1)"
+      },
+      {
+        "n": 5,
+        "text": "f(1) = 3 \\cdot 4^{1} = 3 \\cdot 4 = 12.",
+        "tier": "essential",
+        "title": "Räkna f(1)"
+      },
+      {
+        "n": 6,
+        "text": "f(0) - f(-1) = 3 - \\frac{3}{4} = \\frac{12}{4} - \\frac{3}{4} = \\frac{9}{4} = 2{,}25.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet I"
+      },
+      {
+        "n": 7,
+        "text": "f(1) - f(0) = 12 - 3 = 9.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet II"
+      },
+      {
+        "n": 8,
+        "text": "Kvantitet I = 2,25. Kvantitet II = 9. 9 > 2,25 → II > I.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 9,
+        "text": "Exponentialfunktionen 4^{x} växer snabbare för STÖRRE x. Skillnaden mellan f(0) och f(−1) (när funktionen är runt 0–3) är liten; skillnaden mellan f(1) och f(0) (när funktionen är runt 3–12) är mycket större. Det är en grundläggande egenskap hos exponentialväxt.",
+        "tier": "detail",
+        "title": "Varför är skillnaderna olika stora?"
+      },
+      {
+        "n": 10,
+        "text": "Kvantitet II är betydligt större än Kvantitet I — svaret är B. Insikten i en mening: exponentialfunktioners differenser växer EXPONENTIELLT — en differens långt åt höger på x-axeln är dramatiskt större än en lika lång differens åt vänster.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Exponential-differens-strategin: räkna ut funktionsvärden explicit; kom ihåg att exponentialfunktioner har differenser som växer geometriskt med x (skillnaden 'multipliceras' med basen för varje steg åt höger)."
+  },
+  "host-2016-kvant2-KVA-018": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Kvantitet I:s andra term har 'mer' i nämnaren (x+1) — kan se 'större' ut om man inte tänker på att större nämnare betyder mindre bråk.",
+        "why_wrong": "Steg 3: större nämnare → MINDRE bråk för positiva täljare. \\frac{1}{x+1} är ALLTID mindre än \\frac{1}{x} för x > 0."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Båda kvantiteter har 'x + 1/...'-struktur — frestande att tro att de är ekvivalenta.",
+        "why_wrong": "Steg 5: nämnarna skiljer sig (x+1 vs x), så bråken är olika stora. De är aldrig lika för x > 0."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Med x som variabel är det frestande att gissa 'beror på'.",
+        "why_wrong": "Steg 9: villkoret x > 0 låser riktningen. Olikheten är universellt sann; inget rum för tvetydighet."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att tolka 'större nämnare' som 'större bråk'. Botemedlet: kom ihåg pizzaanalogin — fler bitar (större nämnare) betyder MINDRE per bit. Och visualisera med x = 1 om du är osäker på riktningen.",
+    "solution_path": "Båda kvantiteter har x som första term, så jämförelsen reduceras till \\frac{1}{x+1} mot \\frac{1}{x}. För x > 0 är x + 1 > x, så \\frac{1}{x+1} < \\frac{1}{x}. Alltså är Kvantitet II större. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har x > 0. Kvantitet I = x + \\frac{1}{x+1} och Kvantitet II = x + \\frac{1}{x}. Du ska jämföra dem.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Båda kvantiteter har 'x +' som första del. Skillnaden ligger i andra termen. Kvantitet I > II om och endast om \\frac{1}{x+1} > \\frac{1}{x}, och vice versa.",
+        "tier": "essential",
+        "title": "Eliminera den gemensamma termen"
+      },
+      {
+        "n": 3,
+        "text": "För positiva tal: större nämnare → MINDRE bråk. T.ex. \\frac{1}{2} = 0{,}5 medan \\frac{1}{3} \\approx 0{,}33. Större nämnare gör täljarens 1 'delas i fler bitar' — varje bit blir mindre.",
+        "tier": "detail",
+        "title": "Vad händer när nämnaren ändras?"
+      },
+      {
+        "n": 4,
+        "text": "x + 1 > x för alla x (vi adderar 1). Båda är positiva (x > 0 ger x + 1 > 1 > 0).",
+        "tier": "essential",
+        "title": "Jämför nämnarna"
+      },
+      {
+        "n": 5,
+        "text": "Eftersom x + 1 > x och båda positiva, är \\frac{1}{x+1} < \\frac{1}{x}. Alltså är Kvantitet I:s andra term mindre än Kvantitet II:s.",
+        "tier": "essential",
+        "title": "Slutsats om bråken"
+      },
+      {
+        "n": 6,
+        "text": "Kvantitet I = x + (mindre bråk) < x + (större bråk) = Kvantitet II. Alltså II > I.",
+        "tier": "essential",
+        "title": "Slutsats om kvantiteterna"
+      },
+      {
+        "n": 7,
+        "text": "Sätt x = 1: Kvantitet I = 1 + \\frac{1}{2} = 1{,}5. Kvantitet II = 1 + 1 = 2. 2 > 1,5 ✓. Sätt x = 4: I = 4 + 1/5 = 4{,}2. II = 4 + 1/4 = 4{,}25. 4,25 > 4,2 ✓.",
+        "tier": "detail",
+        "title": "Verifiera med konkret tal"
+      },
+      {
+        "n": 8,
+        "text": "Vid x mycket litet (säg 0,01): I = 0,01 + 1/1,01 ≈ 1,00. II = 0,01 + 1/0,01 = 100,01. II är massivt större. Vid x mycket stort: båda bråk är små, kvantiteterna nästan lika; men II är fortfarande lite större.",
+        "tier": "detail",
+        "title": "Sanity-check vid extrema värden"
+      },
+      {
+        "n": 9,
+        "text": "Villkoret x > 0 garanterar att x + 1 > x > 0 alltid. Olikheten 1/(x+1) < 1/x är universellt sann för x > 0. Inget val av x kan ändra riktning.",
+        "tier": "detail",
+        "title": "Varför inte D?"
+      },
+      {
+        "n": 10,
+        "text": "Kvantitet II är alltid större än Kvantitet I för x > 0 — svaret är B. Insikten i en mening: vid jämförelse av summor med en gemensam term, jämför bara de skiljande termerna; för positiva 1/x-bråk är större nämnare lika med mindre bråk.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Gemensam-term-elimination: vid jämförelse av uttryck a + b mot a + c, dra bort a från båda sidor och jämför bara b mot c. Förenklar dramatiskt och undviker komplicerade gemensamma nämnare."
+  },
+  "host-2016-kvant2-KVA-019": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Vid 'positivt skewed' fördelning (R långt borta) är medelvärdet större än medianen — kan kännas som en universell regel.",
+        "why_wrong": "Steg 7 ger motexempel: P=1, Q=10, R=12 → median är större. Skewness är inte garanterad åt höger."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att tro att 'medianen är mer robust, alltså större' om man minns att medianen är 'mer stabil'.",
+        "why_wrong": "Steg 6 ger motexempel: P=1, Q=2, R=100 → medelvärdet är dramatiskt större. Robust ≠ större."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Symmetri-intuition: om P, Q, R är 'jämnt fördelade' blir medelvärde = median.",
+        "why_wrong": "Steg 8 visar att likhet inträffar BARA i specialfallet P + R = 2Q. Övriga konfigurationer ger olikheter."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att tro att medelvärde och median 'oftast är ungefär lika', vilket gör likhet (C) frestande. Botemedlet: använd KVA-otillräcklighetsteknik — leta efter ETT exempel som ger I > II och ETT som ger II > I; finns båda är svaret D.",
+    "solution_path": "Medianen av (P, Q, R) är Q. Medelvärdet är \\frac{P+Q+R}{3}. Jämförelsen reduceras till om P + R är större, mindre, eller lika med 2Q. Konkreta exempel ger alla tre utfall — otillräckligt. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "P, Q, R är tre positiva heltal med P < Q < R. Kvantitet I är medelvärdet av dem; Kvantitet II är medianen. Jämför.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Medianen av en ordnad lista är det mellersta värdet. För tre tal P < Q < R är medianen Q.",
+        "tier": "detail",
+        "title": "Vad är median?"
+      },
+      {
+        "n": 3,
+        "text": "Medelvärdet är summan dividerat med antalet. Här: \\frac{P + Q + R}{3}.",
+        "tier": "detail",
+        "title": "Vad är medelvärde?"
+      },
+      {
+        "n": 4,
+        "text": "Medelvärde vs median: \\frac{P+Q+R}{3} vs Q. Multiplicera båda sidor med 3: P + Q + R vs 3Q. Subtrahera Q: P + R vs 2Q.",
+        "tier": "essential",
+        "title": "Reducera jämförelsen"
+      },
+      {
+        "n": 5,
+        "text": "P + R = 2Q betyder att Q är exakt mitt emellan P och R. P + R > 2Q betyder att R är 'längre bort uppåt' än P är 'nedåt' (tyngdpunkt åt höger). P + R < 2Q betyder att P är 'längre bort nedåt'.",
+        "tier": "detail",
+        "title": "Insikt: jämförelsen beror på spridningen"
+      },
+      {
+        "n": 6,
+        "text": "P = 1, Q = 2, R = 100. Median = 2. Medelvärde = \\frac{103}{3} \\approx 34{,}3. Medelvärdet är MYCKET större än medianen. Här P + R = 101 > 4 = 2Q.",
+        "tier": "essential",
+        "title": "Exempel där medelvärdet > median"
+      },
+      {
+        "n": 7,
+        "text": "P = 1, Q = 10, R = 12. Median = 10. Medelvärde = \\frac{23}{3} \\approx 7{,}67. Medelvärdet är MINDRE än medianen. Här P + R = 13 < 20 = 2Q.",
+        "tier": "essential",
+        "title": "Exempel där medelvärdet < median"
+      },
+      {
+        "n": 8,
+        "text": "P = 1, Q = 5, R = 9. Median = 5. Medelvärde = \\frac{15}{3} = 5. Lika. Här P + R = 10 = 2Q.",
+        "tier": "essential",
+        "title": "Exempel där de är lika"
+      },
+      {
+        "n": 9,
+        "text": "Med samma villkor (P < Q < R, alla positiva heltal) kan medelvärdet vara större, mindre eller lika med medianen. Otillräcklig information för att avgöra.",
+        "tier": "essential",
+        "title": "Alla tre utfall möjliga → otillräckligt"
+      },
+      {
+        "n": 10,
+        "text": "Informationen räcker inte — svaret är D. Insikten i en mening: medianen är okänslig för extremvärden, medan medelvärdet flyttas av dem; om vi inte vet hur 'spritt' R är från Q jämfört med P, kan jämförelsen inte avgöras.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Medelvärde-vs-median-strategin: medelvärdet > medianen om R är 'längre upp' än P är 'ner'; medelvärdet < medianen om motsatsen. Utan information om spridningen är jämförelsen otillräcklig — testa två motexempel för att bekräfta D."
+  },
+  "host-2016-kvant2-KVA-020": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att om x^{2} = 4y så är x \"större\" än 2y eftersom x^{2} > 2y krävs för 'växt'.",
+        "why_wrong": "Steg 5: för y > 1 är 2y större än x = 2\\sqrt{y}. Olikheten beror på y och kan gå åt båda hållen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 'om y är stort så är 2y stort' utan att testa y < 1.",
+        "why_wrong": "Steg 6: för 0 < y < 1 är x = 2\\sqrt{y} faktiskt STÖRRE än 2y. Inte universellt II > I."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "x^{2} = 4y kan kännas som en 'symmetri' som ger x = 2y.",
+        "why_wrong": "Steg 7: x = 2 och 2y = 2 är ett specialfall (y = 1). För andra y är de inte lika."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att glömma att x^{2} = 4y ger x = \\pm 2\\sqrt{y} (två tecken) och att jämförelsen \\sqrt{y} vs y vänder vid y = 1. Botemedlet: rita talaxeln med y = 0, y = 1 markerade och tänk i tre zoner.",
+    "solution_path": "Från x^{2} - y = 7y - x^{2} följer 2x^{2} = 8y, alltså x^{2} = 4y och x = \\pm 2\\sqrt{y}. Jämför x med 2y: utfallet beror på y:s storlek (mer eller mindre än 1) och på vilket tecken x har. Otillräckligt — svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Villkor: y > 0 och x^{2} - y = 7y - x^{2}. Du ska jämföra x (Kvantitet I) med 2y (Kvantitet II).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "x^{2} - y = 7y - x^{2}. Flytta termer: 2x^{2} = 8y → x^{2} = 4y.",
+        "tier": "essential",
+        "title": "Förenkla villkoret"
+      },
+      {
+        "n": 3,
+        "text": "x^{2} = 4y → x = \\sqrt{4y} = 2\\sqrt{y} ELLER x = -2\\sqrt{y} (kvadratrot ger två lösningar, positiv och negativ).",
+        "tier": "essential",
+        "title": "Lös för x"
+      },
+      {
+        "n": 4,
+        "text": "Om x = 2\\sqrt{y}, jämför 2\\sqrt{y} med 2y → \\sqrt{y} med y → dela båda sidor med \\sqrt{y} (positivt, ok): 1 vs \\sqrt{y}. Det beror på y.",
+        "tier": "essential",
+        "title": "Fall 1: x positivt"
+      },
+      {
+        "n": 5,
+        "text": "Om y > 1: \\sqrt{y} > 1, alltså \\sqrt{y} > 1, så y > \\sqrt{y}, vilket ger 2y > 2\\sqrt{y} = x → Kvantitet II > Kvantitet I.",
+        "tier": "essential",
+        "title": "y > 1: 2y > x"
+      },
+      {
+        "n": 6,
+        "text": "Om 0 < y < 1: \\sqrt{y} > y (rotrot av tal i intervallet (0,1) är större än talet självt). T.ex. \\sqrt{0{,}25} = 0{,}5 > 0{,}25. Då är 2\\sqrt{y} > 2y → x > 2y → I > II.",
+        "tier": "essential",
+        "title": "0 < y < 1: x > 2y"
+      },
+      {
+        "n": 7,
+        "text": "Om y = 1: x^{2} = 4 → x = ±2. För x = 2: 2y = 2 → lika. För x = -2: x = -2 < 2 = 2y → II > I.",
+        "tier": "essential",
+        "title": "y = 1: lika"
+      },
+      {
+        "n": 8,
+        "text": "Om x = -2\\sqrt{y}, då är x < 0 < 2y → x < 2y oavsett y. I < II.",
+        "tier": "essential",
+        "title": "Fall 2: x negativt"
+      },
+      {
+        "n": 9,
+        "text": "Med y = 0{,}25 och x = 2\\sqrt{0{,}25} = 1: 1 vs 0,5 → I > II. Med y = 4 och x = 4: 4 vs 8 → II > I. Med y = 1 och x = 2: 2 vs 2 → lika. Tre olika utfall under samma villkor → otillräckligt.",
+        "tier": "essential",
+        "title": "Olika utfall → otillräckligt"
+      },
+      {
+        "n": 10,
+        "text": "Informationen är otillräcklig — svaret är D. Insikten i en mening: villkoret x^{2} = 4y låser inte x till ett unikt värde (positivt eller negativt) eller y till en låst storleksklass — jämförelsen växlar mellan tre möjliga utfall.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Kvadratrot-fall-strategin: när villkoret är en kvadratekvation (x^{2} = k), kom ihåg båda lösningarna (x = \\pm\\sqrt{k}) och testa olika storleksklasser av variabeln (y < 1, y = 1, y > 1). Om utfall växlar är svaret D."
+  },
+  "host-2016-kvant2-KVA-021": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 'n separata cirklar har mer rand totalt' än en stor cirkel.",
+        "why_wrong": "Steg 6: omkretsen är LINJÄR i radien, så multiplikation med n går exakt jämnt upp. Summan av n små omkretsar matchar omkretsen för en n-gånger-så-stor cirkel."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "En stor cirkel kan se 'mer omkrets' ut visuellt om man tänker på den geometriska storleken.",
+        "why_wrong": "Steg 4: stora omkretsen är 2πnr — precis vad de små summerar till. Visuell storlek lurar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Två okända variabler (n och r) kan ge känsla av tvetydighet.",
+        "why_wrong": "Steg 5: båda kvantiteter blir 2πnr oavsett n och r. Likheten är universell, inte fallberoende."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att blanda ihop omkrets och area: areorna växer KVADRATISKT med radien, omkretsarna LINJÄRT. Botemedlet: rita ut formeln (omkrets = 2πr; area = πr²) och se exponenten på r — den avgör skalningens beteende.",
+    "solution_path": "Summan av omkretsarna för n cirklar med radie r är n \\cdot 2\\pi r = 2\\pi n r. Omkretsen för cirkeln med radie R = nr är 2\\pi R = 2\\pi nr. Lika. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har n små cirklar, varje med radie r, och en stor cirkel med radie R = nr. Du ska jämföra summan av de små cirklarnas omkretsar (Kvantitet I) med den stora cirkelns omkrets (Kvantitet II).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "En cirkel med radie ρ har omkrets 2πρ. Formeln är linjär i radien.",
+        "tier": "detail",
+        "title": "Cirkelns omkrets"
+      },
+      {
+        "n": 3,
+        "text": "Varje liten cirkels omkrets = 2\\pi r. Summan av n stycken = n \\cdot 2\\pi r = 2\\pi n r.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet I"
+      },
+      {
+        "n": 4,
+        "text": "Stora cirkelns omkrets = 2\\pi R = 2\\pi (nr) = 2\\pi n r.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet II"
+      },
+      {
+        "n": 5,
+        "text": "Kvantitet I = 2\\pi n r och Kvantitet II = 2\\pi n r. Lika.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 6,
+        "text": "Omkretsen är linjär i radien (omkrets = 2π · radie). När du multiplicerar radien med n får du n gånger omkretsen. Summan av n små omkretsar är exakt samma som omkretsen för en cirkel med n gånger radien.",
+        "tier": "detail",
+        "title": "Varför det fungerar"
+      },
+      {
+        "n": 7,
+        "text": "Cirkelns area = πr², kvadratisk i radien. n cirklar med radie r har total area n · πr² = nπr². Men en cirkel med radie R = nr har area π(nr)² = πn²r² — n GÅNGER större än de små. Linjäritet är specifikt för omkretsen.",
+        "tier": "detail",
+        "title": "Jämför med area — varför det INTE skulle gälla"
+      },
+      {
+        "n": 8,
+        "text": "n = 3, r = 2: tre små cirklar med radie 2, omkrets 4π vardera, totalt 12π. Stor cirkel R = 3·2 = 6, omkrets 12π ✓. Lika.",
+        "tier": "detail",
+        "title": "Konkret exempel"
+      },
+      {
+        "n": 9,
+        "text": "Villkoret R = nr binder ihop variablerna helt. Kvantiteterna blir båda 2πnr — entydigt lika oavsett n och r.",
+        "tier": "detail",
+        "title": "Varför inte D?"
+      },
+      {
+        "n": 10,
+        "text": "Kvantiteterna är lika — svaret är C. Insikten i en mening: omkretsen är LINJÄR i radien, så summan av n cirkelomkretsar med radie r är samma som omkretsen för en cirkel med radie nr. (Det är inte sant för areor, som är kvadratiska.)",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Linjäritets-strategin för geometri: omkretsen är LINJÄR i radien (× n radie → × n omkrets). Det innebär att summor av cirkelomkretsar kan jämföras direkt med omkretsen av en proportionellt skalad cirkel. För area måste man kvadrera istället."
+  },
+  "host-2016-kvant2-KVA-022": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Vid stora pojk-antal kan 2P kännas större intuitivt; eller om man räknar bröder fel.",
+        "why_wrong": "Steg 7–8: P = 4 är låst. 2P = 8 < 9 = 3F. Räkningen säger B, inte A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att 2P och 3F är 'designade' lika.",
+        "why_wrong": "Steg 10: 2P = 8 ≠ 9 = 3F. Inte lika; skiljer med 1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Vid syskonfrågor med två variabler är det frestande att gissa 'beror på'.",
+        "why_wrong": "Steg 4 och 6 ger två oberoende ekvationer med två obekanta → unik lösning. P och F är låsta till specifika värden."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att räkna en pojkes bröder som P (alla pojkar) istället för P − 1 (alla utom han själv). Botemedlet: rita en gubbe med 'jag' i mitten och bröder som separata gubbar runt omkring — 'jag' räknas inte som sin egen bror.",
+    "solution_path": "Sätt P = pojkar, F = flickor. Pojkes ekvation: P − 1 = F. Flickas ekvation: P = 2(F − 1). Lös: F = 3, P = 4. Kvantitet I = 2P = 8. Kvantitet II = 3F = 9. II > I — svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "En syskonskara har pojkar och flickor. Varje pojke har lika många bröder som systrar. Varje flicka har dubbelt så många bröder som systrar. Jämför 2 \\cdot (antal pojkar) med 3 \\cdot (antal flickor).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Kalla antalet pojkar P och antalet flickor F. Båda är positiva heltal.",
+        "tier": "essential",
+        "title": "Sätt variabler"
+      },
+      {
+        "n": 3,
+        "text": "En specifik pojke har P − 1 bröder (alla pojkar utom han själv) och F systrar (alla flickor).",
+        "tier": "detail",
+        "title": "Vad är en pojkes bröder?"
+      },
+      {
+        "n": 4,
+        "text": "'Lika många bröder som systrar' → P − 1 = F → P = F + 1.",
+        "tier": "essential",
+        "title": "Pojkens ekvation"
+      },
+      {
+        "n": 5,
+        "text": "En specifik flicka har P bröder (alla pojkar) och F − 1 systrar (alla flickor utom hon själv).",
+        "tier": "detail",
+        "title": "Vad är en flickas bröder och systrar?"
+      },
+      {
+        "n": 6,
+        "text": "'Dubbelt så många bröder som systrar' → P = 2(F − 1) → P = 2F − 2.",
+        "tier": "essential",
+        "title": "Flickans ekvation"
+      },
+      {
+        "n": 7,
+        "text": "Sätt in P = F + 1 i P = 2F − 2: F + 1 = 2F − 2 → 1 + 2 = 2F − F → F = 3.",
+        "tier": "essential",
+        "title": "Lös systemet"
+      },
+      {
+        "n": 8,
+        "text": "P = F + 1 = 3 + 1 = 4. Så det finns 4 pojkar och 3 flickor.",
+        "tier": "essential",
+        "title": "Räkna P"
+      },
+      {
+        "n": 9,
+        "text": "Pojke har 3 bröder (= P − 1 = 3) och 3 systrar (= F = 3) ✓ lika. Flicka har 4 bröder (= P = 4) och 2 systrar (= F − 1 = 2). 4 = 2 \\cdot 2 ✓ dubbelt.",
+        "tier": "essential",
+        "title": "Verifiera"
+      },
+      {
+        "n": 10,
+        "text": "Kvantitet I = 2P = 8. Kvantitet II = 3F = 9. 9 > 8 → II > I. Svaret är B. Insikten i en mening: 'jag har x bröder' utesluter alltid personen själv (i en syskonskara med P pojkar och en pojkes perspektiv: bröder = P − 1).",
+        "tier": "essential",
+        "title": "Jämför kvantiteterna"
+      }
+    ],
+    "technique": "Syskon-perspektivstrategin: när man säger 'en pojke har X bröder' menas alla pojkar UTOM honom själv (P − 1). Detta är den vanligaste fällan i syskonproblem. Ställ upp två ekvationer från två syskons perspektiv och lös."
+  }
+}

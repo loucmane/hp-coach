@@ -1,0 +1,1496 @@
+{
+  "host-2022-kvant1-KVA-013": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du korsmultiplicerar fel håll (10·16 = 8·x) får du x = 20 — fel håll igen, men kanske du sen blandar och hamnar nära Kvantitet II som större.",
+        "why_wrong": "Korsmultiplikationen ger 8·16 = 10·x (steg 3), inte tvärtom. Rätt håll ger 128 = 10x, alltså x = 12,8 > 10."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du tror att x måste vara nämnaren snarare än räkna ut den, kanske du gissar att x = 10 (eftersom 10 dyker upp i bägge bråk).",
+        "why_wrong": "Den ena 10:an är nämnaren i det första bråket; x är täljaren i det andra. De är olika positioner — och x = 12,8, inte 10 (steg 4)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'jag vet inte vilket x är, så informationen räcker inte'.",
+        "why_wrong": "Informationen räcker mer än väl: en ekvation, en obekant. Steg 3–4 löser den entydigt till x = 12,8."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Korsmultiplicera: 8 \\cdot 16 = 10x, alltså x = \\tfrac{128}{10} = 12{,}8. Eftersom 12,8 > 10 är Kvantitet I större. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har likheten \\tfrac{8}{10} = \\tfrac{x}{16}. Hitta x och jämför mot 10.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "När två bråk a/b och c/d är lika kan du korsmultiplicera: a·d = b·c. Detta är ett vanligt trick för att lösa ut en obekant i ett bråk.",
+        "tier": "detail",
+        "title": "Två bråk är lika"
+      },
+      {
+        "n": 3,
+        "text": "\\tfrac{8}{10} = \\tfrac{x}{16} → 8 \\cdot 16 = 10 \\cdot x, alltså 128 = 10x.",
+        "tier": "essential",
+        "title": "Korsmultiplicera"
+      },
+      {
+        "n": 4,
+        "text": "Dividera båda sidor med 10: x = 128/10 = 12,8.",
+        "tier": "essential",
+        "title": "Lös ut x"
+      },
+      {
+        "n": 5,
+        "text": "8/10 kan förkortas till 4/5. Då blir 4/5 = x/16 → 4 · 16 = 5x → 64 = 5x → x = 64/5 = 12,8. Samma svar.",
+        "tier": "detail",
+        "title": "Alternativ: förenkla först"
+      },
+      {
+        "n": 6,
+        "text": "Bråket 8/10 = 0,8 är konstant. Vi ska hitta x sådan att x/16 också är 0,8 — alltså 80 procent av 16. 80 % av 16 är 12,8.",
+        "tier": "detail",
+        "title": "Förstå förhållandet"
+      },
+      {
+        "n": 7,
+        "text": "Kvantitet I = x = 12,8. Kvantitet II = 10. Är 12,8 större än 10? Ja.",
+        "tier": "essential",
+        "title": "Jämför Kvantitet I mot Kvantitet II"
+      },
+      {
+        "n": 8,
+        "text": "12,8 − 10 = 2,8, så Kvantitet I är 2,8 enheter större.",
+        "tier": "essential",
+        "title": "Tolka skillnaden"
+      },
+      {
+        "n": 9,
+        "text": "Sätt in x = 12,8: 12,8/16 = 0,8 och 8/10 = 0,8. Båda bråk är lika. ✓",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 10,
+        "text": "x = 12,8 > 10, alltså är Kvantitet I större. Svaret är A. Insikten i en mening: när ett bråk har samma värde fast med en obekant i täljaren, räkna ut bråkets decimalvärde först — sedan är multiplikationen mekanisk.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Korsmultiplikations-strategin: när två bråk är lika, gångra täljare i ena med nämnare i andra och vice versa. Triggern: ett bråk = ett bråk, en obekant i någon av positionerna."
+  },
+  "host-2022-kvant1-KVA-014": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du tänker 'medelvärdet av två är mindre än det större, men större än det mindre' — och förenklat antar att Alma alltid hamnar mellan — kan du gissa att Alma > Ella om Ella är den yngsta.",
+        "why_wrong": "Du vet inte om Ella är yngst eller äldst (steg 9–10). Båda riktningarna är möjliga, alltså inte alltid A."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Symmetrisk variant: om du antar att Ella är 'sannolikt' äldre, tippar du B.",
+        "why_wrong": "Symmetrin går åt båda håll (steg 6 vs 7). Det finns ingen grund i texten att anta att Ella är äldre."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tänka 'hälften av summan = symmetri = lika', speciellt om man läser uppgiften snabbt.",
+        "why_wrong": "Lika gäller bara om Ella = Lena (steg 8) — det är ETT specialfall, inte generellt. Steg 6 och 7 visar att olikhet är fullt möjligt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att tro 'medelvärde = mitten' och dra slutsatsen lika. Botemedlet: medelvärdet ligger mellan extremerna, men i det här problemet jämförs medelvärdet mot ENA extremen (Ella), inte mot mittpunkten — så det är inte trivialt.",
+    "solution_path": "Alma är genomsnittet av Ella och Lena. Beroende på om Lena är äldre eller yngre än Ella kan Alma vara större, mindre eller lika med Ella. Otillräcklig information. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Almas ålder är hälften av Ella + Lena tillsammans. Jämför Alma mot Ella.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Hälften av (Ella + Lena) är samma sak som medelvärdet (genomsnittet) av Ella och Lena. Med formler: Alma = (Ella + Lena)/2.",
+        "tier": "detail",
+        "title": "Vad är 'hälften av summan'?"
+      },
+      {
+        "n": 3,
+        "text": "Kalla åldrarna A (Alma), E (Ella), L (Lena). Då gäller A = (E + L)/2.",
+        "tier": "essential",
+        "title": "Ställ upp uttrycken"
+      },
+      {
+        "n": 4,
+        "text": "Är A > E, A < E, eller A = E? Det beror på L. Lös ut: A − E = (E + L)/2 − E = (E + L − 2E)/2 = (L − E)/2.",
+        "tier": "essential",
+        "title": "Jämför A mot E direkt"
+      },
+      {
+        "n": 5,
+        "text": "A − E = (L − E)/2. Tecknet på A − E är samma som tecknet på L − E. Alltså: Alma är större än Ella precis när Lena är större än Ella, mindre när Lena är mindre, och lika när Lena = Ella.",
+        "tier": "detail",
+        "title": "Algebraisk insikt"
+      },
+      {
+        "n": 6,
+        "text": "Sätt E = 10, L = 20. Då är A = (10+20)/2 = 15. Alma (15) > Ella (10), alltså Kvantitet I större → svar A.",
+        "tier": "essential",
+        "title": "Testfall 1 — Lena större"
+      },
+      {
+        "n": 7,
+        "text": "Sätt E = 20, L = 10. Då är A = 15. Alma (15) < Ella (20), alltså Kvantitet II större → svar B.",
+        "tier": "essential",
+        "title": "Testfall 2 — Lena mindre"
+      },
+      {
+        "n": 8,
+        "text": "Sätt E = L = 10. Då är A = 10 = Ella, lika → svar C.",
+        "tier": "detail",
+        "title": "Testfall 3 — Lena lika"
+      },
+      {
+        "n": 9,
+        "text": "Steg 6–8 visar att alla tre utfall (I större, II större, lika) är möjliga beroende på Lenas ålder. Inget av A, B eller C är låst.",
+        "tier": "essential",
+        "title": "Tre olika svar för olika fall"
+      },
+      {
+        "n": 10,
+        "text": "För att jämföra Alma mot Ella entydigt behöver vi veta Lenas ålder i förhållande till Ella — den informationen saknas i frågan.",
+        "tier": "detail",
+        "title": "Vad saknas?"
+      },
+      {
+        "n": 11,
+        "text": "Informationen är otillräcklig — relationen mellan Alma och Ella beror på Lena, och Lena är obekant. Svaret är D. Insikten i en mening: när en kvantitet är 'medelvärdet' av två andra, beror jämförelsen mot en av dem entydigt på den TREDJE.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Tre-testfall-strategin för KVA-otillräcklighet: hitta ett fall där I > II, ett där II > I, och om möjligt ett där I = II. Om alla tre dyker upp är svaret D. Triggern: jämförelse mellan två kvantiteter där minst en variabel är obegränsad."
+  },
+  "host-2022-kvant1-KVA-015": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tänka 'större procent ger större resultat' och tippa att 40 % av något måste vara större än 30 % av något.",
+        "why_wrong": "Procentsatsen är större (40 % vs 30 %), men talet den verkar på är mindre (30 vs 40). De jämnar exakt ut varandra (steg 6) — resultatet är lika."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelbild av A: 'större talbas (40) ger större resultat', alltså skulle Kvantitet I bli större.",
+        "why_wrong": "Samma fel åt andra hållet. Basen är större men procentsatsen mindre — produkten är densamma (steg 6)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'jag är osäker, så jag väljer D'.",
+        "why_wrong": "Informationen räcker uppenbart — båda kvantiteterna är konkreta tal som kan räknas ut direkt (steg 3–4)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är intuitivt att 'större procent = större resultat', men det glömmer att basen också ändras. Botemedlet: skriv om båda som ab/100 och se att uttrycken är identiska — då försvinner illusionen att de skulle skilja sig.",
+    "solution_path": "30\\% \\cdot 40 = 0{,}3 \\cdot 40 = 12 och 40\\% \\cdot 30 = 0{,}4 \\cdot 30 = 12. Båda är 12. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska jämföra 'a procent av b' med 'b procent av a' när (a, b) = (30, 40).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "a procent betyder \\tfrac{a}{100}. Så 30 % = 0,30 och 40 % = 0,40.",
+        "tier": "detail",
+        "title": "Vad betyder procent?"
+      },
+      {
+        "n": 3,
+        "text": "30 % av 40 = 0,30 · 40 = 12.",
+        "tier": "essential",
+        "title": "Räkna ut Kvantitet I"
+      },
+      {
+        "n": 4,
+        "text": "40 % av 30 = 0,40 · 30 = 12.",
+        "tier": "essential",
+        "title": "Räkna ut Kvantitet II"
+      },
+      {
+        "n": 5,
+        "text": "Kvantitet I = Kvantitet II = 12. De är lika.",
+        "tier": "essential",
+        "title": "Båda är 12"
+      },
+      {
+        "n": 6,
+        "text": "a\\% \\cdot b = \\tfrac{a}{100} \\cdot b = \\tfrac{a \\cdot b}{100}. På samma sätt b\\% \\cdot a = \\tfrac{a \\cdot b}{100}. Samma uttryck — alltid lika!",
+        "tier": "detail",
+        "title": "Allmän regel: kommutativitet"
+      },
+      {
+        "n": 7,
+        "text": "12 % av 50 = 6. 50 % av 12 = 6. Stämmer — regeln gäller för alla (a, b).",
+        "tier": "detail",
+        "title": "Verifiera med ett annat talpar"
+      },
+      {
+        "n": 8,
+        "text": "30 % av 40 betyder 'tre tiondelar av 40'. 40 delat med 10 är 4; gångra med 3 = 12. Likadant: 40 % av 30 = fyra tiondelar av 30 = 12.",
+        "tier": "detail",
+        "title": "Räkna med procent direkt"
+      },
+      {
+        "n": 9,
+        "text": "Multiplikation är kommutativ: a · b = b · a. Procent-uttrycket är ren multiplikation, så ordningen spelar ingen roll.",
+        "tier": "detail",
+        "title": "Snabb mental kontroll"
+      },
+      {
+        "n": 10,
+        "text": "Båda kvantiteterna är 12. Svaret är C. Insikten i en mening: a % av b är alltid lika med b % av a — det är en konsekvens av att multiplikation är kommutativ.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Procent-kommutativitet: a % av b är alltid lika med b % av a, eftersom båda är ab/100. Triggern: KVA-fråga där procentsats och bas verkar bytas mellan kvantiteterna."
+  },
+  "host-2022-kvant1-KVA-016": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tänka 'snittet av en kortare serie är högre' eller 'färre tal = mer koncentrerat snitt'.",
+        "why_wrong": "Snittet beror inte på antalet utan på fördelningen. Steg 3-4 räknar ut båda direkt: 11/3 ≈ 3,67 mot 19/5 = 3,8."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du tror att duplicering av VARJE värde inte ändrar medelvärdet (vilket gäller om duplicera ALLA värden lika) tippar du C.",
+        "why_wrong": "Här duplicerar vi BARA 1 och 7 — inte 3. Den olika viktningen ändrar snittet (steg 6–7). C gäller om hela serien dubblas, t.ex. {1,1,3,3,7,7}."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'för komplicerat — informationen räcker inte'.",
+        "why_wrong": "Båda mätserierna är fullständigt specificerade — bara att räkna (steg 3-4). Informationen räcker mer än väl."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att tro att duplicering inte ändrar medelvärdet. Botemedlet: duplicering ändrar inte snittet ENDAST om alla värden dubblas lika många gånger. Om bara vissa värden multipliceras, viktas de tyngre och drar snittet åt sitt håll.",
+    "solution_path": "Kvantitet I = (1+3+7)/3 = 11/3 \\approx 3{,}67. Kvantitet II = (1+1+3+7+7)/5 = 19/5 = 3{,}8. 3,8 > 3,67, så Kvantitet II är större. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Jämför två medelvärden: serien {1, 3, 7} mot serien {1, 1, 3, 7, 7}.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Medelvärdet av en serie tal är summan av talen delat med antalet tal. Det är talen 'jämnt utspridda'.",
+        "tier": "detail",
+        "title": "Vad är medelvärde?"
+      },
+      {
+        "n": 3,
+        "text": "Summa: 1 + 3 + 7 = 11. Antal: 3. Medel: 11/3 ≈ 3,667.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet I"
+      },
+      {
+        "n": 4,
+        "text": "Summa: 1 + 1 + 3 + 7 + 7 = 19. Antal: 5. Medel: 19/5 = 3,8.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet II"
+      },
+      {
+        "n": 5,
+        "text": "3,8 vs 3,667. 3,8 är större. Skillnaden är 3,8 − 3,667 ≈ 0,133.",
+        "tier": "essential",
+        "title": "Decimal-jämförelse"
+      },
+      {
+        "n": 6,
+        "text": "Serie II har lika många 1:or som 7:or (två av varje), plus den ensamma trean. Det betyder att 1:orna och 7:orna parar ihop sig och tar ut varandra runt mittenvärdet 4 — men 1+7 = 8, och 8/2 = 4, INTE 3. Trean drar ner snittet. Eftersom det finns mer av extremerna 1 och 7 i serie II väger de tyngre, och eftersom de paras symmetriskt runt 4 ger de ett snitt närmare 4 — alltså högre än 11/3.",
+        "tier": "detail",
+        "title": "Förstå varför II är större"
+      },
+      {
+        "n": 7,
+        "text": "Att duplicera 1 och 7 (men inte 3) ökar vikten av extremerna 1 och 7. Eftersom 7 är längre från mitten 3 än 1 (avstånd 4 mot 2), drar 7-orna snittet uppåt mer än 1-orna drar det nedåt. Resultat: snittet stiger.",
+        "tier": "detail",
+        "title": "Alternativ insikt — viktning"
+      },
+      {
+        "n": 8,
+        "text": "11/3 vs 19/5: gemensam nämnare 15. 11/3 = 55/15. 19/5 = 57/15. 57 > 55, alltså 19/5 > 11/3.",
+        "tier": "detail",
+        "title": "Bråkjämförelse exakt"
+      },
+      {
+        "n": 9,
+        "text": "11/3 = 3,667 (cirka). 19/5 = 3,8 exakt. 3,8 > 3,667. ✓",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 10,
+        "text": "Kvantitet II (3,8) är större än Kvantitet I (≈ 3,67). Svaret är B. Insikten i en mening: att duplicera värden i en mätserie INTE jämnt över alla värden ändrar medelvärdet — det viktar tunglägret.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Direkträkning-strategin för medelvärdesfrågor: med små serier (≤ 6 tal), räkna ut båda medelvärdena explicit. Använd gemensam nämnare för exakt jämförelse (11/3 vs 19/5 → 55/15 vs 57/15)."
+  },
+  "host-2022-kvant1-KVA-017": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du tycker att figuren ser ut som om x, y, z plus en yttre vinkel blir större än 180°, kan du tippa I > II.",
+        "why_wrong": "x, y, z är de TRE INRE vinklarna i triangeln (steg 3). En triangels inre vinklar summerar exakt till 180° (steg 2)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du räknar bara två vinklar (t.ex. glömmer z eller en av dem) och tror summan är mindre än 180°, tippar du II > I.",
+        "why_wrong": "Alla tre vinklarna räknas (steg 6). Med alla tre är summan exakt 180°, inte mindre."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'jag ser inte figuren ordentligt, alltså vet jag inte'.",
+        "why_wrong": "Frågan är geometrisk: oavsett triangelns specifika form är vinkelsumman 180° (steg 2). Figuren behövs bara för att identifiera triangeln, inte för att räkna."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att tro att parallella linjer eller transversaler komplicerar svaret. Botemedlet: identifiera vad x, y, z är vinklar AV — om det är en triangel räcker vinkelsumman, oavsett konstruktionsdetaljer.",
+    "solution_path": "Vinklarna x, y, z är en triangels tre vinklar (enligt figurens parallella linjer och tvärgående linjer). Triangelvinkelsumman är alltid 180°, så x + y + z = 180°. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Två parallella linjer L₁ och L₂ ligger med en triangel inklämd mellan dem (enligt figuren). Vinklarna x, y och z är markerade vid trianglens tre hörn. Jämför summan x + y + z med 180°.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "En grundsats i euklidisk geometri: summan av en triangels tre inre vinklar är ALLTID 180°, oavsett triangelns form.",
+        "tier": "detail",
+        "title": "Triangelvinkelsumman"
+      },
+      {
+        "n": 3,
+        "text": "Enligt figuren är de markerade vid de tre hörnen av en triangel där två sidor utgör tvärlinjer mellan L₁ och L₂. Hörnen är de tre vinklar som kvalificerar.",
+        "tier": "essential",
+        "title": "Är x, y, z faktiskt triangelns vinklar?"
+      },
+      {
+        "n": 4,
+        "text": "Även om x, y, z inte vore exakt triangelns inre vinklar, kan man ofta via parallell-linje-regler (alternat-vinklar, motstående vinklar) visa att x + y + z = en hel rak vinkel = 180° — det är poängen med problem som blandar parallella linjer + tvärgående.",
+        "tier": "detail",
+        "title": "Alternativa angreppssätt — parallella linjer"
+      },
+      {
+        "n": 5,
+        "text": "Rita en linje genom triangelns ena hörn parallell med motstående sida. Då kollapsar de tre vinklarna in i en rak linje vid det hörnet, och en rak linje är 180°.",
+        "tier": "detail",
+        "title": "Triangelvinkel-bevis i miniatyr"
+      },
+      {
+        "n": 6,
+        "text": "x + y + z = 180°.",
+        "tier": "essential",
+        "title": "Sammansumma"
+      },
+      {
+        "n": 7,
+        "text": "Kvantitet I = 180°. Kvantitet II = 180°. De är lika.",
+        "tier": "essential",
+        "title": "Jämför mot Kvantitet II"
+      },
+      {
+        "n": 8,
+        "text": "Tänk en likbent triangel med vinklarna 60°, 60°, 60° — summa 180°. Eller en rätvinklig 30-60-90: 30 + 60 + 90 = 180°. Alltid 180°.",
+        "tier": "detail",
+        "title": "Verifiera med ett konkret exempel"
+      },
+      {
+        "n": 9,
+        "text": "Parallellitet i figuren behövs för att SE att x, y, z formar en triangel — men resultatet hänger på triangelvinkelsumman, inte på själva parallellheten.",
+        "tier": "detail",
+        "title": "Vad betyder de parallella linjernas roll?"
+      },
+      {
+        "n": 10,
+        "text": "x + y + z = 180° = Kvantitet II. Svaret är C. Insikten i en mening: när tre vinklar i en figur är triangelns inre vinklar är summan ALLTID 180° — en av geometrins mest pålitliga regler.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Triangelvinkelsumman-strategin: när tre vinklar markerade i en figur tillhör samma triangel, är summan 180° utan vidare räkning. Triggern: tre vinklar vid tre hörn, ofta med parallella linjer eller transversaler som distraktion."
+  },
+  "host-2022-kvant1-KVA-018": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du löser kvadrat-ekvationen och tar absolutbeloppet av roten (eller missar minustecknet) får du x = 5 > 0.",
+        "why_wrong": "Steg 6 ger x = −5, INTE +5. Tecken-bytet sker i flytten från x + 5 = 0 till x = −5 — minustecknet är centralt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att x = 0 är lösningen eftersom det är den enklaste roten av x(x+5) = 0.",
+        "why_wrong": "Villkoret x ≠ 0 utesluter precis den lösningen (steg 6). Det är där frågan placerar tyngden — vi tvingas till den andra roten."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'kvadratiska ekvationer kan ha två lösningar, alltså är x okänt'.",
+        "why_wrong": "Ekvationen har två lösningar (0 och −5), men x ≠ 0-villkoret eliminerar den ena. Då återstår exakt en — informationen räcker (steg 6)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att dela båda sidor med x och förkorta till x = −5 i ett steg. Det fungerar HÄR (eftersom x ≠ 0), men i andra fall riskerar man att kasta bort x = 0 som giltig rot. Botemedlet: flytta först allt till en sida, faktorisera, läs sedan av rötterna — det är säkrare.",
+    "solution_path": "Faktorisera: x^{2} + 5x = x(x + 5) = 0. Eftersom x \\neq 0 måste x + 5 = 0, alltså x = −5. Kvantitet I = −5 < 0 = Kvantitet II. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Givet: x \\neq 0 och x^{2} = -5x. Jämför x mot 0.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "x^{2} är x gångrat med sig självt. Ekvationen säger att detta ska vara lika med −5 gånger x.",
+        "tier": "detail",
+        "title": "Vad betyder x² = −5x?"
+      },
+      {
+        "n": 3,
+        "text": "x^{2} = -5x → x^{2} + 5x = 0. (Lägg till 5x på båda sidor.)",
+        "tier": "essential",
+        "title": "Flytta allt till en sida"
+      },
+      {
+        "n": 4,
+        "text": "Båda termer har x som faktor. Bryt ut: x · (x + 5) = 0.",
+        "tier": "essential",
+        "title": "Faktorisera"
+      },
+      {
+        "n": 5,
+        "text": "Om två tal multiplicerade ger 0 måste minst ETT av dem vara 0. Så x · (x + 5) = 0 betyder att antingen x = 0 eller x + 5 = 0.",
+        "tier": "detail",
+        "title": "Nollproduktsregeln"
+      },
+      {
+        "n": 6,
+        "text": "Vi vet att x ≠ 0 från start. Alltså måste den andra faktorn vara noll: x + 5 = 0, vilket ger x = −5.",
+        "tier": "essential",
+        "title": "Använd villkoret x ≠ 0"
+      },
+      {
+        "n": 7,
+        "text": "Sätt in x = −5 i ursprungsekvationen: vänsterledet (−5)² = 25, högerledet −5 · (−5) = 25. ✓",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 8,
+        "text": "Kvantitet I = −5. Kvantitet II = 0. −5 < 0, alltså är Kvantitet II större.",
+        "tier": "essential",
+        "title": "Jämför Kvantitet I mot Kvantitet II"
+      },
+      {
+        "n": 9,
+        "text": "x^{2} är alltid icke-negativt (kvadrat). Om x > 0 är −5x < 0 — då kan vänsterled (≥ 0) inte vara lika med högerled (< 0). Alltså måste x vara negativt (då blir −5x positivt).",
+        "tier": "detail",
+        "title": "Intuition: varför kan x bara vara negativt?"
+      },
+      {
+        "n": 10,
+        "text": "Den enda lösningen som uppfyller x ≠ 0 är x = −5, vilket är mindre än 0. Svaret är B. Insikten i en mening: en kvadratisk ekvation som har x = 0 som triviallösning blir entydig så fort man utesluter den — då är den andra roten den enda möjligheten.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Nollproduktsregeln: när en kvadratisk ekvation kan skrivas på formen x · (x + a) = 0, är lösningarna alltid x = 0 och x = −a. När problemet utesluter x = 0 är x = −a det enda kvar. Triggern: en x²-ekvation där alla termer har x som faktor."
+  },
+  "host-2022-kvant1-KVA-019": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du räknar diagonalen som BREDD + LÄNGD (5 + 10 = 15) i stället för Pythagoras och sedan halverar (15/2 = 7,5), eller gör någon annan slarvig approximation som hamnar under 11, tippar du II > I.",
+        "why_wrong": "Diagonalen är inte summan av sidorna (steg 4). Pythagoras (steg 5) ger d² = 125, alltså d ≈ 11,18 > 11."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du tror att en 5×10-rektangels diagonal råkar vara 11 exakt (en gissning som ligger 'lagom') tippar du lika.",
+        "why_wrong": "11 cm skulle kräva d² = 121, men d² = 125 (steg 5). 125 ≠ 121, alltså inte lika (steg 8)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'jag minns inte Pythagoras, alltså vet jag inte'.",
+        "why_wrong": "Pythagoras är en allmän geometrisk regel; med kateter 5 och 10 är diagonalen entydigt √125 (steg 5–6). Informationen räcker."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att räkna kvadratroten ur 125 med miniräknare-flow och tappa decimaler. Botemedlet: jämför i KVADRAT-domänen — 125 vs 121 är lätt utan rotsymbol.",
+    "solution_path": "Längden är 50/5 = 10. Pythagoras: diagonalen är \\sqrt{5^{2} + 10^{2}} = \\sqrt{125} \\approx 11{,}18. 11,18 > 11, så Kvantitet I är större. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "En rektangel har area 50 cm² och bredd 5 cm. Hitta diagonalens längd och jämför mot 11 cm.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Arean av en rektangel = längd · bredd. Med area = 50 och bredd = 5 är längden 50/5 = 10 cm.",
+        "tier": "detail",
+        "title": "Rektangelarea-formel"
+      },
+      {
+        "n": 3,
+        "text": "Diagonalen är linjen från ett hörn till motstående hörn. Den delar rektangeln i två rätvinkliga trianglar där diagonalen är hypotenusan.",
+        "tier": "detail",
+        "title": "Vad är en diagonal?"
+      },
+      {
+        "n": 4,
+        "text": "I en rätvinklig triangel är hypotenusan² = ena katetens² + andra katetens². Med formler: c^{2} = a^{2} + b^{2}.",
+        "tier": "detail",
+        "title": "Pythagoras sats"
+      },
+      {
+        "n": 5,
+        "text": "Kateter: bredden 5 och längden 10. Hypotenusan = diagonalen d. d^{2} = 5^{2} + 10^{2} = 25 + 100 = 125.",
+        "tier": "essential",
+        "title": "Tillämpa Pythagoras på rektangeln"
+      },
+      {
+        "n": 6,
+        "text": "d = \\sqrt{125}. Förenkla: 125 = 25 · 5, så \\sqrt{125} = \\sqrt{25} \\cdot \\sqrt{5} = 5\\sqrt{5}.",
+        "tier": "essential",
+        "title": "Ta kvadratroten"
+      },
+      {
+        "n": 7,
+        "text": "√5 ≈ 2,236. Alltså d ≈ 5 · 2,236 = 11,18 cm.",
+        "tier": "detail",
+        "title": "Approximera √5"
+      },
+      {
+        "n": 8,
+        "text": "Är d > 11? Kvadrera båda sidor: d² = 125 vs 11² = 121. Eftersom 125 > 121 är d > 11 (för positiva tal: större kvadrat = större tal).",
+        "tier": "essential",
+        "title": "Snabbjämförelse mot 11 utan miniräknare"
+      },
+      {
+        "n": 9,
+        "text": "Kvantitet I ≈ 11,18 cm. Kvantitet II = 11 cm. Kvantitet I är större.",
+        "tier": "essential",
+        "title": "Jämför Kvantitet I mot Kvantitet II"
+      },
+      {
+        "n": 10,
+        "text": "11² = 121 och 11,2² = 125,44 — så diagonalen ligger mellan 11 och 11,2. Konsistent med 11,18.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 11,
+        "text": "Diagonalen är cirka 11,18 cm, alltså större än 11. Svaret är A. Insikten i en mening: vid Pythagoras-jämförelser slipper du roten — kvadrera båda sidor och jämför kvadraterna direkt.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Diagonal-strategin: för en rektangel med sidor a och b, är diagonalen \\sqrt{a^{2} + b^{2}}. Vid jämförelse mot ett tal k: kvadrera båda och jämför a² + b² mot k². Triggern: 'diagonal i rektangel', 'avstånd från hörn till hörn'."
+  },
+  "host-2022-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tänka 4 − 3 = 1 och sedan addera in 1 till uttrycket som om det vore 1 + (x + 2y).",
+        "why_wrong": "Multiplikation med 1 är INTE addition med 1. Som steg 5 visar är 1 \\cdot (x + 2y) = x + 2y, inte 1 + x + 2y."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du försöker distribuera den vänstra parentesen TERM-VIS — låter 4 träffa x och −3 träffa x — får du 4 − 3x + 2y. Det ser ut som ett distributivlag-resultat.",
+        "why_wrong": "Den distributiva lagen gångrar varje term i ena parentesen mot VARJE term i den andra. Men här innehåller den vänstra parentesen ett enda värde efter att man räknar ut den (1) — distribution behövs inte alls. Se steg 4."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du räknar 4 · x = 4x och (−3) · 2y = −6y och hoppar över allt annat landar du på 4x − 6y.",
+        "why_wrong": "Det betyder att du har låtit 4 träffa bara x och −3 träffa bara 2y — varje sida av subtraktionen fick bara EN term i andra parentesen. Det är inte hur distribution fungerar. Steg 4 visar att den vänstra parentesen är 1, så det enkla svaret är x + 2y."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att hoppa direkt på den distributiva lagen så fort man ser två parenteser. Botemedlet: pausa och kolla om någondera parentesen är en ren siffra — då är multiplikation med 1 (eller vilken konstant som helst) mycket snabbare än full distribution.",
+    "solution_path": "Räkna ut parentesen till vänster först: 4 - 3 = 1. Då blir uttrycket 1 \\cdot (x + 2y) = x + 2y. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska skriva om uttrycket (4 − 3)(x + 2y) och hitta vilket av svarsalternativen som är samma sak.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "När två parenteser står direkt intill varandra (utan tecken mellan) betyder det multiplikation: (4 − 3)(x + 2y) är samma sak som (4 - 3) \\cdot (x + 2y).",
+        "tier": "detail",
+        "title": "Två parenteser bredvid varandra"
+      },
+      {
+        "n": 3,
+        "text": "Räkneordningen säger att du alltid förenklar inuti parenteser innan du multiplicerar. Den vänstra parentesen innehåller bara siffror — den kan vi räkna ut direkt.",
+        "tier": "detail",
+        "title": "Räkneordning: parenteser först"
+      },
+      {
+        "n": 4,
+        "text": "4 - 3 = 1. Uttrycket har nu blivit 1 \\cdot (x + 2y).",
+        "tier": "essential",
+        "title": "Räkna ut den vänstra parentesen"
+      },
+      {
+        "n": 5,
+        "text": "Att multiplicera något med 1 ändrar inget — talet behåller sitt värde. Alltså är 1 \\cdot (x + 2y) = x + 2y.",
+        "tier": "detail",
+        "title": "Multiplicera med 1"
+      },
+      {
+        "n": 6,
+        "text": "Resultatet x + 2y matchar alternativ C exakt. Inga av de andra alternativen blir x + 2y.",
+        "tier": "essential",
+        "title": "Jämför med svarsalternativen"
+      },
+      {
+        "n": 7,
+        "text": "Sätt x = 2 och y = 1. Ursprungligt uttryck: (4 − 3)(2 + 2·1) = 1 · 4 = 4. Alternativ C: 2 + 2·1 = 4. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera med ett testvärde"
+      },
+      {
+        "n": 8,
+        "text": "Alternativ B (4 − 3x + 2y) ser ut som om man hade fördelat 4:an över x men inte över 2y, och låtit 3:an bara träffa x — det är inte den distributiva lagen.",
+        "tier": "detail",
+        "title": "Snabbkoll mot fällan"
+      },
+      {
+        "n": 9,
+        "text": "Den vänstra parentesen kollapsar till 1, så hela uttrycket kollapsar till x + 2y. Svaret är C. Insikten i en mening: titta alltid efter om en parentes innehåller bara siffror — räkna ut den först innan du drar igång distribution.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Förenkla först-strategin: när en parentes innehåller bara siffror (inga variabler), räkna ut den FÖRST innan du börjar distribuera. Triggern: en av två parenteser har bara konstanter — fixa den och se vad som blir kvar."
+  },
+  "host-2022-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att 3³ − 2³ är samma sak som (3 − 2)³, vilket är 1³ = 1.",
+        "why_wrong": "Exponenter fördelar sig inte över subtraktion. Se steg 9: 3³ = 27 och 2³ = 8, så differensen är 19, inte 1."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du tolkar 3³ som 3 · 3 = 9 och 2³ som 2 · 3 = 6 hamnar du på 9 − 6 = 3.",
+        "why_wrong": "3³ är INTE 3 · 3 — det är 3 · 3 · 3. Steg 2 förklarar definitionen: exponent betyder upprepad multiplikation, inte multiplikation med själva exponenten."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att räkna 3² − 2² = 9 − 4 = 5, eller någon liknande förenkling som råkar landa runt 6.",
+        "why_wrong": "Frågan handlar om upphöjt till 3, inte 2. Med rätt exponent (steg 3-4) är skillnaden 27 − 8 = 19."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanliga fällan är att tro att exponenten kan dras ut: a^{n} - b^{n} = (a - b)^{n}. Det gäller bara i specialfall (t.ex. n = 1). Botemedlet: räkna alltid ut potenserna numeriskt först — då kan du inte luras.",
+    "solution_path": "3^{3} = 27 och 2^{3} = 8. Differensen är 27 - 8 = 19. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska räkna ut 3^{3} - 2^{3} och hitta vilket svarsalternativ som matchar.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "När du skriver a^{3} (\"a upphöjt till 3\") menar du a gångrad med sig själv tre gånger: a^{3} = a \\cdot a \\cdot a. Det är INTE samma sak som 3 · a.",
+        "tier": "detail",
+        "title": "Vad betyder upphöjt till 3?"
+      },
+      {
+        "n": 3,
+        "text": "3^{3} = 3 \\cdot 3 \\cdot 3. Räkna stegvis: 3 · 3 = 9, sedan 9 · 3 = 27. Alltså 3^{3} = 27.",
+        "tier": "essential",
+        "title": "Räkna ut 3^3"
+      },
+      {
+        "n": 4,
+        "text": "2^{3} = 2 \\cdot 2 \\cdot 2. Stegvis: 2 · 2 = 4, sedan 4 · 2 = 8. Alltså 2^{3} = 8.",
+        "tier": "essential",
+        "title": "Räkna ut 2^3"
+      },
+      {
+        "n": 5,
+        "text": "3^{3} - 2^{3} = 27 - 8.",
+        "tier": "essential",
+        "title": "Sätt ihop differensen"
+      },
+      {
+        "n": 6,
+        "text": "27 − 8 = 19.",
+        "tier": "detail",
+        "title": "Subtraktion"
+      },
+      {
+        "n": 7,
+        "text": "19 matchar alternativ D exakt.",
+        "tier": "essential",
+        "title": "Jämför mot alternativen"
+      },
+      {
+        "n": 8,
+        "text": "Kontrollera bakåt: 8 + 19 = 27. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 9,
+        "text": "En vanlig miss är att tro att a^{n} - b^{n} = (a - b)^{n}. Det stämmer inte: (3 − 2)³ = 1³ = 1, men 3³ − 2³ = 19. Exponenter fördelar sig INTE över subtraktion.",
+        "tier": "detail",
+        "title": "Varför inte (3 − 2)^3?"
+      },
+      {
+        "n": 10,
+        "text": "27 − 8 = 19. Svaret är D. Insikten i en mening: räkna ut varje exponent FÖR SIG och subtrahera sedan — försök aldrig kombinera dem under ett gemensamt exponenttak.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Exponent-för-sig-strategin: när du ser {M('a^{n} \\pm b^{n}')}, räkna ut varje potens HELT FÖR SIG och addera/subtrahera siffrorna efteråt. Triggern: två separata potenser som binds ihop av + eller −."
+  },
+  "host-2022-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att råka räkna divisionen åt fel håll (0,2 / (−1,6)) eller missa en tia, och landa på −10.",
+        "why_wrong": "Steg 6–7 visar att x = −1,6 / 0,2 = −8. Det är resultatet av att dividera den största sidan (1,6) med den minsta (0,2), inte tvärtom."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du glömmer bort minustecknet och bara kollar storleken på differenserna kan du landa på 1,6.",
+        "why_wrong": "Vänster sida i steg 5 är negativ (−1,6, inte 1,6). Att hoppa över tecknet ger fel storleksordning OCH fel tecken."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att räkna 1,8 − 0,2 = 1,6 och sedan dela med skillnaden 0,2 åt fel håll, vilket kan ge 2 om man rundar fel.",
+        "why_wrong": "Den korrekta operationen (steg 6) är att dela en negativ konstant med en positiv koefficient. Att tappa minustecknet OCH räkna fel på decimaler landar i fel kvadrant av tallinjen helt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Med decimaltal är det lätt att tappa minustecken under flytten. Botemedlet: skriv om ekvationen mellan varje steg och sätt in värdet i originalekvationen för att verifiera (steg 9) — det fångar tecken-misstag.",
+    "solution_path": "Samla x-termerna på en sida och konstanterna på den andra: -0{,}2x = 1{,}6, alltså x = -8. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har ekvationen 0,4x + 0,2 = 0,6x + 1,8 och ska hitta värdet på x.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "I svensk notation används komma som decimalseparator: 0,4 betyder fyra tiondelar (samma som 0.4 på engelska eller 4/10).",
+        "tier": "detail",
+        "title": "Decimaltal med komma"
+      },
+      {
+        "n": 3,
+        "text": "Målet är att få x ensam. Det enklaste är att samla alla x-termer på en sida (gärna den med större koefficient) och alla siffror på den andra.",
+        "tier": "essential",
+        "title": "Strategi: samla x på ena sidan"
+      },
+      {
+        "n": 4,
+        "text": "Vänsterledet blir 0,2 (0,4x − 0,4x försvinner). Högerledet blir 0,6x − 0,4x + 1,8 = 0,2x + 1,8. Vi har nu: 0,2 = 0,2x + 1,8.",
+        "tier": "essential",
+        "title": "Subtrahera 0,4x från båda sidor"
+      },
+      {
+        "n": 5,
+        "text": "Vänster blir 0,2 − 1,8 = −1,6. Höger blir 0,2x. Ekvationen lyder nu: −1,6 = 0,2x.",
+        "tier": "essential",
+        "title": "Subtrahera 1,8 från båda sidor"
+      },
+      {
+        "n": 6,
+        "text": "För att isolera x, dividera båda sidor med 0,2: x = −1,6 / 0,2.",
+        "tier": "essential",
+        "title": "Division med 0,2"
+      },
+      {
+        "n": 7,
+        "text": "−1,6 / 0,2 = −16 / 2 = −8. (Multiplicera täljare och nämnare med 10 så blir det enklare tal.)",
+        "tier": "detail",
+        "title": "Räkna ut divisionen"
+      },
+      {
+        "n": 8,
+        "text": "x = −8.",
+        "tier": "essential",
+        "title": "Resultat"
+      },
+      {
+        "n": 9,
+        "text": "Vänsterledet: 0,4 · (−8) + 0,2 = −3,2 + 0,2 = −3,0. Högerledet: 0,6 · (−8) + 1,8 = −4,8 + 1,8 = −3,0. Båda leder är −3,0 — det stämmer.",
+        "tier": "detail",
+        "title": "Verifiera i originalekvationen"
+      },
+      {
+        "n": 10,
+        "text": "x = −8 är den enda lösning som gör ekvationen sann. Svaret är B. Insikten i en mening: linjära ekvationer löses genom att flytta x-termer till en sida och konstanter till den andra — sedan en enda division kvar.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Linjär-ekvation-strategin: samla alla x på den sida där koefficienten är större, samla alla siffror på andra sidan, dividera med koefficienten. Triggern: ekvation av formen ax + b = cx + d där a och c är konstanter."
+  },
+  "host-2022-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du tar medelvärdet av sannolikheterna (10/50 = 1/5 från A och 2/3 från B) på något felaktigt sätt kan du landa nära 2/7.",
+        "why_wrong": "Du kan INTE bara medelvärda sannolikheter när urvalsstorlekarna är olika (50 vs 90). Du måste väga med antal — eller, lättare, addera svarta och totala separat (steg 6–7)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att räkna fel på burk B och tro att 2/3 av 90 är 70 (snarare än 60). Då blir 80/140 ≈ 0,57, nära 7/10.",
+        "why_wrong": "Steg 4 visar tydligt att 2/3 · 90 = 60, inte 70. Multiplikation först, division sen — eller tvärtom, men kontrollera siffran."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du räknar svarta i burk B som 70 (av misstag) eller använder 100 som totalt antal landar du på 5/7.",
+        "why_wrong": "Burk B har EXAKT 60 svarta (steg 4), och totalsumman är 140 (steg 7). Korrekt bråk är 70/140 = 1/2 — inte 5/7."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att medelvärda sannolikheterna direkt (1/5 + 2/3) / 2. Botemedlet: medelvärdet av sannolikheter fungerar BARA om urvalen är lika stora. När de inte är det, gå alltid via antal.",
+    "solution_path": "Burk A har 10 svarta av 50. Burk B har \\tfrac{2}{3} \\cdot 90 = 60 svarta. Tillsammans: 70 svarta av 140 totalt, alltså \\tfrac{70}{140} = \\tfrac{1}{2}. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Burk A: 50 kulor, 10 svarta och 40 vita. Burk B: 90 kulor, varav andelen svarta är 2/3. Alla kulor hälls i en gemensam påse. Vad är sannolikheten att en slumpmässig kula från påsen är svart?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Sannolikheten att dra en svart kula är (antal svarta) delat med (totalt antal kulor). Det är en bråk-form: gynnsamma utfall över alla utfall.",
+        "tier": "detail",
+        "title": "Vad betyder sannolikhet?"
+      },
+      {
+        "n": 3,
+        "text": "Det står direkt i texten: 10 svarta kulor.",
+        "tier": "essential",
+        "title": "Räkna svarta i burk A"
+      },
+      {
+        "n": 4,
+        "text": "Andel svarta = 2/3, antal totalt = 90. Antal svarta = \\tfrac{2}{3} \\cdot 90. Räkna: 90 / 3 = 30, sedan 30 · 2 = 60. Burk B har 60 svarta kulor.",
+        "tier": "essential",
+        "title": "Räkna svarta i burk B"
+      },
+      {
+        "n": 5,
+        "text": "Att ta 2/3 av 90 betyder samma sak som att gångra: 2/3 · 90 = 180/3 = 60. Det är samma resultat på två sätt.",
+        "tier": "detail",
+        "title": "Andel som bråkmultiplikation"
+      },
+      {
+        "n": 6,
+        "text": "Totala antalet svarta = 10 (från A) + 60 (från B) = 70.",
+        "tier": "essential",
+        "title": "Summera svarta i påsen"
+      },
+      {
+        "n": 7,
+        "text": "Totalt antal kulor i påsen = 50 (från A) + 90 (från B) = 140.",
+        "tier": "essential",
+        "title": "Summera totalt antal kulor"
+      },
+      {
+        "n": 8,
+        "text": "P(svart) = (antal svarta) / (totalt) = \\tfrac{70}{140}.",
+        "tier": "essential",
+        "title": "Sätt upp sannolikheten"
+      },
+      {
+        "n": 9,
+        "text": "Både 70 och 140 är delbara med 70: \\tfrac{70}{140} = \\tfrac{1}{2}.",
+        "tier": "detail",
+        "title": "Förkorta bråket"
+      },
+      {
+        "n": 10,
+        "text": "1/2 matchar alternativ B exakt.",
+        "tier": "essential",
+        "title": "Jämför mot alternativen"
+      },
+      {
+        "n": 11,
+        "text": "Halva påsen ska vara svart. Påsen har 140 kulor och 70 av dem är svarta — det är exakt hälften. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 12,
+        "text": "Sannolikheten att en slumpmässig kula är svart är 1/2. Svaret är B. Insikten i en mening: när två urval blandas, addera SVARTA-antalet och TOTALA-antalet var för sig — då blir det nya bråket korrekt.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vägd-sannolikhets-strategin: när två (eller fler) urval slås ihop, räkna gynnsamma-antal och totala-antal var för sig i varje urval och summera innan du bildar bråket. Triggern: 'kulorna hälls ihop', 'två klasser slås samman', 'kombinerad population'."
+  },
+  "host-2022-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du räknar 2³ som 6 (2 · 3) i stället för 8 blir första parentesen 8, vidare 5 · 8 = 40, och om resten görs rätt landar du nära 3.",
+        "why_wrong": "2³ = 8, inte 6 (steg 4). Hela uträkningen vilar på korrekta potens-värden."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du glömmer det yttre 10 framför andra parentesen och räknar bara 5 · 10 − 5 = 50 − 5 = 45 (eller en variant) kan du fastna på 20.",
+        "why_wrong": "Båda parenteserna har sin egen koefficient (5 och 10). Steg 6 multiplicerar in dem korrekt: 5 · 10 = 50 och 10 · 5 = 50."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att potenserna ska multipliceras tillsammans (2³ · 2² = 2⁵ = 32) och bygger en helt felaktig uträkning landar du nära 100.",
+        "why_wrong": "x³ och x² är olika termer i olika parenteser — de ska inte slås ihop. Räkna varje för sig (steg 4) och håll ihop med plus/minus."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är lätt att räkna 2^{3} som 2 · 3 = 6 i stället för 2 · 2 · 2 = 8. Botemedlet: skriv ALLTID ut potensen som upprepad multiplikation första gången du möter den, även om det känns omotiverat — fingerminnet är stabilare än mentalräkningen.",
+    "solution_path": "Sätt in x = 2: 5(2^{3} + 2) - 10(2^{2} + 1) = 5 \\cdot 10 - 10 \\cdot 5 = 0. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Funktionen är f(x) = 5(x^{3} + x) - 10(x^{2} + 1). Du ska beräkna f(2) — det vill säga sätta in x = 2 i hela uttrycket.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "f(2) betyder att du ersätter VARJE förekomst av x i funktionsuttrycket med talet 2. Sedan räknar du ut resultatet enligt vanlig räkneordning.",
+        "tier": "detail",
+        "title": "Vad betyder f(2)?"
+      },
+      {
+        "n": 3,
+        "text": "f(2) = 5(2^{3} + 2) - 10(2^{2} + 1).",
+        "tier": "essential",
+        "title": "Sätt in x = 2"
+      },
+      {
+        "n": 4,
+        "text": "2^{3} = 2 \\cdot 2 \\cdot 2 = 8 och 2^{2} = 2 \\cdot 2 = 4.",
+        "tier": "essential",
+        "title": "Räkna ut potenserna"
+      },
+      {
+        "n": 5,
+        "text": "Första parentesen: 2^{3} + 2 = 8 + 2 = 10. Andra parentesen: 2^{2} + 1 = 4 + 1 = 5.",
+        "tier": "essential",
+        "title": "Räkna parenteserna"
+      },
+      {
+        "n": 6,
+        "text": "5 · 10 = 50 och 10 · 5 = 50. Uttrycket är nu 50 − 50.",
+        "tier": "essential",
+        "title": "Multiplicera in koefficienterna"
+      },
+      {
+        "n": 7,
+        "text": "Räkneordningen säger: räkna parenteser → potenser → multiplikation/division → addition/subtraktion. Vi följde den ordningen.",
+        "tier": "detail",
+        "title": "Räkneordning — varför parenteser först"
+      },
+      {
+        "n": 8,
+        "text": "50 − 50 = 0.",
+        "tier": "essential",
+        "title": "Sista subtraktion"
+      },
+      {
+        "n": 9,
+        "text": "f(2) = 0.",
+        "tier": "essential",
+        "title": "Resultat"
+      },
+      {
+        "n": 10,
+        "text": "Du kan också skriva om: 5(x^{3} + x) = 5x(x^{2} + 1). Då blir f(x) = 5x(x^{2}+1) - 10(x^{2}+1) = (5x - 10)(x^{2} + 1). Vid x = 2: (10 − 10)(4 + 1) = 0 · 5 = 0. Samma svar — och faktoriseringen visar att x = 2 är ett nollställe.",
+        "tier": "detail",
+        "title": "Verifiera med faktorisering"
+      },
+      {
+        "n": 11,
+        "text": "f(2) = 0 eftersom 5x − 10 = 0 vid x = 2. Svaret är A. Insikten i en mening: vid funktionsutvärdering räknar du strikt enligt räkneordning — potenser, parenteser, multiplikation, subtraktion — utan att fuska.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Funktionsutvärdering-strategin: ersätt varje x med givet värde, räkna sedan potenser → parenteser → multiplikation → subtraktion. Triggern: f(tal) eller g(tal) — det är en uppmaning att substituera, inget annat."
+  },
+  "host-2022-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tänka att vilket tal som helst funkar bara man väljer rätt a, och välja det första alternativet 26.",
+        "why_wrong": "26 = 4a + 1 skulle kräva a = 6,25 — och en kvart-person finns inte (steg 9). Heltals-villkoret är hårt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du glömmer att räkna Albert själv och bara har 4a (ingen +1) får du 27/4 = 6,75 — fortfarande inte heltal, men kanske du avrundar.",
+        "why_wrong": "Albert är en person i kön och måste räknas. Total = 3a + 1 + a, inte 4a (steg 4). 27 ger inte heltals-a heller."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du räknar 3a + a = 4a och glömmer Albert helt landar du på alternativ där 4a = 28, dvs 28.",
+        "why_wrong": "Albert räknas (han står ju själv i kön). Total är 4a + 1, inte 4a. Steg 4 etablerar att +1 alltid följer med."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är lätt att glömma räkna huvudpersonen själv (Albert) i totalen. Botemedlet: rita en miniatyrbild av kön — punkt-Albert-punkter — och räkna prickar. Då glömmer du inte mittenpricken.",
+    "solution_path": "Om a är antalet personer efter Albert står 3a framför honom, plus han själv: totalt 1 + 4a. För att summan ska bli ett heltal måste den minus 1 vara delbar med 4. Bara 29 (= 1 + 4·7) passar. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Albert står i en kö. Antalet personer FRAMFÖR honom är tre gånger antalet personer BAKOM honom. Vilket av alternativen 26, 27, 28, 29 kan vara det totala antalet personer i kön?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Kalla antalet personer bakom Albert för a. Då är antalet framför 3a. Albert själv räknas också — han är 1 person.",
+        "tier": "essential",
+        "title": "Sätt namn på det okända"
+      },
+      {
+        "n": 3,
+        "text": "a är ett antal människor, så a måste vara ett icke-negativt heltal (0, 1, 2, 3, ...). Du kan inte ha 4,5 personer i en kö.",
+        "tier": "detail",
+        "title": "Vad är 'heltal'?"
+      },
+      {
+        "n": 4,
+        "text": "Total = (framför) + (Albert) + (bakom) = 3a + 1 + a = 4a + 1.",
+        "tier": "essential",
+        "title": "Ställ upp uttryck för totalen"
+      },
+      {
+        "n": 5,
+        "text": "Vi söker vilket av alternativen som kan skrivas på formen 4a + 1 där a är ett positivt heltal.",
+        "tier": "essential",
+        "title": "Vad behöver vi?"
+      },
+      {
+        "n": 6,
+        "text": "Om total = 4a + 1, då är (total − 1) = 4a, vilket måste vara delbart med 4. Testa: 26 − 1 = 25 (25/4 är inte heltal); 27 − 1 = 26 (26/4 är inte heltal); 28 − 1 = 27 (27/4 är inte heltal); 29 − 1 = 28 (28/4 = 7, heltal!).",
+        "tier": "essential",
+        "title": "Subtrahera 1 från varje alternativ"
+      },
+      {
+        "n": 7,
+        "text": "Ett tal är delbart med 4 om det går jämnt ut när man delar med 4. Exempelvis 28 = 4 · 7, så 28/4 = 7 utan rest.",
+        "tier": "detail",
+        "title": "Vad betyder delbarhet med 4?"
+      },
+      {
+        "n": 8,
+        "text": "Endast 29 fungerar: 29 = 4 · 7 + 1. Det betyder a = 7 (7 personer bakom Albert) och 3a = 21 (21 framför honom). Totalt: 21 + 1 + 7 = 29. ✓",
+        "tier": "essential",
+        "title": "Tolka resultatet"
+      },
+      {
+        "n": 9,
+        "text": "26: skulle kräva a = 25/4 = 6,25 — ej heltal, omöjligt. 27: a = 26/4 = 6,5 — ej heltal. 28: a = 27/4 = 6,75 — ej heltal. Bara 29 fungerar.",
+        "tier": "detail",
+        "title": "Verifiera de tre andra"
+      },
+      {
+        "n": 10,
+        "text": "Tal på formen 4a + 1 är: 1, 5, 9, 13, 17, 21, 25, 29, 33, ... — alla ger rest 1 vid division med 4.",
+        "tier": "detail",
+        "title": "Snabbgeneralisering"
+      },
+      {
+        "n": 11,
+        "text": "Endast 29 kan skrivas som 1 + 4a med a heltal (här a = 7). Svaret är D. Insikten i en mening: när problemet räknar 'person + tre gånger så många som någon annan' bygger man uttrycket k + (1 + 1)·tal — och delbarhet bestämmer vilka totaler som är möjliga.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Heltals-villkors-strategin: när alternativen är specifika heltal och uppgiften involverar 'antal personer' eller 'antal föremål', översätt till uttryck och kontrollera VILKA alternativ som kan skrivas på den formen med heltals-värden. Triggern: 'X gånger så många som', 'tre gånger fler än', 'dubbelt så stort som'."
+  },
+  "host-2022-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du gångrar 7 · 7 = 49 och tror att det är koefficienten landar du på 49x.",
+        "why_wrong": "49-termerna i de två kvadrerade uttrycken TAR UT VARANDRA (steg 9): +49 − 49 = 0. Det är 14x-termerna som kvarstår och dubblas till 28x."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är lätt att tro att (x+7)² − (x−7)² blir x² genom någon symmetri som radera 7:orna men låter x² stå kvar.",
+        "why_wrong": "x^{2}-termerna i båda kvadraterna är identiska och tar ut varandra (steg 9). Det som blir kvar är BARA 14x-termerna, vilka adderas till 28x."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du multiplicerar ut bara den första kvadraten och glömmer den andra hamnar du på x² − 7x + 49 eller liknande blandning.",
+        "why_wrong": "Båda kvadraterna måste utvecklas, sedan subtraheras (steg 9). Halvfärdig expansion ger ett otillåtet \"halvfärdigt\" uttryck."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att multiplicera ut båda kvadraterna term-för-term och räkna fel på minustecken under subtraktionen. Botemedlet: när du ser minus mellan två kvadrater, gå direkt på (a−b)(a+b) — då slipper du tecken-bokföringen.",
+    "solution_path": "Använd konjugatregeln a^{2} - b^{2} = (a-b)(a+b) med a = x+7, b = x−7. Då blir uttrycket ((x+7)-(x-7)) \\cdot ((x+7)+(x-7)) = 14 \\cdot 2x = 28x. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska förenkla (x+7)^{2} - (x-7)^{2} och välja det matchande alternativet.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "a^{2} betyder a · a. Så (x+7)^{2} = (x+7)(x+7) och (x-7)^{2} = (x-7)(x-7).",
+        "tier": "detail",
+        "title": "Vad betyder kvadrat?"
+      },
+      {
+        "n": 3,
+        "text": "En central identitet i algebra: a^{2} - b^{2} = (a-b)(a+b). Den fungerar för VILKA två uttryck som helst a och b — inte bara enskilda variabler.",
+        "tier": "detail",
+        "title": "Konjugatregeln (skillnad mellan kvadrater)"
+      },
+      {
+        "n": 4,
+        "text": "Vi har (x+7)² − (x−7)². Sätt a = x + 7 och b = x − 7. Då är uttrycket a² − b².",
+        "tier": "essential",
+        "title": "Identifiera a och b"
+      },
+      {
+        "n": 5,
+        "text": "a^{2} - b^{2} = (a - b)(a + b) med våra värden:\n  a - b = (x+7) - (x-7)\n  a + b = (x+7) + (x-7)",
+        "tier": "essential",
+        "title": "Tillämpa konjugatregeln"
+      },
+      {
+        "n": 6,
+        "text": "(x + 7) − (x − 7) = x + 7 − x + 7 = 14. (Tecken-byte: minus framför (x − 7) blir −x + 7.)",
+        "tier": "essential",
+        "title": "Räkna ut a − b"
+      },
+      {
+        "n": 7,
+        "text": "(x + 7) + (x − 7) = x + 7 + x − 7 = 2x.",
+        "tier": "essential",
+        "title": "Räkna ut a + b"
+      },
+      {
+        "n": 8,
+        "text": "Uttrycket blir 14 · 2x = 28x.",
+        "tier": "essential",
+        "title": "Sätt ihop"
+      },
+      {
+        "n": 9,
+        "text": "(x+7)^{2} = x^{2} + 14x + 49. (x-7)^{2} = x^{2} - 14x + 49. Differens: (x^{2} + 14x + 49) - (x^{2} - 14x + 49) = 28x. Samma svar via direkt utveckling.",
+        "tier": "detail",
+        "title": "Alternativt: multiplicera ut direkt"
+      },
+      {
+        "n": 10,
+        "text": "Sätt x = 1: (1+7)² − (1−7)² = 64 − 36 = 28. Och 28 · 1 = 28. ✓",
+        "tier": "detail",
+        "title": "Verifiera med ett testvärde"
+      },
+      {
+        "n": 11,
+        "text": "Uttrycket förenklas till 28x. Svaret är A. Insikten i en mening: konjugatregeln (a² − b² = (a−b)(a+b)) kollapsar alla x²-termer omedelbart — använd den så fort du ser en skillnad mellan två kvadrerade uttryck.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Konjugatregeln-strategin: a^{2} - b^{2} = (a-b)(a+b). Triggern är 'skillnad mellan två kvadrerade uttryck' — så fort du ser den, faktorisera i stället för att multiplicera ut. Genvägen sparar 4-5 räkneoperationer."
+  },
+  "host-2022-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du tar längden = 4r och höjden = 3r (i stället för 2r) hamnar du nära 108.",
+        "why_wrong": "Höjden bestäms av att cirkeln tangerar TOPP och BOTTEN — det är exakt en diameter (2r), inte mer (steg 7)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du räknar längden som 12 och höjden som 12 (kvadrat med sida diametern · 2) får du 144.",
+        "why_wrong": "Rektangeln är inte kvadrat — höjden är 6, längden 12. Att räkna samma diameter två gånger som höjd är dubbelräkning."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du missar att rektangelns area = bas · höjd och multiplicerar diametern med π/sqrt-något kan du landa nära 162.",
+        "why_wrong": "Rektangelns area är strikt längd × höjd (steg 9). π behövs bara för att räkna ut radien från cirklarnas area — sedan är resten rätlinjig geometri."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är lätt att blanda ihop radie och diameter under uträkningen. Botemedlet: skriv ALLTID ner båda värdena (r = 3, d = 6) tidigt, och peka tillbaka på diametern när du sätter rektangeldimensionerna.",
+    "solution_path": "Cirklarnas sammanlagda area är 18π, så varje cirkels area är 9π, vilket ger radien r = 3. Rektangeln är 4r lång (två cirkeldiametrar) och 2r hög (en diameter), alltså 12 · 6 = 72 cm². Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Två lika stora cirklar ligger inuti en rektangel. De tangerar varandra och tangerar dessutom tre av rektangelns sidor var. Sammanlagd area av cirklarna: 18π cm². Hitta rektangelns area.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Två figurer tangerar varandra när de rör vid varandra i exakt en punkt utan att korsa. En cirkel som tangerar en rät linje rör linjen i en enda punkt — där är linjen vinkelrät mot radien.",
+        "tier": "detail",
+        "title": "Vad betyder 'tangerar'?"
+      },
+      {
+        "n": 3,
+        "text": "Båda cirklarna har samma storlek (lika sammanlagd area + symmetri). De ligger sida vid sida i rektangeln och tangerar varandra mitt i. Varje cirkel tangerar tre sidor: topp, botten, och en kortsida (vänster för ena, höger för andra).",
+        "tier": "essential",
+        "title": "Tolka figuren"
+      },
+      {
+        "n": 4,
+        "text": "Arean av en cirkel med radien r är A = \\pi r^{2}. Det är en definition som du behöver kunna utantill.",
+        "tier": "detail",
+        "title": "Cirkelns area-formel"
+      },
+      {
+        "n": 5,
+        "text": "Två cirklar, sammanlagd area 18π. Alltså är en cirkels area 9π. Då är \\pi r^{2} = 9\\pi, så r^{2} = 9 och r = 3 cm.",
+        "tier": "essential",
+        "title": "Räkna ut radien"
+      },
+      {
+        "n": 6,
+        "text": "Diametern är dubbla radien: d = 2r = 6 cm. Diametern är cirkelns bredd från ena sidan till andra.",
+        "tier": "detail",
+        "title": "Diameter"
+      },
+      {
+        "n": 7,
+        "text": "Eftersom varje cirkel tangerar både topp och botten är rektangelns höjd exakt en diameter: höjd = 2r = 6 cm.",
+        "tier": "essential",
+        "title": "Rektangelns höjd"
+      },
+      {
+        "n": 8,
+        "text": "Cirklarna ligger sida vid sida och tangerar varandra mitt i. Varje cirkel upptar en diameter av längden, så längden = 2 · diametern = 4r = 12 cm.",
+        "tier": "essential",
+        "title": "Rektangelns längd"
+      },
+      {
+        "n": 9,
+        "text": "Arean av en rektangel = längd · höjd = 12 · 6 = 72 cm².",
+        "tier": "essential",
+        "title": "Räkna ut rektangelns area"
+      },
+      {
+        "n": 10,
+        "text": "Två cirklar med radie 3 i en rektangel 12 × 6: vardera cirkel passar exakt i en 6 × 6-kvadrat, och två sådana kvadrater bredvid varandra ger 12 × 6. ✓",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 11,
+        "text": "Rektangeln är 12 × 6 = 72 cm². Svaret är A. Insikten i en mening: när en cirkel tangerar parallella sidor är avståndet mellan sidorna exakt diametern — det är genvägen för geometriska container-problem.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Tangering-strategin: när en cirkel tangerar två parallella räta linjer är avståndet mellan linjerna lika med cirkelns diameter. Triggern: 'tangerar', 'precis innesluten i', 'får plats i'. Den här regeln låser geometrin på ett snabbt sätt."
+  },
+  "host-2022-kvant1-XYZ-011": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du glömmer att vända bråket och bara kuber den 'råa' högersidan −2/3 får du (−2/3)³ = −8/27.",
+        "why_wrong": "Vänsterledet är 1/x, INTE x. Steg 3 visar att x = −3/2, inte −2/3. Att kuba det inverterade värdet ger fel täljare och nämnare."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du både glömmer att vända OCH tappar minustecknet under kuberingen landar du på +8/27.",
+        "why_wrong": "Två fel: x är inte −2/3 (steg 3), och ojämn potens av negativt tal är negativ (steg 7). Båda måste rättas till."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tar det rätta x = −3/2, kuber det till −27/8, men sedan klistrar dit ett π eller tappar minustecknet i sista steget får du 27/8 · π.",
+        "why_wrong": "Det finns inget π i problemet (steg 1 — bara rationella tal). Och tecknet är negativt — inte positivt (steg 7)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Negativt tecken försvinner lätt under bråkinvertering. Botemedlet: skriv om bråket explicit som täljare/nämnare innan du vänder, och håll fast tecknet framför. (−2)/3 inverterat är 3/(−2) = −3/2.",
+    "solution_path": "Vänd båda sidorna: x = -\\tfrac{3}{2}. Kuben är x^{3} = (-\\tfrac{3}{2})^{3} = -\\tfrac{27}{8}. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har ekvationen \\tfrac{1}{x} = -\\tfrac{2}{3} och ska räkna ut x^{3}.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "\\tfrac{1}{x} kallas inversen av x. Om \\tfrac{1}{x} = k, så är x = \\tfrac{1}{k}. Inversen av inversen är talet självt.",
+        "tier": "detail",
+        "title": "Vad är inversen?"
+      },
+      {
+        "n": 3,
+        "text": "\\tfrac{1}{x} = -\\tfrac{2}{3} → ta inversen av båda sidor: x = -\\tfrac{3}{2}. (Bråkets täljare och nämnare byter plats.)",
+        "tier": "essential",
+        "title": "Lös ut x"
+      },
+      {
+        "n": 4,
+        "text": "Negativt tecken stannar på sin sida när du inverterar bråket — det påverkar bara storleken, inte tecknet. Negativ inverterad förblir negativ.",
+        "tier": "detail",
+        "title": "Tecken vid invertering"
+      },
+      {
+        "n": 5,
+        "text": "x^{3} = x \\cdot x \\cdot x. Tre kopior av x multiplicerade.",
+        "tier": "detail",
+        "title": "Vad är x upphöjt till 3?"
+      },
+      {
+        "n": 6,
+        "text": "x^{3} = (-\\tfrac{3}{2}) \\cdot (-\\tfrac{3}{2}) \\cdot (-\\tfrac{3}{2}).",
+        "tier": "essential",
+        "title": "Sätt in x = −3/2"
+      },
+      {
+        "n": 7,
+        "text": "Negativ gånger negativ är positiv: (−3/2)·(−3/2) = +9/4. Sedan +9/4 · (−3/2) = negativt. Ojämn potens av negativt tal är negativt.",
+        "tier": "detail",
+        "title": "Hantera tecknen"
+      },
+      {
+        "n": 8,
+        "text": "Steg-för-steg: (-\\tfrac{3}{2}) \\cdot (-\\tfrac{3}{2}) = \\tfrac{9}{4}. Sedan: \\tfrac{9}{4} \\cdot (-\\tfrac{3}{2}) = -\\tfrac{27}{8}.",
+        "tier": "essential",
+        "title": "Räkna ut bråken"
+      },
+      {
+        "n": 9,
+        "text": "Vid bråkmultiplikation: täljare · täljare och nämnare · nämnare. Täljare: 3 · 3 · 3 = 27. Nämnare: 2 · 2 · 2 = 8. Tecken: tre minustecken → minus (ojämnt antal). Svar: −27/8.",
+        "tier": "detail",
+        "title": "Slå ihop täljare och nämnare"
+      },
+      {
+        "n": 10,
+        "text": "(-\\tfrac{a}{b})^{3} = -\\tfrac{a^{3}}{b^{3}}. Här: -\\tfrac{3^{3}}{2^{3}} = -\\tfrac{27}{8}.",
+        "tier": "detail",
+        "title": "Snabbformel"
+      },
+      {
+        "n": 11,
+        "text": "Kontrollera: x = −3/2 gör att 1/x = −2/3. ✓. x³ = −27/8 stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 12,
+        "text": "x³ = −27/8. Svaret är A. Insikten i en mening: när du har 1/x givet, vänd bråket först och räkna sedan potensen — försök aldrig kombinera operationerna i ett enda hopp.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Inverterings-strategin: när ekvationen ger 1/x = k, vänd bråket på BÅDA sidor: x = 1/k. Triggern: 1/x ensam på ena sidan av ett likhetstecken — det är en uppmaning att invertera, inte att korsmultiplicera."
+  }
+}
