@@ -63,9 +63,13 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, tes
   await page.getByTestId('drill-start').click()
 
   for (let i = 0; i < 10; i++) {
-    const nextBtn = page.getByTestId('drill-next')
-    // Wait for the *next* question to render (drill-next disabled in 'answering').
-    await expect(nextBtn).toBeDisabled({ timeout: 10_000 })
+    // Wait for an option button to be present — signals the drill is in
+    // the 'answering' phase regardless of which Edition variant rendered
+    // (StyleA editorial, StyleB workbook, StyleC cockpit, or the phone
+    // DrillQuestion). Each layout renders the buttons; only the post-pick
+    // "Nästa" affordance differs between variants and the phone path.
+    const optionA = page.getByTestId('option-A')
+    await expect(optionA).toBeVisible({ timeout: 10_000 })
 
     // Read the prompt the user is currently looking at, then resolve the
     // correct letter via the bank exposed on window. This couples the test
@@ -85,7 +89,13 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, tes
     ).not.toBeNull()
 
     await page.getByTestId(`option-${correctLetter}`).click()
-    await expect(nextBtn).toBeEnabled({ timeout: 5_000 })
+    // drill-next appears post-grade. On the phone path it's the same
+    // button rendered disabled-then-enabled; on the StyleA editorial
+    // variant it only renders after grading (a different control idiom
+    // — clicking-anywhere also advances, but the explicit button is
+    // what the test asserts on).
+    const nextBtn = page.getByTestId('drill-next')
+    await expect(nextBtn).toBeVisible({ timeout: 5_000 })
     // `.hpc-breathe` cycles opacity + transform.scale on the CTA so
     // Playwright's stability check never settles. `force: true` skips it.
     await nextBtn.click({ force: true })
