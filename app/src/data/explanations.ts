@@ -45,6 +45,12 @@ export type ExplanationStep = {
   /** Step body. Math wrapped in U+E000 / U+E001 like solution_path;
    *  render via <MathText>. */
   text: string
+  /** Phase A.6V — Progressive Reveal. 'essential' steps render in
+   *  full by default; 'detail' steps render as collapsed-preview
+   *  cards (title only) until the user taps to expand. Legacy
+   *  explanations without this field default to 'essential' on the
+   *  renderer side. */
+  tier?: 'essential' | 'detail'
 }
 
 /** Generation metadata — surfaced to the SPA so a future QA UI can

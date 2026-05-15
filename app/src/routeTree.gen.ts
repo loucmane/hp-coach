@@ -9,16 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as RepetitionRouteImport } from './routes/repetition'
 import { Route as ProgressRouteImport } from './routes/progress'
+import { Route as ExplanationBakeOffRouteImport } from './routes/explanation-bake-off'
+import { Route as DrillStyleCRouteImport } from './routes/drill-style-c'
+import { Route as DrillStyleBRouteImport } from './routes/drill-style-b'
+import { Route as DrillStyleARouteImport } from './routes/drill-style-a'
+import { Route as DrillBakeOffRouteImport } from './routes/drill-bake-off'
 import { Route as DrillRouteImport } from './routes/drill'
 import { Route as DevRouteImport } from './routes/dev'
 import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AvanceratRouteImport } from './routes/avancerat'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
@@ -37,6 +48,31 @@ const RepetitionRoute = RepetitionRouteImport.update({
 const ProgressRoute = ProgressRouteImport.update({
   id: '/progress',
   path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExplanationBakeOffRoute = ExplanationBakeOffRouteImport.update({
+  id: '/explanation-bake-off',
+  path: '/explanation-bake-off',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DrillStyleCRoute = DrillStyleCRouteImport.update({
+  id: '/drill-style-c',
+  path: '/drill-style-c',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DrillStyleBRoute = DrillStyleBRouteImport.update({
+  id: '/drill-style-b',
+  path: '/drill-style-b',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DrillStyleARoute = DrillStyleARouteImport.update({
+  id: '/drill-style-a',
+  path: '/drill-style-a',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DrillBakeOffRoute = DrillBakeOffRouteImport.update({
+  id: '/drill-bake-off',
+  path: '/drill-bake-off',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DrillRoute = DrillRouteImport.update({
@@ -71,10 +107,16 @@ export interface FileRoutesByFullPath {
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
+  '/drill-bake-off': typeof DrillBakeOffRoute
+  '/drill-style-a': typeof DrillStyleARoute
+  '/drill-style-b': typeof DrillStyleBRoute
+  '/drill-style-c': typeof DrillStyleCRoute
+  '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/welcome': typeof WelcomeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -82,10 +124,16 @@ export interface FileRoutesByTo {
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
+  '/drill-bake-off': typeof DrillBakeOffRoute
+  '/drill-style-a': typeof DrillStyleARoute
+  '/drill-style-b': typeof DrillStyleBRoute
+  '/drill-style-c': typeof DrillStyleCRoute
+  '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/welcome': typeof WelcomeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -94,10 +142,16 @@ export interface FileRoutesById {
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
   '/drill': typeof DrillRoute
+  '/drill-bake-off': typeof DrillBakeOffRoute
+  '/drill-style-a': typeof DrillStyleARoute
+  '/drill-style-b': typeof DrillStyleBRoute
+  '/drill-style-c': typeof DrillStyleCRoute
+  '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/welcome': typeof WelcomeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -107,10 +161,16 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/drill'
+    | '/drill-bake-off'
+    | '/drill-style-a'
+    | '/drill-style-b'
+    | '/drill-style-c'
+    | '/explanation-bake-off'
     | '/progress'
     | '/repetition'
     | '/sign-in'
     | '/sign-up'
+    | '/welcome'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -118,10 +178,16 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/drill'
+    | '/drill-bake-off'
+    | '/drill-style-a'
+    | '/drill-style-b'
+    | '/drill-style-c'
+    | '/explanation-bake-off'
     | '/progress'
     | '/repetition'
     | '/sign-in'
     | '/sign-up'
+    | '/welcome'
   id:
     | '__root__'
     | '/'
@@ -129,10 +195,16 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/drill'
+    | '/drill-bake-off'
+    | '/drill-style-a'
+    | '/drill-style-b'
+    | '/drill-style-c'
+    | '/explanation-bake-off'
     | '/progress'
     | '/repetition'
     | '/sign-in'
     | '/sign-up'
+    | '/welcome'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -141,14 +213,27 @@ export interface RootRouteChildren {
   CoachRoute: typeof CoachRoute
   DevRoute: typeof DevRoute
   DrillRoute: typeof DrillRoute
+  DrillBakeOffRoute: typeof DrillBakeOffRoute
+  DrillStyleARoute: typeof DrillStyleARoute
+  DrillStyleBRoute: typeof DrillStyleBRoute
+  DrillStyleCRoute: typeof DrillStyleCRoute
+  ExplanationBakeOffRoute: typeof ExplanationBakeOffRoute
   ProgressRoute: typeof ProgressRoute
   RepetitionRoute: typeof RepetitionRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
+  WelcomeRoute: typeof WelcomeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sign-up': {
       id: '/sign-up'
       path: '/sign-up'
@@ -175,6 +260,41 @@ declare module '@tanstack/react-router' {
       path: '/progress'
       fullPath: '/progress'
       preLoaderRoute: typeof ProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explanation-bake-off': {
+      id: '/explanation-bake-off'
+      path: '/explanation-bake-off'
+      fullPath: '/explanation-bake-off'
+      preLoaderRoute: typeof ExplanationBakeOffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drill-style-c': {
+      id: '/drill-style-c'
+      path: '/drill-style-c'
+      fullPath: '/drill-style-c'
+      preLoaderRoute: typeof DrillStyleCRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drill-style-b': {
+      id: '/drill-style-b'
+      path: '/drill-style-b'
+      fullPath: '/drill-style-b'
+      preLoaderRoute: typeof DrillStyleBRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drill-style-a': {
+      id: '/drill-style-a'
+      path: '/drill-style-a'
+      fullPath: '/drill-style-a'
+      preLoaderRoute: typeof DrillStyleARouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drill-bake-off': {
+      id: '/drill-bake-off'
+      path: '/drill-bake-off'
+      fullPath: '/drill-bake-off'
+      preLoaderRoute: typeof DrillBakeOffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/drill': {
@@ -221,10 +341,16 @@ const rootRouteChildren: RootRouteChildren = {
   CoachRoute: CoachRoute,
   DevRoute: DevRoute,
   DrillRoute: DrillRoute,
+  DrillBakeOffRoute: DrillBakeOffRoute,
+  DrillStyleARoute: DrillStyleARoute,
+  DrillStyleBRoute: DrillStyleBRoute,
+  DrillStyleCRoute: DrillStyleCRoute,
+  ExplanationBakeOffRoute: ExplanationBakeOffRoute,
   ProgressRoute: ProgressRoute,
   RepetitionRoute: RepetitionRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
+  WelcomeRoute: WelcomeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

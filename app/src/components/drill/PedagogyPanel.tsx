@@ -282,8 +282,12 @@ function PostGradeBody({
 // ── Step rendering ─────────────────────────────────────────────────
 
 /** Reconcile the structured-steps path (A.6+) with the prose-only path
- *  (pre-A.6). Returns an array of ExplanationStep ready for rendering. */
-function resolveSteps(explanation: Explanation): ExplanationStep[] {
+ *  (pre-A.6). Returns an array of ExplanationStep ready for rendering.
+ *
+ *  Exported so the phone ExplanationPanel can render the same
+ *  step-card composition as desktop (Phase A.6V.5 — phone bifurcation
+ *  fix). */
+export function resolveSteps(explanation: Explanation): ExplanationStep[] {
   if (explanation.steps && explanation.steps.length > 0) {
     return explanation.steps
   }
@@ -324,7 +328,43 @@ function splitProseIntoSteps(prose: string): ExplanationStep[] {
   return [{ n: 1, text: prose }]
 }
 
-function StepList({ steps }: { steps: ExplanationStep[] }) {
+/** Render an ordered list of explanation steps as the canonical
+ *  numbered-card composition used in Study Desk's PedagogyPanel.
+ *
+ *  Exported so the phone ExplanationPanel can reuse the same look,
+ *  rather than maintaining a parallel renderer (Phase A.6V.5).
+ *  Single-step explanations render as a plain prose block instead of
+ *  a numbered card — the card framing is overkill when there's
+ *  only one.
+ *
+ *  Phase A.6V Progressive Reveal: steps marked `tier: 'detail'`
+ *  render as collapsed-preview cards (title-only, muted chrome,
+ *  tap-to-expand) until the user opens them — either individually
+ *  by tapping the card, or all at once via the "Jag förstår
+ *  fortfarande inte" CTA below the list. Legacy explanations
+ *  without `tier` default to 'essential' (always fully visible).
+ */
+export function StepList({ steps }: { steps: ExplanationStep[] }) {
+  // Track which detail steps the user has individually expanded.
+  // A.6V update: toggle direction — once you reveal a detail you can
+  // also collapse it back. Per-step + nuclear-collapse-all at the
+  // bottom. Original "no toggle back" was too rigid; users want to
+  // simplify the panel back to scannable after they've absorbed a
+  // detail they no longer need spread out.
+  const [expandedDetails, setExpandedDetails] = useState<Set<number>>(() => new Set())
+  const expandDetail = (n: number) =>
+    setExpandedDetails((prev) => {
+      const next = new Set(prev)
+      next.add(n)
+      return next
+    })
+  const collapseDetail = (n: number) =>
+    setExpandedDetails((prev) => {
+      const next = new Set(prev)
+      next.delete(n)
+      return next
+    })
+
   if (steps.length === 0) return null
   if (steps.length === 1) {
     // Single step — render as a plain prose block, not a numbered
@@ -343,28 +383,263 @@ function StepList({ steps }: { steps: ExplanationStep[] }) {
       </div>
     )
   }
+
+  // Three states for the bottom CTA:
+  //   - some collapsed → "show all details" (expand-all)
+  //   - none collapsed AND some expanded → "collapse all details"
+  //   - no detail steps at all → no CTA
+  const allDetailNs = steps.filter((s) => (s.tier ?? 'essential') === 'detail').map((s) => s.n)
+  const collapsedDetailCount = allDetailNs.filter((n) => !expandedDetails.has(n)).length
+  const expandedDetailCount = allDetailNs.length - collapsedDetailCount
+
+  let cta: React.ReactNode = null
+  if (collapsedDetailCount > 0) {
+    cta = (
+      <RevealAllDetailsCTA
+        count={collapsedDetailCount}
+        onClick={() => setExpandedDetails(new Set(allDetailNs))}
+      />
+    )
+  } else if (expandedDetailCount > 0) {
+    cta = (
+      <CollapseAllDetailsCTA
+        count={expandedDetailCount}
+        onClick={() => setExpandedDetails(new Set())}
+      />
+    )
+  }
+
   return (
-    <ol
-      data-testid="pedagogy-steps"
-      style={{
-        margin: 0,
-        padding: 0,
-        listStyle: 'none',
-        display: 'flex',
-        flexDirection: 'column',
-        // A.8.1 — generous step-to-step gap so each step reads as its
-        // own moment in the worked example, not as a list item.
-        gap: 20,
-      }}
-    >
-      {steps.map((step) => (
-        <StepCard key={step.n} step={step} />
-      ))}
-    </ol>
+    <div>
+      <ol
+        data-testid="pedagogy-steps"
+        style={{
+          margin: 0,
+          padding: 0,
+          listStyle: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          // A.8.1 — generous step-to-step gap so each step reads as its
+          // own moment in the worked example, not as a list item.
+          // A.6V.5 — softened via clamp() so phone widths (where steps
+          // stack inside the expanded ExplanationPanel accordion) get
+          // tighter vertical rhythm; the same component renders happily
+          // at studio width too.
+          gap: 'clamp(14px, 2.5vw, 20px)',
+        }}
+      >
+        {steps.map((step) => {
+          const tier = step.tier ?? 'essential'
+          if (tier === 'essential') {
+            return <StepCard key={step.n} step={step} />
+          }
+          if (expandedDetails.has(step.n)) {
+            // Expanded detail — render the full card with a small
+            // "collapse" affordance in the top-right.
+            return <StepCard key={step.n} step={step} onCollapse={() => collapseDetail(step.n)} />
+          }
+          return <StepPreview key={step.n} step={step} onExpand={() => expandDetail(step.n)} />
+        })}
+      </ol>
+      {cta}
+    </div>
   )
 }
 
-function StepCard({ step }: { step: ExplanationStep }) {
+/** Collapsed-preview card for a `tier: 'detail'` step. Shows just the
+ *  ordinal + title with a faint expand affordance. Tapping reveals
+ *  the full StepCard in place. */
+function StepPreview({ step, onExpand }: { step: ExplanationStep; onExpand: () => void }) {
+  return (
+    <li
+      data-testid={`pedagogy-step-preview-${step.n}`}
+      data-tier="detail"
+      style={{
+        position: 'relative',
+        paddingLeft: 38,
+        listStyle: 'none',
+      }}
+    >
+      <button
+        type="button"
+        onClick={onExpand}
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: 12,
+          width: '100%',
+          padding: '6px 0',
+          background: 'transparent',
+          border: 0,
+          borderLeft: 0,
+          cursor: 'pointer',
+          textAlign: 'left',
+          color: 'inherit',
+          fontFamily: 'inherit',
+        }}
+      >
+        <span
+          aria-hidden
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 8,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 12,
+            letterSpacing: 'var(--font-mono-track)',
+            color: 'var(--muted)',
+            fontWeight: 500,
+            fontVariantNumeric: 'tabular-nums',
+            opacity: 0.6,
+          }}
+        >
+          {String(step.n).padStart(2, '0')}
+        </span>
+        <span
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(14px, 0.85rem + 0.25vw, 16px)',
+            fontWeight: 400,
+            color: 'var(--muted)',
+            letterSpacing: '-0.005em',
+            lineHeight: 1.3,
+            flex: 1,
+            fontStyle: 'italic',
+          }}
+        >
+          {step.title ?? 'Detalj'}
+        </span>
+        <span
+          aria-hidden
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            letterSpacing: 'var(--font-mono-track)',
+            color: 'var(--muted)',
+            textTransform: 'uppercase',
+            opacity: 0.7,
+            flex: '0 0 auto',
+          }}
+        >
+          se mer ↘
+        </span>
+      </button>
+    </li>
+  )
+}
+
+/** Bottom CTA below the step list: reveals every remaining collapsed
+ *  detail at once. Disappears after all details are expanded. Modeled
+ *  on the editorial "Show me more" reveal pattern (Khan Academy /
+ *  Stripe Press hybrid) — one tap, no toggle back. */
+function RevealAllDetailsCTA({ count, onClick }: { count: number; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      data-testid="pedagogy-reveal-all-details"
+      style={{
+        marginTop: 'clamp(16px, 2.5vw, 24px)',
+        width: '100%',
+        padding: '12px 16px',
+        background: 'transparent',
+        border: '1px dashed var(--hairline)',
+        borderRadius: 'calc(var(--radius) * 0.4)',
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
+        alignItems: 'flex-start',
+        textAlign: 'left',
+        color: 'inherit',
+        fontFamily: 'inherit',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(14px, 0.85rem + 0.25vw, 16px)',
+          fontWeight: 500,
+          color: 'var(--ink)',
+        }}
+      >
+        Jag förstår fortfarande inte
+      </span>
+      <span
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
+          letterSpacing: 'var(--font-mono-track)',
+          color: 'var(--muted)',
+          textTransform: 'uppercase',
+        }}
+      >
+        Visa alla {count} detaljerade steg ↘
+      </span>
+    </button>
+  )
+}
+
+/** Bottom CTA when all details are currently expanded — collapses them
+ *  all back to preview-card state. The mirror of RevealAllDetailsCTA. */
+function CollapseAllDetailsCTA({ count, onClick }: { count: number; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      data-testid="pedagogy-collapse-all-details"
+      style={{
+        marginTop: 'clamp(16px, 2.5vw, 24px)',
+        width: '100%',
+        padding: '12px 16px',
+        background: 'transparent',
+        border: '1px dashed var(--hairline)',
+        borderRadius: 'calc(var(--radius) * 0.4)',
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
+        alignItems: 'flex-start',
+        textAlign: 'left',
+        color: 'inherit',
+        fontFamily: 'inherit',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(14px, 0.85rem + 0.25vw, 16px)',
+          fontWeight: 500,
+          color: 'var(--ink)',
+        }}
+      >
+        Korta ner förklaringen
+      </span>
+      <span
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
+          letterSpacing: 'var(--font-mono-track)',
+          color: 'var(--muted)',
+          textTransform: 'uppercase',
+        }}
+      >
+        Dölj alla {count} detaljerade steg ↗
+      </span>
+    </button>
+  )
+}
+
+/** Single numbered step card. Exported alongside StepList so callers
+ *  (currently just ExplanationPanel on phone) can compose ad-hoc step
+ *  layouts without a parallel implementation.
+ *
+ *  Phase A.6V update: `onCollapse` is optional. When provided
+ *  (i.e. the card is an EXPANDED detail step), renders a small
+ *  "stäng" affordance in the top-right so the user can re-collapse
+ *  this single step back to its preview state. Essential steps
+ *  don't get a collapse handle. */
+export function StepCard({ step, onCollapse }: { step: ExplanationStep; onCollapse?: () => void }) {
   return (
     <li
       data-testid={`pedagogy-step-${step.n}`}
@@ -396,6 +671,31 @@ function StepCard({ step }: { step: ExplanationStep }) {
       >
         {String(step.n).padStart(2, '0')}
       </span>
+      {onCollapse && (
+        <button
+          type="button"
+          onClick={onCollapse}
+          data-testid={`pedagogy-step-${step.n}-collapse`}
+          aria-label="Dölj detta steg"
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: 2,
+            background: 'transparent',
+            border: 0,
+            padding: '2px 6px',
+            cursor: 'pointer',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            letterSpacing: 'var(--font-mono-track)',
+            color: 'var(--muted)',
+            textTransform: 'uppercase',
+            opacity: 0.7,
+          }}
+        >
+          dölj ↗
+        </button>
+      )}
       {step.title && (
         <div
           style={{
