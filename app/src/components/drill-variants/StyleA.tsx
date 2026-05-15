@@ -40,6 +40,13 @@ export function StyleA({
   // reading column. Toggles the grid template + canvas max-width
   // below so the passage column expands and pedagogy compresses.
   const hasLongContext = !!question.context
+  // ORD questions are dictionary specimens: a single headword (or short
+  // phrase) + 5 candidate synonyms. The default prompt cap of ~24px
+  // makes "hospitaliserad" look like a typo on a 1440px canvas; the
+  // options at ~17px feel like checkbox bubbles, not dictionary
+  // candidates. Specimen layout: hero-scale headword + roomier option
+  // rhythm. (Friction inventory §5.)
+  const isOrd = question.section === 'ORD'
   return (
     <div
       style={{
@@ -160,16 +167,33 @@ export function StyleA({
            *  width and the reading width are decoupled. */}
           <div
             data-testid="drill-prompt"
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(20px, 1rem + 0.6vw, 24px)',
-              lineHeight: 1.35,
-              letterSpacing: '-0.012em',
-              fontWeight: 500,
-              marginBottom: 28,
-              color: 'var(--ink)',
-              maxWidth: '60ch',
-            }}
+            style={
+              isOrd
+                ? {
+                    // Hero-scale headword. ORD prompts are 1–3 words; the
+                    // word IS the question, so it carries the visual weight
+                    // of a specimen lemma. Tighter letter-spacing reads as
+                    // editorial display type rather than running prose.
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'clamp(44px, 4vw + 1rem, 72px)',
+                    lineHeight: 1.05,
+                    letterSpacing: '-0.025em',
+                    fontWeight: 500,
+                    marginTop: 8,
+                    marginBottom: 48,
+                    color: 'var(--ink)',
+                  }
+                : {
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'clamp(20px, 1rem + 0.6vw, 24px)',
+                    lineHeight: 1.35,
+                    letterSpacing: '-0.012em',
+                    fontWeight: 500,
+                    marginBottom: 28,
+                    color: 'var(--ink)',
+                    maxWidth: '60ch',
+                  }
+            }
           >
             {question.section === 'KVA' && question.prompt ? (
               <KvaPrompt prompt={question.prompt} />
@@ -244,7 +268,11 @@ export function StyleA({
                         gridTemplateColumns: '24px 1fr auto',
                         gap: 14,
                         alignItems: 'baseline',
-                        padding: '14px 0',
+                        // ORD: candidate synonyms get dictionary breathing
+                        // room — 2/3 more vertical space per row so the
+                        // five candidates feel like a specimen list rather
+                        // than answer-bubble checkboxes.
+                        padding: isOrd ? '22px 0' : '14px 0',
                         width: '100%',
                         borderLeft: `2px solid ${railColor}`,
                         paddingLeft: 10,
@@ -268,7 +296,13 @@ export function StyleA({
                       <span
                         style={{
                           fontFamily: 'var(--font-display)',
-                          fontSize: 'clamp(15px, 0.85rem + 0.3vw, 17px)',
+                          // ORD: candidate type at reading-display scale.
+                          // Each synonym is a one-or-two-word candidate so
+                          // it should read like a dictionary lemma, not a
+                          // checkbox label.
+                          fontSize: isOrd
+                            ? 'clamp(18px, 1rem + 0.5vw, 22px)'
+                            : 'clamp(15px, 0.85rem + 0.3vw, 17px)',
                           lineHeight: 1.45,
                           letterSpacing: '-0.005em',
                           fontWeight: isPicked ? 500 : 400,
