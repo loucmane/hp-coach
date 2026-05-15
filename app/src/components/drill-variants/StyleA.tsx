@@ -141,6 +141,7 @@ export function StyleA({
             </div>
           )}
           <div
+            data-testid="drill-prompt"
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(20px, 1rem + 0.6vw, 24px)',
@@ -214,6 +215,7 @@ export function StyleA({
                   >
                     <button
                       type="button"
+                      data-testid={`option-${opt.letter}`}
                       onClick={() => onPick(opt.letter)}
                       disabled={graded}
                       style={{
@@ -701,6 +703,7 @@ export function StyleA({
                   />
                   <button
                     type="button"
+                    data-testid="drill-next"
                     onClick={onReset}
                     style={{
                       all: 'unset',
