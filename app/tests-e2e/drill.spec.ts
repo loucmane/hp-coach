@@ -26,18 +26,50 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, tes
   const idle = page.getByTestId('drill-idle')
   await expect(idle).toBeVisible({ timeout: 10_000 })
 
-  // Clean any stale active drill from a previous run.
-  if (await page.getByTestId('drill-stale-warning').isVisible().catch(() => false)) {
+  // Clean any stale active drill from a previous run. The earlier
+  // version checked `isVisible()` with no timeout — on slower CI
+  // runners the stale-warning hadn't always finished rendering by
+  // the time the probe fired, so the cleanup was silently skipped,
+  // drill-start no-op'd against an active session, and drill-next
+  // never appeared (test timed out at 10s on Q1). Give the idle
+  // surface up to 2s to settle into one of its two terminal states
+  // before deciding which path to take.
+  const stale = page.getByTestId('drill-stale-warning')
+  await stale
+    .waitFor({ state: 'visible', timeout: 2_000 })
+    .catch(() => null)
+  if (await stale.isVisible().catch(() => false)) {
     await page.getByRole('button', { name: 'Avsluta tidigare' }).click()
-    await expect(page.getByTestId('drill-stale-warning')).toBeHidden({ timeout: 5_000 })
+    await expect(stale).toBeHidden({ timeout: 5_000 })
   }
+
+  // Wait for the question bank to be loaded before pressing Start. The
+  // drill `begin()` handler awaits loadBank() (one /data/_index.json
+  // fetch + 27 parallel exam JSONs); on a cold CI network this can take
+  // longer than the 10s `toBeDisabled` timeout below, so the state
+  // transition is dropped and drill-next never renders inside the
+  // window. Locally the data is cached and the load is ~50ms — no race.
+  // Gating on window.__HPC_BANK__ (set in src/main.tsx) converts the
+  // implicit race into an explicit ready-check.
+  await page.waitForFunction(
+    () => {
+      const bank = (window as unknown as { __HPC_BANK__?: unknown[] }).__HPC_BANK__
+      return Array.isArray(bank) && bank.length > 0
+    },
+    null,
+    { timeout: 20_000 },
+  )
 
   await page.getByTestId('drill-start').click()
 
   for (let i = 0; i < 10; i++) {
-    const nextBtn = page.getByTestId('drill-next')
-    // Wait for the *next* question to render (drill-next disabled in 'answering').
-    await expect(nextBtn).toBeDisabled({ timeout: 10_000 })
+    // Wait for an option button to be present — signals the drill is in
+    // the 'answering' phase regardless of which Edition variant rendered
+    // (StyleA editorial, StyleB workbook, StyleC cockpit, or the phone
+    // DrillQuestion). Each layout renders the buttons; only the post-pick
+    // "Nästa" affordance differs between variants and the phone path.
+    const optionA = page.getByTestId('option-A')
+    await expect(optionA).toBeVisible({ timeout: 10_000 })
 
     // Read the prompt the user is currently looking at, then resolve the
     // correct letter via the bank exposed on window. This couples the test
@@ -57,7 +89,13 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, tes
     ).not.toBeNull()
 
     await page.getByTestId(`option-${correctLetter}`).click()
-    await expect(nextBtn).toBeEnabled({ timeout: 5_000 })
+    // drill-next appears post-grade. On the phone path it's the same
+    // button rendered disabled-then-enabled; on the StyleA editorial
+    // variant it only renders after grading (a different control idiom
+    // — clicking-anywhere also advances, but the explicit button is
+    // what the test asserts on).
+    const nextBtn = page.getByTestId('drill-next')
+    await expect(nextBtn).toBeVisible({ timeout: 5_000 })
     // `.hpc-breathe` cycles opacity + transform.scale on the CTA so
     // Playwright's stability check never settles. `force: true` skips it.
     await nextBtn.click({ force: true })
