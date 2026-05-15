@@ -25,6 +25,17 @@ export const test = base.extend({
       throw new Error('Missing E2E_TEST_EMAIL — set it in app/.env.local')
     }
     await setupClerkTestingToken({ page })
+    // Pre-seed the `/welcome` gate's bypass flag so __root.tsx's
+    // first-time-visit redirect doesn't trap e2e tests on /welcome.
+    // The gate (app/src/lib/welcome.ts) treats hpc-welcomed='1' as
+    // "user has clicked through onboarding"; for tests we always
+    // want to render as a returning user. Must be added BEFORE the
+    // first page.goto so the script runs on every navigation.
+    await page.addInitScript(() => {
+      try {
+        localStorage.setItem('hpc-welcomed', '1')
+      } catch {}
+    })
     await page.goto('/')
     await clerk.signIn({
       page,
