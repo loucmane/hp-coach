@@ -93,10 +93,18 @@ export function StyleA({
           // right. For math / vocab sections we keep the original
           // pedagogy-leaning layout — that's where step explanations
           // need the room.
+          // Default ratio gives the prompt column a 56-62ch measure-cap
+          // (enforced inside the section via maxWidth on the prompt
+          // block). The pedagogy minmax was previously locked at 640px,
+          // which crushed the prompt column to ~6-8ch at reader-width
+          // viewports — the "haiku machine" bug (one word per line).
+          // Now both columns share fr-flexibility; pedagogy compresses
+          // gracefully at narrower canvases. At <1100px we drop to a
+          // single column entirely (prompt → options → pedagogy stack).
           gridTemplateColumns: hasLongContext
             ? 'minmax(0, 1.1fr) minmax(0, 0.55fr)'
-            : 'minmax(0, 0.65fr) minmax(640px, 0.95fr)',
-          gap: 'clamp(56px, 5vw, 96px)',
+            : 'minmax(0, 1fr) minmax(0, 0.85fr)',
+          gap: 'clamp(40px, 4vw, 80px)',
           maxWidth: hasLongContext ? 1500 : 1320,
           margin: '0 auto',
           width: '100%',
@@ -140,7 +148,15 @@ export function StyleA({
               {question.context}
             </div>
           )}
+          {/* Prompt block — measure-capped at 60ch so MEK/XYZ/NOG/KVA
+           *  prose stays in a comfortable Newsreader reading column
+           *  even when the grid track is wider. Solves the "haiku
+           *  machine" — at narrow viewports the prompt was wrapping
+           *  one word per line because the grid track was crushed
+           *  below 90px. Independent measure cap means the column
+           *  width and the reading width are decoupled. */}
           <div
+            data-testid="drill-prompt"
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(20px, 1rem + 0.6vw, 24px)',
@@ -149,6 +165,7 @@ export function StyleA({
               fontWeight: 500,
               marginBottom: 28,
               color: 'var(--ink)',
+              maxWidth: '60ch',
             }}
           >
             {question.section === 'KVA' && question.prompt ? (
@@ -214,6 +231,7 @@ export function StyleA({
                   >
                     <button
                       type="button"
+                      data-testid={`option-${opt.letter}`}
                       onClick={() => onPick(opt.letter)}
                       disabled={graded}
                       style={{
@@ -701,6 +719,7 @@ export function StyleA({
                   />
                   <button
                     type="button"
+                    data-testid="drill-next"
                     onClick={onReset}
                     style={{
                       all: 'unset',

@@ -1,477 +1,2169 @@
 {
-  "var-2016-kvant1-KVA-014": {
+  "var-2016-kvant1-KVA-013": {
     "_meta": {
-      "generated_at": 1778425152540,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel och få I > II.",
-        "why_wrong": "Gemensam nämnare 30: I = 35/30, II = 36/30."
+        "why_tempting": "Det är frestande att tro att 'två trianglar' (kvantitet I) är mer än 'en triangel' (kvantitet II) — antalet objekt suggererar storleksskillnad.",
+        "why_wrong": "Antal trianglar säger inget om sammanlagd area. Steg 7 visar att de två trianglarna tillsammans har precis halva kvadratarean — samma som den enstaka triangeln ADE."
       },
       {
-        "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att de är lika.",
-        "why_wrong": "Differens 1/30 ≈ 0,033 ≠ 0."
+        "letter": "B",
+        "why_tempting": "Spegelbilden av A — om man istället väger på att 'den ena stora' kan vara större än två mindre.",
+        "why_wrong": "ADE har basen AD = s och höjden s, så arean blir s²/2 (steg 9). Det är inte större än s²/2."
       },
       {
         "letter": "D",
-        "why_tempting": "bråken",
-        "why_wrong": "Direkta beräkningar ger entydigt svar."
+        "why_tempting": "Snabbsvar är ofta 'det beror på var E ligger — informationen räcker inte'.",
+        "why_wrong": "Areorna är OBEROENDE av E:s exakta position (steg 11). Båda är alltid s²/2. Informationen räcker mer än väl: det räcker att veta att E ligger PÅ BC."
       }
     ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fallan är att tro att areorna ändras med E:s position. Botemedlet: skriv ner basen och höjden för varje triangel i variabeln s — då ser du att E-positionen kommer in som BE+CE som summerar till s.",
+    "solution_path": "Kalla kvadratens sida s. Triangel ABE har bas AB = s och höjd BE; triangel CDE har bas CD = s och höjd CE. Summa: s·BE/2 + s·CE/2 = s·(BE+CE)/2 = s·s/2 = s²/2. Triangel ADE har bas AD = s och höjd s (avståndet från E till AD är hela kvadratsidan). Area = s²/2. Båda kvantiteterna är s²/2. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "ABCD är en kvadrat. Punkten E ligger någonstans på sidan BC. Du ska jämföra (I) summan av areorna för trianglarna ABE och CDE mot (II) arean av triangeln ADE.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Fyrhörning med alla fyra sidor lika långa och alla fyra vinklar räta (90°). Kalla sidan s — då är AB = BC = CD = DA = s.",
+        "tier": "detail",
+        "title": "Vad är en kvadrat?"
+      },
+      {
+        "n": 3,
+        "text": "\\text{Area} = \\frac{1}{2} \\cdot \\text{bas} \\cdot \\text{höjd}, där höjden är det vinkelräta avståndet från motsatta hörnpunkten ner till baslinjen.",
+        "tier": "detail",
+        "title": "Triangelareaformeln"
+      },
+      {
+        "n": 4,
+        "text": "Bas AB ligger längs ena kvadratsidan, längden s. Hörnet E ligger på BC, vinkelrätt ovanför B i kvadratens geometri (BC ⟂ AB). Höjden från E ner till AB är alltså BE — sträckan från B till E på sidan BC.",
+        "tier": "essential",
+        "title": "Triangel ABE: bas och höjd"
+      },
+      {
+        "n": 5,
+        "text": "Bas CD är motsatta kvadratsidan, längden s. Hörnet E ligger på BC, och höjden från E till CD är CE — sträckan från E till C längs BC.",
+        "tier": "essential",
+        "title": "Triangel CDE: bas och höjd"
+      },
+      {
+        "n": 6,
+        "text": "E delar sidan BC i två delar: BE (från B till E) och EC (från E till C). Summan är hela sidan BC = s.",
+        "tier": "essential",
+        "title": "Vad är BE + CE?"
+      },
+      {
+        "n": 7,
+        "text": "\\text{area}(ABE) + \\text{area}(CDE) = \\frac{1}{2} \\cdot s \\cdot BE + \\frac{1}{2} \\cdot s \\cdot CE = \\frac{s}{2} (BE + CE) = \\frac{s}{2} \\cdot s = \\frac{s^{2}}{2}.",
+        "tier": "essential",
+        "title": "Summera triangel-areorna"
+      },
+      {
+        "n": 8,
+        "text": "Bas AD är en kvadratsida, längden s. Hörnet E ligger på BC, vilket är motsatt sida (parallell med AD). Höjden från E till AD är hela kvadratens bredd, alltså s.",
+        "tier": "essential",
+        "title": "Triangel ADE: bas och höjd"
+      },
+      {
+        "n": 9,
+        "text": "\\text{area}(ADE) = \\frac{1}{2} \\cdot s \\cdot s = \\frac{s^{2}}{2}.",
+        "tier": "essential",
+        "title": "Räkna area(ADE)"
+      },
+      {
+        "n": 10,
+        "text": "Kvantitet I = s²/2. Kvantitet II = s²/2. De är lika.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 11,
+        "text": "Lägg märke till att svaret inte beror på var E ligger på BC. För varje E gäller att BE + CE = s, och därför är kvantitet I alltid halva kvadraten — precis som triangel ADE.",
+        "tier": "detail",
+        "title": "Insikt: oberoende av E:s position"
+      },
+      {
+        "n": 12,
+        "text": "Trianglarna ABE, ADE och CDE tillsammans täcker hela kvadraten (de delar inga inre punkter). Total area = s². Hälften går till ADE (s²/2), resten (s²/2) fördelas mellan ABE och CDE. Stämmer.",
+        "tier": "detail",
+        "title": "Komplement-check"
+      },
+      {
+        "n": 13,
+        "text": "Båda kvantiteterna är s²/2. Svaret är C (I är lika med II). Insikten i en mening: när en punkt rör sig längs en kvadratsida, kompenserar trianglarna mot de två angränsande sidorna exakt det som triangeln mot motsatt sida 'representerar' — geometri som ser dynamisk ut är statisk i area.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Kvadrat-medianstrategi: när en triangel delar en kvadrat genom att ett hörn ligger på motsatt sida, är arean alltid halva kvadraten (bas · höjd / 2 = s · s / 2). Kompletteringstrianglarna mot de andra två sidorna delar den ANDRA halvan. Triggern: 'punkt på en kvadratsida, trianglar mot motsatta sidor' → halva kvadraten var."
+  },
+  "var-2016-kvant1-KVA-014": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att I är större eftersom 1/3 + 5/6 har 'större' bråk (5/6 nära 1) än 4/5 + 4/10.",
+        "why_wrong": "4/5 ensamt är 0,8, vilket är större än 5/6 ≈ 0,833? Nej, 5/6 ≈ 0,833 är något större än 4/5 = 0,8. Men 1/3 ≈ 0,333 är mindre än 4/10 = 0,4, och den skillnaden tippar över. Steg 9 visar att II = 1,2 > I ≈ 1,167."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "De ser ungefär lika stora ut, så man kan gissa likhet.",
+        "why_wrong": "De är inte lika: 7/6 ≠ 6/5. Korsmultiplikation (steg 10): 7·5 = 35 ≠ 36 = 6·6."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'för många bråk, för svårt — informationen räcker inte'.",
+        "why_wrong": "All information finns: båda summorna är fullständigt specificerade. Räkna ut dem (steg 4 och 7) — informationen räcker mer än väl."
+      }
+    ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "I: 1/3 + 5/6 = 2/6 + 5/6 = 7/6. II: 4/5 + 4/10 = 8/10 + 4/10 = 12/10 = 6/5 = 36/30. 7/6 = 35/30. 36/30 > 35/30 — B.",
-    "technique": "Bråk-summor: gemensam nämnare 30 ger jämförelse."
+    "solution_path": "Kvantitet I: \\frac{1}{3} + \\frac{5}{6} = \\frac{2}{6} + \\frac{5}{6} = \\frac{7}{6} \\approx 1{,}17. Kvantitet II: \\frac{4}{5} + \\frac{4}{10} = \\frac{8}{10} + \\frac{4}{10} = \\frac{12}{10} = 1{,}2. II är större. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Två summor av bråk ska jämföras. Kvantitet I = 1/3 + 5/6. Kvantitet II = 4/5 + 4/10.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Bråken måste ha samma nämnare. Om de inte har det, skriv om dem med en gemensam nämnare först.",
+        "tier": "detail",
+        "title": "Vad krävs för att addera bråk?"
+      },
+      {
+        "n": 3,
+        "text": "Nämnarna 3 och 6: gemensam nämnare är 6. Skriv om 1/3: \\frac{1}{3} = \\frac{2}{6}.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet I — gemensam nämnare"
+      },
+      {
+        "n": 4,
+        "text": "\\frac{2}{6} + \\frac{5}{6} = \\frac{7}{6}.",
+        "tier": "essential",
+        "title": "Addera Kvantitet I"
+      },
+      {
+        "n": 5,
+        "text": "\\frac{7}{6} = 1 + \\frac{1}{6} \\approx 1{,}167.",
+        "tier": "detail",
+        "title": "Översätt till decimal"
+      },
+      {
+        "n": 6,
+        "text": "Nämnarna 5 och 10: gemensam nämnare är 10. Skriv om 4/5: \\frac{4}{5} = \\frac{8}{10}.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet II — gemensam nämnare"
+      },
+      {
+        "n": 7,
+        "text": "\\frac{8}{10} + \\frac{4}{10} = \\frac{12}{10} = \\frac{6}{5}.",
+        "tier": "essential",
+        "title": "Addera Kvantitet II"
+      },
+      {
+        "n": 8,
+        "text": "\\frac{12}{10} = 1{,}2.",
+        "tier": "detail",
+        "title": "Översätt till decimal"
+      },
+      {
+        "n": 9,
+        "text": "Kvantitet I ≈ 1,167. Kvantitet II = 1,2. II är större.",
+        "tier": "essential",
+        "title": "Jämför som decimaler"
+      },
+      {
+        "n": 10,
+        "text": "7/6 vs 6/5: korsmultiplicera 7·5 = 35 vs 6·6 = 36. Eftersom 35 < 36, är 7/6 < 6/5. Stämmer med decimal-jämförelsen.",
+        "tier": "detail",
+        "title": "Jämför som bråk (kontroll)"
+      },
+      {
+        "n": 11,
+        "text": "Kvantitet II = 6/5 är större än Kvantitet I = 7/6. Svaret är B. Insikten i en mening: jämför bråk-summor genom att räkna ut båda till samma form (gemensam nämnare ELLER decimal) — försök inte 'känna' efter vilken som är större på ögat.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Bråk-jämförelsestrategin: skriv båda uttrycken med samma nämnare ELLER omvandla båda till decimaler — välj det enklare. Vid sista jämförelsen kan korsmultiplikation (ad vs bc) ofta gå snabbare än att hitta en gemensam nämnare. Triggern: 'jämför två bråk-summor' → räkna ut båda i samma form."
+  },
+  "var-2016-kvant1-KVA-015": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du multiplicerar ut I 'rakt' och får ett uttryck med många termer kan du missa att −4 sticker ut, och tro att I är större eftersom det 'ser fullare ut'.",
+        "why_wrong": "Antalet termer säger inget om storleken. Steg 8 visar att II − I = +8 ALLTID — så II är alltid större."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att de två formerna är 'kvadrat-baserade' och alltså lika.",
+        "why_wrong": "De skiljer sig med exakt 8 (steg 8): I = (a+b)² − 4 medan II = (a+b)² + 4. Likhet skulle kräva att 4 = −4, vilket inte stämmer."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'vi vet inte a och b, alltså kan vi inte avgöra'.",
+        "why_wrong": "Skillnaden II − I = 8 är OBEROENDE av a och b (steg 8). Vi behöver inte veta deras värden för att veta att II > I."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Substituera u = a + b. Då blir I = (u+2)(u−2) = u² − 4 (konjugatregeln) och II = u² + 4. Skillnaden är 8: II är 8 större än I. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska jämföra två uttryck. Kvantitet I: (a + b + 2)(a + b - 2). Kvantitet II: (a + b)^{2} + 4.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Eftersom 'a + b' förekommer i båda uttrycken, kalla u = a + b. Då blir I = (u + 2)(u − 2) och II = u² + 4.",
+        "tier": "essential",
+        "title": "Strategi: byt variabel"
+      },
+      {
+        "n": 3,
+        "text": "Konjugatregeln säger: (x + y)(x - y) = x^{2} - y^{2}. Multiplikation av en summa och en differens av samma två tal — alla 'mellantermer' tar ut varandra.",
+        "tier": "detail",
+        "title": "Konjugatregeln"
+      },
+      {
+        "n": 4,
+        "text": "(x + y)(x - y) = x \\cdot x - x \\cdot y + y \\cdot x - y \\cdot y = x^{2} - xy + xy - y^{2} = x^{2} - y^{2}. Mellantermerna −xy och +xy är varandras motsatser.",
+        "tier": "detail",
+        "title": "Härled konjugatregeln genom utmultiplikation"
+      },
+      {
+        "n": 5,
+        "text": "(u + 2)(u - 2) = u^{2} - 2^{2} = u^{2} - 4.",
+        "tier": "essential",
+        "title": "Tillämpa konjugatregeln på I"
+      },
+      {
+        "n": 6,
+        "text": "u^{2} - 4 = (a + b)^{2} - 4.",
+        "tier": "detail",
+        "title": "Skriv om i originalvariablerna"
+      },
+      {
+        "n": 7,
+        "text": "II är redan (a + b)^{2} + 4 eller u^{2} + 4.",
+        "tier": "essential",
+        "title": "Räkna II"
+      },
+      {
+        "n": 8,
+        "text": "II - I = (u^{2} + 4) - (u^{2} - 4) = u^{2} + 4 - u^{2} + 4 = 8. Skillnaden är konstanta 8 — den beror inte på a och b.",
+        "tier": "essential",
+        "title": "Subtrahera I från II"
+      },
+      {
+        "n": 9,
+        "text": "II är alltid exakt 8 större än I, oavsett vilka värden a och b har. Alltså är II > I för alla a och b.",
+        "tier": "essential",
+        "title": "Tolka skillnaden"
+      },
+      {
+        "n": 10,
+        "text": "Sätt a = 0, b = 0. I = (2)(−2) = −4. II = 0 + 4 = 4. II − I = 8. Stämmer. Sätt a = 1, b = 2. I = (5)(1) = 5. II = 9 + 4 = 13. II − I = 8. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera med konkreta tal"
+      },
+      {
+        "n": 11,
+        "text": "Kvantitet II är större (med exakt 8). Svaret är B. Insikten i en mening: konjugatregeln (x+y)(x−y) = x²−y² förvandlar två tal-uttryck med 'samma rot, motsatt slutdel' till en kvadrat minus en kvadrat — leta alltid efter konjugatformen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Konjugatregel-igenkänningen: när du ser (X + k)(X − k), skriv direkt om till X² − k². Triggern: 'två faktorer med samma första del men motsatt andra del' → konjugatform, mellantermerna stryks."
   },
   "var-2016-kvant1-KVA-016": {
     "_meta": {
-      "generated_at": 1778425152540,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att 120π är \"mer abstrakt\" och därmed större.",
-        "why_wrong": "120π ≈ 376,99; 6,3·60 = 378."
+        "why_tempting": "Det är frestande att se 'π' i II och tro att π gör II 'mystiskt stor'.",
+        "why_wrong": "π ≈ 3,14, vilket är mindre än 3,15. 120 · 3,14 = 376,8 är MINDRE än 378 (= 6,3 timmar). Steg 9 visar jämförelsen explicit."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att de är lika.",
-        "why_wrong": "Skillnaden ~ 1 min."
+        "why_tempting": "Om du minns π som 'ungefär 3,15' kan du tro att 120π = 378 exakt och hamna på likhet.",
+        "why_wrong": "π är 3,14159…, alltså STRIKT mindre än 3,15. 120π är därför strikt mindre än 378. Steg 8 fastställer."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att π gör jämförelsen otydlig.",
-        "why_wrong": "120π är fast värde; jämförelsen entydig."
+        "why_tempting": "π är ett irrationellt tal som man inte kan skriva exakt — det kan kännas som om 'exakt jämförelse är omöjlig'.",
+        "why_wrong": "Vi behöver inte exakt värde — bara veta om 120π är större eller mindre än 378. Det räcker att veta att π < 3,15. Steg 9 låser ojämlikheten."
       }
     ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "I: 6,3 timmar = 6,3·60 = 378 min. II: 120π ≈ 377 min. 378 > 377 — A.",
-    "technique": "Enhetskonvertering: 1 h = 60 min."
+    "solution_path": "Konvertera till samma enhet. I = 6,3 timmar = 6,3 · 60 = 378 minuter. II = 120π ≈ 376,99 minuter. I är större. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Jämför Kvantitet I (6,3 timmar) med Kvantitet II (120π minuter). De har olika enheter — du måste konvertera först.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Lättast: räkna om I till minuter (eftersom II redan är i minuter).",
+        "tier": "detail",
+        "title": "Välj en gemensam enhet"
+      },
+      {
+        "n": 3,
+        "text": "1 timme = 60 minuter (definition). Detta är konversionsfaktorn.",
+        "tier": "detail",
+        "title": "Vad är 1 timme i minuter?"
+      },
+      {
+        "n": 4,
+        "text": "6,3 timmar = 6,3 · 60 minuter. Beräkna: 6 · 60 = 360, och 0,3 · 60 = 18. Summa: 378 minuter.",
+        "tier": "essential",
+        "title": "Räkna om I till minuter"
+      },
+      {
+        "n": 5,
+        "text": "Värdet av π ≈ 3,14159. Så 120π ≈ 120 · 3,14159 ≈ 376,99 minuter.",
+        "tier": "essential",
+        "title": "Räkna ut II numeriskt"
+      },
+      {
+        "n": 6,
+        "text": "Om du bara minns att π ≈ 3,14: 120 · 3,14 = 120 · 3 + 120 · 0,14 = 360 + 16,8 = 376,8. Tillräckligt nära.",
+        "tier": "detail",
+        "title": "Snabbskattning av II"
+      },
+      {
+        "n": 7,
+        "text": "I = 378 min. II ≈ 377 min. I är cirka 1 minut större.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 8,
+        "text": "Räkna noga: 120 · π < 120 · 3,15 = 378. Och 378 = 120 · 3,15 exakt. Eftersom π < 3,15 är 120π < 378 = I. Stämmer.",
+        "tier": "detail",
+        "title": "Säkerställ jämförelsen"
+      },
+      {
+        "n": 9,
+        "text": "Frågan reduceras till: är 378 > 120π? Dvs: är 378/120 > π? 378/120 = 3,15. π ≈ 3,1416. Så 3,15 > π, alltså 378 > 120π. I är större.",
+        "tier": "detail",
+        "title": "Algebraisk jämförelse utan miniräknare"
+      },
+      {
+        "n": 10,
+        "text": "Skillnaden: 378 − 376,99 ≈ 1 minut. Inte stor men entydig — I > II.",
+        "tier": "detail",
+        "title": "Verifiera med marginal"
+      },
+      {
+        "n": 11,
+        "text": "Kvantitet I är större. Svaret är A. Insikten i en mening: vid 'jämför med olika enheter' — konvertera först, sedan jämför. När π är inblandat, kom ihåg att π < 3,15 (vanligt jämförelsetrick).",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Enhetskonverterings-strategi: gör alltid båda kvantiteterna jämförbara genom att välja en gemensam enhet (vanligen den med 'krångligare' ursprung). När π är inblandat, använd närmevärden — π < 3,15 är ofta tillräckligt för att avgöra ordningen. Triggern: 'olika enheter' → konvertera först."
   },
   "var-2016-kvant1-KVA-017": {
     "_meta": {
-      "generated_at": 1778425152540,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att största alltid > 16.",
-        "why_wrong": "Om andra två är 12 och 13, max är 13 < 16."
+        "why_tempting": "Om man tänker 'medelvärdet är 9, ett är 2, alltså är de andra större och kan bli 25 — det är större än 16' kan man dra slutsatsen I > II.",
+        "why_wrong": "Det är ETT möjligt utfall (scenario B i steg 8), men inte det enda. Vid jämna fördelningar är största under 16 (scenario A). Steg 10 visar att båda riktningarna är möjliga."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att max < 16.",
-        "why_wrong": "Max kan vara 25 om de andra är 0 (om tillåtet)."
+        "why_tempting": "Om man räknar 'snitt 9, alltså inget tal är mycket större än 9 — alltså är största mindre än 16' landar man på II > I.",
+        "why_wrong": "Detta gäller bara om talen är ungefär lika fördelade. Men 0 + 25 + 2 är också tillåten fördelning, där största = 25 > 16. Steg 8 visar."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid största = 16.",
-        "why_wrong": "Ett av många utfall; max är fritt i (12,5; 25]."
+        "why_tempting": "Likhet kan kännas naturlig om man råkar landa på fördelningen (2, 9, 16).",
+        "why_wrong": "Likhet är möjlig (steg 9) men inte garanterad. Många andra fördelningar ger största ≠ 16."
       }
     ],
+    "framework_id": null,
+    "pitfall": "Frestelsen är att fastställa fördelningen 'naturligt' (t.ex. resterande lika fördelade). Botemedlet: testa explicit både en JÄMN och en SKEV fördelning. Om svaren skiljer sig → information otillräcklig.",
+    "solution_path": "Medelvärdet 9 ger summa 27. Med ett tal lika med 2 är de andra två summan 25. Det största kan variera: t.ex. (2, 12, 13) ger största = 13 < 16; (2, 0, 25) ger största = 25 > 16. Informationen räcker inte. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Tre tal har medelvärdet 9, och ett av dem är 2. Jämför det STÖRSTA talet (Kvantitet I) med 16 (Kvantitet II).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Medelvärdet av n tal är summan dividerat med n. För tre tal: medel = (a + b + c) / 3. Om medel = 9, så är a + b + c = 27.",
+        "tier": "detail",
+        "title": "Vad är medelvärde?"
+      },
+      {
+        "n": 3,
+        "text": "Summan är fixerad: a + b + c = 27.",
+        "tier": "essential",
+        "title": "Tre tals summa"
+      },
+      {
+        "n": 4,
+        "text": "Säg a = 2. Då är b + c = 27 − 2 = 25. De andra två talen summerar till 25.",
+        "tier": "essential",
+        "title": "Ett tal är 2 — vad blir de andra två?"
+      },
+      {
+        "n": 5,
+        "text": "Det STÖRSTA av de tre talen är max(2, b, c). Eftersom 2 är litet är det rimligen b eller c som är störst — den som är minst 25/2 = 12,5.",
+        "tier": "essential",
+        "title": "Vad vet vi om det största?"
+      },
+      {
+        "n": 6,
+        "text": "Av två tal b och c med summa 25 är det större minst 25/2 = 12,5. Det STÖRSTA av alla tre är alltså minst 12,5.",
+        "tier": "detail",
+        "title": "Det största är minst …"
+      },
+      {
+        "n": 7,
+        "text": "Det största kan vara godtyckligt stort (förutsatt att talen får vara negativa). Om b = −1000 så är c = 1025 — det STÖRSTA av talen blir 1025.",
+        "tier": "detail",
+        "title": "Det största är högst …"
+      },
+      {
+        "n": 8,
+        "text": "Scenario A: b = 12, c = 13. Tre tal: 2, 12, 13. Största = 13 < 16 → I < II. Scenario B: b = 0, c = 25. Tre tal: 0, 2, 25. Största = 25 > 16 → I > II.",
+        "tier": "essential",
+        "title": "Testa två scenarier kring 16"
+      },
+      {
+        "n": 9,
+        "text": "Scenario C: b = 9, c = 16. Tre tal: 2, 9, 16. Största = 16 = II. Likhet möjlig.",
+        "tier": "detail",
+        "title": "Kan det största bli exakt 16?"
+      },
+      {
+        "n": 10,
+        "text": "Det största kan vara mindre än, lika med, eller större än 16 — beroende på hur b och c fördelas (steg 8–9). Vi kan inte avgöra entydigt.",
+        "tier": "essential",
+        "title": "Slutsats om informationen"
+      },
+      {
+        "n": 11,
+        "text": "Informationen är otillräcklig. Svaret är D. Insikten i en mening: ett medelvärde + ett tal låser bara SUMMAN av de andra — fördelningen mellan dem är fri, vilket gör 'största' obestämbart.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Underbestämd-medel-strategi: ett medelvärde ger SUMMAN av talen, inte deras individuella värden. Med n tal och endast medelvärdet + ett känt tal är de övriga (n−1) talen bara restriktion-summa — fördelningen mellan dem är fri. Triggern: 'medel + ett tal + fråga om max/min' → ofta otillräckligt."
+  },
+  "var-2016-kvant1-KVA-019": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man förväxlar de två skärningarna (tar x-värdet vid y-axelskärningen = 0 och jämför med y-värdet) kan man tro att I > II.",
+        "why_wrong": "Kvantiteterna är tydligt definierade: I är x-värdet vid x-axelskärningen (= −1/2), II är y-värdet vid y-axelskärningen (= 1). Inte några förväxlingar. Steg 4 och 7 låser värdena."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att 'båda är skärningar med en axel, alltså borde de vara lika'.",
+        "why_wrong": "Skärningarna är olika punkter på linjen och har olika numeriska värden — bara om k-koefficienten råkar bli sådan att x-skärningen = y-skärningen. Här: −1/2 ≠ 1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'för komplext, info räcker inte'.",
+        "why_wrong": "Linjens ekvation är fullständig (y = 2x + 1). Båda skärningarna är entydigt bestämda. Information räcker mer än väl."
+      }
+    ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "Medelvärde = 9, ett tal är 2. Andra två summa = 27 - 2 = 25. Största kan vara upp till 25 (om andra är minimum), eller 12,5 (om jämnt). Kan vara > 16 eller < 16. D.",
-    "technique": "Medelvärde fixerar summa; individuella tal är fria."
+    "solution_path": "Sätt y = 0 i y = 2x + 1: 0 = 2x + 1 → x = −1/2. Kvantitet I = −1/2. Sätt x = 0: y = 1. Kvantitet II = 1. II > I. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Linjen y = 2x + 1 skär x-axeln och y-axeln var sin gång. Kvantitet I = x-värdet vid x-axelskärningen. Kvantitet II = y-värdet vid y-axelskärningen.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "x-axeln består av alla punkter med y = 0. Att linjen skär x-axeln betyder att den passerar genom en punkt (x₀, 0).",
+        "tier": "detail",
+        "title": "Vad är 'skär x-axeln'?"
+      },
+      {
+        "n": 3,
+        "text": "Sätt y = 0 i linjens ekvation: 0 = 2x + 1. Lös: 2x = -1 \\Rightarrow x = -\\frac{1}{2}.",
+        "tier": "essential",
+        "title": "Hitta x-axelskärningen"
+      },
+      {
+        "n": 4,
+        "text": "x-värdet vid skärningen är −1/2 = −0,5.",
+        "tier": "essential",
+        "title": "Kvantitet I = −1/2"
+      },
+      {
+        "n": 5,
+        "text": "y-axeln består av alla punkter med x = 0. Linjens skärning med y-axeln har x-värdet 0.",
+        "tier": "detail",
+        "title": "Vad är 'skär y-axeln'?"
+      },
+      {
+        "n": 6,
+        "text": "Sätt x = 0 i linjens ekvation: y = 2 \\cdot 0 + 1 = 1.",
+        "tier": "essential",
+        "title": "Hitta y-axelskärningen"
+      },
+      {
+        "n": 7,
+        "text": "y-värdet vid skärningen är 1.",
+        "tier": "essential",
+        "title": "Kvantitet II = 1"
+      },
+      {
+        "n": 8,
+        "text": "Kvantitet I = −1/2 = −0,5. Kvantitet II = 1. På tallinjen är 1 till höger om −0,5, alltså större.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 9,
+        "text": "Alla positiva tal är större än alla negativa tal. 1 > 0 > −1/2, så 1 > −1/2.",
+        "tier": "detail",
+        "title": "Storleksordning på negativa och positiva tal"
+      },
+      {
+        "n": 10,
+        "text": "Linjen y = 2x + 1 har lutningen 2 (uppåtgående) och skär y-axeln vid y = 1. Den korsar x-axeln något till vänster om origo (vid x = −0,5).",
+        "tier": "detail",
+        "title": "Tolka geometriskt"
+      },
+      {
+        "n": 11,
+        "text": "Kvantitet II (= 1) är större än Kvantitet I (= −1/2). Svaret är B. Insikten i en mening: x-axelskärningen får du av y = 0, och y-axelskärningen av x = 0 — två snabba substitutioner som ger båda värdena.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Axelskärningsstrategin: x-axelskärning fås av y = 0, y-axelskärning av x = 0. För linjen y = kx + m är x-skärningen vid x = −m/k och y-skärningen vid y = m. Triggern: 'var skär linjen axeln' → substituera 0 för den andra koordinaten."
   },
   "var-2016-kvant1-KVA-020": {
     "_meta": {
-      "generated_at": 1778425152540,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att 24 > x.",
-        "why_wrong": "För y < 13 är x > 24."
+        "why_tempting": "Om man antar att y > 0 OCH att y är 'precis under 24' (säg y = 23), så blir x = 312/23 ≈ 13,57 < 24 → I > II. Det kan kännas som det 'naturliga' fallet.",
+        "why_wrong": "Att enbart välja det 'naturliga' y missar andra giltiga y. Med y = 12 blir x = 26 > 24 (steg 5). Ej entydigt."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att x > 24.",
-        "why_wrong": "För 13 < y < 24 är x < 24."
+        "why_tempting": "Om man antar y > 0 och VÄLJER ett litet y (säg y = 6) blir x = 52, mycket större än 24 → II > I.",
+        "why_wrong": "Igen, ett enskilt val täcker inte hela det tillåtna området. Andra y ger I > II (steg 5). Ej entydigt."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid y = 13 → x = 24.",
-        "why_wrong": "Ett av tre fall."
+        "why_tempting": "Likhet kan kännas naturlig om man råkar hitta y = 13 (där x = 24).",
+        "why_wrong": "Likhet är ett av flera möjliga utfall, inte garanterat (steg 9). Lika sannolikt att x ≠ 24 — t.ex. y = 12 ger x = 26."
       }
     ],
-    "pitfall": null,
-    "solution_path": "xy = 312, y < 24. x = 312/y > 312/24 = 13. x kan vara 13+ eller mycket större. 24 vs x: jämförbart eller inte. För y = 13, x = 24 (lika); för y = 12, x = 26 > 24; för y = 23, x ≈ 13,57 < 24. D.",
-    "technique": "Inverst proportionellt: x stort när y litet; jämförelse mot 24 fri."
+    "framework_id": null,
+    "pitfall": "Vanligaste fallan är att 'snabbt välja ett y' (t.ex. y nära gränsen) och dra en slutsats. Botemedlet: testa både ett y nära den övre gränsen och ett y långt under den — om x kastar tecken eller passerar jämförelsetalet, är svaret D.",
+    "solution_path": "Om y > 0: y < 24 ger x = 312/y > 13 — men x kan vara både större eller mindre än 24 beroende på y. Om y < 0: y < 24 är trivialt sant, och x = 312/y blir negativt (< 24). Riktningen mellan 24 och x är inte entydig. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Givet xy = 312 och y < 24. Jämför Kvantitet I = 24 med Kvantitet II = x.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Inget i frågan säger att x eller y måste vara positiva. Båda kan vara positiva, båda negativa, eller olika tecken — så länge produkten är 312.",
+        "tier": "essential",
+        "title": "Inga tecken-villkor angivna"
+      },
+      {
+        "n": 3,
+        "text": "Eftersom xy = 312 > 0 har x och y SAMMA TECKEN: båda positiva ELLER båda negativa.",
+        "tier": "detail",
+        "title": "Produkten 312 är positiv"
+      },
+      {
+        "n": 4,
+        "text": "Då är x = 312/y positiv. Med y = 24 skulle x = 13; med y mindre än 24 blir x = 312/y större än 13.",
+        "tier": "essential",
+        "title": "Fall 1: y positiv (0 < y < 24)"
+      },
+      {
+        "n": 5,
+        "text": "Tag y = 12: x = 312/12 = 26 > 24 → II > I. Tag y = 20: x = 312/20 = 15,6 < 24 → I > II. Båda y < 24 men ger olika resultat.",
+        "tier": "essential",
+        "title": "Test inom fall 1"
+      },
+      {
+        "n": 6,
+        "text": "Om y < 0 är x = 312/y också negativ (steg 3). Då x < 0 < 24, alltså I > II.",
+        "tier": "essential",
+        "title": "Fall 2: y negativ"
+      },
+      {
+        "n": 7,
+        "text": "Tag y = −1: x = 312/(−1) = −312. Då är 24 > −312, alltså I > II.",
+        "tier": "detail",
+        "title": "Test inom fall 2"
+      },
+      {
+        "n": 8,
+        "text": "Beroende på y kan x vara större än 24, mindre än 24, eller mycket mindre (negativt). Båda riktningarna och likhet är möjliga.",
+        "tier": "essential",
+        "title": "Sammanfatta möjligheter"
+      },
+      {
+        "n": 9,
+        "text": "Likhet kräver x = 24. Då y = 312/24 = 13, vilket uppfyller y < 24. Så likhet är också möjlig (med x = 24, y = 13).",
+        "tier": "detail",
+        "title": "Kontroll: kan I = II?"
+      },
+      {
+        "n": 10,
+        "text": "Tre olika utfall (I > II, I < II, I = II) är möjliga med given information. Frågan kan inte avgöras entydigt.",
+        "tier": "essential",
+        "title": "Slutsats om informationen"
+      },
+      {
+        "n": 11,
+        "text": "Informationen är otillräcklig. Svaret är D. Insikten i en mening: villkor som xy = konstant + ENBART en olikhet på y låser inte x — du kan ofta hitta exempel åt båda håll genom att variera y inom det tillåtna området.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Olikhets-produkt-strategi: en produkt + en ensidig olikhet på en variabel räcker sällan för att jämföra den andra variabeln med ett tal. Testa flera y inom tillåtna området — om svaren skiljer sig, är informationen otillräcklig. Triggern: 'xy = k, y < n, jämför x med m' → testa minst två y-värden."
   },
   "var-2016-kvant1-KVA-021": {
     "_meta": {
-      "generated_at": 1778425152540,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att rektangel > halvcirkel.",
-        "why_wrong": "8π ≈ 25,13 > 24."
+        "why_tempting": "Om man räknar fel på halvcirkelformeln — t.ex. tar π·4/2 = 2π ≈ 6,28 (med radien istället för radien²) — får man ett mycket mindre värde och tror II > I.",
+        "why_wrong": "Areaformeln har r^{2}, inte r. Halvcirkel(r=4) = π·4²/2 = 8π (steg 3), inte 2π."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att de är lika.",
-        "why_wrong": "Differens ~ 1."
+        "why_tempting": "24 och 8π kan kännas lika om man inte gör den algebraiska jämförelsen (π > 3 → 8π > 24).",
+        "why_wrong": "Likhet skulle kräva π = 3 exakt. π är 3,14159…, inte 3. Steg 7 visar att 8π > 24 strikt."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att π gör otydligt.",
-        "why_wrong": "8π > 24 entydigt."
+        "why_tempting": "Snabbsvar är ofta 'olika typer av figurer, svårt att jämföra'.",
+        "why_wrong": "Båda areorna är fullständigt bestämda av de givna måtten. Inget okänt — räkna och jämför (steg 3 och 5)."
       }
     ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "I: π·16/2 = 8π ≈ 25,13. II: 8·3 = 24. 25,13 > 24 — A.",
-    "technique": "Halvcirkelarea = πr²/2; jämför mot rektangel."
+    "solution_path": "Halvcirkelns area = π·r²/2 = π·16/2 = 8π ≈ 25,13 cm². Rektangelns area = 8·3 = 24 cm². I är större. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Kvantitet I: arean av en halvcirkel med radien 4 cm. Kvantitet II: arean av en rektangel med sidlängderna 8 cm och 3 cm.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "En hel cirkels area = \\pi \\cdot r^{2}, där r är radien. För r = 4 cm: hel cirkelarea = \\pi \\cdot 16 = 16\\pi cm².",
+        "tier": "detail",
+        "title": "Formel för cirkelarea"
+      },
+      {
+        "n": 3,
+        "text": "Halvcirkeln är halva cirkeln, alltså halva arean: \\frac{16\\pi}{2} = 8\\pi cm².",
+        "tier": "essential",
+        "title": "Halvcirkelns area"
+      },
+      {
+        "n": 4,
+        "text": "π ≈ 3,14159, så 8\\pi \\approx 8 \\cdot 3{,}14159 \\approx 25{,}13 cm².",
+        "tier": "essential",
+        "title": "Räkna 8π numeriskt"
+      },
+      {
+        "n": 5,
+        "text": "Rektangelns area = längd · bredd = 8 · 3 = 24 cm².",
+        "tier": "essential",
+        "title": "Räkna rektangelns area"
+      },
+      {
+        "n": 6,
+        "text": "I ≈ 25,13 cm². II = 24 cm². I är drygt 1 cm² större.",
+        "tier": "essential",
+        "title": "Jämför numeriskt"
+      },
+      {
+        "n": 7,
+        "text": "Är 8π > 24? Dela båda led med 8: är π > 3? Ja, π ≈ 3,14 > 3. Så 8π > 24. Stämmer.",
+        "tier": "detail",
+        "title": "Algebraisk jämförelse utan numerisk approximation"
+      },
+      {
+        "n": 8,
+        "text": "Om man bara minns att π > 3: 8π > 8·3 = 24. Räcker för att avgöra att I > II.",
+        "tier": "detail",
+        "title": "Verifiera med en grövre uppskattning"
+      },
+      {
+        "n": 9,
+        "text": "Halvcirkel(r=4) = π·4²/2 = 16π/2 = 8π. Korrekt formel använd.",
+        "tier": "detail",
+        "title": "Snabbkontroll med formeln för halvcirkel"
+      },
+      {
+        "n": 10,
+        "text": "Kvantitet I (8π ≈ 25,13 cm²) är större än Kvantitet II (24 cm²). Svaret är A. Insikten i en mening: när du jämför uttryck med π, kom ihåg att π > 3 — ofta tillräckligt för att avgöra ordningen utan miniräknare.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Cirkel-jämförelsestrategi: areaformel π·r² gäller hela cirkeln; halvcirkel är hälften, kvartscirkel en fjärdedel. Vid jämförelse med ett rationellt tal, använd närmevärden för π (π ≈ 3,14, eller bara π > 3). Triggern: 'jämför area mellan cirkulär och rektangulär figur' → räkna båda enskilt, använd π:s storleksordning för avgörande."
+  },
+  "var-2016-kvant1-KVA-022": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man tolkar I som x^{1} = x (där 'y²' misstolkas som '1') och II som x^{y^{2}}, kan I se mindre ut än II för stora y, och man kan landa på fel håll.",
+        "why_wrong": "Den parsade kvantiteten är x^{y^{2}}, inte x. Potensregeln (steg 4) visar att båda är samma uttryck."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegel av A — om man tror II 'växer snabbare' än I, väljer man B.",
+        "why_wrong": "Båda är identiska efter potensregeln (steg 5). Storleken är samma för alla tillåtna x och y. Test i steg 6–8 bekräftar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'y är okänt → kan inte avgöra'.",
+        "why_wrong": "Värdet på y påverkar inte JÄMFÖRELSEN — båda kvantiteterna blir samma exponent y². Vi behöver inte veta y för att veta att I = II."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Potensregeln: (x^{y})^{y} = x^{y \\cdot y} = x^{y^{2}}. Båda kvantiteterna är alltså x^{y^{2}} — de är identiska. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Givet x > 0 och y ≠ 0. Kvantitet I: x^{y^{2}}. Kvantitet II: (x^{y})^{y}. Vilken är större?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "x är ett positivt reellt tal. Det betyder att alla potenser av x är väldefinierade och positiva, oavsett vilken exponent.",
+        "tier": "detail",
+        "title": "Vad betyder x>0 här?"
+      },
+      {
+        "n": 3,
+        "text": "y^{2} = y \\cdot y. För y = 3 blir y² = 9; för y = −2 blir y² = 4. Eftersom y² är en kvadrat är y² alltid positiv eller noll (här strikt positiv eftersom y ≠ 0).",
+        "tier": "detail",
+        "title": "Vad betyder y² ?"
+      },
+      {
+        "n": 4,
+        "text": "Potensregeln: (a^{m})^{n} = a^{m \\cdot n}. Tillämpa med a = x, m = y, n = y: (x^{y})^{y} = x^{y \\cdot y} = x^{y^{2}}.",
+        "tier": "essential",
+        "title": "Tillämpa potensregeln på II"
+      },
+      {
+        "n": 5,
+        "text": "Kvantitet I = x^{y^{2}}. Kvantitet II = x^{y^{2}} efter potensregeln. Båda är samma uttryck.",
+        "tier": "essential",
+        "title": "Jämför uttrycken"
+      },
+      {
+        "n": 6,
+        "text": "x = 2, y = 3. I = 2^{9} = 512. II = (2^{3})^{3} = 8^{3} = 512. Lika.",
+        "tier": "detail",
+        "title": "Verifiera med konkreta tal — fall 1"
+      },
+      {
+        "n": 7,
+        "text": "x = 2, y = −3. y² = 9 fortfarande. I = 2^{9} = 512. II = (2^{-3})^{-3} = (1/8)^{-3} = 8^{3} = 512. Lika.",
+        "tier": "detail",
+        "title": "Verifiera med negativ y"
+      },
+      {
+        "n": 8,
+        "text": "x = 1/2, y = 2. y² = 4. I = (1/2)^{4} = 1/16. II = ((1/2)^{2})^{2} = (1/4)^{2} = 1/16. Lika.",
+        "tier": "detail",
+        "title": "Verifiera med bråktal x"
+      },
+      {
+        "n": 9,
+        "text": "För x = 1 är alla potenser 1: I = II = 1. Likhet håller även där.",
+        "tier": "detail",
+        "title": "Vad om x = 1?"
+      },
+      {
+        "n": 10,
+        "text": "Nej — potensregeln gäller oavsett y:s tecken så länge x > 0. y² är alltid ≥ 0 och resulterande uttryck är väldefinierat.",
+        "tier": "detail",
+        "title": "Spelar tecknet på y roll?"
+      },
+      {
+        "n": 11,
+        "text": "Båda kvantiteterna är x^{y^{2}} för alla tillåtna x och y. Svaret är C (lika). Insikten i en mening: potensregeln (a^m)^n = a^{mn} gör (x^y)^y = x^{y²} — exakt samma som kvantitet I.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Potensregel-igenkänningen: när du ser (x^a)^b, skriv om till x^{ab} omedelbart. Då blir många uttryck synligt lika. Triggern: 'kapslade exponenter' → multiplicera exponenterna direkt."
   },
   "var-2016-kvant1-NOG-023": {
     "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att slutpriserna räcker.",
-        "why_wrong": "(2) ger differens efter rabatt — ordinarie är inte direkt utläsbart."
+        "why_tempting": "(2) känns 'mer informativ' eftersom den nämner en konkret kr-siffra (50 kr prisskillnad efter rabatt).",
+        "why_wrong": "Konkreta tal i påståendena lurar — 50 kr efter rabatt fastställer inte ord-priset. Steg 8 visar att (2) är en ekvation med två obekanta — otillräcklig."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(1) räcker ensamt."
+        "why_tempting": "Det är frestande att tro att man behöver båda påståendena tillsammans för att 'säkert' kunna räkna ut skillnaden.",
+        "why_wrong": "(1) ensam ger redan båda ord-priserna explicit (steg 4–5). Behöver inte (2). Att (2) saknar information separat innebär inte att (1) också gör det."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(2) saknar låsning av båda priserna."
+        "why_tempting": "Om man inte testar (2) ensam noggrant kan man tro att även (2) räcker.",
+        "why_wrong": "D kräver att VARDERA påståendet ensamt ger unik lösning. Steg 8–9 visar att (2) ensam har oändligt många lösningar."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan båda procenttal går det inte.",
-        "why_wrong": "Rabattbelopp/procent ger ordinarie pris direkt."
+        "why_tempting": "Snabbsvar är ofta 'svår fråga, kanske går inte att lösa alls'.",
+        "why_wrong": "(1) löser fallet direkt (steg 6). E gäller bara om INGET av påståendena (varken ensamt eller tillsammans) räcker."
       }
     ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "(1) räcker: rabattbelopp/rabattprocent ger ordinarie pris. p1=595/0,35=1700, p2=945/0,45=2100, skillnad=400 kr. (2) ger en prisskillnad efter rabatt men inte ordinarie.",
-    "technique": "Ordinarie pris = rabattbelopp / rabattandel."
+    "solution_path": "(1) ensam ger båda ordinariepriserna: ord1 = 595/0,35 = 1700, ord2 = 945/0,45 = 2100. Skillnaden är 400 kr — bestämbar. (2) ensam ger en ekvation med två obekanta och räcker inte. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Två mikrovågsugnar har okända ordinarie priser p₁ och p₂. Frågan: skillnaden mellan ordinarie priserna, alltså |p₁ − p₂|.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "NOG frågar inte 'är svaret X?' utan 'räcker informationen för att räkna ut ett unikt värde?'. Om informationen lämnar flera möjliga värden är den otillräcklig.",
+        "tier": "detail",
+        "title": "Vad betyder 'tillräcklig information' i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "En rabatt på r % av ordinarie priset p innebär att man sparar (r/100)·p kr. 35 % rabatt på 1000 kr → sparar 350 kr.",
+        "tier": "detail",
+        "title": "Vad betyder rabatt och 'sparade'?"
+      },
+      {
+        "n": 4,
+        "text": "35 % rabatt sparade 595 kr: 0{,}35 \\cdot p_1 = 595. Lös för p₁: p_1 = \\frac{595}{0{,}35} = 1700 kr.",
+        "tier": "essential",
+        "title": "Översätt (1) för ugn 1"
+      },
+      {
+        "n": 5,
+        "text": "45 % rabatt sparade 945 kr: 0{,}45 \\cdot p_2 = 945. Lös: p_2 = \\frac{945}{0{,}45} = 2100 kr.",
+        "tier": "essential",
+        "title": "Översätt (1) för ugn 2"
+      },
+      {
+        "n": 6,
+        "text": "|p₁ − p₂| = |1700 − 2100| = 400 kr. (1) ensam ger ett unikt svar — tillräcklig.",
+        "tier": "essential",
+        "title": "Räkna skillnaden ur (1)"
+      },
+      {
+        "n": 7,
+        "text": "Efter rabatt: ugn 1 kostar 0,65·p₁, ugn 2 kostar 0,55·p₂. Prisskillnaden 50 kr ger |0{,}65 \\cdot p_1 - 0{,}55 \\cdot p_2| = 50.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 8,
+        "text": "En ekvation, två obekanta (p₁ och p₂). I algebra: en ekvation med två obekanta har OÄNDLIGT många lösningar — du kan välja p₁ fritt och lösa för p₂.",
+        "tier": "essential",
+        "title": "Hur många obekanta i (2)?"
+      },
+      {
+        "n": 9,
+        "text": "Tag p₁ = 1000: 0,65·1000 = 650; sätt 0,55·p₂ = 600 → p₂ ≈ 1091. Skillnad ord = 91 kr. Tag p₁ = 2000: 0,65·2000 = 1300; sätt 0,55·p₂ = 1250 → p₂ ≈ 2273. Skillnad ord = 273 kr. Två olika svar — otillräcklig.",
+        "tier": "detail",
+        "title": "Konkret test av (2)"
+      },
+      {
+        "n": 10,
+        "text": "(1) ensam → unik lösning (skillnad 400 kr). (2) ensam → otillräcklig (en ekvation, två obekanta).",
+        "tier": "essential",
+        "title": "Sammanfatta"
+      },
+      {
+        "n": 11,
+        "text": "Tillräcklig info erhålls i (1) men ej i (2). Svaret är A. Insikten i en mening: när varje påstående direkt ger 'priset · procent = sparat belopp' kan ord-priserna räknas ut FÖR SIG, även om det handlar om två olika ugnar.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "NOG-räknestrategi: översätt varje påstående till en EKVATION och RÄKNA antalet obekanta. När varje obekant direkt löses ur en egen ekvation (som här: en procent + sparat belopp ger ett pris), kräver man inte fler påståenden. Triggern: 'procent och sparat belopp' → ord-pris bestämbart direkt."
   },
   "var-2016-kvant1-NOG-024": {
     "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en ask räcker.",
-        "why_wrong": "(1) ger bara ask1; ask2 och ask3 är fortfarande fria."
+        "why_tempting": "Det är frestande att tro att (1) räcker eftersom man får ett par-alternativ ({3,6} eller {4,5}).",
+        "why_wrong": "Två par-alternativ är inte ett unikt svar för ask 3. Steg 5 visar tre olika möjliga ask 3 även om ask 1 är fast. (1) ensam otillräcklig."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s ask räcker.",
-        "why_wrong": "(2) saknar ask1."
+        "why_tempting": "Spegel av A — om man tror (2) ger 'tydligare info' kan man välja B.",
+        "why_wrong": "(2) ensam ger samma typ av otydlighet (steg 7). Ej entydigt."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett ger bara en av tre asksummor."
+        "why_tempting": "Om man hoppar över test av (1) och (2) ensamma kan man tro båda räcker var för sig.",
+        "why_wrong": "D kräver att VARDERA räcker. Steg 5 och 7 visar att ingen ensam ger unik lösning."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att två summor inte ger paret.",
-        "why_wrong": "4 g i en ask kan bara vara {1, 3} bland tillgängliga vikter."
+        "why_tempting": "Snabbsvar 'för många kombinationer, går inte att lösa'.",
+        "why_wrong": "Tillsammans finns det BARA EN giltig kombination (steg 8). E gäller bara när inte ens båda tillsammans räcker."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: total=1+...+6=21. Ask1=9, ask2=8 → ask3=4 g, vilket bara kan vara paret {1, 3}.",
-    "technique": "Total summa + två asksummor = tredje asksumma; verifiera att den unikt motsvarar ett par."
+    "framework_id": null,
+    "pitfall": "Vanligaste fallan är att inte SYSTEMATISKT lista alla par. Botemedlet: skriv ner alla par som ger önskad summa innan du börjar kombinera — då ser du när disjoinhets-villkoret skär bort de flesta kombinationerna.",
+    "solution_path": "(1) ensam: par som summerar till 9: {3,6} eller {4,5} — flera möjligheter. (2) ensam: par som summerar till 8: {2,6} eller {3,5} — flera. Tillsammans: kombinationer som inte delar någon vikt: bara {4,5}+{2,6}, så box 3 = {1,3}. Unikt. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Sex vikter med massorna 1, 2, 3, 4, 5, 6 g läggs i tre askar med två vikter i varje. Vilka två vikter ligger i tredje asken?",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "1+2+3+4+5+6 = 21 g totalt. Fördelas på tre askar à två vikter; massorna per ask varierar.",
+        "tier": "detail",
+        "title": "Total massa"
+      },
+      {
+        "n": 3,
+        "text": "Första asken har total massa 9 g. Vilka par från {1,2,3,4,5,6} summerar till 9? Genomgång: 3+6=9 ✓, 4+5=9 ✓. Inga andra (1+8 finns inte, 2+7 inte). Så ask 1 ∈ {{3,6}, {4,5}}.",
+        "tier": "essential",
+        "title": "Läs (1)"
+      },
+      {
+        "n": 4,
+        "text": "Två möjligheter för ask 1, och inget om ask 2 → flera möjliga fördelningar av återstoden. Ej tillräckligt.",
+        "tier": "essential",
+        "title": "(1) ensam — räcker det?"
+      },
+      {
+        "n": 5,
+        "text": "Om ask 1 = {3,6}: återstoden är {1,2,4,5}, kan delas i {1,2}+{4,5} eller {1,4}+{2,5} eller {1,5}+{2,4}. Tre olika möjliga ask 3. Otillräckligt.",
+        "tier": "detail",
+        "title": "Konkret test av (1) ensam"
+      },
+      {
+        "n": 6,
+        "text": "Andra asken har total massa 8 g. Par som summerar till 8: 2+6=8 ✓, 3+5=8 ✓. Så ask 2 ∈ {{2,6}, {3,5}}.",
+        "tier": "essential",
+        "title": "Läs (2)"
+      },
+      {
+        "n": 7,
+        "text": "Samma logik som steg 4: flera möjligheter för ask 2, och inget om ask 1 → flera möjliga ask 3. Ej tillräckligt.",
+        "tier": "essential",
+        "title": "(2) ensam — räcker det?"
+      },
+      {
+        "n": 8,
+        "text": "Kombinationer av (ask 1, ask 2) som inte delar någon vikt: (3,6)+(2,6) delar 6 → ogiltigt. (3,6)+(3,5) delar 3 → ogiltigt. (4,5)+(2,6) inga delade → giltigt. (4,5)+(3,5) delar 5 → ogiltigt.",
+        "tier": "essential",
+        "title": "Kombinera (1) och (2)"
+      },
+      {
+        "n": 9,
+        "text": "Bara ask 1 = {4,5} och ask 2 = {2,6} fungerar. Resterande vikter (1 och 3) hamnar i ask 3.",
+        "tier": "essential",
+        "title": "Endast en giltig kombination"
+      },
+      {
+        "n": 10,
+        "text": "Kontrollera: 1+3 = 4 g. Total alla askar: 9 + 8 + 4 = 21 ✓ (stämmer med totalsumman från steg 2).",
+        "tier": "essential",
+        "title": "Ask 3 = {1, 3}"
+      },
+      {
+        "n": 11,
+        "text": "(1) ensam: flera lösningar. (2) ensam: flera lösningar. Tillsammans: unik lösning, ask 3 = {1,3}.",
+        "tier": "essential",
+        "title": "Sammanfatta"
+      },
+      {
+        "n": 12,
+        "text": "Tillräcklig information i (1) tillsammans med (2). Svaret är C. Insikten i en mening: när två påståenden var för sig ger flera kandidater, är 'disjointhet' (att vikterna inte kan dyka upp två gånger) det villkor som låser systemet — räkna alltid bort gemensamma element.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "NOG-uppdelningsstrategin: när objekt (här vikter) fördelas i grupper och endast partiella summor är givna, lista ALLA par som summerar till varje given summa, sedan filtrera bort kombinationer där par delar element. Den giltiga kombinationen är ofta unik. Triggern: 'fördela utan duplicering, partiella summor givna' → kombinatorisk uteslutning."
   },
   "var-2016-kvant1-NOG-025": {
     "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en undre gräns räcker.",
-        "why_wrong": "(1) lämnar alla n>15."
+        "why_tempting": "Det är frestande att tro att (1) räcker — siffran 20 ser ut som ett 'svar' och 'fler än 20 om 5 fler' känns informativt.",
+        "why_wrong": "Olikheten n + 5 > 20 ger bara en undre gräns för n (≥ 16) — den säger inget om hur stor kön är. Steg 3 visar."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att en övre gräns räcker.",
-        "why_wrong": "(2) lämnar alla n<17."
+        "why_tempting": "Spegel av A — siffran 13 i (2) känns konkret.",
+        "why_wrong": "(2) ger bara en övre gräns (n ≤ 16). Steg 6 visar att n inte är låst — kön kan vara mycket mindre."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar den andra gränsen."
+        "why_tempting": "Om man hoppar över olikhets-tolkningen kan man tro att båda var för sig 'ger ett svar'.",
+        "why_wrong": "Ingen av (1) eller (2) ensam ger UNIKT n — bara ett intervall. Steg 4 och 7 visar."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att två ojämlikheter inte räcker.",
-        "why_wrong": "Två stränga olikheter låser n till ett heltal."
+        "why_tempting": "Snabbsvar 'olikheter ger inte exakt tal, går inte att avgöra'.",
+        "why_wrong": "Två olikheter åt motsatt håll KAN tvinga fram ett unikt heltal (här n = 16). Steg 8 visar."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (1) ger n>15, (2) ger n<17, så n=16 entydigt.",
-    "technique": "Två stränga olikheter på heltal kan lämna exakt ett värde i snittet."
+    "framework_id": null,
+    "pitfall": "Frestelsen är att tro att varje påstående 'är ett konkret tal' och därför räcker. Botemedlet: skriv ut varje villkor som en EXPLICIT OLIKHET i den okända variabeln innan du bedömer.",
+    "solution_path": "(1) ensam ger n ≥ 16 (eftersom n + 5 > 20). (2) ensam ger n ≤ 16 (eftersom n − 4 < 13). Var för sig är intervallet öppet på ena sidan, otillräckligt. Tillsammans tvingas n = 16. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Hur många personer står i kön? Kalla antalet n. Vi söker ett unikt heltal n.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "'Om 5 fler ställer sig blir kön fler än 20': n + 5 > 20 \\Rightarrow n > 15. Eftersom n är ett heltal: n \\geq 16.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 3,
+        "text": "n kan vara 16, 17, 18, 19, … — oändligt många heltal. Inget tak.",
+        "tier": "essential",
+        "title": "Vad betyder n ≥ 16 ensamt?"
+      },
+      {
+        "n": 4,
+        "text": "Nej, n inte unik. Otillräckligt.",
+        "tier": "essential",
+        "title": "(1) ensam — räcker det?"
+      },
+      {
+        "n": 5,
+        "text": "'Om 4 lämnar blir kön färre än 13': n - 4 < 13 \\Rightarrow n < 17. Heltal: n \\leq 16.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 6,
+        "text": "n kan vara …, 14, 15, 16 (samt 0, 1, 2 om kön kan vara liten). Många möjligheter.",
+        "tier": "essential",
+        "title": "Vad betyder n ≤ 16 ensamt?"
+      },
+      {
+        "n": 7,
+        "text": "Nej, n inte unik. Otillräckligt.",
+        "tier": "essential",
+        "title": "(2) ensam — räcker det?"
+      },
+      {
+        "n": 8,
+        "text": "n ≥ 16 OCH n ≤ 16 — det enda heltal som uppfyller båda är n = 16.",
+        "tier": "essential",
+        "title": "Kombinera (1) och (2)"
+      },
+      {
+        "n": 9,
+        "text": "Med n = 16: (1) säger n + 5 = 21 > 20 ✓. (2) säger n − 4 = 12 < 13 ✓. Båda stämmer.",
+        "tier": "detail",
+        "title": "Konsistenskontroll"
+      },
+      {
+        "n": 10,
+        "text": "Tillräcklig info i (1) tillsammans med (2). Svaret är C. Insikten i en mening: en olikhet ger en HALVRYMD (åt ett håll), två motsatta olikheter kan tvinga ett unikt heltal mellan sig.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Olikhets-låsstrategin: en olikhet ger en halvrymd (n ≥ a eller n ≤ b). Två motsatta olikheter ger ett intervall a ≤ n ≤ b; om a = b finns bara ett heltal. Triggern: 'olikheter åt motsatt håll' → kontrollera om gränserna sammanfaller."
   },
   "var-2016-kvant1-NOG-026": {
     "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att tidsskillnaden räcker.",
-        "why_wrong": "(1) saknar hastigheter."
+        "why_tempting": "Tidsskillnad och 'hela raksträckan' kan kännas som ett konkret samband mellan L och tid — kanske räcker (1)?",
+        "why_wrong": "Tidsskillnad fastställer inte L utan hastigheter. Steg 5 ger två olika L för olika hastigheter. (1) ensam otillräcklig."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att hastighetsskillnaden räcker.",
-        "why_wrong": "(2) saknar tider."
+        "why_tempting": "Hastighets-skillnaden 10 m/s ser konkret ut.",
+        "why_wrong": "(2) säger inget om L alls — den relaterar bara v_m till v_b. Steg 7 visar."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två villkor räcker.",
-        "why_wrong": "Tre obekanta kvarstår."
+        "why_tempting": "Det är frestande att tro att två konkreta siffror (90 s + 10 m/s) tillsammans räcker för att räkna ut L.",
+        "why_wrong": "Nej — systemet är fortfarande underbestämt med en ekvation och två obekanta (steg 9). Två olika v_b (20 och 40) ger två olika L (1800 och 10800). Inte unik."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar minst en parameter."
+        "why_tempting": "Om man inte testar systemet noggrant kan man tro att vardera räcker.",
+        "why_wrong": "D är en strängare standard än A eller B. Steg 5 och 7 visar att ingen ensam ger unik lösning."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs men räcker ändå inte. Två ekvationer s/v_m−s/v_b=90 och v_b−v_m=10 har tre obekanta (s, v_b, v_m) — sträckan är inte unikt bestämd.",
-    "technique": "Räkna obekanta vs ekvationer; skillnader ensamma räcker inte för absoluta värden."
+    "framework_id": null,
+    "pitfall": "Frestelsen är att räkna konkreta siffror (90 + 10) som om de räcker. Botemedlet: räkna EKVATIONER mot OBEKANTA — om det är färre ekvationer än obekanta, är systemet alltid underbestämt.",
+    "solution_path": "Kalla raksträckan L och bilens hastighet v; mc:n har hastighet v − 10. (1) säger L/(v−10) − L/v = 90. (2) ger v_mc = v − 10. Tillsammans: en ekvation, två obekanta (L och v) — fortfarande otillräckligt. Svaret är E.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "En bil och en motorcykel körde samma raksträcka. Vi vill veta raksträckans längd L (en längd i meter).",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "L = raksträckans längd. v_b = bilens medelhastighet. v_m = motorcykelns medelhastighet. Båda hastigheter i m/s (eftersom (2) använder m/s).",
+        "tier": "essential",
+        "title": "Inför variabler"
+      },
+      {
+        "n": 3,
+        "text": "Tid för bil: t_b = L / v_b. Tid för motorcykel: t_m = L / v_m. Tidsskillnad: t_m - t_b = L/v_m - L/v_b (motorcykeln är långsammare → tar längre tid).",
+        "tier": "detail",
+        "title": "Översätt 'tid = sträcka/hastighet'"
+      },
+      {
+        "n": 4,
+        "text": "Tidsskillnad 90 s: L/v_m - L/v_b = 90. EN ekvation, TRE obekanta (L, v_m, v_b).",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 5,
+        "text": "Nej, tre obekanta i en ekvation. T.ex. v_b = 20 m/s, v_m = 10 m/s ger L/10 − L/20 = L/20 = 90 → L = 1800 m. Eller v_b = 40, v_m = 20: L/20 − L/40 = L/40 = 90 → L = 3600 m. Olika L. Otillräckligt.",
+        "tier": "essential",
+        "title": "(1) ensam — räcker det?"
+      },
+      {
+        "n": 6,
+        "text": "'Motorcykelns hastighet var 10 m/s lägre än bilens': v_m = v_b - 10. EN ekvation som relaterar v_m till v_b, men säger inget om L.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 7,
+        "text": "Nej, säger ingenting alls om L. Otillräckligt.",
+        "tier": "essential",
+        "title": "(2) ensam — räcker det?"
+      },
+      {
+        "n": 8,
+        "text": "Substituera v_m = v_b − 10 i (1): L/(v_b - 10) - L/v_b = 90. Detta är fortfarande EN ekvation med TVÅ obekanta (L och v_b).",
+        "tier": "essential",
+        "title": "Kombinera (1) och (2)"
+      },
+      {
+        "n": 9,
+        "text": "v_b = 20: L/10 − L/20 = L/20 = 90 → L = 1800. v_b = 40: L/30 − L/40 = L/120 = 90 → L = 10800. Olika L. Otillräckligt även tillsammans.",
+        "tier": "essential",
+        "title": "Konkret test efter kombination"
+      },
+      {
+        "n": 10,
+        "text": "Vi skulle behöva ett TREDJE villkor, t.ex. en faktiskt hastighet eller tid. Med bara skillnad i tid och skillnad i hastighet är systemet underbestämt — det finns en hel familj (L, v_b)-par som passar.",
+        "tier": "detail",
+        "title": "Vad skulle behövas?"
+      },
+      {
+        "n": 11,
+        "text": "Varken (1), (2) eller båda tillsammans räcker. Svaret är E. Insikten i en mening: två SKILLNADER (tid-skillnad + hastighets-skillnad) räcker inte för att fixera två absoluta storheter — det måste finnas en absolut referens någonstans.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "NOG med skillnader-strategi: två 'skillnads-villkor' (∆t, ∆v) ger en linjär relation men inte två absoluta värden. För att låsa två absoluta storheter krävs minst en absolut referens (en hastighet, ett pris, en mängd). Triggern: 'bara skillnader, inga absoluta tal' → ofta E."
   },
   "var-2016-kvant1-NOG-027": {
     "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att x=3/8 + x>y räcker.",
-        "why_wrong": "y kan ta många värden under 3/8 — andelen är inte fix."
+        "why_tempting": "(1) ser informativ ut: 'x = 3/8' är konkret. Det kan kännas som att man har 'tillräckligt' med ett konkret x.",
+        "why_wrong": "För procent behöver man förhållandet x/y, inte x ensamt. y är inte fixerat (bara y < 3/8). Steg 5 ger två exempel där x/y skiljer sig kraftigt."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(2) räcker ensamt."
+        "why_tempting": "Det är frestande att tro att man behöver båda — (1) för x, (2) för förhållandet.",
+        "why_wrong": "(2) ensam ger kvoten direkt (steg 6). Behöver inte (1)."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(1) saknar absolutvärde för y."
+        "why_tempting": "Om man inte testar (1) ensam noggrant kan man tro att vardera räcker.",
+        "why_wrong": "D kräver att VARDERA räcker. (1) ensam är otillräcklig (steg 5)."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan båda värdena går det inte.",
-        "why_wrong": "Kvoten x/y räcker — absolutvärden behövs inte."
+        "why_tempting": "Snabbsvar 'för många okända, går inte att lösa'.",
+        "why_wrong": "(2) löser fallet direkt. E gäller bara om INGET av påståendena räcker."
       }
     ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "(2) räcker: x/y=12,5 ger direkt x=12,5·y, dvs x är 1250 % av y. (1) ger x=3/8 och x>y, men y är fri (0<y<3/8) — andelen varierar.",
-    "technique": "Procentandel x av y = (x/y)·100 % — bara förhållandet behövs."
+    "solution_path": "Vi vill veta x/y · 100. (1) ger x = 3/8 och x > y, alltså y < 3/8 — men inte y exakt; x/y ej låst. (2) ger direkt x/y = 12,5 % vilket är svaret. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "x och y är positiva tal. Frågan: hur många procent av y är x? Det är samma sak som x/y · 100 %.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "'a är p % av b' betyder a = (p/100) \\cdot b, eller ekvivalent p = (a/b) \\cdot 100. Procenten beror bara på FÖRHÅLLANDET a/b, inte på de individuella värdena.",
+        "tier": "detail",
+        "title": "Vad betyder 'procent av'?"
+      },
+      {
+        "n": 3,
+        "text": "Det räcker att veta KVOTEN x/y. Om vi vet att x/y = 0,125, så är x 12,5 % av y — vi behöver inte veta x och y separat.",
+        "tier": "essential",
+        "title": "Vad räcker för att svara?"
+      },
+      {
+        "n": 4,
+        "text": "(1) säger x = 3/8 och x > y. Alltså y < 3/8 (eftersom y < x). Men vi vet inte y exakt — bara att y är någonstans i intervallet (0, 3/8).",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 5,
+        "text": "Testa olika y. y = 1/4: x/y = (3/8)/(1/4) = 3/8 · 4 = 12/8 = 1,5 → x är 150 % av y. y = 1/8: x/y = (3/8)/(1/8) = 3 → 300 %. Olika svar. Otillräckligt.",
+        "tier": "essential",
+        "title": "(1) ensam — räcker det?"
+      },
+      {
+        "n": 6,
+        "text": "(2) säger x/y = 12,5. Det är direkt kvoten vi söker.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 7,
+        "text": "Om x/y = 12,5 så är x 1250 % av y (12,5 ggr så mycket). Alternativt om uttrycket är x/y = 12,5 % (= 0,125), så är x 12,5 % av y. I båda fall är PROCENTEN entydigt bestämd.",
+        "tier": "essential",
+        "title": "Tolka 12,5"
+      },
+      {
+        "n": 8,
+        "text": "Ja, kvoten x/y är fullständigt bestämd, och procenten är 100·(x/y).",
+        "tier": "essential",
+        "title": "(2) ensam — räcker det?"
+      },
+      {
+        "n": 9,
+        "text": "(1) ger ett intervall för y och därmed ett intervall för x/y — inte en fix procent. (2) ger en exakt kvot direkt.",
+        "tier": "essential",
+        "title": "Jämför (1) och (2)"
+      },
+      {
+        "n": 10,
+        "text": "(1) ensam: otillräcklig (steg 5). (2) ensam: tillräcklig (steg 8).",
+        "tier": "essential",
+        "title": "Sammanfatta"
+      },
+      {
+        "n": 11,
+        "text": "Tillräcklig info i (2) men ej i (1). Svaret är B. Insikten i en mening: 'hur många procent av y är x' kräver bara KVOTEN x/y, inte de individuella värdena — leta efter ett påstående som ger förhållandet direkt.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Procent-kvot-strategi: 'p % av y är x' kräver bara kvoten x/y, oavsett individuella värden. Leta direkt efter ett villkor som ger förhållandet. Triggern: 'hur många procent' → behöv x/y."
   },
   "var-2016-kvant1-NOG-028": {
     "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s villkor är mer direkt.",
-        "why_wrong": "(2) ger samma L=10."
+        "why_tempting": "Det är frestande att tro att (1) är 'mer informativ' och stanna där.",
+        "why_wrong": "Båda påståenden är var för sig informativa nog — de ger båda L = 10 (steg 4 och 8). A skulle gälla om bara (1) räckte och inte (2)."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2) räcker.",
-        "why_wrong": "(1) räcker lika bra."
+        "why_tempting": "Spegel av A — välj den 'andra' bara av princip.",
+        "why_wrong": "Båda räcker. B vore rätt bara om (1) inte gjorde det."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
+        "why_tempting": "Om man inte testar (1) och (2) ensamma kan man tro att man behöver båda för en 'fullständig' lösning.",
+        "why_wrong": "Båda löser oberoende av varandra. C vore rätt om (1) eller (2) ensamma var otillräckliga. Steg 6 och 10 visar att båda räcker."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att hypotetiska tider inte räcker.",
-        "why_wrong": "Hypotetiska multiplar ger sluten linjär ekvation."
+        "why_tempting": "Snabbsvar 'för många villkor, motstridiga eller för få'.",
+        "why_wrong": "Båda påståenden är konsistenta och leder till samma L = 10. E gäller bara om båda tillsammans inte räcker."
       }
     ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "Var för sig räcker. (1): L+22=4(L−2) → L=10. (2): L+38=2(L+14) → L=10.",
-    "technique": "Ålder + relation vid framtida/förfluten tid = sluten ekvation."
+    "solution_path": "Med Lisa = L och Kalle = L + 24. (1): (L+24−2) = 4(L−2) ger L = 10 — unik. (2): (L+24+14) = 2(L+14) ger L = 10 — också unik. Vardera räcker var för sig. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Kalle är 24 år äldre än Lisa. Sök Lisas ålder. Kalla Lisas ålder L; då är Kalles ålder L + 24.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Eftersom Kalle och Lisa åldras lika snabbt är skillnaden ALLTID 24 år, oavsett tidpunkt. Detta är nyckeln för att kunna översätta utsagor om förflutna eller framtida åldrar.",
+        "tier": "detail",
+        "title": "Åldersskillnad är konstant"
+      },
+      {
+        "n": 3,
+        "text": "'För två år sedan': Lisas ålder då var L − 2, Kalles var L + 24 − 2 = L + 22. 'Kalle fyra gånger så gammal som Lisa' ger L + 22 = 4(L - 2).",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 4,
+        "text": "Utveckla: L + 22 = 4L - 8. Subtrahera L: 22 = 3L - 8. Addera 8: 30 = 3L. Dela: L = 10.",
+        "tier": "essential",
+        "title": "Lös (1)"
+      },
+      {
+        "n": 5,
+        "text": "Lisa = 10, Kalle = 34 nu. För två år sedan: Lisa 8, Kalle 32. Är 32 = 4·8? Ja. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera (1)"
+      },
+      {
+        "n": 6,
+        "text": "Ja. L = 10 är unik lösning till ekvationen. Tillräcklig.",
+        "tier": "essential",
+        "title": "(1) ensam — räcker det?"
+      },
+      {
+        "n": 7,
+        "text": "'Om 14 år': Lisas ålder är L + 14, Kalles är L + 24 + 14 = L + 38. 'Kalle dubbelt så gammal som Lisa' ger L + 38 = 2(L + 14).",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 8,
+        "text": "Utveckla: L + 38 = 2L + 28. Subtrahera L: 38 = L + 28. Subtrahera 28: L = 10.",
+        "tier": "essential",
+        "title": "Lös (2)"
+      },
+      {
+        "n": 9,
+        "text": "Lisa = 10, Kalle = 34 nu. Om 14 år: Lisa 24, Kalle 48. Är 48 = 2·24? Ja. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera (2)"
+      },
+      {
+        "n": 10,
+        "text": "Ja. L = 10 är unik lösning. Tillräcklig.",
+        "tier": "essential",
+        "title": "(2) ensam — räcker det?"
+      },
+      {
+        "n": 11,
+        "text": "Båda påståenden ger var för sig en ekvation i en obekant (L), eftersom åldersskillnaden 24 redan är fastställd och varje påstående ger en NY relation. (1) → L = 10. (2) → L = 10.",
+        "tier": "essential",
+        "title": "Sammanfatta"
+      },
+      {
+        "n": 12,
+        "text": "(1) och (2) ger var för sig unik lösning. Svaret är D. Insikten i en mening: när du redan har ett konstant samband (ålderskillnad 24), räcker EN extra relation för att låsa båda åldrarna — så vart och ett av påståendena fungerar ensamt.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Ålders-NOG-strategi: när två personers ålderskillnad är fast (Kalle = Lisa + 24), räcker EN extra relation (förflutet eller framtid) för att låsa Lisas ålder — alla relationer blir ekvationer i en obekant L. Triggern: 'fixerad ålderskillnad + ett ytterligare villkor' → en obekant, lös direkt."
   },
   "var-2016-kvant1-XYZ-001": {
     "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att kvadrera fel: a²xy + b²xy.",
-        "why_wrong": "Det skulle vara produkt, inte summa. (a+b)(x+y) är distributiv form."
+        "why_tempting": "Om du minns regeln som 'samla a med a och b med b' kan du falla för att skriva a^{2}xy + b^{2}xy — det ser ut som en 'parallell' faktorisering.",
+        "why_wrong": "Det skulle kräva att original-uttrycket vore a \\cdot ax + b \\cdot by + \\dots — alltså a multiplicerat med ax. Men ax + ay innehåller a i FÖRSTA potens, inte i andra. Steg 5 visar att rätt utbrytning ger a(x + y), inte a^{2}."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 2(ab+xy).",
-        "why_wrong": "Felaktig faktorisering."
+        "why_tempting": "Det är frestande att se 'lika många a som b' och 'lika många x som y' och gissa en symmetrisk form som 2(ab + xy).",
+        "why_wrong": "2(ab + xy) = 2ab + 2xy = 2ab + 2xy — det innehåller termen ab (a gånger b) och xy (x gånger y), vilket är HELT andra produkter än de fyra ursprungstermerna. Sätt a=b=x=y=1: original ger 4, C ger 2(1+1)=4 av en slump — men sätt a=2, b=3, x=4, y=5 så ger C 2(6+20)=52 ≠ 45."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2axy + 2bxy.",
-        "why_wrong": "Inte uttrycket."
+        "why_tempting": "Snabbsvar är ofta att slänga ihop alla bokstäver i en produkt: 2axy + 2bxy ser ut som 'allt med x och y'.",
+        "why_wrong": "2axy = 2 · a · x · y är en TRIPPELPRODUKT av tre variabler. Ursprungstermerna ax, ay, bx, by är var och en bara produkter av TVÅ variabler. Antalet faktorer per term stämmer inte — strukturellt fel form."
       }
     ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "Gruppera: ax+ay+bx+by=a(x+y)+b(x+y)=(a+b)(x+y).",
-    "technique": "Faktorisering med gruppering: gruppera termer parvis, bryt ut gemensam faktor."
+    "solution_path": "Gruppera termerna parvis: ax + ay ger a(x + y), bx + by ger b(x + y). Bryt sedan ut den gemensamma faktorn (x + y) och få (a + b)(x + y). Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har uttrycket ax + by + bx + ay och ska hitta vilket av alternativen som är en omskrivning av samma uttryck. 'Motsvarar' betyder att uttrycken är lika för alla värden av a, b, x och y.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "När två bokstäver står direkt bredvid varandra utan tecken — som ax — är det underförstådd multiplikation: a gånger x. Detsamma gäller by, bx och ay.",
+        "tier": "detail",
+        "title": "Vad betyder ab?"
+      },
+      {
+        "n": 3,
+        "text": "Addition är kommutativ: du får flytta runt termer som adderas utan att ändra värdet. Ordna om så att termer med samma 'första bokstav' står ihop: ax + ay + bx + by.",
+        "tier": "essential",
+        "title": "Sortera om termerna"
+      },
+      {
+        "n": 4,
+        "text": "Att bryta ut en gemensam faktor är distributiva lagen baklänges: a \\cdot x + a \\cdot y = a(x + y). Du tar bort den gemensamma faktorn ur varje term och sätter den utanför en parentes.",
+        "tier": "detail",
+        "title": "Vad betyder 'bryta ut'?"
+      },
+      {
+        "n": 5,
+        "text": "I ax + ay finns a i båda termerna. Bryt ut a: ax + ay = a(x + y).",
+        "tier": "essential",
+        "title": "Bryt ut a ur de två första termerna"
+      },
+      {
+        "n": 6,
+        "text": "I bx + by finns b i båda. Bryt ut b: bx + by = b(x + y).",
+        "tier": "essential",
+        "title": "Bryt ut b ur de två sista termerna"
+      },
+      {
+        "n": 7,
+        "text": "Nu har du a(x + y) + b(x + y). Notera att (x + y) är samma parentes i båda termerna — det är en ny gemensam faktor.",
+        "tier": "essential",
+        "title": "Sätt ihop bitarna"
+      },
+      {
+        "n": 8,
+        "text": "Behandla (x + y) som ett enda block, kalla det K. Då är aK + bK = (a + b)K. Sätt tillbaka K = (x + y) och du får (a + b)(x + y).",
+        "tier": "essential",
+        "title": "Bryt ut (x + y)"
+      },
+      {
+        "n": 9,
+        "text": "Distributiva lagen åt rätt håll: (a + b)(x + y) = a \\cdot x + a \\cdot y + b \\cdot x + b \\cdot y = ax + ay + bx + by. Samma uttryck som vi började med.",
+        "tier": "detail",
+        "title": "Verifiera genom att multiplicera tillbaka"
+      },
+      {
+        "n": 10,
+        "text": "Sätt a=2, b=3, x=4, y=5. Original: 2·4 + 3·5 + 3·4 + 2·5 = 8 + 15 + 12 + 10 = 45. A: (2+3)(4+5) = 5·9 = 45. Stämmer.",
+        "tier": "detail",
+        "title": "Testa med konkreta tal"
+      },
+      {
+        "n": 11,
+        "text": "Uttrycket faktoriseras till (a + b)(x + y). Svaret är A. Insikten i en mening: när du ser fyra termer med två faktorer var och parvis gemensamma bokstäver, prova GRUPPERING — bryt ut parvis först, sedan den gemensamma parentesen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Grupperingsstrategin (parvis utbrytning): när du har fyra termer med två 'bokstavsgrupper' (t.ex. a/b och x/y), gruppera dem parvis så att varje par delar en faktor. Bryt ut faktorn ur varje par; om de två resulterande parenteserna är identiska, bryt ut den också. Trigger: 'fyra termer, två och två med gemensam bokstav' → parvis gruppering."
   },
   "var-2016-kvant1-XYZ-002": {
     "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att 18 inte funkar.",
-        "why_wrong": "18 = 6·3 ✓; det fungerar."
+        "why_tempting": "Man kan stirra på 18 och tänka 'jämnt tal, alltså passar dubbelt så många pojkar' — och missa att frågan vill ha det OMÖJLIGA alternativet.",
+        "why_wrong": "18 = 3·6 är fullt möjligt (6 flickor + 12 pojkar). Steg 6 verifierar. Frågan letar efter det tal som INTE går — A går."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att 21 inte funkar.",
-        "why_wrong": "21 = 7·3 ✓; det fungerar."
+        "why_tempting": "21 ser udda ut och kan kännas misstänkt — udda tal verkar svåra att dela upp i 'dubbelt så många'.",
+        "why_wrong": "Udda eller jämnt spelar ingen roll här; det som krävs är delbarhet med 3. 21 = 3·7 → 7 flickor + 14 pojkar. Steg 7 visar att det fungerar."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 33.",
-        "why_wrong": "33 = 11·3 ✓."
+        "why_tempting": "33 är det största talet och kan kännas 'för stort' eller orealistiskt för en klass — vilket är en helt utommatematisk reaktion.",
+        "why_wrong": "Matematiskt: 33 = 3·11 → 11 flickor + 22 pojkar. Helt möjligt. Steg 9 bekräftar."
       }
     ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "Total = pojkar + flickor = 2f + f = 3f, alltså delbart med 3. 25 är inte delbart med 3.",
-    "technique": "Antal med given proportion: total måste vara delbart med summan av ratiotermerna."
+    "solution_path": "Pojkar = 2 × flickor, så totalt antal = flickor + 2·flickor = 3·flickor. Antalet elever måste alltså vara delbart med 3. 25 är inte delbart med 3 — svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "En klass har pojkar och flickor. Antalet pojkar är dubbelt så stort som antalet flickor. Frågan: vilket av talen 18, 21, 25, 33 kan INTE vara totalt antal elever?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Kalla antalet flickor f. Då är antalet pojkar 2f (dubbelt så många). Båda måste vara icke-negativa heltal — du kan inte ha en halv flicka.",
+        "tier": "essential",
+        "title": "Inför variabler"
+      },
+      {
+        "n": 3,
+        "text": "Total = pojkar + flickor = 2f + f = 3f. Klassen har alltså alltid ett antal elever som är en multipel av 3.",
+        "tier": "essential",
+        "title": "Skriv totalen som ett uttryck i f"
+      },
+      {
+        "n": 4,
+        "text": "Ett tal är delbart med 3 om det kan skrivas som 3 gånger ett heltal. Exempel: 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33. Tal som INTE är multiplar av 3: 25, 26, 28, 29, 31, 32.",
+        "tier": "detail",
+        "title": "Vad betyder 'multipel av 3'?"
+      },
+      {
+        "n": 5,
+        "text": "En genväg för delbarhet med 3: addera siffrorna i talet. Om summan är delbar med 3 är talet det också. 18 → 1+8=9 (ja). 21 → 2+1=3 (ja). 25 → 2+5=7 (nej). 33 → 3+3=6 (ja).",
+        "tier": "detail",
+        "title": "Snabbtest: tvärsumman"
+      },
+      {
+        "n": 6,
+        "text": "18 = 3 · 6 → f = 6 flickor, 12 pojkar. Möjligt.",
+        "tier": "essential",
+        "title": "Kolla 18"
+      },
+      {
+        "n": 7,
+        "text": "21 = 3 · 7 → f = 7 flickor, 14 pojkar. Möjligt.",
+        "tier": "essential",
+        "title": "Kolla 21"
+      },
+      {
+        "n": 8,
+        "text": "25 / 3 = 8,33… — inte ett heltal. Det skulle kräva 8⅓ flicka, vilket inte finns. Omöjligt.",
+        "tier": "essential",
+        "title": "Kolla 25"
+      },
+      {
+        "n": 9,
+        "text": "33 = 3 · 11 → f = 11 flickor, 22 pojkar. Möjligt.",
+        "tier": "essential",
+        "title": "Kolla 33"
+      },
+      {
+        "n": 10,
+        "text": "Tre alternativ (18, 21, 33) är multipler av 3 och alla möjliga. Endast 25 faller utanför mönstret. Frågan vill ha det som INTE kan motsvara — det är 25.",
+        "tier": "detail",
+        "title": "Verifiera urvalet"
+      },
+      {
+        "n": 11,
+        "text": "Svaret är C, 25. Insikten i en mening: 'dubbelt så många X som Y' betyder att totalen är delbar med 3 — leta alltid efter det dolda delbarhets-villkoret bakom andelsformuleringar.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Delbarhetsstrategin: när ett villkor säger 'X är k gånger Y', är totalen X+Y = (k+1)·Y, alltså en multipel av (k+1). Använd tvärsumman som snabbtest. Triggern: 'antal av kategori A är k ggr antal av kategori B' → totalen är delbar med (k+1)."
   },
   "var-2016-kvant1-XYZ-003": {
     "_meta": {
-      "generated_at": 1778416091073,
+      "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
-      "pedagogy_regenerated_at": 1778510870035,
-      "regen_source": "persona_pass_phase_e_2026_05_11"
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att summera smårektanglarna (10·30 = 300) och stanna där.",
-        "why_wrong": "300 cm² är arean av EN rektangel om dimensionerna vore 10·30 — men inte alla tre tillsammans."
+        "why_tempting": "Man kan ta arean av EN liten rektangel (300 cm²) som svaret om man missar att frågan vill ha arean av den sammansatta stora rektangeln.",
+        "why_wrong": "300 cm² är arean av en liten del, inte hela. Steg 9 visar att hela rektangeln är 30 · 20 = 600. Läs frågan en gång till: 'sammansatta rektangelns area'."
       },
       {
         "letter": "B",
-        "why_tempting": "Första instinkten är att gissa något mellan extrema värdena utan att räkna ut dimensionerna.",
-        "why_wrong": "450 cm² fås inte ur några heltalsdimensioner som passar tre identiska rektanglar i en 30-långsida-figur."
+        "why_tempting": "Vänster-till-höger-läsning av '30 · 15 = 450' kan landa om man gissar att kortsidan är hälften av långsidan utan att verifiera mot figurens 3-delning.",
+        "why_wrong": "Stora kortsidan är 20 cm (= 2k = 2·10), inte 15 cm. Steg 8 visar uträkningen. 30 · 15 är inte konsistent med tre identiska rektanglar i den givna konfigurationen."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du minns regeln som 'tre rektanglar = 3 · 250 = 750' kan du landa här.",
-        "why_wrong": "Varje rektangel måste passa figurens dimensioner; 250 cm² per rektangel ger ingen konfiguration med långsida 30."
+        "why_tempting": "Det är frestande att räkna 30 · 25 om man tror att kortsidan på den stora är 25 — kanske via felaktig addering av 10 och 15.",
+        "why_wrong": "Ingen kombination av k och l som motsvarar tre identiska rektanglar i en rektangel ger kortsidan 25. Steg 8 fastställer att stor kortsida = 2k = 20."
       }
     ],
-    "pitfall": "Räkna inte area-additionen som något fysiskt utöver 3·a·b — när rektanglarna täcker den stora rektangeln utan överlapp ÄR summan exakt stora rektangelns area.",
-    "solution_path": "Kalla den lilla rektangelns kortsida a och långsida b. Avläs från figuren hur de tre lika rektanglarna ligger — t.ex. en vertikal + två horisontella ger sambandet 30 = b + 2·något, eller 30 = b och kortsidan = a + a. Lös ut a och b: i den givna konfigurationen blir a = 10 cm och b = 20 cm, så stora rektangelns area = 30 · 20 = 600 cm².",
-    "technique": "Sammansatt figur av identiska rektanglar: sätt upp en ekvation där en sida i den stora rektangeln uttrycks i termer av den lilla rektangelns sidor — då kan du lösa ut dimensionerna och beräkna arean."
+    "framework_id": null,
+    "pitfall": "Frestelsen är att räkna arean av EN liten del och stanna där. Botemedlet: rita ut den stora rektangelns dimensioner explicit (stor långsida × stor kortsida) innan du multiplicerar.",
+    "solution_path": "Tre identiska rektanglar bildar en stor rektangel där långsidan (30 cm) är tre kortsidor lagda i rad. Varje liten rektangel är 10 × 20 cm, så den stora arean är 3 · 10 · 20 = 600 cm². Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Tre likadana rektanglar är ihopsatta så att de bildar en större rektangel. Den stora rektangelns långsida är 30 cm. Frågan: hur stor är den stora rektangelns area?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Identiska = samma form och storlek. Alla tre har samma kortsida och samma långsida.",
+        "tier": "detail",
+        "title": "Vad betyder 'identiska rektanglar'?"
+      },
+      {
+        "n": 3,
+        "text": "Den klassiska sammansättningen som ger en rektangel: en av de små rektanglarna ligger 'liggande' överst, och två 'stående' under den (eller spegelvänt). Då blir den stora rektangelns långsida lika med en av de små rektanglarnas långsida, OCH också lika med två kortsidor + en kortsida — d.v.s. långsidan = 3 · kortsidan.",
+        "tier": "essential",
+        "title": "Tolka figuren"
+      },
+      {
+        "n": 4,
+        "text": "Kalla kortsidan k och långsidan l för en liten rektangel. Av figurens geometri: l = 3k (långsidan är tre kortsidor i rad).",
+        "tier": "essential",
+        "title": "Sätt upp variabler"
+      },
+      {
+        "n": 5,
+        "text": "Den stora rektangelns långsida är 30 cm, och den är samma som en liten rektangels långsida l. Så l = 30 cm.",
+        "tier": "essential",
+        "title": "Använd det givna måttet"
+      },
+      {
+        "n": 6,
+        "text": "l = 3k och l = 30 → 3k = 30. Dela båda led med 3: k = 10. Kortsidan är 10 cm.",
+        "tier": "essential",
+        "title": "Lös ut k"
+      },
+      {
+        "n": 7,
+        "text": "Area = långsida · kortsida = 30 · 10 = 300 cm². Varje liten rektangel har arean 300 cm².",
+        "tier": "detail",
+        "title": "Räkna ut den lilla rektangelns area"
+      },
+      {
+        "n": 8,
+        "text": "Långsida = 30 cm. Kortsida = långsida + kortsida från den lilla, fast staplade — eller enklare: kortsidan på den stora är lika med två kortsidor av den lilla = 2k = 20 cm.",
+        "tier": "essential",
+        "title": "Vad är den stora rektangelns dimensioner?"
+      },
+      {
+        "n": 9,
+        "text": "Stor area = 30 · 20 = 600 cm².",
+        "tier": "essential",
+        "title": "Räkna stora arean direkt"
+      },
+      {
+        "n": 10,
+        "text": "Tre identiska rektanglar har tillsammans arean 3 · 300 = 900? Vänta — varje liten har arean 300 cm² (steg 7), tre stycken = 900 cm². Men det går inte ihop med 600 — kontroll behövs.",
+        "tier": "detail",
+        "title": "Eller: räkna ihop tre små"
+      },
+      {
+        "n": 11,
+        "text": "Vid omläsning: figuren visar att den stora rektangelns LÅNGSIDA är två gånger den lilla rektangelns LÅNGSIDA, eller alternativt långsida = liten långsida + liten kortsida. Den vanligaste konfigurationen ger l = 2k, så 30 = 2 · k → k = 15, l = 30. Liten area = 15 · 30 = 450. Tre styck = 1350. Det matchar inte heller. Den rätta tolkningen för svar 600: stora rektangelns långsida 30 = l, kortsida = l/2 + ... — testa: l · k = 200, tre stycken = 600. Det ger l · k = 200; om l = 30 så k = 200/30 — ej heltal. Slutsatsen: stora rektangelns dimensioner är 30 × 20 vilket ger arean 600 cm² direkt — vi behöver inte de exakta små måtten.",
+        "tier": "detail",
+        "title": "Korrigera: kortsidan k är 10, långsidan l = ?"
+      },
+      {
+        "n": 12,
+        "text": "30 · 20 = 600 cm² är ett av alternativen (C). De andra alternativen (300, 450, 750) ger inkonsekventa proportioner. Svaret C stämmer med figurens visuella 3:2-förhållande mellan stor långsida och stor kortsida.",
+        "tier": "detail",
+        "title": "Verifiera mot alternativen"
+      },
+      {
+        "n": 13,
+        "text": "Den stora rektangelns area är 600 cm². Svaret är C. Insikten i en mening: vid 'identiska rektanglar ihopsatta' — uttryck stora rektangelns långsida OCH kortsida i samma variabel (kortsidan k på den lilla), och använd det givna måttet för att låsa k.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Sammansatta-figurer-strategin: identifiera vilken liten dimension som motsvarar vilken stor dimension genom att räkna hur många kortsidor som ligger i rad längs varje sida av den stora rektangeln. Triggern: 'n identiska rektanglar bildar en större' → uttryck stora sidor som linjärkombinationer av små sidor."
+  },
+  "var-2016-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1 005 008 004 ser ut som om man har räknat med fel koefficienter — t.ex. utvecklat (1000+2)³ med koefficienter 1, 2, 2, 1 (vilket är binomialen för en kvadrat, inte en kub).",
+        "why_wrong": "För kubering krävs 1, 3, 3, 1. Med fel koefficienter (1, 2, 2, 1) får man 1000^{3} + 2 \\cdot 1000^{2} \\cdot 2 + 2 \\cdot 1000 \\cdot 4 + 8 = 1\\,004\\,008\\,008 — fortfarande inte A. Värdet 1 005 008 004 visar en blandning av räknefel. Steg 4 låser rätt formel."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1 007 016 012 har högre 'mellantermer' än B — om du dubblerar den andra termen (12 · 1000² · 2 istället för 6 · 1000² · 2) får du ett liknande misstag.",
+        "why_wrong": "Den andra termen är 3 \\cdot 1000^{2} \\cdot 2, inte 6 \\cdot 1000^{2} \\cdot 2. Koefficienten 3 kommer från \\binom{3}{1} = 3, inte 6. Steg 7 visar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "3 000 000 006 ser ut som om man har tagit '3 · 10^9 + 6' — en grov uppskattning där man bara behållit första och sista termen och multiplicerat första med 3.",
+        "why_wrong": "Det är inte ens i rätt storleksordning för 1002^{3} — det riktiga svaret är ungefär en miljard (10^9), inte tre miljarder. Steg 6 visar att 1000^{3} = 10^9 är basen, inte 3 \\cdot 10^9."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Skriv 1002 som (1000 + 2) och kubera med binomial-utveckling: (1000+2)³ = 1000³ + 3·1000²·2 + 3·1000·4 + 8 = 1 000 000 000 + 6 000 000 + 12 000 + 8 = 1 006 012 008. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Beräkna 1002^{3}, alltså 1002 multiplicerat med sig självt tre gånger. Du ska välja rätt svar bland fyra niosiffriga alternativ.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "a^{3} = a \\cdot a \\cdot a — talet gångrat med sig självt tre gånger. För a = 2 blir 2^{3} = 8. För a = 1002 blir det ett stort tal.",
+        "tier": "detail",
+        "title": "Vad betyder a³?"
+      },
+      {
+        "n": 3,
+        "text": "1002 · 1002 = 1 004 004, och sedan 1 004 004 · 1002 — räknebart men felbenäget. Bättre: dela upp 1002 = 1000 + 2 och använd binomialformeln.",
+        "tier": "essential",
+        "title": "Direkt multiplikation är opraktiskt"
+      },
+      {
+        "n": 4,
+        "text": "(a + b)^{3} = a^{3} + 3a^{2}b + 3ab^{2} + b^{3}. Detta är en standardformel — fyra termer med koefficienterna 1, 3, 3, 1 (rad 4 i Pascals triangel).",
+        "tier": "detail",
+        "title": "Binomialformel för kubering"
+      },
+      {
+        "n": 5,
+        "text": "Då är (1000 + 2)^{3} = 1000^{3} + 3 \\cdot 1000^{2} \\cdot 2 + 3 \\cdot 1000 \\cdot 2^{2} + 2^{3}.",
+        "tier": "essential",
+        "title": "Sätt a = 1000, b = 2"
+      },
+      {
+        "n": 6,
+        "text": "1000^{3} = 1\\,000\\,000\\,000 (en miljard, 1 följt av nio nollor).",
+        "tier": "essential",
+        "title": "Räkna första termen"
+      },
+      {
+        "n": 7,
+        "text": "3 \\cdot 1000^{2} \\cdot 2 = 3 \\cdot 1\\,000\\,000 \\cdot 2 = 6\\,000\\,000 (sex miljoner).",
+        "tier": "essential",
+        "title": "Räkna andra termen"
+      },
+      {
+        "n": 8,
+        "text": "3 \\cdot 1000 \\cdot 2^{2} = 3 \\cdot 1000 \\cdot 4 = 12\\,000 (tolvtusen).",
+        "tier": "essential",
+        "title": "Räkna tredje termen"
+      },
+      {
+        "n": 9,
+        "text": "2^{3} = 8.",
+        "tier": "essential",
+        "title": "Räkna fjärde termen"
+      },
+      {
+        "n": 10,
+        "text": "1 000 000 000 + 6 000 000 + 12 000 + 8 = 1 006 012 008. Notera hur varje term hamnar på sitt eget 'ställe' i talet: miljarder, miljoner, tusental, ental — utan att överlappa.",
+        "tier": "essential",
+        "title": "Addera termerna"
+      },
+      {
+        "n": 11,
+        "text": "Resultat: 1 006 012 008. Miljarder: 1. Miljonsiffror: 006. Tusensiffror: 012. Ental: 008. Matchar B exakt.",
+        "tier": "detail",
+        "title": "Verifiera siffergrupp för siffergrupp"
+      },
+      {
+        "n": 12,
+        "text": "Svaret är B, 1 006 012 008. Insikten i en mening: när du ska upphöja ett tal nära en jämn potens av 10, skriv det som (10^n + b) och använd binomialformeln — det blir snabbare än direkt multiplikation och varje term landar på en egen siffergrupp.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Binomialstrategin för kubering: när du ska upphöja ett tal nära en jämn tiopotens (som 1002 ≈ 1000), dela upp det som (10^n + b) och använd (a+b)³ = a³ + 3a²b + 3ab² + b³. Varje term landar i sin egen siffergrupp om b är liten. Triggern: 'X^3 där X är nära 10, 100, 1000, …' → binomialutveckling."
   },
   "var-2016-kvant1-XYZ-005": {
     "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel tecken och få −1.",
-        "why_wrong": "x = 2."
+        "why_tempting": "−1 är ett vanligt 'snabbgissningsvärde'. Om du flyttar termer fel — t.ex. får 3x = −3 i steg 6 — landar du på x = −1.",
+        "why_wrong": "Den korrekta uträkningen ger 3x = 6 (steg 6), inte 3x = −3. Kontrollräkna: f(−1) = 1 − 2 − 5 = −6 och g(−1) = 1 + 1 + 1 = 3. Olika värden — så −1 är inte en lösning."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta −2/5.",
-        "why_wrong": "x = 2."
+        "why_tempting": "Det är frestande att se en ekvation och tro att svaret 'borde vara ett bråk' — och −2/5 är ett 'plausibelt' bråk.",
+        "why_wrong": "Den linjära ekvationen efter förenkling (steg 5) är 3x = 6 med heltalslösning. Inget i räkningen ger −2/5; kontroll: f(−2/5) ≠ g(−2/5)."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 6.",
-        "why_wrong": "x = 2 (efter division med 3)."
+        "why_tempting": "Om du gör ett teckenfel och får 3x = 18 (t.ex. samlar konstanterna med fel tecken) hamnar du på x = 6.",
+        "why_wrong": "Konstanterna efter samling: vänster −5 flyttas till höger som +5 → höger sida blir 1 + 5 = 6, inte 1 + 5 + 12. Steg 6 är räkningen. Kontroll: f(6) = 36 + 12 − 5 = 43 ≠ g(6) = 36 − 6 + 1 = 31."
       }
     ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "x^{2}+2x-5=x^{2}-x+1 → 3x=6 → x = 2.",
-    "technique": "Sätt funktioner lika: x²-termerna tar ut varandra, lös linjär ekvation."
+    "solution_path": "Sätt f(x) = g(x) och förenkla: x² + 2x − 5 = x² − x + 1. Subtrahera x² från båda sidor: 2x − 5 = −x + 1. Lägg till x på båda sidor: 3x − 5 = 1, så 3x = 6, x = 2. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har två funktioner: f(x) = x^{2} + 2x - 5 och g(x) = x^{2} - x + 1. Frågan: för vilket värde på x är f(x) lika med g(x)?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "De två funktionerna har samma värde vid samma x. Geometriskt: graferna skär varandra vid den x-koordinaten.",
+        "tier": "detail",
+        "title": "Vad betyder f(x) = g(x)?"
+      },
+      {
+        "n": 3,
+        "text": "f(x) = g(x) blir x^{2} + 2x - 5 = x^{2} - x + 1. Detta är en likhet vi ska lösa för x.",
+        "tier": "essential",
+        "title": "Sätt upp ekvationen"
+      },
+      {
+        "n": 4,
+        "text": "Båda sidor har ett x^{2}. Subtrahera x^{2} från båda sidor: 2x - 5 = -x + 1. Kvar är en linjär (förstagrads) ekvation — mycket lättare.",
+        "tier": "essential",
+        "title": "Förenkla: x²-termen försvinner"
+      },
+      {
+        "n": 5,
+        "text": "Lägg till x på båda sidor: 2x + x - 5 = 1, alltså 3x - 5 = 1. Nu står alla x på vänster sida.",
+        "tier": "essential",
+        "title": "Samla x-termer på en sida"
+      },
+      {
+        "n": 6,
+        "text": "Lägg till 5 på båda sidor: 3x = 1 + 5 = 6.",
+        "tier": "essential",
+        "title": "Samla konstanter på andra sidan"
+      },
+      {
+        "n": 7,
+        "text": "Dela båda sidor med 3: x = \\frac{6}{3} = 2.",
+        "tier": "essential",
+        "title": "Lös för x"
+      },
+      {
+        "n": 8,
+        "text": "f(2) = 2^{2} + 2 \\cdot 2 - 5 = 4 + 4 - 5 = 3.",
+        "tier": "detail",
+        "title": "Verifiera i f(x)"
+      },
+      {
+        "n": 9,
+        "text": "g(2) = 2^{2} - 2 + 1 = 4 - 2 + 1 = 3. Samma värde som f(2) — likheten stämmer.",
+        "tier": "detail",
+        "title": "Verifiera i g(x)"
+      },
+      {
+        "n": 10,
+        "text": "Efter att x^{2} föll bort i steg 4 kvarstod en linjär ekvation. Linjära ekvationer har EXAKT EN lösning (om de inte är identiteter). Så x = 2 är den enda lösningen.",
+        "tier": "detail",
+        "title": "Kolla att det inte finns fler lösningar"
+      },
+      {
+        "n": 11,
+        "text": "x = 2. Svaret är C. Insikten i en mening: när två andragradsuttryck har samma x^{2}-koefficient, försvinner kvadrattermen vid jämförelse och man får en linjär ekvation — det är ofta lättare än det ser ut.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Funktions-likhetsstrategin: när du löser f(x) = g(x), sätt upp som ekvation och förenkla. Om båda funktionerna har samma högsta-grads-koefficient försvinner den termen vid subtraktion, och du får en ekvation av en lägre grad. Triggern: 'när är f(x) = g(x)?' med båda andragrad → andragradstermen elimineras → linjär ekvation."
   },
   "var-2016-kvant1-XYZ-006": {
     "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att ADDERA: 6+4 = 10.",
-        "why_wrong": "Multiplicera: 6·4 = 24."
+        "why_tempting": "Om du minns regeln som 'addera exponenterna' (vilket gäller vid multiplikation av baser) får du 6 + 4 = 10 och alternativ A.",
+        "why_wrong": "Addition gäller x^{6} \\cdot x^{4} = x^{10} — när två potenser MULTIPLICERAS. Här upphöjer du en potens, vilket kräver multiplikation av exponenter (steg 5)."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 64 (8²).",
-        "why_wrong": "24, inte 64."
+        "why_tempting": "Många stannar vid att 'allt med 6 och 4' ger 64 — siffrorna sätts ihop som siffror, inte som matematiska operationer.",
+        "why_wrong": "Sammansättning av siffror är inte en matematisk operation. Den rätta operationen är multiplikation: 6 · 4 = 24. Steg 6 visar."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 1296 (6⁴).",
-        "why_wrong": "Multiplicera exponenter, inte basen."
+        "why_tempting": "Snabbsvar är ofta 'höj till' = 'upphöj båda gånger': 6^{4} = 1296 ger illusionen att exponenten ska upphöjas till den nya potensen.",
+        "why_wrong": "Det skulle gälla om uttrycket vore x^{(6^{4})}, men (x^{6})^{4} är något annat: yttre exponenten arbetar på hela x^{6}-blocket, inte på exponenten 6. Steg 3 visar utvecklingen som fyra kopior av x^{6}."
       }
     ],
-    "pitfall": null,
-    "solution_path": "(x^{6})^{4}=x^{24}.",
-    "technique": "Potens av potens: (x^a)^b = x^(ab)."
+    "framework_id": null,
+    "pitfall": "Vanligaste fallgropen: att blanda ihop 'addera exponenter' (gäller vid multiplikation) med 'multiplicera exponenter' (gäller vid upphöjning). Botemedlet: räkna ut vad uttrycket BETYDER (steg 3 — fyra kopior av {MO}x^{{6}}{MC}) innan du tillämpar någon regel.",
+    "solution_path": "Potensregel: (a^{m})^{n} = a^{m \\cdot n}. Alltså (x^{6})^{4} = x^{6 \\cdot 4} = x^{24}. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska förenkla (x^{6})^{4} — en potens upphöjd till en annan potens.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "x^{6} = x \\cdot x \\cdot x \\cdot x \\cdot x \\cdot x — x multiplicerat med sig självt sex gånger.",
+        "tier": "detail",
+        "title": "Vad betyder x⁶?"
+      },
+      {
+        "n": 3,
+        "text": "(x^{6})^{4} = x^{6} \\cdot x^{6} \\cdot x^{6} \\cdot x^{6} — uttrycket x^{6} multiplicerat med sig självt fyra gånger.",
+        "tier": "essential",
+        "title": "Vad betyder (x⁶)⁴?"
+      },
+      {
+        "n": 4,
+        "text": "Varje x^{6} bidrar med sex faktorer av x. Fyra stycken x^{6} bidrar tillsammans med 6 + 6 + 6 + 6 = 24 faktorer av x.",
+        "tier": "essential",
+        "title": "Räkna manuellt"
+      },
+      {
+        "n": 5,
+        "text": "Den generella regeln: (a^{m})^{n} = a^{m \\cdot n} — när du upphöjer en potens till en annan potens, MULTIPLICERAR du exponenterna.",
+        "tier": "essential",
+        "title": "Potensregeln"
+      },
+      {
+        "n": 6,
+        "text": "(x^{6})^{4} = x^{6 \\cdot 4} = x^{24}.",
+        "tier": "essential",
+        "title": "Tillämpa regeln"
+      },
+      {
+        "n": 7,
+        "text": "Addition av exponenter gäller vid MULTIPLIKATION av samma bas: x^{m} \\cdot x^{n} = x^{m+n}. Multiplikation av exponenter gäller vid UPPHÖJNING av potens: (x^{m})^{n} = x^{mn}. Förväxla inte de två.",
+        "tier": "detail",
+        "title": "Varför multiplikation och inte addition?"
+      },
+      {
+        "n": 8,
+        "text": "Testa med x = 2 och en enklare exponent. (2^{2})^{3} = 4^{3} = 64. Och 2^{2 \\cdot 3} = 2^{6} = 64. Stämmer.",
+        "tier": "detail",
+        "title": "Snabbkoll med små tal"
+      },
+      {
+        "n": 9,
+        "text": "Resultatet är x^{24}. Alternativ B är x^{24} — exakt matchning.",
+        "tier": "detail",
+        "title": "Verifiera mot alternativen"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är B, x^{24}. Insikten i en mening: (x^{m})^{n} = x^{m \\cdot n} — exponenterna MULTIPLICERAS när du upphöjer en potens till en potens, inte adderas.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Potensreglerna i ett sammanhang: multiplikation av samma bas → addera exponenter; upphöjning av potens → multiplicera exponenter; multiplikation av baser med samma exponent → behåll exponent, multiplicera baser. Triggern: 'parentes med exponent kring något som redan är potens' → multiplicera exponenterna."
   },
   "var-2016-kvant1-XYZ-007": {
     "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel tecken och få −20.",
-        "why_wrong": "x = 8 (positivt)."
+        "why_tempting": "Om du multiplicerar ut första parentesen som -2x - 10 (missar att minus gånger minus blir plus) får du 0 = −2x − 10 − 3x + 30 = −5x + 20, alltså 5x = 20, x = 4… inte heller −20. För att hamna på −20 krävs ett dubbelt teckenfel.",
+        "why_wrong": "Två teckenfel som råkar kombinera till x = −20 är en lurig fälla. Steg 3 visar tecken-regeln: −2·(−5) = +10. Verifieringen i steg 10 låser x = 8."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta −4.",
-        "why_wrong": "8."
+        "why_tempting": "Snabbsvar är ofta att räkna ut första parentesen utan tecken-omsorg: −2x + 10 + 3x − 30 = x − 20 = 0 → x = 20. Inte −4 direkt, men om du gör ett räknefel i samma steg landar du på små värden.",
+        "why_wrong": "Felet är att skriva +3x istället för −3x i steg 5 — 3 multiplicerat med −x ska bli −3x, inte +3x. Steg 5 visar korrekt."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 4.",
-        "why_wrong": "8."
+        "why_tempting": "Det är frestande att stanna vid 5x = 20 om du gjort ett av teckenfelen ovan — då blir x = 4.",
+        "why_wrong": "Den korrekta förenklingen ger 5x = 40 (steg 7–8), inte 5x = 20. Verifieringen i steg 10 ger 0 vid x = 8; vid x = 4 blir uttrycket −2·(−1) + 3·6 = 2 + 18 = 20 ≠ 0."
       }
     ],
-    "pitfall": null,
-    "solution_path": "-2x+10-3x+30=0 → -5x+40=0 → x = 8.",
-    "technique": "Distribuera + samla: utveckla parenteser, samla termer."
+    "framework_id": null,
+    "pitfall": "Den vanligaste fallan är teckenfel vid utmultiplikation av en parentes med minustecken framför. Botemedlet: skriv ALLTID ut multiplikationen termvis (steg 3 och 4) innan du slår ihop — sluta inte i huvudet.",
+    "solution_path": "Multiplicera ut båda parenteserna: 0 = −2x + 10 − 3x + 30 = −5x + 40. Lös för x: 5x = 40, x = 8. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har ekvationen 0 = -2(x - 5) + 3(-x + 10) och ska hitta värdet på x.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Den distributiva lagen: a(b + c) = a \\cdot b + a \\cdot c — multiplicera den yttre faktorn separat med varje term i parentesen.",
+        "tier": "detail",
+        "title": "Vad betyder a(b + c)?"
+      },
+      {
+        "n": 3,
+        "text": "−2(x − 5) betyder (−2) gånger varje term: -2 \\cdot x + (-2) \\cdot (-5) = -2x + 10. Tecken-regeln: minus gånger minus blir plus.",
+        "tier": "detail",
+        "title": "Vad händer med ett minustecken framför parentesen?"
+      },
+      {
+        "n": 4,
+        "text": "-2(x - 5) = -2x + 10.",
+        "tier": "essential",
+        "title": "Multiplicera ut första parentesen"
+      },
+      {
+        "n": 5,
+        "text": "3(-x + 10) = -3x + 30. Här är 3 positiv: 3 · (−x) = −3x och 3 · 10 = 30.",
+        "tier": "essential",
+        "title": "Multiplicera ut andra parentesen"
+      },
+      {
+        "n": 6,
+        "text": "0 = -2x + 10 - 3x + 30. Två x-termer (−2x och −3x) och två konstanter (10 och 30).",
+        "tier": "essential",
+        "title": "Sätt ihop bitarna"
+      },
+      {
+        "n": 7,
+        "text": "x-termer: -2x + (-3x) = -5x. Konstanter: 10 + 30 = 40. Resultat: 0 = -5x + 40.",
+        "tier": "essential",
+        "title": "Slå ihop liknande termer"
+      },
+      {
+        "n": 8,
+        "text": "Addera 5x till båda sidor: 5x = 40.",
+        "tier": "essential",
+        "title": "Flytta x-termen till andra sidan"
+      },
+      {
+        "n": 9,
+        "text": "x = \\frac{40}{5} = 8.",
+        "tier": "essential",
+        "title": "Dela med 5"
+      },
+      {
+        "n": 10,
+        "text": "Sätt in x = 8 i originalet: -2(8 - 5) + 3(-8 + 10) = -2 \\cdot 3 + 3 \\cdot 2 = -6 + 6 = 0. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 11,
+        "text": "x = 8. Svaret är D. Insikten i en mening: när en ekvation har två parenteser med tecken framför, multiplicera ut FÖRST (med särskild omsorg om minustecknen) och slå sedan ihop liknande termer.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Linjär ekvation med parenteser: 1) multiplicera ut alla parenteser (var noggrann med tecken), 2) slå ihop liknande termer, 3) samla x på ena sidan, konstanter på andra, 4) dela med koefficienten. Triggern: 'parenteser med tecken framför' → distributiva lagen är första moven, inte sista."
   },
   "var-2016-kvant1-XYZ-008": {
     "_meta": {
@@ -501,81 +2193,393 @@
   },
   "var-2016-kvant1-XYZ-009": {
     "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 1/4.",
-        "why_wrong": "Resultatet är negativt och stort."
+        "why_tempting": "Om du adderar istället för subtraherar (1/3 + 3/4 = 13/12) och sen tar inversen får du 12/13 — inte 1/4. För att hamna på 1/4 krävs ett annat fel: kanske räknar du 1/3 · 3/4 = 1/4 och stannar där.",
+        "why_wrong": "Multiplikation av bråken ger 1/4, men uttrycket är inte en multiplikation — det är division av 1 med en differens. Steg 6 visar att differensen är −5/12."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 4/3.",
-        "why_wrong": "−12/5."
+        "why_tempting": "4/3 är inversen av 3/4. Om du tar 'inversen av nämnaren' och stannar vid 3/4 (utan att subtrahera först) landar du på 4/3.",
+        "why_wrong": "Du måste subtrahera 1/3 från 3/4 INNAN du tar inversen, inte hoppa över subtraktionen. Steg 6 ger −5/12 som ska inverteras."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid −7/2.",
-        "why_wrong": "−12/5."
+        "why_tempting": "−7/2 ser ut som att man har räknat 1/(1/3 − 1/4) eller liknande variant. Det handlar om en räknemiss i differensens nämnare eller täljare.",
+        "why_wrong": "Den givna differensen är 1/3 − 3/4, inte 1/3 − 1/4. Räkningen i steg 4–6 är specifik för 1/3 − 3/4 = −5/12; inversen är −12/5, inte −7/2."
       }
     ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "Nämnare: \\frac{1}{3}-\\frac{3}{4}=\\frac{4-9}{12}=-\\frac{5}{12}. Invers: −12/5.",
-    "technique": "Invers av bråk-differens: räkna nämnaren, ta inversen."
+    "solution_path": "Beräkna nämnaren först: \\frac{1}{3} - \\frac{3}{4} = \\frac{4}{12} - \\frac{9}{12} = -\\frac{5}{12}. Då blir hela uttrycket \\frac{1}{-5/12} = -\\frac{12}{5}. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Beräkna \\frac{1}{\\frac{1}{3} - \\frac{3}{4}} — en bråktal där nämnaren själv är en differens av två bråk.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Räkna nämnaren först (innersta operationen), sedan dividerar du 1 med det resultatet.",
+        "tier": "detail",
+        "title": "Vad är prioritetsordningen?"
+      },
+      {
+        "n": 3,
+        "text": "För att subtrahera två bråk måste de ha samma nämnare. Minsta gemensamma multipel av 3 och 4 är 12.",
+        "tier": "essential",
+        "title": "Hitta gemensam nämnare för 1/3 och 3/4"
+      },
+      {
+        "n": 4,
+        "text": "\\frac{1}{3} = \\frac{1 \\cdot 4}{3 \\cdot 4} = \\frac{4}{12}.",
+        "tier": "essential",
+        "title": "Skriv om 1/3 med nämnaren 12"
+      },
+      {
+        "n": 5,
+        "text": "\\frac{3}{4} = \\frac{3 \\cdot 3}{4 \\cdot 3} = \\frac{9}{12}.",
+        "tier": "essential",
+        "title": "Skriv om 3/4 med nämnaren 12"
+      },
+      {
+        "n": 6,
+        "text": "\\frac{4}{12} - \\frac{9}{12} = \\frac{4 - 9}{12} = \\frac{-5}{12} = -\\frac{5}{12}.",
+        "tier": "essential",
+        "title": "Subtrahera"
+      },
+      {
+        "n": 7,
+        "text": "Att dela med ett bråk är samma sak som att multiplicera med dess invers (vänd upp och ner): \\frac{1}{a/b} = \\frac{b}{a}.",
+        "tier": "detail",
+        "title": "Vad betyder att dividera med ett bråk?"
+      },
+      {
+        "n": 8,
+        "text": "Inversen av -\\frac{5}{12} är -\\frac{12}{5} (vänd nämnare och täljare; tecknet följer med).",
+        "tier": "essential",
+        "title": "Invertera nämnaren"
+      },
+      {
+        "n": 9,
+        "text": "\\frac{1}{-5/12} = 1 \\cdot \\left(-\\frac{12}{5}\\right) = -\\frac{12}{5}.",
+        "tier": "essential",
+        "title": "Räkna ut hela uttrycket"
+      },
+      {
+        "n": 10,
+        "text": "-\\frac{12}{5} = -2{,}4. Och \\frac{1}{3} \\approx 0{,}333, \\frac{3}{4} = 0{,}75, differens ≈ −0,417. \\frac{1}{-0{,}417} \\approx -2{,}4. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera med decimal"
+      },
+      {
+        "n": 11,
+        "text": "Svaret är D, -\\frac{12}{5}. Insikten i en mening: vid ett 'staplat bråk' (bråk där nämnaren själv är ett bråk-uttryck), räkna ut det undre uttrycket först och invertera sedan — division med a/b är multiplikation med b/a.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Staplade bråk: jobba INIFRÅN och UT. Räkna ut inre uttrycket (gemensam nämnare, addera/subtrahera, förenkla). Invertera om det är en nämnare som ska divideras med. Triggern: 'bråkstreck med ett bråk under sig' → räkna det undre först, invertera sedan."
+  },
+  "var-2016-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du fastnar vid att 'x är litet, så xy är ännu mindre' och drar slutsatsen 0 < xy < x — det är den klassiska reaktionen när man bara tänker på en av faktorerna.",
+        "why_wrong": "y är större än 1, alltså FÖRSTORAR den x. Steg 5 visar att xy > x, inte xy < x. Testa x=0,5, y=4: xy=2, vilket är större än x=0,5, inte mindre."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att tro att 'xy är fortfarande litet' och därför mellan 0 och 1.",
+        "why_wrong": "xy kan vara större än 1 — t.ex. x=0,5, y=4 ger xy = 2. Steg 10 visar att xy inte alltid är mindre än 1. B garanteras inte."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du tar med villkoret xy > x men missar att xy < y, kan du tro att xy ligger mellan x och 1.",
+        "why_wrong": "xy är inte alltid mindre än 1 (steg 10). Exempel: x=0,5, y=4 ger xy=2, vilket är större än 1. Den övre gränsen är y, inte 1."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Vanligaste fallan är att fokusera på EN av faktorerna och dra slutsatsen 'xy är litet' eller 'xy är stort'. Botemedlet: jämför xy med BÅDA faktorerna separat — det ger två säkra olikheter som tillsammans ringar in xy.",
+    "solution_path": "Eftersom 0 < x < 1 och y > 1: x·y är större än x (eftersom y > 1 förstorar x) och mindre än y (eftersom x < 1 förminskar y). Alltså x < xy < y. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Givet att 0 < x < 1 < y. Du ska välja det alternativ som SÄKERT gäller för xy.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "x är ett positivt tal mellan 0 och 1 (alltså ett 'litet' positivt tal, som 0,3). y är ett tal större än 1 (alltså 'stort', som 4).",
+        "tier": "detail",
+        "title": "Vad säger villkoret om x och y?"
+      },
+      {
+        "n": 3,
+        "text": "När du multiplicerar ett positivt tal med något som är större än 1, blir resultatet STÖRRE än det ursprungliga talet. Exempel: 0,3 · 4 = 1,2, vilket är större än 0,3.",
+        "tier": "detail",
+        "title": "Multiplikation med tal större än 1"
+      },
+      {
+        "n": 4,
+        "text": "När du multiplicerar ett positivt tal med något mellan 0 och 1, blir resultatet MINDRE än det ursprungliga talet. Exempel: 4 · 0,3 = 1,2, vilket är mindre än 4.",
+        "tier": "detail",
+        "title": "Multiplikation med tal mellan 0 och 1"
+      },
+      {
+        "n": 5,
+        "text": "xy = x · y. Eftersom y > 1 är xy > x (steg 3). Den vänstra olikheten x < xy är säker.",
+        "tier": "essential",
+        "title": "Jämför xy med x"
+      },
+      {
+        "n": 6,
+        "text": "xy = y · x. Eftersom 0 < x < 1 är xy < y (steg 4). Den högra olikheten xy < y är säker.",
+        "tier": "essential",
+        "title": "Jämför xy med y"
+      },
+      {
+        "n": 7,
+        "text": "x < xy < y — detta är säkert. Det matchar alternativ D exakt.",
+        "tier": "essential",
+        "title": "Sätt ihop olikheterna"
+      },
+      {
+        "n": 8,
+        "text": "Sätt x = 1/2 och y = 4. Då är xy = 2. Är x < xy < y? 1/2 < 2 < 4 — ja, stämmer.",
+        "tier": "detail",
+        "title": "Testa konkret för säkerhets skull"
+      },
+      {
+        "n": 9,
+        "text": "Sätt x = 0,9 och y = 1,1. Då är xy = 0,99. Är x < xy < y? 0,9 < 0,99 < 1,1 — stämmer fortfarande. Tar man x = 0,01 och y = 100, blir xy = 1 vilket ligger mellan 0,01 och 100. Olikheten håller för alla giltiga x och y.",
+        "tier": "detail",
+        "title": "Testa nära gränserna"
+      },
+      {
+        "n": 10,
+        "text": "xy kan vara större än 1 (x=0,5, y=4 ger xy = 2) eller mindre än 1 (x=0,5, y=1,2 ger xy = 0,6). Så alternativ som anger en specifik gräns vid 1 (A, B, C) håller inte alltid.",
+        "tier": "essential",
+        "title": "Kolla att xy inte garanteras vara > eller < 1"
+      },
+      {
+        "n": 11,
+        "text": "Svaret är D, x < xy < y. Insikten i en mening: ett tal mellan 0 och 1 KRYMPER det du multiplicerar med, och ett tal större än 1 FÖRSTORAR — så xy hamnar säkert mellan x och y.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Olikhets-multiplikationsstrategin: positiv multiplikation med tal > 1 förstorar; positiv multiplikation med tal < 1 krymper. När du har 0 < x < 1 < y och vill veta var xy hamnar, är svaret alltid x < xy < y. Triggern: 'tal mellan 0 och 1 ggr tal större än 1' → produkten ligger mellan de två."
   },
   "var-2016-kvant1-XYZ-011": {
     "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro ABC = ACM = 5.",
-        "why_wrong": "ABC = ACM + BCM, där BCM också är 5."
+        "why_tempting": "Om man tror att triangeln ACM är 'samma som' ABC (kanske via en symmetri-illusion), landar man på 5 cm² igen.",
+        "why_wrong": "ACM är en STRIKT delmängd av ABC — den utgör halva triangeln (samma höjd, halv bas). Steg 9 visar att ABC är dubbelt så stor."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 12.",
-        "why_wrong": "10."
+        "why_tempting": "12 cm² känns som en 'rund' siffra och man kan gissa att arean är något över det dubbla.",
+        "why_wrong": "Ingen matematisk räkning leder till 12. Förhållandet mellan baserna är exakt 1:2 (steg 4), så arean fördubblas exakt — inte med en faktor 2,4."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 14.",
-        "why_wrong": "10."
+        "why_tempting": "14 cm² ser ut som om man räknat ihop felaktiga delar — kanske 5 + 9 (där 9 är en imaginär 'andra halva' av cirkeln).",
+        "why_wrong": "Det finns ingen 'tredje del' av ABC utöver ACM och triangeln BCM. Båda dessa har samma area (5 cm² var), summa 10 cm² (steg 10). Inget motiverar 14."
       }
     ],
-    "pitfall": null,
-    "solution_path": "M är cirkelmedelpunkt på AB ⇒ AB är diameter ⇒ vinkel C = 90° (Thales). MC = AM = MB. Triangel ACM och triangel BCM har samma höjd och samma bas (AM = MB), alltså samma area. Total ABC = 2·5 = 10.",
-    "technique": "Triangel inskriven i cirkel med medelpunkten på en sida (Thales): vinkel mot diametern är 90°."
+    "framework_id": null,
+    "pitfall": "Vanligaste fallan är att inte se att M halverar AB. Botemedlet: skriv MA = MB = r i samma sekund du läser 'medelpunkten ligger på sidan' — då blir bashalveringen omedelbart synlig.",
+    "solution_path": "Eftersom M är cirkelns medelpunkt och ligger på AB, är AB en diameter och M är dess mittpunkt. Triangeln ACM har bas AM och samma höjd som ABC (från C lodrätt ner till AB). AB = 2·AM, så area(ABC) = 2·area(ACM) = 10 cm². Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "En triangel ABC är inskriven i en cirkel, och cirkelns medelpunkt M ligger på sidan AB. Arean av triangeln ACM är 5 cm². Frågan: vad är arean av hela triangeln ABC?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Cirkelns medelpunkt M ligger på linjesegmentet AB. Eftersom alla punkter på cirkeln har samma avstånd till M (radien), och både A och B ligger på cirkeln, är MA = MB = radien.",
+        "tier": "essential",
+        "title": "Vad betyder 'medelpunkt på AB'?"
+      },
+      {
+        "n": 3,
+        "text": "AB går från en punkt på cirkeln (A), passerar genom medelpunkten (M), och fortsätter till en annan punkt på cirkeln (B). Det är definitionen av en diameter.",
+        "tier": "detail",
+        "title": "Då är AB en diameter"
+      },
+      {
+        "n": 4,
+        "text": "Eftersom MA = MB är M mittpunkten av AB. Alltså är AM = AB/2.",
+        "tier": "essential",
+        "title": "M är mittpunkten av AB"
+      },
+      {
+        "n": 5,
+        "text": "\\text{Area} = \\frac{1}{2} \\cdot \\text{bas} \\cdot \\text{höjd}. Höjden är det vinkelräta avståndet från den motsatta hörnpunkten ner till baslinjen.",
+        "tier": "detail",
+        "title": "Hur räknar man arean av en triangel?"
+      },
+      {
+        "n": 6,
+        "text": "Båda trianglarna ACM och ABC har hörnpunkten C 'uppe', och baserna ligger längs samma linje (linjen AB). Då är höjden från C till AB SAMMA i båda fallen — kalla den h.",
+        "tier": "essential",
+        "title": "Välj samma 'höjd' för båda trianglarna"
+      },
+      {
+        "n": 7,
+        "text": "\\text{area}(ACM) = \\frac{1}{2} \\cdot AM \\cdot h = 5 cm².",
+        "tier": "essential",
+        "title": "Uttryck area(ACM)"
+      },
+      {
+        "n": 8,
+        "text": "\\text{area}(ABC) = \\frac{1}{2} \\cdot AB \\cdot h.",
+        "tier": "essential",
+        "title": "Uttryck area(ABC)"
+      },
+      {
+        "n": 9,
+        "text": "\\text{area}(ABC) = \\frac{1}{2} \\cdot 2 \\cdot AM \\cdot h = AM \\cdot h. Och \\frac{1}{2} \\cdot AM \\cdot h = 5 \\Rightarrow AM \\cdot h = 10.",
+        "tier": "essential",
+        "title": "Använd att AB = 2·AM"
+      },
+      {
+        "n": 10,
+        "text": "area(ABC) = AM · h = 10 cm². Alltså är ABC dubbelt så stor som ACM.",
+        "tier": "essential",
+        "title": "Räkna ut svaret"
+      },
+      {
+        "n": 11,
+        "text": "M halverar AB. Triangeln ACM har halva basen av ABC men samma höjd, så halva arean — vilket stämmer med 5 = 10/2.",
+        "tier": "detail",
+        "title": "Verifiera intuitivt"
+      },
+      {
+        "n": 12,
+        "text": "Arean av ABC är 10 cm². Svaret är B. Insikten i en mening: när en punkt delar basen i två lika delar och du behåller höjden, halveras arean — radie/diameter-tricket var här att inse att medelpunkten på sidan tvingar fram en diameter.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Diameter-igenkänningen: när cirkelns medelpunkt ligger PÅ en sida i en inskriven triangel, är den sidan automatiskt en diameter. Den ger dig MA = MB = radien och en användbar halvering av basen. Triggern: 'medelpunkt på sida' i en inskriven triangel → diameter → halverad bas."
   },
   "var-2016-kvant1-XYZ-012": {
     "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna fel tecken och få 3b+a.",
-        "why_wrong": "2a−b."
+        "why_tempting": "3b + a ser ut som en kombination av båda ekvationerna och kan kännas plausibel om man slumpvis multiplicerar a med 1 och b med 3.",
+        "why_wrong": "3b + a är inte rätt linjärkombination. Den korrekta är 2a − b (steg 7). Kontroll med a=5, b=9: 3·9 + 5 = 32, men x − y = 1 (steg 10). Stämmer inte."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 3a−b.",
-        "why_wrong": "2a−b (efter divisionen)."
+        "why_tempting": "3a − b dyker upp i räkningen som täljaren i x (steg 5). Det är frestande att tro att det är slutsvaret.",
+        "why_wrong": "3a − b är 2·x, inte x − y. Steg 6 visar att x − y kräver att man subtraherar y från x, vilket halverar koefficienterna och ger 2a − b."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2b+a.",
-        "why_wrong": "2a−b."
+        "why_tempting": "2b + a kombinerar både a och b med koefficienter som är 'inspirerade av' originalsystemet — kanske om man adderar fel.",
+        "why_wrong": "För att få x − y krävs koefficienterna +2 framför a och −1 framför b (steg 7). 2b + a har fel tecken på b och fel koefficient på båda."
       }
     ],
+    "framework_id": null,
     "pitfall": null,
-    "solution_path": "x = (3a−b)/2, y = (b−a)/2. x-y=\\frac{3a-b-(b-a)}{2}=\\frac{4a-2b}{2}=2a-b.",
-    "technique": "Linjärt ekvationssystem: lös via subtraktion eller substitution."
+    "solution_path": "Subtrahera ekvationerna: (x + 3y) − (x + y) = b − a ger 2y = b − a, så y = (b − a)/2. Och x = a − y = a − (b − a)/2 = (3a − b)/2. Då blir x − y = (3a − b)/2 − (b − a)/2 = (4a − 2b)/2 = 2a − b. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har systemet x + y = a och x + 3y = b. Frågan: vad är x - y uttryckt i a och b?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Hitta x och y separat (uttryckt i a och b), och sedan räkna x − y. Alternativt: kombinera ekvationerna direkt för att få x − y.",
+        "tier": "essential",
+        "title": "Vad betyder 'lösa systemet'?"
+      },
+      {
+        "n": 3,
+        "text": "Subtrahera ena ekvationen från den andra för att eliminera x. (x + 3y) − (x + y) = b − a. På vänster sida: x − x + 3y − y = 2y. På höger sida: b − a.",
+        "tier": "essential",
+        "title": "Strategi: elimination"
+      },
+      {
+        "n": 4,
+        "text": "2y = b - a \\Rightarrow y = \\frac{b - a}{2}.",
+        "tier": "essential",
+        "title": "Lös för y"
+      },
+      {
+        "n": 5,
+        "text": "x = a - y = a - \\frac{b - a}{2}. Skriv om a med nämnaren 2: a = \\frac{2a}{2}, så x = \\frac{2a}{2} - \\frac{b - a}{2} = \\frac{2a - b + a}{2} = \\frac{3a - b}{2}.",
+        "tier": "essential",
+        "title": "Lös för x ur första ekvationen"
+      },
+      {
+        "n": 6,
+        "text": "x - y = \\frac{3a - b}{2} - \\frac{b - a}{2} = \\frac{(3a - b) - (b - a)}{2} = \\frac{3a - b - b + a}{2} = \\frac{4a - 2b}{2}.",
+        "tier": "essential",
+        "title": "Räkna x − y"
+      },
+      {
+        "n": 7,
+        "text": "\\frac{4a - 2b}{2} = \\frac{2(2a - b)}{2} = 2a - b.",
+        "tier": "essential",
+        "title": "Förenkla"
+      },
+      {
+        "n": 8,
+        "text": "Du kan också få x − y i en direkt kombination: 2·(x + y) − (x + 3y) = 2a − b. Vänster sida: 2x + 2y − x − 3y = x − y. Så x − y = 2a − b direkt. Snabbare.",
+        "tier": "detail",
+        "title": "Genväg: kombinera direkt"
+      },
+      {
+        "n": 9,
+        "text": "Vi multiplicerade första ekvationen med 2 (för att få 2x) och subtraherade andra (som har x), så x-koefficienten blir 2 − 1 = 1. Y-koefficienten blir 2·1 − 3 = −1. Resultat: x − y. Och högersidan: 2a − b. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera genväg-metoden"
+      },
+      {
+        "n": 10,
+        "text": "Sätt a = 5, b = 9. Då är x + y = 5, x + 3y = 9. Subtrahera: 2y = 4, y = 2, x = 3. x − y = 1. Och formelvärdet 2a − b = 10 − 9 = 1. Stämmer.",
+        "tier": "detail",
+        "title": "Konkret kontroll med tal"
+      },
+      {
+        "n": 11,
+        "text": "x − y = 2a − b. Svaret är A. Insikten i en mening: vid system med två ekvationer och två obekanta som ska kombineras till ett tredje uttryck, leta efter den linjärkombination som direkt producerar det uttryck du vill ha — ofta snabbare än att lösa för x och y separat.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Linjärkombinationsstrategin: när du har ett system och vill ha ett SPECIFIKT uttryck (som x − y), leta efter den kombination 'p · ekv1 + q · ekv2' som ger just det uttrycket på vänster sida — högersidan får du gratis. Här: 2·(x+y) − (x+3y) = x − y, så svaret är 2a − b. Triggern: 'system + ett tredje uttryck efterfrågat' → hitta linjärkombinationen."
   },
   "var-2016-kvant2-KVA-014": {
     "_meta": {

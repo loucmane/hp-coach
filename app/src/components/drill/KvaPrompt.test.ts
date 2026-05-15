@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { splitKvaPrompt } from './KvaPrompt'
+import { isProseCondition, splitKvaPrompt } from './KvaPrompt'
 
 describe('splitKvaPrompt', () => {
   it('splits a canonical condition + Kvantitet I + Kvantitet II prompt', () => {
@@ -48,5 +48,26 @@ describe('splitKvaPrompt', () => {
     // Edge case: a prose mention of "Kvantitet I" without the colon
     // shouldn't be picked up.
     expect(splitKvaPrompt('Kvantitet I är inte definierad.')).toBeNull()
+  })
+})
+
+describe('isProseCondition', () => {
+  it('treats compact equation conditions as non-prose', () => {
+    expect(isProseCondition('b = a + 1')).toBe(false)
+    expect(isProseCondition('x > 0')).toBe(false)
+    expect(isProseCondition('xy ≠ 0')).toBe(false)
+    expect(isProseCondition('a · b = 16')).toBe(false)
+  })
+
+  it('treats long sentence setups as prose', () => {
+    // The var-2015-kvant1-KVA-022 sample — a setup paragraph
+    // introducing a line, a constraint, and two points P and Q.
+    const cond = 'Linjen y = 3/4·x+m, där m ≠ 0, skär x-axeln i punkten P och y-axeln i punkten Q.'
+    expect(isProseCondition(cond)).toBe(true)
+  })
+
+  it('treats short sentences with prose connectors as prose', () => {
+    expect(isProseCondition('x är ett positivt heltal')).toBe(true)
+    expect(isProseCondition('a och b är reella tal')).toBe(true)
   })
 })

@@ -1,0 +1,1448 @@
+{
+  "host-2016-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att 'slå ihop' termerna till en enda potens om du inte tänker på att exponenter inte adderas över olika baser.",
+        "why_wrong": "Steg 3 visar att termerna har OLIKA bokstavskombinationer (xy^{2} mot x^{2}y) — de kan inte adderas till en gemensam potens. Och 3 + 2 = 5 är en illusion: du adderar bara koefficienter när BOKSTAVSDELEN är identisk."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att bryta ut bara x och glömmer att y också finns i båda termerna.",
+        "why_wrong": "Steg 4 visar att y är gemensamt för båda termerna; bryter du bara ut x stannar ett y kvar i första termen (y^{2} \\to y) men din parentes (3y^{2} + 2x^{2}) har behållit y^{2} — du har då bara brytit ut x, inte xy."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att lägga ihop koefficienterna (3 + 2 = 5) och bryta ut xy.",
+        "why_wrong": "Detta ignorerar att termerna har OLIKA grader i x och y. Steg 6–7 visar att efter utbrytning av xy blir kvar 3y + 2x, inte y + x multiplicerat med 5."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att lägga ihop hela termer som om de vore 'liknande' bara för att de delar några bokstäver. Botemedlet: skriv ut varje term som en produkt (3 \\cdot x \\cdot y \\cdot y) innan du jämför — då ser du exakt vilka faktorer som finns gemensamt och vilka som inte gör det.",
+    "solution_path": "Båda termerna i 3xy^{2} + 2x^{2}y har faktorerna x och y gemensamma. Bryt ut xy och kvar blir xy(3y + 2x) — svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska skriva uttrycket 3xy^{2} + 2x^{2}y på ett annat sätt, och hitta vilket av alternativen som är samma uttryck. 'Motsvarar' betyder 'är lika med för alla värden på x och y'.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "xy^{2} betyder x \\cdot y \\cdot y (y gångrad med sig själv, sedan med x). x^{2}y betyder x \\cdot x \\cdot y. Två bokstäver som står bredvid varandra är underförstådd multiplikation.",
+        "tier": "detail",
+        "title": "Vad betyder potenserna?"
+      },
+      {
+        "n": 3,
+        "text": "Första termen 3xy^{2} är 3 \\cdot x \\cdot y \\cdot y. Andra termen 2x^{2}y är 2 \\cdot x \\cdot x \\cdot y. När du ser termerna så här blir det tydligt vad som är gemensamt.",
+        "tier": "essential",
+        "title": "Skriv ut faktorerna"
+      },
+      {
+        "n": 4,
+        "text": "Båda termerna innehåller minst ett x och minst ett y. Alltså är xy en gemensam faktor. Talen 3 och 2 har ingen gemensam faktor större än 1, så de stannar inne i parentesen.",
+        "tier": "essential",
+        "title": "Identifiera gemensamma faktorer"
+      },
+      {
+        "n": 5,
+        "text": "Att bryta ut en faktor är att använda distributiva lagen baklänges: ab + ac = a(b + c). Du tar bort en kopia av den gemensamma faktorn ur varje term och sätter den utanför parentesen.",
+        "tier": "detail",
+        "title": "Vad betyder 'bryta ut'?"
+      },
+      {
+        "n": 6,
+        "text": "3xy^{2} = xy \\cdot 3y — när du tar bort ett x och ett y stannar bara 3y kvar.",
+        "tier": "essential",
+        "title": "Bryt ut xy ur första termen"
+      },
+      {
+        "n": 7,
+        "text": "2x^{2}y = xy \\cdot 2x — du tar bort ett x och ett y, och kvar finns 2x.",
+        "tier": "essential",
+        "title": "Bryt ut xy ur andra termen"
+      },
+      {
+        "n": 8,
+        "text": "Skriv uttrycket med xy utanför parentesen: 3xy^{2} + 2x^{2}y = xy(3y + 2x). Det är exakt alternativ A.",
+        "tier": "essential",
+        "title": "Sätt ihop"
+      },
+      {
+        "n": 9,
+        "text": "Distribuera xy in i parentesen: xy \\cdot 3y = 3xy^{2} och xy \\cdot 2x = 2x^{2}y. Summan blir 3xy^{2} + 2x^{2}y — exakt uttrycket vi började med. Faktorerna stämmer.",
+        "tier": "detail",
+        "title": "Verifiera genom att multiplicera tillbaka"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är A. Insikten i en mening: när alla termer delar samma bokstäver är största gemensamma faktor produkten av dem — bryt ut och de inre talen hamnar oförändrade i parentesen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Faktorisera-strategin: när du ser en summa av termer med blandade variabler, leta efter den största gemensamma faktorn (GCF) i koefficienter och varje variabel separat. Bryt ut GCF och dela varje term med den; det som blir kvar hamnar inne i parentesen."
+  },
+  "host-2016-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Genomsnittet av A och C är 105°, så det känns som om 'minst en av dem' måste vara över 90°. Men frågan är om vinkeln A SPECIFIKT är större än 90°.",
+        "why_wrong": "Steg 6 visar att vinkeln A kan vara nästan vad som helst mellan 30° och 180° så länge C kompletterar till 210°. A = 60° är möjligt; då är A inte större än 90°."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Symmetri känns 'snygg' — om A och C är speciella vinklar, kanske B och D också är det.",
+        "why_wrong": "Steg 7 visar att vi bara känner SUMMAN B + D = 150°, inte att de är lika. B = 30°, D = 120° uppfyller villkoret; då är B och D INTE lika."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Rektanglar är de vanligaste fyrhörningarna — instinkten är att en fråga om en fyrhörning handlar om en rektangel.",
+        "why_wrong": "Steg 8 visar att en rektangel kräver A + C = 180°, men du har 210°. Fyrhörningen är garanterat INTE en rektangel."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Summan av alla fyra vinklar i en fyrhörning är 360°. Om A + C = 210° så är B + D = 360° − 210° = 150°. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har en fyrhörning ABCD. Du vet att vinkeln vid A plus vinkeln vid C är 210°. Du ska säga vilket av påståendena som ALLTID är sant — inte 'kan vara sant', utan 'är garanterat sant'.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "En fyrhörning kan delas in i två trianglar med en diagonal. Varje triangel har vinkelsumma 180°. Alltså är fyrhörningens fyra inre vinklar tillsammans 2 \\cdot 180° = 360°. Detta gäller alla fyrhörningar — inte bara rektanglar.",
+        "tier": "detail",
+        "title": "Vad är vinkelsumman i en fyrhörning?"
+      },
+      {
+        "n": 3,
+        "text": "Vinkelsumman ger: A + B + C + D = 360°. Du vet att A + C = 210°.",
+        "tier": "essential",
+        "title": "Ställ upp ekvationen"
+      },
+      {
+        "n": 4,
+        "text": "Sätt in: 210° + B + D = 360°. Subtrahera 210° från båda sidor: B + D = 150°.",
+        "tier": "essential",
+        "title": "Lös ut B + D"
+      },
+      {
+        "n": 5,
+        "text": "Notera att B + D = 150° fås rent algebraiskt från A + C = 210° — du behöver inga antaganden om enskilda vinklar eller om fyrhörningens form. Alternativ C är ALLTID korrekt.",
+        "tier": "essential",
+        "title": "Detta är alltid sant"
+      },
+      {
+        "n": 6,
+        "text": "A + C = 210° är genomsnittligt 105° per vinkel. Men en av dem kan vara mycket större (säg 180°) och den andra mycket mindre (30°). 'Vinkel A större än 90°' är möjligt men inte garanterat.",
+        "tier": "detail",
+        "title": "Varför är A inte säkert?"
+      },
+      {
+        "n": 7,
+        "text": "Att B = D skulle kräva symmetri som vi inte vet att fyrhörningen har. Steg 4 ger bara summan B + D, inte att de är lika. Exempel: B = 100°, D = 50° funkar; B = 75°, D = 75° funkar också.",
+        "tier": "detail",
+        "title": "Varför är B inte säkert?"
+      },
+      {
+        "n": 8,
+        "text": "En rektangel har alla fyra vinklar lika med 90°, alltså A + C = 90° + 90° = 180° — inte 210°. Fyrhörningen kan alltså INTE vara en rektangel.",
+        "tier": "detail",
+        "title": "Varför är D inte säkert?"
+      },
+      {
+        "n": 9,
+        "text": "Sätt A = 100°, C = 110° (summa 210°). Sätt B = 70°, D = 80° (summa 150°). Total: 360°. Alla villkor uppfyllda, B + D = 150° stämmer. C håller.",
+        "tier": "essential",
+        "title": "Verifiera med ett exempel"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är C: summan av vinkel B och vinkel D är 150°. Insikten i en mening: fyrhörningens vinkelsumma 360° gör att om du känner summan av två motstående vinklar så känner du automatiskt summan av de andra två.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vinkelsumman 360° i fyrhörningar är en låst regel: om du vet summan av två vinklar känner du automatiskt summan av de andra två. Triggern att memorera: 'fyrhörning + vinkelsumma' → tänk 360° direkt och subtrahera bort det du vet."
+  },
+  "host-2016-kvant1-XYZ-003": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Punkten (4, 0) ligger 'mellan' linjerna OM man ser på avståndet från origo, men ligga-mellan i geometri syftar på de tre regionerna planet delas in i.",
+        "why_wrong": "Steg 6 räknar: vid x = 4 ska y vara mellan 1 och 7, och 0 är under 1. Punkten ligger geometriskt UNDER den nedre linjen, inte i remsan mellan."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att (0, −4) är 'symmetriskt motsatt' (0, 4) och hamnar i mellanregionen.",
+        "why_wrong": "Steg 7 visar att vid x = 0 ska y vara mellan −3 och 3. y = −4 är utanför detta intervall — punkten ligger nedanför båda linjerna."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är lätt att tro att en punkt med 'jämna koordinater' nära origo ska ligga någonstans rimligt.",
+        "why_wrong": "Steg 8 visar att (4, −4) ligger långt under båda linjerna. Att x = y i absoluta belopp betyder ingenting för var punkten ligger relativt linjerna y = x ± 3."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Punkten ska ligga MELLAN linjerna y = x + 3 och y = x − 3, dvs uppfylla x − 3 < y < x + 3. Testa (0, 0): −3 < 0 < 3 stämmer. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har två linjer i x,y-planet: y = x + 3 och y = x - 3. Du ska hitta vilken av fyra punkter som ligger MELLAN dessa två linjer.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Två linjer delar planet i tre delar: ovanför båda, mellan dem, och nedanför båda. 'Mellan' betyder att punkten är under den övre linjen och samtidigt över den nedre linjen.",
+        "tier": "detail",
+        "title": "Vad betyder 'ligga mellan'?"
+      },
+      {
+        "n": 3,
+        "text": "Båda linjerna har lutning 1. y = x + 3 ligger 3 enheter HÖGRE än y = x för varje x. y = x - 3 ligger 3 enheter LÄGRE. Den övre är alltså y = x + 3 och den nedre är y = x - 3.",
+        "tier": "essential",
+        "title": "Identifiera vilken linje som är övre och nedre"
+      },
+      {
+        "n": 4,
+        "text": "En punkt (x, y) ligger mellan linjerna om: x - 3 < y < x + 3. Det är en dubbel olikhet — y ska vara större än den nedre linjens y-värde och mindre än den övre linjens y-värde, för samma x.",
+        "tier": "essential",
+        "title": "Översätt 'mellan' till olikheter"
+      },
+      {
+        "n": 5,
+        "text": "För x = 0 är nedre linjens y-värde -3 och övre linjens y-värde 3. Är -3 < 0 < 3? Ja. Punkten (0, 0) ligger mellan linjerna.",
+        "tier": "essential",
+        "title": "Testa A: (0, 0)"
+      },
+      {
+        "n": 6,
+        "text": "För x = 4 är nedre linjens y-värde 4 - 3 = 1 och övre linjens y-värde 4 + 3 = 7. Är 1 < 0 < 7? Nej — 0 är inte större än 1. Punkten (4, 0) ligger UNDER den nedre linjen.",
+        "tier": "essential",
+        "title": "Testa B: (4, 0)"
+      },
+      {
+        "n": 7,
+        "text": "För x = 0 ska y ligga mellan −3 och 3. Är −4 mellan dem? Nej — −4 är mindre än −3. Punkten (0, −4) ligger under den nedre linjen.",
+        "tier": "essential",
+        "title": "Testa C: (0, −4)"
+      },
+      {
+        "n": 8,
+        "text": "För x = 4 ska y ligga mellan 1 och 7. Är −4 mellan dem? Nej — −4 är mycket mindre än 1. Punkten ligger under båda linjerna.",
+        "tier": "essential",
+        "title": "Testa D: (4, −4)"
+      },
+      {
+        "n": 9,
+        "text": "Båda linjerna har lutning 1 och går genom (0, ±3). Mellan-zonen är en oändlig diagonal remsa runt linjen y = x. Origo ligger på linjen y = x och är därför mitt i remsan — naturligt att (0, 0) klarar testet.",
+        "tier": "detail",
+        "title": "Geometrisk intuition"
+      },
+      {
+        "n": 10,
+        "text": "Endast (0, 0) uppfyller x - 3 < y < x + 3. Svaret är A. Insikten i en mening: 'mellan två parallella linjer' översätts till en dubbel olikhet — testa kandidaten i den, och passar siffrorna är punkten där.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Olikhetstestet för regioner: när frågan ger linjer och frågar var en punkt ligger, översätt 'mellan/över/under' till olikheter (y < mx + b eller y > mx + b) och sätt in punkten. Två linjer ger en dubbel olikhet."
+  },
+  "host-2016-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att slarva med tecknet och tro att resultatet ska vara negativt eftersom det står 'minus' i vänsterledet.",
+        "why_wrong": "Steg 5 visar att högerledet är +42 och utbrytningen ger +11(x − y). Tecknet på (x − y) följer alltså 42 — alltså POSITIVT, inte negativt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du blandar ihop 'dela med 11' och 'dela med 42' kan du landa på -\\frac{11}{42}.",
+        "why_wrong": "Steg 6 är tydlig: efter utbrytning står 11 som koefficient framför (x − y). Du DELAR med 11 för att isolera (x − y), inte tvärtom — det ger \\frac{42}{11}, inte \\frac{11}{42}."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att läsa '11 går in i 42' åt fel håll och få \\frac{11}{42}.",
+        "why_wrong": "Steg 6 visar tydligt placeringen: täljaren kommer från 42 (högerledet) och nämnaren från 11 (koefficienten). \\frac{täljaren}{nämnaren} = \\frac{42}{11}, inte \\frac{11}{42}."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att försöka räkna ut x och y var för sig — du har bara EN ekvation och TVÅ obekanta, så du kan inte lösa för dem individuellt. Botemedlet: läs alltid VAD som efterfrågas innan du börjar; om det är en kombination, fokusera på kombinationen.",
+    "solution_path": "Bryt ut 11 från vänster sida: 11(x - y) = 42. Dela båda sidor med 11: x - y = \\frac{42}{11}. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har en ekvation: 11x - 11y = 42. Du ska räkna ut värdet av uttrycket x - y — inte värdena av x och y var för sig.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Frågan vill ha x - y, inte x ensam eller y ensam. Det är en LEDTRÅD: när bara skillnaden eller summan efterfrågas räcker det ofta att manipulera ekvationen så att den kombinationen står ensam — du behöver inte två ekvationer.",
+        "tier": "detail",
+        "title": "Notera vad som efterfrågas"
+      },
+      {
+        "n": 3,
+        "text": "På vänster sida står 11x - 11y. Båda termerna har 11 som gemensam faktor.",
+        "tier": "essential",
+        "title": "Identifiera gemensam faktor"
+      },
+      {
+        "n": 4,
+        "text": "Den distributiva lagen säger a(b - c) = ab - ac. Baklänges: ab - ac = a(b - c). Använd det här: 11x - 11y = 11(x - y).",
+        "tier": "detail",
+        "title": "Distributiva lagen baklänges"
+      },
+      {
+        "n": 5,
+        "text": "Ekvationen blir: 11(x - y) = 42. Nu står (x − y) som ett block, multiplicerat med 11.",
+        "tier": "essential",
+        "title": "Skriv om ekvationen"
+      },
+      {
+        "n": 6,
+        "text": "Dela båda sidor med 11: \\frac{11(x - y)}{11} = \\frac{42}{11} → x - y = \\frac{42}{11}.",
+        "tier": "essential",
+        "title": "Isolera (x − y)"
+      },
+      {
+        "n": 7,
+        "text": "\\frac{42}{11} kan inte förkortas — 11 är primtal och 42 = 2 · 3 · 7 har ingen 11 som faktor. Bråket är redan i enklaste form.",
+        "tier": "detail",
+        "title": "Behöver inte förenklas vidare"
+      },
+      {
+        "n": 8,
+        "text": "Alternativ A: -\\frac{42}{11} (negativt — fel tecken). B: -\\frac{11}{42} (inverterat och negativt). C: \\frac{11}{42} (inverterat). D: \\frac{42}{11} — exakt det vi fick.",
+        "tier": "essential",
+        "title": "Jämför mot alternativen"
+      },
+      {
+        "n": 9,
+        "text": "Välj t.ex. y = 0: då är 11x = 42, så x = \\frac{42}{11} och x - y = \\frac{42}{11}. Välj y = 1: 11x = 42 + 11 = 53, så x = \\frac{53}{11} och x - y = \\frac{53}{11} - 1 = \\frac{42}{11}. Samma svar oavsett val av y — stämmer.",
+        "tier": "detail",
+        "title": "Verifiera med konkreta tal"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är D: x - y = \\frac{42}{11}. Insikten i en mening: när bara en linjärkombination (typ x − y) efterfrågas, leta efter en gemensam faktor på den givna sidan och bryt ut den — det undviker att behöva lösa för enskilda variabler.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Linjärkombination-utbrytning: när frågan efterfrågar uttrycket ax + by eller x \\pm y — leta efter gemensamma faktorer på ekvationens ena sida som matchar målet, bryt ut och dividera. Du slipper då lösa för varje variabel."
+  },
+  "host-2016-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "80 minuter motsvarar ungefär 1 h 20 min — kan kännas rimligt om du tror att B 'tar över halva resten'.",
+        "why_wrong": "Steg 7 visar att B behöver 8/3 timme för 2/3 av jobbet, inte 4/3 timme. 80 min skulle bara räcka för 1/3 av planket (B:s hastighet × 80/60 = 1/4 · 4/3 = 1/3) — bara halva återstoden."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "120 minuter = 2 timmar känns 'symmetriskt' med A:s 2 timmar.",
+        "why_wrong": "På 2 timmar målar B 2 \\cdot \\frac{1}{4} = \\frac{1}{2} av planket. Men återstoden är \\frac{2}{3}, inte \\frac{1}{2} — så 2 timmar räcker inte (steg 6)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att B behöver hela 4 timmar (B:s totaltid) eller 200 min (3 h 20 min), kan du landa på överskattning.",
+        "why_wrong": "Steg 7–8 ger exakt 160 minuter. På 200 minuter skulle B måla \\frac{200}{60} \\cdot \\frac{1}{4} = \\frac{200}{240} = \\frac{5}{6} av planket — mer än återstoden 2/3."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "A målar 1/6 per timme; efter två timmar har A målat 2/6 = 1/3 av planket. Kvarvarande är 2/3. B målar 1/4 per timme och behöver 2/3 ÷ 1/4 = 8/3 timme ≈ 2 h 40 min = 160 minuter. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Två målare, A och B, kan måla ett plank ensamma. A tar 6 timmar; B tar 4 timmar. A börjar och målar 2 timmar; sedan tar B över. Frågan: hur många MINUTER målar B innan planket är klart?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Om någon gör hela jobbet på t timmar, så gör de \\frac{1}{t} av jobbet per timme. Hastighet = jobb per tidsenhet. Detta är den enda formeln som behövs.",
+        "tier": "detail",
+        "title": "Vad är 'arbetshastighet'?"
+      },
+      {
+        "n": 3,
+        "text": "A klarar planket på 6 timmar → A målar \\frac{1}{6} av planket per timme.",
+        "tier": "essential",
+        "title": "Räkna ut A:s hastighet"
+      },
+      {
+        "n": 4,
+        "text": "B klarar planket på 4 timmar → B målar \\frac{1}{4} av planket per timme.",
+        "tier": "essential",
+        "title": "Räkna ut B:s hastighet"
+      },
+      {
+        "n": 5,
+        "text": "Hastighet × tid = jobb: \\frac{1}{6} \\cdot 2 = \\frac{2}{6} = \\frac{1}{3} av planket. A har målat en tredjedel.",
+        "tier": "essential",
+        "title": "Hur mycket målar A på 2 timmar?"
+      },
+      {
+        "n": 6,
+        "text": "Hela planket är '1' (100%). Återstår 1 - \\frac{1}{3} = \\frac{3}{3} - \\frac{1}{3} = \\frac{2}{3} av planket — två tredjedelar.",
+        "tier": "essential",
+        "title": "Hur mycket är kvar?"
+      },
+      {
+        "n": 7,
+        "text": "Tid = jobb ÷ hastighet: \\frac{2/3}{1/4} timmar. Att dela med ett bråk är att gångra med dess inverterade: \\frac{2}{3} \\cdot \\frac{4}{1} = \\frac{8}{3} timmar.",
+        "tier": "essential",
+        "title": "Hur lång tid behöver B för 2/3?"
+      },
+      {
+        "n": 8,
+        "text": "\\frac{8}{3} timmar = \\frac{8}{3} \\cdot 60 minuter = \\frac{480}{3} = 160 minuter.",
+        "tier": "detail",
+        "title": "Konvertera till minuter"
+      },
+      {
+        "n": 9,
+        "text": "\\frac{8}{3} \\approx 2{,}67 timmar ≈ 2 h 40 min. Rimligt: B är snabbare än A, så B borde klara 2/3 av planket på mindre tid än det skulle ta A (A skulle behövt \\frac{2/3}{1/6} = 4 timmar). 2 h 40 min < 4 timmar ✓.",
+        "tier": "detail",
+        "title": "Sanity-check"
+      },
+      {
+        "n": 10,
+        "text": "B behöver 160 minuter — svaret är C. Insikten i en mening: hastighetsfrågor löses med formeln jobb = hastighet × tid; konvertera 'tar T timmar att klara' till 'gör 1/T per timme' och allt blir aritmetik.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Arbete-hastighet-tid-strategin: gör om 'tar T timmar att klara ett jobb' till hastigheten \\frac{1}{T} per timme; använd sedan jobb = hastighet × tid. Vid kombinerade arbeten: räkna ihop hastigheter (om de jobbar samtidigt) eller jobben (om de jobbar i tur och ordning)."
+  },
+  "host-2016-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att läsa \\frac{1}{2} + \\frac{1}{6} som 'något runt 0,6' utan att räkna noga.",
+        "why_wrong": "Steg 3 visar att summan är \\frac{2}{3} \\approx 0{,}667, inte \\frac{3}{5} = 0{,}6. Liten skillnad i decimal men olika bråk."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du läser strukturen 'liten + ännu mindre' och jämför ungefärligt kan C se rimligt ut.",
+        "why_wrong": "Steg 5 räknar summan till \\frac{2}{5} = 0{,}4 — under 0,5 och alltså inte 3/5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Vänster-till-höger-läsning ger 'kvart plus sjättedel — kanske runt en halv'.",
+        "why_wrong": "Steg 6 räknar summan till \\frac{5}{12} \\approx 0{,}417 — också under 0,5 och alltså inte 3/5."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Räkna ut varje alternativ. \\frac{1}{2} + \\frac{1}{10} = \\frac{5}{10} + \\frac{1}{10} = \\frac{6}{10} = \\frac{3}{5}. Svaret är B (frågan söker \\frac{3}{5}).",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska hitta det alternativ vars summa är lika med \\frac{3}{5} (frågetexten är förkortad — målvärdet är 3/5, vilket bekräftas av alternativ B nedan). Varje alternativ är en summa av två stambråk.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "För att addera bråk måste de ha samma nämnare. Hitta minsta gemensamma nämnare (MGN), skriv om varje bråk med den nämnaren, och addera täljarna.",
+        "tier": "detail",
+        "title": "Vad är en gemensam nämnare?"
+      },
+      {
+        "n": 3,
+        "text": "MGN för 2 och 6 är 6. \\frac{1}{2} = \\frac{3}{6}. Summa: \\frac{3}{6} + \\frac{1}{6} = \\frac{4}{6} = \\frac{2}{3}. Inte 3/5.",
+        "tier": "essential",
+        "title": "Testa A: 1/2 + 1/6"
+      },
+      {
+        "n": 4,
+        "text": "MGN för 2 och 10 är 10. \\frac{1}{2} = \\frac{5}{10}. Summa: \\frac{5}{10} + \\frac{1}{10} = \\frac{6}{10} = \\frac{3}{5}. Matchar.",
+        "tier": "essential",
+        "title": "Testa B: 1/2 + 1/10"
+      },
+      {
+        "n": 5,
+        "text": "MGN för 3 och 15 är 15. \\frac{1}{3} = \\frac{5}{15}. Summa: \\frac{5}{15} + \\frac{1}{15} = \\frac{6}{15} = \\frac{2}{5}. Inte 3/5.",
+        "tier": "essential",
+        "title": "Testa C: 1/3 + 1/15"
+      },
+      {
+        "n": 6,
+        "text": "MGN för 4 och 6 är 12. \\frac{1}{4} = \\frac{3}{12}, \\frac{1}{6} = \\frac{2}{12}. Summa: \\frac{3}{12} + \\frac{2}{12} = \\frac{5}{12}. Inte 3/5.",
+        "tier": "essential",
+        "title": "Testa D: 1/4 + 1/6"
+      },
+      {
+        "n": 7,
+        "text": "Både täljare och nämnare är delbara med 2: \\frac{6}{10} = \\frac{6/2}{10/2} = \\frac{3}{5}.",
+        "tier": "detail",
+        "title": "Hur förkortas 6/10?"
+      },
+      {
+        "n": 8,
+        "text": "\\frac{3}{5} = 0{,}6. Alternativ B: \\frac{1}{2} + \\frac{1}{10} = 0{,}5 + 0{,}1 = 0{,}6 ✓. A: 0,5 + 0,167 ≈ 0,667. C: 0,333 + 0,067 ≈ 0,4. D: 0,25 + 0,167 ≈ 0,417.",
+        "tier": "detail",
+        "title": "Decimalkontroll"
+      },
+      {
+        "n": 9,
+        "text": "Av de fyra alternativen är det bara B som ger \\frac{3}{5}. Övriga ger 2/3, 2/5 respektive 5/12.",
+        "tier": "essential",
+        "title": "Endast B matchar"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är B. Insikten i en mening: vid addition av bråk med olika nämnare är gemensam nämnare nyckeln; konvertera till decimal är en bra dubbel-koll när alternativen ska jämföras snabbt.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Bråk-addition med MGN: hitta minsta gemensamma nämnaren först (oftast produkten av nämnarna delat med deras GCD), konvertera båda bråken, addera täljarna och förkorta resultatet. Vid svaralternativ: räkna ut alla och förkorta."
+  },
+  "host-2016-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du gör fel i steg 6 och delar \\frac{15}{4} fel kan du landa på -\\frac{3}{5}.",
+        "why_wrong": "Steg 6 visar: \\frac{15/4}{5} = \\frac{15}{20} = \\frac{3}{4} (efter förkortning), inte \\frac{3}{5}. Förväxla inte 'dela med 5' och 'sätt 5 i nämnaren under existerande täljare'."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att inte förenkla 15/20 och kan blanda ihop 4/5 och 3/4.",
+        "why_wrong": "\\frac{15}{20} förkortas till \\frac{3}{4} (dela med 5), inte \\frac{4}{5} (steg 7)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du adderar istället för subtraherar i steg 4 (\\frac{1}{4} + 4 = \\frac{17}{4}) och sedan delar med 5, landar du på något runt 17/20.",
+        "why_wrong": "Steg 4 är subtraktion: du flyttar \\frac{1}{4} från höger till vänster, tecknet ändras. Resultatet är \\frac{15}{4}, inte \\frac{17}{4}, vilket ger \\frac{3}{4} efter delning, inte \\frac{7}{20}."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Ur 4 = \\frac{3}{12} - 5x: förenkla \\frac{3}{12} = \\frac{1}{4}. Lös: 5x = \\frac{1}{4} - 4 = -\\frac{15}{4} → x = -\\frac{3}{4}. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har ekvationen 4 = \\frac{3}{12} - 5x. Du ska lösa ut x — hitta vilket värde på x som gör vänster sida lika med höger sida.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Bråk i ekvationer är lättare att hantera om de är förkortade. \\frac{3}{12} = \\frac{3}{3 \\cdot 4} = \\frac{1}{4} (förkorta med 3).",
+        "tier": "detail",
+        "title": "Förenkla 3/12 först"
+      },
+      {
+        "n": 3,
+        "text": "Ekvationen blir: 4 = \\frac{1}{4} - 5x.",
+        "tier": "essential",
+        "title": "Skriv om ekvationen"
+      },
+      {
+        "n": 4,
+        "text": "Flytta \\frac{1}{4} till vänster sida genom att subtrahera: 4 - \\frac{1}{4} = -5x.",
+        "tier": "essential",
+        "title": "Isolera 5x-termen"
+      },
+      {
+        "n": 5,
+        "text": "Gemensam nämnare 4: 4 = \\frac{16}{4}. Så \\frac{16}{4} - \\frac{1}{4} = \\frac{15}{4}. Ekvationen blir: \\frac{15}{4} = -5x.",
+        "tier": "essential",
+        "title": "Beräkna vänster sida"
+      },
+      {
+        "n": 6,
+        "text": "För att isolera x, dela med −5: x = \\frac{15/4}{-5} = -\\frac{15}{4 \\cdot 5} = -\\frac{15}{20}.",
+        "tier": "essential",
+        "title": "Dela båda sidor med −5"
+      },
+      {
+        "n": 7,
+        "text": "-\\frac{15}{20}: båda delbara med 5 → -\\frac{3}{4}. Alltså x = -\\frac{3}{4}.",
+        "tier": "essential",
+        "title": "Förkorta resultatet"
+      },
+      {
+        "n": 8,
+        "text": "Vänster sida (4) är mycket större än \\frac{1}{4} i högerledet. För att högerledet ska bli så stort måste -5x vara stort och positivt, dvs x måste vara NEGATIVT (negativ gånger negativ = positiv).",
+        "tier": "detail",
+        "title": "Varför blir x negativt?"
+      },
+      {
+        "n": 9,
+        "text": "Sätt in x = -\\frac{3}{4} i originalekvationen: \\frac{1}{4} - 5 \\cdot (-\\frac{3}{4}) = \\frac{1}{4} + \\frac{15}{4} = \\frac{16}{4} = 4 ✓. Vänster sida = höger sida.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är A: x = -\\frac{3}{4}. Insikten i en mening: lös linjära ekvationer i tre steg — isolera variabelns term, isolera variabeln, förkorta resultatet.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Linjär ekvation, tre-stegs-strategin: 1) förenkla konstanter (förkorta bråk), 2) flytta termer så variabeln står ensam på en sida, 3) dela med koefficienten. Kontrollera alltid genom att sätta in svaret i originalekvationen."
+  },
+  "host-2016-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "14 år ligger nära mitten av alternativen — ett 'mitten-gissningssvar'.",
+        "why_wrong": "Steg 5 låser totalsumman för de avgångna till 100 år. 80 + 14 = 94 ≠ 100. Inte den andra personen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "16 år känns rimligt om man tror att den andra var 'lite under genomsnittet' — strax under 18.",
+        "why_wrong": "Steg 6 räknar exakt: 100 − 80 = 20, inte 16. 80 + 16 = 96 ≠ 100."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "18 år är gruppens ursprungliga snitt — frestande att tro att en 'genomsnittlig' person försvinner.",
+        "why_wrong": "Om en genomsnittsperson lämnar förändras inte gruppens snitt. Steg 9 visar att medelåldern sjönk så drastiskt att den andra MÅSTE ha varit långt från 18 — eller mer specifikt att totalen 100 inte stämmer med 18."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att försöka räkna med medelvärden direkt. Botemedlet: vid varje förändring av gruppens storlek — räkna ut den nya summan via medelvärde × antal, och jobba sedan med summan. Summor är additiva; medelvärden är det inte.",
+    "solution_path": "Total åldersumma för 10 personer: 180 år. Efter att två lämnar är total ålder 8 · 10 = 80. De som lämnade har tillsammans 180 − 80 = 100 år. En är 80, så den andra är 20. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "10 personer har medelålder 18 år. Två personer lämnar; medelåldern bland de 8 kvarvarande är 10 år. En av de som lämnade är 80 år. Hur gammal är den andra?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Medelvärdet av en grupp = summan av alla värden ÷ antalet värden. Omvänt: summan = medelvärde × antal.",
+        "tier": "detail",
+        "title": "Vad är medelvärde?"
+      },
+      {
+        "n": 3,
+        "text": "10 personer × 18 år/person = 180 år total. Detta är summan av allas åldrar.",
+        "tier": "essential",
+        "title": "Total åldersumma före"
+      },
+      {
+        "n": 4,
+        "text": "8 personer × 10 år/person = 80 år total. Detta är summan av åldrarna för de 8 som är kvar.",
+        "tier": "essential",
+        "title": "Total åldersumma efter"
+      },
+      {
+        "n": 5,
+        "text": "De två som lämnade hade tillsammans: 180 − 80 = 100 år. (Vad som drogs bort när medelåldern sjönk.)",
+        "tier": "essential",
+        "title": "Total ålder hos de som lämnade"
+      },
+      {
+        "n": 6,
+        "text": "Den ena är 80 år. Den andra är: 100 − 80 = 20 år.",
+        "tier": "essential",
+        "title": "Räkna ut den andra personen"
+      },
+      {
+        "n": 7,
+        "text": "Medelåldern SJÖNK från 18 till 10 efter att två personer lämnade. Det betyder att de som lämnade hade HÖGRE genomsnitt än 18. Deras snitt: 100/2 = 50, vilket är högre än 18 ✓.",
+        "tier": "detail",
+        "title": "Sanity-check rörelseriktningen"
+      },
+      {
+        "n": 8,
+        "text": "Före: total 180, snitt 180/10 = 18 ✓. Efter att 80 och 20 lämnar: 180 − 80 − 20 = 80 kvar, fördelat på 8 personer ger 80/8 = 10 ✓.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 9,
+        "text": "Om den andra också var 18 år (medelåldern), skulle gruppens medelålder INTE förändras särskilt mycket. Den dramatiska minskningen från 18 till 10 kräver att båda som lämnade var betydligt äldre än snittet — och 18 + 80 = 98 ≠ 100.",
+        "tier": "detail",
+        "title": "Varför inte 18 år (alternativ C)?"
+      },
+      {
+        "n": 10,
+        "text": "Den andra personen som lämnade är 20 år gammal. Svaret är D. Insikten i en mening: medelvärdesfrågor löses snabbast genom att räkna med SUMMOR (medelvärde × antal), inte med enskilda värden.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Medelvärde-sum-strategin: konvertera 'medelvärde × antal' → 'summa', räkna med summor i alla mellansteg, och konvertera tillbaka till medelvärde först i slutet. Vid 'någon lämnar/tillkommer'-frågor är skillnaden i summa nyckeln."
+  },
+  "host-2016-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att x = AD/9 = 27/9 = 3 ger en förenklad version av frågan; men det skulle räknas som FD, inte AF.",
+        "why_wrong": "Steg 7 visar att x = AF = 8h/9, inte h/9. FD (alltså sträckan på den lilla rektangelns sida) är h/9 = 3, men frågan ber om x = AF."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 'det är väl bara hälften så stort' eller 'kanske 1/3 av AD' om man missar 1/9-faktorn.",
+        "why_wrong": "Steg 6 låser ekvationen: förhållandet 1/9 ger x = 8h/9 = 24 cm, inte h/3 = 9 cm."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "12 cm är ungefär hälften av 24 — kan dyka upp om man misstolkar villkoret som 'FECD är en niondedel av ABEF' istället för 'av ABCD'.",
+        "why_wrong": "Steg 6 är tydlig: villkoret är att FECD är 1/9 av HELA ABCD, inte av övre rektangeln. Det ger x = 24, inte 12."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "FE är parallell med AB, så FECD är en mindre rektangel med samma bredd som ABCD. Om \\text{area}(FECD) = \\frac{1}{9} \\cdot \\text{area}(ABCD) så är FD = AD/9, alltså är AF = (8/9)·AD. Med AD = 27 cm (avläst i figuren) blir x = AF = 24 cm. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "ABCD är en rektangel. Punkterna F (på AD) och E (på BC) ligger så att linjen FE är parallell med AB. Den mindre rektangeln FECD har en area som är 1/9 av hela rektangeln ABCD. Du ska hitta längden x = AF.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Två linjer är parallella om de aldrig korsar varandra och har samma riktning. Eftersom ABCD är en rektangel är AB ⊥ AD. Om FE ‖ AB, så är även FE ⊥ AD. FE skär alltså rektangeln vinkelrätt mot långsidorna AD och BC.",
+        "tier": "detail",
+        "title": "Vad betyder 'FE parallell med AB'?"
+      },
+      {
+        "n": 3,
+        "text": "Linjen FE delar ABCD i två mindre rektanglar: ABEF (toppen) och FECD (botten). Båda har samma bredd som ABCD (nämligen AB).",
+        "tier": "essential",
+        "title": "Två rektanglar uppstår"
+      },
+      {
+        "n": 4,
+        "text": "Kalla AB = a (rektangelns bredd) och AD = h (rektangelns höjd). Kalla AF = x. Då är FD = h − x.",
+        "tier": "essential",
+        "title": "Sätt namn på längderna"
+      },
+      {
+        "n": 5,
+        "text": "Area av ABCD = a \\cdot h. Area av FECD = a \\cdot FD = a(h - x).",
+        "tier": "essential",
+        "title": "Beräkna areorna"
+      },
+      {
+        "n": 6,
+        "text": "\\text{area}(FECD) = \\frac{1}{9} \\cdot \\text{area}(ABCD) ger a(h - x) = \\frac{1}{9} \\cdot ah.",
+        "tier": "essential",
+        "title": "Använd villkoret"
+      },
+      {
+        "n": 7,
+        "text": "Dela båda sidor med a (a ≠ 0): h - x = \\frac{h}{9}. Lös ut x: x = h - \\frac{h}{9} = \\frac{9h - h}{9} = \\frac{8h}{9}.",
+        "tier": "essential",
+        "title": "Förenkla"
+      },
+      {
+        "n": 8,
+        "text": "Enligt figuren är AD = h = 27 cm (markerat i originalbilden). Vi sätter in detta värde.",
+        "tier": "detail",
+        "title": "Läs av h från figuren"
+      },
+      {
+        "n": 9,
+        "text": "x = \\frac{8 \\cdot 27}{9} = \\frac{216}{9} = 24 cm.",
+        "tier": "essential",
+        "title": "Räkna ut x"
+      },
+      {
+        "n": 10,
+        "text": "Om x = 24 så är FD = 27 − 24 = 3. Area FECD = a · 3, area ABCD = a · 27. Förhållande: 3/27 = 1/9 ✓. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 11,
+        "text": "x = 24 cm — svaret är D. Insikten i en mening: när en figur delas av en parallell linje skalas areorna med längdförhållandet längs den vinkelräta riktningen — så area-förhållande 1/9 betyder att den mindre delen är 1/9 av höjden, inte 1/9 av sidan.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Skalningsstrategin för rektanglar: när en rektangel delas med en linje parallell med en sida, skalas området med samma faktor som höjdens förhållande. Översätt 'areadel = k' till 'höjddel = k' direkt — du slipper räkna med bredden eftersom den är samma."
+  },
+  "host-2016-kvant2-XYZ-001": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du adderar 13 och 24 men glömmer att tecknet ska vändas tillbaka kan du landa på −37.",
+        "why_wrong": "Steg 3 visar att −x = −37 betyder x = +37. Tecknet vänds när du multiplicerar båda sidor med −1; resultatet är POSITIVT."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "−11 kan dyka upp om du subtraherar 24 från 13 istället för att räkna 13 + 24.",
+        "why_wrong": "Steg 5 visar att lösningen är 13 + 24 = 37, inte 24 − 13 eller liknande. Tecknet på −24 kräver addition när det flyttas till andra sidan."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "+11 är ett 'middle ground' om du gör fel på båda räkningarna och båda tecknen.",
+        "why_wrong": "Steg 6 verifierar: bara x = 37 gör 13 - x = -24 sant. x = 11 ger 13 - 11 = 2 \\neq -24."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Lös 13 - x = -24: subtrahera 13 från båda sidor: -x = -37 → x = 37. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har ekvationen 13 - x = -24. Du ska hitta vilket värde på x som gör vänster lika med höger.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Subtrahera 13 från båda sidor: 13 - x - 13 = -24 - 13 → -x = -37.",
+        "tier": "essential",
+        "title": "Isolera −x"
+      },
+      {
+        "n": 3,
+        "text": "−x = −37 betyder att 'minus x' är minus 37. Två tal är lika om deras negativa motsvarigheter är lika. Multiplicera båda sidor med −1: x = 37.",
+        "tier": "detail",
+        "title": "Vad betyder −x = −37?"
+      },
+      {
+        "n": 4,
+        "text": "x = 37 (efter att tecknet vänts på båda sidor).",
+        "tier": "essential",
+        "title": "Lös ut x"
+      },
+      {
+        "n": 5,
+        "text": "Du kan också börja med att flytta x till höger och −24 till vänster: 13 + 24 = x → 37 = x. Samma svar.",
+        "tier": "detail",
+        "title": "Alternativ metod: flytta x och −24"
+      },
+      {
+        "n": 6,
+        "text": "Sätt in x = 37: 13 - 37 = -24 ✓. Vänster lika med höger.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 7,
+        "text": "Om x var negativt (säg −37) skulle 13 - (-37) = 13 + 37 = 50, vilket inte är −24. Tecknet följer den korrekta lösningen.",
+        "tier": "detail",
+        "title": "Varför inte negativt?"
+      },
+      {
+        "n": 8,
+        "text": "13 minus 'något stort' ger en stor negativ summa. Vi behöver att '13 minus x' = −24, alltså att x är cirka 13 + 24 = 37. Sanityn pekar mot D direkt.",
+        "tier": "detail",
+        "title": "Sanity-check storlek"
+      },
+      {
+        "n": 9,
+        "text": "x = 37 är alternativ D.",
+        "tier": "essential",
+        "title": "Bekräfta svaret"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är D. Insikten i en mening: lös linjära ekvationer steg för steg — isolera variabeltermen, vänd tecknet vid behov, och sätt alltid in svaret i originalet för kontroll.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Linjär ekvation-strategin: när variabeln har koefficient ±1, isolera den genom att flytta konstanten till andra sidan. Tecknet vänds när variabeln flyttas; tecknet vänds INTE när konstanten flyttas."
+  },
+  "host-2016-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få 20 burkar (om man approximerar 18·35 ≈ 600 → 600/30 = 20).",
+        "why_wrong": "Steg 2 ger exakt 630, inte 600. 630/30 = 21, vilket ger skillnaden 3 — inte 2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Vänster-till-höger-läsning ger ofta \"35 − 30 = 5\" och därav '5 fler burkar'.",
+        "why_wrong": "5 kulor mindre per burk är inte samma sak som 5 fler burkar. Steg 4 låser räkningen: skillnaden i antal burkar är 3, inte 5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "5 fler dyker upp om man tror att 'minskning på 5 kulor per burk' direkt motsvarar 'ökning på 5 burkar'.",
+        "why_wrong": "Steg 4 visar att skillnaden är 3, inte 5. Antalet burkar skalar med 35/30 = 7/6, vilket inte är 1:1 med kulskillnaden."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Totalt antal kulor: 18 \\cdot 35 = 630. Antal burkar med 30 kulor: 630 / 30 = 21. Fler burkar: 21 − 18 = 3. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Kalle har 18 burkar med 35 kulor i varje burk. Du ska räkna ut hur många FLER burkar han behöver om varje burk istället ska innehålla 30 kulor (samma totala antal kulor).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Totalt antal kulor = antal burkar × kulor per burk = 18 \\cdot 35. Räkna: 18 \\cdot 35 = 18 \\cdot 30 + 18 \\cdot 5 = 540 + 90 = 630.",
+        "tier": "essential",
+        "title": "Räkna totala antalet kulor"
+      },
+      {
+        "n": 3,
+        "text": "Om varje burk innehåller 30 kulor: antal burkar = 630 / 30 = 21.",
+        "tier": "essential",
+        "title": "Räkna antal burkar med 30 kulor"
+      },
+      {
+        "n": 4,
+        "text": "Fler burkar = 21 − 18 = 3. Kalle behöver 3 fler burkar.",
+        "tier": "essential",
+        "title": "Räkna skillnaden"
+      },
+      {
+        "n": 5,
+        "text": "30 kulor är färre per burk än 35 → behöver fler burkar för samma totala antal kulor. Riktningen stämmer.",
+        "tier": "detail",
+        "title": "Sanity-check"
+      },
+      {
+        "n": 6,
+        "text": "18·35 = N och N/30 är vad vi söker. \\frac{18 \\cdot 35}{30} = \\frac{18 \\cdot 35}{30} = \\frac{630}{30} = 21. Och 21 − 18 = 3.",
+        "tier": "detail",
+        "title": "Alternativ metod: gemensam faktor"
+      },
+      {
+        "n": 7,
+        "text": "35 och 30 har 5 som gemensam faktor: \\frac{35}{30} = \\frac{7}{6}. Så 18 burkar × 35 kulor = (18 · 7/6) burkar × 30 kulor = 21 burkar × 30 kulor.",
+        "tier": "detail",
+        "title": "Förenkling med GCD"
+      },
+      {
+        "n": 8,
+        "text": "21 burkar · 30 kulor = 630 kulor, samma som ursprungliga 18 · 35 = 630 ✓.",
+        "tier": "essential",
+        "title": "Bekräfta resultatet"
+      },
+      {
+        "n": 9,
+        "text": "Frågan vill ha skillnaden (HUR MÅNGA FLER), inte 21. Svaret är 21 − 18 = 3, inte 21.",
+        "tier": "detail",
+        "title": "Skillnaden, inte totala antalet"
+      },
+      {
+        "n": 10,
+        "text": "Kalle behöver 3 fler burkar — svaret är B. Insikten i en mening: vid 'omfördelningsfrågor' med konstant totalsumma: räkna totalen först, dela med ny gruppstorlek, och svara på vad frågan SPECIFIKT efterfrågar (totalen, skillnaden, eller annat).",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Bevara-totalsumma-strategin: vid omfördelning där totalsumman är konstant, räkna ut totalen, dela med nya gruppstorleken, och jämför med ursprungliga antalet. Triggern: 'samma totala mängd, andra grupperingen'."
+  },
+  "host-2016-kvant2-XYZ-005": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du multiplicerar koefficienterna men glömmer att 4 · 2,5 = 10 (inte 1), kan du landa på 1 · 10^2 = 10^2 = 100.",
+        "why_wrong": "Steg 7 räknar 4 · 2,5 = 10. Hela produkten är 10, inte 100. Tecken-flipparna i exponenten 10^{6} · 10^{-6} = 10^0, inte 10^2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1000 = 10^3 kan kännas rimligt om man approximerar 4·10^6 · 2,5·10^{-6} och adderar 6 + (-3) eller liknande.",
+        "why_wrong": "Steg 6 visar att exponenten är 6 + (-6) = 0, inte 3. Resultatet är 10 (en tia), inte 1000."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "10^4 = 10000 är ännu en gissning åt 'större tal' om man fokuserar på 4·10^6 och missar att andra talet är < 1.",
+        "why_wrong": "Steg 4 låser andra talet till 2{,}5 \\cdot 10^{-6} — negativ exponent betyder mycket litet tal. Produkten blir bara 10."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Skriv om: 4\\,000\\,000 = 4 \\cdot 10^{6} och 0{,}000\\,0025 = 2{,}5 \\cdot 10^{-6}. Produkten: 4 \\cdot 2{,}5 \\cdot 10^{6-6} = 10 \\cdot 10^{0} = 10 = 10^{1}. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska räkna ut 4\\,000\\,000 \\cdot 0{,}000\\,0025 och välja vilket av tiopotensalternativen det blir lika med.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Ett tal som a \\cdot 10^{n} betyder a multiplicerat med 10 gångrat med sig själv n gånger (om n > 0) eller delat n gånger (om n < 0). T.ex. 10^{6} = 1\\,000\\,000 (sex nollor); 10^{-6} = 0{,}000\\,001 (sex decimaler).",
+        "tier": "detail",
+        "title": "Vad är 10-potens-notation?"
+      },
+      {
+        "n": 3,
+        "text": "4\\,000\\,000 = 4 \\cdot 1\\,000\\,000 = 4 \\cdot 10^{6}.",
+        "tier": "essential",
+        "title": "Skriv om första talet"
+      },
+      {
+        "n": 4,
+        "text": "0{,}000\\,0025 — räkna decimaler: efter kommat är det 6 nollor + 25 = 0,0000025 = 2{,}5 \\cdot 10^{-6}. (Flytta decimalpunkten 6 steg åt höger för att få 2,5; det är samma som att gångra med 10^{-6}.)",
+        "tier": "essential",
+        "title": "Skriv om andra talet"
+      },
+      {
+        "n": 5,
+        "text": "(4 \\cdot 10^{6}) \\cdot (2{,}5 \\cdot 10^{-6}) = (4 \\cdot 2{,}5) \\cdot (10^{6} \\cdot 10^{-6}).",
+        "tier": "essential",
+        "title": "Multiplicera"
+      },
+      {
+        "n": 6,
+        "text": "Vid multiplikation: ADDERA exponenterna. 10^{6} \\cdot 10^{-6} = 10^{6 + (-6)} = 10^{0} = 1.",
+        "tier": "detail",
+        "title": "Räkneregler för 10-potenser"
+      },
+      {
+        "n": 7,
+        "text": "4 \\cdot 2{,}5 = 10 och 10^{6-6} = 10^{0} = 1. Produkten blir 10 \\cdot 1 = 10.",
+        "tier": "essential",
+        "title": "Räkna ut"
+      },
+      {
+        "n": 8,
+        "text": "10 = 10^{1} (10 upphöjt till 1).",
+        "tier": "essential",
+        "title": "Skriv 10 som tiopotens"
+      },
+      {
+        "n": 9,
+        "text": "4\\,000\\,000 \\cdot 0{,}000\\,0025 = flytta kommat: 4 \\cdot 0{,}000\\,0025 = 0{,}00001; sedan \\cdot 1\\,000\\,000 = 10 ✓.",
+        "tier": "detail",
+        "title": "Verifiera med direkträkning"
+      },
+      {
+        "n": 10,
+        "text": "Produkten är 10 = 10^{1} — svaret är A. Insikten i en mening: omvandla alla tal till a \\cdot 10^{n}-form innan du multiplicerar; addera sedan exponenterna och multiplicera koefficienterna.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vetenskaplig notation-strategin: skriv alla tal som a \\cdot 10^{n} där 1 ≤ a < 10; multiplicera koefficienterna och addera exponenterna. Slipper räkna med många nollor och decimaler."
+  },
+  "host-2016-kvant2-XYZ-007": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att tro att 'x < y' ger x^{6} < y^{6} utan att tänka på att x är negativt och exponenten är jämn.",
+        "why_wrong": "Steg 5: jämn potens tar bort tecknet. x^{6} = |x|^{6}. Om |x| > |y| (säg x = −10, y = 1) så är x^{6} > y^{6} — motexempel."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är lätt att tolka 'x < 0 < y' som att x och y är symmetriskt placerade kring 0.",
+        "why_wrong": "Steg 6: villkoret ger bara TECKEN, inte storlek. x = −1 och y = 100 är fullt tillåtet, men x + y = 99, inte 0."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att alternativ A och D ser symmetriska ut och man väljer fel håll på olikheten.",
+        "why_wrong": "Steg 7: y/x har positiv täljare och negativ nämnare → negativt. 0 < \\frac{y}{x} betyder att y/x är positivt, vilket det aldrig är. D är ALLTID falskt — motsatsen till alltid sant."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att tro att x < y ger x^{n} < y^{n} även för negativa x. Det gäller BARA för udda potenser. Botemedlet: tänk alltid på paritets-regeln för exponenter — jämn potens raderar tecken, udda potens behåller det.",
+    "solution_path": "x är negativ och y är positiv. \\frac{x}{y} är negativt delat med positivt, alltså negativt — uppfyller \\frac{x}{y} < 0. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du vet att x och y är heltal och att x < 0 < y — alltså x är ett negativt heltal och y är ett positivt heltal. Du ska säga vilket av alternativen som är ALLTID sant — inte 'kan vara sant' utan 'garanterat sant'.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "x ∈ {…, −3, −2, −1} och y ∈ {1, 2, 3, …}. Vi vet INTE deras storleksordning relativt varandra — bara att x < 0 och y > 0.",
+        "tier": "detail",
+        "title": "Vad vet vi?"
+      },
+      {
+        "n": 3,
+        "text": "Negativt + negativt = negativt. Negativt · negativt = positivt. Negativt · positivt = negativt. Negativt / positivt = negativt. Negativt upphöjt till JÄMN potens = positivt; upphöjt till UDDA potens = negativt.",
+        "tier": "detail",
+        "title": "Tecken-regler"
+      },
+      {
+        "n": 4,
+        "text": "\\frac{x}{y}: negativt täljare, positivt nämnare → negativt resultat (tecken-regel). Alltså \\frac{x}{y} < 0 är ALLTID sant. Kandidat.",
+        "tier": "essential",
+        "title": "Testa A: x/y < 0"
+      },
+      {
+        "n": 5,
+        "text": "x^{6}: negativt upphöjt till 6 (jämn) = positivt = |x|^{6}. y^{6}: positivt upphöjt till 6 = |y|^{6}. Jämförelse: beror på om |x| < |y| eller inte. Motexempel: x = −5, y = 2: x^{6} = 15625, y^{6} = 64 — alltså x^{6} > y^{6}. Inte alltid sant.",
+        "tier": "essential",
+        "title": "Testa B: x^6 < y^6"
+      },
+      {
+        "n": 6,
+        "text": "x + y = 0 kräver y = −x. Det stämmer bara om värdena är exakt motsatta — t.ex. x = −3 och y = 3. Men x = −2, y = 5 är också tillåtet och ger x + y = 3, inte 0. Inte alltid sant.",
+        "tier": "essential",
+        "title": "Testa C: x + y = 0"
+      },
+      {
+        "n": 7,
+        "text": "\\frac{y}{x}: positivt täljare, negativt nämnare → negativt resultat. Alltså \\frac{y}{x} < 0, inte 0 < \\frac{y}{x}. D är ALDRIG sant.",
+        "tier": "essential",
+        "title": "Testa D: 0 < y/x"
+      },
+      {
+        "n": 8,
+        "text": "x = −1, y = 1: \\frac{-1}{1} = -1 < 0 ✓. x = −7, y = 3: \\frac{-7}{3} \\approx -2{,}33 < 0 ✓. x = −1, y = 100: \\frac{-1}{100} = -0{,}01 < 0 ✓. Alltid negativt — alltid uppfyllt.",
+        "tier": "detail",
+        "title": "Verifiera A med konkreta exempel"
+      },
+      {
+        "n": 9,
+        "text": "Av de fyra alternativen är A det enda som är garanterat sant för ALLA giltiga x, y. B, C, D kan visas med motexempel inte vara universella.",
+        "tier": "detail",
+        "title": "Endast A passerar"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är A: \\frac{x}{y} < 0. Insikten i en mening: vid 'alltid sant'-frågor är teckenregler oslagbara — negativt/positivt är ALLTID negativt, oavsett storlek; medan jämförelser som x^6 < y^6 beror på storlek och alltså inte är garanterade.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Tecken-regelstrategin för 'alltid sant'-frågor: när villkoren begränsar TECKEN (men inte storlek), är teckenbaserade alternativ (x/y < 0, x · y < 0) säkra; storlek-baserade alternativ (x^6 < y^6, x + y = 0) kräver motexempel-test."
+  },
+  "host-2016-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "(6π + 8) kan kännas rimligt om man tror att sektorn är en halv cirkel (8π) och kvadraten halveras (8).",
+        "why_wrong": "Steg 5 visar att sektorn är 3/4, inte 1/2. Och kvadraten räknas helt (16), inte halvt (8). Detta alternativ är ungefär en kvart av det rätta svaret."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "(6π + 16) ser ut som ett 'mellanting' om man tror att sektorn är halv cirkel (men kvadraten räknas helt).",
+        "why_wrong": "Steg 6: sektorn är 12π (3/4 av hela cirkeln), inte 6π (3/8). Vinkeln är 270°, inte 135°."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "(12π + 8) kan dyka upp om man halverar kvadraten (8) men räknar sektorn rätt (12π).",
+        "why_wrong": "Steg 2 räknar hela kvadraten: 4·4 = 16, inte 8. Det finns ingen anledning att halvera kvadraten — hela kvadraten ingår i figuren."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Figuren består av en kvadrat (sida 4 cm) och en cirkelsektor (radie 4 cm, vinkel 270° = 3/4 cirkel). Kvadratens area: 16. Sektorns area: \\frac{3}{4} \\cdot \\pi \\cdot 4^{2} = 12\\pi. Total: (12\\pi + 16)\\,\\text{cm}^{2} — svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Figuren är ihopsatt av två delar: en kvadrat med sidan 4 cm, och en cirkelsektor med medelpunkten M och radien 4 cm. Du ska räkna ut den totala arean av figuren. Cirkelsektorns vinkel framgår av figuren (270°, dvs tre fjärdedelar av en hel cirkel).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Kvadratens area = sidan × sidan = s^{2}. För s = 4: area = 4 \\cdot 4 = 16\\,\\text{cm}^{2}.",
+        "tier": "detail",
+        "title": "Vad är en kvadrats area?"
+      },
+      {
+        "n": 3,
+        "text": "En hel cirkel har area \\pi r^{2}. En cirkelsektor är en 'tårtbit' av cirkeln med vinkel θ. Sektorns area är \\frac{\\theta}{360°} \\cdot \\pi r^{2}.",
+        "tier": "detail",
+        "title": "Vad är en cirkelsektors area?"
+      },
+      {
+        "n": 4,
+        "text": "Med radie 4: hela cirkelns area = \\pi \\cdot 4^{2} = 16\\pi\\,\\text{cm}^{2}.",
+        "tier": "essential",
+        "title": "Räkna ut hela cirkelns area"
+      },
+      {
+        "n": 5,
+        "text": "Figuren visar en sektor som är 3/4 av hela cirkeln (vinkel 270° — kvadraten 'biter ut' en kvartcirkel ur den hela cirkeln, och kvarvarande sektor är 3/4).",
+        "tier": "essential",
+        "title": "Identifiera sektorns vinkel"
+      },
+      {
+        "n": 6,
+        "text": "Sektorns area = \\frac{3}{4} \\cdot 16\\pi = 12\\pi\\,\\text{cm}^{2}.",
+        "tier": "essential",
+        "title": "Räkna ut sektorns area"
+      },
+      {
+        "n": 7,
+        "text": "Total area = kvadratens area + sektorns area = 16 + 12\\pi cm². Det är samma som (12\\pi + 16)\\,\\text{cm}^{2}.",
+        "tier": "essential",
+        "title": "Lägg ihop areorna"
+      },
+      {
+        "n": 8,
+        "text": "\\pi \\approx 3{,}14, så 12\\pi \\approx 37{,}7 och totalen ≈ 53,7 cm². Rimligt för en figur som rymmer en hel cirkel (≈ 50,3 cm²) plus extra hörn.",
+        "tier": "detail",
+        "title": "Numerisk uppskattning"
+      },
+      {
+        "n": 9,
+        "text": "6π skulle motsvara halv cirkel (3/8 cirkel ger 6π med radie 4 — det stämmer inte med en kvadrat som biter ut en kvartcirkel). 12π + 8 skulle motsvara halv kvadrat (8 cm²), inte hela. Alternativ D 12π + 16 matchar exakt 'kvadrat 16 + 3/4 cirkel 12π'.",
+        "tier": "detail",
+        "title": "Varför inte 6π eller 12π+8?"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är D: (12\\pi + 16)\\,\\text{cm}^{2}. Insikten i en mening: vid sammansatta figurer — bryt ner till kända grundformer (kvadrat, cirkel, sektor), räkna ut varje areas och addera; använd \\frac{\\theta}{360°}-faktorn för partiella cirklar.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Sammansatta figurer-strategin: dela upp figuren i kända grundformer (rektanglar, trianglar, cirklar/sektorer), räkna ut varje areas separat, och addera (eller subtrahera om hål) i slutet. För partiella cirklar: använd \\frac{\\theta}{360°} \\cdot \\pi r^{2}."
+  },
+  "host-2016-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "−9,5 kan dyka upp om man räknar (-4)^{-1} = -\\frac{1}{4} men sedan glömmer (−2)⁻² eller räknar fel och får −0,5 istället för +0,25.",
+        "why_wrong": "Steg 5 är specifik: (-2)^{-2} = +\\frac{1}{4} (jämn potens ger positivt resultat). Och 1 − 9 = −8, inte −9,5."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "+2 kan kännas rimligt om man teckenflippar uttrycken slumpmässigt utan att hålla reda på vilken som subtraheras.",
+        "why_wrong": "Steg 7 visar att 3^{2} subtraheras (uttrycket slutar med - 3^{2}). 9 dras alltså bort, vilket ger −8, inte +2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "10 kan dyka upp om man adderar alla absolutvärden utan att hålla reda på tecknen.",
+        "why_wrong": "Steg 8 är räkneoperationen: -\\frac{1}{4} + \\frac{1}{4} + 1 - 9 = -8. Tecknen är låsta av uttrycket."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att tro att negativ exponent ger negativt resultat. Botemedlet: kom ihåg att negativ exponent BARA inverterar (a^{-n} = \\frac{1}{a^{n}}) — tecknet bestäms av basen och paritet hos exponenten, inte av exponenten själv.",
+    "solution_path": "Räkna ut varje term: (-4)^{-1} = -\\frac{1}{4}, (-2)^{-2} = \\frac{1}{4}, (-1)^{0} = 1, 3^{2} = 9. Summa: -\\frac{1}{4} + \\frac{1}{4} + 1 - 9 = -8. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska räkna ut värdet av uttrycket (-4)^{-1} + (-2)^{-2} + (-1)^{0} - 3^{2} (tolkning av den något garbliga prompten — fyra potensuttryck där tre har negativ bas och en har olika exponent).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "a^{-n} = \\frac{1}{a^{n}} — negativ exponent betyder 'invertera och gör positivt'. Exempel: 2^{-1} = \\frac{1}{2}, 3^{-2} = \\frac{1}{9}.",
+        "tier": "detail",
+        "title": "Vad betyder en negativ exponent?"
+      },
+      {
+        "n": 3,
+        "text": "Vilket tal som helst (utom 0) upphöjt till 0 är 1. a^{0} = 1 för alla a \\neq 0.",
+        "tier": "detail",
+        "title": "Vad betyder exponent 0?"
+      },
+      {
+        "n": 4,
+        "text": "(-4)^{-1} = \\frac{1}{-4} = -\\frac{1}{4}. Negativt tal i nämnaren ger negativt resultat.",
+        "tier": "essential",
+        "title": "Term 1: (−4)⁻¹"
+      },
+      {
+        "n": 5,
+        "text": "(-2)^{-2} = \\frac{1}{(-2)^{2}} = \\frac{1}{4}. Den inre exponenten 2 är JÄMN, så (-2)^{2} = 4 (positivt). Sedan inverterar negativ-exponenten.",
+        "tier": "essential",
+        "title": "Term 2: (−2)⁻²"
+      },
+      {
+        "n": 6,
+        "text": "(-1)^{0} = 1 (enligt regeln i steg 3).",
+        "tier": "essential",
+        "title": "Term 3: (−1)⁰"
+      },
+      {
+        "n": 7,
+        "text": "3^{2} = 3 \\cdot 3 = 9. (Denna subtraheras enligt uttrycket.)",
+        "tier": "essential",
+        "title": "Term 4: 3²"
+      },
+      {
+        "n": 8,
+        "text": "-\\frac{1}{4} + \\frac{1}{4} + 1 - 9. Första två termerna tar ut varandra: -\\frac{1}{4} + \\frac{1}{4} = 0. Kvar: 0 + 1 - 9 = -8.",
+        "tier": "essential",
+        "title": "Lägg ihop"
+      },
+      {
+        "n": 9,
+        "text": "-\\frac{1}{4} + \\frac{1}{4} är ett bråk plus sin negation = 0. 1 - 9 = -8. Slutligt: 0 + (-8) = -8 ✓.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 10,
+        "text": "Värdet är -8 — svaret är B. Insikten i en mening: vid potensuttryck — tolka negativa exponenter som invertering, kom ihåg att jämn potens av negativt tal blir positivt, och leta efter termer som tar ut varandra för att förenkla.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Potens-uttrycks-strategin: räkna ut varje potensterm separat (negativ exponent → invertera; jämn exponent på negativ bas → positivt), sätt sedan ihop. Leta efter par av termer som tar ut varandra (såsom -\\frac{1}{4} och +\\frac{1}{4}) för att förenkla."
+  },
+  "host-2016-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "f(−2) ≈ −0,333 är 'mindre negativt' än f(0) eller f(3); kan kännas som ett 'nästan positivt' val.",
+        "why_wrong": "Steg 7: f(−2) är fortfarande NEGATIVT. f(−5) är positivt (1/9) — vilket alltid är större än negativt. f(−5) > f(−2)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "f(0) = −1 är ett 'snyggt' tal; lätt att tro att 'när x = 0' är ett naturligt 'mittenval'.",
+        "why_wrong": "Steg 5: f(0) = −1, vilket är mindre än 1/9. Att x = 0 är 'mitten' har inget att göra med hur stort funktionsvärdet är."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "f(3) ger största täljaren (7) i absolutvärde — om man bara tittar på täljaren ser f(3) 'stor' ut.",
+        "why_wrong": "Steg 6: f(3) = −7, vilket är det MINSTA värdet av alla fyra (mest negativt). Att täljaren är stor i absolutvärde betyder inte att kvoten är stor positivt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att tro att 'störst absolutbelopp = störst' när alternativen blandar positiva och negativa tal. Botemedlet: kom ihåg att även ett litet positivt tal (som 1/9) är större än ALLA negativa tal — sortera först på tecken, sedan på storlek.",
+    "solution_path": "Räkna ut varje värde: f(-5) = \\frac{1}{9}, f(-2) = -\\frac{1}{3}, f(0) = -1, f(3) = -7. Endast f(-5) är positivt; alltså störst. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har funktionen f(x) = \\frac{x+4}{x-4}. Du ska säga vilket av f(-5), f(-2), f(0), f(3) som är STÖRST.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "f(a) betyder 'sätt in a i funktionen där x står'. T.ex. f(5) = \\frac{5+4}{5-4} = \\frac{9}{1} = 9.",
+        "tier": "detail",
+        "title": "Vad betyder f(a)?"
+      },
+      {
+        "n": 3,
+        "text": "f(-5) = \\frac{-5+4}{-5-4} = \\frac{-1}{-9} = \\frac{1}{9}. (Två negativa delade ger positivt.)",
+        "tier": "essential",
+        "title": "Räkna f(−5)"
+      },
+      {
+        "n": 4,
+        "text": "f(-2) = \\frac{-2+4}{-2-4} = \\frac{2}{-6} = -\\frac{1}{3}.",
+        "tier": "essential",
+        "title": "Räkna f(−2)"
+      },
+      {
+        "n": 5,
+        "text": "f(0) = \\frac{0+4}{0-4} = \\frac{4}{-4} = -1.",
+        "tier": "essential",
+        "title": "Räkna f(0)"
+      },
+      {
+        "n": 6,
+        "text": "f(3) = \\frac{3+4}{3-4} = \\frac{7}{-1} = -7.",
+        "tier": "essential",
+        "title": "Räkna f(3)"
+      },
+      {
+        "n": 7,
+        "text": "f(-5) = \\frac{1}{9} \\approx 0{,}111 (positivt). f(-2) \\approx -0{,}333. f(0) = -1. f(3) = -7. Endast f(-5) är POSITIVT — och positivt är större än alla negativa tal.",
+        "tier": "essential",
+        "title": "Jämför värdena"
+      },
+      {
+        "n": 8,
+        "text": "f(x) är positivt när täljaren och nämnaren har samma tecken. Täljaren är (x+4), nämnaren är (x−4). Samma tecken kräver att antingen båda är positiva (x > 4) eller båda negativa (x < −4). f(−5): båda negativa ✓. Övriga (x = −2, 0, 3): bara nämnaren är negativ — olika tecken → negativt resultat.",
+        "tier": "detail",
+        "title": "Varför är f(−5) positivt men inte de andra?"
+      },
+      {
+        "n": 9,
+        "text": "x = −5: x + 4 = −1 (neg), x − 4 = −9 (neg) → kvot positiv ✓. x = −2: x + 4 = 2 (pos), x − 4 = −6 (neg) → kvot negativ ✓. Stämmer med beräkningarna.",
+        "tier": "detail",
+        "title": "Verifiera teckenanalysen"
+      },
+      {
+        "n": 10,
+        "text": "f(−5) är störst — svaret är A. Insikten i en mening: vid jämförelse av funktionsvärden — räkna ut varje exakt OCH analysera teckenmönstret (positivt > negativt) för att snabbt eliminera kandidater.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Funktion-värde-jämförelse-strategin: räkna ut varje funktionsvärde, men kolla först TECKNEN (positiv/negativ) — det eliminerar ofta de flesta alternativen direkt. För kvoter: täljarens och nämnarens tecken bestämmer kvotens tecken."
+  }
+}
