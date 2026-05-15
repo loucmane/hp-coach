@@ -87,7 +87,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Tecken-snabbtest: vid jämförelse av potenser av samma negativa bas — jämn exponent ger positivt, udda exponent ger negativt. Triggern är \"x < 0\" plus uttryck med olika exponenter — då räcker tecken-analys, inga räkneoperationer behövs."
+    "technique": "Tecken-snabbtest: vid jämförelse av potenser av samma negativa bas — jämn exponent ger positivt, udda exponent ger negativt. Triggern är \"x < 0\" plus uttryck med olika exponenter — då räcker tecken-analys, inga räkneoperationer behövs.",
+    "pregrade_tactic": {
+      "handle": "Teckenanalysen",
+      "move": "När basen har bestämt tecken, kolla bara om exponenten är jämn eller udda — räkna inte ut själva talet."
+    }
   },
   "host-2015-kvant1-KVA-014": {
     "_meta": {
@@ -183,7 +187,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "När medelvärdet är oförändrat och antalet är detsamma efter ett byte: använd \"summan av borttagna = summan av tillagda\". Triggern är \"medelvärde ändras inte\" + samma antal element — översätt till en summa-likhet och se vilka enskilda jämförelser den TILLÅTER snarare än TVINGAR."
+    "technique": "När medelvärdet är oförändrat och antalet är detsamma efter ett byte: använd \"summan av borttagna = summan av tillagda\". Triggern är \"medelvärde ändras inte\" + samma antal element — översätt till en summa-likhet och se vilka enskilda jämförelser den TILLÅTER snarare än TVINGAR.",
+    "pregrade_tactic": {
+      "handle": "Summa-låsningen",
+      "move": "När ett medelvärde är oförändrat, översätt villkoret till en summa-likhet och pröva om enskilda termer kan röra sig fritt."
+    }
   },
   "host-2015-kvant1-KVA-015": {
     "_meta": {
@@ -279,7 +287,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Centrumvinkelsatsen: centrumvinkel = 2 · randvinkel över samma båge. Triggern är en figur med en cirkel där en vinkel har vertex i medelpunkten och en annan har vertex på randen, och båda \"ser\" samma båge — då räcker det att räkna förhållandet 2:1."
+    "technique": "Centrumvinkelsatsen: centrumvinkel = 2 · randvinkel över samma båge. Triggern är en figur med en cirkel där en vinkel har vertex i medelpunkten och en annan har vertex på randen, och båda \"ser\" samma båge — då räcker det att räkna förhållandet 2:1.",
+    "pregrade_tactic": {
+      "handle": "Centrumvinkelregeln",
+      "move": "När en vinkel sitter i cirkelns mitt och en annan på randen mot samma båge, använd att mittvinkeln är dubbelt så stor."
+    }
   },
   "host-2015-kvant1-KVA-016": {
     "_meta": {
@@ -375,7 +387,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Sannolikhets-räkning genom gynnsamma/totala: skriv ner antalet gynnsamma utfall som ETT konkret tal och dela med totalantalet. Triggern är \"slumpmässigt vald\" + uppdelning i kategorier — räkna kategorin direkt utan att förvilla dig av enheter eller proportioner."
+    "technique": "Sannolikhets-räkning genom gynnsamma/totala: skriv ner antalet gynnsamma utfall som ETT konkret tal och dela med totalantalet. Triggern är \"slumpmässigt vald\" + uppdelning i kategorier — räkna kategorin direkt utan att förvilla dig av enheter eller proportioner.",
+    "pregrade_tactic": {
+      "handle": "Gynnsamma-av-totala",
+      "move": "Skriv ner hur många dagar som uppfyller villkoret och dela med totalantalet — inte storleken på själva talen."
+    }
   },
   "host-2015-kvant1-KVA-018": {
     "_meta": {
@@ -471,7 +487,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Substitutions-strategin för funktionsvärden: byt ut x mot det givna talet och räkna term för term, med särskild noggrannhet vid tecken och exponenter. Triggern är f(x) plus konkreta x-värden — beräkning, inte algebra, är det som krävs."
+    "technique": "Substitutions-strategin för funktionsvärden: byt ut x mot det givna talet och räkna term för term, med särskild noggrannhet vid tecken och exponenter. Triggern är f(x) plus konkreta x-värden — beräkning, inte algebra, är det som krävs.",
+    "pregrade_tactic": {
+      "handle": "Substitutionsmetoden",
+      "move": "Byt ut x mot det givna talet i hela uttrycket och räkna term för term — håll extra koll på tecken vid potenser."
+    }
   },
   "host-2015-kvant1-KVA-019": {
     "_meta": {
@@ -567,7 +587,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Volym-till-area-strategin: när du har volymen av en kub, ta kubikroten för att få sidan, sedan multiplicera 6·(sida)² för total yta. Triggern är att en kub anges via volym men frågan vill ha area — då går du via sidan."
+    "technique": "Volym-till-area-strategin: när du har volymen av en kub, ta kubikroten för att få sidan, sedan multiplicera 6·(sida)² för total yta. Triggern är att en kub anges via volym men frågan vill ha area — då går du via sidan.",
+    "pregrade_tactic": {
+      "handle": "Volym-till-sida",
+      "move": "Vid kub: ta kubikroten av volymen för att få sidan, multiplicera sedan 6 gånger sidan i kvadrat för total yta."
+    }
   },
   "host-2015-kvant1-KVA-020": {
     "_meta": {
@@ -663,7 +687,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "π-jämförelse-strategin: använd närmevärdet π ≈ 3,14 för snabba uppskattningar i KVA. Triggern är att π dyker upp på exakt en sida — räkna fram talvärdet och jämför mot den andra sidan med tillräcklig precision för att vara säker på tecken."
+    "technique": "π-jämförelse-strategin: använd närmevärdet π ≈ 3,14 för snabba uppskattningar i KVA. Triggern är att π dyker upp på exakt en sida — räkna fram talvärdet och jämför mot den andra sidan med tillräcklig precision för att vara säker på tecken.",
+    "pregrade_tactic": {
+      "handle": "π-närmevärdet",
+      "move": "Sätt π ≈ 3,14 och räkna fram talvärdet — använd aldrig π ≈ 3, marginalen kan bli för knapp."
+    }
   },
   "host-2015-kvant1-KVA-021": {
     "_meta": {
@@ -759,7 +787,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Förenkla-först-strategin: innan du jämför, multiplicera ut parenteser och kombinera lika termer. Triggern är en ekvation som SER ut att koppla två variabler — ofta visar förenklingen att en variabel försvinner, och då är den ena fri."
+    "technique": "Förenkla-först-strategin: innan du jämför, multiplicera ut parenteser och kombinera lika termer. Triggern är en ekvation som SER ut att koppla två variabler — ofta visar förenklingen att en variabel försvinner, och då är den ena fri.",
+    "pregrade_tactic": {
+      "handle": "Förenkla-först",
+      "move": "Multiplicera ut parenteserna och slå ihop lika termer innan du jämför — ibland försvinner en variabel helt."
+    }
   },
   "host-2015-kvant1-KVA-022": {
     "_meta": {
@@ -867,7 +899,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Procent-till-decimal-strategin: översätt \"p % av X\" till (p/100)·X innan du börjar lösa ekvationer. Triggern är procenttecken i ekvation — gör om till decimaltal direkt, då blir ekvationen en vanlig linjär ekvation."
+    "technique": "Procent-till-decimal-strategin: översätt \"p % av X\" till (p/100)·X innan du börjar lösa ekvationer. Triggern är procenttecken i ekvation — gör om till decimaltal direkt, då blir ekvationen en vanlig linjär ekvation.",
+    "pregrade_tactic": {
+      "handle": "Procent-till-decimal",
+      "move": "Översätt varje procentuttryck till decimaltal (p % = p/100) innan du löser ekvationen som vanlig algebra."
+    }
   },
   "host-2015-kvant1-NOG-023": {
     "_meta": {
@@ -968,7 +1004,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Likhet-mot-olikhet-strategin för NOG: påståenden med EXAKTA förhållanden (\"X = 3,8 gånger Y\") är ofta tillräckliga ensamma, medan påståenden med OLIKHETER (\"X > tre gånger Y\") ofta är otillräckliga. Triggern är språkkonstruktionen i påståendet — \"så mycket som\" mot \"mer/mindre än\"."
+    "technique": "Likhet-mot-olikhet-strategin för NOG: påståenden med EXAKTA förhållanden (\"X = 3,8 gånger Y\") är ofta tillräckliga ensamma, medan påståenden med OLIKHETER (\"X > tre gånger Y\") ofta är otillräckliga. Triggern är språkkonstruktionen i påståendet — \"så mycket som\" mot \"mer/mindre än\".",
+    "pregrade_tactic": {
+      "handle": "Likhet-mot-olikhet",
+      "move": "Påståenden med EXAKT förhållande räcker oftast ensamma; påståenden med olikhet (mer än, mindre än) gör det sällan."
+    }
   },
   "host-2015-kvant1-NOG-024": {
     "_meta": {
@@ -1106,7 +1146,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Medelhastighets-strategin: för rund-resa, använd 2·s / (t₁ + t₂) — och observera att om förhållandet t₁/t₂ är känt så faller s ut ur kvoten. Triggern är \"medelhastighet för hela resan\" plus okänd hastighet i ena riktningen — då räcker oftast tidsförhållandet."
+    "technique": "Medelhastighets-strategin: för rund-resa, använd 2·s / (t₁ + t₂) — och observera att om förhållandet t₁/t₂ är känt så faller s ut ur kvoten. Triggern är \"medelhastighet för hela resan\" plus okänd hastighet i ena riktningen — då räcker oftast tidsförhållandet.",
+    "pregrade_tactic": {
+      "handle": "Sträckan-faller-ut",
+      "move": "Vid medelhastighet för rund-resa räcker ofta tidsförhållandet ut/hem — själva avståndet behövs inte."
+    }
   },
   "host-2015-kvant1-NOG-026": {
     "_meta": {
@@ -1219,7 +1263,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Motexempel-i-båda-riktningar-strategin: för NOG-frågor med olikheter och okända tecken, försök konstruera motexempel där svaret är JA och NEJ samtidigt under samma villkor. Triggern är \"är z < 0?\" plus uttryck i form av produkter — multiplicera negativa och positiva val systematiskt."
+    "technique": "Motexempel-i-båda-riktningar-strategin: för NOG-frågor med olikheter och okända tecken, försök konstruera motexempel där svaret är JA och NEJ samtidigt under samma villkor. Triggern är \"är z < 0?\" plus uttryck i form av produkter — multiplicera negativa och positiva val systematiskt.",
+    "pregrade_tactic": {
+      "handle": "Motexempel-i-båda-led",
+      "move": "Vid olikheter med okända tecken: konstruera ett scenario där svaret är ja och ett där svaret är nej innan du bestämmer dig."
+    }
   },
   "host-2015-kvant1-NOG-027": {
     "_meta": {
@@ -1326,7 +1374,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Andelsproblem-i-NOG-strategin: när frågan är \"andel/procent av X\", räkna både täljare och nämnare separat — och kolla att TVÅ oberoende uppgifter finns för att låsa båda. Triggern är \"andel av X:s liv/totala/etc.\" — säkerställ att både \"delen\" och \"helheten\" har egna data."
+    "technique": "Andelsproblem-i-NOG-strategin: när frågan är \"andel/procent av X\", räkna både täljare och nämnare separat — och kolla att TVÅ oberoende uppgifter finns för att låsa båda. Triggern är \"andel av X:s liv/totala/etc.\" — säkerställ att både \"delen\" och \"helheten\" har egna data.",
+    "pregrade_tactic": {
+      "handle": "Andel-kräver-två-data",
+      "move": "När frågan är ”andel av X”, kräv att både täljaren och nämnaren har egna data — en uppgift räcker aldrig."
+    }
   },
   "host-2015-kvant1-NOG-028": {
     "_meta": {
@@ -1433,7 +1485,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "2x2-system-strategin för NOG-allokering: när två påståenden beskriver \"över\" och \"fattas\" för samma okända, översätt båda till ekvationer i samma två variabler — då matchar antalet ekvationer antalet obekanta och systemet löses entydigt."
+    "technique": "2x2-system-strategin för NOG-allokering: när två påståenden beskriver \"över\" och \"fattas\" för samma okända, översätt båda till ekvationer i samma två variabler — då matchar antalet ekvationer antalet obekanta och systemet löses entydigt.",
+    "pregrade_tactic": {
+      "handle": "Ekvationer-mot-obekanta",
+      "move": "Översätt varje påstående till en ekvation; jämför antal ekvationer mot antal obekanta för att se om systemet är låst."
+    }
   },
   "host-2015-kvant1-XYZ-001": {
     "_meta": {
@@ -1575,7 +1631,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Procentdefinitionen i en formel: andelen i procent = (delen / helheten) · 100. Triggern är \"hur många procent är X av Y\" — räkna X/Y och översätt till hundradelar genom förlängning eller multiplikation med 100."
+    "technique": "Procentdefinitionen i en formel: andelen i procent = (delen / helheten) · 100. Triggern är \"hur många procent är X av Y\" — räkna X/Y och översätt till hundradelar genom förlängning eller multiplikation med 100.",
+    "pregrade_tactic": {
+      "handle": "Procentdefinitionen",
+      "move": "Räkna delen genom helheten och förläng bråket till hundradelar — det blir procentsiffran direkt."
+    }
   },
   "host-2015-kvant1-XYZ-004": {
     "_meta": {
@@ -1665,7 +1725,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Mittpunkts-formeln: räkna medelvärdet av x-koordinaterna och medelvärdet av y-koordinaterna separat. Triggern är \"mittpunkten mellan A och B\" eller \"halvvägs mellan\" — använd alltid (snitt-x, snitt-y), aldrig något annat."
+    "technique": "Mittpunkts-formeln: räkna medelvärdet av x-koordinaterna och medelvärdet av y-koordinaterna separat. Triggern är \"mittpunkten mellan A och B\" eller \"halvvägs mellan\" — använd alltid (snitt-x, snitt-y), aldrig något annat.",
+    "pregrade_tactic": {
+      "handle": "Mittpunktsformeln",
+      "move": "Mittpunkten har x = medelvärdet av x-koordinaterna och y = medelvärdet av y-koordinaterna, var för sig."
+    }
   },
   "host-2015-kvant1-XYZ-005": {
     "_meta": {
@@ -1788,7 +1852,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Fix-en-person-strategin för cirkulär sittsannolikhet: sätt en person på godtycklig plats, räkna bara var den andra hamnar relativt den första. Triggern är \"vad är sannolikheten att A och B sitter i viss konfiguration\" — kollapsa rotationssymmetrin innan du räknar."
+    "technique": "Fix-en-person-strategin för cirkulär sittsannolikhet: sätt en person på godtycklig plats, räkna bara var den andra hamnar relativt den första. Triggern är \"vad är sannolikheten att A och B sitter i viss konfiguration\" — kollapsa rotationssymmetrin innan du räknar.",
+    "pregrade_tactic": {
+      "handle": "Fix-en-person",
+      "move": "Vid cirkulär placering: lås en person på en sida och räkna bara var den andra hamnar relativt den första."
+    }
   },
   "host-2015-kvant1-XYZ-007": {
     "_meta": {
@@ -1884,7 +1952,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Paritetsregler-strategin: när x och y har låst paritet (båda jämna eller båda udda), analysera varje uttryck FORMELLT med reglerna jämn±jämn=jämn, jämn·något=jämn, udda+1=jämn. Triggern är \"kan vara udda/jämn\" — leta efter uttrycket där ingen jämn faktor finns inbäddad."
+    "technique": "Paritetsregler-strategin: när x och y har låst paritet (båda jämna eller båda udda), analysera varje uttryck FORMELLT med reglerna jämn±jämn=jämn, jämn·något=jämn, udda+1=jämn. Triggern är \"kan vara udda/jämn\" — leta efter uttrycket där ingen jämn faktor finns inbäddad.",
+    "pregrade_tactic": {
+      "handle": "Paritets-räkning",
+      "move": "När x och y är jämna: pröva varje uttryck med reglerna jämn+jämn=jämn, jämn·tal=jämn, jämn+1=udda."
+    }
   },
   "host-2015-kvant1-XYZ-008": {
     "_meta": {
@@ -1980,7 +2052,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Romb-formel-strategin: när alla fyra sidor i en fyrhörning är lika långa, använd area = (d₁·d₂)/2. Triggern är \"sidor lika långa\" eller en geometri där punkter på sidorna ligger i radie-avstånd från medelpunkter — då är fyrhörningen ofta en romb."
+    "technique": "Romb-formel-strategin: när alla fyra sidor i en fyrhörning är lika långa, använd area = (d₁·d₂)/2. Triggern är \"sidor lika långa\" eller en geometri där punkter på sidorna ligger i radie-avstånd från medelpunkter — då är fyrhörningen ofta en romb.",
+    "pregrade_tactic": {
+      "handle": "Romb-arean",
+      "move": "När alla sidor i en fyrhörning är lika långa: använd att arean är diagonalerna multiplicerade och delat med två."
+    }
   },
   "host-2015-kvant1-XYZ-010": {
     "_meta": {
@@ -2076,7 +2152,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Olikhets-strategin: hantera precis som en ekvation MEN med extraregeln att vända olikhetstecknet när du multiplicerar eller dividerar båda sidor med ett negativt tal. Triggern är att en koefficient framför x är negativ — då måste vändningen ske vid sista isoleringssteget."
+    "technique": "Olikhets-strategin: hantera precis som en ekvation MEN med extraregeln att vända olikhetstecknet när du multiplicerar eller dividerar båda sidor med ett negativt tal. Triggern är att en koefficient framför x är negativ — då måste vändningen ske vid sista isoleringssteget.",
+    "pregrade_tactic": {
+      "handle": "Vänd-vid-negativt",
+      "move": "Lös olikheten som en ekvation — men vänd olikhetstecknet när du multiplicerar eller dividerar med ett negativt tal."
+    }
   },
   "host-2015-kvant1-XYZ-012": {
     "_meta": {
@@ -2172,7 +2252,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Substitutions-bakåtstrategin: när du får \"vilket p gör att lösningen blir x = a\", sätt in x = a och lös för p. Triggern är att en konstant står som okänd och lösningen är given — då är p den nya okända i en linjär ekvation som blir trivial att lösa."
+    "technique": "Substitutions-bakåtstrategin: när du får \"vilket p gör att lösningen blir x = a\", sätt in x = a och lös för p. Triggern är att en konstant står som okänd och lösningen är given — då är p den nya okända i en linjär ekvation som blir trivial att lösa.",
+    "pregrade_tactic": {
+      "handle": "Substitutionen-baklänges",
+      "move": "När lösningen x är given och en konstant är okänd: sätt in x-värdet och lös för konstanten i stället."
+    }
   },
   "host-2015-kvant2-KVA-013": {
     "_meta": {
@@ -2262,7 +2346,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Ordningsregler-strategin: vid rena talvärden, räkna stegvis enligt ordningsreglerna (parentes → multiplikation/division → addition/subtraktion). Triggern är två talvärde-uttryck utan variabler — då gäller mekanisk räkning, ingen algebra."
+    "technique": "Ordningsregler-strategin: vid rena talvärden, räkna stegvis enligt ordningsreglerna (parentes → multiplikation/division → addition/subtraktion). Triggern är två talvärde-uttryck utan variabler — då gäller mekanisk räkning, ingen algebra.",
+    "pregrade_tactic": {
+      "handle": "Räkneordningen",
+      "move": "Räkna ut båda uttrycken steg för steg: parentes först, sedan multiplikation, sist addition och subtraktion."
+    }
   },
   "host-2015-kvant2-KVA-015": {
     "_meta": {
@@ -2358,7 +2446,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Negativa-exponenter-strategin: skriv om {MO}a^{{-n}}{MC} som {MO}1/a^{{n}}{MC} och jämför bråken med samma täljare via deras nämnare. Triggern är negativa exponenter — invertera dem till bråk, då blir storleksjämförelsen mekanisk."
+    "technique": "Negativa-exponenter-strategin: skriv om {MO}a^{{-n}}{MC} som {MO}1/a^{{n}}{MC} och jämför bråken med samma täljare via deras nämnare. Triggern är negativa exponenter — invertera dem till bråk, då blir storleksjämförelsen mekanisk.",
+    "pregrade_tactic": {
+      "handle": "Negativ-exponent-inversen",
+      "move": "Skriv om varje negativ potens som ett bråk: a upphöjt till minus n blir ett delat med a upphöjt till n."
+    }
   },
   "host-2015-kvant2-KVA-016": {
     "_meta": {
@@ -2460,7 +2552,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Fri-variabel-strategin för KVA: när minst en variabel är fri (bara generiskt villkor som k ≠ 0), sök tre olika scenarier som ger I > II, I < II respektive I = II. Triggern är \"k ≠ 0\" eller liknande löst villkor — det signalerar oftast otillräcklig information."
+    "technique": "Fri-variabel-strategin för KVA: när minst en variabel är fri (bara generiskt villkor som k ≠ 0), sök tre olika scenarier som ger I > II, I < II respektive I = II. Triggern är \"k ≠ 0\" eller liknande löst villkor — det signalerar oftast otillräcklig information.",
+    "pregrade_tactic": {
+      "handle": "Fri-variabel-testet",
+      "move": "När bara ett svagt villkor ges (typ k ≠ 0), leta efter tre scenarier som ger I större, I mindre och I lika — då fattas information."
+    }
   },
   "host-2015-kvant2-KVA-017": {
     "_meta": {
@@ -2556,7 +2652,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Cylinder-volym-formel-strategin: {MO}V = \\pi r^{{2}} h{MC} — komihåg att RADIEN kvadreras. Triggern är två cylindrar med olika r och h — när du behöver jämföra, räkna {MO}r^{{2}} h{MC} (utan π-faktor, den är gemensam) och jämför."
+    "technique": "Cylinder-volym-formel-strategin: {MO}V = \\pi r^{{2}} h{MC} — komihåg att RADIEN kvadreras. Triggern är två cylindrar med olika r och h — när du behöver jämföra, räkna {MO}r^{{2}} h{MC} (utan π-faktor, den är gemensam) och jämför.",
+    "pregrade_tactic": {
+      "handle": "Cylindervolymen",
+      "move": "Vid cylinder: räkna radien i kvadrat gånger höjden (π är gemensam för båda och kan strykas) och jämför."
+    }
   },
   "host-2015-kvant2-KVA-018": {
     "_meta": {
@@ -2652,7 +2752,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Substitutions-strategin: när du har ett villkor (typ x = 3y) och två uttryck med båda variabler, byt ut villkorets variabel överallt — då blir uttrycken funktioner av en enda variabel, och du kan jämföra dem direkt."
+    "technique": "Substitutions-strategin: när du har ett villkor (typ x = 3y) och två uttryck med båda variabler, byt ut villkorets variabel överallt — då blir uttrycken funktioner av en enda variabel, och du kan jämföra dem direkt.",
+    "pregrade_tactic": {
+      "handle": "Substitutionsmetoden",
+      "move": "När villkoret kopplar ihop två variabler (x = 3y), byt ut den ena överallt så att bara en variabel återstår."
+    }
   },
   "host-2015-kvant2-KVA-019": {
     "_meta": {
@@ -2748,7 +2852,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Definierad-operation-strategin: läs definitionen av den nya symbolen och substituera in argumentvärdena precis enligt formeln. Triggern är en udda symbol med en \"x \\square y = ...\"-definition — det är bara en alternativ notation för ett vanligt aritmetiskt uttryck."
+    "technique": "Definierad-operation-strategin: läs definitionen av den nya symbolen och substituera in argumentvärdena precis enligt formeln. Triggern är en udda symbol med en \"x \\square y = ...\"-definition — det är bara en alternativ notation för ett vanligt aritmetiskt uttryck.",
+    "pregrade_tactic": {
+      "handle": "Definierad-operation",
+      "move": "Läs definitionen av den nya symbolen som en formel och sätt bara in argumenten — det är vanlig aritmetik i förklädnad."
+    }
   },
   "host-2015-kvant2-KVA-021": {
     "_meta": {
@@ -2850,7 +2958,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Olikhets-jämförelse-strategin: lös var och en av olikheterna isolat, identifiera om de ger båda en undre gräns OCH en övre gräns för variabeln eller bara en av dem. Triggern är två olikheter med olika variabler — räkna lösningsmängderna och se om de \"tvingar\" en jämförelse."
+    "technique": "Olikhets-jämförelse-strategin: lös var och en av olikheterna isolat, identifiera om de ger båda en undre gräns OCH en övre gräns för variabeln eller bara en av dem. Triggern är två olikheter med olika variabler — räkna lösningsmängderna och se om de \"tvingar\" en jämförelse.",
+    "pregrade_tactic": {
+      "handle": "Olikhets-låsningen",
+      "move": "Lös varje olikhet för sig så du får en gräns för x och en för y — jämför sedan om gränserna tvingar fram en ordning."
+    }
   },
   "host-2015-kvant2-KVA-022": {
     "_meta": {
@@ -2958,7 +3070,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Par-räknings-strategin: för \"hur många skärningar/par/möten\" med n objekt, använd binomialkoefficienten {MO}\\binom{{n}}{{2}} = n(n-1)/2{MC}. Triggern är frågan om ATT VÄLJA PAR (par av linjer, par av lag, ...) — det är inte multiplikation utan kombination."
+    "technique": "Par-räknings-strategin: för \"hur många skärningar/par/möten\" med n objekt, använd binomialkoefficienten {MO}\\binom{{n}}{{2}} = n(n-1)/2{MC}. Triggern är frågan om ATT VÄLJA PAR (par av linjer, par av lag, ...) — det är inte multiplikation utan kombination.",
+    "pregrade_tactic": {
+      "handle": "Par-räkningen",
+      "move": "Vid frågan ”hur många par” av n objekt: räkna n gånger (n minus 1) delat med två — inte n gånger n."
+    }
   },
   "host-2015-kvant2-NOG-023": {
     "_meta": {
@@ -3059,7 +3175,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Andel-och-förhållande-ekvivalens-strategin: påståenden om procent och påståenden om förhållande är ofta utbytbara — \"75 % svarta\" och \"3 svarta per 1 vit\" ger samma andel. Triggern är NOG om sannolikheter — leta efter andelar eller förhållanden, båda räcker."
+    "technique": "Andel-och-förhållande-ekvivalens-strategin: påståenden om procent och påståenden om förhållande är ofta utbytbara — \"75 % svarta\" och \"3 svarta per 1 vit\" ger samma andel. Triggern är NOG om sannolikheter — leta efter andelar eller förhållanden, båda räcker.",
+    "pregrade_tactic": {
+      "handle": "Andel-eller-förhållande",
+      "move": "Vid sannolikhet: både en andel (75 % svarta) och ett förhållande (tre svarta per vit) räcker — de säger samma sak."
+    }
   },
   "host-2015-kvant2-NOG-024": {
     "_meta": {
@@ -3166,7 +3286,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Räkna-ekvationer-mot-obekanta-strategin för NOG: skriv upp alla okända storheter och alla ekvationer från påståendena. Om antalet oberoende ekvationer är MINDRE än antalet obekanta, är systemet underbestämt — informationen räcker inte. Triggern är många kategorier (flera distinkta studentinriktningar) med få exakta ekvationer."
+    "technique": "Räkna-ekvationer-mot-obekanta-strategin för NOG: skriv upp alla okända storheter och alla ekvationer från påståendena. Om antalet oberoende ekvationer är MINDRE än antalet obekanta, är systemet underbestämt — informationen räcker inte. Triggern är många kategorier (flera distinkta studentinriktningar) med få exakta ekvationer.",
+    "pregrade_tactic": {
+      "handle": "Räkna-ekvationer",
+      "move": "Skriv upp alla okända storheter och alla ekvationer påståendena ger; räcker ekvationerna inte till antalet obekanta så saknas info."
+    }
   },
   "host-2015-kvant2-NOG-025": {
     "_meta": {
@@ -3279,7 +3403,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "System-räknings-strategin: räkna antalet oberoende ekvationer (inklusive huvudekvationen i problemtexten) och jämför med antalet obekanta. Triggern är NOG med en relation i frågetexten plus två påståenden — huvudekvationen RÄKNAS MED, så ofta räcker bara TVÅ extra ekvationer för tre obekanta."
+    "technique": "System-räknings-strategin: räkna antalet oberoende ekvationer (inklusive huvudekvationen i problemtexten) och jämför med antalet obekanta. Triggern är NOG med en relation i frågetexten plus två påståenden — huvudekvationen RÄKNAS MED, så ofta räcker bara TVÅ extra ekvationer för tre obekanta.",
+    "pregrade_tactic": {
+      "handle": "Ekvationer-mot-obekanta",
+      "move": "Räkna med huvudekvationen från frågetexten — den räknas också, så ofta räcker två extra påståenden för tre obekanta."
+    }
   },
   "host-2015-kvant2-NOG-026": {
     "_meta": {
@@ -3380,7 +3508,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Avvikelse-i-NOG-strategin: \"avvikelse med X\" eller \"skillnad med X\" är osignerade — de tillåter två giltiga utfall (plus och minus). Triggern är ordet \"avvikelse\" — vänd det till en kvadratisk olikhet eller ETT möjlig val åt vardera hållet innan du svarar."
+    "technique": "Avvikelse-i-NOG-strategin: \"avvikelse med X\" eller \"skillnad med X\" är osignerade — de tillåter två giltiga utfall (plus och minus). Triggern är ordet \"avvikelse\" — vänd det till en kvadratisk olikhet eller ETT möjlig val åt vardera hållet innan du svarar.",
+    "pregrade_tactic": {
+      "handle": "Avvikelsens-två-håll",
+      "move": "”Avvikelse med X” är osignerad — pröva både plus och minus innan du tror att påståendet ger ett unikt svar."
+    }
   },
   "host-2015-kvant2-NOG-027": {
     "_meta": {
@@ -3481,7 +3613,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Olikhets-otillräcklighets-strategin: när påståenden är OLIKHETER (\"färre än\", \"fler än\") snarare än LIKHETER (\"= X\"), är de oftast otillräckliga för att låsa ett konkret heltal. Triggern är jämförelseord (\"fler\", \"färre\") utan exakta tal — räkna med flera möjliga heltal innan du avgör."
+    "technique": "Olikhets-otillräcklighets-strategin: när påståenden är OLIKHETER (\"färre än\", \"fler än\") snarare än LIKHETER (\"= X\"), är de oftast otillräckliga för att låsa ett konkret heltal. Triggern är jämförelseord (\"fler\", \"färre\") utan exakta tal — räkna med flera möjliga heltal innan du avgör.",
+    "pregrade_tactic": {
+      "handle": "Olikhet-räcker-sällan",
+      "move": "Vid heltalsantal: ”färre än” eller ”fler än” räcker sällan ensamt — pröva flera heltal som uppfyller villkoret innan du svarar."
+    }
   },
   "host-2015-kvant2-NOG-028": {
     "_meta": {
@@ -3612,7 +3748,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Sortering-NOG-strategin: skriv ut alla möjliga ordningar systematiskt och eliminera dem med varje villkor. Triggern är NOG-frågor med en sekvens (\"i vilken ordning\") — varje påstående är en filtrerings-regel; den sista som ger UNIK ordning räcker."
+    "technique": "Sortering-NOG-strategin: skriv ut alla möjliga ordningar systematiskt och eliminera dem med varje villkor. Triggern är NOG-frågor med en sekvens (\"i vilken ordning\") — varje påstående är en filtrerings-regel; den sista som ger UNIK ordning räcker.",
+    "pregrade_tactic": {
+      "handle": "Sortera-bort-kandidater",
+      "move": "Skriv ut alla tänkbara ordningar och stryk dem som bryter mot påståendet — den sista som ger en unik ordning räcker."
+    }
   },
   "host-2015-kvant2-XYZ-001": {
     "_meta": {
@@ -3708,7 +3848,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Utveckla-och-förenkla-strategin: när båda sidor har parenteser, distribuera ut allt och slå ihop lika termer. Triggern är två sidor med samma form a(x + b) = c(x + d) — utveckla och se om de leder till en låst x eller en identitet/motsägelse."
+    "technique": "Utveckla-och-förenkla-strategin: när båda sidor har parenteser, distribuera ut allt och slå ihop lika termer. Triggern är två sidor med samma form a(x + b) = c(x + d) — utveckla och se om de leder till en låst x eller en identitet/motsägelse.",
+    "pregrade_tactic": {
+      "handle": "Distribuera-och-jämför",
+      "move": "Multiplicera ut båda parenteserna, slå ihop lika termer på varje sida och isolera x — ofta blir lösningen ett enkelt tal."
+    }
   },
   "host-2015-kvant2-XYZ-002": {
     "_meta": {
@@ -3804,7 +3948,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Entalssiffre-strategin: räkna ut de första potenserna för att hitta cykeln av entalssiffror. Triggern är \"sista siffran i a^n\" — entalssiffrorna upprepar sig ofta i ett kort mönster (för bas 5 låst på 5, för bas 2 cykel 2-4-8-6-2-4...)."
+    "technique": "Entalssiffre-strategin: räkna ut de första potenserna för att hitta cykeln av entalssiffror. Triggern är \"sista siffran i a^n\" — entalssiffrorna upprepar sig ofta i ett kort mönster (för bas 5 låst på 5, för bas 2 cykel 2-4-8-6-2-4...).",
+    "pregrade_tactic": {
+      "handle": "Entalssiffrans-cykel",
+      "move": "Räkna ut de första potenserna för att se hur sista siffran upprepar sig — basen 5 har alltid 5 som entalssiffra."
+    }
   },
   "host-2015-kvant2-XYZ-003": {
     "_meta": {
@@ -3900,7 +4048,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Gemensam-nämnare-strategin: konvertera alla bråk (och decimaltal) till bråk med samma nämnare innan du adderar/subtraherar. Triggern är blandade format eller olika nämnare — hitta MGN och förläng systematiskt."
+    "technique": "Gemensam-nämnare-strategin: konvertera alla bråk (och decimaltal) till bråk med samma nämnare innan du adderar/subtraherar. Triggern är blandade format eller olika nämnare — hitta MGN och förläng systematiskt.",
+    "pregrade_tactic": {
+      "handle": "Gemensam-nämnare",
+      "move": "Konvertera alla decimaltal och bråk till samma nämnare innan du adderar eller subtraherar — då blir räkningen mekanisk."
+    }
   },
   "host-2015-kvant2-XYZ-004": {
     "_meta": {
@@ -3996,7 +4148,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Vinkelrät-strategi: när två räta linjer ska vara vinkelräta, ta NEGATIVA INVERSEN av den ena lutningen för att få den andra (lutningar multiplicerar till −1). Triggern är \"rät vinkel\" eller \"vinkelrätt\" plus en känd lutning — invertera och vänd tecknet."
+    "technique": "Vinkelrät-strategi: när två räta linjer ska vara vinkelräta, ta NEGATIVA INVERSEN av den ena lutningen för att få den andra (lutningar multiplicerar till −1). Triggern är \"rät vinkel\" eller \"vinkelrätt\" plus en känd lutning — invertera och vänd tecknet.",
+    "pregrade_tactic": {
+      "handle": "Vinkelrät-lutning",
+      "move": "Vid räta vinklar: ta negativa inversen av den ena lutningen för att få den andra — produkten av lutningarna blir minus ett."
+    }
   },
   "host-2015-kvant2-XYZ-005": {
     "_meta": {
@@ -4104,7 +4260,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Potens-regler-strategin: vid multiplikation av potenser med samma bas, addera exponenterna. Triggern är två potenser med samma bas multiplicerade — direkt regelapplicering, inga räkneoperationer behövs."
+    "technique": "Potens-regler-strategin: vid multiplikation av potenser med samma bas, addera exponenterna. Triggern är två potenser med samma bas multiplicerade — direkt regelapplicering, inga räkneoperationer behövs.",
+    "pregrade_tactic": {
+      "handle": "Potenslag-samma-bas",
+      "move": "Vid multiplikation av potenser med samma bas: addera exponenterna direkt, det är hela regeln."
+    }
   },
   "host-2015-kvant2-XYZ-006": {
     "_meta": {
@@ -4250,7 +4410,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Tecken-tracking-strategin: vid förenkling av uttryck med flera parenteser och minustecken, skriv ut MINUSTECKEN FRAMFÖR varje multiplikation och kontrollera tecknet på varje produkt innan du går vidare. Triggern är fler än en parentes med blandade tecken."
+    "technique": "Tecken-tracking-strategin: vid förenkling av uttryck med flera parenteser och minustecken, skriv ut MINUSTECKEN FRAMFÖR varje multiplikation och kontrollera tecknet på varje produkt innan du går vidare. Triggern är fler än en parentes med blandade tecken.",
+    "pregrade_tactic": {
+      "handle": "Tecken-spårning",
+      "move": "När en parentes föregås av minus eller en faktor: skriv ut faktorn för varje term och kontrollera tecknet innan du slår ihop."
+    }
   },
   "host-2015-kvant2-XYZ-008": {
     "_meta": {
@@ -4346,7 +4510,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Addera-hastigheter-strategin: när två (eller fler) entiteter arbetar samtidigt på samma uppgift, addera deras hastigheter (uppgift/tid), inte tiderna. Triggern är \"båda samtidigt\" eller \"tillsammans\" — räkna fram hastigheter, summera, och invertera för total tid."
+    "technique": "Addera-hastigheter-strategin: när två (eller fler) entiteter arbetar samtidigt på samma uppgift, addera deras hastigheter (uppgift/tid), inte tiderna. Triggern är \"båda samtidigt\" eller \"tillsammans\" — räkna fram hastigheter, summera, och invertera för total tid.",
+    "pregrade_tactic": {
+      "handle": "Adderade-hastigheter",
+      "move": "När två arbetar samtidigt: addera deras hastigheter (uppgift per tid), invertera summan för total tid — addera aldrig tiderna."
+    }
   },
   "host-2015-kvant2-XYZ-009": {
     "_meta": {
@@ -4436,7 +4604,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Prefix-omvandlings-strategin: skriv alla alternativ i meter (eller bas-enheten) med tio-potenser. Triggern är jämförelse mellan tal med olika SI-prefix — översätt alla till samma enhet med 10^n-form och jämför exponenter."
+    "technique": "Prefix-omvandlings-strategin: skriv alla alternativ i meter (eller bas-enheten) med tio-potenser. Triggern är jämförelse mellan tal med olika SI-prefix — översätt alla till samma enhet med 10^n-form och jämför exponenter.",
+    "pregrade_tactic": {
+      "handle": "SI-prefix-omvandling",
+      "move": "Skriv alla alternativ i meter med tio-potenser — då blir jämförelsen bara en jämförelse av exponenter."
+    }
   },
   "host-2015-kvant2-XYZ-010": {
     "_meta": {
@@ -4550,7 +4722,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Vägt-medelvärde-strategin: när en grupp består av delgrupper med olika medelvärden, använd (sum delsummor)/(sum delgrupper). Eller smartare: \"avvikelse · antal\" från det gemensamma medelvärdet måste balansera. Triggern är \"medel för pojkar + medel för flickor + medel för alla\" — tre medelvärden och okänt antal."
+    "technique": "Vägt-medelvärde-strategin: när en grupp består av delgrupper med olika medelvärden, använd (sum delsummor)/(sum delgrupper). Eller smartare: \"avvikelse · antal\" från det gemensamma medelvärdet måste balansera. Triggern är \"medel för pojkar + medel för flickor + medel för alla\" — tre medelvärden och okänt antal.",
+    "pregrade_tactic": {
+      "handle": "Vägt-medelvärde",
+      "move": "Vid medel för pojkar, flickor och hela gruppen: summan av (medel · antal) per grupp måste matcha totala medelvärdet."
+    }
   },
   "host-2015-kvant2-XYZ-011": {
     "_meta": {
@@ -4646,7 +4822,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Förhållandeskalering-strategin: när tre eller fler storheter ges som förhållande och deras summa är känd, sätt summan = k·(förhållandets total) och lös för k. Triggern är ett förhållande plus en känd total — k låses direkt, sedan följer alla storheter."
+    "technique": "Förhållandeskalering-strategin: när tre eller fler storheter ges som förhållande och deras summa är känd, sätt summan = k·(förhållandets total) och lös för k. Triggern är ett förhållande plus en känd total — k låses direkt, sedan följer alla storheter.",
+    "pregrade_tactic": {
+      "handle": "Förhållandet-skalas",
+      "move": "När storheter ges som förhållande och deras summa är känd: sätt summan delat med förhållandets totalsumma — det ger skalfaktorn."
+    }
   },
   "host-2015-kvant2-XYZ-012": {
     "_meta": {
@@ -4754,7 +4934,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Pythagoras-isolations-strategin: vid villkor på formen a^{2}+b^{2}=k och en variabel given, kvadrera det givna värdet FÖRST och subtrahera från k för att hitta den andra kvadraten. Triggern är \"a² + b² = konstant\" — operationen är subtraktion av kvadrater, inte rötter."
+    "technique": "Pythagoras-isolations-strategin: vid villkor på formen a^{2}+b^{2}=k och en variabel given, kvadrera det givna värdet FÖRST och subtrahera från k för att hitta den andra kvadraten. Triggern är \"a² + b² = konstant\" — operationen är subtraktion av kvadrater, inte rötter.",
+    "pregrade_tactic": {
+      "handle": "Pythagoras-baklänges",
+      "move": "Vid villkoret a² + b² = konstant och ett av talen givet: kvadrera det kända, dra ifrån, ta roten ur — inga räknerötter åt fel håll."
+    }
   },
   "host-2015-verb1-ELF-031": {
     "_meta": {
@@ -4820,7 +5004,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'What is implied here?' items, the answer paraphrases the writer's UNSPOKEN call-to-action — the next sentence the writer would say if pushed. Look for the option that completes the writer's thought, not the option that adds new content."
+    "technique": "On 'What is implied here?' items, the answer paraphrases the writer's UNSPOKEN call-to-action — the next sentence the writer would say if pushed. Look for the option that completes the writer's thought, not the option that adds new content.",
+    "pregrade_tactic": {
+      "handle": "Implied-call",
+      "move": "On ”implied” items, pick the option that completes the writer's unspoken next sentence — not the option that adds new content."
+    }
   },
   "host-2015-verb1-ELF-032": {
     "_meta": {
@@ -4886,7 +5074,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'What is said about X' items, find the sentence that pairs X with a verb of claiming ('shows', 'suggests', 'may have') — that sentence is the answer in disguise. Then check that your chosen option preserves both the MECHANISM and the HEDGE (probably / may / suggests)."
+    "technique": "On 'What is said about X' items, find the sentence that pairs X with a verb of claiming ('shows', 'suggests', 'may have') — that sentence is the answer in disguise. Then check that your chosen option preserves both the MECHANISM and the HEDGE (probably / may / suggests).",
+    "pregrade_tactic": {
+      "handle": "Claiming-verb",
+      "move": "On ”what is said about X”, find the sentence with X plus a claiming verb (shows, suggests, may have) — preserve both mechanism and hedge."
+    }
   },
   "host-2015-verb1-ELF-033": {
     "_meta": {
@@ -4952,7 +5144,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'opening paragraph' items, the answer almost always paraphrases a single CONCESSIVE sentence — one with 'Although', 'However', 'while', or 'most… but a few…'. The concession names the exception, and the correct option usually states that exception in plain language."
+    "technique": "On 'opening paragraph' items, the answer almost always paraphrases a single CONCESSIVE sentence — one with 'Although', 'However', 'while', or 'most… but a few…'. The concession names the exception, and the correct option usually states that exception in plain language.",
+    "pregrade_tactic": {
+      "handle": "Concession-clue",
+      "move": "On ”opening paragraph” items, look for the concessive sentence (Although, while, most ... but a few) — the correct option names the exception."
+    }
   },
   "host-2015-verb1-ELF-034": {
     "_meta": {
@@ -5018,7 +5214,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'implied about X' items, look for a concessive sentence ('Although X had Y, the people still Z') — the implication usually lives in the second half. The author has already conceded the criticism (Y); what they REALLY want you to take away is the resistance or preference (Z)."
+    "technique": "On 'implied about X' items, look for a concessive sentence ('Although X had Y, the people still Z') — the implication usually lives in the second half. The author has already conceded the criticism (Y); what they REALLY want you to take away is the resistance or preference (Z).",
+    "pregrade_tactic": {
+      "handle": "Although-then-but",
+      "move": "On ”implied about X”, find the concessive sentence — the implication lives in the second half, after the ”although” or ”but”."
+    }
   },
   "host-2015-verb1-ELF-035": {
     "_meta": {
@@ -5084,7 +5284,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'paradox / somewhat paradoxical' items, the author has usually already named the surprise out loud — look for sentences with 'Why X did Y rather than Z' or 'although'. The paradox is in that 'rather than' structure; the correct option will restate both sides of it."
+    "technique": "On 'paradox / somewhat paradoxical' items, the author has usually already named the surprise out loud — look for sentences with 'Why X did Y rather than Z' or 'although'. The paradox is in that 'rather than' structure; the correct option will restate both sides of it.",
+    "pregrade_tactic": {
+      "handle": "Paradox-flag",
+      "move": "On ”paradoxical” items, the author has already named the surprise — scan for ”rather than” or ”although” and restate both sides."
+    }
   },
   "host-2015-verb1-ELF-036": {
     "_meta": {
@@ -5150,7 +5354,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'what are we told about the import of X' items, look for the historical depth markers — phrases like 'earlier rulers', 'great-grandfather', 'at the turn of the century'. These set up a 'long before' answer; the correct option usually anchors the practice well before the article's main event."
+    "technique": "On 'what are we told about the import of X' items, look for the historical depth markers — phrases like 'earlier rulers', 'great-grandfather', 'at the turn of the century'. These set up a 'long before' answer; the correct option usually anchors the practice well before the article's main event.",
+    "pregrade_tactic": {
+      "handle": "Long-before-marker",
+      "move": "On items about ”import of X”, look for depth markers (earlier rulers, great-grandfather, turn of the century) — the answer anchors X well before the main event."
+    }
   },
   "host-2015-verb1-ELF-037": {
     "_meta": {
@@ -5216,7 +5424,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'attitude towards X' items where the article sets up a Bombay-vs-Lucknow style contrast, the answer is almost always the option that names the CONTRAST itself (inconsistent, mixed, varying) — not the option that names only one side of it."
+    "technique": "On 'attitude towards X' items where the article sets up a Bombay-vs-Lucknow style contrast, the answer is almost always the option that names the CONTRAST itself (inconsistent, mixed, varying) — not the option that names only one side of it.",
+    "pregrade_tactic": {
+      "handle": "Mixed-attitude",
+      "move": "On ”attitude towards X” items with case-by-case contrast, the answer almost always names the inconsistency — not just one side of it."
+    }
   },
   "host-2015-verb1-ELF-038": {
     "_meta": {
@@ -5282,7 +5494,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'implied about X' items for short feature pieces, the implication usually lives in the LAST sentence — that's where the author lands the takeaway. If the last sentence raises an ethical or risk question, the answer paraphrases that risk."
+    "technique": "On 'implied about X' items for short feature pieces, the implication usually lives in the LAST sentence — that's where the author lands the takeaway. If the last sentence raises an ethical or risk question, the answer paraphrases that risk.",
+    "pregrade_tactic": {
+      "handle": "Closing-takeaway",
+      "move": "On ”implied” items in short pieces, look at the LAST sentence — the implication usually lands as an ethical or risk question there."
+    }
   },
   "host-2015-verb1-ELF-039": {
     "_meta": {
@@ -5348,7 +5564,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'main claim about X' items, the headline is usually the sentence that names a CHANGE across time. Watch for 'Since', 'Now', 'today', 'modern', 'growing' — these flag the trend. The correct option paraphrases that trend in its own terms."
+    "technique": "On 'main claim about X' items, the headline is usually the sentence that names a CHANGE across time. Watch for 'Since', 'Now', 'today', 'modern', 'growing' — these flag the trend. The correct option paraphrases that trend in its own terms.",
+    "pregrade_tactic": {
+      "handle": "Trend-across-time",
+      "move": "On ”main claim” items, find the sentence that names a CHANGE over time — words like Since, Now, today flag the headline trend."
+    }
   },
   "host-2015-verb1-ELF-040": {
     "_meta": {
@@ -5414,7 +5634,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On short experiment-summary texts, the answer almost always paraphrases the proposed MECHANISM (the 'researchers speculate…' sentence), not the experimental setup. Skip the procedure details; find the proposed explanation."
+    "technique": "On short experiment-summary texts, the answer almost always paraphrases the proposed MECHANISM (the 'researchers speculate…' sentence), not the experimental setup. Skip the procedure details; find the proposed explanation.",
+    "pregrade_tactic": {
+      "handle": "Speculative-mechanism",
+      "move": "On short experiment summaries, the answer paraphrases the proposed mechanism (the ”scientists suggest” sentence) — not the procedure."
+    }
   },
   "host-2015-verb1-LÄS-011": {
     "_meta": {
@@ -5480,7 +5704,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "I jämförelsefrågor mellan en gammal och en ny studie: läs först den gamla studiens slutsats, sedan den nyas, och fråga \"samma riktning eller motsatt?\". Triggern: alternativen brukar dela sig i \"bekräftar X\" mot \"visar mer/mindre X än trott\" — välj bekräfta om båda säger samma sak."
+    "technique": "I jämförelsefrågor mellan en gammal och en ny studie: läs först den gamla studiens slutsats, sedan den nyas, och fråga \"samma riktning eller motsatt?\". Triggern: alternativen brukar dela sig i \"bekräftar X\" mot \"visar mer/mindre X än trott\" — välj bekräfta om båda säger samma sak.",
+    "pregrade_tactic": {
+      "handle": "Före-och-efter-jämförelsen",
+      "move": "Vid frågor om gammal mot ny studie: läs först gamla slutsatsen, sedan nya, och fråga ”samma riktning eller motsatt?”."
+    }
   },
   "host-2015-verb1-LÄS-012": {
     "_meta": {
@@ -5546,7 +5774,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "När en forskare själv namnger framtidsvärdet i ett citat — leta efter formuleringen \"kan bli en modell för\", \"öppnar för\", \"kan tillämpas på\". Den explicita meningen vinner alltid över sidoämnen som texten råkar nämna. Triggern: \"inom vilken forskning är X användbar?\" → hitta den enda meningen där X kopplas till ett större forskningsfält."
+    "technique": "När en forskare själv namnger framtidsvärdet i ett citat — leta efter formuleringen \"kan bli en modell för\", \"öppnar för\", \"kan tillämpas på\". Den explicita meningen vinner alltid över sidoämnen som texten råkar nämna. Triggern: \"inom vilken forskning är X användbar?\" → hitta den enda meningen där X kopplas till ett större forskningsfält.",
+    "pregrade_tactic": {
+      "handle": "Forskarens-egen-formulering",
+      "move": "Vid ”inom vilket fält är X användbart?” — leta efter den enda meningen där forskaren själv namnger en bredare modell eller tillämpning."
+    }
   },
   "host-2015-verb1-LÄS-013": {
     "_meta": {
@@ -5612,7 +5844,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "När en text använder retoriska frågor och svarar med \"verkar inte poängfullt\" eller \"vad är det för poäng med det?\" — då argumenterar författaren mot själva begreppsuppdelningen, inte för en variant av den. Triggern: leta efter meningar som upplöser frågan istället för att svara på den."
+    "technique": "När en text använder retoriska frågor och svarar med \"verkar inte poängfullt\" eller \"vad är det för poäng med det?\" — då argumenterar författaren mot själva begreppsuppdelningen, inte för en variant av den. Triggern: leta efter meningar som upplöser frågan istället för att svara på den.",
+    "pregrade_tactic": {
+      "handle": "Retoriska-frågans-svar",
+      "move": "När texten ställer retoriska frågor och svarar med ”vad är poängen?” — då upplöser författaren begreppet, hen försvarar det inte."
+    }
   },
   "host-2015-verb1-LÄS-014": {
     "_meta": {
@@ -5678,7 +5914,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "När en text använder ett konkret exempel (copyright, lag, juridik) för att stödja en abstrakt poäng — fråga vilken övergripande tes exemplet ska illustrera. Triggern: \"vad vill författaren BELYSA med X?\" → hitta den abstrakta tesen som föregår eller följer exemplet, inte exemplets egna detaljer."
+    "technique": "När en text använder ett konkret exempel (copyright, lag, juridik) för att stödja en abstrakt poäng — fråga vilken övergripande tes exemplet ska illustrera. Triggern: \"vad vill författaren BELYSA med X?\" → hitta den abstrakta tesen som föregår eller följer exemplet, inte exemplets egna detaljer.",
+    "pregrade_tactic": {
+      "handle": "Exemplets-tes",
+      "move": "När ett konkret exempel (copyright, juridik) dras in i en abstrakt text: fråga vilken övergripande tes exemplet ska illustrera."
+    }
   },
   "host-2015-verb1-LÄS-015": {
     "_meta": {
@@ -5744,7 +5984,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Sök efter en VÄRDERANDE mening där recensenten själv namnger en intern motsägelse — typiska signalord: \"ändå\", \"trots att\", \"samtidigt som\", \"beklämmande\". Triggern: \"vad finner recensenten motsägelsefullt?\" → leta efter den ena meningen där han säger \"X men ändå Y\"."
+    "technique": "Sök efter en VÄRDERANDE mening där recensenten själv namnger en intern motsägelse — typiska signalord: \"ändå\", \"trots att\", \"samtidigt som\", \"beklämmande\". Triggern: \"vad finner recensenten motsägelsefullt?\" → leta efter den ena meningen där han säger \"X men ändå Y\".",
+    "pregrade_tactic": {
+      "handle": "Motsägelseflaggan",
+      "move": "Vid ”vad finner recensenten motsägelsefullt?” — leta efter signalorden ändå, trots att, samtidigt som, beklämmande."
+    }
   },
   "host-2015-verb1-LÄS-016": {
     "_meta": {
@@ -5810,7 +6054,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "När en text säger \"X handlar inte om Y utan om Y som ...\" — leta efter den kompletterande egenskapen (Y SOM representant, Y SOM symbol). Triggern: \"i vilken egenskap är X intressant?\" → hitta meningen där författaren spelar ner X som person och pekar på X som funktion i ett större mönster."
+    "technique": "När en text säger \"X handlar inte om Y utan om Y som ...\" — leta efter den kompletterande egenskapen (Y SOM representant, Y SOM symbol). Triggern: \"i vilken egenskap är X intressant?\" → hitta meningen där författaren spelar ner X som person och pekar på X som funktion i ett större mönster.",
+    "pregrade_tactic": {
+      "handle": "Inte-X-utan-X-som",
+      "move": "När texten säger ”boken handlar inte om Y utan om Y som...” — leta efter den efterföljande funktionen Y fyller i analysen."
+    }
   },
   "host-2015-verb1-LÄS-017": {
     "_meta": {
@@ -5876,7 +6124,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Vid \"vilket av följande gjorde INTE X?\"-frågor — markera varje alternativ med skillnad/ingen skillnad i texten. Triggern: leta efter den enda explicita identitetsformuleringen (\"densamma\", \"lika\", \"oförändrat\"), eftersom skillnader uttrycks med siffror och identitet uttrycks med ord."
+    "technique": "Vid \"vilket av följande gjorde INTE X?\"-frågor — markera varje alternativ med skillnad/ingen skillnad i texten. Triggern: leta efter den enda explicita identitetsformuleringen (\"densamma\", \"lika\", \"oförändrat\"), eftersom skillnader uttrycks med siffror och identitet uttrycks med ord.",
+    "pregrade_tactic": {
+      "handle": "Negativa-frågans-undantag",
+      "move": "Vid ”vilket gjorde INTE skillnad?” — markera varje alternativ med skillnad/ingen skillnad och välj det enda som texten kallar likadant."
+    }
   },
   "host-2015-verb1-LÄS-018": {
     "_meta": {
@@ -5942,7 +6194,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "I medicinska forskningstexter — hitta ETT motiv för varför just en patientgrupp är studieobjektet. Det står ofta i första-stycke-meningen som beskriver gruppen, inte i metoddelen. Triggern: \"varför just denna grupp?\" → leta efter \"har oftast/svårt att\"-formuleringar i inledningen."
+    "technique": "I medicinska forskningstexter — hitta ETT motiv för varför just en patientgrupp är studieobjektet. Det står ofta i första-stycke-meningen som beskriver gruppen, inte i metoddelen. Triggern: \"varför just denna grupp?\" → leta efter \"har oftast/svårt att\"-formuleringar i inledningen.",
+    "pregrade_tactic": {
+      "handle": "Förstastyckets-motiv",
+      "move": "Vid medicinska forskningstexter: motivet för att studera just en grupp står ofta i första stycket, inte i metodavsnittet."
+    }
   },
   "host-2015-verb1-LÄS-019": {
     "_meta": {
@@ -6008,7 +6264,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Skilj mellan OBJEKTIVA utfall (vårdtid, gasavgång) och SUBJEKTIVA upplevelser (välbefinnande). När frågan gäller stöd för en subjektiv upplevelse, leta efter handlingar eller uttalanden FRÅN patienterna själva — inte mätvärden på kroppen. Triggern: \"upplevde positivt\" → sök patient-initierad efterfrågan/önskan/upprepning."
+    "technique": "Skilj mellan OBJEKTIVA utfall (vårdtid, gasavgång) och SUBJEKTIVA upplevelser (välbefinnande). När frågan gäller stöd för en subjektiv upplevelse, leta efter handlingar eller uttalanden FRÅN patienterna själva — inte mätvärden på kroppen. Triggern: \"upplevde positivt\" → sök patient-initierad efterfrågan/önskan/upprepning.",
+    "pregrade_tactic": {
+      "handle": "Subjektivt-stöd",
+      "move": "När påståendet är subjektivt (”upplevde positivt”): leta efter handling eller önskan från patienterna själva, inte mätvärden på kroppen."
+    }
   },
   "host-2015-verb1-LÄS-020": {
     "_meta": {
@@ -6074,7 +6334,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "När en text säger \"X har ändrats\" eller \"Y är nu möjligt\" — det implicerar att Y INTE var möjligt förut, oftast på grund av regelverk. Triggern: \"varför inte hittills?\" → leta efter formuleringen \"föreskrifterna har ändrats\" / \"tillåts nu\" och spegla den till sin negation som tidigare tillstånd."
+    "technique": "När en text säger \"X har ändrats\" eller \"Y är nu möjligt\" — det implicerar att Y INTE var möjligt förut, oftast på grund av regelverk. Triggern: \"varför inte hittills?\" → leta efter formuleringen \"föreskrifterna har ändrats\" / \"tillåts nu\" och spegla den till sin negation som tidigare tillstånd.",
+    "pregrade_tactic": {
+      "handle": "Nu-tillåts-tidigare-förbjudet",
+      "move": "När texten säger ”X är nu möjligt” — då var X tidigare inte tillåtet; spegla formuleringen till sitt historiska tillstånd."
+    }
   },
   "host-2015-verb1-MEK-021": {
     "_meta": {
@@ -6140,7 +6404,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Tvålucksregeln: båda luckorna måste passa OBEROENDE. Hitta först kategoriordet för lucka 1 (vad är tiggarmunkar en sort av?) och därefter det specifika substantivet för lucka 2 (vad lever en tiggare på?). Triggern: när lucka 1 har formen \"en typ av ____\" är det nästan alltid ett kategoriord som söks, inte en plats eller relation."
+    "technique": "Tvålucksregeln: båda luckorna måste passa OBEROENDE. Hitta först kategoriordet för lucka 1 (vad är tiggarmunkar en sort av?) och därefter det specifika substantivet för lucka 2 (vad lever en tiggare på?). Triggern: när lucka 1 har formen \"en typ av ____\" är det nästan alltid ett kategoriord som söks, inte en plats eller relation.",
+    "pregrade_tactic": {
+      "handle": "Kategoriordet",
+      "move": "När lucka 1 har formen ”en typ av ___” söks ett kategoriord (klass, familj, ordning) — inte en plats eller relation."
+    }
   },
   "host-2015-verb1-MEK-022": {
     "_meta": {
@@ -6200,7 +6468,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Laddningstest + riktningstest: verbet måste matcha både polariteten (här: orättfärdigt påförande, negativ) och riktningen (handling från motståndare TILL makthavare, passiv mottagning). Triggern: när ett verb saknas i en passivkonstruktion med \"av X\" — fråga \"vem gör handlingen, vem tar emot\" innan du provar betydelser."
+    "technique": "Laddningstest + riktningstest: verbet måste matcha både polariteten (här: orättfärdigt påförande, negativ) och riktningen (handling från motståndare TILL makthavare, passiv mottagning). Triggern: när ett verb saknas i en passivkonstruktion med \"av X\" — fråga \"vem gör handlingen, vem tar emot\" innan du provar betydelser.",
+    "pregrade_tactic": {
+      "handle": "Laddning-och-riktning",
+      "move": "Vid passiv konstruktion (”av motståndare”): fråga vem som gör handlingen och vem som tar emot, och välj verb med rätt polaritet."
+    }
   },
   "host-2015-verb1-MEK-023": {
     "_meta": {
@@ -6266,7 +6538,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Trelucks-elimineringsregeln: när tre ord ska väljas tillsammans, börja med den lucka du är säkrast på (här lucka 3 — fackord för mjölksyra) och eliminera. När du har två alternativ kvar, fäll det på den lucka där de tydligast skiljer sig åt. Triggern: i långa MEK med tre luckor — leta efter den lucka som kräver fackord, den är ofta avgörande."
+    "technique": "Trelucks-elimineringsregeln: när tre ord ska väljas tillsammans, börja med den lucka du är säkrast på (här lucka 3 — fackord för mjölksyra) och eliminera. När du har två alternativ kvar, fäll det på den lucka där de tydligast skiljer sig åt. Triggern: i långa MEK med tre luckor — leta efter den lucka som kräver fackord, den är ofta avgörande.",
+    "pregrade_tactic": {
+      "handle": "Säkraste-luckan-först",
+      "move": "Vid trelucksuppgifter: börja med den lucka du är säkrast på (oftast den med fackord) och eliminera bland resterande."
+    }
   },
   "host-2015-verb1-MEK-024": {
     "_meta": {
@@ -6326,7 +6602,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Laddningstest för negativa objekt: när lucka-objektet är NEGATIVT (risk, fel, brist) ska verbet vara reducerande. Triggern: när du ser \"risk\" eller \"fara\" som subjekt, fråga \"vill texten att den blir större eller mindre?\" och välj verbet som matchar."
+    "technique": "Laddningstest för negativa objekt: när lucka-objektet är NEGATIVT (risk, fel, brist) ska verbet vara reducerande. Triggern: när du ser \"risk\" eller \"fara\" som subjekt, fråga \"vill texten att den blir större eller mindre?\" och välj verbet som matchar.",
+    "pregrade_tactic": {
+      "handle": "Laddningstestet",
+      "move": "När subjektet är negativt (risk, fara, fel): välj verb som REDUCERAR det — vi vill ha så lite risk som möjligt."
+    }
   },
   "host-2015-verb1-MEK-025": {
     "_meta": {
@@ -6392,7 +6672,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Kollokationsregeln: vissa verbsubstantiv-par är låsta i svensk text — \"hävda sig i konkurrensen\" är fast, \"aktivera sig i konkurrensen\" är onaturligt. När lucka-verbet följs av reflexivpronomenet \"sig\" + ett område, leta efter den fasta kollokationen för det området."
+    "technique": "Kollokationsregeln: vissa verbsubstantiv-par är låsta i svensk text — \"hävda sig i konkurrensen\" är fast, \"aktivera sig i konkurrensen\" är onaturligt. När lucka-verbet följs av reflexivpronomenet \"sig\" + ett område, leta efter den fasta kollokationen för det området.",
+    "pregrade_tactic": {
+      "handle": "Fasta-verbuttrycket",
+      "move": "När verbet följs av ”sig + område” (i konkurrensen): leta efter det fasta uttrycket — ”hävda sig”, ”göra sig hörd”, ”göra sig gällande”."
+    }
   },
   "host-2015-verb1-MEK-026": {
     "_meta": {
@@ -6452,7 +6736,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Kolonregeln: när en lucka följs av kolon och en uppräkning är lucka-ordet samlingsnamnet för uppräkningen. Triggern: när du ser \"____: A, B, och C\" — fråga \"vad heter den helhet som A+B+C bildar?\" och välj det substantiv som omfattar dem."
+    "technique": "Kolonregeln: när en lucka följs av kolon och en uppräkning är lucka-ordet samlingsnamnet för uppräkningen. Triggern: när du ser \"____: A, B, och C\" — fråga \"vad heter den helhet som A+B+C bildar?\" och välj det substantiv som omfattar dem.",
+    "pregrade_tactic": {
+      "handle": "Kolonets-samlingsnamn",
+      "move": "När en lucka följs av kolon och en uppräkning: lucka-ordet är substantivet som omfattar alla uppräknade saker."
+    }
   },
   "host-2015-verb1-MEK-027": {
     "_meta": {
@@ -6518,7 +6806,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Parkonstruktionsregeln: \"i allmänhet ... i synnerhet\" är en fast svensk parkonstruktion — när du ser ena halvan, leta efter den andra. När en lucka är låst av en sådan konstruktion behöver du inte ens fundera över lucka 2 förrän bara ett alternativ återstår."
+    "technique": "Parkonstruktionsregeln: \"i allmänhet ... i synnerhet\" är en fast svensk parkonstruktion — när du ser ena halvan, leta efter den andra. När en lucka är låst av en sådan konstruktion behöver du inte ens fundera över lucka 2 förrän bara ett alternativ återstår.",
+    "pregrade_tactic": {
+      "handle": "Parkonstruktionen",
+      "move": "När du ser ”i allmänhet” söks ofta ”i synnerhet” som motpol — fasta svenska parkonstruktioner låser bara ett alternativ."
+    }
   },
   "host-2015-verb1-MEK-028": {
     "_meta": {
@@ -6584,7 +6876,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Fackords-precision: när texten har en historisk eller vetenskaplig domän (välfärdshistoria, medicin, lingvistik) är fackorden specifika — filantropi för privat välgörenhet, brytningstid för historisk övergång. Triggern: när alternativen alla låter \"smarta\" ska du fråga \"vilket är det FACKORD som faktiskt används i den disciplinen?\"."
+    "technique": "Fackords-precision: när texten har en historisk eller vetenskaplig domän (välfärdshistoria, medicin, lingvistik) är fackorden specifika — filantropi för privat välgörenhet, brytningstid för historisk övergång. Triggern: när alternativen alla låter \"smarta\" ska du fråga \"vilket är det FACKORD som faktiskt används i den disciplinen?\".",
+    "pregrade_tactic": {
+      "handle": "Fackordet-vinner",
+      "move": "I historiska eller vetenskapliga texter: välj det specifika fackordet (filantropi för privat välgörenhet) snarare än det allmänspråkliga."
+    }
   },
   "host-2015-verb1-MEK-029": {
     "_meta": {
@@ -6644,7 +6940,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Polaritets-och-kontrast-regeln: när lucka-meningen har formen \"X är avskild FRÅN Y där Z händer\" — fråga \"vad är motsatsen till Z?\" och välj det ordet för X. Här: Z = påhitt-som-sanning, motsats = verkligheten. Triggern: ord som \"avskild\", \"till skillnad från\", \"i motsats till\" markerar att lucka-ordet ska bära den ANDRA polen."
+    "technique": "Polaritets-och-kontrast-regeln: när lucka-meningen har formen \"X är avskild FRÅN Y där Z händer\" — fråga \"vad är motsatsen till Z?\" och välj det ordet för X. Här: Z = påhitt-som-sanning, motsats = verkligheten. Triggern: ord som \"avskild\", \"till skillnad från\", \"i motsats till\" markerar att lucka-ordet ska bära den ANDRA polen.",
+    "pregrade_tactic": {
+      "handle": "Motsats-i-kontrasten",
+      "move": "När meningen säger ”X är avskild från Y där Z händer” — fråga vad motsatsen till Z är, och välj det ordet för X."
+    }
   },
   "host-2015-verb1-MEK-030": {
     "_meta": {
@@ -6710,7 +7010,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Laddningstest med flerleds-cue: när texten har två signaler om laddning (här \"total koncentration\" som premiss + \"inte alltid så lyckat\" som konsekvens), måste lucka-adjektivet matcha BÅDA. Triggern: läs meningens slut innan du väljer lucka 1 — det är ofta där den slutgiltiga laddnings­indikationen sitter."
+    "technique": "Laddningstest med flerleds-cue: när texten har två signaler om laddning (här \"total koncentration\" som premiss + \"inte alltid så lyckat\" som konsekvens), måste lucka-adjektivet matcha BÅDA. Triggern: läs meningens slut innan du väljer lucka 1 — det är ofta där den slutgiltiga laddnings­indikationen sitter.",
+    "pregrade_tactic": {
+      "handle": "Två-signaler-samtidigt",
+      "move": "När texten har två cues om laddning (premiss + konsekvens): läs hela meningen klart och välj lucka-ord som matchar BÅDA."
+    }
   },
   "host-2015-verb1-ORD-001": {
     "_meta": {
@@ -6763,7 +7067,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Latinska magn-familjen: när huvudordet börjar på magn- (magnifik, magnitud, magnat, magnum), tänk 'stor' och fråga vad det stora avser. Här: stor i prakt och påkostad utformning — alltså praktfull."
+    "technique": "Latinska magn-familjen: när huvudordet börjar på magn- (magnifik, magnitud, magnat, magnum), tänk 'stor' och fråga vad det stora avser. Här: stor i prakt och påkostad utformning — alltså praktfull.",
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När ordet börjar på magn- (magnifik, magnitud, magnat) — tänk ”stor” och fråga vad storheten avser."
+    }
   },
   "host-2015-verb1-ORD-002": {
     "_meta": {
@@ -6816,7 +7124,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Latinska frag-/fract-familjen: när huvudordet innehåller frag- eller fract- (fragment, fraktur, fragil, fragmentering), tänk 'bryta sönder' och fråga vad som bryts. Triggern att memorera: '-frag-/-fract- = brott, brytning, det som går sönder'."
+    "technique": "Latinska frag-/fract-familjen: när huvudordet innehåller frag- eller fract- (fragment, fraktur, fragil, fragmentering), tänk 'bryta sönder' och fråga vad som bryts. Triggern att memorera: '-frag-/-fract- = brott, brytning, det som går sönder'.",
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När ordet innehåller frag- eller fract- (fragment, fraktur) — tänk ”bryta sönder” och fråga vad som splittras."
+    }
   },
   "host-2015-verb1-ORD-003": {
     "_meta": {
@@ -6869,7 +7181,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Idiom från hantverk: när uttrycket lånar ett ord från ett konkret hantverk (etsa, gjuta, smida, brodera), tänk på hur hantverket fysiskt fungerar och översätt till mental nivå. Etsning = syra som fräter permanent → intryck som präglar permanent."
+    "technique": "Idiom från hantverk: när uttrycket lånar ett ord från ett konkret hantverk (etsa, gjuta, smida, brodera), tänk på hur hantverket fysiskt fungerar och översätt till mental nivå. Etsning = syra som fräter permanent → intryck som präglar permanent.",
+    "pregrade_tactic": {
+      "handle": "Hantverksbilden",
+      "move": "När ett idiom lånar från ett konkret hantverk (etsa, gjuta, smida) — visualisera hur hantverket fungerar fysiskt och flytta upp till mental nivå."
+    }
   },
   "host-2015-verb1-ORD-004": {
     "_meta": {
@@ -6922,7 +7238,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Franska lånord på -ör/-eur: när huvudordet slutar på svensk -ör (valör, kontur, kontör, transport-ör), spåra det till franskans -eur/-aire och vidare till latinet. Här: valeur → valere = 'vara värd'. Kärnan är alltid 'värde' i någon mening."
+    "technique": "Franska lånord på -ör/-eur: när huvudordet slutar på svensk -ör (valör, kontur, kontör, transport-ör), spåra det till franskans -eur/-aire och vidare till latinet. Här: valeur → valere = 'vara värd'. Kärnan är alltid 'värde' i någon mening.",
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När ordet kommer från franska -eur (valör, kontör) — spåra det till latinets valere = ”vara värd”; kärnan är värde."
+    }
   },
   "host-2015-verb1-ORD-005": {
     "_meta": {
@@ -6975,7 +7295,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Svensk fordra-stam: när huvudordet bygger på fordra (uppfordrande, fordring, anfordra, avfordra), tänk 'kräva' och fråga vad som krävs av vem. Triggern att memorera: '-fordra = sätta krav, begära handling'."
+    "technique": "Svensk fordra-stam: när huvudordet bygger på fordra (uppfordrande, fordring, anfordra, avfordra), tänk 'kräva' och fråga vad som krävs av vem. Triggern att memorera: '-fordra = sätta krav, begära handling'.",
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När ordet bygger på fordra (uppfordra, fordring) — tänk ”kräva” och fråga vem som ställer kravet på vem."
+    }
   },
   "host-2015-verb1-ORD-006": {
     "_meta": {
@@ -7028,7 +7352,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Grekiska -tomi-familjen: när huvudordet slutar på -tomi (anatomi, lobotomi, appendektomi), tänk 'snitt/skärning' och leta efter den första halvan som anger VAR snittet sker. Här: lob- = hjärnlob + -tomi = snitt → hjärnoperation."
+    "technique": "Grekiska -tomi-familjen: när huvudordet slutar på -tomi (anatomi, lobotomi, appendektomi), tänk 'snitt/skärning' och leta efter den första halvan som anger VAR snittet sker. Här: lob- = hjärnlob + -tomi = snitt → hjärnoperation.",
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När ordet slutar på -tomi (anatomi, lobotomi) — tänk ”snitt” och låt första halvan berätta var snittet sker."
+    }
   },
   "host-2015-verb1-ORD-007": {
     "_meta": {
@@ -7081,7 +7409,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Sammansättningar med färg som metafor: när huvudordet är 'färg + verb' (svartmåla, vitmena, blåljuga), tolka färgen symboliskt först. Svart/mörker = skam, skuld, dåligt rykte → svartmåla = ge dålig bild."
+    "technique": "Sammansättningar med färg som metafor: när huvudordet är 'färg + verb' (svartmåla, vitmena, blåljuga), tolka färgen symboliskt först. Svart/mörker = skam, skuld, dåligt rykte → svartmåla = ge dålig bild.",
+    "pregrade_tactic": {
+      "handle": "Färgmetaforen",
+      "move": "När ordet är färg + verb (svartmåla, vitmena) — tolka färgen symboliskt först; mörker = skuld, ljus = oskyldighet."
+    }
   },
   "host-2015-verb1-ORD-008": {
     "_meta": {
@@ -7134,7 +7466,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Sammansättningar med bi- (vid sidan av): när huvudordet börjar på svenskt bi- (bifall, bistå, biträda, bibringa), tänk 'vid sidan av, tillsammans med' — någon ansluter sig till något redan föreslaget. Bifall = ansluter sig med ett ja."
+    "technique": "Sammansättningar med bi- (vid sidan av): när huvudordet börjar på svenskt bi- (bifall, bistå, biträda, bibringa), tänk 'vid sidan av, tillsammans med' — någon ansluter sig till något redan föreslaget. Bifall = ansluter sig med ett ja.",
+    "pregrade_tactic": {
+      "handle": "Prefixets-riktning",
+      "move": "När ordet börjar på bi- (bifall, bistå, biträda) — tänk ”vid sidan av, instämma med” snarare än motstånd."
+    }
   },
   "host-2015-verb1-ORD-009": {
     "_meta": {
@@ -7187,7 +7523,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Bildligt språk med dra/sträcka: när huvudordet är ett sammansatt verb med dra/sträcka/spänna (hårdragen, översträckt, urspänd), tänk på den fysiska bilden av materialet som tänjs — kärnan är 'för långt, för tunt, för spänt'. Hårdraget = dragen i hårsmånen."
+    "technique": "Bildligt språk med dra/sträcka: när huvudordet är ett sammansatt verb med dra/sträcka/spänna (hårdragen, översträckt, urspänd), tänk på den fysiska bilden av materialet som tänjs — kärnan är 'för långt, för tunt, för spänt'. Hårdraget = dragen i hårsmånen.",
+    "pregrade_tactic": {
+      "handle": "Tänj-bilden",
+      "move": "När verbet handlar om att dra eller sträcka något (hårdragen, översträckt) — se den fysiska bilden av material som tänjs för långt."
+    }
   },
   "host-2015-verb1-ORD-010": {
     "_meta": {
@@ -7240,7 +7580,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Ålderdomliga svenska ord med fornnordisk stam: när huvudordet ser arkaiskt ut (lekamen, gehör, åtbörd), försök ge en modern översättning genom att tänka religiöst eller högtidligt sammanhang. Lekamen → 'Kristi lekamen' → kropp."
+    "technique": "Ålderdomliga svenska ord med fornnordisk stam: när huvudordet ser arkaiskt ut (lekamen, gehör, åtbörd), försök ge en modern översättning genom att tänka religiöst eller högtidligt sammanhang. Lekamen → 'Kristi lekamen' → kropp.",
+    "pregrade_tactic": {
+      "handle": "Högtidlig-källa",
+      "move": "När ordet ser arkaiskt ut (lekamen, gehör, åtbörd) — leta efter den religiösa eller bibliska kontext det lever kvar i."
+    }
   },
   "host-2015-verb2-ELF-031": {
     "_meta": {
@@ -7306,7 +7650,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'verb + to + recipient' cloze gaps, two things narrow the choice: (1) the verb must take a 'to-recipient' frame ('recommend X to Y', 'send X to Y'), (2) the surrounding tone (positive 'with good reason' vs. negative 'unfortunately') fixes the verb's polarity. Use both filters and the gap collapses to one option."
+    "technique": "On 'verb + to + recipient' cloze gaps, two things narrow the choice: (1) the verb must take a 'to-recipient' frame ('recommend X to Y', 'send X to Y'), (2) the surrounding tone (positive 'with good reason' vs. negative 'unfortunately') fixes the verb's polarity. Use both filters and the gap collapses to one option.",
+    "pregrade_tactic": {
+      "handle": "Verb-to-recipient",
+      "move": "On verb-cloze with ”X-ed Y to Z”, two filters narrow the choice: the verb must take a to-recipient frame, and the tone must match."
+    }
   },
   "host-2015-verb2-ELF-032": {
     "_meta": {
@@ -7372,7 +7720,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On adverb-cloze gaps modifying a sharp word ('harmful', 'effective', 'dangerous'), check the SPEAKER's institutional position. Government / medical institutes almost always HEDGE their claims with words like 'potentially', 'possibly', 'somewhat' — distractors that intensify or add time dynamics usually miss the institutional voice."
+    "technique": "On adverb-cloze gaps modifying a sharp word ('harmful', 'effective', 'dangerous'), check the SPEAKER's institutional position. Government / medical institutes almost always HEDGE their claims with words like 'potentially', 'possibly', 'somewhat' — distractors that intensify or add time dynamics usually miss the institutional voice.",
+    "pregrade_tactic": {
+      "handle": "Institutional-hedge",
+      "move": "On adverb-cloze before a sharp word: government bodies and medical institutes hedge — pick ”potentially”, ”possibly”, ”somewhat”."
+    }
   },
   "host-2015-verb2-ELF-033": {
     "_meta": {
@@ -7438,7 +7790,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'when it ___ X' cloze frames, the answer is overwhelmingly 'comes to' — this is one of the half-dozen most common discourse markers in English. Memorise the frame: 'when it comes to X' = 'on the topic of X'. Distractor verbs (refer / deal / rule) usually need a fuller subject to feel natural."
+    "technique": "On 'when it ___ X' cloze frames, the answer is overwhelmingly 'comes to' — this is one of the half-dozen most common discourse markers in English. Memorise the frame: 'when it comes to X' = 'on the topic of X'. Distractor verbs (refer / deal / rule) usually need a fuller subject to feel natural.",
+    "pregrade_tactic": {
+      "handle": "Topical-frame",
+      "move": "On ”when it ___ X” gaps, ”comes to” wins overwhelmingly — memorise the frame ”when it comes to X” = ”on the topic of X”."
+    }
   },
   "host-2015-verb2-ELF-034": {
     "_meta": {
@@ -7504,7 +7860,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'X are ___ to Y' cloze frames, find the 'because' clause that follows — it tells you the DIRECTION of the comparison. Weakness-naming 'because' → INFERIOR; strength-naming 'because' → SUPERIOR. Always check that 'to' is the right preposition for the adjective (superior/inferior/equal take 'to'; distant takes 'from')."
+    "technique": "On 'X are ___ to Y' cloze frames, find the 'because' clause that follows — it tells you the DIRECTION of the comparison. Weakness-naming 'because' → INFERIOR; strength-naming 'because' → SUPERIOR. Always check that 'to' is the right preposition for the adjective (superior/inferior/equal take 'to'; distant takes 'from').",
+    "pregrade_tactic": {
+      "handle": "Direction-from-because",
+      "move": "On ”X are ___ to Y” gaps, find the ”because” clause that follows — weakness-naming clue → INFERIOR, strength-naming clue → SUPERIOR."
+    }
   },
   "host-2015-verb2-ELF-035": {
     "_meta": {
@@ -7570,7 +7930,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'leads to the vitamin's ___' cloze gaps about placebo trials, ask: WHAT IS THE TRIAL TRYING TO MEASURE? That is the noun that would confound the trial. Trials measure EFFECTS — so the missing word is almost always 'effects', 'benefits', or 'drawbacks' depending on the polarity earlier in the article."
+    "technique": "On 'leads to the vitamin's ___' cloze gaps about placebo trials, ask: WHAT IS THE TRIAL TRYING TO MEASURE? That is the noun that would confound the trial. Trials measure EFFECTS — so the missing word is almost always 'effects', 'benefits', or 'drawbacks' depending on the polarity earlier in the article.",
+    "pregrade_tactic": {
+      "handle": "What-trial-measures",
+      "move": "On ”the vitamin's ___” gaps in placebo-trial contexts, ask what the trial is trying to measure — trials measure EFFECTS."
+    }
   },
   "host-2015-verb2-ELF-036": {
     "_meta": {
@@ -7636,7 +8000,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'main focus of the first two paragraphs' items, find the THESIS sentence — usually the one starting with 'The problem is…' or 'In reality…'. The thesis is rarely the opening CSI/anecdote sentence; it's the second or third sentence that names the actual critique."
+    "technique": "On 'main focus of the first two paragraphs' items, find the THESIS sentence — usually the one starting with 'The problem is…' or 'In reality…'. The thesis is rarely the opening CSI/anecdote sentence; it's the second or third sentence that names the actual critique.",
+    "pregrade_tactic": {
+      "handle": "Thesis-not-anecdote",
+      "move": "On ”main focus” items in opinion pieces, find the thesis sentence (often ”In reality...”, ”The problem is...”) — skip the opening anecdote."
+    }
   },
   "host-2015-verb2-ELF-037": {
     "_meta": {
@@ -7702,7 +8070,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'implied about courts' items, find the sentence that names a SPECIFIC actor and a specific failure — here, 'Expert witnesses command great authority in the eyes of jurors and judges'. The correct option restates that specific actor-failure pair without adding a new ingredient (like 'outdated research')."
+    "technique": "On 'implied about courts' items, find the sentence that names a SPECIFIC actor and a specific failure — here, 'Expert witnesses command great authority in the eyes of jurors and judges'. The correct option restates that specific actor-failure pair without adding a new ingredient (like 'outdated research').",
+    "pregrade_tactic": {
+      "handle": "Actor-failure-pair",
+      "move": "On ”implied about courts” items, find a sentence with a specific actor and a specific failure — pick the option that restates that pair without new ingredients."
+    }
   },
   "host-2015-verb2-ELF-038": {
     "_meta": {
@@ -7768,7 +8140,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'what is said about X' items where X is a contested practice, find the sentence about MEASUREMENT — when has X's accuracy been studied? If the article says 'never been measured / has yet to be done', the answer almost always names the uncertainty."
+    "technique": "On 'what is said about X' items where X is a contested practice, find the sentence about MEASUREMENT — when has X's accuracy been studied? If the article says 'never been measured / has yet to be done', the answer almost always names the uncertainty.",
+    "pregrade_tactic": {
+      "handle": "Never-been-measured",
+      "move": "On ”what is said about X” where X is contested: find the sentence about MEASUREMENT — if the article says ”never measured”, the answer names the uncertainty."
+    }
   },
   "host-2015-verb2-ELF-039": {
     "_meta": {
@@ -7834,7 +8210,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'argued about X' items in critical opinion pieces, look for the sequence-of-events language ('only AFTER', 'before… later', 'it took … years for'). These time markers expose the article's structural complaint — usually 'X was too slow / too reactive / too late'."
+    "technique": "On 'argued about X' items in critical opinion pieces, look for the sequence-of-events language ('only AFTER', 'before… later', 'it took … years for'). These time markers expose the article's structural complaint — usually 'X was too slow / too reactive / too late'.",
+    "pregrade_tactic": {
+      "handle": "Time-marker-critique",
+      "move": "On ”argued about X” items, look for sequence-of-events language (only after, before ... later, it took years) — they expose the slow / late / reactive critique."
+    }
   },
   "host-2015-verb2-ELF-040": {
     "_meta": {
@@ -7900,7 +8280,11 @@
         "title": "Conclusion"
       }
     ],
-    "technique": "On 'how can the article best be described' items, find the FINAL SENTENCE of the piece — the closer almost always names the genre. Here the closer is 'unless the courts stop rewarding practitioners for ignoring science, the revolution is likely to take longer than it should' — that names an UNRESOLVED CONFLICT. Pick the option that uses 'conflict / tension / divide' over 'progress / argument / request' when the closer ends in stalemate."
+    "technique": "On 'how can the article best be described' items, find the FINAL SENTENCE of the piece — the closer almost always names the genre. Here the closer is 'unless the courts stop rewarding practitioners for ignoring science, the revolution is likely to take longer than it should' — that names an UNRESOLVED CONFLICT. Pick the option that uses 'conflict / tension / divide' over 'progress / argument / request' when the closer ends in stalemate.",
+    "pregrade_tactic": {
+      "handle": "Closing-genre-tag",
+      "move": "On ”how is the article best described” items, the final sentence names the genre — pick conflict / tension when the closer ends in stalemate."
+    }
   },
   "host-2015-verb2-LÄS-011": {
     "_meta": {
@@ -7966,7 +8350,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "I texter som beskriver en konstnärlig verkning över tid — leta efter den enda KONTRASTERANDE meningen som ställer \"då\" mot \"nu\" med ett \"men\". Triggern: \"hur har synen förändrats?\" → hitta den mening som har både dåtid och nutid i sig, sammanknutna med kontrast."
+    "technique": "I texter som beskriver en konstnärlig verkning över tid — leta efter den enda KONTRASTERANDE meningen som ställer \"då\" mot \"nu\" med ett \"men\". Triggern: \"hur har synen förändrats?\" → hitta den mening som har både dåtid och nutid i sig, sammanknutna med kontrast.",
+    "pregrade_tactic": {
+      "handle": "Då-mot-nu-meningen",
+      "move": "Vid frågor om hur synen förändrats: leta efter den enda meningen som kontrasterar ”då” mot ”nu” med ett ”men”."
+    }
   },
   "host-2015-verb2-LÄS-012": {
     "_meta": {
@@ -8032,7 +8420,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Meta-frågor (\"ger texten en förklaring till X?\") testar om läsaren kan skilja på att texten BESKRIVER något och att texten FÖRKLARAR det. Triggern: när alternativen är \"Ja, [orsak]\" / \"Ja, [orsak]\" / \"Ja, [orsak]\" / \"Nej, ingen förklaring ges\" — sök aktivt efter en mening där texten ger ett VARFÖR; finns ingen, så är D rätt."
+    "technique": "Meta-frågor (\"ger texten en förklaring till X?\") testar om läsaren kan skilja på att texten BESKRIVER något och att texten FÖRKLARAR det. Triggern: när alternativen är \"Ja, [orsak]\" / \"Ja, [orsak]\" / \"Ja, [orsak]\" / \"Nej, ingen förklaring ges\" — sök aktivt efter en mening där texten ger ett VARFÖR; finns ingen, så är D rätt.",
+    "pregrade_tactic": {
+      "handle": "Beskriver-mot-förklarar",
+      "move": "Vid metafrågor (”ger texten en förklaring?”): skilj noga på att texten BESKRIVER något och att texten FÖRKLARAR varför det är så."
+    }
   },
   "host-2015-verb2-LÄS-013": {
     "_meta": {
@@ -8098,7 +8490,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "När alternativen erbjuder olika RISK-typer (medicinsk, moralisk, social, språklig) — leta efter textens egen formulering av vad som \"dominerar\", \"växer\", \"fått större plats\". Texten ger ofta exakt en sådan dominerande dimension. Triggern: \"vilken risk lyfts allt oftare?\" → hitta orden \"alltmer dominerande\" / \"växer\" / \"allt vanligare\" i texten."
+    "technique": "När alternativen erbjuder olika RISK-typer (medicinsk, moralisk, social, språklig) — leta efter textens egen formulering av vad som \"dominerar\", \"växer\", \"fått större plats\". Texten ger ofta exakt en sådan dominerande dimension. Triggern: \"vilken risk lyfts allt oftare?\" → hitta orden \"alltmer dominerande\" / \"växer\" / \"allt vanligare\" i texten.",
+    "pregrade_tactic": {
+      "handle": "Dominerande-dimensionen",
+      "move": "Vid ”vilken risk lyfts allt oftare?” — leta efter texten egna ord om vad som ”dominerar”, ”växer” eller ”fått större plats”."
+    }
   },
   "host-2015-verb2-LÄS-014": {
     "_meta": {
@@ -8164,7 +8560,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "I texter där författaren landar i en kritik mot dagens praktik — leta efter slutstyckets värderande mening med signalord \"dock\", \"allt svårare att försvara\", \"behov av\". Det är där tesen ligger, inte i de beskrivande styckena om hur fältet ser ut. Triggern: \"vilken kritik framförs?\" → sista stycket, värderande verb."
+    "technique": "I texter där författaren landar i en kritik mot dagens praktik — leta efter slutstyckets värderande mening med signalord \"dock\", \"allt svårare att försvara\", \"behov av\". Det är där tesen ligger, inte i de beskrivande styckena om hur fältet ser ut. Triggern: \"vilken kritik framförs?\" → sista stycket, värderande verb.",
+    "pregrade_tactic": {
+      "handle": "Slutstyckets-tes",
+      "move": "Vid kritikfrågor i akademiska texter: tesen ligger i slutstycket, ofta med signalord som dock, allt svårare att försvara, behov av."
+    }
   },
   "host-2015-verb2-LÄS-015": {
     "_meta": {
@@ -8230,7 +8630,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "I texter som beskriver två lagar/regelverk parallellt — leta efter den ena meningen där författaren visar att de KOLLIDERAR (\"trots att\", \"ironiskt nog\", \"får inte påverka\"). Den kollisionen är ofta textens grundproblem. Triggern: \"grundläggande problem?\" → leta efter regelkonflikt-ord som \"trots\", \"ironiskt nog\", \"får inte\"."
+    "technique": "I texter som beskriver två lagar/regelverk parallellt — leta efter den ena meningen där författaren visar att de KOLLIDERAR (\"trots att\", \"ironiskt nog\", \"får inte påverka\"). Den kollisionen är ofta textens grundproblem. Triggern: \"grundläggande problem?\" → leta efter regelkonflikt-ord som \"trots\", \"ironiskt nog\", \"får inte\".",
+    "pregrade_tactic": {
+      "handle": "Regelkollisionen",
+      "move": "När en text beskriver två parallella regelverk: leta efter den ena meningen där de KROCKAR (ironiskt nog, trots att, får inte påverka)."
+    }
   },
   "host-2015-verb2-LÄS-016": {
     "_meta": {
@@ -8296,7 +8700,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "När en text beskriver ett juridiskt regelverk — leta efter en explicit \"målformulering\" eller \"syftet är att\"-mening, ofta i samband med en jämförelse mot vad lagen INTE prioriterar. Triggern: \"bakomliggande syfte?\" → hitta meningen där författaren själv namnger målet, oftast med ord som \"målet är\" eller \"anses vara\"."
+    "technique": "När en text beskriver ett juridiskt regelverk — leta efter en explicit \"målformulering\" eller \"syftet är att\"-mening, ofta i samband med en jämförelse mot vad lagen INTE prioriterar. Triggern: \"bakomliggande syfte?\" → hitta meningen där författaren själv namnger målet, oftast med ord som \"målet är\" eller \"anses vara\".",
+    "pregrade_tactic": {
+      "handle": "Syftets-egna-ord",
+      "move": "Vid ”bakomliggande syfte?” — leta efter en explicit ”målet är att”-mening, ofta i kontrast mot vad lagen INTE prioriterar."
+    }
   },
   "host-2015-verb2-LÄS-017": {
     "_meta": {
@@ -8362,7 +8770,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Skilj alltid mellan ABSOLUTA tal (antal) och RELATIVA tal (andel/procent) i statistikfrågor. En ökning i antal är inte detsamma som en ökning i andel — om hela gruppen växer kan andelen stå still. Triggern: när texten kontrasterar \"numerär\" mot \"procentuell\" → leta efter alternativ som speglar exakt denna distinktion."
+    "technique": "Skilj alltid mellan ABSOLUTA tal (antal) och RELATIVA tal (andel/procent) i statistikfrågor. En ökning i antal är inte detsamma som en ökning i andel — om hela gruppen växer kan andelen stå still. Triggern: när texten kontrasterar \"numerär\" mot \"procentuell\" → leta efter alternativ som speglar exakt denna distinktion.",
+    "pregrade_tactic": {
+      "handle": "Antal-mot-andel",
+      "move": "Vid statistikfrågor: skilj på absoluta tal (antal) och relativa tal (andel) — gruppen kan växa medan procenten står still."
+    }
   },
   "host-2015-verb2-LÄS-018": {
     "_meta": {
@@ -8428,7 +8840,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "När en text frågar efter en VIKTIG ORSAK till motstånd mot förändring — leta efter Begreppet \"doxa\" eller motsvarande identitetshotande formulering. Det är när förändringen läses som ett hot mot \"vilka vi är\" som motståndet blir starkast. Triggern: \"varför vill X inte ändra Y?\" → leta efter ord som \"domän\", \"identitet\", \"doxa\", \"hot mot kärnan\"."
+    "technique": "När en text frågar efter en VIKTIG ORSAK till motstånd mot förändring — leta efter Begreppet \"doxa\" eller motsvarande identitetshotande formulering. Det är när förändringen läses som ett hot mot \"vilka vi är\" som motståndet blir starkast. Triggern: \"varför vill X inte ändra Y?\" → leta efter ord som \"domän\", \"identitet\", \"doxa\", \"hot mot kärnan\".",
+    "pregrade_tactic": {
+      "handle": "Identitets-hotet",
+      "move": "Vid ”varför inget motstånd mot förändring?” — leta efter formuleringar om domän, identitet, doxa eller hot mot kärnan."
+    }
   },
   "host-2015-verb2-LÄS-019": {
     "_meta": {
@@ -8494,7 +8910,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "I bokrecensioner — leta efter signalordet \"men\" eller \"hade kunnat stärkas\" i en annars positiv text. Den enda meningen där recensenten markerar en svaghet är invändningen. Triggern: \"vilken invändning?\" → hitta det enda stycket där en saknad eller en brist namnges, inte de många styckena som beskriver bokens innehåll."
+    "technique": "I bokrecensioner — leta efter signalordet \"men\" eller \"hade kunnat stärkas\" i en annars positiv text. Den enda meningen där recensenten markerar en svaghet är invändningen. Triggern: \"vilken invändning?\" → hitta det enda stycket där en saknad eller en brist namnges, inte de många styckena som beskriver bokens innehåll.",
+    "pregrade_tactic": {
+      "handle": "Det-enda-MEN-et",
+      "move": "I positiva recensioner: leta efter det enda ”men” eller ”hade kunnat stärkas” — där sitter recensentens invändning."
+    }
   },
   "host-2015-verb2-LÄS-020": {
     "_meta": {
@@ -8560,7 +8980,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "När frågan kräver en orsak som drabbar BÅDA grupper — sila bort förklaringar som bara träffar den ena. Triggern: \"båda könen?\" → leta efter en strukturell orsak (kultur, miljö, norm) snarare än en partsfaktor (\"kvinnornas\", \"männens\", \"jämställdhetspolitiken\")."
+    "technique": "När frågan kräver en orsak som drabbar BÅDA grupper — sila bort förklaringar som bara träffar den ena. Triggern: \"båda könen?\" → leta efter en strukturell orsak (kultur, miljö, norm) snarare än en partsfaktor (\"kvinnornas\", \"männens\", \"jämställdhetspolitiken\").",
+    "pregrade_tactic": {
+      "handle": "Strukturell-orsak",
+      "move": "När orsaken ska drabba BÅDA grupper: sila bort partsförklaringar och leta efter en strukturell faktor (kultur, miljö, norm)."
+    }
   },
   "host-2015-verb2-MEK-021": {
     "_meta": {
@@ -8620,7 +9044,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Yttre-tecken-regeln: när meningen har formen \"yttre tecken på ____\" söks substantivet för ett TILLSTÅND som det konkreta är manifestationer av. Triggern: leta efter det abstrakta substantiv vars MANIFESTATIONER texten just räknade upp."
+    "technique": "Yttre-tecken-regeln: när meningen har formen \"yttre tecken på ____\" söks substantivet för ett TILLSTÅND som det konkreta är manifestationer av. Triggern: leta efter det abstrakta substantiv vars MANIFESTATIONER texten just räknade upp.",
+    "pregrade_tactic": {
+      "handle": "Yttre-tecken-på",
+      "move": "Vid ”yttre tecken på ___” söks det abstrakta substantivet vars manifestationer texten just räknade upp (rikedom, makt, status)."
+    }
   },
   "host-2015-verb2-MEK-022": {
     "_meta": {
@@ -8686,7 +9114,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Specificitetstest: när texten har \"X och hela kroppen för övrigt\" är X en SPECIFIK KROPPSDEL (inte hela kroppen) — annars vore tillägget redundant. Triggern: \"____ och hela kroppen\" — lucka 1 är något mindre än helheten."
+    "technique": "Specificitetstest: när texten har \"X och hela kroppen för övrigt\" är X en SPECIFIK KROPPSDEL (inte hela kroppen) — annars vore tillägget redundant. Triggern: \"____ och hela kroppen\" — lucka 1 är något mindre än helheten.",
+    "pregrade_tactic": {
+      "handle": "Och-hela-kroppen-för-övrigt",
+      "move": "När texten har ”X och hela kroppen för övrigt” — då är X en SPECIFIK kroppsdel; annars vore tillägget redundant."
+    }
   },
   "host-2015-verb2-MEK-023": {
     "_meta": {
@@ -8752,7 +9184,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Fackord-fältet styr: när tredje luckan är en vetenskaplig kategori, leta upp det etablerade fackordet (hydrologisk för vatten, geologisk för bergrund, meteorologisk för väder) och låt det elimi­nera resten. Triggern: substantiv + \"cykeln\"/\"systemet\"/\"processen\" + utrymme för adjektiv är ofta fackord."
+    "technique": "Fackord-fältet styr: när tredje luckan är en vetenskaplig kategori, leta upp det etablerade fackordet (hydrologisk för vatten, geologisk för bergrund, meteorologisk för väder) och låt det elimi­nera resten. Triggern: substantiv + \"cykeln\"/\"systemet\"/\"processen\" + utrymme för adjektiv är ofta fackord.",
+    "pregrade_tactic": {
+      "handle": "Fackordet-vinner",
+      "move": "När en lucka är ”___ cykeln” eller ”___ systemet” i en vetenskaplig text: välj det etablerade fackordet (hydrologisk, geologisk)."
+    }
   },
   "host-2015-verb2-MEK-024": {
     "_meta": {
@@ -8818,7 +9254,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Redundansvarning: när lucka-ordet riskerar att bli synonymt med ett ord som redan står i meningen, eliminera det. \"Riktning åt processen och åt syftningen\" är tautologi — välj det ord som tillför något NYTT."
+    "technique": "Redundansvarning: när lucka-ordet riskerar att bli synonymt med ett ord som redan står i meningen, eliminera det. \"Riktning åt processen och åt syftningen\" är tautologi — välj det ord som tillför något NYTT.",
+    "pregrade_tactic": {
+      "handle": "Inte-redundant",
+      "move": "Om lucka-ordet riskerar att bli synonymt med ord som redan står i meningen — stryk det och välj alternativet som tillför något nytt."
+    }
   },
   "host-2015-verb2-MEK-025": {
     "_meta": {
@@ -8878,7 +9318,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Kollokationsregeln för byråkratspråk: \"främja X-ande\" är en fast svensk fras i offentliga texter om stöd (främja företagande, främja jämställdhet, främja folkhälsa). Triggern: när subjektet är en offentlig instans som STÖDJER en aktivitet utan att utföra den, är \"främja\" oftast rätt verb."
+    "technique": "Kollokationsregeln för byråkratspråk: \"främja X-ande\" är en fast svensk fras i offentliga texter om stöd (främja företagande, främja jämställdhet, främja folkhälsa). Triggern: när subjektet är en offentlig instans som STÖDJER en aktivitet utan att utföra den, är \"främja\" oftast rätt verb.",
+    "pregrade_tactic": {
+      "handle": "Fasta-verbuttrycket",
+      "move": "I byråkratspråk är ”främja X-ande” en fast fras — när en offentlig instans stödjer en aktivitet är ”främja” oftast rätt verb."
+    }
   },
   "host-2015-verb2-MEK-026": {
     "_meta": {
@@ -8944,7 +9388,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Dubbel-negation-regeln: \"inte så X\" inverterar X:s laddning. Om slutsatsen är att något är SATT UR SPEL (stark påverkan), måste X vara SMÅLIGHETSORD så att dubbel-negationen ger \"ganska stor\". Triggern: när du ser \"inte så ____\" + en följdsats som beskriver konsekvenser — välj lucka-ord vars motsats matchar konsekvensen."
+    "technique": "Dubbel-negation-regeln: \"inte så X\" inverterar X:s laddning. Om slutsatsen är att något är SATT UR SPEL (stark påverkan), måste X vara SMÅLIGHETSORD så att dubbel-negationen ger \"ganska stor\". Triggern: när du ser \"inte så ____\" + en följdsats som beskriver konsekvenser — välj lucka-ord vars motsats matchar konsekvensen.",
+    "pregrade_tactic": {
+      "handle": "Dubbel-negationen",
+      "move": "När du ser ”inte så ___” + en följdsats med stark konsekvens: lucka-ordet är en gradkvantifierare vars negation matchar konsekvensen."
+    }
   },
   "host-2015-verb2-MEK-027": {
     "_meta": {
@@ -9010,7 +9458,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Idiom-precision: \"tappa X\" har minst fyra etablerade idiom (huvudet, balansen, hakan, ansiktet) med helt olika betydelser. Triggern: när lucka-ordet är substantiv-del av ett fast verb-uttryck — fråga \"vilken av betydelserna matchar texten?\" istället för att välja på ljud."
+    "technique": "Idiom-precision: \"tappa X\" har minst fyra etablerade idiom (huvudet, balansen, hakan, ansiktet) med helt olika betydelser. Triggern: när lucka-ordet är substantiv-del av ett fast verb-uttryck — fråga \"vilken av betydelserna matchar texten?\" istället för att välja på ljud.",
+    "pregrade_tactic": {
+      "handle": "Idiom-pricket",
+      "move": "”Tappa X” har minst fyra etablerade idiom (huvudet, balansen, hakan, ansiktet) — välj på betydelse i kontexten, inte på ljud."
+    }
   },
   "host-2015-verb2-MEK-028": {
     "_meta": {
@@ -9076,7 +9528,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Fackområdes-koherens: när två luckor i samma mening tillhör samma fackområde (här religionshistoria), välj det par där båda är de etablerade fackorden för det området. Triggern: när du har två luckor med \"specialord\"-känsla, fråga \"vilken disciplin?\" och leta efter fackorden i den disciplinen."
+    "technique": "Fackområdes-koherens: när två luckor i samma mening tillhör samma fackområde (här religionshistoria), välj det par där båda är de etablerade fackorden för det området. Triggern: när du har två luckor med \"specialord\"-känsla, fråga \"vilken disciplin?\" och leta efter fackorden i den disciplinen.",
+    "pregrade_tactic": {
+      "handle": "Fackområdes-koherens",
+      "move": "När två luckor tillhör samma fackområde (religionshistoria, biologi): välj det par där båda är etablerade fackord för det området."
+    }
   },
   "host-2015-verb2-MEK-029": {
     "_meta": {
@@ -9136,7 +9592,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Teori-vs-praktik-cuet: när texten kontrasterar formell kunskap (lär sig OM X) mot praktisk frånvaro (lite X i verkligheten), är \"reellt\" det svenska standardadjektivet för \"i praktiken/verkligheten\". Triggern: ord som \"visserligen ... däremot\" markerar precis denna kontrast och låser ofta lucka-adjektivet på \"reellt\"."
+    "technique": "Teori-vs-praktik-cuet: när texten kontrasterar formell kunskap (lär sig OM X) mot praktisk frånvaro (lite X i verkligheten), är \"reellt\" det svenska standardadjektivet för \"i praktiken/verkligheten\". Triggern: ord som \"visserligen ... däremot\" markerar precis denna kontrast och låser ofta lucka-adjektivet på \"reellt\".",
+    "pregrade_tactic": {
+      "handle": "Teori-mot-praktik",
+      "move": "När texten kontrasterar formell kunskap mot praktisk frånvaro (visserligen ... däremot): ”reellt” är standardadjektivet för det praktiska."
+    }
   },
   "host-2015-verb2-MEK-030": {
     "_meta": {
@@ -9202,7 +9662,11 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Litteraturkritiskt fackord: när lucka 3 är en subjekts­position för \"X blir intim och dialektnära\", välj det fackord som korresponderar till SPRÅKLIG karaktäristik (Stilen) — inte handling, inte hela texten, inte språkkänsla. Triggern: \"intim\" + \"dialektnära\" pekar på författarens språkbruk = stil."
+    "technique": "Litteraturkritiskt fackord: när lucka 3 är en subjekts­position för \"X blir intim och dialektnära\", välj det fackord som korresponderar till SPRÅKLIG karaktäristik (Stilen) — inte handling, inte hela texten, inte språkkänsla. Triggern: \"intim\" + \"dialektnära\" pekar på författarens språkbruk = stil.",
+    "pregrade_tactic": {
+      "handle": "Litterär-dimension",
+      "move": "När tre luckor beskriver en författares verk: lucka för ”intim och dialektnära” pekar på SPRÅKET — alltså stil, inte handling eller form."
+    }
   },
   "host-2015-verb2-ORD-001": {
     "_meta": {
@@ -9255,7 +9719,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Franska lånord med italiensk-latinsk rot: när huvudordet är ett franskt lånord (nisch, atelje, garage), spåra till den italienska eller latinska ursprungsbilden — den ger ofta nyckeln. Nisch → italienska nicchia → latin nidus (bo) → den lilla skyddade platsen."
+    "technique": "Franska lånord med italiensk-latinsk rot: när huvudordet är ett franskt lånord (nisch, atelje, garage), spåra till den italienska eller latinska ursprungsbilden — den ger ofta nyckeln. Nisch → italienska nicchia → latin nidus (bo) → den lilla skyddade platsen.",
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När ordet är ett franskt-italienskt lånord (nisch, atelje): spåra till ursprungsbilden — nisch = nicchia = liten skyddad plats."
+    }
   },
   "host-2015-verb2-ORD-002": {
     "_meta": {
@@ -9308,7 +9776,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Latinska moment-familjen: när huvudordet bygger på moment- (moment, momentum, momentan, monument), tänk 'ögonblick, kort punkt i tiden, drivkraft'. Triggern att memorera: 'moment- = punkt-i-tiden, inte tidsspann'."
+    "technique": "Latinska moment-familjen: när huvudordet bygger på moment- (moment, momentum, momentan, monument), tänk 'ögonblick, kort punkt i tiden, drivkraft'. Triggern att memorera: 'moment- = punkt-i-tiden, inte tidsspann'.",
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När ordet bygger på moment- (momentan, momentum) — tänk ”ögonblick, kort punkt i tiden”, inte ett tidsspann."
+    }
   },
   "host-2015-verb2-ORD-003": {
     "_meta": {
@@ -9361,7 +9833,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Sammansättningar med före- + verb: när huvudordet börjar på före- (föreskrift, förslag, förordning, föredra), tänk på 'i förväg, innan' och fråga vad som görs i förväg. Föreskrift = i förväg skrivet → en regel som finns redo innan situationen."
+    "technique": "Sammansättningar med före- + verb: när huvudordet börjar på före- (föreskrift, förslag, förordning, föredra), tänk på 'i förväg, innan' och fråga vad som görs i förväg. Föreskrift = i förväg skrivet → en regel som finns redo innan situationen.",
+    "pregrade_tactic": {
+      "handle": "Prefixets-riktning",
+      "move": "När ordet börjar på före- (föreskrift, förordning) — tänk ”i förväg, innan” och fråga vad som är förskrivet."
+    }
   },
   "host-2015-verb2-ORD-004": {
     "_meta": {
@@ -9414,7 +9890,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Ljudhärmande svenska verb för småbråk: när huvudordet är ett ord med 'klick' eller 'kläm' i ljudet (käbbla, knorra, gnabba, tjafsa), tänk på den lilla, vardagliga, irriterande tjafsregistret. Alla landar i samma fält: småbråk, gräl om småsaker."
+    "technique": "Ljudhärmande svenska verb för småbråk: när huvudordet är ett ord med 'klick' eller 'kläm' i ljudet (käbbla, knorra, gnabba, tjafsa), tänk på den lilla, vardagliga, irriterande tjafsregistret. Alla landar i samma fält: småbråk, gräl om småsaker.",
+    "pregrade_tactic": {
+      "handle": "Ljudbilden",
+      "move": "När ordet låter småpetigt och kacklande (käbbla, knorra, gnabba): det är småbråk-fältet — gräl om småsaker, inte krig."
+    }
   },
   "host-2015-verb2-ORD-005": {
     "_meta": {
@@ -9467,7 +9947,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Latinska ex-prefixet: när huvudordet börjar på ex- (exil, export, exodus, exkludera), tänk 'ut, bort, från'. Triggern att memorera: 'ex- = ut/bort'. Här: ex + il = ut ur (hem)marken → landsflykt."
+    "technique": "Latinska ex-prefixet: när huvudordet börjar på ex- (exil, export, exodus, exkludera), tänk 'ut, bort, från'. Triggern att memorera: 'ex- = ut/bort'. Här: ex + il = ut ur (hem)marken → landsflykt.",
+    "pregrade_tactic": {
+      "handle": "Prefixets-riktning",
+      "move": "När ordet börjar på ex- (exil, export, exodus) — tänk ”ut, bort, från”; exil = bort från hemlandet, ofta påtvingat."
+    }
   },
   "host-2015-verb2-ORD-006": {
     "_meta": {
@@ -9520,7 +10004,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Idiom från djurbeteende: när huvudordet är ett uttryck med djurnamn (gåsmarsch, ankgång, hökblick), tänk på vilket konkret djurbeteende uttrycket avbildar. Gäss går i rad → gåsmarsch = i rad."
+    "technique": "Idiom från djurbeteende: när huvudordet är ett uttryck med djurnamn (gåsmarsch, ankgång, hökblick), tänk på vilket konkret djurbeteende uttrycket avbildar. Gäss går i rad → gåsmarsch = i rad.",
+    "pregrade_tactic": {
+      "handle": "Djurbeteendet",
+      "move": "När idiomet använder ett djur (gåsmarsch, hökblick) — visualisera det konkreta djurbeteendet och översätt till mänsklig handling."
+    }
   },
   "host-2015-verb2-ORD-007": {
     "_meta": {
@@ -9573,7 +10061,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Latinska in-stall-familjen: när huvudordet bygger på install- (installation, installera), tänk 'sätta på sin plats, säte'. Stallum = säte/plats, så installation = att placera någon eller något i sin tilldelade position — vare sig det är en biskop i sitt ämbete eller en maskin på sin sockel."
+    "technique": "Latinska in-stall-familjen: när huvudordet bygger på install- (installation, installera), tänk 'sätta på sin plats, säte'. Stallum = säte/plats, så installation = att placera någon eller något i sin tilldelade position — vare sig det är en biskop i sitt ämbete eller en maskin på sin sockel.",
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När ordet bygger på install- (installera, installation) — tänk ”sätta på plats i ämbete eller säte”, inte bara teknisk inkoppling."
+    }
   },
   "host-2015-verb2-ORD-008": {
     "_meta": {
@@ -9626,7 +10118,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Sammansättningar med under- (nedanför grunden): när huvudordet är 'under + verb' (undergräva, underminera, undantränga), tänk på den fysiska bilden av något som händer UNDER ytan — dolt, gradvis, åt grunden. Undergräva = gräva under grunden så det rasar."
+    "technique": "Sammansättningar med under- (nedanför grunden): när huvudordet är 'under + verb' (undergräva, underminera, undantränga), tänk på den fysiska bilden av något som händer UNDER ytan — dolt, gradvis, åt grunden. Undergräva = gräva under grunden så det rasar.",
+    "pregrade_tactic": {
+      "handle": "Prefixets-riktning",
+      "move": "När ordet börjar på under- (undergräva, underminera) — visualisera något som händer DOLT under ytan; gradvis erosion åt grunden."
+    }
   },
   "host-2015-verb2-ORD-009": {
     "_meta": {
@@ -9679,7 +10175,11 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Grekiska -nomi-familjen: när huvudordet slutar på -nomi (gastronomi, astronomi, ekonomi, agronomi), tänk 'lagar/lära om X' och leta efter den första halvan som anger ÄMNET. Här: gastro- (mage) + -nomi (lära) → läran om maten."
+    "technique": "Grekiska -nomi-familjen: när huvudordet slutar på -nomi (gastronomi, astronomi, ekonomi, agronomi), tänk 'lagar/lära om X' och leta efter den första halvan som anger ÄMNET. Här: gastro- (mage) + -nomi (lära) → läran om maten.",
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När ordet slutar på -nomi (gastronomi, astronomi) — tänk ”lära om X”; första halvan anger ämnet (gastro = mage)."
+    }
   },
   "host-2015-verb2-ORD-010": {
     "_meta": {
@@ -9732,6 +10232,10 @@
         "title": "Välj synonymen"
       }
     ],
-    "technique": "Latinska stipul-familjen: när huvudordet bygger på stipul- (stipulera, stipulerad, stipendium), tänk 'formellt utlovat, inskrivet i avtal'. Triggern att memorera: 'stipulerad = halmstrået bröts, avtalet är bindande'."
+    "technique": "Latinska stipul-familjen: när huvudordet bygger på stipul- (stipulera, stipulerad, stipendium), tänk 'formellt utlovat, inskrivet i avtal'. Triggern att memorera: 'stipulerad = halmstrået bröts, avtalet är bindande'.",
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När ordet bygger på stipul- (stipulera, stipendium) — tänk ”formellt inskrivet i avtal”, något fastställt och bindande."
+    }
   }
 }

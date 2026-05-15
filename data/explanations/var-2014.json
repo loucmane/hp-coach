@@ -24,6 +24,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det luriga är att kombinera TVÅ villkor (röd-före-vit + minst en tom mellan). Botemedlet: översätt båda villkoren till ett enda olikhetstecken (v − r ≥ 2) innan du börjar räkna — då kan du inte 'glömma' ett villkor halvvägs.",
+    "pregrade_tactic": {
+      "handle": "Platsräkningen",
+      "move": "Fastna en variabel i taget och räkna val för den andra; för små tal slår systematisk uppräkning alltid formel."
+    },
     "solution_path": "Räkna par (röd-position, vit-position) med röd vänster om vit och minst en tom låda mellan: r=1 ger 4 val, r=2 ger 3, r=3 ger 2, r=4 ger 1. Summa = 10, vilket är mindre än 12. Svaret är B.",
     "steps": [
       {
@@ -126,6 +130,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Avståndsformeln",
+      "move": "När två punkter delar samma y-värde är avståndet bara absolutbeloppet av skillnaden i x — y-termerna stryks bort."
+    },
     "solution_path": "Avstånd mellan två punkter med samma y-värde = absolutbeloppet av skillnaden i x. Kvantitet I = |−4 − 22| = 26, Kvantitet II = |3 − (−21)| = 24. Svaret är A.",
     "steps": [
       {
@@ -216,6 +224,10 @@
     ],
     "framework_id": null,
     "pitfall": "Geometriska KVA-problem lockar till intuitionsbaserade gissningar utifrån en enda mental bild. Botemedlet: rita ALLTID minst två olika giltiga konfigurationer innan du svarar — om de ger olika tecken är svaret D.",
+    "pregrade_tactic": {
+      "handle": "Multipla-fallen",
+      "move": "Rita minst två giltiga konfigurationer innan du svarar; pekar de åt olika håll i jämförelsen är svaret D."
+    },
     "solution_path": "Två cirklar skär i två punkter när avståndet d mellan medelpunkterna ligger i intervallet |R − r| < d < R + r. Den större radien R kan vara mindre, lika med, eller större än d beroende på radierna. Information saknas — svaret är D.",
     "steps": [
       {
@@ -312,6 +324,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Potens-genvägen",
+      "move": "När du delar potenser av samma bas, dra exponenterna istället för att räkna ut talen explicit."
+    },
     "solution_path": "En åttondel av 2^{6} = \\frac{64}{8} = 8. Kvantitet II är också 8. Båda är 8 — svaret är C.",
     "steps": [
       {
@@ -402,6 +418,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Statistikgrunden",
+      "move": "Räkna både median och medelvärde explicit — gissa aldrig på 'känsla' av talserien, även när den är kort."
+    },
     "solution_path": "Sorterat blir serien 1, 5, 5, 6, 8. Medianen (mittentalet) = 5. Medelvärdet = (5+1+6+5+8)/5 = 25/5 = 5. Båda är 5 — svaret är C.",
     "steps": [
       {
@@ -491,6 +511,10 @@
       }
     ],
     "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kvadrera-summan",
+      "move": "(x+y)² är x² + 2xy + y² — mellantermen 2xy 'försvinner' aldrig, ta alltid med den när du utvecklar."
+    },
     "pitfall": "Freshman's dream-fällan: tron att kvadrering distribuerar över addition. Botemedlet: utveckla ALLTID parentesen explicit innan jämförelse; om du ser ett kort 'A² + B² vs (A+B)²', utveckla högersidan med en gång.",
     "solution_path": "Utveckla (x + y)^{2} = x^{2} + 2xy + y^{2}. Skillnaden II − I är 2xy, som är positiv när både x och y är positiva. Kvantitet II är större — svaret är B.",
     "steps": [
@@ -568,6 +592,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Extremvärdestestet",
+      "move": "Pröva minst två y-värden runt brytpunkten där x − y = 0 innan du fastnar i en enda konfiguration."
     },
     "distractors": [
       {
@@ -665,6 +693,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Bråk-i-bråk",
+      "move": "När du har 'en X-del dividerat med Y', multiplicera ihop X och Y till en gemensam nämnare direkt."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -760,6 +792,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Substitutionsstrategin",
+      "move": "När frågan ger ett villkor mellan variablerna, byt ut den ena överallt så att uttrycket bara har en variabel kvar."
     },
     "distractors": [
       {
@@ -863,6 +899,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Pythagoras-på-areor",
+      "move": "Tre kvadrater på en rätvinklig triangel — använd areorna direkt som a² + b² = c² utan att dra rötter."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -964,6 +1004,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Sorteringskravet",
+      "move": "Vill frågan utse min OCH max bland N objekt? Då måste alla par vara jämförda direkt eller via transitivitet."
     },
     "distractors": [
       {
@@ -1078,6 +1122,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Redundans-vakten",
+      "move": "Kolla alltid om ett påstående bara upprepar något frågans inledning redan gav — sådana villkor är värdelösa."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -1184,6 +1232,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Variabelräkningen",
+      "move": "Räkna oberoende ekvationer mot obekanta variabler — färre ekvationer än obekanta betyder oftast otillräckligt."
     },
     "distractors": [
       {
@@ -1298,6 +1350,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Filtersnittet",
+      "move": "Applicera varje villkor som ett filter på listan; snittet av filtren ska innehålla exakt EN kandidat."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -1410,6 +1466,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Gratis-ekvationen",
+      "move": "Räkna in ekvationer som GÖMS i frågans inledning — 'lika många' eller 'samma' är ofta ett gratis villkor."
     },
     "distractors": [
       {
@@ -1529,6 +1589,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Elimineringen",
+      "move": "Subtrahera frågans ekvationer för att eliminera delade variabler och avslöja den dolda kopplingen."
     },
     "distractors": [
       {
@@ -1674,6 +1738,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Skuggat-minus",
+      "move": "Skuggat område = yttre area minus inskriven area; räkna varje med sin formel och dra ifrån."
     },
     "distractors": [
       {
@@ -1823,6 +1891,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Distributiv-minus",
+      "move": "Minustecken framför parentes = multiplikation med −1 av varje term — skriv ut distributionen även när det känns trivialt."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -1924,6 +1996,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Rest-strategin",
+      "move": "Hitta största multipeln av delaren under talet; resten är talet minus den multipeln."
     },
     "distractors": [
       {
@@ -2041,6 +2117,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Vinkelsumman-runt",
+      "move": "När flera figurer möts i en punkt, summerar vinklarna kring den till 360° — dra ifrån de kända vinklarna."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -2149,6 +2229,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Komponentmåttet",
+      "move": "Räkna först delfigurens sida, sedan rektangelns mått som funktion av delfigurens mått."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -2244,6 +2328,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Mittenpunkten",
+      "move": "För k på varandra följande heltal är medianen mittenpunkten — räkna avståndet från minsta talet."
     },
     "distractors": [
       {
@@ -2341,6 +2429,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Olikhetsisoleringen",
+      "move": "Isolera x i intervallet först; jämför sedan mot det andra talet via intervallets relevanta gräns."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -2430,6 +2522,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Area-till-sida",
+      "move": "När arean är given, dra roten ur (efter att ha plockat bort π i cirkelfallet) för att få sida eller radie."
     },
     "distractors": [
       {
@@ -2527,6 +2623,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Teckenanalysen",
+      "move": "När villkoret ger strikta tecken på variablerna, bestäm tecken på täljare och nämnare separat — riktningen avslöjas utan algebra."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -2616,6 +2716,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Kvadratregeln",
+      "move": "x² är alltid ≥ 0 — jämför du x² med ett negativt tal är fallet klart, oavsett vad x är."
     },
     "distractors": [
       {
@@ -2743,6 +2847,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Tärningssymmetrin",
+      "move": "Summan av två tärningar är symmetrisk kring 7 — kolla avstånd från 7 istället för att räkna sannolikheter."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -2851,6 +2959,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Koordinatläggningen",
+      "move": "När en figur är symmetrisk, lägg in koordinater (smidig sida 2 eller 4) och räkna areor med bas·höjd direkt."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -2946,6 +3058,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Korstabellen",
+      "move": "Bygg en 2x2-tabell över de två oberoende egenskaperna och se vilka rutor påståendena fyller i."
     },
     "distractors": [
       {
@@ -3079,6 +3195,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Hastighetskontot",
+      "move": "En tidsskillnad kräver båda objektens hastigheter — kontrollera att informationen täcker bägge sidors fart."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -3179,6 +3299,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Förhållandestrategin",
+      "move": "När påståendet ger en sannolikhet UTAN en färg, översätt till en ratio mellan kvarvarande — inte absoluta tal."
     },
     "distractors": [
       {
@@ -3299,6 +3423,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Konfigurationsmallen",
+      "move": "Konstruera en mall för var person/objekt kan stå; leta TVÅ konsistenta scenarier som ger olika svar."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -3418,6 +3546,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Tecken-reduktionen",
+      "move": "Omforma frågan tills den blir en tecken-fråga på en enskild variabel — kolla sufficiens sedan."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -3530,6 +3662,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Medelvärdes-omvändningen",
+      "move": "Om medelvärdet av två tal är M och ett tal är känt k, är det andra 2M − k — räkna direkt utan ekvation."
     },
     "distractors": [
       {
@@ -3647,6 +3783,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Minus-distribution",
+      "move": "Skriv ut differensen som A − (B) och distribuera minustecknet till varje term i B innan du slår ihop liknande termer."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -3736,6 +3876,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Teckenfiltret",
+      "move": "Testa varje alternativ endast för tecknet på båda sidor; eliminerar ofta 2–3 alternativ direkt."
     },
     "distractors": [
       {
@@ -3833,6 +3977,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Procent-omvändningen",
+      "move": "'p % av x = N' ger x = N · (100/p) — dela det kända talet med procentdecimalformen."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -3922,6 +4070,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Bråk-rensningen",
+      "move": "När x sitter i nämnaren, multiplicera alla termer med nämnaren (om den ≠ 0) innan du löser ut x."
     },
     "distractors": [
       {
@@ -4013,6 +4165,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Lutning-eller-skärning",
+      "move": "Klassificera varje förändring som ändring av k (lutning) eller m (lodrät position) i y = kx + m."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -4102,6 +4258,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Thales-vinkeln",
+      "move": "Vinkel mot diameter är 90° (Thales sats); använd Pythagoras i den rätvinkliga triangeln."
     },
     "distractors": [
       {
@@ -4273,6 +4433,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Hedge-jakten",
+      "move": "Leta efter dämpande språk (preliminary, might, not yet known); rätt svar speglar samma reservation."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -4338,6 +4502,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Past-present-skiftet",
+      "move": "Hitta 'used to be X, now is Y'-skiftet och välj alternativet som namnger den NUVARANDE sidan av kontrasten."
     },
     "distractors": [
       {
@@ -4405,6 +4573,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Parallell-listan",
+      "move": "Meningar med 'like X, Y and Z' bär författarens framing — distraktorer lockar ofta med ett enskilt exempel ur listan."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -4470,6 +4642,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Två-menings-bågen",
+      "move": "När frågan namnger en person, läs meningen med namnet OCH nästa mening — påståendet sträcker sig över båda."
     },
     "distractors": [
       {
@@ -4537,6 +4713,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Tema-zoom-ut",
+      "move": "Vid 'most in line with the text': zooma ut till TEMAT över flera stycken — låt dig inte fastna i en enskild mening."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -4602,6 +4782,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Exakt-finding-match",
+      "move": "Lokalisera stycket som namnger den specifika studien och välj alternativet som parafraserar den EXAKTA finden."
     },
     "distractors": [
       {
@@ -4669,6 +4853,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Elaborations-jakten",
+      "move": "Hitta uttryckets introduktion och meningarna som UTVECKLAR det direkt efter — rätt alternativ sammanfattar utvecklingen."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -4734,6 +4922,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Tempus-matchen",
+      "move": "Scanna efter presens vs futurum-markörer; rätt alternativ speglar textens tidsram, distraktorer ofta flippar den."
     },
     "distractors": [
       {
@@ -4801,6 +4993,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Framtids-pilen",
+      "move": "Hitta trendmeningen ('will', 'is becoming', 'increasingly') och välj alternativet som namnger SAMMA riktning."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -4866,6 +5062,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Hedge-headlinen",
+      "move": "Identifiera styckets största påstående och välj alternativet som fångar det utan att överdriva — hedgade alternativ slår absoluta."
     },
     "distractors": [
       {
@@ -4933,6 +5133,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Villkorat-omdömet",
+      "move": "När texten först kritiserar ett begrepp och sedan tillägger ett 'men ändå', landar svaret i det villkorade alternativet."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -4998,6 +5202,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Båda-polerna",
+      "move": "När en metafor placeras MELLAN två namngivna positioner, välj alternativet som rymmer båda — inte det som plockar en."
     },
     "distractors": [
       {
@@ -5065,6 +5273,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Lag-vs-kritik",
+      "move": "Skilj mellan vad LAGEN kräver (saklig referatmening) och vad TEXTFÖRFATTAREN kritiserar — markera lagmeningen separat."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -5130,6 +5342,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "OCH-testet",
+      "move": "När ett alternativ har TVÅ egenskaper (A och B), kontrollera båda mot texten — räcker inte att hälften stämmer."
     },
     "distractors": [
       {
@@ -5197,6 +5413,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Riktnings-läsningen",
+      "move": "Hitta meningen med 'syftade till att' eller 'undersökte om' och spåra orsak → verkan — riktningen avslöjar rätt alternativ."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -5262,6 +5482,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Resultat-vs-design",
+      "move": "I experimentreferat: skilj på vad EXPERIMENTET VISAR (resultatet) och vad det BYGGER UPP (förutsättningarna)."
     },
     "distractors": [
       {
@@ -5329,6 +5553,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Teoretiska-antagandet",
+      "move": "Leta efter meningen där en teoretiker namnges med 'modellen betonar' eller 'utgår från' — det är studiens antagande."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -5394,6 +5622,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Paraply-perspektivet",
+      "move": "När texten radar upp 'tre perspektiv på X', är skillnaden alltid PERSPEKTIVET — inte ämnet."
     },
     "distractors": [
       {
@@ -5461,6 +5693,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Datakällan",
+      "move": "Vid 'vad bygger studien på?' — leta efter meningen med 'har använts', 'har samlats in via' eller 'empirin består av'."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -5526,6 +5762,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Ja-och-nej-listan",
+      "move": "Gör en ja-lista och nej-lista över faktorer; ett alternativ med ett nej-listord faller direkt."
     },
     "distractors": [
       {
@@ -5593,6 +5833,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Motreaktions-läsningen",
+      "move": "Två samtidiga trender från motsatta domäner (fysiskt vs digitalt) — när den ena uppstår SOM SVAR på den andra, är 'motreaktion på' rätt."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -5652,6 +5896,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Tvålucksregeln",
+      "move": "Båda orden måste passa oberoende; identifiera kravet för varje lucka separat och eliminera par som spricker på minst ett led."
     },
     "distractors": [
       {
@@ -5718,6 +5966,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Trelucksregeln",
+      "move": "Läs hela meningen två gånger, identifiera kravet för varje lucka — eliminera ett alternativ så fort EN lucka spricker."
     },
     "distractors": [
       {
@@ -5791,6 +6043,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Fackord-precisionen",
+      "move": "När meningen anger ett SPECIFIKT redskap eller en specifik fas, måste luckan vara fackordet för just den handlingen."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -5850,6 +6106,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Precisions-orden",
+      "move": "När båda halvorna kräver exakta ord ('dråpligt', 'tillträde till'), plugga ordens precisa nyanser — gissa inte på känsla."
     },
     "distractors": [
       {
@@ -5916,6 +6176,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Idiom-ankaret",
+      "move": "Leta fasta uttryck (typ 'långsiktigt hållbart') som låser två av tre luckor direkt; den tredje följer av elimination."
     },
     "distractors": [
       {
@@ -5989,6 +6253,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Domän-vokabulären",
+      "move": "I medicintext har varje fackord en EXAKT plats — åkomma = sjukdom, diagnos = etikett, symptom = del; matcha rollen."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -6054,6 +6322,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Förled-betydelsen",
+      "move": "När alla alternativ delar samma ändelse (-fall), plugga skillnaderna mellan förleden — där ligger betydelsen."
     },
     "distractors": [
       {
@@ -6121,6 +6393,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Idiom-strategin",
+      "move": "Leta fasta kollokationer som 'statligt sanktionerad' eller 'stor räckvidd' — luckans kvalificering pekar ut idiomet."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -6186,6 +6462,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Bildlig-eller-konkret",
+      "move": "Verb med både konkret och bildlig betydelse — i litterära sammanhang dominerar oftast den metaforiska."
     },
     "distractors": [
       {
@@ -6253,6 +6533,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Kyrklig-latinet",
+      "move": "Ovanligt kort latinord med religiös ton (oblat, hostia) pekar mot mat- eller ritualord i nattvardssammanhang."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -6305,6 +6589,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Verb-byteprovet",
+      "move": "Bilda en mening med ordet ('infria ett löfte') och prova varje alternativ i samma slot — det som låter idiomatiskt rätt är synonymen."
     },
     "distractors": [
       {
@@ -6359,6 +6647,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Klassdefinitionen",
+      "move": "När ordet är ett ämne eller en disciplin (algebra, geometri), peka ut det som SKILJER det från andra grenar — inte ett exempel."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -6411,6 +6703,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Ration-stammen",
+      "move": "Ration- som prefix kommer från latinets ratio = räkning/förnuft — leta efter ord om TANKEPROCESSEN, inte resultatet."
     },
     "distractors": [
       {
@@ -6465,6 +6761,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Räkneords-stammen",
+      "move": "Lånord med tri-/troj-/tre- bär indoeuropeiska räkneord — räkna alternativen efter vilket som nämner just tre."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -6517,6 +6817,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Naturbilds-spårningen",
+      "move": "Grekiska adjektiv på -isk hämtar ofta bild från naturen (sporá = sådd) — spåra till det konkreta naturordet."
     },
     "distractors": [
       {
@@ -6571,6 +6875,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Diminutiv-ändelsen",
+      "move": "Latinsk/romansk diminutivändelse (-ell, -ette, -ino) betyder 'liten variant av X' — leta efter den enkla varianten."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -6623,6 +6931,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Franskt-affärsord",
+      "move": "Verb på -era med ekonomisk klang kommer ofta från franska — leta efter en EXAKT avtalshandling, inte en allmän aktivitet."
     },
     "distractors": [
       {
@@ -6677,6 +6989,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Form-till-mängd",
+      "move": "Adjektiv byggt på en form (rundlig, tjockt) bär ofta en mängd-laddning — fråga vilken kvantitet bilden suggererar."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -6730,6 +7046,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "Plocka isär det grekiska sammansatta ordet i sina två stammar (eu- = god, thanatos = död) och översätt komponentvis."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -6782,6 +7102,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Relations-namnet",
+      "move": "Namnge relationen meningen kopplar (ancestor → relative, cause → effect, part → whole) innan du läser alternativen."
     },
     "distractors": [
       {
@@ -6849,6 +7173,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Standard-paret",
+      "move": "Välj verbet som naturligt paras ihop med substantivet i standardengelska — 'evidence to support', inte 'evidence to promote'."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -6914,6 +7242,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Standard-frasen",
+      "move": "När substantivet är ett känt oprovet fenomen (Bigfoot, ghosts, aliens), är 'believe in' den låsta engelska kollokationen."
     },
     "distractors": [
       {
@@ -6981,6 +7313,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Idiom-dragningen",
+      "move": "Låt substantivet dra idiomet — 'driven to extinction', 'set a record' — matcha standardkollokationen."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -7046,6 +7382,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Konjunktions-formen",
+      "move": "Mappa de två meningshalvorna till orsak-verkan, koncession, addition eller villkor — konjunktionen följer av formen."
     },
     "distractors": [
       {
@@ -7113,6 +7453,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Spännings-pekfingret",
+      "move": "Leta efter meningen med 'men', 'samtidigt' eller 'dock' — yrkessvårigheter namnges genom två krav som drar åt olika håll."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -7178,6 +7522,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Värderings-signalen",
+      "move": "Signalfraser som 'framför allt', 'bäst blir det' och 'bör bli mönsterbildande' pekar ut det rangordnade högst."
     },
     "distractors": [
       {
@@ -7245,6 +7593,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Författarröst-kravet",
+      "move": "Kräv en citerad utsaga från författaren själv; recensentens tolkning räknas inte som uttalad avsikt."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -7311,6 +7663,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Adjektiv-räkningen",
+      "move": "Räkna adjektiven i värderingsmeningen — formord (lättläst, översiktlig) pekar mot framställningen, innehållsord pekar mot innehållet."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -7376,6 +7732,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Kontrast-signalen",
+      "move": "Leta efter 'inte bara… utan också…' eller 'till skillnad från…' — kontrasten innehåller två poler, det är dimensionen frågan vill ha."
     },
     "distractors": [
       {
@@ -7573,6 +7933,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Re-verb-konstruktionen",
+      "move": "Ord med re-prefix är inte utbytbara — kolla EXAKT konstruktion (till/för/om) och betydelse separat innan du väljer."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -7632,6 +7996,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Låsta-svenska-frasen",
+      "move": "'Så när som på X' är en låst svensk fras = 'med undantag för X' — kolla EXAKT form, gissa inte på känsla."
     },
     "distractors": [
       {
@@ -7705,6 +8073,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Ju-desto-paret",
+      "move": "Korrelativa par som 'ju ... desto ...' är låsta — när andra ledet är 'desto + komparativ' är förstedet ALLTID 'ju + komparativ'."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -7777,6 +8149,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Ägna-en-tanke",
+      "move": "När konstruktionen är '____ X en tanke', är verbet ÄGNA i 9 fall av 10 — det är en låst svensk fras."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -7843,6 +8219,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Ism-definitionen",
+      "move": "Varje -ism är en EXAKT lära om en specifik fråga — matcha textens definition mot rätt -isms kärndefinition."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -7908,6 +8288,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Historisk-koherensen",
+      "move": "I politisk text ska alla tre leden samspela i samma historiska resonemang — kolla att orden hänger ihop med samma berättelse."
     },
     "distractors": [
       {
@@ -7981,6 +8365,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Teori-empiri-paret",
+      "move": "I akademisk text är TEORETISK vs EMPIRISK det klassiska paret — när ena luckan är teoretisk, leta motpolen empirisk."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -8046,6 +8434,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Exempel-leder-luckan",
+      "move": "När texten räknar upp exempel direkt efter luckan, är luckan fackordet som exempelraden ILLUSTRERAR."
     },
     "distractors": [
       {
@@ -8113,6 +8505,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Förklaringen-efter",
+      "move": "Läs förklaringen som kommer EFTER luckan — den definierar svaret oftare än meningen före."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -8178,6 +8574,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Suffix-rollen",
+      "move": "När texten signalerar en grupp (efter sjukdom, motion) och ändelsen är -ent, är ordet konvalescent eller patient — kolla rollen."
     },
     "distractors": [
       {
@@ -8245,6 +8645,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Tyg-eller-färg",
+      "move": "Exotiskt klingande tre-/fyrabokstavsord från kolonialspråk (kaki, denim) är ofta både färg och tyg — kontrollera båda aspekter."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -8297,6 +8701,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Ljus-stammen",
+      "move": "Stammar lust-/luc-/lum- spårar till latinets ljus — leta efter synonym med 'ljus' eller 'klarhet' i."
     },
     "distractors": [
       {
@@ -8351,6 +8759,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Minnes-stammen",
+      "move": "Stam -minisc-/-mem- med prefix betyder minne — re- betyder 'åter', något kommer åter i medvetandet."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -8403,6 +8815,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Bildens-en-aspekt",
+      "move": "'Som en X' lyfter EN enda aspekt av bilden, inte alla — fråga vilken egenskap idiomet faktiskt lånat."
     },
     "distractors": [
       {
@@ -8457,6 +8873,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Medicin-tillståndet",
+      "move": "Latinskt fackord med -ium/-osis/-itis pekar på SYMPTOM eller TILLSTÅND — fråga vilken funktion som är drabbad."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -8509,6 +8929,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Particip-tiden",
+      "move": "Suffix -ande markerar pågående handling eller tillstånd — ordet beskriver något i ett bestämt tidsläge."
     },
     "distractors": [
       {
@@ -8563,6 +8987,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Möte-stammen",
+      "move": "Stam -ven-/-vent- spårar till latinets venire = komma — ordet handlar om möten, regler eller överenskommelser."
+    },
     "distractors": [
       {
         "letter": "B",
@@ -8615,6 +9043,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Av-prefixet",
+      "move": "Av- + ovanligt rotord pekar på 'bort' eller 'från' — leta efter en avlägsnande- eller avslutningshandling."
     },
     "distractors": [
       {
@@ -8669,6 +9101,10 @@
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
     },
+    "pregrade_tactic": {
+      "handle": "Komponent-bygget",
+      "move": "Svenskt sammansatt particip (för-X-ad, miss-X-ad) — bryt ner i delarna och bygg betydelsen mekaniskt."
+    },
     "distractors": [
       {
         "letter": "A",
@@ -8721,6 +9157,10 @@
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
       "recipe": "variant-c-ultra-granular"
+    },
+    "pregrade_tactic": {
+      "handle": "Logi-dubbeltydigheten",
+      "move": "-logi kan vara 'lära om' (biologi) eller 'samling' (antologi) — testa 'samling/serie' när det inte är en disciplin."
     },
     "distractors": [
       {

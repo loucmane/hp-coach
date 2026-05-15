@@ -27,6 +27,13 @@ export type VariantData = {
   correct: boolean
   onPick: (letter: AnswerLetter) => void
   onReset: () => void
+  /** 1-indexed position in the current drill plan. Undefined when
+   *  the variant is rendered outside a session (legacy /drill-style-*
+   *  routes, bake-offs). Used by the pre-grade apparatus footer. */
+  position?: number
+  /** Total questions in the current plan. Same nullability as
+   *  position — both present or both absent. */
+  total?: number
 }
 
 type Props = {

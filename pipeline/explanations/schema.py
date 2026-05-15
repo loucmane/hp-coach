@@ -248,4 +248,19 @@ def validate_explanation(payload: dict) -> list[str]:
                 if f not in d or not isinstance(d[f], str) or not d[f].strip():
                     errors.append(f"distractors[{i}].{f} missing or empty")
 
+    # pregrade_tactic — optional. When present, must be an object with
+    # `handle` (a short named-strategy noun phrase) and `move` (the
+    # 1-line move in plain Swedish, pre-grade-safe — gives the student
+    # the strategy frame without revealing the answer). Surfaced in the
+    # SPA's pre-grade right column. Entries without this field fall back
+    # to a section-default tactic via hash-rotation.
+    pgt = payload.get("pregrade_tactic")
+    if pgt is not None:
+        if not isinstance(pgt, dict):
+            errors.append("pregrade_tactic must be an object or null")
+        else:
+            for f in ("handle", "move"):
+                if f not in pgt or not isinstance(pgt[f], str) or not pgt[f].strip():
+                    errors.append(f"pregrade_tactic.{f} missing or empty")
+
     return errors

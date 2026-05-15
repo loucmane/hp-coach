@@ -41,12 +41,14 @@ echo "synced $copied dataset(s)"
 
 # Quant figures (Phase B vector pipeline). The drill fetches each
 # SVG on demand via QuestionFigure.tsx, so these need to land beside
-# the JSON in the public/ tree. Mirror the whole directory — `cp -R`
-# is safe because the parser writes deterministic per-qid filenames.
+# the JSON in the public/ tree. Use rsync with --delete so the
+# directory inode is preserved; the earlier `rm -rf` + `cp -R`
+# recipe broke Vite's static file watcher (the watcher kept the old
+# inode reference and SVG requests fell through to the SPA index.html
+# instead of the real file, until you bounced the dev server).
 if [ -d "$FIG_SRC" ]; then
-  rm -rf "$FIG_DEST"
   mkdir -p "$FIG_DEST"
-  cp -R "$FIG_SRC"/. "$FIG_DEST"/
+  rsync -a --delete "$FIG_SRC"/ "$FIG_DEST"/
   fig_count=$(find "$FIG_DEST" -maxdepth 1 -name '*.svg' | wc -l | tr -d ' ')
   echo "synced $fig_count figure(s) → app/public/figures/"
 fi
@@ -55,13 +57,12 @@ fi
 # offline by pipeline/explanations/generate.py; one JSON file per
 # exam keyed by qid, plus an _index.json listing covered qids. The
 # SPA's loadExplanation() fetches them lazily; missing explanations
-# are non-fatal — the panel just doesn't mount. Mirroring the whole
-# directory keeps source-of-truth in data/ and the SPA's view in
-# public/ in lock-step, the same pattern as figures.
+# are non-fatal — the panel just doesn't mount. Same rsync+--delete
+# pattern as figures so Vite's watcher doesn't lose its grip on the
+# directory.
 if [ -d "$EXPL_SRC" ]; then
-  rm -rf "$EXPL_DEST"
   mkdir -p "$EXPL_DEST"
-  cp -R "$EXPL_SRC"/. "$EXPL_DEST"/ 2>/dev/null || true
+  rsync -a --delete "$EXPL_SRC"/ "$EXPL_DEST"/
   expl_count=$(find "$EXPL_DEST" -maxdepth 1 -name '*.json' ! -name '_index.json' | wc -l | tr -d ' ')
   echo "synced $expl_count explanation file(s) → app/public/explanations/"
 fi

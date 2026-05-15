@@ -35,9 +35,13 @@ app.use(
   cors({
     origin: (origin) => {
       if (!origin) return undefined
-      if (origin.startsWith('http://localhost:5173')) return origin
-      if (origin.startsWith('http://localhost:4173')) return origin
-      if (/\.pages\.dev$/.test(new URL(origin).hostname)) return origin
+      // Match any localhost port — Vite picks 5174/5175/etc. when 5173
+      // is in use, and pinning to a single port broke `Starta övning`
+      // mid-session. The dev/preview origin matters for safety; the
+      // port doesn't.
+      const url = new URL(origin)
+      if (url.hostname === 'localhost' && url.protocol === 'http:') return origin
+      if (/\.pages\.dev$/.test(url.hostname)) return origin
       return undefined
     },
     allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
