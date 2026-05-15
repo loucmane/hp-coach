@@ -24,6 +24,7 @@
 
 import { useEffect, useState } from 'react'
 import { type FeedbackEntry, getFeedback, submitFeedback } from '@/api/feedback'
+import { resolveSteps, StepList } from '@/components/drill/PedagogyPanel'
 import { MathText } from '@/components/MathText'
 import { type Explanation, loadExplanation } from '@/data/explanations'
 
@@ -150,9 +151,25 @@ function Header({
 // ── Body ──────────────────────────────────────────────────────────
 
 function Body({ explanation, qid }: { explanation: Explanation; qid: string }) {
+  // A.6V.5 — Phone bifurcation: when the explanation carries structured
+  // `steps[]` (Phase A.6 corpus), render the same numbered-card
+  // composition as desktop's PedagogyPanel. When it doesn't (legacy
+  // pre-A.6 entries), fall back to the prose `solution_path` blob.
+  //
+  // This matches what `PostGradeBody` does on desktop: when steps exist,
+  // the prose summary is gone in favor of the cards. Rendering BOTH
+  // would double-show the same content (resolveSteps falls back to
+  // splitting solution_path when steps[] is empty).
+  const hasSteps = (explanation.steps?.length ?? 0) > 0
   return (
     <div style={{ padding: '14px 16px 16px' }}>
-      <SolutionPath text={explanation.solution_path} />
+      {hasSteps ? (
+        <div style={{ marginBottom: 16 }}>
+          <StepList steps={resolveSteps(explanation)} />
+        </div>
+      ) : (
+        <SolutionPath text={explanation.solution_path} />
+      )}
       {explanation.distractors.length > 0 && (
         <DistractorList distractors={explanation.distractors} />
       )}
