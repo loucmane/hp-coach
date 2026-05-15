@@ -68,6 +68,11 @@ function variantPropsFor(args: {
   correct: boolean
   onPick: (letter: AnswerLetter) => void
   onAdvance: () => void
+  /** 1-indexed position in the plan; threaded through to the pre-grade
+   *  apparatus footer in StyleA. Optional so legacy /drill-style-*
+   *  routes that mount the variant without a session keep compiling. */
+  position?: number
+  total?: number
 }) {
   return {
     question: args.question,
@@ -77,6 +82,8 @@ function variantPropsFor(args: {
     correct: args.correct,
     onPick: args.onPick,
     onReset: args.onAdvance,
+    position: args.position,
+    total: args.total,
   }
 }
 
@@ -390,6 +397,8 @@ export function SessionPlayer(props: SessionPlayerProps) {
             correct: picked === q.answer,
             onPick,
             onAdvance: onNext,
+            position: index + 1,
+            total: plan.length,
           })}
         />
       </MobileFrame>
@@ -429,6 +438,8 @@ export function SessionPlayer(props: SessionPlayerProps) {
               correct: picked === q.answer,
               onPick,
               onAdvance: onNext,
+              position: index + 1,
+              total: plan.length,
             })}
           />
         ) : (

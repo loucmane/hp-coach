@@ -92,6 +92,16 @@ export type Explanation = {
    *  the framework lesson. Optional so pre-A.6 explanations don't
    *  break. */
   framework_id?: string
+  /** Phase A.6V Path 3 — per-question named-strategy hint surfaced in
+   *  the SPA's pre-grade right column. Authored offline against the
+   *  Variant-C corpus so each question gets a tactic tailored to its
+   *  specific shape. Optional: entries without this field fall back
+   *  to the section-default hash-rotation catalog in
+   *  components/pre-grade/pregrade-tactics.ts. */
+  pregrade_tactic?: {
+    handle: string
+    move: string
+  }
   /** Generation provenance; not always present on older entries. */
   _meta?: ExplanationMeta
 }

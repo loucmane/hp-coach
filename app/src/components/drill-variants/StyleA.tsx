@@ -14,6 +14,7 @@ import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { EditionStrip } from '@/components/EditionStrip'
 import { MathText } from '@/components/MathText'
+import { PreGradeFill } from '@/components/pre-grade/PreGradeFill'
 import type { VariantData } from './DrillVariantShell'
 import { useExplanation } from './useExplanation'
 import { useProgressiveReveal } from './useProgressiveReveal'
@@ -26,6 +27,8 @@ export function StyleA({
   correct,
   onPick,
   onReset,
+  position,
+  total,
 }: VariantData) {
   // Self-load if the caller didn't preload (e.g., when used inside
   // SessionPlayer instead of via DrillVariantShell).
@@ -329,430 +332,497 @@ export function StyleA({
           style={{
             maxWidth: '65ch',
             paddingTop: 'clamp(28px, 4vh, 48px)',
-            opacity: graded ? 1 : 0.3,
+            // Opacity used to fade the column since it had no
+            // pre-grade content — PreGradeFill now carries named-
+            // tactic strategy coaching there, so both modes render
+            // at full weight. The transition is kept for the
+            // post-grade swap from coaching → explanation.
             transition: 'opacity 280ms cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
           {!graded ? (
-            <p
+            <PreGradeFill
+              question={question}
+              explanation={explanation}
+              position={position}
+              total={total}
+            />
+          ) : !explanation ? (
+            // Graded but no Variant-C explanation on file (DTK, parser-
+            // truncated tail, or a qid the regen waves missed). Without
+            // this branch the post-grade body short-circuits and the
+            // drill-next button never renders — Enter still advances
+            // via SessionPlayer's global key binding, but there's no
+            // visible affordance. Surface a minimal "advance" control
+            // so click works regardless.
+            <div
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 19,
-                lineHeight: 1.7,
-                color: 'var(--muted)',
-                fontStyle: 'italic',
+                paddingTop: 24,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 16,
+                maxWidth: '52ch',
               }}
             >
-              Förklaringen visas när du svarat.
-            </p>
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 11,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'var(--muted)',
+                }}
+              >
+                Förklaring saknas
+              </div>
+              <p
+                style={{
+                  margin: 0,
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 16,
+                  lineHeight: 1.5,
+                  color: 'var(--ink-2)',
+                }}
+              >
+                Den här frågan har ingen utförlig förklaring i korpus ännu.
+              </p>
+              <div style={{ marginTop: 24, textAlign: 'right' }}>
+                <button
+                  type="button"
+                  data-testid="drill-next"
+                  onClick={onReset}
+                  style={{
+                    all: 'unset',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 17,
+                    lineHeight: 1.4,
+                    color: 'var(--ink)',
+                    fontWeight: 500,
+                  }}
+                >
+                  Nästa fråga →{' '}
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 14,
+                      color: 'var(--muted)',
+                    }}
+                  >
+                    ↵
+                  </span>
+                </button>
+              </div>
+            </div>
           ) : (
-            explanation && (
-              <>
-                {steps.map((step, i) => {
-                  const isDetail = (step.tier ?? 'essential') === 'detail'
-                  const isCollapsed = reveal.isCollapsedDetail(step)
-                  // Collapsed detail = a single-line typographic preview
-                  // row. Editorial register: hanging mono number stays,
-                  // title in ink, "se mer →" italic muted at right.
-                  if (isCollapsed) {
-                    return (
-                      <button
-                        key={step.n}
-                        type="button"
-                        onClick={() => reveal.expandDetail(step.n)}
-                        style={{
-                          all: 'unset',
-                          cursor: 'pointer',
-                          position: 'relative',
-                          display: 'flex',
-                          alignItems: 'baseline',
-                          justifyContent: 'space-between',
-                          gap: 16,
-                          marginBottom: 20,
-                          paddingBottom: 16,
-                          borderBottom:
-                            '1px dashed color-mix(in oklch, var(--hairline) 60%, transparent)',
-                          width: '100%',
-                          animation: 'hpc-reveal 280ms cubic-bezier(0.16, 1, 0.3, 1) both',
-                          animationDelay: `${Math.min(i, 8) * 60}ms`,
-                        }}
-                      >
-                        <span
-                          aria-hidden
-                          style={{
-                            position: 'absolute',
-                            left: -56,
-                            top: 0,
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: 11,
-                            letterSpacing: '0.05em',
-                            fontWeight: 500,
-                            color: 'var(--muted)',
-                            fontVariantNumeric: 'tabular-nums',
-                          }}
-                        >
-                          {String(step.n).padStart(2, '0')}
-                        </span>
-                        <span
-                          style={{
-                            fontFamily: 'var(--font-display)',
-                            fontSize: 'clamp(17px, 0.95rem + 0.3vw, 19px)',
-                            lineHeight: 1.4,
-                            letterSpacing: '-0.012em',
-                            fontWeight: 500,
-                            color: 'var(--ink-2)',
-                            flex: 1,
-                          }}
-                        >
-                          <MathText>{step.title ?? step.text.slice(0, 80)}</MathText>
-                        </span>
-                        <span
-                          style={{
-                            fontFamily: 'var(--font-display)',
-                            fontSize: 14,
-                            fontStyle: 'italic',
-                            color: 'var(--muted)',
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
-                          se mer →
-                        </span>
-                      </button>
-                    )
-                  }
+            // graded && explanation truthy — render the full pedagogy
+            // walk-through with the canonical Nästa fråga button at the
+            // end.
+            <>
+              {steps.map((step, i) => {
+                const isDetail = (step.tier ?? 'essential') === 'detail'
+                const isCollapsed = reveal.isCollapsedDetail(step)
+                // Collapsed detail = a single-line typographic preview
+                // row. Editorial register: hanging mono number stays,
+                // title in ink, "se mer →" italic muted at right.
+                if (isCollapsed) {
                   return (
-                    <article
+                    <button
                       key={step.n}
+                      type="button"
+                      onClick={() => reveal.expandDetail(step.n)}
                       style={{
+                        all: 'unset',
+                        cursor: 'pointer',
                         position: 'relative',
-                        marginBottom: 36,
+                        display: 'flex',
+                        alignItems: 'baseline',
+                        justifyContent: 'space-between',
+                        gap: 16,
+                        marginBottom: 20,
+                        paddingBottom: 16,
+                        borderBottom:
+                          '1px dashed color-mix(in oklch, var(--hairline) 60%, transparent)',
+                        width: '100%',
                         animation: 'hpc-reveal 280ms cubic-bezier(0.16, 1, 0.3, 1) both',
                         animationDelay: `${Math.min(i, 8) * 60}ms`,
                       }}
                     >
-                      {/* Hanging step number, mono, accent — signature element. */}
                       <span
                         aria-hidden
                         style={{
                           position: 'absolute',
                           left: -56,
-                          top: 6,
+                          top: 0,
                           fontFamily: 'var(--font-mono)',
                           fontSize: 11,
                           letterSpacing: '0.05em',
                           fontWeight: 500,
-                          color: 'var(--accent)',
+                          color: 'var(--muted)',
                           fontVariantNumeric: 'tabular-nums',
                         }}
                       >
                         {String(step.n).padStart(2, '0')}
                       </span>
-                      {/* Matching-width hairline beneath, mirroring the folio. */}
                       <span
-                        aria-hidden
-                        style={{
-                          position: 'absolute',
-                          left: -56,
-                          top: 24,
-                          width: '1.5em',
-                          height: 1,
-                          background: 'var(--accent)',
-                          opacity: 0.5,
-                        }}
-                      />
-                      {/* Detail steps that are expanded get a quiet
-                       *  collapse affordance at the top-right. */}
-                      {isDetail && (
-                        <button
-                          type="button"
-                          onClick={() => reveal.collapseDetail(step.n)}
-                          style={{
-                            all: 'unset',
-                            cursor: 'pointer',
-                            position: 'absolute',
-                            top: 0,
-                            right: 0,
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: 10,
-                            letterSpacing: '0.12em',
-                            textTransform: 'uppercase',
-                            color: 'var(--muted)',
-                          }}
-                        >
-                          dölj ↗
-                        </button>
-                      )}
-                      {step.title && (
-                        <h3
-                          style={{
-                            fontFamily: 'var(--font-display)',
-                            fontSize: 'clamp(20px, 1.05rem + 0.4vw, 24px)',
-                            lineHeight: 1.25,
-                            letterSpacing: '-0.018em',
-                            fontWeight: 500,
-                            margin: 0,
-                            marginBottom: 12,
-                            paddingRight: isDetail ? 60 : 0,
-                          }}
-                        >
-                          <MathText>{step.title}</MathText>
-                        </h3>
-                      )}
-                      <div
                         style={{
                           fontFamily: 'var(--font-display)',
-                          fontSize: 'clamp(17px, 0.95rem + 0.35vw, 20px)',
-                          lineHeight: 1.7,
-                          letterSpacing: '-0.008em',
+                          fontSize: 'clamp(17px, 0.95rem + 0.3vw, 19px)',
+                          lineHeight: 1.4,
+                          letterSpacing: '-0.012em',
+                          fontWeight: 500,
                           color: 'var(--ink-2)',
+                          flex: 1,
                         }}
                       >
-                        <MathText>{step.text}</MathText>
-                      </div>
-                    </article>
+                        <MathText>{step.title ?? step.text.slice(0, 80)}</MathText>
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: 14,
+                          fontStyle: 'italic',
+                          color: 'var(--muted)',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        se mer →
+                      </span>
+                    </button>
                   )
-                })}
-
-                {/* Bottom Progressive Reveal CTA — typographic, no chrome. */}
-                {reveal.totalDetailCount > 0 && (
-                  <div
+                }
+                return (
+                  <article
+                    key={step.n}
                     style={{
-                      marginTop: 12,
-                      marginBottom: 48,
-                      paddingTop: 24,
-                      borderTop: '1px dashed color-mix(in oklch, var(--hairline) 60%, transparent)',
-                      textAlign: 'center',
+                      position: 'relative',
+                      marginBottom: 36,
+                      animation: 'hpc-reveal 280ms cubic-bezier(0.16, 1, 0.3, 1) both',
+                      animationDelay: `${Math.min(i, 8) * 60}ms`,
                     }}
                   >
-                    {reveal.collapsedDetailCount > 0 ? (
+                    {/* Hanging step number, mono, accent — signature element. */}
+                    <span
+                      aria-hidden
+                      style={{
+                        position: 'absolute',
+                        left: -56,
+                        top: 6,
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 11,
+                        letterSpacing: '0.05em',
+                        fontWeight: 500,
+                        color: 'var(--accent)',
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
+                      {String(step.n).padStart(2, '0')}
+                    </span>
+                    {/* Matching-width hairline beneath, mirroring the folio. */}
+                    <span
+                      aria-hidden
+                      style={{
+                        position: 'absolute',
+                        left: -56,
+                        top: 24,
+                        width: '1.5em',
+                        height: 1,
+                        background: 'var(--accent)',
+                        opacity: 0.5,
+                      }}
+                    />
+                    {/* Detail steps that are expanded get a quiet
+                     *  collapse affordance at the top-right. */}
+                    {isDetail && (
                       <button
                         type="button"
-                        onClick={reveal.expandAll}
+                        onClick={() => reveal.collapseDetail(step.n)}
                         style={{
                           all: 'unset',
                           cursor: 'pointer',
-                          fontFamily: 'var(--font-display)',
-                          fontSize: 17,
-                          fontStyle: 'italic',
-                          color: 'var(--ink)',
-                          borderBottom: '1px solid var(--ink)',
-                          paddingBottom: 2,
-                        }}
-                      >
-                        Jag förstår fortfarande inte
-                        <span
-                          style={{
-                            color: 'var(--muted)',
-                            marginLeft: 8,
-                            fontStyle: 'normal',
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: 12,
-                          }}
-                        >
-                          ({reveal.collapsedDetailCount} steg till)
-                        </span>
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={reveal.collapseAll}
-                        style={{
-                          all: 'unset',
-                          cursor: 'pointer',
+                          position: 'absolute',
+                          top: 0,
+                          right: 0,
                           fontFamily: 'var(--font-mono)',
-                          fontSize: 11,
+                          fontSize: 10,
                           letterSpacing: '0.12em',
                           textTransform: 'uppercase',
                           color: 'var(--muted)',
                         }}
                       >
-                        ← Korta ner förklaringen
+                        dölj ↗
                       </button>
                     )}
-                  </div>
-                )}
-
-                {/* Distractors */}
-                {explanation.distractors.length > 0 && (
-                  <section style={{ marginTop: 64 }}>
-                    <h2
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 10,
-                        letterSpacing: '0.14em',
-                        textTransform: 'uppercase',
-                        fontWeight: 600,
-                        color: 'var(--muted)',
-                        margin: 0,
-                        marginBottom: 24,
-                      }}
-                    >
-                      Varför inte de andra
-                    </h2>
-                    {explanation.distractors.map((d) => (
-                      <div key={d.letter} style={{ position: 'relative', marginBottom: 28 }}>
-                        <span
-                          aria-hidden
-                          style={{
-                            position: 'absolute',
-                            left: -56,
-                            top: 4,
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: 11,
-                            letterSpacing: '0.04em',
-                            fontWeight: 500,
-                            color: 'var(--muted)',
-                          }}
-                        >
-                          {d.letter.toLowerCase()}.
-                        </span>
-                        <p
-                          style={{
-                            fontFamily: 'var(--font-display)',
-                            fontSize: 16,
-                            lineHeight: 1.55,
-                            margin: 0,
-                            marginBottom: 6,
-                            color: 'var(--ink)',
-                            fontStyle: 'italic',
-                          }}
-                        >
-                          Lockar för att <MathText>{d.why_tempting}</MathText>
-                        </p>
-                        <p
-                          style={{
-                            fontFamily: 'var(--font-display)',
-                            fontSize: 16,
-                            lineHeight: 1.55,
-                            margin: 0,
-                            color: 'var(--ink)',
-                          }}
-                        >
-                          Men fel för att <MathText>{d.why_wrong}</MathText>
-                        </p>
-                      </div>
-                    ))}
-                  </section>
-                )}
-
-                {/* Technique + Pitfall — rails, no chips. */}
-                {explanation.technique && (
-                  <section
-                    style={{
-                      marginTop: 64,
-                      paddingLeft: 16,
-                      borderLeft: '2px solid var(--accent)',
-                    }}
-                  >
-                    <h3
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 10,
-                        letterSpacing: '0.14em',
-                        textTransform: 'uppercase',
-                        fontWeight: 600,
-                        color: 'var(--accent)',
-                        margin: 0,
-                        marginBottom: 8,
-                      }}
-                    >
-                      Teknik
-                    </h3>
-                    <p
+                    {step.title && (
+                      <h3
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: 'clamp(20px, 1.05rem + 0.4vw, 24px)',
+                          lineHeight: 1.25,
+                          letterSpacing: '-0.018em',
+                          fontWeight: 500,
+                          margin: 0,
+                          marginBottom: 12,
+                          paddingRight: isDetail ? 60 : 0,
+                        }}
+                      >
+                        <MathText>{step.title}</MathText>
+                      </h3>
+                    )}
+                    <div
                       style={{
                         fontFamily: 'var(--font-display)',
-                        fontSize: 16,
-                        lineHeight: 1.55,
-                        margin: 0,
-                        color: 'var(--ink)',
+                        fontSize: 'clamp(17px, 0.95rem + 0.35vw, 20px)',
+                        lineHeight: 1.7,
+                        letterSpacing: '-0.008em',
+                        color: 'var(--ink-2)',
                       }}
                     >
-                      <MathText>{explanation.technique}</MathText>
-                    </p>
-                  </section>
-                )}
-                {explanation.pitfall && (
-                  <section
-                    style={{ marginTop: 32, paddingLeft: 16, borderLeft: '2px solid var(--bad)' }}
-                  >
-                    <h3
+                      <MathText>{step.text}</MathText>
+                    </div>
+                  </article>
+                )
+              })}
+
+              {/* Bottom Progressive Reveal CTA — typographic, no chrome. */}
+              {reveal.totalDetailCount > 0 && (
+                <div
+                  style={{
+                    marginTop: 12,
+                    marginBottom: 48,
+                    paddingTop: 24,
+                    borderTop: '1px dashed color-mix(in oklch, var(--hairline) 60%, transparent)',
+                    textAlign: 'center',
+                  }}
+                >
+                  {reveal.collapsedDetailCount > 0 ? (
+                    <button
+                      type="button"
+                      onClick={reveal.expandAll}
                       style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 10,
-                        letterSpacing: '0.14em',
-                        textTransform: 'uppercase',
-                        fontWeight: 600,
-                        color: 'var(--bad)',
-                        margin: 0,
-                        marginBottom: 8,
-                      }}
-                    >
-                      Fälla
-                    </h3>
-                    <p
-                      style={{
+                        all: 'unset',
+                        cursor: 'pointer',
                         fontFamily: 'var(--font-display)',
-                        fontSize: 16,
-                        lineHeight: 1.55,
-                        margin: 0,
-                        color: 'var(--ink)',
+                        fontSize: 17,
                         fontStyle: 'italic',
+                        color: 'var(--ink)',
+                        borderBottom: '1px solid var(--ink)',
+                        paddingBottom: 2,
                       }}
                     >
-                      <MathText>{explanation.pitfall}</MathText>
-                    </p>
-                  </section>
-                )}
+                      Jag förstår fortfarande inte
+                      <span
+                        style={{
+                          color: 'var(--muted)',
+                          marginLeft: 8,
+                          fontStyle: 'normal',
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 12,
+                        }}
+                      >
+                        ({reveal.collapsedDetailCount} steg till)
+                      </span>
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={reveal.collapseAll}
+                      style={{
+                        all: 'unset',
+                        cursor: 'pointer',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 11,
+                        letterSpacing: '0.12em',
+                        textTransform: 'uppercase',
+                        color: 'var(--muted)',
+                      }}
+                    >
+                      ← Korta ner förklaringen
+                    </button>
+                  )}
+                </div>
+              )}
 
-                {/* Inline CTA — typographic, not a floating pill. */}
-                <div style={{ marginTop: 80, textAlign: 'right' }}>
-                  <span
-                    aria-hidden
+              {/* Distractors */}
+              {explanation.distractors.length > 0 && (
+                <section style={{ marginTop: 64 }}>
+                  <h2
                     style={{
-                      display: 'block',
-                      width: '100%',
-                      height: 1,
-                      background: 'var(--hairline)',
-                      opacity: 0.6,
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 10,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      fontWeight: 600,
+                      color: 'var(--muted)',
+                      margin: 0,
                       marginBottom: 24,
                     }}
-                  />
-                  <button
-                    type="button"
-                    data-testid="drill-next"
-                    onClick={onReset}
+                  >
+                    Varför inte de andra
+                  </h2>
+                  {explanation.distractors.map((d) => (
+                    <div key={d.letter} style={{ position: 'relative', marginBottom: 28 }}>
+                      <span
+                        aria-hidden
+                        style={{
+                          position: 'absolute',
+                          left: -56,
+                          top: 4,
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 11,
+                          letterSpacing: '0.04em',
+                          fontWeight: 500,
+                          color: 'var(--muted)',
+                        }}
+                      >
+                        {d.letter.toLowerCase()}.
+                      </span>
+                      <p
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: 16,
+                          lineHeight: 1.55,
+                          margin: 0,
+                          marginBottom: 6,
+                          color: 'var(--ink)',
+                          fontStyle: 'italic',
+                        }}
+                      >
+                        Lockar för att <MathText>{d.why_tempting}</MathText>
+                      </p>
+                      <p
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: 16,
+                          lineHeight: 1.55,
+                          margin: 0,
+                          color: 'var(--ink)',
+                        }}
+                      >
+                        Men fel för att <MathText>{d.why_wrong}</MathText>
+                      </p>
+                    </div>
+                  ))}
+                </section>
+              )}
+
+              {/* Technique + Pitfall — rails, no chips. */}
+              {explanation.technique && (
+                <section
+                  style={{
+                    marginTop: 64,
+                    paddingLeft: 16,
+                    borderLeft: '2px solid var(--accent)',
+                  }}
+                >
+                  <h3
                     style={{
-                      all: 'unset',
-                      cursor: 'pointer',
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 17,
-                      lineHeight: 1.4,
-                      color: 'var(--ink)',
-                      fontWeight: 500,
-                      borderBottom: '1px solid transparent',
-                      transition: 'border-color 150ms',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderBottomColor = 'var(--ink)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderBottomColor = 'transparent'
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 10,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      fontWeight: 600,
+                      color: 'var(--accent)',
+                      margin: 0,
+                      marginBottom: 8,
                     }}
                   >
-                    Nästa fråga →{' '}
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 14,
-                        color: 'var(--muted)',
-                      }}
-                    >
-                      ↵
-                    </span>
-                  </button>
-                </div>
-              </>
-            )
+                    Teknik
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 16,
+                      lineHeight: 1.55,
+                      margin: 0,
+                      color: 'var(--ink)',
+                    }}
+                  >
+                    <MathText>{explanation.technique}</MathText>
+                  </p>
+                </section>
+              )}
+              {explanation.pitfall && (
+                <section
+                  style={{ marginTop: 32, paddingLeft: 16, borderLeft: '2px solid var(--bad)' }}
+                >
+                  <h3
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 10,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      fontWeight: 600,
+                      color: 'var(--bad)',
+                      margin: 0,
+                      marginBottom: 8,
+                    }}
+                  >
+                    Fälla
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 16,
+                      lineHeight: 1.55,
+                      margin: 0,
+                      color: 'var(--ink)',
+                      fontStyle: 'italic',
+                    }}
+                  >
+                    <MathText>{explanation.pitfall}</MathText>
+                  </p>
+                </section>
+              )}
+
+              {/* Inline CTA — typographic, not a floating pill. */}
+              <div style={{ marginTop: 80, textAlign: 'right' }}>
+                <span
+                  aria-hidden
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    height: 1,
+                    background: 'var(--hairline)',
+                    opacity: 0.6,
+                    marginBottom: 24,
+                  }}
+                />
+                <button
+                  type="button"
+                  data-testid="drill-next"
+                  onClick={onReset}
+                  style={{
+                    all: 'unset',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 17,
+                    lineHeight: 1.4,
+                    color: 'var(--ink)',
+                    fontWeight: 500,
+                    borderBottom: '1px solid transparent',
+                    transition: 'border-color 150ms',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderBottomColor = 'var(--ink)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderBottomColor = 'transparent'
+                  }}
+                >
+                  Nästa fråga →{' '}
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 14,
+                      color: 'var(--muted)',
+                    }}
+                  >
+                    ↵
+                  </span>
+                </button>
+              </div>
+            </>
           )}
         </section>
       </main>

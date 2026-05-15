@@ -24,6 +24,10 @@
     ],
     "framework_id": null,
     "pitfall": "Den vanligaste fällan är teckenhanteringen när x är negativt och funktionen innehåller minustecken. Botemedlet: skriv ut alla parenteser explicit ({MO}-\\frac{{-2}}{{2}}{MC} → −((−2)/2) → −(−1) → +1) — gör tecken-räkningen mekanisk istället för i huvudet.",
+    "pregrade_tactic": {
+      "handle": "Funktionsvärde-räkningen",
+      "move": "När båda kvantiteterna är funktionsvärden, räkna ut varje för sig på sitt eget x-värde och jämför slutsiffrorna direkt."
+    },
     "solution_path": "Räkna f(−2) och g(14). f(−2) = −(−2)/2 + 5 = 1 + 5 = 6. g(14) = 14/2 − 1 = 7 − 1 = 6. Båda är 6 — kvantiteterna är lika. Svaret är C.",
     "steps": [
       {
@@ -114,6 +118,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att tro att 'alla är jämförbara' bara för att vi har TRE relationer. Botemedlet: rita ut Hasse-diagram (vem är ovanpå vem), och kolla om det finns ett par utan direkt eller indirekt koppling — då saknas information.",
+    "pregrade_tactic": {
+      "handle": "Kedjekopplingen",
+      "move": "Översätt varje ordningsuttalande till > och rita kedjor mellan personerna; saknas en koppling mellan två ändpunkter är svaret information saknas."
+    },
     "solution_path": "Vi vet att Lisbeth > Sara, Eva > Camilla, Camilla > Sara. Det säger inget om hur Lisbeth förhåller sig till Eva. Information saknas. Svaret är D.",
     "steps": [
       {
@@ -204,6 +212,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att inte göra färdigt räkningen och lita på 'känslan' att ekvationerna ser olika ut, så talen måste vara olika. Botemedlet: räkna alltid båda värdena exakt — algebra är mekanisk, inte intuitiv.",
+    "pregrade_tactic": {
+      "handle": "Ekvationsparet",
+      "move": "När I och II kommer från varsin oberoende ekvation, lös vardera för sin variabel och jämför sluttalen — gissa inte på struktur."
+    },
     "solution_path": "Lös för x: 2 = \\frac{194}{x} ger x = 97. Lös för y: 3 = 100 − y ger y = 97. Båda är 97 — kvantiteterna är lika. Svaret är C.",
     "steps": [
       {
@@ -294,6 +306,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att fastna vid ett enda testvärde och dra slutsatsen utan att testa andra ändar av intervallet. Botemedlet: testa minst två kontrasterande värden (x = 0 vs x = 100) — vänder svaret riktning, så är D rätt.",
+    "pregrade_tactic": {
+      "handle": "Skillnadsuttrycket",
+      "move": "Räkna I − II som ett enda uttryck och titta på dess tecken; beror tecknet på en obegränsad variabel är svaret information saknas."
+    },
     "solution_path": "Med bara villkoret y > 0 och okänt x kan vi inte avgöra om x − y > 3x − 2y. Subtraktion ger I − II = −2x + y, vars tecken beror på x. Information saknas. Svaret är D.",
     "steps": [
       {
@@ -384,6 +400,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att avläsa decimalvärden för otydligt och få nästan-likhet (1,33 ≈ 1,31) — frestar dig att svara C. Botemedlet: räkna alltid I på gemensam nämnare och jämför med II:s nämnare-och-täljare — exakt jämförelse istället för approximation.",
+    "pregrade_tactic": {
+      "handle": "Gemensam-nämnare-jakten",
+      "move": "Skriv om bråken på gemensam nämnare först; har slutbråken samma täljare avgör nämnaren — mindre nämnare betyder större bråk."
+    },
     "solution_path": "Räkna I: \\frac{1}{2} + \\frac{2}{5} + \\frac{3}{7} \\approx 0{,}5 + 0{,}4 + 0{,}43 = 1{,}33. Räkna II: \\frac{93}{71} \\approx 1{,}31. I > II — svaret är A.",
     "steps": [
       {
@@ -486,6 +506,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att tro att π beror på cirkelns storlek (typ 'större cirkel → större π'). Botemedlet: minns att π är en KONSTANT som inte ändras med cirkeln; det är just vad ekvationen omkrets = π · diameter låser.",
+    "pregrade_tactic": {
+      "handle": "Konstantkvittot",
+      "move": "Om en kvantitet är en geometrisk konstant (π, kvoten omkrets/diameter, summan av triangelvinklarna), behandla den som ett fast tal och jämför numeriskt."
+    },
     "solution_path": "Kvoten omkrets/diameter är π (per definition). Kvantitet II är 2\\sqrt{2} \\approx 2{,}83. π ≈ 3,14 > 2,83 — I är större. Svaret är A.",
     "steps": [
       {
@@ -570,6 +594,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att försöka räkna ut storlek istället för bara tecken. Botemedlet: för en strikt tecken-jämförelse räcker det att veta att I är positiv och II negativ — då är slutsatsen omedelbar utan ett enda räknat värde.",
+    "pregrade_tactic": {
+      "handle": "Teckenparitetstestet",
+      "move": "När villkoren bara fixerar tecknen på variablerna, läs av varje uttrycks slutsign genom paritets-regeln: jämn exponent ger plus, udda exponent bevarar tecknet."
+    },
     "solution_path": "x > 0 ger x^{3}, x^{4} positiva. y < 0 ger y^{3} negativt, y^{4} positivt. Kvantitet I = pos · pos = positiv; Kvantitet II = pos · neg = negativ. Positiv > negativ. Svaret är A.",
     "steps": [
       {
@@ -660,6 +688,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att blanda ihop median med medelvärde, eller att tro att 'primtal' inkluderar 1. Botemedlet: definiera definitionerna högt för dig själv ('median = mittentalet', '1 är inte ett primtal') innan du börjar räkna.",
+    "pregrade_tactic": {
+      "handle": "Primfaktoriseringen",
+      "move": "När frågan ger 'produkten av N primtal är X', primfaktorisera X — faktoriseringen är unik, så trippeln är låst och statistiken följer."
+    },
     "solution_path": "Tre primtal med produkten 42. Primfaktorisera: 42 = 2 · 3 · 7. Medianen av {2, 3, 7} är 3. Svaret är C (lika).",
     "steps": [
       {
@@ -755,6 +787,10 @@
     ],
     "framework_id": null,
     "pitfall": "Den klassiska NOG-tabell-fällan: att tro att kolumnsummor och en kolumnuppdelning räcker när målet är en radsumma. Botemedlet: skriv ut tabellen, ringa in den efterfrågade summan, och kolla att informationen rör BÅDA rutorna i den summan — inte bara den ena.",
+    "pregrade_tactic": {
+      "handle": "Tvåvägstabellen",
+      "move": "Rita 2×2-tabellen med raderna och kolumnerna i frågan; pricka av vilka rutor varje påstående fyller — saknas en hel rad eller kolumn räcker informationen inte."
+    },
     "solution_path": "Båda påståendena låser bara den ENFÄRGADE gruppen (totalt 7 paket, varav 5 hårda). Antalet hårda paket bland de 18 mönstrade förblir okänt — kan vara 0 till 18. Svaret är E.",
     "steps": [
       {
@@ -856,6 +892,10 @@
     ],
     "framework_id": null,
     "pitfall": "NOG-fällan med olika enheter: 1,91 m/s (fart) och 50,6 s (tid) kan kännas ojämförbara och få dig att klassa infon som otillräcklig. Botemedlet: kom ihåg t = s/v — när sträckan är känd är fart och tid utbytbara.",
+    "pregrade_tactic": {
+      "handle": "Två-aktör-jämförelsen",
+      "move": "När NOG frågar 'vem vann/störst/dyrast', kräver svaret jämförbar information om BÅDA aktörerna — lista vad som behövs om vardera och pricka av."
+    },
     "solution_path": "(1) ger Sarahs tid via t = \\text{sträcka}/\\text{fart} = 100/1{,}91 \\approx 52{,}4 s. (2) ger Thereses tid 50,6 s. Var för sig vet vi bara en simmares tid; tillsammans kan vi jämföra och se att Therese var snabbare. Svaret är C.",
     "steps": [
       {
@@ -957,6 +997,10 @@
     ],
     "framework_id": null,
     "pitfall": "Fällan att alltid lösa systemet helt: två okända får dig att vilja hitta x och y separat. Botemedlet: kolla ALLTID först om frågan kan besvaras direkt från villkoret — utan att behöva separera variablerna.",
+    "pregrade_tactic": {
+      "handle": "Linjärkombinationsspåret",
+      "move": "Om NOG söker en kombination (x+y, 2a−b), leta villkor som innehåller exakt den klumpen — du behöver inte alltid plocka isär variablerna."
+    },
     "solution_path": "(1): (x+y)/2 + 3 = 10 \\Rightarrow (x+y)/2 = 7 \\Rightarrow x+y = 14 — entydigt. (2): y = 6x ger inget enskilt värde på x+y (beror på x). Endast (1) räcker — svaret är A.",
     "steps": [
       {
@@ -1064,6 +1108,10 @@
     ],
     "framework_id": null,
     "pitfall": "'Minst en av X och Y' låter starkt men är ett svagt villkor (uppfyllt av X ensam, Y ensam, eller båda). Botemedlet: skriv alltid ut alla tillåtna konfigurationer för 'minst en'-villkor och se om någondera variabel är fri i något scenario.",
+    "pregrade_tactic": {
+      "handle": "Fallkonstruktionen",
+      "move": "I logik-NOG, försök bygga ETT scenario med svaret JA och ETT med svaret NEJ; lyckas båda är informationen otillräcklig."
+    },
     "solution_path": "Även med båda påståendena går det att konstruera scenarier där Anki har medalj OCH scenarier där Anki inte har medalj — till exempel {Anki, Bosse, Cissi} respektive {Bosse, Cissi, Danne}. Båda passar alla villkor. Otillräckligt → svaret är E.",
     "steps": [
       {
@@ -1177,6 +1225,10 @@
     ],
     "framework_id": null,
     "pitfall": "'Varken X eller Y väljs till Z' missuppfattas ofta som svag information. Botemedlet: i ett 3-personers-system betyder 'varken X eller Y på Z' att den TREDJE personen får Z (enda kvar) — vilket är en STARK låsning.",
+    "pregrade_tactic": {
+      "handle": "Permutationslåsen",
+      "move": "I NOG med n personer och n poster, räkna hur många positioner varje villkor LÅSER; n−1 låsta positioner ger den sista automatiskt."
+    },
     "solution_path": "(1) ger 'Stig = kassör' (han är ej sekr och varken G/R är kassör), men lämnar G och R fria på ordförande/sekreterare. (2) säger 'R = ordförande' (G och S ej ordf) och 'S = kassör' — då måste G vara sekreterare. Endast (2) räcker — svaret är B.",
     "steps": [
       {
@@ -1284,6 +1336,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är lätt att 'glömma' bakgrundsvillkoret när man bedömer påståendena enskilt och därför klassa båda som otillräckliga (en ekvation, två obekanta). Botemedlet: skriv ner bakgrundsekvationen FÖRST, sedan jämför varje påstående mot 'räcker detta tillsammans med bakgrunden?'.",
+    "pregrade_tactic": {
+      "handle": "Bakgrundsekvationen",
+      "move": "Läs frågans bakgrund (förhållande, dubbelt, hälften) som en gratis ekvation först; då räcker oftast EN extra ekvation per påstående för att låsa systemet."
+    },
     "solution_path": "Bakgrund: A = 2B. (1) ger A - 10 = 3(B - 10) \\Rightarrow B = 20, total 60. (2) ger A - B = 20 \\Rightarrow B = 20, total 60. Var och en ensamt räcker — svaret är D.",
     "steps": [
       {
@@ -1386,6 +1442,10 @@
     ],
     "framework_id": null,
     "pitfall": "Vid bråksubtraktion glömmer många att förlänga till gemensam nämnare och drar bara täljarna direkt (1 − 1 = 0). Botemedlet: skriv om båda bråken med samma nämnare som första räknemoment, alltid, även när det 'ser lätt ut'.",
+    "pregrade_tactic": {
+      "handle": "Termflyttningen",
+      "move": "Isolera x genom att flytta varje x-fri term till motsatt sida med motsatt tecken; för bråk, förläng till gemensam nämnare INNAN du subtraherar."
+    },
     "solution_path": "Isolera x genom att subtrahera \\frac{1}{4} från båda sidor. Då blir x = \\frac{1}{8} − \\frac{2}{8} = − \\frac{1}{8}. Svaret är B.",
     "steps": [
       {
@@ -1508,6 +1568,10 @@
     ],
     "framework_id": null,
     "pitfall": "Tecknet är fällan: när andra parentesen har minustecken (x − y) följer minus med på BÅDA produkterna där y är inblandad. Botemedlet: skriv om minusparentesen som '+ (−y)' innan du multiplicerar, så blir teckenhanteringen mekanisk.",
+    "pregrade_tactic": {
+      "handle": "FOIL-mekaniken",
+      "move": "Multiplicera ut parentes-parentes term för term (4 produkter för två tvåtermare), behåll tecken via parentes runt minuset, och slå sedan ihop liknande termer."
+    },
     "solution_path": "Multiplicera ut (3x + y)(x − y) term för term: 3x·x + 3x·(−y) + y·x + y·(−y) = 3x^{2} − 2xy − y^{2}. Svaret är A.",
     "steps": [
       {
@@ -1616,6 +1680,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det luriga är att glömma att f redan är 'gjort' när du sätter in i g — du ska INTE räkna 4·3 + 1 igen inne i g. Botemedlet: skriv ner f(3) = 13 som ett mellansteg på papper och behandla 13 som en vanlig konstant när du sätter in i g.",
+    "pregrade_tactic": {
+      "handle": "Sammansatta-funktionsräkningen",
+      "move": "När g(x) är definierad via f(x), räkna alltid innerst först — beräkna f-värdet som ett tal och sätt sedan in talet i g."
+    },
     "solution_path": "Beräkna f(3) först: 4·3 + 1 = 13. Sätt in i g: g(3) = 2·f(3) − 1 = 2·13 − 1 = 25. Svaret är D.",
     "steps": [
       {
@@ -1706,6 +1774,10 @@
     ],
     "framework_id": null,
     "pitfall": "Den klassiska fällan är att glömma enhetsbytet och dela kilometer med meter-per-sekund — du får då ett tal i 'km·s/m', vilket är meningslöst. Botemedlet: skriv ut enheterna intill talen (18 km / (20 m/s)) och se bokstavligen om de strykorder ut till sekunder.",
+    "pregrade_tactic": {
+      "handle": "Enhetskollen",
+      "move": "Räkna alltid om alla storheter till samma grundenhet (meter, sekunder) INNAN du sätter in i formeln tid = sträcka/hastighet."
+    },
     "solution_path": "Konvertera 18 km till meter (18 000 m) och dividera med hastigheten 20 m/s — det ger 900 sekunder, vilket är 15 minuter. Svaret är A.",
     "steps": [
       {
@@ -1802,6 +1874,10 @@
     ],
     "framework_id": null,
     "pitfall": "Den klassiska fällan är att glömma absolutbeloppet och hamna med ett negativt 'basvärde' i area-formeln. Botemedlet: tänk på basen som en LÄNGD (alltid positiv); ta absolutbeloppet av talet, oavsett tecken på koordinaten.",
+    "pregrade_tactic": {
+      "handle": "Linjens-triangel",
+      "move": "Hitta y-skärningen från m och x-skärningen som m/k; använd area = ½·|x-skärning|·|y-skärning| och välj k:s tecken från villkoret."
+    },
     "solution_path": "Linjen y = kx − 4 skär y-axeln i (0, −4) och bildar en rätvinklig triangel med axlarna. Area = (1/2)·bas·höjd = 2 ger bas = 1, alltså x-skärningen ligger vid (−1, 0). Svaret är B.",
     "steps": [
       {
@@ -1910,6 +1986,10 @@
     ],
     "framework_id": null,
     "pitfall": "Den största fällan är att förlänga nämnaren korrekt men glömma att också förlänga täljaren med samma faktor. Botemedlet: när du gångrar nämnaren med X, gångra ALLTID täljaren med samma X i samma räknemoment.",
+    "pregrade_tactic": {
+      "handle": "Bråkadditions-spåret",
+      "move": "Hitta minsta gemensamma nämnare först, förläng varje bråk så att nämnaren blir den, och addera sedan täljarna — gångra både täljare och nämnare med samma faktor."
+    },
     "solution_path": "Skriv båda bråken på gemensam nämnare ab: \\frac{b}{a} = \\frac{b \\cdot b}{a \\cdot b} = \\frac{b^{2}}{ab}, och \\frac{1}{b} = \\frac{a}{ab}. Summa: \\frac{b^{2} + a}{ab}. Svaret är D (skrivsätt: \\frac{1}{a}b^{2} + a, vilket multipliceras med 1/b ger ab — facit anger D).",
     "steps": [
       {
@@ -2006,6 +2086,10 @@
     ],
     "framework_id": null,
     "pitfall": "Den klassiska fällan är att tro att båda kasten påverkar villkoret och räkna fram alla 36 par. Botemedlet: testa extremfallen — vad krävs minst av tiotalssiffran för att villkoret ska kunna uppfyllas, och räcker entalssiffran alltid då?",
+    "pregrade_tactic": {
+      "handle": "Sannolikhetsfokuset",
+      "move": "Identifiera vilket av flera kast som ENSAMT styr villkoret; räkna gynnsamma utfall för det avgörande kastet och bortse från de andra."
+    },
     "solution_path": "För att tvåsiffriga talet x ska vara > 40 måste tiotalssiffran (första tärningskastet) vara minst 4. Tärningen visar 4, 5 eller 6 med sannolikhet 3/6 = 1/2. Svaret är C.",
     "steps": [
       {
@@ -2096,6 +2180,10 @@
     ],
     "framework_id": null,
     "pitfall": "Den vanliga fällan är att vilja addera exponenter mellan TERMER (som om 2·3⁻¹ + 3·3⁻² var samma som något · 3⁻³). Botemedlet: exponentregler gäller vid MULTIPLIKATION av potenser, inte vid ADDITION av termer.",
+    "pregrade_tactic": {
+      "handle": "Negativ-exponent-vändningen",
+      "move": "Skriv om varje a^(−n) som 1/a^n i ett tidigt steg, så blir resten vanlig bråkräkning — exponentregler gäller vid multiplikation, inte addition."
+    },
     "solution_path": "3^{-1} betyder 1/3 och 3^{-2} betyder 1/9. Räkna: 2 \\cdot \\frac{1}{3} + 3 \\cdot \\frac{1}{9} = \\frac{2}{3} + \\frac{1}{3} = 1. Svaret är D.",
     "steps": [
       {
@@ -2192,6 +2280,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att blanda ihop riktningar och addera fel tecken. Botemedlet: skriv ut skillnaderna som A − B = +n eller −n explicit; kedja sedan algebraiskt utan att gissa tecknet.",
+    "pregrade_tactic": {
+      "handle": "Ålders-kedjan",
+      "move": "När personer fyller år samma dag är åldersskillnaderna konstanta över tid; kedjeaddera kända skillnader (A−B) + (B−C) = (A−C)."
+    },
     "solution_path": "Åldersskillnaden Erik − Johanna = 7 år (de fyller år samma dag), och Johanna − Mikael = −5 år (Johanna 5 år yngre). Så Erik − Mikael = 7 − 5 = 2 år. När Mikael är 18 är Erik 20. Kvantitet I = II = 20. Svaret är C.",
     "steps": [
       {
@@ -2282,6 +2374,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att inte testa flera värden i intervallet och stanna vid ett enda. Botemedlet: testa minst tre värden (litet, mellanstort, nära 1) — om alla ger samma utfall är resultatet generellt.",
+    "pregrade_tactic": {
+      "handle": "Inversflippen",
+      "move": "För tal mellan 0 och 1 är inversen alltid större än talet självt; bevisa genom att gångra båda sidor av 1/a > a med a och få 1 > a²."
+    },
     "solution_path": "Med 0 < a < 1 är 1/a > 1 alltid (gångrat med a ger 1, så 1/a > a när a < 1). Alltså Kvantitet I > Kvantitet II. Svaret är A.",
     "steps": [
       {
@@ -2366,6 +2462,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att försöka jämföra de fyra ursprungliga bråken termvis (typ '5/4 är större än 4/3', '4/5 är mindre än 3/4') utan att räkna ut hela skillnaden. Botemedlet: räkna ALLTID ut varje kvantitet till ett enda slutbråk innan du jämför.",
+    "pregrade_tactic": {
+      "handle": "Bråkskillnads-jämförelsen",
+      "move": "Räkna ut varje bråk på sin egen gemensamma nämnare först, sedan jämför slutbråken med korsmultiplikation eller decimalvärden."
+    },
     "solution_path": "Räkna I: \\frac{5}{4} - \\frac{4}{5} = \\frac{25 - 16}{20} = \\frac{9}{20}. Räkna II: \\frac{4}{3} - \\frac{3}{4} = \\frac{16 - 9}{12} = \\frac{7}{12}. Jämför 9/20 ≈ 0,45 mot 7/12 ≈ 0,58. II är större. Svaret är B.",
     "steps": [
       {
@@ -2456,6 +2556,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att tillämpa intuitionen från heltalsräkning där multiplikation gör större. Botemedlet: minns att tal mellan 0 och 1 fungerar 'krymper' multiplikationsvis — kom ihåg den enkla testen: 0,5 · 10 = 5, alltså mindre än 10.",
+    "pregrade_tactic": {
+      "handle": "Krympmultiplikationen",
+      "move": "När en faktor ligger mellan 0 och 1, krymper produkten — gångra ett positivt tal med ett tal < 1 ger alltid mindre än talet självt."
+    },
     "solution_path": "0 < x < y < 1. Alla tal positiva, alla mindre än 1. xy < y eftersom x < 1: gångrar du y med ett tal mindre än 1 blir produkten mindre än y. Kvantitet II > I. Svaret är B.",
     "steps": [
       {
@@ -2534,6 +2638,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att inte göra färdigt substitueringen och tro att 'z är en variabel beroende av x'. Botemedlet: räkna ALLTID ut z helt och se om uttrycket innehåller x kvar — om inte är z konstant.",
+    "pregrade_tactic": {
+      "handle": "Substitutionsstrategin",
+      "move": "När en variabel definieras via andra (y = ax + b), sätt in och förenkla — om uttrycket kollapsar till en konstant är jämförelsen mot en fri variabel typiskt information saknas."
+    },
     "solution_path": "x > 0, y = 5x + 3, z = 2y − 10x = 2(5x + 3) − 10x = 10x + 6 − 10x = 6. Så z = 6 (konstant). Jämför x mot 6 — eftersom x kan vara vad som helst > 0, kan x < 6, x = 6, eller x > 6. Information saknas. Svaret är D.",
     "steps": [
       {
@@ -2624,6 +2732,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att tro att medelvärde och median är 'samma sak' eller 'följer varandra'. Botemedlet: minns att enstaka extremvärden påverkar medelvärdet kraftigt men medianen inte alls — de är dans-på-olika-sidor av en datamängd.",
+    "pregrade_tactic": {
+      "handle": "Statistik-oberoendet",
+      "move": "Medelvärde och median är oberoende storheter — att fixera den ena säger inget om den andra; konstruera motexempel om frågan ger bara den ena."
+    },
     "solution_path": "Medelvärdet av tio tal säger inget om medianen. Båda kvantiteterna kan ha vilken median som helst. Information saknas. Svaret är D.",
     "steps": [
       {
@@ -2714,6 +2826,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att tro att triangelns 'absolut storlek' påverkar vinklarna. Botemedlet: minns att vinklar är RIKTNINGSGRADER, inte längder — bara summan och förhållandet styr dem.",
+    "pregrade_tactic": {
+      "handle": "Vinkelförhållandet",
+      "move": "Vid vinkelförhållande a:b:c i en triangel, sätt vinklarna till ax, bx, cx och lös (a+b+c)·x = 180°; varje vinkel följer mekaniskt."
+    },
     "solution_path": "Vinklarna i triangeln har förhållandet 1:2:4. Summan måste vara 180°. Sätt vinklarna till x, 2x, 4x. Då x + 2x + 4x = 180° → 7x = 180° → x ≈ 25,7°. Största vinkeln är 4x ≈ 102,9° > 90°. Svaret är A.",
     "steps": [
       {
@@ -2804,6 +2920,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att fastna i att räkna ut varje produkt mekaniskt utan att se mönstret — ger samma svar men tar tio gånger så lång tid. Botemedlet: skriv om varje faktor som ett bråk OCH leta efter par där täljaren av ena är nämnaren av andra.",
+    "pregrade_tactic": {
+      "handle": "Invers-parstricket",
+      "move": "I långa bråkprodukter, leta efter par (a/b)·(b/a) som tar ut till 1; för (1±1/n)-mönster söker du teleskoperingen direkt."
+    },
     "solution_path": "Uttrycket är |1 + \\frac{1}{2}| \\cdot |1 - \\frac{1}{3}| \\cdot |1 + \\frac{1}{4}| \\cdot |1 - \\frac{1}{5}| = \\frac{3}{2} \\cdot \\frac{2}{3} \\cdot \\frac{5}{4} \\cdot \\frac{4}{5} = 1. Kvantitet I = Kvantitet II = 1. Svaret är C.",
     "steps": [
       {
@@ -2905,6 +3025,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att räkna varje påstående för sig och inte korsrefererar låsningarna. Botemedlet: gör en gemensam zippning-tabell när båda påståendena är tillgängliga och pricka av låsningar från båda källorna.",
+    "pregrade_tactic": {
+      "handle": "Disjunktionseliminationen",
+      "move": "I logik-NOG, när ett villkor är 'X är A:s eller B:s' och ett annat villkor utesluter ena halvan, kollapsar disjunktionen till en enda möjlighet."
+    },
     "solution_path": "Tillsammans: (1) ger Dylan = marsvin, (2) ger Conny = undulat. (1) säger kaninen är Bellas eller Connys — men Conny har undulat, så Bella har kanin. Det lämnar hamstern till Astrid. Endast tillsammans ger entydigt — svaret är C.",
     "steps": [
       {
@@ -3012,6 +3136,10 @@
     ],
     "framework_id": null,
     "pitfall": "Klassisk procent-fälla: tro att 'växte med 25%' betyder att slutvärdet är 25% av startvärdet (det är slutvärdet som är 125% av startvärdet, dvs 5/4 av det). Botemedlet: rita en pil från start → slut och skriv ut '×1,25' ovanpå, så ser du procenten som en faktor inte ett tal.",
+    "pregrade_tactic": {
+      "handle": "Procent-direktekvationen",
+      "move": "Översätt 'X är p% av N' till ekvationen X = (p/100)·N; 'växte med p%' betyder att tillskottet är p% av STARTVÄRDET."
+    },
     "solution_path": "(1): 4 är 20% av N \\Rightarrow N = 20. (2): 4 nya gav 25% tillväxt, så 4 är 25% av det tidigare antalet \\Rightarrow tidigare = 16, nu = 16 + 4 = 20. Båda räcker var för sig — svaret är D.",
     "steps": [
       {
@@ -3119,6 +3247,10 @@
     ],
     "framework_id": null,
     "pitfall": "Konkreta tal i geometri-villkor (180°, 90°, 360°) får dig att tro att informationen är specifik — men det är ofta tautologier. Botemedlet: fråga 'gäller detta påstående i ALLA möjliga konfigurationer?'. Om ja → ingen information.",
+    "pregrade_tactic": {
+      "handle": "Tautologivakten",
+      "move": "Kolla om ett geometri-påstående (vinkelsumma, motstående vinklar) är en grund-sats som gäller ALLTID; då bidrar det inte ny information."
+    },
     "solution_path": "I den givna figuren skär en transversal de två linjerna och bildar vinklarna u, v, w i triangelformation. (1): u + v + w = 180° är ALLTID sant i en triangel (vinkelsumman) — säger inget specifikt om parallellitet. (2): v = w ger att de motsvarande/alternerande vinklarna vid L₁ och L₂ är lika, vilket är parallellitetskriteriet. Endast (2) räcker — svaret är B.",
     "steps": [
       {
@@ -3226,6 +3358,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att vilja räkna ut ALLA okända (n, f, h) — men frågan kan ofta besvaras genom att bara räkna DET som behövs. Botemedlet: skriv ner exakt vad målet är (antal mynt = 2n) och kolla vilka villkor som låser just det, ignorera resten.",
+    "pregrade_tactic": {
+      "handle": "Målisoleringen",
+      "move": "Identifiera exakt vad frågan söker (här: antal mynt), och välj bara den info som låser just det målet — alla andra okända får förbli okända."
+    },
     "solution_path": "Låt n = antal enkronor = antal femkronor. Myntvärde = n + 5n = 6n. (1): myntvärde = 420 − 300 = 120, så 6n = 120 \\Rightarrow n = 20, totalt mynt = 40. Unikt. (2): 5n + 50 f = 200 har flera heltalslösningar. Endast (1) räcker — svaret är A.",
     "steps": [
       {
@@ -3333,6 +3469,10 @@
     ],
     "framework_id": null,
     "pitfall": "Relativa villkor (typ '1/6 av varken') är frestande att klassa som starka — men de behöver ett konkret ankarvärde för att bli löstbara. Botemedlet: räkna alltid antalet OBEROENDE absoluta värden i påståendena; kvoter ensamma är värdelösa.",
+    "pregrade_tactic": {
+      "handle": "Venn-fyrarutan",
+      "move": "I mängdfrågor (har X / har Y / båda / varken), rita de fyra rutorna och totalsumman; informationen ska räcka för att låsa alla rutor — eller åtminstone målrutan."
+    },
     "solution_path": "Bygg Venn-diagrammet (bara katt / både / bara hund / varken). (1) ger 'bara katt = 10' (och därmed 'både = 4'). (2) ger 'både = (1/6) · varken'. Tillsammans: både = 4 → varken = 24, bara hund = 45 − 10 − 4 − 24 = 7, totalt hund = 7 + 4 = 11. Var för sig räcker inget av påståendena. Svaret är C.",
     "steps": [
       {
@@ -3440,6 +3580,10 @@
     ],
     "framework_id": null,
     "pitfall": "Att glömma att negativa tal flippar ordningar: 'dubbelt så mycket' (x = -2y) kan göra x mycket större ELLER mycket mindre än y, beroende på tecken. Botemedlet: när minustecknet finns med, testa minst ett positivt och ett negativt fall.",
+    "pregrade_tactic": {
+      "handle": "Tecken-testet",
+      "move": "I NOG om 'störst/minst/ordning', testa varje fri variabel i tre teckenfall (positiv, negativ, noll); om svaret växlar är informationen otillräcklig."
+    },
     "solution_path": "Tillsammans ger (1) och (2) sambandet z = -3y. Tecknet på y avgör allt: om y > 0 är y störst (resten är negativa); om y < 0 är z störst (positiv och störst). Utan tecknet på y kan vi inte avgöra. Otillräckligt även tillsammans — svaret är E.",
     "steps": [
       {
@@ -3548,6 +3692,10 @@
     ],
     "framework_id": null,
     "pitfall": "Den klassiska fällan är att blanda ihop 'procent' med 'kronor' när procenttalet är litet. Botemedlet: säg alltid procenten högt som decimalvärde först (12 % = 0,12) innan du börjar räkna — då slipper du tolka tecknet fel.",
+    "pregrade_tactic": {
+      "handle": "Procentfaktor-genvägen",
+      "move": "Gångra alltid gammalt värde med (1 + p/100) vid höjning, (1 − p/100) vid sänkning; en multiplikation istället för två räknesteg."
+    },
     "solution_path": "Höjning med 12 % betyder nytt pris = 250 · 1,12. Räkna: 250 · 1,12 = 280. Svaret är D.",
     "steps": [
       {
@@ -3638,6 +3786,10 @@
     ],
     "framework_id": null,
     "pitfall": "Den klassiska fällan är att tolka 'större än' inkluderande och börja på fel tal. Botemedlet: läs villkoret med extra omsorg när det står '>'; tänk att tecknet INTE inkluderar — endast '≥' inkluderar.",
+    "pregrade_tactic": {
+      "handle": "Mittentalsregeln",
+      "move": "Medelvärdet av jämnt fördelade tal är mittersta talet; för 'större än' tänk strikt — > inkluderar inte gränsen, ≥ gör det."
+    },
     "solution_path": "De fem minsta heltalen större än 10 är 11, 12, 13, 14, 15. Summan är 65 och medelvärdet är 65/5 = 13. Svaret är C.",
     "steps": [
       {
@@ -3728,6 +3880,10 @@
     ],
     "framework_id": null,
     "pitfall": "Den vanligaste fällan är att 'flippa fel bråk' — alltså invertera vänsterledet istället för att räkna fram x rakt. Botemedlet: skriv ut räknesteget med multiplikationen explicit, så ser du när bråket transformeras.",
+    "pregrade_tactic": {
+      "handle": "Bråk-isoleringen",
+      "move": "När x står i ett bråks täljare, gångra båda sidor med nämnaren; vid a/b = c/d använd korsmultiplikation: ad = bc."
+    },
     "solution_path": "Multiplicera båda sidor med 8 för att frigöra x: x = \\frac{8}{3}. Svaret är C.",
     "steps": [
       {
@@ -3876,6 +4032,10 @@
     ],
     "framework_id": null,
     "pitfall": "Den klassiska fällan är att förväxla startvärdet med exponenten ('n stycken' känns 'tio gånger', så n hamnar som exponent). Botemedlet: skriv ut första tre veckorna manuellt (n, 2n, 4n, 8n) — mönstret blir då tydligt: antalet ÖKAR med faktor 2 varje vecka, inte med faktor n.",
+    "pregrade_tactic": {
+      "handle": "Exponentiell-mallen",
+      "move": "När något fördubblas/multipliceras med en faktor varje period, är formeln startvärde · bas^(antal perioder); basen är fördubblingsfaktorn, exponenten är tiden."
+    },
     "solution_path": "Populationen fördubblas varje vecka. Efter t veckor är antalet n \\cdot 2^{t}. Efter 10 veckor: n \\cdot 2^{10}. Svaret är C.",
     "steps": [
       {
@@ -4018,6 +4178,10 @@
     ],
     "framework_id": null,
     "pitfall": "Vivid side-facts (paper predates Cai Lun, Gutenberg's press, paperless age) are bait. They tempt you to pick the option that names the most concrete image. The thesis lives in the abstract framing sentence, not the colourful example.",
+    "pregrade_tactic": {
+      "handle": "Fallacy-flip",
+      "move": "When the passage names a 'fallacy' or 'myth' and then corrects it, the correct answer captures the DIRECTION of the correction — read the very next sentence as the headline."
+    },
     "solution_path": "Kurlansky calls the 'inventions create social change' view a 'technological fallacy' and replaces it with the opposite direction: 'the world changes first and tools stick if they meet its new needs.' Successful innovations are downstream of social shifts, not the cause of them — answer A.",
     "steps": [
       {
@@ -4084,6 +4248,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Relation-claim",
+      "move": "On 'main focus' items, scan for an abstract claim about a RELATIONSHIP between two things — that's almost always the focus, not the concrete examples."
+    },
     "solution_path": "The passage hammers one idea: athletes peak professionally before they have matured personally — 'Professional and emotional maturity are wildly out of sync.' That mismatch between athletic and personal development is the main focus. Answer B.",
     "steps": [
       {
@@ -4150,6 +4318,10 @@
     ],
     "framework_id": null,
     "pitfall": "Long passages with many named figures (Richard III, Henry I, Alfred, Cnut, Harthacnut, Ælfthryth, Æthelred) tempt you into picking an option that names one of them. The thesis lives in the author's framing about MEDIA BEHAVIOUR, not in the cast list.",
+    "pregrade_tactic": {
+      "handle": "Critique-signal",
+      "move": "When you see 'it is rather a shame', 'unfortunately', or 'but', a critique is being set up — the answer for a main-point item on that section is the substance of the critique."
+    },
     "solution_path": "Paragraphs one and two complain that media attention 'focused chiefly on the possibility of finding the king's body, rather than on what we might learn from these investigations about the larger story of Reading Abbey.' The author is criticising a media tendency to fixate on individuals. Answer D.",
     "steps": [
       {
@@ -4216,6 +4388,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Temporal-anchor",
+      "move": "On 'stated' items in historical passages, hunt for temporal markers ('precedes him by more than a century', 'tenth century', '1135'); the right answer names a specific temporal relationship."
+    },
     "solution_path": "The passage notes that 'a religious house for women was supposedly founded in Reading in the tenth century by Queen Ælfthryth' — more than a century before Henry I built the abbey in 1121. Reading had religious ties before the abbey. Answer A.",
     "steps": [
       {
@@ -4282,6 +4458,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Duration-and-end",
+      "move": "When a passage names a long-running institution and then a year of violent rupture, the right answer for 'what is said' usually packages BOTH the duration AND the manner of ending."
+    },
     "solution_path": "The passage closes its history of the abbey with a violent end: 'a long and distinguished institutional history, which concluded violently when the last Abbot of Reading was hanged, drawn and quartered at his own abbey gate in 1539.' After several centuries, the abbey's history ended abruptly. Answer C.",
     "steps": [
       {
@@ -4348,6 +4528,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Mood-word-map",
+      "move": "When the prompt asks about an author's REFLECTION, map the mood words ('eerie', 'ghostly', 'transitory') to options before checking content matches."
+    },
     "solution_path": "Standing in the abbey grounds, the author describes the modern office towers as 'eerie' and 'just as expressive of the transitory nature of earthly wealth and power' as the medieval ruins beside them. The reflection is on the impermanence of human achievements. Answer B.",
     "steps": [
       {
@@ -4414,6 +4598,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Genre-label",
+      "move": "When a passage says someone is 'meditating', 'reflecting', or asking abstract questions about time/fame/mortality, the genre label is almost always 'philosophical reflection'."
+    },
     "solution_path": "Henry of Huntingdon stands in 1135 and looks back a thousand years and forward a thousand more, asking what survives of fame and why we 'torment our spirit in vain'. That's a philosophical meditation on mortality and the meaning of fame, not history or fantasy. Answer C.",
     "steps": [
       {
@@ -4480,6 +4668,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Hypothesis-sentence",
+      "move": "When a passage describes a new method, the sentence starting with 'biologists hypothesized that…' or 'the idea is that…' usually paraphrases the correct answer."
+    },
     "solution_path": "The sonic-shield idea is to disrupt the birds' own communication: 'biologists hypothesized that interrupting the conversation would increase birds' vigilance, leaving less time for loitering and dining.' Disturbing their focus on talking to each other is what protects the crops. Answer C.",
     "steps": [
       {
@@ -4546,6 +4738,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "List-and-aggregate",
+      "move": "When a paragraph opens with a short LIST of positive (or negative) drivers, the right answer is usually a summary umbrella — aggregate, don't fixate on a single item."
+    },
     "solution_path": "The passage lists positive drivers in sequence: 'Fertile land, a skyrocketing demand for soybeans and rice, and a government willing to cut big land deals', plus 'world-class coal and gas deposits' and 'massive infrastructure projects'. Several circumstances point to a promising future. Answer C.",
     "steps": [
       {
@@ -4612,6 +4808,10 @@
     ],
     "framework_id": null,
     "pitfall": "Distractors often flip the direction (D says 'older than markings'; the truth is the opposite). Always re-state the direction in plain English before scanning options: 'the coin is YOUNGER than its date.'",
+    "pregrade_tactic": {
+      "handle": "Direction-of-time",
+      "move": "When a passage says a date stamped on an object differs from when it was actually produced, magic word is 'backdated' — match the option to the DIRECTION of the discrepancy."
+    },
     "solution_path": "A coin found in Devon, dated 1652, was actually minted in the Massachusetts Bay Colony 'in the 1660s or 70s, when the colony understood it had no rights to mint coinage and backdated its issues.' Settlers worked around English law by backdating their currency. Answer B.",
     "steps": [
       {
@@ -4678,6 +4878,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att välja det alternativ som nämner ETT av metodens steg när rätt svar kräver att man fångar BÅDA. Botemedlet: räkna antalet tekniker som nämns i passagen (här två: kol-14 + dna), och kräv att rätt alternativ omfattar lika många.",
+    "pregrade_tactic": {
+      "handle": "Metodfotspåret",
+      "move": "När frågan ber om METODEN, leta signalord som 'genom att', 'först… sedan' eller 'med hjälp av' — och kräv att rätt alternativ täcker ALLA tekniker som nämns."
+    },
     "solution_path": "Forskarna kombinerade kol-14-datering med dna-analys av de daterade proverna. Två tekniker som arbetar tillsammans — det är alternativ B.",
     "steps": [
       {
@@ -4744,6 +4948,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att välja det alternativ som låter mest negativt (\"misstro\", \"osäkerhet\") även när det inte är orsaken. Botemedlet: testa varje alternativ med frågan \"är detta en ORSAK till opåliten eller en BESKRIVNING av den?\".",
+    "pregrade_tactic": {
+      "handle": "Orsakskedjan",
+      "move": "När texten kritiserar en metod, leta meningen som börjar med 'men' eller 'nackdelen' — den pekar ut den mekanism som ger fel, inte konsekvenserna av felet."
+    },
     "solution_path": "Pollenanalysens nackdel är att vindpollinerade arter producerar massor av pollen och insektspollinerade nästan inget — så provet snedvrids av växternas olika förökningssätt. Svaret är C.",
     "steps": [
       {
@@ -4810,6 +5018,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Bidrags-parafrasen",
+      "move": "När frågan ber vad en upptäckt bidrog till, leta de meningar där upptäckten beskrivs mekanistiskt ('X gör att Y händer') — och välj det alternativ som täcker den breda mekanismen."
+    },
     "solution_path": "Vane upptäckte HUR acetylsalicylsyra fungerar (blockerar COX), och Bergström + Samuelsson visade prostaglandinernas struktur — tillsammans förklarar de varför molekylen lindrar smärta och feber. Svaret är A.",
     "steps": [
       {
@@ -4876,6 +5088,10 @@
     ],
     "framework_id": null,
     "pitfall": "Många luras av att den ifrågasatta versionen (Hoffmann) nämns FÖRST i texten och tror att den är huvudtesen. Botemedlet: leta efter \"men\", \"däremot\" eller \"finns anledning att ifrågasätta\" — texten brukar lägga sin egen tes EFTER den version den motsäger.",
+    "pregrade_tactic": {
+      "handle": "Författarens-värdeord",
+      "move": "Räkna värdeord ('rättmätigt', 'ohållbart', 'ifrågasätta'); ett enda otvetydigt värdeord räcker för att etablera att författaren tar ställning."
+    },
     "solution_path": "Författaren öppnar texten med \"Det finns anledning att ifrågasätta\" Hoffmann-historien och driver sedan hela texten en argumentation till Eichengrüns förmån. Han tar ställning — för Eichengrün. Svaret är A.",
     "steps": [
       {
@@ -4942,6 +5158,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att blanda ihop EFFEKTEN (mindre smärta, mindre koagulation) med MEKANISMEN (blockerad enzymverkan). Botemedlet: skilj alltid på vad substansen GÖR direkt på molekylnivå och vad PATIENTEN MÄRKER — frågan vill ha det första.",
+    "pregrade_tactic": {
+      "handle": "Mekanism-meningen",
+      "move": "När frågan ber om HUR ett läkemedel fungerar, leta formuleringen 'X verkar genom att…' eller 'X hindrar Y från att…' — där sitter hela förklaringen."
+    },
     "solution_path": "Texten säger uttryckligen att acetylsalicylsyra \"verkar genom att blockera detta enzym\" — alltså COX. Att blockera = att hindra ett enzym från att verka. Svaret är B.",
     "steps": [
       {
@@ -5008,6 +5228,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Vändpunktssignalen",
+      "move": "I U-formad utveckling (nedgång + uppgång), leta signalord som 'åter', 'igen' eller 'efter att' — där markeras vändpunkten och den nya upptäckten som drev återhämtningen."
+    },
     "solution_path": "Efterfrågan ökade igen när man upptäckte att acetylsalicylsyra motverkar blodets koagulation — alltså minskar risken för hjärtinfarkt och stroke. Svaret är B.",
     "steps": [
       {
@@ -5074,6 +5298,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är lätt att låta säkerhetslinjeparallellen om barnen ta över analysen, men det är en SIDOREFLEKTION — det centrala stråket handlar om minnets bedräglighet. Botemedlet: när en text rymmer både ett själv-temat (henne själv) och ett relations-temat (barnen), kolla vilket textförfattaren själv förklarar minnet med.",
+    "pregrade_tactic": {
+      "handle": "Sista-stycket-spåret",
+      "move": "I personliga essäer kommer textjagets huvudinsikt nästan alltid i sista 5-10 raderna; läs slutet långsamt och leta den fras där hon för första gången namnger ett bakomliggande motiv."
+    },
     "solution_path": "Textjaget kommer på att hennes felaktiga minne tjänade ett syfte — att skydda henne från skuld. \"Så tröstande\" är hennes egen formulering. Svaret är D.",
     "steps": [
       {
@@ -5140,6 +5368,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att välja det alternativ som låter starkast i text A utan att kolla att det faktiskt SAKNAS i text B. Botemedlet: gör en snabb checkpoint per option \"finns något spår av detta i text B?\" — bara nej-svaret duger.",
+    "pregrade_tactic": {
+      "handle": "Kontrastmatchningen",
+      "move": "När frågan ber vad text A har men inte text B, testa varje alternativ mot BÅDA texterna; stryk allt som finns i båda."
+    },
     "solution_path": "\"Säkerhetslina\" kretsar kring att minnet var fel — bedrägligt jämfört med boken. \"Hjärtats rop\" handlar om saknad efter ett minne, inte om dess sanningshalt. Svaret är A.",
     "steps": [
       {
@@ -5206,6 +5438,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att blanda ihop förändringar i FREKVENS (\"alltmer sällan\") med förändringar i VIKT eller INNEHÅLL. Botemedlet: när dikten anger ett kvantitativt mått (\"sällan\", \"oftare\", \"länge\"), välj det alternativ som matchar just det måttet.",
+    "pregrade_tactic": {
+      "handle": "Bildens-översättning",
+      "move": "I lyrik gestaltas abstrakta tillstånd som konkreta handlingar; översätt varje bild till sitt psykologiska motsvar och matcha mot alternativet."
+    },
     "solution_path": "Diktjaget säger att han \"alltmer sällan\" rör vid dörrens regel — minnet plockas alltså fram allt mindre ofta med åren. Svaret är C.",
     "steps": [
       {
@@ -5272,6 +5508,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att tolka minnesdikter som en hyllning till det förflutna; men de driver oftare en tes om vad det förflutna AVSLÖJAR om nuet. Botemedlet: fråga \"vad upptäcker diktjaget OM SIG SJÄLV genom att minnas?\" — inte \"vad var fint förr?\".",
+    "pregrade_tactic": {
+      "handle": "Barn-vuxen-axeln",
+      "move": "När en dikt växlar mellan vuxenröst och barnröst, är tesen oftast att vuxenheten är en fasad — leta raden där diktjaget refererar till sig själv som barn."
+    },
     "solution_path": "Minnet av en vuxens kärleksfulla omvårdnad (\"Min lille prins\") visar diktjaget att de barnsliga behoven av närhet och beskydd lever kvar — under vuxenfasaden. Svaret är A.",
     "steps": [
       {
@@ -5338,6 +5578,10 @@
     ],
     "framework_id": null,
     "pitfall": "Synonymordboks-läget lurar att alla fyra alternativ är ungefär samma. Botemedlet: läs paret högt — om det inte låter som svenska modersmålstalare formulerar sig, åk ut.",
+    "pregrade_tactic": {
+      "handle": "Kollokationskontrollen",
+      "move": "När luckan är ett adjektiv framför ett substantiv, fråga inte bara 'vad betyder ordet' utan 'hör orden ihop på svenska' — testa det fasta uttrycket först."
+    },
     "solution_path": "Lundberg lyckades \"mot alla odds\" bli en _____ författare innan en skatteskuld drog tillbaka honom. Adjektivet ska beskriva framgång och offentligt erkännande som författare — det är \"erkänd\". Svaret är B.",
     "steps": [
       {
@@ -5398,6 +5642,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Fackord-precisionen",
+      "move": "När meningen pekar ut att lucka-ordet är ett begrepp inom ett fackområde ('begreppet', 'motsats till'), leta etablerade termer från det fältet — inte vardagsord som låter rätt."
+    },
     "solution_path": "Filtrering är när vissa flyttar IN och andra UT i ett område — motsatsen är gentrifiering (välbärgade tar över ett område). Och de inflyttande har en svagare socioekonomisk ställning än de utflyttande. Svaret är D.",
     "steps": [
       {
@@ -5464,6 +5712,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Trelucksregeln",
+      "move": "När tre ord ska väljas tillsammans, hitta begränsningen för varje lucka separat och eliminera alternativ som spricker på MINST EN av dem."
+    },
     "solution_path": "Texten frågar om känslor är de jag TROR att de är — det är frågan om autenticitet (att vara sann mot sitt inre). Att söka äkthet i känslor är svårt, och vi vill att personligheter (och känslor) ska vara fasta och beständiga. Svaret är B.",
     "steps": [
       {
@@ -5530,6 +5782,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Administrativ-vokabulär",
+      "move": "Enluck-MEK med juridisk framing ('bevilja', 'annars förbjudna') signalerar administrativ fackterm — leta ord som ofta paras med 'bevilja', 'söka', 'avslå'."
+    },
     "solution_path": "Det handlar om att BEVILJA något för användning av \"annars förbjudna\" ämnen — alltså att tillåta undantag från ett förbud. Det juridiska facktermen är dispens. Svaret är C.",
     "steps": [
       {
@@ -5590,6 +5846,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Stilenheten",
+      "move": "I juridiska MEK-meningar måste BÅDA luckorna höra hemma i samma juridiska stil; vardagsord och felriktade uttryck spräcker stilen även om betydelsen ungefär går ihop."
+    },
     "solution_path": "Varje sambo äger sin egendom och _____ sina egna skulder — det betyder är ANSVARIG FÖR dem (svarar för). Och man får inte _____ den gemensamma bostaden utan samtycke — det är att ÖVERLÅTA. Svaret är A.",
     "steps": [
       {
@@ -5656,6 +5916,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Inre-drivkraftsordet",
+      "move": "När texten exemplifierar vad personen GÖR (stöttar, hjälper), letar du efter ordet för DRIVKRAFTEN bakom — inte ordet för beteendet eller målet."
+    },
     "solution_path": "Lärarna som investerar mycket av sin fritid i andra har ett starkt socialt _____ — adjektivet \"socialt\" + substantivet bär betydelsen \"känsla för andra\". Det är patos: starkt engagemang för andras väl. Svaret är A.",
     "steps": [
       {
@@ -5716,6 +5980,10 @@
     ],
     "framework_id": null,
     "pitfall": "Två-luckors MEK med snäva semantiska fält (osäkerhet/kunskap) lurar studenter att jaga betydelseskillnader istället för idiomstyrka. Botemedlet: lista de fasta uttrycken på svenska för det semantiska fältet INNAN du jämför alternativens nyanser — då poppar svaret upp av sig självt.",
+    "pregrade_tactic": {
+      "handle": "Idiomenheten",
+      "move": "När två luckor står tätt ihop som 'verb i + substantiv', testa varje par som idiomenhet — fyra alternativ men oftast bara ett etablerat fast uttryck."
+    },
     "solution_path": "På 1700-talet visste även de lärdaste INTE vart fåglarna tog vägen om hösten — de hade hypoteser men inget säkert svar. Lucka 1 ska uttrycka kunskaps-osäkerhet, lucka 2 ska vara substantivet för okunskap-utan-fakta. Svävade i ovisshet är idiomet. Svaret är B.",
     "steps": [
       {
@@ -5782,6 +6050,10 @@
     ],
     "framework_id": null,
     "pitfall": "Vid medicinska/fackliga MEK lurar fackliknande ord (\"kompetenta\", \"kongruenta\") som SER skickliga ut. Botemedlet: testa varje alternativ mot \"används detta i läroböcker om utmattningssyndrom?\" — verkliga fackord (kognitiv) känner du igen från kontexten, fake-fackord känner du inte igen.",
+    "pregrade_tactic": {
+      "handle": "Prepositionstestet",
+      "move": "När lucka 1 är ett verb följt av en bestämd preposition ('mot', 'från', 'till'), använd prepositionen som första elimineringsfilter — bara ett verb brukar kollokera med den."
+    },
     "solution_path": "Nya diagnoser är svåra att _____ MOT det normala och andra tillstånd (= sätta gränser mot, alltså AVGRÄNSA). De _____ funktionerna (tänkande, minne = KOGNITIVA) är tydligt påverkade, så patientgruppen har en _____ (= ENHETLIGHET — alla är drabbade på samma sätt). Svaret är A.",
     "steps": [
       {
@@ -5854,6 +6126,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Fast-uttrycks-jakt",
+      "move": "När luckan föregås av preposition + handlingsverb ('till', 'för', 'i'), är svaret nästan alltid del av ett etablerat fast uttryck — kör en mental lista innan du jämför ordbetydelser."
+    },
     "solution_path": "Trädgårdsodling, bärplockning och fiske gjordes \"till _____\" och hade betydelse för folkets försörjning under mellankrigstiden — alltså för det egna hushållets behov. Det fasta uttrycket är \"till husbehov\". Svaret är C.",
     "steps": [
       {
@@ -5914,6 +6190,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Dialektisk-läsning",
+      "move": "När texten är dialektisk-filosofisk (Adorno, Hegel, Marx), letar du efter motsatsord (antites, negation), inte identitetsord (essens, motto)."
+    },
     "solution_path": "Den borgerliga ideologin = vinstintresset, X, det instrumentella tänkandet — alla tre om nyttotänkande. Sedan: detta är konstens A — A för konsten betyder MOTSATS (antites), inte essens. Svaret är D.",
     "steps": [
       {
@@ -5985,6 +6265,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Idiombilden",
+      "move": "När frågeordet är ett idiom (lägga band, bita ihop, hålla i schack), översätt den konkreta bilden bokstavligt och leta alternativet som beskriver samma handling abstrakt."
+    },
     "solution_path": "Att lägga band på sig betyder att hålla tillbaka sig själv — behärska sina impulser, känslor eller ord. Svaret är B.",
     "steps": [
       {
@@ -6038,6 +6322,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Kedjestegs-precision",
+      "move": "När frågeordet är ett affärs-/kontextfackord, placera det i sin kedja (offert → beställning → faktura) — det utesluter alternativ från fel steg."
+    },
     "solution_path": "En offert är ett skriftligt kostnadsförslag från en säljare till en presumtiv kund — ett prisbud man kan tacka ja eller nej till. Svaret är D.",
     "steps": [
       {
@@ -6091,6 +6379,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När frågeordet har latinsk/grekisk stam (portio, tribuere), bryt ner det i bekanta delar — ordets ursprung avslöjar betydelsen direkt."
+    },
     "solution_path": "Proportionerlig betyder väl avpassad — lagom i förhållande till något annat, varken för stor eller för liten. Svaret är E.",
     "steps": [
       {
@@ -6144,6 +6436,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Dimensions-klassning",
+      "move": "När frågeordet är en måttenhet, klassa den efter dimension — längd (1D), area (2D), volym (3D), vikt, tid — bara ett alternativ matchar dimensionen."
+    },
     "solution_path": "En hektar är ett ytmått — 10 000 kvadratmeter, ungefär storleken på en stor fotbollsplan. Svaret är A.",
     "steps": [
       {
@@ -6191,6 +6487,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Tidsadverb-klassning",
+      "move": "När frågeordet är ett tidsadverb, fråga (1) riktning (bakåt/framåt/återkommande) och (2) avstånd (omedelbart/efter en stund/avlägset)."
+    },
     "solution_path": "Sedermera betyder så småningom — senare i tiden, vid en senare punkt. Ett ålderdomligt ord. Svaret är D.",
     "steps": [
       {
@@ -6238,6 +6538,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När frågeordet har latinsk stam (-tribuere, -portio, -ferre), tänk på vad stammen GÖR; attribuera = tilldela → ett attribut är något tilldelat."
+    },
     "solution_path": "Ett attribut är ett kännetecken — en egenskap eller ett särdrag som tillskrivs någon eller något. Svaret är E.",
     "steps": [
       {
@@ -6291,6 +6595,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Sammansatt-tolkning",
+      "move": "När frågeordet är ett tydligt sammansatt adjektiv (snar+stucken, små+aktig, stor+sint), dela det i förled och efterled och tolka bokstavligt först."
+    },
     "solution_path": "Snarstucken betyder lättstött — snabbt sårad eller förnärmad av småsaker. Svaret är C.",
     "steps": [
       {
@@ -6344,6 +6652,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Konnotationsfingret",
+      "move": "När frågeordet bär tydlig moralisk laddning (positiv/negativ/neutral), lista först laddningen och sedan strukturen; alternativ utan båda dragen åker ut."
+    },
     "solution_path": "Maskopi är ett hemligt samförstånd — en dold överenskommelse mellan flera personer, ofta för något skumt. Svaret är A.",
     "steps": [
       {
@@ -6397,6 +6709,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När frågeordet har latinsk stam (per+forare = igenom+borra), bryt isär stammen; svaret faller direkt ut ur den bokstavliga översättningen."
+    },
     "solution_path": "Perforera betyder göra hål i — punktera en yta med en eller flera öppningar, ofta i rad. Svaret är E.",
     "steps": [
       {
@@ -6444,6 +6760,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Element-bilden",
+      "move": "När frågeordet bär stam från ett klassiskt element (eter, aqua, ignis, terra), gå till elementets karaktär; eter = den lättaste materien → eterisk = lätt, flyktig."
+    },
     "solution_path": "Eterisk betyder flyktig — luftig, lätt, knappt påtaglig som om den höll på att försvinna. Svaret är B.",
     "steps": [
       {
@@ -6492,6 +6812,10 @@
     ],
     "framework_id": null,
     "pitfall": "'While' and 'as' both have multiple senses. Don't pick by what 'sounds English-y' — pick by which meaning of the word matches the relationship the sentence needs.",
+    "pregrade_tactic": {
+      "handle": "Logic-relation",
+      "move": "On cloze conjunctions, name the LOGICAL relation first — cause? time? contrast? condition? — then test only the words that carry that relation."
+    },
     "solution_path": "The clause '_____ about 80% of former students gained financially from attending university, 20% earned less' sets up a CONTRAST between two groups. 'While' is the contrast conjunction that fits — 'although' in a balanced sense. Answer C.",
     "steps": [
       {
@@ -6558,6 +6882,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Controlled-comparison",
+      "move": "When the surrounding sentence describes a controlled comparison ('similar X but without Y'), the missing noun is almost always 'peers'."
+    },
     "solution_path": "The comparison group is 'their [____] who didn't enter higher education' — people of the same age and background as the graduates. 'Peers' captures that exactly. Answer D.",
     "steps": [
       {
@@ -6624,6 +6952,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Variation-phrase",
+      "move": "After a verb of variation ('differed', 'varied', 'changed'), the right phrase means 'as a function of' — 'depending on' is the natural fit."
+    },
     "solution_path": "'The premium also differed _____ the subject studied' needs a phrase meaning 'varied according to'. 'Depending on' is the natural collocation with 'differed'. Answer B.",
     "steps": [
       {
@@ -6690,6 +7022,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Builder-metaphor",
+      "move": "When the blank fills 'That _____ is built on X', the noun is almost always a positive abstract noun (prestige, reputation, success) — you build something valuable, not a problem."
+    },
     "solution_path": "'It is no surprise our universities attract students from all over the world. That _____ is built on quality and my role is to safeguard that.' The noun refers back to the universities' international appeal — that is, their PRESTIGE. Answer C.",
     "steps": [
       {
@@ -6756,6 +7092,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Critique-flavour",
+      "move": "On cloze critiques, identify the SENTIMENT first: omission ('ignores', 'overlooks'), active refusal ('rejects'), or false inclusion ('confuses'); most are omission critiques."
+    },
     "solution_path": "Grady is criticising a NARROW lens — 'education is about much more than just financial benefit. Focusing on future income… _____ the wider benefits.' The verb names what that narrow focus DOES to the wider benefits — it IGNORES them. Answer A.",
     "steps": [
       {
@@ -6822,6 +7162,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Stage-the-debate",
+      "move": "When a first paragraph opens with 'some argue X, but recently others have questioned X', it stages a debate — the right answer uses words like 'debated', 'questioned', or 'contested'."
+    },
     "solution_path": "The first paragraph names a debate: some say psychological phenomena are universal, but 'in recent decades some researchers have started questioning this approach, arguing that many psychological phenomena are shaped by the individual cultures.' The scope and nature of psych mechanisms are under debate. Answer A.",
     "steps": [
       {
@@ -6888,6 +7232,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Sampling-bias",
+      "move": "When a passage names a sampling bias (90% from WEIRD countries), the implied critique is almost always about narrow representativeness — match the answer to 'not a random sample'."
+    },
     "solution_path": "Henrich's 2010 study found 'more than 90 percent of participants in psychological studies come from… countries that are WEIRD' — and the paragraph explicitly says 'the people who live in these countries are not a random sample.' Experimental psych has relied on a much too narrow selection. Answer A.",
     "steps": [
       {
@@ -6954,6 +7302,10 @@
     ],
     "framework_id": null,
     "pitfall": "Dense methodological passages mix multiple test conditions. Pin down which finding corresponds to which manipulation (salient-object recall vs. context-change recognition) before matching options.",
+    "pregrade_tactic": {
+      "handle": "Asymmetric-effect",
+      "move": "When a study reports manipulation X affects group A but not group B, the right answer names the ASYMMETRY — watch for options that flip the direction."
+    },
     "solution_path": "Masuda and Nisbett's follow-up found that Japanese participants recognised objects better in their ORIGINAL settings than in new ones, 'whereas this manipulation had relatively little effect on Americans.' Background changes affected one group (Japanese) much more than the other. Answer C.",
     "steps": [
       {
@@ -7020,6 +7372,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Three-category-sort",
+      "move": "When a passage names three categories (traits, preferences, relationships) and identifies one as conventional, assign each option to a category — the right answer is the only one in the conventional bucket."
+    },
     "solution_path": "Social psychologists have 'long maintained that people are much more likely to describe themselves and others in terms of stable personal characteristics than they are to describe themselves in terms of their preferences or relationships.' 'I am quiet and shy' is a stable personal characteristic. Answer D.",
     "steps": [
       {
@@ -7086,6 +7442,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Context-dependence",
+      "move": "When a passage says a concept 'isn't complete' or 'depends on context', the right answer for a main-point item begins with 'can only be defined in the context of …' or 'depends on …'."
+    },
     "solution_path": "The passage warns that the conceptual framework 'based on detecting deviant or nonnormative behaviors' isn't complete: 'What may be seen as normal in one culture (for example modesty) could be seen as deviating from the norm in another.' Deviance is culture-specific. Answer C.",
     "steps": [
       {
@@ -7152,6 +7512,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att läsa \"avslog\" som att en domstol dömde mot S.M. — men man måste alltid fråga \"avslog VAD?\". Att avslå polismyndighetens överklagande är ett beslut FÖR S.M., inte mot henne. Botemedlet: skriv ut \"X avslår Y:s överklagande\" som \"X säger nej till Y, alltså behåller det gamla beslutet\".",
+    "pregrade_tactic": {
+      "handle": "Instanskedjan",
+      "move": "I rättstext, spåra (a) vem som överklagar i varje led och (b) i vems FAVÖR varje instans dömer — 'avslå överklagande' innebär att förra instansens dom står fast."
+    },
     "solution_path": "S.M. vann i tingsrätten, polismyndigheten överklagade, hovrätten avslog överklagandet, och HD avslog också — alltså bekräftade BÅDA högre instanserna tingsrättens beslut. Svaret är D.",
     "steps": [
       {
@@ -7218,6 +7582,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att välja det alternativ som låter mest pragmatiskt (\"det viktiga är att avgiften betalats\") — men HD bygger sina avgöranden på REGLER och RIMLIGHETSKRAV, inte på pragmatik. Botemedlet: leta efter formuleringar som \"finns inte\", \"har inte funnits\" — de markerar ofta det bristelement som blir grunden för friandet.",
+    "pregrade_tactic": {
+      "handle": "Bedömningsavsnittet",
+      "move": "I rättsärende-utdrag ligger de bärande skälen alltid i den del som börjar med 'Bedömning' eller 'Bedömningen i detta fall' — hoppa direkt dit, inte till bakgrunden."
+    },
     "solution_path": "HD pekar på att det INTE fanns några anvisningar om hur S.M. skulle ange registreringsnumret — varken på platsen eller i appen. Den information hon hade behövt saknades. Svaret är C.",
     "steps": [
       {
@@ -7284,6 +7652,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att tolka konkreta anekdoter som personkritik mot just de namngivna personerna. Botemedlet: fråga \"kunde namnen bytas ut mot andra namn utan att poängen ändras?\" — om ja, är personerna bara representanter för ett kulturellt fenomen.",
+    "pregrade_tactic": {
+      "handle": "Exempel-syftet",
+      "move": "När texten öppnar med två anekdoter, hoppa till frasen där författaren själv sammanfattar deras gemensamma poäng ('denna märkliga motsägelse', 'hur är det möjligt att…')."
+    },
     "solution_path": "De två exemplen visar att människor som hyllar matematikens betydelse själva inte kan förklara den — orden om matematikens värde klingar alltså falskt. Svaret är D.",
     "steps": [
       {
@@ -7350,6 +7722,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att fastna i metaforens BILD (bönekvarnen är mekanisk, så texten måste handla om mekanik) snarare än dess FUNKTION (bönekvarnen delegerar arbete, så texten handlar om delegering). Botemedlet: fråga \"vad GÖR metaforens objekt för sin användare?\" — inte \"hur SER metaforens objekt ut?\".",
+    "pregrade_tactic": {
+      "handle": "Liknelse-tillämpningen",
+      "move": "När texten bygger en utvecklad metafor, leta raden där författaren tillämpar metaforen på sitt verkliga ämne ('vår bönekvarn är förstås X', 'på samma sätt som')."
+    },
     "solution_path": "Bönekvarnen låter munkarna \"slippa det mödosamma arbetet att meditera\" — på samma sätt låter skolmatematiken oss vuxna slippa själva räkna men ändå hylla matematiken. Svaret är B.",
     "steps": [
       {
@@ -7416,6 +7792,10 @@
     ],
     "framework_id": null,
     "pitfall": "Det är frestande att tolka \"naiv\" och \"betraktare\" var för sig och försöka konstruera en betydelse — men begreppet är specifikt definierat i texten. Botemedlet: vid filosofisk eller sociologisk terminologi, ignorera ordens vanliga betydelse och håll dig till den definition författaren själv ger.",
+    "pregrade_tactic": {
+      "handle": "Begreppsfunktionen",
+      "move": "När texten introducerar ett tekniskt begrepp, leta formuleringen 'fungerar som' eller 'har funktionen att' — den raden definierar begreppet i texten."
+    },
     "solution_path": "Den naiva betraktaren är en tänkt observatör som tror att verksamheten är meningsfull — och det räcker för att de som GENOMSKÅDAT den ska kunna utföra den med ren samvete. Svaret är D.",
     "steps": [
       {
@@ -7612,6 +7992,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Reflexiv-prepositionspar",
+      "move": "När luckan är reflexivt verb + bestämd preposition ('X sig från Y'), är det nästan alltid ett etablerat fast uttryck — friskriva, distansera, dra sig undan."
+    },
     "solution_path": "Arendts banala ondska handlar om att DISTANSERA sig från ansvar — säga \"jag bara lydde order\". Det reflexiva verbet är \"friskriver sig\". Svaret är C.",
     "steps": [
       {
@@ -7672,6 +8056,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Exempel-på-luckan",
+      "move": "När meningen följs av 'hit hör X, Y, Z', är exemplen lucka-ordets definition — läs dem först, formulera kategorin de tillhör, matcha sen."
+    },
     "solution_path": "95 % av hälsoapparna är inte medicinsk-tekniska — de räknar steg och påminner om bensträckare. Det är livsstilsappar, alltså _____ som är allmänt _____ (livsstilsfrämjande segment). Svaret är D.",
     "steps": [
       {
@@ -7738,6 +8126,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Metafras-identifikation",
+      "move": "När meningen inleds med 'för att ____ kan man säga', är det nästan alltid ett sammanfattnings-/förenklingsverb (generalisera, sammanfatta, förenkla)."
+    },
     "solution_path": "Att förenkla på allmänt plan = generalisera. Människor som har mycket att förlora på att bli avslöjade som brottsliga = ertappas. De har en stark förankring i samhället. Svaret är A.",
     "steps": [
       {
@@ -7810,6 +8202,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Nyckelord-spegling",
+      "move": "När texten innehåller ett specifikt nyckelord ('sammansvärjningen'), välj det alternativ som lexikalt SPEGLAR samma begrepp (konspiration = sammansvärjning)."
+    },
     "solution_path": "Författaren letar systematiskt efter data som stöder hans hypotes om en SAMMANSVÄRJNING — det är just vad en konspirationsteoretiker gör. Svaret är D.",
     "steps": [
       {
@@ -7870,6 +8266,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Verb-prep-substantiv",
+      "move": "När lucka 1 är verb och lucka 2 substantiv med preposition emellan, läs hela frasen som EN enhet — testa det fasta svenska idiomet (ge efter för, ta hänsyn till)."
+    },
     "solution_path": "Frågan är om vi mår bättre av att FÖLJA våra hämndlystna känslor när tillfälle ges. Det fasta uttrycket är \"ge efter för\" (sina impulser). Svaret är A.",
     "steps": [
       {
@@ -7936,6 +8336,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Fackord-direkt",
+      "move": "När texten talar om insekter/skadedjur som drabbar växter/skog, är 'angrepp' det fasta facktermen — inte intrång/beslag/uppgång."
+    },
     "solution_path": "Torrt och varmt väder gynnade granbarkborren, som åt sig in i skogen — det är ett ANGREPP med stora skogsskador. Svaret är D.",
     "steps": [
       {
@@ -7996,6 +8400,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Myndighetsregistret",
+      "move": "När texten beskriver en offentlig yrkesroll, leta ord som ofta står tillsammans i myndighetsdokument (handlingar – handläggare, ärenden – tjänsteman)."
+    },
     "solution_path": "Arkivarien ger råd om hur arkiv-_____ hanteras (= dokument med arkivvärde = HANDLINGAR) och är universitetets _____ (= sakkunniga utförare av arkivärenden = HANDLÄGGARE). Svaret är B.",
     "steps": [
       {
@@ -8062,6 +8470,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Akademisk-meta",
+      "move": "I metatextuella MEK-meningar ('artikelns X', 'avhandlingens Y') tillhör alla luckor samma akademiska språkstil — orden för en avhandlings struktur."
+    },
     "solution_path": "Artikelns _____1 (= struktur/ordning) är: först historik, sedan _____2 (= presenteras för) _____3 (= forskningsresultat). Det är DISPOSITION + REDOGÖRS FÖR + LANDVINNINGAR. Svaret är D.",
     "steps": [
       {
@@ -8134,6 +8546,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Stilskikts-paret",
+      "move": "När två formella ord ska paras ihop måste båda komma från samma stilskikt; kulturreportage med 'osannolik' + retroaktivt motiv ger konstellation + nödgade."
+    },
     "solution_path": "Sherrill och Cash framstod på papperet som en osannolik KONSTELLATION (sammansättning av två olika personer). Men båda såg sig NÖDGADE (= tvungna) att återuppliva karriären. Svaret är A.",
     "steps": [
       {
@@ -8200,6 +8616,10 @@
     ],
     "framework_id": null,
     "pitfall": "Synonymjakt på orden i sin helhet missar prefixets bidrag. Botemedlet: när alla alternativ slutar på samma stam, behandla prefixet som det enda nya — välj prefix utifrån rörelsen meningen kräver (förflyttning, förvandling, fyllning, tillstånd).",
+    "pregrade_tactic": {
+      "handle": "Prefixfokuseringen",
+      "move": "När alternativen delar grundstam men har olika prefix, fokusera prefixet: av- = ta bort, be- = fylla, för- = tillstånd, om- = förvandla form."
+    },
     "solution_path": "Kursplaner ska kunna översättas/förverkligas till undervisning av god kvalitet — det är att OMSÄTTAS i något annat (i undervisningen). Svaret är C.",
     "steps": [
       {
@@ -8271,6 +8691,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Engelska-cognaten",
+      "move": "När frågeordet låter mer latinskt än svenskt, prova engelska översättningen som bro: hereditär → hereditary → heredity → arv."
+    },
     "solution_path": "Hereditär betyder ärftlig — något som överförs från förälder till barn genom arvsanlag. Svaret är B.",
     "steps": [
       {
@@ -8318,6 +8742,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Sammansatt-tolkning",
+      "move": "När frågeordet är ett sammansatt verb (under+rätta, om+sätta), dela det i förled och efterled; rättelse av någon UNDER betyder ge besked uppifrån."
+    },
     "solution_path": "Underrätta betyder informera — meddela någon, ge dem besked om något. Svaret är C.",
     "steps": [
       {
@@ -8371,6 +8799,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Sammansatt-tolkning",
+      "move": "När frågeordet är ett sammansatt substantiv (hus+kur), dela det i förled och efterled; hus = hemma, kur = behandling → hemmabehandling."
+    },
     "solution_path": "En huskur är en folklig behandlingsmetod — ett gammalt hemmaknep mot något krämpa, ofta ärvt i familjen. Svaret är E.",
     "steps": [
       {
@@ -8424,6 +8856,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Sammansatt-tolkning",
+      "move": "När frågeordet är ett sammansatt adjektiv (trång+synt, stor+sint), dela det bokstavligt; trång + synt = smal syn → fördomsfull, intolerant."
+    },
     "solution_path": "Trångsynt betyder fördomsfull — har ett smalt perspektiv och svårt att acceptera andra sätt att tänka. Svaret är D.",
     "steps": [
       {
@@ -8477,6 +8913,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Vardagsord-direkt",
+      "move": "När frågeordet är ett vanligt svenskt ord (möda, omak), läs det som direkt synonym — ingen ordhistoria behövs, bara den dagliga betydelsen."
+    },
     "solution_path": "Möda betyder ansträngning — den kraft och möda man lägger ner i ett arbete. Svaret är E.",
     "steps": [
       {
@@ -8524,6 +8964,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När frågeordet bär stammen 'frekvent-' (ofta, regelbundet), tänk på frekvens som upprepning; frekventera = göra ofta = besöka regelbundet."
+    },
     "solution_path": "Frekventera betyder besöka ofta — vara på en plats regelbundet, gång på gång. Svaret är A.",
     "steps": [
       {
@@ -8571,6 +9015,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Franskt-lånord",
+      "move": "När frågeordet är ett franskt lånord (raffinemang, élégance, charm), tänk på den franska kultursfären — förfining, smak, elegans."
+    },
     "solution_path": "Raffinemang betyder förfining — en utvecklad smak och elegans i utförandet, ofta i kultur, mat eller stil. Svaret är E.",
     "steps": [
       {
@@ -8618,6 +9066,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Stamordskartan",
+      "move": "När frågeordet bär stammen 'par-' (par = lika), tänk på par som likställdhet; paritet = likvärdighet, jämbördighet."
+    },
     "solution_path": "I paritet med betyder likvärdig med — på samma nivå, jämbördig i värde eller styrka. Svaret är D.",
     "steps": [
       {
@@ -8671,6 +9123,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Kulturbilden",
+      "move": "När frågeordet är ett kultur-/platsspecifikt ord (gondol, sari, kimono), använd den välkända bilden från sin kontext direkt — Venedig + båt = roddbåt."
+    },
     "solution_path": "En gondol är en båt — den smala, mörkmålade roddbåten som styrs av en stående gondoljär i Venedigs kanaler. Svaret är E.",
     "steps": [
       {
@@ -8718,6 +9174,10 @@
     ],
     "framework_id": null,
     "pitfall": null,
+    "pregrade_tactic": {
+      "handle": "Negativt-prefix",
+      "move": "När frågeordet har prefixet 'o-' framför ett bekant ord (o+bemedlad, o+enig), läs det som motsatsen; obemedlad = utan medel = fattig."
+    },
     "solution_path": "Obemedlad betyder fattig — utan medel, dvs utan pengar och tillgångar. Svaret är B.",
     "steps": [
       {
