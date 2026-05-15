@@ -43,6 +43,23 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, tes
     await expect(stale).toBeHidden({ timeout: 5_000 })
   }
 
+  // Wait for the question bank to be loaded before pressing Start. The
+  // drill `begin()` handler awaits loadBank() (one /data/_index.json
+  // fetch + 27 parallel exam JSONs); on a cold CI network this can take
+  // longer than the 10s `toBeDisabled` timeout below, so the state
+  // transition is dropped and drill-next never renders inside the
+  // window. Locally the data is cached and the load is ~50ms — no race.
+  // Gating on window.__HPC_BANK__ (set in src/main.tsx) converts the
+  // implicit race into an explicit ready-check.
+  await page.waitForFunction(
+    () => {
+      const bank = (window as unknown as { __HPC_BANK__?: unknown[] }).__HPC_BANK__
+      return Array.isArray(bank) && bank.length > 0
+    },
+    null,
+    { timeout: 20_000 },
+  )
+
   await page.getByTestId('drill-start').click()
 
   for (let i = 0; i < 10; i++) {
