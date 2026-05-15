@@ -9,6 +9,41 @@
 //
 // Stripe Press × Apple Books reading register.
 
+// NOG prompts are `Question? (1) Statement-1. (2) Statement-2. Tail` —
+// shipped with two marker shapes:
+//   - PUA-wrapped subscript:  `(_{1} )` / `(_{2} )`
+//   - Plain text:             `(1)` / `(2)`
+// Both forms appear in the corpus depending on parser vintage. Returns
+// null when the prompt doesn't split cleanly into 3 parts (statement
+// markers missing or extra) — callers fall back to inline prose.
+const NOG_MARKER = /[]?\(\s*_?\{?[12]\}?\s*[]?\s*\)\s*\t?/g
+// "Tillräcklig information för lösningen erhålls" is the canonical tail
+// that grammatically links to the option list. Pulled out of statement
+// II so it renders as a separate apparatus caption rather than running
+// into the statement prose.
+const NOG_TAIL = /\s*Tillräcklig information för lösningen erhålls\s*$/
+
+function parseNogPrompt(prompt: string): {
+  question: string
+  statement1: string
+  statement2: string
+  tail: string | null
+} | null {
+  const parts = prompt.split(NOG_MARKER)
+  if (parts.length !== 3) return null
+  const question = parts[0].trim()
+  const statement1 = parts[1].trim()
+  let statement2 = parts[2].trim()
+  let tail: string | null = null
+  const tailMatch = statement2.match(NOG_TAIL)
+  if (tailMatch) {
+    tail = tailMatch[0].trim()
+    statement2 = statement2.slice(0, tailMatch.index).trim()
+  }
+  if (!question || !statement1 || !statement2) return null
+  return { question, statement1, statement2, tail }
+}
+
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { QuestionFigure } from '@/components/drill/QuestionFigure'
@@ -47,6 +82,14 @@ export function StyleA({
   // candidates. Specimen layout: hero-scale headword + roomier option
   // rhythm. (Friction inventory §5.)
   const isOrd = question.section === 'ORD'
+  // NOG questions are data-sufficiency: `Question? (1) Statement-1.
+  // (2) Statement-2. Tillräcklig…`. The prompt arrives as a single
+  // prose blob with the (1)/(2) markers buried inline — pedagogically
+  // the student must evaluate each statement in isolation, then
+  // jointly. Surface that structure: parse the markers and render
+  // each statement as a labelled mini-panel. (Friction inventory §6.)
+  const isNog = question.section === 'NOG'
+  const nogParts = isNog && question.prompt ? parseNogPrompt(question.prompt) : null
   return (
     <div
       style={{
@@ -165,42 +208,51 @@ export function StyleA({
            *  one word per line because the grid track was crushed
            *  below 90px. Independent measure cap means the column
            *  width and the reading width are decoupled. */}
-          <div
-            data-testid="drill-prompt"
-            style={
-              isOrd
-                ? {
-                    // Hero-scale headword. ORD prompts are 1–3 words; the
-                    // word IS the question, so it carries the visual weight
-                    // of a specimen lemma. Tighter letter-spacing reads as
-                    // editorial display type rather than running prose.
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(44px, 4vw + 1rem, 72px)',
-                    lineHeight: 1.05,
-                    letterSpacing: '-0.025em',
-                    fontWeight: 500,
-                    marginTop: 8,
-                    marginBottom: 48,
-                    color: 'var(--ink)',
-                  }
-                : {
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(20px, 1rem + 0.6vw, 24px)',
-                    lineHeight: 1.35,
-                    letterSpacing: '-0.012em',
-                    fontWeight: 500,
-                    marginBottom: 28,
-                    color: 'var(--ink)',
-                    maxWidth: '60ch',
-                  }
-            }
-          >
-            {question.section === 'KVA' && question.prompt ? (
-              <KvaPrompt prompt={question.prompt} />
-            ) : (
-              <MathText>{question.prompt ?? ''}</MathText>
-            )}
-          </div>
+          {isNog && nogParts ? (
+            <NogPromptBlock
+              question={nogParts.question}
+              statement1={nogParts.statement1}
+              statement2={nogParts.statement2}
+              tail={nogParts.tail}
+            />
+          ) : (
+            <div
+              data-testid="drill-prompt"
+              style={
+                isOrd
+                  ? {
+                      // Hero-scale headword. ORD prompts are 1–3 words; the
+                      // word IS the question, so it carries the visual weight
+                      // of a specimen lemma. Tighter letter-spacing reads as
+                      // editorial display type rather than running prose.
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 'clamp(44px, 4vw + 1rem, 72px)',
+                      lineHeight: 1.05,
+                      letterSpacing: '-0.025em',
+                      fontWeight: 500,
+                      marginTop: 8,
+                      marginBottom: 48,
+                      color: 'var(--ink)',
+                    }
+                  : {
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 'clamp(20px, 1rem + 0.6vw, 24px)',
+                      lineHeight: 1.35,
+                      letterSpacing: '-0.012em',
+                      fontWeight: 500,
+                      marginBottom: 28,
+                      color: 'var(--ink)',
+                      maxWidth: '60ch',
+                    }
+              }
+            >
+              {question.section === 'KVA' && question.prompt ? (
+                <KvaPrompt prompt={question.prompt} />
+              ) : (
+                <MathText>{question.prompt ?? ''}</MathText>
+              )}
+            </div>
+          )}
           {/* Inline vector figure — XYZ/KVA/NOG questions that come with
            *  a parser-extracted SVG diagram. Sits between prompt and
            *  options, matching DrillQuestion's order. QuestionFigure
@@ -887,6 +939,104 @@ export function StyleA({
           {graded && <span style={{ color: 'var(--ink)' }}>↵ nästa</span>}
         </span>
       </footer>
+    </div>
+  )
+}
+
+// NOG-specific prompt apparatus. Three editorial blocks:
+//   1. Question prose — standard prompt weight.
+//   2. PÅSTÅENDE I / II panels — mono small-caps eyebrow + statement
+//      body in display serif. Each panel is hairline-separated so the
+//      eye registers two distinct evaluation surfaces (which matches
+//      the data-sufficiency pedagogy: test each statement alone, then
+//      jointly).
+//   3. Tail caption — "Tillräcklig information för lösningen erhålls",
+//      rendered as the apparatus lead-in to the option list.
+function NogPromptBlock({
+  question,
+  statement1,
+  statement2,
+  tail,
+}: {
+  question: string
+  statement1: string
+  statement2: string
+  tail: string | null
+}) {
+  return (
+    <div data-testid="drill-prompt" style={{ maxWidth: '62ch', marginBottom: 28 }}>
+      <div
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(20px, 1rem + 0.6vw, 24px)',
+          lineHeight: 1.35,
+          letterSpacing: '-0.012em',
+          fontWeight: 500,
+          color: 'var(--ink)',
+          marginBottom: 28,
+        }}
+      >
+        <MathText>{question}</MathText>
+      </div>
+      <NogStatement label="Påstående I" body={statement1} />
+      <NogStatement label="Påstående II" body={statement2} />
+      {tail && (
+        <div
+          style={{
+            marginTop: 20,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10.5,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--muted)',
+            lineHeight: 1.45,
+          }}
+        >
+          {tail}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function NogStatement({ label, body }: { label: string; body: string }) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'auto 1fr',
+        gap: 'clamp(14px, 2vw, 22px)',
+        alignItems: 'baseline',
+        paddingTop: 18,
+        paddingBottom: 18,
+        borderTop: '1px solid color-mix(in oklch, var(--hairline) 70%, transparent)',
+      }}
+    >
+      <div
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 10.5,
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+          fontWeight: 600,
+          color: 'var(--muted)',
+          whiteSpace: 'nowrap',
+          paddingTop: 4,
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(17px, 0.9rem + 0.4vw, 19px)',
+          lineHeight: 1.5,
+          letterSpacing: '-0.008em',
+          color: 'var(--ink)',
+        }}
+      >
+        <MathText>{body}</MathText>
+      </div>
     </div>
   )
 }
