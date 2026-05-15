@@ -1,0 +1,98 @@
+{
+  "host-2018-kvant1-KVA-020": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du minns regeln som 'större procentsats ger större resultat' kan 42 % verka 'starkare' än 21 %.",
+        "why_wrong": "Steg 9 visar att procentsats och bastal är symmetriska multiplikativt — den ena uppvägs av den andra. 42 % av en halv så stor bas = 21 % av hela basen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelversion av A — 'större bastal ger större resultat' kan göra 2482 (Kvantitet I:s bastal) verka tyngre.",
+        "why_wrong": "Samma symmetriargument. Steg 7 visar att uttrycken är algebraiskt identiska efter omskrivning."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'utan beräkning är det omöjligt att veta' och välja 'informationen är otillräcklig'.",
+        "why_wrong": "All information finns. Steg 6–7 låter dig se likheten utan att räkna ut decimaltalen."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Klassisk KVA-fälla: två uttryck som SER olika ut men är algebraiskt identiska. Botemedlet: faktorisera båda uttrycken till samma 'kanoniska form' (här: produkt av samma tal) innan du drar slutsatser om storlek.",
+    "solution_path": "Skriv om: 2482 = 2·1241 och 42 % = 2·21 %. Faktor 2 i procentsats × faktor 1/2 i bastal tar ut varandra. Kvantiteterna är lika — svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Kvantitet I är 21 % av 2482. Kvantitet II är 42 % av 1241. Frågan: vilken är större eller är de lika? Vi vill INTE räkna ut talen — vi vill se mönstret.",
+        "tier": "essential",
+        "title": "Läs problemet noggrant"
+      },
+      {
+        "n": 2,
+        "text": "X % av Y betyder \\frac{X}{100}\\cdot Y. Det är en multiplikation: procentsatsen (X/100) och bastalet (Y). Båda kan ändras, men produkten beror på BÅDA.",
+        "tier": "detail",
+        "title": "Vad betyder X % av Y?"
+      },
+      {
+        "n": 3,
+        "text": "21\\%\\text{ av }2482 = \\frac{21}{100}\\cdot 2482 = \\frac{21\\cdot 2482}{100}.",
+        "tier": "essential",
+        "title": "Skriv ut Kvantitet I som produkt"
+      },
+      {
+        "n": 4,
+        "text": "42\\%\\text{ av }1241 = \\frac{42}{100}\\cdot 1241 = \\frac{42\\cdot 1241}{100}.",
+        "tier": "essential",
+        "title": "Skriv ut Kvantitet II som produkt"
+      },
+      {
+        "n": 5,
+        "text": "Båda har samma nämnare (100), så jämförelsen reduceras till täljarna: 21·2482 mot 42·1241. Vi vill se om de är lika utan att räkna ut talen.",
+        "tier": "essential",
+        "title": "Välj strategi — jämför täljarna"
+      },
+      {
+        "n": 6,
+        "text": "42 = 2 · 21. 2482 = 2 · 1241. Båda är samma faktor 2 multiplicerade med 'halva' uttrycket.",
+        "tier": "detail",
+        "title": "Faktorisera 42 och 2482"
+      },
+      {
+        "n": 7,
+        "text": "42\\cdot 1241 = (2\\cdot 21)\\cdot 1241 = 21\\cdot (2\\cdot 1241) = 21\\cdot 2482. Det är EXAKT samma uttryck som täljaren i Kvantitet I.",
+        "tier": "essential",
+        "title": "Skriv om Kvantitet II med faktor 2 framme"
+      },
+      {
+        "n": 8,
+        "text": "Båda kvantiteter har samma täljare (21·2482) och samma nämnare (100). De är identiska.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 9,
+        "text": "När procentsatsen dubblas (21 % → 42 %) och bastalet halveras (2482 → 1241), tar förändringarna ut varandra exakt. Produkten är invariant.",
+        "tier": "essential",
+        "title": "Vad är insikten?"
+      },
+      {
+        "n": 10,
+        "text": "21\\%\\text{ av }2482 = 0{,}21 \\cdot 2482 \\approx 521{,}22. 42\\%\\text{ av }1241 = 0{,}42 \\cdot 1241 \\approx 521{,}22. Lika.",
+        "tier": "detail",
+        "title": "Sanity-check med faktiska tal"
+      },
+      {
+        "n": 11,
+        "text": "Svaret är C: I är lika med II. Insikten i en mening: procent-multiplikation är symmetrisk — om du dubblar procentsatsen och halverar bastalet, blir resultatet detsamma.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Procentsymmetri-strategin: 'X % av Y' är multiplikation X · Y / 100. Om X dubblas och Y halveras (eller vice versa), är produkten oförändrad. Triggern: jämför 'aX % av bY' mot 'X % av Y' — kolla om ab = 1."
+  }
+}

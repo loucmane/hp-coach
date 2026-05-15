@@ -1,0 +1,182 @@
+{
+  "var-2022-2-kvant2-KVA-014": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man inte förkortar och tror att \\frac{5}{20} är mindre än \\frac{1}{5} (för att 5 är större i nämnaren), kan man tro att I > 0 och gissa A.",
+        "why_wrong": "Steg 2 visar att 5/20 = 1/4, vilket är STÖRRE än 1/5. Att se på \"talen i bråket\" utan att räkna leder fel."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man räknar slarvigt och tror \\frac{1}{5} och \\frac{5}{20} är samma bråk (förkortning vänd åt fel håll), tror man att skillnaden är 0.",
+        "why_wrong": "Steg 2 visar att 1/5 = 4/20, INTE 5/20. De är två olika bråk. Skillnaden är −1/20, inte 0."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta \"jag är osäker på bråkräkningen, så otillräckligt\".",
+        "why_wrong": "Båda kvantiteter är fullt definierade rationella tal — räkningen ger ett exakt svar (−1/20). Information räcker."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "En vanlig fälla är att tro att 5/20 är \"litet\" för att 5 < 20 utan att se att det = 1/4 = 0,25, vilket är större än 1/5 = 0,2. Botemedlet: förkorta ALLTID bråk innan jämförelse, eller omvandla till decimaler — då blir storleksordningen synlig.",
+    "solution_path": "Skriv om \\frac{1}{5}=\\frac{4}{20}. Då blir I = \\frac{4}{20}-\\frac{5}{20}=-\\frac{1}{20}. Negativ — alltså mindre än 0. II > I, svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Kvantitet I är \\frac{1}{5}-\\frac{5}{20}. Kvantitet II är 0. Vem är större?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "5/20 kan förkortas: båda delbara med 5. \\frac{5}{20}=\\frac{5\\div 5}{20\\div 5}=\\frac{1}{4}. Och \\frac{1}{4} är större än \\frac{1}{5} (mindre nämnare = större bråk när täljaren är samma).",
+        "tier": "detail",
+        "title": "Förkorta 5/20 om möjligt"
+      },
+      {
+        "n": 3,
+        "text": "För att subtrahera bråk behövs gemensam nämnare. 5 och 20: 20 är delbart med 5 (20 = 5·4), så gemensam nämnare = 20.",
+        "tier": "essential",
+        "title": "Välj strategi: gemensam nämnare"
+      },
+      {
+        "n": 4,
+        "text": "\\frac{1}{5}=\\frac{1\\cdot 4}{5\\cdot 4}=\\frac{4}{20}.",
+        "tier": "essential",
+        "title": "Förläng 1/5"
+      },
+      {
+        "n": 5,
+        "text": "\\frac{4}{20}-\\frac{5}{20}=\\frac{4-5}{20}=\\frac{-1}{20}=-\\frac{1}{20}.",
+        "tier": "essential",
+        "title": "Subtrahera"
+      },
+      {
+        "n": 6,
+        "text": "Kvantitet I = −1/20, ett negativt tal — alltså mindre än 0.",
+        "tier": "essential",
+        "title": "Tolka resultatet"
+      },
+      {
+        "n": 7,
+        "text": "I = −1/20 < 0 = II. Alltså II är större.",
+        "tier": "essential",
+        "title": "Jämför med Kvantitet II"
+      },
+      {
+        "n": 8,
+        "text": "Vi subtraherar \\frac{5}{20}=\\frac{1}{4} från \\frac{1}{5}. Eftersom 1/4 > 1/5, blir resultatet negativt. Det är logiskt — vi tar bort \"mer än vi har\".",
+        "tier": "detail",
+        "title": "Intuitiv kontroll"
+      },
+      {
+        "n": 9,
+        "text": "1/5 = 0,2; 5/20 = 0,25. 0,2 − 0,25 = −0,05 = −1/20 ✓. Negativt, mindre än 0.",
+        "tier": "detail",
+        "title": "Verifiera med decimaler"
+      },
+      {
+        "n": 10,
+        "text": "I = −1/20 < 0 = II. Svaret är B. Insikten i en mening: när du subtraherar bråk och resultatet ser ut att kunna bli negativt — räkna ut det, gissa inte; tecknet avgör jämförelsen mot 0.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Bråk-subtraktion-strategin: när du subtraherar bråk, hitta gemensam nämnare, förläng, dra ifrån täljarna. Resultatet KAN bli negativt — det är inget fel, det betyder att den första termen är mindre än den andra. Triggern: \"A − B\" där A och B är bråk → gemensam nämnare, sedan subtrahera täljarna."
+  },
+  "var-2022-2-kvant2-KVA-020": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att tro att två \"mellanstora\" cirklar tillsammans väger upp en ENSAM jättecirkel — man tänker linjärt: 10 + 15 = 25 cm radie, vs 20 + 5 = 25 cm radie. Båda summerar till 25 cm.",
+        "why_wrong": "Steg 4 visar att AREA inte är linjär i radie utan KVADRATISK. Lika radie-summor ger INTE lika area-summor. 20² + 5² = 425 ≠ 10² + 15² = 325."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Eftersom radie-summorna är lika (5+20 = 10+15 = 25), kan man gissa att area-summorna också är lika.",
+        "why_wrong": "Steg 8 förklarar konvexitet: kvadraten av summan ≠ summan av kvadraterna. Att summera kvadrater av extrempunkter ger MER än kvadrater av mellanstora värden."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta \"jag vet inte hur cirklar staplar — kanske beror på något\".",
+        "why_wrong": "Steg 3 och 5–6 ger exakta värden. Areor av cirklar med konkreta radier är fullt definierade."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "En vanlig fälla är att tro att lika radie-summor ger lika area-summor (linjärt tänkande). Botemedlet: räkna ALLTID arean med πr² explicit — kvadreringen avslöjar den icke-linjära effekten.",
+    "solution_path": "Area = πr². I = π(5² + 20²) = π·(25 + 400) = 425π. II = π(10² + 15²) = π·(100 + 225) = 325π. 425π > 325π → I > II. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Fyra cirklar har radierna 5, 10, 15 och 20 cm. Kvantitet I = den sammanlagda arean av den STÖRSTA (r = 20) och den MINSTA (r = 5). Kvantitet II = den sammanlagda arean av de TVÅ MELLANSTORA (r = 10 och r = 15).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Arean av en cirkel med radie r är \\pi r^{2}. Pi (π ≈ 3,14) är en konstant; r² betyder r gånger r (kvadrat).",
+        "tier": "detail",
+        "title": "Vad är en cirkels area?"
+      },
+      {
+        "n": 3,
+        "text": "r = 5: \\pi\\cdot 25=25\\pi. r = 10: \\pi\\cdot 100=100\\pi. r = 15: \\pi\\cdot 225=225\\pi. r = 20: \\pi\\cdot 400=400\\pi.",
+        "tier": "essential",
+        "title": "Räkna varje cirkels area"
+      },
+      {
+        "n": 4,
+        "text": "5² = 25; 10² = 100; 15² = 225; 20² = 400. r² VÄXER snabbare än r — fördubbla r, så fyrdubblas r².",
+        "tier": "detail",
+        "title": "Räkna r² för varje"
+      },
+      {
+        "n": 5,
+        "text": "I = (största + minsta) area = 400π + 25π = 425π.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet I"
+      },
+      {
+        "n": 6,
+        "text": "II = (mellan + mellan) area = 100π + 225π = 325π.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet II"
+      },
+      {
+        "n": 7,
+        "text": "I = 425π, II = 325π. π är samma positiva konstant i båda. Så I > II eftersom 425 > 325.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 8,
+        "text": "Funktionen r² är \"konvex\" — den krökt uppåt. Då lönar det sig att ta de YTTERSTA värdena (största och minsta) framför mellanstora — summan av kvadrater blir större för ytterligheter.",
+        "tier": "detail",
+        "title": "Strukturell intuition"
+      },
+      {
+        "n": 9,
+        "text": "I cm²: π ≈ 3,14. I = 425π ≈ 1335 cm². II = 325π ≈ 1021 cm². 1335 > 1021 ✓.",
+        "tier": "detail",
+        "title": "Verifiera med specifika siffror"
+      },
+      {
+        "n": 10,
+        "text": "I > II. Svaret är A. Insikten i en mening: r² växer kvadratiskt — den största cirkelns area dominerar; att para den med den minsta cirkeln ger fortfarande mer än två mellancirklar tillsammans.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Konvexitets-strategin: när du jämför summor av kvadrater (eller andra konvexa funktioner) över olika parvis indelningar, vinner indelningen med MEST EXTREMA värden. r² är konvex, så (a² + b²) är större när a och b är längre ifrån varandra. Triggern: \"jämför summor av kvadrater\" → para extrempunkter ger största summa."
+  }
+}

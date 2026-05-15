@@ -1,0 +1,98 @@
+{
+  "host-2015-kvant1-XYZ-006": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tänka \"David sitter antingen mitt emot eller inte — alltså chansen 1/2\".",
+        "why_wrong": "Det stämmer bara om bara två alternativ är lika troliga. Här är det tre möjliga sidor för David, inte två. Steg 5–6 visar att två av tre är \"inte mitt emot\"."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1/4 dyker upp om man räknar \"en bestämd sida av fyra\" — som om alla fyra sidor av bordet vore lika troliga för David.",
+        "why_wrong": "När Cesar är fastsatt har David bara tre möjliga sidor kvar, inte fyra. Steg 5 låser nämnaren till 3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du minns regeln som \"unikt par av fyra personer = 1/5\" hamnar du fel.",
+        "why_wrong": "Det finns ingen 1/5-regel i den här uppgiften. Räkningen i steg 7 ger en ren kvot 1/3 oavsett tolkning."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Cesar sätter sig först — godtyckligt val. Av de tre kvarvarande stolarna är exakt en mitt emot Cesar, så Davids chans att hamna där är 1/3. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Fyra personer sätter sig slumpmässigt vid ett kvadratiskt bord, en på varje sida. Frågan: hur stor är sannolikheten att Cesar och David hamnar på MOTSTÅENDE sidor (mitt emot varandra)?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Ett kvadratiskt bord har fyra sidor. Varje sida tar en person. Två sidor är \"intill\" varandra (delar ett hörn), två sidor är \"mitt emot\" varandra.",
+        "tier": "detail",
+        "title": "Hur många sidor finns?"
+      },
+      {
+        "n": 3,
+        "text": "Sannolikhet är antalet gynnsamma utfall delat med antalet möjliga utfall. \"Gynnsamt\" = de utfall som uppfyller villkoret. Alla utfall här är lika troliga.",
+        "tier": "detail",
+        "title": "Vad betyder \"sannolikhet\"?"
+      },
+      {
+        "n": 4,
+        "text": "Eftersom borden ser likadana ut från alla sidor spelar det ingen roll på vilken specifik sida Cesar sitter — vi kan utan inskränkning sätta honom på en valfri sida och se var David hamnar relativt honom.",
+        "tier": "essential",
+        "title": "Välj strategi: fixa Cesar"
+      },
+      {
+        "n": 5,
+        "text": "När Cesar är placerad återstår tre stolar för David (slumpmässigt vald bland de tre). Tre lika troliga möjliga utfall.",
+        "tier": "essential",
+        "title": "Räkna alternativ för David"
+      },
+      {
+        "n": 6,
+        "text": "Av de tre kvarvarande stolarna är exakt EN mitt emot Cesar (den motstående sidan). De andra två är intill Cesar (höger respektive vänster).",
+        "tier": "essential",
+        "title": "Hur många av Davids platser är \"mitt emot\"?"
+      },
+      {
+        "n": 7,
+        "text": "Gynnsamma utfall = 1 (David mitt emot). Möjliga utfall = 3 (David var som helst av de tre kvarvarande). Sannolikhet = 1/3.",
+        "tier": "essential",
+        "title": "Räkna sannolikheten"
+      },
+      {
+        "n": 8,
+        "text": "Adam och Bertil fyller bara de två platser David inte tar — de är \"med-passagerare\" i händelsen. Vi bryr oss bara om var David hamnar relativt Cesar.",
+        "tier": "detail",
+        "title": "Varför påverkar inte Adam och Bertil?"
+      },
+      {
+        "n": 9,
+        "text": "Totalt antal placeringar av fyra personer på fyra sidor = 4! = 24. Hur många av dessa har Cesar mitt emot David? Välj Cesars sida (4 sätt), då är Davids sida bestämd (1 sätt), Adam och Bertil väljer fritt bland de återstående två (2! = 2 sätt). Gynnsamma = 4·1·2 = 8. Sannolikhet = 8/24 = 1/3. Bekräftar.",
+        "tier": "detail",
+        "title": "Kontrollräkning med totala permutationer"
+      },
+      {
+        "n": 10,
+        "text": "1/2 skulle gälla om bara två placeringar var möjliga — t.ex. om vi visste att David sitter \"intill\" eller \"mitt emot\". Men David kan hamna på vilken som helst av de tre lediga, varav två är intill.",
+        "tier": "detail",
+        "title": "Avfärda 1/2"
+      },
+      {
+        "n": 11,
+        "text": "Sannolikheten är 1/3. Svaret är B. Insikten i en mening: i sittsannolikhet med ett kvadratiskt bord, fixa en person och räkna bara de återstående platsernas \"riktning\" mot honom/henne — då kollapsar problemet till en enkel kvot.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Fix-en-person-strategin för cirkulär sittsannolikhet: sätt en person på godtycklig plats, räkna bara var den andra hamnar relativt den första. Triggern är \"vad är sannolikheten att A och B sitter i viss konfiguration\" — kollapsa rotationssymmetrin innan du räknar."
+  }
+}

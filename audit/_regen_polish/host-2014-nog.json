@@ -1,0 +1,103 @@
+{
+  "host-2014-kvant1-NOG-027": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att \"P(båda svarta) = 0\" är en stark och informativ utsaga och därför räcker.",
+        "why_wrong": "Den utsagan begränsar bara antalet svarta till < 2. Steg 4 visar två giltiga scenarier som ger olika P(vit). (1) ensamt räcker inte."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta \"båda låter informativa, säkert behövs båda\".",
+        "why_wrong": "C kräver att (2) ENSAMT inte räcker. Men steg 6 visar att (2) ger unikt svar 2/3. C är fel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om man tror att även (1) räcker (vilket är fel) kan man landa på D — vardera räcker ensamt.",
+        "why_wrong": "Steg 4 visar att (1) inte är unik. Bara (2) räcker — svaret är B, inte D."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Om man missar att förhållandet i (2) räcker för en sannolikhet, kan man tycka att antalsinformationen är otillräcklig.",
+        "why_wrong": "Sannolikhet beror på FÖRHÅLLANDEN. Steg 6 visar att 2/3 följer enbart från 2:1-förhållandet, oavsett antalet."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att tro att man måste veta antalet bollar exakt för att svara på en sannolikhetsfråga. Botemedlet: minns att P är ett FÖRHÅLLANDE — så länge du har förhållandet mellan grupperna är P-värdet entydigt.",
+    "solution_path": "(1) säger att P(båda svarta) = 0, vilket bara fastställer att det finns < 2 svarta — P(vit) kan vara 1 eller (N−1)/N, inte unikt. (2) ger förhållandet 2:1 ⇒ P(vit) = 2/3 entydigt. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "En låda har bara svarta och vita bollar. Vi söker sannolikheten att dra en vit boll: P(vit) = (antal vita)/(totalt antal).",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Det är omöjligt att dra två svarta bollar (utan återläggning). Det betyder att det finns färre än 2 svarta bollar i lådan — alltså antingen 0 eller 1 svart.",
+        "tier": "detail",
+        "title": "Vad betyder P(två svarta) = 0?"
+      },
+      {
+        "n": 3,
+        "text": "(1) ger två möjligheter: (a) 0 svarta ⇒ alla är vita ⇒ P(vit) = 1; (b) 1 svart och N − 1 vita ⇒ P(vit) = (N − 1)/N, beroende på N.",
+        "tier": "essential",
+        "title": "Testa (1) ensamt"
+      },
+      {
+        "n": 4,
+        "text": "Om N = 5 (1 svart, 4 vita): P(vit) = 4/5. Om N = 10 (0 svarta, 10 vita): P(vit) = 1. Båda förenliga med (1) men ger olika P(vit). Inte unikt.",
+        "tier": "detail",
+        "title": "Konkret motexempel för (1)"
+      },
+      {
+        "n": 5,
+        "text": "(2) säger: antal vita = 2 · antal svarta. Låt antalet svarta vara s, då är antalet vita 2s, och totala är 3s.",
+        "tier": "essential",
+        "title": "Testa (2) ensamt"
+      },
+      {
+        "n": 6,
+        "text": "P(vit) = (antal vita)/totalt = 2s/(3s) = 2/3. s försvinner — sannolikheten beror BARA på förhållandet, inte på antalet.",
+        "tier": "essential",
+        "title": "Beräkna P(vit) från (2)"
+      },
+      {
+        "n": 7,
+        "text": "Ja — 2/3 är ett unikt värde oavsett hur många bollar lådan innehåller. (2) ensamt räcker.",
+        "tier": "detail",
+        "title": "Är (2) ensamt entydigt?"
+      },
+      {
+        "n": 8,
+        "text": "Nej. Steg 6 ger ett unikt P(vit) bara från (2). (1) är överskottinformation som dessutom KONFLIKTERAR med (2) i ett av sina scenarier (om 0 svarta finns kan vi inte ha förhållandet 2:1). Men för NOG räcker det att (2) ensamt fungerar.",
+        "tier": "detail",
+        "title": "Behövs (1) också?"
+      },
+      {
+        "n": 9,
+        "text": "Med (2) ensamt: P(vit) = 2/3, sannolikt 1 svart och 2 vita (eller 2 och 4, etc.). Med också (1) skulle 1 svart vara ok (P(två svarta) = 0 trivialt om s = 1), så scenarier kan finnas samtidigt — men irrelevant för svaret.",
+        "tier": "detail",
+        "title": "Konsistenskontroll"
+      },
+      {
+        "n": 10,
+        "text": "(1) ensamt räcker inte (steg 4); (2) ensamt räcker (steg 6). Det matchar alternativ B.",
+        "tier": "essential",
+        "title": "Tolka för NOG"
+      },
+      {
+        "n": 11,
+        "text": "Svaret är B — bara (2) räcker. Insikten i en mening: när frågan handlar om en sannolikhet eller andel, räcker ett FÖRHÅLLANDE mellan grupper — den absoluta storleken behövs inte.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Sannolikhets-förhållanden: P(någon färg) bestäms helt av förhållandet mellan färgmängderna — absoluta antal behövs inte. Triggern: \"P(välja en av typ X)\" + \"X är k gånger så många som Y\" → P = k/(k+1) eller liknande, utan att lösa för antalet."
+  }
+}

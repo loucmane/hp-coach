@@ -1,0 +1,204 @@
+{
+  "host-2023-kvant1-NOG-026": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man tänker att förhållandet 6:5 plus totalantal 56 borde räcka, kan (1) verka tillräcklig.",
+        "why_wrong": "Steg 4: (1) säger bara hur B och G förhåller sig till VARANDRA, inte hur stor del de utgör av totalen. R skulle bero på k, och flera k är möjliga."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Att kombinera båda 'känns säkrare' även om man inte är säker på (2) ensamt.",
+        "why_wrong": "Steg 9 visar att (2) ensamt räcker. C kräver att VARDERA ensamt INTE räcker. Eftersom (2) räcker, är svaret B, inte C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'både påståenden ger användbar info, alltså båda räcker'.",
+        "why_wrong": "Steg 5: (1) räcker inte ensamt. D kräver att BÅDA räcker ensamt."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Att slå sig själv på fingrarna med 'kanske finns det inget unikt svar för röda kulor'.",
+        "why_wrong": "Steg 7 ger unikt R = 12 från (2) ensamt. Informationen räcker."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "(1) ger förhållandet blå:grön = 6:5, men inget om totalantal — flera möjliga röda. (2) ger blå = 3/7·56 = 24, gröna = 5/14·56 = 20, så röda = 56 − 24 − 20 = 12. Unikt. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "56 kulor totalt, i tre färger (blå B, grön G, röd R). Du ska räkna ut antal röda — ETT UNIKT TAL.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "B + G + R = 56. En ekvation, tre obekanta. Otillräckligt utan mer info.",
+        "tier": "essential",
+        "title": "Vad ger frågetexten?"
+      },
+      {
+        "n": 3,
+        "text": "(1): förhållandet B:G = 6:5. Det betyder B/G = 6/5, eller likvärdigt B = 6k och G = 5k för något positivt heltal k (om både B och G är heltal och förhållandet är 6:5).",
+        "tier": "essential",
+        "title": "Översätt påstående (1)"
+      },
+      {
+        "n": 4,
+        "text": "Med B = 6k, G = 5k: B + G + R = 56 ⇒ 11k + R = 56 ⇒ R = 56 − 11k. För k = 1: R = 45. För k = 2: R = 34. För k = 3: R = 23. För k = 4: R = 12. För k = 5: R = 1. Många heltalsvärden för R är möjliga. Otillräckligt.",
+        "tier": "essential",
+        "title": "Testa (1) ensamt"
+      },
+      {
+        "n": 5,
+        "text": "(1) ensamt räcker inte — förhållandet säger inte hur många totalt är blå+gröna.",
+        "tier": "essential",
+        "title": "Slutsats (1) ensamt"
+      },
+      {
+        "n": 6,
+        "text": "(2): 3/7 av kulorna är blå, 5/14 är gröna. Eftersom totalt = 56 kan vi räkna direkt: B = (3/7) · 56 = 24, G = (5/14) · 56 = 20.",
+        "tier": "essential",
+        "title": "Översätt påstående (2)"
+      },
+      {
+        "n": 7,
+        "text": "R = 56 − B − G = 56 − 24 − 20 = 12.",
+        "tier": "essential",
+        "title": "Beräkna R från (2)"
+      },
+      {
+        "n": 8,
+        "text": "(2)-villkoren är ekvationer i absoluta tal (inte bara förhållanden), och totalantalet 56 fixerar exakta värden. Inga andra fördelningar är möjliga.",
+        "tier": "detail",
+        "title": "Verifiera (2) är konsistent"
+      },
+      {
+        "n": 9,
+        "text": "(2) ensamt räcker — det ger unikt R = 12.",
+        "tier": "essential",
+        "title": "Slutsats (2) ensamt"
+      },
+      {
+        "n": 10,
+        "text": "Nej. Eftersom (2) ensamt räcker, är (1) inte nödvändig. (Kontrollera dock konsistens: B/G = 24/20 = 6/5 ✓ — alltså är (1) också uppfyllt, vilket är förväntat.)",
+        "tier": "detail",
+        "title": "Behöver vi kombinera?"
+      },
+      {
+        "n": 11,
+        "text": "(1) ensamt räcker inte; (2) ensamt räcker. Alternativ B. Insikten i en mening: ett FÖRHÅLLANDE (6:5) säger relativ storlek men inte absoluta tal — det räcker bara om totalantalet OCH alla förhållanden i hela mängden ges. ANDELAR (3/7, 5/14) av en bestämd total ger däremot exakta tal.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Förhållande-vs-andel-strategin: förhållanden (a:b) ger inte absoluta tal utan ytterligare info; andelar (a/b av totalen) gör det direkt om totalen är känd. Triggern: 'förhållandet mellan X och Y är a:b' (svagare info) vs. 'X är a/b av totalen' (starkare info)."
+  },
+  "host-2023-kvant1-NOG-027": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "(1) ger tre konkreta fakta (s_1 = 2·s_5, s_1+s_2=7, s_3=7) vilket känns som mycket information.",
+        "why_wrong": "Steg 4: (1) lämnar s_4 helt obestämd och har flera (s_1, s_2, s_5)-möjligheter."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "(2) ger en konkret relation. Det är frestande att tro att en sådan relation räcker.",
+        "why_wrong": "Steg 7: (2) säger inget om fyra av fem siffror. Klart otillräckligt ensamt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Att lägga ihop (1)'s tre fakta med (2)'s en fakta känns som mycket information totalt (4 villkor).",
+        "why_wrong": "Steg 8–9 visar att även tillsammans finns två giltiga tal (25741 och 43782). Fyra villkor + två gränsvillkor (siffror ≤ 9) räcker inte för fem oberoende siffror."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ibland 'både påståendena ger massor av info, säkert räcker var för sig'.",
+        "why_wrong": "Steg 5 och 7 visar att varken (1) eller (2) räcker ensamt. D är direkt motbevisat."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att glömma att siffror är begränsade till 0–9 (vilket kan både skära bort och fastställa lösningar). Botemedlet: när du löser systemet, se till att VARJE siffra ligger i 0–9 — fall där en siffra blir ≥ 10 eller < 0 ska elimineras.",
+    "solution_path": "(1) ger första, andra och tredje siffran. (2) ger en relation mellan första och fjärde siffran. Den femte siffran låses från (1) eftersom första = 2·femte och första+andra = 7. Men EN siffra (oftast en av dem mellan tredje och fjärde, eller fjärde i sig) saknar information även tillsammans. Faktiskt: (1) ger siffrorna 1, 2, 3, 5. (2) ger siffra 4 från siffra 1. Sammantaget vet vi siffra 1, 2, 3, 4, 5 om vi också vet siffra 1. Men siffra 5 från (1):s villkor 'första = 2·femte' med första+andra=7: möjliga (första,femte): (2,1) med andra=5, (4,2) med andra=3, (6,3) med andra=1. Tre möjligheter — inte unikt. Svaret är E.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Ett femsiffrigt tal är skrivet på pappret. Du ska hitta talet — ALLA FEM SIFFRORNA entydigt.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Kalla siffrorna s_1, s_2, s_3, s_4, s_5 (från vänster). Talet är då 10000·s_1 + 1000·s_2 + 100·s_3 + 10·s_4 + s_5. Varje siffra är ett heltal 0–9, och s_1 ≥ 1 (annars är talet inte femsiffrigt).",
+        "tier": "detail",
+        "title": "Notation"
+      },
+      {
+        "n": 3,
+        "text": "(1) ger tre fakta: s_1 = 2·s_5, s_1 + s_2 = 7, s_3 = 7.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 4,
+        "text": "Från s_1 = 2·s_5 med s_1 ≥ 1: möjliga (s_5, s_1) ∈ {(1,2), (2,4), (3,6), (4,8)} (s_5 = 0 ger s_1 = 0 ej tillåtet). För varje par är s_2 = 7 − s_1: (1,2,5), (2,4,3), (3,6,1), (4,8,-1) — sista omöjlig. Så tre giltiga tripletter (s_5, s_1, s_2): (1,2,5), (2,4,3), (3,6,1). s_3 = 7 i alla. Men s_4 är helt obestämd (0–9). Många möjligheter — minst 3 · 10 = 30 olika tal. Otillräckligt.",
+        "tier": "essential",
+        "title": "Testa (1) ensamt"
+      },
+      {
+        "n": 5,
+        "text": "(1) ensamt räcker inte — varken (s_5, s_1, s_2)-tripletten eller s_4 låses entydigt.",
+        "tier": "essential",
+        "title": "Slutsats (1) ensamt"
+      },
+      {
+        "n": 6,
+        "text": "(2): s_4 = 2·s_1. En ekvation, men inget om de övriga siffrorna.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 7,
+        "text": "Bara en koppling mellan s_4 och s_1. Säg s_1 = 1, s_4 = 2 — resten obestämt. Otillräckligt.",
+        "tier": "essential",
+        "title": "Testa (2) ensamt"
+      },
+      {
+        "n": 8,
+        "text": "Vi har: s_1 = 2·s_5, s_2 = 7 − s_1, s_3 = 7, s_4 = 2·s_1. Tre giltiga (s_5, s_1, s_2)-tripletter från steg 4: (1,2,5), (2,4,3), (3,6,1). För varje ger (2) s_4 = 2·s_1: (1,2,5,4,1) → talet 25471, (2,4,3,8,2) → 43782, (3,6,1,12,3) — s_4 = 12 är OMÖJLIGT (siffra ≤ 9). Så två giltiga tal: 25471 och 43782.",
+        "tier": "essential",
+        "title": "Kombinera (1) + (2)"
+      },
+      {
+        "n": 9,
+        "text": "Tal 25471: s_1=2=2·s_5(=1) ✓, s_1+s_2=2+5=7 ✓, s_3=4? NEJ — vänta, talet 25471: s_1=2, s_2=5, s_3=4, s_4=7, s_5=1. Hm, s_3 ska vara 7. Låt mig korrigera: tripletten är (s_5=1, s_1=2, s_2=5) → talet börjar 2,5, sedan s_3=7, sedan s_4=2·2=4, sedan s_5=1: talet är 25741. Verifiera: s_1=2=2·1=2·s_5 ✓; s_1+s_2=7 ✓; s_3=7 ✓; s_4=4=2·2=2·s_1 ✓. För andra: (s_5=2, s_1=4, s_2=3) → talet 4,3,7,8,2 = 43782. Verifiera: s_1=4=2·2 ✓; 4+3=7 ✓; s_3=7 ✓; s_4=8=2·4 ✓.",
+        "tier": "detail",
+        "title": "Verifiera båda kandidater"
+      },
+      {
+        "n": 10,
+        "text": "Två giltiga femsiffriga tal (25741 och 43782) uppfyller båda påståendena tillsammans. Inte unikt.",
+        "tier": "essential",
+        "title": "Slutsats om kombinationen"
+      },
+      {
+        "n": 11,
+        "text": "Varken (1), (2), eller deras kombination ger unik lösning. Alternativ E. Insikten i en mening: i siffer-pussel måste man räkna antalet OBEROENDE villkor mot antalet siffror — fem siffror kräver fem oberoende villkor för entydig låsning.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Siffer-villkor-strategin: räkna ALLA villkor (likheter) mot antalet siffror som ska bestämmas. För ett N-siffrigt tal behövs N oberoende villkor som låser varje siffra. Triggern: 'femsiffrigt tal, hitta det' + ett antal aritmetiska relationer mellan siffrorna."
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "host-2016-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Genomsnittet av A och C \u00e4r 105\u00b0, s\u00e5 det k\u00e4nns som om 'minst en av dem' m\u00e5ste vara \u00f6ver 90\u00b0. Men fr\u00e5gan \u00e4r om vinkeln A SPECIFIKT \u00e4r st\u00f6rre \u00e4n 90\u00b0.",
+        "why_wrong": "Steg 6 visar att vinkeln A kan vara n\u00e4stan vad som helst mellan 30\u00b0 och 180\u00b0 s\u00e5 l\u00e4nge C kompletterar till 210\u00b0. A = 60\u00b0 \u00e4r m\u00f6jligt; d\u00e5 \u00e4r A inte st\u00f6rre \u00e4n 90\u00b0."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Symmetri k\u00e4nns 'snygg' \u2014 om A och C \u00e4r speciella vinklar, kanske B och D ocks\u00e5 \u00e4r det.",
+        "why_wrong": "Steg 7 visar att vi bara k\u00e4nner SUMMAN B + D = 150\u00b0, inte att de \u00e4r lika. B = 30\u00b0, D = 120\u00b0 uppfyller villkoret; d\u00e5 \u00e4r B och D INTE lika."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Rektanglar \u00e4r de vanligaste fyrh\u00f6rningarna \u2014 instinkten \u00e4r att en fr\u00e5ga om en fyrh\u00f6rning handlar om en rektangel.",
+        "why_wrong": "Steg 8 visar att en rektangel kr\u00e4ver A + C = 180\u00b0, men du har 210\u00b0. Fyrh\u00f6rningen \u00e4r garanterat INTE en rektangel."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Summan av alla fyra vinklar i en fyrh\u00f6rning \u00e4r 360\u00b0. Om A + C = 210\u00b0 s\u00e5 \u00e4r B + D = 360\u00b0 \u2212 210\u00b0 = 150\u00b0. Svaret \u00e4r C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har en fyrh\u00f6rning ABCD. Du vet att vinkeln vid A plus vinkeln vid C \u00e4r 210\u00b0. Du ska s\u00e4ga vilket av p\u00e5st\u00e5endena som ALLTID \u00e4r sant \u2014 inte 'kan vara sant', utan '\u00e4r garanterat sant'.",
+        "tier": "essential",
+        "title": "F\u00f6rst\u00e5 problemet"
+      },
+      {
+        "n": 2,
+        "text": "En fyrh\u00f6rning kan delas in i tv\u00e5 trianglar med en diagonal. Varje triangel har vinkelsumma 180\u00b0. Allts\u00e5 \u00e4r fyrh\u00f6rningens fyra inre vinklar tillsammans \ue0002 \\cdot 180\u00b0 = 360\u00b0\ue001. Detta g\u00e4ller alla fyrh\u00f6rningar \u2014 inte bara rektanglar.",
+        "tier": "detail",
+        "title": "Vad \u00e4r vinkelsumman i en fyrh\u00f6rning?"
+      },
+      {
+        "n": 3,
+        "text": "Vinkelsumman ger: \ue000A + B + C + D = 360\u00b0\ue001. Du vet att \ue000A + C = 210\u00b0\ue001.",
+        "tier": "essential",
+        "title": "St\u00e4ll upp ekvationen"
+      },
+      {
+        "n": 4,
+        "text": "S\u00e4tt in: \ue000210\u00b0 + B + D = 360\u00b0\ue001. Subtrahera 210\u00b0 fr\u00e5n b\u00e5da sidor: \ue000B + D = 150\u00b0\ue001.",
+        "tier": "essential",
+        "title": "L\u00f6s ut B + D"
+      },
+      {
+        "n": 5,
+        "text": "B + D = 150\u00b0 f\u00e5s rent algebraiskt fr\u00e5n A + C = 210\u00b0 \u2014 du beh\u00f6ver inga antaganden om enskilda vinklar eller om fyrh\u00f6rningens form. Alternativ C \u00e4r ALLTID korrekt.",
+        "tier": "essential",
+        "title": "Detta \u00e4r alltid sant"
+      },
+      {
+        "n": 6,
+        "text": "A + C = 210\u00b0 \u00e4r genomsnittligt 105\u00b0 per vinkel. Men en av dem kan vara mycket st\u00f6rre (s\u00e4g 180\u00b0) och den andra mycket mindre (30\u00b0). 'Vinkel A st\u00f6rre \u00e4n 90\u00b0' \u00e4r m\u00f6jligt men inte garanterat.",
+        "tier": "detail",
+        "title": "Varf\u00f6r \u00e4r A inte s\u00e4kert?"
+      },
+      {
+        "n": 7,
+        "text": "Att B = D skulle kr\u00e4va symmetri som vi inte vet att fyrh\u00f6rningen har. Steg 4 ger bara summan B + D, inte att de \u00e4r lika. Exempel: B = 100\u00b0, D = 50\u00b0 funkar; B = 75\u00b0, D = 75\u00b0 funkar ocks\u00e5.",
+        "tier": "detail",
+        "title": "Varf\u00f6r \u00e4r B inte s\u00e4kert?"
+      },
+      {
+        "n": 8,
+        "text": "En rektangel har alla fyra vinklar lika med 90\u00b0, allts\u00e5 \ue000A + C = 90\u00b0 + 90\u00b0 = 180\u00b0\ue001 \u2014 inte 210\u00b0. Fyrh\u00f6rningen kan allts\u00e5 INTE vara en rektangel.",
+        "tier": "detail",
+        "title": "Varf\u00f6r \u00e4r D inte s\u00e4kert?"
+      },
+      {
+        "n": 9,
+        "text": "S\u00e4tt A = 100\u00b0, C = 110\u00b0 (summa 210\u00b0). S\u00e4tt B = 70\u00b0, D = 80\u00b0 (summa 150\u00b0). Total: 360\u00b0. Alla villkor uppfyllda, B + D = 150\u00b0 st\u00e4mmer. C h\u00e5ller.",
+        "tier": "essential",
+        "title": "Verifiera med ett exempel"
+      },
+      {
+        "n": 10,
+        "text": "Svaret \u00e4r C: summan av vinkel B och vinkel D \u00e4r 150\u00b0. Insikten i en mening: fyrh\u00f6rningens vinkelsumma 360\u00b0 g\u00f6r att om du k\u00e4nner summan av tv\u00e5 motst\u00e5ende vinklar s\u00e5 k\u00e4nner du automatiskt summan av de andra tv\u00e5.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Vinkelsumman 360\u00b0 i fyrh\u00f6rningar \u00e4r en l\u00e5st regel: om du vet summan av tv\u00e5 vinklar k\u00e4nner du automatiskt summan av de andra tv\u00e5. Triggern att memorera: 'fyrh\u00f6rning + vinkelsumma' \u2192 t\u00e4nk 360\u00b0 direkt och subtrahera bort det du vet."
+  },
+  "host-2016-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att slarva med tecknet och tro att resultatet ska vara negativt eftersom det st\u00e5r 'minus' i v\u00e4nsterledet.",
+        "why_wrong": "Steg 5 visar att h\u00f6gerledet \u00e4r +42 och utbrytningen ger +11(x \u2212 y). Tecknet p\u00e5 (x \u2212 y) f\u00f6ljer allts\u00e5 42 \u2014 allts\u00e5 POSITIVT, inte negativt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du blandar ihop 'dela med 11' och 'dela med 42' kan du landa p\u00e5 \ue000-\\frac{11}{42}\ue001.",
+        "why_wrong": "Steg 6 \u00e4r tydlig: efter utbrytning st\u00e5r 11 som koefficient framf\u00f6r (x \u2212 y). Du DELAR med 11 f\u00f6r att isolera (x \u2212 y), inte tv\u00e4rtom \u2014 det ger \ue000\\frac{42}{11}\ue001, inte \ue000\\frac{11}{42}\ue001."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar \u00e4r ofta att l\u00e4sa '11 g\u00e5r in i 42' \u00e5t fel h\u00e5ll och f\u00e5 \ue000\\frac{11}{42}\ue001.",
+        "why_wrong": "Steg 6 visar tydligt placeringen: t\u00e4ljaren kommer fr\u00e5n 42 (h\u00f6gerledet) och n\u00e4mnaren fr\u00e5n 11 (koefficienten). \ue000\\frac{t\u00e4ljaren}{n\u00e4mnaren} = \\frac{42}{11}\ue001, inte \ue000\\frac{11}{42}\ue001."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste f\u00e4llan \u00e4r att f\u00f6rs\u00f6ka r\u00e4kna ut x och y var f\u00f6r sig \u2014 du har bara EN ekvation och TV\u00c5 obekanta, s\u00e5 du kan inte l\u00f6sa f\u00f6r dem individuellt. Botemedlet: l\u00e4s alltid VAD som efterfr\u00e5gas innan du b\u00f6rjar; om det \u00e4r en kombination, arbeta med den som ett block.",
+    "solution_path": "Bryt ut 11 fr\u00e5n v\u00e4nster sida: \ue00011(x - y) = 42\ue001. Dela b\u00e5da sidor med 11: \ue000x - y = \\frac{42}{11}\ue001. Svaret \u00e4r D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har en ekvation: \ue00011x - 11y = 42\ue001. Du ska r\u00e4kna ut v\u00e4rdet av uttrycket \ue000x - y\ue001 \u2014 inte v\u00e4rdena av x och y var f\u00f6r sig.",
+        "tier": "essential",
+        "title": "F\u00f6rst\u00e5 problemet"
+      },
+      {
+        "n": 2,
+        "text": "Fr\u00e5gan vill ha \ue000x - y\ue001, inte x ensam eller y ensam. Det \u00e4r en LEDTR\u00c5D: n\u00e4r bara skillnaden eller summan efterfr\u00e5gas r\u00e4cker det ofta att manipulera ekvationen s\u00e5 att den kombinationen st\u00e5r ensam \u2014 du beh\u00f6ver inte tv\u00e5 ekvationer.",
+        "tier": "detail",
+        "title": "Notera vad som efterfr\u00e5gas"
+      },
+      {
+        "n": 3,
+        "text": "P\u00e5 v\u00e4nster sida st\u00e5r \ue00011x - 11y\ue001. B\u00e5da termerna har 11 som gemensam faktor.",
+        "tier": "essential",
+        "title": "Identifiera gemensam faktor"
+      },
+      {
+        "n": 4,
+        "text": "Den distributiva lagen s\u00e4ger \ue000a(b - c) = ab - ac\ue001. Bakl\u00e4nges: \ue000ab - ac = a(b - c)\ue001. Anv\u00e4nd det h\u00e4r: \ue00011x - 11y = 11(x - y)\ue001.",
+        "tier": "detail",
+        "title": "Distributiva lagen bakl\u00e4nges"
+      },
+      {
+        "n": 5,
+        "text": "Ekvationen blir: \ue00011(x - y) = 42\ue001. Nu st\u00e5r (x \u2212 y) som ett block, multiplicerat med 11.",
+        "tier": "essential",
+        "title": "Skriv om ekvationen"
+      },
+      {
+        "n": 6,
+        "text": "Dela b\u00e5da sidor med 11: \ue000\\frac{11(x - y)}{11} = \\frac{42}{11}\ue001 \u2192 \ue000x - y = \\frac{42}{11}\ue001.",
+        "tier": "essential",
+        "title": "Isolera (x \u2212 y)"
+      },
+      {
+        "n": 7,
+        "text": "\ue000\\frac{42}{11}\ue001 kan inte f\u00f6rkortas \u2014 11 \u00e4r primtal och 42 = 2 \u00b7 3 \u00b7 7 har ingen 11 som faktor. Br\u00e5ket \u00e4r redan i enklaste form.",
+        "tier": "detail",
+        "title": "Beh\u00f6ver inte f\u00f6renklas vidare"
+      },
+      {
+        "n": 8,
+        "text": "Alternativ A: \ue000-\\frac{42}{11}\ue001 (negativt \u2014 fel tecken). B: \ue000-\\frac{11}{42}\ue001 (inverterat och negativt). C: \ue000\\frac{11}{42}\ue001 (inverterat). D: \ue000\\frac{42}{11}\ue001 \u2014 exakt det vi fick.",
+        "tier": "essential",
+        "title": "J\u00e4mf\u00f6r mot alternativen"
+      },
+      {
+        "n": 9,
+        "text": "V\u00e4lj t.ex. y = 0: d\u00e5 \u00e4r \ue00011x = 42\ue001, s\u00e5 \ue000x = \\frac{42}{11}\ue001 och \ue000x - y = \\frac{42}{11}\ue001. V\u00e4lj y = 1: \ue00011x = 42 + 11 = 53\ue001, s\u00e5 \ue000x = \\frac{53}{11}\ue001 och \ue000x - y = \\frac{53}{11} - 1 = \\frac{42}{11}\ue001. Samma svar oavsett val av y \u2014 st\u00e4mmer.",
+        "tier": "detail",
+        "title": "Verifiera med konkreta tal"
+      },
+      {
+        "n": 10,
+        "text": "Svaret \u00e4r D: \ue000x - y = \\frac{42}{11}\ue001. Insikten i en mening: n\u00e4r bara en linj\u00e4rkombination (typ x \u2212 y) efterfr\u00e5gas, leta efter en gemensam faktor p\u00e5 den givna sidan och bryt ut den \u2014 det undviker att beh\u00f6va l\u00f6sa f\u00f6r enskilda variabler.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Linj\u00e4rkombination-utbrytning: n\u00e4r fr\u00e5gan efterfr\u00e5gar uttrycket \ue000ax + by\ue001 eller \ue000x \\pm y\ue001 \u2014 leta efter gemensamma faktorer p\u00e5 ekvationens ena sida som matchar m\u00e5let, bryt ut och dividera. Du slipper d\u00e5 l\u00f6sa f\u00f6r varje variabel."
+  }
+}

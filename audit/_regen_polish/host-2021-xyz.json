@@ -1,0 +1,86 @@
+{
+  "host-2021-kvant1-XYZ-009": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du flyttar decimalkommat olika många steg i täljare och nämnare kan du landa på 0,05.",
+        "why_wrong": "Decimalkommat måste flyttas LIKA många steg i täljare och nämnare för att bevara bråkets värde. Steg 5–6 förklarar."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du gångrar bara täljaren med 10 (eller bara nämnaren) blir resultatet en faktor 10 fel.",
+        "why_wrong": "Steg 7 visar att exakt 360/72 = 5, inte 0,5. Att tappa en tiopotens är en klassisk decimalmiss."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du missar att räkna 3 · 0,024 i nämnaren och bara använder 0,024 som nämnare blir det 0,36/0,024 = 15, eller om du gångrar ytterligare landar du nära 50.",
+        "why_wrong": "Nämnaren är 3 · 0,024 = 0,072, inte 0,024 (se steg 2). Att glömma 3:an i nämnaren ger felaktig faktor 3."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det luriga är att flytta decimalkommat olika många steg i täljare och nämnare. Botemedlet: gångra både täljaren och nämnaren med samma tiopotens — då bevaras bråkets värde, och du jobbar med heltal som är lättare att överblicka.",
+    "solution_path": "Räkna nämnaren först: 3 · 0,024 = 0,072. Dela sedan: \\frac{0{,}36}{0{,}072} = 5. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi ska räkna ut 0,36 dividerat med (3 · 0,024). Det är ett bråk där täljaren är 0,36 och nämnaren är produkten 3 · 0,024.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Inuti nämnaren står 3 · 0,024. Gångra: 3 · 0,024 = 0,072 (3 gånger 24 tusendelar = 72 tusendelar).",
+        "tier": "essential",
+        "title": "Räkna nämnaren först"
+      },
+      {
+        "n": 3,
+        "text": "Skriv 0,024 som 24/1000. Gångra: 3 · 24/1000 = 72/1000 = 0,072. Decimalkommat står 3 steg från höger eftersom det är tusendelar.",
+        "tier": "detail",
+        "title": "Hur gångrar man heltal med decimal?"
+      },
+      {
+        "n": 4,
+        "text": "Sätt in resultatet: \\frac{0{,}36}{0{,}072}. Båda har decimaler — gör om dem till heltal.",
+        "tier": "essential",
+        "title": "Bråket är nu 0,36 / 0,072"
+      },
+      {
+        "n": 5,
+        "text": "Om du gångrar både täljaren och nämnaren med samma tal ändras inte bråkets värde — det är bara skrivsättet som ändras. Vi väljer ett tal som tar bort decimalerna.",
+        "tier": "detail",
+        "title": "Gångra täljare och nämnare med samma tal"
+      },
+      {
+        "n": 6,
+        "text": "0,36 · 1000 = 360. 0,072 · 1000 = 72. Bråket blir \\frac{360}{72}.",
+        "tier": "essential",
+        "title": "Multiplicera båda med 1000"
+      },
+      {
+        "n": 7,
+        "text": "72 · 5 = 360, alltså 360 / 72 = 5.",
+        "tier": "essential",
+        "title": "Räkna ut 360/72"
+      },
+      {
+        "n": 8,
+        "text": "0,072 · 5 = 0,36. Stämmer.",
+        "tier": "detail",
+        "title": "Sanity-check"
+      },
+      {
+        "n": 9,
+        "text": "Värdet är 5, alltså svar C. Insikten i en mening: ett decimalbråk blir ett heltalsbråk om du gångrar både täljare och nämnare med samma tiopotens.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Decimal-omskrivnings-strategin: bråk med decimaler blir lättare om du flyttar decimalkommat lika många steg i täljare och nämnare så att båda blir heltal. Triggern: bråk där både täljare och nämnare har decimaler."
+  }
+}

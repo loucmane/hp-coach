@@ -1,0 +1,92 @@
+{
+  "host-2016-kvant1-KVA-019": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att 'Kvantitet I har x i n\u00e4mnaren' g\u00f6r den st\u00f6rre om x \u00e4r 'st\u00f6rre' \u00e4n y.",
+        "why_wrong": "Steg 2 l\u00e5ser x = y. B\u00e5da n\u00e4mnare blir samma. Steg 4\u20135: b\u00e5da kvantiteter blir 1."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelversionen kan k\u00e4nnas 'mer balanserad' eller st\u00f6rre, men det \u00e4r en illusion.",
+        "why_wrong": "Steg 7: villkoret x = y g\u00f6r spegel-uttrycken identiska. B\u00e5da \u00e4r 1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Med tv\u00e5 variabler \u00e4r D ofta frestande att v\u00e4lja som default.",
+        "why_wrong": "Steg 9: villkoret l\u00e5ser x = y, s\u00e5 variation \u00e4r begr\u00e4nsad. Ber\u00e4kningen ger alltid 1 \u2014 inget rum f\u00f6r tvetydighet."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Villkoret x \u2212 y = y \u2212 x ger 2x = 2y \u2192 x = y. S\u00e4tt in i b\u00e5da kvantiteterna: Kvantitet I = \\frac{2x + y}{3x} = \\frac{3x}{3x} = 1 och samma f\u00f6r Kvantitet II. Lika. Svaret \u00e4r C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har tv\u00e5 villkor: x \u2260 0 och x \u2212 y = y \u2212 x. Du ska j\u00e4mf\u00f6ra \\frac{2x + y}{3x} (Kvantitet I) med \\frac{2y + x}{3y} (Kvantitet II).",
+        "tier": "essential",
+        "title": "F\u00f6rst\u00e5 problemet"
+      },
+      {
+        "n": 2,
+        "text": "x - y = y - x. Addera x till b\u00e5da sidor: 2x - y = y. Addera y till b\u00e5da sidor: 2x = 2y \u2192 x = y.",
+        "tier": "essential",
+        "title": "L\u00f6s villkoret"
+      },
+      {
+        "n": 3,
+        "text": "Eftersom x = y och x \u2260 0, \u00e4r \u00e4ven y \u2260 0. Det betyder att n\u00e4mnaren i b\u00e5da kvantiteterna (3x respektive 3y) inte \u00e4r 0 \u2014 uttrycken \u00e4r definierade.",
+        "tier": "detail",
+        "title": "Implikation: x \u2260 0 betyder y \u2260 0"
+      },
+      {
+        "n": 4,
+        "text": "Kvantitet I = \\frac{2x + y}{3x} = \\frac{2x + x}{3x} = \\frac{3x}{3x} = 1.",
+        "tier": "essential",
+        "title": "S\u00e4tt in y = x i Kvantitet I"
+      },
+      {
+        "n": 5,
+        "text": "Kvantitet II = \\frac{2y + x}{3y} = \\frac{2y + y}{3y} = \\frac{3y}{3y} = 1.",
+        "tier": "essential",
+        "title": "S\u00e4tt in x = y i Kvantitet II"
+      },
+      {
+        "n": 6,
+        "text": "B\u00e5da kvantiteter blir 1. Lika.",
+        "tier": "essential",
+        "title": "J\u00e4mf\u00f6r"
+      },
+      {
+        "n": 7,
+        "text": "Kvantitet I och II \u00e4r spegelvarianter av samma uttryck (byt x \u2194 y). N\u00e4r villkoret x = y h\u00e5ller, blir spegeln identisk. Det \u00e4r d\u00e4rf\u00f6r de blir lika oavsett VILKET v\u00e4rde x = y har (utom 0).",
+        "tier": "detail",
+        "title": "Algebraisk symmetri"
+      },
+      {
+        "n": 8,
+        "text": "x = y = 5: Kvantitet I = \\frac{2 \\cdot 5 + 5}{3 \\cdot 5} = \\frac{15}{15} = 1 \u2713. Kvantitet II = \\frac{2 \\cdot 5 + 5}{3 \\cdot 5} = 1 \u2713.",
+        "tier": "detail",
+        "title": "Verifiera med konkret tal"
+      },
+      {
+        "n": 9,
+        "text": "Villkoret x - y = y - x har EN l\u00f6sning: x = y. N\u00e4r x och y \u00e4r l\u00e5sta att vara lika, blir b\u00e5da kvantiteter automatiskt lika med 1. Ingen tvetydighet, allts\u00e5 inte D.",
+        "tier": "detail",
+        "title": "Varf\u00f6r inte D?"
+      },
+      {
+        "n": 10,
+        "text": "B\u00e5da kvantiteter \u00e4r lika med 1 \u2014 svaret \u00e4r C. Insikten i en mening: ekvationen x \u2212 y = y \u2212 x betyder x = y; substitution g\u00f6r spegel-uttryck identiska.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Symmetri-substitutionsstrategin f\u00f6r KVA: n\u00e4r villkoret \u00e4r en likhet som binder ihop variablerna (t.ex. x \u2212 y = y \u2212 x \u2192 x = y), substituera in i kvantiteterna; om de blir spegelversioner av varandra under villkoret \u00e4r de lika med absolut s\u00e4kerhet."
+  }
+}

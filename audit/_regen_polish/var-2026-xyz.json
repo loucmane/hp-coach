@@ -1,0 +1,290 @@
+{
+  "var-2026-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (x + 3)(x - 5) bara blir x^{2} - 15 — som om man bara gångrade första med första och andra med andra (x \\cdot x och 3 \\cdot (-5)).",
+        "why_wrong": "Det är bara HALVA distributiva lagen — två av fyra produkter saknas. Steg 4 och 6 visar att x också ska gångras med −5 och att 3 också ska gångras med x. Korstermerna ger −2x."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många tänker felaktigt att (x + 3)(x - 5) betyder x^{2} + 3 - 5 — som om man bara adderar konstanterna och låter x i fred.",
+        "why_wrong": "Det är två operationer som blandas ihop. Parenteser bredvid varandra betyder MULTIPLIKATION, inte addition (se steg 2). Hela distributiva lagen i steg 3 ska tillämpas."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du räknar 3 \\cdot (-5) = -15 fel som 3 \\cdot (-5) = -8 (som om du adderade istället för multiplicerade), landar du på −8 som konstant.",
+        "why_wrong": "Jämför tecken-multiplikationen i steg 7: 3 \\cdot (-5) är alltid −15. Det är två separata regler — addition (3 + (−5) = −2) och multiplikation (3 · (−5) = −15) — och det är multiplikation som gäller här."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att glömma korstermerna (de två produkterna som blandar x med konstant). Botemedlet: skriv alltid ner alla fyra produkterna innan du slår ihop liknande termer, så att inget hoppas över.",
+    "solution_path": "Multiplicera ut parentesen med distributiva lagen — varje term i första parentesen gångras med varje term i andra. Resultatet är x^{2} - 2x - 15, så svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska skriva uttrycket (x + 3)(x - 5) på en form utan parenteser. Det handlar inte om att lösa en ekvation — bara om att förenkla.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "När två parenteser står direkt bredvid varandra som (x + 3)(x - 5) betyder det MULTIPLIKATION. Det är samma sak som (x + 3) \\cdot (x - 5).",
+        "tier": "detail",
+        "title": "Vad betyder parenteser intill varandra?"
+      },
+      {
+        "n": 3,
+        "text": "Distributiva lagen säger att varje term i första parentesen ska gångras med varje term i andra. För (a + b)(c + d) blir det fyra produkter: a \\cdot c + a \\cdot d + b \\cdot c + b \\cdot d. Vi använder samma mönster här.",
+        "tier": "detail",
+        "title": "Distributiva lagen i kort form"
+      },
+      {
+        "n": 4,
+        "text": "Första x-et i (x + 3) ska gångras med både x och −5: x \\cdot x = x^{2} och x \\cdot (-5) = -5x.",
+        "tier": "essential",
+        "title": "Gångra x med båda termerna i andra parentesen"
+      },
+      {
+        "n": 5,
+        "text": "Att gångra ett tal med sig självt skrivs som en kvadrat: x \\cdot x = x^{2}. Det är bara en kortform — inga nya regler, bara ett kortare sätt att skriva.",
+        "tier": "detail",
+        "title": "Vad betyder x · x?"
+      },
+      {
+        "n": 6,
+        "text": "Trean i (x + 3) ska gångras med både x och −5: 3 \\cdot x = 3x och 3 \\cdot (-5) = -15.",
+        "tier": "essential",
+        "title": "Gångra 3 med båda termerna i andra parentesen"
+      },
+      {
+        "n": 7,
+        "text": "Positivt gånger negativt blir negativt. Därför ger 3 · (−5) talet −15, inte +15. Glöm aldrig minustecknet när du flyttar ner det i nästa rad.",
+        "tier": "detail",
+        "title": "Tecken vid multiplikation"
+      },
+      {
+        "n": 8,
+        "text": "Lägg ihop dem: x^{2} - 5x + 3x - 15. Inget mer behöver räknas, men termerna kan slås ihop.",
+        "tier": "essential",
+        "title": "Skriv ner alla fyra produkterna"
+      },
+      {
+        "n": 9,
+        "text": "Termer som har samma variabel-del kan slås ihop. Här är -5x och +3x liknande — båda har x utan kvadrat. Du adderar bara koefficienterna (talen framför): -5 + 3 = -2.",
+        "tier": "detail",
+        "title": "Vad betyder 'liknande termer'?"
+      },
+      {
+        "n": 10,
+        "text": "−5x + 3x = −2x. Konstanten −15 har ingen liknande term så den står kvar. Resultatet blir x^{2} - 2x - 15.",
+        "tier": "essential",
+        "title": "Slå ihop −5x och +3x"
+      },
+      {
+        "n": 11,
+        "text": "(x + 3)(x - 5) = x^{2} - 2x - 15, vilket matchar C. Insikten i en mening: dubbel parentes utvecklas alltid till fyra produkter, sen slår man ihop liknande termer.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Dubbel-parentes-strategin: när du har (a + b)(c + d) ska VARJE term i första parentesen gångras med VARJE term i andra — fyra produkter totalt. Triggern att memorera: 'två parenteser bredvid varandra → multiplikation, alltid fyra korsprodukter'."
+  },
+  "var-2026-kvant2-XYZ-008": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du försöker faktorisera och bara behåller den 'största' faktorn men tappar variabler kan du landa på något som -8z (drar bort all x och y).",
+        "why_wrong": "Steg 8: båda termerna i parentesen ska finnas, och variablerna bevaras. -8z är inte ekvivalent med -28xyz + 20xy. Verifiera genom distribution som i steg 9."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du bryter ut -2xy (en gemensam faktor, men inte den största) får du -2xy(14z - 10), eller om tecknet hanteras fel -2xy(14z + 10).",
+        "why_wrong": "Steg 4: sgd är 4, inte 2. -2xy är giltigt men inte FULLT faktoriserat. Dessutom bör tecknet bevaras: -2xy(14z + 10) distribuerar till -28xyz - 20xy, inte -28xyz + 20xy."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du bryter ut 20xy (felaktigt — 20 delar inte 28) kan du försöka skriva 20xy(1 - 8z) eller liknande, vilket distribueras till 20xy - 160xyz, inte rätt.",
+        "why_wrong": "Steg 4: 20 är INTE en delare i 28 — gcd(20, 28) = 4. 20xy kan inte vara den utbrutna faktorn. Steg 9 verifierar 4xy(5 - 7z)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Att INTE bryta ut den STÖRSTA gemensamma faktorn ger en 'halv' faktorisering. Botemedlet: efter du brutit ut, se efter om termerna i parentesen fortfarande har en gemensam faktor.",
+    "solution_path": "Hitta största gemensamma faktorn i -28xyz och 20xy. Siffrorna: gcd(28, 20) = 4. Variablerna: båda har x och y, men bara första har z. Gemensam faktor: 4xy. Bryt ut: 4xy(5 - 7z). Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska FAKTORISERA uttrycket -28xyz + 20xy — alltså skriva det som en produkt av en gemensam faktor och en parentes.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Att bryta ut en gemensam faktor från flera termer, så att uttrycket skrivs som produkt. Motsatsen till distribution.",
+        "tier": "detail",
+        "title": "Vad är 'faktorisera'?"
+      },
+      {
+        "n": 3,
+        "text": "Vi söker det största som DELAR båda termerna — både i sifferdel och i variabel-del.",
+        "tier": "essential",
+        "title": "Strategi: hitta största gemensamma faktor (sgd)"
+      },
+      {
+        "n": 4,
+        "text": "28 och 20: faktorer av 28 är {1, 2, 4, 7, 14, 28}, faktorer av 20 är {1, 2, 4, 5, 10, 20}. Största gemensamma: 4.",
+        "tier": "detail",
+        "title": "sgd för sifferdelarna"
+      },
+      {
+        "n": 5,
+        "text": "Term 1 (-28xyz) har x, y, z. Term 2 (20xy) har x, y. Gemensamma variabler: x och y. (z finns bara i term 1.)",
+        "tier": "detail",
+        "title": "Gemensamma variabler"
+      },
+      {
+        "n": 6,
+        "text": "Sgd-siffra · gemensamma variabler = 4 · x · y = 4xy.",
+        "tier": "essential",
+        "title": "Total gemensam faktor"
+      },
+      {
+        "n": 7,
+        "text": "(-28xyz) / (4xy) = -7z (28/4 = 7, och z står kvar). (20xy) / (4xy) = 5 (20/4 = 5, alla variabler tar ut sig själva).",
+        "tier": "essential",
+        "title": "Dela varje term med 4xy"
+      },
+      {
+        "n": 8,
+        "text": "-28xyz + 20xy = 4xy · (-7z) + 4xy · 5 = 4xy(-7z + 5) = 4xy(5 - 7z) (omarrangering).",
+        "tier": "essential",
+        "title": "Skriv den faktoriserade formen"
+      },
+      {
+        "n": 9,
+        "text": "4xy(5 - 7z) = 4xy·5 - 4xy·7z = 20xy - 28xyz = -28xyz + 20xy ✓. Stämmer med originalet.",
+        "tier": "detail",
+        "title": "Verifiera genom distribution"
+      },
+      {
+        "n": 10,
+        "text": "Vi kunde också skriva -4xy(7z - 5), men det är mindre standard. C-alternativets form 4xy(5 - 7z) är den klassiska 'positiv faktor framför'-formen.",
+        "tier": "detail",
+        "title": "Varför inte fler tecken-byten?"
+      },
+      {
+        "n": 11,
+        "text": "Faktoriserat: 4xy(5 - 7z), vilket matchar C. Insikten i en mening: att faktorisera är 'distribution baklänges' — hitta sgd, dividera, skriv som produkt.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Faktorisering-strategin: (1) räkna sgd för sifferdelarna, (2) lista gemensamma variabler, (3) bryt ut sgd · gemensamma variabler, (4) skriv kvarvarande termer i parentes, (5) verifiera genom distribution. Triggern: 'addition/subtraktion av två termer → hitta sgd, faktorisera'."
+  },
+  "var-2026-kvant2-XYZ-012": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om man inte faktoriserar utan testar bara siffrorna och låter tecknen 'kvitta', kan b > 0 och a > 0 verka 'positivt' i alla led.",
+        "why_wrong": "Steg 6: a > 0, b < 0 ger NEGATIV produkt. Faktoriseringen i steg 3 låser tecken-analysen — det är (a - b)-faktorn som vänder slutsatsen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att 'båda negativa' ger 'allt positivt' — men då är (a - b)-tecknet inte garanterat.",
+        "why_wrong": "Steg 7: med båda negativa kan a - b vara positiv eller negativ beroende på storlek. Inte med säkerhet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Att tro att 'båda positiva' alltid är säkrast är intuitivt — positiva tal beter sig 'snällt'.",
+        "why_wrong": "Steg 8: ab är positivt, men (a - b) är osäkert i tecken. Slutprodukten kan vända. Inte med säkerhet positivt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "'Med säkerhet'-frågor lurar studenter att acceptera 'fungerar för exempel'-svar. Botemedlet: testa MINST TVÅ olika storleksrelationer (t.ex. |a| > |b| och |a| < |b|) i varje alternativ för att se om tecknet hålls konstant.",
+    "solution_path": "Faktorisera: a^{2}b - ab^{2} = ab(a - b). För att uttrycket alltid är > 0 krävs att produkten av tecknen på ab och (a - b) alltid är positiv. Med a < 0 och b > 0: ab är negativt, a - b är negativt, och negativt · negativt = positivt. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska hitta tecken-villkoren på a och b som GARANTERAR att a^{2}b - ab^{2} > 0 — alltså att uttrycket är positivt OAVSETT specifika värden, så länge tecknen stämmer.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Komplexa uttryck blir lättare att tecken-analysera efter faktorisering. Leta efter gemensam faktor.",
+        "tier": "detail",
+        "title": "Strategi: faktorisera först"
+      },
+      {
+        "n": 3,
+        "text": "a^{2}b - ab^{2} = ab \\cdot a - ab \\cdot b = ab(a - b). Gemensam faktor är ab.",
+        "tier": "essential",
+        "title": "Faktorisera uttrycket"
+      },
+      {
+        "n": 4,
+        "text": "Uttrycket ab(a - b) är positivt om antingen båda faktorerna är positiva eller båda är negativa.",
+        "tier": "essential",
+        "title": "Tecken-analys"
+      },
+      {
+        "n": 5,
+        "text": "ab: negativt · positivt = NEGATIVT. a - b: a är negativt, b är positivt, så a - b är NEGATIVT (negativt minus positivt = mer negativt). Produkt: negativt · negativt = POSITIVT. ✓",
+        "tier": "essential",
+        "title": "Testa alternativ A: a < 0, b > 0"
+      },
+      {
+        "n": 6,
+        "text": "ab: positivt · negativt = NEGATIVT. a - b: a är positivt, b är negativt, så a - b är POSITIVT (positivt minus negativt = ännu mer positivt). Produkt: negativt · positivt = NEGATIVT. ✗",
+        "tier": "essential",
+        "title": "Testa alternativ B: a > 0, b < 0"
+      },
+      {
+        "n": 7,
+        "text": "ab: negativt · negativt = POSITIVT. a - b kan vara antingen tecken: om |a| > |b|, t.ex. a = -2, b = -1: a - b = -1 (negativt). Om |a| < |b|: a - b > 0. Inte säkert tecken. ✗ (inte med säkerhet).",
+        "tier": "essential",
+        "title": "Testa alternativ C: a < 0, b < 0"
+      },
+      {
+        "n": 8,
+        "text": "ab: positivt · positivt = POSITIVT. a - b: kan vara antingen tecken — om a > b positivt, annars negativt. Inte säkert. ✗",
+        "tier": "essential",
+        "title": "Testa alternativ D: a > 0, b > 0"
+      },
+      {
+        "n": 9,
+        "text": "Sätt a = -1, b = 2: ab = -2, a - b = -3. Produkt = -2 · -3 = 6 > 0. ✓. Sätt a = -5, b = 1: ab = -5, a - b = -6. Produkt = 30 > 0. ✓",
+        "tier": "detail",
+        "title": "Bekräfta A med konkreta tal"
+      },
+      {
+        "n": 10,
+        "text": "Frågan kräver att uttrycket är positivt för ALLA värden inom alternativet, inte bara några. C och D kan ge positiv ETT värde men negativ ett annat — alltså inte med säkerhet.",
+        "tier": "detail",
+        "title": "Varför är 'med säkerhet' viktigt?"
+      },
+      {
+        "n": 11,
+        "text": "Endast A (a < 0, b > 0) garanterar uttrycket > 0 oavsett storlek. Insikten i en mening: faktorisera FÖRST, tecken-analysera SEDAN — och se efter att svaret gäller med säkerhet, inte bara för några exempel.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Tecken-faktoriserings-strategin: när uttrycket innehåller hög-grads-termer (a²b, ab²), faktorisera till produkt av enklare termer (ab(a - b)) och analysera tecknen var för sig. Triggern: 'tecken-villkor på produkt → faktorisera, sedan tecken-analysera varje faktor'."
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "host-2018-kvant2-NOG-023": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (1) ensamt 'utesluter en ask' (vita) och därmed entydigt placerar gem.",
+        "why_wrong": "Steg 5 visar att även om vita är utesluten för häftstift, kan gem fortfarande vara i blå, vit eller röd beroende på var häftstift hamnar."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegel-tankefel: tro att (2) ensamt utesluter blå för nålar och därmed låser gem.",
+        "why_wrong": "Steg 7 visar att gemmens placering varierar med vilken färg nålar hamnar i."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många hoppar till 'kombinera ger unik lösning' eftersom det ofta gör det i logikpussel.",
+        "why_wrong": "Steg 8–13 testar alla konsistenta kombinationer — det finns TRE giltiga, var och en med olika gem-färg. Tillsammans räcker inte."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "D ('var för sig') skulle innebära att VARDERA påståendet ensamt räcker. Snabbsvar är ofta att 'mer info = mer info'.",
+        "why_wrong": "Steg 5 och 7 visar att varken (1) eller (2) ensamt räcker. D är därmed direkt utesluten."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Vanlig fälla: utesluta en färg via (1) och en annan via (2), och tro att man har låst målobjektet — men målobjektet kan fortfarande variera över de tre 'inte uteslutna' positionerna. Botemedlet: lista ALLA konsistenta placeringar, inte bara stirra på vilka färger som är 'uteslutna'.",
+    "solution_path": "(1) ger två möjliga askar för häftstiften; (2) ger två möjliga för nålarna. Tillsammans kvarstår tre konsistenta placeringar (gem kan hamna i vit, röd ELLER blå), så ingen kombination låser gemmens färg. Svaret är E.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Tre askar (blå, vit, röd) innehåller var sin sak (gem, häftstift, nålar). Frågan: vilken färg har asken med gem? Vi söker ETT entydigt svar — blå, vit eller röd.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Räcker informationen för att låsa gemmens ask till EN bestämd färg? Om flera färger är möjliga är informationen otillräcklig.",
+        "tier": "detail",
+        "title": "Vad betyder 'tillräcklig information' i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "Tre saker (gem, häftstift, nålar) ska tilldelas tre färger (blå, vit, röd), en sak per färg, ingen färg dubbelt.",
+        "tier": "essential",
+        "title": "Sätt upp scenariot"
+      },
+      {
+        "n": 4,
+        "text": "(1) Häftstiften är i den blå eller den röda asken. Alltså INTE i den vita.",
+        "tier": "essential",
+        "title": "Översätt påstående (1)"
+      },
+      {
+        "n": 5,
+        "text": "Häftstiften: blå eller röd. Gemmens ask är någon annan färg. Om häftstift = blå: gem kan vara i vit eller röd. Om häftstift = röd: gem kan vara i blå eller vit. Sammantaget: gem kan vara i blå, vit ELLER röd. Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 6,
+        "text": "(2) Nålarna är i den röda eller den vita asken. Alltså INTE i den blå.",
+        "tier": "essential",
+        "title": "Översätt påstående (2)"
+      },
+      {
+        "n": 7,
+        "text": "Nålar: röd eller vit. Gem är någon annan färg. Om nålar = röd: gem kan vara i blå eller vit. Om nålar = vit: gem kan vara i blå eller röd. Sammantaget: gem kan vara i blå, vit ELLER röd. Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 8,
+        "text": "Vi måste hitta en konsistent placering av (häftstift, nålar, gem) som uppfyller båda. Häftstift ∈ {blå, röd}, nålar ∈ {röd, vit}. De får inte ha samma färg.",
+        "tier": "essential",
+        "title": "Test (1) + (2) tillsammans"
+      },
+      {
+        "n": 9,
+        "text": "Då gem = vit. Konsistent med (1) och (2). ✓ Gem är vit.",
+        "tier": "essential",
+        "title": "Fall A — häftstift blå, nålar röd"
+      },
+      {
+        "n": 10,
+        "text": "Då gem = röd. Konsistent. ✓ Gem är röd.",
+        "tier": "essential",
+        "title": "Fall B — häftstift blå, nålar vit"
+      },
+      {
+        "n": 11,
+        "text": "Då gem = blå. Konsistent. ✓ Gem är blå.",
+        "tier": "essential",
+        "title": "Fall C — häftstift röd, nålar vit"
+      },
+      {
+        "n": 12,
+        "text": "Båda i samma ask — omöjligt (en sak per ask). Förkastas.",
+        "tier": "detail",
+        "title": "Fall D — häftstift röd, nålar röd"
+      },
+      {
+        "n": 13,
+        "text": "Tre giltiga placeringar: gem kan vara vit (fall A), röd (fall B) eller blå (fall C). Tre olika svar — ingen unik. Otillräckligt även tillsammans.",
+        "tier": "essential",
+        "title": "Sammanfatta utfall"
+      },
+      {
+        "n": 14,
+        "text": "Svaret är E: tillräcklig information erhålls EJ genom de båda påståendena. Insikten i en mening: 'en av två' för båda restriktioner (häftstift i en av två, nålar i en av två) räcker inte alltid för att låsa den tredje objektets plats — flera kombinationer kan överleva.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "NOG-logikpussel-disjunktion-strategin: när varje påstående har formen 'A eller B' (en av två), räkna alla konsistenta kombinationer som överlever båda. Om FLER än en konfiguration ger olika svar → E. Triggern: logikpussel där varje ledtråd är en disjunktion (eller)."
+  }
+}

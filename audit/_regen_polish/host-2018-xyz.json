@@ -1,0 +1,116 @@
+{
+  "host-2018-kvant2-XYZ-010": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 3·(a+1) som '3a + 1' i stället för '3a + 3' om man slarvar med distributiva lagen.",
+        "why_wrong": "Steg 4 låser: 3·(a+1) = 3·a + 3·1 = 3a + 3. Distributiva lagen kräver att man multiplicerar med varje term inuti parentesen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som 'skillnad = nästa argument minus förra argument' kan du hamna på a.",
+        "why_wrong": "f(a+1) - f(a) är skillnaden i FUNKTIONSVÄRDET, inte i argumenten. Steg 7–8 räknar konkret till 3."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Konstanten m står där i båda termerna, så det kan kännas som om m 'överlever'.",
+        "why_wrong": "Steg 6 distribuerar minustecknet korrekt: +m och -m kancellerar. m överlever inte i differensen."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att glömma distribuera 3 över hela (a+1). Botemedlet: skriv ut det som ett eget steg, och se efter att konstanttermen kancellerar (är ett tecken på att du gjort rätt med distributiva lagen).",
+    "solution_path": "f(a+1) - f(a) = (3(a+1) + m) - (3a + m) = 3a + 3 + m - 3a - m = 3. Konstanttermerna m tar ut varandra. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "f(x) = 3x + m är en linjär funktion med konstant m (vars värde är okänt). Frågan: vad blir f(a+1) - f(a)?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Stoppa in (a+1) på x:s plats i funktionsregeln: f(a+1) = 3·(a+1) + m. Parentes runt a+1 eftersom hela uttrycket ska multipliceras med 3.",
+        "tier": "detail",
+        "title": "Vad betyder f(a+1)?"
+      },
+      {
+        "n": 3,
+        "text": "Stoppa in a på x:s plats: f(a) = 3a + m.",
+        "tier": "detail",
+        "title": "Vad betyder f(a)?"
+      },
+      {
+        "n": 4,
+        "text": "3\\cdot (a+1) = 3a + 3 (distributiva lagen). Så f(a+1) = 3a + 3 + m.",
+        "tier": "essential",
+        "title": "Multiplicera ut f(a+1)"
+      },
+      {
+        "n": 5,
+        "text": "f(a+1) - f(a) = (3a + 3 + m) - (3a + m).",
+        "tier": "essential",
+        "title": "Skriv skillnaden"
+      },
+      {
+        "n": 6,
+        "text": "-(3a + m) = -3a - m. Skillnaden blir: 3a + 3 + m - 3a - m.",
+        "tier": "detail",
+        "title": "Distribuera minustecknet"
+      },
+      {
+        "n": 7,
+        "text": "3a - 3a = 0. m - m = 0. Kvar: bara 3.",
+        "tier": "essential",
+        "title": "Slå ihop liknande termer"
+      },
+      {
+        "n": 8,
+        "text": "f(a+1) - f(a) = 3. Oberoende av både a och m.",
+        "tier": "essential",
+        "title": "Resultat"
+      },
+      {
+        "n": 9,
+        "text": "Skillnaden mellan funktionsvärdet vid (a+1) och vid (a) är ALLTID 3, oavsett var på x-axeln du står. Det är riktningskoefficienten 3 (lutningen) i funktionen f(x) = 3x + m: när x ökar med 1, ökar f med 3.",
+        "tier": "detail",
+        "title": "Tolkning — vad säger detta?"
+      },
+      {
+        "n": 10,
+        "text": "a = 0, m = 5. f(1) = 3+5 = 8. f(0) = 5. Skillnad = 3. ✓ a = 10, m = -2. f(11) = 33-2 = 31. f(10) = 30-2 = 28. Skillnad = 3. ✓ Alltid 3.",
+        "tier": "detail",
+        "title": "Verifiera med konkreta tal"
+      },
+      {
+        "n": 11,
+        "text": "A: 1. Skulle uppstå om man missar att multiplicera 3 med 1 i utvecklingen — då hamnar man på +1 istället för +3.",
+        "tier": "essential",
+        "title": "Granska A"
+      },
+      {
+        "n": 12,
+        "text": "B: a. Skulle uppstå om man tror att f(a+1) - f(a) = a, vilket är fel — det är slope, inte input.",
+        "tier": "essential",
+        "title": "Granska B"
+      },
+      {
+        "n": 13,
+        "text": "C: m. Skulle uppstå om man inte distribuerar minustecknet ordentligt och får kvar ett m i slutet.",
+        "tier": "essential",
+        "title": "Granska C"
+      },
+      {
+        "n": 14,
+        "text": "Svaret är D: 3. Insikten i en mening: för en linjär funktion f(x) = kx + m är f(a+1) - f(a) alltid k — lutningskoefficienten — oavsett a eller m.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Funktion-differens-strategin: f(a+1) - f(a) räknar 'hur mycket f ändras när x ökar med 1' — för linjär f(x) = kx + m är detta alltid k. Triggern: 'f(a+h) - f(a)' i XYZ → läs av riktningskoefficienten."
+  }
+}

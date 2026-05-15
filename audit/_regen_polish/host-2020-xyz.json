@@ -1,0 +1,182 @@
+{
+  "host-2020-kvant2-XYZ-004": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Basen halveras (0,5x), och det är lätt att dra slutsatsen att resultatet halveras till 0,5y, utan att märka att procentsatsen samtidigt fördubblats.",
+        "why_wrong": "Steg 6 visar att 2·0,5 = 1 tar ut båda effekterna exakt. Bara en av dem skulle ge 0,5y eller 2y; båda samtidigt ger y."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att se fördubblingen (2a%) och dra slutsatsen att resultatet fördubblas till 2y.",
+        "why_wrong": "Steg 5 visar att basen samtidigt halveras (0,5x), vilket exakt motverkar fördubblingen av procentsatsen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att räkna 'fördubblat fördubblat' och få 4y om man blandar ihop riktningen — fördubblar både procent och bas.",
+        "why_wrong": "Steg 1 visar att BASEN halveras (0,5x), inte fördubblas. Att hyperaktivt fördubbla allt ger fel svar."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "(a%)·x = y. Då blir (2a%)·(0,5x) = (a%·x)·(2·0,5) = y·1 = y. Faktorerna 2 och 0,5 tar ut varandra. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi vet: a procent av x är y. Vi vill ha: 2a procent av 0,5x — uttryckt i y.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "'a procent av x' betyder (a/100)·x. Procent är bara en faktor.",
+        "tier": "detail",
+        "title": "Vad betyder '% av'?"
+      },
+      {
+        "n": 3,
+        "text": "\\frac{a}{100} \\cdot x = y, eller kortare a·x/100 = y.",
+        "tier": "essential",
+        "title": "Skriv ut det vi vet"
+      },
+      {
+        "n": 4,
+        "text": "2a% av 0,5x = \\frac{2a}{100} \\cdot 0{,}5x.",
+        "tier": "essential",
+        "title": "Skriv ut det vi vill räkna"
+      },
+      {
+        "n": 5,
+        "text": "\\frac{2a}{100} \\cdot 0{,}5x = \\frac{a}{100} \\cdot x \\cdot 2 \\cdot 0{,}5. Vi separerar konstanterna 2 och 0,5 från a·x/100.",
+        "tier": "detail",
+        "title": "Faktorisera"
+      },
+      {
+        "n": 6,
+        "text": "2·0,5 = 1. Faktorerna tar exakt ut varandra.",
+        "tier": "essential",
+        "title": "Räkna 2·0,5"
+      },
+      {
+        "n": 7,
+        "text": "\\frac{a}{100} \\cdot x \\cdot 1 = \\frac{a}{100} \\cdot x = y. Resultatet är y.",
+        "tier": "essential",
+        "title": "Slå ihop"
+      },
+      {
+        "n": 8,
+        "text": "Sätt a = 10, x = 200. Då är y = 10% av 200 = 20. Räkna sen 2a% = 20% av 0,5x = 100. 20% av 100 = 20. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera med ett tal"
+      },
+      {
+        "n": 9,
+        "text": "Att fördubbla procentsatsen OCH halvera basen tar ut varandra exakt — resultatet blir oförändrat. Det är samma mönster som '2·0,5 = 1' i alla proportionella räkningar.",
+        "tier": "detail",
+        "title": "Tolkning"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är y, alltså B. Insikten i en mening: i procenträkning är resultatet PROPORTIONELLT mot både procentsats och bas — fördubblar du den ena och halverar den andra blir det oförändrat.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Proportionalitet i procenträkning: 'p% av x' är proportionellt mot p OCH mot x. Multiplicera p med k och x med m → resultatet multipliceras med k·m. Triggern: 'p% av x' förvandlas till 'k·p% av m·x' → faktor k·m."
+  },
+  "host-2020-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du flyttar alla termer fel och får 'x = 1 − ax − bx', sen råkar förenkla på fel sätt till x = 1 − (a + b), landar du här.",
+        "why_wrong": "Steg 3 visar att x ska faktoriseras UT, inte lämnas på båda sidor. Korrekt manipulation ger x = 1/(a+b)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att 'två tal i nämnaren' borde betyda a·b — så x = 1/(ab) från någon ihopkopplad regel.",
+        "why_wrong": "Steg 8 motexemplifierar: 1/(ab) = 1/6 med a=2, b=3, men svaret är 1/5. Distributiv faktorisering ger a + b, inte a · b."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att läsa 'ax + bx = 1' som 'a + b → x' och bara skriva x = a + b.",
+        "why_wrong": "Steg 5 visar att vi DELAR båda sidor med (a + b), inte multiplicerar. x = 1/(a+b), inte (a+b)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Faktorisera vänsterledet: ax + bx = (a + b)·x. Dela båda sidor med (a + b): x = \\frac{1}{a + b}. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Ekvationen ax + bx = 1, där a och b är positiva tal. Vi söker x uttryckt i a och b.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Båda termerna i vänsterledet innehåller x. Det är samma struktur som 'något·x + något·x' — kan faktoriseras.",
+        "tier": "essential",
+        "title": "Identifiera mönstret"
+      },
+      {
+        "n": 3,
+        "text": "ax + bx = x·a + x·b = x·(a + b). Den distributiva lagen baklänges: när två termer delar en faktor (här x), kan vi lyfta ut den. Tänk: 3x + 7x = (3 + 7)x = 10x.",
+        "tier": "detail",
+        "title": "Faktorisera ut x"
+      },
+      {
+        "n": 4,
+        "text": "(a + b)·x = 1.",
+        "tier": "essential",
+        "title": "Ny ekvation"
+      },
+      {
+        "n": 5,
+        "text": "x = \\frac{1}{a + b}.",
+        "tier": "essential",
+        "title": "Dela båda sidor med (a + b)"
+      },
+      {
+        "n": 6,
+        "text": "a och b är positiva, så a + b är också positivt och inte noll. Division med (a + b) är därför tillåten.",
+        "tier": "detail",
+        "title": "Varför får vi dela?"
+      },
+      {
+        "n": 7,
+        "text": "Sätt in: a·\\frac{1}{a+b} + b·\\frac{1}{a+b} = \\frac{a + b}{a + b} = 1. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 8,
+        "text": "a = 2, b = 3: ekvation 2x + 3x = 1 → 5x = 1 → x = 1/5. Formel: 1/(2+3) = 1/5. Stämmer.",
+        "tier": "detail",
+        "title": "Snabbtest med konkreta tal"
+      },
+      {
+        "n": 9,
+        "text": "x = 1 − (a+b) (A) skulle ge ax + bx = (a+b)·(1 − (a+b)) = (a+b) − (a+b)² ≠ 1 generellt. x = 1/(ab) (B) ger ax + bx = (a+b)/(ab) = 1/a + 1/b ≠ 1 generellt. x = a+b (C) ger ax + bx = (a+b)² ≠ 1 generellt.",
+        "tier": "detail",
+        "title": "Eliminera alternativen"
+      },
+      {
+        "n": 10,
+        "text": "x = \\frac{1}{a + b}, svaret är D. Insikten i en mening: när flera termer DELAR en variabel, faktorisera ut den för att förvandla flera termer till en enkel produkt.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Faktorisering över gemensam variabel: när flera termer innehåller samma variabel, lyft ut den med distributiva lagen baklänges. Triggern: 'ax + bx + ...' → x·(a + b + ...) → lös sen som en linjär ekvation."
+  }
+}

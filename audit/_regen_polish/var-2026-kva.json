@@ -1,0 +1,188 @@
+{
+  "var-2026-kvant1-KVA-013": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att 'större x ger större allt' — fler saker, mer värde. Men reciproka värden beter sig omvänt.",
+        "why_wrong": "Steg 2 förklarar varför: 1/x är 'pizzan delad i x bitar', så större x = mindre bitar. Test i steg 4 (x=5) ger 1/5 < 1/4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet skulle gälla om x var exakt 4, men villkoret är STRIKT x > 4 — likhet är utesluten.",
+        "why_wrong": "Steg 3 låser: x = 4 ger likhet, men x > 4 ger 1/x < 1/4. Likhet är aldrig möjlig i det öppna intervallet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'okänt x → otillräcklig information', men x är BEGRÄNSAT till x > 4 — och i hela det intervallet gäller samma slutsats.",
+        "why_wrong": "Steg 7 visar att 1/x är strikt avtagande för positiva x, så i hela x > 4 gäller II > I. Informationen räcker."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Många glömmer att reciproka värden VÄNDER olikhetstecknet för positiva tal. Botemedlet: skriv alltid 'om x > 4 så är 1/x < 1/4' som en låsregel innan du svarar.",
+    "solution_path": "När x > 4 är x större än 4, så 1/x (att dela 1 i fler delar) blir mindre än 1/4. Kvantitet II är alltid större — svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Villkoret är x > 4 (x är större än 4). Du ska jämföra 1/x med 1/4 och avgöra vilken som är störst.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Tänk på 1 som en hel pizza. 1/x betyder 'pizzan delad i x lika stora bitar'. Ju fler bitar, desto mindre blir varje bit. När x växer blir 1/x ALLTID mindre.",
+        "tier": "detail",
+        "title": "Vad händer med 1/x när x blir större?"
+      },
+      {
+        "n": 3,
+        "text": "Om x var exakt 4, då skulle 1/x = 1/4 — likhet. Men x är STRIKT större än 4 (inte lika med), så vi är säkra på att kvantiteterna INTE är lika.",
+        "tier": "essential",
+        "title": "Sätt in gränsen x = 4 som referens"
+      },
+      {
+        "n": 4,
+        "text": "Sätt x = 5. Då är 1/x = 1/5 = 0{,}2, medan 1/4 = 0{,}25. Tydligt: 0,25 > 0,2, så II > I.",
+        "tier": "essential",
+        "title": "Testa ett konkret värde"
+      },
+      {
+        "n": 5,
+        "text": "Sätt x = 100. Då är 1/x = 1/100 = 0{,}01, fortfarande mindre än 0,25. Mönstret håller.",
+        "tier": "detail",
+        "title": "Testa ett annat konkret värde"
+      },
+      {
+        "n": 6,
+        "text": "När x växer mot oändligheten närmar sig 1/x noll. Det blir ALDRIG större än 1/4 i vårt intervall.",
+        "tier": "detail",
+        "title": "Vad händer när x → ∞?"
+      },
+      {
+        "n": 7,
+        "text": "Nej. Funktionen 1/x är strikt avtagande för positiva x. När x > 4 är 1/x alltid strikt mindre än 1/4.",
+        "tier": "essential",
+        "title": "Kan I någonsin bli ≥ II i intervallet x > 4?"
+      },
+      {
+        "n": 8,
+        "text": "x > 4 betyder också att x > 0, så du behöver inte oroa dig för tecken-byte. Båda kvantiteterna är positiva.",
+        "tier": "detail",
+        "title": "Tecken-check"
+      },
+      {
+        "n": 9,
+        "text": "Just före x = 4 (om det vore tillåtet) skulle 1/x ligga nära men under 1/4. För alla x > 4 håller olikheten II > I.",
+        "tier": "detail",
+        "title": "Verifiera med extrempunkten"
+      },
+      {
+        "n": 10,
+        "text": "II är alltid större än I i intervallet x > 4. Svaret är B. Insikten i en mening: 1/x är en avtagande funktion för positiva x — ju större nämnaren, desto mindre bråket.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Reciprokt-tal-strategin: när du jämför 1/x med ett konstant 1/c och vet att x ligger på en sida av c, gäller motsatt olikhet för reciprokerna. Triggern att memorera: 'x > c (positiva tal) ⇒ 1/x < 1/c; tecknen vänds'."
+  },
+  "var-2026-kvant2-KVA-021": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om man räknar omkrets fel — t.ex. tar bara summan av kateterna (3+4 = 7) — eller räknar T:s area fel (t.ex. (1/2)·3·5), kan K:s omkrets verka större.",
+        "why_wrong": "Steg 6: T:s omkrets är ALLA tre sidor, inte två. 3+4+5 = 12. Steg 9 verifierar 12 > 4√6 utan approximationer."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man tycker att 'samma area = liknande omkrets' eller missar att räkna explicit, kan likhet kännas rimligt.",
+        "why_wrong": "Steg 10: bland alla former med samma area har kvadraten MINST omkrets. Likhet inträffar bara om triangeln OCKSÅ vore en kvadrat — vilket den uppenbart inte är."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'kvadratens sida är inte heltal — för krångligt'.",
+        "why_wrong": "√6 är ett irrationellt tal men jämförelsen är fortfarande exakt: 12² = 144 > 96 = (4√6)². Steg 9 gör jämförelsen utan decimaler."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Att räkna T:s area med fel formel (t.ex. ta hypotenusa istället för en katet) är vanligt. Botemedlet: i en rätvinklig triangel är kateterna BAS och HÖJD, hypotenusan deltar INTE i area-formeln.",
+    "solution_path": "Triangelns area = (1/2)·3·4 = 6 cm². Kvadraten K har samma area = 6 cm², så sidan är \\sqrt{6} cm och omkretsen 4\\sqrt{6} cm ≈ 9,8. Triangelns omkrets = 3+4+5 = 12 cm. 12 > 9,8, så I > II. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Rätvinklig triangel T med sidor 3, 4, 5 cm. Kvadrat K med samma area som T. Jämför T:s omkrets med K:s omkrets.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Pythagoras: 3^{2} + 4^{2} = 9 + 16 = 25 = 5^{2} ✓. Hypotenusan är 5; kateterna 3 och 4. Det är den klassiska rätvinkliga triangeln.",
+        "tier": "detail",
+        "title": "Verifiera att 3-4-5 är rätvinklig"
+      },
+      {
+        "n": 3,
+        "text": "Rätvinklig triangel: area = (1/2) · katet1 · katet2 = (1/2)·3·4 = 6 cm².",
+        "tier": "essential",
+        "title": "Räkna triangelns area"
+      },
+      {
+        "n": 4,
+        "text": "K:s area = 6 cm². För en kvadrat: area = sida², alltså sida = √6 cm.",
+        "tier": "essential",
+        "title": "Kvadraten K har samma area"
+      },
+      {
+        "n": 5,
+        "text": "√6 är talet vars kvadrat är 6. Eftersom 2² = 4 och 3² = 9, ligger √6 mellan 2 och 3. Mer specifikt √6 ≈ 2,449.",
+        "tier": "detail",
+        "title": "Vad betyder √6?"
+      },
+      {
+        "n": 6,
+        "text": "Omkrets = summan av sidorna = 3 + 4 + 5 = 12 cm.",
+        "tier": "essential",
+        "title": "Räkna T:s omkrets"
+      },
+      {
+        "n": 7,
+        "text": "Kvadrat har fyra lika sidor: omkrets = 4 · √6 ≈ 4 · 2,449 ≈ 9,80 cm.",
+        "tier": "essential",
+        "title": "Räkna K:s omkrets"
+      },
+      {
+        "n": 8,
+        "text": "T:s omkrets = 12; K:s omkrets ≈ 9,80. T > K, så I > II.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 9,
+        "text": "Är 12 > 4√6? Kvadrera båda (båda positiva): 144 > 16 · 6 = 96? Ja, 144 > 96. Olikheten håller. Inget avrundningsfel kan ändra slutsatsen.",
+        "tier": "detail",
+        "title": "Verifiera utan decimal-approximation"
+      },
+      {
+        "n": 10,
+        "text": "Triangeln är 'långsmal' och spridd, så omkretsen är hög relativt arean. Kvadraten är den 'mest kompakta' fyrhörningen — minst omkrets för en given area.",
+        "tier": "detail",
+        "title": "Varför är T:s omkrets större?"
+      },
+      {
+        "n": 11,
+        "text": "T:s omkrets > K:s omkrets, så I > II. Svaret är A. Insikten i en mening: för samma area har olika former olika omkrets — kvadrater är 'kompaktare' än trianglar, så kvadraters omkrets är mindre.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Isoperimetrisk-jämförelse-strategin: olika former med samma area har olika omkrets — kvadraten har minst (mest kompakt). Triggern: 'jämför omkrets av två former med samma area → använd kvadrat-minsta-omkrets-principen som heuristik'."
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "host-2017-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du tror 'parallellt = motsatt lutning' eller blandar ihop parallell med vinkelrät, kan k = −2 verka rätt.",
+        "why_wrong": "Motsatt lutning ger linjer som lutar åt olika håll — de skär varandra. Parallella linjer har SAMMA lutning, inte motsatt. Steg 4 är regeln."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "k = 0 betyder vågrät linje, vilket kan kännas som 'orörlig' och 'aldrig påverkad' — men det skär en lutande linje precis en gång.",
+        "why_wrong": "y = 6 (vågrät) skär y = 2x + 3 där 6 = 2x + 3, alltså x = 1{,}5. Det finns en skärningspunkt. Vågrätt är inte parallellt med en lutande linje."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att en lutning 'nära' 2 räcker — k = 1 är 'närapå parallellt'.",
+        "why_wrong": "Lutningen måste vara EXAKT lika för parallellitet. k = 1 ≠ 2 → linjerna skär varandra (steg 8 räknar fram skärningspunkten)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "m-värdena MÅSTE skilja sig — om både k och m är lika är linjerna identiska (de 'skär' i oändligt många punkter, vilket inte räknas som 'aldrig skär'). Botemedlet: se efter att de två m-värdena (6 och 3) inte är samma.",
+    "solution_path": "Två räta linjer som inte skär varandra är PARALLELLA — de har samma lutning. y = kx + 6 och y = 2x + 3 har samma lutning om k = 2. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi har två linjer: y = kx + 6 och y = 2x + 3. Vi ska hitta det värde på k som gör att linjerna ALDRIG skär varandra.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "I formen y = kx + m är k LUTNINGEN (hur brant linjen är) och m är skärningen med y-axeln (var linjen korsar y-axeln). Det kallas 'k-formen' eller 'räta linjens ekvation'.",
+        "tier": "detail",
+        "title": "Vad är 'k' i y = kx + m?"
+      },
+      {
+        "n": 3,
+        "text": "Två räta linjer i ett plan möts i exakt en punkt — UTOM när de är parallella. Parallella linjer har samma lutning men olika 'startpunkter' (olika m), så de håller samma avstånd och möts aldrig.",
+        "tier": "essential",
+        "title": "När skär två linjer varandra?"
+      },
+      {
+        "n": 4,
+        "text": "Linjerna y = kx + 6 och y = 2x + 3 ska vara parallella. Det betyder: samma lutning (k = 2) men olika m (6 ≠ 3, det är redan uppfyllt).",
+        "tier": "essential",
+        "title": "Översätt 'skär inte varandra' till villkor"
+      },
+      {
+        "n": 5,
+        "text": "Om k = 2 OCH m-värdena var lika (båda = 6 eller båda = 3), så skulle linjerna sammanfalla (oändligt många skärningar). Här är m-värdena olika (6 och 3), så linjerna är parallella men distinkta.",
+        "tier": "detail",
+        "title": "Kontrollera m-villkoret"
+      },
+      {
+        "n": 6,
+        "text": "Om linjerna skar varandra skulle det finnas x sådant att kx + 6 = 2x + 3. Det ger (k − 2)x = −3. Om k = 2 blir vänster sida 0, höger −3 — omöjligt, ingen lösning. Ingen skärning, alltså parallellt.",
+        "tier": "detail",
+        "title": "Sätt linjerna lika och se vad som händer"
+      },
+      {
+        "n": 7,
+        "text": "Om k ≠ 2, kan (k − 2)x = −3 lösas: x = −3 / (k − 2). Det finns alltså en skärningspunkt. Bara k = 2 ger 'ingen lösning'.",
+        "tier": "essential",
+        "title": "Vad om k ≠ 2?"
+      },
+      {
+        "n": 8,
+        "text": "Sätt k = 1. y = x + 6 och y = 2x + 3. Sätt lika: x + 6 = 2x + 3 → x = 3, y = 9. De skär i (3, 9). För k = 1 finns alltså skärning — bekräftar att andra k än 2 ger skärning.",
+        "tier": "detail",
+        "title": "Verifiera med ett konkret k"
+      },
+      {
+        "n": 9,
+        "text": "Alternativ A: k = −2 → olika lutning från 2 → skärning finns. B: k = 0 → linjen y = 6 är vågrät, skär y = 2x + 3 vid x = 1{,}5. C: k = 1 → skär (steg 8). D: k = 2 → parallellt. Bara D fungerar.",
+        "tier": "detail",
+        "title": "Kontrollera mot svarsalternativen"
+      },
+      {
+        "n": 10,
+        "text": "k = 2. Svaret är D. Insikten i en mening: två linjer i k-form är parallella precis när de har samma k (och olika m).",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Parallella-linjer-strategin: i k-formen y = kx + m är två linjer parallella ↔ k-värdena är lika och m-värdena olika. Trigger: 'skär inte', 'skär aldrig', 'parallella'."
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "host-2015-kvant1-KVA-015": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att gissa att centrumvinkeln \"alltid är större\" eftersom den ligger närmare bågens kurvatur.",
+        "why_wrong": "Centrumvinkeln är större än randvinkeln (faktor 2) men jämförs här mot 2y, inte y. Stegen 5–8 visar att 2y är EXAKT lika med x — inte mindre."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många misstolkar och tror att randvinkeln, ihop med en \"dubbling\", ger något större än centrumvinkeln.",
+        "why_wrong": "Centrumvinkelsatsen ger entydigt x = 2y. Att 2y skulle vara större kräver att satsen vore x < 2y, vilket den inte är."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta \"figurer utan exakta mått ger otillräcklig information\".",
+        "why_wrong": "Vinkelförhållanden är låsta av cirkelgeometrin — exakta längder krävs inte. Steg 5–8 ger en exakt regel som gäller för ALLA giltiga konfigurationer av denna typ."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är lätt att se centrumvinkeln och randvinkeln som om de \"konkurrerar\" om vilken som är störst. Botemedlet: skriv på papper \"centrum dubbel rand\" innan du börjar tolka figuren — då blir relationen mekanisk och du undviker att vacklar mellan A och B.",
+    "solution_path": "A är cirkelns medelpunkt, så AB och AC är båda radier — alltså är triangeln ABC likbent. Centrumvinkelsatsen ger att centrumvinkeln x vid A är dubbelt så stor som randvinkeln vid omkretsen. Här blir x = 2y exakt. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi har en cirkel med medelpunkten A. B och C ligger på cirkelranden. DB är en diameter (alltså en linje genom A från D till B). x är vinkeln vid A i triangeln ABC, och y är vinkeln i randpunkten C (sannolikt vinkeln BCD eller motsvarande randvinkel som ser sträckan BA — figuren preciserar). Vi jämför x mot 2y.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "En radie är en sträcka från cirkelns medelpunkt ut till en punkt på cirkelranden. Alla radier i samma cirkel är lika långa per definition.",
+        "tier": "detail",
+        "title": "Vad är en radie?"
+      },
+      {
+        "n": 3,
+        "text": "Eftersom A är medelpunkten och B, C ligger på cirkeln, är både AB och AC radier. Det innebär att AB = AC, så triangeln ABC är likbent med toppvinkel x vid A.",
+        "tier": "essential",
+        "title": "AB och AC är båda radier"
+      },
+      {
+        "n": 4,
+        "text": "En triangel med två lika långa sidor kallas likbent. De två basvinklarna (vid bas-sidan, motsatt toppen) är då lika stora.",
+        "tier": "detail",
+        "title": "Vad betyder \"likbent triangel\"?"
+      },
+      {
+        "n": 5,
+        "text": "Centrumvinkelsatsen säger: när två punkter på en cirkel (säg B och C) ses från medelpunkten A och från en annan punkt D på cirkelranden, så är centrumvinkeln BAC dubbelt så stor som randvinkeln BDC, förutsatt att D ligger på den \"längre\" cirkelbågen (annars är de supplementära i en exakt och förutsägbar mening).",
+        "tier": "essential",
+        "title": "Centrumvinkel mot randvinkel"
+      },
+      {
+        "n": 6,
+        "text": "Centrumvinkel: vinkeln med vertex i cirkelns MEDELPUNKT som spänner upp en båge. Randvinkel: vinkeln med vertex PÅ cirkelranden som spänner upp samma båge. Centrumvinkeln är alltid exakt dubbelt så stor som randvinkeln över samma båge.",
+        "tier": "detail",
+        "title": "Vad betyder \"centrumvinkel\" och \"randvinkel\"?"
+      },
+      {
+        "n": 7,
+        "text": "x är centrumvinkeln BAC (med vertex i A, medelpunkten). y är randvinkeln BDC (eller motsvarande, med vertex på cirkelranden i D, sett mot bågen BC). Båda spänner upp samma båge BC.",
+        "tier": "essential",
+        "title": "Identifiera vinklarna"
+      },
+      {
+        "n": 8,
+        "text": "Med centrumvinkel x och tillhörande randvinkel y gäller x = 2y direkt från satsen.",
+        "tier": "essential",
+        "title": "Tillämpa satsen"
+      },
+      {
+        "n": 9,
+        "text": "Att DB är en diameter låser D på cirkelranden så att D, B, C tillsammans definierar en geometrisk konfiguration som garanterar att satsen är tillämplig (D ligger på den motstående bågen mot BC). Diameter-villkoret säkerställer att vinklarna sitter på rätt sätt.",
+        "tier": "detail",
+        "title": "Varför DB-som-diameter spelar roll"
+      },
+      {
+        "n": 10,
+        "text": "Säg radien är 1 och B, C ligger så att bågen BC svarar mot centrumvinkel 80°. Då är x = 80° och randvinkeln över samma båge är 40°. Förhållandet x = 2y stämmer (80 = 2·40).",
+        "tier": "detail",
+        "title": "Verifiera med konkret exempel"
+      },
+      {
+        "n": 11,
+        "text": "Centrumvinkelsatsen ger x = 2y exakt. Svaret är C — Kvantitet I är lika med Kvantitet II. Insikten i en mening: centrumvinkel = 2 · randvinkel över samma båge är en av de starkaste regelmässigt återkommande relationerna i HP-geometri.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Centrumvinkelsatsen: centrumvinkel = 2 · randvinkel över samma båge. Triggern är en figur med en cirkel där en vinkel har vertex i medelpunkten och en annan har vertex på randen, och båda \"ser\" samma båge — då räcker det att räkna förhållandet 2:1."
+  },
+  "host-2015-kvant2-KVA-021": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att fastna vid \"x > 3\" och tycka att x är \"stort\".",
+        "why_wrong": "x > 3 säger inte att x är större än y. Y är också bara begränsad nedåt, av 4 — och kan vara 100. Steg 8 ger motexempel."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelbilden: \"y > 4 är större lägsta gräns än x > 3, alltså y är större\".",
+        "why_wrong": "Lägsta gränsen är inte ETT värde. y har minimum 4 i strikt mening men kan vara hur stor som helst. Steg 7 ger motexempel där x > y."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många tror att likhet är möjlig och att det är det enda svaret. Men likhet är BARA ETT möjligt utfall.",
+        "why_wrong": "Likhet är möjligt (steg 9), men inte ENDA möjligheten — också x > y (steg 7) och y > x (steg 8) inträffar. Det är just därför svaret är D, inte C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är lätt att tro att en olikhet låser en variabel mer än den gör. \"x > 3\" säger BARA en sak: x är inte 3 eller mindre. Botemedlet: skriv olikheten på tallinjen — du ser då hur stor del av tallinjen som är öppen, och att x kan vara godtyckligt stor.",
+    "solution_path": "Från 5 − x < 2 följer x > 3. Från y − 3 > 1 följer y > 4. Båda är olikheter med oändliga lösningar; x kan vara större eller mindre än y (t.ex. x = 100 > y = 5, eller x = 4 < y = 100). Information otillräcklig. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi har två olikheter: 5 − x < 2 och y − 3 > 1. Vi ska jämföra x mot y.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "5 − x < 2. Subtrahera 5 från båda sidor: −x < −3. Multiplicera med −1 (VÄND tecknet): x > 3.",
+        "tier": "essential",
+        "title": "Lös första olikheten för x"
+      },
+      {
+        "n": 3,
+        "text": "När man multiplicerar eller dividerar båda sidor med ett NEGATIVT tal vänds olikhetstecknet. Här gör vi det när vi multiplicerar med −1 för att få +x.",
+        "tier": "detail",
+        "title": "Regeln om olikhetsvändning"
+      },
+      {
+        "n": 4,
+        "text": "y − 3 > 1. Addera 3 till båda sidor: y > 4.",
+        "tier": "essential",
+        "title": "Lös andra olikheten för y"
+      },
+      {
+        "n": 5,
+        "text": "x > 3 och y > 4. Båda är olikheter — definierar OÄNDLIGT MÅNGA värden, inte specifika.",
+        "tier": "essential",
+        "title": "Vad har vi nu?"
+      },
+      {
+        "n": 6,
+        "text": "Vi ska se om x > y kan ske, om y > x kan ske, eller om x = y kan ske, under villkoren x > 3 och y > 4.",
+        "tier": "essential",
+        "title": "Strategi: testa olika kombinationer"
+      },
+      {
+        "n": 7,
+        "text": "Pröva x = 100, y = 5. Båda uppfyller villkoren (x > 3 ✓, y > 4 ✓). x > y. Ja, möjligt.",
+        "tier": "essential",
+        "title": "Kan x > y?"
+      },
+      {
+        "n": 8,
+        "text": "Pröva x = 4, y = 100. Båda uppfyller (4 > 3 ✓, 100 > 4 ✓). y > x. Ja, möjligt.",
+        "tier": "essential",
+        "title": "Kan y > x?"
+      },
+      {
+        "n": 9,
+        "text": "Pröva x = y = 5. Båda uppfyller (5 > 3 ✓, 5 > 4 ✓). Likhet, ja möjligt.",
+        "tier": "essential",
+        "title": "Kan x = y?"
+      },
+      {
+        "n": 10,
+        "text": "Alla tre relationer (>, <, =) kan uppstå. Information otillräcklig.",
+        "tier": "essential",
+        "title": "Tre olika utfall möjliga"
+      },
+      {
+        "n": 11,
+        "text": "x > 3 säger BARA att x är större än 3. Det säger inget om hur stort x kan vara — bara om en undre gräns. Y har samma typ av begränsning. Eftersom båda är obegränsade uppåt, kan vilket som helst vara större.",
+        "tier": "detail",
+        "title": "Varför säger \"x > 3\" inget om x mot y?"
+      },
+      {
+        "n": 12,
+        "text": "Båda olikheter ger bara undre gränser för x respektive y. Båda kan vara godtyckligt stora. Alla tre KVA-relationer möjliga. Svaret är D. Insikten i en mening: olikheter med bara nedre gränser (typ x > a, y > b) är otillräckliga för att fastställa jämförelser mellan variablerna.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Olikhets-jämförelse-strategin: lös var och en av olikheterna isolat, identifiera om de ger båda en undre gräns OCH en övre gräns för variabeln eller bara en av dem. Triggern är två olikheter med olika variabler — räkna lösningsmängderna och se om de \"tvingar\" en jämförelse."
+  }
+}

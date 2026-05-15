@@ -1,0 +1,260 @@
+{
+  "var-2013-kvant1-KVA-013": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 15·36 + 15·64 i huvudet och få ett tal aningen större än 1 500 (kanske 1 510 av räknemiss), och då bedöma att I > II.",
+        "why_wrong": "Steg 7 visar att exakt värde är 1 500, inte 1 510 eller mer. 1 500 är 1 mindre än 1 501 — II vinner. Approximerad räkning är farlig här eftersom skillnaden är så liten."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att 1 500 är 'nästan 1 501' och tror på likhet — speciellt om man inte räknar steget 1 500 vs 1 501 noggrant.",
+        "why_wrong": "1 500 ≠ 1 501. Differensen är exakt 1 (steg 8). KVA-frågor straffar slarvig avrundning — alltid räkna ut exakt och jämföra."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'kan inte avgöra utan räknare' om man inte ser utbrytningsmöjligheten — då gissar man D.",
+        "why_wrong": "All information ges som exakta heltal och uttrycket är fullständigt definierat. Steg 2–4 visar att det går att räkna utan räknare. D används bara när någon variabel/villkor saknas."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att räkna varje term för sig (15·36 och 15·64) utan att se utbrytningsmöjligheten — då gör man dubbelt så många multiplikationer i onödan. Botemedlet: skanna ALLTID uttrycket efter gemensamma faktorer innan du börjar räkna.",
+    "solution_path": "Bryt ut 15: 15·36 + 15·64 = 15·(36 + 64) = 15·100 = 1 500. Kvantitet II är 1 501, alltså 1 större. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi ska jämföra två tal: Kvantitet I = 15·36 + 15·64 och Kvantitet II = 1 501. Inga räknare — vi måste räkna smart.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "BÅDA termerna i Kvantitet I innehåller 15: 15·36 och 15·64. När en faktor är gemensam för flera termer kan vi BRYTA UT den.",
+        "tier": "essential",
+        "title": "Sök mönster: gemensam faktor"
+      },
+      {
+        "n": 3,
+        "text": "Vanligt: a·(b + c) = a·b + a·c (multiplikation in i parentes). Baklänges: a·b + a·c = a·(b + c) — att 'samla ihop' den gemensamma faktorn. Det är samma regel, körd andra hållet.",
+        "tier": "detail",
+        "title": "Den distributiva lagen baklänges"
+      },
+      {
+        "n": 4,
+        "text": "15·36 + 15·64 = 15·(36 + 64). I parentesen står ren addition utan 15.",
+        "tier": "essential",
+        "title": "Bryt ut 15"
+      },
+      {
+        "n": 5,
+        "text": "36 + 64 = 100. Det är ett 'snällt' tal — talen 36 och 64 är medvetet valda att komplettera varandra till 100.",
+        "tier": "essential",
+        "title": "Räkna parentesen"
+      },
+      {
+        "n": 6,
+        "text": "Konstruktörer av matteuppgifter brukar välja siffror så att summan blir 10, 100, 1000 — då går resten snabbt. När du ser 36 och 64 (eller 47 och 53, etc.), pröva summan.",
+        "tier": "detail",
+        "title": "Insikt: leta efter par som ger jämna tal"
+      },
+      {
+        "n": 7,
+        "text": "Kvantitet I = 15 · 100 = 1 500.",
+        "tier": "essential",
+        "title": "Multiplicera"
+      },
+      {
+        "n": 8,
+        "text": "Kvantitet I = 1 500. Kvantitet II = 1 501. Skillnad: 1 501 − 1 500 = 1. Kvantitet II är 1 större än Kvantitet I.",
+        "tier": "essential",
+        "title": "Jämför kvantiteterna"
+      },
+      {
+        "n": 9,
+        "text": "Direkträkning: 15·36 = 540 (15·30 = 450 plus 15·6 = 90, summa 540). 15·64 = 960 (15·60 = 900 plus 15·4 = 60, summa 960). 540 + 960 = 1 500 ✓. Samma svar.",
+        "tier": "detail",
+        "title": "Verifiera utan utbrytning"
+      },
+      {
+        "n": 10,
+        "text": "Kvantitet II är större. Svaret är B. Insikten i en mening: när en gemensam faktor syns i flera termer (här 15), bryt ut den FÖRST — då blir resten räknemässigt billigt.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Utbrytningsstrategin: när du ser två termer med samma faktor (typ 15·a + 15·b), bryt ALLTID ut den gemensamma faktorn först → 15·(a + b). Triggern: 'a·m + a·n' eller liknande mönster med upprepad faktor → distributiva lagen baklänges sparar tid."
+  },
+  "var-2013-kvant1-KVA-016": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att förenkla 10/4 felaktigt — om man tror att 10/4 = 5 (förväxlar nämnaren 4 med 2), blir Kvantitet II = 8 − 5 = 3, vilket är mindre än 5 och då skulle I > II.",
+        "why_wrong": "Steg 6 visar att 10/4 = 2,5, inte 5. 10/4 betyder '10 delat med 4', och 10/4 är samma som 5/2 = 2,5. Snabb mental aritmetik på division är fällan här."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 'både är ungefär 5' om man uppskattar mentalt och inte räknar ut decimaldelen.",
+        "why_wrong": "Skillnaden är exakt 0,5 (steg 7) — Kvantitet II = 5,5, inte 5. KVA-frågor straffar avrundning; alltid räkna ut exakt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'vi vet inte x' om man missar att ekvationen 8x + 4 = 10 har en EXAKT lösning.",
+        "why_wrong": "8x + 4 = 10 är en linjär ekvation med EN unik lösning för x (steg 4). Kvantitet II innehåller inte ens x — det är ren aritmetik. Informationen är fullständig."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att lösa ut x först och räkna mödosamt — vilket öppnar för räknemiss. Botemedlet: titta först efter ALGEBRAISK GENVÄG (utbrytning, halvering, identifikation av kvadreringsformel) innan du sätter pennan på papper.",
+    "solution_path": "Halvera båda sidor av 8x + 4 = 10: 4x + 2 = 5 (Kvantitet I). Kvantitet II: 8 − 10/4 = 8 − 2,5 = 5,5. 5 < 5,5, alltså II > I. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Givet: 8x + 4 = 10. Vi ska jämföra Kvantitet I = 4x + 2 mot Kvantitet II = 8 − 10/4. Båda kan vi räkna ut exakt.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "4x + 2 är EXAKT HÄLFTEN av 8x + 4: gångra 4x + 2 med 2 så får du 8x + 4. Och 8x + 4 = 10. Så 4x + 2 = 10/2 = 5.",
+        "tier": "essential",
+        "title": "Knep för Kvantitet I"
+      },
+      {
+        "n": 3,
+        "text": "Om 2·(4x + 2) = 10, då följer (4x + 2) = 10/2 = 5 (dela båda sidor med 2). Det är samma sak som att lösa ekvationen för 4x + 2 direkt, utan att räkna ut x separat. Smart genväg.",
+        "tier": "detail",
+        "title": "Varför funkar halveringen?"
+      },
+      {
+        "n": 4,
+        "text": "8x + 4 = 10 → 8x = 6 → x = 6/8 = 3/4. Då blir 4x + 2 = 4·(3/4) + 2 = 3 + 2 = 5. Samma svar — men halveringen är snabbare.",
+        "tier": "detail",
+        "title": "Alternativ: räkna ut x först"
+      },
+      {
+        "n": 5,
+        "text": "Kvantitet II = 8 − 10/4. Räkna 10/4 = 2,5. Alltså Kvantitet II = 8 − 2,5 = 5,5.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet II"
+      },
+      {
+        "n": 6,
+        "text": "10/4 betyder '10 delat med 4'. 4·2 = 8 (4 går i 10 två gånger, med 2 i rest). Resten 2 delat med 4 = 1/2 = 0,5. Sammanlagt: 2 + 0,5 = 2,5.",
+        "tier": "detail",
+        "title": "Räkna 10/4"
+      },
+      {
+        "n": 7,
+        "text": "Kvantitet I = 5. Kvantitet II = 5,5. Skillnad: 5,5 − 5 = 0,5. Kvantitet II är 0,5 större än Kvantitet I.",
+        "tier": "essential",
+        "title": "Jämför kvantiteterna"
+      },
+      {
+        "n": 8,
+        "text": "Med x = 3/4: 4·(3/4) + 2 = 3 + 2 = 5 ✓. Och 8x + 4 = 8·(3/4) + 4 = 6 + 4 = 10 ✓. Givet ekvation stämmer.",
+        "tier": "detail",
+        "title": "Verifiera Kvantitet I"
+      },
+      {
+        "n": 9,
+        "text": "Kvantitet II är större. Svaret är B. Insikten i en mening: när du ser ett uttryck som är en MULTIPEL av en given ekvations vänsterled, dela ekvationens hela sida med samma faktor — du behöver inte lösa ut x först.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Halveringsstrategin: om ett uttryck är en konstant multipel av en given ekvations vänsterled (t.ex. 4x + 2 är hälften av 8x + 4), kan du dela ekvationens högerled med samma faktor för att få uttrycket direkt — ingen variabel-lösning krävs. Triggern: 'givet 2A = K, sökt A' → A = K/2."
+  },
+  "var-2013-kvant1-KVA-020": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att fastna vid fallet där talen ligger tätt (typ 1, 2, 3) och tro att m/n alltid är större eftersom täljaren är 'mitt-talet' och nämnaren 'största talet'.",
+        "why_wrong": "Steg 4 visar att med n = 100 blir m/n litet (0,02) — mycket mindre än k/m (0,5). I är inte alltid större; det beror på hur långt ifrån n är från m."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelvariant: om man bara testar fall där n är mycket större än m (som n = 100) tror man att k/m alltid vinner.",
+        "why_wrong": "Steg 3 visar att med n = 3 blir m/n = 2/3, större än k/m = 1/2. II är inte alltid större; resultatet vänds när n är nära m."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 'kanske bråken alltid är lika' om man av en slump landar på k/m = m/n (steg 8) som ett första exempel.",
+        "why_wrong": "Lika utfall är bara EN av möjligheterna (steg 8). Steg 3 och 4 visar att utfallet kan också vara strikt I > II eller II > I. Likhet är inte universellt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att bara testa ETT exempel och dra slutsatsen för snabbt. Botemedlet: testa MINST två fall — gärna med 'extremtal' (n nära m och n mycket större än m) — för att se om jämförelsen är robust.",
+    "solution_path": "0 < k < m < n garanterar inte vilken som är störst av m/n och k/m. Exempel: k=1, m=2, n=3 ger m/n = 2/3 och k/m = 1/2 → I > II. Men k=1, m=2, n=100 ger m/n = 0,02 och k/m = 0,5 → II > I. Otillräcklig info. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "k, m, n är heltal med 0 < k < m < n. Vi jämför Kvantitet I = m/n och Kvantitet II = k/m. Frågan: kan vi alltid säga vilken som är större, eller beror det på k, m, n?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "När villkoren är allmänna ('positiva heltal i strikt ordning') ska vi pröva flera kombinationer för att se om jämförelsen blir konsistent eller varierar. Om den varierar — otillräckligt.",
+        "tier": "essential",
+        "title": "Strategi: testa extremfall"
+      },
+      {
+        "n": 3,
+        "text": "m/n = 2/3 ≈ 0,667. k/m = 1/2 = 0,5. Kvantitet I (0,667) > Kvantitet II (0,5). Här verkar I vinnare.",
+        "tier": "essential",
+        "title": "Test 1: k = 1, m = 2, n = 3"
+      },
+      {
+        "n": 4,
+        "text": "m/n = 2/100 = 0,02. k/m = 1/2 = 0,5. Kvantitet I (0,02) < Kvantitet II (0,5). Här vinner II.",
+        "tier": "essential",
+        "title": "Test 2: k = 1, m = 2, n = 100"
+      },
+      {
+        "n": 5,
+        "text": "Två konkreta fall, två olika svar. Den enda möjliga slutsatsen är att INFORMATIONEN ÄR OTILLRÄCKLIG — det beror på de specifika värdena på k, m och n.",
+        "tier": "essential",
+        "title": "Tolka resultaten"
+      },
+      {
+        "n": 6,
+        "text": "m/n styrs av hur 'långt apart' m och n är. När n är väldigt nära m (som 3 vs 2) är m/n stort. När n är mycket större än m (som 100 vs 2) är m/n litet. Däremot är k/m relativt stabilt eftersom k < m kan vara nästan 1 eller mycket mindre.",
+        "tier": "detail",
+        "title": "Varför kan jämförelsen vända?"
+      },
+      {
+        "n": 7,
+        "text": "Ett bråk a/b är stort när a är nära b. Det är litet när b >> a. Eftersom det inte finns något i villkoren som låser hur nära m och n är (eller k och m), kan båda bråken vandra fritt mellan 'nästan 0' och 'nästan 1'.",
+        "tier": "detail",
+        "title": "Intuition: bråk-storlek"
+      },
+      {
+        "n": 8,
+        "text": "m/n = 2/4 = 0,5. k/m = 1/2 = 0,5. Här är de LIKA. Det betyder att jämförelsen kan ha alla tre utfall: I > II, II > I, och I = II.",
+        "tier": "detail",
+        "title": "Test 3: k = 1, m = 2, n = 4"
+      },
+      {
+        "n": 9,
+        "text": "Tre fall ger tre olika utfall, så ingen entydig jämförelse är möjlig. Svaret är D — informationen är otillräcklig. Insikten i en mening: när inget begränsar HUR NÄRA två okända ligger varandra, kan bråk mellan dem variera fritt — testa minst två motpoler för att avslöja brist på information.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Variation-test-strategin för KVA: när villkoren är allmänna (typ 'positiva heltal' med viss ordning), testa MINST TVÅ konkreta exempel som spänner spektrumet (typ talen nära varandra och talen långt ifrån). Om utfallen skiljer sig → D (otillräckligt). Triggern: 'positiva tal/heltal med ordning' utan numeriskt värde → kontrollvariation."
+  }
+}

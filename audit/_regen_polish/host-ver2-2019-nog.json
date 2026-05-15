@@ -1,0 +1,115 @@
+{
+  "host-ver2-2019-kvant1-NOG-028": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (1) är 'starkare' — 'x Z 0 = x' låter som en stark egenskap.",
+        "why_wrong": "Steg 3–4: både + och − ger x Z 0 = x. Två möjligheter — inte unik. Otillräckligt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 'jag behöver båda för att vara säker' utan att märka att (2) ensam redan är unik.",
+        "why_wrong": "Steg 6 och 10: (2) ensam ger Z = − unikt. (1) behövs inte — C är fel när B gäller."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är lätt att tro att om båda påståenden 'säger något verklighetstroget' så räcker vardera ensam.",
+        "why_wrong": "Steg 4: (1) ger två möjligheter, inte en. D kräver att VARDERA räcker — bara (2) gör det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'fyra räknesätt är så få att man inte kan låsa svaret med två villkor'.",
+        "why_wrong": "Steg 6: (2) räcker ensam. B, inte E, är korrekt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "(1) x Z 0 = x: + (x + 0 = x ✓) och − (x − 0 = x ✓) klarar båda — två möjligheter, otillräckligt. (2) x Z x = 0: bara − ger 0 (x − x = 0). + ger 2x ≠ 0, × ger x² ≠ 0, ÷ ger 1 ≠ 0. Z = − UNIKT. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Z står för ett av de fyra räknesätten +, −, ×, ÷. Vi vill veta exakt vilket — alltså unikt bestämda.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Eftersom Z bara har 4 möjliga värden, kan vi pröva varje räknesätt mot varje påstående och se vilket som klarar villkoren.",
+        "tier": "detail",
+        "title": "Strategin: testa varje räknesätt mot varje villkor"
+      },
+      {
+        "n": 3,
+        "text": "Testa varje operator: x + 0 = x ✓ (vänster identitet för +). x − 0 = x ✓. x · 0 = 0, inte x (utom när x = 0). x / 0 = odefinierat (division med noll går inte).",
+        "tier": "essential",
+        "title": "Analysera (1) ensamt: x Z 0 = x för alla x"
+      },
+      {
+        "n": 4,
+        "text": "Två möjligheter: + eller −. Otillräckligt.",
+        "tier": "essential",
+        "title": "Vad återstår efter (1)?"
+      },
+      {
+        "n": 5,
+        "text": "Testa varje operator: x + x = 2x, vilket är 0 bara om x = 0 — INTE för alla x. Falsk. x − x = 0 för ALLA x ✓. x · x = x², vilket är 0 bara om x = 0 — falskt. x / x = 1 (när x ≠ 0), inte 0 — falskt.",
+        "tier": "essential",
+        "title": "Analysera (2) ensamt: x Z x = 0 för alla x"
+      },
+      {
+        "n": 6,
+        "text": "Bara − klarar villkoret. Z = − UNIKT.",
+        "tier": "essential",
+        "title": "Vad återstår efter (2)?"
+      },
+      {
+        "n": 7,
+        "text": "Ja — exakt en operator (subtraktion) klarar villkoret 'x Z x = 0 för alla x'.",
+        "tier": "essential",
+        "title": "Är (2) tillräckligt?"
+      },
+      {
+        "n": 8,
+        "text": "x − x = 0 oavsett om x = 5, −7, 0, eller π. Allmängiltigt.",
+        "tier": "detail",
+        "title": "Verifiera att (2) klarar alla x"
+      },
+      {
+        "n": 9,
+        "text": "Nej — (1) lämnar två möjligheter: + och −. Bara med (1) ensam kan vi inte avgöra.",
+        "tier": "essential",
+        "title": "Är (1) ensam tillräcklig?"
+      },
+      {
+        "n": 10,
+        "text": "Med bara (2) är Z = −. Vi BEHÖVER inte (1) alls — (2) ensam räcker.",
+        "tier": "essential",
+        "title": "Räkna om man verkligen behöver (1) för att låsa svar?"
+      },
+      {
+        "n": 11,
+        "text": "A — bara (1) räcker — fel. B — bara (2) räcker — korrekt. C — tillsammans — fel, (2) räcker ensam. D — var för sig — fel, (1) räcker inte. E — fel.",
+        "tier": "essential",
+        "title": "Värdera alternativen"
+      },
+      {
+        "n": 12,
+        "text": "Z = −: x Z 0 = x − 0 = x ✓ (klarar 1). x Z x = x − x = 0 ✓ (klarar 2). Konsistent.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 13,
+        "text": "Svaret är B — tillräcklig information i (2) men ej i (1). Insikten i en mening: (1) (höger-identitet) skiljer inte + från −, men (2) (idempotens till 0) är unik för subtraktion bland de fyra räknesätten.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "NOG-operatoridentifiering: gå igenom alla möjliga operatorer (här bara 4) och kolla vilken som uppfyller varje villkor. Tillräckligt = exakt en operator klarar villkoret. Triggern: 'Z är ett räknesätt' → uttömmande test mot +, −, ×, ÷."
+  }
+}

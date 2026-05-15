@@ -1,0 +1,228 @@
+{
+  "host-2016-kvant1-NOG-028": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att l\u00e4sa (1) som 'f\u00e5r framf\u00f6r, katt bak, r\u00e4v bredvid katt' och tro att hela ordningen l\u00e5ses fast. (1) k\u00e4nns informationsrik.",
+        "why_wrong": "Steg 6 visar att (1) till\u00e5ter katten p\u00e5 sida 4 ELLER sida 5 \u2014 uppslaget fastst\u00e4lls, men inte v\u00e4nster/h\u00f6ger inom uppslaget. Otillr\u00e4ckligt f\u00f6r en unik sida."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du tror att (2) ensamt bara s\u00e4ger 'katt bakom get' utan att l\u00e5sa positionen, kan det k\u00e4nnas som om (1):s uppslags-villkor beh\u00f6vs f\u00f6r att r\u00e4kna ihop till svaret.",
+        "why_wrong": "Steg 9\u201311 visar att (2) ensamt tvingar fram katten p\u00e5 sida 4 \u2014 r\u00e4v- och \u00e4lg-villkoren r\u00e4knar bort alla andra m\u00f6jligheter. (2) \u00e4r redan tillr\u00e4ckligt, s\u00e5 (1) beh\u00f6vs inte."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "V\u00e4nster-till-h\u00f6ger-l\u00e4sning ger ett intryck av tv\u00e5 informationstunga p\u00e5st\u00e5enden och man kan tro att vart och ett r\u00e4cker.",
+        "why_wrong": "D kr\u00e4ver att VARDERA p\u00e5st\u00e5endet ensamt l\u00e5ser fast en unik sida. Steg 7 visar att (1) l\u00e4mnar tv\u00e5 m\u00f6jligheter \u2014 allts\u00e5 \u00e4r (1) inte tillr\u00e4ckligt ensamt. D \u00e4r fel."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att korta logikpussel med m\u00e5nga villkor inte r\u00e4cker \u2014 speciellt n\u00e4r inget pris-tal n\u00e4mns.",
+        "why_wrong": "Steg 11 visar att r\u00e4kne-argumentet p\u00e5 lediga sidor bakom katten \u00e4r skarpt: endast katt = 4 l\u00e4mnar tillr\u00e4ckligt med sidor f\u00f6r r\u00e4v och \u00e4lg. (2) ensamt r\u00e4cker \u2014 E \u00e4r fel."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste f\u00e4llan \u00e4r att stanna vid uppslags-niv\u00e5 och inte g\u00e5 ner till sid-niv\u00e5. Botemedlet: n\u00e4r fr\u00e5gan ber om en specifik SIDA (inte ett uppslag), m\u00e5ste du alltid kolla om informationen skiljer v\u00e4nster- och h\u00f6gersidan inom uppslaget \u00e5t \u2014 annars \u00e4r tv\u00e5 sidor m\u00f6jliga och informationen \u00e4r otillr\u00e4cklig.",
+    "solution_path": "(1) tvingar katt+r\u00e4v till uppslag 2 (sidorna 4\u20135), men l\u00e5ser inte vilken av sidorna 4 eller 5 katten ligger p\u00e5 \u2014 otillr\u00e4ckligt. (2) tvingar f\u00e5r+get till uppslag 1, sedan r\u00e4v+\u00e4lg bakom katten, vilket entydigt landar katten p\u00e5 sida 4. Svaret \u00e4r B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "En bok har sex sidor numrerade 1 till 6: sida 1 = framsida (hund), sidorna 2\u20133 = uppslag 1, sidorna 4\u20135 = uppslag 2, sida 6 = baksida. Sex djur, ett per sida. Vi vet att hund \u00e4r p\u00e5 sida 1; de fem \u00f6vriga djuren (katt, r\u00e4v, f\u00e5r, get, \u00e4lg) fyller sidorna 2\u20136. Fr\u00e5gan: vilken SIDA \u00e4r katten p\u00e5 (1\u20136)?",
+        "tier": "essential",
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan"
+      },
+      {
+        "n": 2,
+        "text": "Vi m\u00e5ste hitta katten p\u00e5 en UNIK sida. Om informationen l\u00e4mnar flera m\u00f6jliga sidor \u00e4r den otillr\u00e4cklig. Logikpussel som detta l\u00f6ses genom att testa varje p\u00e5st\u00e5ende f\u00f6r sig och se om sidan blir entydig.",
+        "tier": "detail",
+        "title": "Vad betyder 'tillr\u00e4cklig' i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "Ett uppslag \u00e4r tv\u00e5 motst\u00e5ende sidor man ser samtidigt n\u00e4r boken \u00e4r \u00f6ppen. Uppslag 1 = sidorna 2 och 3; uppslag 2 = sidorna 4 och 5. Framsidan (1) och baksidan (6) \u00e4r inga uppslag \u2014 de st\u00e5r ensamma.",
+        "tier": "detail",
+        "title": "Vad \u00e4r 'samma uppslag'?"
+      },
+      {
+        "n": 4,
+        "text": "(1) ger tv\u00e5 villkor: A) katt och r\u00e4v \u00e4r p\u00e5 samma uppslag, s\u00e5 paret katt+r\u00e4v fyller antingen sidorna {2, 3} eller sidorna {4, 5}. B) f\u00e5r \u00e4r n\u00e4rmare framsidan \u00e4n katten \u2014 allts\u00e5 sidnumret f\u00f6r f\u00e5r \u00e4r mindre \u00e4n sidnumret f\u00f6r katten.",
+        "tier": "essential",
+        "title": "\u00d6vers\u00e4tt p\u00e5st\u00e5ende (1)"
+      },
+      {
+        "n": 5,
+        "text": "Om katt+r\u00e4v fyller sidorna {2, 3}, m\u00e5ste f\u00e5r ligga p\u00e5 en sida med l\u00e4gre nummer \u00e4n katten. L\u00e4gsta lediga sida (efter att hund tagit 1 och katt+r\u00e4v tagit 2 och 3) \u00e4r sida 4 \u2014 men 4 > b\u00e5de 2 och 3, s\u00e5 f\u00e5r hamnar BAKOM katten. Mots\u00e4gelse: detta fall \u00e4r om\u00f6jligt.",
+        "tier": "essential",
+        "title": "Test (1) \u2014 fall katt+r\u00e4v p\u00e5 uppslag 1"
+      },
+      {
+        "n": 6,
+        "text": "Om katt+r\u00e4v fyller sidorna {4, 5}, \u00e4r sidorna 2, 3 och 6 lediga f\u00f6r f\u00e5r, get, \u00e4lg. F\u00f6r att f\u00e5r ska vara n\u00e4rmare framsidan \u00e4n katten m\u00e5ste f\u00e5r ligga p\u00e5 sida 2 eller 3. Det fungerar \u2014 men katten kan vara p\u00e5 sida 4 ELLER sida 5. Inget i (1) skiljer dem \u00e5t.",
+        "tier": "essential",
+        "title": "Test (1) \u2014 fall katt+r\u00e4v p\u00e5 uppslag 2"
+      },
+      {
+        "n": 7,
+        "text": "(1) ger tv\u00e5 m\u00f6jliga sidor f\u00f6r katten: 4 eller 5. Otillr\u00e4ckligt \u2014 vi f\u00e5r inte en unik sida.",
+        "tier": "essential",
+        "title": "Slutsats om (1) ensamt"
+      },
+      {
+        "n": 8,
+        "text": "(2) ger tre villkor: A) f\u00e5r och get p\u00e5 samma uppslag (paret fyller {2, 3} eller {4, 5}). B) katt n\u00e4rmare baksidan \u00e4n get (sida(katt) > sida(get)). C) r\u00e4v och \u00e4lg b\u00e5da l\u00e4ngre bak i boken \u00e4n katten (sida(r\u00e4v) > sida(katt) OCH sida(\u00e4lg) > sida(katt)).",
+        "tier": "essential",
+        "title": "\u00d6vers\u00e4tt p\u00e5st\u00e5ende (2)"
+      },
+      {
+        "n": 9,
+        "text": "Om f\u00e5r+get fyller sidorna {4, 5}, \u00e4r sidorna 2, 3 och 6 lediga f\u00f6r katt, r\u00e4v, \u00e4lg. Katt m\u00e5ste ha sidnummer st\u00f6rre \u00e4n get (som \u00e4r p\u00e5 4 eller 5), s\u00e5 katten m\u00e5ste ligga p\u00e5 sida 6. Men d\u00e5 m\u00e5ste r\u00e4v OCH \u00e4lg ligga p\u00e5 sidor > 6 \u2014 och det finns ingen sida 7. Mots\u00e4gelse: detta fall \u00e4r om\u00f6jligt.",
+        "tier": "essential",
+        "title": "Test (2) \u2014 fall f\u00e5r+get p\u00e5 uppslag 2"
+      },
+      {
+        "n": 10,
+        "text": "Om f\u00e5r+get fyller sidorna {2, 3}, \u00e4r sidorna 4, 5 och 6 lediga f\u00f6r katt, r\u00e4v, \u00e4lg. Katt m\u00e5ste ligga p\u00e5 en sida med h\u00f6gre nummer \u00e4n get (max 3), s\u00e5 katten m\u00e5ste vara p\u00e5 4, 5 eller 6. Men r\u00e4v och \u00e4lg m\u00e5ste B\u00c5DA ligga p\u00e5 sidor st\u00f6rre \u00e4n katten.",
+        "tier": "essential",
+        "title": "Test (2) \u2014 fall f\u00e5r+get p\u00e5 uppslag 1"
+      },
+      {
+        "n": 11,
+        "text": "Om katt = 5, beh\u00f6ver r\u00e4v och \u00e4lg b\u00e5da ligga p\u00e5 sidor > 5, dvs. p\u00e5 sida 6 \u2014 men det finns bara EN sida 6. Om\u00f6jligt. Om katt = 6, beh\u00f6ver r\u00e4v och \u00e4lg ligga p\u00e5 sidor > 6 \u2014 finns inte. Om\u00f6jligt. \u00c5terst\u00e5r katt = 4, d\u00e5 fyller r\u00e4v och \u00e4lg sidorna 5 och 6 (i n\u00e5gon ordning).",
+        "tier": "essential",
+        "title": "R\u00e4kna lediga sidor bakom katten"
+      },
+      {
+        "n": 12,
+        "text": "L\u00f6sningen: sida 1 = hund, sidorna 2\u20133 = f\u00e5r och get (n\u00e5gon ordning), sida 4 = katt, sidorna 5\u20136 = r\u00e4v och \u00e4lg (n\u00e5gon ordning). Alla villkor i (2) uppfylls: f\u00e5r och get delar uppslag, katt (4) > get (\u2264 3), r\u00e4v (\u2265 5) > katt (4), \u00e4lg (\u2265 5) > katt (4). Sidan f\u00f6r katten \u00e4r ENTYDIG: sida 4.",
+        "tier": "detail",
+        "title": "Verifiera (2)"
+      },
+      {
+        "n": 13,
+        "text": "(1) l\u00e4mnar tv\u00e5 m\u00f6jliga sidor (4 eller 5) \u2014 otillr\u00e4ckligt. (2) tvingar katten p\u00e5 sida 4 \u2014 tillr\u00e4ckligt ensamt. Svaret \u00e4r B \u2014 tillr\u00e4ckligt i (2) men ej i (1). Insikten i en mening: n\u00e4r p\u00e5st\u00e5enden r\u00e4knar 'f\u00f6re/efter' i en kort sekvens, r\u00e4kna alltid hur m\u00e5nga djur som m\u00e5ste rymmas i utrymmet f\u00f6re och efter \u2014 antalet sidor m\u00e5ste matcha antalet djur.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "R\u00e4kna-platser-strategin: i NOG-pussel med f\u00e5 platser och 'f\u00f6re/efter'-villkor, r\u00e4kna hur m\u00e5nga objekt som m\u00e5ste rymmas p\u00e5 sidorna BAKOM (eller framf\u00f6r) en given position. Om antalet objekt \u00f6verstiger antalet lediga sidor, \u00e4r positionen om\u00f6jlig. Triggern att memorera: 'minst tv\u00e5 objekt bakom X' tvingar X till en tidig position med minst tv\u00e5 sidor kvar efter."
+  },
+  "host-2016-kvant2-NOG-027": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det \u00e4r l\u00e4tt att fastna vid E:s l\u00e4ge \u2014 det \u00e4r ju E som \u00e4r det 'r\u00f6rliga' elementet \u2014 och tro att (2) ('BE = EC') \u00e4r nyckeln, medan (1):s \ue000\\frac{19}{8}\ue001 verkar kr\u00e5nglig och 'kanske inte direkt om arean'.",
+        "why_wrong": "Steg 6 visar att arean \u00e4r HELT OK\u00c4NSLIG f\u00f6r var E ligger p\u00e5 BC, s\u00e5 l\u00e4nge E stannar p\u00e5 BC. Att veta E \u00e4r mittpunkten ger ingen ny information om arean."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man inte ser att arean \u00e4r oberoende av E:s position kan man tro att man beh\u00f6ver B\u00c5DA: (1) f\u00f6r bredden CD och (2) f\u00f6r att 'fixera' E.",
+        "why_wrong": "Steg 9 visar att (1) ensamt redan ger arean = 19 utan att veta n\u00e5got om E. Steg 6 f\u00f6rklarar varf\u00f6r: triangelns h\u00f6jd beror inte p\u00e5 var h\u00f6rnet E ligger l\u00e4ngs den parallella sidan. (1) r\u00e4cker ensamt, s\u00e5 C \u00e4r fel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att 'BE = EC' fixerar triangeln helt och h\u00e5llet (specifik form) kan det k\u00e4nnas som att (2) ensamt skulle ge en konkret area.",
+        "why_wrong": "Steg 11 visar att (2) inte s\u00e4ger ett ord om CD \u2014 bredden i rektangeln \u2014 och utan bredden kan arean vara vad som helst. (2) ger inte unikt svar ensamt, s\u00e5 D \u00e4r fel."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r 'br\u00e5k plus mittpunkt \u2014 knepigt; kanske g\u00e5r det inte alls'.",
+        "why_wrong": "Steg 8\u20139 r\u00e4knar igenom (1): \ue000AD = 4\ue001 (fr\u00e5n rektangeln) plus (1):s villkor ger \ue000CD = \\frac{19}{2}\ue001 och d\u00e4rmed arean 19. R\u00e4knebart, allts\u00e5 inte E."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste f\u00e4llan \u00e4r att tro att man beh\u00f6ver veta E:s exakta l\u00e4ge f\u00f6r att r\u00e4kna ut triangelns area. Botemedlet: rita upp tv\u00e5 extrema l\u00e4gen av E (E = B och E = C) och kolla att areorna blir lika \u2014 d\u00e5 \u00e4r det tydligt att E:s position inte styr arean, bara rektangelns bredd g\u00f6r det.",
+    "solution_path": "I rektangel ABCD \u00e4r \ue000AD = BC = 4\ue001, s\u00e5 (1) ger \ue000CD = \\frac{19}{8} \\cdot 4 = \\frac{19}{2}\ue001. Triangel AED har basen \ue000AD = 4\ue001 och h\u00f6jden \ue000CD\ue001 (h\u00f6jden fr\u00e5n E \u00e4r konstant lika med avst\u00e5ndet mellan de parallella sidorna). Arean = \ue000\\frac{1}{2} \\cdot 4 \\cdot \\frac{19}{2} = 19\ue001. (1) r\u00e4cker ensamt; (2) s\u00e4ger inget om CD. Svaret \u00e4r A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "ABCD \u00e4r en rektangel (h\u00f6rnen i ordning runt figuren). E \u00e4r en punkt n\u00e5gonstans p\u00e5 sidan BC. Vi vet att \ue000BC = 4\ue001 cm. Fr\u00e5gan: vad \u00e4r arean av triangeln med h\u00f6rnen A, E och D?",
+        "tier": "essential",
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan"
+      },
+      {
+        "n": 2,
+        "text": "Vi s\u00f6ker ett KONKRET tal f\u00f6r arean. P\u00e5st\u00e5endena r\u00e4cker n\u00e4r de tillsammans med det vi redan vet (rektangel, BC = 4) l\u00e5ser fast arean entydigt.",
+        "tier": "detail",
+        "title": "Vad betyder 'tillr\u00e4cklig' i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "I en rektangel \u00e4r motst\u00e5ende sidor lika l\u00e5nga. ABCD med h\u00f6rnen i ordning ger sidorna AB, BC, CD och DA. Motst\u00e5ende par: \ue000AB = CD\ue001 och \ue000BC = AD\ue001. Vi vet \ue000BC = 4\ue001, allts\u00e5 \u00e4r ocks\u00e5 \ue000AD = 4\ue001.",
+        "tier": "detail",
+        "title": "Vad vet vi om sidorna?"
+      },
+      {
+        "n": 4,
+        "text": "Arean av en triangel \u00e4r \ue000\\frac{1}{2} \\cdot bas \\cdot h\\\"ojd\ue001. H\u00f6jden \u00e4r det VINKELR\u00c4TA avst\u00e5ndet fr\u00e5n det tredje h\u00f6rnet till basen (den linje vi ritar basen l\u00e4ngs).",
+        "tier": "detail",
+        "title": "Triangelarea \u2014 basformeln"
+      },
+      {
+        "n": 5,
+        "text": "V\u00e4lj AD som bas (vi vet redan att \ue000AD = 4\ue001). H\u00f6jden \u00e4r det vinkelr\u00e4ta avst\u00e5ndet fr\u00e5n E till linjen AD. E ligger p\u00e5 BC, och BC \u00e4r parallell med AD (motst\u00e5ende sidor i rektangeln). Avst\u00e5ndet mellan tv\u00e5 parallella sidor i en rektangel \u00e4r BREDDEN \u2014 allts\u00e5 sidan CD (eller lika l\u00e5nga AB).",
+        "tier": "essential",
+        "title": "Identifiera bas och h\u00f6jd f\u00f6r AED"
+      },
+      {
+        "n": 6,
+        "text": "Var som helst E befinner sig p\u00e5 BC \u00e4r dess vinkelr\u00e4ta avst\u00e5nd till AD samma tal \u2014 n\u00e4mligen CD. Att flytta E l\u00e4ngs BC \u00e4ndrar formen p\u00e5 triangeln men inte dess area, eftersom basen AD och h\u00f6jden CD \u00e4r desamma.",
+        "tier": "essential",
+        "title": "Nyckelinsikt: h\u00f6jden beror inte p\u00e5 var E ligger"
+      },
+      {
+        "n": 7,
+        "text": "Arean av AED = \ue000\\frac{1}{2} \\cdot AD \\cdot CD = \\frac{1}{2} \\cdot 4 \\cdot CD = 2 \\cdot CD\ue001. Vi beh\u00f6ver allts\u00e5 bara K\u00c4NNA TILL CD f\u00f6r att f\u00e5 ett konkret tal.",
+        "tier": "essential",
+        "title": "R\u00e4kna areaformeln"
+      },
+      {
+        "n": 8,
+        "text": "(1) s\u00e4ger \ue000CD = \\frac{19}{8} \\cdot AD\ue001. Vi vet redan att \ue000AD = 4\ue001, s\u00e5 \ue000CD = \\frac{19}{8} \\cdot 4 = \\frac{76}{8} = \\frac{19}{2}\ue001 cm.",
+        "tier": "essential",
+        "title": "\u00d6vers\u00e4tt p\u00e5st\u00e5ende (1)"
+      },
+      {
+        "n": 9,
+        "text": "Med \ue000CD = \\frac{19}{2}\ue001 blir arean \ue0002 \\cdot \\frac{19}{2} = 19\ue001 kvadratcentimeter. (1) r\u00e4cker ensamt f\u00f6r ett entydigt svar.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 10,
+        "text": "(2) s\u00e4ger \ue000BE = EC\ue001. Det betyder att E \u00e4r mittpunkten p\u00e5 BC \u2014 allts\u00e5 att b\u00e5de BE och EC \u00e4r 2 cm l\u00e5nga.",
+        "tier": "essential",
+        "title": "\u00d6vers\u00e4tt p\u00e5st\u00e5ende (2)"
+      },
+      {
+        "n": 11,
+        "text": "(2) ber\u00e4ttar VAR p\u00e5 BC E ligger, men s\u00e4ger ingenting om bredden CD. Och steg 6 visade att arean inte beror p\u00e5 var E ligger \u2014 bara p\u00e5 CD. S\u00e5 (2) bidrar med ingenting nytt om arean. Konkret: om CD = 1, blir arean 2; om CD = 100, blir arean 200 \u2014 alla m\u00f6jliga. Otillr\u00e4ckligt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 12,
+        "text": "S\u00e4tt \ue000AD = 4, CD = \\frac{19}{2}\ue001, placera E var som helst p\u00e5 BC. Rektangelns area \u00e4r \ue0004 \\cdot \\frac{19}{2} = 38\ue001. Triangel AED tar alltid exakt halva rektangelarean n\u00e4r basen \u00e4r en hel sida och tredje h\u00f6rnet \u00e4r p\u00e5 den motst\u00e5ende sidan: \ue000\\frac{38}{2} = 19\ue001 \u2713.",
+        "tier": "detail",
+        "title": "Verifiera (1)"
+      },
+      {
+        "n": 13,
+        "text": "(1) r\u00e4cker ensamt (ger CD \u2192 ger arean = 19). (2) r\u00e4cker inte ensamt (E:s position p\u00e5verkar inte arean, och CD \u00e4r ok\u00e4nt). Svaret \u00e4r A \u2014 tillr\u00e4ckligt i (1) men ej i (2). Insikten i en mening: n\u00e4r triangelns tredje h\u00f6rn ligger p\u00e5 en linje PARALLELL med basen, \u00e4r arean konstant oavsett h\u00f6rnets exakta l\u00e4ge p\u00e5 den linjen \u2014 s\u00e5 'var ligger E?' \u00e4r irrelevant information.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Triangel-p\u00e5-parallell-bas-strategin: om triangelns tredje h\u00f6rn ligger p\u00e5 en linje parallell med basen, \u00e4r arean konstant \u2014 h\u00f6jden \u00e4r avst\u00e5ndet mellan de parallella linjerna, inte 'fr\u00e5n h\u00f6rnet till basen' i n\u00e5gon mer komplicerad mening. Triggern: en punkt 'p\u00e5 sidan' av en rektangel/parallellogram betyder ofta 'positionen \u00e4r irrelevant f\u00f6r arean'."
+  }
+}

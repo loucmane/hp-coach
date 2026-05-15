@@ -1,0 +1,62 @@
+# Prose-register patterns to retire from Variant-C explanations.
+#
+# Each line is a Python regex (case-insensitive) flagged as
+# clunky/dated/office-memo Swedish. The scan tool
+# `audit/corpus_lint/register_polish.py` greps every Variant-C entry's
+# prose fields (solution_path, technique, pitfall, steps[].text,
+# distractors[].why_*) and routes flagged entries to a subagent for
+# contextual rewrite.
+#
+# DO NOT add patterns whose meaning depends on context that varies
+# per occurrence. The grep is mechanical; the rewrite is contextual.
+# If a pattern needs human judgment to flag (e.g. "är" is fine 99% of
+# the time but bad in this construction), leave it out and rely on
+# the subagent's prompt to catch register drift.
+#
+# Source: audit/_design_friction_points.md §2 + scout findings on
+# corpus-regen-wave2-verbal (2026-05-15).
+
+# ── Office-memo register — retire ────────────────────────────────────
+# "Notera att aloe och oboe ljudmässigt liknar varandra" — too formal.
+# Better: just state the relationship inline ("Aloe och oboe ljudar
+# lika men…").
+\bnotera att\b
+
+# "Kontrollera att problemet är specifikt…" — same memo voice.
+# Better: "Kolla om…" / "Se efter om…" / drop the verb entirely.
+\bkontrollera att\b
+
+# "Det är värt att notera att…" — meta-prose, just state the thing.
+\bdet är värt att\b
+
+# "I detta exempel…" — bureaucratic; we're INSIDE the example.
+\bi detta exempel\b
+
+# "Stäm av betydelsenyans" — original dogfood complaint.
+# Better: "Jämför betydelserna" / "Se hur de skiljer sig".
+\bstäm av\b
+
+# ── Anglicisms / direct EN→SV transfers ──────────────────────────────
+# "Låt oss läsa…" / "Låt oss anta…" — direct from "let us".
+# Swedish prefers imperative: "Läs…" / "Antag att…".
+\blåt oss\b
+
+# "Som vi ser" / "Som vi kan se" — anglicism + tour-guide voice.
+# Better: just state the observation.
+\bsom vi (ser|kan se)\b
+
+# "Nyckel: …" as a heading/lead-in. Swedish doesn't use the bare
+# "Nyckel:" — use "Knepet:" / "Trick:" / "Det viktiga:" / etc.
+\bnyckel\s*:
+
+# ── Formal answer-key voice — soften ─────────────────────────────────
+# "Korrekt svar är A" / "Rätt svar är A" — sounds like the official
+# answer key, not a coach. Better: "Då blir A rätt" / "A stämmer".
+\b(korrekt|rätt) svar är\b
+
+# ── Self-narration that doesn't add information ──────────────────────
+# "Fokusera på X" — usually filler ("look at X"). If it's followed
+# by a real instruction, the instruction can stand alone.
+# (Flag liberally; subagent decides whether to keep when it's truly
+# directive.)
+\bfokusera på\b

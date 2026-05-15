@@ -1,0 +1,222 @@
+{
+  "var-2017-kvant2-NOG-026": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (1)'s två villkor (TB-granne + G-D-icke-granne) räcker för att låsa.",
+        "why_wrong": "(1) lämnar två konfigurationer (D-T-B-G och G-T-B-D). Steg 5 listar dem."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "(2):s två icke-granne-villkor känns starka — man kan tro att de räcker.",
+        "why_wrong": "(2) lämnar flera konfigurationer (steg 8). Man kan komma fram till exempel både D-T-B-G och T-D-B-G som passar (2) ensamt om man räknar uttömmande."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Båda påståenden ger 'mycket information' — det är frestande att tro att båda räcker var för sig.",
+        "why_wrong": "Varken (1) eller (2) ensamt räcker (steg 6 och 8). D är striktare än C."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Pussel med fyra fåglar och tre villkor kan kännas 'överbestämda' eller 'motsägelsefulla'.",
+        "why_wrong": "Snittet av (1)'s och (2)'s kandidater är exakt ETT element (D-T-B-G). Tillsammans räcker (steg 9)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det luriga med pussel-NOG är att slumpa in en konfiguration som passar BÅDA påståenden och tro att den är unik — utan att tömma alla. Botemedlet: för varje påstående, enumerera ALLA kandidater (med liten brute-force) — sedan snitta.",
+    "solution_path": "(1) ger två möjliga ordningar: D-T-B-G eller G-T-B-D. (2) utesluter den andra (där T och G är grannar). Tillsammans återstår bara D-T-B-G — och längst till vänster sitter domherren. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Fyra fåglar — bofnik (B), domherre (D), gråsparv (G), talgoxe (T) — sitter på en rad i fyra positioner. Bofniken sitter inte längst till höger. Vi vill veta vilken fågel som sitter längst till vänster (position 1).",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Position 1 = vänster, position 4 = höger. Vi vet B ≠ 4. Det utesluter 6 av de 24 permutationerna (de där B sitter sist).",
+        "tier": "detail",
+        "title": "Sätt upp pusslet"
+      },
+      {
+        "n": 3,
+        "text": "'T sitter närmast till vänster om B.' Det betyder T och B är grannar och T är till vänster: T är i position n, B i n+1 för någon n ∈ {1, 2, 3}.",
+        "tier": "essential",
+        "title": "Översätt (1) — del 1"
+      },
+      {
+        "n": 4,
+        "text": "'G inte bredvid D.' G och D är inte i intilliggande positioner.",
+        "tier": "essential",
+        "title": "Översätt (1) — del 2"
+      },
+      {
+        "n": 5,
+        "text": "TB kan stå i (1,2), (2,3), eller (3,4). Sista fallet (3,4) gör B sist — fail (B ≠ 4).\nTB = (1,2): D, G fyller (3, 4). De är grannar — fail 'G inte bredvid D'.\nTB = (2,3): D, G fyller (1, 4). De är inte grannar — OK. Två möjliga ordningar: D@1, G@4 eller G@1, D@4.\nTvå konfigurationer: D-T-B-G eller G-T-B-D.",
+        "tier": "essential",
+        "title": "Räkna ut konfigurationer med (1)"
+      },
+      {
+        "n": 6,
+        "text": "Leftmost = D eller G. Inte unikt. (1) ENSAMT INTE TILLRÄCKLIGT.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 7,
+        "text": "'T inte bredvid G' och 'D inte bredvid B'. Plus premissen B ≠ 4.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 8,
+        "text": "Detta blir komplicerat. Pröva istället om (2) kan ge ett unikt svar. Försök t.ex. D-G-T-B: D@1, G@2, T@3, B@4. Men B@4 är förbjudet. Försök G-D-T-B: G@1, D@2, T@3, B@4 — B@4 fail. Försök D-T-B-G: D@1, T@2, B@3, G@4. T@2 och G@4 ej grannar ✓; D@1, B@3 ej grannar ✓. PASS.\nFörsök T-D-B-G: T@1, D@2, B@3, G@4. T@1 och G@4 ej grannar ✓; D@2, B@3 GRANNAR — fail.\nFörsök G-T-D-B: G@1, T@2 — grannar, fail.\nFörsök T-G-D-B: T@1, G@2 — grannar, fail.\nFörsök flera D-T-G-B, T-B-G-D etc. ger fler valida. Slutsatsen: (2) ensamt har flera lösningar — leftmost varierar. (2) ENSAMT INTE TILLRÄCKLIGT.",
+        "tier": "essential",
+        "title": "Räkna konfigurationer med (2) ensamt"
+      },
+      {
+        "n": 9,
+        "text": "Vi har två kandidater: D-T-B-G och G-T-B-D. Kontrollera (2) för båda:\nD-T-B-G: T@2, G@4 — ej grannar ✓; D@1, B@3 — ej grannar ✓. PASS (2).\nG-T-B-D: T@2, G@1 — GRANNAR! Fail 'T inte bredvid G'.\nBara D-T-B-G uppfyller båda.",
+        "tier": "essential",
+        "title": "Tillsammans — testa båda kandidaterna från (1)"
+      },
+      {
+        "n": 10,
+        "text": "Den enda ordningen som passar både (1) och (2) är D-T-B-G. Längst till vänster sitter D (domherre).",
+        "tier": "essential",
+        "title": "Slutsats för tillsammans"
+      },
+      {
+        "n": 11,
+        "text": "C = '(1) tillsammans med (2)'. Det matchar — bara båda tillsammans räcker. Steg 6 och 8 visar att vart för sig är otillräckligt; steg 9 låser till unikt svar.",
+        "tier": "detail",
+        "title": "Vad betyder svar C?"
+      },
+      {
+        "n": 12,
+        "text": "Ordning: D, T, B, G. Premiss B ≠ 4 ✓ (B@3). (1) T@2, B@3 — T direkt vänster om B ✓. G@4, D@1 — ej grannar ✓. (2) T@2, G@4 — ej grannar ✓. D@1, B@3 — ej grannar ✓. Alla villkor uppfyllda.",
+        "tier": "detail",
+        "title": "Verifiera D-T-B-G"
+      },
+      {
+        "n": 13,
+        "text": "Svaret är C — bara båda tillsammans räcker. Insikten i en mening: i pussel-NOG, lista kandidat-uppsättningar från varje påstående och snitta — om snittet har ETT element, är svaret unikt.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Pussel-snitt-strategin för NOG: enumerera kandidater för varje påstående separat, snitta uppsättningarna. Om snittet har en kandidat, räcker tillsammans (C). Om var för sig har en kandidat: A eller B eller D. Triggern: 'fyra objekt + olika ordningsvillkor' → 24 permutationer eller smartare uppsättnings-enumeration."
+  },
+  "var-2017-kvant2-NOG-027": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att 'lika många pojkar som flickor' (1) ger viktig information om kvoten — symmetri känns informationsrik.",
+        "why_wrong": "Symmetri mellan könen säger inget om HUR MÅNGA av varje som godkändes. Steg 4 visar olika scenarier som båda passar (1)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "När båda påståenden känns relevanta är 'båda tillsammans' ett tryggt val.",
+        "why_wrong": "(2) räcker ENSAMT (steg 7). Att lägga till (1) ger ingen extra information — det blir överflödigt. B är striktare och rätt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Båda påståenden låter informationsrika — det är lätt att tro att båda räcker.",
+        "why_wrong": "(1) räcker INTE (steg 4). D kräver att VART OCH ETT räcker, vilket inte gäller."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Med många siffror och två kategorier kan det kännas omöjligt att låsa fast en kvot.",
+        "why_wrong": "(2) ger explicita värden på x och y (12 och 12) — kvoten är 1 entydigt. Steg 7 låser."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det luriga är att (1) ('lika många pojkar som flickor') KÄNNS som en stark koppling, men säger inget om y (godkända totalt). Knepet: matcha varje påstående mot VAD FRÅGAN VILL HA — relationer mellan oberoende variabler räcker oftast inte.",
+    "solution_path": "(1) ger bara relationen P = F, inget om godkända — otillräcklig. (2) ger totalt 24, hälften godkända (y = 12), 12 flickor totalt (x = 12); alltså x/y = 12/12 = 1. Unikt. Bara (2) räcker. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "I en klass med flickor och pojkar gavs godkänt eller underkänt på ett prov. x = totalt antal flickor (godkända + underkända). y = totalt antal godkända (flickor + pojkar). Vi söker kvoten x/y.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Det är en 2x2-situation: kön × resultat. Fyra celler: F-G (godkända flickor), F-U (underkända flickor), P-G (godkända pojkar), P-U (underkända pojkar). x = F-G + F-U; y = F-G + P-G.",
+        "tier": "detail",
+        "title": "Sätt upp pusslet"
+      },
+      {
+        "n": 3,
+        "text": "'Lika många pojkar som flickor.' Totala pojkar = totala flickor. P = F.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 4,
+        "text": "P = F säger inget om hur många som ÄR GODKÄNDA. Säg klassen har 10 flickor + 10 pojkar, alla godkända: x = 10, y = 20, x/y = 0,5. Eller 10 flickor + 10 pojkar, alla underkända: x = 10, y = 0 → x/y odefinierat. Eller flera andra fördelningar med olika kvot. (1) ENSAMT INTE TILLRÄCKLIGT.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 5,
+        "text": "'Av klassens 24 elever fick hälften godkänt' — totalt 24, y = 12 godkända. 'Av klassens 12 flickor fick hälften underkänt' — 12 flickor totalt, alltså x = 12. Och 6 av dem underkända → 6 godkända.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 6,
+        "text": "x = 12 (flickor totalt). y = 12 (godkända totalt).",
+        "tier": "essential",
+        "title": "Räkna x och y från (2)"
+      },
+      {
+        "n": 7,
+        "text": "x/y = 12/12 = 1. Unikt värde.",
+        "tier": "essential",
+        "title": "Räkna kvoten"
+      },
+      {
+        "n": 8,
+        "text": "x = 12 och y = 12 är direkt utläsbart ur (2). x/y = 1, ett unikt tal. (2) ENSAMT RÄCKER.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 9,
+        "text": "24 elever totalt, 12 flickor → 12 pojkar. 12 godkända totalt, 12 underkända totalt. Bland flickorna: 6 godkända, 6 underkända. Bland pojkarna: 12 − 6 = 6 godkända, 12 − 6 = 6 underkända. Allt går ihop. Och x = 12 = y, alltså x/y = 1.",
+        "tier": "detail",
+        "title": "Verifiera (2) med full uppdelning"
+      },
+      {
+        "n": 10,
+        "text": "B = '(2) men ej i (1)' = bara (2) räcker. Det matchar våra slutsatser (steg 4: (1) räcker ej; steg 8: (2) räcker).",
+        "tier": "detail",
+        "title": "Vad betyder svar B?"
+      },
+      {
+        "n": 11,
+        "text": "A skulle gälla om bara (1) räckte (det gör den inte). C skulle kräva båda tillsammans (men (2) räcker ensamt — C är överflödigt). D skulle kräva båda var för sig (men (1) räcker inte). E skulle kräva att inget räcker.",
+        "tier": "detail",
+        "title": "Granska distraktorerna"
+      },
+      {
+        "n": 12,
+        "text": "Svaret är B — bara (2) räcker. Insikten i en mening: ett påstående som ger DIREKT värden på x och y räcker; ett som bara ger en relation mellan oberoende variabler räcker inte.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Direkt-värde-strategin: när frågan vill ha en kvot/produkt/skillnad mellan två variabler, leta efter ett påstående som ger BÅDA VÄRDENA explicit. Triggern: 'vad är x/y' + ett påstående med totaler för båda → direkt utläsbart."
+  }
+}

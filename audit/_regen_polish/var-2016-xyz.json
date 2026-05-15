@@ -1,0 +1,194 @@
+{
+  "var-2016-kvant1-XYZ-001": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som 'samla a med a och b med b' kan du falla för att skriva a^{2}xy + b^{2}xy — det ser ut som en 'parallell' faktorisering.",
+        "why_wrong": "Det skulle kräva att original-uttrycket vore a \\cdot ax + b \\cdot by + \\dots — alltså a multiplicerat med ax. Men ax + ay innehåller a i FÖRSTA potens, inte i andra. Steg 5 visar att rätt utbrytning ger a(x + y), inte a^{2}."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att se 'lika många a som b' och 'lika många x som y' och gissa en symmetrisk form som 2(ab + xy).",
+        "why_wrong": "2(ab + xy) = 2ab + 2xy = 2ab + 2xy — det innehåller termen ab (a gånger b) och xy (x gånger y), vilket är HELT andra produkter än de fyra ursprungstermerna. Sätt a=b=x=y=1: original ger 4, C ger 2(1+1)=4 av en slump — men sätt a=2, b=3, x=4, y=5 så ger C 2(6+20)=52 ≠ 45."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att slänga ihop alla bokstäver i en produkt: 2axy + 2bxy ser ut som 'allt med x och y'.",
+        "why_wrong": "2axy = 2 · a · x · y är en TRIPPELPRODUKT av tre variabler. Ursprungstermerna ax, ay, bx, by är var och en bara produkter av TVÅ variabler. Antalet faktorer per term stämmer inte — strukturellt fel form."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Gruppera termerna parvis: ax + ay ger a(x + y), bx + by ger b(x + y). Bryt sedan ut den gemensamma faktorn (x + y) och få (a + b)(x + y). Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du har uttrycket ax + by + bx + ay och ska hitta vilket av alternativen som är en omskrivning av samma uttryck. 'Motsvarar' betyder att uttrycken är lika för alla värden av a, b, x och y.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "När två bokstäver står direkt bredvid varandra utan tecken — som ax — är det underförstådd multiplikation: a gånger x. Detsamma gäller by, bx och ay.",
+        "tier": "detail",
+        "title": "Vad betyder ab?"
+      },
+      {
+        "n": 3,
+        "text": "Addition är kommutativ: du får flytta runt termer som adderas utan att ändra värdet. Ordna om så att termer med samma 'första bokstav' står ihop: ax + ay + bx + by.",
+        "tier": "essential",
+        "title": "Sortera om termerna"
+      },
+      {
+        "n": 4,
+        "text": "Att bryta ut en gemensam faktor är distributiva lagen baklänges: a \\cdot x + a \\cdot y = a(x + y). Du tar bort den gemensamma faktorn ur varje term och sätter den utanför en parentes.",
+        "tier": "detail",
+        "title": "Vad betyder 'bryta ut'?"
+      },
+      {
+        "n": 5,
+        "text": "I ax + ay finns a i båda termerna. Bryt ut a: ax + ay = a(x + y).",
+        "tier": "essential",
+        "title": "Bryt ut a ur de två första termerna"
+      },
+      {
+        "n": 6,
+        "text": "I bx + by finns b i båda. Bryt ut b: bx + by = b(x + y).",
+        "tier": "essential",
+        "title": "Bryt ut b ur de två sista termerna"
+      },
+      {
+        "n": 7,
+        "text": "Nu har du a(x + y) + b(x + y). Här är (x + y) samma parentes i båda termerna — det är en ny gemensam faktor.",
+        "tier": "essential",
+        "title": "Sätt ihop bitarna"
+      },
+      {
+        "n": 8,
+        "text": "Behandla (x + y) som ett enda block, kalla det K. Då är aK + bK = (a + b)K. Sätt tillbaka K = (x + y) och du får (a + b)(x + y).",
+        "tier": "essential",
+        "title": "Bryt ut (x + y)"
+      },
+      {
+        "n": 9,
+        "text": "Distributiva lagen åt rätt håll: (a + b)(x + y) = a \\cdot x + a \\cdot y + b \\cdot x + b \\cdot y = ax + ay + bx + by. Samma uttryck som vi började med.",
+        "tier": "detail",
+        "title": "Verifiera genom att multiplicera tillbaka"
+      },
+      {
+        "n": 10,
+        "text": "Sätt a=2, b=3, x=4, y=5. Original: 2·4 + 3·5 + 3·4 + 2·5 = 8 + 15 + 12 + 10 = 45. A: (2+3)(4+5) = 5·9 = 45. Stämmer.",
+        "tier": "detail",
+        "title": "Testa med konkreta tal"
+      },
+      {
+        "n": 11,
+        "text": "Uttrycket faktoriseras till (a + b)(x + y). Svaret är A. Insikten i en mening: när du ser fyra termer med två faktorer var och parvis gemensamma bokstäver, prova GRUPPERING — bryt ut parvis först, sedan den gemensamma parentesen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Grupperingsstrategin (parvis utbrytning): när du har fyra termer med två 'bokstavsgrupper' (t.ex. a/b och x/y), gruppera dem parvis så att varje par delar en faktor. Bryt ut faktorn ur varje par; om de två resulterande parenteserna är identiska, bryt ut den också. Trigger: 'fyra termer, två och två med gemensam bokstav' → parvis gruppering."
+  },
+  "var-2016-kvant1-XYZ-010": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du fastnar vid att 'x är litet, så xy är ännu mindre' och drar slutsatsen 0 < xy < x — det är den klassiska reaktionen när man bara tänker på en av faktorerna.",
+        "why_wrong": "y är större än 1, alltså FÖRSTORAR den x. Steg 5 visar att xy > x, inte xy < x. Testa x=0,5, y=4: xy=2, vilket är större än x=0,5, inte mindre."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att tro att 'xy är fortfarande litet' och därför mellan 0 och 1.",
+        "why_wrong": "xy kan vara större än 1 — t.ex. x=0,5, y=4 ger xy = 2. Steg 10 visar att xy inte alltid är mindre än 1. B garanteras inte."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du tar med villkoret xy > x men missar att xy < y, kan du tro att xy ligger mellan x och 1.",
+        "why_wrong": "xy är inte alltid mindre än 1 (steg 10). Exempel: x=0,5, y=4 ger xy=2, vilket är större än 1. Den övre gränsen är y, inte 1."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Vanligaste fallan är att stanna vid EN av faktorerna och dra slutsatsen 'xy är litet' eller 'xy är stort'. Botemedlet: jämför xy med BÅDA faktorerna separat — det ger två säkra olikheter som tillsammans ringar in xy.",
+    "solution_path": "Eftersom 0 < x < 1 och y > 1: x·y är större än x (eftersom y > 1 förstorar x) och mindre än y (eftersom x < 1 förminskar y). Alltså x < xy < y. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Givet att 0 < x < 1 < y. Du ska välja det alternativ som SÄKERT gäller för xy.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "x är ett positivt tal mellan 0 och 1 (alltså ett 'litet' positivt tal, som 0,3). y är ett tal större än 1 (alltså 'stort', som 4).",
+        "tier": "detail",
+        "title": "Vad säger villkoret om x och y?"
+      },
+      {
+        "n": 3,
+        "text": "När du multiplicerar ett positivt tal med något som är större än 1, blir resultatet STÖRRE än det ursprungliga talet. Exempel: 0,3 · 4 = 1,2, vilket är större än 0,3.",
+        "tier": "detail",
+        "title": "Multiplikation med tal större än 1"
+      },
+      {
+        "n": 4,
+        "text": "När du multiplicerar ett positivt tal med något mellan 0 och 1, blir resultatet MINDRE än det ursprungliga talet. Exempel: 4 · 0,3 = 1,2, vilket är mindre än 4.",
+        "tier": "detail",
+        "title": "Multiplikation med tal mellan 0 och 1"
+      },
+      {
+        "n": 5,
+        "text": "xy = x · y. Eftersom y > 1 är xy > x (steg 3). Den vänstra olikheten x < xy är säker.",
+        "tier": "essential",
+        "title": "Jämför xy med x"
+      },
+      {
+        "n": 6,
+        "text": "xy = y · x. Eftersom 0 < x < 1 är xy < y (steg 4). Den högra olikheten xy < y är säker.",
+        "tier": "essential",
+        "title": "Jämför xy med y"
+      },
+      {
+        "n": 7,
+        "text": "x < xy < y — detta är säkert. Det matchar alternativ D exakt.",
+        "tier": "essential",
+        "title": "Sätt ihop olikheterna"
+      },
+      {
+        "n": 8,
+        "text": "Sätt x = 1/2 och y = 4. Då är xy = 2. Är x < xy < y? 1/2 < 2 < 4 — ja, stämmer.",
+        "tier": "detail",
+        "title": "Testa konkret för säkerhets skull"
+      },
+      {
+        "n": 9,
+        "text": "Sätt x = 0,9 och y = 1,1. Då är xy = 0,99. Är x < xy < y? 0,9 < 0,99 < 1,1 — stämmer fortfarande. Tar man x = 0,01 och y = 100, blir xy = 1 vilket ligger mellan 0,01 och 100. Olikheten håller för alla giltiga x och y.",
+        "tier": "detail",
+        "title": "Testa nära gränserna"
+      },
+      {
+        "n": 10,
+        "text": "xy kan vara större än 1 (x=0,5, y=4 ger xy = 2) eller mindre än 1 (x=0,5, y=1,2 ger xy = 0,6). Så alternativ som anger en specifik gräns vid 1 (A, B, C) håller inte alltid.",
+        "tier": "essential",
+        "title": "Kolla att xy inte garanteras vara > eller < 1"
+      },
+      {
+        "n": 11,
+        "text": "Svaret är D, x < xy < y. Insikten i en mening: ett tal mellan 0 och 1 KRYMPER det du multiplicerar med, och ett tal större än 1 FÖRSTORAR — så xy hamnar säkert mellan x och y.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Olikhets-multiplikationsstrategin: positiv multiplikation med tal > 1 förstorar; positiv multiplikation med tal < 1 krymper. När du har 0 < x < 1 < y och vill veta var xy hamnar, är svaret alltid x < xy < y. Triggern: 'tal mellan 0 och 1 ggr tal större än 1' → produkten ligger mellan de två."
+  }
+}

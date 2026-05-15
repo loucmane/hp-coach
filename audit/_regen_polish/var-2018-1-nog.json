@@ -1,0 +1,103 @@
+{
+  "var-2018-1-kvant1-NOG-026": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (1) räcker eftersom 60 kvinnor + 140 totalt kvällstidning genast ger 80 män kvällstidning.",
+        "why_wrong": "Steg 4–5: vi får MK = 80, men det säger inget om MM, alltså inte om totala antalet män. Otillräckligt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbtolkning av (2) som 'lika många män som kvinnor' kan tro att vi vet att antalet män = 200.",
+        "why_wrong": "Steg 6–7: (2) säger bara att MM = KM = 130, alltså att män och kvinnor är lika MÅNGA SOM VALDE MORGONTIDNING — inte att de är lika många totalt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om varje påstående 'ser ut' att ge en konkret siffra (60 kvinnor kvällstidning, lika många män som kvinnor morgon), kan det kännas som att båda räcker ensamma.",
+        "why_wrong": "Konkreta siffror räcker inte automatiskt. Steg 5 och 7: varje påstående lämnar två obekanta otäckta. D är felaktig."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'ingen kombination räcker' när problem ser krångligt ut.",
+        "why_wrong": "Steg 8: tillsammans har vi exakt det vi behöver — MK = 80 och MM = 130, summa 210. Fullt tillräckligt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det luriga är att stirra sig blind på de tal som GES i påståendet och missa de celler som FORTFARANDE är okända. Botemedlet: rita tabellen och markera vilka celler du fortfarande inte vet — då blir otillräckligheten synlig.",
+    "solution_path": "(1) ensamt: ger antal män som svarade kvällstidning (80) men inte totala antalet män. (2) ensamt: ger män som svarade morgontidning (130) men inte de som svarade kvällstidning. Tillsammans: 80 + 130 = 210 män. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "400 personer (kvinnor + män) tillfrågades. 140 svarade kvällstidningen, alltså 260 svarade morgontidningen. Du söker antalet MÄN totalt.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Tänk en tabell: rader = kön (man/kvinna), kolumner = tidning (kvälls/morgon). Du söker summan av män-raden. Råder du har: kvällskolumnen summa = 140, morgonkolumnen summa = 260, totalsumma = 400.",
+        "tier": "essential",
+        "title": "Sätt upp en 2x2-tabell"
+      },
+      {
+        "n": 3,
+        "text": "Kalla MK = män kvällstidning, KK = kvinnor kvällstidning, MM = män morgontidning, KM = kvinnor morgontidning. Totalt: MK + KK = 140, MM + KM = 260, MK + MM = män totalt (det söker vi).",
+        "tier": "essential",
+        "title": "Beteckningar"
+      },
+      {
+        "n": 4,
+        "text": "Då är MK = 140 − 60 = 80 (män som svarade kvällstidning). Bra. Men för att hitta MM behöver vi mer — KM är okänt, alltså MM också. Vi har bara hittat 80 + MM. Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt: KK = 60"
+      },
+      {
+        "n": 5,
+        "text": "Anta KM = 100. Då MM = 160. Antal män totalt = 80 + 160 = 240. Eller anta KM = 150. Då MM = 110. Antal män = 80 + 110 = 190. Båda passar (1) men ger olika svar. Otillräckligt.",
+        "tier": "detail",
+        "title": "Konkret exempel som visar tvetydighet i (1)"
+      },
+      {
+        "n": 6,
+        "text": "Lika många män som kvinnor svarade morgon → MM = KM. Sedan MM + KM = 260 → 2·MM = 260 → MM = 130. Bra. Men antalet män totalt är MK + MM = MK + 130. MK är okänt utan (1). Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt: MM = KM"
+      },
+      {
+        "n": 7,
+        "text": "Anta MK = 50. Då antal män = 50 + 130 = 180. Anta MK = 100. Då antal män = 100 + 130 = 230. Båda passar (2). Otillräckligt.",
+        "tier": "detail",
+        "title": "Konkret exempel som visar tvetydighet i (2)"
+      },
+      {
+        "n": 8,
+        "text": "Från (1): MK = 80. Från (2): MM = 130. Antal män totalt = MK + MM = 80 + 130 = 210.",
+        "tier": "essential",
+        "title": "Test (1) + (2) tillsammans"
+      },
+      {
+        "n": 9,
+        "text": "Antal kvinnor = 400 − 210 = 190. KK = 60 (givet), KM = 130 (lika med MM). Kontroll: KK + KM = 60 + 130 = 190 ✓. MK + KK = 80 + 60 = 140 (kväll) ✓. MM + KM = 130 + 130 = 260 (morgon) ✓. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 10,
+        "text": "Med (1) och (2) har vi fyra obekanta (MK, KK, MM, KM) och fyra ekvationer (MK+KK=140, MM+KM=260, KK=60, MM=KM). Determinerat system med unik lösning.",
+        "tier": "detail",
+        "title": "Räkna ekvationer mot obekanta"
+      },
+      {
+        "n": 11,
+        "text": "Svaret är C — bara tillsammans räcker. Insikten i en mening: i NOG-problem med flera kategorier (kön × val), bygg en 2x2-tabell och räkna hur många av cellerna varje påstående fixerar.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Tabellstrategin för NOG-kategoriproblem: bygg en 2x2-tabell (eller större) av kategorierna, fyll i kända summor, räkna hur många celler varje påstående fastställer. Triggern: två kategoriska variabler (kön × val, färg × form, etc.) med totalantal givet."
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "var-2019-kvant1-XYZ-002": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att felet ligger redan i originalformuleringen.",
+        "why_wrong": "Steg 5: rad 1 är ordagrant originalekvationen. Inget fel där."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 'felet är där siffrorna förändras' — i steg 3 syns 5x−60 första gången.",
+        "why_wrong": "Steg 7: 5x−60 = 3x+20 stämmer med korrekt distribution. Raden är riktig."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är lätt att titta på sista steget (x = 20) — det är där fel-svaret syns.",
+        "why_wrong": "Steg 8: subtraktions-aritmetiken är fel där, men det räknas som EN konsekvens av den asymmetri som introducerades redan i steg 2."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Många dras till sista raden eftersom det är där det fel SVARET visas. Botemedlet: börja granska från RAD 1 och gå framåt — felet sitter där det FÖRSTA gången avviker, inte där det syns mest.",
+    "solution_path": "Räkna ut båda sidor korrekt: 5(x−12) = 5x−60 och 3(x+5)+5 = 3x+20. Johannas steg 2 hoppar över vänster sidas distribution medan höger sida förenklas — felet ligger där. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Johanna löste 5(x−12) = 3(x+5)+5 felaktigt i fyra steg och fick x = 20. Vilket av stegen 1–4 introducerade felet?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "När du har a(b+c) måste a gångras med VARJE term inuti parentesen: a(b+c) = a \\cdot b + a \\cdot c.",
+        "tier": "detail",
+        "title": "Distributiva lagen"
+      },
+      {
+        "n": 3,
+        "text": "3(x+5) + 5 = 3·x + 3·5 + 5 = 3x + 15 + 5 = 3x + 20.",
+        "tier": "essential",
+        "title": "Räkna höger sida korrekt"
+      },
+      {
+        "n": 4,
+        "text": "5(x−12) = 5·x − 5·12 = 5x − 60.",
+        "tier": "essential",
+        "title": "Räkna vänster sida korrekt"
+      },
+      {
+        "n": 5,
+        "text": "Steg 1 visar 5(x−12) = 3(x+5)+5 — det är originalekvationen oförändrad. Inget fel.",
+        "tier": "essential",
+        "title": "Granska Johannas steg 1"
+      },
+      {
+        "n": 6,
+        "text": "Steg 2 visar 5(x−12) = 3x+20. Höger sida är förenklad korrekt, men vänster sida är fortfarande på parentes-formen. Det är ASYMMETRISKT — facit pekar ut detta som felet.",
+        "tier": "essential",
+        "title": "Granska Johannas steg 2"
+      },
+      {
+        "n": 7,
+        "text": "Steg 3: 5x − 60 = 3x + 20. Detta matchar vår korrekta uträkning (steg 3 och 4 ovan). OK.",
+        "tier": "essential",
+        "title": "Granska Johannas steg 3"
+      },
+      {
+        "n": 8,
+        "text": "Steg 4: 2x = 40. Korrekt skulle vara 5x − 3x = 20 + 60 → 2x = 80, INTE 40. Aritmetiken i steg 4 är också felaktig.",
+        "tier": "essential",
+        "title": "Granska Johannas steg 4"
+      },
+      {
+        "n": 9,
+        "text": "Det finns två aritmetiska problem: asymmetrin i steg 2 (höger förenklad, vänster inte) och subtraktionen i steg 4. Facit identifierar steg 2 som felet — den första rad där en sida behandlas annorlunda än den andra.",
+        "tier": "essential",
+        "title": "Vilket är 'felet'?"
+      },
+      {
+        "n": 10,
+        "text": "5(x−12) = 3(x+5) + 5 → 5x − 60 = 3x + 20 → 2x = 80 → x = 40. Då blir x = 40, inte 20.",
+        "tier": "essential",
+        "title": "Lös ekvationen korrekt"
+      },
+      {
+        "n": 11,
+        "text": "Sätt in x = 40: vänster = 5(40−12) = 5·28 = 140. Höger = 3(40+5) + 5 = 3·45 + 5 = 140. ✓",
+        "tier": "essential",
+        "title": "Sanity-check"
+      },
+      {
+        "n": 12,
+        "text": "Svaret är B — felet introducerades i steg 2. Insikten i en mening: när du granskar någon annans uträkning rad för rad, räkna SJÄLV och peka ut den FÖRSTA raden som inte matchar din egen räkning — där sitter felet.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Granskningsstrategi: när uppgiften visar en uträkning och frågar 'i vilket steg är felet', räkna SJÄLV från originalekvationen och peka ut den första rad som inte matchar din räkning."
+  },
+  "var-2019-kvant2-XYZ-009": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att tro 'radien är 10 (samma som katetlängden)' och få omkrets 20π.",
+        "why_wrong": "Steg 6: radien är avståndet från (5, 5) till kateterna — det är 5, inte 10. Att placera koordinaterna hjälper avläsningen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta '10\\sqrt{2}\\pi' om man tror radien är halva hypotenusan.",
+        "why_wrong": "Steg 6: cirkeln tangerar kateterna, inte hypotenusan. Radien är 5 (halva katetlängden), inte halva hypotenusan (5\\sqrt{2})."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många försöker använda hypotenusan direkt och gissar 20\\sqrt{2}\\pi.",
+        "why_wrong": "Steg 6 och 7: avståndet från medelpunkten till tangentlinjen MÅSTE vara radien. Hypotenusan är inte tangent — kateterna är."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att tro att radien är halva hypotenusan i en likbent rätvinklig triangel. Botemedlet: hypotenusan är inte tangent här — kateterna är. Mät avståndet från medelpunkten till de korrekta tangentlinjerna.",
+    "solution_path": "Likbent rätvinklig triangel med area 50 har katet 10 (eftersom (1/2)·a² = 50 → a = 10). Cirkelns medelpunkt på hypotenusans mittpunkt har radie 5 (avstånd till kateterna). Omkrets = 2πr = 10π. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Triangel ABC är LIKBENT och har HYPOTENUSAN AC — alltså är den rätvinklig vid B. En cirkel har medelpunkt på mitten av AC och tangerar både AB och BC. Triangelarea = 50 cm². Hitta cirkelns omkrets.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "En rätvinklig triangel där de två kateterna är LIKA långa. Vinkeln vid den räta är 90°, de andra två är 45° var.",
+        "tier": "detail",
+        "title": "Vad betyder 'likbent rätvinklig triangel'?"
+      },
+      {
+        "n": 3,
+        "text": "Med katet a: arean = (1/2)·a·a = a²/2 = 50, så a² = 100 → a = 10 cm. Båda kateter är 10 cm.",
+        "tier": "essential",
+        "title": "Räkna ut sidan"
+      },
+      {
+        "n": 4,
+        "text": "Sätt B = (0, 0), A = (10, 0), C = (0, 10). Då AB ligger på x-axeln, BC på y-axeln, AC är hypotenusan.",
+        "tier": "detail",
+        "title": "Placera triangeln"
+      },
+      {
+        "n": 5,
+        "text": "Mittpunkt = ((10 + 0)/2, (0 + 10)/2) = (5, 5).",
+        "tier": "essential",
+        "title": "Hitta mittpunkten av AC"
+      },
+      {
+        "n": 6,
+        "text": "Cirkelns medelpunkt är (5, 5) och den TANGERAR både AB (x-axeln) och BC (y-axeln). Avståndet från (5, 5) till x-axeln (y = 0) är 5. Avståndet till y-axeln är 5. Båda lika — alltså är radien r = 5 cm.",
+        "tier": "essential",
+        "title": "Cirkelns radie"
+      },
+      {
+        "n": 7,
+        "text": "En cirkel TANGERAR en linje när den nuddar linjen i exakt EN punkt. Det inträffar när avståndet från cirkelmedelpunkten till linjen är lika med RADIEN.",
+        "tier": "detail",
+        "title": "Vad är 'tangera'?"
+      },
+      {
+        "n": 8,
+        "text": "Omkretsen av en cirkel är 2\\pi r.",
+        "tier": "detail",
+        "title": "Omkretsformeln"
+      },
+      {
+        "n": 9,
+        "text": "Omkrets = 2π · 5 = 10π cm.",
+        "tier": "essential",
+        "title": "Räkna omkretsen"
+      },
+      {
+        "n": 10,
+        "text": "Hypotenusan AC har längd \\sqrt{10^2 + 10^2} = \\sqrt{200} = 10\\sqrt{2} cm ≈ 14,1 cm. Cirkeln har diameter 10 (= 2·5) — passar bra inom triangeln.",
+        "tier": "detail",
+        "title": "Sanity-check mot hypotenusan"
+      },
+      {
+        "n": 11,
+        "text": "Svaret är A — omkrets 10π cm. Insikten i en mening: för en cirkel med medelpunkt på mitten av hypotenusan som tangerar kateterna, är RADIEN = halva katetlängden (eftersom kateten är vinkelrät axel och avståndet till axeln är just halva katetlängden).",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Inskriven cirkel i rätvinklig triangel: när cirkelns medelpunkt ligger på en sida (typ mittpunkten av hypotenusan) och tangerar de andra två, är radien = avståndet från medelpunkten till tangentlinjen. Triggern: 'cirkel tangerar kateter, medelpunkt på hypotenusan' → koordinatsätt och mät avstånd."
+  }
+}
