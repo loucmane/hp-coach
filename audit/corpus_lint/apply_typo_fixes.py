@@ -89,6 +89,10 @@ def apply_to_text(text: str, replacements: list, counts: dict) -> str:
     for pat, correct, label in replacements:
         def _repl(m, _correct=correct):
             matched = m.group(0)
+            # Empty replacement (e.g. page-header bleed stripping) — skip
+            # the case-preservation branch since there's no first char.
+            if not _correct:
+                return ""
             if matched.isupper() and len(matched) > 1:
                 return _correct.upper()
             elif matched and matched[0].isupper():
