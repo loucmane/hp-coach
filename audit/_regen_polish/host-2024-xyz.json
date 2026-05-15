@@ -1,0 +1,98 @@
+{
+  "host-2024-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att lösa s^{2} = 16 och vid en stressad glömsk stund skriva s = 2 (som om \\sqrt{16} = 2).",
+        "why_wrong": "Steg 8-9: \\sqrt{16} = 4, inte 2. Kom ihåg att 2^{2} = 4 — vi söker det tal vars kvadrat är 16, inte 4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid s² = 16 och tror att svaret ÄR 16, eller glömmer att ta roten ur och tar s^{2} = 64 rakt av och får s = 8.",
+        "why_wrong": "Steg 7 visar att 64 ska delas med 4 först — du har 4s^{2}, inte s^{2}, på vänster sida. Sedan ger steg 8 s = 4, inte 8."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du missar att slå ihop 2s^{2}-termerna och tar s^{2} = 64 direkt, OCH glömmer att ta roten, landar du på 64 — men 16 är det näst-närmaste värdet.",
+        "why_wrong": "Steg 6-8 visar hela kedjan: 4s^{2} = 64 → s^{2} = 16 → s = 4. Att hoppa över rotsteget eller divisionssteget ger fel svar."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Steget som glöms bort: när du löst {O}s^{2}{C} måste du komma ihåg att ta kvadratroten för att få s själv. Det är inte samma sak. Botemedlet: skriv alltid ut 's² = ...' EXPLICIT på en egen rad innan du tar roten — då glömmer du inte bort steget.",
+    "solution_path": "För en kvadrat gäller d = s\\sqrt{2}, så d^{2} = 2s^{2}. Sätt in: 2s^{2} + 2s^{2} = 4s^{2} = 64, alltså s^{2} = 16 och s = 4. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "En kvadrat har sidan s cm och diagonalen d cm. Vi får villkoret 2s^{2} + d^{2} = 64 och ska hitta s. Vi har två obekanta (s och d) men bara en ekvation — det behövs en relation till mellan s och d, och den kommer från geometrin.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Att kvadrera betyder att gångra ett tal med sig självt: s^{2} = s \\cdot s. Om s = 3 så är s^{2} = 9; om s = 4 så är s^{2} = 16.",
+        "tier": "detail",
+        "title": "Vad betyder s² (kvadrera)?"
+      },
+      {
+        "n": 3,
+        "text": "En diagonal i en kvadrat delar kvadraten i två rätvinkliga trianglar med katetrar s och s och hypotenusa d. Pythagoras sats säger: s^{2} + s^{2} = d^{2}, dvs d^{2} = 2s^{2}.",
+        "tier": "essential",
+        "title": "Kvadratens diagonal: Pythagoras"
+      },
+      {
+        "n": 4,
+        "text": "I en rätvinklig triangel är summan av kvadraterna på katetrarna lika med kvadraten på hypotenusan: a^{2} + b^{2} = c^{2}, där c är den längsta sidan. Här är båda katetrar = s (kvadratens sida), och hypotenusan är diagonalen d.",
+        "tier": "detail",
+        "title": "Vad säger Pythagoras sats?"
+      },
+      {
+        "n": 5,
+        "text": "Vi vet att d^{2} = 2s^{2}. Sätt in det i villkoret 2s^{2} + d^{2} = 64: 2s^{2} + 2s^{2} = 64.",
+        "tier": "essential",
+        "title": "Substituera d² med 2s²"
+      },
+      {
+        "n": 6,
+        "text": "2s^{2} och 2s^{2} är liknande termer (samma variabel-del s²), så koefficienterna adderas: 2s^{2} + 2s^{2} = 4s^{2}. Ekvationen blir 4s^{2} = 64.",
+        "tier": "essential",
+        "title": "Slå ihop liknande termer"
+      },
+      {
+        "n": 7,
+        "text": "Dela båda sidor med 4: s^{2} = 64/4 = 16. Nu står s² ensamt.",
+        "tier": "essential",
+        "title": "Dela med 4"
+      },
+      {
+        "n": 8,
+        "text": "För att få s från s² tar du kvadratroten av båda sidor: s = \\sqrt{16} = 4. (Vi väljer det positiva värdet eftersom en sidlängd inte kan vara negativ.)",
+        "tier": "essential",
+        "title": "Ta roten ur"
+      },
+      {
+        "n": 9,
+        "text": "\\sqrt{16} är det positiva tal som gångrat med sig självt ger 16. Eftersom 4 \\cdot 4 = 16 är \\sqrt{16} = 4.",
+        "tier": "detail",
+        "title": "Vad betyder kvadratroten?"
+      },
+      {
+        "n": 10,
+        "text": "Med s = 4 blir d^{2} = 2 \\cdot 16 = 32, alltså d = \\sqrt{32} \\approx 5{,}66. Kontrollera villkoret: 2 \\cdot 16 + 32 = 32 + 32 = 64. Stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 11,
+        "text": "s = 4 cm. Svaret är B. Insikten i en mening: när kvadrat-geometrin nämns räknar du fram diagonalen med Pythagoras (d^{2} = 2s^{2}), sedan blir villkoret en ren ekvation i s².",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Geometri-i-ekvation-strategin: när en geometrisk figur (kvadrat, rektangel, rätvinklig triangel) nämns tillsammans med en ekvation i sidor och diagonaler, översätt geometrin till en algebrarelation (för kvadrat: d² = 2s²) och substituera. Triggern: 'sida och diagonal nämns i samma villkor' → Pythagoras först, algebra sedan."
+  }
+}

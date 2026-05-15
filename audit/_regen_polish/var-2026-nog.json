@@ -1,0 +1,103 @@
+{
+  "var-2026-kvant1-NOG-028": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (1) räcker — '10 mjuka av 90 cm' är ett konkret tal som känns substantiellt.",
+        "why_wrong": "Steg 5: (1) berättar bara om de 20 madrasserna à 90 cm — vi vet inget om de 15 à 120 cm. Antalet mjuka totalt är inte låst."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man missar att (2) ensam räcker, kan det kännas som om båda påståendena behövs tillsammans.",
+        "why_wrong": "Steg 8: (2) räcker ensam. (1) ger inte ytterligare nödvändig information."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om man tror att båda räcker, hamnar man på D.",
+        "why_wrong": "Steg 5: (1) ensam räcker inte — bara (2) gör det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'tabellen är komplex — för många variabler'.",
+        "why_wrong": "Tabellen har bara fyra celler totalt, och 35 - hårda-totalt = mjuka-totalt är en direkt räkning. Steg 7 låser det."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är vanligt att gå på 'mest fyllig info' i stället för 'minst räckande info' — (1) har två deluppgifter men låser bara halva tabellen. Botemedlet: räkna explicit hur många celler i 2×2-tabellen som låses av varje påstående.",
+    "solution_path": "(1) säger 20 är 90 cm, 10 av dem mjuka. Återstår 15 madrasser à 120 cm — hur många mjuka bland dessa är okänt. (2) säger att 10 + 6 = 16 är hårda. Då är resterande 35 − 16 = 19 mjuka. (2) ensam räcker — svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Affären har 35 madrasser. Varje är antingen hård eller mjuk, OCH antingen 90 cm eller 120 cm bred. Frågan: hur många är MJUKA (oavsett bredd)?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Tänk på madrasserna i en 2×2-tabell: rader = hård/mjuk, kolumner = 90/120 cm. Total = 35. Vi söker rad-summan för 'mjuk'.",
+        "tier": "detail",
+        "title": "Strukturera i en korstabell"
+      },
+      {
+        "n": 3,
+        "text": "(1): 20 är 90 cm, varav hälften (10) är mjuka. Då finns 10 hårda 90 cm-madrasser. Återstår 35 - 20 = 15 madrasser à 120 cm.",
+        "tier": "essential",
+        "title": "Analysera (1) ensamt"
+      },
+      {
+        "n": 4,
+        "text": "Bland de 15 120-cm-madrasserna vet vi inte uppdelningen hård/mjuk. Kan vara 0 mjuka eller 15 mjuka eller någonstans mitten.",
+        "tier": "essential",
+        "title": "Vad är okänt efter (1)?"
+      },
+      {
+        "n": 5,
+        "text": "Nej — totala antalet mjuka är 10 (från 90 cm) plus okänt antal (från 120 cm). Inte unikt. (1) ensam räcker INTE.",
+        "tier": "essential",
+        "title": "Räcker (1) ensamt?"
+      },
+      {
+        "n": 6,
+        "text": "(2): av de HÅRDA madrasserna är 10 stycken 90 cm och 6 stycken 120 cm. Total hårda = 10 + 6 = 16.",
+        "tier": "essential",
+        "title": "Analysera (2) ensamt"
+      },
+      {
+        "n": 7,
+        "text": "Mjuka = totalt - hårda = 35 - 16 = 19. Entydigt.",
+        "tier": "essential",
+        "title": "Räkna ut totalt antal mjuka från (2)"
+      },
+      {
+        "n": 8,
+        "text": "Ja — antalet mjuka är 19. (2) ensam räcker.",
+        "tier": "essential",
+        "title": "Räcker (2) ensamt?"
+      },
+      {
+        "n": 9,
+        "text": "Från (1): 10 mjuka i 90 cm; alltså 10 hårda i 90 cm (matchar (2)). Då är de övriga 15 madrasserna 120 cm. Av dem är 6 hårda (från (2)), så 9 är mjuka. Total mjuka = 10 + 9 = 19. Stämmer.",
+        "tier": "detail",
+        "title": "Sanity-check: stämmer (1) och (2) ihop?"
+      },
+      {
+        "n": 10,
+        "text": "Nej — (2) ensam ger 35 - 16 = 19. (1) bidrar med extra info men behövs inte för att räkna ut antalet mjuka.",
+        "tier": "detail",
+        "title": "Behöver vi (1) givet (2)?"
+      },
+      {
+        "n": 11,
+        "text": "(1) ensam räcker inte; (2) ensam räcker. Svaret är B. Insikten i en mening: när du söker en rad- eller kolumn-summa i en 2×2-tabell, räcker den ANDRA rad-/kolumn-summan via totalen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Korstabell-strategin för NOG: med två binära variabler (här hård/mjuk × bredd) bildar madrasserna en 2×2-tabell. För att hitta en rad-summa räcker den motsvarande KOLUMN-summan plus totalen — eller alla cellerna i den andra raden. Triggern: '2×2-tabell + fråga om en rad/kolumn → räkna via komplement'."
+  }
+}

@@ -1,0 +1,454 @@
+{
+  "var-2022-2-kvant1-NOG-023": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (2) ensamt är otillräckligt eftersom det börjar med \"röda\" och man söker \"vita minus röda\" — kanske känns det \"baklänges\".",
+        "why_wrong": "Steg 7–9 visar att (2) ger R = 5 OCH förhållandet, vilket räcker för att räkna V = 10 och V − R = 5. Ordningen av variablerna i påståendet spelar ingen roll."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelvänt: om man tror att (1) ger för mycket information \"i för många riktningar\" och inte räcker ensamt, kan man gissa B.",
+        "why_wrong": "Steg 4–6 visar att (1) ger V = 10 direkt och R = V/2 = 5 — fullständigt bestämt. Båda variabler är låsta från enbart (1)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid \"varje påstående ger bara EN variabel direkt\" och tror att man behöver båda för att fastställa båda variabler.",
+        "why_wrong": "Det är fel: varje påstående ger MER än ett namngivet tal — det ger också ett FÖRHÅLLANDE. (1) säger 10 vita PLUS att röda är hälften — alltså R = 5. Ekvationer mot obekanta-räkningen ger 2 ekvationer i båda fall."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta \"jag ser bilar och färger men ingen konkret matematik — kanske går det inte lösa\".",
+        "why_wrong": "Steg 4–8 visar att båda påståendena ger fullt definierad numerisk lösning. E gäller bara när påståendena är motsägelsefulla eller saknar information helt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "En vanlig fälla är att räkna varje påstående som \"en bit information\" i stället för att räkna alla ekvationer de implicerar. Botemedlet: efter att du läst ett påstående, skriv ut ALLA ekvationer det ger — \"10 vita, hälften så många röda\" är två separata ekvationer.",
+    "solution_path": "Båda påståendena ger numeriskt: (1) 10 vita, 5 röda → diff = 5. (2) 5 röda, 10 vita → diff = 5. Varje påstående ensamt räcker. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Anton mötte ett antal bilar som alla var antingen vita eller röda. Frågan: hur många FLER vita än röda? Vi söker skillnaden V − R, där V = antal vita och R = antal röda.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "NOG frågar inte om svaret är rätt — utan om informationen RÄCKER för att hitta ETT unikt svar. Om informationen lämnar flera möjliga svar är den otillräcklig, även om vi kan ringa in intervallet.",
+        "tier": "detail",
+        "title": "Vad betyder \"tillräcklig information\" i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "V = antal vita bilar (positivt heltal). R = antal röda bilar (icke-negativt heltal, kan vara 0 i princip, men problemet implicerar att båda finns). Vi vill hitta V − R.",
+        "tier": "essential",
+        "title": "Sätt upp variablerna"
+      },
+      {
+        "n": 4,
+        "text": "\"Anton mötte 10 vita bilar\" → V = 10. \"Antalet röda var hälften av antalet vita\" → R = V/2 = 10/2 = 5.",
+        "tier": "essential",
+        "title": "Översätt påstående (1)"
+      },
+      {
+        "n": 5,
+        "text": "V − R = 10 − 5 = 5. Påstående (1) ger båda konkreta tal — V och R är låsta, och differensen blir exakt 5.",
+        "tier": "essential",
+        "title": "Räkna V − R med (1)"
+      },
+      {
+        "n": 6,
+        "text": "Är V − R unikt bestämt? Ja: V = 10, R = 5, V − R = 5. (1) ensamt är tillräckligt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 7,
+        "text": "\"Anton mötte 5 röda bilar\" → R = 5. \"Antalet vita var dubbelt så stort som antalet röda\" → V = 2R = 2·5 = 10.",
+        "tier": "essential",
+        "title": "Översätt påstående (2)"
+      },
+      {
+        "n": 8,
+        "text": "V − R = 10 − 5 = 5. Påstående (2) ger också båda konkreta tal — V och R låsta, differensen exakt 5.",
+        "tier": "essential",
+        "title": "Räkna V − R med (2)"
+      },
+      {
+        "n": 9,
+        "text": "Är V − R unikt bestämt? Ja: V = 10, R = 5, V − R = 5. (2) ensamt är tillräckligt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 10,
+        "text": "Båda påståenden ger oberoende men konsistenta uppgifter: varje innehåller en EXAKT siffra (10 vita eller 5 röda) plus ett FÖRHÅLLANDE (hälften eller dubbelt) som tillsammans bestämmer båda värdena.",
+        "tier": "detail",
+        "title": "Sammanfatta strukturen"
+      },
+      {
+        "n": 11,
+        "text": "D = \"tillräckligt i (1) OCH (2) var för sig\". Båda påståenden räcker ENSAMMA — det är D-villkoret.",
+        "tier": "essential",
+        "title": "Vilket NOG-alternativ matchar?"
+      },
+      {
+        "n": 12,
+        "text": "(1) och (2) säger faktiskt samma sak från olika håll — (1) ger V = 10 och deducerar R; (2) ger R = 5 och deducerar V. Slutsumman V − R = 5 är samma. ✓",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 13,
+        "text": "Svaret är D — tillräckligt i (1) och (2) var för sig. Insikten i en mening: när varje påstående innehåller både ett absolut tal OCH ett förhållande, kan båda låsa hela situationen ensam.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "NOG-systemstrategin: 1) översätt varje påstående till ekvationer, 2) räkna antalet ekvationer mot antalet obekanta, 3) avgör om varje påstående ensamt bestämmer alla obekanta. Här ger varje påstående 2 ekvationer för 2 obekanta — varje räcker ensamt. Regel: när ett påstående innehåller både ett absolut tal och ett förhållande, kan det ofta lösa hela systemet ensamt."
+  },
+  "var-2022-2-kvant1-NOG-024": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att (2) är överdrivet specifikt (\"hela ordningen\") och därför inte är ENBART det frågan vill ha — och att (1) som bara säger \"Fanny ej först\" är tydligare.",
+        "why_wrong": "Steg 9 visar att (2) ger en unik ordning, och därmed också unikt den första. \"Mer än nödvändigt\" är fortfarande TILLRÄCKLIGT i NOG."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelvänt: om man tror att (1) bara säger \"Fanny ej först\" — och inte ser implikationen att Polly måste vara först — kan man tro (1) är otillräckligt.",
+        "why_wrong": "Steg 5–6 visar att (1) också säger \"Polly före Betty\", vilket tillsammans med \"Fanny ej först\" tvingar Polly att vara först. Båda delvillkoren i (1) är viktiga."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid \"varje påstående säger något om bara en eller två fåglar\" och gissar att man måste lägga ihop dem.",
+        "why_wrong": "Steg 6 och 9 visar att VARDERA påståendet, korrekt avkodat, redan ger den första entydigt. De räcker var för sig — du behöver inte kombinera."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta \"det är bara villkor och inga konkreta tider — alltså omöjligt att avgöra\".",
+        "why_wrong": "Steg 3–6 visar att med rätt elimineringsmetod ger logiska villkor en unik slutsats. Frånvaron av tider är inte ett problem — relativ ordning räcker."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "En vanlig fälla är att tolka \"Fanny rymmer inte först\" som om det räcker att Fanny inte är först — utan att hitta vem som DÅ är först. Botemedlet: kombinera ALLTID alla delvillkor i påståendet och se vad det IMPLICERAR om den efterfrågade positionen.",
+    "solution_path": "Båda påståendena låser Polly som först. (1) säger Fanny ej först + Betty efter Polly → endast Polly kan vara först. (2) ger total ordning P < B < F. Vardera räcker — svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Tre fåglar — Betty, Fanny, Polly — rymmer i någon ordning. Frågan: vilken rymmer FÖRST? Vi söker namnet på den första.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "NOG frågar inte vem som SANNOLIKT är först — utan om informationen räcker för att FASTSLÅ vem som är först. Om flera fåglar kan vara först är svaret \"otillräckligt\".",
+        "tier": "detail",
+        "title": "Vad betyder \"tillräcklig information\" i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "Med tre fåglar finns 6 möjliga ordningar (3! = 6): BFP, BPF, FBP, FPB, PBF, PFB. Vi ska se vilka som överlever villkoren.",
+        "tier": "essential",
+        "title": "Sätt upp möjliga ordningar"
+      },
+      {
+        "n": 4,
+        "text": "Två delvillkor: (1a) Fanny rymmer INTE först. (1b) Betty rymmer EFTER Polly — alltså Polly före Betty i ordningen.",
+        "tier": "essential",
+        "title": "Översätt påstående (1)"
+      },
+      {
+        "n": 5,
+        "text": "Av de 6: stryk dem som har F först (FBP, FPB) — kvar 4. Stryk dem där Betty är före Polly (BPF, BFP — i båda är B först, då är B före P) — kvar PBF och PFB. Kontrollera: PBF (P först ✓, B efter P ✓, F ej först ✓), PFB (P först ✓, F ej först ✓, B efter P ✓ — B är tredje, P är första).",
+        "tier": "essential",
+        "title": "Filtrera ordningar mot (1)"
+      },
+      {
+        "n": 6,
+        "text": "Båda kvarvarande ordningar (PBF och PFB) har Polly som första. Alltså är den första entydigt Polly. (1) ensamt RÄCKER.",
+        "tier": "essential",
+        "title": "Test (1) ensamt — vem är först?"
+      },
+      {
+        "n": 7,
+        "text": "Tre delvillkor: (2a) Polly före Fanny, (2b) Betty före Fanny, (2c) Polly före Betty. Sammantaget: Polly < Betty < Fanny.",
+        "tier": "essential",
+        "title": "Översätt påstående (2)"
+      },
+      {
+        "n": 8,
+        "text": "Endast ordningen PBF uppfyller alla tre (Polly före Betty före Fanny). Alla övriga ordningar kränker minst ett delvillkor.",
+        "tier": "essential",
+        "title": "Filtrera ordningar mot (2)"
+      },
+      {
+        "n": 9,
+        "text": "Med en unik ordning PBF är den första entydigt Polly. (2) ensamt RÄCKER.",
+        "tier": "essential",
+        "title": "Test (2) ensamt — vem är först?"
+      },
+      {
+        "n": 10,
+        "text": "(1) ger entydigt \"Polly först\" (även om resten av ordningen kan variera). (2) ger entydigt \"Polly först\" (och dessutom hela ordningen). Båda räcker var för sig.",
+        "tier": "detail",
+        "title": "Sammanfatta"
+      },
+      {
+        "n": 11,
+        "text": "D = tillräckligt i (1) och (2) var för sig. Det är just vårt fall.",
+        "tier": "essential",
+        "title": "Vilket NOG-alternativ matchar?"
+      },
+      {
+        "n": 12,
+        "text": "(2) ger MER information än frågan behöver — hela ordningen, inte bara den första. (1) ger PRECIS lagom — den fastställer bara den första men inte vem som är andra. NOG kräver bara entydighet för det som frågas.",
+        "tier": "detail",
+        "title": "Strukturell insikt"
+      },
+      {
+        "n": 13,
+        "text": "Svaret är D. Insikten i en mening: i ordningsuppgifter — eliminera ordningar tills bara de som är konsistenta med villkoren är kvar; om alla kvarvarande har samma kandidat på den efterfrågade positionen räcker informationen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Ordnings-eliminerings-strategin: när du har en uppsättning villkor av typen \"A före B\", lista ALLA möjliga ordningar och stryk dem som kränker villkoren. Om alla kvarvarande har samma kandidat på efterfrågad position räcker informationen. Triggern: \"vem är först/sist/...\" med relativa ordningsvillkor → enumerera och filtrera."
+  },
+  "var-2022-2-kvant1-NOG-026": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Spegelvänt: om man bara läser snabbt och tror \"x + y > 50\" automatiskt ger medel > 25 vilket är < 50 — alltså ja — kan man gissa (2) räcker.",
+        "why_wrong": "Steg 8 visar att x+y > 50 inte ger någon ÖVRE gräns på medelvärdet. Det kan vara godtyckligt stort. (2) lämnar JA/NEJ-frågan obesvarad."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man inte ser att (1) ENSAM räcker (kanske tycker man att (1) säger något om 3x och 3y, inte om x och y), kan man tro att man behöver båda.",
+        "why_wrong": "Steg 4–6 visar att (1) direkt ger x+y = 98 efter att vi delar bort faktor 3. (1) är fullt tillräcklig — vi behöver inte (2)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid \"båda säger något om x+y\" och gissar att båda räcker var för sig.",
+        "why_wrong": "Steg 9 visar att (2) lämnar både JA och NEJ möjliga. Bara (1) räcker ensamt — D är fel."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta \"vi har ingen konkret information om varken x eller y enskilt\".",
+        "why_wrong": "JA/NEJ-frågan handlar om medelvärdet, inte enskilda x eller y. Steg 5 visar att (1) ger x+y = 98 exakt — fullt tillräcklig information för frågan."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "En vanlig fälla är att tolka \"x + y > 50\" som direkt svar på \"är medel < 50?\" utan att räkna. Botemedlet: testa ALLTID minst två konkreta värden — ett som ger JA och ett som ger NEJ — om båda finns inom påståendets villkor är det otillräckligt.",
+    "solution_path": "(1) ger (3x+3y)/2 = 147 → (x+y)/2 = 49 < 50. Tydligt JA. (2) ger bara x+y > 50, vilket bara säger medel > 25 — kan vara <50 eller >50. Otillräckligt. Endast (1) räcker — svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan är en JA/NEJ-fråga: är medelvärdet av x och y mindre än 50? För att svara behöver vi en exakt eller begränsande information om summan x + y (eller medelvärdet (x+y)/2 direkt).",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "I JA/NEJ-NOG räcker informationen om den ger ETT entydigt svar (alltid JA, eller alltid NEJ). Om informationen tillåter både JA och NEJ är den otillräcklig.",
+        "tier": "detail",
+        "title": "Vad betyder \"tillräcklig information\" i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "Medelvärdet av x och y är \\frac{x+y}{2}. Vi frågar om detta är < 50, dvs om x+y<100.",
+        "tier": "essential",
+        "title": "Sätt upp uttrycket"
+      },
+      {
+        "n": 4,
+        "text": "\"Medelvärdet av 3x och 3y är 147\" → \\frac{3x+3y}{2}=147.",
+        "tier": "essential",
+        "title": "Översätt påstående (1)"
+      },
+      {
+        "n": 5,
+        "text": "Bryt ut 3 ur täljaren: \\frac{3(x+y)}{2}=147. Multiplicera båda sidor med 2: 3(x+y)=294. Dela med 3: x+y=98.",
+        "tier": "essential",
+        "title": "Förenkla ekvationen från (1)"
+      },
+      {
+        "n": 6,
+        "text": "Med x + y = 98 är medelvärdet \\frac{98}{2}=49. 49 < 50, så svaret är entydigt JA. (1) RÄCKER ensamt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 7,
+        "text": "\"x + y > 50\" — direkt en olikhet i summan.",
+        "tier": "essential",
+        "title": "Översätt påstående (2)"
+      },
+      {
+        "n": 8,
+        "text": "Vi söker svaret på frågan \"är (x+y)/2 < 50?\". Med villkoret x + y > 50: testa x+y = 51 → medel = 25,5 (< 50, JA). Testa x+y = 200 → medel = 100 (> 50, NEJ).",
+        "tier": "essential",
+        "title": "Test (2) ensamt — prova värden"
+      },
+      {
+        "n": 9,
+        "text": "Eftersom (2) tillåter BÅDE JA och NEJ är (2) OTILLRÄCKLIGT ensamt.",
+        "tier": "essential",
+        "title": "Slutsats om (2)"
+      },
+      {
+        "n": 10,
+        "text": "Eftersom (1) redan räcker behöver vi inte testa kombinationen — men för fullständighet: (1) ger x+y=98 och (2) säger x+y>50, vilket är konsistent. Tillsammans samma slutsats: medel = 49 < 50, JA.",
+        "tier": "detail",
+        "title": "Test (1) tillsammans med (2)"
+      },
+      {
+        "n": 11,
+        "text": "A = tillräckligt i (1) men ej i (2). Det är just vårt mönster.",
+        "tier": "essential",
+        "title": "Vilket NOG-alternativ matchar?"
+      },
+      {
+        "n": 12,
+        "text": "Multiplikation med en konstant (3·x och 3·y) är en \"röd sill\" — den ändrar inte VAR medelvärdet ligger relativt en gräns när du \"omräknar\" det. Det vill säga: medelvärdet av 3x och 3y är 3 gånger medelvärdet av x och y.",
+        "tier": "detail",
+        "title": "Strukturell insikt"
+      },
+      {
+        "n": 13,
+        "text": "Svaret är A. Insikten i en mening: medelvärde av k·x och k·y är k gånger medelvärdet av x och y — så en LIKHET i \"3-skalade\" medelvärdet ger en exakt likhet i originalmedelvärdet.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "JA/NEJ-NOG-strategin: 1) översätt frågan till en olikhet eller likhet, 2) testa varje påstående: ger det ENTYDIGT JA eller ENTYDIGT NEJ? Om både JA och NEJ är möjliga är påståendet otillräckligt. Triggern: \"Är X < Y?\" → testa båda riktningar med konkreta motexempel."
+  },
+  "var-2022-2-kvant2-NOG-025": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att 7 är mer \"unikt\" än 8, och att bara (1) räcker. Eller om man räknar fel multiplar av 8 (förbiser 56) gissar man att (2) inte räcker.",
+        "why_wrong": "Steg 6 visar konkret: 56 är delbart med 8 och ligger i intervallet. (2) räcker LIKA väl som (1). Båda räcker."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelvänt: man tror (1) inte räcker men (2) gör det — kanske för att 8 är jämnt och känns mer specifikt.",
+        "why_wrong": "Steg 4 visar att (1) också ger unikt 56. Båda är symmetriska — vardera ger 56."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid \"två villkor = man behöver båda\" som en allmän regel. Då gissar man C.",
+        "why_wrong": "Steg 5 och 7 visar att vardera ensamt ger det unika svaret. Man behöver INTE kombinera. D, inte C, är rätt eftersom \"D\" säger var för sig."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta \"jag är inte säker på multiplar — kanske går inte\".",
+        "why_wrong": "Steg 4 och 6 ger exakta multipler: bara 56 i båda fallen. E gäller bara när varken ensam eller tillsammans räcker — inte här."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "En vanlig fälla är att tro att \"ett delbarhetsvillkor\" automatiskt är otillräckligt i ett konkret intervall. Botemedlet: lista ALLTID multiplarna explicit — om bara EN ligger i intervallet räcker villkoret.",
+    "solution_path": "Heltalen 51–59 är möjliga. Delbara med 7: bara 56 (7·8 = 56). Delbara med 8: bara 56 (8·7 = 56). Varje påstående ensamt ger x = 56. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "x är ett tal med 50 < x < 60 (strikt mellan). Vi söker det EXAKTA värdet av x.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Räcker informationen för att hitta ETT unikt värde på x? Om flera värden i intervallet uppfyller villkoren är informationen otillräcklig.",
+        "tier": "detail",
+        "title": "Vad betyder \"tillräcklig information\" i NOG?"
+      },
+      {
+        "n": 3,
+        "text": "Frågan letar efter ett konkret värde i ett heltalsproblem (delbarhet — som bara har mening för heltal). Så vi tolkar x som ett heltal: möjliga är 51, 52, 53, 54, 55, 56, 57, 58, 59. Totalt 9 heltal.",
+        "tier": "detail",
+        "title": "Antagande: x är heltal"
+      },
+      {
+        "n": 4,
+        "text": "\"x är jämnt delbart med 7\" → x = 7k för något heltal k. I intervallet 50–60: testa multiplar av 7. 7·7 = 49 (för litet), 7·8 = 56 (passar!), 7·9 = 63 (för stort). Bara 56.",
+        "tier": "essential",
+        "title": "Översätt påstående (1)"
+      },
+      {
+        "n": 5,
+        "text": "Det finns EXAKT en multipel av 7 i 50 < x < 60: x = 56. Unikt — (1) ensamt räcker.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 6,
+        "text": "\"x är jämnt delbart med 8\" → x = 8m för något heltal m. Multiplar av 8: 8·6 = 48 (för litet), 8·7 = 56 (passar!), 8·8 = 64 (för stort). Bara 56.",
+        "tier": "essential",
+        "title": "Översätt påstående (2)"
+      },
+      {
+        "n": 7,
+        "text": "Det finns EXAKT en multipel av 8 i 50 < x < 60: x = 56. Unikt — (2) ensamt räcker.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 8,
+        "text": "56 = 7·8 — det är BÅDE delbart med 7 och 8 samtidigt. Det är inte en tillfällighet utan en följd av att 7 och 8 har minst gemensamma multipel = 56, och det råkar ligga i intervallet.",
+        "tier": "detail",
+        "title": "Slumpens roll"
+      },
+      {
+        "n": 9,
+        "text": "56 / 7 = 8 (heltal) ✓. Och 50 < 56 < 60 ✓.",
+        "tier": "detail",
+        "title": "Verifiera (1)"
+      },
+      {
+        "n": 10,
+        "text": "56 / 8 = 7 (heltal) ✓. Och 50 < 56 < 60 ✓.",
+        "tier": "detail",
+        "title": "Verifiera (2)"
+      },
+      {
+        "n": 11,
+        "text": "Båda (1) och (2) ger unikt x = 56 ENSAMMA. Det är D-villkoret: tillräckligt i (1) och (2) var för sig.",
+        "tier": "essential",
+        "title": "Vilket NOG-alternativ matchar?"
+      },
+      {
+        "n": 12,
+        "text": "Ett tightare intervall (här bredd 10) gör att även en \"vag\" begränsning som \"delbar med 7\" eller \"delbar med 8\" kan låsa svaret unikt — eftersom det bara ryms en multipel i intervallet.",
+        "tier": "detail",
+        "title": "Strukturell insikt"
+      },
+      {
+        "n": 13,
+        "text": "Svaret är D. Insikten i en mening: när intervallet är smalt och delbarhet är hög, finns oftast bara EN multipel — vilket räcker för att fastställa talet ensamt.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Smalt-intervall-strategin: i ett begränsat intervall är multiplar av medelstora tal (7, 8, 9, 11) ofta unika — räkna multiplarna explicit och se hur många som ligger i intervallet. Triggern: \"x i intervall, delbart med k\" → räkna multipler av k i intervallet, kolla hur många."
+  }
+}

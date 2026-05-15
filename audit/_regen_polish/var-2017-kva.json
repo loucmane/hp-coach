@@ -1,0 +1,104 @@
+{
+  "var-2017-kvant1-KVA-017": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om man tar parret (2, 5) och avrundar 3,5 nedåt mot 3,3 kan det kännas som att II ≈ \\frac{10}{3} är större.",
+        "why_wrong": "3,5 > 3,33 — det är cirka 0,17 över. Steg 8 håller koll."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att medelvärdet av två tal med produkt 10 'råkar bli' 10/3 — siffran 10 dyker upp på båda sidor.",
+        "why_wrong": "10/3 är inget av de möjliga medelvärdena (5,5 eller 3,5). Steg 4–5 låser fast värdena."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Med två par att välja på kan det kännas som att svaret beror på vilket par — alltså 'otillräcklig'.",
+        "why_wrong": "Båda möjliga paren ger I > II (steg 7 och 8). Skillnaden går alltid åt samma håll, så svaret är entydigt A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det luriga med 'heltal'-villkoret är att lättglömt — utan det vore svaret D (otillräcklig). Botemedlet: omedelbart understryk 'heltal' i frågan och lista paren EXPLICIT innan du börjar räkna.",
+    "solution_path": "Produkten 10 av två positiva heltal kan bara realiseras som 1·10 eller 2·5. Medelvärdena är 5,5 respektive 3,5 — båda är större än \\frac{10}{3} \\approx 3{,}33. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi har två positiva heltal vars produkt är 10. Kvantitet I är deras medelvärde, Kvantitet II är \\frac{10}{3}. Frågan: är medelvärdet alltid större, alltid mindre, lika, eller varierar?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Positiva heltal är 1, 2, 3, 4, ... — alltså hela tal större än 0. Vi får INTE använda bråk eller negativa tal.",
+        "tier": "detail",
+        "title": "Vad är ett positivt heltal?"
+      },
+      {
+        "n": 3,
+        "text": "Heltalsparen (a, b) med a·b = 10 och båda positiva: (1, 10), (2, 5). Det är alla. (Och 5·2 är samma par som 2·5, vi räknar inte ordning.)",
+        "tier": "essential",
+        "title": "Lista alla par"
+      },
+      {
+        "n": 4,
+        "text": "Medelvärde = (a + b) / 2. För (1, 10): (1 + 10) / 2 = 11/2 = 5,5.",
+        "tier": "essential",
+        "title": "Räkna medelvärde för (1, 10)"
+      },
+      {
+        "n": 5,
+        "text": "För (2, 5): (2 + 5) / 2 = 7/2 = 3,5.",
+        "tier": "essential",
+        "title": "Räkna medelvärde för (2, 5)"
+      },
+      {
+        "n": 6,
+        "text": "\\frac{10}{3} = 3{,}333... — drygt 3,33. Tänk: 3·3 = 9, så 10/3 är lite över 3.",
+        "tier": "detail",
+        "title": "Vad är 10/3 som decimaltal?"
+      },
+      {
+        "n": 7,
+        "text": "Medelvärde 5,5 mot 10/3 ≈ 3,33. 5,5 är klart större. I > II i detta fall.",
+        "tier": "essential",
+        "title": "Jämför fall 1: (1, 10)"
+      },
+      {
+        "n": 8,
+        "text": "Medelvärde 3,5 mot 10/3 ≈ 3,33. 3,5 är också (knappt) större. I > II även här.",
+        "tier": "essential",
+        "title": "Jämför fall 2: (2, 5)"
+      },
+      {
+        "n": 9,
+        "text": "Oavsett vilket av de två talparen vi har, är medelvärdet större än 10/3. Alltså gäller I > II ALLTID.",
+        "tier": "essential",
+        "title": "Båda fall ger samma riktning"
+      },
+      {
+        "n": 10,
+        "text": "Det krävs två POSITIVA HELTAL — minsta möjliga medelvärde är 3,5 (paret 2,5). Om vi tillåtit bråk, hade till exempel paret (√10, √10) gett medelvärde √10 ≈ 3,16 < 10/3. Men heltalskravet håller oss borta från det.",
+        "tier": "detail",
+        "title": "Varför kan vi inte få I = II eller I < II?"
+      },
+      {
+        "n": 11,
+        "text": "Räkna efter: 5,5 > 3,33 (uppenbart) och 3,5 > 3,33 eftersom 3,5 − 3,33 = 0,17 > 0. Båda stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 12,
+        "text": "Svaret är A — Kvantitet I är alltid större än Kvantitet II. Insikten i en mening: positiva heltal med fast produkt har LÄGST medelvärde när faktorerna ligger närmast varandra; det 'närmaste' möjliga (2,5) ger 3,5 — fortfarande över 10/3.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Fall-uttömnings-strategin för 'positiva heltal med givet villkor': lista alla möjliga par/triplar, räkna kvantiteten för varje fall, och titta om alla pekar samma håll. Triggern: 'två positiva heltal med produkt N' (där N är litet) → uttömma faktoruppdelningarna."
+  }
+}

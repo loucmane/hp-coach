@@ -1,0 +1,206 @@
+{
+  "host-ver2-2019-kvant1-KVA-021": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att läsa 'y motsvarar talet 50, z motsvarar 60' bokstavligt och anta att y < z och alltså y < 60.",
+        "why_wrong": "Steg 5: y och z är OKÄNDA storheter — 50 och 60 är resultatet av att ta x % av dem, inte värdena själva. Steg 7: med x = 50 blir y = 100."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 'y ger 50, z ger 60 — 50 < 60' och utan vidare resonemang dra slutsatsen att y < 60.",
+        "why_wrong": "Samma fel som A. Steg 6 visar att y CAN vara 50 (då < 60), men steg 7 visar att y också kan vara 100 (> 60)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att gissa likhet när bara små siffror är inblandade.",
+        "why_wrong": "Steg 8: y = 60 kräver x ≈ 83,3, vilket är ett specifikt — inte garanterat — värde. Två andra x-värden ger ojämlikhet."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Skriv om: \\frac{x}{100} y = 50 ger y = \\frac{5000}{x}. Värdet på y beror på x. Om x = 100, blir y = 50 < 60. Om x = 50, blir y = 100 > 60. Bägge riktningar är möjliga — information saknas. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi vet att 'x procent av y är 50' och 'x procent av z är 60'. Vi ska jämföra y med 60. Är y större, mindre, lika med, eller obestämbar?",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "'x procent av y' = \\frac{x}{100} \\cdot y. Det är en multiplikation där x/100 ger 'andelen' (typ 0,3 för 30 %).",
+        "tier": "detail",
+        "title": "Vad betyder 'x procent av'?"
+      },
+      {
+        "n": 3,
+        "text": "\\frac{x}{100} \\cdot y = 50. Lös ut y genom att gångra båda sidor med 100/x: y = \\frac{5000}{x}.",
+        "tier": "essential",
+        "title": "Översätt första villkoret"
+      },
+      {
+        "n": 4,
+        "text": "\\frac{x}{100} \\cdot z = 60, alltså z = \\frac{6000}{x}. (Vi behöver inte z i jämförelsen, men det visar att samma x styr båda.)",
+        "tier": "detail",
+        "title": "Översätt andra villkoret"
+      },
+      {
+        "n": 5,
+        "text": "y är inte ett fixt tal — det varierar med x. För att jämföra y med 60 behöver vi veta vad x är. Men x är inte givet!",
+        "tier": "essential",
+        "title": "Insikt: y beror på x"
+      },
+      {
+        "n": 6,
+        "text": "Då y = 5000/100 = 50. Och 50 < 60 — så Kvantitet II är större.",
+        "tier": "essential",
+        "title": "Test 1: vad om x = 100?"
+      },
+      {
+        "n": 7,
+        "text": "Då y = 5000/50 = 100. Och 100 > 60 — så Kvantitet I är större.",
+        "tier": "essential",
+        "title": "Test 2: vad om x = 50?"
+      },
+      {
+        "n": 8,
+        "text": "y = 60 kräver 5000/x = 60, alltså x = 5000/60 ≈ 83,3. Möjligt om x ≈ 83,3, men inte alls låst.",
+        "tier": "detail",
+        "title": "Test 3: kan de bli lika?"
+      },
+      {
+        "n": 9,
+        "text": "Test 1 ger I < II. Test 2 ger I > II. Eftersom båda är möjliga utan att bryta mot villkoren, kan vi inte säkert säga vilken kvantitet som är större.",
+        "tier": "essential",
+        "title": "Två motsatta riktningar"
+      },
+      {
+        "n": 10,
+        "text": "A (I större), B (II större), C (lika) — alla tre är möjliga beroende på x. Bara D matchar: informationen är otillräcklig.",
+        "tier": "essential",
+        "title": "Värdera alternativen"
+      },
+      {
+        "n": 11,
+        "text": "Båda testen uppfyller villkoren: x = 100 → 100 % av 50 = 50 ✓. x = 50 → 50 % av 100 = 50 ✓. Båda är giltiga scenarier.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 12,
+        "text": "Svaret är D — information otillräcklig. Insikten i en mening: när en variabel som x styr en relation utan att själv vara bestämd, kan den 'efterfrågade' kvantiteten röra sig fritt — testa två motsatta x för att se det.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "KVA-talvärdestest vid okända procentparametrar: när en variabel som x bestämmer en relation utan eget värde, testa minst två konkreta x-värden för att se om kvantiteterna kan röra sig åt olika håll. Triggern: 'x % av y = ...' utan att x är fast → otillräcklig om y inte är låst."
+  },
+  "host-ver2-2019-kvant2-KVA-018": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att räkna fel på f(−1) — typ glömma att −3 · −1 = +3 och tro att f(−1) = 2.",
+        "why_wrong": "Steg 5: minus gånger minus blir plus. f(−1) = 3 + 5 = 8, inte 2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid intuitionen att 'kvot och dess invers' är lika.",
+        "why_wrong": "Steg 10: invers ENDAST om talet är 1 eller −1. Här är talen 0,25 och 4 — klart olika."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'funktioner ser krångligt ut, kanske inte tillräckligt'.",
+        "why_wrong": "Steg 3–4: f(1) och f(−1) är exakta tal (2 och 8). Räkningen är mekanisk; inget saknas."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "f(1) = −3·1 + 5 = 2. f(−1) = −3·(−1) + 5 = 8. I = 2/8 = 1/4. II = 8/2 = 4. 4 > 1/4 — II är klart större. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Funktionen f(x) = −3x + 5 är given. Vi jämför f(1)/f(−1) (Kvantitet I) med f(−1)/f(1) (Kvantitet II). De är varandras inverser.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "f är en regel: ta in ett tal x, multiplicera med −3, lägg till 5 — det är funktionsvärdet f(x).",
+        "tier": "detail",
+        "title": "Vad betyder f(x) = −3x + 5?"
+      },
+      {
+        "n": 3,
+        "text": "Sätt x = 1: f(1) = −3 · 1 + 5 = −3 + 5 = 2.",
+        "tier": "essential",
+        "title": "Räkna f(1)"
+      },
+      {
+        "n": 4,
+        "text": "Sätt x = −1: f(−1) = −3 · (−1) + 5 = 3 + 5 = 8.",
+        "tier": "essential",
+        "title": "Räkna f(−1)"
+      },
+      {
+        "n": 5,
+        "text": "Negativt tal gångrat med negativt blir positivt: −3 · (−1) = +3.",
+        "tier": "detail",
+        "title": "Vad är −3 · (−1)?"
+      },
+      {
+        "n": 6,
+        "text": "I = f(1) / f(−1) = 2 / 8 = 1/4 = 0,25.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet I"
+      },
+      {
+        "n": 7,
+        "text": "II = f(−1) / f(1) = 8 / 2 = 4.",
+        "tier": "essential",
+        "title": "Räkna Kvantitet II"
+      },
+      {
+        "n": 8,
+        "text": "2/8: täljaren 2, nämnaren 8. Båda delbara med 2. Förkortat: 1/4.",
+        "tier": "detail",
+        "title": "Förkortning av bråk"
+      },
+      {
+        "n": 9,
+        "text": "I = 1/4 = 0,25, II = 4. 4 > 0,25 — II är 16 gånger större.",
+        "tier": "essential",
+        "title": "Jämför"
+      },
+      {
+        "n": 10,
+        "text": "I och II är varandras inverser: II = 1/I. Om I = 0,25, så är II = 1/0,25 = 4. Inversen av ett tal under 1 är alltid större än 1.",
+        "tier": "essential",
+        "title": "Insikt om invers"
+      },
+      {
+        "n": 11,
+        "text": "A (I större) — fel. B (II större) — korrekt. C (lika) — fel, 0,25 ≠ 4. D (otillräcklig) — fel, allt är exakt.",
+        "tier": "essential",
+        "title": "Värdera alternativen"
+      },
+      {
+        "n": 12,
+        "text": "Svaret är B — II är större än I. Insikten i en mening: när två kvantiteter är varandras inverser, är den med större täljare absolut större (under förutsättning att talen har samma tecken).",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Funktion vid två specifika x-värden: sätt in värdena, räkna ut funktionsvärdena, och hantera dem som vanliga tal. Triggern: 'jämför f(a)/f(b) med f(b)/f(a)' → räkna f(a), f(b) först."
+  }
+}

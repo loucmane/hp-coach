@@ -1,0 +1,67 @@
+{
+  "var-2017-verb1-LÄS-012": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Snabbsvar är ofta att högstadiet introducerar nya användningar av begrepp eleverna redan har — och då hör 'helt nya sätt' till.",
+        "why_wrong": "Texten talar om att eleverna möter samma matematiska objekt (cirkeln) som tidigare, men med en term de inte är vana vid (radie istället för diameter). Som steg 5 visar är problemet termvalet, inte användningssättet."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att läsa 'två termer som varit lika svåra att hålla isär' i första stycket och tolka det som att termerna betyder samma sak.",
+        "why_wrong": "Diameter och radie betyder INTE samma sak — radien är hälften av diametern, vilket texten själv förklarar genom att citera Matematiktermer för skolan. Steg 4 visar att 'växla mellan' förutsätter att eleven redan har båda, vilket inte är fallet här."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du minns regeln som 'eleverna googlar och förvirrar sig själva' kan D verka rimligt — det stämmer ofta i andra ämnen.",
+        "why_wrong": "Texten visar att de förklaringar eleverna kan hitta på internet faktiskt ÄR entydiga (två sådana citeras ord för ord). Som steg 2 visar är orsaken inte oklara nätförklaringar utan ett tomrum mellan vad eleven har och vad boken erbjuder."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Författaren skriver explicit: elever har med sig termen 'diameter' men läroböckerna använder bara 'radie' (med 2r för omkrets). Den krocken mellan elevens kända term och bokens enda term är problemkällan — svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi söker en specifik ORSAK till att eleverna har problem med termerna — alltså inte vad problemet är (de blandar ihop dem), utan VARFÖR det uppstår enligt författaren själv.",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Andra stycket är spiken: 'Många läroböcker använder numera bara termen radie, och i beräkningar av omkrets används då 2r. Min erfarenhet är att elever har med sig termen diameter.' Två meningar direkt efter varandra som ställer läroboken mot elevens förförståelse.",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: 'eleverna kan en term hemifrån (diameter), boken kör med en annan (radie), och de två möts inte'. Det är obalansen mellan elevens språk och bokens språk som skaver — inte att termerna är svåra i sig.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "Stanna vid skillnaden mellan att VÄXLA mellan två termer (B) och att MÖTA en enda term som inte är ens egen (C). Att växla förutsätter att eleven redan har båda. Texten beskriver däremot att eleven HAR den ena (diameter) och MÖTER bara den andra (radie) i boken. Det är inte växling, det är ersättning.",
+        "tier": "detail",
+        "title": "Vad betyder 'växla mellan'?"
+      },
+      {
+        "n": 5,
+        "text": "A 'använda termerna på helt nya sätt' — fel, texten talar inte om nya användningssätt utan om vilka termer som finns på vilken sida. B 'svårt att växla mellan två termer som betyder samma ord' — felaktig premiss: radie och diameter betyder INTE samma sak (radien är hälften av diametern). C 'vana vid den ena medan läroböckerna använder endast den andra' — direkt parafras av textens egen formulering. D 'sällan hittar entydiga förklaringar när de söker själva' — texten visar tvärtom TVÅ entydiga förklaringar som internet ger, inte att de saknas.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är C. Författarens orsaksdiagnos är krocken mellan elevens medhavda term (diameter) och lärobokens enda term (radie). Det är två termer för OLIKA saker, men eleven har bara verktyg för en av dem.",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Orsaksfrågor löser man genom att hitta författarens egen orsakssats: leta efter formuleringar som 'min erfarenhet är att...', 'detta beror på...', 'orsaken är...'. När ett alternativ ÄR en parafras av en sådan mening, är det nästan alltid svaret. Triggern: 'vad bidrar till X?' → sök textens egen diagnos, parafrasera inte ifrån alternativen tillbaka till texten."
+  }
+}

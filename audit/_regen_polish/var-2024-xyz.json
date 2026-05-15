@@ -1,0 +1,98 @@
+{
+  "var-2024-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 50·54·72 / något fel — t.ex. dela med 720 (klossens omkrets eller annan storhet) i stället för 270, eller använda fel orientering som ger 9·6·5 = 270 'rader' per lager.",
+        "why_wrong": "Steg 8 ger den korrekta volymdivisionen 194 400/270 = 720. 270 är klossvolymen, inte ett orientationsantal."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du tar 50/5 · 54/6 · 72/9 men räknar fel på sista divisionen (t.ex. tar 72/9 = 10 i stället för 8), kan du landa på 10·9·10 ≈ 900, justera bort fel orientering och få 500.",
+        "why_wrong": "Steg 5 visar 72/9 = 8, inte 10. Volymdivision (steg 8) bekräftar 720 — inget annat tal är möjligt om klossarna fyller utan luft."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att uppskatta utan att para sidorna systematiskt: 'lådan är ungefär 200 000 cm³, klossen ungefär 300 cm³ → ungefär 650 klossar'.",
+        "why_wrong": "Steg 8 visar att 270 (inte 300) är klossvolymen. 194 400/270 = exakt 720, inte 650. Approximationer förlorar precisionen som krävs."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Vanligaste felet är att anta en orientering utan att se till att alla tre divisioner går jämnt ut. Botemedlet: skriv ner ALLA divisioner mellan klosskanter och lådkanter (en 3×3-matris) och välj parningen där varje rad och kolumn ger ett heltal.",
+    "solution_path": "Para ihop varje klosskant med en lådkant så att divisionerna går jämnt ut: 50/5, 54/6, 72/9 ger 10·9·8 = 720 klossar. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi har en stängd låda med inre mått 50×54×72 cm och rätblocksformade klossar 5×6×9 cm. Vi vill packa så MÅNGA klossar som möjligt i lådan.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Vi ska orientera klossarna så att varje klosskant är en delare av motsvarande lådkant. Då fyller klossarna lådan helt utan luft.",
+        "tier": "essential",
+        "title": "Strategin: matcha sidor som går jämnt ut"
+      },
+      {
+        "n": 3,
+        "text": "Vilken av klosskanterna 5, 6 eller 9 delar 50 jämnt? 50/5 = 10 (jämnt). 50/6 ≈ 8,33 (rest). 50/9 ≈ 5,56 (rest). Bara 5-sidan fungerar.",
+        "tier": "essential",
+        "title": "Kontrollera 50 mot klosskanterna"
+      },
+      {
+        "n": 4,
+        "text": "54/5 = 10,8 (rest). 54/6 = 9 (jämnt). 54/9 = 6 (jämnt). Både 6 och 9 fungerar — men 5 är redan tagen, så vi har 6 och 9 kvar.",
+        "tier": "essential",
+        "title": "Kontrollera 54 mot klosskanterna"
+      },
+      {
+        "n": 5,
+        "text": "72/5 = 14,4 (rest). 72/6 = 12 (jämnt). 72/9 = 8 (jämnt). Båda fungerar.",
+        "tier": "essential",
+        "title": "Kontrollera 72 mot klosskanterna"
+      },
+      {
+        "n": 6,
+        "text": "Klossens 5-sida måste mot lådans 50-sida (det är enda valet). Sedan kan vi para 6 mot 54 (ger 9 rader) och 9 mot 72 (ger 8 rader), ELLER 9 mot 54 (ger 6 rader) och 6 mot 72 (ger 12 rader). Båda parningar fungerar.",
+        "tier": "essential",
+        "title": "Välj parningen"
+      },
+      {
+        "n": 7,
+        "text": "Parning 1: 10·9·8 = 720. Parning 2: 10·6·12 = 720. Samma resultat — eftersom volymen är konstant.",
+        "tier": "essential",
+        "title": "Vilken parning ger fler klossar?"
+      },
+      {
+        "n": 8,
+        "text": "Lådans volym: 50·54·72 = 194 400 cm³. En klosses volym: 5·6·9 = 270 cm³. Maximalt antal om allt fylls: 194 400 / 270 = 720. Klossarna fyller alltså HELT.",
+        "tier": "detail",
+        "title": "Sanity-check med volymer"
+      },
+      {
+        "n": 9,
+        "text": "För att packningen ska vara perfekt måste klossvolymen dela lådvolymen jämnt (vilket den gör: 720 är ett heltal) OCH klosskanterna måste kunna paras med lådkanterna utan rest (steg 3-5 bekräftar). Båda villkoren är uppfyllda.",
+        "tier": "detail",
+        "title": "Varför går det jämnt ut?"
+      },
+      {
+        "n": 10,
+        "text": "720 klossar · 270 cm³ = 194 400 cm³ = lådans volym. Inte en kubikcentimeter slösas.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 11,
+        "text": "Maximalt 720 klossar får plats. Svaret är D. Insikten i en mening: packnings-frågor blir lätta när varje klosskant kan paras med en lådkant som den delar jämnt — då räcker volymdivision.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Packnings-strategin: matcha varje klosskant med en lådkant som klossens kant delar jämnt. När alla tre dimensioner kan paras utan rest, fyller klossarna lådan exakt och svaret är lådans volym dividerad med klossvolymen. Triggern: 'rätblock i rätblock + möjliga roteringar' → testa varje par av dimensioner."
+  }
+}

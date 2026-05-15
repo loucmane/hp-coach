@@ -1,0 +1,92 @@
+{
+  "host-2025-kvant1-XYZ-011": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att svara 1/4 om du tänker 'fyran är en av sex tärningssidor, och vi vill ha minst fyra' utan att räkna med 5 och 6 också.",
+        "why_wrong": "Steg 6 är spärrpunkten: t ≥ 4 betyder 4, 5 ELLER 6 — tre sidor, inte en. Sannolikheten är 3/6, inte 1/6 och inte 1/4."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du räknar 'vi vill att tiotalssiffran ska vara > 4' (istället för ≥ 4) får du 2 av 6 = 1/3 — bara 5 och 6 räknas.",
+        "why_wrong": "Steg 4–5 låser tröskeln: t = 4 ger redan x = 41–46, alla > 40. Så t = 4 räknas in."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Sannolikhet 2/3 = 4/6 dyker upp om du av misstag inkluderar t = 3 (talen 31–36) i 'gynnsamma' eftersom 3 är 'nästan 4'.",
+        "why_wrong": "Steg 7 visar att t = 3 ger som mest x = 36 < 40 — alltså INTE gynnsamt. Tröskeln är t ≥ 4, inte t ≥ 3."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan är att tro att båda kasten påverkar villkoret och räkna fram alla 36 par. Botemedlet: testa extremfallen — vad krävs minst av tiotalssiffran för att villkoret ska kunna uppfyllas, och räcker entalssiffran alltid då?",
+    "solution_path": "För att tvåsiffriga talet x ska vara > 40 måste tiotalssiffran (första tärningskastet) vara minst 4. Tärningen visar 4, 5 eller 6 med sannolikhet 3/6 = 1/2. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vera kastar en sexsidig tärning två gånger. Första kastet ger tiotalssiffran och andra ger entalssiffran i ett tvåsiffrigt tal x. Vi vill veta sannolikheten att x > 40.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Om tiotal är t och ental är e så är talet 10t + e. Exempel: tiotal 3, ental 5 ger 10·3 + 5 = 35.",
+        "tier": "detail",
+        "title": "Vad är ett tvåsiffrigt tal med tiotal + ental"
+      },
+      {
+        "n": 3,
+        "text": "En sexsidig tärning kan visa 1, 2, 3, 4, 5 eller 6. Varje siffra har sannolikhet 1/6, och de två kasten är oberoende — utfallet av ett kast påverkar inte det andra.",
+        "tier": "detail",
+        "title": "Tärningens möjliga utfall"
+      },
+      {
+        "n": 4,
+        "text": "Eftersom tiotalssiffran t kan vara 1, 2, 3, 4, 5 eller 6 blir x mellan 11 och 66. För x > 40 behöver t vara minst 4 — då börjar talen vid 41.",
+        "tier": "essential",
+        "title": "Vad krävs för att x > 40"
+      },
+      {
+        "n": 5,
+        "text": "Om t = 4 är x mellan 41 och 46 — alla större än 40 (eftersom entalssiffran är minst 1, det finns ingen tärningssida med 0). Så t ≥ 4 räcker.",
+        "tier": "detail",
+        "title": "Skillnaden mellan ≥ 40 och > 40"
+      },
+      {
+        "n": 6,
+        "text": "Tärningens sidor som ger t ≥ 4 är 4, 5 och 6 — alltså 3 av 6 möjliga utfall.",
+        "tier": "essential",
+        "title": "Räkna gynnsamma utfall för t"
+      },
+      {
+        "n": 7,
+        "text": "Entalssiffran e kan vara vad som helst (1–6) och påverkar inte villkoret x > 40 så länge t ≥ 4. Och om t < 4 räcker e inte heller, eftersom det största talet då är 36 (t=3, e=6) — fortfarande mindre än 40.",
+        "tier": "detail",
+        "title": "Vad gör entalssiffran"
+      },
+      {
+        "n": 8,
+        "text": "P(x > 40) = P(t ≥ 4) = 3/6 = 1/2. Entalskastets utfall spelar ingen roll alls.",
+        "tier": "essential",
+        "title": "Beräkna sannolikheten"
+      },
+      {
+        "n": 9,
+        "text": "Totalt finns 6 · 6 = 36 möjliga (t, e)-par. Gynnsamma par: t ∈ {4, 5, 6}, e ∈ {1..6} → 3 · 6 = 18 par. Sannolikhet = 18/36 = 1/2. ✓",
+        "tier": "detail",
+        "title": "Verifiera med uppräkning"
+      },
+      {
+        "n": 10,
+        "text": "Sannolikheten är 1/2 — svaret är C. Insikten i en mening: när ett villkor beror BARA på tiotalssiffran kan du ignorera entalssiffran helt och bara räkna gynnsamma utfall för det avgörande kastet.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Tvåstegs-tärningsstrategin: identifiera vilket av kasten som styr villkoret. Om bara ett kast spelar roll, räkna gynnsamma utfall för det kastet och bortse från det andra. Triggern: 'sannolikhet för tvåsiffrigt tal med villkor på storlek' → räkna gynnsamma utfall för tiotalskastet."
+  }
+}

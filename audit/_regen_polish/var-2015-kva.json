@@ -1,0 +1,98 @@
+{
+  "var-2015-kvant1-KVA-014": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna första testet (y > 0 ger I > II) och stanna där.",
+        "why_wrong": "Steg 7: om y < 0 blir II större. Ett enda exempel räcker inte — du måste testa alla teckenfall för en KVA-uppgift med fria variabler."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 'z är längre fram i alfabetet, alltså större' eller andra ytliga heuristiker.",
+        "why_wrong": "Steg 6: om y > 0 är y > z = −y. Bokstavsordning säger inget om värden."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 'om y och z är 'symmetriska' i ekvationen, måste de vara lika'.",
+        "why_wrong": "Steg 4: de är förvisso symmetriska i ekvationerna, men SUMMAN är 0 — inte att de var och en är 0. Bara i specialfallet y = 0 blir de lika."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "De två ekvationerna ger x − w = y+z+w − (z+y+x), vilket leder till x = -w. Det säger inget om y respektive z separat — alla y, z kan väljas så länge x = −w. Informationen är otillräcklig. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi har två ekvationer: x = y + z + w och w = z + y + x. Vi ska jämföra Kvantitet I = y med Kvantitet II = z.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Ekvation (a): x = y + z + w. Ekvation (b): w = z + y + x, eller likvärdigt w = x + y + z.",
+        "tier": "essential",
+        "title": "Skriv båda ekvationerna i samma form"
+      },
+      {
+        "n": 3,
+        "text": "w − x = (x + y + z) − (y + z + w) = x − w. Så w − x = x − w. Lägg till x − w + (w − x) ... eller: 2(w − x) = 0, alltså w = x.",
+        "tier": "essential",
+        "title": "Subtrahera (a) från (b)"
+      },
+      {
+        "n": 4,
+        "text": "Addera istället (a) och (b): x + w = (y + z + w) + (z + y + x) = 2y + 2z + x + w. Dra bort x + w från båda sidor: 0 = 2y + 2z, alltså y + z = 0, vilket ger z = −y.",
+        "tier": "essential",
+        "title": "Hoppsan — räkna om"
+      },
+      {
+        "n": 5,
+        "text": "Kvantitet I = y, Kvantitet II = z = −y. Vi jämför y mot −y. Resultatet beror på vad y är.",
+        "tier": "essential",
+        "title": "Vad säger z = −y?"
+      },
+      {
+        "n": 6,
+        "text": "Om y = 5, så z = −5. Då är Kvantitet I = 5 > −5 = Kvantitet II. I är större.",
+        "tier": "essential",
+        "title": "Testa y > 0"
+      },
+      {
+        "n": 7,
+        "text": "Om y = −5, så z = 5. Då är Kvantitet I = −5 < 5 = Kvantitet II. II är större.",
+        "tier": "essential",
+        "title": "Testa y < 0"
+      },
+      {
+        "n": 8,
+        "text": "Om y = 0, så z = 0. Då är Kvantitet I = 0 = Kvantitet II. Lika.",
+        "tier": "essential",
+        "title": "Testa y = 0"
+      },
+      {
+        "n": 9,
+        "text": "Eftersom y inte är specificerat, kan I > II, I < II och I = II alla inträffa. Informationen räcker inte för att låsa förhållandet.",
+        "tier": "essential",
+        "title": "Alla tre utfall är möjliga"
+      },
+      {
+        "n": 10,
+        "text": "Pröva y = 5, z = −5, x = 0, w = 0: (a) 0 = 5 + (−5) + 0 = 0 ✓, (b) 0 = −5 + 5 + 0 = 0 ✓. Pröva y = −5, z = 5, x = 0, w = 0: (a) 0 = −5 + 5 + 0 = 0 ✓, (b) 0 = 5 + (−5) + 0 = 0 ✓. Båda scenarier giltiga.",
+        "tier": "detail",
+        "title": "Konkreta exempel som uppfyller båda ekvationerna"
+      },
+      {
+        "n": 11,
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: två linjära ekvationer i fyra obekanta lämnar två frihetsgrader — y och z kan välja tecken fritt, så deras relativa storlek är öppen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Test-flera-teckenfall-strategi för KVA: när du landar på en relation som z = −y eller a + b = 0, testa tre fall (positivt, negativt, noll) innan du svarar. Triggern: 'fria variabler kvar efter förenkling' → D är ofta rätt, men bevisa det med motexempel."
+  }
+}

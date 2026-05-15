@@ -1,0 +1,68 @@
+{
+  "host-2021-verb1-LÄS-013": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du läser snabbt och bara fångar 'försämrats' kan A låta som textens röda tråd — det blir sämre.",
+        "why_wrong": "A inverterar VEM som säger vad. Som steg 2 visar säger läkarna SJÄLVA att hälsan är god, INTE försämrad. Det är de objektiva sjukskrivningssiffrorna som försämrats — inte självskattningen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tänka att läkare som yrkesgrupp är tåliga och inte sjukskriver sig så lätt.",
+        "why_wrong": "Texten säger visserligen att läkare 'inte sjukskriver sig i första taget', men HELA ökningen av långtidssjukskrivningar utgörs av psykiatriska diagnoser. Påståendet 'psykiska besvär leder SÄLLAN till sjukskrivning' motsägs alltså direkt av textens centrala siffror."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att män ofta presenteras som friskare än kvinnor i hälsotexter — och att samma mönster gäller här.",
+        "why_wrong": "Texten talar om att uppgången av psykiatriska långtidssjukskrivningar finns BARA bland kvinnliga läkare, men ger ingen könsuppdelad statistik för SJÄLVSKATTAD god hälsa. D är därför påhittat — texten kan helt enkelt inte ge stöd för det."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Vid två-sanningar-texter är det lätt att fastna i den ena halvan och välja ett alternativ som motsäger den andra. Botemedlet: hitta MEN-ordet i texten och kolla att svarsalternativet rymmer båda sidorna av MEN-et.",
+    "solution_path": "Texten öppnar med att 'nio av tio läkare' bedömer sin egen hälsa som god — men följer upp med ökande sjukskrivningar och fördubblade psykiatriska långtidssjukskrivningar bland kvinnliga läkare. Subjektivt bra mående trots objektivt försämrad utveckling. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi ska hitta det påstående som korrekt beskriver textens TVÅDELADE bild av svenska läkares hälsa: vad säger LÄKARNA SJÄLVA, och hur ser DEN OBJEKTIVA UTVECKLINGEN ut?",
+        "tier": "essential",
+        "title": "Vad frågar texten?"
+      },
+      {
+        "n": 2,
+        "text": "Textens öppningsstycke: 'nio av tio läkare ... skattade den egna hälsan som god eller mycket god.' Och tre stycken senare: 'Men det finns det som solkar den ljusa bilden. Precis som hos befolkningen generellt ökar sjukskrivningarna bland läkare.'",
+        "tier": "essential",
+        "title": "Hitta stället"
+      },
+      {
+        "n": 3,
+        "text": "På vardagssvenska: när läkarna själva tillfrågas säger nästan alla att de mår jättebra — bättre än för tio år sedan, bättre än andra grupper. Men om man tittar på statistiken över sjukskrivningar, särskilt långtidssjukskrivningar med psykiatriska diagnoser, går trenden åt fel håll. Två sanningar samtidigt.",
+        "tier": "essential",
+        "title": "Parafrasera"
+      },
+      {
+        "n": 4,
+        "text": "'Solka' = göra smutsig, fläcka. Att något 'solkar den ljusa bilden' betyder att det finns en huvudbild (här: läkare mår bra) som besudlas eller komplicerats av något annat (här: ökade sjuktal). Det är textens signal om att hålla BÅDA bilderna i huvudet samtidigt — inte ersätta den ena med den andra.",
+        "tier": "detail",
+        "title": "Vad betyder \"solkar den ljusa bilden\"?"
+      },
+      {
+        "n": 5,
+        "text": "C 'Trots en i vissa avseenden negativ utveckling säger sig läkarna må riktigt bra' fångar exakt denna dubbelhet — utveckling negativ, självskattning positiv. A inverterar: 'läkarna själva uppger att deras hälsa försämrats' — fel, läkarna säger TVÄRTOM att de mår bättre än för tio år sedan. B 'psykiska besvär leder sällan till sjukskrivning' motsägs av att psykiatriska diagnoser STÅR FÖR HELA ökningen av långtidssjukskrivningar. D 'fler män än kvinnor mår bra' nämns aldrig — texten ger inga sådana könsuppdelade självskattningssiffror.",
+        "tier": "essential",
+        "title": "Matcha mot alternativen"
+      },
+      {
+        "n": 6,
+        "text": "Svaret är C. Textens öppningsdragning är exakt detta: 'Först den goda nyheten ... Men det finns det som solkar den ljusa bilden.' Subjektiv positiv självskattning trots objektivt försämrad utveckling — det är C, ord för ord.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "I 'vilket påstående stämmer'-frågor med många nyanser: leta efter alternativet som speglar textens BÅDA huvudpåståenden (här: bra självskattning + dålig statistik), inte bara det ena. Triggern: en text som börjar 'först den goda nyheten ... men' säger nästan alltid 'A ändå B' — det rätta alternativet rymmer båda halvorna."
+  }
+}

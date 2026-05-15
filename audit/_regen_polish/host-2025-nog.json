@@ -1,0 +1,109 @@
+{
+  "host-2025-kvant2-NOG-027": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att se (1) som rik info eftersom den specificerar exakt antal i en Venn-ruta (10 har katt men inte hund).",
+        "why_wrong": "Steg 5: (1) låser BK = 10 och B = 4, men lämnar BH + V = 31 utan uppdelning. Hund-antalet är fortfarande fritt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid (2) eftersom den ger en KVANTITATIV RELATION (1:6) som känns avancerad.",
+        "why_wrong": "Steg 7: en relation utan ankarvärde ger en ekvation med två obekanta — flera lösningar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att Venn-villkor är 'kompletta' var för sig (eftersom Venn känns symmetriskt) landar du här.",
+        "why_wrong": "Steg 5 och 7: varken (1) eller (2) ensamt räcker. D kräver att VARDERA ensamt ger unik lösning."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Snabbsvar är ofta 'för många okända rutor — fyra rutor, för få ekvationer'.",
+        "why_wrong": "Steg 8-10: tillsammans har vi 14 (katt-totalt) + BK=10 + V=6B + totalsumma=45 — fyra ekvationer, fyra obekanta (BK, B, BH, V). Systemet löses entydigt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Relativa villkor (typ '1/6 av varken') är frestande att klassa som starka — men de behöver ett konkret ankarvärde för att bli löstbara. Botemedlet: räkna alltid antalet OBEROENDE absoluta värden i påståendena; kvoter ensamma är värdelösa.",
+    "solution_path": "Bygg Venn-diagrammet (bara katt / både / bara hund / varken). (1) ger 'bara katt = 10' (och därmed 'både = 4'). (2) ger 'både = (1/6) · varken'. Tillsammans: både = 4 → varken = 24, bara hund = 45 − 10 − 4 − 24 = 7, totalt hund = 7 + 4 = 11. Var för sig räcker inget av påståendena. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "45 familjer i området. 14 av dem har katt. Vi söker antalet familjer med hund. Detta är ett klassiskt mängd/Venn-problem: 'har katt' och 'har hund' är två (möjligen överlappande) egenskaper.",
+        "tier": "essential",
+        "title": "Förstå frågan"
+      },
+      {
+        "n": 2,
+        "text": "Tillräcklig = informationen pekar ut ETT entydigt antal hund-familjer. Om flera värden är förenliga med villkoren är den otillräcklig.",
+        "tier": "detail",
+        "title": "Vad menar NOG med 'tillräcklig'?"
+      },
+      {
+        "n": 3,
+        "text": "Fyra rutor: 'bara katt' (BK), 'både katt och hund' (B), 'bara hund' (BH), 'varken' (V). Det gäller: BK + B = 14 (totalt katt), BK + B + BH + V = 45 (totalsumma). Total hund = B + BH.",
+        "tier": "essential",
+        "title": "Rita Venn-diagrammet"
+      },
+      {
+        "n": 4,
+        "text": "'10 familjer har katt men inte hund.' Det är BK = 10. Och eftersom BK + B = 14, så B = 14 − 10 = 4 — antalet 'både katt och hund' är 4.",
+        "tier": "essential",
+        "title": "Översätt (1)"
+      },
+      {
+        "n": 5,
+        "text": "Från (1) vet vi BK = 10, B = 4. Då är 14 katt-familjer placerade. Återstår: BH + V = 45 − 14 = 31. Men vi vet inte fördelningen mellan BH och V — kan vara (BH=0, V=31), (BH=15, V=16), (BH=31, V=0) etc. Total hund = B + BH = 4 + BH, vilket varierar. Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (1) ensamt"
+      },
+      {
+        "n": 6,
+        "text": "'Antalet familjer som har både katt och hund är en sjättedel av antalet familjer som varken har katt eller hund.' Det är B = V/6, eller V = 6B.",
+        "tier": "essential",
+        "title": "Översätt (2)"
+      },
+      {
+        "n": 7,
+        "text": "Från (2): V = 6B. Total: BK + B + BH + V = 45, dvs BK + B + BH + 6B = 45, dvs BK + BH + 7B = 45. Vi vet också BK + B = 14, dvs BK = 14 − B. Sätt in: (14 − B) + BH + 7B = 45 → BH + 6B = 31. En ekvation, två obekanta (B, BH) — flera lösningar. T.ex. B=1, BH=25 (hund=26); B=3, BH=13 (hund=16); B=5, BH=1 (hund=6). Otillräckligt.",
+        "tier": "essential",
+        "title": "Test (2) ensamt"
+      },
+      {
+        "n": 8,
+        "text": "Från (1): B = 4. Från (2): V = 6B = 6 · 4 = 24. Nu vet vi BK = 10, B = 4, V = 24. Återstår BH.",
+        "tier": "essential",
+        "title": "Test (1) + (2) tillsammans — lås B"
+      },
+      {
+        "n": 9,
+        "text": "Total: BK + B + BH + V = 45 → 10 + 4 + BH + 24 = 45 → 38 + BH = 45 → BH = 7. Klart.",
+        "tier": "essential",
+        "title": "Tillsammans — lås BH"
+      },
+      {
+        "n": 10,
+        "text": "Total hund = B + BH = 4 + 7 = 11 familjer. Entydigt.",
+        "tier": "essential",
+        "title": "Räkna total hund"
+      },
+      {
+        "n": 11,
+        "text": "Kolla totalsumman: 10 + 4 + 7 + 24 = 45 ✓. Kolla (1): 'katt men inte hund' = BK = 10 ✓. Kolla (2): B = 4, V = 24, 24/6 = 4 = B ✓. Alla villkor stämmer.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 12,
+        "text": "Varken (1) eller (2) ensamt räcker (en saknar 'både'-värdet, den andra saknar fixpunkt för B). Tillsammans låser de hela Venn-diagrammet. Svaret är C — tillräcklig i (1) tillsammans med (2). Insikten i en mening: i Venn-NOG behöver du oftast två 'ankare' — ett som låser en absolut ruta, ett som relaterar två rutor till varandra.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Venn-NOG-strategin: rita alltid de fyra rutorna (bara A, bara B, både, varken) och totalsumman. Kolla om informationen räcker för att låsa alla fyra rutor — eller åtminstone det aktuella målet. Triggern: 'X familjer/personer, varav Y har en egenskap' → fyra-rutors-Venn direkt."
+  }
+}

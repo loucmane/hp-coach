@@ -1,0 +1,200 @@
+{
+  "var-2013-kvant1-XYZ-008": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om du glömmer att vända tecknet på −2x när minusparentesen distribueras, blir x-termerna -2x - 2x = -4x istället för 0. Resultatet ser ut som 3x^{2} - 4x.",
+        "why_wrong": "Steg 8 påminner: minustecknet framför parentesen vänder TECKNET på varje term inuti. −(−2x) = +2x, inte −2x. När båda x-termerna har rätt tecken tar de ut varandra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är lätt att 'addera' 3x²:orna istället för att subtrahera, om man bara klumpar ihop alla x^{2}-termer: 6x^{2} + 3x^{2} = 9x^{2}.",
+        "why_wrong": "Det är en subtraktion mellan parenteserna, inte addition. Steg 9 visar att andra parentesens 3x^{2} blir -3x^{2} efter minusdistribuering — 6x^{2} - 3x^{2} = 3x^{2}."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att kombinera båda fel: addera istället för subtrahera de kvadratiska termerna OCH glömma att vända x-termens tecken — det ger 9x^{2} - 4x.",
+        "why_wrong": "Två fel på samma gång. Steg 8 och steg 9 visar att båda räkneoperationer ska vara subtraktion (för minustecknet framför parentesen) — inte addition."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att vända tecknet på den FÖRSTA termen i andra parentesen men glömma den ANDRA. Botemedlet: skriv ut alla led explicit (6x² − 2x − 3x² + 2x) innan du börjar samla — då syns alla fyra tecken tydligt och inget glöms.",
+    "solution_path": "Multiplicera ut båda parenteserna: (3x − 1)·2x = 6x^{2} - 2x och x(3x − 2) = 3x^{2} - 2x. Skillnaden är 6x^{2} - 2x - 3x^{2} + 2x = 3x^{2}. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi har ett uttryck med två parenteser som ska multipliceras ut och dras från varandra. Målet är att förenkla till ett enkelt polynom — inget värde att lösa för, bara algebraisk omskrivning.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "När en variabel står direkt framför eller bakom en parentes är multiplikation underförstådd. 2x · (3x − 1) betyder '2x gångrat med hela parentesens innehåll'. Multiplikationstecknet utelämnas men finns där.",
+        "tier": "detail",
+        "title": "Vad betyder 'x bredvid en parentes'?"
+      },
+      {
+        "n": 3,
+        "text": "Den distributiva lagen säger: a(b - c) = a \\cdot b - a \\cdot c — gångra a separat med varje term inuti parentesen. Vi kommer använda den två gånger i denna uppgift.",
+        "tier": "detail",
+        "title": "Den distributiva lagen"
+      },
+      {
+        "n": 4,
+        "text": "Gångra 2x med varje term inuti: (3x − 1)·2x = 3x·2x + (−1)·2x = 6x^{2} - 2x. Tänk: 3x · 2x = 3·2·x·x = 6x^{2}, och −1 · 2x = −2x.",
+        "tier": "essential",
+        "title": "Multiplicera ut (3x − 1)·2x"
+      },
+      {
+        "n": 5,
+        "text": "x · x = x^{2} per definition. När du gångrar samma variabel med sig själv ökar exponenten med 1.",
+        "tier": "detail",
+        "title": "Vad är x · x?"
+      },
+      {
+        "n": 6,
+        "text": "Gångra x med varje term inuti: x · 3x + x · (−2) = 3x^{2} - 2x. Tänk: x · 3x = 3·x·x = 3x^{2}, och x · (−2) = −2x.",
+        "tier": "essential",
+        "title": "Multiplicera ut x(3x − 2)"
+      },
+      {
+        "n": 7,
+        "text": "Vi har nu (3x − 1)·2x − x(3x − 2) = (6x^{2} - 2x) − (3x^{2} - 2x). Notera minustecknet FRAMFÖR andra parentesen — det vänder tecknet på allt inuti.",
+        "tier": "essential",
+        "title": "Skriv hela uttrycket"
+      },
+      {
+        "n": 8,
+        "text": "−(3x^{2} - 2x) = -3x^{2} + 2x. Minustecknet 'gångras in' i båda termerna: negativ av en negativ blir positiv, så −(−2x) = +2x.",
+        "tier": "detail",
+        "title": "Distribuera minustecknet"
+      },
+      {
+        "n": 9,
+        "text": "Uttrycket är nu 6x^{2} - 2x - 3x^{2} + 2x. Termer med x^{2} hör ihop: 6x^{2} - 3x^{2} = 3x^{2}. Termer med x hör ihop: −2x + 2x = 0.",
+        "tier": "essential",
+        "title": "Samla termer av samma sort"
+      },
+      {
+        "n": 10,
+        "text": "Termer med samma variabel-del kan slås ihop genom att addera koefficienterna (talen framför). 6x^{2} och 3x^{2} är liknande; 2x och x^{2} är INTE liknande (olika exponent).",
+        "tier": "detail",
+        "title": "Vad betyder 'liknande termer'?"
+      },
+      {
+        "n": 11,
+        "text": "Resultatet är 3x^{2} + 0 = 3x^{2}. x-termerna tar ut varandra helt — de var där bara för att lura oss.",
+        "tier": "essential",
+        "title": "Sista förenkling"
+      },
+      {
+        "n": 12,
+        "text": "Svaret är A — 3x^{2}. Insikten i en mening: när du subtraherar en parentes, vänd ALLA tecken inuti den först, sedan samla liknande termer i ordning.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Subtraktionsstrategin för parenteser: när du har 'uttryck A − uttryck B' med B i parentes — MULTIPLICERA UT båda först, vänd tecknet på varje term i B, och samla sedan liknande termer i ordning. Triggern: 'minustecken framför parentes med flera termer' → tecken-vändning är obligatorisk."
+  },
+  "var-2013-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 2 · 947 = 1 894 men sedan dra av 10 av misstag, eller blanda ihop 1 894 med 1 884.",
+        "why_wrong": "Korrekt produkt är 2 · 947 = 1 894 (steg 9). 1 884 är 10 enheter för lite — varken talen 946 och 948 eller medelvärdet 947 ger den siffran."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Vänster-till-höger-räkning av 946 + 948 kan landa på 1 886 om man tappar bort en enhet i hundratalskolumnen.",
+        "why_wrong": "946 + 948 = (900 + 900) + (46 + 48) = 1 800 + 94 = 1 894, inte 1 886. Steg 8 visar den korrekta additionen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta att räkna (n − 1) + n + (n + 1) = 3 · 947 + ... men sedan ta något annat än rätt två termer; eller att blanda ihop med summan av alla tre.",
+        "why_wrong": "Summan av ALLA tre talen är 3 · 947 = 2 841, inte 1 896. Och summan av MINSTA + STÖRSTA är 2 · 947 = 1 894 — inte 1 896 (steg 9)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är att försöka räkna ut talen explicit istället för att utnyttja symmetrin. Botemedlet: när tal är jämnt utspridda kring en mittpunkt, sätt mitten = medelvärdet och hoppa över talet-för-tal-räknandet.",
+    "solution_path": "För tre på varandra följande heltal är medelvärdet det mittersta talet. Mitten är 947, så det minsta är 946 och det största 948. Summa = 946 + 948 = 1 894. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi har tre heltal som följer direkt på varandra (t.ex. 5, 6, 7). Medelvärdet av dem är 947. Vi ska räkna ut summan av det MINSTA och det STÖRSTA av dessa tre tal.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Det är tre heltal som ligger precis efter varandra på tallinjen: n, n+1, n+2. Skillnaden mellan grannarna är alltid exakt 1.",
+        "tier": "detail",
+        "title": "Vad betyder 'tre på varandra följande heltal'?"
+      },
+      {
+        "n": 3,
+        "text": "Medelvärdet av tre tal är (summan av talen) delat med 3. Formel: (a + b + c)/3 = m, alltså a + b + c = 3m.",
+        "tier": "detail",
+        "title": "Vad är medelvärde?"
+      },
+      {
+        "n": 4,
+        "text": "Kalla det mittersta talet n. Då är de tre talen n − 1, n, n + 1 — det minsta är n − 1, det största är n + 1.",
+        "tier": "essential",
+        "title": "Namnge talen"
+      },
+      {
+        "n": 5,
+        "text": "Medelvärdet = ((n − 1) + n + (n + 1))/3 = (3n)/3 = n. Det mittersta talet ÄR medelvärdet — för tre på varandra följande heltal stryks +1 och −1 ut mot varandra.",
+        "tier": "essential",
+        "title": "Räkna ut medelvärdet symboliskt"
+      },
+      {
+        "n": 6,
+        "text": "Det här gäller alltid för udda antal jämnt utspridda tal: det mittersta är exakt medelvärdet. Spara den insikten — den dyker upp ofta.",
+        "tier": "detail",
+        "title": "Insikt: mittersta = medelvärde"
+      },
+      {
+        "n": 7,
+        "text": "Eftersom medelvärdet är 947 så är n = 947. Talen är 946, 947, 948.",
+        "tier": "essential",
+        "title": "Bestäm talen"
+      },
+      {
+        "n": 8,
+        "text": "Det minsta är 946, det största 948. Summan = 946 + 948 = 1 894.",
+        "tier": "essential",
+        "title": "Räkna ut summan"
+      },
+      {
+        "n": 9,
+        "text": "(n − 1) + (n + 1) = 2n. Så det minsta + det största = 2 · medelvärdet = 2 · 947 = 1 894. Det är samma svar — och en snabbare räknemetod när du ser mönstret.",
+        "tier": "detail",
+        "title": "Snabbväg: 2 · medelvärdet"
+      },
+      {
+        "n": 10,
+        "text": "Kontroll: medelvärdet av 946, 947, 948 = (946 + 947 + 948)/3 = 2 841/3 = 947 ✓. Och 946 + 948 = 1 894 ✓.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 11,
+        "text": "Summan av det minsta och det största är 1 894. Svaret är C. Insikten i en mening: för tre på varandra följande heltal är mittersta = medelvärde, och summan av ändarna = 2 · medelvärdet.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Strategi för 'tre/fem/sju på varandra följande tal med givet medelvärde': namnge MITTERSTA talet n. För tre tal: n − 1, n, n + 1 → medelvärdet är n. Summan av yttre tal = 2n. Triggern: 'medelvärde av tre på varandra följande heltal' → skip rätt fram till '2 × medelvärdet'."
+  }
+}

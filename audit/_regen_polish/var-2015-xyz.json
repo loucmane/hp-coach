@@ -1,0 +1,374 @@
+{
+  "var-2015-kvant1-XYZ-005": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa parenteserna och räkna fel, så att 'något runt 110' verkar rimligt.",
+        "why_wrong": "Steg 4: korrekt utveckling ger x^{2} - 1 = 121 - 1 = 120, inte 110. 110 skulle innebära att x^{2} hade varit 111."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 'kvadraten minus två' eller liknande nära-värden — 121 − 10 = 111 kan verka logiskt om man tror att (x−1) bidrar med en hel 10:a.",
+        "why_wrong": "Steg 3–4: utvecklingen ger −1, inte −10. (x−1) är bara 1 mindre än x, inte 10 mindre."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Vänster-till-höger-läsning ger 'svaret är x^{2}, alltså 121' — om man helt struntar i att (x+1) och (x−1) ändrar uttrycket.",
+        "why_wrong": "Steg 4–6: (x+1)(x−1) = x^{2} - 1, alltså 120 — inte x^{2} självt. Konjugatregeln tar bort precis 1."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att räkna ut x först (x = ±11) och sedan substituera överallt. Botemedlet: kolla om uttrycket kan skrivas som x^{{2}} ± konstant — gör det det, behövs inte x självt alls.",
+    "solution_path": "Konjugatregeln: (x+1)(x-1) = x^{2} - 1. Med x^{2} = 121 blir det 121 − 1 = 120. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi får veta att x^{2} = 121 och ska beräkna (x+1)(x−1). x självt efterfrågas aldrig — vi behöver bara dess kvadrat.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "x^{2} betyder x gånger x. Om x = 3 så är x^{2} = 9. Här är x^{2} = 121, vilket betyder att x · x = 121. (x kan vara 11 eller −11 — men det spelar ingen roll, som vi snart ser.)",
+        "tier": "detail",
+        "title": "Vad betyder x^{2}?"
+      },
+      {
+        "n": 3,
+        "text": "Två parenteser multipliceras med 'varje term mot varje term': (x+1)(x−1) = x·x + x·(−1) + 1·x + 1·(−1) = x^{2} - x + x - 1.",
+        "tier": "essential",
+        "title": "Multiplicera ut (x+1)(x−1)"
+      },
+      {
+        "n": 4,
+        "text": "−x + x = 0. Termerna i mitten tar ut varandra. Kvar: x^{2} - 1.",
+        "tier": "essential",
+        "title": "Förenkla mellantermerna"
+      },
+      {
+        "n": 5,
+        "text": "Det mönster vi just härledde är konjugatregeln: (a+b)(a-b) = a^{2} - b^{2}. Den fungerar för alla a och b: mellantermerna tar alltid ut varandra. Lärs utantill — den dyker upp ständigt.",
+        "tier": "detail",
+        "title": "Vad just hände? — konjugatregeln"
+      },
+      {
+        "n": 6,
+        "text": "Vi har x^{2} - 1 och vet att x^{2} = 121. Byt ut: 121 − 1 = 120.",
+        "tier": "essential",
+        "title": "Substituera in värdet"
+      },
+      {
+        "n": 7,
+        "text": "Uttrycket beror BARA på {MO}x^{{2}}{MC}, inte på x självt. Det är därför båda lösningarna x = 11 och x = −11 ger samma svar — och varför uppgiften inte ber oss välja en av dem.",
+        "tier": "detail",
+        "title": "Varför behövde vi inte räkna ut x?"
+      },
+      {
+        "n": 8,
+        "text": "Sätt x = 11: (11+1)(11−1) = 12 · 10 = 120 ✓.",
+        "tier": "detail",
+        "title": "Verifiera med x = 11"
+      },
+      {
+        "n": 9,
+        "text": "Sätt x = −11: (−11+1)(−11−1) = (−10)(−12) = 120 ✓. Båda x-värden ger samma resultat — konjugatregeln 'glömmer' tecknet på x.",
+        "tier": "detail",
+        "title": "Verifiera med x = −11"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är C: 120. Insikten i en mening: när du ser (x+a)(x−a), tänk konjugatregel — uttrycket är alltid x^{2} - a^{2}, inget annat.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Konjugatregeln: (a+b)(a-b) = a^{2} - b^{2}. Triggern: när två parenteser har samma två tal/variabler fast en med plus och en med minus mellan dem — utveckla aldrig term-för-term, använd regeln direkt."
+  },
+  "var-2015-kvant1-XYZ-011": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att förväxla 0,25 % med 25 % och räkna 25 % av 16 = 4.",
+        "why_wrong": "Steg 3: 0,25 % är HUNDRA gånger mindre än 25 %. Steg 8: 4 motsvarar 25 % av 16, inte 0{{,}}25 %."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om man tappar en decimalplats och tolkar 0,25 % som 2,5 %, hamnar man på 0,4 = 4/10.",
+        "why_wrong": "Steg 9: 0,25 % och 2,5 % skiljer sig med en faktor 10. Det blir 4/100, inte 4/10."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om man flyttar decimaltecknet ett steg för långt blir 0,25 % tolkat som 0,025 %, vilket ger 4/1000.",
+        "why_wrong": "Steg 3: 0,25 % = 0,0025 (två decimaler från procenttecken till decimaltal). 0,025 % skulle vara TIO gånger mindre. Det blir 4/100."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "0,25 % = 0,25/100 = 0,0025. 0,25 % av 16 = 0,0025 · 16 = 0,04 = 4/100. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Frågan: hur mycket är 0,25 % av talet 16? Svaret ges som bråk i alternativen.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Procent betyder 'per hundra'. p % = p/100. Exempel: 50 % = 50/100 = 1/2 = 0{{,}}5. 100 % = 1. 0{{,}}25 % är en mycket liten procentsats — betydligt mindre än 1 %.",
+        "tier": "detail",
+        "title": "Vad betyder procent?"
+      },
+      {
+        "n": 3,
+        "text": "0,25 % = 0,25/100 = 0,0025. (Flytta decimaltecknet två steg åt vänster för att 'gå från procent till decimal'.)",
+        "tier": "essential",
+        "title": "Skriv om 0,25 % som tal"
+      },
+      {
+        "n": 4,
+        "text": "'p % av N' = (p/100) · N. Detta är multiplikation: ta procentsatsen som ett bråk eller decimaltal och gångra med N.",
+        "tier": "detail",
+        "title": "Vad betyder 'p % av N'?"
+      },
+      {
+        "n": 5,
+        "text": "0,0025 · 16: tänk på 25 · 16 = 400. Eftersom 0,0025 har FYRA decimaler får vi 0,0400 = 0,04.",
+        "tier": "essential",
+        "title": "Beräkna 0,0025 · 16"
+      },
+      {
+        "n": 6,
+        "text": "Alternativt: 0,25 % av 16 = (0,25/100)·16 = (1/4 · 1/100)·16 = 16/400 = 1/25 = 4/100 = 0,04.",
+        "tier": "detail",
+        "title": "Bråkväg som dubbelkoll"
+      },
+      {
+        "n": 7,
+        "text": "0,04 = 4/100. Det är formen vi ser i alternativ C.",
+        "tier": "essential",
+        "title": "Skriv 0,04 som bråk i decimal-form"
+      },
+      {
+        "n": 8,
+        "text": "A: 4 (det vore 25 % av 16, inte 0{{,}}25 %). B: 4/10 = 0,4 (det vore 2,5 % av 16). D: 4/1000 = 0,004 (det vore 0{{,}}025 % av 16).",
+        "tier": "detail",
+        "title": "Kolla de andra alternativen"
+      },
+      {
+        "n": 9,
+        "text": "Skillnaden mellan 25 %, 2{{,}}5 %, 0{{,}}25 % och 0{{,}}025 % är BARA decimalplatsen — men varje förflyttning ändrar svaret med en faktor 10. Räkna decimalerna noga.",
+        "tier": "detail",
+        "title": "Decimalplatsfälla"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är C: 4/100. Insikten i en mening: procent → decimal genom att flytta decimaltecknet två steg åt vänster — 0{{,}}25 % blir 0{{,}}0025, inte 0{{,}}025 eller 0{{,}}25.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Procent-till-decimal: dela alltid procenttalet med 100 INNAN du multiplicerar. Triggern: 'p % av N' → räkna (p/100) · N. Tänk på decimalflytt 2 steg åt vänster: 0,25 % → 0,0025."
+  },
+  "var-2015-kvant2-XYZ-002": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att tro att 'ett av alternativen är produkten 5·11 = 55, alltså är 45 = 3·15 ett 'mellansvar''.",
+        "why_wrong": "Steg 4: 45 är inte en av produkterna för udda par med summa 16. Det är 3·15 (men 15 + 3 = 18, fel summa) eller 5·9 (men 5 + 9 = 14, fel summa)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta '5·11 = 55, det näst-närmaste paret'.",
+        "why_wrong": "Steg 5: paret (7, 9) ger 63 > 55. (5, 11) är inte närmast varandra — (7, 9) är ett steg närmare."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid '65 är nära 64 = 8·8 och 8 är medel av 16/2'.",
+        "why_wrong": "Steg 7: 8 är JÄMNT, inte udda. (8, 8) är inte ett tillåtet par. Det udda paret närmast medianen är (7, 9), inte (8, 8) → 63, inte 65."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att maximera 'felaktigt långt isär' (typ 1·15 = 15) i tron att 'större spridning = större produkt'. Botemedlet: testa par i ordning och se att produkten växer mot mitten — sedan respektera restriktionen (udda).",
+    "solution_path": "För två tal med given summa maximeras produkten när talen ligger så nära varandra som möjligt. Udda heltal med summa 16 närmast medianen 8: paret (7, 9) ger produkt 63. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi söker två UDDA HELTAL som tillsammans blir 16. Av alla sådana par vill vi ha det med STÖRST PRODUKT.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Udda heltal är heltal som INTE är delbara med 2: …, −3, −1, 1, 3, 5, 7, 9, 11, …. De ligger med avstånd 2 mellan varandra.",
+        "tier": "detail",
+        "title": "Vad är ett udda heltal?"
+      },
+      {
+        "n": 3,
+        "text": "Två positiva udda heltal a + b = 16: (1, 15), (3, 13), (5, 11), (7, 9). Inga fler positiva par. (Negativa eller noll-par kan också uppfylla summan, t.ex. (−1, 17), men vi söker största produkt, och då gäller 'närmast varandra'.)",
+        "tier": "essential",
+        "title": "Listupp möjliga par med summa 16"
+      },
+      {
+        "n": 4,
+        "text": "1·15 = 15. 3·13 = 39. 5·11 = 55. 7·9 = 63.",
+        "tier": "essential",
+        "title": "Räkna produkterna"
+      },
+      {
+        "n": 5,
+        "text": "Produkten växer när talen närmar sig varandra. Det maximala (om talen kunde vara vad som helst) skulle vara 8·8 = 64. Men 8 är JÄMNT, inte udda — så vi tar paret med UDDA tal närmast varandra: (7, 9).",
+        "tier": "essential",
+        "title": "Vad ser vi för mönster?"
+      },
+      {
+        "n": 6,
+        "text": "För två tal a, b med a + b = S, är produkten ab = a(S − a) = aS − a^{2}, en nedåtbuktande parabel i a. Den maximeras när a = S/2, här a = 8. Vi rundar till närmaste tillåtna (udda) värden: 7 och 9.",
+        "tier": "detail",
+        "title": "Algebraisk intuition"
+      },
+      {
+        "n": 7,
+        "text": "7 är udda (7 = 2·3 + 1). 9 är udda (9 = 2·4 + 1). ✓",
+        "tier": "detail",
+        "title": "Kolla att 7 och 9 båda är udda"
+      },
+      {
+        "n": 8,
+        "text": "7 + 9 = 16 ✓. Och 7·9 = 63.",
+        "tier": "detail",
+        "title": "Verifiera 7 + 9 = 16"
+      },
+      {
+        "n": 9,
+        "text": "Negativa heltal: (−1)·17 = −17 (mindre); (−3)·19 = −57 (mindre); osv. Produkten av ett positivt och ett negativt tal är negativ — alltid mindre än de positiva produkterna vi har.",
+        "tier": "detail",
+        "title": "Skulle negativa par kunna ge större produkt?"
+      },
+      {
+        "n": 10,
+        "text": "Två negativa heltal summerar till ett negativt tal, inte 16. Uteslutet.",
+        "tier": "detail",
+        "title": "Skulle två negativa kunna fungera?"
+      },
+      {
+        "n": 11,
+        "text": "Svaret är C: 63 (paret 7 och 9). Insikten i en mening: för en fixerad summa maximeras produkten när talen är så lika som möjligt — udda-restriktionen tvingar oss till närmaste udda par kring summans halva.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Produkt-vid-fix-summa-strategin: när summan är låst, ligger maximala produkten vid talen så nära varandra som möjligt. Triggern: 'störst möjlig produkt av två tal med summa S' → välj talen kring S/2 (med eventuella heltals-/uddarestriktioner)."
+  },
+  "var-2015-kvant2-XYZ-006": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att 'gissa runt −1/2' när decimalvärdet är nära −0,5.",
+        "why_wrong": "Steg 10: rätt blir −0,533, närmast −8/15 ≈ −0,533, inte −0,5 = −1/2. −1/2 = −7,5/15, alltså litet skilt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta '−8/3' om man råkar lämna kvar nämnaren 3 i slutet.",
+        "why_wrong": "Steg 8: gemensam nämnare är 15, inte 3. Och täljaren −8/3 ≈ −2,67 — för långt från det riktiga svaret −0,53."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att tro att 'något runt −4/5 eftersom 4/5 syns i uttrycket'.",
+        "why_wrong": "Steg 8: −4/5 = −0,8, fortfarande inte korrekt. Att en av termerna innehåller 4/5 betyder inte att svaret är ±4/5."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "6 · 4/5 = 24/5. 2 · 8/3 = 16/3. Gemensam nämnare 15: 24/5 = 72/15 och 16/3 = 80/15. Skillnad: 72/15 − 80/15 = −8/15. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi ska räkna ut 6·(4/5) − 2·(8/3).",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "n·(a/b) = (n·a)/b. Heltalet multipliceras med täljaren, nämnaren oförändrad. Exempel: 6·(4/5) = (6·4)/5 = 24/5.",
+        "tier": "detail",
+        "title": "Multiplikation av heltal och bråk"
+      },
+      {
+        "n": 3,
+        "text": "6 · 4/5 = 24/5.",
+        "tier": "essential",
+        "title": "Räkna första termen"
+      },
+      {
+        "n": 4,
+        "text": "2 · 8/3 = 16/3.",
+        "tier": "essential",
+        "title": "Räkna andra termen"
+      },
+      {
+        "n": 5,
+        "text": "24/5 − 16/3. Vi behöver gemensam nämnare för att subtrahera.",
+        "tier": "essential",
+        "title": "Skriv subtraktionen"
+      },
+      {
+        "n": 6,
+        "text": "Nämnarna är 5 och 3. Minsta gemensamma multipel: 15.",
+        "tier": "detail",
+        "title": "Hitta gemensam nämnare"
+      },
+      {
+        "n": 7,
+        "text": "24/5 = (24·3)/(5·3) = 72/15. 16/3 = (16·5)/(3·5) = 80/15.",
+        "tier": "essential",
+        "title": "Skriv om till 15-delar"
+      },
+      {
+        "n": 8,
+        "text": "72/15 − 80/15 = (72 − 80)/15 = −8/15.",
+        "tier": "essential",
+        "title": "Subtrahera"
+      },
+      {
+        "n": 9,
+        "text": "72 < 80, så skillnaden är negativ. ✓ Stämmer med att 24/5 = 4,8 är mindre än 16/3 ≈ 5,33.",
+        "tier": "detail",
+        "title": "Verifiera tecknet"
+      },
+      {
+        "n": 10,
+        "text": "24/5 = 4,8. 16/3 ≈ 5,33. 4,8 − 5,33 = −0,53. Och −8/15 ≈ −0,533 ✓.",
+        "tier": "detail",
+        "title": "Decimalkontroll"
+      },
+      {
+        "n": 11,
+        "text": "Svaret är D: −8/15. Insikten i en mening: vid blandade bråkoperationer — räkna varje term först, sedan gör om till gemensam nämnare innan du subtraherar.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Blandad-bråkoperation-strategi: räkna varje term först (heltal · bråk = täljare-multiplikation), sedan omvandla till gemensam nämnare innan addition/subtraktion. Triggern: 'n·(a/b) ± m·(c/d)' → räkna termerna, MGN, kombinera."
+  }
+}

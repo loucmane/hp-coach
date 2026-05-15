@@ -1,0 +1,92 @@
+{
+  "var-2022-1-kvant1-XYZ-004": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att man kan 'förenkla' (3x − 3y)(y − x) till bara 2x − 2y eller liknande genom någon kortslutning.",
+        "why_wrong": "Två polynom av grad 1 multiplicerade ger ett polynom av grad 2 — det MÅSTE finnas x^{2}- och y^{2}-termer. Steg 7 visar dem."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att gångra bara de yttre termerna och få 3x·(−x) = −3x² + ett y²-led — och slarva fram något i stil med 2x − 3y².",
+        "why_wrong": "Alla fyra produkterna i (3x − 3y)(y − x) måste tas med (FOIL-metoden). Slutar man halvvägs får man fel termer."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att se 3(x^{2} − y^{2}) = 3x² − 3y² som en konjugatregels-form.",
+        "why_wrong": "Konjugatregeln är (a − b)(a + b) = a^{2} − b^{2}. Här är båda faktorer DIFFERENSER (3x − 3y och y − x), inte 'differens·summa'. Steg 4 visar att uttrycket är −3(x − y)^2, inte 3(x² − y²)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Det är frestande att försöka använda konjugatregeln (a-b)(a+b) = a^{2} - b^{2} här, men det är fel: (3x-3y)(y-x) består av två DIFFERENSER, inte en differens och en summa. Botemedlet: kolla att den ena parentesen har '+' och den andra '−' innan du tillämpar konjugatregeln.",
+    "solution_path": "(3x − 3y)(y − x) = 3(x − y)(y − x). Eftersom y − x = −(x − y) blir uttrycket 3(x − y)·(−(x − y)) = −3(x − y)^{2} = −3(x^{2} − 2xy + y^{2}) = 6xy − 3x^{2} − 3y^{2}. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska multiplicera ut (3x − 3y)(y − x) och hitta vilket av svaralternativen som är samma uttryck.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "I första parentesen 3x − 3y har båda termer faktorn 3. Bryt ut den: 3x − 3y = 3·(x − y). Uttrycket blir 3·(x − y)·(y − x).",
+        "tier": "essential",
+        "title": "Bryt ut den gemensamma faktorn 3"
+      },
+      {
+        "n": 3,
+        "text": "Notera: (y − x) är negativen av (x − y), alltså y − x = −(x − y). Det är en grundregel — att kasta om subtraktionsordning gör tecknet motsatt.",
+        "tier": "detail",
+        "title": "Vad (a − b) och (b − a) har för relation"
+      },
+      {
+        "n": 4,
+        "text": "3·(x − y)·(y − x) = 3·(x − y)·(−1)·(x − y) = −3·(x − y)·(x − y) = −3·{O}(x − y)^{{2}}{C}. Att två parenteser av samma form gångras betyder att den ena blir i kvadrat.",
+        "tier": "essential",
+        "title": "Skriv om uttrycket med −(x − y)"
+      },
+      {
+        "n": 5,
+        "text": "(a − b)^{2} = a^{2} − 2ab + b^{2}. Det är 'kvadraten på en differens' — en av tre standardprodukter du bör memorera. Här a = x, b = y.",
+        "tier": "detail",
+        "title": "Den första kvadreringsregeln"
+      },
+      {
+        "n": 6,
+        "text": "(x − y)^{2} = x^{2} − 2xy + y^{2}.",
+        "tier": "essential",
+        "title": "Multiplicera ut (x − y)²"
+      },
+      {
+        "n": 7,
+        "text": "−3·(x^{2} − 2xy + y^{2}) = −3x^{2} + 6xy − 3y^{2}. (Negativt gånger negativt blir positivt — så −3·(−2xy) = +6xy.)",
+        "tier": "essential",
+        "title": "Multiplicera med −3"
+      },
+      {
+        "n": 8,
+        "text": "Skriv om i ordning: 6xy − 3x^{{2}} − 3y^{{2}}. Det är exakt svar D.",
+        "tier": "essential",
+        "title": "Sortera termerna"
+      },
+      {
+        "n": 9,
+        "text": "Sätt x = 2, y = 1. Original: (3·2 − 3·1)(1 − 2) = 3·(−1) = −3. Vårt svar D: 6·2·1 − 3·4 − 3·1 = 12 − 12 − 3 = −3 ✓.",
+        "tier": "detail",
+        "title": "Verifiera med ett konkret par"
+      },
+      {
+        "n": 10,
+        "text": "Svaret är D: 6xy − 3x² − 3y². Insikten i en mening: när du ser '(a − b)(b − a)' i en produkt, byt direkt till −(a − b)² — det sparar ett tecken-misstag.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Negativ-faktor-knepet: när två parenteser bara skiljer sig genom subtraktionsordningen ((a − b) och (b − a)), byt en till −(samma differens). Då får du en kvadrat. Triggern: båda parenteserna innehåller exakt samma två termer men i omkastad ordning."
+  }
+}

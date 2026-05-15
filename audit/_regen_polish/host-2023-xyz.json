@@ -1,0 +1,92 @@
+{
+  "host-2023-kvant1-XYZ-007": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att glömma multiplicera y-termen och bara skriva −35x − 3y om man tappar fokus.",
+        "why_wrong": "Steg 5 visar att (−5x)·(−3y) ger +15xy, inte −3y. Vi måste multiplicera HELA −5x med varje term — inte bara koefficienterna."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du brytter ut y istället för x och teckenslarvar landar du på −(35x − 15)y.",
+        "why_wrong": "Steg 8 visar att x är den gemensamma faktorn (båda termerna har x), inte y. Endast en av termerna (15xy) innehåller y."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du missar minustecknet hos −5x och bryter ut 15x landar du på 15x(y + 7).",
+        "why_wrong": "Steg 6 ger −35x + 15xy, alltså KOEFFICIENTEN för x när vi bryter ut är (15y − 35), inte (15y + 105) eller liknande positivt uttryck."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den vanligaste fällan är teckenfelet i (-5x)(-3y). Botemedlet: räkna alltid tecknen separat från storlekarna — räkna antalet negativa faktorer först (här 2 stycken → positivt), sedan multiplicera absolutbeloppen.",
+    "solution_path": "Multiplicera ut −5x in i parentesen (7 − 3y): −5x · 7 + (−5x) · (−3y) = −35x + 15xy. Skriv om: 15xy − 35x = (15y − 35)x. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Du ska förenkla uttrycket -5x(7 - 3y) och hitta det svarsalternativ som är ekvivalent med det.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "-5x(7 - 3y) betyder '−5x gånger hela parentesen (7 − 3y)'. När en faktor står framför en parentes är multiplikation underförstådd.",
+        "tier": "detail",
+        "title": "Vad betyder uttrycket?"
+      },
+      {
+        "n": 3,
+        "text": "Den distributiva lagen säger: a(b + c) = a \\cdot b + a \\cdot c — du multiplicerar a separat med varje term inuti parentesen. Här är a = −5x, b = 7 och c = −3y.",
+        "tier": "detail",
+        "title": "Distributiva lagen"
+      },
+      {
+        "n": 4,
+        "text": "(−5x) · 7 = −35x. Negativ gånger positiv blir negativ.",
+        "tier": "essential",
+        "title": "Multiplicera −5x · 7"
+      },
+      {
+        "n": 5,
+        "text": "(−5x) · (−3y) = (−5)·(−3) · x · y = 15xy. Negativ gånger negativ blir positiv; 5 \\cdot 3 = 15.",
+        "tier": "essential",
+        "title": "Multiplicera −5x · (−3y)"
+      },
+      {
+        "n": 6,
+        "text": "−5x(7 − 3y) = −35x + 15xy. Andra termen blev PLUS eftersom (−5x)·(−3y) = +15xy.",
+        "tier": "essential",
+        "title": "Sätt ihop resultatet"
+      },
+      {
+        "n": 7,
+        "text": "Vårt resultat: −35x + 15xy. Vi ser efter ett alternativ som är samma uttryck men eventuellt omskrivet.",
+        "tier": "essential",
+        "title": "Jämför med alternativen"
+      },
+      {
+        "n": 8,
+        "text": "Byt ordning: −35x + 15xy = 15xy − 35x. Bryt ut x från båda termerna: 15xy − 35x = x(15y − 35) = (15y − 35)x. Det är precis alternativ C.",
+        "tier": "essential",
+        "title": "Skriv om till alternativ C-form"
+      },
+      {
+        "n": 9,
+        "text": "Sätt x = 1 och y = 1 i originalet: −5·1·(7 − 3·1) = −5·4 = −20. I C: (15·1 − 35)·1 = (−20)·1 = −20. Matchar.",
+        "tier": "detail",
+        "title": "Sanity-check med tal"
+      },
+      {
+        "n": 10,
+        "text": "(15y − 35)x = −5x(7 − 3y), alternativ C. Insikten i en mening: efter distribution kan resultatet skrivas om genom omkastning av termordning eller utbrytning — testa alla former mot alternativen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Distribution-och-omskrivnings-strategin: multiplicera ut parentesen först (distributiva lagen, tecken per term), och om resultatet inte direkt syns bland alternativen — skriv om genom termordning och utbrytning. Triggern: 'vilket alternativ motsvarar' + ett uttryck med faktor utanför parentes."
+  }
+}

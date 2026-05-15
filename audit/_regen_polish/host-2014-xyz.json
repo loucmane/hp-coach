@@ -1,0 +1,188 @@
+{
+  "host-2014-kvant2-XYZ-003": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel med tecken och hamna på k = −8 — t.ex. om man räknar −6 − 13 i stället för −13 + 6.",
+        "why_wrong": "Från −13 = −6 + k får vi k = −13 − (−6) = −13 + 6 = −7, inte −8. Steg 8–9 visar tecknet noggrant."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man slarvar med 6 · (−3) och får −12 istället för −18, kan man få −7 eller −6 från olika räknebanor.",
+        "why_wrong": "Steg 3 visar tydligt 6 · (−3) + 5 = −13, inte −12 eller −7. Slarv med multiplikationen ger fel k."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta \"k är negativt och nära −5\" om man räknar approximativt.",
+        "why_wrong": "Approximationer fungerar inte här — vi behöver exakt k. Steg 8 ger k = −7, inte −5."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Tecken på negativa tal är notoriskt feldelade. Botemedlet: skriv ut varje multiplikation och addition på sin egen rad — undvik att kombinera flera tecken i ett huvudräkningssteg.",
+    "solution_path": "Funktionen är f(x) = \\tfrac{6x + 5}{2x + k}. Sätt in x = −3 och f = 1: \\tfrac{-13}{-6 + k} = 1 ⇒ k - 6 = -13 ⇒ k = −7. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Vi har en funktion f(x) = \\tfrac{6x + 5}{2x + k} där k är ett okänt tal. Vi vet att f(−3) = 1 och söker k.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Det betyder: sätt in x = −3 i formeln för f, så blir resultatet 1. Vi byter ut x mot −3 överallt och löser ut k.",
+        "tier": "detail",
+        "title": "Vad betyder f(−3) = 1?"
+      },
+      {
+        "n": 3,
+        "text": "Täljaren är 6x + 5. Med x = −3: 6 \\cdot (-3) + 5 = -18 + 5 = -13.",
+        "tier": "essential",
+        "title": "Sätt in x = −3 i täljaren"
+      },
+      {
+        "n": 4,
+        "text": "Negativt tal gånger positivt tal blir negativt: 6 · (−3) = −18. Det följer av teckenregeln.",
+        "tier": "detail",
+        "title": "Negativ gånger positiv"
+      },
+      {
+        "n": 5,
+        "text": "Nämnaren är 2x + k. Med x = −3: 2 \\cdot (-3) + k = -6 + k. Här är k obekant — det blir kvar i uttrycket.",
+        "tier": "essential",
+        "title": "Sätt in x = −3 i nämnaren"
+      },
+      {
+        "n": 6,
+        "text": "f(−3) = 1 ger \\tfrac{-13}{-6 + k} = 1.",
+        "tier": "essential",
+        "title": "Sätt upp ekvationen"
+      },
+      {
+        "n": 7,
+        "text": "En bråk är lika med 1 om och endast om täljaren = nämnaren: a/b = 1 ⇒ a = b. Här: −13 = −6 + k.",
+        "tier": "detail",
+        "title": "När är en kvot lika med 1?"
+      },
+      {
+        "n": 8,
+        "text": "−13 = −6 + k. Lägg till 6 på båda sidor: −13 + 6 = k ⇒ k = −7.",
+        "tier": "essential",
+        "title": "Lös för k"
+      },
+      {
+        "n": 9,
+        "text": "−13 + 6 = −7: när du adderar ett positivt tal till ett negativt, går du UPP på tallinjen. Starta vid −13, gå 6 steg åt höger: hamnar vid −7.",
+        "tier": "detail",
+        "title": "Subtraktion med negativa tal"
+      },
+      {
+        "n": 10,
+        "text": "Med k = −7: f(-3) = \\tfrac{-13}{-6 + (-7)} = \\tfrac{-13}{-13} = 1 ✓.",
+        "tier": "detail",
+        "title": "Verifiera"
+      },
+      {
+        "n": 11,
+        "text": "k = −7, alltså alternativ B. Insikten i en mening: när en kvot är lika med 1, ställ täljare = nämnare direkt — det är genvägen som hoppar över multiplikation.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Substitutions-och-likhets-strategin: sätt in det givna x-värdet, sätt upp ekvationen, och när kvoten är lika med 1, sätt täljare = nämnare. Triggern: \"f(x₀) = c givet, hitta parameter k\" → substituera, lös linjär ekvation."
+  },
+  "host-2014-kvant2-XYZ-011": {
+    "_meta": {
+      "generated_at": "2026-05-14",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 75 − 45 − 35 + 25 = 20 (vilket är rätt) men slarva och få 10 om man tappar bort en term.",
+        "why_wrong": "Att räkna 75 − 45 − 35 utan att lägga tillbaka 25 ger 75 − 80 = −5 (orimligt). 10 kommer från en annan felräkning. Steg 6 visar att 20 stämmer."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Att tro att 25 (antalet med båda) är svaret eftersom det ser ut som en \"central\" siffra.",
+        "why_wrong": "25 är antalet bilar som har BÅDA egenskaperna, inte VARKEN. Frågan ber om komplementet till unionen, inte skärningen. Steg 8 visar fördelningen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om man räknar 75 − 45 = 30 (bilar som inte är kombi) och stannar där, landar man på 30.",
+        "why_wrong": "30 inkluderar bilar med dragkula men inte kombi. Vi vill ha bara de UTAN dragkula också. Steg 8 visar att bilar utan både är 20, inte 30."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": null,
+    "solution_path": "Inklusion-exklusion: antal med kombi ELLER dragkula = 45 + 35 − 25 = 55. Antal som saknar båda = 75 − 55 = 20. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "text": "Av 75 bilar är 45 av kombimodell, 35 har dragkula, 25 är BÅDE. Vi söker antalet bilar som varken är kombi eller har dragkula.",
+        "tier": "essential",
+        "title": "Förstå problemet"
+      },
+      {
+        "n": 2,
+        "text": "Mängdunionen \"kombi eller dragkula\" innehåller alla bilar som har MINST EN av egenskaperna. Bilar med båda räknas en gång (inte två).",
+        "tier": "essential",
+        "title": "Vad är en union?"
+      },
+      {
+        "n": 3,
+        "text": "För två mängder: |A \\cup B| = |A| + |B| - |A \\cap B|. Vi adderar storlekarna och drar bort överlappet, eftersom annars räknar vi det dubbelt.",
+        "tier": "detail",
+        "title": "Vad är inklusion-exklusion?"
+      },
+      {
+        "n": 4,
+        "text": "|kombi ∪ dragkula| = 45 + 35 − 25 = 55. Alltså 55 av bilarna har minst en av egenskaperna.",
+        "tier": "essential",
+        "title": "Räkna unionen"
+      },
+      {
+        "n": 5,
+        "text": "Bilar som är BÅDE kombi och har dragkula räknas en gång i \"45 kombi\" och igen i \"35 dragkula\" — totalt två gånger. För att räkna varje bil EXAKT en gång drar vi bort de 25 som dubbelräknades.",
+        "tier": "detail",
+        "title": "Varför subtrahera 25?"
+      },
+      {
+        "n": 6,
+        "text": "De 55 bilarna har minst en egenskap. De andra (75 − 55) har INGEN av egenskaperna. 75 − 55 = 20.",
+        "tier": "essential",
+        "title": "Räkna komplementet"
+      },
+      {
+        "n": 7,
+        "text": "Tänk på två cirklar inuti en rektangel av 75 bilar. Cirklarna överlappar (25 bilar i mitten). Inom cirklarna: 55 bilar totalt. Utanför båda cirklarna: 75 − 55 = 20 bilar.",
+        "tier": "detail",
+        "title": "Tänk i Venn-diagram"
+      },
+      {
+        "n": 8,
+        "text": "Bara kombi: 45 − 25 = 20. Bara dragkula: 35 − 25 = 10. Båda: 25. Inget: 20. Summa: 20 + 10 + 25 + 20 = 75 ✓.",
+        "tier": "detail",
+        "title": "Verifiera fördelningen"
+      },
+      {
+        "n": 9,
+        "text": "Antalet bilar med någon egenskap (55) är mer än hälften av 75, så komplementet (20) ska vara mindre än hälften av 75. ✓",
+        "tier": "detail",
+        "title": "Sanity-check"
+      },
+      {
+        "n": 10,
+        "text": "Antalet bilar som saknar dragkula OCH inte är kombi = 20. Svaret är B. Insikten i en mening: för \"hur många har varken X eller Y\", räkna unionen med inklusion-exklusion och dra bort från totalen.",
+        "tier": "essential",
+        "title": "Slutsats"
+      }
+    ],
+    "technique": "Komplement-via-inklusion-exklusion: för \"varken X eller Y\", räkna unionen |X ∪ Y| = |X| + |Y| − |X ∩ Y|, dra sedan bort från totalen. Triggern: \"hur många saknar både två egenskaper\" → kör IE + komplement."
+  }
+}
