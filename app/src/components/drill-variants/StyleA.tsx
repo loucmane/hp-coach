@@ -156,6 +156,7 @@ export function StyleA({
            *  below 90px. Independent measure cap means the column
            *  width and the reading width are decoupled. */}
           <div
+            data-testid="drill-prompt"
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(20px, 1rem + 0.6vw, 24px)',
@@ -230,6 +231,7 @@ export function StyleA({
                   >
                     <button
                       type="button"
+                      data-testid={`option-${opt.letter}`}
                       onClick={() => onPick(opt.letter)}
                       disabled={graded}
                       style={{
@@ -717,6 +719,7 @@ export function StyleA({
                   />
                   <button
                     type="button"
+                    data-testid="drill-next"
                     onClick={onReset}
                     style={{
                       all: 'unset',
