@@ -1,0 +1,1852 @@
+"""Author Variant-C LÄS explanations for var-2026.
+
+Run once: produces audit/_regen/var-2026-las.json.
+"""
+from __future__ import annotations
+import json
+from pathlib import Path
+
+META = {
+    "model": "claude-opus-4-7",
+    "generated_at": "2026-05-14",
+    "recipe": "variant-c-ultra-granular",
+}
+
+
+def E(solution_path, steps, distractors, technique, pitfall=None):
+    """Build one explanation entry."""
+    return {
+        "_meta": META,
+        "solution_path": solution_path,
+        "steps": [
+            {"n": i + 1, "title": t, "text": x, "tier": tier}
+            for i, (t, x, tier) in enumerate(steps)
+        ],
+        "framework_id": None,
+        "distractors": distractors,
+        "technique": technique,
+        "pitfall": pitfall,
+    }
+
+
+def D(letter, why_tempting, why_wrong):
+    return {
+        "letter": letter,
+        "why_tempting": why_tempting,
+        "why_wrong": why_wrong,
+    }
+
+
+entries = {}
+
+# ════════════════════════════════════════════════════════════════════
+# PASSAGE 1: Medborgarkompetens (var-2026-verb1-LÄS-011, 012)
+# ════════════════════════════════════════════════════════════════════
+
+entries["var-2026-verb1-LÄS-011"] = E(
+    solution_path=(
+        "Forskningsprojektets uttalade syfte är att undersöka om gymnasiereformen "
+        "Gy 11 påverkar yrkesprogramelevernas medborgarkompetens — alltså om "
+        "skolförändringen påverkar elevernas samhällsengagemang. Svaret är D."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta HUVUDSYFTET med forskningsprojektet — inte ett delspår, "
+         "inte en biaspekt, utan vad forskarna själva pekar ut som projektets "
+         "övergripande mål.",
+         "essential"),
+        ("Hitta stället",
+         "Forskarna formulerar syftet rakt ut i tredje stycket: \"Det övergripande "
+         "syftet med vårt forskningsprojekt är att undersöka om reformen av "
+         "gymnasieskolan påverkar yrkesprogramelevernas medborgarkompetens.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: forskarna vill veta om skolreformen Gy 11 ändrar "
+         "elevernas förmåga och vilja att delta i samhället — deras värderingar, "
+         "kunskaper och politiska engagemang.",
+         "essential"),
+        ("Vad betyder medborgarkompetens?",
+         "Texten räknar själv upp innehållet: demokratiska värderingar, tillit "
+         "till egna färdigheter, kommunikativa förmågor, politiska kunskaper och "
+         "politiskt engagemang. Samhällsengagemang fångar kärnan av detta — "
+         "alltså vad eleverna kan och vill göra som medborgare.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A handlar bara om undervisningsformen — det är ett delspår (\"För det "
+         "andra…\"), inte huvudmålet. B handlar om ämnet samhällskunskaps "
+         "lämplighet — det utvärderas inte. C vänder pilen åt fel håll (engagemang "
+         "→ kunskaper), medan texten frågar reform → engagemang. D matchar "
+         "syftesmeningen exakt: reform → samhällsengagemang.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är D. Studien undersöker om gymnasiereformen påverkar elevernas "
+         "samhällsengagemang. Insikten i en mening: vid huvudsyfte-frågor — leta "
+         "efter forskarnas egen syftesmening, inte efter delspår eller exempel.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är lätt att fastna vid att texten också nämner undervisningsformen "
+          "— kateder kontra deliberativ — som en av två aspekter forskarna tittar på.",
+          "Undervisningsformen är uttryckligen ett av två delspår (\"För det andra…\"), "
+          "inte huvudmålet. Steg 5 visar att alternativ A tar en delfråga och behandlar "
+          "den som hela syftet."),
+        D("B",
+          "Många stannar vid att texten kretsar kring samhällskunskap och medborgar­"
+          "kompetens och tänker att studien handlar om ämnets lämplighet.",
+          "Texten utvärderar inte om samhällskunskap är ett LÄMPLIGT ämne för att lära "
+          "ut medborgarkompetens — den utgår från att det redan är så och frågar om "
+          "reformens effekter. B ligger vid sidan om syftesmeningen i steg 2."),
+        D("C",
+          "Första instinkten är att \"engagemang\" och \"kunskaper\" båda nämns i texten "
+          "och låter centrala — så de hör nog ihop som fråga.",
+          "Riktningen är inverterad. Texten frågar hur REFORMEN påverkar engagemanget "
+          "(reform → engagemang), inte hur engagemanget påverkar kunskaperna "
+          "(engagemang → kunskaper). C kastar om orsakspilen."),
+    ],
+    technique=(
+        "Vid frågor om en studies HUVUDMÅL — sök forskarnas egen syftesmening, "
+        "ofta inledd med \"Det övergripande syftet är att undersöka om…\". Triggern: "
+        "\"vilket är huvudmålet\" → leta efter ordet \"syfte\" i texten, inte efter "
+        "delspår eller exempel."
+    ),
+    pitfall=(
+        "Delspår (här: undervisningsmängd och undervisningsform) kan se ut som svar "
+        "eftersom de tar plats i texten. Botemedlet: fråga \"vad är det här ett delspår "
+        "OF?\" och leta efter den övergripande ramen som binder ihop delspåren."
+    ),
+)
+
+entries["var-2026-verb1-LÄS-012"] = E(
+    solution_path=(
+        "Texten säger uttryckligen att Gy 11 lägger mindre vikt på det medborgar­"
+        "fostrande uppdraget och MER vikt på att förbereda eleverna för yrkesliv "
+        "eller fortsatta studier. Det yrkesförberedande står alltså i fokus. Svaret är A."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta vad som verkar ha STÅTT I FOKUS när skolreformen Gy 11 "
+         "utformades — alltså vilken prioritet reformen själv signalerar.",
+         "essential"),
+        ("Hitta stället",
+         "Reformens fokus beskrivs i andra styckets slut: \"Reformen av gymnasie­"
+         "skolan (Gy 11) innebar en förändring så till vida att mindre fokus numera "
+         "läggs på skolans medborgarfostrande uppdrag medan ett tydligare fokus "
+         "läggs på att förbereda eleverna antingen för yrkeslivet och fortsatt "
+         "yrkesutbildning eller för fortsatta studier.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: reformen flyttar tyngdpunkten BORT från fostrande/"
+         "demokratiuppdraget och MOT förberedelse för arbete eller vidareutbildning. "
+         "Den konkreta åtgärden — samhällskunskap halverad från 100 till 50 poäng "
+         "på yrkesprogrammen — bekräftar riktningen.",
+         "essential"),
+        ("Vad menas med medborgarfostrande?",
+         "\"Medborgarfostrande\" betyder att skolan utvecklar eleverna till "
+         "deltagande medborgare — diskutera samhällsfrågor, värdera, ta ställning. "
+         "Det är det som GICK NER i reformen, inte det som gick upp. Detta är "
+         "viktigt eftersom det filtrerar bort B och D direkt.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"elevernas framtida arbetsliv\" matchar exakt det som ÖKADE i fokus — "
+         "\"förbereda eleverna för yrkeslivet\". B \"en stärkt demokrati\" är en "
+         "konsekvens av det medborgarfostrande uppdraget, som MINSKADE. C "
+         "\"teoretiska ämnen\" nämns inte som reformens drivkraft. D "
+         "\"fostrande uppdrag\" är raka motsatsen — det är just det som tonades ner.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är A. Reformen flyttade fokus mot yrkesförberedelse, med "
+         "konkret bevisning i halveringen av samhällskunskapstimmarna på "
+         "yrkesprogrammen. Insikten i en mening: riktningsord (\"mindre fokus\" "
+         "kontra \"tydligare fokus\") avgör vad som ÖKADE i en reform — leta efter "
+         "kontrastparet, inte efter enskilda ord.",
+         "essential"),
+    ],
+    distractors=[
+        D("B",
+          "Många stannar vid att texten talar mycket om demokrati och medborgar­"
+          "kompetens — det känns som temat.",
+          "Demokrati och medborgarfostran beskrivs som det reformen TONADE NER, "
+          "inte det den lyfte upp. Som steg 2 visar är riktningsorden \"mindre fokus\" "
+          "(medborgarfostran) och \"tydligare fokus\" (yrkesliv) — B går åt fel håll."),
+        D("C",
+          "Det är frestande att läsa \"fortsatta studier\" och tolka det som "
+          "fördjupning i teoretiska ämnen.",
+          "\"Fortsatta studier\" står som en av två förberedelsevägar (\"yrkesliv "
+          "eller fortsatta studier\") — det är förberedelseuppdraget som lyfts, "
+          "inte teoretiska ämnen som sådana. Texten nämner inte teoretisk ämnes­"
+          "betoning som reformens fokus."),
+        D("D",
+          "Första instinkten kan vara att \"fostrande\" låter centralt eftersom "
+          "ordet återkommer i texten.",
+          "Det fostrande uppdraget är just det som reformen FLYTTADE FOKUS BORT FRÅN. "
+          "Steg 2 är otvetydigt: \"mindre fokus läggs på skolans medborgarfostrande "
+          "uppdrag\". D är raka motsatsen till svaret."),
+    ],
+    technique=(
+        "Vid frågor om en reforms fokus — leta efter kontrastpar med riktningsord "
+        "(\"mindre fokus på X medan tydligare fokus på Y\"). Y är svaret. Triggern: "
+        "\"vad stod i fokus\" → leta efter ordet \"fokus\" eller \"tyngdpunkt\" och "
+        "spåra åt vilket håll riktningen pekar."
+    ),
+    pitfall=(
+        "Det är lätt att låta textens TEMA (medborgarkompetens) skugga vad reformen "
+        "faktiskt prioriterade. Botemedlet: skilj på vad texten DISKUTERAR (medborgar­"
+        "fostran som koncept) och vad reformen VALDE (yrkesförberedelse)."
+    ),
+)
+
+# ════════════════════════════════════════════════════════════════════
+# PASSAGE 2: Två inlägg i debatten om ljudboken (013-016)
+# ════════════════════════════════════════════════════════════════════
+
+entries["var-2026-verb1-LÄS-013"] = E(
+    solution_path=(
+        "Ola Nilssons hela inlägg argumenterar för att läsning är en aktiv "
+        "förvandling som lyssning inte kan ersätta — och att man inte ska "
+        "kalla ljudbokslyssnande för läsning. Det är ett tydligt ställnings­"
+        "tagande för boken över ljudboken. Svaret är C."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill ha den TOTALA SIGNALEN i Ola Nilssons inlägg — inte ett "
+         "enskilt argument utan vad hela texten sammantaget vill säga.",
+         "essential"),
+        ("Hitta stället",
+         "Nilssons positionssats kommer mot slutet: \"Jag har inget principiellt "
+         "emot ljudboksformatet, bara man inte kallar det läsning, för det är det "
+         "inte.\" Och tidigare: lyssning kan aldrig \"ersätta den rikedom som "
+         "läsandet av en bok ger\".",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: Nilsson tycker att läsning är något kvalitativt "
+         "annat och bättre — boken har \"gravitation\", kräver fokus och arbete, "
+         "ger en förvandling som ljudboken inte kan ge. Han säger inte att man "
+         "ska förbjuda ljudboken, bara att den inte är samma sak och inte ersätter "
+         "läsningen.",
+         "essential"),
+        ("Vad gör de tre tematiska parallellerna?",
+         "Nilsson använder evighetsmaskiner, guldmakeri och vatten-till-vin som "
+         "bilder för att läsning utan att läsa är en omöjlig lockelse — något som "
+         "lovar för mycket. Bilderna förstärker att boken erbjuder något ljudboken "
+         "BARA SER UT ATT erbjuda. Hela texten lutar åt: boken vinner.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"marknaden behöver regleras\" — Nilsson nämner Storytels datainsamling "
+         "men föreslår inte reglering; han säger att debatten borde handla om detta. "
+         "B \"satsar inte på kvalitetslitteratur\" — texten säger inget om vilken "
+         "litteratur ljudboksförlagen väljer. C \"bättre att läsa än lyssna\" — "
+         "exakt vad steg 2 och 3 visar. D \"meningslöst att debattera\" — Nilsson "
+         "DELTAR i debatten, så han kan rimligen inte tycka att den är meningslös.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är C. Ola Nilssons inlägg sammanfattas bäst som en argumentation "
+         "för bokens överlägsenhet jämfört med ljudboken. Insikten i en mening: "
+         "vid \"vad signalerar texten\" — sök författarens positionssats (ofta "
+         "med \"jag\" eller modala ord) och avfärda alternativ som handlar om "
+         "frågor texten BERÖR men inte tar ställning till.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är frestande att läsa Storytel-avsnittet om datainsamling och "
+          "tänka att Nilsson kräver reglering.",
+          "Nilsson säger uttryckligen att \"detta talar man aldrig om\" och att "
+          "debatten åtminstone borde handla om det — han efterlyser en annan "
+          "debatt, inte lagstiftning. A går steget längre än vad texten faktiskt "
+          "föreslår."),
+        D("B",
+          "Många stannar vid Nilssons referens till deckare och \"konsumerat\" "
+          "ljudböcker och drar slutsatsen att han kritiserar ljudboksförlagens "
+          "kvalitetsval.",
+          "Citatet om deckare kommer från Jakob Nilssons text — Ola Nilsson "
+          "kritiserar inte vad förlagen ger ut, utan idén att lyssnande på "
+          "ljudbok kan ersätta läsning. B blandar ihop ett citerat påstående med "
+          "Nilssons egen position."),
+        D("D",
+          "Snabbsvar är ofta att Nilssons ton är skarp och att han verkar trött "
+          "på debatten — alltså tycker han nog att den är meningslös.",
+          "Att skriva ett inlägg ÄR att delta i debatten. Som steg 2 visar gör "
+          "Nilsson en tydlig poäng inom debatten (lyssning ≠ läsning) och föreslår "
+          "till och med en kompletterande riktning (Storytels datapolitik). "
+          "Det är raka motsatsen till att tycka debatten är meningslös."),
+    ],
+    technique=(
+        "Vid \"vad signalerar författaren\"-frågor — sök positionssatsen där "
+        "författaren tar ställning, ofta med \"jag\" eller modala verb (\"borde\", "
+        "\"bara\"). Alternativ som handlar om frågor texten berör men inte tar "
+        "ställning till är fällor. Triggern: \"vad signalerar texten\" → sök "
+        "den enda meningen där författaren använder första person eller en "
+        "värdering."
+    ),
+    pitfall=(
+        "Det är lätt att förväxla \"texten nämner X\" med \"texten argumenterar "
+        "för/emot X\". Botemedlet: kontrollera om författaren bara beskriver "
+        "fenomenet eller faktiskt värderar det — bara värderingar räknas som "
+        "signaler."
+    ),
+)
+
+entries["var-2026-verb1-LÄS-014"] = E(
+    solution_path=(
+        "Daniel Åberg ifrågasätter Nilssons \"gravitations\"-bild genom att hävda "
+        "att lyssnande också kräver arbete — kanske till och med svårare arbete, "
+        "eftersom någon annan styr tempot. Hans poäng är att de två aktiviteterna "
+        "är mer lika än Nilsson gör gällande. Svaret är B."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta hur Åberg svarar på en SPECIFIK metafor från Nilsson — "
+         "att den tryckta boken har \"gravitation\" som ljudboken saknar. Vi ska "
+         "alltså hitta Åbergs direkta motbild.",
+         "essential"),
+        ("Vad är Nilssons gravitation?",
+         "Nilsson menar att boken kräver eget aktivt arbete: bladet vänds inte av "
+         "sig självt, du måste föra texten framåt. \"Gravitation\" är alltså "
+         "metaforen för bokens tröghet och krav på fokus.",
+         "detail"),
+        ("Hitta Åbergs svar",
+         "Åberg adresserar gravitationen direkt i tredje stycket: \"Ola Nilssons "
+         "påpekande att läsning till skillnad från lyssning kräver att man på "
+         "egen hand för texten framåt är visserligen korrekt, men gör det "
+         "verkligen att det blir svårare att läsa än att lyssna? Kan det inte "
+         "lika gärna vara tvärtom?\"",
+         "essential"),
+        ("Parafrasera Åbergs invändning",
+         "På vardagssvenska: ja, läsning kräver att DU driver texten — men "
+         "lyssning kräver att du hänger med när NÅGON ANNAN driver texten i en "
+         "takt du inte väljer. Det är också arbete, och kanske svårare. \"Borde "
+         "det inte vara en lika svår konst att bli en god lyssnare som en god "
+         "läsare?\"",
+         "essential"),
+        ("Matcha mot alternativen",
+         "A \"andra sinnen / underlättar inlärningen\" — Åberg säger inte detta, "
+         "tvärtom citerar han studien som visar att läsning ger bättre minnes­"
+         "behållning. B \"lyssning kräver också arbetsinsats\" — exakt Åbergs "
+         "kontring i steg 3-4. C \"innehållet, inte presentationen\" — Åberg "
+         "diskuterar processen, inte innehållet kontra form. D \"helt olika "
+         "aktiviteter\" — raka motsatsen, Åberg argumenterar för att de är mer "
+         "LIKA än Nilsson säger.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är B. Åbergs kontring av gravitations-metaforen är att lyssning "
+         "också kräver en arbetsinsats — inte helt olik den att läsa. Insikten i "
+         "en mening: vid replikfrågor — sök det stycke där den andra författaren "
+         "tar upp den specifika punkt frågan handlar om, och parafrasera kontringen.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är frestande att tänka att ljudboken \"aktiverar\" hörseln på ett "
+          "sätt boken inte gör, och att Åberg därför pratar om sinnen.",
+          "Åberg jämför inte sinnen — han jämför KOGNITIV ANSTRÄNGNING. Han citerar "
+          "studien som visar att läsning gav bättre minnesbehållning och spekulerar "
+          "att det kan bero på att vi tränar mer på läsning. Sinnen kommer aldrig upp."),
+        D("C",
+          "Vänster-till-höger-läsning ger lätt intrycket att Åbergs hela mittpunkt "
+          "är \"båda är litteratur, sluta bråka om format\".",
+          "Åbergs explicita poäng är att presentationen MEDFÖR ARBETE i båda fallen "
+          "— han bryr sig just om HUR vi processar texten, inte om att kalla det "
+          "irrelevant. Som steg 4 visar går hans argumentation rakt in i process­"
+          "skillnaderna, inte runt dem."),
+        D("D",
+          "Om du minns regeln som \"två saker som båda är värdefulla men olika\", "
+          "låter D rimligt — Åberg sägs ju själv inte likställa dem helt.",
+          "Åberg säger uttryckligen \"jag tillhör inte dem som tycker att lyssning "
+          "och läsning alltid går att likställa\" — men han fortsätter direkt med "
+          "\"men samtidigt — är sysslorna verkligen så väsensskilda?\" D fångar bara "
+          "första halvan av Åbergs nyansering och missar att han argumenterar för "
+          "LIKHET, inte väsensskillnad."),
+    ],
+    technique=(
+        "Vid frågor om hur författare B svarar på författare A — leta efter det "
+        "stycke där B citerar eller refererar A:s specifika ord (här: \"Ola Nilssons "
+        "påpekande\"). Strax därefter står B:s motargument. Triggern: \"hur svarar X "
+        "på Y:s påstående\" → sök X:s användning av Y:s nyckelord."
+    ),
+    pitfall=None,
+)
+
+entries["var-2026-verb1-LÄS-015"] = E(
+    solution_path=(
+        "Åberg refererar Willinghams jämförelsestudie där läsande studenter mindes "
+        "mer än lyssnande studenter. Hans tolkning är att läsning är så centralt i "
+        "skolan att studenterna helt enkelt SAKNADE RÄTT VERKTYG för aktivt lyssnande "
+        "— alltså är resultatet en träningseffekt, inte ett bevis för läsningens "
+        "överlägsenhet. Svaret är A."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill ha ÅBERGS TOLKNING av studiens resultat — inte resultatet "
+         "i sig, utan vad Åberg läser ut ur det.",
+         "essential"),
+        ("Hitta stället",
+         "Åbergs egen tolkning kommer omedelbart efter han presenterat resultatet, "
+         "i näst sista stycket: \"Skillnaden i prestation skulle också kunna bottna "
+         "i att vi skolas betydligt mer i att lära oss läsa och tolka skriven text "
+         "än vi lär oss att på allvar lyssna på och minnas det vi hör — studenterna "
+         "saknade helt enkelt de rätta verktygen för att bäst komma ihåg och förstå "
+         "vad de lyssnade på.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: studenterna hade tränats på läsning i hela sin skoltid "
+         "men knappast på aktivt lyssnande. Att läsningen gav bättre resultat "
+         "BEHÖVER inte betyda att läsning är bättre — det kan lika gärna betyda "
+         "att studenterna är BÄTTRE TRÄNADE PÅ LÄSNING. Skillnaden ligger i tränings­"
+         "bakgrunden, inte i metoden.",
+         "essential"),
+        ("Vad betyder \"läsningens höga status\"?",
+         "I alternativ A betyder \"hög status\" att skolan prioriterar läsning — "
+         "lägger ner mer tid och resurser på att lära ut den. Det är precis Åbergs "
+         "förklaringsmodell: läsning får extra träningstid, alltså extra prestation. "
+         "Det är inte status som i \"prestige\", utan status som i \"vilken plats "
+         "den har i utbildningen\".",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"följd av läsningens höga status i skolan\" — exakt Åbergs träningseffekt­"
+         "tolkning. B \"skilda förutsättningar\" — Åberg pratar om DELAD bakgrund "
+         "(alla skolas mer i läsning), inte individuella skillnader. C \"likartade "
+         "processer\" — det är vad Willingham säger om hjärnan generellt, men "
+         "studiens RESULTAT (skillnad) tolkar Åberg som träning, inte likhet. "
+         "D \"bevisar att läsning är bäst\" — raka motsatsen till Åbergs poäng; "
+         "han avfärdar uttryckligen denna slutsats med \"Kanske, men inte "
+         "nödvändigtvis\".",
+         "essential"),
+        ("Slutsats",
+         "Svaret är A. Åberg tolkar studiens resultat som en effekt av att läsning "
+         "är så centralt i skolundervisningen — studenterna är bättre tränade på "
+         "läsning, alltså blir resultatet inte ett rättvist test. Insikten i en "
+         "mening: vid \"vad vill X säga med Y\" — leta efter författarens egen "
+         "förklaringsmodell, ofta inledd med \"skulle också kunna bottna i\" eller "
+         "\"kanske beror det på\".",
+         "essential"),
+    ],
+    distractors=[
+        D("B",
+          "Det är lätt att läsa \"studenterna saknade verktyg\" och tänka individuella "
+          "skillnader — vissa har verktygen, andra inte.",
+          "Åberg talar om HELA STUDENTGRUPPENS gemensamma skolbakgrund (\"vi skolas\") "
+          "— inte om enskilda studenters olika förutsättningar. Steg 3 visar att det "
+          "är en strukturell träningsfråga, inte en individvariation."),
+        D("C",
+          "Snabbsvar är ofta att Willingham säger att hjärnan hanterar läsning och "
+          "lyssning identiskt — då måste Åbergs poäng vara att processerna är lika.",
+          "Det är Willinghams kognitiva slutsats, inte Åbergs tolkning av JÄMFÖRELSE­"
+          "STUDIEN. Studien gav en TYDLIG SKILLNAD i resultat — och Åberg förklarar "
+          "den skillnaden med ojämn träning, inte med likhet. C blandar ihop "
+          "Willinghams generella påstående med Åbergs tolkning av en specifik studie."),
+        D("D",
+          "Första instinkten är: studien visar att läsning ger bättre minne, alltså "
+          "är läsning bättre — och Åberg refererar studien, alltså står han för "
+          "slutsatsen.",
+          "Åberg ställer denna tolkning som en MÖJLIGHET (\"då är väl läsning trots "
+          "allt bättre?\") och avfärdar den omedelbart: \"Kanske, men inte nöd­"
+          "vändigtvis.\" Hans poäng är att studien INTE bevisar det. D missar Åbergs "
+          "tolkningsvändning."),
+    ],
+    technique=(
+        "Vid frågor om hur en författare TOLKAR ett refererat resultat — gå till "
+        "meningen där författaren kommenterar resultatet, ofta inledd med "
+        "\"skulle också kunna bero på\", \"kanske\", \"men\". Triggern: \"vad vill "
+        "X få sagt om resultatet\" → leta efter författarens egen förklarings­"
+        "alternativ, inte studiens råresultat."
+    ),
+    pitfall=(
+        "Det är lätt att blanda ihop refererat innehåll (vad studien visade) med "
+        "författarens tolkning (vad författaren menar att resultatet betyder). "
+        "Botemedlet: markera meningar med \"jag\", \"skulle kunna\", \"kanske\" — "
+        "det är där tolkningen bor, inte i citaten."
+    ),
+)
+
+entries["var-2026-verb1-LÄS-016"] = E(
+    solution_path=(
+        "Åbergs sista mening — \"Ja, nu spekulerar jag mest, men det tycker jag nog "
+        "att Ola Nilsson gjorde i sin artikel också\" — är ett självmedvetet steg "
+        "tillbaka från sina egna resonemang och en lika lätt knuff åt Nilsson. "
+        "Den skapar distans till hela diskussionen. Svaret är D."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta vilken FUNKTION den sista meningen fyller — alltså vad "
+         "den GÖR retoriskt, inte bara vad den säger.",
+         "essential"),
+        ("Hitta meningen",
+         "Sista meningen i Åbergs text: \"Ja, nu spekulerar jag mest, men det tycker "
+         "jag nog att Ola Nilsson gjorde i sin artikel också.\" Den följer direkt "
+         "efter hans träningseffekt-tolkning av Willingham-studien.",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: Åberg säger \"jag erkänner att jag bara gissar — fast "
+         "det gjorde Nilsson också\". Han backar undan från ETT bestämt påstående "
+         "(min tolkning är sann) och placerar både sig själv och Nilsson på samma "
+         "spekulationsnivå.",
+         "essential"),
+        ("Vad är retorisk distans?",
+         "Att ta \"distans\" till en diskussion betyder att gå ett steg åt sidan, "
+         "inte argumentera vidare utan reflektera över själva diskussionens "
+         "karaktär. När Åberg säger \"vi spekulerar båda\" zoomar han ut från "
+         "ljudbok-vs-bok och kommenterar debattens grund. Det är en distanserings­"
+         "gest, inte en sammanfattning eller en argumentation.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"sammanfattar resonemang\" — meningen sammanfattar inte argumenten, "
+         "den BACKAR från dem. B \"nyanserar ensidig argumentation\" — Åbergs text "
+         "är redan nyanserad (\"missförstå mig inte\", \"men samtidigt\"); meningen "
+         "lägger inte till nyans utan distanserar sig. C \"egentligen överens\" — "
+         "meningen säger inte att de är överens, bara att båda spekulerar; det är "
+         "en metakommentar om debattformen, inte ett påstående om konsensus. D "
+         "\"skapar distans\" — exakt det metasteg som steg 3 och 4 beskriver.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är D. Sista meningen lyfter Åberg ur debatten och placerar både "
+         "honom och Nilsson på spekulationsnivå — en distanserande gest. Insikten "
+         "i en mening: meningar med \"jag medger / vi alla / kanske bara\" är ofta "
+         "metakommentarer om själva debatten snarare än argument inom den.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är frestande att tänka att en sista mening i en text automatiskt är "
+          "en sammanfattning.",
+          "Sammanfattningar samlar ihop argument; den här meningen UNDERMINERAR sina "
+          "egna argument genom att kalla dem spekulation. Som steg 3 visar är "
+          "rörelsen från position till metakommentar — det är inte ihopsamling."),
+        D("B",
+          "Många stannar vid att Åbergs text DÄR EMOT är klart Nilsson-kritisk, så "
+          "den sista meningen kan se ut som en nyansering.",
+          "Åbergs text är redan nyanserad löpande (\"missförstå mig inte\", \"men "
+          "samtidigt\"). Meningen lägger inte till nyans inom argumentationen; den "
+          "lämnar argumentet och kommenterar genren. B identifierar fel funktion."),
+        D("C",
+          "Snabbsvar är ofta att \"båda spekulerar\" låter som att de står på samma "
+          "sida.",
+          "Att båda spekulerar betyder bara att båda har osäker grund — inte att de "
+          "har samma åsikt. Steg 4 visar att meningen är en metakommentar om DEBATT­"
+          "FORMEN (\"vi gissar allihop\"), inte en försoning. C läser in mer enighet "
+          "än vad texten faktiskt antyder."),
+    ],
+    technique=(
+        "Vid funktionsfrågor om en specifik mening — fråga vad meningen GÖR, inte "
+        "bara vad den SÄGER. Sista meningar som vidkänner spekulation eller "
+        "kallar fram metanivå (\"jag medger / vi spekulerar\") fungerar oftast som "
+        "distanserande, inte sammanfattande. Triggern: \"vilken funktion fyller "
+        "meningen\" → leta efter meta-signaler (\"jag erkänner\", \"vi gör alla\")."
+    ),
+    pitfall=(
+        "Den retoriska funktionen är inte alltid synonym med textens position. "
+        "En författare kan ARGUMENTERA mot Nilsson men AVSLUTA med distans — de "
+        "två rör sig på olika nivåer. Botemedlet: skilj på position (vad argumenteras) "
+        "och funktion (vad meningen GÖR med läsaren)."
+    ),
+)
+
+# ════════════════════════════════════════════════════════════════════
+# PASSAGE 3: Fiskodling vid vattenkraftverk (017-020)
+# ════════════════════════════════════════════════════════════════════
+
+entries["var-2026-verb1-LÄS-017"] = E(
+    solution_path=(
+        "Texten anger två orsaker till sjunkande näringshalter i norrländska "
+        "vatten — ökat näringsbehov i skogarna (påskyndat av varmare klimat) "
+        "och minskad erosion när kalfjället täcks av växter. Alternativ A "
+        "fångar den första: skogens växtlighet tar upp mer näring. Svaret är A."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta vad TEXTEN ANGER som orsak till de förändrade närings­"
+         "halterna i Vindelälven och liknande norrländska vatten. Vi söker en "
+         "uttrycklig orsaksformulering, inte ett rimligt antagande.",
+         "essential"),
+        ("Hitta stället",
+         "Förklaringen kommer i första styckets slut: \"Den förhärskande teorin "
+         "idag är att denna generella nedgång i näringshalter kan knytas till "
+         "ett ökat näringsbehov i våra skogar påskyndat av ett varmare klimat "
+         "och till minskad erosion då allt mer av kalfjället täcks av växter.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: skogen runt vattendragen växer mer (delvis för att "
+         "klimatet är varmare) och behöver mer näring — det näringsbehovet "
+         "fångar upp näring som annars skulle hamnat i vattnet. Dessutom rinner "
+         "mindre näring ut från fjället eftersom växter binder marken.",
+         "essential"),
+        ("Vad betyder att näring \"tas upp av växtligheten\"?",
+         "När växter (träd, buskar, fjällvegetation) växer drar de in fosfor, "
+         "kväve och andra närsalter ur marken — växten BINDER näringen i sina "
+         "rötter, stam, blad. Mindre näring blir då kvar att rinna ut med "
+         "vattnet. Det är exakt det texten beskriver med \"ökat näringsbehov "
+         "i våra skogar\".",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"näring tas upp av skogens växtlighet\" — matchar \"ökat näringsbehov "
+         "i våra skogar\" rakt av. B \"kraftverksdammar har ökat järn/aluminium\" "
+         "— texten säger att järn och aluminium förekommer NATURLIGT (\"naturligt "
+         "höga halter\"), inte att dammar orsakade ökningen. C \"fiskodlingar har "
+         "krävt mer näring\" — fiskodling beskrivs tvärtom som en näringskälla, "
+         "inte som något som tär på näringen. D \"varmare klimat → strandvegeta­"
+         "tionens utbredning\" — strandvegetationen FÖRSVINNER vid reglering, "
+         "den utbreder sig inte; och klimateffekten i texten gäller skogen, "
+         "inte stranden.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är A. Den ökade upptagningen av näring i skogens växtlighet "
+         "(påskyndad av varmare klimat) är textens uttryckliga orsaksförklaring. "
+         "Insikten i en mening: vid \"vad anges som orsak\" — sök forskartextens "
+         "egna kausalord (\"kan knytas till\", \"beror på\", \"orsakas av\") "
+         "och kopiera den orsaken; rimliga gissningar utanför textens formulering "
+         "är fällor.",
+         "essential"),
+    ],
+    distractors=[
+        D("B",
+          "Det är frestande att läsa \"höga halter aluminium och järn\" och tro "
+          "att dessa metaller är orsaken till nedgången.",
+          "Texten säger att aluminium- och järnhalter är NATURLIGT höga — inte "
+          "att de orsakats av dammar. De är en SEPARAT mekanism för fosforns "
+          "biologiska otillgänglighet (en andra problem), inte orsaken till "
+          "nedgången i halterna. B blandar ihop två olika resonemang."),
+        D("C",
+          "Många stannar vid att texten handlar mycket om fiskodling och drar "
+          "slutsatsen att fiskodlingen tär på näringen.",
+          "Fiskodling presenteras i hela texten som ett potentiellt POSITIVT "
+          "tillskott av näring, inte som ett uttag. C inverterar fiskodlingens "
+          "roll i textens resonemang."),
+        D("D",
+          "Snabbsvar är ofta att varmare klimat → mer växter → mer strandvegetation. "
+          "Det låter logiskt.",
+          "Texten kopplar varmare klimat till SKOGENS näringsbehov, inte till "
+          "strandvegetationens utbredning. Strandvegetationen (litoralen) beskrivs "
+          "snarare som UTSLAGEN av vattenreglering, inte som utbredd. D bygger en "
+          "kedja som texten inte gör."),
+    ],
+    technique=(
+        "Vid \"vad anges som orsak\"-frågor — sök kausalmarkörer i texten "
+        "(\"kan knytas till\", \"beror på\", \"orsakas av\", \"den förhärskande "
+        "teorin är\"). Den första kausalsatsen efter sådana ord är oftast svaret. "
+        "Triggern: \"vad ANGES som orsak\" → leta efter forskartextens egna "
+        "orsakskonstruktion, inte efter externt rimliga förklaringar."
+    ),
+    pitfall=(
+        "Vetenskapliga texter har ofta flera parallella mekanismer (här: skogens "
+        "upptag, mindre erosion, aluminium/järn-bindning). Det är lätt att blanda "
+        "ihop dem. Botemedlet: håll reda på VAD varje mekanism förklarar — denna "
+        "fråga handlar om nedgången i halter, inte om varför fosforn binds upp."
+    ),
+)
+
+entries["var-2026-verb1-LÄS-018"] = E(
+    solution_path=(
+        "Texten förklarar: om det INTE finns organiskt material i litoralen "
+        "(strandzonen) som fosfor kan bindas till, reagerar fosforn istället "
+        "med aluminium och järn ute i pelagialen och blir biologiskt otill­"
+        "gänglig. Det är litoralvegetationens avsaknad som driver problemet. "
+        "Svaret är A."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta varför mycket av fosforn i Ströms Vattudal är "
+         "BIOLOGISKT OTILLGÄNGLIG — alltså låst, inte tillgänglig för växter "
+         "och alger att använda.",
+         "essential"),
+        ("Hitta stället",
+         "Förklaringen kommer i mitten av första stora stycket: \"Om det inte "
+         "finns tillgängligt organiskt material i litoralen (strandzonen) som "
+         "fosfor kan bindas in i, så kommer fosforn att reagera med detta "
+         "aluminium och järn ute i pelagialen och bli biologiskt otillgänglig.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: fosforn har två möjliga \"hem\" — den kan binda "
+         "till organiskt material vid stranden (bra, då är den biologiskt "
+         "användbar) eller reagera med aluminium/järn i den öppna vatten­massan "
+         "(dåligt, då är den låst). Om strandhabitatet är förstört finns inget "
+         "organiskt material att binda till — fosforn hamnar i fel \"hem\".",
+         "essential"),
+        ("Vad är litoralen och varför är den tom?",
+         "Litoralen är strandzonen — det grunda området närmast stranden där "
+         "vegetationen normalt sitter. I kraftverksdammar slås den ut av "
+         "upprepad torrläggning när vattennivån regleras. När litoralen är tom "
+         "på vegetation finns ingen organisk substans där fosforn kan binda — "
+         "den drivs ut i pelagialen och låses i metaller.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"avsaknaden av vegetation i litoralen\" — exakt textens orsaks­"
+         "kedja: ingen litoral-vegetation → inget organiskt material → fosforn "
+         "binds i metaller istället. B \"den ökande halten aluminium\" — texten "
+         "säger att aluminiumhalten är NATURLIGT hög, inte att den ökar; och "
+         "aluminium är reaktanten, inte primärorsaken. C \"bunden i organiskt "
+         "material\" — det är raka motsatsen, det är just AVSAKNADEN av sådan "
+         "bindning som är problemet. D \"koncentrerats till bottnen vid "
+         "fiskodlingen\" — texten säger att totalmängden är större under "
+         "odlingen, men frågan handlar om TILLGÄNGLIGHET, inte mängd.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är A. När strandvegetationen är borta saknas organiskt material "
+         "att binda fosforn till — den hamnar i pelagialen och låses i aluminium/"
+         "järn. Insikten i en mening: vid orsaksfrågor med \"om-så\"-konstruktioner — "
+         "negationen i \"om\"-satsen är ofta orsaken (här: \"OM det inte finns "
+         "material\" → svaret är AVSAKNADEN av materialet).",
+         "essential"),
+    ],
+    distractors=[
+        D("B",
+          "Det är lätt att läsa \"reagerar med aluminium och järn\" och dra "
+          "slutsatsen att en ökning av aluminium är orsaken.",
+          "Aluminium- och järnhalterna beskrivs som NATURLIGT förekommande, inte "
+          "som något som ökat. De är passiva reaktanter — det aktiva problemet "
+          "är att fosforn saknar ETT BÄTTRE BINDNINGSMÅL (organiskt material). "
+          "B förväxlar reaktant med orsak."),
+        D("C",
+          "Det är frestande att tänka \"bunden i organiskt material\" eftersom "
+          "ordet organiskt återkommer i texten.",
+          "Texten säger att fosforn INTE binds i organiskt material i Ströms "
+          "Vattudal (för att det organiska materialet saknas i litoralen) — och "
+          "ATT den inte binds där är just problemet. C inverterar logiken; om "
+          "fosforn vore bunden i organiskt material skulle den vara biologiskt "
+          "TILLGÄNGLIG."),
+        D("D",
+          "Snabbsvar är ofta att om totalmängden fosfor är större vid fiskodlingen, "
+          "så är det fiskodlingens koncentration som är problemet.",
+          "Texten säger att TOTALMÄNGDEN fosfor är större under odlingen — men "
+          "frågan gäller TILLGÄNGLIGHET, inte mängd. Bindningsmekanismen (aluminium/"
+          "järn) är densamma uppströms, nedströms och under odlingen. D blandar "
+          "ihop kvantitet med biotillgänglighet."),
+    ],
+    technique=(
+        "Vid orsaksfrågor med \"om-så\"-konstruktioner i texten — den NEGATIVA "
+        "betingelsen i \"om\"-satsen är ofta orsaken. \"Om det INTE finns X, "
+        "så händer Y\" betyder att avsaknaden av X orsakar Y. Triggern: "
+        "\"vad orsakar Y\" → sök \"om inte\"-satser i texten."
+    ),
+    pitfall=(
+        "Det är lätt att ta reaktanten (aluminium/järn) för orsaken bara för att "
+        "den nämns mest aktivt i meningen. Botemedlet: fråga \"vad SAKNAS som "
+        "skulle förändrat utfallet?\" — det är där orsaken bor, inte hos den "
+        "kemiska reaktanten."
+    ),
+)
+
+entries["var-2026-verb1-LÄS-019"] = E(
+    solution_path=(
+        "Vattenreglering skadar litoralen och ger näringsbrist i kraftverks­"
+        "dammar (negativ effekt). Fiskodling tillför näring och kan ersätta "
+        "den litorala födobasen — alltså KOMPENSERA för regleringens skada. "
+        "Svaret är D."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta relationen mellan TVÅ saker — vattenreglering och "
+         "fiskodling — när det gäller näringen i en kraftverksdamm. Vi söker "
+         "alltså hur den ena påverkar det den andra gör (positivt eller "
+         "negativt, och åt vilket håll).",
+         "essential"),
+        ("Hitta stället",
+         "Sambandet beskrivs när texten introducerar undantaget från oligotrofi-"
+         "problemet: \"Ett undantag från sådana ekosystemeffekter i dessa "
+         "onaturligt oligotrofa vatten tycks nu skönjas i magasin som länge "
+         "har haft öppen fiskodling… vatten där det kontinuerligt och under "
+         "lång tid har tillförts organiskt tillgänglig näring.\" Och tydligare: "
+         "\"fiskodlingen kan utföra en miljötjänst.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: vattenregleringen är dålig för näringen — den "
+         "slår ut strandzonen och dammen blir näringsfattig. Fiskodlingen är "
+         "bra för näringen — den tillför organiskt material. De drar alltså "
+         "åt MOTSATT håll, och fiskodlingens positiva effekt kompenserar för "
+         "regleringens negativa.",
+         "essential"),
+        ("Vad betyder \"kompensera för\"?",
+         "Att kompensera för en negativ effekt betyder att JÄMNA UT eller "
+         "MOTVERKA den, så att slutresultatet närmar sig det normala igen. "
+         "I texten är vattenregleringens skada att näring försvinner; fisk­"
+         "odlingen återinför näring — det är just kompensation, inte att den "
+         "FÖRSTÄRKER något.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"reglering förvärrar fiskodlingens negativa effekter\" — fiskodlingen "
+         "presenteras som POSITIV i texten, inte negativ. B \"reglering "
+         "påskyndar fiskodlingens positiva effekter\" — regleringen påskyndar "
+         "ingenting positivt, den slår ut litoralen. C \"fiskodling motverkar "
+         "regleringens positiva effekter\" — regleringen har inga positiva "
+         "näringseffekter i texten. D \"fiskodling kompenserar för regleringens "
+         "negativa effekter\" — exakt den motsats-balans som steg 3 beskriver.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är D. Vattenregleringen drar näringen NER och fiskodlingen "
+         "drar den UPP igen — en kompensation. Insikten i en mening: vid "
+         "relations-frågor med två faktorer — bestäm tecknet på vardera (positiv "
+         "eller negativ) och hur de samspelar (förstärkning, försvagning, "
+         "kompensation).",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är frestande att tänka att fiskodling normalt sett är miljö­"
+          "skadlig (övergödning) och att reglering kunde göra det värre.",
+          "Texten gör en ANNORLUNDA värdering: i en kraftverksdamm där litoralen "
+          "är utslagen är fiskodlingens näringstillförsel POSITIV. Steg 2 visar "
+          "att forskarna kallar det en \"miljötjänst\". A importerar en värdering "
+          "som inte gäller i textens kontext."),
+        D("B",
+          "Om du minns regeln som \"de två är på samma sida\" — alltså båda "
+          "bidrar till samma utfall — låter B rimligt: reglering hjälper fiskodling.",
+          "Regleringen GÖR ingenting positivt i texten — den slår ut litoralen och "
+          "skapar näringsbrist. Den kan inte \"påskynda fiskodlingens positiva "
+          "effekter\" eftersom den själv går åt motsatt håll. B bygger en allians "
+          "som texten inte beskriver."),
+        D("C",
+          "Vänster-till-höger-läsning ger lätt intrycket att fiskodling \"motverkar\" "
+          "någonting i texten — och regleringen är det som närmast omtalas.",
+          "Fiskodlingen motverkar VATTENREGLERINGENS NEGATIVA effekter, inte "
+          "positiva. Steg 2 visar att regleringen orsakar näringsbrist; fiskodlingen "
+          "motverkar bristen. C får riktningen rätt men tecknet fel."),
+    ],
+    technique=(
+        "Vid relations-frågor med två faktorer — bestäm tecknet på vardera "
+        "(positiv/negativ effekt på det aktuella systemet) och välj sedan "
+        "alternativet där tecknen är konsekventa. Triggern: \"hur är relationen "
+        "mellan X och Y\" → märk X och Y med + eller − för utfallet, och sök "
+        "alternativet som matchar."
+    ),
+    pitfall=(
+        "Det är lätt att importera en värdering från en annan kontext (\"fiskodling "
+        "är dåligt\") och låta den styra läsningen. Botemedlet: läs textens egen "
+        "värdering i den specifika situationen — i en näringsfattig kraftverksdamm "
+        "är näringstillförsel just det som behövs."
+    ),
+)
+
+entries["var-2026-verb1-LÄS-020"] = E(
+    solution_path=(
+        "Textens röda tråd är problemet med näringsbrist i svenska inlandsvatten "
+        "(särskilt norrländska kraftverksdammar) och om/hur fiskodling kan öka "
+        "näringen där. Det är frågan om hur dessa vatten kan bli MER närings­"
+        "rika. Svaret är B."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta vilken FRÅGESTÄLLNING som driver hela texten — den "
+         "övergripande problemformuleringen, inte ett enskilt resultat eller "
+         "delavsnitt.",
+         "essential"),
+        ("Hitta tematiska tråden",
+         "Textens första halva diagnostiserar problemet: \"halterna närsalter\" "
+         "har sjunkit till \"kritiskt låga nivåer\" i norrländska vatten, "
+         "vattenreglering förvärrar det, fosforn blir biologiskt otillgänglig. "
+         "Andra halvan introducerar lösningen: fiskodling som kan tillföra "
+         "biologiskt tillgänglig näring och utgöra en \"miljötjänst\".",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: våra norrländska vatten har för LITE näring — det "
+         "är ekosystem-skadligt. Forskarna undersöker om fiskodling (som tillför "
+         "näring) kan vara svaret. Hela texten handlar om att näringsfattigdomen "
+         "är problemet och näringsTILLFÖRSEL är den utvärderade lösningen.",
+         "essential"),
+        ("Vad betyder \"oligotrofiering\"?",
+         "Texten definierar det själv: minskande halter närsalter — alltså att "
+         "vatten BLIR näringsfattigare. Det är detta som är textens nyckel­"
+         "problem; rubriken \"fiskodling vid vattenkraftverk\" pekar mot "
+         "lösningen, men problemet är näringsbrist i regleringsdammar.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"minska Östersjöns näringsöverskott\" — Östersjön nämns men som ett "
+         "OMRÅDE där överskott historiskt funnits, inte som textens fråga; "
+         "tvärtom används Östersjöns avrinning som potentiell näringskälla för "
+         "inlandsvatten. B \"hur kan svenska inlandsvatten bli mer näringsrika\" "
+         "— exakt vad steg 2 och 3 visar. C \"vilda fiskbestånd\" är ETT delspår "
+         "(följdeffekt av näringen), inte hela textens fråga. D \"hur kan "
+         "näringen utnyttjas bäst\" — alternativet vänder pilen åt fel håll; "
+         "texten frågar hur näringen kan ÖKAS, inte hur befintlig näring "
+         "ska fördelas.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är B. Hela texten kretsar kring att norrländska inlandsvatten "
+         "har för lite näring och hur den bristen kan motverkas. Insikten i en "
+         "mening: vid \"vilken frågeställning står i centrum\" — diagnosen i "
+         "första halvan och lösningen i andra halvan ska peka på samma fråga; "
+         "delspår (fiskbestånd, miljötjänst, ekonomi) är följder, inte frågan.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är frestande att läsa flera Östersjö-nämningar och tänka att "
+          "Östersjöns näringsöverskott är textens problem.",
+          "Östersjön nämns som AVRINNINGSOMRÅDE och som kontrast (\"miljötjänst\" "
+          "fungerar både norr och söder), inte som textens fråga. Som steg 2 "
+          "visar är problemområdet de norrländska inlandsvattnen, inte havet."),
+        D("C",
+          "Många stannar vid \"tusenbröder\" och \"vilda fiskbestånd\" och tror "
+          "att fisken är textens centrum.",
+          "Fiskbestånden är en KONSEKVENS av näringsläget, ett delspår — men "
+          "textens analytiska fokus är vattnets näring (mätningar, sediment­"
+          "studier, näringsteorier). Steg 2 visar att hela utredningen kretsar "
+          "kring näringshalter, inte fiskpopulationer."),
+        D("D",
+          "Snabbsvar är ofta att \"hur utnyttja näringen bäst\" är textens fråga "
+          "eftersom den diskuterar Robin Hood-effekten och fiskfoder.",
+          "Texten frågar inte hur befintlig näring SKA FÖRDELAS — den frågar hur "
+          "näring kan TILLFÖRAS vatten där den saknas. D vänder pilen från "
+          "näringsbrist till resursoptimering."),
+    ],
+    technique=(
+        "Vid \"vilken frågeställning står i centrum\"-frågor — kolla att både "
+        "första halvans DIAGNOS och andra halvans LÖSNINGSFÖRSLAG handlar om "
+        "samma fråga. Det som binder ihop dem ÄR centrumfrågan. Triggern: "
+        "\"frågeställning i centrum\" → diagnostiken (problemet) + lösnings­"
+        "förslaget (svaret) → den fråga båda förhåller sig till."
+    ),
+    pitfall=(
+        "Delspår (fiskbestånd, ekonomi, Östersjön) kan se ut som centrumfrågor "
+        "eftersom de tar plats. Botemedlet: fråga \"binder den HÄR frågan ihop "
+        "första och andra halvan av texten?\" — om inte, är det ett delspår."
+    ),
+)
+
+# Save first batch (5 entries: 011-015) before continuing... actually we have 8 so far
+# We'll save after each 5 inserted (so once we reach 015, 020, etc.)
+
+# ════════════════════════════════════════════════════════════════════
+# PASSAGE 4: Vilse (verb2 LÄS 011-012)
+# ════════════════════════════════════════════════════════════════════
+
+entries["var-2026-verb2-LÄS-011"] = E(
+    solution_path=(
+        "Tidens \"budbärare\" beskrivs som agenter som STRYKER UT spår av "
+        "Gunnar — reflexer, imfigurer, avtryck — och som intalar oss att "
+        "döden inte gäller oss. Deras roll är att få oss att glömma den döde "
+        "och döden själv. Svaret är C."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta rollen hos tidens \"nitiska budbärare och handgångna "
+         "män\" — vad de GÖR i berättarrösternas liv enligt texten.",
+         "essential"),
+        ("Hitta stället",
+         "Budbärarna beskrivs i mitten av andra stycket: \"tiden och dess "
+         "nitiska budbärare och handgångna män oavbrutet söker hindra oss. "
+         "De stryker ut reflexerna i fönstrens glas, imfigurerna i badrummens "
+         "speglar, avtrycken efter försvunna kroppsdelar i sängkläder, "
+         "soffkuddar och klädesplagg.\" Och: de ska \"intala oss att allt är "
+         "som det ska och att allt vad döden mumlar genom nätterna inte "
+         "gäller oss\".",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: tidens budbärare är aktiva radergummin. De suddar "
+         "ut de små materiella minnen efter Gunnar (en reflex i ett glas, en "
+         "imfigur i en spegel, ett avtryck i en kudde) — alla de spår som "
+         "håller den döde närvarande. Och de berättar samtidigt en lugnande "
+         "lögn: oroa er inte, döden gäller inte er.",
+         "essential"),
+        ("Vad menas med \"rationalitetens kalla ordning\"?",
+         "Texten kallar dem utsända från \"en ockupationsmakts propaganda­"
+         "ministerium\" med uppgift att återställa \"de himmelska ekvationernas "
+         "kalla ordning\" — alltså en avförmänskligad logik där levande "
+         "människor är \"oönskat okända faktorer\". Deras uppdrag är att tysta "
+         "den känslomässiga närvaron av de döda. Det stämmer exakt med "
+         "alternativ C: få oss att glömma.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"påminner oss om döden\" — raka motsatsen; de stryker ut påminnelser. "
+         "B \"hämtar oss när det är dags att dö\" — texten beskriver INTE budbärarna "
+         "som dödens hantlangare som hämtar oss; deras roll är att radera, inte "
+         "att hämta. C \"vill få oss att glömma döden och de döda\" — exakt det "
+         "steg 2 och 3 beskriver: utradering av spår + intalande att döden inte "
+         "gäller. D \"lura oss att döden är ett lyckligt slut\" — de förskönar "
+         "inte döden, de PROPAGERAR för dess osynlighet.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är C. Tidens budbärare suddar ut spåren efter den döde och "
+         "intalar oss att döden inte är vår sak — deras roll är glömskan. "
+         "Insikten i en mening: i lyrisk prosa — slå ihop verben som beskriver "
+         "karaktärernas handlingar (\"stryker ut\", \"intala oss\") och fråga "
+         "vad VERBEN tillsammans gör. Det är funktionen.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är frestande att associera \"tidens budbärare\" med påminnelser "
+          "om tidens gång och därmed om döden.",
+          "Texten är specifik: budbärarna STRYKER UT, RADERAR, suddar bort spår "
+          "och imfigurer. Och deras intalan är att döden INTE gäller oss. Steg 2 "
+          "visar att deras funktion är raka motsatsen till påminnelse."),
+        D("B",
+          "Om du minns regeln som \"dödens budbärare hämtar de döda\", låter B "
+          "rimligt — det är en vanlig kulturell bild.",
+          "Texten gör budbärarna till tidens, inte dödens, agenter — och deras "
+          "uppgift är inte att hämta utan att RENSA EFTER. Steg 4 visar att de "
+          "är propagandister, inte dödsänglar. B importerar en symbol som texten "
+          "inte använder."),
+        D("D",
+          "Snabbsvar är ofta att texten har en lugnande ton mot slutet (\"allt är "
+          "som det ska\") och att det handlar om att förskönra döden.",
+          "Lugnandet är att döden INTE GÄLLER OSS — alltså ett förnekande, inte "
+          "ett försköndande. Texten beskriver detta som en lögn från ett \"propa­"
+          "gandaministerium\" — det är manipulation till glömska, inte ett "
+          "påstående om dödens lycka. D missar att lugnandet är ett bedrägeri "
+          "om relevans, inte om värde."),
+    ],
+    technique=(
+        "I lyrisk prosa — slå ihop verben som beskriver karaktärernas handlingar "
+        "och fråga vad de tillsammans utgör. Här: \"stryker ut\", \"intalar\", "
+        "\"återställa\" — alla pekar mot utplåning och tystande, alltså glömska. "
+        "Triggern: \"vilken roll spelar X\" → kollektivverben kring X."
+    ),
+    pitfall=(
+        "Det är lätt att läsa figurativ prosa som om symbolerna betyder vad "
+        "de gör i andra texter (\"budbärare\" = hämtare, \"död\" = slut). "
+        "Botemedlet: läs vad texten själv säger att de gör — texten är sin "
+        "egen ordbok för sina figurer."
+    ),
+)
+
+entries["var-2026-verb2-LÄS-012"] = E(
+    solution_path=(
+        "Texten ställer två krafter mot varandra: människors känslomässiga "
+        "fasthållande vid varandra (sorgen efter Gunnar, gemenskapen, "
+        "minnesarbetet) mot tidens \"kalla ordning\" — \"de himmelska "
+        "ekvationernas\" rationalitet som vill radera människan. Svaret är A."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta vilka TVÅ POLER som tycks stå mot varandra i texten — "
+         "alltså vilken motsättning som driver berättelsen.",
+         "essential"),
+        ("Hitta båda polerna",
+         "Pol 1 (människor): \"Vi arbetar för att hålla oss kvar vid varandra\" "
+         "— minnet av Gunnar, försök att fasthålla närvaron. Pol 2 (tiden/"
+         "rationaliteten): \"tiden och dess nitiska budbärare … vill återställa "
+         "världen till den plats av rationalitet där människors liv alltid utgör "
+         "oönskat okända faktorer … de himmelska ekvationernas kalla ordning\".",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: på ena sidan står människornas värme och vilja att "
+         "minnas, hålla ihop, ge plats åt sorgen. På den andra står en kall, "
+         "rationell ordning som vill skala bort människan ur ekvationen. Texten "
+         "framställer det som kamp mellan mänskligt fasthållande och tidens "
+         "kyliga \"matematik\".",
+         "essential"),
+        ("Vad är \"de himmelska ekvationernas kalla ordning\"?",
+         "Bildens innebörd är en värld där allt är förutsägbart, beräkneligt, "
+         "städat — och där människor är besvärliga \"okända faktorer\" som "
+         "stör. Texten kontrasterar denna kyla mot människornas värme när de "
+         "håller kvar Gunnar i kön, på promenaden, i tv-rutan. Det är just A:s "
+         "motsatspar: känslor mot kall rationalitet.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"människors känslor — tidens kalla rationalitet\" — exakt textens "
+         "huvudkontrast som steg 2-3 visar. B \"vardagsglädje — sorg\" — sorgen "
+         "finns där men dess motpol är inte glädje utan tidens utplåning. C "
+         "\"ungdomlig hoppfullhet — insikt om döden\" — texten gestaltar inte "
+         "ungdom kontra dödsinsikt; alla karaktärer verkar vara vuxna och "
+         "sorgsna. D \"överlevnadsinstinkt — hårt samhällsklimat\" — texten "
+         "talar inte om samhällsklimat utan om en metafysisk/tids-ordning; "
+         "kategorin är fel sort.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är A. Textens dramatiska spänning ligger mellan människornas "
+         "varma fasthållande vid varandra och tidens \"kalla\" rationella "
+         "ordning. Insikten i en mening: vid \"två poler\"-frågor i lyrisk "
+         "prosa — sök textens egna kontrastord (\"kall\", \"varm\", \"oavbrutet\", "
+         "\"vi mot dem\") och para ihop dem.",
+         "essential"),
+    ],
+    distractors=[
+        D("B",
+          "Det är frestande att tänka \"texten handlar om sorg, alltså är "
+          "motpolen glädje\".",
+          "Sorgen efter Gunnar är förvisso central, men textens motpol är inte "
+          "vardagsglädje — utan tidens utplåning av människan. Steg 2 visar att "
+          "kontrasten är värme mot kyla, inte sorg mot glädje. B väljer ett "
+          "abstrakt motsatspar som inte finns i texten."),
+        D("C",
+          "Många stannar vid att texten handlar om döden och tänker att motpolen "
+          "ska vara liv eller ungdom.",
+          "Texten visar inga ungdomsgestalter eller hoppfulla figurer — bara "
+          "minnesbärare i en bistert sorglig värld. C antar en åldersmässig "
+          "motsättning som texten inte har; motpolerna är värme/känsla mot "
+          "rationalitet."),
+        D("D",
+          "Snabbsvar är ofta att \"ockupationsmakt\" och \"hårdhet\" pekar mot "
+          "ett samhällskritiskt motsatspar mellan instinkt och samhälle.",
+          "\"Ockupationsmakt\" är textens METAFOR för tidens ordning — inte ett "
+          "konkret samhälle. Det handlar inte om socialt klimat utan om en "
+          "metafysisk kamp. D läser metaforen för bokstavligt och får fel sorts "
+          "motsatspar."),
+    ],
+    technique=(
+        "Vid \"två poler\"-frågor i lyrisk prosa — sök textens egna kontrastord "
+        "(\"kall\" mot \"hålla kvar\", \"ordning\" mot \"oönskade faktorer\") och "
+        "para ihop dem. Alternativ som handlar om abstrakta motsatspar (glädje/"
+        "sorg, ung/gammal) utan textuell förankring är fällor. Triggern: \"två "
+        "poler\" → leta efter adjektiv-par som beskriver två krafter."
+    ),
+    pitfall=(
+        "Det är lätt att läsa metaforer som om de syftar på vardagliga sociala "
+        "motsättningar (ockupation = krig, hård = samhället). Botemedlet: läs "
+        "metaforen i textens egen mening — \"ockupationsmakt\" här är tiden, "
+        "inte ett konkret regim."
+    ),
+)
+
+# ════════════════════════════════════════════════════════════════════
+# PASSAGE 5: Omvårdnadsforskning (013-016)
+# ════════════════════════════════════════════════════════════════════
+
+entries["var-2026-verb2-LÄS-013"] = E(
+    solution_path=(
+        "Texten säger att riktlinjerna togs fram med utgångspunkt i forskares "
+        "bedömning av var behovet att NORMERA vården var störst — och att de "
+        "tillgodoser GRUNDLÄGGANDE BEHOV (mat, fall, livets slut, etc.). "
+        "Syftet är alltså att säkra kvaliteten i den dagliga vården. Svaret är B."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta SYFTET med de nationella riktlinjerna — alltså "
+         "vad de är till för. Vi söker textens egen motivering, inte vad "
+         "riktlinjer i allmänhet brukar göra.",
+         "essential"),
+        ("Hitta stället",
+         "Riktlinjerna introduceras i tredje stycket: \"Arbetet startade med "
+         "utgångspunkt i forskares och verksamhetsföreträdares bedömning av "
+         "inom vilka områden det fanns kunskap att sammanställa och var det "
+         "fanns störst behov att normera vården. Det resulterade i kunskaps­"
+         "baserade riktlinjer för att tillgodose grundläggande behov inom "
+         "områden som exempelvis vård i livets slutskede, mat och ätande, "
+         "fall, munhälsa, urininkontinens och förstoppning.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: forskarna kollade var vården behövde tydligast "
+         "regler för att fungera bra, och tog fram riktlinjer för det. "
+         "Riktlinjerna handlar om VARDAGLIGA vårdmoment — mat, sömn, fall, "
+         "munvård — alltså om att den dagliga vården av patienten ska hålla "
+         "kvalitet.",
+         "essential"),
+        ("Vad betyder \"normera vården\"?",
+         "Att normera = att sätta upp normer/standarder för hur något ska "
+         "göras. Här: bestämma hur god vård SKA se ut i konkreta vardags­"
+         "situationer. Det är just \"säkerställa kvaliteten i den dagliga "
+         "vården\" — kvaliteten är inte ett biresultat utan riktlinjernas "
+         "huvudpoäng.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"förbättra utbildningen av ny vårdpersonal\" — texten nämner "
+         "personalkompetens som en bredare fråga, men riktlinjerna handlar om "
+         "VÅRDPRAXIS, inte utbildningsprogram. B \"säkerställa kvaliteten i "
+         "den dagliga vården\" — exakt vad steg 2-3 visar. C \"underlätta "
+         "utvärderingen av vården\" — utvärdering nämns inte som syfte. D "
+         "\"stärka forskningen\" — forskningens kunskap är INPUTEN till "
+         "riktlinjerna, inte målet; målet är vården, inte forskningen.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är B. Riktlinjerna ska säkra kvaliteten i den dagliga vården "
+         "genom att normera vardagliga vårdmoment. Insikten i en mening: vid "
+         "\"vad är syftet med X\" — sök meningen där X presenteras och leta "
+         "efter målverb (\"för att tillgodose\", \"för att normera\"); kring­"
+         "kontexten är ofta input eller följder, inte syftet.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är frestande att läsa \"välutbildad personal\" och \"utbildning\" "
+          "och tro att riktlinjernas syfte är personalutbildning.",
+          "\"Välutbildad personal\" nämns som ETT av flera områden riktlinjerna "
+          "lyfter, inte som riktlinjernas syfte. Som steg 2 visar är syftet att "
+          "normera den faktiska vårdpraxisen — utbildningen är en av flera "
+          "kvalitetsfaktorer, inte målet."),
+        D("C",
+          "Många stannar vid att texten talar om att \"mäta\" personcentrerad "
+          "vård och kopplar riktlinjerna till utvärdering.",
+          "Mätning av personcentrerad vård är ett FORSKNINGSMOTIV som Sandman "
+          "nämner separat — riktlinjerna i sig handlar om att normera VÅRDEN, "
+          "inte att producera mätinstrument. C blandar ihop två olika spår i "
+          "texten."),
+        D("D",
+          "Snabbsvar är ofta att riktlinjerna togs fram av forskare och därför "
+          "stärker forskningen.",
+          "Att forskare bidrog med kunskap är riktlinjernas INPUT — kunskapen "
+          "kanaliserades INTO vården, inte tillbaka till forskningen. Som steg 2 "
+          "visar är slutprodukten kunskap som ska användas i vården; forskningen "
+          "är källan, inte målet."),
+    ],
+    technique=(
+        "Vid \"vad är syftet med X\"-frågor — sök målverbet i den mening där X "
+        "presenteras (\"för att tillgodose / för att säkra / för att normera\"). "
+        "Stödord runt presentationen är ofta input (forskning) eller följder "
+        "(utvärdering), inte själva syftet. Triggern: \"syftet med X\" → leta "
+        "efter \"för att\"-konstruktion direkt vid X."
+    ),
+    pitfall=(
+        "Det är lätt att blanda ihop riktlinjernas UPPHOV (forskning) och deras "
+        "EFFEKT (vården) — eller med ett bredare TEMA i texten (personal, "
+        "ledarskap). Botemedlet: rama in den specifika mening där riktlinjerna "
+        "ges en målbeskrivning, och ignorera vad som sägs om grannfenomen."
+    ),
+)
+
+entries["var-2026-verb2-LÄS-014"] = E(
+    solution_path=(
+        "Sandman beskriver omvårdnadsforskningen som hittills \"främst "
+        "EXPLORATIV\" — kartläggande, beskrivande. Men nu krävs \"innovation, "
+        "implementering och intervention\" — alltså omsättning till praktik. "
+        "Övergången är från utforskning till tillämpning. Svaret är D."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan beskriver att forskningen befinner sig i en ÖVERGÅNGSFAS och "
+         "vill veta vilken övergång det är — vad rör sig forskningen FRÅN och "
+         "TILL?",
+         "essential"),
+        ("Hitta båda ändpunkterna",
+         "FRÅN: \"Enligt Per-Olof Sandman har omvårdnadsforskningen till dags "
+         "dato främst varit explorativ. Intervjuer och observationer har använts "
+         "för att kartlägga olika fenomen.\" TILL: \"ska man få pengar till "
+         "forskning i dag måste man enligt Per-Olof Sandman arbeta med "
+         "innovation, implementering och intervention.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: hittills har forskningen UTFORSKAT — kartlagt, "
+         "beskrivit, samlat in fakta genom intervjuer och observationer. Nu "
+         "krävs att forskningen TILLÄMPAR — utvecklar produkter och metoder, "
+         "implementerar dem, intervenerar i vården. Rörelsen är från att "
+         "förstå till att förändra.",
+         "essential"),
+        ("Vad betyder explorativ kontra interventionsforskning?",
+         "Explorativ forskning UTFORSKAR — \"vad finns där?\" Den producerar "
+         "beskrivningar och kartor över fenomen. Interventionsforskning "
+         "TILLÄMPAR — \"vad händer om vi ändrar något?\" Den producerar verktyg "
+         "och behandlingsmetoder. Sandmans poäng är att forskningen rör sig "
+         "från första typen till andra.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"experiment till teori\" — vänd: forskningen rör sig MOT mer "
+         "praktik (intervention), inte mot teori; och hittills var det inte "
+         "experiment utan kartläggning. B \"exempel till kartläggning\" — "
+         "vänd: kartläggning är ändpunkt A (varifrån), inte slutmålet. C "
+         "\"beskrivning till analys\" — \"analys\" är fel typ av slutmål; "
+         "Sandman talar om tillämpning (produkter, intervention), inte ny "
+         "analytisk fördjupning. D \"utforskning till tillämpning\" — exakt "
+         "explorativ → intervention som steg 2-3 visar.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är D. Omvårdnadsforskningen går från explorativ utforskning "
+         "till tillämpning genom innovation, implementering och intervention. "
+         "Insikten i en mening: vid övergångsfrågor med ändpunkter — leta "
+         "efter två tidsmarkörer i texten (\"till dags dato\" + \"i dag/i "
+         "framtiden\") och para ihop forskningstyperna på vardera sidan.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är frestande att tänka att vetenskap rör sig från observation "
+          "till teoribyggande — det är en klassisk vetenskapsbild.",
+          "Sandmans rörelse går åt motsatt håll. Som steg 2 visar är slutmålet "
+          "PRAKTISK tillämpning — produkter, implementering, intervention — "
+          "inte teoribyggande. A applicerar en generisk vetenskaps-rörelse på "
+          "fel disciplin."),
+        D("B",
+          "Snabbsvar är ofta att forskningen rör sig mot \"kartläggning\" "
+          "eftersom \"riktlinjer\" kan låta som strukturering.",
+          "Kartläggning är vad forskningen GJORDE hittills (med intervjuer och "
+          "observationer) — alltså FRÅN-änden, inte TILL-änden. B vänder "
+          "tidsriktningen på övergången."),
+        D("C",
+          "Många stannar vid \"konklusiv kunskap\" och \"säga: så här ska vi "
+          "göra\" och tolkar slutfasen som analytisk.",
+          "Sandmans \"konklusiva kunskap\" är inte en analytisk djupdykning — "
+          "det är handlingsinriktad kunskap (\"så här ska vi göra\"). Det är "
+          "tillämpning, inte ny analys. Som steg 2 visar är slutmålet "
+          "INTERVENTION, alltså att GÖRA, inte att ANALYSERA mer."),
+    ],
+    technique=(
+        "Vid övergångsfrågor — sök två tidsmarkörer (\"hittills / till dags "
+        "dato\" och \"i dag / nu\") och para ihop forskningstyperna på vardera "
+        "sidan. Försök sedan namnge båda i samma kategori-system (här: "
+        "utforskning vs. tillämpning). Triggern: \"övergångsfas\" → leta efter "
+        "tidsadverb som flaggar före/efter."
+    ),
+    pitfall=(
+        "Det är lätt att tolka in vanliga forskningsrörelser (observation → "
+        "teori) istället för textens specifika rörelse (kartläggning → "
+        "intervention). Botemedlet: använd textens egna ord för båda ändpunkter — "
+        "\"explorativ\" och \"intervention\" pekar inte mot teori utan mot "
+        "praktisk tillämpning."
+    ),
+)
+
+entries["var-2026-verb2-LÄS-015"] = E(
+    solution_path=(
+        "På 70- och 80-talen organiserades omvårdnaden enligt \"löpande "
+        "bandet\" — alla vårdare utbytbara, allt handlade om uppgifter som "
+        "skulle utföras, inte om personliga relationer. Vårdarens arbete "
+        "BEGRÄNSADES till bestämda uppgifter. Svaret är C."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta vad som UTMÄRKTE den \"industriella\" omvårdnaden "
+         "på 70- och 80-talen — alltså den karaktäristiska egenskap som "
+         "definierade modellen.",
+         "essential"),
+        ("Hitta stället",
+         "Sandman beskriver perioden i ett par stycken: \"På 1970- och 1980-"
+         "talet organiserades omvårdnadsarbetet enligt industrins modell, det "
+         "löpande bandet.\" Och: \"Att omvårdnadens organisation byggde på "
+         "idén om det löpande bandet gjorde att det inte var viktigt med "
+         "personliga relationer, allt handlade om uppgifter som skulle "
+         "utföras. Det betydde att alla vårdare var utbytbara.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: vårdarna var som arbetare vid ett löpande band — "
+         "varje vårdare gjorde sina inrutade arbetsmoment, ingen personlig "
+         "relation behövdes, vem som helst kunde steppa in. Patienten "
+         "behandlades som ett objekt på bandet. Arbetet var alltså AVGRÄNSAT "
+         "TILL UPPGIFTER, inte till relationer.",
+         "essential"),
+        ("Vad betyder \"objektifierande synsätt\"?",
+         "Sandman säger att perioden hade ett \"väldigt instrumentellt och "
+         "objektifierande synsätt\" — patienten sågs som ett objekt, inte som "
+         "ett subjekt. Det betyder konkret: man INTERAGERADE inte med "
+         "patienten som en person utan VERKSTÄLLDE rutinmässiga vårdmoment "
+         "PÅ kroppen. Det är just det \"begränsat till bestämda uppgifter\" "
+         "fångar.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"personlig relation enligt mönster\" — raka motsatsen, det fanns "
+         "ingen personlig relation alls; den modellen kom senare. B \"patientens "
+         "behov inte viktigare än vårdarens\" — texten talar inte om en "
+         "rivalitet mellan patient- och vårdarbehov; det handlade om utbytbara "
+         "uppgifter. C \"begränsades till bestämda uppgifter\" — exakt \"allt "
+         "handlade om uppgifter som skulle utföras\" från steg 2. D \"övervaka "
+         "snarare än ta hand om\" — \"övervaka\" är inte den modell som "
+         "beskrivs; uppgiftsutförande är konkret praktiskt vårdarbete, inte "
+         "övervakning på avstånd.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är C. Den industriella modellen kännetecknades av att "
+         "vårdarens arbete begränsades till specifika uppgifter — patienten "
+         "som objekt, vårdaren som utbytbar utförare. Insikten i en mening: "
+         "vid \"vad utmärkte X\"-frågor — sök adjektiv och verb som direkt "
+         "beskriver karaktären (\"industriell\", \"löpande bandet\", \"utbytbara\") "
+         "och översätt dem till alternativens språk.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är frestande att tänka att en \"industriell\" modell ändå har "
+          "en mönsterstyrd relation — strukturerade scheman, möten enligt "
+          "rutin.",
+          "Sandman är otvetydig: det fanns INGEN personlig relation och den "
+          "ansågs inte viktig. Steg 2 visar att utbytbarheten är poängen — "
+          "det är raka motsatsen till en utvecklad relation. A läser in en "
+          "ordning som modellen specifikt SAKNADE."),
+        D("B",
+          "Om du minns regeln som \"industriellt system gynnar arbetaren över "
+          "kunden\", låter B rimligt — vårdarens behov framför patientens.",
+          "Texten talar INTE om en sådan rivalitet — den säger att vårdare "
+          "OCH patienter reagerade mot modellen (\"både patienter och vårdare "
+          "reagerade mot\"). Det handlade om en sak: utbytbara funktioner. "
+          "B importerar en konflikt som texten inte beskriver."),
+        D("D",
+          "Snabbsvar är ofta att \"industriell\" ger associationer till "
+          "övervakning och kontroll på en fabrik.",
+          "\"Löpande bandet\" är en bild för UPPGIFTSUTFÖRANDE, inte för "
+          "övervakning. Vårdarna utförde konkret praktisk vård (mat, hygien, "
+          "etc.) — bara utan personlig relation. Som steg 2 visar är \"uppgifter "
+          "som skulle utföras\" formeln, inte \"övervakning\". D skiftar typ av "
+          "arbete."),
+    ],
+    technique=(
+        "Vid \"vad utmärkte X\"-frågor — sök adjektiv och verb i texten som "
+        "direkt beskriver X (\"industriell\", \"löpande bandet\", \"utbytbara\", "
+        "\"uppgifter\") och översätt deras INNEHÅLL till alternativens språk. "
+        "Triggern: \"vad utmärkte X\" → identifiera den centrala metaforen "
+        "(här: löpande bandet) och spåra dess implikationer."
+    ),
+    pitfall=(
+        "Det är lätt att projicera associationer från ordet \"industriell\" "
+        "(kontroll, övervakning, hierarki) på vårdmodellen. Botemedlet: läs "
+        "vad texten KONKRET säger att modellen innebar — här: uppgiftsfokus "
+        "och utbytbarhet, inte hierarki eller övervakning."
+    ),
+)
+
+entries["var-2026-verb2-LÄS-016"] = E(
+    solution_path=(
+        "Sandman pekar på en risk: i framtiden kan vården ha välutbildad "
+        "personal som i teorin vet hur demensvården borde fungera men som "
+        "INTE HAR FÖRUTSÄTTNINGAR att genomföra det — alltså låga bemannings­"
+        "tal i relation till förväntningarna. Ledarskapet blir centralt just "
+        "för att navigera denna bemanningssituation. Svaret är B."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta vad som gör LEDARSKAPET extra viktigt I DAG — "
+         "alltså den aktuella situationsfaktor som Sandman pekar ut.",
+         "essential"),
+        ("Hitta stället",
+         "Sandman tar upp ledarskapets vikt i två steg. Först: \"vi behöver "
+         "starka ledare som går före och visar, som upprätthåller idén om den "
+         "goda vården\". Och avgörande mot slutet: \"Ledarskapet ställs också "
+         "på sin spets i relation till personaltätheten i omvårdnaden. Det "
+         "finns en risk att vi i framtiden har en väldigt välutbildad "
+         "vårdpersonal som i teorin vet hur demensvården borde fungera men "
+         "som inte har förutsättningar att genomföra det.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: personalen kan i teorin vården, men det är för "
+         "lite folk på golvet för att hinna göra det rätt. Det är just denna "
+         "obalans — kunskap minus bemanning — som gör ledarskapet kritiskt: "
+         "ledaren måste hålla ihop verksamheten när tiden inte räcker.",
+         "essential"),
+        ("Vad menas med bemanningssituation?",
+         "Bemanningssituation = hur många personer som finns på arbetet i "
+         "förhållande till uppgifterna och förväntningarna. Sandman nämner "
+         "tidigare \"låga bemanningstal i relation till de förväntningar "
+         "som finns på personalen\" — det är problembilden. Ledaren ska "
+         "navigera denna spänning.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"ökad personalomsättning\" — Sandman säger tvärtom att person­"
+         "alomsättningen INTE är så hög som tidigare. B \"den rådande "
+         "bemanningssituationen\" — exakt det steg 2 pekar ut: ledarskapet "
+         "ställs på sin spets just i relation till personaltätheten. C "
+         "\"övergången till uppgiftsfokuserad vård\" — den uppgiftsfokuserade "
+         "vården beskrivs som ett TIDIGARE problem (70-80-tal) och som "
+         "delvis återkommande, men ledarskapets aktuella vikt kopplas till "
+         "bemanningen, inte till vårdmodellen. D \"förväntningar från vård­"
+         "tagarna\" — vårdtagarnas förväntningar nämns inte som drivande för "
+         "ledarskapsfrågan.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är B. Den rådande bemanningssituationen — välutbildad personal "
+         "men för få på golvet — är vad som gör ledarskapet extra viktigt. "
+         "Insikten i en mening: vid \"varför är X viktigt I DAG\"-frågor — sök "
+         "den aktuella situationsbeskrivning Sandman ger \"i dag/i framtiden\" "
+         "och leta i samma stycke som ledarskapsfrasen.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är lätt att associera \"ledarskap behövs\" med personalproblem, "
+          "och personalomsättning är en typ av personalproblem.",
+          "Sandman säger explicit att personalomsättningen INTE är så hög som "
+          "tidigare. Som steg 2 visar är det bemanningstätheten (för få "
+          "personer per uppgift) som är problemet, inte att folk slutar och "
+          "byts ut."),
+        D("C",
+          "Många stannar vid Sandmans observation att vården ofta är \"uppgifts- "
+          "och inte personcentrerad\" och kopplar ledarskapet till detta.",
+          "Den uppgiftsfokuserade vården är en bred problembild som Sandman "
+          "kommenterar tidigare i texten, men hans specifika ledarskapsfras "
+          "kopplas direkt till BEMANNINGEN: \"Ledarskapet ställs också på sin "
+          "spets i relation till personaltätheten.\" C plockar fel grannfråga."),
+        D("D",
+          "Snabbsvar är ofta att vårdtagarna förväntar sig mer i dag och att "
+          "ledarskapet ska möta dessa förväntningar.",
+          "Vårdtagarnas förväntningar är inte vad Sandman pekar på som driv­"
+          "kraften. Han pekar på personalens förmåga att i praktiken leverera "
+          "den vård de teoretiskt kan — alltså ett INTERNT genomförande­problem, "
+          "inte ett externt förväntningstryck. D förskjuter agenten."),
+    ],
+    technique=(
+        "Vid \"varför är X extra viktigt i dag\" — sök den AKTUELLA situations­"
+        "beskrivning som ges i samma textstycke som X. Sandman talar generellt "
+        "om ledarskap, men gör en specifik koppling till \"personaltätheten i "
+        "omvårdnaden\". Triggern: \"varför viktigt I DAG\" → leta efter "
+        "tidsadverb och dagsfärsk situationsbeskrivning."
+    ),
+    pitfall=(
+        "Sandman beskriver flera problem (uppgiftsfokus, övermedicinering, "
+        "bemanning, ledarskapsbrist). Det är lätt att blanda ihop dem. "
+        "Botemedlet: pinpointa exakt VILKEN MENING som motiverar X — här gör "
+        "Sandman kopplingen själv (\"ledarskapet ställs på sin spets i relation "
+        "till personaltätheten\")."
+    ),
+)
+
+# ════════════════════════════════════════════════════════════════════
+# PASSAGE 6: En afrikansk vår? (017-020)
+# ════════════════════════════════════════════════════════════════════
+
+entries["var-2026-verb2-LÄS-017"] = E(
+    solution_path=(
+        "Texten anger den ETNISKA/SPRÅKLIGA splittringen som den viktigaste "
+        "skillnaden mot Nordafrika — Nigeria med 170 språkgrupper saknar en "
+        "samlad rörelse som kan utmana makten. Det är detta som talar EMOT "
+        "en afrikansk vår söder om Sahara. Svaret är A."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta vad TEXTEN ANGER som ett argument MOT att en "
+         "afrikansk vår är trolig — den specifika faktor som hindrar.",
+         "essential"),
+        ("Hitta stället",
+         "Argumentet kommer i andra stycket: \"Men mycket skiljer nord från "
+         "syd, och den viktigaste skillnaden är att länder som Egypten och "
+         "Tunisien är långt mer homogena samhällen än vad majoriteten av de "
+         "afrikanska länderna är. Till exempel rymmer Nigeria 170 språk­"
+         "grupper och i landet finns ännu så länge ingen större samlad "
+         "rörelse som förmår utmana makten.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: arabiska våren funkade delvis för att Egypten "
+         "och Tunisien är ganska enhetliga samhällen — folk kunde samlas i en "
+         "rörelse. Söder om Sahara är länderna etniskt och språkligt mycket "
+         "mer uppsplittrade. När folk inte ens delar språk är det svårt att "
+         "bygga en samlad rörelse som kan utmana regeringen.",
+         "essential"),
+        ("Vad är skillnaden mellan homogen och splittrad?",
+         "Ett homogent samhälle har relativt få etniska/språkliga grupper — "
+         "alla delar någorlunda gemensam grund. Ett splittrat samhälle har "
+         "många separata grupper med olika språk och identitet. För att "
+         "starta ett uppror behövs en SAMLAD rörelse — det är mycket lättare "
+         "i ett homogent samhälle. Det är därför etnisk splittring talar "
+         "EMOT en afrikansk vår.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"etniskt splittrade samhällen\" — exakt textens \"viktigaste "
+         "skillnad\" och dess Nigeria-exempel. B \"växande ungdoms­"
+         "arbetslöshet\" — texten anger detta som något som DRIVER unga "
+         "MOT rebellrörelser, alltså som en potentiell DRIVKRAFT för uppror, "
+         "inte ett argument emot. C \"stora ekonomiska skillnader\" — också "
+         "en POTENTIELL driver (\"längtan efter välfärd\"), inte ett "
+         "hinder. D \"korrupta makthavare\" — texten nämner att invånare "
+         "lägger skulden på egna regeringar; det är också potentiell drivkraft "
+         "för uppror, inte hinder.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är A. Etnisk/språklig splittring i sub-Sahara hindrar bildandet "
+         "av en samlad upprorsrörelse. Insikten i en mening: vid \"vad talar "
+         "emot X\"-frågor — separera DRIVKRAFTER för X (de pekar mot X som "
+         "möjligt) från HINDER för X (de pekar bort från X). Här ska bara "
+         "hindrena väljas.",
+         "essential"),
+    ],
+    distractors=[
+        D("B",
+          "Det är frestande att tänka att hög ungdomsarbetslöshet är ett "
+          "negativt fenomen och därför hindrar något — kanske även en arabisk "
+          "vår.",
+          "Texten kopplar UNGDOMSARBETSLÖSHET till rebellrörelse — \"40 procent "
+          "av dem som gått med i rebellrörelser\" angav arbetslösheten som "
+          "drivkraft. Det är alltså en TÄNDVÄTSKA för uppror, inte ett "
+          "hinder. B förväxlar driver med hinder."),
+        D("C",
+          "Många stannar vid att stora inkomstklyftor leder till stabila "
+          "samhällen och därför skulle förhindra uppror.",
+          "Tvärtom — texten säger att \"de enorma inkomstskillnaderna leder "
+          "till stora spänningar\" och att en eventuell afrikansk vår skulle "
+          "\"drivas av en längtan efter välfärd\". Ekonomiska skillnader är "
+          "en POTENTIELL DRIVER för uppror, inte ett hinder. C inverterar "
+          "rollen."),
+        D("D",
+          "Vänster-till-höger-läsning ger ofta att korruption stabiliserar "
+          "regimer och därför hindrar uppror.",
+          "Texten säger att både fattiga och rika invånare \"lägger en stor "
+          "del av skulden på de egna regeringarna\" — alltså bygger korruption "
+          "på MISSNÖJE, som är upprorsbränsle. D antar en stabiliseringseffekt "
+          "som texten inte stödjer."),
+    ],
+    technique=(
+        "Vid \"vad talar EMOT X\"-frågor — separera fenomen som DRIVER X (de "
+        "ökar sannolikheten) från fenomen som HINDRAR X (de minskar sannolik­"
+        "heten). I texten är ungdomsarbetslöshet och inkomstklyftor drivers — "
+        "bara etnisk splittring är hindret. Triggern: \"vad talar emot X\" → "
+        "fråga \"gör detta X mer eller mindre sannolikt?\""
+    ),
+    pitfall=(
+        "Det är lätt att tänka \"allt dåligt är ett hinder\". Botemedlet: "
+        "fråga om fenomenet PUSHAR mot X (är driver) eller BLOCKERAR X (är "
+        "hinder). Negativa fenomen kan vara drivkrafter; det är riktningen som "
+        "räknas."
+    ),
+)
+
+entries["var-2026-verb2-LÄS-018"] = E(
+    solution_path=(
+        "Mo Ibrahim-stiftelsens slutsats — som texten lyfter fram — är att "
+        "fattigdomens utvägar går via JORDBRUKET, inte städernas arbets­"
+        "marknad. Men ungdomar vill inte in i jordbruket; därför krävs "
+        "upplysningskampanjer som ändrar synen på jordbruket. Svaret är A."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta vad texten LYFTER FRAM som ett viktigt led i "
+         "fattigdomsbekämpningen söder om Sahara — alltså ett konkret "
+         "lösningsförslag som textens röst stödjer.",
+         "essential"),
+        ("Hitta stället",
+         "Mo Ibrahim-stiftelsens slutsats refereras: \"Förslagen är entydiga: "
+         "fattigdomens utvägar går inte nödvändigtvis via städernas arbets­"
+         "marknad, utan via jordbruket.\" Men: \"att arbeta inom jordbruket "
+         "är inte särskilt eftertraktat eftersom det är så förknippat med "
+         "generationers slit. Därför anser Mo Ibrahim Foundation att det "
+         "krävs upplysningskampanjer om vilka slags nya arbetstillfällen "
+         "som kommer att erbjudas inom det moderna, industrialiserade "
+         "afrikanska jordbruket.\"",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: lösningen ligger i moderna jordbruksjobb (transport, "
+         "förpackning, växtförädling), men ungdomarna har en negativ bild av "
+         "jordbruk som slit och fattigdom. För att de ska gå dit måste man "
+         "FÖRÄNDRA DERAS SYN — upplysningskampanjer om de nya möjligheterna. "
+         "Det handlar alltså om en attitydförändring kring jordbruket.",
+         "essential"),
+        ("Vad menas med \"viktigt led\"?",
+         "Ett \"viktigt led\" är ett konkret moment i en lösningskedja. Här: "
+         "lösningskedjan är moderniserat jordbruk → ungdomssysselsättning → "
+         "minskad fattigdom. Det LED som texten konkret föreslår är "
+         "attityd­förändringen, eftersom DET är det som låser upp resten av "
+         "kedjan. Utan attitydförändring stannar ungdomarna i staden i "
+         "arbetslöshet.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"förändra ungdomars syn på jordbruket\" — exakt det Mo Ibrahim "
+         "anser krävs, enligt textens citat. B \"nyansera mediala bilden\" — "
+         "texten nämner att hotbilder är överrepresenterade i media, men det "
+         "är en BIASKRITIK, inte en fattigdomsåtgärd. C \"minska inkomst­"
+         "skillnaderna\" — texten beskriver inkomstskillnader som problem men "
+         "föreslår inget åtgärdsförslag specifikt om att minska dem. D \"påverka "
+         "samhället i demokratisk riktning\" — texten talar om diktaturer och "
+         "möjlig vår, men kopplar inte demokratisering till fattigdoms­bekämpning.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är A. Texten lyfter Mo Ibrahim-förslaget att ändra ungdomars "
+         "syn på jordbruket — via upplysningskampanjer om moderna jordbruksjobb. "
+         "Insikten i en mening: vid \"vad lyfts fram som åtgärd\" — sök "
+         "stiftelser/forskare som texten refererar med åtgärdsformuleringar "
+         "(\"förslagen är entydiga\", \"det krävs\")."
+         ,
+         "essential"),
+    ],
+    distractors=[
+        D("B",
+          "Det är frestande att läsa kritiken mot mediabilden (\"hotbilder "
+          "överrepresenterade\") och tänka att korrigerad mediabild är textens "
+          "lösning på fattigdomen.",
+          "Mediakritiken är en INRAMNINGSANMÄRKNING, inte ett fattigdoms­"
+          "bekämpningsförslag. Texten kopplar inte mediabilden till fattigdoms­"
+          "minskning. B blandar ihop ett perifert observerande med textens "
+          "huvudåtgärd."),
+        D("C",
+          "Många stannar vid Saviour Mwanbwa och inkomstskillnaderna och "
+          "tror att inkomstutjämning är textens åtgärdsförslag.",
+          "Texten BESKRIVER inkomstskillnader som ett problem (skapar spänningar) "
+          "men föreslår inget åtgärdsförslag som direkt utjämnar dem. Den "
+          "konkreta åtgärden som lyfts är Mo Ibrahims jordbruksförslag. C "
+          "förväxlar problemobservation med åtgärdsförslag."),
+        D("D",
+          "Snabbsvar är ofta att textens öppning om en \"afrikansk vår\" antyder "
+          "att demokratisering är textens lösning.",
+          "Texten ifrågasätter just om en afrikansk vår är trolig — den "
+          "argumenterar INTE för demokratisering som väg ut ur fattigdomen. "
+          "Som steg 2-3 visar är åtgärdsförslaget jordbrukssatsning, inte "
+          "politisk reform. D byter ut åtgärdsspår."),
+    ],
+    technique=(
+        "Vid \"vad lyfts fram som åtgärd\"-frågor — sök citerade förslagsröster "
+        "(stiftelser, forskare, institutioner) som texten ger talutrymme. "
+        "Här är Mo Ibrahim-stiftelsens \"förslagen är entydiga\" en stark "
+        "åtgärdsmarkör. Triggern: \"åtgärd / led i bekämpningen\" → leta "
+        "efter förslagsröster som texten lyfter fram."
+    ),
+    pitfall=(
+        "Det är lätt att blanda ihop problembeskrivningar (inkomstskillnader, "
+        "korruption, mediabias) med åtgärdsförslag. Botemedlet: skilj på \"X "
+        "är problem\" och \"Y föreslås göra mot problemet\" — bara Y är åtgärd."
+    ),
+)
+
+entries["var-2026-verb2-LÄS-019"] = E(
+    solution_path=(
+        "Texten driver tydligt en orättviselinje: rika världens koldioxid­"
+        "utsläpp orsakar klimatförändringen, men det är fattiga som John och "
+        "Ruth i Kenya som drabbas värst. John själv säger: \"Det är alltid "
+        "den fattige som drabbas.\" Svaret är D."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta vilket alternativ som bäst stämmer med textens "
+         "sätt att RESONERA om det förändrade klimatet — alltså den övergripande "
+         "hållning texten kommunicerar.",
+         "essential"),
+        ("Hitta stället",
+         "Resonemanget kulminerar i John-passagen: John tror först att han "
+         "själv orsakar klimatförändringen genom kolframställningen, men "
+         "klimat­experten förklarar \"den rika världens koldioxidutsläpp och "
+         "växthuseffekten\". John svarar: \"Jag tänker att det alltid är den "
+         "fattige som drabbas.\" Och tidigare: \"de allra fattigaste drabbas "
+         "värst eftersom de varken har marginaler … eller kunskap\".",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: rika länder släpper ut, klimatet ändras, fattiga "
+         "länder och fattiga människor drabbas hårdast. Det är orättvist — "
+         "de som inte orsakat problemet bär dess konsekvenser. Det är textens "
+         "moraliska linje, sammanfattad i Johns egen mening.",
+         "essential"),
+        ("Vad är skillnaden mellan A och D?",
+         "A säger att fattigas BRIST på kunskap och resurser BIDRAR till "
+         "klimatförändringen — alltså att fattigdom är en ORSAK. D säger att "
+         "fattigdom gör en till FÖRSTA OFFER — alltså att fattigdom är en "
+         "DRABBNING. Texten korrigerar uttryckligen John på just denna punkt: "
+         "han trodde först att han orsakade klimatet, men experten förklarade "
+         "att den rika världen gör det. Riktningen är från RIK orsakar till "
+         "FATTIG drabbas.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"fattigas brist på resurser bidrar till klimatförändringen\" — "
+         "raka motsatsen; texten korrigerar John som först trodde detta, och "
+         "klargör att rika världen orsakar det. B \"Afrika drabbas hårdast\" "
+         "— Afrika nämns, men textens TES är inte en kontinental ranking utan "
+         "en SOCIO-ekonomisk: fattiga drabbas, oavsett kontinent. C \"klimat­"
+         "förändringar kan bromsas med moderniserat jordbruk\" — moderniserat "
+         "jordbruk lyfts som fattigdomsåtgärd, inte som klimat­åtgärd. D \"de "
+         "minst skyldiga drabbas hårdast\" — exakt textens orättviselinje, med "
+         "John som personifiering.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är D. Texten argumenterar för en orättvisa: rika orsakar, "
+         "fattiga drabbas. Insikten i en mening: vid \"resonemang om X\"-"
+         "frågor — sök textens egna värderingsuttryck (Johns kommentar, "
+         "klimatexpertens förklaring) och para ihop dem; det är inte enskilda "
+         "fakta utan textens HÅLLNING som söks.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är lätt att läsa Johns första svar (\"det är mitt fel, jag hugger "
+          "ner träd\") och tro att textens resonemang är att fattigas levnads­"
+          "sätt orsakar klimatet.",
+          "Texten KORRIGERAR Johns första hypotes — klimatexperten förklarar "
+          "för honom att den rika världens koldioxidutsläpp är orsaken. Som "
+          "steg 2 visar är texten på Johns andra svar: \"alltid den fattige "
+          "som drabbas\". A speglar den uppfattning texten avfärdar."),
+        D("B",
+          "Många stannar vid \"Afrika\" i rubriken och nämningar av afrikansk "
+          "fattigdom och tror att textens tes är att Afrika är värst drabbad.",
+          "Afrika är textens SCEN, inte dess tes. Tesen är socioekonomisk — "
+          "fattiga drabbas värst, oavsett kontinent. John och Ruth representerar "
+          "fattiga generellt, inte \"Afrika\" som ett geografiskt undantag. B "
+          "blandar ihop fall (Afrika) med tema (orättvisa)."),
+        D("C",
+          "Snabbsvar är ofta att Mo Ibrahim-förslaget om moderniserat jordbruk "
+          "är textens lösning, så det moderniserade jordbruket måste vara klimat­"
+          "lösningen också.",
+          "Moderniserat jordbruk lyfts som FATTIGDOMS-åtgärd, inte som klimat­"
+          "åtgärd. Texten kopplar inte jordbruksmoderniseringen till att "
+          "BROMSA klimatförändringarna. C blandar ihop två olika åtgärdsspår "
+          "(fattigdom kontra klimat)."),
+    ],
+    technique=(
+        "Vid \"textens resonemang om X\"-frågor — sök textens egna värderings­"
+        "uttryck och vändpunkter (här: Johns andra svar efter expertens "
+        "korrigering). Korrigeringen avslöjar vad texten avfärdar och vad den "
+        "stöder. Triggern: \"resonemang om X\" → sök vändpunkter där texten "
+        "korrigerar eller bekräftar en uppfattning."
+    ),
+    pitfall=(
+        "Det är lätt att ta en figurs FÖRSTA hypotes (Johns självanklagelse) "
+        "för textens egen tes. Botemedlet: läs till slutet av dialogen — "
+        "textens position är den figurens FÖRSTA hypotes blir KORRIGERAD till."
+    ),
+)
+
+entries["var-2026-verb2-LÄS-020"] = E(
+    solution_path=(
+        "Texten frågar i öppningen om en afrikansk vår är att vänta, granskar "
+        "ungdomsarbetslöshet, etnisk splittring, klimatförändring, jordbruks­"
+        "framtid — alla under paraplyet \"vad kommer att forma Afrikas "
+        "framtid\". Avslutningen ekar: \"då finns det nya Afrika för alla\". "
+        "Svaret är C."
+    ),
+    steps=[
+        ("Vad frågar texten?",
+         "Frågan vill veta vilken ÖVERGRIPANDE FRÅGA som texten som helhet "
+         "kretsar kring — alltså den paraply­fråga som alla delavsnitt "
+         "anknyter till.",
+         "essential"),
+        ("Spåra textens stora rörelse",
+         "Texten öppnar med \"Kommer vi att få se en afrikansk vår?\" — en "
+         "framtidsfråga. Sedan: ungdomsarbetslöshet, etniska skillnader, "
+         "ekonomiska klyftor, klimatförändring, jordbrukets roll, demografisk "
+         "fördubbling till 2050. Den avslutar: \"då finns det nya Afrika för "
+         "alla\" — en vision om framtiden.",
+         "essential"),
+        ("Parafrasera",
+         "På vardagssvenska: vilken sorts Afrika kommer att finnas i framtiden? "
+         "Texten samlar olika faktorer (ungdomar, ekonomi, klimat, jordbruk, "
+         "politik) som var och en kan dra åt olika håll. Den övergripande "
+         "frågan handlar inte om ett av spåren utan om DET SAMMANLAGDA "
+         "UTFALLET — Afrikas framtid.",
+         "essential"),
+        ("Vad är inte centrum?",
+         "Texten BESKRIVER skulden (rika länders utsläpp, korrupta regeringar), "
+         "FÖRESLÅR ledning (Mo Ibrahim-stiftelsen), och NAMNGER faktorer som "
+         "skiljer kontinenter — men ingen av dessa är dess huvudfråga. Skuld, "
+         "ledning, enhet är var och en delfaktorer i en större framtidsfråga. "
+         "Det binder ihop dem.",
+         "detail"),
+        ("Matcha mot alternativen",
+         "A \"vem bär ansvaret\" — texten tar UPP ansvarsfrågor (egna "
+         "regeringar, rika världen) men ger ingen sammanhållen ansvars­"
+         "diskussion; det är inte paraplyet. B \"vem ska leda nya Afrika\" — "
+         "ledarskap berörs inte specifikt som centrumfråga. C \"vad avgör "
+         "Afrikas framtid\" — exakt paraplyet som steg 2-3 ringar in: alla "
+         "delar är faktorer i framtidens utfall. D \"vad kan ena Afrikas "
+         "befolkningar\" — splittring nämns som hinder för en arabisk vår, "
+         "men enhet är ett delspår, inte paraplyet.",
+         "essential"),
+        ("Slutsats",
+         "Svaret är C. Texten är en framtidsundersökning — vad blir av "
+         "Afrika när alla dessa krafter spelar ut? Insikten i en mening: vid "
+         "\"vilken fråga kretsar texten kring\" — kontrollera att texten "
+         "INLEDS och AVSLUTAS i samma paraply, och att delavsnitten alla är "
+         "faktorer i den paraplyfrågan.",
+         "essential"),
+    ],
+    distractors=[
+        D("A",
+          "Det är frestande att tänka att texten är polemisk om vem som har "
+          "skuld — rika världen, korrupta regeringar — och därför handlar "
+          "om ansvar.",
+          "Ansvarsfrågor TAS UPP men inte som textens huvudtema. Texten väger "
+          "inte olika ansvarskandidater mot varandra; den utforskar olika "
+          "faktorer i framtiden. Som steg 2 visar är öppning och avslutning "
+          "framtidsorienterade, inte skuldfrågande. A plockar ett delspår."),
+        D("B",
+          "Många stannar vid Sandman-resonemanget om Sandman… vänta, fel text. "
+          "Här: vid Mo Ibrahims förslag eller medelklassen i Lusaka och tänker "
+          "att texten frågar vem som ska leda.",
+          "Ledarskap som specifik fråga är inte centralt. Texten talar om "
+          "regeringar, stiftelser, statsvetare — men dessa är RÖSTER om framtiden, "
+          "inte kandidater för ledarskap. B förskjuter fokus till en metanivå "
+          "som texten inte explicit driver."),
+        D("D",
+          "Vänster-till-höger-läsning ger ofta att den etniska splittringen "
+          "(170 språk i Nigeria) gör enhet till textens huvudfråga.",
+          "Splittringen är en faktor som påverkar EN av framtidsfrågorna (om en "
+          "afrikansk vår är möjlig). Texten frågar inte hur den ska överbryggas. "
+          "Som steg 2 visar är paraplyet vad som AVGÖR framtiden — splittring "
+          "är en av flera avgörande faktorer, inte paraplyet."),
+    ],
+    technique=(
+        "Vid \"vilken fråga kretsar texten kring\"-frågor — kontrollera att "
+        "textens ÖPPNING och AVSLUTNING befinner sig under samma paraply, "
+        "och att delavsnitten alla är faktorer i den paraplyfrågan. Här: "
+        "öppningen \"kommer en afrikansk vår?\", avslutningen \"det nya Afrika "
+        "för alla\" — båda framtidsfrågor. Triggern: \"vilken fråga i centrum\" "
+        "→ jämför öppning och avslutning."
+    ),
+    pitfall=(
+        "Det är lätt att lyfta upp ett INTRESSANT delspår (skuld, ledning, "
+        "splittring) till paraplyfråga eftersom delspåret är dramatiskt. "
+        "Botemedlet: testa om alla DELAVSNITT anknyter till alternativet — "
+        "om bara hälften gör det är alternativet ett delspår, inte paraplyet."
+    ),
+)
+
+# ════════════════════════════════════════════════════════════════════
+# Save
+# ════════════════════════════════════════════════════════════════════
+
+out = Path("audit/_regen/var-2026-las.json")
+out.write_text(json.dumps(entries, indent=2, sort_keys=True, ensure_ascii=False))
+print(f"Wrote {out} with {len(entries)} entries")

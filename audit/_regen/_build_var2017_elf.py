@@ -1,0 +1,2246 @@
+"""Build var-2017 ELF Variant-C explanations (English).
+
+Authored by hand from the source passages + Variant-C voice anchors in
+host-2014 ELF entries. NO API calls. 20 entries — 12 comprehension (verb1-031..039,
+verb1-040, verb2-036..040) + 5 cloze (verb2-031..035). verb1-040 has no
+parsed context; recovered from hp_databas.json (vaccine paragraph).
+
+Each entry: 4-6 steps, 3 distractors, _meta with recipe 'variant-c-ultra-granular',
+empathy openers rotated within each entry.
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+META = {
+    "model": "claude-opus-4-7",
+    "generated_at": "2026-05-14",
+    "recipe": "variant-c-ultra-granular",
+}
+
+
+def entry(solution_path, steps, distractors, technique, pitfall=None, framework_id=None):
+    return {
+        "_meta": META,
+        "solution_path": solution_path,
+        "steps": [
+            {"n": i + 1, "title": s["title"], "text": s["text"], "tier": s.get("tier", "essential")}
+            for i, s in enumerate(steps)
+        ],
+        "framework_id": framework_id,
+        "distractors": distractors,
+        "technique": technique,
+        "pitfall": pitfall,
+    }
+
+
+EXPLANATIONS: dict[str, dict] = {}
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# verb1 — comprehension
+# ═══════════════════════════════════════════════════════════════════════
+
+# verb1-ELF-031 — 'Languages' passage, answer B
+EXPLANATIONS["var-2017-verb1-ELF-031"] = entry(
+    solution_path=(
+        "The 'Languages' passage reports a study where bilingual dementia patients showed "
+        "the first signs 4.5 years later than monolinguals — speaking two languages keeps "
+        "the mind sharp longer, exactly what B states."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt is 'What is said in this text?' — a stated-claim item. You need the option "
+                "that is directly supported by the words on the page, not an inference or an extrapolation."
+            ),
+        },
+        {
+            "title": "Locate the key sentences",
+            "text": (
+                "The headline finding is in the second and third sentences: 'Speaking two languages may keep "
+                "the mind sharp longer than knowing only a single language' and 'Patients who spoke two languages "
+                "developed the first signs of dementia an average of 4.5 years later than those who spoke only one language.'"
+            ),
+        },
+        {
+            "title": "Paraphrase in plain English",
+            "text": (
+                "Boiled down: people who speak two languages stay mentally sharp longer — about 4.5 years longer "
+                "before dementia shows up — than people who speak only one. The study is about TWO languages versus ONE, "
+                "nothing about three or more."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Bilingual' = speaks two languages. 'Monolingual' = speaks one. 'Dementia' = a decline in memory and "
+                "thinking ability, usually with age. 'Mentally alert' = mind staying sharp, focused, clear-headed — "
+                "the opposite of cognitive decline."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A is about how often Indians need more than one language — never mentioned. B says two languages "
+                "keep someone mentally alert for longer — matches the 4.5-year delay in step 2. C ties longer life to "
+                "higher education — the passage says the opposite, 'education alone cannot account for the difference'. "
+                "D extrapolates to 'the more languages, the better' — the study only compares two vs one."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is B. It restates the study's headline finding using safe, calibrated language — "
+                "'mentally alert for a longer period of time' is exactly what '4.5 years later' shows."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "It's easy to read 'a clinic in Hyderabad, India' as a clue that the passage is making a wider claim "
+                "about Indian language needs."
+            ),
+            "why_wrong": (
+                "Hyderabad is just the study site. The passage never says anything about how often Indians need "
+                "more than one language. Step 2's locate-the-sentence drill turns up no support for A anywhere."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "Many stop at the words 'dementia' and 'education' together and assume the text is making a claim "
+                "about education extending the lives of dementia patients."
+            ),
+            "why_wrong": (
+                "The passage states the OPPOSITE: 'Additional results suggest that education alone cannot account "
+                "for the difference.' Step 5 catches this — C inverts what the text actually says about education."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on 'two languages is better than one' is the dose-response logic 'so three must be "
+                "even better, and four better still'."
+            ),
+            "why_wrong": (
+                "The study only compared bilingual to monolingual speakers — no trilingual tier. 'What is said' "
+                "questions reward sticking to what the text reports, and the text only reports a two-vs-one comparison."
+            ),
+        },
+    ],
+    technique=(
+        "On 'What is said?' items, the correct option restates a finding using EQUIVALENT but slightly safer language. "
+        "Trigger: scan for a hard number or quantified claim in the passage (here '4.5 years later') — the right option "
+        "almost always paraphrases that claim while keeping the same scope."
+    ),
+    pitfall=(
+        "It's easy to upgrade 'two languages delay dementia by 4.5 years' to 'the more languages you know, the better' "
+        "(D). Stay inside the scope of the study — if the text compares only two groups, the correct option only "
+        "compares those two groups."
+    ),
+)
+
+
+# verb1-ELF-032 — Silent Spring paragraph, answer C
+EXPLANATIONS["var-2017-verb1-ELF-032"] = entry(
+    solution_path=(
+        "The Silent Spring paragraph says the fight is 'far from over, as the polarized debate over climate change "
+        "demonstrates' and the battle 'will be long and loud' — Carson's basic idea remains controversial today, "
+        "which is exactly what C claims."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks for the MAIN POINT of the Silent Spring paragraph — the single idea that holds the "
+                "whole paragraph together. With main-point items you read the paragraph once, then ask: if I had to "
+                "title it in one sentence, what would I say?"
+            ),
+        },
+        {
+            "title": "Locate the key sentences",
+            "text": (
+                "The closing pair carries the argument: 'But the fight is far from over, as the polarized debate over "
+                "climate change demonstrates. Rachel Carson may have prophesied a silent spring, but the battle "
+                "between her acolytes and her enemies will be long and loud.' Industry's playbook — 'question the "
+                "science, attack the scientists' credibility, warn of unbearable costs' — sets up the conflict."
+            ),
+        },
+        {
+            "title": "Paraphrase in plain English",
+            "text": (
+                "Silent Spring kicked off the green movement in 1962. Industry has been fighting it ever since with "
+                "the same three moves. The fight has not been settled — climate change is the current battlefield. "
+                "So Carson's basic idea is still being argued over."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Acolytes' = devoted followers, supporters. 'Enemies' here = industry opponents. 'Long and loud' = "
+                "the fight will be drawn out and noisy — the opposite of resolved. 'Polarized debate' = a debate where "
+                "the two sides are at opposite extremes and not converging."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says the Silent Spring success story has ENDED — the closing line ('long and loud') says the "
+                "opposite: the story is ongoing. B says industry has accepted Carson's arguments — the playbook "
+                "sentence shows industry is still attacking, not accepting. C says her basic idea remains "
+                "controversial — matches the 'far from over' and 'polarized debate' language directly. D says Carson "
+                "was wrong in many predictions — the passage never evaluates her predictions for accuracy."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is C. The paragraph traces a 60-year fight that is explicitly still active, framed by the "
+                "'polarized debate over climate change' — controversy is the headline."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "If you anchor on 'gave birth to the modern green movement' and 'the U.S. has become cleaner and "
+                "healthier', A reads like a tidy success-story ending."
+            ),
+            "why_wrong": (
+                "The very next clause flips the picture: 'But the fight is far from over.' Step 2 locates the closing "
+                "sentence — 'long and loud' — which directly contradicts 'come to an end'."
+            ),
+        },
+        {
+            "letter": "B",
+            "why_tempting": (
+                "It's tempting to read the U.S. becoming 'cleaner and healthier' as a sign industry has come around "
+                "to Carson's view."
+            ),
+            "why_wrong": (
+                "The passage describes industry's playbook in present tense — 'the battle plan is the same' — and "
+                "names the climate-change debate as an active example. Step 3's paraphrase pins industry as still "
+                "fighting, not accepting."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on a paragraph that mentions Carson 'prophesied' is to look for an evaluation of whether "
+                "her prophecies came true."
+            ),
+            "why_wrong": (
+                "The paragraph never grades Carson's specific predictions for accuracy. It describes industry's "
+                "response strategy and frames the ongoing debate — not a verdict on her track record. Step 5 catches "
+                "this: D imports a claim the text doesn't make."
+            ),
+        },
+    ],
+    technique=(
+        "On main-point items, hunt for the sentence that names a TENSION still in play ('the fight is far from over', "
+        "'long and loud') — that sentence usually carries the main point. Trigger: if the closing sentence flips the "
+        "opening sentiment, the main point lives in the flip."
+    ),
+    pitfall=(
+        "An opening sentence that sounds like a verdict ('gave birth to the modern green movement') tempts a reader "
+        "into picking a verdict-shaped option. The author's actual headline often comes in the LAST sentence, after "
+        "the contrast word 'but'."
+    ),
+)
+
+
+# verb1-ELF-033 — Setting Standards, first paragraph, answer D
+EXPLANATIONS["var-2017-verb1-ELF-033"] = entry(
+    solution_path=(
+        "The first paragraph of 'Setting Standards' names the primary problem as 'what should students learn?' and "
+        "then explains: 'In an education system run by the 50 states, success is in the eye of the beholder. "
+        "Mississippi has different expectations for pupils than Massachusetts does.' That is a lack of equality "
+        "between schools in different parts of the US — answer D."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt narrows the scope to the FIRST paragraph and asks for the MAIN ISSUE in American "
+                "education. Don't import claims from later paragraphs — restrict your search to the opening eight or "
+                "so sentences."
+            ),
+        },
+        {
+            "title": "Locate the key sentences",
+            "text": (
+                "Three sentences in the opening paragraph carry the argument: 'In the long list of problems that "
+                "plague American education, one is primary: what should students learn?' Then: 'In an education "
+                "system run by the 50 states, success is in the eye of the beholder. Mississippi has different "
+                "expectations for pupils than Massachusetts does.'"
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "Each US state runs its own schools and decides for itself what counts as a good education. So a "
+                "student in Mississippi is being judged by a different yardstick than one in Massachusetts. That "
+                "uneven, state-by-state quality is the central problem the paragraph names."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'In the eye of the beholder' = it depends on who is looking — there is no shared standard. "
+                "'Plague' (verb) = trouble persistently. 'Expectations for pupils' = what the school system asks "
+                "students to know and do."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A blames a recent FALL in results — the paragraph names the 2006 PISA ranking as evidence, not as "
+                "the issue itself. B is about failing to realize 'the full learning potential of all young people' — "
+                "the paragraph doesn't talk about potential. C says the issue is denial of attention to gifted "
+                "students — never raised. D says the issue is inequality between schools in different parts of the US "
+                "— matches Mississippi vs. Massachusetts in step 3 exactly."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is D. The opening paragraph names ONE primary problem — that 50 states means 50 different "
+                "yardsticks — and D captures exactly that geographic inequality."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "If you remember the line 'American teenagers came a dismal 21st in science and 25th in maths', it "
+                "feels like a story about falling results."
+            ),
+            "why_wrong": (
+                "The ranking is offered as evidence that the US has fallen behind OTHER countries — not as a claim "
+                "about falling year-on-year results within the US. Step 2 places the primary problem in the "
+                "'50 states' sentence, not the ranking sentence."
+            ),
+        },
+        {
+            "letter": "B",
+            "why_tempting": (
+                "Many stop at 'what should students learn?' and assume the answer is about students reaching their "
+                "full potential."
+            ),
+            "why_wrong": (
+                "The paragraph never talks about each student's potential. It talks about state-level standards being "
+                "inconsistent. Step 3 keeps the focus where the paragraph puts it: on the states, not the students."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "It's tempting to read 'a denial of the need for paying more attention to gifted students' as a "
+                "natural concern when standards are weak."
+            ),
+            "why_wrong": (
+                "Gifted students are never mentioned in the first paragraph (or anywhere in the passage). C imports "
+                "a topic the text doesn't raise. Step 5's option-by-option pass catches that import."
+            ),
+        },
+    ],
+    technique=(
+        "When a prompt narrows to a specific PARAGRAPH, treat that paragraph as the entire universe. The thesis is "
+        "usually flagged by 'one is primary', 'the central issue is', or a colon after a list — that punctuation "
+        "points at the answer."
+    ),
+    pitfall=(
+        "Later paragraphs in the same passage often raise related issues (NCLB, funding, tests). The trap is letting "
+        "them colour your reading of the first-paragraph question. Stay inside the prompt's scope."
+    ),
+)
+
+
+# verb1-ELF-034 — Setting Standards, about American interest, answer B
+EXPLANATIONS["var-2017-verb1-ELF-034"] = entry(
+    solution_path=(
+        "The passage traces national-standards efforts from Eisenhower in 1959 through Bush, Clinton and NCLB, "
+        "noting 'past efforts to set such standards have been squashed quickly' — a long history, mostly unsuccessful, "
+        "exactly what B states."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks what is SAID about American interest in national standards — a stated-claim item. "
+                "Find the cluster of sentences that talk about American interest over time, then pick the option that "
+                "restates them without overreaching."
+            ),
+        },
+        {
+            "title": "Locate the historical timeline",
+            "text": (
+                "Three anchors. Origin: 'President Eisenhower spoke of the need for “national goals” for "
+                "education as long ago as 1959.' Failure pattern: 'past efforts to set such standards have been "
+                "squashed quickly.' Examples: Bush senior's history guidelines voted down 99–1; Clinton's voluntary "
+                "national test scrapped by Congress; NCLB still let states set their own bars."
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "The idea of national standards has been around in the US since at least 1959 — more than half a "
+                "century. Every time someone has tried to introduce them, the attempt has been blocked or watered "
+                "down. So American interest has been long-standing but historically unsuccessful."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Squashed' = crushed, suppressed quickly. 'National standards' = a single set of rules for what "
+                "every state's schools should teach. 'Local level' (option A) = at the level of cities or school "
+                "districts, smaller than the federal government."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says interest is chiefly from LOCAL officials — but the timeline names presidents (Eisenhower, "
+                "Bush, Clinton) and the federal Secretary of Education. B says 'long but largely unsuccessful history' "
+                "— matches the 1959 origin plus the chain of failures in step 2. C says interest is too WEAK to "
+                "influence policy — the passage shows repeated, high-profile attempts, so interest is not weak. "
+                "D names pedagogical suspicion — never discussed."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is B. The historical sweep from 1959 to NCLB is exactly the 'long but unsuccessful' arc "
+                "that B describes."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "If you read 'in an education system run by the 50 states' as the dominant frame, it feels like local "
+                "officials must be where interest comes from."
+            ),
+            "why_wrong": (
+                "Every named driver of national-standards efforts is FEDERAL: the Secretary of Education, Presidents "
+                "Eisenhower, Bush, and Clinton, and Congress's NCLB. Step 2's timeline shows the interest sits at the "
+                "national, not the local, level."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "It's tempting to translate 'squashed quickly' into 'interest is too weak to push the policy through'."
+            ),
+            "why_wrong": (
+                "Standards efforts being SQUASHED is not the same as interest being WEAK — strong interest can still "
+                "lose a vote. Bush senior's plan got to a 99–1 Senate vote; that's strong enough interest to reach "
+                "the floor. Step 3 separates 'interest existed' from 'effort succeeded'."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on 'derided by conservatives as political correctness' is that pedagogical "
+                "professionals must be sceptical too."
+            ),
+            "why_wrong": (
+                "Conservatives are not the same as 'pedagogical circles' (teachers, education researchers). The "
+                "passage never mentions teacher or educator scepticism — only political opposition. D imports a "
+                "constituency the text doesn't name."
+            ),
+        },
+    ],
+    technique=(
+        "On 'What is said about X?' items, scan for time markers (years, presidents, decades). A passage that opens "
+        "a long timeline is usually answered by an option using the words 'long', 'history', or 'over time'. "
+        "Trigger: dates spanning decades = look for an option about duration."
+    ),
+    pitfall=(
+        "The most recent event in a timeline (NCLB in 2001) feels like the headline, but main-history items reward "
+        "the option that covers the WHOLE arc, not the latest point on it."
+    ),
+)
+
+
+# verb1-ELF-035 — NCLB best characterised, answer A
+EXPLANATIONS["var-2017-verb1-ELF-035"] = entry(
+    solution_path=(
+        "The passage calls NCLB 'an encouraging step' that 'determined that schools should be held accountable for "
+        "how they performed' — a positive nudge in the right direction, even though it still let states set their own "
+        "bars. That fits A: 'a national attempt to get things moving in the right direction.'"
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks how NCLB can BEST be characterised — pick the option that captures the passage's "
+                "overall stance on NCLB, not a partial side comment."
+            ),
+        },
+        {
+            "title": "Locate the NCLB sentences",
+            "text": (
+                "Two sentences carry the verdict: 'An encouraging step came in 2001, when No Child Left Behind (NCLB) "
+                "determined that schools should be held accountable for how they performed.' Then the caveat: 'But "
+                "NCLB still lets states set their own bars for success.' Plus, later: 'NCLB's reforms were plainly "
+                "insufficient.'"
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "The author calls NCLB 'an encouraging step' — a positive first move. But it didn't go far enough: "
+                "states still set their own success criteria, and the reforms turned out to be insufficient on their "
+                "own. So NCLB is a half-step in the right direction, not a full solution."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Encouraging step' = a positive move worth celebrating, even if incomplete. 'Held accountable' = "
+                "expected to answer for results. 'Set their own bars for success' = decide for themselves what counts "
+                "as good enough."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says 'a national attempt to get things moving in the right direction' — matches 'encouraging step' "
+                "in step 2 exactly. B calls it 'a bureaucratic plan to implement national standards' — but NCLB did "
+                "NOT implement national standards, it left states to set their own. C calls it 'yet another failure' "
+                "— too harsh; the author calls it encouraging, just insufficient. D frames it as protecting states' "
+                "right to ignore federal law — the opposite of accountability."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is A. The text's tone on NCLB is calibrated: a real step forward, not the finish line — "
+                "and A captures that calibration."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "B",
+            "why_tempting": (
+                "It's easy to assume 'No Child Left Behind' was the national-standards reform, because the surrounding "
+                "paragraphs talk so much about national standards."
+            ),
+            "why_wrong": (
+                "The text is explicit: 'NCLB still lets states set their own bars for success' — national standards "
+                "are precisely what NCLB DID NOT implement. Step 5 catches this; B describes a law NCLB wasn't."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "Many stop at 'NCLB's reforms were plainly insufficient' and read NCLB as a failure."
+            ),
+            "why_wrong": (
+                "The same passage opens with 'An encouraging step' — that is praise, not a failure verdict. "
+                "'Insufficient' means 'did not go far enough', not 'failed'. Step 3 holds both halves together: "
+                "encouraging but incomplete."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "If you focus on 'NCLB still lets states set their own bars', it sounds like NCLB protected state "
+                "autonomy."
+            ),
+            "why_wrong": (
+                "NCLB's purpose, as the text frames it, was to make schools ACCOUNTABLE for performance — the "
+                "opposite of protecting them from federal oversight. The state-bars caveat is a flaw, not the goal. "
+                "Step 2 keeps the accountability framing front and centre."
+            ),
+        },
+    ],
+    technique=(
+        "On 'how can X best be characterised' items, find the author's evaluative adjective ('encouraging', 'dismal', "
+        "'pathetic', 'plainly insufficient') and select the option whose TONE matches those adjectives. Trigger: a "
+        "single adjective in the passage usually sets the calibration."
+    ),
+    pitfall=(
+        "When the passage offers a praise word AND a caveat in the same paragraph, the trap is picking an option that "
+        "captures only the caveat (option C 'yet another failure'). The correct option preserves BOTH halves of the "
+        "calibration."
+    ),
+)
+
+
+# verb1-ELF-036 — NGA and CCSSO, answer C
+EXPLANATIONS["var-2017-verb1-ELF-036"] = entry(
+    solution_path=(
+        "The NGA/CCSSO are drafting common standards so that 'high-school graduates' know what they need 'to succeed "
+        "in college or the workforce' — they want every high-school student getting the same essential education, "
+        "which is what C states."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks which option is most IN LINE with the text about what the NGA and CCSSO are doing. "
+                "That's a 'best-fit' inference — pick the option the passage most clearly endorses."
+            ),
+        },
+        {
+            "title": "Locate the goal sentences",
+            "text": (
+                "Two anchors. Purpose: 'The first task is to provide standards for what high-school graduates should "
+                "know to succeed in college or the workforce.' Scope: 'standards for maths and English that are clear, "
+                "focused and rigorous' — applying to ALL states that signed on (everyone except Texas and Alaska)."
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "The NGA and CCSSO are setting one shared bar across nearly every US state for what high-school "
+                "graduates should know. Whether you finish school in Mississippi or Massachusetts, you'll have learned "
+                "essentially the same maths and English. They are NOT prescribing HOW to teach — only WHAT students "
+                "should end up knowing."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Standards' = what students should know (the outcomes), not the methods used to teach. 'Routines' "
+                "(option A) = teaching practices, day-to-day classroom methods. 'Equivalent education' (option C) = "
+                "education at the same level, with the same essential content."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says the NGA/CCSSO want the same TEACHING ROUTINES — but standards target OUTCOMES, not classroom "
+                "methods. B says 'new methods for implementing overall national goals' — the goals are not yet in "
+                "place, so there's nothing to implement; the NGA/CCSSO are SETTING goals, not implementing them. "
+                "C says they wish to ensure all high-school students get an equivalent education — matches the "
+                "step-2 purpose sentence directly. D talks about a new grading system — never mentioned."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is C. The NGA and CCSSO's project is to fix the Mississippi-vs-Massachusetts inequality "
+                "named in the first paragraph by giving every state's graduates the same essential education."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "If you remember 'standards' as 'rules', it feels like the same rules everywhere should mean the same "
+                "teaching everywhere."
+            ),
+            "why_wrong": (
+                "Standards specify the OUTCOMES students should reach, not the routes teachers take to get there. The "
+                "passage never prescribes teaching methods. Step 4's vocabulary check separates outcomes (standards) "
+                "from methods (routines)."
+            ),
+        },
+        {
+            "letter": "B",
+            "why_tempting": (
+                "It's tempting to read 'common standards' as the implementation phase of a goal that already exists."
+            ),
+            "why_wrong": (
+                "There is no agreed national goal in place yet — Eisenhower's 1959 call was never realised. The "
+                "NGA/CCSSO are CREATING the standards in step 2's purpose sentence, not implementing pre-existing "
+                "ones. B reverses the timeline."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on 'standards for each grade' is that grading systems must be involved."
+            ),
+            "why_wrong": (
+                "'Standards for each grade' means what students at each grade LEVEL should know — not a new grading "
+                "(A/B/C) system. The passage never mentions changing how students are graded. Step 5 catches D's "
+                "import."
+            ),
+        },
+    ],
+    technique=(
+        "On 'most in line with the text' items about an institution's PROJECT, find the sentence beginning 'The first "
+        "task is…' or 'The goal is…'. That sentence anchors the correct option. Trigger: a numbered or sequenced "
+        "purpose statement points at the answer."
+    ),
+    pitfall=(
+        "Reform questions tempt you with broad-sounding options about 'implementing' or 'overhauling' the system. The "
+        "passage usually describes a SPECIFIC narrow project — match THAT, not the grand reform vibe."
+    ),
+)
+
+
+# verb1-ELF-037 — consequences of introduction, answer A
+EXPLANATIONS["var-2017-verb1-ELF-037"] = entry(
+    solution_path=(
+        "The passage lists the consequences in concrete terms: states adopting the standards 'will need to revise "
+        "curricula, textbooks and the way they train teachers' and 'new standards demand new tests' that 'may not be "
+        "ready for years' — a number of consequences involving time and money, matching A."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks what is CLAIMED about introducing national standards. Stay close to the text's "
+                "explicit claims — pick the option the passage spells out, not one you have to infer."
+            ),
+        },
+        {
+            "title": "Locate the consequences paragraph",
+            "text": (
+                "The last paragraph names the cost: 'States that do adopt the standards will need to revise curricula, "
+                "textbooks and the way they train teachers… New standards demand new tests. The stimulus offered "
+                "provides $350 million to develop common assessments, but these may not be ready for years.'"
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "Putting the new standards in place won't be a flick of a switch. States will have to rewrite the "
+                "curriculum, replace textbooks, retrain teachers, and develop entirely new tests. All of that takes "
+                "money ($350 million is already on offer) and time (the tests may not be ready for years). So "
+                "introducing the standards has multiple knock-on consequences involving both."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Curricula' = the courses and content students study. 'Stimulus' here = federal funding offered to "
+                "kick-start the work. 'Assessments' = tests. 'Outdated' (option C) = already old-fashioned by the "
+                "time it's introduced."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says 'a number of consequences, involving time and money' — matches step 2's curriculum/textbook/"
+                "teacher/test list and the $350m + 'may not be ready for years' framing. B says it's UNLIKELY to "
+                "affect ordinary students' learning — the opposite of the passage's whole point. C says it may be "
+                "outdated before acceptance — never claimed. D says the benefits may not exceed the costs — the "
+                "passage names costs but doesn't run a cost-benefit verdict."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is A. The closing paragraph spells out a list of time-and-money consequences in plain "
+                "terms, and A is the only option that names exactly that list."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "B",
+            "why_tempting": (
+                "Many stop at 'NCLB's reforms were plainly insufficient' and assume the new standards will be just "
+                "as ineffective on students."
+            ),
+            "why_wrong": (
+                "The closing line — 'American students will at least know where they stand, and where they should be "
+                "going' — explicitly claims a student-level benefit. Step 5 catches B's contradiction."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "If you remember 'may not be ready for years' as 'may be obsolete by the time it lands', C feels "
+                "close."
+            ),
+            "why_wrong": (
+                "'Not ready for years' refers to the new TESTS, not the standards themselves becoming obsolete. The "
+                "passage never claims the standards will be outdated. Step 4's vocabulary check separates 'delayed' "
+                "from 'outdated'."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on a paragraph listing costs is to read it as a warning that the costs may exceed "
+                "the gains."
+            ),
+            "why_wrong": (
+                "The passage names costs and ALSO names benefits, ending on the optimistic 'in the end… students "
+                "will at least know where they stand.' The text never weighs the two; D imports a cost-benefit "
+                "verdict the author doesn't make."
+            ),
+        },
+    ],
+    technique=(
+        "On 'what is claimed' items about a future change, list the concrete consequences the passage names (rewrites, "
+        "retraining, new tests, funding). The correct option is usually the one that says 'multiple consequences' or "
+        "'time and money' — calibrated to the list, not a single dramatic outcome."
+    ),
+    pitfall=(
+        "It's tempting to read a cost-listing paragraph as the author taking a negative stance. The passage actually "
+        "ends positively ('at least know where they stand') — the costs are framed as the price of progress, not as "
+        "a reason to abandon the project."
+    ),
+)
+
+
+# verb1-ELF-038 — Children and Parents, what is implied, answer B
+EXPLANATIONS["var-2017-verb1-ELF-038"] = entry(
+    solution_path=(
+        "'Children and Parents' opens with parents not wanting caution and inhibition 'in a society that lionizes the "
+        "bold' — society celebrates outgoing kids, so parents push the introverted ones to change. That implies "
+        "modern social ideals favour extroverts, matching B."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks what is IMPLIED — not what is stated directly. Look for the unspoken belief that "
+                "makes the explicit claims hang together. With implication questions, the correct option restates "
+                "the silent assumption behind the passage."
+            ),
+        },
+        {
+            "title": "Locate the key sentence",
+            "text": (
+                "The hinge is the phrase 'a society that lionizes the bold': 'they're still not characteristics many "
+                "parents want in their children, especially in a society that lionizes the bold.' That phrase names "
+                "which personalities society admires — the bold, the outgoing."
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "The author is saying: shy traits might actually be useful, but society tells parents 'an outgoing "
+                "child is the good child', so parents push shy kids to be more outgoing. The unspoken belief is that "
+                "today's society sees extroverts as the ideal."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Lionize' = treat someone as a celebrity, admire excessively. 'The bold' = bold, confident, "
+                "outgoing people. 'Inhibition' = a tendency to hold back, the opposite of impulsiveness. 'Extrovert' "
+                "(option B) = outgoing, energised by social interaction. 'Introvert' = quieter, more reserved."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A draws a mom-vs-dad contrast — never made in the text. B says social ideals encourage extroverts — "
+                "matches 'lionizes the bold' in step 2 directly. C says introverts are seen as MORE intelligent — "
+                "the opposite of what the passage suggests; society isn't celebrating them. D says pushy parents hurt "
+                "school success — the passage actually says parents push to avoid kids being 'overlooked in class' "
+                "— so the parents' goal is school SUCCESS, not failure."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is B. The unspoken backdrop to the whole paragraph is that boldness is what gets rewarded "
+                "in society today — and B names that backdrop."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "It's easy to read 'moms and dads of introverted offspring' as a balanced gender duo and assume the "
+                "paragraph compares the two parental styles."
+            ),
+            "why_wrong": (
+                "The phrase pairs mothers and fathers together as one group — both pushing in the same direction. "
+                "The text never separates mom behaviour from dad behaviour. Step 5 catches A's import of a gender "
+                "contrast that isn't there."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "Many stop at 'may be healthy — and smart' and conclude introverts are seen as more intelligent."
+            ),
+            "why_wrong": (
+                "The author's voice says shy traits CAN be smart — but the passage immediately says society does not "
+                "share that view ('lionizes the bold' instead). C makes society agree with the author, which it "
+                "doesn't. Step 3 pins the disagreement explicitly."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on 'press their kids to be more outgoing' is that pushy parenting must have downsides "
+                "for school."
+            ),
+            "why_wrong": (
+                "The text explicitly says the OPPOSITE: parents push so kids aren't 'overlooked in class and later in "
+                "life'. School success is the GOAL of the pushing, not its casualty. Step 5 puts D directly against "
+                "the text."
+            ),
+        },
+    ],
+    technique=(
+        "On 'what is implied?' items, find the phrase that names a SOCIAL OR CULTURAL backdrop ('a society that…', "
+        "'in a world where…') — that backdrop is usually the implied claim. Trigger: a 'because…' or 'in a society "
+        "that…' clause is doing the implying."
+    ),
+    pitfall=(
+        "Implication items tempt you to over-infer — to find a hidden moral the author didn't put there (option D's "
+        "school-success harm). Stay close to the cultural backdrop the passage actually names."
+    ),
+)
+
+
+# verb1-ELF-039 — Testing paragraph, conclusion, answer C
+EXPLANATIONS["var-2017-verb1-ELF-039"] = entry(
+    solution_path=(
+        "The 'Testing' paragraph says well-managed proficiency tests 'support the fairness of decisions about "
+        "individuals' and are 'an improvement on procedures that involved impressionistic evaluations from officers "
+        "not qualified to make language assessment' — language testers can make immigration decisions more impartial, "
+        "matching C."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks what may be CONCLUDED from the text — the option that follows from the whole "
+                "argument, not just one phrase. 'Concluded' is broader than 'stated' — fit the overall arc."
+            ),
+        },
+        {
+            "title": "Locate the key claim",
+            "text": (
+                "The crux is two sentences. Claim: 'the tests support the fairness of decisions about individuals, "
+                "and in terms of fairness, are an improvement on procedures that involved impressionistic evaluations "
+                "from officers not qualified to make language assessment.' Caveat: 'Even if a test is fair, it may be "
+                "unjust, if it is used to implement unjust policies.'"
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "Well-designed language tests are FAIRER than letting unqualified officers judge applicants on a "
+                "personal feeling. So testers can help make immigration decisions less biased. Whether the policies "
+                "themselves are just is a separate question, but at the level of judging individuals, tests improve "
+                "impartiality."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Impressionistic' = based on personal impression, not on objective measurement. 'Fairness' (in the "
+                "passage) = applying the same criteria consistently to everyone. 'Justice' (in the passage) = "
+                "whether the underlying policy is morally right — a separate axis from fairness. 'Impartiality' "
+                "(option C) = lack of bias, treating people equally."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says language tests can NEVER be both fair and just — too absolute; the text says they CAN be fair "
+                "but their justice depends on the policy. B says cooperation with politicians is needed — never "
+                "mentioned. C says testers can contribute to GREATER IMPARTIALITY for immigrants — matches the "
+                "'improvement on impressionistic evaluations' anchor in step 2. D says national policies have changed "
+                "how tests are produced — the text discusses how tests SERVE policies, not how policies shape tests."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is C. The paragraph's overall arc is that good tests improve fairness at the individual "
+                "level — exactly the impartiality C names."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "If you read 'even if a test is fair, it may be unjust' as a sweeping verdict, A's 'never both fair "
+                "and just' feels like a fair summary."
+            ),
+            "why_wrong": (
+                "'May be unjust' is conditional — it depends on the POLICY the test serves. A test that serves a just "
+                "policy can be both fair and just. Step 3's calibration keeps 'sometimes' from sliding into 'never'."
+            ),
+        },
+        {
+            "letter": "B",
+            "why_tempting": (
+                "It's easy to read 'language testers are currently debating whether their responsibility extends to "
+                "how tests are used' as a call for cooperation with policymakers."
+            ),
+            "why_wrong": (
+                "The text describes an internal debate AMONG testers, not a call for cooperation between testers and "
+                "politicians. Step 5 catches B's import of a stakeholder the passage doesn't introduce."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on 'tests serve policies' is that policies shape tests, so national policies must "
+                "have changed test production."
+            ),
+            "why_wrong": (
+                "The passage describes the direction the OTHER way round: well-managed tests support the fairness of "
+                "decisions made WITHIN existing policy settings. The passage doesn't claim policies have changed test "
+                "production. Step 2's claim sentence pins the direction."
+            ),
+        },
+    ],
+    technique=(
+        "On 'what may be concluded?' items, separate the passage's CALIBRATED claim from any absolute-sounding "
+        "phrasing. The correct option usually says 'can contribute to' or 'may improve' — matching the cautious "
+        "verbs the passage uses. Trigger: scan for hedges ('may', 'allow', 'support') in the passage."
+    ),
+    pitfall=(
+        "A passage that draws a careful distinction between two near-synonyms (fairness vs. justice) tempts a reader "
+        "into a sweeping verdict (A's 'never both'). Stay inside the distinction — the right answer respects both "
+        "concepts."
+    ),
+)
+
+
+# verb1-ELF-040 — vaccine paragraph (recovered from hp_databas), answer D
+EXPLANATIONS["var-2017-verb1-ELF-040"] = entry(
+    solution_path=(
+        "The vaccine paragraph announces that 'a new meningitis vaccine can be stored without refrigeration for up "
+        "to four days, as long as it stays below 104 degrees Fahrenheit, or 40 Celsius' — a recently developed vaccine "
+        "tolerates high temperatures better than older ones, matching D."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks for the MAIN NEWS VALUE — what's NEW here that makes this a story. For news-value "
+                "items, focus on the specific change the article is announcing, not the background context."
+            ),
+        },
+        {
+            "title": "Locate the news anchor",
+            "text": (
+                "The headline finding: 'regulatory authorities have decided that a new meningitis vaccine can be "
+                "stored without refrigeration for up to four days, as long as it stays below 104 degrees Fahrenheit, "
+                "or 40 Celsius.' Plus the reason it matters: 'the hardest part of protecting poor countries is often "
+                "keeping vaccine cold while moving it from electrified cities to villages with no power.'"
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "Most vaccines spoil if they get warm — they need constant refrigeration. The news is that this NEW "
+                "vaccine survives up to 40°C for four days without spoiling. So it tolerates heat much better than "
+                "older vaccines, which is a big deal in places where you can't keep things cold during transport."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Meningitis belt' = the band of African countries with the highest meningitis rates. 'Without "
+                "refrigeration' = not needing to be kept cold. 'Sensitive to high temperatures' (option D) = damaged "
+                "by heat. So 'less sensitive' = tolerates heat better. 'Harmattan winds' = hot, dry winds that blow "
+                "across West Africa."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says vaccines must be PROTECTED from African heat — that's the OLD problem the article is "
+                "solving, not the news. B says the new vaccine is MOST EFFECTIVE in hot climates — the text says it "
+                "TOLERATES heat (keeps working), not that heat makes it work better. C says earlier vaccines have been "
+                "INEFFECTIVE in Africa — the issue with earlier vaccines was distribution (the cold chain), not "
+                "effectiveness. D says the new vaccine is LESS SENSITIVE to high temperatures — exactly what 'can be "
+                "stored without refrigeration' in step 2 means."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is D. The whole news value of this short article is that ONE thing has changed: a new "
+                "vaccine no longer requires constant cold storage, and D names that change precisely."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "It's easy to read 'the hardest part of protecting poor countries is often keeping vaccine cold' as "
+                "the central claim — old vaccines needed protection from heat."
+            ),
+            "why_wrong": (
+                "That sentence is BACKGROUND — it explains why the news matters. The news itself is that the NEW "
+                "vaccine no longer has that problem. Step 2 separates news from setup."
+            ),
+        },
+        {
+            "letter": "B",
+            "why_tempting": (
+                "If you anchor on 'meningitis belt' and 'Harmattan winds', it's tempting to read the new vaccine as "
+                "tuned for hot climates."
+            ),
+            "why_wrong": (
+                "'Tolerates heat without spoiling' is not the same as 'most effective in heat'. The article makes no "
+                "claim about effectiveness in different temperatures — only storage stability. Step 4's vocabulary "
+                "check separates effectiveness from storage tolerance."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "First instinct on 'epidemics during the hot Harmattan winds have killed as many as 25,000 Africans' "
+                "is that older vaccines must have failed."
+            ),
+            "why_wrong": (
+                "The text doesn't say older vaccines were ineffective in Africa — it says distributing them was "
+                "hard because of the cold chain. The vaccines worked; getting them to villages was the problem. "
+                "Step 5 catches C's slide from 'hard to deliver' to 'ineffective'."
+            ),
+        },
+    ],
+    technique=(
+        "On 'main news value' items, find the sentence with words like 'now', 'recently', 'a new…', 'regulatory "
+        "authorities have decided'. That sentence carries the news. Trigger: a temporal marker plus a regulatory "
+        "verb usually points at the headline."
+    ),
+    pitfall=(
+        "Background sentences that explain WHY the news matters (the cold-chain problem, Harmattan deaths) tempt you "
+        "to pick an option that names the problem rather than the solution. The news value is the CHANGE, not the "
+        "context."
+    ),
+)
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# verb2 — cloze (031–035, 'The Amazon')
+# ═══════════════════════════════════════════════════════════════════════
+
+# verb2-ELF-031 — gap before 'an array of new industrial projects', answer A 'as'
+EXPLANATIONS["var-2017-verb2-ELF-031"] = entry(
+    solution_path=(
+        "Gap 31 sits in 'turning that rural vision on its head, _____ an array of new industrial projects transforms "
+        "the Amazon into Brazil's fastest-growing region.' The blank needs a conjunction meaning 'while at the same "
+        "time' — 'as' fits cleanly. Answer A."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "This is a gap-fill (cloze) item — pick the single word that best fits the blank. Read the FULL "
+                "sentence around the gap, decide what relationship the missing word needs to express, then test the "
+                "four options against that relationship."
+            ),
+        },
+        {
+            "title": "Read the sentence around the gap",
+            "text": (
+                "'The surging population growth of cities in the jungle is turning that rural vision on its head, "
+                "_____ an array of new industrial projects transforms the Amazon into Brazil's fastest-growing "
+                "region.' Two things are happening simultaneously: cities are growing AND industrial projects are "
+                "transforming the region. The gap connects them."
+            ),
+        },
+        {
+            "title": "Identify the relationship",
+            "text": (
+                "The two clauses describe two synchronised forces — they happen together and reinforce each other. "
+                "Neither contradicts the other. So the conjunction needs to mean 'while at the same time', linking "
+                "two parallel ongoing changes."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'As' = a conjunction that can mean 'while', 'at the same time as'. 'Though' = 'although', signals "
+                "concession or contrast. 'Unless' = 'if not', a conditional exception. 'So' = 'therefore', signals "
+                "a cause-effect chain."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Plug and test each option",
+            "text": (
+                "'…turning that rural vision on its head, AS industrial projects transform…' — natural, two "
+                "simultaneous changes. ✓ 'THOUGH industrial projects transform…' — flags a contrast, but the two "
+                "clauses agree; doesn't fit. 'UNLESS industrial projects transform…' — turns the second clause into "
+                "a condition that hasn't happened, but the passage states it IS happening. 'SO industrial projects "
+                "transform…' — implies one causes the other, but population growth doesn't CAUSE industrial projects, "
+                "they're parallel forces."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is A — 'as'. Only 'as' captures two simultaneous ongoing transformations without forcing "
+                "a contrast, a condition, or a causal chain that the sentence doesn't have."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "B",
+            "why_tempting": (
+                "If you read 'rural vision on its head' as something surprising, 'though' feels like the natural "
+                "contrastive conjunction."
+            ),
+            "why_wrong": (
+                "'Though' would set the two clauses AGAINST each other — but they actually agree (both are forces "
+                "remaking the Amazon). Step 3's relationship check rules out contrast."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "Many stop at 'transforms the Amazon' and try to fit a conditional, as if the transformation depended "
+                "on something."
+            ),
+            "why_wrong": (
+                "The passage describes the industrial projects as currently happening, not as an unmet condition. "
+                "'Unless' would mean 'if industrial projects DON'T transform the Amazon' — the opposite of what the "
+                "sentence states. Step 5's plug-and-test catches this."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on linking two changes is to read one as causing the other — 'population growth, so "
+                "industrial projects'."
+            ),
+            "why_wrong": (
+                "The article doesn't claim population growth CAUSES the industrial projects — they're presented as "
+                "parallel drivers. 'So' would impose a cause-effect direction the text doesn't support."
+            ),
+        },
+    ],
+    technique=(
+        "On cloze CONJUNCTIONS, name the logical relationship the sentence needs ('simultaneous', 'contrast', "
+        "'condition', 'cause') before scanning the options. 'As' usually wins when two things happen in parallel. "
+        "Trigger: comma-then-blank linking two ongoing changes."
+    ),
+    pitfall=(
+        "Cloze conjunctions all sound plausible on a quick read. The trap is picking the first one that doesn't jar "
+        "— instead, pin the relationship first, then test each option against THAT relationship."
+    ),
+)
+
+
+# verb2-ELF-032 — 'demands on the ___ of the Amazon', answer D 'resources'
+EXPLANATIONS["var-2017-verb2-ELF-032"] = entry(
+    solution_path=(
+        "Gap 32 sits in 'focusing on the demands on the _____ of the Amazon, the world's largest remaining area of "
+        "tropical forest.' The blank needs a noun meaning what people TAKE from the forest — its natural assets. "
+        "'Resources' fits exactly. Answer D."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "This cloze blank is a noun slot. Read the surrounding sentence, decide what KIND of noun belongs "
+                "there — what concept the slot is naming — then match each option against that concept."
+            ),
+        },
+        {
+            "title": "Read the sentence around the gap",
+            "text": (
+                "'Scientists are studying such developments and focusing on the demands on the _____ of the Amazon, "
+                "the world's largest remaining area of tropical forest.' Industrial projects and cities place "
+                "DEMANDS — pressure, extraction, use — on something the Amazon HAS."
+            ),
+        },
+        {
+            "title": "Identify the relationship",
+            "text": (
+                "What does the Amazon HAVE that industrial demands draw on? Timber, minerals, water, soil, biodiversity "
+                "— all the natural assets that economic activity extracts or depends on. The blank names that bundle "
+                "of assets."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Resources' = natural assets that can be used or extracted (timber, minerals, water). 'Contents' = "
+                "what's inside something — too general, and an odd word for a forest. 'Inhabitants' = the people or "
+                "animals that LIVE in a place. 'Concerns' = worries, anxieties — a feeling, not a thing demands can "
+                "be made ON."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Plug and test each option",
+            "text": (
+                "'…demands on the CONTENTS of the Amazon…' — clumsy; you don't make demands on the 'contents' of a "
+                "forest. 'demands on the INHABITANTS of the Amazon…' — possible grammatically, but industrial "
+                "projects don't make 'demands' on people or animals in the relevant sense. 'demands on the CONCERNS "
+                "of the Amazon…' — doesn't make sense; you don't make demands on concerns. 'demands on the RESOURCES "
+                "of the Amazon…' — natural English; you put demands on a region's natural assets all the time."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is D — 'resources'. Only 'resources' fits the collocation 'demands on the X of a forest' "
+                "and captures what industrial expansion actually draws from a place."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "It's easy to read 'demands on the contents' as a generic phrase — contents of a forest could include "
+                "trees, animals, etc."
+            ),
+            "why_wrong": (
+                "'Contents' is the standard word for what's INSIDE a container (a box, a bottle, a book) — it doesn't "
+                "fit a forest. Native English speakers don't say 'the contents of the Amazon'. Step 5's plug-and-test "
+                "catches the awkward collocation."
+            ),
+        },
+        {
+            "letter": "B",
+            "why_tempting": (
+                "If you anchor on 'population growth' and 'migration', it feels like the relevant pressure is on the "
+                "people living there."
+            ),
+            "why_wrong": (
+                "The sentence frames the pressure as coming FROM the new arrivals and projects TOWARDS the forest — "
+                "not the other way around. 'Demands on inhabitants' would reverse the direction. Step 3 nails the "
+                "direction."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "Many stop at the word 'demands' and reach for an abstract noun like 'concerns'."
+            ),
+            "why_wrong": (
+                "You can ADDRESS concerns or SHARE concerns, but you don't make 'demands on concerns' — concerns "
+                "aren't a resource to be tapped. Step 4's vocabulary check rules out the grammatical mismatch."
+            ),
+        },
+    ],
+    technique=(
+        "On cloze NOUN slots, name the concept the blank holds (here: 'natural assets that demand draws on') BEFORE "
+        "scanning the options. The right noun usually has a standard collocation with the surrounding verbs and "
+        "prepositions. Trigger: 'demands on the ___' = something that can be tapped or used."
+    ),
+    pitfall=(
+        "Cloze noun options often look related to the topic (contents/inhabitants of a forest both feel forest-y). "
+        "The trap is picking on topical resonance — what matters is COLLOCATION with the verb-preposition frame."
+    ),
+)
+
+
+# verb2-ELF-033 — 'curbing deforestation, mainly by ___ logging laws', answer B 'enforcing'
+EXPLANATIONS["var-2017-verb2-ELF-033"] = entry(
+    solution_path=(
+        "Gap 33 sits in 'while the country has recently made progress in curbing deforestation, mainly by _____ "
+        "logging laws and carving out protected forest areas.' To curb deforestation, Brazil must ENFORCE its logging "
+        "laws — apply them strictly. Answer B."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "This blank is a verb slot (in -ing form). Read the full sentence to find what activity, paired with "
+                "'carving out protected forest areas', would help REDUCE deforestation. Match each option against "
+                "that activity."
+            ),
+        },
+        {
+            "title": "Read the sentence around the gap",
+            "text": (
+                "'…the country has recently made progress in curbing deforestation, mainly by _____ logging laws "
+                "and carving out protected forest areas, biologists and other climate researchers fear that the "
+                "sharp increase in migration to cities in the Amazon could erode those gains.' The verb in the gap "
+                "describes one of TWO ways Brazil has curbed deforestation. The other way — carving out protected "
+                "areas — is government action that PROTECTS the forest. The gap verb should run in the same "
+                "direction."
+            ),
+        },
+        {
+            "title": "Identify the relationship",
+            "text": (
+                "Brazil is reducing deforestation. That means making the logging laws STRONGER or making them ACTUALLY "
+                "BITE. The verb has to mean 'applying the laws strictly' or 'making the laws stick'. The opposite "
+                "(weakening / ignoring laws) would INCREASE deforestation."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Enforce' = make sure rules are followed; apply them strictly. 'Except' / 'excepting' = leave out, "
+                "exclude. 'Retain' = keep, hold onto. 'Defy' = openly resist or break a rule. So only 'enforce' "
+                "describes strengthening the laws' grip."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Plug and test each option",
+            "text": (
+                "'…by EXCEPTING logging laws…' — would mean Brazil is making EXCEPTIONS to its logging laws — which "
+                "would loosen them, not curb deforestation. 'by ENFORCING logging laws…' — applying them strictly "
+                "would directly reduce illegal logging. ✓ 'by RETAINING logging laws…' — 'keeping' the laws is "
+                "passive; if the laws were already in place and not curbing deforestation, just keeping them wouldn't "
+                "change anything. 'by DEFYING logging laws…' — defying laws would INCREASE deforestation; the "
+                "opposite direction."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is B — 'enforcing'. Only 'enforcing' captures the active strengthening that turns logging "
+                "laws into a tool against deforestation."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "If you misread 'excepting' as 'accepting' (acknowledging) the laws, A feels close. The two words "
+                "look similar."
+            ),
+            "why_wrong": (
+                "'Excepting' = making exceptions, leaving things out — the opposite of strict application. Brazil "
+                "making exceptions to its logging laws would WORSEN deforestation, not curb it. Step 4's vocabulary "
+                "check pins the actual meaning."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "Many stop at 'made progress' and read 'retaining' as 'keeping the progress going'."
+            ),
+            "why_wrong": (
+                "'Retaining logging laws' just means 'keeping the laws on the books' — a passive state. The sentence "
+                "names an ACTIVE step that produced new progress. Step 3 specifies that the verb has to capture an "
+                "active strengthening, not a static hold."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on a verb like 'curbing' is to pair it with confrontational verbs like 'defying'."
+            ),
+            "why_wrong": (
+                "'Defying logging laws' means BREAKING them. Brazil breaking its own laws would not curb "
+                "deforestation — it would mean the laws fail. Step 5's plug-and-test puts D in direct contradiction "
+                "with the outcome."
+            ),
+        },
+    ],
+    technique=(
+        "On cloze VERBS describing government action against a problem, the right verb usually means 'apply rules "
+        "strictly' or 'add new rules'. Verbs of EVASION ('except', 'defy') or PASSIVITY ('retain') are common traps. "
+        "Trigger: 'progress in [reducing X] by ___-ing [the rules]' = enforce / strengthen."
+    ),
+    pitfall=(
+        "Two of the four options sound similar to other English words ('excepting' vs 'accepting'; 'defying' vs "
+        "'defining'). The trap is picking on near-spelling instead of meaning. Read each option as its actual word."
+    ),
+)
+
+
+# verb2-ELF-034 — '___ Brazil's birthrate has fallen to 1.86, the Amazon has highest at 2.42', answer A 'While'
+EXPLANATIONS["var-2017-verb2-ELF-034"] = entry(
+    solution_path=(
+        "Gap 34 introduces a CONTRAST: Brazil's overall birthrate is one of the lowest in Latin America (1.86), but "
+        "the Amazon's is the country's highest (2.42). 'While' is the contrastive conjunction that fits. Answer A."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "This blank is a conjunction slot at the start of a sentence. Read the WHOLE sentence and identify "
+                "the logical relationship between the two halves — that fixes the right conjunction."
+            ),
+        },
+        {
+            "title": "Read the sentence around the gap",
+            "text": (
+                "'_____ Brazil's birthrate has fallen to 1.86 children per woman, one of the lowest in Latin America, "
+                "the Amazon has Brazil's highest, at 2.42.' Two facts: country-level birthrate is LOW (1.86); Amazon "
+                "birthrate is the country's HIGHEST (2.42). The same country, different regions, opposite signals."
+            ),
+        },
+        {
+            "title": "Identify the relationship",
+            "text": (
+                "The sentence is presenting a contrast: even though Brazil overall is low, the Amazon stands out as "
+                "the high outlier. The conjunction has to flag that contrast — something like 'whereas' or "
+                "'although'."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'While' = at the start of a clause, can mean 'although', 'whereas' — flags a contrast. 'Provided' = "
+                "on condition that — sets up a conditional. 'Since' = 'because' (causal) or 'from that time on' "
+                "(temporal). 'Considering' = taking into account; offers context, not contrast."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Plug and test each option",
+            "text": (
+                "'WHILE Brazil's birthrate has fallen to 1.86… the Amazon has Brazil's highest…' — 'while' as "
+                "'whereas' fits the contrast perfectly. ✓ 'PROVIDED Brazil's birthrate has fallen…' — would mean the "
+                "Amazon's high rate depends on the country's low rate; no such condition is present. 'SINCE Brazil's "
+                "birthrate has fallen…' — would mean the country's drop CAUSES the Amazon's rise; the passage frames "
+                "them as parallel facts, not cause-effect. 'CONSIDERING Brazil's birthrate has fallen…' — sets up a "
+                "background; possible but weaker than 'while' for marking a sharp contrast."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is A — 'While'. 'While' is the standard English conjunction for contrasting two "
+                "simultaneous facts about different parts of the same whole."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "B",
+            "why_tempting": (
+                "If you read the first clause as setting a hypothetical condition, 'provided' feels plausible."
+            ),
+            "why_wrong": (
+                "Brazil's 1.86 birthrate is stated as a FACT, not as a condition. 'Provided' would suggest the Amazon's "
+                "high rate is dependent on Brazil being low overall — a relationship the passage doesn't draw. "
+                "Step 3's relationship check rules out conditional framing."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "Many stop at the comma and read the first clause as causing the second — 'since X has fallen, Y is "
+                "the highest'."
+            ),
+            "why_wrong": (
+                "'Since' would frame Brazil's national drop as the REASON the Amazon is the country's highest. The "
+                "passage doesn't make that causal claim — the Amazon's high rate is presented as a coincident fact, "
+                "explained by other factors (family sizes, poverty)."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on 'a fact + a contrasting fact' is to set up the second with 'considering' the "
+                "first."
+            ),
+            "why_wrong": (
+                "'Considering' is softer than 'while' — it gives BACKGROUND, not contrast. The sentence wants a sharp "
+                "'whereas' force ('low overall vs highest in this region'), which only 'while' delivers. Step 5's "
+                "plug-and-test shows 'while' lands cleaner."
+            ),
+        },
+    ],
+    technique=(
+        "On cloze CONJUNCTIONS at the start of a sentence, name the relationship between the two clauses (contrast, "
+        "condition, cause, background) before testing options. 'While' is the default for contrasting two facts. "
+        "Trigger: 'X has fallen to 1.86, Y is the highest at 2.42' = contrast = 'while'."
+    ),
+    pitfall=(
+        "Four conjunctions can all start a sentence grammatically. The distinguishing feature is the logical "
+        "relationship they signal — pick on logic, not on whether the option SOUNDS like it could open the sentence."
+    ),
+)
+
+
+# verb2-ELF-035 — 'migration may ___ deforestation by permitting cattle ranchers...', answer C 'increase'
+EXPLANATIONS["var-2017-verb2-ELF-035"] = entry(
+    solution_path=(
+        "Gap 35 sits in 'Others contend that the migration may _____ deforestation by permitting cattle ranchers to "
+        "acquire lands now held by small cultivators.' The clause sets up a CONTRAST with the previous claim "
+        "(migration might REDUCE forest loss) — so 'others' argue the opposite: migration might INCREASE "
+        "deforestation. Answer C."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "This blank is a verb slot. The key to cloze verbs is reading the FULL context, especially the "
+                "neighbouring sentence — it usually fixes the direction the verb has to go."
+            ),
+        },
+        {
+            "title": "Read the sentences around the gap",
+            "text": (
+                "'Some researchers have argued that… migration to cities in tropical countries might actually reduce "
+                "forest loss by depopulating certain rural areas, allowing tropical forests to regrow. Others contend "
+                "that the migration may _____ deforestation by permitting cattle ranchers to acquire lands now held "
+                "by small cultivators.' The first researchers say migration REDUCES forest loss. 'Others contend' "
+                "signals the opposite view."
+            ),
+        },
+        {
+            "title": "Identify the relationship",
+            "text": (
+                "'Others contend' = others argue the opposite. The first group says migration REDUCES deforestation. "
+                "The second group must say it INCREASES (or worsens) deforestation. The mechanism named — cattle "
+                "ranchers taking over land from small cultivators — would mean MORE forest cleared for ranching. "
+                "Direction: upward."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Limit' = hold back, reduce. 'Transform' = change in form, but doesn't specify direction. 'Increase' "
+                "= make greater. 'Disrupt' = throw into disorder, interrupt — doesn't fit a quantity verb."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Plug and test each option",
+            "text": (
+                "'…the migration may LIMIT deforestation…' — would AGREE with the first group, not contradict them. "
+                "But the word 'Others contend' demands disagreement. 'may TRANSFORM deforestation…' — odd "
+                "collocation; transforming deforestation doesn't say more or less. 'may INCREASE deforestation by "
+                "permitting cattle ranchers to acquire lands…' — fits 'Others contend' perfectly: cattle ranches "
+                "clear more land, increasing deforestation. ✓ 'may DISRUPT deforestation…' — to 'disrupt' "
+                "deforestation would mean to interrupt it (reduce it), which agrees with the first group."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is C — 'increase'. 'Others contend' demands an opposite-direction verb, and the mechanism "
+                "(ranchers consolidating land) only makes sense as a driver of MORE deforestation."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "It's easy to skim 'permitting cattle ranchers' and pick a positive-sounding verb like 'limit', "
+                "imagining ranching as a regulated activity."
+            ),
+            "why_wrong": (
+                "'Others contend' explicitly flags disagreement with the first group's claim that migration REDUCES "
+                "deforestation. 'Limit' would put both groups on the SAME side. Step 3's direction check catches the "
+                "contradiction."
+            ),
+        },
+        {
+            "letter": "B",
+            "why_tempting": (
+                "Many stop at 'cattle ranchers acquire lands now held by small cultivators' and read it as land "
+                "CHANGING owners — a transformation."
+            ),
+            "why_wrong": (
+                "'Transform deforestation' doesn't mean anything specific about the AMOUNT of forest lost. The "
+                "passage demands a directional verb (increase or decrease); 'transform' is directionless. Step 4's "
+                "vocabulary check rules out the imprecision."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on 'cattle ranchers taking over' is that it disrupts the existing land use."
+            ),
+            "why_wrong": (
+                "To 'disrupt deforestation' would mean to interrupt or break it up — which would REDUCE forest loss. "
+                "That puts 'others' on the same side as the first group. The mechanism named (ranches clearing more "
+                "land) only makes sense with 'increase'."
+            ),
+        },
+    ],
+    technique=(
+        "On cloze VERBS in contrastive constructions ('Some say A; others contend ___'), the missing verb has to "
+        "REVERSE the direction of the first claim. Read both halves before testing. Trigger: 'Others contend' or "
+        "'On the other hand' = opposite-direction verb."
+    ),
+    pitfall=(
+        "It's tempting to anchor on the mechanism named in the second half ('cattle ranchers acquire lands') and "
+        "ignore the 'Others contend' frame. The frame is doing the work — it tells you which DIRECTION the verb "
+        "needs."
+    ),
+)
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# verb2 — 'Our True Dawn' comprehension (036–040)
+# ═══════════════════════════════════════════════════════════════════════
+
+# verb2-ELF-036 — opening paragraphs about palaeontology vs. genetics, answer C
+EXPLANATIONS["var-2017-verb2-ELF-036"] = entry(
+    solution_path=(
+        "The opening paragraphs say palaeontologists searched fossils, geneticists analysed DNA, 'both made "
+        "discoveries but they did not see eye to eye' — different evidence, different conclusions, no consensus. "
+        "That is exactly C."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks what is said in the OPENING paragraphs about the two kinds of research. Restrict "
+                "your scan to the first two paragraphs — both methods, both verdicts."
+            ),
+        },
+        {
+            "title": "Locate the contrast sentences",
+            "text": (
+                "Method anchor: 'Palaeontologists have searched for fossil remains, and geneticists have rummaged "
+                "through the historical documents that are human and chimp DNA.' Verdict anchor: 'Both made "
+                "discoveries but they did not see eye to eye.' Later: geneticists arrived at 4–6 million years; "
+                "palaeontologists called that 'just silly'."
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "Two different sciences attacked the same question (when did humans split from chimps?) using two "
+                "different KINDS of evidence — fossils versus DNA mutations. They did not agree on the answer. So "
+                "the headline is: different methods, no consensus."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'See eye to eye' = agree, share a view. 'Diverge' = move apart, take different paths. 'Speciation' "
+                "= the process by which new species form. 'Consensus' (option C) = general agreement among "
+                "researchers. 'Methods' = the techniques each side uses."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says different methods but SIMILAR conclusions — the opposite of 'did not see eye to eye'. B says "
+                "their AIMS have differed — the passage says they share the same aim (the human-chimp split) and "
+                "only differ on method and conclusion. C says different evidence, FAILED to reach a consensus — "
+                "matches step 2's contrast and verdict anchors. D says they don't respect each other's METHODS — "
+                "the issue is the CONCLUSIONS, not the methods themselves (only later, in paragraph three, does the "
+                "tone get personal)."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is C. The opening paragraphs frame the article around a methodological split (fossils "
+                "vs DNA) and an explicit disagreement on results — different evidence, no consensus."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "It's easy to read 'both made discoveries' as both arriving at similar truths."
+            ),
+            "why_wrong": (
+                "The very next clause says they 'did not see eye to eye' — they made discoveries but disagreed on "
+                "what those discoveries mean. Step 2 quotes the disagreement directly."
+            ),
+        },
+        {
+            "letter": "B",
+            "why_tempting": (
+                "If you read 'palaeontologists searched fossils, geneticists rummaged through DNA' as different "
+                "research traditions, B's 'aims have differed' feels right."
+            ),
+            "why_wrong": (
+                "The shared aim is stated outright: 'when… we shared a common ancestor.' Both fields are answering "
+                "the same question. Step 5 separates 'different methods' from 'different aims' — the passage names "
+                "the former, not the latter."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "Many stop at 'did not see eye to eye' and read it as mutual disrespect for each other's methods."
+            ),
+            "why_wrong": (
+                "'Did not see eye to eye' refers to disagreement about CONCLUSIONS. Personal-disrespect language "
+                "('cry foul', 'just silly') appears later, in a different paragraph. The OPENING paragraphs name "
+                "the methodological contrast, not the personal hostility."
+            ),
+        },
+    ],
+    technique=(
+        "On 'what is said in the opening paragraphs' items, scan for a sentence that uses the word 'both' or "
+        "'each'. That sentence usually carries the dual-method comparison. Trigger: 'both' + a verb of agreement or "
+        "disagreement = the answer."
+    ),
+    pitfall=(
+        "When a passage uses two related contrasts (different methods vs different conclusions; different evidence "
+        "vs different aims), it's easy to mix them up. Match each option against the passage's EXACT contrast — not "
+        "a paraphrase of it."
+    ),
+)
+
+
+# verb2-ELF-037 — molecular clock method, answer A
+EXPLANATIONS["var-2017-verb2-ELF-037"] = entry(
+    solution_path=(
+        "The molecular clock method needs the mutation rate to date the human-chimp split — but the mutation rate "
+        "itself depends on knowing when humans and chimps split. The passage explicitly calls this 'a catch-22': "
+        "you need the answer to compute the answer. That circularity is what A names."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks which statement about the 'molecular clock method' is TRUE according to the text. "
+                "Pick the option supported by the passage's actual description, not by general scientific knowledge."
+            ),
+        },
+        {
+            "title": "Locate the catch-22 sentence",
+            "text": (
+                "The crucial line: 'But there is a catch. To arrive at the answer, you have to know how fast the "
+                "mutations arise. And that leads you back to square one: you first need to know how long ago we "
+                "split from chimpanzees.' The passage uses the phrase 'catch-22' two sentences later."
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "To date the split, the method counts DNA differences and divides by the mutation rate. But to know "
+                "the mutation rate, you have to know how long ago the species split — which is exactly what you "
+                "were trying to find out. So the inputs depend on the output. That's circular."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Circularity' = reasoning that uses its own conclusion as a premise. 'Catch-22' = a paradoxical "
+                "situation where the solution requires the problem to already be solved. 'Speciation' = the formation "
+                "of new species. 'Divergence' = the point at which two lineages split."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says the method 'suffers from a certain degree of circularity' — matches the catch-22 in step 2 "
+                "exactly. B says its purpose is to calculate DNA similarities between UNRELATED species — the passage "
+                "uses it on RELATED species (human, chimp, orangutan), and the purpose is dating, not similarity-"
+                "calculation. C says it's the OBVIOUS way of establishing mutation rate — the passage says it has a "
+                "fundamental snag, the opposite of obvious. D calls it OUTDATED — but the passage describes it as "
+                "still used, just refined."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is A. The molecular clock method's signature problem, as the text presents it, is "
+                "circular dependence — the mutation rate and the divergence date determine each other."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "B",
+            "why_tempting": (
+                "It's easy to read 'count the differences in matching stretches of chimp and human DNA' as a "
+                "general DNA-similarity calculation."
+            ),
+            "why_wrong": (
+                "The passage explicitly applies the method to RELATED species (human, chimp, orangutan) — the whole "
+                "point is dating their COMMON ancestor. 'Unrelated species' contradicts the method's basis. Step 5 "
+                "catches B's misframing."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "If you anchor on 'simply count the differences' as a confident-sounding instruction, C's 'obvious "
+                "way' feels right."
+            ),
+            "why_wrong": (
+                "The 'simply' is followed by 'But there is a catch' — the method is presented as superficially "
+                "simple but actually flawed. Step 3 holds both halves together: the description and the snag."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "Many stop at 'the new molecular clock' (later in the passage) and conclude the old one is now "
+                "obsolete."
+            ),
+            "why_wrong": (
+                "The 'new molecular clock' is the REFINED version of the same method — direct observation of "
+                "mutations in real time. The method itself isn't outdated; it has been given better inputs. D "
+                "confuses 'refined' with 'discarded'."
+            ),
+        },
+    ],
+    technique=(
+        "On 'which statement is true about X?' items, find the SPECIFIC characterising sentence the passage uses "
+        "about X (here: 'catch-22'). The correct option usually echoes that adjective or noun. Trigger: a method "
+        "named with a flaw word ('catch', 'snag', 'circular') points the answer at that flaw."
+    ),
+    pitfall=(
+        "Scientific-method items tempt you to import general knowledge ('molecular clock is the standard tool'). "
+        "Stay inside the passage's specific characterisation — even an accurate general claim can be the wrong "
+        "answer if the passage doesn't make it."
+    ),
+)
+
+
+# verb2-ELF-038 — clash between palaeontologists and geneticists, answer B
+EXPLANATIONS["var-2017-verb2-ELF-038"] = entry(
+    solution_path=(
+        "The clash came down to geneticists trusting their DNA-based 4-million-year estimate so much that they "
+        "'ignored the palaeontologists completely' and dismissed the fossil evidence. Geneticists relied too heavily "
+        "on DNA — exactly B."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks what BASICALLY caused the clash. Look for the structural cause — what each side "
+                "did or trusted that put them at odds — rather than a procedural detail."
+            ),
+        },
+        {
+            "title": "Locate the clash quote",
+            "text": (
+                "The key passage: 'When fossil-hunters hear this number, they cry foul. “Geneticists ignored the "
+                "palaeontologists completely.” says Owen Lovejoy of Kent State University in Ohio. “To "
+                "claim a 4 million divergence date is just silly.” Simply put, the palaeontologists were sure, "
+                "on the basis of fossil evidence, that there was little chance the DNA results were accurate.'"
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "Geneticists put forward a 4-6 million year date based purely on DNA mutations. Palaeontologists "
+                "looked at the fossil record and said that timeline was wrong — humans had to be older. The "
+                "geneticists, according to a leading fossil-hunter, simply ignored what the fossil people had to "
+                "say. So the clash came from geneticists trusting DNA too much, at the expense of fossil evidence."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Cry foul' = protest, object loudly. 'Just silly' = absurd, dismissively wrong. 'Divergence date' "
+                "= the date when two species split. 'Relied too much on' (option B) = depended on, leaned on — at "
+                "the cost of other evidence."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says palaeontologists' fossil work occasionally failed scientific standards — the passage praises "
+                "their evidence (later proved right), not faults it. B says geneticists relied too much on DNA in "
+                "their dating — matches step 2's 'ignored the palaeontologists completely'. C says palaeontologists "
+                "were ignorant about DNA — they didn't ignore DNA, they doubted its dating; the passage frames their "
+                "criticism as substantive, not uninformed. D says geneticists' response was questioned on ETHICAL "
+                "grounds — the dispute was about scientific accuracy, not ethics."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is B. The clash, as the passage describes it, was caused by geneticists treating DNA-"
+                "based dating as sufficient on its own — and dismissing what fossils were saying."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "It's easy to read 'fossil humans are notoriously thin on the ground and difficult to interpret' as "
+                "a knock on palaeontology's standards."
+            ),
+            "why_wrong": (
+                "The 'thin on the ground' line describes the scarcity of fossils, not the quality of palaeontological "
+                "methods. And the passage ultimately VINDICATES palaeontologists — their evidence turned out to be "
+                "right. Step 5 keeps the cause on the geneticists' side."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "Many stop at 'cry foul' and 'just silly' and read palaeontologists as uninformed bystanders unable "
+                "to engage with DNA."
+            ),
+            "why_wrong": (
+                "The palaeontologists weren't ignorant of DNA — they doubted that the DNA results were ACCURATE for "
+                "dating, based on their fossil evidence. They engaged with the conclusion, not from ignorance but "
+                "from contrary evidence. Step 3's paraphrase keeps the disagreement substantive."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "First instinct on a sharp clash ('cry foul') is that it must have crossed into ethics."
+            ),
+            "why_wrong": (
+                "The dispute is entirely about scientific accuracy — does the DNA-based number match the fossil "
+                "evidence? Ethics is never mentioned. D imports a dimension the passage doesn't introduce."
+            ),
+        },
+    ],
+    technique=(
+        "On 'what caused the clash?' items, find the QUOTE from one side complaining about the other — that quote "
+        "usually names the cause. Here Lovejoy's 'ignored the palaeontologists completely' is the cause in one "
+        "sentence. Trigger: scare quotes around a complaint point at the answer."
+    ),
+    pitfall=(
+        "Two-sided clashes tempt you to balance the blame across both sides. The passage actually puts the cause on "
+        "ONE side (geneticists over-relying on DNA). Match the direction the passage takes, not a 'both sides have "
+        "a point' instinct."
+    ),
+)
+
+
+# verb2-ELF-039 — palaeontologists' views recently gained weight, answer A
+EXPLANATIONS["var-2017-verb2-ELF-039"] = entry(
+    solution_path=(
+        "Kong's 2012 study found each child carries 36 new mutations — half what was previously assumed — meaning the "
+        "molecular clock ticks slower and the human-chimp split is OLDER than geneticists claimed. That backs up the "
+        "palaeontologists, exactly what A says."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks HOW the palaeontologists' views have RECENTLY gained weight. Look for the recent "
+                "finding that supports their position — a specific study or piece of evidence."
+            ),
+        },
+        {
+            "title": "Locate the 2012 study",
+            "text": (
+                "The key passage: 'In 2012, Augustine Kong of Decode Genetics in Reykjavik, Iceland, and colleagues "
+                "published a ground-breaking study. After scanning the genome of 78 children and their parents to "
+                "count the number of new mutations in each child's genome, they found that each child carries an "
+                "average of 36 new mutations. Crucially, that is half what was previously assumed, meaning the "
+                "molecular clock ticks more slowly than we thought, pushing the human-chimp split further back in "
+                "time.'"
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "New genetic research (Kong 2012) directly measured how fast mutations actually arise. The real "
+                "rate turned out to be half of what was assumed. That means the molecular clock ticks slower, so the "
+                "actual split between humans and chimps happened FURTHER BACK than the old 4-6 million number "
+                "suggested. Palaeontologists had always argued for an older split — so this new mutation finding "
+                "supports them."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'Mutation rate' = how fast new genetic changes accumulate per generation. 'Ground-breaking' = "
+                "highly innovative, opening new territory. 'Gained weight' = become more credible, better supported. "
+                "'Devalued' (option B) = reduced in worth or credibility."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says new research on MUTATION RATES agrees with palaeontologists' calculations — matches step 2's "
+                "Kong study directly: a lower mutation rate pushes the split older, agreeing with the older fossil-"
+                "based dating. B says DNA evidence has been DEVALUED — the passage doesn't devalue DNA; it refines "
+                "the DNA inputs. C says new fossil finds support the older date — but the new evidence is GENETIC "
+                "(Kong's mutation count), not fossil. D says molecular-clock theory has been ABANDONED — the opposite: "
+                "the clock now ticks more slowly, but it's still being used."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is A. The palaeontologists' position has been vindicated by NEW GENETIC research, not "
+                "by new fossils — the Kong 2012 study fixed the mutation rate and pushed the divergence date back."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "B",
+            "why_tempting": (
+                "It's tempting to read the new findings as discrediting earlier DNA work, since the old DNA estimate "
+                "turned out wrong."
+            ),
+            "why_wrong": (
+                "DNA evidence wasn't devalued — the new study IS DNA evidence, refining what DNA can tell us. The "
+                "passage frames Kong's work as making the molecular clock MORE accurate, not as undermining DNA. "
+                "Step 5 catches the false framing."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "First instinct on 'palaeontologists vindicated' is that new fossils must have been found."
+            ),
+            "why_wrong": (
+                "The new evidence in the passage is GENETIC (mutation count in 78 children) — not fossil. "
+                "Palaeontologists were vindicated by a NEW geneticist finding, ironically. Step 3 keeps the evidence "
+                "type straight: genetic, not fossil."
+            ),
+        },
+        {
+            "letter": "D",
+            "why_tempting": (
+                "Many stop at 'the molecular clock ticks more slowly than we thought' and read it as the clock theory "
+                "collapsing."
+            ),
+            "why_wrong": (
+                "A slower clock is still a clock — the theory wasn't abandoned, it was RECALIBRATED. The passage "
+                "continues to use the molecular clock as a dating tool, just with a corrected rate. Step 4's "
+                "vocabulary check distinguishes 'recalibrated' from 'abandoned'."
+            ),
+        },
+    ],
+    technique=(
+        "On 'how has X's view gained weight?' items, find the recent study (named with a year and lead researcher) "
+        "and ask: 'Does its conclusion agree with X?' The right option restates that agreement. Trigger: a date "
+        "(2012, 2018) plus a researcher name points at the answer."
+    ),
+    pitfall=(
+        "It's easy to assume that when one side wins, the other side's evidence becomes irrelevant (B). The passage "
+        "actually makes DNA evidence MORE useful — the refinement vindicates the palaeontologists by improving the "
+        "geneticists' tools."
+    ),
+)
+
+
+# verb2-ELF-040 — general conclusion, answer D
+EXPLANATIONS["var-2017-verb2-ELF-040"] = entry(
+    solution_path=(
+        "The closing lines say: 'We are used to thinking about ourselves as separate and distinct from the rest of "
+        "the animal kingdom. We just got a bit more separate, and a bit more distinct.' The new findings tweak the "
+        "existing view rather than overturning it — the overall picture is basically familiar, which is D."
+    ),
+    steps=[
+        {
+            "title": "Understand the question",
+            "text": (
+                "The prompt asks how the GENERAL CONCLUSION of the text can best be characterised. Look at the "
+                "FINAL paragraph — that's where the author lands the closing message."
+            ),
+        },
+        {
+            "title": "Locate the closing lines",
+            "text": (
+                "The last two sentences: 'We are used to thinking about ourselves as separate and distinct from the "
+                "rest of the animal kingdom. We just got a bit more separate, and a bit more distinct.' Plus the "
+                "lead-in: 'The human lineage is significantly older, and our closest living relatives more distant, "
+                "than we once thought.'"
+            ),
+        },
+        {
+            "title": "Restate in plain English",
+            "text": (
+                "We've always seen humans as separate and special among animals. The new research shows the "
+                "human-chimp split happened earlier than thought, so we're a BIT more separate than before — but the "
+                "BASIC picture (humans as distinct from other animals) is exactly what we already thought. The "
+                "tweak is in DEGREE, not in KIND."
+            ),
+        },
+        {
+            "title": "Vocabulary check",
+            "text": (
+                "'A bit more' = a slight increase. 'Drastic break' (option A) = a sharp, sudden departure. "
+                "'Conventional wisdom' (option B) = the standard view. 'An alternative approach' (option C) = a "
+                "different framework, not a small adjustment. 'Basically familiar' (option D) = essentially the same "
+                "as before, with small refinements."
+            ),
+            "tier": "detail",
+        },
+        {
+            "title": "Match against the options",
+            "text": (
+                "A says the conclusion is a DRASTIC BREAK with how humans see themselves — the opposite of 'a bit "
+                "more', which signals a small shift, not a break. B says little attempt to challenge conventional "
+                "wisdom — but the passage IS based on recent research that updates the wisdom; B downplays the "
+                "research too much. C says it offers an ALTERNATIVE APPROACH to human evolution as distinct from "
+                "the animal world — the passage doesn't change the framework, it refines the dates within the "
+                "existing framework. D says the overall view is BASICALLY FAMILIAR despite new findings — matches "
+                "'a bit more separate, a bit more distinct' in step 2."
+            ),
+        },
+        {
+            "title": "Conclusion",
+            "text": (
+                "The answer is D. The passage's last two sentences are deliberately calibrated — small updates on a "
+                "long-held view, not a revolution."
+            ),
+        },
+    ],
+    distractors=[
+        {
+            "letter": "A",
+            "why_tempting": (
+                "It's easy to read 'significantly older… more distant' as a major revision and assume the conclusion "
+                "is dramatic."
+            ),
+            "why_wrong": (
+                "The very next sentence (the close) walks the drama back with 'a bit more separate, and a bit more "
+                "distinct' — small adjustment, not revolution. Step 5 catches A's overstatement."
+            ),
+        },
+        {
+            "letter": "B",
+            "why_tempting": (
+                "If you anchor on 'we are used to thinking…' as the closing frame, B's 'little attempt to challenge "
+                "conventional wisdom' feels close."
+            ),
+            "why_wrong": (
+                "The passage DOES update conventional dating — pushing the split back and the African departure "
+                "back. The conclusion isn't 'nothing changed'; it's 'the broad picture is the same, with refined "
+                "numbers'. B undersells the new findings. Step 3's calibration matters here."
+            ),
+        },
+        {
+            "letter": "C",
+            "why_tempting": (
+                "Many stop at 'separate and distinct from the rest of the animal kingdom' and read it as proposing "
+                "a different approach to evolution."
+            ),
+            "why_wrong": (
+                "An 'alternative approach' would mean a different FRAMEWORK or METHOD — the passage offers neither. "
+                "It uses the existing framework (the molecular clock) with refined inputs. Step 4's vocabulary check "
+                "separates 'refining the dates' from 'proposing a new approach'."
+            ),
+        },
+    ],
+    technique=(
+        "On 'general conclusion' items, the right option usually matches the CALIBRATION of the closing sentence. "
+        "Modifiers like 'a bit more', 'slightly', 'essentially' signal that the option saying 'basically familiar' "
+        "is correct. Trigger: a closing sentence with a hedging adverb = soft-conclusion option."
+    ),
+    pitfall=(
+        "Updates to a long-held view come in two flavours: a tweak ('a bit more X') or a revolution ('completely "
+        "different X'). The trap is upgrading a tweak to a revolution — option A. Always match the option's tone to "
+        "the closing sentence's tone."
+    ),
+)
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# Write
+# ═══════════════════════════════════════════════════════════════════════
+
+out = Path("audit/_regen/var-2017-elf.json")
+out.write_text(json.dumps(EXPLANATIONS, indent=2, ensure_ascii=False))
+print(f"wrote {len(EXPLANATIONS)} entries to {out}")

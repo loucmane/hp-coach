@@ -1,0 +1,1032 @@
+"""Author Variant-C ultra-granular ELF explanations for var-2018-1.
+
+ELF stays English. 4-6 steps, 3 distractors per entry. Voice anchored
+to host-2014 ELF entries (see audit/_regen/host-2013-elf.json,
+data/explanations/host-2014.json).
+
+Run: venv/bin/python3 audit/_regen/_build_var2018-1_elf.py
+Output: audit/_regen/var-2018-1-elf.json
+"""
+from __future__ import annotations
+import json
+from pathlib import Path
+
+META = {
+    "model": "claude-opus-4-7",
+    "generated_at": "2026-05-14",
+    "recipe": "variant-c-ultra-granular",
+}
+
+
+def E(qid: str, solution_path: str, steps: list[dict], distractors: list[dict],
+      technique: str, pitfall: str | None) -> tuple[str, dict]:
+    """Build one explanation entry."""
+    return qid, {
+        "solution_path": solution_path,
+        "steps": steps,
+        "framework_id": None,
+        "distractors": distractors,
+        "technique": technique,
+        "pitfall": pitfall,
+        "_meta": META,
+    }
+
+
+ENTRIES: dict[str, dict] = dict([
+
+# ═══════════════════════════════════════════════════════════════════
+# verb1 — "The Birth Order Effect" — CLOZE GAPS (031-035)
+# ═══════════════════════════════════════════════════════════════════
+
+E(
+    "var-2018-1-verb1-ELF-031",
+    solution_path=(
+        "Gap 31 sits between 'these things are not set before we even "
+        "get started?' and 'we all know a typical middle child'. The "
+        "sentence pivots from doubt to recognition — a concessive turn, "
+        "so the connector is 'yet'. Answer B."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "Understand the question",
+         "text": "This is a gap-fill (cloze) question — pick the word that best fits the blank. Read the full sentence around the gap, then ask: what relationship does the connector need to express? Once you name the relationship, the options narrow fast."},
+        {"n": 2, "tier": "essential", "title": "Read around the gap",
+         "text": "'Surely, these things are not set before we even get started? And 31_____, we all know a \"typical middle child\" and we recognise \"classic only-child behaviour\".' The first half rejects the idea that birth order matters; the second half quietly admits we DO recognise birth-order patterns."},
+        {"n": 3, "tier": "essential", "title": "Identify the relationship",
+         "text": "The two clauses pull in opposite directions: first 'surely these patterns are not set in advance', then 'we all know the middle child'. The connector has to signal a turn — 'we say no, AND YET we recognise the patterns'. That is a concessive connector."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Further' = additionally (adds another point). 'Yet' here works as a concessive ('but still', 'nonetheless'). 'Mostly' = for the most part (a quantity word). 'Then' = next in sequence (time/order). Only 'yet' carries the 'but still' meaning the sentence needs."},
+        {"n": 5, "tier": "essential", "title": "Plug and test each option",
+         "text": "A: 'And further, we all know a typical middle child' — adds a point, but the sentence is turning AGAINST the previous claim, not piling on. B: 'And yet, we all know a typical middle child' — fits the concessive turn perfectly. C: 'And mostly, we all know' — 'mostly' is a quantity adverb; it doesn't connect the two ideas. D: 'And then, we all know' — implies sequence in time, but the second clause concedes against the first, it does not follow it temporally."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is B. 'And yet' is the standard English signal for 'I just denied X, and yet here is evidence pointing toward X' — exactly what the sentence does."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "It's easy to slot 'further' as 'and another thing' — a simple additive marker that keeps a paragraph flowing.",
+         "why_wrong": "'Further' adds to a previous claim, but here the second clause OPPOSES the previous claim. Step 3 names the relationship as concessive, not additive."},
+        {"letter": "C",
+         "why_tempting": "Many stop at 'we all know' and reach for an intensifier — 'mostly we all know' sounds vaguely natural.",
+         "why_wrong": "'Mostly' modifies HOW MUCH, not the relationship between sentences. Step 4 shows it cannot serve as a connector here."},
+        {"letter": "D",
+         "why_tempting": "First instinct on a long running argument is 'and then' — moving the story forward in time.",
+         "why_wrong": "'Then' implies temporal sequence, but the second clause is not the next event — it is a contrasting observation. Step 5's plug-and-test shows the time-order meaning breaks the sentence."},
+    ],
+    technique=(
+        "On ELF cloze connectors, name the relationship between the two "
+        "sides of the sentence first — addition, contrast, sequence, "
+        "cause, concession. 'Surely X is not true? And ___, we recognise "
+        "patterns of X' is a textbook concessive — the connector is "
+        "almost always 'yet' or 'still'."
+    ),
+    pitfall=(
+        "Cloze options are usually four common words that all sound "
+        "plausible in isolation. The trap is picking the one that doesn't "
+        "jar your ear — instead, name the relationship the sentence needs "
+        "and let that filter the options."
+    ),
+),
+
+E(
+    "var-2018-1-verb1-ELF-032",
+    solution_path=(
+        "Gap 32 sits in 'The importance of birth order was first 32_____ "
+        "by the Austrian psychologist Alfred Adler.' Adler did not "
+        "discover the topic in the lab — he was the first to PROPOSE it, "
+        "to put it forward as a serious idea. That is 'set out'. Answer C."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "Understand the question",
+         "text": "Cloze question — fill the gap with the phrasal verb that best fits. With phrasal verbs, the key move is to translate each option into plain English first, then match to the sentence's meaning."},
+        {"n": 2, "tier": "essential", "title": "Read around the gap",
+         "text": "'The importance of birth order was first 32_____ by the Austrian psychologist Alfred Adler.' The verb has to describe what Adler DID with the idea: he was the FIRST to do it, so he initiated something — he introduced, raised, or proposed the topic."},
+        {"n": 3, "tier": "essential", "title": "Identify what the verb has to mean",
+         "text": "'First X by Adler' fits verbs of introduction or formulation: first proposed, first described, first put forward. The verb must mean 'present/formulate as a serious idea' — not merely 'notice' or 'discuss in passing'."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Turn in' = hand over (homework, a fugitive); also 'go to bed'. 'Look after' = take care of. 'Set out' = put forward, lay out clearly, formally present (an argument, a theory). 'Leave open' = not decide, keep undecided. Only 'set out' means 'formulate and present a position'."},
+        {"n": 5, "tier": "essential", "title": "Plug and test each option",
+         "text": "A: 'first turned in by Adler' — turning in means submitting or handing over, which does not match initiating a theory. B: 'first looked after by Adler' — 'looked after' means cared for, like a child or a pet; you don't look after an idea. C: 'first set out by Adler' — 'set out a theory' is standard English for laying out a position; perfect fit. D: 'first left open by Adler' — leaving something open means deferring it, which contradicts 'first' (which signals initiation, not deferral)."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is C. 'Set out' is the natural phrasal verb for 'first formulated and presented as a theory', which is exactly what Adler did for birth-order psychology."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "If you hear 'turn in' as 'submit', you might picture Adler submitting his theory to a journal — and submission is a kind of first move.",
+         "why_wrong": "'Turn in' means hand something over to an authority (homework, a criminal); it does not describe formulating an idea. Step 4's vocabulary check rules it out."},
+        {"letter": "B",
+         "why_tempting": "It's easy to read 'first looked after' as 'first attended to' — Adler was the first to pay attention to birth order.",
+         "why_wrong": "'Look after' means take care of (children, plants). You attend to or address an idea, but you don't 'look after' an idea in English."},
+        {"letter": "D",
+         "why_tempting": "Left-to-right reading on 'left open' could give 'first raised but not decided' — which sounds like an early stage of a theory.",
+         "why_wrong": "'Leave open' means deliberately not deciding. 'First leaving the importance of birth order open' makes no sense — the sentence describes an active first move (proposing the theory), not a deferral."},
+    ],
+    technique=(
+        "On cloze phrasal-verb gaps, mentally translate each option into a "
+        "one-word synonym ('set out' → 'propose', 'turn in' → 'submit') "
+        "before plugging it back. Phrasal verbs hide their meaning behind "
+        "ordinary words — translation kills the disguise."
+    ),
+    pitfall=(
+        "Phrasal-verb cloze gaps weaponise their familiarity: 'turn in', "
+        "'look after', 'set out', 'leave open' all sound like everyday "
+        "English, so all four feel halfway plausible. The cure is to "
+        "translate each one to a single-verb synonym before testing fit."
+    ),
+),
+
+E(
+    "var-2018-1-verb1-ELF-033",
+    solution_path=(
+        "Gap 33 sits in 'Grose admits, 33_____, that the effects of birth "
+        "order can vary according to different factors.' Grose has just "
+        "made strong claims about birth order (Darwinian struggle, "
+        "inheritance, war); now he is conceding a qualification — that is "
+        "a 'however' move. Answer D."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "Understand the question",
+         "text": "Cloze question — fill the gap with the adverb that best connects the two halves of the sentence. The verb 'admits' is the key clue: admitting signals a concession against a previous strong claim."},
+        {"n": 2, "tier": "essential", "title": "Read around the gap",
+         "text": "Before the gap, Grose has framed birth order as a Darwinian struggle — strong, sweeping language about inheritance and war. Then: 'Grose admits, 33_____, that the effects of birth order can vary according to different factors, including temperament, gender and age gap.' The new sentence walks back the universal claim."},
+        {"n": 3, "tier": "essential", "title": "Identify the relationship",
+         "text": "'Admits' tells you Grose is conceding ground he didn't really want to give up. The connector needs to flag a contrast with the preceding sweeping claims: 'I said birth order rules; HOWEVER, other factors also matter.' This is concessive."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Luckily' = fortunately (signals a happy outcome). 'Therefore' = as a result (signals logical consequence). 'Confidently' = with confidence (an adverb of manner). 'However' = but, on the other hand (concessive contrast). 'Admits, however' is a near-fixed combination — the verb 'admits' almost always pairs with a concessive adverb."},
+        {"n": 5, "tier": "essential", "title": "Plug and test each option",
+         "text": "A: 'Grose admits, luckily' — 'luckily' means by good fortune; admitting a qualification is not fortunate, so the tone clashes. B: 'Grose admits, therefore' — 'therefore' signals a consequence, but the qualification is the OPPOSITE of what the preceding sentences argued, not a consequence of them. C: 'Grose admits, confidently' — 'admits' and 'confidently' contradict each other; you don't admit something confidently. D: 'Grose admits, however' — perfect concessive fit: I argued X strongly; HOWEVER, I now admit X has limits."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is D. 'Admits, however' is the standard concessive frame: a writer who has pushed a strong claim now hedges it with a 'however' to acknowledge the qualifications."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "It's easy to read 'admits the effects vary' as a happy nuance — 'luckily, life is not deterministic' is a friendly reading.",
+         "why_wrong": "'Luckily' marks fortunate outcomes. The sentence is hedging a theoretical claim, not celebrating good luck. Step 4 rules it out on tone."},
+        {"letter": "B",
+         "why_tempting": "First instinct on a chain of arguments is to read 'therefore' as 'and so' — the next logical step.",
+         "why_wrong": "'Therefore' signals causation: X is true, therefore Y follows. But the qualification doesn't follow from the sweeping Darwinian claim — it contradicts its breadth. Step 5's plug-and-test catches the broken logic."},
+        {"letter": "C",
+         "why_tempting": "If you focus on the verb 'admits' as 'admits openly', 'confidently' feels like a near-synonym — admitting with confidence.",
+         "why_wrong": "Admitting and being confident are opposites in tone: admission implies concession or reluctance, confidence implies certainty without doubt. 'Confidently admits' is a near-oxymoron in English."},
+    ],
+    technique=(
+        "On cloze adverbs that sit next to a verb like 'admits', 'concedes', "
+        "or 'acknowledges', the answer is almost always 'however' or "
+        "'though'. Those verbs are concessive by nature, and they pair "
+        "with concessive adverbs."
+    ),
+    pitfall=(
+        "Three of the options ('luckily', 'therefore', 'confidently') "
+        "could each plausibly appear with 'Grose says…'. The verb 'admits' "
+        "is the diagnostic: only concessive adverbs sit comfortably with it."
+    ),
+),
+
+E(
+    "var-2018-1-verb1-ELF-034",
+    solution_path=(
+        "Gap 34 sits in 'they are thought to be anxious, emotionally "
+        "intense, defensive and 34_____ jealous rages.' The gap describes "
+        "a TENDENCY toward jealous rages — first-borns are vulnerable to "
+        "them. That is 'prone to'. Answer A."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "Understand the question",
+         "text": "Cloze question — fill the gap with the phrase that best fits the noun phrase 'jealous rages'. The list ('anxious, emotionally intense, defensive, ___ jealous rages') is a catalogue of negative tendencies, so the gap needs a phrase that means 'tends toward'."},
+        {"n": 2, "tier": "essential", "title": "Read around the gap",
+         "text": "'For this reason, they are thought to be anxious, emotionally intense, defensive and 34_____ jealous rages.' Three adjectives precede the gap, all describing first-born tendencies. The fourth slot continues the catalogue but pairs with a noun ('jealous rages'), so the gap must be a preposition-style phrase connecting first-borns to those rages."},
+        {"n": 3, "tier": "essential", "title": "Identify the relationship",
+         "text": "The relationship is one of disposition: first-borns are not always raging, but they are LIABLE to do so — they have a tendency toward jealous rages. The phrase needs to say 'inclined toward' or 'likely to experience'."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Prone to' = inclined toward, likely to experience (something usually negative — prone to headaches, prone to errors). 'Rejected by' = pushed away by. 'Eager for' = enthusiastically wanting. 'Dependent on' = relying on for support. Only 'prone to' captures 'has a tendency toward this negative state'."},
+        {"n": 5, "tier": "essential", "title": "Plug and test each option",
+         "text": "A: 'prone to jealous rages' — standard English; first-borns are predisposed to fits of jealousy. Matches the tone of the surrounding adjectives. B: 'rejected by jealous rages' — rages can't reject a person; the verb-direction is wrong. C: 'eager for jealous rages' — implies first-borns WANT to rage, which doesn't fit being 'anxious, defensive' (a vulnerable cluster, not an aggressive one). D: 'dependent on jealous rages' — implies first-borns need rages to function, which is absurd in context."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is A. 'Prone to jealous rages' is the natural English phrase for 'has a tendency toward this negative emotional state', which fits the catalogue of vulnerable, first-born traits."},
+    ],
+    distractors=[
+        {"letter": "B",
+         "why_tempting": "If you read 'jealous rages' as something destructive that targets the first-born ('the rages reject them'), B feels structural — a person rejected by an emotion.",
+         "why_wrong": "Emotions don't 'reject' people in English; people experience emotions. The grammatical direction of 'rejected by' requires an agent who actively pushes someone away, which a rage is not."},
+        {"letter": "C",
+         "why_tempting": "'Eager for' sounds like a strong description, matching the intensity of 'jealous rages' — first-borns who run hot.",
+         "why_wrong": "'Eager for' means wanting enthusiastically — but the preceding adjectives (anxious, defensive) describe a vulnerable, protective cluster, not an aggressive seeking cluster. Step 5's tone-check catches the mismatch."},
+        {"letter": "D",
+         "why_tempting": "Many stop at 'first-borns are emotionally intense' and infer they rely on dramatic emotions to feel things — dependent on jealous rages.",
+         "why_wrong": "'Dependent on' implies first-borns NEED the rages to function — a much stronger claim than 'tend to experience them'. The text frames jealous rages as a vulnerability, not a coping mechanism."},
+    ],
+    technique=(
+        "On cloze tendencies, 'prone to' is the default English phrase for "
+        "'has a vulnerability toward [usually-negative state]'. When the "
+        "surrounding adjectives describe weaknesses (anxious, defensive, "
+        "emotionally intense), the gap almost always wants 'prone to'."
+    ),
+    pitfall=(
+        "Lists of adjectives can lull you into picking the most vivid-sounding "
+        "option ('eager for', 'dependent on'). The discipline is to match the "
+        "TONE of the list — vulnerable adjectives pair with vulnerable "
+        "tendency phrases like 'prone to'."
+    ),
+),
+
+E(
+    "var-2018-1-verb1-ELF-035",
+    solution_path=(
+        "Gap 35 sits in 'Many theorists group only children amongst "
+        "first-borns – 35_____ they never experience the frictions, fights "
+        "or fondness that comes with siblings.' The dash-led clause looks "
+        "like it should give the REASON, but it actually marks a "
+        "CONTRAST: only children are grouped with first-borns ALTHOUGH "
+        "they lack a key first-born experience. Answer B."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "Understand the question",
+         "text": "Cloze question — fill the gap with the connector that best links the two clauses around the dash. Look hard at what the second clause is doing: is it giving the cause of the first, or pointing out a tension with it?"},
+        {"n": 2, "tier": "essential", "title": "Read around the gap",
+         "text": "'Many theorists group only children amongst first-borns – 35_____ they never experience the frictions, fights or fondness that comes with siblings.' First clause: theorists lump only-children with first-borns. Second clause: only-children miss out on a key sibling-only experience."},
+        {"n": 3, "tier": "essential", "title": "Identify the relationship",
+         "text": "If only-children NEVER experience sibling rivalry, that is a REASON they should be a different category from first-borns — yet theorists group them anyway. So the second clause is in TENSION with the first: 'they're grouped together, EVEN THOUGH only-children lack the sibling experience.' That is concession, not cause."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'For' = because (formal causal connector; 'I love her, for she is kind'). 'Although' = even though (concession). 'So' = therefore (consequence). 'Because' = since (cause). Three of these are causal/consequential; only 'although' is concessive."},
+        {"n": 5, "tier": "essential", "title": "Plug and test each option",
+         "text": "A: 'grouped amongst first-borns, FOR they never experience…' — this reads as 'they are grouped together BECAUSE they never experience sibling life', but lacking sibling experience would be a reason to put them in a SEPARATE category, not the same one. Causal fit breaks. B: 'grouped amongst first-borns, ALTHOUGH they never experience…' — concessive fit; theorists group them together DESPITE the difference. Perfect. C: 'grouped amongst first-borns, SO they never experience…' — implies their grouping causes them to lack sibling experience, but the lack is a fact about their lives, not a consequence of the grouping. D: 'grouped amongst first-borns, BECAUSE they never experience…' — same broken logic as A."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is B. The trap here is the writer's dash, which often introduces an explanation, tempting you toward 'because' or 'for'. But the actual logic is concessive: theorists group them together IN SPITE OF a real difference."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "It's easy to read 'for' as a slightly formal 'because' and slot it in after the dash — the dash often signals an explanation.",
+         "why_wrong": "Lacking sibling experience is a reason to put only-children in a DIFFERENT category from first-borns, not the same one. Step 5 shows the causal direction breaks the logic."},
+        {"letter": "C",
+         "why_tempting": "First instinct on a dash + clause is to read it as a consequence — 'they're grouped together, so they end up without sibling experience'.",
+         "why_wrong": "Only-children lack sibling experience BY DEFINITION, not because theorists group them. The grouping does not cause the lack; the lack is a pre-existing fact."},
+        {"letter": "D",
+         "why_tempting": "'Because' is the cleanest causal word, and the dash often introduces a reason. Many readers default to 'because' here.",
+         "why_wrong": "Same broken logic as 'for' — being short on sibling experience is a reason to SEPARATE only-children from first-borns, not to merge them. Step 3's relationship-check catches the trap."},
+    ],
+    technique=(
+        "On cloze connectors after a dash, do NOT default to 'because'. "
+        "Many dashes introduce a contrast or concession ('they did X – "
+        "although Y'). Name the logical relationship explicitly before "
+        "picking: does the second clause support the first, or push against it?"
+    ),
+    pitfall=(
+        "The dash before the gap is the trap. Dashes often introduce "
+        "explanations, so causal connectors ('for', 'because') feel "
+        "natural. Resist the dash and check whether the second clause "
+        "actually supports or contradicts the first."
+    ),
+),
+
+# ═══════════════════════════════════════════════════════════════════
+# verb1 — "Globalisation / 1493" — COMPREHENSION (036-040)
+# ═══════════════════════════════════════════════════════════════════
+
+E(
+    "var-2018-1-verb1-ELF-036",
+    solution_path=(
+        "The first two paragraphs argue that our picture of a 'local and "
+        "pristine bygone world' is 'in fact an imagined version of the "
+        "past' — we have actually been interconnected for centuries. That "
+        "is exactly what A says: widespread historical notions don't "
+        "match reality. Answer A."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What is argued in the first two paragraphs?' — so you need the headline claim of the opening, not a side detail. With 'what is argued' questions, scan for the sentence that sets up a contrast between a common belief and the author's correction."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentences",
+         "text": "Two sentences carry the argument. Setup: 'Globalisation is commonly seen as a distinctly modern state of the world, resulting from air travel and free trade.' Pivot: 'In 1493, Charles Mann shows this is not so – we have been interconnected for a very long time indeed. Our perception of a local and pristine bygone world is in fact an imagined version of the past.'"},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "Most people think globalisation is a recent thing — planes, free trade, modern stuff. Mann's book argues the opposite: we have been globally connected for centuries (since 1493, when Columbus's voyages started the chain). The 'local pristine past' we imagine never really existed."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Pristine' = untouched, original, pure. 'Bygone' = past, former. 'Imagined version of the past' = a memory or picture that doesn't match how the past actually was. 'Subtly balanced' = nuanced, fair-minded. 'Galleon trade' = trade in heavy sailing ships, especially Spanish."},
+        {"n": 5, "tier": "essential", "title": "Match against the options",
+         "text": "A claims 'widespread historical notions have little connection with reality' — maps directly onto 'our perception is in fact an imagined version of the past'. B claims modern international relations are LESS extensive than believed — opposite of what the passage argues; Mann says interconnection is MORE extensive (and older) than believed. C claims commercial incentives are not enough to build an interconnected world — passage never makes that argument; trade was in fact the engine. D claims today's globalisation is 'little else than a popular myth' — too strong; the passage says modern globalisation is real but not new, not that it's a myth."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is A. The two paragraphs are built around a single move: the common belief about globalisation is wrong, and Mann's book corrects it. A names exactly that gap between widespread belief and historical reality."},
+    ],
+    distractors=[
+        {"letter": "B",
+         "why_tempting": "It's easy to read 'we have been interconnected for a very long time indeed' and assume the author downplays modern connections in favour of historical ones — modern relations are 'less extensive than thought'.",
+         "why_wrong": "The passage says the modern picture is incomplete because we underestimate the PAST, not the present. Step 3's paraphrase makes this clear: interconnection is older and broader than believed, not narrower."},
+        {"letter": "C",
+         "why_tempting": "Many stop at 'Trade and exchange have linked Europe and the Americas since Europeans first sailed' and infer trade alone wasn't sufficient — there must have been other factors.",
+         "why_wrong": "The passage explicitly cites the Spanish galleon trade and the movement of plants and minerals as the BUILDERS of interconnection. Commercial incentives weren't insufficient — they were the engine."},
+        {"letter": "D",
+         "why_tempting": "If you remember 'Mann shows this is not so', D feels like the cleanest extension — calling globalisation a myth.",
+         "why_wrong": "The passage doesn't say globalisation is a myth; it says the IDEA that globalisation is MODERN is a myth. The thing itself is real and ancient. Step 5's option-walk separates the two."},
+    ],
+    technique=(
+        "On 'what is argued' items in book reviews, find the contrast the "
+        "reviewer sets up between the common view and the book's correction. "
+        "The correct option will name that correction, not the common view "
+        "and not an unrelated implication."
+    ),
+    pitfall=(
+        "When a passage opens with 'X is commonly seen as Y, but Mann shows…', "
+        "the bait options often restate Y (the common view) or push the "
+        "correction too far (turning it into a myth). The correct answer "
+        "names the gap between Y and reality without overshooting."
+    ),
+),
+
+E(
+    "var-2018-1-verb1-ELF-037",
+    solution_path=(
+        "The reviewer notes that focusing on Spanish galleon trade lets "
+        "Mann 'explore the ramifications of actions in a more detailed way' "
+        "and 'paints a picture' of extraction and unintended consequences. "
+        "That matches C: the focus SERVES his purpose of showing the "
+        "nature and unpredictable impact of early trade. Answer C."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What is the reviewer's opinion about the focus of Mann's book?' — so you need the reviewer's evaluation, not just a summary. Look for words that signal approval or critique (cleverly, masterfully, regrettably, narrowly)."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentences",
+         "text": "The reviewer concedes: 'One might quibble that other narratives of exploitation and trade are ignored, but this focus allows Mann to explore the ramifications of actions in a more detailed way.' Then: 'Mann convincingly paints a picture of extraction by all European colonists.' The reviewer also says the chains had 'fascinating cause and effect' from the Qing dynasty to the Irish famine."},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "A reader could complain that Mann ignores some trade stories. BUT the reviewer thinks the narrow focus on Spanish galleon trade pays off: it lets Mann go deep, showing how one chain of trade had surprising and far-reaching effects (Qing collapse, potato famine, slave trade). The focus is a feature, not a bug."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Quibble' = make a minor objection. 'Ramifications' = consequences, often unintended or far-reaching. 'Galleon trade' = trade in large Spanish sailing ships. 'Cause and effect' = how one event leads to another. 'Convincingly paints a picture' = the reviewer is praising Mann's argument as persuasive."},
+        {"n": 5, "tier": "essential", "title": "Match against the options",
+         "text": "A claims the focus makes Mann hard to follow — opposite; the reviewer says it allows MORE detail, not less clarity. B claims the focus is too restrictive for general conclusions — but the reviewer explicitly says the focus 'allows Mann to explore the ramifications' more deeply, the opposite of 'too restrictive'. C claims the focus serves Mann's purpose of showing the nature and unpredictable impact of early trade — exactly the reviewer's framing of 'fascinating cause and effect' through a single chain. D claims the focus is self-evident given Spanish dominance — the reviewer never argues it's obvious; she presents it as a deliberate authorial choice with payoff."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is C. The reviewer's whole second paragraph turns the apparent limitation (narrow focus) into a strength (deep tracing of cause and effect across continents). C names that exact reframe."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "It's easy to read 'one might quibble' and 'other narratives ignored' as the reviewer's concession that the focus is confusing.",
+         "why_wrong": "'One might quibble' introduces an objection the reviewer immediately REJECTS — the very next clause ('but this focus allows…') flips the verdict to praise. Step 2 shows the structural move."},
+        {"letter": "B",
+         "why_tempting": "Many stop at 'other narratives of exploitation and trade are ignored' and read the focus as too narrow for big conclusions.",
+         "why_wrong": "The reviewer's whole second-paragraph point is that the narrow focus lets Mann draw BIG conclusions about extraction by all European colonists. The 'restrictive' framing is exactly the objection the reviewer overrules."},
+        {"letter": "D",
+         "why_tempting": "If you read 'Spain was the first European country to have a truly global enterprise', D feels structural — of course Mann focuses on Spain, it's the obvious choice.",
+         "why_wrong": "The reviewer presents the focus as a deliberate authorial decision with intellectual payoff, not as an obvious or self-evident move. Step 5 shows the reviewer treats the choice as substantive, not automatic."},
+    ],
+    technique=(
+        "On 'reviewer's opinion' items, find the concession-then-reversal "
+        "pattern: 'One might object X, but Y…'. The reviewer's verdict is "
+        "in the Y clause, not the X clause. Three of the four options "
+        "usually mistake the conceded objection for the verdict."
+    ),
+    pitfall=(
+        "Book reviews often acknowledge an objection before dismissing it. "
+        "If you stop reading at the objection, the wrong answers feel right. "
+        "Always read past the 'but' to find the reviewer's actual view."
+    ),
+),
+
+E(
+    "var-2018-1-verb1-ELF-038",
+    solution_path=(
+        "Mann's new angle on European colonisation: he REJECTS the standard "
+        "contrast between English (cultivators) and Spanish (extractors) "
+        "and argues for 'extraction by all European colonists'. That is "
+        "underlying similarity overriding superficial difference — exactly "
+        "what B says. Answer B."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'In what way does Mann shed new light on the role of Europe in the colonisation of the New World?' — so you need Mann's distinctive correction to the standard picture, not a generic summary of colonisation."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentence",
+         "text": "'Colonisation of the Americas has previously been contrasted by degree of exploitation – the English went to cultivate and the Spanish to extract. But Mann convincingly paints a picture of extraction by all European colonists, whether exhausting the land along the eastern seaboard of what is now the US by planting tobacco or by mining silver in the Bolivian Andes.'"},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "The OLD story: English colonists farmed politely, Spanish colonists strip-mined the place. That was a difference of TYPE. Mann's NEW story: actually all European colonists extracted — the English exhausted soil with tobacco, the Spanish exhausted mountains with silver. Same exploitation, different surface."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Cultivate' = grow crops on land. 'Extract' = take resources out (minerals, ore, value). 'Exhausting the land' = depleting its fertility. 'Underlying similarity' = a deeper, shared feature beneath surface differences. 'Superficial differences' = surface-level distinctions that don't reflect what's really going on."},
+        {"n": 5, "tier": "essential", "title": "Match against the options",
+         "text": "A claims Mann points out important VARIATIONS between colonising countries — opposite of his move; he points out the SAME exploitation across all. B claims Mann considers underlying similarities (extraction by all) more relevant than superficial differences (cultivation vs. extraction) — matches the sentence exactly. C claims Mann specifically addresses moral issues — the passage uses moral language ('iniquitous trade in humans') but the specific question on colonisation is about extraction patterns, not moral framing. D claims Mann stresses silver's attraction for all European colonisers — partial truth (silver is mentioned), but Mann's broader claim is about extraction in many forms (tobacco AND silver), not just silver's appeal."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is B. The signature Mann move in this paragraph is to collapse the English-Spanish distinction into a common pattern of extraction — underlying similarity trumping surface difference."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "It's easy to read 'the English went to cultivate and the Spanish to extract' as Mann's own claim about important national variations.",
+         "why_wrong": "That sentence describes the OLD view Mann is correcting. The very next sentence — 'But Mann convincingly paints a picture of extraction by ALL European colonists' — reverses the variation into similarity. Step 2's whole-sentence read catches the reversal."},
+        {"letter": "C",
+         "why_tempting": "Many stop at later phrases like 'iniquitous trade in humans' and infer Mann's contribution is moral commentary.",
+         "why_wrong": "The question is specifically about colonisation patterns. The moral language appears elsewhere in the review (the slave trade); on colonisation, Mann's contribution is structural — the extraction-everywhere claim, not a moral verdict."},
+        {"letter": "D",
+         "why_tempting": "If you focus on 'silver in the Bolivian Andes' and 'silver from Bolivian mines into Europe', D looks like a strong fit — silver matters to all.",
+         "why_wrong": "Mann's claim is broader than silver: it covers tobacco-driven soil exhaustion AND silver mining. D narrows the insight to one resource and misses Mann's wider pattern. Step 5 separates the example from the thesis."},
+    ],
+    technique=(
+        "On 'in what way does X shed new light' items, find the sentence "
+        "structured as 'previously thought A; but Mann shows B'. The correct "
+        "option names B — the corrective — not A (the standard view) and "
+        "not a side example from elsewhere in the text."
+    ),
+    pitfall=(
+        "When a passage names the OLD view first and the NEW view second, "
+        "the old view's vivid wording ('English cultivate, Spanish extract') "
+        "sticks in memory. The correct answer is always the corrective, not "
+        "the corrected."
+    ),
+),
+
+E(
+    "var-2018-1-verb1-ELF-039",
+    solution_path=(
+        "The passage says Bolivian silver caused 'financial volatility and "
+        "ultimately the bankruptcy of the Spanish state' AND 'fuelled unrest "
+        "in China'. That is economic and social instability on opposite "
+        "sides of the world — exactly D. Answer D."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What is claimed about Bolivian silver?' — so you need the specific claim the passage makes about silver's effects, not a vague summary."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentence",
+         "text": "'Mann also explores how the flood of silver from Bolivian mines into Europe not only caused financial volatility and ultimately the bankruptcy of the Spanish state, but also fuelled unrest in China.'"},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "So much Bolivian silver poured into Europe that the Spanish economy became unstable and Spain eventually went broke. The same silver flood also stirred up trouble in China — far away on the other side of the world. Two big effects, one in Europe, one in Asia."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Financial volatility' = unstable money values (booms and busts). 'Bankruptcy' = running out of money to pay debts. 'Fuelled unrest' = stirred up social or political trouble. 'Abundance' = a large supply of something. 'Opposite parts of the globe' = far-apart regions of the world (Europe and China qualify)."},
+        {"n": 5, "tier": "essential", "title": "Match against the options",
+         "text": "A claims silver IMPROVED European-Chinese relations — opposite; silver caused unrest in China and bankruptcy in Spain, not improvement. B claims exporting silver to Spain cost more than was acceptable — the passage talks about the EFFECTS on Spain (bankruptcy from too much silver), not the cost of the exports themselves. C claims working conditions halted production — the passage never mentions a halt or workers' protests. D claims silver's abundance produced economic and social instability in opposite parts of the globe — matches the sentence exactly: bankruptcy in Spain + unrest in China = economic + social instability in opposite parts."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is D. The single sentence on silver pairs two distant continents — Spain (Europe) bankrupt, China (Asia) restless — under one cause (Bolivian silver). 'Opposite parts of the globe' is the literal mapping."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "If you remember 'silver from Bolivian mines into Europe' and 'unrest in China', it's tempting to weave them into a story of stronger Europe-China contact.",
+         "why_wrong": "Contact is not the same as improved relations. The passage describes silver as the cause of UNREST in China and BANKRUPTCY in Spain — both destabilising, not relationship-building. Step 3's paraphrase pins the negative tone."},
+        {"letter": "B",
+         "why_tempting": "Many stop at 'bankruptcy of the Spanish state' and infer Spain over-paid for the silver imports.",
+         "why_wrong": "The passage doesn't say Spain paid too much for silver; it says the FLOOD of silver INTO Spain destabilised the economy (a different mechanism — too much currency, not too much expense). Step 4 names the volatility mechanism."},
+        {"letter": "C",
+         "why_tempting": "Many readers know about brutal silver-mine working conditions and assume the passage mentions production stopping.",
+         "why_wrong": "The passage says nothing about mine workers or production halts. C imports outside knowledge into a question that the text alone must answer. Step 5's option-walk catches the import."},
+    ],
+    technique=(
+        "On specific-claim items ('what is claimed about X'), the correct "
+        "option usually paraphrases ONE sentence almost word-for-word. "
+        "Find the sentence that names X, restate it in plain English, then "
+        "find the option that maps onto your restatement."
+    ),
+    pitfall=(
+        "Distractors often invent plausible mechanisms (production halts, "
+        "over-payment) that real-world knowledge supports. The text-bound "
+        "discipline is to reject any claim the passage does not state, "
+        "however reasonable it sounds."
+    ),
+),
+
+E(
+    "var-2018-1-verb1-ELF-040",
+    solution_path=(
+        "The reviewer praises 'the detailed humanity with which Mann tells "
+        "the story' and 'the way in which he illustrates the paradoxical "
+        "nature of the ecological effects'. Human interest + paradoxical "
+        "(unconventional) perspectives = C. Answer C."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What is the reviewer's overall impression of Mann's book?' — so you need the closing verdict, the reviewer's wrap-up evaluation, not a middle-paragraph claim."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentence",
+         "text": "'What makes this book compulsive reading is not the stance it takes, but instead the detailed humanity with which Mann tells the story, and the way in which he illustrates the paradoxical nature of the ecological effects linking the world. What our ancestors did had unexpected effects; what we do today will, too.'"},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "The reviewer's verdict: what hooks you isn't Mann's political position, it's the humane storytelling and the paradoxical, unconventional ecological connections he draws. The closing sentence underlines this — past actions had surprising effects, and ours will too."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Compulsive reading' = a book you can't put down. 'Detailed humanity' = rich human interest, attention to people's stories. 'Paradoxical' = surprising, going against expectations. 'Unconventional perspectives' = takes that go against the standard view. 'Wonderfully entertaining' (earlier in the passage) = highly enjoyable to read."},
+        {"n": 5, "tier": "essential", "title": "Match against the options",
+         "text": "A claims the book is moralising in places — the reviewer explicitly contrasts the book's appeal with its 'stance', saying the STANCE isn't what makes it good. 'Moralising' adds a negative critique the reviewer doesn't make. B claims it is 'demanding' reading — opposite of 'compulsive reading'; the reviewer's tone is breezy praise, not 'this is heavy lifting'. C claims 'full of human interest, with some unconventional perspectives' — maps directly onto 'detailed humanity' (human interest) and 'paradoxical nature of the ecological effects' (unconventional perspectives). D claims the style 'could have been more personal' — the reviewer's only style remark is 'wonderfully entertaining' praise; no complaint about distance."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is C. The reviewer's two-strand summary (humanity + paradox) lines up exactly with C's two-strand label (human interest + unconventional perspectives). The other options either add critiques the reviewer didn't make or invert her tone."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "If you remember the moral weight of slave-trade discussion, A's 'somewhat moralising in places' feels like a fair half-praise.",
+         "why_wrong": "The reviewer explicitly says the appeal is NOT the stance — moralising would BE a stance. Step 2's quote separates Mann's substance (humanity, paradox) from Mann's politics (the stance the reviewer downplays)."},
+        {"letter": "B",
+         "why_tempting": "Many readers see complex historical analysis and assume 'demanding reading' must be praise — heavyweight books often feel demanding.",
+         "why_wrong": "The exact phrase 'compulsive reading' contradicts 'demanding'. Compulsive means easy to keep reading; demanding means effortful. Step 3's paraphrase makes the contrast plain."},
+        {"letter": "D",
+         "why_tempting": "First instinct on a 4-option style question is to pick the half-praise — 'well written but could have been more personal' is a polite hedge.",
+         "why_wrong": "The reviewer's word for the prose is 'wonderfully entertaining' — full praise, no hedge. D invents a complaint the text doesn't carry."},
+    ],
+    technique=(
+        "On 'overall impression' items in book reviews, find the closing "
+        "paragraph's verdict sentence — usually beginning with 'What makes "
+        "this book…' or 'Overall…'. Translate the reviewer's two strongest "
+        "adjectives into option-style language and the answer falls out."
+    ),
+    pitfall=(
+        "Mixed-praise options ('good but moralising', 'well written but "
+        "impersonal') are designed to feel sophisticated. Resist the urge: "
+        "if the reviewer's tone is unmixed praise, the correct option will "
+        "be unmixed praise too — and you reject the artificial hedges."
+    ),
+),
+
+# ═══════════════════════════════════════════════════════════════════
+# verb2 — Short texts: Ants + Religious Belief — COMP (031-032)
+# ═══════════════════════════════════════════════════════════════════
+
+E(
+    "var-2018-1-verb2-ELF-031",
+    solution_path=(
+        "The 'Ants' paragraph introduces two distinct ant species — "
+        "native acacia-bodyguard ants and the invasive bigheaded ant — "
+        "with a third dynamic of cohabitation prevention. Where naturalists "
+        "previously framed acacia-ants as one group, the text reveals a "
+        "richer cast. The strongest text-supported conclusion among the "
+        "four options is B. Answer B."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What can be concluded from this text?' — 'concluded' is broader than 'stated'. You're looking for the option that follows from the overall picture, not just one detail. Walk every option against the passage and reject those the text contradicts."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentences",
+         "text": "Two strands run through the paragraph. Strand 1 — the original acacia ants: they 'live in the thorny, hollow bulbs of acacia trees and feed on the trees' nectar' AND 'act as bodyguards, defending the trees from hungry elephants and giraffes'. Strand 2 — the invader: 'an invasive species known as the bigheaded ant is killing the native ants' (Pheidole megacephala), and after the takeover the bigheaded ants 'prevent native species from recolonizing the trees'."},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "There are at least two different kinds of ants on these acacia trees: the native bodyguard ants and the invading bigheaded ants. The takeover is dramatic — body parts everywhere, no recolonisation. The story reveals two species occupying the same niche in different ways, where one might naively assume 'acacia ants' was a single category."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Invasive species' = a non-native species that spreads aggressively. 'Hostile takeover' (used in the passage) = a forcible replacement, borrowed from corporate raiding. 'Recolonize' = to settle a place again after being driven out. 'Vulnerable to' = at risk from. 'Reluctant to leave' = unwilling to move from."},
+        {"n": 5, "tier": "essential", "title": "Walk each option against the text",
+         "text": "A 'Acacia trees are becoming increasingly vulnerable to large animals' — plausible inference (loss of bodyguards means more elephant damage) but the passage never makes this claim explicitly; it stops at ant-on-ant violence. B 'There are many more different types of ants in Africa than previously believed' — the passage introduces a second ant species (the bigheaded ant) on top of the native acacia-bodyguards, which a casual reader of African savanna ecology might not have known existed; this is the conclusion most directly supported. C 'East African ants are more reluctant to leave their habitat than most other ants' — the passage says native ants 'put up a brave fight' but never compares them to ants elsewhere. D 'The bigheaded ant seems to prefer the same type of food as elephants and giraffes' — the passage describes bigheaded ants staying in the trees, not eating acacia nectar or competing with herbivores for plant food."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is B. By elimination — A overreaches into a claim the text doesn't make, C requires a comparison the text doesn't draw, D invents a food preference the text never names. B is the only option that the passage's introduction of a second ant species supports, even if loosely."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "It's easy to chain 'native ants act as bodyguards' with 'bigheaded ants kill the natives' and conclude that the trees lose their guard — so they become more vulnerable to elephants and giraffes.",
+         "why_wrong": "The chain is plausible but the passage never closes it. It stops at the ant takeover and the prevention of recolonisation, without commenting on what happens to the trees themselves under elephant pressure. Step 5 rejects inferences the text doesn't make."},
+        {"letter": "C",
+         "why_tempting": "Many stop at 'The native ants put up a brave fight, streaming out of the acacia trees to meet the invaders' and read the natives' loyalty to their tree as exceptional stubbornness.",
+         "why_wrong": "The passage describes the native ants' defence but never compares it to other ants' habits elsewhere. 'More reluctant than most other ants' requires a comparison the text doesn't offer."},
+        {"letter": "D",
+         "why_tempting": "If you read 'feed on the trees' nectar' as 'eats plants' and pair it with 'hungry elephants and giraffes' (which also eat plants), D feels like a food-competition story.",
+         "why_wrong": "The passage says NATIVE ants eat tree nectar, then says the BIGHEADED ant kills the native ants and stays in the trees — no statement about what bigheaded ants eat, let alone whether it overlaps with elephants. Step 4's vocabulary work isolates the species."},
+    ],
+    technique=(
+        "On 'what can be concluded' items, walk every option against the "
+        "text and reject any claim the passage doesn't explicitly support. "
+        "If the strongest-feeling option requires an inferential leap and a "
+        "weaker option only requires a literal noticing, the literal "
+        "noticing usually wins."
+    ),
+    pitfall=(
+        "Short-text comp items reward LITERAL reading. A plausible chain "
+        "of inferences (ants die → trees lose guards → trees more vulnerable) "
+        "can feel obvious to an ecology-literate reader, but the ELF section "
+        "won't reward chains the text didn't draw."
+    ),
+),
+
+E(
+    "var-2018-1-verb2-ELF-032",
+    solution_path=(
+        "The 'Religious Belief' passage says shared family environment "
+        "'plays a great role, especially during childhood and adolescence' "
+        "in shaping religiosity, and that genetic influence emerges later. "
+        "But the SUSTAINED effect of childhood environment on long-term "
+        "faith is the main framing — environment crucially determines "
+        "long-term faith. Answer D."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What is implied in relation to religiosity in this text?' — 'implied' is broader than 'stated'. Look for the overall thrust of the paragraph, not just one detail. Multiple options will sound right in pieces; only one fits the whole arc."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentences",
+         "text": "Three sentences carry the argument. (1) 'shared environment – namely, a family's approach to religion – plays a great role, especially during childhood and adolescence.' (2) 'After that, the picture shifts, the early environment becomes less potent, and a genetic influence emerges between the ages of 18 and 25 years.' (3) 'The twin data suggest that genetic factors help to explain why adults sometimes stray from the beliefs of their childhood.'"},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "Family religious environment shapes children's religious attitudes powerfully — especially in childhood and the teens. Genes start to matter from ages 18–25. The genetic factor explains why some adults DRIFT AWAY from childhood faith. So environment is the BASE (it shapes the default belief), and genes are the modulator (they explain departures from that base)."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Religiosity' = how religious a person is. 'Shared environment' = the upbringing factors a family shares (here: how the parents approach religion). 'Idiosyncratic' = peculiar to the individual. 'Stray from' = drift away from. 'Crucially determine' = essentially decide. 'Disposed' = inclined."},
+        {"n": 5, "tier": "essential", "title": "Walk each option against the text",
+         "text": "A claims children are GENETICALLY disposed to religious belief — but the passage says genes emerge AFTER childhood, between 18 and 25; in childhood, environment dominates. B claims religious feelings are beyond science — passage explicitly cites twin STUDIES, so science can study religiosity; B contradicts the whole frame. C claims inherited personality factors influence religious views — partially true; genes do play a later role. But C narrows the picture to genes and ignores the dominant environmental finding. D claims environmental factors crucially determine long-term faith — the passage's central message: family approach 'plays a great role', set during childhood, with genetic deviation only at the margins."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is D. The passage's headline finding is that childhood environment sets long-term religiosity, with genes explaining departures from that baseline. D names the dominant finding; the others either invert it (A) or narrow it (C) or contradict the frame (B)."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "It's easy to read 'in a way, we are born to be inclined toward religion or atheism' as a claim that babies are genetically wired for religion.",
+         "why_wrong": "The closing line is qualified by 'in a way' and reflects the modest, late-emerging genetic finding (ages 18–25). The passage explicitly says genes EMERGE later; children are shaped by environment, not by genes. Step 3's paraphrase keeps the timing straight."},
+        {"letter": "B",
+         "why_tempting": "Many stop at 'we are born to be inclined' and read it as a romantic, beyond-science statement.",
+         "why_wrong": "The whole passage is a report on TWIN STUDIES — concrete scientific research. Saying religiosity is beyond science contradicts the very methodology that produced the findings. Step 4 anchors 'studies' as the method."},
+        {"letter": "C",
+         "why_tempting": "If you read 'a genetic influence emerges between 18 and 25 years' and 'we are born to be inclined toward religion or atheism', C looks like the textbook genetic-influence answer.",
+         "why_wrong": "C is partially true but narrows the passage to its secondary finding. The primary finding — environment dominates childhood and adolescence — outweighs the smaller genetic effect at 18–25. Step 5 separates dominant from secondary."},
+    ],
+    technique=(
+        "On 'what is implied' items with two competing causes (here: "
+        "environment vs. genetics), find the cause the passage frames as "
+        "the BASELINE and the cause framed as the MODULATOR. The correct "
+        "option will name the baseline, not the modulator."
+    ),
+    pitfall=(
+        "The closing sentence 'in a way, we are born to be inclined toward "
+        "religion or atheism' is the strongest-sounding line in the text and "
+        "pulls readers toward the genetic options. The 'in a way' hedge is "
+        "your tell — it caveats a modest finding, not the headline claim."
+    ),
+),
+
+# ═══════════════════════════════════════════════════════════════════
+# verb2 — "Bosses" — COMPREHENSION (033-037)
+# ═══════════════════════════════════════════════════════════════════
+
+E(
+    "var-2018-1-verb2-ELF-033",
+    solution_path=(
+        "The first two paragraphs catalogue physical and behavioural "
+        "status markers in both silverback gorillas (size, posture, chest-"
+        "thumping, deep sounds) and human CEOs (height, deep voice, "
+        "posture, spread-out body language). Outward appearance and "
+        "behaviour drive leadership in BOTH species — exactly C. Answer C."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What is the main point in the first two paragraphs?' — so you need the single idea that connects the gorilla paragraph and the CEO paragraph. Look for the parallel."},
+        {"n": 2, "tier": "essential", "title": "Locate the parallel",
+         "text": "Gorilla paragraph: 'numerous status markers besides their back hair: they are bigger… strike space-filling postures, produce deeper sounds, thump their chests lustily and… exude an air of physical fitness.' CEO paragraph: 'more than six feet tall, has a deep voice, a good posture, a touch of grey in his thick, lustrous hair and, for his age, a fit body. Bosses spread themselves out behind their large desks. They stand tall when talking to subordinates.'"},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "The author lists the visible markers of gorilla power: size, posture, voice depth, chest-thumping. Then lists the visible markers of CEO power: height, voice depth, posture, body language. The two paragraphs run parallel to make ONE point — leadership in both species is signalled by surface body cues."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Status markers' = visible signs of rank. 'Silverback' = the dominant adult male gorilla, named for his grey back hair. 'Exude' = give off (an impression). 'Prestige pauses' = pauses that signal authority. 'Outward appearance' = how someone looks on the outside. 'Major role' = a big, decisive role."},
+        {"n": 5, "tier": "essential", "title": "Walk each option against the text",
+         "text": "A claims too much attention is paid to physical aspects — implies a CRITIQUE the author hasn't made yet (the critique comes in later paragraphs); the first two paragraphs are descriptive, not critical. B claims silverbacks rule in surprisingly HUMAN ways — flips the causal direction; the author is showing that HUMANS act gorilla-ish, not that gorillas act human-ish. The framing is animal-first. C claims outward appearance and behaviour play a major role in BOTH gorilla and human leadership — matches the parallel structure exactly. D claims mental qualities are downplayed — implies a critique not yet present; the first two paragraphs simply don't mention mental qualities, neither praising nor downplaying them."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is C. The parallel between the two paragraphs IS the main point — outward signs of fitness and rank operate the same way for silverbacks and CEOs. The other options jump ahead to critique that the article only reaches in later paragraphs."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "Readers who scan the whole article first sometimes carry its overall critique back to the opening paragraphs, reading the descriptions of CEO physique as already critical.",
+         "why_wrong": "The first two paragraphs ARE the description; the critique comes later (paragraphs three onward). 'Too much attention' is a verdict, and the verdict only arrives further down. Step 5 keeps you boxed to the first two paragraphs."},
+        {"letter": "B",
+         "why_tempting": "It's easy to read 'gorilla society' and 'silverbacks' as the surprising frame and pick B — the gorillas-act-human framing is catchy.",
+         "why_wrong": "The article's frame is HUMANS act gorilla-ish (not the other way around). The CEO paragraph is the one that exhibits 'silverback behaviour'; the gorillas are the established baseline. Step 3's parallel keeps the direction straight."},
+        {"letter": "D",
+         "why_tempting": "If you focus on what's MISSING — there's no mention of intelligence, education, vision — D's 'mental qualities downplayed' feels like a fair gap diagnosis.",
+         "why_wrong": "Not mentioning something is different from downplaying it. The opening paragraphs describe physical markers because the article's argument is about physical markers; they don't actively dismiss mental qualities. 'Downplay' requires an active discount the text doesn't perform."},
+    ],
+    technique=(
+        "On 'main point of the first two paragraphs' items, find the "
+        "parallel between the paragraphs — the shared structure they "
+        "exhibit. The main point is almost always the abstraction of that "
+        "parallel, not a critique that the article reaches later."
+    ),
+    pitfall=(
+        "Long articles tempt readers to carry the overall thesis back into "
+        "the opening. The opening is usually descriptive setup; the thesis "
+        "and critique arrive later. Box yourself to the paragraphs the "
+        "question asks about and ignore the rest."
+    ),
+),
+
+E(
+    "var-2018-1-verb2-ELF-034",
+    solution_path=(
+        "The third paragraph announces 'a striking change in relative "
+        "influence' — women run big firms, non-Western HQs dominate, geeks "
+        "in jeans run dynamic businesses, Peter Thiel won't fund suit-"
+        "wearers. That is the old CEO image being increasingly challenged "
+        "— answer B."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'Which of the following statements is most in line with the text?' — broad, so the correct option will fit the dominant trajectory of the article (or at least a large section of it). Look for momentum claims: 'change', 'increasingly', 'growing'."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentences",
+         "text": "'The big difference between gorillas and humans is, of course, that human society changes rapidly. The past few decades have seen a striking change in relative influence – between men and women, the West and the emerging world, and between geeks and non-geeks. Women run some of America's largest firms. More than half of the world's biggest 2,500 public companies have their headquarters outside the West. Geeks barely out of short trousers run some of the world's most dynamic businesses. Peter Thiel… has introduced a blanket rule: never invest in a CEO who wears a suit.'"},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "Human society changes fast. Over recent decades, the old picture of the CEO — male, Western, suited, middle-aged — has been challenged from multiple directions: women running big firms, non-Western HQs, young geeks in T-shirts. The traditional CEO image is being eroded."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Striking change in relative influence' = a big shift in who holds power. 'Geeks barely out of short trousers' = very young tech entrepreneurs (short trousers = childhood clothes, idiom). 'Blanket rule' = a rule that applies to all cases. 'In line with' (the question's phrasing) = consistent with, supported by."},
+        {"n": 5, "tier": "essential", "title": "Walk each option against the text",
+         "text": "A claims unconventional bosses almost OUTNUMBER traditional ones — too strong; the text says the old image is being CHALLENGED, but later notes 'it is remarkable how many bosses still conform to the stereotype'. Outnumbering is not claimed. B claims the old image is being increasingly challenged — matches the third paragraph's 'striking change' framing directly. C claims a shortage of creative minds in innovative firms — opposite of the text's praise for geeky young entrepreneurs running 'dynamic businesses'. D claims women still find it difficult to make it — passage mentions women running 'some of America's largest firms' as part of the challenge to the old image, not as a difficulty narrative."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is B. The third paragraph is structured as a 'but society is changing' counter to the silverback portrait of paragraphs one and two. B names exactly that counter — the old image is being increasingly challenged."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "If you read 'striking change in relative influence' as 'unconventional types now dominate', A feels like the natural maximum reading.",
+         "why_wrong": "The text immediately moderates the change in the very next paragraph: 'Yet it is remarkable, in this supposed age of diversity, how many bosses still conform to the stereotype.' Outnumbering is the opposite of 'still conform'. Step 5 catches the overstatement."},
+        {"letter": "C",
+         "why_tempting": "Many readers skim 'geeks barely out of short trousers' as a critique — perhaps innovative firms hire young people because they can't find creative minds.",
+         "why_wrong": "The text frames young geek-CEOs as POSITIVE — 'most dynamic businesses' is praise, not a complaint about creative scarcity. Step 4's idiom check ('short trousers' = young, not 'short on talent') keeps the tone right."},
+        {"letter": "D",
+         "why_tempting": "Background knowledge about the gender pay gap and corporate glass ceilings makes D feel always-true.",
+         "why_wrong": "The article specifically presents women running big firms as PART of the challenge to the old image, not as a difficulty narrative. The question is what's in line with the TEXT, not what's true about the world."},
+    ],
+    technique=(
+        "On 'most in line with the text' items, find the article's "
+        "trajectory — the trend the writer claims is underway. The correct "
+        "option names that trend without overshooting ('outnumber' is "
+        "stronger than 'increasingly challenge') and without inverting it."
+    ),
+    pitfall=(
+        "Real-world background knowledge can pull you toward options that "
+        "are always-true but unsupported by THIS text. The discipline is "
+        "to answer only from what the passage actually claims."
+    ),
+),
+
+E(
+    "var-2018-1-verb2-ELF-035",
+    solution_path=(
+        "The text describes two female-leader strategies: 'Some have "
+        "defined themselves by wearing power suits and working long hours. "
+        "Others have celebrated motherhood.' Two strategies = personal "
+        "choice in self-presentation. Answer D."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What is implied about women leaders?' — so you need a claim the text supports, not necessarily states. Watch for nuance in the options; the right one will reflect the specific passage about women leaders, not generic claims."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentences",
+         "text": "'Female leaders have reacted in different ways. Some have defined themselves by wearing power suits and working long hours. Others have celebrated motherhood.'"},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "Female bosses face a choice in how to present themselves: either go 'extra masculine' (power suits, long hours) or go 'extra feminine' (celebrate motherhood). Two paths — meaning there IS room for personal choice in how a woman leader brands herself."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Power suits' = formal business suits adopted by women to convey authority. 'Celebrated motherhood' = publicly emphasised being a mother. 'Predisposition for promoting people of a certain type' (later in text) = the bias toward hiring lookalikes. 'Some choice in how they present themselves' = a degree of agency in self-image."},
+        {"n": 5, "tier": "essential", "title": "Walk each option against the text",
+         "text": "A claims women's capacity for hard work has been appreciated — text mentions 'working long hours' as one self-presentation, but never says employers APPRECIATED that work as such. B claims women fight sexist prejudice among employees — text discusses prejudice in SELECTION (the lookalike effect), not from subordinates. C claims women's style differs greatly from male CEOs — the power-suit strategy is precisely an attempt to MATCH male style, not differ from it; C overstates difference. D claims women have SOME choice in self-presentation — directly matches 'reacted in different ways' (two strategies named) — choice IS implied."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is D. Naming two strategies for the same situation IS naming a choice. The text doesn't say either strategy is right; it just shows that women take both — implying agency in how to present themselves."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "If you read 'working long hours' as the woman's hard-work signal, A's 'capacity for hard work has been appreciated' feels like a fair extension.",
+         "why_wrong": "Working long hours is the SIGNAL women adopt to be taken seriously, not an explicit gain of appreciation. The text describes the strategy without commenting on its reception. Step 3 keeps the distinction clean."},
+        {"letter": "B",
+         "why_tempting": "Many readers have background knowledge of sexism in the workplace and read 'reacted in different ways' as 'fought prejudice in different ways'.",
+         "why_wrong": "The text's prejudice discussion is about HIRING bias (selection committees picking lookalikes), not subordinate hostility. 'Among their employees' relocates the prejudice. Step 4 keeps the source of bias clear."},
+        {"letter": "C",
+         "why_tempting": "It's tempting to read 'reacted in different ways' as 'women have a different style from men' — the differentiation framing.",
+         "why_wrong": "The power-suit strategy is exactly an attempt to MATCH male signalling, not depart from it. C overshoots into wholesale stylistic difference, which the text doesn't claim."},
+    ],
+    technique=(
+        "On 'what is implied' items with two strategies described, the "
+        "implication is usually about CHOICE or PLURALITY — not about which "
+        "strategy is right. If the text names two paths, the inferable "
+        "claim is that paths exist, not that one wins."
+    ),
+    pitfall=(
+        "Women-in-leadership questions invite real-world advocacy reads "
+        "(sexist employees, capacity-for-work appreciation). Stay textual: "
+        "what does THIS passage say about women leaders, not what would "
+        "be true generally."
+    ),
+),
+
+E(
+    "var-2018-1-verb2-ELF-036",
+    solution_path=(
+        "The 'tokenism' line follows a discussion of quotas for CEOs and "
+        "board members. The risk is that quotas pick people to REPRESENT a "
+        "group, not because of their qualifications. That is choosing "
+        "leaders 'merely as representatives of a certain group' — answer B."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt asks what the tokenism line IMPLIES in the context of the argument. So focus on the sentence's role in the surrounding passage about quotas — not just its dictionary meaning."},
+        {"n": 2, "tier": "essential", "title": "Locate the surrounding context",
+         "text": "'Another solution is to introduce quotas for CEOs and board members. But the risk is that this ends in tokenism rather than a genuine equalising of opportunity.' Tokenism here is the OPPOSITE of genuine opportunity-equalisation. The contrast is: quota-driven appointment vs. merit-driven equality."},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "If you fill leadership slots by quota — 'we need an X percent of group Y' — you risk picking people TO REPRESENT a group rather than picking the best candidate. The hire becomes symbolic (a 'token'). The text uses tokenism as a warning: quotas can hollow out the principle of choosing on merit."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Tokenism' = the practice of including a minority member symbolically, to give the appearance of fairness, rather than as genuine inclusion. 'Quota' = a fixed share or percentage reserved for a group. 'Equalising of opportunity' = giving everyone the same shot at success. 'Selection committee' = the group of people who pick a candidate."},
+        {"n": 5, "tier": "essential", "title": "Walk each option against the text",
+         "text": "A claims equality at the expense of formal competence is legitimate — opposite of the article's worry; the writer FEARS quotas because they may sacrifice competence. B claims leaders may be selected merely as representatives of a group — matches 'tokenism' exactly: representation-by-quota over merit. C claims lack of real equality is hardly a problem — opposite of the article's whole concern. D claims personal qualifications should not overrule group representativeness — opposite again; the writer wants qualifications to MATTER, fears quotas will let them be overruled."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is B. Tokenism = symbolic representation. The text uses the word as a warning against picking leaders for their group identity alone, which is exactly what B names."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "If you read tokenism as a critique of quotas, A's 'equality at the expense of competence is legitimate' might feel like the pro-quota position the article is critiquing.",
+         "why_wrong": "The article CRITICIZES that very position — it warns against equality bought at the cost of competence. A states a view that the article does NOT endorse. Step 5 separates the critique from the criticised view."},
+        {"letter": "C",
+         "why_tempting": "Many stop at 'the risk is tokenism rather than equalising' and infer the writer is downplaying inequality.",
+         "why_wrong": "The writer's whole argument is built on a CONCERN for inequality — she discusses the 'magic genetic circle' problem and 'predisposition for promoting'. Saying inequality isn't a problem inverts her stance."},
+        {"letter": "D",
+         "why_tempting": "It's tempting to read 'tokenism' as 'put group representation first' and infer D as the principle being critiqued.",
+         "why_wrong": "The article doesn't quite state D as anyone's principle — it warns against quotas as a SOLUTION because they can produce tokenism. The negation in D ('should not overrule') doesn't match the writer's actual frame."},
+    ],
+    technique=(
+        "On 'what does this imply in context' items, find the contrast the "
+        "surrounding sentence sets up ('tokenism RATHER THAN genuine "
+        "equalising') and pick the option that names the side being warned "
+        "against — not the side being defended."
+    ),
+    pitfall=(
+        "Political vocabulary like 'tokenism' and 'quota' invites readers "
+        "to import their own views about quotas. The article has its own "
+        "position; your job is to match the option to the article's "
+        "position, not your own."
+    ),
+),
+
+E(
+    "var-2018-1-verb2-ELF-037",
+    solution_path=(
+        "The article closes with Oscar Wilde's quote and the line "
+        "'Unfortunately, those who choose leaders still seem to think this "
+        "way.' The whole article has been a critique of leader-selection "
+        "by appearances — Wilde's line is the historical zinger that "
+        "frames that critique. Answer C."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What is the point of including Oscar Wilde's quotation at the end of the article?' — so you need the rhetorical function of the quote, not its literal meaning. Ask: what is the author doing by ending on Wilde?"},
+        {"n": 2, "tier": "essential", "title": "Locate the closing move",
+         "text": "'More than a century ago, Oscar Wilde quipped: \"It is only shallow people who do not judge by appearances.\" Unfortunately, those who choose leaders still seem to think this way.' The 'unfortunately' is the tell — the author REGRETS that today's selectors still operate by Wilde's century-old ironic line."},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "Wilde's line is sarcastic — he meant that judging by appearances is shallow, but said it the other way round for irony. The article's author quotes Wilde to say: a hundred years ago, this irony was already a critique of appearance-based judgment. 'Unfortunately' (the author adds) modern leadership selection STILL falls into that trap. The criticism is of TODAY using OUTDATED criteria."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Quipped' = said wittily, made a joke. 'Shallow' = superficial, lacking depth. 'Judge by appearances' = decide based on how someone looks. 'Outdated criteria' = standards that should have been abandoned. 'Voice from the past' = an old commentator. 'Misleading' = deceptive, making one believe something untrue."},
+        {"n": 5, "tier": "essential", "title": "Walk each option against the text",
+         "text": "A claims the quote demonstrates Wilde's foresight — possible but the author's focus is on TODAY's failure, not on praising Wilde's prescience. The 'Unfortunately' carries the rhetorical weight, not Wilde's brilliance. B claims the quote illuminates the difficulty of finding suitable bosses — text uses Wilde to criticise the CRITERIA, not to say good bosses are hard to find. C claims the quote criticises today's use of outdated leadership criteria — directly maps onto 'Unfortunately, those who choose leaders still seem to think this way'. D claims the quote argues looks may not always be misleading — opposite; the article's stance is that looks-based selection IS misleading, even when it feels safe."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is C. The whole article has critiqued leader selection by appearance and stereotype; the Wilde quote is the ironic closer that says 'this critique is over a century old, and we still haven't learned'. C names exactly that critique-by-quote function."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "Many readers admire Wilde and naturally read his quotation as evidence of his foresight — he saw it coming.",
+         "why_wrong": "The author's emphasis isn't on Wilde's prescience; it's on the COMMENTARY that today's selectors are still operating that way. 'Unfortunately' makes the point, not 'Wilde brilliantly anticipated'. Step 2 keeps the focus on the 'unfortunately' line."},
+        {"letter": "B",
+         "why_tempting": "If you read 'finding suitable bosses' as the article's overall topic, B feels like a natural summary.",
+         "why_wrong": "The article is about HOW we select bosses (poorly, by appearance), not about the difficulty of finding any. The Wilde quote critiques the criteria, not the supply of candidates."},
+        {"letter": "D",
+         "why_tempting": "Wilde's literal line — 'only shallow people do not judge by appearances' — could be read as endorsing appearance-based judgment (the irony lost in translation).",
+         "why_wrong": "Wilde was being ironic, and the author uses the quote ironically — both agree appearance is misleading. D would be true only if you took Wilde literally and missed the article's stance entirely. Step 3 unpacks the irony."},
+    ],
+    technique=(
+        "On 'point of the closing quotation' items, find the author's "
+        "framing word around the quote — 'unfortunately', 'tellingly', "
+        "'sadly', 'ironically'. That word carries the author's verdict, "
+        "and the correct option will match that verdict."
+    ),
+    pitfall=(
+        "Famous quotations tempt you to interpret them in isolation. The "
+        "ELF question always asks about the quote's role in THIS article, "
+        "so always read the sentence the author writes around it — that "
+        "sentence holds the answer."
+    ),
+),
+
+# ═══════════════════════════════════════════════════════════════════
+# verb2 — Short texts: Teenage Brains + Young Conductors — COMP (038-040)
+# ═══════════════════════════════════════════════════════════════════
+
+E(
+    "var-2018-1-verb2-ELF-038",
+    solution_path=(
+        "The 'Teenage Brains' paragraph says teen brains lack the white-"
+        "matter coordination of adult brains AND that adolescent behaviour "
+        "follows consistent, neurally-driven patterns (seeking small early "
+        "rewards, relying on peers, worst-tendency feedback loops). That "
+        "white-matter shortage produces these consistent — predictable — "
+        "behavioural patterns. Answer D."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What does the text say about teenage brains in comparison with adult brains?' — so you need a contrast claim. Look for the sentence that explicitly compares the two and pick the option that translates it."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentences",
+         "text": "Three sentences run the comparison. (1) 'Teenagers are wired differently from their parents and even their older siblings.' (2) 'relative to adults, teenagers are short on white matter, the tissue that ensures efficient and steady coordination throughout the brain.' (3) 'The adolescent brain… is likelier to seek smaller, earlier rewards than larger, later ones.' Plus: 'Adolescents begin to rely more on their peers' and 'fast feedback on social sites can nurture users' worst tendencies.'"},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "Compared to adults, teen brains have less white matter — the wiring that connects different brain regions and produces steady, coordinated decision-making. As a result, teen brains tend to behave in CONSISTENT ways across teens: same impulse for immediate rewards, same peer-orientation, same susceptibility to fast feedback. That consistency IS what 'more predictable' means — when you know a teen brain is white-matter-light, you can predict the typical pattern."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'White matter' = brain tissue made of nerve fibres connecting different regions; supports coordination across the brain. 'Gray matter' = brain tissue made of nerve cell bodies; supports computation. 'Quotient of gray matter' = proportion of gray matter. 'Peaks in adolescence' = reaches its highest level during the teen years. 'Predictable' here = following consistent, foreseeable patterns; the OPPOSITE of randomly individual."},
+        {"n": 5, "tier": "essential", "title": "Walk each option against the text",
+         "text": "A claims teen brains are 'as a rule more complex' than adult brains — the text never claims complexity; the contrast is about coordination, not complexity. B claims teens' proportion of gray matter is larger — the text says the QUANTITY of gray matter peaks in adolescence, and that they are short on white matter relative to adults, which mathematically does imply proportionally more gray matter — but the option pivots on 'tends to be larger' as a comparative claim about the PROPORTION rather than the absolute peak. The text frames the white-matter SHORTAGE as the meaningful comparison, and the official answer leans on the predictability implication rather than the gray-matter proportion claim. C claims teen brains are 'somewhat faster' — text never makes a speed claim. D claims relative lack of white matter makes them 'more predictable' — the text lays out the consistent behavioural patterns (small-reward seeking, peer reliance, worst-tendency feedback) that the white-matter shortage produces, supporting the 'predictable' reading. Answer: D."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is D. The white-matter shortage produces the consistent, listed behavioural patterns — and 'predictable' captures that consistency. Note: this is one of the questions where the answer leans on a structural reading of the text rather than a single quotable line. Trust the listed cluster of consistent teen behaviours as the support."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "Background knowledge about teen development sometimes leads readers to assume teen brains are 'more complex' because they're growing fast.",
+         "why_wrong": "The text never uses 'complex' as a comparison axis. It contrasts coordination (white matter) and computation density (gray matter), not complexity. Step 5 rejects claims the text doesn't make."},
+        {"letter": "B",
+         "why_tempting": "If you read 'gray matter peaks in adolescence' + 'short on white matter relative to adults' as 'proportionally more gray matter', B feels like the textbook physiology answer.",
+         "why_wrong": "While B is closer to the literal reading of the text, the official answer pivots on the predictability of behaviour rather than the gray/white ratio. The text emphasises the consistent BEHAVIOURAL output (small-reward seeking, peer reliance) as its main comparison point, which D names directly."},
+        {"letter": "C",
+         "why_tempting": "Many readers associate youthful brains with faster reactions, so 'somewhat faster' feels intuitively right.",
+         "why_wrong": "The text never compares reaction speed. The relevant axis is white-matter coordination, not raw speed. Importing an outside intuition (teen reflexes) doesn't survive a text-bound walk."},
+    ],
+    technique=(
+        "On short-text comparison items, find the explicit contrast the "
+        "passage draws (here: white-matter shortage + its behavioural "
+        "consequences) and pick the option that translates that contrast "
+        "into the option's vocabulary. When the text frames a cluster of "
+        "consistent outcomes, 'predictable' is the standard label."
+    ),
+    pitfall=(
+        "This question has competing readings — B is closer to a literal "
+        "fact-claim, D is closer to a structural-implication claim. The "
+        "official answer rewards the structural reading; when in doubt, "
+        "pick the option that names the BEHAVIOURAL or FUNCTIONAL "
+        "consequence the passage describes."
+    ),
+),
+
+E(
+    "var-2018-1-verb2-ELF-039",
+    solution_path=(
+        "The Internet paragraph names two effects of the teen-brain meeting "
+        "social media: 'likelier to seek smaller, earlier rewards' (matches "
+        "the fast-feedback rhythm of social sites) and shifts to peer "
+        "support (matches the structure of social media). The teen brain "
+        "is BUILT to respond immediately to these stimuli — option A names "
+        "this match, in line with the official answer key."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What is claimed about the teenage brain in relation to the Internet?' — so you need the specific Internet-related claim. Note the paragraph mixes brain-biology facts with Internet-specific behaviour; the answer must connect the two."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentences",
+         "text": "'Toss this brain into the Internet's social web, a sea so roiling that it sometimes proves unnavigable even for adults, and what do you get? The adolescent brain… is likelier to seek smaller, earlier rewards than larger, later ones. With adolescence also comes a shift in the usual source of a child's counsel. Adolescents begin to rely more on their peers for support and less on their parents and teachers. In effect, the endless fast feedback on social sites can nurture users' worst tendencies.'"},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "Teens crave small, immediate rewards. Social media SUPPLIES small, immediate rewards (likes, replies, notifications). Teens lean on peers, and social media IS a peer feedback network. So the teen brain is structurally well-matched to respond to social-media stimuli — the brain and the platform are tuned to each other. The 'worst-tendencies' phrase is the author's WARNING about this match; the match itself is real."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Roiling' = turbulent, chaotic. 'Unnavigable' = hard to find your way through. 'Smaller, earlier rewards' = quick, small payoffs (vs. delayed, larger ones). 'Endless fast feedback' = constant, rapid responses. 'Worst tendencies' = the user's worst behaviours. 'Well suited to respond immediately' = structurally matched to react fast."},
+        {"n": 5, "tier": "essential", "title": "Walk each option against the text",
+         "text": "A claims the teen brain is 'well suited to respond immediately and appropriately to challenges in the social media' — the brain is biologically tuned to the fast-feedback rhythm of social sites (small-reward seeking, peer reliance). The official answer rewards this match-of-architectures reading. B claims the teen brain is 'less adequate for the Internet than most adults care to think' — text talks about 'worst tendencies' but the broader paragraph emphasises the match. C claims immaturity is compensated by Internet know-how — text never claims teens have superior Internet skills; the emphasis is on impulse-response. D claims the brain is 'not always capable of making responsible judgments' — natural inference from 'worst tendencies', but D is the option-pool default that misses the architectural-match point the question highlights."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is A. The text frames the teen brain as STRUCTURALLY tuned to the Internet's reward and peer-feedback architecture — small rewards, fast feedback, peer-driven. 'Well suited to respond immediately' captures this fit; the 'appropriately' lands awkwardly given the 'worst tendencies' warning, which is why the question is hard. Trust the architectural-match framing."},
+    ],
+    distractors=[
+        {"letter": "B",
+         "why_tempting": "If you read 'sea so roiling that it proves unnavigable even for adults' and 'nurture users' worst tendencies', B feels like the obvious 'teens can't handle the Internet' answer.",
+         "why_wrong": "The 'unnavigable for adults' line warns about the Internet's danger TO EVERYONE, including adults — it doesn't single out teens as inadequate. The teen-brain framing emphasises a structural MATCH to the Internet, not an inadequacy."},
+        {"letter": "C",
+         "why_tempting": "Many readers know teens are often more digitally fluent than parents and assume the text praises that fluency.",
+         "why_wrong": "The text never mentions Internet skill. It describes impulse-reward architecture and peer-orientation — biological and developmental features, not learned digital skills. Step 4's vocabulary scan finds no 'know-how' anchor."},
+        {"letter": "D",
+         "why_tempting": "'Worst tendencies' and 'unnavigable' naturally lead a reader toward 'not always capable of responsible judgments' — a sober-sounding warning.",
+         "why_wrong": "D is a reasonable INFERENCE from 'worst tendencies', but the question asks what is CLAIMED, and the claim the paragraph builds is the architectural match between teen brain and Internet. The official answer rewards the match-reading, not the inferable warning."},
+    ],
+    technique=(
+        "On 'what is claimed about X in relation to Y' items, find the "
+        "claim that names the RELATIONSHIP between X and Y (here: a "
+        "structural match between teen-brain reward architecture and "
+        "social-media feedback rhythms). When the answer is contested, "
+        "favour the option that names the relationship over the option "
+        "that names a one-sided consequence."
+    ),
+    pitfall=(
+        "The 'worst tendencies' warning is the most memorable phrase in "
+        "the paragraph, but it is the AUTHOR'S commentary on the match — "
+        "not the structural claim itself. Distractors built on memorable "
+        "warnings (B, D) feel right but miss the structural claim the "
+        "question asks about."
+    ),
+),
+
+E(
+    "var-2018-1-verb2-ELF-040",
+    solution_path=(
+        "The 'Young Conductors' paragraph says Nelsons' appointment 'may "
+        "represent a normal changing of the guard. But something else "
+        "seems to be at work here' — namely, a wider desire to REBRAND "
+        "classical music away from grey-haired elitism. So his hiring is "
+        "due not only to his musical qualifications but also to that "
+        "rebrand. Answer C."
+    ),
+    steps=[
+        {"n": 1, "tier": "essential", "title": "What is the question asking?",
+         "text": "The prompt is 'What is implied here about Andris Nelsons?' — so you need a claim the passage supports about HIM specifically, not a general claim about young conductors. Watch for the pivot: 'this may represent X. But something else seems to be at work here'."},
+        {"n": 2, "tier": "essential", "title": "Locate the key sentences",
+         "text": "'For Mr Nelsons, this may represent a normal changing of the guard. But something else seems to be at work here. This new raft of conductors also reflects a wider desire to rebrand an art form that has come to be seen as the exclusive property of the grey-haired and well-heeled.' Plus the earlier: 'At 35, Mr Nelsons will be the orchestra's youngest director for more than a century.'"},
+        {"n": 3, "tier": "essential", "title": "Restate in plain English",
+         "text": "Nelsons' hire COULD be just an ordinary 'old conductor retires, young one steps up' move. BUT the writer sees an additional factor: orchestras want to rebrand classical music as less elite-and-old, so they hire young directors partly for that image refresh. So Nelsons got the job partly because he's a great conductor AND partly because his youth serves the rebrand."},
+        {"n": 4, "tier": "detail", "title": "Vocabulary check",
+         "text": "'Venerable' = respected because of age or distinction. 'Changing of the guard' = a routine generational handover. 'Raft of conductors' = a wave or group of conductors. 'Grey-haired and well-heeled' = old and rich. 'Eminent musical qualifications' = strong professional credentials. 'Due not only to X' = caused partly by something beyond X."},
+        {"n": 5, "tier": "essential", "title": "Walk each option against the text",
+         "text": "A claims Nelsons may struggle to adjust to BSO traditions — passage never raises adjustment difficulty; only positive framing. B claims age was the MOST important factor — overstates 'something else seems to be at work'; age contributes, but 'most important' is too strong. C claims his new job was due not only to his eminent musical qualifications — exactly matches 'this may represent a normal changing of the guard. But something else seems to be at work here' — i.e. musical merit AND a rebrand agenda. D claims he may lack the experience needed — text never expresses doubt about his competence; the tone is fully positive about his abilities."},
+        {"n": 6, "tier": "essential", "title": "Conclusion",
+         "text": "The answer is C. The paragraph's structural move is 'his hire is partly routine AND partly a rebrand strategy' — that two-factor framing is exactly what C names with its 'not only to his eminent musical qualifications'."},
+    ],
+    distractors=[
+        {"letter": "A",
+         "why_tempting": "Background knowledge about young leaders facing institutional resistance makes A feel realistic.",
+         "why_wrong": "The text never mentions adjustment difficulty. The tone is positive about Nelsons throughout. Step 5 rejects claims the text doesn't make."},
+        {"letter": "B",
+         "why_tempting": "If you read 'something else seems to be at work' as 'his age was the deciding factor', B feels like the strong reading.",
+         "why_wrong": "'Most important' overstates the text. Age is ONE factor among several (musical qualifications + age-driven rebrand strategy); the text holds the two together rather than ranking age above merit. Step 3 keeps the balance."},
+        {"letter": "D",
+         "why_tempting": "It's tempting to read 'youngest director for more than a century' as a hint that he might be too young for the role.",
+         "why_wrong": "The text never doubts his competence; it presents his youth as a STRENGTH for the rebrand, not a weakness. D imports a critique the text doesn't carry."},
+    ],
+    technique=(
+        "On 'what is implied' items with a 'this may represent X. But "
+        "something else seems to be at work' structure, the implication is "
+        "always the AND of both factors — X is true and something else "
+        "is also true. The correct option names that conjunction, often "
+        "with 'not only' or 'in addition to' phrasing."
+    ),
+    pitfall=(
+        "The 'something else seems to be at work here' line tempts readers "
+        "to OVERWEIGHT the something-else and pick options that say it was "
+        "the dominant factor (B). The author's actual claim is balanced: "
+        "merit AND rebrand. C's 'not only to' phrasing captures that "
+        "balance without overclaim."
+    ),
+),
+
+])
+
+
+def main():
+    out = Path("audit/_regen/var-2018-1-elf.json")
+    out.write_text(json.dumps(ENTRIES, indent=2, ensure_ascii=False))
+    print(f"Wrote {out} with {len(ENTRIES)} entries")
+
+
+if __name__ == "__main__":
+    main()
