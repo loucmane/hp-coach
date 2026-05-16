@@ -16,6 +16,7 @@ import { z } from 'zod'
 import { getDb } from '../db/client'
 import { attempts, mistakes, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { extractSection, type Section, SECTIONS } from '../lib/section'
 import { currentStreak } from '../lib/stats'
 import type { Env, Vars } from '../types'
 
@@ -150,6 +151,101 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     const accuracyCorrect = accuracyRow?.correct ?? 0
     const accuracy7d = accuracyTotal > 0 ? accuracyCorrect / accuracyTotal : null
 
+    // Per-section breakdown for the score model. Pull the rolling-90d
+    // window of attempts in one go and aggregate in TS — cheaper than
+    // 8 sections × 4 window queries against SQLite, and we don't have
+    // a section column on the attempts table yet (B5 follow-up). For
+    // a single dogfood user the row count is in the hundreds; comfortable.
+    const ninetyDayStart = new Date(now.getTime() - 90 * 24 * 60 * 60_000)
+    const prevWeekStart = new Date(now.getTime() - 14 * 24 * 60 * 60_000)
+    const recentAttempts = await db
+      .select({
+        questionId: attempts.questionId,
+        correct: attempts.correct,
+        timeTakenMs: attempts.timeTakenMs,
+        createdAt: attempts.createdAt,
+      })
+      .from(attempts)
+      .where(and(eq(attempts.userId, userId), gte(attempts.createdAt, ninetyDayStart)))
+
+    type SectionAgg = {
+      attempts7d: number
+      correct7d: number
+      attempts7to14d: number
+      correct7to14d: number
+      attempts90d: number
+      correct90d: number
+      timeMsSum: number
+      timeMsCount: number
+      lastAttemptedAt: number | null
+    }
+    const seed = (): SectionAgg => ({
+      attempts7d: 0,
+      correct7d: 0,
+      attempts7to14d: 0,
+      correct7to14d: 0,
+      attempts90d: 0,
+      correct90d: 0,
+      timeMsSum: 0,
+      timeMsCount: 0,
+      lastAttemptedAt: null,
+    })
+    const bySectionAgg: Record<Section, SectionAgg> = Object.fromEntries(
+      SECTIONS.map((s) => [s, seed()]),
+    ) as Record<Section, SectionAgg>
+
+    for (const a of recentAttempts) {
+      const section = extractSection(a.questionId)
+      if (!section) continue
+      const ts = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
+      const correct = a.correct ? 1 : 0
+      const agg = bySectionAgg[section]
+      agg.attempts90d += 1
+      agg.correct90d += correct
+      if (a.timeTakenMs != null && a.timeTakenMs > 0) {
+        agg.timeMsSum += a.timeTakenMs
+        agg.timeMsCount += 1
+      }
+      if (agg.lastAttemptedAt == null || ts > agg.lastAttemptedAt) {
+        agg.lastAttemptedAt = ts
+      }
+      if (ts >= weekStart.getTime()) {
+        agg.attempts7d += 1
+        agg.correct7d += correct
+      } else if (ts >= prevWeekStart.getTime()) {
+        agg.attempts7to14d += 1
+        agg.correct7to14d += correct
+      }
+    }
+
+    const bySection: Record<Section, {
+      attempts7d: number
+      correct7d: number
+      attempts7to14d: number
+      correct7to14d: number
+      attempts90d: number
+      correct90d: number
+      avgTimeMs: number | null
+      lastAttemptedAt: number | null
+    }> = Object.fromEntries(
+      SECTIONS.map((s) => {
+        const agg = bySectionAgg[s]
+        return [
+          s,
+          {
+            attempts7d: agg.attempts7d,
+            correct7d: agg.correct7d,
+            attempts7to14d: agg.attempts7to14d,
+            correct7to14d: agg.correct7to14d,
+            attempts90d: agg.attempts90d,
+            correct90d: agg.correct90d,
+            avgTimeMs: agg.timeMsCount > 0 ? Math.round(agg.timeMsSum / agg.timeMsCount) : null,
+            lastAttemptedAt: agg.lastAttemptedAt,
+          },
+        ]
+      }),
+    ) as never
+
     return c.json({
       stats: {
         attempts: {
@@ -168,6 +264,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         },
         accuracy7d,
         streakDays,
+        bySection,
       },
     })
   })

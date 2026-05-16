@@ -8,6 +8,9 @@
 
 import { useQuery } from '@tanstack/react-query'
 
+import type { Section } from '@/data/questions'
+import type { SectionStats } from '@/lib/scoring'
+
 import { useApiClient } from '../useApiClient'
 
 const STATS_KEY = ['me', 'stats'] as const
@@ -19,6 +22,10 @@ export type Stats = {
   /** 0–1 ratio over attempts in the last 7 days; null if zero attempts. */
   accuracy7d: number | null
   streakDays: number
+  /** Per-section rolling-90d aggregates that feed lib/scoring.ts.
+   *  Worker computes these from raw attempts; the SPA computes the
+   *  derived score / trend / weakness ranking in lib/scoring.ts. */
+  bySection: Record<Section, SectionStats>
 }
 
 export function useStats() {
