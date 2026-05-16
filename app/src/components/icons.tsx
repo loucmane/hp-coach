@@ -99,3 +99,13 @@ export const Cmd = ({ s, title, ...p }: IconProps) =>
     p,
     <path d="M9 9V6a3 3 0 113 3H9zm0 0v6m0 0v3a3 3 0 11-3-3h3zm0 0h6m0 0V6a3 3 0 113 3h-3zm0 0v6m0 0v3a3 3 0 11-3-3h3z" />,
   )
+export const Book = ({ s, title, ...p }: IconProps) =>
+  wrap(
+    s,
+    title,
+    p,
+    <>
+      <path d="M4 5a2 2 0 012-2h13v15H6a2 2 0 00-2 2V5z" />
+      <path d="M4 19a2 2 0 012-2h13" />
+    </>,
+  )

@@ -34,6 +34,7 @@ function HomeRoute() {
       onContinue={() => navigate({ to: '/drill' })}
       onAvancerat={() => navigate({ to: '/avancerat' })}
       onRepetition={() => navigate({ to: '/repetition' })}
+      onLektion={() => navigate({ to: '/lektion' })}
       onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
     />
   )
