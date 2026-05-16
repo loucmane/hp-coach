@@ -114,10 +114,14 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
   //   - expireAllMistakes between Phase 1 and Phase 2 to backdate the
   //     just-seeded row so /due immediately returns it
   // The endpoint refuses to run when ENVIRONMENT === 'production', so
-  // the staging worker is the only place this hits real data.
-  await page.goto('/drill')
+  // the staging worker is the only place this hits real data. Must run
+  // BEFORE page.goto('/drill') — otherwise the SPA's react-query cache
+  // for /api/sessions/active still holds the row we just deleted, the
+  // stale-warning re-renders against ghost state, and the "Avsluta
+  // tidigare" cleanup spins because there's nothing to delete.
   await clearMistakes(page)
   // ── Phase 1: drill, intentionally miss Q1 ──────────────────────────────
+  await page.goto('/drill')
   await awaitAppReady(page)
   const idle = page.getByTestId('drill-idle')
   await expect(idle).toBeVisible({ timeout: 10_000 })
