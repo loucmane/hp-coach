@@ -7,6 +7,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
 import { useStats } from '@/api/hooks/useStats'
 import { MobileFrame } from '@/components/MobileFrame'
+import { Page } from '@/components/Page'
 import { TAB_ROUTE } from '@/lib/nav'
 import { ProgressMobile } from '@/screens/ProgressMobile'
 
@@ -19,7 +20,16 @@ function ProgressRoute() {
   const stats = useStats()
   return (
     <MobileFrame tabs activeTab="progress" onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}>
-      <ProgressMobile stats={stats.data} loading={stats.isPending} />
+      <Page
+        runningHead={['HP · COACH', 'Framsteg']}
+        status={{
+          mode: 'FRAMSTEG',
+          context: 'översikt',
+          hints: ['esc tillbaka', '⌘k palett'],
+        }}
+      >
+        <ProgressMobile stats={stats.data} loading={stats.isPending} />
+      </Page>
     </MobileFrame>
   )
 }

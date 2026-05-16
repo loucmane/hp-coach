@@ -14,6 +14,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { clearFeedback, getAllFeedback } from '@/api/feedback'
 import { MobileFrame } from '@/components/MobileFrame'
+import { Page } from '@/components/Page'
 import { Btn, Card, Eyebrow, Mono, Stack } from '@/components/primitives'
 import { TAB_ROUTE } from '@/lib/nav'
 
@@ -71,56 +72,65 @@ function CoachView() {
 
   return (
     <MobileFrame tabs activeTab="coach" onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}>
-      <div style={{ padding: '20px 22px 24px', height: '100%', overflowY: 'auto' }}>
-        <Stack gap={18}>
-          <div>
-            <Eyebrow>Coach</Eyebrow>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 24, marginTop: 6 }}>
-              Dogfood-feedback
-            </div>
-          </div>
-
-          <Card>
-            <Stack gap={12}>
-              <Mono>{count} sparade poster</Mono>
-              <div style={{ fontSize: 14, lineHeight: 1.4, color: 'var(--ink-soft)' }}>
-                Träna i <strong>Övning</strong> eller <strong>Repetition</strong> och tryck 👎 på
-                förklaringar som var otydliga. Här exporterar du listan till Claude för
-                regenerering.
+      <Page
+        runningHead={['HP · COACH', 'Coach']}
+        status={{
+          mode: 'COACH',
+          context: 'dogfood-feedback',
+          hints: ['esc tillbaka', '⌘k palett'],
+        }}
+      >
+        <div style={{ padding: '20px 22px 24px', height: '100%', overflowY: 'auto' }}>
+          <Stack gap={18}>
+            <div>
+              <Eyebrow>Coach</Eyebrow>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 24, marginTop: 6 }}>
+                Dogfood-feedback
               </div>
-              <Btn
-                onClick={() => {
-                  exportFeedback().finally(refresh)
-                }}
-                full
-              >
-                Exportera feedback till urklipp
-              </Btn>
-              {count > 0 && (
-                <Btn variant="secondary" onClick={resetFeedback}>
-                  Rensa alla poster
-                </Btn>
-              )}
-            </Stack>
-          </Card>
+            </div>
 
-          {toast && (
-            <Card
-              padded
-              style={{
-                background:
-                  toast.kind === 'success'
-                    ? 'var(--panel)'
-                    : toast.kind === 'empty'
-                      ? 'var(--panel)'
-                      : 'var(--panel)',
-              }}
-            >
-              <div style={{ fontSize: 13 }}>{toast.message}</div>
+            <Card>
+              <Stack gap={12}>
+                <Mono>{count} sparade poster</Mono>
+                <div style={{ fontSize: 14, lineHeight: 1.4, color: 'var(--ink-soft)' }}>
+                  Träna i <strong>Övning</strong> eller <strong>Repetition</strong> och tryck 👎 på
+                  förklaringar som var otydliga. Här exporterar du listan till Claude för
+                  regenerering.
+                </div>
+                <Btn
+                  onClick={() => {
+                    exportFeedback().finally(refresh)
+                  }}
+                  full
+                >
+                  Exportera feedback till urklipp
+                </Btn>
+                {count > 0 && (
+                  <Btn variant="secondary" onClick={resetFeedback}>
+                    Rensa alla poster
+                  </Btn>
+                )}
+              </Stack>
             </Card>
-          )}
-        </Stack>
-      </div>
+
+            {toast && (
+              <Card
+                padded
+                style={{
+                  background:
+                    toast.kind === 'success'
+                      ? 'var(--panel)'
+                      : toast.kind === 'empty'
+                        ? 'var(--panel)'
+                        : 'var(--panel)',
+                }}
+              >
+                <div style={{ fontSize: 13 }}>{toast.message}</div>
+              </Card>
+            )}
+          </Stack>
+        </div>
+      </Page>
     </MobileFrame>
   )
 }
