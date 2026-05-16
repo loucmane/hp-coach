@@ -6,6 +6,7 @@
 // the next study minute is targeted, then give them a single decisive
 // "Öva igen" CTA.
 
+import { MathText } from '@/components/MathText'
 import { Btn, Eyebrow, Hairline, Mono } from '@/components/primitives'
 import type { AnswerLetter, Question } from '@/data/questions'
 
@@ -154,7 +155,7 @@ function MissRow({ q, picked }: { q: Question; picked: AnswerLetter | null }) {
           letterSpacing: '-0.005em',
         }}
       >
-        {q.prompt}
+        <MathText>{q.prompt ?? ''}</MathText>
       </div>
       <div
         style={{
@@ -164,7 +165,7 @@ function MissRow({ q, picked }: { q: Question; picked: AnswerLetter | null }) {
       >
         Rätt:{' '}
         <span style={{ color: 'var(--ink)', fontWeight: 500 }}>
-          {q.answer}. {correctOption?.text ?? '—'}
+          {q.answer}. <MathText>{correctOption?.text ?? '—'}</MathText>
         </span>
         {picked && (
           <>
