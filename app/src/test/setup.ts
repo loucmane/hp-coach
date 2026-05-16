@@ -31,6 +31,20 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
   })
 }
 
+// jsdom defaults `window.innerWidth` to 1024 → `useViewport()` returns
+// 'reader' → `<Page>` mounts its desktop running-head chrome, including
+// the inline NavLinks that call TanStack Router's `useLocation()`. Tests
+// render screens standalone (no <RouterProvider>) so that hook throws.
+//
+// All screen tests today pass `forceLayout='phone'` to the screen they
+// render — they intend to test phone composition. Pinning jsdom's
+// innerWidth to a phone width aligns `useViewport()` with that intent
+// without touching every test.
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, 'innerWidth', { configurable: true, value: 390 })
+  Object.defineProperty(window, 'innerHeight', { configurable: true, value: 844 })
+}
+
 // Shim `fetch` for the question-bank loader. The dataset moved out of
 // the JS bundle into app/public/data/*.json, served as a static asset
 // in production. In vitest we have neither a dev server nor a real

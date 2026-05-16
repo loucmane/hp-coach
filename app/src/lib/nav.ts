@@ -2,9 +2,10 @@
 
 import type { TabKey } from '@/components/MobileFrame'
 
-export const TAB_ROUTE: Record<TabKey, '/' | '/drill' | '/coach' | '/progress'> = {
+export const TAB_ROUTE: Record<TabKey, '/' | '/drill' | '/lektion' | '/coach' | '/progress'> = {
   home: '/',
   drill: '/drill',
+  lektion: '/lektion',
   coach: '/coach',
   progress: '/progress',
 }

@@ -88,6 +88,20 @@ const COMMANDS: Command[] = [
     action: ({ navigate }) => navigate({ to: '/repetition' }),
   },
   {
+    id: 'lektion',
+    label: 'Lektion',
+    hint: 'Bläddra alla sektioner',
+    keywords: ['lektion', 'lesson', 'framework', 'ramverk', 'mönster'],
+    action: ({ navigate }) => navigate({ to: '/lektion' }),
+  },
+  {
+    id: 'lektion-nog',
+    label: 'Lektion · NOG',
+    hint: '25 mönster · datasufficiens',
+    keywords: ['lektion', 'lesson', 'nog', 'datasufficiens', 'sufficiency'],
+    action: ({ navigate }) => navigate({ to: '/lektion', search: { section: 'NOG' } }),
+  },
+  {
     id: 'home',
     label: 'Hem',
     keywords: ['hem', 'home'],

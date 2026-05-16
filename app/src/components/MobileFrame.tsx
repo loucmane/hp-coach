@@ -19,7 +19,7 @@ import type { CSSProperties, ReactNode } from 'react'
 
 import { useViewport } from '@/hooks/useViewport'
 
-import { Chart, Home, Pencil, User } from './icons'
+import { Book, Chart, Home, Pencil, User } from './icons'
 
 // ── Status bar (iOS-style: time left, signal/wifi/battery right) ─────
 function StatusBar({ time = '09:41' }: { time?: string }) {
@@ -103,7 +103,7 @@ function HomeIndicator() {
 }
 
 // ── Bottom tabs ──────────────────────────────────────────────────────
-export type TabKey = 'home' | 'drill' | 'coach' | 'progress'
+export type TabKey = 'home' | 'drill' | 'lektion' | 'coach' | 'progress'
 
 const TABS: ReadonlyArray<{
   id: TabKey
@@ -112,6 +112,7 @@ const TABS: ReadonlyArray<{
 }> = [
   { id: 'home', label: 'Hem', Icon: Home },
   { id: 'drill', label: 'Övning', Icon: Pencil },
+  { id: 'lektion', label: 'Lektion', Icon: Book },
   { id: 'coach', label: 'Coach', Icon: User },
   { id: 'progress', label: 'Framsteg', Icon: Chart },
 ]

@@ -1,0 +1,351 @@
+{
+  "section": "NOG",
+  "family": "nog_traps",
+  "version": 1,
+  "authored_at": "2026-05-11",
+  "notes": "v1 — 25 trap entries synthesized from 282 Layer-2 NOG explanations across 27 exams. Covers the core meta-skill (judging sufficiency, not solving), plus the highest-leverage structural traps: 2×2 marginals, equations-vs-unknowns, ratio+absolute, candidate-counting, trivial identities, parallel chains, hypotheticals that add no info, and inequalities that never lock values. Five candidates from the extractor were promoted (with overlap merges); the rest emerged from manual pass over technique/pitfall fields.",
+  "entries": [
+    {
+      "id": "NOG-TRAP-001",
+      "pattern_description": "Två yttre marginaler i en 2×2-tabell räcker INTE för enskilda celler — radsummor och kolumnsummor lämnar cellfördelningen fri.",
+      "why_it_occurs": "Studenten ser fyra tal (två radsummor + två kolumnsummor) och tror att tabellen är 'fylld' — men marginalerna är konsistenta med oändligt många cell-fördelningar.",
+      "common_distractor_signature": "Väljer C när E är rätt: tror att två oberoende totaler tillsammans räcker för snittet/cellerna, fast varje rad-kolumn-par har en fri parameter.",
+      "countermeasure": "I 2×2-uppgifter: kontrollera om du har minst EN cell (eller ett 'varken') utöver marginalerna. Yttre summor + en cell = sluten tabell; yttre summor ensamma = otillräckligt.",
+      "example_questions": [
+        "host-2014-kvant1-NOG-026",
+        "host-2014-kvant2-NOG-025",
+        "host-2021-kvant2-NOG-025",
+        "host-2023-kvant2-NOG-023",
+        "host-2024-kvant2-NOG-025"
+      ],
+      "notes": "Trajectory-tagged as 'marginals don't fix cells' — one of the highest-leverage NOG meta-rules."
+    },
+    {
+      "id": "NOG-TRAP-002",
+      "pattern_description": "Misslyckas räkna obekanta mot oberoende ekvationer — tre okända kräver tre oberoende relationer; två räcker aldrig.",
+      "why_it_occurs": "När båda utsagorna är ekvationer i rätt variabler antar studenten att de räcker — utan att kontrollera att antalet oberoende ekvationer ≥ antalet obekanta.",
+      "common_distractor_signature": "Väljer C när E är rätt: räknar ihop två ekvationer i tre obekanta och tror att systemet är slutet.",
+      "countermeasure": "Lista varje obekant och varje oberoende ekvation INNAN du landar på svar. Om #obekanta > #ekvationer är systemet underbestämt — E.",
+      "example_questions": [
+        "host-2016-kvant1-NOG-024",
+        "host-2017-kvant2-NOG-028",
+        "host-2022-kvant2-NOG-025",
+        "host-2023-kvant2-NOG-028",
+        "host-2025-kvant2-NOG-026",
+        "var-2016-kvant1-NOG-026",
+        "var-2022-1-kvant1-NOG-024"
+      ],
+      "notes": "Trajectory-tagged as the foundational algebraic-sufficiency rule."
+    },
+    {
+      "id": "NOG-TRAP-003",
+      "pattern_description": "Förhållande/fraktion utan något absolut tal räcker aldrig för absolutvärden — bara för andelar och kvoter.",
+      "why_it_occurs": "Studenten tolkar 'andelen A:B är 3:5' som om det räcker för att räkna ut hur många A finns — men förhållandet låser bara KVOTEN, inte mängderna.",
+      "common_distractor_signature": "Väljer A eller B när C är rätt: tror att en utsaga med 'förhållande' eller 'fraktion' är ensam tillräcklig för absolutvärdet.",
+      "countermeasure": "Förhållande/fraktion + minst ETT absolut tal (summa, differens, eller en kategoris antal) = sluten lösning. Förhållande ensamt = otillräckligt för absolutvärden.",
+      "example_questions": [
+        "host-2025-kvant1-NOG-028",
+        "var-2025-kvant1-NOG-028",
+        "var-2019-kvant1-NOG-025",
+        "host-2018-kvant1-NOG-023",
+        "host-2021-kvant1-NOG-023",
+        "var-2025-kvant2-NOG-023"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-004",
+      "pattern_description": "Slutar räkna kandidater för tidigt — 'två giltiga tilldelningar kvar' eller '»X eller Y«-villkor' är fortfarande otillräckligt.",
+      "why_it_occurs": "Studenten hittar EN giltig tilldelning som uppfyller alla villkor och stannar — utan att verifiera att den är UNIK. Disjunktiva ('X eller Y') villkor är ofta svagare än de ser ut.",
+      "common_distractor_signature": "Väljer A/B/C när E är rätt: hittar en lösning, kontrollerar inte om en andra lösning också uppfyller villkoren.",
+      "countermeasure": "Räkna ALLA tilldelningar som uppfyller villkoren — sluta inte förrän talet är exakt 1. Två kvar = otillräckligt, lika så tre.",
+      "example_questions": [
+        "host-2018-kvant2-NOG-023",
+        "var-2015-kvant1-NOG-026",
+        "var-2018-1-kvant1-NOG-023",
+        "var-2025-kvant1-NOG-025",
+        "var-2026-kvant2-NOG-023"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-005",
+      "pattern_description": "Skäre kandidatmängder från olika villkor — och kontrollera att snittet blir en singleton, inte ett intervall eller två kandidater.",
+      "why_it_occurs": "Vid delbarhets- eller siffer-villkor 'krymper' studenten kandidaterna en gång och antar att resultatet är unikt — utan att räkna sluttalet.",
+      "common_distractor_signature": "Väljer C när E är rätt: tror att två villkor som skär varandra alltid ger en lösning, fast smala intervall + delbarhet ofta lämnar 2–3 kandidater.",
+      "countermeasure": "Skär kandidatmängderna och RÄKNA: blev det exakt 1? Två kvar = otillräckligt, även om snittet 'känns smalt'.",
+      "example_questions": [
+        "host-2023-kvant1-NOG-023",
+        "host-2024-kvant2-NOG-028",
+        "host-2025-kvant2-NOG-023",
+        "var-2019-kvant1-NOG-027",
+        "var-2023-kvant2-NOG-025",
+        "var-2026-kvant1-NOG-026"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-006",
+      "pattern_description": "Stränga olikheter ('mer än hälften', 'fler än X', 'avvikelse ±k') räcker aldrig ensamma för exakta värden — bara för intervall.",
+      "why_it_occurs": "Studenten ser ett konkret tal i utsagan ('fler än 50 %') och antar att den binder värdet — men olikheter definierar intervall, inte specifika tal.",
+      "common_distractor_signature": "Väljer A/B/C när E är rätt: räknar olikheten som om den vore en ekvation och får ett 'svar'.",
+      "countermeasure": "Olikheter binder INTE absoluta värden. För absolutvärden, leta efter ekvationer (=). 'Mer än X' = intervall = otillräckligt ensamt.",
+      "example_questions": [
+        "host-2015-kvant2-NOG-027",
+        "host-2021-kvant1-NOG-028",
+        "host-2022-kvant2-NOG-027",
+        "host-2023-kvant1-NOG-024",
+        "var-2016-kvant1-NOG-025"
+      ],
+      "notes": "Note: olikheter KAN räcka för ja/nej-tecken-frågor (se NOG-TRAP-016), men inte för 'vad är värdet?'-frågor."
+    },
+    {
+      "id": "NOG-TRAP-007",
+      "pattern_description": "Utsaga upprepar en känd geometrisk sats (Pythagoras, vinkelsumma=180°, yttervinkelsatsen, bivinkelsumma=180°) — den är alltid sann och tillför ingen information.",
+      "why_it_occurs": "Studenten ser en ekvation med rätt variabler i geometri-kontexten och räknar den som villkor — utan att inse att den bara upprepar en universell sats som redan gäller.",
+      "common_distractor_signature": "Väljer A/B/C/D när E är rätt: räknar den triviala satsen som ett oberoende villkor och tror att den binder värdet.",
+      "countermeasure": "Fråga: 'Gäller detta påstående för ALLA trianglar/cirklar i den här kontexten?' Om ja — det är en identitet, inte information.",
+      "example_questions": [
+        "host-2013-kvant1-NOG-025",
+        "host-2024-kvant1-NOG-025",
+        "var-2025-kvant2-NOG-027"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-008",
+      "pattern_description": "Utsaga är logiskt EKVIVALENT med frågeställningen eller den andra utsagan — den upprepar bara samma villkor i andra ord.",
+      "why_it_occurs": "Studenten ser olika formuleringar ('80 %', '4/5', 'fyra av fem') och räknar dem som oberoende information — men de är samma villkor.",
+      "common_distractor_signature": "Väljer A/B/D när E är rätt: räknar ekvivalenta omformuleringar som oberoende villkor och tror sig ha mer data.",
+      "countermeasure": "Skriv om varje utsaga som en ekvation i samma variabler — om de blir IDENTISKA, är det ett villkor, inte två.",
+      "example_questions": [
+        "host-2022-kvant2-NOG-026",
+        "host-2024-kvant1-NOG-023",
+        "var-2017-kvant2-NOG-024",
+        "var-2023-kvant2-NOG-023",
+        "var-2026-kvant2-NOG-026"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-009",
+      "pattern_description": "En framtidsformulering ('om x år') om en konstant storhet (åldersskillnad, längdskillnad) bär samma info som nuvarande villkor — den är trivial.",
+      "why_it_occurs": "Studenten ser ett nytt tidsperspektiv och antar att det är ny information — men differenser mellan personers åldrar är invarianta över tid.",
+      "common_distractor_signature": "Väljer C eller D när A/B är rätt: tror att framtida ekvationen kompletterar nuvarande, fast den bara är samma ekvation flyttad i tid.",
+      "countermeasure": "Vid ålders- eller längdskillnader: kontrollera om en 'framtida' formulering ger samma differens som nuvarande. Om ja, den är trivial.",
+      "example_questions": [
+        "host-2014-kvant1-NOG-028",
+        "host-2013-kvant1-NOG-026",
+        "var-2016-kvant1-NOG-028"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-010",
+      "pattern_description": "Hypotetiska utsagor ('om priset varit X', 'om en stiger av') tolkas som faktiska — fast hypotetiken bara verifierar en räkneidentitet utan ny info.",
+      "why_it_occurs": "Studenten räknar ut den hypotetiska konsekvensen och får ett tal, men talet är bara en omformulering av redan kända fakta — det binder inte värdet.",
+      "common_distractor_signature": "Väljer A/B/C när E är rätt (eller hoppar förbi A när A är rätt): blandar ihop hypotetiska kontrollräkningar med faktiska låsande villkor.",
+      "countermeasure": "Fråga: 'Ger den hypotetiska utsagan en NY ekvation med en obekant?' Om hypotetiken introducerar samma många nya obekanta som ekvationer, är netto-informationen noll.",
+      "example_questions": [
+        "var-2026-kvant2-NOG-026",
+        "var-2022-1-kvant1-NOG-024",
+        "var-2018-1-kvant1-NOG-024"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-011",
+      "pattern_description": "Hypotetisk omfördelning som binder bara EN obekant ('om alla fick lika mycket') ger en sluten ekvation — räknas ofta som otillräcklig av misstag.",
+      "why_it_occurs": "Studenten ser ordet 'om' och avskriver utsagan som spekulation — men Hypotes som binder en obekant till en explicit volym ÄR en linjär ekvation.",
+      "common_distractor_signature": "Väljer E eller C när A/B/D är rätt: avfärdar en hypotetisk utsaga som 'om-spekulation' och missar dess algebraiska kraft.",
+      "countermeasure": "Skriv ut hypotetiken som en ekvation i den ENDA okända — om den löser sig isolerat, räcker utsagan. 'Om-spekulationer' kan vara fullt giltiga ekvationer.",
+      "example_questions": [
+        "var-2015-kvant2-NOG-025",
+        "var-2015-kvant2-NOG-026",
+        "var-2017-kvant1-NOG-023",
+        "var-2022-1-kvant2-NOG-023",
+        "var-2024-kvant2-NOG-027",
+        "var-2026-kvant2-NOG-024"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-012",
+      "pattern_description": "Parallella jämförelse-kedjor (A>F, E>F) lämnar ordningen mellan toppen av varje kedja FRI — även tillsammans räcker de inte.",
+      "why_it_occurs": "Studenten ser flera ojämlikheter med samma referens och antar att alla entiteter är ordnade — men 'A>F och E>F' säger ingenting om A vs E.",
+      "common_distractor_signature": "Väljer C eller D när E är rätt: räknar två kedjor med samma botten som globala ordningar, fast topparna är fria.",
+      "countermeasure": "Rita kedjorna som en graf. Om TVÅ entiteter saknar en transitiv pil mellan sig (direkt eller via mellanled), är deras ordning öppen.",
+      "example_questions": [
+        "host-2022-kvant1-NOG-025",
+        "var-2014-kvant1-NOG-023",
+        "var-2019-kvant2-NOG-026",
+        "var-2022-2-kvant2-NOG-023"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-013",
+      "pattern_description": "Konsekutiv 'intill'-kedja + en uteslutning av en ändposition ger total ordning — räknas ofta som otillräcklig av misstag.",
+      "why_it_occurs": "Studenten ser flera relationsvillkor och tror att kedjan är 'flytande' — men en stel blockstruktur + en ändlåsning fixerar alla positioner.",
+      "common_distractor_signature": "Väljer C eller E när A/B/D är rätt: räknar en kedja + en uteslutning som otillräckligt, fast den faktiskt fixerar permutationen.",
+      "countermeasure": "Vid 'intill'-villkor: bygg den största sammanhängande kedjan av relationer. Om det finns en uteslutande utsaga som tar bort den sista friheten, är ordningen unik.",
+      "example_questions": [
+        "host-ver1-2019-kvant2-NOG-026",
+        "host-ver2-2019-kvant2-NOG-026",
+        "host-2022-kvant1-NOG-028",
+        "var-2015-kvant1-NOG-023",
+        "var-2022-1-kvant1-NOG-023",
+        "var-2023-kvant1-NOG-023"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-014",
+      "pattern_description": "I tilldelnings-problem med N entiteter räcker det ofta att låsa N−1 platser — den sista följer automatiskt; studenten tror felaktigt att alla N måste låsas.",
+      "why_it_occurs": "Studenten räknar villkor 1-till-1 mot entiteter och tror att N obekanta kräver N utsagor — men i tilldelnings-problem är platserna inbördes beroende.",
+      "common_distractor_signature": "Väljer C eller E när A/B/D är rätt: räknar ner kandidater för tidigt, missar att den sista entiteten saknar fria val.",
+      "countermeasure": "I tilldelnings-problem: efter att N−1 platser är låsta finns bara en plats kvar — den sista entiteten har inget val. Räkna platser, inte villkor.",
+      "example_questions": [
+        "host-2016-kvant2-NOG-023",
+        "host-ver2-2019-kvant1-NOG-023",
+        "var-2025-kvant2-NOG-024"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-015",
+      "pattern_description": "Frågan efterfrågar en KOMBINATION (x+y, a+b, medel) — då räcker en utsaga som direkt isolerar kombinationen, även om varje obekant förblir okänd.",
+      "why_it_occurs": "Studenten antar att man måste lösa ut varje obekant individuellt — och avfärdar utsagor som bara binder summan x+y som 'otillräckliga'.",
+      "common_distractor_signature": "Väljer C eller E när A/B är rätt: räknar fram att x och y inte är individuellt bestämda och missar att deras SUMMA är låst.",
+      "countermeasure": "Innan du löser: identifiera VAD som efterfrågas. Om det är en kombination (summa, medel, kvot), leta efter utsagor som binder kombinationen — inte de individuella variablerna.",
+      "example_questions": [
+        "host-2025-kvant1-NOG-025",
+        "var-2014-kvant1-NOG-028",
+        "var-2023-kvant2-NOG-028"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-016",
+      "pattern_description": "Tecken/paritet-frågor ('är x<0?', 'är n jämnt?') kan låsas av olikheter eller udda potenser — fast frågan inte söker absolutvärdet.",
+      "why_it_occurs": "Studenten avfärdar tecken-utsagor som 'inte tillräckligt' eftersom de inte ger ett numeriskt värde — men för ja/nej-frågor om tecken räcker det att tecknet är låst.",
+      "common_distractor_signature": "Väljer C eller E när A/B/D är rätt: ignorerar att x^udda < 0 ⇔ x < 0 är teckenbevarande, eller att en produkts tecken låses av antalet negativa faktorer.",
+      "countermeasure": "För ja/nej-frågor om tecken: kolla om utsagan ger tecknet (via olikhet, udda potens, eller faktorisering). Värdet behöver inte vara känt — bara tecknet.",
+      "example_questions": [
+        "host-2021-kvant2-NOG-027",
+        "host-2022-kvant2-NOG-024",
+        "var-2017-kvant2-NOG-028",
+        "var-2022-1-kvant1-NOG-028"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-017",
+      "pattern_description": "Modulo-/delbarhetsvillkor utan övre gräns lämnar oändligt många lösningar — räcker aldrig ensamt.",
+      "why_it_occurs": "Studenten ser ett konkret delbarhets-villkor och antar att det binder talet — men 'delbart med 7' har lösningar 0, 7, 14, 21, ... utan slut.",
+      "common_distractor_signature": "Väljer A/B/D när C eller E är rätt: räknar ett modulo-villkor som unikt låsande utan att kontrollera intervallet.",
+      "countermeasure": "Modulo-villkor + intervall = ändlig kandidat-lista — räkna då. Modulo-villkor ensamt = oändliga lösningar = aldrig tillräckligt.",
+      "example_questions": [
+        "var-2025-kvant2-NOG-025",
+        "var-2026-kvant1-NOG-024",
+        "var-2023-kvant1-NOG-025",
+        "host-2024-kvant1-NOG-028"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-018",
+      "pattern_description": "Inklusion-exklusion: total = |A|+|B|−|båda|+|varken|; tre av fyra Venn-tal räcker INTE för att låsa det fjärde utan minst en partitionsregel.",
+      "why_it_occurs": "Studenten ser 'antal med A' + 'antal med B' och drar ihop dem som totalsumma — men dubbelräknar snittet och missar 'varken'.",
+      "common_distractor_signature": "Väljer A/B/C när E är rätt: räknar |A|+|B| och tror att den är totalen, fast både snittet och 'varken' behövs.",
+      "countermeasure": "I Venn-uppgifter: skriv ut alla fyra tal (bara A, bara B, båda, varken). Saknas något, är systemet öppet. Inkl-exkl: |A∪B| = |A|+|B|−|båda|.",
+      "example_questions": [
+        "host-2014-kvant1-NOG-024",
+        "host-2018-kvant1-NOG-028",
+        "host-2020-kvant1-NOG-026",
+        "var-2019-kvant1-NOG-028",
+        "var-2025-kvant2-NOG-026"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-019",
+      "pattern_description": "Procentkedjor (faktor·faktor) räcker för procent-OUTPUT men aldrig för absoluta värden — ursprungspriset stryks ut.",
+      "why_it_occurs": "Studenten blandar ihop 'vad är ny pris?' (kräver ursprung) med 'vad är total procentändring?' (kräver bara faktorer) och avfärdar enkla procentkedjor.",
+      "common_distractor_signature": "Väljer C eller E när A/B är rätt: tror att en procentkedja ensamt aldrig räcker, fast den räcker fullt ut för totala procent-ändringar.",
+      "countermeasure": "Vid procent-i-serie: om frågan söker total procent-ändring räcker enbart faktorerna (0,8·1,25=1,0). För absoluta tal krävs ETT absolutvärde i kedjan.",
+      "example_questions": [
+        "host-ver1-2019-kvant2-NOG-023",
+        "host-ver2-2019-kvant2-NOG-023",
+        "var-2022-1-kvant1-NOG-026",
+        "host-2024-kvant2-NOG-024"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-020",
+      "pattern_description": "Median/medel ger bara aggregerade egenskaper — de låser inte individuella tal i en serie utan extra struktur.",
+      "why_it_occurs": "Studenten ser 'medel = M' och drar slutsatsen att enskilda värden är bestämda — men medel binder bara summan; medianen binder bara mittenvärdet.",
+      "common_distractor_signature": "Väljer C eller D när E är rätt: räknar medel/median som om de fixerade individuella värden, fast de bara begränsar en aggregat-egenskap.",
+      "countermeasure": "Medel = summa/antal låser bara summan. Median låser bara mittenvärdet. För att låsa enskilda tal krävs N oberoende ekvationer för N obekanta.",
+      "example_questions": [
+        "host-2020-kvant1-NOG-025",
+        "host-2022-kvant2-NOG-028",
+        "host-ver1-2019-kvant2-NOG-025",
+        "host-ver2-2019-kvant2-NOG-025",
+        "var-2013-kvant1-NOG-023",
+        "var-2016-kvant2-NOG-027"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-021",
+      "pattern_description": "I rätvinklig triangel räcker en ytterligare uppgift (en katet, en sida, eller en spetsig vinkel) tillsammans med hypotenusan — likformighet/Pythagoras låser resten.",
+      "why_it_occurs": "Studenten tror att en spetsig vinkel är 'mindre information' än en sida och avfärdar utsagan som otillräcklig — fast en vinkel räcker för att låsa formen.",
+      "common_distractor_signature": "Väljer C eller E när D är rätt: räknar 'hypotenusa + vinkel' som otillräckligt, fast vinkeln ger likformigheten gratis.",
+      "countermeasure": "Rätvinklig triangel: en sida + en till sida ELLER en sida + en spetsig vinkel = hela triangeln. En vinkel är lika kraftfull som en sida.",
+      "example_questions": [
+        "host-2018-kvant2-NOG-028",
+        "var-2017-kvant1-NOG-026",
+        "var-2026-kvant1-NOG-027"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-022",
+      "pattern_description": "Vid fart-/sträcka-uppgifter: utan en av (sträcka, hastighet, tid) explicit räcker inte de andra två — alla tre är beroende.",
+      "why_it_occurs": "Studenten räknar med kvoter (s/v=t) och tror att förhållanden räcker — men för absoluta tider/sträckor krävs minst ETT absolutvärde i kedjan.",
+      "common_distractor_signature": "Väljer C eller D när E är rätt: räknar 'tidsförhållande' som tillräckligt för absoluta tider, fast bara kvoten är låst.",
+      "countermeasure": "Vid fart-NOG: lista (s, v, t) för varje resa. Kombinationer som ger bara KVOTER räcker inte för absoluta värden — leta efter ett absolutvärde någonstans.",
+      "example_questions": [
+        "var-2019-kvant1-NOG-026",
+        "var-2025-kvant1-NOG-024",
+        "host-2025-kvant1-NOG-024"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-023",
+      "pattern_description": "Absolutvärden eller hypotetiska 'avvikelse med ±k' lämnar alltid TVÅ kandidater — räcker inte ensamt för ett unikt svar.",
+      "why_it_occurs": "Studenten ser 'avvek med 5 minuter' och tar bara den positiva tolkningen, missar att ±5 ger två lösningar.",
+      "common_distractor_signature": "Väljer A/B när C eller E är rätt: räknar absolutvärdet som om det vore en signerad avvikelse.",
+      "countermeasure": "Absolutvärde eller 'avvek med' = två kandidater. Behöver ett extra villkor för att välja tecken. ±k ensamt = otillräckligt.",
+      "example_questions": [
+        "host-2015-kvant2-NOG-026",
+        "host-2023-kvant2-NOG-028",
+        "var-2023-kvant2-NOG-026"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-024",
+      "pattern_description": "Förhållande + summa (eller differens) = slutet linjärt system — ofta tror studenten att man behöver fler villkor.",
+      "why_it_occurs": "Studenten ser 'A:B = 3:5' + 'A+B = 80' och tror att två obekanta kräver två 'riktiga' ekvationer — utan att inse att förhållandet ÄR en ekvation (B=5A/3).",
+      "common_distractor_signature": "Väljer E när C är rätt: räknar förhållandet som 'mindre information' än en ekvation, fast det är fullt likvärdigt.",
+      "countermeasure": "Skriv förhållande som ekvation (A/B=k ⇔ A=kB). Förhållande + summa = två ekvationer i två obekanta = alltid lösbart.",
+      "example_questions": [
+        "host-2013-kvant1-NOG-027",
+        "host-2020-kvant1-NOG-024",
+        "host-2021-kvant1-NOG-023",
+        "var-2013-kvant2-NOG-026",
+        "var-2019-kvant1-NOG-023",
+        "var-2025-kvant1-NOG-027",
+        "var-2025-kvant2-NOG-023"
+      ]
+    },
+    {
+      "id": "NOG-TRAP-025",
+      "pattern_description": "Glömmer skilja på vad SVARET är från vad UTSAGAN binder — frågar 'kön på första person' men utsagan binder bara positioner, inte kön.",
+      "why_it_occurs": "Studenten räknar att placeringen är bestämd och drar slutsatsen att frågan är besvarad — utan att verifiera att den specifika efterfrågade attributen är låst.",
+      "common_distractor_signature": "Väljer A/B/C/D när E är rätt: bevisar något ANNAT än det frågan ber om, ofta en bredare egenskap istället för det specifika.",
+      "countermeasure": "Skriv ut frågans EXAKTA mål innan du börjar. Kontrollera efteråt: är den specifika storheten unikt bestämd, eller bara strukturen runt den?",
+      "example_questions": [
+        "var-2013-kvant2-NOG-025",
+        "var-2014-kvant2-NOG-027",
+        "host-2017-kvant2-NOG-024",
+        "var-2025-kvant2-NOG-028",
+        "host-2022-kvant2-NOG-028"
+      ]
+    }
+  ]
+}

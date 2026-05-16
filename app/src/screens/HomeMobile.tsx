@@ -44,6 +44,7 @@ type HomeMobileProps = {
   onContinue?: () => void
   onAvancerat?: () => void
   onRepetition?: () => void
+  onLektion?: () => void
   onTabChange?: (id: TabKey) => void
   /** Test-only override for viewport detection. */
   forceLayout?: 'phone' | 'reader' | 'studio'
@@ -58,6 +59,7 @@ export function HomeMobile({
   onContinue,
   onAvancerat,
   onRepetition,
+  onLektion,
   onTabChange,
   forceLayout,
 }: HomeMobileProps = {}) {
@@ -125,6 +127,7 @@ export function HomeMobile({
               onContinue={onContinue}
               onAvancerat={onAvancerat}
               onRepetition={onRepetition}
+              onLektion={onLektion}
             />
           ) : (
             <DesktopBody
@@ -134,6 +137,7 @@ export function HomeMobile({
               dueCount={dueCount}
               onContinue={onContinue}
               onRepetition={onRepetition}
+              onLektion={onLektion}
             />
           )}
         </div>
@@ -157,6 +161,7 @@ type PhoneBodyProps = {
   onContinue: (() => void) | undefined
   onAvancerat: (() => void) | undefined
   onRepetition: (() => void) | undefined
+  onLektion: (() => void) | undefined
 }
 
 function PhoneBody({
@@ -171,6 +176,7 @@ function PhoneBody({
   onContinue,
   onAvancerat,
   onRepetition,
+  onLektion,
 }: PhoneBodyProps) {
   const greeting = parseGreeting(voice.homeLine)
   return (
@@ -242,6 +248,9 @@ function PhoneBody({
           {hasDue ? <RepetitionLink dueCount={dueCount ?? 0} onClick={onRepetition} /> : <span />}
           <AvanceratLink onClick={onAvancerat} />
         </div>
+        <div className="reveal" style={{ marginTop: 12, animationDelay: '420ms' }}>
+          <LektionLink onClick={onLektion} />
+        </div>
       </div>
     </>
   )
@@ -256,9 +265,17 @@ type DesktopBodyProps = {
   dueCount: number | undefined
   onContinue: (() => void) | undefined
   onRepetition: (() => void) | undefined
+  onLektion: (() => void) | undefined
 }
 
-function DesktopBody({ voice, hasDue, dueCount, onContinue, onRepetition }: DesktopBodyProps) {
+function DesktopBody({
+  voice,
+  hasDue,
+  dueCount,
+  onContinue,
+  onRepetition,
+  onLektion,
+}: DesktopBodyProps) {
   const greeting = parseGreeting(voice.homeLine)
   // Phase A.8 EDITION: drop the kicker row (the running head + status
   // line now carry date/days/sitting). Drop the card-chrome'd
@@ -315,7 +332,12 @@ function DesktopBody({ voice, hasDue, dueCount, onContinue, onRepetition }: Desk
         </div>
       </div>
 
-      <PlanMarginalia hasDue={hasDue} dueCount={dueCount} onRepetition={onRepetition} />
+      <PlanMarginalia
+        hasDue={hasDue}
+        dueCount={dueCount}
+        onRepetition={onRepetition}
+        onLektion={onLektion}
+      />
     </div>
   )
 }
@@ -326,10 +348,12 @@ function PlanMarginalia({
   hasDue,
   dueCount,
   onRepetition,
+  onLektion,
 }: {
   hasDue: boolean
   dueCount: number | undefined
   onRepetition: (() => void) | undefined
+  onLektion: (() => void) | undefined
 }) {
   return (
     <aside
@@ -400,6 +424,26 @@ function PlanMarginalia({
           → Repetera
         </button>
       )}
+      <button
+        type="button"
+        onClick={onLektion}
+        data-testid="home-lektion-link"
+        style={{
+          background: 'transparent',
+          border: 'none',
+          padding: 0,
+          color: 'var(--ink-2)',
+          fontSize: 12,
+          fontFamily: 'var(--font-mono)',
+          letterSpacing: 'var(--font-mono-track)',
+          textTransform: 'uppercase',
+          cursor: 'pointer',
+          textAlign: 'left',
+          width: 'fit-content',
+        }}
+      >
+        → Lektion
+      </button>
     </aside>
   )
 }
@@ -571,6 +615,29 @@ function AvanceratLink({ onClick }: { onClick: (() => void) | undefined }) {
       }}
     >
       Avancerat
+    </button>
+  )
+}
+
+function LektionLink({ onClick }: { onClick: (() => void) | undefined }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      data-testid="home-lektion-link"
+      style={{
+        background: 'transparent',
+        border: 'none',
+        padding: 0,
+        color: 'var(--ink-2)',
+        fontSize: 12,
+        fontFamily: 'inherit',
+        cursor: 'pointer',
+        textDecoration: 'underline',
+        textUnderlineOffset: 3,
+      }}
+    >
+      Läs en lektion först →
     </button>
   )
 }
