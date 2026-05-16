@@ -32,9 +32,26 @@ type Props = {
   children: string | null | undefined
 }
 
+// Multi-letter SI / common units that the parser emits as bare letter
+// clusters inside math segments (e.g. `12 dm^{3}`, `6 kg`). KaTeX's
+// default behavior italicizes every letter as a math variable, so
+// `dm` renders as the product `d·m` in italic. Wrapping the cluster
+// in `\mathrm{…}` makes it render upright like a unit symbol.
+//
+// Single-letter units (`m`, `s`, `l`, `t`, `g`) are intentionally
+// excluded — they collide with common HP variable names and the
+// italic default is correct most of the time. The visible win is on
+// multi-letter clusters where context makes the unit reading
+// unambiguous.
+const UNIT_RE = /\b(mm|cm|dm|km|mg|kg|ml|cl|dl|min|kr|Hz|SEK)\b/g
+
+function wrapUnits(latex: string): string {
+  return latex.replace(UNIT_RE, '\\mathrm{$1}')
+}
+
 function renderMath(latex: string): string {
   try {
-    return katex.renderToString(latex, {
+    return katex.renderToString(wrapUnits(latex), {
       output: 'html',
       throwOnError: false,
       strict: 'ignore',
