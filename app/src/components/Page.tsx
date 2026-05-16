@@ -34,10 +34,43 @@
 // still rendered by MobileFrame). Status line at the bottom is
 // kept but compressed (no progress bar, just mode + esc/⌘k hints).
 
-import type { CSSProperties, ReactNode } from 'react'
+import { Link, useLocation } from '@tanstack/react-router'
+import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from 'react'
 
 import { EditionStrip } from '@/components/EditionStrip'
 import { useViewport } from '@/hooks/useViewport'
+
+// Apple-style "headroom" pattern — hide the running-head nav on
+// scroll-down (reader wants the page), reveal on scroll-up (reader
+// wants to navigate). Threshold: only hide once you're more than
+// 96px past the top, so quick taps near the masthead don't trigger.
+function useHeadroom(disabled: boolean): boolean {
+  const [hidden, setHidden] = useState(false)
+  const lastY = useRef(0)
+  const ticking = useRef(false)
+  useEffect(() => {
+    if (disabled) {
+      setHidden(false)
+      return
+    }
+    const onScroll = () => {
+      if (ticking.current) return
+      ticking.current = true
+      requestAnimationFrame(() => {
+        const y = window.scrollY
+        const delta = y - lastY.current
+        if (y < 96) setHidden(false)
+        else if (delta > 4) setHidden(true)
+        else if (delta < -4) setHidden(false)
+        lastY.current = y
+        ticking.current = false
+      })
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [disabled])
+  return hidden
+}
 
 type FolioLite = {
   /** 1-based; rendered as `pp. 12 / 80` with leading zeros not
@@ -112,10 +145,65 @@ export function Page({ runningHead, folio, status, children, style }: Props) {
 
 // ── Running head + folio ──────────────────────────────────────────
 
+// Top-level routes that surface in the inline running-head nav. Mirrors
+// the bottom tab bar at phone (Hem · Övning · Lektion · Coach · Framsteg)
+// but rendered as an editorial masthead row instead of a tab pill —
+// magazine masthead language, not SaaS chrome.
+const NAV_LINKS = [
+  { to: '/', label: 'Hem' },
+  { to: '/drill', label: 'Övning' },
+  { to: '/lektion', label: 'Lektion' },
+  { to: '/coach', label: 'Coach' },
+  { to: '/progress', label: 'Framsteg' },
+] as const
+
+function NavLinks() {
+  const location = useLocation()
+  const pathname = location.pathname
+  // Active route = exact path match for '/', prefix match otherwise so
+  // /lektion?section=NOG keeps '• Lektion' lit.
+  const isActive = (to: string) => (to === '/' ? pathname === '/' : pathname.startsWith(to))
+  return (
+    <nav
+      data-testid="page-nav"
+      aria-label="Sektioner"
+      style={{
+        display: 'flex',
+        alignItems: 'baseline',
+        gap: 'clamp(14px, 1.5vw, 22px)',
+        paddingBottom: 14,
+        fontFamily: 'var(--font-mono)',
+        fontSize: 11,
+        letterSpacing: '0.14em',
+        textTransform: 'uppercase',
+      }}
+    >
+      {NAV_LINKS.map(({ to, label }) => (
+        <Link
+          key={to}
+          to={to}
+          aria-current={isActive(to) ? 'page' : undefined}
+          className="hpc-nav-link"
+        >
+          {label}
+        </Link>
+      ))}
+    </nav>
+  )
+}
+
 function RunningHeadBand({ runningHead, isPhone }: { runningHead: string; isPhone: boolean }) {
+  const hidden = useHeadroom(isPhone)
   return (
     <header
       style={{
+        // Headroom: nav hides on scroll-down, reveals on scroll-up
+        // (Apple-style). Phone gets no headroom — its iOS chrome owns
+        // the top edge and disappearing chrome would feel wrong inside
+        // an artboard. Negative translate goes ABOVE the viewport top
+        // so the hairline rule below also slides away.
+        transform: hidden ? 'translateY(-100%)' : 'translateY(0)',
+        transition: 'transform 280ms cubic-bezier(0.16, 1, 0.3, 1)',
         // Sticky-top mirror of the sticky status line at the bottom.
         // Together they form the editorial "chrome envelope":
         //   ┌───── running head (frosted) ─────┐
@@ -145,26 +233,40 @@ function RunningHeadBand({ runningHead, isPhone }: { runningHead: string; isPhon
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'baseline',
-        gap: 16,
+        gap: 'clamp(20px, 3vw, 48px)',
       }}
     >
-      <span
-        data-testid="running-head"
+      <div
         style={{
-          fontFamily: 'var(--font-display)',
-          fontWeight: 500,
-          fontSize: isPhone ? 12 : 13,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-          color: 'var(--ink)',
-          // Subtle pre-content baseline gap so the hairline rule
-          // beneath the band reads as the page band's bottom edge,
-          // not as a hugging line under the text.
-          paddingBottom: isPhone ? 8 : 14,
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: 'clamp(20px, 3vw, 40px)',
+          minWidth: 0,
         }}
       >
-        {runningHead}
-      </span>
+        <span
+          data-testid="running-head"
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontWeight: 500,
+            fontSize: isPhone ? 12 : 13,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'var(--ink)',
+            // Subtle pre-content baseline gap so the hairline rule
+            // beneath the band reads as the page band's bottom edge,
+            // not as a hugging line under the text.
+            paddingBottom: isPhone ? 8 : 14,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {runningHead}
+        </span>
+        {/* Editorial inline nav — visible signposts to top-level routes.
+         *  Phase B nav addition. Phone keeps its bottom tab bar; desktop
+         *  gets the magazine masthead pattern instead. */}
+        {!isPhone && <NavLinks />}
+      </div>
       {/* Phase A.6V Edition Strip — picker for mode + palette + edition.
        *  Replaces the old Folio in the running head; folio moves down to
        *  the status line where page-count metadata fits the vim-mode
