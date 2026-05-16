@@ -46,41 +46,61 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
   const projected = stats ? computeProjected(scores) : null
   const weak = stats ? rankWeakness(scores).slice(0, 3) : []
 
+  const hasWeekly = (stats?.weekly?.length ?? 0) > 0
   return (
     <div
       style={{
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        padding: 'clamp(28px, 2vw + 20px, 56px) var(--pad-lg) var(--frame-tabbar)',
+        padding: 'clamp(28px, 2vw + 20px, 56px) clamp(20px, 4vw, 56px) var(--frame-tabbar)',
         overflowY: 'auto',
         color: 'var(--ink)',
-        maxWidth: '720px',
       }}
     >
       <Mono>FRAMSTEG</Mono>
 
-      <ProjectedHero projected={projected?.total ?? null} loading={loading} />
-      <Halves
-        verbal={projected?.verbal ?? null}
-        quant={projected?.quant ?? null}
-        loading={loading}
-      />
+      {/* Hero band — projected total LEFT, verbal/quant halves on the
+       *  right at reader/studio. At phone the halves stack underneath. */}
+      <div
+        style={{
+          marginTop: 18,
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr)',
+          gap: 32,
+        }}
+        className="hpc-progress-hero-grid"
+      >
+        <ProjectedHero projected={projected?.total ?? null} loading={loading} />
+        <Halves
+          verbal={projected?.verbal ?? null}
+          quant={projected?.quant ?? null}
+          loading={loading}
+        />
+      </div>
 
       <Hairline style={{ marginTop: 36, marginBottom: 24 }} />
 
       <WeeklyMasthead stats={stats} />
 
-      {stats?.weekly && stats.weekly.length > 0 && (
-        <div style={{ marginTop: 24 }}>
-          <TrendChart weekly={stats.weekly} />
+      {/* Two-column band: trend chart (wide) + section table (narrow)
+       *  at studio width. Stacks vertically at reader/phone so the SVG
+       *  can use full canvas width when there's less space. */}
+      <div
+        style={{
+          marginTop: 24,
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr)',
+          gap: 'clamp(24px, 3vw, 40px)',
+        }}
+        className="hpc-progress-data-grid"
+      >
+        <div>{hasWeekly && stats && <TrendChart weekly={stats.weekly} />}</div>
+        <div>
+          <Eyebrow>Sektioner</Eyebrow>
+          <SectionTable scores={scores} loading={loading} />
         </div>
-      )}
-
-      <Hairline style={{ marginTop: 36, marginBottom: 24 }} />
-
-      <Eyebrow>Sektioner</Eyebrow>
-      <SectionTable scores={scores} loading={loading} />
+      </div>
 
       {weak.length > 0 && (
         <>
