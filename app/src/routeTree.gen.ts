@@ -25,6 +25,7 @@ import { Route as DevRouteImport } from './routes/dev'
 import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AvanceratRouteImport } from './routes/avancerat'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DevDtkBrowserRouteImport } from './routes/dev.dtk-browser'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
@@ -106,12 +107,17 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevDtkBrowserRoute = DevDtkBrowserRouteImport.update({
+  id: '/dtk-browser',
+  path: '/dtk-browser',
+  getParentRoute: () => DevRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
-  '/dev': typeof DevRoute
+  '/dev': typeof DevRouteWithChildren
   '/drill': typeof DrillRoute
   '/drill-bake-off': typeof DrillBakeOffRoute
   '/drill-style-a': typeof DrillStyleARoute
@@ -124,12 +130,13 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
+  '/dev/dtk-browser': typeof DevDtkBrowserRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
-  '/dev': typeof DevRoute
+  '/dev': typeof DevRouteWithChildren
   '/drill': typeof DrillRoute
   '/drill-bake-off': typeof DrillBakeOffRoute
   '/drill-style-a': typeof DrillStyleARoute
@@ -142,13 +149,14 @@ export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
+  '/dev/dtk-browser': typeof DevDtkBrowserRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
-  '/dev': typeof DevRoute
+  '/dev': typeof DevRouteWithChildren
   '/drill': typeof DrillRoute
   '/drill-bake-off': typeof DrillBakeOffRoute
   '/drill-style-a': typeof DrillStyleARoute
@@ -161,6 +169,7 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
+  '/dev/dtk-browser': typeof DevDtkBrowserRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/welcome'
+    | '/dev/dtk-browser'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -199,6 +209,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/welcome'
+    | '/dev/dtk-browser'
   id:
     | '__root__'
     | '/'
@@ -217,13 +228,14 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/welcome'
+    | '/dev/dtk-browser'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AvanceratRoute: typeof AvanceratRoute
   CoachRoute: typeof CoachRoute
-  DevRoute: typeof DevRoute
+  DevRoute: typeof DevRouteWithChildren
   DrillRoute: typeof DrillRoute
   DrillBakeOffRoute: typeof DrillBakeOffRoute
   DrillStyleARoute: typeof DrillStyleARoute
@@ -352,14 +364,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dev/dtk-browser': {
+      id: '/dev/dtk-browser'
+      path: '/dtk-browser'
+      fullPath: '/dev/dtk-browser'
+      preLoaderRoute: typeof DevDtkBrowserRouteImport
+      parentRoute: typeof DevRoute
+    }
   }
 }
+
+interface DevRouteChildren {
+  DevDtkBrowserRoute: typeof DevDtkBrowserRoute
+}
+
+const DevRouteChildren: DevRouteChildren = {
+  DevDtkBrowserRoute: DevDtkBrowserRoute,
+}
+
+const DevRouteWithChildren = DevRoute._addFileChildren(DevRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AvanceratRoute: AvanceratRoute,
   CoachRoute: CoachRoute,
-  DevRoute: DevRoute,
+  DevRoute: DevRouteWithChildren,
   DrillRoute: DrillRoute,
   DrillBakeOffRoute: DrillBakeOffRoute,
   DrillStyleARoute: DrillStyleARoute,
