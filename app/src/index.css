@@ -367,6 +367,22 @@ body::before {
   outline-offset: 3px;
 }
 
+/* ── Framsteg grid — 2-col at studio, single at narrower ──────────── */
+/* Original prototype's 05 · Framsteg used a 1fr/380px split for the
+ * trend chart + sektionsmästring band. We mirror it at studio width;
+ * below studio the page stacks vertically so the SVG gets full canvas
+ * width and section rows don't get squeezed. */
+@media (min-width: 1280px) {
+  .hpc-progress-hero-grid {
+    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 380px) !important;
+    align-items: end;
+  }
+  .hpc-progress-data-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 400px) !important;
+    align-items: start;
+  }
+}
+
 /* ── Editorial nav links — inline running-head signposts ───────────── */
 /* Magazine masthead pattern: tiny mono labels at quiet contrast,
  * a single 1px hairline 3px below baseline on hover, and a leading

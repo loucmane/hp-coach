@@ -8,9 +8,19 @@
 
 import { useQuery } from '@tanstack/react-query'
 
+import type { Section } from '@/data/questions'
+import type { SectionStats } from '@/lib/scoring'
+
 import { useApiClient } from '../useApiClient'
 
 const STATS_KEY = ['me', 'stats'] as const
+
+export type WeeklyBucket = {
+  /** Unix-ms timestamp of the bucket's start. */
+  weekStart: number
+  attempts: number
+  correct: number
+}
 
 export type Stats = {
   attempts: { total: number; today: number; thisWeek: number }
@@ -19,6 +29,12 @@ export type Stats = {
   /** 0–1 ratio over attempts in the last 7 days; null if zero attempts. */
   accuracy7d: number | null
   streakDays: number
+  /** Per-section rolling-90d aggregates that feed lib/scoring.ts.
+   *  Worker computes these from raw attempts; the SPA computes the
+   *  derived score / trend / weakness ranking in lib/scoring.ts. */
+  bySection: Record<Section, SectionStats>
+  /** 12-week rolling buckets, oldest first. Drives the trend chart. */
+  weekly: WeeklyBucket[]
 }
 
 export function useStats() {

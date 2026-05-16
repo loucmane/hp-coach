@@ -21,6 +21,14 @@ export const rateLimit: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = 
     await next()
     return
   }
+  // /test-reset is only mounted in non-production (the handler 403s
+  // otherwise) and is called by e2e tests that legitimately need a
+  // burst of clear+expire-all hits inside the 60s window. Counting
+  // them against the regular bucket trips CI under retry pressure.
+  if (c.req.path === '/api/test-reset') {
+    await next()
+    return
+  }
   const window = Math.floor(Date.now() / 1000 / WINDOW_SECONDS)
   const key = `rl:${userId}:${window}`
   try {
