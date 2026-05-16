@@ -101,6 +101,30 @@ MATH_CLOSE = ""
 # "12. Vad är x?"). Only matched on the prompt-text candidates.
 Q_STEM_RE = re.compile(r"^\s*(\d{1,2})\.\s+(.*)$", re.DOTALL)
 
+# Multi-letter unit clusters that KaTeX would otherwise render as
+# italic variable products (e.g. `dm` → italic `d·m`). Wrapping the
+# base in `\mathrm{…}` makes it typeset upright like a unit symbol.
+# Single-letter units (m, s, l, t, g) intentionally excluded — they
+# collide with HP variable names and the italic default is right
+# most of the time for variables. Mirrored in MathText.tsx so the
+# runtime renderer applies the same rule for any content the parser
+# emitted before this commit landed.
+_UNIT_BASE_RE = re.compile(r"^(mm|cm|dm|km|mg|kg|ml|cl|dl|min|kr|Hz|SEK)$")
+
+
+def _wrap_unit_base(base: str) -> str:
+    """Wrap base in `\\mathrm{…}` if it matches a multi-letter unit."""
+    stripped = base.strip()
+    if _UNIT_BASE_RE.match(stripped):
+        # Preserve any leading/trailing whitespace the caller had so we
+        # don't accidentally swallow a separator. Spaces inside the
+        # base (none expected for unit symbols) would defeat the regex
+        # anyway, so the strip-and-rewrap is safe.
+        prefix = base[: len(base) - len(base.lstrip())]
+        suffix = base[len(base.rstrip()):]
+        return f"{prefix}\\mathrm{{{stripped}}}{suffix}"
+    return base
+
 
 # ── Math-font glyph normalization ──────────────────────────────────────────
 #
@@ -229,7 +253,7 @@ def _line_to_text(line: dict) -> str:
             out[-1] = out[-1][: len(out[-1]) - len(last_base_token)] + last_base_token[
                 : len(last_base_token) - len(base)
             ]
-            out.append(f"{MATH_OPEN}{base}^{{{sup}}}{MATH_CLOSE}")
+            out.append(f"{MATH_OPEN}{_wrap_unit_base(base)}^{{{sup}}}{MATH_CLOSE}")
         sup_buffer.clear()
         last_base_token = None
 
@@ -458,7 +482,7 @@ def _render_baseline_group(spans: list[dict]) -> str:
             if m:
                 base = m.group(0)
                 out[-1] = out[-1][: -len(base)]
-                out.append(f"{MATH_OPEN}{base}{op}{{{script}}}{MATH_CLOSE}")
+                out.append(f"{MATH_OPEN}{_wrap_unit_base(base)}{op}{{{script}}}{MATH_CLOSE}")
             else:
                 out.append(script)
         else:
