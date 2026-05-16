@@ -15,7 +15,43 @@
 // transparently as part of the same call.
 
 import { clerk, setupClerkTestingToken } from '@clerk/testing/playwright'
-import { test as base, expect } from '@playwright/test'
+import { type Page, test as base, expect } from '@playwright/test'
+
+const API_BASE_URL = process.env.VITE_API_BASE_URL ?? 'http://localhost:8787'
+
+// Hit /api/test-reset to put the authenticated user's mistakes/sessions
+// state into a known shape. The endpoint is mounted by the worker only
+// when ENVIRONMENT !== 'production' (see worker/src/routes/testReset.ts);
+// in CI the staging worker matches that gate.
+async function testReset(page: Page, action: 'clear' | 'expire-all'): Promise<void> {
+  const result = await page.evaluate(
+    async ({ baseUrl, action }) => {
+      type ClerkLike = { session?: { getToken: () => Promise<string | null> } | null }
+      const clerk = (window as unknown as { Clerk?: ClerkLike }).Clerk
+      const token = (await clerk?.session?.getToken()) ?? null
+      if (!token) return { ok: false as const, status: 0, body: 'no Clerk token' }
+      const res = await fetch(`${baseUrl}/api/test-reset`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ action }),
+      })
+      const body = await res.text()
+      return { ok: res.ok, status: res.status, body }
+    },
+    { baseUrl: API_BASE_URL, action },
+  )
+  if (!result.ok) {
+    throw new Error(`/api/test-reset ${action} failed: ${result.status} ${result.body}`)
+  }
+}
+
+export async function clearMistakes(page: Page): Promise<void> {
+  await testReset(page, 'clear')
+}
+
+export async function expireAllMistakes(page: Page): Promise<void> {
+  await testReset(page, 'expire-all')
+}
 
 export const test = base.extend({
   // Override the default `page` fixture: every test starts already signed in.

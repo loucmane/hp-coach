@@ -26,6 +26,7 @@ import { healthRoute } from './routes/health'
 import { meRoute } from './routes/me'
 import { mistakesRoute } from './routes/mistakes'
 import { sessionsRoute } from './routes/sessions'
+import { testResetRoute } from './routes/testReset'
 import type { Env, Vars } from './types'
 
 const app = new Hono<{ Bindings: Env; Variables: Vars }>()
@@ -65,6 +66,10 @@ app.onError((err, c) => {
 })
 
 // Authed sub-app: every /api/* route runs through Clerk verify + rate limit.
+// The test-reset route is mounted unconditionally on the type-level so the
+// SPA's hono/client surfaces it cleanly, but the handler itself refuses
+// in production. Two layers of guard against shipping a destructive
+// endpoint to the live API.
 const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .use('*', requireAuth)
   .use('*', rateLimit)
@@ -72,6 +77,7 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .route('/sessions', sessionsRoute)
   .route('/attempts', attemptsRoute)
   .route('/mistakes', mistakesRoute)
+  .route('/test-reset', testResetRoute)
 
 // Chained route registration → preserves route types in `typeof routes`.
 const routes = app

@@ -14,7 +14,7 @@
 //   /repetition → SessionPlayer w/ kind='adaptive_review'
 //   onCorrect in replay → PATCH /api/mistakes/:id { resolve: true }
 
-import { expect, test } from './fixtures'
+import { clearMistakes, expect, expireAllMistakes, test } from './fixtures'
 
 // Walk over to /dev and end every active session for this user. Used
 // before AND after each test in this file because the test leaves an
@@ -105,21 +105,19 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
   // `pnpm exec playwright test mistakes --project=mobile` (it passes
   // in isolation; the suite-wide order is the trigger).
   test.skip(testInfo.project.name === 'mobile', 'mobile-emulation Clerk-refresh flake under full suite')
-  // Skip in CI: this test depends on the seeded mistake from Phase 1
-  // landing in D1 and surfacing via /api/mistakes/due before Phase 2's
-  // /repetition drill-start enables (25s budget). In CI the chain
-  // (POST /api/mistakes upsert + immediate GET /api/mistakes/due via
-  // react-query cache + the SRS due-at gate) doesn't consistently
-  // satisfy the gate within budget — the button stays disabled and
-  // all three retries time out. Locally it passes because the dogfood
-  // D1 always has pre-existing mistakes in the queue, so /api/mistakes/
-  // due returns ≥1 immediately on every drill-idle render. The
-  // structural fix is a /test-reset endpoint that seeds a deterministic
-  // mistake row outside of the drill flow — filed as follow-up. The
-  // React Query mutations underneath are covered by vitest.
-  test.skip(!!process.env.CI, 'CI flake — react-query GET /api/mistakes/due race with seeded POST; follow-up to seed via /test-reset')
-  // ── Phase 1: drill, intentionally miss Q1 ──────────────────────────────
+  // Start from a known-empty mistakes queue. The drill flow used to fail
+  // in CI because the seeded mistake from Phase 1 gets nextReviewAt=now+10min
+  // (SRS first-rung relearn) and /api/mistakes/due returns empty until
+  // that interval elapses. We solve both halves below:
+  //   - clearMistakes here so the suite is deterministic regardless of
+  //     leftover state from prior runs
+  //   - expireAllMistakes between Phase 1 and Phase 2 to backdate the
+  //     just-seeded row so /due immediately returns it
+  // The endpoint refuses to run when ENVIRONMENT === 'production', so
+  // the staging worker is the only place this hits real data.
   await page.goto('/drill')
+  await clearMistakes(page)
+  // ── Phase 1: drill, intentionally miss Q1 ──────────────────────────────
   await awaitAppReady(page)
   const idle = page.getByTestId('drill-idle')
   await expect(idle).toBeVisible({ timeout: 10_000 })
@@ -158,6 +156,12 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
   await expect(page.getByTestId('drill-result')).toBeVisible({ timeout: 10_000 })
 
   // ── Phase 2: replay the seeded mistake, answer correctly ───────────────
+  // Backdate every active mistake's nextReviewAt so the row we just
+  // seeded on Q1 surfaces in /api/mistakes/due immediately, instead of
+  // waiting out the 10-minute first-rung relearn interval. Without this
+  // the /repetition idle state has an empty queue and drill-start stays
+  // disabled forever.
+  await expireAllMistakes(page)
   // Skip the mid-test reload of /drill (which flakes on Clerk re-init).
   // Navigate straight to /repetition; the queue must contain ≥1 mistake
   // we just recorded on the wrong answer above.
