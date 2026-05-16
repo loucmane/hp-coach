@@ -133,8 +133,12 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
   await startSessionAndAwaitQ1(page)
 
   // Q1 — pick a deliberately wrong letter to seed a mistake.
+  // No pre-click toBeDisabled assertion: in studyDesk view (chromium
+  // @ 1280px) StyleA only renders drill-next post-grade — the
+  // pre-grade body is <PreGradeFill> with no advance affordance.
+  // The toBeEnabled check after the option click is the meaningful
+  // assertion that the advance control becomes available.
   const nextBtn = page.getByTestId('drill-next')
-  await expect(nextBtn).toBeDisabled({ timeout: 5_000 })
   const { correct: q1Correct } = await readPromptCorrectLetter(page)
   const wrongLetter = q1Correct === 'A' ? 'B' : 'A'
   await page.getByTestId(`option-${wrongLetter}`).click()
@@ -144,9 +148,11 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
   // suite where occasional retries hit a late-paint frame.
   await nextBtn.click({ force: true })
 
-  // Q2..Q10 — answer correctly to finish quickly.
+  // Q2..Q10 — answer correctly to finish quickly. Same note as above:
+  // in studyDesk view drill-next isn't in the DOM until the option
+  // click flips the phase to graded, so the only meaningful gate is
+  // toBeEnabled after the click.
   for (let i = 0; i < 9; i++) {
-    await expect(nextBtn).toBeDisabled({ timeout: 10_000 })
     const { correct } = await readPromptCorrectLetter(page)
     await page.getByTestId(`option-${correct}`).click()
     await expect(nextBtn).toBeEnabled({ timeout: 5_000 })
@@ -174,7 +180,6 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
   await expect(page.getByTestId('drill-idle')).toBeVisible({ timeout: 5_000 })
   await startSessionAndAwaitQ1(page)
 
-  await expect(nextBtn).toBeDisabled({ timeout: 5_000 })
   const { correct: replayCorrect } = await readPromptCorrectLetter(page)
   await page.getByTestId(`option-${replayCorrect}`).click()
   await expect(nextBtn).toBeEnabled({ timeout: 5_000 })
