@@ -169,3 +169,38 @@ export function formatTrend(trend: number | null): string {
   const sign = trend > 0 ? '+' : ''
   return `${arrow} ${sign}${(trend * 100).toFixed(0)}%`
 }
+
+/** ISO 8601 week number. Matches what calendars print in Sweden
+ *  ("Vecka 19" === ISO week 19 of the current year). */
+export function isoWeek(d: Date): number {
+  const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()))
+  date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7))
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
+  return Math.ceil(((date.getTime() - yearStart.getTime()) / 86_400_000 + 1) / 7)
+}
+
+/** Swedish short-month form: "12 maj". Tabular-numeric friendly. */
+export function formatSwedishDateShort(d: Date): string {
+  const months = [
+    'jan',
+    'feb',
+    'mar',
+    'apr',
+    'maj',
+    'jun',
+    'jul',
+    'aug',
+    'sep',
+    'okt',
+    'nov',
+    'dec',
+  ]
+  return `${d.getDate()} ${months[d.getMonth()]}`
+}
+
+/** Score for a weekly bucket — null when no attempts (don't pretend
+ *  a flat line; chart breaks the polyline). */
+export function weeklyScore(bucket: { attempts: number; correct: number }): number | null {
+  if (bucket.attempts === 0) return null
+  return scoreFromFraction(bucket.correct / bucket.attempts)
+}

@@ -20,12 +20,15 @@ import { Link } from '@tanstack/react-router'
 
 import type { Stats } from '@/api/hooks/useStats'
 import { Eyebrow, Hairline, Mono } from '@/components/primitives'
+import { TrendChart } from '@/components/progress/TrendChart'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import {
   computeProjected,
   computeSectionScore,
   formatScore,
+  formatSwedishDateShort,
   formatTrend,
+  isoWeek,
   rankWeakness,
   type SectionScore,
 } from '@/lib/scoring'
@@ -63,6 +66,16 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
         quant={projected?.quant ?? null}
         loading={loading}
       />
+
+      <Hairline style={{ marginTop: 36, marginBottom: 24 }} />
+
+      <WeeklyMasthead stats={stats} />
+
+      {stats?.weekly && stats.weekly.length > 0 && (
+        <div style={{ marginTop: 24 }}>
+          <TrendChart weekly={stats.weekly} />
+        </div>
+      )}
 
       <Hairline style={{ marginTop: 36, marginBottom: 24 }} />
 
@@ -426,6 +439,90 @@ function StatList({ rows, loading }: { rows: Row[]; loading?: boolean }) {
           </span>
         </div>
       ))}
+    </div>
+  )
+}
+
+// ── Weekly masthead — "Vecka N · DD mån – DD mån" + summary chips ─
+
+function WeeklyMasthead({ stats }: { stats: Stats | undefined }) {
+  const today = new Date()
+  const weekNum = isoWeek(today)
+  // Sunday of this week → Saturday next. Anchor to today; the original
+  // design used Monday–Sunday and we follow Sweden's calendar
+  // convention. JS Date.getDay() returns 0 = Sunday, so we step back
+  // (dayOfWeek === 0 ? 6 : dayOfWeek - 1) days to land on the prior
+  // Monday.
+  const dayOfWeek = today.getDay()
+  const stepBack = dayOfWeek === 0 ? 6 : dayOfWeek - 1
+  const monday = new Date(today)
+  monday.setDate(today.getDate() - stepBack)
+  const sunday = new Date(monday)
+  sunday.setDate(monday.getDate() + 6)
+  const range = `${formatSwedishDateShort(monday)} – ${formatSwedishDateShort(sunday)}`
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        gap: 16,
+        flexWrap: 'wrap',
+      }}
+    >
+      <div>
+        <Mono>Veckorapport</Mono>
+        <h2
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(24px, 1.6vw + 14px, 32px)',
+            lineHeight: 1.1,
+            letterSpacing: '-0.015em',
+            color: 'var(--ink)',
+            margin: '8px 0 0 0',
+          }}
+        >
+          Vecka {weekNum} · {range}
+        </h2>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          gap: 20,
+          flexWrap: 'wrap',
+          fontVariantNumeric: 'tabular-nums',
+        }}
+      >
+        <SummaryChip
+          label="Frågor"
+          value={stats?.attempts.thisWeek != null ? String(stats.attempts.thisWeek) : '—'}
+        />
+        <SummaryChip
+          label="Träffsäkerhet"
+          value={stats?.accuracy7d == null ? '—' : `${Math.round(stats.accuracy7d * 100)}%`}
+        />
+        <SummaryChip label="Streak" value={stats == null ? '—' : `${stats.streakDays} d`} />
+      </div>
+    </div>
+  )
+}
+
+function SummaryChip({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{ textAlign: 'right' }}>
+      <Mono>{label}</Mono>
+      <div
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontWeight: 500,
+          fontSize: 'clamp(18px, 1vw + 12px, 22px)',
+          fontVariantNumeric: 'tabular-nums',
+          color: 'var(--ink)',
+          marginTop: 2,
+        }}
+      >
+        {value}
+      </div>
     </div>
   )
 }

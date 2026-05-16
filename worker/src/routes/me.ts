@@ -246,6 +246,29 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       }),
     ) as never
 
+    // Weekly time-series for the trend chart. 12 weeks back, indexed
+    // 0 = oldest, 11 = current. Each bucket is a Sunday-anchored ISO
+    // week boundary (UTC). When a week has zero attempts, score is
+    // null and the SVG renderer skips the point.
+    const WEEK_MS = 7 * 24 * 60 * 60_000
+    const WEEKS = 12
+    type WeeklyBucket = { weekStart: number; attempts: number; correct: number }
+    const weekly: WeeklyBucket[] = []
+    for (let i = WEEKS - 1; i >= 0; i--) {
+      const start = new Date(now.getTime() - (i + 1) * WEEK_MS)
+      weekly.push({ weekStart: start.getTime(), attempts: 0, correct: 0 })
+    }
+    for (const a of recentAttempts) {
+      const ts = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
+      // Find bucket index. weekly[0] starts WEEKS weeks ago. Anything
+      // older falls outside the 12w window — skip.
+      const weeksAgo = Math.floor((now.getTime() - ts) / WEEK_MS)
+      if (weeksAgo < 0 || weeksAgo >= WEEKS) continue
+      const idx = WEEKS - 1 - weeksAgo
+      weekly[idx].attempts += 1
+      if (a.correct) weekly[idx].correct += 1
+    }
+
     return c.json({
       stats: {
         attempts: {
@@ -265,6 +288,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         accuracy7d,
         streakDays,
         bySection,
+        weekly,
       },
     })
   })
