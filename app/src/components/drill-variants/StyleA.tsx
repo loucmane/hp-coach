@@ -181,9 +181,11 @@ export function StyleA({
           className="hpc-scrollbar-ghost"
         >
           {/* LÄS / ELF passage — rendered as a quiet, indented lead-in
-           *  block. Editorial register: no panel chrome, just a hairline
-           *  rule on the left like marginalia quoting from a longer
-           *  source. Whitespace preserved so paragraph breaks survive. */}
+           *  block with paragraph folio numbers in the left margin so
+           *  the student can reference "paragraf 4" when the question
+           *  cites a specific paragraph. The first chunk (often a
+           *  short title) is treated as a heading and gets no folio.
+           *  Friction §7 LÄS apparatus. */}
           {question.context && (
             <div
               data-testid="drill-context"
@@ -193,12 +195,42 @@ export function StyleA({
                 lineHeight: 1.65,
                 color: 'var(--ink-2)',
                 marginBottom: 24,
-                paddingLeft: 14,
+                paddingLeft: 'clamp(14px, 4vw, 44px)',
                 borderLeft: '1px solid var(--hairline)',
-                whiteSpace: 'pre-wrap',
               }}
             >
-              {question.context}
+              {parseContextParagraphs(question.context).map((para, i) => (
+                <p
+                  // biome-ignore lint/suspicious/noArrayIndexKey: stable paragraph order
+                  key={i}
+                  style={{
+                    position: 'relative',
+                    margin: '0 0 1em',
+                    fontWeight: para.isTitle ? 500 : 400,
+                    color: para.isTitle ? 'var(--ink)' : 'var(--ink-2)',
+                  }}
+                >
+                  {!para.isTitle && para.n != null && (
+                    <span
+                      aria-hidden
+                      style={{
+                        position: 'absolute',
+                        left: 'clamp(-30px, -3vw, -16px)',
+                        top: '0.3em',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 10,
+                        letterSpacing: '0.06em',
+                        fontWeight: 500,
+                        color: 'var(--muted)',
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
+                      ¶{para.n}
+                    </span>
+                  )}
+                  {para.text}
+                </p>
+              ))}
             </div>
           )}
           {/* Prompt block — measure-capped at 60ch so MEK/XYZ/NOG/KVA
@@ -941,6 +973,34 @@ export function StyleA({
       </footer>
     </div>
   )
+}
+
+// Split LÄS/ELF context into paragraphs and tag the first chunk as a
+// title when it reads as one (short single line, no terminal period).
+// Returns `[{n, text, isTitle}]` where `n` is the 1-indexed body
+// paragraph number (null for titles). Body paragraph numbers skip the
+// title so "paragraf 1" maps to the first prose paragraph, not the
+// heading. Used by the LÄS apparatus in StyleA's context render.
+function parseContextParagraphs(
+  context: string,
+): Array<{ n: number | null; text: string; isTitle: boolean }> {
+  const paragraphs = context
+    .split(/\n\s*\n/)
+    .map((p) => p.replace(/\s+$/, '').replace(/^\s+/, ''))
+    .filter((p) => p.length > 0)
+  let bodyIdx = 0
+  return paragraphs.map((text, i) => {
+    // Title heuristic: the very first paragraph is short, has no
+    // sentence terminator, and isn't a self-contained sentence. HP
+    // passage headings ("Förbindelsepunktens läge", "Mad Madge") fit;
+    // body paragraphs always end in period/question/exclamation.
+    const isTitle = i === 0 && text.length < 80 && !/[.?!]$/.test(text) && !text.includes('\n')
+    if (isTitle) {
+      return { n: null, text, isTitle }
+    }
+    bodyIdx += 1
+    return { n: bodyIdx, text, isTitle: false }
+  })
 }
 
 // NOG-specific prompt apparatus. Three editorial blocks:
