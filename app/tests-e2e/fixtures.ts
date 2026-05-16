@@ -22,14 +22,33 @@ const API_BASE_URL = process.env.VITE_API_BASE_URL ?? 'http://localhost:8787'
 // Hit /api/test-reset to put the authenticated user's mistakes/sessions
 // state into a known shape. The endpoint is mounted by the worker only
 // when ENVIRONMENT !== 'production' (see worker/src/routes/testReset.ts);
-// in CI the staging worker matches that gate.
+// `wrangler dev` runs as ENVIRONMENT='dev' so it's available in CI.
+//
+// The helper is robust against being called immediately after a goto:
+// `window.Clerk` only becomes available once the SDK script loads, and
+// `Clerk.session.getToken()` can briefly return null while the JWT is
+// rotating. We poll for up to 15s for both — the in-flight signal we
+// trust is "got a non-null token back".
 async function testReset(page: Page, action: 'clear' | 'expire-all'): Promise<void> {
   const result = await page.evaluate(
     async ({ baseUrl, action }) => {
-      type ClerkLike = { session?: { getToken: () => Promise<string | null> } | null }
-      const clerk = (window as unknown as { Clerk?: ClerkLike }).Clerk
-      const token = (await clerk?.session?.getToken()) ?? null
-      if (!token) return { ok: false as const, status: 0, body: 'no Clerk token' }
+      type ClerkLike = {
+        loaded?: boolean
+        session?: { getToken: () => Promise<string | null> } | null
+      }
+      const getWindowClerk = (): ClerkLike | undefined =>
+        (window as unknown as { Clerk?: ClerkLike }).Clerk
+      const deadline = Date.now() + 15_000
+      let token: string | null = null
+      while (Date.now() < deadline) {
+        const clerk = getWindowClerk()
+        if (clerk?.loaded && clerk.session) {
+          token = (await clerk.session.getToken()) ?? null
+          if (token) break
+        }
+        await new Promise((r) => setTimeout(r, 100))
+      }
+      if (!token) return { ok: false as const, status: 0, body: 'no Clerk token after 15s' }
       const res = await fetch(`${baseUrl}/api/test-reset`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
