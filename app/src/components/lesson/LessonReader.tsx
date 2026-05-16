@@ -8,6 +8,7 @@
 // name + scope), then a flush-left flow of cards. No tiles, no grid —
 // the artefact is a reading surface, not a dashboard.
 
+import { Link } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
 import { Mono } from '@/components/primitives'
@@ -89,6 +90,21 @@ export function LessonReader({ section }: { section: Section }) {
       }}
     >
       <header className="reveal" style={{ animationDelay: '0ms' }}>
+        <Link
+          to="/lektion"
+          style={{
+            display: 'inline-block',
+            marginBottom: 10,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--muted)',
+            textDecoration: 'none',
+          }}
+        >
+          ← alla sektioner
+        </Link>
         <Mono>LEKTION</Mono>
         <h1
           style={{

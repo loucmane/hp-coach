@@ -13,6 +13,7 @@
 // swaps the content source.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { useEffect } from 'react'
 
 import { LessonReader } from '@/components/lesson/LessonReader'
 import { MobileFrame } from '@/components/MobileFrame'
@@ -49,6 +50,23 @@ const SECTION_BLURB: Record<Section, string> = {
 
 function LektionRoute() {
   const { section } = Route.useSearch()
+  const navigate = useNavigate()
+  // Esc-to-parent: reader → picker, picker → home. Status line shows
+  // "esc tillbaka" so the gesture is discoverable; this wires it. The
+  // CommandPalette also listens for Escape, but only when its overlay
+  // is open, so there's no double-handle.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      if ((e.target as HTMLElement | null)?.closest('[data-palette-open]')) return
+      e.preventDefault()
+      if (section) navigate({ to: '/lektion' })
+      else navigate({ to: '/' })
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [section, navigate])
+
   if (section) return <ReaderShell section={section} />
   return <PickerShell />
 }
@@ -87,6 +105,21 @@ function PickerBody() {
       }}
     >
       <header className="reveal" style={{ animationDelay: '0ms' }}>
+        <Link
+          to="/"
+          style={{
+            display: 'inline-block',
+            marginBottom: 10,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--muted)',
+            textDecoration: 'none',
+          }}
+        >
+          ← Hem
+        </Link>
         <Mono>LEKTION</Mono>
         <h1
           style={{

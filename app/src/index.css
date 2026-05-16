@@ -366,3 +366,23 @@ body::before {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+
+/* ── Lesson trap card — kill default disclosure triangle ────────────── */
+/* Native <details>/<summary> ships a triangle marker we don't want next
+ * to our "läs mer +" mono affordance. Hide in both engines, and swap
+ * the affordance text when the card is open. */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details:not([open]) > summary .trap-card-toggle::before {
+  content: 'läs mer +';
+}
+details[open] > summary .trap-card-toggle::before {
+  content: 'fäll ihop −';
+}
+.trap-card-toggle {
+  white-space: nowrap;
+}

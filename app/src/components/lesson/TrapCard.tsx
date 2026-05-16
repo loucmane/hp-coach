@@ -1,12 +1,14 @@
 // TrapCard — renders one trap-catalog entry (NOG/KVA/XYZ family).
 //
-// Layout follows the editorial composition established in PedagogyPanel:
-// ID kicker (mono small-caps) → pattern (display serif) → why (body) →
-// countermeasure (callout with hairline rule) → "Öva detta mönster" link.
+// Collapsed by default — the dogfood user found 25 stacked full cards
+// fatiguing on first read. Native <details>/<summary> gives a free,
+// keyboard-accessible accordion: scan the 25 pattern titles, expand
+// the few you want to study. No JS state.
 //
-// No card chrome — flush-left, hairline-articulated, body-text width.
-// Phone gets stacked single-column; studio gets the same column with a
-// marginalia "Öva" link in the gutter.
+// Visual contract per card:
+//   collapsed:  ID kicker · pattern (display)  ·  + (mono affordance)
+//   expanded:   above + why → countermeasure (hairline rule) → optional
+//               distractor signature → "Öva detta mönster" link
 
 import { Link } from '@tanstack/react-router'
 
@@ -17,81 +19,36 @@ import type { Section } from '@/data/questions'
 
 export function TrapCard({ entry, section }: { entry: TrapEntry; section: Section }) {
   return (
-    <article
+    <details
       style={{
-        paddingBlock: 'clamp(28px, 3vw + 12px, 48px)',
+        paddingBlock: 'clamp(20px, 2vw + 8px, 32px)',
         borderTop: '1px solid var(--hairline)',
         maxWidth: '68ch',
       }}
     >
-      <Eyebrow>{entry.id.replace('-TRAP-', ' · TRAP ')}</Eyebrow>
-      <h3
+      <summary
         style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(22px, 1.6vw + 14px, 30px)',
-          lineHeight: 1.25,
-          letterSpacing: '-0.01em',
-          color: 'var(--ink)',
-          marginTop: 12,
-          marginBottom: 0,
+          listStyle: 'none',
+          cursor: 'pointer',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+          // Override the default disclosure triangle (added with `display:
+          // list-item`) for both Webkit and Gecko.
         }}
       >
-        <MathText>{entry.pattern_description}</MathText>
-      </h3>
-      <p
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(15px, 0.6vw + 13px, 17px)',
-          lineHeight: 1.55,
-          color: 'var(--ink-2)',
-          marginTop: 18,
-          marginBottom: 0,
-        }}
-      >
-        <MathText>{entry.why_it_occurs}</MathText>
-      </p>
-      <div
-        style={{
-          marginTop: 24,
-          paddingLeft: 'clamp(16px, 1vw + 10px, 24px)',
-          borderLeft: '1px solid var(--hairline)',
-        }}
-      >
-        <Eyebrow>Motåtgärd</Eyebrow>
-        <p
+        <div
           style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(15px, 0.6vw + 13px, 17px)',
-            lineHeight: 1.55,
-            color: 'var(--ink)',
-            marginTop: 10,
-            marginBottom: 0,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
+            gap: 16,
           }}
         >
-          <MathText>{entry.countermeasure}</MathText>
-        </p>
-      </div>
-      {entry.common_distractor_signature && (
-        <p
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(14px, 0.4vw + 12px, 15px)',
-            lineHeight: 1.55,
-            color: 'var(--muted)',
-            marginTop: 18,
-            marginBottom: 0,
-            fontStyle: 'italic',
-          }}
-        >
-          <MathText>{entry.common_distractor_signature}</MathText>
-        </p>
-      )}
-      <div style={{ marginTop: 24 }}>
-        {/* DTK has no drill yet (image pipeline pending), so its trap
-         *  cards fall back to a static label. Every other section has
-         *  a working drill behind /drill?section=. */}
-        {section === 'DTK' ? (
+          <Eyebrow>{entry.id.replace('-TRAP-', ' · TRAP ')}</Eyebrow>
           <span
+            aria-hidden
+            className="trap-card-toggle"
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: 11,
@@ -99,27 +56,106 @@ export function TrapCard({ entry, section }: { entry: TrapEntry; section: Sectio
               textTransform: 'uppercase',
               color: 'var(--muted)',
             }}
-          >
-            övning kommer
-          </span>
-        ) : (
-          <Link
-            to="/drill"
-            search={{ section }}
+          />
+          {/* text set via CSS ::before so it flips on [open] without JS */}
+        </div>
+        <h3
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(20px, 1.4vw + 13px, 26px)',
+            lineHeight: 1.3,
+            letterSpacing: '-0.01em',
+            color: 'var(--ink)',
+            margin: 0,
+          }}
+        >
+          <MathText>{entry.pattern_description}</MathText>
+        </h3>
+      </summary>
+
+      <div style={{ marginTop: 20 }}>
+        <p
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(15px, 0.6vw + 13px, 17px)',
+            lineHeight: 1.55,
+            color: 'var(--ink-2)',
+            marginTop: 0,
+            marginBottom: 0,
+          }}
+        >
+          <MathText>{entry.why_it_occurs}</MathText>
+        </p>
+        <div
+          style={{
+            marginTop: 24,
+            paddingLeft: 'clamp(16px, 1vw + 10px, 24px)',
+            borderLeft: '1px solid var(--hairline)',
+          }}
+        >
+          <Eyebrow>Motåtgärd</Eyebrow>
+          <p
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 15,
-              lineHeight: 1.4,
+              fontSize: 'clamp(15px, 0.6vw + 13px, 17px)',
+              lineHeight: 1.55,
               color: 'var(--ink)',
-              textDecoration: 'none',
-              borderBottom: '1px solid var(--ink)',
-              paddingBottom: 2,
+              marginTop: 10,
+              marginBottom: 0,
             }}
           >
-            Öva detta mönster →
-          </Link>
+            <MathText>{entry.countermeasure}</MathText>
+          </p>
+        </div>
+        {entry.common_distractor_signature && (
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(14px, 0.4vw + 12px, 15px)',
+              lineHeight: 1.55,
+              color: 'var(--muted)',
+              marginTop: 18,
+              marginBottom: 0,
+              fontStyle: 'italic',
+            }}
+          >
+            <MathText>{entry.common_distractor_signature}</MathText>
+          </p>
         )}
+        <div style={{ marginTop: 24 }}>
+          {/* DTK has no drill yet (image pipeline pending); every other
+           *  section has a working drill behind /drill?section=. */}
+          {section === 'DTK' ? (
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 11,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'var(--muted)',
+              }}
+            >
+              övning kommer
+            </span>
+          ) : (
+            <Link
+              to="/drill"
+              search={{ section }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 15,
+                lineHeight: 1.4,
+                color: 'var(--ink)',
+                textDecoration: 'none',
+                borderBottom: '1px solid var(--ink)',
+                paddingBottom: 2,
+              }}
+            >
+              Öva detta mönster →
+            </Link>
+          )}
+        </div>
       </div>
-    </article>
+    </details>
   )
 }
