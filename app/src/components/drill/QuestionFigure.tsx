@@ -1,19 +1,13 @@
-// QuestionFigure — render a parser-extracted vector diagram inline
-// inside a quant question.
+// QuestionFigure — render a parser-extracted figure inline inside a
+// quant question. Two source kinds:
 //
-// Why inline SVG instead of <img src>:
-//  - `stroke="currentColor"` inside the SVG cascades from the parent
-//    color, so dark-mode theming "just works" without per-figure CSS.
-//  - We can animate individual paths (entrance stroke-draw) and add
-//    accessibility hooks (<title>, focusable parts) later without
-//    touching the parser output.
-//  - Tap-to-zoom can re-render the same SVG at a larger viewBox
-//    instead of fetching a second asset.
-//
-// Why not bundle the SVGs into JS:
-//  - 280+ figures × a few KB each adds up. We already moved the
-//    JSON banks out of the bundle for the same reason. Lazy-fetch
-//    keeps initial payload small.
+//  - 'svg' (XYZ/KVA/NOG vector diagrams): inlined as HTML so
+//    `stroke="currentColor"` cascades for dark-mode theming. Compact
+//    (a few KB each), themable, animatable.
+//  - 'raster' (DTK figure pages): a full-page JPEG render of the
+//    printed source. DTK diagrams/tables/maps don't reasonably
+//    vectorize, so we ship them as JPEG. Loaded as <img>, with a
+//    tap-to-zoom modal because the source pages are dense.
 //
 // Layout discipline: the wrapper reserves space using `aspect-ratio`
 // from the parser metadata. This eliminates layout-shift while the
@@ -27,8 +21,6 @@ type Props = {
   figure: QuestionFigureMeta
 }
 
-// Module-level cache so two questions referencing the same figure
-// (or a back-and-forth between drill questions) don't refetch.
 const svgCache = new Map<string, Promise<string>>()
 
 function fetchSvg(src: string): Promise<string> {
@@ -44,6 +36,10 @@ function fetchSvg(src: string): Promise<string> {
 }
 
 export function QuestionFigure({ figure }: Props) {
+  return figure.kind === 'raster' ? <RasterFigure figure={figure} /> : <SvgFigure figure={figure} />
+}
+
+function SvgFigure({ figure }: Props) {
   const [svg, setSvg] = useState<string | null>(null)
   const [zoomed, setZoomed] = useState(false)
   const mounted = useRef(true)
@@ -72,11 +68,9 @@ export function QuestionFigure({ figure }: Props) {
   // The natural-at-MAX_H width is `ratio * MAX_H`; we pick whichever
   // of (column, naturalWidth) is smaller. Aspect-ratio then derives
   // the height from that resolved width — so wide figures stay short
-  // and tall figures stay narrow, both fully proportional. This
-  // replaces the earlier `width:100% + margin:22px` recipe that was
-  // overflowing by 44px because margin sits outside the 100% box.
+  // and tall figures stay narrow, both fully proportional.
   const ratio = figure.aspect_ratio
-  const MAX_H = 240 // px — leaves room for prompt + 5 options on a 780px frame
+  const MAX_H = 240
   const naturalWidth = ratio * MAX_H
 
   return (
@@ -87,8 +81,6 @@ export function QuestionFigure({ figure }: Props) {
         aria-label="Förstora figur"
         data-testid="question-figure"
         style={{
-          // Centered inside the scroller, with the same 22px gutter
-          // as the prompt and option rows.
           display: 'block',
           margin: '0 auto 18px',
           width: `min(${naturalWidth.toFixed(1)}px, calc(100% - 44px))`,
@@ -99,17 +91,119 @@ export function QuestionFigure({ figure }: Props) {
           color: 'var(--ink)',
           padding: 12,
           cursor: 'zoom-in',
-          // Subtle entrance: fade the figure in once the SVG arrives.
           opacity: svg ? 1 : 0.35,
           transition: 'opacity 240ms ease',
         }}
-        // Inline-render the SVG. Trusted source (our parser); no user
-        // input flows in. Required to enable currentColor cascading.
         // biome-ignore lint/security/noDangerouslySetInnerHtml: parser-emitted SVG, no user input
         dangerouslySetInnerHTML={svg ? { __html: wrapForFit(svg) } : undefined}
       />
       {zoomed && <FigureModal svg={svg} onClose={() => setZoomed(false)} />}
     </>
+  )
+}
+
+// DTK figure pages: dense JPEG renders. Show at full column width with
+// the aspect-reserved box (no height cap — the figure IS the question,
+// readers WILL scroll to take it in). Tap-to-zoom opens an unconstrained
+// modal so axis labels and table digits stay legible.
+function RasterFigure({ figure }: Props) {
+  const [zoomed, setZoomed] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+  const ratio = figure.aspect_ratio
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setZoomed(true)}
+        aria-label="Förstora figur"
+        data-testid="question-figure"
+        style={{
+          display: 'block',
+          margin: '0 auto 18px',
+          width: 'calc(100% - 44px)',
+          aspectRatio: String(ratio),
+          background: 'var(--panel)',
+          border: '1px solid var(--hairline)',
+          borderRadius: 'calc(var(--radius) * 0.5)',
+          padding: 0,
+          overflow: 'hidden',
+          cursor: 'zoom-in',
+          opacity: loaded ? 1 : 0.35,
+          transition: 'opacity 240ms ease',
+        }}
+      >
+        <img
+          src={`/${figure.src}`}
+          alt="Figur"
+          loading="lazy"
+          onLoad={() => setLoaded(true)}
+          style={{
+            display: 'block',
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+          }}
+        />
+      </button>
+      {zoomed && <RasterModal src={figure.src} onClose={() => setZoomed(false)} />}
+    </>
+  )
+}
+
+function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  return (
+    <div
+      onClick={onClose}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') onClose()
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Förstorad figur"
+      tabIndex={-1}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'color-mix(in oklch, var(--bg) 88%, transparent)',
+        backdropFilter: 'blur(8px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 100,
+        padding: 24,
+        cursor: 'zoom-out',
+        // The figure-page renders are large (1700×1200+); allow the
+        // user to scroll if it exceeds the viewport at native size.
+        overflow: 'auto',
+      }}
+    >
+      <img
+        src={`/${src}`}
+        alt="Figur, förstorad"
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+        style={{
+          maxWidth: 'min(96vw, 1400px)',
+          maxHeight: '94vh',
+          width: 'auto',
+          height: 'auto',
+          background: 'var(--panel)',
+          border: '1px solid var(--hairline)',
+          borderRadius: 'var(--radius)',
+          padding: 12,
+          cursor: 'zoom-out',
+        }}
+      />
+    </div>
   )
 }
 

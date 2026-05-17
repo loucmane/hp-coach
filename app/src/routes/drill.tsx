@@ -13,10 +13,7 @@ import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { findQuestion, loadBank, type Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
 
-// Sections the drill currently supports. We only list the ones that
-// have fully-parsed questions in the bundled dataset; DTK lands when
-// its image-rendering pipeline ships.
-const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG'] as const
+const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG', 'DTK'] as const
 type DrillSection = (typeof DRILL_SECTIONS)[number]
 
 type DrillSearch = { section?: DrillSection; qid?: string }
@@ -49,6 +46,7 @@ const SECTION_DURATIONS: Record<DrillSection, number> = {
   XYZ: 8,
   KVA: 6,
   NOG: 12,
+  DTK: 15,
 }
 
 const SECTION_COPY: Record<DrillSection, { headline: string; subcopy: string }> = {
@@ -76,6 +74,10 @@ const SECTION_COPY: Record<DrillSection, { headline: string; subcopy: string }> 
   NOG: {
     headline: 'NOG',
     subcopy: '10 frågor om kvantitativa resonemang från riktiga prov.',
+  },
+  DTK: {
+    headline: 'DTK',
+    subcopy: '10 frågor om diagram, tabeller och kartor från riktiga prov.',
   },
 }
 
