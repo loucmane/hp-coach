@@ -137,24 +137,33 @@ export function ProtocolCard({ entry, section }: { entry: AnyProtocolEntry; sect
             {entry.common_distractors.length > 0 && (
               <div style={{ marginTop: 24 }}>
                 <Eyebrow>Vanliga fällor</Eyebrow>
-                <ul
+                <dl
                   style={{
                     marginTop: 10,
                     marginBottom: 0,
-                    paddingLeft: '1.2em',
                     fontFamily: 'var(--font-display)',
                     fontSize: 'clamp(14px, 0.4vw + 12px, 15px)',
                     lineHeight: 1.55,
-                    color: 'var(--muted)',
-                    fontStyle: 'italic',
                   }}
                 >
                   {entry.common_distractors.map((d) => (
-                    <li key={d} style={{ marginBottom: 6 }}>
-                      <MathText>{d}</MathText>
-                    </li>
+                    <div key={d.pattern} style={{ marginBottom: 14 }}>
+                      <dt style={{ color: 'var(--ink)', fontWeight: 500 }}>
+                        <MathText>{d.pattern}</MathText>
+                      </dt>
+                      <dd
+                        style={{
+                          marginLeft: 0,
+                          marginTop: 4,
+                          color: 'var(--muted)',
+                          fontStyle: 'italic',
+                        }}
+                      >
+                        <MathText>{d.why_it_traps}</MathText>
+                      </dd>
+                    </div>
                   ))}
-                </ul>
+                </dl>
               </div>
             )}
           </>

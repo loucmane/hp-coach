@@ -85,7 +85,7 @@ export type ProtocolEntry = {
   id: string
   question_type: string
   attack_protocol: string[]
-  common_distractors: string[]
+  common_distractors: Array<{ pattern: string; why_it_traps: string }>
   example_questions: string[]
   notes?: string
 }
