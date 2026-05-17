@@ -5,13 +5,17 @@
 // copied into SPA public dir for runtime fetch). One file per section.
 //
 // Each call to `loadFramework(section)` returns a memoised Promise of
-// that section's framework. v1 ships NOG only; B1.1 adds the rest.
+// that section's framework. Five schema families, three reader cards:
 //
-// The framework shape is section-family-dependent — trap catalogs
-// (KVA/NOG/XYZ), protocol/tactic lists (MEK/DTK/LÄS/ELF), lexicons
-// (ORD). For B1.0 we type the NOG/trap shape narrowly; B1.1 widens
-// the union once we know what shape the other 7 sections actually
-// land at after schema validation.
+//   - **TrapCatalog** (NOG, KVA, XYZ): pattern → why → countermeasure
+//   - **TacticCatalog** (DTK): tactic → when_to_apply
+//   - **ConstraintCatalog** (MEK): constraint_type → rule
+//   - **ProtocolCatalog** (LÄS, ELF): question_type → attack_protocol[]
+//                                     + common_distractors[]
+//   - **Lexicon** (ORD): root → origin → meaning → example_words[]
+//
+// The reader dispatches on `family` to pick the right card. Schema
+// validation lives upstream in `frameworks/*.json` authoring.
 //
 // **Naming note**: PRD § 5.16 reserves "lesson" for LLM-curated
 // pedagogy (Phase B5). What this loader serves today is the raw
@@ -20,7 +24,7 @@
 
 import type { Section } from './questions'
 
-/** One entry in a trap-catalog framework (NOG, KVA, XYZ). */
+/** Trap catalog entry (NOG, KVA, XYZ). */
 export type TrapEntry = {
   id: string
   pattern_description: string
@@ -31,7 +35,6 @@ export type TrapEntry = {
   notes?: string
 }
 
-/** Trap catalog (NOG/KVA/XYZ). */
 export type TrapCatalog = {
   section: Section
   family: 'nog_traps' | 'kva_traps' | 'xyz_traps'
@@ -41,27 +44,101 @@ export type TrapCatalog = {
   entries: TrapEntry[]
 }
 
-/** Union widens in B1.1 when ProtocolCard + LexiconCard land. */
-export type Framework = TrapCatalog
+/** Tactic catalog entry (DTK). */
+export type TacticEntry = {
+  id: string
+  tactic: string
+  when_to_apply: string
+  example_questions: string[]
+  notes?: string
+}
+
+export type TacticCatalog = {
+  section: Section
+  family: 'dtk_tactics'
+  version: number
+  authored_at: string
+  notes?: string
+  entries: TacticEntry[]
+}
+
+/** Constraint protocol entry (MEK). */
+export type ConstraintEntry = {
+  id: string
+  constraint_type: string
+  rule: string
+  example_questions: string[]
+  notes?: string
+}
+
+export type ConstraintCatalog = {
+  section: Section
+  family: 'mek_protocol'
+  version: number
+  authored_at: string
+  notes?: string
+  entries: ConstraintEntry[]
+}
+
+/** Question-type protocol entry (LÄS, ELF). */
+export type ProtocolEntry = {
+  id: string
+  question_type: string
+  attack_protocol: string[]
+  common_distractors: Array<{ pattern: string; why_it_traps: string }>
+  example_questions: string[]
+  notes?: string
+}
+
+export type ProtocolCatalog = {
+  section: Section
+  family: 'las_taxonomy' | 'elf_taxonomy'
+  version: number
+  authored_at: string
+  notes?: string
+  entries: ProtocolEntry[]
+}
+
+/** Lexicon entry (ORD). */
+export type LexiconEntry = {
+  id: string
+  root: string
+  origin: string
+  meaning: string
+  example_words: string[]
+  example_questions: string[]
+  corpus_frequency?: number
+  notes?: string
+}
+
+export type Lexicon = {
+  section: Section
+  family: 'ord_roots'
+  version: number
+  authored_at: string
+  notes?: string
+  entries: LexiconEntry[]
+}
+
+export type Framework = TrapCatalog | TacticCatalog | ConstraintCatalog | ProtocolCatalog | Lexicon
 
 const FILENAMES: Partial<Record<Section, string>> = {
   NOG: 'nog_traps.json',
-  // KVA: 'kva_traps.json',  // wired in B1.1
-  // XYZ: 'xyz_traps.json',
-  // MEK: 'mek_protocol.json',
-  // DTK: 'dtk_tactics.json',
-  // ORD: 'ord_roots.json',
-  // 'LÄS': 'las_taxonomy.json',
-  // ELF: 'elf_taxonomy.json',
+  KVA: 'kva_traps.json',
+  XYZ: 'xyz_traps.json',
+  MEK: 'mek_protocol.json',
+  DTK: 'dtk_tactics.json',
+  ORD: 'ord_roots.json',
+  LÄS: 'las_taxonomy.json',
+  ELF: 'elf_taxonomy.json',
 }
 
 const cache = new Map<Section, Promise<Framework | null>>()
 
 /**
  * Load a section's Layer 1 framework. Returns null when the section
- * isn't wired yet (B1.0 ships NOG only). The 404 path is treated as
- * "not wired" rather than an error so the reader can render an
- * empty-state instead of crashing.
+ * isn't wired yet. The 404 path is treated as "not wired" rather than
+ * an error so the reader can render an empty-state instead of crashing.
  */
 export async function loadFramework(section: Section): Promise<Framework | null> {
   const filename = FILENAMES[section]

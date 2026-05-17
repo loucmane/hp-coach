@@ -1,0 +1,239 @@
+{
+  "section": "MEK",
+  "family": "mek_protocol",
+  "version": 1,
+  "authored_at": "2026-05-11",
+  "notes": "v1 protocol rules synthesized by direct reading of 534 MEK explanations (Layer 2 corpus). Extractor candidates were sparse (only 1 cluster), so rules are grounded in hand-clustered explanation patterns rather than the candidates file. Syntactic rules cover the fixed-form mechanics (collocation, preposition rektion, correlative pairs, multiblank consistency); semantic rules cover meaning-fit (definition ledtråd, antonym contrast, idiom recognition, nuance disambiguation, paronym traps). Each rule cites real corpus qids whose published explanation explicitly invokes the check.",
+  "entries": [
+    {
+      "id": "MEK-RULE-001",
+      "constraint_type": "syntactic",
+      "rule": "Fast verb–objekt-kollokation: vissa verb kräver ett specifikt objekt. Bytt verb låter fel även om synonymen ”betyder samma sak”. Testa verbet mot dess fasta objekt.",
+      "example_questions": [
+        "host-2013-verb2-MEK-030",
+        "host-2014-verb2-MEK-026",
+        "host-2014-verb2-MEK-027",
+        "host-2015-verb1-MEK-022",
+        "host-2016-verb1-MEK-022",
+        "host-2016-verb2-MEK-021",
+        "host-2018-verb1-MEK-028",
+        "var-2013-verb2-MEK-021"
+      ],
+      "notes": "Exempel: bereda en fråga, förskriva ett recept, upprätta en policy, utfärda en förordning, attestera en faktura, deponera avfall, tillskriva ngn ngt, förkasta ett anbud. Distraktorerna är ofta semantiska kvasi-synonymer som inte tar samma objekt."
+    },
+    {
+      "id": "MEK-RULE-002",
+      "constraint_type": "syntactic",
+      "rule": "Fast preposition (rektion): vissa fraser kräver en specifik preposition. Annan preposition = automatiskt fel, oavsett om resten av meningen ”passar”. Testa prepositionen FÖRST.",
+      "example_questions": [
+        "host-2013-verb2-MEK-025",
+        "host-2014-verb2-MEK-021",
+        "host-2016-verb1-MEK-024",
+        "host-2016-verb1-MEK-026",
+        "host-2016-verb1-MEK-030",
+        "var-2014-verb1-MEK-021"
+      ],
+      "notes": "Exempel: belägg FÖR, halt AV, varna FÖR, i kraft AV, i kölvattnet AV, motreaktion PÅ. Testet räknar bort 1–2 alternativ direkt innan semantiken bedöms."
+    },
+    {
+      "id": "MEK-RULE-003",
+      "constraint_type": "syntactic",
+      "rule": "Korrelativa konjunktionspar är låsta: såväl … SOM, ju … DESTO, varken … ELLER, både … OCH. Hittar du första ledet i prompten måste partnerordet finnas i rätt blank.",
+      "example_questions": [
+        "host-2020-verb1-MEK-028",
+        "var-2014-verb2-MEK-023",
+        "var-2017-verb2-MEK-024"
+      ],
+      "notes": "Grammatiken utesluter andra alternativ INNAN semantiken testats. Sök efter 'såväl', 'ju', 'varken', 'både' i prompten — partnern är en gratis-poäng."
+    },
+    {
+      "id": "MEK-RULE-004",
+      "constraint_type": "syntactic",
+      "rule": "Tvåblanks- och treblanksuppgifter måste testas SAMTIDIGT. Ett enda fel led utesluter hela alternativet, även om de andra leden låter rimliga. Testa det MEST specifika ledet först.",
+      "example_questions": [
+        "host-2013-verb1-MEK-023",
+        "host-2013-verb1-MEK-028",
+        "host-2013-verb2-MEK-024",
+        "host-2014-verb1-MEK-023",
+        "host-2014-verb1-MEK-028",
+        "host-2015-verb1-MEK-023",
+        "host-2016-verb1-MEK-023",
+        "var-2026-verb2-MEK-028"
+      ],
+      "notes": "Klassisk fälla: det första ledet låter rimligt i flera alternativ; det tredje ledet (ofta facktermen) avslöjar fel kombination snabbare."
+    },
+    {
+      "id": "MEK-RULE-005",
+      "constraint_type": "syntactic",
+      "rule": "Register-konsekvens: alla led i ett flerblanks-alternativ måste sitta i samma stilregister. Vardagsverb i lagtext, eller fackterm i barnberättarröst, avslöjar fel alternativ.",
+      "example_questions": [
+        "host-2013-verb1-MEK-023",
+        "host-2013-verb1-MEK-028",
+        "host-2014-verb1-MEK-021",
+        "host-2014-verb2-MEK-026",
+        "host-2014-verb2-MEK-028",
+        "host-2017-verb2-MEK-029"
+      ],
+      "notes": "Identifiera registret av textens nyckelord (myndighet → byråkratiska; kyrka → kyrkliga; konstkritik → litterära). Välj sedan alternativet där alla led håller samma ton."
+    },
+    {
+      "id": "MEK-RULE-006",
+      "constraint_type": "syntactic",
+      "rule": "Morfemroten avgör fackområdet: latinska/grekiska rötter låser betydelse (odont- = tand, kardi- = hjärta, -agog = ledare, -log = forskare, pro-cras = för imorgon). Bryt isär ordet före kontexten lästs.",
+      "example_questions": [
+        "host-2013-verb1-MEK-029",
+        "host-2014-verb2-MEK-030",
+        "host-2017-verb1-MEK-024",
+        "host-2017-verb2-MEK-030",
+        "host-2020-verb1-MEK-029",
+        "var-2013-verb1-MEK-021",
+        "var-2015-verb1-MEK-027"
+      ],
+      "notes": "Snabbväg när alla fyra alternativ är -logi/-tion/-era-lånord: läs rotmorfemet, matcha mot textens fackområde. Profylax = förebygga; prokrastinera = för-imorgon; demagog = folkledare."
+    },
+    {
+      "id": "MEK-RULE-007",
+      "constraint_type": "semantic",
+      "rule": "Inbyggd definition: meningen definierar ofta blankordet via relativsats, parentes eller omskrivning. Sök ledtråden ('det vill säga', 'med andra ord', 'såsom A, B, C') — blanken avslöjas direkt.",
+      "example_questions": [
+        "host-2013-verb2-MEK-022",
+        "host-2014-verb2-MEK-025",
+        "host-2014-verb2-MEK-030",
+        "host-2016-verb2-MEK-028",
+        "host-2017-verb1-MEK-024",
+        "host-2018-verb2-MEK-021",
+        "host-2020-verb1-MEK-030",
+        "var-2026-verb1-MEK-021",
+        "var-2026-verb2-MEK-021"
+      ],
+      "notes": "Sök efter 'det vill säga ___', 'innebär att', 'som betyder', eller exempel-trio efter blanken. Facktermen står ofta inbäddad i samma mening."
+    },
+    {
+      "id": "MEK-RULE-008",
+      "constraint_type": "semantic",
+      "rule": "Antonym-kontrast: när texten signalerar motsats ('inte X utan ___', 'snarare än', 'i kontrast till', 'tvärtemot'), ska blanken FYLLAS med motsatsen till X — inte med en synonym i samma fält.",
+      "example_questions": [
+        "host-2013-verb1-MEK-024",
+        "host-2013-verb2-MEK-026",
+        "host-2014-verb1-MEK-029",
+        "host-2015-verb1-MEK-029",
+        "host-2016-verb1-MEK-028",
+        "host-2017-verb1-MEK-022",
+        "host-2017-verb2-MEK-021"
+      ],
+      "notes": "Klassisk fälla: tre alternativ är ”närliggande” X (samma riktning) och bara ett är motsatsen. Distraktorerna är ofta synonymer till det ord texten kontrasterar emot."
+    },
+    {
+      "id": "MEK-RULE-009",
+      "constraint_type": "semantic",
+      "rule": "Idiom är låsta i sin form: hitta HELA uttrycket, inte enstaka ord. Distraktorerna är ofta andra fasta svenska idiom — i fel betydelse.",
+      "example_questions": [
+        "host-2014-verb1-MEK-022",
+        "host-2014-verb1-MEK-024",
+        "host-2014-verb1-MEK-027",
+        "host-2015-verb2-MEK-021",
+        "host-2015-verb2-MEK-027",
+        "host-2017-verb1-MEK-025",
+        "host-2018-verb2-MEK-026",
+        "var-2026-verb1-MEK-024"
+      ],
+      "notes": "Exempel: stötesten (hinder), röda skynken (provokation), tappa ansiktet (förlora värdighet), lägga band på sig (självcensur), sitta på dubbla stolar (intressekonflikt), plocka russinen ur kakan (selektivt urval)."
+    },
+    {
+      "id": "MEK-RULE-010",
+      "constraint_type": "semantic",
+      "rule": "Paronym-fälla: alternativ med samma prefix/suffix (för-, o-, -mässigt, -ellt, -sion) ser likadana ut men har helt olika rotbetydelser. Ignorera ändelsen och läs ROTEN.",
+      "example_questions": [
+        "host-2014-verb1-MEK-025",
+        "host-2014-verb1-MEK-026",
+        "host-2014-verb1-MEK-030",
+        "host-2015-verb2-MEK-029",
+        "host-2017-verb2-MEK-026",
+        "var-2013-verb1-MEK-028",
+        "var-2026-verb1-MEK-021"
+      ],
+      "notes": "Exempel: försigkomna ≠ förfördelade ≠ förtjänstfulla; reellt ≠ ideellt ≠ partiellt; omistlig ≠ oklanderlig ≠ oskälig; infusion ≠ inkarnation ≠ induktion."
+    },
+    {
+      "id": "MEK-RULE-011",
+      "constraint_type": "semantic",
+      "rule": "Stäm av betydelsenyans hos närbesläktade ord: ”synonymer” som inte är utbytbara. Den exakta nyansen avgör — pröva varje alternativ som om det vore det enda.",
+      "example_questions": [
+        "host-2013-verb1-MEK-021",
+        "host-2014-verb1-MEK-026",
+        "host-2014-verb2-MEK-022",
+        "host-2016-verb2-MEK-026",
+        "host-2018-verb1-MEK-027",
+        "var-2025-verb1-MEK-024",
+        "var-2025-verb2-MEK-021"
+      ],
+      "notes": "Exempel: avspegla (passiv) ≠ framhäva (aktiv) ≠ förstärka (förstora); inventera (kartlägga befintligt) ≠ exploatera (utvinna) ≠ projektera (planera nytt); fingervisning (vink) ≠ tumregel (regel) ≠ fotnot (text-not)."
+    },
+    {
+      "id": "MEK-RULE-012",
+      "constraint_type": "semantic",
+      "rule": "Fackjargong-låsning: varje yrkesområde har en exklusiv term. Matcha fackområdet mot textens kontext — distraktorer är ofta facktermer från ett ANNAT fält.",
+      "example_questions": [
+        "host-2013-verb1-MEK-025",
+        "host-2014-verb2-MEK-027",
+        "host-2016-verb1-MEK-022",
+        "host-2017-verb1-MEK-026",
+        "host-2018-verb2-MEK-021",
+        "host-2018-verb2-MEK-024",
+        "host-2020-verb1-MEK-022"
+      ],
+      "notes": "Exempel: läkaren förskriver (inte attesterar); riksdagen ratificerar (inte certifierar); blodhunden följer vittring (inte impuls); brons är en legering (inte mixtur); äktenskapsförord är familjerätt (inte affärsrätt)."
+    },
+    {
+      "id": "MEK-RULE-013",
+      "constraint_type": "semantic",
+      "rule": "Berättarröst-konsekvens: en författarröst håller stilen. Vardagsverb i högstilig essä, eller pompösa abstrakter i barnberättarröst, skär omedelbart. Lyssna efter tonen och välj blanken som matchar.",
+      "example_questions": [
+        "host-2014-verb1-MEK-021",
+        "host-2014-verb2-MEK-023",
+        "host-2016-verb2-MEK-029",
+        "host-2017-verb1-MEK-029",
+        "host-2017-verb2-MEK-029"
+      ],
+      "notes": "Särskilt viktig i MEK med litterär berättarröst (självreflexiv, ironisk, barn, nedlåtande). Texten kring blanken ger tonkartan."
+    },
+    {
+      "id": "MEK-RULE-014",
+      "constraint_type": "semantic",
+      "rule": "Uppräkning eller exempel-trio definierar samlingsordet: 'dop, vigslar och begravningar' → förrättningar; 'företag, organisationer och ___' → dylikt. Fråga: vad är hypernymen?",
+      "example_questions": [
+        "host-2013-verb1-MEK-030",
+        "host-2014-verb2-MEK-025",
+        "host-2020-verb1-MEK-028",
+        "var-2026-verb1-MEK-025"
+      ],
+      "notes": "När prompten innehåller tre konkreta exempel — blanken är samlingsbegreppet. Distraktorer är ofta andra abstrakter ur fel kategori."
+    },
+    {
+      "id": "MEK-RULE-015",
+      "constraint_type": "semantic",
+      "rule": "Paradox- och slutsatslogik: när texten bygger en motsägelse kräver blanken ord som BIBEHÅLLER paradoxen — inte ett som plattar ut den. Sök 'paradoxalt', 'ironiskt', inte 'naturligt'.",
+      "example_questions": [
+        "host-2015-verb1-MEK-029",
+        "host-2017-verb2-MEK-025",
+        "host-ver1-2019-verb1-MEK-028",
+        "host-ver2-2019-verb1-MEK-028"
+      ],
+      "notes": "Exempel: gick ur kyrkan MEN engagerade sig mer i tron → paradoxalt; valmöjligheter ökar MEN fritiden blir stressfylld → paradoxalt. Alternativ som ger neutral slutsats förstör textens vits."
+    },
+    {
+      "id": "MEK-RULE-016",
+      "constraint_type": "semantic",
+      "rule": "Treblanks-koherens via fackområde: i ett treblanksdrag måste alla tre orden tillhöra samma sakliga sammanhang. En term ur främmande sakfält avslöjar fel alternativ direkt.",
+      "example_questions": [
+        "host-2013-verb1-MEK-027",
+        "host-2013-verb1-MEK-028",
+        "host-2013-verb2-MEK-024",
+        "host-2014-verb1-MEK-028",
+        "host-2015-verb1-MEK-023",
+        "host-2016-verb1-MEK-023"
+      ],
+      "notes": "Komplement till MEK-RULE-004: 004 fokuserar på att TESTA alla led; 016 fokuserar på SAKFÄLT-koherens (geomorfologi, immunologi, bygg, mejeri)."
+    }
+  ]
+}
