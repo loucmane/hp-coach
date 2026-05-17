@@ -102,63 +102,179 @@ function SvgFigure({ figure }: Props) {
   )
 }
 
-// DTK figure pages: dense JPEG renders. Show at full column width with
-// the aspect-reserved box (no height cap — the figure IS the question,
-// readers WILL scroll to take it in). Tap-to-zoom opens an unconstrained
-// modal so axis labels and table digits stay legible.
+// DTK figure pages: dense JPEG renders.
+//
+// Readability problem: a landscape source page (aspect ~1.4) shoved into
+// a phone-portrait column at 346px wide collapses to ~247px tall — bar
+// chart labels and table digits go unreadable. Two-pronged fix:
+//   1. Drop the 22px column gutter — landscape figures use full canvas
+//      width so the inline preview is as large as the column allows.
+//   2. Surface the "Förstora figur" affordance as an explicit floating
+//      badge in the corner of the figure. Users learn it's tappable.
+//
+// The modal pans for figures wider than the viewport (overflow:auto on
+// the modal scaffold) so the user can read native landscape pages
+// without having to physically rotate the device.
 function RasterFigure({ figure }: Props) {
   const [zoomed, setZoomed] = useState(false)
   const [loaded, setLoaded] = useState(false)
+  const [rotation, setRotation] = useState(0)
   const ratio = figure.aspect_ratio
+  const isLandscape = ratio > 1.05
+  const rotated = rotation === 90 || rotation === 270
+  // Post-rotation effective aspect: swap when the figure is rotated
+  // by 90/270 so the layout-reserved box matches what the rotated
+  // image actually fills.
+  const effectiveAspect = rotated ? 1 / ratio : ratio
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setZoomed(true)}
-        aria-label="Förstora figur"
-        data-testid="question-figure"
+      <div
         style={{
-          display: 'block',
+          position: 'relative',
           margin: '0 auto 18px',
-          width: 'calc(100% - 44px)',
-          aspectRatio: String(ratio),
-          background: 'var(--panel)',
-          border: '1px solid var(--hairline)',
-          borderRadius: 'calc(var(--radius) * 0.5)',
-          padding: 0,
-          overflow: 'hidden',
-          cursor: 'zoom-in',
-          opacity: loaded ? 1 : 0.35,
-          transition: 'opacity 240ms ease',
+          width: isLandscape && !rotated ? '100%' : 'calc(100% - 44px)',
         }}
       >
-        <img
-          src={`/${figure.src}`}
-          alt="Figur"
-          loading="lazy"
-          onLoad={() => setLoaded(true)}
+        <button
+          type="button"
+          onClick={() => setZoomed(true)}
+          aria-label="Förstora figur"
+          data-testid="question-figure"
           style={{
+            position: 'relative',
             display: 'block',
             width: '100%',
-            height: '100%',
-            objectFit: 'contain',
+            aspectRatio: String(effectiveAspect),
+            background: 'var(--panel)',
+            border: '1px solid var(--hairline)',
+            borderRadius: 'calc(var(--radius) * 0.5)',
+            padding: 0,
+            overflow: 'hidden',
+            cursor: 'zoom-in',
+            opacity: loaded ? 1 : 0.35,
+            transition: 'opacity 240ms ease',
           }}
-        />
-      </button>
+        >
+          <img
+            src={`/${figure.src}`}
+            alt="Figur"
+            loading="lazy"
+            onLoad={() => setLoaded(true)}
+            style={
+              rotated
+                ? {
+                    // When rotated 90/270, the image's native long axis
+                    // (ratio > 1) becomes vertical. Size it to fill the
+                    // ROTATED box (which has aspect 1/ratio): set
+                    // height=100% of the new box (= width-of-old-box),
+                    // width=100% of the orthogonal axis.
+                    display: 'block',
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    width: rotated ? `${100 * ratio}%` : '100%',
+                    height: rotated ? `${100 / ratio}%` : '100%',
+                    objectFit: 'contain',
+                    transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+                    transformOrigin: 'center center',
+                  }
+                : {
+                    display: 'block',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    transform: `rotate(${rotation}deg)`,
+                    transformOrigin: 'center center',
+                  }
+            }
+          />
+          <span
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              right: 10,
+              bottom: 10,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '6px 10px',
+              background: 'color-mix(in oklch, var(--bg) 92%, transparent)',
+              border: '1px solid var(--hairline)',
+              borderRadius: 999,
+              fontFamily: 'var(--font-mono)',
+              fontSize: 10,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: 'var(--ink-2)',
+              pointerEvents: 'none',
+            }}
+          >
+            ⤢ förstora
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            setRotation((r) => (r + 90) % 360)
+          }}
+          aria-label="Rotera figur 90 grader"
+          title="Rotera figur"
+          style={{
+            position: 'absolute',
+            left: 10,
+            bottom: 10,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '6px 10px',
+            background: 'color-mix(in oklch, var(--bg) 92%, transparent)',
+            border: '1px solid var(--hairline)',
+            borderRadius: 999,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--ink)',
+            cursor: 'pointer',
+          }}
+        >
+          ↻ rotera
+        </button>
+      </div>
       {zoomed && <RasterModal src={figure.src} onClose={() => setZoomed(false)} />}
     </>
   )
 }
 
 function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
+  // Three controls available in the modal:
+  //   - actual: 1:1 pixel size vs fit-to-viewport. DTK landscape
+  //     renders are ~1700px wide — actual-pixel mode is essential for
+  //     reading small chart labels.
+  //   - rotation: 0/90/180/270 in degrees. Landscape DTK pages are
+  //     more comfortable to read with the phone held landscape OR
+  //     with the image rotated to portrait orientation; the rotate
+  //     button gives the user control.
+  //   - r-shortcut: keyboard accelerator for rotation (desktop).
+  const [actual, setActual] = useState(false)
+  const [rotation, setRotation] = useState(0)
+  const rotate = () => setRotation((r) => (r + 90) % 360)
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
+      else if (e.key === 'r' || e.key === 'R') {
+        e.preventDefault()
+        setRotation((r) => (r + 90) % 360)
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
+
+  const rotated = rotation === 90 || rotation === 270
 
   return (
     <div
@@ -173,7 +289,7 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
       style={{
         position: 'fixed',
         inset: 0,
-        background: 'color-mix(in oklch, var(--bg) 88%, transparent)',
+        background: 'color-mix(in oklch, var(--bg) 92%, transparent)',
         backdropFilter: 'blur(8px)',
         display: 'flex',
         alignItems: 'center',
@@ -181,28 +297,110 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
         zIndex: 100,
         padding: 24,
         cursor: 'zoom-out',
-        // The figure-page renders are large (1700×1200+); allow the
-        // user to scroll if it exceeds the viewport at native size.
         overflow: 'auto',
       }}
     >
       <img
         src={`/${src}`}
         alt="Figur, förstorad"
+        onClick={(e) => {
+          e.stopPropagation()
+          setActual((v) => !v)
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+        style={
+          actual
+            ? {
+                // Native pixel size: ~1700px wide for landscape pages.
+                // The backdrop scrolls; user pans by dragging.
+                width: 'auto',
+                height: 'auto',
+                maxWidth: 'none',
+                maxHeight: 'none',
+                background: 'var(--panel)',
+                border: '1px solid var(--hairline)',
+                borderRadius: 'var(--radius)',
+                padding: 12,
+                cursor: 'zoom-out',
+                transform: `rotate(${rotation}deg)`,
+                transition: 'transform 220ms ease',
+              }
+            : {
+                // Fit mode: contain inside viewport. When rotated 90/270,
+                // the bounding box swaps so the post-rotation image
+                // still fits — clamp by the SHORTER viewport axis as the
+                // image's longer axis after rotation.
+                maxWidth: rotated ? 'min(94vh, 1400px)' : 'min(96vw, 1400px)',
+                maxHeight: rotated ? '94vw' : '94vh',
+                width: 'auto',
+                height: 'auto',
+                background: 'var(--panel)',
+                border: '1px solid var(--hairline)',
+                borderRadius: 'var(--radius)',
+                padding: 12,
+                cursor: 'zoom-in',
+                transform: `rotate(${rotation}deg)`,
+                transition: 'transform 220ms ease',
+              }
+        }
+      />
+      <div
         onClick={(e) => e.stopPropagation()}
         onKeyDown={(e) => e.stopPropagation()}
+        role="toolbar"
+        aria-label="Figurkontroller"
         style={{
-          maxWidth: 'min(96vw, 1400px)',
-          maxHeight: '94vh',
-          width: 'auto',
-          height: 'auto',
-          background: 'var(--panel)',
+          position: 'fixed',
+          bottom: 16,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          padding: '6px 8px 6px 14px',
+          background: 'color-mix(in oklch, var(--bg) 92%, transparent)',
           border: '1px solid var(--hairline)',
-          borderRadius: 'var(--radius)',
-          padding: 12,
-          cursor: 'zoom-out',
+          borderRadius: 999,
+          cursor: 'default',
         }}
-      />
+      >
+        <span
+          aria-hidden="true"
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--ink-2)',
+            pointerEvents: 'none',
+          }}
+        >
+          {actual ? 'tryck = anpassa' : 'tryck = zooma in'} · esc stäng
+        </span>
+        <button
+          type="button"
+          onClick={rotate}
+          aria-label="Rotera figur 90 grader"
+          title="Rotera (R)"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '6px 10px',
+            background: 'var(--panel)',
+            border: '1px solid var(--hairline)',
+            borderRadius: 999,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--ink)',
+            cursor: 'pointer',
+          }}
+        >
+          ↻ rotera
+        </button>
+      </div>
     </div>
   )
 }

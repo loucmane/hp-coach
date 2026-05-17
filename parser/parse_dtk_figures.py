@@ -91,6 +91,10 @@ def render_page(page: fitz.Page, dst: Path) -> None:
     full corpus). DTK pages are mostly grayscale text + line art, so
     the JPEG compression artifacts that matter for photos don't show
     up here.
+
+    Rotation: PyMuPDF's `get_pixmap` honors `page.rotation` natively,
+    so a `/Rotate 90` flag in the source PDF is already baked into
+    the output dimensions. We do NOT need to prerotate the matrix.
     """
     mat = fitz.Matrix(RENDER_SCALE, RENDER_SCALE)
     pix = page.get_pixmap(matrix=mat)
@@ -137,11 +141,11 @@ def process_pass(
         # Pixel dimensions match the rendered output exactly. Read
         # them off the page rect × scale rather than the file on disk
         # so this stays fast (no decode round-trip).
-        rect = doc[fig_idx].rect
+        page = doc[fig_idx]
+        rect = page.rect
         width = round(rect.width * RENDER_SCALE)
         height = round(rect.height * RENDER_SCALE)
-        if not dst.exists():
-            render_page(doc[fig_idx], dst)
+        render_page(page, dst)
         rendered[fig_idx] = (name, width, height)
 
     index: dict[str, dict[str, object]] = {}
