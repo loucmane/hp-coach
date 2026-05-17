@@ -91,6 +91,10 @@ def render_page(page: fitz.Page, dst: Path) -> None:
     full corpus). DTK pages are mostly grayscale text + line art, so
     the JPEG compression artifacts that matter for photos don't show
     up here.
+
+    Rotation: PyMuPDF's `get_pixmap` honors `page.rotation` natively,
+    so a `/Rotate 90` flag in the source PDF is already baked into
+    the output dimensions. We do NOT need to prerotate the matrix.
     """
     mat = fitz.Matrix(RENDER_SCALE, RENDER_SCALE)
     pix = page.get_pixmap(matrix=mat)
@@ -99,12 +103,13 @@ def render_page(page: fitz.Page, dst: Path) -> None:
 
 def process_pass(
     exam_id: str, provpass: str, pdf_path: Path, out_dir: Path
-) -> dict[str, dict[str, str]]:
+) -> dict[str, dict[str, object]]:
     """Process one kvantpass PDF. Returns a partial index keyed by qid.
 
-    Each qid entry maps to { 'figure_png': ..., 'question_png': ... }
-    paths relative to the SPA public root. Pairing of question→figure
-    is by "most recent preceding figure page" within the same pass.
+    Each qid entry maps to { figure, width, height }: filename relative
+    to /figures/dtk/ plus rendered pixel dimensions (post-RENDER_SCALE).
+    Width/height let the SPA reserve layout space at fetch time so the
+    options below don't shift when the figure paints.
     """
     doc = fitz.open(pdf_path)
     pages_info: list[tuple[int, str, list[int]]] = []
@@ -127,26 +132,31 @@ def process_pass(
     # Render only the figure pages. Question prompts come from DTK-2
     # (multimodal LLM transcription); shipping the question-page PNGs
     # would double the corpus disk footprint for no end-user gain.
-    rendered: dict[int, str] = {}
+    rendered: dict[int, tuple[str, int, int]] = {}
     for fig_idx, _q_idx, _ in pair_map:
         if fig_idx in rendered:
             continue
         name = f"{exam_id}-{provpass}-p{fig_idx + 1:02d}.jpg"
         dst = out_dir / name
-        render_page(doc[fig_idx], dst)
-        rendered[fig_idx] = name
+        # Pixel dimensions match the rendered output exactly. Read
+        # them off the page rect × scale rather than the file on disk
+        # so this stays fast (no decode round-trip).
+        page = doc[fig_idx]
+        rect = page.rect
+        width = round(rect.width * RENDER_SCALE)
+        height = round(rect.height * RENDER_SCALE)
+        render_page(page, dst)
+        rendered[fig_idx] = (name, width, height)
 
-    # Build qid → {figure, question} map. Question numbers may exceed
-    # the 12 DTK count if classify_page mis-fires on a non-DTK page;
-    # we sanity-clamp to 29-40 (kvant1) and 1-12 (kvant2 fallback) by
-    # accepting any 2-digit number — qid lookup against the question
-    # bank validates downstream.
-    index: dict[str, dict[str, str]] = {}
+    index: dict[str, dict[str, object]] = {}
     for fig_idx, _q_idx, nums in pair_map:
+        name, width, height = rendered[fig_idx]
         for n in nums:
             qid = f"{exam_id}-{provpass}-DTK-{n:03d}"
             index[qid] = {
-                "figure": rendered[fig_idx],
+                "figure": name,
+                "width": width,
+                "height": height,
             }
     return index
 
@@ -171,7 +181,7 @@ def main() -> int:
             print(f"no such exam: {args.exam}", file=sys.stderr)
             return 2
 
-    full_index = dict(existing_index)
+    full_index: dict[str, dict[str, object]] = dict(existing_index)
     total_figures = 0
     for exam_dir in exam_dirs:
         exam_id = exam_dir.name

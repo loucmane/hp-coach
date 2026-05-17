@@ -16,7 +16,7 @@ different whitespace flavor: "29.\\n" vs "29.\\t"). One regex handles
 both.
 
 Output: rewrites the question bank JSON at app/public/data/{exam}.json
-in place — populates `prompt`, `options`, `parsing_status: 'parsed'`
+in place — populates `prompt`, `options`, `parsing_status: 'complete'`
 for every DTK entry whose qid is in the DTK figure index. The facit-
 provided `answer` is preserved as-is.
 
@@ -168,7 +168,7 @@ def process_exam(exam_id: str, *, dry_run: bool) -> tuple[int, int]:
                     continue
                 target["prompt"] = payload["prompt"]
                 target["options"] = payload["options"]
-                target["parsing_status"] = "parsed"
+                target["parsing_status"] = "complete"
                 updated += 1
 
     if updated > 0 and not dry_run:

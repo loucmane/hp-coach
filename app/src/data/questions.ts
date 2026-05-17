@@ -31,14 +31,25 @@ export type Option = {
   text: string
 }
 
-/** Vector figure attached to a quant question — rendered inline as
- *  an SVG with strokes themed via `currentColor`. The parser writes
- *  the SVG to `data/figures/{qid}.svg`; the SPA fetches it on demand
- *  so the JSON bundle stays small. `aspect_ratio` lets us reserve
- *  layout space before the SVG arrives, preventing CLS during fetch. */
+/** Figure attached to a quant question.
+ *
+ *  Two kinds, distinguished by `kind` (defaults to 'svg' for backwards
+ *  compatibility with the original parser output):
+ *  - **svg**: vector diagram for XYZ/KVA/NOG. Inline-rendered so
+ *    `stroke="currentColor"` cascades for dark-mode theming. Parser
+ *    writes to `data/figures/{qid}.svg`.
+ *  - **raster**: full-page JPEG render of a DTK figure page (diagrams,
+ *    tables, maps that can't reasonably vectorize). Parser writes to
+ *    `figures/dtk/{exam}-{pass}-p{NN}.jpg`. Lives behind a tap-to-zoom
+ *    affordance because the source pages are dense.
+ *
+ *  `aspect_ratio` (width / height) lets us reserve layout space before
+ *  the asset paints, preventing CLS during fetch.
+ */
 export type QuestionFigureMeta = {
   src: string
   aspect_ratio: number
+  kind?: 'svg' | 'raster'
 }
 
 export type Question = {
@@ -75,17 +86,40 @@ let cached: Promise<readonly Question[]> | null = null
  * Failures bubble up unwrapped: if `_index.json` 404s we want the screen
  * to know the dataset is broken, not silently render zero questions.
  */
+type DtkIndexEntry = { figure: string; width: number; height: number }
+type DtkIndex = Record<string, DtkIndexEntry>
+
 export function loadBank(): Promise<readonly Question[]> {
   if (cached) return cached
   cached = (async () => {
     const idx = (await fetch('/data/_index.json').then(handleJson)) as IndexFile
-    const examFiles = await Promise.all(
-      idx.exams.map((e) => fetch(`/data/${e.exam_id}.json`).then(handleJson)),
-    )
+    const [examFiles, dtkIndex] = await Promise.all([
+      Promise.all(idx.exams.map((e) => fetch(`/data/${e.exam_id}.json`).then(handleJson))),
+      // DTK figures live in a separate index because they're rendered
+      // by a different parser stage (parse_dtk_figures.py). Treat 404
+      // as "no DTK figures available" rather than fatal — the verbal
+      // half still works without it.
+      fetch('/figures/dtk/_index.json')
+        .then((r) => (r.ok ? (r.json() as Promise<DtkIndex>) : ({} as DtkIndex)))
+        .catch(() => ({}) as DtkIndex),
+    ])
     const out: Question[] = []
     for (const rows of examFiles) {
       if (!Array.isArray(rows) || rows.length === 0 || !('qid' in rows[0])) continue
-      out.push(...(rows as Question[]))
+      for (const q of rows as Question[]) {
+        // Patch DTK questions with their figure-page metadata so the
+        // rest of the pipeline (drill picker, QuestionFigure) treats
+        // them like any other figure-bearing quant question.
+        const dtk = dtkIndex[q.qid]
+        if (dtk) {
+          q.figure = {
+            src: `figures/dtk/${dtk.figure}`,
+            aspect_ratio: dtk.width / dtk.height,
+            kind: 'raster',
+          }
+        }
+        out.push(q)
+      }
     }
     return out
   })()
