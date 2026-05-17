@@ -1,0 +1,337 @@
+{
+  "section": "LÄS",
+  "family": "las_taxonomy",
+  "version": 1,
+  "authored_at": "2026-05-11",
+  "notes": "Layer 1 question-type taxonomy for LÄS (Swedish reading). Eight types covering literal retrieval, inference, author stance, rhetorical purpose, characterization/summary, contrast (skillnadsfrågor), logical entailment / consequence, and conditional 'och i så fall'-format. Synthesized from direct corpus reading of 540 LÄS prompts across 28 exams (the candidates extractor only surfaced one cluster, so the entries below are grounded in hand-tagged qids rather than statistical clusters).",
+  "entries": [
+    {
+      "id": "LAS-TYPE-001",
+      "question_type": "Literal retrieval",
+      "attack_protocol": [
+        "Note the trigger phrase 'enligt texten' / 'enligt textförfattaren' / 'av texten framgår' — the answer must be stated in the passage, not inferred.",
+        "Identify the named entity, study, person, year, or claim the question pins down (e.g. 'VA-nämnden', '1977 års tillträdesreform', 'Sten-Olof Ullströms avhandling').",
+        "Scan the passage for that entity and read the surrounding sentence carefully — do not paraphrase from memory.",
+        "Match the option that restates the passage's wording most faithfully. Reject any option that adds an idea the text does not contain, even if it sounds plausible.",
+        "If two options seem to match, prefer the one whose scope (degree, time, agent) is identical to the text — wrong options usually overgeneralize or shift the agent."
+      ],
+      "common_distractors": [
+        {
+          "pattern": "True-sounding world knowledge not stated in the text",
+          "why_it_traps": "Students fill the gap with what they know from biology/law/history class. The HP only credits what the passage says."
+        },
+        {
+          "pattern": "Right entity, wrong attribute",
+          "why_it_traps": "Mentions a name from the text but pairs it with a fact that belongs to a different name (e.g. swaps the recensent's claim with the avhandling's claim)."
+        },
+        {
+          "pattern": "Overgeneralization of a hedged claim",
+          "why_it_traps": "Text says 'en bidragande orsak' / 'kan vara'; distractor says 'huvudorsaken' / 'är'. Sounds like a fair summary, isn't."
+        },
+        {
+          "pattern": "Adjacent fact from the same paragraph",
+          "why_it_traps": "The wrong fact sits next to the right one in the passage; students see the keyword and grab the nearest plausible sentence."
+        }
+      ],
+      "example_questions": [
+        "host-2013-verb1-LÄS-015",
+        "host-2016-verb1-LÄS-015",
+        "host-2017-verb1-LÄS-012",
+        "host-2020-verb1-LÄS-014",
+        "host-2023-verb1-LÄS-013",
+        "host-2025-verb2-LÄS-012",
+        "host-ver1-2019-verb2-LÄS-011",
+        "var-2019-verb2-LÄS-014"
+      ]
+    },
+    {
+      "id": "LAS-TYPE-002",
+      "question_type": "Inference / implication",
+      "attack_protocol": [
+        "Note the inference trigger: 'av texten att döma', 'tycks', 'mest sannolikt', 'mest rimlig', 'antyder', 'utifrån resonemanget'.",
+        "The answer is NOT verbatim in the text — but it must follow from what the text says without adding outside premises.",
+        "Locate the passage segment the question points to and articulate the underlying premise in your own words.",
+        "Test each option: does it follow from the premise using only information in the passage? Eliminate options that need an extra assumption the text never establishes.",
+        "Prefer the most cautious option that still answers the question — strongly worded inferences are usually traps."
+      ],
+      "common_distractors": [
+        {
+          "pattern": "Inference that requires external knowledge",
+          "why_it_traps": "Reads as 'common sense' but the premise needed isn't in the passage."
+        },
+        {
+          "pattern": "Too-strong conclusion from a hedged premise",
+          "why_it_traps": "Passage says 'kan tyda på' / 'en bidragande faktor'; the option converts it to a categorical claim."
+        },
+        {
+          "pattern": "Reasonable-but-unrelated inference",
+          "why_it_traps": "True given the passage in some abstract sense, but doesn't actually answer what the question asks."
+        },
+        {
+          "pattern": "Inverted causation",
+          "why_it_traps": "Swaps cause and effect from the passage's chain ('X ledde till Y' rewritten as 'Y orsakade X')."
+        }
+      ],
+      "example_questions": [
+        "host-2015-verb2-LÄS-016",
+        "host-2016-verb2-LÄS-012",
+        "host-2021-verb2-LÄS-013",
+        "host-2022-verb2-LÄS-019",
+        "host-2024-verb1-LÄS-015",
+        "host-2024-verb1-LÄS-017",
+        "var-2013-verb2-LÄS-014",
+        "var-2015-verb1-LÄS-017",
+        "var-2017-verb2-LÄS-012",
+        "var-2024-verb1-LÄS-020"
+      ]
+    },
+    {
+      "id": "LAS-TYPE-003",
+      "question_type": "Author stance",
+      "attack_protocol": [
+        "Identify whose stance the question asks about: textförfattaren, recensenten, or a named third party introduced in the text (Spivak, Berglund, Posner, Heller Sahlgren …).",
+        "Mark the evaluative vocabulary the text uses about that person/object — 'kritisk', 'beundrande', 'skeptisk', 'efterlyser', 'invänder', 'försvarar', 'beklagar'.",
+        "Build a one-word valence for the stance (positive / negative / mixed / agnostic). Most LÄS stance answers are mixed or qualified, not pure.",
+        "Eliminate options whose valence disagrees with the textual cues. Then between same-valence options, pick the one whose scope matches what the author actually evaluates (the method? the conclusion? the writing style?).",
+        "If the question is 'I vilken fråga är X kritisk?' or 'Vad är X kritisk till?' — locate the specific object of criticism, not the general topic of the text."
+      ],
+      "common_distractors": [
+        {
+          "pattern": "Right valence, wrong object",
+          "why_it_traps": "Author is critical, but of something else (the framing, not the conclusion; the data, not the theory)."
+        },
+        {
+          "pattern": "Stance attributed to wrong voice",
+          "why_it_traps": "Confuses recensentens stance with the avhandling-författarens, or with a quoted opponent."
+        },
+        {
+          "pattern": "Stance polarized beyond the text",
+          "why_it_traps": "Text says 'med viss tvekan'; option says 'avvisar'. The hedged author becomes a categorical one."
+        },
+        {
+          "pattern": "Neutral-sounding option when the author is clearly partisan (or vice versa)",
+          "why_it_traps": "Smooths out a sharp stance into bland balance to feel 'safer'."
+        }
+      ],
+      "example_questions": [
+        "host-2013-verb2-LÄS-020",
+        "host-2014-verb1-LÄS-012",
+        "host-2020-verb1-LÄS-018",
+        "host-2020-verb2-LÄS-014",
+        "host-2022-verb2-LÄS-013",
+        "host-ver1-2019-verb1-LÄS-011",
+        "var-2016-verb1-LÄS-012",
+        "var-2019-verb1-LÄS-011",
+        "var-2019-verb2-LÄS-012",
+        "var-2025-verb1-LÄS-014"
+      ]
+    },
+    {
+      "id": "LAS-TYPE-004",
+      "question_type": "Rhetorical purpose",
+      "attack_protocol": [
+        "Spot the purpose trigger: 'vad vill textförfattaren ha sagt med …', 'vad vill X understryka / illustrera', 'vilken funktion fyller …', 'i syfte att', 'vad framstår som syftet'.",
+        "Ignore the surface content of the cited example/sentence/quote. The question asks what RHETORICAL JOB it does (illustrate a claim? concede a point? introduce a contrast? signal irony?).",
+        "Find the surrounding claim the device supports. The example/quote is almost always evidence FOR a thesis stated nearby.",
+        "Pick the option that names the function relative to that thesis, not the option that paraphrases the example's content.",
+        "If the device is a metaphor or an analogy, the answer is usually the abstract claim it concretizes — never the literal subject of the metaphor."
+      ],
+      "common_distractors": [
+        {
+          "pattern": "Literal restatement of the example",
+          "why_it_traps": "Paraphrases the metaphor / quote at face value instead of naming what it argues for."
+        },
+        {
+          "pattern": "Plausible authorial intent, but not the local function",
+          "why_it_traps": "Names a goal the author has somewhere in the text, but not the job of THIS sentence/quote."
+        },
+        {
+          "pattern": "Function mismatched to surrounding rhetoric",
+          "why_it_traps": "Says 'underbygga' when the device is actually a concession; says 'ifrågasätta' when it's confirmation."
+        },
+        {
+          "pattern": "Decorative-reading option",
+          "why_it_traps": "Treats the device as ornament ('för att göra texten levande') when it actually carries argumentative weight."
+        }
+      ],
+      "example_questions": [
+        "host-2014-verb2-LÄS-011",
+        "host-2015-verb1-LÄS-013",
+        "host-2017-verb2-LÄS-014",
+        "host-2022-verb2-LÄS-015",
+        "host-2025-verb2-LÄS-013",
+        "host-2025-verb2-LÄS-014",
+        "host-2025-verb2-LÄS-015",
+        "var-2022-2-verb2-LÄS-013",
+        "var-2024-verb2-LÄS-016",
+        "var-2026-verb1-LÄS-016"
+      ]
+    },
+    {
+      "id": "LAS-TYPE-005",
+      "question_type": "Characterization / summary",
+      "attack_protocol": [
+        "Spot the trigger: 'hur kan man bäst beskriva / karakterisera / definiera / sammanfatta X', 'vilken alternativ rubrik …', 'vilket svarsförslag sammanfattar bäst texten', 'texten som helhet'.",
+        "Decide whether the target is a whole-text characterization (rubrik, huvudpoäng, helhet) or a sub-object (en roman, ett begrepp, en persons utrikespolitik). Whole-text questions demand a thesis that covers the recurring theme across paragraphs; sub-object questions demand the bundled-up portrait of one entity.",
+        "List the 3–5 traits the text repeatedly attaches to the target. The right option will hit most of them; wrong options will pick one episode or one trait.",
+        "Eliminate options that describe a single example or paragraph instead of the recurring theme. (Trajectory rule: 'look for the recurring theme, not the episodes'.)",
+        "Eliminate options that capture the topic but not the angle. A correct rubrik names BOTH what the text is about AND what the text claims about it."
+      ],
+      "common_distractors": [
+        {
+          "pattern": "True of one example, false of the whole",
+          "why_it_traps": "Picks up the most vivid anecdote (an episode) and uses it as the description — but the text's recurring theme is broader."
+        },
+        {
+          "pattern": "Topic without thesis",
+          "why_it_traps": "Names what the text is about ('skolbibliotekarier') but not what the text argues ('att de behövs mer än någonsin')."
+        },
+        {
+          "pattern": "Overreaching characterization",
+          "why_it_traps": "Adds a property the text never establishes — e.g. calls a balanced review 'avfärdande'."
+        },
+        {
+          "pattern": "Plausible-sounding abstract noun phrase",
+          "why_it_traps": "Reads as good academic prose ('en mångfacetterad analys') but is so generic it can't be falsified — usually wrong."
+        }
+      ],
+      "example_questions": [
+        "host-2013-verb2-LÄS-017",
+        "host-2014-verb1-LÄS-019",
+        "host-2016-verb1-LÄS-011",
+        "host-2017-verb1-LÄS-018",
+        "host-2018-verb1-LÄS-014",
+        "host-2024-verb1-LÄS-016",
+        "var-2013-verb1-LÄS-016",
+        "var-2016-verb2-LÄS-020",
+        "var-2018-1-verb2-LÄS-016",
+        "var-2022-1-verb1-LÄS-016",
+        "var-2025-verb1-LÄS-011",
+        "var-2026-verb2-LÄS-020"
+      ]
+    },
+    {
+      "id": "LAS-TYPE-006",
+      "question_type": "Contrast / skillnadsfråga",
+      "attack_protocol": [
+        "Spot the trigger: 'vad skiljer X från Y', 'i vilken fråga skiljer sig X och Y', 'skillnaden mellan', 'vad utmärker X jämfört med Y'.",
+        "Build a two-column mental table: claim about X | claim about Y. Pull from the passage; ignore your priors about the entities.",
+        "The right answer is the dimension on which the text DRAWS THE CONTRAST — even if other differences exist in the world, only the textual one counts.",
+        "Reject options where the asymmetric claim is true of one side but the text doesn't say it's FALSE of the other side. A real skillnad needs both halves explicit or strongly implied.",
+        "Watch for cases where X and Y agree on the asked dimension; the right answer is sometimes 'no clear difference / the texts converge here', or a more carefully scoped contrast."
+      ],
+      "common_distractors": [
+        {
+          "pattern": "True about X, silent about Y",
+          "why_it_traps": "The option states a real property of X but the text never says Y differs on it — so it's a property, not a contrast."
+        },
+        {
+          "pattern": "Difference that exists in the world but not in the text",
+          "why_it_traps": "Students rely on background knowledge of Piaget vs Vygotskij rather than what THIS text says about them."
+        },
+        {
+          "pattern": "Sides reversed",
+          "why_it_traps": "Names a real textual contrast but swaps which side has which property."
+        },
+        {
+          "pattern": "Difference at the wrong granularity",
+          "why_it_traps": "Names a sub-detail that flows from a deeper contrast — but the question asks for the principled split, not the symptom."
+        }
+      ],
+      "example_questions": [
+        "host-2017-verb1-LÄS-019",
+        "host-2020-verb2-LÄS-019",
+        "host-2022-verb2-LÄS-012",
+        "host-ver1-2019-verb1-LÄS-012",
+        "host-ver2-2019-verb1-LÄS-012",
+        "var-2014-verb2-LÄS-015",
+        "var-2015-verb1-LÄS-018",
+        "var-2015-verb2-LÄS-014",
+        "var-2017-verb1-LÄS-020",
+        "var-2019-verb2-LÄS-020",
+        "var-2022-1-verb1-LÄS-017"
+      ]
+    },
+    {
+      "id": "LAS-TYPE-007",
+      "question_type": "Logical entailment",
+      "attack_protocol": [
+        "Spot the trigger: 'vilken blir följden / konsekvensen', 'vad skulle innebära', 'rimlig slutsats', 'om man följer textens resonemang', 'logiska konsekvens', 'rimligaste tolkningen'.",
+        "Identify the premise the question hands you (explicitly stated in the text — sometimes quoted in the question stem).",
+        "Apply the author's own reasoning, not your own — even if you'd disagree with their logic, the answer is what THEIR argument entails.",
+        "Trace one step forward from the premise. Most LÄS entailment questions are one inferential step, not a chain.",
+        "Eliminate options that don't follow even if the premise is true, and options that follow only under an outside assumption."
+      ],
+      "common_distractors": [
+        {
+          "pattern": "Follows under a different premise",
+          "why_it_traps": "Sounds logical, but uses your background reasoning, not the author's stated chain."
+        },
+        {
+          "pattern": "Two-step entailment when only one step is licensed",
+          "why_it_traps": "The option follows IF you grant one extra inferential leap the text doesn't make."
+        },
+        {
+          "pattern": "Restates the premise as if it were the consequence",
+          "why_it_traps": "Sounds like it answers because the keywords match — but it's the input, not the output."
+        },
+        {
+          "pattern": "Contradicts the author's normative frame",
+          "why_it_traps": "Logically valid but at odds with the value-judgment the author has already committed to — students forget the author's stance constrains acceptable conclusions."
+        }
+      ],
+      "example_questions": [
+        "host-2013-verb1-LÄS-011",
+        "host-2014-verb1-LÄS-014",
+        "host-2016-verb2-LÄS-020",
+        "host-2017-verb2-LÄS-019",
+        "var-2013-verb2-LÄS-014",
+        "var-2017-verb2-LÄS-012",
+        "var-2023-verb2-LÄS-012",
+        "var-2024-verb1-LÄS-020",
+        "var-2024-verb2-LÄS-014"
+      ]
+    },
+    {
+      "id": "LAS-TYPE-008",
+      "question_type": "Conditional yes/no",
+      "attack_protocol": [
+        "Spot the trigger shape: 'Ger texten någon förklaring/svar till X, och i så fall vilken/vilket?' or 'Tar X ställning, och i så fall vilken?'. The question is two questions chained: (a) does the text address this at all, (b) if yes, what is the answer.",
+        "First settle (a) using the passage. If the text is silent or only hints, the correct option is the 'nej' option — even if a 'ja, …' option sounds plausible.",
+        "If (a) is yes, you still must match (b) to what the text actually says — the trap is picking a 'ja' option with the wrong content.",
+        "Beware the asymmetric option set: usually one 'nej' option plus 3–4 'ja, X' options. The mere presence of many 'ja' options is not evidence that the answer is 'ja'.",
+        "Read the text for the exact scope the question pins down (e.g. 'någon förklaring TILL DETTA' — not just any explanation in the text)."
+      ],
+      "common_distractors": [
+        {
+          "pattern": "'Ja' option that gives a true fact from the wrong place in the text",
+          "why_it_traps": "The fact appears in the passage but doesn't answer the specific 'varför/hur' the question pins down."
+        },
+        {
+          "pattern": "'Ja' option that infers what the text only hints at",
+          "why_it_traps": "Tempting because students feel they must commit to a position — but if the text is genuinely silent, 'nej' is the answer."
+        },
+        {
+          "pattern": "'Nej' option when the text does give an explanation",
+          "why_it_traps": "Students who skim miss the explanation and default to 'nej'. The check is to find the explanation explicitly before ruling 'nej' out or in."
+        },
+        {
+          "pattern": "'Ja' option that gives the wrong half of a two-sided treatment",
+          "why_it_traps": "Text presents both sides; option commits to only one. Often the right answer is 'nej, inget entydigt svar' or a 'ja' that captures the duality."
+        }
+      ],
+      "example_questions": [
+        "host-2013-verb2-LÄS-013",
+        "host-2014-verb1-LÄS-016",
+        "host-2015-verb2-LÄS-012",
+        "host-2025-verb1-LÄS-014",
+        "var-2013-verb2-LÄS-012",
+        "var-2013-verb2-LÄS-013",
+        "var-2014-verb2-LÄS-013",
+        "var-2015-verb2-LÄS-012",
+        "var-2019-verb2-LÄS-016",
+        "var-2025-verb2-LÄS-015"
+      ]
+    }
+  ]
+}

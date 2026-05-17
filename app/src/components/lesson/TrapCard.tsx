@@ -123,37 +123,21 @@ export function TrapCard({ entry, section }: { entry: TrapEntry; section: Sectio
           </p>
         )}
         <div style={{ marginTop: 24 }}>
-          {/* DTK has no drill yet (image pipeline pending); every other
-           *  section has a working drill behind /drill?section=. */}
-          {section === 'DTK' ? (
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 11,
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: 'var(--muted)',
-              }}
-            >
-              övning kommer
-            </span>
-          ) : (
-            <Link
-              to="/drill"
-              search={{ section }}
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 15,
-                lineHeight: 1.4,
-                color: 'var(--ink)',
-                textDecoration: 'none',
-                borderBottom: '1px solid var(--ink)',
-                paddingBottom: 2,
-              }}
-            >
-              Öva detta mönster →
-            </Link>
-          )}
+          <Link
+            to="/drill"
+            search={{ section }}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 15,
+              lineHeight: 1.4,
+              color: 'var(--ink)',
+              textDecoration: 'none',
+              borderBottom: '1px solid var(--ink)',
+              paddingBottom: 2,
+            }}
+          >
+            Öva detta mönster →
+          </Link>
         </div>
       </div>
     </details>

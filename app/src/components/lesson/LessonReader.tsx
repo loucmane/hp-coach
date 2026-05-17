@@ -15,6 +15,8 @@ import { Mono } from '@/components/primitives'
 import { type Framework, loadFramework } from '@/data/frameworks'
 import type { Section } from '@/data/questions'
 
+import { LexiconCard } from './LexiconCard'
+import { ProtocolCard } from './ProtocolCard'
 import { TrapCard } from './TrapCard'
 
 const SECTION_TITLE: Record<string, { headline: string; subline: string }> = {
@@ -38,10 +40,15 @@ const WORDS_PER_MINUTE = 200
 function estimateReadMinutes(framework: Framework): number {
   let words = 0
   for (const entry of framework.entries) {
-    words += countWords(entry.pattern_description)
-    words += countWords(entry.why_it_occurs)
-    words += countWords(entry.countermeasure)
-    words += countWords(entry.common_distractor_signature)
+    // Family-agnostic word count: sum every string-valued field plus
+    // every element of any string-array field. New schema fields land
+    // automatically without changing this loop.
+    for (const value of Object.values(entry)) {
+      if (typeof value === 'string') words += countWords(value)
+      else if (Array.isArray(value)) {
+        for (const v of value) if (typeof v === 'string') words += countWords(v)
+      }
+    }
   }
   return Math.max(1, Math.round(words / WORDS_PER_MINUTE))
 }
@@ -157,13 +164,47 @@ export function LessonReader({ section }: { section: Section }) {
         {loading && <EmptyState message="Laddar…" />}
         {error && <EmptyState message={`Kunde inte ladda: ${error}`} />}
         {!loading && !error && !framework && <EmptyState message="Inget innehåll här ännu." />}
-        {framework?.family.endsWith('_traps') &&
-          framework.entries.map((entry) => (
-            <TrapCard key={entry.id} entry={entry} section={section} />
-          ))}
+        {framework && <FrameworkBody framework={framework} section={section} />}
       </div>
     </div>
   )
+}
+
+function FrameworkBody({ framework, section }: { framework: Framework; section: Section }) {
+  // Dispatch on the framework's discriminating family. Trap catalogs
+  // (NOG/KVA/XYZ) → TrapCard. Tactic / constraint / protocol catalogs
+  // (DTK/MEK/LÄS/ELF) → ProtocolCard. Lexicon (ORD) → LexiconCard.
+  switch (framework.family) {
+    case 'nog_traps':
+    case 'kva_traps':
+    case 'xyz_traps':
+      return (
+        <>
+          {framework.entries.map((entry) => (
+            <TrapCard key={entry.id} entry={entry} section={section} />
+          ))}
+        </>
+      )
+    case 'dtk_tactics':
+    case 'mek_protocol':
+    case 'las_taxonomy':
+    case 'elf_taxonomy':
+      return (
+        <>
+          {framework.entries.map((entry) => (
+            <ProtocolCard key={entry.id} entry={entry} section={section} />
+          ))}
+        </>
+      )
+    case 'ord_roots':
+      return (
+        <>
+          {framework.entries.map((entry) => (
+            <LexiconCard key={entry.id} entry={entry} />
+          ))}
+        </>
+      )
+  }
 }
 
 function EmptyState({ message }: { message: string }) {
