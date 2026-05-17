@@ -287,80 +287,100 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
       aria-label="Förstorad figur"
       tabIndex={-1}
       style={{
+        // Backdrop fills the viewport but does NOT scroll. The scroll
+        // lives on the inner image-area box so the toolbar (absolute
+        // child of the backdrop) stays pinned to the bottom edge even
+        // when the user pans a 1:1 landscape figure.
         position: 'fixed',
         inset: 0,
         background: 'color-mix(in oklch, var(--bg) 92%, transparent)',
         backdropFilter: 'blur(8px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         zIndex: 100,
-        padding: 24,
         cursor: 'zoom-out',
-        overflow: 'auto',
       }}
     >
-      <img
-        src={`/${src}`}
-        alt="Figur, förstorad"
-        onClick={(e) => {
-          e.stopPropagation()
-          setActual((v) => !v)
+      <div
+        style={{
+          position: 'absolute',
+          // Reserve 80px at the bottom for the toolbar — keeps the
+          // controls always visible above the image scroll area.
+          // Clicks in the padding still bubble to the backdrop (closes
+          // the modal), matching the "click outside to dismiss" gesture
+          // users already know.
+          inset: '0 0 80px 0',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'auto',
+          padding: 24,
         }}
-        onKeyDown={(e) => e.stopPropagation()}
-        style={
-          actual
-            ? {
-                // Native pixel size: ~1700px wide for landscape pages.
-                // The backdrop scrolls; user pans by dragging.
-                width: 'auto',
-                height: 'auto',
-                maxWidth: 'none',
-                maxHeight: 'none',
-                background: 'var(--panel)',
-                border: '1px solid var(--hairline)',
-                borderRadius: 'var(--radius)',
-                padding: 12,
-                cursor: 'zoom-out',
-                transform: `rotate(${rotation}deg)`,
-                transition: 'transform 220ms ease',
-              }
-            : {
-                // Fit mode: contain inside viewport. When rotated 90/270,
-                // the bounding box swaps so the post-rotation image
-                // still fits — clamp by the SHORTER viewport axis as the
-                // image's longer axis after rotation.
-                maxWidth: rotated ? 'min(94vh, 1400px)' : 'min(96vw, 1400px)',
-                maxHeight: rotated ? '94vw' : '94vh',
-                width: 'auto',
-                height: 'auto',
-                background: 'var(--panel)',
-                border: '1px solid var(--hairline)',
-                borderRadius: 'var(--radius)',
-                padding: 12,
-                cursor: 'zoom-in',
-                transform: `rotate(${rotation}deg)`,
-                transition: 'transform 220ms ease',
-              }
-        }
-      />
+      >
+        <img
+          src={`/${src}`}
+          alt="Figur, förstorad"
+          onClick={(e) => {
+            e.stopPropagation()
+            setActual((v) => !v)
+          }}
+          onKeyDown={(e) => e.stopPropagation()}
+          style={
+            actual
+              ? {
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: 'none',
+                  maxHeight: 'none',
+                  background: 'var(--panel)',
+                  border: '1px solid var(--hairline)',
+                  borderRadius: 'var(--radius)',
+                  padding: 12,
+                  cursor: 'zoom-out',
+                  transform: `rotate(${rotation}deg)`,
+                  transition: 'transform 220ms ease',
+                }
+              : {
+                  // Fit inside the scroll-area box. When rotated 90/270
+                  // the bounding box swaps so clamp by the orthogonal
+                  // viewport axis instead.
+                  maxWidth: rotated ? 'min(94vh, 1400px)' : 'min(96vw, 1400px)',
+                  maxHeight: rotated ? '94vw' : '94vh',
+                  width: 'auto',
+                  height: 'auto',
+                  background: 'var(--panel)',
+                  border: '1px solid var(--hairline)',
+                  borderRadius: 'var(--radius)',
+                  padding: 12,
+                  cursor: 'zoom-in',
+                  transform: `rotate(${rotation}deg)`,
+                  transition: 'transform 220ms ease',
+                }
+          }
+        />
+      </div>
       <div
         onClick={(e) => e.stopPropagation()}
         onKeyDown={(e) => e.stopPropagation()}
         role="toolbar"
         aria-label="Figurkontroller"
         style={{
-          position: 'fixed',
-          bottom: 16,
+          // Absolute inside the backdrop — pinned at the bottom and
+          // OUTSIDE the scroll container above, so panning the image
+          // doesn't scroll the toolbar away. Avoids `position: fixed`
+          // (gets trapped by transformed ancestors elsewhere in the
+          // page chrome).
+          position: 'absolute',
+          bottom: 24,
           left: '50%',
           transform: 'translateX(-50%)',
           display: 'flex',
           alignItems: 'center',
           gap: 12,
           padding: '6px 8px 6px 14px',
-          background: 'color-mix(in oklch, var(--bg) 92%, transparent)',
+          background: 'color-mix(in oklch, var(--bg) 96%, transparent)',
           border: '1px solid var(--hairline)',
           borderRadius: 999,
+          boxShadow: '0 8px 24px -12px rgba(0, 0, 0, 0.18)',
+          zIndex: 1,
           cursor: 'default',
         }}
       >
