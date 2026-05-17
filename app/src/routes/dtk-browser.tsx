@@ -17,7 +17,7 @@ import { Mono } from '@/components/primitives'
 
 type DtkIndex = Record<string, { figure: string }>
 
-export const Route = createFileRoute('/dev/dtk-browser')({
+export const Route = createFileRoute('/dtk-browser')({
   component: DtkBrowserRoute,
 })
 
@@ -27,8 +27,11 @@ function DtkBrowserRoute() {
 
   useEffect(() => {
     fetch('/figures/dtk/_index.json')
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((data: DtkIndex) => setIndex(data))
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        return r.json() as Promise<DtkIndex>
+      })
+      .then((data) => setIndex(data))
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
   }, [])
 
