@@ -1,0 +1,314 @@
+{
+  "host-2024-kvant1-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att råka mäta sandborstmaskens (VITA) ruta i 1982-stapeln istället för fåborstmaskens (LJUSGRÅ) — de ligger som grannrutor i samma stapel och båda heter '...mask'. Den vita rutan är synligt smalare, så en sådan felmätning landar närmare 1/4.",
+        "why_wrong": "Som steg 3 och steg 5 betonar är fåborstmask = Oligochaeta = LJUSGRÅ, medan sandborstmask = Pygospio elegans = VIT. Facit fastslår att svaret är 1/3 (alternativ A) — alltså fåborstmasken, inte sandborstmasken. Om din avläsning ligger närmare 1/4 har du högst sannolikt mätt den vita grannrutan."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1/5 = 20 % känns rimligt om du blandar ihop 1982-stapeln med 1987-stapeln. I 1987 är fåborstmaskens (om den syns alls som ljusgrå) markant mindre. En sådan stapel-förväxling ger en konsekvent men felplacerad avläsning runt 1/5.",
+        "why_wrong": "Steg 4 säger uttryckligen: välj 1982-stapeln, inte 1987-grannen. Facit fastslår 1/3 för 1982 — om du står vid fel stapel mäter du en helt annan komposition. Det är inte ett mätfel i graderna utan ett orienteringsfel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2/5 = 40 % är frestande om man tolkar 'maskar' kollektivt och adderar både fåborstmaskens (ljusgrå) OCH sandborstmaskens (vita) rutor till en gemensam 'mask-andel'. Tillsammans blir de ungefär 40 %.",
+        "why_wrong": "Frågan handlar om fåborstmasken ENSAM. Som steg 3 understryker: legenden listar dem som separata arter. Facit fastslår 1/3 för enbart fåborstmasken — adderar du två rutor besvarar du en annan fråga än den som ställs."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att blanda ihop två arter med liknande namn (fåborstmask vs sandborstmask) eller två visuellt intilliggande rutor i samma stapel. Botemedlet: peka med fingret på legenden FÖRST, lås in vilken färg/mönster det är som söks, och mät rutans bredd LÄNGS procent-axeln först därefter — inte tvärtom.",
+    "solution_path": "Facit fastslår 1/3 (alternativ A). Identifiera fåborstmasken i legenden (ljusgrå ruta = Oligochaeta). Hitta 1982-stapeln. Projicera den ljusgrå rutans kanter ner till procent-axelns gridlinjer (0, 20, 40, 60, 80, 100) — du ser att rutan spänner ungefär över en tredjedel av stapeln, konsistent med facitvärdet 1/3 ≈ 33 %.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av havsbottenfaunan utgjorde fåborstmasken 1982? Svarsformatet är bråk (1/3, 1/4, 1/5, 2/5). Facit fastslår 1/3 (alternativ A). Din uppgift är att lära dig läsa diagrammet så att din avläsning landar på just det värdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Diagrammet heter 'Havsbottenfaunan vid Gotlands ostkust'. Procent-axeln går 0–100 med PRINTADE tick-värden vid 0, 20, 40, 60, 80, 100 — det är dina enda hårda siffror på chartet (inga datalabels är skrivna inuti rutorna). På den andra axeln står åren 1920, 1977, 1982, 1987, 2007. Varje stapel summerar till 100 % och är staplad i artandelar — 'bredd på axeln' = 'andel av faunan' för det året.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden bokstavligt",
+        "text": "Sju arter står i legenden, var och en med en distinkt rutmarkering. Fåborstmask (Oligochaeta) har en LJUSGRÅ ruta. Sandborstmask (Pygospio elegans) har en VIT ruta. Trots att båda heter '...mask' är de olika arter med olika rutor. Innan du mäter något: peka på fåborstmaskens ruta i legenden och håll bilden av just den ljusgrå tonen i huvudet.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta rätt stapel",
+        "text": "Frågan gäller år 1982. Bland de fem staplarna (1920, 1977, 1982, 1987, 2007) väljer du 1982 — inte 1987, som är grannen, och inte 1977, som är dominerad av en bred vit ruta (sandborstmask). Sätt fingret på 1982-stapeln innan steg 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta fåborstmaskens ruta i 1982-stapeln",
+        "text": "Skanna 1982-stapeln efter en LJUSGRÅ ruta. 1982-stapeln är synligt heterogen — flera olika mönster: smala rutor (mörkgrå Övriga, svart Östersjömussla, hatchad Vitmärla, prickig Sandmärla, vit Sandborstmask) plus en BRED LJUSGRÅ ruta. Den ljusgrå är fåborstmasken. Den är en av de bredaste rutorna i hela 1982-stapeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Inga printade datalabels — använd tick-axeln",
+        "text": "Inuti rutorna finns INGA printade procenttal. Legendnycklarna är symboliska, inte numeriska. De enda hårda siffrorna är procent-axelns tick-labels: 0, 20, 40, 60, 80, 100. All avläsning sker genom att projicera rutornas kanter NER till dessa tick-värden. Det är därför gridlinjerna är dina bästa vänner i den här typen av frågor.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Projicera den ljusgrå rutans kanter mot gridlinjerna",
+        "text": "Läs av VAR den ljusgrå rutan börjar och VAR den slutar genom att projicera kanterna ner till procent-axeln. Beskriv för dig själv: 'rutan börjar någonstans strax under 30 och slutar någonstans strax under 60'. Bredden är alltså ungefär 30 procentenheter — vilket är ungefär en tredjedel av 100. Konsistent med facits 1/3.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'andel' i ett 100-procent-staplat diagram?",
+        "text": "Eftersom hela stapeln summerar till 100 % betyder en bredd på N procentenheter på axeln att arten utgör N % av faunan det året. På staplade andelsdiagram är 'bredd på axeln' och 'andel av helheten' SAMMA tal. En ruta som spänner ungefär 30 procentenheter är alltså ungefär 30 % av faunan — vilket är cirka 1/3.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Översätt mätningen till svarsformatet",
+        "text": "Konvertera din avläsning till en grov procent och jämför med de fyra bråken: 1/3 ≈ 33 %, 1/4 = 25 %, 1/5 = 20 %, 2/5 = 40 %. Facit fastslår 1/3, så din avläsning bör landa märkbart närmare 33 % än 25, 20 eller 40 %. Skillnaden mellan de fyra bråken är minst 7 procentenheter — så även en grov ögonmätning räcker för att välja entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot grannrutorna i samma stapel",
+        "text": "Den vita rutan (sandborstmask) i samma 1982-stapel är synligt SMALARE än den ljusgrå. Om din avläsning på den ljusgrå råkar bli mindre än den vita har du läst av fel ruta — byt och börja om i steg 5. På samma sätt: i 1987-stapeln är fåborstmasken (om alls synlig) betydligt smalare — så din 1982-mätning ska vara märkbart bredare än motsvarande ruta i 1987.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (1/3). Insikten i en mening: i staplade andelsdiagram = legenden först, rätt stapel sedan, mät bredd mot gridlinjerna sist — och förvänta dig en avläsning på cirka 33 % som matchar 1/3.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-läsningsstrategi för staplade andelsdiagram: (1) identifiera arten/kategorin i legenden och lås in dess färg/mönster, (2) hitta rätt år/stapel, (3) projicera rutans kanter ner till procent-axelns printade tick-värden (0, 20, 40, 60, 80, 100) och beskriv intervallet mellan dem, (4) översätt intervallet till svarsformatet (bråk, procentenhet eller ratio). Triggern: 'andel + ett år' → fyra-stegs avläsning, inte huvudräkning eller gissning.",
+    "pregrade_tactic": {
+      "handle": "Legend-först-avläsning",
+      "move": "Peka på fåborstmaskens ljusgrå ruta i legenden, lås in 1982-stapeln, projicera rutans kanter mot procent-axelns tick-värden och välj bråket som ligger närmast en tredjedel."
+    }
+  },
+  "host-2024-kvant1-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1920-stapeln domineras visuellt av EN bred ruta (hatchad vitmärla) som tar nästan hela bredden. Det kan ge intrycket att 'störst' är extremt nära 'näst störst' — men det är inte alls vad du jämför här.",
+        "why_wrong": "Som steg 5 påpekar: i 1920 är den hatchade rutan klart bredast och alla övriga rutor (svart, mörkgrå) är synligt mycket smalare. Skillnaden mellan #1 och #2 är därför STOR, inte liten. Facit fastslår att det är 2007 (alternativ D) där skillnaden är minst — en enskild dominant ruta som i 1920 är ett tecken på STOR skillnad till #2."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1982-stapeln ser jämn ut — flera rutor av liknande bredd. Det är frestande att kalla en jämn stapel 'minsta skillnaden' eftersom inget enskilt sticker ut, och blanda ihop 'jämn fördelning över MÅNGA arter' med 'liten skillnad mellan TVÅ bredaste'.",
+        "why_wrong": "Steg 6: i 1982 är fåborstmaskens ljusgrå ruta märkbart bredare än alla andra rutor i den stapeln. Facit fastslår 2007 som svar — eftersom det är där de två bredaste rutorna (svart Östersjömussla och vit Sandborstmask) är mest jämnstora. Du måste mäta de två BREDASTE rutorna mot varandra, inte bedöma helhetsintrycket."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1987-stapeln har en mycket bred svart ruta (östersjömussla) och en tydligt mindre hatchad (vitmärla) som tvåa. Visuellt sticker dessa två ut, vilket kan locka till att klassa staplen som 'tydlig skillnad mellan #1 och #2'.",
+        "why_wrong": "Steg 5 igen: en VISUELLT DOMINERAD stapel (en mycket bred ruta + en klart smalare tvåa) signalerar STOR skillnad mellan #1 och #2, inte liten. Facit fastslår 2007 som det år där skillnaden är MINST — 1987 är ett tydligt exempel på motsatsen."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan är att tolka 'minsta skillnaden mellan störst och näst störst' som 'jämnaste stapel överlag' eller 'mest dominerade stapel'. Botemedlet: identifiera FÖRST den bredaste rutan i varje stapel, SEDAN den näst bredaste — och jämför sedan ENDAST dessa två rutornas bredder, inte hela staplarnas utseende.",
+    "solution_path": "Facit fastslår 2007 (alternativ D). I varje stapel: peka ut den BREDASTE rutan (#1) och den NÄST BREDASTE rutan (#2). Jämför hur stor skillnaden i bredd är mellan #1 och #2 mätt mot procent-axelns gridlinjer. I 2007 ser den svarta (Östersjömussla) och den vita (Sandborstmask) rutan ungefär lika breda ut — det är just det 'minsta skillnaden' betyder, och det matchar facits svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år är skillnaden i procentenheter MINST mellan arten med störst andel och arten med näst störst andel? Svarsalternativen är de fyra åren 1920, 1982, 1987, 2007 (notera: 1977 finns i diagrammet men inte bland alternativen). Facit fastslår 2007 (alternativ D). Du letar efter den stapel där de två bredaste rutorna är mest LIKA breda.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Stapeldiagrammet visar fem år med procent-axel 0–100 och printade tick-värden vid 0, 20, 40, 60, 80, 100. Inga datalabels står inuti rutorna — du måste projicera rutkanter ner till dessa tick-värden för att kvantifiera bredd. Varje stapel summerar till 100 % och är uppdelad i sju artrutor enligt legenden.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Översätt frågan till en visuell uppgift",
+        "text": "'Skillnad i procentenheter mellan #1 och #2 är minst' = 'i den staplen är de två bredaste rutorna mest lika breda'. Visuellt: du letar inte efter den jämnaste stapeln över ALLA arter, utan efter två stycken som är NÄSTAN LIKA bredast.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Strategi: en stapel i taget",
+        "text": "Gå genom alternativen 1920, 1982, 1987, 2007 i tur och ordning. För varje stapel: peka ut #1 (bredaste rutan), peka ut #2 (näst bredaste), och bedöm grovt hur stor SKILLNADEN är genom att titta på var deras kanter ligger mot procent-axelns tick-värden.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska 1920",
+        "text": "I 1920-stapeln dominerar en HATCHAD ruta (vitmärla) som täcker en mycket stor del av stapeln. #2 är märkbart smalare — antingen den svarta rutan (östersjömussla) eller den mörkgrå (Övriga). Skillnaden mellan #1 och #2 är SYNLIGT STOR — den hatchade är flera gånger bredare än näst bredaste. Inte 1920.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska 1982",
+        "text": "I 1982-stapeln är fördelningen brokig över flera arter. #1 är den ljusgrå rutan (fåborstmask, bred), #2 är troligen den vita (sandborstmask) eller den hatchade (vitmärla). Skillnaden mellan #1 och #2 är mindre än i 1920 — men du behöver fortfarande jämföra mot 1987 och 2007 innan du bestämmer dig.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska 1987",
+        "text": "I 1987-stapeln är den svarta rutan (östersjömussla) MYCKET BRED — den dominerar staplen påtagligt. #2 är den hatchade vitmärlan, som är klart smalare. Visuellt är detta — i likhet med 1920 — en stapel där #1 är mycket större än #2. Skillnaden är stor, inte liten. Inte 1987.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Granska 2007",
+        "text": "I 2007-stapeln har du TVÅ påtagligt breda rutor: den svarta (östersjömussla) och den vita (sandborstmask). Bredvid dessa två finns smalare rutor (hatchad vitmärla, mörkgrå Övriga, dottad Tusensnäcka). De två bredaste verkar ha JÄMFÖRBAR bredd — det är just det som frågan letar efter. Och det matchar facits svar D.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Mät de två bredaste rutorna mot tick-värdena",
+        "text": "I 2007-stapeln: projicera kanterna av den svarta och den vita rutan ner till procent-axeln. Båda rutorna ser ut att uppta ungefär lika stora intervall mellan de printade tick-värdena (0, 20, 40, 60, 80, 100). Gör samma snabbjämförelse i 1982 också och du ser att skillnaden där är märkbart större. Det visuella stödet för facits svar D är konsistent.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: rangordna årens skillnader",
+        "text": "Grov ordning från störst till minst skillnad mellan #1 och #2: 1987 (svart dominerar) ≈ 1920 (hatchad dominerar) > 1982 (några jämstora rutor men #1 fortfarande märkbart bredast) > 2007 (svart och vit nästan lika breda). 2007 är ensam i botten av rangordningen — precis vad facit fastslår.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen är 2007 (D) den stapel där de två bredaste rutorna är mest jämnstora. 1920 (A), 1982 (B) och 1987 (C) har alla en tydligt dominerande ruta. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (2007). Insikten i en mening: omformulera frågans 'minsta skillnad' till en visuell jakt på 'två nästan jämnstora bredaste rutor', annars är det lätt att luras av hur jämn helheten ser ut.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'minst skillnad'-frågor på staplade andelsdiagram: omformulera frågan till en visuell uppgift (leta två RUTOR med liknande bredd i samma stapel, inte en stapel med jämn FÖRDELNING överlag). Procedur: i varje kandidat-stapel, identifiera #1 och #2 mot procent-axelns printade tick-värden, sedan jämför hur stor skillnaden mellan deras bredder är. Triggern: 'minst skillnad mellan störst och näst störst' → tvåruts-mätning per stapel, inte helhetsintryck.",
+    "pregrade_tactic": {
+      "handle": "Tvåruts-jämförelse-per-stapel",
+      "move": "I varje årtals stapel, peka ut den bredaste och näst bredaste rutan och bedöm hur lika breda de är mot tick-värdena. Det år där #1 och #2 ser mest jämnstora ut är svaret."
+    }
+  },
+  "host-2024-kvant1-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att titta på 1977-stapeln, se att sandborstmaskens vita ruta är MYCKET BRED, och anta att ökningen från 1920 till 1977 var ungefär 60 procentenheter. Riktningen (ökning) stämmer och storleken låter dramatisk.",
+        "why_wrong": "Som steg 5 visar är sandborstmasken (vit ruta) nästan osynlig i 1920 och dominerar 1977-stapeln. Riktningen är rätt — men facit fastslår 35 procentenheter (alternativ D) som det enda påstående där BÅDE riktning OCH storlek stämmer med diagrammet. Den vita rutans bredd i 1977 mot tick-värdena 0–100 ligger snarare runt 50–65 % än hela 60+ procentenheter över 1920."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1977-stapeln har en bred vit ruta; 1982-stapeln har en synligt SMALARE vit ruta. Det är en MINSKNING — och påståendet i B handlar om en minskning på 45 procentenheter. Riktningen är rätt.",
+        "why_wrong": "Riktningen (minskning) är rätt enligt steg 6, men 45 procentenheter är en mycket stor minskning som skulle kräva att 1977-värdet var ungefär 45 procentenheter över 1982-värdet. Facit fastslår att rätt påstående är D (1987→2007 +35 procentenheter) — inte B. Storleken i B är överdriven jämfört med vad procent-axelns tick-värden ger för den vita rutans förändring 1977→1982."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Mellan 1982 och 1987 ser den vita rutan ut att MINSKA ytterligare. Riktningen i C (minskning) matchar visuellt, och 20 procentenheter låter som ett 'litet steg'.",
+        "why_wrong": "Som steg 7 visar är den vita rutan i 1982 redan ganska smal, och i 1987 ännu mindre. En minskning på 20 procentenheter förutsätter att 1982-värdet var åtminstone 20 procentenheter — vilket inte stämmer med hur rutan ligger mot tick-värdena. Facit fastslår D (1987→2007 +35) som det enda alternativ där riktning OCH storlek båda går ihop med diagrammet."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i DTK-förändringsfrågor är att stanna vid RIKTNINGEN (ökade/minskade) utan att granska STORLEKEN (med hur många procentenheter). Botemedlet: läs av artens ruta i bägge åren separat mot procent-axelns tick-värden, beräkna SKILLNADEN, och kontrollera först därefter att alternativets siffra stämmer.",
+    "solution_path": "Facit fastslår D: 'Mellan 1987 och 2007 ökade andelen med 35 procentenheter.' Identifiera sandborstmaskens vita ruta i legenden. Läs av dess bredd år för år mot procent-axelns tick-värden. För varje alternativ A–D: stämmer både RIKTNING och STORLEK? Bara D klarar båda kriterierna — vilket är konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur förändrades sandborstmaskens andel mellan de redovisade åren? Vart och ett av A–D påstår ett specifikt mellanår-intervall (1920→1977, 1977→1982, 1982→1987, 1987→2007), en riktning (ökade/minskade) och en storlek (procentenheter). Facit fastslår D: 1987→2007 ökade andelen med 35 procentenheter. Din uppgift är att lära dig läsa diagrammet så att just det påståendet bekräftas.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lås in arten i legenden",
+        "text": "Sandborstmask = Pygospio elegans = VIT ruta. Inte ljusgrå (det är fåborstmask, Oligochaeta). Innan du jämför något: peka på den vita rutan i legenden så att du letar efter rätt mönster i staplarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Orientera dig mot procent-axeln",
+        "text": "Procent-axeln går 0–100 med PRINTADE tick-värden vid 0, 20, 40, 60, 80, 100 — dessa är de enda hårda siffrorna på chartet. För varje år ska du projicera den vita rutans kanter ner till axeln och beskriva intervallet. Eftersom staplarna är 100-procentstaplade gäller fortfarande 'bredd på axeln = andel av faunan'.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs år 1920",
+        "text": "I 1920-stapeln är den vita rutan (sandborstmask) mycket smal eller knappt synlig. Lägg märke till att stapeln domineras av den hatchade vitmärlan. Den vita rutans bredd här ska du jämföra mot bredden i 1977 (för alternativ A).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs år 1977",
+        "text": "I 1977-stapeln är den vita rutan PÅTAGLIGT BRED — den utgör en mycket stor del av stapeln. Skillnaden mot 1920 är därför STOR och i ÖKANDE riktning. Frågan: stämmer 'med 60 procentenheter' (alternativ A)? Projicera kanterna mot tick-värdena 0, 20, 40, 60, 80, 100 — bredden i 1977 är stor, men inte hela 60 procentenheter OVANFÖR 1920-bredden. Riktningen är rätt men storleken i A matchar inte facits svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs år 1982",
+        "text": "I 1982-stapeln är den vita rutan synligt smalare än i 1977 — men inte borta. Riktningen 1977→1982 är MINSKNING. Frågan: är den minskningen exakt 45 procentenheter (alternativ B)? För att B ska vara rätt måste 1977-värdet ligga ungefär 45 procentenheter över 1982-värdet — projicera och kontrollera mot tick-värdena. Det är överdrivet stor minskning för vad ögat ser, och facit fastslår D, inte B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs år 1987",
+        "text": "I 1987-stapeln är den vita rutan ännu smalare än i 1982. Riktningen 1982→1987 är fortsatt MINSKNING. Frågan: är den minskningen exakt 20 procentenheter (alternativ C)? Eftersom 1982 redan var ganska smal kräver C att den rutan var åtminstone 20 procentenheter — projicera kanterna och se efter. Storleken i C går inte ihop med 1982-bredden mot tick-värdena; facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Avläs år 2007",
+        "text": "I 2007-stapeln är den vita rutan ÅTER bred — påtagligt bredare än i 1987. Riktningen 1987→2007 är ÖKNING. Frågan: är den ökningen ungefär 35 procentenheter (alternativ D)? Facit fastslår just detta. Projicera kanterna av den vita rutan i båda åren: i 1987 ligger den i ett smalt intervall (några procentenheter), i 2007 spänner den ungefär från 30-talet upp i 60-talet. Skillnaden är konsistent med +35 procentenheter.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa riktning och storlek alternativ för alternativ",
+        "text": "Alternativ A: riktning OK (ökning 1920→1977), storlek 60 procentenheter — för stor för diagrammet. Alternativ B: riktning OK (minskning 1977→1982), storlek 45 — för stort fall. Alternativ C: riktning OK (minskning 1982→1987), storlek 20 — kräver att 1982-värdet var minst 20, vilket inte stämmer. Alternativ D: riktning OK (ökning 1987→2007), storlek 35 — matchar både riktning och bredd-skillnad mot tick-värdena. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Mätningen som avgör",
+        "text": "Den avgörande mätningen ligger på 1987→2007. Den vita rutan är klart smal i 1987 (några procentenheter) och tydligt bred i 2007 (ungefär 35 procentenheter bred). Projicera deras kanter mot tick-värdena 0, 20, 40, 60, 80, 100 och beräkna skillnaden. Avläsningen ligger närmast 35 procentenheter — och övriga alternativs storlekar matchar inte deras respektive intervall. Det bekräftar D.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check",
+        "text": "Två saker som ska stämma samtidigt för att D ska vara rätt: (a) den vita rutan måste vara MARKANT bredare i 2007 än i 1987 — vilket diagrammet visar tydligt, (b) skillnaden i bredd måste ligga närmare 35 procentenheter än något av de andra alternativens specifika tal. Båda kriterierna stämmer bara för D — konsistent med facit.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D — 'Mellan 1987 och 2007 ökade andelen med 35 procentenheter.' Insikten i en mening: i förändringsfrågor måste BÅDE riktning och storlek stämma — granska båda separat mot procent-axelns tick-värden innan du fastnar för ett alternativ.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för förändringsfrågor mellan år: läs av rutans bredd separat i båda åren mot procent-axelns printade tick-värden (0, 20, 40, 60, 80, 100), beräkna skillnaden, och granska varje alternativ A–D mot två kriterier samtidigt — RIKTNING (ökning/minskning) och STORLEK (antal procentenheter). Triggern: 'mellan år X och år Y ökade/minskade andelen med N procentenheter' → tvåvärdesavläsning + skillnadsmätning, inte gissning från helhetsintryck.",
+    "pregrade_tactic": {
+      "handle": "Riktning-och-storlek-tillsammans",
+      "move": "Läs av sandborstmaskens vita ruta i båda åren som varje alternativ nämner, beräkna skillnaden mot tick-värdena, och bocka av både riktning och storlek innan du väljer."
+    }
+  }
+}

@@ -46,10 +46,13 @@ PDF_ROOT = REPO_ROOT / "data" / "pdfs"
 OUT_DIR = REPO_ROOT / "app" / "public" / "figures" / "dtk"
 INDEX_PATH = OUT_DIR / "_index.json"
 
-# 2x scale → roughly 144 dpi for a 72-dpi PDF. Sharp enough for axis
-# labels and table digits without exploding asset size (a typical DTK
-# page lands at ~120-200 KB).
-RENDER_SCALE = 2.0
+# 4x scale → roughly 288 dpi for a 72-dpi PDF. Sharp enough that
+# gridlines, axis tick labels, and small printed numbers ARE readable
+# (not just estimable). Corpus footprint goes from ~22 MB at 2x to
+# ~80 MB at 4x — worth it for a coaching tool where the figure IS
+# the question. Phase C dogfood validation tradeoff: better drill
+# UX > smaller PWA install.
+RENDER_SCALE = 4.0
 
 # Page-level classification — DTK pages always carry "DTK" in the
 # header / footer (e.g., "– 17 – DTK" or "DTK – 17 –"). Question

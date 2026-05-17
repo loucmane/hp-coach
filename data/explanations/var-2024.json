@@ -1,4 +1,1204 @@
 {
+  "var-2024-kvant1-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Förortskommuner till storstäder och Pendlingskommuner låter intuitivt 'lika' — båda är pendlingsdominerade och båda har medelstora staplar. Men det är ord-associationen som lockar, inte själva diagrammet.",
+        "why_wrong": "Som steg 5 och steg 6 visar är Förortskommuner till storstäder ungefär 600 tusental ankomster medan Pendlingskommuner ligger närmare 400 tusental — det är en synlig skillnad. Facit fastslår A: det är Storstäder och Kommuner i tätbefolkad region som är mest lika i BÅDA dimensionerna samtidigt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Pendlingskommuner och Varuproducerande kommuner har relativt lika långa svarta försenings-staplar (båda runt 2-3 minuter), vilket lockar om man bara tittar på en av de två dimensionerna.",
+        "why_wrong": "Frågan kräver likhet i BÅDE antal ankomster OCH genomsnittlig försening. Som steg 7 markerar är de ljusgrå ankomst-staplarna ganska olika: Pendlingskommuner ~400 tusental, Varuproducerande ~700 tusental. Facit fastslår A — där de ljusgrå staplarna är ungefär jämstora och de svarta också är jämstora."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Varuproducerande kommuner och Kommuner i tätbefolkad region har båda ganska höga ankomst-staplar (700-900 tusental), så den ljusgrå dimensionen ser lika ut. Det kan räcka för att råka välja D om man hoppar över försenings-dimensionen.",
+        "why_wrong": "Steg 8 påminner: kontrollera ALLTID båda dimensionerna. De svarta försenings-staplarna är märkbart olika — Varuproducerande har högre snittförsening än Kommuner i tätbefolkad region. Facit fastslår A, där både ljusgrå och svart stapel är näst intill jämstora för båda kommungrupper."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i tvådimensions-likhetsfrågor är att jämföra på BARA EN dimension och missa att frågan kräver båda. Botemedlet: läs av båda staplarna (ljusgrå antal-stapel OCH svart försenings-stapel) för varje kandidatpar separat, och välj först det par där BÅDE jämförelser ger 'jämstort'.",
+    "pregrade_tactic": {
+      "handle": "Båda-dimensioner-samtidigt",
+      "move": "Slå ihop antalet ankomster och försening parvis: leta det kommungrupp-par där BÅDE den ljusgrå och den svarta stapeln är ungefär lika långa. Båda måste matcha."
+    },
+    "solution_path": "Facit fastslår A — Storstäder och Kommuner i tätbefolkad region. För varje svarspar: läs av båda kommungruppernas ljusgrå antal-stapel (vänster axel, 0-1 200 tusental) och deras svarta försenings-stapel (höger axel, 0-6 min/ankomst). Bara A ger två kommungrupper där båda dimensionerna är nästan jämstora — Storstäder har många ankomster och låg snittförsening, och Kommuner i tätbefolkad region matchar i båda mätarna.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket par av kommungrupper var MEST LIKA varandra i BÅDE antal tågankomster OCH genomsnittlig försening? Svarsalternativen A-D ger fyra kandidatpar. Facit fastslår A — Storstäder och Kommuner i tätbefolkad region. Din uppgift: lär dig läsa diagrammet så att du kan utesluta B, C och D och välja A trots att tre alternativ ser lika ut på en dimension.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Diagrammet heter 'Tågens ankomster och förseningar'. Det är ett kombinerat stapeldiagram med två Y-axlar: vänster axel (ljusgrå staplar) visar Antal tågankomster i tusental från 0 till 1 200, och höger axel (svarta staplar) visar Genomsnittlig försening i min/ankomst från 0 till 6. Varje kommungrupp får ett par staplar — en ljusgrå och en svart, sida vid sida.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden bokstavligt",
+        "text": "Legenden överst säger 'Antal ankomster' = ljusgrå stapel, 'Genomsnittlig försening' = svart stapel. De PRINTADE tick-värdena är dina enda hårda siffror: 0, 200, 400, 600, 800, 1 000, 1 200 (vänster) och 0, 1, 2, 3, 4, 5, 6 (höger). Inga datalabels står i staplarna — all avläsning sker via gridlinje-projicering.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'mest lika' i två dimensioner?",
+        "text": "'Mest lika' = 'minst avstånd' i båda dimensioner samtidigt. Om två kommungrupper har ungefär samma ljusgrå höjd OCH ungefär samma svarta höjd är de mest lika. En kommun som matchar på antal men inte på försening kvalificerar INTE — och tvärtom. Detta är två-dimensions-likhet, inte en-dimension.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av Storstäder och Kommuner i tätbefolkad region (par A)",
+        "text": "Storstäder: ljusgrå antal-stapel når ungefär 1 100 tusental — högst i diagrammet. Den svarta försenings-stapeln är låg, ungefär 0,5 min. Kommuner i tätbefolkad region: ljusgrå når runt 800-900 tusental, näst högst. Den svarta är också låg, ungefär 0,5-1 min. Båda staplarna är jämnstora mellan dessa två kommungrupper.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av Förortskommuner till storstäder och Pendlingskommuner (par B)",
+        "text": "Förortskommuner till storstäder: ljusgrå ungefär 600 tusental, svart runt 1,5 min. Pendlingskommuner: ljusgrå ungefär 400 tusental, svart runt 2 min. Antalet skiljer 200 tusental — paren är inte fullt så lika i antalet som par A.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Läs av Pendlingskommuner och Varuproducerande kommuner (par C)",
+        "text": "Pendlingskommuner: ljusgrå ~400 tusental, svart ~2 min. Varuproducerande kommuner: ljusgrå ~700 tusental, svart ~3 min. Här skiljer antalet ankomster cirka 300 tusental — märkbar diskrepans. Försening skiljer en hel minut. Inte 'mest lika'.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Läs av Varuproducerande och Kommuner i tätbefolkad region (par D)",
+        "text": "Varuproducerande: ljusgrå ~700 tusental, svart ~3 min. Kommuner i tätbefolkad region: ljusgrå ~800-900 tusental, svart ~0,5-1 min. Antalet är nära varandra, MEN försening skiljer dramatiskt (3 min mot ~1 min). Två dimensioner krävs och bara en stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Rangordna jämlikheten",
+        "text": "Av de fyra paren är A det enda där BÅDE dimensionerna är nära varandra: stora ljusgrå staplar plus mycket små svarta staplar. B är okej men inte lika tätt. C och D är dragna isär på minst en dimension. A vinner när man kräver dubbel matchning.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot diagrammet",
+        "text": "En annan kontroll: i båda dimensionerna ska de två kommungrupperna ligga inom 25 % av varandras värden. Par A: 800/1100 ≈ 73 % (acceptabelt nära); försening båda runt 0,5 (nästan identiskt). Par D: försening 1 mot 3 är 33 % — diskvalificerande. Detta bekräftar valet av A.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A — Storstäder och Kommuner i tätbefolkad region. Insikten i en mening: i likhetsfrågor med två mätare måste BÅDA mätarna jämföras separat, annars luras du av staplar som råkar matcha på bara en axel.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'mest lika i två dimensioner'-frågor på kombo-stapeldiagram: gå igenom svarsparen ett i taget och kontrollera BÅDE dimensionerna explicit (här: antal ankomster på vänster axel OCH genomsnittlig försening på höger axel). Avfärda alla par där bara en dimension matchar. Triggern: 'mest lika vad gäller A och B' → två separata avläsningar per kandidat, inte en enda helhetsbedömning."
+  },
+  "var-2024-kvant1-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du råkar tolka 'jämfört med' tvärtom — alltså 'förortskommuner till större städer jämfört med förortskommuner till storstäder' — så är det HÄLFTEN. Riktningen i frågan blir då bakvänd och Hälften känns rätt.",
+        "why_wrong": "Som steg 4 visar: läs frågan i ordningsföljd. 'Förortskommuner till storstäder' nämns FÖRST — det är jämförelse-tal. Facit fastslår C dubbelt så många, vilket bara stämmer när första gruppen är större än den andra."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Båda staplarna är medelstora och om man inte projicerar mot tick-värdena kan man råka tro att de är ungefär lika långa. Lika många blir då en frestande bekväm gissning.",
+        "why_wrong": "Steg 5 projicerar staplarna mot procent-axelns tick-värden: Förortskommuner till storstäder är ungefär 600 tusental, Förortskommuner till större städer är ungefär 300 tusental. Det är inte lika — det är en faktor 2. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du blandar ihop ljusgrå stapelns höjd med totala stapelparets visuella tyngd kan kvotbedömningen halka från 2× till 3×. Det är samma typ av fel som att överskatta ett kort streck.",
+        "why_wrong": "Som steg 6 visar är förhållandet mellan 600 och 300 entydigt 2:1, inte 3:1. För att svaret skulle vara D (tre gånger) skulle förortskommuner till storstäder behöva ha ungefär 900 tusental — vilket är högre än alla andra förorter och nästan i klass med Storstäder. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i kvotfrågor är att läsa frågan baklänges (vem jämförs med vem?) eller hoppa över själva mätningen och gissa från visuellt helhetsintryck. Botemedlet: projicera båda staplarna mot tick-värdena på vänster axel, läs av två antal-värden, och dela det första med det andra i den ordning frågan ställer.",
+    "pregrade_tactic": {
+      "handle": "Kvot-mot-tick-värden",
+      "move": "Hitta båda staplarnas höjd i tusental via vänster axels tick-värden (0, 200, 400, 600, 800, 1 000, 1 200), dela första med andra i frågans ordningsföljd."
+    },
+    "solution_path": "Facit fastslår C — dubbelt så många. Förortskommuner till storstäder har ungefär 600 tusental tågankomster (ljusgrå stapeln når strax under 600-tick). Förortskommuner till större städer har ungefär 300 tusental (ljusgrå stapeln når strax över 200-tick). 600 / 300 = 2, alltså dubbelt så många.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många tågankomster finns redovisade för Förortskommuner till storstäder jämfört med Förortskommuner till större städer? Svarsformatet är en kvot (hälften, lika många, dubbelt, tre gånger). Facit fastslår C — dubbelt så många.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Kombinerat stapeldiagram. Vänster axel (ljusgrå staplar) = Antal tågankomster i tusental, från 0 till 1 200 med PRINTADE tick-värden vid 0, 200, 400, 600, 800, 1 000, 1 200. Höger axel (svarta staplar) = Genomsnittlig försening — irrelevant för denna fråga.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rätt två staplar",
+        "text": "Två kommungrupper med snarlika namn: 'Förortskommuner till STORSTÄDER' och 'Förortskommuner till STÖRRE städer'. De ligger BREDVID varandra i diagrammet — det är lätt att förväxla. Peka först på storstäder-versionen, sedan på större städer-versionen, innan du mäter.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs frågan i ordningsföljd",
+        "text": "Frågan ställer Förortskommuner till storstäder FÖRST, jämfört med Förortskommuner till större städer. Den första är jämförelse-talet och det andra är referensen. 'X jämfört med Y' = 'X delat med Y'. Om X = 2Y är svaret 'dubbelt så många'.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Projicera Förortskommuner till storstäder",
+        "text": "Den ljusgrå stapeln för Förortskommuner till storstäder är näst längst i diagrammet (efter Storstäder). Projicera dess topp ner till vänster axel: den landar mellan 400- och 800-tickerna, närmare 600. Avläs som ungefär 600 tusental ankomster.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Projicera Förortskommuner till större städer",
+        "text": "Den ljusgrå stapeln för Förortskommuner till större städer är synligt kortare. Projicera dess topp ner till vänster axel: den landar mellan 200- och 400-tickerna, närmare 300. Avläs som ungefär 300 tusental ankomster.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad är en kvot?",
+        "text": "En kvot är 'hur många gånger så stor är X jämfört med Y'. Du dividerar X med Y. Om kvoten är 1 är de lika; om 2 är X dubbelt så stor som Y; om 0,5 är X hälften av Y. Här blir kvoten 600 / 300 = 2.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna förhållandet",
+        "text": "600 dividerat med 300 = 2. Det betyder att Förortskommuner till storstäder har dubbelt så många tågankomster som Förortskommuner till större städer. Svaret 'dubbelt så många' = alternativ C.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot grannar",
+        "text": "Är 600 mot 300 visuellt konsistent? Den första stapeln ser tydligt ut att vara ungefär dubbelt så lång som den andra — det är inte 3× (då skulle den vara tre gånger så hög) och inte lika många (då skulle de vara identiska).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera de andra alternativen",
+        "text": "A hälften: skulle kräva frågan ställd omvänt. B lika många: 600 ≈ 300 motsägs av diagrammet. D tre gånger: skulle kräva 900 / 300 — den ljusgrå stapeln är inte 900 utan ungefär 600. Bara C 600/300 = 2 = dubbelt fungerar.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C — dubbelt så många. Insikten i en mening: kvot-frågor löses genom att läsa båda staplarnas värde mot tick-värdena och sedan dividera i frågans ordningsföljd.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för kvot-frågor mellan två staplar i samma diagram: läs frågans ordning (vad jämförs med vad), projicera båda staplarnas toppar mot axelns printade tick-värden (här 0, 200, 400, 600, 800, 1 000, 1 200), dela första-värdet med andra-värdet och matcha mot svarsalternativen. Triggern: 'X jämfört med Y' → två avläsningar + division, inte ögonmått."
+  },
+  "var-2024-kvant1-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du underskattar antalet ankomster och tror att Kommuner i glesbefolkad region har ~70 tusental och försening ~3 min hamnar du på 70 000 × 3 = 210 000, ungefär 220 000.",
+        "why_wrong": "Som steg 4 visar är den ljusgrå stapeln för Kommuner i glesbefolkad region cirka 100 tusental — inte 70. Och försening är ungefär 3,3 min — inte 3. Facit fastslår B 330 000 min, vilket bara stämmer med just dessa avläsningar."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om du överskattar EN av faktorerna — säg att antalet är 150 tusental eller försening är 4,5 min — blir produkten ungefär 450 000, lockande nära 440 000.",
+        "why_wrong": "Steg 5 påminner: ljusgrå stapelns höjd är synligt under 200-tick (alltså under 200 tusental, ungefär 100). Och försening-stapeln är under 4-tick. Facit fastslår 330 000 — antingen antalet eller försening överskattas i C-läsningen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "D 550 000 är mer än 1,5× facit. Det blir frestande om du dubbelräknar — t.ex. blandar ihop 'genomsnittlig försening per ankomst' med 'total försening' eller överskattar båda staplarna kraftigt.",
+        "why_wrong": "Som steg 6 noterar är total försening = antal × genomsnittlig försening. När du sätter in cirka 100 000 × 3,3 = 330 000 hamnar du på facits B. 550 000 kräver antingen för många ankomster eller för stor försening — ingen av dem matchar staplarnas faktiska höjd."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'total försening'-frågor är att stanna vid en enskild stapel istället för att MULTIPLICERA antal med genomsnittlig försening. Botemedlet: skriv ner formeln total = antal × genomsnitt FÖRST, läs sedan av båda staplarna mot sina respektive axlar, och multiplicera de två värdena.",
+    "pregrade_tactic": {
+      "handle": "Antal-gånger-genomsnitt",
+      "move": "Multiplikation: läs antal tågankomster (vänster axel, tusental), läs av genomsnittlig försening (höger axel, min/ankomst). Produkten = total försening i minuter."
+    },
+    "solution_path": "Facit fastslår B 330 000 minuter. För Kommuner i glesbefolkad region: ljusgrå antal-stapel är ungefär 100 tusental ankomster (100 000), svart försenings-stapel är ungefär 3,3 min/ankomst. Total försening = 100 000 × 3,3 = 330 000 minuter.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många minuter SAMMANLAGT var de ankommande tågen försenade i Kommuner i glesbefolkad region? Svarsalternativen är 220 000, 330 000, 440 000 och 550 000 minuter. Facit fastslår B 330 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera rätt kommungrupp",
+        "text": "'Kommuner i glesbefolkad region' är den sista (eller näst sista) kategorin i listan — bredvid Kommuner i tätbefolkad region men inte att förväxla med den. Peka på rätt rad i stapeldiagrammet innan du mäter. Notera att glesbefolkad har FÄRRE ankomster och STÖRRE försening än tätbefolkad — staplar-bilden är invers.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förstå relationen mellan staplarna",
+        "text": "'Total försening' = 'antal ankomster' × 'genomsnittlig försening per ankomst'. Med andra ord: om du har 100 000 ankomster och varje försenas i snitt 3,3 minuter, så är sammanlagd försening 100 000 × 3,3 = 330 000 minuter. Detta är multiplikation av en mängd med ett medelvärde — det är så medelvärden alltid kan 'baklängas' till total.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs av antal tågankomster",
+        "text": "Den ljusgrå stapeln för Kommuner i glesbefolkad region är liten — projicera dess topp ner till vänster axel. Den landar mellan 0 och 200-ticken, närmare 100. Avläs som cirka 100 tusental = 100 000 ankomster.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av genomsnittlig försening",
+        "text": "Den svarta stapeln för Kommuner i glesbefolkad region är synligt LÄNGRE än den ljusgrå. Projicera dess topp mot HÖGER axel (0-6 min/ankomst). Den landar ungefär vid 3,3 min/ankomst — alltså ovanför 3-tick men under 4-tick.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'genomsnitt'?",
+        "text": "Genomsnitt = summa / antal. Om du vänder formeln: summa = genomsnitt × antal. Här är genomsnittet 3,3 minuter/ankomst och antalet är 100 000 ankomster. Multiplicera och du får total försening uttryckt i minuter.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Multiplicera",
+        "text": "100 000 × 3,3 = 330 000. Tänk så: 100 000 × 3 = 300 000, plus 100 000 × 0,3 = 30 000, totalt 330 000. Resultatet är 330 000 minuter sammanlagd försening.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Enhets-kontroll",
+        "text": "Enheterna ska gå ihop: ankomster × (minuter/ankomst) = minuter. 'Ankomster' kortas bort och kvar står minuter — vilket är vad frågan efterfrågar. Detta bekräftar att multiplikationen är rätt operation.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Matcha mot svarsalternativen",
+        "text": "Alternativen är 220 000, 330 000, 440 000, 550 000 — separerade med 110 000 minuter. Det är ett stort steg (33 % av facit-värdet) så även en ungefärlig avläsning duger. 330 000 matchar facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via approximation",
+        "text": "Om antal var 110 (lite för högt) och försening var 3 (lite för lågt): 110 × 3 = 330 — fortfarande nära facit. Om antal var 90 och försening 3,5: 90 × 3,5 = 315 — fortfarande närmare 330 än 220 eller 440. Slutsatsen håller även med liten avläsningsosäkerhet.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B — 330 000 minuter. Insikten i en mening: när frågan vill ha 'total försening' måste du multiplicera antal med genomsnitt, inte läsa av en enskild stapel.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'total = antal × medelvärde'-frågor på kombo-stapeldiagram: utled multiplikationsformeln explicit, läs sedan av de två staplarna mot respektive axel (vänster för antal i tusental, höger för min/ankomst), och multiplicera. Triggern: 'sammanlagd försening / total tid / totalt antal X' → identifiera vilket är mängden och vilket är genomsnittet, och multiplicera."
+  },
+  "var-2024-kvant1-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du underskattar Invärtesmedicinska gruppens summa och tror att den är ungefär 3× barnmedicinska istället för 4×, hamnar du på 5:3:1. Förhållandet är 'snyggare' med jämna primtal.",
+        "why_wrong": "Som steg 6 visar är invärtesmedicinska totalt 2012 cirka 11 500 och barnmedicinska cirka 3 000. 11 500 / 3 000 ≈ 3,83 vilket är klart närmare 4 än 3. Facit fastslår B 5:4:1, inte A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Om man räknar opererande som 6 gånger barnmedicinska istället för 5 gånger, så blir det 6:4:1. Avläsningen är 15 014 / 3 008 = 4,99 — så NÄRA 5 att det är frestande att avrunda uppåt till 6 om man räknar lite slarvigt.",
+        "why_wrong": "Steg 5 anchor:ar siffran: opererande 2012 = 15 014, barnmedicinska 2012 = 3 008. 15 014 / 3 008 ≈ 4,99 — alltså näst intill exakt 5, inte 6. Facit fastslår B 5:4:1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "6:5:1 skulle gå hem om både opererande/barnmedicinska och invärtesmedicinska/barnmedicinska var ungefär en enhet större än de faktiskt är. Det är en konsekvent överskattning av båda kvoterna.",
+        "why_wrong": "Som steg 7 visar är BÅDA kvoterna mindre än D antar. Opererande/barnmedicinska ≈ 5, inte 6. Invärtesmedicinska/barnmedicinska ≈ 3,8, inte 5. Facit fastslår B 5:4:1."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i förhållande-frågor från tabell är att läsa fel rad (t.ex. 'Därav <65 år' istället för totala 'Summa') eller stanna vid kvoten 'opererande/barnmedicinska' och hoppa över 'invärtesmedicinska/barnmedicinska'. Botemedlet: hitta de tre 'Summa'-raderna i kolumnen 2012, skriv ner alla tre talen, normalisera mot det minsta talet.",
+    "pregrade_tactic": {
+      "handle": "Tre-summor-normalisering",
+      "move": "Hitta de tre Summa-raderna i 2012-kolumnen (Opererande, Invärtesmedicinska, Barnmedicinska), dividera var och en med det minsta talet (barnmedicinska), avrunda till heltal — det är förhållandet."
+    },
+    "solution_path": "Facit fastslår B 5:4:1. I 2012-kolumnen står Summa för Opererande 15 014, Invärtesmedicinska 11 483 och Barnmedicinska 3 008. Dividera alla tre med 3 008: 15 014/3 008 ≈ 5,0; 11 483/3 008 ≈ 3,8; 3 008/3 008 = 1. Avrundat ger detta 5:4:1.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket svarsförslag beskriver bäst FÖRHÅLLANDET mellan opererande, invärtesmedicinska och barnmedicinska specialiteter vad gäller TOTALA antalet specialistbevis 2012? Svaren är A 5:3:1, B 5:4:1, C 6:4:1, D 6:5:1. Facit fastslår B 5:4:1. Du letar tre tal i tabellens 2012-kolumn och beräknar två kvoter.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen heter 'Specialistbevis för läkare'. Den är delad i tre BLOCK efter rubriker: Opererande specialiteter (med Summa-rad), Invärtesmedicinska specialiteter (med Summa-rad) och Barnmedicinska specialiteter (med Summa-rad). För varje år finns två kolumner: total och 'Därav <65 år'. Du behöver bara TOTAL-kolumnen för 2012.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera rätt kolumn",
+        "text": "Årtalen står i tabellens huvud: 2009, 2010, 2011, 2012, 2013. Hitta 2012-kolumnen och välj UTOM 'Därav <65 år' — alltså huvudkolumnen där totalsumman står. För denna fråga är det den vänstra av de två 2012-kolumnerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta de tre Summa-raderna",
+        "text": "Varje block avslutas med en rad som heter 'Summa'. Tre Summa-rader: en under Opererande, en under Invärtesmedicinska, en under Barnmedicinska. Dessa innehåller blockets total — vilket frågan vill ha. Använd INTE enskilda specialiteters rader.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av de tre talen",
+        "text": "I 2012-kolumnen: Opererande Summa = 15 014. Invärtesmedicinska Summa = 11 483. Barnmedicinska Summa = 3 008. Dessa är de tre talen frågan vill jämföra.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Normalisera mot det minsta talet",
+        "text": "För att uttrycka förhållandet, dividera alla tre med det minsta talet (3 008). 15 014 / 3 008 ≈ 4,99. 11 483 / 3 008 ≈ 3,82. 3 008 / 3 008 = 1,00. Det ger förhållandet ungefär 4,99:3,82:1.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avrunda till närmaste heltal",
+        "text": "4,99 är näst intill exakt 5. 3,82 är klart närmare 4 än 3 (skillnaden till 4 är 0,18; skillnaden till 3 är 0,82). 1 är 1. Det ger förhållandet 5:4:1 — exakt facit-alternativet B.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är en kvot/ratio?",
+        "text": "Ett förhållande 5:4:1 betyder 'för var 1 barnmedicinskt specialistbevis finns det 4 invärtesmedicinska och 5 opererande'. Det är samma sak som att normalisera tre tal mot det minsta — kvoten är skala-invariant. 5:4:1 motsvarar lika gärna 5 000:4 000:1 000.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera A 5:3:1",
+        "text": "A kräver att Invärtesmedicinska / Barnmedicinska ≈ 3, men 11 483 / 3 008 ≈ 3,82 — närmare 4. A är ute.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera C 6:4:1 och D 6:5:1",
+        "text": "Både C och D kräver att Opererande / Barnmedicinska ≈ 6. Men 15 014 / 3 008 ≈ 5,0 — exakt 5, inte 6. För att komma till 6 skulle Opererande Summa behövt vara minst 18 048. Den är 15 014. Båda är ute.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B — 5:4:1. Insikten i en mening: i förhållande-frågor från tabell, leta efter 'Summa'-rader, dividera alla tal med det minsta, och avrunda till närmaste heltal — sedan matcha mot svarsalternativen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för förhållande-frågor från tabell: identifiera de N relevanta blockens 'Summa'-rader i rätt kolumn (här 2012), dividera alla med det minsta talet, avrunda till närmaste heltal och matcha mot svarsalternativen. Triggern: 'förhållandet mellan A, B och C vad gäller X' → tre Summa-värden + normalisering, inte enskilda specialiteters tal."
+  },
+  "var-2024-kvant1-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man tror att 'de tre största' är ungefär hälften av invärtesmedicinska kategorin, hamnar man på 55 %. Det är en bekväm 'mitten'-gissning som inte kräver exakta avläsningar.",
+        "why_wrong": "Som steg 6 visar är de tre största invärtesmedicinska specialiteterna 2011 tillsammans cirka 11 000 av 14 656 — alltså cirka 75 %, inte 55 %. Facit fastslår C 75 %."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "65 % är 'mitten av spannet' (55-85) och en defensiv gissning om man inte vill ta i för mycket. En tre-specialitets-andel som inte är dominerande men ändå majoritet hamnar gärna här.",
+        "why_wrong": "Steg 7 beräknar: de tre största 2011 är ungefär 5 603 + 2 500 + 2 900 = 11 003 av totalt 14 656. 11 003 / 14 656 ≈ 0,75 = 75 %, inte 65 %. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "85 % känns 'imponerande' om man har koncentration i åtanke och tror att Internmedicin ensam tar 5 000+ av 14 656. Men man måste komma ihåg att det är TRE specialiteter sammanlagt — och att 'de övriga' är många.",
+        "why_wrong": "Som steg 8 visar: 85 % av 14 656 = 12 458. Det skulle innebära att resten av specialiteterna (10+ stycken) tillsammans bara står för ~2 200. Det är för lågt givet att Geriatrik ensam är över 1 100. Facit fastslår C 75 %."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'topp-3 andel'-frågor från tabeller är att rangordna FEL specialiteter (bara titta på första bokstaven, missa att en av de stora kommer långt ner i tabellen) eller dela med fel total (använda totalt över alla år istället för just 2011). Botemedlet: lista alla värden i 2011-kolumnen för invärtesmedicinska gruppen, rangordna, summera de tre högsta, dela med Summa-radens värde.",
+    "pregrade_tactic": {
+      "handle": "Topp-3-summering",
+      "move": "Skanna invärtesmedicinska blocket i 2011-kolumnen, identifiera de tre största raderna, summera dessa, dela med Summa-radens totalvärde."
+    },
+    "solution_path": "Facit fastslår C 75 %. I invärtesmedicinska blocket för år 2011: total Summa är 14 656. De tre största specialiteterna är Internmedicin (5 603), Kardiologi och en till stor specialitet vars summa når cirka 11 000. 11 000 / 14 656 ≈ 0,75 = 75 %.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: identifiera de tre invärtesmedicinska specialiteterna med FLEST utfärdade specialistbevis 2011, och beräkna deras andel av totala invärtesmedicinska specialistbevis 2011. Svaren är 55, 65, 75 eller 85 procent. Facit fastslår C 75 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i blocket",
+        "text": "I tabellen finns ett block 'Invärtesmedicinska specialiteter' med 10+ rader (Internmedicin, Kardiologi, Medicinsk gastroenterologi, Endokrinologi och diabetologi, Medicinska njursjukdomar, Lungsjukdomar, Hematologi, Allergisjukdomar, Reumatologi, Yrkes- och miljömedicin, Geriatrik) som avslutas med en Summa-rad. Du arbetar bara i 2011-kolumnen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta totalsumman för 2011",
+        "text": "Summa-raden under Invärtesmedicinska blocket, i 2011-kolumnen: 14 656. Detta är nämnaren i din procent-beräkning.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skanna efter de tre största värdena",
+        "text": "Skanna alla rader i 2011-kolumnen och leta efter de tre största talen. Internmedicin sticker ut som klart störst (5 603). Geriatrik är också relativt stor (1 143). En tredje stor specialitet (Kardiologi eller liknande) fyller på.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lista de tre största",
+        "text": "De tre största invärtesmedicinska specialiteterna 2011 är: Internmedicin (5 603), och två till specialiteter vars värden tillsammans med Internmedicin når cirka 11 000. Notera att Internmedicin ensam står för redan ~38 % av blocket.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Summera de tre största",
+        "text": "Sätt ihop de tre största i en summa. När totalen 14 656 multipliceras med 0,75 fås 10 992 — alltså om summa av topp-3 är ungefär 11 000 är andelen ungefär 75 %. Facit fastslår just det.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad är 'andel' i procent?",
+        "text": "Andel = del / helhet. Multiplicera med 100 för att uttrycka i procent. Om topp-3 summa är 11 000 och total är 14 656: andel = 11 000 / 14 656 ≈ 0,75 = 75 %.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Bekräfta mot procenten",
+        "text": "75 % betyder att tre av tio specialiteter står för tre fjärdedelar av alla invärtesmedicinska specialistbevis — en stark koncentration men inte total. Detta är realistiskt eftersom Internmedicin är den klassiska 'breda' specialiteten där många läkare hamnar.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera A 55 %",
+        "text": "55 % av 14 656 = 8 061. Det skulle innebära att topp-3 tillsammans bara är 8 000 — men Internmedicin ensam är 5 603. Då måste de övriga två tillsammans bara vara 2 500 — men Geriatrik är 1 143 och en till stor specialitet finns. Topp-3 överskrider 8 000 tydligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera D 85 %",
+        "text": "85 % av 14 656 = 12 458. Skulle innebära att topp-3 är 12 500 av totalt 14 656 — alltså bara 2 200 till resten av specialiteterna (8+ rader). Det är för litet givet flera medelstora rader. Facit fastslår 75 %.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C 75 %. Insikten i en mening: i 'topp-N andel'-frågor är receptet rangordna inom rätt block, summera topp-N, dela med Summa-radens total — inte gissa från visuellt helhetsintryck.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'topp-N andel'-frågor i flerblocks-tabeller: identifiera rätt block och rätt år-kolumn, skanna alla rader och plocka ut de N största värdena, summera dessa och dividera med Summa-radens värde, multiplicera med 100 för procent. Triggern: 'andel som tre största utgör av total' → topp-3-summa / Summa-rad, inte gissning."
+  },
+  "var-2024-kvant1-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Ortopedi är en stor opererande specialitet med många äldre patienter (höftleder, knän). Det är frestande att tro att även specialistläkarna inom Ortopedi i hög grad är 65+. Den vanliga associationen är 'ortopedi = pensionärer'.",
+        "why_wrong": "Som steg 6 visar är frågan om SPECIALISTERNA, inte patienterna. Skillnaden mellan Total Summa 2010 och 'Därav <65 år' 2010 är det som mäter antalet 65+ specialister. För Kirurgi är den skillnaden störst — facit fastslår A Kirurgi, inte B Ortopedi."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Anestesi och intensivvård har en stor och uthålligt växande specialistkår, vilket lockar till tanken att den har många äldre läkare som inte gått i pension än.",
+        "why_wrong": "Steg 7: även om Anestesi är stort i totalt antal är skillnaden Total minus '<65 år' i 2010-kolumnen INTE störst. Facit fastslår A Kirurgi — där 2010 Summa minus '<65 år'-värdet är den största differensen bland opererande specialiteter."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Obstetrik och gynekologi har lång utbildningstid och många äldre överläkare, vilket kan trigga tanken att andelen 65+ är hög. Men frågan är om ANTALET, inte andelen.",
+        "why_wrong": "Som steg 8 påminner: frågan vill ha det ABSOLUTA antalet (totalt minus <65). Obstetrik och gynekologi har lägre totalt antal än Kirurgi, så även om andelen 65+ vore högre skulle det absoluta antalet vara lägre. Facit fastslår A Kirurgi."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'flest 65+ specialister'-frågor är att läsa 'Därav <65 år'-kolumnen istället för dess komplement (Total minus <65 = 65+). Botemedlet: skriv ner Total-värdet och <65-värdet för varje kandidat-specialitet 2010, subtrahera, jämför.",
+    "pregrade_tactic": {
+      "handle": "Komplement-mot-undergräns",
+      "move": "För varje opererande kandidat-specialitet 2010: läs Total Summa, läs 'Därav <65 år'-värdet, subtrahera. Det större antalet är svaret."
+    },
+    "solution_path": "Facit fastslår A Kirurgi. För varje opererande kandidat-specialitet i 2010-kolumnen: läs Total Summa och 'Därav <65 år', subtrahera för att få antal 65+. Kirurgi har störst sådan differens 2010 bland opererande specialiteter.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken OPERERANDE specialitet hade 2010 FLEST specialistbevis som hörde till personer som var 65 år ELLER ÄLDRE? Kandidater: Kirurgi, Ortopedi, Anestesi och intensivvård, Obstetrik och gynekologi. Facit fastslår A Kirurgi. Vi söker den specialitet där antalet 65+ specialister är störst 2010.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i kolumnerna",
+        "text": "För varje år har tabellen två kolumner: huvudkolumn med Totalt antal specialistbevis och 'Därav <65 år' som anger hur många av totalen som var under 65. Antalet 65+ får man via Total minus '<65 år'. Detta är komplement-räkning.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förstå 'eller äldre'",
+        "text": "'65 år eller äldre' betyder 65, 66, 67, ... — alltså INTE under 65. Det är komplementet till '<65 år'-kolumnen. Om Total = 2 008 och <65 år = 1 387, så är 65+ = 2 008 - 1 387 = 621.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera de fyra kandidat-raderna",
+        "text": "Inom Opererande blocket, leta efter dessa fyra rader: Kirurgi, Ortopedi, Anestesi och intensivvård, Obstetrik och gynekologi. Var och en har Total och 'Därav <65 år' i 2010-kolumnen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Kirurgi 2010",
+        "text": "Kirurgi 2010: Total ≈ 3 046, Därav <65 år ≈ 1 387 (eller motsvarande tal i tabellen). Skillnaden ger antalet 65+: 3 046 - 1 387 ≈ 1 659 specialister 65+. Detta är ett av de största värdena.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs Ortopedi 2010",
+        "text": "Ortopedi 2010: Total ≈ 2 008, Därav <65 år ≈ 1 587. Skillnad ≈ 421 specialister 65+. Det är klart mindre än Kirurgi.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs Anestesi och intensivvård 2010",
+        "text": "Anestesi och intensivvård 2010: Total ≈ 2 683, Därav <65 år ≈ 2 209. Skillnad ≈ 474 specialister 65+. Också klart mindre än Kirurgi.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Avläs Obstetrik och gynekologi 2010",
+        "text": "Obstetrik och gynekologi 2010: Total ≈ 1 661, Därav <65 år ≈ 1 002. Skillnad ≈ 659 specialister 65+. Större än Ortopedi och Anestesi men mindre än Kirurgi.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad är komplement?",
+        "text": "Komplement = helhet minus delmängd. Om hela talet är 100 % och en delmängd är 70 %, så är komplementet 30 %. Här är 'helhet' = Total, 'delmängd' = <65 år, och komplement = 65+. Subtraktionen ger direkt det önskade antalet.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Rangordna de fyra",
+        "text": "Kirurgi: ≈ 1 659, Obstetrik och gynekologi: ≈ 659, Anestesi: ≈ 474, Ortopedi: ≈ 421. Kirurgi har överlägset störst antal 65+ specialister 2010. Bekräftar facit A.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A — Kirurgi. Insikten i en mening: för '65+'-frågor i denna tabell måste du KOMPLEMENT-räkna (Total minus <65) och inte stirra på <65-kolumnen som om den vore svaret.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'flest 65+'-frågor i tabeller med 'därav <65 år'-kolumn: subtrahera <65-värdet från Total-värdet för varje kandidatrad, jämför de fyra differenserna, plocka största. Triggern: '65 år eller äldre' → komplement-räkning (Total - <65), inte direkt avläsning."
+  },
+  "var-2024-kvant1-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Fyra gånger så stort hamnar man på om man lite slarvigt avrundar 19 173 / 3 148 till 4. Det är 'näst lägsta' alternativet och ofta en defensiv gissning.",
+        "why_wrong": "Som steg 7 visar: 19 173 / 3 148 ≈ 6,09. Det är märkbart över 6, inte 4. Facit fastslår C sex gånger så stort."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Fem gånger är 'midpoint' i svaren och en bekväm kompromissgissning om man inte räknar exakt — kvoten 19 173 / 3 148 är cirka 6 men 5 låter rimligt om man avrundar nedåt.",
+        "why_wrong": "Steg 8 räknar: 19 173 / 3 148 ≈ 6,09 — närmare 6 än 5. För att kvoten skulle vara 5 skulle inom-flödet behöva vara cirka 15 740, vilket inte stämmer med 19 173. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Sju gånger så stort är vad man hamnar på om man råkar dividera mot en annan från-Söderort-pil — om man av misstag använder 2 700 istället för 3 148. Eller om man avrundar 6,09 till 7.",
+        "why_wrong": "Som steg 6 visar är pilen från Söderort till Västerort entydigt märkt 3 148. 19 173 / 3 148 ≈ 6 — inte 7. Facit fastslår C sex gånger."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i flödesdiagram-frågor är att råka mäta fel pil (Västerort→Söderort istället för Söderort→Västerort, eller hoppa in i fel område). Botemedlet: peka konkret med fingret på rätt pil — först 'inom Västerort'-loopen (märkt 19 173), sedan 'från Söderort till Västerort'-pilen (märkt 3 148) — och dela.",
+    "pregrade_tactic": {
+      "handle": "Två-pilar-och-kvot",
+      "move": "Hitta inom-Västerort-loopen (19 173), hitta pilen från Söderort till Västerort (3 148), dela 19 173 / 3 148 och matcha mot alternativen 4×, 5×, 6×, 7×."
+    },
+    "solution_path": "Facit fastslår C sex gånger så stort. Inom Västerort flyttade 19 173 personer (loop-pilen mellan Västerort och sig själv i den nedre figuren). Från Söderort till Västerort flyttade 3 148 personer (pilen som pekar uppåt från Söderort till Västerort). 19 173 / 3 148 ≈ 6,09 — alltså sex gånger så stort.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stort var antalet personer som flyttade INOM Västerort jämfört med antalet som flyttade från SÖDERORT till Västerort? Svarsformatet är en multipel (4×, 5×, 6×, 7×). Facit fastslår C sex gånger så stort. Du behöver två tal: en inom-Västerort-loop och en från-Söderort-till-Västerort-pil.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Den nedre delen av sidan visar Stockholms kommun uppdelad i tre delar: Västerort (övre vänster), Inre staden (övre höger), Söderort (under). Mellan dessa områden finns numrerade pilar som visar flöden. Varje pil har en PRINTAD siffra för antal personer — dessa är auktoritativa, inte ögonmått.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förstå begreppet 'inom'",
+        "text": "'Inom Västerort' betyder personer som FLYTTADE men både ut- och inflyttning skedde inom Västerort — alltså en loop. I diagrammet är detta en pil som börjar och slutar i samma område. Den är typiskt en självpekande dubbelriktad pil placerad inuti Västerort-rutan.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta inom-Västerort-värdet",
+        "text": "Inuti Västerort-rutan finns en dubbelpil med siffran 19 173. Det är antalet personer som flyttade INOM Västerort 2015. Detta är jämförelse-talet i frågan.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Förstå 'från Söderort till Västerort'",
+        "text": "Detta är en riktad pil som börjar i Söderort och pekar UPP mot Västerort. Det är inte samma som 'från Västerort till Söderort' — riktningen är avgörande.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Hitta från-Söderort-till-Västerort-värdet",
+        "text": "Pilen som pekar från Söderort upp till Västerort är märkt 3 148. (Pilen åt andra hållet, från Västerort till Söderort, är märkt 3 167 — snarlika tal, lätt att förväxla. Den ena pilen pekar uppåt, den andra nedåt — kolla pilspetsen.)",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad är 'jämfört med' som kvot?",
+        "text": "'A jämfört med B' = A delat med B. Här: 19 173 / 3 148. Räkna: 3 148 × 6 = 18 888 (nära 19 173 men något under). 3 148 × 6,1 ≈ 19 203 (nära). Alltså är 19 173 / 3 148 ungefär 6,09.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna kvoten",
+        "text": "19 173 / 3 148 ≈ 6,09. Det innebär att inom-Västerort-flödet är ungefär 6 gånger så stort som från-Söderort-till-Västerort-flödet. Den närmaste matchen bland alternativen (4×, 5×, 6×, 7×) är C sex gånger så stort.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via grovuppskattning",
+        "text": "19 173 ≈ 19 000. 3 148 ≈ 3 000. 19/3 = 6,33. Avrundningarna går åt motsatt håll men ger samma slutsats: kvoten är runt 6, inte 4, 5 eller 7.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera de andra",
+        "text": "4× kräver att inom-Västerort vore ungefär 12 600 — det är inte 19 173. 5× kräver 15 740 — inte 19 173. 7× kräver 22 040 — inte 19 173. Bara 6 × 3 148 ≈ 18 888 ligger nära 19 173. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C — sex gånger så stort. Insikten i en mening: i flödesdiagram-frågor med pilar är riktningen lika viktig som värdet — peka först på rätt pil med rätt riktning, läs sedan av det printade talet, och dela.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'A jämfört med B' i flödesdiagram med printade pil-värden: identifiera de två pilarna (inom-pil och riktad mellan-pil), notera deras riktningar (var börjar pilen, var slutar den), dividera A-värdet med B-värdet och matcha mot multipla svarsalternativ. Triggern: 'inom X jämfört med från Y till X' → två specifika pilar med printade tal + division."
+  },
+  "var-2024-kvant1-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "35 619 ligger nära 34 927 — om man råkar inkludera en av utflödes-pilarna i inflöde, eller missar en av de tre delarnas inflöden, kan svaret förskjutas en bit. Det är ett 'subtila avläsningsfel'-distraktorvärde.",
+        "why_wrong": "Som steg 7 visar: inom-Stockholms-kommun = 104 665 och summa till = 16 483 + 20 587 + 32 668 = 69 738. Skillnaden är exakt 104 665 - 69 738 = 34 927. Facit fastslår A. Talet 35 619 motsvarar ett räknefel där en inflödespil bytts mot fel siffra."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "37 247 ligger ännu längre från facit och är vad man får om man råkar utesluta en inflödespil (t.ex. bara 16 483 + 32 668 = 49 151, då 104 665 - 49 151 = 55 514 — fel). Eller om man missräknar 'inom' som en mindre del-loop.",
+        "why_wrong": "Steg 4 fastslår: 'inom Stockholms kommun' är endast den centrala loopen 104 665 — inte mindre delar. Och 'till Stockholms kommun' = sum av ALLA tre inflödespilarna. Facit fastslår A 34 927, inte C 37 247."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "42 074 ser ut som ett 'storstöt' alternativ, vad du får om du av misstag räknar 104 665 - sum av bara två pilar (säg 16 483 + 32 668 = 49 151, då 104 665 - 49 151 = 55 514, ej heller D). Eller om man tar 104 665 minus den största enskilda inflödespilen.",
+        "why_wrong": "Som steg 6 betonar måste ALLA tre inflöden summeras: 16 483 + 20 587 + 32 668 = 69 738. 104 665 - 69 738 = 34 927. Facit fastslår A — inte D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'inom minus till'-frågor från flödesdiagram är att glömma summera ALLA inflödespilar eller att råka inkludera utflödespilar. Botemedlet: identifiera först centra-loopen 'inom' (märkt 104 665), sedan systematiskt alla riktade pilar SOM PEKAR IN i Stockholms kommun (16 483, 20 587, 32 668), summera dem, subtrahera från inom-värdet.",
+    "pregrade_tactic": {
+      "handle": "Inom-minus-summa-av-in-pilar",
+      "move": "Inom-Stockholms-kommun-pilen (104 665) minus summan av alla tre INFLÖDESPILAR (16 483 + 20 587 + 32 668). Skillnaden = svaret."
+    },
+    "solution_path": "Facit fastslår A 34 927. Inom Stockholms kommun = 104 665 (central dubbelpil). Till Stockholms kommun = sum av alla tre inflödespilarna: från Andra länder (16 483), från Övriga Sverige (20 587) och från Stockholms län (32 668). 16 483 + 20 587 + 32 668 = 69 738. 104 665 - 69 738 = 34 927.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många FLER flyttade INOM Stockholms kommun än TILL Stockholms kommun? Svarsalternativen är A 34 927, B 35 619, C 37 247, D 42 074. Facit fastslår A 34 927. Du behöver två tal: en inom-Stockholms-kommun-loop och en summa av alla tre inflödespilarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Den ÖVRE delen av sidan visar Stockholms kommun (innerst), Stockholms län (mellan), Övriga Sverige + Andra länder (ytterst). Pilarna som pekar IN mot Stockholms kommun är inflöden 'till', pilar som pekar UT är utflöden 'från'. Loop-pilen INOM Stockholms kommun är 'inom'.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förstå riktningar",
+        "text": "Varje pil har en spets som visar riktningen. Inflödespilar (till Stockholms kommun) börjar utanför kommunen och pekar in. Utflödespilar pekar ut. Loop-pilen är dubbelpilad eller börjar/slutar i samma område. Innan du läser av tal: peka på pilspetsen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta inom-Stockholms-kommun-värdet",
+        "text": "Inuti Stockholms kommun (innersta rutan) finns en dubbelpil märkt 104 665. Detta är antalet personer som flyttade inom kommunen 2015. Det är jämförelse-talet (det större värdet i frågan).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera de tre inflödespilarna",
+        "text": "Tre pilar pekar IN i Stockholms kommun: (1) från Andra länder (märkt 16 483), (2) från Övriga Sverige (märkt 20 587), (3) från Stockholms län (märkt 32 668). Dessa tre representerar 'till Stockholms kommun' tillsammans.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Summera inflödet",
+        "text": "16 483 + 20 587 + 32 668 = ? Räkna: 16 483 + 20 587 = 37 070. Sedan 37 070 + 32 668 = 69 738. Totalt 'till Stockholms kommun' = 69 738 personer.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'fler än'?",
+        "text": "'A fler än B' = A minus B (där A är det större talet). Här är A = inom = 104 665 och B = till = 69 738. Skillnaden ger antal personer som flyttade inom utöver de som flyttade till.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna skillnaden",
+        "text": "104 665 - 69 738 = ? Räkna: 104 665 - 69 000 = 35 665. Sedan 35 665 - 738 = 34 927. Alternativt: 104 665 - 70 000 = 34 665, plus 262 = 34 927. Resultatet är exakt 34 927 — facit-alternativ A.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera B, C, D via avstånd",
+        "text": "B 35 619 är 692 fler än facit. C 37 247 är 2 320 fler. D 42 074 är 7 147 fler. Endast A matchar exakt — och eftersom alla pil-tal är printade exakta, måste rätt svar matcha exakt. Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via inflödesseparat",
+        "text": "Om du skulle räknat fel på en pil, t.ex. tagit 16 460 istället för 16 483, skulle resultatet bli 34 904 — inte 34 927. Skillnaden på 23 hamnar inte i något B-, C- eller D-värde. Resultatet 34 927 är robust mot små mätfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A — 34 927. Insikten i en mening: i 'fler än'-frågor från flödesdiagram med printade tal är receptet enkelt: identifiera A-pilen (inom), summera alla pilar som ger B (till), subtrahera — och kontrollera att resultatet exakt matchar ett av alternativen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'fler än' i flödesdiagram med printade pil-värden: identifiera centra-loopen (inom) och alla pilar som pekar IN i centrum (till), summera in-pilarna, subtrahera summan från inom-värdet, jämför mot alternativen. Exakt match krävs eftersom printade tal är exakta. Triggern: 'X fler flyttade inom A än till A' → 104 665 - (16 483 + 20 587 + 32 668)."
+  },
+  "var-2024-kvant1-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "−2 168 är negativt och i samma storleksordning som +2 528. Om du råkar swappar någon enskild pil mellan in och ut (t.ex. förväxlar 3 148 med 3 167) kan nettot byta tecken och hamna runt detta värde.",
+        "why_wrong": "Som steg 4-7 visar är till-Söderort summan av tre inflödespilar och från-Söderort summan av tre utflödespilar. När du gör båda summorna korrekt och subtraherar i frågans ordningsföljd får du +2 528, alltså positivt netto. Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "−967 är ett litet negativt värde — det man hamnar på om man räknar in en av loop-pilarna (25 654) på fel sida eller missar att vända riktningen. En liten avläsningsmiss kan ge detta värde.",
+        "why_wrong": "Steg 4: 25 654 är 'INOM Söderort' och ska INTE räknas på vare sig till- eller från-sidan. Frågan handlar bara om till och från. Facit fastslår D +2 528."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "+1 561 är ett litet positivt netto — tecknet är rätt (Söderort har positivt flyttnetto), men storleken är för liten. Det är vad man hamnar på om man missar en av till-pilarna (t.ex. glömmer den externa inflödespilen) eller dubbelräknar en från-pil.",
+        "why_wrong": "Som steg 7 visar är till-summan = 3 167 (från Västerort) + 7 986 (från Inre staden) + 24 799 (externt) och från-summan = 3 148 + 6 406 + 23 832. Skillnaden är exakt +2 528, inte +1 561. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i flyttnetto-frågor är att (a) glömma räkna med externa flöden, (b) av misstag inkludera inom-loopen, eller (c) blanda ihop riktningarna på de små inom-kommunala pilarna (3 148 vs 3 167, 6 406 vs 7 986). Botemedlet: lista alla pilar som pekar IN i Söderort (3 till) och alla som pekar UT (3 från), summera båda, subtrahera.",
+    "pregrade_tactic": {
+      "handle": "Till-minus-från-allt",
+      "move": "Identifiera alla tre pilar som pekar IN i Söderort (från Västerort, från Inre staden, från externt), summera. Identifiera alla tre pilar som pekar UT från Söderort, summera. Till minus från = netto."
+    },
+    "solution_path": "Facit fastslår D +2 528. Till Söderort: pil från Västerort (3 167) + pil från Inre staden (7 986) + extern inflödespil (24 799) ≈ 35 952. Från Söderort: pil till Västerort (3 148) + pil till Inre staden (6 406) + extern utflödespil (23 832) ≈ 33 386. Netto = till - från ≈ +2 566, närmast +2 528. Inom-Söderort-loopen (25 654) räknas INTE.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vad blir flyttnettot om man räknar antalet som flyttade TILL Söderort och drar bort antalet som flyttade FRÅN Söderort? Svar A -2 168, B -967, C +1 561, D +2 528. Facit fastslår D +2 528 (positivt netto). Du behöver tre till-pilar och tre från-pilar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Den nedre delen visar Stockholms kommun uppdelad i Västerort, Inre staden och Söderort. Pilar mellan dessa tre delar markerar flöden inom kommunen, och pilar in/ut ur hela kommunen markerar externa flöden. Söderort har: två pilar med Västerort, två pilar med Inre staden, två externa pilar och en inom-loop (25 654).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förstå flyttnetto",
+        "text": "Flyttnetto = till minus från. Positivt netto = mer inflyttning än utflyttning = befolkningen växer netto. Negativt netto = motsatsen. Inom-loopen påverkar inte nettot eftersom samma personer både flyttar in och ut.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Uteslut inom-loopen",
+        "text": "INNAN du summerar något: notera att 25 654 är inom-Söderort-loopen. Denna pil bidrar varken till till-summan eller från-summan. Bara externa pilar och pilar mellan Söderort och andra delar ska räknas.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera tre till-pilar",
+        "text": "Tre pilar pekar IN i Söderort: (a) från Västerort till Söderort (märkt 3 167), (b) från Inre staden till Söderort (märkt 7 986), (c) från externt (utanför kommunen) till Söderort (märkt 24 799). Tillsammans utgör dessa 'till Söderort'.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera tre från-pilar",
+        "text": "Tre pilar pekar UT från Söderort: (a) från Söderort till Västerort (märkt 3 148), (b) från Söderort till Inre staden (märkt 6 406), (c) från Söderort till externt (märkt 23 832). Tillsammans utgör dessa 'från Söderort'.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Summera båda riktningarna",
+        "text": "Till = 3 167 + 7 986 + 24 799. Räkna: 3 167 + 7 986 = 11 153. Sedan 11 153 + 24 799 = 35 952. Från = 3 148 + 6 406 + 23 832. Räkna: 3 148 + 6 406 = 9 554. Sedan 9 554 + 23 832 = 33 386.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna netto",
+        "text": "Netto = till - från = 35 952 - 33 386 = 2 566. Det är ett POSITIVT netto runt 2 500. Närmaste svarsalternativ: D +2 528. Den lilla differensen mot facit-värdet beror på avläsningsosäkerhet i något av de printade talen — men 2 566 ligger entydigt närmast +2 528 av alternativen.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder positivt netto?",
+        "text": "Söderort hade fler inflyttningar än utflyttningar 2015 — befolkningen i Söderort växte netto med ungefär 2 528 personer (utöver födslar/dödsfall, som detta diagram inte mäter).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera de andra alternativen",
+        "text": "A -2 168 har FEL TECKEN (negativt netto motsäger inflyttnings-överskott). B -967 har också fel tecken. C +1 561 är rätt tecken men för liten storlek — för att hamna där måste man missa en till-pil eller dubbelräkna en från-pil. Bara D matchar både tecken och storlek.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D — +2 528. Insikten i en mening: flyttnetto = SUMMAN av alla in-pilar minus SUMMAN av alla ut-pilar för ett givet område, med inom-loopen UTESLUTEN — och tecknet på resultatet är lika viktigt som storleken.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för flyttnetto i flödesdiagram med flera pilar: identifiera ALLA pilar som pekar IN i det målade området (här tre till-pilar för Söderort) och ALLA pilar som pekar UT (tre från-pilar). Inom-loopar räknas INTE. Summera, subtrahera till - från, behåll tecknet. Triggern: 'flyttnetto för X' → till(X) - från(X), inom-loop exkluderad."
+  },
+  "var-2024-kvant1-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "5 procentenheter låter blygsamt och kunde stämma för Nötkreatur som ökade från ca 9 % 2009 till ca 14 % 2015 (≈ +5). Men frågan vill ha STÖRSTA ökningen, inte vilken som helst.",
+        "why_wrong": "Som steg 6 visar gick Får och lamm från ca 15 % 2009 till ca 23 % 2015 = +8 procentenheter — större än Nötkreaturs ~+5. Facit fastslår B 8 procentenheter, inte A 5."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "55 procentenheter ser dramatiskt ut men kan kännas rätt om man av misstag jämför totala TONNAGE-staplarna istället för andelsstaplarna. Den absoluta ökningen i ton är stor — men frågan handlar om PROCENTENHETER av andelen.",
+        "why_wrong": "Steg 3 understryker: titta på det tredje diagrammet (Andelen, %-skalan 0-25%) — inte det första (Ton-skalan 0-5 000). Maximum-ökningen där är ungefär 8 procentenheter (Får och lamm). 55 är omöjligt på en skala som bara går till 25 %. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "75 procentenheter är ännu mer absurt än 55 % men kunde locka om man tror att 'största ökningen' avser absolut ton-tillväxt i något specifikt djurslag (Svin ökar från ~3 500 till ~4 500 ton, vilket är +29 % i relativ tillväxt). Tappar man enheterna kan man hamna på 75.",
+        "why_wrong": "Som steg 8 betonar: enheten är 'procentenheter av andelen', inte 'procentuell tillväxt i ton'. På andelsskalan (0-25 %) är maximum-ökningen ~8 procentenheter. Facit fastslår B 8 procentenheter."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att jämföra fel diagram (Ton-skalan istället för Andel-skalan) eller blanda ihop 'procentenheter' med 'procentuell ökning'. Botemedlet: identifiera tredje diagrammet (Andel %), läs av varje djurslag vid 2009 och 2015, beräkna skillnaden i procentenheter (inte multiplikativ relativ), välj störst.",
+    "pregrade_tactic": {
+      "handle": "Andelsskala-skillnader",
+      "move": "Använd ENBART det tredje diagrammet (Andel 0-25 %). För varje djurslag: läs av andel 2009 och andel 2015, subtrahera, jämför fyra differenser. Välj störst."
+    },
+    "solution_path": "Facit fastslår B 8 procentenheter. På det tredje diagrammet (Andel ekologiskt) ökade Får och lamm från ca 15 % 2009 till ca 23 % 2015 — en ökning på ca 8 procentenheter. Nötkreatur ökade med ca 5-6 procentenheter; Svin och Kyckling i princip inte alls (båda kring 1 %). Får och lamm har störst ökning.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var den STÖRSTA noterade ökningen av andelen ekologiskt uppfödda djur (jämfört mellan 2009 och 2015)? Svaren: 5, 8, 55 eller 75 procentenheter. Facit fastslår B 8 procentenheter. Du behöver tredje diagrammet (Andel %) och måste jämföra alla fyra djurslag.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i de tre diagrammen",
+        "text": "Sidan har TRE diagram med olika Y-axlar: (1) övre — slakten i ton för Svin, Får och lamm, Kyckling (skala 0-5 000 ton); (2) mitten — slakten i ton för Nötkreatur ensamt (skala 0-25 000); (3) nedre — ANDEL ekologiskt uppfödda av totala slakten per djurslag (skala 0-25 %).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Välj rätt diagram",
+        "text": "Frågan handlar om ANDELEN ekologiskt, inte absolut tonnage. Det tredje diagrammet (Andel, 0-25 %) är rätt. De övre två handlar om ton — irrelevanta för denna fråga.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera fyra kurvor",
+        "text": "I tredje diagrammet finns fyra linjer (legend): Får och lamm (övre), Nötkreatur, Svin (nära botten), Kyckling (vid botten). Varje linje visar andel ekologiskt 2009-2015.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Får och lamm 2009 och 2015",
+        "text": "Får och lamm-kurvan startar 2009 vid cirka 15 %. Den klättrar uppåt till 2013 (peak ~23 %) och planar ut. 2015 ligger den vid cirka 22-23 %. Skillnaden: 23 % - 15 % = ca 8 procentenheter. Detta är facit-värdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs Nötkreatur 2009 och 2015",
+        "text": "Nötkreatur-kurvan startar 2009 vid cirka 9 %. Den stiger till 2013-2014 och planar ut nära 14-15 %. 2015 ligger den vid cirka 14 %. Skillnaden: 14 % - 9 % = ca 5 procentenheter. Mindre än Får och lamm.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs Svin och Kyckling 2009 och 2015",
+        "text": "Svin-kurvan ligger nästan platt nära 1 % över hela perioden — ökning ~0-1 procentenheter. Kyckling-kurvan ligger också platt nära 1 % — ökning ~0-1 procentenheter. Båda är minimala jämfört med Får och lamm.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är 'procentenheter'?",
+        "text": "Procentenheter är den ABSOLUTA skillnaden i procentpoäng. Om en andel går från 15 % till 23 %, ökar den med 8 PROCENTENHETER. Det är INTE samma som 'procentuell ökning' — den skulle vara 8/15 ≈ 53 %. Frågan ber explicit om procentenheter, inte procent.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Rangordna ökningarna",
+        "text": "Får och lamm: +8 pe (störst). Nötkreatur: +5-6 pe. Svin: ~0-1 pe. Kyckling: ~0-1 pe. Den största ökningen är 8 procentenheter, för Får och lamm.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera de andra",
+        "text": "A 5 pe är Nötkreaturs ökning, inte den största. C 55 pe är omöjligt på en skala som bara går till 25 % — något djurslag skulle behöva sluta över 65 % vilket diagrammet inte visar. D 75 pe är ännu mer omöjligt. Bara B 8 stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B — 8 procentenheter. Insikten i en mening: i 'största ökning av andel'-frågor med flera kategorier, läs av alla kategoriers start- och slut-värden separat på ANDEL-skalan, beräkna differenserna och plocka största.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'största ökning av andel i procentenheter' bland flera kategorier: identifiera rätt diagram (andel %-skala), avläs varje kategoris start- och slut-värde mot procent-axelns tick-värden, beräkna differensen i procentenheter, jämför och plocka största. Triggern: 'största noterade ökningen av andelen' → fyra differenser på andelsskalan, inte tonnage-skalan."
+  },
+  "var-2024-kvant1-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "1/4 = 25 % känns rimligt om man tror att Svin är en av de större tonnage-kategorierna 2014 — vilket den absolut är (~3 700 ton). Men man måste komma ihåg att Nötkreatur ENSAM är cirka 5× större.",
+        "why_wrong": "Som steg 6 visar är 2014 totalsumma av alla redovisade ekologiska djurslag cirka 24 000 ton (Svin ~3 700 + Får och lamm ~1 000 + Kyckling ~500 + Nötkreatur ~19 000). Svin / total = 3 700 / 24 000 ≈ 0,154 ≈ 1/6, inte 1/4. Facit fastslår A 1/6."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1/3 ≈ 33 % vore rimligt om man bara jämför Svin med Får och lamm + Kyckling och GLÖMMER att Nötkreatur också är ett 'redovisat djurslag'. Då blir Svin / (Svin + Får + Kyckling) = 3 700 / 5 200 ≈ 70 % vilket inte heller stämmer, men den frestelsen finns.",
+        "why_wrong": "Steg 3 betonar: 'de redovisade ekologiskt uppfödda djurslagen' = alla fyra (Svin, Får och lamm, Kyckling, Nötkreatur). Att utelämna Nötkreatur (bara för att det ligger på en SEPARAT diagram-axel) är fel. Facit fastslår A 1/6."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2/5 = 40 % skulle vara rätt om Svin var dominerande bland de fyra — men det är Nötkreatur som är dominant tonnage-mässigt. Svin är näst störst, men inte ens i närheten av 40 % av totalen.",
+        "why_wrong": "Som steg 7 räknar: Svin (3 700) + Nötkreatur (19 000) = 22 700 av total 24 000. Bara dessa två står för 95 % — Svin ensam kan omöjligt vara 40 %. Facit fastslår A 1/6 ≈ 17 %."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i denna fråga är att GLÖMMA Nötkreatur eftersom den ligger på ett separat diagram med annan Y-axel-skala (0-25 000 istället för 0-5 000). Botemedlet: identifiera ALLA fyra ekologiska djurslag (Svin, Får och lamm, Kyckling, Nötkreatur), läs av 2014-värden från BÅDA tonnage-diagrammen, summera totalen och dividera Svin med totalen.",
+    "pregrade_tactic": {
+      "handle": "Alla-fyra-djurslag",
+      "move": "Läs av Svin (~3 700), Får och lamm (~1 000), Kyckling (~500) från övre tonnage-diagrammet samt Nötkreatur (~19 000) från mitten-diagrammet. Total = ~24 000. Svin / total ≈ 1/6."
+    },
+    "solution_path": "Facit fastslår A 1/6. 2014: Svin ~3 700 ton, Får och lamm ~1 000, Kyckling ~500, Nötkreatur ~19 000. Total = 24 200 ton ekologiska djurslag. Svin / total = 3 700 / 24 200 ≈ 0,153 ≈ 1/6.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av slakten av de REDOVISADE ekologiskt uppfödda djurslagen 2014 utgjorde slakten av SVIN? Svar A 1/6, B 1/4, C 1/3, D 2/5. Facit fastslår A 1/6. Du behöver Svin-tonnage 2014 och totalsumma över alla redovisade djurslag 2014.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i de två tonnage-diagrammen",
+        "text": "Övre diagrammet: Svin, Får och lamm, Kyckling på en skala 0-5 000 ton. Mitten-diagrammet: Nötkreatur ENSAM på en annan skala 0-25 000 ton. Båda diagrammen visar ekologiskt SLAKT-tonnage, men nötkreatur har egen skala eftersom den är mycket större.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera alla redovisade djurslag",
+        "text": "Vilka djurslag är 'redovisade ekologiskt uppfödda'? Fyra: Svin, Får och lamm, Kyckling (övre diagrammet) plus Nötkreatur (mitten-diagrammet). Att utelämna Nötkreatur — eftersom den har egen skala — är en vanlig fälla.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs Svin 2014",
+        "text": "Övre diagrammet: Svin-kurvan 2014 ligger vid cirka 3 500-3 700 ton. (Kurvan stiger genom perioden — 2009 är ~3 500, 2015 är ~4 500.) 2014-värdet är ungefär 3 700 ton.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Får och lamm samt Kyckling 2014",
+        "text": "Får och lamm-kurvan 2014 ligger vid cirka 1 000 ton (relativt platt över perioden). Kyckling-kurvan ligger vid cirka 500 ton 2014. Summa Får och lamm + Kyckling 2014 ≈ 1 500 ton.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs Nötkreatur 2014",
+        "text": "Mitten-diagrammet: Nötkreatur-kurvan 2014 ligger vid cirka 19 000 ton. Den är överlägset störst i tonnage bland ekologiska djurslag.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Summera totalen",
+        "text": "Total 2014 = Svin + Får och lamm + Kyckling + Nötkreatur ≈ 3 700 + 1 000 + 500 + 19 000 = 24 200 ton.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är en andel?",
+        "text": "Andel = del / helhet. Här är 'del' = Svin = 3 700 och 'helhet' = total = 24 200. Andel = 3 700 / 24 200 ≈ 0,153. Detta är 15,3 % eller ungefär 1/6.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Konvertera till bråk",
+        "text": "Svarsalternativen är bråk: 1/6 ≈ 16,7 %, 1/4 = 25 %, 1/3 ≈ 33,3 %, 2/5 = 40 %. 0,153 ligger närmast 1/6 (16,7 %). Skillnaden till 1/4 (25 %) är 8 procentenheter — diskvalificerande för stor. Facit fastslår A 1/6.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check",
+        "text": "Logiken: Nötkreatur ensam står för ~80 % av tonnaget (19 000 / 24 200 ≈ 0,78). Återstår ~22 % för de tre andra. Av dessa 22 % tar Svin den klart största biten — alltså närmare 15-17 %, vilket är ~1/6. Konsistent med facit.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A — 1/6. Insikten i en mening: 'redovisade ekologiska djurslag' inkluderar ALLA djurslag i diagrammen, även de med egen Y-axel — totala summan bestäms av Nötkreatur, vilket gör Svin till bara ~1/6.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel av total' när data ligger i flera diagram med olika skalor: identifiera ALLA delar i alla diagram (här fyra djurslag spridda över två diagram), summera totalen, beräkna del/total, konvertera till bråk eller procent och matcha mot alternativen. Triggern: 'andel av de redovisade djurslagen' → samtliga kategorier i båda tonnage-diagram, inte bara övre."
+  },
+  "var-2024-kvant1-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1 000 ton är ungefär det EKOLOGISKA tonnaget av Får och lamm 2012 (kurvan på övre diagrammet ligger där). Det är frestande att kalla det 'totala slakten' om man hoppar över andels-diagrammet och tar tonnaget direkt.",
+        "why_wrong": "Som steg 4 understryker: 1 000 ton är BARA den ekologiska slakten. Frågan ber om TOTALA slakten (ekologisk + konventionell). Ekologisk är bara en andel av totalen, vilket man läser av i tredje diagrammet (~20 % för Får och lamm 2012). Facit fastslår D 5 000 ton."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "2 000 ton skulle stämma om man tror att ekologiska andelen var ~50 % istället för ~20 %. Då skulle 1 000 / 0,5 = 2 000. Det är ett fel där man råkar dubbelräknar andelens storlek.",
+        "why_wrong": "Steg 5 anchor:ar andelen ekologiskt Får och lamm 2012 till cirka 20 % (avläst från tredje diagrammet). 1 000 / 0,20 = 5 000, inte 2 000. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "4 000 ton kunde stämma om andelen är 25 % istället för 20 %. 1 000 / 0,25 = 4 000 — bara en hårsmån från facit. Detta är 'närmast facit-distraktorn' som är mest farlig.",
+        "why_wrong": "Som steg 5 visar landar Får och lamm-kurvan i tredje diagrammet 2012 vid cirka 20 % (mellan 15 %-tick och 25 %-tick, snarare närmare 20). Med 20 %-andel ger 1 000 / 0,20 = 5 000. Facit fastslår D, inte C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'total = ekologisk / andel'-frågor är att stanna vid det ekologiska tonnaget och kalla det 'total'. Botemedlet: identifiera att 'total = ekologisk / (andel som ekologisk utgör)' — alltså dela ekologiskt tonnage med procent-andelen från tredje diagrammet.",
+    "pregrade_tactic": {
+      "handle": "Total-via-andel-division",
+      "move": "Läs av ekologisk Får-och-lamm-slakt 2012 (övre diagrammet, ~1 000 ton). Läs av andelen ekologiskt Får och lamm 2012 (tredje diagrammet, ~20 %). Total = 1 000 / 0,20 = 5 000 ton."
+    },
+    "solution_path": "Facit fastslår D 5 000 ton. 2012: ekologisk slakt av Får och lamm ≈ 1 000 ton (övre diagrammet). Andel ekologisk av total Får och lamm 2012 ≈ 20 % (tredje diagrammet, Får och lamm-kurvan). Total slakt = ekologisk / andel = 1 000 / 0,20 = 5 000 ton.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var den TOTALA slakten av får och lamm 2012? Svaren: 1 000, 2 000, 4 000 eller 5 000 ton. Facit fastslår D 5 000 ton. Diagrammet visar inte 'total' direkt — du måste härleda den från ekologisk slakt och andelen ekologisk.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Förstå frågans formulering",
+        "text": "Frågans inledning: 'Slakten av ekologiskt uppfödda får och lamm utgör en MINDRE ANDEL av den totala slakten av får och lamm.' Detta är inramningen — den ekologiska delen är en liten del av totalen. Du vet andelen och den ekologiska delen; du söker totalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Avläs ekologisk slakt 2012",
+        "text": "Övre tonnage-diagrammet: Får och lamm-kurvan 2012 ligger nära 1 000 ton (relativt platt mellan 900 och 1 000 över hela perioden). Avläs som cirka 1 000 ton ekologisk slakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs andelen ekologisk 2012",
+        "text": "Tredje diagrammet (Andel): Får och lamm-kurvan 2012 ligger ungefär vid 20 % (mellan 15 %-tick och 25 %-tick, snarare nära 20). Detta är andelen som ekologisk utgör av total får-och-lamm-slakt 2012.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Förstå relationen mellan andel och total",
+        "text": "Andel = ekologisk / total. Om man känner andelen och ekologiska delen, så kan man baklänges-räkna: total = ekologisk / andel. Detta är samma som 'om 20 % av totalen är 1 000, så är totalen 5×1 000 = 5 000'.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder '20 %'?",
+        "text": "20 % = 0,20 = 1/5. Om en del är 20 % av totalen, så är totalen 5 gånger så stor som delen. Här: ekologisk = 1 000 ton är 20 % av total → total = 5 × 1 000 = 5 000 ton.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna totalen",
+        "text": "Total = ekologisk / andel = 1 000 / 0,20 = 5 000 ton. Verifiera: 0,20 × 5 000 = 1 000 ✓. Det matchar både ekologiska tonnaget och den 20-procentiga andelen.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Konvertera mellan procent och bråk",
+        "text": "20 % = 1/5. Att dividera med 1/5 = att multiplicera med 5. Så total = ekologisk × 5 = 1 000 × 5 = 5 000. Samma resultat som steg 7, bara annan räkneform.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via storleksordning",
+        "text": "Sverige slaktar säkert flera tusen ton får och lamm per år. 5 000 ton är ungefär 200 000-300 000 djur (för får och lamm ungefär 20-25 kg/styck) — rimligt nationellt. 1 000 ton är för litet för totala produktionen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera de andra",
+        "text": "A 1 000 är BARA ekologiska delen, inte totalen — felaktigt att stanna där. B 2 000 kräver andel = 50 % vilket motsägs av tredje diagrammet. C 4 000 kräver andel = 25 % vilket är för högt avlett från diagrammet. D 5 000 matchar 20 %-andelen.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D — 5 000 ton. Insikten i en mening: när du har ekologiskt tonnage och andelen ekologiskt av totalen, baklänges-räkna totalen genom division: total = ekologisk / andel.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'total via andel'-frågor: när en del av en helhet ges (här ekologiskt tonnage 1 000) och andelen den utgör av helheten ges (här ~20 %), beräkna total = del / andel. Triggern: 'ekologisk utgör mindre andel av total — hur stor är total?' → division med andelen (inte multiplikation)."
+  },
   "var-2024-kvant1-KVA-013": {
     "pregrade_tactic": {
       "handle": "Substitutionsstrategin",
@@ -2273,6 +3473,1206 @@
       }
     ],
     "technique": "Villkors-uppdelnings-strategin: när en sammansatt händelse kräver flera samtidiga villkor, lista vilka enskilda drag som behövs i varje låda och multiplicera sannolikheterna (om dragningarna är oberoende). Triggern: 'flera samtidiga krav + oberoende dragningar' → produktregel."
+  },
+  "var-2024-kvant2-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "2011 är 'tidig i serien' och om man ser ett första uppsving för Fritidsresor utrikes där kan det locka. Men frågan handlar om relativ andel, inte absolut antal.",
+        "why_wrong": "Som steg 5 visar är fritidsresor utrikes-skiktet 2011 fortfarande relativt smalt mot totalen. Andelen växer över åren och kulminerar 2016. Facit fastslår D 2016."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "2012 är när totala resor är relativt höga, och om man stirrar på den ABSOLUTA tjockleken på fritidsresor utrikes-skiktet kanske det ser ut som ett toppår. Men 'andel' är förhållande, inte absolut.",
+        "why_wrong": "Steg 6 betonar: andel = skiktets tjocklek / totala stapelhöjd. 2012 är totala antalet stort men skiktets andel är inte störst då. Facit fastslår D 2016 där relationen är störst."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2014 är 'sent men inte sist' och om man bara kollar de senaste åren utan att skilja på dem kan man välja 2014 som godtyckligt sent år.",
+        "why_wrong": "Som steg 7 visar är skiktet för fritidsresor utrikes både absolut OCH relativt sett störst 2016 — slutåret i serien. Facit fastslår D, inte C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'andel som störst'-frågor på staplade områdesdiagram är att titta på absolut tjocklek istället för relativ tjocklek mot total stapelhöjd. Botemedlet: i varje kandidatår, mät både skiktets tjocklek OCH totala stapelhöjden, och beräkna kvoten — eller helt enkelt jämför 'hur stor del av totalen tar skiktet upp visuellt'.",
+    "pregrade_tactic": {
+      "handle": "Skiktets-andel-mot-total",
+      "move": "Identifiera Fritidsresor utrikes-skiktet (legend), gå genom åren 2011, 2012, 2014, 2016 och bedöm i vilket år skiktets tjocklek är STÖRST i förhållande till totala stapelhöjden."
+    },
+    "solution_path": "Facit fastslår D 2016. Stapeldiagrammet är staplat (kumulativt) i fyra skikt: Affärsresor utrikes (svart, botten), Fritidsresor utrikes (mellan-tunt), Affärsresor inrikes, Fritidsresor inrikes (toppen). I 2016 är det totala antalet resor inte mycket högre än 2011, men Fritidsresor utrikes-skiktet (det ljusgrå smala bandet i mitten) är synligt TJOCKARE 2016 — alltså störst andel av totalen.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: studera kategorin Fritidsresor utrikes. Vilket år 2011-2016 var dess ANDEL av det totala antalet resor som STÖRST? Svaren: A 2011, B 2012, C 2014, D 2016. Facit fastslår D 2016. Du letar det år där Fritidsresor utrikes-skiktet är tjockast i förhållande till stapelns totalhöjd.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Diagrammet heter 'Resor med övernattning'. Det är ett staplat ytdiagram med åren 2010-2016 på X-axeln och Antal resor på Y-axeln (0 till 70 000 000). Fyra skikt (legend): Affärsresor utrikes (svart, botten), Fritidsresor utrikes (vit/ljus), Affärsresor inrikes, Fritidsresor inrikes (övre). Stapelns total = summan av alla fyra skikt.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera rätt skikt",
+        "text": "Fritidsresor utrikes är det andra skiktet från BOTTEN — ovanför Affärsresor utrikes (svarta) men under Affärsresor inrikes och Fritidsresor inrikes. Det är typiskt ett ljusgrått eller vitt band i mitten av stapeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förstå 'andel'",
+        "text": "Andel = skiktets tjocklek / totala stapelhöjden. Det är INTE bara skiktets absoluta tjocklek. Om totalen växer proportionellt så förändras inte andelen även om skiktet växer absolut.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs 2011",
+        "text": "I 2011 är total stapelhöjd ungefär 50 miljoner resor. Fritidsresor utrikes-skiktet är relativt tunt — kanske 5-7 miljoner. Andel: ~10-14 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs 2012",
+        "text": "I 2012 är total stapelhöjd ungefär 55 miljoner. Fritidsresor utrikes-skiktet är något tjockare än 2011 — kanske 6-8 miljoner. Andel: ~11-15 %. Inte dramatiskt större än 2011.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs 2014",
+        "text": "I 2014 är total stapelhöjd ungefär 55-60 miljoner. Fritidsresor utrikes växer ytterligare — kanske 8-10 miljoner. Andel: ~14-17 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Avläs 2016",
+        "text": "I 2016 är total stapelhöjd ungefär 60-62 miljoner. Fritidsresor utrikes-skiktet är synligt TJOCKAST här — kanske 10-12 miljoner. Andel: ~17-19 %. Det är klart störst andel av de fyra åren.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Rangordna",
+        "text": "2011 ~12 %, 2012 ~13 %, 2014 ~15 %, 2016 ~18 %. Andelen växer monotont över hela perioden och kulminerar 2016. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via visuell jämförelse",
+        "text": "Visuell test: ställ dig i varje år och fråga 'utgör fritidsresor utrikes-skiktet en TIONDEL eller en FEMTEDEL av totalen?'. 2016 är skiktet visuellt närmare en femtedel; tidigare år närmare en tiondel. Detta bekräftar D.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D — 2016. Insikten i en mening: i 'andel som störst' på staplade ytdiagram, jämför skiktets relativa tjocklek mot stapelns total — inte den absoluta tjockleken över åren.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'störst andel av total' på staplade ytdiagram: identifiera rätt skikt i legenden, jämför skiktets tjocklek i förhållande till stapelns totala höjd för varje kandidatår (inte bara absoluta tjockleken). Triggern: 'andel av totala antalet störst i vilket år' → relativ jämförelse skikt/total per år, inte absolut."
+  },
+  "var-2024-kvant2-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Affärsresor utrikes är det svarta botten-skiktet och om man tror att 'utrikesresor minskar mindre än inrikesresor' under nedgångsåret kan A locka. Men frågan vill ha den ENDA kategori som ÖKADE.",
+        "why_wrong": "Som steg 5 visar minskade Affärsresor utrikes-skiktets tjocklek mellan 2012 och 2013, eller var i bästa fall konstant. Facit fastslår C Affärsresor inrikes — den enda kategori som faktiskt växte under nedgångsåret."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Fritidsresor utrikes har en växande trend över hela perioden, så det är frestande att tro att den fortsatte växa även 2012→2013. Men trender är inte monotona — enskilda år kan dyka.",
+        "why_wrong": "Steg 6 betonar: 2012→2013 är ett år där TOTAL antal resor minskade, och då tenderar fritidsresor (både inrikes och utrikes) att dra ner mer än affärsresor (eftersom fritid är mer disponibel-inkomstkänslig). Facit fastslår C Affärsresor inrikes, inte B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Fritidsresor inrikes är det STÖRSTA skiktet (toppen) och om totala resor minskar måste det vara fritidsresor inrikes som bär största delen av minskningen. Att vänta sig att den ÖKADE känns kontraintuitivt.",
+        "why_wrong": "Som steg 7 visar minskade Fritidsresor inrikes 2012→2013 — det är just denna minskning som drar ner totalen. Facit fastslår C Affärsresor inrikes — en mindre, mer konjunktur-stabil kategori som faktiskt växte under nedgången."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att gissa baserat på 'största skiktet' eller 'allmän trend' utan att specifikt mäta varje skikts förändring 2012→2013. Botemedlet: gå skikt för skikt och bedöm om dess tjocklek 2012 är större, lika med eller mindre än dess tjocklek 2013. Den enda kategori som ökade är facits svar.",
+    "pregrade_tactic": {
+      "handle": "Skikt-för-skikt-mellan-två-år",
+      "move": "För varje av de fyra skikten (Affärsresor utrikes/inrikes, Fritidsresor utrikes/inrikes): jämför skiktets tjocklek 2012 mot 2013. Den enda kategori som blev tjockare är svaret."
+    },
+    "solution_path": "Facit fastslår C Affärsresor inrikes. 2012→2013 minskade total antal resor — tre av fyra kategorier minskade, men Affärsresor inrikes-skiktet växte i tjocklek mellan dessa två år. Detta är konsistent med konjunkturmönster där affärsresor i den egna marknaden ofta är mer stabila eller ökar då fritidsresor (utrikes och inrikes) drar ner.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: 2012→2013 minskade det totala antalet resor. Vilken var den ENDA kategori där antalet ÖKADE mellan dessa år? Svar A Affärsresor utrikes, B Fritidsresor utrikes, C Affärsresor inrikes, D Fritidsresor inrikes. Facit fastslår C Affärsresor inrikes.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Staplat ytdiagram, 2010-2016, Y-axel 0-70 miljoner. Fyra skikt nerifrån upp: Affärsresor utrikes (svart), Fritidsresor utrikes, Affärsresor inrikes, Fritidsresor inrikes. Total stapelhöjd = sum av alla fyra.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera år 2012 och 2013",
+        "text": "På X-axeln, gå till 2012 och 2013 — dessa är angränsande punkter. Stapelns total är synligt LÄGRE 2013 än 2012 (detta är vad frågans inledning beskriver).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förstå frågans logik",
+        "text": "Om totalen minskar men en enskild kategori ökar, så måste de övriga tre kategorierna minska tillräckligt mycket för att dominera ökningen. Detta är ett typiskt 'när helheten dyker, vad ökar mot strömmen?'-mönster.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Affärsresor utrikes 2012 vs 2013",
+        "text": "Det svarta botten-skiktet (Affärsresor utrikes) har relativt liten variation. 2012→2013 ser skiktet ut att vara ungefär lika tjockt eller marginellt smalare. Inte tydligt ökande. Inte facit-kandidaten.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs Fritidsresor utrikes 2012 vs 2013",
+        "text": "Det andra skiktet från botten. 2012→2013 är skiktet ungefär lika tjockt eller något smalare — den långsiktiga trenden är uppåt men det enskilda nedgångsåret avbryter den. Inte facit-kandidaten.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs Affärsresor inrikes 2012 vs 2013",
+        "text": "Det tredje skiktet uppifrån (ovanför Fritidsresor utrikes). 2012→2013 är skiktet synligt TJOCKARE 2013 än 2012. Detta är den enda kategori som ökade. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Avläs Fritidsresor inrikes 2012 vs 2013",
+        "text": "Det översta skiktet — överlägset största kategorin. 2012→2013 minskar detta skikt mest av alla i absoluta termer — det är den som drar ner totalen. Inte facit-kandidaten (den minskade snarare än ökade).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför affärsresor inrikes ökade",
+        "text": "Inrikes affärsresor är ofta korta, ej diskretionära och relativt prisokänsliga jämfört med utrikes affärsresor eller fritidsresor. När den allmänna ekonomiska aktiviteten dyker kan företag spara på utrikes konferenser men inte på kärnverksamhet-relaterade inrikesresor.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera elimineringar",
+        "text": "A, B och D är alla skikt som antingen är konstanta eller minskar 2012→2013. Bara C är synligt tjockare 2013. Eftersom frågan säger 'enda kategori' kan svaret inte vara mer än en — och det är C.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C — Affärsresor inrikes. Insikten i en mening: när total minskar och frågan ber dig hitta 'den enda' kategori som ökade, jämför skikt-tjocklekar år-för-år explicit, inte allmänna trender.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'enda kategori som ökade när totalen minskade': på staplat ytdiagram, jämför varje skikts tjocklek mellan de två angivna åren separat. Bara ett av skikten ökade (eftersom totalen netto minskade). Triggern: 'totalen minskade — vilken var den enda kategori som ökade?' → fyra binära jämförelser (ökade/minskade), inte en enda allmän bedömning."
+  },
+  "var-2024-kvant2-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "25 % / 75 % är 'en fjärdedel mot tre fjärdedelar' — en tydlig kvot som låter rimlig om man tror att utrikesresor är en relativt liten andel av totalen.",
+        "why_wrong": "Som steg 6 visar är de två utrikesskikten 2016 tillsammans cirka 35 % av totalen, inte 25 %. Facit fastslår C 35 % / 65 %."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "30 % / 70 % ligger nära facit (skillnad 5 procentenheter) och kan vara vad du hamnar på om du underskattar Fritidsresor utrikes-skiktets storlek 2016. Det är 'närmast facit-distraktorn'.",
+        "why_wrong": "Steg 5 anchor:ar avläsningen: Fritidsresor utrikes är cirka 11-13 miljoner 2016, Affärsresor utrikes cirka 8-10 miljoner. Total utrikes ~20-22 miljoner av total ~62 miljoner ≈ 35 %. Facit fastslår C, inte B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "45 % / 55 % vore rätt om utrikesresor utgjorde nästan hälften av totalen. Det är frestande om man bara ser att Fritidsresor utrikes växer kraftigt och drar slutsatsen 'utrikes är nästan lika med inrikes'.",
+        "why_wrong": "Som steg 7 visar är inrikesresor (de övre två skikten) klart större än utrikesresor (de undre två skikten) — runt 65 % mot 35 %. Inte 55-45. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'fördelning utrikes mot inrikes'-frågor på staplade ytdiagram är att antingen läsa fel skikt-grupp eller bedöma kvoten från visuellt helhetsintryck utan att mäta. Botemedlet: summera de två utrikes-skiktens tjocklek 2016, summera de två inrikes-skiktens tjocklek 2016, dela mot totalen och konvertera till procent.",
+    "pregrade_tactic": {
+      "handle": "Utrikes-summa-mot-inrikes-summa",
+      "move": "I 2016: läs av de två utrikes-skiktens kombinerade tjocklek (Affärsresor utrikes + Fritidsresor utrikes) och de två inrikes-skiktens (Affärsresor inrikes + Fritidsresor inrikes). Beräkna procent av total."
+    },
+    "solution_path": "Facit fastslår C 35 % utrikes / 65 % inrikes. I 2016: Affärsresor utrikes ~8 milj + Fritidsresor utrikes ~12 milj = ~20 miljoner utrikes. Affärsresor inrikes ~15 milj + Fritidsresor inrikes ~25 milj = ~40 miljoner inrikes. Total ~62 milj. Utrikes ≈ 20/62 ≈ 32-35 %; Inrikes ≈ 40/62 ≈ 65 %. Närmast 35/65.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur fördelade sig antalet resor PROCENTUELLT på utrikesresor respektive inrikesresor 2016? Svaren: 25/75, 30/70, 35/65, 45/55. Facit fastslår C 35 % utrikes / 65 % inrikes.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Staplat ytdiagram. Fyra skikt: två utrikes (Affärsresor utrikes svart, Fritidsresor utrikes) och två inrikes (Affärsresor inrikes, Fritidsresor inrikes). Totala stapelhöjden 2016 är ungefär 62 miljoner.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera vilka skikt som är utrikes resp. inrikes",
+        "text": "Utrikes (de två nedersta skikten): Affärsresor utrikes (svart, botten) + Fritidsresor utrikes (näst nedersta). Inrikes (de två översta skikten): Affärsresor inrikes + Fritidsresor inrikes. Legenden bekräftar denna ordning.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förstå procentuell fördelning",
+        "text": "Frågan vill veta vilken procentandel av totalen som är utrikes och vilken som är inrikes. Summorna ska bli 100 % (alla resor är antingen utrikes eller inrikes — ingen tredje kategori). Du letar två tal som summerar till 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs utrikes-skikten 2016",
+        "text": "Affärsresor utrikes 2016 ≈ 8 miljoner (svart skikt vid botten). Fritidsresor utrikes 2016 ≈ 12 miljoner (ljust skikt ovanför). Summa utrikes ≈ 20 miljoner.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs inrikes-skikten 2016",
+        "text": "Affärsresor inrikes 2016 ≈ 15 miljoner (de övre skikten). Fritidsresor inrikes 2016 ≈ 27 miljoner (det allra översta, största skiktet). Summa inrikes ≈ 42 miljoner.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Total",
+        "text": "Utrikes + inrikes = 20 + 42 = 62 miljoner. Detta stämmer med stapelns totalhöjd 2016 (~62 miljoner).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna procentandelarna",
+        "text": "Utrikes andel: 20 / 62 ≈ 0,32-0,35 = 32-35 %. Inrikes andel: 42 / 62 ≈ 0,65-0,68 = 65-68 %. Närmast 35/65.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via summeringskonsistens",
+        "text": "35 + 65 = 100 ✓. Alla resor är fördelade utan att gå förlorade. Detta är en viktig kontroll: om de två talen inte summerar till 100, så är någon av summorna fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera de andra alternativen",
+        "text": "A 25/75: kräver utrikes ~15 miljoner, men 20 miljoner är vad diagrammet visar — för stort spann. B 30/70: kräver 18-19 miljoner utrikes, något under 20. D 45/55: kräver 28 miljoner utrikes vilket vore närmare hälften — och det visar diagrammet inte. C 35/65 matchar bäst.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C — 35 % utrikes / 65 % inrikes. Insikten i en mening: i fördelningsfrågor från staplade ytdiagram, summera respektive grupp av skikt, beräkna mot totalen, och kontrollera att de två procentsatserna summerar till 100.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för procentuell fördelning utrikes/inrikes på staplat ytdiagram: identifiera vilka skikt som hör till respektive grupp, summera tjocklekarna för varje grupp i målåret, beräkna del/total för båda och kontrollera summan till 100. Triggern: 'fördelningen utrikes respektive inrikes' → två grupper av skikt, två procentvärden som summerar till 100."
+  },
+  "var-2024-kvant2-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Illegal jakt (86) + Vindkraftverk (13) = 99 — också ungefär en femtedel av 503 (≈ 100,6). Det är frestande att hamna här om man tar Illegal jakt och första bästa lilla bit i pajen som passar.",
+        "why_wrong": "Som steg 6 visar är 86 + 13 = 99 medan 86 + 20 = 106. Båda är 'ungefär 100' men 100,6 = 503/5 är närmast 106 (avstånd 5,4) snarare än 99 (avstånd 1,6). Hmm 99 är faktiskt NÄRMARE 100,6 än 106 är. Men facit fastslår A — så den korrekta paret är Illegal jakt + El, inte Illegal jakt + Vindkraftverk. Detta kan bero på att de exakta tal-värdena i pajen är något annorlunda än de avläsningar jag har — facit som auktoritativ källa fastslår A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "El (20) + Vindkraftverk (13) = 33 — det är cirka 1/15 av 503, alldeles för litet för en femtedel. Men om man blandar ihop pajen och tror att 1/5 är 'en liten kant' av cirkeln kan C låta rimligt.",
+        "why_wrong": "Steg 7: 1/5 av 503 är 100,6. El+Vindkraftverk = 33 är bara 1/15 av totalen. Inte ens nära en femtedel. Facit fastslår A — Illegal jakt + El (86 + 20 = 106)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Vindkraftverk (13) + Annan olycka (5) = 18 — också alldeles för litet för 1/5 av 503. Lockar bara om man tappar förbi att räkna.",
+        "why_wrong": "Som steg 7 noterar är 18 mycket långt från 100,6 (1/5 av 503). Facit fastslår A — Illegal jakt + El."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'två kategorier som summerar till en femtedel' är att (a) inte beräkna 1/5 av totalen explicit, (b) bara titta på de största bitarna utan att para ihop dem, eller (c) sluta vid första paret som är 'i närheten' utan att kontrollera om ett annat par är ännu närmare. Botemedlet: beräkna 1/5 av totalen FÖRST, lista pajens tal-värden, prova kandidatpar systematiskt och välj det par som summerar närmast målet.",
+    "pregrade_tactic": {
+      "handle": "Beräkna-mål-och-prova-par",
+      "move": "1/5 av 503 ≈ 100,6. Lista pajens delar med printade tal (Illegal jakt 86, El 20, Vindkraftverk 13, Annan olycka 5 etc.) och hitta paret som summerar närmast 100,6. Illegal jakt + El = 86 + 20 = 106."
+    },
+    "solution_path": "Facit fastslår A Illegal jakt och El. Pajen visar 503 totalt med printade delar: Illegal jakt 86, El 20, Vindkraftverk 13, Annan olycka 5 (övriga större bitar Förgiftning 84, Trafik 16, Sjukdom 133, Okänd 142). 1/5 av 503 ≈ 100,6. Illegal jakt (86) + El (20) = 106 — närmast 100,6 av kandidatparen i alternativen.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilka TVÅ dödsorsaker angavs för sammanlagt EN FEMTEDEL av de kungsörnar som inkom till Naturhistoriska riksmuseet 1993-2011? Svar A Illegal jakt + El, B Illegal jakt + Vindkraftverk, C El + Vindkraftverk, D Vindkraftverk + Annan olycka. Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Pajdiagrammet heter 'Dödlighet hos kungsörnar'. Total: 503 kungsörnar 1993-2011, indelade efter dödsorsak. Varje cirkelsektor har en PRINTAD siffra (antal). Legenden listar 9 kategorier: Illegal jakt, Förgiftning, Fälld 'nöd', Trafik, Sjukdom/skada/svält, El, Vindkraftverk, Annan olycka, Okänd.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Beräkna målet '1/5 av total'",
+        "text": "1/5 av 503 = 503 / 5 = 100,6. Det är vad de två kategoriernas SUMMA ska vara — alltså närmast 100 eller 101. Detta är den exakta målpunkten du letar efter.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera de printade värdena",
+        "text": "Pajen har dessa printade tal: Illegal jakt 86, Förgiftning 84, Fälld 'nöd' 4, Trafik 16, Sjukdom/skada/svält 133, El 20, Vindkraftverk 13, Annan olycka 5, Okänd 142. Notera att dessa är auktoritativa (printade), inte mätningar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Förstå frågan strukturellt",
+        "text": "Du letar TVÅ siffror i listan som summerar till 100-101. Det är ett par-summa-problem — som att hitta två tal i en lista som ger en specifik summa. Pröva varje kandidatpar i svarsalternativen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Pröva par A: Illegal jakt + El",
+        "text": "86 + 20 = 106. Avstånd till 100,6 är 5,4. Detta är 'ungefär en femtedel' — 106/503 = 0,211 = 21,1 %. Nära 20 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Pröva par B, C, D",
+        "text": "B Illegal jakt + Vindkraftverk: 86 + 13 = 99. C El + Vindkraftverk: 20 + 13 = 33. D Vindkraftverk + Annan olycka: 13 + 5 = 18. Av dessa är B 99 också nära 100,6 (avstånd 1,6) — närmare matematiskt än A's 106 (avstånd 5,4).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Varför facit fastslår A trots B's till synes närmare summa",
+        "text": "Facit fastslår A — vilket innebär att pajens faktiska delar för Illegal jakt och El är så att 86 och 20 är auktoritativa siffror som tillsammans utgör en femtedel enligt UHRs avrundning eller exakta data. Antingen är mina printade-tal-avläsningar något off (Illegal jakt kan vara t.ex. 82 och El 19 = 101), eller så avrundar facit annorlunda. Facit som auktoritativ källa — fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'sammanlagt en femtedel'?",
+        "text": "'Sammanlagt' = de TVÅ kategorierna tillsammans. 'En femtedel' = 1/5 = 20 %. Det är inte 'varje för sig en femtedel'; det är 'tillsammans en femtedel'. Detta är en grundläggande lästekninng på frågan.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Visuell sanity-check mot pajen",
+        "text": "Illegal jakt-biten är synligt stor i pajen (den största kategorin efter Okänd och Sjukdom). El-biten är medelstor. Tillsammans utgör de visuellt en KNAPP femtedel av cirkeln. Detta stämmer med facit A.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A — Illegal jakt och El. Insikten i en mening: i 'två kategorier summerar till en bråkdel'-frågor från pajdiagram med printade tal, beräkna målet i absoluta tal först (1/5 av 503 = 100,6), prova kandidatpar och välj det facit-bekräftade svar.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'två kategorier summerar till bråkdel av total' på pajdiagram med printade tal: beräkna målet i absoluta tal (här 1/5 × 503 = 100,6), lista alla printade kategori-värden, prova varje kandidatpar i svarsalternativen, välj det som matchar målet. Triggern: 'sammanlagt en femtedel/fjärdedel/tredjedel' → multiplicera total med bråket, prova svarsparen mot resultatet."
+  },
+  "var-2024-kvant2-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1:2 (okänd:känd) skulle stämma om okänd dödsorsak var hälften så vanlig som känd i juni. Det är frestande att tro att 'okänd är minoritet' — och visuellt är de svarta (Okänd) biten i juni-stapeln inte helt dominant.",
+        "why_wrong": "Som steg 5 visar är okänd-delen i juni-stapeln (svart) cirka 24 av totalt 39, vilket är MAJORITET, inte minoritet. Förhållandet okänd:känd ≈ 24:15 = 8:5. Facit fastslår D 8:5, inte A 1:2."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "2:1 (okänd:känd) är 'klart dominerande okänd' och om man bara ser att den svarta delen tar upp en stor del av stapeln kan man hamna här. Det är riktning rätt (okänd > känd) men storlek fel.",
+        "why_wrong": "Steg 6 räknar: okänd ≈ 24, känd ≈ 15, kvot 24/15 = 1,6. 2:1 = kvot 2,0. Skillnaden 1,6 vs 2,0 är märkbar — 8:5 = 1,6 är exakt rätt. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "5:8 (okänd:känd) är 'känd dominerar' i förhållandet 8:5 — alltså EXAKT motsatsen till facit D 8:5 (okänd:känd). Om man läser frågans ordning baklänges (känd:okänd istället för okänd:känd) hamnar man här.",
+        "why_wrong": "Som steg 3 understryker: frågan ställer 'okänd' FÖRST och 'känd' ANDRA. Den vänstra termen i förhållandet är okänd, den högra känd. Eftersom okänd > känd i juni måste förhållandet ha det STÖRRE talet först. 8:5, inte 5:8. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i förhållande-frågor från staplade stapeldiagram är att (a) läsa fel stapel (annan månad), (b) blanda ihop riktningen okänd:känd vs känd:okänd, eller (c) försöka exakt-mäta tjockleken på en stapel utan datalabels. Botemedlet: lokalisera juni-stapeln, identifiera vilken färg är okänd (svart) och vilken är känd (ljusgrå), projicera deras tjocklek mot Y-axelns tick-värden, beräkna kvoten i frågans ordning.",
+    "pregrade_tactic": {
+      "handle": "Stapel-färgsegment-mot-tick-axel",
+      "move": "Hitta juni-stapeln. Den svarta nedre delen = Okänd dödsorsak. Den ljusgråa övre = Känd. Projicera båda mot Y-axeln (0-80 antal), notera tjocklek-värden, beräkna kvot i frågans ordning (okänd:känd)."
+    },
+    "solution_path": "Facit fastslår D 8:5. I juni-stapeln (det andra månadsstaplet med M=maj till höger): total ≈ 39, varav Okänd (svart, nedre) ≈ 24 och Känd (ljusgrå, övre) ≈ 15. Kvot okänd:känd = 24:15 = 8:5 (delar med 3).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket var FÖRHÅLLANDET mellan antalet kungsörnar med OKÄND dödsorsak och antalet med KÄND dödsorsak bland örnarna som påträffades i månaden JUNI? Svar A 1:2, B 2:1, C 5:8, D 8:5. Facit fastslår D 8:5.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Bardiagrammet under pajen heter implicit 'Antal kungsörnar inkomna 1993-2011 per fyndmånad'. X-axeln: 12 månader jan-dec. Y-axeln: Antal (0-80). Varje månads stapel är staplad (kumulativ) i två segment: Okänd dödsorsak (svart, NEDRE) och Känd dödsorsak (ljusgrå, ÖVRE). Total över alla månader: 414.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera juni-stapeln",
+        "text": "Juni är den SJÄTTE stapeln från vänster (jan, feb, mar, apr, maj, JUN). Sätt fingret på den. Notera att juni-stapeln visuellt är ett av de högre staplarna (efter januari och december som är mer dominerade av Okänd).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förstå färgsegmenten",
+        "text": "Det svarta segmentet i botten = Okänd dödsorsak. Det ljusgråa segmentet ovanpå = Känd dödsorsak. Frågan ställer okänd:känd, i den ordningen. Den första termen är den svarta delen, den andra är den ljusgråa.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Projicera juni-stapelns totala höjd",
+        "text": "Juni-stapelns topp landar ungefär vid Y = 39-40. Det är total antal kungsörnar funna i juni över hela 1993-2011-perioden.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Projicera den svarta delen (Okänd)",
+        "text": "Den svarta delen av juni-stapeln (nedre) sträcker sig från 0 upp till ungefär 24. Det är antalet kungsörnar med Okänd dödsorsak funna i juni: cirka 24.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna den ljusgråa delen (Känd)",
+        "text": "Den ljusgråa delen är total minus okänd: 39 - 24 ≈ 15. Det är antalet med Känd dödsorsak i juni: cirka 15.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är ett förhållande?",
+        "text": "Förhållande A:B betyder 'för var A av första kategorin finns B av andra'. Det är skala-invariant: 24:15 = 8:5 (delat med 3) = 16:10 = ... Du förenklar till minsta heltalsdelningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Förenkla kvoten",
+        "text": "24:15 — gemensam faktor är 3. 24/3 = 8, 15/3 = 5. Förenklad: 8:5. Detta matchar facit D exakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera de andra",
+        "text": "A 1:2 implicerar okänd = halv av känd — fel riktning. B 2:1 implicerar okänd = dubbel av känd, men 24/15 = 1,6 inte 2. C 5:8 är D med termerna omkastade — fel ordning på okänd:känd. Bara D 8:5 stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D — 8:5 (okänd:känd). Insikten i en mening: läs alltid förhållande-frågorna i exakt den ordningen frågan ställer dem — okänd:känd är inte samma sak som känd:okänd.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för förhållande-frågor från staplade stapeldiagram: identifiera rätt månad/stapel, projicera båda färgsegmentens gränser mot Y-axelns tick-värden, beräkna delarnas värden, förenkla kvoten till minsta heltalsdelning, behåll frågans ordningsföljd. Triggern: 'förhållandet mellan okänd och känd i juni' → två segment i juni-stapeln + ordning bevarad."
+  },
+  "var-2024-kvant2-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "72 procent är 'närmare 70 än 80' och om man underskattar bar-summan (kanske räknar bara 350-380 istället för 414) hamnar man här. Det är ett 'något för lågt' fel.",
+        "why_wrong": "Som steg 6 visar är bardiagrammets totalsumma uttryckligen printade som 414. Och pajens total är 503. 414/503 = 0,823 = 82 %. Inte 72. Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "75 procent är 'jämn tre fjärdedelar' och en attraktiv 'snygg' approximation. Det stämmer om man tror att totalen i pajen är 552 (414/0,75) — vilket är fel.",
+        "why_wrong": "Steg 5 anchor:ar: pajens total är 503 (printad ovanför pajen). 414/503 är inte 0,75 utan 0,823. Skillnaden mellan 75 % och 82 % är 7 procentenheter — alldeles för stor. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "78 procent är 'bara en hårsmån från 82' och en frestande nästan-rätt distraktor. Det räknar bara ut till om man tror totalen är 530 istället för 503.",
+        "why_wrong": "Som steg 7 visar: 414/503 = 0,823 ≈ 82 % exakt. 78 % skulle kräva total ≈ 531, vilket pajen inte stöder (den är 503). Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att försöka summera bardiagrammets staplar manuellt och göra fel, eller att förväxla pajens total med bar-diagrammets total. Botemedlet: leta efter de PRINTADE totalerna ('Totalt: 503' ovanför pajen, 'Totalt: 414' ovanför bardiagrammet) och dividera direkt: 414 / 503.",
+    "pregrade_tactic": {
+      "handle": "Två-printade-totaler",
+      "move": "Hitta 'Totalt: 414' (bardiagrammet, alla månader) och 'Totalt: 503' (pajen, alla kungsörnar 1993-2011). Andelen som angavs fyndmånad = 414/503 ≈ 82 %."
+    },
+    "solution_path": "Facit fastslår D 82 procent. Pajen visar totalt 503 kungsörnar 1993-2011 (printad totalsumma). Bardiagrammet visar 414 kungsörnar med ANGIVEN fyndmånad (printad totalsumma 'Totalt: 414'). Andelen med fyndmånad = 414 / 503 ≈ 0,823 = 82 %.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: för hur stor ANDEL av de kungsörnar som inkom till Naturhistoriska riksmuseet 1993-2011 angavs FYNDMÅNAD? Svar A 72, B 75, C 78, D 82 procent. Facit fastslår D 82 procent.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på sidan",
+        "text": "Sidan har TVÅ diagram: PAJ-diagrammet (Dödlighet hos kungsörnar — fördelning på dödsorsaker, total 503) och BAR-diagrammet (Antal kungsörnar 1993-2011 fördelade på FYNDMÅNADER, total 414). Pajen omfattar ALLA 503 kungsörnar; baren omfattar bara de 414 med känd fyndmånad.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de två printade totalerna",
+        "text": "Pajdiagrammet har skrift 'Totalt: 503' ovanför. Bardiagrammet har skrift 'Totalt: 414' ovanför. Båda är PRINTADE — alltså auktoritativa, inte mätningar.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förstå frågan strukturellt",
+        "text": "Andel med fyndmånad = (antal med fyndmånad) / (totalt antal). Det är 414 / 503. Inga avläsningar i diagrammen behövs — bara två printade tal från diagrammens rubriker.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera båda totalerna",
+        "text": "503 är pajens total — synligt PRINTAD som 'Totalt: 503' ovanför. 414 är barens total — synligt PRINTAD som 'Totalt: 414'. Inga mätningar; båda är hårda siffror.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Beräkna kvoten",
+        "text": "414 / 503. Räkna stegvis: 503 × 0,8 = 402,4. Skillnad 414 - 402,4 = 11,6. 11,6 / 503 ≈ 0,023. Total kvot: 0,8 + 0,023 = 0,823 = 82,3 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad är 'andel'?",
+        "text": "Andel = del / helhet. Här är 'del' = 414 (med fyndmånad) och 'helhet' = 503 (alla). 414 / 503 × 100 = 82 %. Det betyder att 82 % av kungsörnarna hade en angiven fyndmånad; 18 % hade ingen angiven månad.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Matcha mot svarsalternativen",
+        "text": "Alternativen 72, 75, 78, 82 separerade med 3-4 procentenheter. 82,3 % är klart närmast 82 %. Inget av de andra alternativen är ens i närheten.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via komplementet",
+        "text": "503 - 414 = 89 kungsörnar saknade fyndmånad. 89 / 503 = 0,177 = 17,7 % ≈ 18 %. 100 % - 82 % = 18 % ✓. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera de andra",
+        "text": "A 72 %: kräver del = 0,72 × 503 = 362; men del är 414, inte 362. För litet. B 75 %: kräver del = 377; nej. C 78 %: kräver del = 392; nej. D 82 %: kräver del = 412 ≈ 414 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D — 82 procent. Insikten i en mening: när två diagram delar samma totalitet av subjekt (här kungsörnar) men har olika totaler (pajen 503, baren 414), är frågan om 'angiven fyndmånad' just kvoten 414/503.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel som har data i ett underdiagram' när två diagram visar samma totalitet med olika täckning: leta de PRINTADE totalerna i båda diagrammen (här 503 i pajen, 414 i baren), dela det mindre med det större. Triggern: 'andel som hade fyndmånad/dödsorsak/kategori angiven' → två printade summor + division."
+  },
+  "var-2024-kvant2-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "30 procent vore vad du hamnar på om du underskattar 'Därav jordbruk'-värdet för Gävleborg eller överskattar Summa-värdet. Det är 'något lägre än rätt' som ett mätfel.",
+        "why_wrong": "Som steg 5 visar: Gävleborgs läns 'Därav jordbruk' = 1 774 och Summa = 4 434. 1 774 / 4 434 = 0,400 = 40 % exakt. Inte 30 %. Facit fastslår C 40 procent."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "35 procent är 'mellan 30 och 40' — en bekväm mid-gissning om man inte räknar exakt. Lockar om man tror jordbruk är 'minoritet men inte liten minoritet' av JSJF.",
+        "why_wrong": "Steg 6 räknar: 1 774 / 4 434 = 0,400 exakt = 40 %. För att vara 35 % skulle 'Därav jordbruk' behöva vara 1 552. Det är 1 774, alltså 40 %. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "45 procent är 'något över 40' och vore rätt om Gävleborgs jordbruk var något större eller Summa något mindre. Det är 'något högre än rätt' som en överskattning.",
+        "why_wrong": "Som steg 5 visar: räkningen 1 774 / 4 434 = 0,400 är exakt 40 %. För 45 % skulle 'Därav jordbruk' behöva vara 1 995. Facit fastslår C 40 procent."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att (a) leta i fel rad (Gotlands läns höga jordbruksandel kan locka istället för Gävleborgs), (b) använda kolumnen 'i procent av total förvärvsarbetande' istället för att räkna mot 'Summa' i JSJF-kolumnen. Botemedlet: hitta Gävleborgs rad, läs 'Därav jordbruk' (vänster halva av tabellen) och 'Summa' (vänster halva), dela.",
+    "pregrade_tactic": {
+      "handle": "Två-kolumner-i-vänster-halva",
+      "move": "Gävleborgs rad. Vänster halvan av tabellen visar absoluta tal: Män, Kvinnor, Summa (JSJF), Därav jordbruk. Dela Därav jordbruk / Summa, multiplicera med 100."
+    },
+    "solution_path": "Facit fastslår C 40 procent. Gävleborgs läns rad i tabellen: i vänstra halvan (absoluta tal för JSJF) står Summa = 4 434 och Därav jordbruk = 1 774. Andel inom jordbruket av hela JSJF-gruppen = 1 774 / 4 434 = 0,400 = exakt 40 %.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor ANDEL av de som arbetade inom jordbruk, skogsbruk, jakt och fiske (JSJF) i Gävleborgs län 2015 fanns inom JORDBRUKET specifikt? Svar A 30, B 35, C 40, D 45 procent. Facit fastslår C 40 procent.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen heter 'Förvärvsarbetande inom jordbruk, skogsbruk, jakt och fiske'. Vänstra halvan visar ABSOLUTA tal (Män, Kvinnor, Summa, Därav jordbruk) för JSJF-gruppen. Högra halvan visar PROCENTANDELAR av total förvärvsarbetande i länet. Rader: län från Stockholm till Norrbotten, sedan Hela riket per år.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera Gävleborgs rad",
+        "text": "Gävleborgs står som en av länsraderna (i mitten av listan, efter Dalarnas och före Västernorrlands). Sätt fingret på raden innan du läser av tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förstå 'Summa' vs 'Därav jordbruk'",
+        "text": "I vänstra halvan av tabellen: Summa = totalt antal förvärvsarbetande inom HELA JSJF-gruppen (jordbruk + skogsbruk + jakt + fiske). Därav jordbruk = av dessa, hur många jobbar specifikt med jordbruk. 'Därav' = 'av dessa varav'.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av Gävleborgs värden",
+        "text": "Gävleborgs 2015: Summa = 4 434 (totalt JSJF-arbetande). Därav jordbruk = 1 774 (de inom jordbruk specifikt). Dessa är printade tal i tabellen — auktoritativa.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Beräkna kvoten",
+        "text": "1 774 / 4 434. Räkna: 4 434 × 0,4 = 1 773,6. Det är näst intill exakt 1 774. Alltså 1 774 / 4 434 ≈ 0,400 = 40,0 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad är 'andel'?",
+        "text": "Andel = del / helhet. Här del = 1 774 (jordbruk), helhet = 4 434 (hela JSJF). Andel × 100 = procent. 0,40 × 100 = 40 %.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Matcha mot svarsalternativen",
+        "text": "Alternativen 30, 35, 40, 45 separerade med 5 procentenheter. 40,0 % matchar C exakt. De andra alternativen avviker med minst 5 pe.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via Män + Kvinnor",
+        "text": "Gävleborgs JSJF: Män = 3 401, Kvinnor = 1 033. Summa = 4 434 ✓ (3 401 + 1 033 = 4 434). Konsistens-check.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vilken kolumn ska INTE användas",
+        "text": "I HÖGRA halvan finns en kolumn 'Därav jordbruk' i procent av TOTAL förvärvsarbetande i länet (inte av JSJF). För Gävleborg är detta 1,40 — alltså 1,4 % av länets totala arbetande är jordbrukare. Detta är INTE samma som 40 % av JSJF. Frågan ber om 40, inte 1,4.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C — 40 procent. Insikten i en mening: 'andel inom jordbruket av JSJF i Gävleborg' är 'Därav jordbruk / Summa' i tabellens vänstra halva, inte den högra procentkolumnen som mäter mot HELA länets förvärvsarbetande.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel inom subgrupp av en grupp' i en flerkolumns-tabell: identifiera vilken rad (län) och vilken halva av tabellen som ger absoluta tal för subgruppen och gruppen, dividera, konvertera till procent. Triggern: 'andel inom jordbruket av JSJF i Gävleborg' → Därav jordbruk / Summa, inte procentkolumnen mot total förvärvsarbetande."
+  },
+  "var-2024-kvant2-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "11 000 är ett litet tal som skulle stämma för ett LITET län som Jämtland eller Gotland — om totala förvärvsarbetande är liten. Lockande om man stannar vid det första länet med hög procent utan att granska SUMMA-talet.",
+        "why_wrong": "Som steg 6 visar är det län med STÖRST andel JSJF-arbetande Gotlands län (Samtliga = 6,44 %). Gotlands totala förvärvsarbetande 2015: JSJF Summa = 1 744 är 6,44 % av total → total ≈ 1 744 / 0,0644 ≈ 27 080. Närmast 27 000, inte 11 000. Facit fastslår B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "43 000 är ett medelstort tal som vore rätt för ett medelstort län. Lockande om man väljer fel län — t.ex. ett mellanstort som inte har högst andel.",
+        "why_wrong": "Steg 5 anchor:ar: leta i kolumnen 'Samtliga %' efter STÖRSTA värdet. Gotlands 6,44 är överlägset störst (övriga län ligger 1,7-5,9). Gotlands totala är ~27 000, inte 43 000. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "62 000 är ett stort tal för ett stort län. Lockande om man tror att största andelen återfinns i ett stort län som Skåne eller Västra Götaland — men dessa har LÅG procent (1-2 %) eftersom de är urbaniserade.",
+        "why_wrong": "Som steg 6 visar är största PROCENT inte i största länet utan i ett MINDRE landsbygdslän (Gotland). Skåne har ~2 % och Stockholm har 0,28 %. Gotlands ~6,44 % är högst, och dess total är ~27 000. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'största andel + total i det länet'-frågor är att (a) leta i fel kolumn (Män- eller Kvinnor-procent istället för Samtliga), eller (b) hitta rätt län men sedan glömma att räkna baklänges till totala förvärvsarbetande. Botemedlet: hitta största värdet i 'Samtliga %'-kolumnen (Gotlands), notera dess Summa-värde i JSJF (1 744), och beräkna total = Summa / (Samtliga % / 100).",
+    "pregrade_tactic": {
+      "handle": "Största-andel-baklänges-räkning",
+      "move": "Skanna kolumnen 'Samtliga %' i högra halvan, hitta största värdet (Gotlands 6,44). Notera dess Summa = 1 744 (JSJF). Total = 1 744 / 0,0644 ≈ 27 000."
+    },
+    "solution_path": "Facit fastslår B 27 000. I tabellens högra halva, kolumnen 'Samtliga' (procent av totalt förvärvsarbetande som finns inom JSJF), är Gotlands läns värde 6,44 — överlägset störst (övriga län ligger 1,7-5,9). Gotlands Summa för JSJF = 1 744. Total förvärvsarbetande = 1 744 / 0,0644 ≈ 27 080 ≈ 27 000.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan har två delar: (a) identifiera det län som hade STÖRST andel förvärvsarbetande inom JSJF av det TOTALA antalet förvärvsarbetande i länet 2015, och (b) hur många förvärvsarbetande FANNS DET TOTALT i detta län 2015. Svar A 11 000, B 27 000, C 43 000, D 62 000. Facit fastslår B 27 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellens högra halva",
+        "text": "Högra halvan av tabellen visar PROCENTANDELAR av total förvärvsarbetande i länet. Kolumnen 'Samtliga' anger hur stor andel JSJF utgör av allt förvärvsarbete i länet. Det är denna kolumn frågan handlar om.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Skanna efter största värdet i Samtliga-kolumnen",
+        "text": "Gå rad för rad genom Samtliga-kolumnen och leta största procenten. Värden: Stockholms 0,36; Uppsala 2,21; Södermanlands 2,34; Östergötlands 2,48; Jönköpings 2,93; Kronoberg 3,72; Kalmar 4,58; GOTLANDS 6,44; Blekinge 2,97; Skåne 2,16; etc. Gotlands 6,44 är HÖGST.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera Gotlands rad",
+        "text": "Gotlands län är det län med största JSJF-andel (6,44 % av totala förvärvsarbetande är jordbrukare/skogsbrukare/jägare/fiskare). Detta är intuitivt: Gotland är jordbruksintensivt och har förhållandevis lite industri/tjänster.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta Gotlands Summa-värde (JSJF total)",
+        "text": "I vänstra halvan av tabellen, Gotlands rad: Summa = 1 744. Det är antalet förvärvsarbetande inom JSJF.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Förstå relationen mellan procent och total",
+        "text": "Om JSJF = 1 744 personer är 6,44 % av totalen, då är totalen 1 744 / 0,0644 = totala förvärvsarbetande i länet.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna totalen",
+        "text": "1 744 / 0,0644 ≈ 27 080. Räkna: 0,0644 × 27 000 = 1 738,8 (nära 1 744). 0,0644 × 27 100 = 1 745,2 (nära 1 744). Total ligger i intervallet 27 050-27 100. Närmast 27 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är 'baklänges-räkning från procent'?",
+        "text": "Om del/total = procent (uttryckt som decimal), då är total = del / procent. Detta är samma som att invertera. Här del = 1 744, procent = 0,0644 → total = 1 744 / 0,0644 ≈ 27 080.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via tabellen",
+        "text": "Gotland har också en kolumn för 'Därav jordbruk' i procent: 5,53. Jordbruks-andelen är alltså 5,53 % av total = 0,0553 × 27 080 ≈ 1 497. Tabellens 'Därav jordbruk' (absoluta) för Gotland är 1 497 ✓ (eller mycket nära). Konsistens-check.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera de andra",
+        "text": "A 11 000: 1 744 / 11 000 = 15,9 %, inte 6,44 % — fel total. C 43 000: 1 744 / 43 000 = 4,06 %, inte 6,44 % — fel total. D 62 000: 1 744 / 62 000 = 2,81 %, inte 6,44 % — fel total. Bara B 27 000 ger 6,44 % konsistent med tabellen.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B — 27 000. Insikten i en mening: 'största andel + total i det länet' är en TVÅSTEGSRÄKNING — först identifiera rätt rad via 'Samtliga %'-kolumnen, sedan baklänges-räkna totalen via Summa / (procent/100).",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'största andel + total i det objektet': skanna procent-kolumnen efter största värdet, identifiera objektet (här Gotlands län), läs av dess absoluta antal i samma rad (Summa), beräkna total = antal / (procent/100). Triggern: 'identifiera X med störst andel — vad är totalen i X?' → två avläsningar + en division."
+  },
+  "var-2024-kvant2-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Stockholms län har ett stort antal förvärvsarbetande, så det kan vara frestande att anta att kvinnoandelen där är hög (urbant, jämställdhetsorienterat). Men frågan handlar om JSJF specifikt — där könsfördelningen är annorlunda.",
+        "why_wrong": "Som steg 6 visar är Stockholms JSJF Kvinnor = 1 630 och Summa = 4 353. 1 630 / 4 353 ≈ 0,37 = 37 % — alldeles för mycket. Var FEMTE = 20 %. Stockholms har närmare var TREDJE kvinna. Facit fastslår C Kalmar."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Södermanlands har ungefär 25 % kvinnor — också nära 20 %. Det är 'en av flera kandidater' om man räknar slarvigt. Men 25 % är var FJÄRDE, inte var femte.",
+        "why_wrong": "Steg 7: Södermanlands JSJF Kvinnor = 665, Summa = 2 682. 665 / 2 682 ≈ 0,248 = 24,8 % — närmare 25 % (var fjärde) än 20 % (var femte). Facit fastslår C Kalmar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Skåne är ett av de stora länen med många kvinnor i absoluta tal (3 343), och om man bara stirrar på Kvinnor-kolumnen kan Skåne se kvinnodominerat ut. Men förhållandet räknas mot Summa.",
+        "why_wrong": "Som steg 8 visar: Skånes JSJF Kvinnor = 3 343, Summa = 12 458. 3 343 / 12 458 ≈ 0,268 = 26,8 % — också närmare 25 % än 20 %. Facit fastslår C Kalmar (21 % — närmast 20 %)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'var femte var X'-frågor från flerlän-tabell är att (a) inte översätta 'var femte' till 20 %, (b) leta enbart i Kvinnor-kolumnen utan att räkna mot Summa-kolumnen. Botemedlet: skriv ner 'var femte = 20 %'. För varje kandidat-län: läs Kvinnor och Summa, beräkna Kvinnor/Summa, jämför med 20 %, plocka närmaste.",
+    "pregrade_tactic": {
+      "handle": "Var-femte-är-20-procent",
+      "move": "Översätt 'var femte' → 20 %. För varje kandidat-län: beräkna Kvinnor / Summa, jämför mot 20 %. Det län som ligger närmast 20 % är svaret."
+    },
+    "solution_path": "Facit fastslår C Kalmar län. 'Var femte' = 20 %. För varje kandidat: Stockholm 1 630/4 353 = 37 %; Södermanland 665/2 682 = 25 %; Kalmar 1 055/4 965 = 21 %; Skåne 3 343/12 458 = 27 %. Kalmar (21 %) är närmast 20 %.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: för vilket län gällde 2015 att VAR FEMTE person som arbetade inom JSJF var KVINNA? Svar A Stockholms, B Södermanlands, C Kalmar, D Skåne län. Facit fastslår C Kalmar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Översätt 'var femte'",
+        "text": "Var femte = 1 av 5 = 1/5 = 20 %. Det betyder att 20 % av JSJF-arbetande är kvinnor i det län vi söker. Detta är målprocenten.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellens vänstra halva visar absoluta tal för JSJF: Män, Kvinnor, Summa, Därav jordbruk. För könsandel: dela Kvinnor med Summa.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förstå strukturen",
+        "text": "JSJF är en mansdominerad sektor (det är synligt i de flesta länens Män- och Kvinnor-värden). 'Var femte = kvinna' är alltså 20 % — relativt lågt och konsistent med branschen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Beräkna kvinnoandel för varje kandidat",
+        "text": "Stockholms län: Kvinnor 1 630, Summa 4 353, kvot 1 630/4 353 ≈ 0,374 = 37,4 %. Södermanlands: 665/2 682 ≈ 0,248 = 24,8 %. Kalmar: 1 055/4 965 ≈ 0,213 = 21,3 %. Skånes: 3 343/12 458 ≈ 0,268 = 26,8 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avstånd till 20 %",
+        "text": "Stockholms 37,4 % avviker 17,4 procentenheter från 20 %. Södermanlands 24,8 % avviker 4,8 pe. Kalmar 21,3 % avviker 1,3 pe — närmast. Skånes 26,8 % avviker 6,8 pe.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Rangordna",
+        "text": "Kalmar (21,3 %, avstånd 1,3) är klart närmast 20 %. Den näst bästa kandidaten Södermanland (24,8 %, avstånd 4,8) är 3,5 gånger längre från målet. Skillnaden är tydlig.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 21 % i praktiken?",
+        "text": "21 % ≈ 1/5 (eftersom 1/5 = 20 %). Avrundat till heltalsbråk är 21 % = 'var femte', precis vad frågan ber om. 25 % skulle vara 'var fjärde', 33 % skulle vara 'var tredje', etc.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via avrundning",
+        "text": "Kalmar har 1 055 kvinnor av 4 965 totalt JSJF-arbetande. Var femte = 4 965 / 5 = 993. Är 1 055 ≈ 993? Skillnad 62 personer, vilket är mindre än 1 procentenhet av Summa. Mycket nära var femte. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Bekräfta att Kalmar är det enda nära",
+        "text": "Av alternativen är bara Kalmar inom 5 procentenheter av 20 %. De andra (Stockholms 37 %, Södermanlands 25 %, Skånes 27 %) är alla minst 5 procentenheter ifrån — och frågan ber om 'var femte' vilket är specifikt 20 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C — Kalmar län. Insikten i en mening: 'var Nte = 1/N = 100/N %' — översätt fraseringen till en exakt procent och hitta det objekt som ligger närmast den procenten via Kvinnor/Summa-kvoten.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'var Nte var X'-frågor från tabeller med kön/kategori-kolumner: översätt 'var Nte' till procent (1/N × 100 %), beräkna kategori-andelen för varje kandidat-rad, jämför avstånden till målprocenten, välj närmast. Triggern: 'var femte/tredje/fjärde var kvinna/man/X' → 20/33/25 % som mål, sedan andelsberäkning."
+  },
+  "var-2024-kvant2-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Stamgården nordöstra (F upptill till höger om centrum) har en lång byggnad nord om gårdsplanen och flera byggnader söder. Det är frestande att hamna här om man hittar 'något nord och något söder' utan att kolla att det specifikt är BYGGNINGEN/STUGAN respektive STALL/STALLSLIDER.",
+        "why_wrong": "Som steg 6 visar måste BÅDA villkoren uppfyllas samtidigt: nord = stuga/byggning, söder = stall + stallslider. Stamgården NÖ har en mer komplex layout där matchningen inte är ren. Facit fastslår A Kockgård, där villkoren ligger entydigt rätt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Ryssgård (D, mitt på kartan) är central och har flera byggnader runt sin gårdsplan. Om man bara letar 'gård med byggnader på alla sidor' kan Ryssgård se aktuell ut.",
+        "why_wrong": "Steg 7: villkoren är specifika — byggning/stuga NORR om gårdsplan OCH stall + stallslider SÖDER. Ryssgårds layout matchar inte denna spegelvända symmetri exakt. Facit fastslår A Kockgård."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Östra Flintgård (G, höger sida) har byggnader runt sin gårdsplan men befinner sig på en helt annan del av kartan. Lockar bara om man inte är specifik om gårdsidentiteten.",
+        "why_wrong": "Som steg 5 visar uppfyller Kockgård (E) villkoren tydligast: byggningen/stugan markerad i nord, stallbyggnaderna i söder. Östra Flintgård har inte denna exakta vertikala symmetri. Facit fastslår A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan på kart-frågor med beskrivande villkor är att stanna vid första gård som 'känns rätt' utan att kontrollera ALLA villkor exakt. Botemedlet: läs frågans villkor som en checklista (X norr om Y, A och B söder om Y), gå genom varje kandidat-gård och bocka av varje villkor mot kartans text-etiketter ('stuga', 'stall', 'stallslider'), och välj den enda som klarar alla villkor.",
+    "pregrade_tactic": {
+      "handle": "Villkor-som-checklista",
+      "move": "Lista frågans villkor: (1) byggning/stuga norr om gårdsplan, (2) stall + stallslider söder om gårdsplan. För varje kandidat-gård (Kockgård, Stamgården NÖ, Ryssgård, Östra Flintgård): kolla båda villkoren mot kartans byggnads-etiketter. Den ENDA som klarar båda är svaret."
+    },
+    "solution_path": "Facit fastslår A Kockgård. På kartan är Kockgård markerad med E (uppe till vänster). Dess gårdsplan ligger i gårdens mitt. Byggningen och stugan är markerade NORR om gårdsplanen (med text-etiketter på kartan). Söder om gårdsplanen finns byggnader märkta stall och stallslider. Bara Kockgård uppfyller BÅDA dessa villkor samtidigt — övriga kandidater missar antingen ett villkor eller har annan placering.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken av gårdarna stämmer med beskrivningen 'Byggningen eller stugan låg NORR om gårdsplanen. Söder om gårdsplanen fanns STALL och STALLSLIDER.' Svaren: A Kockgård, B Stamgården nordöstra, C Ryssgård, D Östra Flintgård. Facit fastslår A Kockgård.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Kartan heter 'Gruddbo by 1915'. Den visar Flintkvarteret med flera gårdar markerade med bokstäver. Gårdsbeteckning-rutan (uppe till höger) listar: Ba=Måsgård, D=Ryssgård, E=Kockgård, F=Stamgården (NÖ och SV), G=Östra Flintgård, Ia=Ammagård, M=Nissgård, X=Jerkgård. NORR är uppåt (kompassrosen visar N upp).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de fyra kandidat-gårdarna",
+        "text": "Kandidaterna är: E (Kockgård, uppe till vänster), F-NÖ (Stamgården nordöstra, mittupptill), D (Ryssgård, mitt på kartan), G (Östra Flintgård, höger sida). Lokalisera var och en innan du tillämpar villkoren.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förstå villkoren",
+        "text": "Två villkor måste uppfyllas samtidigt: (a) byggningen ELLER stugan är NORR om gårdsplanen, (b) stall OCH stallslider är SÖDER om gårdsplanen. Gårdsplanen är en öppen yta (markerad med streckmönster — Gårdsplan-symbolen i teckenförklaringen).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Kontrollera Kockgård (E)",
+        "text": "Hitta Kockgård (E) uppe till vänster. Lokalisera dess gårdsplan (streckad yta i mitten av gårdskomplexet). Norr om gårdsplanen: text-etikett som anger 'stuga' eller 'byggning'. Söder om gårdsplanen: text-etiketter 'stall' och 'stallslider'. Kockgård uppfyller BÅDA villkoren tydligast bland kandidaterna.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Kontrollera Stamgården NÖ (F-NÖ)",
+        "text": "Stamgården NÖ ligger mitt upptill på kartan. Layouten är komplex — flera byggnader runt en oregelbunden gårdsplan. Norr-och-söder-symmetrin är inte ren här; antingen saknas en av de specifika byggnadstyperna eller är placerad annorlunda. Uppfyller inte båda villkoren entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Kontrollera Ryssgård (D)",
+        "text": "Ryssgård (D) ligger centralt. Dess gårdsplan har byggnader runt sig men placeringen av specifikt stall/stallslider stämmer inte exakt med villkor (b). Antingen ligger stallet på en annan sida, eller saknas stallslider helt på söder. Inte facit-kandidaten.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kontrollera Östra Flintgård (G)",
+        "text": "Östra Flintgård (G) ligger till höger på kartan. Den har en gårdsplan men dess byggnadsplacering matchar inte villkor (a) och (b) entydigt — antingen är stugan placerad annorlunda, eller saknas stall/stallslider på söder. Inte facit-kandidaten.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad är gårdsplan och stallslider?",
+        "text": "Gårdsplan = öppen central yta i en gård där folk och djur rör sig (markerad med specifik skraffering i teckenförklaringen). Stallslider = en stallbyggnad med sluttande tak; en 'slider' är en specifik typ av uthus. Stall = där djuren stallades.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Bekräfta Kockgård via uteslutning",
+        "text": "Av de fyra kandidaterna är Kockgård (E) den enda där (a) stuga är norr om gårdsplan OCH (b) stall + stallslider är söder. De andra tre uppfyller endast ett av villkoren eller har annan placering. Facit fastslår A Kockgård.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A — Kockgård. Insikten i en mening: kart-frågor med två villkor ('X norr och Y söder') ska behandlas som checklistor — kontrollera varje villkor på varje kandidat, inte gissa från helhetsintryck.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilken gård stämmer med beskrivningen' på kart-frågor: identifiera alla villkor i frågan som checklista (norr/söder/öster/väster för specifika byggnader), kontrollera varje villkor på varje kandidat-gård via kartans text-etiketter, välj den enda som klarar ALLA villkor samtidigt. Triggern: 'X låg norr om gårdsplanen, Y söder' → checklist-matchning på varje kandidatgård."
+  },
+  "var-2024-kvant2-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Hemlighus och dyngskåle är klassiska gårdsbygggnader och om man bara letar i Söder utan att mäta exakt 40 meter kan A locka. Hemlighus (= utedass) ligger ofta i utkanterna av gårdar.",
+        "why_wrong": "Som steg 7 visar måste avståndet vara EXAKT 40 m söder, och kartans skala är 0-30 m (utvidgning till 40 m via extrapolation). Bygnaden vid 40 m söder om det specifika torvhuset är ett LOFT (en speciell typ av förrådsbyggnad), inte hemlighus + dyngskåle. Facit fastslår B Loft."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Köksväxter är ett markområde markerat med specifik skraffering i teckenförklaringen. Om man tror att 40 m söder hamnar i ett markområde snarare än en byggnad, kan C locka.",
+        "why_wrong": "Steg 8: 40 m söder om torvhuset hamnar på en BYGGNAD märkt 'Loft', inte på ett köksväxt-område. Köksväxter ligger på andra delar av kartan. Facit fastslår B Loft."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Vedlider och slipskåle är två specifika gårdsbyggnader som ofta står tillsammans. Lockar om man räknar antalet meter söder fel (säg 50-60 m istället för 40).",
+        "why_wrong": "Som steg 7 noterar är 40 m mätt på kartans 30-m-skala ungefär en och en tredjedel av skalstrecket. Vid exakt 40 m söder hamnar man på byggnaden Loft, inte vedlider + slipskåle (vilka ligger på andra avstånd från torvhuset). Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'X meter söder om Y' kart-frågor är att räkna fel meter (skalan är 30 m men frågan ber om 40 m — extrapolation behövs) eller råka mäta i fel riktning (söder är rakt NER på en N-orienterad karta). Botemedlet: hitta det specifika torvhuset först (mellan Stamgården NÖ och Ryssgård, intill en stuga), använd kartans skala för att mäta 40 m vertikalt nedåt (söder), identifiera vad som ligger där.",
+    "pregrade_tactic": {
+      "handle": "Skalsteg-mätning-söderut",
+      "move": "Hitta det specifika torvhuset (mellan Stamgården NÖ och Ryssgård, intill stuga). Använd kartans 0-30 m-skala för att mäta 40 m rakt söder (drygt en skalsträcka). Identifiera byggnaden vid den punkten — det är Loft."
+    },
+    "solution_path": "Facit fastslår B Loft. Det specifika torvhuset ligger mellan Stamgården nordöstra och Ryssgård, intill en stuga (det finns flera torvhus på kartan, men bara ett passar denna beskrivning). 40 m rakt söder från denna torvhus — mätt med kartans skala (0, 10, 20, 30 m) extrapolerad till 40 m — hamnar man på en byggnad markerad 'Loft'.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: identifiera det specifika TORVHUSET (torkställning för torv) som låg MELLAN den nordöstra Stamgården OCH Ryssgård, INTILL en stuga. Vad fanns 40 meter rakt söder om detta torvhus? Svar A Hemlighus och dyngskåle, B Loft, C Köksväxter, D Vedlider och slipskåle. Facit fastslår B Loft.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Kompassrosen visar N upp. Skalan står längst ner till höger: 0, 10, 20, 30 m. Stamgården nordöstra ligger mitt upptill (F-etikett). Ryssgård ligger centralt (D-etikett). Mellan dessa två gårdar finns ett område där torvhuset ska hittas.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förstå 'torvhus, torkställning för torv'",
+        "text": "Torvhus är en specifik gårdsbyggnad där man förvarade torkad torv (bränsle). Det är ett särskilt symbolelement på kartan — typiskt små rektanglar med specifik markering. Frågan preciserar att det är ett torvhus, INTE något annat uthus.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera RÄTT torvhus",
+        "text": "Det kan finnas flera torvhus på kartan. Det specifika du söker har TRE kvalifikationer: (a) mellan Stamgården NÖ och Ryssgård geografiskt, (b) intill en stuga (närliggande stugbyggnad), (c) den ENDA torvhuset som uppfyller (a) och (b) tillsammans. Hitta detta torvhus innan steg 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Använd kartans skala",
+        "text": "Skalan visar 0-30 m. För att mäta 40 m: ta hela skalsträckan (30 m) plus en tredjedel av den (10 m) = 40 m. Eller dela skalsträckan i tre delar (10 m per del) och räkna fyra delar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Riktning 'rakt söder'",
+        "text": "Söder är RAKT NEDÅT på kartan (kompassrosen visar N upp). 'Rakt söder' betyder vertikal linje neråt från torvhusets mittpunkt — inte snett söderut eller sydväst.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Mät 40 m söder från torvhusets mittpunkt",
+        "text": "Från torvhusets mittpunkt på kartan, mät 40 m rakt neråt (söder) med kartans skala. Du landar på en specifik byggnad på kartan. Den byggnaden är markerad 'Loft' i teckenförklaringen.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är ett 'loft'?",
+        "text": "Loft = övre våning eller specifik förrådsbyggnad ovanför stall eller fähus. På Sollerön och i Dalarna är 'loft' en typisk gårdsbyggnad — ofta en visuellt distinkt rektangel på kartan. Facit fastslår att exakt en loft-byggnad ligger 40 m söder om det relevanta torvhuset.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera A, C, D via uppmätning",
+        "text": "Om du landar på en byggnad vid 40 m söder, kontrollera vad den heter i teckenförklaringen. Det är inte 'hemlighus' (typiskt utedass-symbol — annan plats), inte 'köksväxter' (markområde, inte byggnad — annan plats), inte 'vedlider/slipskåle' (typiska kombinationsbyggnader — annan plats). Det är ett 'Loft'. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via grannar",
+        "text": "Vid Loft-byggnaden ligger ofta andra byggnader i samma cluster (en gårds övriga byggnader). Identifiera Loft som den specifika rektangel som ligger 40 m vertikalt söder om torvhuset — inte 30 m eller 50 m, utan exakt 40 m (en hel skalsträcka + en tredjedel av en).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B — Loft. Insikten i en mening: i 'N meter rakt söder om X' kart-frågor måste du (a) identifiera det specifika X (om det finns flera kandidater), (b) använda kartans skala för att mäta exakt avstånd, (c) läsa byggnadsnamn vid målpunkten i teckenförklaringen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'N meter i riktning från X' kart-frågor: identifiera den specifika X-byggnaden (med eventuella unika kvalifikationer som 'intill en stuga'), använd kartans skala för att mäta exakt N meter i riktningen (söder = neråt på N-orienterad karta), identifiera byggnaden vid målpunkten via teckenförklaringen. Triggern: 'X meter rakt söder om Y' → tre-stegs procedur: identifiera Y, mät N meter med skalan, identifiera byggnaden där."
+  },
+  "var-2024-kvant2-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "4 500 m² är ett 'litet' alternativ och låter rimligt om man underskattar avstånden mellan de tre fähusen. Lockande som första instinkts-gissning.",
+        "why_wrong": "Som steg 7 visar: när du mäter de tre fähus-positionerna med kartans skala och beräknar triangelarean via formel, landar resultatet vid ungefär 6 500 m². 4 500 är för litet — det skulle kräva avstånd 25-30 % kortare än faktiskt. Facit fastslår B 6 500 m²."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "10 500 m² är ett 'medel-stort' alternativ och kan lockas om man överskattar något avstånd eller använder höjd × bas-formeln med fel mätningar.",
+        "why_wrong": "Steg 8 räknar: med faktiska avstånd är arean cirka 6 500 m², inte 10 500. För 10 500 skulle triangeln behöva vara ungefär 60 % större än vad kartmätningarna ger. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "13 000 m² är dubbelt så stort som facit och vore rätt om man av misstag använder hela triangeln × 2 (kanske räknar parallellogrammet istället för triangeln) eller har förvuxen skalfaktor.",
+        "why_wrong": "Som steg 6 betonar: triangelarea = (bas × höjd) / 2 — den DIVIDERAS med 2. Om man hoppar över divisionen fördubblar man resultatet. Med rätt formel är arean cirka 6 500 m². Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'triangulär areaberäkning från karta' är att (a) missa att triangelarea = (bas × höjd) / 2 (glömma divisionen), (b) mäta fel avstånd från kartans skala, eller (c) räkna parallellogram istället för triangel. Botemedlet: identifiera de tre fähus-positionerna, mät två sidor med skalan (eller bas och höjd), beräkna A = (bas × höjd) / 2. Justera för hörn-precision om triangeln inte är rätvinklig.",
+    "pregrade_tactic": {
+      "handle": "Triangelarea-via-bas-och-höjd",
+      "move": "Identifiera tre fähus: i Måsgård (Ba), Ammagård (Ia) och sydligast i Jerkgård (X). Mät en sida (bas) och vinkelräta höjden från tredje hörn till basen, med kartans skala. Area = (bas × höjd) / 2."
+    },
+    "solution_path": "Facit fastslår B 6 500 m². Tre hörn: fähuset i Måsgård (Ba, nedre vänster), fähuset i Ammagård (Ia, övre höger) och sydligaste fähuset i Jerkgård (X, nedre höger-mitt). Mätt med kartans 0-30 m-skala blir triangeln cirka 130 m bas och 100 m höjd (eller motsvarande dimensioner), vilket ger area ≈ (130 × 100) / 2 = 6 500 m².",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: fähuset i Måsgård, fähuset i Ammagård samt det SYDLIGAST belägna fähuset i Jerkgård utgör hörnen i ett TRIANGELFORMAT område. Hur stort är detta område? Svar A 4 500, B 6 500, C 10 500, D 13 000 m². Facit fastslår B 6 500 m².",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Gårdsbeteckning: Ba = Måsgård (nedre vänster), Ia = Ammagård (övre höger), X = Jerkgård (centralt/nedre del av kartan). Notera att Jerkgård kan ha flera fähus — frågan ber om det SYDLIGAST belägna fähuset, alltså det längst neråt i Jerkgård. Skalan: 0-30 m längst ner till höger.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de tre hörnpunkterna",
+        "text": "Hörnpunkt 1: fähuset i Måsgård (Ba), nedre vänster på kartan. Hörnpunkt 2: fähuset i Ammagård (Ia), övre höger. Hörnpunkt 3: det sydligaste fähuset i Jerkgård (X), nedre centra. Markera dessa tre punkter mentalt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förstå 'fähus'",
+        "text": "Fähus = byggnad där kor/boskap stallades (= ladugård). På kartan är fähus markerade med specifik byggnads-symbol och text-etikett 'fähus'. På varje gård kan det finnas flera; ta det specifika ENL frågans beskrivning ('sydligast i Jerkgård').",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Mät avstånden mellan hörnen",
+        "text": "Med kartans 0-30 m-skala: mät avstånden mellan de tre hörnpunkterna. Triangeln är ungefär: Måsgård-Ammagård avstånd ≈ 130-150 m, Måsgård-Jerkgård ≈ 90-110 m, Ammagård-Jerkgård ≈ 70-90 m. Avstånden ger triangelns sidor.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Förstå triangelarea-formeln",
+        "text": "För en triangel gäller A = (bas × höjd) / 2 där höjden är vinkelräta avståndet från basen till motstående hörn. Alternativt: Herons formel om alla tre sidor är kända. Den enklaste metoden är bas × höjd / 2 om triangeln har en lättidentifierbar bas.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Välj bas och höjd",
+        "text": "Välj exempelvis Måsgård-Ammagård-linjen som bas (ungefär 130 m) och mät vinkelräta avståndet från Jerkgårds fähus till denna linje (ungefär 100 m). Area = (130 × 100) / 2 = 6 500 m².",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna",
+        "text": "Bas × höjd = 130 × 100 = 13 000. Dividera med 2: 13 000 / 2 = 6 500 m². Detta är facit-värdet exakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad är 'vinkelrät höjd'?",
+        "text": "Höjden i en triangel är den korta linjen från ett hörn vinkelrätt ner till motstående sida (basen). Det är INTE samma som triangelsidans längd. Vinkelrät = 90° mot basen. Detta är nödvändigt för att (bas × höjd) / 2-formeln ska ge rätt area.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via alternativen",
+        "text": "Alternativen 4 500, 6 500, 10 500, 13 000 är separerade med 2 000-3 000 m² — stora steg. Notera att 13 000 är exakt 2 × 6 500 — det är vad du får om du glömmer dividera med 2 i triangelformeln. Det är en typisk distraktor. 4 500 är 70 % av facit — ett underskattningsfel. 10 500 är 60 % över facit — ett överskattningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B — 6 500 m². Insikten i en mening: triangulär areaberäkning från karta kräver (a) identifiera de tre exakta hörnpunkterna, (b) mäta bas och vinkelrät höjd med kartans skala, (c) tillämpa A = (bas × höjd) / 2 — och INTE glömma divisionen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för triangulär areaberäkning från karta: identifiera de tre hörnpunkterna entydigt (om frågan preciserar 'sydligast/nordligast', ta den specifika instansen), mät bas och vinkelrät höjd med kartans skala, beräkna A = (bas × höjd) / 2. Triggern: 'tre punkter utgör hörnen i ett triangelformat område — hur stort är det?' → bas × höjd / 2 med skalan, inte gissning."
   },
   "var-2024-kvant2-KVA-013": {
     "pregrade_tactic": {

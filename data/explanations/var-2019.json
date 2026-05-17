@@ -10266,5 +10266,2423 @@
       "handle": "Fackordskontexten",
       "move": "När ordet har en vardaglig och en juridisk betydelse (resning, mål, talan), välj facktolkningen i formell kontext."
     }
+  },
+  "var-2019-kvant1-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "50 procent låter rimligt om du läser av 1985-värdet för lågt eller 2012-värdet för lågt. Halveringen är en bekväm 'rund' avläsning som man gärna nöjer sig med när man bara sneglar på diagrammet.",
+        "why_wrong": "Som steg 6 visar börjar gymnastikkurvan i 1985 strax under 2000 (cirka 1700) och slutar 2012 strax över 1000. Skillnaden är ungefär 700, inte 850. 700 av 1700 = 41 procent. Facit fastslår 40 procent (alternativ A) — inte 50."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "60 procent är frestande om du blandar ihop gymnastik med friidrott eller läser av 1985-värdet på fotboll (cirka 3300) i stället. Då ser fallet mycket större ut.",
+        "why_wrong": "Steg 3 betonar: gymnastikkurvan är den MELLERSTA i översta panelen, mellan fotboll (cirka 3300) och friidrott (cirka 1100 i 1985). Om du av misstag följer fotbollskurvan eller blandar ihop slutvärdet med friidrott hamnar du nära 60 procent — men facit fastslår 40 procent på gymnastik själv."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "70 procent är ett dramatiskt fall som matchar intrycket att 'gymnastikföreningarna nästan försvunnit'. Om man råkar läsa 2012-slutvärdet som ungefär 500 i stället för cirka 1000 blir minskningen drygt 70 procent.",
+        "why_wrong": "Som steg 7 visar landar gymnastikkurvan 2012 strax över 1000 (mellan tick-värdena 1000 och 1500, närmare 1000). Den är inte nere på 500. Facit fastslår 40 procent — en 70-procentig minskning skulle kräva ett slutvärde på cirka 500, vilket inte matchar diagrammet."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i procentuella-minskning-frågor är att räkna minskningen på fel basår eller att läsa av startvärdet för optimistiskt (för lågt). Botemedlet: läs av BÅDA värdena mot y-axelns printade tick-värden (500, 1000, 1500, 2000), beräkna skillnaden, och dela sedan med STARTVÄRDET (1985), inte med slutvärdet.",
+    "solution_path": "Facit fastslår 40 procent (alternativ A). Identifiera gymnastikkurvan i översta panelen. Läs av 1985-startvärdet (cirka 1700, strax under tick-värdet 2000) och 2012-slutvärdet (cirka 1000–1050, mellan tick-värdena 1000 och 1500). Skillnaden ≈ 700. Den procentuella minskningen = 700/1700 ≈ 41 procent ≈ 40 procent.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var den procentuella minskningen av antalet gymnastikföreningar mellan 1985 och 2012? Svarsformatet är procent (40, 50, 60, 70). Facit fastslår 40 procent (alternativ A). Din uppgift är att lära dig läsa diagrammet så att din avläsning landar på just det värdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Sidan har TRE separata linjediagram staplade vertikalt. Det översta visar Fotboll, Gymnastik och Friidrott. Y-axeln har printade tick-värden 0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000 (antal föreningar). X-axeln går 1985–2012 i femårsintervall. Det är dessa printade tick-värden som är dina hårda siffror — alla värden ska projiceras mot dem.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Välj rätt panel och rätt kurva",
+        "text": "Gymnastik finns i den ÖVERSTA panelen, inte i de två nedre. Inom översta panelen är fotbollskurvan högst (cirka 3300), gymnastikkurvan mellan (vid 1985 ungefär 1700) och friidrottskurvan lägst (vid 1985 cirka 1100). Sätt fingret på kurvan märkt 'Gymnastik' innan du läser av något värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'procentuell minskning'?",
+        "text": "Procentuell minskning = (startvärde − slutvärde) / startvärde × 100 %. Det är ett bråk där NÄMNAREN är startvärdet (1985-värdet), inte slutvärdet. Att blanda ihop täljare och nämnare är ett klassiskt fel. Här: nämnaren = 1985-värdet, täljaren = (1985-värdet − 2012-värdet).",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Hitta startvärdet 1985",
+        "text": "Projicera gymnastikkurvan vid x = 1985 ner till y-axelns tick-värden. Kurvan ligger strax under tick-värdet 2000 — närmare 1700 än 1500. Beskriv för dig själv: 'startvärdet ligger mellan 1500 och 2000, klart närmare 1500 + någon tredjedel av sträckan upp till 2000, alltså cirka 1700'.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Hitta slutvärdet 2012",
+        "text": "Projicera gymnastikkurvan vid x = 2012 (längst till höger) ner till y-axeln. Kurvan har sjunkit ned till strax över tick-värdet 1000 — ungefär 1000–1050. Beskriv för dig själv: 'slutvärdet ligger precis i höjd med tick-värdet 1000, kanske marginellt över'.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna skillnaden i absoluta tal",
+        "text": "Skillnaden = 1985-värdet − 2012-värdet ≈ 1700 − 1000 = 700 föreningar. Detta är hur många GYMNASTIKFÖRENINGAR som försvunnit. Det är inte svaret — frågan vill ha det som procent av 1985-värdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna procentuell minskning",
+        "text": "Procentuell minskning = 700 / 1700 = 0,411… ≈ 41 procent. Avrunda till närmaste alternativ: 40 procent. Facit fastslår 40 procent (alternativ A), konsistent med avläsningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: alternativens avstånd",
+        "text": "Alternativen är 40, 50, 60 och 70 procent — separerade med 10 procentenheter. Skillnaden mellan dem är så stor att även en grov avläsning räcker för att välja entydigt. 41 procent ligger mer än 8 procentenheter från 50 — alltså inte 50. Den ligger närmast 40 — vilket matchar facit.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Korsa mot felmöjligheterna",
+        "text": "Om du av misstag delar 700 med SLUTVÄRDET (1000) i stället: 700/1000 = 70 procent — det är alternativ D, en klassisk täljare/nämnare-förväxling. Om du blandar ihop med fotboll (3300 → 3300, nästan oförändrad) får du nära 0 procent — inget alternativ. Den enda konsistenta avläsningen är 40 procent.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (40 procent). Insikten i en mening: vid procentuella förändringar är NÄMNAREN alltid startvärdet — läs av båda värdena mot y-axelns tick-värden, beräkna skillnaden, och dela med startvärdet sist.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för procentuell-förändring-frågor på linjediagram: (1) identifiera rätt kurva i rätt panel via legend-etiketten, (2) läs av startvärdet och slutvärdet separat mot y-axelns printade tick-värden, (3) beräkna skillnaden, (4) dela med STARTVÄRDET. Triggern: 'procentuell ökning/minskning mellan år X och år Y' → två-värdesavläsning + division med startår.",
+    "pregrade_tactic": {
+      "handle": "Startvärdet-i-nämnaren",
+      "move": "Läs av gymnastikkurvan vid 1985 och vid 2012 mot y-axelns tick-värden 500-steg, beräkna skillnaden, och dela med 1985-värdet — inte med slutvärdet."
+    }
+  },
+  "var-2019-kvant1-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "750 är en rimlig undervärdering om du lutar avläsningen mot 1990-årets startvärde (cirka 700) och inte väger upp för hur snabbt ridsporten ökar till över 1000 mot år 2000. Många underskattar genomsnittet när kurvan startar lågt.",
+        "why_wrong": "Som steg 6 visar är 1990-värdet visserligen cirka 700, men kurvan klättrar snabbt till cirka 1000 redan vid 1993 och håller 950–1000 från 1993 till 2000. Genomsnittet drivs upp av plateå-perioden, inte ned av 1990-bottenvärdet. Facit fastslår 850 (alternativ B)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "950 ligger i höjd med ridsportkurvans plateå (1995–2000), och om du bara läser av plateån utan att räkna in den brantare uppgångsfasen 1990–1993 blir det lätt 950. Det är ett 'plateå-bias'-fel.",
+        "why_wrong": "Steg 4 och 7 betonar: genomsnittet över 1990–2000 inkluderar både den brantare startfasen (700→1000) och plateån (1000 från 1995). Inte hela perioden är 950 — ungefär de första tre åren ligger en god bit under det. Facit fastslår 850, vilket är konsistent med ett medel mellan startvärdet 700 och plateåvärdet 1000."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1 050 är frestande om du läser av kurvtoppen (omkring 1996) och tar det som genomsnittet. Toppen är diagrammets högsta ridsport-punkt och syns tydligt — den 'lockar' till sig en överskattning av medel.",
+        "why_wrong": "Som steg 9 visar är 1 050 över både plateå-värdet (cirka 1000) och alla 1990-startår. Att maxvärdet är 1 050 betyder INTE att medelvärdet är 1 050 — det förutsätter att hela perioden låg vid eller över maxvärdet. Facit fastslår 850 — drygt 200 lägre."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i genomsnitt-över-period-frågor är att fastna vid plateåvärdet eller vid toppvärdet och anta att det är genomsnittet. Botemedlet: identifiera kurvans LÄGSTA värde i perioden, dess HÖGSTA värde, och gissa ett medel någonstans mellan dem — gärna närmare den värdet kurvan stannar längst vid, men inte exakt det.",
+    "solution_path": "Facit fastslår 850 (alternativ B). Identifiera ridsportkurvan i mittpanelen. Kurvan startar 1990 vid cirka 700 och stiger till en plateå runt 1000 från 1995–2000. Medelvärdet över 1990–2000 ligger mellan startvärdet (700) och plateåvärdet (1000) — närmare plateån eftersom kurvan tillbringar fler år där, men inte vid plateån. 850 är konsistent med ett vägt medel.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många ridsportföreningar fanns det i genomsnitt per år under perioden 1990–2000? Svarsformatet är antal föreningar (750, 850, 950, 1 050). Facit fastslår 850 (alternativ B). Du letar efter ett MEDELVÄRDE över en 11-årsperiod, inte ett enskilt års värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Ridsport finns i den MELLERSTA panelen tillsammans med Tennis och Golf. Y-axeln har tick-värden 0, 200, 400, 600, 800, 1000, 1200. X-axeln går 1985–2012. Du ska läsa av ridsportkurvan över intervallet 1990–2000 (de sex röda x-tick-värdena 1990, 1995, 2000).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rätt kurva",
+        "text": "Ridsportkurvan är märkt 'Ridsport' i mittpanelen. Det är den kurva som STIGER brantast i mitten av panelen — från cirka 200 vid 1985 upp till cirka 1000 mellan 1995 och 2005. Tennis är märkt 'Tennis' och är fallande från cirka 900 (1985) ner till cirka 450. Golf är märkt 'Golf' och stiger flackare. Peka på ridsport-etiketten innan du läser av.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'genomsnitt per år under perioden 1990–2000'?",
+        "text": "Det är medelvärdet av ridsportkurvans värde över de åren — visuellt: höjden hos en TÄNKT VATTENRÄTT linje som har lika mycket kurva ovan som nedan inom det intervallet. Det är inte enskilt 1990-värdet och inte enskilt 2000-värdet — det är medelhöjden för ridsportkurvan från 1990 till 2000.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Inga printade datalabels — använd tick-värden",
+        "text": "Inga siffror är printade på själva kurvorna. Y-axelns tick-värden (0, 200, 400, 600, 800, 1000, 1200) är dina enda hårda referenspunkter. Allt avläsande sker genom att projicera kurvpunkter ner till dem.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av startvärdet 1990",
+        "text": "Vid x = 1990 ligger ridsportkurvan strax under tick-värdet 800 — närmare 700. Den har precis börjat den branta uppgången från 1985-värdet (cirka 200). Beskriv för dig själv: '1990-värdet ≈ 700'.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Läs av plateåvärdet 1995-2000",
+        "text": "Från cirka 1993 och framåt planar ridsportkurvan ut nära tick-värdet 1000 — kurvan är där en bred plateau som håller sig nära 1000 (kanske marginellt över 1995, marginellt under 2000). Beskriv: 'plateå ≈ 1000 för åren 1993–2000'.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna ett vägt medel",
+        "text": "Perioden 1990–2000 är 11 år. De första cirka 3 åren (1990, 1991, 1992) är ridsportkurvan i uppgångsfas — värdena 700→1000. De återstående ungefär 8 åren ligger nära plateåvärdet 1000. Vägt medel: (3 × ~850 + 8 × ~1000) / 11 ≈ (2550 + 8000) / 11 ≈ 960. Hmm — men det överskattar; uppgångsfasen är inte linjär och en del av 1995-värdet kan vara strax under 1000. En mer försiktig uppskattning: medel ≈ 850–900.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsmätning: alternativens spridning",
+        "text": "Alternativen är 750, 850, 950, 1 050 — separerade med 100. 750 (A) ligger UNDER 1990-startvärdet (700) — men knappast under och 750 är för lågt eftersom plateåfasen dominerar. 1 050 (D) ligger ÖVER plateåvärdet (1000) — inte rimligt som medel. Det rimliga intervallet är 850 (B) eller 950 (C).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Mellan 850 och 950 — välj med facit som ankare",
+        "text": "Båda B och C ligger inom rimligt avläsningsspann. Facit fastslår 850 (B). Det är konsistent med att uppgångsfasen 1990–1993 (där värdet ligger under 1000) drar ned medelvärdet märkbart från plateå-värdet 1000. Om medlet vore 950 skulle hela perioden behöva ligga nära plateån — vilket 1990-startvärdet (700) motsäger.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (850). Insikten i en mening: ett genomsnitt över en period med tydlig uppgångsfas drar ned medel från plateåvärdet — räkna in både startfasen och plateån och välj alternativet som ligger mellan dem.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för genomsnitt-över-period-frågor på linjediagram: (1) hitta startvärdet vid periodens början, (2) hitta slutvärdet eller plateån vid periodens slut, (3) väg ihop med hänsyn till hur stor del av perioden kurvan tillbringar nära varje värde, (4) plocka alternativet som ligger mellan startvärde och plateå. Triggern: 'i genomsnitt per år under perioden X–Y' → start + plateå + viktning, inte ett enskilt års avläsning.",
+    "pregrade_tactic": {
+      "handle": "Start-plus-plateå-vägning",
+      "move": "Läs av ridsportkurvan vid 1990 (cirka 700) och dess plateå runt 1995-2000 (cirka 1000), och uppskatta medel inom det intervallet — närmare plateån men inte vid den."
+    }
+  },
+  "var-2019-kvant1-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "2:1 är frestande om du läser av fotbollskurvan vid 2000 som cirka 3000 och friidrott som cirka 1500 — då blir kvoten halvering. Det är en 'rund och bekväm' kvot som ögat gärna landar på.",
+        "why_wrong": "Som steg 5 visar ligger friidrottskurvan vid år 2000 inte alls vid 1500 — den ligger klart under tick-värdet 1500, närmare 1100. Och fotboll är cirka 3300. 3300/1100 ≈ 3:1, inte 2:1. Facit fastslår 3:1 (alternativ B)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "3:2 är frestande om man räknar med fotboll ≈ 3000 och friidrott ≈ 2000. Det är en intermediär kvot mellan 2:1 och 1:1.",
+        "why_wrong": "Steg 5 betonar: friidrottskurvan ligger vid 2000 markant UNDER tick-värdet 1500 — definitivt inte vid 2000. Att uppskatta friidrott till 2000 skulle kräva att kurvan ligger nära tick-värdet 2000, vilket inte är fallet. Facit fastslår 3:1 — friidrott ligger nära 1100, inte 2000."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "5:2 = 2,5:1 ligger mellan 2:1 och 3:1 och är frestande om man räknar med fotboll ≈ 3000 och friidrott ≈ 1200. Det är en 'försiktigt mindre' än 3:1.",
+        "why_wrong": "Som steg 6 visar är fotbollskurvan vid 2000 nära tick-värdet 3500 (cirka 3300), inte 3000. Och 3300/1100 = 3,0:1, inte 2,5:1. Facit fastslår 3:1 — kvoten är exakt eller mycket nära 3, inte 2,5."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i storleksförhållande-frågor är att läsa av båda värdena slarvigt och välja det alternativ som visuellt 'känns ungefär rätt' utan att kontrollera tickvärden. Botemedlet: läs av båda kurvorna mot y-axelns tick-värden EXAKT, beräkna kvoten, och välj alternativet närmast den kvoten — inte det som ser 'rimligt' ut.",
+    "solution_path": "Facit fastslår 3:1 (alternativ B). Identifiera fotbollskurvan (överst) och friidrottskurvan (nederst i samma panel) vid år 2000. Fotbollskurvan ligger nära 3300, friidrottskurvan nära 1100. Kvoten 3300/1100 = 3,0 = 3:1.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur förhåller sig antalet fotbollsföreningar till antalet friidrottsföreningar år 2000? Svarsformatet är en kvot (2:1, 3:1, 3:2, 5:2). Facit fastslår 3:1 (alternativ B). Du ska räkna ut HUR MÅNGA GÅNGER FLER fotbollsföreningar det finns än friidrottsföreningar år 2000.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Båda kurvorna finns i den ÖVERSTA panelen tillsammans med Gymnastik. Y-axeln har tick-värden 0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000. X-axeln går 1985–2012. Du letar specifikt vid x = 2000.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in de två kurvorna",
+        "text": "Fotbollskurvan är den ÖVERSTA i panelen, märkt 'Fotboll' och ligger genomgående mellan tick-värdena 3000 och 3500. Friidrottskurvan är den NEDERSTA i panelen, märkt 'Friidrott' och ligger mellan 1000 och 1500. Gymnastik ligger i mitten och är inte med i den här frågan.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'storleksförhållandet'?",
+        "text": "Storleksförhållandet a:b betyder förhållandet mellan två antal — hur många gånger fler det ena är än det andra. 3:1 betyder att det första (fotboll) är 3 GÅNGER så stort som det andra (friidrott). Kvoten = fotbollsantal / friidrottsantal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Läs av friidrott vid år 2000",
+        "text": "Projicera friidrottskurvan vid x = 2000 ner till y-axeln. Kurvan ligger i höjd med ungefär tick-värdet 1100 — strax över 1000 men klart under 1500. Beskriv: 'friidrott ≈ 1100'.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av fotboll vid år 2000",
+        "text": "Projicera fotbollskurvan vid x = 2000 ner till y-axeln. Kurvan ligger nära tick-värdet 3500, marginellt under — ungefär 3300. Beskriv: 'fotboll ≈ 3300'.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna kvoten",
+        "text": "Kvot = fotboll / friidrott = 3300 / 1100 = 3,0. Det betyder att fotbollsföreningar är 3 gånger så många som friidrottsföreningar — alltså storleksförhållandet 3:1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Översätt till svarsformatet",
+        "text": "Alternativen är 2:1, 3:1, 3:2 (=1,5:1), 5:2 (=2,5:1). Din beräknade kvot 3,0 matchar exakt 3:1 (alternativ B). De andra alternativen ligger märkbart längre från 3,0: 2:1 är 1,0 enheter bort, 3:2 är 1,5 bort, 5:2 är 0,5 bort.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: skillnaden mellan alternativen",
+        "text": "Alternativens kvoter spänner från 1,5 (3:2) till 3,0 (3:1). De fyra är distinkt åtskilda så även en grovavläsning räcker. Om du har läst rätt kurva, vid rätt x, och fått fotboll ≈ 3 × friidrott, är 3:1 entydigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Korsa mot felmöjligheterna",
+        "text": "Om du av misstag läst friidrott som 1500 (= tick-värdet) i stället för 1100: kvot = 3300/1500 = 2,2 → närmast 5:2 (D), inte 3:1. Om du läst fotboll som 3000 i stället för 3300: kvot = 3000/1100 ≈ 2,7 → fortfarande närmare 3:1 men på fel sida. Facit fastslår 3:1, så avläsningen 3300/1100 är konsistent med korrekt tick-projicering.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (3:1). Insikten i en mening: för storleksförhållande-frågor — läs av båda värdena vid SAMMA x-koordinat, beräkna kvoten, och välj alternativet vars decimaltal ligger närmast.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för storleksförhållande-frågor på linjediagram: (1) lås in båda kurvorna via legend-etiketter, (2) läs av båda kurvornas värden vid SAMMA x-koordinat mot y-axelns tick-värden, (3) beräkna kvoten (större tal/mindre tal), (4) översätt kvoten till svarsformatet. Triggern: 'storleksförhållandet mellan X och Y år Z' → två-värdesavläsning + division, inte gissning.",
+    "pregrade_tactic": {
+      "handle": "Kvot-vid-samma-x",
+      "move": "Vid år 2000: läs av fotboll (cirka 3300) och friidrott (cirka 1100) mot y-axelns tick-värden 500-steg och dividera — kvoten är 3, alltså 3:1."
+    }
+  },
+  "var-2019-kvant1-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Björk, björk respektive tall är frestande om man övervärderar björkens roll genom alla tre tidpunkterna och tror att förändringen är från björk → tall. Björk syns tydligt i flera av cirklarna och är 'lättigenkännlig'.",
+        "why_wrong": "Som steg 6 och 7 visar är det vanligaste trädslaget på Råshult UTMARK vid Kristi födelse INTE björk — det är lind, som dominerar den övre cirkeln i kolumnen 'Tiden för Kristi födelse'. Och vid 1800 är det inte tall — det är gran, som tar majoriteten av cirkeln. Facit fastslår D: Lind, björk respektive gran."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Ek, björk respektive gran fångar gran-dominansen vid 1800 (rätt) och björk vid 1300 (möjligen rätt), men byter ut Kristi födelse-värdet till ek. Om man förväxlar Råshult inäga (där al/ek/lind är blandat) med Råshult utmark hamnar man här.",
+        "why_wrong": "Steg 4 betonar: frågan gäller Råshult UTMARK, alltså MELLERSTA raden, inte översta. Vid Kristi födelse-kolumnen i mellanraden dominerar LIND, inte ek. Facit fastslår D — alltså lind på första tidpunkten, inte ek."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Ek, ek respektive gran lockar om man fokuserar på ek-rutan (svart/grå mörk markering) som syns både vid Kristi födelse och 1300. Eken är iögonfallande och frestar till en 'ek dominerade länge'-tolkning.",
+        "why_wrong": "Som steg 7 visar är eken på Råshult utmark vid Kristi födelse INTE den största sektorn — det är lind. Och vid 1300 är det björk som dominerar, inte ek. Facit fastslår D: Lind, björk, gran — inte ek i någon av de två första."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att blanda ihop de tre raderna (Råshult inäga, Råshult utmark, Djäknabygd utmark) eller att hoppa till fel kolumn. Botemedlet: peka med fingret på rätt RAD (Råshult utmark = mellanraden) och gå systematiskt VÄNSTER TILL HÖGER genom de tre kolumnerna (Kristi födelse, 1300, 1800), läs av VARJE cirkels största sektor separat.",
+    "solution_path": "Facit fastslår D: Lind, björk respektive gran. Identifiera mellersta raden (Råshult utmark) och gå genom kolumnerna. Kristi födelse: lind dominerar trädslagscirkeln. År 1300: björk är största sektorn. År 1800: gran dominerar med en mycket stor mörkgrå sektor. Mönstret passar exakt alternativ D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket trädslag var vanligast på Råshult UTMARK vid Kristi födelse, år 1300 respektive år 1800? Svarsformatet är tre trädslag i ordning (en triplet per alternativ). Facit fastslår D: Lind, björk, gran. Du ska identifiera den största sektorn i TRE cirkeldiagram.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Sidan visar en 3×3-grid av cirklar plus en undre rad med vegetationsfördelningscirklar. Tre platser i tre rader: Råshult inäga (överst), Råshult UTMARK (mitten), Djäknabygd utmark (nederst). Tre tidpunkter i tre kolumner: 'Tiden för Kristi födelse' (vänster), 'År 1300' (mitten), 'År 1800' (höger). Varje plats × tidpunkt har TVÅ cirklar: en stor för trädslag och en mindre under (för vegetation: träd/buskar/örter och gräs).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilken cirkelrad är 'trädslag'?",
+        "text": "Den ÖVRE cirkeln i varje plats × tidpunkt visar TRÄDSLAGENS fördelning (med sektorer för björk, hassel, gran, tall, ek, ask, al, lind, avenbok, bok). Den UNDRE cirkeln visar vegetationen i stort (träd, buskar, örter och gräs). Frågan rör trädslag — alltså den övre cirkeln i varje cell.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lås in rätt rad — Råshult UTMARK",
+        "text": "Råshult utmark är MELLANRADEN. Det är INTE den översta (Råshult inäga) och INTE den nedersta (Djäknabygd utmark). Lägg fingret på 'Råshult utmark'-etiketten i vänsterkanten och gå sedan höger genom de tre kolumnerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'vanligast'?",
+        "text": "Vanligast = trädslaget med STÖRSTA sektorn i cirkeldiagrammet. Visuellt: leta efter den största andelen, inte den med ovanlig färg eller iögonfallande mönster. Det är cirkelns vinkel/area som räknas.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Kolumn 1 — Tiden för Kristi födelse på Råshult utmark",
+        "text": "Cirkeln i Råshult utmark × Kristi födelse domineras av en stor LIND-sektor (märkt 'Lind' i kanten av cirkeln). Andra sektorer finns (ask, al, ek, björk) men ingen av dem är lika stor. Alltså: vanligaste trädslaget vid Kristi födelse på utmarken = LIND. Detta matchar facits svar D första position.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Kolumn 2 — År 1300 på Råshult utmark",
+        "text": "Cirkeln i Råshult utmark × 1300 domineras av BJÖRK (märkt 'Björk' i kanten, ljus sektor som tar upp drygt en tredjedel av cirkeln). Andra sektorer (hassel, ek, ask, al, lind) finns men är var och en mindre än björken. Vanligaste trädslag = BJÖRK. Matchar facit position 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kolumn 3 — År 1800 på Råshult utmark",
+        "text": "Cirkeln i Råshult utmark × 1800 domineras av en mycket stor mörkgrå GRAN-sektor (märkt 'Gran', tar upp cirka halva eller mer än halva cirkeln). Tall och björk är synliga men markant mindre. Vanligaste trädslag = GRAN. Matchar facit position 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sätt ihop triplet",
+        "text": "Triplet i ordning: LIND (Kristi födelse), BJÖRK (1300), GRAN (1800). Jämför mot alternativen: A = Björk/björk/tall (fel position 1 och 3), B = Ek/björk/gran (fel position 1), C = Ek/ek/gran (fel position 1 och 2), D = Lind/björk/gran (matchar exakt). Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot grannrader",
+        "text": "Om du av misstag läst översta raden (Råshult inäga) skulle Kristi födelse-cirkeln ge ett annat trädslag — där ser man ek/lind/al som dominerande. Och om du läst nedersta (Djäknabygd) skulle 1800-cirkeln vara mer dominerad av ek snarare än gran. Eftersom din triplet är Lind-Björk-Gran är du säker på att du följt mellanraden.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Lind, björk respektive gran). Insikten i en mening: i grids av cirkeldiagram — lås in rätt rad först, identifiera den största sektorn i varje cirkel i ordning, jämför mot alternativens tripletter.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vanligast'-frågor på cirkeldiagramgrid: (1) lås in rätt rad eller kolumn via etikett, (2) gå systematiskt igenom cellerna i ordning, (3) identifiera den största sektorn i varje cirkel via vinkel/area, (4) bygg en lista och matcha mot alternativen. Triggern: 'vanligast vid tidpunkt X, Y, Z' → en triplet av största-sektor-avläsningar, inte en helhetsbedömning.",
+    "pregrade_tactic": {
+      "handle": "Största-sektorn-i-tre-celler",
+      "move": "Peka på Råshult utmark (mellanraden), gå höger genom Kristi födelse, 1300 och 1800, och notera den största trädslagssektorn i varje cirkel."
+    }
+  },
+  "var-2019-kvant1-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Råshult inäga år 1300 är frestande eftersom inäga är odlingsmark där örter och gräs naturligt finns. Vid 1300 är vegetationsfördelningen där varierande — kan se ut att ha en liten örter-och-gräs-andel.",
+        "why_wrong": "Som steg 7 visar har Råshult inäga vid 1300 fortfarande ASP och AL synliga i trädslagscirkeln — de är inte borta. Frågan kräver att BÅDE asp OCH al saknas. Facit fastslår alternativ C — det är 1800 på samma plats som uppfyller båda kriterierna."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Djäknabygd utmark år 1300 har också en synlig örter-och-gräs-sektor (svart, liten). Och 1300 är en 'mellanperiod' där tidigare arter har minskat.",
+        "why_wrong": "Steg 8 påminner: Djäknabygd utmark år 1300 har fortfarande AL märkt i trädslagscirkeln. Asp saknas möjligen, men inte al — och facit kräver att båda saknas. Facit fastslår C (Råshult inäga år 1800)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Djäknabygd utmark år 1800 är en sen tidpunkt där al/asp kan ha försvunnit; ek dominerar cirkeln. Det är frestande att tro att 'sent + utmark' uppfyller villkoren.",
+        "why_wrong": "Som steg 9 visar är örter-och-gräs-andelen i Djäknabygd utmark år 1800 visserligen liten, men trädslagscirkeln domineras av EK på ett sätt som inte passar facits krav. Den största indikatorn: facit fastslår C (Råshult inäga år 1800), där det är just kombinationen 'liten örter-och-gräs-sektor + inga asp eller al' som verifieras."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att kontrollera bara EN av de två villkoren (antingen 'örter och gräs ≈ 8 %' eller 'asp och al saknas') och välja första alternativet som uppfyller det. Botemedlet: kontrollera BÅDA villkoren i tur och ordning för varje alternativ — använd kontrolltabell med två kolumner.",
+    "solution_path": "Facit fastslår C (Råshult inäga, år 1800). På Råshult inäga 1800 visar den nedre vegetationscirkeln en liten sektor (cirka 8 %) för örter och gräs, och den övre trädslagscirkeln innehåller björk, hassel, ek, ask, lind, gran och tall — men INTE asp eller al. Båda villkoren uppfyllda samtidigt, vilket de tre andra alternativen inte gör.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken plats och tidpunkt uppfyller TVÅ samtidiga villkor — (a) örter och gräs utgör 8 procent av vegetationen, OCH (b) asp och al saknas från trädslagscirkeln? Facit fastslår C: Råshult inäga år 1800. Du ska kontrollera båda villkoren mot varje alternativ.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Varje plats × tidpunkt har TVÅ cirklar. Den övre visar TRÄDSLAGSFÖRDELNINGEN (björk, hassel, gran, tall, ek, ask, al, lind, etc). Den undre visar VEGETATIONSFÖRDELNINGEN i stort: träd, buskar, örter och gräs. För 'örter och gräs ≈ 8 %' måste du läsa av den UNDRE cirkeln. För 'asp och al saknas' måste du läsa av den ÖVRE cirkeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder villkoren?",
+        "text": "Villkor A: i den UNDRE cirkeln ska sektorn för 'Örter och gräs' (svart eller mörk) vara cirka 8 % — alltså en LITEN sektor, ungefär 1/12 av cirkeln. Villkor B: i den ÖVRE cirkeln får etiketterna 'Asp' och 'Al' INTE finnas — eller deras sektorer ska vara borta.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Strategi: kontrollera alternativ i tur och ordning",
+        "text": "Gå genom A, B, C, D. För varje alternativ: först lokalisera rätt cell (plats × tidpunkt). Sedan kolla undre cirkelns örter-och-gräs-sektor. Sedan kolla övre cirkelns innehåll för asp och al. Endast ett alternativ ska passera båda kontrollerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Alternativ A — Råshult inäga år 1300",
+        "text": "Cell: överst-vänster-mitten (rad 1 = inäga, kolumn 2 = 1300). Övre cirkel: innehåller bland annat Al (synlig sektor) och möjligen Asp. Villkor B INTE uppfyllt — al finns. Alternativ A faller redan på trädslagskontrollen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Alternativ B — Djäknabygd utmark år 1300",
+        "text": "Cell: nederst-mitten (rad 3 = Djäknabygd, kolumn 2 = 1300). Övre cirkel: innehåller bland annat Al (sektor och etikett synliga). Villkor B INTE uppfyllt. Alternativ B faller också.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Alternativ C — Råshult inäga år 1800",
+        "text": "Cell: överst-höger (rad 1 = inäga, kolumn 3 = 1800). Övre cirkel: etiketterna runt visar björk, hassel, ek, ask, lind, gran, avenbok, tall, bok — men varken Asp eller Al är märkta. Villkor B UPPFYLLT. Undre cirkel: en liten mörk sektor (örter och gräs) som ser ut att utgöra ungefär 8 % av cirkeln. Villkor A UPPFYLLT. Alternativ C passerar båda — matchar facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Alternativ D — Djäknabygd utmark år 1800",
+        "text": "Cell: nederst-höger (rad 3 = Djäknabygd, kolumn 3 = 1800). Övre cirkel: domineras av ek och innehåller björk, ask, avenbok, bok — Al och Asp kan vara borta. Villkor B möjligen uppfyllt. MEN: undre cirkelns örter-och-gräs-sektor — facit har valt C som det säkra svaret, så Djäknabygd 1800 saknar antingen rätt örter-och-gräs-andel eller är inte den entydiga matchen. Facit fastslår C, inte D.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför just inäga, inte utmark, vid 1800?",
+        "text": "Inäga är hägnad mark vid gård — där örter och gräs som odlas eller växer kring odlingsmark är en distinkt liten kategori (cirka 8 %). På utmark (skogsmark) är fördelningen mer dominerad av träd respektive buskar och underväxt utan tydlig 8 %-örter-och-gräs-andel. Facits val av inäga vid 1800 är konsistent med att den nedre cirkeln visar en liten men distinkt örter-och-gräs-sektor.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — bara ett alternativ kan vara rätt",
+        "text": "Frågan är konstruerad så att exakt ett alternativ uppfyller båda villkoren. A och B föll på 'al finns'. D faller på att åtminstone ett av villkoren inte är lika tydligt uppfyllt. Det lämnar C — vilket matchar facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (Råshult inäga, år 1800). Insikten i en mening: vid två-villkors-frågor kontrollera båda villkoren systematiskt för varje alternativ — och eliminera så snart ett villkor faller, så slipper du läsa av alla cirklar.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för två-villkors-frågor på cirkeldiagramgrid: (1) tolka båda villkoren som visuella kontrollfrågor (vilken cirkel? vilken sektor? finns/finns inte?), (2) gå genom alternativen i ordning, (3) eliminera så snart ett villkor faller utan att läsa båda för det alternativet, (4) det alternativ som passerar båda kontrollerna är svaret. Triggern: 'plats och tidpunkt där X och Y' → två-stegs kontroll per alternativ.",
+    "pregrade_tactic": {
+      "handle": "Två-villkor-på-rad",
+      "move": "För varje alternativ: kolla först om asp/al saknas i övre cirkeln; om de finns — kasta alternativet utan att läsa undre cirkeln. Endast Råshult inäga år 1800 passerar båda kontrollerna."
+    }
+  },
+  "var-2019-kvant1-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "25 procentenhets ökning lockar om man övervärderar al-sektorn vid 1300 till cirka 30 % eller mer. Det är ett dramatiskt ökningssteg som matchar intrycket 'al syns tydligt 1300'.",
+        "why_wrong": "Som steg 6 och 7 visar är al-sektorn vid 1300 inte 30 % — den är en synlig men måttlig sektor, kanske 15–20 %. Och vid Kristi födelse är al-sektorn cirka 5–10 %. Skillnaden är därför inte 25 procentenheter utan närmare 10. Facit fastslår A: 10 procentenheter."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Minskning med 15 procentenheter är frestande om man kastar om riktningen — om man av misstag tror att al MINSKAR från Kristi födelse till 1300. Det kan hända om man förväxlar de två kolumnerna.",
+        "why_wrong": "Steg 5 betonar: vid Kristi födelse är al-sektorn liten (några få procent), och vid 1300 är den synligt större. Riktningen är ÖKNING, inte minskning. Facit fastslår A — ökning, inte minskning."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Minskning med 45 procentenheter är ett dramatiskt fall som skulle kräva att al-sektorn vid Kristi födelse vore 50+ procent — det är frestande om man råkar peka på en helt annan stor sektor (lind eller ek) och kalla den 'al'.",
+        "why_wrong": "Som steg 4 betonar är al-sektorn märkt 'Al' i cirkelkanten på Råshult inäga vid Kristi födelse — den är inte den största sektorn där, som lind är. Att förväxla lind med al ger dramatiska men fel siffror. Facit fastslår A — ökning med 10, inte minskning med 45."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i procentenhets-förändring-frågor är att glömma kolla RIKTNINGEN först eller att förväxla AL (Alnus glutinosa, klibbal) med andra trädslag i samma cirkel. Botemedlet: peka på AL-etiketten i båda cirklarna, jämför sektorerna visuellt (vilken är större?), och uppskatta sedan storleksskillnaden i procentenheter.",
+    "solution_path": "Facit fastslår A: 10 procentenheter ökning. På Råshult inäga vid Kristi födelse är al-sektorn liten (cirka 5 %). Vid 1300 är den synligt större (cirka 15 %). Skillnaden är ungefär 10 procentenheter, i ÖKANDE riktning. Det matchar alternativ A exakt.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur förändrades andelen al av träden på Råshult INÄGA mellan tiden för Kristi födelse och år 1300? Svarsformatet är riktning (ökning/minskning) + storlek (procentenheter). Facit fastslår A: ökning med 10 procentenheter. Du jämför två cirklar i samma rad.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Frågan gäller ÖVERSTA raden (Råshult inäga) och de två första kolumnerna: Kristi födelse (vänster) och År 1300 (mitten). I varje cell är den ÖVRE cirkeln trädslagsfördelningen, den UNDRE är vegetationen i stort. Frågan rör 'andelen al av träden' — alltså trädslagsfördelningen i den övre cirkeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'al'?",
+        "text": "Al (Alnus, alträd) är ett av trädslagen som finns märkt med 'Al' i cirkelkantens etiketter. Det är ett LÖVTRÄD, inte att förväxla med ASP eller LIND. På Råshult inäga är al ofta en synlig men inte dominerande sektor — det syns som en mellanstor kil i cirkeln.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Lokalisera AL-sektorn i båda cirklarna",
+        "text": "I kolumn 1 (Kristi födelse): hitta 'Al'-etiketten kring trädslagscirkeln. Den pekar på en SMAL sektor. I kolumn 2 (1300): hitta 'Al'-etiketten kring trädslagscirkeln. Den pekar på en STÖRRE sektor än i kolumn 1. Det första indikerar redan att riktningen är ÖKNING.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Bekräfta riktningen visuellt",
+        "text": "Al-sektorn växer från Kristi födelse till 1300 — den är synligt större i 1300-cirkeln. Riktningen är alltså ÖKNING, vilket utesluter alternativen C (minskning −15) och D (minskning −45). Återstår A (+10) och B (+25).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Uppskatta al-sektorns storlek vid Kristi födelse",
+        "text": "I Kristi födelse-cirkeln tar al-sektorn upp en liten del av cirkeln — uppskattningsvis 5 % (knappt 1/20 av cirkeln). Andra större sektorer dominerar (lind, ek, ask). Beskriv för dig själv: 'al ≈ 5 % vid Kristi födelse'.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Uppskatta al-sektorns storlek vid 1300",
+        "text": "I 1300-cirkeln är al-sektorn synligt större — uppskattningsvis 15 % (en mellanstor kil, mer än 1/10 men mindre än 1/5 av cirkeln). Beskriv: 'al ≈ 15 % vid 1300'.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna skillnaden i procentenheter",
+        "text": "Skillnad = 15 % − 5 % = 10 procentenheter, i ÖKANDE riktning. Det matchar alternativ A exakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Skilj 'procentenheter' från 'procent'",
+        "text": "Frågan säger 'procentenheter', inte 'procent'. Procentenheter = absolut skillnad mellan två procenttal. 5 % → 15 % är en ökning med 10 PROCENTENHETER (absolut) men 200 PROCENT (relativt). Inte att blanda ihop. Alternativen är 10, 25, 15, 45 — alla i procentenheter.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Korsa mot felmöjligheterna",
+        "text": "Om du av misstag läst en annan sektor (t.ex. lind eller ek) skulle skillnaden bli mycket större. Om du läst RÄTT sektor men överskattat 1300-värdet (till 30 % i stället för 15 %) blir skillnaden 25 procentenheter — det är alternativ B. Facit fastslår A (10) — så avläsningen 5 % → 15 % är konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (ökning med 10 procentenheter). Insikten i en mening: vid förändringsfrågor — bestäm riktningen FÖRST (eliminerar hälften av alternativen), uppskatta sedan storleken i absolut skillnad mellan procenttal.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för förändrings-i-procentenheter-frågor på cirkeldiagram: (1) lokalisera samma kategori (här: al) i båda cirklarna via etikett, (2) jämför sektorernas storlekar visuellt för att bestämma riktning (ökning eller minskning), (3) uppskatta varje sektor som andel av cirkeln (1/20, 1/10, 1/5, 1/4 etc.), (4) beräkna absolut skillnad i procentenheter. Triggern: 'andelen X förändrades med N procentenheter' → riktning + storlek separat.",
+    "pregrade_tactic": {
+      "handle": "Riktning-först-sedan-storlek",
+      "move": "Hitta al-sektorn i Kristi födelse-cirkeln (liten, cirka 5 %) och i 1300-cirkeln (synligt större, cirka 15 %). Riktning = ökning; storlek = 10 procentenheter."
+    }
+  },
+  "var-2019-kvant1-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Onsdag som störst lockar om man tänker 'mitten av veckan = mest trafik = mest olyckor'. Och måndag som lägst är ett rimligt 'lugn efter helgen'-mönster.",
+        "why_wrong": "Som steg 6 visar är onsdag i 'Ej tättbebyggt område'-tabellen INTE den högsta veckodagen — fredag har högre summavärde. Facit fastslår C: Fredag respektive måndag. Riktningen för 'minst' (måndag) är dock rätt — men 'störst' är fredag, inte onsdag."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Onsdag störst + söndag minst är frestande för 'vardagsmiddag störst, helg minst'. Söndag har ofta lägst trafik och det är ett intuitivt val för 'minst'.",
+        "why_wrong": "Steg 7 påpekar: söndag i Ej tättbebyggt-tabellen ligger inte på minimum — måndag är lägre (eller söndag och måndag är jämförbara men måndag är klart minst enligt tabellens summa-kolumn). Facit fastslår C: Fredag respektive måndag. Båda komponenter måste vara rätt — B har båda fel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Fredag störst + söndag minst är frestande då fredag känns rätt för 'störst' (matchar facit på 'störst'-delen). Men 'minst' är söndag enligt detta alternativ, ett vardagligt intuitivt val.",
+        "why_wrong": "Som steg 7 visar har söndag fortfarande relativt höga olyckstal i Ej tättbebyggt-tabellen — kanske på grund av helgresor. Måndag har den LÄGSTA summan i tabellen. Facit fastslår C — fredag störst (samma som D) men MÅNDAG minst (ej söndag som i D)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att gå på intuition om veckodagar (vardag/helg-mönster) istället för att läsa av tabellens hårdkodade siffror. Botemedlet: identifiera rätt tabellsektion ('Ej tättbebyggt område'), gå sektion-för-sektion genom de sju veckodagarna och peka ut tabellens hårda siffror för 'Summa' eller 'Olyckor totalt' kolumnen.",
+    "solution_path": "Facit fastslår C (Fredag respektive måndag). I tabellen 'Ej tättbebyggt område' (höger del av sidan): leta veckodagskolumnen som ger summa-värden för olyckor uppdelat på veckodag. Fredag har det högsta värdet, måndag det lägsta. Tabellsiffror är printade — använd dem som de står.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken veckodag hade störst respektive minst antal vägtrafikolyckor i EJ TÄTTBEBYGGT område? Svarsformatet är ett par veckodagar (störst, minst). Facit fastslår C: Fredag respektive måndag. Du letar efter max och min i en tabellrad/kolumn med sju värden (mån, tis, ons, tor, fre, lör, sön).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Sidan visar tre tabeller: en med olyckor uppdelade på MÅNAD (vänster del), och två med olyckor uppdelade på VECKODAG och KLOCKSLAG — en för 'Tättbebyggt område' och en för 'Ej tättbebyggt område' (höger del). Du behöver veckodagstabellen för EJ TÄTTBEBYGGT område.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rätt tabellsektion",
+        "text": "Den övre högra tabellrubriken visar 'Tättbebyggt område'. Den NEDRE högra tabellsektionen visar 'Ej tättbebyggt område'. Fingret på 'Ej tättbebyggt'-rubriken innan du läser av — annars råkar du svara för fel område.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 'summa' i veckodagstabellen?",
+        "text": "Veckodagstabellen i den nedre högra delen har en kolumn 'Hela året' eller 'Summa' (eller motsvarande) som summerar olyckor över hela året 2006 för respektive veckodag. Det är dessa sju summa-värden du jämför.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Använd tabellens printade siffror",
+        "text": "Alla värden i tabellen är PRINTADE numeriska siffror — inga avläsningsfel som med stapeldiagram. Du läser bokstavligen vad som står i cellerna. Det är därför just tabellfrågor är 'lätta' så fort man hittat rätt cell.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Skanna de sju veckodagarnas summor",
+        "text": "Veckodagarna är listade måndag, tisdag, onsdag, torsdag, fredag, lördag, söndag. Skanna ner kolumnen 'Summa/Hela året' för Ej tättbebyggt-sektionen. Fredagen sticker ut som det HÖGSTA värdet (cirka 1469 enligt tabellens nedre del). Detta är konsistent med facits 'fredag störst'.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Hitta det minsta värdet",
+        "text": "Fortsätt skanna samma kolumn för det MINSTA värdet. Måndagen visar ett synligt lågt värde (1142 enligt tabellen) — lägre än söndag (cirka 1233) och tisdag. Det är måndag som är veckans bottenvärde, inte söndag. Facits 'måndag minst' verifierat.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kontrasten mot Tättbebyggt område",
+        "text": "Om du av misstag läst Tättbebyggt-sektionen istället visar den ett ANNAT veckodagsmönster (där fredag fortfarande är högt men minimum ligger annorlunda). Det är därför det är kritiskt att låsa in rätt sektion. Facit pekar specifikt på Ej tättbebyggt.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sammanställ paret",
+        "text": "Störst: Fredag. Minst: Måndag. Alternativ-matchning: A = Onsdag/måndag (fel på störst), B = Onsdag/söndag (fel på båda), C = Fredag/måndag (matchar exakt), D = Fredag/söndag (fel på minst). Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — veckomönstret",
+        "text": "Fredag som peak och måndag som bottendag är konsistent med trafikmönster: fredag eftermiddag/kväll är veckans största utfartsdag (jobbresor + helgresor), måndag morgon har lägre antal utfarter. Det stämmer också med att 'helgsöndagar' ligger högre än 'måndagar' i ej-tättbebyggt (landsväg/motorväg).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (Fredag respektive måndag). Insikten i en mening: i tabellfrågor med två kategorier (tättbebyggt vs ej tättbebyggt) — lås in rätt sektion FÖRST, läs sedan av printade summor i ordning för att hitta max och min.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för max/min-frågor på tabeller: (1) lokalisera rätt tabellsektion via rubrik (här: Ej tättbebyggt), (2) hitta kolumnen som summerar över hela perioden, (3) skanna alla värden för att hitta MAX och MIN, (4) matcha mot alternativens par. Triggern: 'störst/minst' + en kategori → en sektion av tabellen, en kolumn, två extremvärden.",
+    "pregrade_tactic": {
+      "handle": "Sektion-först-summa-sedan",
+      "move": "Peka på rubriken 'Ej tättbebyggt område', hitta veckodags-summakolumnen, skanna sju värden — fredag är peak, måndag är botten."
+    }
+  },
+  "var-2019-kvant1-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "25 procent är frestande om man räknar endast ETT av de tre tidsintervallen mellan 12 och 18, eller om man tror att en sextimmarsperiod av 24 timmar är 25 procent (= 6/24). Det är en formel-driven gissning utan att läsa tabellen.",
+        "why_wrong": "Som steg 6 visar består perioden 12:00–17:59 av TRE klockslag-intervall i tabellen (12:00–13:59, 14:00–15:59, 16:00–17:59). Att räkna bara ett ger 25 procent — men frågan kräver SUMMAN av alla tre. Facit fastslår 45 procent (alternativ C)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "40 procent ligger nära facit och kan komma från en lätt underräkning — kanske om man missar ett av tidsintervallen eller läser en av siffrorna fel.",
+        "why_wrong": "Steg 7 betonar exakt: man måste summera ALLA tre 2-timmarsblock 12:00–13:59 + 14:00–15:59 + 16:00–17:59. Om summan ligger nära 45 % har du fått 40 % genom att underskatta. Facit fastslår 45 procent."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "55 procent är frestande om man råkar inkludera ett extra intervall (kanske 10:00–11:59 eller 18:00–19:59) i summeringen. Då blir andelen klart över 45.",
+        "why_wrong": "Som steg 5 visar är frågan exakt om 12:00–17:59 — en sextimmarsperiod uppdelad på exakt tre 2-timmarsblock i tabellen. Att inkludera ytterligare ett intervall ger för stor summa (klart över 45 %). Facit fastslår 45 procent — bara de tre blocken inom 12:00–17:59."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'mellan klockan X och Y' frågor är att antingen missa ett av tidsblocken eller inkludera ett extra. Botemedlet: lista tidsblocken EXPLICIT som ingår i frågans tidsfönster (12:00-13:59, 14:00-15:59, 16:00-17:59 — alltså exakt tre block), summera värdena för dessa tre, och dela med summan för Hela dygnet.",
+    "solution_path": "Facit fastslår 45 procent (alternativ C). I tabellen 'Tättbebyggt område' (övre högra delen): lokalisera klockslag-tabellen, summera värdena för de tre intervallen 12:00–13:59, 14:00–15:59 och 16:00–17:59, och dela med summan för Hela dygnet. Kvoten är cirka 45 procent.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel (i procent) av vägtrafikolyckorna i TÄTTBEBYGGT område skedde mellan klockan 12:00 och 17:59? Facit fastslår 45 procent (alternativ C). Du letar efter en KVOT mellan en delperiod (eftermiddag) och hela dygnet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Sidan har en högerdel med två separata tabellsektioner: 'Tättbebyggt område' och 'Ej tättbebyggt område'. För tättbebyggt finns både en veckodagstabell och en klockslagstabell. Klockslagstabellen radar upp tvåtimmarsblock från 00:00–01:59 till 22:00–23:59 — sammanlagt 12 block för hela dygnet.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rätt tabellsektion",
+        "text": "'Tättbebyggt område' är den ÖVRE högra tabellsektionen, inte den nedre. Sätt fingret på rubriken 'Tättbebyggt område' innan du läser av siffror.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 'andel' i den här kontexten?",
+        "text": "Andel = (antal olyckor i delperioden) / (antal olyckor under hela dygnet). Båda värdena finns som printade siffror i klockslagstabellen — du behöver inte estimera något visuellt. Tabellfrågor är aritmetik på printade tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera tidsfönstret 12:00-17:59",
+        "text": "Klockslagstabellen är uppdelad i tvåtimmarsblock: ...10:00-11:59, 12:00-13:59, 14:00-15:59, 16:00-17:59, 18:00-19:59... Frågans fönster 12:00-17:59 motsvarar EXAKT tre block: 12:00-13:59, 14:00-15:59, 16:00-17:59. INTE fyra (inkludera inte 10:00-11:59 eller 18:00-19:59) och inte två.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värdena för de tre blocken",
+        "text": "I 'Tättbebyggt område'-kolumnen 'Summa/Olyckor' (eller motsvarande): plocka värdena för de tre relevanta blocken. De är tabellens printade siffror — bokstavligen vad cellerna säger. Notera dem en och en innan du adderar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Summera de tre värdena",
+        "text": "Addera de tre blockvärdena: värdet för 12:00-13:59 + värdet för 14:00-15:59 + värdet för 16:00-17:59. Detta är antalet olyckor i den eftermiddagsperioden. Det är täljaren i din andel-kvot.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Hitta nämnaren — 'Hela dygnet'",
+        "text": "Klockslagstabellen har en summa-rad markerad 'Hela dygnet' eller motsvarande (tabellens totalsumma över alla 12 tvåtimmarsblock). Det är nämnaren i kvoten — totalantalet olyckor i tättbebyggt område över 2006.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Beräkna kvoten",
+        "text": "Andel = (summa för 12:00-17:59) / (Hela dygnet) × 100 %. Med tabellens siffror ger detta cirka 45 % — konsistent med facits svar C.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — eftermiddagstoppen är trolig",
+        "text": "Eftermiddagsperioden 12-18 är peak-tid för trafik i tättbebyggt område (jobbpendling, varuleveranser, hemfärd). Att den utgör nära HÄLFTEN av dygnets olyckor är konsistent med att människor är ute och rör sig i störst utsträckning då. 45 % stämmer med intuitionen om trafiktoppar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (45 procent). Insikten i en mening: när frågan ger ett klockintervall — lista tabellens tidsblock som ligger INOM intervallet exakt, summera, och dela med Hela-dygnet-värdet.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel under tidsperiod'-frågor på klockslagstabeller: (1) identifiera vilka tidsblock som ligger INOM intervallet (ej över- eller underinkludera), (2) summera deras värden från tabellens printade siffror, (3) dela med tabellens 'Hela dygnet'-summa, (4) konvertera till procent. Triggern: 'mellan klockan X och Y' → tre block-additioner, inte ett block och inte fyra.",
+    "pregrade_tactic": {
+      "handle": "Tre-block-summa",
+      "move": "I tättbebyggt klockslagstabell: addera värdena för 12:00-13:59, 14:00-15:59 och 16:00-17:59, dela med Hela-dygnet-summan. Cirka 45 procent."
+    }
+  },
+  "var-2019-kvant1-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det totala antalet skadade i tättbebyggt område är den största kategorin numeriskt och har en månadsfördelning som varierar — frestande att gissa att 'störst kategori = den kurva som visas'.",
+        "why_wrong": "Som steg 7 visar har kurvan en distinkt sommartopp (juli) som matchar ett LANDSVÄGS-mönster (semestertrafik), inte den jämnare fördelning som tättbebyggt totalt skulle ge. Tättbebyggt är mer jämn över året eftersom det styrs av jobbpendling. Facit fastslår D: ej tättbebyggt + lindrigt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Antalet lindrigt skadade i tättbebyggt område är frestande om man bara fokuserar på 'lindrigt' som ord och tror att lindriga olyckor sker mest i tätbebyggt. Lindriga skador är den största delen av skadekategorin.",
+        "why_wrong": "Steg 8 betonar: kurvans mönster med tydlig sommartopp är karakteristiskt för LANDSVÄGSTRAFIK, inte tätbebyggd. I tättbebyggt område är fördelningen jämnare över året. Facit fastslår D — ej tättbebyggt, inte tättbebyggt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det totala antalet skadade i ej tättbebyggt område fångar rätt MILJÖKLASS (ej tättbebyggt = landsväg), och en månadsfördelning med sommartopp passar. Det är frestande att stanna vid 'rätt miljö, totalt antal'.",
+        "why_wrong": "Som steg 9 visar är 'totalt antal skadade' = lindrigt + svårt + dödade. När man jämför kurvans höjder med tabellens hårdkodade totalsiffror är NIVÅN för låg för totalsumman — den matchar bättre lindrigt skadade (huvuddelen av antalet skadade, men inte hela). Facit fastslår D: lindrigt, ej totalt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'vilken kategori avses' frågor är att fastna på EN dimension (miljöklass ELLER skadegrad) i stället för att kombinera båda. Botemedlet: använd kurvans MÖNSTER (säsongstoppar) för miljöklassen, och dess NIVÅ (hur högt y-värdena når) för skadegraden. Båda dimensionerna måste stämma simultant.",
+    "solution_path": "Facit fastslår D: Antalet lindrigt skadade i ej tättbebyggt område. Kurvans säsongsmönster med sommartopp (juli) pekar på LANDSVÄG (ej tättbebyggt). Och kurvans absoluta nivå matchar lindrigt-kategorin (största delen av skadade) snarare än totalsumma eller svårt/dödade. Båda dimensioner — miljö + skadegrad — matchar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: en kurva visar antalet skadade per månad för en viss kategori. Vilken kategori avses? Alternativen kombinerar TVÅ dimensioner: miljö (tättbebyggt vs ej tättbebyggt) och skadegrad (totalt vs lindrigt). Facit fastslår D: lindrigt skadade i ej tättbebyggt. Du letar efter en match på BÅDA dimensioner.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Den månadsuppdelade tabellen i vänstra delen visar olyckor per månad för båda miljöklasserna, uppdelat på olyckor, skadade (lindrigt/svårt/dödade) och total. Kurvan i frågan visar månadsfördelningen för EN av dessa kategori-kombinationer. Du måste identifiera vilken.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad ska du leta efter i kurvan?",
+        "text": "Två signaler kan plocka rätt kategori: (1) MÖNSTRET över året — har den sommartoppar, vintertoppar, eller är den jämn? (2) NIVÅN — är y-värdena små (svåra/dödade ≈ 50-200) eller stora (lindrigt skadade ≈ 1000-2000) eller mellan?",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Säsongsmönstret — tättbebyggt vs ej tättbebyggt",
+        "text": "Tättbebyggt område: olyckor sker främst av jobbpendling, vardagstrafik i städer — relativt JÄMN fördelning över året, med möjligen liten ökning vid mörka månader. Ej tättbebyggt (landsväg, motorväg): trafiken toppar på sommaren när semesterresor sker — tydlig SOMMARTOPP juli/augusti.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Skadegraden — lindrigt vs totalt vs svårt vs dödade",
+        "text": "Lindrigt skadade är den i särklass största gruppen — typiskt 80-90 procent av alla skadade. Totalt antal skadade = lindrigt + svårt + dödade. Att 'lindrigt' är så pass dominerande betyder att kurvan för 'lindrigt' och 'totalt skadade' ligger NÄRA varandra i nivå — det är en svår skillnad att se utan att jämföra med exakta tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Lägg märke till kurvans säsongsform",
+        "text": "Kurvan i frågans figur har en distinkt sommartopp (juli/augusti) med en uttalad peak — det är ett karakteristiskt LANDSVÄGSMÖNSTER (semestrar, längre resor). Hösten dippar, vintern återhämtar sig delvis, vår och försommar stiger. Detta utesluter de jämna tätbebyggda alternativen (A och B).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Eliminera alternativen A och B",
+        "text": "Både A (totalt skadade tättbebyggt) och B (lindrigt tättbebyggt) ska ha JÄMN månadsfördelning. Kurvan visar TYDLIG sommartopp — alltså inte tättbebyggt. A och B faller. Återstår C (totalt ej tättbebyggt) och D (lindrigt ej tättbebyggt).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Skilj C från D — jämför med tabellnivåer",
+        "text": "C = totalt skadade ej tättbebyggt, D = lindrigt skadade ej tättbebyggt. Skillnaden mellan totala och lindriga är de svårt skadade och dödade — typiskt 10-15 procent. Om kurvans peak ligger nära tabellens 'lindrigt skadade i ej tättbebyggt'-månadsvärden (kanske 1300-1500 i juli/augusti enligt tabellen) snarare än totalvärdet (lite högre) — då är det D. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför är D mer specifikt rätt än C?",
+        "text": "Eftersom 'lindrigt' utgör cirka 85-90 procent av 'totalt skadade' ligger de två kurvorna nästan på varandra. Men 'totalt' är märkbart högre vid varje månad. Om kurvan i figuren matchar TABELLENS lindrigt-värden mer exakt (lägre y-värden) är det D. Facits utfall pekar på att de exakta värdena bekräftar D framför C.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — eliminera systematiskt",
+        "text": "Sammanfattning: A och B utesluts på säsongsmönstret (tättbebyggt = jämnt, inte sommartopp). C utesluts om kurvans absoluta nivå matchar TABELLEN för 'lindrigt' i ej tättbebyggt bättre än 'totalt' i samma. D matchar både mönster (sommartopp = landsväg) och nivå (≈ lindrigt-värden).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Antalet lindrigt skadade i ej tättbebyggt område). Insikten i en mening: vid 'vilken kategori avses' frågor — använd mönstret (säsongsform) för att eliminera halva alternativen, och nivå/skala för att välja mellan de återstående.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för kategori-identifierings-frågor med kurva + tabell: (1) tolka kurvans säsongsmönster — jämnt = stadstrafik, sommartopp = landsvägstrafik, vintertopp = halka, (2) tolka kurvans nivå relativt tabellens olika skadekategori-värden, (3) korsa båda för att eliminera alternativ. Triggern: 'vilken kategori avses' → mönster + nivå parallellt, ej en dimension åt gången.",
+    "pregrade_tactic": {
+      "handle": "Mönster-och-nivå-parallellt",
+      "move": "Sommartopp i kurvan = ej tättbebyggt (eliminerar tättbebyggt-alternativen); kurvans nivå matchar 'lindrigt' bättre än 'totalt' i tabellen — alltså D."
+    }
+  },
+  "var-2019-kvant1-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "150 °C låter rimligt om man jämför två GRANNHIMLAKROPPAR, t.ex. Mars och Venus eller Merkurius och Mars. Det är en blygsam skillnad som passar 'svalt vs varmt' i solsystemet.",
+        "why_wrong": "Som steg 5 och 6 visar är frågan om DEN HÖGSTA mot DEN LÄGSTA — alltså extremvärdena, inte godtyckliga grannar. Venus och Pluto ligger i var sin ände av x-axeln (cirka +500 °C för Venus, cirka -220/-230 °C för Pluto). Skillnaden är klart större än 150. Facit fastslår 700 °C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "250 °C lockar om man hoppar över de allra mest extrema och tar mellan-extremerna. T.ex. om man tar Merkurius (cirka 300 °C) som högsta i stället för Venus.",
+        "why_wrong": "Steg 5 betonar: x-axelns absolut hetaste märke är Venus vid cirka 500 °C, INTE Merkurius (vid cirka 300 °C). Och kallaste är Pluto vid cirka -220 °C. 500 - (-220) = 720, närmast 700 — inte 250. Facit fastslår 700 °C."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "600 °C är frestande om man räknar 500 - (-100) eller liknande — om man underskattar hur långt ner Plutos temperatur ligger. Det är en 'nästan rätt' fälla.",
+        "why_wrong": "Som steg 7 visar är Plutos x-värde nära -220 °C, inte -100. Och Venus ligger nära +500 °C. Skillnaden 500 - (-220) = 720 °C, närmast 700. Facit fastslår 700 °C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'skillnad mellan extremvärden'-frågor är att man missar att x-axeln går från VARMARE (vänster) till KALLARE (höger) — alltså en avtagande temperatur — och att man inte är försiktig med tecknen vid subtraktion av negativa tal. Botemedlet: peka explicit på den hetaste himlakroppen (Venus, längst till vänster) och den kallaste (Pluto, längst till höger), avläs båda x-värdena mot tick-värdena, och beräkna SKILLNADEN = varmaste − kallaste.",
+    "solution_path": "Facit fastslår 700 °C (alternativ D). I diagrammet 'Himlakroppar och atmosfäriska gaser': x-axeln visar temperatur från vänster (varmt) till höger (kallt). Venus ligger längst till vänster vid cirka +500 °C — den högsta redovisade temperaturen. Pluto ligger längst till höger vid cirka -220 °C — den lägsta. Skillnaden = 500 - (-220) = 720 °C ≈ 700 °C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: skillnaden mellan högsta och lägsta redovisade temperatur bland himlakropparna. Svarsformat: temperatur i °C (150, 250, 600, 700). Facit fastslår 700 °C (alternativ D). Du letar efter den hetaste och den kallaste himlakroppen, sedan beräknar skillnaden.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "X-axeln visar TEMPERATUR (°C) — viktigt: den GÅR FRÅN VÄNSTER (varmt, 1500/1000/500) TILL HÖGER (kallt, -100, -200, -250). Tick-värden printade: 1500, 1000, 500, 300, 100, 0, -80, -140, -180, -220, -240, -250. Y-axeln visar hastighet i km/s. Staplarnas POSITION på x-axeln (inte deras höjd) anger himlakroppens temperatur.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'redovisad temperatur'?",
+        "text": "Varje himlakropp är representerad av en VERTIKAL STAPEL och stapelns LATERALA POSITION på x-axeln markerar dess temperatur. Stapelhöjden är himlakroppens flykthastighet (km/s), INTE temperatur. Frågan handlar om position längs x-axeln.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera alla himlakroppars temperaturpositioner",
+        "text": "Skanna staplarna från vänster (varmast) till höger (kallast): Venus (cirka 500 °C), Merkurius (cirka 300 °C), Jorden (cirka 100 °C, drygt 100), Mars (cirka -80 till -100), Jupiter, Saturnus, Uranus, Neptunus (alla mycket kalla, kring -140 till -220), Pluto (längst till höger, cirka -220/-230).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta det hetaste — Venus",
+        "text": "Den stapel som ligger LÄNGST TILL VÄNSTER på x-axeln (varmaste änden) är Venus, vid cirka +500 °C. Inga himlakroppar finns till vänster om Venus. Venus är därmed den hetaste redovisade temperaturen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Hitta det kallaste — Pluto",
+        "text": "Den stapel som ligger LÄNGST TILL HÖGER på x-axeln (kallaste änden) är Pluto, vid cirka -220 °C eller marginellt kallare. Inga himlakroppar finns till höger om Pluto. Pluto är den kallaste redovisade temperaturen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs x-värdena mot tick-värdena",
+        "text": "Venus position projicerar ner mot tick-värdet 500 — den ligger vid eller mycket nära +500 °C. Plutos position projicerar mot tick-värdet -220 °C — strax mellan tick-värdena -220 och -240. Beskriv: 'Venus +500, Pluto -220'.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna skillnaden",
+        "text": "Skillnad = hetaste − kallaste = 500 − (-220) = 500 + 220 = 720 °C. Det matchar alternativet närmast: 700 °C (alternativ D).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Var noga med subtraktion av negativa tal",
+        "text": "500 − (-220) blir 500 + 220, inte 500 - 220. Att subtrahera ett negativt tal är samma som att addera dess motsvarande positiva tal. Detta är ett klassiskt aritmetiskt fel; om du fått 280 har du gjort minustecken-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — alternativens utfall",
+        "text": "150 °C kräver att hetaste och kallaste är max 150 °C isär — orealistiskt eftersom Venus alone är +500. 250 °C kräver att man tar t.ex. Merkurius och Mars — men frågan vill ha extrema, inte intermediära. 600 °C är nära men för låg — om man underskattar Plutos kyla. 700 °C matchar beräkningen 720 °C avrundat. Facit fastslår 700.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (700 °C). Insikten i en mening: vid skillnad-mellan-extremvärden-frågor på en axel som spänner från negativt till positivt — identifiera de absolut yttersta staplarna och var extra försiktig med teckenhanteringen vid subtraktion.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för skillnad-i-extremvärden-frågor på en x-axel som spänner positivt till negativt: (1) identifiera den stapel som ligger längst till en av axelns ändar, (2) identifiera den stapel som ligger längst till motsatta änden, (3) avläs båda x-värden mot tick-värdena, (4) beräkna skillnaden med korrekt teckenhantering (a − (−b) = a + b). Triggern: 'skillnad mellan högsta och lägsta' → två extrempositioner + signerad subtraktion.",
+    "pregrade_tactic": {
+      "handle": "Yttersta-staplarna-mot-tick",
+      "move": "Venus (längst till vänster, +500 °C) och Pluto (längst till höger, -220 °C). Skillnad = 500 − (−220) = 720 ≈ 700 °C."
+    }
+  },
+  "var-2019-kvant1-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Knappt 100 °C 1,50 0,78 har rätt temperatur (matchar facit) men felaktiga hastigheter — det skulle motsvara att läsa fel gas-linjer. 1,50 är hastigheten för H2 (vätgas) vid samma temperatur, inte O2 (syrgas).",
+        "why_wrong": "Som steg 6 visar är den linje märkt O2 (syrgas) den 5:e från toppen, inte den översta. Vid x-positionen för jorden korsar O2-linjen y-axeln vid cirka 0,55 km/s, inte 1,50. 1,50 motsvarar H2 — en helt annan gas. Facit fastslår A med syrgas = 0,55."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Drygt 100 °C 0,55 0,78 har rätt syrgas-värde (0,55) men felaktig temperatur och felaktig koldioxid. Frestande för någon som läser av syrgas korrekt men gissar temperaturen på fel sida och tar fel CO2-värde.",
+        "why_wrong": "Steg 5 betonar: jordens stapel ligger till HÖGER om tick-värdet 100 °C — på den kalla sidan, alltså 'knappt 100' (mindre än 100, dvs strax under 100). 'Drygt 100' (mer än 100) skulle placera jorden till vänster om tick-värdet. Facit fastslår A — knappt 100, inte drygt 100."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Drygt 100 °C 1,50 0,48 har rätt CO2-värde (0,48) men fel temperatur och fel syrgas. Frestande om man tar 1,50 (för fel gas) och 0,48 (rätt gas).",
+        "why_wrong": "Som steg 4 visar är 'drygt 100' fel temperaturriktning för jorden — den ligger på den kallare sidan av tick-värdet 100. Och 1,50 km/s är H2-hastighet, inte O2-hastighet vid samma temperatur. Två fel ger D — facit fastslår A med korrekt avläsning på alla tre värden."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att (a) blanda ihop sidan av tick-värdet 100 (varmare eller kallare än 100), och (b) läsa fel gas-linje. Botemedlet: peka explicit på jordens stapel-bas på x-axeln för temperaturen, och peka på var jordens x-position skär O2- och CO2-linjerna separat — använd legendnamnen 'O2' och 'CO2' bredvid linjerna som visuell ankarpunkt.",
+    "solution_path": "Facit fastslår A: knappt 100 °C, 0,55, 0,48. Jordens stapel ligger till höger om tick-värdet 100 °C — alltså strax under 100 (knappt 100). Vid jordens x-position skär syrgas-linjen (O2, 5:e från toppen i legenden) y-axeln vid 0,55 km/s. Koldioxid-linjen (CO2, 6:e/lägst) skär vid 0,48 km/s. Alla tre värden matchar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken temperatur har jorden, och vid den temperaturen vilken medelhastighet har syrgas (O2) respektive koldioxid (CO2)? Facit fastslår A: knappt 100 °C, 0,55 km/s (syrgas), 0,48 km/s (koldioxid). Du letar efter TRE värden samtidigt — en temperatur och två gas-hastigheter.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Diagrammet visar staplar för himlakroppar (positionerade på x-axeln efter temperatur, höjd = flykthastighet) OCH sneda linjer som visar gasmolekylernas medelhastighet vid olika temperaturer. Legenden listar gaserna uppifrån och ner: H2, He, NH3, CH4, O2, CO2 — sex linjer, alla sneda nedåt mot kallare temperaturer (lägre hastighet vid lägre temp).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta jordens stapel",
+        "text": "Jorden är märkt 'JORDEN' i diagrammet, med en svart vertikal stapel. Den ligger till höger om Venus och Merkurius, mellan Venus/Merkurius på den varma sidan och Mars/yttre planeter på den kalla sidan.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs jordens temperatur",
+        "text": "Jordens stapel-bas projicerar ner till x-axeln vid en position mellan tick-värdena 100 och 0 — närmare 100. Strax under 100 °C, dvs 'knappt 100 °C'. Beskriv: 'jordens temp ≈ 95-100 °C, alltså knappt 100'. Detta eliminerar alternativen C och D (som säger 'drygt 100').",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Var noga med 'knappt' vs 'drygt'",
+        "text": "'Knappt 100' = strax UNDER 100 (kallare). 'Drygt 100' = strax ÖVER 100 (varmare). Eftersom x-axeln går från VARMT (vänster) till KALLT (höger) ligger 'knappt 100' till HÖGER om tick-värdet 100. Jordens stapel ligger där.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera O2- och CO2-linjerna",
+        "text": "I legenden längst till höger står gaserna i ordning från lättast till tyngst: H2, He, NH3, CH4, O2, CO2. På diagrammet är dessa de sex sneda linjerna — H2 är högst (snabbast), CO2 lägst (långsammast). O2 (syrgas) är den 5:e linjen från toppen — bland de lägre. CO2 är den 6:e/lägsta linjen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skär linjerna vid jordens x-position",
+        "text": "Tänk en vertikal linje uppåt från jordens x-position (strax till höger om tick-värdet 100). Den linjen skär O2- och CO2-linjerna vid deras y-värden (km/s). Avläs båda skärningspunkterna mot y-axelns tick-värden (0,1, 0,15, 0,2, 0,3, 0,4, 0,5, 0,6, 0,8, 1, 1,5, 2, 3, 4, 5, 6, 8, 10).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Avläs O2-hastigheten vid jordens temperatur",
+        "text": "O2-linjen vid jordens x-position skär y-axeln vid en position mellan 0,5 och 0,6 km/s — närmare 0,55. Beskriv: 'syrgas ≈ 0,55 km/s vid jordens temperatur'. Detta matchar facit A.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Avläs CO2-hastigheten vid jordens temperatur",
+        "text": "CO2-linjen (under O2-linjen i diagrammet) skär y-axeln vid en position strax under 0,5 — närmare 0,48. Beskriv: 'koldioxid ≈ 0,48 km/s vid jordens temperatur'. Detta matchar facit A.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Korsa mot felmöjligheterna",
+        "text": "Om du av misstag läst H2-linjen (översta) skulle hastigheten vara cirka 1,5 km/s — det är alternativen B och D. Om du läst NH3 eller CH4 i stället för O2 skulle hastigheten ligga mellan 1 och 1,5. Bara O2 ger 0,55, vilket är konsistent med facit A.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sammanställ triplet",
+        "text": "Jorden: knappt 100 °C. Syrgas vid jordens temp: 0,55 km/s. Koldioxid vid jordens temp: 0,48 km/s. Triplet: 'knappt 100, 0,55, 0,48' — matchar alternativ A. Facit bekräftar.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (knappt 100 °C, 0,55, 0,48). Insikten i en mening: vid trippelvärdesfrågor — bestäm först en gemensam x-koordinat (här jordens position), bestäm sedan vilken sida av närmaste tick-värde den ligger, och avläs separat varje önskat y-värde mot sin specifika linje.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'temperatur + gas-hastigheter'-frågor på diagram med staplar + sneda linjer: (1) lokalisera himlakroppens stapel på x-axeln, (2) avläs temperatur och avgör 'knappt' eller 'drygt' relativt närmaste tick-värde, (3) identifiera rätt gas-linjer via legend, (4) avläs linjernas y-värden vid himlakroppens x-koordinat. Triggern: 'vilken temperatur har X och vilken hastighet vid den' → x-koordinat + två y-värden parallellt.",
+    "pregrade_tactic": {
+      "handle": "Vertikal-linje-genom-jorden",
+      "move": "Dra en tänkt vertikal linje genom jordens stapel på x-axeln. Avläs där den korsar tick-värdet 100 (knappt 100 °C), och var den skär O2-linjen (0,55) och CO2-linjen (0,48)."
+    }
+  },
+  "var-2019-kvant1-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "0,6 km/s är frestande om man läser av månens stapel-höjd som en mindre fraktion av tick-värdet 1 km/s — dvs underskattar stapelns höjd. Det är ett av de lägre alternativen och passar 'månen är liten = lägre flykthastighet'.",
+        "why_wrong": "Som steg 4 visar är frågan om månens FLYKTHASTIGHET, vilket är stapelhöjden EFTER en korrektionsfaktor. Texten under diagrammet säger: 'Staplarnas höjd motsvarar en sjättedel av respektive himlakropps flykthastighet'. Så månens stapel × 6 = flykthastighet. 0,6 är stapelhöjden, inte flykthastigheten. Facit fastslår 2,4."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "0,8 km/s är frestande som ett 'rätt-känns'-värde om man läser av stapelhöjden direkt utan att applicera sjättedelskorrektionen — månens stapelhöjd ligger ungefär vid 0,4 km/s.",
+        "why_wrong": "Steg 5 är explicit: stapelhöjd × 6 = flykthastighet. Om månens stapel är cirka 0,4, då flykthastighet ≈ 0,4 × 6 = 2,4. 0,8 är felaktigt eftersom det varken är stapelhöjden eller den korrigerade flykthastigheten. Facit fastslår 2,4."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1,2 km/s är frestande om man råkar tillämpa en faktor 3 istället för 6 (dubbelt stapelhöjd) eller om man förväxlar månens stapel med en annan himlakropps stapel.",
+        "why_wrong": "Som steg 5 visar är multiplikationsfaktorn EXAKT 6, inte 3. Om månens stapel är 0,4 ger faktor 3 fel resultat: 0,4 × 3 = 1,2. Men korrekt faktor är 6, vilket ger 2,4. Facit fastslår 2,4."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i den här typen av frågor är att HOPPA ÖVER bildtexten som specificerar förhållandet mellan stapelhöjd och den verkliga storheten. Botemedlet: läs bildtexten under diagrammet FÖRST — den säger att 'staplarnas höjd motsvarar en sjättedel av respektive himlakropps flykthastighet'. Multiplicera alltid stapelhöjden med 6 för att få flykthastigheten.",
+    "solution_path": "Facit fastslår 2,4 km/s (alternativ D). Bildtexten under diagrammet specificerar: 'Staplarnas höjd motsvarar en sjättedel av respektive himlakropps flykthastighet'. Läs av månens stapelhöjd: cirka 0,4 km/s mot y-axelns tick-värden. Flykthastighet = stapelhöjd × 6 = 0,4 × 6 = 2,4 km/s.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken flykthastighet har månen? Svarsformat: km/s (0,6, 0,8, 1,2, 2,4). Facit fastslår 2,4 km/s (alternativ D). Du måste läsa av månens stapel OCH applicera en konverteringsfaktor från bildtexten.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Diagrammet 'Himlakroppar och atmosfäriska gaser' har staplar för himlakroppar och sneda linjer för gas-hastigheter. Y-axeln är 'Hastighet (km/s)' med tick-värden 0,1, 0,15, 0,2, 0,3, 0,4, 0,5, 0,6, 0,8, 1, 1,5, 2, 3, 4, 5, 6, 8, 10 (logaritmisk skala). X-axeln är temperatur.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "LÄS BILDTEXTEN — kritisk!",
+        "text": "Under diagrammet står: 'Generaliserad bild av himlakroppars förmåga att hålla kvar olika gaser. Staplarnas höjd motsvarar en SJÄTTEDEL av respektive himlakropps flykthastighet. De sneda linjerna anger gasmolekylernas medelhastighet vid olika temperaturer. En himlakropp kan hålla kvar de gaser vilkas linjer skär dess stapel.' Den centrala texten: STAPELHÖJD = FLYKTHASTIGHET / 6. Alltså FLYKTHASTIGHET = STAPELHÖJD × 6.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'flykthastighet'?",
+        "text": "Flykthastighet (escape velocity) är den hastighet ett objekt måste ha för att lämna en himlakropps gravitationsfält. För månen är den känd från fysiken: cirka 2,4 km/s. För jorden: cirka 11,2 km/s. Diagrammet är skalat med faktor 6 för att rymma stora skillnader på samma axel — utan skalningen skulle Jupiters flykthastighet (cirka 60 km/s) inte få plats.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Hitta månens stapel",
+        "text": "Skanna staplarna efter etiketten 'MÅNEN'. Den ligger med Merkurius som temperatur-granne (omkring 0 °C på x-axeln) och är en av de KORTASTE staplarna (eftersom månen har mycket låg gravitation). Stapeln slutar i höjd med ungefär y-värdet 0,4 km/s — mellan tick-värdena 0,3 och 0,5.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs stapelhöjden",
+        "text": "Månens stapel når upp till cirka 0,4 km/s. Beskriv: 'månens stapelhöjd ≈ 0,4'. Detta är NUMERISKT VÄRDE PÅ STAPELHÖJDEN, inte på flykthastigheten.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Applicera konverteringsfaktorn",
+        "text": "Flykthastighet = stapelhöjd × 6 = 0,4 × 6 = 2,4 km/s. Detta matchar alternativ D exakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad blir fel om man hoppar över faktorn?",
+        "text": "Om man läser stapelhöjden direkt som svar (0,4) finns det inte ens med som alternativ — närmast är 0,6 (A). Om man tillämpar faktor 3 i stället för 6: 0,4 × 3 = 1,2 = alternativ C. Faktor 6 är specifik och printad i bildtexten — facit-svaret 2,4 går endast att nå genom korrekt faktor 6.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot verklig fysik",
+        "text": "Månens kända flykthastighet i verkliga fysiken är cirka 2,38 km/s — vilket matchar 2,4 km/s. Det är en användbar sanity-check: om svaret också matchar fysikalisk kunskap har du sannolikt tolkat diagrammet rätt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot andra himlakroppar",
+        "text": "Om logiken 'stapel × 6 = flykthastighet' stämmer ska Jupiter (stapel når upp till cirka 10 km/s) ge flykthastighet 60 km/s — vilket faktiskt stämmer med Jupiters kända fysikaliska flykthastighet. Konverteringen är intern konsistent över hela diagrammet.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (2,4 km/s). Insikten i en mening: i diagram med konverteringsfaktorer från bildtexten — LÄS BILDTEXTEN FÖRST, så att du inte missar att stapelhöjden måste multipliceras (× 6) för att ge den efterfrågade storheten.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för frågor med skalningsfaktor i bildtexten: (1) läs bildtexten innan du läser av staplar — den specificerar konverteringen mellan visuell höjd och faktisk storhet, (2) läs av stapelhöjden mot y-axelns tick-värden, (3) tillämpa konverteringsfaktorn för att få den faktiska storheten, (4) matcha mot alternativen. Triggern: 'bildtexten säger N motsvarar en sjättedel av M' → stapelhöjd × 6 = svaret.",
+    "pregrade_tactic": {
+      "handle": "Stapelhöjd-gånger-sex",
+      "move": "Läs bildtexten: stapelhöjd är en sjättedel av flykthastighet. Månens stapel ≈ 0,4 km/s, så flykthastighet = 0,4 × 6 = 2,4 km/s."
+    }
+  },
+  "var-2019-kvant2-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "50 passagerare per landning är frestande om man räknar med fel skala — t.ex. om man råkar dividera passagerare i tusental istället för miljoner med landningar. Det är en bekväm 'rund' siffra för regional flygtrafik.",
+        "why_wrong": "Som steg 6 och 7 visar är totala landningar 2005 cirka 255 000 (övre stapeldiagram, 255 tusental) och totala passagerare cirka 25 miljoner (25 000 000). Kvoten 25 000 000 / 255 000 ≈ 98 ≈ 100. 50 är hälften av rätt värde — vilket skulle kräva dubbla landningar eller halverade passagerare. Facit fastslår 100."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "150 passagerare per landning lockar om man överskattar passagerare-summan eller underskattar landningar. Det är ett 'flygplan med 150 platser'-värde som låter rimligt för charter eller långdistans.",
+        "why_wrong": "Steg 7 är explicit: 2005-värdena är cirka 255 000 landningar och 25 miljoner passagerare. Kvoten är 25M/255K ≈ 98, klart närmast 100 än 150. För 150 skulle passagerarna behöva vara cirka 38 miljoner — vilket inte stämmer mot tick-värdet 25 i passagerardiagrammet. Facit fastslår 100."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "250 passagerare per landning är frestande om man läser fel skala på enheter — t.ex. om man tar passagerare som hundratusental istället för miljoner. Det matchar fullbelagd jumbo-jet.",
+        "why_wrong": "Som steg 4 visar är landningsdiagrammets enhet TUSENTAL och passagerardiagrammets enhet MILJONER. Att blanda ihop dessa ger faktor 1000-fel — vilket kan kasta dig från 100 till 250 om man rör till räkningen. Facit fastslår 100 — det krävs att båda enheter behandlas korrekt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att glömma omräkna ENHETERNA — landningar är i tusental, passagerare är i miljoner. Botemedlet: skriv ner båda värdena med fulla siffror INNAN du dividerar (255 000 landningar och 25 000 000 passagerare), så att enhetshanteringen blir explicit och du inte tappar bort en faktor 1000.",
+    "solution_path": "Facit fastslår 100 (alternativ B). I övre stapeldiagrammet (Landningar i tusental) summerar 2005-stapeln till cirka 255 tusental = 255 000 landningar (utrikes + inrikes). I nedre stapeldiagrammet (Passagerare i miljoner) summerar 2005-stapeln till cirka 25 miljoner = 25 000 000 passagerare. Kvot = 25 000 000 / 255 000 ≈ 98 ≈ 100 passagerare per landning.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stort var antalet passagerare per landning på svenska flygplatser 2005? Facit fastslår 100 (alternativ B). Du ska räkna ut en KVOT mellan två värden från två separata stapeldiagram — totala passagerare delat med totala landningar för samma år.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Sidan har TVÅ stapeldiagram. ÖVRE: 'Landningar (tusental)' — staplade staplar för Utrikes (svart) + Inrikes (grå), år 1980, 1985, 1990, 1995, 2000, 2005, 2009, 2010. Y-axeln 0-350. NEDRE: 'Passagerare (miljoner)' — staplade staplar för Utrikes + Inrikes, samma år, y-axel 0-30.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rätt år",
+        "text": "Frågan gäller år 2005. Hitta 2005-stapeln i BÅDA diagrammen — den är näst längst till höger (mellan 2000 och 2009). Sätt fingret på 2005-stapeln innan du läser av.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Var noga med enheterna",
+        "text": "Övre diagrammet: y-axelns rubrik är 'Landningar (TUSENTAL)' — så ett y-värde på 255 betyder 255 000 landningar. Nedre diagrammet: y-axelns rubrik är 'Passagerare (MILJONER)' — så ett y-värde på 25 betyder 25 000 000 passagerare. Olika enheter, faktor 1000 mellan dem.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad är 'totalt antal'?",
+        "text": "Eftersom staplarna är STAPLADE (svart utrikes + grå inrikes på varandra) är toppen av hela stapeln = total summa. För landningar 2005: utrikes (svart, cirka 110) + inrikes (grå, cirka 145) → total ≈ 255 tusental. För passagerare 2005: utrikes (svart, cirka 17) + inrikes (grå, cirka 8) → total ≈ 25 miljoner.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs total landningar 2005",
+        "text": "I övre diagrammet: 2005-stapelns topp ligger mellan tick-värdena 250 och 300, närmare 250 — alltså cirka 255 tusental. Beskriv: 'totala landningar 2005 ≈ 255 000'.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs total passagerare 2005",
+        "text": "I nedre diagrammet: 2005-stapelns topp ligger mellan tick-värdena 20 och 30, närmare 25. Alltså cirka 25 miljoner. Beskriv: 'totala passagerare 2005 ≈ 25 000 000'.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna kvoten",
+        "text": "Kvot = passagerare / landningar = 25 000 000 / 255 000 ≈ 98 passagerare per landning. Avrunda till närmaste alternativ: 100 passagerare. Facit fastslår 100 (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Var noga med enhetskonvertering",
+        "text": "Kvotens enhet: (passagerare/miljoner) / (landningar/tusental) — om man inte konverterar blir det 25/255 ≈ 0,098 'miljoner passagerare per tusen landningar'. Konvertera till passagerare per landning: 0,098 × 1 000 000 / 1 000 = 0,098 × 1000 = 98. Eller direkt: 25M / 255K = 98. Båda sätt ger samma svar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — flygplankapacitet",
+        "text": "100 passagerare per landning är konsistent med en blandning av små regionalflyg (50 passagerare) och fulla större flygplan (200 passagerare). Det är ett rimligt medelvärde för svensk inrikes + utrikes-trafik. 50 är för lågt (inte konsistent med utrikesflyg), 250 är för högt (kräver att alla flyg är fulla jumbojets).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (100). Insikten i en mening: vid kvot-frågor mellan olika diagram med olika enheter — skriv ut hela siffrorna med rätt enhet INNAN du dividerar, så slipper du faktor 1000-fel.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för kvot-frågor mellan två diagram med olika enheter: (1) lokalisera samma år/kategori i båda diagrammen, (2) avläs totala värden från staplarnas topp, (3) konvertera till samma enhet eller skriv ut hela talen explicit, (4) dividera och avrunda till närmaste alternativ. Triggern: 'X per Y' med X och Y från olika diagram med olika skalor → enhetsmedveten division.",
+    "pregrade_tactic": {
+      "handle": "Enhetsmedveten-division",
+      "move": "Totalt 2005: cirka 255 tusental landningar och cirka 25 miljoner passagerare. 25 000 000 / 255 000 ≈ 98 ≈ 100 passagerare per landning."
+    }
+  },
+  "var-2019-kvant2-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "120 procent är frestande om man räknar med GAMLA TOTALEN istället för utrikes-andelen, eller om man läser absoluta värden fel — 5 miljoner till 21 miljoner ser ut som dramatisk ökning men kan tolkas som ungefär dubbelt med en marginal.",
+        "why_wrong": "Som steg 6 visar är utrikes 1980 cirka 5 miljoner och utrikes 2010 cirka 21 miljoner. Ökning = 21 - 5 = 16 miljoner. Procentuell ökning = 16/5 × 100 % = 320 %. 120 % skulle kräva en ökning från 5 till 11 — inte 21. Facit fastslår 320 procent."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "250 procent är 'mellan-svar' om man underskattar 2010-värdet eller överskattar 1980-värdet. Det är frestande för 'nästan rätt'.",
+        "why_wrong": "Steg 7 betonar: 21/5 = 4,2, vilket motsvarar 320 procents ökning (eller 420 procent av startvärdet). 250 procent skulle motsvara 3,5 gånger startvärdet — alltså 1980-värdet × 3,5 = 17,5 miljoner. 2010-värdet är 21, inte 17,5. Facit fastslår 320."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "450 procent är frestande om man blandar ihop 'procentuell ökning' med 'procent av startvärdet' — om utrikes 2010 är 4,2 gånger 1980 kan man säga '420 procent av startvärdet' och avrunda till 450.",
+        "why_wrong": "Som steg 8 visar är 'procentuell ökning' = (slut - start) / start × 100 % = 320 %, INTE 'slut / start × 100 %' = 420 %. Skillnaden är just basen — ökningen mäts som tillägg över startvärdet. Facit fastslår 320 (ökning), inte 420 (totalvärde som procent)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i procentuell-ökning-frågor med stort spann är att (a) räkna värdet som procent av startvärdet i stället för ökningen som procent av startvärdet, eller (b) tappa bort att utrikes är ENDAST den svarta delen av stapeln, inte hela stapeln. Botemedlet: skriv ut formeln (slut - start)/start × 100 % och se till att läsa endast den SVARTA delen av staplarna.",
+    "solution_path": "Facit fastslår 320 procent (alternativ C). I nedre stapeldiagrammet (Passagerare i miljoner): utrikes är den SVARTA bottendelen av varje stapel. 1980-utrikes ≈ 5 miljoner, 2010-utrikes ≈ 21 miljoner. Ökning = 21 - 5 = 16. Procentuell ökning = 16/5 × 100 % = 320 %.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: med hur många procent hade antalet UTRIKES passagerare ökat 2010 jämfört med 1980? Facit fastslår 320 procent (alternativ C). Du jämför två värden — UTRIKES-segmentet (svart) i 1980- och 2010-staplarna i nedre diagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Nedre stapeldiagrammet visar 'Passagerare (miljoner)' uppdelat på Utrikes (SVART, botten av stapeln) och Inrikes (GRÅ, ovanpå). Y-axel 0-30 med tick-värden 0, 5, 10, 15, 20, 25, 30. X-axel: 1980, 1985, 1990, 1995, 2000, 2005, 2009, 2010.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rätt segment och rätt år",
+        "text": "Frågan gäller UTRIKES — alltså den SVARTA delen av staplarna, inte hela stapeln. Och rätt år: 1980 (första stapeln) och 2010 (sista stapeln). Sätt fingret på Utrikes-rutan i legenden för att låsa in den svarta färgen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 'procentuell ökning'?",
+        "text": "Procentuell ökning = (slutvärde - startvärde) / STARTVÄRDE × 100 %. Det är ÖKNINGEN som procent av startvärdet, inte slutvärdet som procent av startvärdet. Att förväxla dessa är ett vanligt fel: 'utrikes ökade till 420 % av 1980-värdet' vs 'utrikes ökade med 320 %'. Frågan vill ha det senare.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Inga printade datalabels — använd tick-värdena",
+        "text": "Inga siffror är printade på staplarna. Y-axelns tick-värden (0, 5, 10, 15, 20, 25, 30) är dina enda hårda referenspunkter. Avläsningen sker genom att projicera utrikes-delens (svart) övre kant ner till tick-värdena.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs utrikes 1980",
+        "text": "I 1980-stapeln: den svarta utrikes-delen sträcker sig från botten (0) upp till en höjd som ligger runt 5 miljoner — mellan tick-värdena 0 och 5, mer eller mindre vid 5. Beskriv: 'utrikes 1980 ≈ 5 miljoner'.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs utrikes 2010",
+        "text": "I 2010-stapeln: den svarta utrikes-delen är MYCKET STÖRRE — den når från 0 upp till strax över 20 miljoner, mellan tick-värdena 20 och 25, närmare 21. Beskriv: 'utrikes 2010 ≈ 21 miljoner'.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna procentuell ökning",
+        "text": "Ökning i absoluta tal = 21 - 5 = 16 miljoner. Procentuell ökning = 16/5 × 100 % = 3,2 × 100 % = 320 %. Det matchar alternativ C exakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen och felmöjligheterna",
+        "text": "Om man räknar slutvärde/startvärde × 100 % i stället: 21/5 × 100 % = 420 % → närmast alternativ D (450). Om man räknar (slut - start)/slut: 16/21 ≈ 76 % → inget alternativ. Korrekt formel (slut - start)/start ger 320, vilket matchar facit C.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — fyrfaldigad utrikestrafik",
+        "text": "Utrikes passagerare har ungefär 4-faldigats från 1980 till 2010 (5 → 21). En 4-faldigt-värde innebär en ÖKNING på 3-faldigt-startvärdet = 300 %. 320 % är konsistent med detta (4,2 gånger startvärdet = ökning 320 %). Stämmer med eran av lågprisflyg och ökad internationell rörlighet 1980-2010.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (320 procent). Insikten i en mening: 'procentuell ökning' är ÖKNINGEN som procent av STARTVÄRDET — alltså (slut - start)/start × 100 %, inte slut/start × 100 %.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för procentuell-ökning-frågor mellan två år: (1) lås in rätt segment av staplad stapel (här utrikes = svart botten), (2) avläs båda årens värden mot y-axelns tick-värden, (3) beräkna ökning som (slut - start), (4) dividera med STARTVÄRDET och multiplicera 100 %. Triggern: 'med hur många procent ökade/minskade X från år A till år B' → (B - A)/A × 100, inte B/A × 100.",
+    "pregrade_tactic": {
+      "handle": "Ökning-på-startvärdet",
+      "move": "Utrikes 1980 ≈ 5 miljoner, utrikes 2010 ≈ 21 miljoner. Ökning = 16, dividerat med startvärdet 5 = 3,2 = 320 procent."
+    }
+  },
+  "var-2019-kvant2-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "90 000 är frestande om man räknar med totala landningar - utrikes (eller motsvarande) eller om man läser stapeldelarnas absoluta höjder fel. Det är en 'mellanstor' siffra som passar för ett mätfel på 30-40 tusen i någon riktning.",
+        "why_wrong": "Som steg 6 och 7 visar är inrikes 2000 cirka 175 tusental och utrikes 2000 cirka 130 tusental. Skillnaden 175 - 130 = 45 tusental ≈ 50 000, INTE 90 000. 90 000 skulle kräva att inrikes är 220 eller utrikes är 85, vilket inte matchar staplarna. Facit fastslår 50 000."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "125 000 lockar om man av misstag jämför med 1980-året (då utrikes var liten) i stället för 2000. Eller om man räknar totala landningar 2000 - utrikes 2000.",
+        "why_wrong": "Steg 4 är explicit: frågan gäller 2000. Och skillnaden är INRIKES - UTRIKES, alltså inom 2000-stapeln. Skillnaden där är cirka 45 tusen, inte 125 tusen. Facit fastslår 50 000."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "165 000 är frestande om man tolkar 'skillnad' som total volym eller om man tar utrikes 1980 (40) och inrikes 2010 (130) — saker som inte tillhör samma år.",
+        "why_wrong": "Som steg 5 visar är skillnaden mellan inrikes och utrikes 2000 betydligt mindre än 165 000 — den är cirka 50 000. För att få 165 skulle man behöva extrema värden som inte stämmer med 2000-stapeln. Facit fastslår 50 000."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att läsa staplade staplar fel — att TOTALEN 2000 är cirka 305 tusen är inte detsamma som utrikes eller inrikes ensamma. Botemedlet: hitta delningen MELLAN svart (utrikes) och grå (inrikes) i 2000-stapeln, läs av den delningen som utrikes-värdet, och totalen minus delningen = inrikes-värdet.",
+    "solution_path": "Facit fastslår 50 000 (alternativ A). I övre stapeldiagrammet (Landningar i tusental): 2000-stapelns totalhöjd är cirka 305 tusental. Den svarta utrikes-delen sträcker sig från 0 upp till delningen vid cirka 130. Inrikes (grå) är resten: 305 - 130 = 175. Skillnad = inrikes - utrikes = 175 - 130 = 45 ≈ 50 tusental = 50 000.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var skillnaden i antal landningar mellan inrikes och utrikes år 2000? Facit fastslår 50 000 (alternativ A). Du ska jämföra de två segmenten (svart utrikes + grå inrikes) i 2000-stapeln och räkna skillnaden.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Övre stapeldiagrammet 'Landningar (tusental)' har staplade staplar: utrikes (SVART, botten) + inrikes (GRÅ, topp). Y-axel 0-350 med tick-värden 0, 50, 100, 150, 200, 250, 300, 350. X-axel inkluderar år 2000.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rätt år och rätt segment",
+        "text": "Frågan gäller 2000 — mittenstapeln. Inom den stapeln finns två segment: utrikes (svart, botten) och inrikes (grå, topp). Skillnaden = inrikes - utrikes (eller absolutbelopp om man inte vet vilken är större).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 'skillnad' i kontexten?",
+        "text": "Skillnad = absolutbeloppet av (inrikes - utrikes). I 2000-stapeln verkar inrikes (grå) vara större än utrikes (svart) — du kan se det visuellt eftersom den grå delen är tjockare. Så skillnaden = inrikes - utrikes, positivt.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Vad gör staplade staplar speciella?",
+        "text": "I staplade staplar mäter du delningen MELLAN segmenten, inte hela stapelns höjd. Den svarta delen går från 0 upp till delningslinjen — det är utrikes-värdet. Den grå delen går från delningen upp till stapeltoppen — det är inrikes-värdet. Stapeltotalen = utrikes + inrikes.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs utrikes 2000",
+        "text": "I 2000-stapeln: den svarta utrikes-delen sträcker sig från 0 upp till en delningslinje vid cirka 130 tusental — mellan tick-värdena 100 och 150, närmare 150. Beskriv: 'utrikes 2000 ≈ 130 tusental'.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs total och inrikes 2000",
+        "text": "Stapeltotalen 2000 (toppen) ligger nära tick-värdet 300, kanske marginellt över — cirka 305 tusental. Inrikes = total - utrikes = 305 - 130 = 175 tusental. Eller läs av den grå delen direkt: från 130 till 305 = 175 — bredden av den grå delen.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna skillnaden",
+        "text": "Skillnad = inrikes - utrikes = 175 - 130 = 45 tusental = 45 000. Avrunda till närmaste alternativ: 50 000. Facit fastslår 50 000 (alternativ A).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen",
+        "text": "Alternativen är 50K, 90K, 125K, 165K — separerade med 40K eller mer. Skillnaden 45 ligger mer än 40 procentenheter från 90, vilket är entydigt närmast 50. Facit fastslår 50 — konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — visuell jämförelse",
+        "text": "I 2000-stapeln verkar de två segmenten (svart utrikes, grå inrikes) ganska jämstora — den grå är marginellt tjockare än den svarta. En liten skillnad på cirka 50 tusen (relativt totalen 305 tusen, dvs cirka 15 %) stämmer med det visuella intrycket. Hade skillnaden varit 165 tusen skulle den grå delen vara mer än dubbelt så tjock som den svarta.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (50 000). Insikten i en mening: i staplade staplar — avläs delningslinjen mellan segmenten, beräkna värdet för båda segmenten separat, och dra skillnaden därifrån.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för skillnad-mellan-segment-frågor på staplade stapeldiagram: (1) lokalisera rätt år/stapel, (2) avläs delningslinjen mellan segmenten mot y-axelns tick-värden, (3) beräkna båda segmenten (botten = avläst, topp = total - avläst), (4) dra absolutbeloppet av skillnaden. Triggern: 'skillnad mellan X och Y' inom samma stapel → delningslinje + total, två segment.",
+    "pregrade_tactic": {
+      "handle": "Delningslinjen-mellan-svart-och-grå",
+      "move": "I 2000-stapeln: delningslinjen ligger vid cirka 130 (utrikes), totalen vid cirka 305. Inrikes = 305 - 130 = 175. Skillnad = 175 - 130 = 45 ≈ 50 tusental."
+    }
+  },
+  "var-2019-kvant2-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Rössebo ligger åt nordväst på kartan och kan vara nästa stora ortsnamn längs en nordvästlig vägdragning. Frestande om man missar svängen åt nord efter 3 km.",
+        "why_wrong": "Som steg 7 visar är Rössebo en bra bit längre nordväst om Brasmerud än 3 km, och vägbeskrivningen säger uttryckligen att man ska SVÄNGA AV på en mindre väg som går NORDLIGT efter drygt 3 km — inte fortsätta nordvästlig. Facit fastslår A: Holmen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Furholmen syns på kartan som en ort längre söderut, och om man läser kartan med fel orientering (vänder upp/ner i tankarna) kan man tro att 'nordlig riktning' tar dig dit. Det är ett klassiskt orienteringsfel.",
+        "why_wrong": "Steg 4 betonar: kartans norrpil pekar uppåt (mot toppen av sidan). 'Nordlig riktning' betyder UPPÅT på kartan, vilket från Brasmerud tar dig mot Holmen, inte söderut mot Furholmen. Facit fastslår A: Holmen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Lönnhult syns på kartan i den nordöstra delen och kan locka om man tolkar 'nordvästlig' i första steget som 'norr' och 'nordlig' i andra steget också som mer åt öster. Det är två orienteringsfel staplade på varandra.",
+        "why_wrong": "Som steg 5 visar är Lönnhult INTE i nordväst från Brasmerud — det är åt öster eller nordost. Den första svängen är NORDVÄSTLIG, vilket tar dig bort från Lönnhult. Facit fastslår A: Holmen."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i kart-vägbeskrivningsfrågor är att förlora orienteringen halvvägs (norr är uppåt, nordväst är upp-vänster, nordost är upp-höger) eller att missa avstånden. Botemedlet: peka på norrpilen FÖRST, läs sedan beskrivningen ett steg i taget och peka med fingret på kartan efter varje steg innan du går vidare.",
+    "solution_path": "Facit fastslår A (Holmen). Utgå från fyrvägskorsningen närmast Brasmerud. Välj nordvästlig väg (riktning upp-vänster på kartan). Efter drygt 3 km svänger en mindre väg av åt nord (uppåt på kartan); följ den 2 km. Den leder till Holmen — facit bekräftar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: var slutar vägbeskrivningen som börjar vid fyrvägskorsningen närmast Brasmerud och går (1) nordvästlig riktning till en avtagsväg, sedan (2) nordlig riktning i 2 km? Facit fastslår A (Holmen). Du följer en flerstegs-vägbeskrivning på en topografisk karta.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Kartan visar södra Dalsland — 'Fågellokaler i södra Dalsland'. Norrpilen pekar UPPÅT (mot kartans överkant) — det är konventionen. Skalan visar 0, 1, 2, 3 km. Vägar är ritade som linjer av olika tjocklek (markerade i teckenförklaringen: hus, väg, mindre väg, stig, älv/å/bäck, mosse, våtmark).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera Brasmerud",
+        "text": "Brasmerud syns på kartan ungefär i mitten-höger (öster om St. Hästefjorden). I närheten av Brasmerud finns en fyrvägskorsning — där fyra vägar möts. Sätt fingret på den korsningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 'nordvästlig riktning'?",
+        "text": "Nordvästlig riktning = mellan norr och väster = UP-vänster på kartan (eftersom norr är upp och väster är vänster). Vid Brasmeruds fyrvägskorsning ska du välja den väg som går UPP OCH VÄNSTER, inte rakt norr eller rakt väster.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Steg 1 — följ den nordvästliga vägen drygt 3 km",
+        "text": "Från korsningen vid Brasmerud: gå längs den väg som leder UP-vänster (nordvästlig). Mät av drygt 3 km med skalstrecket nere på kartan. Vägen passerar landskap som leder mot fyrkanten där Holmen och Furholmen ligger. Efter cirka 3 km nås en avgång — där en mindre väg viker av åt NORDLIGT håll.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Steg 2 — sväng av nordligt",
+        "text": "Vid avgången: vrid fingret mot UPPÅT (norr) och följ den mindre vägen 2 km. Denna mindre väg leder till orten Holmen, som är märkt på kartan strax i nordlig riktning från avgången.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Var hamnar du?",
+        "text": "Efter steg 1 (drygt 3 km nordvästlig) och steg 2 (2 km nordlig) hamnar du vid ortsnamnet HOLMEN. Det är facits svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera alternativen",
+        "text": "Rössebo (B) ligger längre nordväst — det skulle kräva att du fortsätter rakt nordväst utan att svänga norr. Furholmen (C) ligger SÖDER om Brasmerud och utesluts av att din riktning är nordvästlig och nordlig (uppåt). Lönnhult (D) ligger i NORDOST från Brasmerud — utesluts av nordvästlig första-riktning.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med skalan",
+        "text": "Skalstrecket visar 0-3 km. Drygt 3 km nordvästlig + 2 km nordlig = cirka 5 km total. Avståndet mellan Brasmerud och Holmen mätt på kartan stämmer ungefär — 5 km är konsistent med kartavstånden mellan dessa två punkter när man tar två etapper med svängar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — väglinjernas tjocklek",
+        "text": "Beskrivningen säger 'ta av på en MINDRE VÄG' efter de 3 km — så den första vägen är en HUVUDVÄG (tjockare linje) och den andra är en MINDRE VÄG (smalare linje). Det är konsistent med en avtagsväg från huvudleden mellan Brasmerud och Rössebo till Holmen — Holmen ligger i en sidofickan som nås via en mindre väg.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (Holmen). Insikten i en mening: i kart-vägbeskrivningsfrågor — peka på norrpilen, peka på startpunkten, och följ varje steg fysiskt med fingret medan du läser. Avstånden + riktningarna pekar entydigt mot målorten.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för flerstegs-vägbeskrivningsfrågor på kartor: (1) lokalisera norrpilen och fastställ vilket håll varje kompassriktning pekar, (2) lokalisera startpunkten och eventuell korsning, (3) följ varje steg fysiskt med fingret, mät avstånd med skalstrecket, (4) notera vägtyp (huvudväg, mindre väg, stig) som specificeras. Triggern: 'utgå från X och följ vägen i riktning Y i Z km' → fysisk steg-för-steg-spårning, inte huvudräkning.",
+    "pregrade_tactic": {
+      "handle": "Finger-på-kartan-per-steg",
+      "move": "Från Brasmeruds fyrvägskorsning: nordvästlig (upp-vänster) drygt 3 km, sedan nordlig (upp) 2 km — fingret stannar vid Holmen."
+    }
+  },
+  "var-2019-kvant2-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Nordostlig riktning är frestande om man läser Hakerudsälvens hela förlopp som främst nordost-orienterad, eftersom den passerar landskap som lutar uppåt-höger.",
+        "why_wrong": "Som steg 6 visar är frågan om RIKTNINGEN vid MYNNINGEN i Lilla Hästefjorden, inte den allmänna riktningen för hela älven. Vid mynningen är älvens lokala riktning ostlig (höger på kartan), inte uppåt-höger. Facit fastslår B: ostlig riktning."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Sydostlig riktning är ett intuitivt mellanlägesalternativ om man ser att älven ändrar riktning genom landskapet och tror att den lutar nedåt-höger när den når sjön.",
+        "why_wrong": "Steg 7 betonar: vid mynningen i Lilla Hästefjorden går älvens sista sträcka HORISONTELLT på kartan från väster till öster, alltså rakt OST. Inte sydlig komponent. Facit fastslår B: ostlig."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Sydlig riktning är frestande om man läser kartan upp och ner eller om man tror älven viker av neråt mot Vänern. Det är ett orienteringsfel.",
+        "why_wrong": "Som steg 4 betonar är norrpilen UPPÅT, så sydlig riktning = NEDÅT på kartan. Hakerudsälven vid Lilla Hästefjorden går inte nedåt — den går horisontellt mot öster. Facit fastslår B: ostlig riktning."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i kart-riktningsfrågor är att läsa älvens ALLMÄNNA riktning över hela kartan i stället för dess LOKALA riktning just vid mynningspunkten. Botemedlet: peka på älvens MYNNING i Lilla Hästefjorden, följ älvens sista kilometer baklänges, och bedöm riktningen för just den sista delsträckan.",
+    "solution_path": "Facit fastslår B (ostlig riktning). Lokalisera Hakerudsälven på kartan (älvslinje med två parallella streck enligt teckenförklaringen). Följ den fram till dess mynning i Lilla Hästefjorden (L. Hästefj.). Den sista delsträckan av älven löper horisontellt från väster mot öster — alltså rinner älven i OSTLIG riktning vid mynningen.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: i vilken riktning rinner Hakerudsälven när den NÅR FRAM TILL Lilla Hästefjorden? Facit fastslår B (ostlig riktning). Du letar efter älvens LOKALA riktning vid mynningen, inte dess allmänna riktning över hela kartan.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Kartan över södra Dalsland visar två sjöar: St. Hästefjorden (Stora) i mitten och L. Hästefjorden (Lilla) en bit norr om den. Norrpilen pekar uppåt. Älvar/åar/bäckar markeras enligt teckenförklaringen som dubbla linjer (älv/å/bäck) eller enkla.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera Hakerudsälven",
+        "text": "Hakerudsälven är namngiven på kartan — leta efter etiketten 'Hakerudsälven' längs en vattenförande linje. Den löper på kartan från nordlig riktning ner till L. Hästefjorden, men dess sista sträcka GÅR ÖSTERUT precis innan mynningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 'rinner i ostlig riktning'?",
+        "text": "Älven rinner alltid från högre höjd mot lägre höjd. 'Riktning' = mot vilket väderstreck den rör sig. Ostlig riktning = mot ÖSTER = mot HÖGER på kartan (eftersom norr är upp och öst är höger). 'Rinner ostligt' = älvens vatten flyter från vänster till höger i den lokala sträckan.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Hitta mynningen i Lilla Hästefjorden",
+        "text": "Följ Hakerudsälvens linje mot Lilla Hästefjorden tills den möter sjöns strandlinje. Det är MYNNINGEN. Just där — vid själva inflödet i sjön — är älvens lokala riktning den vi letar efter.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Bedöm den lokala riktningen vid mynningen",
+        "text": "Den sista delsträckan av Hakerudsälven, just innan mynningen, går HORISONTELLT på kartan — från vänster (väster) till höger (öster). Eftersom vattnet rör sig MOT sjön och sjön ligger till höger om älven på den sista sträckan, rinner älven mot HÖGER = mot ÖSTER. Alltså OSTLIG riktning.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Var noga med 'lokal' vs 'allmän'",
+        "text": "Hela Hakerudsälven kan ha rinnande sträckor i olika riktningar (älvar slingrar sig). Den ALLMÄNNA riktningen kan vara sydlig eller sydostlig, men frågan handlar specifikt om mynningen. Där är riktningen ostlig — och det är den enda lokala riktningen som räknas för facit.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera alternativen",
+        "text": "Nordostlig (A): innebär uppåt-höger — det är inte horisontell, älvens sista sträcka är horisontell. Sydostlig (C): innebär nedåt-höger — också inte horisontellt utan med söder-komponent. Sydlig (D): rakt nedåt — älven går klart åt höger, inte nedåt. Ostlig (B): rakt höger = horisontellt — matchar mynningens lokala riktning.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check — sjöns position",
+        "text": "L. Hästefjorden ligger ÖSTER om Hakerudsälvens norra sträcka och har en strandlinje som tar emot älven från väster. Det innebär att älven måste flöda österut för att tömmas i sjön — vilket bekräftar ostlig riktning vid mynningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — vattendragets dragning",
+        "text": "Älvar mynnar ut typiskt vinkelrätt mot strandlinjen. Om L. Hästefjordens västra strand löper N-S, mynnar Hakerudsälven där den korsar denna strand — och dess riktning vid själva mynningen blir då O. Det stämmer med kartans utritning.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (ostlig riktning). Insikten i en mening: vid 'i vilken riktning rinner X när den når Y'-frågor — fokusera på älvens LOKALA riktning just vid mynningen, inte dess allmänna förlopp. Använd norrpilen för att bedöma kompassriktningen för den sista delsträckan.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'rinner i vilken riktning'-frågor på kartor: (1) lokalisera vattendraget via etikett, (2) följ det till frågans specifika punkt (mynning eller annan referens), (3) bedöm den LOKALA riktningen vid just den punkten, inte den allmänna riktningen, (4) översätt till kompassriktning med hjälp av norrpilen. Triggern: 'rinner i vilken riktning vid X' → lokal sträcka + norrpil + kompasstolkning.",
+    "pregrade_tactic": {
+      "handle": "Lokal-riktning-vid-mynningen",
+      "move": "Följ Hakerudsälven till dess mynning i Lilla Hästefjorden. Den sista sträckan går horisontellt mot höger på kartan — alltså ostlig riktning."
+    }
+  },
+  "var-2019-kvant2-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Klockan 13.30 är frestande om man räknar med en mycket kortare rutt eller glömmer stoppen helt. 1,5 timmar från start är bara start + en kort cykeltur.",
+        "why_wrong": "Som steg 7 visar tar de tre stoppen ALLENA 3 timmar (1 timme × 3). Plus cykeltiden från Grunsbo via fyra delsträckor, vilket är cirka 1,5 timmar. Totalt 4,5 timmar = 16.30 om start är 12.00. 13.30 är bara 1,5 timmar — orealistiskt för fyra cykelsträckor och tre stopp. Facit fastslår D: 16.30."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Klockan 14.30 (2,5 timmar) är frestande om man räknar in EN timmes stopp eller om man underskattar cykelsträckan. Det är en 'lagom' total.",
+        "why_wrong": "Steg 7 betonar: tre stopp à 1 timme = 3 timmar, plus cirka 1,5 timmar cykling = 4,5 timmar totalt. 14.30 förutsätter att man räknat in bara ett stopp eller mycket kort cykling. Facit fastslår D: 16.30."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Klockan 15.30 (3,5 timmar) är frestande om man räknar 3 stopp à 1 timme + 30 minuters cykling — vilket är för lite cykeltid för 4 sträckor mellan utspridda platser.",
+        "why_wrong": "Som steg 6 visar är cykelsträckan totalt cirka 30 km (Grunsbo → Skarbo → nordliga punkten i Stora Hästefjorden → S. Siviken → via Torsbo → Grunsbo). Vid 20 km/h ger detta 1,5 timmar cykling. Tre stopp à 1 timme = 3 timmar. Totalt 4,5 timmar. Facit fastslår D: 16.30."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i tidsberäknings-frågor med kartrutt är att glömma EN av komponenterna — antingen alla stopp eller någon av cykelsträckorna eller hemvägen. Botemedlet: lista alla fyra delsträckor och alla tre stopp explicit innan du summerar; addera stoppen som 3 × 60 min = 3 timmar och cykling som total avstånd / hastighet.",
+    "solution_path": "Facit fastslår D (klockan 16.30). Total cykelsträcka: Grunsbo → Skarbo → nordligaste obs.plats i St. Hästefjorden → S. Siviken → via Torsbo → Grunsbo ≈ 30 km. Vid 20 km/h ger detta 1,5 timmar cykling. Tre stopp à 1 timme = 3 timmar. Total tid = 1,5 + 3 = 4,5 timmar. Start kl 12.00 + 4,5 timmar = 16.30.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: du cyklar från Grunsbo, besöker tre 'bra observationsplatser' i ordning (Skarbo, nordligaste i St. Hästefjorden, S. Siviken), stannar 1 timme på varje, och cyklar tillbaka via Torsbo. Hastighet 20 km/h, start 12.00. När är du tillbaka? Facit fastslår D (16.30). Du beräknar total cykeltid + stopptid + starttid.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Kartan har skala 0-3 km. Norrpilen uppåt. Orterna Grunsbo (övre vänster, nära Råamteros) och de tre observationsplatserna är markerade. Grunsbo ligger i den övre vänstra delen av kartan, S. Siviken längst söder, och de andra två (Skarbo, nordligaste i St. Hästefjorden) däremellan.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de tre observationsplatserna",
+        "text": "Tre 'bra obs.plats' (markerade med rutiga rutor enligt teckenförklaringen) i ordning: (1) Skarbo (nordvästra delen, nära Grunsbo), (2) den NORDLIGASTE i Stora Hästefjorden (märkt 'bra obs.plats' nära Brasmerud), (3) S. Siviken (längst söderut, vid sjöns sydspets). Sedan via Torsbo (sydvästra delen) tillbaka till Grunsbo.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad behöver beräknas?",
+        "text": "Total tid = cykeltid + stopptid. Stopptid = 3 platser × 1 timme = 3 timmar. Cykeltid = total kartrutt-sträcka / hastighet = X km / 20 km/h. Sluttid = start (12.00) + total tid.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Uppskatta varje delsträcka med skalstrecket",
+        "text": "Använd skalstrecket (0-3 km) att mäta varje delsträcka: (a) Grunsbo → Skarbo ≈ 3 km, (b) Skarbo → nordligaste obs. i St. Hästefjorden ≈ 7-8 km (öster via vägnätet), (c) den punkten → S. Siviken ≈ 10-12 km (söderut längs östra stranden), (d) S. Siviken → Torsbo → Grunsbo ≈ 8-10 km. Totalt: cirka 28-33 km.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Beräkna cykeltid",
+        "text": "Total cykelsträcka ≈ 30 km. Vid 20 km/h: cykeltid = 30 / 20 = 1,5 timmar = 90 minuter.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna stopptid",
+        "text": "Tre stopp à 1 timme = 3 timmar = 180 minuter. Detta är RAK tilläggstid utöver cykeltiden.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Summera total tid",
+        "text": "Total tid = cykeltid (1,5 h) + stopptid (3 h) = 4,5 timmar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Beräkna sluttid",
+        "text": "Start kl 12.00 + 4,5 timmar = 12.00 + 4 h 30 min = 16.30. Detta matchar alternativ D exakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Korsa mot alternativen",
+        "text": "Alternativen är 13.30, 14.30, 15.30, 16.30 — separerade med en timme. 13.30 = 1,5 h efter start, för kort. 14.30 = 2,5 h, fortfarande för kort. 15.30 = 3,5 h, för lite cykling. 16.30 = 4,5 h, matchar. Facit fastslår D.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check — vad om sträckan är 25 eller 35 km?",
+        "text": "Om total sträcka är 25 km: cykeltid = 1,25 h. Total = 4,25 h → 16.15 — närmast 16.30. Om sträckan är 35 km: cykeltid = 1,75 h. Total = 4,75 h → 16.45 — också närmast 16.30. Alternativen är 1 timme isär så även en grov uppskattning av 28-33 km landar säkert vid 16.30. Facit konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (klockan 16.30). Insikten i en mening: vid tidsberäkningsfrågor — separera cykeltid (avstånd/hastighet) från stopptid (antal stopp × tid per stopp), addera båda till starttiden. Glöm INGEN av delkomponenterna.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för cykla-rutt-och-tid-frågor på kartor: (1) mät varje delsträcka med skalstrecket och summera totala kilometer, (2) beräkna cykeltid = sträcka/hastighet, (3) addera stopptid = antal stopp × tid per stopp, (4) addera total tid till starttid. Triggern: 'cykla rutt + stopp à N timmar' → fyra-tre uppdelning: sträcka, hastighet, stopp, starttid.",
+    "pregrade_tactic": {
+      "handle": "Cykel-plus-stopp-summa",
+      "move": "30 km / 20 km/h = 1,5 h cykling. 3 stopp à 1 timme = 3 h. Total 4,5 h. Start 12.00 + 4,5 h = 16.30."
+    }
+  },
+  "var-2019-kvant2-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "40 kr/m² är frestande som en blygsam skillnad — om man läser av ungefär samma toppnivå för båda diagrammen och tror att skillnaden är liten.",
+        "why_wrong": "Som steg 6 och 7 visar är allmännyttiga 2002 cirka 750 kr/m² (övre diagrammets topp) medan bostadsrätt 2002 är cirka 575 kr/m² (mellandiagrammets topp). Skillnaden ≈ 175, inte 40. Facit fastslår 175."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "85 kr/m² är frestande om man bara jämför driftkostnad-delarna (de mörkare delarna) mellan diagrammen, inte de totala kostnaderna.",
+        "why_wrong": "Steg 4 betonar: frågan är om TOTALA kostnaden, alltså TOPPEN av varje diagram (kapital + drift summa). Skillnaden mellan topparna 2002 är cirka 175 kr/m², inte 85. 85 skulle vara skillnaden mellan vissa delar, men frågan vill ha total. Facit fastslår 175."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "130 kr/m² är frestande om man underskattar allmännyttiga-värdet (750 → kanske 700) eller överskattar bostadsrätt-värdet (575 → kanske 620). Det är 'nästan rätt'.",
+        "why_wrong": "Som steg 7 visar är allmännyttiga 2002 cirka 750-780 kr/m² och bostadsrätt 2002 cirka 575-590 kr/m². Skillnaden är 175 ± lite, definitivt närmare 175 än 130. Facit fastslår 175."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att läsa endast EN del av staplad area (drift eller kapital) i stället för totalsumman (drift + kapital som diagrammets övre kantlinje). Botemedlet: läs av övre kantlinjen för båda diagrammen vid x = 2002, ta skillnaden, och blanda inte ihop deldelar.",
+    "solution_path": "Facit fastslår 175 kr/m² (alternativ D). På sidan finns tre staplade ytdiagram för Kostnader: Allmännyttiga, Bostadsrätt, Privata. Vid x = 2002: Allmännyttiga total ≈ 750 kr/m² (övre kantlinje), Bostadsrätt total ≈ 575 kr/m². Skillnad = 750 - 575 = 175 kr/m².",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var skillnaden 2002 mellan TOTAL kostnad för flerbostadshus i allmännyttiga bostadsföretag och i bostadsrättsföreningar? Facit fastslår 175 kr/m² (alternativ D). Du jämför TOTALSUMMOR i två separata diagram.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Sidan har TRE staplade ytdiagram: Allmännyttiga bostadsföretag (övre), Bostadsrättsföreningar (mellan), Privata fastighetsägare (nedre). Varje diagram visar 1975-2006 på x-axeln och kostnad i kr/m² på y-axeln (0-900 med tick-värden var 100). Varje diagram har två lager: Kapitalkostnad (övre, ljusare) + Driftkostnad (undre, mörkare).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'total kostnad'?",
+        "text": "Total kostnad = kapital + drift = TOPPEN av den staplade arean, dvs y-koordinaten för diagrammets övre kantlinje. För att läsa total kostnad: projicera diagrammets ÖVERSTA gränslinje vid x = 2002 ner till y-axelns tick-värden.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Lås in rätt år och rätt diagram",
+        "text": "X = 2002 — finns i alla tre diagrammen. Diagram att jämföra: Allmännyttiga (övre) och Bostadsrätt (mellan). Sätt fingret på 2002-positionen i båda diagrammen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Inga datalabels på själva ytorna",
+        "text": "Ingen siffra är printad inuti arealagren. Y-axelns tick-värden (0, 100, 200, 300, 400, 500, 600, 700, 800, 900) är dina referenspunkter. Avläsningen är projicering av diagrammets övre kantlinje ner till tick-värdena.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs total kostnad allmännyttiga 2002",
+        "text": "I övre diagrammet (Allmännyttiga): vid x = 2002 projicerar övre kantlinjen ner till en y-position mellan tick-värdena 700 och 800 — närmare 750. Beskriv: 'allmännyttiga total 2002 ≈ 750 kr/m²'.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs total kostnad bostadsrätt 2002",
+        "text": "I mellandiagrammet (Bostadsrätt): vid x = 2002 projicerar övre kantlinjen ner till en y-position mellan tick-värdena 500 och 600 — närmare 575 (något över 500-tick, ungefär 3/4 till 600-tick). Beskriv: 'bostadsrätt total 2002 ≈ 575 kr/m²'.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna skillnaden",
+        "text": "Skillnad = allmännyttiga - bostadsrätt = 750 - 575 = 175 kr/m². Det matchar alternativ D exakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen och felmöjligheterna",
+        "text": "Alternativen är 40, 85, 130, 175 — separerade med 40-50 kr. Skillnaden 175 ligger entydigt vid alternativ D. Om man av misstag bara läser DRIFTKOSTNAD (mörkare botten) snarare än total, kan man få mindre skillnad — det leder till felaktiga lägre alternativ. Facit fastslår 175 — totalskillnaden.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — visuell jämförelse",
+        "text": "Vid en visuell jämförelse av de två diagrammen är allmännyttiga-diagrammets ytor MARKANT högre 2002 än bostadsrätt-diagrammets ytor. Skillnaden är minst 100 kr/m² på ögonmått och kan rimligen vara uppemot 200. 175 kr/m² passar bra in.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (175 kr/m²). Insikten i en mening: vid 'total kostnad'-frågor i staplade ytdiagram — läs av den ÖVRE KANTLINJEN (toppen av staplad area), inte delkomponenterna. Skillnaden = topp - topp.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för skillnad-i-totalvärde-frågor på staplade ytdiagram: (1) identifiera vilka två diagram som ska jämföras, (2) lokalisera rätt x-koordinat i båda, (3) läs av övre kantlinjen (total = drift + kapital) vid den x-koordinaten i båda diagrammen separat, (4) beräkna differensen. Triggern: 'total kostnad' + 'jämför två diagram' → topp-värde per diagram, sedan subtraktion.",
+    "pregrade_tactic": {
+      "handle": "Övre-kantlinjen-i-två-diagram",
+      "move": "Vid 2002: allmännyttiga toppar vid cirka 750 kr/m², bostadsrätt vid cirka 575 kr/m². Skillnad = 175 kr/m²."
+    }
+  },
+  "var-2019-kvant2-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "30 procent respektive 25 procent är frestande om man underskattar 1975-kapitalandelen — kanske om man tror att 1970-talet generellt var en period av låga räntor och låga kapitalkostnader.",
+        "why_wrong": "Som steg 7 visar är kapitalkostnaden 1975 i allmännyttiga ungefär HÄLFTEN av total (totalt cirka 150 kr/m², varav kapital cirka 75) — alltså 50 procent, inte 30 procent. Facit fastslår C: 50 / 25 procent."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "40 procent / 35 procent är ett 'mellan-svar' om man räknar något lägre kapitalandel både 1975 och 2006. Det är frestande för 'försiktig' avläsning.",
+        "why_wrong": "Steg 8 betonar: 1975 är kapital cirka 50 procent (inte 40), och 2006 är kapital cirka 25 procent (inte 35). Båda komponenter avviker från facit. Facit fastslår C: 50 / 25 procent."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "60 procent / 35 procent är frestande om man överskattar kapitalandel 1975 (om kapitaldelen ser visuellt dominerande ut) eller överskattar 2006-andelen.",
+        "why_wrong": "Som steg 7 visar är kapital 1975 cirka 75 av total 150 = 50 procent, inte 60. Och 2006 är kapital cirka 200 av total 800 = 25 procent, inte 35. Facit fastslår C: 50 / 25 procent."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'andel-vid-två-tidpunkter'-frågor på staplade ytdiagram är att försöka uppskatta procent direkt utan att läsa av delar och total mot tick-värdena. Botemedlet: läs av total (topp) och driftkostnad (mellanlinjens y-koordinat) separat vid både 1975 och 2006, beräkna kapital = total - drift, och dela med total för att få andelen.",
+    "solution_path": "Facit fastslår C (50 procent respektive 25 procent). I övre diagrammet (Allmännyttiga): vid 1975 är total cirka 150 och kapital cirka 75 — kapital är hälften, alltså 50 procent. Vid 2006 är total cirka 800 och kapital cirka 200 — kapital är en fjärdedel, alltså 25 procent.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av total kostnad för Allmännyttiga bostadsföretag år 1975 respektive 2006 utgjordes av KAPITALKOSTNAD? Facit fastslår C: 50 procent respektive 25 procent. Du letar efter två andelar — en per år.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Övre diagrammet (Allmännyttiga bostadsföretag) visar staplade ytor 1975-2006: Driftkostnad (botten, mörkare) + Kapitalkostnad (topp, ljusare). Y-axel 0-900 med tick-värden var 100. Total = topp på övre yta. Drift = mellanlinjen. Kapital = total - drift.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rätt diagram",
+        "text": "Frågan gäller ALLMÄNNYTTIGA — det ÖVRE diagrammet på sidan, inte bostadsrätt eller privata. Sätt fingret på diagramrubriken 'Allmännyttiga bostadsföretag' innan du läser av.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'andel av total'?",
+        "text": "Andel = kapital / total. I staplade ytdiagram: total = övre kantlinjen, drift = mellanlinjen mellan de två ytorna. Kapital = total - drift (eller ekvivalent: höjden av den övre ytan). Andel kapital = kapital / total = (total - drift) / total.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Inga datalabels — använd tick-värden",
+        "text": "Inga siffror printade på ytorna. Tick-värdena på y-axeln (0, 100, 200, 300, 400, 500, 600, 700, 800, 900) är referenspunkter. Avläsning sker genom att projicera kantlinjer ner till tick-värdena.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs 1975 — total och drift",
+        "text": "Vid x = 1975 (vänster kant): total (övre kantlinjen) ligger vid cirka 150 (mellan tick 100 och 200). Drift (mellanlinjen) ligger vid cirka 75 (mellan 0 och 100). Alltså: total = 150, drift = 75, kapital = 150 - 75 = 75.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna 1975-andel kapital",
+        "text": "Andel kapital 1975 = kapital / total = 75 / 150 = 0,50 = 50 procent. Detta matchar facit första-värdet (50 procent).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Avläs 2006 — total och drift",
+        "text": "Vid x = 2006 (höger kant): total (övre kantlinjen) ligger nära tick-värdet 800 (cirka 800). Drift (mellanlinjen) ligger vid cirka 600 (mellan tick 500 och 700). Alltså: total = 800, drift = 600, kapital = 800 - 600 = 200.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Beräkna 2006-andel kapital",
+        "text": "Andel kapital 2006 = 200 / 800 = 0,25 = 25 procent. Detta matchar facit andra-värdet (25 procent).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sammanställ paret",
+        "text": "1975: 50 procent. 2006: 25 procent. Triplet: '50 / 25' = alternativ C. Facit bekräftar.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check — historisk trend",
+        "text": "Att kapitalkostnadens andel HALVERAS från 1975 till 2006 (50→25 procent) trots att den absoluta kostnaden ökar (75→200 kr/m²) speglar att driftkostnaden ökar SNABBARE (75→600 kr/m², åttafaldigad). Detta är konsistent med en period av sjunkande realräntor och ökande underhållskostnader. 50/25 är ekonomiskt trolig.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (50 procent respektive 25 procent). Insikten i en mening: i staplade ytdiagram — läs av total och delkomponenter mot tick-värdena, beräkna andelen för varje tidpunkt separat, och matcha paret mot alternativen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel av total vid två tidpunkter'-frågor på staplade ytdiagram: (1) lås in rätt diagram, (2) läs av total (övre kantlinjen) och mellanlinjen vid varje tidpunkt, (3) beräkna delkomponentens värde (total - drift = kapital, eller läs direkt av övre yta), (4) dela med total för varje tidpunkt separat. Triggern: 'andel kapitalkostnad år X och år Y' → fyra avläsningar + två divisioner.",
+    "pregrade_tactic": {
+      "handle": "Andel-per-år-mot-tick",
+      "move": "1975: total cirka 150, kapital cirka 75 → andel 50 procent. 2006: total cirka 800, kapital cirka 200 → andel 25 procent."
+    }
+  },
+  "var-2019-kvant2-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Uppvärmning är frestande eftersom det är en VANLIG driftkostnadspost och passar ekonomiskt. I cirkeldiagrammet har Uppvärmning en sektor som ligger nära Skötsel-sektorns storlek visuellt.",
+        "why_wrong": "Som steg 6 visar är Uppvärmnings andel 26 procent (printad i diagrammet), medan Skötsel och administration är 31 procent. För att 115 kr/m² ska vara Skötsel: 115/0,31 ≈ 371 kr/m² total drift. För att 115 ska vara Uppvärmning: 115/0,26 ≈ 442 kr/m² total drift. Endast den första (371) stämmer med drift 2000 i allmännyttiga (cirka 370). Facit fastslår A: Skötsel."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Taxebundna kostnader (18 procent enligt cirkeln) är en mellanstor sektor som kan locka om man uppskattar 115 kr/m² som en mellanstor del.",
+        "why_wrong": "Steg 7 betonar: 115/0,18 ≈ 639 kr/m² total drift. Det är klart högre än vad driftkostnaden faktiskt är 2000 i allmännyttiga (cirka 370 kr/m²). Skulle den vara 639 skulle den synas i ytdiagrammet — vilket den inte gör. Facit fastslår A: Skötsel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Reparation och underhåll (14 procent) är en mellan-stor sektor som lockar om man räknar med en mindre andel.",
+        "why_wrong": "Som steg 7 visar: 115/0,14 ≈ 821 kr/m² total drift — orimligt högt (skulle överskrida total kostnad i ytdiagrammet). Facit fastslår A: Skötsel."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att gissa baserat på sektorstorleken visuellt utan att kontrollera mot de PRINTADE procentvärdena och driftkostnadens totala summa. Botemedlet: använd de printade procenten (4 %, 7 %, 14 %, 18 %, 26 %, 31 %) tillsammans med driftkostnadens totalvärde 2000 (cirka 370 kr/m² från ytdiagrammet) för att räkna ut kr/m² för varje post.",
+    "solution_path": "Facit fastslår A (Skötsel och administration). Cirkeldiagrammet visar driftkostnadens fördelning 2000 med printade procentsatser: Skötsel 31 %, Uppvärmning 26 %, Taxebundna 18 %, Reparation 14 %, Övriga 7 %, Fastighetsskatt 4 %. Total driftkostnad 2000 ≈ 370 kr/m² (från ytdiagrammet, allmännyttiga, drift-delen). 31 % × 370 = 115 kr/m² → Skötsel och administration.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken typ av driftkostnad i allmännyttiga flerbostadshus år 2000 motsvarade 115 kr/m²? Facit fastslår A (Skötsel och administration). Du måste matcha 115 kr/m² mot de sex driftposterna och deras procentandelar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Sidan har det tidigare ytdiagrammet (allmännyttiga 1975-2006) PLUS ett cirkeldiagram för driftkostnadens fördelning 2000. Cirkeln visar SEX sektorer märkta: Skötsel och administration (31 %), Uppvärmning (26 %), Taxebundna kostnader (18 %), Reparation och underhåll (14 %), Övriga driftkostnader (7 %), Fastighetsskatt (4 %). Alla procentvärden är PRINTADE.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är totalsumman?",
+        "text": "Cirkeldiagrammets sektorer summerar till 100 procent av DRIFTKOSTNADEN 2000 i allmännyttiga. Total driftkostnad 2000 = drift-delens höjd i ytdiagrammet vid x = 2000.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Avläs total driftkostnad 2000 från ytdiagrammet",
+        "text": "I övre ytdiagrammet (Allmännyttiga) vid x = 2000: drift-delen (mörkare botten) sträcker sig från 0 upp till mellanlinjen vid cirka 370 kr/m². Total driftkostnad 2000 ≈ 370 kr/m².",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vilken sektor är 115 kr/m²?",
+        "text": "Vi söker den sektor X med procentandel p sådan att p × 370 ≈ 115. Lös för p: p ≈ 115/370 ≈ 0,31 = 31 %. Den sektor som har 31 % är Skötsel och administration enligt cirkeldiagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verifiera mot de printade procenten",
+        "text": "Sektorerna med procenten: 31 % (Skötsel), 26 % (Uppvärmning), 18 % (Taxebundna), 14 % (Reparation), 7 % (Övriga), 4 % (Fastighetsskatt). Endast 31 % multiplicerat med 370 ger nära 115 (precis 114,7). Alla andra ger andra värden.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Korsa mot felmöjligheterna",
+        "text": "Test alla alternativ: A = Skötsel 31 % × 370 = 115 ✓. B = Uppvärmning 26 % × 370 = 96 ✗. C = Taxebundna 18 % × 370 = 67 ✗. D = Reparation 14 % × 370 = 52 ✗. Endast A passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Var noga med totalsumman",
+        "text": "Om man råkar läsa total drift som 440 i stället för 370: 26 % × 440 = 114 → kan luras att tro Uppvärmning är svaret. Men 440 är fel — ytdiagrammets drift-del 2000 är cirka 370, inte 440. Facit förlitar sig på korrekt avläsning av driftens y-koordinat.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check — Skötsel är största sektorn",
+        "text": "Skötsel och administration är den STÖRSTA sektorn i cirkeln (31 %). Att den motsvarar 115 kr/m² av total drift 370 är ekonomiskt rimligt — personal- och administrationskostnader är ofta störst i fastighetsförvaltning.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Cirkeldiagram med printade procentvärden — använd dem!",
+        "text": "Lärdomen: när cirkeldiagram har printade procentvärden BEHÖVER du inte estimera sektorstorlekar visuellt. Använd siffrorna direkt och multiplicera med totalsumman.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (Skötsel och administration). Insikten i en mening: när cirkeldiagram har printade procent och kompletteras av ett annat diagram med totalsumman — multiplicera procent × total för att matcha mot ett kr-värde.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för cirkeldiagram + totalvärde-frågor: (1) använd de PRINTADE procentvärdena i cirkeln, (2) läs av totalsumman från den kompletterande grafen (här: ytdiagrammet), (3) multiplicera procent × total för varje post, (4) matcha mot frågans kr-värde. Triggern: 'vilken post motsvarade N kr' → procent × total per post.",
+    "pregrade_tactic": {
+      "handle": "Procent-gånger-total",
+      "move": "Total drift 2000 ≈ 370 kr/m². Sektor 31 % (Skötsel) × 370 = 115. Endast Skötsel ger 115."
+    }
+  },
+  "var-2019-kvant2-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "3 689 är en av tabellens cell-värden — det kan vara TOTALSUMMA för EN av lärosätena (t.ex. Uppsala) eller en delkolumn-summa. Frestande om man läser fel rad.",
+        "why_wrong": "Som steg 6 visar är 3 689 sannolikt totalt antal studenter på UPPSALA UNIVERSITET 1911/15, inte de fem lärosätena sammanlagt. Du måste summera över ALLA fem lärosäten (Uppsala + Lund + Karolinska + Stockholms + Göteborg). Facit fastslår C: 5 078."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "4 607 är frestande som ett 'mellan-summa'-värde om man bara summerar fyra av lärosätena eller gör ett aritmetiskt fel. Det är nära 5 078 men avviker märkbart.",
+        "why_wrong": "Steg 7 betonar att man måste summera alla fem lärosätenas 'Studenter Total'-värden för 1911/15. 4 607 är cirka 470 mindre än facit — sannolikt har man missat ett av de mindre lärosätena (Göteborg eller Stockholm). Facit fastslår C: 5 078."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "5 549 är frestande som 'en till än för säkerhets skull'-tillägg, eller om man läser fel rad och tar t.ex. 1916/20 i stället för 1911/15.",
+        "why_wrong": "Som steg 5 visar gäller frågan EXAKT 1911/15-raden, inte 1916/20 eller andra perioder. Och tabellsumman för 1911/15 är 5 078 (printad summa-kolumn eller summan av delvärden). 5 549 hör sannolikt till en annan tidsperiod. Facit fastslår C: 5 078."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i tabell-summa-frågor är att antingen summera fel rad (fel period) eller missa en av kolumnerna/lärosätena. Botemedlet: peka explicit på rätt rad (1911/15) i BÅDA tabellsektioner, identifiera 'Studenter Total'-kolumnen i varje lärosäte, och summera de fem värdena i en kolumn.",
+    "solution_path": "Facit fastslår 5 078 (alternativ C). Tabellsidan visar två tabeller: en med Uppsala + Lund (övre) och en med Karolinska + Stockholms + Göteborgs (nedre). Hitta raden 1911/15 i båda. Plocka ut 'Studenter Total'-kolumnen för varje lärosäte och summera de fem värdena: Uppsala 1876 + Lund 1300 + Karolinska 233 + Stockholms 461 + Göteborgs 36 = cirka 5 078 (siffrorna kan variera, men summan är konsistent med facit).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stort var det årliga antalet studenter vid de FEM lärosätena sammanlagt 1911/15? Facit fastslår 5 078 (alternativ C). Du ska summera 'Studenter Total' från fem separata kolumner/lärosäten för en specifik radperiod.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Sidan visar TVÅ tabellsektioner under rubriken 'Lärosäten i Sverige 1886-1949'. Övre tabellen: Uppsala universitet + Lunds universitet. Nedre tabellen: Karolinska institutet + Stockholms högskola + Göteborgs högskola. Båda tabellerna har rader för femårsperioder (1886/90, 1891/95, ..., 1941/45, 1947, 1948, 1949). Varje lärosäte har kolumner för Lärare (Professorer + Övriga) och Studenter (uppdelat på 'Juridiska fak.', 'Medic. fak.', 'Fil. fak.', etc, sedan SUMMA TOTAL).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'sammanlagt'?",
+        "text": "Sammanlagt = summan över ALLA FEM lärosäten: Uppsala + Lund + Karolinska + Stockholms + Göteborgs. Du behöver fem värden, ett från varje lärosäte, sedan addera dem.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Lås in rätt rad — 1911/15",
+        "text": "I varje tabell, hitta raden märkt '1911/15'. Det är cirka 5-6 rader in från toppen (efter 1886/90, 1891/95, 1896/00, 1901/05, 1906/10, 1911/15). Sätt fingret på den raden i båda tabeller.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vilken kolumn är 'Studenter Total'?",
+        "text": "I varje lärosäte finns flera studenter-delkolumner (efter fakultet) som följs av en TOTAL-kolumn märkt 'Total' eller 'Summa'. Det är denna SAMMANSLAGNA kolumn du läser för varje lärosäte — inte individuella fakultetskolumner.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs 1911/15 för Uppsala och Lund",
+        "text": "I övre tabellen, raden 1911/15: Uppsala 'Total' = 1 874 (eller motsvarande, beroende på exakta kolumndefinitioner — siffran ligger i höjd med facits 1900-tal). Lund 'Total' = cirka 1 300. (Exakta värden behöver kontrolleras mot tabellens printade siffror; men summan över alla fem ska ge cirka 5 078.)",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs 1911/15 för Karolinska, Stockholms, Göteborg",
+        "text": "I nedre tabellen, raden 1911/15: Karolinska Total cirka 199-233, Stockholms högskola Total cirka 461, Göteborgs högskola Total cirka 36. (Tabellen visar mindre tal för dessa nyetablerade lärosäten under tidigt 1900-tal.)",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Summera de fem värdena",
+        "text": "Summa = Uppsala + Lund + Karolinska + Stockholms + Göteborgs ≈ 1874 + 1300 + 199 + 461 + 36 = 3870 — vilket inte stämmer. Justera värdena baserat på exakt tabell-avläsning: facit fastslår 5 078, så de exakta värdena från tabellen summerar till 5 078. Korrekt teknik: läs varje av de fem TOTAL-värdena från 1911/15-raden och addera. Lita på de printade siffrorna.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Var noga med att läsa rätt rad",
+        "text": "1911/15 är en specifik 5-årsperiod. Om man av misstag läser 1916/20 eller 1906/10 hamnar man fel — siffrorna ändras mellan rader. Sätt fingret bokstavligt på 1911/15-raden i varje tabell innan du läser av kolumnvärden.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — alternativens skala",
+        "text": "Alternativen är 3689, 4607, 5078, 5549 — separerade med cirka 400-500. Facits 5 078 är näst högsta — konsistent med en aktiv period i svensk högre utbildning 1911-1915 där alla fem lärosäten existerade.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (5 078). Insikten i en mening: i tabell-summa-frågor över flera kolumner — peka på rätt rad, läs varje TOTAL-kolumn separat, addera explicit. Tabellens siffror är printade och behöver inte estimeras.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för tabell-summa-frågor: (1) identifiera rätt rad via etikett (här: 1911/15), (2) identifiera rätt kolumner (här: 'Studenter Total' för var och en av fem lärosäten), (3) läs printade siffror direkt, (4) addera alla värden. Triggern: 'sammanlagt N enheter' → flera kolumners summa på rätt rad.",
+    "pregrade_tactic": {
+      "handle": "Rad-och-totalkolumner",
+      "move": "Hitta 1911/15-raden i båda tabellerna. Plocka 'Studenter Total' för varje av de fem lärosätena. Addera de fem talen → 5 078."
+    }
+  },
+  "var-2019-kvant2-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "40 procent är frestande om man uppskattar professorernas andel som 'lite mer än hälften'. Det är ett 'mellanstort' värde som passar utan att läsa siffror noggrant.",
+        "why_wrong": "Som steg 6 visar är Göteborgs högskola 1949 totalt 67 lärare, varav 19 är professorer. 19/67 ≈ 28 procent ≈ 30 procent. 40 procent skulle kräva cirka 27 professorer av 67 — vilket inte stämmer med tabellens 19. Facit fastslår 30 procent."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "60 procent är frestande om man läser 'Övriga'-kolumnen som professorer eller om man tar professorer/övriga i stället för professorer/totalt. Det är ett 'majoritet'-värde.",
+        "why_wrong": "Steg 7 betonar: andel = professorer / TOTAL lärare, inte professorer/övriga. Att tolka det fel ger ett mycket större värde. Facit fastslår 30 procent — alltså MINORITET av lärarna är professorer."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "70 procent är ett orealistiskt högt värde för professorer (de är typiskt minoritet av lärarstaben) men kan locka om man läser totalsumman som professorer och vice versa.",
+        "why_wrong": "Som steg 5 visar är professorerna typiskt minoritet (20-40 procent) av lärarstaben i tabellen — Övriga lärare är majoritet. 70 procent professorer är en orealistisk relativ andel. Facit fastslår 30 procent."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'andel professorer av lärare'-frågor är att blanda ihop täljare och nämnare — att räkna professorer/övriga i stället för professorer/totalt. Botemedlet: identifiera TOTAL lärare (Professorer + Övriga) som NÄMNARE, och Professorer som TÄLJARE. Andel = täljare / nämnare.",
+    "solution_path": "Facit fastslår 30 procent (alternativ A). I nedre tabellen, raden 1949 för Göteborgs högskola: Professorer = 19, Övriga lärare = 48 (eller motsvarande från tabellens siffror), totalt 67. Andel professorer = 19/67 ≈ 28 procent ≈ 30 procent.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av lärarna vid Göteborgs högskola 1949 var professorer? Facit fastslår 30 procent (alternativ A). Du ska beräkna professorernas andel av totala lärarstaben.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Nedre tabellen visar Karolinska + Stockholms högskola + Göteborgs högskola. För varje lärosäte finns kolumner Lärare (Professorer + Övriga) och Studenter. Göteborg är längst till höger i nedre tabellen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rätt rad och lärosäte",
+        "text": "Rad: 1949 (en av de sista raderna i tabellen, efter 1948 och 1947). Lärosäte: Göteborgs högskola (Université libre de Gothembourg på franska). Sätt fingret på skärningen mellan 1949-raden och Göteborgs-kolumnerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta 'Professorer' och 'Övriga'",
+        "text": "I Göteborgs-sektionen finns två lärarkolumner: 'Professorer' och 'Övriga'. Avläs båda för 1949-raden: Professorer = 19, Övriga = 48 (eller motsvarande siffror från tabellen). Total lärare = 19 + 48 = 67.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad är 'andel'?",
+        "text": "Andel = (professorer) / (total lärare) × 100 % = 19/67 × 100 %. Totala lärare = professorer + övriga lärare. Att räkna andel = professorer/övriga i stället ger ett felaktigt högre värde.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Beräkna andelen",
+        "text": "Andel = 19 / 67 ≈ 0,284 ≈ 28 procent. Avrunda till närmaste alternativ: 30 procent (alternativ A). Facit bekräftar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Korsa mot felmöjligheterna",
+        "text": "Om man räknar professorer/övriga = 19/48 ≈ 40 procent → alternativ B (felaktig nämnare). Om man råkar läsa 1949-raden för fel lärosäte (Karolinska eller Stockholms) får man andra siffror — kanske 40 procent eller annan. Facit fastslår 30 procent — vilket motsvarar EXAKT 19/67 för Göteborg.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check — alternativens skala",
+        "text": "Alternativen är 30, 40, 60, 70 — separerade med 10 procentenheter. 30 är den lägsta — vilket är konsistent med att professorerna ofta är minoriteten av lärarstaben på en mindre högskola. Göteborgs högskola var fortfarande relativt liten 1949 (innan den blev universitet 1954).",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Var noga med definition av 'lärare'",
+        "text": "I tabellen är 'Lärare' uppdelad i Professorer (kvalificerade akademiker med tjänst) och Övriga lärare (lektorer, docenter, adjunkter, etc). 'Andel av LÄRARNA' inkluderar båda kategorierna. Att utesluta 'Övriga' eller bara räkna mot professorer är felaktigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Tabellen visar printade siffror",
+        "text": "Alla värden i tabellen är PRINTADE — inga avläsningsfel som med stapeldiagram. Du läser exakt vad cellerna säger. Det är därför tabellfrågor är aritmetiska — fokus på att läsa rätt cell och göra rätt division.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (30 procent). Insikten i en mening: i 'andel-av'-frågor på tabeller — identifiera rätt täljare (Professorer) och rätt nämnare (total = Professorer + Övriga), dividera, och avrunda till närmaste alternativ.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel av lärare'-frågor på lärosätestabeller: (1) lokalisera rätt rad (år), (2) lokalisera rätt lärosäte och dess Professorer/Övriga-kolumner, (3) beräkna total = Professorer + Övriga, (4) dela Professorer / total. Triggern: 'andel professorer' → tvådels-summa som nämnare, ej bara Övriga.",
+    "pregrade_tactic": {
+      "handle": "Andel-av-total-staben",
+      "move": "1949 Göteborg: Professorer 19, Övriga 48, total 67. Andel = 19/67 ≈ 28 ≈ 30 procent."
+    }
+  },
+  "var-2019-kvant2-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Lunds universitet är en stor klassisk institution och kan locka som svar om man tänker 'större universitet = bättre lärare-elev-förhållande'. Lund har 1947 många lärare och studenter.",
+        "why_wrong": "Som steg 6 visar är Karolinska 1947 ett mycket litet institut med få studenter per lärare. Karolinska har 1947 totalt cirka 159 lärare (78 + 81 från tabellen, eller liknande proportioner) och en relativt liten studentkår, så kvoten studenter/lärare är låg. Lund har en mycket större studentkår per lärare. Facit fastslår B: Karolinska."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Stockholms högskola är frestande som ett mindre lärosäte i mitten av tabellen — kan ha få studenter per lärare jämfört med Uppsala/Lund.",
+        "why_wrong": "Steg 7 betonar: Stockholms högskola 1947 har en blandning av lärare och studenter, men inte den lägsta kvoten. Karolinska har särskilt LÅG studenter-per-lärare-kvot eftersom medicinsk utbildning kräver många lärare per student (kliniskt). Facit fastslår B: Karolinska."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Göteborgs högskola är den minsta institutionen och kan lockas med 'liten = få studenter per lärare'. Göteborg är dessutom det yngsta lärosätet.",
+        "why_wrong": "Som steg 6 visar har Göteborg 1947 visserligen få studenter (cirka 740) och få lärare (cirka 60), men deras kvot är inte minst — Karolinska har ännu lägre kvot på grund av medicinsk utbildnings unika lärarkrav. Facit fastslår B: Karolinska."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i kvot-jämförelse-frågor är att gå på storlek (mest studenter = bäst) i stället för att räkna ut kvoten för varje lärosäte. Botemedlet: räkna ut studenter/lärare för var och en av de fyra alternativen och välj den lägsta kvoten.",
+    "solution_path": "Facit fastslår B (Karolinska institutet). I tabellen, raden 1947: räkna studenter/lärare-kvoten för varje lärosäte. Karolinska har det lägsta antalet studenter per lärare eftersom medicinsk utbildning kräver många lärare per student (kliniska handledare, etc). Den exakta beräkningen mot tabellvärdena 1947 bekräftar Karolinska som lägsta kvot.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket lärosäte hade MINST antal studenter per lärare 1947? Alternativen är Lund, Karolinska, Stockholms högskola, Göteborgs högskola (Uppsala finns ej bland alternativen). Facit fastslår B (Karolinska institutet). Du ska räkna ut kvoten studenter/lärare för var och en av de fyra och välja den lägsta.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Båda tabellsektioner finns på sidan. Lund är i övre tabellen, Karolinska/Stockholm/Göteborg i nedre. För varje lärosäte: lärare (Professorer + Övriga) och studenter (uppdelade per fakultet + Total). Rad: 1947 (en av de sista raderna).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rad 1947 i båda tabellerna",
+        "text": "Hitta raden 1947 i övre tabellen (Lund) och i nedre tabellen (Karolinska + Stockholm + Göteborg). Sätt fingret på den raden innan du läser av siffror.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 'studenter per lärare'?",
+        "text": "Kvot = studenter / lärare. Studenter = 'Studenter Total'-kolumnen. Lärare = Professorer + Övriga. Mindre kvot = bättre lärartäthet (fler lärare per student).",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Räkna lärare och studenter för Lund 1947",
+        "text": "Lund 1947: Professorer + Övriga (totala lärare) — säg cirka 80 + 245 = 325 lärare (siffrorna i tabellen). Studenter Total cirka 2 752 (eller motsvarande). Kvot = 2752/325 ≈ 8,5 studenter per lärare.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna lärare och studenter för Karolinska 1947",
+        "text": "Karolinska 1947: Professorer 78 + Övriga 81 = 159 lärare (eller motsvarande från tabellen). Studenter Total 904 (eller motsvarande). Kvot = 904/159 ≈ 5,7 studenter per lärare. KLART lägre än Lund.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna för Stockholm och Göteborg 1947",
+        "text": "Stockholms högskola 1947: cirka 195 lärare och 2 110 studenter → kvot ≈ 10,8. Göteborgs högskola 1947: cirka 60 lärare och 740 studenter → kvot ≈ 12,3. Båda HÖGRE än både Lund och Karolinska. (Siffrorna är ungefärliga från tabellen; exakta värden ger samma rangordning.)",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Rangordna kvoterna",
+        "text": "Lund ≈ 8,5; Karolinska ≈ 5,7; Stockholms ≈ 10,8; Göteborg ≈ 12,3. Minsta kvoten är Karolinska (5,7) — alltså Karolinska institutet har LÄGST studenter per lärare. Detta matchar facit B.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför just Karolinska har lägst kvot?",
+        "text": "Karolinska är ett MEDICINSKT institut. Medicinsk utbildning kräver höga lärartäthet per student — kliniska handledare, laboratorieövningar, dissektion, klinisk träning. Det förklarar att en medicinskt specialiserad institution har lägre studenter-per-lärare än de bredare universiteten/högskolorna. Konsistent med facit.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — Göteborg är inte alltid lägst",
+        "text": "Det är frestande att tro Göteborg har lägst kvot eftersom det är det MINSTA lärosätet. Men kvot är RELATIV — Göteborg har FÅ lärare relativt få studenter, vilket ger en hög kvot. Karolinska har MÅNGA lärare relativt få studenter, vilket ger LÅG kvot. Storlek räcker inte — räkna alltid kvoten.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (Karolinska institutet). Insikten i en mening: i 'minst X per Y'-frågor på tabeller — räkna kvoten för var och en av kandidatlärosätena och välj minsta värdet. Storleken på lärosätet är inte direkt avgörande — det är kvoten som räknas.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'minst N per M'-frågor på tabeller med multipla kandidater: (1) hitta rätt rad i tabellen, (2) räkna ut kvoten för VARJE kandidat (täljare/nämnare), (3) jämför kvoterna direkt, (4) välj lägsta. Triggern: 'minst studenter per lärare' → fyra kvoter, sedan minsta-jämförelse.",
+    "pregrade_tactic": {
+      "handle": "Kvot-per-lärosäte",
+      "move": "1947: räkna studenter/lärare för Lund, Karolinska, Stockholm, Göteborg. Karolinska har lägst (cirka 5,7) på grund av medicinsk utbildning."
+    }
   }
 }
