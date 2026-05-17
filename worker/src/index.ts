@@ -22,6 +22,7 @@ import { cors } from 'hono/cors'
 import { requireAuth } from './middleware/auth'
 import { rateLimit } from './middleware/rateLimit'
 import { attemptsRoute } from './routes/attempts'
+import { devLoginRoute } from './routes/devLogin'
 import { healthRoute } from './routes/health'
 import { meRoute } from './routes/me'
 import { mistakesRoute } from './routes/mistakes'
@@ -80,6 +81,9 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .route('/test-reset', testResetRoute)
 
 // Chained route registration → preserves route types in `typeof routes`.
+// /api/dev/login is mounted OUTSIDE the authed sub-app — its whole job is
+// to bootstrap auth, so requiring an existing session would be circular.
+// The handler itself refuses in production (two-layer guard).
 const routes = app
   .get('/', (c) =>
     c.json({
@@ -89,6 +93,7 @@ const routes = app
     }),
   )
   .route('/health', healthRoute)
+  .route('/api/dev/login', devLoginRoute)
   .route('/api', authed)
 
 export default routes

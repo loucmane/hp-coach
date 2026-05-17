@@ -2,3 +2,9 @@
 # Wrangler reads `.dev.vars` for local-dev secrets; staging/prod use
 # `wrangler secret put CLERK_SECRET_KEY --env staging|production`.
 CLERK_SECRET_KEY=sk_test_REPLACE_ME
+
+# Optional. When set, /api/dev/login issues a Clerk sign-in token for
+# this user — used by MCP-driven Playwright to skip the email-OTP flow
+# for visual verification. Refused in production regardless of this var.
+# Same email as app/.env.local's E2E_TEST_EMAIL is the typical choice.
+DEV_LOGIN_EMAIL=hpc-e2e+clerk_test@example.com
