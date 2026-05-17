@@ -241,14 +241,10 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // ATLAS + TERMINAL):
   //   - a/b/c/d/e: commit the answer directly while in `answering`
   //   - Enter / Space: advance from `graded` to the next question
-  //   - Esc: leave the drill (back to home, via the done state)
-  // These ride on top of the existing click/tap flow — they're
-  // desktop-first, but harmless on phone (touch keyboards rarely fire
-  // these keys). The active-element guard avoids hijacking keystrokes
-  // inside form fields (Cmd+K palette input, etc.). The hook is at
-  // the top of the component (above the early returns for idle/done)
-  // so React's hook-rule isn't violated — the body just does nothing
-  // when the phase is idle/done.
+  // Escape is intentionally NOT bound to "end session" — that gesture
+  // was ejecting users out of the drill when they meant to dismiss a
+  // modal or the figure zoom overlay. Leaving the session is what the
+  // home button (or the bottom-nav Hem tab) is for.
   useEffect(() => {
     if (phase !== 'answering' && phase !== 'graded') return
     const onKey = (e: globalThis.KeyboardEvent) => {
@@ -271,17 +267,10 @@ export function SessionPlayer(props: SessionPlayerProps) {
           onNext()
         }
       }
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        if (sessionId !== null) {
-          updateSession.mutate({ id: sessionId, patch: { end: true } })
-        }
-        setPhase('done')
-      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [phase, onPick, onNext, sessionId, updateSession])
+  }, [phase, onPick, onNext])
 
   if (phase === 'idle') {
     const stale =
@@ -511,7 +500,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
           mode: 'Övning',
           context: `${q.section.toLowerCase()} · fråga ${index + 1}`,
           progress: (index + 1) / plan.length,
-          hints: ['esc tillbaka', '⌘k palett'],
+          hints: ['⌘k palett'],
         }}
       >
         {drillBody}
