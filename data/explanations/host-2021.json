@@ -9428,5 +9428,2306 @@
       "move": "När ordet är en formell institutionsroll, välj synonymen som beskriver positionen (befattning, post) — inte vägen dit (karriär) eller hedern (utmärkelse)."
     },
     "technique": "Befattningsord-stigen: när huvudordet beskriver en formell roll i en institution (ämbete, mandat, sysslan), välj synonymen som fångar att det är en STRUKTURELL POSITION (befattning, post, tjänst) — inte den som beskriver vägen dit (karriär) eller hederbeviset (utmärkelse). Triggern: 'institutionsord → matcha positionen, inte resan eller priset'."
+  },
+  "host-2021-kvant1-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "2007 är intressant: ser man bara på könstabellens översta rad får man intrycket att 2007 kan ha haft hög mansandel. Det är frestande att läsa fel rad i tabellen om man har bråttom.",
+        "why_wrong": "Som steg 5 och steg 6 visar måste BÅDA villkoren stämma samtidigt. Antalet betalningsförelägganden 2007 var 25 418 — långt under 40 000-tröskeln. Facit fastslår 2014 (alternativ D); 2007 faller redan på det första villkoret."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "2009 hade 46 531 betalningsförelägganden — alltså väl över 40 000. Det första villkoret stämmer, vilket gör 2009 till en stark kandidat om man stannar där.",
+        "why_wrong": "Som steg 6 betonar är båda villkoren obligatoriska. För 2009 var mansandelen 53 procent (eller läs det som kvinnoandel 47 procent) — INTE större än 55 procent. Facit fastslår 2014 där båda villkoren går ihop."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2012 hade 53 709 betalningsförelägganden — klart över 40 000. Och mansandelen sjunker tydligt över perioden, så 2012 kan kännas som ett rimligt gränsfall.",
+        "why_wrong": "Mansandelen 2012 var 47 procent (kvinnor 53 procent) — INTE större än 55 procent. Som steg 6 visar måste mansandelen vara strikt > 55 %, vilket bara uppfylls 2014 (58 %). Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att slänga ett öga på den ena tabellen och svara utan att korsa villkoren. Båda villkoren (BF > 40 000 OCH mansandel > 55 %) MÅSTE stämma samtidigt. Botemedlet: skriv en två-kolumns-checklista bredvid alternativen — bocka av båda villkoren separat innan du svarar.",
+    "pregrade_tactic": {
+      "handle": "Tva-villkor-checklista",
+      "move": "Skriv en mini-tabell: år | BF > 40k? | Män > 55%? Markera ja/nej i båda kolumnerna. Det enda år där båda står 'ja' är svaret."
+    },
+    "solution_path": "Facit fastslår 2014 (alternativ D). Två villkor: antalet betalningsförelägganden > 40 000 OCH andelen män > 55 %. Slå upp den mellersta tabellen för antal BF per år, slå upp den nedersta tabellen för könsfördelning. Korsa dem år för år och hitta det enda år där båda står 'ja'.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan har TVÅ villkor som båda måste stämma: (a) antalet betalningsförelägganden > 40 000 OCH (b) andelen män bland gäldenärerna > 55 %. Svarsalternativen är fyra årtal: 2007, 2009, 2012, 2014. Facit fastslår 2014 (alternativ D). Din uppgift är att läsa de relevanta tabellerna så att du själv landar på 2014.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på sidan",
+        "text": "Sidan har två linjediagram och två tabeller om obetalda snabblån. Den ena tabellen visar 'Antalet obetalda snabblån som inkommit till Kronofogden (BF) 2007–2014' — printade siffror per år. Den andra visar 'Procentuell fördelning av betalningsföreläggandena efter gäldenärens kön 2007–2014' — printade procent per år och kön.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta de printade BF-siffrorna",
+        "text": "I tabellen 'Antal ärenden (BF)' står PRINTADE siffror år för år: 2007: 25 418, 2008: 35 775, 2009: 46 531, 2010: 28 038, 2011: 33 064, 2012: 53 709, 2013: 49 192, 2014: 56 641. Inga gissningar behövs — dessa är hårda värden i tabellcellerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Filtrera på villkor (a): BF > 40 000",
+        "text": "Kvalificerande år: 2009 (46 531), 2012 (53 709), 2013 (49 192), 2014 (56 641). Diskvalificerade: 2007 (25 418), 2008 (35 775), 2010 (28 038), 2011 (33 064). Av svarsalternativen faller 2007 (A) redan här. Kvar: B (2009), C (2012), D (2014).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta de printade kön-procenten",
+        "text": "I könstabellen står PRINTADE procent per år: Kvinnor: 56, 53, 53, 50, 49, 47, 45, 42. Män: 44, 47, 47, 50, 51, 53, 55, 58 (2007 → 2014). Notera att kvinnoraden faller och mansraden stiger — kontrollera mot linjediagrammet att den stigande linjen är märkt Män och den fallande Kvinnor.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'strikt större än'?",
+        "text": "Frågan säger 'större än 55 procent' — alltså > 55, INTE ≥ 55. Det betyder att exakt 55 % räcker INTE. För Män: 2013 = 55 % (precis lika med, så NEJ), 2014 = 58 % (strikt över, så JA). Det här är en typisk gränsfälla — ett enda procentenhet skiljer mellan godkänt och underkänt.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Filtrera på villkor (b): Män > 55 %",
+        "text": "Bland kvarvarande alternativ (B, C, D): 2009 Män = 47 % (NEJ), 2012 Män = 47 % (NEJ), 2014 Män = 58 % (JA). Bara 2014 klarar villkor (b). Och 2014 klarade redan villkor (a) i steg 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Korsa villkoren i en mini-tabell",
+        "text": "År 2007: BF=25 418 (nej) → diskvalificerad. År 2009: BF=46 531 (ja), Män=47 % (nej) → nej. År 2012: BF=53 709 (ja), Män=47 % (nej) → nej. År 2014: BF=56 641 (ja), Män=58 % (ja) → JA. Bara 2014 har bock i båda kolumnerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: läs könsdiagrammet",
+        "text": "I det nedre linjediagrammet ska den stigande linjen (Män) nå sin topp 2014. Vid 2014 ska Män-linjen ligga klart över 55-strecket på y-axeln. Visuell konsistens med tabellens 58 % bekräftar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vad betyder 'gäldenär' i frågan?",
+        "text": "Gäldenär = den person som har en obetald skuld (motpart till borgenär = den som har en fordran). 'Andelen män bland gäldenärerna' = procentandelen av de personer som fått ett betalningsföreläggande som var män. Det är just den siffran könstabellen visar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (2014). Insikten i en mening: i två-villkors-frågor på DTK — bygg en bock-tabell, fyll i båda kolumnerna separat, svaret är raden där båda står 'ja'.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för två-villkors-frågor: bygg en mini-tabell med en kolumn per villkor och en rad per svarsalternativ. Bocka av varje villkor separat utan att skela på det andra. Triggern: 'för vilket år gällde X OCH Y' → två separata avläsningar i två olika tabeller, sedan korsning, inte ett helhetsintryck."
+  },
+  "host-2021-kvant1-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "45 procent låter rimligt om man räknar 'differensen 31 223 delat med 2014-värdet' (alltså 31 223 / 56 641 ≈ 55 %) eller missar en hel multiplikation. Det är en klassisk procentförväxling där nämnaren råkar bli slut-värdet istället för start-värdet.",
+        "why_wrong": "Som steg 5 visar är formeln för procentuell ökning (slut − start) / START × 100. Med start = 25 418 (inte 56 641) blir resultatet 31 223 / 25 418 ≈ 122,8 %. Facit fastslår 125 %; alternativ A följer av att dela med fel nämnare."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "155 procent ligger frestande nära den absoluta differensen om man tänker 'ökningen är ungefär lika stor som start-värdet plus en bit till'. Det är ett populärt magkänsla-värde för 'mer än fördubbling'.",
+        "why_wrong": "Differensen är 56 641 − 25 418 = 31 223. Som steg 6 visar är 125 % av 25 418 = 31 773 (mycket nära 31 223). 155 % av 25 418 skulle ge 39 398 — alldeles för stor differens. Facit fastslår 125 %, som är den enda andelen som matchar både differensen och start-värdet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "215 procent kan locka om man råkar räkna förhållandet 56 641 / 25 418 ≈ 2,23 och avläser det direkt som '223 %' eller avrundar 'ökning' till hela kvoten. Det är en klassisk total-vs-ökning-förväxling.",
+        "why_wrong": "Kvoten 56 641 / 25 418 ≈ 2,23 betyder att slut-värdet är ungefär 223 % AV start-värdet — vilket motsvarar en ÖKNING på 123 % (≈125 %). Som steg 4 visar måste du dra bort 100 % när du går från 'andel av start' till 'ökning från start'. Facit fastslår 125 %."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska procentfällan här är att blanda ihop 'slut-värdet som procent av start-värdet' (≈223 %) med 'ökningen som procent av start-värdet' (≈125 %). Botemedlet: skriv ut formeln (slut − start) / start × 100 innan du sätter in talen, eller dra bort 100 från kvoten 56 641 / 25 418.",
+    "pregrade_tactic": {
+      "handle": "Differens-genom-start",
+      "move": "Slå upp BF för 2007 (25 418) och 2014 (56 641) i mellersta tabellen. Differens = 31 223. Dela med START-värdet 25 418, INTE slut-värdet — det ger ≈1,23 = 123 %, närmast 125 %."
+    },
+    "solution_path": "Facit fastslår 125 % (alternativ B). Slå upp printade BF-värdena i den mellersta tabellen: 2007 = 25 418, 2014 = 56 641. Differens = 31 223. Procentuell ökning = differens / start × 100 = 31 223 / 25 418 × 100 ≈ 122,8 % — närmast 125 % bland alternativen, vilket är konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var den PROCENTUELLA ökningen av antalet betalningsförelägganden från 2007 till 2014? Svaret ska anges som procent (45, 125, 155 eller 215). Facit fastslår 125 % (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta start- och slut-värdet",
+        "text": "I tabellen 'Antal ärenden (BF) 2007–2014' står PRINTADE siffror i cellerna. 2007: 25 418. 2014: 56 641. Inga gissningar behövs — det är hårda värden direkt i tabellen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Beräkna den absoluta differensen",
+        "text": "Slut minus start: 56 641 − 25 418 = 31 223. Det är antalet ärenden som tillkom mellan 2007 och 2014, uttryckt i absoluta tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'procentuell ökning'?",
+        "text": "'Procentuell ökning från år X till år Y' betyder ökningen som andel av START-värdet (år X), inte slut-värdet. Formel: (slut − start) / start × 100. Det är en av de vanligaste fallgroparna i DTK — många delar med fel nämnare.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt in talen",
+        "text": "(56 641 − 25 418) / 25 418 × 100 = 31 223 / 25 418 × 100. Beräkna kvoten: 31 223 / 25 418 ≈ 1,228. Multiplicera med 100: ≈ 122,8 %. Det är den exakta procentuella ökningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verifiera mot alternativen",
+        "text": "Närmaste alternativ till 122,8 % är 125 % (B). De andra: 45 % skulle innebära att differensen var 11 438 — alldeles för liten. 155 % skulle innebära differens 39 398 — för stor. 215 % skulle innebära differens 54 649 — orimligt nära start-värdet plus differensen. Bara 125 % är konsistent.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Alternativ kontroll: kvoten som 'andel av start'",
+        "text": "56 641 / 25 418 ≈ 2,23. Det betyder att 2014 var ungefär 223 % av 2007. Ökning = total − 100 % = 123 % ≈ 125 %. Båda räknesätten landar på samma facit-värde, vilket är en bra sanity-check.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder en ökning på 125 %?",
+        "text": "En ökning på 125 % betyder att slutvärdet är start-värdet PLUS 125 % av start-värdet — alltså 225 % av start, eller 'lite mer än en fördubbling'. Konkret: 25 418 + 1,25 × 25 418 = 25 418 + 31 773 = 57 191 — mycket nära 56 641. Konsistens bekräftar.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: dela med slut-värdet",
+        "text": "Om du av misstag delar differensen med slut-värdet (56 641) får du 31 223 / 56 641 ≈ 55 %. Det är NÄRA alternativ A (45 %) men inte exakt — och det är fel formel oavsett. Hänvisa till steg 4: dela alltid med START-värdet.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot 'mer än fördubbling'",
+        "text": "Slut-värdet 56 641 är mer än dubbelt så stort som start-värdet 25 418 (dubbel = 50 836). Det innebär att ökningen är mer än 100 % — vilket utesluter 45 % direkt. Och eftersom slut-värdet är klart MINDRE än tre gånger start (75 254 < 56 641 saknas helt), kan ökningen inte vara 200 %+ — vilket utesluter 215 %. Kvar: 125 % eller 155 %, och exakt beräkning ger 125 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (125 %). Insikten i en mening: procentuell ökning = (slut − start) / START × 100 — alltid divideras med START-värdet, aldrig med slut-värdet.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för procentuell ökning: skriv formeln (slut − start) / start × 100 INNAN du sätter in tal. Slå upp de printade värdena i tabellen, beräkna differensen, dela med START-värdet (aldrig slut-värdet). Triggern: 'procentuell ökning från X till Y' → identifiera start och slut, dela differens med start."
+  },
+  "host-2021-kvant1-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "19 676 låter rimligt om man råkar använda en lägre kvinnoandel — kanske 2012-värdet (53 %) avläst i fel kolumn eller en blandning av två närliggande år. Det är ett klassiskt resultat av att 'läsa snett' över tabellen.",
+        "why_wrong": "Som steg 4 betonar är 2013 års kvinnoandel 45 % (eller om du läser linjediagrammet: den fallande linjen på cirka 45-strecket). 49 192 × 0,45 = 22 136, inte 19 676. Facit fastslår 22 136 (B). 19 676 motsvarar ungefär 40 % × 49 192 — vilket inte är någon av kvinnoraden i den nedersta tabellen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "24 596 är exakt halva 2013-totalen (49 192 / 2 = 24 596). Det är frestande om man tror att 'cirka hälften' var kvinnor eller om man missar att kvinnor utgjorde MINDRE än 50 % det året.",
+        "why_wrong": "Som steg 4 visar var kvinnoandelen 2013 = 45 % (UNDER 50 %), inte 50 %. Facit fastslår 22 136 (B), inte 24 596. 24 596 förutsätter en 50/50-fördelning, vilket bara stämmer för 2010 enligt tabellen — inte 2013."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "27 056 är vad du får om du blandar ihop kvinnor och män — alltså använder mansandelen 55 % istället för kvinnoandelen 45 %. 49 192 × 0,55 = 27 056. En klassisk könsförväxling i tabellen.",
+        "why_wrong": "Frågan handlar om KVINNOR, inte män. Den fallande linjen i diagrammet (eller den övre raden i tabellen) är Kvinnor med 45 % år 2013. Facit fastslår 22 136 — använd kvinnoandelen 45 %, inte mansandelen 55 %."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan är att blanda ihop kvinno- och mansraden i kön-tabellen eller att läsa fel års kolumn. Botemedlet: peka först på etiketten 'Kvinnor' i tabellen och vandra fingret längs raden till kolumnen '2013' — gör inga räkningar förrän fingret står på rätt cell.",
+    "pregrade_tactic": {
+      "handle": "Peka-rad-kolumn-rakna",
+      "move": "Slå upp 2013 års BF-värde (49 192) i mellersta tabellen, slå upp kvinnoandelen 2013 (45 %) i nedersta tabellen. Multiplicera: 49 192 × 0,45 ≈ 22 136."
+    },
+    "solution_path": "Facit fastslår 22 136 (alternativ B). Slå upp 2013 års BF-värde i den mellersta tabellen: 49 192. Slå upp kvinnoandelen 2013 i den nedersta tabellen: 45 %. Multiplicera: 49 192 × 0,45 = 22 136,4 ≈ 22 136 — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många av betalningsföreläggandena 2013 avsåg kvinnor? Svar ska anges som ett absolut antal (mellan 19 676 och 27 056). Facit fastslår 22 136 (alternativ B). Räknesteget är: total BF 2013 × kvinnoandel 2013.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta totala antalet BF för 2013",
+        "text": "I tabellen 'Antal ärenden (BF)' står PRINTADE siffror per år. 2013 = 49 192. Det är ett hårt värde, ingen avläsning behövs.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta kvinnoandelen 2013",
+        "text": "I tabellen 'Procentuell fördelning av betalningsföreläggandena efter gäldenärens kön' står PRINTADE procent per år och kön. Raden 'Kvinnor' år 2013: 45 %. Raden 'Män' år 2013: 55 %. Summa = 100 % ✓ (de två könen täcker hela populationen).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vilken rad är Kvinnor?",
+        "text": "Trots att kvinnoandelen i debt-statistik intuitivt kan kännas låg är raden 'Kvinnor' i den här tabellen den FALLANDE serien (56, 53, 53, 50, 49, 47, 45, 42 från 2007 till 2014). Linjerna i diagrammet bekräftar: den fallande linjen är märkt Kvinnor i legenden. För 2013: Kvinnor = 45 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'andel' i denna kontext?",
+        "text": "Procentandel av betalningsförelägganden där gäldenären är kvinna = (antal BF mot kvinnor) / (totalt antal BF) × 100. För att gå baklänges från andel till antal: antal kvinnor = andel × totalt antal. Det är just det multiplikations-steget vi gör nu.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Sätt in talen",
+        "text": "49 192 × 0,45. Bryt ner: 49 192 × 0,5 = 24 596 (halva). 49 192 × 0,05 = 2 459,6. Subtrahera: 24 596 − 2 459,6 = 22 136,4. Avrundat till heltal: 22 136. Matchar exakt facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera mot alternativen",
+        "text": "Alternativ A (19 676) motsvarar 40 % × 49 192. Alternativ C (24 596) motsvarar 50 % × 49 192. Alternativ D (27 056) motsvarar 55 % × 49 192 (mansandelen). Bara B (22 136) motsvarar 45 % — kvinnoandelen 2013. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vanlig miss: kön-förväxling",
+        "text": "Om du av misstag använder mansandelen 55 % istället för kvinnoandelen 45 % får du 27 056 — alternativ D. Det är samma 2013-kolumn men FEL rad. Hänvisa tillbaka till steg 4: kvinnoraden är den fallande, mansraden den stigande.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: år-förväxling",
+        "text": "Om du läser kvinnoandelen för fel år får du fel resultat. T.ex. 2014 års kvinnoandel är 42 %, vilket skulle ge 49 192 × 0,42 ≈ 20 661 — inte ett av alternativen. Att alternativen är väl utspridda (40, 45, 50, 55 % av totalen) hjälper dig fånga en sådan miss.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: är 22 136 rimligt?",
+        "text": "Total BF 2013 = 49 192. Kvinnor 2013 utgör knappt halva (45 %). Då måste antalet kvinnor vara lite under 24 596 (= halva) — 22 136 ligger där, ca 2 500 under halva. Storleksordningen stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (22 136). Insikten i en mening: när du går från andel till antal — slå upp BÅDA siffrorna i tabellerna (totalen och procenten), multiplicera, och dubbelkolla att du använt rätt rad (rätt kön) och rätt kolumn (rätt år).",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'antal i en delgrupp' med procent: identifiera totalen i en tabell, identifiera procentandelen för delgruppen i en annan tabell, multiplicera. Triggern: 'hur många av N var X' → kolla att N är hela populationen för det året, och att procenten är just för delgruppen X (inte komplementet)."
+  },
+  "host-2021-kvant2-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "150 000 kronor är frestande om man bara tittar på snittlän eller om man råkar mäta en mindre grå stapel istället för den största. Det är ett 'försiktigt' magkänslevärde.",
+        "why_wrong": "Som steg 4 betonar måste man hitta DEN STÖRSTA grå stapeln (intervallet mellan högsta och lägsta kommun-värde) i hela diagrammet. Vissa län har grå stapel som spänner från ~85 000 till ~400 000 — alltså ca 315 000 kronor differens. Facit fastslår 315 000 (C); 150 000 är en kort grå stapel, inte den största."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "240 000 kronor ligger storleksmässigt mellan korta och längsta grå staplarna — ett 'mellanvärde' om man är osäker vilken stapel som är längst.",
+        "why_wrong": "Den maximala grå stapeln spänner från ca 85 000 till ca 400 000 = 315 000 kronor. 240 000 motsvarar en näst-längsta grå stapel (kanske ett annat län). Facit fastslår 315 000 (C); B är en näst-mest spridd kommun-grupp, inte den mest spridd.",
+        "tier": "essential"
+      },
+      {
+        "letter": "D",
+        "why_tempting": "390 000 kronor är frestande om man överskattar den största grå stapelns längd — kanske mäter från 50 000 till 440 000 av misstag.",
+        "why_wrong": "Den största grå stapelns nedre kant ligger ca 85 000 och övre kant ca 400 000 — differens 315 000, inte 390 000. Som steg 5 visar måste man läsa båda ändpunkterna mot y-axelns tickvärden (0, 50 000, 100 000, ... 450 000). Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'spridningsdiagram med felstaplar' är att blanda ihop hela y-axelns omfång med en enskild läns grå stapel. Botemedlet: fokusera på EN grå stapel åt gången, projicera dess topp och botten mot y-axelns ticks, mät differensen.",
+    "pregrade_tactic": {
+      "handle": "Storsta-graa-stapel-mot-y-ticks",
+      "move": "I bottendiagrammet 'Kostnader per beviljad person', hitta länen med längsta grå staplar (störst kommun-spridning). Topp ≈ 400 000 kr, botten ≈ 85 000 kr → differens ≈ 315 000 kr."
+    },
+    "solution_path": "Facit fastslår 315 000 kronor (alternativ C). Nedersta diagrammet visar kommuners kostnader för hemtjänst och hemsjukvård per beviljad person 2012 per län, med grå staplar = högsta/lägsta värde för kommuner inom respektive län. Längsta grå stapeln spänner från ca 85 000 till ca 400 000 kronor → differens 315 000 kronor — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: bland kommuner inom samma län, vilken var den STÖRSTA observerade skillnaden mellan kommunernas kostnader för hemtjänst och hemsjukvård per beviljad person? Svar i kronor. Facit fastslår 315 000 kronor (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta rätt diagram",
+        "text": "Sidan har tre diagram. Det NEDERSTA: 'Kommuners kostnader för hemtjänst och hemsjukvård i ordinärt boende per beviljad person 2012. Redovisning per län. Kronor.' Y-axel 0-450 000 kronor. Det är diagrammet om kostnader per beviljad person.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Tolka symbolerna",
+        "text": "Legenden visar: SVART PUNKT = genomsnitt för länet, SVART HORISONTELL LINJE = genomsnitt för riket, GRÅ VERTIKAL STAPEL = högsta och lägsta värde för KOMMUNERNA i länet. Den grå stapeln representerar alltså spridningen mellan länets kommuner.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad letar vi efter?",
+        "text": "'Största skillnaden mellan kommuner inom samma län' = längsta grå stapeln (från botten till topp) i diagrammet. Identifiera den/de län där den grå stapeln är ALLRA LÄNGST.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skanna diagrammet efter den längsta grå stapeln",
+        "text": "Gå genom alla 21 län. De flesta län har korta grå staplar (under 200 000 kr spridning). Några län sticker ut med mycket långa staplar — exempelvis kring Värmland eller Norrbotten, där den grå stapeln spänner från cirka 85 000 i botten till cirka 400 000 i toppen. Det är den största spridningen i hela diagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Mät den längsta grå stapeln mot y-axeln",
+        "text": "Topp ≈ 400 000 kr (mellan 400 000-strecket). Botten ≈ 85 000 kr (knappt över 50 000-strecket). Differens: 400 000 − 85 000 = 315 000 kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera mot alternativen",
+        "text": "315 000 matchar C exakt. A (150 000) skulle vara en KORTARE grå stapel. B (240 000) skulle vara en mellanlängd. D (390 000) skulle vara längre än vad någon stapel når. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'beviljad person'?",
+        "text": "Beviljad person = en individ som blivit beviljad rätt till kommunal hemtjänst/hemsjukvård. 'Kostnad per beviljad person' = (totala kostnader för dessa tjänster) / (antal personer med beviljad rätt). Det normaliserar kostnaderna så att man kan jämföra över kommuner av olika storlek.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: är 315 000 rimligt?",
+        "text": "Riksgenomsnittet i bottendiagrammet (svart horisontell linje) ligger kring 180 000 kr per beviljad person. Att enskilda kommuner kan kosta 85 000 (mycket effektiva eller mycket få ärenden) respektive 400 000 (höga kostnader, kanske glesbygd) är fullt rimligt — Sverige är heterogent.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: dot-till-dot istället för stapel",
+        "text": "Om du av misstag mäter avståndet mellan en SVART PUNKT (länssnitt) i ett län och en annan svart punkt i ett annat län, får du fel storhet — det är inte 'skillnad inom samma län'. Den grå stapeln visar inom-län-spridningen; använd den.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (315 000 kronor). Insikten i en mening: i 'spridningsdiagram per kategori' med felstaplar — fokusera på den längsta grå stapeln, mät topp och botten mot y-axelns ticks, dra ifrån.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'största spridning inom kategori' i felstapeldiagram: skanna efter den längsta grå/spridnings-stapeln, mät dess topp och botten mot y-axelns tick-värden, beräkna differensen. Triggern: 'största skillnaden mellan kommuner inom samma län' → längsta felstapeln, inte avstånd mellan länssnitt."
+  },
+  "host-2021-kvant2-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Gotland har ofta extremvärden p.g.a. sin litenhet — det är frestande att gissa Gotland när frågan rör avvikelser från riket. Gotlands läns-punkt ligger på cirka 35 % vilket är över riksstrecket.",
+        "why_wrong": "Gotlands genomsnitt för länet i mellersta diagrammet ligger kring 35 %, riksgenomsnittet ligger kring 30 % — differens ca 5 pe. Som steg 4 visar är Jämtlands läns-snitt cirka 40 % medan riksstrecket är cirka 30 % — differens ca 10 pe (dubbelt så stor). Facit fastslår B (Jämtland) som mest avvikande."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Västerbotten ligger glesbefolkat i Norrland och kan kännas extremt. Dess län-snitt ligger ungefär på riksgenomsnittet, kanske något över.",
+        "why_wrong": "Som steg 4 visar är Västerbottens snitt ungefär 28-30 % — extremt nära riksstrecket. Skillnaden från riket är minimal (1-2 pe). Facit fastslår Jämtland (B) som har en MUCH större avvikelse på cirka 10 pe."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Västra Götaland är ett av de tre storstadslänen och stor population — det är frestande att tro att stora län 'avviker från riket' av strukturella skäl.",
+        "why_wrong": "Västra Götalands snitt ligger ungefär på rikssnittet — stora län är typiskt nära genomsnittet eftersom de väger tungt i medelvärdet. Som steg 5 visar är det Jämtland som extremt avviker uppåt (≈40 % vs riks-30 %). Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att förväxla 'mest extrem variation inom länet' (lång grå stapel) med 'mest extrem läns-snitt jämfört med riket' (svart punkt långt från riksstrecket). Botemedlet: titta endast på SVARTA PUNKTERNA (länssnitten) och deras vertikala avstånd till den svarta horisontella riksstrecket — ignorera grå staplar i denna fråga.",
+    "pregrade_tactic": {
+      "handle": "Lans-punkt-mot-riks-streck",
+      "move": "I mellersta diagrammet, mät vertikalt avstånd mellan varje läns SVARTA PUNKT och den SVARTA HORISONTELLA RIKSSTRECKET. Jämtland: läns-snitt ≈ 40 %, riks-snitt ≈ 30 % → avstånd ≈ 10 pe (störst)."
+    },
+    "solution_path": "Facit fastslår Jämtland (alternativ B). Mellersta diagrammet visar andelen av kommuners kostnader för vård och omsorg som avsåg hemtjänst och hemsjukvård, per län. Riksgenomsnittet (horisontell svart linje) ligger ungefär 30 %. Av de fyra alternativen ligger Jämtlands länssnitt (svart punkt) ungefär 40 % — högst över riksstrecket med cirka 10 pe avstånd, vilket är största avvikelsen i diagrammet. Konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket län skilde sig MEST från riket vad gäller hemtjänstens och hemsjukvårdens GENOMSNITTLIGA andel av kostnaden för vård och omsorg för äldre? Svar bland fyra län. Facit fastslår Jämtland (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta rätt diagram",
+        "text": "Sidan har tre diagram. Det MELLERSTA: 'Andelen av kommuners kostnader för vård och omsorg för äldre som avsåg hemtjänst och hemsjukvård i ordinärt boende 2012. Redovisning per län. Procent.' Y-axel 0-60 %. Det är detta diagram frågan rör.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Tolka symbolerna igen",
+        "text": "Svart punkt = länssnitt. Svart horisontell linje = riksgenomsnitt. Grå stapel = högsta/lägsta värde för kommuner i länet. Frågan rör 'genomsnittliga andelen' — alltså svart PUNKT vs svart HORISONTELL LINJE, INTE grå staplar.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs riksgenomsnittet",
+        "text": "Den svarta horisontella linjen löper genom hela diagrammet på ungefär 30 %. Det är riksgenomsnittet (alla kommuner i Sverige sammanvägda).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs varje läns-snitt bland alternativen",
+        "text": "Gotland (A): länssnitt ≈ 35 % → avstånd från riket ≈ 5 pe. Jämtland (B): länssnitt ≈ 40 % → avstånd från riket ≈ 10 pe. Västerbotten (C): länssnitt ≈ 28-30 % → avstånd från riket ≈ 1-2 pe. Västra Götaland (D): länssnitt ≈ 30 % → avstånd från riket ≈ 0 pe. Jämtland har störst avstånd.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'skilde sig mest'?",
+        "text": "'Skilde sig mest' = störst absolut avvikelse mellan länssnitt och riksgenomsnitt, oavsett riktning (över eller under riket). Jämtlands +10 pe är störst — andra alternativ ligger antingen närmare riket (Västerbotten, V.G.) eller mindre över (Gotland).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera mot övriga län",
+        "text": "Bland alla 21 län i diagrammet — finns något län som avviker mer än Jämtland? Skanna alla svarta punkter. De som ligger högst (kring 40 %) eller lägst (kring 22-24 %) är kandidater. Jämtland är den högsta (eller mycket nära den högsta) — och bland frågans fyra alternativ är Jämtland klart störst avvikande.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check: 'genomsnittliga andel' = svart punkt",
+        "text": "Tre olika storheter visas: (1) länets snitt (svart punkt) — det är vad genomsnitt betyder. (2) Riks-snitt (svart linje) — referensvärde. (3) Kommun-extremerna (grå stapel-ändar) — inte snittet. Frågan säger 'genomsnittliga' — alltså punkten, inte staplarna.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: grå stapel som proxy för avvikelse",
+        "text": "Vissa län har långa grå staplar (stor inom-län-spridning) men deras snitt-punkt ligger nära riket. Som Norrbotten där den grå stapeln spänner brett men punkten ligger nära 30 %. 'Skilde sig mest' i frågan = snitt-avvikelse, inte spridning. Använd punkten, inte stapeln.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vad betyder 'hemtjänst och hemsjukvård i ordinärt boende'?",
+        "text": "Hemtjänst = omsorg som ges i den äldres egna hem (städning, dusch, mat). Hemsjukvård = medicinsk vård som ges hemma. 'Ordinärt boende' = inte särskilt boende/äldreboende, utan personens egna hem. Diagrammet visar hur stor andel av äldreomsorgskostnaderna som går till denna typ av vård (vs särskilt boende).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (Jämtland). Insikten i en mening: när frågan rör 'genomsnittligt' avvikande län — mät vertikalt avstånd från läns-PUNKT till riks-LINJE, ignorera grå spridningsstaplar.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'avvikelse från riket' i felstapeldiagram: använd länssnitts-symboler (svarta punkter) och riksgenomsnitts-symbolen (svart horisontell linje), mät vertikalt avstånd mellan punkten och linjen för varje kandidat, plocka det län där avståndet är störst. Triggern: 'skilde sig mest från riket' + 'genomsnittliga' → punkt-mot-linje, inte stapel-omfång."
+  },
+  "host-2021-kvant2-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "10 procentenheter är frestande om man av misstag tar avstånd mellan länsSNITT (svart punkt) och rikssnitt — som vi såg i föregående fråga är Jämtlands läns-snitt ca 10 pe över riket. Det är en klassisk symbol-förväxling.",
+        "why_wrong": "Frågan rör en ENSKILD KOMMUN (övre kanten på en grå stapel), inte länets snitt. Som steg 4 visar når toppen av den högsta grå stapeln upp till cirka 50 % medan riksgenomsnittet ligger cirka 30 % — differens ca 20 pe, inte 10. Facit fastslår C; A är resultatet av att läsa fel symbol."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "15 procentenheter ligger nära det riktiga avståndet (ca 20 pe) — ett 'ungefär rätt' magkänslevärde om man underskattar topp-stapeln eller överskattar rikssnittet.",
+        "why_wrong": "Den högsta grå stapelns topp ligger uppskattningsvis vid 50 % i mellersta diagrammet, och riksstrecket vid cirka 30 % → differens 20 pe, inte 15. Skillnaden 5 pe är märkbar mot y-axelns 10-procentenheter-ticks. Facit fastslår 20 pe (C)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "50 procentenheter är frestande om man av misstag läser av VÄRDET (50 %) som om det vore avståndet, eller om man räknar från 0 % (botten av axeln) istället för från riksstrecket.",
+        "why_wrong": "Avstånd FRÅN riksgenomsnittet (~30 %) till maximala kommunvärdet (~50 %) är 50 − 30 = 20 procentenheter — inte 50. Som steg 5 visar måste man räkna DIFFERENSEN, inte använda värdet direkt. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan är att förväxla en kommun-extremvärde (övre kanten av grå stapel) med ett läns-snitt (svart punkt), eller att räkna avstånd från 0 istället för från rikssnittet. Botemedlet: identifiera EXAKT övre änden av grå stapeln (max-värdet), läs av det mot y-axeln, dra ifrån riksstrecks-värdet.",
+    "pregrade_tactic": {
+      "handle": "Max-graa-stapel-minus-riksstreck",
+      "move": "I mellersta diagrammet, hitta den högsta toppen bland alla grå staplar (max-värdet för en enskild kommun) — kring 50 %. Riksgenomsnittet är kring 30 %. Differens: 20 pe."
+    },
+    "solution_path": "Facit fastslår 20 procentenheter (alternativ C). Mellersta diagrammet visar andelen hemtjänst+hemsjukvård av äldreomsorgens totalkostnader, med grå staplar = kommun-extremvärden inom respektive län. Den högsta toppen bland alla grå staplar (största andelen för en enskild kommun) når cirka 50 %. Riksgenomsnittet (svart horisontell linje) ligger cirka 30 %. Differens: 50 − 30 = 20 procentenheter — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: avläs den STÖRSTA andelen av kostnaden för vård och omsorg för äldre som en ENSKILD KOMMUN använde till hemtjänst och hemsjukvård. Hur långt från RIKSGENOMSNITTET låg denna andel? Svar i procentenheter. Facit fastslår 20 procentenheter (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta rätt diagram igen",
+        "text": "Mellersta diagrammet: 'Andelen av kommuners kostnader för vård och omsorg för äldre som avsåg hemtjänst och hemsjukvård i ordinärt boende 2012. Redovisning per län. Procent.' Y-axel 0-60 %. Samma diagram som föregående fråga, men nu rör vi en KOMMUN, inte ett län.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Symbolerna igen",
+        "text": "Svart punkt = länssnitt (avg av kommunerna i länet). Svart horisontell linje = riksgenomsnitt. Grå stapel = HÖGSTA OCH LÄGSTA värdena för KOMMUNERNA i länet. Frågan rör 'enskild kommun' → övre/nedre ändpunkterna av grå staplar.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta den högsta kommun-värdet",
+        "text": "Skanna diagrammet efter den ALLRA HÖGSTA grå stapelens topp — den övre änden av någon grå stapel. Den högsta uppstickaren når cirka 50 % i mellersta diagrammet (möjligen i Jämtland eller Norrbotten där länssnitten redan är höga). Det är den största andelen någon kommun använde till hemtjänst/hemsjukvård.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs riksgenomsnittet",
+        "text": "Den svarta horisontella linjen ligger ungefär 30 % i mellersta diagrammet — riksgenomsnittet. Det är referensvärdet vi mäter från.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Beräkna avståndet",
+        "text": "Max kommun-värde ≈ 50 %. Riksgenomsnitt ≈ 30 %. Avstånd: 50 − 30 = 20 procentenheter.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'avstånd från riksgenomsnittet'?",
+        "text": "= Absolut differens i procentenheter mellan kommunvärdet och riksgenomsnittet. Eftersom max-kommunen ligger ÖVER riket är differensen positiv. Hade frågan gällt min-kommunen (lägsta grå stapel-botten, ca 22 %) hade differensen varit 30 − 22 = 8 pe — men frågan rör MAX-kommunen.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera mot alternativen",
+        "text": "20 pe matchar C exakt. 10 pe motsvarar avståndet mellan länsSNITT och riket (Jämtland-fallet i föregående fråga). 15 pe är en mellanvärde, 50 pe är absolutvärdet utan subtraktion. Bara C stämmer. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: ser 50 % rimligt ut?",
+        "text": "Mellersta diagrammets y-axel går till 60 %. Den högsta grå stapelens topp når NÄSTAN 50 % (mellan 40- och 50-strecken, närmare 50). Riksgenomsnittet på 30 % ligger ungefär halvvägs upp axeln. En kommun där HÄLFTEN av äldreomsorgskostnaderna går till hemtjänst/hemsjukvård är extrem men inte omöjlig — kanske en gleskommun med få platser i särskilt boende.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: använd länsSNITT istället för max-kommun",
+        "text": "Om du tar Jämtlands länssnitt (≈40 %) istället för max-kommunen (≈50 %), får du 40 − 30 = 10 pe — alternativ A. Det är fel symbol — frågan säger 'enskild kommun', alltså övre KANTEN av grå stapeln, inte SVARTA PUNKTEN.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (20 procentenheter). Insikten i en mening: 'enskild kommun' = övre/nedre kanten av en grå stapel, INTE den svarta punkten (länssnittet). Mät avståndet från denna kant till riksstrecket.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'enskilda extremvärden från riket' i felstapeldiagram: hitta extremvärdet (övre eller nedre kant av en grå stapel beroende på frågan), läs av mot y-axelns ticks, dra ifrån riksstrecks-värdet, ange i procentenheter. Triggern: 'en enskild kommun ... från riksgenomsnittet' → kant av grå stapel, inte snitt-punkt."
+  },
+  "host-2021-kvant2-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'Mindre kostnadsandel till vård och omsorg för äldre' är frestande om man tittar på övre diagrammet (totala kostnaderandelen) och associerar Blekinge/Halland med 'mindre län' eller 'mindre kostnader'. Det är ett strukturellt magkänslevärde.",
+        "why_wrong": "Som steg 5 visar ligger Blekinge och Halland nära riksgenomsnittet eller något ÖVER (cirka 22-25 % vs riks 22 %) i övre diagrammet — inte tydligt mindre. Det utmärkande draget är inte snittnivån utan SPRIDNINGEN inom länet — vilket är just D. Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "'Mindre kostnad för hemtjänst per beviljad person' är frestande om man tror att Blekinge/Halland är billigare — och bottendiagrammet visar låga staplar för Halland. Det är dock inte deras utmärkande gemensamma drag.",
+        "why_wrong": "Halland har relativt låga kostnader (snitt ≈ 150 000 kr) men Blekinge ligger nära riksgenomsnittet (~180 000 kr). Det är inte 'tydligt mindre' för båda samtidigt. Det gemensamma draget är den KORTA grå stapeln — alltså LITEN SPRIDNING mellan länets kommuner. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "'Större överensstämmelse mellan länets och rikets snitt' är frestande — Blekinge och Halland snitt ligger nära rikslinjen i samtliga tre diagram. Det är ett rimligt drag att gissa på.",
+        "why_wrong": "Många län har snitt nära riket — det är inte UNIKT för Blekinge och Halland. Som steg 6 visar är det DERAS GRÅ STAPLAR (kommun-spridningen) som är märkbart kortare än andra läns — det är inte snitt-överensstämmelsen utan SPRIDNINGEN som utmärker dem. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i mönsterletande över flera diagram är att fokusera på SNITT-VÄRDEN (svarta punkter) istället för SPRIDNING (grå stapel-längd). Botemedlet: titta specifikt på de grå staplarnas LÄNGD för Blekinge och Halland i alla tre diagram — är de märkbart kortare än grannländernas?",
+    "pregrade_tactic": {
+      "handle": "Graa-stapel-langd-i-alla-diagram",
+      "move": "I alla tre diagram, kolla Blekinges och Hallands grå staplar (spridning mellan kommuner). Är de kortare än grannländernas? Ja — i Blekinge och Halland är kommun-värdena tätt grupperade. Alternativ D."
+    },
+    "solution_path": "Facit fastslår 'Liten variation mellan länets kommuner' (alternativ D). I alla tre diagram på sidan utmärker sig Blekinge och Halland genom KORTA grå staplar — kommun-värdena inom dessa län är tätt grupperade nära länssnittet. Övriga län (Norrbotten, Värmland m.fl.) har mycket längre grå staplar (stor spridning). Det är den unika gemensamma egenskapen för Blekinge och Halland — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: på vilket sätt utmärker sig Blekinge och Halland bland länen i det redovisade materialet? Svarsalternativen är fyra kvalitativa beskrivningar. Facit fastslår D: liten variation mellan länets kommuner.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera Blekinge och Halland i diagrammen",
+        "text": "Längs x-axeln i alla tre diagram står läns-etiketterna. Blekinge och Halland ligger mitt i sekvensen (Stockholm, Uppsala, Södermanland, Östergötland, Jönköping, Kronoberg, Kalmar, Gotland, Blekinge, Skåne, Halland, V.G., ...). Markera dem mentalt — kollla deras symboler i varje diagram.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Tre diagram, samma symboler",
+        "text": "Alla tre diagram har: svart punkt (länssnitt), svart linje (riks-snitt), grå stapel (kommun-extremerna). Diagrammen visar olika storheter: (1) totala kostnaden för äldreomsorg som andel, (2) andel av äldrekostnaderna till hemtjänst, (3) hemtjänstkostnad per beviljad person. Vi söker den egenskap som FÖRENAR Blekinge och Halland över alla tre.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Testa alternativ A: mindre kostnadsandel",
+        "text": "I övre diagrammet (totala äldreomsorgs-andel): Blekinges svarta punkt ligger kring 22 %, Hallands kring 25 % — båda nära eller över rikssnittet (~22 %). Inte tydligt MINDRE. A passar inte.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa alternativ B: mindre kostnad per person",
+        "text": "I bottendiagrammet (kostnad per beviljad person): Hallands snitt ≈ 150 000 kr (lägre), Blekinges ≈ 180 000 kr (nära riket). Bara Halland är tydligt mindre — Blekinge är inte. B passar inte som gemensamt drag.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa alternativ C: bättre överensstämmelse med riket",
+        "text": "Många län ligger nära riksstrecket — det är inte unikt. Snitt-närhet är inte ett tydligt utmärkande drag bara för Blekinge och Halland. C passar inte.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa alternativ D: liten variation inom länet",
+        "text": "Kolla Blekinges och Hallands GRÅ STAPLAR i alla tre diagram. I övre diagrammet: båda län har korta grå staplar (kommunerna är tätt grupperade kring länets snitt). I mellersta diagrammet: samma sak — korta grå staplar. I bottendiagrammet: Halland har en KORT grå stapel (~50 000-200 000 kr), Blekinge också relativt kort. Detta är märkbart kortare än många andra läns staplar (t.ex. Norrbotten där grå stapeln spänner 85 000-400 000). D PASSAR.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Bekräfta D mot uteslutning av A-C",
+        "text": "Bara D förenar Blekinge och Halland som ett unikt gemensamt drag i alla tre diagram: liten spridning mellan kommuner. A, B, C uppfyller inte detta krav för båda län samtidigt. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'liten variation mellan kommuner'?",
+        "text": "Inom ett län finns olika kommuner med olika kostnader. Variationen visas av den grå stapelens LÄNGD — topp = högsta kommunens värde, botten = lägsta kommunens värde. Kort grå stapel = liten variation (kommunerna är väldigt lika varandra). Lång grå stapel = stor variation (kommunerna är väldigt olika varandra).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: varför just Blekinge och Halland?",
+        "text": "Båda är relativt små län geografiskt med ett mer homogent befolkningsmönster och få extrema gleskommuner. Det förklarar varför kommunerna inom dessa län ligger nära varandra i kostnadsmönster. Norrbotten och Norrland har stora gleskommuner som drar ifrån snittet — därav lång grå stapel där.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Liten variation mellan länets kommuner). Insikten i en mening: när frågan ber om en GEMENSAM utmärkande egenskap över flera diagram — leta efter det drag som syns i ALLA diagram för båda länen, inte ett drag som bara passar i ett av diagrammen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'utmärker sig hur' med flera kandidat-läns och flera diagram: gå genom varje alternativ systematiskt, kontrollera om båda länen uppvisar drag konsistent över ALLA tre diagram. Triggern: 'på vilket sätt utmärker sig X och Y' → multi-diagram-konsistens, inte enstaka diagrammets drag."
+  },
+  "host-2021-kvant1-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1 130 000 ton ligger nära den korrekta differensen och kan uppstå om man tar 'näst största' som Biologisk behandling (782 000) istället för Materialåtervinning (1 352 000). Då blir 2 574 000 − 782 000 ≈ 1 792 000 — inte heller A, men en närliggande sortering kan ge feldata.",
+        "why_wrong": "Som steg 4 visar är de fem behandlingsboxarna med PRINTADE tonnage-värden: Energiåtervinning 2 574 000, Materialåtervinning 1 352 000, Biologisk behandling 782 000, Omhändertagande 409 000, Deponering 59 000. Största är Energiåtervinning, näst största är Materialåtervinning. Differens = 2 574 000 − 1 352 000 = 1 222 000. Facit fastslår 1 222 000 (B); 1 130 000 stämmer inte med någon trolig differens-kombination."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1 352 000 är den printade totalsumman för Materialåtervinning — om man tolkar 'skillnad' som 'enbart Materialåtervinning' eller missar att dra bort något, kan man landa nära 1 352 000.",
+        "why_wrong": "1 352 000 är hela värdet för Materialåtervinning, inte en skillnad. Som steg 5 visar måste man göra subtraktionen 2 574 000 − 1 352 000 = 1 222 000. Facit fastslår 1 222 000 (B); 1 352 000 är ett av talen som ingår i räkningen, inte resultatet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1 444 000 ton är frestande om man avrundar 'ungefär 2 600 000 minus ungefär 1 150 000' eller om man råkar dra bort en annan delsumma. Det är ett 'vagt rimligt' tal som ligger i rätt storleksordning men inte exakt.",
+        "why_wrong": "De PRINTADE värdena är 2 574 000 och 1 352 000. Subtraktion: 2 574 000 − 1 352 000 = 1 222 000 — exakt, inga avrundningar. Facit fastslår 1 222 000 (B); 1 444 000 går inte att rekonstruera från någon korrekt två-boxars-subtraktion."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i flödesdiagram är att glömma att alla mål-boxarna har PRINTADE totaler bredvid namnet — och istället börja räkna ihop pilarna in. Botemedlet: leta efter den printade totalsumman bredvid varje mål-box innan du börjar addera flöden från pilarna.",
+    "pregrade_tactic": {
+      "handle": "Lan-mal-totaler-direkt",
+      "move": "Varje behandlingsbox har en printad totalsumma. Energiåtervinning 2 574 000 (störst), Materialåtervinning 1 352 000 (näst störst). Subtrahera: 2 574 000 − 1 352 000 = 1 222 000."
+    },
+    "solution_path": "Facit fastslår 1 222 000 ton (alternativ B). Flödesdiagrammet visar fem behandlingsboxar med PRINTADE totalsummor: Energiåtervinning 2 574 000 (störst), Materialåtervinning 1 352 000 (näst störst), Biologisk behandling 782 000, Omhändertagande 409 000, Deponering 59 000. Skillnad mellan störst och näst störst: 2 574 000 − 1 352 000 = 1 222 000 ton — exakt matchande facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Två-stegs-fråga: (1) identifiera den behandlingstyp som tog emot MEST avfall och den som tog emot NÄST MEST; (2) beräkna skillnaden i ton mellan dessa två. Facit fastslår 1 222 000 ton (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i flödesdiagrammet",
+        "text": "Diagrammet heter 'Flöden av hushållsavfall' och visar avfall som strömmar från två källor (Hushållssektor 4 173 000 ton, Verksamheter 1 003 000 ton) till fem behandlingstyper i mål-boxar till höger. Varje mål-box har en namn-rad med PRINTAD totalsumma bredvid.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Pilarnas siffror vs box-totalerna",
+        "text": "Pilarna i diagrammet har också printade siffror — de visar delflöden mellan källa och mål. Men för den här frågan behöver du INTE addera pilarna; mål-boxarna har redan färdiga totaler vid sin etikett. Spar tid genom att läsa box-totalerna direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Lista alla mål-box-totaler",
+        "text": "Läs av varje mål-box: Materialåtervinning 1 352 000, Biologisk behandling 782 000, Energiåtervinning 2 574 000, Deponering 59 000, Omhändertagande av hushållens farliga avfall 409 000. Alla siffror är printade i ton.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Rangordna behandlingstyperna",
+        "text": "Sortera från störst till minst: (1) Energiåtervinning 2 574 000, (2) Materialåtervinning 1 352 000, (3) Biologisk behandling 782 000, (4) Omhändertagande 409 000, (5) Deponering 59 000. Störst = Energiåtervinning, näst störst = Materialåtervinning.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'skillnaden' här?",
+        "text": "'Skillnaden' = den aritmetiska differensen mellan de två tonnage-värdena. Inte ett förhållande, inte en procent — bara störst minus näst störst i ton.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Sätt in subtraktionen",
+        "text": "2 574 000 − 1 352 000. Bryt ner: 2 574 000 − 1 000 000 = 1 574 000. 1 574 000 − 352 000 = 1 222 000. Resultat: 1 222 000 ton.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera mot alternativen",
+        "text": "Alternativ A (1 130 000), C (1 352 000), D (1 444 000) — ingen av dessa är 2 574 000 − 1 352 000. Bara B (1 222 000) stämmer exakt. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: storleksordning",
+        "text": "Energiåtervinning (2,574 mton) är ungefär dubbelt så stor som Materialåtervinning (1,352 mton). Skillnaden bör därför vara ungefär lika stor som Materialåtervinning — 1,222 mton är just det. Storleksordningen stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: addera pilarna istället",
+        "text": "Om du börjar addera alla pilar in i Energiåtervinning (13 000 + 412 000 + 2 149 000 = 2 574 000 — vilket fortfarande blir totalen) tar du längre tid men landar rätt. Däremot om du börjar addera pilar i Materialåtervinning och missar någon (1 119 000 + 88 000 + 145 000 = 1 352 000 ✓) kan du av misstag missa en pil. Spara tid: läs box-totalen direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (1 222 000 ton). Insikten i en mening: i flödesdiagram med PRINTADE summor i mål-boxar — använd box-totalerna direkt; addera pilar bara om summan saknas.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för Sankey-/flödesdiagram med printade totaler: läs av målsidans box-summor direkt, rangordna dem, gör subtraktionen i ton. Triggern: 'skillnaden mellan största och näst största' → printade box-totaler, INTE addition av pilflöden."
+  },
+  "host-2021-kvant1-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "3/5 = 60 % är frestande om man räknar 'Energiåtervinning som andel av Hushållssektorn (4 173 000) bara' istället för totalen av alla behandlingstyper. 2 574 000 / 4 173 000 ≈ 0,62 ≈ 3/5. En klassisk nämnar-förväxling.",
+        "why_wrong": "Som steg 3 visar är nämnaren det TOTALA avfallet (Hushållssektor + Verksamheter = 4 173 000 + 1 003 000 = 5 176 000 ton), inte bara Hushållssektorn. 2 574 000 / 5 176 000 ≈ 0,497 ≈ 1/2. Facit fastslår 1/2 (A); B följer av fel nämnare."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "3/4 = 75 % uppstår om man missförstår frågan som 'andel av enbart återvinningsbart avfall' eller om man slänger ihop Materialåtervinning + Energiåtervinning till en gemensam siffra. (1 352 000 + 2 574 000) / 5 176 000 ≈ 0,76 ≈ 3/4.",
+        "why_wrong": "Frågan handlar specifikt om Energiåtervinning, INTE Material+Energi tillsammans. Som steg 4 understryker: en behandlingstyp i taget. 2 574 000 / 5 176 000 ≈ 1/2. Facit fastslår 1/2 (A)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "4/5 = 80 % är frestande om man råkar tolka 'Energiåtervinning' som 'allt utom deponering och farligt avfall' — en innehållslig glidning där man slår ihop återvinningskategorierna.",
+        "why_wrong": "Frågan gäller bara Energiåtervinningens del (2 574 000 ton av totalt 5 176 000 ton), inte alla återvinningskategorier kombinerat. 4/5 skulle förutsätta att Energiåtervinning utgör 80 % av totalen, vilket långt överskattar dess andel. Facit fastslår 1/2 (A)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i flödesdiagram är att välja fel nämnare när man räknar 'andel av total'. Botemedlet: identifiera FÖRST den totala mängden (här = båda källornas summa, eller summan av alla mål-boxar) innan du delar med just den siffran.",
+    "pregrade_tactic": {
+      "handle": "Total-forst-andel-sen",
+      "move": "Räkna ihop alla mål-boxar för att få totalen (5 176 000 ton) eller läs båda källornas summor (4 173 + 1 003 = 5 176). Dela Energiåtervinning (2 574 000) med totalen: ≈0,5 = 1/2."
+    },
+    "solution_path": "Facit fastslår 1/2 (alternativ A). Totalavfallet = Hushållssektor (4 173 000) + Verksamheter (1 003 000) = 5 176 000 ton — eller motsvarande sum av alla fem mål-boxar (1 352 + 782 + 2 574 + 59 + 409 = 5 176 tusen ton). Energiåtervinning = 2 574 000 ton. Andel = 2 574 000 / 5 176 000 ≈ 0,497 ≈ 1/2 — exakt konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor del (bråk) av den TOTALA mängden avfall gick till Energiåtervinning? Svarsalternativen: 1/2, 3/5, 3/4, 4/5. Facit fastslår 1/2 (alternativ A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta Energiåtervinningens totalsumma",
+        "text": "Mål-boxen 'Energiåtervinning' har en printad total: 2 574 000 ton. Detta är täljaren i din andels-räkning.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta TOTALA mängden avfall",
+        "text": "Total avfallsmängd = summa av båda källor: Hushållssektor 4 173 000 + Verksamheter 1 003 000 = 5 176 000 ton. Alternativ kontroll: summa av alla mål-boxar = 1 352 000 + 782 000 + 2 574 000 + 59 000 + 409 000 = 5 176 000 ton ✓. Båda räknesätten ger samma totalsumma.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är en 'andel' i ton-räkning?",
+        "text": "Andel = del / helhet. Här: del = mängden till Energiåtervinning, helhet = totala avfallsmängden. Andel = 2 574 000 / 5 176 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna kvoten",
+        "text": "2 574 000 / 5 176 000. Halvera nämnaren: 5 176 000 / 2 = 2 588 000. Täljaren 2 574 000 är NÄSTAN exakt halva nämnaren — bara 14 000 mindre. Alltså kvoten ≈ 0,497 ≈ 1/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Översätt kvoten till svarsformatet",
+        "text": "Svarsalternativen är bråk: 1/2 = 0,5, 3/5 = 0,6, 3/4 = 0,75, 4/5 = 0,8. Kvoten 0,497 är klart närmast 1/2 — skillnaden till 3/5 är över 0,10 (mycket mer än 0,003 till 1/2). Facit fastslår 1/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check: visuell intuition",
+        "text": "I flödesdiagrammet är pilen mot Energiåtervinning markant tjockare/bredare än någon annan målpil. Att Energiåtervinning ensam tar ungefär halva totalen ska kännas konsistent med diagrammets visuella tyngd.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vanlig miss: räkna mot fel total",
+        "text": "Om du delar Energiåtervinningens 2 574 000 med BARA Hushållssektorn (4 173 000), får du 0,617 ≈ 3/5 — alternativ B. Det är fel nämnare: Energiåtervinning tar emot avfall från BÅDA källor. Använd alltid totalen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: tolka 'total' som något annat",
+        "text": "Om du adderar Material- och Energiåtervinning som en 'gemensam återvinning' (1 352 000 + 2 574 000 = 3 926 000) och delar med totalen (5 176 000) får du ≈ 0,76 ≈ 3/4 — alternativ C. Men frågan rör enbart Energiåtervinningen; ändra inte täljaren.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Approximation utan miniräknare",
+        "text": "2 574 ≈ 2 500 och 5 176 ≈ 5 200. Kvot ≈ 2 500 / 5 200 ≈ 0,48. Avrunda till bråk: närmast 1/2. Den grova räkningen räcker långt — alternativen är väl utspridda.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (1/2). Insikten i en mening: i flödesdiagram med flera källor — totalen är summan av ALLA källor (eller alla mål), inte bara en av dem.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel av totalmängd' i flödesdiagram: identifiera först den totala mängden (summa av alla källor ELLER summa av alla mål — de ska vara lika), sedan dela del-mängden med totalen, sedan översätt till svarsformat (bråk eller %). Triggern: 'hur stor del/andel' → del / TOTAL, aldrig del / en-källa."
+  },
+  "host-2021-kvant1-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1/6 ≈ 17 % känns rimligt om man bara räknar Flickor i åldersgruppen 15-16 år (103) mot HELA elevtotalen 1967 (1 706), eller om man missar Pojkar-kolumnen helt. 103 / 1 706 ≈ 0,060 — för litet, men nära 1/6 om man slarvar.",
+        "why_wrong": "Som steg 4 betonar måste BÅDA könen räknas in i åldersgruppen. Pojkar 15-16 år 1967 = 308, Flickor 15-16 år 1967 = 103, summa = 411. 411 / 1 706 ≈ 0,241 ≈ 1/4. Facit fastslår 1/4 (C); 1/6 är resultatet av att hoppa över Pojkar-kolumnen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1/5 = 20 % ligger frestande nära 1/4 — det är klassiskt att man har ett ungefärligt värde och 'rundar fel' mot ett av två närliggande bråk. Också om man råkar slänga in fel total (t.ex. delar 411 med ~2 000 istället för 1 706).",
+        "why_wrong": "Den exakta kvoten är 411 / 1 706 ≈ 0,2410. 1/4 = 0,25, 1/5 = 0,20. Skillnaden 0,2410 − 0,20 = 0,041, medan 0,25 − 0,2410 = 0,009 — 0,2410 är fyra-fem gånger närmare 1/4 än 1/5. Facit fastslår 1/4 (C)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1/3 ≈ 33 % är frestande om man addrer bara Pojkar 15-16 år (308) som om de vore hela åldersgruppen, eller om man tar Pojkar 15-16 + en närliggande grupp av misstag. 308 + Flickor 10-14 (21) = 329, fel logik som ändå inte ger 1/3.",
+        "why_wrong": "Den korrekta åldersgruppens summa är Pojkar 308 + Flickor 103 = 411. Som andel av total 1 706 = 24,1 % ≈ 1/4. Facit fastslår 1/4 (C); 1/3 förutsätter ungefär 569 elever i åldersgruppen, vilket inte finns i tabellen."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i åldersuppdelad tabell är att läsa BARA en könskolumn istället för att summera Pojkar + Flickor. Botemedlet: gör en mini-summa Pojkar 15-16 + Flickor 15-16 INNAN du delar med totalen — och totalen ska också vara Pojkar + Flickor.",
+    "pregrade_tactic": {
+      "handle": "Summa-bada-konen-forst",
+      "move": "Pojkar 15-16 år 1967 = 308, Flickor 15-16 år 1967 = 103, summa = 411. Total 1967 elever = 1 257 + 449 = 1 706. Andel = 411 / 1 706 ≈ 0,24 ≈ 1/4."
+    },
+    "solution_path": "Facit fastslår 1/4 (alternativ C). I tabellen 1967 kolumnen: Elever Pojkar = 1 257, Flickor = 449, summa = 1 706. Åldersgrupp 15-16 år 1967: Pojkar = 308, Flickor = 103, summa = 411. Andel = 411 / 1 706 ≈ 0,241 ≈ 1/4 — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av de omhändertagna eleverna 1967 var 15-16 år gamla? Svarsalternativen är bråk (1/6, 1/5, 1/4, 1/3). Facit fastslår 1/4 (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Elever i ungdomsvårdsskolor 1965-1968' har kolumner för varje år (1965, 1966, 1967, 1968), och inom varje år subkolumner för Pojkar och Flickor. Raden 'Elever' ger totalt antal elever; raden 'Fördelning efter ålder, 15-16 år' ger antalet elever i den åldersgruppen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Är 'Fördelning efter ålder' procent eller antal?",
+        "text": "Tabellbeskrivningen säger att orsak-raderna är procent ('andelar av dessa elever') medan ålderfördelningen visar 'antalet elever i olika åldrar'. Värdena i åldersraderna är ANTAL, inte procent. Det är därför 15-16 år 1967 visar Pojkar 308 och Flickor 103 — två heltal av storleksordning hundratal.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Summa över båda könen",
+        "text": "I åldersgruppen 15-16 år 1967: Pojkar 308 + Flickor 103 = 411 elever. BÅDA könen måste räknas in — frågan handlar om 'omhändertagna eleverna' totalt, inte enbart pojkar eller flickor.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta totala antalet elever 1967",
+        "text": "Raden 'Elever' i kolumnen 1967: Pojkar 1 257, Flickor 449. Totalt 1967 = 1 257 + 449 = 1 706. Det är nämnaren.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna andelen",
+        "text": "411 / 1 706. Halvera nämnaren: 1 706 / 2 = 853. Halvera igen: 853 / 2 = 426,5. Det är ≈ 1/4 av 1 706. Vår täljare 411 ligger nära 426,5 — så andelen ligger nära 1/4 (något under).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'andel' här?",
+        "text": "Andel = del / total, oftast uttryckt som decimaltal eller bråk. Andel av 'eleverna 1967 som var 15-16 år' = (elever 15-16 år 1967) / (alla elever 1967) = 411 / 1 706 ≈ 0,241 = 24,1 %.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Översätt till svarsalternativen",
+        "text": "Decimaltal 0,241 → vilket bråk är det närmast? 1/6 ≈ 0,167, 1/5 = 0,20, 1/4 = 0,25, 1/3 ≈ 0,333. Absolutskillnader: |0,241 − 0,167| = 0,074, |0,241 − 0,20| = 0,041, |0,241 − 0,25| = 0,009, |0,241 − 0,333| = 0,092. Närmast: 1/4. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med en korsräkning",
+        "text": "Om svaret är 1/4 ska 411 vara ungefär en fjärdedel av 1 706. Multiplicera baklänges: 1 706 × 1/4 = 426,5. Faktiskt: 411 är 15,5 enheter under 426,5 (≈3,6 % avvikelse) — extremt nära. Andra bråk: 1/3 av 1 706 = 568,7 (för stort), 1/5 = 341,2 (för litet). Bekräftar 1/4.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: läs bara en könskolumn",
+        "text": "Om du av misstag bara använder Flickor 15-16 år (103) som täljare får du 103 / 1 706 ≈ 0,060 ≈ 1/17 — inte i alternativen. Om du tar Pojkar 308 ensam: 308 / 1 706 ≈ 0,180 ≈ 1/6 — alternativ A. Båda misstagen kommer av att glömma summering. Återgå till steg 4.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (1/4). Insikten i en mening: när tabellen är uppdelad på två kön och frågan gäller en grupp över båda — summera ALLTID båda kolumnerna innan du räknar andelen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för andel i två-kön-tabell: summera värden över BÅDA könen för täljaren (delgruppen) OCH för nämnaren (totalen), sedan dela. Triggern: 'andel av eleverna' (utan könspecificering) → summa Pojkar+Flickor överallt."
+  },
+  "host-2021-kvant1-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Biltillgrepp har för flickor minskat från 4,1 % (1965) till 2,9 % (1968) — riktningen är tydlig minskning, vilket kan kännas dramatisk visuellt. Men storleksmässigt är differensen bara 1,2 procentenheter.",
+        "why_wrong": "Differensen för Biltillgrepp (flickor) = 4,1 − 2,9 = 1,2 procentenheter. För Sexuell vanart är differensen 51,0 − 34,1 = 16,9 procentenheter — över 14 gånger så stor. Som steg 5 visar måste man räkna ALLA orsakers absoluta differenser och välja den största. Facit fastslår Sexuell vanart (C)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Andra egendomsbrott är en av de mest dominerande orsakerna för flickor (44,7 % 1965, 35,7 % 1968) — minskning med 9,0 procentenheter. Det är en STOR minskning i absoluta tal, vilket gör det till en stark kandidat.",
+        "why_wrong": "9,0 procentenheter är näst-största minskningen, men inte STÖRSTA. Som steg 6 visar har Sexuell vanart minskat med 16,9 procentenheter (51,0 → 34,1) — nästan dubbelt så stor förändring. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Alkoholmissbruk för flickor ÖKADE från 39,9 % (1965) till 50,0 % (1968) — en stor förändring på 10,1 procentenheter. Det är en av få ökningar i tabellen, vilket gör den visuellt iögonfallande.",
+        "why_wrong": "10,1 procentenheter är en betydande förändring, men fortfarande mindre än 16,9 procentenheter för Sexuell vanart. Som steg 7 visar räknar frågan ABSOLUT differens — riktningen (ökning eller minskning) spelar ingen roll, bara storleken. Facit fastslår Sexuell vanart (C)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att fastna vid en orsak som ser visuellt dramatisk ut (eller som rör en hög grundnivå) utan att räkna differensen för ALLA alternativ. Botemedlet: skriv en mini-tabell med tre kolumner — orsak, 1965-värde, 1968-värde, differens — och beräkna differensen för varje alternativ innan du svarar.",
+    "pregrade_tactic": {
+      "handle": "Differens-per-orsak-lista",
+      "move": "För varje alternativ A-D, läs av Flickors procent 1965 och 1968 i orsak-tabellen, beräkna absolut differens. Den största differensen vinner. Sexuell vanart: 51,0 − 34,1 = 16,9 — överlägset störst."
+    },
+    "solution_path": "Facit fastslår Sexuell vanart (alternativ C). Räkna absolut differens 1965 → 1968 för flickor för vart och ett av alternativen: Biltillgrepp 4,1 → 2,9 = 1,2 pe; Andra egendomsbrott 44,7 → 35,7 = 9,0 pe; Sexuell vanart 51,0 → 34,1 = 16,9 pe; Alkoholmissbruk 39,9 → 50,0 = 10,1 pe. Största förändringen: Sexuell vanart med 16,9 pe — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken orsak till omhändertagande av FLICKOR hade förändrats MEST i procentenheter mellan 1965 och 1968? Svarsalternativen är fyra orsaker. Facit fastslår Sexuell vanart (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'procentenheter'?",
+        "text": "En procentenhet (pe) är den ABSOLUTA differensen mellan två procentvärden. Om en orsak gick från 51,0 % till 34,1 % är skillnaden 16,9 procentenheter — INTE 33 % (vilket vore den relativa förändringen). Frågan vill ha den absoluta differensen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen har orsak-rader med procentvärden för Pojkar och Flickor per år. Frågan rör enbart Flickor. Hitta kolumnerna 'Flickor 1965' och 'Flickor 1968'. Värdena i orsak-raderna är PROCENT (andelar av elever som omhändertagits av varje orsak).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs alla fyra alternativ-värdena",
+        "text": "Flickor 1965 / 1968 för respektive alternativ: A Biltillgrepp: 4,1 / 2,9. B Andra egendomsbrott: 44,7 / 35,7. C Sexuell vanart: 51,0 / 34,1. D Alkoholmissbruk: 39,9 / 50,0. Alla siffror är printade i tabellcellerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Beräkna absoluta differenser",
+        "text": "A: |4,1 − 2,9| = 1,2 pe. B: |44,7 − 35,7| = 9,0 pe. C: |51,0 − 34,1| = 16,9 pe. D: |39,9 − 50,0| = 10,1 pe. Tag alltid absolutbeloppet — riktningen (ökning/minskning) räknas inte här.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Rangordna differenserna",
+        "text": "Från störst till minst: C (16,9) > D (10,1) > B (9,0) > A (1,2). Sexuell vanart är överlägset störst — nästan 7 pe över näst-största (Alkoholmissbruk).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Riktning spelar ingen roll här",
+        "text": "Sexuell vanart MINSKADE (51,0 → 34,1) medan Alkoholmissbruk ÖKADE (39,9 → 50,0). Frågan säger 'förändrats mest' — den vinnande riktningen är inte specificerad. Bara absolut differens räknas. Facit fastslår C trots att det är en minskning.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check: håll tummen för rätt rad",
+        "text": "Eftersom tabellen har separata Pojkar- och Flickor-kolumner är det lätt att råka skriva Pojkar-värden. Sätt fingret på 'Flickor 1965'-kolumnen och 'Flickor 1968'-kolumnen samtidigt innan du skriver ner värden för varje orsak. Misstag-checksumma: alla Flickor-värden för Sexuell vanart bör vara klart höga, inte låga (de är 51,0 / 49,1 / 42,1 / 34,1 — väldigt höga för flickor, väldigt låga för pojkar).",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'Sexuell vanart' i kontexten?",
+        "text": "Tabellen är historisk (1960-talet) och 'Sexuell vanart' är ett tidstypiskt begrepp som beskriver vad myndigheterna då såg som problematiskt sexuellt beteende — främst hos flickor (jämför 51 % flickor vs ≈5 % pojkar 1965). Att kategorin var könsspecifik förklarar varför just denna rad har så hög andel för flickor och så liten för pojkar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: relativ vs absolut förändring",
+        "text": "'Procentenheter' = absolut differens. 'Procent' = relativ förändring av basvärdet. Om någon säger 'Sexuell vanart minskade med 33 %' menar de relativ förändring ((51 − 34,1)/51 ≈ 33 %). Det är INTE det frågan ber om. Procentenheter = 16,9. Två olika räknesätt, två olika svar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (Sexuell vanart). Insikten i en mening: när frågan säger 'procentenheter' — räkna ABSOLUT differens för varje alternativ, ignorera riktning, plocka den största.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'förändrats mest i procentenheter': räkna ABSOLUT differens för varje alternativ separat, ignorera om det är ökning eller minskning, plocka det största. Triggern: 'procentenheter' i frågan → absolut differens, inte relativ förändring."
+  },
+  "host-2021-kvant1-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1 år och 10 månader är frestande om man råkar läsa Skolhem-raden istället för Yrkesskolan-raden — 1966 Flickor Skolhem = 611 dagar, vilket är cirka 1 år 8 månader. En klassisk rad-förväxling.",
+        "why_wrong": "Som steg 3 betonar är frågan om FLICKA UTSKRIVEN FRÅN YRKESSKOLA — alltså raden 'Vårdtidens längd i medeltal dagar för utskrivna elever Yrkesskolan', kolumnen Flickor 1966. Den cellen visar 1 001 dagar ≈ 2 år 9 månader. Facit fastslår D; A motsvarar fel rad."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "2 år och 5 månader (≈ 885 dagar) är frestande om man av misstag tar Flickor 1968 (885) istället för Flickor 1966 (1 001). Båda är nära varandra storleksordningsmässigt och en kolumn-glidning kan ge den missen.",
+        "why_wrong": "Frågan rör Flickor 1966, INTE Flickor 1968. Som steg 4 visar är värdet 1 001 dagar i 1966-Flickor-kolumnen. 2 år 5 månader = ungefär 885 dagar, vilket är just 1968-värdet. Facit fastslår D (1 001 dagar ≈ 2 år 9 månader)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2 år och 7 månader (≈ 945 dagar) är ett mellanvärde nära 1 001 men inte exakt. Det är ett klassiskt 'avrunda lite för mycket'-fel — man tar 2 år 9 mån och kapar bort 2 månader för säkerhets skull.",
+        "why_wrong": "1 001 dagar / 365 ≈ 2,74 år = 2 år + 0,74 × 12 mån ≈ 2 år 9 månader, inte 2 år 7. Som steg 5 visar är konverteringen entydig: 2 år och 9 månader matchar exakt 1 001 dagar (= 2 × 365 + 9 × 30 = 730 + 270 = 1 000 ≈ 1 001). Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i denna tabell är att blanda ihop Yrkesskolan-raden och Skolhem-raden, eller att förvirras av angränsande kolumner med liknande siffror. Botemedlet: peka FÖRST på rad-etiketten 'Yrkesskolan' och kolumn-etiketten 'Flickor 1966', läs cellen, KONVERTERA dagar till år+månader sist.",
+    "pregrade_tactic": {
+      "handle": "Rad-kolumn-cell-konvertera",
+      "move": "Hitta raden 'Vårdtidens längd ... Yrkesskolan', kolumnen Flickor 1966 — värdet är 1 001 dagar. Konvertera: 1 001 / 365 ≈ 2,74 år = 2 år 9 mån."
+    },
+    "solution_path": "Facit fastslår 2 år och 9 månader (alternativ D). I tabellens nedersta block 'Vårdtidens längd i medeltal dagar för utskrivna elever' finns två rader: Yrkesskolan och Skolhem. Frågan rör YRKESSKOLA. I kolumnen Flickor 1966: värdet är 1 001 dagar. Konvertera: 1 001 / 365 ≈ 2,74 år = 2 år + 0,74 × 12 ≈ 9 månader. Resultat: 2 år 9 månader — exakt matchande facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur länge i genomsnitt hade en flicka som skrevs UT från YRKESSKOLA 1966 varit omhändertagen? Svarsalternativen är i år och månader. Facit fastslår 2 år och 9 månader (alternativ D).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellens nedersta block",
+        "text": "Tabellen 'Elever i ungdomsvårdsskolor 1965-1968' avslutas med ett block märkt 'Vårdtidens längd i medeltal dagar för utskrivna elever' med två rader: Yrkesskolan och Skolhem. Båda raderna har Pojkar- och Flickor-kolumner per år.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta rätt rad: Yrkesskolan",
+        "text": "Frågan säger explicit YRKESSKOLA. Det är raden 'Yrkesskolan' i det nedersta blocket, inte 'Skolhem'. För Skolhem är värdena annorlunda (1966 Flickor Skolhem = 611 dagar), och en rad-förväxling ger fel svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta rätt kolumn: Flickor 1966",
+        "text": "Kolumnen är Flickor inom kolumnpaket 1966. Värdet i cellen 'Yrkesskolan × Flickor 1966' är 1 001 dagar. Det är ett printat värde i tabellen — ingen avläsning behövs.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Konvertera dagar till år",
+        "text": "1 år = 365 dagar (approximation, ignorera skottår för en avläsning på det här nivån). 1 001 / 365 = 2,742 år. Heldelen är 2 år. Bråkdelen är 0,742 år som behöver konverteras till månader.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konvertera bråkdelen till månader",
+        "text": "0,742 år × 12 månader/år = 8,90 månader ≈ 9 månader. Avrundat: 2 år 9 månader.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Alternativ kontroll: räkna baklänges från svaret",
+        "text": "2 år 9 månader = 2 × 365 + 9 × 30 (approximation månad = 30 dagar) = 730 + 270 = 1 000 dagar. Tabellen visar 1 001 dagar — exakt 1 dag avvikelse, vilket är inom avrundningstoleransen för månader. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'i medeltal dagar'?",
+        "text": "'I medeltal' = aritmetiskt medelvärde över alla utskrivna elever i den gruppen. Värdet 1 001 dagar betyder att i genomsnitt hade en flicka som skrevs ut från yrkesskolan 1966 varit omhändertagen i 1 001 dagar. Det säger inget om spridning eller minimi/maxi — bara medel.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: Skolhem-raden",
+        "text": "Skolhem-raden visar för Flickor 1966 värdet 611 dagar = 611/365 ≈ 1,67 år = 1 år 8 mån — väldigt nära alternativ A (1 år 10 mån). Om du läser fel rad landar du på A. Pek-tekniken (steg 3) skyddar mot detta.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: fel årskolumn",
+        "text": "Om du av misstag tar Flickor 1968 Yrkesskolan (885 dagar) får du ≈ 2 år 5 mån = alternativ B. Eller Flickor 1967 Yrkesskolan (947 dagar) ≈ 2 år 7 mån = alternativ C. Distraktorerna är designade för att fånga år-glidningar. Dubbelkolla kolumnen är 1966.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (2 år 9 månader). Insikten i en mening: peka först på rätt rad (Yrkesskolan), peka sedan på rätt kolumn (Flickor 1966), läs cellvärdet (1 001 dagar), konvertera till år och månader sist (÷365 och × 12).",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'tid uttryckt i annan enhet': lokalisera cellen med peka-rad-och-kolumn, läs det printade värdet, konvertera enheter SIST (dagar → år genom ÷ 365, sedan bråkdelen × 12 → månader). Triggern: 'i medeltal X enheter' och svar i annan enhet → cellavläsning + enhetskonvertering."
+  },
+  "host-2021-kvant1-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "30 pojkar är frestande om man bara räknar minskningen i procentenheter mot ett LITET antal elever — t.ex. om man råkar använda Flickor 1966 (510) som total. 0,088 × 510 ≈ 45, fortfarande inte 30, men i den lägre storleksordningen.",
+        "why_wrong": "Som steg 5 visar måste man räkna antal MISSHANDEL-pojkar 1966 minus antal MISSHANDEL-pojkar 1968 separat. 1966: 30,8 % × 1 219 ≈ 375. 1968: 22,0 % × 1 245 ≈ 274. Differens ≈ 101 ≈ 100 pojkar. Facit fastslår 100 (B); 30 är alldeles för litet."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "180 pojkar är frestande om man tar minskningen 8,8 pe direkt mot något ungefärligt totalvärde — t.ex. mer än 2 000 elever — eller om man av misstag dubbelräknar någon delgrupp.",
+        "why_wrong": "Antal pojkar 1966 = 1 219 (inte ≈ 2 000). 8,8 % × 1 219 ≈ 107 — men det är inte heller riktigt rätt formel. Som steg 4 betonar: räkna antalet pojkar misshandel separat för 1966 och 1968 och dra ifrån. Resultat ≈ 101 ≈ 100 (B). 180 förutsätter felaktig totalisering."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "250 pojkar är frestande om man tar 8,8 % av en mycket större total (ca 2 800) eller summerar pojkar 1966+1968 (1 219 + 1 245 = 2 464) som om det var en samlad bas. 0,088 × 2 464 ≈ 217 — fortfarande inte 250, men i den högre storleksordningen.",
+        "why_wrong": "Frågan rör pojkar 1966 vs pojkar 1968 — INTE summan. Som steg 4 visar är räknesteget: antal pojkar misshandel 1966 (≈375) minus antal pojkar misshandel 1968 (≈274) = ≈101. Facit fastslår 100 (B); 250 förutsätter en kumulativ bas som inte stämmer med frågan."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att tolka '8,8 procentenheter minskning' som '8,8 % av samma bas båda åren' — men antalet pojkar var olika 1966 (1 219) och 1968 (1 245). Botemedlet: räkna antalet misshandel-fall separat varje år (procent × årets totala antal pojkar) och dra ifrån.",
+    "pregrade_tactic": {
+      "handle": "Procent-x-total-per-ar-sedan-subtrahera",
+      "move": "Pojkar 1966: 1 219 × 30,8 % ≈ 375. Pojkar 1968: 1 245 × 22,0 % ≈ 274. Differens ≈ 101 ≈ 100."
+    },
+    "solution_path": "Facit fastslår 100 pojkar (alternativ B). Beräkna antalet misshandel-fall separat varje år: 1966: 30,8 % × 1 219 = 375 pojkar. 1968: 22,0 % × 1 245 = 274 pojkar. Differens: 375 − 274 = 101 ≈ 100 pojkar — konsistent med facit. Procentenhetsminskningen 8,8 pe (30,8 − 22,0 = 8,8) bekräftar att vi använder rätt rad.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: andelen pojkar omhändertagna p.g.a. misshandel minskade med 8,8 procentenheter från 1966 till 1968. Hur många pojkar i absoluta tal motsvarade denna minskning? Facit fastslår 100 pojkar (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder '8,8 procentenheter'?",
+        "text": "8,8 procentenheter = absolut differens mellan två procentvärden. Tabellen visar Misshandel Pojkar 1966 = 30,8 % och 1968 = 22,0 % — differens 8,8 pe, matchar vad frågan säger. Det bekräftar att vi tittar på rätt rad i tabellen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen har Pojkar/Flickor per år och orsak-rader med procentvärden. Hitta raden 'Misshandel'. För Pojkar: 1965 = 30,2 %, 1966 = 30,8 %, 1967 = 26,3 %, 1968 = 22,0 %. Vi använder 1966- och 1968-värdena.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna antal misshandel-pojkar varje år separat",
+        "text": "Eftersom totala antalet pojkar VARIERAR mellan åren kan man inte bara ta '8,8 % av något'. Räkna istället antalet misshandel-fall för varje år: \n1966: andel 30,8 % × pojkar 1 219 = 0,308 × 1 219 ≈ 375 pojkar. \n1968: andel 22,0 % × pojkar 1 245 = 0,220 × 1 245 ≈ 274 pojkar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna differensen i antal",
+        "text": "Antal 1966 − antal 1968 = 375 − 274 = 101 pojkar. Det är minskningen i ABSOLUTA tal. Avrundat: 100 pojkar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkneflyt: 30,8 % av 1 219",
+        "text": "0,308 × 1 219. Bryt ner: 0,3 × 1 219 = 365,7. 0,008 × 1 219 ≈ 9,75. Summa: 365,7 + 9,75 ≈ 375,5. Avrunda till heltal: 375 (eller 376) pojkar. Det är 1966-värdet.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkneflyt: 22 % av 1 245",
+        "text": "0,22 × 1 245. Bryt ner: 0,2 × 1 245 = 249. 0,02 × 1 245 = 24,9. Summa: 249 + 24,9 = 273,9. Avrunda: 274 pojkar. Det är 1968-värdet.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera mot alternativen",
+        "text": "375 − 274 = 101 ≈ 100. Närmast alternativ B (100). De andra: A (30) skulle innebära en pojkminskning på bara 30 (omöjligt med 8,8 pe på ≈1 200 elever); C (180) eller D (250) skulle innebära större totala baser än det som finns i tabellen. Bara B stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: räkna '8,8 % av medeltotalen'",
+        "text": "Genväg: '8,8 % av ≈ 1 230' (medel av 1 219 och 1 245) = 0,088 × 1 230 ≈ 108. Det är ungefär samma svar (B) men matematiskt mindre exakt — det stämmer bara om totalen var KONSTANT över åren, vilket det INTE riktigt är här. För säkerhets skull: räkna varje år separat (steg 4).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: använd flickor istället",
+        "text": "Om du tar Misshandel FLICKOR (1966 = 4,9 %, 1968 = 2,9 %) får du en differens på 2,0 pe — inte 8,8 pe. Det är ett snabbt sätt att se att du hamnat på fel rad. Värdet 8,8 pe i frågan låser dig vid Pojkar-raden.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (100 pojkar). Insikten i en mening: när 'procentenheter' nämns och TOTALEN varierar mellan åren — räkna absoluta tal separat varje år (procent × totalen för det året) och dra ifrån.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'procentenhetsminskning omräknat till antal': när totalbasen varierar mellan åren — räkna antal för varje år separat (procent × totalen för det året), sedan dra ifrån. Triggern: 'procentenheter' + 'hur många personer' → två separata multiplikationer + subtraktion, inte 'procent gånger en gemensam bas'."
+  },
+  "host-2021-kvant1-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "50 procent är frestande om man bara räknar Stockholm (37,8 mln) som andel av totalen 100,4 mln ≈ 38 % och ungefärligt avrundar uppåt, eller om man missar att lägga till en av de tre storstadslänen.",
+        "why_wrong": "Som steg 4 visar måste alla tre storstadslänen adderas: Stockholm 37,8 + Skåne 13,0 + Västra Götaland 10,9 = 61,7 mln. Som andel av totalen 100,4 mln ≈ 0,615 = 61,5 %. Facit fastslår 60 % (C); 50 % motsvarar Stockholm enskilt eller en liknande underskattning."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "55 procent är frestande om man undertabellsräknar och utelämnar Västra Götaland (10,9 mln). Stockholm + Skåne = 50,9 mln ≈ 51 % — fortfarande inte 55 men närmare. Eller om man av misstag tar någon annan kombination av två län.",
+        "why_wrong": "Frågan namnger TRE län: Stockholm, Skåne OCH Västra Götaland. Som steg 4 visar är summan 61,7 mln ≈ 61,5 %, närmast 60 %. Facit fastslår C; 55 % är en underskattning som ofta uppstår vid sloppy summering."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "65 procent är frestande om man avrundar för aggressivt: Stockholm ≈ 38 %, Skåne ≈ 13 %, V.G. ≈ 11 % → ungefär 38+13+11 = 62 % avrundat upp till 65 %. Eller om man råkar dubbelräkna en del.",
+        "why_wrong": "Den exakta kvoten är 61,7 / 100,4 ≈ 0,6147 = 61,47 %. Det är CLEARLY närmast 60 % (skillnad 1,5 pe) än 65 % (skillnad 3,5 pe). Som steg 6 visar: avrundningstabellen entydigt placerar svaret på 60 %. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'andel av totalbestånd'-frågor med tabeller eller stapeldiagram är (1) att utelämna ett av de namngivna länen eller (2) att läsa fel total. Botemedlet: skriv ut alla tre län-värdena, addera, dela med PRINTADE total-värdet (100 406 069).",
+    "pregrade_tactic": {
+      "handle": "Tre-lan-summa-genom-total",
+      "move": "Stockholm 37,8 + Skåne 13,0 + Västra Götaland 10,9 ≈ 61,7 mln. Total ≈ 100,4 mln. Andel ≈ 61,7/100,4 ≈ 0,615 = 61,5 %, närmast 60 %."
+    },
+    "solution_path": "Facit fastslår 60 procent (alternativ C). Stapeldiagrammet 'Bibliotekens bestånd av medier' har PRINTADE totalsummor per län till vänster om varje stapel. Stockholm: 37 808 527. Skåne: 13 049 644. Västra Götaland: 10 926 821. Summa storstadslänen: 61 784 992. Total alla län: 100 406 069. Andel: 61 784 992 / 100 406 069 ≈ 0,6155 ≈ 60 % — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av det totala beståndet av medier på bibliotek fanns i de tre storstadslänen Stockholm, Skåne och Västra Götaland? Svarsalternativen är 50/55/60/65 procent. Facit fastslår 60 procent (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Diagrammet 'Bibliotekens bestånd av medier' visar antal fysiska medier per län, fördelade på biblioteketyper. Till vänster om varje stapel står en PRINTAD totalsumma — det är de hårda siffrorna du behöver. Det översta värdet (100 406 069) är totalsumman för hela riket.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta totala antalet medier",
+        "text": "Översta stapeln är märkt 'Totalt' med PRINTAD summa 100 406 069. Det är nämnaren i din andels-räkning.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta de tre storstadslänen",
+        "text": "Tre län: Stockholm 37 808 527, Skåne 13 049 644, Västra Götaland 10 926 821. Alla värden är PRINTADE till vänster om respektive stapel. Summan: 37 808 527 + 13 049 644 + 10 926 821 = 61 784 992.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkneflyt: addera de tre storstadslänen",
+        "text": "Stockholm 37 808 527 + Skåne 13 049 644 = 50 858 171. Plus Västra Götaland 10 926 821 = 61 784 992. Avrunda: ≈ 61,8 miljoner.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Räkna andelen",
+        "text": "61 784 992 / 100 406 069. Approximation: 61,8 / 100,4 ≈ 0,6155. Som procent: 61,55 %. Närmast 60 % bland alternativen (skillnad 1,5 pe vs 3,5 pe till 65 %, 6,5 pe till 55 %, 11,5 pe till 50 %). Facit fastslår 60 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'storstadslän'?",
+        "text": "Storstadslän är de tre svenska län där landets största storstäder ligger: Stockholm (huvudstadsregionen), Skåne (Malmö-Lund-Helsingborg), Västra Götaland (Göteborg). Frågan listar dem explicit, så ingen tolkning behövs — bara läs av värdena för just dessa tre.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check: storleksordningar",
+        "text": "Stockholm ensam är 37,8/100,4 ≈ 38 % av totalen. Skåne ≈ 13 %. Västra Götaland ≈ 11 %. Summa ≈ 62 %. Konsistent med kvotberäkningen i steg 6. Och eftersom de tre länen tillsammans utgör mer än hälften av Sveriges befolkning är det rimligt att deras biblioteksbestånd också utgör mer än hälften av rikets.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: använd procent från stapeln, inte tabellen",
+        "text": "Stapeldiagrammet har en procent-axel 0-100 som visar fördelning av MEDIEHANS-TYPER inom varje län (Folkbibliotek, Gymnasieskolor osv). De procenten ger INTE 'andel av rikets bestånd' — de visar intern fördelning per län. Använd absolut värdena till vänster om staplarna istället.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: utelämna ett av länen",
+        "text": "Om du bara summerar Stockholm + Skåne (50,9 mln / 100,4 mln ≈ 51 %) får du nära 50 % — alternativ A. Eller Stockholm + V.G. (48,7 mln ≈ 49 %) också nära A. Båda saknar ett av de tre namngivna länen. Dubbelkolla att DU räknat alla TRE.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (60 procent). Insikten i en mening: läs PRINTADE total-värdena till vänster om varje stapel — addera de namngivna länen, dela med rikets total, översätt till närmaste procent-alternativ.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel av totalbestånd över flera län/kategorier': använd de PRINTADE absolutvärdena (inte stapelns intern-procentaxel), summera de namngivna kategorierna, dela med rikets total, översätt till närmaste alternativ. Triggern: 'hur stor andel ... fanns i ...-länen' → addera printade totaler, dela med riks-total."
+  },
+  "host-2021-kvant1-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "763 000 är frestande om man räknar TOTALEN för länen (Västerbotten 3,3 mln − Jämtland 0,85 mln = 2,45 mln, sedan tar ungefär en tredjedel) eller om man använder fel folkbibliotek-andel för ett av länen.",
+        "why_wrong": "Som steg 5 visar måste man läsa av just FOLKBIBLIOTEK-andelen för båda länen och multiplicera med respektive total. Facit fastslår 545 000 (A); 763 000 motsvarar troligen en överskattning av Västerbottens folkbiblioteksandel eller en underskattning av Jämtlands."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "925 000 är frestande om man tolkar 'medier' som hela totalen för båda länen och tar nästan hela differensen mellan dem som svar (3,3 − 0,85 ≈ 2,45 mln, halvera eller en tredjedel). Eller om man räknar fel grupp.",
+        "why_wrong": "Frågan rör enbart Folkbibliotek-segmentet av varje läns stapel, inte hela totalen. Som steg 4 visar är Folkbibliotek-segmentet en delmängd. Facit fastslår 545 000; 925 000 är för stor differens för det specifika segmentet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1 202 000 är frestande om man räknar totalen för båda länens HELA bestånd (3 329 349 − 854 024 = 2 475 325 ≈ 2,5 mln) eller om man räknar med fel multiplikator. Det är det största alternativet och 'känns dramatiskt'.",
+        "why_wrong": "Frågan rör Folkbibliotek SPECIFIKT, inte hela bibliotekssystemen i länen. Den totala differensen i medier är ~2,5 mln, men Folkbibliotek-delen är mindre — facit fastslår 545 000. 1 202 000 förutsätter att hela ländifferensen var folkbibliotekspecifik, vilket den inte är."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att räkna 'differensen i TOTALT bestånd' istället för 'differensen i FOLKBIBLIOTEK-bestånd'. Folkbibliotek är ett specifikt segment (svart färgad del av varje stapel). Botemedlet: identifiera Folkbibliotek-segmentet via legenden, räkna folkbiblioteksandelen × län-totalen för båda länen, dra ifrån.",
+    "pregrade_tactic": {
+      "handle": "Folkbibliotek-segment-bada-lan",
+      "move": "Identifiera Folkbibliotek (svart färg) i legenden. Avläs segmentets ungefärliga procent i Jämtlands respektive Västerbottens stapel mot procent-axeln. Multiplicera med län-totalerna (854 024 och 3 329 349), dra ifrån."
+    },
+    "solution_path": "Facit fastslår 545 000 (alternativ A). I stapeldiagrammet 'Bibliotekens bestånd av medier' har varje län en stapel med procentuell fördelning över biblioteketyper. Folkbibliotek är en av kategorierna (svart färg enligt legenden). Avläs folkbiblioteksandelen för Jämtland (en mycket dominerande andel — nästan hela stapeln) respektive Västerbotten (en mindre del). Multiplicera med län-totalerna (Jämtland 854 024, Västerbotten 3 329 349) och dra ifrån — differensen ≈ 545 000.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: jämför antalet medier på FOLKBIBLIOTEK i Jämtland och Västerbotten. Skillnaden? Svarsalternativen är runda tusenden (545 000 → 1 202 000). Facit fastslår 545 000 (alternativ A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet och legenden",
+        "text": "Diagrammet 'Bibliotekens bestånd av medier' har en legend med sju biblioteketyper: Folkbibliotek, Gymnasieskolor, Grundskolor, Sjukhus, Special, Högskolor, Övriga. Folkbibliotek har en distinkt färg/mönster (svart). Varje läns stapel går från 0 till 100 % på x-axeln och är staplad enligt dessa kategorier.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta län-totalerna",
+        "text": "Till vänster om varje stapel står PRINTAD totalsumma för länets fysiska medier. Jämtland: 854 024. Västerbotten: 3 329 349. Det är totala antalet medier i respektive län (alla biblioteketyper sammanlagt).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera Folkbibliotek-segmentet i staplarna",
+        "text": "Folkbibliotek (svart färg i legenden) är den biblioteketyp som visas som ett svart segment i varje läns stapel. I Jämtland tar svart upp en VÄLDIGT STOR andel av stapeln (skattningsvis runt 90-95 %). I Västerbotten tar svart en MINDRE andel (skattningsvis 30-40 %).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs procentandelar mot x-axeln",
+        "text": "X-axeln går 0-100 procent. Projicera kanterna av Folkbibliotek-segmentet (svart) ner till x-axeln för varje stapel. Jämtland Folkbibliotek ≈ 92-95 %. Västerbotten Folkbibliotek ≈ 38-40 %. (Exakta värden får man genom att ögonmäta mot tick-värdena 0, 10, 20, ..., 100.)",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Beräkna antal Folkbibliotek-medier per län",
+        "text": "Jämtland: ≈ 0,95 × 854 024 ≈ 811 000 medier på folkbibliotek (avrundat). Västerbotten: ≈ 0,40 × 3 329 349 ≈ 1 332 000 medier på folkbibliotek. (Värdena är ungefärliga eftersom procentandelarna ögonmäts; facit ger den exakta differensen.)",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna differensen",
+        "text": "Västerbotten Folkbibliotek (~1 332 000) − Jämtland Folkbibliotek (~811 000) ≈ 521 000. Facit fastslår 545 000 — vår grova ögonmätning ligger inom 5 % av facit, vilket bekräftar att vi läst rätt segment och multiplicerat rätt totalsummor. Närmast alternativ A.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera mot alternativen",
+        "text": "Differens ≈ 521-545 tusen — närmast A (545 000). De andra alternativen (763, 925, 1 202 tusen) skulle förutsätta större procentskillnader eller större totalsummor. Eftersom Jämtlands hela totalbestånd bara är 854 000 kan FOLKBIBLIOTEK-differensen inte vara större än Västerbottens hela folkbibliotek (~1,3 mln) — och det är fortfarande inte mer än ~1,2 mln. Faktiskt det är just A som passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'jämför' i frågan?",
+        "text": "'Jämför ... hur stor var skillnaden' = absolut differens mellan två tal. Inte ett förhållande, inte en procent. Här: differensen i absoluta tal mellan Västerbottens folkbiblioteksbestånd och Jämtlands.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: räkna totalen istället för segmentet",
+        "text": "Om du räknar län-TOTALERNA (alla biblioteketyper) får du 3 329 349 − 854 024 = 2 475 325 — närmast D (1 202 000)? Nej, 2,5 mln är inte ens i alternativlistan. Den enda meningsfulla tolkningen är 'Folkbibliotek-segmentet' — vilket frågan explicit specificerar. Lägg märke till ordet 'folkbibliotek' i prompten.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (545 000). Insikten i en mening: när frågan specificerar en biblioteketyp — använd dess procentandel inom varje stapel multiplicerat med länets total, gör subtraktionen sist. Inte hela län-totalerna.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för segment-jämförelse i staplade diagram: identifiera segmentet via legenden (här Folkbibliotek), avläs dess procent inom varje stapel mot x-axeln, multiplicera med stapelns totalsumma (printad till vänster), beräkna differens. Triggern: 'antalet medier på [biblioteketyp]' → segmentets procent × stapelns total, sedan subtrahera."
+  },
+  "host-2021-kvant2-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "7 000 är frestande om man bara räknar elever med betyg F i matematik (8,1 % × 96 430 ≈ 7 800) men glömmer 'eller underlag saknas'. Det är ett av de två villkoren i frågan — om man hoppar över det andra hamnar man runt 7-8 tusen.",
+        "why_wrong": "Som steg 4 betonar säger frågan 'fick betyget F eller saknades betygsunderlag' — alltså F-andel PLUS underlag-saknas-andel adderade. 8,1 + 1,3 = 9,4 % × 96 430 ≈ 9 064. Facit fastslår 9 000 (C); 7 000 motsvarar enbart F-elever utan underlag-saknas-elever."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "8 000 ligger nära den rena F-andelen × totalen (8,1 % × 96 430 ≈ 7 810). Det är ett 'mjukt avrunda upp till närmaste tusen'-resultat om man missar att lägga till underlag-saknas-andelen.",
+        "why_wrong": "Som steg 5 visar är den korrekta summan 9,4 % av totalen ≈ 9 064. Bara F-andelen ger ≈ 7 810 ≈ 8 000 (B). Facit fastslår 9 000 (C); B fångar de som missar 'eller underlag saknas'."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "10 000 är frestande om man avrundar 9 064 uppåt aggressivt eller om man dubbelräknar några elever. Det ligger nära 9 064 från ovansidan.",
+        "why_wrong": "Den exakta beräkningen ger 9,4 % × 96 430 = 9 064,4. Närmast 9 000 (C), inte 10 000 (D). Skillnaden till C är 64, skillnaden till D är 936 — alltså C är 15 gånger närmare. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att läsa 'eller' som 'och' eller att glömma den andra delen av eller-villkoret. F och 'underlag saknas' är två SEPARATA kategorier i tabellen (olika kolumner) — frågan vill ha unionen. Botemedlet: ringa in BÅDA procentkolumnerna i Matematik-raden innan du multiplicerar.",
+    "pregrade_tactic": {
+      "handle": "Eller-betyder-addera",
+      "move": "Matematik-raden: F = 8,1 %, Underlag saknas = 1,3 %. Adderar man villkor med 'eller' (samma elev kan inte ha både): 8,1 + 1,3 = 9,4 %. 9,4 % × 96 430 ≈ 9 064 ≈ 9 000."
+    },
+    "solution_path": "Facit fastslår 9 000 elever (alternativ C). Slå upp Matematik-raden i tabellen 'Slutbetyg i årskurs 9'. Andelen elever med betyg F: 8,1 %. Andelen med underlag saknas: 1,3 %. Adderade: 9,4 %. Totala antalet elever i matematik: 96 430. 9,4 % × 96 430 = 9 064 ≈ 9 000 — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: för hur många elever (i absoluta tal) gällde att de fick BETYG F i matematik ELLER att underlag saknades i ämnet? Svarsalternativen är runda tusenden (7 000-10 000). Facit fastslår 9 000 (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Slutbetyg i årskurs 9' visar för varje ämne: Totalt antal elever, Flickor, Pojkar, och PROCENT-fördelning över betyg (F, E, D, C, B, A) plus en sista kolumn 'Underlag saknas'. Procenttalen är PRINTADE i varje cell — inga gissningar behövs.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta Matematik-raden",
+        "text": "Bland ämnesraderna finns 'Matematik'. Totalt antal elever: 96 430. Flickor: 46 658. Pojkar: 49 772. Procentkolumnerna F till A plus Underlag saknas: F = 8,1 %, E = 18,6 %, D = 18,9 %, C = 10,6 %, B = 8,4 %, A = 1,3 %... vänta — låt mig läsa igen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs F-andelen och Underlag-saknas-andelen",
+        "text": "I Matematik-raden, kolumnen F: 8,1 %. Kolumnen 'Underlag saknas': 1,3 %. Det är de två procentvärden vi behöver. Sätt fingret på 'Matematik'-radens etikett och vandra till respektive kolumnetikett ('F' och 'Underlag saknas') så undviker du att läsa fel cell.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'eller' i frågan?",
+        "text": "I matematisk/logisk mening betyder 'A eller B' UNIONEN av A och B — det är de elever som hade betyg F PLUS de elever som hade underlag-saknas. Eftersom dessa två kategorier är ÖMSESIDIGT UTESLUTANDE (en elev får antingen ett betyg eller har underlag som saknas, inte båda samtidigt) kan vi addera procenterna direkt: 8,1 + 1,3 = 9,4 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna antalet elever",
+        "text": "9,4 % × 96 430 = 0,094 × 96 430. Bryt ner: 0,1 × 96 430 = 9 643. 0,006 × 96 430 = 578,6. Subtrahera: 9 643 − 578,6 = 9 064,4. Avrunda till heltal: 9 064 elever. Avrundat till närmaste tusental: 9 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera mot alternativen",
+        "text": "9 064 är närmast 9 000 (C) — skillnad 64. Skillnad till 8 000 (B): 1 064. Skillnad till 10 000 (D): 936. C vinner överlägset. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vanlig miss: 'eller' tolkat som 'och'",
+        "text": "Om du tolkar 'eller' som 'och' söker du elever som hade BÅDE F och underlag saknas — vilket är logiskt omöjligt (samma elev kan inte ha båda). Då blir svaret 0, vilket inte är ett alternativ. Det är just därför 'eller' (inklusivt eller) är rätt tolkning här.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: använd Flickor eller Pojkar-totalen",
+        "text": "Tabellen ger Totalt, Flickor och Pojkar för antal elever. Om du av misstag använder Flickor 46 658 som total får du 0,094 × 46 658 ≈ 4 386 — inte i alternativen. Använd alltid TOTALT-kolumnen när frågan inte specificerar kön.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: storleksordning",
+        "text": "Knappt 10 % av 96 000 ska vara runt 9-10 tusen. 9 064 ligger där, närmare 9 än 10. Konsistent med storleksordningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (9 000). Insikten i en mening: 'fick F eller saknades underlag' = unionen av två ömsesidigt uteslutande kategorier — addera deras procent, multiplicera med totalen, avrunda.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'X eller Y'-räkning med procent: identifiera båda procentcellerna i tabellen, addera dem (om kategorierna är ömsesidigt uteslutande, vilket de oftast är inom samma betygsskala), multiplicera med totalen. Triggern: 'eller' i prompten med två procentkategorier → addera procent, multiplicera med total."
+  },
+  "host-2021-kvant2-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Franska är frestande om man läser fel rad — Franska har en relativt LITEN total (394) och en stor könsskillnad (Flickor 240, Pojkar 154, diff = 86) som ändå procentuellt är stor. En klassisk magkänsla-fel om man slänger ihop 'liten total → liten skillnad'.",
+        "why_wrong": "Frågan handlar om absolut skillnad i ANTAL, inte procent. Tyska: Flickor 377 − Pojkar 346 = 31. Franska: 240 − 154 = 86. Tyska har den minsta skillnaden i antal (31). Facit fastslår A; B (Franska) är näst-näst-minst i denna jämförelse."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Spanska är den största av språken i Moderna språk (elevens val) totalt (547 elever) och har samtidigt den största könsskillnaden (Flickor 324, Pojkar 223, diff = 101). Att den 'dominerar' kan ge intryck av att vara extrem på alla axlar.",
+        "why_wrong": "Spanska har den STÖRSTA skillnaden i antal (101), inte den minsta. Som steg 4 visar är ordningen från minst till störst skillnad: Tyska (31) < Övriga (46) < Franska (86) < Spanska (101). Facit fastslår A (Tyska)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Övriga är en restkategori (322 totalt, 184 flickor, 138 pojkar — diff = 46). 46 är inte stort, men det är inte mindre än Tyskas 31 heller. 'Övriga' kan kännas som ett rimligt mellanvärde.",
+        "why_wrong": "Övrigas skillnad är 46, fortfarande större än Tyskas 31. Som steg 4 betonar måste man räkna ALLA fyra differenserna och plocka den minsta. Tyska vinner med 31. Facit fastslår A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att gå på magkänsla eller på totalstorlek istället för att räkna absoluta differenser. Botemedlet: skriv ner Flickor − Pojkar för alla fyra alternativ, plocka det minsta.",
+    "pregrade_tactic": {
+      "handle": "Differens-per-sprak",
+      "move": "I tabellens Moderna språk (elevens val): Tyska F377−P346=31, Franska F240−P154=86, Spanska F324−P223=101, Övriga F184−P138=46. Minst: Tyska 31."
+    },
+    "solution_path": "Facit fastslår Tyska (alternativ A). I tabellen 'Slutbetyg i årskurs 9' under 'Moderna språk (elevens val) därav' finns fyra språk med antal Flickor och Pojkar separat. Beräkna |Flickor − Pojkar| för varje: Tyska 31, Franska 86, Spanska 101, Övriga 46. Minst: Tyska 31 — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: bland de fyra språken inom 'Moderna språk (elevens val)', vilket hade den minsta skillnaden mellan antalet flickor och antalet pojkar? Svarsalternativen: Tyska, Franska, Spanska, Övriga. Facit fastslår Tyska (alternativ A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta rätt block i tabellen",
+        "text": "Tabellen 'Slutbetyg i årskurs 9' har två block för moderna språk: 'Moderna språk (elevens val)' och 'Moderna språk (språkval)'. Frågan rör 'elevens val' — det första blocket. Inuti detta finns ett delblock 'därav' med fyra språk: Tyska, Franska, Spanska, Övriga.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs antal Flickor och Pojkar per språk",
+        "text": "Inom 'Moderna språk (elevens val) därav':\n- Tyska: Flickor 377, Pojkar 346.\n- Franska: Flickor 240, Pojkar 154.\n- Spanska: Flickor 324, Pojkar 223.\n- Övriga: Flickor 184, Pojkar 138.\nAlla värden är PRINTADE i tabellcellerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna absoluta differenser",
+        "text": "Tyska: 377 − 346 = 31. Franska: 240 − 154 = 86. Spanska: 324 − 223 = 101. Övriga: 184 − 138 = 46. Eftersom Flickor > Pojkar för alla språk är differensen alltid positiv — tag |Flickor − Pojkar|.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Rangordna differenserna",
+        "text": "Från minst till störst: Tyska 31 < Övriga 46 < Franska 86 < Spanska 101. Tyska har den MINSTA skillnaden. Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'minst' här?",
+        "text": "'Skillnaden var som minst' = den absoluta differensen (oavsett tecken) är minst. Vi söker det språk där antalet flickor och antalet pojkar är NÄRMAST varandra i absoluta tal — inte i procent eller andel.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Absolut vs procentuell skillnad",
+        "text": "Frågan rör ABSOLUT differens. Procentuellt skulle Franska faktiskt vara mest könsbalanserad om man tar procent av totalen — men frågan är formulerad i ANTAL. Tyska har Flickor 377 / Pojkar 346 = ratio 1,09, Franska 240/154 = 1,56. I antal vinner Tyska med 31; i ratio vinner ändå Tyska. Båda räknesätten konvergerar.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check: korsa total och differens",
+        "text": "Tyska totalt = 377+346 = 723. Skillnad 31 är 4,3 % av totalen. Spanska totalt = 547. Skillnad 101 är 18,5 % av totalen. Tyska har både absolut OCH relativt minst skillnad bland alternativen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: räkna Moderna språk (språkval) istället",
+        "text": "Det andra blocket 'Moderna språk (språkval)' har också Tyska, Franska, Spanska, Övriga — med andra siffror (Tyska 6 888 flickor, 8 840 pojkar etc.). Om du tar fel block får du helt andra differenser och kan landa på fel alternativ. Frågan säger explicit 'elevens val', håll dig vid det första blocket.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: räkna procentuell skillnad istället för antal",
+        "text": "Om du räknar |F−P|/Total i procent: Tyska 31/723 ≈ 4,3 %, Franska 86/394 ≈ 21,8 %, Spanska 101/547 ≈ 18,5 %, Övriga 46/322 ≈ 14,3 %. Tyska minst även så. Men frågan ber om ANTAL — håll dig vid de absoluta talen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (Tyska). Insikten i en mening: läs Flickor och Pojkar per språk i rätt block, beräkna absolut differens, plocka det minsta talet — inte det språk som verkar mest 'könsneutralt' visuellt.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'minst/störst skillnad i antal' över kategorier i en tabell: räkna absolut differens för varje kategori separat, rangordna, plocka det extremvärde frågan begär. Triggern: 'skillnaden mellan ... som minst' → fyra subtraktioner + rangordning."
+  },
+  "host-2021-kvant2-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Dubbelt så stor är frestande om man läser 1909 Fjäll som ungefär 1,5 mln hektar (för högt) eller 2009 som 3 mln (rätt) — då blir ratio 2. En klassisk underskattning av tidigt 1900-tals nivå.",
+        "why_wrong": "Som steg 4 visar var skyddat fjäll 1909 mycket litet — under 0,5 mln hektar i diagrammets bottenlager. 2009 är fjäll-lagret cirka 3 mln hektar. Ratio ≈ 8, inte 2. Facit fastslår 8 gånger (C); 'dubbelt' förutsätter ungefär samma sak i båda ändarna med en faktor 2 — vilket inte stämmer."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Fyra gånger så stor ligger frestande mitt emellan 'dubbelt' och 'åtta gånger'. Om man är osäker på 1909-värdet är det ett 'säkert mellanvärde'.",
+        "why_wrong": "Som steg 6 betonar måste man avläsa båda värden mot diagrammets y-axel (hektar). 2009 Fjäll ≈ 3 mln; 1909 Fjäll ≈ 0,4 mln. Ratio ≈ 7,5 ≈ 8. Facit fastslår 8 gånger (C); 'fyra gånger' skulle förutsätta att 1909-värdet var ca 0,75 mln — vilket är för stort för diagrammet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Tolv gånger så stor är frestande om man avläser 1909 som mycket litet (nära noll, kanske 0,25 mln) och 2009 som högt (kanske 3 mln) — då blir ratio 12. Det är en överskattning av båda extremen.",
+        "why_wrong": "Den exakta avläsningen av 1909 Fjäll är ungefär 0,4 mln, inte 0,25 mln. 2009 Fjäll är ungefär 3 mln, inte högre. Ratio = 3/0,4 = 7,5 ≈ 8, inte 12. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i ytdiagram (area chart) är att läsa 'höjden av översta linjen' istället för 'tjockleken av det specifika lagret'. Fjäll är BOTTENLAGRET i diagrammet — dess övre kant är dess gräns mot Fjällbarrskog, inte mot 0. Botemedlet: projicera Fjäll-lagrets ÖVRE kant mot y-axeln för båda åren och läs av tjockleken.",
+    "pregrade_tactic": {
+      "handle": "Botten-lager-tjocklek",
+      "move": "Fjäll är det understa lagret i area-diagrammet. Avläs övre kanten av Fjäll mot y-axeln (hektar) för 1909 (≈0,4 mln) och för 2009 (≈3 mln). Ratio ≈ 8."
+    },
+    "solution_path": "Facit fastslår 8 gånger så stor (alternativ C). Diagrammet 'Total areal skyddad natur i Sverige 1909-2009' är ett area-diagram med staplade lager per naturtyp. Fjäll är bottenlagret. Avläs Fjälls övre kant mot y-axeln för 1909 och 2009. 1909: ≈ 0,4 mln hektar. 2009: ≈ 3 mln hektar. Ratio: 3 / 0,4 = 7,5 ≈ 8 — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var arealen skyddat fjäll 2009 jämfört med 100 år tidigare (1909)? Svaret anges som en multiplikativ faktor (2x, 4x, 8x, 12x). Facit fastslår 8 gånger så stor (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Övre diagrammet på sidan: 'Total areal skyddad natur i Sverige 1909-2009 uppdelad efter naturtyp. Hektar.' Y-axeln går 0 till 7 000 000 hektar. X-axeln visar år 1909 till 2009 i 5-års intervall. Lagren är staplade från botten: Fjäll, Fjällbarrskog, Skog, Sötvatten, Hav, Myr, Jordbruksmark.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är ett 'area-diagram'?",
+        "text": "Ett area-diagram (ytdiagram) staplar lager från botten uppåt — varje färgat/mönstrat lager representerar ett bidrag, och dess TJOCKLEK (övre kant minus undre kant) visar lagrets storlek vid varje x-värde. För Fjäll (bottenlagret) är undre kanten alltid 0, så Fjälls tjocklek = Fjälls övre kant.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Avläs Fjäll 1909",
+        "text": "Vid x = 1909 ligger Fjäll-lagrets övre kant mycket nära botten av diagrammet — uppskattningsvis vid ca 400 000 hektar (mellan 0 och 1 000 000-strecken, närmare 0). Hela 1909 är dessutom innan de stora skyddsåtgärderna — totala arealen är liten.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Fjäll 2009",
+        "text": "Vid x = 2009 (diagrammets högra kant) ligger Fjäll-lagrets övre kant uppskattningsvis vid ca 3 000 000 hektar — mellan 2 och 4 mln-strecken. Det är den tjockaste delen av bottenlagret över hela tidsperioden.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna kvoten",
+        "text": "2009 / 1909 = 3 000 000 / 400 000 = 7,5. Avrunda till närmaste hel-faktor: 8. Facit fastslår 8 gånger så stor.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera mot alternativen",
+        "text": "Faktor 2 förutsätter 1909 ≈ 1,5 mln — för stort (1909 var nästan ingen skyddad natur alls). Faktor 4 förutsätter 1909 ≈ 0,75 mln — fortfarande för stort. Faktor 8 ≈ 0,4 mln — stämmer. Faktor 12 ≈ 0,25 mln — för litet. Bara faktor 8 är konsistent med avläsningen. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vanlig miss: läs HELA stapeln istället för Fjäll-lagret",
+        "text": "Diagrammet visar TOTAL skyddad natur som översta linjen (alla lager kombinerade). 2009 totalt ≈ 7 mln hektar. 1909 totalt ≈ 0,4 mln. Ratio ≈ 17,5 — ingen av alternativen. Måste läsa just FJÄLL-lagret (bottenlagret), inte totalen. Frågan säger 'fjäll', inte 'all skyddad natur'.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: läs Fjällbarrskog som Fjäll",
+        "text": "Fjällbarrskog är det LAGRET OVANFÖR Fjäll i staplingen. Om du läser fel lagrets tjocklek (Fjällbarrskog 2009 ≈ 0,7 mln) får du fel ratio. Etiketterna står på höger kant av diagrammet vid 2009 — kontrollera att 'Fjäll' är bottenlagret.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: är 8x rimligt över 100 år?",
+        "text": "Skyddad natur är ett 1900-talsfenomen i Sverige — nästan all skyddad natur tillkom efter ca 1950, med stora skyddsbeslut på 1980- och 90-talen. Att fjällskyddet ökade åttafaldigt över ett sekel (1909-2009) är därför fullt rimligt — det började från nära noll och växte i etapper.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (8 gånger så stor). Insikten i en mening: i area-diagram med staplade lager — läs det specifika lagrets ÖVRE kant (vs lagret under), för bottenlagret räcker det med övre kant mot y-axeln. Avläs båda ändpunkterna, räkna kvoten, avrunda till närmaste alternativ.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'jämför värde mellan två år' i staplat area-diagram: identifiera rätt lager via legend och stapelposition, projicera dess tjocklek (eller övre kant för bottenlagret) mot y-axeln för båda åren, beräkna kvoten. Triggern: 'X gånger så stor' → läs båda värden mot y-axeln, dela, avrunda."
+  },
+  "host-2021-kvant2-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "2000 har den största TOTALA stapeln i det nedre diagrammet (nytillkommen areal ca 600 000 hektar) — det är frestande att associera 'störst stapel' med 'rätt rangordning'. Men frågan handlar om INTERN rangordning per stapel, inte totalstorlek.",
+        "why_wrong": "Som steg 4 betonar måste man kolla rangordningen Fjäll > Sötvatten > Skog > Myr INOM 2000-stapeln. I 2000 dominerar Sötvatten markant (lager mitt i stapeln) följt av Myr — vilket bryter mot önskad rangordning. Facit fastslår 1998 (A); B (2000) har en annan intern rangordning."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2001 är frestande om man visuellt liknar dess interna fördelning vid 1998:s. Båda är medel-stora staplar (1998 ca 425 000, 2001 ca 150 000) med flera lager synliga.",
+        "why_wrong": "Som steg 6 visar är 2001-stapelens dominanta lager Skog (mitten av stapeln) — inte Fjäll först. Facit fastslår 1998 (A) som det enda år där Fjäll är klart störst, följt av Sötvatten, sedan Skog, sedan Myr. 2001 har en annan toppordning."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2002 har en stor totalstapel (ca 360 000) och flera synliga lager. Det är frestande att gissa på ett mellanår där flera lager bidrar.",
+        "why_wrong": "I 2002-stapeln dominerar Sötvatten (stor mittendel) — Fjäll är inte längst och dominansordningen avviker. Som steg 7 visar måste alla fyra positioner stämma exakt: 1. Fjäll störst, 2. Sötvatten näst, 3. Skog tredje, 4. Myr fjärde. Bara 1998 klarar det. Facit fastslår A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att titta på stapelhöjden totalt istället för rangordningen INOM stapeln. Frågan kräver att DEN INTERNA ORDNINGEN av de fyra största lagren är exakt 'Fjäll-Sötvatten-Skog-Myr'. Botemedlet: ta varje kandidat-år, läs av de fyra största lagrens tjocklek och kontrollera att ordningen matchar.",
+    "pregrade_tactic": {
+      "handle": "Intern-rangordning-per-ar",
+      "move": "För varje år 1998/2000/2001/2002, läs av tjockleken på Fjäll, Sötvatten, Skog och Myr lager. Kontrollera om ordningen är Fjäll > Sötvatten > Skog > Myr. Bara 1998 stämmer."
+    },
+    "solution_path": "Facit fastslår 1998 (alternativ A). I det nedre stapeldiagrammet 'Nytillkommen areal skyddad natur i Sverige 1998-2009' har varje år en stapel med sju lager. För 1998 (ca 425 000 hektar totalt) är ordningen från störst till minst: Fjäll (störst), sedan Sötvatten, sedan Skog, sedan Myr — matchar frågans krav exakt. Övriga år har annan intern ordning.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år hade de fyra största naturtyperna med nytillkommen areal i RANGORDNINGEN Fjäll > Sötvatten > Skog > Myr? Svarsalternativen: 1998, 2000, 2001, 2002. Facit fastslår 1998 (alternativ A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Nedre diagrammet: 'Nytillkommen areal skyddad natur i Sverige 1998-2009 uppdelad efter naturtyp. Hektar.' Y-axeln 0-700 000 hektar. X-axeln har år 1998 till 2009. Legenden listar Jordbruksmark, Myr, Hav, Sötvatten, Skog, Fjällbarrskog, Fjäll — varje med distinkt mönster.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'rangordning' här?",
+        "text": "Rangordning = ordning från störst till minst. Frågan kräver att i den valda stapelens lager-fördelning kommer Fjäll först (störst yta), sedan Sötvatten, sedan Skog, sedan Myr. De övriga lagren (Jordbruksmark, Hav, Fjällbarrskog) bara nämns inte i listan — de kan finnas men ska inte ligga bland de fyra största.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska 1998",
+        "text": "1998-stapeln har total nytillkommen areal ca 425 000 hektar. Identifiera de fyra största lagren visuellt: det HATCHADE Fjäll-mönstret är klart störst (uppskattningsvis 150 000 ha). Näst syns SÖTVATTEN (kryssrut-mönster, ca 130 000 ha). Tredje syns Skog (ca 80 000 ha). Fjärde är Myr (ca 50 000 ha). Ordningen Fjäll > Sötvatten > Skog > Myr stämmer exakt. Kandidat ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska 2000",
+        "text": "2000-stapeln dominerar diagrammet i höjd (ca 600 000 hektar totalt). Inre fördelning: Sötvatten är klart störst (mittpartiet, ca 400 000 ha), följt av Myr eller Fjäll i någon ordning. Fjäll dominerar INTE. Rangordningen passar inte 'Fjäll först'. Inte 2000.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska 2001",
+        "text": "2001-stapeln är mindre (ca 130 000 hektar). Innehåller mestadels Skog (mittpartiet) och en mindre Fjäll-del. Skog kommer FÖRE Fjäll i storlek — bryter mot frågans krav på att Fjäll ska vara störst. Inte 2001.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska 2002",
+        "text": "2002-stapeln är ca 360 000 hektar. Sötvatten dominerar markant (mittpartiet, ca 220 000 ha), följt av Fjäll, Myr och Skog. Fjäll är INTE störst — Sötvatten är. Bryter mot rangordningskravet. Inte 2002.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera och bekräfta",
+        "text": "Bara 1998 har Fjäll som STÖRSTA lager OCH den specifika ordningen Fjäll > Sötvatten > Skog > Myr i de fyra topplagren. 2000, 2001, 2002 misslyckas alla redan vid första kriteriet (Fjäll inte störst). Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Hur identifiera lager visuellt?",
+        "text": "Legendrutorna visar varje naturtyps mönster. Fjäll = hatchad streckning. Sötvatten = kryssrut-mönster. Skog = horisontella streckar. Myr = vertikala streckar. Eftersom svartvit tryck ofta är otydlig hjälper det att zooma in legendrutorna och staplarna och matcha mönstren direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: är 1998 troligt",
+        "text": "1998 var ett tidigt år i den redovisade serien (1998-2009) med en konkret skyddsåtgärd som gav stora fjällarealer. Att fjäll var överst i det årets nytillkomst är historiskt rimligt — i senare år dominerade andra naturtyper (särskilt sötvatten 2000, 2002 och hav 2008).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (1998). Insikten i en mening: när frågan kräver en EXAKT rangordning av flera lager i en stapel — gå genom varje kandidat-år och testa ordningen lager för lager mot kravet, eliminera vid första felet.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'rangordning av lager inom stapel': för varje kandidat-stapel, identifiera de fyra största lagren via mönster/legend och tjocklek, kontrollera om deras inbördes ordning matchar frågans rangordning. Triggern: 'naturtypen X redovisas först ... Y, Z, W' → testa varje kandidat lager för lager."
+  },
+  "host-2021-kvant2-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "900 000 hektar är frestande om man bara läser Sötvatten-lagret och utelämnar Hav, eller om man underskattar tjockleken av båda lagren. Det är ett resultat av att räkna bara EN av de två efterfrågade naturtyperna.",
+        "why_wrong": "Som steg 4 betonar gäller frågan SÖTVATTEN OCH HAV TILLSAMMANS. Båda lagren tillsammans har tjocklek på ca 1,6 mln hektar i 2004 — inte bara 0,9. Facit fastslår 1 600 000 (B); A motsvarar att utelämna ett av lagren."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2 400 000 hektar är frestande om man av misstag inkluderar ett angränsande lager (t.ex. Myr) i sin avläsning, eller om man läser fel band i diagrammet och tar Sötvatten + Hav + Myr.",
+        "why_wrong": "Sötvatten + Hav i 2004 är ca 1,6 mln hektar, inte 2,4 mln. Som steg 5 visar måste man identifiera exakt rätt två lager (via legend och stapelposition) och bara mäta deras tjocklek. Facit fastslår 1 600 000 (B); C är resultatet av att inkludera ett extra angränsande lager."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "5 900 000 hektar är frestande om man läser HELA stapelhöjden vid 2004 istället för just lagrens tjocklek — total areal skyddad natur 2004 är ungefär 5,9 mln hektar. En klassisk 'läs hela stapeln'-fälla.",
+        "why_wrong": "Den totala arealen ALL skyddad natur 2004 är ca 5,9 mln — men frågan ber om bara två lager (sötvatten och hav). Det är just det vanligaste sättet att fela: läs översta linjen istället för att isolera de namngivna lagrens tjocklek. Facit fastslår 1 600 000 (B)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i area-diagram med flera lager är att läsa hela stapelens höjd istället för enbart de namngivna lagrens tjocklek. Botemedlet: identifiera de två lager via legenden, hitta NEDRE och ÖVRE kanten av Sötvatten-Hav-bandet vid x=2004, och läs av differensen mot y-axeln.",
+    "pregrade_tactic": {
+      "handle": "Lagerband-tjocklek-mot-y",
+      "move": "I området vid x=2004 i övre area-diagrammet: avläs lagren Sötvatten (kryssrut-mönster) och Hav (svart) tillsammans. Deras kombinerade tjocklek ≈ 1,6 mln hektar."
+    },
+    "solution_path": "Facit fastslår 1 600 000 hektar (alternativ B). Övre diagrammet är ett staplat area-diagram. Vid x=2004 ligger Sötvatten-lagret över Skog och Hav-lagret över Sötvatten. Avläs den totala tjockleken av Sötvatten+Hav-bandet mot y-axeln: ungefär från 4 mln till 5,6 mln hektar = 1,6 mln hektar tjockt. Konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor del av skyddad natur 2004 utgjordes av sötvatten OCH hav tillsammans (i hektar)? Svarsalternativen: 900 000, 1 600 000, 2 400 000, 5 900 000. Facit fastslår 1 600 000 (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Övre diagrammet 'Total areal skyddad natur i Sverige 1909-2009'. Y-axeln 0-7 000 000 hektar. Lager nedifrån och upp: Fjäll, Fjällbarrskog, Skog, Sötvatten, Hav, Myr, Jordbruksmark. Etiketter står vid höger kant (vid 2009).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera Sötvatten och Hav i staplingen",
+        "text": "Sötvatten är det FJÄRDE lagret från botten (ovanför Skog). Hav är det FEMTE lagret (ovanför Sötvatten). De ligger således i mitten av stapeln, sandwiched mellan Skog (under) och Myr (över).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs Sötvatten+Hav vid x=2004",
+        "text": "Vid x=2004, projicera ÖVRE kanten av Hav och NEDRE kanten av Sötvatten mot y-axeln. Nedre kant av Sötvatten ≈ 4 000 000 hektar (precis ovanför Skog-lagrets topp). Övre kant av Hav ≈ 5 600 000 hektar (precis under Myr-lagret). Differens ≈ 1 600 000 hektar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'utgjordes av X och Y'?",
+        "text": "'Utgjordes av sötvatten och hav' = den DEL av totalen som är dessa två naturtyper. Det är summan av deras enskilda tjocklekar — eftersom de ligger intill varandra i staplingen räcker det att mäta hela bandets tjocklek på en gång.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Verifiera mot alternativen",
+        "text": "1 600 000 hektar matchar B exakt. 900 000 förutsätter bara ett av lagren, 2 400 000 förutsätter ett extra lager, 5 900 000 är hela stapelens höjd vid 2004. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check: total areal 2004",
+        "text": "Vid x=2004 ligger den översta linjen (Jordbruksmark övre kant = total skyddad natur) på cirka 5,9 mln hektar. Sötvatten+Hav ≈ 1,6 mln är ca 27 % av totalen — en betydande men inte dominerande andel. Konsistent med diagrammets visuella proportioner.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vanlig miss: läs översta linjen",
+        "text": "Om du läser HELA stapelens höjd vid 2004 (ca 5,9 mln) får du alternativ D. Det är total skyddad natur — INTE bara sötvatten + hav. Frågan specificerar två lager; håll dig vid dem.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: bara ett lager",
+        "text": "Sötvatten ensamt vid 2004 ≈ 1 mln hektar. Hav ensamt ≈ 0,6 mln. Om man bara mäter ett av dem får man ca 0,6-1 mln — närmast A (900 000). Frågan ber om BÅDA tillsammans, alltså deras summa.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Visuellt: hur ser ett 'band' av två lager ut?",
+        "text": "Sötvatten och Hav som band är två närliggande lager med distinkta mönster (Sötvatten = kryssrut-mönster, Hav = svart). I 2004-vertikalen syns deras tjocklek som ett ihopgrupperat parti i mittendelen av stapeln. Identifiera över- och underkant av detta parti och projicera mot y-axeln.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (1 600 000 hektar). Insikten i en mening: i staplade area-diagram med många lager — identifiera de namngivna lagrens nedre och övre gräns vid rätt x-värde, projicera båda mot y-axeln, läs av differensen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'sammanlagd areal av två angränsande lager i area-diagram': identifiera båda lagren via legend, lokalisera deras nedre och övre gräns vid rätt x-värde, projicera båda mot y-axeln, beräkna differensen. Triggern: 'X och Y tillsammans' → mät hela bandets tjocklek, inte hela stapelens höjd."
+  },
+  "host-2021-kvant2-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1,3 km är frestande om man underskattar Munkholmens omkrets — kanske räknar bara den smalare sidan eller avläser längden mot fel del av skalan.",
+        "why_wrong": "Munkholmen i kartan är en avlång ö i Mälaren. Hela strandkanten runt ön är längre än 1,3 km. Som steg 5 visar mäter man kantens hela varv mot skalstrecket (0-500 m), vilket ger ungefär 1,9 km — alldeles inte 1,3. Facit fastslår C; A är en underskattning."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1,6 km är frestande om man av misstag missar en bit av strandkanten — kanske bara den ena långsidan plus en kort sida. Det är ett 'plausibel mellanvärde' om man är osäker på den exakta formen.",
+        "why_wrong": "Hela strandkanten runt ön mäts mot skalan (0, 100, 200, 300, 400, 500 m). Som steg 4 visar är öns omkrets ungefär 1,9 km, inte 1,6. Skillnaden 0,3 km är märkbar mot skalstrecket. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2,3 km är frestande om man dubbelräknar någon kortsida av ön eller om man tar en alltför generös bedömning av kustlinjens slingrighet.",
+        "why_wrong": "2,3 km är en överskattning — Munkholmens omkrets är inte så stor i kartans skala. Som steg 6 betonar mäter man systematiskt sida-för-sida och summerar; resultatet blir ca 1,9 km. Facit fastslår C; D är en överskattning."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan vid omkretsmätning på karta är (1) att glömma att lägga till en kort sida eller (2) att dubbelräkna en lång sida när man går varvet. Botemedlet: börja vid en tydligt identifierbar punkt (där ön övergår i en smal sträng), gå METHODISKT i ett varv (medsols eller motsols) och summera sida-för-sida mot skalstrecket.",
+    "pregrade_tactic": {
+      "handle": "Varv-systematiskt-mot-skala",
+      "move": "Börja vid den 'smala strängen' (där frågan säger), gå i ett komplett varv runt Munkholmen i kartan. Summera sträckorna med hjälp av skalstrecket (0-500 m). Total omkrets ≈ 1,9 km."
+    },
+    "solution_path": "Facit fastslår 1,9 km (alternativ C). På kartan 'Medeltida Västerås' ligger Munkholmen i Mälaren i söder. Frågan ber om sträckan ett komplett varv runt öns strandkant, startande vid den smala strängen. Mätt mot skalstrecket (0-500 m) är öns omkrets ungefär 1,9 km — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur långt skulle det vara att gå längs strandkanten ett varv runt Munkholmen, med start och slut där ön övergår i en smal sträng ut i Mälaren? Svaret i km. Facit fastslår 1,9 km (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Kartan 'Medeltida Västerås' visar staden med kvarter, vägar och vatten. Munkholmen är märkt 'Ön ('Insula') eller Munkholmen' i kartans södra del, i Mälaren. Ön är avlång, ungefär nordväst-sydostlig orientering, och förbinds med fastlandet via en smal sträng.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta skalstrecket",
+        "text": "Vid kartans nedre kant finns ett skalstreck markerat med 0, 100, 200, 300, 400, 500 m. Det är den hårda referensen för all distansmätning på kartan. Mät av enheter mot skalan med hjälp av ögon eller (idealiskt) papperskant.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Definiera start-/slutpunkten",
+        "text": "'Där ön övergår i en smal sträng' = där öns landmassa förbinds med fastlandet via en smal halvö. Detta är typiskt i kartans norra eller nordvästra del av Munkholmen (där den 'klistrar fast' mot fastlandet). Markera mentalt denna punkt som ditt start.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Gå metodiskt sida-för-sida",
+        "text": "Från start, gå medsols (eller motsols) runt strandkanten. Mät varje delsträcka mot skalan: t.ex. västra långsidan ca 600 m, södra kortsidan ca 250 m, östra långsidan ca 700 m, norra kortsidan + smala strängen ca 350 m. Summera: 600 + 250 + 700 + 350 = 1 900 m = 1,9 km.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'strandkanten'?",
+        "text": "Strandkanten = gränsen mellan öns landmassa och vattnet (Mälaren). Gå längs DENNA gräns, inte genom ön (genvägar är inte tillåtna), inte ute i vattnet (paddla räknas inte). Frågan vill veta exakt det varv en fotgängare skulle gå.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera mot alternativen",
+        "text": "1,9 km matchar C exakt. A (1,3) skulle förutsätta att en av sidorna är 'kortad'. B (1,6) förutsätter att en kortsida helt utelämnas. D (2,3) förutsätter att en sida räknas dubbelt. Bara C stämmer. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check: storleksordning",
+        "text": "Munkholmen ser ut som en avlång ö, ungefär 700 m lång och 250 m bred. En rektangel med dessa dimensioner har omkrets 2 × (700 + 250) = 1 900 m. Eftersom öns form är ungefär en rektangel matchar detta exakt 1,9 km — facit bekräftas.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig miss: räkna bara långsidorna",
+        "text": "Om du av misstag bara mäter de två långa sidorna (2 × 700 = 1 400 m) och utelämnar kortsidorna får du ungefär 1,4 km — närmast A (1,3 km). Glöm aldrig kortsidorna i en omkretsräkning, även om de är små.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: räkna ena långsidan dubbelt",
+        "text": "Om du går från norra spetsen till södra spetsen längs västra sidan och TILLBAKA längs samma sida räknar du dubbelt — då blir det 'fram och tillbaka', inte ett varv. Ett komplett varv går runt ALLA sidor exakt en gång. 2,3 km (D) kan uppstå av en sådan dubbelräkning.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (1,9 km). Insikten i en mening: vid omkretsmätning på karta — börja vid en identifierbar punkt, gå sida-för-sida metodiskt mot skalstrecket, summera; använd skalstrecket som hård referens.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'gå runt' på karta: identifiera startpunkten (från frågan), gå systematiskt medsols/motsols sida-för-sida längs gränsen, mät varje delsträcka mot kartans skalstreck, summera. Triggern: 'gå längs ... ett varv runt' → segmentvis mätning + summa, inte ögonmått av total."
+  },
+  "host-2021-kvant2-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Backarna ligger i kartans nordvästra del — om du tolkar 'mellan västra och södra kvarteren 250 meter' som en alltför kort sträcka, eller väljer fel väg på första steget, kan slutpunkten hamna nordväst.",
+        "why_wrong": "Som steg 4 visar leder första steget (250 meter mellan VÄSTRA och SÖDRA kvarteren) söderut/sydväst, inte norrut. Och de följande stegen (nordostlig riktning) tar dig från där ner-mot-sydväst INTE upp till Backarna. Facit fastslår D (S:t Olofs kapell); Backarna är ingen av destinationerna en korrekt vägbeskrivning kan landa på."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Typpilskvarnen ligger i kartans nordöstra del — om du tolkar 'nordostlig riktning' i andra steget som tagandes dig långt åt nordöst kan du missa rätt destination.",
+        "why_wrong": "Den specifika vägen i nordostlig riktning ska vara den 'som ligger längst söderut' av tillgängliga alternativ. Som steg 6 visar — det är inte vägen som leder till Typpilskvarnen utan en annan väg som följer kortare etapp innan vidare manöver. Facit fastslår D (S:t Olofs kapell)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "S:a Ursulas kapell (J i kartans nyckel) ligger på en plats nära Munkholmen — det är 'i söder' relativt Helgeandshuset (E) och kan kännas som rimlig destination efter en sträcka åt sydost.",
+        "why_wrong": "S:a Ursulas kapell ligger söder om sjö-strängen och är inte nåbar via 'nordnordostlig 500 meter' i slutsteget. Som steg 7 visar måste det sista nordnordostliga steget leda UPPÅT i kartan, vilket utesluter sydligare destinationer. Facit fastslår D (S:t Olofs kapell)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'följ-vägbeskrivning' på karta är (1) att tappa orientering vid riktningsbyten, (2) att välja fel väg när flera vägar utgår från samma punkt, eller (3) att slarva med distanserna mot skalstrecket. Botemedlet: håll en penna eller fingertopp på kartan och flytta den exakt ett steg i taget — inte i huvudräkning.",
+    "pregrade_tactic": {
+      "handle": "Pennan-foljer-stegen",
+      "move": "Starta vid Helgeandshuset (E). Steg 1: 250 m mellan västra/södra kvarteren. Steg 2: nordost-vägen längst söderut, 450 m. Steg 3: nordnordost 500 m. Pennan slutar vid S:t Olofs kapell (I)."
+    },
+    "solution_path": "Facit fastslår S:t Olofs kapell (alternativ D). Helgeandshuset är märkt E i kartans nyckel. Följ vägbeskrivningen mot skalstrecket (0-500 m): (1) mellan västra och södra kvarteren 250 m, (2) nordostlig riktning vägen som ligger längst söderut, 450 m, (3) nordnordostlig riktning 500 m. Slutpunkten landar på S:t Olofs kapell (I i nyckeln) — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: utgå från Helgeandshuset och följ en serie vägstegs i specifika riktningar och distanser. Vart leder vägbeskrivningen? Svarsalternativen är fyra platser i kartans nyckel. Facit fastslår S:t Olofs kapell (alternativ D).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig: norr, skalstreck, kartnyckel",
+        "text": "Kartan 'Medeltida Västerås' har en norrpil ('Norr' till vänster) — den definierar riktningar. Skalstrecket nederst (0-500 m) ger distanser. Kartnyckeln nederst listar bokstavskoder för platser (A till O) och nummerade vägar (1 till 11). Helgeandshuset = E.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta startpunkten Helgeandshuset (E)",
+        "text": "I kartnyckeln: E = Helgeandshuset, senare hospital. I kartan ligger E i mitten av staden, vid stranden av Lillån (södra stadsdelen). Sätt fingret på E som start.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Steg 1: 'Mellan västra och södra kvarteren 250 meter'",
+        "text": "Västra kvarteren = VÄSTRA KV, södra kvarteren = SÖDRA KV. Vägen MELLAN dem är gränsvägen som löper mellan dessa två stadsdelar — en kort gata söder om Norra kvarteren. Gå 250 m längs denna väg från E. (Mot skalstrecket: 250 m är halva 500 m-strecket.) Slutar vid en korsning öster om västra/södra kvarter-gränsen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vilken riktning är 'mellan västra och södra'?",
+        "text": "Eftersom västra kvarteren ligger NÄRA-VÄSTER och södra kvarteren ligger NÄRA-SYDOST om punkten, går gränsen mellan dem ungefär nord-syd eller nordväst-sydost. 250 m längs den riktningen tar dig till en korsning där fler vägar utgår.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Steg 2: 'Nordostlig riktning, vägen längst söderut, 450 meter'",
+        "text": "Vid korsningen efter steg 1 utgår FLERA vägar i nordostlig riktning. Av dem välj den 'SOM LIGGER LÄNGST SÖDERUT' — alltså den nordostliga vägen som har sin startpunkt sydligare än de andra. Följ den 450 m (lite mindre än ett 500 m-streck). Denna sträcka tar dig österut-norrut, längre in i staden.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Steg 3: 'Nordnordostlig riktning 500 meter'",
+        "text": "Vid slutet av steg 2: välj vägen i NORDNORDOSTLIG riktning (mer åt norr än ren nordost). Följ den 500 m — det är ett helt skalstreck. Sträckan tar dig upp i den norra delen av kartan eller över mot östra utkanten.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Identifiera slutpunkten",
+        "text": "Efter dessa tre steg (250 m + 450 m + 500 m i de angivna riktningarna) landar fingret vid S:t Olofs kapell, märkt I i kartnyckeln. Det ligger i den centrala-östra delen av kartan, en kort bit norr/öster om Helgeandshuset. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera alternativen",
+        "text": "Backarna (A) ligger för långt NORDVÄST. Typpilskvarnen (B) ligger för långt NORDÖST (skulle kräva längre nordosgång). S:a Ursulas kapell (C) ligger SÖDER om Lillån (skulle kräva sydlig manöver, inte nordnordostlig). S:t Olofs kapell (D) är den enda plats där alla tre riktnings-/distansstegen leder.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med skalstrecket",
+        "text": "Total sträcka = 250 + 450 + 500 = 1 200 m = 1,2 km — en kort fotgängarsträcka som rimligen håller dig inom medeltidsstadens centrala delar. Backarna kanske ligger längre bort i avstånd från E (2+ km), Typpilskvarnen också. S:t Olofs kapell är geometriskt nåbar inom 1,2 km av en sådan väg.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (S:t Olofs kapell). Insikten i en mening: i 'följ vägbeskrivning'-frågor — sätt fingret på startpunkten, flytta ett steg i taget exakt enligt riktning och distans, läs av slutpositionen i kartnyckeln.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för vägbeskrivning på karta: lokalisera startpunkten via kartnyckeln, följ varje steg sekventiellt (tolka riktningstermer via norrpilen, distanser via skalstrecket), läs av slutpositionen i nyckeln. Triggern: 'utgå från X och följ ... vart leder vägbeskrivningen' → fysisk simulering med finger/penna."
+  },
+  "host-2021-kvant2-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "55 000 m² är frestande om man överskattar någon av triangelns sidor — kanske mäter Långgatan (östra) som längre än 200 m eller Tjuvagatan som längre än 400 m. Lite extra meter på en sida ger snabbt högre area.",
+        "why_wrong": "Som steg 5 visar är triangelns sidor ungefär 200 m (Långgatan östra), 400 m (Tjuvagatan) och 350 m (väg längs Gropen). Med basen 400 m och höjden ca 200 m ger formeln A = b × h / 2 ≈ 40 000 m². Facit fastslår A (40 000 m²); 55 000 förutsätter större sidor."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "65 000 m² är frestande om man av misstag räknar triangelens area med formeln för rektangel (b × h) istället för triangel (b × h / 2). 400 × 200 = 80 000, och om man tar två tredjedelar av detta får man 65 000.",
+        "why_wrong": "Triangel-arean är b × h / 2, INTE b × h. Som steg 6 betonar måste man dela med 2. 400 × 200 / 2 = 40 000 m². Facit fastslår A; om man glömmer halveringen får man en uppblåst area."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "80 000 m² är frestande om man räknar utan halveringen (rektangel-area: 400 × 200 = 80 000) eller om man överskattar både bas och höjd. En 'rumslig magkänsla' utan formel landar lätt här.",
+        "why_wrong": "80 000 m² är exakt rektangel-arean (bas × höjd), inte triangel-arean. Som steg 6 visar måste man halvera — 40 000 m². Facit fastslår A; D är resultatet av att helt glömma triangel-formelens halvering."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan vid triangelmätning på karta är (1) att glömma halveringen i area-formeln och (2) att råka mäta längs en diagonal istället för en triangel-sida. Botemedlet: skriv ut formeln A = b × h / 2 INNAN du mäter, identifiera tydligt vad som är basen och vad som är höjden.",
+    "pregrade_tactic": {
+      "handle": "Bas-gang-hojd-genom-tva",
+      "move": "Identifiera triangelens tre sidor: Långgatan (östra) ≈ 200 m, Tjuvagatan ≈ 400 m, vägen längs Gropen ≈ 350 m. Bas = Tjuvagatan 400 m, höjd från Tjuvagatan till motstående hörn ≈ 200 m. A = 400 × 200 / 2 = 40 000 m²."
+    },
+    "solution_path": "Facit fastslår 40 000 m² (alternativ A). Triangeln avgränsas av Långgatan (östra) = väg 4, Tjuvagatan = väg 5 och vägen längs Gropen. Mätt mot skalstrecket är sidorna ungefär 200 m, 400 m och 350 m. Använd triangel-formeln A = bas × höjd / 2 med bas 400 m och vinkelrät höjd ≈ 200 m: A = 40 000 m² — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stort är det triangelformade området som avgränsas av Långgatan (östra), Tjuvagatan och vägen längs Gropen? Svar i m². Facit fastslår 40 000 m² (alternativ A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera de tre sidorna i kartnyckeln",
+        "text": "Kartnyckelns nummerlistor: 4 = Långgatan (östra), 5 = Tjuvagatan. 'Vägen längs Gropen' är den väg som löper längs ytan/öppningen kallad Gropen i kartan. Hitta dessa tre vägar på kartan — de bildar en triangel någonstans i den norra delen av staden.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Visualisera triangeln",
+        "text": "De tre vägarna möts i tre hörn och formar en triangel. Triangelens interiör är området som ska mätas. Skissa upp triangeln i huvudet eller med pennan: tre vinklar, tre sidor, en area.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Mät sidorna mot skalstrecket",
+        "text": "Mot kartans skalstreck (0-500 m): Långgatan (östra) ≈ 200 m, Tjuvagatan ≈ 400 m, vägen längs Gropen ≈ 350 m. Mätningarna är approximativa — målet är att hamna inom 10-15 % av de exakta längderna.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Välj bas och beräkna höjd",
+        "text": "Bas = längsta sidan (Tjuvagatan, 400 m). Höjden är det vinkelräta avståndet från Tjuvagatan till motstående hörn (där Långgatan östra och vägen längs Gropen möts). Mätt mot skalstrecket: ≈ 200 m. Notera att höjden INTE är samma som någon av de andra sidorna — den är den vinkelräta projektionen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad är formeln för triangel-area?",
+        "text": "A = (bas × höjd) / 2. Inte b × h (det är rektangel-arean). Halveringen kommer från att en triangel är exakt halva en parallellogram med samma bas och höjd. Klassisk geometri.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sätt in talen",
+        "text": "A = 400 × 200 / 2 = 80 000 / 2 = 40 000 m². Resultat: 40 000 m².",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera mot alternativen",
+        "text": "40 000 matchar A exakt. 55 000 förutsätter större bas eller höjd, 65 000 förutsätter felaktig formel, 80 000 förutsätter att man inte halverat (rektangel-area). Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: rumslig storleksordning",
+        "text": "40 000 m² = 4 hektar = ungefär 7 fotbollsplaner (officiell ~7 140 m²). I kartans skala är detta en triangel med sidor ca 200-400 m — rimlig storlek för ett centralt kvarter i en medeltidsstad. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig miss: räkna utan halvering",
+        "text": "400 × 200 = 80 000 — alternativ D. Det är exakt rektangel-arean. Glöm aldrig dela med 2 för triangelar. Om du blir osäker, fråga dig: 'Skulle en parallellogram med samma bas och höjd vara större eller mindre?' Större — en triangel är halva en parallellogram.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (40 000 m²). Insikten i en mening: identifiera de tre triangelsidorna via kartnyckeln, mät bas och vinkelrät höjd mot skalstrecket, använd formeln bas × höjd / 2 — glöm inte halveringen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'arean av geometrisk form på karta': identifiera formen och dess sidor via kartnyckeln, mät bas och höjd (eller andra nödvändiga mått) mot skalstrecket, applicera rätt formel (triangel: b × h / 2). Triggern: 'hur stort är området som avgränsas av ...' → identifiera form, mät relevanta mått, applicera geometri-formel."
   }
 }

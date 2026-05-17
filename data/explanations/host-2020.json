@@ -9400,5 +9400,2423 @@
       "move": "Ord på '-an' efter en verb-rot (ansök-an, anhåll-an, hemställ-an) pekar på substantiverad handling i förvaltningsspråk — ofta synonym med 'begäran'."
     },
     "technique": "Förvaltnings-/byråkratord-stigen: hemställan, framställan, ansökan, anhållan — alla beskriver FORMELLA FRAMSTÄLLNINGAR till någon med beslutsmakt. Triggern att memorera: när ett ord slutar på '-an' efter ett verb-rot (ansök-an, anhåll-an, hemställ-an), pekar det på en SUBSTANTIVERAD HANDLING i förvaltningsspråk — ofta synonym med 'begäran'."
+  },
+  "host-2020-kvant1-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår D: 1886 och 1897. Diagrammet 'Folkskollärarföreningen 1880–1909' har en stapel per år. Skanna varje par av grannår och leta efter de TVÅ år där stapeln är synligt LÄGRE än året innan. Två dippar finns: en kort dipp vid 1886 (efter 1885) och en kort dipp vid 1897 (efter 1896). Övriga år ökar eller står stilla. Det matchar exakt facits par 1886 + 1897.",
+    "technique": "DTK-strategi för 'vilka år minskade': skanna staplarna par för par (år N mot år N−1) och markera mentalt varje grannpar där höger stapel är LÄGRE än vänster. Triggern: 'minskat jämfört med föregående år' → ögat letar inte trender, det letar lokala dippar mellan grannstaplar.",
+    "pitfall": "Den klassiska fällan är att tolka 'minskat' som 'platt' eller 'svag tillväxt' — varje år där stapeln inte växer snabbt ser ut som en kandidat. Botemedlet: kräva att höger stapel är SYNLIGT lägre än vänster — bara där pilen vänder ner räknas det som minskning.",
+    "pregrade_tactic": {
+      "handle": "Grannpar-skanning",
+      "move": "Gå från vänster till höger genom alla 30 staplarna och markera bara de år där stapeln är SYNLIGT kortare än grannen till vänster. Exakt två sådana dippar finns i diagrammet."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilka två år hade antalet medlemmar MINSKAT jämfört med närmast föregående år? Du letar efter exakt två år där stapeln är LÄGRE än grannstapeln till vänster. Facit fastslår D: 1886 och 1897.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Stapeldiagrammet heter 'Folkskollärarföreningen 1880–1909'. På y-axeln står 'Antal' med PRINTADE tick-värden var 500:e enhet från 500 upp till 12 500. På x-axeln står 'År' med dekadmarkeringar vid 1880, 1885, 1890, 1895, 1900, 1905. Det finns en stapel per år, totalt 30 staplar. Inga datalabels är skrivna ovanpå staplarna — du läser höjder genom att projicera stapeltoppen mot y-axelns tick-värden.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera varje års stapel via x-axeln",
+        "text": "Eftersom bara var femte år är textat behöver du räkna staplar för att hitta ett specifikt år. 1880 är stapel 1 (längst vänster), 1885 är stapel 6, 1890 är stapel 11, 1895 är stapel 16, 1900 är stapel 21, 1905 är stapel 26, 1909 är stapel 30 (längst höger). För att hitta 1886, räkna en stapel höger om 1885; för 1897, två staplar höger om 1895.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'minskat jämfört med föregående år'?",
+        "text": "Det betyder strikt: stapel(N) < stapel(N−1). Inte 'tillväxten saktade in', inte 'stapeln var platt'. Höger stapel måste vara SYNLIGT lägre än vänster grannstapel. Diagrammet visar mest tillväxt — så minskningar är sällsynta visuella avbrott i den i övrigt uppåtgående trenden.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skanna 1880–1890",
+        "text": "1880 ≈ 1 500, 1881 ≈ 2 500 (ökning), 1882 ≈ 2 700 (ökning), 1883 ≈ 2 900 (ökning), 1884 ≈ 3 000 (ökning), 1885 ≈ 3 000 (ungefär oförändrat), 1886 ≈ 2 850 (DIPP — lägre än 1885), 1887 ≈ 3 000 (ökning), 1888 ≈ 3 100, 1889 ≈ 3 200, 1890 ≈ 3 300. Den första MINSKNINGEN i diagrammet är alltså 1886. Lägg märke till det.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skanna 1890–1900",
+        "text": "1890 → 1891 → 1892 → 1893 → 1894 → 1895 → 1896 är en mestadels stigande sekvens upp till ungefär 4 500–5 000. 1896 ≈ 4 800. Då kommer 1897 ≈ 4 700 (DIPP — lägre än 1896). Sedan 1898, 1899 fortsätter uppåt mot 5 500–6 000 och 1900 ligger runt 6 500. Den andra MINSKNINGEN i diagrammet är 1897.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skanna 1900–1909",
+        "text": "Från 1900 och framåt växer kurvan brant: 1900 ≈ 6 500, 1901 ≈ 7 000, 1902 ≈ 7 500, 1903 ≈ 8 000, 1904 ≈ 8 500, 1905 ≈ 10 000–11 000, 1906 ≈ 11 000, 1907 ≈ 11 500, 1908 ≈ 11 500, 1909 ≈ 12 000. Inga synliga dippar i detta intervall. Alla minskningar i diagrammet är alltså redan identifierade: 1886 och 1897.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Korsa fynden mot alternativen",
+        "text": "Alternativ A (1885 och 1886): 1885 ökade eller var oförändrat jämfört med 1884 — inte en minskning. Bara halva paret stämmer. Alternativ B (1885 och 1896): samma fel på 1885; dessutom ökade 1896 mot 1895. Alternativ C (1886 och 1896): 1886 stämmer, men 1896 var en ÖKNING mot 1895, inte en minskning. Alternativ D (1886 och 1897): båda är dippar — matchar facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: jämför dippens storlek",
+        "text": "Båda dipparna är små i absoluta tal (kanske 100–200 medlemmar) men SYNLIGA mot grannstaplarna. Om du är osäker på en stapel: håll en penna eller fingerkant vågrätt vid toppen av grannstapeln till vänster och se om årets stapel sticker upp ovanför eller stannar under. För 1886 och 1897 stannar stapeln under — för alla andra år sticker den upp.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför ser man inte fler dippar?",
+        "text": "Folkrörelser växer typiskt monotont med befolkningen och organisationsgraden. Två minskningar på 30 år är just det visuella mönster du letar efter: en överväldigande tillväxttrend MED två lokala avbrott. Det är konsistent med att facit gett dig exakt två år.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (1886 och 1897). Insikten i en mening: i 'vilka år minskade'-frågor skannar du grannpar (N mot N−1) och accepterar bara år där stapeln är SYNLIGT lägre än vänstergrannen — gissa inte från helhetsintrycket.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1885 ligger ungefär på samma höjd som 1884, vilket kan se ut som 'stillastående eller minskande'. 1886 är en korrekt dipp. Det är frestande att para ihop dem som 'två misstänkta år i rad'.",
+        "why_wrong": "Som steg 5 visar är 1885 ungefär lika hög som 1884 — kanske marginellt högre — inte en SYNLIG MINSKNING. Den första riktiga dippen i diagrammet är 1886, inte 1885. Facit fastslår D, alltså 1886 OCH 1897, inte 1885 + 1886."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1896 verkar vid första ögonkastet vara en kandidat eftersom 1897 strax därefter är en dipp — minnet glider lätt över ett år och förväxlar 'året före dippen' med 'dippen själv'. Plus att 1885 också ser misstänkt platt ut.",
+        "why_wrong": "1896 är en ÖKNING jämfört med 1895 (det är 1897 som är dippen, inte 1896). Steg 6 är explicit om detta. Och 1885 är inte en minskning, som steg 5 visade. Facit fastslår D — båda B:s år är fel."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1886 är korrekt identifierad som en dipp — det är ett halvt rätt svar. Och 1896 ligger nära 1897 i diagrammet, så det är frestande att förväxla dem och utse 1896 istället för 1897.",
+        "why_wrong": "1896 är HÖGRE än 1895, inte lägre — så det är ingen minskning. Steg 6 räknar grannpar 1895→1896 (ökning) och 1896→1897 (minskning). Facit fastslår 1897 som det andra dipp-året, inte 1896. Halv träff räcker inte — D är det enda alternativ där båda åren är riktiga dippar."
+      }
+    ]
+  },
+  "host-2020-kvant1-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår B: 150 procent. Läs av medlemsantalet 1892 (cirka 4 000) och 1905 (cirka 10 000) mot y-axelns tick-värden var 500:e enhet. Beräkna procentuell ökning: (10 000 − 4 000) / 4 000 = 6 000 / 4 000 = 1,5 = 150 %. Det matchar exakt alternativ B.",
+    "technique": "DTK-strategi för procentuell förändring: läs av startvärde och slutvärde separat mot y-axelns tick-värden, beräkna (slut − start) / start × 100 %. Triggern: 'med hur många procent ökade/minskade' → procent OCH procentenheter skiljer sig; här är det procent → division med STARTvärdet, inte med slutvärdet eller med 100.",
+    "pitfall": "Den klassiska fällan är att räkna procentenheter istället för procent — eller att dividera med slutvärdet. Botemedlet: minns formeln (slut − start) / START × 100, läs av båda värdena mot y-axelns gridlinjer separat, och kontrollera storleksordningen (en fördubbling = 100 %, en tredubbling = 200 %, en 2,5×-ökning = 150 %).",
+    "pregrade_tactic": {
+      "handle": "Förändring-genom-start",
+      "move": "Läs stapelhöjden 1892 (start) och 1905 (slut) mot y-axelns tick-värden. Räkna (slut − start) / start; om kvoten är 1,5 så är ökningen 150 %."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: med hur många procent hade medlemsantalet ökat 1905 jämfört med 1892? Svarsformatet är procent (inte procentenheter, inte ratio). Facit fastslår B: 150 procent. Det betyder att 1905 var 2,5 gånger så stort som 1892.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Stapeldiagrammet 'Folkskollärarföreningen 1880–1909' har y-axel 'Antal' med PRINTADE tick-värden var 500:e enhet från 500 till 12 500. Inga datalabels är skrivna på staplarna — du läser höjd genom projektion mot tick-värdena.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta 1892-stapeln",
+        "text": "Eftersom bara var femte år är textat behöver du räkna staplar: 1890 är stapel 11 (textad), 1891 är 12, 1892 är 13. Sätt fingret två staplar höger om 1890-markeringen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs av 1892-höjden",
+        "text": "Projicera toppen på 1892-stapeln vågrätt mot y-axelns tick-värden. Stapeln slutar runt 4 000 (möjligen marginellt över). Använd 4 000 som arbetsvärde för 1892.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta 1905-stapeln",
+        "text": "1905 är textad på x-axeln (stapel 26 från vänster). Den är en av de bland de högsta staplarna i diagrammet, klart över 1900-staplen men en bit under 1909-stapeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av 1905-höjden",
+        "text": "Projicera toppen av 1905-stapeln mot y-axelns tick-värden. Stapeln når ungefär 10 000 — strax över tick-värdet 10 000 och under 10 500. Använd 10 000 som arbetsvärde.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'med X procent ökat'?",
+        "text": "Procentuell ökning = (slutvärde − startvärde) / STARTvärde × 100 %. OBS: dividera med STARTvärdet, inte slutvärdet, och inte med 100. En fördubbling motsvarar 100 % ökning; en tredubbling 200 %. Skillnaden mellan procent och procentenheter är central — frågan frågar procent.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna procenten",
+        "text": "(10 000 − 4 000) / 4 000 = 6 000 / 4 000 = 1,5. Multiplicera med 100 % → 150 %. Slutvärdet är alltså 2,5 gånger startvärdet (start + 1,5×start = 2,5×start), vilket motsvarar +150 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen",
+        "text": "A 100 % ⇔ slutvärdet är 2× startvärdet → skulle kräva 1905 ≈ 8 000. Stämmer inte. B 150 % ⇔ slutvärdet är 2,5× startvärdet → kräver 1905 ≈ 10 000. Stämmer. C 200 % ⇔ slutvärdet är 3× startvärdet → kräver 1905 ≈ 12 000. För högt. D 250 % ⇔ slutvärdet är 3,5× startvärdet → kräver 1905 ≈ 14 000. Vida för högt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: visuell kvot",
+        "text": "Är 1905-stapeln cirka 2,5 gånger så hög som 1892-stapeln? Lägg fingret längs 1892:s topp och se hur många gånger den höjden ryms i 1905-stapeln. Den ryms ungefär 2,5 gånger — konsistent med facit B. Den ryms inte 3 gånger (då skulle stapeln gå förbi 12 000), inte heller bara 2 gånger (då skulle den sluta vid ungefär 8 000).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (150 procent). Insikten i en mening: procent vs procentenheter — i 'med hur många procent ökade'-frågor dividerar du alltid med STARTvärdet, inte slutvärdet, och översätter kvoten 1,5 → 150 %.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är frestande att läsa skillnaden ungefärligt och uppskatta att 1905 är 'ungefär dubbelt så stort som 1892' — vilket motsvarar 100 % ökning. En grov ögonmätning kan landa där.",
+        "why_wrong": "100 % ökning betyder att slutvärdet är 2× startvärdet — det skulle motsvara 1905 ≈ 8 000. Som steg 6 visar når 1905-stapeln 10 000, inte 8 000. Skillnaden 2 000 låter liten i absoluta tal men spelar STOR roll i procent. Facit fastslår 150 %, inte 100 %."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "200 % känns rimligt om man läser 1892 lite för lågt (säg 3 000) eller 1905 lite för högt (säg 10 500). Då blir (10 500 − 3 000) / 3 000 = 2,5 = 250 %, fast vid 3 000 → 9 000 blir det 200 %. Det är en mätfels-känslig zon.",
+        "why_wrong": "200 % betyder att slutvärdet är 3× startvärdet — det skulle kräva 1905 ≈ 12 000, men 1905-stapeln slutar vid cirka 10 000 enligt steg 6. Som steg 8 räknar ut blir det 150 %, inte 200 %. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "250 % kan locka om man av misstag jämför 1892 (≈ 4 000) med 1909 (≈ 12 000) istället för 1905 — då blir kvoten ungefär 3 och ökningen 200 %, eller om man bara räknar (10 000/4 000) = 2,5 och felaktigt kallar det 250 %.",
+        "why_wrong": "Den klassiska felöversättningen: 1905/1892 = 2,5, MEN kvoten 2,5 = 250 % AV startvärdet — ÖKNINGEN är 250 % − 100 % = 150 %, eftersom du måste dra bort startvärdet (100 %) innan du rapporterar ökningen. Det är just den fällan facit B testar — och 250 % är fel."
+      }
+    ]
+  },
+  "host-2020-kvant1-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår B: 2/5. I tabellen 'Transplantationer' läs raden Njure (totalt) 2012: 398. Raden direkt under heter 'Njure från levande donator' 2012: 155. Andelen är 155/398 ≈ 0,389 ≈ 2/5. Det matchar facit B.",
+    "technique": "DTK-strategi för andelsfrågor på tabell: hitta täljaren OCH nämnaren som printade tal i tabellen, beräkna kvoten, översätt till svarsformatet (bråk). Triggern: 'andel av X som var Y' → läs två printade tal, dividera, jämför med alternativens bråk.",
+    "pitfall": "Den klassiska fällan är att blanda ihop 'från levande donator' med 'totalt' eller att titta på fel kolumn (annat år). Botemedlet: lokalisera 2012-kolumnen FÖRST, sedan läs av båda raderna i den kolumnen, sedan dividera.",
+    "pregrade_tactic": {
+      "handle": "Två-tal-i-samma-kolumn",
+      "move": "I 2012-kolumnen: läs Njure (totalt) = 398 och Njure från levande donator = 155. Dividera 155/398 ≈ 0,39, vilket ligger närmast 2/5."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av njurtransplantationerna 2012 gjordes från en levande donator? Svarsformatet är bråk (1/3, 2/5, 2/3, 3/4). Facit fastslår B: 2/5 (= 0,40 = 40 %).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen heter 'Transplantationer av vissa organ åren 2000–2014, totalt samt uppdelat på organ. För njure och lever anges dessutom hur många transplantationer som gjordes från en levande donator.' Kolumnerna är år (2000–2014, 15 stycken). Raderna är organ: Njure (totalt), Njure från levande donator, Bukspottskörtel, Cell-öar, Lever (totalt), Lever från levande donator, Hjärta, Lungor, Hjärta och lunga, Tarm, Totalt.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta 2012-kolumnen",
+        "text": "2012 är en av kolumnerna mellan 2011 och 2013. Lägg fingret på 2012-rubriken och dra rakt ner genom alla rader för det året.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta täljaren: levande donator 2012",
+        "text": "I raden 'Njure från levande donator' kolumn 2012 står 155. Det är antalet njurtransplantationer från levande donator det året.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta nämnaren: totalt njure 2012",
+        "text": "I raden 'Njure (totalt)' kolumn 2012 står 398. Det är det totala antalet njurtransplantationer 2012.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'andel'?",
+        "text": "Andel = del / helhet. I detta fall: andel från levande donator = (antal från levande donator) / (totalt antal njurar) = 155 / 398. OBS: totalsumman 398 är NÄMNAREN, levandedonator-talet 155 är TÄLJAREN.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna kvoten",
+        "text": "155 / 398. Approximera: 398 ≈ 400, så 155 / 400 = 0,3875. Eftersom verklig nämnare är något mindre (398 < 400) blir kvoten marginellt högre: 155/398 ≈ 0,389 ≈ 0,39.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Översätt kvoten till bråk-alternativ",
+        "text": "Konvertera alternativen: 1/3 ≈ 0,333 (33 %), 2/5 = 0,400 (40 %), 2/3 ≈ 0,667 (67 %), 3/4 = 0,750 (75 %). Din kvot 0,39 ligger närmast 2/5 (0,40) — bara 0,01 ifrån. Avståndet till 1/3 är 0,06.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen",
+        "text": "A 1/3 ≈ 0,333 — för lågt, skulle motsvara ungefär 133/398. B 2/5 = 0,400 — matchar 155/398 ≈ 0,389. C 2/3 ≈ 0,667 — kräver 265/398, inte 155. D 3/4 = 0,750 — kräver 299/398, inte 155. Bara B passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: angränsande år",
+        "text": "Som dubbelkoll: 2011 har Njure (totalt) 435 och från levande donator 184 → 184/435 ≈ 0,42 ≈ 2/5. 2013 har 421 och 151 → 151/421 ≈ 0,36, mellan 1/3 och 2/5. Andelen ligger stabilt kring 35–42 % varje år, alltså närmast 2/5. Det styrker facit B.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (2/5). Insikten i en mening: på tabell-baserade andelsfrågor — lås in rätt kolumn (året), läs av täljaren OCH nämnaren som printade tal, dividera, översätt till bråk.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1/3 ≈ 33 % är frestande om man avrundar 155/398 grovt nedåt eller om man av misstag tittar på 2013 (151/421 ≈ 36 %) istället för 2012. Det är värdet näst närmast den korrekta kvoten.",
+        "why_wrong": "Den exakta kvoten 155/398 är 0,389 — märkbart närmare 0,40 (= 2/5) än 0,333 (= 1/3). Som steg 8 visar är avståndet 0,01 till B och 0,06 till A. Facit fastslår B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2/3 ≈ 67 % skulle kunna kännas rätt om man av misstag dividerar baklänges (398/155 ≈ 2,57 → tolkat som 'flera gånger' istället för andel) eller läser fel rad. Eller blandar ihop 'från levande' med 'från avliden' och tar (398 − 155)/398 ≈ 0,61 — fortfarande inte 2/3, men nära.",
+        "why_wrong": "Kvoten 155/398 ≈ 0,39, inte 0,67. För att 2/3 skulle stämma skulle levandedonator-raden behöva visa ungefär 265, inte 155 — vilket inte stämmer med tabellen. Facit fastslår B (2/5)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "3/4 = 75 % kan locka om man förväxlar njur-tabellen med en där levande donator dominerar, eller om man hoppar till en helt annan kolumn. Det är det högsta alternativet och rangordnar visuellt 'mest dramatiskt'.",
+        "why_wrong": "155 är klart mindre än 75 % av 398 (vilket är ≈ 299). Som steg 9 visar är det 39 % som matchar kvoten. Facit fastslår B (2/5) — D är två steg för högt."
+      }
+    ]
+  },
+  "host-2020-kvant1-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår D: Lungor. I tabellen läs av varje organs antal 2001 och 2009, beräkna procentuell förändring (2009−2001)/2001. Lungor: 2001 ≈ 20, 2009 ≈ 50 → +150 %. Bukspottskörtel: 2001 ≈ 9, 2009 ≈ 20 → +122 %. Lever: 2001 ≈ 102, 2009 ≈ 146 → +43 %. Hjärta: 2001 ≈ 25, 2009 ≈ 50 → +100 %. Lungor vinner på +150 %.",
+    "technique": "DTK-strategi för 'procentuellt största förändring': beräkna (slut−start)/start för varje kandidat och jämför KVOTERNA, inte de absoluta skillnaderna. Triggern: 'procentuellt störst förändring' → fyra division, inte fyra subtraktioner.",
+    "pitfall": "Den klassiska fällan är att titta på absoluta tal — Lever (totalt) ökade med 44 transplantationer (störst i antal), men den procentuella ökningen är liten eftersom basen redan var stor. Botemedlet: dividera alltid med startvärdet; det är just därför små organ med små startvärden vinner procentuella förändringsfrågor.",
+    "pregrade_tactic": {
+      "handle": "Liten-bas-vinner",
+      "move": "I tabellen, för varje kandidat-organ: titta först på 2001-kolumnen (startvärde). Det organ med det MINSTA startvärdet är oftast den procentuella vinnaren om slutvärdet i 2009 är väsentligt högre."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket organ har den STÖRSTA PROCENTUELLA förändringen mellan 2001 och 2009? Svarsalternativen är fyra organ: Bukspottskörtel, Lever (totalt), Hjärta, Lungor. Facit fastslår D: Lungor.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Transplantationer' har år som kolumner (2000–2014) och organ som rader. Du behöver två kolumner: 2001 och 2009. Läs av varje kandidat-organs värde i båda kolumnerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'procentuellt störst förändring'?",
+        "text": "Det är förändringen i procent av STARTvärdet: (slut − start) / start × 100 %. Det är NOLLNINGEN i ALL DTK-procentmatte: små baser → stora procentförändringar; stora baser → små procentförändringar. Ett organ som gick från 5 till 10 har +100 %; ett som gick från 500 till 600 har +20 %, även om absolutökningen är mycket större.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs av Bukspottskörtel",
+        "text": "2001: 9, 2009: 20. Förändring: (20−9)/9 = 11/9 ≈ 1,22 = +122 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av Lever (totalt)",
+        "text": "2001: 102, 2009: 146. Förändring: (146−102)/102 = 44/102 ≈ 0,43 = +43 %. Den absoluta ökningen 44 är störst av alla kandidaterna — men på en stor bas blir procenten liten.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av Hjärta",
+        "text": "2001: 25, 2009: 50. Förändring: (50−25)/25 = 25/25 = 1,00 = +100 %. (En fördubbling.)",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Läs av Lungor",
+        "text": "2001: 20, 2009: 50. Förändring: (50−20)/20 = 30/20 = 1,50 = +150 %. Detta är den största kvoten av de fyra.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Rangordna kvoterna",
+        "text": "Lungor +150 %, Bukspottskörtel +122 %, Hjärta +100 %, Lever +43 %. Lungor leder ensamt. Det matchar facit D.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför är detta inte uppenbart?",
+        "text": "Lever ökade i ANTAL mest (44 transplantationer mer). Hjärta fördubblades (mycket synligt). Men Lungor 2,5×-ades — och bukspottskörtel 2,2×-ades. Det är just kvoten, inte differensen, som rangordnar. Det är därför 'procentuellt' i frågan är det viktiga ordet — frågan inviterar dig att INTE välja Lever (totalt), som är fällan.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med approximationer",
+        "text": "Lungor: 50/20 = 2,5 → +150 %. Bukspottskörtel: 20/9 ≈ 2,2 → +120 %. Skillnaden 30 procentenheter är tillräcklig för att rangordna entydigt. Inga gränsfall här — Lungor är klar vinnare.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Lungor). Insikten i en mening: 'procentuellt' = dividera med startvärdet — små organ med små startvärden tenderar att vinna, oavsett hur dramatisk absolut tillväxt på stora organ ser ut.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Bukspottskörtel kommer på andra plats med +122 % — väldigt nära vinnaren. Och 'liten bas vinner'-tumregeln pekar ofta på bukspottskörtel som den minsta kandidaten. Det är en stark men inte vinnande kandidat.",
+        "why_wrong": "Bukspottskörtel ökade från 9 till 20 → +122 %, men Lungor ökade från 20 till 50 → +150 %. Skillnaden 28 procentenheter är inte marginell. Facit fastslår D (Lungor) — kvoten 50/20 slår 20/9 trots att 9 är ett lägre startvärde."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Lever (totalt) hade absolut sett den största ökningen — 44 fler transplantationer 2009 jämfört med 2001 (102→146). Ögat fastnar på den största siffran och översätter det till 'störst förändring'.",
+        "why_wrong": "Den absoluta ökningen är inte det frågan frågar efter. Som steg 3 betonar är 'procentuellt' nyckelordet: 44/102 ≈ 43 %, vilket är den MINSTA procentuella förändringen av de fyra. Facit fastslår D. Lever-fällan är just att blanda ihop absolut differens med procentförändring."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Hjärta fördubblades mellan 2001 (25) och 2009 (50). En fördubbling = +100 % känns visuellt 'stort' och rangordnar lätt högst i mental snabbräkning.",
+        "why_wrong": "+100 % är imponerande men det slås av Lungor (+150 %) och Bukspottskörtel (+122 %). Som steg 8 rangordnar är Hjärta tredje, inte första. Facit fastslår D (Lungor); en fördubbling räcker inte när andra organ 2,5×-ades."
+      }
+    ]
+  },
+  "host-2020-kvant1-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår C: 637. Läs av rad 'Totalt' i tabellen för åren 2005–2010 (sex år): 603, 594, 620, 681, 671, 651. Summan = 3 820. Genomsnitt = 3 820 / 6 ≈ 636,7 ≈ 637.",
+    "technique": "DTK-strategi för 'genomsnitt per år': identifiera rätt rad (Totalt) och rätt år (sex år 2005–2010 inklusivt), summera, dividera med antalet år. Triggern: 'i genomsnitt per år under perioden X–Y' → räkna både X och Y (antal år = Y − X + 1).",
+    "pitfall": "Den klassiska fällan är att räkna fel antal år — 2005–2010 är SEX år, inte fem (du måste inkludera båda ändpunkterna). Botemedlet: räkna manuellt 2005, 2006, 2007, 2008, 2009, 2010 = 6.",
+    "pregrade_tactic": {
+      "handle": "Summa-genom-sex",
+      "move": "Läs av Totalt-raden för 2005–2010 (sex tal: 603, 594, 620, 681, 671, 651), summera till cirka 3 820, dividera med 6 → ca 637."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många transplantationer gjordes i genomsnitt per år 2005–2010? Svarsalternativen är fyra närliggande tal: 612, 622, 637, 657. Facit fastslår C: 637. Du behöver räkna exakt, inte gissa visuellt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "I tabellen 'Transplantationer' finns en rad längst ner som heter 'Totalt' med summan över ALLA organ för varje år. Det är denna rad du läser av — inte de enskilda organraderna.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räkna antalet år",
+        "text": "Perioden 2005–2010 inkluderar BÅDA ändåren. Räkna: 2005, 2006, 2007, 2008, 2009, 2010 = SEX år. Inte fem. Detta är den vanligaste subtila fällan i sådana här frågor — använd alltid (slut − start + 1) eller räkna manuellt på fingrarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs av Totalt 2005",
+        "text": "I rad Totalt, kolumn 2005: 603. (Notera: tabellen är ordnad från 2014 till vänster ner till 2000 till höger — kontrollera kolumnrubriken så du inte läser från fel håll.)",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av Totalt 2006",
+        "text": "Rad Totalt, kolumn 2006: 594.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av Totalt 2007",
+        "text": "Rad Totalt, kolumn 2007: 620.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Läs av Totalt 2008",
+        "text": "Rad Totalt, kolumn 2008: 681.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Läs av Totalt 2009 och 2010",
+        "text": "Totalt 2009: 671. Totalt 2010: 651. Du har nu samtliga sex värden: 603, 594, 620, 681, 671, 651.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Summera de sex värdena",
+        "text": "Para för enklare addition: 603 + 651 = 1 254; 594 + 671 = 1 265; 620 + 681 = 1 301. Summan = 1 254 + 1 265 + 1 301 = 3 820.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Dividera med 6",
+        "text": "3 820 / 6 = 636,67 ≈ 637. (Snabb mental kontroll: 6 × 600 = 3 600, kvar 220, 220/6 ≈ 37 → ca 637.)",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Korsa mot alternativen",
+        "text": "A 612 — för lågt, skulle motsvara summa 3 672 (våra siffror summerar till 3 820, inte 3 672). B 622 — för lågt, skulle ge summa 3 732. C 637 — exakt vad 3 820/6 ger. D 657 — för högt, skulle kräva summa 3 942. Endast C passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (637). Insikten i en mening: i 'genomsnitt per år'-frågor — räkna antalet år INKLUSIVT (slut − start + 1), summera Totalt-raden, dividera. Här: sex år, 3 820 / 6 ≈ 637.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "612 är frestande om man läser av fel kolumn (kanske 2000-talet i samma tabell, där värden är lägre) eller summerar 2005–2009 (fem år) och dividerar med 5 → 3 169 / 5 ≈ 634. Eller om man tappar en eller två av de högsta åren från summan.",
+        "why_wrong": "Korrekt summa över alla sex år 2005–2010 är 3 820, inte cirka 3 672 (som skulle ge 612). Som steg 9 visar är arithmetiken explicit. Facit fastslår C (637), inte A."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "622 ligger nära det korrekta värdet — bara 15 ifrån — och kan komma ur en mindre felräkning, t.ex. att man missar 30 enheter någonstans i summan. Det är 'näst närmast'-fällan.",
+        "why_wrong": "Den exakta summan 3 820 ger 636,67 → 637, inte 622. Skillnaden 15 i medelvärde motsvarar 90 i totalsumma — för stort fel för en korrekt avläsning. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "657 är frestande om man av misstag tar med 2011 (som är högt: 744) i summan, vilket drar upp medelvärdet. Eller om man missar 2005 (det lägsta året) och bara använder 2006–2010 — då blir summan 3 217 / 5 ≈ 643, ungefär D-zon.",
+        "why_wrong": "Frågan specificerar 2005–2010 (sex år) — du ska inte inkludera 2011. Korrekt avgränsning ger 3 820 / 6 ≈ 637, inte 657. Facit fastslår C; D är resultatet av att räkna fel period."
+      }
+    ]
+  },
+  "host-2020-kvant1-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår B: 2011. Du har två villkor som måste gälla samtidigt: (1) levande donatorer (njure + lever) > 170 det året, (2) tarmtransplantationer > året innan. Beräkna för varje alternativ. 2011: njure-levande 184, lever-levande 4 → 188 > 170 ✓; tarm 2011 = 2, tarm 2010 = 1, 2 > 1 ✓. Båda villkoren stämmer för 2011.",
+    "technique": "DTK-strategi för 'år som uppfyller två villkor': behandla varje villkor separat per kandidatår, kräv att BÅDA gäller samtidigt. Triggern: 'för vilket år gällde X samt Y' → fyra kandidatår × två villkor = åtta avläsningar; eliminera så snart ett villkor faller.",
+    "pitfall": "Den klassiska fällan är att glömma att summera njure-levande PLUS lever-levande (frågan säger 'av transplantationerna gjordes från levande donatorer' — alla organ med levande-rad). Botemedlet: addera de två 'från levande donator'-raderna innan du jämför med 170.",
+    "pregrade_tactic": {
+      "handle": "Två-villkor-i-tabellen",
+      "move": "För varje kandidatår: addera njure-levande + lever-levande och jämför med 170 (villkor 1). Läs sedan tarmraden för det året och året innan — kräv att årets > föregående (villkor 2)."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan har TVÅ villkor som måste gälla för samma år: (1) fler än 170 transplantationer gjordes från levande donatorer, (2) antalet tarmtransplantationer var större än året innan. Facit fastslår B: 2011.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilka rader är 'levande donator'?",
+        "text": "Tabellen har två rader för levande donator: 'Njure från levande donator' och 'Lever från levande donator'. Den totala summan från levande donatorer för ett givet år = njure-levande + lever-levande. Det är denna SUMMA som ska överstiga 170.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilken rad är tarm?",
+        "text": "Tarm-raden ligger längst ner bland organraderna, ovanför Totalt. Den behövs för villkor 2: tarm(år) > tarm(år − 1).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska A: 2014",
+        "text": "Njure-levande 2014: 151. Lever-levande 2014: 6. Summa: 157. Villkor 1 (>170) FAIL — 157 < 170. Eliminerat oavsett villkor 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska B: 2011",
+        "text": "Njure-levande 2011: 184. Lever-levande 2011: 4. Summa: 188. Villkor 1: 188 > 170 ✓. Tarm 2011: 2, Tarm 2010: 1. Villkor 2: 2 > 1 ✓. BÅDA villkoren stämmer för 2011 — matchar facit B.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska C: 2005",
+        "text": "Njure-levande 2005: 172. Lever-levande 2005: 3. Summa: 175. Villkor 1: 175 > 170 ✓ (knappt). Tarm 2005: 0, Tarm 2004: 2. Villkor 2: 0 > 2 FAIL. Eliminerat — tarmraden gick ner, inte upp.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska D: 2004",
+        "text": "Njure-levande 2004: 142. Lever-levande 2004: 9. Summa: 151. Villkor 1: 151 > 170 FAIL — för få levande donatorer. Eliminerat.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera B en gång till",
+        "text": "Endast 2011 klarar båda villkoren. Levande donator-summan är 188 (klart över 170, marginal 18). Tarmtransplantationer 2010 var 1, 2011 var 2 — det är ÖKNING med 1. Båda är skarpa: villkor 2 är skarpt > (inte ≥).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'fler än 170'?",
+        "text": "'Fler än' = strikt > 170. Exakt 170 skulle alltså INTE räcka — du behöver minst 171. Det är en detalj som spelar roll om summan landar nära gränsen (som C: 175 — där villkoret är uppfyllt men marginalen liten).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: varför inte tarm-raden ensam?",
+        "text": "Om du hade missat villkor 1 och bara letat 'tarm > året innan' hade C inte gått (0 < 2), men 2014 hade kunnat se rätt ut (2 > 0). Det är just därför båda villkoren behövs simultant: villkor 1 eliminerar A och D, villkor 2 eliminerar C, och B är ensam kvar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (2011). Insikten i en mening: tvåvillkorsfrågor — addera två rader när 'levande donator' nämns utan organspecifikation, och pröva båda villkoren PER alternativ.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "2014 har en tarm-ökning (2 jämfört med 2013:s 0) som lockar och dessutom relativt höga njure-levande-värden (151). Det ser kandidatlikt ut om man bara skummar tarmraden.",
+        "why_wrong": "Levande donator-summan 2014 är 151 + 6 = 157, vilket är UNDER 170. Villkor 1 faller. Som steg 4 visar — A elimineras innan villkor 2 ens prövas. Facit fastslår B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2005 har njure-levande 172 + lever-levande 3 = 175 > 170, alltså klarar villkor 1 — och det är frestande att stanna där. Tarmraden ser man kanske snabbt över utan att jämföra med 2004.",
+        "why_wrong": "Villkor 2 kräver att tarmtransplantationer var FLER än året innan. Tarm 2005 = 0, Tarm 2004 = 2 → 0 < 2, det är en MINSKNING. C klarar villkor 1 men faller på villkor 2. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2004 har många njure-levande-transplantationer i absoluta tal (142) som visuellt sticker ut, och tarm 2004 = 2 jämfört med tarm 2003 = 1 → ökning, alltså villkor 2 ✓. Men det är fel på villkor 1.",
+        "why_wrong": "Levande donator-summan 2004 är 142 + 9 = 151, klart under 170 (villkor 1 FAIL). Som steg 7 visar är D eliminerat oavsett tarmraden. Facit fastslår B (2011); D klarar bara ett av två villkor."
+      }
+    ]
+  },
+  "host-2020-kvant1-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår A: 2. Spridningsdiagrammet 'Tillväxt i regioner 1995–2005' har riksgenomsnitten markerade som korsande räta linjer som delar planet i fyra kvadranter. Du letar punkter i kvadranten 'hög befolkning + låg inkomst' = ovanför den vågräta linjen OCH till vänster om den lodräta linjen. Endast Strömstad och Halmstad ligger där.",
+    "technique": "DTK-strategi för fyrkvadrant-spridningsdiagram: identifiera korslinjerna som rikssnitt, lokalisera vilken kvadrant frågan beskriver (kombinationen av 'över/under' på de två axlarna), räkna punkter i exakt den kvadranten. Triggern: 'hur många regioner hade X högre OCH Y lägre än riksgenomsnittet' → en kvadrant, räkna prickar.",
+    "pitfall": "Den klassiska fällan är att blanda ihop x- och y-axlarnas roller, eller att inkludera punkter på själva linjen (gränsfall). Botemedlet: peka först ut den horisontella linjen (befolkningssnitt) och den vertikala (inkomstsnitt), märk kvadranterna mentalt 'höger-upp', 'höger-ner', 'vänster-upp', 'vänster-ner', och välj den som matchar frågan.",
+    "pregrade_tactic": {
+      "handle": "Kvadrant-räkning",
+      "move": "Hög befolkning + låg inkomst = ovanför den vågräta + till vänster om den lodräta linjen (övre-vänster kvadrant). Räkna namngivna och onamngivna prickar där: Strömstad och Halmstad → 2."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många av regionerna hade befolkningstillväxt HÖGRE än riksgenomsnittet OCH inkomsttillväxt LÄGRE än riksgenomsnittet? Det är två villkor som måste gälla samtidigt. Facit fastslår A: 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i spridningsdiagrammet",
+        "text": "Diagrammet 'Tillväxt i regioner 1995–2005' har två axlar: y-axeln 'Tillväxt i befolkning' (från −0,020 nederst till 0,010 överst), x-axeln 'Tillväxt i regional inkomst' (från 0,015 vänster till 0,045 höger). Varje prick är en av 72 arbetsmarknadsregioner. Vissa är namngivna (Stockholm, Göteborg, Strömstad, Halmstad, Tranås, Avesta, Vilhelmina, Dorotea, Haparanda, Överkalix, Filipstad).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera korslinjerna = riksgenomsnitt",
+        "text": "I diagrammet finns två heldragna räta linjer som korsar varandra: en VÅGRÄT linje som markerar riksgenomsnittet för befolkningstillväxt (ligger runt y ≈ 0,000) och en LODRÄT linje som markerar rikssnittet för inkomsttillväxt (runt x ≈ 0,033). Texten under figuren bekräftar: 'De heldragna räta linjerna anger riksgenomsnittet'.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt frågans villkor till en kvadrant",
+        "text": "Hög befolkning > snittet → OVANFÖR den vågräta linjen. Låg inkomst < snittet → TILL VÄNSTER om den lodräta linjen. Tillsammans: ÖVRE-VÄNSTER kvadranten. Det är där du ska räkna prickar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Inventera den övre-vänstra kvadranten",
+        "text": "I övre-vänster ligger ringsslutna kluster med Stockholm, Göteborg, Halmstad, Strömstad. Men: Stockholm och Göteborg ligger till HÖGER om den lodräta linjen (de har hög inkomsttillväxt — över rikssnittet), så de uppfyller inte villkor 2. Strömstad ligger tydligt till vänster och högt upp. Halmstad ligger ovanför vågrätt och precis till vänster om lodrätt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verifiera Strömstad",
+        "text": "Strömstads prick ligger högt upp (y ≈ 0,005, befolkning ökar snabbt) och långt till vänster (x ≈ 0,032, knappt under inkomstsnittet 0,033). Båda villkoren stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera Halmstad",
+        "text": "Halmstads prick ligger ovanför vågräta linjen (y > 0) och till vänster om lodräta (x < 0,033). Båda villkoren stämmer. Halmstad är den andra punkten.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Diskvalificera Stockholm och Göteborg",
+        "text": "Stockholm och Göteborg är båda i ÖVRE-HÖGER kvadranten (hög befolkning + hög inkomst) — alltså INTE den frågan ber om. De ringslutna ellipserna i diagrammet visar tre grupper baserat på tillväxtens karaktär — Stockholm/Göteborg är i 'hög-hög'-gruppen, inte 'hög-låg'.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Skanna efter onamngivna prickar i kvadranten",
+        "text": "Inspektera övre-vänstra kvadranten noga: utöver Strömstad och Halmstad finns inga andra distinkta prickar mellan den vågräta och den lodräta linjen som tillhör denna kvadrant. Klustret med Tranås/Avesta ligger ovanför vågrätt men nära/över lodrätt, alltså snarare övre-höger eller exakt på gränsen. Endast 2 punkter i övre-vänster.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot alternativen",
+        "text": "A 2 — Strömstad + Halmstad. B 4 — skulle kräva två okänd-prickar till; inga sådana existerar i kvadranten. C 6 — för många. D 10 — vida för många (det skulle vara en majoritet av övre halvplanet). Endast A passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (2). Insikten i en mening: spridningsdiagram med riksgenomsnitt-kors → översätt frågans två villkor till en KVADRANT och räkna prickar; namngivna kandidater kan diskvalificeras direkt om de inte ligger i rätt kvadrant.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "4 är frestande om man räknar med Stockholm och Göteborg ('de är ju kända för befolkningstillväxt'). Då blir det 4 prickar i 'övre halvplanet' — men man har då missat att de är till HÖGER, inte vänster, om inkomstlinjen.",
+        "why_wrong": "Stockholm och Göteborg ligger båda i HÖGER halvplan (hög inkomsttillväxt), inte vänster. De uppfyller inte villkor 2 (inkomst LÄGRE än snittet). Som steg 8 visar är de i 'hög-hög'-kvadranten, inte 'hög-låg'. Facit fastslår A (2)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "6 kan komma av att man slarvar och inkluderar punkter precis på gränslinjen, eller hela övre halvplanet utan att kräva villkor 2. Det är en rimligt-låter siffra.",
+        "why_wrong": "Endast två punkter ligger i ÖVRE-VÄNSTER kvadranten (Strömstad och Halmstad). Att räkna 6 förutsätter att man inkluderar antingen gränsfall eller punkter i fel kvadrant. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "10 motsvarar grovt antalet punkter i hela övre halvplanet (befolkningstillväxt > snittet), oavsett inkomst. Om man bara läser första villkoret och hoppar över andra hamnar man här.",
+        "why_wrong": "Frågan har två villkor som ska gälla SIMULTANT — inte bara ett. Övre halvplanet innehåller fler punkter men nästan alla har hög inkomsttillväxt. I övre-vänster (båda villkoren) finns bara 2. Facit fastslår A."
+      }
+    ]
+  },
+  "host-2020-kvant1-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår C: 0,0270. Identifiera den region med HÖGST befolkningstillväxt (högsta prick på y-axeln) och den med LÄGST (lägsta prick). Strömstad ligger högst, runt 0,008–0,009. Filipstad ligger lägst, runt −0,018 till −0,019. Skillnaden ≈ 0,009 − (−0,018) ≈ 0,027.",
+    "technique": "DTK-strategi för 'skillnad mellan max och min på en axel': hitta extrempunkterna på den relevanta axeln, läs av deras värden mot tick-markeringarna, och dra ifrån. Triggern: 'skillnad mellan högsta och lägsta' → max − min, ej maxavstånd i alla riktningar.",
+    "pitfall": "Den klassiska fällan är att blanda ihop axlarna eller att tolka 'tillväxt' på fel axel. Botemedlet: identifiera ATT befolkningstillväxt är y-axeln (vertikalt), så 'högst och lägst befolkningstillväxt' = den högsta och lägsta punkten LODRÄTT — inkomst spelar ingen roll här.",
+    "pregrade_tactic": {
+      "handle": "Y-axelextremer",
+      "move": "Strömstad är högst (y ≈ 0,008), Filipstad är lägst (y ≈ −0,019). Skillnaden = 0,008 − (−0,019) = 0,027."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor är skillnaden i (genomsnittlig årlig) befolkningstillväxt mellan regionen MED HÖGST och regionen MED LÄGST tillväxt? Svarsalternativen är fyra decimaltal mellan 0,0135 och 0,0310. Facit fastslår C: 0,0270.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Spridningsdiagrammet har befolkningstillväxt på y-axeln med tick-värden vid 0,010, 0,005, 0,000, −0,005, −0,010, −0,015, −0,020. På x-axeln finns inkomsttillväxt — den är IRRELEVANT för denna fråga eftersom frågan bara handlar om befolkningstillväxt.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta högsta y-värdet",
+        "text": "Skanna prickarna uppifrån och ner. Den högsta pricken är Strömstad — den sitter högt upp i övre-vänster kvadranten, med y-värde mellan 0,005 och 0,010, närmare 0,008–0,009.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta lägsta y-värdet",
+        "text": "Skanna nerifrån och upp. Den lägsta pricken är Filipstad — den sitter i nedre delen av diagrammet, mellan −0,015 och −0,020, närmare −0,018 till −0,019.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'genomsnittlig årlig befolkningstillväxt'?",
+        "text": "Värdet är en decimaltalskvot — t.ex. 0,005 betyder 0,5 % årlig befolkningsökning. Negativa värden betyder befolkningsminskning. Strömstad ≈ +0,8 %/år, Filipstad ≈ −1,9 %/år.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna skillnaden",
+        "text": "Skillnad = max − min = 0,008 − (−0,019) = 0,008 + 0,019 = 0,027. Eller med Strömstad ≈ 0,009 och Filipstad ≈ −0,018: 0,009 + 0,018 = 0,027. Båda avläsningarna ger ≈ 0,027.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Korsa mot alternativen",
+        "text": "A 0,0135 — för litet; motsvarar bara intervallet av ena halvan. B 0,0235 — för litet, kräver att max och min är mindre extrema. C 0,0270 — matchar avläsningen. D 0,0310 — för stort; skulle kräva max ≈ 0,010 och min ≈ −0,021, vilket inte stämmer med tick-värdena.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check: avståndet i tick-steg",
+        "text": "Räkna tick-värden mellan Strömstads y-position och Filipstads y-position. Tick-värdena är var 0,005:e enhet. Strömstad ligger någonstans mellan 0,005 och 0,010 → cirka 0,008. Filipstad ligger mellan −0,015 och −0,020 → cirka −0,019. Avståndet sträcker sig över: 0,005 till 0 (= 0,005), 0 till −0,005 (= 0,005), −0,005 till −0,010 (= 0,005), −0,010 till −0,015 (= 0,005), plus en del extra åt båda hållen — totalt cirka 0,027.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Tänk på tecknet",
+        "text": "Eftersom Filipstad har NEGATIV befolkningstillväxt blir skillnaden större än om båda hade varit positiva. Avståndet 0,027 = 0,008 + 0,019 (där absolutbeloppen adderas eftersom tecknena är olika).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför inte Dorotea eller Haparanda?",
+        "text": "Vilhelmina och Dorotea är högt upp till HÖGER (övre-höger kvadrant) men inte högre än Strömstad. Haparanda är låg men inte lägst — Filipstad sitter under den. Strömstad-Filipstad är y-axelns extrema spann.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (0,0270). Insikten i en mening: i spridningsdiagram där frågan bara nämner EN AXELS storhet — koncentrera dig på den axeln, ignorera den andra, och dra av min från max.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "0,0135 är ungefär halva det korrekta värdet — det skulle motsvara avståndet från noll till Strömstad eller från noll till Filipstad ENSAMT, inte hela spannet. Det är frestande om man bara tittar på positiva sidan och glömmer den negativa.",
+        "why_wrong": "Skillnaden mellan max och min måste innefatta hela y-spannet — från 0,008 i topp till −0,019 i botten. Att inte addera den negativa halvan halverar svaret. Som steg 6 visar är spannet 0,027, inte 0,014. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "0,0235 är frestande om man läser Strömstad lite för lågt (säg 0,006) eller Filipstad lite för högt (säg −0,017). Det är 'nära men inte rätt' — en mätfels-känslig zon.",
+        "why_wrong": "Skillnaden 0,0235 förutsätter att antingen max är 0,235 eller min −0,015 — inget av dem stämmer. Tick-värdena är printade var 0,005:e enhet och Strömstad ligger nästan vid 0,010 och Filipstad mellan −0,015 och −0,020. Facit fastslår C (0,0270)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "0,0310 är en överskattning som lockar om man tar Strömstad till exakt 0,010 (top tick) och Filipstad till exakt −0,021. Det är 'absoluta extremerna i diagramutrymmet'.",
+        "why_wrong": "Strömstad ligger inte exakt på 0,010-ticken — den är något under. Filipstad ligger inte vid −0,021 — den är runt −0,018 till −0,019. Korrekt avläsning ger 0,027, inte 0,031. Facit fastslår C."
+      }
+    ]
+  },
+  "host-2020-kvant1-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår C: 45 procent. Diagrammet är indelat i tre grupper (ringmarkerade ellipser). Den grupp som har lägst tillväxt i både befolkning och inkomst är den nedre-vänstra ellipsen (innehåller Haparanda, Överkalix, Filipstad m.fl.). Räkna prickar i den ellipsen: cirka 32 prickar av totalt 72. 32/72 ≈ 0,44 ≈ 45 %.",
+    "technique": "DTK-strategi för 'andel i en grupp i ett kategoriserat spridningsdiagram': identifiera grupperna (ofta ringmarkerade i diagrammet), räkna prickar i den efterfrågade gruppen, dividera med totala antalet (72). Triggern: 'hur stor andel av regionerna fanns i gruppen X' → räkna ellipsens prickar.",
+    "pitfall": "Den klassiska fällan är att gissa visuellt utan att räkna eller att tro att grupperna är lika stora (1/3 vardera). Botemedlet: räkna prickar i ellipsen så noggrant du kan — frågan har en korrekt nämnare (72) given i diagrammets bildtext.",
+    "pregrade_tactic": {
+      "handle": "Räkna-prickar-i-ellipsen",
+      "move": "Den nedre-vänstra ellipsen (låg-låg-gruppen) innehåller cirka 32 prickar. 32/72 ≈ 0,44, ligger närmast 45 %."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av de 72 regionerna fanns i den grupp som hade LÄGST tillväxt i BÅDE befolkning OCH inkomst? Svarsformatet är procent. Facit fastslår C: 45 procent.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Spridningsdiagrammet 'Tillväxt i regioner 1995–2005' visar 72 regioner. I diagrammet finns tre ringmarkerade (ovala) ellipser som grupperar regionerna i tre tillväxtgrupper. Texten under figuren bekräftar: 'Regionerna har delats in i tre grupper beroende på tillväxtens karaktär'.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de tre grupperna",
+        "text": "Grupp 1 (övre-vänster + dragandes mot mitten): en ellips som omsluter Stockholm, Göteborg, Halmstad, Strömstad — högt på befolkningsaxeln. Grupp 2 (övre-höger): en mindre ellips runt Tranås, Avesta, Vilhelmina, Dorotea — hög inkomst. Grupp 3 (nedre-vänster, lutar diagonalt): en stor avlång ellips runt Filipstad, Överkalix, Haparanda — LÅG både i befolkning och inkomst.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vilken är 'lägst tillväxt'-gruppen?",
+        "text": "Gruppen med LÄGST tillväxt i båda — befolkning OCH inkomst — är den nedre-vänstra ellipsen (Grupp 3). Den sträcker sig från nedre-vänster halvan upp mot mitten av diagrammet. Innehåller bl.a. Filipstad, Överkalix, Haparanda.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna prickar i Grupp 3",
+        "text": "Inspektera ellipsen noggrant och räkna alla prickar som ligger inom den. Det är cirka 30–32 prickar — en betydande andel av de 72 totala. Var noggrann om gränspunkter: prickar precis på ellipsens kontur räknas som inom om de tydligt ligger inom diagrammets nedre-vänstra cluster.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'andel av 72'?",
+        "text": "Andel = antal i gruppen / 72. För att räkna ut procent: (antal / 72) × 100 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna procenten",
+        "text": "Med ungefär 32 prickar i ellipsen: 32 / 72 = 0,444 ≈ 44 %. Med 33 prickar: 33/72 ≈ 0,458 ≈ 46 %. Avläsningen landar i intervallet 44–46 % — närmast 45 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Korsa mot alternativen",
+        "text": "A 20 % — skulle motsvara 14 prickar; alldeles för få för den stora nedre-vänstra ellipsen. B 30 % — 22 prickar; för få. C 45 % — 32 prickar; matchar. D 55 % — 40 prickar; för många, skulle vara majoritet vilket inte stämmer. Endast C passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: gruppernas storlekar adderas till 72",
+        "text": "Grupp 1 (övre vänster) verkar innehålla cirka 18 prickar; Grupp 2 (övre höger) cirka 20–22 prickar; Grupp 3 cirka 30–32 prickar. Summan ≈ 70–72, vilket stämmer. Grupperna är INTE lika stora — Grupp 3 är klart störst.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför är denna grupp störst?",
+        "text": "I Sverige under perioden 1995–2005 hade en stor del av de mindre regionerna (särskilt på Norrlands inland och i bruksområden) negativ befolkningsutveckling kombinerat med svag inkomsttillväxt. Det matchar visuellt att den nedre-vänstra ellipsen är klart störst.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (45 procent). Insikten i en mening: vid 'andel i grupp X'-frågor i kategoriserade spridningsdiagram — räkna prickar i den ringmarkerade ellipsen och dividera med den given nämnaren (72 här).",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "20 % känns rimligt om man INTE räknar utan gissar att grupperna är ungefär lika eller om man bara tittar på en mindre delmängd (t.ex. några namngivna prickar). Det är 'underskattningsfällan'.",
+        "why_wrong": "Den nedre-vänstra ellipsen innehåller cirka 30–32 prickar, inte 14. Som steg 5 och 7 visar landar andelen runt 44–45 %, inte 20 %. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "30 % är frestande om man antar att grupperna är ungefär lika (1/3 vardera). Det är ett 'rimligt antagande' men inte vad diagrammet visar.",
+        "why_wrong": "Grupperna är INTE lika stora — Grupp 3 är klart störst. Faktisk räkning ger 32/72 ≈ 44 %, inte 30 %. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "55 % är frestande om man räknar för generöst eller inkluderar prickar utanför ellipsens kontur. Det är 'överskattningsfällan'.",
+        "why_wrong": "55 % skulle kräva cirka 40 prickar i ellipsen — då skulle gruppen ensam vara större än de andra två tillsammans, vilket inte stämmer med diagrammets visuella balans. Som steg 9 visar är fördelningen ungefär 18+22+32. Facit fastslår C (45 %)."
+      }
+    ]
+  },
+  "host-2020-kvant1-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår C: Gävleborgs län. Diagrammen visar arbetstidens fördelning per län under året (1/1 till 1/12). Frågan: i vilket län utgjorde jordbruksarbete (det översta tonade området närmast 100 %-linjen, ovanför Övrigt arbete) mer än hälften av arbetstiden under MER ÄN nio månader. I Gävleborgs län är diagrammet starkt jordbruksdominerat: kurvan för jordbruksarbete ligger ovanför 50 %-linjen från ungefär 1/3 till 1/12, dvs ungefär 10 månader.",
+    "technique": "DTK-strategi för 'hur många månader var X > tröskel': identifiera rätt skikt i ett staplat ytdiagram, jämför skiktets ÖVRE GRÄNS (eller skiktets toppmoln) med tröskellinjen (här 50 %), räkna antalet månader där tröskeln passeras. Triggern: 'mer än hälften under mer än nio månader' → ytdiagram + 50-procentslinje + 9-månaders kontroll.",
+    "pitfall": "Den klassiska fällan är att läsa fel skikt i ytdiagrammet — jordbruksarbete är den ÖVERSTA delen, ovanför Övrigt arbete, Vägarbete, Flottningsarbete och Skogsarbete. Botemedlet: konsultera teckenförklaringen (nederst till höger på p22), identifiera vilket mönster/skuggning som är jordbruksarbete, och spåra DEN bandets ÖVRE kant minus ÖVRIGT-skiktet under det.",
+    "pregrade_tactic": {
+      "handle": "Övre-skikt-mot-50-linjen",
+      "move": "Hitta jordbruksarbete-skiktet (översta band i ytdiagrammet, närmast 100 %). I Gävleborgs län ligger detta bands UNDRE gräns under 50 % bara en kort period på vintern — under 10 av 12 månader är jordbruksarbete > 50 %."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: i vilket län utgjorde jordbruksarbete MER ÄN HÄLFTEN av arbetstiden under MER ÄN NIO MÅNADER av året? Svarsalternativen är fyra norrländska län. Facit fastslår C: Gävleborgs län.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i figurerna",
+        "text": "På sidan visas fem ytdiagram (ett per län: Norrbotten, Västernorrland, Västerbotten, Gävleborg, Jämtland) med y-axel 0–100 % och x-axel som tidsaxel över året (1/1, 1/2, ..., 1/12). Varje diagram är staplat: olika skikt representerar olika arbetsuppgifter. Teckenförklaringen nederst till höger anger ordningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs teckenförklaringen",
+        "text": "Skikten uppifrån-ner enligt teckenförklaringen på p22: överst Jordbruksarbete (ljusast mönster), sedan Övrigt arbete, sedan Vägarbete, sedan Flottningsarbete, sedan Skogsarbete (mörkast/svart). Eftersom jordbruksarbete är ÖVERST betyder det att MÄNGDEN jordbruksarbete = avståndet från 100 %-linjen ner till skiktets undre gräns.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad innebär 'mer än hälften'?",
+        "text": "Jordbruksarbete > 50 % betyder att jordbrukets BAND täcker mer än halva 100 %-skalan. Visuellt: skiktets undre gräns måste ligga UNDER 50 %-linjen — då tar skiktet upp ovanstående 50 %+ del.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skanna Norrbottens län (A)",
+        "text": "I Norrbottens diagram dominerar Skogsarbete (svart, lägst skikt) och Flottningsarbete (mörka mönster) under stora delar av året. Jordbruksarbete ligger högt vid sommar (juni–augusti) men är smal vintertid. Antalet månader med jordbruk > 50 % är troligen 4–5, inte mer än 9. Inte A.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skanna Västerbottens län (B)",
+        "text": "Västerbotten visar liknande mönster som Norrbotten — skog dominerar vintern, jordbruk har en topp på sommaren. Jordbruk > 50 % gäller kanske 4–5 månader vid sommar. Inte mer än 9 månader. Inte B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skanna Gävleborgs län (C)",
+        "text": "Gävleborg sticker ut: jordbruksarbete har den högsta sommartoppen av alla diagrammen (når nära 100 % vid 1/7) och håller sig högt under hela året. Jordbrukets skikt sträcker sig från en undre gräns som ligger UNDER 50 % under större delen av året — bara under några vintermånader (januari–februari) faller den under 50 %. Det ger 10+ månader > 50 %, alltså MER ÄN nio. Matchar facit C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Skanna Jämtlands län (D)",
+        "text": "Jämtland visar ett liknande sommartoppmönster men med starkare skogs- och flottningsdominans under vintern och våren. Jordbruk > 50 % gäller cirka 5–6 månader. Inte mer än 9. Inte D.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'mer än nio månader'?",
+        "text": "'Mer än nio' = strikt > 9, alltså MINST 10 månader. Det är en mycket hög tröskel — bara ett län där jordbruk dominerar nästan hela året klarar det. Gävleborgs län är just ett sådant: längst söderut av de norrländska länen, längsta växtsäsong, störst jordbruksandel.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via geografi",
+        "text": "Gävleborg ligger längst söderut av de fem norrländska länen och har därför längst växtsäsong och störst jordbrukstradition. Norrbotten, Västerbotten och Jämtland ligger längre norrut/inland och har kortare jordbrukssäsong. Det styrker att Gävleborg är det län där jordbruket dominerar mest av året.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (Gävleborgs län). Insikten i en mening: i staplade ytdiagram över året — identifiera rätt skikt via teckenförklaringen, kontrollera dess UNDRE gräns mot tröskellinjen (50 %), räkna månader där tröskeln överskrids.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Norrbottens län ligger längst norrut och har en tydlig sommarjordbrukstopp, vilket kan ge intrycket av jordbruksdominans. Och 'län' med 'jordbruk' triggar lätt associationer åt det stora Norrbottens-territoriet.",
+        "why_wrong": "Norrbotten har kort växtsäsong; jordbruk dominerar bara 4–5 månader runt sommar. Resten av året är skogsarbete (svart skikt) och flottningsarbete dominerande. Som steg 5 visar är jordbruk > 50 % långt under 9 månader. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Västerbottens län har en liknande layout som Norrbotten med sommarjordbrukstopp. Lätt att förväxla med Gävleborg om man inte tittar noga.",
+        "why_wrong": "Västerbotten ligger geografiskt nära Norrbotten — kort växtsäsong, dominant skogsarbete vintertid. Jordbruk > 50 % gäller bara 4–5 månader runt sommar. Inte mer än 9. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Jämtland har också en synlig sommarjordbrukstopp och kan visuellt likna Gävleborg om man inte är noggrann med vilket län som är vilket på sidan.",
+        "why_wrong": "Jämtland har en bredare skogs- och flottningsdominans än Gävleborg. Jordbruk > 50 % gäller cirka 5–6 månader, inte mer än 9. Gävleborg är det enda län där jordbrukets skikt ligger ovanför 50 %-linjen i 10+ månader. Facit fastslår C."
+      }
+    ]
+  },
+  "host-2020-kvant1-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår B: 3 månader. I diagrammets övre band (per län) finns en tidslinje med markörer för bl.a. höskördens avslutning ('Höskörd') och 'Första snön'. Det landskap/område med längst intervall mellan dessa två markörer är ett av de sydligare områdena i Gävleborgs län (där höskörd avslutas tidigt och första snön kommer sent), ungefär 3 månader.",
+    "technique": "DTK-strategi för tidsintervall mellan två händelser på en årskalender: hitta båda markörerna i den övre tidsbanden för varje delområde, mät avståndet i månader (axeln går 1/1 till 1/12), välj det område med största avstånd. Triggern: 'längsta tidsintervall mellan A och B' → skanna alla delområden, mät avstånd, jämför.",
+    "pitfall": "Den klassiska fällan är att förväxla höskördens AVSLUTNING med dess BÖRJAN, eller att räkna fel landskap. Botemedlet: studera teckenförklaringen — Höskörd har en specifik markering, Första snön en annan; mät från höskördens HÖGRA kant (avslutning) till första snöns markör.",
+    "pregrade_tactic": {
+      "handle": "Tidslinje-skanning",
+      "move": "I varje läns övre band: hitta höskördens slutmarkör och första snön. Det område med största avstånd (cirka 3 månader) är svaret."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket landskap/område hade det längsta tidsintervallet mellan höskördens AVSLUTNING och första snön? Hur långt var detta intervall? Svarsalternativ: 2, 3, 4, 5 månader. Facit fastslår B: 3 månader.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammen",
+        "text": "Varje läns ytdiagram har överst en TIDSAXEL/BAND med markörer för olika aktiviteter under året. Teckenförklaringen (nederst till höger på p22) listar: 'Temp 10°' (när dygnsmedeltemperaturen passerar 10°), 'Vårsådd', 'Vårbruket börjar' (Höskörd), 'Potatis-plockning', 'Första snön'. Varje län delas dessutom i två delområden (övre och nedre band), så det finns 10 datapunkter totalt över 5 län × 2 områden.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera Höskörd-markeringen",
+        "text": "Höskörd är en specifik markör i tidsbanden — den motsvarar slutet av sommarens hökördsperiod, typiskt augusti. Hitta den i teckenförklaringen och håll fast vid dess mönster.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera Första snön-markeringen",
+        "text": "Första snön är slutet på snöfria perioden — kommer typiskt oktober–november i norrländska län. Hitta dess specifika markör i teckenförklaringen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'tidsintervall mellan'?",
+        "text": "Intervall = tid från höskördens AVSLUTNING (höger kant av höskördemarkören) fram till första snön. Mäts i månader längs x-axeln (1/1, 1/2, ..., 1/12, så varje markering är en månad).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skanna Norrbottens län",
+        "text": "I Norrbotten (det nordligaste länet) kommer första snön TIDIGT (september eller tidig oktober) och höskörden avslutas också relativt tidigt (kanske augusti). Intervallet är ungefär 1–2 månader. Inte längst.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skanna Västerbottens, Västernorrlands, Gävleborgs och Jämtlands län",
+        "text": "Längre söderut förskjuts båda markörerna: höskörden avslutas marginellt senare men första snön kommer mycket SENARE (november). Differensen växer söderut. Gävleborg är längst söderut bland alternativen och har den största förskjutningen — höskörden klar i augusti, första snön kring november. Intervall ungefär 3 månader.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Mäta intervallet i Gävleborgs sydligare delområde",
+        "text": "I Gävleborgs läns sydligare delområde (eller motsvarande sydligt landskap): höskördens slut ligger vid cirka 1/8 (augusti); första snön vid cirka 1/11 (november). Avståndet är 3 månader (augusti, september, oktober). Det matchar facit B.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen",
+        "text": "A 2 månader — det är intervallet i mer nordliga län (Norrbotten, Västerbotten). B 3 månader — Gävleborgs sydligare område. C 4 månader — skulle kräva höskörd i juli ELLER första snön i december; inget land/område matchar det. D 5 månader — skulle motsvara höskörd i juni och första snön i november, vilket inte stämmer med några av de norrländska länen. Endast B passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via geografi och klimatologi",
+        "text": "Sverige som helhet har en växtsäsong som i Gävleborg avslutas kring september–oktober och första snö i november. Höskörd (timoteivallens andra slag) avslutas i sena augusti. Avståndet 3 månader är klimatologiskt rimligt för Gävleborgs sydligare delområden. Längre intervall (4–5 månader) hör hemma i Skåne eller Östergötland, inte i de norrländska länen som diagrammen täcker.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (3 månader). Insikten i en mening: vid tidsintervall-frågor på årskalender-diagram — hitta båda markörerna i ALLA delområden, mät avståndet i månader, ta det största.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "2 månader är det typiska intervallet i de nordligare länen (Norrbotten, Västerbotten) — och om man läser fel diagram fastnar man här.",
+        "why_wrong": "Frågan ber om det LÄNGSTA intervallet av alla delområden, inte ett genomsnitt eller ett godtyckligt län. Det längsta är cirka 3 månader i Gävleborgs sydligare område. Facit fastslår B (3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "4 månader känns rimligt om man av misstag mäter från höskördens BÖRJAN (i juli) istället för dess AVSLUTNING (i augusti). Eller om man räknar första snön till december (för sent).",
+        "why_wrong": "Frågan specificerar höskördens AVSLUTNING. I de norrländska länen (även det sydligaste, Gävleborg) avslutas höskörden i augusti och första snön kommer i november — vilket ger 3 månader, inte 4. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "5 månader är en överskattning som kräver att antingen höskörden avslutas mycket tidigt (juni) eller första snön mycket sent (december). Det skulle stämma för Skåne men inte för de norrländska län som diagrammen visar.",
+        "why_wrong": "De fem länen i diagrammet är alla norrländska — växtsäsongen är kortare och första snön kommer tidigare än i södra Sverige. 5 månader är inte uppnåeligt i dessa områden. Facit fastslår B (3 månader)."
+      }
+    ]
+  },
+  "host-2020-kvant1-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår D: 75 procent. Steg 1: hitta vid vilken tidpunkt vårsådden inföll (markerad i tidsbanden över varje läns diagram, typiskt maj). Steg 2: i varje län vid den tidpunkten, läs av skogsarbetets andel (svart skikt nederst). Identifiera det län där skogsarbete = 4 %. Steg 3: i samma län vid samma tidpunkt, läs av jordbruksarbetets andel (översta skikt). Det är cirka 75 %.",
+    "technique": "DTK-strategi för tvåstegs-läsning i ytdiagram: hitta tidpunkten via händelsemarkör (här vårsådd) i översta tidsband, gå sedan rakt NER i ytdiagrammet och läs av relevanta skikt vid den tidpunkten. Triggern: 'vid tidpunkten för X, hur stor andel av Y' → två koordinater (tidpunkt + skikt), inte en.",
+    "pitfall": "Den klassiska fällan är att tappa bort vilken tidpunkt som åsyftas — vårsåddens markering varierar mellan länen (tidigare i söder, senare i norr). Botemedlet: först identifiera vårsåddens markör i alla diagram, hitta länet där skogsarbete = 4 % vid den tidpunkten, sedan läs av jordbruksarbete vid SAMMA tidpunkt.",
+    "pregrade_tactic": {
+      "handle": "Tvåstegs-vertikalavläsning",
+      "move": "Vid vårsåddens markering: leta länet där skogsarbete (svart, nederst) = 4 %. Läs sedan jordbruksarbete (översta skikt) vid samma tidpunkt — 75 %."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan har två steg: (1) hitta länet där skogsarbete utgjorde 4 % vid tidpunkten för vårsådden, (2) läs av jordbruksarbetets andel vid samma tidpunkt i samma län. Facit fastslår D: 75 procent.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är 'vårsådd' i diagrammen?",
+        "text": "Vårsådden är en händelsemarkör i tidsbanden över varje läns ytdiagram — en specifik tidpunkt på året (typiskt maj i Norrland). Markören finns i teckenförklaringen nederst till höger på p22.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera vårsåddens tidpunkt per län",
+        "text": "Vårsåddens tidpunkt varierar något mellan länen (tidigare söderut). I de fem norrländska länen ligger den typiskt vid cirka 1/5 till mitten av maj. Markören är specifik per län — leta efter den i varje övre tidsband.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera skogsarbetets skikt",
+        "text": "Enligt teckenförklaringen är skogsarbete det svarta (mörkaste) skiktet längst NED i ytdiagrammet. Vid vårsådden minskar skogsarbetet kraftigt (vintersäsongen är slut) och jordbruksarbetet ökar. Skogsarbete = 4 % betyder att det svarta skiktet är mycket tunt — knappt synligt vid 0–4 % på y-axeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skanna alla fem län för 4 % skogsarbete vid vårsådden",
+        "text": "Vid vårsåddens tidpunkt i varje län: läs av det svarta skiktets tjocklek på y-axeln. I de tre nordligaste länen (Norrbotten, Västerbotten, Jämtland) är skogsarbetet fortfarande dominant vid vårsådd — kan vara 30–50 %. I Västernorrland mindre, kring 15–20 %. I Gävleborg har skogsarbetet sjunkit kraftigt — där ligger det svarta skiktet vid endast 4 % vid vårsådden. Det är länet vi söker.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lokalisera vårsåddens tidpunkt i Gävleborgs diagram",
+        "text": "I Gävleborgs läns övre tidsband: hitta vårsåddens markering, läs av tidpunkten (cirka 1/5). Drag en lodrät linje ner i ytdiagrammet vid den tidpunkten.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Läs av jordbruksarbetets andel i Gävleborg vid vårsådden",
+        "text": "Vid vårsåddens tidpunkt i Gävleborgs ytdiagram: skogsarbete (svart, nederst) tar 4 %. Flottningsarbete kanske 5 %. Vägarbete några procent. Övrigt arbete kanske 15 %. Resten = jordbruksarbete. Översta skiktet (jordbruk) sträcker sig från cirka 25 % ner till 100 % = en bredd på cirka 75 % av y-axeln. Det matchar facit D.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'andel av arbetstiden'?",
+        "text": "Eftersom ytdiagrammet är 100 %-staplat = summan av alla skikt = 100 %. Andel av arbetstid för jordbruk vid en given tidpunkt = HÖJDEN av jordbruksskiktet i diagrammet vid den tidpunkten. När andra skikt är små (skogsarbete 4 %, etc.), tar jordbruk en stor andel.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen",
+        "text": "A 25 % — för litet; skulle kräva att jordbruk endast tar 25 % medan summan av övriga är 75 %, det är inte fallet vid Gävleborgs vårsådd. B 40 % — för litet; jordbruk dominerar tydligare i Gävleborg vid den tidpunkten. C 60 % — för lågt; jordbruk är ännu högre. D 75 % — matchar. Endast D passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via 100 %-staplingen",
+        "text": "Om jordbruk = 75 % och skogsarbete = 4 %, blir summan av övriga aktiviteter (flottning, väg, övrigt) = 21 %. Det är rimligt för en sen vår i Gävleborg där flottning kanske börjar, vägarbete är låst och övrigt är begränsat.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (75 procent). Insikten i en mening: tvåstegs-frågor på ytdiagram — först identifiera tidpunkten via händelsemarkör, sedan länet via specifikt skiktvärde, sedan målskiktet vid samma tidpunkt och län.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "25 % är frestande om man läser fel skikt — det skulle motsvara HÖJDEN från undre kanten av jordbruksskiktet till TOPPEN, men man räknar bara den OVANFÖR-LIGGANDE delen istället för skiktets bredd. Eller om man tar 'Övrigt arbete' istället för jordbruksarbete.",
+        "why_wrong": "Jordbruksarbete är det ÖVERSTA skiktet — dess bredd är från sin undre gräns upp till 100 %. I Gävleborg vid vårsådd ligger den undre gränsen vid cirka 25 % → bredd 75 %, inte 25 %. Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "40 % kan komma från att man av misstag läser av ett annat län (där jordbruk inte är så dominerande vid vårsådd) eller från att man räknar fel skikt.",
+        "why_wrong": "I Gävleborg vid vårsådd dominerar jordbruksarbete kraftigt — 40 % är för lågt. Som steg 7 visar är värdet cirka 75 %. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "60 % känns nära rätt och kan vara avläsningen om man feltolkar skiktets undre gräns i Gävleborg vid vårsådd (säg att man tror den ligger vid 40 % istället för 25 %). Det är 'nära men inte rätt'.",
+        "why_wrong": "Skogsarbete (svart) är endast 4 %, flottning är synligt men måttligt, övriga skikt är små. Sammantaget tar de cirka 25 % — jordbruk fyller resten, 75 %. Skillnaden mellan 60 % och 75 % är just precisionen i avläsningen av jordbruksskiktets undre kant. Facit fastslår D."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår A: Indien. I det undre diagrammet 'Adopterade barn födda under 1970-talet i något av de sex vanligaste födelseländerna' visas en kurva per land. Indien-kurvan (märkt 'Indien') ligger för 1975 högst bland länderna (Sydkorea har just kraschat från sin topp) och stiger mot 1979 där den ligger på cirka 300, klart över 1977-värdet på cirka 250. Båda villkoren stämmer.",
+    "technique": "DTK-strategi för 'vilket land/kategori uppfyller två villkor' i linjediagram: identifiera kandidat-kurvor, kontrollera villkor 1 (vanligast något år) genom att jämföra toppvärden ÅR FÖR ÅR, kontrollera villkor 2 (1979 > 1977) via direkt avläsning på respektive år. Triggern: kombination av topp-villkor och förändrings-villkor → eliminera kurvor som faller på endera.",
+    "pitfall": "Den klassiska fällan är att fastna på Sydkorea (mest dramatisk kurva, topp 1972) utan att kontrollera villkor 2: Sydkorea 1979 är LÄGRE än Sydkorea 1977. Botemedlet: aldrig nöja sig med ett villkor — pröva båda separat och eliminera så fort en kandidat faller.",
+    "pregrade_tactic": {
+      "handle": "Topp-år + förändrings-år",
+      "move": "För varje land: är det HÖGST något år (villkor 1)? Är värdet 1979 högre än 1977 (villkor 2)? Endast Indien klarar båda."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan har två villkor: (1) landet var det VANLIGASTE födelselandet bland adopterade barn för MINST ETT av åren 1970–1979, (2) fler barn föddes 1979 än 1977 från detta land. Facit fastslår A: Indien.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Det undre linjediagrammet visar antal adopterade barn per födelseår och födelseland, sex länder: Sydkorea, Indien, Thailand, Chile, Sri Lanka, Colombia. Y-axel 'Antal' med tick-värden 0, 100, 200, 300, 400, 500, 600. X-axel 'Födelseår' med åren 1970–1979.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera kurvorna via etiketter",
+        "text": "Sydkorea = tjock svart linje med tydlig topp 1972 (≈ 570) och kraftig nedgång efter 1974. Indien = tjock streckad linje som stiger stadigt från ≈ 100 (1970) till ≈ 300 (1979). Thailand = tunn linje med skarp topp 1976 (≈ 400). Chile = streckad linje som stiger mot ≈ 300+ vid slutet. Sri Lanka och Colombia ligger lågt hela perioden.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'vanligaste det året'?",
+        "text": "Det betyder att landets kurva ligger HÖGST i diagrammet det året — högre än alla andra länders kurvor vid samma x-värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska A: Indien — villkor 1",
+        "text": "Indien-kurvan klättrar stadigt. Vid år 1975 har Sydkorea precis kraschat från ≈ 430 (1974) ner till ≈ 180 (1975), medan Indien ligger runt 200. Indien är då bland de högsta (toppar tillsammans med eller över Sydkorea det året). I åtminstone 1975 ligger Indien högst. Villkor 1 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska A: Indien — villkor 2",
+        "text": "Indien 1977: ≈ 250. Indien 1979: ≈ 300. 1979 > 1977 ✓. Båda villkoren stämmer för Indien — matchar facit A.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Eliminera B: Sri Lanka",
+        "text": "Sri Lanka ligger LÅGT under hela perioden — knappt över 100 något år. Sri Lanka är aldrig vanligaste landet — villkor 1 faller direkt. Inte B.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera C: Sydkorea",
+        "text": "Sydkorea uppfyller villkor 1 enkelt (vanligast 1970–1974, topp 1972 ≈ 570). Men villkor 2: Sydkorea 1977 ≈ 200, Sydkorea 1979 ≈ 180. 1979 < 1977 — nedåtgående trend hela tiden. Villkor 2 faller. Inte C.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera D: Thailand",
+        "text": "Thailand toppar 1976 ≈ 400 (då är det vanligaste landet — villkor 1 ✓). Men sedan kraschar Thailand: 1977 ≈ 200, 1979 ≈ 80–100. 1979 < 1977 — kraftig nedgång. Villkor 2 faller. Inte D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: endast Indien klarar båda",
+        "text": "Av de fyra alternativen är Indien det enda land där BÅDE topp-villkoret OCH 1979 > 1977-villkoret är uppfyllt. Sydkorea och Thailand var båda vanligast något år men föll efteråt; Sri Lanka var aldrig vanligast.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (Indien). Insikten i en mening: vid kombinerade villkor — eliminera kandidater så snart EN villkor faller; en stark match på ett villkor (Sydkoreas dominans 1970–1974) betyder inget om det andra villkoret inte uppfylls.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Sri Lanka är ett av de listade länderna och har en kurva som syns i diagrammet. Det är lätt att gissa det om man inte konsulterar kurvornas relativa höjder.",
+        "why_wrong": "Sri Lanka ligger LÅGT hela perioden — knappt över 100 och under de flesta andra kurvor. Sri Lanka är aldrig vanligaste landet. Villkor 1 faller. Som steg 7 visar — direkt eliminerat. Facit fastslår A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Sydkorea är den mest visuella kurvan med tydlig topp 1972 (~570) — det var det överlägset vanligaste landet under första halvan av 70-talet. Det är frestande att stanna vid villkor 1 och utse Sydkorea.",
+        "why_wrong": "Villkor 2 kräver 1979 > 1977. Sydkorea 1977 ≈ 200, Sydkorea 1979 ≈ 180 — nedåt, inte upp. Sydkorea föll efter sin topp och stannade nere. Som steg 8 visar — eliminerat på villkor 2. Facit fastslår A (Indien)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Thailand har en tydlig topp 1976 (≈ 400) som gör det till vanligaste landet det året — uppfyller villkor 1. Det är frestande att stanna där.",
+        "why_wrong": "Thailand 1977 ≈ 200, Thailand 1979 ≈ 80–100. Stark NEDGÅNG, alltså 1979 < 1977. Villkor 2 faller. Som steg 9 visar — eliminerat. Facit fastslår A; Indien är det enda land där båda villkoren stämmer."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår D: 6 500. I det övre linjediagrammet 'Adopterade barn födda under 1970-talet uppdelat efter födelseår och kön' ska du läsa Totalt-kurvan för åren 1975, 1976, 1977, 1978, 1979 och summera. Totalt-värden: 1975 ≈ 1 300, 1976 ≈ 1 500, 1977 ≈ 1 300, 1978 ≈ 1 200, 1979 ≈ 1 200. Summa ≈ 6 500. Matchar D.",
+    "technique": "DTK-strategi för 'totalt antal under period': läs Totalt-kurvans värde för varje år i perioden, summera. Triggern: 'hur många under perioden X–Y' → fem avläsningar (eller motsvarande), enkel addition.",
+    "pitfall": "Den klassiska fällan är att summera Flickor-kurvan eller Pojkar-kurvan istället för Totalt-kurvan, eller att läsa fel diagram (det undre per-land istället för det övre per-kön). Botemedlet: identifiera kurvan märkt 'Totalt' i det ÖVRE diagrammet och håll fingret på den.",
+    "pregrade_tactic": {
+      "handle": "Totalt-kurva-summa",
+      "move": "Övre diagrammet, Totalt-kurvan, läs av 1975–1979 (fem år) och summera: 1 300 + 1 500 + 1 300 + 1 200 + 1 200 = 6 500."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många av de adopterade barnen föddes under perioden 1975–1979? Det är fem år (inklusive båda ändpunkterna). Facit fastslår D: 6 500.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammen",
+        "text": "På sidan finns TVÅ linjediagram. Det ÖVRE visar 'Antalet adopterade barn födda under 1970-talet uppdelat efter födelseår och kön' — tre kurvor: Totalt, Flickor, Pojkar. Det UNDRE visar uppdelning per födelseland. För denna fråga används den ÖVRE Totalt-kurvan.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera Totalt-kurvan",
+        "text": "I det övre diagrammet ligger Totalt-kurvan högst — den är summan av Flickor och Pojkar för varje år. Den når en topp 1976 (≈ 1 500) och håller sig mellan 1 100 och 1 600 under perioden.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna antalet år i perioden",
+        "text": "1975, 1976, 1977, 1978, 1979 = FEM år. (Glöm inte att inkludera både 1975 och 1979.)",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs Totalt 1975",
+        "text": "Vid x = 1975 ligger Totalt-kurvan vid cirka 1 300.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs Totalt 1976",
+        "text": "Vid x = 1976 är Totalt-kurvans topp: ≈ 1 500 (kan vara upp till 1 600).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Läs Totalt 1977, 1978, 1979",
+        "text": "1977 ≈ 1 300 (kurvan dyker efter 1976-toppen). 1978 ≈ 1 200. 1979 ≈ 1 200 (lite under 1978).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Summera de fem värdena",
+        "text": "1 300 + 1 500 + 1 300 + 1 200 + 1 200 = 6 500. Verifiera: (1 300 + 1 200) + (1 300 + 1 200) + 1 500 = 2 500 + 2 500 + 1 500 = 6 500.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen",
+        "text": "A 1 300 — det är bara ETT års värde, inte summan över fem. B 3 300 — ungefär hälften, motsvarar kanske summan av Flickor-kurvan ensam. C 5 500 — något för lågt, motsvarar kanske ett missat årtal eller fel kurva. D 6 500 — matchar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: snitt per år",
+        "text": "6 500 / 5 = 1 300 per år i genomsnitt — vilket stämmer med att Totalt-kurvan svänger mellan 1 200 och 1 500 under perioden. Hade vi bara summerat Flickor eller Pojkar (var och en cirka hälften, ≈ 650/år) skulle vi fått hälften så stor summa (≈ 3 250).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (6 500). Insikten i en mening: identifiera rätt kurva FÖRST (Totalt, inte Flickor/Pojkar), räkna antalet år INKLUSIVT, summera. Här: fem år × snitt 1 300 = 6 500.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1 300 är värdet för ETT enskilt år (t.ex. 1975 eller 1977 ensamt). Det är frestande om man av misstag läser ETT värde istället för summan.",
+        "why_wrong": "Frågan ber om TOTALT över fem år. 1 300 är ett enskilt års värde, inte summan. Som steg 8 visar är summan 6 500. Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "3 300 är ungefär hälften av rätt svar — motsvarar t.ex. summan av Flickor-kurvan ensam över de fem åren, eller en seglig avläsning där hälften av åren räknas dubbelt.",
+        "why_wrong": "Frågan ber om TOTALT (alla barn), inte bara flickor eller bara pojkar. Totalt-kurvan ligger ≈ 1 300/år i snitt, inte 660/år. Som steg 8 visar är korrekt summa 6 500. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "5 500 är frestande om man avläser värdena lite för lågt eller missar en av åren. Det är 'nära men inte rätt' — fångar avläsningsfel på 200 per år.",
+        "why_wrong": "Totalt-kurvan över 1975–1979 summerar till cirka 6 500, inte 5 500. Skillnaden 1 000 motsvarar ett glömt år eller systematisk underläsning. Som steg 8 visar är korrekt 6 500. Facit fastslår D."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår C: 60 procent. I det ÖVRE diagrammet 'Industrins totala utgifter för miljöskydd 2002–2012' staplas Investeringar (svart, nedre) ovanpå med Löpande kostnader (grå, övre). 2011: totalstapeln når cirka 12 000 mkr, investeringar (svart del) når cirka 4 800 mkr, vilket gör att löpande kostnader = 12 000 − 4 800 = 7 200 mkr. Andel löpande = 7 200 / 12 000 = 0,60 = 60 %.",
+    "technique": "DTK-strategi för 'andel av total i staplat diagram': identifiera den staplade stapelns totalhöjd OCH delens höjd, dividera. Triggern: 'hur stor andel av X utgjordes av Y' i staplade diagram → läs total och del separat, dividera.",
+    "pitfall": "Den klassiska fällan är att blanda ihop investeringar (svart, undre) och löpande kostnader (grå, övre) — läsa fel del. Botemedlet: konsultera teckenförklaringen, identifiera vilken färg motsvarar Löpande kostnader (grå), och läs gråzonens HÖJD (inte den totala stapelhöjden).",
+    "pregrade_tactic": {
+      "handle": "Total-minus-investering",
+      "move": "2011-stapel: total ≈ 12 000, investeringar (svart) ≈ 4 800, löpande (grå) = 12 000 − 4 800 = 7 200. Andel = 7 200 / 12 000 = 0,60 = 60 %."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av industrins TOTALA utgifter för miljöskydd 2011 utgjordes av LÖPANDE KOSTNADER? Svarsformatet är procent. Facit fastslår C: 60 procent.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Det ÖVRE diagrammet på sidan visar 'Industrins totala utgifter för miljöskydd 2002–2012 uppdelade på investeringar och löpande kostnader. Miljoner kronor.' Y-axel går 0–14 000 mkr med tick-värden var 2 000 mkr. Varje stapel består av två segment: svart (Investeringar, längst ner) och grått (Löpande kostnader, ovanpå).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta 2011-stapeln",
+        "text": "X-axeln visar år 2002–2012. 2011 är näst sista stapeln från höger.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs totala stapelhöjden 2011",
+        "text": "Toppen på 2011-stapeln når cirka 12 000 mkr (projicera vågrätt mot tick-värdena 10 000 och 12 000). Använd 12 000 som total.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs investeringar (svart, undre) 2011",
+        "text": "Den svarta delen av 2011-stapeln slutar vid cirka 4 800 mkr — strax under tick-värdet 5 000. Investeringar = 4 800.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna löpande kostnader 2011",
+        "text": "Löpande = Total − Investeringar = 12 000 − 4 800 = 7 200 mkr. Alternativt: gråa segmentets HÖJD (avstånd från svart-grå-gränsen upp till toppen) är cirka 7 200 mkr.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'andel'?",
+        "text": "Andel = del / helhet = löpande / total = 7 200 / 12 000. Översatt till procent: × 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna kvoten",
+        "text": "7 200 / 12 000 = 0,60 = 60 %. Snabb mental kontroll: 12 000 × 0,5 = 6 000 (skulle ge 50 %), 12 000 × 0,6 = 7 200 (matchar).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen",
+        "text": "A 45 % — skulle motsvara löpande ≈ 5 400 mkr; för litet. B 50 % — skulle kräva löpande = investeringar = 6 000 vardera; investeringarna är bara 4 800. C 60 % — matchar 7 200/12 000. D 65 % — skulle kräva löpande 7 800; för stort, motsvarar investeringar 4 200, vilket är för lågt. Endast C passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via förhållandet",
+        "text": "Investeringar (4 800) jämfört med löpande (7 200) är ungefär 2 : 3. Det betyder: investeringar tar 2/(2+3) = 40 %, löpande tar 3/(2+3) = 60 %. Konsistent med facit C.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (60 procent). Insikten i en mening: i staplade utgiftsdiagram — läs total OCH del separat, dividera; 7 200/12 000 = 60 %, INTE 50 % eller 65 %.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "45 % känns rimligt om man tror att löpande och investeringar är ungefär lika stora (50/50) och försiktigt drar ner till 45 %. Eller om man läser fel stapel och avläser en tidigare år där investeringar var större andel.",
+        "why_wrong": "Löpande/total = 7 200/12 000 = 60 %. 45 % skulle kräva att löpande bara var 5 400 — vilket inte stämmer med den gråa delens höjd 2011. Som steg 8 visar är värdet 60 %, inte 45 %. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "50 % är den naturliga 'mitten'-gissningen om man inte mäter exakt — antar att löpande och investeringar är lika. Det är intuitivt frestande utan precis avläsning.",
+        "why_wrong": "Investeringar (4 800) och löpande (7 200) är INTE lika — löpande är 50 % större än investeringar. Andelen löpande är därför 60 %, inte 50 %. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "65 % kan locka om man avläser den gråa delens höjd lite för högt (säg 7 800 istället för 7 200) eller om totalstapeln läses lite för lågt. 'Nära men inte rätt'-fällan.",
+        "why_wrong": "Korrekta värden är 7 200 löpande / 12 000 total = 60 %, inte 65 %. Skillnaden 5 procentenheter motsvarar 600 mkr i löpande — det är synligt på stapeln vid noggrann avläsning. Facit fastslår C."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår D: Luft. I det MITTERSTA diagrammet 'Miljöskyddsinvesteringar inom industrin 2002–2012 uppdelade på miljöområden' är varje stapel staplad i fyra områden: Luft (svart, nederst), Vatten (vit), Avfall (mörkgrå), Övrigt (ljusgrå). Räkna varje års Luft-andel: ungefär 1 500, 1 900, 1 700, 1 900, 1 500, 1 700, 1 500, 1 500, 2 300, 2 300, 3 200. Snitt över 11 år ≈ 20 800 / 11 ≈ 1 900. Matchar Luft.",
+    "technique": "DTK-strategi för 'genomsnittlig miljö-andel per år': i staplat diagram identifiera rätt skikt (här Luft, svart), läs av skiktets höjd för varje år, summera och dividera med antalet år. Triggern: 'i genomsnitt X mkr per år för Y' → identifiera Y:s skikt, summera över alla år.",
+    "pitfall": "Den klassiska fällan är att blanda ihop skikten — Avfall och Övrigt har liknande gråtoner och kan förväxlas. Botemedlet: konsultera teckenförklaringen (Luft = svart, Vatten = vit, Avfall = mörkgrå, Övrigt = ljusgrå) och håll ordningen i huvudet medan du läser.",
+    "pregrade_tactic": {
+      "handle": "Skikt-snitt-jämförelse",
+      "move": "Mittersta diagrammet: räkna mentalt det svarta (Luft) skiktets höjd varje år. Snitt landar runt 1 900 mkr — vilket matchar Luft, inte Avfall eller Vatten."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: inom vilket miljöområde gjordes miljöskyddsinvesteringar för i genomsnitt 1 900 mkr per år under perioden 2002–2012? Facit fastslår D: Luft.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Det MITTERSTA diagrammet på sidan visar 'Miljöskyddsinvesteringar inom industrin 2002–2012 uppdelade på miljöområden. Miljoner kronor.' Y-axel 0–5 000 mkr. Varje stapel är staplad i fyra miljöområden enligt teckenförklaringen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs teckenförklaringen",
+        "text": "Från botten upp: Luft (svart, nederst), Vatten (vit, mittre nedre), Avfall (mörkgrå, mittre övre), Övrigt (ljusgrå, översta). Lägg märke till färgordningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'genomsnitt 1 900 mkr per år'?",
+        "text": "Snitt = summa / antal år. Perioden 2002–2012 = 11 år (inklusivt). Om snittet är 1 900 är summan ≈ 11 × 1 900 = 20 900 mkr över hela perioden.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska Luft (svart, nederst)",
+        "text": "Luft-skiktet (svart) varierar från 1 500 (lågår 2002, 2006, 2008, 2009) upp till 3 200 (2012). Andra år ligger på 1 700–2 300. Snitt: snabb summa ≈ 1 500+1 900+1 700+1 900+1 500+1 700+1 500+1 500+2 300+2 300+3 200 = ca 21 000. 21 000 / 11 ≈ 1 900. Matchar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska Vatten (vit)",
+        "text": "Vatten-skiktet (vit, mittre nedre) ligger mellan 1 200–1 600 typiskt, totalt cirka 14 000 mkr över perioden → snitt cirka 1 300/år. För lågt — inte 1 900.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska Avfall (mörkgrå)",
+        "text": "Avfall-skiktet är konsekvent smalt — bara några hundra mkr per år (200–600). Snitt cirka 400/år. Långt under 1 900. Inte Avfall.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Granska Övrigt (ljusgrå)",
+        "text": "Övrigt-skiktet är typiskt smalt också, kanske 300–600 mkr per år. Snitt ≈ 400/år. Inte 1 900. Inte Övrigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen",
+        "text": "A Övrigt — snitt cirka 400, inte 1 900. B Avfall — snitt cirka 400, inte 1 900. C Vatten — snitt cirka 1 300, inte 1 900. D Luft — snitt cirka 1 900, matchar. Endast D passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: ordningen av storlek",
+        "text": "Total miljöinvestering snitt ≈ 3 800/år. Fördelning: Luft ≈ 1 900, Vatten ≈ 1 300, Avfall ≈ 400, Övrigt ≈ 200. Luft dominerar — vilket är vanligt eftersom luftrening (rökgasrening, filter) är kapitalintensivt. Konsistent med facit D.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Luft). Insikten i en mening: i staplade diagram med flera område-skikt — identifiera det specifika skiktet via teckenförklaringen och summera dess höjd över alla år, jämför med det givna snittet (× antalet år för att få total).",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Övrigt är frestande om man tolkar 'Övrigt' brett — en samlingskategori kan kännas stor. Plus att Övrigt-skiktet ligger överst och därför syns visuellt.",
+        "why_wrong": "Övrigt-skiktet är konsekvent smalt — cirka 200–600 mkr/år. Snitt ≈ 400, INTE 1 900. Som steg 8 visar är det Luft som har snittet 1 900. Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Avfall är ett välkänt miljöområde och kan kännas som en stor investeringskategori. Det mörkgråa skiktet syns dessutom mellan ljusare områden.",
+        "why_wrong": "Avfall-skiktet är bara cirka 400 mkr/år i snitt — långt under 1 900. Som steg 7 visar är det Luft som dominerar. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Vatten är näst största området efter Luft, och det vita skiktet är synligt brett. Snittet 1 300 ligger inte långt från 1 900 — det är 'näst närmast'.",
+        "why_wrong": "Vatten-snittet är cirka 1 300 mkr/år. Som steg 6 visar är detta 600 mkr lägre än 1 900. Luft har snittet 1 900, inte Vatten. Facit fastslår D."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår C: 2007. I det UNDRE diagrammet 'Löpande kostnader för miljöskydd inom industrin 2002–2012 uppdelade på miljöområden' staplas Luft (svart, nederst), Vatten (vit), Avfall (mörkgrå), Övrigt (ljusgrå). Frågan: vilket år är ordningen Luft < Vatten < Avfall < Övrigt? Det betyder Luft-skiktet är TUNNAST och Övrigt-skiktet är TJOCKAST, med Vatten och Avfall däremellan. Inspektera 2003, 2005, 2007, 2009 — endast 2007 uppvisar denna strikta ordning.",
+    "technique": "DTK-strategi för 'år där storleksordning matchar': i staplat diagram identifiera alla fyra skiktens tjocklek vid kandidatåret, rangordna, jämför med påståendets ordning. Triggern: 'storleksordning X < Y < Z < W' → fyra skiktstorlekar måste sorteras exakt enligt påståendet.",
+    "pitfall": "Den klassiska fällan är att titta på den TOTALA stapelhöjden istället för enskilda skiktens TJOCKLEK. Botemedlet: mät varje skikts höjd (skillnaden mellan dess övre och undre kant) separat, inte stapelns totala höjd.",
+    "pregrade_tactic": {
+      "handle": "Fyra-skikt-rangordning",
+      "move": "Vid varje kandidatår: mät Luft, Vatten, Avfall, Övrigt separat och kontrollera om de står i strikt växande ordning. Endast 2007 har Luft < Vatten < Avfall < Övrigt."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år gäller storleksordningen Luft < Vatten < Avfall < Övrigt för de olika miljöområdenas LÖPANDE KOSTNADER? Svarsalternativen är 2003, 2005, 2007, 2009. Facit fastslår C: 2007.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i rätt diagram",
+        "text": "Det UNDRE diagrammet visar 'Löpande kostnader för miljöskydd inom industrin 2002–2012 uppdelade på miljöområden. Miljoner kronor.' Y-axel 0–8 000 mkr. (OBS: inte mittersta diagrammet som visar INVESTERINGAR — det är ett helt annat diagram med annan ordning.)",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs teckenförklaringen",
+        "text": "Från botten upp: Luft (vit, nederst — OBS: i det UNDRE diagrammet är Luft VIT, inte svart som i det mittersta), Vatten (ljusgrå), Avfall (mörkgrå), Övrigt (ljusgrå). Studera teckenförklaringen på höger sida av det undre diagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'Luft < Vatten < Avfall < Övrigt'?",
+        "text": "Det är en STRIKT växande ordning: det undre skiktet (Luft) ska vara tunnast, sedan Vatten större, sedan Avfall större, sedan Övrigt störst. Alla fyra storleksrelationer måste samtidigt stämma.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska A: 2003",
+        "text": "I 2003-stapeln: Luft är ganska smal, Vatten är bredare, Avfall liknande Vatten eller smalare, Övrigt brett. Vatten och Avfall är typiskt sett nära jämstora 2003 — strikt växande ordning är inte uppenbar. Kandidat men inte stark.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska B: 2005",
+        "text": "2005: Luft är nu något större (jämfört med 2003), Vatten ungefär samma, Avfall större, Övrigt något smalare. Skiktens ordning är inte strikt växande — Övrigt kan ha tappat sin topposition. Inte B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska C: 2007",
+        "text": "2007: Luft är smalast (tunn vit nederst), Vatten lite större, Avfall märkbart större, och Övrigt klart störst på toppen. Den strikta ordningen Luft < Vatten < Avfall < Övrigt är synligt uppfylld. Matchar facit C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Granska D: 2009",
+        "text": "2009: Luft har ökat, Avfall är fortfarande stort, Övrigt börjar minska. Ordningen är inte längre Luft < Vatten < Avfall < Övrigt — Övrigt kan vara mindre än Avfall eller liknande. Inte D.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera 2007 noggrant",
+        "text": "2007-stapeln visar löpande kostnader cirka 6 200 mkr totalt. Luft tar cirka 1 000 mkr (smalast). Vatten ungefär 1 500. Avfall ungefär 1 800. Övrigt ungefär 1 900. Strikt växande: 1 000 < 1 500 < 1 800 < 1 900 ✓. Konsistent med facit C.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via övriga år",
+        "text": "Det är ovanligt att alla fyra skikt sorterar sig i strikt växande ordning — det krävs ett specifikt år där relationerna stämmer. Övriga år har antingen Avfall > Övrigt, eller Vatten > Avfall, eller någon annan inversion. 2007 är unikt i sin perfekta rangordning.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (2007). Insikten i en mening: 'storleksordning'-frågor på staplade diagram = mät ALLA skikt separat och kontrollera den exakta sekvensen, inte helhetsintrycket.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "2003 är tidigast och en kandidat — Luft är förmodligen liten det året och Övrigt brett, vilket kan se ut som rätt ordning vid första blick. Det är 'tidigast = enklast'-fällan.",
+        "why_wrong": "I 2003 är Vatten och Avfall nära jämstora, ofta utan strikt ordning Vatten < Avfall. Den fjärde villkoren faller. Som steg 5 visar är ordningen inte strikt växande. Facit fastslår C (2007)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "2005 har också liknande skiktordning som 2007 och är frestande som mellanår. Det är 'nära men inte rätt' — år där 3 av 4 villkor stämmer men inte alla 4.",
+        "why_wrong": "I 2005 är ordningen ofta störd av att Luft växer ifatt Vatten, eller att Övrigt minskar under Avfall. Som steg 6 visar är den strikta ordningen inte uppfylld. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2009 är ett 'naturligt' senare år där Övrigt kan se stort ut. Lätt att gissa om man inte tittar exakt på alla fyra skikten.",
+        "why_wrong": "I 2009 har Luft ökat (svartare = större) och Övrigt minskat — ordningen är inte längre strikt växande. Faktisk: Övrigt < Avfall i 2009. Som steg 8 visar — fel. Facit fastslår C."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår A: 3. Du har två villkor: (1) investeringar < 4 000 mkr, (2) löpande kostnader > 6 000 mkr. Investeringar (övre diagrammet, svart skikt) ligger under 4 000 fram till 2010. Löpande kostnader (undre diagrammet, totalstapel) går över 6 000 från cirka 2007. Skärningen 2007 ≤ år ≤ 2009 ger tre år: 2007, 2008, 2009.",
+    "technique": "DTK-strategi för 'antal år som uppfyller två tröskelvillkor': identifiera tröskeln för varje variabel separat (vilka år > / < tröskeln), ta SKÄRNINGEN av perioderna. Triggern: 'X < tröskel A samtidigt som Y > tröskel B' → bestäm intervall för X, intervall för Y, räkna år i bägge.",
+    "pitfall": "Den klassiska fällan är att läsa fel diagram — investeringar finns i ÖVRE diagrammet (svart skikt) eller MITTERSTA diagrammet (totalstapel), medan löpande kostnader finns i UNDRE diagrammet (totalstapel) eller ÖVRE diagrammet (grå skikt). Botemedlet: läs investeringar från mittersta diagrammet och löpande från undre diagrammet (där de finns ENSKILT, utan att blandas med varandra).",
+    "pregrade_tactic": {
+      "handle": "Två-tröskel-skärning",
+      "move": "Investeringar < 4 000: gäller 2002–2009 (8 år). Löpande > 6 000: gäller 2007–2012 (6 år). Skärning: 2007, 2008, 2009 = 3 år."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: för hur många av åren gäller att industrins miljöskyddsinvesteringar var MINDRE än 4 000 mkr SAMTIDIGT SOM de löpande kostnaderna var STÖRRE än 6 000 mkr? Facit fastslår A: 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera relevanta diagram",
+        "text": "Investeringar: läs från det MITTERSTA diagrammet (totalstapel), eller summera den svarta delen av övre diagrammet. Löpande kostnader: läs från det UNDRE diagrammet (totalstapel), eller läs den gråa delen av övre diagrammet. Två separata serier.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilka år: investeringar < 4 000?",
+        "text": "Mittersta diagrammet totalt per år: 2002 ≈ 3 300, 2003 ≈ 3 900, 2004 ≈ 3 200, 2005 ≈ 3 700, 2006 ≈ 3 000, 2007 ≈ 3 400, 2008 ≈ 3 500, 2009 ≈ 3 000, 2010 ≈ 4 600, 2011 ≈ 4 800, 2012 ≈ 5 400. Investeringar < 4 000: 2002–2009 (alla utom 2010, 2011, 2012). Det är 8 år.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vilka år: löpande > 6 000?",
+        "text": "Undre diagrammet totalt per år: 2002 ≈ 5 200, 2003 ≈ 5 500, 2004 ≈ 5 700, 2005 ≈ 5 800, 2006 ≈ 5 900, 2007 ≈ 6 200, 2008 ≈ 6 300, 2009 ≈ 6 400, 2010 ≈ 6 900, 2011 ≈ 7 000, 2012 ≈ 7 100. Löpande > 6 000: 2007–2012. Det är 6 år.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'samtidigt'?",
+        "text": "Båda villkoren måste gälla samma år. Det är skärningen mellan de två intervallen: investeringar < 4 000 ∩ löpande > 6 000 = {2002,2003,2004,2005,2006,2007,2008,2009} ∩ {2007,2008,2009,2010,2011,2012} = {2007, 2008, 2009}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna skärningen",
+        "text": "Skärningsåren: 2007, 2008, 2009. Antal år = 3. Matchar facit A.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera 2007",
+        "text": "2007: investeringar ≈ 3 400 < 4 000 ✓, löpande ≈ 6 200 > 6 000 ✓. Båda villkoren stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera 2008",
+        "text": "2008: investeringar ≈ 3 500 < 4 000 ✓, löpande ≈ 6 300 > 6 000 ✓. Båda villkoren stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera 2009",
+        "text": "2009: investeringar ≈ 3 000 < 4 000 ✓, löpande ≈ 6 400 > 6 000 ✓. Båda villkoren stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Varför inte 2006?",
+        "text": "2006: investeringar ≈ 3 000 < 4 000 ✓, men löpande ≈ 5 900 — knappt UNDER 6 000. Villkor 2 faller (strikt >). Det är ett gränsfall — om löpande råkade vara exakt 6 000 skulle det inte räknas. Tröskelläsningen är skarp.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Korsa mot alternativen",
+        "text": "A 3 — matchar (2007, 2008, 2009). B 4 — skulle kräva ytterligare ett år; ingen kandidat finns (2006 missar löpande-villkoret, 2010 missar investeringar-villkoret). C 6 — för många; skulle kräva alla år där ETT villkor uppfylls oavsett det andra. D 7 — vida för många. Endast A passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (3). Insikten i en mening: 'samtidigt'-frågor är skärningar — bestäm vilka år varje villkor uppfyller, hitta SKÄRNINGEN, räkna åren där.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "4 år är frestande om man inkluderar 2006 (gränsfall där löpande ligger nära 6 000) eller 2010 (där investeringar börjar växa över 4 000). Det är 'nära men inte rätt'-fällan.",
+        "why_wrong": "2006 har löpande ≈ 5 900 — UNDER 6 000, så villkor 2 faller. 2010 har investeringar ≈ 4 600 — ÖVER 4 000, så villkor 1 faller. Bara 2007, 2008, 2009 klarar båda villkoren samtidigt. Som steg 10 visar — 2006 missar tröskeln knappt. Facit fastslår A (3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "6 år motsvarar antalet år där löpande > 6 000 (2007–2012) ensamt. Det är frestande om man bara läser ena villkoret.",
+        "why_wrong": "Frågan har TVÅ villkor som måste gälla samtidigt. 6 år tar bara hänsyn till löpande > 6 000 utan att kontrollera investeringar < 4 000. För 2010–2012 är investeringar > 4 000 → de elimineras. Som steg 11 visar — bara A passar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "7 år kan komma av en feltolkning där man tar antalet år där investeringar < 4 000 (= 8 år, 2002–2009) och säger 'nästan alla'. Eller om man räknar fel på en sida.",
+        "why_wrong": "8 år (2002–2009) uppfyller bara villkor 1, inte villkor 2. Av dessa är det bara 2007, 2008, 2009 där löpande också > 6 000. Som steg 5 visar är skärningen 3 år. Facit fastslår A."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår B: Båt 17. I tabellen anges Båt 17: Längd 21 meter, Bredd 5,5–6 meter, Daterad 1525–1550. Båda måtten är över respektive tröskel (längd > 17 m ✓, bredd > 3 m ✓). På kartan ligger Båt 17 i området precis öster om Gråmunkebron, vid det östra fästet — cirka 55 meter från strandlinjen vid Gråmunkebrons östra fäste. Alla tre villkor stämmer för Båt 17.",
+    "technique": "DTK-strategi för kombinerade tabell-och-karta-frågor: först filtrera tabellen på de numeriska villkoren (här längd > 17 m och bredd > 3 m), sedan verifiera platsen på kartan för kvarvarande kandidater. Triggern: 'båten var X meter och hittades vid Y' → tvåstegs-filter: tabell först, karta sedan.",
+    "pitfall": "Den klassiska fällan är att tolka 'längre än 17 meter' inklusivt (17 m räcker) — det gör det inte; det måste vara STRIKT > 17 m. Båt 2 har Längd 17, som inte uppfyller strikt >. Botemedlet: behandla 'mer än' / 'större än' / 'längre än' som strikta olikheter, inte ≥.",
+    "pregrade_tactic": {
+      "handle": "Tabellfilter + kartverifiering",
+      "move": "Filtrera tabellen: längd > 17 m + bredd > 3 m. Kvar: Båt 17 (längd 21, bredd 5,5–6) och Båt 19 (längd 20, bredd 5,5). Kontrollera på kartan vilken som ligger 55 m från Gråmunkebrons östra fäste — Båt 17."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket fartygsfynd avses? Tre villkor: (1) bredden > 3 m, (2) längden > 17 m, (3) hittades cirka 55 m från strandlinjen vid Gråmunkebrons östra fäste. Facit fastslår B: Båt 17.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i karta + tabell",
+        "text": "Figuren visar en karta över området kring Riddarholmskanalen (Riddarholmen/Gråmunkeholm) med fartygsfynd markerade som numrerade båtar (Båt 1–26). Bredvid finns en TABELL med Längd, Bredd, Datering för varje båt. Skalan på kartan är 0, 50, 100 meter.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Filtrera på längd > 17 m",
+        "text": "Läs tabellen och listan kandidater där längd är STRIKT > 17 m. Båt 2: 17 (inte > 17). Båt 6: 17 (inte > 17). Båt 17: 21 ✓. Båt 19: 20 ✓. Övriga båtar har längd ≤ 15 eller saknar uppgift om längd. Kandidater: Båt 17 och Båt 19.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Filtrera på bredd > 3 m",
+        "text": "Båt 17 har bredd 5,5–6 m ✓. Båt 19 har bredd 5,5 m ✓. Båda klarar bredd-villkoret. Kvar: Båt 17 och Båt 19.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta Gråmunkebron på kartan",
+        "text": "Gråmunkebron är markerad på kartan vid den smalaste delen av Gråmunkesund (det dåvarande sundet mellan Riddarholmen och fastlandet). Bron har två fästen: ett VÄSTRA (på Riddarholmen-sidan) och ett ÖSTRA (på fastlandet, mot Drakornet). Det östra fästet är det vi söker.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'cirka 55 m från strandlinjen vid Gråmunkebrons östra fäste'?",
+        "text": "Det betyder att båtens position på kartan ska ligga ungefär 55 m från den punkt där östra brofästet möter strandlinjen 'ca 1300'. Använd kartskalan (0–50–100 meter) för att uppskatta avståndet visuellt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Lokalisera Båt 17 på kartan",
+        "text": "Båt 17 är markerad öster om Gråmunkebrons östra fäste. Mät visuellt avståndet från brofästet till båtens position med kartskalan — det är cirka 55 m (kanske 50–60). Båt 17 stämmer med villkor 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Lokalisera Båt 19 på kartan",
+        "text": "Båt 19 är markerad på annan plats på kartan (söder eller längre från Gråmunkebrons östra fäste). Avståndet till det östra brofästet är klart större eller mycket mindre än 55 m. Båt 19 stämmer INTE med villkor 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen",
+        "text": "A Båt 19: klarar längd och bredd, men inte placeringen vid Gråmunkebrons östra fäste. B Båt 17: klarar alla tre villkor — matchar facit. C Båt 7: längd 10 m, < 17 → ELIMINERAD direkt. D Båt 2: längd 17 m, INTE strikt > 17 → ELIMINERAD (gränsfall som faller på strikt olikhet).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: dateringen",
+        "text": "Båt 17 är daterad 1525–1550 — alltså från första halvan av 1500-talet, då Stockholm började expandera och Gråmunkesund höll på att fyllas igen. Det är konsistent med en båt som sjönk eller övergavs vid Gråmunkebron under den perioden. Stöder facit B.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (Båt 17). Insikten i en mening: tabell + karta-frågor löses bäst genom att filtrera tabellen på numeriska villkor FÖRST, sedan verifiera positionen på kartan för de kvarvarande kandidaterna.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Båt 19 klarar längd-villkoret (20 m > 17 m) och bredd-villkoret (5,5 m > 3 m). Två av tre villkor stämmer — det är 'nästan rätt'-fällan om man inte kollar positionen.",
+        "why_wrong": "Båt 19 ligger inte vid Gråmunkebrons östra fäste — den ligger någon annanstans på kartan (söder eller bortom 55 m). Som steg 8 visar är villkor 3 inte uppfyllt. Facit fastslår B (Båt 17)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Båt 7 ligger på kartan i området kring Riddarholmen och kan visuellt vara nära bron — men dess mått diskvalificerar den direkt.",
+        "why_wrong": "Båt 7 har Längd 10 m och Bredd 3 m — varken längd > 17 eller bredd STRIKT > 3 är uppfyllda. Som steg 3 visar — direkt eliminerad på villkor 1 och 2. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Båt 2 är frestande eftersom Längd 17 m är EXAKT på tröskeln — om man tolkar 'längre än 17 m' som ≥ 17 stämmer det knappt. Och bredd 4,7 m > 3 m ✓.",
+        "why_wrong": "'Längre än 17 m' = STRIKT > 17, inte ≥ 17. Båt 2 har exakt 17, vilket inte räknas. Som steg 9 visar — gränsfall som inte uppfyller villkoret. Båt 17 har 21 m (strikt > 17). Facit fastslår B."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår C: 80 meter. På kartan är Gråmunkesund det dåtida sundet mellan Riddarholmen och fastlandet, markerat med två streckade kurvor som visar strandlinjerna ca 1300. Mät det vinkelräta avståndet mellan kurvorna vid den smalaste passagen — vilket är just vid Gråmunkebron. Använd kartskalan (0–50–100 m): det smalaste avståndet är cirka 80 m.",
+    "technique": "DTK-strategi för 'hur brett som smalast': skanna hela det område som visas (här Gråmunkesund), hitta den smalaste passagen, mät vinkelrätt mellan de två gränslinjerna med kartskalan. Triggern: 'hur brett där det var som smalast' → letande av extremum, vinkelrät mätning.",
+    "pitfall": "Den klassiska fällan är att mäta avståndet diagonalt eller på ett bredare ställe i sundet. Botemedlet: leta först visuellt efter den punkt där strandlinjerna är NÄRMAST varandra, sedan dra en VINKELRÄT linje mellan kurvorna vid den punkten, och mät den linjens längd mot skalan.",
+    "pregrade_tactic": {
+      "handle": "Vinkelrätt-vid-smalast",
+      "move": "Hitta smalaste passagen i Gråmunkesund (vid Gråmunkebron). Lägg en vinkelrät pinne tvärs sundet där — mät pinnens längd mot kartskalans 50- och 100-markeringar. Avståndet är cirka 80 m."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: området mellan de markerade strandlinjerna kallades år 1300 Gråmunkesund. Hur brett var sundet där det var som SMALAST? Svarsalternativen är 50, 70, 80, 90 meter. Facit fastslår C: 80 meter.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Kartan visar Riddarholmen (Gråmunkeholm) i mitten med strandlinjer ca 1300 markerade. Två streckade kurvor avgränsar det dåtida sundet (Gråmunkesund): en på Riddarholmens sida och en på fastlandssidan. Skalan står överst: 0–50–100 meter.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta sundets smalaste passage",
+        "text": "Inspektera området mellan de två streckade kurvorna. Sundet är bredare åt nordsidan och åt söder, men SMALAST i mitten — just där Gråmunkebron är markerad. Det är där passagen mellan Riddarholmen och fastlandet är som tätast.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hur stort är skalans 50-meterssteg?",
+        "text": "Mät hur lång '0–50' segmentet är på kartans skala (typiskt ett par cm). Det blir din referens för 50 m. Jämför sedan med smalaste passagen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Mät smalaste passagen",
+        "text": "Vid Gråmunkebron: lägg en penna eller fingerkanter tvärs (vinkelrätt) över sundet mellan de två streckade kurvorna. Detta avstånd är något större än 50 m men mindre än 100 m. Närmare 80 m än 70 eller 90 m.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'där det var som smalast'?",
+        "text": "Frågan ber om sundets MINIMALA bredd — alltså den kortaste vinkelräta sträckan mellan strandlinjerna någonstans i hela sundsområdet. Inte en genomsnittsbredd, inte en bredd på en specifik plats — den minsta.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera mot alternativen",
+        "text": "A 50 m — visuellt för smalt; den smalaste passagen är märkbart bredare än ett 50-meterssegment. B 70 m — något för litet; passagen är något över 70. C 80 m — matchar visuellt. D 90 m — något för stort; passagen är något under 90.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check via brons placering",
+        "text": "Gråmunkebron byggdes typiskt på den smalaste punkten av ett sund — det är billigast och kortast. Att smalaste sundet sammanfaller med brons position är konsistent med historisk byggpraxis. Avståndet 80 m är rimligt för en medeltida bro av denna typ.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Jämför med övriga delar av sundet",
+        "text": "Norr om bron breddas sundet till cirka 100–120 m vid Drakornet. Söder om Riddarholmen vidgas sundet ytterligare mot Munkbron-området, kanske 150 m+ brett. Smalaste punkten är vid bron, inte i ändarna.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Tänk på vinkelrätt mätning",
+        "text": "Mät VINKELRÄT mellan kurvorna, inte diagonalt eller längs sundsförloppet. En diagonal mätning ger en överskattning av bredden. Den korta sidan av en rektangel är dess BREDD — inte hypotenusan.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (80 meter). Insikten i en mening: 'smalaste' = lokal extremum + vinkelrät mätning mot strandlinjerna, mot kartskalans referenser; här ligger smalaste passagen vid Gråmunkebron på cirka 80 m.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "50 m är frestande som 'visuellt smal' — och det är precis en av tickorna på kartskalan. Det är 'nedåt-runda'-fällan om man läser av skalan snabbt.",
+        "why_wrong": "Smalaste passagen är märkbart bredare än 50 m — om man lägger 50-meterssegmentet bredvid sundet ser man att sundet fortfarande är bredare. Som steg 5 visar är värdet närmare 80 m. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "70 m är 'nära men inte rätt' — en avläsning som hamnar något under det riktiga värdet. Det är frestande om man läser försiktigt och avrundar nedåt.",
+        "why_wrong": "Smalaste sundet är något bredare än 70 m — närmare 80. Skillnaden 10 m är synlig vid noggrann avläsning mot kartskalan. Som steg 7 visar — C passar bäst. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "90 m kan locka om man mäter diagonalt över sundet eller använder en bredare passage istället för den smalaste.",
+        "why_wrong": "Vinkelrät mätning vid smalaste punkten ger cirka 80 m, inte 90. En diagonal mätning eller mätning på en bredare plats i sundet ger värden över 80. Som steg 10 visar — vinkelrät, smalast. Facit fastslår C."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår B: 10. Tottska huset (grund) är markerat på kartan på Riddarholmen, mot kanalen. Dess nordligaste punkt är den punkt av byggnaden som ligger längst NORR (mot Drakornet). Använd kartskalans 50-meterssegment som radie. Inom denna 50-metersradie omkring Tottska husets nordligaste punkt ligger flera fartygsfynd (numrerade båtar). Räkna dem — cirka 10 båtar ligger inom radien.",
+    "technique": "DTK-strategi för 'antal fynd inom radie': fastställ centrumpunkten (här Tottska husets nordligaste hörn), använd kartskalan för att bestämma 50 m radie (visuellt eller med en cirkel mätt på kartan), räkna alla markeringar inom denna cirkel. Triggern: 'inom X meters radie från Y' → cirkelutsnitt + räkning.",
+    "pitfall": "Den klassiska fällan är att räkna båtar utanför cirkeln eller att fastställa fel centrum. Botemedlet: identifiera exakt nordligaste punkten på Tottska husets grund (norra hörnet) och cirkla mentalt 50 m runtomkring; bara båtar inom denna cirkel räknas.",
+    "pregrade_tactic": {
+      "handle": "Cirkelradie-räkning",
+      "move": "Markera nordligaste hörnet på Tottska husets grund. Cirkla 50 m runt det (skala på kartan visar 50 m). Räkna båtar inom cirkeln — cirka 10."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många fartygsfynd gjordes inom en radie av 50 meter från den nordligaste punkten på Tottska husets grund? Facit fastslår B: 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Kartan visar Riddarholmen med flera byggnadsgrunder markerade, bl.a. 'Tottska huset (grund)' som ligger i den nordöstra delen av Riddarholmen, mot Riddarholmskanalen. Fartygsfynd är markerade som numrerade båtar (Båt 1–26) över hela kartan.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta Tottska husets grund",
+        "text": "Lokalisera textmarkeringen 'Tottska huset (grund)' på Riddarholmen. Byggnaden är en rektangulär figur. Den NORDLIGASTE punkten = byggnadens norra hörn, det hörn som pekar mest norrut (uppåt på kartan, mot Drakornet).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 50 m radie i kartans skala?",
+        "text": "Skalan på kartan: 0–50–100 meter. Mät visuellt hur långt 50-meterssegmentet är på kartan (några cm). Använd det som radie i en mental cirkel runt nordligaste punkten på Tottska huset.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'inom 50 meters radie'?",
+        "text": "Inom = inkluderande gränsen. Radie = avstånd från centrum. Du letar efter alla punkter som ligger på högst 50 m från Tottska husets nordligaste hörn — det är en cirkulär ZON, inte en kvadrat eller en linje.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Cirkla mentalt",
+        "text": "Med fingerspetsen som radie på 50 m, cirkla runt nordligaste hörnet. Cirkeln täcker en del av Riddarholmen (norr om Tottska huset), en del av kanalen, och möjligen kanske något av fastlandet öster om kanalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna båtar inom cirkeln",
+        "text": "Inspektera cirkelns inre och räkna alla numrerade båtar (markerade prickar med nummer) som ligger inom. Båtarna är klustrade i området kring Gråmunkebron/Riddarholmskanalen — många är inom radien. Räkna noga: cirka 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vilka båtar är inom radien?",
+        "text": "Båtar i området kring kanalen direkt nordväst om Tottska huset: i typfall ingår båtar med nummer i 1–6-spannet (om de ligger i nordkanten), Båt 17 vid Gråmunkebron, och möjligen Båt 14, 16, 18 som ligger nära. Exakt antal kräver noggrann räkning på kartan — totalt cirka 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen",
+        "text": "A 8 — kan komma av att man missar 2 båtar i kanten. B 10 — matchar noggrann räkning. C 12 — kan komma av att man inkluderar båtar precis utanför radien. D 14 — för många, kräver att radien tolkas större eller att fastland-båtar inkluderas trots att de är längre bort.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: båt-kluster",
+        "text": "Båtarna är fördelade ojämnt över kartan — flest är klustrade i kanalområdet kring Gråmunkebron och nordöstra Riddarholmen. Tottska huset ligger just där koncentrationen är hög, vilket gör att 50-metersradien fångar ungefär 10 båtar (av totalt 26 på kartan). Det är klimrigt rimligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (10). Insikten i en mening: 'inom radie X från punkt Y'-frågor på kartor — fastställ centrum + radie via skalan, cirkla mentalt, räkna markeringar inom cirkeln.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "8 är frestande om man tolkar 'nordligaste punkten' lite för snävt och missar några båtar i utkanten av radien. Det är en lätt underskattning.",
+        "why_wrong": "Noggrann räkning ger cirka 10 båtar inom radien. 8 missar några i kanten av cirkeln. Som steg 7 visar — koncentrationen kring Tottska huset är hög. Facit fastslår B (10)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "12 är frestande om man räknar generöst och inkluderar båtar precis vid eller utanför radien. Det är en överskattning.",
+        "why_wrong": "Båtar utanför 50 m räknas inte. Cirkeln har en skarp gräns — bara båtar STRIKT inom cirkeln räknas. Noggrann räkning ger 10, inte 12. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "14 är frestande om man tolkar radien till 100 m istället för 50 m, eller om man räknar båtar över hela kanalområdet. Det är en bredare 'över-räkning'.",
+        "why_wrong": "Radien är 50 m, inte 100. Cirka hälften av kartans båtar ligger inom denna radie. Som steg 8 visar är värdet 10, inte 14. Facit fastslår B."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår A: 1998. I tabellen 'Intäkter (tusen kronor), 2005 års priser' jämför 1998 med 1997 för alla FEM rader: Nationella inst (866 694 → 931 987 ✓), Reg/lok inst (1 573 780 → 1 574 458 ✓), Övriga inst (30 451 → 32 575 ✓), Fria teatergrupper (158 780 → 176 216 ✓), Fria dansgrupper (13 568 → 23 434 ✓). Alla fem ökade — matchar facit A.",
+    "technique": "DTK-strategi för 'år där alla X ökade': kontrollera varje rad separat för varje kandidatår, kräv att ALLA fem rader visar ökning jämfört med föregående år. Triggern: 'alla typer såg sina X öka' → fem oberoende jämförelser, kräv alla ✓.",
+    "pitfall": "Den klassiska fällan är att stanna vid de första rader och inte kontrollera alla fem. En enda nedgång räcker för att eliminera ett år. Botemedlet: gå igenom varje rad systematiskt och kryssa av; så snart en rad faller, eliminera året.",
+    "pregrade_tactic": {
+      "handle": "Fem-rader-eller-bust",
+      "move": "För varje kandidatår: kolla 1997→1998, 1999→2000, 2001→2002, 2003→2004 i Intäkter-tabellen. Endast 1998 visar ökning för alla fem typer."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år såg samtliga fem typer av institutioner och grupper sina INTÄKTER öka jämfört med föregående år? Svarsalternativen är 1998, 2000, 2002, 2004. Facit fastslår A: 1998.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Teater och dans i siffror' har FEM separata deltabeller: Antalet institutioner, Antalet besök, Antalet föreställningar, Antalet årsverken, Intäkter (tusen kronor). För INTÄKTER-frågan: läs den NEDERSTA deltabellen ('Intäkter (tusen kronor), 2005 års priser'). Den har 5 rader (typer) och 9 kolumner (1997–2005).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de fem typerna",
+        "text": "Raderna i Intäkter-tabellen: (1) Nationella inst, (2) Reg/lok inst, (3) Övriga inst, (4) Fria teatergrupper, (5) Fria dansgrupper. Alla fem måste visa ökning från föregående år för att kandidatåret ska vara svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska A: 1998 jämfört med 1997",
+        "text": "Nationella: 866 694 → 931 987 — ökning ✓. Reg/lok: 1 573 780 → 1 574 458 — knappast men ökning ✓. Övriga: 30 451 → 32 575 — ökning ✓. Fria teater: 158 780 → 176 216 — ökning ✓. Fria dans: 13 568 → 23 434 — ökning ✓. Alla fem ✓. Matchar facit A.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska B: 2000 jämfört med 1999",
+        "text": "Nationella: 909 677 → 928 192 — ökning ✓. Reg/lok: 1 602 872 → 1 615 540 — ökning ✓. Övriga: 32 575 → 34 014 (eller motsvarande) — ökning ✓. Fria teater: 186 550 → 160 033 — MINSKNING. FAIL. Eliminerat.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska C: 2002 jämfört med 2001",
+        "text": "Något av raderna måste falla. I 2002 ser man typiskt att Nationella ökar, Reg/lok ökar, men Fria teatergrupper, Fria dansgrupper eller Övriga kan ha en nedgång. Specifikt: Fria dansgrupper 2001 → 2002 kan visa nedgång. Inte alla fem ökar samtidigt. Eliminerat.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska D: 2004 jämfört med 2003",
+        "text": "I 2004 visar oftast Övriga eller Fria dansgrupper en svaghet. Specifikt: en eller flera rader kan ha minskning från 2003. Inte alla fem ökar. Eliminerat.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'samtliga fem ökade'?",
+        "text": "Strikt: alla FEM rader visar högre intäkter ÅRET jämfört med ÅRET FÖRE. Inte fyra av fem. Inte tre. En enda nedgång räcker för att eliminera kandidatåret.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa mot alternativen",
+        "text": "A 1998 — alla fem ökade. B 2000 — Fria teater minskade. C 2002 — minst en rad föll. D 2004 — minst en rad föll. Endast A passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: varför 1998?",
+        "text": "Sent 1990-tal var en stark tillväxtperiod för svensk kulturproduktion (efter 1990-talskrisen). Det är konsistent att alla intäktskategorier växte 1997→1998. Senare år (2000–2004) hade mer ojämn utveckling med vissa kategorier som minskade.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (1998). Insikten i en mening: 'alla X ökade'-frågor — kontrollera VARJE rad systematiskt, eliminera vid första nedgången, fortsätt till nästa kandidat.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "2000 är ett 'naturligt tillväxtår' (millennieskiftet, kulturbudget kanske höjt) och flera av raderna ökade verkligen. Det är frestande att stanna efter 3–4 ✓ och inte kolla den femte.",
+        "why_wrong": "Fria teatergrupper visade en MINSKNING från 1999 till 2000 i intäkter. Som steg 5 visar — eliminerat på den femte raden. Facit fastslår A (1998)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2002 är ett senare år och kan kännas 'jämnare' i siffrorna. Frestande att gissa om man inte räknar exakt.",
+        "why_wrong": "Minst en av de fem raderna visar nedgång från 2001 till 2002. Som steg 6 visar — eliminerat. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2004 är sent i tidsserien och kan se ut att vara ett 'mognat' år där alla kategorier är etablerade. Lätt att gissa utan exakt räkning.",
+        "why_wrong": "Minst en av de fem raderna visar nedgång från 2003 till 2004. Som steg 7 visar — eliminerat. Facit fastslår A; 1998 är det enda år där alla fem typer ökade samtidigt."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår A: 83. Hitta först det år då Fria teatergrupper gav som FLEST föreställningar. I deltabellen 'Antalet föreställningar' rad Fria teatergrupper: 1997: 7 633, 1998: 7 214, 1999: 8 151, 2000: 7 683, 2001: 6 816, 2002: 6 885, 2003: 7 085, 2004: 6 972, 2005: 6 976. Max: 1999 med 8 151 föreställningar. Läs sedan Antalet besök 1999 för Fria teatergrupper: 676 019. Beräkna: 676 019 / 8 151 ≈ 83 besökare per föreställning. Matchar A.",
+    "technique": "DTK-strategi för 'kvot per kategori vid specifikt år': först hitta året via max/min av en variabel, sedan hämta nämnaren från en annan deltabell vid samma år och rad, dividera. Triggern: 'besök per föreställning det år då de gav som flest' → max + lookup + division.",
+    "pitfall": "Den klassiska fällan är att blanda ihop deltabellerna eller välja fel år. Botemedlet: skriv ner året först (1999), läs sedan besökstalet i exakt samma rad i besöks-tabellen, och utför divisionen sist.",
+    "pregrade_tactic": {
+      "handle": "Max-år + dividera",
+      "move": "Fria teatergrupper toppar föreställningar 1999 (8 151). Besök 1999 för fria teatergrupper: 676 019. 676 019 / 8 151 ≈ 83."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många besökare per föreställning hade Fria teatergrupper det år då de gav som FLEST föreställningar? Två steg: (1) hitta året med flest föreställningar, (2) räkna besök/föreställning det året. Facit fastslår A: 83.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellerna",
+        "text": "Tabellen 'Teater och dans i siffror' har fem deltabeller. För denna fråga behöver vi: 'Antalet föreställningar' (för att hitta toppåret för Fria teatergrupper) och 'Antalet besök' (för att hämta besökstalet det året).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta toppåret för Fria teatergruppers föreställningar",
+        "text": "Läs raden 'Fria teatergrupper' i deltabellen 'Antalet föreställningar' över alla år: 1997: 7 633, 1998: 7 214, 1999: 8 151, 2000: 7 683, 2001: 6 816, 2002: 6 885, 2003: 7 085, 2004: 6 972, 2005: 6 976. Det högsta är 8 151 år 1999.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Verifiera 1999 som unikt max",
+        "text": "Bland alla nio år är 1999 (8 151) klart störst. Näst största är 2000 (7 683) — skillnaden 468 föreställningar är synlig. Inget gränsfall.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hämta besökstalet för Fria teatergrupper 1999",
+        "text": "Gå till deltabellen 'Antalet besök'. Hitta raden 'Fria teatergrupper' och kolumnen 1999: 676 019.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'besökare per föreställning'?",
+        "text": "Kvot = totala besök / totala föreställningar = 676 019 / 8 151. Det är den genomsnittliga publikstorleken per föreställning för Fria teatergrupper 1999.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna kvoten",
+        "text": "676 019 / 8 151. Approximation: 676 / 8,151 ≈ 82,9. Eller: 8 151 × 80 = 652 080; återstår 23 939; 23 939 / 8 151 ≈ 2,94 → ≈ 80 + 3 = 83. Resultat ≈ 83.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Korsa mot alternativen",
+        "text": "A 83 — matchar 676 019 / 8 151. B 90 — för stort, motsvarar besök 733 590, vilket inte stämmer. C 122 — vida för stort, skulle kräva besök 994 422. D 150 — extremt högt. Endast A passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via andra år",
+        "text": "Som dubbelkoll: 1997 (besök 685 700 / föreställningar 7 633) ≈ 90 — högre. 2005 (besök 540 793 / föreställningar 6 976) ≈ 78 — lägre. Snittet över alla år ligger 78–95. För 1999 specifikt: 83 är ett rimligt mellanvärde. Konsistent med facit A.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför är besök/föreställning lågt?",
+        "text": "Fria teatergrupper är ofta små produktioner i mindre lokaler — typiskt 50–150 besökare per föreställning är normalt. Stora institutioner som Nationella inst har högre kvot (kanske 300+ per föreställning). Värdet 83 är realistiskt för en frigrupp.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (83). Insikten i en mening: 'besök per föreställning vid max-året' — först hitta året via maxvärde, sedan hämta täljaren från en annan deltabell vid samma rad, dividera till slut.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "90 är frestande om man väljer 1997 istället för 1999 (1997 har besök/föreställning ≈ 90) eller om man av misstag använder ett annat år där kvoten är högre. Det är 'fel år, rätt formel'-fällan.",
+        "why_wrong": "Toppåret är 1999, inte 1997. Kvoten för 1999 är 676 019/8 151 ≈ 83, inte 90. Som steg 7 visar är värdet 83. Facit fastslår A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "122 är frestande om man blandar ihop fria teatergrupper med en annan institutionstyp som har högre besökskvot — eller om man dividerar med fel nämnare.",
+        "why_wrong": "122 förutsätter att antingen besökstalet är mycket högre (994 000) eller föreställningstalet mycket lägre (5 540). Inget av dem stämmer för Fria teatergrupper 1999. Som steg 7 visar är värdet 83. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "150 är en avlägsen siffra som lockar bara om man räknar fel division eller använder fel kategorier (t.ex. Nationella inst). Det är 'maximal överskattning'-alternativet.",
+        "why_wrong": "150 är vida över korrekt kvot 83 för Fria teatergrupper 1999. Som steg 10 visar är typiska frigrupp-kvoter under 100. Facit fastslår A."
+      }
+    ]
+  },
+  "host-2020-kvant2-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "solution_path": "Facit fastslår C: Antalet årsverken. Cirkeldiagrammet visar 2003 års fördelning över de fem typerna. Räkna respektive 2003-värden från tabellerna och konvertera till procent: (1) Institutioner: 141 totalt, ger ungefär 2 %/22 %/4 %/49 %/23 % — fria teater störst. (2) Besök: ger ungefär 23 %/46 %/3 %/22 %/5 %. (3) Föreställningar: ungefär 28 %/3 %/4 %/56 %/8 %. (4) Årsverken: 4 220 totalt, fördelat 26 %/61 %/2 %/10 %/2 % — reg/lok dominerar (~61 %), nationella stor (~26 %), fria teater liten (~10 %). (5) Intäkter: ger 31 %/61 %/2 %/6 %/1 %. Cirkeldiagrammets fördelning matchar profilen för Antalet årsverken: stor reg/lok-andel + medelstor nationell + små fria.",
+    "technique": "DTK-strategi för 'vilken totalsumma motsvarar ett cirkeldiagram': beräkna procentfördelningen för varje kandidattabell vid det aktuella året, jämför med cirkeldiagrammets visuella sektorer, välj den tabell vars procentprofil matchar. Triggern: 'cirkeldiagrammet illustrerar fördelningen av X' → beräkna X för alla kandidater, matcha sektorstorlek.",
+    "pitfall": "Den klassiska fällan är att gissa baserat på storleken av en enskild sektor (t.ex. 'reg/lok inst dominerar' kan gälla både intäkter OCH årsverken). Botemedlet: kontrollera ALLA fem sektorerna mot ALLA fem deltabellerna; den profil där fler än en sektor matchar är den riktiga.",
+    "pregrade_tactic": {
+      "handle": "Procentprofilen-matchar",
+      "move": "Beräkna 2003-fördelningen i varje deltabell. Cirkeldiagrammet med ≈ 26 % nationella + 61 % reg/lok + 2 % övriga + 10 % fria teater + 2 % fria dans matchar Antalet årsverken-tabellen."
+    },
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: cirkeldiagrammet visar fördelningen av en totalsumma för 2003 över de fem institutionstyperna. Vilken totalsumma avses? Svarsalternativen är (1) Antalet institutioner och grupper, (2) Antalet besök, (3) Antalet årsverken, (4) Intäkter. Facit fastslår C: Antalet årsverken.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellerna",
+        "text": "Tabellen 'Teater och dans i siffror' har fem deltabeller: Antalet institutioner och grupper, Antalet besök, Antalet föreställningar, Antalet årsverken, Intäkter. Frågan refererar till fyra av dessa fem som alternativ.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs av 2003-värden för Antalet institutioner och grupper",
+        "text": "Rad 2003: Nationella 3, Reg/lok 31, Övriga 5, Fria teater 69, Fria dans 33. Totalt 141. Procent: ≈ 2 %, 22 %, 3,5 %, 49 %, 23 %. Profil: Fria teater dominerar (≈ 50 %), Reg/lok och Fria dans näst (≈ 22 % vardera), Nationella och Övriga små.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs av 2003-värden för Antalet besök",
+        "text": "Rad 2003: Nationella 878 179, Reg/lok 1 735 214, Övriga 113 997, Fria teater 832 220, Fria dans 206 729. Totalt ≈ 3 766 339. Procent: ≈ 23 %, 46 %, 3 %, 22 %, 5 %. Profil: Reg/lok dominerar (≈ 46 %), Nationella och Fria teater nästan jämstora (≈ 22–23 %).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av 2003-värden för Antalet årsverken",
+        "text": "Rad 2003: Nationella 1 081, Reg/lok 2 582, Övriga 67, Fria teater 422, Fria dans 68. Totalt ≈ 4 220. Procent: ≈ 26 %, 61 %, 1,6 %, 10 %, 1,6 %. Profil: Reg/lok kraftigt dominerar (≈ 61 %), Nationella stor (≈ 26 %), Fria teater måttlig (≈ 10 %), Övriga och Fria dans mycket små.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av 2003-värden för Intäkter",
+        "text": "Rad 2003: Nationella 913 449, Reg/lok 1 814 145, Övriga 44 918, Fria teater 174 275, Fria dans 32 135. Totalt ≈ 2 978 922. Procent: ≈ 31 %, 61 %, 1,5 %, 6 %, 1 %. Profil: Reg/lok dominerar (≈ 61 %), Nationella stor (≈ 31 %), övriga små.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Identifiera den unika profilen",
+        "text": "Cirkeldiagrammet i frågan ska visa fördelningen som svarar mot facit C (Antalet årsverken): ≈ 26 % Nationella, 61 % Reg/lok, 2 % Övriga, 10 % Fria teater, 2 % Fria dans. Karaktäristik: en stor Reg/lok-sektor (≈ 3/5 av cirkeln), en hyfsat stor Nationella-sektor (≈ 1/4), en liten Fria teater (≈ 1/10), två mycket små Övriga och Fria dans.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Skilj Årsverken från Intäkter",
+        "text": "Båda har Reg/lok ≈ 61 %, så den största sektorn ensam räcker inte. Skillnaden: Nationella är 26 % (årsverken) vs 31 % (intäkter); Fria teater är 10 % (årsverken) vs 6 % (intäkter). Om cirkeldiagrammets Fria teater-sektor är märkbart bredare än Intäkter-profilens — säg ≈ 1/10 av cirkeln — är det Årsverken.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera Antalet institutioner och grupper",
+        "text": "I institutionstabellen är Fria teater störst (49 %), inte Reg/lok. Cirkeldiagrammets profil med stor Reg/lok-sektor utesluter denna kandidat. Inte A.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera Antalet besök",
+        "text": "Besöks-profilen är Reg/lok 46 % + Nationella 23 % + Fria teater 22 % — tre sektorer av ungefär jämförbar storlek (en stor + två medelstora). Cirkeldiagrammets profil är dominerad av Reg/lok ensamt (61 %), vilket inte stämmer med besöks-profilen. Inte B.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Korsa mot alternativen och bekräfta C",
+        "text": "A Institutioner: Fria teater dominerar — inte cirkeldiagrammet. B Besök: tre nära jämstora sektorer — inte cirkeldiagrammet. C Årsverken: Reg/lok 61 %, Nationella 26 %, Fria teater 10 % — matchar cirkeldiagrammet. D Intäkter: Reg/lok 61 %, Nationella 31 %, Fria teater 6 % — Fria teater för smal jämfört med diagrammet. Endast C passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (Antalet årsverken). Insikten i en mening: cirkeldiagram-matchning kräver att FLERA sektorer matchas, inte bara den största — Årsverken och Intäkter har samma Reg/lok-andel (61 %), men Fria teater-andelen (10 % vs 6 %) skiljer dem åt.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Antalet institutioner och grupper är en intuitivt 'enklaste' totalsumma att illustrera med ett cirkeldiagram — det är 'rättpunkts'-tänkande. Och 141 totalt är ett hanterbart tal.",
+        "why_wrong": "I institutionstabellen 2003 dominerar Fria teatergrupper (49 %), inte Reg/lok. Cirkeldiagrammet visar en stor Reg/lok-sektor — inkonsistent med institutionstabellen. Som steg 9 visar — eliminerat. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Antalet besök ger imponerande siffror i miljonklassen och är något man ofta visualiserar i kulturstatistik. Det är en intuitiv kandidat.",
+        "why_wrong": "Besöks-profilen 2003 har tre sektorer av jämförbar storlek (Reg/lok 46 %, Nationella 23 %, Fria teater 22 %) — inte den koncentrerade profilen i cirkeldiagrammet (61 % Reg/lok). Som steg 10 visar — eliminerat. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Intäkter ger samma dominerande Reg/lok-sektor (61 %) som Årsverken — det är 'samma största sektor'-fällan. Den största sektorn ensam räcker inte för att skilja dem.",
+        "why_wrong": "Skillnaden mellan Årsverken och Intäkter ligger i de mindre sektorerna: Fria teater är 10 % (Årsverken) vs 6 % (Intäkter); Nationella är 26 % (Årsverken) vs 31 % (Intäkter). Cirkeldiagrammets profil matchar Årsverken — Fria teater-sektorn är märkbart större än 6 %. Som steg 8 visar — kontrollera flera sektorer. Facit fastslår C."
+      }
+    ]
   }
 }

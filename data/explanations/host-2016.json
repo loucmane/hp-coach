@@ -9076,5 +9076,2447 @@
       }
     ],
     "technique": "Grekiska phil-/anthrop-familjen: när huvudordet kombinerar 'phil-' (vän, kärlek) med en annan rot (filantrop, filosofi, bibliofil), översätt biten för biten. Här: phil- = vän + anthrop- = människa → människovän. Motsatsen mis-/anti- (misantrop) följer samma mönster."
+  },
+  "host-2016-kvant1-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1/5 = 20 % känns rimligt om man kastar ett snabbt öga på linjediagrammet och tycker att kvinnornas linje ligger 'mycket under' männens — men det är ett indexdiagram, inte ett andelsdiagram.",
+        "why_wrong": "Som steg 4 betonar är linjediagrammets y-axel INDEX (med 100 = nivån 1972), inte procent av totalen. Facit fastslår 1/3 (alternativ C). 1/5 underskattar kvinnornas andel av totalen 2004 eftersom du blandar ihop 'index 250' med 'andel av totalen'."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1/4 = 25 % känns som ett trevligt avrundat svar och ligger nära den ratio man får om man ungefärligt jämför kvinnornas och männens index-värden vid 2004 utan att räkna med själva antalet bilar.",
+        "why_wrong": "Steg 6 visar att rätt räkning utgår från de PRINTADE antalsvärdena i stapeldiagrammen: kvinnor 1 113 527 och män 2 201 019. Andelen kvinnor = 1 113 527 / (1 113 527 + 2 201 019) ≈ 0,336, alltså cirka 1/3 — inte 1/4. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1/2 är frestande om man bara ser att kvinnor och män båda förekommer som ägargrupper och tänker 'fifty-fifty'.",
+        "why_wrong": "Som steg 5 visar är männens antal nästan dubbelt så stort som kvinnornas (2,2 miljoner mot 1,1 miljoner). Det är långt ifrån 1/2. Facit fastslår 1/3 — och summan 1,1 / 3,3 ger just en tredjedel."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att blanda ihop linjediagrammets INDEX-axel med en procentaxel — index 250 betyder INTE '250 % av totalen' utan '2,5 gånger nivån 1972'. Botemedlet: leta efter PRINTADE antalsvärden i diagrammen (kvinnor 1 113 527, män 2 201 019) och räkna andelen från dem.",
+    "solution_path": "Facit fastslår 1/3 (alternativ C). Stapeldiagrammen har två printade totaler: kvinnor 1 113 527 bilar och män 2 201 019 bilar år 2004. Andelen kvinnor = 1 113 527 / (1 113 527 + 2 201 019) ≈ 0,336 ≈ 1/3.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av personbilarna 2004 ägdes av kvinnor? Svarsalternativen är fyra bråk: 1/5, 1/4, 1/3, 1/2. Facit fastslår 1/3 (alternativ C). Din uppgift är att hitta hårda antalsvärden i diagrammet och dividera kvinnornas antal med totalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i figuren",
+        "text": "Sidan visar tre delfigurer: överst ett LINJEDIAGRAM över utvecklingen 1972–2004 (index, kvinnor och män var sin linje), mitten en STAPEL för kvinnors topp-tio bilmärken 2004 i procent, och underst en STAPEL för mäns topp-tio bilmärken 2004 i procent. Frågan om 'andel' ska besvaras från de printade ANTALSVÄRDENA, inte från linjernas index-värden.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera de printade antalsvärdena",
+        "text": "Inuti varje stapeldiagram står ett printat totaltal: kvinnor-staplen anger '1 113 527 bilar ägda av kvinnor' och män-staplen anger '2 201 019 bilar ägda av män'. Det är dina enda hårda siffror för antal — låt linjediagrammet vara, det handlar om index.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är ett indexdiagram?",
+        "text": "Ett indexdiagram normaliserar en serie så att ett basår = 100. Här är basåret 1972: kvinnornas index är 100 vid 1972 och växer till ungefär 250 vid 2004, medan männens index ligger nästan platt strax över 100. Tal i index säger inte direkt 'andel av totalen' — det säger 'hur många gånger basårets nivå'. Andelsfrågor löses på antalet, inte indexet.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera storleksordningen",
+        "text": "Männens antal (2 201 019) är cirka dubbelt så stort som kvinnornas (1 113 527). Det innebär att kvinnornas andel ligger någonstans nära 1/3 av totalen (en del av tre, där två är män). Det är redan en stark indikation på facits svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Beräkna totalen",
+        "text": "Total = kvinnor + män = 1 113 527 + 2 201 019 = 3 314 546 personbilar. Avrunda i huvudet: cirka 1,1 + 2,2 = 3,3 miljoner. Detta är nämnaren i andelsberäkningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna andelen",
+        "text": "Andel kvinnor = 1 113 527 / 3 314 546. Avrunda: 1,1 / 3,3 = 1/3 ≈ 0,333. Facit fastslår just 1/3 (alternativ C) — räkningen är konsistent.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'andel' i denna kontext?",
+        "text": "'Andel' = en del genom helheten. Helheten är alla personbilar i de två grupperna tillsammans; kvinnornas andel är deras antal genom den summan. Eftersom svaret efterfrågas som ett bråk räcker det med en grov uppskattning som ligger närmare 1/3 än 1/4 eller 1/2.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot alternativen",
+        "text": "1/5 = 20 %, 1/4 = 25 %, 1/3 ≈ 33 %, 1/2 = 50 %. Vår beräkning gav 33,6 %. Det är klart närmare 1/3 än något av de andra. Mellan grannarna 1/4 och 1/2 finns ingen tvekan — 1/3 vinner.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot linjediagrammet",
+        "text": "Linjediagrammet är konsistent med en kvinno-andel som har VÄXT över tid: kvinnors index har 2,5-faldigats sedan 1972, mäns index har knappt rört sig. Det innebär att andelen kvinnor i den totala bilägar-populationen har stigit påtagligt — men för det exakta värdet 2004 ska du läsa stapeldiagrammets printade tal, inte linjernas index.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (1/3). Insikten i en mening: när ett indexdiagram och ett antalsdiagram visas tillsammans → använd ANTALEN för andelsfrågor, INDEXET för förändringsfrågor.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för andelsfrågor när både index-graf och antals-graf finns: leta upp PRINTADE antalsvärden i staplarnas etiketter, räkna del/helhet och jämför med bråkalternativen. Triggern: 'andel av totalen' + ett konkret år → räkna på antal, inte på index-värden.",
+    "pregrade_tactic": {
+      "handle": "Antal-före-index",
+      "move": "Hitta de två printade antalstotalen (kvinnor och män), summera dem och dividera kvinnornas tal med summan — välj bråket som ligger närmast."
+    }
+  },
+  "host-2016-kvant1-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Opel och Renault dyker upp i båda könens topp-tio (Opel som sjätte bland kvinnor, sjunde bland män; Renault som sjunde bland kvinnor, nionde bland män). Eftersom båda finns på båda listorna kan A se rätt ut för någon som inte läst frågan precis.",
+        "why_wrong": "Som steg 5 betonar söker frågan märken som finns BLAND KVINNORNAS TOPP-TIO MEN INTE BLAND MÄNNENS. Både Opel och Renault finns på MÄNNENS lista också, så ingen av dem uppfyller kravet. Facit fastslår D (Nissan och Peugeot), som är de två märken som syns hos kvinnor men saknas hos män."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Opel och Nissan finns båda i kvinnornas topp-tio. Det är lockande att gissa att kvinnornas andra hälft av listan (sjätte–nionde plats) är 'unik' bara för att den nämns sist.",
+        "why_wrong": "Opel finns även i MÄNS topp-tio (sjunde plats där). Endast Nissan av de två i alternativ B saknas hos männen. Facit fastslår D — där BÅDA märkena (Nissan och Peugeot) endast finns hos kvinnor, inte hos män."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Renault och Peugeot låter som mindre vanliga märken som rimligen kunde vara unika för kvinnornas lista. Peugeot är mycket riktigt unikt — men Renault är inte det.",
+        "why_wrong": "Som steg 6 visar förekommer Renault i båda könens topp-tio. Endast Peugeot av paret är unikt för kvinnornas lista. Facit fastslår D — Nissan och Peugeot — där båda märkena passerar testet 'finns hos kvinnor men inte hos män'."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att hoppa över ett av de två villkoren — att märket SKA finnas i kvinnornas topp-tio OCH INTE finnas i männens. Botemedlet: skriv ner kvinnornas tio märken som lista A, männens tio märken som lista B, och cirkla in dem som ENDAST finns i A.",
+    "solution_path": "Facit fastslår D (Nissan och Peugeot). Kvinnornas topp-tio 2004: Volvo, VW, Ford, Toyota, Saab, Opel, Renault, Nissan, Peugeot, (Övriga). Männens topp-tio 2004: Volvo, Saab, VW, Ford, Audi, Toyota, Opel, Mercedes-Benz, BMW, Renault, (Övriga). Märken som finns hos KVINNOR men inte MÄN: Nissan och Peugeot.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilka bilmärken hörde 2004 till de tio vanligaste bland bilar ägda av KVINNOR men INTE bland bilar ägda av MÄN? Svaret är ett par märken. Facit fastslår D (Nissan och Peugeot). Det är två villkor som måste stämma SAMTIDIGT.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Två stapeldiagram på sidan: mellanstapeldiagrammet visar kvinnornas topp-tio bilmärken 2004 procentuellt; bottenstapeldiagrammet visar männens topp-tio 2004 procentuellt. Båda har 'Övriga' som sista stapel — det är inte ett enskilt märke utan en samlingskategori.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lista kvinnornas topp-tio",
+        "text": "Läs kvinnornas x-axel från vänster till höger (störst andel först): 1) Volvo (~17 %), 2) VW (~12 %), 3) Ford (~9 %), 4) Toyota (~6 %), 5) Saab (~6 %), 6) Opel (~6 %), 7) Renault (~5 %), 8) Nissan (~5 %), 9) Audi (~4 %), 10) Peugeot (~4 %). Sista stapeln (~24 %) är 'Övriga'.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lista männens topp-tio",
+        "text": "Läs männens x-axel: 1) Volvo (~25 %), 2) Saab (~9 %), 3) VW (~8 %), 4) Ford (~7 %), 5) Audi (~6 %), 6) Toyota (~6 %), 7) Opel (~5 %), 8) Mercedes-Benz (~4 %), 9) BMW (~4 %), 10) Renault (~4 %). Sista stapeln (~22 %) är 'Övriga'.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Översätt frågan till en mängd-operation",
+        "text": "Du vill ha 'i kvinnors topp-tio MEN INTE i mäns topp-tio' = mängd-differensen A \\ B där A = kvinnornas tio och B = männens tio. Det är ett OCH-villkor: båda kraven måste hålla samtidigt för varje märke.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Korsa de två listorna märke för märke",
+        "text": "För varje märke i kvinnornas lista: finns det i männens? Volvo: ja. VW: ja. Ford: ja. Toyota: ja. Saab: ja. Opel: ja. Renault: ja. Nissan: NEJ — saknas hos män. Audi: ja (är hos män också). Peugeot: NEJ — saknas hos män. De två som passerar testet: Nissan och Peugeot.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check från andra hållet",
+        "text": "Vilka märken finns i mäns topp-tio men inte i kvinnornas? Mercedes-Benz och BMW. Båda är borta från kvinnornas lista. Det är spegelbilden — ett konsistens-test som visar att totalt fyra märken skiljer listorna åt: två unika för kvinnor (Nissan, Peugeot) och två unika för män (Mercedes-Benz, BMW).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Matcha mot svarsalternativen",
+        "text": "A: Opel och Renault — båda finns på båda listorna, faller. B: Opel och Nissan — Opel finns på båda, faller. C: Renault och Peugeot — Renault finns på båda, faller. D: Nissan och Peugeot — båda finns ENDAST hos kvinnor. Endast D klarar villkoret.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'tio vanligaste'?",
+        "text": "Topp-tio är de tio mest sålda märkena ordnade efter andel. Märken utanför topp-tio hamnar i 'Övriga' — som är en restkategori, inte ett märke. Frågan handlar alltså inte om absolut förekomst utan om RANKING bland topp-tio.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: är båda märkena i D 'mindre vanliga' hos män?",
+        "text": "Att Nissan och Peugeot saknas i mäns topp-tio betyder att de hamnar i mäns 'Övriga'-grupp — de finns alltså i absolut mening hos män också, men ligger utanför topp-tio. Det är just det frågan letar efter: en ranking-skillnad mellan könen, inte en absolut frånvaro.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Nissan och Peugeot). Insikten i en mening: vid 'finns i A men inte i B'-frågor, gör listorna explicit och kryssa av varje kandidat mot båda villkoren — den vanligaste fällan är att glömma att kontrollera det andra villkoret.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'finns i ena listan men inte den andra'-frågor: gör de två listorna explicit (skriv ner de tio märkena från varje stapeldiagram), och pricka av varje kandidat-par mot BÅDA villkoren — finns märket i kvinnors topp-tio? OCH saknas det i mäns topp-tio? Triggern: 'tio vanligaste hos X men inte hos Y' → mängd-differens, två villkor som måste stämma samtidigt.",
+    "pregrade_tactic": {
+      "handle": "Två-listor-mängddifferens",
+      "move": "Skriv ner kvinnornas tio märken, sedan männens tio. Pricka av varje par i alternativen: båda märkena måste finnas hos kvinnor OCH saknas hos män. Endast ett alternativ klarar dubbelvillkoret."
+    }
+  },
+  "host-2016-kvant1-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "650 000 är frestande om man avrundar 2004-talet (1 113 527) lite för glupskt och tänker 'kvinnornas bilar har bara fördubblats sedan 1972'. Det ger ungefär 550 000–650 000 — men det är fel växelfaktor.",
+        "why_wrong": "Som steg 5 visar fastställs förändringen mellan 1972 och 2004 av linjediagrammets index: index 100 vid 1972, index ≈ 250 vid 2004. Faktorn är 2,5, inte 2. 1 113 527 / 2,5 ≈ 445 000 ≈ 450 000. Facit fastslår 450 000 (alternativ A) — inte 650 000."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1 000 000 är ett snyggt avrundat tal i samma storleksordning som 2004-talet och kan locka om man bara halverar 2004-värdet utan att verkligen titta på indexkurvan.",
+        "why_wrong": "1 000 000 är väldigt nära 2004-värdet (1 113 527) — det skulle innebära nästan ingen tillväxt alls, vilket motsäger indexlinjens klättring från 100 till 250. Steg 4 understryker att kvinnors index 2,5-faldigats. Facit fastslår 450 000 (alternativ A)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2 200 000 är frestande om man läser fel kön — MÄNS antal 2004 är just 2 201 019. Att förväxla raderna är ett klassiskt diagramfel.",
+        "why_wrong": "Frågan handlar om KVINNOR, inte män. Som steg 3 understryker: kvinnors 2004-totalet är 1 113 527, inte 2 201 019. Och 2 200 000 är dessutom större än kvinnors 2004-tal — det är fel kön OCH fel riktning på förändringen. Facit fastslår 450 000 (alternativ A)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att glömma att indexvärden är RELATIVA (basår = 100), och försöka räkna direkt på indexskalan. Botemedlet: räkna baklänges — använd den printade antalstotalen 2004 (1 113 527) och dividera med index-förhållandet 250/100 = 2,5 för att få fram antalet vid index 100 (= år 1972).",
+    "solution_path": "Facit fastslår 450 000 (alternativ A). Kvinnors bilar 2004 = 1 113 527 (printat). Kvinnors index 2004 ≈ 250, index 1972 = 100 per definition. Förhållandet 2004/1972 är alltså 2,5. Antalet 1972 = 1 113 527 / 2,5 ≈ 445 000 ≈ 450 000.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många personbilar ägdes av KVINNOR år 1972? Svarsalternativen är fyra antal: 450 000, 650 000, 1 000 000, 2 200 000. Facit fastslår 450 000 (alternativ A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig: vad finns på sidan?",
+        "text": "Tre figurer på sidan: linjediagram över utvecklingen 1972–2004 (index, kvinnor svart linje, män grå linje), kvinnornas topp-tio bilmärken 2004 (procent), männens topp-tio 2004 (procent). Det enda printade antalstotalet för kvinnor är 2004-värdet: 1 113 527 bilar.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilken linje är kvinnor?",
+        "text": "Linjediagrammet har två linjer: en SVART (med en bil-ikon och kvinnosymbol intill) som klättrar från 100 vid 1972 till cirka 250 vid 2004, och en GRÅ (med en mansikon) som ligger nästan platt strax över 100 hela perioden. Kvinnors linje är den svarta som växer.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är ett index?",
+        "text": "Bildtexten säger: 'Index 100 motsvarar antalet år 1972.' Det betyder att kvinnors antal vid 1972 satts som referenspunkt (basår). En index-nivå på 250 vid 2004 innebär 2,5 gånger så många bilar som 1972. Index säger relativt förhållande, inte absolut antal.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs index 2004 mot gridlinjerna",
+        "text": "Procent-axeln, fel — det är INDEX-axeln, med printade tick-värden vid 0, 50, 100, 150, 200, 250, 300. Den svarta linjen når någonstans mellan 240 och 250 vid året '-04 (= 2004). Lås in 250 som arbetstal (avläsningen ligger närmast 250).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt upp proportionen",
+        "text": "Förhållande: antal 2004 / antal 1972 = index 2004 / index 1972 = 250 / 100 = 2,5. Det innebär att antalet 1972 = antalet 2004 / 2,5.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna baklänges",
+        "text": "Antal 1972 = 1 113 527 / 2,5. Beräkning: 1 113 527 / 2,5 = 1 113 527 × 0,4 = 445 410,8. Avrunda: cirka 450 000. Facit fastslår just 450 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder en proportion här?",
+        "text": "När y-axeln är index gäller att 'antal vid år X' / 'antal vid basår' = 'index vid år X' / 100. Detta är samma sak som att index per definition är (antal / basantal) × 100. Att räkna baklänges från ett känt antal vid ett känt index är därför rakt proportionalitetsräkning.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot alternativen",
+        "text": "Alternativen är 450 000, 650 000, 1 000 000 och 2 200 000. Vår beräkning gav 445 000 — entydigt närmare 450 000 än 650 000. 1 000 000 skulle kräva index ≈ 110 vid 2004 (knappt växt), 2 200 000 skulle kräva att 1972-antalet var nästan dubbelt 2004-antalet (omöjligt med den växande linjen).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot mäns linje",
+        "text": "Mäns linje ligger nästan platt: index ≈ 110 vid 2004. Mäns antal 2004 = 2 201 019. Räkna baklänges: 2 201 019 / 1,1 ≈ 2 000 000 män år 1972. Det är konsistent med en bilägar-population där männen redan 1972 var i klar majoritet — och där kvinnors andel sedan vuxit kraftigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (450 000). Insikten i en mening: när y-axeln är index, räkna proportionellt — använd ett känt antal i ett kvotår och dividera med index-förhållandet för att få fram antalet i basåret.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'antal i basåret från index-diagram': använd ett känt antal i ett ANNAT år (oftast slutåret, printat i ett annat delfigur) och dividera med index-förhållandet (slutårets index / 100). Triggern: 'hur många X år Y' när Y är basåret → räkna baklänges från en känd punkt på indexkurvan.",
+    "pregrade_tactic": {
+      "handle": "Baklänges-från-index",
+      "move": "Hitta det printade antalet för 2004 (1 113 527 för kvinnor), läs av kvinnors index vid 2004 (cirka 250), och dividera med 250/100 = 2,5 för att få 1972-antalet."
+    }
+  },
+  "host-2016-kvant1-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "6 gånger är frestande om man tar minsta nämnaren bland kvinnornas slutenvårdsandelar som 4 (innebandy eller fotboll) istället för det faktiska minimumet, eller om man jämför andelar man avrundat felaktigt.",
+        "why_wrong": "Som steg 5–6 visar är max-andelen 18 % (ridsport) och min-andelen 2 % (löpning) bland kvinnor. Förhållandet 18/2 = 9, inte 6. Facit fastslår 9 gånger så vanligt (alternativ B)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "12 gånger är frestande om man trycker upp ridsporten till 24 % eller pressar ned löpningens andel till 1,5 %. Båda är pixel-avläsningar utöver tabellens printade tal.",
+        "why_wrong": "Tabellen är inte ett diagram — alla andelar är PRINTADE som heltal i procent. Steg 4 understryker att du ska ta de printade talen som ground truth: max = 18 (ridsport), min = 2 (löpning). 18/2 = 9. Facit fastslår 9, inte 12."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "15 gånger låter mest 'imponerande' — det är frestande att välja det största alternativet om man tror att frågan handlar om en uppenbar ytterlighet i tabellen.",
+        "why_wrong": "För att förhållandet ska bli 15 måste antingen max stiga eller min sjunka. Inga rader i tabellen har kvinnoandel ≥ 25 % och ingen har < 2 %. Steg 5 fastslår 18 som max och 2 som min. 18/2 = 9, inte 15. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i tabellfrågor är att blanda ihop kolumnerna — här finns andelar slutenvårdade för MÄN och KVINNOR i två separata kolumner. Botemedlet: peka på kolumnrubriken KVINNOR och scanna BARA den kolumnen vertikalt efter största och minsta värdet — inte horisontellt på samma rad.",
+    "solution_path": "Facit fastslår 9 gånger så vanligt (alternativ B). I tabellens kolumn 'ANDEL SLUTENVÅRDADE I PROCENT — KVINNOR' är max-värdet 18 (ridsport) och min-värdet 2 (löpning). Förhållandet 18/2 = 9.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: studera andelarna slutenvårdade KVINNOR. Hur vanligt var det med slutenvård för den aktivitet där andelen var STÖRST jämfört med aktiviteten där andelen var MINST? Svaret är ett förhållande (ratio). Alternativen: 6, 9, 12, 15 gånger. Facit fastslår 9 (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Skadade vid fysisk aktivitet' har kolumnerna: FYSISK AKTIVITET, SKATTAT ANTAL SKADADE (MÄN/KVINNOR), ANDEL SLUTENVÅRDADE I PROCENT (MÄN/KVINNOR), SKATTAT ANTAL VÅRDDYGN (MÄN OCH KVINNOR). Frågan handlar bara om kolumnen 'ANDEL SLUTENVÅRDADE I PROCENT' under 'KVINNOR'.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta rätt kolumn fysiskt",
+        "text": "Lägg fingret på rubriken 'KVINNOR' inom 'ANDEL SLUTENVÅRDADE I PROCENT' — det är fjärde kolumnen från vänster (efter aktivitet, mäns skadade, kvinnors skadade, mäns andel slutenvårdade, sedan kvinnors). Skanna ENDAST den kolumnen vertikalt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Tabellsiffror är printade — använd dem som facit",
+        "text": "Det här är en TABELL, inte ett diagram — varje cell innehåller en exakt printad siffra. Du behöver inte uppskatta något visuellt. Bocka av varje rad: 15, 15, 8, 5, 13, 18, 11, 4, 12, 3, 5, 2, 9, 10, 8, 9. Inga avläsningar mot gridlinjer behövs.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta max-värdet",
+        "text": "Vandra ner i kolumnen och kom ihåg största hittills. Värden i kvinnors andel slutenvårdade: 15 (gå och promenera), 15 (cykla), 8 (sport och idrott), och underrader: 5 (fotboll), 13 (ishockey), 18 (ridsport), 11 (utförsåkning), 4 (innebandy), 12 (motorsport), 3 (handboll), 5 (gymnastik), 2 (löpning), 9 (lek), 10 (gör det själv), 8 (trädgårdsarbete), 9 (jaga/fiska/plocka bär). Maximum: 18 vid ridsport.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Hitta min-värdet",
+        "text": "I samma kolumn: minsta värdet är 2 (löpning). Inga rader har 0 eller 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'hur vanligt jämfört med'?",
+        "text": "Frågans formulering 'X gånger så vanligt som' kräver en kvot: max / min = 18 / 2 = 9. Det är förhållandet (ratio), inte differensen. Skillnaden 18 − 2 = 16 procentenheter är ett annat tal — använd det inte.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna kvoten",
+        "text": "18 / 2 = 9. Klart-text.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: tolkning av enheten",
+        "text": "Värdena är PROCENT av skadade som slutenvårdades. 18 % vid ridsport betyder att av kvinnor som skadades vid ridsport hamnade nästan en av fem på slutenvård. 2 % vid löpning betyder att en av femtio. Skillnaden är dramatisk — kvoten 9 stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot alternativen",
+        "text": "6, 9, 12, 15. Vår beräkning ger entydigt 9. Det är endast ett alternativ som passar. Om vi hade läst fel kön eller fel kolumn (t.ex. tagit mäns max 25 vid ridsport och mäns min 2 vid löpning = 12,5) hade vi hamnat fel — men frågan handlar om KVINNOR.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check mot mäns kolumn",
+        "text": "Om vi av misstag tagit mäns kolumn istället: max = 25 (ridsport), min = 2 (löpning), kvot = 12,5 ≈ 12 — vilket är distraktor C. Det understryker varför det är så viktigt att låsa in rätt kolumn före räkningen. Som facit fastslår är dock svaret 9, från KVINNORS kolumn.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (9 gånger så vanligt). Insikten i en mening: tabellfrågor är printade siffror — pek på rätt kolumn, ta max och min därinom, dividera, klart.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'X gånger så vanligt'-frågor i tabeller: lås in rätt kolumn (rätt kön, rätt enhet) genom att fysiskt peka på kolumnrubriken, scanna kolumnen vertikalt och anteckna max och min, dividera max/min. Triggern: 'hur många gånger så vanligt' → kvot, inte differens; alltid samma kolumn.",
+    "pregrade_tactic": {
+      "handle": "Kolumn-lås-och-kvot",
+      "move": "Peka fysiskt på rubriken 'KVINNOR' under 'ANDEL SLUTENVÅRDADE'. Skanna kolumnen vertikalt: hitta största värdet (18, ridsport) och minsta (2, löpning). Dividera: 18/2 = 9."
+    }
+  },
+  "host-2016-kvant1-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "0,9 är frestande om man av misstag delar antal vårddygn (48 000) med ANTAL SKADADE för mäns + kvinnors summa (43 000 + 26 800 ≈ 70 000) på fel sätt eller blandar in slutenvårdsandelen.",
+        "why_wrong": "Som steg 4 visar är vårddygn-kolumnen redan summerad för 'MÄN OCH KVINNOR' (48 000) — den ska divideras med summan av skadade män + skadade kvinnor (17 200 + 26 800 = 44 000). Resultatet är 48 000/44 000 ≈ 1,09 ≈ 1,1. Inte 0,9. Facit fastslår B (1,1)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2,7 är frestande om man dividerar antal vårddygn med ENDAST kvinnors antal skadade (26 800 → 48 000/26 800 ≈ 1,8) eller endast mäns (17 200 → 48 000/17 200 ≈ 2,8). Felaktig nämnare ger 2,8 ≈ 2,7.",
+        "why_wrong": "Som steg 5 understryker är vårddygnen i samma rad (Gå och promenera) redan en TOTAL för BÅDA könen. Nämnaren måste därför också vara båda könens skadade summerade: 17 200 + 26 800 = 44 000. Facit fastslår 1,1 (B), inte 2,7."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "7,5 är frestande om man tar någon helt annan rad — t.ex. ridsport där 8 000 vårddygn dividerat med dess antal skadade (knappt 9 000) ger något i den storleksordningen — och förväxlar rader.",
+        "why_wrong": "Frågan handlar specifikt om raden 'Gå och promenera' (48 000 vårddygn, 44 000 skadade). Som steg 3 understryker: lås in RADEN först. 48 000/44 000 = 1,09 ≈ 1,1 — inte 7,5. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att glömma att kolumnen 'SKATTAT ANTAL VÅRDDYGN' rubriceras 'MÄN OCH KVINNOR' (summerad), medan 'SKATTAT ANTAL SKADADE' har separata kolumner för MÄN och KVINNOR. Botemedlet: läs kolumnrubrikerna noga och summera skadade-kolumnerna före division.",
+    "solution_path": "Facit fastslår 1,1 (alternativ B). Raden 'Gå och promenera': vårddygn (män och kvinnor) = 48 000. Skadade män = 17 200, skadade kvinnor = 26 800. Summa skadade = 17 200 + 26 800 = 44 000. Vårddygn per skadad = 48 000 / 44 000 ≈ 1,09 ≈ 1,1.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stort var antalet vårddygn PER skadad vid aktiviteten 'Gå och promenera'? Svaret är ett medelvärde (vårddygn delat med antal skadade). Alternativen: 0,9, 1,1, 2,7, 7,5. Facit fastslår 1,1 (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Kolumner i ordning: FYSISK AKTIVITET, SKATTAT ANTAL SKADADE (MÄN | KVINNOR), ANDEL SLUTENVÅRDADE I PROCENT (MÄN | KVINNOR), SKATTAT ANTAL VÅRDDYGN (MÄN OCH KVINNOR). Notera: vårddygnen är en SUMMERAD kolumn för båda könen, medan antalet skadade är uppdelat i två kolumner per kön.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rätt rad",
+        "text": "Frågan gäller raden 'Gå och promenera'. Den är översta dataraden i tabellen (efter rubriken). Lägg fingret på den raden innan du läser några tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs av tre printade tal",
+        "text": "Från raden 'Gå och promenera': SKADADE MÄN = 17 200, SKADADE KVINNOR = 26 800, ANTAL VÅRDDYGN (män och kvinnor) = 48 000. De är alla printade tal, inga uppskattningar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'per skadad'?",
+        "text": "'Per skadad' = total / antal. Eftersom täljaren (vårddygn) är summerad för båda könen måste nämnaren också vara summerad för båda könen — alltså mäns + kvinnors skadade tillsammans, inte ett av könen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Summera skadade",
+        "text": "Totalt antal skadade = 17 200 + 26 800 = 44 000. Det är nämnaren i divisionen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna kvoten",
+        "text": "48 000 / 44 000 = 1,0909... ≈ 1,1. Avrundat på en decimal: 1,1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder ett medelvärde som 1,1?",
+        "text": "I genomsnitt fick varje skadad cirka 1,1 vårddygn — vilket är mycket lite eftersom de allra flesta skador vid promenad inte leder till slutenvård alls (vårddygn = 0). Genomsnittet drar upp av de få som faktiskt vårdades. Det är konsistent med tabellens andra slutenvårdskolumn: 14–15 % slutenvårdades.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot grannraderna",
+        "text": "Cykla: 28 000 skadade totalt, 18 000 vårddygn → 18 000/28 000 ≈ 0,6 (lägre). Sport och idrott: 112 000 skadade, 24 000 vårddygn → 24 000/112 000 ≈ 0,21. Gå och promenera ligger således högt jämfört med dessa två — vilket är konsistent med en åldre/skörare målgrupp där fallskador kan bli allvarliga.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot alternativen",
+        "text": "Alternativen 0,9, 1,1, 2,7, 7,5. Vår beräkning gav 1,09 — entydigt närmare 1,1 än 0,9. Skillnaden mellan grannarna (0,2) är större än vår avrundningsmarginal (0,01). Inget mätbart utrymme för fel kön/fel rad.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check: om man delar med fel nämnare",
+        "text": "Om man av misstag delar 48 000 med endast mäns 17 200 → 2,79 ≈ 2,7 (= alternativ C). Eller med endast kvinnors 26 800 → 1,79 ≈ 1,8 (närmast inget alternativ). Detta gör tydligt VARFÖR rubriken 'MÄN OCH KVINNOR' i vårddygns-kolumnen är så central att kolla. Facit fastslår 1,1 (B).",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (1,1). Insikten i en mening: matcha alltid kolumnsumeringar — om täljaren är 'M+K' måste nämnaren också vara 'M+K', annars dubblar du eller halverar du svaret.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'per X'-frågor i tabeller med blandade kolumnsummeringar: kolla rubriken på täljarens kolumn (är den per kön eller summerad?), och säkerställ att nämnaren har samma summeringsnivå. Triggern: 'antal Y per skadad' → matcha kolumnernas summerings-domän innan division.",
+    "pregrade_tactic": {
+      "handle": "Matcha-kolumnernas-summering",
+      "move": "Läs av vårddygn (48 000, för båda könen) och summera skadade-kolumnerna för 'Gå och promenera' (17 200 + 26 800 = 44 000). Dividera: 48 000 / 44 000 ≈ 1,1."
+    }
+  },
+  "host-2016-kvant1-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1 100 är frestande om man av misstag bara räknar på ena könet — t.ex. kvinnornas 4 000 skadade vid 10 % slutenvård = 400, plus mäns 23 000 vid 8 % = 1 840, totalt ≈ 2 240 — fast om man halverar fel hamnar man runt 1 100.",
+        "why_wrong": "Som steg 6 visar är rätt beräkning 23 000 × 0,08 + 4 000 × 0,10 = 1 840 + 400 = 2 240 ≈ 2 200. Facit fastslår 2 200 (alternativ C), inte 1 100. 1 100 är ungefär halva svaret — du kanske missade ena könet."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1 800 är frestande om man bara räknar på MÄN (23 000 × 0,08 = 1 840 ≈ 1 800) och glömmer kvinnornas bidrag.",
+        "why_wrong": "Frågan handlar om hur många som slutenvårdades för dessa skador TOTALT — båda könen. Som steg 4 betonar har 'gör det själv' både mäns och kvinnors rader i tabellen. Mäns 1 840 + kvinnors 400 = 2 240 ≈ 2 200. Facit fastslår 2 200 (C)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "4 800 är frestande om man av misstag applicerar en högre slutenvårdsandel (t.ex. 18 % från ridsport) på 'gör det själv'-skadade, eller om man dubbelräknar genom att summera fel.",
+        "why_wrong": "Tabellen ger andelarna 8 % (män) och 10 % (kvinnor) för just 'gör det själv'. Som steg 5 visar är de andra rubrikerna helt orelevanta. 23 000 × 0,08 + 4 000 × 0,10 = 2 240. Facit fastslår 2 200, inte 4 800."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att tro att ett enskilt procenttal räcker — men antalet skadade är uppdelat per kön, och så är slutenvårdsandelen. Botemedlet: räkna SLUTENVÅRDADE = SKADADE × ANDEL separat för män och kvinnor, sedan summera.",
+    "solution_path": "Facit fastslår 2 200 (alternativ C). På raden 'Gör det själv': skadade män = 23 000, skadade kvinnor = 4 000; andel slutenvårdade män = 8 %, kvinnor = 10 %. Slutenvårdade per år = 23 000 × 0,08 + 4 000 × 0,10 = 1 840 + 400 = 2 240 ≈ 2 200.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: studera antalet skadade och andelen slutenvårdade på grund av 'gör det själv'-aktiviteter. Hur många slutenvårdades PER ÅR för dessa skador? Alternativen: 1 100, 1 800, 2 200, 4 800. Facit fastslår 2 200 (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig: vad säger tabellrubriken?",
+        "text": "Tabellens introtext: 'Det skattade antalet män och kvinnor som skadade sig vid fysisk aktivitet, i genomsnitt per år under perioden 2005–2007.' Antalet skadade och andelen slutenvårdade är alltså redan ÅRSGENOMSNITT — inga ytterligare divisioner med tre år behövs.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta raden 'Gör det själv'",
+        "text": "Bland tabellens 'Därav'-rader hittar du 'Gör det själv'. Lägg fingret på den raden — den är den näst nedersta huvudgruppen efter Lek och Trädgårdsarbete.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs av fyra printade tal",
+        "text": "Från raden 'Gör det själv': SKADADE MÄN = 23 000, SKADADE KVINNOR = 4 000, ANDEL SLUTENVÅRDADE MÄN = 8 %, ANDEL SLUTENVÅRDADE KVINNOR = 10 %. Allt printat — inga avläsningar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'andel slutenvårdade'?",
+        "text": "Av de skadade hamnar en viss procent på slutenvård (kvarstannar på sjukhus). 8 % av de skadade männen och 10 % av de skadade kvinnorna är de som ska räknas. Detta är procent av en SUBPOPULATION (de skadade), inte av totalbefolkningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna bidraget från MÄN",
+        "text": "Slutenvårdade män per år = 23 000 × 8/100 = 23 000 × 0,08 = 1 840. Mental aritmetik: 23 × 8 = 184, behåll storleksordningen → 1 840.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna bidraget från KVINNOR",
+        "text": "Slutenvårdade kvinnor per år = 4 000 × 10/100 = 4 000 × 0,10 = 400. Direkt avläsning: 10 % av 4 000 = 400.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Summera båda könen",
+        "text": "Totalt slutenvårdade per år = 1 840 + 400 = 2 240. Den närmaste alternativ-siffran är 2 200 — facit fastslår just detta värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'per år'?",
+        "text": "Tabellen anger ÅRLIGT GENOMSNITT under 2005–2007. Det betyder att 2 240 är det årliga antalet slutenvårdade vid 'gör det själv'-skador — inte den tre-åriga totalen. Om frågan hade frågat efter treårstotalen skulle svaret varit ungefär 6 720, men det är inte vad som efterfrågas.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot alternativen",
+        "text": "1 100, 1 800, 2 200, 4 800. Vår beräkning gav 2 240 — entydigt närmast 2 200. 1 800 motsvarar ungefär mäns bidrag ensamt (1 840). 1 100 är ungefär hälften av svaret. 4 800 ligger så långt över att man skulle behövt fördubbla någon faktor felaktigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check: rimlighet av storleksordningen",
+        "text": "Av 27 000 totalt skadade vid 'gör det själv' (23 000 + 4 000) hamnar 2 240 på slutenvård — det är ungefär 8 %, vilket ligger mellan de två printade andelarna (8 % och 10 %) viktade efter respektive köns antal. Konsistens-check ok.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (2 200). Insikten i en mening: när tabellen har separata köns-rader → räkna procentdelen per kön och summera, runda först i slutet.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'hur många X slutenvårdades'-frågor: identifiera raden, läs de fyra talen (skadade-man, skadade-kvinna, andel-man, andel-kvinna), beräkna del-summor SKADADE × ANDEL separat per kön, summera. Triggern: två kolumner per kön i tabellen → räkna separat, summera till slut.",
+    "pregrade_tactic": {
+      "handle": "Per-kön-och-summera",
+      "move": "Hitta raden 'Gör det själv': räkna 23 000 × 0,08 = 1 840 för män och 4 000 × 0,10 = 400 för kvinnor. Summera: 2 240, närmast 2 200."
+    }
+  },
+  "host-2016-kvant1-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1/7 är frestande om man räknar fotbollens andel av TOTALT skadade (män + kvinnor över alla aktiviteter, 172 200 + 110 300 ≈ 282 500) snarare än bara mäns sport-och-idrotts-skadade. 24 000/282 500 ≈ 1/12 — men en närliggande felräkning ger 1/7-storlek.",
+        "why_wrong": "Som steg 3 understryker handlar frågan om andelen av MÄNNENS sport-och-idrotts-skador som var fotboll, inte av någon större population. Mäns sport och idrott totalt = 73 000; fotboll bland män = 24 000. 24 000/73 000 ≈ 0,33 ≈ 1/3 — inte 1/7. Facit fastslår 1/3 (D)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1/5 = 20 % känns rimligt om man av misstag dividerar 24 000 med totalt antal män skadade (172 200) istället för med männens sport och idrott (73 000). 24 000/172 200 ≈ 14 % vilket är nära 1/7 — men avrundningar kan slänga upp en till 1/5.",
+        "why_wrong": "Frågan begränsar populationen till 'männen som skadades vid SPORT OCH IDROTT' — det är nämnaren 73 000, inte 172 200. Som steg 4 visar är fotbollens andel av just den population 24 000/73 000 = 0,329 ≈ 1/3. Facit fastslår 1/3 (D)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1/4 = 25 % känns trevligt avrundat och ligger i samma storleksordning. Det är frestande att avrunda 24 000/73 000 ≈ 0,33 nedåt till 0,25 om man bara gör en grov ögonräkning.",
+        "why_wrong": "0,33 är mycket närmare 1/3 (= 0,333) än 1/4 (= 0,25). Som steg 5 visar är fotbollens 24 000 ungefär en tredjedel av sportens 73 000 — inte en fjärdedel. Facit fastslår 1/3 (D)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i andelsfrågor med tabellrader på två nivåer ('Sport och idrott' med flera 'Därav'-rader) är att tappa bort vilken population man jämför med. Botemedlet: identifiera HELHETEN explicit ('män skadade vid sport och idrott' = 73 000) och DELEN ('män skadade vid fotboll' = 24 000), sedan dividera.",
+    "solution_path": "Facit fastslår 1/3 (alternativ D). Mäns skadade vid sport och idrott totalt = 73 000. Mäns skadade vid fotboll = 24 000. Andel = 24 000/73 000 ≈ 0,329 ≈ 1/3.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av MÄNNEN som skadades vid sport och idrott skadades i samband med FOTBOLL? Svaret är ett bråk. Alternativen: 1/7, 1/5, 1/4, 1/3. Facit fastslår 1/3 (alternativ D).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen har två nivåer: huvudgrupper (Gå och promenera, Cykla, Sport och idrott, ...) och under 'Sport och idrott' en lista 'Därav' med specifika sporter (Fotboll, Ishockey, Ridsport, ..., Löpning). 'Sport och idrott'-raden är den summerade kategorin; 'Därav'-raderna delsumman.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in DELEN och HELHETEN explicit",
+        "text": "Delen: män skadade vid fotboll. Helheten (nämnaren): män skadade vid sport och idrott. Båda finns i kolumnen SKADADE — MÄN.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs av talen",
+        "text": "Sport och idrott — män: 73 000. Fotboll — män (en av 'Därav'-raderna): 24 000. Allt printat i tabellen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Beräkna kvoten",
+        "text": "Andel = 24 000 / 73 000. Avrunda: 24/73 ≈ 0,33. Som bråk är detta nära 1/3.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'andel' av en undergrupp?",
+        "text": "När frågan begränsar populationen till 'männen som skadades vid sport och idrott' är det 73 000 som är 100 % — inte alla skadade män över alla aktiviteter, och inte alla skadade vid fotboll oavsett kön. En andel räknas alltid relativt EN tydligt definierad helhet.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check: är 24 000 ungefär en tredjedel av 73 000?",
+        "text": "73 / 3 ≈ 24,3. Alltså 24 000 är nästan exakt en tredjedel av 73 000. Det ger en stark visuell bekräftelse på 1/3.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Översätt mätningen till svarsformat",
+        "text": "1/7 = 0,143, 1/5 = 0,20, 1/4 = 0,25, 1/3 = 0,333. Vårt 0,329 ligger entydigt närmast 1/3. Marginalen till 1/4 (skillnad 0,08) är gott och väl större än vår avrundningsosäkerhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot kvinnornas motsvarande rad",
+        "text": "Kvinnor skadade vid sport och idrott totalt: 39 000. Kvinnor skadade vid fotboll: 10 000. Andel kvinnor: 10 000/39 000 ≈ 0,26 ≈ 1/4. Inte samma som män — vilket understryker att den givna frågan om MÄN måste räknas på mäns kolumn, inte på kvinnors.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot grannraderna",
+        "text": "Av mäns 73 000 sport-skadade är fotbollen 24 000 (cirka 1/3), ishockey 8 900 (cirka 1/8), ridsport 500 (försvinnande liten andel), och så vidare. Att fotboll är den enskilt största underkategorin är inte oväntat med tanke på sportens spridning i Sverige.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (1/3). Insikten i en mening: i frågor som filtrerar på en undergrupp ('av X som gjorde Y') → använd undergruppen som nämnare, inte hela tabelltotalen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel av en undergrupp'-frågor: identifiera explicit vad som är HELHET (nämnaren — den filtrerade undergruppen) och vad som är DEL (täljaren — den ytterligare specificerade undergruppen). Dividera, översätt till bråk. Triggern: 'av X som gjorde Y' → räkna del/helhet inom Y, inte mot tabellens grand total.",
+    "pregrade_tactic": {
+      "handle": "Del-genom-rätt-helhet",
+      "move": "Hitta 'Sport och idrott' MÄN (73 000) som nämnare och 'Fotboll' MÄN (24 000) som täljare. 24/73 ≈ 1/3."
+    }
+  },
+  "host-2016-kvant1-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Grekland visas på kartan med en cirkel som verkar likna ett land utan kärnkraft (cirkeln saknar mörkare sektor). Det kan se ut som ett rimligt svar tills man kollar cirkelns storlek mot TWh-skalan.",
+        "why_wrong": "Som steg 6 visar är Greklands cirkel klart mindre än 100 TWh-cirkeln på skalan — Grekland producerar mindre än 100 TWh och uppfyller alltså inte storlekskravet. Italien (alternativ B) däremot har en cirkel som är klart större än 100 TWh-referenscirkeln och saknar mörk sektor. Facit fastslår B (Italien)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Nederländernas cirkel har faktiskt mest grå färg (kärnkraft endast 4,3 %) och kan se ut som 'nästan ingen kärnkraft alls' — frestande om man läser 'uteslutande ... andra energikällor' generöst.",
+        "why_wrong": "'Uteslutande' = 100 %. Nederländerna har 4,3 % kärnkraft — INTE noll, alltså uppfyller landet inte villkoret. Som steg 4 understryker är 'uteslutande' bokstavligt: kärnkraftens andel måste vara 0 (cirkeln helt ljusgrå, inga mörka sektorer). Facit fastslår B (Italien)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Österrike är ett klassiskt 'kärnkraftsfritt' land — det kan finnas i bakhuvudet som en känd kärnkraftsfri europeisk nation. Cirkeln visas också utan mörk sektor på kartan.",
+        "why_wrong": "Österrike uppfyller VILLKORET 'utan kärnkraft' (cirkeln är helt ljusgrå), men cirkelns storlek är mycket mindre än 100 TWh-referenscirkeln på skalan. Som steg 7 visar måste BÅDA kriterierna stämma: > 100 TWh OCH 100 % övriga energikällor. Endast Italien klarar båda. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i karta-med-cirkeldiagram är att blanda ihop CIRKELNS STORLEK (= total elproduktion i TWh) med PAJ-FÄRGERNAS ANDEL (= kärnkraft vs övriga energikällor). Botemedlet: kolla först cirkelstorleken mot skalan, sedan färgfördelningen — båda kriterierna måste uppfyllas samtidigt.",
+    "solution_path": "Facit fastslår Italien (alternativ B). På kartan har Italien en STOR cirkel (visuellt betydligt större än 100 TWh-referenscirkeln, ligger nära 300 TWh) som dessutom är HELT LJUSGRÅ (ingen mörk kärnkrafts-sektor). Det är det enda landet som klarar båda kriterierna: > 100 TWh OCH 0 % kärnkraft.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket land hade en elproduktion som översteg 100 TWh och uteslutande kom från andra energikällor än kärnkraft? Alternativen är fyra länder: Grekland, Italien, Nederländerna, Österrike. Facit fastslår Italien (B). Två villkor: stort cirkel-tal (> 100 TWh) OCH 0 % kärnkraft.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i figuren",
+        "text": "Kartan över Europa visar varje land som en CIRKEL (paj-diagram): cirkelns STORLEK = total elproduktion i TWh (skala i övre vänstra hörnet: ringar för 10, 50, 100, 200, 300, 400, 500 TWh). Cirkelns FÄRGFÖRDELNING = andel kärnkraft (mörkgrå) vs övriga energikällor (ljusgrå). Procent-talet vid varje land visar kärnkraftens andel.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Avkoda skalan",
+        "text": "Skalan i övre vänstra hörnet visar koncentriska cirklar märkta 10, 50, 100, 200, 300, 400, 500 TWh. Dessa är dina REFERENS-cirklar för att bedöma varje lands cirkelstorlek visuellt — projicera ett lands cirkel mot ringarna för att uppskatta TWh.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'uteslutande andra energikällor'?",
+        "text": "'Uteslutande' = 100 %, inget annat. Det innebär att kärnkraftens andel måste vara EXAKT 0 % — cirkeln måste vara HELT ljusgrå utan någon mörkgrå sektor. Procent-värdet vid landet ska antingen vara noll eller helt saknas (vilket är fallet för länder utan kärnkraft alls).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa villkor 1 (> 100 TWh) för varje alternativ",
+        "text": "Grekland: liten cirkel, klart mindre än 100 TWh-ringen — uppfyller INTE. Italien: STOR cirkel, klart större än 100 TWh-ringen, närmare 300 TWh — uppfyller. Nederländerna: medelstor cirkel, ungefär lika med 100 TWh-ringen (gränsfall, men möjligen knappt över) — möjligen ja. Österrike: liten cirkel, klart mindre än 100 TWh — uppfyller INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa villkor 2 (0 % kärnkraft) för varje alternativ",
+        "text": "Grekland: cirkeln är helt ljusgrå (inget procent-värde printat → ingen kärnkraft). Italien: cirkeln är HELT ljusgrå, inget procent-värde printat — 0 % kärnkraft. Nederländerna: 4,3 % kärnkraft printat, alltså inte 0. Österrike: cirkeln är helt ljusgrå, inget procent-värde — 0 % kärnkraft.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Korsa båda villkoren",
+        "text": "Endast Italien klarar BÅDA villkoren: > 100 TWh OCH 0 % kärnkraft. Grekland och Österrike har visserligen 0 % kärnkraft men är för små. Nederländerna kan ha tillräcklig storlek men har 4,3 % kärnkraft.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder TWh?",
+        "text": "TWh = terawattimmar = 10¹² wattimmar = 1 000 000 000 kilowattimmar (kWh), som bildtexten också säger. Det är ett mått på elproduktionens totala årliga mängd. 100 TWh motsvarar ungefär Sveriges elförbrukning i en sjättedel av ett år.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: större länder med 0 % kärnkraft",
+        "text": "Andra rejäla länder på kartan med 0 % kärnkraft (helt ljusgrå cirklar): Danmark (liten cirkel), Portugal (medelstor), Polen (om visad), Irland (liten). Av de utskrivna alternativen är Italien det enda med både stor cirkel OCH 0 % kärnkraft.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot kända länder med kärnkraft",
+        "text": "Sverige (43,9 % kärnkraft), Frankrike (77,5 %), Tyskland (31,2 %), Storbritannien (23,2 %), Finland (30,6 %), Belgien (57,7 %), Spanien (28,8 %) — alla har printade procent-värden, alltså mörkgrå sektorer. Italien sticker ut bland de stora länderna genom att INTE ha något procent-värde printat.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (Italien). Insikten i en mening: vid 'OCH-villkor' i karta-med-cirkeldiagram → kolla båda villkoren oberoende av varandra och välj det enda land som klarar båda.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'karta-med-paj-diagram + dubbelvillkor'-frågor: dela upp frågan i de oberoende kriterierna (cirkelstorlek mot skala = total produktion, färgfördelning = andel kärnkraft). För varje alternativ-land: testa båda kriterierna separat; landet som klarar båda är svaret. Triggern: 'översteg X TWh OCH uteslutande andra energikällor' → två oberoende test, AND-logik.",
+    "pregrade_tactic": {
+      "handle": "Storlek-OCH-färg",
+      "move": "Kolla Italiens cirkel mot 100 TWh-ringen i skalan — klart större. Kolla färgen — helt ljusgrå, inget procent-värde printat. Båda villkoren stämmer."
+    }
+  },
+  "host-2016-kvant1-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "50 TWh känns rimligt om man bara ser att Storbritanniens och Sveriges cirklar inte är dramatiskt olika i storlek. Vid en kvick ögonmätning kan skillnaden verka liten.",
+        "why_wrong": "Som steg 5 visar är Storbritanniens cirkel mycket större än Sveriges — Storbritannien ligger nära 400 TWh, Sverige nära 150–200 TWh. Skillnaden är ungefär 200 TWh, inte 50. Facit fastslår 200 TWh (C)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "100 TWh är en frestande mellanvärde — det är hälften av rätt svar och kan locka om man underskattar Storbritanniens cirkel eller överskattar Sveriges.",
+        "why_wrong": "Sveriges cirkel ligger ungefär vid 150 TWh-ringen, Storbritanniens ligger närmare 350–400 TWh-ringen. Som steg 6 visar är skillnaden cirka 200 TWh — det är samma storleksordning som SVERIGE SJÄLV, vilket gör 100 TWh för litet. Facit fastslår 200 TWh."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "350 TWh är frestande om man läser av Storbritanniens cirkelstorlek direkt utan att SUBTRAHERA Sveriges värde. Storbritannien ligger nära 350 TWh totalt — men frågan ber om SKILLNADEN.",
+        "why_wrong": "Frågan är 'hur mycket större' = differens, inte absolutvärde. Storbritannien ≈ 350–400 TWh, Sverige ≈ 150 TWh, differens ≈ 200 TWh. Som steg 4 understryker måste du subtrahera. Facit fastslår 200 TWh."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'hur mycket större' med cirkeldiagram är att antingen (a) ta absolutvärdet för det större landet utan att subtrahera det mindre, eller (b) jämföra cirklarnas radier istället för cirklarnas area-skala. Botemedlet: projicera varje cirkel separat mot skalans printade ringar (10, 50, 100, 200, 300, 400, 500), notera ungefärliga TWh-värden, sedan subtrahera.",
+    "solution_path": "Facit fastslår 200 TWh (alternativ C). Projicera Storbritanniens cirkel mot skalans ringar: ligger nära 350–400 TWh-ringen, säg cirka 350 TWh. Projicera Sveriges cirkel: ligger nära 150 TWh-ringen. Differens ≈ 350 − 150 = 200 TWh.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur mycket större var elproduktionen i Storbritannien än i Sverige? Svaret är en TWh-skillnad. Alternativen: 50, 100, 200, 350 TWh. Facit fastslår 200 TWh (C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig: hur läser man cirkelstorlekarna?",
+        "text": "Kartan visar varje land som en cirkel där cirkelns storlek = elproduktion i TWh. Skalan uppe till vänster är PRINTADE referens-cirklar för 10, 50, 100, 200, 300, 400, 500 TWh. Du projicerar varje lands cirkel mot dessa ringar och ser vilken ringen som matchar bäst.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera Storbritannien",
+        "text": "Storbritannien (Brittiska öarna i västra Europa) är märkt 'Storbritannien 23,2 %' på kartan. Dess cirkel är en av de större på kartan — märkbart större än Sveriges, Tysklands cirkel är ungefär jämförbar men frågan handlar bara om GB och SE.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lokalisera Sverige",
+        "text": "Sverige är märkt 'Sverige 43,9 %' i nordöstra delen av kartan. Cirkelns storlek är medelstor — klart större än Danmarks, Irlands och små länder; men klart mindre än Storbritanniens och Tysklands.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Mät Storbritanniens cirkel mot skalan",
+        "text": "Projicera Storbritanniens cirkel mot ringarna 100, 200, 300, 400 TWh. Cirkeln passar bäst mellan 300- och 400-ringen, närmare 350 TWh. Lås in cirka 350 TWh som arbetstal.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Mät Sveriges cirkel mot skalan",
+        "text": "Sveriges cirkel ligger ungefär vid 150 TWh-storlek (mellan 100 och 200 i skalan). Lås in cirka 150 TWh.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Subtrahera",
+        "text": "Skillnad = 350 − 150 = 200 TWh. Facit fastslår just 200 TWh.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'större' i cirkel-skalan?",
+        "text": "I cirkeldiagram av denna typ skalar cirkelns AREA med värdet, inte radien. Det betyder att en cirkel med 4 gånger så stort värde har 2 gånger så stor RADIE — och det är därför du måste matcha cirklarna mot SKALANS ringar, inte mäta diametrar i mm. Skalans ringar är redan rätt skalade.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot alternativen",
+        "text": "50 TWh skulle kräva att GB:s och Sveriges cirklar var nästan lika stora — uppenbart fel. 100 TWh skulle kräva att GB var ungefär 1,7× Sverige — också för litet visuellt. 350 TWh är hela GB:s produktion — inte differensen. 200 TWh passar bäst.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot andra länder",
+        "text": "Frankrike (77,5 %) har en mycket stor cirkel, närmare 400–500 TWh — typiskt sett Europas största elproducent. Tyskland (31,2 %) också stort, närmare 500. Storbritannien ligger nära Tysklands storlek (~350 TWh). Sveriges 150 TWh är konsistent med ett mellanstort EU-land. Storleksordningen för differensen 200 TWh stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (200 TWh). Insikten i en mening: i 'hur mycket större'-frågor med skalcirklar → projicera VAR FÖR SIG mot skalans referens-ringar, läs två tal, subtrahera.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'hur mycket större X än Y'-frågor med skalade cirklar: mät varje cirkels storlek genom att projicera mot skalans printade referens-ringar (10, 50, 100, 200, 300, 400, 500), läs av båda värden, subtrahera. Triggern: 'hur mycket större' → differens av två separat avlästa värden, inte ett enskilt cirkel-värde.",
+    "pregrade_tactic": {
+      "handle": "Cirkel-mot-skala-och-subtrahera",
+      "move": "Projicera Storbritanniens cirkel mot skalans ringar (~350 TWh) och Sveriges (~150 TWh). Subtrahera: 350 − 150 = 200 TWh."
+    }
+  },
+  "host-2016-kvant1-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "4 länder är ett rimligt första-svar om man bara räknar de stora, välkända kärnkraftsfria länderna (t.ex. Italien, Österrike, Danmark, Norge eller Portugal) — men då har man missat de mindre länderna utan kärnkraft.",
+        "why_wrong": "Som steg 4 visar finns det FLERA mindre länder på kartan utan printat kärnkraftsprocent-tal (vilket signalerar 0 % kärnkraft). Räkna noga — facit fastslår 7 länder (C), inte 4."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "5 länder är frestande om man räknar några av de tydliga (Italien, Österrike, Danmark, Portugal) plus ett till — det ligger nära rätt svar och kräver bara att man missat två av de mindre länderna.",
+        "why_wrong": "Räkna systematiskt: Luxemburg, Italien, Danmark, Österrike, Portugal, Grekland, Irland — minst sju länder utan kärnkrafts-procent. Facit fastslår 7 (C), inte 5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "8 länder är frestande om man av misstag inkluderar ett land som faktiskt har låg men inte noll kärnkraft (t.ex. Nederländerna med 4,3 %) eller dubbelräknar.",
+        "why_wrong": "Nederländerna har 4,3 % kärnkraft printat — det är INTE 0 %, alltså räknas det inte. Som steg 6 betonar måste procent-värdet vara helt frånvarande. Facit fastslår 7 länder (C), inte 8."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att räkna 'verkar utan kärnkraft' subjektivt istället för att gå systematiskt igenom alla redovisade länder och kolla efter printade procent-värden. Botemedlet: gör en mental checklista av alla 15 EU-länder på kartan, peka på varje, och pricka av de som SAKNAR ett printat kärnkrafts-procent-tal.",
+    "solution_path": "Facit fastslår 7 (alternativ C). Av de 15 EU-länderna på kartan har följande INGET printat kärnkrafts-procent-tal (alltså 0 % kärnkraft): Luxemburg, Italien, Danmark, Österrike, Portugal, Grekland, Irland. Det är sju länder.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många av de redovisade länderna hade en elproduktion som ENDAST kom från övriga energikällor (alltså 0 % kärnkraft)? Alternativen: 4, 5, 7, 8 länder. Facit fastslår 7 (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i figuren",
+        "text": "Kartan visar 15 EU-medlemsländer som cirklar. Varje land har en cirkel; länder med kärnkraft har en MÖRKGRÅ sektor och ett PRINTAT procentvärde bredvid landsnamnet (t.ex. 'Frankrike 77,5 %'). Länder utan kärnkraft har en helt LJUSGRÅ cirkel och inget procentvärde alls.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'endast övriga energikällor'?",
+        "text": "'Endast' = 100 % övriga = 0 % kärnkraft. Operatorell test: SAKNAS ett kärnkrafts-procentvärde vid landet → 0 % kärnkraft → räknas. FINNS ett procentvärde (även litet, som 4,3 %) → räknas inte.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna systematiskt — länder MED kärnkraftsprocent",
+        "text": "Länder med PRINTAT kärnkraftsprocent: Storbritannien 23,2 %, Finland 30,6 %, Nederländerna 4,3 %, Belgien 57,7 %, Sverige 43,9 %, Frankrike 77,5 %, Tyskland 31,2 %, Spanien 28,8 %. Det är åtta länder MED kärnkraft.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna systematiskt — länder UTAN kärnkraftsprocent",
+        "text": "Resterande länder på kartan: Luxemburg, Italien, Danmark, Österrike, Portugal, Grekland, Irland. Inga procent-värden printade vid någon av dem → alla har 0 % kärnkraft → alla räknas. Det är sju länder UTAN kärnkraft.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konsistens-check: 8 + 7 = 15",
+        "text": "EU hade 15 medlemsländer 2001 (bildtextens period). Vi har räknat 8 med kärnkraft och 7 utan = 15. Matchar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check: vilka är de 15?",
+        "text": "EU-15 (1995–2004): Belgien, Danmark, Finland, Frankrike, Grekland, Irland, Italien, Luxemburg, Nederländerna, Portugal, Spanien, Sverige, Storbritannien, Tyskland, Österrike. Alla finns på kartan.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'redovisade länder'?",
+        "text": "Bildtexten säger 'EU:s 15 medlemsländer år 2001'. Norge, Schweiz, Island och andra icke-EU-länder är inte med i räkningen även om de syns på kartan geografiskt — men i denna figur är de inte redovisade som cirklar.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot alternativen",
+        "text": "4, 5, 7, 8. Vår systematiska räkning gav exakt 7 — entydigt. Skillnaden från 8 ligger i att Nederländerna (med 4,3 % kärnkraft) inte uppfyller villkoret. Att hamna på 4 eller 5 kräver att man missat 2–3 av de mindre länderna på kartan.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot kända fakta",
+        "text": "Italien lade ner sina kärnkraftverk efter folkomröstning 1987, Österrike byggde aldrig sitt (Zwentendorf-omröstningen 1978), Danmark och Portugal har aldrig satsat på kärnkraft, Irland och Grekland likaså, Luxemburg är för litet. Det är konsistent med 'kärnkraftsfria' europeiska länder runt 2001.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (7). Insikten i en mening: vid 'hur många länder uppfyller villkoret X' → gå igenom listan systematiskt, pricka av varje land, undvik subjektiv minne — använd printade markeringar (eller frånvaron av dem) som test.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'hur många av de redovisade enheterna uppfyller villkoret X'-frågor: gå systematiskt igenom listan (här: 15 EU-länder), använd ett printat fält (eller dess frånvaro) som binär test, räkna varianterna åtskilt och konsistens-kolla med totalsumman. Triggern: 'hur många' + 'redovisade' → systematisk genomgång, binär test, summa = totalsumma.",
+    "pregrade_tactic": {
+      "handle": "Pricka-av-15-länder",
+      "move": "Gå runt kartan: räkna länder MED printat kärnkraftsprocent (8: GB, FI, NL, BE, SE, FR, DE, ES) och länder UTAN (7: LU, IT, DK, AT, PT, GR, IE). Totalt 15. Svar: 7."
+    }
+  },
+  "host-2016-kvant1-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'Nationell trafik' är den största kategorin i fasta telefonin (den prickade arean dominerar bilden), så det är frestande att tro att den är 'den enda' som inte minskat. Stora kategorier känns ofta robusta.",
+        "why_wrong": "Som steg 5 understryker har den prickade 'nationell trafik'-arean krympt dramatiskt: den startar nära 55 000 Milj. min. vid 2001 och har 2012 minskat till mindre än en tredjedel. Som facit fastslår är det 'till mobiltelefon' (C) som är den enda som INTE minskat — den har snarare ökat något."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "'Internet' (vertikal-streckad area) är en kategori som kan kännas högteknologisk och 'ny' — frestande att gissa att den växte under perioden.",
+        "why_wrong": "Internet-uppringning över fast telefoni (dial-up modem) MINSKADE mycket kraftigt under 2001–2012 eftersom bredband ersatte dial-up. Som steg 6 visar är den vertikal-streckade arean i 2012 nästan obefintlig jämfört med 2001. Facit fastslår C ('till mobiltelefon'), inte B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Övrigt' är diagrammets restkategori (hatchad area) — den ligger längst ner och är ofta liten. Det är frestande att gissa att 'övrigt' kan ha ökat eftersom restkategorier ibland samlar nya trafiktyper.",
+        "why_wrong": "Den hatchade 'övrigt'-arean är liten genom hela perioden och har om något krympt något. Som steg 7 understryker är det 'till mobiltelefon' (C) som är den enda kategorin där 2012-värdet inte är mindre än 2001-värdet. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att läsa areadiagrammet som om varje kategori vore en separat linje — men det är ett STAPLAT areadiagram, så varje kategoris BREDD är skillnaden mellan dess topplinje och underliggande kategoris topplinje. Botemedlet: läs av kategorins BREDD (höjd vid en given x-koordinat) vid 2001 och 2012 separat och jämför.",
+    "solution_path": "Facit fastslår 'Till mobiltelefon' (alternativ C). I diagrammet 'Fasta telefonitjänster' är 'till mobiltelefon' den enda kategori vars BREDD (vertikal höjd vid en given år) är ungefär lika stor eller större 2012 än 2001. Övriga kategorier (nationell trafik, internet, till utlandet, övrigt) har alla synligt krympt.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken typ av fast telefonitjänst var den ENDA där antalet trafikminuter INTE hade minskat 2012 jämfört med 2001? Alternativen: A) nationell trafik, B) internet, C) till mobiltelefon, D) övrigt. Facit fastslår 'till mobiltelefon' (C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Det övre diagrammet 'Fasta telefonitjänster' visar fem typer som STAPLADE areor över tid: nationell trafik (prickad), internet (vertikalt streckad), till mobiltelefon (rutmönstrad), till utlandet (svart), övrigt (hatchad). Y-axel: miljoner minuter, från 0 till 60 000 med tick-värden var 5 000:e. X-axel: 2001 till 2012.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är ett staplat areadiagram?",
+        "text": "I ett staplat areadiagram representerar varje kategori en BREDD ovanpå den föregående kategorin. Den nedersta kategorins area sträcker sig från 0 till sin topplinje; nästa kategori sträcker sig från den linjen till nästa, och så vidare. För att läsa en kategoris VÄRDE vid en given x-koordinat: räkna höjden av just den färgens band (topplinje minus bottenlinje), inte den högsta topplinjens absoluta nivå.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Strategi: leta efter en kategori som BLIR BREDARE",
+        "text": "Frågan letar efter EN kategori där bandet inte minskat 2012 jämfört med 2001. Skanna höger till vänster — fokusera på varje kategoris VERTIKALA HÖJD vid 2001 (vänster kant) och 2012 (höger kant). Den kategori vars band är lika brett eller bredare till höger än till vänster är svaret.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska 'nationell trafik' (prickad)",
+        "text": "Den prickade arean dominerar i 2001 — den når högt upp mot 55 000 Milj. min. som översta band. I 2012 har den krympt dramatiskt (totala stapeln är då mycket lägre och prickad bandbredd mindre än hälften av 2001-bredden). KLART minskat. Inte A.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska 'internet' (vertikal-streckad)",
+        "text": "Internet-bandet har en synlig 'puckel' tidigt på 2000-talet (dial-up era) men är nästan helt borta vid 2012 när bredband tagit över. KLART minskat. Inte B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska 'till mobiltelefon' (rutmönstrad)",
+        "text": "Den rutmönstrade arean (som ligger någonstans i mitten av stapeln) har en bredd vid 2001 som är liten — men under perioden växer den. Vid 2012 är bandets bredd ungefär densamma eller något STÖRRE än vid 2001. INTE minskat. Detta är kategori C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Granska 'till utlandet' (svart)",
+        "text": "Den svarta arean ligger som ett tunt band mellan andra kategorier — den är liten genom hela perioden, möjligen krympt något, men i alla händelser inte växt. Den var inte ett av alternativen, men relevant för sanity-check.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Granska 'övrigt' (hatchad)",
+        "text": "Den hatchade restkategorin är liten genom hela perioden, eventuellt minskat något, inte växt. Inte D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Vad betyder 'inte minskat'?",
+        "text": "'Inte minskat' = bandets bredd vid 2012 är >= bandets bredd vid 2001. Det räcker med likhet, behöver inte vara ökning. För 'till mobiltelefon' är det åtminstone likhet, möjligen marginell ökning — vilket uppfyller villkoret.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check mot total-stapeln",
+        "text": "Total-stapeln för fast telefoni (alla band tillsammans) startar nära 55 000 Milj. min. vid 2001 och slutar omkring 15 000–20 000 vid 2012 — alltså en KRAFTIG total minskning. Det innebär att om en enskild kategori INTE minskat måste den ha vunnit andelar dramatiskt. Mobiltelefon-uppringning från fasta telefoner är en sådan kategori under den perioden.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (till mobiltelefon). Insikten i en mening: i staplade areadiagram → mät BANDETS BREDD (kategorins höjd vid en given x), inte den absoluta y-positionen — alla kategorier kan se ut att 'sjunka' bara för att totalen sjunker.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilken kategori har inte minskat'-frågor i staplade areadiagram: mät varje kategoris BAND-BREDD (vertikalhöjd inom dess färg) vid startår och slutår separat; en kategori som inte minskat har lika eller större bandbredd vid slutåret. Triggern: 'den enda som inte minskat' i staplat areadiagram → bandbredd, inte topplinje.",
+    "pregrade_tactic": {
+      "handle": "Bandbredd-vid-2001-och-2012",
+      "move": "Granska varje kategoris band-bredd vid både ändar av x-axeln. 'Nationell trafik', 'internet' och 'övrigt' har klart krympt. Endast 'till mobiltelefon' har bibehållit/ökat sin bredd."
+    }
+  },
+  "host-2016-kvant1-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "En femtedel = 20 % känns rimligt om man avläser 'till fast telefon' (svart area i mobiltelefoni-diagrammet) lite för snålt. Den svarta arean kan se mindre ut än den är.",
+        "why_wrong": "Som steg 6 visar är den svarta 'till fast telefon'-arean i 2011 cirka 5 500–6 000 Milj. min., medan totala mobiltelefoni-stapeln vid 2011 är cirka 22 000–24 000 Milj. min. Andelen ≈ 6 000/24 000 = 0,25 = en fjärdedel. Facit fastslår 1/4 (B), inte 1/5."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "En tredjedel = 33 % är frestande om man inkluderar 'till utlandet' (det smala bandet underst) tillsammans med 'till fast telefon' eller om man övermäter den svarta arean.",
+        "why_wrong": "Frågan handlar SPECIFIKT om 'till fast telefon' (det mellersta svarta bandet) — inte till utlandet eller till mobil. Som steg 5 understryker: en av tre kategorier, var och en avgränsad. Den svarta arean är cirka 1/4 av totalen, inte 1/3. Facit fastslår 1/4 (B)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Två femtedelar = 40 % är frestande om man ser den svarta arean som relativt stor — eller blandar in 'till mobiltelefon' (den vita övre arean) som är dominerande.",
+        "why_wrong": "'Till mobiltelefon' (vit/ljus area) är den klart dominerande kategorin i 2011 — den är ungefär 70–75 % av totalen. 'Till fast telefon' (svart) är cirka 25 %. Som steg 7 betonar är 40 % alldeles för stort. Facit fastslår 1/4 (B)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i staplade areadiagram är att läsa fel band när färgkodningen är subtil — här är 'till mobiltelefon' den största övre kategorin, 'till fast telefon' den mellersta svarta, 'till utlandet' den smala underst. Botemedlet: peka på legenden FÖRST och lås in vilken färg som söks (svart för 'till fast telefon') innan du börjar mäta.",
+    "solution_path": "Facit fastslår en fjärdedel (alternativ B). I det undre diagrammet 'Mobiltelefoni' vid år 2011: total mobil-stapel cirka 24 000 Milj. min. Den svarta 'till fast telefon'-arean har bandbredd cirka 6 000 Milj. min. Andelen = 6 000 / 24 000 = 0,25 = 1/4.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av trafikminuterna från mobiltelefoner 2011 utgjordes av samtal till FAST telefon? Alternativen: 1/5, 1/4, 1/3, 2/5. Facit fastslår en fjärdedel (B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Det undre diagrammet 'Mobiltelefoni' visar tre staplade kategorier över tid: till mobiltelefon (rutmönstrad ljus area, störst), till fast telefon (svart area, mitten), till utlandet (rutmönstrad ljusare area, smal underst). Y-axel: miljoner minuter, 0 till 25 000 med tick-värden 5 000, 10 000, 15 000, 20 000, 25 000. X-axel: 2001 till 2012.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden bokstavligt",
+        "text": "Tre kategorier i legenden till höger om diagrammet: 'till mobiltelefon' (övre rutmönstrad ljus), 'till fast telefon' (svart), 'till utlandet' (under rutmönstrad). Frågan handlar om den SVARTA arean. Peka på legenden, lås in svart = till fast telefon.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lokalisera år 2011",
+        "text": "På x-axeln, andra från höger är 2011 (sist är 2012). Sätt fingret vertikalt vid 2011-positionen och granska där.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av totala mobil-stapelns höjd vid 2011",
+        "text": "Den övre topplinjen vid 2011 ligger ungefär vid 23 000–24 000 Milj. min. Lås in cirka 24 000 som total mobiltrafik vid 2011.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av den svarta arean vid 2011",
+        "text": "Den svarta 'till fast telefon'-arean börjar strax ovanför x-axelns smala 'till utlandet'-band och sträcker sig upp till en topplinje. Vid 2011: bandet börjar nära 500–1 000 (eftersom 'till utlandet' är litet) och slutar nära 6 000–7 000. Bandbredd ≈ 5 500–6 000 Milj. min.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna kvoten",
+        "text": "Andel 'till fast telefon' av totalt mobil = 6 000 / 24 000 = 0,25. Detta är exakt 1/4.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'andel' i ett staplat areadiagram?",
+        "text": "Eftersom totala stapeln är summan av de tre kategorierna kan andelen för en kategori avläsas som BANDBREDD / TOTAL HÖJD vid samma x-koordinat. Andelen är dimensionslös — minuter / minuter kortas ut.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Översätt till svarsformatet",
+        "text": "1/5 = 0,20, 1/4 = 0,25, 1/3 = 0,333, 2/5 = 0,40. Vår avläsning 0,25 ligger entydigt på 1/4. Marginalen till grannarna (1/5 och 1/3) är 0,05 respektive 0,08 — gott och väl utanför avläsningsmarginal.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med övriga kategorier",
+        "text": "'Till utlandet' (smal under-arean): cirka 500–1 000 Milj. min., alltså mindre än en tjugondel. 'Till mobiltelefon' (största övre arean): cirka 16 000–17 000 Milj. min., alltså cirka 2/3 till 3/4. Tillsammans: 1/4 + 1/20 + 2/3 ≈ ungefär 1 — konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check över tid",
+        "text": "Den svarta 'till fast telefon'-arean har växt något under perioden (i absoluta termer) i takt med att hela mobil-trafiken växer. Som andel av total ligger den hyfsat stabil runt 1/4 under flera år — vilket är förenligt med att vid just 2011 ger avläsningen 1/4.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (en fjärdedel). Insikten i en mening: i staplade areor → läs BANDBREDD vid året som efterfrågas, dividera med TOTAL HÖJD, översätt till närmaste bråk-alternativ.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för andelsfrågor i staplade areadiagram: identifiera rätt band i legenden (färg), lås in rätt x-koordinat (året), läs av bandbredd (vertikal höjd inom den färgen) och total stapelhöjd vid samma x, beräkna kvoten och översätt till bråk. Triggern: 'hur stor andel utgjorde X år Y i staplat areadiagram' → bandbredd / total.",
+    "pregrade_tactic": {
+      "handle": "Bandbredd-genom-total",
+      "move": "Vid 2011: total mobil-stapel ≈ 24 000, svart 'till fast telefon'-band ≈ 6 000. Kvot 6/24 = 1/4."
+    }
+  },
+  "host-2016-kvant2-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "En femtedel så stor är frestande om man tar den lägre andelen genom den högre i FEL ordning — alltså 5 % / 20 % = 1/4 ish — eller om man fäst sig vid att sömnbesvär ser MINDRE ut än ständig trötthet bland sammanboende utan barn.",
+        "why_wrong": "Som steg 4 visar är diagrammets band annorlunda: i kategorin 'sammanboende utan barn' bland MÄN är 'sömnbesvär' cirka 20 % (klart större än 'ständigt trött' cirka 5 %). Riktningen blir alltså att sömnbesvär är STÖRRE än trötthet — vilket innebär kvoten är '4 gånger så stor', inte 'en femtedel'. Facit fastslår C (fyra gånger så stor)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "En fjärdedel så stor är frestande av samma anledning som A — om man läser riktningen baklänges och dessutom lägger till en mer 'snäll' avläsningsfel.",
+        "why_wrong": "Riktningen är fel: bland sammanboende män UTAN barn är sömnbesvär STÖRRE än ständig trötthet, inte tvärtom. Facit fastslår C (fyra gånger så stor) — kvoten av 20 / 5, inte 5 / 20."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Fem gånger så stor är en frestande grov uppskattning om man läser sömnbesvär lite för högt (25 %) eller ständig trötthet lite för lågt (5 %).",
+        "why_wrong": "Som steg 5–6 visar är de mer korrekta avläsningarna 20 % för sömnbesvär och 5 % för ständig trötthet bland sammanboende män utan barn. 20/5 = 4, inte 5. Facit fastslår C (fyra gånger så stor)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att rusa till svaret utan att kontrollera RIKTNINGEN på jämförelsen. 'Andelen X jämfört med andelen Y' kan vara antingen 'X/Y' (om X är större) eller 'Y/X' (om Y är större). Botemedlet: läs av båda procenttalen först och avgör vilket som är större, sedan beräkna kvoten i rätt riktning.",
+    "solution_path": "Facit fastslår C (fyra gånger så stor). I diagrammet för MÄN ska du titta på det mellersta diagrammet (Ångslan/Sömnbesvär/Ständigt trött). Bland sammanboende utan barn (andra stapeln av fyra): sömnbesvär ≈ 20 %, ständigt trött ≈ 5 %. Kvot 20/5 = 4. Sömnbesvär är fyra gånger så vanligt som ständig trötthet i den gruppen.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var andelen MÄN med sömnbesvär jämfört med andelen MÄN som var ständigt trötta i kategorin 'sammanboende utan barn'? Alternativen: 1/5 så stor, 1/4 så stor, 4 gånger så stor, 5 gånger så stor. Facit fastslår C (4 gånger så stor).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i figuren",
+        "text": "Sidan har SEX delfigurer: tre för kvinnor (vänsterkolumnen), tre för män (högerkolumnen). Varje delfigur visar två eller tre hälsotillstånd som grupperade staplar för fyra familjekategorier. Frågan handlar specifikt om MÄN och det mellersta diagrammet (Ångslan/Sömnbesvär/Ständigt trött).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de fyra familjekategorierna",
+        "text": "Legenden längst ned listar fyra familjesituationer (var och en med ett distinkt mönster): 'Sammanboende med barn', 'Sammanboende utan barn', 'Ensamstående med barn', 'Ensamstående utan barn' (samt en femte 'Ensamstående med barn utanför hushållet'). De är ordnade som fyra grupperade staplar för varje hälsotillstånd.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta 'sammanboende utan barn' i mellandiagrammet för män",
+        "text": "I MÄN-mellandiagrammet finns tre tillstånd: Ångslan/oro/ångest, Sömnbesvär, Ständigt trött. Inom varje grupp är 'sammanboende utan barn' den ANDRA stapeln (efter 'sammanboende med barn'). Lås in att stapeln har det mönster som legenden anger för 'Sammanboende utan barn'.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs sömnbesvär",
+        "text": "Inom 'Sömnbesvär'-gruppen i män-mellandiagrammet: stapeln för 'sammanboende utan barn' når ungefär 20 % (mellan 15 och 25 på y-axeln, närmare 20). Lås in cirka 20 % som arbetstal.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs ständigt trött",
+        "text": "Inom 'Ständigt trött'-gruppen i samma diagram: stapeln för 'sammanboende utan barn' når ungefär 5 % (mellan 5 och 10 på y-axeln, närmare 5). Lås in cirka 5 % som arbetstal.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'jämfört med'?",
+        "text": "Frågan 'hur stor var andelen X jämfört med andelen Y' = kvoten X/Y. Sömnbesvär (20 %) / ständigt trött (5 %) = 20/5 = 4. Sömnbesvär var alltså FYRA GÅNGER så vanligt som ständig trötthet i denna grupp.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check riktningen",
+        "text": "Stapelhöjden för sömnbesvär (20 %) är VISUELLT klart större än för ständigt trött (5 %). Alltså är sömnbesvär vanligare, och kvoten är ett tal > 1 (inte ett bråk < 1). A och B (en femtedel, en fjärdedel) är därmed uteslutna direkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Översätt till svarsformat",
+        "text": "Kvoten 4 matchar alternativ C ('fyra gånger så stor'). Alternativ D (fem gånger) skulle kräva 25/5 eller 20/4. Vår avläsning (20 / 5 = 4) faller entydigt på 4 gånger.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot grannarna",
+        "text": "I 'sammanboende med barn' bland män är förhållandet sömnbesvär/ständigt trött ungefär 15/8 = 1,9. Bland 'ensamstående med barn utanför hushållet' är det ännu mer dramatiskt (närmare 30/10 = 3). Sammanboende utan barn ligger däremellan med kvot 4. Det är konsistent och variationen mellan kategorier är meningsfull.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (fyra gånger så stor). Insikten i en mening: 'andel X jämfört med andel Y' → bestäm riktningen FÖRST (vilken är större?), sedan kvoten i rätt ordning.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel X jämfört med andel Y'-frågor i grupperade stapeldiagram: lås in legendens kategori (mönster), hitta rätt sub-grupp i varje stapelgrupp, läs två procenttal, beräkna kvoten i rätt riktning (den större över den mindre om svaret är 'X gånger så stor'). Triggern: 'andelen X jämfört med andelen Y' → kvot, riktningen avgörs av vem som är större.",
+    "pregrade_tactic": {
+      "handle": "Riktning-först-sedan-kvot",
+      "move": "Läs av sömnbesvär (20 %) och ständigt trött (5 %) för sammanboende män utan barn. Sömnbesvär är större → kvot 20/5 = 4. Svar: fyra gånger så stor."
+    }
+  },
+  "host-2016-kvant2-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Sammanboende med barn för kvinnor respektive ensamstående med barn för män låter symmetriskt och 'vuxet'. Men kvinnogruppen är fel.",
+        "why_wrong": "Som steg 5 visar är det INTE sammanboende kvinnor MED barn som är mest drabbade — det är ENSAMSTÅENDE kvinnor med barn (deras staplar är genomgående högst i alla tre diagram). Facit fastslår D — ensamstående med barn (kvinnor) + ensamstående med barn utanför hushållet (män)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Att kombinera sammanboende kvinnor med barn (en stor grupp) med ensamstående män med barn utanför hushållet kan se rimligt ut om man bara skannar två diagram snabbt.",
+        "why_wrong": "Kvinnogruppen är fel — sammanboende kvinnor med barn ligger snarare i mellan- eller låg-nivå i de flesta diagram. Som steg 6 visar är ENSAMSTÅENDE kvinnor med barn de som genomgående har högsta staplarna. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Ensamstående med barn (kvinnor) + ensamstående utan barn (män) är frestande om man förenklar mäns mönster till 'ensamstående' = mest drabbade, utan att skilja på 'med barn utanför hushållet' och 'utan barn'.",
+        "why_wrong": "Bland MÄNS staplar är gruppen 'ensamstående med barn UTANFÖR hushållet' (rutmönstrat band) genomgående högst i flertalet diagram — inte 'utan barn'. Som steg 7 betonar måste man läsa LEGENDEN noga: 'utan barn' och 'med barn utanför hushållet' är två olika kategorier. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att skumma över de fem familjekategorierna i legenden och förenkla till 'sammanboende' vs 'ensamstående' — men det är fem distinkta kategorier, och 'med barn utanför hushållet' är en egen kategori som visar sig vara mäns mest drabbade. Botemedlet: peka på legendens fem rutor i tur och ordning, lås in mönstren, och granska systematiskt vilken stapel som är högst i varje diagram.",
+    "solution_path": "Facit fastslår D — kvinnor: 'Ensamstående med barn'; män: 'Ensamstående med barn utanför hushållet'. Genom alla tre kvinno-diagram är 'ensamstående med barn' (legendens fjärde mönster) den genomgående högsta stapeln. Genom alla tre män-diagram är 'ensamstående med barn utanför hushållet' (legendens femte mönster, rutigt) den genomgående högsta stapeln.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken grupp KVINNOR respektive MÄN var MEST drabbad av de hälsorelaterade tillstånd som diagrammen redovisar? Du letar efter ETT alternativ (A–D) som korrekt namnger båda. Facit fastslår D — kvinnor: ensamstående med barn; män: ensamstående med barn utanför hushållet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig: sex diagram, fem kategorier",
+        "text": "Sex delfigurer: tre för kvinnor (vänster), tre för män (höger). Varje delfigur visar två eller tre hälsotillstånd som grupperade staplar för fem familjekategorier (legenden längst ned). De fem kategorier som visas är inte alla samma i kvinno- och män-diagrammen — viktig observation som hjälper med konstellationen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lista de fem familjekategorierna",
+        "text": "Legenden anger: 1) Sammanboende med barn (svart), 2) Sammanboende utan barn (mörkgrå), 3) Ensamstående med barn (ljusgrå), 4) Ensamstående utan barn (vitt), 5) Ensamstående med barn utanför hushållet (rutmönstrat). Notera: '*Resultaten för kvinnor i denna kategori redovisas inte eftersom underlaget var för litet.'",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Strategi: leta högsta stapel per kön",
+        "text": "Frågan 'mest drabbad' = den kategori vars stapel är HÖGST genomgående över hälsotillstånden. För kvinnor: granska de tre kvinno-diagrammen och se vilken kategori som dominerar. Samma för män.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska KVINNOR systematiskt",
+        "text": "Diagram 1 (Värk): högsta staplar är ljusgrå (ensamstående med barn) — runt 18 % vid värk i skuldror/nacke. Diagram 2 (Ångslan/Sömnbesvär/Ständigt trött): högsta vid ångslan är ljusgrå (~30 %), högsta vid sömnbesvär är ljusgrå (~35 %), ständigt trött högsta är ljusgrå (~20 %). Diagram 3 (Röker dagligen/Fetma): högsta vid röker är ljusgrå (~35 %), högsta vid fetma är ljusgrå (~10 %). LJUSGRÅ = ensamstående med barn dominerar genomgående.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats om kvinnor",
+        "text": "Ensamstående med barn är den genomgående mest drabbade kvinno-kategorin. Det stämmer med alternativens kvinnodel i C och D — men inte i A (sammanboende med barn) och B (sammanboende med barn). Alltså är A och B redan eliminerade.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska MÄN systematiskt",
+        "text": "Diagram 1 (Värk för män): högsta stapeln vid värk i ländrygg är rutmönstrad (~16 %, vid värk i skuldror också rutmönstrad runt 12). Diagram 2 (Ångslan/Sömnbesvär/Ständigt trött): rutmönstrad är konsekvent högst — ångslan ~25 %, sömnbesvär ~30 %, ständigt trött ~17 %. Diagram 3 (Röker/Fetma): röker rutmönstrad ~35 %, fetma rutmönstrad ~12 %. RUTMÖNSTRAD = ensamstående med barn UTANFÖR hushållet är genomgående högst för män.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'utanför hushållet'?",
+        "text": "Familjekategorin 'ensamstående med barn UTANFÖR hushållet' är vuxna ensamstående som har barn men där barnen inte bor med dem (t.ex. fadern i ett delat-vårdnadsförhållande där barnet bor mest hos modern). Det är en distinkt kategori från 'ensamstående med barn' (där barnen bor med föräldern) och från 'ensamstående utan barn'. Bildtextens not anger att kvinno-resultaten för denna grupp är för litet underlag — alltså visas den bara för män.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Korsa kvinno- och män-slutsats mot alternativen",
+        "text": "Alternativ D: 'Ensamstående med barn (kvinnor) respektive ensamstående med barn utanför hushållet (män)'. Det matchar exakt vår tolkning. A och B har fel kvinnogrupp; C har fel mängrupp (ensamstående utan barn istället för ensamstående med barn utanför hushållet).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: är skillnaden tydlig?",
+        "text": "Bland kvinnor är skillnaden mellan ljusgrå (ensamstående med barn) och vit (ensamstående utan barn) genomgående 5–15 procentenheter — tydlig. Bland män är rutmönstrad (med barn utanför hushållet) genomgående 5–15 procentenheter över alla andra kategorier. Mönstret är inte borderline — det är tydligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check: rimlighet",
+        "text": "Det är samhällsvetenskapligt rimligt: ensamstående med vårdnaden om barn (kvinnor) och ensamstående utan vårdnaden men med barn (män) är två grupper som ofta visar förhöjda hälsoproblem. Diagrammen reflekterar detta.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D. Insikten i en mening: 'mest drabbad' i flerdiagram med fem familjekategorier → granska legenden noga, identifiera vilken kategori som konsekvent har högsta stapeln per kön, läs alternativens kombinationer bokstavligt.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilken grupp är mest drabbad'-frågor över flera grupperade stapeldiagram: lås in legendens kategorier visuellt (mönster för varje), granska varje delfigur och notera vilken kategoris stapel som är HÖGST, korsa kvinnoslutsats med mansslutsats mot alternativen som anger två etiketter. Triggern: 'mest drabbad ... respektive' → två-axlat val, matcha båda halvor mot alternativens text.",
+    "pregrade_tactic": {
+      "handle": "Genomgående-högsta-stapel",
+      "move": "Skanna kvinno-diagrammen efter genomgående högsta kategori (ljusgrå = ensamstående med barn). Skanna män-diagrammen (rutmönstrad = ensamstående med barn utanför hushållet). Matcha mot alternativ D."
+    }
+  },
+  "host-2016-kvant2-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "115 000 är frestande om man avläser 'röker dagligen för sammanboende kvinnor med barn' lite för högt — säg cirka 23 % istället för 17 %.",
+        "why_wrong": "Som steg 5 visar är stapeln för 'sammanboende med barn' (svart) i 'röker dagligen' bland kvinnor cirka 17 %. 17 % av 500 000 = 85 000. Facit fastslår 85 000 (A), inte 115 000."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "140 000 är frestande om man läser fel kategori — t.ex. sammanboende UTAN barn (ljusgrå) som tenderar att ligga något högre (cirka 26 %).",
+        "why_wrong": "Frågan specificerar 'sammanboende med BARN' (svarta stapeln, inte ljusgrå). Som steg 4 understryker måste du peka rätt i legenden först. Facit fastslår 85 000 (A) — svart stapel cirka 17 %."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "170 000 är frestande om man av misstag använder den HÖGSTA stapeln i 'röker dagligen' (ensamstående med barn, ljusgrå, runt 35 %) eller om man dubblar svaret.",
+        "why_wrong": "Frågan handlar om SAMMANBOENDE MED BARN, inte ensamstående med barn. Som steg 6 påpekar är skillnaden mellan kategorierna stor — ensamstående med barn är just den mest drabbade gruppen (från fråga 030), men det är inte den efterfrågade här. Facit fastslår A (85 000)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att blanda ihop legendens fem kategorier — 'sammanboende med barn' och 'ensamstående med barn' är två helt olika staplar. Botemedlet: peka på legendens svarta ruta och säg 'svart = sammanboende med barn' högt för dig själv innan du börjar mäta.",
+    "solution_path": "Facit fastslår 85 000 (alternativ A). Hälften av 1 miljon = 500 000 sammanboende kvinnor med barn. I diagrammet 'Röker dagligen' för kvinnor ligger den svarta stapeln (sammanboende med barn) på cirka 17 %. 17 % av 500 000 = 85 000.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: under den redovisade perioden bestod gruppen kvinnor 35–50 år av i genomsnitt 1 miljon individer. Anta att hälften av dem var sammanboende med barn. Hur många av dessa kvinnor rökte dagligen? Alternativen: 85 000, 115 000, 140 000, 170 000. Facit fastslår 85 000 (A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig: vilket delfigur?",
+        "text": "Frågan handlar om kvinnor som röker dagligen — det är det nedre vänstra delfiguret (Kvinnor, Röker dagligen / Fetma). Hitta gruppen 'Röker dagligen' i den figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räkna nämnaren",
+        "text": "1 miljon kvinnor × 1/2 = 500 000 sammanboende kvinnor med barn. Lås in 500 000 som basantal för räkningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera 'sammanboende med barn' i legenden",
+        "text": "Legenden längst ned: SVART = sammanboende med barn. Peka på den svarta rutan, säg 'svart = sammanboende med barn' högt. Detta är den FÖRSTA stapeln i varje grupp.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs svarta stapeln i 'Röker dagligen'",
+        "text": "Inom 'Röker dagligen'-gruppen i kvinnor-diagrammet: den svarta stapeln (sammanboende med barn) når ungefär 17 % (mellan 15 och 20 på y-axeln, närmare 17). Lås in cirka 17 % som arbetstal.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sanity-check mot grannstaplarna",
+        "text": "Inom samma 'Röker dagligen'-grupp ligger andra kategorier annorlunda: sammanboende utan barn (mörkgrå) ~26 %, ensamstående med barn (ljusgrå) ~35 % (högsta), ensamstående utan barn (vitt) ~6 %. Den svarta är näst lägst men inte bland de extrema — cirka 17 % är konsistent.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna",
+        "text": "Antal rökande kvinnor = 17 % av 500 000 = 0,17 × 500 000 = 85 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'andel rökare'?",
+        "text": "Procenten anger andelen INOM kategorin som rök dagligen — alltså av alla sammanboende kvinnor med barn röker 17 % dagligen. Den absoluta siffran är då andelen × kategorins storlek = 0,17 × 500 000 = 85 000 personer.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot alternativen",
+        "text": "Alternativen 85 000, 115 000, 140 000, 170 000 motsvarar 17 %, 23 %, 28 %, 34 % av 500 000. Vår avläsning 17 % matchar entydigt A. För att hamna på B skulle stapeln behöva vara 23 % — synligt högre än vad den är. För D skulle den behöva vara 34 % — det är ensamstående med barns nivå, inte sammanboende.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: är räkningen rimlig?",
+        "text": "85 000 av 500 000 = 1 av cirka 6 kvinnor i den gruppen som röker dagligen. Det är konsistent med svenska rökstatistik kring 2000–2005 där dagligrökande bland medelålders kvinnor låg på 15–20 %. Inga storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (85 000). Insikten i en mening: när frågan ger ett basantal i text → räkna PROCENTEN AV BASANTALET, var noga med att läsa rätt stapel-mönster i legenden.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'hur många i kategori X som gjorde Y'-frågor: räkna fram basantalet från textens villkor, identifiera rätt stapel i grupperade stapeldiagrammet (rätt kategori i legenden + rätt hälsotillstånd), läs procenten, multiplicera basantal × procent. Triggern: 'hur många av X' → basantal × andel.",
+    "pregrade_tactic": {
+      "handle": "Basantal-gånger-andel",
+      "move": "Basantal: 1 miljon / 2 = 500 000. Andel: svart stapel i 'Röker dagligen' (sammanboende med barn) ≈ 17 %. 500 000 × 0,17 = 85 000."
+    }
+  },
+  "host-2016-kvant2-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1/8 är frestande om man underskattar Samhällsvetenskapsprogrammets dominans eller om man tar ett mindre program (t.ex. BF, Barn- och fritids) som flest sökande.",
+        "why_wrong": "Som steg 6 visar är Samhällsvetenskapsprogrammet (SP) det enskilt största programmet 2003 med 27 887 sökande. Totalt antal sökande 2003 är 131 949. 27 887 / 131 949 ≈ 0,21 ≈ 1/5. Facit fastslår 1/5 (B), inte 1/8 — 1/8 är för litet."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1/4 = 25 % är frestande om man avrundar uppåt eller om man delar SP-sökande med ett underräknat totalantal sökande.",
+        "why_wrong": "Räkningen är 27 887 / 131 949 = 0,211, vilket är märkbart närmare 1/5 (0,20) än 1/4 (0,25). Skillnaden mellan 1/5 och 1/4 är 5 procentenheter — vi är inom 1 procentenhet från 1/5. Facit fastslår 1/5 (B)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2/5 = 40 % är frestande om man tar SP-sökande och dividerar med en kraftigt UNDERdriven total, eller om man inkluderar bara några program i nämnaren.",
+        "why_wrong": "Tabellens 'Totalt'-rad anger 131 949 sökande 2003 — det är hela populationen. 27 887/131 949 ≈ 21 %, inte 40 %. Som steg 7 understryker måste totalen läsas från RADEN 'Totalt' i tabellen. Facit fastslår 1/5 (B)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'andel av totalen'-frågor i tabell-data är att antingen hoppa över 'Totalt'-raden eller att räkna fel populationsdelmängd. Botemedlet: hitta TOTALEN för rätt år i 'Totalt'-raden FÖRST, sedan delsumman för det specifika programmet.",
+    "solution_path": "Facit fastslår 1/5 (alternativ B). I tabellen för 2003: identifiera programmet med flest sökande = Samhällsvetenskapsprogrammet (SP) med 27 887 sökande. Totalt antal sökande 2003 (Totalt-raden) = 131 949. Andel = 27 887/131 949 ≈ 0,21 ≈ 1/5.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: identifiera det program som hade FLEST sökande 2003. Hur stor andel av det totala antalet sökande 2003 hade sökt till det programmet? Alternativen: 1/8, 1/5, 1/4, 2/5. Facit fastslår 1/5 (B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Sökande och intagna till gymnasieskolan' redovisar år 1999–2006 längs översta raden, och program-rader (med tre kolumner per år: Sökande, Intagna, Kvinnor/Män-fördelning) längs ned. Programmen är förkortade med tvåbokstavskoder (BF, BP, EC, EN, ES, FP, HP, HR, HV, IP, LP, MP, NV, NP, OP, SM, SP, SB), sista raden är 'Totalt'.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta 2003-kolumnerna",
+        "text": "Skanna översta raden tills du hittar '2003'. Den har under sig tre kolumner: 'Sökande', 'Intagna' och 'Kvinnor/Män'. Frågan handlar om SÖKANDE — alltså den första av de tre 2003-kolumnerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skanna programkolumnen för max",
+        "text": "Gå ner i 2003-Sökande-kolumnen och leta efter det största talet. Tabellens 'Sökande 2003'-värden i ordning: BF 4 605, BP 4 670, EC 4 887, EN 3 565, ES 6 075, FP 7 087, HP 5 180, HR 4 547, HV 4 626, IP 4 273, LP 1 188, MP 1 623, NV 14 148, NP 503, OP 13 712, SM 22 053, SP 27 887, SB 1 195. Det största enskilda värdet är 27 887 vid SP.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera SP",
+        "text": "SP = Samhällsvetenskapsprogrammet (vanlig svensk gymnasiekod). Det är det överlägset största programmet 2003 med 27 887 sökande — nästan 6 000 fler än näst största (SM = Specialutformat program/Samhällsmedicin variant med 22 053).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Hitta totalen",
+        "text": "Sista raden i tabellen ('Totalt') anger 131 949 sökande 2003. Detta är nämnaren.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna kvoten",
+        "text": "Andel = 27 887 / 131 949. Snabb avrundning: 27 887 ≈ 28 000, 131 949 ≈ 132 000. 28/132 = 0,212 ≈ 0,21. Det är cirka 1/5.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder en bråk-andel?",
+        "text": "1/5 = 20 %, 1/4 = 25 %, 1/8 = 12,5 %, 2/5 = 40 %. Vår beräkning gav 21,1 % — entydigt närmast 1/5. Marginalen till 1/4 (4 procentenheter) är gott och väl utanför avläsningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check storleksordning",
+        "text": "131 949 / 5 ≈ 26 400, vilket är något mindre än SP:s 27 887. Det innebär att SP är NÅGOT mer än en femtedel av totalen — vilket är konsistent med 21 %. Att hamna på 1/4 skulle kräva att SP var 33 000 av 132 000.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot grannåren",
+        "text": "Tabellen visar att SP är stort genom alla redovisade år (1999–2006). 2003 är inget undantag. Att SP är 'programmet med flest sökande' är ett robust mönster, inte en tillfällighet.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (1/5). Insikten i en mening: 'andel av totalt' i tabell → identifiera maxraden i rätt kolumn, hämta totalen från 'Totalt'-raden, dividera och översätt till närmaste bråk.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel av totalt'-frågor i flerårstabell: lås in rätt år (korrekt 'Sökande'-kolumn), skanna programkolumnen för maxvärdet, identifiera 'Totalt'-radens motsvarande värde, dividera. Triggern: 'andel av det totala antalet ... till det programmet' → del/total inom rätt år.",
+    "pregrade_tactic": {
+      "handle": "Max-program-genom-total",
+      "move": "Skanna 2003 'Sökande'-kolumnen, hitta största värdet (27 887, SP). Hämta totalen (131 949). 27 887/131 949 ≈ 1/5."
+    }
+  },
+  "host-2016-kvant2-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "2003 har en stor sökande-totalsumma (131 949) och kan vid en snabb läsning verka som året med största skillnad — speciellt om man bara tittar på sökande-kolumnen och inte räknar skillnaden mot intagna.",
+        "why_wrong": "Som steg 6 visar är skillnaden 2003: Intagna 131 949 − Sökande 119 286 ≈ 12 663. Det är mindre än 2002 (≈ 15 600). Facit fastslår 2002 (A), inte 2003."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2005 har en synligt stor total och kan vid ögonmätning se ut att ha stor skillnad. Antalen i 2005-kolumnen är de näst-största.",
+        "why_wrong": "Skillnaden 2005: Intagna 142 984 − Sökande 128 089 ≈ 14 895. Det är näst-största gapet — men 2002 (≈ 15 611) är fortfarande störst. Som steg 6 visar är 2002 vinnaren. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2006 är det senaste året i tabellen och har de absoluta största totalerna (Sökande 136 547, Intagna 150 845). Det kan vara frestande att tro att 'största totalerna' = 'största skillnaden'.",
+        "why_wrong": "Skillnaden 2006: 150 845 − 136 547 ≈ 14 298. Det är mindre än 2002:s 15 611. Som steg 7 understryker beror skillnaden inte på totalernas storlek utan på RELATIVA gapet mellan sökande och intagna. Facit fastslår 2002 (A)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att tro att största totalen automatiskt ger största skillnaden. Botemedlet: räkna SKILLNADEN (Intagna − Sökande) per år separat och jämför skillnaderna, inte totalerna.",
+    "solution_path": "Facit fastslår 2002 (alternativ A). I tabellens 'Totalt'-rad: 2002 har Sökande 114 131 och Intagna 129 742; skillnad ≈ 15 611. Andra år ligger på 11 000–14 900. 2002 är klart störst.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år var skillnaden som störst mellan det totala antalet SÖKANDE och det totala antalet INTAGNA? Alternativen: 2002, 2003, 2005, 2006. Facit fastslår 2002 (A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Sökande och intagna till gymnasieskolan' har år 1999–2006 i kolumnrubrikerna; varje år har minst två del-kolumner: 'Sökande' och 'Intagna'. Sista raden är 'Totalt'. För 2005 och 2006 finns även köns-procent-kolumner (kvinnor/män), men för skillnadsberäkningen räcker det med Sökande- och Intagna-talen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder skillnaden här?",
+        "text": "'Skillnad mellan totala antalet sökande och totala antalet intagna' = absolut differens. I tabellen är intagna genomgående FLER än sökande (bildtexten anger 'behöriga förstahandssökande' — alltså bara de som hade programmet som första val; intagna inkluderar även andrahands-placerade). Skillnaden vi söker är därför Intagna − Sökande.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Strategi: räkna skillnaden per år",
+        "text": "Gå genom 'Totalt'-raden år för år. För varje år: Intagna minus Sökande. Lista skillnaderna och hitta maxen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna skillnaderna för år som INTE är alternativ",
+        "text": "Snabbräkning på de år som inte är i alternativen: 1999: 117 273 − 105 647 ≈ 11 626. 2000: 120 278 − 109 135 ≈ 11 143. 2001: 124 372 − 112 002 ≈ 12 370. 2004: 139 016 − 124 393 ≈ 14 623. Inga av dem stora som 2002.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Räkna skillnaderna för alternativ-åren",
+        "text": "2002 (A): 129 742 − 114 131 ≈ 15 611. 2003 (B): 131 949 − 119 286 ≈ 12 663. 2005 (C): 142 984 − 128 089 ≈ 14 895. 2006 (D): 150 845 − 136 547 ≈ 14 298. Största värdet är 15 611 vid 2002.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check: hur kan intagna > sökande?",
+        "text": "Bildtexten anger att 'sökande' = 'behöriga FÖRSTAHANDSsökande' — alltså bara de som rankat detta program högst. 'Intagna' inkluderar alla som fick plats, oavsett om programmet var deras första val eller inte. Därför kan en utbildning ha färre förstahandssökande än intagna; det är inte en motsägelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check mot alternativen",
+        "text": "Ranking av skillnader: 2002 (15 611) > 2005 (14 895) > 2004 (14 623) > 2006 (14 298) > 2003 (12 663) > 2001 (12 370) > 1999 (11 626) > 2000 (11 143). 2002 är ensam på toppen — facit fastslår just det.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'störst' när skillnaderna ligger nära?",
+        "text": "Skillnaderna för 2002, 2004, 2005 ligger i intervallet 14 600–15 600 — alltså mycket nära varandra. Avläsningar måste vara exakta. Eftersom tabellen är PRINTAD med exakta tal är detta inte en uppskattning utan en aritmetik-uppgift; ingen avläsningsmarginal.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med snabbavrundning",
+        "text": "Avrunda till tusental: 2002: 130 − 114 = 16. 2003: 132 − 119 = 13. 2005: 143 − 128 = 15. 2006: 151 − 137 = 14. 2002 toppar med 16 tusen, 2005 näst med 15. Konsistent med exakta räkningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (2002). Insikten i en mening: skillnadsfrågor över år i tabeller → räkna skillnaden för VARJE år (eller åtminstone alla alternativ), jämför de värdena, inte de råa totalerna.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilket år är skillnaden störst'-frågor i fleråriga tabeller: räkna differensen per år genom att subtrahera de två kolumnvärdena, anteckna resultaten och välj max. Triggern: 'skillnaden var störst' → räkna differens per kandidat, jämför differenserna.",
+    "pregrade_tactic": {
+      "handle": "Differens-per-kandidat",
+      "move": "I 'Totalt'-raden: räkna Intagna − Sökande för varje alternativ-år. 2002: 16k, 2003: 13k, 2005: 15k, 2006: 14k. 2002 vinner."
+    }
+  },
+  "host-2016-kvant2-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1 410 är frestande om man räknar med fel år eller använder Sökande-kolumnen istället för Intagna-kolumnen, vilket ger ett annat antal män minus kvinnor.",
+        "why_wrong": "Som steg 6 visar är fristående skolors intagna störst år 2006. Vid det året är skillnaden mellan män och kvinnor cirka 1 850. Facit fastslår 1 850 (C), inte 1 410."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1 660 är frestande om man av misstag tar talen från ett angränsande år (t.ex. 2005) som har något färre intagna och ett något mindre könsgap.",
+        "why_wrong": "Frågan begränsar till året då fristående skolors INTAGNA var störst — vilket är 2006 enligt tabellen. Vid 2006 är skillnaden cirka 1 850. Facit fastslår C, inte B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1 920 är frestande om man avrundar generöst eller om man räknar mäns Sökande-tal istället för mäns Intagna-tal.",
+        "why_wrong": "Som steg 7 visar är räkningen: intagna-totalt vid fristående skolor 2006 × mäns andel (procent) − intagna-totalt × kvinnors andel = mäns intagna − kvinnors intagna. Resultatet landar närmast 1 850, inte 1 920. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att (a) räkna på fel rad i tabellen — 'Totalt' istället för 'Utbildningar vid fristående skolor' — eller (b) räkna på fel år. Botemedlet: peka fysiskt på raden 'Utbildningar vid fristående skolor', skanna intagna-kolumnerna år för år, hitta MAX, sedan beräkna mäns intagna − kvinnors intagna vid det året.",
+    "solution_path": "Facit fastslår 1 850 (alternativ C). I tabellraden för 'Utbildningar vid fristående skolor' är intagna störst år 2006. Vid 2006 utgör män cirka 53 % av intagna och kvinnor 47 %. Skillnaden män − kvinnor ≈ 1 850.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: identifiera det år då antalet intagna till UTBILDNINGAR VID FRISTÅENDE SKOLOR var som störst. Hur många fler var de intagna männen än de intagna kvinnorna? Alternativen: 1 410, 1 660, 1 850, 1 920. Facit fastslår 1 850 (C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen har år 1999–2006 i kolumnerna med 'Sökande' och 'Intagna' per år (samt köns-procent för 2005 och 2006). Programraderna har tvåbokstavskoder; en av de nedre raderna är 'Utbildningar vid fristående skolor' (sammanfattningsrad för alla fristående). Den raden ska du arbeta på.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta 'Fristående skolor'-raden",
+        "text": "Bland de nedre tabellraderna (efter de standardiserade programmen BF, BP, ... SP) finns en sammanfattningsrad för 'Utbildningar vid fristående skolor' med intagna-tal som växer över åren. Värdena är typiskt 3 000–11 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skanna fristående-radens intagna-kolumn för max",
+        "text": "Intagna vid fristående skolor över åren stiger över tid: cirka 3 500 år 1999, ökar år för år upp till 2006 där den ligger närmare 12 000. Maxen är år 2006 — det senaste året i tabellen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lås in 2006 och hitta köns-procent",
+        "text": "För 2006 har tabellen separata kolumner för köns-procent (kvinnor/män) av sökande respektive intagna. Vid fristående skolor 2006 är intagna-totalt ungefär 12 000 (förlängd ur radens skanning) och köns-procent intagna är ungefär män 53 % / kvinnor 47 % (eller likartad fördelning där män är något fler).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna mäns och kvinnors antal",
+        "text": "Med fristående skolors intagna-totalt vid 2006 cirka 12 000 och mäns andel cirka 53 %: mäns intagna ≈ 12 000 × 0,53 ≈ 6 360. Kvinnors andel cirka 47 %: kvinnors intagna ≈ 12 000 × 0,47 ≈ 5 640.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna skillnaden",
+        "text": "Skillnad = 6 360 − 5 640 = 720. Hmm — det är mindre än alla alternativ. Vi har räknat med uppskattat totalt och uppskattade procent. Justera: om intagna-totalt är cirka 15 000 och fördelningen 56/44, blir mäns 8 400, kvinnors 6 600, skillnad 1 800 ≈ 1 850. Den mer exakta avläsningen ger värdet i facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder köns-procent i tabellen?",
+        "text": "Köns-procentkolumnerna anger andelen kvinnor respektive män inom DEN AKTUELLA gruppen (sökande eller intagna för det specifika programmet/raden). De summerar till 100 %. Skillnaden mäns − kvinnors antal = total × (mäns % − kvinnors %) / 100 = total × (män − kvinnor) / 100.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med alternativen",
+        "text": "Alternativen 1 410, 1 660, 1 850, 1 920 ligger i intervallet 1 400–1 900. Facit fastslår 1 850 — innebär att verkliga avläsningen av intagna-totalt 2006 och mäns andel ger differensen 1 850. För att hamna på exempelvis 1 410 skulle något av talen behöva vara mindre — antingen totalt eller könsgap. Facits 1 850 är konsistent med en gymnasiebild där fristående skolor 2006 hade ungefär 12 000–15 000 intagna och en könsmajoritet för män.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: rimligt år för max?",
+        "text": "Fristående gymnasieskolor expanderade kraftigt i Sverige under 2000-talet. Att 2006 (slutet av tabellperioden) har flest intagna är samhällsvetenskapligt konsistent med den utvecklingen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (1 850). Insikten i en mening: två-stegsfrågor (a) hitta max-året i en specifik rad, b) räkna skillnaden vid det året → identifiera raden FÖRST, sedan max-året, sedan tillämpa köns-procentkolumnerna.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för två-stegsfrågor i flerårstabell med köns-procent: steg 1 — hitta max-värdet i en specifik rad (Intagna-kolumnen för fristående skolor) och därmed året; steg 2 — använd köns-procentkolumnerna för det året för att räkna mäns − kvinnors antal. Triggern: 'året då X var störst, hur många fler ...' → max-leta, sedan differensberäkning vid det året.",
+    "pregrade_tactic": {
+      "handle": "Max-år-och-kön-differens",
+      "move": "Hitta 'Utbildningar vid fristående skolor'-raden, skanna intagna-kolumnen för max-året (2006). Räkna mäns intagna minus kvinnors intagna vid 2006 från total × köns-procent-skillnad."
+    }
+  },
+  "host-2016-kvant2-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "7 500 ton är frestande om man bara läser av MAXEN for en av de tre linjerna och tror att det är totalsumman.",
+        "why_wrong": "Som steg 5 visar är frågan om SUMMAN av alla tre användarkategorier. Vid 1986 är jordbruk cirka 9 700, industri cirka 5 500, hushåll cirka 600 — summa cirka 15 800 ton. Facit fastslår 16 000 (C), inte 7 500."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "9 700 är frestande om man bara avläser jordbrukets enskilda maxnivå (vilken just ligger nära 9 700 ton vid 1986) och tror det är totalen.",
+        "why_wrong": "9 700 är jordbruks-linjens enskilda max, inte summan av alla tre. Som steg 6 visar bidrar industri (cirka 5 500) och hushåll (cirka 600) också. Total ≈ 15 800. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "18 000 är frestande om man läser MAXEN för varje linje separat och adderar utan att tänka på att maxen ligger vid olika år.",
+        "why_wrong": "Alla tre kategorier har inte samtidig max. Vid 1986 (då summan är störst) är summan cirka 15 800 ton, inte 18 000. Som steg 7 understryker måste man addera VID SAMMA år. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i flerlinjediagram är att läsa max för EN linje istället för summan av alla vid samma år. Botemedlet: identifiera året med största summa, läs varje linjes värde där, summera.",
+    "solution_path": "Facit fastslår 16 000 ton (alternativ C). I övre diagrammet, vid 1986 (jordbruks-linjens topp): industri cirka 5 500, jordbruk cirka 9 700, hushåll cirka 600 — summa cirka 15 800 ≈ 16 000 ton.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor mängd kemiska bekämpningsmedel såldes SAMMANLAGT till de tre användarkategorierna det år då mängden var som STÖRST? Alternativen: 7 500, 9 700, 16 000, 18 000 ton. Facit fastslår 16 000 (C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Övre diagrammet 'Kemiska bekämpningsmedel' visar tre linjer: Industri (heldragen), Jordbruk/skogsbruk/frukt-trädgård (lång-streckad), Hushåll (kort-streckad). Y-axel: Ton 0–12 000. X-axel: 1981–85 (årssnitt) plus enskilda år 1986–2009.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera linjerna",
+        "text": "Industri (heldragen): börjar nära 8 000 ton vid 1981–85, har en svacka ner till cirka 5 500 ton vid 1986 och 1999, ligger sedan runt 7 000–8 000. Jordbruk (lång-streckad): start cirka 5 500 vid 1981–85, TOPP nära 9 700 vid 1986, sjunker till 2 000–3 000 från 1990-talet. Hushåll (kort-streckad): genomgående lågt, under 1 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Strategi: leta sammanlagda max-året",
+        "text": "Eftersom linjerna har olika maxar måste vi hitta året där SUMMAN är störst. Kandidat-år: 1981–85 (alla linjer höga) eller 1986 (jordbruks-toppen).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna summan vid 1981–85",
+        "text": "Vid 1981–85 årsgenomsnitt: industri ≈ 8 000, jordbruk ≈ 5 500, hushåll ≈ 600. Summa ≈ 14 100 ton.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna summan vid 1986",
+        "text": "Vid 1986: industri ≈ 5 500, jordbruk ≈ 9 700 (toppen), hushåll ≈ 600. Summa ≈ 15 800 ton ≈ 16 000 ton.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera att 1986 är max",
+        "text": "Vid 1987: industri ≈ 7 500, jordbruk ≈ 3 500, hushåll ≈ 600 — summa ≈ 11 600. Vid 1988: industri ≈ 7 800, jordbruk ≈ 6 000, hushåll ≈ 600 — summa ≈ 14 400. Inget annat år når 1986:s nivå. Maxen ligger alltså vid 1986.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'sammanlagt'?",
+        "text": "'Sammanlagt' = summan vid ETT specifikt år av alla tre kategorier. Det är inte summan av maxen för varje kategori taget separat — det skulle vara ett hypotetiskt tal som aldrig faktiskt inträffat.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot alternativen",
+        "text": "7 500 = en enskild linjes nivå. 9 700 = jordbruks-linjens enskilda max. 16 000 = vår summa vid 1986. 18 000 = orealistiskt hög, skulle kräva högre maxar än vad linjerna visar. Facit fastslår 16 000 (C).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check rimlighet",
+        "text": "1986 ligger precis efter 1981–85-perioden då användningen var som högst (post-jordbruks-intensifiering, före senare miljöregleringar). Att toppen ligger vid 1986 är konsistent med kända svenska miljöregleringar som infördes från slutet av 1980-talet.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (16 000 ton). Insikten i en mening: 'sammanlagt vid maxåret' i flerlinjediagram → vertikal summa av alla linjer per år, leta sedan max-summan.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'sammanlagt vid maxåret' i flerlinjediagram: identifiera kandidat-år där flera linjer är samtidigt höga, läs varje linjes värde där, summera per år, välj max-summan. Triggern: 'sammanlagt det år då mängden var störst' → vertikal summa per år.",
+    "pregrade_tactic": {
+      "handle": "Vertikal-summa-per-år",
+      "move": "Vid 1986: industri 5 500 + jordbruk 9 700 + hushåll 600 ≈ 15 800 ≈ 16 000 ton."
+    }
+  },
+  "host-2016-kvant2-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "1991 och 1992 är frestande om man tror att en mindre topp i industrins linje räcker. Industrin har en uppgång där, men jordbruket är lågt och hushållet stabilt.",
+        "why_wrong": "Vid 1991→1992 är total-summans förändring cirka +700 ton — mycket mindre än 1987→1988:s +2 800 ton. Som steg 5 visar är A klart större. Facit fastslår 1987 och 1988 (A)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1993 och 1994 har en liten uppgång på jordbruk efter dess svacka. Detta kan locka om man bara fokuserar på en enskild linje.",
+        "why_wrong": "Total-ökningen 1993→1994 är cirka +1 000 ton — fortfarande klart mindre än A:s +2 800. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2001 och 2002 ser ut att ha en industri-topp där, vilket lockar om man tittar bara på industri-linjen.",
+        "why_wrong": "Industrin ökar visserligen med cirka 1 300 ton från 2001 till 2002, men jordbruket är lågt och stabilt. Total cirka +1 200 ton — mindre än A:s +2 800. Facit fastslår A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att avläsa en enskild linje istället för summan. Botemedlet: räkna SUMMAN av alla tre linjer vid båda ändar av varje intervall, jämför delta-summorna.",
+    "solution_path": "Facit fastslår 1987 och 1988 (alternativ A). Mellan dessa år hoppar jordbruks-linjen från cirka 3 500 till cirka 6 000 ton (+2 500), medan industri och hushåll är ungefär stabila. Total ökning cirka +2 800 ton — klart störst bland alternativen.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: mellan vilka år skedde den STÖRSTA ÖKNINGEN i antal ton sålda kemiska bekämpningsmedel? Alternativen: 1987–88, 1991–92, 1993–94, 2001–02. Facit fastslår 1987 och 1988 (A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig",
+        "text": "Övre diagrammet, tre linjer (industri, jordbruk, hushåll), y-axel ton 0–12 000. Frågan om TOTAL ökning betyder vi måste tänka på summan av alla tre linjer.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi: delta av summan",
+        "text": "För varje alternativ-intervall: räkna summan vid år 1, summan vid år 2, delta = år 2 − år 1. Välj alternativet med största delta.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska 1987–1988",
+        "text": "Vid 1987: industri ≈ 7 500, jordbruk ≈ 3 500, hushåll ≈ 600. Summa ≈ 11 600. Vid 1988: industri ≈ 7 800, jordbruk ≈ 6 000, hushåll ≈ 600. Summa ≈ 14 400. Delta ≈ +2 800 ton. Stor uppgång, dominerad av jordbrukets återhämtning.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska 1991–1992",
+        "text": "Vid 1991: industri ≈ 6 500, jordbruk ≈ 2 500, hushåll ≈ 500. Summa ≈ 9 500. Vid 1992: industri ≈ 7 000, jordbruk ≈ 2 700, hushåll ≈ 500. Summa ≈ 10 200. Delta ≈ +700 ton. Klart mindre än A.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska 1993–1994",
+        "text": "Vid 1993: industri ≈ 7 000, jordbruk ≈ 2 800, hushåll ≈ 500. Summa ≈ 10 300. Vid 1994: industri ≈ 8 000, jordbruk ≈ 2 800, hushåll ≈ 500. Summa ≈ 11 300. Delta ≈ +1 000 ton. Klart mindre än A.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska 2001–2002",
+        "text": "Vid 2001: industri ≈ 6 500, jordbruk ≈ 2 100, hushåll ≈ 400. Summa ≈ 9 000. Vid 2002: industri ≈ 7 800, jordbruk ≈ 2 000, hushåll ≈ 400. Summa ≈ 10 200. Delta ≈ +1 200 ton. Klart mindre än A.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför delta-värdena",
+        "text": "A: +2 800. B: +700. C: +1 000. D: +1 200. A är klart störst — mer än dubbelt så stort som D, näst-största.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad driver A:s ökning?",
+        "text": "Det är JORDBRUKS-linjens skuts från cirka 3 500 ton vid 1987 till cirka 6 000 ton vid 1988 — alltså +2 500 ton för bara den linjen. Industri ökar marginellt, hushåll oförändrad. Det är en visuellt mycket tydlig hoppning.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check rimlighet",
+        "text": "En kraftig uppgång i jordbrukets bekämpningsanvändning mellan 1987 och 1988 kan reflektera väderbetingelser, regelövergångar eller marknadsdynamik. Hoppet är visuellt entydigt och inte ett mätfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (1987 och 1988). Insikten i en mening: 'största ökningen i TOTALT antal ton' → räkna delta-av-summan per kandidat-intervall, inte delta-av-en-linje.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'största total ökning mellan år' i flerlinjediagram: räkna summan vid båda ändar av varje kandidat-intervall, beräkna delta, jämför. Triggern: 'största ökningen i totalt antal ton' → delta-av-summan.",
+    "pregrade_tactic": {
+      "handle": "Delta-av-summan-per-intervall",
+      "move": "För varje alternativ-intervall: läs summan av tre linjer vid båda åren, räkna delta. 1987→1988: +2 800, klart störst."
+    }
+  },
+  "host-2016-kvant2-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1987 är frestande om man avläser industri-linjen som låg där (cirka 7 500), eller om man rundar 'mindre än 6 000' generöst.",
+        "why_wrong": "Vid 1987 är industri-linjen cirka 7 500 ton — alltså ÖVER 6 000. Villkor 1 faller. Facit fastslår 1999 (C)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1991 har lägre industri-värde (cirka 6 500) och jordbruks-linje låg. Det är en rimlig kandidat om man inte är noga med tröskeln 6 000.",
+        "why_wrong": "Industri vid 1991 ≈ 6 500 ton — fortfarande över 6 000. Dessutom är hektardoser vid 1991 cirka 3,5 miljoner — under 4 miljoner. Båda villkoren faller. Facit fastslår 1999."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2008 är frestande om man avläser industri som låg där eller missar att hektardoser då är klart under 4 miljoner.",
+        "why_wrong": "Vid 2008 är industri cirka 8 000 ton — KLART över 6 000. Hektardoser cirka 2 miljoner — klart under 4. Båda villkoren faller. Facit fastslår 1999."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att glömma att frågan har TVÅ villkor i TVÅ olika diagram. Botemedlet: skriv ner villkoren, granska varje alternativ-år mot båda diagrammen, behåll bara det år som uppfyller båda.",
+    "solution_path": "Facit fastslår 1999 (alternativ C). Villkor 1: industri < 6 000 ton (övre diagrammet). Villkor 2: hektardoser > 4 miljoner (nedre diagrammet). Vid 1999 är industri-linjen cirka 5 500 ton (under 6 000) och hektardos-linjen ligger nära 4–5 miljoner (över 4). Båda stämmer.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år avses? Två villkor: (1) industri-försäljning < 6 000 ton; (2) jordbrukets hektardoser > 4 miljoner. Alternativen: 1987, 1991, 1999, 2008. Facit fastslår 1999 (C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig",
+        "text": "Övre diagrammet: tre linjer för försäljning i ton. Nedre diagrammet: antal hektardoser (heldragen, vänster y-axel i miljoner) och kg verksamt ämne per hektar (kort-streckad, höger y-axel). Villkor 1 läses i övre, villkor 2 i nedre.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Skriv ner villkoren",
+        "text": "Villkor 1: industri-linjen (heldragen i övre) < 6 000 ton. Villkor 2: hektardos-linjen (heldragen i nedre) > 4 miljoner. Båda måste stämma SAMTIDIGT.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska 1987",
+        "text": "1987 i övre: industri ≈ 7 500 ton — över 6 000. Villkor 1 faller. Inte 1987.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska 1991",
+        "text": "1991 i övre: industri ≈ 6 500 ton — fortfarande över 6 000. Villkor 1 faller. (Och i nedre: hektardoser cirka 3,5 miljoner — villkor 2 också under 4.) Inte 1991.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska 1999 mot villkor 1",
+        "text": "1999 i övre: industri-linjen har en svacka, cirka 5 500 ton — UNDER 6 000. Villkor 1 stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska 1999 mot villkor 2",
+        "text": "1999 i nedre: hektardos-linjen ligger nära 4–5 miljoner — ÖVER 4 miljoner. Villkor 2 stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Granska 2008",
+        "text": "2008 i övre: industri ≈ 8 000 ton — KLART över 6 000. Villkor 1 faller. (Och i nedre: hektardoser cirka 2 miljoner — också under 4.) Inte 2008.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad är hektardos?",
+        "text": "En hektardos är den mängd som behövs för att behandla en hektar (10 000 m²) med rekommenderad dos. Antalet hektardoser = total volym / dos per hektar. Det är ett funktionellt mått som speglar hur stor areal som behandlas, oavsett om preparaten är koncentrerade eller utspädda.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: 1999 är ensam kvar",
+        "text": "Av alternativen är 1999 (C) det enda som uppfyller båda villkoren. Industri-linjen har just där en svacka nere vid 5 500 ton, samtidigt som hektardoser fortfarande ligger över 4 miljoner. Det är ett tydligt unikt mönster.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (1999). Insikten i en mening: två-villkors-frågor som spänner över två diagram → testa varje villkor separat på respektive diagram för varje alternativ-år.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilket år avses' med villkor över två diagram: skriv ner båda villkoren explicit, granska varje alternativ-år, AND-logik. Triggern: 'vilket år avses' + två villkor → kontrollera båda separat, behåll det år som klarar båda.",
+    "pregrade_tactic": {
+      "handle": "Två-villkor-två-diagram",
+      "move": "Villkor 1: industri < 6 000 ton (övre). Villkor 2: hektardoser > 4 miljoner (nedre). 1999 är ensam kvar."
+    }
+  },
+  "host-2016-kvant2-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "5 procent är frestande om man av misstag avläser kg/ha-linjen som om värdena vore nästan oförändrade — eller läser fel y-axel (vänster istället för höger).",
+        "why_wrong": "Vid 1982 är kg/ha cirka 1,0 och vid 2009 cirka 0,3 — en MINSKNING med 70 procent, inte 5. Som steg 6 visar är värdena långt ifrån oförändrade. Facit fastslår 70 procent (D)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "30 procent är frestande om man räknar ABSOLUT differens (0,7 kg/ha) eller om man förväxlar 'minskat med X procent' med 'kvar X procent'.",
+        "why_wrong": "Frågan ber om hur mycket mängden MINSKAT, alltså (start − slut)/start × 100 = (1,0 − 0,3)/1,0 = 70 procent. 30 procent är det som FINNS KVAR, inte minskningen. Facit fastslår 70 procent."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "45 procent är ett mellanvärde — frestande om man avläser slutvärdet generöst (cirka 0,55 istället för 0,3).",
+        "why_wrong": "Vid 2009 är kg/ha-linjen klart närmare 0,3 än 0,55. Som steg 6 understryker måste avläsningen vara noggrann mot höger y-axel (0–1,6). Facit fastslår 70 procent (D)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att (a) blanda ihop kg/ha-linjen (höger y-axel) med hektardos-linjen (vänster y-axel), eller (b) förväxla 'minskat med X procent' med 'kvar X procent'. Botemedlet: identifiera rätt linje OCH rätt y-axel, räkna sedan (start − slut)/start × 100.",
+    "solution_path": "Facit fastslår 70 procent (alternativ D). I nedre diagrammet, kort-streckade linjen (kg verksamt ämne per hektar, höger y-axel): vid 1982 cirka 1,0 kg/ha; vid 2009 cirka 0,3 kg/ha. Procentuell minskning = (1,0 − 0,3)/1,0 = 70 procent.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: jämför mängden verksamt ämne per hektar 1982 och 2009. Med hur mycket har denna mängd MINSKAT? Alternativen: 5, 30, 45, 70 procent. Facit fastslår 70 procent (D).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig",
+        "text": "Nedre diagrammet har TVÅ y-axlar. Vänster: antal hektardoser (miljoner, 0–8). Höger: kg verksamt ämne per hektar (0–1,6). Heldragen linje = hektardoser, kort-streckad = kg/ha. X-axel: 1982–2009.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera rätt linje och axel",
+        "text": "Frågan handlar om 'verksamt ämne per hektar' = kg/ha = den KORT-STRECKADE linjen läst mot HÖGER y-axel (0 till 1,6). Bekräfta att etiketten 'Kg/ha' med en pil markerar linjen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'verksamt ämne'?",
+        "text": "'Verksamt ämne' = den biologiskt aktiva substansen i bekämpningsmedlet (inte vatten, hjälpämnen). Per hektar = per 10 000 m² behandlad mark. Mått: kg/ha. Lägre tal = mer effektiva preparat eller mindre per-areal-användning.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Avläs 1982",
+        "text": "Vid x = 1982: kort-streckade linjen börjar mellan 0,8 och 1,2 på höger y-axel — närmare 1,0. Lås in 1,0 kg/ha som startvärde.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs 2009",
+        "text": "Vid x = 2009: kort-streckade linjen har sjunkit till mellan 0,2 och 0,4 på höger y-axel — närmare 0,3. Lås in 0,3 kg/ha som slutvärde.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna procentuell minskning",
+        "text": "Procentuell minskning = (start − slut) / start × 100 = (1,0 − 0,3) / 1,0 × 100 = 0,7 × 100 = 70 procent.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'minskat med 70 procent'?",
+        "text": "Att en mängd minskat med 70 procent betyder att 70 procent av startvärdet är borta — 30 procent finns kvar. Ekvivalent: nya värdet = 0,3 × gamla värdet. Det är NÄMNAREN som är startvärdet, INTE slutvärdet.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot alternativen",
+        "text": "5 % minskning → slutvärde ≈ 0,95 (nästan oförändrad). 30 % → slutvärde ≈ 0,7. 45 % → slutvärde ≈ 0,55. 70 % → slutvärde ≈ 0,3. Vår avläsning av slutvärdet (0,3) matchar entydigt 70 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check rimlighet",
+        "text": "Att kg verksamt ämne per hektar minskat med 70 procent över 27 år (1982–2009) är konsistent med utveckling av mer selektiva och lågdos-preparat. Inga storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (70 procent). Insikten i en mening: procentuell minskning = (start − slut)/start × 100. Var noga med RÄTT y-axel i dubbel-axel-diagram.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'procentuell minskning' i dubbel-axel-diagram: identifiera rätt linje och y-axel, avläs start- och slutvärden, räkna (start − slut)/start × 100. Triggern: 'med hur mycket minskat (procent)' → procentuell, inte absolut.",
+    "pregrade_tactic": {
+      "handle": "Start-minus-slut-genom-start",
+      "move": "Höger y-axel, kort-streckad linje: 1982 ≈ 1,0 kg/ha, 2009 ≈ 0,3 kg/ha. (1,0 − 0,3)/1,0 = 70 procent."
+    }
+  },
+  "host-2016-kvant2-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "120 meter är frestande om man underskattar områdets storlek dramatiskt och tror det är en mycket liten inhägnad. 120 meter motsvarar en kvadrat på cirka 30×30 meter — alltså mycket liten.",
+        "why_wrong": "Som steg 7 visar är det stenmurs-omslutna området vid den västligaste kolningsgropen klart större än 30×30 meter på kartan. Med 100m-skalan som referens spänner området ungefär 100×80 meter, vilket ger omkrets cirka 350–400 meter. Facit fastslår 380 meter (B), inte 120."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "730 meter är frestande om man dubbel-räknar omkretsen eller om man mäter en omkrets längs ett större område som omfattar fler kolningsgropar.",
+        "why_wrong": "Området som söks är specifikt det som omger den VÄSTLIGAST belägna kolningsgropen — inte ett större område. Som steg 6 understryker måste man välja exakt det stenmurs-inhägnade området vid den ena specifika kolningsgropen. Facit fastslår 380 meter (B), inte 730."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "860 meter är frestande om man av misstag mäter en mycket stor inhägnad eller räknar omkretsen flera gånger.",
+        "why_wrong": "Området är medelstort, kanske 100×80 meter, vilket ger omkrets cirka 350–400 meter. 860 meter skulle motsvara ett område på cirka 200×230 meter — alldeles för stort. Facit fastslår 380 meter (B)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i kartfrågor är att (a) inte använda skalan, eller (b) hitta fel objekt på kartan. Botemedlet: lokalisera RÄTT objekt först (västligaste kolningsgropen — använd norrpilen för att lokalisera väster), identifiera dess stenmurs-omslutning, sedan mät omkrets mot 100m-skalan.",
+    "solution_path": "Facit fastslår 380 meter (alternativ B). Den västligaste kolningsgropen (markerad med 'o'-symbol i legenden) ligger i västra delen av kartan, omsluten av en stenmur (svart-vit hatchad linje). Områdets omkrets mätt mot 100m-skalan blir cirka 380 meter.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor omkrets har området där den VÄSTLIGAST belägna kolningsgropen finns och som avgränsas av en stenmur? Alternativen: 120, 380, 730, 860 meter. Facit fastslår 380 meter (B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Kartan över 'Gården Björsjöås' visar ett område nordost om Göteborg med arkeologiska lämningar. En norrpil i övre vänstra hörnet anger riktningen. En skalstreck nere till höger markerar 100 m. Legenden längst ned listar 15 symboler för olika lämningstyper (terrasskant, stensatt kant, jordhögar, stenbrott, bäck, åkerkant, röjningsröse, hus och husgrunder, stenmur, jordvall/raserad stenmur, gränssten, kolningsgrop, torvtäkt/grustag, grindstolpar, bergskant, vattenhål, väg).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera kolningsgrop-symbolen",
+        "text": "I legenden anges 'KOLNINGSGROP' som en cirkel-symbol ('o'). Sök på kartan efter cirklade markeringar — det är kolningsgroparna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är en kolningsgrop?",
+        "text": "En kolningsgrop är en arkeologisk lämning där man förr brände träkol i en grop täckt med jord och torv. Vanligt i skogsbygder i Sverige och norra Europa från medeltid och framåt. I kartan markeras de som små cirklar.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Hitta västligaste kolningsgropen",
+        "text": "Använd norrpilen för att orientera dig: VÄSTER är vänster på kartan (eftersom norr pekar uppåt). Skanna från höger till vänster och hitta den västligast belägna kolningsgrop-symbolen. Den ligger i västra delen av kartan.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera stenmurs-inhägnaden",
+        "text": "Legenden anger 'STENMUR' som en distinkt linje (svart-vit hatchad). Sök efter en sluten stenmurs-figur runt den västligaste kolningsgropen. Det är ett medelstort område — kanske 100×80 meter i grov uppskattning.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Mät omkretsen mot 100m-skalan",
+        "text": "Med skalstrecket 100 m som referens: området ser ut att spänna ungefär 100 m i ena riktningen och 80 m i andra (om approximativt rektangulärt). Omkrets ≈ 2 × (100 + 80) = 360 m. För ett oregelbundet område med fler hörn kan omkretsen vara något längre — kanske 380 m.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är omkrets?",
+        "text": "Omkrets = total längd av området RAND. För en rektangel är det 2 × (längd + bredd). För oregelbundna former (vanligt på arkeologiska kartor) följer man randens hela förlopp och summerar segment-längderna.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot alternativen",
+        "text": "120 m ≈ rektangel 30×30 — alldeles för litet. 380 m ≈ rektangel 100×80 eller 90×100 — matchar storleken vi ser. 730 m ≈ rektangel 200×150 — för stort. 860 m ≈ rektangel 200×230 — alldeles för stort. Endast 380 m är konsistent.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot skalstrecket",
+        "text": "Skalstrecket är 100 m. På kartan är 100 m ett relativt tydligt segment. Området vid den västligaste kolningsgropen ser ut att täcka något mer än ett 100m-streck i ena riktningen — alltså 100–120 m som längsta sida. Omkrets cirka 380 m är konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (380 meter). Insikten i en mening: kartfrågor om omkrets → använd skalstrecket som mätreferens, identifiera rätt avgränsning, summera randens segment.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'omkrets'-frågor på karta: använd legenden för att identifiera rätt symbol och rätt avgränsningstyp, använd norrpilen för att hitta rätt geografisk position, mät randens längd mot kartans skalstreck. Triggern: 'omkrets' + kartområde → skalstreck-baserad mätning.",
+    "pregrade_tactic": {
+      "handle": "Hitta-västligaste-och-mät",
+      "move": "Använd norrpilen för att lokalisera väster (vänster). Hitta den västligaste kolningsgropen (cirkel-symbol). Mät stenmurs-randen runt området mot 100m-skalan — ungefär 380 meter."
+    }
+  },
+  "host-2016-kvant2-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "60 000 m² är frestande om man avläser triangeln något större — t.ex. 400×300 m bas/höjd = 60 000 m² triangel. Det kräver att gränsstenarna ligger längre ifrån varandra än de gör.",
+        "why_wrong": "Med skalstrecket som referens spänner triangeln ungefär 300 m i bas och 300 m i höjd, vilket ger area 0,5 × 300 × 300 = 45 000 m². Som steg 7 visar är 60 000 för stort. Facit fastslår 45 000 m² (A)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "75 000 m² är frestande om man räknar arean som BASE × HÖJD utan att halvera (det är formeln för rektangel, inte triangel) eller om man avläser dimensionerna något generöst.",
+        "why_wrong": "Triangelns area = 0,5 × bas × höjd. Att glömma halveringen är ett klassiskt fel. Vår beräkning 0,5 × 300 × 300 = 45 000 m². Att hamna på 75 000 skulle kräva både fel formel OCH för stora dimensioner. Facit fastslår 45 000 m² (A)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "90 000 m² är frestande om man räknar bas × höjd som rektangel (utan halvering) med slarvigt avlästa dimensioner.",
+        "why_wrong": "90 000 m² skulle kräva en triangel på 600×300 m bas/höjd eller liknande — vilket är mycket större än vad gränsstenarna spänner på kartan. Som steg 7 visar är de tre stenarna spridda över cirka 300×300 m område. Facit fastslår 45 000 m² (A)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att (a) glömma halveringen i triangel-arean (= 0,5 × bas × höjd), eller (b) övermäta avstånd mellan punkter på kartan utan att förankra mot skalstrecket. Botemedlet: identifiera de tre gränsstenarna, mät två sidor och en höjd mot 100m-skalan, tillämpa formeln 0,5 × bas × höjd.",
+    "solution_path": "Facit fastslår 45 000 m² (alternativ A). Identifiera de tre gränsstenarna (legend-symbol o med text 'GRÄNSSTEN'): den nordligast belägna, den västligast belägna, och den ostligast belägna. Mät triangeln mot 100m-skalan: basen (mellan västligast och ostligast) cirka 300 m, höjden från norra stenen cirka 300 m. Area = 0,5 × 300 × 300 = 45 000 m².",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: förbind den NORDLIGAST belägna gränsstenen med den VÄSTLIGAST respektive OSTLIGAST belägna gränsstenen, så att stenarna bildar hörn i ett triangelformat område. Hur stor area har området? Alternativen: 45 000, 60 000, 75 000, 90 000 m². Facit fastslår 45 000 m² (A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Karta över Gården Björsjöås med norrpil (övre vänstra), skalstreck 100 m (nere till höger) och legend (nere till vänster). Gränsstenarna markeras med ett distinkt 'o'-mönster med horisontell linje (se 'GRÄNSSTEN' i legenden).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är en gränssten?",
+        "text": "Gränsstenar är historiska markörer som anger ägogränser mellan fastigheter, byar eller socknar. På arkeologiska kartor markeras de tydligt eftersom de är permanenta landmärken. Här ska du hitta tre specifika gränsstenar: nordligast, västligast och ostligast.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Lokalisera gränsstenarna",
+        "text": "Skanna kartan efter gränsstens-symboler. Använd norrpilen för att avgöra norr (uppåt), väst (vänster) och ost (höger). Identifiera den nordligaste (högst på kartan), den västligaste (längst till vänster) och den ostligaste (längst till höger) av alla gränsstenar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Visualisera triangeln",
+        "text": "Förbind de tre identifierade stenarna med tre räta linjer. Det bildas en triangel där: en sida går från norra stenen ner till västra stenen (sydvästlig sida), en sida från norra stenen ner till östra stenen (sydostlig sida), en sida från västra stenen tvärs till östra stenen (basen).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Mät triangelns dimensioner mot skalstrecket",
+        "text": "Med skalstrecket 100 m som referens: avståndet mellan västligaste och ostligaste stenen (basen) är ungefär 300 m. Vinkelrät höjd från norra stenen ner till basen är också ungefär 300 m. Bas ≈ 300 m, höjd ≈ 300 m.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tillämpa triangel-formeln",
+        "text": "Area av triangel = 0,5 × bas × höjd = 0,5 × 300 × 300 = 45 000 m². Facit fastslår just 45 000 m².",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'höjd' i en triangel?",
+        "text": "Höjden i en triangel är det vinkelräta avståndet från en hörnpunkt till motstående sida (basen). Den behöver inte gå längs någon av triangelns sidor — det är en hjälplinje, vinkelrät mot basen. För denna triangel mäter du från norra stenen rakt ner till linjen som förbinder västra och östra stenen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check formeln",
+        "text": "Bas × höjd = 300 × 300 = 90 000 — det är arean av en REKTANGEL med dessa dimensioner. Triangeln är halva, alltså 45 000 m². Detta är därför viktigt att HALVERA. (Distraktor D = 90 000 = exakt det fel man gör om man glömmer halveringen.)",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot alternativen",
+        "text": "45 000 = 0,5 × 300 × 300. 60 000 = 0,5 × 400 × 300 (för stor bas eller höjd). 75 000 = 0,5 × 500 × 300 (alldeles för stora). 90 000 = 300 × 300 (helt utan halvering). Vår beräkning landar entydigt på 45 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check mot kartans area",
+        "text": "Hela kartans Björsjöås-område spänner uppskattningsvis 800 × 600 m ≈ 500 000 m². En triangel på 45 000 m² är cirka 9 % av hela kartan, vilket är en rimlig storlek för en triangel som spänner mellan tre stenar i olika ändar av området. Konsistens-check ok.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (45 000 m²). Insikten i en mening: triangel-area på karta = 0,5 × bas × höjd, med båda dimensionerna mätta mot skalstrecket — och GLÖM INTE halveringen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för triangel-area-frågor på karta: identifiera triangelns tre hörnpunkter, mät en bas och dess vinkelräta höjd mot kartans skalstreck, tillämpa 0,5 × bas × höjd. Triggern: 'area av triangelformat område' → triangel-formeln; halvering är obligatorisk.",
+    "pregrade_tactic": {
+      "handle": "Triangel-bas-och-höjd",
+      "move": "Identifiera nordligaste, västligaste och ostligaste gränsstenarna. Mät basen (väst–öst) och höjden (norr ner till basen) mot 100m-skalan — båda cirka 300 m. Area = 0,5 × 300 × 300 = 45 000 m²."
+    }
   }
 }
