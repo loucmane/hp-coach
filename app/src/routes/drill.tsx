@@ -7,16 +7,18 @@
 // file is just config.
 
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 
 import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
+import { type Framework, loadFramework } from '@/data/frameworks'
 import { findQuestion, loadBank, type Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
 
 const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG', 'DTK'] as const
 type DrillSection = (typeof DRILL_SECTIONS)[number]
 
-type DrillSearch = { section?: DrillSection; qid?: string }
+type DrillSearch = { section?: DrillSection; qid?: string; framework?: string }
 
 function validateSearch(input: Record<string, unknown>): DrillSearch {
   const out: DrillSearch = {}
@@ -31,6 +33,13 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
   const qid = input.qid
   if (typeof qid === 'string' && qid.length > 0 && qid.length < 80) {
     out.qid = qid
+  }
+  // B1.1 deep-link — `?framework=ENTRY-ID` plays the example_questions
+  // for that specific framework entry (a trap, tactic, root, etc.).
+  // Drives the "Öva detta mönster" link on every lesson card.
+  const framework = input.framework
+  if (typeof framework === 'string' && framework.length > 0 && framework.length < 60) {
+    out.framework = framework
   }
   return out
 }
@@ -87,22 +96,64 @@ export const Route = createFileRoute('/drill')({
 })
 
 function DrillScreen() {
-  const { section: sectionFromUrl, qid } = Route.useSearch()
+  const { section: sectionFromUrl, qid, framework } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
 
   const recordMistake = useRecordMistake()
   const due = useDueMistakes()
   const dueCount = due.data?.length ?? 0
 
+  // Resolve the framework entry's display name (e.g. "för-" for
+  // ORD-ROOT-001) so the idle screen shows what the user is about to
+  // practice instead of the bare ID. Same loadFramework call the picker
+  // makes — Promise is memoised so this hits the cache.
+  const [frameworkHeadword, setFrameworkHeadword] = useState<string | null>(null)
+  useEffect(() => {
+    if (!framework) {
+      setFrameworkHeadword(null)
+      return
+    }
+    let alive = true
+    loadFramework(section as Section).then((fw) => {
+      if (!alive || !fw) return
+      const entry = fw.entries.find((e) => e.id === framework)
+      if (entry) setFrameworkHeadword(entryHeadword(entry, fw))
+    })
+    return () => {
+      alive = false
+    }
+  }, [framework, section])
+
   const copy = SECTION_COPY[section]
-  // Direct-link mode: when `?qid=` is set, short-circuit the random
-  // picker and return a single-question plan. SessionPlayer already
-  // handles single-question plans (the state machine doesn't care
-  // about plan length). Bad qids surface as a runtime error from
-  // findQuestion, which SessionPlayer's empty-state catches.
+
+  // Three picker modes:
+  //   - `?qid=` → load one specific question (variant-comparison / debug)
+  //   - `?framework=` → load a framework entry's example_questions
+  //   - default → random N-question section drill
   const pickQuestions = qid
     ? () => loadBank().then((b) => [findQuestion(b, qid)])
-    : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
+    : framework
+      ? () => pickFrameworkQuestions(section as Section, framework)
+      : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
+
+  const frameworkDisplay = frameworkHeadword ?? framework
+  const idleEyebrow = qid ? 'Direktlänk' : framework ? 'Mönsterövning' : 'Övning'
+  const idleHeadline = qid ? qid : framework ? (frameworkDisplay ?? framework) : copy.headline
+  const idleSubcopy = qid
+    ? 'En specifik fråga via ?qid= — för granskning eller debug.'
+    : framework
+      ? `Exempelfrågor från lektionen som illustrerar detta mönster.`
+      : copy.subcopy
+  const idleMeta = qid
+    ? '1 fråga · ingen sessionsgrad'
+    : framework
+      ? 'Exempelfrågor · 1 poäng per rätt'
+      : `~ ${SECTION_DURATIONS[section]} minuter · 1 poäng per rätt`
+  const emptyCopy = qid
+    ? `Hittade inte frågan ${qid}.`
+    : framework
+      ? `Inga exempelfrågor hittades för ${frameworkDisplay ?? framework}.`
+      : `Inga ${section}-frågor klara att öva på just nu.`
 
   return (
     <SessionPlayer
@@ -110,24 +161,58 @@ function DrillScreen() {
       sections={section}
       activeTab="drill"
       pickQuestions={pickQuestions}
-      idleEyebrow={qid ? 'Direktlänk' : 'Övning'}
-      idleHeadline={qid ? qid : copy.headline}
-      idleSubcopy={qid ? 'En specifik fråga via ?qid= — för granskning eller debug.' : copy.subcopy}
-      idleMeta={
-        qid
-          ? '1 fråga · ingen sessionsgrad'
-          : `~ ${SECTION_DURATIONS[section]} minuter · 1 poäng per rätt`
-      }
-      emptyCopy={
-        qid ? `Hittade inte frågan ${qid}.` : `Inga ${section}-frågor klara att öva på just nu.`
-      }
-      idleExtra={!qid && dueCount > 0 ? <RepetitionHint count={dueCount} /> : null}
+      idleEyebrow={idleEyebrow}
+      idleHeadline={idleHeadline}
+      idleSubcopy={idleSubcopy}
+      idleMeta={idleMeta}
+      emptyCopy={emptyCopy}
+      idleExtra={!qid && !framework && dueCount > 0 ? <RepetitionHint count={dueCount} /> : null}
       onWrong={(q) => {
         // Fire-and-forget: a failed mistake-write doesn't block the UX.
         recordMistake.mutate({ questionId: q.qid })
       }}
     />
   )
+}
+
+// Resolve the human-readable headword for a framework entry. Each
+// schema family puts its summary headword on a different field (root
+// for ORD, tactic for DTK, etc.) — this collapses the union.
+function entryHeadword(entry: Framework['entries'][number], framework: Framework): string | null {
+  switch (framework.family) {
+    case 'ord_roots':
+      return 'root' in entry ? entry.root : null
+    case 'dtk_tactics':
+      return 'tactic' in entry ? entry.tactic : null
+    case 'mek_protocol':
+      return 'constraint_type' in entry ? entry.constraint_type : null
+    case 'las_taxonomy':
+    case 'elf_taxonomy':
+      return 'question_type' in entry ? entry.question_type : null
+    case 'nog_traps':
+    case 'kva_traps':
+    case 'xyz_traps':
+      return 'pattern_description' in entry ? entry.pattern_description : null
+  }
+}
+
+// Build the question plan for a framework deep-link. Loads the section's
+// framework, finds the entry by id, then resolves each example_question
+// qid against the question bank. Missing qids are dropped silently (the
+// example_questions array might reference a qid that didn't parse fully
+// in the corpus — better to drop than crash). An empty result surfaces
+// as SessionPlayer's "no questions" idle state.
+async function pickFrameworkQuestions(section: Section, frameworkId: string) {
+  const [framework, bank] = await Promise.all([loadFramework(section), loadBank()])
+  if (!framework) return []
+  const entry = framework.entries.find((e) => e.id === frameworkId)
+  if (!entry?.example_questions) return []
+  const out = []
+  for (const qid of entry.example_questions) {
+    const q = bank.find((x) => x.qid === qid)
+    if (q && q.parsing_status === 'complete' && q.options) out.push(q)
+  }
+  return out
 }
 
 function RepetitionHint({ count }: { count: number }) {

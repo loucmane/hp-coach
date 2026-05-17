@@ -110,7 +110,7 @@ export function LexiconCard({ entry }: { entry: LexiconEntry }) {
         <div style={{ marginTop: 24 }}>
           <Link
             to="/drill"
-            search={{ section: 'ORD' as const }}
+            search={{ section: 'ORD' as const, framework: entry.id }}
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 15,

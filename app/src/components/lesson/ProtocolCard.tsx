@@ -172,7 +172,7 @@ export function ProtocolCard({ entry, section }: { entry: AnyProtocolEntry; sect
         <div style={{ marginTop: 24 }}>
           <Link
             to="/drill"
-            search={{ section }}
+            search={{ section, framework: entry.id }}
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 15,
