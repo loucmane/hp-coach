@@ -13,6 +13,10 @@ export type Env = {
   ENVIRONMENT: 'dev' | 'staging' | 'production'
   // Secrets (set via `wrangler secret put`)
   CLERK_SECRET_KEY: string
+  // Optional. When set in dev/staging, /api/dev/login issues a sign-in
+  // token for this user — lets MCP-driven browsers bypass Clerk's email
+  // OTP flow for visual verification. Refused in production regardless.
+  DEV_LOGIN_EMAIL?: string
 }
 
 // Hono context variables set by middleware. `userId` is populated by the
