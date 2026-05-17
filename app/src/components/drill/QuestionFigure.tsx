@@ -263,15 +263,24 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
   const rotate = () => setRotation((r) => (r + 90) % 360)
 
   useEffect(() => {
+    // Capture phase + stopImmediatePropagation: SessionPlayer also
+    // listens for Escape on window (to end the session and jump to
+    // the "öva igen" idle screen). Without this, Escape from the
+    // modal closed the modal AND ejected the user from the drill.
+    // Capture lets us intercept first; stopImmediatePropagation halts
+    // sibling listeners on the same target before they fire.
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-      else if (e.key === 'r' || e.key === 'R') {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        onClose()
+      } else if (e.key === 'r' || e.key === 'R') {
         e.preventDefault()
         setRotation((r) => (r + 90) % 360)
       }
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    window.addEventListener('keydown', onKey, true)
+    return () => window.removeEventListener('keydown', onKey, true)
   }, [onClose])
 
   const rotated = rotation === 90 || rotation === 270
@@ -436,13 +445,19 @@ function wrapForFit(rawSvg: string): string {
 }
 
 function FigureModal({ svg, onClose }: { svg: string | null; onClose: () => void }) {
-  // ESC to dismiss — modal pattern users already know from Cmd+K.
+  // Capture-phase Escape so the SessionPlayer's session-end handler
+  // (also on window) doesn't fire too and eject the user out of the
+  // drill. Same pattern as RasterModal.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        onClose()
+      }
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    window.addEventListener('keydown', onKey, true)
+    return () => window.removeEventListener('keydown', onKey, true)
   }, [onClose])
 
   return (
