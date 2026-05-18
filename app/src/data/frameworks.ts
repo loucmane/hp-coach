@@ -162,6 +162,31 @@ export function wiredSections(): Section[] {
   return Object.keys(FILENAMES) as Section[]
 }
 
+/** The human-readable headword for a framework entry — each family
+ *  puts its summary on a different field (root for ORD, tactic for
+ *  DTK, etc.). Used by the drill idle screen + the daily-plan card
+ *  to render "NOG-lektion · 2×2-tabellen" instead of bare IDs. */
+export function entryHeadword(
+  entry: Framework['entries'][number],
+  framework: Framework,
+): string | null {
+  switch (framework.family) {
+    case 'ord_roots':
+      return 'root' in entry ? entry.root : null
+    case 'dtk_tactics':
+      return 'tactic' in entry ? entry.tactic : null
+    case 'mek_protocol':
+      return 'constraint_type' in entry ? entry.constraint_type : null
+    case 'las_taxonomy':
+    case 'elf_taxonomy':
+      return 'question_type' in entry ? entry.question_type : null
+    case 'nog_traps':
+    case 'kva_traps':
+    case 'xyz_traps':
+      return 'pattern_description' in entry ? entry.pattern_description : null
+  }
+}
+
 /** Test-only: clear the cache. */
 export function __resetFrameworkCache(): void {
   cache.clear()
