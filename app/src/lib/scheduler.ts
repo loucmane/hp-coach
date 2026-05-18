@@ -47,6 +47,14 @@ export type DailyPlan = {
   items: PlanItem[]
   /** Total estimated minutes across not-yet-completed items. */
   estimatedMinutes: number
+  /** Per-section `attempts7d` snapshot taken when the plan was
+   *  generated. Drives drill auto-completion: a drill item flips
+   *  to `completed` once the section's current `attempts7d` has
+   *  grown by enough to indicate the user actually drilled that
+   *  section. Pure `generateDailyPlan` doesn't set this — the
+   *  caller (e.g. `useDailyPlan`) attaches it after generation
+   *  to keep the pure function free of UI concerns. */
+  attemptsSnapshot?: Partial<Record<Section, number>>
 }
 
 /** Hint passed in for a section's framework first-entry. Lets the

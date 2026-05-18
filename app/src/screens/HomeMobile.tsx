@@ -31,7 +31,6 @@ type HomeMobileProps = {
   plan?: DailyPlan | null
   /** True iff every plan item is complete. Drives the "Klart för idag" state. */
   allComplete?: boolean
-  onMarkComplete?: (itemId: string) => void
   onRegenerate?: () => void
   /** Called when a plan item is tapped. Receives the item's href so
    *  the route can dispatch SPA navigation. */
@@ -55,7 +54,6 @@ const NOOP = () => {}
 export function HomeMobile({
   plan = null,
   allComplete = false,
-  onMarkComplete = NOOP,
   onRegenerate = NOOP,
   onPlanItemNavigate,
   coach: coachProp,
@@ -175,7 +173,6 @@ export function HomeMobile({
               <DailyPlanCard
                 plan={plan}
                 allComplete={allComplete}
-                onMarkComplete={onMarkComplete}
                 onRegenerate={onRegenerate}
                 onNavigate={onPlanItemNavigate}
               />

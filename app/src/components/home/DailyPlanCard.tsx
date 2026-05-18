@@ -2,19 +2,20 @@
 //
 // Replaces the "Fortsätt övning" hero with a prescriptive list. Each
 // item is one tap: kicker (kind + section if any), headline, rationale
-// in muted body, time hint + arrow on the right, and a small
-// "Markera klar" pill at the bottom of each row (manual completion for
-// items the hook can't derive automatically — drills in v1).
+// in muted body, time hint on the right. Completion is derived from
+// signals only (due-count, lessonReads, attempts-snapshot growth) —
+// there is no manual "mark complete" affordance because the plan
+// should reflect what you actually did, not what you tell it you did.
 //
 // When every item is complete, the card flips to the "Klart för idag"
-// state with optional extras + a "Generera om" affordance.
+// state with a "generera ny plan" affordance.
 //
 // Visual contract:
-//   - Eyebrow:  "IDAG · 32 MIN"  (mono, ink-2)
+//   - Eyebrow:  "IDAG · 32 MIN"  (mono, ink-2) + GENERERA OM
 //   - Items:    one row each; hairline rule between items
-//   - Header on each row: kind kicker (mono) + completed checkmark
-//   - Body:     headline (display) + rationale (display, ink-2)
-//   - Trailing: time hint (mono) + → arrow OR Klar ✓ pill
+//   - Row header: kind kicker (mono) + "· klar ✓" when completed
+//   - Row body:   headline (display) + rationale (display, ink-2)
+//   - Trailing:   time hint (mono)
 //
 // Composition deliberately mirrors the bake-off pattern (eyebrow →
 // title → body → footer affordance) so the visual rhythm is
@@ -26,22 +27,14 @@ import type { DailyPlan, PlanItem } from '@/lib/scheduler'
 type DailyPlanCardProps = {
   plan: DailyPlan
   allComplete: boolean
-  onMarkComplete: (itemId: string) => void
   onRegenerate: () => void
   /** Called when a plan item's row is tapped. Receives the item's
    *  href so the route can pick a navigation strategy. Defaults to
-   *  `window.location.assign` so the card stays functional in
-   *  isolation (e.g. unit tests without a Router context). */
+   *  the anchor's native behaviour when omitted (full-page nav). */
   onNavigate?: (href: string) => void
 }
 
-export function DailyPlanCard({
-  plan,
-  allComplete,
-  onMarkComplete,
-  onRegenerate,
-  onNavigate,
-}: DailyPlanCardProps) {
+export function DailyPlanCard({ plan, allComplete, onRegenerate, onNavigate }: DailyPlanCardProps) {
   if (allComplete) {
     return <CompletePanel plan={plan} onRegenerate={onRegenerate} />
   }
@@ -86,27 +79,14 @@ export function DailyPlanCard({
         }}
       >
         {plan.items.map((item) => (
-          <PlanRow
-            key={item.id}
-            item={item}
-            onMarkComplete={onMarkComplete}
-            onNavigate={onNavigate}
-          />
+          <PlanRow key={item.id} item={item} onNavigate={onNavigate} />
         ))}
       </ol>
     </section>
   )
 }
 
-function PlanRow({
-  item,
-  onMarkComplete,
-  onNavigate,
-}: {
-  item: PlanItem
-  onMarkComplete: (itemId: string) => void
-  onNavigate?: (href: string) => void
-}) {
+function PlanRow({ item, onNavigate }: { item: PlanItem; onNavigate?: (href: string) => void }) {
   const kicker = kickerFor(item)
   const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (onNavigate) {
@@ -197,16 +177,6 @@ function PlanRow({
           }}
         >
           <Mono>{`~${item.estimatedMinutes} min`}</Mono>
-          {!item.completed && (
-            <button
-              type="button"
-              data-testid={`daily-plan-mark-${item.id}`}
-              onClick={() => onMarkComplete(item.id)}
-              style={markCompleteButtonStyle}
-            >
-              Klar ✓
-            </button>
-          )}
         </div>
       </div>
     </li>
@@ -292,19 +262,6 @@ const regenButtonStyle: React.CSSProperties = {
   fontFamily: 'var(--font-mono)',
   fontSize: 11,
   letterSpacing: 'var(--font-mono-track)',
-  textTransform: 'uppercase',
-  color: 'var(--ink-2)',
-  cursor: 'pointer',
-}
-
-const markCompleteButtonStyle: React.CSSProperties = {
-  background: 'transparent',
-  border: '1px solid var(--hairline)',
-  borderRadius: 999,
-  padding: '4px 10px',
-  fontFamily: 'var(--font-mono)',
-  fontSize: 10,
-  letterSpacing: '0.12em',
   textTransform: 'uppercase',
   color: 'var(--ink-2)',
   cursor: 'pointer',

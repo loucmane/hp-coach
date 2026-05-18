@@ -8,15 +8,20 @@
 //
 //   - `plan`            the current day's plan (null while resolving)
 //   - `isLoading`       true until stats + due + framework hints settle
-//   - `markComplete(id)` flip a plan item's completed flag (and persist)
 //   - `regenerate()`    force-rebuild (the "Generera om" button)
 //   - `allComplete`     convenience: items.length > 0 && every completed
 //
-// Auto-completion derivations (no manual tap needed):
+// Completion is fully derived from signals — there is intentionally
+// no manual "mark complete" affordance. The plan reflects what you
+// actually did, not what you tell it you did.
+//
 //   - Repetition items   complete when `dueMistakeCount === 0`
 //   - Lesson items       complete when `lessonReads.has(framework)`
-//   - Drill items        manual in v1 — a per-section attempts-snapshot
-//                        approach is queued for a follow-up
+//   - Drill items        complete when the section's `attempts7d` has
+//                        grown by ≥5 since the plan was generated
+//                        (snapshot stored in `plan.attemptsSnapshot`).
+//                        Half a session is enough signal — the user
+//                        clearly engaged the section.
 //
 // The plan does NOT auto-regenerate when signals change within a day.
 // Stability is intentional — if the user starts the day with NOG-1.2
@@ -37,18 +42,22 @@ import {
   loadLessonReads,
   loadPlan,
   localDateString,
-  markItemComplete,
   type PlanItem,
   savePlan,
 } from '@/lib/scheduler'
 import { computeSectionScore, type SectionScore, type SectionStats } from '@/lib/scoring'
 
 type FrameworkHints = Partial<Record<Section, FrameworkHint>>
+type BySection = Record<Section, SectionStats>
+
+/** Half a default 10-question drill is enough signal that the user
+ *  engaged the section. Lower thresholds (1–3 attempts) risk false
+ *  positives from clicking through to preview a question. */
+const DRILL_COMPLETE_THRESHOLD = 5
 
 export type UseDailyPlan = {
   plan: DailyPlan | null
   isLoading: boolean
-  markComplete: (itemId: string) => void
   regenerate: () => void
   allComplete: boolean
 }
@@ -80,42 +89,33 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
 
     const cached = loadPlan(today)
     if (cached) {
-      setPlan(autoCompleteDerivations(cached, due.data.length, loadLessonReads()))
+      setPlan(deriveCompletion(cached, due.data.length, loadLessonReads(), stats.data.bySection))
       return
     }
 
     const fresh = buildPlan(now, stats.data.bySection, due.data.length, hints)
     savePlan(fresh)
-    setPlan(autoCompleteDerivations(fresh, due.data.length, loadLessonReads()))
+    setPlan(deriveCompletion(fresh, due.data.length, loadLessonReads(), stats.data.bySection))
   }, [stats.data, due.data, hints, today, now])
 
-  // Re-run auto-completion when due count drops to 0 mid-session (the
-  // user just finished /repetition and bounced back here). Lesson
-  // reads can also change mid-session but require a re-mount of Home
-  // to be picked up — that's fine for v1 since reading a lesson
-  // typically navigates away first.
+  // Re-run derivation when due count or stats change mid-session
+  // (user just finished /repetition or a drill and bounced back).
+  // Lesson reads also change mid-session but require a re-mount of
+  // Home to be picked up — that's fine for v1.
   useEffect(() => {
-    if (!plan || due.data === undefined) return
-    const next = autoCompleteDerivations(plan, due.data.length, loadLessonReads())
+    if (!plan || due.data === undefined || !stats.data) return
+    const next = deriveCompletion(plan, due.data.length, loadLessonReads(), stats.data.bySection)
     if (next !== plan) {
       savePlan(next)
       setPlan(next)
     }
-  }, [plan, due.data])
-
-  const markComplete = useCallback(
-    (itemId: string) => {
-      const next = markItemComplete(today, itemId)
-      if (next) setPlan(next)
-    },
-    [today],
-  )
+  }, [plan, due.data, stats.data])
 
   const regenerate = useCallback(() => {
     if (!stats.data || due.data === undefined || hints === null) return
     const fresh = buildPlan(now, stats.data.bySection, due.data.length, hints)
     savePlan(fresh)
-    setPlan(autoCompleteDerivations(fresh, due.data.length, loadLessonReads()))
+    setPlan(deriveCompletion(fresh, due.data.length, loadLessonReads(), stats.data.bySection))
   }, [stats.data, due.data, hints, now])
 
   const allComplete = !!plan && plan.items.length > 0 && plan.items.every((i) => i.completed)
@@ -123,7 +123,6 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
   return {
     plan,
     isLoading: stats.isLoading || due.isLoading || hints === null,
-    markComplete,
     regenerate,
     allComplete,
   }
@@ -135,19 +134,26 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
 
 function buildPlan(
   now: Date,
-  bySection: Record<Section, SectionStats>,
+  bySection: BySection,
   dueCount: number,
   hints: FrameworkHints,
 ): DailyPlan {
   const sectionScores: SectionScore[] = SECTION_KEYS.map((s) =>
     computeSectionScore(s, bySection[s], now),
   )
-  return generateDailyPlan({
+  const base = generateDailyPlan({
     now,
     sectionScores,
     dueMistakeCount: dueCount,
     firstUnreadEntry: hints,
   })
+  // Attach the per-section attempts7d snapshot so drill items can
+  // auto-complete later when the section's attempts7d grows.
+  const attemptsSnapshot: Partial<Record<Section, number>> = {}
+  for (const s of SECTION_KEYS) {
+    attemptsSnapshot[s] = bySection[s].attempts7d
+  }
+  return { ...base, attemptsSnapshot }
 }
 
 /** Resolve the first-unread framework entry for every wired section.
@@ -174,13 +180,15 @@ async function resolveFrameworkHints(): Promise<FrameworkHints> {
   return out
 }
 
-/** Apply the auto-completion rules to a plan, returning a new plan
- *  object when anything changed (so React equality comparisons work)
- *  or the same reference when nothing did. */
-function autoCompleteDerivations(
+/** Derive completion for every plan item from current signals.
+ *  Returns a new plan object when any item flipped (so React
+ *  equality comparisons trigger re-render) or the same reference
+ *  when nothing did. */
+function deriveCompletion(
   plan: DailyPlan,
   dueCount: number,
   lessonReads: Set<string>,
+  bySection: BySection,
 ): DailyPlan {
   let changed = false
   const items: PlanItem[] = plan.items.map((item) => {
@@ -192,6 +200,14 @@ function autoCompleteDerivations(
     if (item.kind === 'lesson' && item.framework && lessonReads.has(item.framework)) {
       changed = true
       return { ...item, completed: true }
+    }
+    if (item.kind === 'drill' && item.section && plan.attemptsSnapshot) {
+      const baseline = plan.attemptsSnapshot[item.section] ?? 0
+      const current = bySection[item.section].attempts7d
+      if (current - baseline >= DRILL_COMPLETE_THRESHOLD) {
+        changed = true
+        return { ...item, completed: true }
+      }
     }
     return item
   })
