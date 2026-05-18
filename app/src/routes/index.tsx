@@ -23,12 +23,27 @@ function HomeRoute() {
 
   const streakDays = stats.data?.streakDays
 
+  // The scheduler emits hrefs as raw URL strings (e.g.
+  // `/lektion?section=KVA`). TanStack's `navigate({ to })` treats `to`
+  // as the route key, not a URL — it doesn't parse `?query` out of the
+  // string. So split the href manually before dispatching.
+  const navigateHref = (href: string) => {
+    const [path, query] = href.split('?')
+    if (!query) {
+      navigate({ to: path as never })
+      return
+    }
+    const search: Record<string, string> = {}
+    for (const [k, v] of new URLSearchParams(query)) search[k] = v
+    navigate({ to: path as never, search: search as never })
+  }
+
   return (
     <HomeMobile
       plan={plan}
       allComplete={allComplete}
       onRegenerate={regenerate}
-      onPlanItemNavigate={(href) => navigate({ to: href })}
+      onPlanItemNavigate={navigateHref}
       streakDays={streakDays}
       onAvancerat={() => navigate({ to: '/avancerat' })}
       onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}

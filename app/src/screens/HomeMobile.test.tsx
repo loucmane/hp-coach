@@ -15,6 +15,7 @@ import { HomeMobile } from './HomeMobile'
 
 function makePlan(overrides: Partial<DailyPlan> = {}): DailyPlan {
   return {
+    version: 2,
     date: '2026-05-18',
     estimatedMinutes: 18,
     items: [

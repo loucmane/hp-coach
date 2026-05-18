@@ -41,7 +41,17 @@ export type PlanItem = {
   completed: boolean
 }
 
+/** Schema version for the stored DailyPlan. Bump when item shape or
+ *  href format changes — `loadPlan` returns null on mismatch, forcing
+ *  the hook to regenerate. Prevents users from being stuck with a
+ *  yesterday-shaped plan whose hrefs point to routes that have since
+ *  moved (e.g. `/lektion/NOG` before #47, now `/lektion?section=NOG`). */
+export const PLAN_SCHEMA_VERSION = 2
+
 export type DailyPlan = {
+  /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are
+   *  treated as cache misses and regenerated. */
+  version: number
   /** Local-date the plan was generated for, ISO 8601 (YYYY-MM-DD). */
   date: string
   items: PlanItem[]
@@ -173,7 +183,7 @@ function finalize(date: string, items: PlanItem[]): DailyPlan {
   const estimatedMinutes = items
     .filter((i) => !i.completed)
     .reduce((sum, i) => sum + i.estimatedMinutes, 0)
-  return { date, items, estimatedMinutes }
+  return { version: PLAN_SCHEMA_VERSION, date, items, estimatedMinutes }
 }
 
 function repetitionItem(count: number, date: string): PlanItem {
@@ -343,6 +353,10 @@ export function loadPlan(date: string, storage: Storage = localStorage): DailyPl
     ) {
       return null
     }
+    // Schema-version mismatch → treat as cache miss. Stale plans
+    // would otherwise stick around with hrefs that no longer route
+    // correctly (e.g. `/lektion/NOG` before the query-param fix).
+    if (parsed.version !== PLAN_SCHEMA_VERSION) return null
     return parsed
   } catch {
     return null

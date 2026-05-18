@@ -409,13 +409,30 @@ describe('savePlan + loadPlan round-trip', () => {
     storage.setItem(`hpc-daily-plan-${TODAY}`, '{not json')
     expect(loadPlan(TODAY, storage)).toBeNull()
   })
+
+  it('returns null when the stored plan has an older schema version', () => {
+    // A v1 plan from before the version field was introduced — its
+    // hrefs may point to routes that no longer match. The hook should
+    // regenerate rather than read stale hrefs back.
+    const storage = fakeStorage()
+    const stale = { date: TODAY, items: [], estimatedMinutes: 0 } // no version
+    storage.setItem(`hpc-daily-plan-${TODAY}`, JSON.stringify(stale))
+    expect(loadPlan(TODAY, storage)).toBeNull()
+  })
+
+  it('returns null when the stored plan has a future schema version', () => {
+    const storage = fakeStorage()
+    const future = { version: 999, date: TODAY, items: [], estimatedMinutes: 0 }
+    storage.setItem(`hpc-daily-plan-${TODAY}`, JSON.stringify(future))
+    expect(loadPlan(TODAY, storage)).toBeNull()
+  })
 })
 
 describe('savePlan — prune old plans', () => {
   it('removes plan keys older than 30 days when a new plan is written', () => {
     const storage = fakeStorage()
-    const today: DailyPlan = { date: TODAY, items: [], estimatedMinutes: 0 }
-    const old: DailyPlan = { date: '2026-04-01', items: [], estimatedMinutes: 0 }
+    const today: DailyPlan = { version: 2, date: TODAY, items: [], estimatedMinutes: 0 }
+    const old: DailyPlan = { version: 2, date: '2026-04-01', items: [], estimatedMinutes: 0 }
     storage.setItem('hpc-daily-plan-2026-04-01', JSON.stringify(old))
     storage.setItem('hpc-daily-plan-2026-05-01', JSON.stringify({ ...old, date: '2026-05-01' }))
     savePlan(today, storage)
