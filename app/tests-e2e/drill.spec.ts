@@ -109,10 +109,10 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, tes
 test('Cmd+K palette — open via keyboard, navigate to drill', async ({ page }) => {
   await page.goto('/')
   // Wait for the home shell to fully mount (React listeners attached) before
-  // dispatching the keystroke. The Fortsätt CTA is a stable landmark across
-  // both viewports — BottomTabs got dropped on desktop in Phase A.8 EDITION
-  // so we can't depend on the "Hem" button anymore.
-  await expect(page.getByRole('button', { name: 'Fortsätt' })).toBeVisible({
+  // dispatching the keystroke. The compact greeting h1 is rendered as soon as
+  // the route hydrates and is the most reliable cross-viewport landmark now
+  // that B3.2 removed the "Fortsätt" CTA in favour of the daily-plan card.
+  await expect(page.getByTestId('home-greeting')).toBeVisible({
     timeout: 10_000,
   })
   await page.keyboard.press('Control+K')
