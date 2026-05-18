@@ -27,6 +27,12 @@ import type { Section } from './questions'
 /** Trap catalog entry (NOG, KVA, XYZ). */
 export type TrapEntry = {
   id: string
+  /** Short editorial name for the pattern — 2-5 words, idiomatic
+   *  Swedish, "magazine table of contents" voice. Used by the daily
+   *  plan card and any other surface that needs a concise label.
+   *  Optional for backwards-compat; `pattern_description` is the
+   *  fallback when missing. */
+  name?: string
   pattern_description: string
   why_it_occurs: string
   common_distractor_signature: string
@@ -183,7 +189,10 @@ export function entryHeadword(
     case 'nog_traps':
     case 'kva_traps':
     case 'xyz_traps':
-      return 'pattern_description' in entry ? entry.pattern_description : null
+      // Prefer the curated short `name` when present; fall back to the
+      // full pattern_description (which scheduler.ts then truncates).
+      if (!('pattern_description' in entry)) return null
+      return entry.name ?? entry.pattern_description
   }
 }
 

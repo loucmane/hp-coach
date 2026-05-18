@@ -7,6 +7,7 @@
   "entries": [
     {
       "id": "NOG-TRAP-001",
+      "name": "2×2-marginalfällan",
       "pattern_description": "Två yttre marginaler i en 2×2-tabell räcker INTE för enskilda celler — radsummor och kolumnsummor lämnar cellfördelningen fri.",
       "why_it_occurs": "Studenten ser fyra tal (två radsummor + två kolumnsummor) och tror att tabellen är 'fylld' — men marginalerna är konsistenta med oändligt många cell-fördelningar.",
       "common_distractor_signature": "Väljer C när E är rätt: tror att två oberoende totaler tillsammans räcker för snittet/cellerna, fast varje rad-kolumn-par har en fri parameter.",
@@ -22,6 +23,7 @@
     },
     {
       "id": "NOG-TRAP-002",
+      "name": "Fler okända än ekvationer",
       "pattern_description": "Misslyckas räkna obekanta mot oberoende ekvationer — tre okända kräver tre oberoende relationer; två räcker aldrig.",
       "why_it_occurs": "När båda utsagorna är ekvationer i rätt variabler antar studenten att de räcker — utan att kontrollera att antalet oberoende ekvationer ≥ antalet obekanta.",
       "common_distractor_signature": "Väljer C när E är rätt: räknar ihop två ekvationer i tre obekanta och tror att systemet är slutet.",
@@ -39,6 +41,7 @@
     },
     {
       "id": "NOG-TRAP-003",
+      "name": "Förhållande utan baseline",
       "pattern_description": "Förhållande/fraktion utan något absolut tal räcker aldrig för absolutvärden — bara för andelar och kvoter.",
       "why_it_occurs": "Studenten tolkar 'andelen A:B är 3:5' som om det räcker för att räkna ut hur många A finns — men förhållandet låser bara KVOTEN, inte mängderna.",
       "common_distractor_signature": "Väljer A eller B när C är rätt: tror att en utsaga med 'förhållande' eller 'fraktion' är ensam tillräcklig för absolutvärdet.",
@@ -54,6 +57,7 @@
     },
     {
       "id": "NOG-TRAP-004",
+      "name": "För tidig kandidatstopp",
       "pattern_description": "Slutar räkna kandidater för tidigt — 'två giltiga tilldelningar kvar' eller '»X eller Y«-villkor' är fortfarande otillräckligt.",
       "why_it_occurs": "Studenten hittar EN giltig tilldelning som uppfyller alla villkor och stannar — utan att verifiera att den är UNIK. Disjunktiva ('X eller Y') villkor är ofta svagare än de ser ut.",
       "common_distractor_signature": "Väljer A/B/C när E är rätt: hittar en lösning, kontrollerar inte om en andra lösning också uppfyller villkoren.",
@@ -68,6 +72,7 @@
     },
     {
       "id": "NOG-TRAP-005",
+      "name": "Snittet som inte krymper till ett",
       "pattern_description": "Skäre kandidatmängder från olika villkor — och kontrollera att snittet blir en singleton, inte ett intervall eller två kandidater.",
       "why_it_occurs": "Vid delbarhets- eller siffer-villkor 'krymper' studenten kandidaterna en gång och antar att resultatet är unikt — utan att räkna sluttalet.",
       "common_distractor_signature": "Väljer C när E är rätt: tror att två villkor som skär varandra alltid ger en lösning, fast smala intervall + delbarhet ofta lämnar 2–3 kandidater.",
@@ -83,6 +88,7 @@
     },
     {
       "id": "NOG-TRAP-006",
+      "name": "Olikhet låser intervall, inte värde",
       "pattern_description": "Stränga olikheter ('mer än hälften', 'fler än X', 'avvikelse ±k') räcker aldrig ensamma för exakta värden — bara för intervall.",
       "why_it_occurs": "Studenten ser ett konkret tal i utsagan ('fler än 50 %') och antar att den binder värdet — men olikheter definierar intervall, inte specifika tal.",
       "common_distractor_signature": "Väljer A/B/C när E är rätt: räknar olikheten som om den vore en ekvation och får ett 'svar'.",
@@ -98,6 +104,7 @@
     },
     {
       "id": "NOG-TRAP-007",
+      "name": "Trivial geometrisats",
       "pattern_description": "Utsaga upprepar en känd geometrisk sats (Pythagoras, vinkelsumma=180°, yttervinkelsatsen, bivinkelsumma=180°) — den är alltid sann och tillför ingen information.",
       "why_it_occurs": "Studenten ser en ekvation med rätt variabler i geometri-kontexten och räknar den som villkor — utan att inse att den bara upprepar en universell sats som redan gäller.",
       "common_distractor_signature": "Väljer A/B/C/D när E är rätt: räknar den triviala satsen som ett oberoende villkor och tror att den binder värdet.",
@@ -110,6 +117,7 @@
     },
     {
       "id": "NOG-TRAP-008",
+      "name": "Förklädd dubblett",
       "pattern_description": "Utsaga är logiskt EKVIVALENT med frågeställningen eller den andra utsagan — den upprepar bara samma villkor i andra ord.",
       "why_it_occurs": "Studenten ser olika formuleringar ('80 %', '4/5', 'fyra av fem') och räknar dem som oberoende information — men de är samma villkor.",
       "common_distractor_signature": "Väljer A/B/D när E är rätt: räknar ekvivalenta omformuleringar som oberoende villkor och tror sig ha mer data.",
@@ -124,6 +132,7 @@
     },
     {
       "id": "NOG-TRAP-009",
+      "name": "Framtid utan ny info",
       "pattern_description": "En framtidsformulering ('om x år') om en konstant storhet (åldersskillnad, längdskillnad) bär samma info som nuvarande villkor — den är trivial.",
       "why_it_occurs": "Studenten ser ett nytt tidsperspektiv och antar att det är ny information — men differenser mellan personers åldrar är invarianta över tid.",
       "common_distractor_signature": "Väljer C eller D när A/B är rätt: tror att framtida ekvationen kompletterar nuvarande, fast den bara är samma ekvation flyttad i tid.",
@@ -136,6 +145,7 @@
     },
     {
       "id": "NOG-TRAP-010",
+      "name": "Tom hypotetisk kontroll",
       "pattern_description": "Hypotetiska utsagor ('om priset varit X', 'om en stiger av') tolkas som faktiska — fast hypotetiken bara verifierar en räkneidentitet utan ny info.",
       "why_it_occurs": "Studenten räknar ut den hypotetiska konsekvensen och får ett tal, men talet är bara en omformulering av redan kända fakta — det binder inte värdet.",
       "common_distractor_signature": "Väljer A/B/C när E är rätt (eller hoppar förbi A när A är rätt): blandar ihop hypotetiska kontrollräkningar med faktiska låsande villkor.",
@@ -148,6 +158,7 @@
     },
     {
       "id": "NOG-TRAP-011",
+      "name": "Underskattad om-spekulation",
       "pattern_description": "Hypotetisk omfördelning som binder bara EN obekant ('om alla fick lika mycket') ger en sluten ekvation — räknas ofta som otillräcklig av misstag.",
       "why_it_occurs": "Studenten ser ordet 'om' och avskriver utsagan som spekulation — men Hypotes som binder en obekant till en explicit volym ÄR en linjär ekvation.",
       "common_distractor_signature": "Väljer E eller C när A/B/D är rätt: avfärdar en hypotetisk utsaga som 'om-spekulation' och missar dess algebraiska kraft.",
@@ -163,6 +174,7 @@
     },
     {
       "id": "NOG-TRAP-012",
+      "name": "Parallella kedjor, fria toppar",
       "pattern_description": "Parallella jämförelse-kedjor (A>F, E>F) lämnar ordningen mellan toppen av varje kedja FRI — även tillsammans räcker de inte.",
       "why_it_occurs": "Studenten ser flera ojämlikheter med samma referens och antar att alla entiteter är ordnade — men 'A>F och E>F' säger ingenting om A vs E.",
       "common_distractor_signature": "Väljer C eller D när E är rätt: räknar två kedjor med samma botten som globala ordningar, fast topparna är fria.",
@@ -176,6 +188,7 @@
     },
     {
       "id": "NOG-TRAP-013",
+      "name": "Intill-kedja med ändlås",
       "pattern_description": "Konsekutiv 'intill'-kedja + en uteslutning av en ändposition ger total ordning — räknas ofta som otillräcklig av misstag.",
       "why_it_occurs": "Studenten ser flera relationsvillkor och tror att kedjan är 'flytande' — men en stel blockstruktur + en ändlåsning fixerar alla positioner.",
       "common_distractor_signature": "Väljer C eller E när A/B/D är rätt: räknar en kedja + en uteslutning som otillräckligt, fast den faktiskt fixerar permutationen.",
@@ -191,6 +204,7 @@
     },
     {
       "id": "NOG-TRAP-014",
+      "name": "N minus ett räcker",
       "pattern_description": "I tilldelnings-problem med N entiteter räcker det ofta att låsa N−1 platser — den sista följer automatiskt; studenten tror felaktigt att alla N måste låsas.",
       "why_it_occurs": "Studenten räknar villkor 1-till-1 mot entiteter och tror att N obekanta kräver N utsagor — men i tilldelnings-problem är platserna inbördes beroende.",
       "common_distractor_signature": "Väljer C eller E när A/B/D är rätt: räknar ner kandidater för tidigt, missar att den sista entiteten saknar fria val.",
@@ -203,6 +217,7 @@
     },
     {
       "id": "NOG-TRAP-015",
+      "name": "Summan räcker, inte delarna",
       "pattern_description": "Frågan efterfrågar en KOMBINATION (x+y, a+b, medel) — då räcker en utsaga som direkt isolerar kombinationen, även om varje obekant förblir okänd.",
       "why_it_occurs": "Studenten antar att man måste lösa ut varje obekant individuellt — och avfärdar utsagor som bara binder summan x+y som 'otillräckliga'.",
       "common_distractor_signature": "Väljer C eller E när A/B är rätt: räknar fram att x och y inte är individuellt bestämda och missar att deras SUMMA är låst.",
@@ -215,6 +230,7 @@
     },
     {
       "id": "NOG-TRAP-016",
+      "name": "Bara tecknet behövs",
       "pattern_description": "Tecken/paritet-frågor ('är x<0?', 'är n jämnt?') kan låsas av olikheter eller udda potenser — fast frågan inte söker absolutvärdet.",
       "why_it_occurs": "Studenten avfärdar tecken-utsagor som 'inte tillräckligt' eftersom de inte ger ett numeriskt värde — men för ja/nej-frågor om tecken räcker det att tecknet är låst.",
       "common_distractor_signature": "Väljer C eller E när A/B/D är rätt: ignorerar att x^udda < 0 ⇔ x < 0 är teckenbevarande, eller att en produkts tecken låses av antalet negativa faktorer.",
@@ -228,6 +244,7 @@
     },
     {
       "id": "NOG-TRAP-017",
+      "name": "Modulo utan tak",
       "pattern_description": "Modulo-/delbarhetsvillkor utan övre gräns lämnar oändligt många lösningar — räcker aldrig ensamt.",
       "why_it_occurs": "Studenten ser ett konkret delbarhets-villkor och antar att det binder talet — men 'delbart med 7' har lösningar 0, 7, 14, 21, ... utan slut.",
       "common_distractor_signature": "Väljer A/B/D när C eller E är rätt: räknar ett modulo-villkor som unikt låsande utan att kontrollera intervallet.",
@@ -241,6 +258,7 @@
     },
     {
       "id": "NOG-TRAP-018",
+      "name": "Venn med saknat fält",
       "pattern_description": "Inklusion-exklusion: total = |A|+|B|−|båda|+|varken|; tre av fyra Venn-tal räcker INTE för att låsa det fjärde utan minst en partitionsregel.",
       "why_it_occurs": "Studenten ser 'antal med A' + 'antal med B' och drar ihop dem som totalsumma — men dubbelräknar snittet och missar 'varken'.",
       "common_distractor_signature": "Väljer A/B/C när E är rätt: räknar |A|+|B| och tror att den är totalen, fast både snittet och 'varken' behövs.",
@@ -255,6 +273,7 @@
     },
     {
       "id": "NOG-TRAP-019",
+      "name": "Procentkedja utan ankare",
       "pattern_description": "Procentkedjor (faktor·faktor) räcker för procent-OUTPUT men aldrig för absoluta värden — ursprungspriset stryks ut.",
       "why_it_occurs": "Studenten blandar ihop 'vad är ny pris?' (kräver ursprung) med 'vad är total procentändring?' (kräver bara faktorer) och avfärdar enkla procentkedjor.",
       "common_distractor_signature": "Väljer C eller E när A/B är rätt: tror att en procentkedja ensamt aldrig räcker, fast den räcker fullt ut för totala procent-ändringar.",
@@ -268,6 +287,7 @@
     },
     {
       "id": "NOG-TRAP-020",
+      "name": "Medel binder bara summan",
       "pattern_description": "Median/medel ger bara aggregerade egenskaper — de låser inte individuella tal i en serie utan extra struktur.",
       "why_it_occurs": "Studenten ser 'medel = M' och drar slutsatsen att enskilda värden är bestämda — men medel binder bara summan; medianen binder bara mittenvärdet.",
       "common_distractor_signature": "Väljer C eller D när E är rätt: räknar medel/median som om de fixerade individuella värden, fast de bara begränsar en aggregat-egenskap.",
@@ -283,6 +303,7 @@
     },
     {
       "id": "NOG-TRAP-021",
+      "name": "Vinkel lika kraftfull som sida",
       "pattern_description": "I rätvinklig triangel räcker en ytterligare uppgift (en katet, en sida, eller en spetsig vinkel) tillsammans med hypotenusan — likformighet/Pythagoras låser resten.",
       "why_it_occurs": "Studenten tror att en spetsig vinkel är 'mindre information' än en sida och avfärdar utsagan som otillräcklig — fast en vinkel räcker för att låsa formen.",
       "common_distractor_signature": "Väljer C eller E när D är rätt: räknar 'hypotenusa + vinkel' som otillräckligt, fast vinkeln ger likformigheten gratis.",
@@ -295,6 +316,7 @@
     },
     {
       "id": "NOG-TRAP-022",
+      "name": "Fart utan absolutvärde",
       "pattern_description": "Vid fart-/sträcka-uppgifter: utan en av (sträcka, hastighet, tid) explicit räcker inte de andra två — alla tre är beroende.",
       "why_it_occurs": "Studenten räknar med kvoter (s/v=t) och tror att förhållanden räcker — men för absoluta tider/sträckor krävs minst ETT absolutvärde i kedjan.",
       "common_distractor_signature": "Väljer C eller D när E är rätt: räknar 'tidsförhållande' som tillräckligt för absoluta tider, fast bara kvoten är låst.",
@@ -307,6 +329,7 @@
     },
     {
       "id": "NOG-TRAP-023",
+      "name": "Absolutvärdets dubbla rot",
       "pattern_description": "Absolutvärden eller hypotetiska 'avvikelse med ±k' lämnar alltid TVÅ kandidater — räcker inte ensamt för ett unikt svar.",
       "why_it_occurs": "Studenten ser 'avvek med 5 minuter' och tar bara den positiva tolkningen, missar att ±5 ger två lösningar.",
       "common_distractor_signature": "Väljer A/B när C eller E är rätt: räknar absolutvärdet som om det vore en signerad avvikelse.",
@@ -319,6 +342,7 @@
     },
     {
       "id": "NOG-TRAP-024",
+      "name": "Förhållande är en ekvation",
       "pattern_description": "Förhållande + summa (eller differens) = slutet linjärt system — ofta tror studenten att man behöver fler villkor.",
       "why_it_occurs": "Studenten ser 'A:B = 3:5' + 'A+B = 80' och tror att två obekanta kräver två 'riktiga' ekvationer — utan att inse att förhållandet ÄR en ekvation (B=5A/3).",
       "common_distractor_signature": "Väljer E när C är rätt: räknar förhållandet som 'mindre information' än en ekvation, fast det är fullt likvärdigt.",
@@ -335,6 +359,7 @@
     },
     {
       "id": "NOG-TRAP-025",
+      "name": "Fel storhet bevisad",
       "pattern_description": "Glömmer skilja på vad SVARET är från vad UTSAGAN binder — frågar 'kön på första person' men utsagan binder bara positioner, inte kön.",
       "why_it_occurs": "Studenten räknar att placeringen är bestämd och drar slutsatsen att frågan är besvarad — utan att verifiera att den specifika efterfrågade attributen är låst.",
       "common_distractor_signature": "Väljer A/B/C/D när E är rätt: bevisar något ANNAT än det frågan ber om, ofta en bredare egenskap istället för det specifika.",
