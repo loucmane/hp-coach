@@ -24,6 +24,8 @@ import type {
 } from '@/data/frameworks'
 import type { Section } from '@/data/questions'
 
+import { MarkAsReadPill } from './MarkAsReadPill'
+
 type AnyProtocolEntry = TacticEntry | ConstraintEntry | ProtocolEntryType
 
 function isTactic(e: AnyProtocolEntry): e is TacticEntry {
@@ -49,9 +51,19 @@ function getKickerLabel(entry: AnyProtocolEntry): string {
   return entry.id.replace('-TYPE-', ' · TYP ')
 }
 
-export function ProtocolCard({ entry, section }: { entry: AnyProtocolEntry; section: Section }) {
+export function ProtocolCard({
+  entry,
+  section,
+  read = false,
+  onToggleRead,
+}: {
+  entry: AnyProtocolEntry
+  section: Section
+  read?: boolean
+  onToggleRead?: () => void
+}) {
   const headword = getHeadword(entry)
-  const kicker = getKickerLabel(entry)
+  const kicker = `${getKickerLabel(entry)}${read ? ' · LÄST' : ''}`
 
   return (
     <details
@@ -169,7 +181,16 @@ export function ProtocolCard({ entry, section }: { entry: AnyProtocolEntry; sect
           </>
         )}
 
-        <div style={{ marginTop: 24 }}>
+        <div
+          style={{
+            marginTop: 24,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 16,
+            flexWrap: 'wrap',
+          }}
+        >
           <Link
             to="/drill"
             search={{ section, framework: entry.id }}
@@ -185,6 +206,7 @@ export function ProtocolCard({ entry, section }: { entry: AnyProtocolEntry; sect
           >
             Öva denna sektion →
           </Link>
+          {onToggleRead && <MarkAsReadPill read={read} onToggle={onToggleRead} />}
         </div>
       </div>
     </details>

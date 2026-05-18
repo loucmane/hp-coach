@@ -17,7 +17,19 @@ import { Eyebrow } from '@/components/primitives'
 import type { TrapEntry } from '@/data/frameworks'
 import type { Section } from '@/data/questions'
 
-export function TrapCard({ entry, section }: { entry: TrapEntry; section: Section }) {
+import { MarkAsReadPill } from './MarkAsReadPill'
+
+export function TrapCard({
+  entry,
+  section,
+  read = false,
+  onToggleRead,
+}: {
+  entry: TrapEntry
+  section: Section
+  read?: boolean
+  onToggleRead?: () => void
+}) {
   return (
     <details
       style={{
@@ -45,7 +57,7 @@ export function TrapCard({ entry, section }: { entry: TrapEntry; section: Sectio
             gap: 16,
           }}
         >
-          <Eyebrow>{entry.id.replace('-TRAP-', ' · TRAP ')}</Eyebrow>
+          <Eyebrow>{`${entry.id.replace('-TRAP-', ' · TRAP ')}${read ? ' · LÄST' : ''}`}</Eyebrow>
           <span
             aria-hidden
             className="trap-card-toggle"
@@ -122,7 +134,16 @@ export function TrapCard({ entry, section }: { entry: TrapEntry; section: Sectio
             <MathText>{entry.common_distractor_signature}</MathText>
           </p>
         )}
-        <div style={{ marginTop: 24 }}>
+        <div
+          style={{
+            marginTop: 24,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 16,
+            flexWrap: 'wrap',
+          }}
+        >
           <Link
             to="/drill"
             search={{ section, framework: entry.id }}
@@ -138,6 +159,7 @@ export function TrapCard({ entry, section }: { entry: TrapEntry; section: Sectio
           >
             Öva detta mönster →
           </Link>
+          {onToggleRead && <MarkAsReadPill read={read} onToggle={onToggleRead} />}
         </div>
       </div>
     </details>

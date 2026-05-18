@@ -75,7 +75,7 @@ describe('generateDailyPlan — rule 5 (cold start)', () => {
     expect(plan.items[0]).toMatchObject({
       kind: 'drill',
       headline: expect.stringContaining('Diagnos'),
-      href: '/diagnostik',
+      href: '/drill',
       section: null,
     })
   })
@@ -139,7 +139,7 @@ describe('generateDailyPlan — rule 2 (weakest needs a lesson)', () => {
     const lesson = plan.items.find((i) => i.kind === 'lesson')
     expect(lesson).toBeDefined()
     expect(lesson?.section).toBe('NOG')
-    expect(lesson?.href).toBe('/lektion/NOG')
+    expect(lesson?.href).toBe('/lektion?section=NOG')
     expect(lesson?.rationale).toContain('1.1')
   })
 
