@@ -19,7 +19,7 @@ export const Route = createFileRoute('/')({
 function HomeRoute() {
   const navigate = useNavigate()
   const stats = useStats()
-  const { plan, allComplete, markComplete, regenerate } = useDailyPlan()
+  const { plan, allComplete, regenerate } = useDailyPlan()
 
   const streakDays = stats.data?.streakDays
 
@@ -27,7 +27,6 @@ function HomeRoute() {
     <HomeMobile
       plan={plan}
       allComplete={allComplete}
-      onMarkComplete={markComplete}
       onRegenerate={regenerate}
       onPlanItemNavigate={(href) => navigate({ to: href })}
       streakDays={streakDays}

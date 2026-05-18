@@ -119,11 +119,11 @@ describe('HomeMobile — streak badge (chrome, unchanged)', () => {
 })
 
 describe('HomeMobile — callbacks', () => {
-  it('fires onMarkComplete with the item id when a "Klar ✓" pill is tapped', async () => {
-    const onMarkComplete = vi.fn()
-    render(<HomeMobile forceLayout="phone" plan={makePlan()} onMarkComplete={onMarkComplete} />)
-    await userEvent.click(screen.getByTestId('daily-plan-mark-rep-2026-05-18'))
-    expect(onMarkComplete).toHaveBeenCalledWith('rep-2026-05-18')
+  it('does NOT render a manual "Klar" button — completion is derived from signals', () => {
+    render(<HomeMobile forceLayout="phone" plan={makePlan()} />)
+    expect(screen.queryByTestId('daily-plan-mark-rep-2026-05-18')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('daily-plan-mark-lesson-NOG-2026-05-18')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('daily-plan-mark-drill-KVA-2026-05-18')).not.toBeInTheDocument()
   })
 
   it('fires onRegenerate when the "Generera om" link is tapped', async () => {
