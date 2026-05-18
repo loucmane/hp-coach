@@ -1,15 +1,14 @@
-// `/` — Daily Home (mobile, editorial).
+// `/` — Daily Home.
 //
-// Wired to live stores: coach voice from useCoachStore, days-remaining
-// counter from useExamStore, the SRS queue count from useDueMistakes,
-// and the consecutive-days streak from useStats. CTA + tabs route
-// through the TanStack Router. Hardcoded prototype strings live
-// exactly nowhere now.
+// Composes `useDailyPlan()` (which resolves stats, due reps, framework
+// hints, lesson-read state and runs the scheduler) into `HomeMobile`.
+// Streak comes from `useStats()` directly so the badge can render
+// independently of the plan readiness.
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
-import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
+import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { TAB_ROUTE } from '@/lib/nav'
 import { HomeMobile } from '@/screens/HomeMobile'
 
@@ -19,22 +18,19 @@ export const Route = createFileRoute('/')({
 
 function HomeRoute() {
   const navigate = useNavigate()
-  const due = useDueMistakes()
   const stats = useStats()
-  // While the queries are loading we pass undefined → HomeMobile hides
-  // the link / streak badge. Better than flashing "0 …" then swapping
-  // in real values once the round-trip lands.
-  const dueCount = due.data?.length
+  const { plan, allComplete, regenerate } = useDailyPlan()
+
   const streakDays = stats.data?.streakDays
 
   return (
     <HomeMobile
-      dueCount={dueCount}
+      plan={plan}
+      allComplete={allComplete}
+      onRegenerate={regenerate}
+      onPlanItemNavigate={(href) => navigate({ to: href })}
       streakDays={streakDays}
-      onContinue={() => navigate({ to: '/drill' })}
       onAvancerat={() => navigate({ to: '/avancerat' })}
-      onRepetition={() => navigate({ to: '/repetition' })}
-      onLektion={() => navigate({ to: '/lektion' })}
       onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
     />
   )

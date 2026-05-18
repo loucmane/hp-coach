@@ -47,6 +47,14 @@ export type DailyPlan = {
   items: PlanItem[]
   /** Total estimated minutes across not-yet-completed items. */
   estimatedMinutes: number
+  /** Per-section `attempts7d` snapshot taken when the plan was
+   *  generated. Drives drill auto-completion: a drill item flips
+   *  to `completed` once the section's current `attempts7d` has
+   *  grown by enough to indicate the user actually drilled that
+   *  section. Pure `generateDailyPlan` doesn't set this — the
+   *  caller (e.g. `useDailyPlan`) attaches it after generation
+   *  to keep the pure function free of UI concerns. */
+  attemptsSnapshot?: Partial<Record<Section, number>>
 }
 
 /** Hint passed in for a section's framework first-entry. Lets the
@@ -187,7 +195,10 @@ function repetitionItem(count: number, date: string): PlanItem {
 }
 
 function lessonItem(score: SectionScore, hint: FrameworkHint | undefined, date: string): PlanItem {
-  const headword = hint?.headword
+  // Trap-catalog headwords are full sentences (the `pattern_description`
+  // field IS the canonical name; there's no short label). Truncate so
+  // the plan-card row stays one or two lines on phone.
+  const headword = hint?.headword ? truncateHeadword(hint.headword, 48) : null
   const headline = headword ? `${score.section}-lektion · ${headword}` : `${score.section}-lektion`
   return {
     id: `lesson-${score.section}-${date}`,
@@ -200,6 +211,15 @@ function lessonItem(score: SectionScore, hint: FrameworkHint | undefined, date: 
     href: `/lektion?section=${score.section}`,
     completed: false,
   }
+}
+
+function truncateHeadword(s: string, max: number): string {
+  if (s.length <= max) return s
+  // Cut on a word boundary near the limit so we don't slice mid-word.
+  const slice = s.slice(0, max - 1)
+  const lastSpace = slice.lastIndexOf(' ')
+  const trimmed = lastSpace > max - 16 ? slice.slice(0, lastSpace) : slice
+  return `${trimmed.replace(/[ ,.;:—–-]+$/, '')}…`
 }
 
 function lessonRationale(score: SectionScore): string {

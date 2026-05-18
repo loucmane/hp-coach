@@ -8,17 +8,13 @@
 // The signed-in fixture relies on globalSetup running clerkSetup() once at
 // the top of the run (see tests-e2e/global-setup.ts).
 //
-// Phase A.8.3 — selectors updated for the EDITION composition:
-//   - Custom Swedish card label "Logga in" replaces Clerk's default
-//     "Sign in to hp-coach" (Clerk title is hidden via clerkAppearance).
-//   - Home dropped the CoachLine "— coach · taktiker" attribution.
-//   - DesktopBody dropped the bottom Hem/Övning/Coach/Framsteg tabs;
-//     they live in PhoneBody only. Tests that depend on them are
-//     restricted to the `mobile` project via `test.skip(viewport)`.
-//   - CTA buttons run `.hpc-breathe` (opacity + scale cycle) which makes
-//     Playwright's stability check time out. We pass `{ force: true }`
-//     to clicks on those buttons — the user perceives them as clickable;
-//     the bounding box is stable enough in practice.
+// B3.2 — selectors updated for the prescriptive daily-plan composition:
+//   - "Fortsätt" CTA is gone. The Home hero is now the daily-plan card,
+//     and plan items are individual deep-links (no single Fortsätt button).
+//   - "Avancerat" trailing link is gone. The escape hatches are the
+//     floating tab bar and Cmd+K palette.
+//   - The compact "God morgon." greeting + the `daily-plan-card`/
+//     `daily-plan-skeleton` testid are the load indicators.
 
 import { expect, test } from '@playwright/test'
 import { expect as authedExpect, test as authedTest } from './fixtures'
@@ -33,11 +29,14 @@ test('unauthenticated visit to / redirects to /sign-in', async ({ page }) => {
 })
 
 // ── Signed-in ──────────────────────────────────────────────────────────
-authedTest('Daily Home renders with iconic CTA', async ({ page }) => {
-  const cta = page.getByRole('button', { name: 'Fortsätt' })
-  await authedExpect(cta).toBeVisible()
-  await cta.focus()
-  await authedExpect(cta).toBeFocused()
+authedTest('Daily Home renders the prescriptive plan card', async ({ page }) => {
+  // The greeting is rendered immediately; the plan card resolves after
+  // stats + due + framework hints settle. Both are valid load indicators.
+  await authedExpect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 10_000 })
+  // Either the resolved card or the skeleton — both prove the route hydrated.
+  const card = page.getByTestId('daily-plan-card')
+  const skeleton = page.getByTestId('daily-plan-skeleton')
+  await authedExpect(card.or(skeleton)).toBeVisible({ timeout: 10_000 })
 })
 
 authedTest('Bottom tabs visible on phone (Hem/Övning/Coach/Framsteg)', async ({ page }, testInfo) => {
@@ -50,29 +49,6 @@ authedTest('Bottom tabs visible on phone (Hem/Övning/Coach/Framsteg)', async ({
   await authedExpect(page.getByRole('button', { name: 'Coach' })).toBeVisible()
   await authedExpect(page.getByRole('button', { name: 'Framsteg' })).toBeVisible()
 })
-
-authedTest('Fortsätt routes to /drill', async ({ page }) => {
-  // `.hpc-breathe` animation makes the button never "stable" by
-  // Playwright's default check. `force: true` skips that check.
-  await page.getByRole('button', { name: 'Fortsätt' }).click({ force: true })
-  await authedExpect(page).toHaveURL(/\/drill$/)
-  // The drill route now mounts the real engine; idle state is the
-  // visible landing for an unstarted drill.
-  await authedExpect(page.getByTestId('drill-idle')).toBeVisible({ timeout: 10_000 })
-})
-
-authedTest(
-  'Avancerat link routes to /avancerat (and tabs are hidden there)',
-  async ({ page }, testInfo) => {
-    test.skip(
-      testInfo.project.name !== 'mobile',
-      'Avancerat link lives in PhoneBody trailing row; DesktopBody dropped it (Phase A.8 EDITION)',
-    )
-    await page.getByRole('button', { name: 'Avancerat' }).click({ force: true })
-    await authedExpect(page).toHaveURL(/\/avancerat$/)
-    await authedExpect(page.getByRole('button', { name: 'Hem', exact: true })).toHaveCount(0)
-  },
-)
 
 authedTest('Bottom tabs route between sections', async ({ page }, testInfo) => {
   test.skip(

@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 
 import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
-import { type Framework, loadFramework } from '@/data/frameworks'
+import { entryHeadword, loadFramework } from '@/data/frameworks'
 import { findQuestion, loadBank, type Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
@@ -160,27 +160,6 @@ function DrillScreen() {
       }}
     />
   )
-}
-
-// Resolve the human-readable headword for a framework entry. Each
-// schema family puts its summary headword on a different field (root
-// for ORD, tactic for DTK, etc.) — this collapses the union.
-function entryHeadword(entry: Framework['entries'][number], framework: Framework): string | null {
-  switch (framework.family) {
-    case 'ord_roots':
-      return 'root' in entry ? entry.root : null
-    case 'dtk_tactics':
-      return 'tactic' in entry ? entry.tactic : null
-    case 'mek_protocol':
-      return 'constraint_type' in entry ? entry.constraint_type : null
-    case 'las_taxonomy':
-    case 'elf_taxonomy':
-      return 'question_type' in entry ? entry.question_type : null
-    case 'nog_traps':
-    case 'kva_traps':
-    case 'xyz_traps':
-      return 'pattern_description' in entry ? entry.pattern_description : null
-  }
 }
 
 // Build the question plan for a framework deep-link. Loads the section's

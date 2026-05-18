@@ -6,13 +6,19 @@
 //   - 1024×768   → reader    (.hpc-frame-reader, ~960px canvas)
 //   - 1440×900   → studio    (.hpc-frame-studio, ~1344px canvas)
 //
-// Phase A.8 EDITION changes that updated this suite:
+// B3.2 updates:
+//   - "Fortsätt" CTA is gone; load indicator is now `home-greeting` testid.
+//   - Plan marginalia (`home-plan-marginalia`) is gone; the daily-plan
+//     card (`daily-plan-card` / `daily-plan-skeleton`) takes its place.
+//   - The compact greeting h1 clamps to 28–48px (was 100+px). The
+//     old "typographic event" masthead test is dropped in favour of
+//     a plan-card visibility check.
+//
+// Phase A.8 EDITION baseline still applies:
 //   - DesktopNav removed. The <Page> shell (running head + folio +
-//     status line) now provides editorial chrome at reader/studio.
+//     status line) provides editorial chrome at reader/studio.
 //   - BottomTabs render ONLY at phone — desktop tests can't depend on
 //     Hem/Övning/Coach/Framsteg buttons existing.
-//   - Home: 3-tile bento dropped → single hero masthead + marginalia.
-//     The plan tile is now `home-plan-marginalia` (was `home-tile-plan`).
 //   - AuthLayout testids `auth-form-pane` / `auth-brand-pane` stay; the
 //     brand pane is hidden at phone.
 
@@ -53,11 +59,9 @@ for (const v of VIEWPORTS) {
     await page.setViewportSize({ width: v.width, height: v.height })
     await page.goto('/')
 
-    // Wait for the daily-home CTA — confirms the page hydrated and the
-    // Frame's children rendered. Available at every viewport.
-    await expect(page.getByRole('button', { name: 'Fortsätt' })).toBeVisible({
-      timeout: 10_000,
-    })
+    // Wait for the daily-home greeting — confirms the page hydrated.
+    // Available at every viewport, doesn't depend on stats/due fetch.
+    await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 10_000 })
 
     // The Frame orchestrator slaps its branch class onto its root div.
     const frame = page.locator(`.${v.expectedFrameClass}`)
@@ -98,9 +102,7 @@ for (const v of VIEWPORTS) {
   test(`Cmd+K opens at ${v.name} (${v.width}×${v.height})`, async ({ page }) => {
     await page.setViewportSize({ width: v.width, height: v.height })
     await page.goto('/')
-    await expect(page.getByRole('button', { name: 'Fortsätt' })).toBeVisible({
-      timeout: 10_000,
-    })
+    await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 10_000 })
 
     await page.keyboard.press('Control+K')
     const palette = page.getByTestId('cmdk')
@@ -131,9 +133,7 @@ test('Page shell renders at desktop, BottomTabs at phone', async ({ page }) => {
   // Studio
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
-  await expect(page.getByRole('button', { name: 'Fortsätt' })).toBeVisible({
-    timeout: 10_000,
-  })
+  await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 10_000 })
   // Editorial running-head band + status line are the Page shell's contract.
   await expect(page.getByTestId('page-shell')).toBeVisible()
   await expect(page.getByTestId('running-head')).toContainText(/HP\s*·\s*Coach/i)
@@ -143,32 +143,30 @@ test('Page shell renders at desktop, BottomTabs at phone', async ({ page }) => {
   // visible.
   await page.setViewportSize({ width: 390, height: 844 })
   await page.reload()
-  await expect(page.getByRole('button', { name: 'Fortsätt' })).toBeVisible({
-    timeout: 10_000,
-  })
+  await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 10_000 })
   await expect(page.getByTestId('page-shell')).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Hem', exact: true })).toBeVisible()
 })
 
-test('Home masthead renders the typographic event at studio', async ({ page }) => {
+test('Daily Home renders the prescriptive plan card at studio', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
-  await expect(page.getByRole('button', { name: 'Fortsätt' })).toBeVisible({
-    timeout: 10_000,
-  })
+  await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 10_000 })
 
-  // The Dagens-plan marginalia sits to the right of the masthead at
-  // reader+. Phase A.8 renamed it from `home-tile-plan` to
-  // `home-plan-marginalia` when card chrome was dropped in favour of
-  // a single 1px hairline rule on the cell's leading edge.
-  await expect(page.getByTestId('home-plan-marginalia')).toBeVisible()
+  // The plan card (or its skeleton during the stats round-trip) is the
+  // hero. Either is a valid prove-it-rendered signal.
+  const card = page.getByTestId('daily-plan-card')
+  const skeleton = page.getByTestId('daily-plan-skeleton')
+  await expect(card.or(skeleton)).toBeVisible({ timeout: 10_000 })
 
-  // Masthead headline (one of the hour-greetings: god morgon/dag/etc.)
+  // The compact greeting h1 clamps to 28–48px at studio — far smaller
+  // than the old hero masthead (which was 100+px). The plan items below
+  // are the typographic event now, not the greeting.
   const h1 = page.locator('h1').first()
   await expect(h1).toBeVisible()
   const fontSize = await h1.evaluate((el) => parseFloat(getComputedStyle(el).fontSize))
-  // At 1440p the clamp() should land between 100-128px.
-  expect(fontSize).toBeGreaterThan(80)
+  expect(fontSize).toBeGreaterThanOrEqual(28)
+  expect(fontSize).toBeLessThanOrEqual(56)
 })
 
 test('Auth brand pane visible at studio, hidden at phone', async ({ page: rawPage }) => {
