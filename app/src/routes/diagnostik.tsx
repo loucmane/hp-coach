@@ -1,9 +1,10 @@
 // /diagnostik — 10-question onboarding diagnostic (B4).
 //
 // Thin route over SessionPlayer with a custom picker that samples
-// across all 8 sections. Results record like any other session, so
-// the next plan generation has real per-section signal. The cold-
-// start scheduler item (`Diagnos · några frågor`) deep-links here.
+// across all 8 sections in a balanced distribution. Results record
+// like any other session, so the next plan generation has real
+// per-section signal. The cold-start scheduler item
+// (`Diagnos · några frågor`) deep-links here.
 //
 // Visible to authenticated users; reachable any time the user wants
 // to re-baseline. After completion the user lands on the standard
