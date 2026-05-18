@@ -14,6 +14,7 @@ import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { type Framework, loadFramework } from '@/data/frameworks'
 import { findQuestion, loadBank, type Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
+import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 
 const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG', 'DTK'] as const
 type DrillSection = (typeof DRILL_SECTIONS)[number]
@@ -42,20 +43,6 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
     out.framework = framework
   }
   return out
-}
-
-// Rough drill-time estimates per section. Match the section's pacing
-// from real exams so the idle-screen hint isn't lying. ORD is fastest
-// (single headword); reading/quant sections take longer per question.
-const SECTION_DURATIONS: Record<DrillSection, number> = {
-  ORD: 3,
-  LÄS: 10,
-  MEK: 5,
-  ELF: 10,
-  XYZ: 8,
-  KVA: 6,
-  NOG: 12,
-  DTK: 15,
 }
 
 const SECTION_COPY: Record<DrillSection, { headline: string; subcopy: string }> = {
