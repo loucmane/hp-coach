@@ -11,7 +11,17 @@ import { Link } from '@tanstack/react-router'
 import { Eyebrow } from '@/components/primitives'
 import type { LexiconEntry } from '@/data/frameworks'
 
-export function LexiconCard({ entry }: { entry: LexiconEntry }) {
+import { MarkAsReadPill } from './MarkAsReadPill'
+
+export function LexiconCard({
+  entry,
+  read = false,
+  onToggleRead,
+}: {
+  entry: LexiconEntry
+  read?: boolean
+  onToggleRead?: () => void
+}) {
   return (
     <details
       style={{
@@ -39,6 +49,7 @@ export function LexiconCard({ entry }: { entry: LexiconEntry }) {
         >
           <Eyebrow>
             {entry.id.replace('-ROOT-', ' · ROT ')} · {entry.origin}
+            {read ? ' · LÄST' : ''}
           </Eyebrow>
           <span
             aria-hidden
@@ -107,7 +118,16 @@ export function LexiconCard({ entry }: { entry: LexiconEntry }) {
             </li>
           ))}
         </ul>
-        <div style={{ marginTop: 24 }}>
+        <div
+          style={{
+            marginTop: 24,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 16,
+            flexWrap: 'wrap',
+          }}
+        >
           <Link
             to="/drill"
             search={{ section: 'ORD' as const, framework: entry.id }}
@@ -123,6 +143,7 @@ export function LexiconCard({ entry }: { entry: LexiconEntry }) {
           >
             Öva ord med denna rot →
           </Link>
+          {onToggleRead && <MarkAsReadPill read={read} onToggle={onToggleRead} />}
         </div>
       </div>
     </details>

@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import { Mono } from '@/components/primitives'
 import { type Framework, loadFramework } from '@/data/frameworks'
 import type { Section } from '@/data/questions'
+import { useLessonReads } from '@/hooks/useLessonReads'
 
 import { LexiconCard } from './LexiconCard'
 import { ProtocolCard } from './ProtocolCard'
@@ -171,6 +172,7 @@ export function LessonReader({ section }: { section: Section }) {
 }
 
 function FrameworkBody({ framework, section }: { framework: Framework; section: Section }) {
+  const { isRead, toggleRead } = useLessonReads()
   // Dispatch on the framework's discriminating family. Trap catalogs
   // (NOG/KVA/XYZ) → TrapCard. Tactic / constraint / protocol catalogs
   // (DTK/MEK/LÄS/ELF) → ProtocolCard. Lexicon (ORD) → LexiconCard.
@@ -181,7 +183,13 @@ function FrameworkBody({ framework, section }: { framework: Framework; section: 
       return (
         <>
           {framework.entries.map((entry) => (
-            <TrapCard key={entry.id} entry={entry} section={section} />
+            <TrapCard
+              key={entry.id}
+              entry={entry}
+              section={section}
+              read={isRead(entry.id)}
+              onToggleRead={() => toggleRead(entry.id)}
+            />
           ))}
         </>
       )
@@ -192,7 +200,13 @@ function FrameworkBody({ framework, section }: { framework: Framework; section: 
       return (
         <>
           {framework.entries.map((entry) => (
-            <ProtocolCard key={entry.id} entry={entry} section={section} />
+            <ProtocolCard
+              key={entry.id}
+              entry={entry}
+              section={section}
+              read={isRead(entry.id)}
+              onToggleRead={() => toggleRead(entry.id)}
+            />
           ))}
         </>
       )
@@ -200,7 +214,12 @@ function FrameworkBody({ framework, section }: { framework: Framework; section: 
       return (
         <>
           {framework.entries.map((entry) => (
-            <LexiconCard key={entry.id} entry={entry} />
+            <LexiconCard
+              key={entry.id}
+              entry={entry}
+              read={isRead(entry.id)}
+              onToggleRead={() => toggleRead(entry.id)}
+            />
           ))}
         </>
       )
