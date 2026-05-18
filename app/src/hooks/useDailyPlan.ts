@@ -181,9 +181,11 @@ async function resolveFrameworkHints(): Promise<FrameworkHints> {
 }
 
 /** Derive completion for every plan item from current signals.
- *  Returns a new plan object when any item flipped (so React
- *  equality comparisons trigger re-render) or the same reference
- *  when nothing did. */
+ *  Always recomputes — the persisted flag is treated as a cache, not
+ *  the source of truth. This means a stale `completed: true` (e.g.
+ *  from a now-removed manual button) flips back to false the next
+ *  time signals say it isn't done. Returns a new plan when any item
+ *  flipped (React equality), or the same reference when nothing did. */
 function deriveCompletion(
   plan: DailyPlan,
   dueCount: number,
@@ -192,28 +194,37 @@ function deriveCompletion(
 ): DailyPlan {
   let changed = false
   const items: PlanItem[] = plan.items.map((item) => {
-    if (item.completed) return item
-    if (item.kind === 'repetition' && dueCount === 0) {
-      changed = true
-      return { ...item, completed: true }
-    }
-    if (item.kind === 'lesson' && item.framework && lessonReads.has(item.framework)) {
-      changed = true
-      return { ...item, completed: true }
-    }
-    if (item.kind === 'drill' && item.section && plan.attemptsSnapshot) {
-      const baseline = plan.attemptsSnapshot[item.section] ?? 0
-      const current = bySection[item.section].attempts7d
-      if (current - baseline >= DRILL_COMPLETE_THRESHOLD) {
-        changed = true
-        return { ...item, completed: true }
-      }
-    }
-    return item
+    const derived = isItemComplete(item, plan, dueCount, lessonReads, bySection)
+    if (derived === item.completed) return item
+    changed = true
+    return { ...item, completed: derived }
   })
   if (!changed) return plan
   const estimatedMinutes = items
     .filter((i) => !i.completed)
     .reduce((sum, i) => sum + i.estimatedMinutes, 0)
   return { ...plan, items, estimatedMinutes }
+}
+
+function isItemComplete(
+  item: PlanItem,
+  plan: DailyPlan,
+  dueCount: number,
+  lessonReads: Set<string>,
+  bySection: BySection,
+): boolean {
+  if (item.kind === 'repetition') return dueCount === 0
+  if (item.kind === 'lesson') {
+    // No framework hint resolved → can't auto-complete (rare edge case
+    // where the section has no entries; the item is still actionable).
+    return item.framework ? lessonReads.has(item.framework) : false
+  }
+  if (item.kind === 'drill' && item.section && plan.attemptsSnapshot) {
+    const baseline = plan.attemptsSnapshot[item.section] ?? 0
+    const current = bySection[item.section].attempts7d
+    return current - baseline >= DRILL_COMPLETE_THRESHOLD
+  }
+  // Cross-section mastery / warmup drills — no per-section signal, so
+  // they stay actionable until tomorrow's plan generates fresh.
+  return false
 }
