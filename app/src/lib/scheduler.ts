@@ -274,9 +274,9 @@ function masteryMaintenanceItem(date: string): PlanItem {
 }
 
 function coldStartItem(date: string): PlanItem {
-  // B4 will ship /diagnostik; until then the link falls through to the
-  // section picker on /drill. The headline + rationale frame it as a
-  // diagnostic regardless of where the route lands.
+  // /diagnostik is the B4 onboarding flow — 10 questions across all
+  // sections, seeds the score model so the next plan generation has
+  // real signal.
   return {
     id: `cold-${date}`,
     kind: 'drill',
