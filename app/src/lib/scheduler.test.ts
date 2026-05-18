@@ -75,7 +75,7 @@ describe('generateDailyPlan — rule 5 (cold start)', () => {
     expect(plan.items[0]).toMatchObject({
       kind: 'drill',
       headline: expect.stringContaining('Diagnos'),
-      href: '/drill',
+      href: '/diagnostik',
       section: null,
     })
   })

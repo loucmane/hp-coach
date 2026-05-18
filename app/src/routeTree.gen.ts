@@ -22,6 +22,7 @@ import { Route as DrillStyleBRouteImport } from './routes/drill-style-b'
 import { Route as DrillStyleARouteImport } from './routes/drill-style-a'
 import { Route as DrillBakeOffRouteImport } from './routes/drill-bake-off'
 import { Route as DrillRouteImport } from './routes/drill'
+import { Route as DiagnostikRouteImport } from './routes/diagnostik'
 import { Route as DevLoginRouteImport } from './routes/dev-login'
 import { Route as DevRouteImport } from './routes/dev'
 import { Route as CoachRouteImport } from './routes/coach'
@@ -93,6 +94,11 @@ const DrillRoute = DrillRouteImport.update({
   path: '/drill',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DiagnostikRoute = DiagnostikRouteImport.update({
+  id: '/diagnostik',
+  path: '/diagnostik',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DevLoginRoute = DevLoginRouteImport.update({
   id: '/dev-login',
   path: '/dev-login',
@@ -125,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
   '/dev-login': typeof DevLoginRoute
+  '/diagnostik': typeof DiagnostikRoute
   '/drill': typeof DrillRoute
   '/drill-bake-off': typeof DrillBakeOffRoute
   '/drill-style-a': typeof DrillStyleARoute
@@ -145,6 +152,7 @@ export interface FileRoutesByTo {
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
   '/dev-login': typeof DevLoginRoute
+  '/diagnostik': typeof DiagnostikRoute
   '/drill': typeof DrillRoute
   '/drill-bake-off': typeof DrillBakeOffRoute
   '/drill-style-a': typeof DrillStyleARoute
@@ -166,6 +174,7 @@ export interface FileRoutesById {
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
   '/dev-login': typeof DevLoginRoute
+  '/diagnostik': typeof DiagnostikRoute
   '/drill': typeof DrillRoute
   '/drill-bake-off': typeof DrillBakeOffRoute
   '/drill-style-a': typeof DrillStyleARoute
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/dev-login'
+    | '/diagnostik'
     | '/drill'
     | '/drill-bake-off'
     | '/drill-style-a'
@@ -208,6 +218,7 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/dev-login'
+    | '/diagnostik'
     | '/drill'
     | '/drill-bake-off'
     | '/drill-style-a'
@@ -228,6 +239,7 @@ export interface FileRouteTypes {
     | '/coach'
     | '/dev'
     | '/dev-login'
+    | '/diagnostik'
     | '/drill'
     | '/drill-bake-off'
     | '/drill-style-a'
@@ -249,6 +261,7 @@ export interface RootRouteChildren {
   CoachRoute: typeof CoachRoute
   DevRoute: typeof DevRoute
   DevLoginRoute: typeof DevLoginRoute
+  DiagnostikRoute: typeof DiagnostikRoute
   DrillRoute: typeof DrillRoute
   DrillBakeOffRoute: typeof DrillBakeOffRoute
   DrillStyleARoute: typeof DrillStyleARoute
@@ -357,6 +370,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DrillRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/diagnostik': {
+      id: '/diagnostik'
+      path: '/diagnostik'
+      fullPath: '/diagnostik'
+      preLoaderRoute: typeof DiagnostikRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dev-login': {
       id: '/dev-login'
       path: '/dev-login'
@@ -401,6 +421,7 @@ const rootRouteChildren: RootRouteChildren = {
   CoachRoute: CoachRoute,
   DevRoute: DevRoute,
   DevLoginRoute: DevLoginRoute,
+  DiagnostikRoute: DiagnostikRoute,
   DrillRoute: DrillRoute,
   DrillBakeOffRoute: DrillBakeOffRoute,
   DrillStyleARoute: DrillStyleARoute,
