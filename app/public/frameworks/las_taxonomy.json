@@ -3,34 +3,34 @@
   "family": "las_taxonomy",
   "version": 1,
   "authored_at": "2026-05-11",
-  "notes": "Layer 1 question-type taxonomy for LÄS (Swedish reading). Eight types covering literal retrieval, inference, author stance, rhetorical purpose, characterization/summary, contrast (skillnadsfrågor), logical entailment / consequence, and conditional 'och i så fall'-format. Synthesized from direct corpus reading of 540 LÄS prompts across 28 exams (the candidates extractor only surfaced one cluster, so the entries below are grounded in hand-tagged qids rather than statistical clusters).",
+  "notes": "Layer 1-taxonomi över frågetyper för LÄS (svensk läsförståelse). Åtta typer som täcker direkt detalj, slutsatsdragning, författarens hållning, retorisk funktion, karakterisering/sammanfattning, skillnadsfrågor, logisk följd och 'och i så fall'-villkorade frågor. Syntetiserad genom direkt korpusläsning av 540 LÄS-frågor över 28 prov (kandidat-extraktorn fångade bara ett kluster, så posterna nedan bygger på handmärkta qids snarare än statistiska kluster).",
   "entries": [
     {
       "id": "LAS-TYPE-001",
-      "question_type": "Literal retrieval",
+      "question_type": "Direkt detalj",
       "attack_protocol": [
-        "Note the trigger phrase 'enligt texten' / 'enligt textförfattaren' / 'av texten framgår' — the answer must be stated in the passage, not inferred.",
-        "Identify the named entity, study, person, year, or claim the question pins down (e.g. 'VA-nämnden', '1977 års tillträdesreform', 'Sten-Olof Ullströms avhandling').",
-        "Scan the passage for that entity and read the surrounding sentence carefully — do not paraphrase from memory.",
-        "Match the option that restates the passage's wording most faithfully. Reject any option that adds an idea the text does not contain, even if it sounds plausible.",
-        "If two options seem to match, prefer the one whose scope (degree, time, agent) is identical to the text — wrong options usually overgeneralize or shift the agent."
+        "Notera triggerfrasen 'enligt texten' / 'enligt textförfattaren' / 'av texten framgår' — svaret måste stå uttryckt i passagen, inte härledas.",
+        "Identifiera den namngivna entiteten, studien, personen, året eller påståendet som frågan låser fast (t.ex. 'VA-nämnden', '1977 års tillträdesreform', 'Sten-Olof Ullströms avhandling').",
+        "Sök igenom passagen efter den entiteten och läs den omgivande meningen noga — parafrasera inte ur minnet.",
+        "Matcha alternativet som återger passagens formulering mest troget. Förkasta alla alternativ som lägger till en idé texten inte innehåller, även om det låter rimligt.",
+        "Om två alternativ verkar matcha: välj det vars räckvidd (grad, tid, aktör) är identisk med textens — fel alternativ generaliserar oftast för brett eller byter aktör."
       ],
       "common_distractors": [
         {
-          "pattern": "True-sounding world knowledge not stated in the text",
-          "why_it_traps": "Students fill the gap with what they know from biology/law/history class. The HP only credits what the passage says."
+          "pattern": "Sannolikt klingande allmänkunskap som inte står i texten",
+          "why_it_traps": "Studenten fyller luckan med vad hen kan från biologi/juridik/historia. HP ger bara poäng för det som faktiskt står i passagen."
         },
         {
-          "pattern": "Right entity, wrong attribute",
-          "why_it_traps": "Mentions a name from the text but pairs it with a fact that belongs to a different name (e.g. swaps the recensent's claim with the avhandling's claim)."
+          "pattern": "Rätt entitet, fel egenskap",
+          "why_it_traps": "Nämner ett namn från texten men parar det med ett faktum som hör till ett annat namn (t.ex. byter recensentens påstående mot avhandlingens)."
         },
         {
-          "pattern": "Overgeneralization of a hedged claim",
-          "why_it_traps": "Text says 'en bidragande orsak' / 'kan vara'; distractor says 'huvudorsaken' / 'är'. Sounds like a fair summary, isn't."
+          "pattern": "Övergeneralisering av ett hedgat påstående",
+          "why_it_traps": "Texten säger 'en bidragande orsak' / 'kan vara'; distraktorn säger 'huvudorsaken' / 'är'. Låter som en rättvis sammanfattning, är det inte."
         },
         {
-          "pattern": "Adjacent fact from the same paragraph",
-          "why_it_traps": "The wrong fact sits next to the right one in the passage; students see the keyword and grab the nearest plausible sentence."
+          "pattern": "Närliggande faktum från samma stycke",
+          "why_it_traps": "Det felaktiga faktumet står precis bredvid det rätta i passagen; studenten ser nyckelordet och griper närmsta rimliga mening."
         }
       ],
       "example_questions": [
@@ -46,30 +46,30 @@
     },
     {
       "id": "LAS-TYPE-002",
-      "question_type": "Inference / implication",
+      "question_type": "Slutsatsdragning / implikation",
       "attack_protocol": [
-        "Note the inference trigger: 'av texten att döma', 'tycks', 'mest sannolikt', 'mest rimlig', 'antyder', 'utifrån resonemanget'.",
-        "The answer is NOT verbatim in the text — but it must follow from what the text says without adding outside premises.",
-        "Locate the passage segment the question points to and articulate the underlying premise in your own words.",
-        "Test each option: does it follow from the premise using only information in the passage? Eliminate options that need an extra assumption the text never establishes.",
-        "Prefer the most cautious option that still answers the question — strongly worded inferences are usually traps."
+        "Notera slutsatstriggern: 'av texten att döma', 'tycks', 'mest sannolikt', 'mest rimlig', 'antyder', 'utifrån resonemanget'.",
+        "Svaret står INTE ordagrant i texten — men det måste följa av det texten säger utan att lägga till yttre premisser.",
+        "Lokalisera det textparti frågan pekar på och formulera den underliggande premissen i egna ord.",
+        "Testa varje alternativ: följer det av premissen med enbart information från passagen? Eliminera alternativ som kräver en extra antagande som texten aldrig etablerar.",
+        "Föredra det mest försiktiga alternativ som ändå besvarar frågan — starkt formulerade slutsatser är oftast fällor."
       ],
       "common_distractors": [
         {
-          "pattern": "Inference that requires external knowledge",
-          "why_it_traps": "Reads as 'common sense' but the premise needed isn't in the passage."
+          "pattern": "Slutsats som kräver yttre kunskap",
+          "why_it_traps": "Läses som 'sunt förnuft' men den premiss som krävs finns inte i passagen."
         },
         {
-          "pattern": "Too-strong conclusion from a hedged premise",
-          "why_it_traps": "Passage says 'kan tyda på' / 'en bidragande faktor'; the option converts it to a categorical claim."
+          "pattern": "Alltför stark slutsats från en hedgad premiss",
+          "why_it_traps": "Passagen säger 'kan tyda på' / 'en bidragande faktor'; alternativet omvandlar det till ett kategoriskt påstående."
         },
         {
-          "pattern": "Reasonable-but-unrelated inference",
-          "why_it_traps": "True given the passage in some abstract sense, but doesn't actually answer what the question asks."
+          "pattern": "Rimlig men irrelevant slutsats",
+          "why_it_traps": "Sann i någon abstrakt mening utifrån passagen, men besvarar inte det frågan faktiskt ställer."
         },
         {
-          "pattern": "Inverted causation",
-          "why_it_traps": "Swaps cause and effect from the passage's chain ('X ledde till Y' rewritten as 'Y orsakade X')."
+          "pattern": "Omvänd kausalitet",
+          "why_it_traps": "Byter orsak och verkan i passagens kedja ('X ledde till Y' skrivs om som 'Y orsakade X')."
         }
       ],
       "example_questions": [
@@ -87,30 +87,30 @@
     },
     {
       "id": "LAS-TYPE-003",
-      "question_type": "Author stance",
+      "question_type": "Författarens hållning",
       "attack_protocol": [
-        "Identify whose stance the question asks about: textförfattaren, recensenten, or a named third party introduced in the text (Spivak, Berglund, Posner, Heller Sahlgren …).",
-        "Mark the evaluative vocabulary the text uses about that person/object — 'kritisk', 'beundrande', 'skeptisk', 'efterlyser', 'invänder', 'försvarar', 'beklagar'.",
-        "Build a one-word valence for the stance (positive / negative / mixed / agnostic). Most LÄS stance answers are mixed or qualified, not pure.",
-        "Eliminate options whose valence disagrees with the textual cues. Then between same-valence options, pick the one whose scope matches what the author actually evaluates (the method? the conclusion? the writing style?).",
-        "If the question is 'I vilken fråga är X kritisk?' or 'Vad är X kritisk till?' — locate the specific object of criticism, not the general topic of the text."
+        "Identifiera vems hållning frågan gäller: textförfattaren, recensenten, eller en namngiven tredje part som introduceras i texten (Spivak, Berglund, Posner, Heller Sahlgren …).",
+        "Markera det evaluerande ordförrådet texten använder om den personen/det objektet — 'kritisk', 'beundrande', 'skeptisk', 'efterlyser', 'invänder', 'försvarar', 'beklagar'.",
+        "Bygg en enordsvalens för hållningen (positiv / negativ / blandad / agnostisk). De flesta LÄS-hållningsfrågor har blandade eller kvalificerade svar, inte rena.",
+        "Eliminera alternativ vars valens strider mot textens signaler. Välj sedan, bland alternativ med samma valens, det vars räckvidd matchar det författaren faktiskt utvärderar (metoden? slutsatsen? skrivstilen?).",
+        "Om frågan är 'I vilken fråga är X kritisk?' eller 'Vad är X kritisk till?' — lokalisera det specifika kritikobjektet, inte textens allmänna ämne."
       ],
       "common_distractors": [
         {
-          "pattern": "Right valence, wrong object",
-          "why_it_traps": "Author is critical, but of something else (the framing, not the conclusion; the data, not the theory)."
+          "pattern": "Rätt valens, fel objekt",
+          "why_it_traps": "Författaren är kritisk, men mot något annat (ramverket, inte slutsatsen; data, inte teorin)."
         },
         {
-          "pattern": "Stance attributed to wrong voice",
-          "why_it_traps": "Confuses recensentens stance with the avhandling-författarens, or with a quoted opponent."
+          "pattern": "Hållning tillskriven fel röst",
+          "why_it_traps": "Förväxlar recensentens hållning med avhandlingsförfattarens, eller med en citerad motståndare."
         },
         {
-          "pattern": "Stance polarized beyond the text",
-          "why_it_traps": "Text says 'med viss tvekan'; option says 'avvisar'. The hedged author becomes a categorical one."
+          "pattern": "Hållning polariserad bortom texten",
+          "why_it_traps": "Texten säger 'med viss tvekan'; alternativet säger 'avvisar'. Den hedgade författaren blir kategorisk."
         },
         {
-          "pattern": "Neutral-sounding option when the author is clearly partisan (or vice versa)",
-          "why_it_traps": "Smooths out a sharp stance into bland balance to feel 'safer'."
+          "pattern": "Neutralt klingande alternativ när författaren är tydligt partisk (eller tvärtom)",
+          "why_it_traps": "Slätar ut en skarp hållning till oförarglig balans för att kännas 'tryggare'."
         }
       ],
       "example_questions": [
@@ -128,30 +128,30 @@
     },
     {
       "id": "LAS-TYPE-004",
-      "question_type": "Rhetorical purpose",
+      "question_type": "Retorisk funktion",
       "attack_protocol": [
-        "Spot the purpose trigger: 'vad vill textförfattaren ha sagt med …', 'vad vill X understryka / illustrera', 'vilken funktion fyller …', 'i syfte att', 'vad framstår som syftet'.",
-        "Ignore the surface content of the cited example/sentence/quote. The question asks what RHETORICAL JOB it does (illustrate a claim? concede a point? introduce a contrast? signal irony?).",
-        "Find the surrounding claim the device supports. The example/quote is almost always evidence FOR a thesis stated nearby.",
-        "Pick the option that names the function relative to that thesis, not the option that paraphrases the example's content.",
-        "If the device is a metaphor or an analogy, the answer is usually the abstract claim it concretizes — never the literal subject of the metaphor."
+        "Spana efter funktionstriggern: 'vad vill textförfattaren ha sagt med …', 'vad vill X understryka / illustrera', 'vilken funktion fyller …', 'i syfte att', 'vad framstår som syftet'.",
+        "Ignorera ytinnehållet i det citerade exemplet/meningen/citatet. Frågan handlar om vilken RETORISK FUNKTION det fyller (illustrera ett påstående? medge en poäng? introducera en kontrast? signalera ironi?).",
+        "Hitta det omgivande påstående som greppet stöder. Exemplet/citatet är nästan alltid bevis FÖR en tes som står i närheten.",
+        "Välj alternativet som benämner funktionen i förhållande till den tesen, inte alternativet som parafraserar exemplets innehåll.",
+        "Om greppet är en metafor eller analogi är svaret oftast det abstrakta påstående den konkretiserar — aldrig metaforens bokstavliga ämne."
       ],
       "common_distractors": [
         {
-          "pattern": "Literal restatement of the example",
-          "why_it_traps": "Paraphrases the metaphor / quote at face value instead of naming what it argues for."
+          "pattern": "Bokstavlig upprepning av exemplet",
+          "why_it_traps": "Parafraserar metaforen/citatet ordagrant istället för att benämna vad det argumenterar för."
         },
         {
-          "pattern": "Plausible authorial intent, but not the local function",
-          "why_it_traps": "Names a goal the author has somewhere in the text, but not the job of THIS sentence/quote."
+          "pattern": "Trolig författarintention, men inte den lokala funktionen",
+          "why_it_traps": "Benämner ett mål författaren har någonstans i texten, men inte uppgiften som DEN HÄR meningen/citatet fyller."
         },
         {
-          "pattern": "Function mismatched to surrounding rhetoric",
-          "why_it_traps": "Says 'underbygga' when the device is actually a concession; says 'ifrågasätta' when it's confirmation."
+          "pattern": "Funktion felmatchad mot omgivande retorik",
+          "why_it_traps": "Säger 'underbygga' när greppet faktiskt är en medgivande gest; säger 'ifrågasätta' när det är bekräftelse."
         },
         {
-          "pattern": "Decorative-reading option",
-          "why_it_traps": "Treats the device as ornament ('för att göra texten levande') when it actually carries argumentative weight."
+          "pattern": "Dekorativ-läsning-alternativ",
+          "why_it_traps": "Behandlar greppet som utsmyckning ('för att göra texten levande') när det faktiskt bär argumentativ tyngd."
         }
       ],
       "example_questions": [
@@ -169,30 +169,30 @@
     },
     {
       "id": "LAS-TYPE-005",
-      "question_type": "Characterization / summary",
+      "question_type": "Karakterisering / sammanfattning",
       "attack_protocol": [
-        "Spot the trigger: 'hur kan man bäst beskriva / karakterisera / definiera / sammanfatta X', 'vilken alternativ rubrik …', 'vilket svarsförslag sammanfattar bäst texten', 'texten som helhet'.",
-        "Decide whether the target is a whole-text characterization (rubrik, huvudpoäng, helhet) or a sub-object (en roman, ett begrepp, en persons utrikespolitik). Whole-text questions demand a thesis that covers the recurring theme across paragraphs; sub-object questions demand the bundled-up portrait of one entity.",
-        "List the 3–5 traits the text repeatedly attaches to the target. The right option will hit most of them; wrong options will pick one episode or one trait.",
-        "Eliminate options that describe a single example or paragraph instead of the recurring theme. (Trajectory rule: 'look for the recurring theme, not the episodes'.)",
-        "Eliminate options that capture the topic but not the angle. A correct rubrik names BOTH what the text is about AND what the text claims about it."
+        "Spana efter triggern: 'hur kan man bäst beskriva / karakterisera / definiera / sammanfatta X', 'vilken alternativ rubrik …', 'vilket svarsförslag sammanfattar bäst texten', 'texten som helhet'.",
+        "Avgör om målet är en helhetskarakterisering (rubrik, huvudpoäng, helhet) eller ett delobjekt (en roman, ett begrepp, en persons utrikespolitik). Helhetsfrågor kräver en tes som täcker det återkommande temat över flera stycken; delobjektsfrågor kräver det sammantagna porträttet av en entitet.",
+        "Lista de 3–5 egenskaper som texten upprepat knyter till målet. Det rätta alternativet träffar de flesta; fel alternativ plockar en episod eller en egenskap.",
+        "Eliminera alternativ som beskriver ett enskilt exempel eller stycke istället för det återkommande temat. (Trajektorieregel: 'leta efter det återkommande temat, inte episoderna'.)",
+        "Eliminera alternativ som fångar ämnet men inte vinkeln. En korrekt rubrik benämner BÅDE vad texten handlar om OCH vad texten påstår om det."
       ],
       "common_distractors": [
         {
-          "pattern": "True of one example, false of the whole",
-          "why_it_traps": "Picks up the most vivid anecdote (an episode) and uses it as the description — but the text's recurring theme is broader."
+          "pattern": "Sant om ett exempel, falskt om helheten",
+          "why_it_traps": "Plockar upp den mest livfulla anekdoten (en episod) och använder den som beskrivning — men textens återkommande tema är bredare."
         },
         {
-          "pattern": "Topic without thesis",
-          "why_it_traps": "Names what the text is about ('skolbibliotekarier') but not what the text argues ('att de behövs mer än någonsin')."
+          "pattern": "Ämne utan tes",
+          "why_it_traps": "Benämner vad texten handlar OM ('skolbibliotekarier') men inte vad texten påstår ('att de behövs mer än någonsin')."
         },
         {
-          "pattern": "Overreaching characterization",
-          "why_it_traps": "Adds a property the text never establishes — e.g. calls a balanced review 'avfärdande'."
+          "pattern": "Översträckande karakterisering",
+          "why_it_traps": "Lägger till en egenskap som texten aldrig etablerar — t.ex. kallar en balanserad recension för 'avfärdande'."
         },
         {
-          "pattern": "Plausible-sounding abstract noun phrase",
-          "why_it_traps": "Reads as good academic prose ('en mångfacetterad analys') but is so generic it can't be falsified — usually wrong."
+          "pattern": "Trolig-låter abstrakt substantivfras",
+          "why_it_traps": "Läses som fin akademisk prosa ('en mångfacetterad analys') men är så generisk att den inte kan falsifieras — oftast fel."
         }
       ],
       "example_questions": [
@@ -212,30 +212,30 @@
     },
     {
       "id": "LAS-TYPE-006",
-      "question_type": "Contrast / skillnadsfråga",
+      "question_type": "Skillnadsfråga / kontrast",
       "attack_protocol": [
-        "Spot the trigger: 'vad skiljer X från Y', 'i vilken fråga skiljer sig X och Y', 'skillnaden mellan', 'vad utmärker X jämfört med Y'.",
-        "Build a two-column mental table: claim about X | claim about Y. Pull from the passage; ignore your priors about the entities.",
-        "The right answer is the dimension on which the text DRAWS THE CONTRAST — even if other differences exist in the world, only the textual one counts.",
-        "Reject options where the asymmetric claim is true of one side but the text doesn't say it's FALSE of the other side. A real skillnad needs both halves explicit or strongly implied.",
-        "Watch for cases where X and Y agree on the asked dimension; the right answer is sometimes 'no clear difference / the texts converge here', or a more carefully scoped contrast."
+        "Spana efter triggern: 'vad skiljer X från Y', 'i vilken fråga skiljer sig X och Y', 'skillnaden mellan', 'vad utmärker X jämfört med Y'.",
+        "Bygg en mental tvåkolumnstabell: påstående om X | påstående om Y. Hämta från passagen; ignorera dina förkunskaper om entiteterna.",
+        "Det rätta svaret är den dimension där texten FAKTISKT DRAR KONTRASTEN — även om andra skillnader finns i verkligheten räknas bara den textuella.",
+        "Förkasta alternativ där det asymmetriska påståendet är sant om ena sidan, men texten inte säger att det är FALSKT om den andra. En äkta skillnad kräver att båda halvorna är uttalade eller starkt antydda.",
+        "Var uppmärksam på fall där X och Y är överens i den efterfrågade dimensionen; det rätta svaret är ibland 'ingen tydlig skillnad / texterna konvergerar här', eller en snävare avgränsad kontrast."
       ],
       "common_distractors": [
         {
-          "pattern": "True about X, silent about Y",
-          "why_it_traps": "The option states a real property of X but the text never says Y differs on it — so it's a property, not a contrast."
+          "pattern": "Sant om X, tyst om Y",
+          "why_it_traps": "Alternativet anger en verklig egenskap hos X, men texten säger aldrig att Y skiljer sig på den punkten — alltså en egenskap, inte en kontrast."
         },
         {
-          "pattern": "Difference that exists in the world but not in the text",
-          "why_it_traps": "Students rely on background knowledge of Piaget vs Vygotskij rather than what THIS text says about them."
+          "pattern": "Skillnad som finns i verkligheten men inte i texten",
+          "why_it_traps": "Studenten lutar sig mot bakgrundskunskap om Piaget vs Vygotskij snarare än vad DEN HÄR texten säger om dem."
         },
         {
-          "pattern": "Sides reversed",
-          "why_it_traps": "Names a real textual contrast but swaps which side has which property."
+          "pattern": "Sidorna omkastade",
+          "why_it_traps": "Benämner en verklig textuell kontrast men byter sida för vilken som har vilken egenskap."
         },
         {
-          "pattern": "Difference at the wrong granularity",
-          "why_it_traps": "Names a sub-detail that flows from a deeper contrast — but the question asks for the principled split, not the symptom."
+          "pattern": "Skillnad på fel granularitet",
+          "why_it_traps": "Benämner en deldetalj som följer ur en djupare kontrast — men frågan efterfrågar den principiella skillnaden, inte symptomet."
         }
       ],
       "example_questions": [
@@ -254,30 +254,30 @@
     },
     {
       "id": "LAS-TYPE-007",
-      "question_type": "Logical entailment",
+      "question_type": "Logisk följd",
       "attack_protocol": [
-        "Spot the trigger: 'vilken blir följden / konsekvensen', 'vad skulle innebära', 'rimlig slutsats', 'om man följer textens resonemang', 'logiska konsekvens', 'rimligaste tolkningen'.",
-        "Identify the premise the question hands you (explicitly stated in the text — sometimes quoted in the question stem).",
-        "Apply the author's own reasoning, not your own — even if you'd disagree with their logic, the answer is what THEIR argument entails.",
-        "Trace one step forward from the premise. Most LÄS entailment questions are one inferential step, not a chain.",
-        "Eliminate options that don't follow even if the premise is true, and options that follow only under an outside assumption."
+        "Spana efter triggern: 'vilken blir följden / konsekvensen', 'vad skulle innebära', 'rimlig slutsats', 'om man följer textens resonemang', 'logiska konsekvens', 'rimligaste tolkningen'.",
+        "Identifiera premissen frågan ger dig (uttryckligen angiven i texten — ibland citerad i frågestammen).",
+        "Tillämpa författarens eget resonemang, inte ditt — även om du själv skulle vara oense med logiken, är svaret det som DERAS argument medför.",
+        "Spåra ett steg framåt från premissen. De flesta LÄS-följdfrågor är ett enda slutledningssteg, inte en kedja.",
+        "Eliminera alternativ som inte följer även om premissen är sann, och alternativ som bara följer under en yttre antagande."
       ],
       "common_distractors": [
         {
-          "pattern": "Follows under a different premise",
-          "why_it_traps": "Sounds logical, but uses your background reasoning, not the author's stated chain."
+          "pattern": "Följer under en annan premiss",
+          "why_it_traps": "Låter logiskt, men använder din bakgrundsförståelse, inte författarens uttalade kedja."
         },
         {
-          "pattern": "Two-step entailment when only one step is licensed",
-          "why_it_traps": "The option follows IF you grant one extra inferential leap the text doesn't make."
+          "pattern": "Tvåstegsföljd när bara ett steg är tillåtet",
+          "why_it_traps": "Alternativet följer OM du tillåter ett extra slutledningssprång som texten inte gör."
         },
         {
-          "pattern": "Restates the premise as if it were the consequence",
-          "why_it_traps": "Sounds like it answers because the keywords match — but it's the input, not the output."
+          "pattern": "Återupprepar premissen som om den vore konsekvensen",
+          "why_it_traps": "Låter som ett svar eftersom nyckelorden matchar — men det är input, inte output."
         },
         {
-          "pattern": "Contradicts the author's normative frame",
-          "why_it_traps": "Logically valid but at odds with the value-judgment the author has already committed to — students forget the author's stance constrains acceptable conclusions."
+          "pattern": "Strider mot författarens normativa ramverk",
+          "why_it_traps": "Logiskt giltigt men oförenligt med den värdering författaren redan bundit sig vid — studenten glömmer att författarens hållning begränsar vilka slutsatser som är acceptabla."
         }
       ],
       "example_questions": [
@@ -294,30 +294,30 @@
     },
     {
       "id": "LAS-TYPE-008",
-      "question_type": "Conditional yes/no",
+      "question_type": "Villkorad ja/nej",
       "attack_protocol": [
-        "Spot the trigger shape: 'Ger texten någon förklaring/svar till X, och i så fall vilken/vilket?' or 'Tar X ställning, och i så fall vilken?'. The question is two questions chained: (a) does the text address this at all, (b) if yes, what is the answer.",
-        "First settle (a) using the passage. If the text is silent or only hints, the correct option is the 'nej' option — even if a 'ja, …' option sounds plausible.",
-        "If (a) is yes, you still must match (b) to what the text actually says — the trap is picking a 'ja' option with the wrong content.",
-        "Beware the asymmetric option set: usually one 'nej' option plus 3–4 'ja, X' options. The mere presence of many 'ja' options is not evidence that the answer is 'ja'.",
-        "Read the text for the exact scope the question pins down (e.g. 'någon förklaring TILL DETTA' — not just any explanation in the text)."
+        "Spana efter triggerformen: 'Ger texten någon förklaring/svar till X, och i så fall vilken/vilket?' eller 'Tar X ställning, och i så fall vilken?'. Frågan är två sammankopplade frågor: (a) tar texten överhuvudtaget upp detta, (b) om ja, vad är svaret.",
+        "Avgör först (a) utifrån passagen. Om texten är tyst eller bara antyder, är det rätta alternativet 'nej'-alternativet — även om ett 'ja, …'-alternativ låter rimligt.",
+        "Om (a) är ja måste du fortfarande matcha (b) mot det texten faktiskt säger — fällan är att välja ett 'ja'-alternativ med fel innehåll.",
+        "Var beredd på den asymmetriska alternativuppsättningen: oftast ett 'nej'-alternativ plus 3–4 'ja, X'-alternativ. Att det finns många 'ja'-alternativ är inte bevis för att svaret är 'ja'.",
+        "Läs texten efter den exakta räckvidd frågan låser fast (t.ex. 'någon förklaring TILL DETTA' — inte vilken förklaring som helst i texten)."
       ],
       "common_distractors": [
         {
-          "pattern": "'Ja' option that gives a true fact from the wrong place in the text",
-          "why_it_traps": "The fact appears in the passage but doesn't answer the specific 'varför/hur' the question pins down."
+          "pattern": "'Ja'-alternativ som anger ett sant faktum från fel ställe i texten",
+          "why_it_traps": "Faktumet finns i passagen men besvarar inte den specifika 'varför/hur' som frågan låser fast."
         },
         {
-          "pattern": "'Ja' option that infers what the text only hints at",
-          "why_it_traps": "Tempting because students feel they must commit to a position — but if the text is genuinely silent, 'nej' is the answer."
+          "pattern": "'Ja'-alternativ som drar slutsatser av det texten bara antyder",
+          "why_it_traps": "Lockande eftersom studenten känner ett tvång att binda sig vid en ståndpunkt — men om texten är genuint tyst är 'nej' svaret."
         },
         {
-          "pattern": "'Nej' option when the text does give an explanation",
-          "why_it_traps": "Students who skim miss the explanation and default to 'nej'. The check is to find the explanation explicitly before ruling 'nej' out or in."
+          "pattern": "'Nej'-alternativ när texten faktiskt ger en förklaring",
+          "why_it_traps": "Studenter som skummar missar förklaringen och defaultar till 'nej'. Kontrollen är att hitta förklaringen explicit innan man avskriver eller väljer 'nej'."
         },
         {
-          "pattern": "'Ja' option that gives the wrong half of a two-sided treatment",
-          "why_it_traps": "Text presents both sides; option commits to only one. Often the right answer is 'nej, inget entydigt svar' or a 'ja' that captures the duality."
+          "pattern": "'Ja'-alternativ som ger fel halva av en tvåsidig behandling",
+          "why_it_traps": "Texten presenterar båda sidorna; alternativet binder sig vid bara en. Ofta är rätt svar 'nej, inget entydigt svar' eller ett 'ja' som fångar dualiteten."
         }
       ],
       "example_questions": [

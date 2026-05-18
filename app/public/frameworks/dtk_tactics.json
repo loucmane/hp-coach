@@ -3,12 +3,12 @@
   "family": "dtk_tactics",
   "version": 1,
   "authored_at": "2026-05-11",
-  "notes": "v0 framework. Layer 2 DTK explanations do not exist yet (0/648 DTK qids have technique/pitfall fields). Tactics are inferred from PROMPT STRUCTURE alone across 464 extracted DTK prompts spanning 26 exams. Each entry encodes a heuristic move keyed to a surface-level trigger in the prompt. example_questions cite real DTK qids whose prompt text exhibits the trigger; we cannot ground the tactic against an authored explanation, so the floor is 1 (schema minimum) and most entries cite 3+ for confidence. Expand and re-author when Layer 2 DTK lands.",
+  "notes": "v0-ramverk. Layer 2-förklaringar för DTK existerar ännu inte (0/648 DTK-qid har technique-/pitfall-fält). Taktikerna är inferrerade från PROMPT-STRUKTUR ensamt över 464 extraherade DTK-prompter spridda över 26 prov. Varje post kodar ett heuristiskt drag knutet till en ytlig trigger i prompten. example_questions citerar verkliga DTK-qid vars promptext uppvisar triggern; vi kan inte förankra taktiken mot en författad förklaring, så minimum är 1 (schema-minimum) och de flesta poster citerar 3+ för säkerhet. Utöka och författa om när Layer 2 DTK landar.",
   "entries": [
     {
       "id": "DTK-TACTIC-001",
-      "tactic": "Treat 'Identifiera ... . Hur/Vilk ...' as two-step: resolve the identifier (year/county/hospital) first, THEN read the second value at that location. Never compute before pinning the identifier.",
-      "when_to_apply": "Prompt begins with 'Identifiera' or chains 'Identifiera ... . Hur ...' / 'Identifiera ... . Vilk ...'.",
+      "tactic": "Identifiera först, läs av sedan: behandla 'Identifiera ... . Hur/Vilk ...' som två steg — pinna identifieraren (år/län/sjukhus) FÖRST, läs sedan av det andra värdet på den platsen. Räkna aldrig innan identifieraren är låst.",
+      "when_to_apply": "Prompten börjar med 'Identifiera' eller kedjar 'Identifiera ... . Hur ...' / 'Identifiera ... . Vilk ...'.",
       "example_questions": [
         "var-2026-kvant1-DTK-033",
         "var-2026-kvant2-DTK-039",
@@ -19,12 +19,12 @@
         "var-2022-1-kvant1-DTK-039",
         "var-2022-1-kvant2-DTK-031"
       ],
-      "notes": "v0 — Layer 2 DTK not yet authored. ~10% of DTK prompts use this composite shape; failure mode is computing on the wrong row because the identifier step was skipped."
+      "notes": "v0 — Layer 2 DTK ännu inte författad. ~10 % av DTK-prompterna har denna sammansatta form; vanlig felväg är att räkna på fel rad eftersom identifieringssteget hoppades över."
     },
     {
       "id": "DTK-TACTIC-002",
-      "tactic": "For extreme-value prompts (störst, minst, lägst, högst, flest), SKIM the chart visually — don't read values. Visual estimation finds KULMEN/trough fast; precise readouts only after pinning a candidate.",
-      "when_to_apply": "Prompt contains 'störst', 'minst', 'lägst', 'högst', 'flest', 'som mest', 'som minst'.",
+      "tactic": "Skanna visuellt vid extremvärden (störst, minst, lägst, högst, flest) — läs INTE av varje värde. Visuell uppskattning hittar toppen/dalen snabbt; precisa avläsningar görs först när en kandidat är pinnad.",
+      "when_to_apply": "Prompten innehåller 'störst', 'minst', 'lägst', 'högst', 'flest', 'som mest' eller 'som minst'.",
       "example_questions": [
         "var-2026-kvant2-DTK-040",
         "host-2025-kvant2-DTK-033",
@@ -34,12 +34,12 @@
         "host-2016-kvant2-DTK-036",
         "host-2014-kvant2-DTK-030"
       ],
-      "notes": "v0 — Layer 2 DTK not yet authored. Visual skim is fastest for line/bar; for tables, scan the relevant column for the extreme cell before reading neighbours."
+      "notes": "v0 — Layer 2 DTK ännu inte författad. Visuell skanning är snabbast för linje-/stapeldiagram; i tabeller, sök relevant kolumn för extremcellen innan grannvärdena läses."
     },
     {
       "id": "DTK-TACTIC-003",
-      "tactic": "For 'andel av X' (share-of-total) prompts, FIRST verify the denominator: re-read which total is referenced ('av nettoomsättningen 2016', 'av totala antalet ...'). Wrong denominator is the top failure.",
-      "when_to_apply": "Prompt contains 'Hur stor andel av ...' or 'Hur stor del av ...' (share-of-total).",
+      "tactic": "Verifiera nämnaren FÖRST vid 'andel av X' — läs om vilken total som åsyftas ('av nettoomsättningen 2016', 'av totala antalet ...'). Fel nämnare är det dominerande felet.",
+      "when_to_apply": "Prompten innehåller 'Hur stor andel av ...' eller 'Hur stor del av ...' (andel av en total).",
       "example_questions": [
         "var-2026-kvant2-DTK-035",
         "var-2026-kvant2-DTK-037",
@@ -51,12 +51,12 @@
         "host-2023-kvant1-DTK-030",
         "host-2023-kvant1-DTK-036"
       ],
-      "notes": "v0 — Layer 2 DTK not yet authored. 'andel av' is the most common DTK template (~122/464 prompts). Distractor pattern (inferred): plausible-but-wrong total like 'global total' instead of 'category total'."
+      "notes": "v0 — Layer 2 DTK ännu inte författad. 'andel av' är den vanligaste DTK-mallen (~122/464 prompter). Distraktor-mönster (inferens): rimlig-men-fel total, t.ex. 'global total' istället för 'kategori-total'."
     },
     {
       "id": "DTK-TACTIC-004",
-      "tactic": "If the prompt distinguishes 'procent' vs 'procentenheter', stop. Procent = relative change (new/old - 1). Procentenheter = absolute share difference. Mixing them gives an order-of-magnitude error.",
-      "when_to_apply": "Prompt contains 'procentenhet' OR contrasts 'med X procent' vs 'X procentenheter'.",
+      "tactic": "Procent vs procentenheter — stanna och skilj dem åt. Procent = relativ förändring (nytt/gammalt − 1). Procentenheter = absolut skillnad i andel. Att blanda ihop dem ger fel av storleksordning.",
+      "when_to_apply": "Prompten innehåller 'procentenhet' ELLER ställer 'med X procent' mot 'X procentenheter'.",
       "example_questions": [
         "host-2024-kvant1-DTK-036",
         "var-2023-kvant2-DTK-038",
@@ -66,12 +66,12 @@
         "host-2014-kvant2-DTK-030",
         "var-2013-kvant2-DTK-035"
       ],
-      "notes": "v0 — Layer 2 DTK not yet authored. The unit-word trap is well-attested across 7+ exams; high-leverage because answer options will include both interpretations."
+      "notes": "v0 — Layer 2 DTK ännu inte författad. Enhetsord-fällan är väl belagd i 7+ prov; hög hävstång eftersom svarsalternativen ofta innehåller båda tolkningarna."
     },
     {
       "id": "DTK-TACTIC-005",
-      "tactic": "For ratio prompts ('förhållande', 'kvot', 'X : Y', 'jämfört med'), estimate to 1 sig fig FIRST. Ratio options are spaced widely (1:2 vs 1:3 vs 2:5); rough estimation eliminates 3-4 options instantly.",
-      "when_to_apply": "Prompt contains 'förhållande', 'kvot', 'X : Y', 'storleksförhållande', or quantitative 'jämfört med'.",
+      "tactic": "Uppskatta till en värdesiffra FÖRST vid förhållande-prompter ('förhållande', 'kvot', 'X : Y', 'jämfört med'). Förhållande-alternativen ligger glest (1:2 vs 1:3 vs 2:5); grov uppskattning eliminerar 3–4 alternativ direkt.",
+      "when_to_apply": "Prompten innehåller 'förhållande', 'kvot', 'X : Y', 'storleksförhållande' eller kvantitativt 'jämfört med'.",
       "example_questions": [
         "var-2026-kvant1-DTK-032",
         "host-2025-kvant2-DTK-040",
@@ -81,12 +81,12 @@
         "var-2022-1-kvant2-DTK-031",
         "var-2019-kvant1-DTK-031"
       ],
-      "notes": "v0 — Layer 2 DTK not yet authored. 48/464 prompts hit this pattern. Estimation discipline saves time; calculate only when two adjacent options remain."
+      "notes": "v0 — Layer 2 DTK ännu inte författad. 48/464 prompter följer detta mönster. Uppskattningsdisciplin sparar tid; räkna exakt först när två närliggande alternativ återstår."
     },
     {
       "id": "DTK-TACTIC-006",
-      "tactic": "When the prompt cites a specific year/county/hospital/named entity, locate that exact cell BEFORE computing. Fingerprint the entity first, then operate — don't compute on the wrong row.",
-      "when_to_apply": "Prompt contains a proper noun (year like '2010', place like 'Kiruna sjukhus', named category) anchoring the answer to one row/cell.",
+      "tactic": "Lokalisera den exakta cellen FÖRST när prompten nämner ett specifikt år/län/sjukhus/namngivet objekt. Fingeravtrycka entiteten, räkna sedan — räkna inte på fel rad.",
+      "when_to_apply": "Prompten innehåller ett egennamn (årtal som '2010', plats som 'Kiruna sjukhus', namngiven kategori) som förankrar svaret till en rad/cell.",
       "example_questions": [
         "var-2026-kvant1-DTK-034",
         "var-2026-kvant2-DTK-029",
@@ -96,12 +96,12 @@
         "host-2023-kvant1-DTK-038",
         "host-2022-kvant2-DTK-032"
       ],
-      "notes": "v0 — Layer 2 DTK not yet authored. The simplest tactic but easy to skip under time pressure; pairs with TACTIC-001 for composite prompts."
+      "notes": "v0 — Layer 2 DTK ännu inte författad. Den enklaste taktiken men lätt att hoppa över under tidspress; paras ofta med TACTIC-001 vid sammansatta prompter."
     },
     {
       "id": "DTK-TACTIC-007",
-      "tactic": "For 'count items meeting both conditions' prompts, DON'T compute a total. Iterate rows and tally only those passing BOTH filters. Filter, then count — never count, then filter.",
-      "when_to_apply": "Prompt joins two conditions with 'både ... och', 'samtidigt som', or 'Hur många av [N rows] hade ...' with a compound criterion.",
+      "tactic": "Filtrera, räkna sedan — räkna ALDRIG först och filtrera sedan. Vid 'räkna poster som uppfyller båda villkoren': iterera raderna och pricka av endast dem som passerar BÅDA filtren.",
+      "when_to_apply": "Prompten kopplar två villkor med 'både ... och', 'samtidigt som' eller 'Hur många av [N rader] hade ...' med ett sammansatt kriterium.",
       "example_questions": [
         "var-2022-1-kvant1-DTK-035",
         "var-2022-1-kvant1-DTK-037",
@@ -110,12 +110,12 @@
         "host-2018-kvant2-DTK-029",
         "var-2016-kvant1-DTK-036"
       ],
-      "notes": "v0 — Layer 2 DTK not yet authored. High error rate: students often check only the more salient condition. Discipline: mark each row pass/fail for BOTH explicitly."
+      "notes": "v0 — Layer 2 DTK ännu inte författad. Hög felfrekvens: studenter kontrollerar ofta bara det mest framträdande villkoret. Disciplin: markera varje rad pass/icke-pass för BÅDA villkoren explicit."
     },
     {
       "id": "DTK-TACTIC-008",
-      "tactic": "When the prompt opens with 'Anta att ...', treat the assumption as a NEW datum to scale by. Separate factual chart data from the hypothetical, then apply the assumed proportion to a real total.",
-      "when_to_apply": "Prompt begins with 'Anta att ...' or contains 'i så fall', 'skulle ... ha', 'om man antar' (a counterfactual setup).",
+      "tactic": "Behandla 'Anta att ...' som ett NYTT datum att skala med. Separera faktiska diagram-data från det hypotetiska, applicera sedan den antagna proportionen på en verklig total.",
+      "when_to_apply": "Prompten börjar med 'Anta att ...' eller innehåller 'i så fall', 'skulle ... ha', 'om man antar' (en kontrafaktisk uppställning).",
       "example_questions": [
         "host-2022-kvant2-DTK-030",
         "host-2022-kvant2-DTK-033",
@@ -124,12 +124,12 @@
         "var-2015-kvant2-DTK-040",
         "var-2013-kvant2-DTK-040"
       ],
-      "notes": "v0 — Layer 2 DTK not yet authored. Anta-prompts are rare (8/464) but high-value: the chart alone is insufficient. Failure mode: ignore the assumption and compute from the chart only."
+      "notes": "v0 — Layer 2 DTK ännu inte författad. Anta-prompter är sällsynta (8/464) men värdefulla: diagrammet ensamt räcker inte. Felväg: ignorera antagandet och räkna bara på diagrammet."
     },
     {
       "id": "DTK-TACTIC-009",
-      "tactic": "Direction/distance/area prompts are MAP questions — use scale bar and compass FIRST. Measure with a pencil edge or count grid squares; don't compute geometry before locating the points on the map.",
-      "when_to_apply": "Prompt has 'väderstreck', 'riktning', 'km'/'meter' as a distance, 'radie', 'triangelformat område', 'avstånd', 'nordväst'/'sydväst', or 'Utgå från'.",
+      "tactic": "Riktnings-, avstånds- och area-prompter är KART-frågor — använd skalstreck och väderstrecksros FÖRST. Mät med pennspetsen eller räkna rutor; räkna inte geometri innan punkterna är lokaliserade på kartan.",
+      "when_to_apply": "Prompten innehåller 'väderstreck', 'riktning', 'km'/'meter' som avstånd, 'radie', 'triangelformat område', 'avstånd', 'nordväst'/'sydväst' eller 'Utgå från'.",
       "example_questions": [
         "var-2026-kvant1-DTK-035",
         "var-2026-kvant1-DTK-036",
@@ -141,12 +141,12 @@
         "var-2018-1-kvant2-DTK-036",
         "var-2013-kvant1-DTK-034"
       ],
-      "notes": "v0 — Layer 2 DTK not yet authored. Map questions cluster heavily (54/464) and have a distinct cognitive profile vs charts/tables. Always set compass + scale BEFORE reading the geometric ask."
+      "notes": "v0 — Layer 2 DTK ännu inte författad. Kartfrågor klumpar ihop sig tungt (54/464) och har en distinkt kognitiv profil jämfört med diagram/tabeller. Lås alltid väderstreck + skala INNAN du läser den geometriska frågan."
     },
     {
       "id": "DTK-TACTIC-010",
-      "tactic": "For 'Vilket år / Vilka två år ...' prompts, scan the year axis with the condition in mind — don't read every year's value. Test visually-plausible years against the condition; reject the rest quickly.",
-      "when_to_apply": "Prompt begins with 'Vilket år', 'Vilka år', 'Vilka två år', or 'Mellan vilka år' (find-the-year questions).",
+      "tactic": "Skanna årtals-axeln med villkoret i bakhuvudet vid 'Vilket år / Vilka två år ...' — läs INTE av varje års värde. Pröva visuellt rimliga år mot villkoret; avfärda resten snabbt.",
+      "when_to_apply": "Prompten börjar med 'Vilket år', 'Vilka år', 'Vilka två år' eller 'Mellan vilka år' (hitta-året-frågor).",
       "example_questions": [
         "host-2024-kvant2-DTK-036",
         "host-2023-kvant1-DTK-038",
@@ -157,7 +157,7 @@
         "var-2016-kvant1-DTK-036",
         "var-2016-kvant2-DTK-034"
       ],
-      "notes": "v0 — Layer 2 DTK not yet authored. Find-the-year prompts (~20/464) reward visual-scan-first over exhaustive readouts; for compound year conditions, pair with TACTIC-007."
+      "notes": "v0 — Layer 2 DTK ännu inte författad. Hitta-året-prompter (~20/464) belönar visuell skanning före uttömmande avläsning; vid sammansatta årsvillkor, para med TACTIC-007."
     }
   ]
 }

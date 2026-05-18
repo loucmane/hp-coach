@@ -3,34 +3,34 @@
   "family": "elf_taxonomy",
   "version": 1,
   "authored_at": "2026-05-11",
-  "notes": "v1 — synthesized from 12 extracted prompt-pattern candidates + a manual pass over all 540 ELF questions (27 exams). Eight cognitive-operation types. Per persona-pass findings, ELF is more uniform than LÄS (mean 4.67 vs 4.11) and the prompt language is highly stereotyped — most questions classify cleanly into ONE type via the prompt verb alone (told/said vs implied vs concluded vs main vs tone/attitude vs why/purpose vs in-line-with vs expression). Highest-leverage trajectory finding: stance/tone and fine-distinction inference under dense academic prose are the persistent v3 error pockets — protocols for ELF-TYPE-002 and ELF-TYPE-005 reflect that. ELF-TYPE-008 (vocabulary-in-context) has exactly 5 corpus examples and sits at the floor; flagged for v2 expansion if more surface.",
+  "notes": "v1 — syntetiserad från 12 extraherade frågemönster-kandidater + ett manuellt pass över alla 540 ELF-frågor (27 prov). Åtta kognitiva operationstyper. Enligt persona-passet är ELF mer enhetlig än LÄS (medel 4,67 vs 4,11) och frågespråket är högst stereotypt — de flesta frågor klassificeras rent in i EN typ via frågeverbet ensamt (told/said vs implied vs concluded vs main vs tone/attitude vs why/purpose vs in-line-with vs expression). Högsta hävstångsfynd från trajektorian: stance/tone och fina distinktioner under tät akademisk prosa är de envisa fel-fickorna i v3 — protokollen för ELF-TYPE-002 och ELF-TYPE-005 speglar det. ELF-TYPE-008 (vocabulary-in-context) har exakt 5 förekomster i korpus och ligger på golvet; flaggad för v2-expansion om fler dyker upp.",
   "entries": [
     {
       "id": "ELF-TYPE-001",
-      "question_type": "literal detail retrieval",
+      "question_type": "Direkt detaljhämtning",
       "attack_protocol": [
-        "Lock the prompt's target noun phrase (e.g. 'Margaret Cavendish', 'the medical effects of music'). It tells you where in the passage to look.",
-        "Scan the passage for that noun phrase or its closest synonym; underline the surrounding sentence.",
-        "Read ONLY that sentence + the one before and after. Do not pull from elsewhere.",
-        "Match each option to that local span word-by-word. The correct option paraphrases ONE sentence with no additions.",
-        "Reject any option that adds quantity, cause, or scope the text doesn't supply, even if it sounds reasonable."
+        "Lås frågans måluttryck (t.ex. 'Margaret Cavendish', 'the medical effects of music'). Det säger var i texten du ska leta.",
+        "Scanna passagen efter måluttrycket eller dess närmaste synonym; stryk under den omgivande meningen.",
+        "Läs ENBART den meningen + en före och en efter. Hämta inte information från andra ställen.",
+        "Matcha varje svarsalternativ mot det lokala stycket ord för ord. Det rätta alternativet parafraserar EN mening utan tillägg.",
+        "Förkasta alla alternativ som lägger till mängd, orsak eller omfång som texten inte ger — även om de låter rimliga."
       ],
       "common_distractors": [
         {
-          "pattern": "True statement from the wrong paragraph",
-          "why_it_traps": "The fact is real but stated about a different entity than the prompt names; students who skim recognize the words and pick it."
+          "pattern": "Sant påstående från fel stycke",
+          "why_it_traps": "Faktumet är verkligt men sägs om en annan entitet än frågan namnger; elever som skummar känner igen orden och väljer det."
         },
         {
-          "pattern": "Real-world common knowledge not in the text",
-          "why_it_traps": "Sounds obviously true (e.g. 'music can be relaxing') so the student picks it; but the text never says so and ELF is text-grounded only."
+          "pattern": "Allmänkunskap som inte står i texten",
+          "why_it_traps": "Låter uppenbart sant (t.ex. 'musik kan vara avslappnande') så eleven väljer det; men texten säger aldrig det, och ELF är strikt textbundet."
         },
         {
-          "pattern": "Quantifier inflation (some → all, often → always)",
-          "why_it_traps": "Option keeps the text's words but strengthens a hedged claim to an absolute; the surface match feels right."
+          "pattern": "Kvantifikator-uppgradering (some → all, often → always)",
+          "why_it_traps": "Alternativet behåller textens ord men förstärker ett gardera påstående till en absolut utsaga; ytmatchningen känns rätt."
         },
         {
-          "pattern": "Causal claim grafted onto descriptive statement",
-          "why_it_traps": "Text describes X happening; option adds 'because Y' that the text only mentioned in passing nearby."
+          "pattern": "Orsakssamband påklistrat på beskrivande utsaga",
+          "why_it_traps": "Texten beskriver att X händer; alternativet lägger till 'eftersom Y' som texten bara nämner i förbifarten i närheten."
         }
       ],
       "example_questions": [
@@ -44,34 +44,34 @@
         "var-2013-verb1-ELF-031",
         "var-2026-verb1-ELF-038"
       ],
-      "notes": "Recognize by prompt verbs: 'we are told', 'is said', 'is stated', 'according to the text' WITHOUT 'main' or 'implied'. ~101 corpus questions — the largest single bucket. Lowest-difficulty type when read carefully; high-difficulty only when the passage contains multiple similar-sounding spans."
+      "notes": "Känns igen på frågeverben: 'we are told', 'is said', 'is stated', 'according to the text' UTAN 'main' eller 'implied'. ~101 frågor i korpus — den största enskilda kategorin. Lägst svårighetsgrad när man läser noggrant; hög svårighet bara när passagen innehåller flera liknande-klingande stycken."
     },
     {
       "id": "ELF-TYPE-002",
-      "question_type": "inference / implication",
+      "question_type": "Slutsatsdragning / implikation",
       "attack_protocol": [
-        "Read the prompt: 'implied' = the answer is NOT literally stated; you must combine sentences or read between the lines.",
-        "Locate the local span anchored by the prompt's target (paragraph, named entity, or 'here').",
-        "Identify the writer's UNSAID-BUT-NECESSARY assumption — the bridge between two statements, or what is needed for the explicit claim to make sense.",
-        "Find the option that follows from the span as a minimal additional step. The correct option is almost always one logical inch beyond the text, never two.",
-        "Drop any option that is either literally restated in the text (too close — that's retrieval, not inference) OR requires outside knowledge / a leap of two steps."
+        "Läs frågan: 'implied' = svaret står INTE bokstavligen; du måste kombinera meningar eller läsa mellan raderna.",
+        "Lokalisera det lokala stycket som ankras av frågans mål (stycke, namngiven entitet, eller 'here').",
+        "Identifiera författarens OSAGDA-MEN-NÖDVÄNDIGA antagande — bryggan mellan två utsagor, eller det som krävs för att det explicita påståendet ska gå ihop.",
+        "Hitta alternativet som följer ur stycket som ett minimalt extra steg. Det rätta alternativet ligger nästan alltid en logisk tum bortom texten, aldrig två.",
+        "Sålla bort alla alternativ som antingen står bokstavligen i texten (för nära — det är retrieval, inte inferens) ELLER kräver utomstående kunskap / ett två-stegs-hopp."
       ],
       "common_distractors": [
         {
-          "pattern": "Literal restatement of the passage",
-          "why_it_traps": "Looks safe because it matches the text word-for-word; students avoid the inferential leap and pick the surface match — but 'implied' demands it NOT be literal."
+          "pattern": "Bokstavlig omformulering av passagen",
+          "why_it_traps": "Ser säkert ut eftersom det matchar texten ord för ord; eleven undviker det inferentiella språnget och tar ytmatchningen — men 'implied' kräver att det INTE är bokstavligt."
         },
         {
-          "pattern": "Two-step leap (plausible but unsupported)",
-          "why_it_traps": "The option follows IF you also assume something the text never gave you; sounds intelligent and worldly."
+          "pattern": "Två-stegs-hopp (rimligt men ostött)",
+          "why_it_traps": "Alternativet följer OM du dessutom antar något som texten aldrig gav dig; låter intelligent och världsvant."
         },
         {
-          "pattern": "Reverse-direction inference",
-          "why_it_traps": "Text implies A causes B; option says B causes A or A prevents B; sign flips under pressure."
+          "pattern": "Inferens i omvänd riktning",
+          "why_it_traps": "Texten implicerar att A orsakar B; alternativet säger att B orsakar A eller att A förhindrar B; tecknet flippar under tidspress."
         },
         {
-          "pattern": "Scope shift (specific instance → general principle)",
-          "why_it_traps": "Text implies a thing about ONE case; option generalizes to all cases of that kind."
+          "pattern": "Omfångsskifte (specifikt fall → generell princip)",
+          "why_it_traps": "Texten implicerar något om ETT fall; alternativet generaliserar till alla fall av den typen."
         }
       ],
       "example_questions": [
@@ -85,34 +85,34 @@
         "var-2024-verb1-ELF-040",
         "var-2026-verb1-ELF-035"
       ],
-      "notes": "Recognize by 'implied' (~56 corpus questions). Persona-pass flagged this as the high-error type when prose is dense and academic. Calibration rule: if the option appears verbatim in the passage, it is NOT the implication answer."
+      "notes": "Känns igen på 'implied' (~56 frågor i korpus). Persona-passet flaggade detta som hög-fel-typen när prosan är tät och akademisk. Kalibreringsregel: om alternativet förekommer ordagrant i passagen är det INTE implikations-svaret."
     },
     {
       "id": "ELF-TYPE-003",
-      "question_type": "logical conclusion / synthesis",
+      "question_type": "Logisk slutsats / syntes",
       "attack_protocol": [
-        "'Concluded' = synthesize across the named span (a paragraph, two paragraphs, or the whole text) — NOT just one sentence.",
-        "Skim the named span and note 2-4 supporting points. Look for the connective tissue (however, therefore, thus, in other words).",
-        "Predict the conclusion in your own words BEFORE looking at options.",
-        "Pick the option that fits ALL the supporting points, not just one. A conclusion that only matches the last sentence is a trap.",
-        "Reject options that contradict any single sentence in the span, even if they paraphrase the gist."
+        "'Concluded' = syntetisera över det namngivna stycket (ett stycke, två stycken, eller hela texten) — INTE bara en mening.",
+        "Skumma det namngivna stycket och notera 2–4 stödpunkter. Leta efter bindeväv (however, therefore, thus, in other words).",
+        "Förutsäg slutsatsen med dina egna ord INNAN du tittar på alternativen.",
+        "Välj det alternativ som passar ALLA stödpunkter, inte bara en. En slutsats som bara matchar sista meningen är en fälla.",
+        "Förkasta alternativ som motsäger någon enskild mening i stycket, även om de parafraserar essensen."
       ],
       "common_distractors": [
         {
-          "pattern": "Conclusion drawn from only the final sentence",
-          "why_it_traps": "Students anchor on the last thing they read; the option restates the closing line but ignores qualifiers earlier in the span."
+          "pattern": "Slutsats dragen enbart från sista meningen",
+          "why_it_traps": "Eleven ankrar i det sist lästa; alternativet återger slutraden men ignorerar gardera-uttryck tidigare i stycket."
         },
         {
-          "pattern": "Conclusion that overstates a hedged premise",
-          "why_it_traps": "Span uses 'may', 'tends to', 'in some cases'; option upgrades to a flat assertion that doesn't survive the qualifiers."
+          "pattern": "Slutsats som överdriver en gardera premiss",
+          "why_it_traps": "Stycket använder 'may', 'tends to', 'in some cases'; alternativet uppgraderar till en kategorisk utsaga som inte överlever garderingarna."
         },
         {
-          "pattern": "Half-correct conclusion missing one branch",
-          "why_it_traps": "Span discusses two phenomena; option covers one and ignores the other, so it's defensible-looking but incomplete."
+          "pattern": "Halv-rätt slutsats som saknar en gren",
+          "why_it_traps": "Stycket diskuterar två fenomen; alternativet täcker bara det ena och ignorerar det andra, så det ser försvarbart ut men är ofullständigt."
         },
         {
-          "pattern": "Conclusion borrowed from a different paragraph",
-          "why_it_traps": "Prompt names 'the first paragraph' or 'the last two paragraphs' specifically; the option states something true elsewhere in the text."
+          "pattern": "Slutsats lånad från ett annat stycke",
+          "why_it_traps": "Frågan namnger 'the first paragraph' eller 'the last two paragraphs' specifikt; alternativet uttrycker något som är sant på en annan plats i texten."
         }
       ],
       "example_questions": [
@@ -126,34 +126,34 @@
         "host-2021-verb2-ELF-039",
         "host-2023-verb1-ELF-040"
       ],
-      "notes": "Recognize by 'can be concluded' / 'may be concluded' (~32 corpus questions). Distinct from ELF-TYPE-002 (inference) in that conclusion synthesizes EXPLICIT statements; inference fills in unstated bridges. Distinct from ELF-TYPE-004 (main idea) in that conclusion targets a NAMED SPAN, not the whole text's thesis."
+      "notes": "Känns igen på 'can be concluded' / 'may be concluded' (~32 frågor i korpus). Skiljer sig från ELF-TYPE-002 (inferens) genom att slutsatsen syntetiserar EXPLICITA utsagor; inferens fyller i osagda bryggor. Skiljer sig från ELF-TYPE-004 (huvudidé) genom att slutsatsen riktas mot ett NAMNGIVET STYCKE, inte hela textens tes."
     },
     {
       "id": "ELF-TYPE-004",
-      "question_type": "main idea / argument / focus",
+      "question_type": "Huvudidé / argument / fokus",
       "attack_protocol": [
-        "Decide the scope: 'main point of the text' = whole passage; 'main point of the opening paragraph' = just that paragraph.",
-        "For whole-text questions: locate the thesis sentence (often paragraph 1's last sentence OR the final paragraph's first sentence) and the recurrent subject across paragraphs.",
-        "For paragraph-scope questions: find the sentence the other sentences in that paragraph support.",
-        "Pick the option that captures the WIDEST claim still supported by the span; reject options that are merely true about one sub-detail.",
-        "Reject options too narrow (a single supporting fact) AND too broad (a slogan beyond what the text argues)."
+        "Bestäm omfånget: 'main point of the text' = hela passagen; 'main point of the opening paragraph' = bara det stycket.",
+        "För hela-text-frågor: lokalisera tesmeningen (ofta sista meningen i stycke 1 ELLER första meningen i sista stycket) och det återkommande ämnet tvärs över styckena.",
+        "För stycke-omfångs-frågor: hitta den mening som de andra meningarna i det stycket stöder.",
+        "Välj det alternativ som fångar det BREDASTE påståendet som fortfarande har stöd i stycket; förkasta alternativ som bara är sanna om en sub-detalj.",
+        "Förkasta alternativ som är för smala (en enskild stödfakta) OCH för breda (en slogan som går utöver det texten faktiskt argumenterar för)."
       ],
       "common_distractors": [
         {
-          "pattern": "Supporting detail dressed as main point",
-          "why_it_traps": "Option restates a vivid example from the text; students remember the example and pick it instead of the abstraction it illustrates."
+          "pattern": "Stöddetalj klädd som huvudpunkt",
+          "why_it_traps": "Alternativet återger ett tydligt exempel från texten; eleven minns exemplet och väljer det istället för den abstraktion det illustrerar."
         },
         {
-          "pattern": "Slogan that overshoots the text's scope",
-          "why_it_traps": "Sounds like a thesis but generalizes beyond what the writer actually argues; the writer covered narrower ground."
+          "pattern": "Slogan som skjuter över textens omfång",
+          "why_it_traps": "Låter som en tes men generaliserar bortom det författaren faktiskt argumenterar; författaren täckte smalare mark."
         },
         {
-          "pattern": "Topic vs thesis confusion",
-          "why_it_traps": "Option names what the text is ABOUT (the topic) rather than what it CLAIMS (the thesis); both feel right when you only registered the subject."
+          "pattern": "Ämne vs tes-förväxling",
+          "why_it_traps": "Alternativet namnger vad texten HANDLAR OM (ämnet) snarare än vad den HÄVDAR (tesen); båda känns rätt när man bara registrerat ämnet."
         },
         {
-          "pattern": "Counter-position that the writer mentions but rejects",
-          "why_it_traps": "Text presents a view to argue against it; student remembers the view's content and picks it as 'main point'."
+          "pattern": "Motposition som författaren nämner men förkastar",
+          "why_it_traps": "Texten presenterar en åsikt för att argumentera MOT den; eleven minns åsiktens innehåll och tar det som 'huvudpunkt'."
         }
       ],
       "example_questions": [
@@ -167,34 +167,34 @@
         "host-2022-verb2-ELF-036",
         "host-2024-verb2-ELF-037"
       ],
-      "notes": "Recognize by 'main point / main argument / main claim / main focus / main conclusion / main impression' (~43 corpus questions, plus a few 'main purpose'). High-leverage type — perfect-score students nail these by anchoring on the thesis sentence rather than memorable details."
+      "notes": "Känns igen på 'main point / main argument / main claim / main focus / main conclusion / main impression' (~43 frågor i korpus, plus några 'main purpose'). Hög-hävstångs-typ — toppelever klarar dessa genom att ankra i tesmeningen istället för minnesvärda detaljer."
     },
     {
       "id": "ELF-TYPE-005",
-      "question_type": "stance / tone / attitude",
+      "question_type": "Hållning / ton / attityd",
       "attack_protocol": [
-        "Identify whose stance: writer's overall, a named figure's, or the text's tone as a whole? The prompt names the target.",
-        "Scan for evaluative language: adjectives, adverbs, hedges, irony markers, scare quotes, exclamations, rhetorical questions.",
-        "Map the evaluative load on a 2-axis grid: positive/negative AND committed/hedged. The correct option lands on the same coordinates.",
-        "For a named figure: find direct quotes / paraphrases attributed to them; the writer's stance and the figure's stance are NOT the same — separate them.",
-        "Reject options that pick up the SUBJECT's tone instead of the WRITER's tone (e.g. a text about anger isn't necessarily angry)."
+        "Identifiera vems hållning: författarens överlag, en namngiven persons, eller textens ton som helhet? Frågan namnger målet.",
+        "Scanna efter värderande språk: adjektiv, adverb, garderingar, ironimarkörer, citationstecken, utrop, retoriska frågor.",
+        "Placera den värderande laddningen på ett 2-axligt rutnät: positiv/negativ OCH bestämd/gardera. Det rätta alternativet landar på samma koordinater.",
+        "För en namngiven person: hitta direkta citat / parafraser som tillskrivs hen; författarens hållning och personens hållning är INTE samma — separera dem.",
+        "Förkasta alternativ som plockar upp ÄMNETS ton istället för FÖRFATTARENS ton (t.ex. en text om ilska är inte nödvändigtvis arg)."
       ],
       "common_distractors": [
         {
-          "pattern": "Subject-tone confused with writer-tone",
-          "why_it_traps": "Text describes a sentimental film or a sarcastic speaker; option labels the TEXT sentimental or sarcastic when the writer is actually detached."
+          "pattern": "Ämnets ton förväxlad med författarens ton",
+          "why_it_traps": "Texten beskriver en sentimental film eller en sarkastisk talare; alternativet etiketterar TEXTEN som sentimental eller sarkastisk när författaren egentligen är distanserad."
         },
         {
-          "pattern": "One degree too strong",
-          "why_it_traps": "Writer is 'mildly critical' or 'cautiously positive'; option says 'scathing' or 'enthusiastic' — same sign, wrong intensity."
+          "pattern": "En grad för starkt",
+          "why_it_traps": "Författaren är 'mildly critical' eller 'cautiously positive'; alternativet säger 'scathing' eller 'enthusiastic' — rätt tecken, fel intensitet."
         },
         {
-          "pattern": "Mixed-stance flattened to one pole",
-          "why_it_traps": "Writer is 'impressed but reserved' or 'positive with serious objections'; option captures only one half and reads as plausible."
+          "pattern": "Blandad hållning plattad till en pol",
+          "why_it_traps": "Författaren är 'impressed but reserved' eller 'positive with serious objections'; alternativet fångar bara den ena halvan och läses som rimligt."
         },
         {
-          "pattern": "Borrowed from a quoted source",
-          "why_it_traps": "Writer quotes a critic; option uses the critic's evaluative words and assigns them to the writer, who actually disagrees."
+          "pattern": "Lånad från en citerad källa",
+          "why_it_traps": "Författaren citerar en kritiker; alternativet använder kritikerns värderande ord och tilldelar dem författaren — som faktiskt inte håller med."
         }
       ],
       "example_questions": [
@@ -208,34 +208,34 @@
         "var-2013-verb1-ELF-037",
         "var-2023-verb1-ELF-038"
       ],
-      "notes": "Recognize by 'tone', 'attitude', 'characterized', 'best be described', 'reviewer’s' / 'writer’s overall' (~23 corpus questions). Trajectory tagged this as a high-error type even in v3 — fine distinctions between e.g. 'on the whole positive but has some serious objections' vs 'clearly impressed but avoids taking a stand' are the persistent failure mode."
+      "notes": "Känns igen på 'tone', 'attitude', 'characterized', 'best be described', 'reviewer's' / 'writer's overall' (~23 frågor i korpus). Trajektorian taggade detta som en hög-fel-typ även i v3 — fina distinktioner mellan t.ex. 'on the whole positive but has some serious objections' vs 'clearly impressed but avoids taking a stand' är det envisa felmönstret."
     },
     {
       "id": "ELF-TYPE-006",
-      "question_type": "purpose / cause-effect",
+      "question_type": "Syfte / orsak-verkan",
       "attack_protocol": [
-        "Decide the question kind: 'why is X mentioned' (rhetorical purpose) OR 'what caused Y' (in-text causal chain).",
-        "For rhetorical purpose: find the sentence WHERE the element appears, then ask what argumentative work it does in the paragraph (illustration, contrast, evidence, hook).",
-        "For causal: locate the chain of events; identify the trigger the text names (not the most plausible real-world cause).",
-        "Match the option to the textual chain — not your prior beliefs about why things happen.",
-        "Reject options that describe a true consequence rather than the cause, or vice versa (direction flips)."
+        "Bestäm frågans typ: 'why is X mentioned' (retoriskt syfte) ELLER 'what caused Y' (kausalkedja i texten).",
+        "För retoriskt syfte: hitta meningen DÄR elementet förekommer, fråga sen vilket argumentativt arbete det utför i stycket (illustration, kontrast, evidens, krok).",
+        "För kausalt: lokalisera händelsekedjan; identifiera den utlösare som TEXTEN namnger (inte den mest sannolika verkliga orsaken).",
+        "Matcha alternativet mot textens kedja — inte mot dina förhandsuppfattningar om varför saker händer.",
+        "Förkasta alternativ som beskriver en sann konsekvens snarare än orsaken, eller tvärtom (riktningen flippar)."
       ],
       "common_distractors": [
         {
-          "pattern": "Plausible real-world cause not in the text",
-          "why_it_traps": "Option states a cause that fits world knowledge; ELF requires the cause the WRITER attributes, which may differ."
+          "pattern": "Rimlig verklig orsak som inte står i texten",
+          "why_it_traps": "Alternativet anger en orsak som passar världsvetenskapen; ELF kräver den orsak FÖRFATTAREN tillskriver, som kan skilja sig."
         },
         {
-          "pattern": "Consequence labeled as cause",
-          "why_it_traps": "Option swaps direction in the causal chain; both items are in the text so option feels familiar."
+          "pattern": "Konsekvens etiketterad som orsak",
+          "why_it_traps": "Alternativet byter riktning i kausalkedjan; båda begreppen finns i texten så alternativet känns bekant."
         },
         {
-          "pattern": "Purpose collapsed to topic",
-          "why_it_traps": "Asked why X is mentioned, option says 'because the text is about X' — true but vacuous; the actual purpose is rhetorical (illustration, contrast, etc.)."
+          "pattern": "Syfte kollapsat till ämne",
+          "why_it_traps": "Frågan är varför X nämns, alternativet svarar 'eftersom texten handlar om X' — sant men tomt; det faktiska syftet är retoriskt (illustration, kontrast, etc.)."
         },
         {
-          "pattern": "Local cause when the text frames a deeper one",
-          "why_it_traps": "Option names the proximate trigger; text emphasizes a background condition as the 'basic' cause (and the prompt often uses 'basically' / 'primarily' to flag this)."
+          "pattern": "Lokal orsak när texten ramar in en djupare",
+          "why_it_traps": "Alternativet namnger den proximala utlösaren; texten betonar ett bakgrundsvillkor som den 'grundläggande' orsaken (och frågan använder ofta 'basically' / 'primarily' för att flagga detta)."
         }
       ],
       "example_questions": [
@@ -249,34 +249,34 @@
         "var-2017-verb2-ELF-038",
         "var-2022-2-verb2-ELF-040"
       ],
-      "notes": "Recognize by 'why', 'main reason', 'purpose', 'caused', 'why is X mentioned' (~19 corpus questions combined). Two sub-flavors share an attack protocol because both ask 'identify the writer's explicit attribution'. Smallish bucket but distinctive enough to keep separate — purpose/cause are not interchangeable with retrieval (no surface phrase to match) or inference (the text names the cause)."
+      "notes": "Känns igen på 'why', 'main reason', 'purpose', 'caused', 'why is X mentioned' (~19 frågor i korpus totalt). Två underkategorier delar attack-protokoll eftersom båda frågar 'identifiera författarens explicita tillskrivning'. Liten kategori men distinkt nog att hålla separat — syfte/orsak är inte utbytbara med retrieval (ingen ytfras att matcha) eller inferens (texten namnger orsaken)."
     },
     {
       "id": "ELF-TYPE-007",
-      "question_type": "statement-text alignment",
+      "question_type": "Påstående-text-överensstämmelse",
       "attack_protocol": [
-        "Recognize the open-ended frame: the prompt does not name a target span ('in line with the text', 'in agreement with the text', 'true according to the text').",
-        "Read all options first to extract candidate claims; scan the text for each claim's keyword anchors.",
-        "For each option, locate its anchor span and check whether the text actually supports the claim — supports, contradicts, or doesn't mention.",
-        "Eliminate any option the text contradicts OR doesn't mention. The correct option is the one the text supports verbatim or by near-paraphrase.",
-        "When two options seem supported, prefer the one matching the text's qualifiers (hedges, scopes, exceptions); the other usually overreaches."
+        "Känn igen den öppna ramen: frågan namnger inget målstycke ('in line with the text', 'in agreement with the text', 'true according to the text').",
+        "Läs alla alternativ först för att plocka ut kandidat-påståenden; scanna texten efter nyckelords-ankare för varje påstående.",
+        "För varje alternativ: lokalisera dess ankarstycke och kontrollera om texten faktiskt stöder påståendet — stöder, motsäger, eller nämner inte.",
+        "Eliminera alla alternativ som texten motsäger ELLER inte nämner. Det rätta alternativet är det texten stöder ordagrant eller via nära parafras.",
+        "När två alternativ verkar stödda: föredra det som matchar textens garderingar (hedges, omfång, undantag); det andra överdriver oftast."
       ],
       "common_distractors": [
         {
-          "pattern": "True in the real world but not in the text",
-          "why_it_traps": "Common knowledge that the text never asserts; students conflate world knowledge with text content."
+          "pattern": "Sant i verkligheten men inte i texten",
+          "why_it_traps": "Allmänkunskap som texten aldrig påstår; elever sammanblandar världskunskap med textinnehåll."
         },
         {
-          "pattern": "Text-supported but with wrong scope",
-          "why_it_traps": "Text says 'in some grammar schools'; option says 'in all'; student matches the topic and misses the quantifier."
+          "pattern": "Stött av texten men med fel omfång",
+          "why_it_traps": "Texten säger 'in some grammar schools'; alternativet säger 'in all'; eleven matchar ämnet och missar kvantifikatorn."
         },
         {
-          "pattern": "Plausible extension the text doesn't make",
-          "why_it_traps": "Sounds like the natural next claim a writer would make; but it crosses from 'supports' to 'compatible with' — alignment demands explicit support."
+          "pattern": "Rimlig förlängning som texten inte gör",
+          "why_it_traps": "Låter som det naturliga nästa påståendet en författare skulle göra; men det rör sig från 'stöder' till 'kompatibel med' — överensstämmelse kräver explicit stöd."
         },
         {
-          "pattern": "Inverted polarity",
-          "why_it_traps": "Option flips a key qualifier (no → some, decrease → increase, before → after); reads correctly under speed-reading."
+          "pattern": "Inverterad polaritet",
+          "why_it_traps": "Alternativet flippar en nyckel-gardering (no → some, decrease → increase, before → after); läses som korrekt vid snabbläsning."
         }
       ],
       "example_questions": [
@@ -290,30 +290,30 @@
         "var-2013-verb1-ELF-040",
         "var-2016-verb2-ELF-038"
       ],
-      "notes": "Recognize by 'which of the following statements is most in line with' / 'in agreement with' / 'is true according to' (~24 corpus questions). Distinct from ELF-TYPE-001 retrieval in that the prompt does NOT name what to look up — you must let the options drive your scan. Time-expensive type; allocate up to 4 lookups per question."
+      "notes": "Känns igen på 'which of the following statements is most in line with' / 'in agreement with' / 'is true according to' (~24 frågor i korpus). Skiljer sig från ELF-TYPE-001 retrieval genom att frågan INTE namnger vad man ska slå upp — du måste låta alternativen styra scanningen. Tidskrävande typ; budgetera upp till 4 uppslag per fråga."
     },
     {
       "id": "ELF-TYPE-008",
-      "question_type": "vocabulary / expression in context",
+      "question_type": "Ordförråd / uttryck i kontext",
       "attack_protocol": [
-        "Lock the quoted expression in the prompt (e.g. 'time is money', 'white elephant', 'survival benefits').",
-        "Locate the expression in the passage; read the 2-3 sentences around it for context — the text always defines/uses the expression in-context.",
-        "Predict the meaning IN THIS CONTEXT before looking at options; do not import the standard idiomatic meaning if the text is using it differently.",
-        "Match the option whose paraphrase fits the contextual usage, not the most common dictionary sense.",
-        "Reject options that paraphrase the literal-words meaning (a 'white elephant' is not literally about an elephant) or the most-common idiomatic sense if the text bends it."
+        "Lås det citerade uttrycket i frågan (t.ex. 'time is money', 'white elephant', 'survival benefits').",
+        "Lokalisera uttrycket i passagen; läs de 2–3 meningarna runt det för kontext — texten definierar/använder alltid uttrycket i kontext.",
+        "Förutsäg betydelsen I DEN HÄR KONTEXTEN innan du tittar på alternativen; importera inte den vanliga idiomatiska betydelsen om texten använder uttrycket annorlunda.",
+        "Matcha det alternativ vars parafras passar den kontextuella användningen, inte den vanligaste lexikala betydelsen.",
+        "Förkasta alternativ som parafraserar den bokstavliga ord-för-ord-betydelsen (en 'white elephant' handlar inte bokstavligen om en elefant) eller den vanligaste idiomatiska betydelsen om texten böjer den."
       ],
       "common_distractors": [
         {
-          "pattern": "Literal reading of the figurative expression",
-          "why_it_traps": "Option treats 'white elephant' / 'survival benefits' / 'time is money' word-for-word; appealing when context is dense and student grabs surface meaning."
+          "pattern": "Bokstavlig läsning av det bildliga uttrycket",
+          "why_it_traps": "Alternativet behandlar 'white elephant' / 'survival benefits' / 'time is money' ord för ord; lockande när kontexten är tät och eleven grabbar ytbetydelsen."
         },
         {
-          "pattern": "Standard idiom meaning vs the text's bent usage",
-          "why_it_traps": "Option gives the dictionary sense; text uses the expression in a culturally-specific or technical sense that diverges."
+          "pattern": "Standard idiombetydelse vs textens böjda användning",
+          "why_it_traps": "Alternativet ger ordbokens betydelse; texten använder uttrycket i en kulturellt specifik eller teknisk mening som avviker."
         },
         {
-          "pattern": "Adjacent-concept substitution",
-          "why_it_traps": "Option swaps the expression for a related-but-not-equivalent concept (e.g. 'time is money' → 'time is valuable' when text means 'time should be spent productively')."
+          "pattern": "Närliggande-koncept-substitution",
+          "why_it_traps": "Alternativet byter ut uttrycket mot ett besläktat-men-inte-likvärdigt koncept (t.ex. 'time is money' → 'time is valuable' när texten menar 'time should be spent productively')."
         }
       ],
       "example_questions": [
@@ -323,7 +323,7 @@
         "var-2014-verb1-ELF-037",
         "var-2024-verb1-ELF-040"
       ],
-      "notes": "Recognize by quoted expression in the prompt + verbs 'best corresponds to', 'is said about the expression', 'is implied about the expression', 'reflects'. Only 5 corpus instances — at the floor for a type. Flagged for v2: expand only if the corpus grows; otherwise consider folding into ELF-TYPE-001 or ELF-TYPE-002 by context."
+      "notes": "Känns igen på citerat uttryck i frågan + verben 'best corresponds to', 'is said about the expression', 'is implied about the expression', 'reflects'. Bara 5 förekomster i korpus — på golvet för en typ. Flaggad för v2: expandera bara om korpus växer; annars överväg att vika in i ELF-TYPE-001 eller ELF-TYPE-002 efter kontext."
     }
   ]
 }

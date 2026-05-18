@@ -7,9 +7,9 @@
   "entries": [
     {
       "id": "KVA-TRAP-001",
-      "pattern_description": "Student sees x² = y² (or kvadratlikhet) and assumes x = y, missing that x = -y is equally valid.",
-      "why_it_occurs": "The natural reading of 'kvadraterna är lika' is 'talen är lika'. Students forget that squaring loses sign, so the constraint splits into two cases: x = y AND x = -y, both consistent with the given info.",
-      "common_distractor_signature": "Picks C (I = II) when D is correct — sees the algebraic match and stops before checking the negative branch.",
+      "pattern_description": "Student ser x² = y² (eller kvadratlikhet) och drar slutsatsen x = y — missar att x = -y är lika giltigt.",
+      "why_it_occurs": "Den naturliga läsningen av 'kvadraterna är lika' är 'talen är lika'. Studenten glömmer att kvadrering raderar tecknet, så villkoret splittras i två fall: x = y OCH x = -y, båda förenliga med given info.",
+      "common_distractor_signature": "Väljer C (I = II) när D är rätt — ser den algebraiska matchningen och stannar innan den negativa grenen är kontrollerad.",
       "countermeasure": "Varje gång du tar kvadratrot eller jämför kvadrater: skriv ut BÅDA fallen x = ±y och kolla om båda är förenliga med villkoren. Om ja → svaret är D.",
       "example_questions": [
         "host-2017-kvant1-KVA-021",
@@ -20,9 +20,9 @@
     },
     {
       "id": "KVA-TRAP-002",
-      "pattern_description": "Student treats a sum-equality (e.g. y + z = 0, or x + y = k) as if it pinned down each individual term.",
-      "why_it_occurs": "Equations 'feel' like they should determine the variables. But one equation in two unknowns only fixes a linear combination — each term is still free along the constraint line.",
-      "common_distractor_signature": "Picks A or B based on a chosen specific solution (e.g. setting y = -z and assuming z > 0), missing that the sign of the free variable can flip the svaret.",
+      "pattern_description": "Student behandlar en summalikhet (t.ex. y + z = 0, eller x + y = k) som om den låste varje enskild term.",
+      "why_it_occurs": "Ekvationer 'känns' som om de borde bestämma variablerna. Men en ekvation i två obekanta låser bara en linjär kombination — varje enskild term är fortfarande fri längs villkorslinjen.",
+      "common_distractor_signature": "Väljer A eller B baserat på en specifik vald lösning (t.ex. sätter y = -z och antar z > 0), missar att tecknet på den fria variabeln kan flippa svaret.",
       "countermeasure": "Räkna frihetsgrader: antal okända − antal oberoende ekvationer. Om resultatet > 0 är minst en variabel fri, och då måste du testa minst två tecken-varianter innan du vågar säga A/B/C.",
       "example_questions": [
         "host-2015-kvant1-KVA-014",
@@ -34,9 +34,9 @@
     },
     {
       "id": "KVA-TRAP-003",
-      "pattern_description": "An inequality bounds only ONE of the two compared variables (e.g. 'Clara > 22'), leaving the other in an open interval that straddles the comparison target.",
-      "why_it_occurs": "Inequalities look like 'enough info' — they constrain something. Students forget that a lower bound on A says nothing about B, and that A's interval may overlap both sides of B.",
-      "common_distractor_signature": "Picks A or B by anchoring on the bound (e.g. assumes Clara is exactly 22 or just above), missing that the unconstrained variable can be anywhere in its interval — D.",
+      "pattern_description": "En olikhet binder BARA en av de två jämförda variablerna (t.ex. 'Clara > 22'), och lämnar den andra i ett öppet intervall som korsar jämförelsemålet.",
+      "why_it_occurs": "Olikheter ser ut som 'tillräcklig info' — de begränsar något. Studenten glömmer att en undre gräns på A inte säger något om B, och att A:s intervall kan överlappa båda sidor av B.",
+      "common_distractor_signature": "Väljer A eller B genom att förankra sig vid gränsen (t.ex. antar att Clara är exakt 22 eller precis över), missar att den obegränsade variabeln kan ligga var som helst i sitt intervall — D.",
       "countermeasure": "Skriv ut intervallet för varje variabel explicit. Om båda variablernas möjliga intervall överlappar målvärdet → D.",
       "example_questions": [
         "var-2022-1-kvant1-KVA-019",
@@ -47,9 +47,9 @@
     },
     {
       "id": "KVA-TRAP-004",
-      "pattern_description": "Geometric figure with fixed area OR fixed perimeter, but free shape — student assumes the side lengths are pinned.",
-      "why_it_occurs": "'En rektangel med area 24' sounds concrete. But area = base·höjd has infinite (base, höjd) pairs satisfying it; the longest side can range from a minimum (most compact) up to arbitrarily large.",
-      "common_distractor_signature": "Picks A or B by imagining a 'typical' rectangle (often a square-ish one), missing that the same constraint admits a needle-thin rectangle with very different side lengths.",
+      "pattern_description": "Geometrisk figur med fixerad area ELLER fixerad omkrets, men fri form — studenten antar att sidlängderna är låsta.",
+      "why_it_occurs": "'En rektangel med area 24' låter konkret. Men area = bas·höjd har oändligt många (bas, höjd)-par som uppfyller villkoret; den längsta sidan kan variera från ett minimum (mest kompakt) upp till godtyckligt stort.",
+      "common_distractor_signature": "Väljer A eller B genom att föreställa sig en 'typisk' rektangel (ofta nästan kvadratisk), missar att samma villkor också tillåter en nålsmal rektangel med helt andra sidlängder.",
       "countermeasure": "Vid fixerad area/omkrets: testa två extremfall — den mest kompakta formen (närmast kvadrat/cirkel) OCH en mycket avlång variant. Om verdikten skiljer sig → D.",
       "example_questions": [
         "host-2013-kvant1-KVA-019",
@@ -61,9 +61,9 @@
     },
     {
       "id": "KVA-TRAP-005",
-      "pattern_description": "A free parameter k (often described as 'k ≠ 0' or 'b är ett tal') is multiplied with a variable; the sign and magnitude of k each open distinct cases.",
-      "why_it_occurs": "'k ≠ 0' sounds restrictive but is actually very permissive: k can be large, small (0 < k < 1), or negative — and each gives a different relation between x and kx.",
-      "common_distractor_signature": "Picks A or B by silently assuming k > 1 (the 'normal' case), missing that 0 < k < 1 reverses the magnitude order and k < 0 reverses the sign.",
+      "pattern_description": "En fri parameter k (ofta beskriven som 'k ≠ 0' eller 'b är ett tal') multipliceras med en variabel; tecknet och magnituden på k öppnar var för sig olika fall.",
+      "why_it_occurs": "'k ≠ 0' låter restriktivt men är i själva verket mycket tillåtande: k kan vara stort, litet (0 < k < 1) eller negativt — och varje val ger en annan relation mellan x och kx.",
+      "common_distractor_signature": "Väljer A eller B genom att tyst anta k > 1 ('det normala fallet'), missar att 0 < k < 1 vänder storleksordningen och k < 0 vänder tecknet.",
       "countermeasure": "När en fri parameter multipliceras: testa MINST tre värden — k = 2, k = 1/2, k = -1. Om verdikten skiljer sig mellan dem → D.",
       "example_questions": [
         "host-2015-kvant2-KVA-016",
@@ -76,9 +76,9 @@
     },
     {
       "id": "KVA-TRAP-006",
-      "pattern_description": "A two-way table gives row and column totals but no joint distribution — student treats it as fully specified.",
-      "why_it_occurs": "Marginal totals look like full information. But without at least one inner-cell value (or independence assumption), the joint distribution is free within the marginals.",
-      "common_distractor_signature": "Picks A/B/C by assuming proportional/uniform distribution across cells, missing that the inner cells can be anywhere within the constraint.",
+      "pattern_description": "En tvåvägstabell ger rad- och kolumnsummor men ingen samverkansfördelning — studenten behandlar den som fullständigt specificerad.",
+      "why_it_occurs": "Marginalsummor ser ut som fullständig information. Men utan minst ett inre cellvärde (eller oberoendeantagande) är cellfördelningen fri inom marginalerna.",
+      "common_distractor_signature": "Väljer A/B/C genom att anta proportionell/uniform fördelning över cellerna, missar att de inre cellerna kan ligga var som helst inom villkoret.",
       "countermeasure": "Vid tvåvägs-tabell utan korsinformation: konstruera TVÅ giltiga ifyllnader som ger olika svar på frågan. Lyckas du → D.",
       "example_questions": [
         "var-2015-kvant2-KVA-014",
@@ -89,22 +89,22 @@
     },
     {
       "id": "KVA-TRAP-007",
-      "pattern_description": "Two given equations look distinct but one is a multiple/proportional rewrite of the other — only one independent constraint remains.",
-      "why_it_occurs": "Two equations 'should' determine two unknowns. Students count the lines on the page rather than checking linear independence; if the second equation is a multiple of the first, you really have a one-equation-two-unknowns system.",
-      "common_distractor_signature": "Picks A/B/C by solving the system as if it had a unique solution, missing the dependency. Correct answer is usually D.",
+      "pattern_description": "Två givna ekvationer ser olika ut men den ena är en multipel/proportionell omskrivning av den andra — bara EN oberoende villkor återstår.",
+      "why_it_occurs": "Två ekvationer 'borde' bestämma två obekanta. Studenten räknar rader på pappret istället för att kontrollera linjärt oberoende; om ekvation två är en multipel av ettan har du i själva verket ett ett-ekvation-två-obekanta-system.",
+      "common_distractor_signature": "Väljer A/B/C genom att lösa systemet som om det hade unik lösning, missar beroendet. Rätt svar är oftast D.",
       "countermeasure": "Innan du löser ett ekvationssystem: dela ekvation 2 med ekvation 1 (eller multiplicera den ena med en konstant) — om de blir identiska har du bara ETT oberoende villkor.",
       "example_questions": [
         "host-ver1-2019-kvant1-KVA-022",
         "host-ver2-2019-kvant1-KVA-022",
         "host-2016-kvant1-KVA-016"
       ],
-      "notes": "host-ver1 / host-ver2 are sister-exams with identical questions; both count as separate corpus qids per dataset convention."
+      "notes": "host-ver1 / host-ver2 är systerprov med identiska frågor; båda räknas som separata qid:n i korpusen enligt datasetkonventionen."
     },
     {
       "id": "KVA-TRAP-008",
-      "pattern_description": "Geometric problem with a 'distinguishing' feature (e.g. 'rätvinklig triangel', 'likbent') has multiple valid configurations — student commits to one.",
-      "why_it_occurs": "'En rätvinklig triangel' sounds like ONE triangle. But the right angle could be at any of three vertices, and 'likbent' has three choices for which side is the base — each configuration gives different angles/sides.",
-      "common_distractor_signature": "Picks A/B/C by drawing the most symmetric or 'obvious' configuration, missing that other configurations satisfy the same description but yield a different svaret.",
+      "pattern_description": "Geometrisk uppgift med en 'utmärkande' egenskap (t.ex. 'rätvinklig triangel', 'likbent') har flera giltiga konfigurationer — studenten låser sig vid en.",
+      "why_it_occurs": "'En rätvinklig triangel' låter som EN triangel. Men rätvinkeln kan sitta i vilken som helst av tre hörn, och 'likbent' har tre val för vilken sida som är bas — varje konfiguration ger olika vinklar/sidor.",
+      "common_distractor_signature": "Väljer A/B/C genom att rita den mest symmetriska eller 'självklara' konfigurationen, missar att andra konfigurationer uppfyller samma beskrivning men ger ett annat svar.",
       "countermeasure": "Vid geometriska beskrivningar: lista ALLA möjliga konfigurationer av den utmärkande egenskapen (var sitter rätvinkeln? vilken sida är basen?) innan du svarar. Två giltiga config → D.",
       "example_questions": [
         "host-2013-kvant2-KVA-022",
@@ -115,9 +115,9 @@
     },
     {
       "id": "KVA-TRAP-009",
-      "pattern_description": "Equation forces x = y (or x = -y) but does not fix the actual value — student compares I against a concrete number without checking the unknown's range.",
-      "why_it_occurs": "Once you derive 'x = y' the algebra feels done. But if the quantity in question depends on the magnitude (e.g. 'x' vs '0') and x is still free, the comparison is not determined.",
-      "common_distractor_signature": "Picks C because the algebraic relation looks like a match, missing that the comparison target (a constant) doesn't get pinned by 'x = y' alone.",
+      "pattern_description": "Ekvationen tvingar fram x = y (eller x = -y) men fixerar inte själva värdet — studenten jämför I mot ett konkret tal utan att kolla den okändas intervall.",
+      "why_it_occurs": "När du väl härlett 'x = y' känns algebran klar. Men om kvantiteten som jämförs beror på magnituden (t.ex. 'x' vs '0') och x är fortfarande fri, är jämförelsen inte bestämd.",
+      "common_distractor_signature": "Väljer C eftersom den algebraiska relationen ser ut som en match, missar att jämförelsemålet (en konstant) inte låses av 'x = y' ensamt.",
       "countermeasure": "Efter att ha löst en relation mellan variabler: fråga 'är värdet låst, eller bara förhållandet?' Om bara förhållandet är låst och kvantiteten beror på det absoluta värdet → D.",
       "example_questions": [
         "var-2015-kvant2-KVA-016",
@@ -128,9 +128,9 @@
     },
     {
       "id": "KVA-TRAP-010",
-      "pattern_description": "Mean (medelvärde) is given — student assumes the individual values are determined.",
-      "why_it_occurs": "Mean = sum / count, so mean fixes the SUM but not the individual terms. Students treat 'medel = 5' as if every value were 5 (or close).",
-      "common_distractor_signature": "Picks A/B/C by assuming the mean equals the comparison value, missing that individual terms can be arbitrarily larger/smaller as long as the sum balances.",
+      "pattern_description": "Medelvärde ges — studenten antar att de enskilda värdena är bestämda.",
+      "why_it_occurs": "Medel = summa / antal, så medelvärdet låser SUMMAN men inte de enskilda termerna. Studenten behandlar 'medel = 5' som om varje värde vore 5 (eller nära).",
+      "common_distractor_signature": "Väljer A/B/C genom att anta att medelvärdet är lika med jämförelsevärdet, missar att enskilda termer kan vara godtyckligt större/mindre så länge summan balanseras.",
       "countermeasure": "Skriv 'medelvärde × antal = totalsumma' och fråga: är totalsumman det jag behöver, eller behöver jag en enskild term? Om en enskild term efterfrågas och inga ytterligare villkor finns → D.",
       "example_questions": [
         "host-2018-kvant2-KVA-014",
@@ -142,9 +142,9 @@
     },
     {
       "id": "KVA-TRAP-011",
-      "pattern_description": "Percent constraint (e.g. '40 % är blå') locks the RATIO but not the absolute count — student treats it as concrete numbers.",
-      "why_it_occurs": "Percent feels like a count. But '40 % blå' is consistent with 4 av 10, 40 av 100, 400 av 1000 — the absolute number is free unless the total is given.",
-      "common_distractor_signature": "Picks A/B/C by pretending the total equals 100, missing that the comparison may depend on absolute counts the percent doesn't pin.",
+      "pattern_description": "Procentvillkor (t.ex. '40 % är blå') låser FÖRHÅLLANDET men inte det absoluta antalet — studenten behandlar det som konkreta tal.",
+      "why_it_occurs": "Procent känns som ett antal. Men '40 % blå' är förenligt med 4 av 10, 40 av 100, 400 av 1000 — det absoluta antalet är fritt om inte totalen ges.",
+      "common_distractor_signature": "Väljer A/B/C genom att låtsas att totalen är 100, missar att jämförelsen kan bero på absoluta antal som procenten inte låser.",
       "countermeasure": "När bara procent ges utan totalmängd: pröva två totaler (t.ex. 10 och 100). Skiljer sig verdikten → D.",
       "example_questions": [
         "host-ver2-2019-kvant1-KVA-021",
@@ -155,9 +155,9 @@
     },
     {
       "id": "KVA-TRAP-012",
-      "pattern_description": "Speed/distance/time problem where one quantity lies in an interval — student grabs an endpoint instead of testing the whole range.",
-      "why_it_occurs": "Word problems with a hastighetsintervall feel solvable: 'mellan 50 och 60 km/h' is a concrete-sounding range. Students compute with one endpoint and compare; if the target value lies INSIDE the resulting time/distance interval, the svaret is D.",
-      "common_distractor_signature": "Picks A or B by computing with the midpoint or one endpoint, missing that the other endpoint flips the comparison.",
+      "pattern_description": "Hastighets-/sträcka-/tidsuppgift där en storhet ligger i ett intervall — studenten plockar en ändpunkt istället för att testa hela intervallet.",
+      "why_it_occurs": "Textuppgifter med hastighetsintervall känns lösbara: 'mellan 50 och 60 km/h' låter som ett konkret intervall. Studenten räknar med en ändpunkt och jämför; om målvärdet ligger INUTI det resulterande tid-/sträcka-intervallet är svaret D.",
+      "common_distractor_signature": "Väljer A eller B genom att räkna med mittpunkten eller en ändpunkt, missar att den andra ändpunkten flippar jämförelsen.",
       "countermeasure": "Vid hastighet/tid/sträcka-intervall: räkna båda ändpunkterna. Om målvärdet ligger i intervallet [v_min, v_max] eller [t_min, t_max] → D.",
       "example_questions": [
         "host-2024-kvant2-KVA-021",
@@ -168,9 +168,9 @@
     },
     {
       "id": "KVA-TRAP-013",
-      "pattern_description": "Negative base raised to a power — student ignores parity of the exponent.",
-      "why_it_occurs": "Magnitude is the salient feature; the sign-flip from odd vs even exponent is easy to forget. Students compute |(-a)^n| and pick A/B without flipping the sign for odd n.",
-      "common_distractor_signature": "Picks the option as if the result were positive, missing that odd n preserves the negative sign — flipping the magnitude comparison.",
+      "pattern_description": "Negativ bas upphöjd till en potens — studenten ignorerar exponentens paritet.",
+      "why_it_occurs": "Magnituden är det iögonenfallande; teckenflippen från udda mot jämn exponent är lätt att glömma. Studenten räknar |(-a)^n| och väljer A/B utan att flippa tecknet för udda n.",
+      "common_distractor_signature": "Väljer alternativet som om resultatet vore positivt, missar att udda n bevarar det negativa tecknet — vilket flippar storleksjämförelsen.",
       "countermeasure": "Vid (-a)^n: bestäm tecknet FÖRST via paritet (n udda → negativt, n jämn → positivt), magnituden SEDAN. Aldrig tvärtom.",
       "example_questions": [
         "host-2013-kvant1-KVA-018",
@@ -182,9 +182,9 @@
     },
     {
       "id": "KVA-TRAP-014",
-      "pattern_description": "Multiplying or dividing an inequality by a variable expression with unknown sign — student keeps the direction.",
-      "why_it_occurs": "Inequalities feel like equations during algebraic manipulation. Students multiply both sides by y (or 1/y) without first checking sign(y); if y could be negative, the inequality flips.",
-      "common_distractor_signature": "Picks A or B by treating the inequality as preserved through the operation, missing that the answer depends on sign(y) — actual svaret often D.",
+      "pattern_description": "Multiplicera eller dela en olikhet med ett variabeluttryck vars tecken är okänt — studenten behåller riktningen.",
+      "why_it_occurs": "Olikheter känns som ekvationer under algebraisk manipulation. Studenten multiplicerar båda sidor med y (eller 1/y) utan att först kolla sign(y); om y kan vara negativ vänds olikheten.",
+      "common_distractor_signature": "Väljer A eller B genom att behandla olikheten som bevarad genom operationen, missar att svaret beror på sign(y) — det faktiska svaret är ofta D.",
       "countermeasure": "Innan du multiplicerar/delar en olikhet med ett uttryck: är tecknet känt? Om nej, bryt i fall (positivt / negativt) — om verdikten skiljer sig → D.",
       "example_questions": [
         "var-2014-kvant1-KVA-021",
@@ -196,9 +196,9 @@
     },
     {
       "id": "KVA-TRAP-015",
-      "pattern_description": "Comparing two negative numbers — student picks the one with larger absolute value, forgetting that 'större' means closer to zero.",
-      "why_it_occurs": "On the number line, 'bigger' and 'further from zero' usually match. For negatives they don't: -3 < -2 even though |-3| > |-2|.",
-      "common_distractor_signature": "Picks A or B by reading absolute value as magnitude, missing the sign flip — answers exactly inverted.",
+      "pattern_description": "Jämför två negativa tal — studenten väljer det med större absolutvärde, glömmer att 'större' betyder närmare noll.",
+      "why_it_occurs": "På tallinjen sammanfaller 'större' och 'längre från noll' oftast. För negativa tal gör de det inte: -3 < -2 även om |-3| > |-2|.",
+      "common_distractor_signature": "Väljer A eller B genom att läsa absolutvärde som magnitud, missar teckenflippen — svaret hamnar exakt omvänt.",
       "countermeasure": "För negativa tal: större = närmare noll. Rita en tallinje om du är osäker; 'större' = längre till höger, ALLTID.",
       "example_questions": [
         "host-2017-kvant1-KVA-022",
@@ -209,9 +209,9 @@
     },
     {
       "id": "KVA-TRAP-016",
-      "pattern_description": "Slope k and y-y-skärning m are independent — student infers one from the other.",
-      "why_it_occurs": "Both k and m describe 'where the line is'. Students conflate 'steep line' with 'high y-y-skärning' or vice versa, treating one as a proxy for the other.",
-      "common_distractor_signature": "Picks A/B by transferring info about k onto m (or vice versa), e.g. 'positiv lutning' is taken to imply 'positiv m'.",
+      "pattern_description": "Lutning k och y-skärning m är oberoende — studenten härleder den ena från den andra.",
+      "why_it_occurs": "Både k och m beskriver 'var linjen ligger'. Studenten blandar ihop 'brant linje' med 'hög y-skärning' eller tvärtom, och behandlar den ena som proxy för den andra.",
+      "common_distractor_signature": "Väljer A/B genom att överföra info om k till m (eller tvärtom), t.ex. 'positiv lutning' tas som tecken på 'positiv m'.",
       "countermeasure": "y = kx + m har TVÅ oberoende parametrar. Information om k säger inget om m och tvärtom — markera vilken du faktiskt har innan du svarar.",
       "example_questions": [
         "host-2014-kvant1-KVA-018",
@@ -222,9 +222,9 @@
     },
     {
       "id": "KVA-TRAP-017",
-      "pattern_description": "Perpendicular lines — student uses k₂ = -k₁ instead of k₂ = -1/k₁.",
-      "why_it_occurs": "'Vinkelrät' suggests 'motsatt riktning', and the negative sign is right — but the relation is the NEGATIVE RECIPROCAL, not the negative. Students drop the inversion.",
-      "common_distractor_signature": "Picks the option built on k₂ = -k₁ — wrong magnitude but right sign of relationship, looking superficially correct.",
+      "pattern_description": "Vinkelräta linjer — studenten använder k₂ = -k₁ istället för k₂ = -1/k₁.",
+      "why_it_occurs": "'Vinkelrät' antyder 'motsatt riktning', och minustecknet är rätt — men relationen är den NEGATIVA INVERSEN, inte negativen. Studenten tappar inverteringen.",
+      "common_distractor_signature": "Väljer alternativet som bygger på k₂ = -k₁ — fel magnitud men rätt tecken på relationen, ser ytligt rätt ut.",
       "countermeasure": "Vinkelräta lutningar: produkten är -1, dvs k₂ = -1/k₁. Aldrig bara -k₁. Memorera: 'NEGATIVA INVERSER, inte motsatser'.",
       "example_questions": [
         "var-2024-kvant1-KVA-020",
@@ -235,9 +235,9 @@
     },
     {
       "id": "KVA-TRAP-018",
-      "pattern_description": "Base of an exponential expression — student forgets that base in (0,1) reverses the size-monotonicity in the exponent.",
-      "why_it_occurs": "'Större exponent = större värde' is the rule for base > 1, and students apply it universally. For 0 < bas < 1, the relation reverses.",
-      "common_distractor_signature": "Picks A/B by trusting that larger exponent gives larger value, missing that for bas < 1 it gives a smaller value.",
+      "pattern_description": "Basen i ett exponentuttryck — studenten glömmer att bas i (0,1) vänder storleksmonotonicitet i exponenten.",
+      "why_it_occurs": "'Större exponent = större värde' är regeln för bas > 1, och studenten tillämpar den universellt. För 0 < bas < 1 vänds relationen.",
+      "common_distractor_signature": "Väljer A/B genom att lita på att större exponent ger större värde, missar att för bas < 1 ger det ett mindre värde.",
       "countermeasure": "Innan du jämför a^m vs a^n: lokalisera basen mot 1. Bas > 1 → större exponent större värde. 0 < bas < 1 → omvänt. Bas = 1 → alltid 1.",
       "example_questions": [
         "host-2018-kvant1-KVA-013",
@@ -249,9 +249,9 @@
     },
     {
       "id": "KVA-TRAP-019",
-      "pattern_description": "Difference of two ordered quantities (a − b vs b − a) — student misreads the sign.",
-      "why_it_occurs": "The two differences are negatives of each other; which is positive depends on which of a, b is larger. Students treat them as equal in magnitude and ignore sign.",
-      "common_distractor_signature": "Picks C (lika) when the answer is D, by reading 'samma skillnad' as if order didn't matter.",
+      "pattern_description": "Differens mellan två ordnade storheter (a − b vs b − a) — studenten läser fel tecken.",
+      "why_it_occurs": "De två differenserna är varandras motsatser; vilken som är positiv beror på vilken av a, b som är störst. Studenten behandlar dem som lika i magnitud och ignorerar tecknet.",
+      "common_distractor_signature": "Väljer C (lika) när svaret är D, genom att läsa 'samma skillnad' som om ordningen inte spelade roll.",
       "countermeasure": "a − b vs b − a är ALDRIG lika (såvida inte a = b). Tecknet beror på vilken är större, och om det är okänt → D.",
       "example_questions": [
         "host-2023-kvant2-KVA-015",
@@ -262,9 +262,9 @@
     },
     {
       "id": "KVA-TRAP-020",
-      "pattern_description": "Cylinder volume πr²h — student treats r and h as equally weighted.",
-      "why_it_occurs": "Both r and h enter the formula linearly in look. But r is SQUARED, so a small radius change dominates a proportional height change.",
-      "common_distractor_signature": "Picks A/B by comparing r + h or r × h totals, missing that radius dominates because of the r² factor.",
+      "pattern_description": "Cylindervolym πr²h — studenten behandlar r och h som lika viktade.",
+      "why_it_occurs": "Både r och h ser linjära ut i formeln. Men r är KVADRERAT, så en liten förändring i radien dominerar över en proportionell höjdförändring.",
+      "common_distractor_signature": "Väljer A/B genom att jämföra r + h eller r × h, missar att radien dominerar pga r²-faktorn.",
       "countermeasure": "I cylindervolym väger r² alltid tyngre än h. Vid jämförelse: räkna r² explicit och jämför r²h direkt, inte r + h.",
       "example_questions": [
         "host-2015-kvant2-KVA-017",
@@ -277,9 +277,9 @@
     },
     {
       "id": "KVA-TRAP-021",
-      "pattern_description": "Median vs mean — student treats them as interchangeable or assumes one constrains the other.",
-      "why_it_occurs": "For symmetric small series they often coincide. Students generalize and assume changing one shifts the other.",
-      "common_distractor_signature": "Picks A/B/C by using median when mean is asked (or vice versa), missing that the two are independent statistics that can move in opposite directions.",
+      "pattern_description": "Median vs medelvärde — studenten behandlar dem som utbytbara eller antar att den ena binder den andra.",
+      "why_it_occurs": "För symmetriska små serier sammanfaller de ofta. Studenten generaliserar och antar att en förändring i den ena förskjuter den andra.",
+      "common_distractor_signature": "Väljer A/B/C genom att använda median när medel efterfrågas (eller tvärtom), missar att de två är oberoende statistikor som kan röra sig åt motsatta håll.",
       "countermeasure": "Median och medelvärde är OBEROENDE — räkna båda explicit (sortera för median, summa/n för medel) och jämför separat. En kan ändras utan att påverka den andra.",
       "example_questions": [
         "host-2025-kvant2-KVA-020",
@@ -291,9 +291,9 @@
     },
     {
       "id": "KVA-TRAP-022",
-      "pattern_description": "Parabola f(x) = x² + bx + c is symmetric kring x = -b/2 — student compares f(a), f(b) at non-symmetric points without using the axis.",
-      "why_it_occurs": "Students compute f(a) and f(b) directly, which works but is slow and error-prone. They miss that points equidistant from -b/2 give identical f-values.",
-      "common_distractor_signature": "Picks A or B by miscomputing one of the values, when the symmetri kring x = -b/2 would give C instantly.",
+      "pattern_description": "Parabeln f(x) = x² + bx + c är symmetrisk kring x = -b/2 — studenten jämför f(a), f(b) i icke-symmetriska punkter utan att utnyttja axeln.",
+      "why_it_occurs": "Studenten räknar ut f(a) och f(b) direkt, vilket fungerar men är långsamt och felbenäget. De missar att punkter på samma avstånd från -b/2 ger identiska f-värden.",
+      "common_distractor_signature": "Väljer A eller B genom att räkna fel på ett av värdena, när symmetrin kring x = -b/2 hade gett C direkt.",
       "countermeasure": "För parabel x² + bx + c: identifiera symmetriaxeln x = -b/2 först. Punkter spegelvänt kring den ger LIKA värden (C).",
       "example_questions": [
         "host-2024-kvant2-KVA-017",
@@ -304,9 +304,9 @@
     },
     {
       "id": "KVA-TRAP-023",
-      "pattern_description": "Fractions with different denominators — student compares numerators or denominators directly without aligning.",
-      "why_it_occurs": "Looking at '5/7 vs 4/9' the student picks the bigger numerator or smaller denominator without converting to a common base.",
-      "common_distractor_signature": "Picks A or B based on a single-component heuristic ('större täljare = större bråk' or 'mindre nämnare = större bråk'), missing that both components matter.",
+      "pattern_description": "Bråk med olika nämnare — studenten jämför täljare eller nämnare direkt utan att likställa.",
+      "why_it_occurs": "När studenten ser '5/7 vs 4/9' väljer hen den större täljaren eller mindre nämnaren utan att konvertera till gemensam bas.",
+      "common_distractor_signature": "Väljer A eller B baserat på en-komponents-heuristik ('större täljare = större bråk' eller 'mindre nämnare = större bråk'), missar att båda komponenterna spelar roll.",
       "countermeasure": "Bråk med olika nämnare: gör ALLTID gemensam nämnare (multiplicera nämnarna) och jämför täljare. Aldrig en-komponents-heuristik.",
       "example_questions": [
         "host-2018-kvant1-KVA-015",
@@ -320,9 +320,9 @@
     },
     {
       "id": "KVA-TRAP-024",
-      "pattern_description": "Algebraic expressions with shared structure — student computes both sides numerically instead of factoring/distributing to cancel.",
-      "why_it_occurs": "Direct evaluation feels safe. But many KVA expressions are designed so that distributing or factoring cancels variables, leaving only the constants to compare — saving time and avoiding arithmetic errors.",
-      "common_distractor_signature": "Slow path leads to numerical errors that pick A/B when expressions are actually equal (C) or differ by a tiny constant.",
+      "pattern_description": "Algebraiska uttryck med gemensam struktur — studenten räknar båda sidor numeriskt istället för att distribuera/faktorisera bort variablerna.",
+      "why_it_occurs": "Direkt utvärdering känns säkert. Men många KVA-uttryck är designade så att distribution eller faktorisering kancellerar variablerna och bara konstanterna återstår att jämföra — sparar tid och undviker räknefel.",
+      "common_distractor_signature": "Den långa vägen ger räknefel som hamnar i A/B när uttrycken faktiskt är lika (C) eller skiljer sig med en pytteliten konstant.",
       "countermeasure": "Innan du räknar: distribuera båda sidor fullständigt OCH bryt ut gemensamma faktorer. Om variablerna kancellerar, jämför bara konstanterna.",
       "example_questions": [
         "host-2013-kvant1-KVA-013",
@@ -336,9 +336,9 @@
     },
     {
       "id": "KVA-TRAP-025",
-      "pattern_description": "Composite discounts mixing percent and absolute (kr) — student assumes order doesn't matter.",
-      "why_it_occurs": "Percent operations alone are commutative (10% then 20% = 20% then 10%). Mixing kr-rabatt with %-rabatt breaks commutativity — applying kr first then % differs from % first then kr.",
-      "common_distractor_signature": "Picks C (lika) when the two orderings actually give different final prices — svaret is A or B depending on direction.",
+      "pattern_description": "Sammansatta rabatter som blandar procent och absolutbelopp (kr) — studenten antar att ordningen inte spelar roll.",
+      "why_it_occurs": "Procentoperationer ensamma är kommutativa (10 % sedan 20 % = 20 % sedan 10 %). Att blanda kr-rabatt med %-rabatt bryter kommutativiteten — kr först sedan % skiljer sig från % först sedan kr.",
+      "common_distractor_signature": "Väljer C (lika) när de två ordningarna faktiskt ger olika slutpris — svaret är A eller B beroende på riktning.",
       "countermeasure": "Vid sammansatta rabatter: om någon är i kronor (inte procent), spelar ordningen ALLTID roll — räkna båda ordningarna explicit.",
       "example_questions": [
         "host-ver1-2019-kvant2-KVA-014",
@@ -349,9 +349,9 @@
     },
     {
       "id": "KVA-TRAP-026",
-      "pattern_description": "Quantities given in different units — student compares the raw numbers without converting.",
-      "why_it_occurs": "Numbers look bigger or smaller depending on unit (1000 m vs 1 km vs 100 cm). Students miss that '50 m/s vs 100 km/h' requires conversion before comparing.",
-      "common_distractor_signature": "Picks A or B based on the raw number, missing that the unit changes the magnitude — actual svaret often the opposite.",
+      "pattern_description": "Storheter angivna i olika enheter — studenten jämför råa tal utan att konvertera.",
+      "why_it_occurs": "Tal ser större eller mindre ut beroende på enhet (1000 m vs 1 km vs 100 cm). Studenten missar att '50 m/s vs 100 km/h' kräver konvertering före jämförelse.",
+      "common_distractor_signature": "Väljer A eller B baserat på det råa talet, missar att enheten ändrar magnituden — det faktiska svaret är ofta det motsatta.",
       "countermeasure": "Vid jämförelse mellan olika enheter: konvertera ALLTID till samma minsta enhet först. Memorera: m/s → km/h multiplicera med 3,6.",
       "example_questions": [
         "host-2018-kvant2-KVA-017",
@@ -365,9 +365,9 @@
     },
     {
       "id": "KVA-TRAP-027",
-      "pattern_description": "Triangle inequality — student forgets the third side must be in (|a − b|, a + b).",
-      "why_it_occurs": "Knowing two sides feels like 'almost the whole triangle'. Students compare ranges of the third side incorrectly, often by picking a single 'sensible' value instead of the open interval.",
-      "common_distractor_signature": "Picks A or B by assuming the third side equals some 'natural' value (like the average), missing that the actual range may straddle the comparison target → D.",
+      "pattern_description": "Triangelolikheten — studenten glömmer att tredje sidan måste ligga i (|a − b|, a + b).",
+      "why_it_occurs": "Att känna till två sidor känns som 'nästan hela triangeln'. Studenten jämför intervall för tredje sidan fel, ofta genom att plocka ett enskilt 'rimligt' värde istället för det öppna intervallet.",
+      "common_distractor_signature": "Väljer A eller B genom att anta att tredje sidan är något 'naturligt' värde (som medelvärdet), missar att det faktiska intervallet kan korsa jämförelsemålet → D.",
       "countermeasure": "Tredje sidan i triangel med två sidor a, b ligger i intervallet (|a-b|, a+b). Jämför mot målvärdet via intervallets ändpunkter.",
       "example_questions": [
         "var-2013-kvant1-KVA-014",
@@ -381,9 +381,9 @@
     },
     {
       "id": "KVA-TRAP-028",
-      "pattern_description": "Probability — student compares without explicitly counting both gynnsamma and totala utfall.",
-      "why_it_occurs": "Probabilities feel intuitable. Students eyeball 'most likely' instead of computing favorable/total for both options, often missing complementary or combinatorial structure.",
-      "common_distractor_signature": "Picks A/B by intuition, missing that the explicit count gives the opposite svaret — or picks C without checking the exact numbers.",
+      "pattern_description": "Sannolikhet — studenten jämför utan att explicit räkna både gynnsamma och totala utfall.",
+      "why_it_occurs": "Sannolikheter känns intuitiva. Studenten ögonmäter 'mest sannolikt' istället för att räkna gynnsamma/totala för båda alternativen, och missar ofta komplementär eller kombinatorisk struktur.",
+      "common_distractor_signature": "Väljer A/B på intuition, missar att den explicita räkningen ger motsatt svar — eller väljer C utan att kolla de exakta talen.",
       "countermeasure": "Sannolikhet = gynnsamma / totala. Räkna BÅDA explicit för varje sida innan du jämför — använd komplementhändelse (1 − P(motsatsen)) om direkt räkning är svår.",
       "example_questions": [
         "host-2015-kvant1-KVA-016",
@@ -397,9 +397,9 @@
     },
     {
       "id": "KVA-TRAP-029",
-      "pattern_description": "Identical numerator, different denominator — student fails to apply 'mindre nämnare = större bråk'.",
-      "why_it_occurs": "When the numerators look harmlessly equal (e.g. 93/70 vs 93/71), students still convert mentally to decimals or estimate, introducing arithmetic errors.",
-      "common_distractor_signature": "Picks C (lika) by glancing at the same numerator, or picks the wrong direction by confusing nämnare-storlek with bråk-storlek.",
+      "pattern_description": "Identisk täljare, olika nämnare — studenten misslyckas tillämpa 'mindre nämnare = större bråk'.",
+      "why_it_occurs": "När täljarna ser oskyldigt lika ut (t.ex. 93/70 vs 93/71) försöker studenten ändå konvertera mentalt till decimaler eller uppskatta, och drar in räknefel.",
+      "common_distractor_signature": "Väljer C (lika) genom att titta på samma täljare, eller väljer fel riktning genom att blanda ihop nämnar-storlek med bråk-storlek.",
       "countermeasure": "Lika täljare ⇒ den med MINDRE nämnare är större. Memorera regeln; pröva inte att räkna ut bråken numeriskt.",
       "example_questions": [
         "host-2014-kvant1-KVA-013",
@@ -410,9 +410,9 @@
     },
     {
       "id": "KVA-TRAP-030",
-      "pattern_description": "Speed = distance / time — student compares speeds without normalizing the time bases.",
-      "why_it_occurs": "When 'Pia cyklade dubbelt så långt på dubbelt så lång tid', the student assumes she's twice as fast (or slow). The ratio matters, not the absolutes.",
-      "common_distractor_signature": "Picks A or B by reading distance OR time alone, missing that proportional scaling of both leaves the speed unchanged (C).",
+      "pattern_description": "Hastighet = sträcka / tid — studenten jämför hastigheter utan att normalisera tidsbaserna.",
+      "why_it_occurs": "När 'Pia cyklade dubbelt så långt på dubbelt så lång tid', drar studenten slutsatsen att hon är dubbelt så snabb (eller långsam). Det är kvoten som spelar roll, inte absolutvärdena.",
+      "common_distractor_signature": "Väljer A eller B genom att läsa sträcka ELLER tid ensamt, missar att proportionell skalning av båda lämnar hastigheten oförändrad (C).",
       "countermeasure": "Medelhastighet är förhållandet sträcka/tid. Om båda skalas med samma faktor ändras INTE hastigheten. Reducera kvoterna eller korsmultiplicera.",
       "example_questions": [
         "var-2017-kvant1-KVA-013",
@@ -425,9 +425,9 @@
     },
     {
       "id": "KVA-TRAP-031",
-      "pattern_description": "Age problem with multiple people — student gets lost in 'tidigare/senare' time-shifts.",
-      "why_it_occurs": "Age problems compress multiple time points and relations. Students mix 'ålder då' with 'ålder nu' and lose track of which Δ applies to whom.",
-      "common_distractor_signature": "Picks A/B by anchoring on the wrong time point or applying Δ to only one person — svaret often inverted.",
+      "pattern_description": "Åldersuppgift med flera personer — studenten tappar bort sig i 'tidigare/senare'-tidsförskjutningar.",
+      "why_it_occurs": "Åldersuppgifter komprimerar flera tidpunkter och relationer. Studenten blandar ihop 'ålder då' med 'ålder nu' och förlorar koll på vilken Δ som gäller för vem.",
+      "common_distractor_signature": "Väljer A/B genom att förankra sig vid fel tidpunkt eller tillämpa Δ på bara en person — svaret är ofta omvänt.",
       "countermeasure": "Skriv alla åldrar i termer av EN gemensam person + tid: 'idag = X', 'tidigare = X − Δ'. Skillnaderna är konstanta över tid; använd det.",
       "example_questions": [
         "host-2017-kvant1-KVA-020",
@@ -440,9 +440,9 @@
     },
     {
       "id": "KVA-TRAP-032",
-      "pattern_description": "Quadratic with two roots — student picks one root and proceeds, missing that the other could give a different svaret.",
-      "why_it_occurs": "Once one root is found, the student stops solving. But x² = a (or x² − 2x − 3 = 0) has TWO roots; if the comparison depends on which root x equals, the answer may be D.",
-      "common_distractor_signature": "Picks A/B based on one root (often the positive one), missing the negative branch that flips the svaret → D.",
+      "pattern_description": "Andragradsekvation med två rötter — studenten plockar en rot och fortsätter, missar att den andra kan ge ett annat svar.",
+      "why_it_occurs": "När en rot är funnen slutar studenten lösa. Men x² = a (eller x² − 2x − 3 = 0) har TVÅ rötter; om jämförelsen beror på vilken rot x är, kan svaret vara D.",
+      "common_distractor_signature": "Väljer A/B baserat på en rot (ofta den positiva), missar den negativa grenen som flippar svaret → D.",
       "countermeasure": "Vid kvadratisk ekvation: skriv ut BÅDA rötterna (faktorisera eller pq-formel). Om båda rötterna ger olika svar på frågan → D.",
       "example_questions": [
         "host-2021-kvant1-KVA-018",
@@ -454,9 +454,9 @@
     },
     {
       "id": "KVA-TRAP-033",
-      "pattern_description": "Same area but different shape — student assumes same perimeter (or vice versa).",
-      "why_it_occurs": "Area and perimeter feel coupled ('större area = större omkrets'). They are not: for fixed area, the most efficient shape (circle/square) has the smallest perimeter; elongated shapes have larger perimeter.",
-      "common_distractor_signature": "Picks C (lika) when comparing a square's omkrets with a triangle's at same area, missing that the kvadrat has the smaller perimeter.",
+      "pattern_description": "Samma area men olika form — studenten antar samma omkrets (eller tvärtom).",
+      "why_it_occurs": "Area och omkrets känns kopplade ('större area = större omkrets'). De är det inte: för fixerad area har den mest effektiva formen (cirkel/kvadrat) minst omkrets; långsmala former har större omkrets.",
+      "common_distractor_signature": "Väljer C (lika) vid jämförelse av en kvadrats omkrets med en triangels vid samma area, missar att kvadraten har den mindre omkretsen.",
       "countermeasure": "Samma area ≠ samma omkrets. För given area: cirkel har minst omkrets, sedan kvadrat, sedan andra former. Räkna båda omkretsarna explicit.",
       "example_questions": [
         "var-2024-kvant1-KVA-021",
@@ -467,22 +467,22 @@
     },
     {
       "id": "KVA-TRAP-034",
-      "pattern_description": "Reciprocal comparison — student forgets that for positive numbers, larger value gives smaller reciprocal.",
-      "why_it_occurs": "Reciprokens monotonicitet vänds (för positiva tal). Students conflate 'större a' with 'större 1/a'.",
-      "common_distractor_signature": "Picks A when B is correct (or vice versa), by transferring the order from a to 1/a directly.",
+      "pattern_description": "Jämförelse av invers — studenten glömmer att för positiva tal ger ett större värde en mindre invers.",
+      "why_it_occurs": "Reciprokens monotonicitet vänds (för positiva tal). Studenten blandar ihop 'större a' med 'större 1/a'.",
+      "common_distractor_signature": "Väljer A när B är rätt (eller tvärtom), genom att överföra ordningen från a till 1/a direkt.",
       "countermeasure": "För positiva tal: 1/a är AVTAGANDE i a — större a ger mindre 1/a. (För negativa tal är 1/a också negativt; rita tallinje.)",
       "example_questions": [
         "var-2026-kvant1-KVA-013",
         "host-2016-kvant2-KVA-018",
         "host-2014-kvant1-KVA-013"
       ],
-      "notes": "TRAP-029 and TRAP-034 are related (both about 1/x monotonicity); kept separate because 029 is fraction-with-equal-täljare and 034 is reciprocal-of-a-number."
+      "notes": "TRAP-029 och TRAP-034 är besläktade (båda handlar om 1/x-monotonicitet); hålls separata eftersom 029 gäller bråk-med-lika-täljare och 034 reciproken-av-ett-tal."
     },
     {
       "id": "KVA-TRAP-035",
-      "pattern_description": "Quadratic f(x) is identical at two non-trivial roots of f — student computes both values numerically without spotting that f(a) = f(b) = 0.",
-      "why_it_occurs": "Numerical evaluation feels safe but misses the structural shortcut: if a, b are both roots of f, then f(a) = f(b) (often 0). Students burn time and risk arithmetic errors.",
-      "common_distractor_signature": "Picks A or B due to a calculation slip, when factoring would have shown both quantities equal (C) instantly.",
+      "pattern_description": "Kvadratisk f(x) är identisk vid två icke-triviala nollställen av f — studenten räknar båda värden numeriskt utan att se att f(a) = f(b) = 0.",
+      "why_it_occurs": "Numerisk utvärdering känns säkert men missar den strukturella genvägen: om a, b båda är nollställen till f, så är f(a) = f(b) (ofta 0). Studenten bränner tid och riskerar räknefel.",
+      "common_distractor_signature": "Väljer A eller B pga en räkneslarv, när faktorisering hade visat att båda kvantiteterna är lika (C) direkt.",
       "countermeasure": "Innan du räknar f(a) och f(b) direkt: faktorisera f. Om både a och b är nollställen ⇒ f(a) = f(b) = 0 → C.",
       "example_questions": [
         "var-2017-kvant1-KVA-020",
@@ -493,9 +493,9 @@
     },
     {
       "id": "KVA-TRAP-036",
-      "pattern_description": "Integer constraint ('positiva heltal') — student treats it like 'positiva tal' and misses divisibility filters.",
-      "why_it_occurs": "'Positiv' is the salient word; 'heltal' is dropped. But the integer condition forces divisibility — e.g. x + 2y = 54 with x, y positiva heltal restricts y to integer values, not 0.5 or 1.7.",
-      "common_distractor_signature": "Picks A/B by picking the algebraically smallest x, missing the divisibility floor that forces a larger minimum.",
+      "pattern_description": "Heltalsvillkor ('positiva heltal') — studenten behandlar det som 'positiva tal' och missar delbarhetsfilter.",
+      "why_it_occurs": "'Positiv' är det iögonenfallande ordet; 'heltal' tappas. Men heltalsvillkoret tvingar fram delbarhet — t.ex. x + 2y = 54 med x, y positiva heltal begränsar y till heltalsvärden, inte 0,5 eller 1,7.",
+      "common_distractor_signature": "Väljer A/B genom att plocka det algebraiskt minsta x, missar delbarhetsgolvet som tvingar fram ett större minimum.",
       "countermeasure": "Vid 'positiva heltal': räkna upp delbarhetsvillkoret. Vilka värden av variabeln ger heltalslösning för den andra? Det är dina tillåtna val.",
       "example_questions": [
         "var-2013-kvant1-KVA-022",
@@ -508,9 +508,9 @@
     },
     {
       "id": "KVA-TRAP-037",
-      "pattern_description": "Substitution with |x| or unspecified sign of x — student picks one sign without testing the other.",
-      "why_it_occurs": "When the problem gives |x| = 3 or x² = 9, x can be +3 OR -3. Students take the positive branch silently and miss the negative case.",
-      "common_distractor_signature": "Picks A/B/C by computing with x = +3, missing that x = -3 may flip the comparison → D.",
+      "pattern_description": "Substitution med |x| eller ospecificerat tecken på x — studenten plockar ett tecken utan att testa det andra.",
+      "why_it_occurs": "När uppgiften ger |x| = 3 eller x² = 9 kan x vara +3 ELLER -3. Studenten tar den positiva grenen tyst och missar det negativa fallet.",
+      "common_distractor_signature": "Väljer A/B/C genom att räkna med x = +3, missar att x = -3 kan flippa jämförelsen → D.",
       "countermeasure": "När du har |x| eller x² i ett villkor: lista x = +värde och x = -värde explicit. Räkna båda; verdikt kan vara D.",
       "example_questions": [
         "host-ver1-2019-kvant2-KVA-016",
@@ -522,9 +522,9 @@
     },
     {
       "id": "KVA-TRAP-038",
-      "pattern_description": "Percent multiplication is commutative (a% of b = b% of a) — student treats it as order-dependent.",
-      "why_it_occurs": "Procent feels like a one-way operation ('30 % av 80' is not visually symmetric with '80 % av 30'). Algebraically: a% · b = (a/100) · b = (b/100) · a = b% · a.",
-      "common_distractor_signature": "Picks A or B trying to compute both sides, missing that the values are identical by construction (C).",
+      "pattern_description": "Procentmultiplikation är kommutativ (a % av b = b % av a) — studenten behandlar den som ordningsberoende.",
+      "why_it_occurs": "Procent känns som en enkelriktad operation ('30 % av 80' ser inte visuellt symmetriskt ut med '80 % av 30'). Algebraiskt: a % · b = (a/100) · b = (b/100) · a = b % · a.",
+      "common_distractor_signature": "Väljer A eller B genom att försöka räkna båda sidor, missar att värdena är identiska per konstruktion (C).",
       "countermeasure": "a % av b = b % av a (alltid, eftersom multiplikation är kommutativ). Spotta den symmetrin innan du räknar — det är ofta direkt C.",
       "example_questions": [
         "host-2018-kvant1-KVA-020",

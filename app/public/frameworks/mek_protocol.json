@@ -7,7 +7,7 @@
   "entries": [
     {
       "id": "MEK-RULE-001",
-      "constraint_type": "syntactic",
+      "constraint_type": "Lexikal kollokation",
       "rule": "Fast verb–objekt-kollokation: vissa verb kräver ett specifikt objekt. Bytt verb låter fel även om synonymen ”betyder samma sak”. Testa verbet mot dess fasta objekt.",
       "example_questions": [
         "host-2013-verb2-MEK-030",
@@ -23,7 +23,7 @@
     },
     {
       "id": "MEK-RULE-002",
-      "constraint_type": "syntactic",
+      "constraint_type": "Prepositionsrektion",
       "rule": "Fast preposition (rektion): vissa fraser kräver en specifik preposition. Annan preposition = automatiskt fel, oavsett om resten av meningen ”passar”. Testa prepositionen FÖRST.",
       "example_questions": [
         "host-2013-verb2-MEK-025",
@@ -37,7 +37,7 @@
     },
     {
       "id": "MEK-RULE-003",
-      "constraint_type": "syntactic",
+      "constraint_type": "Korrelativa konjunktioner",
       "rule": "Korrelativa konjunktionspar är låsta: såväl … SOM, ju … DESTO, varken … ELLER, både … OCH. Hittar du första ledet i prompten måste partnerordet finnas i rätt blank.",
       "example_questions": [
         "host-2020-verb1-MEK-028",
@@ -48,7 +48,7 @@
     },
     {
       "id": "MEK-RULE-004",
-      "constraint_type": "syntactic",
+      "constraint_type": "Flerblanks-konsistens",
       "rule": "Tvåblanks- och treblanksuppgifter måste testas SAMTIDIGT. Ett enda fel led utesluter hela alternativet, även om de andra leden låter rimliga. Testa det MEST specifika ledet först.",
       "example_questions": [
         "host-2013-verb1-MEK-023",
@@ -64,7 +64,7 @@
     },
     {
       "id": "MEK-RULE-005",
-      "constraint_type": "syntactic",
+      "constraint_type": "Stilregister",
       "rule": "Register-konsekvens: alla led i ett flerblanks-alternativ måste sitta i samma stilregister. Vardagsverb i lagtext, eller fackterm i barnberättarröst, avslöjar fel alternativ.",
       "example_questions": [
         "host-2013-verb1-MEK-023",
@@ -78,7 +78,7 @@
     },
     {
       "id": "MEK-RULE-006",
-      "constraint_type": "syntactic",
+      "constraint_type": "Morfemanalys",
       "rule": "Morfemroten avgör fackområdet: latinska/grekiska rötter låser betydelse (odont- = tand, kardi- = hjärta, -agog = ledare, -log = forskare, pro-cras = för imorgon). Bryt isär ordet före kontexten lästs.",
       "example_questions": [
         "host-2013-verb1-MEK-029",
@@ -93,7 +93,7 @@
     },
     {
       "id": "MEK-RULE-007",
-      "constraint_type": "semantic",
+      "constraint_type": "Inbyggd definition",
       "rule": "Inbyggd definition: meningen definierar ofta blankordet via relativsats, parentes eller omskrivning. Sök ledtråden ('det vill säga', 'med andra ord', 'såsom A, B, C') — blanken avslöjas direkt.",
       "example_questions": [
         "host-2013-verb2-MEK-022",
@@ -110,7 +110,7 @@
     },
     {
       "id": "MEK-RULE-008",
-      "constraint_type": "semantic",
+      "constraint_type": "Antonymkontrast",
       "rule": "Antonym-kontrast: när texten signalerar motsats ('inte X utan ___', 'snarare än', 'i kontrast till', 'tvärtemot'), ska blanken FYLLAS med motsatsen till X — inte med en synonym i samma fält.",
       "example_questions": [
         "host-2013-verb1-MEK-024",
@@ -125,7 +125,7 @@
     },
     {
       "id": "MEK-RULE-009",
-      "constraint_type": "semantic",
+      "constraint_type": "Idiomatiska uttryck",
       "rule": "Idiom är låsta i sin form: hitta HELA uttrycket, inte enstaka ord. Distraktorerna är ofta andra fasta svenska idiom — i fel betydelse.",
       "example_questions": [
         "host-2014-verb1-MEK-022",
@@ -141,7 +141,7 @@
     },
     {
       "id": "MEK-RULE-010",
-      "constraint_type": "semantic",
+      "constraint_type": "Paronymdiskriminering",
       "rule": "Paronym-fälla: alternativ med samma prefix/suffix (för-, o-, -mässigt, -ellt, -sion) ser likadana ut men har helt olika rotbetydelser. Ignorera ändelsen och läs ROTEN.",
       "example_questions": [
         "host-2014-verb1-MEK-025",
@@ -156,7 +156,7 @@
     },
     {
       "id": "MEK-RULE-011",
-      "constraint_type": "semantic",
+      "constraint_type": "Betydelsenyans",
       "rule": "Stäm av betydelsenyans hos närbesläktade ord: ”synonymer” som inte är utbytbara. Den exakta nyansen avgör — pröva varje alternativ som om det vore det enda.",
       "example_questions": [
         "host-2013-verb1-MEK-021",
@@ -171,7 +171,7 @@
     },
     {
       "id": "MEK-RULE-012",
-      "constraint_type": "semantic",
+      "constraint_type": "Fackterminologi",
       "rule": "Fackjargong-låsning: varje yrkesområde har en exklusiv term. Matcha fackområdet mot textens kontext — distraktorer är ofta facktermer från ett ANNAT fält.",
       "example_questions": [
         "host-2013-verb1-MEK-025",
@@ -186,7 +186,7 @@
     },
     {
       "id": "MEK-RULE-013",
-      "constraint_type": "semantic",
+      "constraint_type": "Berättarröst",
       "rule": "Berättarröst-konsekvens: en författarröst håller stilen. Vardagsverb i högstilig essä, eller pompösa abstrakter i barnberättarröst, skär omedelbart. Lyssna efter tonen och välj blanken som matchar.",
       "example_questions": [
         "host-2014-verb1-MEK-021",
@@ -199,7 +199,7 @@
     },
     {
       "id": "MEK-RULE-014",
-      "constraint_type": "semantic",
+      "constraint_type": "Hypernym och samlingsord",
       "rule": "Uppräkning eller exempel-trio definierar samlingsordet: 'dop, vigslar och begravningar' → förrättningar; 'företag, organisationer och ___' → dylikt. Fråga: vad är hypernymen?",
       "example_questions": [
         "host-2013-verb1-MEK-030",
@@ -211,7 +211,7 @@
     },
     {
       "id": "MEK-RULE-015",
-      "constraint_type": "semantic",
+      "constraint_type": "Paradoxlogik",
       "rule": "Paradox- och slutsatslogik: när texten bygger en motsägelse kräver blanken ord som BIBEHÅLLER paradoxen — inte ett som plattar ut den. Sök 'paradoxalt', 'ironiskt', inte 'naturligt'.",
       "example_questions": [
         "host-2015-verb1-MEK-029",
@@ -223,7 +223,7 @@
     },
     {
       "id": "MEK-RULE-016",
-      "constraint_type": "semantic",
+      "constraint_type": "Sakfältskoherens",
       "rule": "Treblanks-koherens via fackområde: i ett treblanksdrag måste alla tre orden tillhöra samma sakliga sammanhang. En term ur främmande sakfält avslöjar fel alternativ direkt.",
       "example_questions": [
         "host-2013-verb1-MEK-027",
