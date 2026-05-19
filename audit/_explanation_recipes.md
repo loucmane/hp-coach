@@ -132,3 +132,62 @@ picked variant to a 27-subagent fan-out. Steps:
 
 This is a half-hour insurance policy against a 3+-hour subagent
 misfire if the prompt translation drifts from the user's intent.
+
+## `pregrade_tactic` authoring rules — 2026-05-19 (added during R3 audit)
+
+The `pregrade_tactic` object on each explanation has a `handle` (a
+short, memorable name) and a `move` (one sentence of action-oriented
+coaching). Both render to the student — pre-grade via `PreGradeFill`
+(Style A) and `PedagogyPanel.WaitingBody` (StudyDesk), post-grade via
+the `STRATEGI` block in `ExplanationPanel` (mobile) and `PostGradeBody`
+(desktop).
+
+**1. Language follows the section's exam language.**
+
+- For ORD, LÄS, MEK, XYZ, KVA, NOG, DTK: both `handle` and `move` are
+  **Swedish**. PRD § 5 — product strings are Swedish.
+- For ELF: both `handle` and `move` are **English**. ELF section
+  content stays English by exam design.
+- **Forbidden**: mixed-language pairs (Swedish handle + English move,
+  or vice versa). 8 such entries existed at the start of R3 and were
+  normalized to match-on-move-language. Future regen passes must not
+  reintroduce mixed-language pairs. `scripts/normalize_elf_handles.py`
+  encodes the curated translations.
+
+**2. Handle form — definite-noun convention.**
+
+For Swedish handles: definite-noun form ending in `-(e)t` or `-(e)n`.
+
+Good: `"Linjärekvationsreceptet"`, `"Enhetsharmoniseringen"`,
+`"Ordningsuteslutningen"`, `"Riktningstestet"`, `"Pivot-jakten"`.
+
+Bad: imperative sentence-handles like `"Enhet-först-multiplicera-sist"`
+(`var-2026.json:98`, the documented outlier). These read like English
+mantras; rewrite as a definite noun (`"Enhetsordningen"` or
+`"Multiplicera-sist-receptet"`).
+
+For English handles (ELF): definite-noun form with `"The X"` prefix
+or `X-er`/`X-source` compound. Examples: `"The quote-headline"`,
+`"The contrast hinge"`, `"Multi-claim inventory"`, `"Date anchoring"`.
+
+**3. Move form — action-oriented, one sentence ideally.**
+
+The move tells the student what to *do*, not what to *think*. Lead
+with a verb in imperative or a structural cue ("When X, do Y").
+
+Good Swedish: `"Subtrahera den mindre x-termen från båda sidor — sedan
+finns x bara i en term, och tecknet är fast."`
+
+Good English: `"On main-point items ending in a direct expert quote,
+that quote is the headline — paraphrase it in one sentence and match
+THAT to the options."`
+
+Bad: descriptive prose without an action ("This question is about
+expert quotes" — tells student nothing).
+
+**4. Deferred — bulk sv→en ELF translation.**
+
+~155 ELF entries today have Swedish handle + Swedish move. They're
+internally consistent (both Swedish) but violate rule #1. Task #138
+or a future deferred content workstream handles the bulk translation.
+This is a content lift, not an authoring rule fix.
