@@ -32,8 +32,9 @@ APP_PUBLIC_DIR = REPO_ROOT / "app" / "public" / "explanations"
 
 # Which trap-catalog frameworks are rich enough that the framework_id
 # link will land on a card with worked_example + tldr + recognition_cue.
-# Add XYZ here once it's retrofitted (task #137).
-RICH_TRAP_FRAMEWORKS = ["kva_traps", "nog_traps"]
+# All three quant trap catalogs (KVA + NOG + XYZ) carry the rich schema
+# as of XYZ retrofit (task #137).
+RICH_TRAP_FRAMEWORKS = ["kva_traps", "nog_traps", "xyz_traps"]
 
 
 def build_qid_to_framework_id() -> dict[str, str]:

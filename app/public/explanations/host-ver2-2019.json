@@ -1728,7 +1728,7 @@
         "why_wrong": "Steg 8: 35 % av 45 = 15,75, inte ett heltal. 45 är delbart med 5 och 9 men inte med 20."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-055",
     "pitfall": "Frestelsen är att slänga in alla alternativ i räknaren utan att förkorta 35/100 först. Botemedlet: förkorta procenten till lägsta termer (35/100 → 7/20) — då ser du direkt vilken delbarhet x måste ha, utan att räkna varje alternativ.",
     "solution_path": "35 % skrivs som 35/100 = 7/20. För att 7x/20 ska bli ett heltal måste x vara delbart med 20 (eftersom 7 är primtal och inte hjälper). Bland alternativen är bara 40 delbart med 20. Svaret är C.",
     "steps": [
@@ -1825,7 +1825,8 @@
     ],
     "pitfall": null,
     "solution_path": "Identifiera den triangel där två vinklar är kända ur figuren. Vinkelsumman ger den tredje via 180^\\circ-(a+b), och en yttervinkel = summan av de två icke-angränsande inre vinklarna. Den kedjan landar på v = 67^\\circ.",
-    "technique": "Trianglar i samma figur: använd vinkelsumma 180° plus yttervinkelregeln för att slingra runt mellan de inre och yttre vinklarna."
+    "technique": "Trianglar i samma figur: använd vinkelsumma 180° plus yttervinkelregeln för att slingra runt mellan de inre och yttre vinklarna.",
+    "framework_id": "XYZ-TRAP-038"
   },
   "host-ver2-2019-kvant1-XYZ-007": {
     "_meta": {
@@ -2054,7 +2055,7 @@
         "why_wrong": "Det är samma fel som A i grunden — radien skalas med √k, inte k. Steg 9 låser fast B:s radie till 6."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-043",
     "pitfall": null,
     "solution_path": "Cirkel A har radie 3 cm, alltså area \\pi \\cdot 3^{2} = 9\\pi. Eftersom denna area är 1/4 av cirkel B:s area, är B:s area 4 · 9π = 36π, och B:s radie är \\sqrt{36} = 6 cm. Svaret är B.",
     "steps": [
@@ -2151,7 +2152,8 @@
     ],
     "pitfall": null,
     "solution_path": "Förenkla: \\sqrt{12xy^{4}z^{3}}=2y^{2}z\\sqrt{3xz}.",
-    "technique": "Förenkla rötter med variabler: bryt ut perfekta kvadrater för varje variabel."
+    "technique": "Förenkla rötter med variabler: bryt ut perfekta kvadrater för varje variabel.",
+    "framework_id": "XYZ-TRAP-032"
   },
   "host-ver2-2019-kvant1-XYZ-011": {
     "_meta": {
@@ -4103,7 +4105,8 @@
     ],
     "pitfall": null,
     "solution_path": "Avläs skärningen med y-axeln — linjen skär y-axeln i 3, så m=3. Linjen lutar nedåt åt höger, alltså är k negativt; lutningens belopp läses som Δy/Δx mellan två rutnätspunkter och blir 1,5. Ekvationen är y = -1{,}5x + 3, alternativ B.",
-    "technique": "Linje från graf: läs av y-skärning m direkt på y-axeln, och bestäm tecknet på lutningen k från om linjen lutar uppåt eller nedåt åt höger."
+    "technique": "Linje från graf: läs av y-skärning m direkt på y-axeln, och bestäm tecknet på lutningen k från om linjen lutar uppåt eller nedåt åt höger.",
+    "framework_id": "XYZ-TRAP-051"
   },
   "host-ver2-2019-kvant2-XYZ-003": {
     "_meta": {
@@ -4526,7 +4529,7 @@
         "why_wrong": "Steg 7: 3 · 3 − 5 = 4, inte 5. Punkten ligger 1 över linjen, inte exakt på."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-004",
     "pitfall": null,
     "solution_path": "En punkt (x, y) ligger på linjen y = 3x − 5 om y-värdet stämmer när x sätts in. Testa alternativen: D = (5, 10) → 3·5 − 5 = 10 ✓. De andra ger inte rätt y. Svaret är D.",
     "steps": [
@@ -4626,7 +4629,7 @@
         "why_wrong": "Steg 7: diagonalen är √3, inte 2. Pythagoras ger √(2+1) = √3, inte √(2·2)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-040",
     "pitfall": "Frestelsen är att 'förenkla' förhållanden mellan kvadratrötter genom att kvadrera. Botemedlet: förhållanden behåller sin form — √2:√3 är inte 2:3. För att jämföra storlek, dela: √2/√3 = √(2/3) ≈ 0,816.",
     "solution_path": "A4-formatet har förhållandet lång:kort = \\sqrt{2} : 1. Sätt lång = \\sqrt{2} och kort = 1. Diagonalen via Pythagoras: \\sqrt{(\\sqrt{2})^{2} + 1^{2}} = \\sqrt{3}. Förhållandet lång:diagonal = \\sqrt{2} : \\sqrt{3}. Svaret är D.",
     "steps": [
@@ -4726,7 +4729,7 @@
         "why_wrong": "Steg 6 och 7: när operanden är < 1 ger DIVISION större resultat. 10¹⁵ är inte ens uppnåeligt; det rätta är 10¹⁰."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-031",
     "pitfall": null,
     "solution_path": "För att maximera z välj operator i varje ekvation som ökar resultatet mest. Steg 1: 10^{3} \\cdot 100 = 10^{5} (multiplikation). Steg 2: x \\div 10^{-1} = 10^{5} \\cdot 10 = 10^{6} (division med litet tal ger störst). Steg 3: y \\div 0{,}0001 = 10^{6} \\cdot 10^{4} = 10^{10}. Svaret är C.",
     "steps": [

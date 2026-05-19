@@ -1301,7 +1301,7 @@
         "why_wrong": "Det är 20 % av 50, inte 0,2 %. Skillnaden är en faktor 100 — exakt en procentenhets-flytt åt fel håll."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-020",
     "pitfall": "Fällan med decimalprocent (0,X %) är att man flyttar decimalen fel antal steg, eller att man läser '0,2 %' som '2 %' och får ett svar tio gånger för stort. Botemedlet: skriv om procentsatsen som ett bråk över 100 INNAN du börjar räkna; då blir 0,2/100 = 0,002 tydligt.",
     "pregrade_tactic": {
       "handle": "Procent-som-decimal",
@@ -1403,7 +1403,8 @@
     ],
     "pitfall": null,
     "solution_path": "Av figuren framgår lutningen genom Δy/Δx mellan två avlästa punkter. Här ger linjen lutning -\\frac{1}{2}.",
-    "technique": "Lutning från graf: läs två punkter på linjen, beräkna \\frac{\\Delta y}{\\Delta x}, ta tecken efter lutningens riktning."
+    "technique": "Lutning från graf: läs två punkter på linjen, beräkna \\frac{\\Delta y}{\\Delta x}, ta tecken efter lutningens riktning.",
+    "framework_id": "XYZ-TRAP-051"
   },
   "host-2018-kvant1-XYZ-004": {
     "_meta": {
@@ -1428,7 +1429,7 @@
         "why_wrong": "Det skulle vara fallet om vi hade xy = konstant. Här har vi däremot xy + x = xy + y, som dragit bort xy ger x = y (steg 6) — ingen invers-relation alls."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-024",
     "pitfall": "Många tittar på den ursprungliga formen och försöker gissa relationen mellan x och y baserat på var '+1' står — men strukturen är symmetrisk när du utvecklar. Botemedlet: multiplicera ALLTID ut parenteserna innan du jämför leden, även när det ser ut som att de redan är 'enkla'.",
     "pregrade_tactic": {
       "handle": "Utveckla-allt",
@@ -1536,7 +1537,8 @@
     ],
     "pitfall": null,
     "solution_path": "Aritmetisk talföljd med första värde a_1 och differens d. Av figurens första två termer: a_n=a_1+(n-1)d. Här ger a_{150}=299 (linjär extrapolation).",
-    "technique": "Aritmetisk talföljd: a_n=a_1+(n-1)d. Identifiera a_1 och d från första två termer i figuren."
+    "technique": "Aritmetisk talföljd: a_n=a_1+(n-1)d. Identifiera a_1 och d från första två termer i figuren.",
+    "framework_id": "XYZ-TRAP-054"
   },
   "host-2018-kvant1-XYZ-007": {
     "_meta": {
@@ -1561,7 +1563,7 @@
         "why_wrong": "Steg 7 låser fast vilket bråk som ska inverteras: koefficienten framför x (16/9 → 9/16), inte konstanttermen. Att invertera fel bråk gör att x = 4/3 dyker upp."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-015",
     "pitfall": "Många blir nervösa av bråk och försöker 'städa upp' först genom att gångra hela ekvationen med en gemensam nämnare. Det funkar men ökar risken för räknefel. Botemedlet: jobba med bråken direkt — addition och subtraktion av samma nämnare, multiplikation täljare-mot-täljare. Inversen 9/16 är hela tricket.",
     "pregrade_tactic": {
       "handle": "Bråkekvationsruttinen",
@@ -1669,7 +1671,8 @@
     ],
     "pitfall": null,
     "solution_path": "Av Pythagoras eller given proportionalitet i figuren: x=\\sqrt{18}=3\\sqrt{2} cm.",
-    "technique": "Pythagoras: hypotenusa² = a² + b². Resultatet är ofta \\sqrt{n}-formig och inte hel."
+    "technique": "Pythagoras: hypotenusa² = a² + b². Resultatet är ofta \\sqrt{n}-formig och inte hel.",
+    "framework_id": "XYZ-TRAP-032"
   },
   "host-2018-kvant1-XYZ-009": {
     "_meta": {
@@ -1694,7 +1697,7 @@
         "why_wrong": "Steg 5 visar att 2k + (2m+1) = 2(k+m) + 1, som är udda. Sannolikheten 1 skulle betyda 'alltid delbar med 2' — exakt motsatsen till vad som händer."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-047",
     "pitfall": "Den största fällan är att applicera oberoende-sannolikhet (1/4 för varje jämn/udda-kombination) när variablerna INTE är oberoende. Botemedlet: läs villkoret igen — om b uttrycks i termer av a, är b inte slumpad.",
     "pregrade_tactic": {
       "handle": "Jämn-eller-udda",
@@ -1806,7 +1809,7 @@
         "why_wrong": "5 cm är 0,5 dm, inte 5 dm. Steg 5 låser konverteringen: 1 cm = 0,1 dm, så 5 cm = 0,5 dm."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-053",
     "pitfall": "Den vanligaste fällan är att man räknar 2·5·3 = 30 i huvudet utan att tänka på enheterna och sedan slänger på vilken enhet som helst. Botemedlet: skriv alltid ut enheten bredvid varje siffra under räkningen — då är det omöjligt att blanda.",
     "pregrade_tactic": {
       "handle": "Enhetskonverteringen",
@@ -1924,7 +1927,7 @@
         "why_wrong": "Två fel rättar inte varandra. Steg 6–7 visar att x < 12 är det enda korrekta intervallet."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-005",
     "pitfall": "Den största fällan i olikheter är 'falskvändning' — att vända < till > av reflex när man flyttar en term. Botemedlet: flytta termer genom addition/subtraktion (aldrig multiplikation med ett tal) tills variabeln är ensam, och kontrollera sedan tecknet en gång.",
     "pregrade_tactic": {
       "handle": "Olikhetslösningen",
@@ -2042,7 +2045,7 @@
         "why_wrong": "Den exakta utformningen är otydlig p.g.a. parser-korruption. Steg 8–9 gör D till det säkra valet."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-032",
     "pitfall": "Fällan här är att frågan med parsade kvadrater (7²) kan se ut som om flera alternativ ger heltal. Botemedlet: i parsad text, leta efter alternativet som RAKT av är ett heltal (utan operationer) — det är det robusta valet.",
     "pregrade_tactic": {
       "handle": "Heltals-identifikationen",
@@ -3526,7 +3529,7 @@
         "why_wrong": "Steg 7 utvecklar uttrycket och räknar sju x:n. Inte sexton."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-026",
     "pitfall": "Den vanliga fällan är att blanda ihop potens-multiplikationslagen (addera exponenter) med potens-av-potens-lagen (multiplicera exponenter). Botemedlet: skriv ut potensen som upprepad multiplikation tills du ser strukturen, sedan räkna x:n.",
     "pregrade_tactic": {
       "handle": "Exponent-addition",
@@ -3626,7 +3629,7 @@
         "why_wrong": "Det stämmer inte — x och y kompenserar för att de övriga (15, 17, 23) drar upp medelvärdet. Steg 5–6 räknar exakt: medelvärdet av x och y är 3, mycket lägre än 11."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-048",
     "pitfall": "Den vanligaste fällan är att glömma sista divisionen — du räknar fram x + y = 6 och tror att det är svaret. Botemedlet: läs frågan en gång till efter sista räkneoperationen; här efterfrågas MEDELVÄRDET, inte summan.",
     "pregrade_tactic": {
       "handle": "Medelvärde-baklänges",
@@ -3726,7 +3729,7 @@
         "why_wrong": "Steg 9 förkortar 330:390 till 11:13, inte 6:7. Multiplikation med samma faktor bevarar förhållandet, men 11 och 13 är inte 6 och 7."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-023",
     "pitfall": "Vanlig fälla: kvadrera båda delarna (36:49) eller permutera siffrorna (67:76) och tro att förhållandet bevaras. Botemedlet: skriv c:d som c/d och jämför kvoten — bara identisk kvot räknas.",
     "pregrade_tactic": {
       "handle": "Förhållande-kvoten",
@@ -3826,7 +3829,7 @@
         "why_wrong": "-y - y = -2y, INTE 0. Två negativa termer adderas — de tar inte ut varandra (det skulle kräva ett +y och ett -y)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-001",
     "pitfall": "Den allra vanligaste fällan: tappa minustecknet eller bara distribuera det till första termen. Botemedlet: skriv ut -(y + x) som -y - x i ett eget steg INNAN du fortsätter med resten — minska kognitiv belastning.",
     "pregrade_tactic": {
       "handle": "Distribuera-minustecknet",
@@ -3938,7 +3941,7 @@
         "why_wrong": "Steg 7 räknar exakt: 31·33 = 32² - 1 = 1024 - 1 = 1023. Inget 1096."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-046",
     "pitfall": "Vanlig fälla: räkna 31·32 eller 32·33 istället för 31·33. Botemedlet: rita upp alla tre tal innan du multiplicerar, stryk MITTENTALET visuellt så du minns att produkten ska vara av YTTERTALEN.",
     "pregrade_tactic": {
       "handle": "Mittentals-symmetrin",
@@ -4050,7 +4053,7 @@
         "why_wrong": "Steg 6 distribuerar minustecknet korrekt: +m och -m kancellerar. m överlever inte i differensen."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-052",
     "pitfall": "Den vanligaste fällan är att glömma distribuera 3 över hela (a+1). Botemedlet: skriv ut det som ett eget steg, och se efter att konstanttermen kancellerar (är ett tecken på att du gjort rätt med distributiva lagen).",
     "pregrade_tactic": {
       "handle": "Linjär-lutning-direkt",

@@ -1385,7 +1385,7 @@
         "why_wrong": "Procentvärdet kommer från BRÅKETS storlek, inte från medelvärdet av nämnarna. Steg 7-10 visar tydligt att 3x/30 = x/10 = 10\\%."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-016",
     "pitfall": "Den klassiska bråkfällan: addera ALDRIG nämnare. När du adderar bråk hittar du gemensam nämnare och adderar bara täljarna. Botemedlet: skriv alltid ut bråken med samma nämnare INNAN du lägger ihop dem.",
     "solution_path": "Hitta gemensam nämnare: x/15 + x/30 = 2x/30 + x/30 = 3x/30 = x/10. Eftersom x/10 = 10\\% av x är svaret B.",
     "steps": [
@@ -1494,7 +1494,8 @@
     ],
     "pitfall": "Tänk på skillnaden: komplementvinklar summerar till 90°, supplementvinklar till 180°. En rät linje ger 180° (supplement), inte 90°.",
     "solution_path": "Tre linjer i samma punkt skapar sex vinklar som tillsammans är 360°, och varje vinkel har en lika stor vertikalvinkel mittemot. Sätt upp ekvationen med de markerade vinklarna i figuren och lös ut x — det ger x = 20°.",
-    "technique": "När linjer korsas i en punkt summerar alla vinklar runt punkten till 360°, och vertikalvinklar (mittemot varandra) är lika stora."
+    "technique": "När linjer korsas i en punkt summerar alla vinklar runt punkten till 360°, och vertikalvinklar (mittemot varandra) är lika stora.",
+    "framework_id": "XYZ-TRAP-039"
   },
   "host-2024-kvant1-XYZ-005": {
     "_meta": {
@@ -1519,7 +1520,7 @@
         "why_wrong": "Att nämnarna växer säger inget om ordningen mellan bråken. Steg 5-6 visar att 7/8 = 28/32 faktiskt är STÖRST, inte i mitten."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-019",
     "pitfall": "Fällan: tro att större nämnare automatiskt = mindre bråk. Det stämmer bara när TÄLJAREN ÄR SAMMA. Botemedlet: tvinga ner alla bråken på samma nämnare innan du jämför — då handlar det bara om täljarens storlek.",
     "solution_path": "Skriv alla fyra bråk med samma nämnare 32: 3/4 = 24/32, 7/8 = 28/32, 25/32 = 25/32, 13/16 = 26/32. Ordningen blir 24 < 25 < 26 < 28, dvs 3/4 < 25/32 < 13/16 < 7/8. Svaret är D.",
     "steps": [
@@ -1619,7 +1620,7 @@
         "why_wrong": "Steg 6-8 visar hela kedjan: 4s^{2} = 64 → s^{2} = 16 → s = 4. Att hoppa över rotsteget eller divisionssteget ger fel svar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-044",
     "pitfall": "Steget som glöms bort: när du löst {O}s^{2}{C} måste du komma ihåg att ta kvadratroten för att få s själv. Det är inte samma sak. Botemedlet: skriv alltid ut 's² = ...' EXPLICIT på en egen rad innan du tar roten — då glömmer du inte bort steget.",
     "solution_path": "För en kvadrat gäller d = s\\sqrt{2}, så d^{2} = 2s^{2}. Sätt in: 2s^{2} + 2s^{2} = 4s^{2} = 64, alltså s^{2} = 16 och s = 4. Svaret är B.",
     "steps": [
@@ -1919,7 +1920,7 @@
         "why_wrong": "Steg 3: punkten är (a, 2a), så a är x-koordinaten och 2a är y-koordinaten. Att vända på dem ger fel ekvation."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-004",
     "pitfall": null,
     "solution_path": "Punkten (a, 2a) ligger på linjen, så x = a, y = 2a. Sätt in i y = 3x - 60: 2a = 3a - 60, vilket ger a = 60. Svaret är D.",
     "steps": [
@@ -2019,7 +2020,7 @@
         "why_wrong": "Steg 8: fördelningar som (6, 0, 0), (4, 2, 0), (2, 2, 2) har alla tre lådor med JÄMNT antal bollar. Det är fullt möjligt att ingen låda har udda antal."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-047",
     "pitfall": "Det snabba snubbel-svaret: 'tre lådor, en udda — chans 1/3'. Botemedlet: räkna ALDRIG sannolikhet av en strukturellt omöjlig händelse — kolla först om händelsen ÖVERHUVUDTAGET kan inträffa. Paritets-villkor är den vanligaste 'omöjlighet'-tipsen i kombinatorik.",
     "solution_path": "Sex bollar fördelas i tre lådor — summan är 6 (jämn). 'Exakt en låda har udda antal' skulle ge summan udd + jämn + jämn = udda. Det är omöjligt. Sannolikheten är 0 — svaret är A.",
     "steps": [
@@ -2125,7 +2126,7 @@
         "why_wrong": "Steg 10: 2048 = 2^{11}, och 11 är inte delbart med 3. Att vara 'nära' en potens räcker inte — det måste vara exakt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-027",
     "pitfall": "Den vanliga fällan: addera baser i stället för exponenter, eller tro att 16·32 = 48 är något man jämför direkt med 8^x. Botemedlet: skriv ALDRIG om en produkt utan att först byta till gemensam bas, och kom ihåg att produkt → addera exponenter, INTE baser.",
     "solution_path": "Skriv allt i bas 2: 8^{x} = 2^{3x}, 16 = 2⁴, 32 = 2⁵, 64 = 2⁶. Testa alternativen: 16 \\cdot 32 = 2^{4} \\cdot 2^{5} = 2^{9} = 8^{3}. Svaret är B.",
     "steps": [
@@ -3531,7 +3532,7 @@
         "why_wrong": "Steg 3-5: kedjan är medel·antal = total, sedan subtrahera kända. Inget steg involverar 18 som mellanresultat — det är en räknemissar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-048",
     "pitfall": null,
     "solution_path": "Medelvärdet = summa/antal: (1+2+5+7+x)/5 = 7, alltså 15 + x = 35 \\Rightarrow x = 20. Svaret är D.",
     "steps": [
@@ -3940,7 +3941,8 @@
     ],
     "pitfall": null,
     "solution_path": "Cirkelarea: \\pi\\cdot 2^{2}=4\\pi. Kvadratsidlängd: \\sqrt{4\\pi}=2\\sqrt{\\pi}.",
-    "technique": "Kvadratsida från area: √area; var noga med rotteckenshanteringen."
+    "technique": "Kvadratsida från area: √area; var noga med rotteckenshanteringen.",
+    "framework_id": "XYZ-TRAP-042"
   },
   "host-2024-kvant2-XYZ-008": {
     "_meta": {
@@ -4072,7 +4074,8 @@
     ],
     "pitfall": null,
     "solution_path": "Gemensam nämnare 15: \\frac{10(3-x)}{15}+\\frac{25x}{15}=\\frac{30-10x+25x}{15}=\\frac{30+15x}{15}=2+x.",
-    "technique": "Bråkaddition med olika nämnare: gemensam nämnare, addera täljare, förenkla."
+    "technique": "Bråkaddition med olika nämnare: gemensam nämnare, addera täljare, förenkla.",
+    "framework_id": "XYZ-TRAP-016"
   },
   "host-2024-kvant2-XYZ-010": {
     "_meta": {

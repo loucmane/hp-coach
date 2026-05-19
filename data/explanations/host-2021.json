@@ -1405,7 +1405,7 @@
         "why_wrong": "Att vara 'nära' en multipel av 4 räcker inte — det måste vara EXAKT delbart. Steg 6 visar att 27 ger en rest på 3."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-023",
     "pitfall": null,
     "solution_path": "Antalet röda rosor är 3 gånger antalet vita, så totalen är vita + 3·vita = 4·vita — alltså måste totalen vara delbar med 4. Av alternativen är bara 28 delbart med 4. Svaret är D.",
     "steps": [
@@ -1499,7 +1499,7 @@
         "why_wrong": "Vänster-till-höger-strategin ignorerar att multiplikation har högre prioritet. Steg 3 förklarar varför."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-006",
     "pitfall": "Den lockande genvägen är att läsa vänster till höger och räkna varje operator i tur och ordning. Botemedlet: stryk under multiplikationerna i uttrycket innan du börjar — räkna dem först, skriv om uttrycket, och först då gör du additioner och subtraktioner.",
     "solution_path": "Räkneordningen säger: multiplikation före addition/subtraktion. Räkna 3·5 = 15 och 8·2 = 16 först, sätt in och summera: 5 + 15 − 4 + 16 = 32. Svaret är C.",
     "steps": [
@@ -1593,7 +1593,7 @@
         "why_wrong": "I steg 4 adderar vi 5 till båda sidor (eftersom −5 fanns i originalet), så täljaren blir y + 5, inte 5 − y. Tecken-flippning vänder svaret helt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-015",
     "pitfall": "Det luriga är att inte få med +5 inom täljaren. Botemedlet: när du delar HELA högerledet med 4 ska parentesen (y+5) hållas ihop — annars delar du bara en av termerna.",
     "solution_path": "Lös ut x ur y = 4x - 5: lägg till 5 på båda sidor, dela sedan med 4. Resultatet är x = \\frac{y+5}{4}, alltså svar D.",
     "steps": [
@@ -2027,7 +2027,7 @@
         "why_wrong": "Steg 7–8 ger entydigt x = 0 eller x = −3/5. Varken 5/3 eller dess positiva variant är lösning till denna ekvation."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-008",
     "pitfall": "Många försöker tillämpa pq-formeln eller kvadratkomplettering på en ekvation som inte behöver det. Botemedlet: om båda termer innehåller x, börja alltid med att bryta ut x — det är mycket snabbare och mindre felkänsligt.",
     "solution_path": "Bryt ut x: 5x^{2} + 3x = x(5x + 3) = 0. Produkten är noll när antingen x = 0 eller 5x + 3 = 0 → x = -\\frac{3}{5}. Svaret är A.",
     "steps": [
@@ -3283,7 +3283,7 @@
         "why_wrong": "Steg 4 visar att resultatet av subtraktionen är negativt. Att flippa minustecknet ger fel svar — verifiera alltid i originalet."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-002",
     "pitfall": null,
     "solution_path": "Samla x på en sida och konstanter på den andra: 2x − x = −7 − 9, alltså x = −16. Svaret är A.",
     "steps": [
@@ -3443,7 +3443,8 @@
     ],
     "pitfall": null,
     "solution_path": "Av Pythagoras eller annan vinkelsats i figuren: x=3.",
-    "technique": "Geometriska räkningar i figur: Pythagoras eller likformighet ger ofta heltal eller \\sqrt{n}-värden."
+    "technique": "Geometriska räkningar i figur: Pythagoras eller likformighet ger ofta heltal eller \\sqrt{n}-värden.",
+    "framework_id": "XYZ-TRAP-045"
   },
   "host-2021-kvant2-XYZ-004": {
     "_meta": {
@@ -3556,7 +3557,7 @@
         "why_wrong": "Steg 5: P = 8 000 entydigt löst från 0,08 · P = 640."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-022",
     "pitfall": "Det är frestande att tro att 640 ÄR det nya priset, inte rabatten. Botemedlet: läs uppgiften noga — '640 kr billigare' betyder att rabatten är 640 kr (den absoluta minskningen), inte priset efter rabatt.",
     "solution_path": "8 % av ursprungspriset är 640 kr. Lös: P · 0,08 = 640, så P = 640/0,08 = 8 000 kr. Svaret är D.",
     "steps": [
@@ -3714,7 +3715,7 @@
         "why_wrong": "Steg 6: D = −24. Större (mindre negativt) än B = −36."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-029",
     "pitfall": "Det luriga är att räkna potenser av negativa tal rätt. Botemedlet: jämn potens av negativt → positivt; udda potens av negativt → negativt. Skriv ut räkningen ord för ord när du är osäker.",
     "solution_path": "Sätt in x = −3, y = −2, z = −1 i varje uttryck. A = −18, B = −36, C = −12, D = −24. Minst är −36, svaret är B.",
     "steps": [
@@ -3960,7 +3961,7 @@
         "why_wrong": "Steg 5–6 ger entydigt h ≈ 5 när formeln används korrekt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-042",
     "pitfall": "Det är frestande att använda diametern direkt istället för radien — det fyrdubblar svaret. Botemedlet: dela alltid diametern med 2 INNAN du sätter in i formeln.",
     "solution_path": "Cylinder-volymen är V = \\pi r^{2} h. Radie = diameter/2 = 2 dm, så r^{2} = 4 dm². 1 liter = 1 dm³. Lös: 63 = π · 4 · h → h = \\frac{63}{4\\pi} \\approx 5 dm. Svaret är B.",
     "steps": [
@@ -4048,7 +4049,7 @@
         "why_wrong": "Steg 11 verifierar: m = 0 ger vänsterledet 8, inte 1. Vi behöver 2^m = 1/8, alltså m = −3."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-027",
     "pitfall": "Det luriga är att glömma att {MO}n^{{0}} = 1{MC} för alla n ≠ 0. Botemedlet: kom ihåg regeln — när exponenten är 0 är värdet alltid 1, oavsett bas.",
     "solution_path": "4^{0} = 1 (allt upphöjt till 0 är 1). Skriv 8 = 2^{3}, så ekvationen blir 2^{3+m} = 1 = 2^{0}. Då måste 3 + m = 0, alltså m = −3. Svaret är A.",
     "steps": [

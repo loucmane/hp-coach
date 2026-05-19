@@ -2276,7 +2276,7 @@
         "why_wrong": "Räkneordning kan inte slarvas: 7−2 först, sedan 6·, sedan +5, sedan 4·. Steg 3–7 ger 140 entydigt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-006",
     "pitfall": null,
     "solution_path": "Arbeta inifrån och ut: först (7−2) = 5, sen 6·5 + 5 = 35, sen 4·35 = 140. Svaret är B.",
     "steps": [
@@ -2558,7 +2558,7 @@
         "why_wrong": "Konjugatregeln är (a − b)(a + b) = a^{2} − b^{2}. Här är båda faktorer DIFFERENSER (3x − 3y och y − x), inte 'differens·summa'. Steg 4 visar att uttrycket är −3(x − y)^2, inte 3(x² − y²)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-003",
     "pitfall": "Det är frestande att försöka använda konjugatregeln (a-b)(a+b) = a^{2} - b^{2} här, men det är fel: (3x-3y)(y-x) består av två DIFFERENSER, inte en differens och en summa. Botemedlet: kolla att den ena parentesen har '+' och den andra '−' innan du tillämpar konjugatregeln.",
     "solution_path": "(3x − 3y)(y − x) = 3(x − y)(y − x). Eftersom y − x = −(x − y) blir uttrycket 3(x − y)·(−(x − y)) = −3(x − y)^{2} = −3(x^{2} − 2xy + y^{2}) = 6xy − 3x^{2} − 3y^{2}. Svaret är D.",
     "steps": [
@@ -2746,7 +2746,7 @@
         "why_wrong": "Med m = 7: f(2) = −6 + 7 = 1 ≠ 4. Stämmer inte. Steg 5 är det kritiska — gör subtraktionen 4 − (−6) noggrant."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-051",
     "pitfall": "Subtraktionsordningen i k-formeln måste vara samma i täljare och nämnare: om du tar y₂ − y₁ i täljaren, ta x₂ − x₁ i nämnaren (inte x₁ − x₂). Botemedlet: numrera punkterna 1 och 2 och håll ordningen genom hela räkningen.",
     "solution_path": "En rät linje f(x) = kx + m bestäms av två punkter. f(2) = 4 och f(3) = 1 ger riktningskoefficienten k = (1 − 4)/(3 − 2) = −3 och m = 10 (från 4 = −3·2 + m). Alltså f(x) = −3x + 10. Svaret är D.",
     "steps": [
@@ -2840,7 +2840,7 @@
         "why_wrong": "Steg 4 ger 7x = 12x − 24 — entydigt. Sätt in x = 19/4 = 4,75 i originalekvationen: vänster = 4,75/3 + 4,75/4 ≈ 1,58 + 1,19 = 2,77; höger = 2,75. Stämmer inte."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-014",
     "pitfall": null,
     "solution_path": "Multiplicera båda sidor av \\frac{x}{3} + \\frac{x}{4} = x − 2 med 12 för att bli av med bråken: 4x + 3x = 12x − 24, alltså 7x = 12x − 24 → −5x = −24 → x = 24/5. Svaret är D.",
     "steps": [
@@ -3028,7 +3028,7 @@
         "why_wrong": "Det finns ingen sådan operation. Steg 3 ger \\frac{1}{10^{2x}} = \\frac{1}{36} direkt — talet 10 dyker inte upp i resultatet."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-028",
     "pitfall": "Tecknet i exponenten styr om talet ska INVERTERAS, inte om värdet ska göras negativt. Botemedlet: testa regeln mentalt med 10²=100 → 10^(−2)=1/100 (ej −100) innan du svarar.",
     "solution_path": "10^{-2x} är inversen av 10^{2x}: 10^{-2x} = \\frac{1}{10^{2x}} = \\frac{1}{36}. Svaret är B.",
     "steps": [
@@ -5718,7 +5718,8 @@
     ],
     "pitfall": null,
     "solution_path": "Täljare: \\frac{3}{20}. Nämnare: \\frac{1}{2}. Kvot: \\frac{3}{20}\\cdot 2=\\frac{3}{10}.",
-    "technique": "Sammansatt bråk: räkna täljare och nämnare separat, sen dela."
+    "technique": "Sammansatt bråk: räkna täljare och nämnare separat, sen dela.",
+    "framework_id": "XYZ-TRAP-017"
   },
   "var-2022-1-kvant2-XYZ-006": {
     "_meta": {
@@ -5770,7 +5771,8 @@
     ],
     "pitfall": null,
     "solution_path": "a = 1, f(0)=1\\cdot 3^{0}=1.",
-    "technique": "Exponentialfunktion vid 0: a·b⁰ = a."
+    "technique": "Exponentialfunktion vid 0: a·b⁰ = a.",
+    "framework_id": "XYZ-TRAP-034"
   },
   "var-2022-1-kvant2-XYZ-008": {
     "_meta": {
@@ -5822,7 +5824,8 @@
     ],
     "pitfall": null,
     "solution_path": "y=\\frac{0{,}6}{0{,}4}x=1{,}5x. y är 150% av x.",
-    "technique": "Procent-relation: y/x · 100 = procent."
+    "technique": "Procent-relation: y/x · 100 = procent.",
+    "framework_id": "XYZ-TRAP-020"
   },
   "var-2022-1-kvant2-XYZ-010": {
     "_meta": {
@@ -5848,7 +5851,8 @@
     ],
     "pitfall": null,
     "solution_path": "Sida = 10. Diagonal = 10\\sqrt{2}\\approx 14 cm.",
-    "technique": "Kvadratdiagonal: d = s√2."
+    "technique": "Kvadratdiagonal: d = s√2.",
+    "framework_id": "XYZ-TRAP-044"
   },
   "var-2022-1-kvant2-XYZ-011": {
     "_meta": {
