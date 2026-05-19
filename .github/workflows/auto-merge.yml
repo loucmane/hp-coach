@@ -1,0 +1,50 @@
+name: Auto-merge
+
+# Fires when CI completes. If the head branch has an open PR labeled
+# `auto-merge`, squash-merge it and delete the branch. Lets us land
+# work without watching GitHub once CI goes green.
+#
+# Why a workflow and not native GitHub auto-merge: private repos on the
+# free tier can't require status checks via branch protection, so the
+# native `gh pr merge --auto` would merge instantly on PR open rather
+# than waiting for CI. This workflow gates explicitly on CI success.
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Merge if PR has auto-merge label
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          BRANCH="${{ github.event.workflow_run.head_branch }}"
+          REPO="${{ github.repository }}"
+
+          PR=$(gh pr list \
+            --repo "$REPO" \
+            --head "$BRANCH" \
+            --state open \
+            --json number,labels \
+            --jq '.[] | select(.labels | map(.name) | index("auto-merge")) | .number' \
+            | head -1)
+
+          if [ -z "$PR" ]; then
+            echo "No open PR on $BRANCH carries the auto-merge label — nothing to do."
+            exit 0
+          fi
+
+          echo "CI green on $BRANCH; squash-merging PR #$PR."
+          gh pr merge "$PR" \
+            --repo "$REPO" \
+            --squash \
+            --delete-branch
