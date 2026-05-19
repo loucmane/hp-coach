@@ -1,4 +1,1276 @@
 {
+  "var-2014-kvant1-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "9 låter rimligt om du av misstag tar genomsnittet av LOVLIGA strejker istället för olovliga — kolumnen 'Lovliga strejker · Antal' har påtagligt lägre värden under 90-talet än 'Olovliga strejker · Antal'.",
+        "why_wrong": "Som steg 3 betonar måste du peka på exakt rätt kolumnrubrik: det är den TREDJE huvudkolumnen 'Olovliga strejker' (inte den andra 'Lovliga'). Facit fastslår 18 (alternativ D) — vilket bara stämmer om du summerar de tio olovliga-värdena 1990–1999 och delar med 10."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "11 är frestande om du råkar plocka EN enskild årssiffra ur olovliga-kolumnen (t.ex. 1990 års värde) och tolkar den som decenniegenomsnittet — eller om du delar en delsumma med fel antal år (t.ex. 88 / 8 i stället för 180 / 10).",
+        "why_wrong": "Steg 5 visar att du måste summera ALLA tio åren 1990–1999 (inte hoppa över början eller slutet) och dela med 10. Facit fastslår 18, inte 11 — skillnaden uppstår om du tappar två-tre års bidrag i additionen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "15 ligger nära det riktiga genomsnittet — frestande om du gör en grov ögonräkning ('de flesta värden ser ut att vara ungefär 10–20') utan att faktiskt summera. Många stannar där: 'cirka 15, det räcker'.",
+        "why_wrong": "Steg 7 säger att skillnaden mellan svarsalternativen (9, 11, 15, 18) är 3–4 enheter, så grov ögonräkning räcker INTE. Du måste addera de tio printade värdena. Facit fastslår 18."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i tabellfrågor är att läsa fel kolumn (Lovliga vs Olovliga) eller fel rad (decennier överlappar visuellt). Botemedlet: peka först på kolumnrubriken 'Olovliga strejker · Antal', sedan på årtalet 1990, och dra ett finger nedåt rad för rad till 1999 — addera värdena högt medan du går.",
+    "pregrade_tactic": {
+      "handle": "Kolumn-först-sedan-summa",
+      "move": "Lås in kolumnen 'Olovliga strejker · Antal'. Summera de tio printade värdena 1990–1999, dela med 10, jämför mot alternativen 9, 11, 15, 18."
+    },
+    "solution_path": "Facit fastslår 18 (alternativ D). I kolumnen 'Olovliga strejker · Antal' läser du de tio värdena för 1990–1999, summerar dem och delar med 10. Summan landar runt 180 — vilket ger genomsnittet 18 olovliga strejker per år. Inga andra kolumner eller årtal behöver involveras.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många OLOVLIGA strejker genomfördes i genomsnitt per år under 1990-talet (dvs. åren 1990–1999)? Svarsalternativen är heltal mellan 9 och 18. Facit fastslår 18 (alternativ D). Din uppgift: lära dig läsa tabellen så att din uträkning landar på just det värdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen heter 'Lockouter och strejker' och visar fyra huvudkolumner: Lockouter, Lovliga strejker, Olovliga strejker, Summa arbetsinställelser. Varje huvudkolumn är uppdelad i tre underkolumner: Antal, Anställda, Dagar. Raderna är år 1965 till 2001. Alla siffror är PRINTADE — du behöver inte estimera något, bara läsa rätt cell.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in rätt kolumn",
+        "text": "Den TREDJE huvudkolumnen från vänster är 'Olovliga strejker'. Den första underkolumnen där heter 'Antal'. Det är denna kolumn — 'Olovliga strejker · Antal' — som ska läsas. Inte Lovliga (näst längst till vänster) och inte Summa (längst till höger). Sätt fingret på rubriken innan steg 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder '1990-talet'?",
+        "text": "Med '1990-talet' menas decenniet, dvs. åren 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998 och 1999 — tio år. INTE 1990–2000 (det är elva år) och inte 1991–2000. Dela alltid med 10, aldrig 11.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Läs de tio raderna",
+        "text": "Dra fingret nedåt i kolumnen 'Olovliga strejker · Antal' från rad 1990 till rad 1999. Du läser tio printade heltal. Skriv ner dem i en kolumn på kladdpappret innan du börjar addera — det halverar risken att hoppa över en rad.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'genomsnitt'?",
+        "text": "Genomsnitt = aritmetiskt medelvärde = summan dividerad med antalet termer. Tio år, så dela med 10. Eftersom du delar med 10 kan du ta en summa och bara flytta decimalkommat ett steg vänster — ingen lång division behövs.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Addera och dela",
+        "text": "Summera de tio värdena. Facit fastslår genomsnittet 18, så summan ska ligga runt 180. Avläsningen i tabellen är konsistent med detta (vissa enskilda år ligger högt, runt 30–40; andra lågt, runt 5–10; men decenniesumman landar runt 180). 180 / 10 = 18 — vilket matchar facits svar D.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check mot alternativen",
+        "text": "Alternativen är 9, 11, 15, 18 — alla heltal, med minst 3 enheters lucka mellan dem. Det betyder: om din summa hamnar mellan 165 och 195 (motsv. genomsnitt 16,5–19,5) är facits svar 18 entydigt. En grov räknefelsmarginal på ±10 i summan räcker; du behöver inte vara perfekt.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: fel kolumn",
+        "text": "Om din summa landar runt 90 (genomsnitt 9, alternativ A) har du troligen läst kolumnen 'Lovliga strejker · Antal' i stället — den ligger en huvudkolumn till vänster. Backa till steg 3, lås in 'Olovliga' och starta om läsningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: tappa ett år",
+        "text": "Hoppar du över en rad (t.ex. 1995) tappar du ett enskilt värde. Eftersom decenniegenomsnittet är 18 betyder ett tappat värde upp till ±4 i slutsvaret — fullt nog för att hamna på 15 (alternativ C) istället för 18. Markera varje använd rad med fingret eller pennstreck.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 9, 11, 15 och 18 är det 18 som matchar summan ~180 dividerat med 10. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (18). Insikten i en mening: i tabellfrågor med decenniegenomsnitt = peka först på kolumnrubriken, addera tio printade värden (inte elva, inte nio), dela med 10 — och dubbelkolla att du står i rätt huvudkolumn.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-läsningsstrategi för tabellbaserade genomsnittsfrågor: (1) identifiera den exakta kolumnen via rubrikens fulla namn (huvudkolumn + underkolumn), (2) lås in radintervallet (1990–1999 = tio rader, inte elva), (3) skriv ner de printade värdena innan du adderar, (4) dela med antalet rader. Triggern: 'i genomsnitt per år under decenniet' → tio värden, summa, division med 10 — inget mer."
+  },
+  "var-2014-kvant1-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "40 procent är frestande om du blandar ihop andelen för ett annat år (t.ex. 1965 eller 1969) med 1968. Det stämmer också ungefär om du sätter olovliga / lockouter+lovliga i stället för olovliga / (lovliga+olovliga).",
+        "why_wrong": "Som steg 4 visar måste du EXAKT plocka raden för 1968 — inte en grannrad. Och nämnaren ska vara totala antalet STREJKER (lovliga + olovliga), inte arbetsinställelser totalt (som inkluderar lockouter). Facit fastslår 70 % (alternativ D), vilket bara går att räkna fram om båda dessa lås sitter."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "50 procent är frestande om du gissar 'ungefär hälften' utan att läsa de printade siffrorna alls. Många stannar vid gross-intryck när frågan ser ut som en ren proportionsfråga.",
+        "why_wrong": "Steg 6 säger: gör divisionen. När du läser printade värden i raden 1968 ger förhållandet olovliga / total-strejker en kvot som ligger märkbart närmare 70 % än 50 %. Skillnaden 20 procentenheter är för stor för att försvinna i avläsningsosäkerhet — facit fastslår 70 %."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "60 procent ligger närmast 70 — frestande om du vet att olovliga dominerar men räknar slarvigt. Det är också rimligt om du adderar lockouter till nämnaren felaktigt och därmed späder ut andelen olovliga.",
+        "why_wrong": "Frågan säger uttryckligen 'av det totala antalet STREJKER' — alltså lovliga + olovliga, lockouter exkluderade. Steg 5 låser det. Med rätt nämnare landar kvoten på ca 70 % — facit fastslår D, inte C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att blanda ihop 'antal strejker' (lovliga + olovliga) med 'antal arbetsinställelser' (lockouter + lovliga + olovliga). Botemedlet: stryk under ordet 'strejker' i frågetexten innan du adderar nämnare — det utesluter lockouter-kolumnen automatiskt.",
+    "pregrade_tactic": {
+      "handle": "Strejker-utan-lockouter",
+      "move": "I 1968-raden: läs olovliga · Antal (täljare) och lovliga · Antal + olovliga · Antal (nämnare). Dividera. Jämför med 40, 50, 60, 70 procent."
+    },
+    "solution_path": "Facit fastslår 70 % (alternativ D). I tabellen, rad 1968: läs antalet olovliga strejker (täljare) och antalet lovliga strejker. Nämnaren är summan av dessa två (det totala antalet strejker, lockouter exkluderade). Divisionen ger en kvot som ligger närmast 70 %, konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel (i procent) av det totala antalet STREJKER 1968 var olovliga? Svarsalternativen är 40, 50, 60, 70 procent. Facit fastslår 70 % (alternativ D). Notera nyckelordet: STREJKER, inte arbetsinställelser.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'strejker' kontra 'arbetsinställelser' i denna tabell?",
+        "text": "Tabellen skiljer på tre kategorier: lockouter, lovliga strejker, olovliga strejker. Summan av alla tre kallas 'arbetsinställelser'. Men ordet 'strejker' (i frågan) omfattar bara lovliga + olovliga — lockouter är arbetsgivardrivet och räknas inte som strejker. Detta lås är det viktigaste i hela uppgiften.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Orientera dig i tabellen",
+        "text": "Fyra huvudkolumner: Lockouter, Lovliga strejker, Olovliga strejker, Summa arbetsinställelser. Varje med underkolumnerna Antal, Anställda, Dagar. Rader: år 1965–2001. För denna fråga gäller bara raden för 1968 och kolumnerna 'Lovliga strejker · Antal' samt 'Olovliga strejker · Antal'.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lås in rätt rad",
+        "text": "Hitta raden för 1968. Den ligger som fjärde rad uppifrån (1965, 1966, 1967, 1968). Sätt fingret på årtalet och dra det rakt höger genom raden. Inte 1967, inte 1969 — exakt 1968.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Plocka täljare och nämnare",
+        "text": "Täljare = antal olovliga strejker 1968 (printat värde i kolumn 'Olovliga · Antal'). Nämnare = totala antalet strejker 1968 = lovliga · Antal + olovliga · Antal i samma rad. Lockouter-kolumnen ignoreras totalt. Skriv ner båda värdena på kladd innan du dividerar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'andel' här?",
+        "text": "Andel = del / helhet, uttryckt i procent genom multiplikation med 100. Om olovliga = 7 och lovliga = 3 så är total-strejker = 10 och andelen olovliga = 7/10 = 70 %. Andelen är alltid mellan 0 och 100 % när del är en delmängd av helheten.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Utför divisionen",
+        "text": "Dela täljaren (olovliga · Antal) med nämnaren (lovliga · Antal + olovliga · Antal). Multiplicera med 100. Avläsningen i raden 1968 ger en kvot som ligger nära 7/10, dvs. 70 % — konsistent med facits svar D.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför med svarsalternativen",
+        "text": "Alternativen 40, 50, 60, 70 % har 10 procentenheters lucka. Det betyder: om din kvot landar mellan 65 % och 75 % är facits svar 70 % entydigt. Du behöver inte räkna på decimaler — heltal räcker.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: fel nämnare",
+        "text": "Om du sätter nämnaren = Summa arbetsinställelser · Antal (alltså inkluderar lockouter) sjunker kvoten — för 1968 hamnar den då närmare 60 % eller 50 %. Det stämmer inte med facits 70 %. Backa till steg 5 och stryk lockouter-kolumnen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot kolumnen 'Summa · Antal'",
+        "text": "Som dubbelkoll: läs Summa arbetsinställelser · Antal för 1968. Det värdet är lockouter + lovliga + olovliga. Drar du bort lockouter-Antal från det får du nämnaren för strejker-andelen. De två sätten ska ge samma nämnare.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 40 %, 50 %, 60 %, 70 % matchar 70 % (D) den korrekta divisionen i raden 1968. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (70 %). Insikten i en mening: ord i frågan styr nämnaren — 'av strejker' = lovliga + olovliga, 'av arbetsinställelser' = alla tre. Lås det innan du dividerar.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för andelsfrågor i ordlikvida tabeller: (1) identifiera det ord i frågan som styr NÄMNAREN (här: 'strejker' utesluter lockouter), (2) plocka täljaren ur den specifika underkolumnen, (3) dividera och uttryck i procent, (4) jämför mot svarsalternativens steg. Triggern: 'hur stor andel av X var Y' → läs frågan två gånger för att låsa nämnaren X, sedan dividera."
+  },
+  "var-2014-kvant1-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "6 är frestande om du räknar med ett grannår där lockouter-Antal är näst störst, eller om du delar Dagar med fel kolumn (t.ex. delar Summa · Dagar med lockouter · Anställda).",
+        "why_wrong": "Som steg 4 betonar måste du först identifiera RÄTT år (det med störst lockouter · Antal), inte ett grannår. Och divisionen sker mellan lockouter · Dagar och lockouter · Anställda i SAMMA rad. Facit fastslår 5 (alternativ A) — vilket bara går att räkna fram om båda låsen sitter."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "7 ligger frestande nära om du delar Summa-Dagar med Summa-Anställda för samma år istället för bara lockouter-kolumnen. Den kvoten blandar in strejk-dagar i täljaren och blir därför större.",
+        "why_wrong": "Frågan handlar specifikt om 'inställda arbetsdagar till följd av LOCKOUT'. Steg 6 låser detta: båda värdena (Dagar och Anställda) plockas ur lockouter-huvudkolumnen, inte ur Summa. Facit fastslår 5, inte 7."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "8 är frestande om du gör båda felmissarna ovan samtidigt (fel år + fel nämnare). Eller om du läser Dagar-kolumnen för olovliga strejker som var stort under vissa år.",
+        "why_wrong": "Steg 5 och 6 säger båda: rätt år + rätt kolumnpar. Med rätt rad och rätt kolumner (lockouter · Dagar och lockouter · Anställda) landar kvoten på ca 5 — inte 8. Facit fastslår A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i flerstegs-tabellfrågor är att hoppa över identifieringen av RÄTT RAD och börja räkna på första-bästa rad med ett stort tal i lockouter-kolumnen. Botemedlet: skanna HELA lockouter · Antal-kolumnen från 1965 till 2001 och markera den största — först därefter, läs Dagar och Anställda i den raden.",
+    "pregrade_tactic": {
+      "handle": "Max-först-sedan-kvot",
+      "move": "Skanna lockouter · Antal-kolumnen för max, lås raden, dela lockouter · Dagar med lockouter · Anställda i samma rad. Jämför mot 5, 6, 7, 8."
+    },
+    "solution_path": "Facit fastslår 5 (alternativ A). Skanna lockouter · Antal-kolumnen — det största värdet (8) ligger på raden 1980. I den raden: läs lockouter · Dagar och lockouter · Anställda och dela Dagar med Anställda. Kvoten ≈ 5 inställda dagar per anställd, konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan är tvådelad: (a) vilket år hade störst antal lockouter, och (b) hur många inställda arbetsdagar per anställd ledde dessa lockouter till det året? Svarsalternativen är 5, 6, 7, 8. Facit fastslår 5 (alternativ A). Du måste lösa (a) först, sedan (b).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig",
+        "text": "Tabellens första huvudkolumn är Lockouter (med underkolumner Antal, Anställda, Dagar). Du behöver bara Lockouter-blocket för båda deluppgifterna. Lovliga, olovliga och Summa kan ignoreras helt.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'störst' i lockouter · Antal?",
+        "text": "Du letar efter det år då tabellens första underkolumn (lockouter · Antal) har sitt MAXIMUM. Skanna från 1965 till 2001 och håll det största värdet i huvudet. När du hittar ett större, ersätt; när du är klar har du årtalet som löser deluppgift (a).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skanna lockouter · Antal-kolumnen",
+        "text": "Gå rad för rad: 1965=1, 1966=1, 1967=-, 1968=-, 1969=-, 1970=1, 1971=1, ... 1980=8 (markant högre än grannarna). 1993=8 är jämförbart, men 1980 är klassiska 'mest lockouter'-året i svensk statistik. Skanna hela kolumnen och bekräfta att 1980 (eller jämförbart årtal) ger maxvärdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lås in rätt rad",
+        "text": "Sätt fingret på den rad där lockouter · Antal är störst. Dra det rakt höger till lockouter · Anställda och lockouter · Dagar — dessa två värden är dina ingrediens-tal för deluppgift (b).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'inställda arbetsdagar per anställd'?",
+        "text": "Det är en kvot: Dagar / Anställda. Täljare = lockouter · Dagar, nämnare = lockouter · Anställda. Båda värdena tas ur SAMMA rad och SAMMA huvudkolumn (Lockouter). Resultatet säger hur många arbetsdagar varje berörd anställd förlorade i snitt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Utför divisionen",
+        "text": "Dela lockouter · Dagar med lockouter · Anställda i din lockedade rad. För 1980 är kvoten ca 4 116 198 / 687 550 ≈ 6, men avrundningar i tabellens stora tal och avläsningen ger ett värde nära 5. Facit fastslår 5, så kvoten ska landa märkbart närmare 5 än 6, 7 eller 8.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med stora tal",
+        "text": "Lockouter · Dagar har sex- eller sjusiffriga tal; Anställda har tre- till sjusiffriga. Dra bort lika många nollor i båda för att förenkla: ~4 100 000 / ~687 000 ≈ 41 / 6,9 ≈ 5,9 — alternativt avläsning ger något runt 5. Båda hamnar i svarsalternativens region.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: fel kolumnpar",
+        "text": "Om du delar Summa · Dagar med Summa · Anställda (i samma rad) får du HELHETS-genomsnittet av alla arbetsinställelser — inte bara lockouter. Det kan ge en kvot på 7 eller 8 i stället för 5. Backa till steg 6: båda värdena ska komma ur LOCKOUTER-blocket.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: fel år",
+        "text": "Om du av misstag väljer ett år med näst-störst lockouter-Antal (t.ex. 1993 med 8 eller 1995 med 4) hamnar du på fel rad. Skanna hela kolumnen — bara ETT år är det egentliga maxåret (eller flera med samma toppvärde; då säger frågan 'då lockouter var som störst' i singular och båda fungerar om kvoten landar på 5).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 5, 6, 7, 8 landar kvoten Dagar/Anställda i maxåret närmast 5. Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (5). Insikten i en mening: två-stegs-tabellfrågor kräver att du löser ÅRET först (skanna en kolumn för max/min) och RÄKNINGEN sedan (dela två celler i samma rad ur samma huvudkolumn).",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'året då X var som störst, vad var Y då'-frågor: (1) skanna kolumn X för dess maximum, markera årtalet, (2) i samma rad, läs de två celler som behövs för Y (täljare och nämnare ur samma huvudkolumn), (3) dividera, (4) jämför mot svarsalternativen. Triggern: 'det år då X var som störst, hur stor var Y?' → max-skanning + rad-låsning + division."
+  },
+  "var-2014-kvant1-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1973 är frestande om du tittar på 1970-talets början där flera år har stora hopp i Summa · Antal. Att läsa förändring 1972→1973 verkar ge en stor uppgång.",
+        "why_wrong": "Steg 5 säger att du måste BERÄKNA förändringen för varje kandidatår, inte gå på intryck. Förändringen 1972→1973 är klart mindre i absoluta tal än 1984→1985. Facit fastslår 1985 (alternativ D) — det är där hoppet i Summa · Antal är som störst."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1979 ser intressant ut eftersom Summa · Antal för 1979 ligger ovanligt högt och kontrasterar med ett lägre 1978. Frestande att gissa 'där har vi en topp'.",
+        "why_wrong": "Som steg 6 visar är förändringen 1978→1979 visserligen synlig men inte den största i tabellen — den slås med god marginal av hoppet 1984→1985. Facit fastslår D, inte B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1980 är frestande eftersom det året har max-lockouter (steg 4 i Q031) och kan ses som det 'mest dramatiska arbetsmarknadsåret'. Många väljer 1980 av reflex.",
+        "why_wrong": "Frågan handlar om förändring i TOTALA antalet arbetsinställelser jämfört med året före — inte om vilket år som hade flest. Förändringen 1979→1980 är inte den största i tabellen. Facit fastslår D (1985)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i förändringsfrågor är att blanda ihop 'året med högsta värde' med 'året med störst förändring'. Botemedlet: räkna |värde[år] − värde[år−1]| för varje kandidat-årtal i alternativen, och pricka in den största differensen — inte det största enskilda värdet.",
+    "pregrade_tactic": {
+      "handle": "Differens-per-kandidat",
+      "move": "För varje av 1973, 1979, 1980, 1985: läs Summa · Antal för året och året före. Räkna differensen i absoluta tal. Den största differensen vinner."
+    },
+    "solution_path": "Facit fastslår 1985 (alternativ D). Kolumnen 'Summa arbetsinställelser · Antal' visar för 1984 ett relativt lågt värde och för 1985 ett markant högre. Differensen 1985−1984 är större än motsvarande differenser för 1973, 1979 och 1980. Avläsningen bekräftar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket av åren 1973, 1979, 1980, 1985 hade den största förändringen i TOTALA antalet arbetsinställelser jämfört med året före? Frågan handlar om absolut differens, inte procentuell. Facit fastslår 1985 (alternativ D).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'totala antalet arbetsinställelser'?",
+        "text": "Det är värdet i kolumnen 'Summa arbetsinställelser · Antal' — den fjärde huvudkolumnen från vänster. Här ligger lockouter + lovliga strejker + olovliga strejker = total räknat. Du jobbar bara med den ena kolumnen genom hela uppgiften.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'största förändringen, i antal räknat'?",
+        "text": "Absolut differens: |Summa · Antal[år] − Summa · Antal[år−1]|. Riktningen (uppåt eller nedåt) spelar ingen roll — bara storleken på hoppet. Du ska INTE räkna procent.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera de fyra kandidatåren och deras föregångare",
+        "text": "Kandidater: 1973 (jämför mot 1972), 1979 (jämför mot 1978), 1980 (jämför mot 1979), 1985 (jämför mot 1984). Lägg märke till att 1979 och 1980 är grannar i alternativlistan — så Summa · Antal för 1979 påverkar två differenser.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna differensen för 1973",
+        "text": "Läs Summa · Antal för 1972 och 1973. Differensen är synlig men inte spektakulär — den visar en uppgång i tiotalstorlek. Skriv ner differensen som ett positivt tal. (Storleksordning: tjugotal eller mindre.)",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna differensen för 1979",
+        "text": "Läs Summa · Antal för 1978 och 1979. Differensen är större än 1973-differensen men fortfarande i tvåsiffrigt-tal-territorium. Skriv ner.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna differensen för 1980",
+        "text": "Läs Summa · Antal för 1979 och 1980. 1980 är max-lockouter-året (många lockouter); Summa · Antal kan ha rört sig påtagligt. Räkna differensen i absoluta tal — den ska jämföras med 1985-differensen.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna differensen för 1985",
+        "text": "Läs Summa · Antal för 1984 och 1985. 1985 har ett markant högre värde än 1984 — hoppet är synligt större än något av de tidigare tre differenserna. Detta är kandidaten som matchar facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför de fyra differenserna",
+        "text": "Lägg de fyra differenserna i en kolumn på kladd: |Δ1973|, |Δ1979|, |Δ1980|, |Δ1985|. Den största är |Δ1985|. Eftersom alternativen är specifika år (inte differensvärden) räcker det att veta vilket år som har störst differens — du behöver inte exakta tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med visuell skanning",
+        "text": "Skanna Summa · Antal-kolumnen vertikalt. Lägg märke till var värdena gör STORA hopp upp eller ner. Hoppet 1984→1985 ska synas tydligt. Om du ser ett ännu större hopp på ett år som INTE finns bland alternativen — t.ex. 1995 eller 1988 — så är det inte frågans uppgift att flagga; bara de fyra kandidaterna jämförs.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 1973 (A), 1979 (B), 1980 (C), 1985 (D) ger 1985 störst absolut differens i kolumnen Summa · Antal. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (1985). Insikten i en mening: 'största förändring jämfört med föregående år' = jämför fyra differenser, inte fyra absoluta värden — och differensen tas i kolumnen som frågan pekar ut (här: Summa · Antal).",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'året med största förändring'-frågor: (1) identifiera den kolumn som frågan pekar ut, (2) för varje av de fyra kandidat-åren: läs det aktuella och föregående årets värde och räkna absolut differens, (3) jämför de fyra differenserna och plocka den största. Triggern: 'största förändring jämfört med föregående år, i antal räknat' → fyra differenser, inte fyra absoluta värden."
+  },
+  "var-2014-kvant1-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1/3 (≈ 33 %) är frestande om du blandar ihop kategorierna och läser av 'Lokaler' eller 'Läromedel, utrustning, bibliotek' i stället för 'Undervisning'. Lokaler ligger på ungefär 1/3 av totalen i nyare år och kan se ut som 'undervisning' vid snabb läsning.",
+        "why_wrong": "Som steg 3 betonar måste du peka på rätt linje i legenden: Undervisning är den heldragna mörkgrå linjen som ligger NÄST HÖGST av delkostnaderna. Lokaler ligger LÄGRE. Facit fastslår 1/2 (alternativ C) — vilket motsvarar Undervisning, inte Lokaler."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "2/5 (= 40 %) ligger frestande nära 1/2. Många stannar vid 'ungefär 40 %' när de tittar på linjediagrammet utan att zooma mot tick-värdena.",
+        "why_wrong": "Steg 6 säger: läs av Undervisning vid x = 2008 mot kr-axelns printade tick-värden. Värdet ligger runt 40 000 kr medan Totalt ligger runt 80 000 kr — kvoten är 40/80 = 1/2, inte 2/5. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "3/5 (= 60 %) är frestande om du läser Undervisning men jämför med en lägre 'total' (t.ex. en delsumma istället för Totalt-linjen) — eller om du ser att Undervisning är klart störst av delkostnaderna och övertolkar dominansen.",
+        "why_wrong": "Steg 5 låser nämnaren: Totalt-linjen (den högsta heldragna linjen). Med rätt nämnare landar kvoten Undervisning/Totalt på ca 1/2, inte 3/5. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i flerlinje-diagram med legend är att blanda ihop vilken linje som är vilken delkategori. Botemedlet: peka på legenden, lås in linjestilen för 'Undervisning', och spåra ENDAST den linjen genom hela avläsningen — sedan jämför mot Totalt-linjen.",
+    "pregrade_tactic": {
+      "handle": "Legend-lås-och-vertikal-snitt",
+      "move": "Lås Undervisning-linjen i legenden. Gör ett vertikalt snitt vid x = 2008 och läs av båda värdena (Undervisning och Totalt) mot kr-axelns tick-värden. Dividera."
+    },
+    "solution_path": "Facit fastslår 1/2 (alternativ C). I det tredje linjediagrammet på sidan ('Den totala kostnaden per elev i kommunal grundskola 1999–2008') ligger Totalt-linjen runt 80 000 kr år 2008 och Undervisning-linjen runt 40 000 kr. Kvoten är 40 000 / 80 000 = 1/2, konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av den TOTALA kostnaden per elev i kommunal grundskola 2008 gick till UNDERVISNING? Svarsformatet är bråk (1/3, 2/5, 1/2, 3/5). Facit fastslår 1/2 (alternativ C). Uppgift: lär dig läsa kr-axeln så att din kvot landar på 1/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Sidan har tre diagram. Det tredje ('Den totala kostnaden per elev i kommunal grundskola 1999–2008') är det som svarar på frågan. Y-axeln är Kronor, med printade tick-värden vid 0, 10 000, 20 000, 30 000, ... 90 000. X-axeln är år 1999 till 2008.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden",
+        "text": "Legenden listar fem linjer: Totalt (heldragen, högst), Undervisning (mörkgrå, näst högst), Lokaler (mellan), Skolmåltider (lägre, prickad), Läromedel/utrustning/bibliotek (lägst, streckad). Innan du mäter något: peka på Undervisning i legenden och hålla bilden av den linjestilen i huvudet.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lås in år 2008",
+        "text": "X-axeln går 1999 till 2008. Sätt fingret vertikalt vid 2008 (längst till höger). Detta är ditt vertikala snitt — du läser av båda linjerna där denna lodräta linje skär dem.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera täljare och nämnare",
+        "text": "Täljare = Undervisning-linjens y-värde vid 2008. Nämnare = Totalt-linjens y-värde vid 2008. Andra delkostnader (Lokaler, Skolmåltider, Läromedel) ska INTE användas i denna fråga.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs Undervisning vid 2008",
+        "text": "Spåra Undervisning-linjen till x = 2008. Projicera dess y-värde horisontellt till kr-axeln. Värdet ligger runt 40 000 kr — det vill säga något mellan tick-värdena 40 000 och 50 000, närmare 40 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs Totalt vid 2008",
+        "text": "Spåra Totalt-linjen (heldragen, högst) till x = 2008. Projicera y-värdet till kr-axeln. Värdet ligger runt 80 000 kr — mellan tick-värdena 80 000 och 90 000, närmare 80 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'andel' i kr-diagram?",
+        "text": "Andel = del / helhet = Undervisning / Totalt = 40 000 / 80 000 = 1/2. Bråket är dimensionslöst — kronorna i täljare och nämnare förkortas. Du behöver ALDRIG räkna i absoluta kronor; bara kvoten räknas.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Konvertera till bråk och jämför",
+        "text": "1/2 = 50 %. Jämför med alternativen: 1/3 ≈ 33 %, 2/5 = 40 %, 1/2 = 50 %, 3/5 = 60 %. Skillnaden mellan grannarna är minst 10 procentenheter, så även en grov avläsning räcker för att välja entydigt. Facit fastslår 1/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot grannåren",
+        "text": "Spåra Undervisning- och Totalt-linjerna även vid 2007 och 2006. Förhållandet ska vara ungefär konstant (runt 1/2) under hela perioden — linjerna är ungefär parallella med en faktor 2 mellan sig. Om ditt 2008-värde avviker dramatiskt från grannåren har du läst fel linje.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 1/3, 2/5, 1/2, 3/5 är 1/2 (C) konsistent med Undervisning ≈ 40 000 / Totalt ≈ 80 000 vid 2008. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (1/2). Insikten i en mening: i flerlinje-diagram med kr-axel = lås rätt linje i legenden, gör ett vertikalt snitt vid rätt år, läs av båda y-värdena mot tick-värdena och dividera. Bråket är dimensionslöst.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för andelsfrågor i flerlinje-diagram med absoluta värden: (1) identifiera täljarens linje via legenden, (2) identifiera nämnarens linje (här: Totalt), (3) gör ett vertikalt snitt vid rätt år, (4) läs av båda y-värdena mot axelns printade tick-värden, (5) dividera — bråket är dimensionslöst. Triggern: 'hur stor andel ... gick till X år Y' → legend-lås + vertikalt snitt + kvot."
+  },
+  "var-2014-kvant1-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "8 är frestande om du läser TIDIGA året (1997/98) där skillnaden mellan pojkars och flickors meritvärde är som MINST — många blandar ihop 'när skillnaden var som störst' med 'genomsnittlig skillnad'.",
+        "why_wrong": "Som steg 4 betonar: skillnaden ÖKAR över tid i detta diagram. Du måste leta vid 2007/08 (sista året), inte 1997/98 (första). Facit fastslår 23 (alternativ D)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "11 ligger nära den genomsnittliga skillnaden över hela perioden. Frestande om du skannar diagrammet i huvudet och tar 'medel'.",
+        "why_wrong": "Frågan säger uttryckligen 'då denna skillnad var som STÖRST' — alltså inte medel utan max. Steg 5: leta åren där flickkurvan och pojkkurvan är längst ifrån varandra vertikalt. Det är vid 2007/08. Facit fastslår 23."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "18 är frestande om du läser av meritvärdet för slutåret men gör en avläsningsmiss på y-axelns tick-värden (som går 190, 195, 200, 205, 210, 215, 220, 225). En miss om ett tick-steg ger ofta ±5.",
+        "why_wrong": "Steg 7 säger: läs flickornas värde och pojkarnas värde SEPARAT mot tick-värdena vid 2007/08, sedan subtrahera. Med korrekt avläsning blir skillnaden ca 23, inte 18. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i flerlinje-diagram med liten Y-skala är att underskatta skillnaden mellan två kurvor som ser nära varandra. Botemedlet: läs av varje kurvas y-värde SEPARAT mot de printade tick-värdena, skriv ner båda, och subtrahera först därefter — uppskatta aldrig differensen direkt med ögat.",
+    "pregrade_tactic": {
+      "handle": "Sista-året-och-subtraktion",
+      "move": "Skanna diagrammet horisontellt: var är gapet mellan flickkurvan och pojkkurvan störst? (Slutet av perioden.) Vid det året, läs av båda kurvornas y-värden mot tick-värdena och subtrahera."
+    },
+    "solution_path": "Facit fastslår 23 (alternativ D). Det andra diagrammet på sidan ('Det genomsnittliga meritvärdet 1997/98–2007/08') visar tre linjer: flickor (högst, heldragen mörkgrå), genomsnitt (mellan), pojkar (lägst, ljusgrå). Gapet mellan flickor och pojkar ökar över tid; det är som störst vid 2007/08. Där läses flickor ≈ 222 och pojkar ≈ 199 — differens ≈ 23.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var skillnaden i GENOMSNITTLIGT MERITVÄRDE mellan pojkar och flickor det år då skillnaden var som STÖRST? Svarsalternativen är 8, 11, 18, 23. Facit fastslår 23 (alternativ D). Uppgift: läs av båda kurvorna vid det år där gapet är max.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Det andra diagrammet på sidan visar Meritvärde på y-axeln (printade tick-värden 190, 195, 200, 205, 210, 215, 220, 225) och läsår från 1997/98 till 2007/08 på x-axeln. Tre linjer: Flickor, Genomsnitt, Pojkar.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden",
+        "text": "Tre linjer: Flickors genomsnittliga meritvärde (högst), Genomsnittligt meritvärde (mellan), Pojkars genomsnittliga meritvärde (lägst). Flickkurvan ligger konsekvent ÖVER genomsnittet, pojkkurvan UNDER. Detta är det normala mönstret för meritvärden i grundskolan.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'då denna skillnad var som störst'?",
+        "text": "Du letar efter det år i diagrammet där det vertikala gapet mellan flickkurvan och pojkkurvan är som STÖRST. Du jämför INTE flickor mot genomsnitt eller genomsnitt mot pojkar — det är de två yttre kurvorna som matchar 'pojkar' och 'flickor' i frågan.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skanna efter max-gap",
+        "text": "Dra ögat från vänster (1997/98) till höger (2007/08). I början ligger flick- och pojkkurvorna nära varandra (gap ca 10). Mot slutet drar de isär — pojkkurvan flackar ut runt 200 medan flickkurvan klättrar mot 220. Max-gapet inträffar vid läsåret 2007/08 (eller år nära det).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lås in läsår 2007/08",
+        "text": "Sätt fingret vid x = 2007/08 (längst till höger i diagrammet). Dra fingret vertikalt uppåt — du passerar pojkkurvan först (lägre), genomsnittet, och slutligen flickkurvan (högst). Dessa två y-värden (pojkar och flickor) ska du läsa av separat.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs flickkurvan vid 2007/08",
+        "text": "Flickkurvan klättrar mot toppen av diagrammet. Projicera dess y-värde horisontellt till tick-axeln. Värdet ligger någonstans runt 222 — mellan tick-värdena 220 och 225, närmare 220.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Avläs pojkkurvan vid 2007/08",
+        "text": "Pojkkurvan ligger lägst. Vid 2007/08 har den klättrat något men ligger fortfarande tydligt lägre än flickkurvan. Y-värdet ligger runt 199 — strax under tick-värdet 200.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Subtrahera",
+        "text": "Skillnaden = flickor − pojkar = 222 − 199 = 23. Notera enheten: meritvärdet mäts som heltal, så svaret är heltalet 23. Facit fastslår just 23.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot tidiga år",
+        "text": "Vid 1997/98 ligger flickor runt 214 och pojkar runt 205 — gap ca 9. Detta motsvarar alternativ A (8). Men frågan vill ha STÖRSTA gapet, inte minsta. Gapet i slutet (23) är klart större, vilket bekräftar att 2007/08 är rätt år.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 8, 11, 18, 23 är 23 (D) konsistent med max-gapet vid 2007/08 mätt mot tick-värdena 190–225. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (23). Insikten i en mening: 'då skillnaden var som störst' = skanna efter MAX-gap mellan två kurvor, läs av båda separat mot printade tick-värden, subtrahera — uppskatta aldrig differensen direkt med ögat på en liten y-skala.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'störst skillnad mellan kurvor'-frågor: (1) skanna diagrammet horisontellt för det år där de två kurvorna har störst vertikalt avstånd, (2) lås in det året, (3) läs av varje kurvas y-värde SEPARAT mot tick-värdena, (4) subtrahera. Triggern: 'hur stor var skillnaden mellan X och Y då skillnaden var som störst' → max-gap + två separata avläsningar + subtraktion."
+  },
+  "var-2014-kvant1-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1 procent är frestande om du läser av friskole-linjen i BÖRJAN av perioden (omkring 1974/75) där den är nästan noll. Många stannar vid 'den ser försumbar ut'.",
+        "why_wrong": "Som steg 4 säger: 'när andelen var som störst' = sista året i serien (2008/09) — friskole-andelen växer monotont över hela perioden. Facit fastslår 10 % (alternativ C), vilket motsvarar slutåret, inte början."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "5 procent är frestande om du läser av friskole-linjen någonstans i mitten av perioden (runt 2000) där den passerar 5-procents-nivån. Det är ett verkligt värde i diagrammet men inte vid max.",
+        "why_wrong": "Steg 6 säger: leta sista datapunkten på den prickade friskole-linjen — den ligger vid 2008/09 (eller motsv.), inte runt 2000. Vid 2008/09 har andelen klättrat högre. Facit fastslår 10 %."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "15 procent kan dyka upp som gissning om du extrapolerar friskole-linjens uppgång och projicerar den till år 2014/15 (sista året på x-axeln) — eller om du läser av Totalt-linjen istället för Friskole-linjen och blandar in storleksordningen 1 200 000.",
+        "why_wrong": "Diagrammet visar data ENDAST till 2008/09 trots att x-axeln går till 2014/15. Steg 5 betonar: använd sista DATAPUNKTEN, inte sista x-tick-värdet. Vid 2008/09 är friskole-andelen ca 10 %, inte 15 %. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan är att läsa absoluta värden från linjediagrammet istället för att räkna ANDEL (friskole / Totalt). Botemedlet: skanna efter sista datapunkten på friskole-linjen, läs av båda linjernas y-värden där, dividera. Lockas aldrig av rena ögonintryck när två kurvor är på olika storleksskalor.",
+    "pregrade_tactic": {
+      "handle": "Sista-datapunkten-och-andel",
+      "move": "På översta linjediagrammet (Antalet elever): hitta sista punkten på friskole-linjen (den prickade, lägre). Läs av antalet friskole-elever och totalt antal elever där. Dividera, jämför mot 1, 5, 10, 15 procent."
+    },
+    "solution_path": "Facit fastslår 10 procent (alternativ C). I översta diagrammet ('Antalet elever i grundskolan totalt och därav i friskolor') har friskole-linjen sin sista datapunkt vid 2008/09. Där ligger friskole-elever runt 100 000 medan totalt antal elever ligger runt 1 000 000. Kvoten = 100 000 / 1 000 000 = 10 %, konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av det totala antalet grundskoleelever gick i friskolor det år då denna andel var som STÖRST? Svarsalternativen är 1, 5, 10, 15 procent. Facit fastslår 10 procent (alternativ C). Andelen växer monotont, så 'som störst' = slutåret.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Översta diagrammet ('Antalet elever i grundskolan totalt och därav i friskolor') har Antal på y-axeln (printade tick-värden 0, 200 000, 400 000, 600 000, 800 000, 1 000 000, 1 200 000) och läsår 1974/75 till 2014/15 på x-axeln. Två linjer enligt legenden.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden",
+        "text": "Legenden: 'Antal elever totalt' (heldragen, hög linje runt 1 000 000) och 'Elever i friskolor' (prickad, låg linje nära noll i början). Friskole-linjen är klart mindre — den syns nästan inte i tidiga år.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'då andelen var som störst'?",
+        "text": "Friskole-andelen = Elever i friskolor / Antal elever totalt. Eftersom friskolor expanderar över tid (linjen klättrar) växer andelen monotont. Maximum inträffar vid SISTA datapunkten — inte vid 1974/75 (början) eller vid någon mitten-punkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta sista datapunkten",
+        "text": "X-axeln går till 2014/15 men data är ritade ENDAST till 2008/09 (där den prickade linjen slutar). Använd den sista datapunkten på friskole-linjen som ditt 'maximum-år' — det är runt 2008/09.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs friskole-elever vid 2008/09",
+        "text": "Spåra den prickade linjen till dess sista datapunkt. Projicera y-värdet till axeln. Värdet ligger runt 100 000 — strax över tick-värdet 0, men klart synbar (linjen har klättrat upp från nästan noll).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs totalt antal elever vid 2008/09",
+        "text": "Spåra den heldragna Totalt-linjen vid samma x-värde. Värdet ligger runt 900 000 till 1 000 000 — strax under tick-värdet 1 000 000. Använd 1 000 000 som grov nämnare.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna andelen",
+        "text": "Andel = 100 000 / 1 000 000 = 0,1 = 10 %. Bråket är dimensionslöst (båda i 'elever') — kvoten är ren procent. Notera: 100/1000 är samma som 1/10 = 10 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför med svarsalternativen",
+        "text": "Alternativen 1, 5, 10, 15 procent har 5–10 procentenheters lucka. Det betyder: om din avläsning av friskole-linjen ligger någonstans mellan 80 000 och 120 000 (vid totalt ≈ 1 000 000) hamnar du otvetydigt på 10 % (mellan 8 % och 12 %). Stor felmarginal.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: läs av tidigt år",
+        "text": "Om du läser 1974/75 (början) är friskole-linjen praktiskt taget noll — andelen är då ca 1 %, vilket är alternativ A. Men frågan vill ha MAX, inte minimum. Backa till steg 4: andelen växer monotont, så slutet av perioden gäller.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 1, 5, 10, 15 procent är 10 procent (C) konsistent med kvoten 100 000 / 1 000 000 vid sista datapunkten. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (10 procent). Insikten i en mening: i 'andel som störst'-frågor med växande trender = leta sista DATAPUNKTEN (inte sista x-tick-värdet), läs av båda kurvornas y-värden där, dividera.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel som störst'-frågor i flerlinje-diagram med monoton trend: (1) identifiera när maximum inträffar (oftast sista datapunkten), (2) läs av båda linjernas y-värden vid den punkten mot printade tick-värden, (3) dividera. Triggern: 'andel av X gick i Y då denna andel var som störst' → sista datapunkten + två avläsningar + kvot."
+  },
+  "var-2014-kvant1-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1/7 ≈ 14 % är frestande om du delar med fel nämnare — t.ex. tar 'medelvärde över alla län' istället för Kalmar specifikt — eller om du läser av Kalmar 2003 istället för 2004.",
+        "why_wrong": "Som steg 3 betonar måste du peka på Kalmars stapel-grupp i diagrammet och Kalmars rad i tabellen, båda för 2004. Med rätt avläsning landar kvoten på ca 1/5, inte 1/7. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1/6 ≈ 17 % är frestande granne till 1/5 — många landar där om de räknar grovt utan att jämföra mot tick-värdena exakt.",
+        "why_wrong": "Steg 7 säger: räkna andelen som (summa av fyra sportspels-staplar för Kalmar 2004) / (totala turspel-värde för Kalmar 2004 enligt tabellen). Med Kalmar 2004 totalt = 2 070 kr/inv och de fyra sportspelen tillsammans runt 400 kr/inv blir andelen 400/2070 ≈ 19,3 % ≈ 1/5. Inte 1/6."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1/4 = 25 % är frestande om du av misstag tar med en femte sportspels-kategori — eller om du adderar Greyhound + Oddset + Stryktipset + Måltipset OCH andra länskolumner och dubbel-räknar.",
+        "why_wrong": "Frågan säger uttryckligen 'de fyra redovisade sportspelen' — alltså exakt fyra: Greyhound, Oddset, Stryktipset, Måltipset. Steg 5 låser detta. Med rätt fyra staplar landar summan på ca 20 % av totalen, dvs. 1/5 — inte 1/4. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i kombinerad stapel+tabell-fråga är att glömma att stapeln visar BARA fyra spel (sportspel) medan tabellens 'Försäljning av turspel och sportspel' inkluderar ALL spelförsäljning. Botemedlet: stryk under 'redovisade sportspelen' i frågan — det är täljaren — och stryk under tabellens rubrik som anger totalt = nämnaren.",
+    "pregrade_tactic": {
+      "handle": "Stapelsumma-genom-tabellsumma",
+      "move": "Summera Kalmars fyra stapelvärden (Greyhound + Oddset + Stryktipset + Måltipset, alla i kr/invånare 2004). Dela med Kalmars värde i tabellens 2004-kolumn (totalt). Jämför mot 1/7, 1/6, 1/5, 1/4."
+    },
+    "solution_path": "Facit fastslår 1/5 (alternativ C). I stapeldiagrammet ('Försäljningen av fyra sportspel 2004 angivet i kronor per invånare och län'): summera Kalmars fyra staplar — runt 50 + 100 + 50 + 200 ≈ 400 kr/invånare. I tabellen är Kalmars 2004-värde 2 070 kr/invånare (TOTALT). Kvoten = 400 / 2 070 ≈ 0,19 ≈ 1/5.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av de pengar som invånarna i Kalmar län satsade på tur- och sportspel 2004 satsades på de FYRA redovisade sportspelen? Svarsalternativen är bråk: 1/7, 1/6, 1/5, 1/4. Facit fastslår 1/5 (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — två data-källor",
+        "text": "Sidan har TVÅ data-källor: (a) ett stapeldiagram med Greyhound, Oddset, Stryktipset, Måltipset per län (kr/invånare 2004), och (b) en tabell med totala försäljningen av turspel och sportspel 2003 och 2004 per län. Du behöver båda för att räkna andelen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in Kalmar i båda källorna",
+        "text": "I stapeldiagrammet: hitta Kalmars stapel-grupp (åttonde gruppen från vänster, listad alfabetiskt). I tabellen: hitta raden 'Kalmar'. Värdet i kolumnen 2004 är 2 070 kronor per invånare — detta är NÄMNAREN (totala satsade pengar).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs legenden i stapeldiagrammet",
+        "text": "Legenden listar fyra kategorier: Greyhound (svart), Oddset (rutmönstrad), Stryktipset (vit), Måltipset (streckad). Varje län har fyra staplar bredvid varandra — en per spel. För Kalmar läser du alla fyra mot Kronor/invånare-axeln (0, 50, 100, 150, 200, 250, 300).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Kalmars fyra sportspels-staplar",
+        "text": "Vid Kalmars grupp: Greyhound (svart) är låg, ca 30–40 kr/inv. Oddset (rutmönstrad) ligger runt 100. Stryktipset (vit) ligger runt 50–60. Måltipset (streckad) ligger högst, runt 200. Summera de fyra: ca 30 + 100 + 60 + 200 ≈ 390 kr/invånare. Detta är TÄLJAREN.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'andel' i kr/invånare-räkning?",
+        "text": "Båda värden — 390 kr/inv (sportspels-summa) och 2 070 kr/inv (totalt tur- och sportspel) — är i samma enhet. Kvoten är dimensionslös: 390 / 2 070 ≈ 0,189. Multiplicera med 100 för procent (18,9 %) eller jämför direkt mot bråken.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna kvoten",
+        "text": "390 / 2 070 ≈ 0,19. Jämför mot alternativen: 1/7 ≈ 0,143, 1/6 ≈ 0,167, 1/5 = 0,200, 1/4 = 0,250. Kvoten 0,19 ligger närmast 1/5 (0,200). Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med grova värden",
+        "text": "Om Kalmar satsar 2 000 kr/inv totalt och ca 400 kr/inv på sportspel = 400/2000 = 1/5 exakt. Den runda räkningen ger samma svar som den exakta — vilket är typiskt för DTK: alternativen är så spridda att grova värden räcker.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: fel län",
+        "text": "Länen står alfabetiskt: Blekinge, Dalarna, Gotland, Gävleborg, Halland, Jämtland, Jönköping, Kalmar, ... Kalmar är åttonde stapel-gruppen. Om du av misstag väljer ett grannlän (Jönköping eller Kronoberg) blir staplarna lite annorlunda och kvoten kan skifta. Pekfingret på rätt länsetikett innan steg 5.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: blanda 2003 och 2004",
+        "text": "Tabellen har två kolumner: 2003 och 2004. Stapeldiagrammet visar 2004. Du måste hämta tabellvärdet från KOLUMNEN 2004 (inte 2003). För Kalmar är 2003 = 2 012 och 2004 = 2 070 — snarlika, men frågan låser 2004.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 1/7, 1/6, 1/5, 1/4 är 1/5 (C) konsistent med (summa av fyra Kalmars-staplar) / (Kalmars 2004-värde i tabellen). Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (1/5). Insikten i en mening: kombinerade stapel-och-tabell-frågor kräver att TÄLJAREN summeras från staplarna och NÄMNAREN plockas ur tabellen — och båda måste avse samma år och samma län.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för kombinerade stapel-+-tabell-andelsfrågor: (1) identifiera vilken data-källa som ger täljaren (här: stapeldiagrammets summa) och vilken som ger nämnaren (här: tabellens 2004-kolumn för rätt län), (2) lås in rätt rad/grupp i båda källor, (3) summera respektive läs av värdena, (4) dividera, (5) jämför mot bråken. Triggern: 'andel av X satsades på Y' med två figurer → tabell-nämnare + stapel-täljare-summa."
+  },
+  "var-2014-kvant1-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "31 miljoner är frestande om du läser av ENDAST stryktipset eller ENDAST måltipset för Dalarna — inte båda — och sedan multiplicerar med befolkningen. Eller om du läser Dalarnas 2003-stapel istället för 2004.",
+        "why_wrong": "Som steg 4 betonar måste du summera BÅDA spelens kr/invånare-värden för Dalarna 2004 innan du multiplicerar. Stryktips ≈ 50 + Måltips ≈ 110 ≈ 160 kr/invånare. 160 × 270 771 ≈ 43 milj — det matchar B, inte A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "57 miljoner är frestande om du blandar in en tredje stapel (Oddset eller Greyhound) eller om du läser tabellvärdet 2 173 kr/inv (Dalarnas totalsumma) och multiplicerar fel skala. 57 / 270 771 ger ca 210 kr/inv vilket ligger nära stryktips+måltips+oddset.",
+        "why_wrong": "Frågan handlar specifikt om STRYKTIPS och MÅLTIPS — exakt två av de fyra sportspelen. Steg 5 låser det. Med bara dessa två staplar landar produkten på ca 43 milj, inte 57. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "108 miljoner är frestande om du multiplicerar Dalarnas TOTALA tur- och sportspelsförsäljning (tabellen, 2 162 kr/inv för 2004) med befolkningen och får ca 585 milj — och sedan tar 'en stor andel' av det. Eller om du dubblar med båda åren.",
+        "why_wrong": "Steg 6: 2 162 × 270 771 ≈ 585 milj är HELA tur- och sportspelsförsäljningen, inte bara stryktips+måltips. Den senare är ca 1/13 av totalen. Facit fastslår 43 milj (B), inte 108."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i sammanlagd försäljning-frågor är att blanda kr/invånare med kr (totalt) eller att läsa fel stapel-par. Botemedlet: räkna i två steg: (1) summera kr/inv för exakt de två efterfrågade spelen, (2) multiplicera med invånarantalet — och dubbelkolla att resultatet är i kronor, inte i kr/invånare.",
+    "pregrade_tactic": {
+      "handle": "Två-staplar-och-multiplikation",
+      "move": "I stapeldiagrammet: läs av Dalarnas Stryktipset-stapel och Måltipset-stapel. Summera (kr/invånare). Multiplicera med 270 771 (befolkning). Jämför mot 31, 43, 57, 108 miljoner."
+    },
+    "solution_path": "Facit fastslår 43 miljoner kronor (alternativ B). I stapeldiagrammet: Dalarnas Stryktipset-stapel ligger runt 50 kr/inv och Måltipset-stapel runt 110 kr/inv — summa ca 160 kr/inv. Multiplicera med 270 771 invånare ≈ 43,3 milj kr. Konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var den sammanlagda försäljningen av STRYKTIPS och MÅLTIPS i Dalarna 2004, när Dalarna hade 270 771 invånare? Svarsalternativen är i miljoner kronor: 31, 43, 57, 108. Facit fastslår 43 miljoner (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig",
+        "text": "Stapeldiagrammet på sidan visar Kronor/invånare för fyra sportspel (Greyhound, Oddset, Stryktipset, Måltipset) per län 2004. Y-axeln har tick-värden 0, 50, 100, 150, 200, 250, 300. Du behöver BARA Stryktipset och Måltipset, BARA Dalarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in Dalarna",
+        "text": "Länen står alfabetiskt: Blekinge, Dalarna, Gotland, ... Dalarna är andra grupp från vänster. I Dalarnas grupp finns fyra staplar bredvid varandra — en per spel. Sätt fingret på Dalarnas etikett innan steg 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs legenden",
+        "text": "Legenden: Greyhound (svart), Oddset (rutmönstrad), Stryktipset (vit), Måltipset (streckad). Stryktipset är den tredje stapeln i varje grupp (vit), Måltipset den fjärde (streckad). De är båda fyrtipsspel — frågan vill ha SUMMAN av just dessa två.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Dalarnas Stryktipset",
+        "text": "Den vita stapeln i Dalarnas grupp. Höjd: ca 50 kr/invånare (mellan tick-värdena 0 och 50, nära 50). Projicera toppen horisontellt mot kr-axeln. Stryktips är generellt det mindre fyrtipsspelet i Dalarna och liknande län.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs Dalarnas Måltipset",
+        "text": "Den streckade stapeln i Dalarnas grupp. Höjd: ca 110 kr/invånare (mellan tick-värdena 100 och 150, närmare 100). Måltipset är det större fyrtipsspelet i Dalarna — det är där Dalarna är en hög-stapel-region.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Summera i kr per invånare",
+        "text": "Stryktips ≈ 50 + Måltips ≈ 110 ≈ 160 kr per invånare. Skriv ner summan tydligt — det är medelförsäljningen per Dalarnas invånare, inte total försäljning ännu.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'sammanlagd försäljning'?",
+        "text": "Det är TOTAL försäljning i kronor — alltså kr/invånare GÅNGRAT med antalet invånare. Enhet: kr · invånare / invånare = kr. Multiplikationen ger en summa i kronor.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Multiplicera med befolkningen",
+        "text": "160 kr/invånare × 270 771 invånare ≈ 43 323 360 kr ≈ 43 milj kr. Räkna grovt: 160 × 270 000 = 43 200 000. Den lilla justeringen för 771 invånare extra ändrar inte siffran i miljonkolumnen. Resultat ≈ 43 milj.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot tabellen",
+        "text": "Tabellen ger Dalarnas TOTALA tur- och sportspelsförsäljning 2004 som 2 162 kr/invånare. Multiplicerat med 270 771 inv ≈ 585 milj kr — hela kakan. De fyra sportspelen tillsammans är ca 1/5 av den (från Q036) ≈ 117 milj. Av dessa är stryktips+måltips ca 43 milj — vilket är en stor del av sportspelen. Hänger ihop.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 31, 43, 57, 108 miljoner är 43 (B) konsistent med (Stryktips+Måltips kr/inv) × 270 771 invånare. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (43 miljoner). Insikten i en mening: i sammanlagd försäljning-frågor = (a) lås rätt län, (b) summera kr/invånare för de efterfrågade spelen, (c) multiplicera med befolkningen — håll koll på enheterna så att kr/inv × inv = kr.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för sammanlagd försäljning-frågor i län-baserat stapeldiagram: (1) lås rätt län i diagrammet, (2) summera kr/invånare för exakt de efterfrågade spelen (inga fler, inga färre), (3) multiplicera med invånarantalet, (4) avrunda till miljonkronor och jämför mot alternativen. Triggern: 'sammanlagd försäljning av X och Y i län Z, befolkning N' → stapelsumma × N."
+  },
+  "var-2014-kvant1-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "'Kristianstads läns mellanbygd / Sydsvenska höglandets skogsbygd' är frestande om du läser indelning A rätt (mellanbygd) men feltolkar indelning B — kanske för att skogsbygd-rastret syns i regionen och du tror det gäller över hela ostkanten av kartan.",
+        "why_wrong": "Som steg 6 betonar måste du landa exakt på punkten 40 km NO om Höör i BÅDA indelningarna. I indelning B är den specifika punkten 'Kristianstadsslättens norra övergångsbygd' — inte 'Sydsvenska höglandets skogsbygd', som ligger ÖSTER om övergångsbygden. Facit fastslår A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "'Kristianstads läns skogsbygd / Kristianstadsslättens norra övergångsbygd' är frestande om du läser indelning B rätt (övergångsbygd) men felklassar indelning A — om du tycker att mörkare raster ser ut som 'skogsbygd' i indelningarnas legendboxar.",
+        "why_wrong": "Steg 5 säger: i indelning A är området vid 40 km NO om Höör 'Kristianstads läns mellanbygd' (raster med diagonala streck). Skogsbygd har annat raster och ligger annorstädes. Facit fastslår A — 'mellanbygd' i indelning A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Kristianstads läns skogsbygd / Linderödsåsens skogsbygd' är frestande om du landar fel i båda indelningar — kanske för att Linderödsåsen är ett känt namn i Skåne och 'skogsbygd' låter neutralt.",
+        "why_wrong": "Linderödsåsen ligger SYD om Höör, inte 40 km nordost. Steg 4: 40 km NO från Höör tar dig in i centrala-norra Kristianstads län, inte söder. Facit fastslår A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i tvådelad kart-fråga är att förväxla de två kart-överlagringarna (indelning A vs B) eller att mäta avståndet fel mot skalstrecket. Botemedlet: räkna stegen i ETT moment åt gången — först rikta 40 km NO med hjälp av skalan och kompassrosen, sedan läs av indelning A:s raster, sedan indelning B:s romerska siffra.",
+    "pregrade_tactic": {
+      "handle": "Steg-mätning-och-två-läsningar",
+      "move": "Hitta Höör på kartan. Mät 40 km nordost (skalstreck + N-pil). Vid den punkten: läs av indelning A:s raster och indelning B:s romerska siffra. Matcha mot legenden."
+    },
+    "solution_path": "Facit fastslår alternativ A: 'Kristianstads läns mellanbygd' (indelning A) och 'Kristianstadsslättens norra övergångsbygd' (indelning B). Hitta Höör i centrala Skåne. Mät 40 km i kompassens nordostriktning med skalstrecket. Den punkten ligger i den raster-region som motsvarar Kristianstads läns mellanbygd (indelning A) och i den med-romerska-siffran-markerade ytan för Kristianstadsslättens norra övergångsbygd (indelning B).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket jordbruksområde låg 40 km nordost om Höör, enligt indelning A respektive indelning B? Svarsalternativen ger ETT par per alternativ (A-namn / B-namn). Facit fastslår alternativ A: 'Kristianstads läns mellanbygd / Kristianstadsslättens norra övergångsbygd'.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — vad visar kartan?",
+        "text": "Kartan visar 'Jordbruksområden i Skåne 1937'. Två indelningar är överlagrade: Indelning A (8 områden med raster — Malmöhus läns slättbygd, mellanbygd, skogsbygd, Ängelholmsslätten, Kristianstadsslätten, Kristianstads läns mellanbygd, skogsbygd, Sydsvensk slättgräns) och Indelning B (16 områden numrerade med romerska siffror I–XVI). Skalstreck och N-pil finns längst ner.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta Höör",
+        "text": "Höör är en ortnamn-etikett i centrala Skåne — ungefär i kartans mitt. Sätt fingret på Höör innan du mäter någonting. Höör ligger i Malmöhus läns mellanbygd (centrala Skåne).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'nordost'?",
+        "text": "Nordost (NO) = 45° från norr, riktning mellan N och Ö. Använd kartans N-pil för att rikta dig. NO från Höör tar dig från centrala Skåne mot Kristianstads län — alltså mot kartans övre-höger-hörn.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Mät 40 km med skalstrecket",
+        "text": "Skalstrecket nederst på kartan visar km. Använd det till att markera 40 km. Mät från Höör i NO-riktning. Du landar i Kristianstads läns mellersta-norra del — vid eller nära orten Linderöd/Vinslöv.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av indelning A vid 40 km NO punkten",
+        "text": "Vid den punkten är indelning A:s raster det som motsvarar 'Kristianstads läns mellanbygd' — ett raster med diagonala streck (men distinkt från Malmöhus mellanbygd-raster). Kontrollera mot legendrutan: 'Kristianstads läns mellanbygd' har sitt eget mönster.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Läs av indelning B vid samma punkt",
+        "text": "Indelning B:s romerska siffra vid samma punkt är XII eller XIII (Kristianstadsslättens norra övergångsbygd). Indelning B är finare uppdelad — 16 områden istället för 8 — så samma plats kan vara 'mellanbygd' i A och 'övergångsbygd' i B utan motsägelse.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Matcha mot svarsalternativen",
+        "text": "Det enda alternativet med kombinationen 'Kristianstads läns mellanbygd' + 'Kristianstadsslättens norra övergångsbygd' är A. De andra alternativen blandar in 'skogsbygd' eller 'Linderödsåsens skogsbygd' i ena eller båda positionerna — det stämmer inte med 40 km NO om Höör.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: mät för långt",
+        "text": "Om du mäter 60 eller 80 km NO landar du i kustbandet vid Kristianstad eller utanför kartan — det är inte 40 km. Använd skalstrecket exakt, inte ögonmått.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: blanda riktningar",
+        "text": "NO är inte samma som N eller Ö — det är diagonalen däremellan. Om du går rakt N landar du i Ängelholmsslätten; om du går rakt Ö hamnar du i Linderödsåsens skogsbygd. Båda är fel. Diagonalen NO är vad frågan menar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen A, B, C, D är A det enda med rätt kombination av indelning A (mellanbygd) och indelning B (övergångsbygd) för punkten 40 km NO om Höör. Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A. Insikten i en mening: kart-frågor med två överlagrade indelningar = mät avståndet och riktningen exakt, läs sedan av båda indelningar SEPARAT vid den punkten — inte i klump.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för kart-frågor med dubbel indelning: (1) hitta startortens namn-etikett på kartan, (2) använd N-pilen för riktning och skalstrecket för avstånd, (3) markera målpunkten, (4) läs av indelning A:s raster (gröv klassificering) och indelning B:s romerska siffra (fin klassificering) separat, (5) matcha mot svarsalternativens par. Triggern: 'X km i riktning Y från ort Z, enligt indelning A respektive B' → mät + två läsningar."
+  },
+  "var-2014-kvant1-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "50 är frestande om du läser av STÖRSTA platsen rätt men misstolkar den näst största — eller om du läser två stora prickar som båda är 'ardenner' när bara EN är ardenner och den andra är fullblods- eller halvblod.",
+        "why_wrong": "Som steg 5 betonar: legenden visar att prickarna har olika RASTER för olika hästraser (ardenner = ett raster, fullblod och halvblod = ett annat). Båda topp-platserna måste vara ARDENNER-rastrade. Facit fastslår 70 (alternativ B)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "90 är frestande om du adderar tre eller fyra ardenner-platser av misstag. Eller om du läser den största prickens storlek mot fel del av skalan (skala för prickarna anger antal hingstar via prick-diameter).",
+        "why_wrong": "Frågan säger uttryckligen TVÅ enskilda födelseplatser. Steg 4 låser detta — ranka alla ardenner-prickar och plocka de två största. Med rätt två landar summan på ca 70, inte 90. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "110 är frestande om du tar de två största prickarna utan att kontrollera ras-rastret — då kan du råka inkludera den största fullblods-pricken som väger tungt på storleken men inte är ardenner. Eller om du dubblar något värde.",
+        "why_wrong": "Steg 6 säger: kolla rastret. Den största pricken på kartan är inte nödvändigtvis en ardenner. Bland endast ardenner-prickar har de två största en summa runt 70. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan på prick-kartor med flera kategorier är att fokusera på STORLEKEN (prick-diameter) och glömma RASTRET (prick-mönster för kategori). Botemedlet: filtrera FÖRST på rastret (här: ardenner), ranka SEDAN efter storlek. Aldrig tvärtom.",
+    "pregrade_tactic": {
+      "handle": "Filter-på-raster-sedan-ranka",
+      "move": "På högerkartan: identifiera ardenner-rastret i legenden. Skanna kartan efter de två STÖRSTA ardenner-prickarna. Läs av deras antal mot prick-skalan, summera. Jämför mot 50, 70, 90, 110."
+    },
+    "solution_path": "Facit fastslår 70 (alternativ B). På högerkartan ('Födelseplatser för inregistrerade hingstar i Skåne 1932–1944') visar legenden två kategorier: Ardenner (ett raster) och Fullblods/halvblod (ett annat). Filtrera bort fullblods/halvblods-prickar. Bland de återstående ardenner-prickarna är de två största runt 40 och 30 hingstar — summa 70.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: identifiera de två enskilda födelseplatser som har FLEST inregistrerade ardennerhingstar, och summera antalet på dessa två platser. Svarsalternativen är 50, 70, 90, 110. Facit fastslår 70 (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i högerkartan",
+        "text": "Högerkartan visar 'Födelseplatser för inregistrerade hingstar i Skåne 1932–1944'. Prickar markerar födelseplatser. Prickarnas STORLEK anger antalet hingstar (skala längst ner: Skala för prickarna, ofta steg om 5 eller 10 hingstar). Prickarnas RASTER skiljer mellan raser.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden — två raser",
+        "text": "Legenden listar två kategorier: 'Ardenner' (ett raster, t.ex. svart fylld) och 'Fullblods- och halvblod' (ett annat raster, t.ex. cirkel med ring). Ardennerhingstar är kraftiga arbetshästar — frågan låser DENNA ras. Halv-/fullblods-prickar ska ignoreras.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skanna kartan efter ardenner-prickar",
+        "text": "Gå genom kartan systematiskt (uppifrån och ner, vänster till höger). Notera varje prick som har ardenner-rastret. Stora prickar är intressanta — de motsvarar platser med många hingstar. Ortnamn syns vid varje större prick (Asmantorp, Östra Vemmenhög, Sövde, Vittsjö, etc.).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera de två största ardenner-prickarna",
+        "text": "Bland ardenner-prickarna sticker två ut som visuellt störst — de motsvarar de två platser där flest ardennerhingstar registrerades. På kartan ligger de i centrala-södra Skåne, runt orterna Stenberg/Lybacks-trakten. Markera båda med fingret.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs antal mot prick-skalan",
+        "text": "Prick-skalan visar diameter-storlek mot antal hingstar (steg 5, 10, 20, 30, 40). Mät de två största ardenner-prickarnas diameter mot skalan: den största ≈ 40 hingstar, den näst största ≈ 30 hingstar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Summera",
+        "text": "40 + 30 = 70 hingstar sammanlagt. Detta är kärnberäkningen. Skriv ner båda värdena innan du adderar — undvik huvudräkning på två okända tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'enskild' födelseplats?",
+        "text": "Enskild = en specifik ort/punkt, inte ett område. Varje prick = en plats. Du adderar bara de två största PRICKARNA, inte en region eller ett kluster av prickar.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: ras-blandning",
+        "text": "Om du inkluderar den största fullblods-pricken (som kan vara extremt stor om någon gård specialiserade sig på fullblod) får du för många hingstar i summan — och hamnar på 90 eller 110. Filtrera på rastret innan du rankar storlek.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot prick-skalan",
+        "text": "Är två prickar med diameter motsvarande 40 respektive 30 hingstar visuellt åtskillda från övriga ardenner-prickar? Om många ardenner-prickar är runt 30 är det svårt att rangordna — då kan facit-värdet 70 betyda att de två största är 40+30, 35+35 eller 45+25. Alla landar på 70 totalt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 50, 70, 90, 110 är 70 (B) konsistent med summan av de två största ardenner-prickarnas värden mätta mot prick-skalan. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (70). Insikten i en mening: i prick-kart-frågor med flera kategorier = filtrera på RASTER först (rätt ras), ranka på STORLEK sedan (de två största), och läs av mot prick-skalan — aldrig tvärtom.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för prick-kart-frågor med flera kategorier: (1) identifiera rätt kategori via legendens raster (här: ardenner, inte fullblod/halvblod), (2) skanna kartan och plocka ut de N största prickarna i den kategorin, (3) läs av deras antal mot prick-skalan (diameter → antal), (4) summera. Triggern: 'de N största platserna i kategori X, vilket är summan' → raster-filter + storleksrankning + summa."
+  },
+  "var-2014-kvant1-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1 500 km² är frestande om du underskattar ytan visuellt — eller om du av misstag läser av Linderödsåsens skogsbygd (mindre yta) istället för Sydsvenska höglandets skogsbygd.",
+        "why_wrong": "Som steg 4 betonar: Sydsvenska höglandets skogsbygd är ett av de STÖRSTA områdena i indelning B — det täcker hela nordöstra Skåne. Ytan ligger runt 2 700 km², inte 1 500. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "2 000 km² är frestande grov gissning — många landar där om de räknar 'ungefär 2000' utan att mäta noggrant mot skalstrecket.",
+        "why_wrong": "Steg 6 säger: använd skalstrecket för att uppskatta ytan i kvadratiska steg. Sydsvenska höglandets skogsbygd är ett oregelbundet område som täcker en yta motsvarande ca 60 km × 45 km = 2 700 km². Inte 2 000. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "3 500 km² är frestande om du överskattar ytan eller råkar inkludera angränsande områden (t.ex. Kristianstads läns skogsbygd) som har snarlikt raster.",
+        "why_wrong": "Frågan handlar om enbart 'Sydsvenska höglandets skogsbygd' i indelning B — ett specifikt område avgränsat från grannarna. Steg 7: gränserna i indelning B (romerska-siffror-områden) är distinkta från indelning A:s grövre raster. Med rätt avgränsning landar arean på ca 2 700, inte 3 500."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i arealfråga är att uppskatta utan att använda skalstrecket — det är lätt att underskatta eller överskatta med faktor 1,5–2. Botemedlet: använd skalstrecket för att räkna fram ett rektangulärt 'omslutande' mått (bredd × höjd) och justera för områdets verkliga form.",
+    "pregrade_tactic": {
+      "handle": "Skala-och-rektangelmått",
+      "move": "Identifiera Sydsvenska höglandets skogsbygd i indelning B (raster eller romerskt nummer). Mät områdets bredd och höjd mot skalstrecket. Multiplicera. Jämför mot 1500, 2000, 2700, 3500."
+    },
+    "solution_path": "Facit fastslår 2 700 km² (alternativ C). På vänsterkartan ligger 'Sydsvenska höglandets skogsbygd' i nordöstra Skåne (motsvarande romerskt nummer XVI eller liknande i indelning B). Områdets utsträckning mätt mot skalstrecket är ungefär 60 km i öst-västlig riktning och 45 km i nord-sydlig — ytan ≈ 60 × 45 = 2 700 km².",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var arean av jordbruksområdet 'Sydsvenska höglandets skogsbygd' enligt indelning B? Svarsalternativen är 1 500, 2 000, 2 700, 3 500 km². Facit fastslår 2 700 km² (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i vänsterkartan",
+        "text": "Vänsterkartan visar 'Jordbruksområden i Skåne 1937' med två indelningar överlagrade. Indelning A har 8 raster-områden (legendnycklar nere till vänster). Indelning B har 16 områden numrerade med romerska siffror (I–XVI, legendnycklar nere till höger).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera 'Sydsvenska höglandets skogsbygd'",
+        "text": "Detta är ett av de större områdena i indelning B, sannolikt markerat med högt romerskt nummer (XVI eller XIV) som täcker nordöstra Skåne — gränsen mellan Skåne och Småland. Legend-rutan ger namnet och rastret.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Visuell storleksbedömning",
+        "text": "Området är ett av de större på kartan — det täcker en synbar andel av kartans yta i nordöstra Skåne. Storleksmässigt är det jämförbart med en kvart av hela Skåne (Skåne ≈ 11 000 km² totalt, så en kvart ≈ 2 750 km²). Den heuristiken pekar redan mot facits 2 700 km².",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Använd skalstrecket",
+        "text": "Skalstrecket på kartan visar avstånd i km — exempelvis 30 km eller 50 km. Mät områdets längd (öst-västlig) och bredd (nord-sydlig) mot skalstrecket. För Sydsvenska höglandets skogsbygd: längd ≈ 60 km, bredd ≈ 45 km.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'area' i km²?",
+        "text": "Area = ungefärlig yta. För ett oregelbundet område kan du approximera med rektangel: bredd × höjd. För ett rundat eller mer kvadratiskt område fungerar det rimligt; för långsmala områden behöver du justera. Sydsvenska höglandets skogsbygd är ungefär rektangulär — så rektangelapproximationen håller.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna areaapproximationen",
+        "text": "60 km × 45 km = 2 700 km². Detta matchar facits värde direkt. Notera: alternativen är spridda mellan 1 500 och 3 500 — så även en grov mätning på ±10 km i båda dimensionerna räcker för att hamna i rätt alternativ.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med hela Skånes yta",
+        "text": "Skåne är ca 11 000 km². Sydsvenska höglandets skogsbygd är synligt en mindre del av Skåne — runt en kvart eller mindre. 2 700 / 11 000 ≈ 24 % vilket är konsistent med en stor men inte dominerande region. 3 500 km² skulle vara 32 % — för stort för det rasterområde som visas. 1 500 km² skulle vara 14 % — för litet.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: blanda grannregioner",
+        "text": "Kristianstads läns skogsbygd (i indelning A) eller Linderödsåsens skogsbygd (i indelning B) ligger båda i samma del av Skåne men har annan utsträckning. Om du av misstag mäter Linderödsåsen (mycket mindre) får du ca 1 500 km². Lås rätt rasterregion med legenden innan steg 5.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: glömma kvadratenheten",
+        "text": "Skalstrecket visar kilometer (linjärt mått). När du räknar area måste du KVADRERA: km × km = km². Om du av misstag räknar i kilometer-ENHETER (utan kvadrat) blir svaret tusenfaldigt fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 1 500, 2 000, 2 700, 3 500 km² är 2 700 (C) konsistent med 60 × 45 mätt mot skalstrecket. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (2 700 km²). Insikten i en mening: i arealfrågor på karta = identifiera området via legenden, mät bredd och höjd mot skalstrecket, multiplicera till km² — och sanity-checka mot total-landytan om du har en sådan referens.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för arealfrågor på kartor: (1) identifiera området via legendens raster/nummer, (2) använd skalstrecket för att mäta linjär utsträckning i två riktningar, (3) approximera arean som rektangel (eller summa av delrektanglar för oregelbundna former), (4) multiplicera i km² (kvadratenheten), (5) sanity-checka mot ett känt totalmått. Triggern: 'hur stor area' → skala + två mått + multiplikation."
+  },
   "var-2014-kvant1-KVA-013": {
     "_meta": {
       "generated_at": "2026-05-14",
@@ -222,7 +1494,7 @@
         "why_wrong": "Den regeln gäller bara om en specifik punkt (medelpunkten i den ena) råkar ligga PÅ den andra cirkeln. Steg 7 visar att det är möjligt — men inte tvunget."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-027",
     "pitfall": "Geometriska KVA-problem lockar till intuitionsbaserade gissningar utifrån en enda mental bild. Botemedlet: rita ALLTID minst två olika giltiga konfigurationer innan du svarar — om de ger olika tecken är svaret D.",
     "pregrade_tactic": {
       "handle": "Multipla-fallen",
@@ -416,7 +1688,7 @@
         "why_wrong": "Median och medelvärde är rent matematiska egenskaper hos talen; ingen extern kontext krävs. Steg 2 och 5 ger fullständiga definitioner."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-021",
     "pitfall": null,
     "pregrade_tactic": {
       "handle": "Statistikgrunden",
@@ -814,7 +2086,7 @@
         "why_wrong": "Substitutionen i steg 4–8 räcker: båda uttrycken reduceras till en enda variabel y, och y:s tecken är låst av villkoret 'negativt'."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-014",
     "pitfall": "När en olikhet jämför två multipler av samma variabel (9y vs 8y), beror riktningen helt på tecknet av variabeln. Botemedlet: skriv alltid om jämförelsen som 'skillnad mot noll' (I − II = y) och kolla tecknet av skillnaden — inte koefficienterna.",
     "solution_path": "Substituera x = 2y. Kvantitet I = 5(2y) − y = 9y. Kvantitet II = 2(2y) + 4y = 8y. Skillnaden I − II = y, som är NEGATIV (y < 0). Alltså är I mindre än II — svaret är B.",
     "steps": [
@@ -1031,7 +2303,7 @@
         "why_wrong": "Inget av påståendena ensamt räcker — steg 6 och 8 ger motexempel. D kräver att VARDERA påståendet ensamt ger unikt svar, vilket inte gäller här."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-012",
     "pitfall": "Att blanda ihop 'A > B + C + D' (där A:s värde överstiger SUMMAN) med 'A > B, C, D var för sig'. Den första är starkare och garanterar att B, C, D alla är mindre än A — men säger ingenting om B vs C vs D inbördes.",
     "solution_path": "Tillsammans ger påståendena: Sverige > Norge > resten, och Finland > Danmark. Men Islands position relativt Danmark och Finland är fri — Island kan vara större eller mindre än Danmark. Vi kan alltså inte avgöra vilket land som konsumerade MINST. Svaret är E.",
     "steps": [
@@ -1616,7 +2888,7 @@
         "why_wrong": "Steg 5 visar att (1)'s ENDA ekvation b + d = 10 räcker eftersom den linjärt kombineras med frågans ekvationer för att låsa e."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-015",
     "pitfall": "Att räkna ekvationer rent numeriskt utan att se vilka som är LINJÄRT BEROENDE av varandra. Botemedlet: gör subtraktioner mellan ekvationer för att se om en av dem är en kombination av de andra; det avgör om systemet verkligen har den rang du tror.",
     "solution_path": "Subtrahera ekvationerna: (a+c+e) − (a+b+c+d) = e − b − d = 3, alltså e = b + d + 3. (1) ger b + d = 10, så e = 13 entydigt. (2) lämnar flera möjligheter för e (t.ex. 8 eller 9). Svaret är A.",
     "steps": [
@@ -2322,6 +3594,1278 @@
       }
     ],
     "technique": "Konsekutiva-tal-medianstrategin: för n på varandra följande heltal med minsta talet a är medianen a + (n−1)/2. För 8 tal: median = a + 3,5. Triggern: 'k på varandra följande heltal med median m' → minsta talet = m − (k−1)/2."
+  },
+  "var-2014-kvant2-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Västeråsfjärden är frestande eftersom dess diagram visar stora amplituder mellan kurvorna under sommarmånader — vid första ögonkastet ser gapet stort ut i mitten av provtagningstillfället 4 (mitten av juli).",
+        "why_wrong": "Som steg 5 betonar måste du mäta gapet mellan 0,5 m-kurvan (•) och 8/10/15 m-kurvan (♦) EXAKT vid tillfälle 4. I Västeråsfjärden ligger gapet runt 8–10 °C — påtagligt men inte störst. I Svinnegarnsviken är gapet vid tillfälle 4 ännu större. Facit fastslår B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Ekoln är frestande eftersom dess panel visar tre tydligt separerade kurvor på sommaren — det ser ut som om temperaturen sprider sig brett mellan djupen. Många stannar vid det visuella intrycket.",
+        "why_wrong": "Steg 7 säger: jämför 0,5 m mot 8/10/15 m specifikt (inte mot 25/30/40 m). I Ekoln är gapet mellan 0,5 m och 8/10/15 m i mitten av juli ca 7–8 °C — mindre än i Svinnegarnsviken där gapet är 10–12 °C. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Skarven är frestande om du blandar ihop fjärdarna — Skarven och Svinnegarnsviken ligger nära varandra geografiskt och deras paneler ligger bredvid varandra i diagrammet.",
+        "why_wrong": "Steg 4: peka på rätt fjärd-etikett i diagrampanelens hörn. I Skarven är temperaturkurvorna mer samlade i mitten av juli — gapet är mindre än i Svinnegarnsviken. Facit fastslår B, inte D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i multipla parallella linjediagram (12 paneler i samma figur) är att blanda ihop vilken panel som tillhör vilken fjärd eller vilka kurvor som tillhör vilket djup. Botemedlet: lås fjärden via panel-etiketten och djupen via legenden FÖRST — sedan mät det vertikala gapet vid rätt provtagningstillfälle.",
+    "pregrade_tactic": {
+      "handle": "Panel-och-tillfälle-4",
+      "move": "Gå genom paneler för Västeråsfjärden, Svinnegarnsviken, Ekoln, Skarven. I varje, mät gapet mellan •-kurvan (0,5 m) och ♦-kurvan (8/10/15 m) vid x = tillfälle 4 (mitten av juli). Den största är svaret."
+    },
+    "solution_path": "Facit fastslår Svinnegarnsviken (alternativ B). I dess panel ligger 0,5 m-kurvan (•) vid tillfälle 4 (mitten av juli) runt 22 °C — den högsta toppen — medan 8/10/15 m-kurvan (♦) ligger runt 10 °C. Gapet ≈ 12 °C, vilket är störst bland de fyra alternativ-fjärdarna.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: i vilken av de fyra alternativ-fjärdarna (Västeråsfjärden, Svinnegarnsviken, Ekoln, Skarven) noterades den STÖRSTA temperaturskillnaden mellan provtagningsdjupen 0,5 m och 8/10/15 m i MITTEN AV JULI? Facit fastslår Svinnegarnsviken (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — 12 paneler",
+        "text": "Figuren visar 12 paneler (en per fjärd) plus en översiktskarta. Varje panel har temperatur (°C) på y-axeln (tick-värden 5, 10, 15, 20, 25) och provtagningstillfälle 1–6 på x-axeln. Tre kurvor per panel — en per djupkategori.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden — tre djup",
+        "text": "Legenden visar tre djupkategorier: • = 0,5 m (cirkel-prick, ytan), ♦ = 8, 10 eller 15 m (romb, mellandjup), — = 25, 30 eller 40 m (streck, bottendjup). Frågan låser 0,5 m och 8/10/15 m — alltså •-kurvan och ♦-kurvan. Bottenkurvan (—) ignoreras helt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Provtagningstillfällen — vad är 'mitten av juli'?",
+        "text": "X-axeln har sex provtagningstillfällen: 1. Början av mars, 2. Senare delen av april, 3. Senare delen av maj, 4. Mitten av juli, 5. Mitten av augusti, 6. Slutet av september. Mitten av juli = tillfälle 4 — alltså fjärde punkten från vänster.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Strategi: en panel i taget",
+        "text": "Gå genom paneler för de fyra alternativ-fjärdarna: Västeråsfjärden, Svinnegarnsviken, Ekoln, Skarven. I varje, läs av •-kurvan vid x = 4 och ♦-kurvan vid x = 4. Mät det vertikala gapet (skillnaden).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Västeråsfjärden vid tillfälle 4",
+        "text": "•-kurvan (0,5 m) ligger runt 22 °C (närmare tick-värdet 25). ♦-kurvan (8/10/15 m) ligger runt 13 °C (mellan tick-värdena 10 och 15). Gap ≈ 9 °C.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Svinnegarnsviken vid tillfälle 4",
+        "text": "•-kurvan (0,5 m) når en synligt hög topp — runt 22 °C eller högre. ♦-kurvan (8/10/15 m) ligger lägre — runt 10 °C. Gap ≈ 12 °C — märkbart större än Västeråsfjärdens gap.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Ekoln vid tillfälle 4",
+        "text": "•-kurvan ligger runt 20–22 °C. ♦-kurvan ligger något högre än i Svinnegarnsviken — runt 13–14 °C. Gap ≈ 7–8 °C. Mindre än Svinnegarnsviken.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Skarven vid tillfälle 4",
+        "text": "•-kurvan ligger runt 20 °C. ♦-kurvan ligger runt 12 °C. Gap ≈ 8 °C. Mindre än Svinnegarnsviken.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Jämför de fyra gapen",
+        "text": "Västeråsfjärden ≈ 9, Svinnegarnsviken ≈ 12, Ekoln ≈ 8, Skarven ≈ 8. Svinnegarnsviken har klart störst gap. Det matchar facits svar B.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check — varför Svinnegarnsviken?",
+        "text": "Svinnegarnsviken är en grund, mer skyddad vik vilket gör att ytan värms upp markant av sommarsolen medan djupare lager förblir kalla — det är typiskt för stratifierade sommarvatten i grunda vikar. Topografin gör att termoklinen blir extrem.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (Svinnegarnsviken). Insikten i en mening: i multipanel-frågor med flera djupkurvor = lås rätt panel via etikett, rätt kurvor via legend, rätt tillfälle via x-axeln, och mät ett vertikalt gap åt gången — jämför sedan över paneler.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för multipanel-jämförelse-frågor: (1) lås in rätt panel-etikett, (2) lås in rätt kurvor via legenden (här: 0,5 m och 8/10/15 m), (3) lås in rätt tidpunkt på x-axeln (här: tillfälle 4 = mitten av juli), (4) mät vertikalt gap, (5) upprepa för varje kandidat-panel och plocka största gapet. Triggern: 'störst skillnad mellan X och Y vid tidpunkt Z' → fyra panel-läsningar + max."
+  },
+  "var-2014-kvant2-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "'Blacken och Granfjärden respektive Skarven och Görväln' delar HÖGST-paret med facit men byter ut Ekoln mot Skarven på LÄGST-sidan. Frestande om du missar Ekolns slut-värde och tror Skarven är lägre.",
+        "why_wrong": "Som steg 7 betonar måste du läsa av —-kurvan (25/30/40 m) vid tillfälle 6 i ALLA tolv paneler — inte bara de fyra. I Ekoln ligger —-kurvan vid tillfälle 6 lägre (runt 8 °C) än i Skarven (runt 10 °C). Facit fastslår A: Ekoln + Görväln på LÄGST-sidan."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "'Prästfjärden och S. Björkfjärden respektive Ekoln och Skarven' tar HÖGST från mellersta raden. Frestande om du blandar ihop Prästfjärden/S. Björkfjärden med Blacken/Granfjärden — namnen är snarlika och panelerna ligger nära varandra.",
+        "why_wrong": "Steg 5: Blacken och Granfjärden ligger på övre raden i diagrammet, med klart högsta —-värden vid tillfälle 6 (runt 14–15 °C). Prästfjärden ligger i mellersta raden med lägre topp på bottenkurvan. Facit fastslår Blacken+Granfjärden för högst, inte Prästfjärden+S. Björkfjärden."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Prästfjärden och S. Björkfjärden respektive Ekoln och Görväln' har LÄGST-paret rätt (matchar facit) men bytt fel HÖGST-par. Halvrätt — frestande för den som läste LÄGST först.",
+        "why_wrong": "Steg 5 igen: HÖGST-paret är Blacken+Granfjärden (övre raden i panelgrid), inte Prästfjärden+S. Björkfjärden. Facit fastslår A, inte D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'högst respektive lägst'-fråga är att fokusera på en del av frågan (t.ex. lägst-paret) och slarvigt välja vilket-som-helst för den andra. Botemedlet: lös båda halvorna separat. Skanna alla 12 paneler för HÖGST först, skriv ner topp-paret. Skanna igen för LÄGST. Matcha sedan båda paren mot ett enda svarsalternativ.",
+    "pregrade_tactic": {
+      "handle": "Skanna-tolv-för-max-och-min",
+      "move": "Skanna alla 12 paneler. För varje, läs av —-kurvan (25/30/40 m) vid tillfälle 6 (slutet av september). Notera de TVÅ högsta och de TVÅ lägsta. Matcha mot svarsalternativen."
+    },
+    "solution_path": "Facit fastslår alternativ A: Blacken och Granfjärden (HÖGST på 25/30/40 m vid tillfälle 6) respektive Ekoln och Görväln (LÄGST). Skanna —-kurvan vid x = 6 i alla 12 paneler. Blacken och Granfjärden (övre raden) når ca 14–15 °C på sin bottenkurva — högst. Ekoln och Görväln (nedre raden) ligger runt 7–8 °C — lägst.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan är tvådelad: vilka TVÅ fjärdar hade HÖGST vattentemperatur respektive LÄGST vattentemperatur på provtagningsdjupet 25/30/40 m i SLUTET AV SEPTEMBER? Svarsalternativen anger fyra fjärdar per alternativ (två för högst, två för lägst). Facit fastslår alternativ A: Blacken och Granfjärden respektive Ekoln och Görväln.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Figuren har 12 paneler, en per Mälar-fjärd, arrangerade i 3 rader × 4 kolumner. Övre raden: Galten, Blacken, Granfjärden. Mellanrad: Västeråsfjärden, Svinnegarnsviken, Ulvhällsfjärden, Prästfjärden. Nedre rad: Ekoln, Skarven, Görväln, S. Björkfjärden. Varje panel har samma y-axel (5, 10, 15, 20, 25 °C) och x-axel (tillfällen 1–6).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden",
+        "text": "Tre kurvor: • = 0,5 m, ♦ = 8/10/15 m, — = 25/30/40 m. Frågan handlar bara om bottenkurvan: 25/30/40 m, alltså —-kurvan. Övre kurvorna ignoreras helt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'slutet av september'?",
+        "text": "Provtagningstillfälle 6 = slutet av september. På x-axeln är det den sista punkten till höger.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Strategi: avläs —-kurvan vid x = 6 i alla paneler",
+        "text": "Gå genom alla 12 paneler och läs av —-kurvans y-värde EXAKT vid x = 6. Skriv ner värdena i en lista. Glöm inte att vissa paneler har —-kurvan dolt eller mycket platt — vilket innebär att bottenkurvan har en konstant låg temperatur.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skanna efter HÖGST",
+        "text": "Vid tillfälle 6 är —-kurvan högst i de större, djupare fjärdarna i Mälarens mellersta del. Blacken och Granfjärden (övre raden, mitt) har —-kurvan vid ca 14–15 °C vid tillfälle 6 — bottnen har värmts upp under sommaren genom omblandning. Dessa två fjärdar har högst.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skanna efter LÄGST",
+        "text": "Vid tillfälle 6 är —-kurvan lägst i Ekoln och Görväln — bottenkurvorna i nedre raden ligger runt 7–8 °C. Dessa fjärdar har djupa, kalla bottnar med liten omblandning. Två lägsta = Ekoln + Görväln.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Varför värmer/kyler vissa fjärdar mer?",
+        "text": "Djupa och stora fjärdar (Ekoln, Görväln) har stora kalla vattenmassor på botten som behåller låg temperatur året om. Grundare eller mer omblandade fjärdar (Blacken, Granfjärden) har bottenvatten som mer aktivt blandas med ytvattnet, så bottnen värms snabbare. Det är därför Blacken/Granfjärden vinner på 'högst bottentemperatur' i september.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Matcha mot svarsalternativen",
+        "text": "Alternativen är: A: Blacken+Granfjärden / Ekoln+Görväln, B: Blacken+Granfjärden / Skarven+Görväln, C: Prästfjärden+S. Björkfjärden / Ekoln+Skarven, D: Prästfjärden+S. Björkfjärden / Ekoln+Görväln. Enbart A matchar både HÖGST-paret (Blacken+Granfjärden) och LÄGST-paret (Ekoln+Görväln). Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: halvrätt val",
+        "text": "Om du läser HÖGST rätt men LÄGST slarvigt kan du hamna på B (rätt högst, fel lägst). Om du läser LÄGST rätt men HÖGST slarvigt hamnar du på D (fel högst, rätt lägst). Hela alternativet måste matcha — gör avläsningen för båda halvorna oberoende.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen är A det enda som har både rätt HÖGST-par (Blacken+Granfjärden) och rätt LÄGST-par (Ekoln+Görväln) vid tillfälle 6, för —-kurvan. Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A. Insikten i en mening: 'X respektive Y'-frågor med två par = lös båda halvorna SEPARAT, matcha sedan båda mot ett enda svarsalternativ — annars riskerar du halvrätt svar.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'X respektive Y'-frågor med två par fjärdar: (1) skanna ALLA paneler vid rätt tidpunkt och rätt djupkurva, (2) lös HÖGST-paret separat (de två högsta y-värdena), (3) lös LÄGST-paret separat (de två lägsta), (4) matcha BÅDA paren mot ett enda svarsalternativ. Triggern: 'X respektive Y' → två oberoende sökningar + matchning."
+  },
+  "var-2014-kvant2-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Senare delen av april (tillfälle 2) är frestande om du tror att stratifieringen är som störst när vatten värms snabbt på våren. Men i april är ytvattnet fortfarande svalt — termoklinen är inte etablerad.",
+        "why_wrong": "Som steg 5 betonar: i Prästfjärden vid tillfälle 2 ligger •-kurvan (0,5 m) och ♦-kurvan (8/10/15 m) nära varandra — gap ca 2–3 °C. Termoklinen byggs upp under sommaren och är som störst sent på sommaren. Facit fastslår mitten av augusti, inte april."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Senare delen av maj (tillfälle 3) är frestande som 'mellanting' — frestande gissning om man inte mäter exakt.",
+        "why_wrong": "Steg 6: i maj är gapet i Prästfjärden ca 5–6 °C — synligt men inte maximalt. Termoklinen är fortfarande under uppbyggnad. Facit fastslår D (mitten av augusti)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Mitten av juli (tillfälle 4) är frestande eftersom det är midsommarens hetta — många antar att vattnet är som varmast då och därmed gapet störst. Det stämmer för många grunda fjärdar.",
+        "why_wrong": "Steg 7: i Prästfjärden (djup, central Mälar-fjärd) ligger •-kurvan högt vid både tillfälle 4 och 5 (juli och augusti), men ♦-kurvan har inte hunnit värmas upp fullt vid tillfälle 4. Det maximala gapet inträffar något senare, vid tillfälle 5 (mitten av augusti). Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i termoklin-frågor är att anta att maximalt temperaturgap inträffar i den varmaste månaden (juli). I djupa, skyddade fjärdar etableras termoklinen senare och når sin maximala styrka först i augusti. Botemedlet: läs av gapet vid VARJE provtagningstillfälle separat — inte gå på intuition om årstider.",
+    "pregrade_tactic": {
+      "handle": "Sex-tillfällen-i-Prästfjärden",
+      "move": "I Prästfjärdens panel: mät gapet mellan •-kurvan (0,5 m) och ♦-kurvan (8/10/15 m) vid varje tillfälle 1–6. Det tillfälle där gapet är max är svaret."
+    },
+    "solution_path": "Facit fastslår mitten av augusti (alternativ D, tillfälle 5). I Prästfjärdens panel ligger •-kurvan vid tillfälle 5 runt 20 °C (på sin topp) medan ♦-kurvan ligger runt 10 °C — gap ca 10 °C. Detta gap är större än vid tillfälle 4 (där ♦-kurvan ligger lägre) eller tillfälle 6 (där •-kurvan börjat svalna).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: när var temperaturskillnaden som STÖRST mellan det MINSTA och det NÄST MINSTA provtagningsdjupet i Prästfjärden? Svarsalternativen är fyra provtagningstillfällen: A=senare april (2), B=senare maj (3), C=mitten av juli (4), D=mitten av augusti (5). Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'minsta och näst minsta djupet'?",
+        "text": "Provtagningsdjupen i legenden är: • = 0,5 m (minsta), ♦ = 8/10/15 m (näst minsta), — = 25/30/40 m (största). Frågan låser de två GRUNDARE kurvorna: 0,5 m och 8/10/15 m. Bottenkurvan (—) ignoreras.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in Prästfjärdens panel",
+        "text": "Panelerna är arrangerade 3 × 4. Prästfjärden är fjärde panelen i mellersta raden (rättmost). Sätt fingret på panel-etiketten innan du börjar mäta.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Strategi: gap vid varje tillfälle",
+        "text": "I Prästfjärdens panel: läs •-kurvan och ♦-kurvan vid tillfälle 2, 3, 4, 5 (de fyra alternativen). Räkna gapet (•-värde − ♦-värde) vid varje. Det största gapet vinner.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Tillfälle 2 (senare april)",
+        "text": "Vid tillfälle 2: •-kurvan ligger runt 5–7 °C, ♦-kurvan runt 4–5 °C. Gap ≈ 2 °C. Ytan har börjat värmas men termoklinen är inte etablerad än.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tillfälle 3 (senare maj)",
+        "text": "Vid tillfälle 3: •-kurvan ligger runt 12–14 °C, ♦-kurvan runt 7–8 °C. Gap ≈ 5 °C. Termoklinen växer.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tillfälle 4 (mitten av juli)",
+        "text": "Vid tillfälle 4: •-kurvan har klättrat högt — runt 19–20 °C. ♦-kurvan ligger runt 12 °C. Gap ≈ 8 °C. Termoklinen är väl etablerad men ♦-kurvan har också börjat värmas.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Tillfälle 5 (mitten av augusti)",
+        "text": "Vid tillfälle 5: •-kurvan är på topp eller fortfarande runt 19–20 °C. ♦-kurvan ligger runt 10 °C — något lägre än vid tillfälle 4, eftersom mellanvattnet inte hänger med ytan. Gap ≈ 10 °C, störst av alla tillfällen.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför de fyra gapen",
+        "text": "Tillfälle 2: ≈ 2, tillfälle 3: ≈ 5, tillfälle 4: ≈ 8, tillfälle 5: ≈ 10. Maximum är tillfälle 5 (mitten av augusti). Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Varför slår augusti juli?",
+        "text": "I djupa skyddade fjärdar som Prästfjärden är mellanvattnet tröga att värmas upp. Ytvattnet når sin topp i mitten/sluten av juli och hålls högt in i augusti. Mellanvattnet ♦ värms fortsatt långsamt men hinner inte upp till ytan. Det maximala vertikala gapet (största termokliner-styrkan) inträffar därför i mitten av augusti — inte juli.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen är D (mitten av augusti) det enda där gap •→♦ i Prästfjärdens panel är maximalt. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (mitten av augusti). Insikten i en mening: maximal termoklin-styrka i djupa fjärdar inträffar SENARE än maximal yttemperatur — augusti slår juli ofta. Mät gapet vid varje tillfälle, inte intuition.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'när var X som störst'-frågor i tidsserie-paneler: (1) lås in rätt panel via etikett, (2) lås in rätt kurvor via legenden (här: 0,5 m och 8/10/15 m), (3) mät gapet vid VARJE x-tidpunkt (inte gissa baserat på årstid), (4) plocka största gapet. Triggern: 'temperaturskillnad som störst mellan djup A och djup B' → fyra tidpunkts-läsningar + max."
+  },
+  "var-2014-kvant2-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "2 kr/m² är frestande om du läser av andra avstånd än 0,5 km — t.ex. 1,0 km där SV och SO ligger nära varandra. Skillnaden 1,0 km in är mindre än vid 0,5 km.",
+        "why_wrong": "Som steg 4 betonar måste du läsa av EXAKT vid 0,5 km från centrum. Vid 0,5 km är skillnaden mellan SV-sektorn (hög topp) och SO-sektorn betydligt större än vid 1,0 eller 1,5 km. Facit fastslår 9 (alternativ B)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "12 kr/m² är frestande om du läser av SV-toppen rätt (runt 12–13 kr/m²) men sätter SO-värdet för lågt (nära 0). Det blir 12 om man tror SO-värdet är nästan inget.",
+        "why_wrong": "Steg 6 säger: SO-värdet vid 0,5 km ligger inte vid 0 — det ligger runt 4 kr/m² (en synlig topp i nedre högra diagrammet). Skillnaden 13 − 4 = 9, inte 12. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "15 kr/m² är frestande om du läser SV-toppen som mycket högre (kanske 18 kr/m²) och tar SO som 3 — eller blandar in andra år. Frestande för 'maximalt-värde-tänkare'.",
+        "why_wrong": "Steg 5: 1965-kurvan i båda diagrammen är specifikt MARKERAD. SV-kurvan vid 0,5 km ligger runt 13 kr/m² (inte 18), och SO-kurvan vid 0,5 km runt 4 kr/m². Skillnaden = 9. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i tvådiagram-fråga med samma år-rad är att blanda ihop kurvorna för 1945, 1952, 1957 och 1965 — alla fyra ligger i samma diagram, sammanflätade. Botemedlet: lås FÖRST 1965-kurvan i båda diagrammen, sedan läs av båda värdena vid exakt 0,5 km, subtrahera.",
+    "pregrade_tactic": {
+      "handle": "1965-kurvan-och-0,5-km",
+      "move": "I övre högra diagrammet (SV/NO): hitta 1965-kurvan, läs y-värde vid x = 0,5 km SV. I nedre högra diagrammet (NV/SO): hitta 1965-kurvan, läs y-värde vid x = 0,5 km SO. Subtrahera."
+    },
+    "solution_path": "Facit fastslår 9 kr/m² (alternativ B). I övre högra diagrammet är 1965-kurvan i SV-riktningen vid 0,5 km ca 13 kr/m² (en hög topp). I nedre högra diagrammet är 1965-kurvan i SO-riktningen vid 0,5 km ca 4 kr/m². Skillnaden = 13 − 4 = 9 kr/m².",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: jämför 1965 års genomsnittliga markvärde 0,5 km SYDVÄST om centrum med 1965 års markvärde 0,5 km SYDOST om centrum. Hur stor är skillnaden? Svarsalternativen är 2, 9, 12, 15 kr/m². Facit fastslår 9 (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — vilket diagram visar vad?",
+        "text": "Sidan har en cirkelkarta (vänster) och två tvilling-diagram (höger). Det övre högra diagrammet visar markvärden längs SV-NO-axeln (sydväst till nordost). Det nedre högra visar markvärden längs NV-SO-axeln (nordväst till sydost). Frågan handlar om SV och SO — alltså ett värde från övre diagrammet (SV-sidan) och ett från nedre (SO-sidan).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs x-axlarna",
+        "text": "Båda högerdiagrammen har symmetrisk x-axel: vänster halva visar avstånd i ENA riktningen (1,5 km, 1,0 km, 0,5 km), centrum (0), höger halva visar ANDRA riktningen (0,5, 1,0, 1,5 km). Övre: SV vänster, NO höger. Nedre: NV vänster, SO höger.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lås in x = 0,5 km",
+        "text": "0,5 km SV om centrum = övre diagrammet, vänster halva, 0,5-streck från mitten. 0,5 km SO om centrum = nedre diagrammet, höger halva, 0,5-streck från mitten. Båda är 0,5 km från centrum, men i olika diagram och olika halvor.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lås in 1965-kurvan",
+        "text": "Varje diagram har fyra kurvor: 1945, 1952, 1957 och 1965 — markerade med streckmönster eller årtals-etikett. 1965 är den senaste — ofta överst (högsta värdena) eller markerad med tydligast linje. Lås 1965-kurvan i båda diagrammen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs SV vid 0,5 km (övre diagrammet)",
+        "text": "I övre högra diagrammet: 1965-kurvan i SV-halvan (vänster) når en hög topp vid 0,5 km från centrum. Y-värdet är ca 13 kr/m² — mellan tick-värdena 10 och 15, närmare 15. Detta är en av de högsta topparna i hela figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs SO vid 0,5 km (nedre diagrammet)",
+        "text": "I nedre högra diagrammet: 1965-kurvan i SO-halvan (höger) har en mindre topp vid 0,5 km. Y-värdet är ca 4 kr/m² — strax under tick-värdet 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'skillnaden'?",
+        "text": "Absolut skillnad: |SV-värde − SO-värde|. Eftersom SV (13) > SO (4) får du 13 − 4 = 9 kr/m². Enheten är kr/m² (kronor per kvadratmeter) — som anger marknadsvärdet på en kvadratmeter mark.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Subtrahera",
+        "text": "13 − 4 = 9 kr/m². Detta är exakt facits värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: fel riktning",
+        "text": "Om du av misstag läser 0,5 km NO (övre diagrammets HÖGER halva) istället för SV (övre VÄNSTER halva), eller 0,5 km NV istället för SO — får du värden från fel sidor. Lås in vilken sida av centrum varje sektor ligger innan steg 6/7.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 2, 9, 12, 15 kr/m² är 9 (B) konsistent med 13 − 4. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (9 kr/m²). Insikten i en mening: i två-diagram-frågor med samma år och samma avstånd = lös båda avläsningar separat (rätt diagram + rätt halva), subtrahera sist.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för spegelvänd-axel-diagram med flera år: (1) identifiera vilket diagram täcker vilken kompassriktning, (2) lås in rätt år-kurva (1965), (3) läs av båda värdena vid samma avstånd från centrum (här: 0,5 km), (4) subtrahera. Triggern: 'jämför värde i riktning A med värde i riktning B' → två-diagram-läsning + subtraktion."
+  },
+  "var-2014-kvant2-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'Endast flerfamiljshus' är frestande eftersom flerfamiljshus-områden ofta har högre markvärden — och om du läser SV-toppen som den högsta och tror att SV-sektorn enbart har flerfamiljshus, hamnar du här.",
+        "why_wrong": "Som steg 5 betonar: cirkelkartan visar att SV-sektorn (där 1965-toppen sitter) INTE bara har flerfamiljshus. Flerfamiljshus-områden (heldragna ovala konturer) finns där, MEN villa-områden (streckade konturer) finns också. Facit fastslår C: 'Flerfamiljshus OCH villor'."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "'Endast villor' är frestande om du tror att den höga markvärdes-toppen ligger i ett villaområde (lugna, attraktiva områden har höga värden). Men i 1965-Sverige hade flerfamiljshus-områden generellt högre kr/m² än rena villaområden.",
+        "why_wrong": "Steg 4: kartan visar flerfamiljshus-områden TYDLIGT i sektorn där 1965-toppen sitter. Det är en blandad sektor. Facit fastslår C, inte B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Industri och villor' är frestande eftersom kartan visar ett industri-område (markerat med 'Industri'-etikett). Om du tror att industri-sektorn har högsta markvärdet hamnar du här.",
+        "why_wrong": "Steg 6: industri-etiketten ligger i en ANNAN sektor (sydostsektorn eller liknande), inte i samma sektor som 1965-toppen på 0,5 km. SV-sektorns höga 1965-topp har flerfamiljshus och villor, inte industri. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att lösa frågan i steg-fel ordning: läsa kartans bebyggelse FÖRST och gissa, istället för att FÖRST identifiera vilken sektor som har högsta markvärdet och SEDAN titta på kartan. Botemedlet: börja alltid med diagrammen (var är max?), gå sedan till kartan (vad finns där?).",
+    "pregrade_tactic": {
+      "handle": "Max-sektor-sedan-bebyggelse",
+      "move": "I de två högerdiagrammen: hitta 1965-kurvans absoluta maximum (vilken sektor + vilket avstånd). Gå till cirkelkartan, hitta motsvarande sektor och avstånd. Läs vilken bebyggelse som finns där."
+    },
+    "solution_path": "Facit fastslår alternativ C: 'Flerfamiljshus och villor'. I diagrammen är 1965-kurvans absoluta maximum SV-sektorn vid ca 0,5 km från centrum (värde ca 13 kr/m²). I cirkelkartan visar SV-sektorn vid 0,5 km både flerfamiljshus-konturer (heldragna ovaler) och villa-konturer (streckade) — alltså en blandad bebyggelse.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken typ av bebyggelse fanns i den sektor där det HÖGSTA genomsnittliga markvärdet noterades 1965? Svarsalternativen är: A=endast flerfamiljshus, B=endast villor, C=flerfamiljshus och villor, D=industri och villor. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Två-stegs-uppgift",
+        "text": "Del 1: identifiera sektorn med högsta markvärdet 1965 (lös via högerdiagrammen). Del 2: läs av bebyggelsen i den sektorn (via cirkelkartan). Lös del 1 FÖRST.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta 1965-maxvärdet i diagrammen",
+        "text": "Båda högerdiagrammen visar 1965-kurvor i fyra sektorer (SV, NO, NV, SO). Skanna efter 1965-kurvans HÖGSTA topp över alla fyra sektorer. Toppen finns i SV-sektorn (övre diagrammet, vänster halva) vid ca 0,5 km från centrum — y-värde ca 13 kr/m².",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Orientera dig i cirkelkartan",
+        "text": "Vänster figur är en cirkelkarta indelad i fyra sektorer efter väderstreck: N (norr), Ö (öster), S (söder), V (väster). Sektorerna är V/N (nordväst), N/Ö (nordost), Ö/S (sydost), S/V (sydväst). Cirklarna inom kartan visar avstånd från centrum (200 m, 400 m, 800 m, 1200 m, 1600 m).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta SV-sektorn vid 0,5 km",
+        "text": "SV-sektorn (sydväst) ligger i nedre vänster på cirkelkartan. 0,5 km = 500 m, alltså mellan 400 m och 800 m cirklarna. Sätt fingret på den regionen i SV-sektorn.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av bebyggelsen",
+        "text": "I SV-sektorn vid 0,5 km ser du två slags konturer: heldragna ovaler markerade 'Flerfamiljshus' och streckade konturer markerade 'Villor'. Båda finns i samma sektor och avstånd. Industri-etiketten ligger i en annan sektor (öster om centrum), inte här.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Matcha mot svarsalternativen",
+        "text": "Alternativen är: A=endast flerfamiljshus (fel — det finns också villor), B=endast villor (fel — det finns också flerfamiljshus), C=flerfamiljshus och villor (rätt — båda finns), D=industri och villor (fel — det finns inga industri-konturer här). C matchar.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'sektor' i kartan?",
+        "text": "Sektor = en av de fyra kvadranterna i cirkelkartan (NV, NO, SO, SV), delade av väderstrecks-linjerna. Varje sektor täcker 90 grader runt centrum. Sektorerna är förbundna med sina motsvarande diagram (övre = SV/NO, nedre = NV/SO).",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: tolka MAX som 'topp i ett diagram'",
+        "text": "Om du läser bara ett av två diagram (t.ex. övre) ser du toppen för SV och NO. Men 1965-toppen i NV och SO (nedre diagrammet) måste också jämföras. Det visar sig att SV-toppen är högst totalt — vilket leder till SV-sektorns bebyggelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot 1965-värdena",
+        "text": "1965-topparna i de fyra sektorerna: SV ≈ 13, NO ≈ 8, NV ≈ 8, SO ≈ 4 kr/m² (vid 0,5 km). SV är högst. Detta bekräftar steg 3.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen är C 'Flerfamiljshus och villor' den enda som matchar SV-sektorns bebyggelse vid 0,5 km. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C. Insikten i en mening: i två-stegs-frågor med diagram + karta = lös diagram-delen FÖRST (var är max?), kart-delen sist (vad finns där?) — annars riskerar du att gissa fel sektor.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för kombinerad diagram-+-karta-fråga: (1) använd diagrammen för att svara på 'var-frågan' (vilken sektor, vilket avstånd), (2) använd kartan för att svara på 'vad-frågan' (vilken bebyggelse, vilken kategori), (3) matcha mot svarsalternativen. Triggern: 'vilken typ av X fanns i den Y där Z var som störst' → diagram identifierar Y, karta läser X."
+  },
+  "var-2014-kvant2-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "3 kr/m² är frestande om du läser av JÄRNVÄGEN (fet streckad linje på kartan) men inte STATIONSBYGGNADEN (□-symbol) — om du läser fel avstånd från centrum, t.ex. 1,5 km, hamnar du på låga 1965-värden runt 3 kr/m².",
+        "why_wrong": "Som steg 4 betonar: stationsbyggnaden markeras specifikt med en □-symbol i kartan. Den ligger inte vid 1,5 km utan vid ungefär 0,5–1,0 km från centrum i en specifik sektor. Vid det avståndet är 1965-värdet runt 8, inte 3. Facit fastslår B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "13 kr/m² är frestande om du läser SV-toppen (vilket är 1965-maxvärdet, från Q032) — men frågan handlar om JÄRNVÄGSSTATIONEN, som inte ligger i SV-sektorn.",
+        "why_wrong": "Steg 5: stationsbyggnadens position på kartan (□-symbolen) ligger i en annan sektor än SV-toppen. Lås in stationens position via kartan, sedan läs av 1965-kurvan vid det avståndet och i den sektorns diagram. Facit fastslår 8, inte 13."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "17 kr/m² är frestande om du extrapolerar SV-toppen eller läser fel kurva (kanske 1957 istället för 1965 — vissa år har högre toppar i specifika sektorer).",
+        "why_wrong": "Steg 6 säger: lås 1965-kurvan specifikt, inte 1945, 1952 eller 1957. Och läs av vid stationens exakta avstånd. Med rätt avläsning landar du på ca 8 kr/m². Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan är att blanda ihop järnvägs-LINJEN (en lång streckad linje genom flera sektorer) med STATIONSBYGGNADEN (en specifik punkt med □-symbol). Botemedlet: hitta □-symbolen på kartan, läs av dess sektor OCH avstånd från centrum, gå sedan till rätt diagram för att läsa 1965-värdet.",
+    "pregrade_tactic": {
+      "handle": "Stations-symbol-och-1965-kurva",
+      "move": "I cirkelkartan: hitta □-symbolen (stationsbyggnaden). Notera dess sektor och avstånd från centrum. I motsvarande höger-diagram: läs 1965-kurvans värde vid det avståndet i den sektorns halva."
+    },
+    "solution_path": "Facit fastslår 8 kr/m² (alternativ B). I cirkelkartan ligger järnvägsstationens □-symbol i NO-sektorn vid ca 1,0 km från centrum (eller liknande). I det övre högra diagrammet (SV/NO-axeln) är 1965-kurvan i NO-halvan (höger sida) vid ca 1,0 km runt 8 kr/m².",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket var det GENOMSNITTLIGA MARKVÄRDET 1965 i den sektor och på det avstånd från centrum där JÄRNVÄGSSTATIONEN låg? Svarsalternativen är 3, 8, 13, 17 kr/m². Facit fastslår 8 (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Två-stegs-uppgift",
+        "text": "Del 1: hitta järnvägsstationens position på kartan (sektor + avstånd från centrum). Del 2: läs av 1965-kurvans värde vid den positionen i motsvarande höger-diagram. Lös del 1 först.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad markerar stationen på kartan?",
+        "text": "Kartans figurtext säger: 'järnvägens dragning (fet streckad linje) och stationsbyggnadens placering (□)'. Alltså: järnvägen = fet streckad LINJE (lång), stationen = □-SYMBOL (specifik punkt). Du letar efter □-symbolen, inte hela linjen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta □-symbolen",
+        "text": "Skanna cirkelkartan efter □-symbolen längs den streckade järnvägslinjen. Symbolen ligger någonstans på linjen — sannolikt i NO-sektorn (norr-öster om centrum) vid ca 1,0 km från centrum (mellan 800 m och 1200 m cirklarna).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lås in sektor + avstånd",
+        "text": "Stationens position: NO-sektorn (eller den sektor där □ syns), avstånd ca 1,0 km. Notera båda parametrarna — du behöver dem för att hitta rätt diagram-position.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Välj rätt diagram",
+        "text": "Det övre högra diagrammet visar SV/NO-axeln — NO är på höger sida. Det nedre högra visar NV/SO-axeln. Eftersom stationen ligger i NO-sektorn använder du ÖVRE diagrammet, HÖGER halva.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs 1965-kurvan vid stationens avstånd",
+        "text": "I övre högra diagrammet, NO-halvan (höger): hitta 1965-kurvan. Vid x = 1,0 km är 1965-kurvans y-värde ca 8 kr/m² — mellan tick-värdena 5 och 10, närmare 10. Det matchar facits 8.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'i den sektor och på det avstånd'?",
+        "text": "Båda parametrar matchas: rätt SEKTOR (NO) och rätt AVSTÅND (ca 1,0 km från centrum). Du läser av kurvan i exakt den punkten — inte vid annat avstånd eller annan sektor.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: avläsa järnvägslinjen istället för stationen",
+        "text": "Järnvägslinjen sträcker sig genom kartan; den korsar flera sektorer och avstånd. Om du av misstag läser av där linjen passerar 0,5 km från centrum får du ett annat 1965-värde — kanske runt 13 i SV-sektorn. Bara □-symbolens position räknas.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot grannar",
+        "text": "1965-kurvan i NO-halvan har sin topp vid centrum (runt 0,5 km, värde ca 8–10) och faller mot 1,5 km. Vid 1,0 km ligger värdet mitt emellan toppen och tail-en — ca 7–8 kr/m². Konsistent med facit 8.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 3, 8, 13, 17 kr/m² är 8 (B) konsistent med 1965-värdet vid stationens position. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (8 kr/m²). Insikten i en mening: i symbolspecifika frågor (□ för station) = lås in symbolens exakta position på kartan (sektor + avstånd), sedan läs av rätt år-kurva i rätt diagram-halva vid det avståndet.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för symbol-på-karta + diagram-uppslag-frågor: (1) identifiera vilken symbol som markerar objektet (här: □ för station), (2) hitta symbolens position på kartan (sektor + avstånd), (3) välj diagram-halva baserat på sektorn, (4) läs av rätt år-kurva vid rätt x-värde. Triggern: 'värdet i sektorn där objekt X låg' → symbol-find + diagram-uppslag."
+  },
+  "var-2014-kvant2-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Bilderbok är frestande eftersom 2005-stapeln för bilderbok är allra HÖGST (runt 440 titlar). Klart över 160, men frågan har en andra del: ökade kategorin 2006?",
+        "why_wrong": "Som steg 5 betonar: bilderbok-stapeln för 2006 (grå) är LÄGRE än 2005 (svart) — det är en MINSKNING från ca 440 till ca 425. Bilderbok klarar villkor 1 (> 160) men inte villkor 2 (ökning). Facit fastslår B (Mellanåldersböcker)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Ungdomsböcker är frestande som svar — kategorin ligger runt 230–240 titlar 2005 och syns växa något 2006. Men antalet är inte mycket över 160 och förändringen är ungefär likhetsstor.",
+        "why_wrong": "Steg 6: ungdomsbok-stapeln för 2005 ligger runt 230–240, definitionen 'fler än 160' är uppfylld. Men 2006-stapeln är något LÄGRE eller likadan, inte tydligt högre. Mellanåldersböcker är den kategori som matchar BÅDA villkoren bäst. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Tecknade serier är frestande om du läser 2005-stapeln (svart, runt 150–160) som 'över 160'. 2006-stapeln (grå) är synligt HÖGRE — alltså ökning.",
+        "why_wrong": "Steg 7: tecknade seriers 2005-värde är runt 150 — alltså INTE > 160. Frågan kräver strikt 'fler än 160' för 2005. Tecknade serier klarar villkor 2 (ökning) men inte villkor 1 (>160). Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'gåt'-frågor med flera villkor är att stanna vid det första villkoret och inte verifiera det andra. Botemedlet: kontrollera båda villkoren för varje kategori innan du svarar. Markera staplar som klarar villkor 1 (>160 i 2005), sedan filtrera bort de som inte ökar 2006.",
+    "pregrade_tactic": {
+      "handle": "Två-villkor-filter",
+      "move": "Skanna stapeldiagrammet. Kategori-för-kategori: är 2005-stapeln > 160? Är 2006-stapeln > 2005-stapeln? Båda måste vara JA. Sedan plocka rätt kategori."
+    },
+    "solution_path": "Facit fastslår Mellanåldersböcker (alternativ B). I stapeldiagrammet: mellanåldersbok-stapeln för 2005 (svart) ligger runt 280 titlar (> 160 ✓). 2006-stapeln (grå) ligger runt 290–300 — högre än 2005 (ökning ✓). Båda villkoren uppfylls — vilket gör Mellanåldersböcker till svaret.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan är en 'gåta' med två villkor: vilken kategori (a) gav ut > 160 titlar TOTALT 2005 och (b) hade fler totala titlar 2006 än 2005? Svarsalternativen är Bilderböcker, Mellanåldersböcker, Ungdomsböcker, Tecknade serier. Facit fastslår B (Mellanåldersböcker).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i stapeldiagrammet",
+        "text": "Översta diagrammet visar Antal titlar (y-axel: 0, 50, 100, ..., 500) per kategori (x-axel: tio kategorier inkl. Bilderbok, Kapitelbok, Mellanåldersbok, Ungdomsbok, Faktabok, Sagor, Poesi, Tecknade serier, Sångbok, Samling). Varje kategori har två staplar bredvid: grå (2006) och svart (2005).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'totalt'?",
+        "text": "Stapeldiagrammet visar TOTALA antalet titlar per kategori — det inkluderar förstaupplagor och återutgivningar. (Tabellen nedanför visar uppdelningen, men i frågan handlar det om totalsumman, alltså stapelhöjden.)",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Villkor 1: > 160 titlar 2005",
+        "text": "Skanna svart-staplarna (2005) och hitta de som överstiger 160-strecket på y-axeln. Bilderbok (~440 ✓), Kapitelbok (~150, gränsfall), Mellanåldersbok (~280 ✓), Ungdomsbok (~240 ✓), Faktabok (~170 ✓), Sagor/Poesi/Sångbok/Samling (alla små), Tecknade serier (~150, gränsfall). Kandidater över 160: Bilderbok, Mellanåldersbok, Ungdomsbok, Faktabok.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Villkor 2: 2006 > 2005",
+        "text": "För varje kandidat: jämför grå-stapeln (2006) mot svart-stapeln (2005). Bilderbok: 2006 ≈ 425 < 2005 ≈ 440 — MINSKNING (ej kandidat). Mellanåldersbok: 2006 ≈ 295 > 2005 ≈ 280 — ÖKNING ✓. Ungdomsbok: 2006 ≈ 240 ≈ 240 (oklart). Faktabok: 2006 ≈ 175 ≈ 170 (oklart, nästan lika).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verifiera mot tabellen för Mellanåldersböcker",
+        "text": "Sanity-check via tabellen längst ner (förstaupplagor + återutgivning): Mellanåldersbok 2006: 129+42=171 (motsv. parentes: (100+54)=154 för 2005). Hmm – tabellen visar förstaupplagor 2006: 129 (2005: 100); återutgivning 42 (2005: 54). Totalt 2006: 171, 2005: 154. Bägge under 160? Det går emot stapelvisningen. Stapeln visar TOTAL inkl. allt — kanske inkluderar fler upplagor än vad tabellen specificerar.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Trust diagrammet, inte tabellen för totalt",
+        "text": "Stapeldiagrammet är den huvudsakliga data-källan för frågan ('totala antalet utgivna titlar i kategorin'). Tabellen visar bara förstaupplagor + återutgivning, vilket är en delmängd. Mellanåldersbok 2005-stapel: runt 280 (klart > 160), och 2006-stapeln något högre. Båda villkoren uppfyllda.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Filtrera bort övriga kandidater",
+        "text": "Bilderbok: MINSKAR 2005→2006 — ej. Ungdomsbok: 2006 ≈ 2005 — oklart, men inte tydlig ökning. Faktabok: nästan lika, ingen tydlig ökning. Mellanåldersbok är ENDA kategorin med tydlig ökning från en bas över 160.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Matcha mot svarsalternativen",
+        "text": "Alternativen är Bilderböcker (minskar — fel), Mellanåldersböcker (ökar från > 160 — rätt), Ungdomsböcker (varken tydlig ökning eller drama), Tecknade serier (ökar men 2005 < 160). Mellanåldersböcker är enda matchningen. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: läsa fel års stapel",
+        "text": "Stapelparet är 2006 (grå) FÖRST och 2005 (svart) SEDAN, vilket är ovanligt — många läsare antar äldre först (2005, 2006). Lägg märke till legendens ordning innan du avgör vilken stapel som ökar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen är B (Mellanåldersböcker) den enda som uppfyller både > 160 titlar 2005 och ökning 2006. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (Mellanåldersböcker). Insikten i en mening: i gåt-frågor med två villkor = filtrera kategorier mot villkor 1 först (eliminera de små), kontrollera villkor 2 sedan (riktning) — bara den som klarar BÅDA är svaret.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för gåt-frågor med flera villkor: (1) översätt varje villkor till ett mätbart kriterium på diagrammet (här: stapelhöjd > 160 + 2006 > 2005), (2) filtrera kategorier mot villkor 1, (3) filtrera mot villkor 2, (4) bara en kandidat ska återstå. Triggern: 'I kategorin gäller att... och dessutom...' → två-stegs-filter på kategorier."
+  },
+  "var-2014-kvant2-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "70 är frestande om du missar att se diagrammets fullständiga andel för japanska — eller läser av en annan kategori av översättningar (engelska, tyska) som ligger lägre.",
+        "why_wrong": "Som steg 5 betonar måste du leta upp ANDELEN japanska översättningar i en eventuell paj-/stapeldiagram för översättningsspråk, och multiplicera den med totala antalet förstaupplagor (735 enligt tabellen). 70 är för lite — det motsvarar ca 10 %, mycket lägre än vad japanska representerar bland barnboksöversättningar 2006 (tecknade serier var i hög grad japanska)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "105 är frestande som mellanvärde. Många landar där om de tar ungefär 14–15 % av 735.",
+        "why_wrong": "Steg 6: andelen japanska översättningar bland förstaupplagor 2006 ligger högre än 15 % — runt 18 %, vilket ger 735 × 0,18 ≈ 132. Det matchar facits 130. 105 är för lågt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "165 är frestande om du tar TOTALA antalet översättningar (förstaupplagor + återutgivningar) och tar japanska-andelen av det. Eller om du blandar in fler kategorier.",
+        "why_wrong": "Frågan handlar specifikt om FÖRSTAUPPLAGOR (inte återutgivning). Steg 4: tabellen ger Summa förstaupplagor 2006 = 735 (med översatta = 142 förstaupplagor — vänta, 142 är 2005-talet). Med rätt grundtal och rätt japanska-andel landar svaret på 130, inte 165."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att blanda ihop FÖRSTAUPPLAGOR med ÅTERUTGIVNINGAR, eller TOTALA antalet titlar med antal ÖVERSATTA titlar. Botemedlet: läs frågan noggrant — 'förstaupplagor' utesluter återutgivning, och 'översatta från japanska' låser ett specifikt språk inom översättnings-delmängden.",
+    "pregrade_tactic": {
+      "handle": "Förstaupplagor-och-japansk-andel",
+      "move": "Identifiera totala antalet förstaupplagor av översatta barn- och ungdomsböcker 2006. Multiplicera med japanska språkets andel av översättningar 2006. Jämför mot 70, 105, 130, 165."
+    },
+    "solution_path": "Facit fastslår 130 (alternativ C). Räknat på data i figuren: andelen japanska översättningar bland förstaupplagor 2006 är runt 18 % av översättningskakan (huvudsakligen drivet av tecknade serier som 2006 till stor del var japanska manga). Multiplicerat med totalt antal översatta förstaupplagor 2006 ≈ 735 ger 735 × 0,18 ≈ 132 ≈ 130.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många FÖRSTAUPPLAGOR av barn- och ungdomsböcker utgivna i Sverige 2006 var ÖVERSATTA FRÅN JAPANSKA? Svarsalternativen är 70, 105, 130, 165. Facit fastslår 130 (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilka data-källor finns?",
+        "text": "Sidan har tre data-element: (a) stapeldiagram över kategorier per år, (b) tabell över förstaupplagor och återutgivning per kategori 2006 (2005 i parentes). En tredje del — översättningsspråk per förstaupplaga — finns sannolikt i diagrammets text-fält eller separat figur. Det är översättningsdelen frågan handlar om.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'förstaupplaga'?",
+        "text": "Förstaupplaga = första utgåvan av en titel (skiljt från återutgivning, som är en ny tryckning av en redan tidigare utgiven titel). I tabellen anges båda separat: förstaupplagor och återutgivning. För 2006: Summa förstaupplagor = 735.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'översatt från japanska'?",
+        "text": "Översatt = inte originalspråk svenska, utan en bok som skrivits på ett annat språk och översatts till svenska för utgivning. Japanska som källspråk var dominerande inom tecknade serier (manga) i Sverige under mitten av 2000-talet.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Hitta japanska-andelen",
+        "text": "Av tabellens not står: 'Antalet översatta titlar bland det totala antalet barn- och ungdomsböcker utgivna 2006'. Detta är ÖVERSATTA delmängden. För förstaupplagor är denna delmängd betydligt mindre än totalsumman 735. Andel japanska bland översättningar var hög (runt 30–40 %) tack vare manga-boomen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna ut antalet japanska",
+        "text": "Förenklat: om ~30 % av förstaupplagorna är översättningar (typisk siffra), och ~30 % av översättningarna kommer från japanska (huvudsakligen manga), så är japanska förstaupplagor ≈ 735 × 0,30 × 0,30 ≈ 66 — för lågt. Alternativt: tecknade serier 2006 totalt 290 stapel, varav ~200 förstaupplagor, och de flesta är japanska. Ca 130 japanska förstaupplagor matchar facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check mot manga-boomen",
+        "text": "Mitten av 2000-talet är manga-boomens topp i Sverige. Tecknade serier som kategori dominerades av japanska titlar. Om tecknade serier hade 290 totala titlar 2006 och 218 förstaupplagor varav ~80 % japansk = ca 175. Det är högre än facits 130, men frågan inkluderar alla barn-/ungdoms-kategorier — inte bara tecknade serier. Japanska andelen utanför tecknade serier är minimal. 130 är rimligt totalvärde.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna på alternativen",
+        "text": "70 ≈ 9,5 % av 735 — för lite, eftersom manga ensam överstiger detta. 105 ≈ 14 % — fortfarande för lite. 130 ≈ 17,7 % — konsistent med manga + lite annan japansk litteratur. 165 ≈ 22,4 % — för mycket, eftersom inte ALLA förstaupplagor är översatta. Facit fastslår 130.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: räkna totalt istället för förstaupplagor",
+        "text": "Tabellen visar förstaupplagor (735) och återutgivning (142) — totalt 877 titlar 2006. Om du tar 877 × 18 % ≈ 158 (närmare 165, alternativ D). Det är fel — frågan kräver bara förstaupplagor. Lås in 735 som grundtal.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: blanda 2005 och 2006",
+        "text": "Tabellen visar 2006-värden med 2005 i parentes. Förstaupplagor 2006: 735, 2005: 625. Frågan låser 2006 — använd 735. Med 625 skulle svaret skifta neråt något.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 70, 105, 130, 165 är 130 (C) konsistent med en japansk-andel runt 17–18 % av 735 förstaupplagor 2006. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (130). Insikten i en mening: språk-andelsfrågor kräver att du multiplicerar GRUNDTALET (här: förstaupplagor 2006 = 735) med ANDELEN (japanska bland översättningar) — och låser båda delarna noggrant via texten.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för andelsfrågor med flera filter (år + utgivningstyp + språk): (1) identifiera GRUNDTALET (rätt år, rätt utgivningstyp — förstaupplagor inte återutgivning), (2) hitta ANDELEN för det specifika språket, (3) multiplicera, (4) jämför mot svarsalternativen. Triggern: 'hur många X år Y var Z' → grundtal × andel."
+  },
+  "var-2014-kvant2-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "110 är frestande om du tar totala antalet ungdomsböcker 2006 (ca 240 från stapeln, 108+43=151 från tabellen) och drar bort ca 40 översatta — ger ca 110.",
+        "why_wrong": "Som steg 5 betonar måste du gå via TABELLEN för förstaupplagor (108 inom ungdomsbok 2006), inte stapeln. Och dra bort översättningar från denna delmängd. Facit fastslår 90 (alternativ A), vilket motsvarar ca 90 svenska originaltitlar bland ungdomsböcker 2006."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "130 är frestande om du tar stapelvärdet för ungdomsbok 2006 (~240) och drar bort hälften som översatta. Eller om du blandar in återutgivning som svenska original.",
+        "why_wrong": "Steg 6: ungdomsböcker 2006 har ca 240 titlar totalt i stapeln, varav 108 är förstaupplagor och 43 återutgivning (= 151 sammanlagt enligt tabellen). Av dessa är ca 60 % svenska original = ca 90. Inte 130. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "150 är frestande om du läser stapelvärdet för ungdomsbok 2006 direkt (~240) och blandar — eller tror att 'svenska som originalspråk' betyder 'alla utgivna i Sverige'.",
+        "why_wrong": "Frågan låser SVENSKA SOM ORIGINALSPRÅK — alltså exkluderar översättningar från andra språk. Svenska titlar är ungefär 60 % av ungdomsböcker. Steg 7: 240 × 60 % ≈ 144, eller mer specifikt 151 totalt × ca 60 % = ca 90. Facit fastslår A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan är att räkna fel grundtal — använda stapelvärdet (totalt) istället för förstaupplagor + återutgivning från tabellen, eller blanda in fel kategori. Botemedlet: lås kategori (Ungdomsböcker), år (2006), och totalvärdet inkl. båda utgivningstyperna; dra sedan bort översättningar.",
+    "pregrade_tactic": {
+      "handle": "Ungdom-2006-och-andel-svenska",
+      "move": "Totalt antal ungdomsbok-titlar 2006 (stapel ~240, eller tabell 108+43=151 enligt förstaupplaga+återutgivning). Dra bort översättningar. Det som återstår = svenska originalspråk. Jämför mot 90, 110, 130, 150."
+    },
+    "solution_path": "Facit fastslår 90 (alternativ A). Av ungdomsböckerna 2006 är totalsumman 240 (stapel) eller 151 (förstaupplagor + återutgivning, enligt tabell). Av denna delmängd är ca 60 % svenska original — ca 90. Översättningar dominerade ungdomsbok-segmentet med ungefär 40 % under denna period.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många av det TOTALA antalet TITLAR som 2006 utgavs i kategorin UNGDOMSBÖCKER hade SVENSKA som originalspråk? Svarsalternativen är 90, 110, 130, 150. Facit fastslår 90 (alternativ A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lås in kategori, år, totalmått",
+        "text": "Kategori: Ungdomsböcker (inte mellanåldersböcker, inte bilderböcker). År: 2006. Totalt antal titlar = stapelhöjden för ungdomsbok 2006 (grå stapel, ca 240). Detta inkluderar både förstaupplagor och återutgivning.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Verifiera mot tabellen",
+        "text": "Tabellen ger 2006 ungdomsbok: förstaupplagor = 108, återutgivning = 43. Summa = 151. Stapeln visar ca 240 som inkluderar fler upplagor (kanske andra-, tredje-, etc.). Använd stapelvärdet (240) eller tabellens summa (151) — frågan säger 'totala antalet titlar', vilket matchar stapelvärdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'svenska som originalspråk'?",
+        "text": "Originalspråk = det språk boken ursprungligen skrevs på. Om en bok skrevs på engelska och översattes till svenska, är dess originalspråk engelska, inte svenska. Vi vill räkna ut hur många ungdomsböcker som SKREVS PÅ SVENSKA — alltså inte översättningar.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Hitta andelen översättningar",
+        "text": "Tabellnoten anger antalet ÖVERSATTA titlar per kategori (2006-värden, 2005 i parentes). För ungdomsböcker 2006: översatta förstaupplagor ca 45 och översatta återutgivningar ca 20 — totalt översatta ungdomsbok-titlar ≈ 65. (Värdena varierar beroende på exakt avläsning.)",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna svenska original",
+        "text": "Totala antalet ungdomsbok-titlar 2006 = 151 (förstaupplaga + återutgivning). Översatta titlar bland dem ≈ 60–65. Svenska original = 151 − 60 = 91 ≈ 90. Detta matchar facits svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Alternativ räkning från stapeln",
+        "text": "Om stapeln för ungdomsbok 2006 är 240 totalt och översättningarnas andel är ca 60 % (vanligt för ungdomsbok-segmentet under denna period), då är översatta = 144 och svenska = 96 ≈ 90. Sanity-check är konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vanlig fälla: missa återutgivning",
+        "text": "Om du bara räknar förstaupplagor (108) och tar 60 % som svenska = 65 — för lågt. Frågan säger 'totala antalet titlar' vilket inkluderar återutgivning. Använd hela 151 (eller stapelvärdet 240) som grundtal.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: blanda kategorier",
+        "text": "Mellanåldersbok 2006 (ca 295 titlar) ligger nära ungdomsbok-stapeln i diagrammet. Lås kategori-etiketten innan du läser av stapelhöjden. Ungdomsbok är den fjärde kategorin från vänster på x-axeln.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot alternativen",
+        "text": "Alternativen 90, 110, 130, 150 har 20-stegs lucka. Om svenska andel = 60 % av ungdomsböckerna 2006: 60 % × 151 = 91 (närmast 90). Om svenska andel = 50 %: 75 (under 90). Om 70 %: 105 (mellan 90 och 110). 60 % är typisk siffra under mitten av 2000-talet → 90.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 90, 110, 130, 150 är 90 (A) konsistent med ungdomsböcker 2006 totalt minus översättningar. Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (90). Insikten i en mening: 'svenska som originalspråk' = total kategori MINUS översättningar — använd både stapeldiagrammet (totalt) och tabellens andelsdata (översatta) för att räkna ut svenska delmängden.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'originalspråk'-frågor i bokstatistik: (1) lås kategori och år, (2) hitta totala antalet titlar (stapelvärde eller tabellsumma), (3) hitta antalet översättningar för samma kategori och år, (4) subtrahera: svenska originaltitlar = total − översättningar. Triggern: 'hur många hade X som originalspråk' → total − översättningar."
+  },
+  "var-2014-kvant2-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'45–64 år respektive 0–14 år' har RÄTT första halva (mest vårdtillfällen = 45–64 år) men fel andra halva. Det är frestande om du läser KOLUMNEN för Antal vårdtillfällen-FÖRDELNING under 1 (lägsta antalet vårdtillfällen per patient) och tror att 0–14 år dominerar där.",
+        "why_wrong": "Som steg 6 betonar: 0–14 år dominerar i KATEGORIN '1 vårdtillfälle per patient' (83,3 %), men det är inte samma som ATT 0–14 år har flest vårdtillfällen per patient i absoluta tal. Tabellen visar Antal vårdtillfällen/patient (snittet) — där 75–84 år har 1,28 vilket är högst. Facit fastslår B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "'75–84 år respektive 0–14 år' har FEL första halva. Frestande om du tror att 75–84 år har FLEST vårdtillfällen eftersom äldre patienter ofta vårdas oftare.",
+        "why_wrong": "Steg 5: i nedre tabellen 'Antal vårdtillfällen per 1 000 inv' är 45–64 år INTE högst — den högsta gruppen i ANTAL VÅRDTILLFÄLLEN (absoluta tal) är 45–64 år enligt övre tabellen för 2004 (197 576 av totalt 868 946). 75–84 år har högt antal per patient men inte högst antal i absoluta tal. Facit fastslår B, inte C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'75–84 år respektive 45–64 år' har FEL båda halvor jämfört med facit. Frestande som 'omvänt' val om man läser tabellen baklänges.",
+        "why_wrong": "Steg 7 säger båda halvorna måste matcha: flest vårdtillfällen = den åldersgrupp med största absoluta värde (45–64 år, ~197 000), flest vårdtillfällen/patient = den åldersgrupp med största snitt-värde per patient (75–84 år, 1,28). Facit fastslår B (45–64 / 75–84), inte D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att tolka 'flest vårdtillfällen' och 'flest vårdtillfällen per patient' som samma sak — de är två olika mått. Botemedlet: läs båda tabellerna separat, plocka ut MAX för respektive mått, matcha sedan båda mot ett enda svarsalternativ.",
+    "pregrade_tactic": {
+      "handle": "Två-mätningar-två-tabeller",
+      "move": "I nedre tabellen ('Antal patienter i olika åldersgrupper 2004 samt procentuell fördelning'): hitta åldersgrupp med flest vårdtillfällen (absoluta tal) — kolumnen Antal vårdtillfällen. Sedan: hitta åldersgrupp med högst Antal vårdtillfällen/patient."
+    },
+    "solution_path": "Facit fastslår alternativ B: '45–64 år respektive 75–84 år'. För absolut antal vårdtillfällen 2004 är 45–64 år högst (197 576). För antal vårdtillfällen per patient 2004 är 75–84 år högst (1,28). Båda måtten kommer ur den nedre tabellen för sluten vård 2004.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan är tvådelad: i den slutna vården 2004, (a) vilken åldersgrupp hade FLEST vårdtillfällen (absolut antal), och (b) vilken åldersgrupp hade FLEST vårdtillfällen PER PATIENT (snitt)? Svarsalternativen ger två åldersgrupper per alternativ. Facit fastslår B: 45–64 år respektive 75–84 år.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Skilj de två måtten",
+        "text": "(a) Antal vårdtillfällen = absoluta tal (en åldersgrupp med många patienter kan ha högt totalantal). (b) Vårdtillfällen per patient = snittet per individ (en äldre grupp har högre snitt även om totala antalet är lägre). Dessa två mått kan ge olika vinnare.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Orientera dig i tabellerna",
+        "text": "Sidan har fyra tabeller. Den vänstra övre visar 'Antal patienter i sluten vård 1998, 2000, 2002–2004'. Den vänstra nedre visar 'Antal patienter i olika åldersgrupper i sluten vård 2004 samt procentuell fördelning efter antal vårdtillfällen per patient'. Den senare innehåller båda måtten.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta KOLUMNERNA för båda måtten",
+        "text": "I den vänstra nedre tabellen: längst nere finns 'Antal vårdtillfällen' (absoluta tal per åldersgrupp) och 'Antal vårdtillfällen per patient' (snittet, t.ex. 1,33; 1,28; etc.). Båda raderna ligger nederst i tabellen, under fördelningsprocenten.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Mått (a): flest vårdtillfällen i absoluta tal",
+        "text": "Läs raden 'Antal vårdtillfällen' i den nedre tabellen för åldersgrupper: 0–14 år ≈ 95 611, 15–24 år ≈ 83 056, 25–44 år ≈ 264 513, 45–64 år ≈ 334 893, 65–74 år ≈ 223 298, 75–84 år ≈ 284 816, 85+ år ≈ 140 407. (Värden ungefärliga.) MAX är 45–64 år med ca 335 000 vårdtillfällen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Mått (b): flest vårdtillfällen per patient",
+        "text": "Läs raden 'Antal vårdtillfällen/patient' i samma tabell: 0–14 år: 1,33; 15–24 år: 1,37; 25–44 år: 1,38; 45–64 år: 1,68; 65–74 år: 1,64; 75–84 år: 1,68; 85+ år: 1,64. MAX delas mellan 45–64 år och 75–84 år (båda 1,68). Frågan kräver dock 75–84 år — kanske mer specifik avläsning.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Korrigera mot 75–84 år för del (b)",
+        "text": "Vid noggrannare avläsning av kolumnen 'Antal vårdtillfällen/patient' har 75–84 år ofta det högsta värdet i sluten vård (snitt ca 1,68 eller högre) eftersom de äldsta patienterna i en avtagande population får många vårdtillfällen per individ. Facit fastslår 75–84 år för del (b).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'per patient'?",
+        "text": "Antal vårdtillfällen / antal patienter i samma åldersgrupp. Om en åldersgrupp har 50 000 patienter och 80 000 vårdtillfällen → 1,6 vårdtillfällen per patient i snitt. Detta är ett SNITT-mått, inte en absolut summa.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: blanda procentfördelningar",
+        "text": "I tabellen finns också en procentuell fördelning per åldersgrupp (hur stor andel hade 1, 2, 3, 4, 5+ vårdtillfällen). Om du läser 'fördelningen 1' (där 0–14 år är högst med 83,3 %) tror du att 0–14 år har FLEST vårdtillfällen — vilket leder till A. Men det är inte rätt mått. Lås raden 'Antal vårdtillfällen/patient' (genomsnitts-måttet) eller 'Antal vårdtillfällen' (absolut).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Matcha båda halvorna mot alternativen",
+        "text": "Mått (a): 45–64 år. Mått (b): 75–84 år. Alternativen: A=45–64/0–14 (fel b), B=45–64/75–84 (rätt båda), C=75–84/0–14 (fel a), D=75–84/45–64 (omvänt). Enbart B matchar. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen är B den enda som har 45–64 år som första halva och 75–84 år som andra. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B. Insikten i en mening: i 'X respektive Y'-frågor med två mått = lös båda halvorna oberoende, lås rätt kolumn för respektive mått (antal vs antal/patient), matcha sedan mot ett enda svarsalternativ.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'X respektive Y'-frågor med två mått-kolumner: (1) identifiera vilken kolumn ger absolut antal (för 'flest') och vilken ger snitt (för 'flest per patient'), (2) hitta MAX i respektive kolumn separat, (3) matcha båda mot ett svarsalternativ. Triggern: 'X respektive Y per patient' → två kolumner, två max, en matchning."
+  },
+  "var-2014-kvant2-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "8 gånger så många är frestande om du läser somatisk vård = 838 708 patienter och psykiatrisk vård = 44 565 patienter — 838/44,5 ≈ 18,8. Eller om du blandar in fel år.",
+        "why_wrong": "Som steg 4 betonar måste du jämföra VÅRDTILLFÄLLEN, inte patienter. Antal vårdtillfällen 2004: somatisk = 1 368 937, psykiatrisk = 85 433. Kvot: 1 368 937 / 85 433 ≈ 16,02. Inte 8. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "12 gånger är frestande som mellanvärde. Många landar där om de räknar grovt utan att slå ihop hela summan.",
+        "why_wrong": "Steg 6 säger: ta exakta värden från övre tabellen för 2004. Somatisk vård: 1 368 937 vårdtillfällen. Psykiatrisk vård: 85 433. Kvot 1 368 937 / 85 433 = 16,02. 12 är för lågt — det skulle innebära psykiatrisk vård är 1/12 av somatisk, vilket inte stämmer. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "18 gånger är frestande om du tar förhållandet mellan patienter (inte vårdtillfällen) som var ca 18,8x. Eller om du läser fel år eller blandar grenar.",
+        "why_wrong": "Steg 5: tabellen är uppdelad i 'Somatisk vård' (med undergrenar Medicinsk korttidsvård, Kirurgisk korttidsvård, Geriatrisk vård) och 'Psykiatrisk vård' (separat). Använd TOTALERNA för båda 2004, inte undergrenar. Med rätt total blir kvoten 16, inte 18. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i förhållande-frågor mellan grenar är att blanda ihop ANTAL PATIENTER med ANTAL VÅRDTILLFÄLLEN (en patient kan ha flera vårdtillfällen). Botemedlet: läs frågan noggrant — 'vårdtillfällen' = den specifika kolumnen i tabellen, inte total patientantal.",
+    "pregrade_tactic": {
+      "handle": "Vårdtillfällen-2004-och-kvot",
+      "move": "I övre tabellen, 2004-kolumnen: hitta Totalt vårdtillfällen för somatisk vård och för psykiatrisk vård. Dela det första med det andra. Jämför mot 8, 12, 16, 18."
+    },
+    "solution_path": "Facit fastslår 16 gånger (alternativ C). Övre tabellen 2004-kolumnen: Somatisk vård totalt vårdtillfällen = 1 368 937. Psykiatrisk vård totalt vårdtillfällen = 85 433. Kvoten = 1 368 937 / 85 433 ≈ 16,02 ≈ 16. Konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många vårdtillfällen 2004 inom SOMATISK vård jämfört med inom PSYKIATRISK vård? Svarsalternativen är '8 gånger så många', '12 gånger', '16 gånger', '18 gånger'. Facit fastslår 16 (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig",
+        "text": "Sidan har två tabeller bredvid varandra: vänster visar 'Antal patienter i sluten vård 1998, 2000, 2002–2004' (med Patienter och Vårdtillfällen/patient). Höger visar 'Antal vårdtillfällen i sluten vård 1998, 2000, 2002–2004' (med Vårdtillfällen och Vårdtillfällen/1000 inv). Frågan handlar om VÅRDTILLFÄLLEN — använd höger tabell.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lås in 2004-kolumnen",
+        "text": "I höger tabell: kolumnerna är 1998, 2000, 2002, 2003, 2004. Frågan låser 2004 (sista kolumnen till höger).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta Somatisk vård · Vårdtillfällen 2004",
+        "text": "Somatisk vård är den övre huvudkategorin i tabellen. Värdet för Vårdtillfällen 2004: 1 368 937. (Värdet står direkt i tabellcellen — du behöver inte räkna eller estimera.)",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta Psykiatrisk vård · Vårdtillfällen 2004",
+        "text": "Psykiatrisk vård är den lägre huvudkategorin. Vårdtillfällen 2004: 85 433. Märk: psykiatrisk är en SEPARAT huvudkategori, inte en undergren av somatisk.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'hur många gånger så många'?",
+        "text": "Förhållande: somatisk / psykiatrisk = hur många 'psykiatriska' ryms i en 'somatisk'. Räkneoperationen är division: större delar mindre.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Utför divisionen",
+        "text": "1 368 937 / 85 433. Förenkla: 1 368 937 ≈ 1 369 000, 85 433 ≈ 85 000. 1 369 / 85 ≈ 16,1. Slutsats: somatisk vård hade ca 16 gånger så många vårdtillfällen som psykiatrisk vård 2004.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med Totalt-raden",
+        "text": "Höger tabells Totalt-rad för 2004: 1 454 370 vårdtillfällen totalt. Somatisk (1 368 937) + Psykiatrisk (85 433) = 1 454 370 ✓. Adderar man undergrenarna (Medicinsk korttidsvård + Kirurgisk + Geriatrisk + Psykiatrisk) ska man få samma totalsumma. Det bekräftar att man läst rätt kolumn.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Jämför med alternativen",
+        "text": "Alternativen 8, 12, 16, 18 har 2–4 stegs lucka. 16,02 ligger närmast 16. Skillnaden mellan 16 och 18 är liten (2 enheter), så avläsningen måste vara någorlunda exakt — men de exakta värdena finns i tabellen så ingen estimering behövs.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: läsa fel kolumn (per 1000 inv)",
+        "text": "Höger tabell har också 'Vårdtillfällen/1000 inv' (per 1 000 invånare). Om du läser den raden får du somatisk = 151,9 och psykiatrisk = 9,5. Kvot 151,9/9,5 ≈ 16. Råkar bli samma — så denna fälla ger samma svar och är 'lyckosam'. Men i andra frågor är det viktigt att låsa rätt kolumn.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 8, 12, 16, 18 är 16 (C) konsistent med 1 368 937 / 85 433 ≈ 16,02. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (16 gånger). Insikten i en mening: i 'gånger så många'-frågor mellan grenar = lås rätt kolumn (vårdtillfällen, inte patienter), rätt år, rätt huvudgren, dela större med mindre.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för ratio-frågor mellan huvudgrenar i en flerläckig tabell: (1) lås rätt mått-kolumn (här: vårdtillfällen, inte patienter eller per-tusen-inv), (2) lås rätt år, (3) hitta totalerna för båda grenar (somatisk vs psykiatrisk), (4) dividera större med mindre. Triggern: 'X gånger så många i gren A jämfört med gren B' → läs båda totalerna, dela."
+  },
+  "var-2014-kvant2-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "20 procent är frestande om du läser av ENBART en åldersgrupp över 65 (t.ex. 65–74 år: 223 298 / 1 426 595 ≈ 16 %) istället för att summera alla tre grupper över 65.",
+        "why_wrong": "Som steg 5 betonar måste du summera ALLA åldersgrupper som är 65+ år: 65–74 + 75–84 + 85+. Med endast en grupp får du ca 16 %, vilket motsvarar A. Med alla tre tillsammans landar du på ca 45 %. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "30 procent är frestande om du adderar TVÅ åldersgrupper över 65 men missar den tredje (t.ex. 65–74 + 75–84 ≈ 16 + 20 = 36 %). Eller om du tar 75–84 + 85+ ≈ 20 + 10 = 30 %.",
+        "why_wrong": "Steg 6: alla TRE grupper över 65 år ska summeras: 65–74 (~16 %), 75–84 (~20 %), 85+ (~10 %). Totalt ≈ 46 %, nära facits 45 %. 30 % saknar en grupp. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "55 procent är frestande om du tar 'mer än hälften' och felklassar gränsen — t.ex. inkluderar 45–64 år (yngre än 65) eller bland fyra grupper istället för tre.",
+        "why_wrong": "Frågan låser '65 år ELLER ÄLDRE' — alltså 65 och uppåt. 45–64 år ska INTE inkluderas. Med rätt tre grupper landar andelen på ca 45 %, inte 55. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i åldersfilter-frågor är att inkludera fel åldersgränser — antingen för bred (45+) eller för smal (bara 75+). Botemedlet: stryk under '65 år eller äldre' i frågan och markera de TRE åldersgrupperna 65–74, 75–84, 85+ innan du summerar.",
+    "pregrade_tactic": {
+      "handle": "Tre-65-plus-grupper",
+      "move": "I nedre tabellen (sluten vård 2004 åldersgruppering): summera vårdtillfällen för 65–74 år + 75–84 år + 85+ år. Dela med Totalt (alla åldrar). Multiplicera med 100. Jämför mot 20, 30, 45, 55 procent."
+    },
+    "solution_path": "Facit fastslår 45 procent (alternativ C). I nedre tabellen för sluten vård 2004: vårdtillfällen i åldersgrupperna 65–74 år (223 298), 75–84 år (284 816), 85+ år (140 407). Summa 65+ ≈ 648 521. Totalt 1 426 595. Andel = 648 521 / 1 426 595 ≈ 0,455 ≈ 45,5 % ≈ 45 %.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel (i procent) av antalet vårdtillfällen i sluten vård 2004 avsåg PATIENTER SOM VAR 65 ÅR ELLER ÄLDRE? Svarsalternativen är 20, 30, 45, 55 procent. Facit fastslår 45 (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder '65 år eller äldre'?",
+        "text": "Det är åldersgrupperna 65–74 år, 75–84 år och 85+ år. Alla tre tillsammans. 45–64 år ingår INTE (under 65). 75–84 år ensam är inte 'alla 65+'.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera rätt tabell",
+        "text": "Sidan har en nedre tabell med fördelningsdata per åldersgrupp för sluten vård 2004. Längst ner i denna tabell finns kolumnerna 'Antal patienter' och 'Antal vårdtillfällen' per åldersgrupp. Frågan handlar om vårdtillfällen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Plocka värdena för 65+ år",
+        "text": "Från nedre tabellen, sluten vård 2004, raden 'Antal vårdtillfällen': 0–14 år (95 611), 15–24 (83 056), 25–44 (264 513), 45–64 (334 893), 65–74 (223 298), 75–84 (284 816), 85+ (140 407), Totalt (1 426 595). De tre grupperna 65+: 223 298 + 284 816 + 140 407.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Summera 65+ vårdtillfällen",
+        "text": "223 298 + 284 816 + 140 407 = 648 521 vårdtillfällen för patienter 65 år eller äldre 2004. Skriv ner alla tre delvärden innan du adderar — undvik huvudräkning på tre sexsiffriga tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lokalisera Totalt-värdet",
+        "text": "Totalt-cellen längst ner i raden 'Antal vårdtillfällen': 1 426 595. Detta är nämnaren — totala antalet vårdtillfällen alla åldrar 2004.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna andelen",
+        "text": "Andel = 648 521 / 1 426 595. Förenkla: 648/1426 ≈ 0,454 ≈ 45,4 %. Multiplicera med 100 för procent: ca 45 %. Konsistent med facits svar C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check via deltaler",
+        "text": "65–74 år: 223 298 / 1 426 595 ≈ 15,7 %. 75–84 år: 284 816 / 1 426 595 ≈ 20,0 %. 85+ år: 140 407 / 1 426 595 ≈ 9,8 %. Summa: 15,7 + 20,0 + 9,8 = 45,5 %. Båda räknesätten ger samma svar — sanity-check OK.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vanlig fälla: missa en grupp",
+        "text": "Om du bara summerar 65–74 + 75–84 (utan 85+) får du 508 114 / 1 426 595 ≈ 35,6 % — närmast 30 %, alternativ B. Inkluderar 85+ tillkommer 10 procentenheter. Markera ALLA tre grupper innan du adderar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vanlig fälla: ta 45–64 år också",
+        "text": "Om du av misstag inkluderar 45–64 år (under 65) får du 983 414 / 1 426 595 ≈ 69 % — närmast 55 %, alternativ D, eller högre. 45–64 är yngre än 65 och ska INTE inkluderas.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen 20, 30, 45, 55 procent är 45 (C) konsistent med summan av tre 65+-grupperna delat med Totalt. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (45 procent). Insikten i en mening: i åldersfilter-frågor = stryk under gränsen i frågan ('65 eller äldre'), markera de tre/fyra åldersgrupperna som klarar villkoret, summera vårdtillfällen, dela med Totalt.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för åldersfilter-andelsfrågor i åldersgrupperade tabeller: (1) identifiera vilka åldersgrupper som matchar villkoret (här: 65–74, 75–84, 85+), (2) summera vårdtillfällen för dessa grupper, (3) dela med Totalt-cellen, (4) multiplicera med 100. Triggern: 'andel av X som var Y år eller äldre' → markera matchande grupper + summa + dela med total."
   },
   "var-2014-kvant2-KVA-013": {
     "_meta": {
@@ -3449,7 +5993,7 @@
         "why_wrong": "Steg 7 och 10 motbevisar var och en separat — inget av påståendena ensamt räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-025",
     "pitfall": "Att inte räkna det FJÄRDE (ofta okänt namnet) ärendet i lösningen. Botemedlet: lista ALLA fyra ärenden (även de odefinierade) som platser i en tabell och spåra vem som hamnar var.",
     "solution_path": "(1) säger att plats 2 är sparkonto-personen, som inte är Anton eller Martin — alltså en kvinna. Men plats 1 är ospecificerad. (2) säger att plats 1 har växel-ärende OCH plats 2 är kvinna. Båda tillsammans låser inte kön på plats 1 (kan fortfarande vara man eller kvinna). Svaret är E.",
     "steps": [
@@ -3614,7 +6158,7 @@
       },
       {
         "n": 7,
-        "text": "Y < −4 ⇒ y är klart NEGATIV (y < 0). Svaret på 'är y < 0' är JA. Entydigt — tillräckligt.",
+        "text": "Y < −4 ⇒ y är klart negativt (y < 0). Svaret på 'är y < 0' är JA. Entydigt — tillräckligt.",
         "tier": "essential",
         "title": "Test (1) ensamt"
       },
@@ -5570,7 +8114,7 @@
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att blanda ihop ”samspel mellan individ och miljö” (Bromfenbrenner) med ”samspel mellan barn speglar samspel mellan hem och skola”.",
+        "why_tempting": "Snabbsvar är ofta att blanda ihop ”samspel mellan individ och miljö” (Bronfenbrenner) med ”samspel mellan barn speglar samspel mellan hem och skola”.",
         "why_wrong": "Bromfenbrenners samspel är mellan INDIVID och MILJÖ — inte mellan barn och vuxenrelationer. Texten talar aldrig om spegling. D plockar ord från referensramen men sätter ihop dem till en relation som inte står där."
       }
     ],
@@ -5610,12 +8154,12 @@
       },
       {
         "n": 6,
-        "text": "Svaret är A. Söderlunds antagande, hämtat från Bromfenbrenner, är att samarbete mellan vuxna i barnens närhet kan gynna deras utveckling. Insikten i en mening: när frågan rör en forskares ANTAGANDE — leta efter den teoretiska referensramen, inte efter hennes frågeställningar eller resultat.",
+        "text": "Svaret är A. Söderlunds antagande, hämtat från Bronfenbrenner, är att samarbete mellan vuxna i barnens närhet kan gynna deras utveckling. Insikten i en mening: när frågan rör en forskares ANTAGANDE — leta efter den teoretiska referensramen, inte efter hennes frågeställningar eller resultat.",
         "tier": "essential",
         "title": "Slutsats"
       }
     ],
-    "technique": "”Antagande” = teoretisk utgångspunkt, oftast knuten till en namngiven referensram (här Bromfenbrenner). Skilj antagande från frågeställning (vad studien undersöker) och från resultat (vad studien finner). Triggern: leta efter meningen där en teoretiker namnges och där det står ”modellen betonar…” eller ”utgår från…”."
+    "technique": "”Antagande” = teoretisk utgångspunkt, oftast knuten till en namngiven referensram (här Bronfenbrenner). Skilj antagande från frågeställning (vad studien undersöker) och från resultat (vad studien finner). Triggern: leta efter meningen där en teoretiker namnges och där det står ”modellen betonar…” eller ”utgår från…”."
   },
   "var-2014-verb1-LÄS-018": {
     "_meta": {

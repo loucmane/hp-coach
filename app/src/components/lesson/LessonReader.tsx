@@ -84,6 +84,24 @@ export function LessonReader({ section }: { section: Section }) {
     }
   }, [section])
 
+  // Hash → details deep-link. When the reader loads with #KVA-TRAP-001
+  // in the URL (e.g. arriving from a drill miss's framework link),
+  // find that details element, open it, and scroll it into view. Runs
+  // after framework loads so the entries exist in the DOM.
+  useEffect(() => {
+    if (!framework) return
+    const hash = window.location.hash.slice(1)
+    if (!hash) return
+    // Wait one frame for the entries to commit; <details> elements are
+    // created by FrameworkBody after this effect's first commit.
+    requestAnimationFrame(() => {
+      const el = document.getElementById(hash) as HTMLDetailsElement | null
+      if (!el) return
+      el.open = true
+      el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+    })
+  }, [framework])
+
   const title = SECTION_TITLE[section] ?? { headline: section, subline: '' }
 
   return (

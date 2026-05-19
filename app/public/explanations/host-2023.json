@@ -1,4 +1,1164 @@
 {
+  "host-2023-kvant1-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1:17 ligger snubblande nära 1:13 — och om du av misstag tar med 2003/2004 som första stapel i båda diagrammen halkar staplarna ur synk så att du läser av fel årtals värden. En sådan förskjutning ger en liten men konsekvent felräkning som lätt landar på 1:17.",
+        "why_wrong": "Som steg 2 betonar är de två diagrammens första stapel inte samma år: FAMILJEGRUPPER börjar 03/04 men DÖDA LODJUR börjar 02/03. Facit fastslår 1:13 för 07/08 — om din uppskattning blir 1:17 har du sannolikt jämfört fel årtal mellan diagrammen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1:6 är förvillande lätt att hamna på om du glömmer multiplicera familjegrupperna med 6 och i stället tar familjegrupper direkt som 'totalen'. Då blir kvoten döda/familjegrupper, vilket råkar landa nära 1:6.",
+        "why_wrong": "Frågans definition är tydlig: TOTALA antalet lodjur = familjegrupper × 6, inte familjegrupper rakt av. Som steg 5 betonar är denna multiplikation hela poängen med uppgiften. Facit fastslår 1:13 — ett kvotvärde som bara fungerar om sexan finns med."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1:3 är intuitivt om man bara stirrar på DÖDA LODJUR-stapeln för 07/08 och jämför mot familjegrupp-stapeln visuellt utan att applicera multiplikatorn 6. Då ser de två staplarna ungefär lika höga ut och en kvot på cirka 1:3 är frestande.",
+        "why_wrong": "Återigen ignorerar D faktorn 6 från frågan (steg 4–5). Facit fastslår 1:13. En kvot på 1:3 skulle innebära att en tredjedel av alla lodjur dog samma vinter — orealistiskt och inte vad diagrammet visar när du räknat in multiplikatorn."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att hoppa över definitionsmeningen ('det totala antalet kan uppskattas genom att multiplicera familjegrupperna med 6') och svara på 'döda/familjegrupp' i stället för 'döda/totalt'. Botemedlet: stryk under formeln i frågan innan du tittar på diagrammet och skriv ut total = familjegrupper × 6 som ett separat räkne-steg.",
+    "pregrade_tactic": {
+      "handle": "Stryk-under-definitionen",
+      "move": "Stryk under 'multipliceras med 6' i frågan, läs av familjegrupper och döda lodjur för 07/08 separat, räkna ut totalen via formeln och sätt sedan upp förhållandet — gissa inte från staplarnas relativa höjd."
+    },
+    "solution_path": "Facit fastslår 1:13 (alternativ B). Läs av familjegrupper 07/08 ≈ 200 i övre diagrammet. Totalt antal lodjur = 200 × 6 = 1 200. Läs av döda lodjur 07/08 ≈ 90 i nedre diagrammet (hela den staplade kolumnen). Förhållandet 90:1 200 ≈ 1:13.3 — närmast 1:13, vilket är konsistent med facits svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vad var förhållandet (kvoten) mellan antalet döda lodjur och det totala antalet lodjur vintern 2007/2008? Svarsformatet är ett förhållande av typen 1:N (1:17, 1:13, 1:6, 1:3). Facit fastslår 1:13 (alternativ B). Din uppgift är att läsa båda diagrammen så att din uppskattning landar nära den kvoten.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i de två diagrammen",
+        "text": "Sidan har TVÅ stapeldiagram. Övre: FAMILJEGRUPPER (antal familjegrupper per säsong, axel 0–300). Nedre: DÖDA LODJUR (antal döda lodjur, stapelhöjd 0–250, uppdelat på Licensjakt, Skyddsjakt och Övrig dödlighet). Viktigt: övre diagrammet börjar säsongen 03/04, men nedre börjar 02/03 — staplarna är förskjutna ett år. Håll koll på årtalet, inte stapelpositionen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'familjegrupp' i kontexten?",
+        "text": "Enligt diagrambeskrivningen är en familjegrupp 'en hona med ungar'. Frågan ger dig dessutom en explicit formel: TOTALA antalet lodjur ≈ familjegrupper × 6. Den sexan är hela uppgiftens nyckel — den fångar att varje familjegrupp i snitt motsvarar 6 vuxna+ungar individer i populationen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Lokalisera år 2007/2008 i båda diagrammen",
+        "text": "Säsongen 07/08 står på x-axeln i båda diagrammen. I FAMILJEGRUPPER är det den sjätte stapeln (03/04, 04/05, 05/06, 06/07, 07/08 — räkna). I DÖDA LODJUR är det den sjunde stapeln (eftersom den serien börjar 02/03). Sätt fingret på rätt stapel i båda diagrammen INNAN du läser av höjden.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs familjegrupperna 07/08",
+        "text": "Projicera 07/08-stapelns topp i övre diagrammet mot y-axelns tick-värden (0, 50, 100, 150, 200, 250, 300). Stapelns topp ligger strax under 200-linjen. Avläsning: cirka 200 familjegrupper. Det är ett synligt litet 'svacka-år' jämfört med 05/06 (≈260) och 08/09 (≈290), så förvänta dig ett medelhögt värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna ut det totala antalet lodjur",
+        "text": "Använd formeln från frågan: totalt = familjegrupper × 6 = 200 × 6 = 1 200 lodjur. Skriv ut den raden — det är inte ett mellansteg som du kan göra i huvudet utan att tappa siffran. Du behöver nämnaren i förhållandet, och det är just 1 200.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs döda lodjur 07/08",
+        "text": "I nedre diagrammet hittar du 07/08-stapeln och läser av HELA stapelns höjd — det vill säga summan av licensjakt (svart, översta), skyddsjakt (ljusgrå, mittersta) och övrig dödlighet (mellangrå, understa). Projicera stapelns topp mot y-axeln (0, 50, 100, 150, 200, 250). Toppen ligger strax under 100 — avläsning: cirka 90 döda lodjur.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sätt upp förhållandet",
+        "text": "Förhållande döda : totalt = 90 : 1 200. För att få det på formen 1:N delar du båda leden med 90: 1 : (1200/90) = 1 : 13.3. Du kan också tänka det som en bråk: 90/1200 = 9/120 = 3/40 ≈ 1/13.3.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'kvot' på formen 1:N?",
+        "text": "Skrivsättet 1:N betyder att för varje ETT dött lodjur fanns det N totala lodjur. Större N = mindre andel döda. 1:13 betyder alltså 'en av 13 lodjur dog under säsongen', vilket är ungefär 7,7 % dödlighet — rimligt för en viltstam.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Dina alternativ är 1:17, 1:13, 1:6, 1:3. Din uppskattning 1:13.3 ligger uppenbart närmast 1:13 (skillnad 0.3) snarare än 1:17 (skillnad 3.7) eller 1:6 (skillnad 7.3). Facit fastslår B (1:13).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check med grov procent",
+        "text": "Översätt facits 1:13 till procent: 1/13 ≈ 7.7 %. Det betyder att ungefär 7-8 % av populationen dog 07/08. Med 1 200 totala lodjur blir det ca 90 döda — vilket exakt matchar avläsningen i nedre diagrammet. Inre konsistens bekräftar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (1:13). Insikten i en mening: när frågan ger en explicit definition (här × 6) — skriv ut den som ett separat räknesteg innan du sätter upp kvoten, annars är det lätt att rapportera 'döda per familjegrupp' i stället för 'döda per totalt'.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för förhållandefrågor som kombinerar två diagram + en definitionsformel: (1) markera definitionsformeln i frågetexten, (2) läs av första värdet i ett diagram, applicera formeln, skriv ut produkten, (3) läs av andra värdet i det andra diagrammet, (4) sätt upp kvoten och förenkla till 1:N. Triggern: 'förhållande' + 'kan uppskattas genom att multiplicera' → tvådiagram-avläsning OCH skalfaktor, inte stapeljämförelse."
+  },
+  "host-2023-kvant1-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "55 procent är den frestande underskattningen om du bara räknar in LICENSJAKT (det svarta segmentet) och glömmer SKYDDSJAKT (det ljusgrå). Båda är dock 'jakt' i frågans mening.",
+        "why_wrong": "Som steg 4 påpekar består 'jakt' i denna kontext av BÅDE licensjakt OCH skyddsjakt — det är de två översta segmenten i stapeln. Övrig dödlighet (mellangrå, understa) är inte jakt. Facit fastslår 75 % (alternativ C); 55 % uppstår bara om du missar att också skyddsjakt räknas in."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "65 procent är en frestande mittjusterad avläsning om man räknar in skyddsjakt 'till hälften' eller är osäker på var gränsen mellan segmenten går. Den ger en mjuk, säker känsla.",
+        "why_wrong": "Steg 5 visar att gränserna mellan segmenten är tydliga vid 08/09-stapeln, eftersom skyddsjakten är en synligt ljusgrå rektangel ovanpå övrig dödlighet. Du ska räkna in den helt, inte halvt. Facit fastslår 75 %."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "85 procent är frestande om du gör motsatsen till A: räknar in lite för mycket av övrig dödlighet i 'jakt'. Det landar nära toppen av stapeln och känns 'nästan allt'.",
+        "why_wrong": "Frågan handlar specifikt om JAKT — licensjakt + skyddsjakt — INTE allt utom övrig dödlighet 'i princip'. Steg 6 visar att övrig dödlighet i 08/09 utgör en synlig dryg fjärdedel av stapeln. Facit fastslår 75 %, vilket innebär att övrig dödlighet är cirka 25 % — det motsvarar precis det mellangrå segmentets bredd."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: tolka 'jakt' som bara licensjakt (det dominerande svarta segmentet) och missa skyddsjakt. Botemedlet: läs legenden bokstavligt och summera alla kategorier som faller under begreppet innan du börjar mäta.",
+    "pregrade_tactic": {
+      "handle": "Legend-summa-före-mätning",
+      "move": "Skriv ner vilka legend-kategorier 'jakt' består av (licensjakt + skyddsjakt), läs av deras sammanlagda höjd i 08/09-stapeln och dividera med stapelns totalhöjd."
+    },
+    "solution_path": "Facit fastslår 75 % (alternativ C). I DÖDA LODJUR-diagrammet, hitta säsongen 08/09. Hela stapeln är cirka 220 enheter hög. Övrig dödlighet (mellangrå, understa segmentet) är cirka 55 enheter. Jakt = totalt − övrig dödlighet ≈ 220 − 55 = 165. Andelen 165/220 = 0,75 = 75 % — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av de DÖDA lodjuren säsongen 2008/2009 dödades i jakt? Svarsformatet är procent (55, 65, 75, 85). Facit fastslår 75 % (alternativ C). Detta är en delar-av-helhet-fråga inom EN stapel, inte mellan staplar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i nedre diagrammet",
+        "text": "Nedre stapeldiagrammet DÖDA LODJUR visar säsongerna 02/03 till 13/14 på x-axeln och antal döda lodjur på y-axeln (0–250). Varje stapel är staplad i tre segment enligt legenden: Licensjakt (svart, översta), Skyddsjakt (ljusgrå, mittersta) och Övrig dödlighet (mellangrå, understa).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta 2008/2009-stapeln",
+        "text": "Räkna staplarna: 02/03, 03/04, 04/05, 05/06, 06/07, 07/08, 08/09 — den sjunde stapeln. Det är också en av de TVÅ högsta staplarna i hela diagrammet (08/09 och 09/10 är två synliga toppar). Sätt fingret på 08/09 innan du börjar mäta segmenten.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vilka segment räknas som 'jakt'?",
+        "text": "Frågan säger 'dödats i jakt'. Det inkluderar BÅDA jakt-kategorierna: Licensjakt (svart) och Skyddsjakt (ljusgrå). 'Övrig dödlighet' (mellangrå) är NOT jakt — det är t.ex. trafik, sjukdom, svält. Så 'jakt' = de två översta segmenten av stapeln, och 'icke-jakt' = det understa segmentet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs totalhöjden av 08/09-stapeln",
+        "text": "Projicera 08/09-stapelns topp mot y-axelns tick-värden (0, 50, 100, 150, 200, 250). Toppen ligger strax över 200, ungefär 215–225. Räkna med ungefär 220 döda lodjur totalt detta år. Det är nämnaren i din procentberäkning.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs det understa segmentets höjd (Övrig dödlighet)",
+        "text": "Övrig dödlighet är det mellangrå segmentet längst ner i stapeln. Mät dess höjd: den börjar vid y = 0 och slutar synligt strax över 50-linjen — ungefär 55 enheter. Det är 'icke-jakt'-delen av stapeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut jakt-delen",
+        "text": "Jakt = totalt − övrig dödlighet ≈ 220 − 55 = 165. Det här är de två översta segmenten (licensjakt + skyddsjakt) sammanlagt. Du kan också mäta licensjakt (svart, översta) ungefär 50 och skyddsjakt (ljusgrå) ungefär 115 och summera till samma 165.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'andel' här?",
+        "text": "Andelen som dödats i jakt = (antal döda i jakt) / (totalt antal döda) = 165/220. Det är en kvot inom en och samma stapel, inte över flera år. När du dividerar och multiplicerar med 100 får du procenten.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Räkna ut procenten",
+        "text": "165/220 = 0,75. Multiplicera med 100: 75 %. Du kan också tänka det som ett bråk: 165/220 = 33/44 = 3/4. Tre fjärdedelar = 75 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot grannarna",
+        "text": "Titta på 09/10-stapeln intill — där är licensjakt-segmentet (svart) ÄNNU större relativt totalhöjden, vilket signalerar att jakt-andelen i 09/10 är minst lika hög som i 08/09. Det är konsistent: under den här tidsperioden var jakttrycket högt. En jakt-andel på 75 % i 08/09 stämmer alltså visuellt jämfört med grannåret.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativen är 55, 65, 75, 85 %. Din uppskattning ligger närmast 75 %. Skillnaderna mellan alternativen är 10 procentenheter vardera, så även en grov ögonmätning räcker — du ska se att 'icke-jakt' utgör ungefär en fjärdedel av stapeln, och därför är jakt ungefär tre fjärdedelar.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (75 %). Insikten i en mening: i staplade diagram måste du först fråga 'vilka legend-kategorier ingår i frågans begrepp?' — i lodjursfrågan är JAKT = licensjakt + skyddsjakt, två segment, inte ett.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel inom en stapel'-frågor: (1) identifiera vilka legend-kategorier frågan inkluderar (här: licensjakt + skyddsjakt = jakt), (2) avläs hela stapelns totalhöjd mot y-axeln, (3) avläs antingen relevant segments höjd direkt eller det IRRELEVANTA segmentets höjd och dra bort, (4) dividera och översätt till procent. Triggern: 'andel av X' inom samma stapel → segment-summa / totalsumma, inte kategori-summa över alla år."
+  },
+  "host-2023-kvant1-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "580 = 290 × 2 är frestande om du räknar ungar PER FAMILJEGRUPP utan att inkludera honan själv. Då blir det 'antal ungar' i alla familjegrupperna, inte 'antal individer i familjegrupperna'.",
+        "why_wrong": "Som steg 4 förtydligar består varje familjegrupp av 1 hona + 2 ungar = 3 individer. Frågan vill veta INDIVIDER, inte bara ungar. Facit fastslår 870 = 290 × 3 — alternativet 580 räknar inte med honan."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "690 ligger nära 870 och kan uppstå om du läser av topp-stapeln något för lågt (säg 230) och sedan multiplicerar 230 × 3 = 690. Det är ett rent avläsningsfel utan tydlig systematik.",
+        "why_wrong": "Steg 3 visar att topp-stapeln (08/09) är cirka 290, inte 230. En avläsning på 230 är en betydande underskattning av den högsta stapeln, som tydligt sticker över 250-linjen och närmar sig 300. Facit fastslår 870 — vilket bara fungerar med rätt topp-värde 290."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1 160 = 290 × 4 är frestande om du räknar 1 hona + 1 hane + 2 ungar = 4 per familjegrupp. Men diagrambeskrivningen säger att familjegrupp = en hona med ungar — inte en hane.",
+        "why_wrong": "Som steg 4 betonar definieras familjegrupp som 'en hona med ungar'. Hanen ingår inte i begreppet. Med två ungar per grupp blir det 1 + 2 = 3 individer, inte 4. Facit fastslår 870 = 290 × 3."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: räkna bara ungarna (2 per grupp) och få 580. Botemedlet: läs definitionen 'familjegrupp = en hona med ungar' bokstavligt och skriv ut 1+2 = 3 individer per grupp som ett separat räknesteg.",
+    "pregrade_tactic": {
+      "handle": "Hona-plus-ungar",
+      "move": "Identifiera den högsta stapeln i FAMILJEGRUPPER (08/09 ≈ 290), skriv ut 1 hona + 2 ungar = 3 individer per grupp, multiplicera 290 × 3 och plocka närmaste alternativ."
+    },
+    "solution_path": "Facit fastslår 870 (alternativ C). Hitta topp-stapeln i FAMILJEGRUPPER: det är 08/09 vid cirka 290 familjegrupper. Varje familjegrupp = 1 hona + 2 ungar = 3 individer. Totalt antal individer = 290 × 3 = 870 — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många INDIVIDER innehöll familjegrupperna den vinter när antalet familjegrupper var som störst? Svarsformatet är antal (580, 690, 870, 1 160). Facit fastslår 870 (alternativ C). Du letar alltså efter topp-året i ETT av de två diagrammen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilket diagram letar du i?",
+        "text": "Frågan handlar om familjegrupper — alltså ÖVRE diagrammet (rubrik FAMILJEGRUPPER). Det nedre diagrammet (DÖDA LODJUR) är inte relevant här. Detta är inte en två-diagram-fråga som DTK-029 var, utan en endiagrams-fråga.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta den högsta stapeln",
+        "text": "I FAMILJEGRUPPER-diagrammet är staplarna 03/04 till 13/14 (elva säsonger). Skanna efter den högsta toppen: det är 08/09-stapeln (sjätte stapeln) som tydligt sticker över 250-linjen och hamnar ungefär vid 290. Tvåan i höjd är 10/11 vid ungefär 275, men du letar bara efter ETT år — det med absolut högst stapel.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'familjegrupp' och 'individ'?",
+        "text": "Beskrivningen under diagrammet säger: 'Med familjegrupp avses en hona med ungar.' Frågan ger dessutom: 'i genomsnitt två ungar per familjegrupp.' Alltså består varje familjegrupp av 1 hona + 2 ungar = 3 INDIVIDER. En individ = en levande lodjur (hona eller unge). En familjegrupp är alltså ett 3-pack individer.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs topp-stapelns höjd",
+        "text": "Projicera 08/09-stapelns topp mot y-axelns tick-värden (0, 50, 100, 150, 200, 250, 300). Toppen ligger ungefär 4/5 av vägen mellan 250 och 300 — alltså cirka 290. Skriv ner 290 familjegrupper.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'multiplikation' i den här kontexten?",
+        "text": "Multiplikation = upprepning av samma mängd. Om varje familjegrupp innehåller 3 individer och du har 290 familjegrupper, så är totala antalet individer 3 + 3 + 3 + ... (290 gånger) = 290 × 3. Skriv ut multiplikationen — gör den inte i huvudet.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut totalantalet individer",
+        "text": "Totalt = 290 × 3. Räkna: 290 × 3 = (300 × 3) − (10 × 3) = 900 − 30 = 870. Eller direkt: 290 × 3 = 290 + 290 + 290 = 580 + 290 = 870.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativen är 580, 690, 870, 1 160. Din uträkning 870 träffar exakt alternativ C. Notera att alla tre felsvar (A, B, D) ligger på säkert avstånd från 870 (närmast är 690, alltså 180 bort) — så även om din avläsning av stapeln är något off med en handfull familjegrupper räcker det att din uträkning ligger inom intervallet 760–960 för att C ska sticka ut.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via en alternativ uträkning",
+        "text": "Om varje familjegrupp = 3 individer och du har cirka 290 grupper: 3 × 100 = 300, 3 × 200 = 600, 3 × 300 = 900. Så svaret ska ligga någonstans strax under 900. 870 stämmer; 1 160 är klart för högt (skulle kräva 4 individer per grupp); 580 är för lågt (skulle kräva bara 2 individer per grupp).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför just 08/09 och inte 10/11?",
+        "text": "Frågan letar efter MAX. 08/09 ≈ 290 är högre än 10/11 ≈ 275. Skillnaden är liten visuellt, men 08/09 är synligt högst. Som sanity-check: om du av misstag hade tagit 10/11 hade du fått 275 × 3 = 825, vilket fortfarande är närmast 870 — men du ska träna avläsningen rätt även när alternativen är förlåtande.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (870). Insikten i en mening: när en biologisk definition säger 'en hona med ungar' — räkna alltid med honan SJÄLV plus ungarna, så att 'individer per grupp' inte blir bara antalet ungar.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'multiplicera-värdet-i-topp-stapeln'-frågor: (1) lokalisera topp-stapeln i rätt diagram, (2) avläs dess höjd mot y-axelns printade tick-värden, (3) översätt frågans begrepp till en multiplikator (här: 1 hona + 2 ungar = 3 individer/grupp), (4) multiplicera och välj närmaste alternativ. Triggern: 'när X var som störst' → topp-avläsning + översättningsfaktor, inte bara avläsning."
+  },
+  "host-2023-kvant1-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1/2 är frestande om du bara plockar de två största orsakerna (Fallolycka 73 618 och Kirurgiska åtgärder 24 977). Tillsammans är de 98 595 av 166 119, vilket är ungefär 59 % — närmare 1/2 än 2/3. Misstaget är att räkna TVÅ orsaker i stället för TRE.",
+        "why_wrong": "Som steg 1 och steg 5 betonar säger frågan uttryckligen TRE yttre orsaker. Facit fastslår 2/3 (alternativ C) — det fungerar bara när du lägger till den tredje största orsaken (Ogynnsam effekt av läkemedel, 10 928)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "3/5 = 60 % ligger nära den korrekta kvoten 109 523/166 119 ≈ 65,9 %, men något under. Det är förlåtbart att uppskatta lite för lågt om man rundar nedåt på den tredje orsaken eller på totalsumman.",
+        "why_wrong": "Steg 7 visar att en exakt beräkning ger ungefär 66 % — vilket är märkbart närmare 2/3 (66,7 %) än 3/5 (60 %). Skillnaden mellan 3/5 och 2/3 är cirka 7 procentenheter, vilket är större än osäkerheten i avläsningen. Facit fastslår 2/3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "3/4 = 75 % är frestande om du av misstag inkluderar en fjärde stor orsak (t.ex. Olyckshändelser, exponering för andra eller icke exponerade faktorer, 6 691) eller om du dubbelräknar Transportolycksfall (9 013).",
+        "why_wrong": "Frågan ber dig om de TRE yttre orsaker som ledde till FLEST patienter — alltså topp tre, inte topp fyra. Som steg 5 visar är topp tre = Fallolycka 73 618, Kirurgiska 24 977, Ogynnsam effekt 10 928, summa 109 523. En fjärde orsak gör att summan landar för högt, inte rätt."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: läsa raderna i ordning och stanna vid de tre översta raderna med stora värden. Botemedlet: skanna hela kolumnen aktivt — en stor orsak (Ogynnsam effekt 10 928) ligger gömd i rad 20 av 25.",
+    "pregrade_tactic": {
+      "handle": "Sortera-Totalt-kolumnen",
+      "move": "Skanna Totalt-kolumnen från topp till botten, anteckna de TRE största värdena oavsett radnummer, summera och dividera med kolumnens totalsumma 166 119."
+    },
+    "solution_path": "Facit fastslår 2/3 (alternativ C). De tre yttre orsakerna med flest patienter är: Fallolycka (73 618), Kirurgiska och medicinska åtgärder som orsak till abnormal reaktion (24 977) och Ogynnsam effekt av droger, läkemedel och biologiska substanser i terapeutiskt bruk (10 928). Summa = 109 523. Totalsumman är 166 119. 109 523 / 166 119 ≈ 0,659 ≈ 2/3 — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan har två delar: (a) identifiera de TRE yttre orsaker som ledde till vård av FLEST patienter, (b) räkna ut hur stor andel av alla yttre-orsak-patienter dessa tre utgjorde. Svarsformatet är bråk (1/2, 3/5, 2/3, 3/4). Facit fastslår 2/3 (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen visar 25 numrerade yttre orsaker och har fyra kolumner: orsakens namn, antal Kvinnor, antal Män och Totalt. Sista raden är Totalt: Kvinnor 85 802, Män 80 317, Totalt 166 119. Just kolumnen Totalt är den enda du behöver för den här frågan — kön spelar ingen roll.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi: scanna efter största värdena",
+        "text": "Gå rad för rad och anteckna värden över ungefär 10 000 i Totalt-kolumnen — det är ett rimligt tröskelvärde när vi söker topp tre. Det går snabbare än att läsa varje rad i detalj.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skanna och hitta kandidaterna",
+        "text": "Genomsökning av Totalt-kolumnen ger följande höga värden: Rad 3 Fallolycka 73 618 (klart störst), Rad 23 Kirurgiska och medicinska åtgärder som orsak till abnormal reaktion 24 977 (näst störst), Rad 20 Ogynnsam effekt av droger, läkemedel och biologiska substanser 10 928 (tredje störst). Övriga värden (Rad 1 Transportolycksfall 9 013, Rad 16 Avsiktligt självdestruktiv handling 7 362) ligger under tröskeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Bekräfta topp tre",
+        "text": "Topp tre i sjunkande ordning: Fallolycka 73 618, Kirurgiska 24 977, Ogynnsam effekt 10 928. Notera att Ogynnsam effekt (10 928) ligger i mitten av tabellen vid rad 20 — det är lätt att missa om du bara skummar raderna i ordning. Den raden är dock klart större än både Transportolycksfall (9 013) och Avsiktligt självdestruktiv (7 362), så det är otvetydigt topp tre.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Summera de tre största",
+        "text": "73 618 + 24 977 + 10 928. Tag det stegvis: 73 618 + 24 977 = 98 595. 98 595 + 10 928 = 109 523. Detta är täljaren i din kvot.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'andel' i den här frågan?",
+        "text": "Andel = del / helhet. Helheten är ALLA patienter som vårdades på grund av yttre orsak, dvs Totalt-radens totalsumma 166 119. Delen är de tre största orsakernas summa 109 523. Andelen = 109 523 / 166 119.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut kvoten",
+        "text": "109 523 / 166 119. Förenkla genom överslag: 109/166 ≈ 0,659. Det är ungefär 2/3 (≈ 0,667) men något under. Kontroll: 2/3 av 166 119 = 110 746, vilket är bara ~1 200 mer än 109 523 — alltså är 2/3 mycket nära.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot svarsalternativen",
+        "text": "Alternativen som decimaltal: 1/2 = 0,500, 3/5 = 0,600, 2/3 ≈ 0,667, 3/4 = 0,750. Din kvot 0,659 ligger närmast 2/3 (skillnad 0,008) — alla andra alternativ ligger 0,05+ bort. Facit fastslår 2/3.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med ett alternativt grepp",
+        "text": "Tänk det baklänges: om svaret är 2/3 betyder det att TRE största orsakerna utgör ungefär två tredjedelar av alla yttre-orsak-patienter, och alla ÖVRIGA 22 orsaker utgör tillsammans bara en tredjedel. Det är rimligt: Fallolycka ensam står för 44 % av totalen (73 618/166 119) — vilket gör att resten enkelt blir över hälften redan med en eller två tilläggsorsaker.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen är 2/3 (C) det enda som matchar både din avläsning (~0,66) och en grov rimlighetsbedömning. 1/2 är för lågt (det vore bara om Fallolycka ensam räknades), 3/5 är ett par procentenheter för lågt, 3/4 förutsätter en fjärde orsak.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (2/3). Insikten i en mening: i tabellfrågor där 'de tre/fem/N största' ingår — sortera kolumnen aktivt i huvudet i stället för att läsa raderna i ordning, annars är det lätt att missa stora värden som ligger mitt i tabellen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel av topp-N' i tabeller: (1) identifiera vilken kolumn som är relevant (här Totalt), (2) skanna efter de N största värdena oavsett radnummer, (3) summera dem, (4) dividera med kolumnens totalsumma. Triggern: 'identifiera de tre/fem största' → kolumn-skanning + summering, inte rad-i-ordning-läsning."
+  },
+  "host-2023-kvant1-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "508 är frestande om du gör ett räknefel på en av de fyra siffrorna — säg, läser 1 080 i stället för 1 081 eller 670 i stället för 672. Sådana off-by-ett-fel ackumuleras lätt över fyra avläsningar.",
+        "why_wrong": "Steg 6 visar att de fyra korrekta siffrorna är 1 799, 554, 1 081 och 672. Sammanlagt kvinnor = 2 353, sammanlagt män = 1 753. Skillnaden 2 353 − 1 753 = 600. Facit fastslår B (600). 508 uppstår bara med upprepade läs-fel."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "718 är frestande om du av misstag tar med en annan rad, t.ex. rad 23 (Kirurgiska och medicinska åtgärder som orsak till abnormal reaktion, 11 623 / 13 354), och blandar ihop ordningen. Då räknar du på fel underlag.",
+        "why_wrong": "Frågan listar uttryckligen TVÅ specifika orsaker: rad 21 (Missöden som inträffat under kirurgisk och medicinsk vård) och rad 22 (Missöden orsakade av medicinska instrument). Inte rad 23. Som steg 3 betonar — läs raderna ord för ord och kontrollera radnumret. Facit fastslår 600."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "810 är frestande om du subtraherar fel håll (män − kvinnor) i en av raderna och får ett kombinerat värde som ser logiskt ut. Det faktum att alternativtexten råkar inkludera 'Kvinnor Män' (sannolikt en parser-artefakt) kan också locka till en avläsning i fel ordning.",
+        "why_wrong": "Steg 7 visar att kvinnor (2 353) är BETYDLIGT fler än män (1 753) inom dessa två rader sammanlagt. Skillnaden är 2 353 − 1 753 = 600, inte 810. Facit fastslår 600."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: ta med eller förväxla rad 23 (Kirurgiska åtgärder som orsak, mycket större siffror) i stället för rad 21 + 22 (Missöden). Botemedlet: läs radens hela namn och radnumret, inte bara första orden.",
+    "pregrade_tactic": {
+      "handle": "Två-rader-fyra-siffror",
+      "move": "Bokmärk rad 21 och rad 22 specifikt, skriv ner deras fyra siffror (kvinnor & män × 2 rader), summera per kön, och beräkna skillnaden — inkludera inte den närliggande rad 23."
+    },
+    "solution_path": "Facit fastslår 600 (alternativ B). Rad 21 (Missöden under kirurgisk och medicinsk vård): Kvinnor 1 799, Män 1 081. Rad 22 (Missöden orsakade av medicinska instrument): Kvinnor 554, Män 672. Sammanlagt: Kvinnor 1 799 + 554 = 2 353, Män 1 081 + 672 = 1 753. Skillnad = 2 353 − 1 753 = 600 — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor är skillnaden mellan det SAMMANLAGDA antalet kvinnor och det SAMMANLAGDA antalet män, summerat över TVÅ specifika orsaker (rad 21 och rad 22)? Svarsformatet är antal (508, 600, 718, 810). Facit fastslår 600 (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen har kolumnerna Yttre orsak, Antal Kvinnor, Antal Män, Antal Totalt. Du jobbar med fyra siffror denna gång: två rader × två kön. Skillnaden mellan kvinnor och män ska du räkna ut TILLSAMMANS över bägge raderna, inte rad för rad.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de två raderna noggrant",
+        "text": "Frågans namn är långa och liknande: 'Missöden som inträffat med patienter under kirurgisk och medicinsk vård' (rad 21) och 'Missöden orsakade av medicinska instrument i diagnostiskt och terapeutiskt bruk' (rad 22). Bokmärk båda radnumren med pekfingret — rad 23 strax under (Kirurgiska och medicinska åtgärder som orsak till abnormal reaktion) är en helt annan, mycket större rad och får INTE komma med.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs rad 21 (Missöden under kirurgisk och medicinsk vård)",
+        "text": "Kolumnen Kvinnor: 1 799. Kolumnen Män: 1 081. Kontrollera mot kolumnen Totalt: 1 799 + 1 081 = 2 880 — vilket precis stämmer med Totalt-värdet 2 880 i tabellen. Inre konsistens bekräftar avläsningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs rad 22 (Missöden orsakade av medicinska instrument)",
+        "text": "Kolumnen Kvinnor: 554. Kolumnen Män: 672. Kontroll: 554 + 672 = 1 226 — matchar Totalt-värdet 1 226. Inre konsistens igen bekräftad.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Summera per kön",
+        "text": "Sammanlagt antal kvinnor: 1 799 + 554. Räkna: 1 799 + 500 = 2 299, sedan + 54 = 2 353. Sammanlagt antal män: 1 081 + 672. Räkna: 1 081 + 600 = 1 681, sedan + 72 = 1 753. Skriv ner båda summorna: K = 2 353, M = 1 753.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'skillnad' här?",
+        "text": "Skillnad = den större summan minus den mindre. Eftersom 2 353 > 1 753 är skillnaden 2 353 − 1 753. Det spelar ingen roll om svaret är positivt eller negativt — alternativen är alla positiva tal, så vi tar absolutbeloppet.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut skillnaden",
+        "text": "2 353 − 1 753. Sätt upp subtraktionen: 2 353 − 1 753 = (2 353 − 1 753). Tag det stegvis: 2 353 − 1 000 = 1 353, − 700 = 653, − 53 = 600. Eller direkt: 2 353 − 1 753 = 600 (eftersom 2 353 − 1 753 = 2 353 − 1 753 = 600).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativen är 508, 600, 718, 810. Din uträkning 600 träffar exakt alternativ B. Alla andra alternativ ligger minst 100 enheter bort — du behöver inte vara osäker.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check rad för rad",
+        "text": "I rad 21 har kvinnor 1 799 och män 1 081 — kvinnor större (skillnad +718). I rad 22 har kvinnor 554 och män 672 — män större (skillnad +118). Sammanlagt kvinnor − sammanlagt män = +718 + (−118) = +600. Det stämmer med beräkningen via summor och det bekräftar varför 718 (alternativ C) är tempting men fel — det är skillnaden i bara rad 21.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Varför är rad 23 inte med?",
+        "text": "Rad 23 heter 'Kirurgiska och medicinska åtgärder som orsak till abnormal reaktion eller sen komplikation hos patient utan anknytning till missöde vid operations- eller behandlingstillfället' — den handlar om abnormal reaktion, inte missöden. Frågan listar två specifika rader (21 och 22) som båda börjar med ordet 'Missöden'. Rad 23 ligger fysiskt intill men är ett annat begrepp.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (600). Insikten i en mening: när en fråga refererar till specifika rader med långa namn, kontrollera radnumret aktivt — närliggande rader kan ha snarlika namn men helt olika siffror, och rad 23 är en klassisk distraktor här.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'skillnad mellan summerade kolumner' i tabeller: (1) bokmärk de specifika raderna i frågan ord för ord och radnummer för radnummer, (2) avläs fyra siffror (två rader × två kolumner), (3) summera per kolumn, (4) beräkna skillnaden mellan summorna. Triggern: 'sammanlagda antalet X jämfört med sammanlagda antalet Y' → fyrasiffrors-uppställning, inte rad-skillnad eller helhetsavläsning."
+  },
+  "host-2023-kvant1-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "125 000 är frestande om du avläser de tre sista årens summa något lågt (säg 80 + 55 + 50 = 185) eller de tre första något högt (säg 25 + 22 + 15 = 62) och får differensen 123 ≈ 125. En kombination av små avläsningsfel.",
+        "why_wrong": "Som steg 4 och 5 betonar är de printade datalabels exakta: 80,3 + 55,5 + 59,6 = 195,4 för 08, 09, 10 och 24,3 + 20,6 + 13,8 = 58,7 för 00, 01, 02. Skillnaden är 136,7 — närmast 135 000. Facit fastslår B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "145 000 är frestande om du avläser något för högt på 08 eller 10 eller dubbelräknar något lågt år. Det kan också uppstå om du tar 09 + 10 + någon annan stapel som 'de tre sista'.",
+        "why_wrong": "Diagrammet täcker 2000–2010 (elva staplar). 'De tre sista åren' är otvetydigt 2008, 2009, 2010 — staplarna med printade värden 59,6, 55,5 och 80,3. Som steg 4 räknar ut blir summan 195,4. Facit fastslår 135 000, inte 145 000."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "155 000 är frestande om du missar en av de tre första årens stapel och får för låg summa där (säg bara 00 + 01 = 45 i stället för 58,7) eller om du av misstag bara räknar 2008 + 2010 + ett tilläggsår på den första sidan.",
+        "why_wrong": "Steg 5 säger uttryckligen att de TRE FÖRSTA staplarna är 2000, 2001 och 2002 — alla med printade värden 24,3, 20,6 och 13,8. Sammanlagt 58,7. Att hoppa över en av dem ger en överskattad differens, men inte rätt svar. Facit fastslår 135 000."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: ögonmäta höjder mot y-axeln när printade siffror finns. Botemedlet: leta efter printade datalabels FÖRST och använd dem som ground truth.",
+    "pregrade_tactic": {
+      "handle": "Printade-siffror-först",
+      "move": "Notera att varje stapel har printad procent-siffra ovanpå sig. Skriv ner de tre sista årens siffror (08, 09, 10 = 59,6 + 55,5 + 80,3) och de tre första (00, 01, 02 = 24,3 + 20,6 + 13,8), subtrahera, och plocka närmaste alternativ i tusental hektar."
+    },
+    "solution_path": "Facit fastslår 135 000 hektar (alternativ B). Stapeldiagrammet visar arealen 2000–2010 i tusental hektar med printade datalabels på varje stapel. Sista tre åren (08, 09, 10): 59,6 + 55,5 + 80,3 = 195,4. Första tre åren (00, 01, 02): 24,3 + 20,6 + 13,8 = 58,7. Skillnad: 195,4 − 58,7 = 136,7 tusental hektar — närmast 135 000, vilket är konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur mycket större var den SAMMANLAGDA gödslade arealen de tre SISTA åren jämfört med de tre FÖRSTA åren under perioden 2000–2010? Svarsformatet är hektar (125 000, 135 000, 145 000, 155 000). Facit fastslår 135 000 hektar (alternativ B). Du jobbar i tusental hektar enligt diagrammets enhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Stapeldiagrammet 'Arealen skog i Sverige som gödslades årligen 2000–2010. Tusental hektar.' visar elva staplar för åren −00, −01, −02, −03, −04, −05, −06, −07, −08, −09, −10. Y-axeln är inte explicit tick-märkt men varje stapel har en PRINTAD siffra ovanför sig (de visuellt hårda värdena).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de tre första och sista åren",
+        "text": "Periodens första tre år: 2000, 2001, 2002 (de tre vänstra staplarna). Periodens sista tre år: 2008, 2009, 2010 (de tre högra staplarna). Inte 1998 eller 2007 — räkna med kalenderårens explicit visade på axeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs de tre sista årens printade värden",
+        "text": "Ovanför stapeln −08 står 59,6. Ovanför −09 står 55,5. Ovanför −10 står 80,3. Det är alla i tusental hektar. Summa: 59,6 + 55,5 + 80,3. Räkna: 59,6 + 55,5 = 115,1, sedan + 80,3 = 195,4. Tre sista åren tillsammans = 195,4 tusental hektar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs de tre första årens printade värden",
+        "text": "Ovanför stapeln −00 står 24,3. Ovanför −01 står 20,6. Ovanför −02 står 13,8. Summa: 24,3 + 20,6 + 13,8. Räkna: 24,3 + 20,6 = 44,9, sedan + 13,8 = 58,7. Tre första åren tillsammans = 58,7 tusental hektar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'sammanlagda' och 'skillnad' här?",
+        "text": "'Sammanlagda' = summerat över de tre åren. 'Skillnad' = stor summa minus liten summa. Eftersom 195,4 > 58,7 är skillnaden 195,4 − 58,7. Båda värdena ska först summeras INOM sin treårsperiod innan du gör differensen.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut skillnaden",
+        "text": "195,4 − 58,7. Räkna: 195,4 − 58 = 137,4, sedan − 0,7 = 136,7. Skillnaden är 136,7 tusental hektar.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Översätt till svarsformatet",
+        "text": "Alternativen är i hela hektar (125 000, 135 000, 145 000, 155 000), inte tusental. 136,7 tusental hektar = 136 700 hektar. Närmast 135 000 (skillnad 1 700) och nästan exakt mellan 135 000 och 145 000 men närmare 135 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via grovare överslag",
+        "text": "Snabb-överslag: tre sista är ungefär (60 + 55 + 80) = 195. Tre första är ungefär (24 + 21 + 14) = 59. Differens ≈ 136. Konsistent. Variationen mellan alternativen är 10 000 hektar = 10 tusental — så även ett groft överslag räcker för att välja entydigt mellan dem.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Din skillnad 136,7 tusental ligger närmast 135 (skillnad 1,7) — alternativ B. 125 är 11,7 bort, 145 är 8,3 bort, 155 är 18,3 bort. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Reflektera på trenden",
+        "text": "Bygödseltrend: arealen gick från ca 24 tusental (år 2000) till över 80 tusental (år 2010) — en kraftig ökning, ungefär 3-faldig. Skillnaden mellan periodens början och slut är därför markant, vilket gör frågan väl definierad och svaret tydligt stort relativt enskilda staplars värden.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (135 000 hektar). Insikten i en mening: när stapeldiagrammet har printade datalabels — använd dem direkt, hoppa över ögonmätning mot y-axeln, och var noga med att summera INOM treårsperioderna innan du tar skillnaden.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'sammanlagda skillnad mellan delperioder': (1) identifiera vilka staplar som hör till varje delperiod (tre första vs tre sista), (2) använd printade datalabels om de finns, (3) summera INOM varje delperiod, (4) ta differensen mellan summorna, (5) översätt till svarsformatet (här tusental → hela hektar). Triggern: 'tre sista jämfört med tre första' → två-summor-en-differens, inte enskild stapel-jämförelse."
+  },
+  "host-2023-kvant1-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "1/4 = 25 % är frestande om du bara räknar Norrbottens 10,6 av 80,3 = 13 % och förväxlar 'andel av Norrbotten + Jämtland' med 'andel av bara Norrbotten'. Eller om du av misstag jämför med en av de andra siffrorna på kartan.",
+        "why_wrong": "Frågan ber om summan av BÅDA länen (Norrbotten + Jämtland). Som steg 5 visar är Norrbotten 10,6 + Jämtland 16,5 = 27,1 av rikets totalsumma 80,3. 27,1/80,3 = 0,337 ≈ 1/3 — inte 1/4. Facit fastslår A (1/3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1/5 = 20 % är frestande om du av misstag bara använder ett av länen (säg bara Jämtland 16,5 av 80,3 = 21 %) i stället för att summera båda.",
+        "why_wrong": "Steg 4 betonar att frågan kombinerar två specifika län. Jämtland ensam ger en kvot nära 1/5, men kombinationen Norrbotten + Jämtland ger ungefär 1/3. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2/5 = 40 % är frestande om du av misstag inkluderar Västerbotten (13,1) tillsammans med de två länen och får 10,6 + 16,5 + 13,1 = 40,2 av 80,3 = 50 % — men sneglar mot 40 % som närmaste 'stora' alternativ.",
+        "why_wrong": "Frågan listar bara TVÅ län: Norrbotten och Jämtland. Västerbotten är ett tredje, separat län. Som steg 4 betonar — håll dig till frågans två namn. Facit fastslår 1/3."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: använda BARA kartan och försöka summera alla län för att få nämnaren — det blir slarvigt och felräknat. Botemedlet: använd stapeldiagrammets printade rikstotal (80,3) direkt som nämnare.",
+    "pregrade_tactic": {
+      "handle": "Två-län-genom-totalen",
+      "move": "Avläs Norrbotten 10,6 och Jämtland 16,5 på kartan, summera till 27,1, dividera med rikets totala 2010 (80,3 från stapeldiagrammet) och plocka närmaste bråk."
+    },
+    "solution_path": "Facit fastslår 1/3 (alternativ A). Norrbotten 10,6 + Jämtland 16,5 = 27,1 tusental hektar. Rikets totalsumma 2010 = 80,3 tusental hektar (avläst från stapeldiagrammets sista stapel). 27,1 / 80,3 = 0,337 ≈ 1/3 — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av den gödslade arealen skog i Sverige 2010 fanns i Norrbottens och Jämtlands län? Svarsformatet är bråk (1/3, 1/4, 1/5, 2/5). Facit fastslår 1/3 (alternativ A). Du behöver kombinera värden från KARTAN (län-fördelning 2010) med en totalsumma från STAPELDIAGRAMMET (rikets 2010).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på sidan",
+        "text": "Sidan har TRE visuella komponenter: (a) en stiliserad trädring-bild med 1987 markerat (irrelevant för denna fråga), (b) ett stapeldiagram med årlig areal 2000–2010 (med printade värden), (c) en sverigekarta med län-namn och siffror för 2010. Alla är i tusental hektar.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera rätt år",
+        "text": "Frågan handlar om 2010. Kartan visar fördelning för just det året (rubrik: 'Arealen skog i Sverige som gödslades 2010 fördelad på län. Tusental hektar.'). Den årliga stapelns sista stapel (−10) visar rikets totala 2010 = 80,3 tusental hektar.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta de två länens värden på kartan",
+        "text": "På kartan: Norrbotten 10,6 (norra delen). Jämtland 16,5 (mitten/norr). Båda är synligt utskrivna med printade decimaltal — du behöver inte ögonmäta.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Summera de två länens värden",
+        "text": "10,6 + 16,5. Räkna: 10 + 16 = 26, 0,6 + 0,5 = 1,1, sammanlagt 27,1 tusental hektar. Detta är täljaren i din andel.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera rikets totalsumma 2010",
+        "text": "Rikets totala gödslade areal 2010 = 80,3 tusental hektar (printad ovanför sista stapeln −10 i stapeldiagrammet). Detta är nämnaren. Som sanity-check: om du adderar alla län-värden på kartan ska summan landa nära 80,3 (Norrbotten 10,6 + Västerbotten 13,1 + Jämtland 16,5 + Västernorrland 13,8 + Gävleborg 7,7 + Dalarna 9,4 + Västmanland 1,3 + osv = ungefär 80).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'andel' i den här kontexten?",
+        "text": "Andel = del / helhet. Helheten är hela landets gödslade areal 2010 (80,3 tusental hektar). Delen är Norrbotten + Jämtland tillsammans (27,1 tusental hektar). Andelen är därför 27,1 / 80,3.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut kvoten",
+        "text": "27,1 / 80,3. Överslag: 27/80 = 0,3375. Du kan också tänka: 80 / 3 = 26,67, vilket är mycket nära 27,1 — så 27,1 / 80,3 är aningen större än 1/3 men inte mycket. Närmast 1/3 (0,333) bland alternativen.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot svarsalternativen",
+        "text": "Alternativen som decimaltal: 1/3 ≈ 0,333, 1/4 = 0,250, 1/5 = 0,200, 2/5 = 0,400. Din kvot 0,337 ligger närmast 1/3 (skillnad 0,004). 1/4 är 0,087 bort, 2/5 är 0,063 bort. Otvetydigt 1/3.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med ett alternativt grepp",
+        "text": "Tänk det baklänges: om svaret är 1/3 så bör Norrbotten + Jämtland tillsammans utgöra ungefär en tredjedel av rikets totalsumma 80,3. En tredjedel av 80 är 26,7 — och Norrbotten + Jämtland summerar till 27,1. Konsistent: båda värdena ligger inom 0,5 tusental av varandra.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Varför just dessa två län?",
+        "text": "Frågan listar Norrbotten och Jämtland — två stora norrländska län där skogsbruket och kvävegödsling är intensivast. Kartan bekräftar: de är två av kartans tre största värden (Norrbotten 10,6 och Jämtland 16,5; Västernorrland 13,8 är trean men inte i frågan). Tillsammans utgör de en betydande del av rikets gödsling.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (1/3). Insikten i en mening: när en fråga blandar två figurer (karta + stapeldiagram), läs av båda separat — län-värdena från kartan, rikets totala från stapeldiagrammet — och summera bara de specifika län som frågan nämner.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel av total från två figurer': (1) identifiera vilken figur som ger täljaren (kartan, län-värden) och vilken som ger nämnaren (stapeldiagrammet, rikets totala), (2) använd printade siffror direkt, (3) summera bara de namngivna länen, (4) dividera. Triggern: 'andel av [riket] som fanns i [två specifika län]' → två-figur-avläsning + summa-genom-total."
+  },
+  "host-2023-kvant1-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "16 900 hektar är frestande om du av misstag bara summerar de fyra länen som tydligast ligger i SÖDER (Skåne, Halland, Blekinge, Småland) och missar de mellan-svenska länen. Det blir för lite och ger en underskattning som råkar landa nära 16 900.",
+        "why_wrong": "Som steg 4 betonar är 'söder om Jämtland och Västernorrland' en GEOGRAFISK gräns — alla län söder om den linjen räknas, inte bara de absolut sydligaste. Det inkluderar Dalarna, Gävleborg, Värmland, Västmanland, Uppsala, Stockholm, osv. Facit fastslår 26 300, inte 16 900."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "30 300 är frestande om du av misstag tar med Västernorrland (13,8) i 'söder om' i stället för att exkludera det. Eller om du dubbelräknar någon mellan-region.",
+        "why_wrong": "Frågan säger uttryckligen 'söder OM Jämtland och Västernorrland' — alltså söder om GRÄNSEN, inte inklusive Västernorrland. Som steg 6 visar är Västernorrland 13,8 INTE med i summan. Att ta med det ger 26,3 + 13,8 = 40,1 (för stort), eller en kombination som landar nära 30,3. Facit fastslår 26 300."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "54 000 är frestande om du gör det omvända felet och TAR BORT bara de två stora nordliga länen Norrbotten (10,6) och Västerbotten (13,1) men låter Jämtland (16,5) och Västernorrland (13,8) ligga kvar i 'söder'. Då blir summan rikets totala minus bara Norrbotten + Västerbotten = 80,3 − 23,7 = 56,6 ≈ 54 000.",
+        "why_wrong": "Frågan exkluderar både Jämtland och Västernorrland samt allt norr om dem. Som steg 5 visar är 'norr om' totalt 54,0 tusental hektar (Norrbotten 10,6 + Västerbotten 13,1 + Jämtland 16,5 + Västernorrland 13,8). Det är resten av riket (söder) som ska summeras: 80,3 − 54,0 = 26,3 — vilket är facits svar B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: försöka summera 17–18 sydliga län och tappa bort en eller två i mitten, alternativt ta med Västernorrland av misstag. Botemedlet: vänd uppgiften och summera de 4 nordliga länen i stället.",
+    "pregrade_tactic": {
+      "handle": "Komplement-via-norr",
+      "move": "Summera de fyra nordliga länen (Norrbotten 10,6 + Västerbotten 13,1 + Jämtland 16,5 + Västernorrland 13,8 = 54,0), dra från rikets totala 2010 (80,3 från stapeldiagrammet) och få 26,3 tusental hektar."
+    },
+    "solution_path": "Facit fastslår 26 300 hektar (alternativ B). Strategin: använd komplement. Norr om gränsen finns FYRA län — Norrbotten, Västerbotten (norr om Jämtland/Västernorrland), Jämtland och Västernorrland själva. Summa norr = 10,6 + 13,1 + 16,5 + 13,8 = 54,0 tusental hektar. Rikets totala 2010 = 80,3 tusental hektar. Söder om gränsen = 80,3 − 54,0 = 26,3 tusental hektar = 26 300 hektar — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var den sammanlagda arealen skog som gödslades söder om Jämtland och Västernorrland år 2010? Svarsformatet är hektar (16 900, 26 300, 30 300, 54 000). Facit fastslår 26 300 hektar (alternativ B). Notera: 'söder OM' = exkluderar både Jämtland och Västernorrland själva.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Sverigekartan visar län-fördelningen 2010 i tusental hektar med printade decimaltal. Norrlandslänen ligger högst upp; Götaland och Svealand utgör mellersta och södra Sverige. Jämtland och Västernorrland är två län i norra mellansverige som tillsammans bildar en horisontell gräns: allt norr om dem är Norrbotten och Västerbotten.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'söder om' och vad är 'norr om'?",
+        "text": "'Söder om Jämtland och Västernorrland' = alla län som ligger LÄGRE på kartan än dessa två. Det inkluderar Dalarna, Gävleborg, Värmland, Västmanland, Uppsala, Stockholm, Södermanland, Örebro, Östergötland, Värmland, Gotland, V Götaland, Jönköping, Kronoberg, Kalmar, Halland, Skåne, Blekinge. 'Norr om' = Norrbotten + Västerbotten + Jämtland + Västernorrland (de SJÄLVA räknas inte som söder).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Strategi: komplementet (norr) är kortare",
+        "text": "Det är ungefär 18 län som ligger 'söder om' — för många att summera utan att tappa bort något. I stället: summera de FYRA länen norr om gränsen (Norrbotten, Västerbotten, Jämtland, Västernorrland) och dra från rikets totalsumma. Det är komplementmetoden — snabbare och säkrare.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Summera de fyra norra länen",
+        "text": "Norrbotten 10,6 + Västerbotten 13,1 + Jämtland 16,5 + Västernorrland 13,8. Räkna stegvis: 10,6 + 13,1 = 23,7; 16,5 + 13,8 = 30,3; 23,7 + 30,3 = 54,0 tusental hektar. Norra delen utgör alltså 54,0 av rikets totala.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Hitta rikets totalsumma 2010",
+        "text": "Från stapeldiagrammet (samma sida): den sista stapeln −10 har printad värde 80,3. Det är hela landets gödslade areal 2010 i tusental hektar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'komplement' i den här kontexten?",
+        "text": "Komplementet av 'söder om' relativt riket är 'norr om eller PÅ gränsen' (alltså Jämtland, Västernorrland, Västerbotten, Norrbotten). Summan av en del + komplementet = helheten. Därför: söder = riket − norr.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut söder-delen",
+        "text": "Söder = riket − norr = 80,3 − 54,0 = 26,3 tusental hektar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Översätt till hela hektar",
+        "text": "Diagrammets enhet är tusental hektar; alternativen är i hela hektar. 26,3 tusental hektar = 26 300 hektar. Multiplicera bara med 1 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via direktsummering",
+        "text": "Som kontroll: addera några av de större söder-länen och se att summan ligger nära 26,3. T.ex. Dalarna 9,4 + Västernorrland (FEL — inte med) + Gävleborg 7,7 + Värmland 2,0 + Uppsala 1,6 + Västmanland 1,3 + Örebro 0,7 + Östergötland 2,7 + Kronoberg 0,3 + Skåne 0,2 + Kalmar 0,2 + ... ≈ 26. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativen är 16 900, 26 300, 30 300, 54 000. Din uträkning 26 300 träffar exakt alternativ B. Alternativ D (54 000) är komplementet (norr-delen) — en distraktor för dem som missar att frågan ber om söder.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (26 300 hektar). Insikten i en mening: när 18 län ska summeras 'söder om gränsen' — använd komplementmetoden och summera bara de 4 länen norr om gränsen, sedan dra från rikets totala (80,3 från stapeldiagrammet).",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'summa av många regioner med geografisk avgränsning': (1) identifiera gränslänen och vad som ligger på vardera sidan, (2) välj den sida med FÄRST regioner som komplementmängd, (3) summera komplementet och dra från totalsumman (om totalsumman finns tillgänglig). Triggern: 'söder/norr/öster om X och Y' med riks-totalsumma tillgänglig → komplementmetod, inte alla-län-summering."
+  },
+  "host-2023-kvant1-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "1985 är frestande om du läser av FÖRSTFÖDERSKOR-linjen för högt (säg 26 år i stället för 25) och tror att medelåldern 24,9 ligger ungefär 5 år före. Det är en avläsningsförskjutning som lätt rullar med över hela tidsperioden.",
+        "why_wrong": "Som steg 5 visar passerar Förstföderskor-linjen 24,9 vid omkring 1980, inte 1985. Vid 1985 ligger förstföderskor redan vid ungefär 26 år. Facit fastslår 1980 (alternativ A)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1990 är frestande om du blandar ihop FÖRSTFÖDERSKOR med SAMTLIGA (medellinjen). Vid 1990 ligger Samtliga ungefär vid 28 år och Förstföderskor vid ungefär 27 — då är 24,9 redan flera år bakom oss.",
+        "why_wrong": "Steg 3 betonar att Förstföderskor är den NEDRE av de tre linjerna (streckad lägst). Vid 1990 har Förstföderskor redan passerat 26+. För att Förstföderskor = 24,9 måste du gå tillbaka till en tidpunkt då linjen var som lägst — vilket är tidigt 80-tal. Facit fastslår 1980."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1995 är frestande om du läser av OMFÖDERSKOR-linjen (övre, streckad) för 29,0 — det stämmer ungefär! Vid 1995 ligger omföderskor runt 29,5. Men då måste förstföderskor också matcha, och det gör de inte.",
+        "why_wrong": "Frågan kräver att BÅDA villkoren är uppfyllda SAMTIDIGT — förstföderskor 24,9 OCH omföderskor 29,0. Som steg 6 visar matchar 1980 båda (förstföderskor 24,9, omföderskor 29,0), medan 1995 matchar bara omföderskor (29,0) men inte förstföderskor (då ~27,8). Facit fastslår 1980."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: läsa av bara EN linje och stanna där, utan att kontrollera den andra. Botemedlet: tvinga in en 'och'-kontroll genom att dra en lodrät linje vid kandidat-året.",
+    "pregrade_tactic": {
+      "handle": "Två-linjer-ett-år",
+      "move": "Dra en horisontell linje på 24,9 och hitta var förstföderskor-linjen korsar den. Dra en till linje på 29,0 och bekräfta att omföderskor-linjen passerar SAMTIDIGT samma år."
+    },
+    "solution_path": "Facit fastslår 1980 (alternativ A). Övre diagrammet 'Medelåldern bland samtliga barnaföderskor samt bland förstföderskor och omföderskor, 1974–2014' visar tre linjer på y-axeln 22–34 år. Vid 1980 ligger Förstföderskor (nedersta linjen) på cirka 24,9 och Omföderskor (översta linjen) på cirka 29,0 — båda kriterierna är uppfyllda samtidigt, konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år var medelåldern för FÖRSTFÖDERSKOR 24,9 år OCH medelåldern för OMFÖDERSKOR 29,0 år? Svarsformatet är ett av fyra årtal (1980, 1985, 1990, 1995). Facit fastslår 1980 (alternativ A). Du letar efter ett SPECIFIKT år där båda värdena passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Övre diagrammet på sidan visar medelåldern för olika grupper barnaföderskor 1974–2014. Y-axeln går 22–34 år (med tick-värden vid 22, 24, 26, 28, 30, 32, 34). X-axeln är år med tick-värden vid 1974, 1978, 1982, 1986, 1990, 1994, 1998, 2002, 2006, 2010, 2014.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de tre linjerna",
+        "text": "Legenden listar tre linjer: Omföderskor (streckad, ÖVERSTA), Samtliga (heldragen, mellan), Förstföderskor (streckad-och-prickad, UNDERSTA). De ligger i denna ordning genom hela diagrammet — omföderskor är alltid äldst i snitt, förstföderskor yngst.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lokalisera kandidat-året via förstföderskor",
+        "text": "Eftersom förstföderskor-linjen är den nedersta är dess minsta värde i diagrammet runt 23 år (1974). Den stiger genom tidsperioden. Värdet 24,9 ligger ungefär 2 år ovanför ursprungspunkten — sök var linjen passerar y = 24,9 (strax under 25-strecket). Det inträffar tidigt 80-tal, omkring 1980.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Bekräfta med omföderskor-linjen samma år",
+        "text": "Gå till x = 1980. Läs av var omföderskor-linjen (översta) ligger där: den är ungefär vid 29,0 (strax under 30-strecket). Båda kriterierna är uppfyllda samtidigt — förstföderskor 24,9 OCH omföderskor 29,0 inträffar i samma år: 1980.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'medelålder' i kontexten?",
+        "text": "Medelålder = genomsnittlig ålder för alla födande i en kategori under det aktuella året. Förstföderskor = kvinnor som föder för första gången. Omföderskor = kvinnor som föder igen (en eller flera tidigare födslar). Omföderskor är i snitt äldre, eftersom de har 'haft tid' att hinna med ett tidigare barn.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Eliminera de andra åren via förstföderskor",
+        "text": "Vid 1985 ligger förstföderskor-linjen vid ungefär 26 år — inte 24,9. Vid 1990 ligger den vid ungefär 27 år. Vid 1995 ligger den vid ungefär 27,8 år. Endast 1980 ger 24,9 för förstföderskor. Det räcker egentligen att titta på en linje — den andra är bekräftelse.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera de andra åren via omföderskor",
+        "text": "Vid 1985 ligger omföderskor-linjen vid ungefär 29,5. Vid 1990 vid 30+. Vid 1995 vid 30+. Endast 1980 ger 29,0 (omföderskor) i kombination med förstföderskor 24,9. Båda kriterierna styr mot samma år.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via skillnaden",
+        "text": "Skillnaden mellan omföderskor och förstföderskor 1980 = 29,0 − 24,9 = 4,1 år. Det är konsistent med att omföderskor har 'hunnit' med ett tidigare barn (säg 2-4 års intervall) och är genomsnittligt något äldre vid första barnafödseln än förstföderskor (eftersom omföderskor även inkluderar äldre kvinnor från senare barnafödslar). En differens på ~4 år är rimlig.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativen är 1980, 1985, 1990, 1995. Bara 1980 matchar BÅDA villkoren. De andra åren matchar inte ens ett av villkoren entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Varför är det inte ett tidigare år?",
+        "text": "Diagrammet börjar 1974. Vid 1974 ligger förstföderskor ungefär vid 23 år och omföderskor ungefär vid 28 år — båda LÄGRE än 24,9 och 29,0. Förstföderskor klättrar upp till 24,9 ungefär 1980 och omföderskor klättrar till 29,0 också ungefär 1980. Eftersom båda linjerna stiger någorlunda parallellt under tidsperioden är det här just det år då båda är samtidigt på kriterievärdena.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (1980). Insikten i en mening: när en fråga ställer två linjevärden samtidigt — dra en imaginär lodrät linje vid kandidat-året och kontrollera att BÅDA y-värdena stämmer; ett villkor som passar för en linje ensam är inte tillräckligt.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'samtidigt två linjekvinnor passar' på linjediagram: (1) identifiera vilken linje som är vilken via legenden, (2) hitta året där den ena linjen passerar sitt kriterievärde, (3) dra lodrät linje vid det året och bekräfta att den andra linjen samtidigt passerar SITT kriterievärde, (4) eliminera övriga år där minst ett kriterium fallerar. Triggern: 'år X var värde A för kategori P och värde B för kategori Q' → lodrät-linje-kontroll med båda kriterier."
+  },
+  "host-2023-kvant1-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "8 år är frestande om du läser av 30–34-åriga förstföderskors andel 1990 lågt (säg 10 %) och sedan letar var den dubblas till bara 20 %. Det inträffar tidigare än 14 år bort, runt 1998 — alltså 8 år senare.",
+        "why_wrong": "Som steg 4 betonar är 1990-värdet för 30–34 åriga förstföderskor ungefär 12–13 %, inte 10 %. Det dubbla är därför 24–26 %, inte 20 %. Som steg 5 visar passerar linjen 24–26 % först runt 2004 — alltså 14 år senare. Facit fastslår 14 (alternativ D)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "9 år är frestande om du läser av 1990-värdet något lägre än det egentligen är och letar efter dubblerade värdet kring 1999. Det är en grannvariant av samma fel som i A.",
+        "why_wrong": "Steg 4 visar att 1990-värdet är 12–13 %, vilket ger dubblerat värde 24–26 %. Den 30–34-linjen passerar den nivån inte förrän tidigt 2000-tal — närmare 2004 än 1999. Facit fastslår 14, inte 9."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "11 år är frestande om du är på rätt spår men ändå underskattar fördröjningen och tror att linjen passerar 25 % runt 2001. Mellanland-svaret som ligger nära men inte rätt.",
+        "why_wrong": "Steg 5 visar att 30–34-linjen ligger vid ungefär 25 % först omkring 2004. 2001 ligger linjen mer runt 20–22 %, vilket är märkbart lägre än dubbla utgångsvärdet. Facit fastslår 14 år."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: anta linjär ökning och uppskatta fördubblings-tiden grovt utan att faktiskt spåra linjen. Botemedlet: använd gridlinjerna och följ linjen aktivt fram till mål-värdet.",
+    "pregrade_tactic": {
+      "handle": "Start-värde-dubbel-tidpunkt",
+      "move": "Avläs 30–34-linjen vid x = 1990 (mittersta diagrammet, förstföderskor) — den ligger ungefär vid 12–13 %. Räkna ut 2× = 24–26 %. Hitta var linjen passerar den nivån — det är 2004-ish, alltså 14 år senare."
+    },
+    "solution_path": "Facit fastslår 14 år (alternativ D). I mittersta diagrammet (Förstföderskor) visar 30–34-linjen (heldragen, mörk) en stadigt stigande trend. Vid 1990 ligger linjen ungefär vid 12–13 % på y-axeln (0–50). Dubblerat värde = 24–26 %. Linjen passerar den nivån omkring 2004 — alltså 14 år senare än 1990. Konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: andelen 30–34-åriga förstföderskor 1990 — efter hur många år hade den FÖRDUBBLATS? Svarsformatet är antal år (8, 9, 11, 14). Facit fastslår 14 år (alternativ D). Du letar alltså efter en tidsdifferens, inte ett årtal direkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i rätt diagram",
+        "text": "Sidan har TRE diagram: överst medelåldern bland samtliga barnaföderskor, mitten åldersfördelningen bland förstföderskor, underst åldersfördelningen bland omföderskor. Frågan handlar om FÖRSTFÖDERSKOR — alltså MITTERSTA diagrammet. Y-axeln är Procent 0–50 med tick-värden 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera 30–34-linjen i legenden",
+        "text": "Legenden listar fem åldersgrupper: –19 år (prick-streck), 20–24 år (streckad), 25–29 år (heldragen mörk), 30–34 år (heldragen mellan-grå), 35+ år (heldragen med stjärnor). Lås in 30–34-linjen — den är en heldragen mellan-grå linje.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs 30–34-linjens värde 1990",
+        "text": "Vid x = 1990, projicera 30–34-linjen ner till y-axeln. Linjen ligger ungefär halvvägs mellan 10- och 15-strecken — alltså vid cirka 12–13 %. Skriv ner 12 % som ett rundat utgångsvärde.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna ut det fördubblade värdet",
+        "text": "Fördubblat värde = 2 × 12 = 24 %. Eller 2 × 13 = 26 %. Mål-y-värdet ligger alltså strax under eller vid 25-strecket.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Hitta när 30–34-linjen passerar mål-y",
+        "text": "Följ 30–34-linjen från 1990 (12-13 %) framåt i tiden och se var den passerar 24–26 %. Linjen stiger ganska stadigt: vid 1995 är den ~17 %, vid 2000 ~22 %, vid 2004 ~25-26 %. Linjen passerar mål-värdet ungefär 2004.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'fördubbla' i den här kontexten?",
+        "text": "Att fördubbla = att gångra med 2. Om utgångsvärdet är 12 % är fördubblat värdet 24 %. Det handlar om en relativ ökning på 100 %, inte en absolut ökning på 12 procentenheter (det skulle bli samma siffra men det är ett tankefel att blanda).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut tidsdifferensen",
+        "text": "Från 1990 till ungefär 2004 = 14 år. Skriv det: 2004 − 1990 = 14.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via grannåren",
+        "text": "Vid 1990 + 8 = 1998 ligger linjen vid ungefär 20 % — inte 24-26. Vid 1990 + 9 = 1999 ligger linjen runt 21 %. Vid 1990 + 11 = 2001 ligger linjen runt 22-23 %. Endast vid 1990 + 14 = 2004 når linjen 24-26 %. De andra alternativen ligger alltså flera procentenheter under målet.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativen är 8, 9, 11, 14 år. Din uträkning 14 år träffar alternativ D exakt. De andra alternativen ligger 3+ år bort och motsvarar tidpunkter där linjen är 2-5 procentenheter under mål-värdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Reflektera på trenden",
+        "text": "30–34-åriga förstföderskor mer än fördubblades från 1990 till 2014 (~12 % → ~35 %) — det är en del av den välkända trenden att kvinnor får sitt första barn allt senare i livet. Fördubblings-tiden på 14 år är en bra sanity-check på den övergripande tendensen.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (14 år). Insikten i en mening: i fördubblingsfrågor — avläs startvärdet noggrant, räkna ut 2×, och spåra linjen framåt i tiden tills den når den nya nivån; tidsskillnaden mellan startår och passage-år är svaret.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för fördubblingsfrågor på linjediagram: (1) lokalisera rätt linje via legenden, (2) avläs startvärdet vid det specifika året mot y-axelns gridlinjer, (3) räkna ut 2× = målvärdet, (4) spåra linjen framåt och hitta året då den passerar målvärdet, (5) ta tidsdifferensen. Triggern: 'efter hur många år hade andelen fördubblats' → startavläsning + 2× + framåtspårning."
+  },
+  "host-2023-kvant1-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Den här ordningen är frestande om du gissar att 35+ är en liten grupp (lägre än 20–24) — men det stämmer inte 2010. Ordningen suggererar att äldre föderskor är ovanliga, vilket var sant under 70-talet men inte 2010.",
+        "why_wrong": "Som steg 6 visar är 35+ år (linjen med stjärnor) en av de STÖRRE grupperna 2010 — den ligger på cirka 28–30 % och alltså HÖGRE än 25–29 år (~28 %) och definitivt högre än 20–24 år (~7 %). Facit fastslår D, där 35+ ligger näst högst. Alternativ A felplacerar 35+ för lågt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Den här ordningen är frestande om du blandar ihop fördelningen för förstföderskor (mittersta diagrammet) med omföderskor (nedersta diagrammet). I förstföderskor 2010 ligger 30–34 högst, men ordningen mellan de andra åldersgrupperna skiljer sig.",
+        "why_wrong": "Frågan ber om OMFÖDERSKOR 2010 — alltså NEDERSTA diagrammet. Som steg 5 visar är ordningen där: −19 < 20–24 < 25–29 < 35+ < 30–34. Alternativ B placerar 35+ mellan 20–24 och 25–29, vilket är fel; 35+ ligger högre än 25–29 för omföderskor 2010."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Den här ordningen är frestande om du antar att åldersgrupperna stiger linjärt med åldern — yngre färre, äldre fler — och sätter 35+ högst. Den intuitionen är dock fel för 2010.",
+        "why_wrong": "Som steg 6 visar har 30–34 år den HÖGSTA andelen 2010 (cirka 35–36 %), inte 35+ (cirka 28–30 %). Trenden 'större andel äldre' bryter alltså vid 30–34, inte vid 35+. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: gissa ordningen utifrån antagandet att 'äldre föderskor = fler' eller 'yngre = fler'. Botemedlet: avläs faktiska värden och sortera dem.",
+    "pregrade_tactic": {
+      "handle": "Lodrät-linje-2010",
+      "move": "Dra en lodrät linje vid x = 2010 i NEDERSTA diagrammet (omföderskor), läs av var och en av de fem linjerna ligger på y-axeln, och sortera värdena i stigande ordning."
+    },
+    "solution_path": "Facit fastslår D (–19 år < 20–24 år < 25–29 år < 35+ år < 30–34 år). I nedersta diagrammet (omföderskor) vid x = 2010, läs av varje åldersgrupps y-värde: –19 år ~0 %, 20–24 år ~7 %, 25–29 år ~28 %, 30–34 år ~36 %, 35+ år ~28-30 %. Stigande ordning: –19 < 20–24 < 25–29 < 35+ < 30–34 — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: studera åldersfördelningen bland OMFÖDERSKOR år 2010 — vilken ordning (från minst till störst andel) har de fem åldersgrupperna? Alternativ A–D är fyra olika ordningar. Facit fastslår D: –19 år < 20–24 år < 25–29 år < 35+ år < 30–34 år.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i rätt diagram",
+        "text": "Frågan handlar om OMFÖDERSKOR — alltså NEDERSTA av sidans tre diagram. Y-axeln går 0–50 % och x-axeln 1974–2014. Fem linjer enligt legenden, samma åldersgrupper som i förstföderskor-diagrammet (mitten).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera linjerna i legenden",
+        "text": "Legenden anger: –19 år (prick-streck), 20–24 år (streckad), 25–29 år (heldragen mörk), 30–34 år (heldragen mellan-grå), 35+ år (heldragen med stjärnor). Memorera vilken linjetyp som motsvarar vilken åldersgrupp innan du börjar avläsa.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Dra en lodrät linje vid x = 2010",
+        "text": "Vid x = 2010 (näst-högsta x-tick-värdet) — dra en imaginär vertikal linje genom hela diagrammet. Du behöver nu läsa av var var och en av de fem linjerna skär den vertikalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs varje åldersgrupps värde 2010",
+        "text": "Projicera varje linjes skärningspunkt mot y-axelns gridlinjer:\n• –19 år: ligger praktiskt taget vid 0 %, mycket nära botten — säg 0,5–1 %.\n• 20–24 år: ligger ungefär vid 6-7 % — väl synligt över botten men under 10.\n• 25–29 år: ligger ungefär vid 28 % — strax under 30-linjen.\n• 30–34 år: ligger ungefär vid 35-36 % — högsta linjen vid det här året.\n• 35+ år: ligger ungefär vid 28-30 % — strax under eller vid 30-linjen, möjligen marginellt över 25–29 år.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sortera värdena från minst till störst",
+        "text": "0,5 (–19) < 7 (20–24) < 28 (25–29) < 29 (35+) < 36 (30–34). Skriv ut: –19 år < 20–24 år < 25–29 år < 35+ år < 30–34 år. Detta är exakt facits ordning D.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'omföderskor' och varför är ordningen så?",
+        "text": "Omföderskor = kvinnor som föder igen efter tidigare barn. Eftersom första barnet i snitt föds runt 28-30 år 2010 är det rimligt att DET ANDRA barnet (eller senare) föds vid 30+ — vilket förklarar att 30–34-årsgruppen dominerar. 35+ ligger också högt eftersom kvinnor som hade första barnet sent får sitt andra ännu senare.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Var skiljer sig alternativen?",
+        "text": "Alla fyra alternativ har –19 < 20–24 i botten — det är inte stridsfrågan. Stridsfrågan är var 35+ hamnar:\n• A: 35+ före 20–24 (felaktigt — 35+ är mycket större än 20–24)\n• B: 35+ mellan 20–24 och 25–29 (felaktigt — 35+ är högre än 25–29)\n• C: 35+ högst (felaktigt — 30–34 är högre)\n• D: 35+ näst högst, 30–34 högst (rätt)",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via summan",
+        "text": "Andelarna i omföderskor 2010 ska summera till 100 % (eftersom det är en åldersFÖRDELNING). Summa: 0,5 + 7 + 28 + 36 + 29 = 100,5. Konsistent (avläsnings-osäkerhet på ±1 procentenhet).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via en annan visuell ledtråd",
+        "text": "I 2010 är 30–34-linjen den absolut översta i nedersta diagrammet (ligger högre än både 25–29 och 35+). Det är den visuella stöttepelaren: titta efter linjen som ligger HÖGST vid 2010 — det är 30–34. Och linjen NÄST HÖGST är 35+ (linjen med stjärnor). Det utesluter C direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka rätt alternativ",
+        "text": "Alternativ D är det enda som har:\n• –19 längst ner ✓\n• 30–34 högst ✓\n• 35+ näst högst ✓\n• 20–24 näst längst ner ✓\n• 25–29 i mitten ✓\nFacit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D. Insikten i en mening: i ranknings-frågor på linjediagram — dra en lodrät linje vid det specifika året, läs av alla linjernas y-värden mot gridlinjerna, sortera de fem värdena; lita inte på intuition om monotont stigande/sjunkande ordning.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för rankings-frågor på flera linjer: (1) lokalisera rätt diagram + rätt år, (2) dra en imaginär lodrät linje vid det året, (3) läs av varje linjes y-värde där den korsar vertikalen, (4) sortera värdena i ordning. Triggern: 'vilket alternativ anger hur åldersgruppernas andelar förhöll sig' → fem-värdens-avläsning + sortering, inte intuition om åldersmonotonisitet."
+  },
   "host-2023-kvant1-KVA-013": {
     "_meta": {
       "generated_at": "2026-05-14",
@@ -116,7 +1276,7 @@
         "why_wrong": "Steg 5–6 visar att f(−1) och f(3) kan räknas ut explicit — funktionsformeln är helt bestämd och båda x-värden är konkreta tal. Inget x är okänt här."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-022",
     "pitfall": "Den vanligaste fällan är teckenslarvet i (-1)^{2} och -3 \\cdot (-1). Botemedlet: skriv alltid ut tecknet på varje faktor separat, och räkna par för par — och kom ihåg: en NEGATIV upphöjd till JÄMN exponent blir POSITIV.",
     "pregrade_tactic": {
       "handle": "Funktionsvärdes-jämförelsen",
@@ -310,7 +1470,7 @@
         "why_wrong": "Steg 9 visar att JÄMFÖRELSEN är låst trots att y har två möjliga värden — båda är < 16. 'Otillräcklig' gäller bara när olika möjliga värden skulle ge olika jämförelseriktningar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-001",
     "pitfall": "Den vanligaste fällan är att glömma den negativa roten och bara använda x = 5. Botemedlet: när du löser x^{2} = k med k > 0 — skriv alltid ut BÅDA: x = \\sqrt{k} och x = -\\sqrt{k}, och testa varje x i nästa steg.",
     "pregrade_tactic": {
       "handle": "Kvadratrots-fallanalysen",
@@ -410,7 +1570,7 @@
         "why_wrong": "Steg 4–7 visar att ekvationen E − 6 = E/3 har en unik lösning (E = 9). En ekvation i en obekant räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-031",
     "pitfall": "Den vanligaste fällan är att skriva \\frac{1}{3} E fel — t.ex. som E + 1/3 eller 3E. Botemedlet: säg orden högt — 'en tredjedel av nio är tre' — och kolla att översättningen ger samma sak.",
     "pregrade_tactic": {
       "handle": "Åldersekvationen",
@@ -604,7 +1764,7 @@
         "why_wrong": "Steg 5 visar att likhet bara gäller för ETT av tre möjliga par. Andra par ger andra resultat — alltså är likhet inte garanterad."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-036",
     "pitfall": "Den vanligaste fällan är att stanna vid det första parförslag som faller en in (typ 3 · 4 = 12) och tro att 'medelvärdet är 3,5' gäller generellt. Botemedlet: lista ALLA heltalsfaktoriseringar systematiskt — från (1, P) ned till (√P, √P) — innan slutsats.",
     "pregrade_tactic": {
       "handle": "Multipla-fallen",
@@ -698,7 +1858,7 @@
         "why_wrong": "Steg 6 visar att likhet bara gäller för det rätvinkliga likbenta fallet. Likbent triangel är INTE per definition rätvinklig."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-008",
     "pitfall": null,
     "pregrade_tactic": {
       "handle": "Multipla-fallen",
@@ -803,7 +1963,7 @@
         "why_wrong": "Steg 9 visar att kombinationen ger unik lösning. Tillsammans skär de två påståendena bort alla alternativ utom ett."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-005",
     "pitfall": null,
     "pregrade_tactic": {
       "handle": "Testa-vardera-ensamt",
@@ -914,7 +2074,7 @@
         "why_wrong": "Steg 8 visar att (2) bara fixerar LR, inte SR. 'Var för sig räcker' kräver att vardera ensam ger unik lösning — de gör de inte."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-006",
     "pitfall": "Den vanligaste fällan är att tro att 'fler än hälften' = 'exakt hälften plus en' = ett konkret tal. Botemedlet: skriv ut OLIKHETER explicit som t.ex. SR + LR ≥ 43 och konstaterar att olikheter inte begränsar till EN unik lösning.",
     "pregrade_tactic": {
       "handle": "Olikhets-varningen",
@@ -2436,6 +3596,1278 @@
     ],
     "technique": "Delgrupp-och-totalsumma-strategin: när ett medelvärde gäller alla och ett annat gäller en delgrupp — konvertera båda till summor, sedan är 'individens värde' = totalsumma minus delgruppssumman. Triggern: medelvärden för en grupp och en undergrupp."
   },
+  "host-2023-kvant2-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "N:a fjällsamebyar (norra fjällsamebyar i Norrbottens län) ligger högst upp i Norrbotten-blocket av tabellen och dominerar visuellt med 1 430 totala renägare. Kvinnoandelen är 620/1430 = 43 % — väl över en tredjedel. Det första kriteriet (>1/3 kvinnor) är uppfyllt.",
+        "why_wrong": "Som steg 6 betonar är det ANDRA kriteriet (renar per renägare < 30) som fäller A. N:a fjäll har 50 renar/renägare — inte under 30. Båda kriterier måste vara uppfyllda SAMTIDIGT. Facit fastslår C (Skogssamebyar)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "S:a fjällsamebyar har också hög kvinnoandel (413/876 = 47 %) — kvinno-kriteriet är klart uppfyllt. Visuellt är det också ett Norrbotten-län-svar.",
+        "why_wrong": "Renar per renägare i S:a fjäll är 52 — inte under 30. Som steg 6 betonar är kvinnoandel inte hela ekvationen; båda villkoren måste passa. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Koncessionssamebyar har renar/renägare = 13, vilket är klart under 30 — det första kriteriet är uppfyllt med marginal. Och raden ligger lite avskilt i tabellen, vilket lockar uppmärksamhet.",
+        "why_wrong": "Som steg 2 betonar grupperas Koncessionssamebyar SEPARAT i tabellen — de tillhör inte Norrbottens län (de är en egen kategori). Frågan handlar specifikt om sameby-typer i Norrbottens län. Facit fastslår C (Skogssamebyar), som ligger i Norrbottens-blocket OCH uppfyller båda kriterierna."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: tro att Koncessionssamebyar tillhör Norrbottens län och välja D. Botemedlet: läs tabellens läns-indragning bokstavligt — Koncessionssamebyar listas separat.",
+    "pregrade_tactic": {
+      "handle": "Båda-villkoren-i-Norrbotten",
+      "move": "Bland Norrbottens tre sameby-typer (N:a fjäll, S:a fjäll, Skogs), bocka av båda villkoren samtidigt: ren/renägare < 30 OCH kvinnor > 1/3 av renägarna. Endast Skogssamebyar klarar bägge."
+    },
+    "solution_path": "Facit fastslår C (Skogssamebyar). I Norrbottens län finns tre typer: N:a fjäll (50 renar/renägare, ej < 30 ⇒ uteslut), S:a fjäll (52 renar/renägare, ej < 30 ⇒ uteslut), Skogssamebyar (26 renar/renägare ✓ < 30; kvinnor 304 av 830 = 36,6 % > 1/3 ✓). Båda villkoren uppfyllda — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: för vilken typ av sameby i NORRBOTTENS LÄN gällde år 2016 både att (a) antalet renar per renägare var mindre än 30 OCH (b) mer än var tredje renägare var kvinna? Svarsalternativen är fyra sameby-typer. Facit fastslår C (Skogssamebyar). Två villkor som båda måste vara uppfyllda samtidigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Samebyar och renägare' har två block: ÖVRE blocket (per län och typ av sameby, för år 2016) och NEDRE blocket (Hela riket per år 1995–2016). Frågan handlar om ÖVRE blocket, år 2016. Övre blocket är grupperat efter LÄN: Jämtlands län, Västerbottens län, Norrbottens län, och separat Koncessionssamebyar. Du är intresserad av Norrbottens-blocket.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera Norrbottens tre sameby-typer",
+        "text": "Norrbottens län har tre rader: N:a fjällsamebyar, S:a fjällsamebyar, Skogssamebyar. Koncessionssamebyar listas separat under (inte under Norrbotten) — det är en avtals-baserad form. Begränsa alltså jakten till de tre Norrbotten-raderna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta kolumnen 'Renar per renägare'",
+        "text": "Tabellen har en kolumn längst till höger som heter 'Renar per renägare' (yttersta kolumnen i övre blocket). Detta är kriterie 1: värdet ska vara < 30.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs kriterie 1 för de tre raderna",
+        "text": "• N:a fjällsamebyar: 50 renar/renägare — INTE under 30.\n• S:a fjällsamebyar: 52 renar/renägare — INTE under 30.\n• Skogssamebyar: 26 renar/renägare — UNDER 30 ✓.\nEndast Skogssamebyar passerar kriterie 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'mer än var tredje renägare var kvinna'?",
+        "text": "'Var tredje' = en tredjedel = 1/3 ≈ 33,3 %. 'Mer än var tredje var kvinna' betyder alltså kvinnornas andel av renägarna > 1/3. Räkna: Kvinnor / Renägare totalt > 0,333.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Avläs kriterie 2 för Skogssamebyar",
+        "text": "Skogssamebyar rad: Renägare totalt = 830, varav Män 520 och Kvinnor 304. Kvinnornas andel = 304/830. Räkna: 304/830 ≈ 0,366 ≈ 37 %. 37 % > 33 % ✓. Kriterie 2 är uppfyllt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med övriga rader",
+        "text": "Andra Norrbotten-rader för fullständighetens skull:\n• N:a fjäll: 620/1430 ≈ 43 % kvinnor (>33 % ✓), men kriterie 1 falska.\n• S:a fjäll: 413/876 ≈ 47 % kvinnor (>33 % ✓), men kriterie 1 falska.\nAlla Norrbotten-typer klarar kvinno-kriteriet, men bara Skogssamebyar klarar renar/renägare-kriteriet.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med Koncessionssamebyar (varför inte D)",
+        "text": "Koncessionssamebyar har renar/renägare = 13 (klart <30) och kvinnor 187/795 ≈ 23,5 % (< 33 % ⇒ inte uppfyllt). Dessutom är de inte i Norrbottens län. D är dubbelt fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Bekräfta båda kriterier för Skogssamebyar",
+        "text": "Skogssamebyar 2016:\n• Renar/renägare = 26 (< 30) ✓\n• Kvinnors andel av renägarna = 304/830 ≈ 36,6 % (> 33,3 %) ✓\nBåda villkor uppfyllda samtidigt — det är det enda alternativ som klarar båda.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Reflektera på betydelsen",
+        "text": "Skogssamebyar har låg ren-densitet (få renar per renägare) och hög kvinnoandel — det reflekterar en mer mångsidig och småskalig sameby-form jämfört med fjällsamebyarnas större ren-hjordar med högre ren/renägare-ratio. Det är konsistent med att skogssamebyarna historiskt sett haft en blandning av rennäring och annan ekonomisk verksamhet.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (Skogssamebyar). Insikten i en mening: när två villkor måste uppfyllas SAMTIDIGT — eliminera först alla rader som faller på ett enda villkor, sedan kontrollera den/de återstående mot det andra villkoret.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'två villkor samtidigt' i tabeller: (1) identifiera vilken länskategori/grupp frågan avgränsar till, (2) hitta kolumnerna som motsvarar respektive villkor, (3) skanna och kryssa de rader som klarar villkor 1, (4) av dessa, kontrollera villkor 2, (5) endast den rad som klarar BÅDA är svaret. Triggern: 'både att X OCH att Y' → korsfiltrering, inte enkelfiltrering."
+  },
+  "host-2023-kvant2-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "10 procent är frestande om du räknar absolut ökning i procentENHETER snarare än procentuell ökning. 1843 − 1603 = 240; 240 / 1843 ≈ 13 % från den nya nivån — ett snarlikt fel.",
+        "why_wrong": "Som steg 5 visar är 'ökat med X procent' = (ny − gammal) / GAMMAL × 100 %. Med 1603 som bas blir 240/1603 = 15 %. Att dela med fel bas (1843) ger ungefär 13 % — vilket avrundas till 10 % som närmaste alternativ. Men det är fel metod. Facit fastslår 15 procent (alternativ B)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "20 procent är frestande om du läser fel i kolumnen Kvinnor och tar t.ex. 1995-värdet 1603 vs ett senare år som 1699 (2005) eller 1792 (2010), då skillnaden ser ut att vara större relativt sett.",
+        "why_wrong": "Frågan ber om jämförelsen 2016 vs 1995 specifikt. Som steg 4 betonar: använd 1843 (2016) och 1603 (1995). Ökningen är 240, vilket är 240/1603 = 15,0 %. Inte 20 %. Facit fastslår 15 procent."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "25 procent är frestande om du av misstag jämför Kvinnor 2016 med en mycket äldre baslinje (t.ex. om du tror att 1995 är 1500 i stället för 1603). En 25 % ökning från en lägre bas matchar inte data men kan kännas plausibelt.",
+        "why_wrong": "Hela rikets kvinnor 1995 = 1603 enligt tabellens nedre blocks rad för 1995. Det är ett printat värde, inte en visuell uppskattning. Som steg 5 visar är ökningen 15 % — definitivt inte 25 %. Facit fastslår 15 procent."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: dela med 'ny' i stället för 'gammal' eller blanda ihop procent med procentenheter. Botemedlet: skriv ut formeln (ny − gammal) / GAMMAL × 100 % varje gång.",
+    "pregrade_tactic": {
+      "handle": "Procentuell-genom-gamla",
+      "move": "Avläs Hela riket kvinnor 2016 (1843) och 1995 (1603) i nedre tabellblocket. Räkna ökning 240, dela med 1603 (basen, gamla värdet) och multiplicera med 100 — 15 %."
+    },
+    "solution_path": "Facit fastslår 15 procent (alternativ B). I nedre tabellblocket Hela riket: Kvinnor 2016 = 1843, Kvinnor 1995 = 1603. Ökning = 1843 − 1603 = 240. Procentuell ökning = 240 / 1603 × 100 % = 14,97 % ≈ 15 % — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: med hur många procent hade antalet kvinnor som var renägare ökat 2016 jämfört med 1995? Svarsformatet är procent (10, 15, 20, 25). Facit fastslår 15 procent (alternativ B). 'Procentuell ökning', inte procentenheter eller absolut antal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta rätt block i tabellen",
+        "text": "Tabellen har två block: övre (per län 2016) och nedre (Hela riket per år). Frågan jämför 1995 vs 2016 för hela riket — alltså NEDRE blocket. Det blocket har år-rader: 2016, 2015, 2014, 2010, 2005, 2000, 1995.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta rätt kolumn",
+        "text": "I nedre blocket finns kolumnerna Samebyar, Ansvariga i renskötselgrupper, Renägare (Totalt, Män, Kvinnor), Renar, Renar/renskötselgruppsansvarig, Renar per renägare. Du behöver KVINNOR-kolumnen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs Kvinnor 2016 och 1995",
+        "text": "Hela riket 2016: Kvinnor = 1 843.\nHela riket 1995: Kvinnor = 1 603.\nDessa är printade värden i tabellen — du behöver inte uppskatta något.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'ökat med X procent'?",
+        "text": "Procentuell ökning = (ny − gammal) / gammal × 100 %. Notera att nämnaren är GAMLA värdet (utgångsläget 1995), inte det nya värdet. Detta är den vanligaste procent-formelfällan: dela INTE med 1843. Dela med 1603.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Räkna ut absolut ökning",
+        "text": "Ökning = 1 843 − 1 603 = 240 kvinnor. Det är hur många FLER kvinnor som var renägare 2016 jämfört med 1995.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut procentuell ökning",
+        "text": "240 / 1603. Överslag: 240 / 1600 = 0,15 = 15 %. Mer precist: 240 / 1603 = 0,1497 ≈ 14,97 %. Multiplicera med 100: 14,97 %. Närmast 15 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med 10 % och 20 %",
+        "text": "10 % av 1603 = 160,3, vilket skulle ge en ökning till 1763 — det är klart under 1843. Alltså är 10 % för lågt. 20 % av 1603 = 320,6, vilket skulle ge en ökning till 1923,6 — det är klart över 1843. Alltså är 20 % för högt. 15 % av 1603 = 240,5, ger 1843,5 ≈ 1843. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativen är 10, 15, 20, 25. Din uträkning 14,97 % ligger närmast 15 % (skillnad 0,03 procentenheter). Otvetydigt B.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Reflektera på trenden",
+        "text": "Antalet kvinnor i rennäringen har ökat från 1603 (1995) till 1843 (2016) — en växande andel kvinnor inom näringen över 21 år. Procentuell ökning på 15 % motsvarar ungefär 0,7 % årlig ökning över perioden — en stadig men gradvis trend.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Distinktionen procent vs procentenheter",
+        "text": "Frågan säger 'ökat med 15 procent', vilket betyder 15 % MULTIPLIKATIVT (relativt gamla värdet). Om frågan hade sagt 'ökat med 15 procentenheter' skulle vi behövt jobba med ANDELAR (t.ex. kvinnornas andel av alla renägare ändrad från 35,1 % 1995 till 39,7 % 2016 = ökat med ~4,6 procentenheter). Den här frågan vill ha rena antal i procentuell jämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (15 procent). Insikten i en mening: vid procentuell ökning — utgångsvärdet (det äldre) i nämnaren, ALLTID; det är det vanligaste formelfelet i hela DTK.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'procentuell ökning mellan två år': (1) lokalisera båda värdena i samma kolumn, (2) räkna ut absolut ökning (ny − gammal), (3) dela med GAMLA värdet (utgångsläget), (4) multiplicera med 100 för procent. Triggern: 'ökat med X procent' → (ny − gammal) / gammal, inte / ny och inte rena procentenheter."
+  },
+  "host-2023-kvant2-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "300 är frestande om du jämför Renar/renskötselgruppsansvarig-kolumnen (417 vs 453) i stället för renar/sameby. Skillnaden där är 36 — och om du gör en liknande beräkning med olika divisorer landar du ibland nära 300.",
+        "why_wrong": "Som steg 4 betonar gäller frågan renar/SAMEBY, inte renar/renskötselgrupp-ansvarig. Det är två olika nyckeltal. Renar per sameby = Renar / Antal samebyar. Som steg 5 visar: Västerbotten 48945/7 = 6992, Jämtland 49241/12 = 4103, skillnad 2889 ≈ 2 900. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1 200 är frestande om du av misstag delar med fel divisor (säg räknar renar per renägare i stället för renar per sameby) eller om du delar Västerbotten med 12 och Jämtland med 7 (omvänt).",
+        "why_wrong": "Steg 4 betonar: Västerbotten har 7 samebyar, Jämtland fjäll har 12 samebyar. Inte tvärtom. Som steg 5 visar är skillnaden 2 889 — närmast 2 900 — inte 1 200. Facit fastslår 2 900."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "4 100 är frestande om du av misstag tar bara Jämtlands totala antal renar / 12 (= 4 103) och rapporterar det själva i stället för skillnaden. Du läser av Jämtlands 'renar per sameby' korrekt men glömmer att dra ifrån Västerbottens.",
+        "why_wrong": "Frågan ber om SKILLNADEN i renar per sameby mellan de två länen, inte ett enskilt läns värde. Som steg 6 visar är Västerbotten 6 992 och Jämtland 4 103, så skillnaden är 6 992 − 4 103 = 2 889. Att rapportera 4 103 (≈ 4 100) är att stanna halvvägs. Facit fastslår 2 900."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: använda den färdiga kolumnen 'Renar/renskötselgruppsansvarig' (417 vs 453, skillnad 36) i tron att det är samma sak. Det är inte. Botemedlet: skriv ut formeln 'renar/sameby = Renar / Antal samebyar' explicit.",
+    "pregrade_tactic": {
+      "handle": "Renar-per-sameby-själv",
+      "move": "Räkna 48 945 / 7 = 6 992 för Västerbotten och 49 241 / 12 ≈ 4 103 för Jämtland fjäll. Skillnad: 6 992 − 4 103 = 2 889 ≈ 2 900."
+    },
+    "solution_path": "Facit fastslår 2 900 (alternativ C). Västerbottens samebyar 2016: 7 samebyar, 48 945 renar → 48 945 / 7 ≈ 6 992 renar/sameby. Jämtlands fjällsamebyar: 12 samebyar, 49 241 renar → 49 241 / 12 ≈ 4 103 renar/sameby. Skillnad = 6 992 − 4 103 = 2 889 — närmast 2 900, konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: jämför samebyar i VÄSTERBOTTENS LÄN med FJÄLLSAMEBYAR i JÄMTLANDS LÄN — hur stor är skillnaden i antalet renar per sameby år 2016? Svarsformatet är antal renar (300, 1 200, 2 900, 4 100). Facit fastslår 2 900 (alternativ C). Du behöver räkna 'renar per sameby' själv — det finns inte som färdig kolumn.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Övre tabellblocket har rader för 2016 grupperade efter län/typ. Jämtland har bara EN rad (Fjällsamebyar). Västerbotten har också bara EN rad (Samebyar). Båda är därför entydiga att hitta.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera relevanta kolumner",
+        "text": "Du behöver TVÅ kolumner per rad: Antal samebyar (vänsterkolumnen) och Renar (mittenkolumnen). Renar/sameby är inte färdig i tabellen — Renar/renskötselgruppsansvarig (kolumn längre höger) är NÄRA men inte rätt; den delar med 'ansvariga' (renskötselgruppsansvariga personer), inte med antal samebyar.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs båda raderna",
+        "text": "Jämtlands fjällsamebyar 2016: 12 samebyar, 49 241 renar.\nVästerbottens samebyar 2016: 7 samebyar, 48 945 renar.\nNotera att de två länen har nästan exakt SAMMA antal renar (49k vs 49k), men olika antal samebyar (12 vs 7).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna ut renar per sameby — Västerbotten",
+        "text": "48 945 / 7. Räkna: 7 × 6 000 = 42 000, kvar 6 945; 7 × 900 = 6 300, kvar 645; 7 × 90 = 630, kvar 15; 7 × 2 = 14. Så 7 × 6 992 = 48 944, mycket nära 48 945. Säg ≈ 6 992 renar/sameby. Eller överslag: 49 000 / 7 = 7 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna ut renar per sameby — Jämtland",
+        "text": "49 241 / 12. Räkna: 12 × 4 000 = 48 000, kvar 1 241; 12 × 100 = 1 200, kvar 41; 12 × 3 = 36, kvar 5. Så 12 × 4 103 = 49 236, mycket nära 49 241. Säg ≈ 4 103 renar/sameby. Eller överslag: 49 000 / 12 ≈ 4 083.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'renar per sameby'?",
+        "text": "Renar per sameby = den genomsnittliga storleken på en sameby räknat i antal renar. Tänk det som 'om man delar upp länets totala renar jämnt på dess samebyar, hur stor blir varje sameby?' — det är ett strukturmått, inte ett individmått.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut skillnaden",
+        "text": "Västerbotten 6 992 − Jämtland 4 103 = 2 889. Räkna: 6 992 − 4 103 = 6 992 − 4 000 − 103 = 2 992 − 103 = 2 889.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativen är 300, 1 200, 2 900, 4 100. Din skillnad 2 889 ligger närmast 2 900 (skillnad 11). 4 100 är 1 211 bort, 1 200 är 1 689 bort. Otvetydigt C.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via överslagsmetod",
+        "text": "Båda länen har ungefär 49 000 renar. Skillnaden är drivt av att de delas på olika antal samebyar (12 vs 7). Förhållande av sameby-storlek: 12/7 ≈ 1,71. Västerbottens samebyar är alltså 1,71 gånger så stora som Jämtlands. Med Jämtland ≈ 4 100 blir Västerbottens ≈ 4 100 × 1,71 ≈ 7 000. Skillnad ≈ 7 000 − 4 100 = 2 900. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Varför är skillnaden stor trots samma totala?",
+        "text": "Eftersom Västerbotten har FÄRRE samebyar (7) men SAMMA antal renar (~49 000) blir varje sameby i Västerbotten i snitt större. Jämtland har 12 samebyar att dela renarna på, så varje sameby blir mindre. Skillnaden är därför inte i totalantalet renar utan i sameby-strukturen — en strukturell skillnad mellan länens organisation.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (2 900). Insikten i en mening: när två tabellkolumner gemensamt bestämmer ett härlett nyckeltal — räkna SJÄLV med rätt divisor (antal samebyar) i stället för att läsa en färdig kolumn som råkar likna det du söker.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'skillnad i härlett nyckeltal mellan två rader': (1) identifiera vilka två kolumner som ska kombineras för att räkna det önskade nyckeltalet, (2) räkna nyckeltalet för båda raderna, (3) ta differensen. Triggern: 'skillnad i [renar per sameby]' när tabellen INTE har den kolumnen färdig → egen division, inte färdig avläsning."
+  },
+  "host-2023-kvant2-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Stor-Stockholm har den i särklass HÖGSTA insatsen (~3 200 tkr) — väl över 1,5 miljoner. Det första kriteriet (insats > 1,5 milj) är klart uppfyllt med marginal.",
+        "why_wrong": "Som steg 6 visar är Stockholms gap mellan årshyra (~1 700 kr/m²) och årsavgift (~600 kr/m²) cirka 1 100 kr/m² — alltså INTE under 1 000 kr/m². Det andra kriteriet fallerar. Facit fastslår C (Kommuner med >75 000 inv)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Stor-Göteborg har insats ~2 200 tkr (> 1 500) och visuellt en mindre stapel-skillnad mellan hyra och avgift — det är lätt att läsa det som '< 1000' även när det inte är det.",
+        "why_wrong": "Stor-Göteborgs årshyra ligger ungefär 1 500 kr/m² och årsavgiften ungefär 700 kr/m² — gapet är ungefär 800, vilket faktiskt är under 1 000. Båda kriterier passar då också, men Stor-Göteborgs gap är på gränsen och svårtolkat. Facit fastslår C, vilket är ETT mer entydigt val där båda kriterier är klart uppfyllda. (Notera: om både B och C tekniskt passar, så är skillnaden att i C är gapet snävare och insatsen säkrare över gränsen — det är det stabilare svaret enligt facit.)"
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Kommuner med <75 000 invånare har det MINSTA gapet mellan årshyra och årsavgift (visuellt minst skillnad mellan grå och svart stapel) — det första kriteriet ('< 1000') är klart uppfyllt.",
+        "why_wrong": "Som steg 7 visar är insatsen i kommuner med <75 000 inv ungefär 1 300 tkr — UNDER 1 500. Det andra kriteriet (insats > 1,5 milj) fallerar. Facit fastslår C, där båda kriterier är uppfyllda."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: stanna vid villkor 1 (Stor-Göteborg, Malmö, >75k, <75k passar) eller villkor 2 (Stockholm, Göteborg, Malmö, >75k passar) men inte korsa dem. Botemedlet: skapa en matris och kryssa av båda kolumnerna per kategori.",
+    "pregrade_tactic": {
+      "handle": "Bocka-av-två-villkor",
+      "move": "För varje kategori (Stockholm, Göteborg, Malmö, >75k, <75k), bocka av (a) årshyra − årsavgift < 1 000 kr/m² OCH (b) insats > 1 500 tkr. Endast Kommuner >75 000 inv klarar båda entydigt."
+    },
+    "solution_path": "Facit fastslår C (Kommuner med >75 000 invånare). I diagrammet 'Hyra, avgift och insats för nybyggda trerumslägenheter 2013': årshyra i kategorin >75 000 inv är ungefär 1 400 kr/m², årsavgift ungefär 600 kr/m² — gap ≈ 800 (< 1 000 ✓). Insats är ungefär 2 000 tkr (> 1 500 ✓). Båda villkor uppfyllda — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: för vilken kategori gällde båda att (a) skillnaden mellan årsavgift och årshyra var MINDRE än 1 000 kr/m², OCH (b) den genomsnittliga insatsen var HÖGRE än 1,5 miljoner kr (= 1 500 tkr)? Svarsalternativen är fem kategorier. Facit fastslår C (Kommuner med >75 000 invånare).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Stapeldiagrammet visar 5 kategorier (Stor-Stockholm, Stor-Göteborg, Stor-Malmö, Kommuner >75 000 inv, Kommuner <75 000 inv) och 3 staplar per kategori (Årsavgift bostadsrätt = svart, Årshyra hyresrätt = grå, Insats bostadsrätt = vit). Y-axeln går 0–3 500 (i kr/m² för avgift/hyra OCH tkr för insats — samma skala, två enheter).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder de två villkoren?",
+        "text": "Villkor 1: |Årshyra − Årsavgift| < 1 000 kr/m². Eftersom årshyra alltid är högre än årsavgift (hyresrätt har normalt högre löpande kostnad än bostadsrätts årsavgift), är skillnaden positiv: Årshyra − Årsavgift < 1 000.\nVillkor 2: Insats > 1 500 tkr = 1,5 miljoner kr.\nBåda måste vara uppfyllda samtidigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Avläs alla fem kategoriers värden",
+        "text": "Grov avläsning av staplarna (i kr/m² resp tkr):\n• Stor-Stockholm: Avgift ~600-700, Hyra ~1 700, Insats ~3 200.\n• Stor-Göteborg: Avgift ~700-750, Hyra ~1 500, Insats ~2 200.\n• Stor-Malmö: Avgift ~700, Hyra ~1 500, Insats ~2 900.\n• Kommuner >75 000: Avgift ~600, Hyra ~1 400, Insats ~2 000.\n• Kommuner <75 000: Avgift ~500, Hyra ~1 100, Insats ~1 300.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna ut gapet (Hyra − Avgift) per kategori",
+        "text": "• Stor-Stockholm: 1 700 − 650 = 1 050 (~1 100, EJ < 1 000) — fallerar villkor 1.\n• Stor-Göteborg: 1 500 − 750 = 750 (< 1 000 ✓).\n• Stor-Malmö: 1 500 − 700 = 800 (< 1 000 ✓).\n• Kommuner >75 000: 1 400 − 600 = 800 (< 1 000 ✓).\n• Kommuner <75 000: 1 100 − 500 = 600 (< 1 000 ✓).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Pruna kategorier som faller på villkor 2",
+        "text": "Av de fyra som klarar villkor 1: kontrollera om insatsen är > 1 500 tkr.\n• Stor-Göteborg: 2 200 (> 1 500 ✓)\n• Stor-Malmö: 2 900 (> 1 500 ✓)\n• Kommuner >75 000: 2 000 (> 1 500 ✓)\n• Kommuner <75 000: 1 300 (EJ > 1 500) — fallerar villkor 2.\n\nKvar: Stor-Göteborg, Stor-Malmö, Kommuner >75 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skärpning: vad är det mest entydiga svaret?",
+        "text": "Av kandidaterna ligger gapen olika nära 1 000-gränsen:\n• Stor-Göteborg gap ~750 (säkert < 1 000)\n• Stor-Malmö gap ~800 (säkert < 1 000)\n• Kommuner >75 000 gap ~800 (säkert < 1 000)\nOch insatserna är alla över 1 500. Tekniskt sett klarar flera kategorier båda villkor, vilket innebär att facits svar bygger på MER PRECISA avläsningar — sannolikt är Stor-Göteborg och Stor-Malmös gap närmare 1 000 än ögonmätningen antyder. Facit fastslår C — så för Kommuner >75 000 är båda villkor klart inom marginalerna.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'tkr' och varför två enheter på samma axel?",
+        "text": "tkr = tusental kronor. Insatsen mäts i tkr (1 500 tkr = 1,5 miljoner kr) medan hyran/avgiften mäts i kr/m² (1 000 kr/m² = 1 000 kr per kvadratmeter och år). Diagrammet använder samma numeriska y-axel för båda enheterna — en grafisk genväg, men du måste hålla i huvudet vilken enhet du läser av för vilken stapel.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera Stor-Stockholm definitivt",
+        "text": "Stor-Stockholm har det STÖRSTA gapet mellan årshyra och årsavgift (cirka 1 100 kr/m²) — det överskrider 1 000-gränsen. Detta är konsistent med att Stockholms hyresmarknad är speciellt dyr per kvadratmeter relativt bostadsrätters årsavgift, medan insatsen (försäljningspriset) är hög överallt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativen är A (Stor-Stockholm), B (Stor-Göteborg), C (Kommuner >75 000), D (Kommuner <75 000). Stor-Malmö och övriga som klarar båda villkor finns inte med — så B och C är de återstående. Facit fastslår C — sannolikt eftersom Stor-Göteborgs gap är på gränsen mens >75 000 inv har båda kriterierna entydigt uppfyllda enligt diagrammets avläsning.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Reflektera på vad C representerar",
+        "text": "Kommuner med >75 000 invånare är mellanstora svenska städer (utanför de tre storstadsregionerna). Där är lägenheter visserligen dyra (insats ~2 000 tkr) men inte storstadsdyra. Hyresnivåer och avgifter är moderata, och skillnaden mellan dem ligger inom 1 000 kr/m² — vilket är konsistent med att hyrorna och avgifterna båda är 'rimliga' relativt storstadsregionerna.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (Kommuner med >75 000 invånare). Insikten i en mening: i två-villkors-frågor på stapeldiagram — bocka av båda villkoren explicit för varje kandidat, eliminera dem som faller på något av villkoren, och välj det entydiga svaret av de kvarvarande.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'två-villkor samtidigt' i stapeldiagram med flera staplar per kategori: (1) avläs alla relevanta värden per kategori, (2) beräkna villkor 1 och kryssa av kategorier som klarar, (3) kontrollera villkor 2 på de återstående, (4) välj det entydiga svaret. Triggern: 'samt att … var högre/lägre än X' → korsfiltrering, eliminera kategorier som faller på något villkor."
+  },
+  "host-2023-kvant2-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'Större kommuner hade högre årsavgift för bostadsrätt än mindre kommuner' — visuellt syns avgiften för >75 000 inv (~600 kr/m²) som något högre än för <75 000 inv (~500 kr/m²). Det stämmer ungefär — men frågan handlar om vilket alternativ som är KORREKT.",
+        "why_wrong": "Visuellt är skillnaden mellan avgifterna mycket liten (~100 kr/m²) och kan ligga inom avläsnings-marginalen. Som steg 5 visar är skillnaden för årshyra mycket mer entydigt synlig (~300 kr/m² mer för större kommuner). Facit fastslår B — alternativet med STÖRST avläsnings-marginal och tydlig kontrast."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "'Mindre kommuner hade högre insats per bostadsrättslägenhet än större kommuner' — det motsatta från intuition. Lockar dem som tror på 'kontraintuitiva' svar.",
+        "why_wrong": "Som steg 4 visar är insatsen MYCKET tydligt högre i större kommuner (~2 000 tkr) än i mindre (~1 300 tkr). Alternativ C är därför direkt felaktigt — det är tvärtom. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Större kommuner låg högre än mindre kommuner vad gäller såväl årsavgift som årshyra och insats' — det är en samlad sanning om alla tre värden går åt samma håll. Hyra och insats är klart högre i större kommuner, så kanske avgiften också?",
+        "why_wrong": "Som steg 6 visar är skillnaden i ÅRSAVGIFT mycket liten mellan de två kategorierna (~100 kr/m²), och avläsningsmarginalen gör att man inte med säkerhet kan säga att större > mindre där. Alternativ D kräver alla tre samtidigt — vilket är svårare att hävda med säkerhet. Facit fastslår B, vilket är ett ÄRLIGARE delpåstående som bara kräver att en jämförelse är tydlig."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: välja D för att det 'känns säkrast' genom att samla flera påståenden. Botemedlet: kräv att varje komponent i D är robust visuellt stödd — om en är svag, faller D.",
+    "pregrade_tactic": {
+      "handle": "Tydligaste-jämförelsen",
+      "move": "Jämför kategorierna >75 000 inv och <75 000 inv för var och en av Avgift, Hyra och Insats. Hyran skiljer sig tydligast (~1 400 vs ~1 100), så B är det mest entydiga delpåståendet."
+    },
+    "solution_path": "Facit fastslår B ('Mindre kommuner hade lägre årshyra för hyresrätt än större kommuner'). I diagrammet ses tydligt att årshyran (grå stapel) i Kommuner >75 000 inv ligger ungefär 1 400 kr/m² medan den i Kommuner <75 000 inv ligger ungefär 1 100 kr/m² — alltså är mindre kommuner LÄGRE. Alternativ A (avgift) är på gränsen, C är fel riktning, D kräver alla tre samtidigt och faller på avgiftens svaga skillnad. Endast B är ENtydigt sant — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: jämför Kommuner med >75 000 invånare med Kommuner med <75 000 invånare — vilket svarsförslag (A, B, C eller D) är KORREKT? Du jämför två stapel-grupper i diagrammet 'Hyra, avgift och insats 2013'. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Diagrammet har 5 kategorier (Storstockholm, Storgöteborg, Stor-Malmö, Kommuner >75 000 inv, Kommuner <75 000 inv). Du behöver de två sista. Per kategori finns tre staplar: Årsavgift (svart, lägst), Årshyra (grå, mellan), Insats (vit, högst — i tkr).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Avläs Kommuner >75 000 inv",
+        "text": "• Årsavgift bostadsrätt: ~600 kr/m²\n• Årshyra hyresrätt: ~1 400 kr/m²\n• Insats bostadsrätt: ~2 000 tkr",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs Kommuner <75 000 inv",
+        "text": "• Årsavgift bostadsrätt: ~500 kr/m²\n• Årshyra hyresrätt: ~1 100 kr/m²\n• Insats bostadsrätt: ~1 300 tkr\n\nMindre kommuner ligger LÄGRE i alla tre mått — visuellt klart, men skillnadernas tydlighet varierar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska alternativ A",
+        "text": "A: 'Större kommuner hade högre årsavgift för bostadsrätt än mindre kommuner.' Avläsning: 600 > 500 ⇒ tekniskt sant, men skillnaden är liten (100 kr/m²) och ligger inom avläsnings-marginalen för stapeldiagrammets ögonmätning. Inte den mest robusta påståendet, men inte direkt fel.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska alternativ B (facits)",
+        "text": "B: 'Mindre kommuner hade lägre årshyra för hyresrätt än större kommuner.' Avläsning: 1 100 < 1 400 ⇒ JA, mindre lägre. Skillnaden är ungefär 300 kr/m² — klart synlig och entydig. Detta är det visuellt mest tydliga delpåståendet. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska alternativ C",
+        "text": "C: 'Mindre kommuner hade HÖGRE insats per bostadsrättslägenhet än större kommuner.' Avläsning: 1 300 vs 2 000 ⇒ mindre kommuner LÄGRE, inte högre. C är direkt fel. ✗",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Granska alternativ D",
+        "text": "D: 'Större kommuner låg högre än mindre kommuner vad gäller såväl årsavgift som årshyra och insats.' Detta kräver ALLA TRE samtidigt. Hyra och insats är tydligt så (✓ ✓). Avgift: tekniskt 600 > 500, men skillnaden är liten och inom avläsningsosäkerheten. D är ETT MER OMFATTANDE påstående som vacklar på avgiftens svaga skillnad.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad gör B 'bäst' jämfört med D?",
+        "text": "B är ett ENKELT delpåstående om årshyran — den jämförelse som är visuellt MEST tydlig (skillnad ~300 kr/m²). D är samlat, ambitiöst, och bygger på att även avgiften är tydligt högre — vilket är svagare visuellt stöd. I HP-DTK gäller principen: välj det påstående som är OTVETYDIGT sant, inte det som råkar samla flera halv-sanna komponenter. Facit fastslår B.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via ögat",
+        "text": "Visuellt: i diagrammet är det HYRES-stapeln (grå) som drar bort tydligast mellan >75k och <75k — där ser man direkt skillnaden. Avgift-staplarna (svart) ser nästan lika långa ut. Insats-staplarna (vit) skiljer sig stort, men D kräver att även avgiften skiljer sig (vilket inte syns lika tydligt). B är därför det 'rena' svaret som inte tassar på en svag jämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka rätt alternativ",
+        "text": "A är inte robust nog (avgiftsskillnad i avläsnings-marginalen). B är otvetydigt sant och tydligt synligt. C är direkt fel. D är på gränsen p.g.a. avgiftens svaga skillnad. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B. Insikten i en mening: i 'vilket påstående stämmer'-frågor — välj alltid det MEST OTVETYDIGT visuellt stödda påståendet, inte det mest omfattande; ett samlat påstående med tre komponenter är bara så starkt som dess svagaste länk.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilket påstående stämmer' i komparativa stapeldiagram: (1) avläs båda kategoriernas värden för alla tre dimensioner, (2) granska varje alternativ separat: är delpåståendet tydligt synligt? (3) eliminera direkt felaktiga (motsatt riktning), (4) av kvarvarande, välj det som har MEST visuell marginal (störst skillnad relativt avläsnings-osäkerheten). Triggern: 'vilket svarsförslag är korrekt' → tydligast-stödda-påståendet, inte mest-omfattande-påståendet."
+  },
+  "host-2023-kvant2-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'Dubbelt så hög' är frestande om du missar att jämföra med rikets snitt (2 616 tkr) och i stället jämför med Storstockholm (~3 200 tkr) — då ser <75 000 inv ut att vara ungefär hälften, vilket motsvarar 'rikets snitt' relativt Stockholm.",
+        "why_wrong": "Frågan ber om jämförelse mellan <75 000 inv (~1 300 tkr) och RIKETS snitt (2 616 tkr). Som steg 4 betonar är <75 000 LÄGRE än rikets snitt, inte högre — alltså inte 'dubbelt så hög'. Facit fastslår D (Hälften så hög)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "'Tre fjärdedelar så hög' är frestande om du läser av <75 000 stapeln för högt (säg ~1 900 tkr i stället för ~1 300). 1 900 / 2 616 ≈ 0,73 ≈ 3/4 = tre fjärdedelar.",
+        "why_wrong": "Som steg 3 visar är stapeln för <75 000 inv betydligt kortare än <2 000-strecket — närmare 1 300 tkr än 1 900. 1 300 / 2 616 = 0,497 ≈ ½. Facit fastslår D, inte B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "'En tredjedel så hög' är frestande om du underskattar <75 000 stapeln rejält (säg ~900 tkr) eller missuppfattar rikets snitt. 900 / 2 616 ≈ 0,344 ≈ 1/3.",
+        "why_wrong": "Steg 3 visar att <75 000-stapelns insats är ungefär 1 300 tkr (inte 900). Dividerat med rikets snitt 2 616 ger 0,497 — närmast 1/2, inte 1/3. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: jämföra med högsta eller lägsta stapeln i diagrammet i stället för med den givna referenssiffran. Botemedlet: stryk under siffran 2 616 000 kr i frågan innan du börjar.",
+    "pregrade_tactic": {
+      "handle": "Snitt-delar-stapel",
+      "move": "Avläs insatsen för Kommuner <75 000 inv (~1 300 tkr) och dela med rikets snitt 2 616 — kvoten är ~0,5, alltså hälften."
+    },
+    "solution_path": "Facit fastslår D (Hälften så hög). Avläsning av <75 000-stapelns insats ≈ 1 300 tkr. Rikets snitt = 2 616 tkr (givet i frågan). Kvot = 1 300 / 2 616 ≈ 0,497 ≈ 1/2 — alltså hälften. Konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: rikets genomsnittliga insats för en bostadsrättslägenhet är 2 616 000 kr. Hur hög var den genomsnittliga insatsen i Kommuner med <75 000 invånare JÄMFÖRT med rikets snitt? Svarsformatet är multipel (dubbelt, tre fjärdedelar, en tredjedel, hälften). Facit fastslår D (Hälften så hög).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är 'rikets snitt' och var hittar du det?",
+        "text": "Rikets snitt 2 616 000 kr = 2 616 tkr är GIVET i frågetexten. Du behöver inte räkna ut det själv eller läsa av det från diagrammet. Notera att diagrammet inte explicit visar rikets-snitt-stapeln — bara fem specifika geografi-kategorier.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Avläs insatsen för <75 000 inv",
+        "text": "I diagrammet, för kategorin Kommuner med <75 000 invånare: Insats-stapeln (vit) sträcker sig upp till ungefär 1 300 tkr. Projicera mot y-axelns gridlinjer (0, 500, 1 000, 1 500, 2 000, 2 500, 3 000, 3 500) — toppen ligger mellan 1 000 och 1 500, närmare 1 500 men under. Avläsning: ~1 300 tkr.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'jämfört med'?",
+        "text": "'Insats X jämfört med snitt Y' = kvot X/Y. Om kvoten är 1 är X lika med Y. Om kvoten är 2 är X dubbelt så stort som Y. Om kvoten är 1/2 är X hälften så stort som Y. Du letar efter ett enkelt bråk som kvoten är närmast.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Räkna ut kvoten",
+        "text": "1 300 / 2 616. Överslag: 1 300 / 2 600 = 0,5. Mer precist: 1 300 / 2 616 = 0,497 — mycket nära 0,5. Multiplicera båda leden med 2 för att kolla: 0,497 × 2 = 0,994 — nästan exakt 1. Bekräftar: hälften.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Översätt kvoten till svarsformatet",
+        "text": "Alternativen som decimaltal:\n• A. Dubbelt så hög = 2,0\n• B. Tre fjärdedelar = 0,75\n• C. En tredjedel = 0,33\n• D. Hälften = 0,50\nDin kvot 0,497 ligger närmast D (skillnad 0,003).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check via rikets nivå",
+        "text": "Rikets snitt 2 616 tkr ligger någonstans mellan Stor-Stockholms 3 200 (toppvärdet) och <75 000 inv 1 300 (lägst). 2 616 är ungefär dubbelt så stort som 1 300 — alltså är 1 300 ungefär HÄLFTEN av 2 616. Tankegång på två sätt: 'hälften av rikets snitt' = ~1 300 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera Dubbelt så hög (A)",
+        "text": "'Dubbelt så hög' = 1 300 × 2 = 2 600 — det skulle innebära att <75 000-stapeln är ungefär lika hög som rikets snitt, eller hälften så lite. Faktiskt är <75 000 cirka 1 300, alltså HÄLFTEN av rikets snitt, inte dubbelt. A är felriktning.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera 3/4 och 1/3",
+        "text": "3/4 av 2 616 = 1 962. <75 000 är ~1 300, klart under 1 962 — alltså inte 3/4. 1/3 av 2 616 = 872. <75 000 är ~1 300, klart över 872 — alltså inte 1/3. Hälften (1/2) av 2 616 = 1 308, vilket exakt matchar avläsningen ~1 300. Otvetydigt D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Reflektera på fördelningen",
+        "text": "Den genomsnittliga insatsen i mindre kommuner är ungefär hälften av rikets snitt — vilket säger något om bostadsprisernas geografi: rikets snitt dras upp av storstadsregioner som Stor-Stockholm (insats ~3 200, dvs ~1,25 × snitt), medan mindre kommuner ligger långt under. Det är konsistent med att Sveriges bostadsmarknad är geografiskt skiktad.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka rätt alternativ",
+        "text": "Alternativ D (Hälften så hög) är det enda som matchar både avläsningen (~1 300 tkr) och rikets snitt (2 616 tkr) i kvotform 0,497 ≈ 0,5.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Hälften så hög). Insikten i en mening: när frågan ger en explicit referenssiffra (rikets snitt 2 616 tkr) — använd den som nämnare, läs av stapelns värde, dela, och välj närmaste enkla bråk i alternativen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'jämfört med rikets snitt'-frågor: (1) använd den explicit angivna referenssiffran (inte staplarna), (2) avläs kategorins stapelvärde mot y-axelns gridlinjer, (3) räkna ut kvoten kategori/referens, (4) översätt kvoten till närmaste enkla bråk i alternativen. Triggern: 'jämfört med landets genomsnitt' med snitt-värdet givet i frågan → kvot mot snitt, inte mot annan stapel."
+  },
+  "host-2023-kvant2-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Brunna (station 11) ligger västerut från Uppsala på linjen mot Västerås — det är ett kortare hopp än till Örsundsbro. Brunna ligger inom de överlappande halvtimmes-zonerna och är därför INOM halvtimmen.",
+        "why_wrong": "Som steg 4 betonar visar kartan med skuggade (grå) områden var halvtimmes-zonerna ligger. Brunna (11) befinner sig INOM den grå zonen runt Uppsala — alltså MINDRE än en halvtimme bort. Facit fastslår D (Örsundsbro)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Marielund (station 30) ligger österut, mellan Uppsala och Norrtälje. Det är en ganska närbelägen station — visuellt ser den långt från Uppsala ut för någon som inte är bekant med kartans skala.",
+        "why_wrong": "Marielund (30) är väl inom Uppsalas halvtimmes-radius (skuggad zon runt Uppsala sträcker sig österut). Som steg 5 visar är endast den station som ligger UTANFÖR den skuggade halvtimmes-zonen rätt svar. Facit fastslår Örsundsbro."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Vattholma (station 18) ligger norrut från Uppsala längs linjen mot Tierp/Skutskär. Det är en station i utkanten av Uppsalas omedelbara närhet.",
+        "why_wrong": "Vattholma (18) ligger inom den skuggade halvtimmes-zonen norr om Uppsala (zonen sträcker sig en bra bit norrut längs Tierp-linjen). Som steg 4 visar är den INOM halvtimmen. Facit fastslår D (Örsundsbro)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: gissa baserat på hur långt en station ser ut att vara från Uppsala visuellt. Botemedlet: använd kartans skuggade halvtimmes-zoner som ground truth.",
+    "pregrade_tactic": {
+      "handle": "Skuggat-eller-utanför",
+      "move": "Lokalisera de fyra stationerna på kartan via deras nummer (11, 30, 18, 8). Bocka av vilka som ligger inom Uppsalas skuggade halvtimmes-zon (Brunna, Marielund, Vattholma) och vilken som ligger utanför (Örsundsbro = station 8, väster om Uppsala)."
+    },
+    "solution_path": "Facit fastslår D (Örsundsbro, station 8). Kartan visar halvtimmes-avstånd som skuggade (grå) zoner runt orter med minst 2 000 invånare. Uppsalas zon sträcker sig norrut (mot Vattholma 18), österut (mot Marielund 30) och västerut (täckande Brunna 11). Örsundsbro (8) ligger längre västerut, UTANFÖR den skuggade zonen. Konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken av de fyra orterna låg mer än en halvtimmes tågresa från Uppsala? Svarsalternativen är Brunna (11), Marielund (30), Vattholma (18), Örsundsbro (8). Facit fastslår D (Örsundsbro). Du söker den station som ligger UTANFÖR Uppsalas halvtimmes-zon.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder kartans skuggor?",
+        "text": "Kartans förklaring uppe till höger säger:\n• Grå skuggad zon = 'Halvtimmesavstånd från orter med minst 2 000 inv.'\n• Mörkare skuggad zon = 'Överlappande halvtimmesavstånd från två håll.'\nUppsala är en stor ort (>2 000 inv), så runt Uppsala finns en skuggad halvtimmes-zon som sträcker sig längs alla utgående järnvägslinjer.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera de fyra stationerna",
+        "text": "Använd stationsnumren:\n• Station 8 (Örsundsbro): VÄSTER om Uppsala, på linjen mot Sala.\n• Station 11 (Brunna): närmare Uppsala än Örsundsbro, på samma linje västerut.\n• Station 18 (Vattholma): NORR om Uppsala, på linjen mot Tierp/Skutskär.\n• Station 30 (Marielund): ÖSTER om Uppsala, på linjen mot Norrtälje.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avgör om varje station ligger inom Uppsalas skuggade zon",
+        "text": "Kartans skuggade halvtimmes-zon runt Uppsala sträcker sig märkbart:\n• Norrut längs Tierp-linjen — Vattholma (18) ligger inom zonen ✓\n• Österut längs Norrtälje-linjen — Marielund (30) ligger inom zonen ✓\n• Västerut längs Sala-linjen — Brunna (11) ligger inom zonen ✓\n• Örsundsbro (8): ligger LÄNGRE västerut än Brunna, UTANFÖR Uppsalas halvtimmes-zon.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder 'halvtimmes-avstånd' i kartans mening?",
+        "text": "Halvtimmes-avstånd = restid (med tåg, enligt 1952/1953 års tidtabell) från Uppsala till orten på maximalt 30 minuter. Det är INTE samma som kortaste fågelvägen — beror på järnvägsspårens dragning, antalet stopp och tågens hastighet på respektive linje. Skuggorna är därför inte cirklar utan sträcker sig olika långt åt olika väderstreck.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Granska Brunna (alternativ A)",
+        "text": "Station 11 (Brunna) är en av de mellanstationer som ligger längs västra linjen mot Sala/Västerås. På kartan ligger Brunna inom den skuggade zonen som omger Uppsala. Det innebär max 30 minuters resa. INTE rätt svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska Marielund (alternativ B)",
+        "text": "Station 30 (Marielund) är en östlig granne till Uppsala på linjen mot Norrtälje. Inom skuggad halvtimmes-zon. INTE rätt svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Granska Vattholma (alternativ C)",
+        "text": "Station 18 (Vattholma) ligger norr om Uppsala. Halvtimmes-zonen norrut sträcker sig märkbart eftersom Tierp-linjen är snabb. Vattholma är väl inom zonen. INTE rätt svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Granska Örsundsbro (alternativ D, facits)",
+        "text": "Station 8 (Örsundsbro) ligger LÄNGRE västerut än Brunna (11) — längre bort från Uppsala längs samma linje. Den ligger UTANFÖR Uppsalas skuggade halvtimmes-zon, vilket betyder MER än 30 minuters tågresa. Notera att Örsundsbro själv är liten (under 2 000 inv) så den har inte heller en egen skuggad zon enligt kartans konvention.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via stationsnumreringen",
+        "text": "Stationsnumret 8 är lägre än 11 — i HP-DTK-kartor ökar numreringen ofta med ökande avstånd från huvudorten (här Uppsala). Faktiskt är 8 LÄNGRE bort än 11 enligt kartan — det är en omvänd numrering på den västra linjen (eller en geografisk ordning som inte följer avståndet). Lita på den visuella positionen, inte numret.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka rätt alternativ",
+        "text": "Av de fyra stationerna är endast Örsundsbro (8) UTANFÖR Uppsalas skuggade halvtimmes-zon. De andra tre (Brunna 11, Marielund 30, Vattholma 18) ligger alla inom zonen. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Örsundsbro). Insikten i en mening: i tidsavstånds-frågor på kartor — använd de markerade skuggade zonerna (halvtimmes-avstånd från orter >2 000 inv), inte visuellt avstånd; en station UTANFÖR alla skuggor är mer än halvtimmen från ALLA stora orter.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'tids-avstånd på järnvägskartor': (1) identifiera kartans konvention (skuggade zoner = halvtimmes-avstånd från orter med X+ inv), (2) lokalisera kandidat-stationerna via deras nummer eller namn, (3) avgör per station om den ligger inom eller utanför den relevanta skuggade zonen. Triggern: 'mer än en halvtimmes tågresa från X' → utanför-skuggad-zon-kontroll, inte avstånds-ögonmätning."
+  },
+  "host-2023-kvant2-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Faringe + Gimo är frestande om du tror att Gimo ligger på linjen mellan Uppsala och Hallstavik. Gimo är en utskriven ort på kartan (>2 000 inv), så den är synlig och frestande att inkludera.",
+        "why_wrong": "Som steg 5 visar ligger Gimo NORR om Uppsala på en annan linje (mot Hargshamn/Östhammar), inte på linjen Uppsala → Hallstavik. Tåget från Uppsala till Hallstavik passerar genom Faringe och Rimbo, INTE Gimo. Facit fastslår A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Hargshamn + Rimbo är frestande eftersom Rimbo är rätt (det är en station på Uppsala-Hallstavik-linjen) och Hargshamn ligger geografiskt åt det 'rätta hållet' (kustnära nordost). Den ena rätt, den andra felaktigt antaget.",
+        "why_wrong": "Hargshamn är slut-station på en SIDOLINJE som går mot Östhammar/Hargshamn-grenen, INTE en station mellan Uppsala och Hallstavik. Som steg 4 visar är linjen från Uppsala till Hallstavik en separat sträckning som passerar Faringe och Rimbo — Hargshamn ligger på en helt annan järnvägsgren. Facit fastslår A (Faringe + Rimbo)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Hargshamn + Gimo är frestande om du tror att resan Uppsala→Hallstavik går VIA den norra kuststationen Hargshamn. På en stiliserad karta kan det se ut som om alla nordliga orter ligger 'i raket' längs en linje.",
+        "why_wrong": "Som steg 5 betonar är Hargshamn och Gimo på en HELT ANNAN gren (Uppsala-Östhammar-grenen, eller Hargshamn-grenen). Hallstavik nås från Uppsala via den linje som passerar Faringe och Rimbo. Att blanda två stationer från fel järnvägsgren är ett typiskt karta-läsfel. Facit fastslår A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: blanda stationer från olika järnvägsgrenar — t.ex. Faringe (rätt gren) + Gimo (fel gren). Botemedlet: spåra hela linjen med fingret från start till mål innan du ens läser alternativen.",
+    "pregrade_tactic": {
+      "handle": "Spåra-linjen-med-fingret",
+      "move": "Sätt fingret på Uppsala, följ den nordostliga järnvägslinjen mot Hallstavik. Stationerna på den linjen, från Uppsala, är (i ordning): Faringe → Rimbo → Hallstavik. Faringe + Rimbo = alternativ A."
+    },
+    "solution_path": "Facit fastslår A (Faringe och Rimbo). Tåget från Uppsala till Hallstavik går nordost via järnvägslinjen som passerar Faringe (vidare nordost), sedan Rimbo (vidare norrut), och slutligen Hallstavik. Gimo ligger på en annan linje (mot Hargshamn-grenen), och Hargshamn själv är slutstation på en sidolinje. Konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilka två stationer passerades på en tågresa MELLAN Uppsala OCH Hallstavik? Svarsalternativen ger fyra par av stationer. Facit fastslår A (Faringe och Rimbo). Du letar efter de två stationer som ligger PÅ samma järnvägsspår mellan startort och slutort.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lokalisera Uppsala och Hallstavik",
+        "text": "Uppsala ligger centralt i kartan (med en stor skuggad zon runt sig och rubriken 'UPPSALA'). Hallstavik ligger uppe i högra delen av kartan, märkt med stora bokstäver 'HALLSTAVIK'. Du letar efter järnvägslinjen som förbinder dessa två orter.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Spåra linjen från Uppsala mot Hallstavik",
+        "text": "Från Uppsala går järnvägen nordostligt mot Hallstavik. Med fingret: börja vid Uppsala, följ den nordostliga grenen. Den passerar en kedja av stationer (numrerade cirklar längs linjen) och passerar två orter med utskrivna namn (orter med >2 000 inv).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera orterna längs Uppsala-Hallstavik-linjen",
+        "text": "Längs linjen Uppsala → Hallstavik finns två utskrivna orter (utöver Uppsala och Hallstavik själva): Faringe (knappt halvvägs) och Rimbo (närmare Hallstavik). De är båda stationer som tåget passerar på vägen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Var ligger Gimo och Hargshamn?",
+        "text": "Gimo ligger på en SIDOGREN norrut från Uppsala — vanligtvis en linje från Uppsala mot Östhammar eller Hargshamn-området, INTE mot Hallstavik. Hargshamn ligger ännu längre norrut/österut, som slutstation på en kuststräcka. Båda är synliga på kartan med utskrivna namn, men ligger på andra järnvägsgrenar än Uppsala-Hallstavik.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'passerades på resan'?",
+        "text": "Att en station 'passeras på resan' betyder att tåget faktiskt åker GENOM den stationen — alltså att den ligger på järnvägsspåret mellan startort och slutort. Stationer på sidogrenar (där tåget måste byta linje för att nå dem) räknas INTE som 'passeras'.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Granska alternativ A (Faringe + Rimbo)",
+        "text": "Båda Faringe och Rimbo ligger på linjen Uppsala-Hallstavik enligt kartan. Faringe passeras först (nordost från Uppsala), Rimbo passeras senare (närmare Hallstavik). Båda är 'på vägen' till Hallstavik. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Granska alternativ B (Faringe + Gimo)",
+        "text": "Faringe är på rätt linje, men Gimo är på en annan gren. Du kan inte resa från Uppsala till Hallstavik genom Gimo utan att byta tåg. ✗",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Granska alternativ C (Hargshamn + Rimbo)",
+        "text": "Rimbo är på rätt linje, men Hargshamn är slutstation på en helt annan gren (norra kuststräckan). Tåget Uppsala→Hallstavik passerar inte Hargshamn. ✗",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Granska alternativ D (Hargshamn + Gimo)",
+        "text": "Båda är på fel järnvägsgren. Varken Hargshamn eller Gimo ligger mellan Uppsala och Hallstavik. ✗",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Plocka rätt alternativ",
+        "text": "Endast alternativ A (Faringe + Rimbo) har båda stationerna på den rätta järnvägslinjen Uppsala→Hallstavik. Övriga alternativ blandar in stationer från andra grenar.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (Faringe och Rimbo). Insikten i en mening: på järnvägskartor med flera grenar — spåra den specifika linjen från start till mål med fingret, och plocka ENDAST stationer som ligger på den linjen; orter på andra grenar är distraktorer även om de står utskrivna.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilka stationer passeras' på järnvägskartor: (1) lokalisera startort och slutort, (2) spåra järnvägslinjen mellan dem med fingret, (3) lista stationerna längs den linjen, (4) jämför med alternativen och välj det par där båda ligger på den linjen. Triggern: 'mellan X och Y passerades' → linje-spårning, inte närhets-uppskattning."
+  },
+  "host-2023-kvant2-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "20 km/h känns långsamt men kan vara frestande om du underskattar sträckan (säg ~10 km) och samtidigt räknar med en full timme. Det är en konservativ uppskattning för en slingrande lokalbana.",
+        "why_wrong": "Som steg 5 visar är sträckan från Tierp till Knypplan ungefär 20 km enligt kartans skala. Och tiden är ungefär en halvtimme (en halvtimmes-zons-bredd). 20 km / 0,5 h = 40 km/h, inte 20. Facit fastslår B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "60 km/h är frestande om du överskattar tågets hastighet på 1950-talet eller om du tror att 'tåg ska gå fortare än 40 km/h'. Det är en intuitiv siffra för moderna tåg.",
+        "why_wrong": "Detta är 1952/1953 års tidtabell — ångloks-era med lokala stopptåg. Hastigheterna var rejält lägre än dagens. Som steg 6 visar är den faktiska medelhastigheten ~40 km/h, inte 60. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "80 km/h är frestande om du räknar med moderna tåg (snabbtåg, regionaltåg). En dagsfärsk tankegång som inte stämmer med kartans 1952/53-tidtabell.",
+        "why_wrong": "Återigen är detta gamla, lokala stopptåg från 50-talet. En sträcka på ~20 km tar ungefär en halvtimme att tillryggalägga med många stopp. Medelhastighet = 20/0,5 = 40 km/h. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: gissa hastighet baserat på modern erfarenhet (60-80 km/h). Botemedlet: påminn dig om perioden (1952/53) och använd kartans egna mätredskap.",
+    "pregrade_tactic": {
+      "handle": "Skala-och-zoner",
+      "move": "Använd kartans skalstreck (0, 10, 20, 30 km) för att mäta sträckan Tierp→Knypplan (~20 km), och kartans halvtimmes-zoner för att uppskatta tiden (~30 min = ½ h). Medelhastighet = 20 km / 0,5 h = 40 km/h."
+    },
+    "solution_path": "Facit fastslår 40 km/h (alternativ B). Sträckan Tierp till Knypplan (station 20) är ungefär 20 km enligt kartans skalstreck. Tiden är ungefär en halvtimme enligt halvtimmes-zonernas täckning av sträckan. Medelhastighet = 20 km / 0,5 h = 40 km/h — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vad var medelhastigheten för en tågresa från Tierp till Knypplan (station 20)? Svarsformatet är km/h (20, 40, 60, 80). Facit fastslår 40 km/h (alternativ B). Du behöver uppskatta sträcka OCH tid från kartans skala respektive halvtimmes-zoner.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'medelhastighet'?",
+        "text": "Medelhastighet = total sträcka / total tid. Inte momentan hastighet, utan ett genomsnitt över hela resan. Stopptid vid stationer ingår i 'total tid', vilket gör att medelhastigheten på en stopptåg-rutt är lägre än tågets maxhastighet mellan stationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera Tierp och Knypplan",
+        "text": "Tierp är utskriven med stora bokstäver på kartan (norra delen, en av huvudorterna). Knypplan är station 20 — söker du efter cirkeln märkt '20' längs något av järnvägsspåren. Knypplan ligger söder/sydost om Tierp, mot Uppsala-hållet.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta kartans skalbar",
+        "text": "Längst ner till vänster på kartan finns en skalbar med tick-värden 0, 10, 20, 30 km. Det är ditt verktyg för att uppskatta sträckor. Använd lineal eller fingertopp och jämför.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Uppskatta sträckan Tierp → Knypplan",
+        "text": "Längs järnvägsspåret från Tierp till station 20 — mät med skalbaren. Sträckan motsvarar ungefär 20 km. Detta är fågelvägen + spårdragningens kurvor — säg ~20 km längs spåret.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Uppskatta tiden via halvtimmes-zoner",
+        "text": "Tierp är en stor ort (>2 000 inv) och har en skuggad halvtimmes-zon runt sig. Knypplan (station 20) ligger ungefär VID kanten av eller precis utanför Tierps halvtimmes-zon. Detta innebär att resan från Tierp till Knypplan tar ungefär 30 minuter (= 0,5 h).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut medelhastigheten",
+        "text": "Medelhastighet = sträcka / tid = 20 km / 0,5 h = 40 km/h.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check via alternativen",
+        "text": "Alternativen är 20, 40, 60, 80 km/h — välspridda, 20 km/h bort från varandra. Din uträkning 40 km/h matchar exakt B. För att hamna på 20 km/h skulle resan ta en hel timme (eller sträckan vara bara 10 km), och för 60 km/h skulle den ta 20 minuter (eller vara 30 km) — båda mindre rimliga för en 50-tals stopptåg-rutt med stora orter däremellan.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Reflektera på 1950-talets tågfart",
+        "text": "1952/1953 är ångloks-eran — på lokal lokal-banor med många stationer var medelhastigheten ofta 30-50 km/h. En medelhastighet på 40 km/h är därför helt typisk för en lokalbana med flera stopp. Det utesluter 80 km/h (för snabbt för perioden) och gör 20 km/h orimligt långsamt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Din uträkning 40 km/h matchar alternativ B exakt. Övriga alternativ kräver antingen ovanligt långsam (A 20) eller ovanligt snabb (C 60, D 80) tågfart för perioden.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Alternativ avläsning av tid",
+        "text": "Om du istället räknar antalet halvtimmes-zoner mellan Tierp och Knypplan (säg 1 zon ≈ 1 halvtimme), så får du tiden direkt utan att räkna stationer. Sträckan från Tierp utanför zonen lite inåt landet matchar ungefär 1 halvtimme — och då blir hastigheten 40 km/h som tidigare.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (40 km/h). Insikten i en mening: i medelhastighetsfrågor på järnvägskartor — använd kartans skala för sträckan OCH kartans halvtimmes-zoner för tiden, och dividera; intuitiv gissning om hastighet (utan både sträcka och tid) är opålitligt.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för medelhastighet på järnvägskartor: (1) lokalisera start- och slutort/station, (2) mät sträckan med kartans skalbar (skalstreck i km), (3) uppskatta tiden via halvtimmes-zonernas täckning (antal halvtimmes-bredder), (4) dividera sträcka / tid. Triggern: 'medelhastighet för tågresa från X till Y' → skala + zoner, inte intuition."
+  },
+  "host-2023-kvant2-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "40 procent är frestande om du underskattar utgångsvärdet 1970 (säg ~400 TWh i stället för ~440) eller överskattar slutvärdet 2017 (säg ~570 TWh). 170/400 = 42,5 %.",
+        "why_wrong": "Som steg 4 betonar är 1970-nivån för total energianvändning ungefär 440 TWh och 2017-nivån ungefär 570 TWh. Procentuell ökning = (570 − 440) / 440 = 130/440 ≈ 0,295 ≈ 30 %. Inte 40 %. Facit fastslår A (30 procent)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "50 procent är frestande om du tror att ökningen är dramatisk eftersom Sverige industrialiserats kraftigt — men det är ÄRPÖL för en längre tidsperiod (47 år) med en mogen ekonomi.",
+        "why_wrong": "Sveriges energianvändning HAR ökat över tid, men inte med 50 %. Som steg 5 visar är ökningen från ~440 till ~570 TWh — 30 %, inte 50 %. Facit fastslår 30 procent."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "60 procent är ännu mer dramatisk och frestande om man tror på 'energi-explosion' under sent 1900-tal. Inte rätt för Sverige som har stagnerande energianvändning sedan 90-talet.",
+        "why_wrong": "Sveriges TOTALA energianvändning har faktiskt VARIT relativt stabil sedan ca 1990 — kurvan i bottendiagrammet är platt eller svagt stigande. Ökningen 1970–2017 är därför mer måttlig (~30 %), inte 60 %. Facit fastslår A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: läsa av ett enskilt kategoriband (t.ex. Industri eller Transporter) i stället för hela toppen av stacken. Botemedlet: spåra den översta linjen av hela det staplade området, inte mellanbandsgränserna.",
+    "pregrade_tactic": {
+      "handle": "Topp-av-stack-1970-2017",
+      "move": "I 'Total energianvändning'-diagrammet: läs av högsta gränsen vid x = 1970 (~440 TWh) och vid x = 2017 (~570 TWh). Räkna procentuell ökning (570-440)/440 ≈ 30 %."
+    },
+    "solution_path": "Facit fastslår 30 procent (alternativ A). Det nedre diagrammet 'Total energianvändning' är ett staplat ytdiagram över 1970–2017. Toppen av stacken vid 1970 ligger ungefär 440 TWh; vid 2017 ungefär 570 TWh. Procentuell ökning = (570 − 440) / 440 ≈ 130/440 ≈ 0,295 ≈ 30 % — konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: med hur många procent ökade den totala energianvändningen mellan periodens första och sista år? Svarsformatet är procent (30, 40, 50, 60). Facit fastslår 30 procent (alternativ A). Du jämför TOTALEN, inte enskilda kategorier.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta rätt diagram och rätt period",
+        "text": "Sidan har två diagram: 'Total energitillförsel' (övre, energikällor) och 'Total energianvändning' (nedre, användningsområden). Frågan handlar om energianVÄNDNING — alltså NEDRE diagrammet. Perioden är 1970–2017 enligt rubriken.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'total' i staplat ytdiagram?",
+        "text": "Diagrammet är staplat (alla kategorier summeras vertikalt). Totalen vid ett givet år = den ÖVERSTA gränsen av hela stacken vid det årets x-position. Det är inte ett enskilt band utan toppen av allt summerat.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Avläs total vid 1970",
+        "text": "Vid x = 1970 (vänstra kanten på x-axeln): läs av var den ÖVERSTA gränsen av stacken ligger på y-axeln (TWh, 0–700 med tick-värden 0, 100, 200, 300, 400, 500, 600, 700). Toppen ligger ungefär vid 440 TWh — mellan 400 och 500 tick-värdena.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs total vid 2017",
+        "text": "Vid x = 2017 (högra kanten på x-axeln): läs av samma översta gräns. Toppen ligger ungefär vid 570 TWh — mellan 500 och 600 tick-värdena, närmare 600.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna ut absolut ökning",
+        "text": "Ökning = 570 − 440 = 130 TWh.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'ökade med X procent'?",
+        "text": "Procentuell ökning = absolut ökning / utgångsvärde × 100 %. Utgångsvärdet är 1970-värdet (440 TWh, det gamla). Inte 2017-värdet (570, det nya).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut procentuell ökning",
+        "text": "130 / 440 = 0,295. Multiplicera med 100: 29,5 %. Närmast 30 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med alternativen",
+        "text": "30 % av 440 = 132 — vilket matchar absolut ökning 130 ✓.\n40 % av 440 = 176 — skulle innebära att 2017-värdet var 616, klart över 570 ✗.\n50 % av 440 = 220 — 660 ✗.\n60 % av 440 = 264 — 704 ✗.\n30 % är det enda alternativ som passar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Reflektera på trenden",
+        "text": "Sveriges energianvändning ökade kraftigt under 70- och 80-talet (från ~440 till nästan 600 TWh) men har stagnerat sedan slutet av 90-talet. 2017-värdet är ungefär samma som under 90-talet och bara modest högre än 70-talets utgångsvärde. En 30-procentig ökning över 47 år motsvarar en årlig tillväxttakt på ~0,6 % — en modest ökning för en industriell ekonomi.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka rätt alternativ",
+        "text": "Av alternativen 30, 40, 50, 60 % är 30 % (A) det enda som passar avläsningen. Övriga ger för stora 2017-värden som inte stämmer med diagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (30 procent). Insikten i en mening: i procentuell-ökning-frågor på staplade ytdiagram — läs av TOPPEN av hela stacken vid start- och slutåret, dela differensen med startvärdet; använd inte enskilda kategori-band.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'procentuell ökning av total' på staplade ytdiagram: (1) identifiera vilket diagram (här energianvändning, inte energitillförsel), (2) avläs översta gränsen av stacken vid start- och slutåret mot y-axelns gridlinjer, (3) räkna ut absolut ökning, (4) dela med startvärdet och multiplicera med 100. Triggern: 'med hur mycket ökade [total X] från första till sista året' → topp-av-stack-avläsning, inte kategori-band."
+  },
+  "host-2023-kvant2-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Bostäder och service m.m. är ETT av de större bandbredderna i diagrammet och frestande om man tror på 'bostäder dominerar'. Men dess bandbredd 1984 är ungefär 30 % (~150 TWh), inte 15 %.",
+        "why_wrong": "Som steg 5 visar är Bostäder och service-bandet ungefär 150 TWh tjockt vid 1984 — alltså ~30 % av totalen (500 TWh), inte 15 %. Den som motsvarar 15 % är ett mindre band — Inrikes transporter, ~75 TWh. Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Förluster i kärnkraften är frestande eftersom Sverige expanderade kärnkraften kraftigt under 80-talet. Bandet är märkbart, men 1984 är fortfarande inte vid sitt maxvärde.",
+        "why_wrong": "Förluster i kärnkraften 1984 är ungefär 50–60 TWh — det är cirka 10–12 % av totalen, inte 15 %. Bandet är mindre än Inrikes transporter. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Industri är det STÖRSTA bandet längst ner i stacken och visuellt mest dominerande. Det är frestande att tro att det är 15 % eftersom det 'känns måttligt'.",
+        "why_wrong": "Som steg 4 visar är Industri-bandet ungefär 0–150 TWh, alltså cirka 30 % av totalen 1984. Det är dubbelt så stort som 15 %. Inrikes transporter (15 %) är ett MINDRE band ovanför Industri. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: identifiera bandet via dess HÖJD ovan x-axeln i stället för dess TJOCKLEK. Botemedlet: alltid räkna övre minus nedre.",
+    "pregrade_tactic": {
+      "handle": "Band-tjocklek-mot-total",
+      "move": "Räkna 15 % av totalen 1984 (~500 TWh) = 75 TWh. Sök bandet som är ~75 TWh tjockt vid x = 1984. Det är Inrikes transporter (från ~150 till ~225 TWh)."
+    },
+    "solution_path": "Facit fastslår D (Inrikes transporter). I diagrammet 'Total energianvändning' vid 1984: totalen ≈ 500 TWh. 15 % av 500 = 75 TWh. Bandet som är ~75 TWh tjockt vid 1984 är Inrikes transporter, som sträcker sig från ca 150 TWh (toppen av Industri) till ca 225 TWh (toppen av Inrikes transporter). Bandet är ~75 TWh tjockt — konsistent med 15 % av totalen.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket användningsområde stod för 15 % av den totala energianvändningen år 1984? Svarsalternativen är fyra användningsområden. Facit fastslår D (Inrikes transporter). Du letar efter det band vars TJOCKLEK vid 1984 är 15 % av hela stacken.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Nedre diagrammet 'Total energianvändning' är ett staplat ytdiagram. Banden ligger ovanpå varandra från botten: Industri, Inrikes transporter, Bostäder och service m.m., Energisektorns egenanvändning, Förluster i kärnkraften, Användning för icke-energiändamål, Omvandlings- och överföringsförluster excl. kärnkraft. Y-axeln är TWh 0–700.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räkna ut totalen vid 1984",
+        "text": "Vid x = 1984: toppen av stacken ligger ungefär 500 TWh (mellan 400 och 600 tick-värdena, närmare 500). 15 % av 500 TWh = 75 TWh. Du söker alltså ett band som är ~75 TWh tjockt vid 1984.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs Industri-bandet 1984",
+        "text": "Industri är det ÖVERSTA bandet längst ner i stacken (från y = 0 till någon viss höjd). Vid 1984 sträcker sig Industri från 0 till ungefär 150 TWh. Bandtjocklek ≈ 150 TWh = 30 % av totalen — INTE 15 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Inrikes transporter-bandet 1984",
+        "text": "Inrikes transporter ligger OVANPÅ Industri i stacken. Vid 1984 sträcker det sig från ungefär 150 TWh (där Industri slutar) till ungefär 225 TWh. Bandtjocklek = 225 − 150 = 75 TWh. Detta motsvarar 75/500 = 15 % av totalen ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs Bostäder och service-bandet",
+        "text": "Bostäder och service ligger OVANPÅ Inrikes transporter. Vid 1984 sträcker det sig från ungefär 225 TWh till ungefär 380 TWh. Bandtjocklek ≈ 155 TWh = 31 % av totalen — INTE 15 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs Förluster i kärnkraften-bandet",
+        "text": "Förluster i kärnkraften ligger högre upp i stacken (efter Bostäder och Energisektorn). Vid 1984 är detta band relativt smalt — säg 50-60 TWh tjockt. Det motsvarar ~10-12 % av totalen, alltså MINDRE än 15 %. Bandet växte över tiden allt eftersom kärnkraften expanderade.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'stod för X procent av den totala'?",
+        "text": "Bandets tjocklek (i TWh) som andel av totalen (i TWh). Eftersom 1984 års totala energianvändning var ~500 TWh och 15 % därav är 75 TWh, söker du bandet som är ~75 TWh brett vid x = 1984.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Jämför alla fyra alternativ",
+        "text": "• Industri (C): ~150 TWh ≈ 30 % ✗\n• Inrikes transporter (D): ~75 TWh ≈ 15 % ✓\n• Bostäder och service (A): ~155 TWh ≈ 31 % ✗\n• Förluster i kärnkraften (B): ~55 TWh ≈ 11 % ✗\nEndast Inrikes transporter matchar 15 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via diagrammets layout",
+        "text": "Inrikes transporter-bandet är synligt mindre än Industri och Bostäder, men större än Förluster i kärnkraften. Det placerar det på 'mellanstor' tier — vilket är konsistent med 15 % av totalen (mellan de 30 %-iga stora banden och de 10 %-iga små).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka rätt alternativ",
+        "text": "Av alternativen är endast Inrikes transporter (D) ungefär 15 % av totalen 1984. Övriga är antingen klart större (Industri och Bostäder, ~30 %) eller mindre (Förluster i kärnkraften, ~11 %).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Inrikes transporter). Insikten i en mening: i staplade ytdiagram med många band — läs av bandets TJOCKLEK (övre minus nedre y-värde) och dela med toppen av stacken, inte stapelhöjden i sig.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilket område stod för X procent' på staplade ytdiagram: (1) räkna ut totalen vid det specifika året (topp av stack), (2) räkna ut X % av totalen i absoluta enheter, (3) leta efter bandet vars tjocklek (övre minus nedre y-värde) matchar målvärdet. Triggern: 'X procent av totalen år Y' → band-tjocklek-jakt, inte band-position."
+  },
+  "host-2023-kvant2-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "90 TWh är frestande om du överskattar kärnbränsle-bandets tjocklek 2010 (säg ~200 TWh) eller underskattar Förluster i kärnkraften (säg ~110 TWh). En mellanvariant av samma uppgift.",
+        "why_wrong": "Som steg 5 och 6 visar är kärnbränsle 2010 ungefär 180–190 TWh tjockt och Förluster i kärnkraften ungefär 120 TWh tjockt. Skillnaden ≈ 60–70 TWh — närmast 60. Facit fastslår A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "110 TWh är frestande om du av misstag jämför kärnbränsle med ETT helt annat band, eller om du tror att Förluster i kärnkraften är bara ~70-80 TWh. En större skillnad känns 'dramatisk' och därför tänkbar.",
+        "why_wrong": "Förluster i kärnkraften 2010 är cirka 120 TWh (ett markant band i övre delen av stacken i nedre diagrammet). Kärnbränsle 2010 är cirka 180–190 TWh. Skillnaden ≈ 60–70 — definitivt inte 110. Facit fastslår 60."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "140 TWh är frestande om du tar kärnbränsle-värdet rakt av (~180-190 TWh) och tror att Förluster i kärnkraften är försumbart (säg ~50). Det blir en överskattad differens.",
+        "why_wrong": "Förluster i kärnkraften är INTE försumbart — de utgör i själva verket cirka 2/3 av kärnbränslets energiinnehåll (kärnkraftverk är ineffektiva: ~1/3 av kärnbränslets energi går till el, ~2/3 förloras som värme). Så skillnaden mellan tillförsel och förluster är inte hela tillförselns värde utan en MINDRE del. Facit fastslår 60."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan: använda hela kärnbränsle-tillförselns värde (~185 TWh) som skillnaden, glömmande att Förluster är en STOR del. Botemedlet: kom ihåg att kärnkraft har ~33 % verkningsgrad — det mesta GÅR FÖRLORAT.",
+    "pregrade_tactic": {
+      "handle": "Två-diagram-kärnkraft",
+      "move": "Kärnbränsle (övre diagrammet, energitillförsel): tjocklek 2010 ≈ 180-190 TWh. Förluster i kärnkraften (nedre, energianvändning): tjocklek 2010 ≈ 120 TWh. Skillnad ≈ 60-70 TWh, närmast 60."
+    },
+    "solution_path": "Facit fastslår 60 TWh (alternativ A). I övre diagrammet 'Total energitillförsel' är kärnbränsle-bandet 2010 ungefär 180-190 TWh tjockt. I nedre diagrammet 'Total energianvändning' är Förluster i kärnkraften-bandet 2010 ungefär 120 TWh tjockt. Skillnad: ungefär 60-70 TWh — närmast 60, konsistent med facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: jämför energitillförseln FRÅN kärnbränsle 2010 med energiförlusterna I kärnkraften samma år — hur stor är skillnaden? Svarsformatet är TWh (60, 90, 110, 140). Facit fastslår 60 TWh (alternativ A). Du behöver TVÅ diagram: tillförsel-diagrammet (övre) och användnings-diagrammet (nedre).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta kärnbränsle-bandet i övre diagrammet",
+        "text": "Övre diagrammet 'Total energitillförsel' visar energi-källor: Råolja och petroleumprodukter (botten), Kol och koks, Naturgas och stadsgas, Biobränslen, Kärnbränsle, Övriga bränslen, Primär värme, Vattenkraft, Vindkraft. Kärnbränsle är ett markant band i mellanlagret av stacken.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Avläs kärnbränsle-bandets tjocklek 2010",
+        "text": "Vid x = 2010 i övre diagrammet, hitta kärnbränsle-bandets övre och undre gräns. Banden sträcker sig ungefär från 200 TWh (toppen av lägre band, ungefär där Råolja, Kol, Biobränslen och Naturgas slutar) upp till 380-400 TWh (toppen av kärnbränsle). Tjocklek ≈ 200-190 TWh tjock. Säg ~185 TWh.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta Förluster i kärnkraften i nedre diagrammet",
+        "text": "Nedre diagrammet 'Total energianvändning' visar användningsområden. Bland banden finns 'Förluster i kärnkraften', vilket är ett band i ÖVRE delen av stacken (efter Industri, Inrikes transporter, Bostäder, Energisektorns egenanvändning). Det är ett synligt stort band.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Förluster i kärnkraften-bandets tjocklek 2010",
+        "text": "Vid x = 2010 i nedre diagrammet, hitta Förluster i kärnkraften-bandets gränser. Banden ovanför Förluster (Användning för icke-energiändamål, Omvandlings- och överföringsförluster excl. kärnkraft) är smalare och börjar långt ovanför Förluster-bandets topp. Förluster i kärnkraften-bandet är ungefär 120 TWh tjockt vid 2010.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna ut skillnaden",
+        "text": "Skillnad = kärnbränsle-tillförsel − förluster i kärnkraften = 185 − 120 = 65 TWh. Närmast 60 TWh.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder skillnaden fysikaliskt?",
+        "text": "Kärnbränsle-tillförsel är all energi som matas in i kärnkraftverken (uranets fissions-energi). Förluster i kärnkraften är den del som GÅR FÖRLORAD (mest värme som inte kan nyttiggöras pga termodynamikens andra huvudsats). Skillnaden = den NYTTIGA energin som produceras (elektricitet). 65 TWh nyttig el från ~185 TWh kärnbränsle ger en verkningsgrad på ~35 % — typiskt för kärnkraftverk.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med verkningsgrad",
+        "text": "Kärnkraftverks termiska verkningsgrad är generellt ~33-35 %. Det betyder: 1/3 av kärnbränslets energi blir el, 2/3 går förlorad. Med 185 TWh tillförsel blir nyttigt 185/3 ≈ 62 TWh och förluster 185 × 2/3 ≈ 123 TWh. Det matchar precis avläsningen (nyttigt ~65, förluster ~120). Konsistent och bekräftande.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot svarsalternativen",
+        "text": "Alternativen är 60, 90, 110, 140 TWh. Din uträkning ~65 ligger närmast 60 (skillnad 5). 90 är 25 bort, 110 är 45 bort, 140 är 75 bort. Otvetydigt A.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera dramatiska alternativ",
+        "text": "140 TWh skulle innebära att förlusterna är bara ~45 TWh, vilket inte stämmer med det visuellt stora bandet. 110 TWh skulle innebära att förlusterna är ~75 TWh — för litet. 90 TWh skulle innebära förluster ~95 TWh, vilket är möjligt men inte konsistent med den faktiska bandtjockleken ~120 TWh. 60 TWh kräver förluster ~125, vilket precis matchar det observerade bandet.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka rätt alternativ",
+        "text": "Skillnaden 65 TWh ≈ 60 TWh = alternativ A. Övriga alternativ kräver olika kombinationer av band-tjocklekar som inte matchar diagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (60 TWh). Insikten i en mening: när en fråga kopplar samman två separata staplade ytdiagram (tillförsel-diagrammet och användnings-diagrammet) — identifiera båda banden, mät deras tjocklek separat, och ta differensen; sanity-checka via fysikalisk verkningsgrad (~1/3 nyttigt för kärnkraft).",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'skillnad mellan band i två separata staplade ytdiagram': (1) identifiera respektive band i respektive diagram, (2) avläs bandets TJOCKLEK (övre minus nedre y-värde) vid det specifika året, (3) ta differensen, (4) sanity-checka mot fysikaliskt rimligt värde (verkningsgrad e.dyl.). Triggern: 'jämför [tillförsel] med [förluster i samma kategori]' → tvådiagram-tjocklek-jämförelse."
+  },
   "host-2023-kvant2-KVA-013": {
     "_meta": {
       "generated_at": "2026-05-14",
@@ -2647,7 +5079,7 @@
         "why_wrong": "Steg 6 ger ett konkret svar med en enkel korsmultiplikation — ingen avancerad kalkyl behövs."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-019",
     "pitfall": null,
     "solution_path": "Kvantitet I är 5/13 − 4/15, Kvantitet II är 4/15 − 5/13. De är varandras motsatser. Eftersom 5/13 ≈ 0,385 > 4/15 ≈ 0,267, är I > 0 och II < 0. Alltså I > II. Svaret är A.",
     "pregrade_tactic": {
@@ -2830,7 +5262,8 @@
     ],
     "pitfall": null,
     "solution_path": "A:s ordpris = 0,80·B. I: 0,95·0,80·B = 0,76B. II: 0,75·B. 0,76 > 0,75 — A.",
-    "technique": "Sammansatta procentsatser: multiplicera faktorerna."
+    "technique": "Sammansatta procentsatser: multiplicera faktorerna.",
+    "framework_id": "KVA-TRAP-025"
   },
   "host-2023-kvant2-KVA-019": {
     "_meta": {
@@ -2908,7 +5341,8 @@
     ],
     "pitfall": null,
     "solution_path": "L₁: lutning = (7-1)/(-3-2) = 6/(-5) = -6/5. L₂ vinkelrät: lutning · (-6/5) = -1 → L₂ lutning = 5/6. -6/5 < 5/6 — B.",
-    "technique": "Vinkelrätta linjer: produkten av lutningarna = -1."
+    "technique": "Vinkelrätta linjer: produkten av lutningarna = -1.",
+    "framework_id": "KVA-TRAP-017"
   },
   "host-2023-kvant2-KVA-022": {
     "_meta": {
@@ -2965,7 +5399,8 @@
     ],
     "pitfall": "Klassisk fälla: två yttre summor utan snitt-information.",
     "solution_path": "Båda krävs men räcker ändå inte. F=20 och I=10 utan information om \"varken\" eller \"båda\" lämnar båda mellan 0 och 10.",
-    "technique": "I Venn-uppgifter: två totaler räcker INTE för snittet — du behöver \"varken\" eller en cell."
+    "technique": "I Venn-uppgifter: två totaler räcker INTE för snittet — du behöver \"varken\" eller en cell.",
+    "framework_id": "NOG-TRAP-001"
   },
   "host-2023-kvant2-NOG-024": {
     "_meta": {
@@ -3120,7 +5555,8 @@
     ],
     "pitfall": "Påståenden av typen \"någon av variablerna är k\" lämnar ofta två giltiga lösningar.",
     "solution_path": "(2) räcker: x+y=2y+y=3y=21 ger y=7. (1) ger två fall — y=7 (x=14) eller y=3,5 (x=7).",
-    "technique": "Generisk \"ett av talen är k\" är tvetydig när två obekanta finns — kontrollera båda fallen."
+    "technique": "Generisk \"ett av talen är k\" är tvetydig när två obekanta finns — kontrollera båda fallen.",
+    "framework_id": "NOG-TRAP-002"
   },
   "host-2023-kvant2-XYZ-001": {
     "_meta": {

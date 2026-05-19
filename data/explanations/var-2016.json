@@ -1294,7 +1294,7 @@
         "why_wrong": "All information finns: båda summorna är fullständigt specificerade. Räkna ut dem (steg 4 och 7) — informationen räcker mer än väl."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-023",
     "pitfall": null,
     "pregrade_tactic": {
       "handle": "Bråk-omformningen",
@@ -1494,7 +1494,7 @@
         "why_wrong": "Vi behöver inte exakt värde — bara veta om 120π är större eller mindre än 378. Det räcker att veta att π < 3,15. Steg 9 låser ojämlikheten."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-026",
     "pitfall": null,
     "pregrade_tactic": {
       "handle": "Enhetskonverteringen",
@@ -1594,7 +1594,7 @@
         "why_wrong": "Likhet är möjlig (steg 9) men inte garanterad. Många andra fördelningar ger största ≠ 16."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-010",
     "pitfall": "Frestelsen är att fastställa fördelningen 'naturligt' (t.ex. resterande lika fördelade). Botemedlet: testa explicit både en JÄMN och en SKEV fördelning. Om svaren skiljer sig → information otillräcklig.",
     "pregrade_tactic": {
       "handle": "Extremvärdestestet",
@@ -1794,7 +1794,7 @@
         "why_wrong": "Likhet är ett av flera möjliga utfall, inte garanterat (steg 9). Lika sannolikt att x ≠ 24 — t.ex. y = 12 ger x = 26."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-012",
     "pitfall": "Vanligaste fallan är att 'snabbt välja ett y' (t.ex. y nära gränsen) och dra en slutsats. Botemedlet: testa både ett y nära den övre gränsen och ett y långt under den — om x kastar tecken eller passerar jämförelsetalet, är svaret D.",
     "pregrade_tactic": {
       "handle": "Extremvärdestestet",
@@ -2309,7 +2309,7 @@
         "why_wrong": "Två olikheter åt motsatt håll KAN tvinga fram ett unikt heltal (här n = 16). Steg 8 visar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-006",
     "pitfall": "Frestelsen är att tro att varje påstående 'är ett konkret tal' och därför räcker. Botemedlet: skriv ut varje villkor som en EXPLICIT OLIKHET i den okända variabeln innan du bedömer.",
     "pregrade_tactic": {
       "handle": "Olikhets-låsningen",
@@ -2408,7 +2408,7 @@
         "why_wrong": "D är en strängare standard än A eller B. Steg 5 och 7 visar att ingen ensam ger unik lösning."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-002",
     "pitfall": "Frestelsen är att räkna konkreta siffror (90 + 10) som om de räcker. Botemedlet: räkna EKVATIONER mot OBEKANTA — om det är färre ekvationer än obekanta, är systemet alltid underbestämt.",
     "pregrade_tactic": {
       "handle": "Ekvations-obekanträkningen",
@@ -2618,7 +2618,7 @@
         "why_wrong": "Båda påståenden är konsistenta och leder till samma L = 10. E gäller bara om båda tillsammans inte räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-009",
     "pitfall": null,
     "pregrade_tactic": {
       "handle": "Ålders-ekvationen",
@@ -5087,7 +5087,8 @@
     ],
     "pitfall": null,
     "solution_path": "f(a) = 0 → a - a³ = 0 → a(1 - a²) = 0 → a = 0, ±1. Tre värden, varav -1 < 0, 0 = 0, 1 > 0. D.",
-    "technique": "Faktorisera polynom: nollställen är ±1 och 0."
+    "technique": "Faktorisera polynom: nollställen är ±1 och 0.",
+    "framework_id": "KVA-TRAP-032"
   },
   "var-2016-kvant2-KVA-019": {
     "_meta": {
@@ -5141,7 +5142,8 @@
     ],
     "pitfall": null,
     "solution_path": "Låt E vara Eriks nuvarande ålder; om 20 år har E blivit E + 20 = 4·D, alltså E = 4D − 20. För att E är minst 0 (Erik existerar) krävs D är minst 5. Eftersom D är minst 5 är D större än 4 i alla giltiga fall — A.",
-    "technique": "I åldersgåtor med ojämlikheter: skriv villkoret som E = f(D) och pålägg den implicita gränsen E är minst 0 — det ger en nedre gräns på D som ofta avgör jämförelsen; här D är minst 5 större än 4 ⇒ A."
+    "technique": "I åldersgåtor med ojämlikheter: skriv villkoret som E = f(D) och pålägg den implicita gränsen E är minst 0 — det ger en nedre gräns på D som ofta avgör jämförelsen; här D är minst 5 större än 4 ⇒ A.",
+    "framework_id": "KVA-TRAP-031"
   },
   "var-2016-kvant2-KVA-021": {
     "_meta": {
@@ -5322,7 +5324,8 @@
     ],
     "pitfall": "Median/medelvärde ensamma låser inte hur många exakt motsvarar ett specifikt värde.",
     "solution_path": "Båda krävs men räcker ändå inte. (1) ger d=69 men a, b, c kan kombineras så att 0, 1, 2 eller 3 av dem också är 69 så länge summan är 207. (2) säger \"minst 2\" är 69 men kan vara 2, 3 eller 4. Tillsammans: minst 2 (inkl d), men det exakta antalet är fortfarande tvetydigt.",
-    "technique": "\"Minst N är X\" är inte exakt antal — kontrollera om frågan kräver exakt."
+    "technique": "\"Minst N är X\" är inte exakt antal — kontrollera om frågan kräver exakt.",
+    "framework_id": "NOG-TRAP-020"
   },
   "var-2016-kvant2-NOG-028": {
     "_meta": {

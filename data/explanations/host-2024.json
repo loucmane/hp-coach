@@ -422,7 +422,7 @@
         "why_wrong": "Mittpunkten av villkorsintervallet är inte automatiskt medianen av talen. Steg 7-8: tre olika medianer är möjliga, varav 13,5 bara är en."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-021",
     "pitfall": "Den klassiska 'mittpunkts'-fällan: tro att medianen automatiskt hamnar i mitten av villkorsintervallet (här 13,5 = (12+15)/2). Botemedlet: räkna ALDRIG med en 'naturlig' median — testa alltid extremfall och se om olika konfigurationer ger olika svar.",
     "solution_path": "Medianen är medelvärdet av de två mittersta talen (a_3 och a_4). Villkoren ger a_3 > 12 (eftersom de fyra största är > 12) och a_4 < 15 (eftersom de fyra minsta är < 15). Medianen kan ligga mellan 12 och 15 — t.ex. 13 eller 14,5 — så jämförelsen med 13,5 är osäker. Svaret är D.",
     "steps": [
@@ -628,7 +628,7 @@
         "why_wrong": "Steg 3 ger I = -2y, vilket är 0 ENDAST om y = 0. Men y kan inte vara 0 (division med noll), så likhet aldrig uppnås."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-005",
     "pitfall": null,
     "solution_path": "x/y = -1 betyder x = -y. Då är I = x - y = -y - y = -2y. Tecknet på -2y beror på y: om y > 0 är I < 0 (II vinner); om y < 0 är I > 0 (I vinner). Information saknas — svaret är D.",
     "steps": [
@@ -733,7 +733,7 @@
         "why_wrong": "Steg 5: (1) leder direkt till E = 80. E (ingenting räcker) kräver att VARKEN (1), (2) eller (1)+(2) tillsammans räcker — men (1) gör det redan ensamt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-008",
     "pitfall": "Den klassiska NOG-fällan: att tolka 'en femtedel = 20 procent' som ny information bara för att det innehåller siffror. Botemedlet: fråga 'vilken EKVATION ger det här mig?' — om svaret är 'ingen, det är sant alltid', är påståendet värdelöst.",
     "solution_path": "(1): 1{,}25 \\cdot E = 100 ger E = 80 — entydigt. (2): '1/5 utgör 20%' är en tautologi (1/5 = 20%) — ingen information om antalet. Endast (1) räcker — svaret är A.",
     "steps": [
@@ -944,7 +944,8 @@
     ],
     "pitfall": null,
     "solution_path": "Båda krävs: använd att vinkelsumman i triangeln är u+v+w=180°. Adderar du (1) och (2) får du 2u+v+w=216°, så u=36° när v+w=180°−u substitueras. Var för sig saknar man halva systemet.",
-    "technique": "I triangeluppgifter ingår u+v+w=180° gratis — det räknas som ett villkor."
+    "technique": "I triangeluppgifter ingår u+v+w=180° gratis — det räknas som ett villkor.",
+    "framework_id": "NOG-TRAP-007"
   },
   "host-2024-kvant1-NOG-026": {
     "_meta": {
@@ -1190,7 +1191,7 @@
         "why_wrong": "Steg 2-3: varken (1) eller (2) ensamt ger ett unikt heltal. D kräver att VAR OCH EN gör det."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-017",
     "pitfall": "Den vanligaste NOG-fällan på heltalsuppgifter: tro att två specifika villkor automatiskt ger ett unikt svar. Botemedlet: alltid räkna upp ALLA möjliga heltal som uppfyller villkoren — om det blir mer än ett är E svaret.",
     "solution_path": "(1) ger 50 < x < 75 — flera heltal möjliga, inte unikt. (2) ger 'delbart med 8 men inte 3' — oändligt många (8, 16, 40, 56, ...), inte unikt. Tillsammans: 50 < x < 75 och delbar med 8 ej 3 → x ∈ {56, 64}, fortfarande två möjliga. Svaret är E.",
     "steps": [
@@ -2230,7 +2231,7 @@
         "why_wrong": "Bråken är KONKRETA tal, inte variabler. Steg 4-5 räknar ut båda differenserna entydigt — det finns inget okänt kvar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-023",
     "pitfall": null,
     "solution_path": "Räkna båda bråkskillnaderna med gemensam nämnare 6: 1/2 - 1/3 = 3/6 - 2/6 = 1/6; 2/3 - 1/2 = 4/6 - 3/6 = 1/6. Båda är 1/6 — lika. Svaret är C.",
     "steps": [
@@ -2606,7 +2607,7 @@
         "why_wrong": "Funktionen är ENTYDIGT definierad och båda värden räknas ut till -2. Steg 7-8 ger båda exakt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-022",
     "pitfall": "Den klassiska kvadrerings-fällan: {O}(-2)^{2}{C} blir 4, inte -4. Negativt gånger negativt = positivt. Botemedlet: skriv ALLTID ut kvadreringen som '(-2) gånger (-2)' explicit och påminn dig om tecken-regeln.",
     "solution_path": "f(x) = x^{2} + 2x - 2. f(-2) = 4 - 4 - 2 = -2. f(0) = 0 + 0 - 2 = -2. Båda är -2 — lika. Svaret är C.",
     "steps": [
@@ -2706,7 +2707,7 @@
         "why_wrong": "Mittpunkten av intervallet är inte automatiskt tiden. Tiden beror på den specifika hastigheten, som inte är låst — steg 7-8 visar att I < II och I > II båda möjliga."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-012",
     "pitfall": null,
     "solution_path": "Tiden = sträcka/hastighet. Med hastigheten mellan 80 och 100 km/h blir tiden för 120 km mellan 120/100 = 1{,}2 h och 120/80 = 1{,}5 h, alltså mellan 72 och 90 minuter. 85 minuter ligger i detta intervall — kan vara större eller mindre. Otillräcklig info. Svaret är D.",
     "steps": [
@@ -3010,7 +3011,7 @@
         "why_wrong": "Steg 2-4: (1) har två länkade fakta — det räcker att räkna ut H från 120 = 1,5·H, sedan J = 10·H."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-019",
     "pitfall": null,
     "solution_path": "(1): mössa = 120 = 1,5 · halsduk → halsduk = 80; halsduk = jacka/10 → jacka = 800. Sufficient. (2): halsduk + mössa = jacka/4 — en ekvation, tre okända — INTE sufficient. Endast (1). Svaret är A.",
     "steps": [
@@ -3109,7 +3110,7 @@
         "why_wrong": "Steg 4 + steg 7: varken (1) eller (2) ensam ger entydigt R_B."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-001",
     "pitfall": "Den klassiska fyrkant-fällan: tro att rad-totaler + kolumn-totaler räcker för att låsa alla fyra celler. Botemedlet: rita ALLTID upp tabellen och räkna ekvationer; rad- och kolumn-totaler är bara N+M-1 oberoende villkor (här 2+2-1 = 3), inte N+M = 4.",
     "solution_path": "Båda påståenden ger SAMMA två totaler (R = 1121, F = 1164, shelf = 2253, box = 32) men ingen anger hur R fördelas mellan shelf/box. Tre obekanta (R_shelf, F_shelf, R_box) bara två oberoende ekvationer ens tillsammans. Otillräckligt — svaret är E.",
     "steps": [
@@ -3430,7 +3431,7 @@
         "why_wrong": "Steg 4: 'av rosa och vit, exakt en tom' KRÄVER att den andra inte är tom, vilket = den har ringen. Med (a) som utesluter vit blir ringen i rosa."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-005",
     "pitfall": "Den klassiska 'minst/högst/exakt'-fällan: blanda ihop kvantorerna. Botemedlet: skriv ALLTID ut vad varje fras betyder i tal: 'minst en tom' = 1 eller 2; 'högst en tom' = 0 eller 1; 'exakt en tom' = precis 1.",
     "solution_path": "Tre askar (grön, rosa, vit), en med guldring. (1) tvingar via uteslutning att ringen är i ROSA — sufficient. (2) tillåter både grön och rosa som ring-ask — otillräckligt. Endast (1) räcker — svaret är A.",
     "steps": [

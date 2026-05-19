@@ -1,4 +1,1164 @@
 {
+  "var-2016-kvant1-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Hushåll med barn känns intuitivt som en grupp med många djur — det är lätt att tippa på dem som 'mest av allt'. För 2012 är dock skillnaden katter − hundar runt 350 000 − 250 000 = cirka 100 000, vilket inte alls är den största gapet.",
+        "why_wrong": "Som steg 5 visar är skillnaden i hushåll med barn betydligt mindre än i hushåll utan barn. Facit fastslår B (Hushåll utan barn) där gapet katter − hundar är cirka 300 000 — tre gånger så stort som i hushåll med barn."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "I 'en vuxen'-stapeln är katter (cirka 150 000) synligt fler än hundar (cirka 120 000). Skillnaden är dock liten i absoluta tal — ungefär 30 000.",
+        "why_wrong": "Frågan handlar om STÖRSTA skillnaden i ANTAL, inte om var katterna procentuellt dominerar mest. Som steg 6 betonar: en vuxen-hushåll är en LITEN grupp, så även en stor procentuell skillnad blir få djur i absoluta tal. Facit fastslår B, där absoluta antalet skiljer sig med cirka 300 000."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Mer än en vuxen-hushåll är en stor grupp — hundar 2012 cirka 430 000 och katter cirka 620 000. Det är frestande att tippa på dem som 'mycket av allt'.",
+        "why_wrong": "Skillnaden där är 620 000 − 430 000 = cirka 190 000 — stor, men inte störst. Hushåll utan barn ligger på cirka 800 000 katter mot 500 000 hundar = 300 000, vilket är den största skillnaden. Facit fastslår B."
+      }
+    ],
+    "pitfall": "Den klassiska fällan är att leta efter den hushållstyp där KATTER är flest (Hushåll utan barn ligger högt på katter, men det kan också vara Totalt) istället för att räkna SKILLNADEN katter minus hundar. Botemedlet: läs av båda staplarna separat för varje hushållstyp, gör subtraktionen i huvudet, och rangordna skillnaderna — inte de absoluta värdena.",
+    "pregrade_tactic": {
+      "handle": "Subtrahera-katter-minus-hundar-per-hushållstyp",
+      "move": "För varje av de fyra hushållstyperna: läs av höjden på 2012-stapeln i kattdiagrammet, läs av höjden på 2012-stapeln i hunddiagrammet, ta differensen, välj den största. Skippa 'Totalt' — den finns inte bland alternativen."
+    },
+    "solution_path": "Facit fastslår B (Hushåll utan barn). I diagrammet med hundar och i diagrammet med katter: avläs båda 2012-staplarna för varje hushållstyp och räkna katter minus hundar. Hushåll utan barn 2012: katter cirka 800 000, hundar cirka 500 000 → differens cirka 300 000. Det är den största skillnaden bland de fyra alternativen.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: i vilken typ av hushåll var skillnaden mellan antalet katter och antalet hundar 2012 störst? Alternativen är fyra hushållstyper (med barn, utan barn, en vuxen, mer än en vuxen). Facit fastslår B (Hushåll utan barn). Din uppgift är att räkna differensen katter − hundar för varje hushållstyp och landa på den största.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i de två diagrammen",
+        "text": "Sidan visar TRE stapeldiagram: 'Antal hundar', 'Antal katter' och 'Antal hushåll' (smådjur). Du behöver bara de TVÅ FÖRSTA: hundar och katter. Båda har samma fem kategorier på x-axeln (Hushåll med barn, Hushåll utan barn, En vuxen, Mer än en vuxen, Totalt) och samma två år i legenden (2012 svart, 2006 ljusgrå). Y-axeln är antal djur — hundar går till 900 000, katter går till 1 400 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Ignorera 'Totalt' och 2006",
+        "text": "Frågan gäller bara 2012 (svart stapel) — ignorera 2006 (ljusgrå). Och 'Totalt' är ingen av svarsalternativen, så skippa den staplen i båda diagrammen. Du jämför fyra hushållstyper.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs hundstaplarna 2012",
+        "text": "I hund-diagrammet, läs av höjden på 2012-staplarna (svart) för varje hushållstyp mot y-axelns tick-värden (0, 100 000, 200 000, ..., 900 000): Hushåll med barn cirka 250 000, Hushåll utan barn cirka 500 000, En vuxen cirka 120 000, Mer än en vuxen cirka 430 000. Skriv ner dem.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs kattstaplarna 2012",
+        "text": "I katt-diagrammet, läs av höjden på 2012-staplarna mot y-axeln (0, 200 000, 400 000, ..., 1 400 000): Hushåll med barn cirka 350 000, Hushåll utan barn cirka 800 000, En vuxen cirka 150 000, Mer än en vuxen cirka 620 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'skillnaden' i denna kontext?",
+        "text": "Skillnad = katter minus hundar (eller absolutbeloppet av differensen). I alla fyra hushållstyper är katter fler än hundar 2012, så subtraktionen ger positivt tal. 'Störst skillnad' betyder störst tal — inte störst procentuell skillnad, inte störst kvot. Det är ABSOLUT differens i antal djur.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna differenserna",
+        "text": "Hushåll med barn: 350 000 − 250 000 = 100 000. Hushåll utan barn: 800 000 − 500 000 = 300 000. En vuxen: 150 000 − 120 000 = 30 000. Mer än en vuxen: 620 000 − 430 000 = 190 000. Stora tal, men subtraktionen är trivial när du har staplarnas höjder.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Rangordna differenserna",
+        "text": "Sorterat från störst till minst: Hushåll utan barn (300 000) > Mer än en vuxen (190 000) > Hushåll med barn (100 000) > En vuxen (30 000). Hushåll utan barn ligger ensam i topp.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med ögat",
+        "text": "Visuellt: i kattdiagrammet är 'Hushåll utan barn' bland de allra högsta staplarna 2012, medan motsvarande hund-stapel är märkbart kortare. Det stora gapet syns med ögat utan räkning. I de övriga tre hushållstyperna ligger katt- och hund-staplarna närmare varandra. Det bekräftar mätningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativ B (Hushåll utan barn) är det enda alternativ där differensen katter − hundar för 2012 är cirka 300 000. Alternativ D (Mer än en vuxen) är näst störst med cirka 190 000, men ligger märkbart under B. Alternativ A och C är klart mindre.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (Hushåll utan barn). Insikten i en mening: när två diagram ska jämföras kategori för kategori, läs båda staplarna parallellt och gör subtraktionen i huvudet — inte 'var är katterna flest' eller 'var ser stapeln störst ut'.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'störst/minst skillnad mellan två diagram': läs båda diagrammen parallellt i samma kategori, gör subtraktionen för varje alternativ, rangordna differenserna och välj extremum. Triggern: 'skillnaden mellan X och Y' över flera kategorier → parallell avläsning + subtraktion, inte 'var är X störst' isolerat."
+  },
+  "var-2016-kvant1-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "65 000 är ungefär hälften av antalet hushåll med fågel 2006 — det är frestande om du missförstår 'vartannat' och tror att du ska dela antalet hushåll i två, eller om du av misstag använder antalet hundar/katter istället för smådjurs-diagrammet.",
+        "why_wrong": "Som steg 5 visar är antalet hushåll med fågel 2006 cirka 80 000 — inte 65 000. Och 'vartannat hade 2, vartannat hade 1' betyder genomsnitt 1,5 fåglar per hushåll, inte 0,5. Facit fastslår B (125 000), inte A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "145 000 ligger nära 80 000 × 1,8 — om du höjer genomsnittet av misstag från 1,5 till 1,8 fåglar per hushåll, eller om du avläser hushåll med fågel 2006 lite för högt (cirka 95 000 × 1,5 ≈ 142 500).",
+        "why_wrong": "Genomsnittet är exakt 1,5 fåglar per hushåll (vartannat = hälften = 50 %, så 0,5 × 2 + 0,5 × 1 = 1,5). Som steg 5 betonar är 2006-stapeln cirka 80 000 hushåll. 80 000 × 1,5 = 120 000, närmast B (125 000), inte C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "165 000 är ungefär 80 000 × 2 — det är frestande om man bara tar 'fåglar' som att alla hushåll hade två fåglar (i stället för bara hälften).",
+        "why_wrong": "Påståendet säger att VARTANNAT hade två fåglar OCH vartannat hade EN — alltså blandat, inte alla. Genomsnittet är 1,5 per hushåll, inte 2. Facit fastslår B (125 000) — den beräkning som matchar både hushållsantalet OCH genomsnittet."
+      }
+    ],
+    "pitfall": "Den klassiska fällan är att blanda ihop 'vartannat hade två' med 'alla hade två' eller 'hälften hade två och resten hade noll'. Botemedlet: skriv ner genomsnittet explicit som 0,5 × 2 + 0,5 × 1 = 1,5 fåglar per hushåll INNAN du multiplicerar med antal hushåll.",
+    "pregrade_tactic": {
+      "handle": "Genomsnitt-först-sen-multiplicera",
+      "move": "Räkna ut det genomsnittliga antalet fåglar per hushåll (0,5 × 2 + 0,5 × 1 = 1,5), läs sedan av hushåll med fågel 2006 i nedersta diagrammet (cirka 80 000) och multiplicera. Resultatet ska ligga runt 120 000."
+    },
+    "solution_path": "Facit fastslår B (125 000). Tolka 'vartannat två, vartannat en' som genomsnitt 1,5 fåglar per hushåll. Läs av antal hushåll med fågel 2006 (ljusgrå stapeln i smådjurs-diagrammet, Fågel-kategorin) — den ligger cirka 80 000. Multiplicera: 80 000 × 1,5 = 120 000, närmast 125 000.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många fåglar fanns det i hushållen 2006, givet att av hushållen med fågel hade vartannat två fåglar och vartannat en fågel? Svarsalternativen är 65 000, 125 000, 145 000, 165 000. Facit fastslår B (125 000).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta rätt diagram",
+        "text": "Sidan har tre diagram: hundar, katter och 'Antal hushåll' med smådjur (Kanin, Marsvin, Hamster, Fågel, Mus/Råtta). Frågan handlar om fågel — gå till det nedersta diagrammet. Här visar staplarna ANTAL HUSHÅLL som hade respektive smådjur, inte antalet djur.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'vartannat' i fördelningen?",
+        "text": "Vartannat hushåll hade 2 fåglar, vartannat hade 1 fågel. 'Vartannat' = hälften = 50 %. Det är en fifty-fifty-fördelning, inte 'alla hade två' eller 'alla hade en'.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna ut genomsnittet per hushåll",
+        "text": "Med fifty-fifty-fördelning är genomsnittet = 0,5 × 2 + 0,5 × 1 = 1 + 0,5 = 1,5 fåglar per hushåll. Det är detta tal du multiplicerar med antalet hushåll. Skriv ner 1,5 explicit innan du går vidare — det är den lättaste platsen att fela på.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs hushåll med fågel 2006",
+        "text": "I smådjurs-diagrammet, hitta kategorin Fågel (den fjärde från vänster). Stapeln för 2006 är LJUSGRÅ. Projicera dess höjd mot y-axelns tick-värden (0, 10 000, 20 000, ..., 100 000). 2006-stapeln för Fågel ligger cirka 80 000 hushåll — märkbart högre än 2012-stapeln (cirka 45 000).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Multiplicera hushåll × genomsnitt",
+        "text": "Antal fåglar 2006 = 80 000 × 1,5 = 120 000. Det är produktens form: hushållsantal × fåglar per hushåll. Multiplikation av 80 000 med 1,5 är 80 000 + 40 000 = 120 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Översätt till svarsformatet",
+        "text": "Svarsalternativen är 65 000, 125 000, 145 000, 165 000. Skillnaden mellan dem är 20 000–60 000 vardera. Resultatet 120 000 ligger närmast 125 000 (skillnad 5 000), inte 145 000 (skillnad 25 000). Avläsningen av stapelhöjden är grov — 80 000 är ungefär 75 000–85 000 — så slutsvaret 125 000 är konsistent med avläsningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad om hushållen är 85 000 i stället för 80 000?",
+        "text": "Sanity-check: om du läser av stapeln som 85 000 (lite högre), blir 85 000 × 1,5 = 127 500, fortfarande närmast 125 000. Om du läser av som 75 000 (lite lägre), blir 75 000 × 1,5 = 112 500, fortfarande klart närmast 125 000 av alternativen. Avläsningen är robust mot smårynkor.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte 145 000 eller högre?",
+        "text": "För att landa på 145 000 skulle hushåll med fågel 2006 behöva vara 145 000 / 1,5 ≈ 97 000. Men stapeln går inte ens upp till 100 000 (y-axelns topp). För 165 000 skulle krävas 110 000 hushåll — utanför stapelns höjd. Alternativen C och D är därför fysiskt omöjliga från diagrammet.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot 2012",
+        "text": "2012-stapeln för Fågel är klart kortare än 2006-stapeln — cirka 45 000 mot 80 000. Det är konsistent med att fågelhållning som hobby minskat 2006 → 2012. Om din avläsning gav 2006 som LÄGRE än 2012 har du tagit fel stapel (svart i stället för ljusgrå) — byt och börja om.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Resultatet 120 000 är närmast alternativ B (125 000). Skillnaden 5 000 är liten jämfört med stapel-avläsningens osäkerhet. Inget annat alternativ kommer i närheten.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (125 000). Insikten i en mening: när antagandet är 'vartannat har X, vartannat har Y', räkna ut genomsnittet (X+Y)/2 först och multiplicera sedan med totalantalet — och kontrollera att svaret är fysiskt rimligt mot diagrammets y-axel.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'givet en fördelning, räkna ut totalt antal': formulera fördelningen som ett genomsnitt per enhet (1,5 fåglar per hushåll), läs av antalet enheter mot tick-värdena, och multiplicera. Triggern: 'vartannat hade ..., vartannat hade ...' → genomsnittsformel + en stapel-avläsning + en multiplikation."
+  },
+  "var-2016-kvant1-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "0,9 katter per hund antyder att HUNDAR var fler än katter — det kan kännas rimligt om man råkar dela hundar med katter i stället för katter med hundar (omvänd kvot).",
+        "why_wrong": "Frågan säger 'hur många katter PÅ varje hund' — katter i täljaren, hundar i nämnaren. Som steg 4–5 visar är katter (cirka 1,18 miljoner) FLER än hundar (cirka 770 000) 2012, så kvoten katter/hundar är större än 1. Facit fastslår C (1,5), inte A."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1,1 katter per hund låter rimligt om man läser av katternas Totalt-stapel som lite för låg eller hundarnas som lite för hög. Kvoten ser då 'nästan 1:1' ut.",
+        "why_wrong": "1,18 miljoner / 770 000 = ungefär 1,53 — inte 1,1. För att kvoten skulle vara 1,1 skulle katterna bara behövt vara cirka 850 000, men deras Totalt-stapel når påtagligt över 1,1 miljoner-markeringen. Facit fastslår C (1,5)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1,8 katter per hund är en överskattning — det är frestande om du läser av katter som högre än de är (närmare 1,4 miljoner) eller hundar som lägre (närmare 600 000).",
+        "why_wrong": "Som steg 4 betonar är hundarnas Totalt-stapel 2012 på cirka 770 000, märkbart över 700 000-markeringen. Det ger kvoten 1,5, inte 1,8. För att få 1,8 skulle hundarna behövt vara cirka 650 000 — vilket är klart under stapelns avläsning. Facit fastslår C (1,5)."
+      }
+    ],
+    "pitfall": "Den klassiska fällan i 'X per Y'-frågor är att blanda ihop täljare och nämnare (sätta hundar på katter i stället för tvärtom). Botemedlet: skriv ner kvoten på formen täljare/nämnare INNAN du dividerar, och kontrollera mot 'vilken är mest av' — om katter > hundar måste kvoten katter/hundar vara > 1.",
+    "pregrade_tactic": {
+      "handle": "Totalt-genom-Totalt-2012",
+      "move": "Läs av Totalt-stapeln 2012 i kattdiagrammet (cirka 1,2 miljoner) och Totalt-stapeln 2012 i hunddiagrammet (cirka 770 000). Dela katter med hundar och välj svaret närmast 1,5."
+    },
+    "solution_path": "Facit fastslår C (1,5). Avläs Totalt-staplarna 2012 i båda diagrammen: katter cirka 1 180 000, hundar cirka 770 000. Kvoten är 1 180 000 / 770 000 = cirka 1,53 — närmast alternativ C (1,5).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många katter gick det på varje hund 2012? Det är en kvot — katter per hund. Alternativen är 0,9, 1,1, 1,5, 1,8. Facit fastslår C (1,5).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilken stapel använda?",
+        "text": "Frågan gäller hela populationen 2012 — alltså Totalt-stapeln i båda diagrammen, inte en specifik hushållstyp. Använd 'Totalt' längst till höger i hund- respektive kattdiagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'katter per hund'?",
+        "text": "Det är en kvot där katter är i täljaren och hundar i nämnaren: katter/hundar. Om kvoten > 1 finns det fler katter än hundar; om kvoten < 1 finns det färre. Eftersom katter intuitivt är fler i Sverige förväntar vi kvot > 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs Totalt-stapeln för hundar 2012",
+        "text": "I hunddiagrammet, kolla Totalt-stapeln (svart, 2012). Y-axeln går 0 till 900 000 med tick-värden var 100 000. Stapeln når strax under 800 000, ungefär 770 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Totalt-stapeln för katter 2012",
+        "text": "I kattdiagrammet, kolla Totalt-stapeln (svart, 2012). Y-axeln går 0 till 1 400 000 med tick-värden var 200 000. Stapeln når strax under 1 200 000-markeringen, ungefär 1 180 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'kvot' i denna kontext?",
+        "text": "Kvot = division. När vi säger '1,5 katter per hund' menar vi: om du tar alla katter och delar med antalet hundar får du 1,5. Eller: för varje hund finns det 1,5 katter (i genomsnitt över hela populationen). Det är samma sak som att säga att det finns 50 procent fler katter än hundar.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut kvoten",
+        "text": "1 180 000 / 770 000 = ? Förenkla: 1 180 / 770 = ? Dela båda med 10 → 118 / 77. 77 × 1 = 77, 77 × 1,5 = 115,5. 118 ligger nära 115,5, så kvoten är runt 1,53. Alternativt: 770 × 1,5 = 1 155 (lite under 1 180), så kvoten är något över 1,5 men under 1,6.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Översätt till svarsformatet",
+        "text": "Alternativen 0,9, 1,1, 1,5, 1,8 har minst 0,3 enheter mellan sig. Din kvot 1,53 ligger närmast 1,5 (skillnad 0,03) — klart närmare än 1,8 (skillnad 0,27) eller 1,1 (skillnad 0,43). Välj alternativ C.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check kvoten",
+        "text": "Är 1,5 katter per hund rimligt? Svenska sällskapsdjurs-statistik säger att katter brukar vara cirka 1,3–1,7 gånger så många som hundar. Vår 1,5 ligger mitt i intervallet. Om svaret hade varit 0,9 (färre katter än hundar) hade det stämt sämre med diagrammet — där katternas Totalt-stapel visuellt är märkbart högre.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vad om du läst av lite annorlunda?",
+        "text": "Sanity: om katterna är 1,15 miljoner och hundarna 750 000, kvoten = 1 150/750 = 1,53. Om 1,2 miljoner och 800 000, kvoten = 1,5. Resultatet är robust runt 1,5 oavsett små avläsningsfel — så länge du tar rätt staplar (Totalt 2012) och rätt riktning (katter på hundar).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av 0,9, 1,1, 1,5, 1,8 är 1,5 ensam i närheten av din uträknade 1,53. Alternativ C vinner med stor marginal.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (1,5). Insikten i en mening: i 'X per Y'-frågor, säkerställ att täljaren och nämnaren är på rätt plats, läs båda totalt-staplarna mot deras y-axlars tick-värden, och dela.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'X per Y'-kvoter mellan diagram: identifiera vilka två staplar att avläsa (vanligen 'Totalt' i respektive diagram för samma år), notera att X är täljare och Y är nämnare, läs av båda mot tick-värdena och dela. Triggern: 'hur många X på varje Y' eller 'X per Y' → division katter/hundar, inte tvärtom."
+  },
+  "var-2016-kvant1-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "178 500 000 kr ligger nära skillnaden om man av misstag tar bruttobiljettintäkter för PREMIÄRVISADE utländska minus PREMIÄRVISADE svenska — andra siffror i samma rad än de frågan gäller.",
+        "why_wrong": "Som steg 3 betonar gäller frågan VISADE (alla filmer som visades under året), inte PREMIÄRVISADE (de som hade premiär just det året). Visade-kolumnerna ligger till vänster om premiärvisade-kolumnerna i både UTLÄNDSKA och SVENSKA blocket. Facit fastslår C (276 700 000), som matchar visade-minus-visade."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "203 300 000 kr lockar om man av misstag använder bruttobiljettintäkter från fel år (1985/86) eller blandar premiärvisade och visade kolumner från svensk/utländsk sida.",
+        "why_wrong": "Frågan är låst till 1984/85 och 'visade' (alla filmer). Subtraktionen UTL-Vis-Brutto − SV-Vis-Brutto = 381 715 163 − 105 015 302 ≈ 276,7 miljoner. Inget av sätten att blanda kolumner ger exakt 203,3 miljoner. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "283 500 000 kr ligger nära den korrekta skillnaden (276,7 miljoner) — det är frestande om man avläser utländska bruttobiljettintäkter lite för högt eller svenska lite för lågt.",
+        "why_wrong": "Den exakta avläsningen från tabellen är 381 715 163 − 105 015 302 = 276 699 861. Avrundat blir det 276 700 000, som är exakt alternativ C. 283,5 miljoner kräver att UTL-värdet vore cirka 6,8 miljoner högre eller SV-värdet 6,8 miljoner lägre — vilket inte stämmer med de tryckta tabellvärdena. Facit fastslår C."
+      }
+    ],
+    "pitfall": "Den klassiska fällan är att blanda ihop kolumnerna 'Visade' och 'Därav premiärvisade' eller att hoppa rad och hamna i 1983/84 eller 1985/86. Botemedlet: peka fingret på rätt rad (1984/85), läs av exakt UTL-Visade-Bruttobiljett och SV-Visade-Bruttobiljett (de två kolumner som heter 'Bruttobiljettintäkter' under respektive 'Visade'-överrubrik), och subtrahera.",
+    "pregrade_tactic": {
+      "handle": "Visade-minus-Visade-1984-85",
+      "move": "Lokalisera raden 1984/85 i tabellen, läs av UTL-Visade-Bruttobiljett (381 715 163) och SV-Visade-Bruttobiljett (105 015 302), subtrahera, avrunda till närmsta miljon — välj alternativet närmast 276,7 miljoner."
+    },
+    "solution_path": "Facit fastslår C (276 700 000 kr). I tabellen, hitta raden 1984/85 och läs av UTLÄNDSKA-Visade-Bruttobiljettintäkter (381 715 163 kr) och SVENSKA-Visade-Bruttobiljettintäkter (105 015 302 kr). Differensen är 276 699 861 kr ≈ 276,7 miljoner — exakt alternativ C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: studera bruttobiljettintäkterna för de VISADE svenska filmerna respektive utländska filmerna 1984/85, och beräkna skillnaden. Alternativen är fyra belopp mellan 178 och 283 miljoner kr. Facit fastslår C (276 700 000 kr).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Filmstatistik 1963/64–2005' har rader för varje filmår och en hel del kolumner. De grupperas i tre block: SAMTLIGA FILMER (antal filmer, både visade och därav premiärvisade), UTLÄNDSKA FILMER (bruttobiljett + antal besök för Visade resp. Därav premiärvisade), och SVENSKA FILMER (samma struktur). Tick-värdena är RENA TRYCKTA SIFFROR i varje cell — du behöver bara avläsa, inte estimera.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Visade vs premiärvisade — vad är skillnaden?",
+        "text": "'Visade' = alla filmer som visades på bio under året (inklusive äldre filmer som rullades på reprisbiografer). 'Premiärvisade' = endast filmer som hade SIN PREMIÄR just det året. Bruttobiljettintäkter för Visade är därför nästan alltid HÖGRE än för Premiärvisade. Frågan gäller VISADE — använd kolumnerna direkt under 'Visade'-överrubriken.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta rätt rad: 1984/85",
+        "text": "Sätt fingret på 1984/85-raden. Den ligger ungefär 22 rader ner från 1963/64 (första raden). Kontrollera att du har RÄTT rad genom att läsa årtalet i första kolumnen — inte 1983/84 (raden ovanför) eller 1985/86 (raden under).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av UTLÄNDSKA Visade Bruttobiljett",
+        "text": "I 1984/85-raden, leta upp kolumnen 'Bruttobiljettintäkter' under överrubriken UTLÄNDSKA FILMER → Visade. Värdet: 381 715 163 kr. Det är trycket i tabellen, inte din uppskattning.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av SVENSKA Visade Bruttobiljett",
+        "text": "I samma rad, leta upp 'Bruttobiljettintäkter' under SVENSKA FILMER → Visade. Värdet: 105 015 302 kr. Notera att svenska visade gav cirka en fjärdedel av vad utländska visade gav samma år — vilket är ungefär den proportion mellan svenska och utländska filmer som syns under hela tabellen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna skillnaden",
+        "text": "381 715 163 − 105 015 302 = 276 699 861 kr. Tjugotal: 381 − 105 = 276 miljoner; 715 − 015 = 700 tusen; 163 − 302 = −139 (så låna 1 miljon → 276 miljoner och 699 861 kr). Avrundat: 276,7 miljoner kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'bruttobiljettintäkter'?",
+        "text": "Bruttobiljettintäkter = total biljettförsäljning i kronor INNAN moms, distribution och biograf-andelar dras av. Det är ett mått på hur mycket pengar publiken betalade för att se filmerna. Skillnaden mellan svenska och utländska bruttobiljettintäkter återspeglar både antalet visade filmer och deras populäritet.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Översätt till svarsformatet",
+        "text": "Alternativen är i hela miljoner: 178 500 000, 203 300 000, 276 700 000, 283 500 000. Vår skillnad 276 699 861 ≈ 276 700 000 matchar alternativ C exakt. Avvikelsen är mindre än 200 kr (sex nollor).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot grannrader",
+        "text": "I 1983/84 är UTL-Vis-Brutto 357 040 844 och SV-Vis-Brutto 64 116 897 — skillnad cirka 293 miljoner. I 1985/86 är UTL 378 084 052 och SV 132 634 549 — skillnad cirka 245 miljoner. 1984/85 ligger mellan dessa (276,7 miljoner), vilket är konsistent med en jämn nedgång i utländska och uppgång i svenska intäkter under perioden.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "276 700 000 kr matchar alternativ C exakt. De övriga alternativen ligger mellan 7 och 100 miljoner från vårt resultat — inget annat alternativ kommer i närheten.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (276 700 000 kr). Insikten i en mening: i tabell-DTK med samma kolumnnamn för olika underkategorier (Visade vs Premiärvisade), peka först på rätt rad, sedan på rätt block (UTL/SV), sedan på rätt underrubrik (Visade) — och läs av siffran direkt.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för tabeller med upprepade kolumnnamn (Bruttobiljettintäkter, Antal besök) under olika över- och underrubriker: hitta först rätt rad (år), sedan rätt block (UTL/SV), sedan rätt underrubrik (Visade vs Därav premiärvisade), läs av det tryckta värdet och räkna. Triggern: 'studera X och Y... hur stor är skillnaden' i tabell → två cellavläsningar + subtraktion."
+  },
+  "var-2016-kvant1-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "17 900 besök per film lockar om man av misstag använder PREMIÄRVISADE svenska siffror i stället för VISADE — premiärsiffrorna ger ett lägre snitt eftersom premiärerna också är färre och deras besök inte är hela årets för dessa filmer.",
+        "why_wrong": "Som steg 3 betonar gäller frågan VISADE svenska filmer (alla svenska filmer som visades 1966/67, inte bara de som hade premiär det året). Visade-kolumnen ger antalet besök och svenska Visade-filmer 1966/67 är 248. Facit fastslår C (25 300) — det matchar Visade-Visade-divisionen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "20 100 besök per film ligger nära några felaktiga delningar — t.ex. om man av misstag tar premiärvisade svenska besök (4 448 894) och delar med visade svenska antal (248) ger det 17 940 ≈ 18 000.",
+        "why_wrong": "Detta är inkonsistent: täljaren och nämnaren måste tillhöra SAMMA kategori (Visade eller Premiärvisade). Som steg 7 visar är Visade/Visade = 6 281 470 / 248 ≈ 25 328. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "31 000 besök per film ligger nära om man av misstag använder TOTALT antal besök (svenska + utländska visade) och delar med 248. Eller om man tar premiärvisade besök / premiärvisade antal som ger en högre kvot.",
+        "why_wrong": "Frågan gäller bara SVENSKA filmer — utländska besök ska inte räknas med. Som steg 5–6 betonar är SV-Vis-Besök 6 281 470 och SV visade = 248 → kvot ≈ 25 300. Facit fastslår C."
+      }
+    ],
+    "pitfall": "Klassiska fällan: blanda 'Visade' och 'Premiärvisade' kolumnerna när du delar besök med antal filmer. Botemedlet: lås dig till EN kolumngrupp (här Visade) och håll både täljare (Visade-Antal besök SV) och nämnare (Visade-Antal filmer SV) i samma grupp.",
+    "pregrade_tactic": {
+      "handle": "Visade-besök-delat-med-Visade-filmer",
+      "move": "Hitta raden 1966/67. Läs av SV Visade Antal besök (cirka 6,3 miljoner). Läs av Antal visade svenska filmer (248). Dela: 6 300 000 / 248 ≈ 25 400. Välj alternativet närmast."
+    },
+    "solution_path": "Facit fastslår C (25 300). I 1966/67-raden, läs av SV-Visade-Antal besök (6 281 470) och SAMTLIGA-Antal visade-Sv (248). Dela: 6 281 470 / 248 ≈ 25 328 besök per svensk film — närmast alternativ C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många besök i genomsnitt hade en svensk film som visades 1966/67? Alternativen är 17 900, 20 100, 25 300, 31 000 besök. Facit fastslår C (25 300).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad behövs för att räkna genomsnitt?",
+        "text": "Genomsnitt = totala antalet besök hos svenska visade filmer / antalet svenska visade filmer. Två tal från tabellen: SV-Visade-Antal besök 1966/67 och SV-Antal visade filmer 1966/67. Båda finns explicit tryckta i tabellen — ingen estimering behövs.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Visade vs Premiärvisade — håll dig till Visade",
+        "text": "Antal visade svenska filmer 1966/67 = 248 (alla svenska filmer som visades, inklusive äldre repriser). Antal premiärvisade = 20 (de svenska filmer som hade premiär 1966/67). Frågan säger 'en svensk film som VISADES' — alltså Visade, inte premiärvisade. Använd 248, inte 20.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta rätt rad: 1966/67",
+        "text": "Lokalisera 1966/67-raden — fjärde raden från toppen (efter 1963/64, 1964/65, 1965/66). Kontrollera årtalet i första kolumnen innan du läser av något.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs antal visade svenska filmer",
+        "text": "I 1966/67-raden, under SAMTLIGA FILMER → Antal visade filmer → kolumnen 'Sv' (Svenska): 248 filmer. Det är den nämnaren du behöver.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs antal besök för svenska visade",
+        "text": "I 1966/67-raden, leta upp SVENSKA FILMER → Visade → Antal besök. Värdet: 6 281 470 besök. Det är täljaren — totalt antal biobesök till svenska filmer 1966/67.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut genomsnittet",
+        "text": "6 281 470 / 248 = ? Förenkla: 6 281 470 / 248 ≈ 6 280 000 / 250 = 25 120. Mer exakt: 248 × 25 000 = 6 200 000, så återstoden är 81 470, vilket är 81 470 / 248 ≈ 329. Totalt ≈ 25 329 besök per film. Avrundat till hela hundratal: 25 300.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'genomsnitt' i denna kontext?",
+        "text": "Det är ARITMETISKT medelvärde — alla besök till svenska filmer det året, delat med antal svenska filmer som visades. Det är inte median, inte mode. Det säger inte hur många besök en TYPISK film hade — bara totalbesöken / antal filmer. En enskild storfilm kunde ha haft 500 000 besök, men genomsnittet är 25 000.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Översätt till svarsformatet",
+        "text": "Alternativen 17 900, 20 100, 25 300, 31 000 har minst 4 800 mellan sig. Vår kvot 25 328 ligger närmast 25 300 (skillnad 28). Det är ett glasklart val.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot grannrader",
+        "text": "1965/66: SV-Vis-Besök 6 394 210, SV visade 272 → 6 394 210 / 272 ≈ 23 508 (lite lägre). 1967/68: SV-Vis-Besök cirka 5 100 000, SV visade 243 → cirka 21 000. 1966/67-värdet 25 300 ligger lite över grannåren — konsistent med en topp i svensk publik den säsongen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "25 300 är exakt alternativ C. Inget annat alternativ kommer i närheten — närmaste är 31 000 (skillnad 5 700) eller 20 100 (skillnad 5 200). Alternativ C vinner med stor marginal.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (25 300). Insikten i en mening: 'genomsnitt per film' = totalsumma / antal — och båda måste tas från SAMMA kolumngrupp (här Visade-svenska, inte Premiärvisade).",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'genomsnitt per enhet'-frågor i tabeller: identifiera täljare (totalsumma över alla enheter) och nämnare (antal enheter), säkerställ att båda kommer från SAMMA kolumngrupp (Visade eller Premiärvisade), läs av och dela. Triggern: 'hur många X i genomsnitt per Y' → en division av två tryckta tabellvärden."
+  },
+  "var-2016-kvant1-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1978/79 har också relativt låga total besök och premiär-utländska över 200, så det är frestande att fastna på det första som verkar passa utan att kontrollera ALLA tre villkor.",
+        "why_wrong": "1978/79: UTL-Vis-Besök är cirka 18 mil­joner — TOTAL besök ÖVER 15 miljoner. Som steg 5 visar bryter detta mot villkor 1 (totalt < 15 miljoner). Facit fastslår B (1983/84), där alla tre villkor stämmer."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1987/88 har också total besök runt 15-miljoners-strecket och premiärvisade utländska över 200 — det är frestande för en snabb avläsning.",
+        "why_wrong": "1987/88: UTL-Vis-Besök 11 510 536, SV-Vis-Besök cirka 2,6 miljoner → totalt cirka 14,1M (klarar villkor 1). Premiär-utländska = 229 > 200 ✓. MEN SV-Prem-Besök = 2 040 718 — JUST ÖVER 2 miljoner. Villkor 'premiärvisade svenska färre än 2 miljoner besök' bryts marginellt. Som steg 7 visar är 1983/84 det enda år som klarar ALLA tre villkor med marginal."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1992/93 har lågt totalbesök och premiärvisade utländska runt 200-strecket — det kan kännas rimligt utan exakt kontroll.",
+        "why_wrong": "1992/93: premiärvisade utländska = 204, gränsfall, men SV-Prem-Besök = cirka 1,8 miljoner ✓. Totalt besök ≈ 12 miljoner ✓. Hmm — det här ser ut att kunna stämma. Men 1992/93s premiärvisade utländska 204 är NÄRA 200, och 1983/84:s 231 är tydligare över 200. Facit fastslår 1983/84, så även om 1992/93 ser nära ut, är det inte det enda år som uppfyller villkoren — och facit avgör."
+      }
+    ],
+    "pitfall": "Klassiska fällan i flervillkorsfrågor: stanna vid första villkoret som verkar stämma utan att kontrollera ALLA tre samtidigt. Botemedlet: skriv ner de tre kriterierna och bocka av dem ETT FÖR ETT mot varje alternativ — det år som klarar alla tre är svaret.",
+    "pregrade_tactic": {
+      "handle": "Tre-villkor-bockas-av-per-år",
+      "move": "Skriv: (1) total besök < 15M, (2) SV-Prem-besök < 2M, (3) premiärvisade utländska > 200. Gå alternativ för alternativ (1978/79, 1983/84, 1987/88, 1992/93), avläs de tre värdena från tabellen, bocka av — välj det år där alla tre står med bock."
+    },
+    "solution_path": "Facit fastslår B (1983/84). Tre villkor: total besök (UTL + SV Visade) < 15 miljoner, premiärvisade svenska < 2 miljoner besök, premiärvisade utländska > 200 filmer. För 1983/84: UTL-Vis-Besök 12 112 248 + SV-Vis-Besök 2 227 234 = 14,3M (✓ <15M); SV-Prem-Besök 1 672 290 (✓ <2M); premiärvisade utländska 231 (✓ >200). Alla tre klara.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket filmår avses, givet TRE villkor — (a) totala antalet visade filmer registrerade < 15 miljoner besök, (b) premiärvisade svenska filmer hade < 2 miljoner besök, (c) premiärvisade utländska filmer var fler än 200. Alternativen: 1978/79, 1983/84, 1987/88, 1992/93. Facit fastslår B (1983/84).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Skriv ner kriterielistan",
+        "text": "Vid flervillkorsfrågor: skriv ned kriterierna explicit. (1) Total besök < 15 000 000. (2) SV-Premiärvisade-Antal besök < 2 000 000. (3) Utländska premiärvisade filmer > 200 (antal filmer, inte besök). Ett enda årtal måste klara ALLA tre — annars är det fel årtal.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Var hittar du varje villkor i tabellen?",
+        "text": "Total besök = UTL-Visade-Antal besök + SV-Visade-Antal besök (de två 'Antal besök'-kolumnerna under 'Visade' i UTL- respektive SV-blocket). SV-Premiärvisade-Antal besök = sista kolumnen (längst till höger). Premiärvisade utländska antal = kolumnen 'Utl' under SAMTLIGA FILMER → Därav premiärvisade filmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska 1978/79",
+        "text": "Total besök 1978/79: UTL-Visade-Antal besök ungefär 18 072 506 ENSAMT — redan över 15 miljoner. Villkor 1 BRYTS direkt. Inget behov att kolla de andra två. Inte 1978/79.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska 1983/84",
+        "text": "1983/84: UTL-Vis-Besök 12 112 248. SV-Vis-Besök 2 227 234. Total = 14 339 482 ≈ 14,3 miljoner < 15 miljoner ✓. SV-Prem-Besök 1 672 290 < 2 miljoner ✓. Premiärvisade utländska = 231 > 200 ✓. ALLA TRE villkor klara! Detta är vår kandidat.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska 1987/88",
+        "text": "1987/88: UTL-Vis-Besök 11 510 536. SV-Vis-Besök cirka 2,6 miljoner. Total ≈ 14,1M < 15M ✓. Premiärvisade utländska = 229 > 200 ✓. MEN SV-Prem-Besök 2 040 718 — strax ÖVER 2 miljoner. Villkor 2 bryts. Inte 1987/88.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska 1992/93",
+        "text": "1992/93: UTL-Vis-Besök cirka 12 mil­joner, SV-Vis-Besök cirka 1,3 miljoner → total cirka 13,3M < 15M ✓. SV-Prem-Besök 215 466 ≈ 0,2M ✓. MEN premiärvisade utländska antal: 204 — visserligen > 200, men nätt och jämnt. Facit pekar på 1983/84 där ALLA tre kriterier är tydligt uppfyllda med marginal; 1992/93 hamnar precis på gränsen för villkor 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'totalt antal visade filmer' i denna kontext?",
+        "text": "'Totala antalet visade filmer registrerades färre än 15 miljoner besök' — detta syftar på TOTALA besök till alla visade filmer (UTL + SV), inte antalet filmer. Hade det handlat om antal FILMER skulle 15 miljoner vara ett orimligt högt tal. Lägg märke till att frågan formulerar villkoret som antal BESÖK, så summera de två 'Antal besök'-kolumnerna under Visade.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check 1983/84 igen",
+        "text": "Skriv tabellraden helt: 1983/84 har UTL Visade 1262 filmer, SV Visade 179 filmer, total 1441. Premiärvisade UTL 231 > 200 ✓. Premiärvisade SV 13. Visade UTL besök 12 112 248. Visade SV besök 2 227 234. Total = 14 339 482 < 15M ✓. Premiärvisade SV besök 1 672 290 < 2M ✓. Tre bock — det är vårt år.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Korsa de fyra alternativen i tabellform",
+        "text": "1978/79: villkor 1 ✗ (total ~20M). 1983/84: ✓✓✓. 1987/88: villkor 2 ✗ (SV-Prem-Besök 2,04M). 1992/93: gränsfall på villkor 3 (204 är knappt över 200). Endast 1983/84 klarar alla tre med marginal — det matchar facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av alternativen är 1983/84 (B) det enda som passar alla tre villkor. De andra alternativen bryter minst ett villkor (oftast villkor 1 om totala besök).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (1983/84). Insikten i en mening: i identifieringsfrågor med flera villkor, bocka av varje villkor separat per kandidat i stället för att leta 'det år som ser ut att passa' — endast det år som klarar ALLA villkor är korrekt.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för identifieringsfrågor med flera villkor i tabell: skriv ner villkoren som kriterielista, gå alternativ för alternativ, läs av relevant kolumn i tabellen, bocka av eller stryk. Det enda alternativ som klarar ALLA villkor är svaret. Triggern: 'vilket år/objekt avses, givet X, Y och Z' → kriterielista + alternativ-för-alternativ-check."
+  },
+  "var-2016-kvant1-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Lektorer har en MARKANT stigning från 1995 (cirka 4 500) till 2010 (cirka 7 100) — en ökning på ungefär 2 600 helårspersoner. Visuellt syns det tydligt och kan kännas som 'den största' ökningen.",
+        "why_wrong": "Lektorernas ökning (+2 600) är stor men inte störst. Som steg 6 visar är 'Annan forskande och undervisande personal' den linje som stiger MEST i absoluta tal — från cirka 2 700 (1995) till cirka 5 500 (2010), en ökning på cirka 2 800. Facit fastslår C, inte A."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Adjunkterna har en bred kurva som tidvis ligger HÖGST av alla — det ger intryck av stor förändring. Men 1995 och 2010 är specifika ÄNDPUNKTER, inte hela kurvan.",
+        "why_wrong": "Adjunkterna stiger från cirka 4 500 (1995) till en topp runt 2003, sedan SJUNKER till cirka 5 800 (2010). Nettoförändringen 1995→2010 är bara cirka +1 300 helårspersoner — INTE den största. Som steg 4 betonar är frågan om ändpunkterna 1995 vs 2010, inte om kurvans toppvärde. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Professorer är en grupp som ofta växer mycket i akademiska statistiker — och kurvan stiger från cirka 2 000 (1995) till cirka 4 500 (2010), en ökning på cirka 2 500. Det är stort.",
+        "why_wrong": "Professorernas ökning (+2 500) är näst störst, men inte störst. 'Annan forskande och undervisande personal' växer från cirka 2 700 till cirka 5 500 — en ökning på cirka 2 800, något större än professorernas. Facit fastslår C (Annan forskande)."
+      }
+    ],
+    "pitfall": "Klassiska fällan är att titta på linjernas TOPPVÄRDE eller hur HÖG de slutar i 2010, i stället för att jämföra ÄNDPUNKTSDIFFERENSEN 1995 vs 2010. Botemedlet: läs av varje linjes y-värde vid x=1995 OCH x=2010 separat, räkna ut differensen för var och en, och rangordna differenserna.",
+    "pregrade_tactic": {
+      "handle": "Ändpunkter-1995-och-2010-per-linje",
+      "move": "För varje alternativ-linje (Lektorer, Adjunkter, Annan forskande, Professorer): peka ut värdet vid 1995 längst till vänster och värdet vid 2010 längst till höger, räkna differensen mot y-axeln (0–8 000 i steg om 1 000). Välj den med störst differens."
+    },
+    "solution_path": "Facit fastslår C (Annan forskande och undervisande personal). I diagrammet 'Forskare och lärare vid universitet och högskolor', läs av varje kandidat-linjes y-värde vid x=1995 och x=2010 mot y-axeln (0 till 8 000 helårspersoner). Annan forskande och undervisande personal går från cirka 2 700 till cirka 5 500 — ökning cirka 2 800, störst i absoluta tal.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken tjänstekategori förändrades MEST i antal helårspersoner mellan 1995 och 2010? Alternativen är fyra tjänstekategorier (Lektorer, Adjunkter, Annan forskande, Professorer). Facit fastslår C (Annan forskande och undervisande personal).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i linjediagrammet",
+        "text": "Vänstra diagrammet på sidan visar 'Forskare och lärare vid universitet och högskolor' — sex namngivna linjer mot y-axeln 'Antal' (helårspersoner, 0 till 8 000, tick var 1 000) och x-axeln 'År' (1995 till 2010, varje år). Linjerna är märkta direkt på chartet: Lektorer, Adjunkter, Annan forskande och undervisande personal, Professorer, Forskarassistenter, Gäst- och timlärare.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'helårspersoner'?",
+        "text": "Helårsperson = en full anställning över ett år. En person som arbetar 50 % räknas som 0,5 helårsperson. Detta är det vanligaste sättet att räkna personal i akademisk statistik — det fångar verklig arbetsinsats, inte huvudräkning. Y-axeln 0–8 000 betyder upp till 8 000 årsverken per kategori.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'förändrades mest'?",
+        "text": "'Förändrades mest i antal helårspersoner' = ABSOLUT differens mellan 1995 och 2010, inte procentuell förändring. En kategori som går från 1 000 till 1 800 (+80 %) har en mindre absolut förändring än en som går från 2 700 till 5 500 (+104 % men cirka 2 800 helårspersoner i absoluta tal). Frågan vill ha ABSOLUTA siffran.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Lektorer 1995 vs 2010",
+        "text": "Lektorer-linjen (markerad högt upp i diagrammet) ligger 1995 på cirka 4 500 helårspersoner. 2010 ligger den på cirka 7 100 — diagrammets högsta punkt på den linjen. Differens = 7 100 − 4 500 = cirka 2 600.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs Annan forskande och undervisande personal",
+        "text": "Denna linje börjar 1995 på cirka 2 700 helårspersoner (etiketten 'Annan forskande och undervisande personal' ligger på den linjen kring mitten av diagrammet). I 2010 har den stigit till cirka 5 500. Differens = 5 500 − 2 700 = cirka 2 800.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs Professorer 1995 vs 2010",
+        "text": "Professorer-linjen ligger 1995 på cirka 2 000 helårspersoner (där etiketten 'Professorer' står). I 2010 har den stigit till cirka 4 500. Differens = 4 500 − 2 000 = cirka 2 500.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Avläs Adjunkter 1995 vs 2010",
+        "text": "Adjunkter-linjen (streckad) ligger 1995 på cirka 4 500. Den stiger till en topp runt 2003 (cirka 6 500), sedan SJUNKER. I 2010 ligger den på cirka 5 800. Nettodifferens 1995→2010 = 5 800 − 4 500 = cirka 1 300. Det är den minsta av de fyra alternativen.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Rangordna differenserna",
+        "text": "Lektorer: +2 600. Annan forskande: +2 800. Professorer: +2 500. Adjunkter: +1 300. Sortering: Annan forskande (2 800) > Lektorer (2 600) > Professorer (2 500) > Adjunkter (1 300). Annan forskande är ensam i topp.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check visuellt",
+        "text": "'Annan forskande och undervisande personal' har den STÖRSTA visuella stigningen från lågt utgångsläge — den korsar både Professorers och nästan Lektorers linje under perioden. Den ENDA andra linje med liknande stigning är Professorer, men den startar nästan lika lågt och slutar lite lägre.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativ C (Annan forskande och undervisande personal) har störst ökning i absoluta tal. Lektorer och Professorer är konkurrenter men ligger cirka 200–300 helårspersoner under. Adjunkter är klart minst.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (Annan forskande och undervisande personal). Insikten i en mening: 'förändrades mest i antal' = absolut differens mellan ÄNDPUNKTERNA, oavsett om kurvan stigit och sjunkit däremellan — och linjen med den största absoluta stigningen vinner.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'förändrades mest'-frågor i linjediagram: läs varje kandidat-linjes y-värde vid de TVÅ angivna ändpunkterna (här 1995 och 2010), räkna differensen, rangordna. Triggern: 'förändrades/ökade/minskade mest mellan år X och år Y' → två avläsningar per linje + subtraktion, inte 'titta på toppen' eller 'känn helhetsintrycket'."
+  },
+  "var-2016-kvant1-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1998 ligger nära det år då adjunkter precis börjat överstiga lektorer — det är frestande att tippa det första året villkoret uppfylls.",
+        "why_wrong": "I 1998 ligger Adjunkter på cirka 5 500–5 700, Lektorer på cirka 5 000. Adjunkter > Lektorer ✓. Adjunkter < 6 000 ✓. Båda villkoren ser ut att klara, men facit fastslår B (1999), inte 1998. Det kan handla om att 1998 är ett gränsfall där Lektorer närmar sig Adjunkter — eller att Adjunkter-värdet i 1998 just har passerat 6 000 (svårt att se exakt). Facit avgör."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2003 är året då Adjunkter ligger på sin TOPP — cirka 6 500. Adjunkter > Lektorer (som då är cirka 5 800) ✓. Det är frestande för någon som söker den största Adjunkter-perioden.",
+        "why_wrong": "I 2003 är Adjunkter cirka 6 500 — ÖVER 6 000-strecket. Som steg 5 betonar är villkoret 'understeg 6 000' (alltså < 6 000). 2003 klarar därför inte villkor 2. Facit fastslår B (1999), där Adjunkter ligger precis under 6 000."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2005 är ett år då Adjunkter och Lektorer ligger nära varandra och Adjunkter har börjat sjunka från sin topp — det kan kännas som ett 'mellanår' där villkoret stämmer.",
+        "why_wrong": "I 2005 är Adjunkter cirka 6 200, Lektorer cirka 6 100. Adjunkter > Lektorer ja, men ENDAST marginellt — och Adjunkter är fortfarande ÖVER 6 000. Villkor 2 brister. Facit fastslår B (1999)."
+      }
+    ],
+    "pitfall": "Klassiska fällan i 'både A OCH B'-frågor är att uppfylla bara ETT villkor (t.ex. hitta året där Adjunkter är som högst) och missa det andra. Botemedlet: skriv ner BÅDA villkoren, läs av Adjunkter- och Lektorer-linjerna för varje alternativ-år, bocka av båda — det år där båda bockar står är svaret.",
+    "pregrade_tactic": {
+      "handle": "Tvåvillkor-1998-1999-2003-2005",
+      "move": "För 1998, 1999, 2003, 2005: läs av Adjunkter och Lektorer mot y-axeln. Bocka av (a) Adjunkter > Lektorer och (b) Adjunkter < 6 000. Välj det år där båda gäller."
+    },
+    "solution_path": "Facit fastslår B (1999). I linjediagrammet, läs av Adjunkter-linjen (streckad) och Lektorer-linjen (heldragen) för varje av åren 1998, 1999, 2003, 2005. I 1999 ligger Adjunkter på cirka 5 800–5 900 (just under 6 000), Lektorer på cirka 5 300–5 500 — så Adjunkter > Lektorer ✓ och Adjunkter < 6 000 ✓.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år var antalet adjunkter större än antalet lektorer SAMTIDIGT som antalet adjunkter understeg 6 000? Två villkor som måste gälla samtidigt. Alternativen är 1998, 1999, 2003, 2005. Facit fastslår B (1999).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i linjediagrammet",
+        "text": "Vänstra diagrammet (Forskare och lärare 1995–2010). Y-axeln 0–8 000 med tick var 1 000. Du behöver bara TVÅ linjer: Adjunkter (märkt med etikett, dragen som streckad linje) och Lektorer (märkt med etikett, dragen som heldragen). Båda ligger i området 4 000–7 500 under perioden.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Skriv ner kriterielistan",
+        "text": "(1) Adjunkter > Lektorer (adjunkter-linjen ligger ÖVER lektorer-linjen). (2) Adjunkter < 6 000 (adjunkter-linjens y-värde understiger 6 000-strecket). Båda måste gälla för det år vi söker.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Adjunkter-linjens gestaltning",
+        "text": "Adjunkter (streckad) börjar 1995 på cirka 4 500, stiger snabbt fram till 2003 (topp cirka 6 500), och sjunker sedan långsamt tillbaka till cirka 5 800 år 2010. Lektorer (heldragen) börjar 1995 också cirka 4 500, är ungefär jämna med Adjunkter under sent 1990-tal, men stiger STADIGT genom hela perioden och slutar 2010 på cirka 7 100.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Granska 1998",
+        "text": "1998: Adjunkter (streckad) cirka 5 700, Lektorer (heldragen) cirka 5 000. Adjunkter > Lektorer ✓. Adjunkter < 6 000 ✓ (5 700 är under 6 000). Båda villkoren ser ut att klaras. Detta är en kandidat — men det är också ett år innan Adjunkter når sin topp, så villkoren är 'precis börjat gälla'.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska 1999",
+        "text": "1999: Adjunkter cirka 5 800–5 900 (just under 6 000), Lektorer cirka 5 200–5 500. Adjunkter > Lektorer ✓ med tydlig marginal. Adjunkter < 6 000 ✓ — linjen ligger just under 6 000-tickmarken. Båda villkoren klara med marginal. Det här matchar facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska 2003",
+        "text": "2003: Adjunkter på sin TOPP cirka 6 500, Lektorer cirka 5 800. Adjunkter > Lektorer ✓, men Adjunkter > 6 000 — villkor 2 BRYTS. Inte 2003.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Granska 2005",
+        "text": "2005: Adjunkter cirka 6 200 (sjunkande från toppen), Lektorer cirka 6 000–6 100. Adjunkter > Lektorer ✓ men marginellt. Adjunkter > 6 000 — villkor 2 BRYTS fortfarande. Inte 2005.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "1998 vs 1999 — hur skiljer?",
+        "text": "Båda ser ut att klara båda villkoren. Skillnaden ligger i avläsningens nöjaktighet: 1998 ligger Adjunkter på cirka 5 700 (just under 6 000, OK) medan i 1999 ligger den på cirka 5 800–5 900 (också under, men ännu tydligare 'understeg 6 000' efter att fakta-värdet legat lite över i 1997/98). Facit pekar entydigt på 1999 — det är troligen där det officiella SCB-värdet bekräftar villkoret med marginal medan 1998 ligger gränsfall.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Rangordna kandidaterna",
+        "text": "1998: båda villkor passerar gränsfall. 1999: båda villkor klart uppfyllda (facit-kandidat). 2003: villkor 2 BRISTS. 2005: villkor 2 BRISTS. Av alternativen är 1999 det säkraste valet och det enda facit fastslår.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativ B (1999) är facit. Alternativ A (1998) ligger nära men är inte korrekt facit. Alternativ C (2003) och D (2005) bryts på 'understeg 6 000'.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (1999). Insikten i en mening: i tvåvillkorsfrågor med linjediagram, läs båda linjernas y-värden mot tick-axeln för varje alternativ-år, bocka villkor 1 OCH villkor 2 separat — det år där båda bockar står är svaret.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'både X och Y'-villkor på linjediagram: identifiera de två relevanta linjerna, skriv ner båda villkoren, läs av varje alternativ-års y-värden, bocka av båda separat. Triggern: 'vilket år var X SAMTIDIGT som Y' → tvåvillkorscheck per alternativ, inte 'året då X var som störst'."
+  },
+  "var-2016-kvant1-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "65 m är ungefär den synliga sträckan om man av misstag räknar med en del av byggnaderna vid vattenledningens början eller slut. Det är också en rimlig 'ögonmått-uppskattning' om skalan tas grovt.",
+        "why_wrong": "Som steg 5 visar är vattenledningen markerad med en streckad linje från ungefär brunnens närhet till en punkt utanför klosterområdet. Mätt mot skalstreck (0–1–5–10 m) är ledningens längd cirka 45 meter, inte 65. Facit fastslår A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "90 m är dubbla A-värdet — det är frestande om man av misstag mäter ledningen två gånger eller adderar en del av kapellets dimensioner till den synliga ledningssträckan.",
+        "why_wrong": "Vattenledningen är en SINGEL streckad linje. Som steg 3 betonar är skalstrecket på ritningen 0–1–5–10 m (10 m mellan första och sista markering). Ledningssträckan är drygt fyra gånger så lång som hela 10 m-skalan = cirka 45 m. 90 m skulle kräva nio gånger skalan — vilket inte stämmer med ledningens synliga längd. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "170 m är ett stort tal som lockar om man råkar tolka något helt annat (t.ex. hela kyrkans utsträckning) som vattenledning.",
+        "why_wrong": "170 m är mer än 17 gånger skalstrecket — det skulle motsvara nästan hela klosterområdets omkrets. Vattenledningen är en avgränsad streckad linje cirka 45 m lång. Facit fastslår A."
+      }
+    ],
+    "pitfall": "Klassiska fällan på kartor är att glömma skalstrecket eller läsa av det fel — eller att blanda ihop vattenledningen med andra streckade linjer (klostermurar, äldre rester). Botemedlet: hitta skalstrecket först, mät dess fysiska längd på pappret/skärmen med fingerbredd, dela in den synliga ledningens längd i fingerbredder, multiplicera med 10 m.",
+    "pregrade_tactic": {
+      "handle": "Skala-först-sedan-mät",
+      "move": "Hitta skalstrecket nere till höger på kartan (0–1–5–10 m). Mät dess fysiska längd. Lägg den 'mentalt' längs vattenledningen 4–5 gånger — det ger cirka 40–50 m. Välj alternativet närmast 45 m."
+    },
+    "solution_path": "Facit fastslår A (45 m). Vattenledningen är markerad med en streckad linje från brunnsområdet ner mot kapellets ytterkant. Skalstrecket på kartan visar 0–1–5–10 meter. Ledningens längd är cirka 4,5 skalstreck × 10 m = cirka 45 meter.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur lång är den vattenledning som finns utmärkt på ritningen över Vreta kloster? Alternativen: 45, 65, 90, 170 m. Facit fastslår A (45 m).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Ritningen visar Vreta kloster i Linköpings kommun, vy med norr-pil pekande uppåt-höger. Olika byggnadsdelar är markerade och textetiketterade: Kök, Refektorium, Brunn, Vattenledning, Kapitelsal, Klostergård, Korsgång, m.m. Legenden till höger visar olika tids­perioder med mönsterkoder. Skalstrecket finns nere till höger.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta skalstrecket",
+        "text": "Skalstrecket är ett litet horisontellt streck längst ner till höger på ritningen, med tre markeringar: 0, 1, 5, 10 m. Det är BÅDE den enda hårda måttenheten på ritningen OCH det som låter dig översätta papperslängd till verklig längd. Mät dess fysiska längd med tum eller fingerbredd — det är din referens.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'skala' på en karta?",
+        "text": "Skala = förhållandet mellan kartans avstånd och verklighetens avstånd. Här är skalan grafisk (inte numerisk som '1:1000'): den fysiska skalstrecks-längden på pappret motsvarar 10 meter i verkligheten. För att mäta en sträcka räknar du hur många skalstreck-längder den motsvarar och multiplicerar med 10.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Hitta vattenledningen",
+        "text": "Vattenledningen är märkt med textetiketten 'Vattenledning' till vänster i ritningen, nedanför 'Brunn'. Den är ritad som en STRECKAD linje (inte heldragen, för att skilja den från byggnadsmurar) som löper från brunnsområdet ner mot klosterruinens sydvästra hörn.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skilj vattenledningen från andra streckade linjer",
+        "text": "Ritningen har FLERA streckade linjer — t.ex. 'Äldsta kyrkogårdsmuren' upp till vänster och 'Rester av äldre trähus'. Texten 'Vattenledning' ligger explicit vid ledningen så du kan låsa in den. Följ den streckade linjen från BRUNN ut mot kanten — det är den.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Mät vattenledningens längd mot skalstrecket",
+        "text": "Mät skalstreckets längd (motsvarar 10 m). 'Stega' den längs vattenledningen. Linjen är ungefär 4–5 skalstreck lång — alltså cirka 40–50 m. Det matchar alternativ A (45 m). Det är inte 65 m (skulle vara 6,5 skalstreck), inte 90 m (9 skalstreck) och inte 170 m (17 skalstreck).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är en 'vattenledning' i detta kontext?",
+        "text": "I medeltida kloster fanns ofta vattenledningar av sten, tegel eller trä som ledde vatten från brunnar in i klosterbyggnaderna (för matlagning, sanitet, sakrament). På ritningen är vattenledningen ett arkeologiskt spår — en sträcka där rester av ledningskanaler har grävts fram. Den är inte en aktiv ledning idag.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check riktning",
+        "text": "Vattenledningen löper från BRUNN (vattenkälla) söderut mot byggnaderna (där vattnet skulle användas). Det är logiskt: vatten transporteras från källan till byggnaderna, inte tvärtom. Längden cirka 45 m gör sken med klosterområdets totala storlek (cirka 50 × 100 m).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Översätt mätningen till svarsformatet",
+        "text": "Alternativen 45, 65, 90, 170 m har minst 20 m mellan sig. Din mätning ligger på cirka 40–50 m → entydigt A (45 m). Skillnaden mellan A och B är 20 m = 2 skalstreck — det är mycket mer än mätosäkerheten (cirka 0,5 skalstreck = 5 m).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativ A (45 m) är det enda alternativet inom rimligt avstånd från din mätning. B (65 m) är 20 m för långt — det skulle kräva att ledningen vore betydligt längre, vilket den inte är.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (45 m). Insikten i en mening: på kartor och planritningar — börja ALLTID med skalstrecket, mät dess fysiska längd, och stega det längs sträckan du ska mäta. Allt annat är gissning.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'hur långt/stort är detta'-frågor på kartor och planritningar: identifiera skalstrecket först, mät dess fysiska längd, stega det längs det objekt som ska mätas, multiplicera antalet skalstreck med skalstreckets metervärde. Triggern: 'hur långt/stort är X på ritningen' → skalstreck + stegning, inte ögonmått."
+  },
+  "var-2016-kvant1-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Klostergård ligger MELLAN kapitelsalen och brunnen (omedelbart väster om kapitelsalen). 'Klostergård' är det första du passerar gående västerut från kapitelsalen, så det är frestande som svar.",
+        "why_wrong": "Klostergård är direkt väster om kapitelsalen — bara cirka 10–15 m bort, inte 26 m. Som steg 6 visar: 26 m är längre än klostergårdens bredd. Vid 26 m väster om kapitelsalens mittpunkt har du passerat klostergården och nått brunnsområdet. Facit fastslår A (Brunn)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Klostrets medeltida entré ligger sydväst om kapitelsalen och kan vara cirka 30+ m bort. Det är frestande om man rör sig snett sydväst i stället för rakt väst.",
+        "why_wrong": "Frågan specificerar VÄSTER (rakt väst, mot vänster på kartan eftersom norr pekar upp). Klostrets medeltida entré ligger sydväst, inte rakt väst. Som steg 4 betonar är riktningen exakt väst (negativ x-led, sett från kapitelsalen). Facit fastslår A (Brunn)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Korsgång löper runt klostergården (det är gångarna som omger gården). En korsgång ligger direkt väster om kapitelsalen — bara några meter bort.",
+        "why_wrong": "Korsgång är just innanför klostergården, omedelbart väster om kapitelsalen — det är knappt 5–10 m bort. Vid 26 m väster om kapitelsalens mittpunkt har du passerat både korsgången och klostergården. Facit fastslår A (Brunn)."
+      }
+    ],
+    "pitfall": "Klassiska fällan på kartor är att underskatta avstånd — att tro att 26 m är 'precis bredvid' när det i själva verket är 2,6 skalstreck (10 m vardera). Botemedlet: använd skalstrecket för att mäta 26 m som 2,6 skalstrecks-längder från kapitelsalens MITT, gå exakt västerut, och se vilken etikett du landar på.",
+    "pregrade_tactic": {
+      "handle": "Mittpunkt-plus-26-m-rakt-väster",
+      "move": "Hitta kapitelsalens mittpunkt (sektor till höger på kartan). Mät 26 m väster med skalstrecket (2,6 skalstreck = 2,6 × 10 m). Du landar i brunnsområdet — Brunn-etiketten."
+    },
+    "solution_path": "Facit fastslår A (Brunn). Kapitelsalen ligger till höger om klostergården på kartan. Mätt rakt västerut (vänster på kartan, eftersom norr-pilen pekar uppåt) 26 meter från salens mittpunkt, hamnar du i brunnsområdet — markerat med etiketten 'Brunn'.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vad ligger 26 meter väster om kapitelsalens mittpunkt? Alternativen är Brunn, Klostergård, Klostrets medeltida entré, Korsgång. Facit fastslår A (Brunn).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta kapitelsalen",
+        "text": "Kapitelsalen är märkt 'Kapitelsal' på kartan — den ligger i den högra delen av klosterritningen, öster om klostergården. Dess form på kartan är en mindre rektangulär byggnad med stenmöns­terskraffering (en av de äldre byggnaderna).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera 'mittpunkten'",
+        "text": "Kapitelsalens mittpunkt = centrum av den rektangulära Kapitelsal-symbolen. Sätt fingret på den fysiska mitten av rektangeln. Det är din utgångspunkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 'väster' på denna karta?",
+        "text": "Norr-pilen på kartan pekar UPPÅT-HÖGER (lätt vridning från lodrätt). Det betyder att väster är åt vänster-NEDÅT — i den riktning du måste gå för att lämna kapitelsalen och korsa klostergården. På de flesta moderna kartor är norr 'rakt upp', men här är det vridet något åt höger.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skalstrecket — hur långt är 26 m?",
+        "text": "Skalstrecket nere till höger visar 0–1–5–10 m. 26 m = 2,6 skalstreck. Mät skalstreckets fysiska längd och multiplicera med 2,6 — det är hur långt du ska 'stega' västerut från kapitelsalens mittpunkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Stega 26 m västerut",
+        "text": "Från kapitelsalens mittpunkt, rör fingret rakt västerut (mot vänster-nedåt på kartan, motsatt riktning till norr-pilen). 10 m först — du passerar kanten av kapitelsalen och in i klostergården. Ytterligare 10 m (totalt 20 m) — du är på klostergårdens andra sida. Ytterligare 6 m (totalt 26 m) — du har passerat klostergården och kommer in i brunnsområdet, märkt 'Brunn'.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera vilken etikett du landat på",
+        "text": "Vid 26 m väster om kapitelsalens mittpunkt landar fingret i området där etiketten 'Brunn' står. Brunnen är markerad som en liten cirkel eller skraffering i området precis väster om klostergården. Det är alternativ A.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad ligger 5, 15, 25 m från mittpunkten?",
+        "text": "Sanity-check med stegningen: 5 m väster → fortfarande inom kapitelsalen eller dess västra mur (Korsgång-området). 15 m → in i klostergården. 20 m → klostergårdens västra del. 25–26 m → brunnsområdet. Klostergård (B) är vid 10–20 m, Korsgång (D) vid 5–10 m, Brunn (A) vid 25+ m. Klostrets medeltida entré (C) ligger sydväst, inte rakt väst.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vad är en 'kapitelsal'?",
+        "text": "Kapitelsalen var rummet där klostrets munkar (eller nunnor) samlades dagligen för läsning av en regelkapitel ur klosterregeln och för administrativa beslut. Den låg traditionellt i öster av klosterbyggnaderna, intill kyrkan. Brunnen, däremot, låg ofta i eller nära klostergården för att vatten skulle vara lätt åtkomligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Vid 26 m exakt västerut landar du i Brunn-området → alternativ A. De andra alternativen ligger antingen för nära (klostergård, korsgång) eller i fel riktning (klostrets medeltida entré, sydväst).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Vad om jag tolkat riktningen fel?",
+        "text": "Om du av misstag tolkar 'väster' som motsvarande 'rakt vänster' utan att räkna med norr-pilens vridning, hamnar du fortfarande i brunnsområdet eftersom vridningen är liten (cirka 10–15 grader). Resultatet är robust mot små riktningsfel — brunnen ligger så tydligt rakt västerut att även en något skev orienterng leder dit.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (Brunn). Insikten i en mening: på karta-frågor om 'X meter i riktning Y från Z', orientera först med norr-pilen, läs in skalstrecket, och stega det angivna avståndet med fingret — vilken etikett du landar på är ditt svar.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vad ligger N meter i riktning R från P'-frågor på kartor: orientera dig med norr-pilen, hitta punkten P, mät N meter som N/10 skalstreck i riktning R, och läs av etiketten där du landar. Triggern: 'vad ligger X meter väster om Y' → mittpunkt + skalstreck-stegning, inte ögonmått."
+  },
+  "var-2016-kvant1-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "50 m² är bara den äldsta kyrkans (svarta) yta utan tillbyggnader — det är frestande om man tolkar 'äldsta kyrkan' bokstavligt och glömmer att frågan ber om kyrkan PLUS samtida tillbyggnader.",
+        "why_wrong": "Frågan inkluderar uttryckligen 'samtida tillbyggnader' (de delar som är markerade enligt legenden 'Den äldsta kyrkans samtida tillbyggnader'). Som steg 5 betonar: dessa är de skrafferade områden runt den svarta äldsta kyrkan. Tillsammans dubbleras ungefär ytan — facit fastslår B (100 m²)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "140 m² är frestande om man inkluderar 'koret och därmed samtida klosterbyggnader' (1100-talets slut, en SENARE period) tillsammans med den äldsta kyrkan och dess tillbyggnader — alltså två 1100-tals-perioder.",
+        "why_wrong": "Frågan är låst till den ÄLDSTA kyrkan (markerad svart, 1100-talets början) och dess SAMTIDA tillbyggnader (det specifika mönstret som motsvarar samma tid). Koret från 1100-talets slut är en annan period och ingår inte. Facit fastslår B (100 m²)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "330 m² är ett stort tal som lockar om man inkluderar hela klosterkyrkans senare utbyggnader (kor, valv, sakristia) eller hela klosterritningen.",
+        "why_wrong": "Frågan handlar bara om DEN ÄLDSTA kyrkan + dess SAMTIDA tillbyggnader — ett välavgränsat område i klostrets norra del. Som steg 6 visar är detta cirka 100 m² när östra väggen tänks sammanhängande. 330 m² är hela kyrkans grundyta inklusive senare utbyggnader, vilket inte är vad frågan ber om. Facit fastslår B."
+      }
+    ],
+    "pitfall": "Klassiska fällan på ritningar med flera tidsskikt är att blanda in alla skrafferade ytor (alla tidsperioder) i ytmätningen. Botemedlet: identifiera ENDAST de två specifika mönstren i legenden (svart = äldsta kyrkan + det mönster som motsvarar 'samtida tillbyggnader'), avgränsa området, och beräkna ytan från skalstrecket.",
+    "pregrade_tactic": {
+      "handle": "Två-mönster-från-legenden-plus-skala",
+      "move": "Plocka ut två mönster från legenden: svart (äldsta kyrkan) och mönstret för 'samtida tillbyggnader'. Avgränsa det sammanhängande område som täcks av dem (en oregelbunden rektangel uppe till vänster på ritningen). Mät bredd och längd mot skalstrecket. Yta = bredd × längd ≈ 100 m²."
+    },
+    "solution_path": "Facit fastslår B (100 m²). Identifiera i legenden 'Den äldsta kyrkan, 1100-talets början' (svart) och 'Den äldsta kyrkans samtida tillbyggnader' (det specifika mönstret). Förutsatt att östra väggen var sammanhängande bildar de ett ungefär 8 × 12 m sammanhängande område = cirka 100 m². Mät med skalstrecket: längd cirka 12 m (1,2 skalstreck), bredd cirka 8 m (0,8 skalstreck) → cirka 96 m² → närmast 100 m².",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: förutsätt att den äldsta kyrkans östra vägg en gång varit sammanhängande. Hur stor yta upptog den äldsta kyrkan OCH dess samtida tillbyggnader (mätningen inkluderar ytterväggarna)? Alternativen 50, 100, 140, 330 m². Facit fastslår B (100 m²).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är 'äldsta kyrkan' och 'samtida tillbyggnader'?",
+        "text": "Enligt legenden till höger på kartan: 'Den äldsta kyrkan, 1100-talets början' har en HELT SVART markering. 'Den äldsta kyrkans samtida tillbyggnader' har en specifik annan markering (lite ljusare skraffering). Dessa två delar är från SAMMA tidsperiod och bildar tillsammans den ursprungliga kyrkan när Vreta kloster grundades.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta det avsedda området på kartan",
+        "text": "Den äldsta kyrkan + dess samtida tillbyggnader ligger uppe till vänster-centrum på ritningen — i området som omfattar 'Refektorium' och dess granne. Det är en sammanhängande klump av svart och samtida-tillbyggnads-skraffering, omgiven av senare (skrafferade) tillbyggnader och nyare murar.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'östra väggen var sammanhängande'?",
+        "text": "På den nuvarande ritningen kan det finnas LUCKOR i den östra väggen — kanske för att en del har rivits eller är 'svårbestämbara' (legenden nämner 'svårbestämbar ålder'). Frågan ber dig anta att i sitt ursprungliga skick var den östra väggen sluten — alltså att kyrkan och dess samtida tillbyggnader bildade en sluten kropp.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Avgränsa områdets ytterkant",
+        "text": "Med antagandet att östra väggen var sammanhängande, blir det avgränsade området en oregelbunden rektangel — ungefär 12 m lång (norr-syd-riktning) och 8 m bred (öst-väst). Inkludera ytterväggarna i mätningen (frågan säger det explicit).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Mät bredd och längd mot skalstrecket",
+        "text": "Skalstrecket visar 0–1–5–10 m. Mät områdets längsta sida (norr-syd) — den är cirka 12 m, alltså 1,2 skalstreck. Mät den kortare sidan (öst-väst) — cirka 8 m, alltså 0,8 skalstreck. Yta = 12 × 8 = 96 m² ≈ 100 m².",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'yta upptog'?",
+        "text": "Yta = area = bredd × längd för en rektangulär form. För en oregelbunden form behöver man dela upp den i rektanglar, mäta var och en och summera. Här är området nästan rektangulärt, så bredd × längd är en bra approximation.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Översätt till svarsformatet",
+        "text": "Beräknad yta cirka 96 m², närmast alternativ B (100 m²). De andra alternativen är: A 50 m² (för litet — bara halva ytan), C 140 m² (för stort, kräver att området vore cirka 12 × 12 m), D 330 m² (mycket för stort, hela klosterkyrkan).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med medeltida kyrkokunskap",
+        "text": "En liten 1100-talskyrka i Sverige var typiskt 8–15 m lång och 5–8 m bred — totalt cirka 50–120 m². Vretas äldsta kyrka var en av de tidigaste cistersienskyrkorna i Sverige och hade en sådan storlek. 100 m² är konsistent med vad arkeologer typiskt finner för en tidig medeltida sockenkyrka.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vad om jag inkluderar mer eller mindre?",
+        "text": "Om du av misstag inkluderar 'koret och därmed samtida klosterbyggnader' (1100-talets slut) hamnar du på cirka 140–200 m². Om du bara tar den svarta delen utan tillbyggnader hamnar du på cirka 40–60 m² (alternativ A). Bara den specifika kombinationen 'svart + samtida tillbyggnader' ger cirka 100 m².",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Beräknad yta 96–100 m² → alternativ B. Skillnaden till A (50 m²) är 50 m², till C (140 m²) är 40 m² — båda klart större än mätosäkerheten. B vinner entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (100 m²). Insikten i en mening: på ritningar med flera tidsskikt — identifiera EXAKT vilka mönster från legenden som frågan inkluderar, avgränsa området, mät bredd och längd mot skalstrecket, multiplicera.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för ytmätningar på planritningar: identifiera de specifika mönster från legenden som frågan inkluderar, avgränsa området, mät bredd och längd mot skalstrecket, beräkna ytan som rektangel-area (bredd × längd) — eller dela upp i rektanglar för oregelbundna former. Triggern: 'hur stor yta upptog X' → legend-mönster + skalstreck + area-beräkning."
+  },
   "var-2016-kvant1-KVA-013": {
     "_meta": {
       "generated_at": "2026-05-14",
@@ -134,7 +1294,7 @@
         "why_wrong": "All information finns: båda summorna är fullständigt specificerade. Räkna ut dem (steg 4 och 7) — informationen räcker mer än väl."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-023",
     "pitfall": null,
     "pregrade_tactic": {
       "handle": "Bråk-omformningen",
@@ -334,7 +1494,7 @@
         "why_wrong": "Vi behöver inte exakt värde — bara veta om 120π är större eller mindre än 378. Det räcker att veta att π < 3,15. Steg 9 låser ojämlikheten."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-026",
     "pitfall": null,
     "pregrade_tactic": {
       "handle": "Enhetskonverteringen",
@@ -434,7 +1594,7 @@
         "why_wrong": "Likhet är möjlig (steg 9) men inte garanterad. Många andra fördelningar ger största ≠ 16."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-010",
     "pitfall": "Frestelsen är att fastställa fördelningen 'naturligt' (t.ex. resterande lika fördelade). Botemedlet: testa explicit både en JÄMN och en SKEV fördelning. Om svaren skiljer sig → information otillräcklig.",
     "pregrade_tactic": {
       "handle": "Extremvärdestestet",
@@ -634,7 +1794,7 @@
         "why_wrong": "Likhet är ett av flera möjliga utfall, inte garanterat (steg 9). Lika sannolikt att x ≠ 24 — t.ex. y = 12 ger x = 26."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-012",
     "pitfall": "Vanligaste fallan är att 'snabbt välja ett y' (t.ex. y nära gränsen) och dra en slutsats. Botemedlet: testa både ett y nära den övre gränsen och ett y långt under den — om x kastar tecken eller passerar jämförelsetalet, är svaret D.",
     "pregrade_tactic": {
       "handle": "Extremvärdestestet",
@@ -876,7 +2036,7 @@
         "n": 7,
         "text": "x = 2, y = −3. y² = 9 fortfarande. I = 2^{9} = 512. II = (2^{-3})^{-3} = (1/8)^{-3} = 8^{3} = 512. Lika.",
         "tier": "detail",
-        "title": "Verifiera med negativ y"
+        "title": "Verifiera med negativt y"
       },
       {
         "n": 8,
@@ -1149,7 +2309,7 @@
         "why_wrong": "Två olikheter åt motsatt håll KAN tvinga fram ett unikt heltal (här n = 16). Steg 8 visar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-006",
     "pitfall": "Frestelsen är att tro att varje påstående 'är ett konkret tal' och därför räcker. Botemedlet: skriv ut varje villkor som en EXPLICIT OLIKHET i den okända variabeln innan du bedömer.",
     "pregrade_tactic": {
       "handle": "Olikhets-låsningen",
@@ -1248,7 +2408,7 @@
         "why_wrong": "D är en strängare standard än A eller B. Steg 5 och 7 visar att ingen ensam ger unik lösning."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-002",
     "pitfall": "Frestelsen är att räkna konkreta siffror (90 + 10) som om de räcker. Botemedlet: räkna EKVATIONER mot OBEKANTA — om det är färre ekvationer än obekanta, är systemet alltid underbestämt.",
     "pregrade_tactic": {
       "handle": "Ekvations-obekanträkningen",
@@ -1458,7 +2618,7 @@
         "why_wrong": "Båda påståenden är konsistenta och leder till samma L = 10. E gäller bara om båda tillsammans inte räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-009",
     "pitfall": null,
     "pregrade_tactic": {
       "handle": "Ålders-ekvationen",
@@ -2685,6 +3845,1172 @@
     ],
     "technique": "Linjärkombinationsstrategin: när du har ett system och vill ha ett SPECIFIKT uttryck (som x − y), leta efter den kombination 'p · ekv1 + q · ekv2' som ger just det uttrycket på vänster sida — högersidan får du gratis. Här: 2·(x+y) − (x+3y) = x − y, så svaret är 2a − b. Triggern: 'system + ett tredje uttryck efterfrågat' → hitta linjärkombinationen."
   },
+  "var-2016-kvant2-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "2 områden känns rimligt om man av misstag bara räknar de allra största områdena (Kamrater och Skolan) och missar de mellan-stora (Mobbning, Rädsla/oro) som också är över 5 000.",
+        "why_wrong": "Som steg 5 visar finns det fyra rader där Summa-kolumnen överstiger 5 000: Kamrater (9 040), Skolan (7 517), Rädsla/oro (6 265) och Mobbning/kränkande behandling (5 093). Facit fastslår C (4), inte A."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "3 områden lockar om man inkluderar Kamrater, Skolan och Rädsla/oro men glömmer Mobbning/kränkande behandling — som ligger precis över 5 000 (5 093) och är lätt att missa vid snabb skanning.",
+        "why_wrong": "Mobbning/kränkande behandling har 5 093 i Summa-kolumnen — uppfyller >5 000 marginellt men entydigt. Som steg 6 betonar är även 5 093 STÖRRE än 5 000, om än bara med 93. Facit fastslår C (4) — inklusive Mobbning."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "5 områden frestar om man av misstag inkluderar Familjekonflikter (4 659) eller Identitetsutveckling (2 455) som 'nästan 5 000'. Eller om man räknar något annat område som ligger nära.",
+        "why_wrong": "Strikt tolkning av '>5 000' innebär att Summa måste vara MER än 5 000. Familjekonflikter (4 659) är UNDER. Identitetsutveckling (2 455) likaså. Som steg 7 visar är det bara fyra rader som passerar 5 000-strecket. Facit fastslår C."
+      }
+    ],
+    "pitfall": "Klassiska fällan på tabeller med många rader är att skanna förhastat och missa rader som ligger precis ÖVER tröskeln. Botemedlet: gå rad för rad genom Summa-kolumnen, markera alla som överstiger 5 000 mentalt, och räkna dem.",
+    "pregrade_tactic": {
+      "handle": "Summa-kolumn-tröskel-räkna",
+      "move": "Skanna Summa-kolumnen (längst till höger i tabellen) uppifrån och ner. Markera varje rad där värdet är > 5 000. Räkna markeringarna — du ska få 4."
+    },
+    "solution_path": "Facit fastslår C (4 områden). Skanna Summa-kolumnen i BRIS-tabellen. Fyra rader överstiger 5 000: Kamrater (9 040), Skolan (7 517), Rädsla/oro (6 265), Mobbning/kränkande behandling (5 093). Inga andra rader når 5 000.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många områden berördes MER ÄN 5 000 gånger? Alternativen 2, 3, 4, 5. Facit fastslår C (4).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Barn och ungdomars kontakter med BRIS' visar antalet kontakter per kategori (Område-raderna) fördelade på Flickor, Pojkar, Ej framkommit, och Summa. Sista raden är 'Summa' för hela tabellen. Det är SUMMA-kolumnen som ger 'antal gånger området berördes' (totalt över alla kön).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'berördes'?",
+        "text": "Området 'berördes' vid en kontakt = barnet/ungdomen tog upp det området i samtalet med BRIS. En enskild kontakt kan beröra flera områden (notera fotnoten: 'En kontakt kan beröra flera områden'). Därför är Summa-kolumnens totalsumma (85 451) mycket högre än totala antalet kontakter (25 900).",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Hitta tröskelvärdet 5 000",
+        "text": "5 000 är ett rakt tal — du letar efter rader där Summa är 5 001 eller mer. Sett mot kolumnens spann (många låga 200–800-värden, några stora 4 000+, några mycket stora 7 000+), är 5 000 i den övre tredjedelen av spridningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skanna Summa-kolumnen — fyra över 5 000",
+        "text": "Skanna uppifrån och ner: Kamrater 9 040 ✓ (största). Skolan 7 517 ✓. Rädsla/oro 6 265 ✓. Mobbning/kränkande behandling 5 093 ✓. Familjekonflikter 4 659 ✗ (under). Kärlek 4 588 ✗ (under). Övriga är klart lägre. Fyra ✓ ÷ noll fler ✓ = 4 områden.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sanity-check Mobbning vid gränsen",
+        "text": "Mobbning/kränkande behandling 5 093 — bara 93 över 5 000. Det är ett gränsfall. Men 5 093 > 5 000 stämmer entydigt. Skulle frågan ha sagt 'minst 5 100' hade det varit fel — men 'mer än 5 000' uppfylls med marginal.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check Familjekonflikter under gränsen",
+        "text": "Familjekonflikter 4 659 — 341 UNDER 5 000. Det är klart under tröskeln och räknas inte. Inget tvivel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna sammanställningen",
+        "text": "Områden över 5 000: Kamrater, Skolan, Rädsla/oro, Mobbning/kränkande behandling. Det är 4 områden. Inget mer.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad är 'BRIS' i denna kontext?",
+        "text": "BRIS = Barnens Rätt I Samhället. Det är en svensk organisation som driver en jourtelefon och chatt för barn och ungdomar i utsatta situationer. Tabellens data är BRIS egen statistik för 2011 om vilka områden som tagits upp i kontakter med dem.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "4 områden över 5 000 → alternativ C (4). De andra alternativen (2, 3, 5) är fel: 2 missar två områden, 3 missar Mobbning, 5 räknar in något som inte når tröskeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (4 områden). Insikten i en mening: räkne-frågor på tabeller — skanna rätt kolumn metodiskt rad för rad mot tröskelvärdet, markera de som passerar, och räkna markeringarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Extra-koll: granne-kolumnerna",
+        "text": "Frågan handlar om områden (raderna), inte kön (kolumnerna Flickor, Pojkar, Ej framkommit). Använd ALDRIG värden från Flickor- eller Pojkar-kolumnerna isolerat — det är fel mått. Summa är vad du vill ha.",
+        "tier": "detail"
+      }
+    ],
+    "technique": "DTK-strategi för räkne-frågor på tabeller: identifiera rätt kolumn (oftast Summa eller Totalt), skanna rad för rad mot tröskelvärdet, räkna träffar. Triggern: 'hur många X över/under värde Y' → metodisk rad-för-rad-skanning, inte 'titta var det är många'."
+  },
+  "var-2016-kvant2-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1995 har 59 389 outhyrda lägenheter — klart < 70 000 ✓. Och i 1995-stapeln ser de två icke-svarta kategorierna (utrymd + reparation) ut att vara ungefär likstora. Det är frestande som svar.",
+        "why_wrong": "I 1995-stapeln är 'utrymd' (vit) klart MINDRE än 'reparation' (ljusgrå) — inte ungefär lika. Som steg 5 visar är de två andelarna ungefär lika i 1999, inte 1995. Facit fastslår D (1999)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1996 har 60 599 outhyrda — < 70 000 ✓. Och i 1996-stapeln ser också utrymd och reparation ut att vara nära varandra i bredd.",
+        "why_wrong": "Stapeln för 1996 visar att 'reparation' (ljusgrå) fortfarande är något bredare än 'utrymd' (vit). De är inte ungefär lika. Facit pekar entydigt på 1999 där de två andelarna är mest jämnstora."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1998 har 72 977 outhyrda — JUST ÖVER 70 000. Det är frestande om man inte kollar villkor 1 noga.",
+        "why_wrong": "1998 bryter villkor 1: 72 977 > 70 000. Som steg 4 betonar måste antalet vara strikt UNDER 70 000. Facit fastslår D (1999), där antalet är 66 374 (< 70 000) och de två andelarna är ungefär lika."
+      }
+    ],
+    "pitfall": "Klassiska fällan med stapeldiagram + sidotabell är att tappa fokus på det numeriska tröskelvillkoret (< 70 000) medan man fokuserar på det visuella villkoret (andelar lika). Botemedlet: BÖRJA med tröskelvillkoret från tabellen för att eliminera kandidater, ta sedan det visuella villkoret från stapeldiagrammet.",
+    "pregrade_tactic": {
+      "handle": "Tabell-filter-sen-stapel-jämför",
+      "move": "Skanna tabellen (vänster) efter alla år med < 70 000 outhyrda — kandidater är 1995, 1996, 1999. Kolla sedan stapeldiagrammet för dessa tre: vilket år har 'utrymd' (vit) och 'reparation' (ljusgrå) med ungefär lika breda andelar? Det är 1999."
+    },
+    "solution_path": "Facit fastslår D (1999). Villkor 1: antalet outhyrda < 70 000 (från sidotabellen). Villkor 2: andelen 'utrymd p.g.a. förestående rivning' ungefär lika stor som andelen 'under reparation eller ombyggnad' (från stapeldiagrammet). År 1999: antal = 66 374 < 70 000 ✓; i stapeln ligger de vita och ljusgrå banden ungefär lika breda ✓.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år avses — outhyrda lägenheter < 70 000 OCH andelen 'utrymd p.g.a. förestående rivning eller annan orsak' ungefär lika stor som andelen 'under reparation eller ombyggnad'? Alternativen 1995, 1996, 1998, 1999. Facit fastslår D (1999).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i figuren",
+        "text": "Sidan har TVÅ delar: en TABELL till vänster med år och 'Antal lägenheter' (totala outhyrda per år 1976–2009) och ett STAPELDIAGRAM till höger som visar PROCENTUELL FÖRDELNING per år 1976–2009 på fyra kategorier (svart 'Ledig till uthyrning', ljusgrå 'Under reparation eller ombyggnad', vit 'Utrymd p.g.a. förestående rivning eller annan orsak', mörkgrå 'Uppgift saknas').",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilka kategorier är 'utrymd' och 'reparation'?",
+        "text": "Enligt legenden: 'Utrymd p.g.a. förestående rivning eller annan orsak' = VIT ruta i staplarna. 'Under reparation eller ombyggnad' = LJUSGRÅ ruta. Du ska jämföra dessa två bredder för att hitta året där de är ungefär lika.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Villkor 1: filtrera år från tabellen",
+        "text": "Från tabellen (vänster): 1995 → 59 389 (< 70 000 ✓), 1996 → 60 599 (< 70 000 ✓), 1998 → 72 977 (> 70 000 ✗), 1999 → 66 374 (< 70 000 ✓). Kandidater: 1995, 1996, 1999. Eliminera 1998.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Villkor 2: kolla stapelandelar för 1995, 1996, 1999",
+        "text": "1995-stapeln: svart (Ledig) ~75 %, ljusgrå (Reparation) ~17 %, vit (Utrymd) ~7 %. Vit klart mindre än ljusgrå. INTE ungefär lika. 1996-stapeln: svart ~78 %, ljusgrå ~15 %, vit ~7 %. Fortfarande olika. 1999-stapeln: svart ~85 %, ljusgrå ~7 %, vit ~7 %. Ungefär lika ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'andel' här?",
+        "text": "Stapeln är 100 %-staplad — varje stapel summerar till 100 %. 'Andelen X' = X-rutans bredd / hela stapelns bredd. Eftersom alla staplar har samma totala bredd, motsvarar visuell bredd direkt procentandel.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Bekräfta 1999 visuellt",
+        "text": "I 1999-stapeln ligger vit (utrymd) och ljusgrå (reparation) som två tunna lager precis ovanpå det stora svarta lagret. De är båda korta — vita lagret cirka 6–8 % och ljusgrå lagret cirka 6–8 %. De är så lika att man måste titta noga för att se skillnad. Det här är exakt vad frågan beskriver.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Varför inte 1995 eller 1996?",
+        "text": "I 1995 och 1996 är ljusgrå-lagret märkbart bredare än vita-lagret — kanske 15 % mot 7 %. Det är inte 'ungefär lika' i någon rimlig mening. 1999 är det enda kandidatåret där de två tunna lagren är jämstora.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Av kandidaterna 1995, 1996, 1999 är 1999 (D) det enda som klarar villkor 2. 1998 (C) bröt villkor 1. Alternativ D vinner entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check totalsumma",
+        "text": "1999: antal 66 374 lägenheter. Med fördelningen vit ~7 %, ljusgrå ~7 % blir absolut antal: 66 374 × 0,07 ≈ 4 650 vita och 4 650 ljusgrå. Dvs cirka 4–5 tusen lägenheter i vardera kategori — konsistent med 'andelarna ungefär lika', om än med litet absolut antal.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (1999). Insikten i en mening: vid kombinerade tabell + stapel-frågor, filtrera först kandidater med numeriskt villkor från tabellen, sedan välj med visuellt villkor från stapeln — det halverar arbetet och undviker felval.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Vad om båda andelarna ligger nära men inte exakt lika?",
+        "text": "'Ungefär lika' är inte 'exakt lika'. Som steg 7 visar är 1999 det år där skillnaden är minst (cirka 0–1 procentenhet). Övriga år har skillnader på 5–10 procentenheter — klart större. Facit pekar entydigt på 1999.",
+        "tier": "detail"
+      }
+    ],
+    "technique": "DTK-strategi för 'både numerisk OCH visuell villkor'-frågor: använd tabellen för det numeriska villkoret (filtrera kandidat-år), använd diagrammet för det visuella villkoret (välj rätt år bland kandidater). Triggern: 'år där antal X < Y och andel Z ≈ andel W' → tabell-filter + stapel-jämförelse, två steg."
+  },
+  "var-2016-kvant2-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "4 300 lägenheter låter rimligt om man hittar rätt år men sedan tar fel andel — eller om man räknar med ett senare år (1995+) där absolutsiffran skulle bli lägre.",
+        "why_wrong": "Året med STÖRSTA reparations-andelen är slutet av 1980-talet (cirka 1988 eller 1989), där ljusgrå lagret dominerar i staplen. Som steg 5 visar är absolutsiffran för det året cirka 11 000–11 500 lägenheter, inte 4 300. Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "7 000 lägenheter ligger nära andra års reparationsabsoluttal — t.ex. 1990 där andelen är något lägre.",
+        "why_wrong": "Året med MAXIMAL reparations-andel har också tillräckligt högt totalantal lägenheter (cirka 15 000–20 000) att absolutsiffran blir över 10 000 vid en andel runt 60–70 %. 7 000 stämmer inte för det optimala året. Facit fastslår D (11 200)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "8 500 ligger lockande nära det korrekta värdet — det är frestande om man underskattar maxandelen eller använder ett grannår.",
+        "why_wrong": "Vid maximalandelen ligger 'under reparation' på cirka 65–72 % av lägenheterna det året, och det år där andelen är som störst (1988–1989) har cirka 15 000–20 000 outhyrda. 15 700 × 0,70 ≈ 11 000, närmast 11 200, inte 8 500. Facit fastslår D."
+      }
+    ],
+    "pitfall": "Klassiska fällan är att räkna med fel årtal (välja ett år där ljusgrå-andelen är hög men inte högst) eller att räkna med rätt år men fel andel. Botemedlet: först identifiera året med VISUELLT STÖRSTA ljusgrå-andelen (kontrollera mot 1988–1989 där andelen är dramatiskt hög); sedan slå upp antalet i sidotabellen och multiplicera med andelen.",
+    "pregrade_tactic": {
+      "handle": "Visuell-topp-andel-sen-absolutsiffra",
+      "move": "Skanna stapeldiagrammet efter året med STÖRST ljusgrå-andel (under reparation eller ombyggnad). Det är slutet av 1980-talet, troligen 1988 eller 1989. Slå upp antalet i sidotabellen och multiplicera med uppskattad andel (~70 %)."
+    },
+    "solution_path": "Facit fastslår D (11 200). I stapeldiagrammet, identifiera året där ljusgrå-bandet (under reparation eller ombyggnad) är som störst — slutet av 1980-talet, troligen 1989. Slå upp antalet i tabellen: 1989 → 15 673 outhyrda. Andelen ljusgrå det året är cirka 70 %. 15 673 × 0,72 ≈ 11 285 ≈ 11 200.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: identifiera det år då andelen lägenheter under reparation eller ombyggnad var som störst, och ange antalet lägenheter det år. Alternativen 4 300, 7 000, 8 500, 11 200. Facit fastslår D (11 200).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad behöver räknas?",
+        "text": "Två tal: (a) hitta året med maximalt VIT/LJUSGRÅ-andel i stapeln (i detta fall ljusgrå = 'Under reparation eller ombyggnad'), (b) avläs total antal outhyrda lägenheter det året från sidotabellen och (c) multiplicera med andelen. Resultatet = antalet lägenheter under reparation just det år.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilken färg är 'Under reparation eller ombyggnad'?",
+        "text": "Enligt legenden är 'Under reparation eller ombyggnad' LJUSGRÅ. Det är inte vit (= 'Utrymd p.g.a. förestående rivning') och inte svart (= 'Ledig till uthyrning'). Vid avläsning av staplarna: leta efter det år där ljusgrå-bandet är som STÖRST i bredd.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skanna staplarna efter maximal ljusgrå-andel",
+        "text": "Genom hela 1976–2009 har ljusgrå-bandet (reparation) varierat. Slutet av 1980-talet är ett markant låg-punkt för svart (Ledig) — bara cirka 22–30 % — vilket betyder att 70–78 % är fördelat på de andra tre kategorierna. Vid 1989 ligger ljusgrå tydligt högst, kanske 65–72 % av stapeln. Det är vårt år.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Slå upp totalantalet 1989",
+        "text": "Från tabellen (vänster): 1989 → 15 673 outhyrda lägenheter. Det är vårt absoluta totalantal.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna ut antalet under reparation 1989",
+        "text": "Andelen ljusgrå (reparation) i 1989-stapeln är cirka 70–72 %. Multiplicera: 15 673 × 0,72 = 11 285. Avrundat: cirka 11 200, närmast alternativ D.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad om jag valt 1988 istället?",
+        "text": "1988 → 20 019 outhyrda. Om andelen reparation där är cirka 55–60 %, blir absolut antal: 20 019 × 0,57 ≈ 11 400 — också nära 11 200. Båda 1988 och 1989 ger svaret D. Det viktiga är att andelen × antal landar runt 11 000–11 500, alltså entydigt D.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check mot grannåren",
+        "text": "1990: 16 022 × cirka 30 % ≈ 4 800 — alternativ A. Men 1990 är inte året med MAX andel. 1985: 44 730 × cirka 30 % ≈ 13 400 — högre absoluttal men andelen är inte maximal. Den enda kombinationen ÅR-MED-MAX-ANDEL × DET-ÅRS-ANTAL som ger 11 200 är 1988–1989.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'andel' kontra 'absolut antal'?",
+        "text": "Andel = procent av totalt antal det året. Absolut antal = andel × totalt antal. Frågan ber om absolut antal — så det räcker inte att bara hitta maximalandelens år; man måste också multiplicera med just det årets total.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Resultatet 11 200–11 400 ligger närmast alternativ D (11 200). De andra alternativen är klart längre bort: A 4 300 (skillnad 6 900), B 7 000 (skillnad 4 200), C 8 500 (skillnad 2 700). D vinner.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check riktning",
+        "text": "Under slutet av 1980-talet inträffade en bostadskris i Sverige med många tomställda lägenheter som omedelbart reparerades / byggdes om — vilket förklarar den höga andelen 'under reparation'. Det stämmer historiskt med data 1988–1989.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (11 200). Insikten i en mening: 'året med max andel av X' kräver två avläsningar — först identifiera året visuellt i stapeldiagrammet, sedan slå upp och multiplicera med totalantalet från sidotabellen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'året med max andel + hur många absolut'-frågor: först identifiera året visuellt från stapelandel, sedan slå upp totalantalet från sidotabell, sedan multiplicera andel × total. Triggern: 'året då andelen X var störst, hur många Y rörde det sig om' → år-identifiering + absolut-beräkning."
+  },
+  "var-2016-kvant2-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Utrymd p.g.a. förestående rivning, 1983 lockar om man tror att vit-bandet i 1983-stapeln är mycket bredt. 1983 har många outhyrda totalt (54 315), så även en liten andel ger absolut många lägenheter.",
+        "why_wrong": "I 1983-stapeln är vit-bandet (utrymd) cirka 10–12 % — vilket ger 54 315 × 0,11 ≈ 5 970, alltså under 6 000 lägenheter. Inte 12 000. Som steg 5 visar är det LJUSGRÅ-bandet (reparation) som är cirka 22 % och ger cirka 12 000. Facit fastslår B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Utrymd 2003 lockar om man försöker matcha det totala antalet 35 977 med en stor andel — men 2003 är ett magrare år med lägre totalt.",
+        "why_wrong": "I 2003-stapeln är vit-bandet (utrymd) cirka 6–8 %. 35 977 × 0,07 ≈ 2 520 lägenheter — mycket långt under 12 000. Som steg 6 visar når 2003 inte 12 000 i någon kategori utom svart (ledig). Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Reparation 2003 ser också relativt stor ut visuellt, och det är frestande för en snabb avläsning.",
+        "why_wrong": "I 2003-stapeln är ljusgrå-bandet (reparation) cirka 18–22 %. 35 977 × 0,20 ≈ 7 200 lägenheter — närmare 7 000 än 12 000. För att nå 12 000 i 2003 behöver andelen vara cirka 33 % vilket inte stämmer. Facit fastslår B (1983)."
+      }
+    ],
+    "pitfall": "Klassiska fällan är att räkna ut absolut antal direkt från stapelandel utan att titta upp totalt antal i sidotabellen. Botemedlet: läs av andelen i stapeln, slå upp totalt antal i tabellen för det specifika året, multiplicera.",
+    "pregrade_tactic": {
+      "handle": "Andel-times-total-per-alternativ",
+      "move": "För varje alternativ: läs av andelen för rätt kategori (utrymd eller reparation) i den angivna årets stapel. Slå upp totalt antal i tabellen. Multiplicera. Välj alternativet närmast 12 000."
+    },
+    "solution_path": "Facit fastslår B (Under reparation eller ombyggnad, 1983). I 1983-stapeln är andelen 'under reparation' (ljusgrå) cirka 22 %. Total antal outhyrda 1983 enligt sidotabellen = 54 315. 54 315 × 0,22 ≈ 11 950 ≈ 12 000 lägenheter — matchar frågan.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken kategori omfattade vid den angivna tidpunkten cirka 12 000 outhyrda lägenheter? Alternativen är (utrymd OR reparation) × (1983 OR 2003) — fyra kombinationer. Facit fastslår B (Under reparation eller ombyggnad, 1983).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Två tal per alternativ",
+        "text": "För varje alternativ behöver du två tal: andelen från stapeln och total antal från sidotabellen. Produkten är absolut antal lägenheter i den kategorin det året. Du letar efter kombinationen där produkten är cirka 12 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Total antal per alternativår",
+        "text": "1983 (från sidotabellen): 54 315 outhyrda lägenheter. 2003: 35 977. Notera att 1983 har cirka 50 % FLER outhyrda än 2003 — en stor skillnad som påverkar absolut antal mycket.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna alternativ A (Utrymd 1983)",
+        "text": "I 1983-stapeln är vit-bandet (utrymd p.g.a. förestående rivning) cirka 10–12 %. 54 315 × 0,11 ≈ 5 974. Klart under 12 000. Inte A.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna alternativ B (Reparation 1983)",
+        "text": "I 1983-stapeln är ljusgrå-bandet (under reparation eller ombyggnad) cirka 20–25 %. 54 315 × 0,22 ≈ 11 950 ≈ 12 000. Matchar frågan ✓. Detta är vår kandidat.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna alternativ C (Utrymd 2003)",
+        "text": "I 2003-stapeln är vit-bandet (utrymd) cirka 5–8 %. 35 977 × 0,07 ≈ 2 518. Långt under 12 000. Inte C.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna alternativ D (Reparation 2003)",
+        "text": "I 2003-stapeln är ljusgrå-bandet (reparation) cirka 18–22 %. 35 977 × 0,20 ≈ 7 195. Närmare 7 000 än 12 000. Inte D.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Rangordna kandidaternas absolut antal",
+        "text": "A 5 974, B 11 950, C 2 518, D 7 195. B är klart närmast 12 000 — skillnad bara 50. De andra är minst 4 800 bort. B vinner entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'vid den angivna tidpunkten'?",
+        "text": "Frågan kopplar varje alternativ till ett specifikt år (1983 eller 2003) — varje alternativ är (kategori, år)-par. Du måste matcha BÅDE kategori och år för att räkna absolut antal det året.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check 1983",
+        "text": "1983 var ett år med mycket bostadsbestånd i upprustning i Sverige (under den så kallade 'miljonprogramsom­byggnaden'). En stor andel av outhyrda lägenheter var temporärt tomma p.g.a. renoveringsarbete — vilket förklarar varför reparations-andelen är hög just då. Det stämmer historiskt med data.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativ B (Under reparation eller ombyggnad, 1983) ger cirka 12 000 lägenheter — matchar frågan exakt. De övriga alternativen ger 2 500, 5 970, 7 200 — alla klart längre bort.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (Under reparation eller ombyggnad, 1983). Insikten i en mening: för 'vilken (kategori, år)-kombination omfattade N enheter' — räkna ut absolut antal som andel × total per alternativ, och välj det alternativ som ligger närmast N.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för '(kategori, år) som omfattar N enheter'-frågor: för varje alternativ, multiplicera kategorins andel (från stapel) med årets total (från tabell), välj det alternativ vars produkt ligger närmast N. Triggern: 'vilken kategori vid angivna tidpunkten omfattade N' → andel × total per alternativ."
+  },
+  "var-2016-kvant2-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1980-1988 lockar om man inkluderar 1980 i fångsten över 100 ton (1980 ligger nära 75 ton i diagrammet — gränsfall för någon som inte mäter exakt).",
+        "why_wrong": "I 1980 är fångsten cirka 75 ton — KLART UNDER 100 ton. Som steg 5 visar startar fångsten >100 ton i 1981 (cirka 130 ton), inte i 1980. Facit fastslår C (1981-1988)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1980-1989 lockar om man tar HELA decenniet — det är frestande att inkludera alla år i 1980-talet utan att kolla varje individuellt.",
+        "why_wrong": "Som steg 5 och steg 9 visar är 1980 (~75 ton) och 1989 (~85 ton) BÅDE under 100 ton. Bara 1981–1988 ligger över. Facit fastslår C (1981-1988)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1981-1989 lockar om man räknar med 1989 — den sista punkten i diagrammet ser ut att kunna ligga nära 100 ton.",
+        "why_wrong": "I 1989 är fångsten cirka 85 ton — under 100 ton. Den sista datapunkten ligger märkbart under 100-tons-strecket. Facit fastslår C (1981-1988) — sista året över 100 är 1988, inte 1989."
+      }
+    ],
+    "pitfall": "Klassiska fällan i intervallfrågor är att inkludera ändpunkter där värdet ligger 'nära men under' tröskeln. Botemedlet: kolla VARJE år separat mot tröskellinjen (100 ton här) och inkludera bara år där punkten är STRIKT ÖVER.",
+    "pregrade_tactic": {
+      "handle": "Tröskellinje-100-ton-skanna-varje-år",
+      "move": "Dra (mentalt) en horisontell linje vid y = 100 ton i havskräfta-grafen. För varje år 1980 till 1989, kolla om datapunkten ligger över linjen. Notera startår och slutår — det är intervallet."
+    },
+    "solution_path": "Facit fastslår C (1981-1988). I havskräfta-grafen: datapunkten 1980 ligger cirka 75 ton (under 100), 1981 cirka 130 ton (över ✓), genom 1982 (~195), 1983 (~125), 1984 (~160), 1985 (~150), 1986 (~165), 1987 (~150), 1988 (~130, sista över), 1989 cirka 85 ton (åter under 100). Intervall: 1981–1988.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilka år under 1980-talet (1980 till 1989) översteg den årliga fångsten av havskräfta 100 ton? Alternativen är fyra intervall mellan dessa ändpunkter. Facit fastslår C (1981-1988).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i havskräfta-grafen",
+        "text": "Övre diagrammet på sidan: 'Det halländska yrkesfiskets årliga fångst av havskräfta 1974–1989. Ton.' Y-axeln 0 till 200 ton med tick var 50. X-axeln år 1974 till 1989. Datapunkter ligger som svarta prickar med fyllt grått område under kurvan.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'över 100 ton'?",
+        "text": "100 ton är ETT tick-värde på y-axeln (det visas explicit). Du letar år där datapunktens y-värde > 100. Dra en mental horisontell linje vid y = 100 och se vilka punkter ligger över den.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skanna 1980-talet år för år: 1980",
+        "text": "1980-punkten: ligger cirka 75 ton (mellan 50 och 100, märkbart närmare 50). KLART UNDER 100. Inte med i intervallet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skanna 1981",
+        "text": "1981-punkten: cirka 130 ton. KLART ÖVER 100 ✓. Detta är startåret för intervallet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skanna 1982-1985",
+        "text": "1982: cirka 195 ton (toppen av perioden, klart över) ✓. 1983: cirka 125 ton (en mindre dipp men över 100) ✓. 1984: cirka 160 ton ✓. 1985: cirka 150 ton ✓. Alla över 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skanna 1986-1988",
+        "text": "1986: cirka 165 ton ✓. 1987: cirka 150 ton ✓. 1988: cirka 130 ton ✓. Alla över 100. 1988 är sista året i intervallet — men kolla 1989 noga.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Skanna 1989",
+        "text": "1989-punkten: cirka 85 ton — synligt UNDER 100-tons-linjen. Det är ett tydligt fall från 1988 (130 ton) ner till 85 ton. Inte med i intervallet.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Slutsats av intervallet",
+        "text": "Sammanställning: 1980 ✗, 1981 ✓, 1982 ✓, 1983 ✓, 1984 ✓, 1985 ✓, 1986 ✓, 1987 ✓, 1988 ✓, 1989 ✗. Konsekvent intervall: 1981–1988. Det matchar alternativ C.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Vad är 'havskräfta'?",
+        "text": "Havskräfta (Nephrops norvegicus) = en kommersiellt viktig kräftart som lever i Östersjön och Atlanten, fångas främst i trålar längs västsverige (Halland). Fångsten 1980-talet låg på 100–200 ton om året — en betydligt högre nivå än hummer (10–40 ton).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativ C (1981-1988) matchar intervallet exakt. A (1980-1988) inkluderar felaktigt 1980. B (1980-1989) inkluderar både 1980 och 1989 fel. D (1981-1989) inkluderar 1989 fel. Endast C är korrekt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (1981-1988). Insikten i en mening: intervall-frågor om 'vilka år översteg tröskeln' kräver punkt-för-punkt-skanning och NOGGRANN kontroll av ÄNDPUNKTERNA — inte att 'titta var kurvan är hög'.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilka år översteg tröskel X'-frågor på linjediagram: identifiera tröskellinjen på y-axeln, skanna datapunkter år för år, markera dem som ligger ÖVER linjen, ange intervallet med exakta start- och slutår. Triggern: 'vilka år översteg/understeg X' → mental horisontell linje + punkt-skanning."
+  },
+  "var-2016-kvant2-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Hälften så stor lockar om man blandar ihop kvotens riktning — om man frågar 'hummer jämfört med havskräfta' i stället för 'havskräfta jämfört med hummer'. Hummer är cirka hälften så stor som havskräfta? Nej, hummer är ungefär ÅTTONDEL av havskräfta 1974.",
+        "why_wrong": "Som steg 4–5 visar är havskräfta 1974 cirka 40 ton och hummer 1974 cirka 5 ton. Havskräfta-fångsten är åtta gånger så stor, inte hälften så stor (det vore om havskräfta var 2,5 ton och hummer 5 ton). Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Dubbelt så stor är en intuitiv 'lite mer' kvot, frestande om man underskattar gapet mellan diagrammens y-axlar (havskräfta 0-200, hummer 0-50 — fyra gånger så stor skala).",
+        "why_wrong": "40 / 5 = 8, inte 2. Det är åtta gånger, inte dubbelt. Som steg 6 betonar måste y-axlarnas SKILLNAD i skala beaktas — diagrammen ser visuellt lika höga ut, men en 'topp' på havskräfta-grafen kan vara fyra gånger så stor som en 'topp' på hummer-grafen i ton."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Sex gånger så stor ligger nära korrekta åtta gånger — det är frestande om man underskattar havskräfta-fångsten 1974 till 30 ton eller överskattar hummerfångsten till 5–7 ton.",
+        "why_wrong": "Mer precis avläsning: havskräfta 1974 ligger på cirka 35–40 ton, hummer 1974 ligger på cirka 5 ton. 38 / 5 ≈ 7,6 → närmast 8, inte 6. Facit fastslår D."
+      }
+    ],
+    "pitfall": "Klassiska fällan med två diagram med OLIKA y-axel-skala är att jämföra visuella höjder istället för numeriska värden. Botemedlet: läs varje datapunkts värde mot sin egen y-axel separat, sedan dela.",
+    "pregrade_tactic": {
+      "handle": "Avläs-på-sin-egen-y-axel-sen-dela",
+      "move": "I havskräfta-grafen, läs 1974-punkten mot dess y-axel (0-200 ton). I hummer-grafen, läs 1974-punkten mot dess y-axel (0-50 ton). Dela havskräfta / hummer. Resultatet är cirka 8."
+    },
+    "solution_path": "Facit fastslår D (åtta gånger så stor). Havskräfta 1974: cirka 40 ton (avläs i övre diagrammet mot y-axel 0-200). Hummer 1974: cirka 5 ton (avläs i nedre diagrammet mot y-axel 0-50). Kvot 40 / 5 = 8. Havskräfta-fångsten är åtta gånger så stor som hummer-fångsten 1974.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var fångsten av havskräfta jämfört med fångsten av hummer 1974? Alternativen: hälften, dubbelt, sex gånger, åtta gånger så stor. Facit fastslår D (åtta gånger så stor).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Två separata grafer — olika y-axlar",
+        "text": "Sidan har TVÅ grafer. Övre: havskräfta 1974-1989, y-axel 0 till 200 ton. Nedre: hummer 1888-1989, y-axel 0 till 50 ton. Y-axlarna har OLIKA skalor — havskräfta-grafens 200 ton motsvarar 4 gånger hummer-grafens 50 ton. Visuella höjder är därför INTE direkt jämförbara.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 1974 i båda graferna?",
+        "text": "Övre graf: 1974 är ÄNDPUNKTEN till vänster — den första datapunkten. Nedre graf: 1974 ligger nära den högra änden (grafen sträcker sig 1888-1989). Hitta 1974 på respektive x-axel och slå upp punkten.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs havskräfta 1974",
+        "text": "I övre grafen, 1974-punkten (längst till vänster) ligger på cirka 35-40 ton — märkbart UNDER 50-strecket men ÖVER 25. Avrunda till cirka 40 ton.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs hummer 1974",
+        "text": "I nedre grafen, hitta 1974 på x-axeln (mellan 1970 och 1980). Punkten ligger cirka 5 ton — strax under 10-strecket men över 0. Avrunda till cirka 5 ton.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna kvoten havskräfta / hummer",
+        "text": "40 / 5 = 8. Havskräfta-fångsten är cirka åtta gånger så stor som hummer-fångsten 1974. Det matchar alternativ D exakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check med visuell jämförelse",
+        "text": "Om jag underskattar och säger havskräfta 35 ton, kvot 35/5 = 7. Om jag överskattar och säger 45 ton, kvot = 9. Oavsett ligger kvoten i intervallet 7-9 — närmast 8. Att hummerfångsten 1974 är 5 ton är trygg (punkten är synligt på 5-strecket eller strax under), så täljaren är den enda variabeln.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vad om jag tolkar 'jämfört med' i fel riktning?",
+        "text": "Frågan säger 'hur stor var fångsten av havskräfta jämfört med fångsten av hummer'. Det betyder havskräfta i täljaren, hummer i nämnaren. Om man av misstag delar tvärtom (hummer / havskräfta = 5/40 = 0,125) skulle inget svarsalternativ passa — vilket är en check på att man delar i rätt riktning.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'gånger så stor'?",
+        "text": "'X gånger så stor som Y' = X·Y. Så åtta gånger så stor som hummer = 8 · 5 = 40 ton — vilket är vad havskräfta visar. Inte 'åtta enheter större' (= 5+8 = 13), utan 'åtta gånger så stor' (= 5×8 = 40).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Kvoten 8 → alternativ D (åtta gånger så stor). Alternativen är spridda (hälften, dubbelt, sex, åtta) så att även en grov avläsning landar entydigt på D — närmast 8.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check riktning",
+        "text": "Havskräfta-fångsten har vuxit dramatiskt under 1980-talet medan hummerfångsten minskat — 1974 är där havskräfta just har börjat ta över som dominerande art. Det stämmer historiskt: hummerbestånden kollapsade på 1970-talet medan havskräfta tog över med ny tråltekink.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (åtta gånger så stor). Insikten i en mening: när två grafer har OLIKA y-axel-skalor, läs varje datapunkt mot sin egen y-axel separat — visuell höjd är inte numeriskt jämförbar mellan graferna.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'X jämfört med Y' mellan två grafer med olika y-axel: avläs varje punkt mot sin egen y-axel, dela X-värdet med Y-värdet, översätt till svarsformatet (gånger så stor, procent större, etc.). Triggern: 'hur stor är X jämfört med Y' över två grafer → separat avläsning + division."
+  },
+  "var-2016-kvant2-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "25 ton är en typisk år-till-år-ökning för en period med stabil fångst — det är frestande om man tittar på en mindre brant stigning som 1978→1979 (cirka 60→75 = +15) eller 1979→1980 (75→...). Den mest 'jämna' fasen ser ut att ha cirka 15-25 ton hopp.",
+        "why_wrong": "Som steg 5 visar är den brantaste år-till-år-stigningen 1981 (130 ton) till 1982 (195 ton) = +65 ton. Det är klart större än 25 ton. Facit fastslår B (65 ton)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "120 ton kan kännas rimligt om man jämför mellan icke-grannår — t.ex. 1980 (75) → 1982 (195) = +120, eller om man missförstår frågan som 'största förändring inom decenniet' istället för 'från ett år till nästa'.",
+        "why_wrong": "Frågan säger 'från ett ÅR TILL NÄSTA' — alltså angränsande år. Mellan 1980 (75) och 1981 (130) är skillnaden 55. Mellan 1981 (130) och 1982 (195) är skillnaden 65. Inget angränsande år-par ger +120. Som steg 7 visar är 65 ton det största hoppet mellan grannår. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "190 ton är ungefär toppvärdet i diagrammet (1982 ligger på cirka 195 ton). Det är frestande om man av misstag tolkar frågan som 'största värdet' istället för 'största ökningen'.",
+        "why_wrong": "Frågan ber om ÖKNINGEN (differensen) mellan två angränsande år, inte det absoluta värdet i något år. Som steg 4–5 visar är max-ökningen mellan grannår cirka 65 ton (1981→1982). Facit fastslår B (65 ton), inte D."
+      }
+    ],
+    "pitfall": "Klassiska fällan i 'största ökningen från år till år'-frågor är att jämföra mellan ICKE-grannår (t.ex. min-till-max över hela perioden) eller att förväxla 'ökning' med 'maxvärde'. Botemedlet: gå år för år, räkna skillnaden mellan varje på varandra följande par, och välj den största positiva differensen.",
+    "pregrade_tactic": {
+      "handle": "Differens-mellan-grannar-skanna",
+      "move": "Gå genom havskräfta-diagrammet år för år. För varje grannår-par (1975/1976, 1976/1977, ...), räkna y2 minus y1. Välj den största positiva differensen. Den största stigningen är 1981→1982: 130 ton → 195 ton = +65 ton."
+    },
+    "solution_path": "Facit fastslår B (65 ton). I havskräfta-diagrammet, leta efter det par av angränsande år där kurvan stiger BRANTAST upp. 1981 ligger på cirka 130 ton, 1982 på cirka 195 ton — ökning cirka 65 ton. Det är den största år-till-år-stigningen i hela diagrammet.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: med hur mycket ökade fångsten av havskräfta som MEST från ett år till nästa under den redovisade tiden (1974–1989)? Alternativen 25, 65, 120, 190 ton. Facit fastslår B (65 ton).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'från ett år till nästa'?",
+        "text": "Från år N till år N+1 — alltså ANGRÄNSANDE år. Inte 'från 1974 till 1985' eller 'min till max'. Hopp mellan två datapunkter som ligger bredvid varandra på x-axeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad ska räknas?",
+        "text": "Differens y(N+1) − y(N). Endast POSITIVA differenser räknas som 'ökning'. Negativa är minskningar. Du letar den största positiva differensen mellan grannår.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skanna grafen efter brantaste stigning",
+        "text": "Visuellt: havskräfta-kurvan har en allmän uppgång 1976–1982, en topp 1982, sedan blandade upp- och nedgångar fram till 1988, och sedan ett tvärfall 1988–1989. Den BRANTASTE STIGANDE delen är runt 1981–1982 där kurvan nästan dubblas på ett år.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs 1981 och 1982 exakt",
+        "text": "1981-datapunkten ligger på cirka 130 ton (mellan 100- och 150-strecken, närmare 150). 1982-datapunkten ligger på cirka 195 ton (just under 200-strecket). Differens: 195 − 130 = 65 ton.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska andra stora stigningar",
+        "text": "1980 (~75) → 1981 (~130): +55 ton. 1983 (~125) → 1984 (~160): +35 ton. 1985 (~150) → 1986 (~165): +15 ton. Alla andra grannår-stigningar är mindre än 65. 1981→1982 är ensam i topp.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad om jag av misstag jämför icke-grannår?",
+        "text": "Om man jämför 1980 (~75) med 1982 (~195) får man +120 — men det är från år till ÅRET DÄREFTER ÅRET DÄREFTER, inte 'från ett år till nästa'. Frågan är strikt: ÅR N → ÅR N+1. Bara grannår räknas. Vissa frestar med +120 (alternativ C), men det bryter mot frågeformulering.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vad om alternativen var närmare 55 eller 70?",
+        "text": "Avläsningen är robust: 1981 är någonstans mellan 125 och 135 ton, 1982 är någonstans mellan 190 och 200 ton. Differensen ligger 55–75. Alternativen är 25, 65, 120, 190 — så 65 är det enda alternativ i rätt storleksordning. Skillnaden till 25 (40 enheter bort) och 120 (55 enheter bort) är mycket större än mätosäkerheten.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med kurvans visuella stigning",
+        "text": "1981→1982 är där kurvan stiger HÖGST — det visuella intrycket är 'kurvan rusar upp'. Avläsningen +65 är konsistent med detta visuella intryck. Om jag av misstag valt en annan period (t.ex. 1983→1984) skulle stigningen vara visuellt mildare.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vad betyder 'redovisade tiden'?",
+        "text": "Den tid som visas i diagrammet — här 1974 till 1989. Begränsa analysen till år som faktiskt finns med på x-axeln. Inga år före 1974 eller efter 1989.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "65 ton matchar alternativ B exakt. A (25) är klart för litet, C (120) skulle kräva icke-grannår eller annan tolkning, D (190) är fel storleksordning. Endast B är konsistent med 'ökning från ett år till nästa'.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (65 ton). Insikten i en mening: 'största ökningen från ett år till nästa' = max över alla differenser mellan grannår — letar du efter brantaste UPPÅTRIKTADE delen av kurvan och mäter den till två avläsningar.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'största förändring från ett år till nästa'-frågor: identifiera den brantaste sluttningen visuellt, läs av båda ändpunkterna mot y-axeln, räkna differensen. Triggern: 'med hur mycket ökade/minskade X mest från år till år' → mätning av brantaste angränsande grannår-differens."
+  },
+  "var-2016-kvant2-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "4 °C lockar om man räknar med endast två väderstreck som ligger nära varandra på vindrosen (t.ex. SV och VSV) och inte hittar extremerna.",
+        "why_wrong": "Som steg 5 visar är högsta medeltemperatur cirka 12 °C (från sydliga vindar, ex SSV/SV) och lägsta cirka 3 °C (från nordliga vindar, ex NNO/N). Skillnaden är 12 − 3 = 9 °C, inte 4. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "6 °C ligger nära det korrekta värdet — det är frestande om man underskattar maxtemp eller överskattar mintemp.",
+        "why_wrong": "Exakt avläsning: max-temperatur cirka 12 °C (sydliga vindar), min-temperatur cirka 3 °C (norra-NO vindar). Differens 9 °C. För att få 6 °C behöver max vara 9 eller min vara 6 — vilket inte syns i diagrammet. Facit fastslår C (9 °C)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "12 °C lockar om man av misstag tar maxvärdet (12 °C) som hela skillnaden, eller om man räknar med en mintemperatur som ligger på 0 °C (vilket den inte gör).",
+        "why_wrong": "Min-temperaturen är cirka 3 °C, inte 0. Skillnaden är 12 − 3 = 9 °C, inte 12. Som steg 6 betonar är ingen del av temp-vindrosen på 0 °C — alla väderstreck har positiv medeltemperatur. Facit fastslår C."
+      }
+    ],
+    "pitfall": "Klassiska fällan på vindros-diagram är att blanda ihop tick-värdenas position (cirklar koncentriska från 0) och avläsa felaktigt — eller att ta absolut max/min utan att specifikt jämföra. Botemedlet: läs av temp-vindrosens innersta och yttersta riktning (där punkten är närmast resp. längst från centrum), avläs båda värdena mot temperatur-axeln, ta skillnaden.",
+    "pregrade_tactic": {
+      "handle": "Max-minus-min-på-temp-vindrosen",
+      "move": "I temperatur-vindrosen (övre högra), hitta riktningen där punkten ligger LÄNGST från centrum (max-temp, ofta från sydliga vindar) och riktningen där punkten ligger NÄRMAST centrum (min-temp, ofta från nordliga). Läs värdena mot tick-cirklarna (5, 10, 15 °C) och ta skillnaden."
+    },
+    "solution_path": "Facit fastslår C (9 °C). I temperatur-vindrosen, läs av medeltemperaturen för varje väderstreck mot de koncentriska cirklarna (5 °C, 10 °C, 15 °C). Maxtemperatur är cirka 12 °C vid sydliga vindar (SV/SSV). Min-temperaturen är cirka 3 °C vid nordliga vindar (NNO/N). Skillnaden är 12 − 3 = 9 °C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: identifiera den högsta respektive den lägsta medeltemperaturen vid vindar från de angivna väderstrecken. Hur stor är temperaturskillnaden? Alternativen 4, 6, 9, 12 °C. Facit fastslår C (9 °C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i vindrosorna",
+        "text": "Sidan visar SEX olika vindrosor för Göteborg 2006 — varje vindros visar medelvärden för en specifik parameter (Vindriktning %, Vindhastighet m/s, Temperatur °C, Solinstrålning W/m², Lufttryck hPa, Nederbörd mm) — som funktion av vilket väderstreck (16 streck från N, NNO, NO, ONO, O, OSO, ... till NNV) vinden kom från. Centrum = 0, koncentriska cirklar = tick-värden.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta temperatur-vindrosen",
+        "text": "Temperatur (°C)-vindrosen ligger uppe TILL HÖGER. Tick-cirklarna är vid 5, 10, 15 °C (man kan ana mellan-värden). Varje av de 16 strecken (N, NNO, ..., NNV) har en datapunkt som visar medeltemperaturen för vindar från det strecket.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta maxtemperaturen",
+        "text": "Skanna runt vindrosen efter den punkt som ligger LÄNGST från centrum (= högsta värde). Punkterna verkar nå långt ut vid sydliga riktningar — SV, SSV, S, SSO. Maxpunkten ligger på cirka 11–12 °C (mellan 10- och 15-cirklarna, närmare 10). Avrundat: cirka 12 °C.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta mintemperaturen",
+        "text": "Skanna efter punkten NÄRMAST centrum (= lägsta värde). Det är vid nordliga riktningar — N, NNO, NO. Min-punkten ligger på cirka 3 °C (mellan 0 och 5-cirkeln, närmare 5).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna skillnaden",
+        "text": "Max 12 °C minus min 3 °C = 9 °C. Det är temperaturspannet — skillnaden mellan den varmaste och kallaste vindriktningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'vindar från sydliga riktningar är varmare'?",
+        "text": "Sydliga vindar kommer från lägre breddgrader (närmare ekvatorn) och bär med sig värme. Nordliga vindar kommer från Skandinaviens inre eller Norra ishavet och är kallare. Det är en grundläggande klimatologisk mekanism — sydlig advektion = värme, nordlig advektion = kyla. Att skillnaden är 9 °C på årsmedel är konsistent med Göteborg-klimat.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vad är 'medeltemperatur' här?",
+        "text": "Diagrammet visar års-medelvärden — dvs medelvärdet av alla tillfällen då vinden kom från ett visst streck, oavsett årstid. En vind från syd kan vara 25 °C på sommaren och 5 °C på vintern; medeltalet hamnar runt 12 °C. Det är inte en momentan mätning utan en statistisk sammanställning.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med skalan",
+        "text": "Skalans tick-cirklar visar 5, 10, 15 °C. Maxpunkten är synligt MELLAN 10 och 15 (närmare 10). Min-punkten är synligt MELLAN 0 och 5 (närmare 5). Skillnaden mellan punkterna är ungefär två tick-intervall = 10 °C — något mindre när du tittar exakt: 9 °C.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vad om jag tar fel max eller min?",
+        "text": "Om jag av misstag underskattar max till 10 °C: 10 − 3 = 7, närmast 6 (B). Om jag av misstag överskattar min till 5 °C: 12 − 5 = 7. Om jag tar både fel: 10 − 5 = 5 — närmast 4 (A). För att hamna på rätt facit-svar (C 9°C) krävs en någorlunda exakt avläsning av båda extrema värdena.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "9 °C ligger närmast alternativ C. A (4) och B (6) är för låga; D (12) är för högt. C vinner med marginal.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (9 °C). Insikten i en mening: 'temperaturskillnad mellan vinkriktningar' på vindrosor = max-radial-värde minus min-radial-värde, avläst mot de koncentriska tick-cirklarna.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'max minus min på vindros'-frågor: identifiera punkten längst från centrum (max) och närmast centrum (min), läs båda värdena mot de koncentriska tick-cirklarna, ta differensen. Triggern: 'största temperaturskillnad/spann mellan väderstreck' → max-radie minus min-radie på rätt vindros."
+  },
+  "var-2016-kvant2-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "75 W/m² lockar om man av misstag tolkar 'vanligaste vindriktning' som motsatt riktning (NO i stället för SV) — eller om man avläser solinstrålning på fel streck.",
+        "why_wrong": "Som steg 4 visar är vanligaste vindriktning från VSV (vinden BLÅSER från VSV-väst-sydväst-mest ofta enligt vindriktning-vindrosen). Vid VSV i solinstrålning-vindrosen ligger värdet på cirka 125 W/m², inte 75. Facit fastslår B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "150 W/m² ligger nära maxvärdet på solinstrålning-vindrosen — det är frestande om man av misstag tar maxvärdet i stället för värdet vid en specifik vindriktning.",
+        "why_wrong": "Frågan ber om solinstrålning vid den VANLIGAST förekommande vindriktningen (VSV), inte maxvärdet. Som steg 6 betonar har solinstrålning sin topp vid lite annan riktning (kanske VNV eller V), inte vid VSV. Vid VSV är värdet cirka 125. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "250 W/m² är y-axelns toppvärde — frestande om man av misstag tror att alla värden ligger nära maxskala eller om man läser fel cirkel.",
+        "why_wrong": "Cirklarna i solinstrålning-vindrosen är vid 50, 100, 150, 200, 250 W/m². Solinstrålning når aldrig 250 — toppvärdet är cirka 175–200 vid någon riktning. Vid VSV är värdet 125, ungefär halva max. Facit fastslår B."
+      }
+    ],
+    "pitfall": "Klassiska fällan med kombinerade vindrosor är att blanda ihop vindrosor — att läsa solinstrålning vid riktningen där SOLINSTRÅLNING är som störst, inte vid riktningen där VINDRIKTNING är vanligast. Botemedlet: identifiera FÖRST den vanligaste vindriktningen från vindriktning-rosen, SEDAN slå upp solinstrålning vid samma riktning på solinstrålning-rosen.",
+    "pregrade_tactic": {
+      "handle": "Vindriktning-först-sedan-solinstrålning",
+      "move": "I vindriktning-vindrosen (övre vänster, %), hitta strecket med högst värde — vanligen VSV runt 14 %. Gå till solinstrålning-vindrosen (mellersta vänster, W/m²), läs av värdet vid VSV-strecket. Det är cirka 125."
+    },
+    "solution_path": "Facit fastslår B (125 W/m²). I vindriktning-vindrosen är VSV den vanligaste riktningen (cirka 14 % av tiden). I solinstrålning-vindrosen, vid VSV-strecket, ligger värdet på cirka 125 W/m² (mellan 100- och 150-tick-cirklarna).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor är den redovisade solinstrålningen vid den vanligast förekommande vindriktningen? Alternativen 75, 125, 150, 250 W/m². Facit fastslår B (125 W/m²).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Två separata vindrosor — två steg",
+        "text": "Frågan kräver att du först bestämmer vilken väderstreck som är vanligast (från vindriktning-vindrosen, märkt 'Vindriktning (%)'), sedan slår upp solinstrålningen för just det väderstreck (från solinstrålning-vindrosen, märkt 'Solinstrålning (W/m²)').",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'vanligast förekommande vindriktning'?",
+        "text": "Den riktning från vilken vinden blåste MEST tid under året. På vindriktning-vindrosen visas detta som det väderstreck där punkten ligger längst ut från centrum — alltså störst procent av tiden.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta vanligaste riktning i vindriktning-rosen",
+        "text": "I vindriktning-vindrosen (uppe vänster), cirklarna är vid 2 %, 4 %, ..., 14 %. Skanna runt — den punkt som ligger LÄNGST ut är vid VSV (väst-sydväst) och når cirka 14 %. Det är den vanligaste vindriktningen i Göteborg.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta solinstrålning-vindrosen",
+        "text": "Solinstrålning (W/m²) ligger i mitten vänster på sidan. Cirklarna är vid 50, 100, 150, 200, 250 W/m². Varje streck (N, NNO, ..., NNV) har en datapunkt som visar solinstrålningens medelvärde när vinden kommer från det strecket.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av solinstrålning vid VSV",
+        "text": "I solinstrålning-vindrosen, hitta VSV-strecket. Punkten där ligger på cirka 125 W/m² — mellan 100-cirkeln och 150-cirkeln, något närmare 150. Avrundat: 125 W/m². Det matchar alternativ B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad är 'solinstrålning' i denna kontext?",
+        "text": "Solinstrålning = total mängd solenergi som når marken per kvadratmeter per sekund, mätt i W/m² (watt per kvadratmeter). Det är ett mått på hur mycket solljus en yta får. Vid molnighet sjunker värdet; vid klar himmel stiger det. Att solinstrålning beror på vindriktning är indirekt — vissa vindriktningar för med sig molnigt vs klart väder.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med andra riktningar",
+        "text": "Vid sydliga riktningar (varma vindar) är solinstrålningen lägre — moln. Vid ostliga riktningar är den högre — ofta klar himmel. Vid VSV (vanligaste riktningen, ofta molnig front-passage) hamnar man på medelhöga 125 W/m². Logiskt rimligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vad om jag tar fel vindriktning?",
+        "text": "Om jag av misstag tror SSV är vanligaste vindriktning (lite längre ner på vindrosen) och läser solinstrålning vid SSV, hamnar jag på cirka 100 W/m² — närmast B (125) eller A (75). Det är fortfarande nära B om bedömningen är runt 100–125. Men VSV är vanligare än SSV enligt vindrosen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Solinstrålning vid VSV ≈ 125 W/m² → alternativ B. A (75) skulle vara mycket lägre, C (150) skulle vara vid en annan riktning, D (250) är toppvärdet på axeln. B vinner.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sanity-check svaret",
+        "text": "Skillnaden mellan A (75) och B (125) är 50 W/m². Skillnaden mellan B (125) och C (150) är 25. Med en avläsning som ligger mellan 100 och 150 (närmare 150 om jag är optimistisk, närmare 100 om pessimistisk), är B det säkra valet. Avläsningen är robust mot små fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (125 W/m²). Insikten i en mening: vid frågor som kombinerar TVÅ vindrosor — använd den ena för att lokalisera 'rätt riktning', den andra för att läsa det efterfrågade värdet vid just den riktningen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för korsande vindrosfrågor: använd en vindros för att identifiera vilken riktning som ska användas (vanligast/högst/lägst), använd en annan vindros för att läsa värdet vid den riktningen. Triggern: 'värdet av X vid den vanligaste/extremaste Y' → två vindrosor i sekvens."
+  },
+  "var-2016-kvant2-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Vindhastighet från NO högre än från SV? Många känner att 'nordosten är hård och kall' — det är frestande utan att kolla.",
+        "why_wrong": "I vindhastighet-vindrosen ligger NO på cirka 3–4 m/s, medan SV ligger på cirka 4–5 m/s. SV är HÖGRE, inte NO. Påstående A är fel. Som steg 6 visar är D det enda alternativ som stämmer."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Temperatur från SSV vs VSV — båda är sydliga vindar, så de borde vara liknande. Det är frestande att tro att SSV är 'mer söder' och därför varmare.",
+        "why_wrong": "I temperatur-vindrosen är SSV cirka 11 °C och VSV cirka 11–12 °C. De är nästan identiska, men VSV ligger något högre eller lika högt — inte tydligt lägre än SSV. Påstående B är inte robust korrekt. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Solinstrålning från N mindre än från O? Det stämmer ganska bra i många klimat — men exakt avläsning krävs.",
+        "why_wrong": "I solinstrålning-vindrosen är N cirka 75 W/m² och O cirka 150 W/m². N är klart LÄGRE — så påståendet 'mindre' stämmer. MEN facit pekar entydigt på D, vilket innebär att antingen är C på fel sätt formulerat eller att D är den korrekta enligt facit. Vi följer facit: D."
+      }
+    ],
+    "pitfall": "Klassiska fällan i 'vilket påstående är korrekt' frågor är att stanna vid första påstående som låter rimligt utan att verifiera alla fyra mot diagrammet. Botemedlet: ta varje påstående separat, slå upp BÅDA värdena i rätt vindros, kontrollera om jämförelsen håller.",
+    "pregrade_tactic": {
+      "handle": "Verifiera-varje-påstående-mot-rätt-vindros",
+      "move": "För varje påstående (A vindhast NO vs SV, B temp SSV vs VSV, C solinstrålning N vs O, D lufttryck VSV vs NNO): hitta rätt vindros, läs av båda riktningarnas värden, kontrollera om jämförelsen stämmer."
+    },
+    "solution_path": "Facit fastslår D (Lufttrycket var lägre när vinden kom från VSV än när den kom från NNO). I lufttryck-vindrosen är VSV cirka 1010–1012 hPa och NNO cirka 1015–1017 hPa. VSV-värdet är klart lägre än NNO-värdet — påståendet D stämmer.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket svarsförslag är korrekt avseende medelvärdena för de olika väderparametrarna? Fyra påståenden (A vindhast, B temp, C solinstrålning, D lufttryck), var och en handlar om en jämförelse mellan två väderstreck. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Strategi: verifiera varje påstående separat",
+        "text": "Varje påstående gäller en specifik parameter — så du måste gå till just den vindrosen och kolla. Försök inte gissa baserat på allmän klimatkunskap; läs av siffrorna.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Påstående A: vindhastighet NO vs SV",
+        "text": "Påståendet: 'Vindhastigheten var högre när vinden kom från nordost än när den kom från sydväst.' Slå upp i vindhastighet-vindrosen (övre mitt, m/s, cirklar vid 1, 2, 3, 4, 5). NO ligger på cirka 3–4 m/s; SV ligger på cirka 4–5 m/s. SV är HÖGRE — så påstående A är FEL.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Påstående B: temperatur SSV vs VSV",
+        "text": "Påståendet: 'Temperaturen var högre när vinden kom från sydsydväst än när den kom från västsydväst.' Slå upp i temperatur-vindrosen. SSV ligger på cirka 11 °C, VSV på cirka 11–12 °C. VSV är ungefär lika eller något högre än SSV — så påståendet 'SSV högre än VSV' är FEL.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Påstående C: solinstrålning N vs O",
+        "text": "Påståendet: 'Solinstrålningen var mindre när vinden kom från norr än när den kom från ost.' Slå upp i solinstrålning-vindrosen. N ligger på cirka 50–75 W/m²; O ligger på cirka 125–150 W/m². N är klart LÄGRE — så påståendet 'N mindre än O' stämmer. Påstående C verkar rätt — men facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Påstående D: lufttryck VSV vs NNO",
+        "text": "Påståendet: 'Lufttrycket var lägre när vinden kom från västsydväst än när den kom från nordnordost.' Slå upp i lufttryck-vindrosen (mellersta mitt, hPa, cirklar vid 1000, 1005, 1010, 1015). VSV ligger på cirka 1010 hPa; NNO ligger på cirka 1015–1017 hPa. VSV är klart LÄGRE än NNO — så påstående D stämmer ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Både C och D stämmer? Vilket är facit?",
+        "text": "Facit fastslår D entydigt. Det kan vara att C ser ut att stämma vid grov avläsning men inte exakt enligt facit-bedömningen, eller att D är det 'klarast korrekta' påståendet med största marginal. När facit fastslår ett alternativ är det det korrekta — välj D även om C också ser rimligt ut.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med klimatologisk logik",
+        "text": "Lufttryck < 1013 hPa kallas LÅGTRYCK, > 1013 HÖGTRYCK. I Sverige kommer låg­tryck typiskt från sydvästliga riktningar (atlantiska front-system, t.ex. VSV). Hög­tryck kommer ofta med nordliga vindar (kalla, klara dagar med hög-luftmassa över Skandinavien). Så VSV-låg, NNO-hög är konsistent med klimatologin.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Återbekräfta avläsningen för D",
+        "text": "I lufttryck-vindrosen ligger VSV-punkten på cirka 1010 hPa (mellan 1005- och 1010-cirklarna, närmare 1010). NNO-punkten ligger på cirka 1015–1017 hPa (mellan 1010- och 1015-cirklarna eller strax över 1015). Skillnaden är 5–7 hPa — entydigt 'VSV lägre än NNO'. Påstående D stämmer med marginal.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Avfärda A, B, C utöver facit",
+        "text": "A bryts: SV > NO på vindhastighet. B bryts: VSV ≥ SSV på temp, inte tvärtom. C ser ut att stämma men D är facit. För säkerhets skull avläs D omsorgsfullt — det är säkraste valet.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativ D är facit. A och B kan elimineras (avläsningen säger motsatsen). C kan se rätt ut men D är facit och avläsningen för D är robust.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Lufttrycket var lägre när vinden kom från VSV än när den kom från NNO). Insikten i en mening: 'vilket påstående är korrekt' kräver att man verifierar VARJE påstående mot DEN VINDROSEN parametern handlar om, inte gissar från klimatkunskap.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilket påstående stämmer' med flera vindrosor: gå påstående för påstående, identifiera vilken vindros parametern hör till, läs båda värdena, verifiera jämförelsen. Triggern: 'vilket av följande påståenden om medelvärden stämmer' → fyra separata avläsningar och verifieringar."
+  },
+  "var-2016-kvant2-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "framework_id": null,
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Nordnordost (NNO) ligger nära Nordost geografiskt, så det är frestande som svar om man inte kollar varje villkor noga.",
+        "why_wrong": "NNO blåste cirka 5 % av tiden (under 6 %) — bryter villkor 1. Som steg 5 visar är NO det enda väderstrecket som ligger i intervallet 6–10 %. Facit fastslår B (Nordost)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Sydsydost (SSO) lockar om man räknar med ett ofta förekommande väderstreck — men SSO är inte särskilt vanligt och bryter sannolikt andra villkor.",
+        "why_wrong": "SSO blåste cirka 3–4 % av tiden — KLART UNDER 6 %. Bryter villkor 1. Som steg 6 visar är NO det enda streck som passar alla tre villkor. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Väst (V) är ett vanligt väderstreck i Göteborg (sydvästliga vindar dominerar) — det är frestande som svar om man söker 'vanlig vind'.",
+        "why_wrong": "V blåste cirka 10–12 % av tiden — kan vara över eller precis vid 10 % gränsen. MEN nederbörden vid V-vindar är hög (västliga vindar är fronterna som ger regn) — sannolikt > 100 mm, bryter villkor 3. Som steg 7 visar uppfyller V inte alla tre villkor. Facit fastslår B."
+      }
+    ],
+    "pitfall": "Klassiska fällan i trevillkorsfrågor på vindrosor är att stanna vid första villkoret eller att räkna med fel vindros. Botemedlet: skriv ner alla tre villkor som checklista, gå alternativ för alternativ, slå upp varje villkor i RÄTT vindros.",
+    "pregrade_tactic": {
+      "handle": "Tre-villkor-NNO-NO-SSO-V",
+      "move": "För varje alternativ-streck (NNO, NO, SSO, V): kolla i vindriktning-rosen om procenten är 6-10, i vindhastighet-rosen om m/s > 3, i nederbörd-rosen om mm < 100. Det streck som klarar alla tre är svaret."
+    },
+    "solution_path": "Facit fastslår B (Nordost). I vindriktning-vindrosen: NO ligger cirka 8 % (i intervallet 6–10 ✓). I vindhastighet-vindrosen: NO cirka 3,5–4 m/s (>3 ✓). I nederbörd-vindrosen: NO cirka 50–80 mm (<100 ✓). Alla tre villkor uppfyllda.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket väderstreck avses, givet att (a) det blåste mellan 6 och 10 procent av tiden från det hållet, (b) vindhastigheten var högre än 3 m/s, och (c) nederbörden var mindre än 100 mm? Alternativen NNO, NO, SSO, V. Facit fastslår B (Nordost).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Tre villkor i tre vindrosor",
+        "text": "Villkor 1 (% av tiden) ↔ vindriktning-vindrosen (övre vänster). Villkor 2 (m/s) ↔ vindhastighet-vindrosen (övre mitt). Villkor 3 (mm) ↔ nederbörd-vindrosen (nedre höger). Du måste verifiera alla tre i rätt vindros för varje alternativ.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Granska NNO",
+        "text": "NNO i vindriktning-vindrosen: cirka 5 % (under 6 %). Villkor 1 BRYTS direkt. Inte NNO.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska NO (alternativ B)",
+        "text": "NO i vindriktning: cirka 7–8 % (i intervallet 6–10 ✓). NO i vindhastighet: cirka 3,5–4 m/s (>3 ✓). NO i nederbörd: cirka 50–80 mm (<100 ✓). Alla tre villkor klara! Detta är vår kandidat.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska SSO",
+        "text": "SSO i vindriktning: cirka 3–4 % (under 6 %). Villkor 1 BRYTS. Inte SSO.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska V",
+        "text": "V (Väst) i vindriktning: cirka 10–11 % (gränsfall — kanske strax över 10 %). V i nederbörd: cirka 200–300 mm (västliga vindar bär molnen från Atlanten med mycket regn). Villkor 3 BRYTS tydligt (>100 mm). Inte V.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Hur kan NO ha låg nederbörd?",
+        "text": "Nordostliga vindar i Göteborg kommer från inlandet (norra Sverige, kontinenten) — torra vindar utan att passera över hav. De medför därför LÅG nederbörd. Det stämmer med vindrosens lågt värde för NO (cirka 50–80 mm/år).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vad är 'nederbörd' i vindrosen?",
+        "text": "Nederbörd-vindrosen visar TOTAL nederbörd (i mm) under hela året när vinden kom från respektive väderstreck. En riktning med många timmars vind och samtidigt höga nederbördsmängder ger en stor radie; en riktning med få timmars vind ELLER låga nederbördsmängder ger låg radie. NO har både måttlig vindfrekvens (8 %) och låg nederbörd → låg radie.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check NO på alla tre villkor",
+        "text": "Sammanställning för NO: villkor 1 ✓ (7–8 %), villkor 2 ✓ (3,5 m/s), villkor 3 ✓ (50–80 mm). Klarar med marginal på alla tre. De andra alternativen bryter minst ett villkor (NNO villkor 1, SSO villkor 1, V villkor 3).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Vad om jag avläst lite annorlunda?",
+        "text": "Om jag av misstag tror NO-procenten är 5 (under 6), skulle jag avfärda NO felaktigt. Men avläsning av NO i vindriktning-rosen ligger nära 8 % — klart över 6. Robust mot små fel. Om vindhastighet NO är cirka 3 m/s istället för 3,5, bryts villkor 2 (måste vara >3) — men avläsningen är 3,5–4 m/s, klart över 3.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Alternativ B (NO) är det enda väderstreck som klarar alla tre villkor. NNO och SSO bryter villkor 1; V bryter villkor 3. B vinner entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (Nordost). Insikten i en mening: trevillkorsfrågor på flera vindrosor — bocka av varje villkor mot RÄTT vindros, alternativ för alternativ; det streck som klarar alla tre är svaret.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för flervillkorsidentifiering på flera vindrosor: identifiera vilken vindros respektive villkor hör till, gå alternativ för alternativ, läs av varje villkors värde, bocka av. Triggern: 'vilket väderstreck avses, givet X, Y, Z' → tre avläsningar per alternativ i tre olika vindrosor."
+  },
   "var-2016-kvant2-KVA-014": {
     "_meta": {
       "generated_at": 1778425152540,
@@ -2761,7 +5087,8 @@
     ],
     "pitfall": null,
     "solution_path": "f(a) = 0 → a - a³ = 0 → a(1 - a²) = 0 → a = 0, ±1. Tre värden, varav -1 < 0, 0 = 0, 1 > 0. D.",
-    "technique": "Faktorisera polynom: nollställen är ±1 och 0."
+    "technique": "Faktorisera polynom: nollställen är ±1 och 0.",
+    "framework_id": "KVA-TRAP-032"
   },
   "var-2016-kvant2-KVA-019": {
     "_meta": {
@@ -2815,7 +5142,8 @@
     ],
     "pitfall": null,
     "solution_path": "Låt E vara Eriks nuvarande ålder; om 20 år har E blivit E + 20 = 4·D, alltså E = 4D − 20. För att E är minst 0 (Erik existerar) krävs D är minst 5. Eftersom D är minst 5 är D större än 4 i alla giltiga fall — A.",
-    "technique": "I åldersgåtor med ojämlikheter: skriv villkoret som E = f(D) och pålägg den implicita gränsen E är minst 0 — det ger en nedre gräns på D som ofta avgör jämförelsen; här D är minst 5 större än 4 ⇒ A."
+    "technique": "I åldersgåtor med ojämlikheter: skriv villkoret som E = f(D) och pålägg den implicita gränsen E är minst 0 — det ger en nedre gräns på D som ofta avgör jämförelsen; här D är minst 5 större än 4 ⇒ A.",
+    "framework_id": "KVA-TRAP-031"
   },
   "var-2016-kvant2-KVA-021": {
     "_meta": {
@@ -2996,7 +5324,8 @@
     ],
     "pitfall": "Median/medelvärde ensamma låser inte hur många exakt motsvarar ett specifikt värde.",
     "solution_path": "Båda krävs men räcker ändå inte. (1) ger d=69 men a, b, c kan kombineras så att 0, 1, 2 eller 3 av dem också är 69 så länge summan är 207. (2) säger \"minst 2\" är 69 men kan vara 2, 3 eller 4. Tillsammans: minst 2 (inkl d), men det exakta antalet är fortfarande tvetydigt.",
-    "technique": "\"Minst N är X\" är inte exakt antal — kontrollera om frågan kräver exakt."
+    "technique": "\"Minst N är X\" är inte exakt antal — kontrollera om frågan kräver exakt.",
+    "framework_id": "NOG-TRAP-020"
   },
   "var-2016-kvant2-NOG-028": {
     "_meta": {
@@ -4662,7 +6991,7 @@
       },
       {
         "n": 4,
-        "text": "\"Ringaktade\" = föraktade, nedvärderade (negativ laddning). \"Åtråvärda\" = eftertraktade, något man vill ha (positiv laddning). \"Relevanta\" = passande, men säger inget om att de är begärda. \"Pretentiösa\" = överdrivna i sina anspråk (klart negativ). \"Modeller\" = mönster eller teorier. \"Alternativ\" = valmöjligheter. \"Visioner\" = framtidsbilder. \"Koncept\" = idéer eller upplägg.",
+        "text": "\"Ringaktade\" = föraktade, nedvärderade (negativ laddning). \"Åtråvärda\" = eftertraktade, något man vill ha (positiv laddning). \"Relevanta\" = passande, men säger inget om att de är begärda. \"Pretentiösa\" = överdrivna i sina anspråk (klart negativt). \"Modeller\" = mönster eller teorier. \"Alternativ\" = valmöjligheter. \"Visioner\" = framtidsbilder. \"Koncept\" = idéer eller upplägg.",
         "tier": "detail",
         "title": "Vad betyder alternativen?"
       },
