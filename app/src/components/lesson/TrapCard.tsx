@@ -44,10 +44,12 @@ export function TrapCard({
 }) {
   return (
     <details
+      id={entry.id}
       style={{
         paddingBlock: 'clamp(20px, 2vw + 8px, 32px)',
         borderTop: '1px solid var(--hairline)',
         maxWidth: '68ch',
+        scrollMarginTop: 'clamp(48px, 8vw, 96px)',
       }}
     >
       <summary

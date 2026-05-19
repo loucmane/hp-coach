@@ -22,7 +22,7 @@
         "why_wrong": "Steg 4–6: vi behöver inte räkna ut talen — vi behöver bara veta att I är under 1 och II är över 1. Informationen räcker mer än väl."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-018",
     "pitfall": null,
     "solution_path": "Kvantitet I = 0{,}99^{99} är ett tal mindre än 1 (eftersom basen < 1) — närmar sig 0 ju högre exponent. Kvantitet II = 1{,}1^{11} är ett tal större än 1 (eftersom basen > 1). Alltså II > I. Svaret är B.",
     "steps": [
@@ -116,7 +116,7 @@
         "why_wrong": "Steg 4: de är förvisso symmetriska i ekvationerna, men SUMMAN är 0 — inte att de var och en är 0. Bara i specialfallet y = 0 blir de lika."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-002",
     "pitfall": null,
     "pregrade_tactic": {
       "handle": "Teckenfall-testet",
@@ -322,7 +322,7 @@
         "why_wrong": "Steg 6–7: villkoret x > 1 räcker för att avgöra riktningen entydigt. Vi behöver inte veta exakt värde på x — bara att basen är > 1."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-018",
     "pitfall": null,
     "solution_path": "(x^{3})^{2} = x^{3 \\cdot 2} = x^{6}. Kvantitet I = x^{6} och Kvantitet II = x^{5}. Eftersom x > 1 är x^{6} > x^{5}. Svaret är A.",
     "steps": [
@@ -821,7 +821,7 @@
         "why_wrong": "Steg 10: tillsammans ger (1) och (2) en unik lökposition. Vi behöver inte ens lösa ärtor och rädisor — lökens fåra är låst."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-013",
     "pitfall": null,
     "solution_path": "(1) ensam: morötterna i mitten (fåra 3); sallad intill lök ger två möjliga par. Inte unikt. (2) ensam: sallad i fåra 1, ärtor intill rädisor — många möjliga placeringar. Inte unikt. Tillsammans: morötter i 3, sallad i 1, så lök i 2 (intill sallad), och ärtor/rädisor i 4 och 5. Unikt. Svaret är C.",
     "steps": [
@@ -1154,7 +1154,7 @@
         "why_wrong": "Steg 5 och 7: 3 + 3 fall ÅTERSTÅR efter respektive påstående. Inget av dem är unikt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-004",
     "pitfall": "Det är frestande att tro att två 'icke-restriktioner' (typ '90 ≠ blå' och '80 ≠ grön') måste låsa allt eftersom de utesluter två kombinationer. Botemedlet: räkna kvarvarande fall efter VARJE restriktion — när två fall återstår är informationen otillräcklig.",
     "solution_path": "Minsta (70) inte vit → den är blå eller grön. (1) 'största inte blå' → 90 är vit eller grön. (2) 'mellanstora inte grön' → 80 är vit eller blå. Tillsammans: 70 kan vara blå eller grön och flera färgkombinationer uppfyller alla regler. Inte unikt. Svaret är E.",
     "steps": [
@@ -2481,7 +2481,8 @@
     ],
     "pitfall": null,
     "solution_path": "P(samma sida) = 2/4 = 1/2. P(olika sidor) = 2/4 = 1/2. Lika — C.",
-    "technique": "Kombinatorik: HH, HT, TH, TT — två \"samma\", två \"olika\"."
+    "technique": "Kombinatorik: HH, HT, TH, TT — två \"samma\", två \"olika\".",
+    "framework_id": "KVA-TRAP-028"
   },
   "var-2015-kvant2-KVA-014": {
     "_meta": {
@@ -2507,7 +2508,8 @@
     ],
     "pitfall": null,
     "solution_path": "60 pojkar, 30 flickor (total 90). 40 vänsterhänta totalt. Vänsterhänta pojkar kan vara 10-40, beroende på vänsterhänta flickor (0-30). 20 ligger inom [10, 40], så D.",
-    "technique": "Tvåvägstabell: händighet."
+    "technique": "Tvåvägstabell: händighet.",
+    "framework_id": "KVA-TRAP-006"
   },
   "var-2015-kvant2-KVA-015": {
     "_meta": {
@@ -2561,7 +2563,8 @@
     ],
     "pitfall": null,
     "solution_path": "x - y = y - x → 2(x - y) = 0 → x = y. I: 0. II: x = y; vilket värde? Fri. D.",
-    "technique": "När en ekvation tvingar x = y men inte fixerar det enskilda värdet, är jämförelsen mot ett konkret tal (här 0) inte avgörbar — informationen är otillräcklig (D)."
+    "technique": "När en ekvation tvingar x = y men inte fixerar det enskilda värdet, är jämförelsen mot ett konkret tal (här 0) inte avgörbar — informationen är otillräcklig (D).",
+    "framework_id": "KVA-TRAP-009"
   },
   "var-2015-kvant2-KVA-017": {
     "_meta": {
@@ -2613,7 +2616,8 @@
     ],
     "pitfall": null,
     "solution_path": "Likbent triangel, omkrets 40, en sida = 12. Antingen är 12 basen (då två lika sidor a + a + 12 = 40 → a = 14, max sida = 14 < 15), eller 12 är en av de lika sidorna (12 + 12 + b = 40 → b = 16 > 15). Båda möjliga, så D.",
-    "technique": "Likbent: två konfigurationer; max sida varierar."
+    "technique": "Likbent: två konfigurationer; max sida varierar.",
+    "framework_id": "KVA-TRAP-008"
   },
   "var-2015-kvant2-KVA-022": {
     "_meta": {
@@ -2736,7 +2740,8 @@
     ],
     "pitfall": "I (1): de 20 kr ÖKAR per person när 8 personer avstår — så det är V/(n−8) − V/n = 20, inte V/n − V/(n−8). Räknetecknet matters.",
     "solution_path": "Kalla antal personer n och summa V. Var och en får V/n. Utsaga (1): om 8 personer avstår får de (n − 8) övriga 20 kr mer var: V/(n−8) − V/n = 20. Förenkla: V·8/(n·(n−8)) = 20 ⇒ V = 2,5·n·(n−8). En relation mellan V och n — räcker inte ensamt. Utsaga (2): n = 20. Ensamt ger det inget belopp. Tillsammans: V = 2,5 · 20 · 12 = 600 kr. C.",
-    "technique": "Hypotetisk omfördelning ger en RELATION mellan antal personer och belopp per person — kombinerad med ett absolut antal låser den hela summan."
+    "technique": "Hypotetisk omfördelning ger en RELATION mellan antal personer och belopp per person — kombinerad med ett absolut antal låser den hela summan.",
+    "framework_id": "NOG-TRAP-011"
   },
   "var-2015-kvant2-NOG-026": {
     "_meta": {
@@ -2767,7 +2772,8 @@
     ],
     "pitfall": null,
     "solution_path": "(1) räcker: 1,5t−t=0,5t=5 min → t=10 min. (2) ger bara avståndet utan hastighet.",
-    "technique": "Hypotetisk \"x mer = y % mer\" + absolut differens ger sluten linjär ekvation."
+    "technique": "Hypotetisk \"x mer = y % mer\" + absolut differens ger sluten linjär ekvation.",
+    "framework_id": "NOG-TRAP-011"
   },
   "var-2015-kvant2-NOG-027": {
     "_meta": {

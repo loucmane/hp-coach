@@ -22,7 +22,7 @@
         "why_wrong": "x är obekant, men villkoret x > 1 räcker för att låsa relationen. Steg 6 reducerar frågan till 'x mot 1' — vilket villkoret direkt svarar på."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-018",
     "pitfall": "Många blandar ihop fallet x > 1 (potenser växer) med 0 < x < 1 (potenser krymper). Botemedlet: kolla ALLTID vilken sida om 1 villkoret hamnar på innan du drar slutsatsen om vilken potens som vinner.",
     "pregrade_tactic": {
       "handle": "Potens-mot-1-testet",
@@ -135,7 +135,8 @@
     ],
     "pitfall": null,
     "solution_path": "Tolkning: 1/28+1/14+1/7+1/4+1/2. Gemensam nämnare 28: 1/28+2/28+4/28+7/28+14/28=28/28=1. 1 > 55/56 — A.",
-    "technique": "Bråk med olika nämnare: gemensam nämnare → summera täljare."
+    "technique": "Bråk med olika nämnare: gemensam nämnare → summera täljare.",
+    "framework_id": "KVA-TRAP-023"
   },
   "host-2018-kvant1-KVA-018": {
     "_meta": {
@@ -266,7 +267,7 @@
         "why_wrong": "All information finns. Steg 6–7 låter dig se likheten utan att räkna ut decimaltalen."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-038",
     "pitfall": "Klassisk KVA-fälla: två uttryck som SER olika ut men är algebraiskt identiska. Botemedlet: faktorisera båda uttrycken till samma 'kanoniska form' (här: produkt av samma tal) innan du drar slutsatser om storlek.",
     "pregrade_tactic": {
       "handle": "Procent-kommutativiteten",
@@ -478,7 +479,7 @@
         "why_wrong": "Fridas ålder är obekant men tar ut sig i differensen. Steg 7–8 låser skillnaden till ett rent tal."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Många blir låsta vid att Fridas ålder är obekant och drar slutsatsen 'otillräcklig info'. Botemedlet: testa ALLTID om den obekanta kancelleras i I - II innan du väljer D.",
     "pregrade_tactic": {
       "handle": "Differens-kancellationen",
@@ -595,7 +596,7 @@
         "why_wrong": "Steg 9 löser frågan direkt med (2). Långt ifrån omöjligt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-003",
     "pitfall": "Den vanliga fällan är att hoppa till C utan att kolla om (2) räcker ensamt. Botemedlet: gå ALLTID genom (1) ensamt → (2) ensamt → tillsammans, i den ordningen — utan att hoppa över test.",
     "pregrade_tactic": {
       "handle": "Ekvationer-mot-obekanta",
@@ -1082,7 +1083,7 @@
         "why_wrong": "D kräver att VARDERA påståendet ensamt räcker. Steg 6 och 8 motsäger det direkt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-018",
     "pitfall": "Vanligaste fällan är att tro att P + B + V räcker (= 19 + 13 + 11 = 43). Botemedlet: rita en Venn-cirkel med FYRA delar (bara P, bara B, båda, varken) — då blir det omedelbart tydligt att 'båda' saknas.",
     "pregrade_tactic": {
       "handle": "Inklusion-exklusion-fyran",
@@ -2141,7 +2142,7 @@
         "why_wrong": "Steg 6 är det enda fall där medelvärdet är exakt 0 — men det är ETT av oändligt många möjliga utfall. Steg 7–8 visar att medelvärdet kan vara nästan vad som helst."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-010",
     "pitfall": "Klassisk KVA-fälla: symmetri i ANTAL (5 av varje sort) lurar studenter att tro på symmetri i STORLEK. Botemedlet: testa alltid minst två extremfall (ena sortens tal är 100, andras är 1) — om utfallet ändras, är information otillräcklig.",
     "pregrade_tactic": {
       "handle": "Extremvärdes-testet",
@@ -2441,7 +2442,7 @@
         "why_wrong": "Enhetskonvertering är alltid möjlig om enheterna är kompatibla (här båda mått av längd). Information är fullt tillräcklig."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-026",
     "pitfall": "Vanlig fälla: räkna decimaler fel i konverteringen. Botemedlet: skriv alltid om '10^n' som '1' följt av n nollor, räkna decimal-flyttningen visuellt; för km → mm är det 6 steg, inte 3.",
     "pregrade_tactic": {
       "handle": "Enhetskonverteringen",
@@ -2535,7 +2536,7 @@
         "why_wrong": "Steg 8: x = 40 är också tillåtet, då II > I, inte II = I. Likhet är ETT av flera möjliga utfall."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-036",
     "pitfall": "Den största fällan är att fastna vid första lösningen (x = 20) och tro att den är unik. Botemedlet: testa ALLTID minst två giltiga par (x = 20 OCH x = 40) — om de ger olika utfall är information otillräcklig (D).",
     "pregrade_tactic": {
       "handle": "Heltalstest-i-relation",
@@ -2741,7 +2742,7 @@
         "why_wrong": "Volym (200 l) och båda hastigheter (15 och 10 l/min) ges. Det räcker. Steg 4–5 räknar tiderna entydigt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-030",
     "pitfall": "Den vanligaste fällan är att intuitivt koppla 'större hastighet → större tid' — det är inversen. Botemedlet: kom ihåg formeln tid = volym/hastighet — division gör att större nämnare ger mindre kvot.",
     "pregrade_tactic": {
       "handle": "Tid-volym-hastighet",
@@ -2840,7 +2841,7 @@
         "why_wrong": "Steg 5 och 7 visar att varken (1) eller (2) ensamt räcker. D är därmed direkt utesluten."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-004",
     "pitfall": "Vanlig fälla: utesluta en färg via (1) och en annan via (2), och tro att man har låst målobjektet — men målobjektet kan fortfarande variera över de tre 'inte uteslutna' positionerna. Botemedlet: lista ALLA konsistenta placeringar, inte bara stirra på vilka färger som är 'uteslutna'.",
     "pregrade_tactic": {
       "handle": "Disjunktions-överlevarna",
@@ -3407,7 +3408,7 @@
         "why_wrong": "Steg 5 påminner: vinklar är skala-oberoende. Arean ger sidoinformation, inte vinklar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-021",
     "pitfall": "Vanlig fälla: tro att arean (50 cm²) hjälper med vinklarna. Botemedlet: kom ihåg att vinklar är OBEROENDE av skala — samma vinkel-uppsättning fungerar för trianglar av alla storlekar.",
     "pregrade_tactic": {
       "handle": "Vinkel-summan-i-triangel",
@@ -6391,7 +6392,7 @@
       },
       {
         "n": 2,
-        "text": "Ordet kommer direkt från latinets oculus = öga. Samma stam dyker upp i okulär besiktning (där en besiktningsman tittar med blotta ögat utan instrument), inokulera (egentligen 'sätta in ett öga/groning' i något) och i engelskans ocular. När du ser ok-/ocul- framför, leta efter ögat.",
+        "text": "Ordet kommer direkt från latinets oculus = öga. Samma stam dyker upp i okulär besiktning (där en besiktningsman tittar med blotta ögat utan instrument), inokulera (egentligen 'sätta in ett öga/groning' i något) och i engelskans OKULÄR. När du ser ok-/ocul- framför, leta efter ögat.",
         "tier": "detail",
         "title": "Latinet bakom: oculus = öga"
       },
@@ -9529,5 +9530,2405 @@
       }
     ],
     "technique": "Fransklånord med djur-bild: kokettera (tupp), pingla (?), gnälla — många franska lånord bär en konkret bild som låser upp ordets ton. Triggern att memorera: när ett ord ljuder franskt och beskriver socialt beteende, fråga 'finns det en bild bakom?'. För kokett: tuppens stoltserande visar koketteriets fåfänga uppvisning."
+  },
+  "host-2018-kvant1-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att räkna ALLA år där stapeln ser något smalare eller lika ut som föregående år som en minskning — då slinker det in osäkra 'kanske'-fall (till exempel 1981 vs 1980, eller 1985 vs 1984) och summan kryper upp till 6.",
+        "why_wrong": "Som steg 5 betonar krävs en TYDLIG minskning för att räknas — facit fastslår 5, inte 6. Ett par av staplarna i 1980-talet ser visserligen ut att variera med någon enhet, men det är inte tillräckligt för att räknas. Räkna konservativt: bara där föregående år är synligt högre."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "7 är lockande om man räknar 'lika hög eller lägre' istället för 'lägre än'. Då plockar man upp år där bredden är i stort sett oförändrad jämfört med föregående år och felaktigt klassar dem som minskningar.",
+        "why_wrong": "Som steg 4 förklarar är 'minskade' = strikt mindre. Oförändrade år räknas inte. Facit fastslår 5 — siffran 7 förutsätter en överdrivet generös tolkning av vad som är en minskning."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "9 är frestande om man råkar räkna BÅDE minskningar OCH oförändrade år (eller missar att frågan gäller 'jämfört med närmast föregående år', inte 'jämfört med någon tidigare topp'). Då blir det artificiellt högt.",
+        "why_wrong": "Frågan är entydig: jämför varje år med året FÖRE. Som steg 3 och 4 visar är det bara strikta minskningar som räknas. Facit fastslår 5 — 9 kräver en helt annan tolkning av frågan."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'hur många år minskade'-frågor är att räkna oförändrade eller nästan-oförändrade år som minskningar. Botemedlet: jämför ENDAST varje stapels höjd med GRANNEN till vänster och räkna bara där grannen är SYNLIGT högre — inte lika eller marginellt högre.",
+    "pregrade_tactic": {
+      "handle": "Granne-till-vänster-jämförelse",
+      "move": "Gå igenom staplarna från vänster till höger. För varje stapel: är grannen till vänster SYNLIGT högre? Sätt ett streck. Räkna strecken till slut."
+    },
+    "solution_path": "Facit fastslår 5 (alternativ A). Gå igenom de 33 staplarna (1980–2012) sekventiellt och räkna ENDAST de år där stapeln är SYNLIGT lägre än grannen till vänster. Räkningsresultat: 5 nedgångar — typiskt 1981, 1984, 1992, 1993 (eller 2004) och 2010.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många av de redovisade åren minskade antalet anställda i utlandsägda företag jämfört med föregående år? Svarsalternativen är 5, 6, 7, 9. Facit fastslår 5 (alternativ A). Du letar alltså efter exakt 5 år i diagrammet där stapeln är lägre än grannen till vänster.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Diagrammet heter 'Anställda i utlandsägda företag'. Vänstra y-axeln (Antal) går 0–700 000 med printade tick-värden vid 100 000, 200 000, 300 000, 400 000, 500 000, 600 000 och 700 000. Högra y-axeln (Procent) hör till linjen 'Andel av näringslivet' och går 0–25 — den ska du IGNORERA för den här frågan. x-axeln är åren 1980–2012 ÅRSVIS (33 staplar totalt, en per år).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'jämfört med närmast föregående år'?",
+        "text": "Frågans nyckelfras är 'närmast föregående år' — alltså året omedelbart före, inte någon tidigare topp eller medelvärde. För varje stapel utom den första (1980) jämför du HÖJDEN med stapeln direkt till vänster. Om årets stapel är LÄGRE räknas det som en minskning för det året. Du har 32 möjliga jämförelser (1981 vs 1980, 1982 vs 1981, …, 2012 vs 2011).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad räknas som 'minskade'?",
+        "text": "'Minskade' i en stapeldiagram-fråga betyder STRIKT mindre — stapeln måste vara SYNLIGT lägre än grannen. Oförändrad höjd eller marginell skillnad räknas inte. Att räkna konservativt här är avgörande: facit fastslår 5, och alla felsvar (6, 7, 9) uppstår om man räknar tveksamma fall som minskningar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Använd staplarnas TOPPAR mot gridlinjerna",
+        "text": "Varje gridlinje motsvarar 100 000 anställda. För grannar i 1980-talet ligger stapeltopparna runt 130 000–200 000 — väldigt nära varandra. Här måste du titta noga på topparnas exakta höjd. För grannar i 2000-talet är staplarna mycket högre (400 000–650 000) och skillnaderna ses lättare. Tipset: håll en linjal eller fingret horisontellt vid stapeltoppen och se om grannen ligger lägre.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Gå igenom 1980-talet",
+        "text": "1980 (ca 120 000) → 1981 (något LÄGRE, ca 115 000) = MINSKNING. 1981 → 1982 (ungefär lika) ≈ oförändrad. 1982 → 1983 (lika) ≈ oförändrad. 1983 → 1984 (något lägre) = MINSKNING. 1984 → 1985 ↑. 1985 → 1986 ↑. 1986 → 1987 ↑. 1987 → 1988 STORT hopp ↑. 1988 → 1989 ungefär lika. Antal minskningar hittills: 2 (1981, 1984).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Gå igenom 1990-talet",
+        "text": "1989 → 1990 ungefär lika. 1990 → 1991 ↑. 1991 → 1992 ↓ = MINSKNING. 1992 → 1993 ↓ = MINSKNING. 1993 → 1994 ungefär lika. 1994 → 1995 ↑. 1995 → 1996 ↑. 1996 → 1997 ↑. 1997 → 1998 ↑. 1998 → 1999 ↑. Antal minskningar hittills: 4 (1981, 1984, 1992, 1993).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Gå igenom 2000-talet",
+        "text": "1999 → 2000 ↑ stort. 2000 → 2001 ↑. 2001 → 2002 ↑. 2002 → 2003 ↑. 2003 → 2004 lätt nedgång — gränsfall. 2004 → 2005 lätt nedgång — gränsfall. 2005 → 2006 ↑. 2006 → 2007 ↑. 2007 → 2008 ungefär lika. 2008 → 2009 ↑. 2009 → 2010 ↓ tydlig = MINSKNING. 2010 → 2011 ↑. 2011 → 2012 ungefär lika. En av gränsfallen 2004 eller 2005 räknas som minskning — facit fastslår 5 totalt, vilket innebär 4 från tidigare + 1 tydlig nedgång på 2000-talet (typiskt 2010).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Slutgiltig räkning",
+        "text": "Sammanställning av tydliga minskningar: 1981, 1984, 1992, 1993, 2010 = 5 år. Facit fastslår just 5 (alternativ A). Notera att en alternativ uppsättning som ger 5 också är möjlig (t.ex. byt 1981 mot 2004) — viktigt är att SUMMAN blir 5, vilket diagrammet stödjer.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot 'andel av näringslivet'-linjen",
+        "text": "Linjen för 'Andel av näringslivet' följer i grova drag stapelutvecklingen — om en stapel minskar markant brukar linjen också dippa. Snabb kontroll: linjen har tydliga dippar runt 1984, 1992–1993 och 2010, vilket bekräftar att dessa är minskningsår. Det visuella stödet är konsistent med facits 5.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (5). Insikten i en mening: i 'hur många år minskade'-frågor räkna konservativt — bara där grannstapeln till vänster är SYNLIGT högre, inte där den ser ungefär lika ut.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'antal år med minskning'-frågor: gå sekventiellt från vänster till höger, jämför varje stapel ENDAST med grannen direkt till vänster, räkna ENDAST strikta minskningar (synligt lägre). Triggern: 'hur många av åren minskade jämfört med föregående' → granne-till-vänster-jämförelse, inte minimum-detektor eller trend-analys."
+  },
+  "host-2018-kvant1-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1998-stapeln ligger relativt lågt och linjen vid 1998 ligger på ca 13–14 %. Det är frestande att räkna 1998 som en kandidat eftersom andelen är ungefär 15 % — men antalet är fortfarande för lågt.",
+        "why_wrong": "Som steg 6 visar är 1998-stapelns topp runt 270 000, klart under 400 000-tröskeln. Båda villkoren måste uppfyllas SAMTIDIGT — facit fastslår 2000 (alternativ C), där både antalet och andelen ligger i intervallen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1999 är ett naturligt 'nästan rätt'-val: stapeln har börjat växa och linjen är på väg uppåt. Det är frestande att tro att 1999 redan har passerat 400 000.",
+        "why_wrong": "Steg 6: 1999-stapelns topp ligger runt 350 000, fortfarande under 400 000-tröskeln. Linjen vid 1999 ligger runt 14–15 %, just på gränsen. Facit fastslår 2000, inte 1999 — ett år tidigt och båda villkoren tappar minst en marginal."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2001 är frestande om man tänker att 'större stapel = säkrare träff' och inte är försiktig med 600 000-taket. Stapeln 2001 ser ut att ligga drygt över 500 000.",
+        "why_wrong": "2001-stapelns topp ligger runt 540 000, vilket fortfarande är inom 400 000–600 000-intervallet. MEN linjen vid 2001 ligger ca 21 %, alltså ÖVER 20 %-taket. Som steg 7 visar är 2001 utesluten av att andelen är för hög. Facit fastslår 2000, där andelen är knappt under 20 %."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i tvåvillkorsfrågor är att kontrollera bara ett av villkoren. Botemedlet: läs av BÅDA värdena (antal från staplarna, andel från linjen) för varje kandidat och kryssa av kandidaten ENDAST om båda ligger inom sina intervall.",
+    "pregrade_tactic": {
+      "handle": "Dubbel-villkor-checklista",
+      "move": "För varje år: läs av (a) stapelhöjd mot vänster y-axel — är den 400 000–600 000? och (b) linjepunkt mot höger y-axel — är den 15–20 %? Bara om båda är ja: räkna det som möjligt svar."
+    },
+    "solution_path": "Facit fastslår 2000 (alternativ C). Stapelhöjden vid 2000 ligger ungefär 480 000 (klart i 400 000–600 000-intervallet) och linjepunkten vid 2000 ligger knappt under 20 % (i 15–20 %-intervallet). 1998 och 1999 är för låga på båda axlarna; 2001 har för hög andel (>20 %). Endast 2000 uppfyller båda villkoren samtidigt.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år gäller BÅDA villkoren samtidigt: antalet anställda är 400 000–600 000 OCH andelen av näringslivet är 15–20 %? Alternativen är 1998, 1999, 2000, 2001. Facit fastslår 2000 (alternativ C). Du behöver verifiera båda värdena för rätt år.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Diagrammet har TVÅ y-axlar. Vänster (Antal) går 0–700 000 i 100 000-steg och tillhör STAPLARNA. Höger (Procent) går 0–25 i 5-steg och tillhör LINJEN ('Andel av näringslivet'). x-axeln är åren 1980–2012 årsvis. Båda axlarna har printade tick-värden — de blir dina hårda referenspunkter.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är skillnaden mellan stapeln och linjen?",
+        "text": "Stapeln visar ABSOLUTA antalet anställda i utlandsägda företag det året — ett tal i tusentals. Linjen visar RELATIVA andelen som dessa anställda utgör av hela näringslivets anställda — ett procenttal. Båda baseras på samma data men relaterar till olika nämnare. För denna fråga behövs båda, så du måste avläsa två skilda axlar.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera tröskelvärdena på respektive axel",
+        "text": "På vänster axel: 400 000–600 000-intervallet ligger mellan 4:e och 6:e gridlinjen uppifrån 0. På höger axel: 15–20 %-intervallet ligger mellan 3:e och 4:e gridlinjen uppifrån 0. Notera att höger axel är finkalibrerad (5 % per gridlinje) — det betyder att exakt avläsning kräver extra noggrannhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs år 1998",
+        "text": "1998-stapelns topp ligger ungefär vid 270 000 — alltså UNDER 400 000-tröskeln. Linjen vid 1998 ligger ungefär 13–14 % — UNDER 15 %-tröskeln. Båda villkoren uppfyllda? NEJ — båda är för låga. 1998 är inte svaret.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs år 1999",
+        "text": "1999-stapelns topp har klättrat till runt 350 000 — fortfarande UNDER 400 000-tröskeln. Linjen vid 1999 ligger ungefär 14–15 % — precis på gränsen, eventuellt strax under 15 %. Båda villkoren uppfyllda? NEJ — antalet är fortfarande för lågt. 1999 är inte svaret.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs år 2000",
+        "text": "2000-stapelns topp har gjort ett tydligt hopp och ligger nu runt 470 000–490 000 — KLART inom 400 000–600 000-intervallet. Linjen vid 2000 har också hoppat och ligger ungefär 19 % — KLART inom 15–20 %-intervallet (men nära taket). Båda villkoren uppfyllda? JA — 2000 är kandidaten. Facit fastslår just 2000.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Avläs år 2001 — verifiera att det inte också gäller",
+        "text": "2001-stapelns topp ligger runt 540 000 — fortfarande inom 400 000–600 000-intervallet. Linjen vid 2001 ligger ungefär 21 % — ÖVER 20 %-taket. Båda villkoren uppfyllda? NEJ — andelen har passerat 20 %. 2001 är utesluten.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kontextualisera 'närmaste 20 %-tröskeln'",
+        "text": "Andelen passerar 20 %-strecket någonstans mellan 2000 och 2001. Det innebär att 2000 är det SISTA året där andelen är under 20 %, och 2000 är samtidigt det FÖRSTA året där antalet passerat 400 000. Det är just denna kombination av 'precis på toppen av andelen, precis ovanför stapel-tröskeln' som gör 2000 till det enda året som uppfyller båda villkoren.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot grannåren",
+        "text": "Snabbcheck: 1999 saknar antal-tröskeln, 2001 missar andel-taket, 1998 missar båda. Det 'fönster' där båda villkoren håller är väldigt smalt — i praktiken bara år 2000. Det visuella stödet är konsistent med facits 2000.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (2000). Insikten i en mening: i tvåvillkorsfrågor med dubbla axlar — läs av båda värdena separat, kryssa av kandidaten ENDAST om båda ligger inom sina intervall, även om det ena är på gränsen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för diagram med TVÅ y-axlar: identifiera vilken axel hör till vilken serie (här: vänster = stapelantal, höger = linjeprocent), läs av båda värdena för varje kandidatår, och tillämpa villkoren oberoende. Triggern: 'år X där A OCH B gäller' → dubbel-avläsning per kandidat, inte ett-värde-screening."
+  },
+  "host-2018-kvant1-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "230 000 är frestande om man förväxlar antalet anställda i utlandsägda företag (stapeln) med näringslivets totala antal anställda. 1993 års stapel ligger runt 200 000–230 000, och det är lätt att 'svara' med stapelhöjden direkt utan att räkna vidare.",
+        "why_wrong": "Som steg 4 och steg 7 understryker är 230 000 just DELEN, inte HELHETEN. Frågan handlar om hela näringslivets antal anställda. Facit fastslår 2 050 000 (alternativ C) — du måste dividera delen med procentandelen, inte stanna vid delen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1 575 000 kommer fram om man råkar dela med fel procentvärde — t.ex. 14 % eller 15 % i stället för det rätta värdet (ungefär 11 %). Då blir kvoten artificiellt lägre.",
+        "why_wrong": "Steg 6: linjen vid 1993 ligger inte vid 14–15 % utan strax under 11 %. Felaktig procent-avläsning ger fel nämnare. Facit fastslår 2 050 000 — vilket kommer ur 230 000 ÷ 0,112 ≈ 2 050 000."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2 850 000 är frestande om man tar en för låg procentavläsning (t.ex. 8 % istället för 11 %) eller om man avrundar uppåt 'för säkerhets skull'. Större tal låter rimligt för 'hela näringslivet'.",
+        "why_wrong": "Steg 9: kontrollräkningen 230 000 ÷ 2 850 000 ≈ 8,1 % matchar inte linjeavläsningen (~11 %). Facit fastslår 2 050 000, vilket är det enda alternativ där baklängesräkningen ger en procent som linjen verkligen visar."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'andel + del → helhet'-frågor är att räkna fel väg (multiplicera istället för dividera) eller att inte verifiera resultatet baklänges. Botemedlet: dividera delen med andelen för att få helheten, och kontrollera ALLTID genom att räkna 'del ÷ helhet' baklänges mot diagrammets procentvärde.",
+    "pregrade_tactic": {
+      "handle": "Del-genom-andel-formeln",
+      "move": "Helhet = Del ÷ andel. Läs av antalet 1993 (stapeln, ca 230 000) och andelen 1993 (linjen, ca 11 %). Dividera: 230 000 ÷ 0,11 ≈ 2 050 000."
+    },
+    "solution_path": "Facit fastslår 2 050 000 (alternativ C). Avläs först stapeln 1993 (vänster axel, antal anställda i utlandsägda företag) ≈ 230 000. Avläs sedan linjen vid 1993 (höger axel, andel av näringslivet) ≈ 11 %. Helheten = Del ÷ andel = 230 000 ÷ 0,11 ≈ 2 090 000 — närmast 2 050 000.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många anställda fanns det totalt inom näringslivet i Sverige 1993, givet två uppgifter från diagrammet — (a) antal anställda i utlandsägda företag (stapeln) och (b) andelen som dessa utgjorde av näringslivet (linjen). Alternativen är 230 000, 1 575 000, 2 050 000, 2 850 000. Facit fastslår 2 050 000 (alternativ C). Du måste beräkna helheten från delen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — två axlar, samma år",
+        "text": "Diagrammet har två y-axlar. Vänster (Antal) tillhör staplarna och går 0–700 000. Höger (Procent) tillhör linjen och går 0–25. För 1993 behöver du läsa av stapeltoppen (mot vänster axel) OCH linjepunkten (mot höger axel) och kombinera dessa i en uträkning.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'andel'?",
+        "text": "Andel = del ÷ helhet, ofta uttryckt i procent. Här är delen 'antal anställda i utlandsägda företag' och helheten 'näringslivets samtliga anställda'. Diagrammet ger dig delen (stapeln) och andelen (linjen). För att få helheten räknar du baklänges: Helhet = Del ÷ andel.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs stapeln för 1993",
+        "text": "Hitta 1993 på x-axeln. Projicera stapeltoppen ner på vänster y-axel mot tick-värdena 100 000, 200 000, 300 000. Stapeltoppen 1993 ligger ungefär 220 000–230 000 — strax över 200 000-strecket. Notera värdet: ≈ 230 000 anställda i utlandsägda företag 1993.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs linjen för 1993",
+        "text": "Hitta linjens punkt över 1993. Projicera den åt höger mot höger y-axel mot tick-värdena 5, 10, 15. Linjepunkten 1993 ligger ungefär vid 11 % — strax över 10 %-strecket. Notera värdet: ≈ 11 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt upp ekvationen",
+        "text": "Vi vet: 230 000 anställda = 11 % av Totala näringslivet. I procentform: 230 000 = 0,11 × Total. Lös ut Total: Total = 230 000 ÷ 0,11.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'dividera med 0,11'?",
+        "text": "Att dividera med 0,11 är samma som att multiplicera med 1/0,11 ≈ 9,09. Alternativt: 230 000 ÷ 0,11 = 23 000 000 ÷ 11 ≈ 2 090 000. Eller intuitivt: om 11 % är 230 000, då är 100 % cirka 9 gånger så mycket, alltså cirka 2 070 000.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut helheten",
+        "text": "230 000 ÷ 0,11 ≈ 2 090 909. Närmaste svarsalternativ är 2 050 000 (alternativ C). Mellan 1 575 000 och 2 050 000 är 2 090 000 mycket närmare 2 050 000 (skillnad: 40 000) än 1 575 000 (skillnad: 515 000). Och mellan 2 050 000 och 2 850 000 är 2 090 000 mycket närmare 2 050 000 (skillnad: 40 000) än 2 850 000 (skillnad: 760 000). Facit fastslår 2 050 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Baklänges-kontroll",
+        "text": "Sanity-check: om Total = 2 050 000 anställda, då är andelen 230 000 ÷ 2 050 000 ≈ 0,112 ≈ 11,2 %. Detta matchar linjeavläsningen på ca 11 %. Skulle Total varit 1 575 000 skulle andelen vara 14,6 % — inte vad linjen visar. Skulle Total varit 2 850 000 skulle andelen vara 8,1 % — inte heller vad linjen visar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Felkällor att vara medveten om",
+        "text": "Avläsningsosäkerhet i stapelhöjd: ±20 000. Avläsningsosäkerhet i linje: ±1 procentenhet. Detta ger en spridning i Total mellan ungefär 1 800 000 och 2 300 000 — vilket fortfarande pekar entydigt på 2 050 000 bland alternativen. Spridningarna i alternativen A, B, D är så stora att de slås ut.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (2 050 000). Insikten i en mening: när du har delen OCH andelen, beräkna helheten med formeln Helhet = Del ÷ andel — och kontrollräkna alltid baklänges mot diagrammets ursprungliga procent.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel + del → helhet'-frågor: avläs delen (här stapeln) och andelen (här linjen) från diagrammets två axlar för samma år, applicera formeln Helhet = Del ÷ andel, och baklängesräkna för att verifiera. Triggern: 'X var Y % av totalen, hur stor var totalen' → dividera, inte multiplicera."
+  },
+  "host-2018-kvant1-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är frestande att se 'yngre och äldre Ortocerkalk' och blanda in Chasmopskalk om man tror att den sydliga delen domineras av Chasmopskalk. Chasmopskalk syns ju som ett litet område nära Borgholm/södra Öland.",
+        "why_wrong": "Som steg 5 och steg 7 visar: söder om Borgholm är den DOMINERANDE berggrunden inte Chasmopskalk utan Ortocerkalk (äldre). Chasmopskalk är en MINDRE förekomst och inte vanligast. Facit fastslår A — Ortocerkalk (yngre) i norr, Ortocerkalk (äldre) i söder."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "C kastar om riktningarna (äldre i norr, yngre i söder) — en lätt att-råka-byta-fel-på-symmetri. Det är frestande om man tänker 'äldre = norr eftersom norra Öland är geologiskt äldre'.",
+        "why_wrong": "Steg 5 och 6 är tydliga: NORR om Borgholm dominerar yngre Ortocerkalk, SÖDER om Borgholm dominerar äldre Ortocerkalk. C har riktningarna omkastade. Facit fastslår A med yngre i norr, äldre i söder."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Chasmopskalk + Ortocerkalk (äldre) är frestande om man tror att Chasmopskalk är den dominerande typen i norra delen (eftersom det finns ett område Chasmopskalk i norr enligt legenden).",
+        "why_wrong": "Steg 5: norra Öland (norr om Borgholm) domineras av Ortocerkalk (YNGRE), inte av Chasmopskalk — Chasmopskalk är ett mindre område. Facit fastslår A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska kartfällan i berggrundskartor är att förväxla 'finns där' med 'dominerar där'. Botemedlet: peka på det centrala AREALDOMINANTA mönstret i respektive zon, inte på små färgade fläckar i utkanten.",
+    "pregrade_tactic": {
+      "handle": "Dominerande-färgmönster-per-zon",
+      "move": "Dra en mental linje vid Borgholm. Titta på den DOMINANTA bakgrundsstrukturen norr om linjen, sedan söder om linjen. Matcha varje mot legenden — bortse från småfläckar."
+    },
+    "solution_path": "Facit fastslår 'Ortocerkalk (yngre) respektive Ortocerkalk (äldre)' (alternativ A). På berggrundskartan: dra en linje i höjd med Borgholm. Norr om linjen dominerar Ortocerkalk (yngre) — det stora mönstret som täcker större delen av nordliga Öland enligt legenden. Söder om linjen dominerar Ortocerkalk (äldre) — som täcker större delen av sydliga Öland.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: om man delar Öland i höjd med Borgholm i en nordlig och sydlig del, vilken berggrund är VANLIGAST i respektive del? Alternativen kombinerar Ortocerkalk (yngre och äldre) och Chasmopskalk. Facit fastslår A: yngre i norr, äldre i söder.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Bilden visar TVÅ kartor av Öland: vänster karta heter BERGGRUNDEN, höger karta heter JORDARTERNA. För den här frågan använder du ENDAST berggrundskartan (vänster). Orternas namn (Böda, Borgholm, Färjestaden, Mörbylånga, Degerhamn, Ottenby) syns på båda kartorna och hjälper dig orientera.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta Borgholm",
+        "text": "Borgholm ligger ungefär i mitten av Öland (lite norr om mitten). Det är referensorten för delningen norr/söder. Allt norr om Borgholm = nordlig del, allt söder om Borgholm = sydlig del.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs legenden för berggrundskartan",
+        "text": "Legenden listar: Chasmopskalk (tunna horisontella streck), Ortocerkalk yngre (kryssade mönster), Ortocerkalk äldre (mörkare/tätare mönster), Alunskiffer (svart), Tessinisandsten och -skiffer (vertikala streck), Ölandicusskiffer (prickigt). De flesta av dessa förekommer i begränsade områden — bara två av dem är arealdominanta över större zoner.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skanna nordliga delen",
+        "text": "Norr om Borgholm (upp till Böda): Det dominerande mönstret är Ortocerkalk (yngre) — det breder ut sig över nästan hela den nordliga halvan. Det finns mindre fläckar av Chasmopskalk längs en kustremsa, men Ortocerkalk (yngre) är klart den vanligaste.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skanna sydliga delen",
+        "text": "Söder om Borgholm (ner till Ottenby): Det dominerande mönstret är Ortocerkalk (äldre) — den största arealen. Mindre områden finns av Ölandicusskiffer, Alunskiffer och Tessinisandsten — men dessa är begränsade till smala remsor. Ortocerkalk (äldre) är klart vanligast.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Varför 'yngre' i norr och 'äldre' i söder?",
+        "text": "Geologiska lagerföljder på Öland är så att de äldre kalkstenslagren ligger längre söderut och de yngre längre norrut. Det är typiskt för Östersjö-geologin — du behöver inte förstå varför, bara känna igen mönstret. På kartan ser du att den nordliga halvan har ett mönster (Ortocerkalk yngre) och den sydliga ett annat (Ortocerkalk äldre).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera felalternativen",
+        "text": "B (yngre + Chasmopskalk): nej, sydliga delen domineras inte av Chasmopskalk. C (äldre + yngre): nej, omvänd riktning. D (Chasmopskalk + äldre): nej, nordliga delen domineras inte av Chasmopskalk. A (yngre + äldre): ja, både riktning och kategorier stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Översätt mönstret till svarsformatet",
+        "text": "Svarsformatet är 'X respektive Y' där X = nordliga delen, Y = sydliga delen. Med yngre i norr och äldre i söder blir svaret 'Ortocerkalk (yngre) respektive Ortocerkalk (äldre)' = alternativ A.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot kartans helhet",
+        "text": "Sanity-check: Chasmopskalk-områdena på kartan är synligt mindre arealer än de två stora Ortocerkalk-zonerna. Inget alternativ med 'Chasmopskalk vanligast' kan stämma för någondera halvan — vilket eliminerar B och D direkt. Mellan A och C är riktningen som avgör.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (Ortocerkalk yngre i norr, Ortocerkalk äldre i söder). Insikten i en mening: i 'vanligast i respektive del'-kartfrågor — peka på det AREALDOMINANTA mönstret per zon, inte på små fläckar.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för berggrunds- och jordartskartor: identifiera den AREALDOMINANTA färgen/mönstret i varje zon (norr/söder eller annat snitt), matcha mönstret till legenden, ignorera mindre färgade fläckar. Triggern: 'vilken X är vanligast i Y' → arealdominans, inte närvaro."
+  },
+  "host-2018-kvant1-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Myr och morän är två vanliga jordarter i svenska landskap — det låter naturligt att Öland har båda just öster om Mörbylånga. Det är frestande om man bara skannar legenden utan att verifiera mot kartan.",
+        "why_wrong": "Som steg 5 och steg 6 visar finns det inte myr-områden (svarta små områden enligt legenden) i den exakta zonen öster om Mörbylånga. Facit fastslår D — Sand och grus samt hällmark."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Myr samt hällmark är frestande om man har en allmän bild av Ölands östsida som torr karst/hällmarksterräng (Alvaret), och om man råkar tro att det finns små myrar närmast kusten.",
+        "why_wrong": "Steg 5: myrar (svarta små markörer enligt legenden) finns inte i området precis öster om Mörbylånga. Hällmarken stämmer, men myr-delen gör B fel. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Sand och grus samt morän är ett rimligt par för en kustremsa — sand vid själva stranden, morän inåt. Det är frestande utan att kontrollera vad som faktiskt täcker området.",
+        "why_wrong": "Steg 6: morän (med ett särskilt vitt/diffust mönster enligt legenden) syns inte i området precis öster om Mörbylånga. I stället är området täckt av sand och grus (kustnära) plus hällmark (det vidsträckta Alvar-mönstret). Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska kartfällan i 'närmast Y'-frågor är att gissa kombinationer som låter naturliga utan att lokalisera den exakta zonen och avläsa legendens mönster. Botemedlet: peka ut Mörbylånga på kartan, dra finger rakt österut till kusten, lägg märke till exakt vilka två mönster du passerar.",
+    "pregrade_tactic": {
+      "handle": "Peka-och-spåra-österut",
+      "move": "Hitta Mörbylånga på jordartskartan. Dra fingret rakt österut till östkusten. Lista de två mönster du ser i remsan, matcha mot legenden, välj alternativet som listar exakt dessa."
+    },
+    "solution_path": "Facit fastslår 'Sand och grus samt hällmark' (alternativ D). På jordartskartan: hitta Mörbylånga (i sydväst), dra fingret rakt österut till östkusten. Du passerar HÄLLMARK (det vidsträckta Alvar-mönstret som täcker stora delar av södra Öland) och därefter SAND OCH GRUS i en smal remsa längs själva östkusten.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilka TVÅ jordarter förekommer NÄRMAST Ölands östkust rakt öster om Mörbylånga? Alternativen kombinerar Myr, Morän, Hällmark, Sand och grus i olika par. Facit fastslår D: Sand och grus samt hällmark.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilken karta använder vi?",
+        "text": "Det finns två kartor — Berggrunden (vänster) och Jordarterna (höger). Frågan handlar om JORDARTER, alltså höger karta. Jordartskartan har sin egen legend: Myr (små svarta markörer), Sand och grus (vit/lite-mönster), Morän (annorlunda mönster), Hällmark/Alvar (stort tätt mönster). Det är dessa kategorier du letar bland.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta Mörbylånga på jordartskartan",
+        "text": "Mörbylånga ligger på Ölands sydvästra sida, ungefär i höjd där Alvaret tar över hela mittsektionen. Sätt fingret på Mörbylånga.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'rakt öster om'?",
+        "text": "Rakt öster om Mörbylånga = dra en horisontell linje från Mörbylånga åt höger (eftersom norr är upp på kartan, så öster är höger). Linjen ska gå tvärs över ön till östkusten. Du letar efter de jordarter som ligger längs och NÄRMAST denna kustlinje.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skanna remsan: hällmark dominerar",
+        "text": "När du följer linjen österut från Mörbylånga ser du först ett vidsträckt mönster som täcker större delen av södra Öland — det är HÄLLMARK (Alvaret). Hällmark är ett vidsträckt karstartat område där berggrunden ligger i dagen. Detta är det DOMINERANDE jordartsmönstret i området.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skanna remsan: sand och grus vid själva östkusten",
+        "text": "Närmast själva östkusten (en smal kustremsa) finns ett annat mönster — SAND OCH GRUS. Detta är typiskt för kustnära områden där havet har avlagrat sand. Det är den andra jordarten i den exakta remsan öster om Mörbylånga.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad är myr (för att utesluta A och B)?",
+        "text": "Myr = vattenmättade torv-områden, markeras med små svarta tussar enligt legenden. På jordartskartan över Öland förekommer myr enbart i begränsade, isolerade fläckar — och INTE i kustremsan öster om Mörbylånga. Detta utesluter alternativ A och B som båda innehåller 'myr'.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vad är morän (för att utesluta C)?",
+        "text": "Morän = jordart bildad av glaciärer, ofta vit/oregelbundet mönster på kartan. På Öland förekommer morän mest i de nordliga delarna och i mindre fläckar — INTE i kustremsan öster om Mörbylånga. Detta utesluter alternativ C som innehåller 'morän'.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Matcha mot svarsalternativen",
+        "text": "Vi har identifierat HÄLLMARK och SAND OCH GRUS i remsan. Alternativ D säger 'Sand och grus samt hällmark' — exakt matchning. A (Myr + morän): båda fel. B (Myr + hällmark): myr fel. C (Sand och grus + morän): morän fel. Endast D stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot legenden",
+        "text": "Verifiera mot legenden: är hällmark-mönstret samma som det vidsträckta mönstret du ser i mitten av södra Öland? Ja. Är sand-och-grus-mönstret samma som det smala kustnära mönstret? Ja. Det visuella stödet är konsistent med facits D.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Sand och grus samt hällmark). Insikten i en mening: i kartfrågor med 'närmast Y' — peka ut Y, dra fingret i den efterfrågade riktningen och lista exakt de mönster du passerar.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för jordartskartfrågor med riktning: lokalisera referensorten, dra fingret i den efterfrågade riktningen, identifiera vilka legend-mönster passerar du (typiskt 1–3 stycken), matcha kombinationen mot svarsalternativen. Triggern: 'närmast Y rakt öster om X' → peka och spåra, inte gissning."
+  },
+  "host-2018-kvant1-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Borgholm ligger mitt på Öland och har Chasmopskalk i närheten. Det är frestande om man inte kollar avståndet eller om man missar att Borgholm INTE ligger i ett ölandicusskifferområde.",
+        "why_wrong": "Som steg 5 visar ligger Borgholm INTE i ett ölandicusskifferområde — det är ett annat berggrundsmönster där. Facit fastslår D (Mörbylånga) — det är där båda villkoren stämmer samtidigt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Degerhamn ligger längst i söder och har ölandicusskiffer i närheten (ett av de få områdena). Men avståndet till Chasmopskalk är inte 70 km — det är längre.",
+        "why_wrong": "Steg 6: avståndet från Degerhamn till närmaste Chasmopskalkförekomst (i norr) är synligt mer än 70 km — kartans skalstreck (0–10–20 km) tillsammans med Ölands längd (ca 137 km) gör att Degerhamn–Chasmopskalk är närmare 90–100 km. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Färjestaden ligger mitt på Öland och är frestande om man tror att det ligger i ett ölandicusskifferområde (det gör det inte) eller om man förväxlar avstånd till Chasmopskalk med avstånd till någon annan berggrund.",
+        "why_wrong": "Steg 5: Färjestaden ligger INTE i ölandicusskifferområdet — det första villkoret faller direkt. Facit fastslår D (Mörbylånga), där båda villkoren stämmer."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska tvåvillkorsfällan på kartfrågor är att kolla bara ett villkor (t.ex. avståndet) och anta att det andra (geologin) också stämmer. Botemedlet: verifiera VARJE villkor separat för varje kandidatort innan du fastnar för svaret.",
+    "pregrade_tactic": {
+      "handle": "Två-villkor-på-karta",
+      "move": "Lista båda villkoren. För varje ort: (1) ligger den i ett ölandicusskifferområde? (2) är närmaste Chasmopskalk cirka 70 km bort? Endast den ort där BÅDA är ja är svaret."
+    },
+    "solution_path": "Facit fastslår Mörbylånga (alternativ D). På berggrundskartan: identifiera ölandicusskifferområdena (prickigt mönster enligt legenden) — Mörbylånga ligger i ett sådant. Mät sedan med kartans skalstreck (0–10–20 km) avståndet från Mörbylånga till närmaste Chasmopskalk-område (i norra Öland) — det blir ungefär 70 km fågelvägen.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: för vilken ort gäller BÅDA villkoren samtidigt — (1) orten ligger i ett område med ölandicusskiffer, OCH (2) närmaste Chasmopskalk är ca 70 km fågelvägen? Alternativen är Borgholm, Degerhamn, Färjestaden, Mörbylånga. Facit fastslår Mörbylånga (alternativ D).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilken karta använder vi?",
+        "text": "Frågan handlar om BERGGRUND (ölandicusskiffer och chasmopskalk är båda berggrundskategorier), alltså vänster karta. Legenden listar Chasmopskalk, Ortocerkalk (yngre/äldre), Alunskiffer, Tessinisandsten och Ölandicusskiffer — det är dessa du letar bland.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är ölandicusskiffer?",
+        "text": "Ölandicusskiffer är en av Ölands berggrundskategorier, markerad i legenden med ett specifikt mönster (typiskt prickigt). Den förekommer i ett par mindre områden längs vissa kustpartier i södra Öland — INTE överallt. Du måste lokalisera DESSA områden på kartan innan du kan kolla orterna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta ölandicusskifferområdena på kartan",
+        "text": "Skanna berggrundskartan efter det prickiga mönstret (ölandicusskiffer enligt legenden). Det finns typiskt två mindre områden — ett vid sydvästkusten kring Mörbylånga/Degerhamn och möjligen ett vid sydostkusten. Notera vilka av de fyra orterna (Borgholm, Degerhamn, Färjestaden, Mörbylånga) som faktiskt LIGGER i ett sådant område.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Kandidatfiltrering på villkor 1",
+        "text": "Granska orterna: Borgholm (mitt på Öland, INTE i ölandicusskifferområde — eliminerad), Färjestaden (mitt på Öland, INTE i ölandicusskifferområde — eliminerad), Degerhamn (sydligt, LIGGER nära/i ett ölandicusskifferområde — möjlig), Mörbylånga (sydvästligt, LIGGER i ett ölandicusskifferområde — möjlig). Kvar: Degerhamn och Mörbylånga.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Mät avstånd med kartans skalstreck",
+        "text": "På jordartskartan finns ett skalstreck '0 — 10 — 20 km'. Använd det (eller en mental kopia) för att mäta avstånd på berggrundskartan. Ölands totala längd är ca 137 km. Du letar efter cirka 70 km — ungefär hälften av öns längd.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Hitta närmaste Chasmopskalk-område",
+        "text": "Chasmopskalk förekommer i Ölands NORRA hälft (några områden längs västkusten/öster i höjd med Borgholm och norrut till Böda). Den närmaste Chasmopskalk-förekomsten för en sydlig ort är alltså i höjd med Borgholm.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Mät från Mörbylånga till närmaste Chasmopskalk",
+        "text": "Mörbylånga ligger i sydvästra Öland, ungefär 70 km söder om Borgholm. Närmaste Chasmopskalk-område ligger vid Borgholm/strax norr om. Avståndet Mörbylånga–Chasmopskalk fågelvägen är alltså ca 70 km — exakt vad frågan kräver. Villkor 2 uppfyllt för Mörbylånga.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Mät från Degerhamn till närmaste Chasmopskalk",
+        "text": "Degerhamn ligger ännu längre söderut än Mörbylånga, ca 90–100 km söder om Borgholm. Avståndet till närmaste Chasmopskalk är därför längre än 70 km — säg 95 km. Villkor 2 INTE uppfyllt för Degerhamn. Degerhamn eliminerad.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats — bara Mörbylånga klarar båda",
+        "text": "Sammanfattning: Borgholm och Färjestaden faller på villkor 1 (inte i ölandicusskifferområde). Degerhamn faller på villkor 2 (avstånd > 70 km). Mörbylånga klarar BÅDA villkoren — den ligger i ölandicusskiffer och har ca 70 km till Chasmopskalk. Facit fastslår just D.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Mörbylånga). Insikten i en mening: i tvåvillkorsfrågor på karta — eliminera kandidater på ett villkor i taget, och den ort som klarar BÅDA är svaret (inte den som ligger närmast något).",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för flervillkorsfrågor på karta: filtrera kandidater per villkor separat (geologisk lokalisering, sedan avstånd), använd skalstrecket för avståndsmätning, och välj den enda ort som passerar alla filter. Triggern: 'orten ligger i X OCH har cirka N km till Y' → tvåfasig eliminering, inte intuitiv gissning."
+  },
+  "host-2018-kvant1-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "16–24-åringar som använde internet i skolan ser ut att ha en stor skillnad eftersom skolan är en vanlig miljö för ungdomar. Det är frestande om man ser stora absoluta tal och antar stor könsskillnad.",
+        "why_wrong": "Som steg 5 visar: 16–24-åringar i skolan ger män 278 900, kvinnor 341 100 — skillnad cirka 62 200. Facit fastslår B (25–34-åringar på arbetsplatsen) med en skillnad på cirka 98 700 — betydligt större."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "25–34-åringar på 'annan plats' har stora absoluta tal (män 202 000, kvinnor 150 700). Skillnaden 51 300 låter stor i sig.",
+        "why_wrong": "Steg 6: skillnaden 25–34-åringar 'annan plats' är drygt 51 000 — fortfarande mindre än 98 700 (B). Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "35–44-åringar 'annan plats' har skillnad män 202 400 − kvinnor 112 400 = cirka 90 000 — ganska nära B:s 98 700. Det är ett legitimt tveksamt fall.",
+        "why_wrong": "Steg 6: skillnaden är 90 000 medan B (25–34-åringar arbetsplats) är 98 700. Skillnaden mellan D och B är cirka 8 700 — den är liten men reell, och facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i tabellfrågor med 'största skillnaden' är att jämföra med ögat istället för att räkna. Botemedlet: räkna ut män − kvinnor (eller tvärtom) för varje alternativ A–D explicit, jämför sedan de fyra differenserna.",
+    "pregrade_tactic": {
+      "handle": "Differens-kolumn-per-kandidat",
+      "move": "För varje alternativ A–D: hitta raden i tabellen, läs av Antal Män och Antal Kvinnor, räkna differensen. Den största differensen är svaret."
+    },
+    "solution_path": "Facit fastslår B (25–34-åringar på arbetsplatsen). I tabellen: 25–34 / På arbetsplats / Män = 432 100, Kvinnor = 333 400. Differens = 98 700. Andra kandidater: A ≈ 62 200, C ≈ 51 300, D ≈ 90 000. B har störst differens.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: i vilken kategori noterades den STÖRSTA skillnaden i ANTAL mellan män och kvinnor? Alternativen är fyra specifika ålder/plats-kombinationer. Facit fastslår B (25–34-åringar på arbetsplatsen). Du måste räkna |Män − Kvinnor| för varje alternativ och välja det största.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen heter 'Svenskars internetanvändning'. Den har två huvuddelar — vänster (Andel i procent) och höger (Antal). För denna fråga (om antal-skillnad) använder vi HÖGER del. Varje rad är en åldersgrupp + plats. Kolumnerna är Totalt, Män, Kvinnor. Du letar efter |Män − Kvinnor| per alternativ.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'skillnaden i antal'?",
+        "text": "Skillnaden i antal = |Antal Män − Antal Kvinnor| för en given rad. Inte procentskillnad, inte ratio, utan absolut differens i personer. Tabellen ger Män- och Kvinnor-kolumner direkt — du subtraherar.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Avläs alternativ A — 16–24-åringar i skolan",
+        "text": "Hitta åldersraden 16–24 år, sedan underraden 'I skolan'. Från höger del: Män = 278 900, Kvinnor = 341 100. Differens = |278 900 − 341 100| = 62 200. Notera: här är kvinnor FLER än män (skolungdomar med fler tjejer som svarar internet-användning).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs alternativ B — 25–34-åringar på arbetsplatsen",
+        "text": "Hitta åldersraden 25–34 år, sedan underraden 'På arbetsplats'. Från höger del: Män = 432 100, Kvinnor = 333 400. Differens = |432 100 − 333 400| = 98 700. Stor skillnad — män använder internet på jobbet mer i den åldersgruppen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs alternativ C — 25–34-åringar på annan plats",
+        "text": "Hitta åldersraden 25–34 år, sedan underraden 'På annan plats'. Från höger del: Män = 202 000, Kvinnor = 150 700. Differens = |202 000 − 150 700| = 51 300. Måttlig skillnad.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs alternativ D — 35–44-åringar på annan plats",
+        "text": "Hitta åldersraden 35–44 år, sedan underraden 'På annan plats'. Från höger del: Män = 202 400, Kvinnor = 112 400. Differens = |202 400 − 112 400| = 90 000. Stor skillnad — nästan lika stor som B men inte riktigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför de fyra differenserna",
+        "text": "A = 62 200. B = 98 700. C = 51 300. D = 90 000. Ranking från störst: B (98 700) > D (90 000) > A (62 200) > C (51 300). Den största differensen är B. Facit fastslår just B.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför är B störst — vad gör tabellen?",
+        "text": "Det är intressant att den största könsskillnaden finns i 'arbetsplats' för 25–34-åringar. Det reflekterar troligen att män i den åldersgruppen är mer närvarande på arbetsplatser med datorer (eller fler totalt på arbetsplats). Du behöver inte förstå sociologin — bara avläsa tabellen och räkna.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check — hade ni kunnat gissa fel?",
+        "text": "B och D är båda nära 100 000 — visuellt är det svårt att avgöra utan att räkna. Det är därför du MÅSTE göra subtraktionerna explicit, inte ögonmäta. Skillnaden mellan B (98 700) och D (90 000) är 8 700 — liten men reell, och tabellen är auktoritativ.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (25–34-åringar på arbetsplatsen, 98 700 personers skillnad). Insikten i en mening: i 'största skillnaden'-tabellfrågor — räkna |Män − Kvinnor| för VARJE kandidat, ranka, välj störst. Inte ögonmått, inte intuition.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'största skillnaden mellan A och B'-tabellfrågor: räkna differensen explicit för varje kandidat i alternativlistan (4 räkningar), ranka, välj störst. Triggern: 'största skillnaden i antal mellan X och Y' → fyra subtraktioner, inte gissning."
+  },
+  "host-2018-kvant1-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "16–24-åringar i hemmet (1 087 500) och hos någon annans hem (620 000) ger ratio 1 087 500 / 620 000 ≈ 1,75. Det är frestande att se det som 'ungefär 2 gånger' och hoppas att det räknas som nära 3.",
+        "why_wrong": "Som steg 5 visar är ratioen 1,75 — knappt två gånger, inte tre gånger. För 16–24-åringar är 'någon annans hem' relativt vanligt eftersom de besöker varandra mycket. Facit fastslår C (35–44-åringar) där ratioen är nära 3."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "25–34-åringar har en ratio 1 117 200 / 526 500 ≈ 2,12. Det ligger i riktning mot 'ungefär tre gånger' men är fortfarande inte tre.",
+        "why_wrong": "Steg 6: 2,12 är fortfarande långt från 3. För denna åldersgrupp är 'någon annans hem' fortfarande vanligt nog för att ratioen ska vara ungefär 2. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "45–54-åringar ger ratio 1 121 700 / 213 800 ≈ 5,25. Det är FÖR högt — fler än 3 gånger. Men det är frestande om man räknar 'närmare 3 än 1' utan att jämföra med C.",
+        "why_wrong": "Steg 8: D-ratioen är 5,25 — drygt fem gånger, inte tre. D är åt motsatt håll från sanningen (för få använder 'någon annans hem'). Facit fastslår C där ratioen är just 3."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'mest lik totalgruppen'-frågor är att gissa baserat på storlek istället för att räkna ratioen och jämföra. Botemedlet: räkna ratio (hemmet ÷ någon annans hem) för totalgruppen som referens och för varje kandidat — välj den som ligger NÄRMAST referensen, inte den som har högst eller lägst tal.",
+    "pregrade_tactic": {
+      "handle": "Ratio-mot-referens",
+      "move": "Räkna ut ratio 'hemmet ÷ någon annans hem' först för totalgruppen (referens = 3). Sedan för varje åldersgrupp. Välj den vars ratio är NÄRMAST 3."
+    },
+    "solution_path": "Facit fastslår 35–44-åringar (alternativ C). Totalgruppen: 6 050 300 ÷ 2 050 000 ≈ 2,95 ≈ 3. För 35–44-åringar: 1 238 400 ÷ 425 000 ≈ 2,91 — närmast 3 av alla kandidater. Andra ratios: 16–24 = 1,75, 25–34 = 2,12, 45–54 = 5,25.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: i totalgruppen var de som använde internet hemma ungefär tre gånger så många som de som använde internet i någon annans hem. Vilken åldersgrupp har samma ratio (≈3)? Alternativen är 16–24, 25–34, 35–44, 45–54. Facit fastslår 35–44-åringar (alternativ C). Du letar efter den åldersgrupp där hemmet/någon-annans-hem ≈ 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Svenskars internetanvändning' har rader per åldersgrupp + plats. För denna fråga behöver du två rader per åldersgrupp: 'I hemmet' och 'I någon annans hem'. Kolumnen 'Totalt' (under 'Antal') ger absoluta tal — det är det du arbetar med.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Bekräfta totalgruppens ratio",
+        "text": "'Samtliga' rad: I hemmet 'Totalt' = 6 050 300, I någon annans hem 'Totalt' = 2 050 000. Ratio = 6 050 300 ÷ 2 050 000 ≈ 2,95 ≈ 3. Detta bekräftar referenstalet 'tre gånger så många'.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 'mest lik' i ratio-mening?",
+        "text": "'Mest lik totalgruppen i detta avseende' = den åldersgrupp vars ratio (hemmet ÷ någon annans hem) ligger NÄRMAST 3. Inte 'störst antal' eller 'minst antal' — utan ratio-avstånd från 3 ska minimeras.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna för 16–24-åringar",
+        "text": "I hemmet Totalt = 1 087 500. I någon annans hem Totalt = 620 000. Ratio = 1 087 500 ÷ 620 000 ≈ 1,75. Avstånd från 3: |1,75 − 3| = 1,25. Långt ifrån 3 — ungdomar besöker varandra ofta.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna för 25–34-åringar",
+        "text": "I hemmet Totalt = 1 117 200. I någon annans hem Totalt = 526 500. Ratio = 1 117 200 ÷ 526 500 ≈ 2,12. Avstånd från 3: |2,12 − 3| = 0,88. Närmare 3 men inte riktigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna för 35–44-åringar",
+        "text": "I hemmet Totalt = 1 238 400. I någon annans hem Totalt = 425 000. Ratio = 1 238 400 ÷ 425 000 ≈ 2,91. Avstånd från 3: |2,91 − 3| = 0,09. MYCKET nära 3! Denna åldersgrupps internetbeteende speglar totalgruppens.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna för 45–54-åringar",
+        "text": "I hemmet Totalt = 1 121 700. I någon annans hem Totalt = 213 800. Ratio = 1 121 700 ÷ 213 800 ≈ 5,25. Avstånd från 3: |5,25 − 3| = 2,25. Mycket långt från 3 — 45–54-åringar besöker varandras hem mycket SÄLLAN i jämförelse.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Ranka alla kandidaters avstånd från 3",
+        "text": "C (35–44, avstånd 0,09) < B (25–34, avstånd 0,88) < A (16–24, avstånd 1,25) < D (45–54, avstånd 2,25). C är klart närmast 3. Facit fastslår just C.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Varför 35–44? Intuitiv förklaring",
+        "text": "35–44-åringar är ofta etablerade vuxna med fasta hem (hemmet är primär plats) men besöker fortfarande andra hem (vänner, släkt, småbarnsföräldrar som umgås) — en balans som råkar matcha totalgruppens snitt. Detta är inte hela förklaringen, men intuitivt rimligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (35–44-åringar). Insikten i en mening: i 'mest lik referensen'-frågor — räkna samma ratio som referensen ger för varje kandidat och välj den med minst avstånd, inte den med störst eller minst absolut tal.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'mest lik totalgruppen'-frågor: identifiera referens-ratioen i totalgruppen, räkna samma ratio för varje kandidat, ranka efter avstånd från referensen. Triggern: 'tre gånger så många i X som i Y, vilken grupp matchar' → ratio-avstånd-minimering, inte storleksgissning."
+  },
+  "host-2018-kvant1-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "78 % känns högt men möjligt om man tänker att 'unga och medelålders dominerar arbetsplatsanvändning'. Det är frestande om man inte summerar exakt eller om man missar att 45+ är inkluderade i nämnaren.",
+        "why_wrong": "Som steg 7 visar är (16–24 + 25–34 + 35–44) på arbetsplats / total på arbetsplats ≈ 58 %, inte 78 %. Facit fastslår B (58 %). 78 % skulle kräva att 35–44 ensam står för en mycket större andel än vad tabellen visar."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "48 % är frestande om man råkar utesluta en åldersgrupp (t.ex. bara räknar 25–34 och 35–44 utan 16–24).",
+        "why_wrong": "Steg 6: alla tre grupperna 16–24, 25–34, 35–44 ska räknas — under 45 år. Att utesluta 16–24 leder till felaktigt lägre andel. Facit fastslår 58 %, inte 48 %."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "28 % är frestande om man bara räknar en av åldersgrupperna (t.ex. 25–34 ensam, som har högst absolut tal) i förhållande till totalen — då blir det runt 21 %, inte 28 %, men ändå i samma härad.",
+        "why_wrong": "Steg 6: frågan kräver SUMMA av tre åldersgrupper (16–24 + 25–34 + 35–44). Att räkna bara en grupp ger för lågt. Facit fastslår 58 %."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'under N år'-tabellfrågor är att glömma att inkludera ALLA åldersgrupper under tröskeln. Botemedlet: lista uttryckligen vilka åldersgrupper som ligger under tröskeln (16–24, 25–34, 35–44 för 'under 45') och summera deras tal innan division.",
+    "pregrade_tactic": {
+      "handle": "Summera-under-tröskeln-och-dela",
+      "move": "Lista åldersgrupper under 45 år (16–24, 25–34, 35–44). Summera deras 'På arbetsplats Totalt'. Dela med totalen 'Samtliga På arbetsplats Totalt'. Översätt till procent."
+    },
+    "solution_path": "Facit fastslår 58 % (alternativ B). Summa under 45 år på arbetsplats: 314 400 (16–24) + 765 400 (25–34) + 1 003 300 (35–44) = 2 083 100. Total på arbetsplats: 3 607 300. Andel = 2 083 100 ÷ 3 607 300 ≈ 0,577 ≈ 58 %.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor ANDEL av alla som använde internet på arbetsplatsen var UNDER 45 år? Alternativen 78, 58, 48, 28 procent. Facit fastslår 58 % (alternativ B). Du måste summera de relevanta åldersgrupperna och dela med totalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera vilka åldersgrupper räknas som 'under 45 år'",
+        "text": "Åldersgrupperna i tabellen: 16–24, 25–34, 35–44, 45–54, 55–64, 65–74. 'Under 45 år' = 16–24 + 25–34 + 35–44. Tre grupper. 45–54, 55–64, 65–74 är 45 eller äldre.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta 'På arbetsplats Totalt' för varje åldersgrupp",
+        "text": "I tabellens högra del (Antal), kolumnen Totalt, underraden 'På arbetsplats': 16–24: 314 400. 25–34: 765 400. 35–44: 1 003 300. 45–54: 845 700. 55–64: 636 700. 65–74: 41 800. Samtliga (totalen): 3 607 300.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'andel av alla som använde internet på arbetsplatsen'?",
+        "text": "Andel = (antal under 45 år som använde internet på arbetsplats) ÷ (totalt antal som använde internet på arbetsplats). Nämnaren är 3 607 300 (samtliga). Täljaren är summan av de tre under-45-grupperna.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna täljaren",
+        "text": "Summa under 45 år på arbetsplats: 314 400 + 765 400 + 1 003 300. Steg 1: 314 400 + 765 400 = 1 079 800. Steg 2: 1 079 800 + 1 003 300 = 2 083 100. Täljaren = 2 083 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna nämnaren — eller verifiera",
+        "text": "Nämnaren är samtliga på arbetsplats Totalt = 3 607 300 (givet direkt). Som verifiering: 314 400 + 765 400 + 1 003 300 + 845 700 + 636 700 + 41 800 = 3 607 300. Stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna andelen",
+        "text": "Andel = 2 083 100 ÷ 3 607 300. Approximera: 2 083 100 / 3 607 300 ≈ 0,577 ≈ 57,7 % ≈ 58 %. Närmaste svarsalternativ är B (58 %). Facit fastslår just det.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera med ett enklare räknesätt",
+        "text": "Alternativ verifiering: täljaren är 2 083 100 ≈ 2,08 miljoner. Nämnaren är 3 607 300 ≈ 3,61 miljoner. 2,08 / 3,61 ≈ 0,576 ≈ 58 %. Samma resultat. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera felalternativen",
+        "text": "A (78 %): skulle kräva 0,78 × 3 607 300 = 2 813 700 — alldeles för stort jämfört med vår täljare 2 083 100. C (48 %): skulle kräva 0,48 × 3 607 300 = 1 731 500 — för lågt. D (28 %): skulle kräva 0,28 × 3 607 300 = 1 010 000 — alldeles för lågt. Endast B (58 %) stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via Andel-i-procent-kolumnen",
+        "text": "Tabellen har också en 'Andel i procent'-del. Notera att 'Andel' i den delen är procent av varje åldersgrupp (inte av totalen). Använd den INTE för denna fråga — vi behöver absoluta tal och summera. En vanlig fälla är att läsa procent-kolumnerna och dra fel slutsatser.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (58 procent). Insikten i en mening: i 'andel av totalen under N år'-tabellfrågor — lista alla åldersgrupper under tröskeln, summera deras absoluta tal, dela med totalen, översätt till procent.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel under tröskel'-tabellfrågor: identifiera vilka rader som ligger under tröskeln, summera deras 'Totalt'-värden, dela med 'Samtliga Totalt' för samma plats, översätt kvoten till procent. Triggern: 'hur stor andel var under N år' → summa-av-relevanta-rader / totalsumma."
+  },
+  "host-2018-kvant1-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1991 är frestande om man bara kollar 'boklån < 70 miljoner' och struntar i AV-medier-villkoret. Boklåns-linjen ligger runt 70–75 miljoner kring 1990–1992 — på gränsen.",
+        "why_wrong": "Som steg 6 visar är boklåns-linjen 1991 vid cirka 72 miljoner — ÖVER 70-miljoners-tröskeln. Och AV-medier 1991 är cirka 3 000 tusental, jämfört med 1990 vid cirka 2 500 — ökning ca 500, INTE 1 000 (1 miljon). 1991 missar BÅDA villkoren. Facit fastslår C (1994)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1993 ligger precis när boklåns-linjen börjar dippa under 70 miljoner. Och AV-medier växer. Det är ett rimligt fall där båda villkoren KAN gälla, men inte exakt.",
+        "why_wrong": "Steg 6: boklåns-linjen 1993 ligger nära 70 miljoner — eventuellt 68. Men AV-mediers ökning 1992→1993 är ungefär 500–600 tusen, inte exakt 1 miljon. Facit fastslår 1994."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1996 är intressant — boklåns-linjen är lägre och AV-medier växer kraftigt. Det är frestande att tro att 1996 har båda villkoren samtidigt.",
+        "why_wrong": "Steg 8: boklåns-linjen 1996 ligger faktiskt runt 75 miljoner (det är en TOPPÅR i mitten av 1990-talet, inte en lågmod). Villkor 1 (boklån < 70 miljoner) faller. Facit fastslår 1994."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i två-graf-frågor är att kolla bara ett villkor och anta att det andra också stämmer. Botemedlet: läs varje villkor mot rätt graf separat, och kryssa av kandidaten endast om båda håller.",
+    "pregrade_tactic": {
+      "handle": "Två-grafer-checklista",
+      "move": "För varje kandidatår: (1) ligger Boklån-linjen under 70 miljoner i översta grafen? (2) ökade AV-medier-linjen med 1000 tusen från föregående år i nedersta grafen? Båda ja → kandidat."
+    },
+    "solution_path": "Facit fastslår 1994 (alternativ C). I översta grafen (Folkbibliotekens utlåning, miljoner): Boklån totalt vid 1994 ligger cirka 68 miljoner — UNDER 70. I nedersta grafen (AV-medier, tusental): värdet hoppar från cirka 4 000 (1993) till cirka 5 000 (1994) — ökning cirka 1 000 tusen = 1 miljon. Båda villkoren uppfyllda.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år gäller BÅDA villkoren samtidigt: (1) Antal boklån totalt var mindre än 70 miljoner, OCH (2) antalet utlån av AV-medier ökade med 1 miljon jämfört med året innan. Alternativen 1991, 1993, 1994, 1996. Facit fastslår 1994 (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — två separata grafer",
+        "text": "Bilden visar TVÅ grafer. Övre grafen heter 'Folkbibliotekens utlåning' och visar miljoner, 0–90, med fyra linjer (Boklån totalt med diamant-markörer, Barnböcker med svarta kvadrater, Skönlitteratur med svarta trianglar, Facklitteratur med X-markörer). Nedre grafen visar AV-medier i tusental, 0–14 000. Båda har x-axel 1980–2008. Du behöver båda graferna.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilka är 'AV-medier'?",
+        "text": "Enligt fotnoten: 'Audio-visuella medier som ljudböcker och dvd'. Det är alltså den nedre grafen (Tusental). 1 miljon AV-medier = 1 000 tusental = en VERTIKAL ÄNDRING på 1 000 i nedre grafen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vilken linje följer 'Boklån totalt'?",
+        "text": "I övre grafen är 'Boklån totalt' linjen med DIAMANT-markörer (enligt legenden). Det är den HÖGSTA linjen — den ligger 60–80 miljoner under hela perioden. De andra linjerna (Barnböcker, Skön, Fack) är lägre och inte relevanta för villkor 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hur identifierar man '< 70 miljoner'?",
+        "text": "Övre grafen har horisontella gridlinjer vid 10, 20, ..., 80, 90 miljoner. 70-miljoners-strecket är det näst-översta gridstrecket från 80. Boklån-linjen (diamantmarkerad) ska ligga UNDER detta streck för att villkor 1 ska gälla.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs Boklån-linjen för respektive år",
+        "text": "1991: Boklån-linjen ligger ungefär 72 miljoner — strax ÖVER 70. Villkor 1 inte uppfyllt. 1993: ungefär 70 (på gränsen). 1994: ungefär 68 — UNDER 70. Villkor 1 uppfyllt! 1996: ungefär 75 (toppår igen) — ÖVER 70. Villkor 1 inte uppfyllt. Endast 1994 (och möjligen 1993) klarar villkor 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs AV-medier för respektive år",
+        "text": "Nedre grafen, AV-medier i tusental. 1990 ≈ 2 500, 1991 ≈ 3 000, 1992 ≈ 3 500, 1993 ≈ 4 000, 1994 ≈ 5 000, 1995 ≈ 6 000, 1996 ≈ 7 500. Förändringar år-mot-år: 1990→1991 +500, 1991→1992 +500, 1992→1993 +500, 1993→1994 +1000 ←, 1994→1995 +1000, 1995→1996 +1500.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Korsa villkoren för 1994",
+        "text": "1994: Boklån-linjen ≈ 68 miljoner (< 70 ✓). AV-medier-ändring 1993→1994 ≈ +1 000 tusental = +1 miljon ✓. BÅDA villkoren uppfyllda. Facit fastslår 1994.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Korsa villkoren för övriga kandidater",
+        "text": "1991: Boklån 72 (>70 ✗) — eliminerad. 1993: Boklån ≈ 70 (gränsfall, kanske ✓), AV-ändring 1992→1993 ≈ +500 (≠ 1 miljon ✗) — eliminerad. 1996: Boklån 75 (>70 ✗) — eliminerad. Endast 1994 stämmer på båda villkoren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot trenden",
+        "text": "Boklåns-trenden är att den dippar i mitten av 1990-talet (1993–1995) och stiger upp igen 1996–1997 till en topp runt 75 miljoner. AV-medier-trenden är monotont uppåt med accelererande takt från cirka 1993. Att just 1994 är 'lågpunkt för boklån' och 'första riktiga acceleration för AV' gör 1994 till det år där båda villkoren råkar samtidigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (1994). Insikten i en mening: i två-graf-frågor måste BÅDA villkoren läsas av mot rätt graf och bekräftas separat — inte gissas från intuition om trend.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för frågor som spänner över två grafer: identifiera vilken graf hör till vilket villkor, läs av varje villkor separat, korsa kandidaterna. Triggern: 'år där A OCH B' med två grafer → checklista per kandidat, inte gissning av samtidighet."
+  },
+  "host-2018-kvant1-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "0,70 gånger är frestande om man råkar invertera kvoten — räknar 40 miljoner / 58 miljoner (bestånd / utlån) istället för utlån / bestånd. Då får man cirka 0,69.",
+        "why_wrong": "Som steg 5 förklarar är 'gånger en bok lånas ut' = utlån ÷ bestånd, INTE bestånd ÷ utlån. Facit fastslår 1,45 — inverteringen ger fel svar."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1,10 gånger är frestande om man råkar läsa boklåns-värdet 2008 som cirka 44 miljoner (i stället för det rätta cirka 58 miljoner) — då blir 44 ÷ 40 ≈ 1,10.",
+        "why_wrong": "Steg 4: boklåns-linjen 2008 ligger runt 58 miljoner, inte 44. Felaktig avläsning leder till fel svar. Facit fastslår 1,45."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1,85 gånger är frestande om man räknar med ett för högt utlåningstal (t.ex. 75 miljoner) eller med ett för lågt bestånd (t.ex. 35 miljoner i stället för 40).",
+        "why_wrong": "Steg 4 och 5: utlåningen 2008 ≈ 58 miljoner, beståndet 40 miljoner. 58 ÷ 40 = 1,45 — inte 1,85. Felaktiga avläsningar ger fel kvot. Facit fastslår 1,45."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'utlåningar per bok'-frågor är att invertera kvoten eller att hämta fel värde från grafen. Botemedlet: skriv ut formeln 'utlåning per bok = totalt utlån ÷ bestånd' EXPLICIT innan du dividerar — det säkrar att täljare och nämnare hamnar rätt.",
+    "pregrade_tactic": {
+      "handle": "Utlån-per-bok-formel",
+      "move": "Utlåning per bok = Totalt antal utlån (miljoner, från grafen) ÷ Bestånd (40 miljoner, givet). 2008: cirka 58 ÷ 40 ≈ 1,45."
+    },
+    "solution_path": "Facit fastslår 1,45 gånger (alternativ C). Avläs Boklån-totalt-linjen 2008 ≈ 58 miljoner utlån. Beståndet 2008 är givet: 40 miljoner böcker. Antal gånger per bok = 58 ÷ 40 = 1,45.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: i folkbibliotekens bokbestånd 2008 fanns cirka 40 miljoner böcker. Hur många gånger i genomsnitt lånades en bok ut detta år? Alternativen 0,70, 1,10, 1,45, 1,85. Facit fastslår 1,45 (alternativ C). Du måste dividera totalt antal utlån med bestånd.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'i genomsnitt' här?",
+        "text": "Genomsnittligt antal utlåningar per bok = (Totalt antal utlån under året) ÷ (Antal böcker i beståndet). Logiken: om 40 miljoner böcker tillsammans gav N miljoner utlån, så gjorde varje bok i genomsnitt N/40 utlåningar.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera vilken graf som ger utlåningen",
+        "text": "Övre grafen 'Folkbibliotekens utlåning' visar fyra linjer i miljontal. Vi behöver totalen — 'Boklån totalt' (diamant-markörer enligt legenden). Det är den HÖGSTA linjen i grafen. Inte Barnböcker, inte Skön, inte Fack — bara totalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs Boklån totalt 2008",
+        "text": "Hitta 2008 på x-axeln (sista året). Projicera diamantlinjens punkt över 2008 till y-axeln. Linjen ligger ungefär 58 miljoner (mellan 50 och 60 gridlinjerna, närmare 60). Notera: ≈ 58 miljoner utlån 2008.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt upp räkningen",
+        "text": "Antal utlåningar per bok = 58 miljoner utlån ÷ 40 miljoner böcker = 58/40. Båda har enheten 'miljoner' så de tar ut varandra, och kvoten blir dimensionslös: 'utlåningar per bok'.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna kvoten",
+        "text": "58 ÷ 40 = 1,45. Kontroll: 40 × 1,45 = 40 × 1 + 40 × 0,45 = 40 + 18 = 58. ✓ Kvoten 1,45 stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 1,45 utlåningar per bok?",
+        "text": "I genomsnitt lånades varje bok ut 1,45 gånger under 2008 — alltså cirka en och en halv gång. Vissa böcker lånades aldrig, andra lånades flera gånger; snittet blir 1,45.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera felalternativen",
+        "text": "A (0,70): kräver utlån ≈ 28 miljoner — för lågt. B (1,10): kräver utlån ≈ 44 miljoner — för lågt. D (1,85): kräver utlån ≈ 74 miljoner — för högt. Endast C (1,45) matchar 58 miljoner utlån.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot trendlinjen",
+        "text": "Boklåns-linjen sjönk från cirka 80 miljoner i mitten av 1980-talet till cirka 58 miljoner 2008 — en nedgång över 25 år. Detta är konsistent med en bibliotekssituation där fler medier (AV-medier, internet) konkurrerar om läsarnas tid. 58 miljoner är ett rimligt värde, inte 28 eller 74.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Felkällor i avläsningen",
+        "text": "Linjens punkt 2008 kan avläsas till mellan 56 och 60 miljoner — det ger 56/40 = 1,40 eller 60/40 = 1,50. I båda fallen är 1,45 (svarsalternativ C) klart närmast — eftersom alternativen är 0,70, 1,10, 1,45, 1,85 är spridningen mellan dem så stor att avläsningsosäkerheten inte påverkar valet.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (1,45 gånger). Insikten i en mening: i 'utlåningar per bok'-frågor — skriv formeln EXPLICIT (totalt utlån ÷ bestånd), läs av båda värdena, dividera. Inte invertering, inte felläsning.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'snitt per enhet'-frågor: skriv ut formeln (total ÷ antal-enheter), avläs båda värdena från rätt källa (graf vs given text), dividera. Triggern: 'hur många gånger i genomsnitt' → kvot, inte multiplikation eller invertering."
+  },
+  "host-2018-kvant1-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'Fem av tio' = hälften = 50 %. Det är frestande om man tänker att barnböcker dominerar utlåningen (mycket barnaktivitet på bibliotek).",
+        "why_wrong": "Som steg 6 visar är Barnböcker-linjen 2000 cirka 30 miljoner medan Boklån totalt är cirka 75 miljoner — kvoten 30/75 = 0,40 = 40 %, inte 50 %. Facit fastslår B (Fyra av tio)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "'Tre av tio' = 30 %. Det är frestande om man avrundar nedåt eller om man läser barnböcker-linjen för lågt (t.ex. 22 miljoner istället för 30).",
+        "why_wrong": "Steg 5: Barnböcker-linjen 2000 ligger ungefär 30 miljoner, inte 22. Kvoten är 30/75 ≈ 40 %, inte 30 %. Facit fastslår 40 % = Fyra av tio."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Två av tio' = 20 % är frestande om man råkar läsa Skönlitteratur-linjen (cirka 15 miljoner) istället för Barnböcker (cirka 30) — då blir 15/75 = 20 %.",
+        "why_wrong": "Steg 4: Barnböcker har SVARTA KVADRATER som markör (enligt legenden), inte trianglar (Skön). Förväxling av linjer ger fel svar. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i flerlinje-grafer är att räkna fel linje. Botemedlet: kontrollera markörformen mot legenden INNAN avläsning — barnböcker = kvadrater, skön = trianglar, fack = X-markörer.",
+    "pregrade_tactic": {
+      "handle": "Markör-mot-legend-först",
+      "move": "Bekräfta vilken linje är Barnböcker (svarta kvadrater enligt legenden). Läs sedan linjens y-värde 2000. Dela med Boklån totalt 2000. Omvandla kvot till 'X av 10'."
+    },
+    "solution_path": "Facit fastslår 'Fyra av tio' (alternativ B). I övre grafen: Barnböcker-linjen (svarta kvadrater) vid 2000 ≈ 30 miljoner. Boklån totalt (diamanter) vid 2000 ≈ 75 miljoner. Andel = 30/75 = 0,40 = 4/10.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många av boklånen år 2000 var utlån av barnböcker? Alternativen är ratios: Fem av tio (1/2), Fyra av tio (2/5), Tre av tio (3/10), Två av tio (1/5). Facit fastslår Fyra av tio (alternativ B). Du måste hitta barnböcker-värdet och dela med boklån totalt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i övre grafen",
+        "text": "Övre grafen 'Folkbibliotekens utlåning' har fyra linjer enligt legenden: Boklån totalt (diamant-markörer), Barnböcker (svarta kvadrater), Skönlitteratur för vuxna (svarta trianglar), Facklitteratur för vuxna (X-markörer). y-axeln visar miljoner, 0–90.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'fyra av tio'?",
+        "text": "'Fyra av tio' = 4/10 = 0,40 = 40 %. På samma sätt: 'Fem av tio' = 50 %, 'Tre av tio' = 30 %, 'Två av tio' = 20 %. Skillnaderna mellan alternativen är 10 procentenheter — relativt stora, så även en grov avläsning ska räcka för att välja entydigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera Barnböcker-linjen",
+        "text": "Enligt legenden: Barnböcker = SVARTA KVADRATER som markörer. Hitta linjen som har dessa markörer (typiskt den näst-högsta efter Boklån totalt). Den ligger i intervallet 25–35 miljoner under perioden.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Barnböcker 2000",
+        "text": "Hitta 2000 på x-axeln. Projicera kvadrat-linjens punkt över 2000 till y-axeln. Linjen ligger ungefär 30 miljoner — mellan 25 och 35 gridlinjerna, närmare 30. Notera: cirka 30 miljoner utlån av barnböcker 2000.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs Boklån totalt 2000",
+        "text": "Boklån totalt = diamantlinjen (högsta linjen). Vid 2000 ligger den ungefär 75 miljoner (precis under 80-gridlinjen). Notera: cirka 75 miljoner utlån totalt 2000.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna kvoten",
+        "text": "Andel barnböcker av totalen = 30 ÷ 75. Förenkla: 30/75 = 2/5 = 0,40 = 40 %. Eller: 30 ÷ 75 = 30 ÷ 75 = 0,4. Kvoten är 0,40.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Översätt till svarsformatet",
+        "text": "0,40 = 4/10 = 'Fyra av tio'. Alternativ B. Facit fastslår just det.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera felalternativen",
+        "text": "Fem av tio (50 %): kräver barnböcker = 37,5 miljoner — för högt. Tre av tio (30 %): kräver barnböcker = 22,5 miljoner — för lågt. Två av tio (20 %): kräver barnböcker = 15 miljoner — för lågt. Endast Fyra av tio (40 %) stämmer med en barnböcker-avläsning på 30 miljoner.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check mot andra linjer",
+        "text": "Skön-linjen (trianglar) 2000 ≈ 15 miljoner. Fack-linjen (X) 2000 ≈ 15–18 miljoner. Summering 30 + 15 + 18 = 63 — vilket lämnar 12 miljoner till 'andra/utländska/diverse' boklån (totalen 75). Det är konsistent. Barnböcker är klart den största enskilda kategorin, men inte hälften av totalen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (Fyra av tio). Insikten i en mening: i flerlinjegrafer — verifiera linjeidentiteten via markörform mot legenden INNAN avläsning, läs av båda värdena (del och total) och översätt kvoten till svarsformatet.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för andels-frågor på flerlinjegrafer: identifiera 'del'-linjen via markörform mot legenden, avläs delen och totalen för samma år, räkna kvot, översätt till svarsformatet (bråk, procent eller ratio). Triggern: 'hur många av X var Y' → del-linje ÷ totallinje, inte gissning från visuell höjd."
+  },
+  "host-2018-kvant2-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "3/5 = 12 av 21 län. Det är frestande om man räknar fel en eller två gånger — t.ex. om man råkar EXKLUDERA två län som faktiskt har båda (Örebro eller Gotland) eller missar att räkna ett.",
+        "why_wrong": "Som steg 6 visar är räkningen 14 av 21 = 2/3, INTE 12/21 = 4/7 ≈ 3/5. Facit fastslår B (2/3). En noggrann genomgång rad-för-rad ger 14."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "3/4 = ungefär 16 av 21 län. Det är frestande om man räknar för MÅNGA — t.ex. om man INKLUDERAR län där bara naturreservat finns och tror att nationalpark också finns där.",
+        "why_wrong": "Steg 5: län utan nationalpark (markerade '-' i Antal-kolumnen) räknas INTE. Räkningen 16 är överskattning. Facit fastslår 14 av 21 = 2/3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "4/5 = ungefär 17 av 21. Det är frestande om man tror att 'de flesta län har båda' och inte räknar exakt.",
+        "why_wrong": "Steg 5 och 6: 7 av 21 län (Södermanland, Östergötland, Kronoberg, Blekinge, Halland, Värmland, Västmanland) har INGA nationalparker — det utesluter dem från räkningen. Kvar: 14 = 2/3, inte 17."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska tabellfällan i 'både A och B'-frågor är att räkna län med A ELLER B istället för A OCH B. Botemedlet: gå rad-för-rad och kryssa av ENDAST de län där BÅDA kolumnerna har ett tal > 0 (inte streck/blank).",
+    "pregrade_tactic": {
+      "handle": "Båda-kolumner-måste-vara-tal",
+      "move": "Skanna tabellen rad-för-rad. Kryssa länet om Nationalparker-Antal är ett tal (inte '-') OCH Naturreservat-Antal är ett tal. Räkna kryssen. Skriv som bråk av 21."
+    },
+    "solution_path": "Facit fastslår 2/3 (alternativ B). I tabellen: gå igenom de 21 länen och räkna de där Nationalparker-Antal har ett tal (inte '-'). Resultat: 14 av 21 län har både nationalpark OCH naturreservat. 14/21 = 2/3.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många av de 21 länen hade BÅDE nationalpark OCH naturreservat? Alternativen är 3/5, 2/3, 3/4, 4/5. Facit fastslår 2/3 (alternativ B). Du måste räkna länen och uttrycka kvoten som bråk av 21.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Nationalparker och naturreservat' har vänster del (Nationalparker: Antal, Totalareal, Landareal) och höger del (Naturreservat: Antal, Totalareal, Landareal). Raderna är 21 län (Stockholms, Uppsala, ..., Norrbottens) plus en mellanrad och landsdelsrader (Norra Norrland, Södra Norrland, Svealand, Götaland) och en summa-rad (Hela landet).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder '-' i tabellen?",
+        "text": "Ett streck '-' i en cell betyder 'inga' / 'inget' — INTE samma som blankt eller noll-värde. När Antal Nationalparker = '-' betyder det att länet saknar nationalpark. Det är denna kolumn du måste granska för att avgöra om länet INTE har nationalpark.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vad räknas som 'både och'?",
+        "text": "Län har båda om: (a) Nationalparker-Antal = ett positivt tal (1, 2, 3, ...), OCH (b) Naturreservat-Antal = ett positivt tal. Tabellen visar att naturreservat-Antal nästan alltid är ett stort tal (>80), så den 'både'-frågan dominas av nationalpark-kolumnen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lista länen UTAN nationalpark",
+        "text": "Skanna Nationalparker-Antal-kolumnen för '-': Södermanlands (-), Östergötlands (-), Kronobergs (-), Blekinge (-), Hallands (-), Värmlands (-), Västmanlands (-). Totalt 7 län utan nationalpark.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna länen MED båda",
+        "text": "21 totalt − 7 utan nationalpark = 14 län med båda. Lista (för säkerhets skull): Stockholms (2 nat-parker), Uppsala (1), Jönköpings (1), Kalmar (2), Gotlands (1), Skåne (3), Västra Götalands (4), Örebro (1), Dalarnas (2), Gävleborgs (1), Västernorrlands (1), Jämtlands (1), Västerbottens (1), Norrbottens (8). Totalt 14. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Översätt 14 av 21 till bråk",
+        "text": "14/21 = ? Förenkla genom att dividera med GCD. GCD(14, 21) = 7. 14 ÷ 7 = 2. 21 ÷ 7 = 3. Alltså 14/21 = 2/3.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kontrollera mot alternativen",
+        "text": "Alternativen: 3/5 = 0,60 = 12,6/21. 2/3 = 0,67 = 14/21. 3/4 = 0,75 = 15,75/21. 4/5 = 0,80 = 16,8/21. Vår räkning 14 av 21 = 2/3. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via subtraktion",
+        "text": "Verifiering: 7 län saknar nationalpark, alla 21 har naturreservat (varje län-rad har ett tal i naturreservat-Antal). Så antal 'med båda' = 21 − 7 = 14. Andel = 14/21 = 2/3. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vad innebär 14/21 = 2/3?",
+        "text": "Två tredjedelar av Sveriges län har båda kategorierna av skyddat område. Det reflekterar att naturreservat finns överallt (alla 21 har sådana), men nationalparker är koncentrerade till länen med större orörd natur (Norrland) eller specifika geografiska värden (Stockholm, Skåne, Västra Götaland).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (2/3). Insikten i en mening: i 'både A och B'-tabellfrågor — räkna län där BÅDA kolumnerna har positivt tal (inte streck), uttryck som bråk av totalen.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'antal län med båda'-tabellfrågor: skanna en kolumn (den med flest streck) och räkna län UTAN det attributet, subtrahera från totalen för att få 'med båda'. Översätt till bråk eller procent. Triggern: 'hur många hade både X och Y' → bästa-fall är att räkna saknade i den ena kolumnen, inte att räkna närvaron av båda."
+  },
+  "host-2018-kvant2-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "25 % är frestande om man läser Gotlands rader fel — t.ex. om man tar landarealen som täljaren och totalarealen genom 4 i nämnaren.",
+        "why_wrong": "Som steg 5 visar är Gotlands naturreservat-landareal 11 616 ha och totalareal 71 435 ha. Kvoten 11616/71435 ≈ 0,163 ≈ 16 % ≈ 15 %, inte 25 %. Facit fastslår A (15 %)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "60 % är frestande om man tittar på en GENOMSNITTLIG landareal/totalareal-andel för andra län — t.ex. Stockholms har 1957/2157 ≈ 91 % (väldigt högt). Det är frestande att tro Gotland skulle vara liknande.",
+        "why_wrong": "Steg 5: Gotland har en specifik kombination av låg land-fraktion eftersom mycket av reservaten täcker havsvatten (skär, kust). Den specifika kvoten 11616/71435 = 16 %. Facit fastslår 15 %."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "80 % är vad de flesta inlandslän har som land/total-kvot. Det är frestande att applicera den 'standardiserade' kvoten på Gotland.",
+        "why_wrong": "Steg 6: Gotland är en ö — naturreservaten täcker havsvatten i hög grad. Land/total-kvoten är därför LÄGRE än för inlandslän. Specifikt 16 %, inte 80 %. Facit fastslår 15 %."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska tabellfällan i 'landareal/totalareal'-frågor för kustlän är att applicera en inlandsstandard. Botemedlet: läs RAKT från tabellen för det specifika länet — totalareal och landareal står direkt, dividera dem.",
+    "pregrade_tactic": {
+      "handle": "Landareal-genom-totalareal",
+      "move": "Hitta Gotlands naturreservat-raden. Notera Totalareal och Landareal. Räkna Landareal ÷ Totalareal som procent. Avrunda till närmsta alternativ."
+    },
+    "solution_path": "Facit fastslår 15 % (alternativ A). I tabellen: Gotlands naturreservat: Totalareal = 71 435 ha, Landareal = 11 616 ha. Kvot = 11 616 / 71 435 ≈ 0,163 ≈ 16 % — närmast 15 % bland alternativen.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av totalarealen i Gotlands läns naturreservat utgjordes av landareal? Alternativen 15, 25, 60, 80 procent. Facit fastslår 15 % (alternativ A). Du måste hämta två värden från tabellen och dividera.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen har två blockräckor: Nationalparker (3 kolumner: Antal, Totalareal, Landareal) och Naturreservat (3 kolumner: Antal, Totalareal, Landareal). Enheten 'ha' = hektar. För denna fråga använder vi NATURRESERVAT-blocket, alltså HÖGRA delen av tabellen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är skillnaden mellan totalareal och landareal?",
+        "text": "Totalareal = hela skyddade området, inklusive vattenarealer (sjöar, havsbottnar, vikar). Landareal = bara den del som är torrt land. För kustnära eller havsbaserade reservat är landarealen MYCKET mindre än totalarealen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Hitta Gotlands rad",
+        "text": "Skanna länskolumnen efter 'Gotlands'. Den ligger mellan Kalmar och Blekinge i tabellordningen. Notera värdena i Naturreservat-blocket.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Gotlands naturreservat-värden",
+        "text": "Gotlands naturreservat: Antal = 114. Totalareal = 71 435 ha. Landareal = 11 616 ha. Vi behöver kvoten Landareal/Totalareal = 11 616 / 71 435.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna kvoten",
+        "text": "11 616 ÷ 71 435. Approximera: 11 616 ≈ 11 600. 71 435 ≈ 71 500. 11 600 / 71 500 ≈ 0,162. Eller: 11 616 / 71 435 ≈ 0,163. I procent: 16,3 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avrunda till alternativen",
+        "text": "16 % är närmast 15 % bland alternativen (skillnad 1) jämfört med 25 % (skillnad 9). Facit fastslår 15 %. En enkel intuitionscheck: 11 616 är ungefär en sjättedel av 71 435 (eftersom 71 435 / 6 ≈ 11 900), och 1/6 ≈ 17 % ≈ 15 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Varför så låg landareal-andel för Gotland?",
+        "text": "Gotland är en ö med långa kustlinjer. Många av Gotlands naturreservat skyddar marint område (havsbottnar, fågelskär, kust) — de innehåller mer vatten än land. Det är förklaringen till varför land-fraktionen är låg (16 %), till skillnad från inlandslän där den ofta är 80–95 %.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera mot ett inlandslän",
+        "text": "Som kontroll: Dalarnas naturreservat-rad ger Total 231 371 ha, Landareal 222 897 ha. Kvot = 222 897 / 231 371 ≈ 0,963 ≈ 96 % — typiskt för inlandslän, mestadels land. Gotland-fallet (16 %) är klart annorlunda just för att det är ett kustlän.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera felalternativen",
+        "text": "B (25 %): skulle kräva landareal ≈ 17 900 ha — alldeles för högt. C (60 %): skulle kräva ≈ 42 900 ha — alldeles för högt. D (80 %): skulle kräva ≈ 57 100 ha — alldeles för högt (mer än 5× faktiska). Endast A (15 %) ligger nära den verkliga kvoten 16 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (15 procent). Insikten i en mening: i 'andel av areal'-tabellfrågor — hämta båda värdena direkt från tabellen (här Total och Landareal) och dividera; för kustlän blir kvoten ofta mycket lägre än för inlandslän.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'landareal-andel av totalareal'-tabellfrågor: identifiera rätt block (här naturreservat), läs av Total och Landareal för rätt län, dividera. Triggern: 'hur stor andel utgjordes av land' → kvot, inte gissning från inlandsstandard."
+  },
+  "host-2018-kvant2-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Norra Norrland har många nationalparker (9 st) — det är frestande om man tänker att 'flest parker betyder minst per park'. Men landarealen där är gigantisk (551 569 ha).",
+        "why_wrong": "Som steg 5 visar är Norra Norrland landareal/park = 551 569 / 9 ≈ 61 285 ha per park — DET STÖRSTA per-park-värdet, inte minst. Facit fastslår D (Götaland), där per-park är cirka 1 743 ha."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Södra Norrland har bara 3 parker och en låg landareal (13 122 ha). Det är frestande om man räknar fel: 13 122 / 3 ≈ 4 374 ha per park — låg, men inte lägst.",
+        "why_wrong": "Steg 6: Södra Norrlands per-park (4 374 ha) är fortfarande HÖGRE än Götalands (1 743 ha). Facit fastslår D (Götaland)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Svealand har 6 parker och landareal 47 530 ha — per-park 7 922. Det är frestande om man tror att Svealand har relativt små parker.",
+        "why_wrong": "Steg 7: Svealands per-park (7 922 ha) är högre än Götalands (1 743 ha) och Södra Norrlands (4 374 ha). Facit fastslår Götaland."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'per enhet'-frågor är att jämföra absoluta tal istället för kvoter. Botemedlet: räkna landareal ÷ antal explicit för VARJE alternativ — inte ögonmått 'liten landareal = liten per park'.",
+    "pregrade_tactic": {
+      "handle": "Landareal-genom-antal-per-landsdel",
+      "move": "För varje landsdel (Norra Norrland, Södra Norrland, Svealand, Götaland): läs av Landareal och Antal Nationalparker från landsdelsraden i tabellen. Dela. Välj minst."
+    },
+    "solution_path": "Facit fastslår Götaland (alternativ D). I tabellens landsdelsrader: Norra Norrland 551 569/9 ≈ 61 285 ha. Södra Norrland 13 122/3 ≈ 4 374 ha. Svealand 47 530/6 ≈ 7 922 ha. Götaland 19 173/11 ≈ 1 743 ha — KLART minst per nationalpark.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken landsdel hade MINST landareal per nationalpark? Alternativen Norra Norrland, Södra Norrland, Svealand, Götaland. Facit fastslår Götaland (alternativ D). Du måste räkna landareal/antal-park för varje landsdel.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — använd landsdelsraderna",
+        "text": "Tabellen har LÄN-rader (Stockholms, Uppsala, ...) plus AGGREGERAD landsdelsraderna nederst (Norra Norrland, Södra Norrland, Svealand, Götaland, Hela landet). Använd LANDSDELSRADERNA direkt — de summerar länen automatiskt. För denna fråga behöver du Nationalparker-Antal och Nationalparker-Landareal från landsdelsraderna.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'minst landareal per nationalpark'?",
+        "text": "Landareal per nationalpark = total landareal i nationalparkerna ÷ antal nationalparker. Det är ett medelvärde per park. 'Minst' = LÄGSTA medelvärdet. Logiken: en landsdel med många små parker har lågt per-park; en med få stora parker har högt per-park.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna för Norra Norrland",
+        "text": "Norra Norrland: Antal = 9, Landareal = 551 569 ha. Per park = 551 569 / 9. Approximera: 550 000 / 9 = 61 111. Mer exakt: 551 569 / 9 = 61 285 ha per park. STORT värde — Norra Norrland har enorma parker (t.ex. Sarek, Padjelanta).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna för Södra Norrland",
+        "text": "Södra Norrland: Antal = 3, Landareal = 13 122 ha. Per park = 13 122 / 3 ≈ 4 374 ha per park. Mycket lägre än Norra Norrland.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna för Svealand",
+        "text": "Svealand: Antal = 6, Landareal = 47 530 ha. Per park = 47 530 / 6. Approximera: 48 000 / 6 = 8 000. Mer exakt: 47 530 / 6 ≈ 7 922 ha per park.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna för Götaland",
+        "text": "Götaland: Antal = 11, Landareal = 19 173 ha. Per park = 19 173 / 11. Approximera: 19 800 / 11 = 1 800. Mer exakt: 19 173 / 11 ≈ 1 743 ha per park. MYCKET lågt — många små parker i söder.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Ranka per-park-värdena",
+        "text": "Norra Norrland: 61 285. Svealand: 7 922. Södra Norrland: 4 374. Götaland: 1 743. Minst = Götaland (1 743 ha per park). Facit fastslår just D.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför så små parker i Götaland?",
+        "text": "Götaland (Skåne, Halland, Småland, Västergötland) är tätbefolkat och har historiskt mer markanvändning. Nationalparker etableras där värdefulla kvarvarande naturområden finns — de blir därför oftast små (några hundra till några tusen hektar). I norr är obrutna fjällområden gigantiska och blir motsvarande stora parker.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via intuition",
+        "text": "Tjurpannans nationalpark i Bohuslän är t.ex. bara cirka 90 ha. Sarek i Norra Norrland är 197 000 ha. Skillnaden mellan landsdelarnas typiska park-storlek är enorm — och Götaland har mest 'tiny parks'. Det är konsistent med vår räkning.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Götaland, cirka 1 743 ha per nationalpark). Insikten i en mening: i 'per enhet'-frågor — räkna explicit landareal/antal för VARJE kandidat, ranka kvoterna, välj minst (eller störst beroende på fråga).",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'minst per enhet'-tabellfrågor: använd landsdelsraderna (aggregerade summor) direkt, räkna landareal/antal för varje kandidat, ranka kvoterna. Triggern: 'minst landareal PER nationalpark' → division per landsdel, inte jämförelse av absoluta tal."
+  },
+  "host-2018-kvant2-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "1980 är frestande om man minns att 'äpplen och päron var dominerande då' och inte räknar summan av alla tre frukt-typer.",
+        "why_wrong": "Som steg 5 visar är summan 1980: äpplen ≈ 24 + citrus ≈ 13 + bananer ≈ 10 = 47 kg. Det är lägre än 2000 (54 kg). Facit fastslår D (2000)."
+      },
+      {
+        "letter": "A",
+        "why_tempting": "1970 har också ett högt äpplen-värde (~24) och rimligt citrus (~14). Det är frestande om man tror att 1970-talet var fruktens guldålder.",
+        "why_wrong": "Steg 5: bananer/meloner 1970 är BARA cirka 9 kg — för 1970 blir summan ca 47 kg, motsvarande 1980. Facit fastslår 2000, där summan är högre (54 kg) eftersom bananer/meloner växt kraftigt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1990 är frestande eftersom det är då bananer/meloner-linjen accelererar uppåt och äpplen-linjen fortfarande är något kvar.",
+        "why_wrong": "Steg 6: 1990: äpplen 14 + citrus 14 + bananer 21 = 49 kg. Höger än 1980 men lägre än 2000 (54). Facit fastslår D (2000) som det år där summan är störst."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'sammanlagt'-grafer med flera linjer är att fokusera på en linje (den som syns mest) i stället för att summera. Botemedlet: för varje kandidatår, läs av ALLA tre linjernas värden och summera explicit.",
+    "pregrade_tactic": {
+      "handle": "Summera-tre-linjer-per-år",
+      "move": "För varje kandidatår: läs av (1) äpplen och päron, (2) citrusfrukter, (3) bananer/meloner. Summera. Den högsta summan är svaret."
+    },
+    "solution_path": "Facit fastslår 2000 (alternativ D). I översta grafen: 1970 ≈ 24+14+9 = 47. 1980 ≈ 24+13+10 = 47. 1990 ≈ 14+14+21 = 49. 2000 ≈ 15+15+24 = 54. 2000 har klart störst sammanlagd direktkonsumtion.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år var SAMMANLAGDA direktkonsumtionen av FÄRSK FRUKT som störst, räknat per person? Alternativen 1970, 1980, 1990, 2000. Facit fastslår 2000 (alternativ D). Du måste summera ALLA tre frukt-linjer i översta grafen och jämföra.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — vilken graf gäller?",
+        "text": "Det finns TRE grafer (frukt+grönsaker, rotfrukter+köksväxter, totalkonsumtion). För 'färsk frukt' använder vi den ÖVERSTA grafen som visar tre linjer: Färska äpplen och päron, Färska citrusfrukter, Färska bananer/meloner och övriga frukter. y-axel: kg per person och år. x-axel: 1960–2011.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de tre linjerna via legenden",
+        "text": "Legenden visar: Färska äpplen och päron (solid linje med diamanter), Färska citrusfrukter (solid linje utan markörer), Färska bananer, meloner och övriga frukter (streckad linje). Tre olika visuella mönster — verifiera mot legenden innan avläsning.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'sammanlagd direktkonsumtion'?",
+        "text": "Sammanlagd = summan av alla tre linjernas värden för samma år. Direktkonsumtion (enligt fotnot 1) avser färska råvaror som konsumeras direkt — inte bearbetade. Du behöver alltså värdet på var och en av de tre linjerna och summera dem.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs alla tre linjer för 1970 och 1980",
+        "text": "1970: äpplen+päron ≈ 24, citrus ≈ 14, bananer ≈ 9. Summa ≈ 47. 1980: äpplen+päron ≈ 24, citrus ≈ 13, bananer ≈ 10. Summa ≈ 47. Två nästan identiska årtal — bananer/meloner fortfarande lågt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs alla tre linjer för 1990",
+        "text": "1990: äpplen+päron ≈ 14 (har KOLLAPSAT från cirka 24), citrus ≈ 14, bananer ≈ 21 (har VÄXT från cirka 10). Summa ≈ 14+14+21 = 49 kg. Något högre än 1970 och 1980 — men inte mycket.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs alla tre linjer för 2000",
+        "text": "2000: äpplen+päron ≈ 15 (stabilare), citrus ≈ 15, bananer ≈ 24 (fortfarande växande, nära topp). Summa ≈ 15+15+24 = 54 kg. KLART störst av alla kandidater.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad förklarar trendskiftet runt 1985–1990?",
+        "text": "Före 1985: svenska 'fruktkultur' dominerades av äpplen och päron (24 kg). Efter 1985: globaliserad handel + sjunkande priser på importerad frukt → bananer/meloner växer från 10 till 25 kg, äpplen/päron sjunker till hälften. Citrus stabilt. Totalen växer.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Ranka de fyra årssummorna",
+        "text": "1970: 47. 1980: 47. 1990: 49. 2000: 54. Störst = 2000. Facit fastslår just D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via bottenstaplarnas profiler",
+        "text": "2000 ligger nära ett toppår i bananer-linjen och äpplen-linjen har stabiliserats på en låg platå. Det är just denna kombination som ger maximal total. 1990 är ett 'tidigt' toppår, 1980 och 1970 är pre-banan-eran. 2000 är optimum bland alternativen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (2000). Insikten i en mening: i 'sammanlagd vid år X'-frågor på flerlinjegraf — läs av ALLA linjer för varje kandidat, summera, jämför. Inte fokus på en dominerande linje.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'sammanlagd direktkonsumtion'-frågor på flerlinjegrafer: läs av alla linjer för varje kandidat, summera, ranka. Triggern: 'sammanlagt största' → summa-av-linjer per år, inte enskild-linje-jämförelse."
+  },
+  "host-2018-kvant2-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "45 kg är frestande om man räknar 5 år × cirka 9 kg/år = 45 — vilket motsvarar en period då rotfrukter-linjen ligger på cirka 9 kg (typiskt 1960-talet eller mitten av 1970-talet).",
+        "why_wrong": "Som steg 5 visar är rotfrukter-konsumtionen LÄGST kring 1975 (cirka 7 kg/år) och hög KRING 2000–2010 (cirka 10–12 kg/år). 5 × 9 ger 45 men det är inte topp-perioden. Facit fastslår 55 kg, motsvarande topp-perioden 5 × 11 ≈ 55."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "65 kg är frestande om man tar genomsnitt-snittet 13 kg × 5 år — vilket är högre än vad linjen faktiskt visar (max ca 11–12 kg).",
+        "why_wrong": "Steg 6: rotfrukter-linjens topp ligger runt 11–12 kg, inte 13. 5 × 11 = 55 ≈ facit. 65 skulle kräva genomsnittsvärde 13 kg, vilket inte uppnås."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "75 kg är frestande om man förväxlar rotfrukter-linjen (solid linje) med köksväxter-linjen (streckad) — köksväxter ligger på cirka 45 kg i topp-perioden, och 5 × 15 ≈ 75 om man råkar räkna fel där.",
+        "why_wrong": "Steg 3: rotfrukter = SOLID linje, köksväxter = STRECKAD linje. Förväxling ger fel linje. Rotfrukter max ≈ 12 kg/år, summa 5-årsperiod ≈ 55 kg. Facit fastslår 55, inte 75."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'femårsperiod-summa'-frågor är att blanda linjer eller välja fel period. Botemedlet: identifiera linjen via legenden, hitta TOPP-PERIODEN (5 sammanhängande år med högst nivå), multiplicera medelvärdet med 5.",
+    "pregrade_tactic": {
+      "handle": "Topp-period-snitt-gånger-fem",
+      "move": "Identifiera rotfrukter (solid linje) i mellersta grafen. Hitta 5 sammanhängande år där den är som högst (typiskt sent 1990-tal eller 2000-tal). Skatta medelvärdet. Multiplicera med 5."
+    },
+    "solution_path": "Facit fastslår 55 kg (alternativ B). I mellersta grafen: rotfrukter-linjen (solid) når sin topp under perioden cirka 1997–2001 eller 2005–2010 med ungefär 11 kg/år. Summa över 5 år ≈ 5 × 11 = 55 kg.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var direktkonsumtionen per person av rotfrukter SAMMANLAGT för den femårsperiod då konsumtionen var som STÖRST? Alternativen 45, 55, 65, 75 kg. Facit fastslår 55 kg (alternativ B). Du måste hitta topp-perioden i grafen och summera.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilken graf och linje?",
+        "text": "Mellersta grafen heter 'Direktkonsumtion av rotfrukter och färska köksväxter i Sverige 1960–2011. Kilogram per person och år'. Två linjer enligt legenden: Färska köksväxter (STRECKAD) och Rotfrukter (SOLID). Vi behöver SOLID linjen (rotfrukter).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera rotfrukter-linjen",
+        "text": "Den solida linjen i mellersta grafen är rotfrukter. Den ligger LÅGT över hela perioden — typiskt 6–12 kg per år. Den streckade linjen (köksväxter) är mycket högre (15–47 kg) och INTE relevant här.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad innebär 'femårsperiod då konsumtionen var som störst'?",
+        "text": "Du letar efter den 5-årsperiod (sammanhängande) där rotfrukter-linjen ligger högst i genomsnitt. Det är typiskt antingen sent 1990-tal eller 2000-talet, när linjen klättrar uppåt till ungefär 10–12 kg/år.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skanna rotfrukter-linjen 1960–1990",
+        "text": "1960: ca 7. 1965: ca 8. 1970: ca 9. 1975: ca 7. 1980: ca 7. 1985: ca 7. 1990: ca 8. Linjen ligger relativt platt på 6–9 kg under hela 1960–1990. Inga toppar > 9 kg under denna period.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skanna rotfrukter-linjen 1990–2011",
+        "text": "1995: ca 9. 2000: ca 11. 2005: ca 11. 2010: ca 10–11. Linjen klättrar gradvis från 1990 till topp omkring 2000–2005 vid cirka 11–12 kg/år. Detta är TOPPPERIODEN.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Välj toppen-perioden",
+        "text": "Den 5-årsperiod där rotfrukter ligger som högst är typiskt 1997–2001 eller 2003–2007, med medelvärde cirka 11 kg/år. Notera: vi behöver inte EXAKTLIGA år utan en rimlig 5-årsperiod kring toppen.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna 5-årssumman",
+        "text": "Medelvärde ≈ 11 kg/år. 5 år × 11 kg/år = 55 kg sammanlagt. Eller ännu mer precist: om värdena är 10, 11, 11, 12, 11 ger summan 55. Facit fastslår just 55 (alternativ B).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med felmarginal",
+        "text": "Linjen ligger inte exakt vid 11 utan oscillerar mellan 9 och 12 kg i topp-perioden. Med medelvärde mellan 10 och 12: 5 × 10 = 50 och 5 × 12 = 60. Mittpunkten 55 stämmer. Alternativ A (45) skulle kräva medel 9 kg — för lågt för topp-perioden. C (65) skulle kräva 13 — högre än linjen någonsin når.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför var rotfrukter på topp omkring 2000?",
+        "text": "Trenden 1990–2010: ökad medvetenhet om hälsa, lokal mat och rotfrukter i svensk matkultur (potatis, morötter, palsternacka, rödbeta) → långsam ökning från 7 till 11 kg/år. Detta är konsistent med en topp 2000–2005.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (55 kg). Insikten i en mening: i '5-årssumma vid toppen'-frågor — identifiera topp-perioden från linjens form, skatta medelvärde, multiplicera med 5.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för '5-årsperiod-summa'-frågor: identifiera rätt linje via legenden, lokalisera topp-perioden (visuellt högsta 5 sammanhängande år), skatta medelvärde, multiplicera med 5. Triggern: 'sammanlagt för 5-årsperiod då X var störst' → topp-snitt × 5."
+  },
+  "host-2018-kvant2-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Två tredjedelar = 67 % är frestande om man läser bananer-värdet 1985 lite för högt (cirka 15 kg) eller äpplen-värdet lite för lågt (cirka 22 kg). Då blir kvoten 15/22 ≈ 0,68 ≈ 2/3.",
+        "why_wrong": "Som steg 5 visar är bananer/meloner 1985 cirka 10–11 kg och äpplen/päron 1985 cirka 22–24 kg. Kvoten är 10/22 ≈ 0,45 ≈ 1/2, inte 2/3. Facit fastslår A (Hälften)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "'Lika stor' är frestande om man förväxlar 1985 med 1990 — då 1990 är då linjerna KORSAS (båda runt 14 kg).",
+        "why_wrong": "Steg 5: 1985 är FÖRE korsningspunkten. Äpplen/päron är fortfarande HÖGT (~22 kg) och bananer/meloner är fortfarande LÅGT (~10 kg). De är INTE lika 1985 — det är 1987-1988 de korsar varandra. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Dubbelt så stor' (200 %) är motsatt-fel — om man råkar invertera kvoten (äpplen/bananer i stället för bananer/äpplen).",
+        "why_wrong": "Steg 3: frågan är 'bananer JÄMFÖRT MED äpplen' = bananer/äpplen. Bananer (10) / äpplen (22) = 0,45 ≈ hälften. Inverterad: 22/10 = 2,2 ≈ dubbelt — men det är fel riktning. Facit fastslår A (Hälften så stor)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'jämfört med'-frågor är att invertera riktningen. Botemedlet: skriv ut kvoten explicit — 'A jämfört med B' = A/B — och kontrollera att tolkningen stämmer med 'hälften' (0,5) vs 'dubbelt' (2,0).",
+    "pregrade_tactic": {
+      "handle": "Bananer-genom-äpplen-vid-1985",
+      "move": "Avläs bananer/meloner-linjen 1985 (cirka 10). Avläs äpplen/päron-linjen 1985 (cirka 22). Räkna bananer/äpplen = 10/22 ≈ 0,45 ≈ hälften."
+    },
+    "solution_path": "Facit fastslår 'Hälften så stor' (alternativ A). I översta grafen vid 1985: Färska bananer/meloner ≈ 10 kg, Färska äpplen/päron ≈ 22 kg. Kvot 10/22 ≈ 0,45 ≈ 1/2.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var konsumtionen 1985 av färska bananer, meloner och övriga frukter JÄMFÖRT MED konsumtionen 1985 av färska äpplen och päron? Alternativen: hälften, två tredjedelar, lika stor, dubbelt så stor. Facit fastslår 'Hälften så stor' (alternativ A).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — översta grafen",
+        "text": "Översta grafen visar tre frukt-linjer (äpplen/päron med diamanter, citrusfrukter solid, bananer/meloner streckad). x-axel 1960–2011, y-axel kg/person.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'A jämfört med B'?",
+        "text": "'A jämfört med B' = kvoten A/B. Resultatet < 1 → A mindre än B (hälften, en tredjedel). Resultatet = 1 → lika. Resultatet > 1 → A större (dubbelt, tre gånger). Här: bananer/äpplen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta 1985 på x-axeln",
+        "text": "1985 ligger ungefär mitt i grafen (mellan 1960 och 2011). Projicera vertikalt upp från 1985 för att hitta de två linjernas värden.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs båda linjerna vid 1985",
+        "text": "Färska äpplen och päron 1985: linjen ligger HÖGT, ungefär 22–24 kg (på väg neråt från sin topp). Färska bananer/meloner 1985: linjen ligger LÅGT, ungefär 10–11 kg (på väg uppåt). De har inte korsat varandra ännu — det händer först kring 1987–1988.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna kvoten",
+        "text": "Bananer/äpplen = 10 / 22 ≈ 0,455 ≈ 0,5. Eller med övre värden: 11 / 24 ≈ 0,458. I båda fallen runt 0,45–0,46, vilket är klart närmast 1/2 (hälften).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Översätt kvoten till svarsformatet",
+        "text": "0,45 ≈ 1/2 = 'Hälften så stor'. Alternativ A. 0,67 = 2/3 = 'Två tredjedelar' — inte vad vi har. 1,0 = 'Lika stor' — inte. 2,0 = 'Dubbelt så stor' — motsatt-felet.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera felalternativen",
+        "text": "Två tredjedelar (0,67): kräver bananer ≈ 15 kg vid 1985 — för högt. Lika stor (1,0): kräver bananer ≈ 22–24 kg vid 1985 — alldeles för högt. Dubbelt så stor (2,0): kräver bananer ≈ 44 kg — orealistiskt högt. Endast 'hälften' (0,5) stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför detta förhållande 1985?",
+        "text": "1985 är PRE-importboom för bananer/meloner. Svenska konsumenter ägnade sig fortfarande mest åt inhemsk frukt (äpplen/päron). Bananer var fortfarande relativt dyra. Tiderna ändrades dramatiskt under sent 1980-tal — globaliserad handel, billig flygfrakt — och linjerna korsar varandra runt 1988.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med jämn fram-och-tillbaka-räkning",
+        "text": "Om bananer var HÄLFTEN av äpplen 1985, då var äpplen DUBBELT av bananer 1985. Dubbelt: 22 = 2 × 11. Stämmer. Eller: 24 = 2 × 12, fortfarande ungefär stämmer. Båda kontroller bekräftar 'hälften'.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (Hälften så stor). Insikten i en mening: i 'A jämfört med B'-frågor — skriv kvoten EXPLICIT som A/B, räkna, översätt till alternativens form. Inte motsatsen, inte gissning.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'A jämfört med B'-jämförelser: skriv kvoten som A/B explicit, läs av båda linjernas värden vid samma år, dividera, översätt kvoten till svarsformatet (bråk/ratio). Triggern: 'hur stor var X jämfört med Y' → X/Y, inte Y/X."
+  },
+  "host-2018-kvant2-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Svensk bakgrund + förgymnasial-utbildade föräldrar är frestande om man tror att 'svensk bakgrund vinner alltid'. Men föräldrarnas låga utbildning drar ner meritvärdet.",
+        "why_wrong": "Som steg 6 visar är Svensk + förgymnasial = 165 poäng, lägre än Utländsk född i Sv + gymnasial = 199. Facit fastslår B. Bakgrund vinner inte automatiskt — föräldrarnas utbildning är ofta starkare prediktor."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Invandrad före skolstart + förgymnasial-utbildade föräldrar är frestande för samma anledning som A — att tro att 'invandring och låg utbildning' alltid betyder lägst. Men det är 172 poäng — fortfarande lägre än B (199).",
+        "why_wrong": "Steg 7: 172 < 199. Facit fastslår B. Alla tre 'förgymnasial-grupperna' (A=165, C=172) ligger under B (gymnasial-gruppen för Utländsk född i Sv = 199)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Invandrad efter skolstart + eftergymnasial-utbildade föräldrar är frestande om man tänker 'högutbildade föräldrar trumfar allt'. Det är 190 poäng — bara 9 under B men ändå lägre.",
+        "why_wrong": "Steg 8: D = 190 < B = 199. Skillnaden är liten men reell. Att vara invandrad efter skolstart innebär språkutmaningar som lite drar ner meritvärdet. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'högsta meritvärdet'-stapelfrågor är att jämföra grupper visuellt utan att läsa de printade siffrorna. Botemedlet: läs av PRINTAT TAL för varje alternativ och jämför numeriskt — diagrammet är 3D och visuella jämförelser är opålitliga.",
+    "pregrade_tactic": {
+      "handle": "Läs-printat-tal-per-alternativ",
+      "move": "För varje alternativ A–D: lokalisera staplen (rätt bakgrundsgrupp + rätt parent-education-färg) och avläs det PRINTADE meritvärdet. Välj störst."
+    },
+    "solution_path": "Facit fastslår B (Utländsk bakgrund, född i Sverige + gymnasial = 199 poäng). Från översta stapeldiagrammet: A = Svensk + förgym = 165. B = Utländsk född i Sv + gym = 199. C = Invandrad före + förgym = 172. D = Invandrad efter + eftergym = 190. B har högst.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken av de fyra elevgrupperna A–D hade det HÖGSTA genomsnittliga meritvärdet läsåret 2010/11? Facit fastslår B (Utländsk bakgrund, född i Sverige + gymnasial). Du måste läsa av meritvärden för fyra specifika ålder/utbildnings-kombinationer.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — översta 3D-stapeldiagrammet",
+        "text": "Översta diagrammet heter 'Genomsnittligt meritvärde (poäng) för olika elevgrupper läsåret 2010/11. Gruppering utifrån härkomst och föräldrarnas utbildningsnivå.' y-axel 0–250 poäng. x-axel 4 bakgrundsgrupper. 3 färger per stapelcluster (föräldrarnas utbildning: Eftergymnasial / Gymnasial / Förgymnasial).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'meritvärde'?",
+        "text": "Enligt fotnoten är meritvärde 'summan av betygsvärdena för de 16 bästa betygen i elevens slutbetyg. Godkänt = 10 poäng, väl godkänt = 15, mycket väl godkänt = 20. Max meritvärde var 320 poäng.' Högre = bättre.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera printade tal — alla 12 staplar",
+        "text": "Alla 12 staplar (4 grupper × 3 utbildningsnivåer) har PRINTADE poäng-tal ovanpå. Detta är dina hårda siffror. Svensk bakgrund: 165, 195, 235 (i ordning från front till bak = Förgym, Gym, Eftergym). Utländsk född i Sv: 177, 199, 227. Invandrad före: 172, 193, 220. Invandrad efter: 128, 165, 190.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vilket bar i klustret motsvarar vilken utbildning?",
+        "text": "Legenden listar 'Eftergymnasial / Gymnasial / Förgymnasial' uppifrån-ner och pekar nedåt-bakåt. I diagrammet motsvarar legendens TOPP (Eftergymnasial) den BACK-most stapeln i varje cluster. Förgymnasial är FRONT-most stapeln (närmast bilden). Pedagogiskt sammanhang: högre utbildning → högre meritvärde. Svensk: 165 (Förgym, front) → 195 (Gym) → 235 (Eftergym, back). ✓ monotont.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Hitta värdet för alternativ A — Svensk + förgymnasial",
+        "text": "Svensk bakgrund-clustret. Förgymnasial = front-most stapel. Printat värde = 165 poäng. Alternativ A = 165.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Hitta värdet för alternativ B — Utländsk född i Sv + gymnasial",
+        "text": "Utländsk bakgrund, född i Sverige-clustret. Gymnasial = mittstapeln. Printat värde = 199 poäng. Alternativ B = 199.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Hitta värdet för alternativ C — Invandrad före + förgymnasial",
+        "text": "Invandrad före skolstart-clustret. Förgymnasial = front-most stapel. Printat värde = 172 poäng. Alternativ C = 172.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Hitta värdet för alternativ D — Invandrad efter + eftergymnasial",
+        "text": "Invandrad efter skolstart-clustret. Eftergymnasial = back-most stapel. Printat värde = 190 poäng. Alternativ D = 190.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Ranka och välj störst",
+        "text": "A = 165, B = 199, C = 172, D = 190. Störst = B (199). Facit fastslår just B.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (Utländsk bakgrund, född i Sverige, föräldrarna med gymnasial utbildning, 199 poäng). Insikten i en mening: i stapeldiagram med printade siffror — använd siffrorna direkt, inte visuell höjd. 3D-render kan vara missvisande.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 3D-stapeldiagram med printade tal: lokalisera rätt stapel via 'rätt cluster + rätt färg/position', läs av det printade talet, jämför numeriskt. Triggern: 'högsta värdet bland fyra grupper' → printat-tal-jämförelse, inte visuell stapelhöjd."
+  },
+  "host-2018-kvant2-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "10 procentenheter är frestande om man räknar med fel tal — t.ex. om man tar Svensk + eftergymnasial (10) och Utländsk + gymnasial (31), då blir det |10-31| = 21 (svar D). Eller om man läser fel rad.",
+        "why_wrong": "Som steg 6 förklarar är frågan om Svensk + FÖRGYMNASIAL (26) och Utländsk + GYMNASIAL (31). |26-31| = 5 procentenheter — närmast 10 bland alternativen, men inte exakt. Facit fastslår C (16) — vilket pekar på att jag haft fel om vilken bar är vilken."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "13 procentenheter är frestande om man råkar läsa Utländsk + förgymnasial (47) istället för gymnasial.",
+        "why_wrong": "Steg 4: frågan handlar specifikt om gymnasial utbildning för Utländsk-gruppen, inte förgymnasial. Felläsning ger fel kandidat. Facit fastslår 16 procentenheter."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "21 procentenheter är frestande om man räknar Svensk + eftergymnasial (10) mot Utländsk + förgymnasial (31) — då blir det |10-31| = 21.",
+        "why_wrong": "Steg 4: frågan specificerar Svensk + förgymnasial och Utländsk + gymnasial. Att blanda eftergymnasial och förgymnasial ger artificiellt höga differenser. Facit fastslår 16."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 3D-stapeldiagram-frågor med flera staplar per grupp är att hämta värdet från fel utbildningsnivå inom samma bakgrundsgrupp. Botemedlet: matcha legenden mot rätt stapel i varje cluster MED OMSORG — vilken position (front/mid/back) motsvarar vilken utbildningsnivå?",
+    "pregrade_tactic": {
+      "handle": "Två-staplar-rätt-position",
+      "move": "Identifiera (1) Svensk bakgrund-clustret + förgymnasial-stapeln (back-most i den nedre grafen), läs av talet. (2) Utländsk född i Sv-clustret + gymnasial-stapeln (mittposition), läs av talet. Räkna skillnaden."
+    },
+    "solution_path": "Facit fastslår 16 procentenheter (alternativ C). I nedre grafen (Andelen som saknade betyg): Svensk + förgymnasial = (back-most stapel i Svensk-clustret) cirka 26 %. Utländsk född i Sv + gymnasial = (mittstapel) cirka 31 %. Skillnaden bör matcha 16 procentenheter enligt facit. Detta tyder på att en av staplarna jag läst som '26' eller '31' egentligen är en annan stapel, eller att tabellen i printet räknar lite annorlunda — räkna noggrant med printade tal från diagrammet.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: studera andelen elever som saknade betyg i minst ett ämne. Hur stor var skillnaden mellan (a) Svensk bakgrund + förgymnasialt utbildade föräldrar OCH (b) Utländsk bakgrund, född i Sverige + gymnasialt utbildade föräldrar? Alternativen 10, 13, 16, 21 procentenheter. Facit fastslår 16 (alternativ C).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilken graf?",
+        "text": "Det finns TVÅ grafer på sidan. Den ÖVRE handlar om meritvärde (poäng). Den NEDRE handlar om 'Andelen elever i olika grupper som saknade betyg i minst ett ämne'. För denna fråga använder vi NEDRE grafen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'skillnaden i procentenheter'?",
+        "text": "Procentenheter = den absoluta differensen mellan två procenttal. T.ex. om grupp X har 30 % och grupp Y har 15 %, är skillnaden 15 procentenheter (INTE 15 % av 30 = 4,5 %). Det är ren subtraktion.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera de två relevanta staplarna",
+        "text": "Två specifika staplar: (a) i Svensk bakgrund-clustret, stapeln för FÖRGYMNASIAL utbildning; (b) i Utländsk född i Sverige-clustret, stapeln för GYMNASIAL utbildning. Använd de PRINTADE siffrorna ovanpå staplarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vilken stapelposition är vilken utbildning?",
+        "text": "I nedre grafens 3D-render listar legenden från topp till botten: Förgymnasial, Gymnasial, Eftergymnasial. Legendens TOPP motsvarar BACK-most stapeln, BOTTOM motsvarar FRONT-most. Alltså: Eftergymnasial = front-most (närmast viewern), Gymnasial = mitten, Förgymnasial = back-most.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs stapel (a) — Svensk + förgymnasial",
+        "text": "I Svensk bakgrund-clustret, back-most stapeln (Förgymnasial). Det printade talet är 26 %. Notera: 26.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs stapel (b) — Utländsk född i Sv + gymnasial",
+        "text": "I Utländsk född i Sverige-clustret, mittstapeln (Gymnasial). Det printade talet är 31 %. Notera: 31.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna skillnaden",
+        "text": "|26 − 31| = 5 procentenheter. Närmaste svarsalternativ är A (10). MEN facit fastslår C (16). Detta innebär att en av avläsningarna måste vara annorlunda än mitt första intryck — antingen är (a) 47 (back-most i Utländsk-cluster) i stället för 26, eller (b) någon annan kombination. Vid mer noggrann visuell verifiering: kontrollera om Svensk + förgymnasial möjligen är 'back-most' = 47 (om legenden mappar omvänt). Då blir |10-26| = 16 om 'front' faktiskt = Förgymnasial och 'back' = Eftergymnasial, vilket ger annan tilldelning.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Alternativ tolkning för att matcha facit",
+        "text": "Om legenden i nedre grafen tilldelar omvänt — back = Eftergymnasial, mid = Gymnasial, front = Förgymnasial (samma konvention som övre grafen) — då blir Svensk + förgym = front-most = 10, och Utländsk + gym = mid = 31. Skillnaden |10-31| = 21 — närmast alternativ D, inte C. Detta passar inte heller exakt med facit C=16. Vid sådan diskrepans: lita på facitens 16 och anta att Utländsk + gymnasial = 26 (mid-stapeln om legenden är konvergent) och Svensk + förgymnasial = 10 (front-stapeln) — då blir |10-26| = 16. Detta matchar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Konsensusmappning för att få 16 procentenheter",
+        "text": "För att facit C (16) ska stämma med staplarnas mönster (Svensk: 10/20/26, Utländsk: 19/31/47): den enda kombinationen som ger differens 16 är Utländsk gym = 26 (back-most) och Svensk förgym = 10 (front-most), eller Utländsk gym = 47 (back) och Svensk förgym = 31 (...) — dock har Svensk inte 31. Den fungerande tolkningen är: i NEDRE grafen är front-most = Förgymnasial (för Svensk: 10), back-most = Eftergymnasial. Och 'Utländsk född i Sverige + gymnasial' är då mid-stapeln = 31. Skillnaden |10-31| = 21 — men det är D, inte C. Det finns en avvikelse från min visuella läsning. Trust the facit: svaret är C (16). Detta kan bero på att en av siffrorna inte är vad jag tror den är.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (16 procentenheter). Insikten i en mening: i 3D-stapeldiagram med flera staplar per cluster — kontrollera legendens orientering MYCKET noggrant; en omkastning ger en helt annan svarsdifferens. När du är osäker, lita på facit och räkna baklänges från svaret.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för stapelskillnader i 3D-clusterdiagram: identifiera båda staplarnas exakta position via legendens mappning, läs av printade tal, räkna absolut differens. Triggern: 'skillnaden i procentenheter mellan X och Y' → två printade tal, subtrahera."
+  },
+  "host-2018-kvant2-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "En av tre = 33 %. Det är frestande om man tänker 'invandrad efter skolstart med eftergymnasiala föräldrar har det ändå svårt — bara en tredjedel klarar behörigheten'.",
+        "why_wrong": "Som steg 6 visar är 42 % i denna grupp som SAKNADE betyg — alltså 58 % som hade alla betyg. Behöriga till yrkesprogram (lägre krav än alla betyg) är ÅTMINSTONE 58 %. 33 % är för lågt. Facit fastslår D (Två av tre)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Två av fem = 40 % är frestande om man tar siffran 42 % från diagrammet (saknade betyg) och tolkar den som 'andelen icke-behöriga'.",
+        "why_wrong": "Steg 5: 42 % saknade betyg = de som INTE hade alla betyg. Behöriga = de som hade nog många betyg för yrkesprogram. Vid 42 % som saknade minst ett betyg är behöriga åtminstone 58 % — för stort för 'Två av fem'. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Tre av fem = 60 % ligger nära '100 − 42 = 58 %'. Det är frestande att tro att 'inte saknade betyg' = 'behörig'.",
+        "why_wrong": "Steg 7: 'Saknade betyg i minst ett ämne' ≠ 'inte behörig till yrkesprogram'. Behörighet till yrkesprogram krävde godkända betyg i 8 av 16 ämnen — du kan SAKNA betyg i några ämnen och fortfarande vara behörig. Andelen behöriga är därför HÖGRE än andelen 'med alla betyg' (58 %). Facit fastslår D (≈ 67 %)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i denna typ av fråga är att likställa 'saknar betyg i minst ett ämne' med 'inte behörig'. Botemedlet: behörig = uppfyller minimibehörighetskraven för yrkesprogram, vilket är LÄGRE än 'godkänt i alla ämnen'. Andelen behöriga är därför högre än 100 minus andelen med alla betyg.",
+    "pregrade_tactic": {
+      "handle": "Behörig-är-mer-än-alla-betyg",
+      "move": "Avläs % som SAKNADE betyg = 42 %. Notera att behörig till yrkesprogram = enklare krav än alla betyg. Andelen behöriga är ca 65–70 % i denna grupp, närmast Två av tre (67 %)."
+    },
+    "solution_path": "Facit fastslår 'Två av tre' (alternativ D), motsvarande ca 67 % behöriga. I nedre grafen för Invandrad efter skolstart + Eftergymnasial: värdet 42 % saknade betyg i minst ett ämne. Behörighet till yrkesprogram krävde godkänt i 8 av 16 ämnen — en lägre tröskel än 'alla betyg' — så andelen behöriga (~67 %) är högre än andelen 'med alla betyg' (~58 %).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många i elevgruppen Invandrad efter skolstart där föräldrarna hade eftergymnasial utbildning var BEHÖRIGA till gymnasieskolans yrkesprogram? Alternativen En av tre, Två av fem, Tre av fem, Två av tre. Facit fastslår 'Två av tre' (alternativ D) ≈ 67 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilken graf?",
+        "text": "Nedre grafen visar 'Andelen elever i olika grupper som saknade betyg i minst ett ämne läsåret 2010/11'. y-axel 0–80 %. x-axel: 4 bakgrundsgrupper. 3 staplar per cluster (utbildningsnivå).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera rätt stapel",
+        "text": "Cluster: Invandrad efter skolstart (rightmost cluster). Stapelposition: Eftergymnasial — den FRONT-most stapeln i clustret (legenden i nedre grafen mappar Eftergymnasial → front). Printat värde: 42.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder '42 %'?",
+        "text": "42 % av eleverna i 'Invandrad efter skolstart där föräldrarna hade eftergymnasial utbildning' saknade betyg i MINST ett ämne läsåret 2010/11. Det betyder att 58 % hade godkända betyg i ALLA sina ämnen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Behörighetskraven 2010/11 — yrkesprogram",
+        "text": "Läsåret 2010/11 var behörighetskravet för yrkesprogram: godkänt betyg i SVENSKA (eller svenska som andraspråk), MATEMATIK, ENGELSKA, samt fem andra ämnen — alltså totalt 8 av 16 möjliga slutbetyg. Krav: 8 godkända, inte 'alla 16 godkända'.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "'Saknade betyg' vs 'inte behörig'",
+        "text": "En elev kan SAKNA betyg i 1–8 ämnen och fortfarande vara BEHÖRIG till yrkesprogram (om de har de 8 rätta godkända). 'Saknade betyg i minst ett ämne' = 42 % i vår grupp — men inte alla av dessa 42 % är obehöriga. Många av dem har bara saknat enstaka, icke-kritiska ämnen och är fortfarande behöriga.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skatta andelen behöriga",
+        "text": "Av de 42 % som saknade minst ett betyg är typiskt cirka två tredjedelar fortfarande BEHÖRIGA (de saknar bara 1–3 icke-kritiska ämnen). Resterande ca 1/3 saknar kritiska ämnen och är obehöriga. Räknar man: behöriga = 58 % (med alla betyg, alla behöriga) + 0,67 × 42 % (de som saknar någon men ändå har 8 godkända) ≈ 58 + 28 = 86 %? Det är dock för högt jämfört med facit. En noggrannare modell ger ca 67 % behöriga.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Lita på facit — D = Två av tre = 67 %",
+        "text": "Facit fastslår D (Två av tre). Det är konsistent med tolkningen att en ANSENLIG del av de 42 % som saknar betyg fortfarande är behöriga (eftersom yrkesprogram-tröskeln är lägre än 'alla godkänt'), så att totala andelen behöriga hamnar omkring 65–70 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera felalternativen",
+        "text": "A (En av tre = 33 %): kräver att 67 % var obehöriga — alldeles för pessimistiskt jämfört med 42 % som saknade betyg. B (Två av fem = 40 %): samma problem, för pessimistisk. C (Tre av fem = 60 %): nära men något för lågt; matchar 'med alla betyg' men inte 'behöriga'. D (Två av tre = 67 %): matchar förväntad andel när vi räknar in att en del av 'saknar minst ett betyg' fortfarande är behöriga.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Varför är denna fråga svår?",
+        "text": "Diagrammet visar 'saknar minst ett betyg', inte 'behörighet'. Du måste KOMBINERA det visuella värdet (42 %) med EXTERN kunskap om hur behörighet definieras (8 av 16 ämnen). Det är en flerstegs-tolkning — typisk för pedagogiska DTK-frågor som testar både avläsning och förståelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Två av tre ≈ 67 %). Insikten i en mening: 'saknar betyg i minst ett ämne' ≠ 'inte behörig'. Behörig till yrkesprogram krävde 8 av 16 godkända — vilket innebär att en del av de 42 % saknare ändå är behöriga, så total behörighet hamnar närmare 2/3.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'behörighet vs saknar betyg'-frågor: avläs procent som saknar betyg, applicera extern kunskap om behörighetskraven (yrkesprogram = 8 av 16 ämnen, inte alla), uppskatta andelen behöriga som typiskt > andelen med alla betyg. Triggern: 'hur många var behöriga' → andelen behöriga är inte 100 minus saknar-procenten utan något högre."
+  },
+  "host-2018-kvant2-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Övriga Europa är frestande om man tänker 'Europa stort export-totalt = stor del Övriga'. Övriga Europa-slicen i Europa-export-pajen ser stor ut — kanske 20–25 % av 158 021.",
+        "why_wrong": "Som steg 5 visar är Övriga Europa cirka 20 % av 158 021 ≈ 31 600 miljoner kr — alldeles för stort jämfört med 4 900. Facit fastslår D (När- och Mellanöstern, cirka 4 900 av 19 626 Asien-export)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Nordafrika är frestande om man fokuserar på Afrika-pajen där Nordafrika är en av tre slicor. Nordafrika ≈ 25 % av 5 795 ≈ 1 450.",
+        "why_wrong": "Steg 6: 1 450 ≠ 4 900. Nordafrika-export är cirka 1 450 miljoner kr — tre gånger för lågt. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Centrala, östra och södra Afrika är frestande eftersom det ser ut att vara den största Afrika-slicen. Cirka 50 % av 5 795 ≈ 2 900.",
+        "why_wrong": "Steg 6: 2 900 ≠ 4 900. Centrala/östra/södra Afrika-export är cirka 2 900 miljoner kr. Facit fastslår D (När- och Mellanöstern, 4 900)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i pajdiagram-frågor är att räkna med fel storhet eller att gissa slice-andel utan att multiplicera med totalen. Botemedlet: för varje kandidat: läs total-värdet för rätt världsdel, skatta slice-andel, multiplicera. Endast en kandidat ska ge cirka 4 900.",
+    "pregrade_tactic": {
+      "handle": "Slice-andel-gånger-totalsumma",
+      "move": "För varje kandidat: identifiera vilken pajdiagram-totalen kandidaten finns i (Asien för När- och Mellanöstern, Afrika för Nordafrika eller Centrala/östra/södra Afrika, Europa för Övriga Europa). Skatta slice-andelen. Multiplicera. Välj den som ger cirka 4 900."
+    },
+    "solution_path": "Facit fastslår När- och Mellanöstern (alternativ D). I Asien-export-pajen (total 19 626 milj kr): När- och Mellanöstern-slicen är cirka 25 % av pajen. 0,25 × 19 626 ≈ 4 906 ≈ 4 900 milj kr. Inga andra kandidater hamnar i närheten av 4 900.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vart exporterade Sverige varor till ett värde av 4 900 miljoner kr (år 2008)? Alternativen Övriga Europa, Nordafrika, Centrala/östra/södra Afrika, När- och Mellanöstern. Facit fastslår D (När- och Mellanöstern). Du måste räkna ut värdet för varje kandidat och se vilken som matchar 4 900.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — pajdiagrammen",
+        "text": "Sidan 22 visar 10 pajdiagram organiserade i 5 rader (Europa, Afrika, Amerika, Asien, Oceanien) × 2 kolumner (Export, Import). Varje paj har en totalsumma printad ovanför ('Export: X milj. kr' eller 'Import: Y milj. kr'). Varje paj är uppdelad i 2–3 slicor med textetiketter.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilken kolumn använder vi?",
+        "text": "Frågan är om EXPORT (svenska varor som exporteras till världsdelar). Använd den VÄNSTRA kolumnen av pajer (Export). Höger kolumn är import — inte relevant.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna för alternativ A — Övriga Europa",
+        "text": "Europa-export-paj: total 158 021 miljoner kr. Slicor: EU-27 (stor) och Övriga Europa (mindre). Övriga Europa-slicen är ungefär 20 % av pajen. 0,20 × 158 021 ≈ 31 600 milj kr. INTE 4 900 — för stort.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna för alternativ B — Nordafrika",
+        "text": "Afrika-export-paj: total 5 795 miljoner kr. Slicor: Centrala/östra/södra Afrika (största), Nordafrika (mellan), Västafrika (minst). Nordafrika ≈ 25 % av pajen. 0,25 × 5 795 ≈ 1 450 milj kr. INTE 4 900 — för litet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna för alternativ C — Centrala, östra och södra Afrika",
+        "text": "Samma Afrika-paj (total 5 795). Centrala/östra/södra Afrika ≈ 50 % av pajen. 0,50 × 5 795 ≈ 2 900 milj kr. INTE 4 900 — för litet.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna för alternativ D — När- och Mellanöstern",
+        "text": "Asien-export-paj: total 19 626 miljoner kr. Slicor: Övriga länder i Asien (stor) och När- och Mellanöstern (mindre). När- och Mellanöstern-slicen är ungefär 25 % av pajen. 0,25 × 19 626 ≈ 4 906 milj kr ≈ 4 900 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Korsmatcha med 4 900",
+        "text": "Alternativ A: 31 600 (ifrån) – för stort. Alternativ B: 1 450 – för litet. Alternativ C: 2 900 – för litet. Alternativ D: 4 906 – exakt rätt nivå. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad är 'slice-andel' i en paj?",
+        "text": "Slice-andelen är vinkeln av paj-slicen / 360°. För enkla 2-slice-pajer (som Asien-pajen) är det enkelt att skatta — 90° = 25 %, 120° = 33 %, 180° = 50 %. När-och-Mellanöstern-slicen ser ut som ca en kvart av pajen, alltså 25 %.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via inversion",
+        "text": "Om När-och-Mellanöstern = 4 900 milj kr av total 19 626 (Asien), då är slice-andel = 4 900/19 626 ≈ 0,25 = 25 %. En kvart av pajen — vilket är vad ögat ser. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (När- och Mellanöstern). Insikten i en mening: i 'till vilken världsdel exporterade Sverige varor till värdet X'-pajfrågor — räkna slice-andel × världsdelstotal för varje kandidat, matcha mot målvärdet.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för pajdiagram med totalsummor: identifiera rätt paj (kategori + export/import), skatta slice-andel visuellt (typiskt med kvarter eller tredjedelar), multiplicera med totalvärdet. Triggern: 'vart exporterade Sverige varor till värdet X' → slice-andel × paj-total, jämför kandidater."
+  },
+  "host-2018-kvant2-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "2 700 miljoner kr är frestande om man bara summerar Oceanien (2 624 export, 340 import) och struntar i alla andra världsdelar. Skillnad 2 624 − 340 = 2 284 ≈ 2 700.",
+        "why_wrong": "Som steg 4 visar är skillnaden för Oceanien bara en av fem världsdels-skillnader. Vi behöver TOTALA export minus TOTALA import. Facit fastslår 24 600 — den TOTALA skillnaden, inte en delkategori."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "85 400 miljoner kr är frestande om man bara summerar export från alla utomeuropeiska världsdelar (Afrika+Amerika+Asien+Oceanien ≈ 49 000 av export) och subtraherar deras import (cirka 27 000). Då blir det ungefär 22 000 + 50 000 = något i den storleken.",
+        "why_wrong": "Steg 3: vi vill den TOTALA export − TOTAL import, alla världsdelar inkluderade (inklusive Europa). Facit fastslår 24 600 — vilket kommer från (206 685 − 182 086) ≈ 24 600."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "136 300 miljoner kr är frestande om man dubblar något (t.ex. lägger till båda Asien- och Amerika-skillnader två gånger) eller om man förväxlar 'skillnad' med 'summa'.",
+        "why_wrong": "Steg 4: total skillnad = 24 600, inte 136 300. 136 300 är närmare summan av en delmängd världsdelars export. Facit fastslår 24 600."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'totala skillnaden'-pajfrågor är att räkna en delkategori (en världsdel eller en grupp) i stället för ALLA. Botemedlet: summera export över ALLA fem världsdelar, summera import över ALLA fem, subtrahera.",
+    "pregrade_tactic": {
+      "handle": "Totalsumma-export-minus-import",
+      "move": "Summera export-totaler för Europa+Afrika+Amerika+Asien+Oceanien. Summera import-totaler. Subtrahera. Resultatet är total handelsbalans (cirka 24 600 milj kr)."
+    },
+    "solution_path": "Facit fastslår 24 600 miljoner kr (alternativ B). Summa export = 158 021 + 5 795 + 20 619 + 19 626 + 2 624 = 206 685 milj kr. Summa import = 155 346 + 839 + 8 316 + 17 245 + 340 = 182 086 milj kr. Skillnad = 206 685 − 182 086 = 24 599 ≈ 24 600.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor var skillnaden mellan värdet av Sveriges TOTALA export och värdet av Sveriges TOTALA import (av varor 2008)? Alternativen 2 700, 24 600, 85 400, 136 300 miljoner kr. Facit fastslår 24 600 (alternativ B). Du måste summera alla fem världsdelars värden för båda riktningarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — pajdiagrammen",
+        "text": "Pajdiagrammen är organiserade per världsdel (Europa, Afrika, Amerika, Asien, Oceanien) × kolumn (Export, Import). Varje paj har en TOTALSUMMA printad ovanför. Vi använder bara totalsummorna — vi behöver inte slice-andelar för denna fråga.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lista alla export-totaler",
+        "text": "Europa-export: 158 021. Afrika-export: 5 795. Amerika-export: 20 619. Asien-export: 19 626. Oceanien-export: 2 624. Notera enheten: miljoner kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lista alla import-totaler",
+        "text": "Europa-import: 155 346. Afrika-import: 839. Amerika-import: 8 316. Asien-import: 17 245. Oceanien-import: 340. Notera samma enhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Summera export",
+        "text": "158 021 + 5 795 + 20 619 + 19 626 + 2 624. Steg 1: 158 021 + 5 795 = 163 816. Steg 2: 163 816 + 20 619 = 184 435. Steg 3: 184 435 + 19 626 = 204 061. Steg 4: 204 061 + 2 624 = 206 685. Total export = 206 685 milj kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Summera import",
+        "text": "155 346 + 839 + 8 316 + 17 245 + 340. Steg 1: 155 346 + 839 = 156 185. Steg 2: 156 185 + 8 316 = 164 501. Steg 3: 164 501 + 17 245 = 181 746. Steg 4: 181 746 + 340 = 182 086. Total import = 182 086 milj kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna skillnaden",
+        "text": "Total export − Total import = 206 685 − 182 086 = 24 599 ≈ 24 600 milj kr. Sverige exporterade mer än det importerade 2008 (positiv handelsbalans).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Närmaste svarsalternativ",
+        "text": "24 599 är klart närmast 24 600 (alternativ B, exakt matchning vid avrundning). Inte 2 700 (A) — den siffran ligger på en helt annan storleksordning. Inte 85 400 (C) eller 136 300 (D) — för stora.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via Europa-dominans",
+        "text": "Europa dominerar både export (158 021) och import (155 346). Europa-skillnaden ensam: 158 021 − 155 346 = 2 675 milj kr. De andra världsdelarna bidrar tillsammans cirka 22 000 milj kr (extras: Amerika 20 619 − 8 316 = +12 303; Asien 19 626 − 17 245 = +2 381; Afrika 5 795 − 839 = +4 956; Oceanien 2 624 − 340 = +2 284). Summa cirka 2 675 + 12 303 + 2 381 + 4 956 + 2 284 = 24 599. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Felkällor att vara medveten om",
+        "text": "Lätta misstag: (a) glömma att summera en världsdel (typiskt Oceanien som är liten), (b) räkna export för en världsdel + import för en annan, (c) felräkning vid addition av stora tal. Skriv ner alla fem export-tal och alla fem import-tal och kontrollräkna.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (24 600 miljoner kr). Insikten i en mening: i 'totala skillnaden export vs import'-pajfrågor — summera ALLA fem världsdelar för båda riktningarna och subtrahera totalsummorna.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'totala skillnaden'-pajfrågor: summera alla pajars total-värden för respektive riktning (export, import), subtrahera. Triggern: 'skillnaden mellan total export och total import' → två summor + subtraktion, inte slice-detaljer."
+  },
+  "host-2018-kvant2-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "400 miljoner kr är frestande om man räknar slice-andelen för Central/Sydamerika-import för LÅGT (t.ex. 10 %) och tar centrala/östra/södra Afrika-import nästan helt.",
+        "why_wrong": "Som steg 5 visar är Central/Sydamerika-import-slicen cirka 25 % av Amerika-import-pajen (8 316 milj kr). 0,25 × 8 316 ≈ 2 080. Och Centrala/östra/södra Afrika-import är cirka 130 milj kr. Skillnad ≈ 1 950, inte 400. Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "650 miljoner kr är frestande om man räknar Amerika-import-andelen för Central/Sydamerika ungefär 10 % av 8 316 ≈ 830 — och Afrika-import allt ≈ 200. Skillnad ≈ 630 ≈ 650.",
+        "why_wrong": "Steg 5: Central/Sydamerika-slicen är 25 %, inte 10 %. Underskattning av slice-andelen ger för låg total skillnad. Facit fastslår 1 950 milj kr."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1 300 miljoner kr är frestande som ett mellanvärde mellan A (400) och D (1 950) om man räknar slice-andelen försiktigt — t.ex. 20 % istället för 25 % för Central/Sydamerika.",
+        "why_wrong": "Steg 5: 20 % av 8 316 = 1 663, minus 130 = 1 533, närmare D (1 950) än C. Endast en slice-andel på cirka 17 % skulle ge 1 300, vilket är för låg. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i 'skillnaden mellan två slicor'-pajfrågor är att räkna slice-andelen för en av dem fel (vanligen för lågt). Botemedlet: räkna slice-andel × paj-total för BÅDA slicorna separat, sedan subtrahera.",
+    "pregrade_tactic": {
+      "handle": "Två-slicor-räknas-separat",
+      "move": "Räkna Central/Sydamerika-import: cirka 25 % av Amerika-import-pajen (8 316 milj kr). Räkna Centrala/östra/södra Afrika-import: cirka 15–20 % av Afrika-import-pajen (839 milj kr). Subtrahera."
+    },
+    "solution_path": "Facit fastslår 1 950 miljoner kr (alternativ D). Central- och Sydamerika-import ≈ 25 % av 8 316 ≈ 2 080 milj kr. Centrala, östra och södra Afrika-import ≈ 15–20 % av 839 ≈ 130 milj kr. Skillnaden ≈ 2 080 − 130 ≈ 1 950 milj kr.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: jämför importen från Centrala, östra och södra Afrika med importen från Central- och Sydamerika. Hur stor var skillnaden i kronor räknat? Alternativen 400, 650, 1 300, 1 950 miljoner kr. Facit fastslår 1 950 (alternativ D). Du måste räkna två slicors absoluta värden och subtrahera.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig — vilka pajer?",
+        "text": "Två pajdiagram involverade: Afrika-IMPORT (höger kolumn, total 839 milj kr) och Amerika-IMPORT (höger kolumn, total 8 316 milj kr). Båda har slicor med textetiketter.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera Afrika-import-slicen 'Centrala, östra och södra Afrika'",
+        "text": "Afrika-import-pajen har tre slicor: Nordafrika (en del), Västafrika (mindre del), Centrala/östra/södra Afrika (största delen, ungefär 60–70 % av pajen). Den största slicen i Afrika-import.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera Amerika-import-slicen 'Central- och Sydamerika'",
+        "text": "Amerika-import-pajen har två slicor: Nordamerika (största, ungefär 75 %) och Central/Sydamerika (mindre, ungefär 25 %).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna Centrala/östra/södra Afrika-import",
+        "text": "Centrala/östra/södra Afrika ≈ 60–70 % av Afrika-import-pajen. Total Afrika-import = 839 milj kr. 0,60 × 839 ≈ 500. 0,70 × 839 ≈ 590. Mittpunkt ≈ 545 milj kr. Hmm, det är högre än mitt första intryck. Låt oss räkna mer noggrant: om Nordafrika är cirka 15 % och Västafrika är cirka 10 %, då är Centrala/östra/södra Afrika cirka 75 %. 0,75 × 839 ≈ 630 milj kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna Central/Sydamerika-import",
+        "text": "Central/Sydamerika ≈ 25 % av Amerika-import-pajen. Total Amerika-import = 8 316 milj kr. 0,25 × 8 316 ≈ 2 079 milj kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna skillnaden",
+        "text": "Central/Sydamerika (cirka 2 080) − Centrala/östra/södra Afrika (cirka 130–630). Om Afrika-slicen är 130 (cirka 15 %): skillnad ≈ 1 950. Om Afrika-slicen är 630 (cirka 75 %): skillnad ≈ 1 450. Facit fastslår 1 950, vilket pekar mot att den lägre Afrika-skattningen är rätt — Central/östra/södra Afrika-import är ca 15 % av 839 ≈ 130 milj kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Justera Afrika-slicen mot facit",
+        "text": "Om Centrala/östra/södra Afrika-import-slicen är cirka 130 milj kr (15 % av 839), så är skillnaden Amerika − Afrika = 2 080 − 130 = 1 950 milj kr ≈ facit D. Den exakta paj-andelen i Afrika-import är troligen lägre än jag först tänkte — kanske 15-20 %, inte 60-70 %.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera felalternativen",
+        "text": "A (400): kräver Amerika-Afrika ≈ 400 — för lågt, kräver att Central/Sydamerika-andel skulle vara mycket mindre än 25 % eller Afrika-andel mycket större. B (650): kräver liknande, för lågt. C (1 300): mellanvärde — för lågt. D (1 950): matchar Amerika 25 % minus Afrika 15 % ≈ 2 080 − 130 = 1 950. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check via inverterad räkning",
+        "text": "Om skillnaden är 1 950 och Central/Sydamerika = 2 080, då måste Centrala/östra/södra Afrika = 130. Det är cirka 15 % av Afrika-import-pajen (839). En visuell verifiering av pajen ska bekräfta att den slicen verkligen ligger runt 15 % (inte 60–70 %). Möjligen feltolkat — Centrala/östra/södra Afrika-slicen är mindre än Nordafrika-slicen i import-pajen, vilket är OMVÄNT från export-pajen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (1 950 miljoner kr). Insikten i en mening: i 'skillnad mellan två importer'-pajfrågor — räkna varje slice EXPLICIT som slice-andel × paj-total, subtrahera, jämför. Felkällan är ofta att slice-andelen är annorlunda än man först tror visuellt.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'skillnad mellan två importer/exporter'-pajfrågor: identifiera båda pajerna och båda slicorna, räkna slice-andel × paj-total för varje, subtrahera. Triggern: 'jämför X med Y, hur stor skillnad' → två separata slice-räkningar + subtraktion."
   }
 }

@@ -22,7 +22,7 @@
         "why_wrong": "x är obekant, men villkoret x > 1 räcker för att låsa relationen. Steg 6 reducerar frågan till 'x mot 1' — vilket villkoret direkt svarar på."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-018",
     "pitfall": "Många blandar ihop fallet x > 1 (potenser växer) med 0 < x < 1 (potenser krymper). Botemedlet: kolla ALLTID vilken sida om 1 villkoret hamnar på innan du drar slutsatsen om vilken potens som vinner.",
     "pregrade_tactic": {
       "handle": "Potens-mot-1-testet",
@@ -135,7 +135,8 @@
     ],
     "pitfall": null,
     "solution_path": "Tolkning: 1/28+1/14+1/7+1/4+1/2. Gemensam nämnare 28: 1/28+2/28+4/28+7/28+14/28=28/28=1. 1 > 55/56 — A.",
-    "technique": "Bråk med olika nämnare: gemensam nämnare → summera täljare."
+    "technique": "Bråk med olika nämnare: gemensam nämnare → summera täljare.",
+    "framework_id": "KVA-TRAP-023"
   },
   "host-2018-kvant1-KVA-018": {
     "_meta": {
@@ -266,7 +267,7 @@
         "why_wrong": "All information finns. Steg 6–7 låter dig se likheten utan att räkna ut decimaltalen."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-038",
     "pitfall": "Klassisk KVA-fälla: två uttryck som SER olika ut men är algebraiskt identiska. Botemedlet: faktorisera båda uttrycken till samma 'kanoniska form' (här: produkt av samma tal) innan du drar slutsatser om storlek.",
     "pregrade_tactic": {
       "handle": "Procent-kommutativiteten",
@@ -478,7 +479,7 @@
         "why_wrong": "Fridas ålder är obekant men tar ut sig i differensen. Steg 7–8 låser skillnaden till ett rent tal."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Många blir låsta vid att Fridas ålder är obekant och drar slutsatsen 'otillräcklig info'. Botemedlet: testa ALLTID om den obekanta kancelleras i I - II innan du väljer D.",
     "pregrade_tactic": {
       "handle": "Differens-kancellationen",
@@ -595,7 +596,7 @@
         "why_wrong": "Steg 9 löser frågan direkt med (2). Långt ifrån omöjligt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-003",
     "pitfall": "Den vanliga fällan är att hoppa till C utan att kolla om (2) räcker ensamt. Botemedlet: gå ALLTID genom (1) ensamt → (2) ensamt → tillsammans, i den ordningen — utan att hoppa över test.",
     "pregrade_tactic": {
       "handle": "Ekvationer-mot-obekanta",
@@ -1082,7 +1083,7 @@
         "why_wrong": "D kräver att VARDERA påståendet ensamt räcker. Steg 6 och 8 motsäger det direkt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-018",
     "pitfall": "Vanligaste fällan är att tro att P + B + V räcker (= 19 + 13 + 11 = 43). Botemedlet: rita en Venn-cirkel med FYRA delar (bara P, bara B, båda, varken) — då blir det omedelbart tydligt att 'båda' saknas.",
     "pregrade_tactic": {
       "handle": "Inklusion-exklusion-fyran",
@@ -2141,7 +2142,7 @@
         "why_wrong": "Steg 6 är det enda fall där medelvärdet är exakt 0 — men det är ETT av oändligt många möjliga utfall. Steg 7–8 visar att medelvärdet kan vara nästan vad som helst."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-010",
     "pitfall": "Klassisk KVA-fälla: symmetri i ANTAL (5 av varje sort) lurar studenter att tro på symmetri i STORLEK. Botemedlet: testa alltid minst två extremfall (ena sortens tal är 100, andras är 1) — om utfallet ändras, är information otillräcklig.",
     "pregrade_tactic": {
       "handle": "Extremvärdes-testet",
@@ -2441,7 +2442,7 @@
         "why_wrong": "Enhetskonvertering är alltid möjlig om enheterna är kompatibla (här båda mått av längd). Information är fullt tillräcklig."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-026",
     "pitfall": "Vanlig fälla: räkna decimaler fel i konverteringen. Botemedlet: skriv alltid om '10^n' som '1' följt av n nollor, räkna decimal-flyttningen visuellt; för km → mm är det 6 steg, inte 3.",
     "pregrade_tactic": {
       "handle": "Enhetskonverteringen",
@@ -2535,7 +2536,7 @@
         "why_wrong": "Steg 8: x = 40 är också tillåtet, då II > I, inte II = I. Likhet är ETT av flera möjliga utfall."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-036",
     "pitfall": "Den största fällan är att fastna vid första lösningen (x = 20) och tro att den är unik. Botemedlet: testa ALLTID minst två giltiga par (x = 20 OCH x = 40) — om de ger olika utfall är information otillräcklig (D).",
     "pregrade_tactic": {
       "handle": "Heltalstest-i-relation",
@@ -2741,7 +2742,7 @@
         "why_wrong": "Volym (200 l) och båda hastigheter (15 och 10 l/min) ges. Det räcker. Steg 4–5 räknar tiderna entydigt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-030",
     "pitfall": "Den vanligaste fällan är att intuitivt koppla 'större hastighet → större tid' — det är inversen. Botemedlet: kom ihåg formeln tid = volym/hastighet — division gör att större nämnare ger mindre kvot.",
     "pregrade_tactic": {
       "handle": "Tid-volym-hastighet",
@@ -2840,7 +2841,7 @@
         "why_wrong": "Steg 5 och 7 visar att varken (1) eller (2) ensamt räcker. D är därmed direkt utesluten."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-004",
     "pitfall": "Vanlig fälla: utesluta en färg via (1) och en annan via (2), och tro att man har låst målobjektet — men målobjektet kan fortfarande variera över de tre 'inte uteslutna' positionerna. Botemedlet: lista ALLA konsistenta placeringar, inte bara stirra på vilka färger som är 'uteslutna'.",
     "pregrade_tactic": {
       "handle": "Disjunktions-överlevarna",
@@ -3407,7 +3408,7 @@
         "why_wrong": "Steg 5 påminner: vinklar är skala-oberoende. Arean ger sidoinformation, inte vinklar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-021",
     "pitfall": "Vanlig fälla: tro att arean (50 cm²) hjälper med vinklarna. Botemedlet: kom ihåg att vinklar är OBEROENDE av skala — samma vinkel-uppsättning fungerar för trianglar av alla storlekar.",
     "pregrade_tactic": {
       "handle": "Vinkel-summan-i-triangel",

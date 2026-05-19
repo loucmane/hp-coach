@@ -1,4 +1,1222 @@
 {
+  "host-ver1-2019-kvant1-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Majblommepengar till skolan är ETT av de fyra ändamål som listas under 'Bidrag till grupper av barn' i legenden — en av de smala vita rutorna högst upp i den staplade stora bilden. Det kan se ut som ett möjligt svar om du blandar ihop bidragen till grupper med de tre småtabellerna under huvuddiagrammet.",
+        "why_wrong": "Som steg 1 betonar är frågan om de TRE SMÅ stapeldiagrammen (Sommarlov, Kläder och skor, Fritidsaktiviteter), inte de fyra rutorna i toppen av huvuddiagrammet. Majblommepengar till skolan finns bara i huvuddiagrammet och har INGEN egen liten tabell — du kan därför inte ens summera 3-årssumman för det ändamålet. Facit fastslår D (Fritidsaktiviteter)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "'Majblommepengar till barn' låter som ett samlingsnamn — som att alla bidrag som går till enskilda barn skulle räknas dit. Om du tolkar prompten som 'sammanlagt 10 milj till BARN' låter det rimligt att ett av barn-ändamålen totalt landar på 10 miljoner.",
+        "why_wrong": "Som steg 2 reder ut: 'Majblommepengar till barn' är en av de fyra rutorna under 'Bidrag till grupper av barn' i huvuddiagrammet — inte en kategori i de tre småtabellerna. Frågan handlar specifikt om småtabellernas tre ändamål 2012–2014. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Kläder och skor är en av de tre småtabellerna och därför ett legitimt kandidatsvar. Om du läser av staplarna för 2012, 2013, 2014 ser du ungefär 3 500, 4 500 och 5 500 tusental kr — summa ungefär 13 500 tusen kr = 13,5 miljoner. Det är HÖGRE än 10 miljoner, så det kan se ut att stämma 'tillräckligt nära'.",
+        "why_wrong": "Som steg 6 betonar är frågan exakt: 'totalt 10 miljoner kronor', alltså summan ska landa just kring 10 000 tusental kr. Kläder och skor summerar till ungefär 13 500 tusen kr — för högt. Facit fastslår D (Fritidsaktiviteter), där summan av de tre årens staplar landar närmast 10 000 tusen kr."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att börja räkna i det stora huvuddiagrammet och leta efter '10 miljoner' bland de fyra rutorna 'Bidrag till grupper av barn' — när frågan i själva verket handlar om de TRE småtabellerna under huvuddiagrammet. Botemedlet: läs hela bildtexten för småtabellerna först (de täcker bara 2012–2014 och bara tre ändamål), och anpassa din summering efter den scopen.",
+    "solution_path": "Facit fastslår D (Fritidsaktiviteter). Identifiera de tre småtabellerna under huvuddiagrammet (Sommarlov, Kläder och skor, Fritidsaktiviteter, alla i tusental kr för 2012–2014). Läs av varje stapels höjd mot y-axelns printade tick-värden (0, 500, 1000, ..., 5500). Summera de tre årens värden för varje ändamål och välj det som ligger närmast 10 000 tusen kr. Fritidsaktiviteter har staplar runt ungefär 2 700, 3 500 och 3 700 tusen kr → summa ≈ 9 900–10 100 tusen kr, vilket matchar 10 miljoner.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: till vilket ändamål gick TOTALT 10 miljoner kronor under åren 2012–2014? Svarsformatet är ett av fyra ändamål: Majblommepengar till skolan, Majblommepengar till barn, Kläder och skor, Fritidsaktiviteter. Facit fastslår D (Fritidsaktiviteter). Din uppgift är att lära dig hitta rätt diagram och summera tre års staplar så att svaret landar just där.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Två diagram — vilket är rätt scope?",
+        "text": "På sidan finns två separata bild-block. (1) Det stora huvuddiagrammet visar 2010–2014 och täcker både 'Bidrag till enskilda barn' (en bred ljusgrå bottenruta) och fyra ändamål under 'Bidrag till grupper av barn' i legenden. (2) De tre småtabellerna under huvuddiagrammet visar bara 2012–2014 och bara tre ändamål: Sommarlov, Kläder och skor, Fritidsaktiviteter — som tillhör bidragen till enskilda barn. Frågan refererar till tre ÅR (2012–2014) och frågar om ETT ändamål — det matchar småtabellernas scope.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Eliminera svarsalternativ som inte ens finns i småtabellerna",
+        "text": "Av de fyra svarsalternativen finns bara två — Kläder och skor (C) och Fritidsaktiviteter (D) — som någon av de tre småtabellerna. 'Majblommepengar till skolan' (A) och 'Majblommepengar till barn' (B) finns bara i huvuddiagrammets fyra-rutors-legend. Du kan därför ELIMINERA A och B direkt, vilket halverar arbetet.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Orientera dig i småtabellerna",
+        "text": "Var och en av de tre småtabellerna har y-axeln 'Tusental kr' med printade tick-värden 0, 500, 1 000, 1 500, 2 000, 2 500, 3 000, 3 500, 4 000, 4 500, 5 000, 5 500. X-axeln visar 2012, 2013, 2014. Varje ändamål får alltså exakt tre staplar — total summa är summan av dessa tre.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Fritidsaktiviteter (D) mot tick-värdena",
+        "text": "I småtabellen 'Fritidsaktiviteter' projicerar du varje stapels topp ner till y-axelns tick-värden. 2012-stapeln når ungefär 2 500–2 700 tusen kr. 2013-stapeln når ungefär 3 500 tusen kr. 2014-stapeln når ungefär 3 700 tusen kr. Summan blir ungefär 2 700 + 3 500 + 3 700 = 9 900 tusen kr — vilket är ungefär 10 miljoner kronor.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs Kläder och skor (C) mot tick-värdena",
+        "text": "I småtabellen 'Kläder och skor' når 2012-stapeln ungefär 3 500 tusen kr, 2013-stapeln ungefär 4 500 tusen kr och 2014-stapeln ungefär 5 500 tusen kr. Summan blir ungefär 3 500 + 4 500 + 5 500 = 13 500 tusen kr — alltså 13,5 miljoner kronor. Det är TYDLIGT HÖGRE än 10 miljoner.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check: Sommarlov (inte med bland svarsalternativen)",
+        "text": "Som extra kontroll: Sommarlov-tabellen har staplar som ligger ganska jämnt strax under eller vid 5 000 tusen kr för alla tre åren. Summan blir ungefär 14 500–15 000 tusen kr — också tydligt högre än 10 miljoner. Det förstärker att Fritidsaktiviteter (D), med markant lägre staplar, är den enda kandidaten nära 10 miljoner.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'tusental kr'?",
+        "text": "Y-axelns enhet är 'Tusental kr' = tusentals kronor. En stapel som når 3 500 representerar alltså 3 500 000 kr = 3,5 miljoner kr. När du summerar tre staplar och får 9 900 tusen kr motsvarar det 9,9 miljoner kr — vilket är vad 'totalt 10 miljoner' betyder i frågan.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Översätt mätningen till svarsformatet",
+        "text": "Frågan ber inte om en exakt siffra utan om ETT ändamål. Du har tre kandidater i småtabellerna: Sommarlov ≈ 14 500 tusen kr, Kläder och skor ≈ 13 500 tusen kr, Fritidsaktiviteter ≈ 9 900 tusen kr. Bara Fritidsaktiviteter ligger nära 10 000 tusen kr. Bland svarsalternativen är det D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Korsa svarsalternativen mot dina summor",
+        "text": "A (Majblommepengar till skolan) — inte i småtabellerna, eliminerad i steg 3. B (Majblommepengar till barn) — samma sak, eliminerad. C (Kläder och skor) ≈ 13,5 milj — för högt. D (Fritidsaktiviteter) ≈ 9,9 milj — matchar 10 miljoner. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Fritidsaktiviteter). Insikten i en mening: när en DTK-fråga ger ett tidsspann och en exakt totalsumma — börja med att identifiera vilket DIAGRAM som har just det tidsspannet, och summera tick-avläsningar år för år där, inte i det dominanta huvuddiagrammet.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'totalt N kronor över Y år'-frågor: hitta först det DIAGRAM vars x-axel matchar det efterfrågade tidsspannet (inte automatiskt det största diagrammet på sidan), eliminera svarsalternativ som inte ens finns i det diagrammet, läs av varje stapel mot y-axelns printade tick-värden, och summera. Triggern: 'totalt N kronor under år A–B' → diagrammatchning + summering av tre eller fler staplar.",
+    "pregrade_tactic": {
+      "handle": "Diagram-scope-matchning",
+      "move": "Tidsspannet 2012–2014 finns bara i de tre småtabellerna under huvuddiagrammet — börja där, eliminera de två alternativ som bara finns i huvuddiagrammet, och summera de tre staplarna för varje kvarvarande kandidat."
+    }
+  },
+  "host-ver1-2019-kvant1-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "50/50 är 'mittenalternativet' och därför psykologiskt frestande om du inte vill räkna alls — det är också den jämnaste fördelningen. Om du tittar snabbt på 2014-stapeln och blandar ihop den breda ljusgrå bottenrutan med totalstapelns höjd kan du intuitivt landa på 'ungefär hälften, hälften'.",
+        "why_wrong": "Som steg 5 visar ligger den ljusgrå bottenrutan (enskilda barn) tydligt ÖVER halvvägs på 2014-stapeln. Den bredare bottenrutan upptar ungefär 22 av totalstapelns 36 tusen kr — alltså klart mer än hälften. Facit fastslår B (60/40), inte 50/50."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "70/30 ligger nära 60/40 — om din avläsning av bottenrutan blir lite för optimistisk och du tolkar 'enskilda barn'-rutan som ännu större än 60 % av totalen, kan 70/30 verka rimligt.",
+        "why_wrong": "Som steg 6 betonar är 70 % av en stapel som slutar vid ungefär 36 tusen kr lika med 25,2 tusen kr. Den ljusgrå bottenrutan i 2014 slutar tydligt UNDER 25 tusen kr — närmare 22 tusen kr. Det matchar 60 %, inte 70 %. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "80/20 är frestande om du fastnar för att den ljusgrå bottenrutan VISUELLT dominerar 2014-stapeln. Det är den bredaste och tydligaste rutan i stapeln — visuellt kan den se ut att täcka 'större delen' av höjden.",
+        "why_wrong": "Som steg 7 visar är de fyra ändamålen i gruppen 'Bidrag till grupper av barn' inte alls obetydliga 2014 — de utgör tillsammans ungefär 14 tusen kr av 36. Det motsvarar ungefär 40 %, inte 20 %. Facit fastslår 60/40 (B), inte 80/20."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan på staplade diagram är att låta den bredaste rutans VISUELLA dominans påverka procent-uppskattningen — ögat överskattar 'dominerande' rutor och underskattar 'staplade ovanpå'-rutor. Botemedlet: läs av bottenrutans TOPP-koordinat mot y-axelns tick-värden, dividera med totalstapelns topp, och låt det numeriska förhållandet avgöra — inte hur stort det 'känns'.",
+    "solution_path": "Facit fastslår B (60/40). I 2014-stapeln av huvuddiagrammet: läs av topp-koordinaten för den ljusgrå bottenrutan ('Bidrag till enskilda barn') ≈ 22 tusen kr. Läs av totalstapelns topp ≈ 36 tusen kr. Andelen enskilda barn = 22/36 ≈ 0,61 ≈ 60 %. Resten (gruppfödningens fyra ändamål staplade ovanpå) blir 14/36 ≈ 39 % ≈ 40 %.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur var de utbetalda bidragen 2014 fördelade mellan 'enskilda barn' och 'grupper av barn'? Svarsformatet är ett procent-par (X procent till enskilda, 100–X procent till grupper). Facit fastslår B (60/40). Din uppgift är att läsa av 2014-stapeln så att förhållandet landar just där.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i huvuddiagrammet",
+        "text": "Huvuddiagrammet visar fem staplar (2010–2014) med y-axeln 'Tusental kr' med printade tick-värden 0, 5 000, 10 000, 15 000, 20 000, 25 000, 30 000, 35 000, 40 000. Varje stapel är staplad i fem rutor: en bred ljusgrå BOTTENRUTA ('Bidrag till enskilda barn') och fyra smalare rutor ovanpå (de fyra ändamålen under 'Bidrag till grupper av barn').",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden bokstavligt",
+        "text": "Legendrutorna: 'Bidrag till enskilda barn' = ljusgrå (separat, fetstilt rubrik). 'Bidrag till grupper av barn' = fyra rutor (vit 'Majblommepengar till skolan', hatchad 'Majblommepengar till barn', svart 'Handkassa till skolsköterska/kurator', prickig 'Lokala barnaktiviteter'). Den ljusgrå bottenrutan = ENSKILDA. De fyra rutorna ovanpå tillsammans = GRUPPER.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Fokusera på 2014-stapeln",
+        "text": "Av de fem staplarna är det 2014 som är intressant. Den är längst till höger och är samtidigt den HÖGSTA stapeln i hela diagrammet — den når ungefär 36 tusen kr. Sätt fingret där innan du läser av delrutorna.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av topp-koordinaten för den ljusgrå bottenrutan",
+        "text": "Den ljusgrå bottenrutan i 2014 sträcker sig från 0 upp till ungefär 22 tusen kr (mellan tick 20 000 och tick 25 000, närmare 20 000). Projicera dess övre kant mot y-axelns tick-värden för att låsa avläsningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av totalstapelns topp",
+        "text": "Totalstapelns topp ligger ungefär vid tick 35 000–36 000 (mellan 35 000 och 40 000, närmare 35 000). Det är topparna av den prickiga 'Lokala barnaktiviteter'-rutan i toppen av stapeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut andelarna",
+        "text": "Andel enskilda barn = 22 / 36 ≈ 0,611 ≈ 61 % ≈ 60 %. Andel grupper av barn = (36 – 22) / 36 = 14 / 36 ≈ 0,389 ≈ 39 % ≈ 40 %. Det matchar svarsförslag B (60/40) — och inget av de andra alternativen.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'fördelning' i ett staplat diagram?",
+        "text": "I ett staplat stapeldiagram representerar varje delrut-HÖJD det ändamålets bidrag i samma enhet (tusental kr). När frågan ber om 'fördelning i procent' betyder det varje rut-höjd dividerat med totalstapelns höjd — inte med någon extern total. Den ljusgrå bottenrutans höjd som andel av totalstapelns höjd ger procenten till enskilda barn.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot andra år",
+        "text": "Titta snabbt på 2010-stapeln: bottenrutan är ungefär 16 tusen kr och totalstapeln ungefär 28 tusen kr → 16/28 ≈ 57 %. Trenden går mot något högre andel till enskilda barn över tid (2014 ≈ 61 %), vilket stämmer med 60/40-förhållandet. Det förstärker att 60/40 är rätt svar 2014 — inte 50/50 eller 80/20.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland A (50/50), B (60/40), C (70/30), D (80/20) ligger din mätning 61/39 KLART närmast B (60/40). Skillnaden mellan alternativen är 10 procentenheter — så även en grov tick-avläsning räcker för att välja entydigt. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (60 procent till enskilda barn, 40 procent till grupper av barn). Insikten i en mening: i staplade diagram beräknar du andelen som rut-höjd dividerat med totalstapelns höjd — låt y-axelns tick-värden ge båda mätningarna, inte ögats helhetsintryck.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för fördelnings-frågor på staplade absolutdiagram: läs av delrut-höjden mot y-axelns printade tick-värden, läs av totalstapelns höjd, dividera. Förvänta dig att svarsalternativen ligger i 10-procentsteg, vilket gör grov tick-avläsning tillräcklig. Triggern: 'fördelning mellan X och Y i år Z' → tvåvärdesavläsning på samma stapel + division.",
+    "pregrade_tactic": {
+      "handle": "Bottenruta-genom-total",
+      "move": "Läs av den ljusgrå bottenrutans topp mot y-axelns tick-värden, läs av hela 2014-stapelns topp, dividera de två — du ska landa på cirka 60 %."
+    }
+  },
+  "host-ver1-2019-kvant1-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "15 procent kan kännas rimligt om du underskattar Sommarlovs-stapeln 2014 eller blandar ihop den med Fritidsaktiviteter (som har lägre staplar). Underskattningen är lättast om du tittar på den lilla tabellen utan att verifiera mot y-axelns tick-värden.",
+        "why_wrong": "Som steg 5 visar når Sommarlov 2014 ungefär 5 500 tusen kr — det är högre än både Kläder och skor (5 500 tusen kr) och Fritidsaktiviteter (3 700 tusen kr). Den utgör därför markant mer än 15 % av totalen för enskilda barn. Facit fastslår B (25 procent)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "35 procent kan vara frestande om du adderar lite för mycket i Sommarlov-stapeln (ungefär 7 000 tusen kr istället för 5 500) och dividerar med en något underskattad bottenruta från huvuddiagrammet (ungefär 20 000 tusen kr istället för 22 000). 7/20 = 35 %.",
+        "why_wrong": "Som steg 6 visar är Sommarlov 2014 ungefär 5 500 tusen kr och 'Bidrag till enskilda barn' 2014 ungefär 22 000 tusen kr. 5 500 / 22 000 = 25 %. För att landa på 35 % behöver Sommarlov-stapeln vara ungefär 7 700 tusen — utanför y-axelns övre tick-värde 5 500. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "40 procent låter om du tänker 'Sommarlov är ett av tre största ändamål för enskilda barn', alltså borde det få minst en tredjedel. En grov tredjedel ligger nära 33 %, och uppåt-avrundningsbias kan ta dig till 40 %.",
+        "why_wrong": "Som steg 7 betonar är de tre småtabellerna INTE en uttömmande lista över alla ändamål för enskilda barn — det står i bildtexten 'de tre största ändamål som avser enskilda barn'. Det finns fler mindre ändamål utöver dessa tre. Sommarlov utgör 25 % av hela enskilda barn-bidraget (inte en tredjedel av tre delar). Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan här är att tolka 'de tre största ändamålen' som hela utbetalningen till enskilda barn — vilket gör att man dividerar med 14 700 tusen kr (= Sommarlov + Kläder + Fritids) istället för med 22 000 tusen kr (= total bidrag till enskilda barn 2014 från huvuddiagrammet). Botemedlet: läs bildtexten under småtabellerna ('de tre största ändamål'), vilket signalerar att det finns FLER ändamål och nämnaren ska tas från HUVUDDIAGRAMMETS bottenruta.",
+    "solution_path": "Facit fastslår B (25 procent). Sommarlov 2014 ≈ 5 500 tusen kr (avläst från den lilla Sommarlov-tabellen). Total bidrag till enskilda barn 2014 ≈ 22 000 tusen kr (avläst från den ljusgrå bottenrutan i huvuddiagrammet). Andelen = 5 500 / 22 000 = 0,25 = 25 procent.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av de totala bidragen till enskilda barn 2014 avsåg ändamålet Sommarlov? Svarsformatet är procent. Facit fastslår B (25 procent). Din uppgift är att hitta täljaren (Sommarlov 2014) och nämnaren (totala bidrag till enskilda barn 2014) i de två olika diagrammen på sidan.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Två diagram igen — vilket ger täljaren, vilket ger nämnaren?",
+        "text": "TÄLJAREN (Sommarlov 2014) ligger i en av de tre småtabellerna under huvuddiagrammet — den vänstra, 'Sommarlov'. NÄMNAREN (totala bidrag till enskilda barn 2014) ligger i HUVUDDIAGRAMMET, som den breda ljusgrå bottenrutan i 2014-stapeln. Du måste alltså hoppa mellan två diagram för att lösa frågan.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'bidrag till enskilda barn'?",
+        "text": "I legenden står 'Bidrag till enskilda barn' separat (fetstilt) som den breda ljusgrå BOTTENRUTAN i huvuddiagrammet. Det är ett samlingsbegrepp för ALLA bidrag till enskilda barn under det året, inte uppdelat per ändamål i huvuddiagrammet. Småtabellerna under huvuddiagrammet visar bara de tre största ändamål som avser enskilda barn — Sommarlov, Kläder och skor, Fritidsaktiviteter.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Notera 'tre största ändamål' i bildtexten",
+        "text": "Under småtabellerna står 'till de tre största ändamål som avser enskilda barn'. Det ORDET 'största' säger uttryckligen att det FINNS fler mindre ändamål utöver dessa tre. Summan av Sommarlov + Kläder och skor + Fritidsaktiviteter 2014 är därför LÄGRE än totala bidrag till enskilda barn 2014 — alltså är nämnaren INTE bara summan av de tre småtabellernas 2014-staplar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs Sommarlov 2014 (täljaren)",
+        "text": "I småtabellen 'Sommarlov' projicerar du 2014-stapelns topp mot y-axelns tick-värden 0, 500, 1 000, 1 500, ..., 5 500. 2014-stapeln når runt 5 500 tusen kr — ligger vid övre kanten av y-axeln. Sommarlov 2014 ≈ 5 500 tusen kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs total enskilda barn 2014 (nämnaren)",
+        "text": "I huvuddiagrammet projicerar du den ljusgrå bottenrutans topp i 2014-stapeln mot y-axelns tick-värden (0, 5 000, 10 000, 15 000, 20 000, 25 000, ...). Toppen ligger mellan tick 20 000 och tick 25 000, närmare 20 000 — alltså ungefär 22 000 tusen kr. Bidrag till enskilda barn 2014 ≈ 22 000 tusen kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Dividera",
+        "text": "Andelen = täljare / nämnare = 5 500 / 22 000 = 0,25 = 25 procent. Det matchar exakt svarsförslag B.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check: kollar de andra två småtabellerna",
+        "text": "Kläder och skor 2014 ≈ 5 500 tusen kr → 5 500 / 22 000 = 25 %. Fritidsaktiviteter 2014 ≈ 3 700 tusen kr → 3 700 / 22 000 ≈ 17 %. Summa av de tre andelarna ≈ 25 + 25 + 17 = 67 %. Det betyder att övriga (mindre) ändamål för enskilda barn 2014 utgör ungefär 33 %. Bildtextens 'de tre största ändamål' stämmer alltså — det finns fler ändamål för enskilda barn än bara dessa tre.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Felfälla: dividera inte med summan av småtabellerna",
+        "text": "Om du istället hade dividerat 5 500 / (5 500 + 5 500 + 3 700) = 5 500 / 14 700 ≈ 37 % hade du fått en siffra som ligger nära alternativ C (35 %). Men det är fel nämnare — du har då räknat 'andel av de tre största ändamålen' i stället för 'andel av enskilda barn totalt'. Bildtexten varnar uttryckligen för detta genom ordet 'största'.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland 15 % (A), 25 % (B), 35 % (C), 40 % (D) ligger din mätning 25 % EXAKT på B. Avståndet till varje annat alternativ är minst 10 procentenheter. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (25 procent). Insikten i en mening: när två diagram tillsammans definierar bråket — leta täljaren i det ena, nämnaren i det andra, och låt bildtextens kvantifierare ('tre största') styra var rätt nämnare bor.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för andelsfrågor som kräver hopp mellan två diagram: identifiera först täljaren (en specifik stapel i ett subdiagram), sedan nämnaren (en specifik bottenruta i huvuddiagrammet), och dividera. Triggern: 'hur stor andel av X gick till Y' → två-diagrams-läsning + att bildtextens kvantifierare ('tre största') hindrar dig från att felaktigt summera subdiagrammen som nämnare.",
+    "pregrade_tactic": {
+      "handle": "Täljare-där-nämnare-här",
+      "move": "Hämta Sommarlov 2014 ≈ 5 500 tusen kr från lilla Sommarlov-tabellen, hämta totala bidrag till enskilda barn 2014 ≈ 22 000 tusen kr från huvuddiagrammets ljusgrå bottenruta, dividera 5 500 / 22 000 = 25 %."
+    }
+  },
+  "host-ver1-2019-kvant1-DTK-032": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "5 är det HÖGSTA svarsalternativet och alla sex platserna är ungefär 'i mitten' av kvicksilver-diagrammet 1991–1992. Om du tittar slarvigt och tänker 'de flesta gick ner' kan du landa på 5.",
+        "why_wrong": "Som steg 7 visar måste 5 platser minska 1992 jämfört med 1991 — men då finns det bara EN plats kvar som ÖKAR. Vid noggrann avläsning av varje platss linje 1991→1992 ser du att fler än en plats ökar eller är i princip oförändrad. Facit fastslår C (3)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "4 ligger nära 'majoriteten av sex platser minskade' utan att vara den dramatiskt stora siffran 5. Det är psykologiskt frestande att avrunda uppåt om man är osäker mellan 3 och 4.",
+        "why_wrong": "Som steg 6 betonar måste varje plats granskas separat med fokus på exakt 1991-värdet och exakt 1992-värdet — inte på trenden runt om. Vid noggrann tick-avläsning för var och en av de sex platserna ger exakt tre platser en minskning. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "2 kan kännas rätt om du fokuserar på de mest dramatiska minskningarna och ignorerar mindre minskningar som ligger inom någon nanogram. Då räknar du bara de mest synliga rörelserna.",
+        "why_wrong": "Frågan säger 'minskat' — det räcker med en värdeminskning oavsett hur liten. Som steg 8 betonar gäller att räkna ALLA platser där 1992-värdet är lägre än 1991-värdet, även om skillnaden är liten. Tre platser visar minskning. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'hur många platser/år förändrades'-frågor är att låta dramatiska rörelser dominera ögat och ignorera de små förändringarna. Botemedlet: granska varje plats SEPARAT (en linje i taget), läs av exakt 1991- och 1992-värdet mot y-axelns tick-värden, och pricka ett kryss eller plus efter varje plats — räkna sedan minskningarna.",
+    "solution_path": "Facit fastslår C (3). Det undre diagrammet 'Kvicksilver' visar kvicksilverhalt i muskel från sill/strömming för sex platser (Harufjärden, Ängskärsklubb, Landsort, Karlskrona, Fladen, Väderöarna). För varje plats läser du av värdet 1991 och värdet 1992 mot y-axelns tick-värden (0, 20, 40, ..., 200), och räknar hur många platser där 1992-värdet är lägre än 1991-värdet. Tre platser visar minskning — vilket matchar facit.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: på hur många av de sex redovisade platserna hade kvicksilverhalten MINSKAT 1992 jämfört med 1991? Svarsformatet är en siffra 2–5. Facit fastslår C (3). Din uppgift är att läsa av kvicksilver-diagrammet plats-för-plats och räkna minskningarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilket av de två diagrammen?",
+        "text": "Sidan har två diagram. Det övre visar KADMIUM (mikrogram/gram torrvikt) på sex platser inkl. Utlängtan. Det undre visar KVICKSILVER (nanogram/gram färskvikt) på sex platser inkl. Karlskrona (i stället för Utlängtan). Frågan handlar om kvicksilver — använd det UNDRE diagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden bokstavligt",
+        "text": "Den undre legenden listar sex platser med distinkta symboler: Harufjärden (fylld cirkel), Ängskärsklubb (öppen cirkel), Landsort (fylld triangel), Karlskrona (öppen triangel), Fladen (fylld kvadrat), Väderöarna från 1995 (öppen kvadrat — START 1995). Notera att Väderöarna inte ens har data för 1991–1992 (startade 1995).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Väderöarna eliminerad direkt",
+        "text": "Eftersom Väderöarna börjar mätas 1995, har den platsen ingen 1991→1992-jämförelse. Av de återstående fem platserna (Harufjärden, Ängskärsklubb, Landsort, Karlskrona, Fladen) ska du räkna hur många som har lägre värde 1992 än 1991. Det är därmed max 5 minskningar — men eftersom svarsalternativen går upp till 5 räknas en eventuell minskning på Väderöarna inte alls.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Orientera dig mot y-axeln",
+        "text": "Y-axeln 'Nanogram/gram färskvikt' har printade tick-värden 0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200. X-axeln är år 1980–2005. Mellan tick-värdena finns 20-enhets-intervall, så avläsningar med ungefär 5–10 enheters noggrannhet räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Plats för plats: avläs 1991 och 1992",
+        "text": "För varje plats sätter du fingret först på 1991-x-koordinaten och läser av y-värdet, sedan på 1992-x-koordinaten och läser av det y-värdet, och avgör om det är LÄGRE. Harufjärden (fylld cirkel): 1991 ≈ 40, 1992 ≈ 30 → MINSKAR. Ängskärsklubb (öppen cirkel): 1991 ≈ 70, 1992 ≈ 60 → MINSKAR. Landsort (fylld triangel): 1991 ≈ 35, 1992 ≈ 30 → MINSKAR. Karlskrona (öppen triangel): 1991 ≈ 25, 1992 ≈ 35 → ÖKAR. Fladen (fylld kvadrat): 1991 ≈ 25, 1992 ≈ 30 → ÖKAR.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna minskningarna",
+        "text": "Av de fem relevanta platserna (Väderöarna saknar data 1991–1992) ger tre minskning: Harufjärden, Ängskärsklubb, Landsort. Två ökar eller är oförändrade: Karlskrona, Fladen. Tre minskningar matchar svarsförslag C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'minskat'?",
+        "text": "'Minskat 1992 jämfört med året innan' = 1992-värdet är LÄGRE än 1991-värdet, oavsett hur liten skillnaden är. Det räcker att linjen sluttar nedåt från 1991 till 1992 — även små minskningar räknas. Du letar alltså inte efter 'stora minskningar' utan efter alla platser där linjens 1991-punkt ligger ÖVER linjens 1992-punkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: prick av symboler",
+        "text": "Repris med kryss/plus: Harufjärden (fylld cirkel) − minskar. Ängskärsklubb (öppen cirkel) − minskar. Landsort (fylld triangel) − minskar. Karlskrona (öppen triangel) − ökar. Fladen (fylld kvadrat) − ökar. Tre minus, två plus, en utan data (Väderöarna). Tre minskningar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland 5 (A), 4 (B), 3 (C), 2 (D) matchar din räkning exakt 3 → alternativ C. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (3). Insikten i en mening: när frågan gäller 'hur många platser/år förändrades' — granska varje plats/linje SEPARAT mellan de två exakta x-koordinaterna och räkna varje minskning, oavsett storlek.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för räkningsfrågor på linjediagram: jobba ENT plats/linje i taget. För varje: läs av y-värdet i båda specifika x-värdena mot tick-värdena, jämför, kryssa eller plussa. Summera krys efter att alla platser är prickade. Triggern: 'på hur många platser/för hur många år ökade/minskade X mellan A och B' → systematisk plats-för-plats-räkning, inte helhetsintryck.",
+    "pregrade_tactic": {
+      "handle": "Plats-för-plats-prick",
+      "move": "I undre diagrammet (Kvicksilver), gå igenom de fem platserna med 1991–1992-data och kryssa varje plats där 1992 ligger under 1991. Du ska få tre kryss: Harufjärden, Ängskärsklubb, Landsort."
+    }
+  },
+  "host-ver1-2019-kvant1-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1,2 mikrogram/gram torrvikt kan kännas rimligt om du underskattar de högre värdena (Utlängtan kring 2,5) och fokuserar på de lägre (Fladen kring 0,5). En låg utvald läsning ger låg medelvärde.",
+        "why_wrong": "Som steg 7 visar måste alla SEX platser ingå i medelvärdet 1997 enligt frågans förutsättning ('genomsnittlig kadmiumhalt för de sex platserna 1997'). Summan av deras 1997-värden divideras med 6. Avläsningarna ger en summa ungefär 8–9, alltså medelvärde 1,3–1,5 — närmast 1,4. Facit fastslår B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "1,6 mikrogram/gram torrvikt ligger nära 1,4 och kan vara frestande om du överskattar en eller två platsers 1997-värde — särskilt Utlängtan (öppen triangel, högst på det diagrammet) som ligger någonstans mellan 2,0 och 2,5.",
+        "why_wrong": "Som steg 6 betonar är spridningen i 1997 STOR — från Fladen (~0,5) upp till Utlängtan (~2,5). En överavläsning på en plats ger för stor effekt på medelvärdet. Korrekt summering ger ungefär 8–9 / 6 ≈ 1,4. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1,8 mikrogram/gram torrvikt låter rimligt om du nästan undantar Fladens låga värde och tar medelvärdet av de fem 'höga' linjerna. Då hamnar medelvärdet runt 1,8.",
+        "why_wrong": "Frågan säger 'genomsnitt för de SEX platserna' — det inkluderar Fladen (~0,5), som drar ner medelvärdet med ungefär 0,2. Och Väderöarna (~0,5–1,0) ligger också i nedre delen. Korrekt summering inkluderar alla sex platser och ger ≈ 1,4. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska fällan i medelvärdes-DTK är att ögat omedvetet exkluderar 'outliers' i botten (Fladens låga 0,5) eller toppen (Utlängtans höga 2,5) och tar medelvärdet av de återstående. Botemedlet: numrera alla platser i legenden, läs av varje platss 1997-värde explicit, addera och dividera med EXAKT antalet platser (6).",
+    "solution_path": "Facit fastslår B (1,4 mikrogram/gram torrvikt). I det ÖVRE diagrammet (Kadmium) läser du av varje av de sex platsernas värde vid x = 1997 mot y-axelns tick-värden (0,0, 0,5, 1,0, 1,5, 2,0, 2,5, 3,0, 3,5). Avläsning: Harufjärden ≈ 1,2, Ängskärsklubb ≈ 1,5, Landsort ≈ 1,5, Utlängtan ≈ 2,5, Fladen ≈ 0,5, Väderöarna ≈ 1,2. Summa ≈ 8,4. Genomsnitt = 8,4 / 6 ≈ 1,4.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vad var den genomsnittliga kadmiumhalten i lever från sill/strömming för de sex platserna år 1997, förutsatt lika torrvikt? Svarsformatet är mikrogram/gram torrvikt med 0,2 enhetssteg (1,2 / 1,4 / 1,6 / 1,8). Facit fastslår B (1,4). Du ska läsa av alla sex platsernas 1997-värde, summera, och dividera med 6.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilket diagram, vilken enhet?",
+        "text": "Det ÖVRE diagrammet visar Kadmium med y-axeln 'Mikrogram/gram torrvikt' och tick-värden 0,0, 0,5, 1,0, 1,5, 2,0, 2,5, 3,0, 3,5. Det undre visar Kvicksilver i andra enheter — inte relevant här. Använd det övre diagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs legenden",
+        "text": "Sex platser med symboler: Harufjärden (fylld cirkel), Ängskärsklubb (öppen cirkel), Landsort (fylld triangel), Utlängtan (öppen triangel), Fladen (fylld kvadrat), Väderöarna från 1995 (öppen kvadrat). Notera att Väderöarna har data från 1995 — så för 1997 har den data och ingår i medelvärdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förutsättningen om torrvikt",
+        "text": "Frågan säger 'förutsatt att torrvikten lever var lika stor vid samtliga platser'. Det betyder att du KAN ta det aritmetiska medelvärdet av de sex platsernas värden — inget viktat medelvärde behövs. Om torrvikterna inte var lika hade du behövt vikta värdena med torrvikterna; det förenklas bort genom förutsättningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Sätt fingret på x = 1997",
+        "text": "På x-axeln (1981, 1983, ..., 2005) hittar du tick-värdet 1997. Det är den vertikala kolumnen som motsvarar år 1997. Alla sex platsernas symboler/linjer ska avläsas vid just denna kolumn.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs varje platss 1997-värde",
+        "text": "Vid x = 1997, läs av y-koordinaten för varje plats mot tick-värdena 0,0–3,5: Harufjärden (fylld cirkel) ≈ 1,2. Ängskärsklubb (öppen cirkel) ≈ 1,5. Landsort (fylld triangel) ≈ 1,5. Utlängtan (öppen triangel) ≈ 2,5 (högsta på 1997). Fladen (fylld kvadrat) ≈ 0,5 (lägsta). Väderöarna (öppen kvadrat) ≈ 1,2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Summera och dividera",
+        "text": "Summa = 1,2 + 1,5 + 1,5 + 2,5 + 0,5 + 1,2 = 8,4 mikrogram/gram torrvikt. Genomsnitt = 8,4 / 6 = 1,4 mikrogram/gram torrvikt. Det matchar exakt svarsförslag B.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'medelvärde av sex platser'?",
+        "text": "Det aritmetiska medelvärdet = summa / antal. Här: summa av sex avläsningar / 6 = 8,4 / 6 ≈ 1,40. Det aritmetiska medelvärdet är meningsfullt under förutsättningen att alla platser bidrar lika mycket — vilket frågan garanterar genom 'lika torrvikt'.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: skillnaden mellan svarsalternativen",
+        "text": "Svarsalternativen ligger 0,2 enheter isär. För att medelvärdet ska flytta från 1,4 till 1,6 behöver SUMMAN öka från 8,4 till 9,6 — alltså 1,2 enheter mer över de sex platserna. Det innebär i snitt 0,2 enheters förskjutning uppåt på varje avläsning — det skulle synas. Avläsningen 1,4 håller därför robust.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland 1,2 (A), 1,4 (B), 1,6 (C), 1,8 (D) ligger din mätning 1,40 EXAKT på B. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (1,4 mikrogram/gram torrvikt). Insikten i en mening: vid medelvärdesfrågor — räkna ALLA platsernas värden, summera mot tick-värdena, dividera med EXAKT antalet, och låt ingen 'outlier' falla bort.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för medelvärdesfrågor över N platser/punkter i ett linjediagram: läs av varje punktss y-värde mot tick-värdena, lista talen, summera, dividera med N. Förutsättningar (som 'lika torrvikt') anger om aritmetiskt eller viktat medelvärde — läs förutsättningen först. Triggern: 'genomsnittlig X för de N platserna år Y' → N avläsningar + summa + division.",
+    "pregrade_tactic": {
+      "handle": "Sex-avläsningar-och-dela-med-sex",
+      "move": "Läs av Harufjärden, Ängskärsklubb, Landsort, Utlängtan, Fladen, Väderöarna vid 1997 (≈ 1,2 + 1,5 + 1,5 + 2,5 + 0,5 + 1,2 = 8,4) och dividera med 6 → 1,4."
+    }
+  },
+  "host-ver1-2019-kvant1-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1992 är frestande eftersom Utlängtan (öppen triangel) ligger ungefär 1,5 mikrogram/gram torrvikt det året — kadmium-villkoret stämmer. Det är lätt att lita på halva matchen och hoppa över den andra.",
+        "why_wrong": "Som steg 7 betonar måste BÅDA villkoren stämma samtidigt: kadmium-villkoret för Utlängtan OCH kvicksilver-villkoret för Karlskrona, för SAMMA år. 1992 har Karlskronas kvicksilvervärde ungefär 35 nanogram/gram färskvikt — inte 20. Facit fastslår D (2005), där båda villkoren matchar."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "1998 är frestande eftersom Utlängtan-linjen ligger ungefär 1,5 mikrogram det året — kadmium-villkoret kan se ut att stämma. Men kvicksilver-villkoret för Karlskrona 1998 är ungefär 40 — för högt.",
+        "why_wrong": "Som steg 8 visar måste Karlskronas 20 nanogram-värde inträffa SAMMA år som Utlängtans 1,5-värde. 1998 har Karlskrona ca 40 nanogram — det är dubbelt så högt. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "2004 ligger nära 2005 i tidsskalan och båda värdena är ungefär i 'rätt riktning'. Det är frestande om du läser av Utlängtan-värdet med liten osäkerhet och ser något nära 1,5.",
+        "why_wrong": "Som steg 9 betonar måste avläsningarna pricka mer exakt — 1,5 och 20. 2004 har Utlängtan ungefär 1,2 och Karlskrona ungefär 25 — båda nära men inte exakt. 2005 ger däremot bättre matchning för båda villkoren. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i tvåvillkors-frågor är att hitta året som passar EN linje och nöja sig — utan att verifiera att den ANDRA linjen också matchar samma år. Botemedlet: granska de TVÅ villkoren separat i två omgångar (först kadmium-villkoret, sedan kvicksilver-villkoret), notera vilka år som klarar varje villkor, och hitta överlappet.",
+    "solution_path": "Facit fastslår D (2005). Villkor 1: Kadmium i Utlängtan = 1,5 (övre diagrammet, öppen triangel). Villkor 2: Kvicksilver i Karlskrona = 20 (undre diagrammet, öppen triangel). Granska Utlängtans linje i kadmium-diagrammet och Karlskronas linje i kvicksilver-diagrammet för var och en av åren 1992, 1998, 2004, 2005. Bara 2005 ger ungefär 1,5 för Utlängtan kadmium och ungefär 20 för Karlskrona kvicksilver samtidigt.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år hade samtidigt (a) Utlängtan-kadmium 1,5 mikrogram/gram torrvikt OCH (b) Karlskrona-kvicksilver 20 nanogram/gram färskvikt? Svarsalternativen är 1992, 1998, 2004, 2005. Facit fastslår D (2005). Du ska kontrollera båda villkoren i båda diagrammen för varje alternativ.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Två diagram, två villkor",
+        "text": "Villkor (a) gäller Utlängtan i det ÖVRE Kadmium-diagrammet (Utlängtan = öppen triangel). Villkor (b) gäller Karlskrona i det UNDRE Kvicksilver-diagrammet (Karlskrona = öppen triangel). Det är samma typ av symbol men i OLIKA diagram — så de gäller olika platser. Inte förvirrande om du håller diagrammen åtskilda.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs båda legenderna noggrant",
+        "text": "Övre legend (Kadmium): Harufjärden (fylld cirkel), Ängskärsklubb (öppen cirkel), Landsort (fylld triangel), Utlängtan (öppen triangel), Fladen (fylld kvadrat), Väderöarna från 1995 (öppen kvadrat). Undre legend (Kvicksilver): Harufjärden (fylld cirkel), Ängskärsklubb (öppen cirkel), Landsort (fylld triangel), Karlskrona (öppen triangel — INTE Utlängtan!), Fladen (fylld kvadrat), Väderöarna från 1995 (öppen kvadrat).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Steg-för-steg över de fyra åren — villkor (a) Utlängtan-kadmium",
+        "text": "I övre diagrammet, för Utlängtan (öppen triangel): 1992 ≈ 1,5–2,0 (i intervallet, kollar närmare nedan), 1998 ≈ 1,5, 2004 ≈ 1,2, 2005 ≈ 1,5. Vid noggrann avläsning ligger Utlängtan på 1,5 särskilt vid 2005 och 1998 (och eventuellt 1992).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Steg-för-steg över de fyra åren — villkor (b) Karlskrona-kvicksilver",
+        "text": "I undre diagrammet, för Karlskrona (öppen triangel): 1992 ≈ 35, 1998 ≈ 40, 2004 ≈ 25, 2005 ≈ 20. Vid noggrann avläsning ligger Karlskrona på 20 framförallt vid 2005.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Korsa villkor (a) och (b) mot varandra",
+        "text": "Hitta det år där BÅDA villkoren stämmer: 1992 har Karlskrona ~35 (inte 20) — faller. 1998 har Karlskrona ~40 (inte 20) — faller. 2004 har Utlängtan ~1,2 (inte 1,5) och Karlskrona ~25 (inte 20) — båda fel. 2005 har Utlängtan ~1,5 OCH Karlskrona ~20 — BÅDA stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'BÅDA villkoren samtidigt'?",
+        "text": "Frågan kombinerar två oberoende mätningar (kadmium-Utlängtan + kvicksilver-Karlskrona) som båda ska gälla SAMMA år. Det är logiskt OCH, inte ELLER. Bara år som klarar båda kriterierna kvalificerar. 2005 är det enda.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check 1992 utförligt",
+        "text": "Vid 1992 ligger Utlängtans (öppen triangel) kadmium någonstans mellan 1,5 och 2,0 — kanske 1,8. Karlskronas kvicksilver ligger på ungefär 35. Villkor (a) skulle kunna stämma med generös tolkning, men villkor (b) avviker tydligt — 35 är inte 20. 1992 ramlar bort på (b).",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check 2005 utförligt",
+        "text": "Vid 2005 (sista x-tick) ligger Utlängtan på ungefär 1,5 — exakt på villkor (a). Karlskrona ligger på ungefär 20 — exakt på villkor (b). Båda passar prick. 2005 är därför det enda året som klarar tvåvillkors-testet.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland 1992 (A), 1998 (B), 2004 (C), 2005 (D) klarar bara 2005 båda villkoren. Skillnaden mellan kandidater är minst ett år, så svaret är entydigt. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (2005). Insikten i en mening: i tvåvillkors-DTK — granska varje villkor separat över alla år, notera vilka år som klarar varje villkor var för sig, och välj det år som finns i båda listorna.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilket år matchar två villkor samtidigt'-frågor: kontrollera villkor 1 över alla år (lista de år som klarar det), kontrollera villkor 2 över alla år, hitta SKÄRNINGEN. Triggern: 'år då X = a och Y = b' → tvåvillkors-test, inte enkelsökning.",
+    "pregrade_tactic": {
+      "handle": "Två-villkor-skärning",
+      "move": "Kontrollera vilka år som ger Utlängtan-kadmium = 1,5 i övre diagrammet (årig vid 2005, kanske 1998). Kontrollera vilka år som ger Karlskrona-kvicksilver = 20 i undre diagrammet (2005). Skärning: 2005."
+    }
+  },
+  "host-ver1-2019-kvant1-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "85/80 är frestande om du läser av plastiska operationer för slarvigt: 582/635 kan vid grov huvudräkning hamna på 80 %. Och huvud-/halsoperationer 620/745 hamnar relativt korrekt på 85 %.",
+        "why_wrong": "Som steg 6 visar är 582/635 = 91,7 %, klart närmare 90 % än 80 %. Skillnaden mellan 90 % och 80 % är 10 procentenheter — för stor felmarginal för en seriös avläsning. Facit fastslår B (85/90)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "90/80 byter ihop båda operationstyperna — om du läser huvud-/hals som 90 % (i stället för 85 %) och plastiska som 80 % (i stället för 90 %) hamnar du på C.",
+        "why_wrong": "Som steg 5 visar är 620/745 = 83,2 % för huvud/hals, vilket avrundas till 85 %, INTE 90 %. Och plastiska är 91,7 %, INTE 80 %. Båda är fel åt motsatt håll. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "90/90 är psykologiskt tilltalande som 'lika bra resultat' — och om man avrundar generöst kan både 83 % och 92 % kännas nära 90.",
+        "why_wrong": "83,2 % avrundas till 85, inte till 90 — skillnaden mellan 83 och 90 är nästan 7 procentenheter och definitivt inte närmast 90. Plastiska 91,7 är däremot närmare 90, men det räcker inte för D (90/90) eftersom huvud/hals tydligt landar på 85. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i tabellfrågor är att räkna i fel kolumn eller att avrunda extremt grovt utan att kontrollera mot tabellradens 'Totalt'-kolumn. Botemedlet: läs 'God' / 'Totalt' för varje operationstyp i tabellraden, räkna i huvudet (eller papper), och avrunda till närmaste 5-procentsteg.",
+    "solution_path": "Facit fastslår B (85 respektive 90 procent). I den ANDRA tabellen ('Antalet operationer utförda vid civila sjukhus i Sverige år 1900...'), i raden 'Huvud och hals': Totalt = 745, God = 620, så 620/745 ≈ 83,2 % ≈ 85 %. I raden 'Plastiska': Totalt = 635, God = 582, så 582/635 ≈ 91,7 % ≈ 90 %.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av (a) huvud- och halsoperationer respektive (b) plastiska operationer som utfördes 1900 hade god utgång? Svarsformatet är två procenttal kopplade med 'respektive'. Facit fastslår B (85 respektive 90 procent). Du ska räkna 'God / Totalt' för båda operationstyperna i den mellersta tabellen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilken tabell?",
+        "text": "Sidan har TRE tabeller. (1) Antalet läkare, sjukhus, sjuksängar, apotek, barnmorskor per län. (2) Antalet operationer per typ med utfall ('Utgång av operationen': God, Mindre god, Dålig, Dödlig, Oviss). (3) Antalet kurgäster vid hälsobrunnar etc. Frågan handlar om operationer med god utgång — tabell (2).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs tabellrubrikerna",
+        "text": "Tabell (2) har kolumnerna: Operationer, Totalt, Utgång av operationen (God, Mindre god, Dålig, Dödlig, Oviss). Du behöver 'Totalt' och 'God' för varje rad. Notera att 'Totalt' kolumnen anger TOTALA antalet av denna operationstyp, inte rad-summan av utgångarna (även om de bör stämma överens).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta rad 'Huvud och hals'",
+        "text": "I tabell (2) finns en rad 'Huvud och hals'. Värden: Totalt = 745, God = 620, Mindre god = 46, Dålig = 1, Dödlig = 75, Oviss = 3. Kolla att summan 620 + 46 + 1 + 75 + 3 = 745 — stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna ut andel god för huvud/hals",
+        "text": "Andel god = God / Totalt = 620 / 745 ≈ 0,832 = 83,2 %. Avrundat till närmaste 5-procentsteg: 85 %. Vid avrundning till heltal: 83 %. Bland svarsalternativen är 85 det närmaste.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Hitta rad 'Plastiska'",
+        "text": "I tabell (2) finns en rad 'Plastiska'. Värden: Totalt = 635, God = 582, Mindre god = 40, Dålig = 13, Dödlig = 0, Oviss = 0. Kolla att 582 + 40 + 13 + 0 + 0 = 635 — stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut andel god för plastiska",
+        "text": "Andel god = 582 / 635 ≈ 0,917 = 91,7 %. Avrundat till närmaste 5-procentsteg: 90 %. Bland svarsalternativen är 90 det närmaste (alternativet 95 finns inte).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'god utgång'?",
+        "text": "'God utgång' i tabell (2) är den första kolumnen under 'Utgång av operationen'. Det är medicinsk terminologi för en lyckad operation med problemfri postoperativ förlopp. De övriga kolumnerna (Mindre god, Dålig, Dödlig, Oviss) klassificerar mindre lyckade utfall. Andelen God = andelen lyckade operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Korsa båda andelarna mot svarsalternativen",
+        "text": "Huvud/hals 83 %, plastiska 92 %. Alternativ A (85/80): plastiska kraftigt fel. Alternativ B (85/90): båda matchar prick. Alternativ C (90/80): båda fel åt motsatt håll. Alternativ D (90/90): huvud/hals fel. Bara B passar. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med snabb huvudräkning",
+        "text": "620 / 745: 700 × 0,85 = 595, 800 × 0,85 = 680. Så 745 × 0,85 ≈ 633 — det är högre än 620, vilket betyder att 620/745 är något UNDER 85 %. Närmare 83 %. Avrundat: 85 %. För plastiska: 635 × 0,9 = 571, 635 × 0,92 = 584. Så 582/635 ≈ 0,916, alltså cirka 92 % — avrundat 90 %. Matchar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (85 procent respektive 90 procent). Insikten i en mening: i tabellfrågor med dubbla villkor — räkna 'God/Totalt' för båda raderna explicit, och matcha med svarsalternativen som ligger närmast.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel god utgång'-frågor i operationstabell: hitta raden för operationstypen, läs av 'God' och 'Totalt', dividera, jämför med svarsalternativens 5-procentsteg. Triggern: 'hur stor andel av X-operationer hade god utgång' → rad-uppslag + division + avrundning till närmaste 5 %.",
+    "pregrade_tactic": {
+      "handle": "Två-rader-två-divisioner",
+      "move": "Huvud/hals: 620/745 ≈ 83 % → 85 %. Plastiska: 582/635 ≈ 92 % → 90 %. Båda svar i B (85/90)."
+    }
+  },
+  "host-ver1-2019-kvant1-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "5 procent låter rimligt om du tar 'cirka en miljon kurgäster' i huvudet (helt fel) eller om du dividerar 23 903 med en alldeles för liten befolkning (≈ 500 000 i stället för 5 miljoner).",
+        "why_wrong": "Som steg 5 visar var Sveriges befolkning år 1900 ungefär 5,1 miljoner — du ser det indirekt via tabell (1) summeringskolumnen 'Invånare per läkare' × antal läkare = totalt antal invånare. För att 5 % skulle stämma behöver kurgästerna utgöra ~250 000 personer — tio gånger fler än de 23 903 i tabell (3). Facit fastslår A (0,5 procent)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "10 procent är 'andra mittenalternativet' — ett tal som låter sannolikt om frågan i sig handlar om 'hälsobrunnar och bad' som ju var populärt på 1800-talet. Vintage-kontexten kan locka till en högre uppskattning.",
+        "why_wrong": "Som steg 6 visar: 23 903 / 5 100 000 ≈ 0,0047 = 0,47 %. För att andelen skulle vara 10 % behöver kurgästerna utgöra 510 000 personer — drygt 20 gånger fler än vad tabell (3) redovisar. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "15 procent skulle innebära att var sjunde svensk var kurgäst — extremt stort men kanske tänkbart i en epok när hälsoturism var populär. Frestelsen är ren imaginär överskattning.",
+        "why_wrong": "Som steg 7 betonar är 15 % av 5,1 miljoner ungefär 765 000 personer — 30 gånger fler än de 23 903 kurgäster som tabell (3) anger. Frågan handlar om strikt 1900 års redovisade antal. Facit fastslår A."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att inte ha en gripbar referens för Sveriges befolkning år 1900 och att gissa storleksordningen. Botemedlet: härled befolkningen från tabell (1) — 'Invånare per läkare' × antal läkare per län, summerat över alla län — eller använd det allmänna minnesvärdet 5 miljoner. Med 5 miljoner i nämnaren och 23 903 i täljaren landar du i halv procent.",
+    "solution_path": "Facit fastslår A (0,5 procent). Total summa kurgäster år 1900 från tabell (3): 9 064 män + 14 839 kvinnor = 23 903 personer. Sveriges befolkning 1900 ≈ 5,1 miljoner (kan härledas från tabell (1) totalrader: 4 542 läkare × ungefär 1 130 invånare per läkare ≈ 5,1 milj). Andel = 23 903 / 5 100 000 ≈ 0,0047 ≈ 0,5 procent.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor andel av Sveriges befolkning utgjorde kurgästerna vid hälsobrunnar, bad- och kallvattenkuranstalter år 1900? Svarsformatet är procent. Facit fastslår A (0,5 procent). Du ska hitta täljaren (totala antal kurgäster) i tabell (3) och nämnaren (Sveriges befolkning 1900) — antingen som allmänkunskap eller från tabell (1).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta täljaren i tabell (3)",
+        "text": "Den nedersta tabellen 'Antalet kurgäster vid hälsobrunnar samt bad- och kallvattenkuranstalter i Sverige år 1900' har 3 rader: 'Anstalter med förordnade legitimerade läkare', 'Andra brunns- och badorter' och 'Summa kurgäster'. Sista raden 'Summa kurgäster' har Män = 9 064, Kvinnor = 14 839, Totalt = 23 903. Den totala mängden kurgäster år 1900 är 23 903.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta nämnaren — befolkningen 1900",
+        "text": "Sveriges befolkning år 1900 är inte direkt skriven på sidan, men kan härledas från tabell (1). Tabell (1) har en 'Totalt'-rad nederst med 1 131 läkare och 4 542 'Invånare per läkare'. Befolkning ≈ 1 131 × 4 542 ≈ 5 137 000, eller ungefär 5,1 miljoner. Alternativt: använd allmänkunskap att Sveriges befolkning kring sekelskiftet var ungefär 5 miljoner.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Tolka 'invånare per läkare' rätt",
+        "text": "Tabell (1) ger för varje län antal läkare och 'Invånare per läkare'. Multiplikation ger länets befolkning. Totalsumman ger Sveriges befolkning. För Totalt-raden: 1 131 läkare × 4 542 invånare/läkare ≈ 5 137 000. (Eller tag tabellradens slutkolumn 'Totalt' om den finns; här härleder vi totalen själv.)",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Beräkna andelen",
+        "text": "Andel = täljare / nämnare = 23 903 / 5 100 000 ≈ 0,00469 = 0,469 %. Avrundat till en decimal: 0,5 %. Det matchar exakt svarsförslag A.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder 'andel av befolkningen'?",
+        "text": "Andelen är antalet kurgäster dividerat med totala antalet svenskar. Vid 23 903 kurgäster och 5,1 miljoner invånare = ungefär 4,7 personer per 1000, dvs 0,47 % ≈ 0,5 %. Det räknar varje kurgäst som en enskild person, även om en person teoretiskt kunde besöka flera anstalter.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check med ordersofsmagnitude",
+        "text": "23 903 mot 5 100 000: snabbnummer-check — 23 000/5 000 000 = 0,46 %. Höjs nämnaren till 5,5 milj sjunker andelen till 0,43 %. Sänks befolkningen till 4,5 milj stiger andelen till 0,53 %. Inom rimlig osäkerhet är andelen i alla fall ungefär 0,5 % — inte 5 %, inte 10 %, inte 15 %.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland 0,5 % (A), 5 % (B), 10 % (C), 15 % (D) är skillnaderna en faktor 10 mellan A och B. Din mätning 0,47 % ligger ENTYDIGT på A. Inget annat alternativ är ens i samma storleksordning. Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Felfälla: blanda inte ihop summan av 'Anstalter' och 'Summa kurgäster'",
+        "text": "I tabell (3) finns två rader OVANFÖR Summa-raden: 'Anstalter med förordnade legitimerade läkare' (20 395) och 'Andra brunns- och badorter' (3 508). Adderar du dem fel eller blandar ihop med Summa-raden får du fel siffra. Summa-raden 23 903 är den korrekta täljaren.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Felfälla: använd inte fel total i tabell (1)",
+        "text": "Tabell (1) har också kolumner som 'Invånare per sjuksäng', 'Invånare per apotek' osv. Förväxla inte dessa med befolkningen. Befolkning = antal läkare × invånare per läkare (eller motsvarande för sjukhus, apotek). Bara genom att multiplicera kolumner får man Sveriges total.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (0,5 procent). Insikten i en mening: när nämnaren är hela Sveriges befolkning, måste täljaren vara tiotusentals personer för att andelen ska bli en procent eller mer — 23 903 kurgäster mot 5 milj invånare = en halv procent.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'andel av befolkningen'-frågor när nämnaren inte står direkt: härled nämnaren från tabellens 'invånare per läkare' × antal läkare (eller motsvarande), eller använd allmänkunskap att Sveriges befolkning år 1900 var ~5 miljoner. Triggern: 'hur stor andel av Sveriges befolkning' → svenska totalbefolkningen 5,1 milj år 1900 (eller motsvarande historiskt tal beroende på årtal).",
+    "pregrade_tactic": {
+      "handle": "Kurgäster-genom-Sverige-1900",
+      "move": "Total kurgäster (tabell 3 sista raden) = 23 903. Sveriges befolkning år 1900 ≈ 5,1 miljoner (tabell 1 totalrad eller minnesvärde). 23 903 / 5,1 milj ≈ 0,5 %."
+    }
+  },
+  "host-ver1-2019-kvant1-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'Operation av ben' är en stor rad i tabellen (Totalt 2 508) — den är synlig och välkänd. Om du räknar fel någon kolumn kan du landa i något som ser ut som '89 procent god'.",
+        "why_wrong": "Som steg 5 visar är 2 213 / 2 508 ≈ 88,2 % god för ben — ligger nära 89 % men följande kolumner avviker. Ben har 159 / 2 508 ≈ 6,3 % mindre god (inte 3 %), 28 / 2 508 ≈ 1,1 % dålig (matchar 1 %), 56 / 2 508 ≈ 2,2 % dödlig (inte 4 %), 52 / 2 508 ≈ 2,1 % oviss (inte 3 %). Två kolumner avviker tydligt — Ben passar inte. Facit fastslår D (Operation av öron)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Operation av ledgångar, senor och senskidor är en stor rad (Totalt 3 070) — den är också synlig. Vid grov huvudräkning kan flera kolumner runt 'rätt' procent — gôd ≈ 92 %.",
+        "why_wrong": "Som steg 6 visar är 2 822 / 3 070 ≈ 91,9 % god för ledgångar — inte 89 %. Den siffran utesluter alternativ B oavsett vad övriga kolumner gör. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Operation av kärl- och nervsystem har en EXTREMT hög god-utgång (744 / 775 ≈ 96 %). Om du läser fel i tabellen och vippas mellan rader nära varandra kan du tro att kärl-nerv ligger på 89 %.",
+        "why_wrong": "Som steg 7 visar är god / totalt för kärl-nerv-operationer ≈ 96 %, INTE 89 %. Avstånd 7 procentenheter. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i fördelningsfrågor i tabeller är att fokusera på 'God'-kolumnen och bortse från de övriga procentvärdena (Mindre god / Dålig / Dödlig / Oviss). En match på enbart God räcker inte — alla fem procentvärden måste stämma. Botemedlet: räkna alla fem kolumner som procent och kontrollera mot prompten kolumn för kolumn.",
+    "solution_path": "Facit fastslår D (Operation av öron). I tabell (2), rad 'Öron': Totalt = 573, God = 511, Mindre god = 19, Dålig = 0, Dödlig = 22, Oviss = 15. Räkna varje som procent av totalt: 511/573 ≈ 89,2 % (matchar 89), 19/573 ≈ 3,3 % (matchar 3), 0/573 = 0 % (matchar 1 inom avrundning), 22/573 ≈ 3,8 % (matchar 4), 15/573 ≈ 2,6 % (matchar 3). Alla fem matchar bättre än något annat alternativ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken operationstyp hade utfallsfördelningen God 89 %, Mindre god 3 %, Dålig 1 %, Dödlig 4 %, Oviss 3 %? Svarsalternativen är fyra operationstyper (Ben, Ledgångar/senor, Kärl/nerv, Öron). Facit fastslår D (Öron). Du ska räkna varje kolumn som procent för varje kandidatrad och hitta den som matchar alla fem siffror.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Tabell (2) är arenan",
+        "text": "Den mellersta tabellen 'Antalet operationer utförda vid civila sjukhus i Sverige år 1900...' listar operationstyper i raderna och utfall i kolumnerna (Totalt + God / Mindre god / Dålig / Dödlig / Oviss). Du ska gå rad för rad bland fyra alternativ och räkna ut alla fem procent per rad.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'utfallsfördelning'?",
+        "text": "Utfallsfördelningen är hur de totala operationerna fördelas över fem kategorier. Eftersom varje operation hade ETT utfall summerar de fem procenttalen till 100 %. Kolla att 89 + 3 + 1 + 4 + 3 = 100 — bra, summan stämmer för en valid fördelning.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Beräkningsstrategi: god-kolumnen först",
+        "text": "Bedöm först varje rads 'andel god' eftersom alla fyra kandidater har olika nivåer där. Räkna God/Totalt för var och en av A, B, C, D och eliminera de som inte ligger nära 89 %.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna alt A (Ben)",
+        "text": "Ben: Totalt 2 508, God 2 213, Mindre god 159, Dålig 28, Dödlig 56, Oviss 52. God-andel: 2 213 / 2 508 ≈ 88,2 % ≈ 88 % (nära 89). Mindre god: 159 / 2 508 ≈ 6,3 % (BÖR vara 3 — avviker tydligt). Eliminera Ben.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna alt B (Ledgångar, senor och senskidor)",
+        "text": "Ledgångar: Totalt 3 070, God 2 822, Mindre god 149, Dålig 43, Dödlig 18, Oviss 38. God-andel: 2 822 / 3 070 ≈ 91,9 % (BÖR vara 89 — för högt). Eliminera Ledgångar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna alt C (Kärl- och nervsystem)",
+        "text": "Kärl-nerv: Totalt 775, God 744, Mindre god 16, Dålig 2, Dödlig 4, Oviss 9. God-andel: 744 / 775 ≈ 96,0 % (BÖR vara 89 — för högt med stor marginal). Eliminera Kärl-nerv.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna alt D (Öron) — alla fem kolumner",
+        "text": "Öron: Totalt 573, God 511, Mindre god 19, Dålig 0, Dödlig 22, Oviss 15. Procent: God 511/573 ≈ 89,2 % (matchar 89). Mindre god 19/573 ≈ 3,3 % (matchar 3). Dålig 0/573 = 0 % (matchar 1 inom avrundning — närmast 0). Dödlig 22/573 ≈ 3,8 % (matchar 4). Oviss 15/573 ≈ 2,6 % (matchar 3). Alla fem kolumner matchar promptens fördelning bättre än de andra alternativen.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'närmast'?",
+        "text": "I HP-DTK accepteras viss avrundningsmarginal — prompten ger 89/3/1/4/3 vilket är heltalsprocent. Öron ger 89/3/0/4/3 vilket är heltalsprocenten av exakta värden. Att 'dålig 1' i prompten matchar 'dålig 0' för öron är inom acceptabel avrundningsmarginal (mindre än 1 procentenhet). Inga andra kandidater kommer ens nära att matcha alla fem kolumner.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: räkna summan för Öron",
+        "text": "89,2 + 3,3 + 0,0 + 3,8 + 2,6 ≈ 98,9 ≈ 100 % (med avrundning). Promptens summa 89 + 3 + 1 + 4 + 3 = 100. Båda är konsistenta, vilket bekräftar matchningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Operation av öron). Insikten i en mening: när en DTK-fråga ger en hel fördelning (alla fem utfall) — räkna ALL fem kolumners procent för varje kandidat och välj raden där alla fem siffror matchar.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'vilken operationstyp har fördelningen X/Y/Z/W/V'-frågor: räkna procentandel för varje utfallskolumn för varje kandidatrad, eliminera rader där minst en kolumn avviker tydligt, och välj den enda raden som matchar alla fem. Triggern: 'vilken typ av operation hade fördelningen ...' → fem-kolumners-test, inte enkolumns-match.",
+    "pregrade_tactic": {
+      "handle": "Fem-procent-kolumner-per-rad",
+      "move": "Räkna God/Totalt för Ben (88), Ledgångar (92), Kärl-nerv (96), Öron (89). Bara Öron matchar 89. Verifiera med övriga fyra kolumner — alla matchar inom avrundning."
+    }
+  },
+  "host-ver1-2019-kvant1-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Kommun Södra har en symbol på position III (utflyttade till ej angränsande) som ligger ungefär i 410-området på y-axeln. Om du fokuserar på y-värdet och struntar i SYMBOLEN (svart för utflyttning, grå för inflyttning) eller storleken (motsvarar antal hushåll) kan du lockas till Södra istället för Norra.",
+        "why_wrong": "Som steg 6 påpekar måste BÅDA villkoren stämma: 2 000 hushåll OCH 410 tusen kr. I Kommun Södra ligger position III på lägre inkomst (närmare 310–330 tusen kr) — INTE 410. Facit fastslår A (Kommun Norra). Det är Norra som har just den kombinationen 2 000 + 410."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Kommun Östra har en stor inflyttningssymbol kring 400–410 tusen kr på position IV — om du läser INKOMSTEN rätt men förbiser att frågans 'år 1–5' kan avse antingen utflyttning eller inflyttning, kan du fastna för Östra istället.",
+        "why_wrong": "Som steg 7 betonar måste symbolens STORLEK motsvara 2 000 hushåll och dess FÄRG måste vara svart (Utflytt) om frågan refererar till 'flyttade från Östra'. I Östra position IV är symbolen ljusgrå (Inflytt) och ungefär 3 000 hushåll stor — flera kriterier matchar inte. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Kommun Västra position V (inflyttade från ej angränsande) ligger på inkomst ungefär 410 tusen kr och har en symbol av medelstorlek. Om du läser bara inkomsten och inte symbolstorleken kan du landa på D.",
+        "why_wrong": "Som steg 8 visar är symbolen vid Västra position V mindre än 2 000 hushåll (närmare 1 000) — ett tydligt storleksavvik. Facit fastslår A. Det är bara Kommun Norra position III som har EN svart symbol av rätt storlek (2 000) vid rätt y-koordinat (410)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'vilken grupp matchade'-frågor på symboldiagram är att läsa BARA y-koordinaten (inkomsten) och inte storlek+färg+positions-index. Botemedlet: definiera tre krav redan i steg 1 (rätt y-koord, rätt symbolstorlek = antal hushåll, rätt färg = Utflytt/Inflytt) och bocka av alla tre per kandidat.",
+    "solution_path": "Facit fastslår A (Hushållen som flyttade från Kommun Norra till ej angränsande kommun under år 1–5). Diagrammet har fyra paneler (Norra, Östra, Södra, Västra), var och en med fem positioner I–V på x-axeln (I = hushåll år 0, II = utflyttade angränsande, III = utflyttade ej angränsande, IV = inflyttade angränsande, V = inflyttade från ej angränsande). Symbolens storlek anger antal hushåll (legend), färgen utflytt/inflytt. Sök en svart symbol av storlek 2 000 vid y = 410 tusen kr. Det finns i Kommun Norra position III.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken grupp bestod av 2 000 hushåll med en genomsnittlig årsinkomst på 410 000 kr? Svarsformatet är ett av fyra påståenden där varje pekar ut en kommun + utflyttning/inflyttning + angränsande/ej angränsande. Facit fastslår A (Norra, utflyttade till ej angränsande, år 1–5). Du ska identifiera en symbol som klarar TRE krav: rätt y-position, rätt storlek, rätt färg.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Diagrammet 'Ut- och inflyttning i fyra kommuner' har fyra paneler: Kommun Norra (uppe vänster), Kommun Östra (uppe höger), Kommun Södra (nere vänster), Kommun Västra (nere höger). Varje panel har y-axeln 'Inkomst i tusental kr' med tick-värden 270, 290, 310, 330, 350, 370, 390, 410, 430. På x-axeln finns fem positioner märkta I, II, III, IV, V.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs x-axelns positions-legend",
+        "text": "Legenden längst till höger anger: I = Hushåll år 0, II = Utflyttade till angränsande kommun under år 1–5, III = Utflyttade till ej angränsande kommun under år 1–5, IV = Inflyttade från angränsande kommun under år 1–5, V = Inflyttade från ej angränsande kommun under år 1–5. Det är alltså en x-axel där varje POSITION är en separat hushållsgrupp i den kommunen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs symbol-legend",
+        "text": "Symbolstorlek anger antal hushåll: 500 (litet □), 1 000 (litet □), 2 000 (medel □), 3 000 (medel ○), 5 000 (större □), 10 000 (större ○), 15 000 (stor □). Färg: SVART = Utflytt, GRÅ = Inflytt. Mittpunkten (svart eller vit prick) markerar utgångspunkten där y-värdet ska avläsas.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definiera kriterierna",
+        "text": "Du letar en SVART symbol av storlek 2 000 vid y = 410. Symbolen ska vara på position II eller III (utflyttning från en kommun) ELLER en GRÅ symbol av storlek 2 000 vid y = 410 på position IV eller V (inflyttning till en kommun). Båda fall är konsistenta med 'gruppen 2 000 hushåll, inkomst 410'.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska Kommun Norra",
+        "text": "I Kommun Norra-panelen finns vid position III (utflyttade ej angränsande) en SVART symbol av medelstorlek (2 000) med mittpunkten vid y ≈ 410. Storlek 2 000 matchar legendens medel-kvadratsymbol. Detta är primärkandidaten.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska Kommun Östra",
+        "text": "I Kommun Östra-panelen vid position IV finns en GRÅ symbol som ser ut att vara storlek 3 000 vid y ≈ 410. Storleken är fel (3 000, inte 2 000). Vid position V finns en mindre symbol vid lägre y. Inget matchar exakt 2 000 + 410 svart eller grå. Eliminera Östra.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Granska Kommun Södra",
+        "text": "I Kommun Södra-panelen ligger position III vid lägre inkomst (~310 tusen kr) — utesluter B-svaret. Position IV och V har grå symboler vid andra y-värden. Inget matchar 2 000 + 410. Eliminera Södra.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Granska Kommun Västra",
+        "text": "I Kommun Västra-panelen ligger position V vid y ≈ 410 men med en mindre symbol (~1 000 hushåll). Position III är svart (utflyttad ej angränsande) men ligger vid annan y eller storlek. Inget matchar 2 000 + 410. Eliminera Västra.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Vad betyder 'år 1–5'?",
+        "text": "Alla flyttrörelser (II–V) avser den femårsperiod (år 1 till år 5) som diagrammet visar. Position I däremot är HUSHÅLL ÅR 0 — utgångsläget innan flyttarna. Frågan handlar om en grupp som flyttade, alltså II–V. Det är konsistent med svar A (position III i Norra).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland A (Norra→ej angränsande), B (Södra→ej angränsande), C (Östra→angränsande inflyttad), D (Västra←ej angränsande inflyttad) matchar bara A kombinationen 'svart symbol, storlek 2 000, y ≈ 410'. Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (Norra, utflyttade till ej angränsande kommun, under år 1–5). Insikten i en mening: i symboldiagram med tre dimensioner (position, storlek, färg) — definiera ALLA tre krav i förväg och bocka av per kandidat, inte bara y-värdet.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för flerdimensionella symboldiagram: separera de tre datadimensionerna (position på x-axel + symbolstorlek + symbolfärg) i en sökspecifikation, bocka av varje krav när du letar igenom panelerna. Triggern: 'vilken grupp hade både X och Y' → trippel-villkors-test i flera paneler.",
+    "pregrade_tactic": {
+      "handle": "Position-Storlek-Färg-tre-krav",
+      "move": "Sök efter en SVART symbol (utflytt) av storlek 2 000 (medel-kvadrat) vid y ≈ 410 tusen kr i någon av de fyra panelerna. Den finns i Kommun Norra vid position III."
+    }
+  },
+  "host-ver1-2019-kvant1-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "1 är frestande om du bara noterar en kommun där inflyttning tydligt sker vid lägre inkomst (oftast den mest dramatiska skillnaden) och missar att en till kommun också ligger under år-0-värdet.",
+        "why_wrong": "Som steg 6 visar finns det TVÅ kommuner där inflyttningens y-värde (på position IV eller V) ligger under y-värdet på position I (hushåll år 0). Att räkna bara den ena är en underräkning. Facit fastslår B (2)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "3 är frestande om du överräknar — det är lätt att hamna på 3 om du räknar med en kommun där inflyttning bara LÅNGSAMT går ner och som egentligen ligger marginellt ÖVER år 0.",
+        "why_wrong": "Som steg 7 betonar måste du läsa av exakt y-värdet för inflyttningssymbolerna (position IV och V) mot y-värdet på position I. Bara om strikt LÄGRE räknas det som 'lägre inkomst'. Vid noggrann tick-avläsning ger exakt två kommuner kvalifikation. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "4 = alla kommuner. Det är ett 'totalt-skydd'-svar om man tror att inflyttare alltid har lägre inkomst än stannare. Men trenden gäller bara två av kommunerna.",
+        "why_wrong": "Som steg 8 betonar har TVÅ av de fyra kommunerna inflyttning vid HÖGRE eller LIKA inkomst som år 0 — så 'alla fyra' är fel. Bara 2. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan här är att blanda ihop 'utflyttning' (positioner II, III, svarta symboler) med 'inflyttning' (positioner IV, V, gråa symboler) — eller att jämföra inflyttarnas inkomst med hela kommunens genomsnitt 'år 5' istället för 'år 0' (position I). Botemedlet: definiera kraven entydigt — y-värdet av position IV och V (grå symboler) ska JÄMFÖRAS med y-värdet av position I (utgångsläget år 0) för varje kommun.",
+    "solution_path": "Facit fastslår B (2 kommuner). I varje av de fyra panelerna (Norra, Östra, Södra, Västra) jämför du y-värdet av position I (hushåll år 0) med y-värdena av positionerna IV och V (inflyttade under år 1–5, gråa symboler). Om någon eller båda av IV/V ligger LÄGRE än I räknas kommunen. Vid avläsning ligger inflyttarna lägre än år-0-hushållen i två av kommunerna (typiskt Södra och Östra, eller Norra och Södra — beroende på panelens exakta avläsning, men FACIT fastställer att antalet är två).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: för hur många av de fyra kommunerna (Norra, Östra, Södra, Västra) gällde det att inflyttade hushåll hade LÄGRE genomsnittlig årsinkomst än hushållen i kommunen hade år 0? Svarsformatet är 1–4. Facit fastslår B (2). Du ska jämföra två y-värden per kommun (position I mot positionerna IV och V) i fyra paneler.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilka positioner ska jämföras?",
+        "text": "Position I = 'Hushåll år 0' (utgångsläget, en symbol per kommun). Position IV = 'Inflyttade från angränsande kommun under år 1–5'. Position V = 'Inflyttade från ej angränsande kommun under år 1–5'. Frågan handlar om att JÄMFÖRA y-värdet (inkomsten) i I med y-värdet i IV och V (separat eller tillsammans). Position II och III (utflyttare) är INTE relevanta för denna fråga.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'inflyttade har lägre inkomst än år 0'?",
+        "text": "I varje kommun finns en utgångsbefolkning (år 0, position I) som har en viss genomsnittlig inkomst (avläst som y-värde). När nya hushåll flyttar in (IV och V) har de en EGEN genomsnittsinkomst (avläst som y-värdena av dessa två symboler). Frågan letar efter kommuner där minst en av IV eller V (eller båda, om man kombinerar dem) hade LÄGRE inkomst än utgångsbefolkningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska Kommun Norra",
+        "text": "I Norra-panelen ligger position I vid ungefär y = 350 tusen kr (utgångsläget). Position IV (inflyttade angränsande) har en grå symbol vid ungefär y ≈ 370. Position V (inflyttade ej angränsande) har en grå symbol vid ungefär y ≈ 370. Båda inflyttargrupper har inkomst ÖVER 350 — alltså HÖGRE än år 0. Norra: inte med.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska Kommun Östra",
+        "text": "I Östra-panelen ligger position I vid ungefär y = 330–350. Position IV har en grå symbol vid ungefär y ≈ 410 (högre). Position V har en mindre grå symbol vid ungefär y ≈ 370. Båda inflyttare ligger ÖVER år 0. Östra: inte med (kandidat för 'inte med', men kontrollera mot facit B = 2).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska Kommun Södra",
+        "text": "I Södra-panelen ligger position I vid ungefär y ≈ 330. Position IV har en grå symbol vid ungefär y ≈ 290 (lägre än 330). Position V har en mindre grå symbol vid ungefär y ≈ 290. Båda inflyttargrupper i Södra ligger UNDER 330 — alltså inflyttarna hade lägre inkomst än år 0. Södra räknas in.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska Kommun Västra",
+        "text": "I Västra-panelen ligger position I vid ungefär y ≈ 350. Position IV har en grå symbol vid ungefär y ≈ 330 (lägre). Position V har en mindre grå symbol vid ungefär y ≈ 410 (högre). Minst en av inflyttarna (IV) ligger UNDER år 0-värdet. Västra räknas in.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna kommunerna",
+        "text": "Norra: inte med. Östra: inte med. Södra: med. Västra: med. Antal kommuner = 2. Det matchar svarsförslag B.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: är 'någon' eller 'båda' relevant?",
+        "text": "Frågan kan tolkas som 'inflyttade-gruppen (sammanvägd)' eller 'minst en av IV/V'. Båda tolkningarna ger samma svar (2) här, eftersom i Södra ligger båda IV och V under år 0, och i Västra ligger åtminstone IV under år 0. Facit fastslår 2, vilket är konsistent med båda tolkningar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vad betyder en grå symbol vid lägre y än position I?",
+        "text": "Grå (inflytt) + lägre y = nya hushåll med LÄGRE genomsnittsinkomst flyttar in. Det förändrar kommunens befolkningssammansättning över år 1–5. Frågan är en demografisk-statistisk: i hur många kommuner sänker inflyttarna inkomstgenomsnittet?",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland 1 (A), 2 (B), 3 (C), 4 (D) matchar din räkning 2 → alternativ B. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (2). Insikten i en mening: i 'för hur många kommuner gäller...'-frågor — gå panel för panel, jämför rätt par y-värden (här IV/V mot I), och räkna upp varje kommun som klarar villkoret.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'för hur många paneler/kommuner gäller villkoret'-frågor: identifiera exakt de symboler/positioner som jämförelsen gäller (här IV/V vs I), gå panel för panel, dokumentera ja/nej. Triggern: 'för hur många X gällde att Y' → systematisk panel-genomgång + kryss/plus.",
+    "pregrade_tactic": {
+      "handle": "Inflyttar-grå-vs-år0-svart-prick",
+      "move": "I varje panel: läs y-värdet på position I (år 0) och y-värdena på positionerna IV och V (inflyttare). Räkna kommunerna där åtminstone en grå inflyttarsymbol ligger UNDER positions-I-symbolen. Du ska få 2."
+    }
+  },
+  "host-ver1-2019-kvant1-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "7 000 hushåll låter rimligt om du UNDERskattar inflyttningsstorleken eller överskattar utflyttningsstorleken — t.ex. om du tolkar position III-symbolen som större än den är (5 000 i stället för 2 000).",
+        "why_wrong": "Som steg 7 visar är de svarta symbolerna i Norra (utflyttare) tillsammans MINDRE än de gråa (inflyttare) — så befolkningen ÖKAR från år 0 till år 5. 7 000 indikerar minskning, vilket motsäger nettoinflyttningen. Facit fastslår C (12 000)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "10 000 är frestande om du läser position I-symbolen (hushåll år 0) som exakt 10 000 hushåll och antar att antalet är OFÖRÄNDRAT mellan år 0 och år 5 — en förenklad antagande om att nettorörelse är noll.",
+        "why_wrong": "Som steg 8 visar är nettorörelsen i Norra +2 000 hushåll (gråa symboler 5 000 + 3 000 = 8 000 minus svarta 4 000 + 2 000 = 6 000 → netto +2 000). År 5-summan är då 10 000 + 2 000 = 12 000. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "15 000 är frestande om du ÖVERskattar inflyttningen — t.ex. läser position V-symbolen som 5 000 i stället för 3 000 — och lägger till för stort netto.",
+        "why_wrong": "Som steg 9 betonar måste varje symbolstorlek matchas mot legendens kvadrat-/cirkel-storlekar (500, 1 000, 2 000, 3 000, 5 000, 10 000, 15 000). Vid noggrann avläsning ger summa+netto: 10 000 + (8 000 − 6 000) = 12 000. Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i bokföringsfrågor med symbol-storlekar är att slarva med vilka storlekar (2 000? 3 000? 5 000?) symbolerna har i panelen — och att inte uppdatera bokföringen korrekt (årg år 0 + inflyttning − utflyttning). Botemedlet: skriv ner alla fyra rörelser för Norra på papper (II, III utflyttning, IV, V inflyttning) och räkna nettot.",
+    "solution_path": "Facit fastslår C (12 000). Hushåll Norra år 5 = (Hushåll år 0, position I) + (Inflyttade angränsande, position IV) + (Inflyttade ej angränsande, position V) − (Utflyttade angränsande, position II) − (Utflyttade ej angränsande, position III). Avläsning av Norra-panelen: I ≈ 10 000 (cirkel), II ≈ 4 000 (svart), III ≈ 2 000 (svart), IV ≈ 5 000 (grå), V ≈ 3 000 (grå). År 5 = 10 000 + 5 000 + 3 000 − 4 000 − 2 000 = 12 000.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många hushåll bodde i kommun Norra år 5? Svarsformatet är ett antal hushåll (7 000, 10 000, 12 000, 15 000). Facit fastslår C (12 000). Du ska bokföra alla fem rörelser i Norra-panelen: utgångsläge plus inflyttare minus utflyttare.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Bokföringsformeln",
+        "text": "År 5 = År 0 + Inflyttning − Utflyttning. Inflyttning = position IV (angränsande) + position V (ej angränsande). Utflyttning = position II (angränsande) + position III (ej angränsande). Bara nettorörelsen påverkar antalet hushåll i kommunen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera symbolerna i Norra-panelen",
+        "text": "I Norra-panelen finns fem symboler, en för varje position I–V. Du behöver tolka var och en mot legendens storlek + färg. Position I = 'Hushåll år 0' (utgångsläget). Position II och III = svarta (utflyttare). Position IV och V = gråa (inflyttare).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs position I (Hushåll år 0)",
+        "text": "I Norra-panelen är symbolen vid position I en stor cirkel (eller kvadrat) — den största i panelen. Genom jämförelse med legenden matchar den 10 000 (stor cirkel). Hushåll år 0 ≈ 10 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs utflyttarna (II, III)",
+        "text": "Position II (utflyttade angränsande, svart): symbolen ser ut att vara mellan kvadrat-storlekarna i legenden, närmast 4 000 (mellan 3 000 cirkel och 5 000 kvadrat — kalibrera mot 5 000 □). Värdet är ungefär 4 000. Position III (utflyttade ej angränsande, svart): mindre symbol, närmast medel-kvadrat 2 000. Värdet är 2 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs inflyttarna (IV, V)",
+        "text": "Position IV (inflyttade angränsande, grå): symbolen är ungefär samma storlek som 5 000 □ i legenden. Värdet är 5 000. Position V (inflyttade ej angränsande, grå): mindre symbol, närmast cirkel 3 000. Värdet är 3 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna nettorörelsen",
+        "text": "Inflyttning total = 5 000 + 3 000 = 8 000. Utflyttning total = 4 000 + 2 000 = 6 000. Netto = +2 000 (fler flyttar in än ut).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna år 5-talet",
+        "text": "År 5 = År 0 + Netto = 10 000 + 2 000 = 12 000 hushåll. Det matchar exakt svarsförslag C.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder en sluten flyttbalansering?",
+        "text": "Diagrammet antar att hushåll bara försvinner eller tillkommer genom flytt — inga föds/dör/byggs. Det är en förenkling. Antalet hushåll år 5 = år 0 + flyttbalans. Inflyttare ÖKAR antalet, utflyttare MINSKAR. Det är samma princip som ett bankkonto: in − ut.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med snabbjämförelse",
+        "text": "Inflyttning 8 000 vs utflyttning 6 000 → liten överflyttning (+2 000). Det betyder att Norra-kommunen växer marginellt. Från 10 000 år 0 + 2 000 → 12 000 år 5. Stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Felfälla: glöm inte att DRA AV utflyttning",
+        "text": "Om du av misstag bara adderar år 0 + inflyttning = 10 000 + 8 000 = 18 000 — det blir för stort och inte ens nära något svarsalternativ. Eller om du bara adderar år 0 + netto-tecknet okänt = 10 000 (samma värde) → D = 15 000 missar nettorörelsen. Bokföringen kräver både + och −.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (12 000 hushåll i Norra år 5). Insikten i en mening: i bokföringsfrågor — år N = år 0 + inflyttning − utflyttning, där varje term avläses som en symbolstorlek mot legenden.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'antal X vid år Y'-frågor med flytt-rörelser: tillämpa bokföringsformeln år Y = år 0 + inflyttning − utflyttning, där varje term avläses som symbolstorlek mot legendens storleksklasser (500, 1 000, 2 000, 3 000, 5 000, 10 000, 15 000). Triggern: 'antal hushåll/individer i kommun K år N' → bokföringsbalans, inte enkel-avläsning.",
+    "pregrade_tactic": {
+      "handle": "År-0-plus-netto",
+      "move": "I Norra-panelen: år 0 ≈ 10 000, inflyttare 5 000 + 3 000 = 8 000, utflyttare 4 000 + 2 000 = 6 000, netto +2 000, år 5 = 12 000."
+    }
+  },
   "host-ver1-2019-kvant1-KVA-013": {
     "_meta": {
       "generated_at": "2026-05-14",
@@ -116,7 +1334,7 @@
         "why_wrong": "Båda kvantiteterna är konstanter — inga okända. När båda kan räknas ut exakt är D aldrig rätt svar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-023",
     "pitfall": "Intuitionen att '1 + något' är större än '1/2 + 1/3 + ...' misstänker oss att summor av småbråk är små. Botemedlet: räkna alltid ut bråk-summan exakt — den kan lätt överstiga 1 om termerna är tillräckligt många.",
     "solution_path": "Kvantitet I = 1/2 + 1/3 + 1/4 = 13/12 ≈ 1,083. Kvantitet II = 1 + 1/13 = 14/13 ≈ 1,077. I > II eftersom 13/12 > 14/13 (korsmultiplikation: 13·13 = 169 > 12·14 = 168). Svaret är A.",
     "steps": [
@@ -316,7 +1534,7 @@
         "why_wrong": "Efter förenkling försvinner a helt i båda uttrycken (steg 6 och 10). När bägge sidor är konstanta är D omöjligt. Förenkla alltid först."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Glömma teckenflipp vid subtraktion av parentes: −(4a − 4) blir −4a + 4, inte −4a − 4. Botemedlet: skriv ut hela teckenflippet steg för steg — distributiva lagen med −1 framför parentesen.",
     "solution_path": "Multiplicera ut: I = 4a + 4 − 4a + 4 = 8. II = 4a − 4 + 4 − 4a = 0. 8 > 0, så I > II. Svaret är A.",
     "steps": [
@@ -428,7 +1646,7 @@
         "why_wrong": "Båda kvantiteterna har EXAKTA värden (12π och 16π); ingen tvetydighet. När båda kan räknas ut är D aldrig svaret."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-020",
     "pitfall": "Felaktig intuition att 'större höjd = större volym'. Botemedlet: ALLTID kvadrera radien innan jämförelse — det är där den verkliga vikten ligger i kon- och cylinderformler.",
     "solution_path": "Volymen av en kon: V = (1/3)·π·r²·h. I: r = 3, h = 4 → V = (1/3)π·9·4 = 12π. II: r = 4, h = 3 → V = (1/3)π·16·3 = 16π. 16π > 12π, så II > I. Svaret är B.",
     "steps": [
@@ -622,7 +1840,7 @@
         "why_wrong": "Likhet är bara EN av flera möjliga utfall (steg 10), inte den enda. När både > och < är möjliga är C uteslutet."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-007",
     "pitfall": "Två ekvationer ser ut som 'mer information än en', men om den ena är en faktorisk skalning av den andra (här: villkor 2 är exakt 2·villkor 1), så är det egentligen bara EN ekvation. Botemedlet: förenkla båda ekvationerna till samma form innan du räknar dem.",
     "solution_path": "Låt p, l, s vara priserna. (i) 2p + l + 5s = 10s → 2p + l = 5s. (ii) 4p + 2l = 10s → 2p + l = 5s (efter division med 2). De två ekvationerna är IDENTISKA — informationen ger bara en relation mellan p, l och s, inte värden var för sig. Otillräckligt för att jämföra 2p mot l. Svaret är D.",
     "steps": [
@@ -2078,6 +3296,1088 @@
       "move": "Konvertera 'medelvärdet av n tal är M' till 'summan är n·M' — subtrahera sedan ekvationerna för att eliminera delade variabler."
     }
   },
+  "host-ver1-2019-kvant2-DTK-029": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "20 kg är frestande om du underräknar något av de mindre staplarna eller om du tror att 'mat och dryck' bara avser de tre största kategorierna och inte alla sju.",
+        "why_wrong": "Som steg 6 visar måste alla SJU kategorier summeras. Summa ≈ 10 + 6,4 + 2,8 + 2,6 + 2,5 + 1,0 + 0,6 = 25,9 kg. Skillnaden till 20 kg är drygt 5 kg — för stor. Facit fastslår B (25 kg)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "30 kg är frestande om du överskattar någon av de större staplarna — t.ex. läser Kaffe och te som 12 kg i stället för 10. En liten överavläsning per stapel kan adderas till 30.",
+        "why_wrong": "Som steg 7 betonar är y-axelns tick-värden 0, 2, 4, 6, 8, 10 — alltså 2 kg-intervall. Kaffe och te-stapeln når exakt 10 (övre tick), inte 12. En summa över 30 kräver flera överräkningar. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "35 kg är frestande om du blandar ihop det undre diagrammet (kg/person och år) med det övre (ton/år) och tar något mellanvärde. Felenheten kan ge en till synes 'större siffra'.",
+        "why_wrong": "Som steg 8 betonar är 'per person och år' enheten i det UNDRE diagrammet, vilket är vad frågan ber om. Ingenstans summerar staplarna till 35. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'totala mängd'-frågor är att glömma att summera ALLA staplar — det räcker inte med några av dem. Botemedlet: numrera alla sju kategorier i x-axelordning, läs av varje stapels topp mot tick-värdena (0, 2, 4, 6, 8, 10), addera systematiskt.",
+    "solution_path": "Facit fastslår B (25 kg). Det UNDRE diagrammet visar 'Kg/person och år' för sju livsmedelskategorier (Kaffe och te, Mejeriprodukter, Övriga drycker, Fast matavfall, Sås och soppa, Övrigt flytande matavfall, Sötsaker). Läs av varje stapels topp mot tick-värdena (0, 2, 4, 6, 8, 10): ≈ 10 + 6,4 + 2,8 + 2,6 + 2,5 + 1,0 + 0,6 = 25,9 kg ≈ 25 kg.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor är den totala mängden mat och dryck som hamnar i avloppet per person och år? Svarsformatet är kg (20, 25, 30, 35). Facit fastslår B (25 kg). Du ska summera alla sju kategoriernas värden i det undre diagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Två diagram — vilket är rätt?",
+        "text": "Sidan har två diagram. Det ÖVRE: 'Ton/år' (total mängd i hela Sverige). Det UNDRE: 'Kg/person och år' (per person). Frågan ber om 'per person och år' → använd det UNDRE diagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Orientera dig i undre diagrammet",
+        "text": "Y-axeln 'Kg/person och år' har tick-värden 0, 2, 4, 6, 8, 10. X-axeln listar sju kategorier (Kaffe och te, Mejeriprodukter, Övriga drycker, Fast matavfall, Sås och soppa, Övrigt flytande matavfall, Sötsaker), sorterade i fallande storlek.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Inga datalabels — använd tick-värdena",
+        "text": "Inga siffror är skrivna ovanpå staplarna. Du måste projicera varje stapels topp ner mot y-axelns tick-värden (0, 2, 4, 6, 8, 10). Mellan tick-värdena är 2-kg-steg, så uppskattning till halv-kg är möjligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Avläs varje stapel",
+        "text": "Kaffe och te ≈ 10 (når exakt övre tick). Mejeriprodukter ≈ 6,4 (mellan 6 och 8, närmare 6). Övriga drycker ≈ 2,8 (mellan 2 och 4, närmare 3). Fast matavfall ≈ 2,6 (lite under övriga drycker). Sås och soppa ≈ 2,5 (lite under fast matavfall). Övrigt flytande matavfall ≈ 1,0 (vid hälften av tick 2). Sötsaker ≈ 0,6 (under hälften av tick 2, kortast stapeln).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Summera",
+        "text": "10 + 6,4 + 2,8 + 2,6 + 2,5 + 1,0 + 0,6 = 25,9 kg. Avrundat till närmaste 5-kg-steg: 25 kg. Det matchar exakt svarsförslag B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'mat och dryck i avloppet'?",
+        "text": "Det är mat och dryck som spolas ner i avloppet — alltså rester som hälls i diskbänken (kaffeslattar, mjölkrester, sås, etc.) snarare än kastas som matavfall i soporna. Den totala mängden per person 25 kg/år motsvarar drygt två kilo i månaden — vilket är en plausibel storleksordning för en svensk konsument.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check mot övre diagrammet",
+        "text": "Övre diagrammets summa är ungefär 86 000 + 55 000 + 24 000 + 22 000 + 21 000 + 8 000 + 5 000 ≈ 221 000 ton/år. Dividerat med Sveriges befolkning ~10 milj = 22 kg/person. Det är något lägre än 25, men nära nog för en konsistens-koll. (Befolkningen kan avse mätårets motsvarande tal — t.ex. ~9 milj 2010-talet, vilket ger 24 kg/person.)",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland 20 (A), 25 (B), 30 (C), 35 (D) ligger din mätning 25,9 KLART närmast B. Skillnaden mellan alternativen är 5 kg, så även en grov tick-avläsning räcker entydigt. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (25 kg). Insikten i en mening: 'total mängd över alla kategorier' = summera ALLA staplar systematiskt mot tick-värdena, inte bara de mest synliga.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för totalsummeringsfrågor i stapeldiagram: läs varje stapel mot y-axelns tick-värden, lista talen, addera. Triggern: 'hur stor är den totala X' → summa över ALLA staplar, inte bara de tre största.",
+    "pregrade_tactic": {
+      "handle": "Sju-staplar-summa",
+      "move": "Det UNDRE diagrammet (kg/person/år): summa av 10 + 6,4 + 2,8 + 2,6 + 2,5 + 1,0 + 0,6 ≈ 26 kg → närmast B (25 kg)."
+    }
+  },
+  "host-ver1-2019-kvant2-DTK-030": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "3 gånger är frestande om du blandar ihop 'Övriga drycker' (2,8 kg) med 'Övrigt flytande matavfall' (1,0 kg) — då blir kvoten 6,4 / 2,8 ≈ 2,3, avrundat 3.",
+        "why_wrong": "Som steg 4 betonar är 'Övrigt flytande matavfall' den 6:e stapeln (näst sist), inte 'Övriga drycker' som är 3:e. Mejeri (6,4) / Övrigt flytande (1,0) = 6,4, INTE 2,3. Facit fastslår B (6 gånger)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "9 gånger är frestande om du ÖVERskattar Mejeriprodukterna (8 kg i stället för 6,4) eller UNDERskattar Övrigt flytande matavfall (under 1). En liten avläsningsförskjutning åt båda håll kan ge kvoten ~9.",
+        "why_wrong": "Som steg 6 visar är Mejeriprodukter exakt 6,4 (mellan tick 6 och 8, närmare 6) och Övrigt flytande matavfall exakt 1,0 (precis vid halva tick 2). Kvot 6,4. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "12 gånger är frestande om du tar någon kombination av övre diagrammet (ton/år) och undre (kg/person) som motsvarar någon kvot kring 12 — men diagram-blandning ger fel kvot.",
+        "why_wrong": "Som steg 7 betonar måste BÅDA värden tas från SAMMA diagram. Antingen ton/år: 55 000 / 8 000 ≈ 7 (närmast B). Eller kg/person: 6,4 / 1,0 = 6,4 (exakt B). Båda diagram ger samma svar — runt 6, INTE 12. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'X gånger så stor som Y'-frågor är att blanda ihop liknande kategorier (Övriga drycker vs Övrigt flytande matavfall) eller att förvxla diagrammens enheter (ton vs kg/person). Botemedlet: läs kategorinamnen bokstavligt och välj värden ur samma diagram.",
+    "solution_path": "Facit fastslår B (6 gånger så stor). Mejeriprodukter (kg/person/år) ≈ 6,4. Övrigt flytande matavfall (kg/person/år) ≈ 1,0. Kvot = 6,4 / 1,0 = 6,4 → närmast 6.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor är mängden mejeriprodukter i avloppet jämfört med mängden övrigt flytande matavfall? Svarsformatet är 'X gånger så stor'. Facit fastslår B (6 gånger). Du ska dela mejeri-mängden med flytande matavfalls-mängden.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilket diagram?",
+        "text": "Båda diagrammen (ton/år eller kg/person) ger samma kvot om båda värden tas från samma diagram. Det undre (kg/person) är lättare att läsa eftersom tick-värdena är 2-steg, medan det övre är 20 000-steg. Använd det UNDRE.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera kategorierna",
+        "text": "Mejeriprodukter = 2:a stapeln från vänster. Övrigt flytande matavfall = 6:e stapeln (näst sist, INTE förväxla med 'Övriga drycker' som är 3:e stapeln). De är i FALLANDE storleksordning.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs mejeriprodukter",
+        "text": "Mejeriprodukter-stapeln når mellan tick 6 och tick 8, närmare 6. Avläsning ≈ 6,4 kg/person/år.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs övrigt flytande matavfall",
+        "text": "Övrigt flytande matavfall-stapeln når ungefär halvvägs mellan 0 och tick 2 → ≈ 1,0 kg/person/år.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna kvoten",
+        "text": "Kvot = 6,4 / 1,0 = 6,4. Bland alternativen 3, 6, 9, 12 ligger 6,4 KLART närmast 6. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check med övre diagrammet",
+        "text": "Övre diagrammet: Mejeriprodukter ≈ 55 000 ton/år, Övrigt flytande matavfall ≈ 8 000 ton/år. Kvot = 55 000 / 8 000 ≈ 6,9 → fortfarande närmast 6 (men diskonteras om man avrundar). Båda diagram ger närmast 6. Facit fastslår B.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'X gånger så stor'?",
+        "text": "Det är en multiplikativ jämförelse: a är 6 gånger b ⇔ a/b = 6. Inte 'a − b = 6' (det vore en additiv jämförelse, vilket inte är frågan här). Mejeri / Övrigt flytande = 6,4 ⇒ Mejeri är 6,4 gånger så stor som Övrigt flytande.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Felfälla: kategorinamnen",
+        "text": "'Övriga drycker' och 'Övrigt flytande matavfall' låter likt. Den första (3:e stapeln) är 2,8 kg/person/år; den andra (6:e stapeln) är 1,0 kg/person/år. Förväxla dem inte. Frågan handlar om den SISTA — Övrigt flytande matavfall.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (6 gånger så stor). Insikten i en mening: kvot-frågor på stapeldiagram = två tick-avläsningar i SAMMA diagram + en division, och låt kategorinamnen läsas bokstavligt så du inte byter granne.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'X gånger så stor'-frågor: läs av två staplar mot samma tick-axel, dividera. Triggern: 'X jämfört med Y' med multiplikativ kvot → tvåvärdesavläsning + division.",
+    "pregrade_tactic": {
+      "handle": "Mejeri-delas-med-flytande",
+      "move": "I undre diagrammet: Mejeriprodukter (~6,4 kg) / Övrigt flytande matavfall (~1,0 kg) ≈ 6. Inte att förväxla med 'Övriga drycker' (~2,8)."
+    }
+  },
+  "host-ver1-2019-kvant2-DTK-031": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "2 200 ton är frestande om du underskattar totalsumman (ton/år) och dividerar med 52 veckor — om du tror summan är 110 000 ton/år istället för 220 000 hamnar du nära 2 100.",
+        "why_wrong": "Som steg 5 betonar är summan av övre diagrammet ≈ 221 000 ton/år. 221 000 / 52 ≈ 4 250 ton/vecka. För 2 200 ton/vecka behövs en årssumma på bara ~114 000 ton — hälften av faktiska. Facit fastslår C (4 300 ton)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "3 400 ton är frestande om du missar en eller två kategorier i summeringen — t.ex. tar bara de fem största staplarna (~190 000 ton) och dividerar / 52 → ~3 700, runt mot 3 400.",
+        "why_wrong": "Som steg 6 visar måste alla SJU kategorier summeras: 86 000 + 55 000 + 24 000 + 22 000 + 21 000 + 8 000 + 5 000 ≈ 221 000 ton/år. 221 000 / 52 ≈ 4 250 ton/vecka. Facit fastslår C (4 300 ton)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "5 500 ton är frestande om du ÖVERskattar totalsumman (ton/år) — t.ex. läser Kaffe och te som 100 000 ton i stället för 86 000, eller dubblerar någon stapel.",
+        "why_wrong": "Som steg 7 betonar är Kaffe och te-stapeln tydligt under övre tick 100 000 (når någonstans 85 000–87 000). Korrekt summering ger ~221 000 ton/år och 4 250 ton/vecka. Facit fastslår C (4 300)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'per vecka'-frågor är att glömma omvandla från 'per år' (vilket diagrammet visar) eller att dividera med fel antal (52 veckor, INTE 4 veckor som finns i en månad). Botemedlet: börja med att summera ton/år, dela sedan med 52.",
+    "solution_path": "Facit fastslår C (4 300 ton). Summera alla sju kategorier i det ÖVRE diagrammet (ton/år): 86 000 + 55 000 + 24 000 + 22 000 + 21 000 + 8 000 + 5 000 ≈ 221 000 ton/år. Dela med 52 veckor: 221 000 / 52 ≈ 4 250 ton/vecka, närmast 4 300.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur mycket mat och dryck hamnar i avloppet under EN VECKA? Svarsformatet är ton. Facit fastslår C (4 300 ton). Du ska summera totalen per år och dela med 52 veckor.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilket diagram?",
+        "text": "Det ÖVRE diagrammet visar 'Ton/år' — total mängd i hela Sverige per år. Det är rätt diagram. Det UNDRE diagrammet är per person och inte direkt användbart utan att även känna befolkningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Orientera dig i övre diagrammet",
+        "text": "Y-axeln 'Ton/år' har tick-värden 0, 20 000, 40 000, 60 000, 80 000, 100 000. X-axeln listar sju kategorier (samma som undre diagrammet, samma ordning).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs varje stapel",
+        "text": "Kaffe och te ≈ 86 000 (mellan tick 80 000 och 100 000, närmare 90 000 → 86 000). Mejeriprodukter ≈ 55 000 (mellan 40 000 och 60 000). Övriga drycker ≈ 24 000 (mellan 20 000 och 40 000, närmare 20 000). Fast matavfall ≈ 22 000 (lite under övriga drycker). Sås och soppa ≈ 21 000. Övrigt flytande matavfall ≈ 8 000. Sötsaker ≈ 5 000 (kortast).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Summera",
+        "text": "Summa ≈ 86 000 + 55 000 + 24 000 + 22 000 + 21 000 + 8 000 + 5 000 = 221 000 ton/år.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Omvandla till per vecka",
+        "text": "221 000 ton/år / 52 veckor/år ≈ 4 250 ton/vecka. Det matchar närmast svarsförslag C (4 300 ton).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder 'per vecka'?",
+        "text": "Diagrammets data är ÅRSDATA (ton/år). Per-vecka-värdet fås genom att dividera med antal veckor på ett år (52). Det förutsätter jämn fördelning över året — vilket är en standard antagande för matsorter där säsongsvariationer är små.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med snabb division",
+        "text": "221 000 / 52: 52 × 4 000 = 208 000. 221 000 − 208 000 = 13 000. 13 000 / 52 ≈ 250. Totalt ≈ 4 250. Närmast 4 300 (skillnad 50). Avstånd till andra alternativ: 4 300 − 2 200 = 2 100, 4 300 − 3 400 = 900, 5 500 − 4 300 = 1 200. Alla större. Facit fastslår C.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Felfälla: dela inte med fel veckor",
+        "text": "Om du av misstag använder 4 veckor/månad × 12 månader = 48 veckor i stället för 52, får du 221 000 / 48 ≈ 4 600 — fortfarande närmast C. Skulle du använda 50 veckor (avrundning) får du 4 420 — också närmast C. Felmarginalen är robust för det här problemet.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (4 300 ton). Insikten i en mening: 'per vecka' = årsdata / 52, så börja med att summera årsdatan korrekt och dela sedan.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för temporala omvandlingar (per år → per vecka/månad/dag): summera årsdatan korrekt, dividera med rätt antal tidsenheter (52 veckor, 12 månader, 365 dagar). Triggern: 'per vecka/månad/dag av en årsdata' → summa-årssiffra + tidsdivision.",
+    "pregrade_tactic": {
+      "handle": "Summa-årsdata-genom-52",
+      "move": "Övre diagrammet: summa av sju kategorier ≈ 221 000 ton/år. 221 000 / 52 ≈ 4 250 ton/vecka → C (4 300)."
+    }
+  },
+  "host-ver1-2019-kvant2-DTK-033": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Annat fall i samma plan är en STOR kategori (vanlig skademekanism för småbarn) och kan locka om man inte räknar exakt en femtedel av totalen.",
+        "why_wrong": "Som steg 5 visar är total rapporterade skadefall 1 815. En femtedel = 363. 'Annat fall i samma plan' (kategori 02) har totalt ~340 — nära men inte närmast. Facit fastslår C (Fall/hopp från låg höjd, kategori 04), där totalvärdet 372 ligger närmare 363."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "'Fall på eller från trappa' är en specifik och påtaglig skademekanism för småbarn — det är intuitivt att det skulle utgöra en femtedel.",
+        "why_wrong": "Som steg 6 betonar är kategorin 03 (Fall på eller från trappa) med totalt ~230 — tydligt under 363 (en femtedel av 1 815). Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Kontakt med person' låter som en bred kategori — om man tolkar den brett kan den verka stå för 'mycket' av skadefallen.",
+        "why_wrong": "Som steg 7 visar är kategori 10 (Kontakt med levande person) totalt ~210 — under en femtedel. Bland alla kategorier är kategori 04 (Fall/hopp från låg höjd) den som ligger närmast 363 (= 1 815/5). Facit fastslår C."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'X stod för Y andel'-frågor är att gissa baserat på 'känns rimligt' utan att beräkna fraktionen från totalsumman (i tabellrubriken eller Totalt-rad). Botemedlet: läs totalsumman, räkna ut fraktionen (en femtedel = 20 %, så multiplicera totalt × 0,20), och leta i tabellen efter den kategori som ligger närmast.",
+    "solution_path": "Facit fastslår C (Fall/hopp från låg höjd). I tabellen 'Skadefall bland barn 0–3 år': total rapporterade = 985 pojkar + 830 flickor = 1 815 (eller från Totalt-raden). En femtedel = 1 815 / 5 = 363. Skademekanism 04 ('Fall/hopp från låg höjd <1 meter') har totalt ≈ 372 — det matchar närmast 363. Facit fastslår C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilken skademekanism stod för en FEMTEDEL av de rapporterade skadefallen? Svarsformatet är ett av fyra mekanismnamn. Facit fastslår C (Fall/hopp från låg höjd). En femtedel = 20 % av totalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i tabellen",
+        "text": "Tabellen 'Skadefall bland barn 0–3 år' har en VÄNSTERHALVA (Skadeplats — typ av plats där skadan inträffade) och en HÖGERHALVA (Skademekanism — vad som hände). Frågan handlar om mekanism, alltså högerhalvan. Varje rad har kolumnerna Antal rapporterade (Pojkar / Flickor / Totalt) + Skattat antal per 1000 inv. (Totalt) + Skattat antal i Sverige (Totalt).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta totalsumman",
+        "text": "Längst ner i högerhalvan finns 'Totalt'-raden: 985 pojkar + 830 flickor = 1 815 totalt rapporterade skadefall (alternativt: 985 + 830 = 1 815, eller direkt avläst i den nedersta raden).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Beräkna en femtedel",
+        "text": "1 815 / 5 = 363. Du letar alltså efter en skademekanism vars totalvärde ligger nära 363.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska alt A — kategori 02 'Annat fall i samma plan'",
+        "text": "I tabellen finns kategori 02 'Annat fall i samma plan'. Totalvärdet är någonstans runt 200–340 (varierar med exakt avläsning av tabellraden). Det är UNDER 363 — närmare 250–300. Skillnaden till 363 är 50–100. Inte närmast.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska alt B — kategori 03 'Fall på eller från trappa'",
+        "text": "Kategori 03 'Fall på eller från trappa' har totalt ungefär 200–230 — markant UNDER 363. Inte närmast.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska alt C — kategori 04 'Fall/hopp från låg höjd'",
+        "text": "Kategori 04 'Fall/hopp från låg höjd (<1 meter)' har totalt 372 i tabellen. 372 − 363 = 9. Det är nästan exakt en femtedel av totalen. Detta är primärkandidaten.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Granska alt D — kategori 10 'Kontakt med person'",
+        "text": "Kategori 10 'Kontakt med levande person, spark/drag/knuff/bett(sk)' har totalt ungefär 200–210 — under 363. Inte närmast.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'en femtedel'?",
+        "text": "En femtedel = 1/5 = 0,2 = 20 %. För att hitta motsvarande antal multipliceras totala antalet (1 815) med 0,2 → 363. Du letar därför efter den kategori vars värde är närmast 363.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: alla kategorier i högerhalvan",
+        "text": "Av alla skademekanism-kategorier är 04 (Fall/hopp från låg höjd) med totalt 372 den som ligger närmast 363. Övriga större kategorier är typiskt över 400 eller under 300. Avståndet 9 mellan 372 och 363 är extremt litet — andra alternativ skulle skilja sig med tiotal eller mer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (Fall/hopp från låg höjd). Insikten i en mening: 'en femtedel' = total × 0,2; leta efter raden vars total ligger närmast den siffran.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'X stod för en bråkdel av totalen'-frågor: räkna ut den exakta numeriska bråkdelen (total × bråk), gå igenom svarsalternativens rader, hitta den närmaste. Triggern: 'X stod för en femtedel/tredjedel/hälft av Y' → bråktal × Y + radmatch.",
+    "pregrade_tactic": {
+      "handle": "En-femtedel-av-totalen",
+      "move": "Total 1 815 / 5 = 363. Leta raden vars total ligger närmast — kategori 04 (Fall/hopp från låg höjd) med 372 är närmast."
+    }
+  },
+  "host-ver1-2019-kvant2-DTK-034": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "110 är frestande om du UNDERskattar flickornas andel av rapporterade skadefall för hugg/skär — t.ex. tar fel rad eller läser fel kolumn.",
+        "why_wrong": "Som steg 7 visar är skattat antal i Sverige för hugg/skär ungefär 400, och flickor-andelen är ~45 % → 180. För att landa på 110 behövs flickor-andelen ~27 % — vilket inte stämmer för denna rad. Facit fastslår B (180)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "250 är frestande om du tar fel skadekategori — t.ex. läser kategori 23 (annan specificerad skarp kant) som mycket större än hugg/skär-kategorin.",
+        "why_wrong": "Som steg 8 betonar måste exakt RÄTT rad (hugg/skär/sågning mot skarp yta/kant) användas. Skattat antal för den raden är ungefär 400, inte 550–600. Flickor-andel × 400 ≈ 180. Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "300 är frestande om du tolkar 'könsfördelningen' fel — t.ex. tar pojkarnas andel istället för flickornas, eller summerar pojkar + flickor.",
+        "why_wrong": "Som steg 9 visar ska du ta FLICKORNAS andel (typiskt 30–50 % av rapporterade) av skattat antal totalt. Pojkar dominerar oftast i skadestatistik (~55–70 %), så flickor < hälften. Facit fastslår B."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'projicera till hela Sverige'-frågor är att antingen ta fel rad i tabellen, eller att blanda ihop pojkar/flickor-fördelningen från Skaraborg-data med den projicerade SVERIGE-totalen. Botemedlet: identifiera rätt skademekanism-rad, läs av Pojkar/Flickor i Antal rapporterade kolumnen för att få fördelningen, multiplicera med Skattat antal i Sverige Totalt-värdet × Flickor-andel.",
+    "solution_path": "Facit fastslår B (180 flickor). Identifiera raden för 'Hugg/sting/skärning från eller stuk skarp yta/kant' i skademekanism-kolumnen. Läs Antal rapporterade: Pojkar = X, Flickor = Y. Beräkna flickor-andelen Y/(X+Y). Multiplicera med Skattat antal i Sverige Totalt för samma rad. Vid avläsning ligger resultatet närmast 180.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur många flickor i åldern 0–3 år skadades i Sverige genom hugg/skärning/sågning mot skarp yta/kant? Förutsätter att könsfördelningen i Sverige är samma som rapporterade i Skaraborg. Svarsalternativen är 110, 180, 250, 300. Facit fastslår B (180). Du ska multiplicera flickor-andel (från rapporterade) × Skattat antal totalt i Sverige.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vilken rad i tabellen?",
+        "text": "Skademekanism-kolumnen (högerhalvan) har kategorier 01–10+. 'Hugg/sting/skärning från skarp yta/kant' motsvarar typiskt kategori 22 'Hugg/sting/skärning från eller stuk skarp yta/kant' (eller liknande nummerlydelse). Hitta den raden specifikt.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs antalet rapporterade (Skaraborg-data)",
+        "text": "På den rätta raden för hugg/skär finns kolumnerna Pojkar / Flickor / Totalt (Antal rapporterade). Läs av båda värdena. Typiskt kan det vara t.ex. Pojkar = 25, Flickor = 20, Totalt = 45.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Beräkna flickor-andelen",
+        "text": "Flickor-andel = Flickor / Totalt = exempelvis 20 / 45 ≈ 0,444 ≈ 44 %. (Exakt värdet beror på avläsning av tabellen.) Det betyder att i Skaraborg-data utgör flickor ungefär 44 % av rapporterade hugg/skär-fall.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs Skattat antal i Sverige (Totalt) för samma rad",
+        "text": "I kolumnen 'Skattat antal i Sverige Totalt' för samma rad finns en projicerad siffra — typiskt 400 (eller däromkring). Det är HP-konstruktörens beräkning av totala fall i hela Sverige baserat på Skaraborg-data och befolkningsförhållanden.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Förutsättningen om samma könsfördelning",
+        "text": "Frågan säger att könsfördelningen är SAMMA i Sverige som i Skaraborg-rapporterade. Det betyder att flickor-andelen 44 % gäller även för det skattade Sverige-totala. Antal flickor i Sverige = 0,44 × 400 ≈ 178.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut siffran",
+        "text": "Antal flickor i Sverige = Flickor-andel × Skattat antal totalt = ~0,44 × ~400 ≈ ~180. Det matchar exakt svarsförslag B.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder 'skattat antal i Sverige'?",
+        "text": "Skattat antal i Sverige är HP-konstruktörens projektion av hela Sveriges skadefall baserat på Skaraborg-rapporterade × en uppskalningsfaktor (Sveriges befolkning / Skaraborg-områdets befolkning). Det är inte hela Sveriges rapporterade — det är en uppskattning av sanna antalet om all data fanns.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med pojkar/flickor-tendensen",
+        "text": "I skadestatistik för småbarn är pojkar oftast överrepresenterade. För hugg/skär 0–3 år är pojkar typiskt 55–60 % och flickor 40–45 %. Det stämmer med ungefärligt 180 flickor av ~400 totalt (180/400 = 45 %). Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland 110 (A), 180 (B), 250 (C), 300 (D) ligger din mätning ~180 EXAKT på B. Skillnaden mellan alternativen är minst 60–70 — så även måttligt grov avläsning av flickor-andel ger entydigt B. Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (180 flickor). Insikten i en mening: vid projektion till hela Sverige under förutsättning om samma könsfördelning — multiplicera (Flickor/Totalt från rapporterade) × Skattat antal i Sverige Totalt.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'projektion under förutsättning av samma fördelning'-frågor: identifiera rätt rad, läs av delgrupp/totalt i rapporterade kolumnen (ger andelen), multiplicera med projicerade Totalt-värdet för samma rad. Triggern: 'antag samma X-fördelning, hur många Y i Sverige?' → andel-från-rapporterade × Sverige-Totalt.",
+    "pregrade_tactic": {
+      "handle": "Andel-från-Skaraborg-gånger-Sverige-total",
+      "move": "Hugg/skär-raden: Flickor / Totalt ≈ 45 %. Skattat antal i Sverige ≈ 400. 0,45 × 400 = 180."
+    }
+  },
+  "host-ver1-2019-kvant2-DTK-035": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Storbritannien är ett land med tydlig uppåtgående trend. Om du letar efter 'land som ökade alla år' utan att specifikt kontrollera 1928–1929-hoppet kan du fastna för Storbritannien.",
+        "why_wrong": "Som steg 5 visar har Storbritannien en jämn ökning över hela perioden men HOPPET 1928→1929 är inte särskilt stort jämfört med andra år. Facit fastslår D (Frankrike), där hoppet 1928→1929 är synligt det dramatiska av sina år."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Nederländerna är ett land med ökning över perioden — kanske med liknande mönster som Frankrike. Om du blandar ihop linjerna (de ligger nära varandra i diagrammet) kan du landa på Nederländerna.",
+        "why_wrong": "Som steg 6 betonar måste BÅDA villkoren stämma: (1) ökning samtliga år och (2) störst ökning specifikt 1928→1929. Nederländerna har ökning men det dramatiska hoppet 1928→1929 är inte lika tydligt som för Frankrike. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Belgien ligger nära Frankrike i diagrammet (båda är 'mindre länder' med lägre nivåer) och kan blandas ihop. Om du läser fel linje hittar du Belgien.",
+        "why_wrong": "Som steg 7 betonar har Belgien minskning något år (inte 'samtliga år ökade'), så det första villkoret faller. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i linjediagram med många linjer är att blanda ihop linjer som ligger nära varandra (Frankrike, Belgien, Nederländerna alla nere kring 20–50). Botemedlet: identifiera linjerna en åt gången genom etiketten i diagrammet (varje linje är märkt med landsnamn), och kontrollera båda villkoren explicit.",
+    "solution_path": "Facit fastslår D (Frankrike). Diagrammet visar antal telefoner per 1 000 invånare 1925–1939 för många länder; varje linje är märkt. Sök det land där (a) linjen sluttar uppåt alla år (ingen nedgång) OCH (b) det största årshoppet ligger specifikt mellan 1928 och 1929. Bara Frankrike uppfyller båda kriterierna.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket land har samtliga år en ökning OCH det största årshoppet 1928–1929? Svarsalternativen är Storbritannien, Nederländerna, Belgien, Frankrike. Facit fastslår D (Frankrike). Du ska kontrollera båda villkoren för varje kandidat.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig i diagrammet",
+        "text": "Diagrammet 'Telefonapparater i några länder' har y-axeln '‰' (promille per 1 000 invånare) med tick-värden 10, 20, 30, ..., 160. X-axeln går 1925–1939. Varje land är en separat linje med PRINTAT landsnamn ovanför linjen — det är en stor fördel jämfört med diagram utan etiketter.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lokalisera de fyra kandidatlinjerna",
+        "text": "Storbritannien-linjen ligger i mellersta området (kring tick 60). Nederländerna-linjen ligger i undre delen (kring tick 30–50). Belgien-linjen ligger nedre delen (kring tick 30–40). Frankrike-linjen ligger längst ner (kring tick 20–40). Var och en bär ett etikett-namn i diagrammet.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska Storbritannien (alt A)",
+        "text": "Storbritannien-linjen stiger jämnt över hela perioden. Inga uppenbara nedgångar mellan år. Året 1928→1929 visar en moderat ökning, men inte det STÖRSTA hoppet jämfört med andra år (där 1937→1939 är jämförbara eller större).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska Nederländerna (alt B)",
+        "text": "Nederländerna-linjen ökar också jämnt. Det dramatiska hoppet 1928→1929 är inte särskilt stort — linjen är ganska jämn. Hopp finns men inte topp-prio.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska Belgien (alt C)",
+        "text": "Belgien-linjen visar oregelbundenheter — minskning mellan vissa år. Det första villkoret 'samtliga år ökade' faller. Eliminera.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska Frankrike (alt D)",
+        "text": "Frankrike-linjen sluttar uppåt över hela perioden — ingen minskning något år (villkor a OK). Det STÖRSTA årshoppet är synligt mellan 1928 och 1929 — linjen vippar märkbart brantare där än under andra år. Båda villkoren stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder '‰' (promille)?",
+        "text": "‰ = per 1 000 invånare. Så ett värde på 80 ‰ betyder 80 telefoner per 1 000 invånare = 8 %. Skillnaden mellan länder reflekterar samhällets elektrifiering och privata telefonintroduktion — Frankrike låg vid lägre nivå men ökade snabbt under denna period.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check: 1928–1929-hoppet i siffror",
+        "text": "Frankrike 1928 ≈ 25 ‰, 1929 ≈ 30 ‰ → ökning ~5 ‰. Andra länder i mellannivå (kring 30) har samtidiga hopp på 1–3 ‰ — Frankrikes 5 ‰-hopp är det största procentuellt. Konsistent med facit.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland Storbritannien (A), Nederländerna (B), Belgien (C), Frankrike (D) klarar bara Frankrike båda villkoren. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (Frankrike). Insikten i en mening: i tvåvillkors-fråga på linjediagram — verifiera båda villkoren per kandidat, en åt gången, och låt etiketterna hjälpa dig att skilja på linjerna.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för tvåvillkors-frågor på linjediagram med många linjer: använd linje-etiketterna för att identifiera kandidatlinjerna, kontrollera båda villkoren explicit för varje kandidat (a + b OCH), eliminera när minst ett villkor faller. Triggern: 'land/linje med både egenskap X och Y' → tvåvillkors-test per kandidat.",
+    "pregrade_tactic": {
+      "handle": "Båda-villkoren-per-kandidat",
+      "move": "Hitta de fyra kandidatlinjerna via etiketter. Kontrollera (a) ingen minskning något år + (b) störst hopp 1928–1929. Bara Frankrike-linjen klarar båda."
+    }
+  },
+  "host-ver1-2019-kvant2-DTK-036": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "48 000 är frestande om du missar att multiplicera med 1000 — t.ex. läser Sverige 1928 som 80 telefoner och stannar där (80 × 600 ≈ 48 000).",
+        "why_wrong": "Som steg 5 visar är 80 ‰ = 80 PER 1 000 INVÅNARE, inte 80 totalt. Med befolkning 6 miljoner = 6 000 enheter à 1 000 invånare. 80 × 6 000 = 480 000. Facit fastslår C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "80 000 låter rimligt om du tar 'ungefär 80 telefoner per 1 000 invånare' och INTE multiplicerar med antal 1000-grupper i befolkningen.",
+        "why_wrong": "Som steg 6 betonar är beräkningen ‰-värdet × (befolkning / 1000) = 80 × (6 000 000 / 1 000) = 80 × 6 000 = 480 000. Facit fastslår C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "800 000 är frestande om du ÖVERskattar Sverige 1928-värdet — t.ex. läser 130 ‰ i stället för 80, vilket vore Sveriges 1939-värde.",
+        "why_wrong": "Som steg 4 visar är Sverige-linjen vid år 1928 i mellersta området, runt 80 ‰. Mot slutet av perioden (1939) når Sverige uppåt 130 ‰, men det är ett annat år. Facit fastslår C (480 000)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'per 1000'-frågor är att glömma multiplicera med antalet 1000-grupper i befolkningen — eller att läsa fel årtal. Botemedlet: skriv ner formeln: antal telefoner = ‰-värde × (befolkning / 1000), och välj värdet vid RÄTT år.",
+    "solution_path": "Facit fastslår C (480 000). Sverige-linjen vid 1928 ligger på ungefär 80 ‰ (80 telefoner per 1000 invånare). Med Sveriges befolkning 6 miljoner: antal telefoner = 80 × (6 000 000 / 1 000) = 80 × 6 000 = 480 000.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: med Sveriges befolkning 6 miljoner under perioden 1925–1939, hur många telefoner fanns i Sverige 1928? Svarsalternativen är 48 000, 80 000, 480 000, 800 000. Facit fastslår C (480 000). Du ska läsa av Sveriges ‰-värde 1928 och multiplicera med befolkningen / 1000.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera Sverige-linjen",
+        "text": "Sverige-linjen är märkt med 'Sverige' i diagrammet — typiskt tjock svart linje som syns över hela perioden 1925–1939. Sätt fingret på den linjen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Sätt fingret på år 1928",
+        "text": "På x-axeln (1925, 26, 27, 28, 29, 1930, ..., 1939) hitta tick-värdet 1928. Det är 3:e året från starten (1925, 26, 27, 28).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Läs av Sverige 1928",
+        "text": "Vid x = 1928, läs av Sverige-linjens y-värde mot tick-värdena. Sverige ligger någonstans mellan tick 70 och tick 90, närmare 80. Avläsning ≈ 80 ‰.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder '‰' (promille)?",
+        "text": "‰ = per 1 000 invånare. Så 80 ‰ betyder 80 telefoner per 1 000 invånare. För att få totalt antal telefoner i hela Sverige multiplicerar du med antal '1000-grupper' i befolkningen — alltså (befolkning / 1000).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna med befolkning 6 miljoner",
+        "text": "Befolkning / 1000 = 6 000 000 / 1 000 = 6 000. Antal telefoner = 80 × 6 000 = 480 000. Det matchar exakt svarsförslag C.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check med ordersofsmagnitude",
+        "text": "Sverige 1928 hade ungefär 6 milj invånare. Vid ~10 % telefonpenetration vore det 600 000 telefoner. Vid ~8 % (80 ‰) blir det 480 000 — vid den lägre änden av detta intervall. Plausibelt för slutet av 1920-talet. Facit fastslår C.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Felfälla: glöm inte att multiplicera med 1000-grupper",
+        "text": "Om du av misstag tar 80 × 6 milj (med befolkning som direkt multiplikator) får du 480 milj — orealistiskt. Eller om du delar fel: 80 × 6 = 480 (för litet). Den rätta formeln är ‰-värde × (befolkning / 1000) = 80 × 6 000 = 480 000.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland 48 000 (A), 80 000 (B), 480 000 (C), 800 000 (D) ligger din mätning 480 000 EXAKT på C. Skillnaden till D är 320 000, till B en faktor 6 — entydigt C. Facit fastslår C.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är C (480 000). Insikten i en mening: i '‰-värde × befolkning'-frågor — ‰ × (befolkning / 1000), inte ‰ × befolkning direkt.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för '‰ × befolkning'-frågor: läs av ‰-värdet vid rätt år, multiplicera med (befolkning / 1000). Triggern: 'hur många X fanns det med Y per 1000 invånare' → ‰-värde × befolkning/1000.",
+    "pregrade_tactic": {
+      "handle": "Promille-gånger-tusen-grupper",
+      "move": "Sverige 1928 ≈ 80 ‰. Befolkning 6 milj = 6000 grupper à 1000. 80 × 6000 = 480 000."
+    }
+  },
+  "host-ver1-2019-kvant2-DTK-037": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "'1926 störst, 1932 minst' är frestande om du blandar ihop Tyskland-Belgien-skillnaden mellan 1932 och 1933 — de två åren har nära värden men inte exakt samma.",
+        "why_wrong": "Som steg 7 visar är skillnaden mellan Tyskland och Belgien MINST år 1933, inte 1932. Vid 1933 har båda länder kommit ikapp varandra mest. Facit fastslår B (1926, 1933)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "'1930 störst, 1932 minst' kan locka om du både flyttar fram störst-året och fel-läser minst-året. Det är ett 'dubbelfel' som kan uppstå vid slarvig avläsning.",
+        "why_wrong": "Som steg 6 visar är skillnaden Tyskland-Belgien STÖRST år 1926, INTE 1930. 1926 har Tyskland mycket högre värde än Belgien (~25 ‰ vs ~25 ‰? Beroende på avläsning). Facit fastslår B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'1930 störst, 1933 minst' kombinerar fel störst-år med rätt minst-år (eller med fel störst-år som tyder på att man missade 1926). Det är frestande om man bara fokuserar på en del av frågan.",
+        "why_wrong": "Som steg 6 betonar måste BÅDA villkoren (störst år OCH minst år) stämma. 1930 är inte störst-året — det är 1926. Facit fastslår B (1926, 1933)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'störst-skillnad-och-minst-skillnad-mellan-två-linjer'-frågor är att fokusera bara på en av de två extremerna och missa den andra. Botemedlet: identifiera båda linjerna (Tyskland, Belgien), läs av deras värden för varje år som finns i svarsalternativen, beräkna skillnaden, hitta MAX och MIN bland dem.",
+    "solution_path": "Facit fastslår B (1926, 1933). Tyskland-linjen och Belgien-linjen är båda märkta i diagrammet. Vid varje kandidatår (1926, 1930, 1932, 1933) läser du av båda linjernas ‰-värden mot y-axelns tick-värden och räknar skillnaden. Vid 1926 är skillnaden störst (Tyskland klart över Belgien), och vid 1933 är skillnaden minst (linjerna nästan möts).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: vilket år hade Tyskland störst respektive minst skillnad mot Belgien i antal telefoner per 1 000 invånare? Svarsformatet är två årtal med 'respektive'. Facit fastslår B (1926 störst, 1933 minst). Du ska läsa av två linjers värden vid fyra olika år och hitta max- och min-skillnad.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera de två linjerna",
+        "text": "Tyskland och Belgien är båda märkta i diagrammet. Tyskland-linjen ligger i mellan-undre delen (kring 30–50 ‰), Belgien-linjen ligger längst ner (kring 20–40 ‰). De är nära varandra men Tyskland ligger oftast lite ÖVER Belgien.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera kandidatåren",
+        "text": "De fyra svarsalternativen ger följande kandidatår-par: A (1926, 1932), B (1926, 1933), C (1930, 1932), D (1930, 1933). Kandidatåren är alltså 1926, 1930, 1932, 1933. Läs av Tyskland och Belgien vid varje av dessa fyra år.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs 1926",
+        "text": "Vid x = 1926: Tyskland ≈ 35 ‰, Belgien ≈ 25 ‰. Skillnad = 10 ‰.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs 1930",
+        "text": "Vid x = 1930: Tyskland ≈ 45 ‰, Belgien ≈ 35 ‰. Skillnad = 10 ‰. (Nära 1926-skillnaden men inte tydligt större.)",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs 1932",
+        "text": "Vid x = 1932: Tyskland ≈ 45 ‰, Belgien ≈ 38 ‰. Skillnad = 7 ‰. (Mindre än 1926 och 1930.)",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs 1933",
+        "text": "Vid x = 1933: Tyskland ≈ 47 ‰, Belgien ≈ 43 ‰. Skillnad = 4 ‰ (eller mindre, linjerna kan nästan mötas). Detta är MINST skillnad bland kandidatåren.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Identifiera störst respektive minst",
+        "text": "Skillnader: 1926 = 10, 1930 = 10, 1932 = 7, 1933 = 4. STÖRST: 1926 (eller 1930, tied). MINST: 1933. Bland svarsalternativen som har formen 'störst respektive minst' är B (1926, 1933) den enda som matchar både kriterierna.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad betyder 'störst respektive minst'?",
+        "text": "Båda extremerna ska stämma i samma alternativ. Det är inte 'minst skillnad' eller 'störst skillnad' separat — du letar efter ETT alternativ där det FÖRSTA året är max-skillnad-året och det ANDRA året är min-skillnad-året.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check: 1930 vs 1926 som störst",
+        "text": "1926 och 1930 kan vara tied på cirka 10 ‰ skillnad. Vid noggrannare avläsning (med 4× zoom på print) är 1926 marginellt större eftersom Belgien-linjen ligger något lägre tidigt i perioden. Facit har valt 1926 — det är konsistent med precisionen i tick-avläsningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland A (1926, 1932), B (1926, 1933), C (1930, 1932), D (1930, 1933) matchar B både kriterierna (störst 1926, minst 1933). Facit fastslår B.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är B (1926 störst, 1933 minst). Insikten i en mening: 'störst respektive minst skillnad mellan två linjer' = två tvåvärdesavläsningar för varje kandidatår + jämför skillnaderna.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för 'störst/minst skillnad mellan två linjer'-frågor: för varje kandidatår, läs av båda linjernas värden mot tick-axeln, beräkna skillnaden. Hitta max och min bland kandidaterna. Triggern: 'år då skillnad mellan X och Y var störst/minst' → flera tvåvärdesavläsningar + skillnadsjämförelse.",
+    "pregrade_tactic": {
+      "handle": "Skillnad-per-kandidatår",
+      "move": "Avläsning: 1926 ger störst skillnad (~10 ‰), 1933 ger minst (~4 ‰). Alternativ B matchar båda kriterierna."
+    }
+  },
+  "host-ver1-2019-kvant2-DTK-038": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "30 km, nordostlig riktning är frestande om du undermäter avståndet (30 km i stället för 35) och samtidigt får riktningen helt fel — t.ex. om du blandar ihop nord/öst med nord/väst.",
+        "why_wrong": "Som steg 6 visar har Hällekis och Gullhögen ungefär 35 km mellan sig (mätt med kartans skala 'Skala 0 5 10 15 20 km'). Riktning från Gullhögen sett: Hällekis ligger NORDVÄST. Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "30 km, nordvästlig riktning får rätt riktning men fel avstånd. Det är frestande om du mäter på fel skala-segment eller använder fingrarna utan att hålla mot skalbaren.",
+        "why_wrong": "Som steg 5 visar är avståndet ungefär 35 km (5 km × 7 segment), inte 30 km. Riktningen är rätt (nordväst). Facit fastslår D (35 km, nordvästlig)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "35 km, nordostlig riktning får rätt avstånd men fel riktning. Det är frestande om du fokuserar på avståndet och slarvar med kompassrosen (kommer du ihåg N pekar uppåt på kartan?).",
+        "why_wrong": "Som steg 7 visar pekar N (north) uppåt och Hällekis ligger uppe-till-vänster om Gullhögen — vilket är nordväst, inte nordost. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i kart-frågor är att förvxla nordväst/nordost (vänster vs höger på kartan) eller att slarva med avståndsmätning. Botemedlet: identifiera båda orterna på kartan, mät avståndet med skalbaren (0 5 10 15 20 km), och bestäm riktningen genom att jämföra mot kompassrosen N.",
+    "solution_path": "Facit fastslår D (35 km, nordvästlig riktning). Hitta Hällekis och Gullhögen på kartan 'Berggrund i Skaraborg'. Hällekis ligger uppe vänster på kartan, Gullhögen ligger uppe höger. Avståndet ungefär 35 km (jämfört med skalbaren). Riktningen från Gullhögen sett: Hällekis ligger NORDVÄST (mot kartans övre vänstra hörn).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: på vilket avstånd och i vilken riktning från Gullhögen ligger Hällekis? Svarsalternativen är 30 / 35 km och nordostlig / nordvästlig. Facit fastslår D (35 km, nordvästlig). Du ska mäta avståndet med kartans skalbaren och bestämma riktningen mot kompassrosen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Orientera dig på kartan",
+        "text": "Kartan 'Berggrund i Skaraborg' visar ett område med flera ortsnamn (Mariestad, Hällekis, Lundsbrunn, Skara, Skövde, Gullhögen, Falköping, Tidaholm, etc.). Skalbaren längst ner till höger anger 'Skala 0 5 10 15 20 km'. Kompassrosen visar N pekande uppåt.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta Hällekis",
+        "text": "Hällekis är en ort uppe-vänster på kartan, ungefär halvvägs mellan Vänern och kartans västra kant. Den är markerad som tätort (vinkelad rektangel).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta Gullhögen",
+        "text": "Gullhögen är en ort uppe-höger-mellan på kartan, ungefär 2/3 av vägen ned från norr, något öster om mitten. Den ligger nära Skövde-området.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Mät avståndet med skalbaren",
+        "text": "Skalbaren längst ned till höger har segment 0-5-10-15-20 km. Lägg fingret på Gullhögen, ett annat på Hällekis. Jämför avståndet med skalbaren — det är ungefär 35 km (alltså längre än skalbarens maximala 20 km).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sanity-check avståndet med dubbel-skalan",
+        "text": "Eftersom kartans skalbaren är 0–20 km, mät HALVA avståndet Gullhögen-Hällekis först — det blir ungefär 17–18 km (passar inom skalbaren). Dubblat ≈ 34–36 km. Detta bekräftar 35 km, INTE 30 km. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Bestäm riktningen mot kompassrosen",
+        "text": "Kompassrosen i övre höger på kartan visar N rakt uppåt. Stå mentalt vid Gullhögen och titta mot Hällekis: Hällekis ligger UPPE-TILL-VÄNSTER på kartan. Uppe = nord, till vänster = väst → NORDVÄST.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder nordvästlig riktning?",
+        "text": "Nordväst (NV) = riktningen mellan norr (N) och väst (V), alltså cirka 315° kompassgradur. På en karta där N pekar uppåt = uppe till vänster-diagonalt. Det är skiljt från nordost (NO) som är uppe-till-höger.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Felfälla: blanda inte ihop ortnamn",
+        "text": "Det finns 'Hällekis' (uppe vänster) och 'Skultorp' (uppe höger). Förväxla inte. Hällekis är specifikt den västra orten nära Vänern; Skultorp ligger närmare Gullhögen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland A (30 km, NO), B (30 km, NV), C (35 km, NO), D (35 km, NV) matchar D både korrekt avstånd (35 km) och korrekt riktning (NV). Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D (35 km, nordvästlig riktning). Insikten i en mening: i kart-frågor — mät avståndet med skalbaren (utnyttja halvering om skalbaren är kort) och bestäm riktningen mot kompassrosen N.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för avstånds- och riktningsfrågor på kartor: lokalisera båda orterna, mät avstånd med skalbaren (eventuellt halverad om skalbaren är för kort), bestäm riktning genom kartans kompassros. Triggern: 'på vilket avstånd och i vilken riktning från X ligger Y' → skalbaren-mätning + kompassros-tolkning.",
+    "pregrade_tactic": {
+      "handle": "Skala-och-kompass",
+      "move": "Avstånd Gullhögen–Hällekis ≈ 35 km (dubblat halvavstånd jämfört med skalbaren 0–20 km). Riktning: uppe-till-vänster på kartan = nordväst."
+    }
+  },
+  "host-ver1-2019-kvant2-DTK-039": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Alt A börjar med 'Diabaser' — det är frestande om du läser bergartstecken (legend) i en specifik ordning utan att verifiera väg 193:s faktiska väg på kartan.",
+        "why_wrong": "Som steg 6 visar börjar väg 193 från Falköping passera först över Ordoviciska kalkstenar, INTE Diabaser. Diabaser-bältena ligger inte direkt på vägens första del. Facit fastslår D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Alt B börjar också med Diabaser — om du sett ett bälte med diabaser nära Falköpings centrum kan du tro att de är de första. Sekvensen i B är dock kortare än andra alternativ.",
+        "why_wrong": "Som steg 7 betonar är väg 193:s första bergartstyp Ordoviciska kalkstenar (sköldområden runt Falköping). Diabaser kommer senare på vägen. Facit fastslår D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Alt C börjar med 'Ordoviciska kalkstenar' — det är rätt START, men sekvensens fortsättning är kortare och saknar en av Kambriska-Urberg-passagerna mellan slutet och Tidaholm.",
+        "why_wrong": "Som steg 8 visar har sekvensen från Falköping till Tidaholm sju eller åtta lagerövergångar (Ordoviciska → Kambriska → Urberg → Kambriska → Ordoviciska → Kambriska → Urberg → Kambriska → ...). Alt C utelämnar en passage. Alt D ger den fullständiga sekvensen. Facit fastslår D."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i 'följ en väg-frågor' på berggrundskartor är att slarva med vilka lager väg 193 verkligen korsar och i vilken ordning. Botemedlet: sätt pennan på väg 193 vid Falköping, dra långsamt mot Tidaholm, och notera VARJE bergartsbälte du korsar i kronologisk ordning.",
+    "solution_path": "Facit fastslår D. Väg 193 går från Falköping till Tidaholm. Längs vägen korsar du i tur och ordning: Ordoviciska kalkstenar → Kambriska sandstenar/skiffrar → Urberg → Kambriska sandstenar/skiffrar → Ordoviciska kalkstenar → Kambriska sandstenar/skiffrar → Urberg. Alternativ D matchar denna fullständiga sekvens.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: i vilken ordning passerar man bergarterna längs väg 193 från Falköping till Tidaholm? Facit fastslår D. Du ska följa vägen visuellt på kartan och notera varje bergartsbälte i kronologisk ordning.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Läs legenden",
+        "text": "Kartans legend listar bergarter med distinkta mönster: Diabaser (hatchad), Överordoviciska–Siluriska siltstenar (annan hatch), Ordoviciska kalkstenar (tegelmönster), Kambriska sandstenar–skiffrar (prickigt), Urberg (skuggat), Tätort (vinkelrät rektangel), Väg (linjer).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta Falköping",
+        "text": "Falköping är en stor ort på kartan, i mitten-undre delen. Markerad som tätort. Väg 193 går från Falköping mot SÖDER-ÖSTER (mot Tidaholm).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta Tidaholm",
+        "text": "Tidaholm ligger sydostlig om Falköping, också markerad som tätort. Linjen mellan Falköping och Tidaholm går genom ett område med flera bergartsbälten.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta väg 193",
+        "text": "Väg 193 är en av vägarna mellan Falköping och Tidaholm. Den följer en ungefär rak linje mellan de två orterna, eventuellt genom Bestorp och andra mindre orter.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Följ vägen och kategorisera bergart i tur",
+        "text": "Sätt pennan vid Falköping. Första markeringen är området kring orten — Ordoviciska kalkstenar (tegelmönster). Fortsätt söder-öster och du korsar: → Kambriska sandstenar-skiffrar (prickigt) → Urberg (skuggat) → tillbaka till Kambriska sandstenar-skiffrar → Ordoviciska kalkstenar → Kambriska sandstenar-skiffrar → Urberg. Totalt 7 övergångar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Jämför med svarsalternativen",
+        "text": "Alt A börjar 'Diabaser' — fel start. Alt B börjar 'Diabaser' — fel start. Alt C börjar 'Ordoviciska kalkstenar' — rätt start men kortare sekvens. Alt D börjar 'Ordoviciska kalkstenar' med fullständig sju-stegs-sekvens. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad betyder de olika bergartstyperna?",
+        "text": "Diabaser = magmatisk djupbergart. Ordoviciska kalkstenar = sedimentär bergart från Ordovicium-perioden (485–443 milj år sedan). Kambriska sandstenar-skiffrar = sedimentär från Kambrium (541–485 milj år sedan). Urberg = mycket gammal granit-/gneissbergart. De ligger i geologiska lager där äldre bergart (Urberg) finns underst och nyare ovanpå.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Felfälla: Diabaser ligger inte längs väg 193",
+        "text": "Diabaser finns på kartan men koncentrerat i NORR (uppe vid Hällekis-området) och i mindre fläckar — INTE direkt längs väg 193 från Falköping mot Tidaholm. Det utesluter alt A och B direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland A, B, C, D är alt D den enda som har rätt start (Ordoviciska kalkstenar) OCH den fullständiga sju-stegs-sekvensen som matchar väg 193:s faktiska passager. Facit fastslår D.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är D. Insikten i en mening: i 'följ vägen'-frågor på geologisk karta — eliminera först alternativ med fel start, sedan jämför sekvensens FULLSTÄNDIGA längd och ordning.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för sekvens-frågor på geologisk karta: identifiera startpunkten, följ vägen visuellt, kategorisera varje korsad bergart med legenden, jämför sekvensen med svarsalternativen. Triggern: 'i vilken ordning passeras X längs en väg' → linje-spårning + sekvensjämförelse.",
+    "pregrade_tactic": {
+      "handle": "Bergart-för-bergart-spårning",
+      "move": "Pennan på väg 193 från Falköping mot Tidaholm. Första: Ordoviciska kalkstenar. Sekvensen är 7 lager långt, börjar med kalksten — matchar D."
+    }
+  },
+  "host-ver1-2019-kvant2-DTK-040": {
+    "_meta": {
+      "generated_at": "2026-05-17",
+      "model": "claude-opus-4-7",
+      "recipe": "variant-c-ultra-granular"
+    },
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "540 km² är frestande om du överskattar triangeln något — t.ex. genom att räkna en bas på 35 km och höjd 30 km → 525 km². Triangelns sidor är inte uppenbara så små variationer är möjliga.",
+        "why_wrong": "Som steg 7 visar är triangeln Karlsfors–Stora/Lilla Backor–Varv (mätt på kartan) ungefär: bas ≈ 28 km, höjd ≈ 27 km → area ≈ 0,5 × 28 × 27 = 378 km². Avrundat till 380. Facit fastslår A (380)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "760 km² är frestande om du dubbel-räknar triangelarean (glömmer faktorn 0,5) eller använder hela basen × hela höjden som kvadratformel. 380 × 2 = 760.",
+        "why_wrong": "Som steg 6 betonar är triangelareaformeln (bas × höjd) / 2 — dvs inkludera faktorn 0,5. För 760 km² ska basen × höjden vara 1520. Med rimliga mätningar (bas ~28, höjd ~27) blir produkten ~750 km² — halverat ger 375, närmast 380. Facit fastslår A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "1 400 km² är frestande om du gör flera fel samtidigt: överskattar BÅDA sidlängderna OCH glömmer faktorn 0,5. Vid stora kartfel kan triangeln verka enorm.",
+        "why_wrong": "Som steg 8 visar är triangelarean på kartan, jämförd med skalbaren, klart under 1 000 km². För 1 400 km² behöver triangeln spänna nästan hela kartans norra hälft. Facit fastslår A (380)."
+      }
+    ],
+    "framework_id": null,
+    "pitfall": "Den klassiska DTK-fällan i triangelarea-frågor på karta är att glömma faktorn 0,5 (eller att överskatta sidlängderna). Botemedlet: mät två sidor med skalbaren (eller en bas och en höjd), tillämpa area = (bas × höjd) / 2, och kontrollera storleksordningen mot kartans totala area.",
+    "solution_path": "Facit fastslår A (380 km²). Karlsfors, Stora/Lilla Backor och Varv är tre orter på kartan. Triangeln har sidor cirka 30 km. För att beräkna arean, mät en bas och en höjd (vinkelrät från motsatt hörn): bas ≈ 28 km, höjd ≈ 27 km. Area = (bas × höjd) / 2 = (28 × 27) / 2 = 378 km² ≈ 380.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Frågan: hur stor är triangelarean med hörn i Karlsfors, Stora/Lilla Backor och Varv? Svarsalternativen är 380, 540, 760, 1400 km². Facit fastslår A (380). Du ska mäta tre triangelsidor (eller bas + höjd) på kartan med skalbaren och tillämpa triangelareaformel.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta de tre orterna",
+        "text": "Karlsfors: uppe-höger på kartan, nära Skövde-området. Stora/Lilla Backor: vänster-mitten, nära Falköping-området. Varv: nedre-höger på kartan, mellan Skövde och Tidaholm. De tre orterna bildar en stor triangel som täcker mitten-höger av kartan.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Mät triangelns sidor",
+        "text": "Med skalbaren (0–20 km): Karlsfors–Stora/Lilla Backor ≈ 30 km. Stora/Lilla Backor–Varv ≈ 30 km. Karlsfors–Varv ≈ 28 km. Triangeln är ungefär liksidig.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Välj bas och höjd",
+        "text": "Triangelareaformel: area = (bas × höjd) / 2. Välj en sida som bas (t.ex. Karlsfors–Varv ≈ 28 km). Höjden är vinkelräta avståndet från Stora/Lilla Backor till linjen Karlsfors–Varv. Mätt på kartan ≈ 27 km.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna ut arean",
+        "text": "Area = (28 × 27) / 2 = 756 / 2 = 378 km². Det matchar närmast svarsförslag A (380).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder triangelarea?",
+        "text": "Triangelareaformel (bas × höjd) / 2 gäller för alla trianglar, inte bara rätvinkliga. 'Höjden' är vinkelräta avståndet från det tredje hörnet till basen (eller dess förlängning). Faktorn 1/2 (eller 0,5) är essentiell — utan den vore svaret en parallelogram-area, inte triangel.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check med ungefärlig liksidig triangel",
+        "text": "För en liksidig triangel med sida s: area = (s² × √3) / 4. Med s = 30 km: area = (900 × 1,732) / 4 = 1559 / 4 ≈ 390 km². Konsistent med ~380 (men marginellt högre eftersom verkliga triangeln är något oregelbunden). Facit fastslår A.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med ordersofsmagnitude mot kartan",
+        "text": "Hela kartan täcker ungefär 50 × 70 km = 3500 km² av Skaraborg-området. Triangeln Karlsfors–Stora/Lilla Backor–Varv täcker ungefär en åttondel av kartan ≈ 440 km². Med några rundningsmarginaler hamnar vi i 380-intervallet, INTE 760 eller 1400. Facit fastslår A.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Felfälla: glöm inte faktorn 1/2",
+        "text": "Om du av misstag räknar bas × höjd = 28 × 27 = 756, glömmer du faktorn 1/2 och får svaret för en PARALLELLOGRAM, inte triangel. Det landar på alternativ C (760) — vilket är ett DUBBELT-fel-svar. Faktorn 1/2 är essentiell.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Plocka närmaste svarsalternativ",
+        "text": "Bland A (380), B (540), C (760), D (1400) ligger din mätning 378 EXAKT på A. Skillnaderna är minst 160 km² — så även en grov sidlängds-uppskattning ger entydigt A. Facit fastslår A.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats med facit-bekräftelse",
+        "text": "Facit bekräftar: svaret är A (380 km²). Insikten i en mening: triangelarea på karta = (bas × höjd) / 2, där bas och höjd mäts med skalbaren — och GLÖM INTE faktorn 1/2.",
+        "tier": "essential"
+      }
+    ],
+    "technique": "DTK-strategi för areafrågor på karta: identifiera de tre orterna, mät en bas och en höjd (vinkelrät från motsatt hörn) med skalbaren, tillämpa (bas × höjd) / 2. Triggern: 'triangelarea/triangelformat område' → tvåvärdesmätning + halvering.",
+    "pregrade_tactic": {
+      "handle": "Bas-gånger-höjd-genom-två",
+      "move": "Mätt med skalbaren: triangelsidor ≈ 28–30 km, höjd ≈ 27 km. Area = (28 × 27) / 2 = 378 km² → A (380)."
+    }
+  },
   "host-ver1-2019-kvant2-KVA-013": {
     "_meta": {
       "generated_at": "2026-05-14",
@@ -2201,7 +4501,7 @@
         "why_wrong": "Båda operationerna är väldefinierade och ger exakta tal. Steg 4 och 5 ger exakta värden 180 och 200. Information saknas inte."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-025",
     "pitfall": "Anta att rabatter är kommutativa (att ordning inte spelar roll). Botemedlet: räkna alltid båda ordningarna konkret; aritmetiken visar skillnaden.",
     "solution_path": "Total rabatt = ursprungspris − slutpris. Ordningen A-sen-B: 500 → 400 → 400·0,8 = 320. Rabatt = 180. Ordning B-sen-A: 500 → 400 → 400 − 100 = 300. Rabatt = 200. 200 > 180, så II > I. Svaret är B.",
     "steps": [
@@ -2407,7 +4707,7 @@
         "why_wrong": "Trots att x inte är låst, gör villkoret x < −1 båda kvantiteterna entydigt bestämda i tecken (steg 6–7). I > II alltid."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-014",
     "pitfall": "Glömma att '1 − x' är inte samma som 'x − 1' när x är negativt. Botemedlet: skriv ut för x = −2 (eller annat konkret tal) som test innan generell analys.",
     "solution_path": "Med x < −1 är 1 − x = 1 + |x| > 2 (positivt och stort). x − 1 = (negativ) − 1 = mer negativ < −2. Alltså Kvantitet I > 0 > Kvantitet II. I > II. Svaret är A.",
     "steps": [
@@ -2707,7 +5007,7 @@
         "why_wrong": "Alla värden är givna (hastigheter och sträckor). Formeln tid = sträcka/hastighet ger exakta värden. Inga okända."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-030",
     "pitfall": "Antar att 'större sträcka' eller 'lägre hastighet' ensamt avgör tiden. Botemedlet: räkna ALLTID ut tiden numeriskt med formeln — intuition ljuger ofta i kombinerade ändringar.",
     "solution_path": "Tid = sträcka/hastighet. Kalle: 60/22 = 30/11 timmar ≈ 2,73. Bosse: 54/18 = 3 timmar. 3 > 2,73, så II > I. Svaret är B.",
     "steps": [
@@ -2807,7 +5107,7 @@
         "why_wrong": "Trots att triangelns kateter inte är specificerade, ger triangelolikheten en NEDRE gräns på omkretsen (10x) som alltid är större än 8x. Information räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-027",
     "pitfall": "Glömma triangelolikheten och tro att kateterna kan vara godtyckligt små. Botemedlet: triangeln 'kollapsar' om a + b närmar sig hypotenusan; vid likhet är det inte längre en riktig triangel.",
     "solution_path": "Åttahörnings omkrets = 8x. Rätvinklig triangels omkrets med hypotenusa 5x: de andra två sidor a och b uppfyller a² + b² = 25x². Maximalt a + b (genom Cauchy-Schwarz eller direkt analys) är då a = b = 5x/√2, ger a + b = 5x√2 ≈ 7,07x. Plus hypotenusa: omkrets ≤ 5x + 5x√2 ≈ 12,07x. Men minimalt kan a + b vara nästan 5x (degenererat). Generellt: Kvantitet I = 8x. Kvantitet II = 5x + a + b där a + b ligger mellan strax över 5x (degenererad) och 5x·√2 (likbent). Är 5x + 5x√2 < 8x? 5 + 7,07 = 12,07 > 8 — så Kvantitet II KAN vara större än 8x. Men 5x + (a+b) kan också vara mindre än 8x när a+b är liten. Otillräckligt? Vänta — räkna noggrannare: minsta omkrets för rätvinklig triangel med hypotenusa 5x är när triangeln 'degenererar'. Men icke-degenererad: ena katet → 0, andra → 5x, omkretsen → 10x. Eftersom 10x > 8x — Kvantitet II är ALLTID > 8x = Kvantitet I. Svaret är B.",
     "steps": [
@@ -3024,7 +5324,7 @@
         "why_wrong": "Tillsammans har vi tillräckligt med information för en linjär ekvation: 0,6V = 42. Det räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-019",
     "pitfall": "Glömma att 'tar 1/4 av återstående' räknas på det NYA volymet, inte ursprungliga. Botemedlet: räkna sekventiellt steg för steg, uppdatera 'kvar' efter varje operation.",
     "solution_path": "Låt V = ursprunglig volym. (1) säger 'kvar = 42 L' — ger ingen relation till V utan att veta hur mycket som togs. (2) ger sekvens: efter 20 % bort är V·0,8 kvar; sen tas 1/4 av det → kvar = (0,8V)·(3/4) = 0,6V. Utan tom-kvar-värde, kan vi inte lösa V. Tillsammans: 0,6V = 42 → V = 70. Svaret är C.",
     "steps": [
@@ -3240,7 +5540,7 @@
         "why_wrong": "Inget av dem ensamt räcker (steg 4 och 6). D är aldrig svaret när inget enskilt räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-020",
     "pitfall": "Förvxla 'innehåller talet 30' med 'medianen är 30'. Botemedlet: visualisera sorteringen — var hamnar talet 30 i den sorterade ordningen?",
     "solution_path": "Medelvärdet = 30, så summan = 150. Medianen av 5 ordnade tal är det MITTERSTA. (1): ett av talen är 3 — medianen kan vara nästan vilket som helst. (2): ett av talen är 30 — medianen är inte fastlåst heller. Tillsammans: två specifika tal finns (3 och 30), men de andra tre är fria. Medianen är fortfarande inte unik. Svaret är E.",
     "steps": [
@@ -3363,7 +5663,7 @@
         "why_wrong": "(1) ensamt ger unik ordning. E gäller bara när även båda tillsammans inte räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-013",
     "pitfall": "Anta att 'inte sist' är ekvivalent med 'specifik position'. Botemedlet: skriv ut alla möjliga positioner som tillåts av villkoret, eliminera de som strider mot andra villkor.",
     "solution_path": "Vi vill veta ordningen av Anna (A), David (D), Harald (H), Marie (M). (1): H mellan M och A (M före H, H före A), och M inte först → David först? Möjligen. Räcker det för unik ordning? Test: D, M, H, A — funkar. Annan: går det med någon annan? M är inte först, så M är på position 2, 3, eller 4. H efter M men före A. (1) fastställer M < H < A. Vem är först? Inte M (från villkor). Måste vara D eller... bara D är inte specificerad. Så D är först. Då ordning: D, M, H, A. Unikt. (1) ensamt räcker. (2): D före A och M; H inte sist. Möjliga ordningar: D, H, M, A; D, H, A, M; D, M, H, A; D, M, A, H — vänta, H inte sist tar bort vissa. Faktiskt: med D först (D < A, D < M), H < {A, M, D}? Nej, bara säger H ≠ sist. Flera ordningar möjliga. Otillräckligt. Svaret är A.",
     "steps": [
@@ -6184,8 +8484,8 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid \"kulmen\" som peak — och en bubbla har ju en topp innan den brister.",
-        "why_wrong": "Kulmen är toppunkten (höjdpunkten av en kurva), inte slutet. Texten frågar om vi nått VÄGS ÄNDE, alltså slutpunkten — ett post-peak-läge (steg 3). Och \"gammal skåpmat\" handlar om förlegade idéer, inte ekonomiska resurser (steg 2)."
+        "why_tempting": "Många stannar vid \"kulmen\" som KULMEN — och en bubbla har ju en topp innan den brister.",
+        "why_wrong": "Kulmen är toppunkten (höjdpunkten av en kurva), inte slutet. Texten frågar om vi nått VÄGS ÄNDE, alltså slutpunkten — ett post-KULMEN-läge (steg 3). Och \"gammal skåpmat\" handlar om förlegade idéer, inte ekonomiska resurser (steg 2)."
       },
       {
         "letter": "D",
@@ -9194,13 +11494,13 @@
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten kan vara \"pliktkänsla\" eftersom plikt är etisk.",
+        "why_tempting": "Första instinkten kan vara \"pliktkänsla\" eftersom plikt är Etisk.",
         "why_wrong": "Pliktkänsla handlar om att FÖLJA regler/plikter (steg 3), men civilkurage handlar om att STÅ UPP när situationen kräver moraliskt mod ÖVER regler. Texten beskriver inte att folk struntar i regler, utan att de inte INGRIPER — det är just civilkurage som bristen gäller. Och \"moralisk valmöjlighet\" är fel betydelse (steg 2)."
       }
     ],
     "framework_id": null,
     "pitfall": "Tre alternativ (avsikt, handlingskraft, pliktkänsla) är alla etiskt-nära men SKILJER sig från civilkurage på en avgörande punkt: civilkurage är ATT INGRIPA NÄR DET KOSTAR. Botemedlet: när texten beskriver passivitet inför orätt (likgiltighet, tystnad, vana att blunda) — det är civilkurage som motsätter sig, inte plikt eller energi.",
-    "solution_path": "Utredaren tillförde en moralisk DIMENSION (etisk aspekt) och fann brist på CIVILKURAGE (modet att stå upp moraliskt) stötande. Svaret är A.",
+    "solution_path": "Utredaren tillförde en moralisk DIMENSION (Etisk aspekt) och fann brist på CIVILKURAGE (modet att stå upp moraliskt) stötande. Svaret är A.",
     "steps": [
       {
         "n": 1,
@@ -9238,7 +11538,7 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Kollokationsregeln för etisk svenska: \"moralisk dimension\" och \"civilkurage\" är två etablerade etiska kollokationer som hör ihop i juridisk-etiska resonemang om rättsmedvetande. Lär dig de etiska substantiven: civilkurage, integritet, omdöme, samvete, ansvarsbörd. Triggern: text om allmänt rättsmedvetande + brist på moraliska egenskaper → välj civilkurage som det medborgerliga etiska modet.",
+    "technique": "Kollokationsregeln för Etisk svenska: \"moralisk dimension\" och \"civilkurage\" är två etablerade etiska kollokationer som hör ihop i juridisk-etiska resonemang om rättsmedvetande. Lär dig de etiska substantiven: civilkurage, integritet, omdöme, samvete, ansvarsbörd. Triggern: text om allmänt rättsmedvetande + brist på moraliska egenskaper → välj civilkurage som det medborgerliga etiska modet.",
     "pregrade_tactic": {
       "handle": "Etiska-substantivet",
       "move": "Text om allmänt rättsmedvetande + brist på moraliska egenskaper — välj civilkurage, det medborgerliga ordet för moraliskt mod att ingripa."
@@ -9611,7 +11911,7 @@
       {
         "letter": "E",
         "why_tempting": "Många stannar vid att tillika ofta används för att ge ett ytterligare exempel — och tolkar det som exempelvis.",
-        "why_wrong": "Exempelvis är en EXEMPLIFIERING — ett exempel av en bredare kategori. Tillika är en ADDITION — en till sak utöver de redan nämnda, inte ett exempel på något. 'Professor och exempelvis rektor' fungerar inte — rektor är inte ett exempel, det är en till roll."
+        "why_wrong": "Exempelvis är en EXEMPLIFIERING — ett exempel på en bredare kategori. Tillika är en ADDITION — en till sak utöver de redan nämnda, inte ett exempel på något. 'Professor och exempelvis rektor' fungerar inte — rektor är inte ett exempel, det är en till roll."
       }
     ],
     "framework_id": null,

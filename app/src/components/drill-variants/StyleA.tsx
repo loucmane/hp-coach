@@ -876,7 +876,7 @@ export function StyleA({
                       marginBottom: 8,
                     }}
                   >
-                    Fälla
+                    Fällan här
                   </h3>
                   <p
                     style={{

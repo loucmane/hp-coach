@@ -23,7 +23,8 @@
     ],
     "pitfall": null,
     "solution_path": "Skillnaden 69\\cdot 116-68\\cdot 117=69\\cdot 116-68\\cdot 116-68=116-68=48, alltså är I större än II. Bryt ut den gemensamma faktorn istället för att räkna båda produkterna i huvudet — det avslöjar tecknet på ett par sekunder.",
-    "technique": "Jämför produkter genom att bryta ut den gemensamma faktorn — slipp räkna båda sidorna."
+    "technique": "Jämför produkter genom att bryta ut den gemensamma faktorn — slipp räkna båda sidorna.",
+    "framework_id": "KVA-TRAP-024"
   },
   "host-2013-kvant1-KVA-014": {
     "_meta": {
@@ -75,7 +76,8 @@
     ],
     "pitfall": null,
     "solution_path": "Villkoret x=-y tillåter alla tre utfall: vid y=0 blir x=0=y (lika), vid y=1 blir x=-1<y (II>I), och vid y=-1 blir x=1>y (I>II). Information saknas.",
-    "technique": "Identifiera när information är otillräcklig genom att testa både y = 0 och y med olika tecken."
+    "technique": "Identifiera när information är otillräcklig genom att testa både y = 0 och y med olika tecken.",
+    "framework_id": "KVA-TRAP-037"
   },
   "host-2013-kvant1-KVA-018": {
     "_meta": {
@@ -101,7 +103,8 @@
     ],
     "pitfall": null,
     "solution_path": "(-10)^{11} har udda exponent och blir negativt; (-11)^{10} har jämn exponent och blir positivt. Ett positivt tal är alltid större än ett negativt, alltså II > I.",
-    "technique": "Vid (-a)^{n}: kolla pariteten hos n innan du försöker räkna magnituden."
+    "technique": "Vid (-a)^{n}: kolla pariteten hos n innan du försöker räkna magnituden.",
+    "framework_id": "KVA-TRAP-013"
   },
   "host-2013-kvant1-KVA-019": {
     "_meta": {
@@ -127,7 +130,8 @@
     ],
     "pitfall": null,
     "solution_path": "Rektangelns omkrets 2(l+b)=36 ger l+b=18, så längsta sidan kan ligga var som helst i intervallet [9, 18). II = 4·3 = 12. Längsta sidan kan vara mindre (t.ex. l=10, b=8), lika med 12, eller större (t.ex. l=15, b=3) — D.",
-    "technique": "En enskild omkrets eller area låser inte sidlängderna — testa intervallets ändpunkter."
+    "technique": "En enskild omkrets eller area låser inte sidlängderna — testa intervallets ändpunkter.",
+    "framework_id": "KVA-TRAP-004"
   },
   "host-2013-kvant1-KVA-020": {
     "_meta": {
@@ -153,7 +157,8 @@
     ],
     "pitfall": null,
     "solution_path": "Två summor av positiva tal kan vara lika med vilken kombination som helst av antal termer. Exempelvis ger 1+1+1=3 (n=3) och 3=3 (m=1) lika summor med n>m; och 2=2 (n=1) mot 1+1=2 (m=2) ger n<m. Information saknas.",
-    "technique": "En summa-likhet säger inget om antalet termer — testa olika partitionsvarianter."
+    "technique": "En summa-likhet säger inget om antalet termer — testa olika partitionsvarianter.",
+    "framework_id": "KVA-TRAP-002"
   },
   "host-2013-kvant1-KVA-022": {
     "_meta": {
@@ -276,7 +281,8 @@
     ],
     "pitfall": "Ett påstående som beskriver en KÄND geometrisk sats (yttervinkelsatsen, Pythagoras, vinkelsumman = 180°) i en triangel ger aldrig ny information — det är alltid sant.",
     "solution_path": "Sökt: storleken på d i grader. Utsaga (1): c = b/4 — en RELATION mellan c och b utan absoluta värden. Räcker inte för att räkna d. Utsaga (2): d = a + b — detta ÄR yttervinkelsatsen och gäller alltid, även utan utsaga (2). Den tillför ingen ny information. Tillsammans: (1) ger en relation, (2) är trivial — fortfarande inga absolutvärden på a eller b. E.",
-    "technique": "Yttervinkelsatsen säger: en yttervinkel till en triangel är ALLTID lika med summan av de två icke-närliggande inre vinklarna (d = a + b). Det är en regel som gäller överallt — så ett påstående som upprepar regeln tillför ingen ny information."
+    "technique": "Yttervinkelsatsen säger: en yttervinkel till en triangel är ALLTID lika med summan av de två icke-närliggande inre vinklarna (d = a + b). Det är en regel som gäller överallt — så ett påstående som upprepar regeln tillför ingen ny information.",
+    "framework_id": "NOG-TRAP-007"
   },
   "host-2013-kvant1-NOG-026": {
     "_meta": {
@@ -305,7 +311,7 @@
         "why_wrong": "Detta är fel intuition. Två oberoende ekvationer + två obekanta = ALLTID en unik lösning (det är en grundläggande algebrasats). (1) ger A − K = 24, (2) ger A = 2K + 13 — olika typer av relationer, alltså oberoende. Steg 10–11 löser systemet. E gäller bara när påståendena är redundanta eller motsägelsefulla."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-009",
     "pitfall": "Konkreta siffror i påståendena (här '24' och 'dubbelt') lurar studenter att tro att informationen räcker. Botemedlet: räkna ALLTID antalet ekvationer och antalet obekanta, snarare än att titta på hur 'fyllig' varje påstående ser ut språkligt. En enda ekvation med två obekanta är otillräcklig, även om den innehåller flera konkreta tal.",
     "solution_path": "Översätt (1) till A − K = 24, (2) till A = 2K + 13. Var för sig är vardera en ekvation med två obekanta — otillräckligt. Tillsammans bildar de ett 2x2-system med unik lösning K = 11. Svaret är C.",
     "steps": [
@@ -419,7 +425,8 @@
     ],
     "pitfall": null,
     "solution_path": "Var för sig räcker. v_r+v_g=117. (1): v_r−v_g=27 → v_g=45, v_r=72. (2): v_r=1,6·v_g → v_g=45.",
-    "technique": "Total summa + en relation (differens eller förhållande) = slutet system."
+    "technique": "Total summa + en relation (differens eller förhållande) = slutet system.",
+    "framework_id": "NOG-TRAP-024"
   },
   "host-2013-kvant1-NOG-028": {
     "_meta": {
@@ -838,7 +845,8 @@
     ],
     "pitfall": null,
     "solution_path": "I: x(y+z)+x^{2}+yz=xy+xz+x^{2}+yz. II: (x+z)(y+x)=xy+x^{2}+zy+zx. Termvis identiska — C.",
-    "technique": "Distribuera båda sidor fullständigt och jämför term för term innan du gissar olikhet."
+    "technique": "Distribuera båda sidor fullständigt och jämför term för term innan du gissar olikhet.",
+    "framework_id": "KVA-TRAP-024"
   },
   "host-2013-kvant2-KVA-022": {
     "_meta": {
@@ -866,7 +874,8 @@
     ],
     "pitfall": "\"Rätvinkeln\" i en rätvinklig triangel är 90°-vinkeln — den kan sitta vid VILKET som helst av de tre hörnen. Räkna alla tre fallen.",
     "solution_path": "Punkterna (2,2) och (2,4) ligger lodrätt över varandra (samma x-värde). Rätvinkeln kan sitta vid (2,2): då måste benet till (−1,a) vara vågrätt, dvs a = 2. Eller vid (2,4): då måste benet vara vågrätt på höjden 4, dvs a = 4. Två giltiga värden ger I = 2 (lika med II) respektive I = 4 (större än II) — informationen räcker inte.",
-    "technique": "I geometriska KVA-problem: pröva ALLA möjliga placeringar av den utmärkande egenskapen (här: var rätvinkeln sitter) innan du svarar — flera giltiga konfigurationer betyder D."
+    "technique": "I geometriska KVA-problem: pröva ALLA möjliga placeringar av den utmärkande egenskapen (här: var rätvinkeln sitter) innan du svarar — flera giltiga konfigurationer betyder D.",
+    "framework_id": "KVA-TRAP-008"
   },
   "host-2013-kvant2-NOG-023": {
     "_meta": {

@@ -22,7 +22,7 @@
         "why_wrong": "Vi behöver inget exakt värde — tecken-regeln räcker. Som steg 9 visar är utfallet identiskt för alla x < 0."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-013",
     "pitfall": null,
     "solution_path": "När x är negativ blir x^{2} alltid positiv (negativ gånger negativ = positiv) medan x^{3} förblir negativ. Positivt är alltid större än negativt, så svaret är A.",
     "steps": [
@@ -116,7 +116,7 @@
         "why_wrong": "Den regeln gäller bara om PARSAMMANSÄTTNINGEN är låst (ex. \"Anna ersätts av Christina\"). Här byts två mot två — en grupp-summa måste hållas, inte två individuella likheter. Steg 8 är bara ett av flera möjliga utfall."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-002",
     "pitfall": "Det är frestande att para ihop \"den första som lämnar\" med \"den första som kommer in\" och anta att de är jämförbara. Botemedlet: skriv om villkoret som en summa-ekvation och konstruera medvetet motexempel åt minst två håll innan du svarar.",
     "solution_path": "Att medellängden inte ändras betyder att summan av de borttagna längderna (Anna + Bosse) är lika med summan av de tillkomna (Christina + Daniel). Det säger inget om Anna jämfört med Christina enskilt — svaret är D.",
     "steps": [
@@ -316,7 +316,7 @@
         "why_wrong": "Frågan rör en SLUMPVIS dag — inget specifikt val. Med alla parametrar givna (400 dagar/år, 40 dagar/månad, 5 dagar/vecka) är båda sannolikheter exakt beräkningsbara. Stegen 3 och 6 räknar dem exakt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-028",
     "pitfall": "Att blanda ihop \"första dagen i veckan\" med \"första veckan på året\" är vanligt. Botemedlet: läs varje kvantitet exakt två gånger och översätt till frågan \"hur många dagar på året uppfyller villkoret?\" innan du börjar räkna kvoten.",
     "solution_path": "Sannolikheten för \"i första månaden\" är 40/400 = 1/10. Sannolikheten för \"första dagen i någon vecka\" är 80/400 = 1/5 (varje vecka har 5 dagar, så var 5:e dag är en \"första\"; totalt 80 sådana dagar på året). 1/5 > 1/10, så II > I. Svaret är B.",
     "steps": [
@@ -416,7 +416,7 @@
         "why_wrong": "f är exakt definierad genom formeln, så f(−1) och f(0) är båda entydiga tal — beräkningsbara genom enkel substitution. Steg 5–7 räknar ut dem."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-013",
     "pitfall": "Den vanligaste fallgropen är tecken vid (-1)^{3} mot (-1)^{2} — många får dem omkastade. Botemedlet: räkna alltid potensen separat på sidan av pappret och skriv ut tecknet innan du sätter in i polynomet.",
     "solution_path": "Sätt in x = −1 och x = 0 i f(x)=3x^{3}+2x^{2}-5x+1. f(−1) = −3 + 2 + 5 + 1 = 5. f(0) = 1. 5 > 1, så I > II. Svaret är A.",
     "steps": [
@@ -2475,7 +2475,7 @@
         "why_wrong": "k ≠ 0 utesluter bara noll. k = 1 är möjlig men inte ENDA möjligheten. Steg 5 visar att likhet kan inträffa (x = 0), men andra utfall är också möjliga."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-005",
     "pitfall": "Vanligt fel är att tycka att \"k ≠ 0\" är ett \"stort\" villkor som låser något. Men k kan fortfarande vara 1, 2, 0,5, −3, π — vilket som helst utom noll. Botemedlet: testa minst ETT bråk-värde (k = 0,5) och ETT negativt värde (k = −1) innan du svarar.",
     "solution_path": "k ≠ 0 men kan vara positiv eller negativ, större eller mindre än 1. x är fritt — kan vara 0, positiv, eller negativ. Vid x = 0 är båda 0 (lika). Vid x = 1, k = 2 är I = 1 < II = 2. Vid x = 1, k = 1/2 är I = 1 > II = 0,5. Alla tre utfall möjliga — svaret är D.",
     "steps": [
@@ -2581,7 +2581,7 @@
         "why_wrong": "Alla dimensioner är exakta tal. Räkningarna i steg 4–5 ger entydiga volymer (36π respektive 48π)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-020",
     "pitfall": "Vanligaste fallgropen är att glömma kvadreringen och räkna \\pi r h, vilket skulle göra cylindrarna lika. Botemedlet: räkna r^{2} SEPARAT som en första rad innan du multiplicerar med h.",
     "solution_path": "Cylindervolym = \\pi r^{2} h. Kvantitet I (r=3, h=4): \\pi \\cdot 9 \\cdot 4 = 36\\pi. Kvantitet II (r=4, h=3): \\pi \\cdot 16 \\cdot 3 = 48\\pi. 48π > 36π. Svaret är B.",
     "steps": [
@@ -2881,7 +2881,7 @@
         "why_wrong": "Likhet är möjligt (steg 9), men inte ENDA möjligheten — också x > y (steg 7) och y > x (steg 8) inträffar. Det är just därför svaret är D, inte C."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-003",
     "pitfall": "Det är lätt att tro att en olikhet låser en variabel mer än den gör. \"x > 3\" säger BARA en sak: x är inte 3 eller mindre. Botemedlet: skriv olikheten på tallinjen — du ser då hur stor del av tallinjen som är öppen, och att x kan vara godtyckligt stor.",
     "solution_path": "Från 5 − x < 2 följer x > 3. Från y − 3 > 1 följer y > 4. Båda är olikheter med oändliga lösningar; x kan vara större eller mindre än y (t.ex. x = 100 > y = 5, eller x = 4 < y = 100). Information otillräcklig. Svaret är D.",
     "steps": [
@@ -3437,7 +3437,7 @@
         "why_wrong": "(2) ger entydigt 4 timmar via direkt räkning (steg 7). Information finns — räcker via (2)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-023",
     "pitfall": "Det är lätt att läsa \"32 km/h, avvikelse 2\" som \"alltså 30 km/h\" (subtrahera bara) utan att betänka den andra möjligheten. Botemedlet: skriv ut båda möjligheter (32 + 2 och 32 − 2) som två rader innan du fortsätter — vid två giltiga svar är (1) otillräckligt.",
     "solution_path": "(1) ger två möjliga verkliga medelhastigheter: 30 eller 34 km/h (32 ± 2). Båda ger olika tider för 120 km. Otillräckligt. (2) ger separata sträckor och hastigheter: 60 km på 40 km/h = 1,5 h, 60 km på 24 km/h = 2,5 h, totalt 4 h. UNIK. Svaret är B.",
     "steps": [
@@ -3542,7 +3542,7 @@
         "why_wrong": "Stegen 3 och 6 visar att inget räcker ensamt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-006",
     "pitfall": "Vanligt fel är att tycka att två olikheter \"specificerar tillräckligt\". Botemedlet: efter att ha tolkat (1) och (2), KONSTRUERA explicit två olika scenarier som båda uppfyller alla villkor — om de finns, är svaret E (eller åtminstone inte D/C).",
     "solution_path": "(1) säger om 15 pudlar + 2 schäfrar lämnar är pudlar < schäfrar och pudlar > taxar. Tre olikheter, inga exakta tal. (2) ger taxar = 7 och pudlar = 24. Båda ensamma otillräckliga (1: bara olikheter; 2: schäfrar okända). Tillsammans: pudlar efter = 9, schäfrar efter > 9, schäfrar före > 11. Men exakt antal schäfrar är inte låst — kan vara 12, 13, 14... Svaret är E.",
     "steps": [

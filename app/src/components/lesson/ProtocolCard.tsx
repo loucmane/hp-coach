@@ -119,10 +119,10 @@ export function ProtocolCard({
 
       <div style={{ marginTop: 20 }}>
         {/* DTK tactic body: when_to_apply as prose */}
-        {isTactic(entry) && <ProseBody label="När" text={entry.when_to_apply} />}
+        {isTactic(entry) && <ProseBody label="Igenkänningstecken" text={entry.when_to_apply} />}
 
         {/* MEK constraint body: rule as prose */}
-        {isConstraint(entry) && <ProseBody label="Regel" text={entry.rule} />}
+        {isConstraint(entry) && <ProseBody label="Mönsterregel" text={entry.rule} />}
 
         {/* LÄS/ELF protocol body: attack_protocol as ordered list,
             common_distractors as italic note */}

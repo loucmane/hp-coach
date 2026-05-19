@@ -120,7 +120,7 @@
         "why_wrong": "Lika gäller bara om Ella = Lena (steg 8) — det är ETT specialfall, inte generellt. Steg 6 och 7 visar att olikhet är fullt möjligt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-010",
     "pitfall": "Det är frestande att tro 'medelvärde = mitten' och dra slutsatsen lika. Botemedlet: medelvärdet ligger mellan extremerna, men i det här problemet jämförs medelvärdet mot ENA extremen (Ella), inte mot mittpunkten — så det är inte trivialt.",
     "solution_path": "Alma är genomsnittet av Ella och Lena. Beroende på om Lena är äldre eller yngre än Ella kan Alma vara större, mindre eller lika med Ella. Otillräcklig information. Svaret är D.",
     "steps": [
@@ -220,7 +220,7 @@
         "why_wrong": "Informationen räcker uppenbart — båda kvantiteterna är konkreta tal som kan räknas ut direkt (steg 3–4)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-038",
     "pitfall": "Det är intuitivt att 'större procent = större resultat', men det glömmer att basen också ändras. Botemedlet: skriv om båda som ab/100 och se att uttrycken är identiska — då försvinner illusionen att de skulle skilja sig.",
     "solution_path": "30\\% \\cdot 40 = 0{,}3 \\cdot 40 = 12 och 40\\% \\cdot 30 = 0{,}4 \\cdot 30 = 12. Båda är 12. Svaret är C.",
     "steps": [
@@ -695,7 +695,8 @@
     ],
     "pitfall": "\"Positiv lutning\" säger bara att linjen lutar uppåt — det säger inget om VAR den korsar y-axeln. En brant linje (stor k) startar långt ovanför x-axeln; en flack linje (liten k) startar nedanför.",
     "solution_path": "Linjen passerar (−10, −1) med positiv lutning k > 0. Y-skärningen m är y-värdet vid x = 0: m = −1 + 10k. För liten k (t.ex. k = 0,05) är m = −0,5 < 0. För stor k (t.ex. k = 1) är m = 9 > 0. Y-skärningen kan alltså vara negativ, noll eller positiv — D.",
-    "technique": "En linje y = kx + m går genom (x₀, y₀) ⇒ y₀ = k·x₀ + m. Lös ut m: m = y₀ − k·x₀. För en linje genom (−10, −1) blir y-skärningen m = −1 − k·(−10) = 10k − 1."
+    "technique": "En linje y = kx + m går genom (x₀, y₀) ⇒ y₀ = k·x₀ + m. Lös ut m: m = y₀ − k·x₀. För en linje genom (−10, −1) blir y-skärningen m = −1 − k·(−10) = 10k − 1.",
+    "framework_id": "KVA-TRAP-016"
   },
   "host-2022-kvant1-KVA-022": {
     "_meta": {
@@ -971,7 +972,7 @@
         "why_wrong": "Steg 5 och 8 visar att INGENDERA påståendet ensamt räcker. D är dubbelt fel."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-012",
     "pitfall": "Det är vanligt att tro att 'nedanför' betyder 'direkt under', vilket skulle ge starkare restriktioner. Botemedlet: 'nedanför' i NOG betyder alltid bara LÄGRE VÅNING — inte angränsande. Markera det innan du börjar testa scenarier.",
     "solution_path": "(1) ger att Cedergren är under Andersson. (2) ger att Berg är under Dahlman. Tillsammans finns flera giltiga placeringar (t.ex. Andersson eller Dahlman på tredje våningen). Svaret är E.",
     "steps": [
@@ -1310,7 +1311,7 @@
         "why_wrong": "Steg 11–12 visar att D-E-B-C-A passar alla villkor i (2). Det finns en lösning — bara via (2) ensamt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-013",
     "pitfall": "Det är vanligt att glömma att 'intill BÅDA' kräver två grannar, vilket utesluter ändpositioner. Botemedlet: när du läser 'B intill både C och E' — stryk omedelbart ut ändpositionerna för B.",
     "solution_path": "(1) ger två giltiga ordningar (D-C-B-E-A och D-E-B-C-A) — otillräckligt. (2) ger den UNIKA ordningen D-E-B-C-A. Svaret är B.",
     "steps": [
@@ -2417,7 +2418,8 @@
     ],
     "pitfall": null,
     "solution_path": "Triangelarea = b·h/2; två trianglar med olika baser och höjder kan ha olika area. Inget i villkoret rangordnar dem — D.",
-    "technique": "Trianglar med fria baser och höjder: area-jämförelse är obestämd."
+    "technique": "Trianglar med fria baser och höjder: area-jämförelse är obestämd.",
+    "framework_id": "KVA-TRAP-004"
   },
   "host-2022-kvant2-KVA-018": {
     "_meta": {
@@ -2497,7 +2499,8 @@
     ],
     "pitfall": null,
     "solution_path": "I: 40 km / 100 km/h = 0,4 h = 24 min. II: 40 m/s = 144 km/h, 40/144 h = 1/3,6 h ≈ 0,278 h ≈ 16,67 min. 24 > 16,67 — A.",
-    "technique": "Konvertera m/s till km/h: multiplicera med 3,6."
+    "technique": "Konvertera m/s till km/h: multiplicera med 3,6.",
+    "framework_id": "KVA-TRAP-026"
   },
   "host-2022-kvant2-NOG-023": {
     "_meta": {
@@ -2636,7 +2639,7 @@
         "why_wrong": "Båda påståenden ger faktiskt ett tydligt svar. E gäller bara när informationen är otillräcklig — inte här."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-016",
     "pitfall": "Det är lätt att blanda ihop udda och jämna exponenter. Om frågan hade varit x^{4} < 0 hade det varit OMÖJLIGT (jämn exponent → alltid \\ge 0). Botemedlet: testa exponentens paritet innan du drar slutsatser om tecken.",
     "solution_path": "(1): 4x = -8 \\Rightarrow x = -2 < 0 — ja. (2): x^{5} < 0 \\Rightarrow x < 0 (udda exponent bevarar tecken) — ja. Båda räcker var för sig. Svaret är D.",
     "steps": [
@@ -2741,7 +2744,7 @@
         "why_wrong": "Steg 10–12 visar att tillsammans bildar (1) och (2) ett komplett 4×4-system med unik lösning a = 25. E är fel."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-002",
     "pitfall": "Det är vanligt att räkna 'antal påståenden' i stället för 'antal ekvationer'. Botemedlet: bryt ut varje delsats (kommaseparerad) som en egen ekvation; '2B = 24' OCH 'totalt 103' i samma påstående räknas som TVÅ separata villkor.",
     "solution_path": "(1) ger två ekvationer i tre obekanta (otillräckligt). (2) ger en total och en klass (otillräckligt). Tillsammans bildar de fyra oberoende ekvationer i fyra obekanta och ger 1A = 25. Svaret är C.",
     "steps": [
@@ -2864,7 +2867,7 @@
         "why_wrong": "Steg 9 ger ett klart svar: B = 15 cl. Informationen räcker — i (2)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-008",
     "pitfall": "Det är lätt att blanda ihop 'glas B fyllt till 75 %' (hur mycket VÄTSKA i glaset just nu) med 'glas B:s rymd' (kapaciteten). Botemedlet: stryk under VAD frågan söker — kapacitet, innehåll just nu, eller andel — innan du använder talen.",
     "solution_path": "(1) upprepar bara förutsättningen (\\tfrac{4}{5} = 80\\%) och ger inget nytt. (2) ger glas A = 12 cl, så glas B = 12 / 0{,}80 = 15 cl. Svaret är B.",
     "steps": [
@@ -2975,7 +2978,7 @@
         "why_wrong": "Steg 7 ger ett tydligt unikt svar (S = 1 000) från (1) ensam — informationen räcker, bara inte i (2)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-006",
     "pitfall": "Det är vanligt att blanda ihop 'hälften' (en olikhet) med 'halva beloppet' (en likhet). Botemedlet: läs ALLTID jämförelseorden ('mer än', 'lika med', 'minst') ordagrant och skriv ner motsvarande matematiska symbol (>, =, ≥) innan du börjar räkna.",
     "solution_path": "(1) ger två relationer som tillsammans med totalen 1 600 kr låser skoaffären till 1 000 kr. (2) ger bara en olikhet och räcker inte. Svaret är A.",
     "steps": [
@@ -3092,7 +3095,7 @@
         "why_wrong": "Steg 6 och 10 visar att INGENDERA räcker ensamt. D är dubbelt fel — och stränger krav än C, som redan misslyckas."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-020",
     "pitfall": "Det är vanligt att tolka 'medianen oförändrad' som 'X måste vara mediananen' eller 'X måste vara ändpunkt'. Botemedlet: rita upp de tre lägena (kortast / median / längst) och testa konkret om perturbationen behåller mellerstapersonen — gör det för minst två konkreta scenarier.",
     "solution_path": "(1) Emma = 173 (medianen) men avgör inte mellan Marie och Petra. (2) Marie kan vara antingen längst eller kortast och fortfarande lämna medianen oförändrad. Tillsammans: vi vet att Emma är median, men inte vem av M/P som är längst. Svaret är E.",
     "steps": [

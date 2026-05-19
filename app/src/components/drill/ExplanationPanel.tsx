@@ -22,11 +22,13 @@
 // --hairline, --accent, --bg, etc.) so this component themes
 // automatically with the user's palette / mode / density choice.
 
+import { Link } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { type FeedbackEntry, getFeedback, submitFeedback } from '@/api/feedback'
 import { resolveSteps, StepList } from '@/components/drill/PedagogyPanel'
 import { MathText } from '@/components/MathText'
 import { type Explanation, loadExplanation } from '@/data/explanations'
+import { SECTION_KEYS, type Section } from '@/data/questions'
 
 type Props = {
   qid: string
@@ -163,6 +165,12 @@ function Body({ explanation, qid }: { explanation: Explanation; qid: string }) {
   const hasSteps = (explanation.steps?.length ?? 0) > 0
   return (
     <div style={{ padding: '14px 16px 16px' }}>
+      {explanation.pregrade_tactic && (
+        <Strategi
+          handle={explanation.pregrade_tactic.handle}
+          move={explanation.pregrade_tactic.move}
+        />
+      )}
       {hasSteps ? (
         <div style={{ marginBottom: 16 }}>
           <StepList steps={resolveSteps(explanation)} />
@@ -175,12 +183,67 @@ function Body({ explanation, qid }: { explanation: Explanation; qid: string }) {
       )}
       <TechniqueRow technique={explanation.technique} />
       {explanation.pitfall && <Pitfall text={explanation.pitfall} />}
+      {explanation.framework_id && <FrameworkLink frameworkId={explanation.framework_id} />}
       <QABar qid={qid} explanation={explanation} />
     </div>
   )
 }
 
 // ── Sub-components ────────────────────────────────────────────────
+
+// Surfaces the pre-grade named strategy on the post-grade view so the
+// handle ("Linjärekvationsreceptet") and move ("Subtrahera den mindre
+// x-termen…") get a second reading after grading — the moment the
+// student is most likely to internalize the handle.
+function Strategi({ handle, move }: { handle: string; move: string }) {
+  return (
+    <div
+      data-testid="explanation-strategi"
+      style={{
+        marginBottom: 14,
+        paddingBottom: 14,
+        borderBottom: '1px solid var(--hairline-2)',
+      }}
+    >
+      <div
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 10,
+          letterSpacing: 'var(--font-mono-track)',
+          textTransform: 'uppercase',
+          color: 'var(--muted)',
+          marginBottom: 8,
+        }}
+      >
+        Strategi
+      </div>
+      <h3
+        style={{
+          margin: '0 0 6px',
+          fontFamily: 'var(--font-display)',
+          fontSize: 18,
+          letterSpacing: '-0.012em',
+          lineHeight: 1.3,
+          fontWeight: 500,
+          color: 'var(--ink)',
+        }}
+      >
+        {handle}
+      </h3>
+      <p
+        style={{
+          margin: 0,
+          fontFamily: 'var(--font-display)',
+          fontSize: 15,
+          lineHeight: 1.55,
+          color: 'var(--ink-2)',
+        }}
+      >
+        <MathText>{move}</MathText>
+      </p>
+    </div>
+  )
+}
 
 function SolutionPath({ text }: { text: string }) {
   return (
@@ -351,11 +414,71 @@ function Pitfall({ text }: { text: string }) {
           marginTop: 2,
         }}
       >
-        Fälla
+        Fällan här
       </span>
       <span style={{ color: 'var(--ink)' }}>
         <MathText>{text}</MathText>
       </span>
+    </div>
+  )
+}
+
+// Parse the leading section code from a framework_id like
+// "KVA-TRAP-001" → "KVA". Returns null if the prefix doesn't match a
+// known section so the link silently disappears on malformed ids.
+function sectionFromFrameworkId(id: string): Section | null {
+  const prefix = id.split('-', 1)[0]
+  if ((SECTION_KEYS as readonly string[]).includes(prefix)) return prefix as Section
+  return null
+}
+
+// Closes the Layer-1 ↔ Layer-2 loop: after a missed question, surface
+// the lektion entry this question is an example of. Deep-links to
+// /lektion?section=SEC#FRAMEWORK_ID; the lektion route opens that
+// entry and scrolls it into view.
+function FrameworkLink({ frameworkId }: { frameworkId: string }) {
+  const section = sectionFromFrameworkId(frameworkId)
+  if (!section) return null
+  return (
+    <div
+      data-testid="explanation-framework-link"
+      style={{
+        marginTop: 12,
+        paddingTop: 10,
+        borderTop: '1px solid var(--hairline-2)',
+        display: 'flex',
+        alignItems: 'baseline',
+        gap: 8,
+        flexWrap: 'wrap',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 10,
+          letterSpacing: 'var(--font-mono-track)',
+          textTransform: 'uppercase',
+          color: 'var(--muted)',
+        }}
+      >
+        Mönster
+      </span>
+      <Link
+        to="/lektion"
+        search={{ section }}
+        hash={frameworkId}
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 12,
+          letterSpacing: 'var(--font-mono-track)',
+          color: 'var(--ink)',
+          textDecoration: 'none',
+          borderBottom: '1px solid var(--ink-2)',
+          paddingBottom: 1,
+        }}
+      >
+        {frameworkId} →
+      </Link>
     </div>
   )
 }

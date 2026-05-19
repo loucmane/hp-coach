@@ -26,12 +26,14 @@
 // heuristic-split fallback ships earlier so the UI works without
 // waiting for corpus regen.
 
+import { useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
 import { type FeedbackEntry, getFeedback, submitFeedback } from '@/api/feedback'
 import { MathText } from '@/components/MathText'
 import { Eyebrow, L1Chip, Mono } from '@/components/primitives'
 import { type Explanation, type ExplanationStep, loadExplanation } from '@/data/explanations'
+import { SECTION_KEYS, type Section } from '@/data/questions'
 
 type Props = {
   qid: string
@@ -261,11 +263,12 @@ function PostGradeBody({
   return (
     <>
       <Eyebrow style={{ color: correct ? 'var(--ok)' : 'var(--ink-2)' }}>{eyebrow}</Eyebrow>
-      {explanation.framework_id && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Mono>Ramverk</Mono>
-          <L1Chip id={explanation.framework_id} />
-        </div>
+      {explanation.framework_id && <FrameworkChip frameworkId={explanation.framework_id} />}
+      {explanation.pregrade_tactic && (
+        <StrategiBlock
+          handle={explanation.pregrade_tactic.handle}
+          move={explanation.pregrade_tactic.move}
+        />
       )}
       <StepList steps={steps} />
       {explanation.distractors.length > 0 && (
@@ -276,6 +279,73 @@ function PostGradeBody({
       )}
       <QABar qid={qid} explanation={explanation} />
     </>
+  )
+}
+
+// ── Framework chip (post-grade deep-link) ──────────────────────────
+
+function sectionFromFrameworkId(id: string): Section | null {
+  const prefix = id.split('-', 1)[0]
+  if ((SECTION_KEYS as readonly string[]).includes(prefix)) return prefix as Section
+  return null
+}
+
+/** Closes the Layer-1 ↔ Layer-2 loop on desktop: clicking the chip
+ *  navigates to /lektion?section=SEC#FRAMEWORK_ID, where the reader
+ *  opens the matching trap card and scrolls it into view. */
+function FrameworkChip({ frameworkId }: { frameworkId: string }) {
+  const navigate = useNavigate()
+  const section = sectionFromFrameworkId(frameworkId)
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <Mono>Ramverk</Mono>
+      <L1Chip
+        id={frameworkId}
+        locked={section === null}
+        onClick={() => {
+          if (!section) return
+          navigate({ to: '/lektion', search: { section }, hash: frameworkId })
+        }}
+      />
+    </div>
+  )
+}
+
+// ── Strategi block (post-grade) ────────────────────────────────────
+
+/** Surfaces the pre-grade named strategy on the post-grade view so the
+ *  handle ("Linjärekvationsreceptet") and move ("Subtrahera den
+ *  mindre x-termen…") get a second reading after the student grades —
+ *  the moment they're most likely to internalize the handle. */
+function StrategiBlock({ handle, move }: { handle: string; move: string }) {
+  return (
+    <div style={{ maxWidth: '52ch' }}>
+      <Mono>Strategi</Mono>
+      <h3
+        style={{
+          margin: '8px 0 8px',
+          fontFamily: 'var(--font-display)',
+          fontSize: 20,
+          letterSpacing: '-0.012em',
+          lineHeight: 1.3,
+          fontWeight: 500,
+          color: 'var(--ink)',
+        }}
+      >
+        {handle}
+      </h3>
+      <p
+        style={{
+          margin: 0,
+          fontFamily: 'var(--font-display)',
+          fontSize: 16,
+          lineHeight: 1.55,
+          color: 'var(--ink-2)',
+        }}
+      >
+        {move}
+      </p>
+    </div>
   )
 }
 
@@ -552,7 +622,7 @@ function MetaBlock({ technique, pitfall }: { technique: string; pitfall: string 
             lineHeight: 1.45,
           }}
         >
-          <Mono style={{ color: 'var(--bad)', flexShrink: 0, marginTop: 2 }}>Fälla</Mono>
+          <Mono style={{ color: 'var(--bad)', flexShrink: 0, marginTop: 2 }}>Fällan här</Mono>
           <span style={{ color: 'var(--ink)' }}>
             <MathText>{pitfall}</MathText>
           </span>
