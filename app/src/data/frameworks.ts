@@ -33,6 +33,27 @@ export type TrapEntry = {
   countermeasure: string
   example_questions: string[]
   notes?: string
+  /** One-line TLDR pulled out as a kicker above the body. Optional —
+   *  TrapCard hides the block when missing. ~10–15 words ideal. */
+  tldr?: string
+  /** "When to suspect this trap" — the textual or structural cue in
+   *  the question that should trigger an alarm bell. Optional. */
+  recognition_cue?: string
+  /** Concrete instance of the trap firing + the correct resolution.
+   *  Authored as a four-beat narrative so cards render consistently. */
+  worked_example?: {
+    /** The problem premise (numbers, figure, etc.). */
+    setup: string
+    /** The seductive wrong reasoning a student walks into. */
+    trap_thinking: string
+    /** The corrected reasoning that exits the trap. */
+    correct_thinking: string
+    /** The right answer letter / value. */
+    answer: string
+  }
+  /** Edge condition where this pattern does NOT trap — usually an
+   *  added constraint that pins the ambiguity. Optional. */
+  counter_example?: string
 }
 
 export type TrapCatalog = {

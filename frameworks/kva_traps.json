@@ -16,7 +16,16 @@
         "host-2016-kvant2-KVA-020",
         "host-2023-kvant1-KVA-018"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Kvadratlikhet låser inte tecknet — x² = y² öppnar både x = y och x = −y.",
+      "recognition_cue": "När problemet jämför kvadrater (x² = y², \"kvadraterna är lika\", a² ger b²) eller drar kvadratrot ur en variabel.",
+      "worked_example": {
+        "setup": "Givet att x² = 9 och inga andra villkor på x. Jämför I: x med II: 3.",
+        "trap_thinking": "Studenten löser x² = 9 som x = 3 och drar slutsatsen I = II = 3 — väljer C.",
+        "correct_thinking": "x² = 9 har två rötter: x = 3 OCH x = −3. Om x = 3: I = 3 = II. Om x = −3: I = −3 < II = 3. Båda fallen är förenliga med villkoret, så förhållandet mellan I och II är inte unikt fastlagt.",
+        "answer": "D — informationen är otillräcklig."
+      },
+      "counter_example": "Om problemet lägger till \"x > 0\" (eller \"x ≠ 0 och x är positivt\"), då är tecknet låst och fällan är död — x = 3 unikt, svaret blir C."
     },
     {
       "id": "KVA-TRAP-002",
@@ -30,7 +39,16 @@
         "var-2015-kvant1-KVA-014",
         "host-2013-kvant1-KVA-020"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "En summa- eller skillnadslikhet binder termerna mot varandra, inte var för sig.",
+      "recognition_cue": "När ett villkor ges som en summa eller skillnad (\"y + z = 0\", \"a − b = k\") men varje enskild term är fri inom det villkoret.",
+      "worked_example": {
+        "setup": "Givet att y + z = 0 och inga andra villkor. Jämför I: y² med II: z².",
+        "trap_thinking": "Studenten tänker \"om summan är noll måste y = 0 och z = 0\" → I = II = 0 av den anledningen, väljer C.",
+        "correct_thinking": "y + z = 0 betyder z = −y, inte y = z = 0. Då z² = (−y)² = y² för ALLA värden på y. Så I = II gäller alltid — men av rätt skäl: kvadraten suddar tecknet. Väljer C.",
+        "answer": "C — av rätt skäl (kvadrering, inte trivial lösning)."
+      },
+      "counter_example": "Om problemet specificerar en enskild term (\"y = 5\" utöver y + z = 0), då är z fastlåst till −5 och båda kvadraterna konkreta. Fällan dör — och om frågan istället jämför y med z är svaret nu A (5 > −5)."
     },
     {
       "id": "KVA-TRAP-003",
@@ -43,7 +61,16 @@
         "var-2024-kvant2-KVA-013",
         "host-2015-kvant2-KVA-021"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "En olikhet som bara nämner EN variabel säger ingenting om den andra.",
+      "recognition_cue": "Olikhet i villkoren som bara binder en av de jämförda storheterna (\"Clara > 22\", \"a > 5\"), medan den andra är obegränsad.",
+      "worked_example": {
+        "setup": "Givet att Clara är äldre än 22 år. Davids ålder är ett okänt tal. Jämför I: Claras ålder med II: Davids ålder.",
+        "trap_thinking": "Studenten ser \"Clara > 22\" och tolkar 22 som ett ankare för David också — drar slutsatsen Clara > David och väljer A.",
+        "correct_thinking": "Vi vet INGENTING om David. David kan vara 5 (då Clara > David) eller 100 (då Clara < David). Båda fallen är förenliga med given info, så förhållandet är inte fastlagt.",
+        "answer": "D — informationen är otillräcklig."
+      },
+      "counter_example": "Om problemet binder David också (\"David är yngre än 20\"), då är fällan död — Clara > 22 > 20 > David, svaret A unikt."
     },
     {
       "id": "KVA-TRAP-004",
