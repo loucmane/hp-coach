@@ -41,12 +41,19 @@ export type PlanItem = {
   completed: boolean
 }
 
-/** Schema version for the stored DailyPlan. Bump when item shape or
- *  href format changes — `loadPlan` returns null on mismatch, forcing
- *  the hook to regenerate. Prevents users from being stuck with a
- *  yesterday-shaped plan whose hrefs point to routes that have since
- *  moved (e.g. `/lektion/NOG` before #47, now `/lektion?section=NOG`). */
-export const PLAN_SCHEMA_VERSION = 2
+/** Schema version for the stored DailyPlan. Bump when item shape,
+ *  href format, OR the framework-data the headlines snapshot changes
+ *  — `loadPlan` returns null on mismatch, forcing the hook to
+ *  regenerate.
+ *
+ *  Bumps:
+ *  - v2: split path/query in navigate; cache invalidated stale
+ *    `/lektion/NOG`-style hrefs from before #47.
+ *  - v3: KVA/MEK/DTK/LÄS/ELF framework copy translated to Swedish in
+ *    #51. Lesson-item headlines capture the framework headword at
+ *    plan-generation time, so plans cached before #51 still display
+ *    English lesson titles. */
+export const PLAN_SCHEMA_VERSION = 3
 
 export type DailyPlan = {
   /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are

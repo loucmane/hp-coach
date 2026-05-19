@@ -10,12 +10,12 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
-import type { DailyPlan } from '@/lib/scheduler'
+import { type DailyPlan, PLAN_SCHEMA_VERSION } from '@/lib/scheduler'
 import { HomeMobile } from './HomeMobile'
 
 function makePlan(overrides: Partial<DailyPlan> = {}): DailyPlan {
   return {
-    version: 2,
+    version: PLAN_SCHEMA_VERSION,
     date: '2026-05-18',
     estimatedMinutes: 18,
     items: [

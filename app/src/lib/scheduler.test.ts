@@ -17,6 +17,7 @@ import {
   localDateString,
   markItemComplete,
   markLessonRead,
+  PLAN_SCHEMA_VERSION,
   type SchedulerSignals,
   savePlan,
 } from './scheduler'
@@ -431,8 +432,18 @@ describe('savePlan + loadPlan round-trip', () => {
 describe('savePlan — prune old plans', () => {
   it('removes plan keys older than 30 days when a new plan is written', () => {
     const storage = fakeStorage()
-    const today: DailyPlan = { version: 2, date: TODAY, items: [], estimatedMinutes: 0 }
-    const old: DailyPlan = { version: 2, date: '2026-04-01', items: [], estimatedMinutes: 0 }
+    const today: DailyPlan = {
+      version: PLAN_SCHEMA_VERSION,
+      date: TODAY,
+      items: [],
+      estimatedMinutes: 0,
+    }
+    const old: DailyPlan = {
+      version: PLAN_SCHEMA_VERSION,
+      date: '2026-04-01',
+      items: [],
+      estimatedMinutes: 0,
+    }
     storage.setItem('hpc-daily-plan-2026-04-01', JSON.stringify(old))
     storage.setItem('hpc-daily-plan-2026-05-01', JSON.stringify({ ...old, date: '2026-05-01' }))
     savePlan(today, storage)
