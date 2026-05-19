@@ -186,6 +186,22 @@ function MissingExplanation({ qid, correct }: { qid: string; correct: boolean })
 // ── Waiting state ──────────────────────────────────────────────────
 
 function WaitingBody({ explanation }: { explanation: Explanation }) {
+  // When a per-question named strategy is authored, lead with it as
+  // active pre-grade coaching — mirrors what PreGradeFill does on the
+  // Style A drill variant. Without one, fall back to the quiet "Innan
+  // svaret" placeholder so the column doesn't go blank.
+  if (explanation.pregrade_tactic) {
+    return (
+      <>
+        <Eyebrow style={{ color: 'var(--muted)' }}>Strategi — innan du svarar</Eyebrow>
+        <StrategiBlock
+          handle={explanation.pregrade_tactic.handle}
+          move={explanation.pregrade_tactic.move}
+        />
+        {explanation.framework_id && <FrameworkChip frameworkId={explanation.framework_id} />}
+      </>
+    )
+  }
   return (
     <>
       <Eyebrow style={{ color: 'var(--muted)' }}>Innan svaret</Eyebrow>
@@ -200,12 +216,7 @@ function WaitingBody({ explanation }: { explanation: Explanation }) {
       >
         Välj ett alternativ — förklaringen visas här när du svarat.
       </p>
-      {explanation.framework_id && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Mono>Mönster</Mono>
-          <L1Chip id={explanation.framework_id} />
-        </div>
-      )}
+      {explanation.framework_id && <FrameworkChip frameworkId={explanation.framework_id} />}
       {explanation.technique && (
         <div>
           <Mono style={{ marginBottom: 4, display: 'inline-block' }}>Teknik</Mono>
