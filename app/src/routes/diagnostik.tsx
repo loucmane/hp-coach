@@ -7,11 +7,13 @@
 // (`Diagnos · några frågor`) deep-links here.
 //
 // Visible to authenticated users; reachable any time the user wants
-// to re-baseline. After completion the user lands on the standard
-// DrillResult screen and taps "Hem →" to see a freshly-prescribed plan.
+// to re-baseline. After completion the user lands on the coached
+// `DiagnosticReport` ("Vad vi tror nu") instead of the generic
+// DrillResult — see #140.
 
 import { createFileRoute } from '@tanstack/react-router'
 import { useRecordMistake } from '@/api/hooks/useMistakes'
+import { DiagnosticReport } from '@/components/diagnostic/DiagnosticReport'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { DIAGNOSTIC_LENGTH, pickDiagnosticQuestions } from '@/lib/diagnostic'
 
@@ -38,6 +40,9 @@ function DiagnostikScreen() {
         // picks it up. Fire-and-forget; a failed write doesn't block.
         recordMistake.mutate({ questionId: q.qid })
       }}
+      renderDone={({ summary, onReplay, onHome }) => (
+        <DiagnosticReport summary={summary} onReplay={onReplay} onHome={onHome} />
+      )}
     />
   )
 }
