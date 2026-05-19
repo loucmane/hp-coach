@@ -22,13 +22,13 @@
 // are optional — sections render only when present.
 
 import { Link } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
 
 import { MathText } from '@/components/MathText'
 import { Eyebrow } from '@/components/primitives'
 import type { TrapEntry } from '@/data/frameworks'
-import { loadBank, type Question, type Section } from '@/data/questions'
+import type { Section } from '@/data/questions'
 
+import { ExampleQuestions } from './ExampleQuestions'
 import { MarkAsReadPill } from './MarkAsReadPill'
 
 export function TrapCard({
@@ -315,117 +315,6 @@ function Beat({
       <p style={style}>
         <MathText>{text}</MathText>
       </p>
-    </div>
-  )
-}
-
-// Memoised lookup: build a qid → Question map once the bank resolves.
-// The bank fetch itself is memoised in `loadBank()`, so this is just a
-// thin index on top.
-let bankIndex: Promise<Map<string, Question>> | null = null
-function getBankIndex(): Promise<Map<string, Question>> {
-  if (!bankIndex) {
-    bankIndex = loadBank().then((bank) => {
-      const m = new Map<string, Question>()
-      for (const q of bank) m.set(q.qid, q)
-      return m
-    })
-  }
-  return bankIndex
-}
-
-function ExampleQuestions({ qids }: { qids: string[] }) {
-  const [questions, setQuestions] = useState<(Question | null)[]>(() => qids.map(() => null))
-
-  useEffect(() => {
-    let alive = true
-    getBankIndex().then((idx) => {
-      if (!alive) return
-      setQuestions(qids.map((qid) => idx.get(qid) ?? null))
-    })
-    return () => {
-      alive = false
-    }
-  }, [qids])
-
-  return (
-    <div style={{ marginTop: 28 }}>
-      <Eyebrow>Exempelfrågor från korpus</Eyebrow>
-      <ul
-        style={{
-          listStyle: 'none',
-          padding: 0,
-          margin: '12px 0 0 0',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 10,
-        }}
-      >
-        {qids.map((qid, i) => {
-          const q = questions[i]
-          return (
-            <li key={qid}>
-              <Link
-                to="/drill"
-                search={{ qid }}
-                style={{
-                  display: 'block',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  borderTop: '1px solid var(--hairline)',
-                  paddingTop: 10,
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'baseline',
-                    gap: 12,
-                    marginBottom: 4,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 10.5,
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
-                      color: 'var(--muted)',
-                      fontVariantNumeric: 'tabular-nums',
-                    }}
-                  >
-                    {qid}
-                  </span>
-                  {q && (
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 10.5,
-                        letterSpacing: '0.14em',
-                        color: 'var(--ink-2)',
-                      }}
-                    >
-                      SVAR {q.answer}
-                    </span>
-                  )}
-                </div>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(14px, 0.4vw + 12px, 15px)',
-                    lineHeight: 1.5,
-                    color: q ? 'var(--ink-2)' : 'var(--muted)',
-                    margin: 0,
-                  }}
-                >
-                  <MathText>{q?.prompt ?? '(laddar…)'}</MathText>
-                </p>
-              </Link>
-            </li>
-          )
-        })}
-      </ul>
     </div>
   )
 }
