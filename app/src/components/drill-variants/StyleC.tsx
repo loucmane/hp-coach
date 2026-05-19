@@ -697,7 +697,7 @@ export function StyleC({
                           marginBottom: 6,
                         }}
                       >
-                        FÄLLA
+                        FÄLLAN HÄR
                       </h3>
                       <p
                         style={{

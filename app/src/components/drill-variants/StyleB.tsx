@@ -680,10 +680,10 @@ export function StyleB({
                   </section>
                 )}
 
-                {/* FÄLLA */}
+                {/* FÄLLAN HÄR */}
                 {explanation.pitfall && (
                   <section>
-                    <SectionHeader label="FÄLLA" />
+                    <SectionHeader label="FÄLLAN HÄR" />
                     <p
                       style={{
                         fontFamily: 'var(--font-display)',

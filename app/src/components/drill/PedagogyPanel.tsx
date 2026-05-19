@@ -202,7 +202,7 @@ function WaitingBody({ explanation }: { explanation: Explanation }) {
       </p>
       {explanation.framework_id && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Mono>Ramverk</Mono>
+          <Mono>Mönster</Mono>
           <L1Chip id={explanation.framework_id} />
         </div>
       )}
@@ -298,7 +298,7 @@ function FrameworkChip({ frameworkId }: { frameworkId: string }) {
   const section = sectionFromFrameworkId(frameworkId)
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <Mono>Ramverk</Mono>
+      <Mono>Mönster</Mono>
       <L1Chip
         id={frameworkId}
         locked={section === null}
