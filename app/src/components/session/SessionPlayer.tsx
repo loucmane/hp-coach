@@ -117,6 +117,15 @@ export type SessionPlayerProps = {
   /** Secondary CTA rendered just above the primary button. Used to give
    *  the user a way out when the primary action is disabled. */
   idleSecondaryCta?: ReactNode
+  /** Replacement renderer for the done/result screen. When omitted,
+   *  falls back to `DrillResult`. Used by /diagnostik to swap in the
+   *  coached "Vad vi tror nu" report. Receives the same summary +
+   *  handlers as `DrillResult`. */
+  renderDone?: (args: {
+    summary: { questions: Question[]; picks: (AnswerLetter | null)[] }
+    onReplay: () => void
+    onHome: () => void
+  }) => ReactNode
 }
 
 export function SessionPlayer(props: SessionPlayerProps) {
@@ -327,6 +336,11 @@ export function SessionPlayer(props: SessionPlayerProps) {
 
   if (phase === 'done') {
     const isPhone = viewport === 'phone'
+    const doneBody = props.renderDone ? (
+      props.renderDone({ summary: { questions: plan, picks }, onReplay, onHome })
+    ) : (
+      <DrillResult summary={{ questions: plan, picks }} onReplay={onReplay} onHome={onHome} />
+    )
     if (isPhone) {
       return (
         <MobileFrame
@@ -334,7 +348,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
           activeTab={props.activeTab}
           onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
         >
-          <DrillResult summary={{ questions: plan, picks }} onReplay={onReplay} onHome={onHome} />
+          {doneBody}
         </MobileFrame>
       )
     }
@@ -349,7 +363,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
             hints: ['esc hem', '⌘k palett'],
           }}
         >
-          <DrillResult summary={{ questions: plan, picks }} onReplay={onReplay} onHome={onHome} />
+          {doneBody}
         </Page>
       </MobileFrame>
     )
