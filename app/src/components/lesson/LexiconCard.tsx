@@ -11,6 +11,7 @@ import { Link } from '@tanstack/react-router'
 import { Eyebrow } from '@/components/primitives'
 import type { LexiconEntry } from '@/data/frameworks'
 
+import { ExampleQuestions } from './ExampleQuestions'
 import { MarkAsReadPill } from './MarkAsReadPill'
 
 export function LexiconCard({
@@ -118,6 +119,9 @@ export function LexiconCard({
             </li>
           ))}
         </ul>
+        {entry.example_questions && entry.example_questions.length > 0 && (
+          <ExampleQuestions qids={entry.example_questions} />
+        )}
         <div
           style={{
             marginTop: 24,

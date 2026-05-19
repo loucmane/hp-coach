@@ -37,15 +37,20 @@ export const Route = createFileRoute('/lektion')({
   component: LektionRoute,
 })
 
+// One line per section, sold by the section's biggest leverage trap
+// rather than its definition — so a student deciding "which lesson
+// at 9pm?" feels "yes, that's me" rather than reading a glossary.
+// By convention each line is the gist of the section framework's
+// first entry (the highest-leverage one in the catalog).
 const SECTION_BLURB: Record<Section, string> = {
-  ORD: 'Ordförståelse — synonymer från riktiga prov.',
-  LÄS: 'Svensk läsförståelse — strategier för långa passager.',
-  MEK: 'Meningskomplettering — syntaktiska och semantiska val.',
-  ELF: 'Engelsk läsförståelse — taktik för icke-modersmål.',
-  XYZ: 'Matematisk problemlösning — mönster och fallgropar.',
-  KVA: 'Kvantitativa jämförelser — när är A > B?',
-  NOG: 'Datasufficiens — bedöm utan att lösa.',
-  DTK: 'Diagram, tabeller, kartor — läs data först.',
+  ORD: 'Ordförståelse — täta rotkluster (för-, be-, över-) återkommer ofta.',
+  LÄS: 'Svensk läsförståelse — det texten säger, inte det texten antyder.',
+  MEK: 'Meningskomplettering — verb och objekt sitter ihop. Bytt verb låter fel.',
+  ELF: 'Engelsk läsförståelse — det passagen säger, inte det den antyder.',
+  XYZ: 'Matematisk problemlösning — minustecken över en parentes byter ALLA termer.',
+  KVA: 'Kvantitativa jämförelser — kvadrat-likhet låser inte tecken.',
+  NOG: 'Datasufficiens — två radsummor räcker inte för en enskild cell.',
+  DTK: 'Diagram, tabeller, kartor — pinna identifieraren först, läs av sedan.',
 }
 
 function LektionRoute() {

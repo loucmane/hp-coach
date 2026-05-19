@@ -24,6 +24,7 @@ import type {
 } from '@/data/frameworks'
 import type { Section } from '@/data/questions'
 
+import { ExampleQuestions } from './ExampleQuestions'
 import { MarkAsReadPill } from './MarkAsReadPill'
 
 type AnyProtocolEntry = TacticEntry | ConstraintEntry | ProtocolEntryType
@@ -179,6 +180,10 @@ export function ProtocolCard({
               </div>
             )}
           </>
+        )}
+
+        {entry.example_questions && entry.example_questions.length > 0 && (
+          <ExampleQuestions qids={entry.example_questions} />
         )}
 
         <div
