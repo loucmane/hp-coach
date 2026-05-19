@@ -18,7 +18,16 @@
         "var-2014-kvant1-XYZ-007",
         "var-2014-kvant2-XYZ-004"
       ],
-      "notes": "Highest-leverage XYZ pattern per trajectory: 'distribute-minus' is the single most common arithmetic slip in the corpus."
+      "notes": "Highest-leverage XYZ pattern per trajectory: 'distribute-minus' is the single most common arithmetic slip in the corpus.",
+      "tldr": "Minustecken framför parentes är multiplikation — varje term innanför byter tecken, inte bara den första.",
+      "recognition_cue": "När uttrycket innehåller −(a+b+c) eller en negativ koefficient k·(…) som ska distribueras, särskilt om parentesen har tre eller fler termer eller en redan negativ inre term.",
+      "worked_example": {
+        "setup": "Förenkla uttrycket 8 − 3·(5x − 3) − 4x − (2 − 9x).",
+        "trap_thinking": "Studenten distribuerar −3 över (5x − 3) som −15x − 3 (missar att byta tecken på andra termen), och behandlar −(2 − 9x) som −2 − 9x. Får 8 − 15x − 3 − 4x − 2 − 9x = 3 − 28x och väljer B.",
+        "correct_thinking": "Distribuera in tecknet på varje term: −3·(5x − 3) = −15x + 9, och −(2 − 9x) = −2 + 9x. Hela uttrycket blir 8 − 15x + 9 − 4x − 2 + 9x = (8 + 9 − 2) + (−15 − 4 + 9)x = 15 − 10x.",
+        "answer": "A — −10x + 15, varje term i parentesen har fått tecknet flippat."
+      },
+      "counter_example": "Om uttrycket istället hade plus framför parentesen, +3·(5x − 3) + (2 − 9x), då bevaras alla tecken oförändrat och fällan är död — ingen distributionsväxling behövs."
     },
     {
       "id": "XYZ-TRAP-002",
@@ -37,7 +46,16 @@
         "var-2025-kvant1-XYZ-001",
         "var-2026-kvant2-XYZ-001"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Term som korsar likhetstecknet byter tecken — alltid, även när den ligger gömd i kedjan.",
+      "recognition_cue": "När en linjär ekvation har x-termer och konstanter blandade på båda sidorna, särskilt efter parentesutveckling där flera termer ska flyttas över på en gång.",
+      "worked_example": {
+        "setup": "Lös ekvationen 35x + 60 = 47x − 24 för x.",
+        "trap_thinking": "Studenten flyttar 35x till höger som +35x istället för −35x och flyttar −24 till vänster som −24 istället för +24. Får 60 − 24 = 47x + 35x, det vill säga 36 = 82x, och väljer B (ungefärligt negativt värde).",
+        "correct_thinking": "Subtrahera 35x från båda leden: 60 = 12x − 24. Addera 24 till båda leden: 84 = 12x. Dela med 12: x = 7. Varje term som korsade tecknet fick tecknet flippat, ingen blev kvar.",
+        "answer": "D — x = 7, verifierat: 35·7 + 60 = 305 och 47·7 − 24 = 305."
+      },
+      "counter_example": "Om ekvationen istället hade samma x-koefficient på båda sidorna, 35x + 60 = 35x − 24, då försvinner x helt vid samling och ekvationen blir motsägelsefull (60 = −24) — ingen lösning."
     },
     {
       "id": "XYZ-TRAP-003",
@@ -53,7 +71,16 @@
         "var-2022-1-kvant1-XYZ-004",
         "var-2026-kvant1-XYZ-001"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "FOIL kräver alla fyra produkterna — och konjugatformen gäller bara när andra-termerna är samma tal med motsatt tecken.",
+      "recognition_cue": "När uttrycket är en produkt av binomer (x+a)(x+b), eller en kedja av tre binomer (a+b)(c+d)(e+f), och svaren skiljer sig i mellantermerna eller antalet termer.",
+      "worked_example": {
+        "setup": "Beräkna uttrycket (a + b)(c + d)(e + f) i utvecklad form.",
+        "trap_thinking": "Studenten FOIL:ar de två första parenteserna till ac + ad + bc + bd, men glömmer sedan att VARJE av dessa fyra termer ska multipliceras med BÅDA termerna i (e + f). Får bara ac + ad + bc + bd + e + f och väljer A.",
+        "correct_thinking": "Multiplicera först (a + b)(c + d) = ac + ad + bc + bd. Multiplicera sedan hela summan med (e + f): varje av de fyra termerna gångrar både e och f, vilket ger åtta termer ace + acf + ade + adf + bce + bcf + bde + bdf.",
+        "answer": "D — ace + acf + ade + adf + bce + bcf + bde + bdf, åtta termer totalt (2·2·2)."
+      },
+      "counter_example": "Om uttrycket istället var (a + b)(a − b), då gäller konjugatregeln och resultatet kollapsar till a² − b² — två termer istället för fyra, eftersom korstermerna tar ut varandra."
     },
     {
       "id": "XYZ-TRAP-004",
@@ -71,7 +98,16 @@
         "var-2023-kvant2-XYZ-008",
         "var-2024-kvant2-XYZ-009"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Punkt på linje betyder att koordinaterna satisfierar ekvationen — substituera direkt, lös ut parametern.",
+      "recognition_cue": "När problemet säger att punkten (x₀, y₀) ligger på en linje y = kx + m, särskilt när någon av koordinaterna är ett uttryck i parametern som ska bestämmas.",
+      "worked_example": {
+        "setup": "Givet att punkten (a, 2a) ligger på linjen y = 3x − 60. Vilket värde har a?",
+        "trap_thinking": "Studenten ser \"a\" och \"2a\" som två obekanta och försöker ställa upp två ekvationer, eller använder lutningen 3 isolerat och dividerar −60 med 3 för att få a = 20 — väljer fel alternativ.",
+        "correct_thinking": "Substituera x = a och y = 2a direkt i linjens ekvation: 2a = 3a − 60. Subtrahera 3a från båda leden: −a = −60. Multiplicera med −1: a = 60. En ekvation, en obekant.",
+        "answer": "D — a = 60, kontroll: punkten (60, 120) ligger på y = 3·60 − 60 = 120."
+      },
+      "counter_example": "Om punkten istället angavs som (a, 3a − 60), då skulle substitutionen ge 3a − 60 = 3a − 60, en identitet — fällan är död eftersom punkten ligger på linjen för alla a."
     },
     {
       "id": "XYZ-TRAP-005",
@@ -85,7 +121,16 @@
         "var-2017-kvant2-XYZ-009",
         "var-2026-kvant2-XYZ-012"
       ],
-      "notes": "KVA-overlap: KVA-TRAP-014 handlar om olikhet × variabel med okänt tecken (→ D); detta XYZ-entry handlar om numeriskt tecken på koefficienten."
+      "notes": "KVA-overlap: KVA-TRAP-014 handlar om olikhet × variabel med okänt tecken (→ D); detta XYZ-entry handlar om numeriskt tecken på koefficienten.",
+      "tldr": "Olikhet vänds endast när man multiplicerar eller dividerar med ett negativt tal — markera koefficienten innan du delar.",
+      "recognition_cue": "När en olikhet löses och koefficienten på x blir negativ efter samling av termer, eller när båda leden multipliceras med ett uttryck vars tecken inte är låst.",
+      "worked_example": {
+        "setup": "Lös olikheten 3 − 2x < 1 för x.",
+        "trap_thinking": "Studenten subtraherar 3 från båda leden korrekt och får −2x < −2, men delar sedan med −2 utan att vända olikheten. Får x < 1 och väljer A.",
+        "correct_thinking": "Subtrahera 3 från båda leden: −2x < −2. Dela båda leden med −2 — koefficienten är negativ, så olikheten vänds: x > 1. Det negativa tecknet är den enda strukturella effekten.",
+        "answer": "B — x > 1, kontroll med x = 2: 3 − 4 = −1 < 1, stämmer."
+      },
+      "counter_example": "Om olikheten istället var 3 + 2x < 1, då är koefficienten på x positiv (+2) efter samling och olikheten vänds inte — den vanliga algebrarutinen räcker, x < −1."
     },
     {
       "id": "XYZ-TRAP-006",
@@ -101,7 +146,16 @@
         "var-2013-kvant1-XYZ-001",
         "var-2022-1-kvant1-XYZ-001"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Multiplikation och division före addition och subtraktion — räkneordning kapar uttrycket innan du sätter ihop det.",
+      "recognition_cue": "När uttrycket blandar +, −, · och / utan parenteser som styr ordningen, eller när det innehåller en bråkmultiplikation insprängd mellan additionstermer.",
+      "worked_example": {
+        "setup": "Beräkna värdet av 1 + ½ · ⅓.",
+        "trap_thinking": "Studenten räknar från vänster till höger: först 1 + ½ = 3/2, sedan 3/2 · ⅓ = 3/6 = ½. Väljer A (3/6).",
+        "correct_thinking": "Multiplikation har högre prioritet än addition. Räkna först ½ · ⅓ = 1/6. Addera sedan: 1 + 1/6 = 6/6 + 1/6 = 7/6.",
+        "answer": "B — 7/6, multiplikationen utförs före additionen."
+      },
+      "counter_example": "Om uttrycket istället var (1 + ½) · ⅓, då tvingar parenteserna additionen först och resultatet blir 3/2 · ⅓ = ½ — fällan är död eftersom parentesen styr ordningen."
     },
     {
       "id": "XYZ-TRAP-007",
@@ -116,7 +170,16 @@
         "var-2018-1-kvant2-XYZ-008",
         "var-2026-kvant1-XYZ-002"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Vid substitution av negativt värde: sätt alltid parentes runt det — annars slarvar tecknet med exponenter och produkter.",
+      "recognition_cue": "När en funktion ska evalueras vid ett negativt argument, särskilt om uttrycket innehåller potenser eller där tecknet på den insatta variabeln kombineras med ett yttre tecken.",
+      "worked_example": {
+        "setup": "Beräkna g(2) − h(2) där g(z) = 2(z − 1) och h(z) = 3(1 − z).",
+        "trap_thinking": "Studenten räknar g(2) = 2(2 − 1) = 2 korrekt, men slarvar med h(2) = 3(1 − 2) och tappar tecknet, läser det som +3 istället för −3. Får 2 − 3 = −1 och väljer A.",
+        "correct_thinking": "Substituera z = 2 in varje funktion med parenteser runt argumentet: g(2) = 2·(2 − 1) = 2·1 = 2, och h(2) = 3·(1 − 2) = 3·(−1) = −3. Differensen är g(2) − h(2) = 2 − (−3) = 2 + 3 = 5.",
+        "answer": "D — 5, parentesen runt (1 − 2) hindrar tecknet från att försvinna."
+      },
+      "counter_example": "Om funktionen istället var h(z) = 3·|1 − z| med absolutbelopp, då försvinner tecknet helt vid substitution och differensen blir 2 − 3 = −1 — fällan är död eftersom absolutbeloppet låser tecknet positivt."
     },
     {
       "id": "XYZ-TRAP-008",
@@ -129,7 +192,16 @@
         "var-2019-kvant2-XYZ-011",
         "var-2025-kvant2-XYZ-001"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Andragradsekvation utan konstantterm faktoriseras — dela aldrig med x, för då tappar du roten x = 0.",
+      "recognition_cue": "När ekvationen har formen ax² + bx = 0 (ingen konstantterm) och svarsalternativen listar enskilda x-värden istället för par.",
+      "worked_example": {
+        "setup": "Lös ekvationen 5x² + 3x = 0 och välj ett möjligt värde på x.",
+        "trap_thinking": "Studenten delar båda leden med x och får 5x + 3 = 0, alltså x = −3/5. Tycker sig ha löst klart och väljer A, men har samtidigt tappat den andra roten x = 0.",
+        "correct_thinking": "Faktorisera istället: 5x² + 3x = x(5x + 3) = 0. Nollproduktsregeln ger x = 0 ELLER 5x + 3 = 0. Den andra grenen ger x = −3/5. Båda värdena är giltiga lösningar — om svarsalternativen bara listar ett, är det det som är icke-trivialt.",
+        "answer": "A — −3/5, den icke-triviala roten utöver x = 0."
+      },
+      "counter_example": "Om ekvationen istället var 5x² + 3x + 2 = 0 (med konstantterm), då är x = 0 inte längre en lösning och det går bra att lösa med pq-formeln eller faktorisering utan att tappa rötter."
     },
     {
       "id": "XYZ-TRAP-009",
@@ -143,7 +215,16 @@
         "var-2015-kvant1-XYZ-007",
         "var-2025-kvant2-XYZ-004"
       ],
-      "notes": "KVA-overlap: KVA-TRAP-032 (quadratic two roots → D) använder samma mekanik för verdiktet. Här är fokus på själva räkningen."
+      "notes": "KVA-overlap: KVA-TRAP-032 (quadratic two roots → D) använder samma mekanik för verdiktet. Här är fokus på själva räkningen.",
+      "tldr": "x² = k ger två rötter ±√k — skriv alltid ut tecknet, även när villkoret begränsar grenen.",
+      "recognition_cue": "När ekvationen reducerar till en kvadrat lika med ett positivt tal, ofta efter substitution eller utveckling, och svarsalternativen blandar positiva och negativa värden.",
+      "worked_example": {
+        "setup": "Givet att x < 0, lös ekvationen (x − 7)² = 144.",
+        "trap_thinking": "Studenten drar kvadratrot och tar bara den positiva grenen: x − 7 = 12, alltså x = 19. Glömmer att x < 0 är angivet och ignorerar den negativa roten — väljer A (närmast 19 med fel tecken).",
+        "correct_thinking": "Dra kvadratrot med ± explicit: x − 7 = ±12. Två grenar: x = 7 + 12 = 19 och x = 7 − 12 = −5. Villkoret x < 0 utesluter 19 och låser svaret till x = −5.",
+        "answer": "D — −5, den negativa grenen är den som uppfyller villkoret x < 0."
+      },
+      "counter_example": "Om villkoret istället varit x > 0, då skulle samma uppdelning ge x = 19 som enda giltiga rot — fällan kvarstår, men på den andra grenen."
     },
     {
       "id": "XYZ-TRAP-010",
@@ -156,7 +237,16 @@
         "var-2023-kvant2-XYZ-003",
         "var-2025-kvant2-XYZ-001"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Faktorisera x² + bx + c kräver två tal med rätt produkt OCH rätt summa — kontrollera båda, inte bara den ena.",
+      "recognition_cue": "När en andragradsekvation eller kurva på formen x² + bx + c ska faktoriseras eller dess rötter bestämmas, och svarsalternativen ger rätt produkt men varierar i summa.",
+      "worked_example": {
+        "setup": "Kurvan y = x² + x − 6 skär x-axeln i två punkter. Bestäm punkternas x-värden.",
+        "trap_thinking": "Studenten söker två tal vars produkt är −6 och provar 3 och −2 — produkten stämmer, men summan blir 1 (korrekt) — sedan vänder studenten tecknen i förhastat skick och väljer B (x = 3 och x = −2).",
+        "correct_thinking": "Sätt y = 0: x² + x − 6 = 0. Sök två tal med produkt −6 OCH summa +1. Paret är +3 och −2, eftersom 3·(−2) = −6 och 3 + (−2) = 1. Faktoriseringen blir (x + 3)(x − 2) = 0, alltså rötterna x = −3 och x = 2.",
+        "answer": "C — x = −3 och x = 2, tecknen är omvända jämfört med talen i faktoriseringen."
+      },
+      "counter_example": "Om kurvan istället var y = x² + x + 6, då finns inget reellt par med produkt +6 och summa +1 (diskriminanten är negativ) — ekvationen saknar reella rötter och kurvan skär inte x-axeln alls."
     },
     {
       "id": "XYZ-TRAP-011",
@@ -171,7 +261,16 @@
         "var-2016-kvant1-XYZ-001",
         "var-2026-kvant2-XYZ-008"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Största gemensamma faktor omfattar både siffra och variabel — bryt ut allt som finns i varje term.",
+      "recognition_cue": "När uttrycket är en summa av termer som delar både en numerisk faktor och en gemensam variabel, och svarsalternativen blandar fullständig och partiell utbrytning.",
+      "worked_example": {
+        "setup": "I uttrycket 3xy² + 2x²y, bryt ut största gemensamma faktor.",
+        "trap_thinking": "Studenten ser att båda termerna har x men missar att de också har y. Bryter ut bara x och skriver x(3y² + 2xy), eller går åt andra hållet och försöker bryta ut numeriskt 5 (felaktig summa av koefficienter) — väljer B eller C.",
+        "correct_thinking": "Identifiera vad som finns i BÅDA termerna: x finns i båda (lägst exponent 1), y finns i båda (lägst exponent 1). Största gemensamma faktor är xy. Dela varje term med xy: 3xy²/xy = 3y och 2x²y/xy = 2x. Resultatet blir xy(3y + 2x).",
+        "answer": "A — xy(3y + 2x), både variabel och blandtermen är utbrutna."
+      },
+      "counter_example": "Om uttrycket istället var 3xy² + 2z²w (utan gemensam variabel), då finns ingen variabel att bryta ut och uttrycket är redan på sin enklaste form — fällan är död utan delade faktorer."
     },
     {
       "id": "XYZ-TRAP-012",
@@ -187,7 +286,16 @@
         "var-2019-kvant2-XYZ-004",
         "var-2023-kvant2-XYZ-005"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Konjugatregeln (a+b)(a−b) = a²−b² ger tecknet minus — tillämpa bara när andra-termerna är samma tal med motsatt tecken.",
+      "recognition_cue": "När uttrycket är en differens av två kvadrater eller en produkt där den ena binomen har plus och den andra minus mellan samma två termer, t.ex. (x+7)² − (x−7)² eller (a+b)(a−b).",
+      "worked_example": {
+        "setup": "Förenkla uttrycket (x + 7)² − (x − 7)².",
+        "trap_thinking": "Studenten kvadrerar varje parentes och tappar korstermerna: (x+7)² blir x² + 49 och (x−7)² blir x² + 49 (eller liknande slarvfel), och differensen blir 0 — väljer fel alternativ. Eller kvadrerar korrekt men subtraherar fel och får x² eller 49x.",
+        "correct_thinking": "Behandla hela uttrycket som en konjugat-skillnad på formen A² − B² där A = (x+7) och B = (x−7): resultatet är (A+B)(A−B) = (2x)·(14) = 28x. Alternativt: utveckla varje kvadrat fullt — (x+7)² = x² + 14x + 49 och (x−7)² = x² − 14x + 49 — och subtrahera, vilket också ger 28x.",
+        "answer": "A — 28x, korstermerna är det som överlever subtraktionen."
+      },
+      "counter_example": "Om uttrycket istället var (x + 7)² + (x − 7)², då tar korstermerna ut varandra med samma tecken och resultatet blir 2x² + 98 — fällan är död eftersom det inte längre är en konjugatstruktur."
     },
     {
       "id": "XYZ-TRAP-013",
@@ -201,7 +309,16 @@
         "var-2013-kvant2-XYZ-012",
         "var-2022-2-kvant2-XYZ-012"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "(a+b)² är inte a²+b² — kvadreringsregeln har en korsterm 2ab som lätt försvinner.",
+      "recognition_cue": "När uttrycket innehåller en binom i kvadrat, (a+b)² eller (a−b)², särskilt när det jämförs med eller subtraheras från ett annat kvadratiskt uttryck.",
+      "worked_example": {
+        "setup": "Sidan i kvadraten K₁ är x + y och sidan i kvadraten K₂ är x. Beräkna differensen mellan areorna av K₁ och K₂.",
+        "trap_thinking": "Studenten skriver area(K₁) = (x + y)² och utvecklar slarvigt som x² + y² (glömmer korstermen 2xy). Differensen blir då x² + y² − x² = y² och väljer C.",
+        "correct_thinking": "Tillämpa kvadreringsregeln korrekt: (x + y)² = x² + 2xy + y². Differensen mellan areorna är (x + y)² − x² = x² + 2xy + y² − x² = 2xy + y². Korstermen 2xy är det som syns när x²-termerna tar ut varandra.",
+        "answer": "D — 2xy + y², korstermen 2xy överlever subtraktionen."
+      },
+      "counter_example": "Om sidan i K₁ istället var bara y (utan x), då blir differensen y² − x² (konjugat) — fällan är död eftersom det inte längre är en kvadrering utan en differens av kvadrater."
     },
     {
       "id": "XYZ-TRAP-014",
@@ -217,7 +334,16 @@
         "var-2018-1-kvant1-XYZ-009",
         "var-2022-1-kvant1-XYZ-008"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Vid multiplikation med nämnare: hela båda leden gångras, varje term — inte bara bråktermen.",
+      "recognition_cue": "När ekvationen har x i nämnaren eller är på formen bråk = polynom, och båda leden ska multipliceras med nämnaren för att rensa ut bråket.",
+      "worked_example": {
+        "setup": "Lös ekvationen 45x/7 = 5x + 10 för x.",
+        "trap_thinking": "Studenten multiplicerar bara vänsterledet med 7 och får 45x = 5x + 10 (glömmer att också multiplicera högerledets termer med 7). Lös ger 40x = 10, alltså x = 1/4 — väljer A eller B (närmaste små bråk).",
+        "correct_thinking": "Multiplicera HELA båda leden med 7, term för term: vänsterledet blir 45x, högerledet blir 7·5x + 7·10 = 35x + 70. Ekvationen är nu 45x = 35x + 70. Subtrahera 35x: 10x = 70. Dela med 10: x = 7.",
+        "answer": "D — x = 7, kontroll: 45·7/7 = 45 och 5·7 + 10 = 45."
+      },
+      "counter_example": "Om ekvationen istället var 45x/7 = 5x (utan konstantterm), då försvinner asymmetrin — multiplikation med 7 ger 45x = 35x, alltså 10x = 0 och x = 0 — fällan är död utan extra term som måste hängas med."
     },
     {
       "id": "XYZ-TRAP-015",
@@ -231,7 +357,16 @@
         "var-2019-kvant1-XYZ-009",
         "var-2026-kvant1-XYZ-005"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Dela med koefficient — hela högerledet måste delas, inte bara den snyggaste termen.",
+      "recognition_cue": "När en ekvation har formen ax = b + c (eller ax + d = e) och du löser ut x genom att dela med a — varje term i högerledet måste delas, inte bara den första.",
+      "worked_example": {
+        "setup": "Lös ekvationen y = 4x − 5 för x.",
+        "trap_thinking": "Studenten tänker att x = y/4 − 5 — flyttar femman till andra sidan och delar bara y med 4, glömmer att −5 också måste delas. Hamnar nära alternativ B (x = y/4 + 5) och väljer det.",
+        "correct_thinking": "Lägg till 5 på båda sidor: y + 5 = 4x. Hela vänsterledet är nu täljaren när du delar med 4, så x = (y + 5)/4. Båda termerna i täljaren delas av nämnaren samtidigt — det är hela poängen med bråkstrecket.",
+        "answer": "D — x = (y + 5)/4, hela uttrycket över 4."
+      },
+      "counter_example": "Om problemet istället bara hade en term i högerledet (säg y = 4x), då finns ingen risk för halverad delning — x = y/4 är direkt, fällan är inaktiv."
     },
     {
       "id": "XYZ-TRAP-016",
@@ -250,7 +385,16 @@
         "var-2023-kvant1-XYZ-012",
         "var-2025-kvant1-XYZ-010"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Bråkaddition kräver gemensam nämnare — addera aldrig täljare och nämnare var för sig.",
+      "recognition_cue": "När uttrycket innehåller a/b + c/d med olika nämnare och svarsalternativen frestar med formen (a+c)/(b+d) eller en summa som ser ut som direktaddition.",
+      "worked_example": {
+        "setup": "Beräkna 1/2 + 1/10 och avgör vilket alternativ som motsvarar resultatet.",
+        "trap_thinking": "Studenten adderar täljare och nämnare separat: (1+1)/(2+10) = 2/12 = 1/6. Resultatet ser litet och rimligt ut, men det är fel regel — det matchar inget alternativ exakt, så studenten gissar.",
+        "correct_thinking": "Hitta gemensam nämnare: MGM(2, 10) = 10. Skriv om 1/2 som 5/10. Då blir 1/2 + 1/10 = 5/10 + 1/10 = 6/10 = 3/5. Nämnaren förblir 10 genom hela additionen — bara täljarna adderas.",
+        "answer": "B — 1/2 + 1/10 = 3/5, vilket är exakt det värde frågan söker."
+      },
+      "counter_example": "Om bråken istället hade samma nämnare från början (1/10 + 3/10), då är gemensam nämnare redan på plats och studenten adderar bara täljarna — fällan saknar bränsle."
     },
     {
       "id": "XYZ-TRAP-017",
@@ -265,7 +409,16 @@
         "var-2026-kvant1-XYZ-005",
         "var-2026-kvant2-XYZ-005"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Division med ett bråk är multiplikation med dess invers — vänd nämnar-bråket innan du räknar.",
+      "recognition_cue": "När uttrycket är ett bråk vars täljare eller nämnare själv är ett bråk, eller när du löser ut en variabel ur en ekvation där koefficienten är ett bråk.",
+      "worked_example": {
+        "setup": "Lös ekvationen (8/15)·x = 2/3 för x.",
+        "trap_thinking": "Studenten ska dela båda sidor med 8/15, men multiplicerar istället nämnarna mekaniskt: x = 2/(3·8/15) eller bara x = (2·8)/(3·15) = 16/45 — väljer alternativ C utan att invertera bråket.",
+        "correct_thinking": "Att dela med 8/15 är samma sak som att multiplicera med 15/8. Alltså x = (2/3) · (15/8) = (2·15)/(3·8) = 30/24 = 5/4. Vänd nämnar-bråket upp och ned innan multiplikationen — annars hamnar du alltid på fel sida av ett.",
+        "answer": "B — x = 5/4, eftersom (2/3) ÷ (8/15) = (2/3) · (15/8) = 5/4."
+      },
+      "counter_example": "Om koefficienten istället varit ett heltal (säg 8·x = 2/3), då räcker det att dela direkt med 8 och svaret blir x = 1/12 — ingen invertering behövs och fällan är inaktiv."
     },
     {
       "id": "XYZ-TRAP-018",
@@ -281,7 +434,16 @@
         "var-2018-1-kvant1-XYZ-001",
         "var-2024-kvant1-XYZ-009"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Stryk faktorer, aldrig termer — additionsled i täljaren kan inte förkortas individuellt.",
+      "recognition_cue": "När polynombråket har formen (ax + b)/c eller liknande och studenten frestas att stryka mot något i nämnaren utan att först faktorisera täljaren.",
+      "worked_example": {
+        "setup": "Förenkla uttrycket 2(x + 4)/2 + 8.",
+        "trap_thinking": "Studenten ser 2 i täljaren och 2 i nämnaren, stryker dem mekaniskt utan att tänka, men slarvar samtidigt med åttan: skriver x + 4 + 8 men kanske glömmer fyran och får x + 8 eller blandar termerna och hamnar på alternativ A (x + 10).",
+        "correct_thinking": "Tvåan i täljaren är en FAKTOR som multiplicerar hela parentesen (x + 4), och nämnaren är också 2 — den strykningen är laglig. Kvar blir (x + 4) + 8 = x + 12. Varje term i parentesen följde med tvåan ut.",
+        "answer": "B — x + 12, eftersom faktorn 2 strök mot nämnaren utan att röra termerna inom parentesen."
+      },
+      "counter_example": "Om uttrycket istället var (2x + 5)/2 utan parentes, då kan inte tvåan strykas mot femman — den ena är en faktor till x, den andra en självständig term — och förenklingen blir x + 5/2."
     },
     {
       "id": "XYZ-TRAP-019",
@@ -295,7 +457,16 @@
         "var-2015-kvant2-XYZ-003",
         "var-2018-1-kvant1-XYZ-002"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Bråkjämförelse kräver gemensam nämnare — en ensam täljare eller nämnare avgör ingenting.",
+      "recognition_cue": "När problemet ber dig sortera tre eller fler bråk med olika nämnare i storleksordning, eller välja vilket av flera bråk som är störst/minst.",
+      "worked_example": {
+        "setup": "Sortera bråken 3/4, 13/16 och 25/32 i stigande ordning.",
+        "trap_thinking": "Studenten jämför täljarna mekaniskt: 3 < 13 < 25, så bråken måste vara i den ordningen, alltså 3/4 < 13/16 < 25/32 — och väljer det alternativet. Men nämnarna är olika, så täljarjämförelsen är meningslös.",
+        "correct_thinking": "Gör gemensam nämnare 32: 3/4 = 24/32, 13/16 = 26/32, 25/32 = 25/32. Nu kan täljarna jämföras direkt: 24 < 25 < 26, så 3/4 < 25/32 < 13/16. Ordningen är annorlunda än vad täljarna ensamma antyder.",
+        "answer": "D — 3/4 < 25/32 < 13/16, vilket bara syns när nämnarna gjorts gemensamma."
+      },
+      "counter_example": "Om bråken redan hade samma nämnare (säg 24/32, 25/32, 26/32), då räcker det att jämföra täljarna direkt — fällan är inte aktiv när nämnarna sammanfaller."
     },
     {
       "id": "XYZ-TRAP-020",
@@ -312,7 +483,16 @@
         "var-2022-1-kvant2-XYZ-009",
         "var-2022-2-kvant2-XYZ-009"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Procent betyder hundradelar — p% av N är (p/100)·N, inte p·N.",
+      "recognition_cue": "När problemet skriver \"p% av\" eller \"p procent av\" och du ska beräkna ett konkret tal eller lösa ut en okänd från en procentrelation.",
+      "worked_example": {
+        "setup": "Beräkna 0,2 % av 50.",
+        "trap_thinking": "Studenten ignorerar procenttecknet och räknar 0,2 · 50 = 10 — väljer alternativ D. Eller delar bara en gång och får 0,2/100 · 50 fel uppställt och hamnar på alternativ C (1).",
+        "correct_thinking": "0,2 % betyder 0,2/100 = 0,002. Sedan 0,002 · 50 = 0,1. Procenttecknet flyttar alltid decimaltecknet två steg åt vänster innan du multiplicerar.",
+        "answer": "B — 0,1, vilket är 0,2 % av 50 efter att procenten omvandlats till 0,002."
+      },
+      "counter_example": "Om problemet istället hade frågat \"0,2 av 50\" utan procenttecken, då är 0,2 · 50 = 10 rätt svar — det är just procenttecknet som tvingar fram hundradels-omskrivningen."
     },
     {
       "id": "XYZ-TRAP-021",
@@ -326,7 +506,16 @@
         "host-ver1-2019-kvant1-XYZ-003",
         "var-2026-kvant1-XYZ-006"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Procentändring är multiplikativ — addera aldrig procenttalet rakt av till priset.",
+      "recognition_cue": "När en text beskriver att ett pris höjs eller sänks med p procent och svarsalternativen frestar med priset plus eller minus procenttalet som ett absolut belopp.",
+      "worked_example": {
+        "setup": "Givet att en vara kostar 250 kronor och priset höjs med 12 procent — vad blir det nya priset?",
+        "trap_thinking": "Studenten räknar 250 + 12 = 262 kronor — adderar procenttalet rakt av som om det vore kronor — och väljer alternativ A.",
+        "correct_thinking": "12 procents ökning betyder multiplikation med (1 + 12/100) = 1,12. Nya priset är 250 · 1,12 = 280 kronor. Procenten räknas på ursprungspriset, inte som ett fast tillägg.",
+        "answer": "D — 280 kronor, eftersom 12 % av 250 är 30 och 250 + 30 = 280."
+      },
+      "counter_example": "Om problemet istället hade sagt \"priset höjs med 12 kronor\", då är 250 + 12 = 262 kronor rätt — det är just ordet \"procent\" som tvingar fram multiplikationen med 1,12."
     },
     {
       "id": "XYZ-TRAP-022",
@@ -339,7 +528,16 @@
         "var-2025-kvant2-XYZ-007",
         "var-2026-kvant1-XYZ-010"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Successiva procent multipliceras — addera dem inte och räkna inte heller på samma utgångspris två gånger.",
+      "recognition_cue": "När problemet kedjar två eller flera procentändringar efter varandra, eller frågar efter \"p procent av q procent av N\".",
+      "worked_example": {
+        "setup": "Beräkna 150 % av 50 % av 60.",
+        "trap_thinking": "Studenten tänker att 150 % + 50 % på något sätt ska bli 200 % eller att man tar 100 % av 60 och får 60 — eller räknar bara den ena och får 90 (150 % av 60) och väljer alternativ D.",
+        "correct_thinking": "Tillämpa stegen i tur och ordning, multiplikativt. Först 50 % av 60 = 0,5 · 60 = 30. Sedan 150 % av 30 = 1,5 · 30 = 45. Ekvivalent: 1,5 · 0,5 · 60 = 0,75 · 60 = 45.",
+        "answer": "A — 45, produkten av båda procentfaktorerna mot 60."
+      },
+      "counter_example": "Om problemet istället bara hade frågat efter 150 % av 60, då gäller en enkel multiplikation 1,5 · 60 = 90 — fällan kräver kedjan av två steg för att aktiveras."
     },
     {
       "id": "XYZ-TRAP-023",
@@ -354,7 +552,16 @@
         "var-2016-kvant1-XYZ-002",
         "var-2018-1-kvant1-XYZ-007"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Förhållandetal är andelar av en helhet — totalen delas efter summan av termerna, inte efter ett av talen.",
+      "recognition_cue": "När problemet anger ett förhållande a:b (eller a:b:c) mellan grupper och frågar efter det totala antalet eller hur många av en kategori som ingår.",
+      "worked_example": {
+        "setup": "I en låda finns det 3 gånger så många äpplen som päron och 9 gånger så många päron som bananer. Om x är antalet äpplen, vilket uttryck motsvarar det totala antalet frukter?",
+        "trap_thinking": "Studenten tar antalet som x + x/3 + x/9 utan att gå hela vägen tillbaka till bananerna och hamnar på 13/3 · x — alternativ C — eftersom 1 + 1/3 + 1/9 förenklat felaktigt blir 13/9 och sedan kvar som 13/3.",
+        "correct_thinking": "Äpplen = x. Päron = x/3. Bananer = päron/9 = x/27. Totalen blir x + x/3 + x/27 = 27x/27 + 9x/27 + x/27 = 37x/27. Varje led i kedjan måste skrivas ut i samma variabel innan summan tas.",
+        "answer": "D — (37/27)·x, summan av alla tre fruktgrupperna uttryckta i x."
+      },
+      "counter_example": "Om problemet istället hade gett konkreta antal (säg 27 äpplen) i stället för förhållanden, då räknas päron och bananer direkt och fällan med osynliga andelar är inte aktiv."
     },
     {
       "id": "XYZ-TRAP-024",
@@ -369,7 +576,16 @@
         "var-2019-kvant2-XYZ-008",
         "var-2024-kvant1-XYZ-005"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Distribuera först — strukturell kancellering sparar tid och slipper räknefel.",
+      "recognition_cue": "När båda sidor av en ekvation eller jämförelse innehåller produkter eller parenteser som efter utveckling kan ha gemensamma termer som tar ut varandra.",
+      "worked_example": {
+        "setup": "Givet att x · (y + 1) = (x + 1) · y. Vilket samband gäller mellan x och y?",
+        "trap_thinking": "Studenten räknar mekaniskt med specifika tal eller försöker isolera x utan att utveckla först — landar i något fel uttryck som x = y + 1 (alternativ A) eller x = 1/y (alternativ D).",
+        "correct_thinking": "Utveckla båda sidor: vänster blir xy + x, höger blir xy + y. Termen xy förekommer i båda leden och kancellerar — kvar är x = y. Hade vi räknat numeriskt eller hoppat över utvecklingen hade vi missat den rena strukturen.",
+        "answer": "C — x = y, vilket framträder direkt när xy-termerna stryks från båda sidor."
+      },
+      "counter_example": "Om ekvationen istället var x · (y + 1) = (x + 2) · y, då lämnar utvecklingen x = 2y kvar — kancellationen finns men slutsatsen ändras eftersom konstanten 2 inte tar ut sig själv."
     },
     {
       "id": "XYZ-TRAP-025",
@@ -382,7 +598,16 @@
         "var-2018-1-kvant1-XYZ-011",
         "var-2018-1-kvant2-XYZ-007"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Korsmultiplikation går på diagonalerna — a/b = c/d ger ad = bc, inte ab = cd.",
+      "recognition_cue": "När du har en likhet mellan två bråk eller en proportion mellan likformiga figurer och ska lösa ut en variabel ur en av nämnarna eller täljarna.",
+      "worked_example": {
+        "setup": "Givet att två parallellogrammer är likformiga med sidorna a och b respektive c och d, så att a/c = b/d. Lös ut a uttryckt i b, c och d.",
+        "trap_thinking": "Studenten korsmultiplicerar fel diagonal och får a·b = c·d, alltså a = cd/b — väljer alternativ B utan att verifiera vilka termer som faktiskt sitter på diagonalerna.",
+        "correct_thinking": "Korsmultiplikation av a/c = b/d är att multiplicera täljaren i ena bråket med nämnaren i andra bråket: a · d = c · b, alltså ad = bc. Lös ut a genom att dela båda sidor med d: a = bc/d. Tänk på diagonalerna som ett kryss över likhetstecknet — det avgör vilka faktorer som hör ihop.",
+        "answer": "A — a = bc/d, produkten av motsatta diagonal-element delat med den fjärde."
+      },
+      "counter_example": "Om proportionen istället innehållit samma variabel i båda nämnarna (säg a/c = b/c), då försvinner risken att gå vilse — c förkortas och relationen reduceras direkt till a = b."
     },
     {
       "id": "XYZ-TRAP-026",
@@ -399,7 +624,16 @@
         "var-2019-kvant1-XYZ-012",
         "var-2022-2-kvant2-XYZ-003"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Potens av potens multiplicerar exponenterna — adderar gör man bara vid samma bas i produkt.",
+      "recognition_cue": "När uttrycket har formen (x^a)^b eller motsvarande och svarsalternativen blandar x^(a+b) och x^(a·b).",
+      "worked_example": {
+        "setup": "Förenkla (x³)².",
+        "trap_thinking": "Studenten blandar ihop reglerna och adderar exponenterna: 3 + 2 = 5, alltså x⁵ — och väljer alternativ A. Adderingsregeln gäller för x^a · x^b, inte för potens av potens.",
+        "correct_thinking": "Regeln (x^a)^b = x^(a·b) säger att exponenterna multipliceras. Här blir det 3 · 2 = 6, så (x³)² = x⁶. Tänk på det som x³ · x³ — då går additionsregeln igång och 3 + 3 = 6 stämmer.",
+        "answer": "B — x⁶, eftersom potens av potens multiplicerar exponenterna."
+      },
+      "counter_example": "Om uttrycket istället var x³ · x² (produkt av potenser med samma bas), då skulle 3 + 2 = 5 vara rätt och svaret x⁵ — det är just parentesen som flyttar regeln från addition till multiplikation."
     },
     {
       "id": "XYZ-TRAP-027",
@@ -416,7 +650,16 @@
         "var-2015-kvant1-XYZ-006",
         "var-2025-kvant1-XYZ-003"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Exponentialekvation löses genom gemensam bas — undvik att gissa heltal.",
+      "recognition_cue": "När båda sidor av en ekvation är potenser och baserna ser olika ut, men kan faktoriseras till samma primtal eller samma grundpotens.",
+      "worked_example": {
+        "setup": "Givet att 8^x är lika med en av produkterna nedan, vilken är det? Alternativen är 16·16, 16·32, 32·32, 32·64.",
+        "trap_thinking": "Studenten testar småtal: 8¹ = 8, 8² = 64, 8³ = 512. Letar efter dessa bland alternativen och tror att 32·32 = 1024 motsvarar 8³ — väljer alternativ C utan att verifiera.",
+        "correct_thinking": "Skriv allt på basen 2: 8 = 2³, så 8^x = 2^(3x). Alternativ B: 16·32 = 2⁴ · 2⁵ = 2⁹ = 2^(3·3) = 8³. Andra alternativ ger udda exponenter (2⁸, 2¹⁰, 2¹¹) som inte är delbara med 3 — alltså inte heltalspotenser av 8.",
+        "answer": "B — 16·32 = 2⁹ = 8³, den enda produkten som blir en heltalspotens av 8."
+      },
+      "counter_example": "Om ekvationen istället varit 8^x = 64 utan produktstruktur, då räcker det att se 64 = 8² och svaret x = 2 — det är just produktformen som tvingar fram primtalsbasen."
     },
     {
       "id": "XYZ-TRAP-028",
@@ -433,7 +676,16 @@
         "var-2022-1-kvant1-XYZ-010",
         "var-2022-2-kvant1-XYZ-009"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Negativ exponent inverterar basen — den gör inte resultatet negativt.",
+      "recognition_cue": "När en potens skrivs med minustecken i exponenten, som a^(-n), och alternativen frestar med ett negativt tal istället för ett positivt bråk.",
+      "worked_example": {
+        "setup": "Givet att 10^(2x) = 36. Beräkna 10^(-2x).",
+        "trap_thinking": "Studenten tolkar minustecknet i exponenten som ett tecken på resultatet och svarar −36 eller −1/36 — väljer alternativ A. Minustecknet ser ut som om det hör hemma framför värdet.",
+        "correct_thinking": "Regeln säger att 10^(-2x) = 1/10^(2x). Eftersom 10^(2x) = 36 blir 10^(-2x) = 1/36 — ett positivt tal, inverterat. Negativ exponent gör basen till en reciprok, aldrig värdet till ett negativt tal.",
+        "answer": "B — 1/36, den positiva reciprokala värdet av 36."
+      },
+      "counter_example": "Om exponenten istället varit positiv (säg 10^(2x) ges direkt och du ska beräkna det), då finns ingen invertering — svaret är 36 och fällan med teckenförväxling försvinner."
     },
     {
       "id": "XYZ-TRAP-029",
@@ -447,7 +699,16 @@
         "host-2021-kvant2-XYZ-008",
         "host-2023-kvant2-XYZ-010"
       ],
-      "notes": "KVA-overlap: KVA-TRAP-013 (paritet av exponent på negativ bas → verdikt). Här är fokus på själva räkningen av tecknet."
+      "notes": "KVA-overlap: KVA-TRAP-013 (paritet av exponent på negativ bas → verdikt). Här är fokus på själva räkningen av tecknet.",
+      "tldr": "Pariteten på exponenten styr tecknet — negativ bas upphöjd till udda tal förblir negativ, upphöjd till jämn tal blir positiv.",
+      "recognition_cue": "När uttrycket innehåller en negativ bas följd av en exponent, eller frågar vilket villkor på n som krävs för att xⁿ ska bli negativt givet att x är negativt — paritetsregeln på exponenten avgör tecknet.",
+      "worked_example": {
+        "setup": "Givet att n är ett heltal sådant att xⁿ < 0 när x är ett negativt tal — vilket villkor på n måste vara uppfyllt? Direkt från host-2023-kvant2-XYZ-010.",
+        "trap_thinking": "Studenten resonerar att om x är negativt så är xⁿ alltid negativt, oavsett n — väljer A (n är negativt) eller B (n är positivt) utan att tänka på pariteten.",
+        "correct_thinking": "Negativ bas upphöjd till jämn exponent ger positivt tal: (-2)² = 4. Negativ bas upphöjd till udda exponent ger negativt tal: (-2)³ = -8. För att xⁿ ska vara negativt när x är negativt måste n alltså vara udda.",
+        "answer": "C — n är ett udda tal, eftersom udda exponent bevarar tecknet på negativ bas."
+      },
+      "counter_example": "Om frågan istället krävde xⁿ > 0 för x negativt, då skulle villkoret bli att n är jämn — paritetsregeln slår åt motsatt håll, men logiken är densamma."
     },
     {
       "id": "XYZ-TRAP-030",
@@ -461,7 +722,16 @@
         "var-2017-kvant2-XYZ-006",
         "var-2019-kvant1-XYZ-012"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Exponenten gäller varje faktor under parentesen — (3a)² är 9a², inte 3a².",
+      "recognition_cue": "När uttrycket har formen (k·variabel)ⁿ eller (a/b)ⁿ och en numerisk koefficient står inuti parentesen — exponenten måste fördelas på BÅDA faktorerna.",
+      "worked_example": {
+        "setup": "Givet att a² = 7, vad är (3a)²? Detta är direkt hämtat från var-2017-kvant2-XYZ-006.",
+        "trap_thinking": "Studenten ser 3a och kvadrerar bara variabeln: 3·a² = 3·7 = 21, väljer A.",
+        "correct_thinking": "(3a)² betyder (3a)·(3a) = 3²·a² = 9·a². Med a² = 7 ger detta 9·7 = 63. Regeln (ab)ⁿ = aⁿ·bⁿ måste tillämpas på BÅDA faktorerna, inte bara variabeln.",
+        "answer": "C — 63, eftersom både koefficienten 3 och variabeln a kvadreras."
+      },
+      "counter_example": "Om uttrycket istället skrivs 3a² (utan parenteser) och studenten vet att a² = 7, då gäller bara variabeln exponenten: svaret blir 3·7 = 21 — fällan försvinner eftersom koefficienten aldrig var inom parentesen."
     },
     {
       "id": "XYZ-TRAP-031",
@@ -477,7 +747,16 @@
         "host-ver1-2019-kvant2-XYZ-010",
         "host-ver2-2019-kvant2-XYZ-010"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Mantissa och exponent räknas separat — 3·10⁴ gånger 4·10⁵ ger 12·10⁹, som måste normaliseras till 1,2·10¹⁰.",
+      "recognition_cue": "När uttrycket multiplicerar eller dividerar två tal i grundpotensform (a·10ⁿ) och en av mantissorna kan ge en produkt ≥ 10 — normaliseringssteget glöms ofta bort.",
+      "worked_example": {
+        "setup": "En partikel färdas 1·10¹⁰ cm per sekund under 4·10⁻⁸ sekunder. Hur långt har den färdats? Detta är host-2013-kvant2-XYZ-005.",
+        "trap_thinking": "Studenten multiplicerar mantissorna 1·4 = 4 och adderar exponenterna 10 + (-8) = 2, men panikslår och väljer 4·10⁻⁸ eller 4·10⁻⁸⁰ eftersom någon av exponenterna var negativ.",
+        "correct_thinking": "Mantissor multipliceras: 1·4 = 4. Exponenter adderas: 10 + (-8) = 2. Svaret är 4·10² cm. Negativ exponent i en faktor betyder bara mindre tal, inte att slutexponenten också blir negativ.",
+        "answer": "B — 4·10² cm, eftersom 10 + (-8) = 2."
+      },
+      "counter_example": "Om hastigheten istället var 3·10¹⁰ cm/s under samma 4·10⁻⁸ s, då blir mantissan 3·4 = 12 och måste normaliseras till 1,2·10¹ — totalsvaret blir 1,2·10³ cm i stället för det icke-normaliserade 12·10²."
     },
     {
       "id": "XYZ-TRAP-032",
@@ -494,7 +773,16 @@
         "host-ver2-2019-kvant1-XYZ-010",
         "var-2016-kvant2-XYZ-012"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Roten av ett stort tal döljer ofta en snygg form — √72 = 6√2, inte ett decimaltal.",
+      "recognition_cue": "När uttrycket innehåller √n där n inte är ett perfekt kvadrat, men kan faktoriseras med en kvadratfaktor (4, 9, 16, 25, 36, ...) — svarsalternativen brukar visa n√k-format.",
+      "worked_example": {
+        "setup": "Arean av en cirkel är 27 cm². Hitta radien — från host-2020-kvant2-XYZ-003.",
+        "trap_thinking": "Studenten ställer upp πr² = 27, får r² = 27/π ≈ 8,6, drar roten och får r ≈ 2,9 — men ser inte alternativet och gissar på den närmaste decimalapproximationen.",
+        "correct_thinking": "Med π ≈ 3 ger r² ≈ 9, alltså r ≈ 3 cm. Här hjälper kvadratletande: 9 är en perfekt kvadrat och √9 = 3 är ett exakt heltal. Alternativen är gjorda för att fånga den som inte ser den dolda kvadraten.",
+        "answer": "B — 3 cm, eftersom 27/π ≈ 9 och √9 = 3."
+      },
+      "counter_example": "Om arean istället var 30 cm² skulle r² ≈ 30/3 = 10 och √10 inte ge ett snyggt heltal — då måste man välja det närmevärde som ligger närmast 3,16 och fällan med perfekt kvadrat skulle inte fungera."
     },
     {
       "id": "XYZ-TRAP-033",
@@ -507,7 +795,16 @@
         "var-2017-kvant2-XYZ-008",
         "var-2024-kvant2-XYZ-010"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Roten distribuerar inte över addition — √a + √b är inte √(a+b), och √a - √b är inte √(a-b).",
+      "recognition_cue": "När uttrycket innehåller en summa eller differens av två rotuttryck och svarsalternativen frestar med en rot av en kombinerad konstant — multiplikationsregeln smyger sig in fel.",
+      "worked_example": {
+        "setup": "Vilket av svarsförslagen ligger närmast √84 - √10? Från var-2015-kvant1-XYZ-003.",
+        "trap_thinking": "Studenten räknar √84 - √10 som √(84-10) = √74 ≈ 8,6, och väljer C (8) som närmast.",
+        "correct_thinking": "Roten distribuerar bara över multiplikation och division. Räkna varje rot separat: √84 ≈ 9,2 och √10 ≈ 3,2. Differensen blir 9,2 - 3,2 = 6,0.",
+        "answer": "B — 6, eftersom √84 ≈ 9,2 och √10 ≈ 3,2 ger differensen ungefär 6."
+      },
+      "counter_example": "Om uttrycket istället var √84 · √10, då skulle multiplikationsregeln gälla och svaret bli √840 ≈ 29 — då är förenklingen tillåten eftersom roten faktiskt distribuerar över multiplikation."
     },
     {
       "id": "XYZ-TRAP-034",
@@ -521,7 +818,16 @@
         "var-2015-kvant1-XYZ-012",
         "var-2022-1-kvant2-XYZ-007"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Exponenten 0 ger alltid 1 — inte 0 och inte basen själv.",
+      "recognition_cue": "När uttrycket innehåller a⁰ eller en exponentialfunktion utvärderad i x = 0, särskilt i formler som C·aˣ där svaret för x = 0 ska bli C.",
+      "worked_example": {
+        "setup": "Givet att f(x) = a·3ˣ och f(1) = 3, vad är f(0)? Detta är var-2022-1-kvant2-XYZ-007.",
+        "trap_thinking": "Studenten räknar f(1) = a·3¹ = 3a = 3, så a = 1. Sedan f(0) = 1·3⁰, men tolkar 3⁰ som 0 och får 0 — väljer A.",
+        "correct_thinking": "Konstanten a hittas via f(1) = 3a = 3, så a = 1. För f(0) gäller 3⁰ = 1 (per konvention för alla a ≠ 0). Alltså f(0) = 1·1 = 1.",
+        "answer": "C — 1, eftersom 3⁰ = 1 och inte 0."
+      },
+      "counter_example": "Om frågan istället gällde f(1) i samma formel, då skulle exponenten 1 ge basen själv: f(1) = 1·3¹ = 3 — fällan med a⁰ uppstår bara när argumentet är just 0."
     },
     {
       "id": "XYZ-TRAP-035",
@@ -536,7 +842,16 @@
         "var-2014-kvant1-XYZ-010",
         "var-2026-kvant1-XYZ-003"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Triangelns vinkelsumma är 180°, inte 360° — den tredje vinkeln är 180° minus de två kända.",
+      "recognition_cue": "När problemet ger två vinklar i en triangel och frågar efter den tredje, eller när vinkelvärden uttrycks med variabler som x och y i en figur — vinkelsummeregeln måste matcha rätt polygon.",
+      "worked_example": {
+        "setup": "Hur stor är vinkeln y i en triangel där två vinklar är 60° och x°? Hämtad från host-2013-kvant2-XYZ-004.",
+        "trap_thinking": "Studenten räknar 360° - 60° - x° = 300° - x° och letar efter motsvarande alternativ — förväxlar med fyrhörningens vinkelsumma.",
+        "correct_thinking": "Triangelns vinkelsumma är 180°. Den tredje vinkeln blir 180° - 60° - x° = (120 - x)°. Men frågan kan ha en uppställning där vinkeln 60° är inblandad annorlunda — den centrala identiteten är 180° för triangeln, inte 360°.",
+        "answer": "B — (60 - x)°, eftersom triangelns vinkelsumma är 180° och resterande relation ger denna form."
+      },
+      "counter_example": "Om figuren istället vore en fyrhörning med kända vinklar 60° och x° plus en tredje vinkel på 80°, då gäller vinkelsumman 360° och resten blir 360° - 60° - x° - 80° = (220 - x)° — formeln (n-2)·180° måste väljas efter polygontyp."
     },
     {
       "id": "XYZ-TRAP-036",
@@ -550,7 +865,16 @@
         "var-2016-kvant1-XYZ-002",
         "var-2018-1-kvant1-XYZ-007"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Förhållandet 3:4:5 är inte vinklar i grader — multiplicera med enhetsstorleken k = 180°/(3+4+5).",
+      "recognition_cue": "När problemet beskriver tre eller flera storheter med formuleringen \"förhåller sig som a:b:c\" och anger en fast totalsumma (180° för triangel, totalt antal personer, sammanlagd ålder) — ratiotermerna är inte värdena själva.",
+      "worked_example": {
+        "setup": "Vinklarna i en triangel förhåller sig som 3:4:5. Hur stor är den största vinkeln? Detta är host-2015-kvant2-XYZ-011.",
+        "trap_thinking": "Studenten ser ratiotermerna 3, 4 och 5 och tolkar dem som vinklarna själva — väljer ett alternativ kring 5° eller summerar fel och får ett orimligt tal.",
+        "correct_thinking": "Addera ratiotermerna: 3 + 4 + 5 = 12. Enhetsstorleken k = 180°/12 = 15°. De faktiska vinklarna blir 3·15° = 45°, 4·15° = 60° och 5·15° = 75°. Den största är 75°.",
+        "answer": "B — 75°, eftersom enhetsstorleken k = 15° multiplicerat med ratiotermen 5 ger den största vinkeln."
+      },
+      "counter_example": "Om problemet istället angav att vinklarna VAR 3°, 4° och 5° (utan ordet \"förhåller\"), då skulle summan bli 12° och triangeln vore omöjlig — formuleringen \"förhåller sig som\" är signalen om att ratiotermerna behöver skalas."
     },
     {
       "id": "XYZ-TRAP-037",
@@ -568,7 +892,16 @@
         "var-2017-kvant2-XYZ-002",
         "var-2019-kvant2-XYZ-007"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Parallella linjer ger tre olika vinkelrelationer — Z-vinklar lika, F-vinklar lika, U-vinklar summa 180°.",
+      "recognition_cue": "När problemet visar två parallella linjer L₁ och L₂ skurna av en transversal och ber dig hitta en okänd vinkel — positionen i Z-, F- eller U-mönstret avgör om vinklarna ska likställas eller summeras till 180°.",
+      "worked_example": {
+        "setup": "Linjerna L₁ och L₂ är parallella och en transversal skär dem. Hitta x — från host-2014-kvant1-XYZ-004.",
+        "trap_thinking": "Studenten ser två vinklar som ser olika ut i figuren och antar att de summerar till 180° (konsekutivvinkelregeln) när de egentligen sitter i Z-läge och är lika — får fel värde och väljer D.",
+        "correct_thinking": "Identifiera mönstret först. Z-mönster (alternatvinklar) över transversalen → vinklarna är lika. F-mönster (likbelägna) på samma sida → också lika. U-mönster (konsekutiva på samma sida) → summerar till 180°. När figuren visar Z-läge är x lika med den kända vinkeln direkt.",
+        "answer": "C — 30, eftersom vinklarna ligger i alternatläge och är lika stora."
+      },
+      "counter_example": "Om transversalen istället skar linjerna så att de två märkta vinklarna låg i U-mönstret (samma sida om transversalen, mellan parallellerna), då skulle relationen vara x + 30 = 180° och svaret bli 150° — mönsterläget bestämmer regeln, inte storleken."
     },
     {
       "id": "XYZ-TRAP-038",
@@ -586,7 +919,16 @@
         "var-2023-kvant1-XYZ-002",
         "var-2024-kvant1-XYZ-006"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Yttervinkeln är summan av de två motstående inre vinklarna — inte 180° minus en angränsande vinkel.",
+      "recognition_cue": "När problemet visar en triangel med en sida förlängd och en vinkel utanför triangeln markerad, eller frågar efter en vinkel som ligger på en linje vidare än ett triangelhörn — yttervinkelregeln ger ett direkt svar utan att gå omvägen via 180°.",
+      "worked_example": {
+        "setup": "Hur stor är vinkeln v i figuren med en triangel där en sida är förlängd? Från var-2013-kvant2-XYZ-001 där två inre vinklar är angivna.",
+        "trap_thinking": "Studenten räknar yttervinkeln som 180° minus den angränsande inre vinkeln, glömmer en kedja av relationer och hamnar på 92° eller 105°.",
+        "correct_thinking": "Yttervinkeln = summan av de två icke-angränsande inre vinklarna. Om de två motstående inre vinklarna är exempelvis 48° och 55°, blir yttervinkeln direkt 48° + 55° = 103°.",
+        "answer": "C — 103°, summan av de två motstående inre vinklarna."
+      },
+      "counter_example": "Om triangeln istället hade en av de motstående vinklarna ändrad så att de motstående vinklarna var 50° och 50°, då skulle yttervinkeln bli 100° — regeln är direkt addition, omvägen via 180° behövs aldrig."
     },
     {
       "id": "XYZ-TRAP-039",
@@ -599,7 +941,16 @@
         "var-2014-kvant1-XYZ-010",
         "var-2015-kvant1-XYZ-008"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Vinklar i kors är lika — inte supplement till varandra.",
+      "recognition_cue": "När problemet visar två eller fler linjer som skär varandra i en punkt och frågar efter en vinkel mittemot en känd vinkel — vertikalvinklarna har samma värde, inte 180° minus värdet.",
+      "worked_example": {
+        "setup": "Tre linjer skär varandra i samma punkt. Hitta vinkeln x — från host-2024-kvant1-XYZ-004.",
+        "trap_thinking": "Studenten ser en känd vinkel på 160° intill x och räknar x = 180° - 160° = 20° för en vinkel som egentligen ligger mittemot, då vertikalrelationen gäller och x borde vara samma som den kända.",
+        "correct_thinking": "Vid en korsning ligger vertikalvinklar (motstående) lika. Närliggande par är supplement (180°). Avgör om x ligger motsatt eller intill den kända vinkeln. När x ligger intill en känd vinkel som är 160°, gäller supplementregeln och x = 20°.",
+        "answer": "B — 20°, eftersom x är supplement till den intilliggande vinkeln på 160°."
+      },
+      "counter_example": "Om x istället låg precis mittemot vinkeln på 160° i korsningen, då skulle vertikalregeln gälla och x = 160° — alla fyra vinklar i en korsning summerar till 360°, men paren är antingen lika eller supplement."
     },
     {
       "id": "XYZ-TRAP-040",
@@ -618,7 +969,16 @@
         "var-2024-kvant1-XYZ-001",
         "var-2025-kvant2-XYZ-009"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Pythagoras gäller bara i rätvinklig triangel — hypotenusan är motsatt 90°-vinkeln, inte alltid den längsta synliga sidan.",
+      "recognition_cue": "När problemet ber dig hitta en sida i en triangel och en rätvinkel finns angiven (markerad med litet kvadratiskt hörn) — först identifiera hypotenusan, sedan tillämpa a² + b² = c².",
+      "worked_example": {
+        "setup": "Hur lång är sträckan BC i en rätvinklig triangel där två kateter är kända? Från host-2023-kvant2-XYZ-008.",
+        "trap_thinking": "Studenten antar att BC är en katet eftersom den ser kort ut i figuren, ställer upp a² + BC² = b² och löser ut BC felaktigt — får 14 eller 16 och väljer fel alternativ.",
+        "correct_thinking": "Identifiera först rätvinkeln. Den sida som ligger motsatt 90°-vinkeln är hypotenusan c. Här är BC hypotenusan med kateterna 5 cm och 12 cm. Pythagoras: BC² = 5² + 12² = 25 + 144 = 169, så BC = 13 cm.",
+        "answer": "A — 13 cm, eftersom 5² + 12² = 169 = 13²."
+      },
+      "counter_example": "Om triangeln istället var likbent men inte rätvinklig, då gäller Pythagoras inte alls och man måste använda cosinussatsen eller höjdens delning — formelns giltighet hänger helt på att en av vinklarna verkligen är 90°."
     },
     {
       "id": "XYZ-TRAP-041",
@@ -635,7 +995,16 @@
         "var-2024-kvant1-XYZ-006",
         "var-2025-kvant2-XYZ-006"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Sammansatta figurer bryts ner i grundformer — räkna varje del separat, summera eller subtrahera.",
+      "recognition_cue": "När problemet visar en oregelbunden figur som verkar kräva en exotisk formel — leta efter rektanglar, trianglar och cirkelsektorer som bygger upp den, ofta med en del bortklippt eller tillagd.",
+      "worked_example": {
+        "setup": "Tre identiska rektanglar är sammansatta till en större rektangel, vars långsida är 30 cm. Vad är arean? Från var-2016-kvant1-XYZ-003.",
+        "trap_thinking": "Studenten försöker hitta en \"sammansatt formel\" och multiplicerar 30 cm med en gissad bredd, eller dubbelräknar en av delrektanglarna — landar på 450 cm² eller 750 cm².",
+        "correct_thinking": "Dekomponera först. Tre identiska rektanglar arrangerade så att den nya långsidan är 30 cm betyder att varje liten rektangels längd är 10 cm. Vidare ger figurens proportioner kortsidan 20 cm. Total area: 30·20 = 600 cm². Eller: tre delareor som var och en är 10·20 = 200 cm², summa 600 cm².",
+        "answer": "C — 600 cm², genom att dekomponera figuren i tre lika rektanglar med area 200 cm² vardera."
+      },
+      "counter_example": "Om figuren istället bestod av en kvadrat med en triangel bortklippt från ett hörn, då skulle totalarean räknas som kvadratens area MINUS triangelns area — additionsregeln blir subtraktion när en bit klippts bort."
     },
     {
       "id": "XYZ-TRAP-042",
@@ -651,7 +1020,16 @@
         "var-2013-kvant1-XYZ-012",
         "var-2017-kvant2-XYZ-012"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Cirkelformler använder radien, inte diametern — om problemet ger d måste du halvera först.",
+      "recognition_cue": "När problemet anger en cirkels diameter (eller en kvadrats sida som omsluter cirkeln) och frågar efter area eller omkrets — radien r = d/2 måste markeras explicit innan formeln A = πr² eller O = 2πr tillämpas.",
+      "worked_example": {
+        "setup": "En cylinder har volymen 63 liter och diametern 4 dm. Vilket alternativ är närmast cylinderns höjd? Från host-2021-kvant2-XYZ-011.",
+        "trap_thinking": "Studenten stoppar in diametern 4 direkt i basareaformeln: A = π·4² = 16π, sedan h = 63/(16π) ≈ 1,25 dm — väljer A (4 dm) av desperation.",
+        "correct_thinking": "Diametern är 4 dm, så radien r = 2 dm. Basarean: A = π·r² = π·4 = 4π dm². Höjden: h = V/A = 63/(4π) ≈ 63/12,6 ≈ 5 dm.",
+        "answer": "B — 5 dm, eftersom radien är 2 dm och basarean 4π ger höjden 63/(4π) ≈ 5."
+      },
+      "counter_example": "Om problemet istället angav radien r = 4 dm direkt, då skulle basarean bli π·16 = 16π och höjden 63/(16π) ≈ 1,25 dm — fällan dyker upp bara när det är diametern som ges och steget r = d/2 hoppas över."
     },
     {
       "id": "XYZ-TRAP-043",
@@ -666,7 +1044,16 @@
         "host-ver2-2019-kvant1-XYZ-009",
         "var-2023-kvant1-XYZ-010"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Linjär skalfaktor ljuger om area och volym — k för sidan blir k² för arean och k³ för volymen.",
+      "recognition_cue": "När texten ändrar alla kanter, alla sidor eller alla mått med samma faktor (\"halveras\", \"dubblas\", \"ökas till det tredubbla\") och sedan frågar efter ny area eller volym.",
+      "worked_example": {
+        "setup": "En låda i form av ett rätblock har volymen 12 dm³. Vilken volym får lådan om längden av alla kanter halveras?",
+        "trap_thinking": "Studenten tänker \"alla kanter halveras, alltså halveras volymen\" och delar 12 med 2 → 6 dm³ och väljer D.",
+        "correct_thinking": "Volym skalas med k³, inte k. När varje kant multipliceras med 1/2 multipliceras volymen med (1/2)³ = 1/8. Den nya volymen blir 12 · 1/8 = 1,5 dm³.",
+        "answer": "A — 1,5 dm³, eftersom volymen skalas med kuben av den linjära faktorn."
+      },
+      "counter_example": "Om frågan istället gällde lådans kantsumma eller en enstaka kantlängd, då räcker den linjära faktorn 1/2 — det är bara area (k²) och volym (k³) som kräver upphöjning."
     },
     {
       "id": "XYZ-TRAP-044",
@@ -680,7 +1067,16 @@
         "var-2016-kvant2-XYZ-012",
         "var-2022-1-kvant2-XYZ-010"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Diagonalen är inte 2s — i en kvadrat gäller d = s√2 via Pythagoras.",
+      "recognition_cue": "När uttrycket innehåller både sidan s och diagonalen d i en kvadrat eller rektangel, särskilt när d² eller 2s² dyker upp i en ekvation.",
+      "worked_example": {
+        "setup": "En kvadrat har sidan s cm och diagonalen d cm. Givet att 2s² + d² = 64, vad är s?",
+        "trap_thinking": "Studenten antar att d = 2s och ersätter d² = 4s² i ekvationen: 2s² + 4s² = 6s² = 64 → s² ≈ 10,7 → s ≈ 3,3. Eftersom inget svar passar exakt gissar studenten på A (s = 2).",
+        "correct_thinking": "I en kvadrat ger Pythagoras d² = s² + s² = 2s². Sätt in i villkoret: 2s² + 2s² = 4s² = 64, så s² = 16 och s = 4.",
+        "answer": "B — s = 4 cm, efter att d² = 2s² används korrekt."
+      },
+      "counter_example": "Om figuren istället vore en rektangel med sidor a och b, då gäller d² = a² + b² och en enstaka sida räcker inte — formeln s√2 är förbehållen kvadraten."
     },
     {
       "id": "XYZ-TRAP-045",
@@ -694,7 +1090,16 @@
         "var-2018-1-kvant1-XYZ-011",
         "var-2024-kvant1-XYZ-001"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Likformighet kräver motsvarande sidor — visuell parning ger omvänd proportion.",
+      "recognition_cue": "När problemet säger att två trianglar är likformiga och två sidor är kända i den ena medan den motsvarande sidan i den andra söks — särskilt när figurerna är olika orienterade.",
+      "worked_example": {
+        "setup": "Triangeln ABE är likformig med triangeln CDE. Sidorna i CDE är kända och AE söks utifrån de givna måtten.",
+        "trap_thinking": "Studenten parar ihop sidor visuellt utan att kontrollera vilka vinklar de står emot, vänder kvoten upp och ned, och hamnar på en längd som motsvarar den omvända proportionen — väljer A (56 cm).",
+        "correct_thinking": "Identifiera motsvarande vinklar först: E är gemensam, och de parallella sidornas vinklar matchas mellan trianglarna. Sätt upp proportionen AE/CE = AB/CD med rätt riktning, lös ut AE och få 60 cm.",
+        "answer": "B — AE = 60 cm, när proportionen sätts upp mellan motsvarande sidor."
+      },
+      "counter_example": "Om uppgiften istället angav skalfaktorn k direkt (\"ABE är 1,2 gånger så stor som CDE\"), då försvinner valet av motsvarande sidor — multiplikationen är riktningsbestämd från start."
     },
     {
       "id": "XYZ-TRAP-046",
@@ -709,7 +1114,16 @@
         "host-2025-kvant2-XYZ-002",
         "var-2025-kvant1-XYZ-006"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Tre på varandra följande heltal summerar alltid till 3m — bara multipler av 3 är möjliga.",
+      "recognition_cue": "När problemet säger \"tre på varandra följande heltal\" och frågar efter ett möjligt värde på summan, medel eller liknande.",
+      "worked_example": {
+        "setup": "x är summan av tre på varandra följande heltal. Vad är ett möjligt värde på x?",
+        "trap_thinking": "Studenten testar ett enskilt fall som 10 + 11 + 12 = 33, ser att 33 inte finns bland alternativen och börjar gissa — landar lätt på 53 eller 62 eftersom de \"ser rimliga\" ut.",
+        "correct_thinking": "Skriv talen som m − 1, m, m + 1. Summan är 3m, alltså alltid delbar med 3. Testa alternativen: 45 = 3 · 15 (möjligt), 53, 62, 79 är inte delbara med 3.",
+        "answer": "A — 45, det enda alternativet som är en multipel av 3."
+      },
+      "counter_example": "Om följden istället bestod av tre på varandra följande jämna tal (m − 2, m, m + 2), då blir summan 3m fortfarande, men nu med m jämn — kravet skärps till delbarhet med 6."
     },
     {
       "id": "XYZ-TRAP-047",
@@ -725,7 +1139,16 @@
         "var-2019-kvant1-XYZ-001",
         "var-2025-kvant2-XYZ-002"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Paritet avgör innan räknandet börjar — jämn × vad-som-helst är jämn, udda × udda är udda.",
+      "recognition_cue": "När frågan handlar om huruvida ett uttryck \"kan vara udda\", \"måste vara jämnt\" eller liknande, särskilt med villkor som \"x och y är jämna tal\".",
+      "worked_example": {
+        "setup": "Både x och y är jämna tal. Vilket av uttrycken kan vara ett udda tal: A) x + y − 2, B) x(y + 1), C) (x + 1)/(y + 1), D) (x − y)²?",
+        "trap_thinking": "Studenten testar x = 2, y = 2 i varje uttryck och får alla jämna utom B där x(y + 1) = 2 · 3 = 6 (jämn). Eftersom inget verkar udda väljer studenten A på måfå.",
+        "correct_thinking": "Tillämpa paritetsregler: A är jämn + jämn − jämn = jämn. B är jämn · udda = jämn. D är (jämn − jämn)² = jämn. C däremot är (udda)/(udda) som kan ge ett udda heltal, t.ex. x = 2, y = 0 ger 3/1 = 3.",
+        "answer": "C — (x + 1)/(y + 1) kan landa på ett udda heltal eftersom både täljare och nämnare är udda."
+      },
+      "counter_example": "Om villkoret istället var \"x är udda och y är jämn\", då flippar paritetstabellen helt — t.ex. x + y blir nu udda och uttryck A skulle ge ett udda värde."
     },
     {
       "id": "XYZ-TRAP-048",
@@ -742,7 +1165,16 @@
         "var-2017-kvant2-XYZ-003",
         "var-2025-kvant2-XYZ-003"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Medelvärde börjar med totalsumman — försök inte lösa ut enskilda termer i förväg.",
+      "recognition_cue": "När problemet ger flera relationer mellan okända (x + y, y + z, x + z) eller en lista där några tal saknas och frågar efter medelvärdet.",
+      "worked_example": {
+        "setup": "Givet att x + y = 7,5, y + z = 12,5 och x + z = 10. Vad är medelvärdet av x, y och z?",
+        "trap_thinking": "Studenten försöker lösa ut x, y och z var för sig genom substitution, gör räknefel under vägen och får ett medelvärde som inte stämmer — landar på 7,5 (C) eftersom det \"känns rimligt\".",
+        "correct_thinking": "Addera alla tre ekvationer: (x + y) + (y + z) + (x + z) = 2(x + y + z) = 30, alltså x + y + z = 15. Medelvärdet är total/antal = 15/3 = 5.",
+        "answer": "B — medelvärdet är 5, eftersom totalsumman dividerad med 3 räcker."
+      },
+      "counter_example": "Om frågan istället bad om enskilda värden för x, y eller z, då räcker inte totalen — då måste systemet faktiskt lösas och varje variabel räknas fram."
     },
     {
       "id": "XYZ-TRAP-049",
@@ -756,7 +1188,16 @@
         "var-2016-kvant1-XYZ-008",
         "var-2025-kvant1-XYZ-011"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Vid jämnt antal är medianen medelvärdet av två tal — inte en av dem.",
+      "recognition_cue": "När en lista innehåller ett jämnt antal tal och frågan rör median, särskilt när medianen jämförs med medelvärdet eller en annan statistik.",
+      "worked_example": {
+        "setup": "Beräkna differensen mellan medianen och medelvärdet av talen −1, 1, 2, 4, 5 och 7.",
+        "trap_thinking": "Studenten sorterar talen och plockar 2 som median (en av de två mittersta), räknar medelvärdet till 3 och får differensen 1 — väljer B.",
+        "correct_thinking": "Vid sex tal är medianen medelvärdet av tredje och fjärde talet, alltså (2 + 4)/2 = 3. Medelvärdet är (−1 + 1 + 2 + 4 + 5 + 7)/6 = 18/6 = 3. Differensen blir 3 − 3 = 0.",
+        "answer": "A — differensen är 0, eftersom medianen och medelvärdet sammanfaller på 3."
+      },
+      "counter_example": "Om listan istället bestod av fem tal, då finns ett unikt mittersta element och medianen är ett enskilt tal — ingen halvering av två tal behövs."
     },
     {
       "id": "XYZ-TRAP-050",
@@ -769,7 +1210,16 @@
         "host-2015-kvant1-XYZ-006",
         "var-2026-kvant1-XYZ-006"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Utan återläggning krymper både täljare och nämnare för varje drag — sannolikheten är inte konstant.",
+      "recognition_cue": "När texten säger \"utan att lägga tillbaka\", \"plockar två bollar i följd\" eller på annat sätt beskriver flera drag från samma begränsade pool.",
+      "worked_example": {
+        "setup": "I en låda finns tjugo bollar numrerade 1–20. Siri har redan plockat bollarna 11 och 18 utan att lägga tillbaka. Hon plockar slumpmässigt en tredje boll. Hur stor är sannolikheten att numret är större än 11 och mindre än 18?",
+        "trap_thinking": "Studenten räknar gynnsamma som tal mellan 12 och 17, alltså 6 stycken, och delar med 20 (ursprungstotalen). Resultatet blir 6/20 = 3/10 och studenten väljer D.",
+        "correct_thinking": "Efter två dragningar finns bara 18 bollar kvar. Talen 12, 13, 14, 15, 16, 17 finns alla kvar (eftersom 11 och 18 är borttagna), så det är 6 gynnsamma av 18. Sannolikheten blir 6/18 = 1/3.",
+        "answer": "A — 1/3, när nämnaren justeras till de återstående 18 bollarna."
+      },
+      "counter_example": "Om Siri istället lade tillbaka varje dragen boll, då skulle nämnaren bestå som 20 och svaret bli 6/20 = 3/10 — utan återläggning krymper poolen."
     },
     {
       "id": "XYZ-TRAP-051",
@@ -788,7 +1238,16 @@
         "var-2025-kvant1-XYZ-009",
         "var-2026-kvant2-XYZ-004"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Lutning är Δy delat med Δx — räkna i den ordningen och behåll tecknet.",
+      "recognition_cue": "När problemet visar en linje i ett koordinatsystem eller ger en linjes ekvation och frågar efter lutningen, k-värdet eller den \"bästa anpassningen\".",
+      "worked_example": {
+        "setup": "I ett koordinatsystem ligger mätpunkterna ungefär längs en linje som går från övre vänstra hörnet ned mot nedre högra och korsar y-axeln vid 4. Vilken rät linje passar bäst: A) y = −x − 4, B) y = x − 4, C) y = x + 4, D) y = −x + 4?",
+        "trap_thinking": "Studenten ser att linjen korsar y-axeln vid +4 men registrerar inte att linjen lutar nedåt, så positivt k känns naturligare — väljer C (y = x + 4).",
+        "correct_thinking": "Linjen går nedåt mot höger, alltså k < 0. Δy är negativ när Δx är positiv. Skärningen med y-axeln vid +4 ger m = 4. Ekvationen är y = −x + 4.",
+        "answer": "D — y = −x + 4, eftersom negativ lutning kräver minustecknet framför x."
+      },
+      "counter_example": "Om mätpunkterna istället steg från nedre vänstra mot övre högra hörnet, då vore k positivt och C (y = x + 4) skulle vara rätt — tecknet på Δy/Δx avgör allt."
     },
     {
       "id": "XYZ-TRAP-052",
@@ -801,7 +1260,16 @@
         "var-2023-kvant1-XYZ-004",
         "var-2026-kvant2-XYZ-009"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "För linjär f gäller f(b) − f(a) = k(b − a) — konstanten m faller bort.",
+      "recognition_cue": "När uttrycket har formen f(b) − f(a) eller f(a + 1) − f(a) för en linjär funktion f(x) = kx + m, oavsett vad m är.",
+      "worked_example": {
+        "setup": "Givet att f(x) = 3x + m där m är en konstant. Vad är f(a + 1) − f(a)?",
+        "trap_thinking": "Studenten skriver ut f(a + 1) = 3(a + 1) + m = 3a + 3 + m och f(a) = 3a + m, fastnar på att m \"borde finnas kvar\" och väljer C (m).",
+        "correct_thinking": "Differensen är (3a + 3 + m) − (3a + m) = 3 — termen 3a försvinner och m faller bort. Mer direkt: f(b) − f(a) = k(b − a) = 3 · 1 = 3.",
+        "answer": "D — differensen är 3, oberoende av m och a."
+      },
+      "counter_example": "Om f istället var kvadratisk, exempelvis f(x) = x² + m, då försvinner m fortfarande men differensen beror på både a och b — den linjära genvägen k(b − a) gäller inte längre."
     },
     {
       "id": "XYZ-TRAP-053",
@@ -814,7 +1282,16 @@
         "host-2025-kvant1-XYZ-007",
         "var-2025-kvant1-XYZ-002"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Volym kräver samma enhet på alla sidor — m och cm får inte blandas under multiplikation.",
+      "recognition_cue": "När problemet anger dimensioner i blandade enheter (m och cm, dm och mm) och frågar efter volym eller area.",
+      "worked_example": {
+        "setup": "En rektangel med längden 2 dm och bredden 5 cm utgör basytan av ett rätblock med höjden 3 m. Vilken volym har rätblocket?",
+        "trap_thinking": "Studenten multiplicerar talen direkt utan att konvertera — 2 · 5 · 3 = 30 — och gissar på enhet, hamnar på 30 cm³ (A) eftersom cm dyker upp i texten.",
+        "correct_thinking": "Konvertera allt till dm först: 2 dm, 5 cm = 0,5 dm, 3 m = 30 dm. Volymen blir 2 · 0,5 · 30 = 30 dm³.",
+        "answer": "B — 30 dm³, efter konvertering till samma enhet."
+      },
+      "counter_example": "Om alla mått redan var i samma enhet från början (t.ex. allt i cm), då försvinner fällan — själva multiplikationen är aldrig problemet, bara enhetsbytet."
     },
     {
       "id": "XYZ-TRAP-054",
@@ -827,7 +1304,16 @@
         "host-2023-kvant2-XYZ-004",
         "var-2018-1-kvant1-XYZ-010"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "Term nummer n ligger (n − 1) steg från första termen — inte n steg.",
+      "recognition_cue": "När uppgiften beskriver en aritmetisk följd eller ett mönster som växer med fast skillnad och frågar efter en specifik term långt fram (figur 150, term 20 etc.).",
+      "worked_example": {
+        "setup": "Med hjälp av lika stora kvadrater bildas figurer i ett mönster där antalet kvadrater i figurerna bildar en aritmetisk talföljd som börjar med 1 och växer med 2 per steg. Hur många kvadrater finns i figur 150?",
+        "trap_thinking": "Studenten ser \"figur 150\" och multiplicerar 150 · 2 = 300, väljer C — har räknat 150 steg från start istället för 149.",
+        "correct_thinking": "Använd a_n = a_1 + (n − 1)d med a_1 = 1, d = 2 och n = 150. Då blir a_150 = 1 + 149 · 2 = 1 + 298 = 299.",
+        "answer": "B — 299 kvadrater, eftersom 150:e figuren ligger 149 steg från den första."
+      },
+      "counter_example": "Om frågan istället gällde antalet steg mellan figur 1 och figur 150, då är svaret faktiskt 149 — felgreppet kommer från att förväxla termindex med stegantal."
     },
     {
       "id": "XYZ-TRAP-055",
@@ -842,7 +1328,16 @@
         "host-ver2-2019-kvant1-XYZ-004",
         "var-2018-1-kvant1-XYZ-007"
       ],
-      "notes": null
+      "notes": null,
+      "tldr": "\"A är x gånger så stor som B\" betyder A = x·B — subjektet är det multiplicerade.",
+      "recognition_cue": "När texten kedjar relationer av typen \"3 gånger så många äpplen som päron\" och \"9 gånger så många päron som bananer\" och söker en total uttryckt i en av sorterna.",
+      "worked_example": {
+        "setup": "I en låda finns det 3 gånger så många äpplen som päron och 9 gånger så många päron som bananer. Om x är antalet äpplen, vilket uttryck motsvarar då det totala antalet frukter?",
+        "trap_thinking": "Studenten vänder på riktningen och tänker \"päron = 3 · äpplen\", får ett uppblåst antal och landar på A (13x) som ser snyggt ut.",
+        "correct_thinking": "Riktningen är A = x · B. Äpplen = 3 · päron ger päron = x/3. Päron = 9 · bananer ger bananer = päron/9 = x/27. Totalen blir x + x/3 + x/27 = (27 + 9 + 1)x/27 = 37x/27.",
+        "answer": "D — 37x/27, när varje \"x gånger så stor som\" tolkas med subjektet som multiplikator."
+      },
+      "counter_example": "Om uppgiften istället sa \"antalet päron är 3 gånger antalet äpplen\", då vänds riktningen helt och päron = 3x — formuleringen styr vilken sida som blir multiplicerad."
     }
   ]
 }

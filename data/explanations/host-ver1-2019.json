@@ -2625,7 +2625,7 @@
         "why_wrong": "40 % av 6 = 2,4 — inte heltal. Procenten 40 % motsvarar 2/5, så villkoret är delbarhet med 5, inte med 6 eller med 2."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-055",
     "pitfall": null,
     "solution_path": "40 % av x = 2x/5. För att kvoten ska bli ett heltal måste x vara delbar med 5. Av alternativen är bara 5 delbar med 5 — svaret är C.",
     "steps": [
@@ -2722,7 +2722,8 @@
     ],
     "pitfall": "Räkna noga med kvadratrutorna i koordinatsystemet — ett räknefel i basen eller höjden gör hela arean fel.",
     "solution_path": "Dela femhörningen i två trianglar och en rektangel genom att rita räta linjer mellan lämpliga hörn (eller dra ut figuren till en omslutande rektangel och dra bort hörnen). Summera delarna: t.ex. rektangel 4·2 = 8 plus två trianglar 1·2·1/2 vardera = 1 + 1 = 2, totalt 10 areaenheter.",
-    "technique": "Polygon i koordinatsystem: dela upp i rektanglar och rätvinkliga trianglar — varje del räknar du med grundformler (rektangel = b·h, triangel = b·h/2)."
+    "technique": "Polygon i koordinatsystem: dela upp i rektanglar och rätvinkliga trianglar — varje del räknar du med grundformler (rektangel = b·h, triangel = b·h/2).",
+    "framework_id": "XYZ-TRAP-021"
   },
   "host-ver1-2019-kvant1-XYZ-004": {
     "_meta": {
@@ -2853,7 +2854,7 @@
         "why_wrong": "Insättning i steg 9 visar att 5·0 = 0, men 2·3 = 6. 0 ≠ 6. x = 1 löser inte ekvationen."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-002",
     "pitfall": "Teckenfel vid distributiva lagen är den vanligaste fällan: 5·(−1) blir −5, inte +5. Botemedlet: skriv ut den fullständiga multiplikationen 5·x − 5·1 innan du förkortar — då syns minustecknet tydligt.",
     "solution_path": "Multiplicera ut parenteserna: 5x − 5 = 2x + 4. Samla x-termer på en sida: 3x = 9, alltså x = 3. Svaret är D.",
     "steps": [
@@ -2948,7 +2949,8 @@
     ],
     "pitfall": null,
     "solution_path": "Sök en kedja från givna vinklar till v via triangelns vinkelsumma. Lös trianglarna: figurens kända vinklar ger v genom 180^\\circ - (a+b) där a och b läses direkt ur figuren — kedjan landar på v = 67^\\circ.",
-    "technique": "Vinkelräkning i sammansatt figur: använd vinkelsumma 180° i triangel plus yttervinkelregeln för att härleda vinkeln från det kända till det sökta."
+    "technique": "Vinkelräkning i sammansatt figur: använd vinkelsumma 180° i triangel plus yttervinkelregeln för att härleda vinkeln från det kända till det sökta.",
+    "framework_id": "XYZ-TRAP-038"
   },
   "host-ver1-2019-kvant1-XYZ-007": {
     "_meta": {
@@ -3068,7 +3070,8 @@
     ],
     "pitfall": null,
     "solution_path": "Cirkel A: area = 9π. Cirkel B är 4× → 36π → r_B=\\sqrt{36}=6 cm.",
-    "technique": "Skalning av cirkelarea: A = πr² → A skalas med r²; r-skala = √(area-skala)."
+    "technique": "Skalning av cirkelarea: A = πr² → A skalas med r²; r-skala = √(area-skala).",
+    "framework_id": "XYZ-TRAP-042"
   },
   "host-ver1-2019-kvant1-XYZ-010": {
     "_meta": {
@@ -3200,7 +3203,8 @@
     ],
     "pitfall": null,
     "solution_path": "Av faktorisering: \\sqrt{32xy^{2}}=4y\\sqrt{2x}.",
-    "technique": "Förenkla rötter: bryt ut perfekta kvadrater under roten."
+    "technique": "Förenkla rötter: bryt ut perfekta kvadrater under roten.",
+    "framework_id": "XYZ-TRAP-032"
   },
   "host-ver1-2019-kvant1-XYZ-012": {
     "_meta": {
@@ -6491,7 +6495,7 @@
         "why_wrong": "Visuell mönstermatchning räcker inte. Räkna: 3·3 − 5 = 4, inte 5. Se steg 8."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-004",
     "pitfall": "Glömma konstanten −5 och bara räkna 3x. Botemedlet: skriv hela ekvationen, sätt in x, räkna BÅDA termerna innan jämförelse med y.",
     "solution_path": "Sätt in varje punkts (x, y) i y = 3x − 5 och se vilken som uppfyller likheten. (5, 10): 3·5 − 5 = 10 ✓. Svaret är D.",
     "steps": [
@@ -6698,7 +6702,8 @@
     ],
     "pitfall": "Identifiera bråktal som potenser av 10 innan du väljer operation: 100 = 10², 0,1 = 10⁻¹, 0,0001 = 10⁻⁴. Annars är det svårt att jämföra effekten av multiplikation kontra division.",
     "solution_path": "Maximera z genom att välja operation per steg. Steg 1: 10^{3}\\,?\\,100=x — multiplikation ger 10^{3}\\cdot 10^{2}=10^{5}, vilket är största x. Steg 2: x\\,?\\,10^{-1}=y — division med liten exponent ger 10^{5}/10^{-1}=10^{6}. Steg 3: y\\,?\\,0{,}0001=z — division med 10^{-4} ger 10^{6}/10^{-4}=10^{10}.",
-    "technique": "Vid potenser av samma bas: division innebär subtraktion av exponenter, multiplikation innebär addition. Division med en NEGATIV exponent blir alltså addition av motsvarande positiv exponent — ett kraftigt 'förstoringsverktyg'."
+    "technique": "Vid potenser av samma bas: division innebär subtraktion av exponenter, multiplikation innebär addition. Division med en NEGATIV exponent blir alltså addition av motsvarande positiv exponent — ett kraftigt 'förstoringsverktyg'.",
+    "framework_id": "XYZ-TRAP-031"
   },
   "host-ver1-2019-kvant2-XYZ-012": {
     "_meta": {
