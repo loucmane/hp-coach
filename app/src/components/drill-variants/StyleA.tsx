@@ -49,6 +49,7 @@ import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { EditionStrip } from '@/components/EditionStrip'
 import { MathText } from '@/components/MathText'
+import { NavLinks } from '@/components/Page'
 import { PreGradeFill } from '@/components/pre-grade/PreGradeFill'
 import type { VariantData } from './DrillVariantShell'
 import { useExplanation } from './useExplanation'
@@ -120,7 +121,17 @@ export function StyleA({
           color: 'var(--ink)',
         }}
       >
-        <span>HP · COACH · {question.section}</span>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'baseline',
+            gap: 'clamp(20px, 3vw, 40px)',
+            minWidth: 0,
+          }}
+        >
+          <span>HP · COACH · {question.section}</span>
+          <NavLinks />
+        </div>
         {/* Phase A.6V Edition Strip — replaces the static folio. The
          *  picker carries more value than 'pp. 1 / 1' here (which
          *  the variant doesn't even know the real value of), and
@@ -368,10 +379,10 @@ export function StyleA({
                       <span
                         style={{
                           fontFamily: 'var(--font-mono)',
-                          fontSize: 11,
+                          fontSize: 13,
                           letterSpacing: '0.04em',
                           fontWeight: isPicked ? 600 : 500,
-                          color: isPicked || isCorrect ? 'var(--ink)' : 'var(--muted)',
+                          color: isPicked || isCorrect ? 'var(--ink)' : 'var(--ink-2)',
                           fontVariantNumeric: 'tabular-nums',
                         }}
                       >
