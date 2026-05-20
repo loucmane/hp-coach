@@ -37,10 +37,18 @@ APP_PUBLIC_DATA = REPO_ROOT / "app" / "public" / "data"
 # leading whitespace tolerance so they only trim trailing bleeds, not
 # mid-string occurrences.
 FOOTER_PATTERNS = [
-    # `… – 17 – FORTSÄTT PÅ NÄSTA SIDA »` (and trailing whitespace)
-    re.compile(r"\s*[–-]\s*\d+\s*[–-]\s*FORTSÄTT PÅ NÄSTA SIDA\s*»?\s*$"),
+    # `… – 17 – FORTSÄTT PÅ NÄSTA SIDA »` / `Fortsätt på nästa sida »`
+    # Case-insensitive — older cohorts (pre-2020) parse the footer
+    # in mixed casing; pass-2 audit caught 38 residual bleeds.
+    re.compile(
+        r"\s*[–-]\s*\d+\s*[–-]\s*FORTSÄTT PÅ NÄSTA SIDA\s*»?\s*$",
+        re.IGNORECASE,
+    ),
     # `… – 23 – Provet är slut. finns tid över, kontroLlera dina svar.`
-    re.compile(r"\s*[–-]\s*\d+\s*[–-]\s*Provet är slut[^$]*$"),
+    re.compile(
+        r"\s*[–-]\s*\d+\s*[–-]\s*Provet är slut[^$]*$",
+        re.IGNORECASE,
+    ),
 ]
 
 
