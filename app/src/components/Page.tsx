@@ -157,7 +157,7 @@ const NAV_LINKS = [
   { to: '/progress', label: 'Framsteg' },
 ] as const
 
-function NavLinks() {
+export function NavLinks() {
   const location = useLocation()
   const pathname = location.pathname
   // Active route = exact path match for '/', prefix match otherwise so
