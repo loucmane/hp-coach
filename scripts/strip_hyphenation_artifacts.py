@@ -42,6 +42,14 @@ SWEEP_DIRS = [
 # 1. Soft hyphen — remove unconditionally.
 SOFT_HYPHEN = "­"
 
+# Swedish connector words that mark a compound-prefix hyphen, NOT a
+# PDF line-break artifact. E.g. `växt- och djurliv` — the `-` is real
+# Swedish grammar, not a line break, and collapsing it produces a
+# non-word. Lookahead in HYPHEN_BREAK keeps these intact.
+# (Pass-2 fix: the original regex collapsed ~6000 such pairs.)
+CONNECTORS = ["och", "eller", "men", "inte", "samt"]
+CONNECTOR_GUARD = r"(?!(?:" + "|".join(CONNECTORS) + r")\b)"
+
 # 2. Hyphen-break artifacts. The pattern targets:
 #       <Swedish lowercase> (- | U+00AD) <whitespace> <Swedish lowercase>
 #    Either an ASCII `-` or a soft hyphen, then whitespace, then a
@@ -50,8 +58,11 @@ SOFT_HYPHEN = "­"
 #       - hyphenated compounds where both sides are uppercase ("HD-domen")
 #       - en-dash `–` or em-dash `—` (legitimate punctuation)
 #       - dash followed by punctuation (intentional)
+#       - Swedish connector words on the right side (CONNECTOR_GUARD)
 HYPHEN_BREAK = re.compile(
-    r"([a-zåäö])(?:-|" + SOFT_HYPHEN + r")\s+([a-zåäö])"
+    r"([a-zåäö])(?:-|" + SOFT_HYPHEN + r")\s+"
+    + CONNECTOR_GUARD
+    + r"([a-zåäö])"
 )
 
 
