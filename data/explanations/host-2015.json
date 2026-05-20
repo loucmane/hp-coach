@@ -8,13 +8,13 @@
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Första instinkten är att \"högre exponent ger större tal\" — så x^{3} borde vara större än x^{2}.",
+        "why_tempting": "Första instinkten är att \"högre exponent ger större tal\" — så x^{3} borde vara större än x^{2}.",
         "why_wrong": "Den regeln gäller bara för positiva tal. För negativa x vänder mönstret eftersom tecknet växlar mellan jämna och udda potenser. Steg 4–5 låser fast tecknet."
       },
       {
         "letter": "C",
-        "why_tempting": "Det är lätt att tänka att x^{2} och x^{3} är \"nästan samma\" för x nära noll.",
-        "why_wrong": "Även för x = −0,01 är x^{2} = 0{,}0001 (positivt) och x^{3} = -0{,}000001 (negativt). Skillnaden i tecken är total — likhet kräver att båda är noll, men x < 0 utesluter det."
+        "why_tempting": "Det är lätt att tänka att x^{2} och x^{3} är \"nästan samma\" för x nära noll.",
+        "why_wrong": "Även för x = −0,01 är x^{2} = 0{,}0001 (positivt) och x^{3} = -0{,}000001 (negativt). Skillnaden i tecken är total — likhet kräver att båda är noll, men x < 0 utesluter det."
       },
       {
         "letter": "D",
@@ -28,13 +28,13 @@
     "steps": [
       {
         "n": 1,
-        "text": "Vi vet att x är ett negativt tal (x < 0). Vi ska jämföra x^{2} mot x^{3} — alltså x kvadrerad mot x i kubik. Vilken är störst?",
+        "text": "Vi vet att x är ett negativt tal (x < 0). Vi ska jämföra x^{2} mot x^{3} — alltså x kvadrerad mot x i kubik. Vilken är störst?",
         "tier": "essential",
         "title": "Förstå problemet"
       },
       {
         "n": 2,
-        "text": "x^{2} betyder x gånger x. x^{3} betyder x gånger x gånger x. Exponenten räknar bara hur många gånger x multipliceras med sig själv.",
+        "text": "x^{2} betyder x gånger x. x^{3} betyder x gånger x gånger x. Exponenten räknar bara hur många gånger x multipliceras med sig själv.",
         "tier": "detail",
         "title": "Vad betyder x² och x³?"
       },
@@ -46,13 +46,13 @@
       },
       {
         "n": 4,
-        "text": "x^{2} = x \\cdot x. Två negativa faktorer (eftersom x är negativ). Två är jämnt → resultatet är positivt. Kvantitet I är POSITIV.",
+        "text": "x^{2} = x \\cdot x. Två negativa faktorer (eftersom x är negativ). Två är jämnt → resultatet är positivt. Kvantitet I är POSITIV.",
         "tier": "essential",
         "title": "Räkna ut tecknet på Kvantitet I"
       },
       {
         "n": 5,
-        "text": "x^{3} = x \\cdot x \\cdot x. Tre negativa faktorer. Tre är udda → resultatet är negativt. Kvantitet II är NEGATIV.",
+        "text": "x^{3} = x \\cdot x \\cdot x. Tre negativa faktorer. Tre är udda → resultatet är negativt. Kvantitet II är NEGATIV.",
         "tier": "essential",
         "title": "Räkna ut tecknet på Kvantitet II"
       },
@@ -64,13 +64,13 @@
       },
       {
         "n": 7,
-        "text": "Sätt x = −2. Då är x^{2} = (-2)(-2) = 4 (positivt). Och x^{3} = (-2)(-2)(-2) = 4 \\cdot (-2) = -8 (negativt). 4 > −8. Stämmer.",
+        "text": "Sätt x = −2. Då är x^{2} = (-2)(-2) = 4 (positivt). Och x^{3} = (-2)(-2)(-2) = 4 \\cdot (-2) = -8 (negativt). 4 > −8. Stämmer.",
         "tier": "detail",
         "title": "Testa med ett konkret tal"
       },
       {
         "n": 8,
-        "text": "Sätt x = −0,5. x^{2} = 0{,}25 (positivt). x^{3} = -0{,}125 (negativt). Fortfarande I > II. Mönstret håller för ALLA negativa x.",
+        "text": "Sätt x = −0,5. x^{2} = 0{,}25 (positivt). x^{3} = -0{,}125 (negativt). Fortfarande I > II. Mönstret håller för ALLA negativa x.",
         "tier": "detail",
         "title": "Testa med x nära noll"
       },
@@ -82,7 +82,7 @@
       },
       {
         "n": 10,
-        "text": "x^{2} är positivt, x^{3} är negativt, alltså är I alltid större än II. Svaret är A. Insikten i en mening: jämn exponent på ett negativt tal ger positivt, udda exponent behåller minustecknet.",
+        "text": "x^{2} är positivt, x^{3} är negativt, alltså är I alltid större än II. Svaret är A. Insikten i en mening: jämn exponent på ett negativt tal ger positivt, udda exponent behåller minustecknet.",
         "tier": "essential",
         "title": "Slutsats"
       }
@@ -417,12 +417,12 @@
       }
     ],
     "framework_id": "KVA-TRAP-013",
-    "pitfall": "Den vanligaste fallgropen är tecken vid (-1)^{3} mot (-1)^{2} — många får dem omkastade. Botemedlet: räkna alltid potensen separat på sidan av pappret och skriv ut tecknet innan du sätter in i polynomet.",
+    "pitfall": "Den vanligaste fallgropen är tecken vid (-1)^{3} mot (-1)^{2} — många får dem omkastade. Botemedlet: räkna alltid potensen separat på sidan av pappret och skriv ut tecknet innan du sätter in i polynomet.",
     "solution_path": "Sätt in x = −1 och x = 0 i f(x)=3x^{3}+2x^{2}-5x+1. f(−1) = −3 + 2 + 5 + 1 = 5. f(0) = 1. 5 > 1, så I > II. Svaret är A.",
     "steps": [
       {
         "n": 1,
-        "text": "Vi har funktionen f(x)=3x^{3}+2x^{2}-5x+1. Vi jämför värdet f(−1) (Kvantitet I) mot f(0) (Kvantitet II).",
+        "text": "Vi har funktionen f(x)=3x^{3}+2x^{2}-5x+1. Vi jämför värdet f(−1) (Kvantitet I) mot f(0) (Kvantitet II).",
         "tier": "essential",
         "title": "Förstå problemet"
       },
@@ -434,19 +434,19 @@
       },
       {
         "n": 3,
-        "text": "x^{3} = x \\cdot x \\cdot x. För x = −1: (-1)^{3} = (-1)\\cdot(-1)\\cdot(-1). Två negativa multiplicerade ger +1, sedan gångrat med −1 igen ger −1. Alltså (-1)^{3} = -1.",
+        "text": "x^{3} = x \\cdot x \\cdot x. För x = −1: (-1)^{3} = (-1)\\cdot(-1)\\cdot(-1). Två negativa multiplicerade ger +1, sedan gångrat med −1 igen ger −1. Alltså (-1)^{3} = -1.",
         "tier": "detail",
-        "title": "Vad är x^{3}?"
+        "title": "Vad är x^{3}?"
       },
       {
         "n": 4,
-        "text": "x^{2} = x \\cdot x. För x = −1: (-1)^{2} = (-1)\\cdot(-1) = 1 (två negativa = positivt).",
+        "text": "x^{2} = x \\cdot x. För x = −1: (-1)^{2} = (-1)\\cdot(-1) = 1 (två negativa = positivt).",
         "tier": "detail",
-        "title": "Vad är x^{2}?"
+        "title": "Vad är x^{2}?"
       },
       {
         "n": 5,
-        "text": "3x^{3} blir 3·(−1) = −3. 2x^{2} blir 2·1 = 2. −5x blir −5·(−1) = 5. Konstanten +1 förblir +1.",
+        "text": "3x^{3} blir 3·(−1) = −3. 2x^{2} blir 2·1 = 2. −5x blir −5·(−1) = 5. Konstanten +1 förblir +1.",
         "tier": "essential",
         "title": "Räkna f(−1) term för term"
       },
@@ -458,7 +458,7 @@
       },
       {
         "n": 7,
-        "text": "För x = 0: 3·0^{3} = 0, 2·0^{2} = 0, −5·0 = 0, +1 förblir 1. Alla x-termer försvinner, bara konstantleden +1 är kvar. f(0) = 1.",
+        "text": "För x = 0: 3·0^{3} = 0, 2·0^{2} = 0, −5·0 = 0, +1 förblir 1. Alla x-termer försvinner, bara konstantleden +1 är kvar. f(0) = 1.",
         "tier": "essential",
         "title": "Räkna f(0)"
       },
@@ -534,19 +534,19 @@
       },
       {
         "n": 3,
-        "text": "Volymen av en kub är sidlängden upphöjd till tre: V = s^{3}. Att räkna s^{3} betyder s · s · s.",
+        "text": "Volymen av en kub är sidlängden upphöjd till tre: V = s^{3}. Att räkna s^{3} betyder s · s · s.",
         "tier": "essential",
         "title": "Volymformel för kub"
       },
       {
         "n": 4,
-        "text": "V = 125, så s^{3} = 125. Vi söker det tal som upphöjt till 3 ger 125. 5^{3} = 5\\cdot 5\\cdot 5 = 25 \\cdot 5 = 125. Alltså s = 5 cm.",
+        "text": "V = 125, så s^{3} = 125. Vi söker det tal som upphöjt till 3 ger 125. 5^{3} = 5\\cdot 5\\cdot 5 = 25 \\cdot 5 = 125. Alltså s = 5 cm.",
         "tier": "essential",
         "title": "Hitta sidlängden"
       },
       {
         "n": 5,
-        "text": "Kubikroten av 125 är det tal vars kub är 125. Den skrivs \\sqrt[3]{125} och här är den 5. Det är inversen av att kubera.",
+        "text": "Kubikroten av 125 är det tal vars kub är 125. Den skrivs \\sqrt[3]{125} och här är den 5. Det är inversen av att kubera.",
         "tier": "detail",
         "title": "Vad betyder kubikrot?"
       },
@@ -602,7 +602,7 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att 7^{3} = 343 är ett \"stort kubiskt tal\" och därför större än 111·något.",
+        "why_tempting": "Det är lätt att tro att 7^{3} = 343 är ett \"stort kubiskt tal\" och därför större än 111·något.",
         "why_wrong": "Räkningen 111·π ≈ 348 (steg 4) är något STÖRRE än 343, inte mindre. Marginalen är liten men entydig."
       },
       {
@@ -622,13 +622,13 @@
     "steps": [
       {
         "n": 1,
-        "text": "Vi jämför 7^{3} (Kvantitet I) mot 111\\pi (Kvantitet II). Båda är reella tal — vi behöver bara räkna ut dem.",
+        "text": "Vi jämför 7^{3} (Kvantitet I) mot 111\\pi (Kvantitet II). Båda är reella tal — vi behöver bara räkna ut dem.",
         "tier": "essential",
         "title": "Förstå problemet"
       },
       {
         "n": 2,
-        "text": "7^{3} = 7\\cdot 7\\cdot 7. Räkna stegvis: 7·7 = 49. 49·7 = ? 49·7 = 50·7 − 1·7 = 350 − 7 = 343. Alltså 7^{3} = 343.",
+        "text": "7^{3} = 7\\cdot 7\\cdot 7. Räkna stegvis: 7·7 = 49. 49·7 = ? 49·7 = 50·7 − 1·7 = 350 − 7 = 343. Alltså 7^{3} = 343.",
         "tier": "essential",
         "title": "Vad är 7³?"
       },
@@ -664,7 +664,7 @@
       },
       {
         "n": 8,
-        "text": "343 = 7^{3}. 111π har π ≈ 3,14159… Skillnaden 111π − 343 = 5,72… > 0. Alltid positivt.",
+        "text": "343 = 7^{3}. 111π har π ≈ 3,14159… Skillnaden 111π − 343 = 5,72… > 0. Alltid positivt.",
         "tier": "essential",
         "title": "Vilket håll vinner — exakt?"
       },
@@ -840,7 +840,7 @@
       },
       {
         "n": 4,
-        "text": "Distributiva lagen: 0{,}55(x+10) = 0{,}55\\cdot x + 0{,}55\\cdot 10 = 0{,}55x + 5{,}5.",
+        "text": "Distributiva lagen: 0{,}55(x+10) = 0{,}55\\cdot x + 0{,}55\\cdot 10 = 0{,}55x + 5{,}5.",
         "tier": "essential",
         "title": "Multiplicera ut höger sida"
       },
@@ -1924,7 +1924,7 @@
       },
       {
         "n": 7,
-        "text": "a^{2} = a \\cdot a. Om a = 6, då är a^{2} = 36. Att kvadrera ett jämnt tal ger alltid ett jämnt tal eftersom faktorerna båda är jämna.",
+        "text": "a^{2} = a \\cdot a. Om a = 6, då är a^{2} = 36. Att kvadrera ett jämnt tal ger alltid ett jämnt tal eftersom faktorerna båda är jämna.",
         "tier": "detail",
         "title": "Vad betyder ^2?"
       },
@@ -2368,7 +2368,7 @@
       {
         "letter": "C",
         "why_tempting": "Många tror att \"båda är så små att de är ungefär noll och därför lika\".",
-        "why_wrong": "Båda är små positiva tal, men exakt definierade: 1/7^{8} ≈ 1,77·10⁻⁷ och 1/7^{16} ≈ 3,14·10⁻¹⁴ — olika storleksordningar."
+        "why_wrong": "Båda är små positiva tal, men exakt definierade: 1/7^{8} ≈ 1,77·10⁻⁷ och 1/7^{16} ≈ 3,14·10⁻¹⁴ — olika storleksordningar."
       },
       {
         "letter": "D",
@@ -2382,31 +2382,31 @@
     "steps": [
       {
         "n": 1,
-        "text": "Vi jämför 7^{-8} mot 7^{-16}. Båda är negativa potenser av 7 — vi behöver veta hur de förhåller sig storleksmässigt.",
+        "text": "Vi jämför 7^{-8} mot 7^{-16}. Båda är negativa potenser av 7 — vi behöver veta hur de förhåller sig storleksmässigt.",
         "tier": "essential",
         "title": "Förstå problemet"
       },
       {
         "n": 2,
-        "text": "a^{-n} = 1/a^{n}. Negativ exponent betyder \"inverterat\" — räkna positiva potensen och ta inversen. T.ex. 2^{-3} = 1/8.",
+        "text": "a^{-n} = 1/a^{n}. Negativ exponent betyder \"inverterat\" — räkna positiva potensen och ta inversen. T.ex. 2^{-3} = 1/8.",
         "tier": "essential",
         "title": "Vad betyder negativ exponent?"
       },
       {
         "n": 3,
-        "text": "7^{-8} = 1/7^{8}.",
+        "text": "7^{-8} = 1/7^{8}.",
         "tier": "essential",
         "title": "Skriv om Kvantitet I"
       },
       {
         "n": 4,
-        "text": "7^{-16} = 1/7^{16}.",
+        "text": "7^{-16} = 1/7^{16}.",
         "tier": "essential",
         "title": "Skriv om Kvantitet II"
       },
       {
         "n": 5,
-        "text": "7^{16} är MYCKET större än 7^{8} (eftersom 7^{16} = 7^{8}\\cdot 7^{8}, dvs. 7^{8} multiplicerat med sig självt en gång till).",
+        "text": "7^{16} är MYCKET större än 7^{8} (eftersom 7^{16} = 7^{8}\\cdot 7^{8}, dvs. 7^{8} multiplicerat med sig självt en gång till).",
         "tier": "essential",
         "title": "Jämför nämnarna"
       },
@@ -2418,19 +2418,19 @@
       },
       {
         "n": 7,
-        "text": "1/7^{16} < 1/7^{8} eftersom 7^{16} > 7^{8}. Alltså är Kvantitet II mindre än Kvantitet I.",
+        "text": "1/7^{16} < 1/7^{8} eftersom 7^{16} > 7^{8}. Alltså är Kvantitet II mindre än Kvantitet I.",
         "tier": "essential",
         "title": "Slutsats om bråken"
       },
       {
         "n": 8,
-        "text": "2^{-1} = 1/2 = 0{,}5. 2^{-2} = 1/4 = 0{,}25. Större negativ exponent ger MINDRE positivt tal. Samma mönster för bas 7.",
+        "text": "2^{-1} = 1/2 = 0{,}5. 2^{-2} = 1/4 = 0{,}25. Större negativ exponent ger MINDRE positivt tal. Samma mönster för bas 7.",
         "tier": "detail",
         "title": "Konkret kontroll med små tal"
       },
       {
         "n": 9,
-        "text": "B (II > I) skulle kräva 7^{-16} > 7^{-8} — men negativa exponenter följer motsatt regel mot positiva. Steg 8 ger motexempel även med små tal.",
+        "text": "B (II > I) skulle kräva 7^{-16} > 7^{-8} — men negativa exponenter följer motsatt regel mot positiva. Steg 8 ger motexempel även med små tal.",
         "tier": "detail",
         "title": "Avfärda B"
       },
@@ -2442,12 +2442,12 @@
       },
       {
         "n": 11,
-        "text": "7^{-8} > 7^{-16}. Svaret är A. Insikten i en mening: för negativa exponenter gäller att MINDRE absolutvärde på exponenten = STÖRRE positivt tal (eftersom bråket bara är inversen av motsvarande positiva potens).",
+        "text": "7^{-8} > 7^{-16}. Svaret är A. Insikten i en mening: för negativa exponenter gäller att MINDRE absolutvärde på exponenten = STÖRRE positivt tal (eftersom bråket bara är inversen av motsvarande positiva potens).",
         "tier": "essential",
         "title": "Slutsats"
       }
     ],
-    "technique": "Negativa-exponenter-strategin: skriv om {MO}a^{{-n}}{MC} som {MO}1/a^{{n}}{MC} och jämför bråken med samma täljare via deras nämnare. Triggern är negativa exponenter — invertera dem till bråk, då blir storleksjämförelsen mekanisk.",
+    "technique": "Negativa-exponenter-strategin: skriv om {MO}a^{{-n}}{MC} som {MO}1/a^{{n}}{MC} och jämför bråken med samma täljare via deras nämnare. Triggern är negativa exponenter — invertera dem till bråk, då blir storleksjämförelsen mekanisk.",
     "pregrade_tactic": {
       "handle": "Negativ-exponent-inversen",
       "move": "Skriv om varje negativ potens som ett bråk: a upphöjt till minus n blir ett delat med a upphöjt till n."
@@ -2569,12 +2569,12 @@
       {
         "letter": "A",
         "why_tempting": "Det är frestande att tro att radie och höjd är \"likvärdiga\" och att större höjd ger större volym.",
-        "why_wrong": "Höjden är linjär, radien kvadrerad i formeln \\pi r^{2} h. Större radie vinner ALLTID över större höjd (av samma differens). Steg 4–6 räknar exakt."
+        "why_wrong": "Höjden är linjär, radien kvadrerad i formeln \\pi r^{2} h. Större radie vinner ALLTID över större höjd (av samma differens). Steg 4–6 räknar exakt."
       },
       {
         "letter": "C",
         "why_tempting": "Det är frestande att tro att eftersom r·h-produkten är samma (3·4 = 4·3 = 12), måste volymerna vara lika.",
-        "why_wrong": "Volymen är \\pi r^{2} h, inte π·r·h. r² · h ≠ r · h². Stegen 4–5 räknar olika tal."
+        "why_wrong": "Volymen är \\pi r^{2} h, inte π·r·h. r² · h ≠ r · h². Stegen 4–5 räknar olika tal."
       },
       {
         "letter": "D",
@@ -2583,7 +2583,7 @@
       }
     ],
     "framework_id": "KVA-TRAP-020",
-    "pitfall": "Vanligaste fallgropen är att glömma kvadreringen och räkna \\pi r h, vilket skulle göra cylindrarna lika. Botemedlet: räkna r^{2} SEPARAT som en första rad innan du multiplicerar med h.",
+    "pitfall": "Vanligaste fallgropen är att glömma kvadreringen och räkna \\pi r h, vilket skulle göra cylindrarna lika. Botemedlet: räkna r^{2} SEPARAT som en första rad innan du multiplicerar med h.",
     "solution_path": "Cylindervolym = \\pi r^{2} h. Kvantitet I (r=3, h=4): \\pi \\cdot 9 \\cdot 4 = 36\\pi. Kvantitet II (r=4, h=3): \\pi \\cdot 16 \\cdot 3 = 48\\pi. 48π > 36π. Svaret är B.",
     "steps": [
       {
@@ -2594,25 +2594,25 @@
       },
       {
         "n": 2,
-        "text": "Volym = basytan · höjd. Basytan är en cirkel med radie r och area \\pi r^{2}. Alltså V = \\pi r^{2} h.",
+        "text": "Volym = basytan · höjd. Basytan är en cirkel med radie r och area \\pi r^{2}. Alltså V = \\pi r^{2} h.",
         "tier": "essential",
         "title": "Formel för cylinder-volym"
       },
       {
         "n": 3,
-        "text": "r^{2} = r \\cdot r. Kvadrering av radien står för \"hur mycket area\" cirkeln har, i förhållande till radie 1.",
+        "text": "r^{2} = r \\cdot r. Kvadrering av radien står för \"hur mycket area\" cirkeln har, i förhållande till radie 1.",
         "tier": "detail",
         "title": "Vad betyder r²?"
       },
       {
         "n": 4,
-        "text": "r = 3, h = 4. V_{I} = \\pi \\cdot 3^{2} \\cdot 4 = \\pi \\cdot 9 \\cdot 4 = 36\\pi cm³.",
+        "text": "r = 3, h = 4. V_{I} = \\pi \\cdot 3^{2} \\cdot 4 = \\pi \\cdot 9 \\cdot 4 = 36\\pi cm³.",
         "tier": "essential",
         "title": "Räkna Kvantitet I"
       },
       {
         "n": 5,
-        "text": "r = 4, h = 3. V_{II} = \\pi \\cdot 4^{2} \\cdot 3 = \\pi \\cdot 16 \\cdot 3 = 48\\pi cm³.",
+        "text": "r = 4, h = 3. V_{II} = \\pi \\cdot 4^{2} \\cdot 3 = \\pi \\cdot 16 \\cdot 3 = 48\\pi cm³.",
         "tier": "essential",
         "title": "Räkna Kvantitet II"
       },
@@ -2624,7 +2624,7 @@
       },
       {
         "n": 7,
-        "text": "I V = \\pi r^{2} h kvadreras radien men inte höjden. Det betyder att en ändring i radien får MYCKET större effekt än en lika stor ändring i höjden. Att byta från r=3 till r=4 nästan dubblar bidraget från r²-faktorn (9 → 16).",
+        "text": "I V = \\pi r^{2} h kvadreras radien men inte höjden. Det betyder att en ändring i radien får MYCKET större effekt än en lika stor ändring i höjden. Att byta från r=3 till r=4 nästan dubblar bidraget från r²-faktorn (9 → 16).",
         "tier": "detail",
         "title": "Varför viktigare radie?"
       },
@@ -2653,7 +2653,7 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Cylinder-volym-formel-strategin: {MO}V = \\pi r^{{2}} h{MC} — komihåg att RADIEN kvadreras. Triggern är två cylindrar med olika r och h — när du behöver jämföra, räkna {MO}r^{{2}} h{MC} (utan π-faktor, den är gemensam) och jämför.",
+    "technique": "Cylinder-volym-formel-strategin: {MO}V = \\pi r^{{2}} h{MC} — komihåg att RADIEN kvadreras. Triggern är två cylindrar med olika r och h — när du behöver jämföra, räkna {MO}r^{{2}} h{MC} (utan π-faktor, den är gemensam) och jämför.",
     "pregrade_tactic": {
       "handle": "Cylindervolymen",
       "move": "Vid cylinder: räkna radien i kvadrat gånger höjden (π är gemensam för båda och kan strykas) och jämför."
@@ -2768,13 +2768,13 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är frestande att tro att 2\\square 2 är större eftersom båda \"talen\" är 2 (icke-noll), medan 0\\square 3 har en nolla.",
-        "why_wrong": "Räkneoperationen är kvadrat-sum: 3^{2} = 9 är större än 2^{2} + 2^{2} = 8. Steg 3–4 låser fast värdena."
+        "why_tempting": "Det är frestande att tro att 2\\square 2 är större eftersom båda \"talen\" är 2 (icke-noll), medan 0\\square 3 har en nolla.",
+        "why_wrong": "Räkneoperationen är kvadrat-sum: 3^{2} = 9 är större än 2^{2} + 2^{2} = 8. Steg 3–4 låser fast värdena."
       },
       {
         "letter": "C",
         "why_tempting": "Många tror att operationen är symmetrisk och därför ger samma värde.",
-        "why_wrong": "Operationen är symmetrisk i argumenten, men det betyder bara x\\square y = y\\square x — inte att olika argumentpar ger samma värde. (2,2) och (0,3) är olika par, ger olika summor."
+        "why_wrong": "Operationen är symmetrisk i argumenten, men det betyder bara x\\square y = y\\square x — inte att olika argumentpar ger samma värde. (2,2) och (0,3) är olika par, ger olika summor."
       },
       {
         "letter": "D",
@@ -2783,30 +2783,30 @@
       }
     ],
     "framework_id": null,
-    "pitfall": "Vanligt fel är att glömma kvadreringen och bara addera argumenten: tycka 2\\square 2 = 4 (= 2 + 2) och 0\\square 3 = 3 (= 0 + 3). Botemedlet: läs formeln EXAKT — vad står efter likhetstecknet? Här x^{2} + y^{2}, alltså kvadrater.",
+    "pitfall": "Vanligt fel är att glömma kvadreringen och bara addera argumenten: tycka 2\\square 2 = 4 (= 2 + 2) och 0\\square 3 = 3 (= 0 + 3). Botemedlet: läs formeln EXAKT — vad står efter likhetstecknet? Här x^{2} + y^{2}, alltså kvadrater.",
     "solution_path": "Räkneoperationen är definierad som x \\square y = x^{2} + y^{2}. Kvantitet I: 2\\square 2 = 4 + 4 = 8. Kvantitet II: 0\\square 3 = 0 + 9 = 9. 9 > 8, alltså II > I. Svaret är B.",
     "steps": [
       {
         "n": 1,
-        "text": "En NY räkneoperation definieras: x \\square y = x^{2} + y^{2}. Vi ska räkna ut 2 \\square 2 och 0 \\square 3 och jämföra.",
+        "text": "En NY räkneoperation definieras: x \\square y = x^{2} + y^{2}. Vi ska räkna ut 2 \\square 2 och 0 \\square 3 och jämföra.",
         "tier": "essential",
         "title": "Förstå problemet"
       },
       {
         "n": 2,
-        "text": "När en uppgift definierar en symbol (här \\square) med en formel (x^{2} + y^{2}), ska du tolka symbolen exakt enligt formeln. Det är som att lära sig en ny räknesatsen som bara gäller för den här uppgiften.",
+        "text": "När en uppgift definierar en symbol (här \\square) med en formel (x^{2} + y^{2}), ska du tolka symbolen exakt enligt formeln. Det är som att lära sig en ny räknesatsen som bara gäller för den här uppgiften.",
         "tier": "detail",
         "title": "Vad är en \"definierad operation\"?"
       },
       {
         "n": 3,
-        "text": "2 \\square 2 = 2^{2} + 2^{2} = 4 + 4 = 8.",
+        "text": "2 \\square 2 = 2^{2} + 2^{2} = 4 + 4 = 8.",
         "tier": "essential",
         "title": "Räkna Kvantitet I"
       },
       {
         "n": 4,
-        "text": "0 \\square 3 = 0^{2} + 3^{2} = 0 + 9 = 9.",
+        "text": "0 \\square 3 = 0^{2} + 3^{2} = 0 + 9 = 9.",
         "tier": "essential",
         "title": "Räkna Kvantitet II"
       },
@@ -2853,7 +2853,7 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Definierad-operation-strategin: läs definitionen av den nya symbolen och substituera in argumentvärdena precis enligt formeln. Triggern är en udda symbol med en \"x \\square y = ...\"-definition — det är bara en alternativ notation för ett vanligt aritmetiskt uttryck.",
+    "technique": "Definierad-operation-strategin: läs definitionen av den nya symbolen och substituera in argumentvärdena precis enligt formeln. Triggern är en udda symbol med en \"x \\square y = ...\"-definition — det är bara en alternativ notation för ett vanligt aritmetiskt uttryck.",
     "pregrade_tactic": {
       "handle": "Definierad-operation",
       "move": "Läs definitionen av den nya symbolen som en formel och sätt bara in argumenten — det är vanlig aritmetik i förklädnad."
@@ -2985,7 +2985,7 @@
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta \"linjernas konfiguration kan variera, kanske saknas info\".",
-        "why_wrong": "Frågan handlar om MAXIMUM, inte ett specifikt fall. Maximum är väldefinierat och låst av kombinatoriken: {MO}\\binom{{8}}{{2}} = 28{MC}."
+        "why_wrong": "Frågan handlar om MAXIMUM, inte ett specifikt fall. Maximum är väldefinierat och låst av kombinatoriken: {MO}\\binom{{8}}{{2}} = 28{MC}."
       }
     ],
     "framework_id": null,
@@ -3018,25 +3018,25 @@
       },
       {
         "n": 5,
-        "text": "Antal par av n objekt är \\binom{n}{2} = \\frac{n(n-1)}{2}. Förklaring: välj första objektet av n sätt, andra av (n−1) sätt, men ordningen spelar ingen roll (par är oordnade), så dela med 2.",
+        "text": "Antal par av n objekt är \\binom{n}{2} = \\frac{n(n-1)}{2}. Förklaring: välj första objektet av n sätt, andra av (n−1) sätt, men ordningen spelar ingen roll (par är oordnade), så dela med 2.",
         "tier": "detail",
         "title": "Formel för antal par"
       },
       {
         "n": 6,
-        "text": "\\frac{2\\cdot 1}{2} = 1. Stämmer med problemets uppgift \"två linjer: högst 1 skärning\".",
+        "text": "\\frac{2\\cdot 1}{2} = 1. Stämmer med problemets uppgift \"två linjer: högst 1 skärning\".",
         "tier": "detail",
         "title": "Pröva formeln på n = 2"
       },
       {
         "n": 7,
-        "text": "\\frac{3\\cdot 2}{2} = 3. Stämmer med problemets uppgift \"tre linjer: högst 3 skärningar\".",
+        "text": "\\frac{3\\cdot 2}{2} = 3. Stämmer med problemets uppgift \"tre linjer: högst 3 skärningar\".",
         "tier": "detail",
         "title": "Pröva formeln på n = 3"
       },
       {
         "n": 8,
-        "text": "\\frac{8\\cdot 7}{2} = \\frac{56}{2} = 28.",
+        "text": "\\frac{8\\cdot 7}{2} = \\frac{56}{2} = 28.",
         "tier": "essential",
         "title": "Tillämpa på n = 8"
       },
@@ -3066,12 +3066,12 @@
       },
       {
         "n": 13,
-        "text": "Max antal skärningspunkter för 8 linjer = 28 > 24. Svaret är A. Insikten i en mening: maximalt antal skärningspunkter för n linjer är \\binom{n}{2} = n(n-1)/2 — det är antalet par.",
+        "text": "Max antal skärningspunkter för 8 linjer = 28 > 24. Svaret är A. Insikten i en mening: maximalt antal skärningspunkter för n linjer är \\binom{n}{2} = n(n-1)/2 — det är antalet par.",
         "tier": "essential",
         "title": "Slutsats"
       }
     ],
-    "technique": "Par-räknings-strategin: för \"hur många skärningar/par/möten\" med n objekt, använd binomialkoefficienten {MO}\\binom{{n}}{{2}} = n(n-1)/2{MC}. Triggern är frågan om ATT VÄLJA PAR (par av linjer, par av lag, ...) — det är inte multiplikation utan kombination.",
+    "technique": "Par-räknings-strategin: för \"hur många skärningar/par/möten\" med n objekt, använd binomialkoefficienten {MO}\\binom{{n}}{{2}} = n(n-1)/2{MC}. Triggern är frågan om ATT VÄLJA PAR (par av linjer, par av lag, ...) — det är inte multiplikation utan kombination.",
     "pregrade_tactic": {
       "handle": "Par-räkningen",
       "move": "Vid frågan ”hur många par” av n objekt: räkna n gånger (n minus 1) delat med två — inte n gånger n."
@@ -3796,7 +3796,7 @@
       },
       {
         "n": 3,
-        "text": "a(b + c) = a\\cdot b + a\\cdot c. Multiplicera faktorn framför parentesen med varje term inom parentesen.",
+        "text": "a(b + c) = a\\cdot b + a\\cdot c. Multiplicera faktorn framför parentesen med varje term inom parentesen.",
         "tier": "detail",
         "title": "Vad är distributiva lagen?"
       },
@@ -3884,7 +3884,7 @@
     "steps": [
       {
         "n": 1,
-        "text": "Vi har talet 5^{33} (5 multiplicerat med sig själv 33 gånger). Vi vill veta entalssiffran (sista siffran) i resultatet.",
+        "text": "Vi har talet 5^{33} (5 multiplicerat med sig själv 33 gånger). Vi vill veta entalssiffran (sista siffran) i resultatet.",
         "tier": "essential",
         "title": "Förstå problemet"
       },
@@ -3920,7 +3920,7 @@
       },
       {
         "n": 7,
-        "text": "5^{33} = 5 multiplicerat med sig själv 33 gånger. Varje multiplikation bevarar entalssiffran 5. Slutresultatet har därför entalssiffra 5.",
+        "text": "5^{33} = 5 multiplicerat med sig själv 33 gånger. Varje multiplikation bevarar entalssiffran 5. Slutresultatet har därför entalssiffra 5.",
         "tier": "essential",
         "title": "Tillämpa på 5^33"
       },
@@ -3944,7 +3944,7 @@
       },
       {
         "n": 11,
-        "text": "Entalssiffran i 5^{33} är 5. Svaret är C. Insikten i en mening: potenser av tal som slutar på 5 har alltid entalssiffran 5 — mönstret stabiliseras direkt från 5^2.",
+        "text": "Entalssiffran i 5^{33} är 5. Svaret är C. Insikten i en mening: potenser av tal som slutar på 5 har alltid entalssiffran 5 — mönstret stabiliseras direkt från 5^2.",
         "tier": "essential",
         "title": "Slutsats"
       }
@@ -3984,13 +3984,13 @@
     "steps": [
       {
         "n": 1,
-        "text": "Vi ska räkna ut 0{,}4 - \\frac{1}{4}. Det är en blandning av decimaltal och bråk — bäst att konvertera till samma form.",
+        "text": "Vi ska räkna ut 0{,}4 - \\frac{1}{4}. Det är en blandning av decimaltal och bråk — bäst att konvertera till samma form.",
         "tier": "essential",
         "title": "Förstå problemet"
       },
       {
         "n": 2,
-        "text": "0,4 betyder 4 tiondelar = 4/10. Förenkla: dela täljare och nämnare med 2 → 2/5. Alltså 0{,}4 = \\frac{2}{5}.",
+        "text": "0,4 betyder 4 tiondelar = 4/10. Förenkla: dela täljare och nämnare med 2 → 2/5. Alltså 0{,}4 = \\frac{2}{5}.",
         "tier": "essential",
         "title": "Skriv 0,4 som bråk"
       },
@@ -4014,7 +4014,7 @@
       },
       {
         "n": 6,
-        "text": "\\frac{8}{20} - \\frac{5}{20} = \\frac{8-5}{20} = \\frac{3}{20}.",
+        "text": "\\frac{8}{20} - \\frac{5}{20} = \\frac{8-5}{20} = \\frac{3}{20}.",
         "tier": "essential",
         "title": "Subtrahera"
       },
@@ -4184,31 +4184,31 @@
     "steps": [
       {
         "n": 1,
-        "text": "Vi ska förenkla uttrycket x^{k+1} \\cdot x^{k} givet att x > 0. Båda faktorerna har samma bas (x) men olika exponenter.",
+        "text": "Vi ska förenkla uttrycket x^{k+1} \\cdot x^{k} givet att x > 0. Båda faktorerna har samma bas (x) men olika exponenter.",
         "tier": "essential",
         "title": "Förstå problemet"
       },
       {
         "n": 2,
-        "text": "x^{n} betyder x multiplicerat med sig själv n gånger. T.ex. x^{3} = x\\cdot x\\cdot x.",
+        "text": "x^{n} betyder x multiplicerat med sig själv n gånger. T.ex. x^{3} = x\\cdot x\\cdot x.",
         "tier": "detail",
         "title": "Vad betyder x upphöjt till en exponent?"
       },
       {
         "n": 3,
-        "text": "När man multiplicerar potenser med samma bas adderar man exponenterna: x^{a} \\cdot x^{b} = x^{a+b}.",
+        "text": "När man multiplicerar potenser med samma bas adderar man exponenterna: x^{a} \\cdot x^{b} = x^{a+b}.",
         "tier": "essential",
         "title": "Potens-regeln för multiplikation"
       },
       {
         "n": 4,
-        "text": "x^{3}\\cdot x^{2} = (x·x·x)·(x·x) = x·x·x·x·x = x^{5}. Antalet faktorer adderas. Det är dit regeln x^{a}\\cdot x^{b}=x^{a+b} kommer ifrån.",
+        "text": "x^{3}\\cdot x^{2} = (x·x·x)·(x·x) = x·x·x·x·x = x^{5}. Antalet faktorer adderas. Det är dit regeln x^{a}\\cdot x^{b}=x^{a+b} kommer ifrån.",
         "tier": "detail",
         "title": "Varför adderar man exponenterna?"
       },
       {
         "n": 5,
-        "text": "x^{k+1}\\cdot x^{k} = x^{(k+1)+k}. Adderar exponenterna.",
+        "text": "x^{k+1}\\cdot x^{k} = x^{(k+1)+k}. Adderar exponenterna.",
         "tier": "essential",
         "title": "Tillämpa på vårt uttryck"
       },
@@ -4220,43 +4220,43 @@
       },
       {
         "n": 7,
-        "text": "x^{k+1}\\cdot x^{k} = x^{2k+1}.",
+        "text": "x^{k+1}\\cdot x^{k} = x^{2k+1}.",
         "tier": "essential",
         "title": "Sätt ihop slututtrycket"
       },
       {
         "n": 8,
-        "text": "k = 2 → vänster: x^{3}\\cdot x^{2} = x^{5}. Höger: x^{2\\cdot 2+1} = x^{5}. Stämmer.",
+        "text": "k = 2 → vänster: x^{3}\\cdot x^{2} = x^{5}. Höger: x^{2\\cdot 2+1} = x^{5}. Stämmer.",
         "tier": "detail",
         "title": "Konkret kontroll med k = 2"
       },
       {
         "n": 9,
-        "text": "k(k+1) skulle kräva att man MULTIPLICERAR exponenterna, vilket är reglen för (x^{a})^{b} = x^{ab} (potens av potens), inte x^{a}\\cdot x^{b} (produkt av potenser). Två olika regler.",
+        "text": "k(k+1) skulle kräva att man MULTIPLICERAR exponenterna, vilket är reglen för (x^{a})^{b} = x^{ab} (potens av potens), inte x^{a}\\cdot x^{b} (produkt av potenser). Två olika regler.",
         "tier": "detail",
         "title": "Varför inte k(k + 1) som exponent?"
       },
       {
         "n": 10,
-        "text": "A skulle vara x^{k(k+1)}, dvs. multiplikation av exponenterna. Det stämmer bara om operationen vore en potens av en potens, inte en produkt.",
+        "text": "A skulle vara x^{k(k+1)}, dvs. multiplikation av exponenterna. Det stämmer bara om operationen vore en potens av en potens, inte en produkt.",
         "tier": "detail",
         "title": "Avfärda A"
       },
       {
         "n": 11,
-        "text": "C skulle vara x^{1} = x — bara om exponenterna tog ut varandra, vilket de inte gör.",
+        "text": "C skulle vara x^{1} = x — bara om exponenterna tog ut varandra, vilket de inte gör.",
         "tier": "detail",
         "title": "Avfärda C"
       },
       {
         "n": 12,
-        "text": "D skulle vara x^{2k-1}. Det skulle gälla om man SUBTRAHERADE exponenterna — vilket är regeln för DIVISION (x^{a}/x^{b}=x^{a-b}), inte multiplikation.",
+        "text": "D skulle vara x^{2k-1}. Det skulle gälla om man SUBTRAHERADE exponenterna — vilket är regeln för DIVISION (x^{a}/x^{b}=x^{a-b}), inte multiplikation.",
         "tier": "detail",
         "title": "Avfärda D"
       },
       {
         "n": 13,
-        "text": "x^{k+1}\\cdot x^{k} = x^{2k+1}. Svaret är B. Insikten i en mening: vid multiplikation av potenser med samma bas — addera exponenter; vid division — subtrahera; vid potens av potens — multiplicera.",
+        "text": "x^{k+1}\\cdot x^{k} = x^{2k+1}. Svaret är B. Insikten i en mening: vid multiplikation av potenser med samma bas — addera exponenter; vid division — subtrahera; vid potens av potens — multiplicera.",
         "tier": "essential",
         "title": "Slutsats"
       }
@@ -4838,8 +4838,8 @@
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "3/4 dyker upp om man räknar \\sqrt{1 - 1/4} = \\sqrt{3/4} ≈ 0,87 ≈ 3/4 — alltså glömmer att kvadrera b först.",
-        "why_wrong": "Man måste kvadrera b INNAN man subtraherar. Steg 4 ger b^{2} = 1/16, inte 1/4. Resultatet blir 15/16, inte 3/4."
+        "why_tempting": "3/4 dyker upp om man räknar \\sqrt{1 - 1/4} = \\sqrt{3/4} ≈ 0,87 ≈ 3/4 — alltså glömmer att kvadrera b först.",
+        "why_wrong": "Man måste kvadrera b INNAN man subtraherar. Steg 4 ger b^{2} = 1/16, inte 1/4. Resultatet blir 15/16, inte 3/4."
       },
       {
         "letter": "C",
@@ -4853,42 +4853,42 @@
       }
     ],
     "framework_id": null,
-    "pitfall": "Det är lätt att räkna 1 - 1/4 = 3/4 och ta roten ur — men man har glömt att kvadrera 1/4 först. Botemedlet: skriv ALLTID ut b^{2} = (1/4)^{2} = 1/16 som en separat rad innan subtraktion.",
+    "pitfall": "Det är lätt att räkna 1 - 1/4 = 3/4 och ta roten ur — men man har glömt att kvadrera 1/4 först. Botemedlet: skriv ALLTID ut b^{2} = (1/4)^{2} = 1/16 som en separat rad innan subtraktion.",
     "solution_path": "Givet a^{2} + b^{2} = 1 och b = 1/4: a^{2} = 1 - (1/4)^{2} = 1 - 1/16 = 15/16. Eftersom a > 0 är a = \\sqrt{15/16} = \\sqrt{15}/4. Bland alternativen står \"15/16\" — sannolikt menas \\sqrt{15}/4 men labeln matchar a^{2} = 15/16. Svaret är A.",
     "steps": [
       {
         "n": 1,
-        "text": "Vi har två villkor: a > 0 och a^{2} + b^{2} = 1. Givet b = 1/4, sök a.",
+        "text": "Vi har två villkor: a > 0 och a^{2} + b^{2} = 1. Givet b = 1/4, sök a.",
         "tier": "essential",
         "title": "Förstå problemet"
       },
       {
         "n": 2,
-        "text": "a^{2} = a \\cdot a. Att kvadrera är att gångra med sig själv. T.ex. 3^{2} = 9, (1/2)^{2} = 1/4.",
+        "text": "a^{2} = a \\cdot a. Att kvadrera är att gångra med sig själv. T.ex. 3^{2} = 9, (1/2)^{2} = 1/4.",
         "tier": "detail",
         "title": "Vad betyder a²?"
       },
       {
         "n": 3,
-        "text": "Från a^{2} + b^{2} = 1 följer a^{2} = 1 - b^{2}.",
+        "text": "Från a^{2} + b^{2} = 1 följer a^{2} = 1 - b^{2}.",
         "tier": "essential",
         "title": "Isolera a²"
       },
       {
         "n": 4,
-        "text": "b = 1/4, så b^{2} = (1/4)^{2} = 1/4 \\cdot 1/4 = 1/16.",
+        "text": "b = 1/4, så b^{2} = (1/4)^{2} = 1/4 \\cdot 1/4 = 1/16.",
         "tier": "essential",
         "title": "Räkna ut b²"
       },
       {
         "n": 5,
-        "text": "\\left(\\frac{p}{q}\\right)^{2} = \\frac{p^{2}}{q^{2}}. Kvadrera täljaren och nämnaren var för sig. T.ex. (1/4)^{2} = 1^{2}/4^{2} = 1/16.",
+        "text": "\\left(\\frac{p}{q}\\right)^{2} = \\frac{p^{2}}{q^{2}}. Kvadrera täljaren och nämnaren var för sig. T.ex. (1/4)^{2} = 1^{2}/4^{2} = 1/16.",
         "tier": "detail",
         "title": "Hur kvadrerar man ett bråk?"
       },
       {
         "n": 6,
-        "text": "a^{2} = 1 - 1/16 = 16/16 - 1/16 = 15/16.",
+        "text": "a^{2} = 1 - 1/16 = 16/16 - 1/16 = 15/16.",
         "tier": "essential",
         "title": "Sätt in i ekvationen"
       },
@@ -4900,13 +4900,13 @@
       },
       {
         "n": 8,
-        "text": "a^{2} = 15/16. Ta kvadratroten: a = \\pm\\sqrt{15/16} = \\pm \\frac{\\sqrt{15}}{4}. Villkoret a > 0 utesluter den negativa roten, så a = \\sqrt{15}/4.",
+        "text": "a^{2} = 15/16. Ta kvadratroten: a = \\pm\\sqrt{15/16} = \\pm \\frac{\\sqrt{15}}{4}. Villkoret a > 0 utesluter den negativa roten, så a = \\sqrt{15}/4.",
         "tier": "essential",
         "title": "Lös för a"
       },
       {
         "n": 9,
-        "text": "\\sqrt{15/16} = \\sqrt{15}/\\sqrt{16} = \\sqrt{15}/4 (eftersom \\sqrt{16} = 4).",
+        "text": "\\sqrt{15/16} = \\sqrt{15}/\\sqrt{16} = \\sqrt{15}/4 (eftersom \\sqrt{16} = 4).",
         "tier": "detail",
         "title": "Förenkla √(15/16)"
       },
@@ -4918,24 +4918,24 @@
       },
       {
         "n": 11,
-        "text": "3/4 skulle gälla om a = \\sqrt{9/16} = 3/4, men då måste a^{2} = 9/16, vilket kräver b^{2} = 7/16 — och b = 1/4 ger b² = 1/16, inte 7/16. Alltså inte 3/4.",
+        "text": "3/4 skulle gälla om a = \\sqrt{9/16} = 3/4, men då måste a^{2} = 9/16, vilket kräver b^{2} = 7/16 — och b = 1/4 ger b² = 1/16, inte 7/16. Alltså inte 3/4.",
         "tier": "detail",
         "title": "Varför inte 3/4?"
       },
       {
         "n": 12,
-        "text": "a = \\sqrt{15}/4 \\approx 3{,}873/4 \\approx 0{,}968. Då a^{2} \\approx 0{,}938 = 15/16, och a^{2} + b^{2} = 15/16 + 1/16 = 1. Stämmer.",
+        "text": "a = \\sqrt{15}/4 \\approx 3{,}873/4 \\approx 0{,}968. Då a^{2} \\approx 0{,}938 = 15/16, och a^{2} + b^{2} = 15/16 + 1/16 = 1. Stämmer.",
         "tier": "detail",
         "title": "Verifiera"
       },
       {
         "n": 13,
-        "text": "a^{2} = 15/16 (motsvarande svarsalternativ A som rapporterats). Insikten i en mening: vid Pythagoras-liknande villkor (a^{2} + b^{2} = 1), isolera ena kvadraten genom subtraktion och kom ihåg att gemensam nämnare gör subtraktionen enkel.",
+        "text": "a^{2} = 15/16 (motsvarande svarsalternativ A som rapporterats). Insikten i en mening: vid Pythagoras-liknande villkor (a^{2} + b^{2} = 1), isolera ena kvadraten genom subtraktion och kom ihåg att gemensam nämnare gör subtraktionen enkel.",
         "tier": "essential",
         "title": "Slutsats"
       }
     ],
-    "technique": "Pythagoras-isolations-strategin: vid villkor på formen a^{2}+b^{2}=k och en variabel given, kvadrera det givna värdet FÖRST och subtrahera från k för att hitta den andra kvadraten. Triggern är \"a² + b² = konstant\" — operationen är subtraktion av kvadrater, inte rötter.",
+    "technique": "Pythagoras-isolations-strategin: vid villkor på formen a^{2}+b^{2}=k och en variabel given, kvadrera det givna värdet FÖRST och subtrahera från k för att hitta den andra kvadraten. Triggern är \"a² + b² = konstant\" — operationen är subtraktion av kvadrater, inte rötter.",
     "pregrade_tactic": {
       "handle": "Pythagoras-baklänges",
       "move": "Vid villkoret a² + b² = konstant och ett av talen givet: kvadrera det kända, dra ifrån, ta roten ur — inga räknerötter åt fel håll."
