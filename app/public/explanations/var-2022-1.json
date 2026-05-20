@@ -13,7 +13,7 @@
       },
       {
         "letter": "B",
-        "why_tempting": "101 ligger nära ett rimligt totalresultat och frestar om du läser av en eller två staplar för lågt mot grid­linjerna. Avläsningsfel på 1–3 enheter per stapel ackumuleras lätt till en totalavvikelse runt 7–10 djur.",
+        "why_tempting": "101 ligger nära ett rimligt totalresultat och frestar om du läser av en eller två staplar för lågt mot gridlinjerna. Avläsningsfel på 1–3 enheter per stapel ackumuleras lätt till en totalavvikelse runt 7–10 djur.",
         "why_wrong": "Som steg 4 visar har 2008-stapeln en bred hatchad (4–10 år) på cirka 37 — om du av misstag läser den som 30 hamnar du nära 101. Facit fastslår 108, vilket är det enda alternativ som matchar när alla fem staplar projiceras noggrant mot tick-värdena 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50."
       },
       {
@@ -499,7 +499,7 @@
         "tier": "essential"
       }
     ],
-    "technique": "DTK-strategi för 'andel-av-rader-i-ett-extremkvartal'-frågor: (1) hitta extremkvartalet via summerings­raden, (2) bocka av branscher som klarar villkoret i den kolumnen — strikt tolkning av '>' eller '<', (3) räkna nämnaren noggrant (inkluderar restpost?), (4) dividera och välj närmaste bråk. Triggern: 'andel av branschkategorierna med villkor X det kvartal Y var max' → tvåstegs filtrering + bråkjämförelse.",
+    "technique": "DTK-strategi för 'andel-av-rader-i-ett-extremkvartal'-frågor: (1) hitta extremkvartalet via summeringsraden, (2) bocka av branscher som klarar villkoret i den kolumnen — strikt tolkning av '>' eller '<', (3) räkna nämnaren noggrant (inkluderar restpost?), (4) dividera och välj närmaste bråk. Triggern: 'andel av branschkategorierna med villkor X det kvartal Y var max' → tvåstegs filtrering + bråkjämförelse.",
     "pregrade_tactic": {
       "handle": "Max-kvartal-sedan-tröskel",
       "move": "Skanna 'Samtliga'-raden för att hitta MAX-kvartalet, bocka sedan av branscher med värde >1 000 i den kolumnen, och dividera med antalet redovisade branscher."
@@ -699,7 +699,7 @@
         "tier": "essential"
       }
     ],
-    "technique": "DTK-strategi för 'X OCH Y'-scatter-frågor med blandade skalor: (1) översätt varje villkor till en räthet linje i diagrammet, (2) på loggskalan: identifiera tröskelvärdet som en specifik gridlinje, (3) räkna ENDAST punkter i den kvadrant där båda villkoren gäller strikt. Triggern: 'både publiktal ≥ X och index > Y' → tvådimensionell filtrering + kvadrant­räkning.",
+    "technique": "DTK-strategi för 'X OCH Y'-scatter-frågor med blandade skalor: (1) översätt varje villkor till en räthet linje i diagrammet, (2) på loggskalan: identifiera tröskelvärdet som en specifik gridlinje, (3) räkna ENDAST punkter i den kvadrant där båda villkoren gäller strikt. Triggern: 'både publiktal ≥ X och index > Y' → tvådimensionell filtrering + kvadranträkning.",
     "pregrade_tactic": {
       "handle": "Övre-högra-hörn-räkning",
       "move": "Dra mentala räta linjer vid y = 100 000 (loggskalan) och x = 3,50 (linjär), räkna sedan svarta/grå/vita punkter strikt över OCH till höger — bara punkter i hörnet kvalificerar."
@@ -2336,7 +2336,7 @@
       },
       {
         "n": 10,
-        "text": "Svaret är 140 — B. Insikten i en mening: vid kapslade parenteser, lös ALLTID från innersta och ut — det förhindrar tecken- och multiplikationsfel.",
+        "text": "Svaret är 140 — B. Insikten i en mening: vid kapslade parenteser, lös ALLTID från innersta och ut — det förhindrar teckenoch multiplikationsfel.",
         "tier": "essential",
         "title": "Slutsats"
       }
@@ -3399,7 +3399,7 @@
       }
     ],
     "framework_id": null,
-    "pitfall": "Den klassiska tabellfällan i 'skillnad i procentenheter inom ett län'-frågor är att (a) förväxla riket med ett enskilt län, (b) blanda ihop Chefer- och Anställda-kolumnerna, eller (c) räkna procentuell skillnad i stället för procentenheter. Botemedlet: lokalisera den specifika län-raden, läs av båda värdena från rätt kolumner och utför enkel subtraktion.",
+    "pitfall": "Den klassiska tabellfällan i 'skillnad i procentenheter inom ett län'-frågor är att (a) förväxla riket med ett enskilt län, (b) blanda ihop Cheferoch Anställda-kolumnerna, eller (c) räkna procentuell skillnad i stället för procentenheter. Botemedlet: lokalisera den specifika län-raden, läs av båda värdena från rätt kolumner och utför enkel subtraktion.",
     "solution_path": "Facit fastslår 16 procentenheter (alternativ D). I tabellen, för Gävleborgs län: Chefer → Könsfördelning % Män = 80 % (printat); Samtliga anställda → Könsfördelning % Män = 64 % (printat). Skillnad = 80 − 64 = 16 procentenheter — konsistent med facit.",
     "steps": [
       {
@@ -3869,7 +3869,7 @@
         "tier": "essential"
       }
     ],
-    "technique": "DTK-strategi för 'kategori-förändring med X procentenheter mellan två år': (1) identifiera färgkoderna i legenden, (2) mät varje kategoris ruta i båda åren mot tick-värdena, (3) räkna ut |andel1990 − andel1910| för varje, (4) plocka den som är närmast målvärdet X. Triggern: 'för vilken hushållsstorlek var förändringen exakt X procentenheter' → fem-mätnings­jämförelse.",
+    "technique": "DTK-strategi för 'kategori-förändring med X procentenheter mellan två år': (1) identifiera färgkoderna i legenden, (2) mät varje kategoris ruta i båda åren mot tick-värdena, (3) räkna ut |andel1990 − andel1910| för varje, (4) plocka den som är närmast målvärdet X. Triggern: 'för vilken hushållsstorlek var förändringen exakt X procentenheter' → fem-mätningsjämförelse.",
     "pregrade_tactic": {
       "handle": "Fem-kategoriers-förändring",
       "move": "Mät 1910 och 1990 för alla fem rutor mot tick-värdena, räkna skillnader (5+: −55, 4: −3, 3: +2, 2: +20, 1: +35) och plocka den närmast 33 — det är 1 person med +35."
@@ -4169,7 +4169,7 @@
         "tier": "essential"
       }
     ],
-    "technique": "DTK-strategi för 'hur lång är en vandringsled mellan två punkter'-kartfrågor: (1) identifiera ledens linjetyp i legenden, (2) lokalisera start- och slutpunkt, (3) följ leden segment för segment med fingret, (4) uppskatta varje segment mot skalan och addera. Triggern: 'följ leden från X till Y' → segment-för-segment-mätning, inte fågelvägsavstånd.",
+    "technique": "DTK-strategi för 'hur lång är en vandringsled mellan två punkter'-kartfrågor: (1) identifiera ledens linjetyp i legenden, (2) lokalisera startoch slutpunkt, (3) följ leden segment för segment med fingret, (4) uppskatta varje segment mot skalan och addera. Triggern: 'följ leden från X till Y' → segment-för-segment-mätning, inte fågelvägsavstånd.",
     "pregrade_tactic": {
       "handle": "Segment-för-segment-mätning",
       "move": "Hitta sydligaste P vid Herrestadsjön, följ prickade vandringsleden norrut genom Lövö-Kalvsjön-centrala mossen tills den korsar järnvägen, mät varje segment mot 5 km-skalan — summa cirka 11 km."
@@ -4446,7 +4446,7 @@
       },
       {
         "n": 8,
-        "text": "För alla siffror n och m gäller \\frac{n0n}{n0} = \\frac{m0m}{m0} (där 'n0n' är talet med n i hundra- och ental och 0 emellan, lika med n·101). Inbyggd lika.",
+        "text": "För alla siffror n och m gäller \\frac{n0n}{n0} = \\frac{m0m}{m0} (där 'n0n' är talet med n i hundraoch ental och 0 emellan, lika med n·101). Inbyggd lika.",
         "tier": "detail",
         "title": "Insikt — vad mönstret säger"
       },
@@ -4655,7 +4655,7 @@
       "handle": "Kvadrera-radien",
       "move": "Cylindervolym har radien i kvadrat men höjden bara linjärt — radien väger dubbelt så hårt när du svänger värden."
     },
-    "technique": "Kvadrera-radien-strategin: i cylinder- och cirkelproblem, radien går alltid i kvadrat. Triggern: orden 'cylinder', 'cirkel', 'sfär'. När du byter värden mellan radie och höjd är effekten ojämn — kvadrera tankesätt: r väger dubbelt så hårt."
+    "technique": "Kvadrera-radien-strategin: i cylinderoch cirkelproblem, radien går alltid i kvadrat. Triggern: orden 'cylinder', 'cirkel', 'sfär'. När du byter värden mellan radie och höjd är effekten ojämn — kvadrera tankesätt: r väger dubbelt så hårt."
   },
   "var-2022-1-kvant2-KVA-016": {
     "_meta": {
@@ -5941,7 +5941,7 @@
       },
       {
         "n": 2,
-        "text": "Two sentences carry the argument. First, the diagnosis from Sierra: 'There's a lot of grumbling… about how often we cure diseases in mice that never translates when we try those cures in humans.' Then the cause: 'Since most grants are usually only for a four- to five-year period, using younger mice is not only less expensive, but it avoids the delay of waiting for an animal to age.'",
+        "text": "Two sentences carry the argument. First, the diagnosis from Sierra: 'There's a lot of grumbling… about how often we cure diseases in mice that never translates when we try those cures in humans.' Then the cause: 'Since most grants are usually only for a fourto five-year period, using younger mice is not only less expensive, but it avoids the delay of waiting for an animal to age.'",
         "tier": "essential",
         "title": "Locate the key sentences"
       },
@@ -6768,7 +6768,7 @@
       {
         "letter": "A",
         "why_tempting": "Det är lätt att fastna vid textens sista mening om \"hur gammal en cell kan bli och vad som skyddar cellen mot åldrande\" och dra slutsatsen att forskningen handlar om åldersrelaterade sjukdomar.",
-        "why_wrong": "Den meningen beskriver vad svältforskningen UTVECKLATS till — den listar inte ett argument för varför kunskapen är viktig. Argumenten ligger i frågorna författaren ställer tidigare. \"Närings- och åldersrelaterade sjukdomar\" nämns inte alls i texten."
+        "why_wrong": "Den meningen beskriver vad svältforskningen UTVECKLATS till — den listar inte ett argument för varför kunskapen är viktig. Argumenten ligger i frågorna författaren ställer tidigare. \"Näringsoch åldersrelaterade sjukdomar\" nämns inte alls i texten."
       },
       {
         "letter": "B",
@@ -7654,7 +7654,7 @@
       "handle": "Fackord-precision",
       "move": "Alla alternativ delar samma prefix (anti-) — läs 'anti-X' bokstavligen som 'mot X' och fråga vilket X stämmer med meningens problem."
     },
-    "technique": "MEK-fackord-precision: när alla alternativ delar samma prefix (här \"anti-\"), avgör resten av ordet. Lär dig att läsa \"anti-X\" bokstavligen som \"mot X\" och fråga \"vilket X stämmer med meningens problem\". Triggern: konstruktioner som anti-/pro-/dys-/hyper- bär hela betydelseskillnaden."
+    "technique": "MEK-fackord-precision: när alla alternativ delar samma prefix (här \"anti-\"), avgör resten av ordet. Lär dig att läsa \"anti-X\" bokstavligen som \"mot X\" och fråga \"vilket X stämmer med meningens problem\". Triggern: konstruktioner som anti-/pro-/dys-/hyperbär hela betydelseskillnaden."
   },
   "var-2022-1-verb1-MEK-026": {
     "_meta": {
@@ -7965,7 +7965,7 @@
       },
       {
         "n": 2,
-        "text": "Konstruktionen \"____ kunskaper för att utföra X\" kräver ett adjektiv som betyder \"som passar X / räcker för X\". Detta är en standardkollokation i fack- och förvaltningsspråk.",
+        "text": "Konstruktionen \"____ kunskaper för att utföra X\" kräver ett adjektiv som betyder \"som passar X / räcker för X\". Detta är en standardkollokation i fackoch förvaltningsspråk.",
         "tier": "essential",
         "title": "Hitta begränsningen"
       },
@@ -7992,7 +7992,7 @@
       "handle": "Kollokationskontrollen",
       "move": "Vissa adjektiv har fasta partners — 'adekvat kunskap/utbildning' är standardkollokation i förvaltningsspråk när nyckeln är 'tillräcklig för uppgift'."
     },
-    "technique": "MEK-kollokationsregeln: vissa adjektiv har FASTA partners. \"Adekvat kunskap/utbildning/insats\" är en standardkollokation i förvaltnings- och fackspråk. Triggern: när luckan handlar om \"tillräcklig och lämplig för uppgift X\", är adekvat ofta det enda ordet som inte skaver. Lär dig några sådana fasta par."
+    "technique": "MEK-kollokationsregeln: vissa adjektiv har FASTA partners. \"Adekvat kunskap/utbildning/insats\" är en standardkollokation i förvaltningsoch fackspråk. Triggern: när luckan handlar om \"tillräcklig och lämplig för uppgift X\", är adekvat ofta det enda ordet som inte skaver. Lär dig några sådana fasta par."
   },
   "var-2022-1-verb1-ORD-001": {
     "_meta": {
@@ -8047,9 +8047,9 @@
     ],
     "pregrade_tactic": {
       "handle": "Stamord-kartan",
-      "move": "Internationellt rese- eller militärord — hitta den latinska stammen (här providere, 'se framåt') och fråga vad konkret det handlar om."
+      "move": "Internationellt reseeller militärord — hitta den latinska stammen (här providere, 'se framåt') och fråga vad konkret det handlar om."
     },
-    "technique": "Latinska resestam-stigen: när huvudordet är ett internationellt rese- eller militärord (proviant, transport, eskort, logistik), leta efter den latinska stammen — här providere ('se framåt') — och fråga vad konkret som tas med. Triggern att memorera: 'rese- eller militärord på latin → fråga vad i materiell form det handlar om'."
+    "technique": "Latinska resestam-stigen: när huvudordet är ett internationellt reseeller militärord (proviant, transport, eskort, logistik), leta efter den latinska stammen — här providere ('se framåt') — och fråga vad konkret som tas med. Triggern att memorera: 'reseeller militärord på latin → fråga vad i materiell form det handlar om'."
   },
   "var-2022-1-verb1-ORD-002": {
     "_meta": {
@@ -8104,7 +8104,7 @@
     ],
     "pregrade_tactic": {
       "handle": "Stamord-kartan",
-      "move": "Ord på -flect-/-flex- bär bilden 'böja tillbaka' — reflektera = tankar som böjs tillbaka mot sig själva, alltså eftertanke."
+      "move": "Ord på -flect-/-flexbär bilden 'böja tillbaka' — reflektera = tankar som böjs tillbaka mot sig själva, alltså eftertanke."
     },
     "technique": "Spegel-stam-stigen: när ordet bygger på -flect-/-flex- (reflektera, deflektera, böja), tänk 'böja tillbaka' eller 'böja åt sidan'. Reflektera = tankar som böjs tillbaka mot sig själva = övervägande eftertanke."
   },
@@ -8293,7 +8293,7 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'låda' och tänker på en presentförpackning eller serverings­låda — då kan 'hålla låda' kännas som att stå för något, bjuda på fest.",
+        "why_tempting": "Många stannar vid 'låda' och tänker på en presentförpackning eller serveringslåda — då kan 'hålla låda' kännas som att stå för något, bjuda på fest.",
         "why_wrong": "Att bjuda på fest är att GENERÖST stå för värdskapet — något varmt och inkluderande. Att hålla låda är att TA PLATS i pratet — ofta tvärtom uteslutande, eftersom andra inte kommer till tals. Olika sociala mönster, varav det ena är att ge och det andra att ta."
       },
       {
@@ -8391,7 +8391,7 @@
       "handle": "Stamord-kartan",
       "move": "Ord med 'hän' (hänförd, hädan, hänryckt) bär riktningen 'bort, dit' — affekten är att vara bortförd av något starkare."
     },
-    "technique": "Hän/hin-stam-stigen: när ordet innehåller 'hän' (hänförd, hädan, hänryckt), tänk 'bort, dit, åt det hållet'. Hänförelse = att vara bortförd av något vackert. Triggern att memorera: 'hän- i affektiva ord → riktning från det vardagliga mot något starkare'."
+    "technique": "Hän/hin-stam-stigen: när ordet innehåller 'hän' (hänförd, hädan, hänryckt), tänk 'bort, dit, åt det hållet'. Hänförelse = att vara bortförd av något vackert. Triggern att memorera: 'häni affektiva ord → riktning från det vardagliga mot något starkare'."
   },
   "var-2022-1-verb1-ORD-008": {
     "_meta": {
@@ -9359,7 +9359,7 @@
     ],
     "framework_id": null,
     "pitfall": "Det är lätt att tolka \"behöver mest\" som att man väljer det första problem som nämns. Botemedlet: skilj mellan PROBLEMlistan (knappa resurser, dålig kompetens på basnivån, etc.) och LÖSNINGSlistan (riktlinjer, pyramid) — frågan om \"behov\" siktar på det andra.",
-    "solution_path": "Texten kräver \"nationella riktlinjer\", en \"pyramid\" av kunskapscentrum knutna till universitets- och länssjukhus, och \"sammanhållen vårdkedja\". Det är struktur och samordning — svaret är C.",
+    "solution_path": "Texten kräver \"nationella riktlinjer\", en \"pyramid\" av kunskapscentrum knutna till universitetsoch länssjukhus, och \"sammanhållen vårdkedja\". Det är struktur och samordning — svaret är C.",
     "steps": [
       {
         "n": 1,
@@ -10553,7 +10553,7 @@
       },
       {
         "n": 4,
-        "text": "\"Världsfrånvänd\" = frånvänd verkligheten, inriktad mot inre/andligt (en världsfrånvänd mystiker). \"Diskurs\" = strukturerat tänkande/talande inom ett område (humanistisk fackterm, populariserad av Foucault). \"Poetisk\" = lyrisk till sin natur. \"Radikal\" = som vill omstörta i grunden. \"Humanistisk\" = bildnings- och människocentrerad. \"Differens\" = skillnad. \"Dimension\" = aspekt eller mått. \"Dispyt\" = gräl, ordväxling.",
+        "text": "\"Världsfrånvänd\" = frånvänd verkligheten, inriktad mot inre/andligt (en världsfrånvänd mystiker). \"Diskurs\" = strukturerat tänkande/talande inom ett område (humanistisk fackterm, populariserad av Foucault). \"Poetisk\" = lyrisk till sin natur. \"Radikal\" = som vill omstörta i grunden. \"Humanistisk\" = bildningsoch människocentrerad. \"Differens\" = skillnad. \"Dimension\" = aspekt eller mått. \"Dispyt\" = gräl, ordväxling.",
         "tier": "detail",
         "title": "Vad betyder alternativen?"
       },
@@ -10721,7 +10721,7 @@
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten kan vara att späck är ett gammalt köks- eller hushållsord och därför något i köket — som en kruka.",
+        "why_tempting": "Första instinkten kan vara att späck är ett gammalt kökseller hushållsord och därför något i köket — som en kruka.",
         "why_wrong": "En kruka är ett HÅLLKÄRL — en behållare av lera eller metall. Späck är INNEHÅLLET (fettet) som möjligen kan förvaras i en kruka — men ordet syftar på det man förvarar, inte förvaringen. Behållare ≠ innehåll."
       }
     ],
