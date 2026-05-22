@@ -14,6 +14,7 @@ import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
 import { findQuestion, loadBank, type Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
+import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 
 const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG', 'DTK'] as const
@@ -182,6 +183,10 @@ async function pickFrameworkQuestions(section: Section, frameworkId: string) {
 }
 
 function RepetitionHint({ count }: { count: number }) {
+  // Cap the surfaced number to the per-session size so the user's
+  // expectation matches the /repetition reality. When the backlog
+  // overflows, show "10 av N" — same shape as the Home plan card.
+  const playable = Math.min(count, REPETITION_SESSION_SIZE)
   return (
     <Link
       to="/repetition"
@@ -199,7 +204,15 @@ function RepetitionHint({ count }: { count: number }) {
       }}
     >
       <span style={{ fontSize: 14 }}>
-        Du har <strong>{count}</strong> {count === 1 ? 'miss' : 'missar'} att repetera
+        {count > playable ? (
+          <>
+            <strong>{playable}</strong> av {count} missar redo att repetera
+          </>
+        ) : (
+          <>
+            Du har <strong>{count}</strong> {count === 1 ? 'miss' : 'missar'} att repetera
+          </>
+        )}
       </span>
       <span
         style={{

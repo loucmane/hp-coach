@@ -125,6 +125,21 @@ describe('generateDailyPlan — rule 1 (due repetitions)', () => {
     // Should fall through past rule 1 — no rep item present.
     expect(plan.items.find((i) => i.kind === 'repetition')).toBeUndefined()
   })
+
+  it('caps repetition session size to REPETITION_SESSION_SIZE when backlog overflows', () => {
+    // 50 missar in the queue — Home used to claim ~50 min and the destination
+    // played 10. Now the prescription matches the execution: "10 av 50 missar"
+    // for ~8 min, with the backlog surfaced explicitly.
+    const plan = generateDailyPlan(
+      signals({
+        dueMistakeCount: 50,
+        sectionScores: [score('NOG', { score: 1.2 })],
+      }),
+    )
+    expect(plan.items[0].headline).toBe('Repetition · 10 av 50 missar')
+    expect(plan.items[0].estimatedMinutes).toBe(8) // ceil(10 * 0.75)
+    expect(plan.items[0].rationale).toContain('10 av 50 missar denna session')
+  })
 })
 
 describe('generateDailyPlan — rule 2 (weakest needs a lesson)', () => {

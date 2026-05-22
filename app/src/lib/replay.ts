@@ -9,7 +9,16 @@
 import type { Mistake } from '@/api/hooks/useMistakes'
 import { loadBank, type Question } from '@/data/questions'
 
-export const DEFAULT_REPLAY_LENGTH = 10
+/** Single source of truth for the per-session repetition queue size.
+ *  The replay route plays at most this many missed questions per
+ *  session; the scheduler caps its "Repetition · N missar" prescription
+ *  to the same number; the /drill banner advertises the same number.
+ *  Without this constant, the three surfaces disagreed (50 / 71 / 10),
+ *  which was the user's #1 complaint at dogfood pass 2. */
+export const REPETITION_SESSION_SIZE = 10
+/** @deprecated kept for backwards compatibility — prefer
+ *  `REPETITION_SESSION_SIZE`. */
+export const DEFAULT_REPLAY_LENGTH = REPETITION_SESSION_SIZE
 
 export type ReplayItem = {
   question: Question
