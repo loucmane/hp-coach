@@ -65,8 +65,13 @@ export type PlanItem = {
  *    changed from `Repetition · 50 missar` to `Repetition · 10 av
  *    50 missar` when the backlog overflows the per-session cap;
  *    estimatedMinutes recalibrated to ~0.75 min/rep. Plans cached
- *    before #74 still show the misleading raw count. */
-export const PLAN_SCHEMA_VERSION = 4
+ *    before #74 still show the misleading raw count.
+ *  - v5: trap-aware drill rule. When a top-trap exists in the next-
+ *    weakest section, the drill item now points to that specific
+ *    trap (`/drill?framework=NOG-TRAP-007`, headline names the
+ *    trap, rationale cites recent miss count). Plans cached before
+ *    this still prescribe generic section drills. */
+export const PLAN_SCHEMA_VERSION = 5
 
 export type DailyPlan = {
   /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are
@@ -107,6 +112,20 @@ export type SchedulerSignals = {
   dueMistakeCount: number
   /** Per-section framework hints. Missing key === undefined === no hint. */
   firstUnreadEntry?: Partial<Record<Section, FrameworkHint>>
+  /** Recurring trap patterns from the active mistake queue. When
+   *  present and a trap belongs to the next-weakest section, the
+   *  drill rule prefers a *trap-specific* drill ("Kvotjakten · 5
+   *  frågor") over a generic section drill. Sorted by miss count
+   *  descending. Empty / undefined → fall back to section drills. */
+  topTraps?: Array<{
+    framework_id: string
+    section: Section
+    count: number
+    /** Display name from the framework's `tldr` field. Used in the
+     *  plan item headline / rationale. May be null when the framework
+     *  data hasn't loaded yet — caller decides whether to wait. */
+    headline: string | null
+  }>
 }
 
 const LESSON_SCORE_THRESHOLD = 1.4
@@ -172,10 +191,19 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
     }
   }
 
-  // Rule 3 — next-weakest section needs a drill.
+  // Rule 3 — next-weakest section needs a drill. When a top-trap
+  // exists in that section, prescribe a trap-specific drill instead
+  // of a generic 10-question section drill — concrete, targeted, and
+  // threaded with the TopTrapsCard on Home. Falls back to a section
+  // drill when no trap fits.
   const secondWeakest = ranked[1]
   if (secondWeakest && items.length < MAX_ITEMS && needsDrill(secondWeakest)) {
-    items.push(drillItem(secondWeakest, date))
+    const trap = pickTrapForSection(signals.topTraps, secondWeakest.section)
+    if (trap) {
+      items.push(trapDrillItem(trap, secondWeakest, date))
+    } else {
+      items.push(drillItem(secondWeakest, date))
+    }
   }
 
   // Rule 4 — mastery maintenance fallback.
@@ -289,6 +317,55 @@ function drillItem(score: SectionScore, date: string): PlanItem {
     href: `/drill?section=${score.section}`,
     completed: false,
   }
+}
+
+/** Trap-specific drill — when a top-trap exists in the section that
+ *  would otherwise get a generic drill, prescribe practice on that
+ *  exact pattern instead. The drill route's `?framework=X` deep-link
+ *  plays the framework entry's authored example_questions.
+ *
+ *  Estimated minutes is ~half a normal drill — example_questions are
+ *  typically 5 entries, and the user has already seen these patterns.
+ */
+function trapDrillItem(
+  trap: NonNullable<SchedulerSignals['topTraps']>[number],
+  score: SectionScore,
+  date: string,
+): PlanItem {
+  // Prefer the trap's editorial name when present; fall back to the
+  // bare framework_id so something concrete still shows.
+  const name = trap.headline?.trim() || trap.framework_id
+  return {
+    id: `drill-trap-${trap.framework_id}-${date}`,
+    kind: 'drill',
+    section: score.section,
+    framework: trap.framework_id,
+    headline: `${trap.framework_id} · ${EXAMPLE_QUESTIONS_PER_TRAP} frågor`,
+    // Coaching line — names the pattern, cites the recent miss count,
+    // ties to the "fokuserad drill" intention.
+    rationale: `${name} — ${trap.count} missar senaste veckan. Fokuserad drill.`,
+    estimatedMinutes: Math.max(3, Math.round(SECTION_DURATIONS[score.section] / 2)),
+    href: `/drill?framework=${trap.framework_id}`,
+    completed: false,
+  }
+}
+
+/** Typical example_questions count per framework entry. Used for the
+ *  trap-drill headline copy; the actual drill picks whatever the
+ *  framework has authored. */
+const EXAMPLE_QUESTIONS_PER_TRAP = 5
+
+/** Pick the first top-trap that belongs to the given section. Returns
+ *  null when no trap matches — caller falls back to a section drill. */
+function pickTrapForSection(
+  topTraps: SchedulerSignals['topTraps'],
+  section: Section,
+): NonNullable<SchedulerSignals['topTraps']>[number] | null {
+  if (!topTraps || topTraps.length === 0) return null
+  for (const trap of topTraps) {
+    if (trap.section === section) return trap
+  }
+  return null
 }
 
 function drillRationale(score: SectionScore): string {

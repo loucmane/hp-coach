@@ -248,6 +248,49 @@ describe('generateDailyPlan — rule 3 (next-weakest needs a drill)', () => {
     expect(plan.items.find((i) => i.kind === 'lesson')).toBeDefined()
     expect(plan.items.find((i) => i.kind === 'drill')).toBeUndefined()
   })
+
+  it('prescribes a trap-specific drill when a top-trap exists in the drill section', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [
+          score('NOG', { score: 1.1 }), // triggers lesson
+          score('KVA', { score: 1.5 }), // triggers drill
+        ],
+        topTraps: [
+          {
+            framework_id: 'KVA-TRAP-024',
+            section: 'KVA',
+            count: 4,
+            headline: 'Faktorisera-och-förkorta-genvägen',
+          },
+        ],
+      }),
+    )
+    const drill = plan.items.find((i) => i.kind === 'drill')
+    expect(drill?.framework).toBe('KVA-TRAP-024')
+    expect(drill?.href).toBe('/drill?framework=KVA-TRAP-024')
+    expect(drill?.headline).toContain('KVA-TRAP-024')
+    expect(drill?.rationale).toContain('Faktorisera-och-förkorta-genvägen')
+    expect(drill?.rationale).toContain('4 missar')
+  })
+
+  it('falls back to generic section drill when no trap matches the section', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [
+          score('NOG', { score: 1.1 }), // triggers lesson
+          score('KVA', { score: 1.5 }), // triggers drill
+        ],
+        topTraps: [
+          // Trap is in NOG, not KVA — KVA drill should still be generic.
+          { framework_id: 'NOG-TRAP-007', section: 'NOG', count: 3, headline: 'x' },
+        ],
+      }),
+    )
+    const drill = plan.items.find((i) => i.kind === 'drill')
+    expect(drill?.href).toBe('/drill?section=KVA')
+    expect(drill?.framework).toBeUndefined()
+  })
 })
 
 describe('generateDailyPlan — rule 4 (mastery maintenance)', () => {

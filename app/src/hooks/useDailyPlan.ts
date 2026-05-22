@@ -33,6 +33,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
+import { type TopTrap, useTopTraps } from '@/api/hooks/useTopTraps'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import {
@@ -65,6 +66,11 @@ export type UseDailyPlan = {
 export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
   const stats = useStats()
   const due = useDueMistakes()
+  // Top recurring traps drive the trap-aware drill rule. We don't
+  // gate plan generation on this — when traps haven't resolved yet
+  // (cold start, first render), the scheduler falls back to generic
+  // section drills.
+  const topTraps = useTopTraps()
   const today = useMemo(() => localDateString(now), [now])
 
   const [plan, setPlan] = useState<DailyPlan | null>(null)
@@ -93,10 +99,10 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
       return
     }
 
-    const fresh = buildPlan(now, stats.data.bySection, due.data.length, hints)
+    const fresh = buildPlan(now, stats.data.bySection, due.data.length, hints, topTraps)
     savePlan(fresh)
     setPlan(deriveCompletion(fresh, due.data.length, loadLessonReads(), stats.data.bySection))
-  }, [stats.data, due.data, hints, today, now])
+  }, [stats.data, due.data, hints, today, now, topTraps])
 
   // Re-run derivation when due count or stats change mid-session
   // (user just finished /repetition or a drill and bounced back).
@@ -113,10 +119,10 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
 
   const regenerate = useCallback(() => {
     if (!stats.data || due.data === undefined || hints === null) return
-    const fresh = buildPlan(now, stats.data.bySection, due.data.length, hints)
+    const fresh = buildPlan(now, stats.data.bySection, due.data.length, hints, topTraps)
     savePlan(fresh)
     setPlan(deriveCompletion(fresh, due.data.length, loadLessonReads(), stats.data.bySection))
-  }, [stats.data, due.data, hints, now])
+  }, [stats.data, due.data, hints, now, topTraps])
 
   const allComplete = !!plan && plan.items.length > 0 && plan.items.every((i) => i.completed)
 
@@ -137,6 +143,7 @@ function buildPlan(
   bySection: BySection,
   dueCount: number,
   hints: FrameworkHints,
+  topTraps: TopTrap[],
 ): DailyPlan {
   const sectionScores: SectionScore[] = SECTION_KEYS.map((s) =>
     computeSectionScore(s, bySection[s], now),
@@ -146,6 +153,7 @@ function buildPlan(
     sectionScores,
     dueMistakeCount: dueCount,
     firstUnreadEntry: hints,
+    topTraps,
   })
   // Attach the per-section attempts7d snapshot so drill items can
   // auto-complete later when the section's attempts7d grows.
