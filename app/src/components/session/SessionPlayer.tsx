@@ -126,6 +126,23 @@ export type SessionPlayerProps = {
     onReplay: () => void
     onHome: () => void
   }) => ReactNode
+  /** Two-way URL sync of the active qid.
+   *
+   *  When provided: on every plan resolution, if `qid` matches a plan
+   *  entry, the player starts at that index instead of 0. On every
+   *  advance to a new question, `setQid(nextQid)` is called so the
+   *  caller can replaceState the URL. Without this prop the route
+   *  holds qid in React state only — refresh loses position and
+   *  share-debug has to reverse-engineer the qid from the DOM.
+   *
+   *  Pattern is identical across /drill, /repetition, /diagnostik;
+   *  each route does `navigate({ search: prev => ({...prev, qid}),
+   *  replace: true })` from its own validateSearch shape.
+   */
+  urlSyncedQid?: {
+    qid: string | null
+    setQid: (qid: string | null) => void
+  }
 }
 
 export function SessionPlayer(props: SessionPlayerProps) {
@@ -172,12 +189,26 @@ export function SessionPlayer(props: SessionPlayerProps) {
       setSessionId(session.id)
       setPlan(picked)
       setPicks(new Array(picked.length).fill(null))
-      setIndex(0)
+      // Seek-to-URL-qid: when the route already carries `?qid=X` in the
+      // URL and that qid appears in this plan, start at that question
+      // instead of position 0. Refresh-stability + share-link land
+      // here. If the URL qid isn't in the plan (queue changed since
+      // last visit), fall through to index 0 and overwrite the URL.
+      const urlQid = props.urlSyncedQid?.qid ?? null
+      const seekIdx = urlQid ? picked.findIndex((q) => q.qid === urlQid) : -1
+      const startIdx = seekIdx >= 0 ? seekIdx : 0
+      setIndex(startIdx)
       setPhase('answering')
       setQuestionStartedAt(Date.now())
+      // Always reflect the active qid in the URL — covers both the
+      // "URL was empty" cold-start and "URL had a stale qid" re-resolve
+      // cases. Side effect deferred to a microtask so React state
+      // commits first.
+      const activeQid = picked[startIdx]?.qid ?? null
+      props.urlSyncedQid?.setQid(activeQid)
       updateSession.mutate({
         id: session.id,
-        patch: { position: 0, currentQuestionId: picked[0]?.qid ?? null },
+        patch: { position: startIdx, currentQuestionId: activeQid },
       })
     } finally {
       setStarting(false)
@@ -216,6 +247,10 @@ export function SessionPlayer(props: SessionPlayerProps) {
       if (sessionId !== null) {
         updateSession.mutate({ id: sessionId, patch: { end: true } })
       }
+      // Clear the URL qid on done so refresh doesn't return to a stale
+      // question; the route lands on the done screen as long as session
+      // state holds, then the user can replay or leave.
+      props.urlSyncedQid?.setQid(null)
       setPhase('done')
       return
     }
@@ -223,16 +258,21 @@ export function SessionPlayer(props: SessionPlayerProps) {
     setIndex(nextIndex)
     setPhase('answering')
     setQuestionStartedAt(Date.now())
+    const nextQid = plan[nextIndex]?.qid ?? null
+    // Reflect advance in the URL when the route opts in. Use
+    // replaceState (via the caller's setQid implementation) — don't
+    // pollute history with 10 entries per session.
+    props.urlSyncedQid?.setQid(nextQid)
     if (sessionId !== null) {
       updateSession.mutate({
         id: sessionId,
         patch: {
           position: nextIndex,
-          currentQuestionId: plan[nextIndex]?.qid ?? null,
+          currentQuestionId: nextQid,
         },
       })
     }
-  }, [index, plan, sessionId, updateSession])
+  }, [index, plan, sessionId, updateSession, props.urlSyncedQid])
 
   const onReplay = useCallback(() => {
     setPhase('idle')
@@ -241,8 +281,12 @@ export function SessionPlayer(props: SessionPlayerProps) {
     setIndex(0)
     setSessionId(null)
     setEmptyAttempted(false)
+    // Drop any stale qid from the URL — replay re-picks fresh
+    // questions, so the previous run's qid would seek to a no-longer-
+    // present plan entry.
+    props.urlSyncedQid?.setQid(null)
     void begin()
-  }, [begin])
+  }, [begin, props.urlSyncedQid])
 
   const onHome = useCallback(() => navigate({ to: '/' }), [navigate])
 
