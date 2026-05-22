@@ -69,9 +69,11 @@ describe('HomeMobile — plan rendering', () => {
     expect(screen.getByText('KVA-drill · 10 frågor')).toBeInTheDocument()
   })
 
-  it('shows the total estimated minutes in the eyebrow', () => {
+  it('shows the total estimated minutes in the eyebrow with the "uppskattat" qualifier', () => {
     render(<HomeMobile forceLayout="phone" plan={makePlan()} />)
-    expect(screen.getByText(/idag · 18 min/i)).toBeInTheDocument()
+    // "~N min · uppskattat" — the qualifier sets expectation that the
+    // total is heuristic, not a measured commitment.
+    expect(screen.getByText(/idag · ~18 min · uppskattat/i)).toBeInTheDocument()
   })
 
   it('renders the "Klart för idag" complete panel when allComplete is true', () => {

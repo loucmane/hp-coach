@@ -93,9 +93,11 @@ export function HomeMobile({
   const viewport = forceLayout ?? detectedViewport
   const isPhone = viewport === 'phone'
 
-  const statusHints = [renderStreak ? `streak ${streakValue} d` : null, '⌘k palett'].filter(
-    Boolean,
-  ) as string[]
+  // Streak is rendered as the chrome badge top-right (StreakBadge) and
+  // also shows on /progress; the status-line "streak 1 d" was a third
+  // copy of the same fact. Audit recommended consolidating — drop the
+  // status-line streak; badge + /progress remain.
+  const statusHints = ['⌘k palett']
 
   const greetingHeadline = hourGreeting(today)
   const hasAnySignal = projected != null && (projected.verbal != null || projected.quant != null)
