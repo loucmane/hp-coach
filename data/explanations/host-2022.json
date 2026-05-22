@@ -762,7 +762,7 @@
         "why_wrong": "Steg 6: det är bara ETT av oändligt många k-värden; steg 7 och 8 ger m ≠ 0 i andra fall."
       }
     ],
-    "technique": "En linje {m('y = kx + m')} genom {m('(x_0, y_0)')} ger {m('m = y_0 - k x_0')}. Trigger: \"linje genom given punkt, jämför y-skärning med ett tal\". När lutningen bara har teckenvillkor (k > 0 t.ex.), kolla intervallet av m och se var jämförelsetalet hamnar.",
+    "technique": "En linje y = kx + m genom (x_0, y_0) ger m = y_0 - k x_0. Trigger: \"linje genom given punkt, jämför y-skärning med ett tal\". När lutningen bara har teckenvillkor (k > 0 t.ex.), kolla intervallet av m och se var jämförelsetalet hamnar.",
     "pitfall": "Botemedlet mot \"positiv lutning ⇒ positiv y-skärning\": lutningen säger bara HUR linjen lutar, inte VAR den skär. För punkter under x-axeln avgör lutningens STORLEK om skärningen blir positiv eller negativ.",
     "framework_id": "KVA-TRAP-016",
     "pregrade_tactic": {
@@ -841,7 +841,7 @@
       {
         "n": 11,
         "title": "Sammanställ",
-        "text": "Villkoret låser y entydigt till {m('\\frac{2x}{21}')}, vilket är samma som II. Likhet gäller alltid.",
+        "text": "Villkoret låser y entydigt till \\frac{2x}{21}, vilket är samma som II. Likhet gäller alltid.",
         "tier": "essential"
       },
       {
@@ -854,22 +854,22 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel och få {m('y = 21x/2')}.",
-        "why_wrong": "Steg 3-4: korrekt är {m('2x = 21y')}, alltså {m('y = 2x/21')}, INTE 21x/2 — täljaren och nämnaren får inte byta plats."
+        "why_tempting": "Det är lätt att räkna fel och få y = 21x/2.",
+        "why_wrong": "Steg 3-4: korrekt är 2x = 21y, alltså y = 2x/21, INTE 21x/2 — täljaren och nämnaren får inte byta plats."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att {m('2x/21')} är mycket större än y.",
+        "why_tempting": "Snabbsvar är ofta att 2x/21 är mycket större än y.",
         "why_wrong": "Steg 5-6: de är samma uttryck — algebraiskt identiska, inte ett större än det andra."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att y är fri.",
-        "why_wrong": "Steg 7: förhållandet låser y entydigt i termer av x ({m('y = 2x/21')}); informationen är fullständig."
+        "why_wrong": "Steg 7: förhållandet låser y entydigt i termer av x (y = 2x/21); informationen är fullständig."
       }
     ],
     "technique": "Vid rationell ekvation, korsmultiplicera och lös ut den variabel som efterfrågas. Trigger: \"jämför y med ett uttryck i x\" + \"villkor är ett bråk = konstant\". Jämför sedan med II algebraiskt.",
-    "pitfall": "Botemedlet mot \"flippa fel håll\": skriv noggrant ut {m('\\frac{täljare}{nämnare} = k \\Rightarrow täljare = k \\cdot nämnare')}. Här är täljaren {m('2x')} (inte {m('3y')}), så det är {m('2x')} som blir {m('21y')}.",
+    "pitfall": "Botemedlet mot \"flippa fel håll\": skriv noggrant ut \\frac{täljare}{nämnare} = k \\Rightarrow täljare = k \\cdot nämnare. Här är täljaren 2x (inte 3y), så det är 2x som blir 21y.",
     "framework_id": null,
     "pregrade_tactic": {
       "handle": "Korsmultiplicering-receptet",
@@ -2638,7 +2638,7 @@
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta x = 0.",
-        "why_wrong": "Steg 10: vid x = 0 blir vänster {m('2(3) = 6')} och höger {m('3(4) = 12')} — INTE lika; rätt lösning är x = −6."
+        "why_wrong": "Steg 10: vid x = 0 blir vänster 2(3) = 6 och höger 3(4) = 12 — INTE lika; rätt lösning är x = −6."
       },
       {
         "letter": "D",
@@ -2749,10 +2749,10 @@
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att man behöver räkna alla utfall.",
-        "why_wrong": "Steg 9: symmetrin {m('P(s) = P(14-s)')} ger likhet utan att enumerera alla 36 utfall."
+        "why_wrong": "Steg 9: symmetrin P(s) = P(14-s) ger likhet utan att enumerera alla 36 utfall."
       }
     ],
-    "technique": "Vid sannolikhet med två sexsidiga tärningar: utnyttja symmetrin {m('P(s) = P(14-s)')}. Trigger: \"P(summa = a) jämfört med P(summa = b) där a + b = 14\". Annars enumerera utfallen.",
+    "technique": "Vid sannolikhet med två sexsidiga tärningar: utnyttja symmetrin P(s) = P(14-s). Trigger: \"P(summa = a) jämfört med P(summa = b) där a + b = 14\". Annars enumerera utfallen.",
     "pitfall": "Botemedlet mot \"låga summor vanligare\": fördelningen är triangulär — toppen är vid 7, och 6 och 8 är lika sannolika, 5 och 9 är lika sannolika, osv. Spegelpar har lika sannolikhet.",
     "framework_id": null,
     "pregrade_tactic": {
@@ -2845,7 +2845,7 @@
       {
         "letter": "B",
         "why_tempting": "Det är lätt att tro att multiplikation av \"stora\" bråk ger ännu större.",
-        "why_wrong": "Steg 8: multiplikation av tal mellan 0 och 1 KRYMPER; {m('(5/6)^2 = 25/36')} är mindre än {m('5/6')}."
+        "why_wrong": "Steg 8: multiplikation av tal mellan 0 och 1 KRYMPER; (5/6)^2 = 25/36 är mindre än 5/6."
       },
       {
         "letter": "C",
@@ -2858,7 +2858,7 @@
         "why_wrong": "Steg 3 och 5: direktberäkning ger entydigt svar — ingen tvetydighet."
       }
     ],
-    "technique": "Vid q + q jämfört med q · q för {m('0 < q < 1')}: addition ger 2q (växer), multiplikation ger q² (krymper). Trigger: \"samma bråk, två operationer\".",
+    "technique": "Vid q + q jämfört med q · q för 0 < q < 1: addition ger 2q (växer), multiplikation ger q² (krymper). Trigger: \"samma bråk, två operationer\".",
     "pitfall": "Botemedlet mot \"multiplikation gör större\": multiplikation av två tal under 1 ger något ÄNNU mindre än bägge faktorerna — det är därför produkter av bråk konvergerar mot 0.",
     "framework_id": null,
     "pregrade_tactic": {
@@ -3037,7 +3037,7 @@
       {
         "n": 10,
         "title": "Granska tolkning",
-        "text": "Notera: \"radien 1\" (inte diametern). Cirkelarean är {m('\\pi r^2')}, inte {m('\\pi d^2/4')} — kontrollera att du läst rätt mått.",
+        "text": "Notera: \"radien 1\" (inte diametern). Cirkelarean är \\pi r^2, inte \\pi d^2/4 — kontrollera att du läst rätt mått.",
         "tier": "detail"
       },
       {
@@ -3057,7 +3057,7 @@
       {
         "letter": "B",
         "why_tempting": "Det är lätt att tro att 3/4 > π/4 eftersom 3 < π — nej, just det: 3 < π så 3/4 < π/4.",
-        "why_wrong": "Steg 7-8: {m('\\pi \\approx 3{,}14 > 3')}, så {m('\\pi/4 \\approx 0{,}785 > 3/4 = 0{,}75')} — I vinner med marginal."
+        "why_wrong": "Steg 7-8: \\pi \\approx 3{,}14 > 3, så \\pi/4 \\approx 0{,}785 > 3/4 = 0{,}75 — I vinner med marginal."
       },
       {
         "letter": "C",
