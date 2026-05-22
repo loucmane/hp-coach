@@ -57,7 +57,11 @@ export function DailyPlanCard({ plan, allComplete, onRegenerate, onNavigate }: D
           marginBottom: 20,
         }}
       >
-        <Eyebrow>{`Idag · ${plan.estimatedMinutes} min`}</Eyebrow>
+        {/* "~N min" + "uppskattat" qualifier — the total is generated
+         *  from per-item heuristics (repetition uses MINUTES_PER_REP,
+         *  drill/lesson use SECTION_DURATIONS); not a measured commitment.
+         *  Setting expectation up front (audit rec). */}
+        <Eyebrow>{`Idag · ~${plan.estimatedMinutes} min · uppskattat`}</Eyebrow>
         <button
           type="button"
           data-testid="daily-plan-regenerate"

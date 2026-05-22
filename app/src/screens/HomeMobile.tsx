@@ -21,7 +21,9 @@ import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
 import { useViewport } from '@/hooks/useViewport'
 import { formatSwedishHeader } from '@/lib/dates'
+import { type DiagnosticMemory, formatTimeSince } from '@/lib/diagnosticMemory'
 import type { DailyPlan } from '@/lib/scheduler'
+import { formatScore, type ProjectedTotal } from '@/lib/scoring'
 import type { CoachKey } from '@/lib/voice'
 import { useCoachStore } from '@/stores/coachStore'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
@@ -32,6 +34,15 @@ type HomeMobileProps = {
   /** True iff every plan item is complete. Drives the "Klart för idag" state. */
   allComplete?: boolean
   onRegenerate?: () => void
+  /** Optional per-half + total projection rendered as a mono kicker
+   *  above the plan card. Null/undefined hides the line (cold-start,
+   *  loading). Route owns the data wire so HomeMobile stays pure. */
+  projected?: ProjectedTotal | null
+  /** Optional "last diagnostic" event. When set, renders a one-line
+   *  kicker under the date header — `DIAGNOSTIK · 2 d sedan · baseline
+   *  0.62 · rebaseline →`. Closes B4: the diagnostic seeds the score
+   *  model, but without this line the user has no way to feel it. */
+  diagnosticMemory?: DiagnosticMemory | null
   /** Called when a plan item is tapped. Receives the item's href so
    *  the route can dispatch SPA navigation. */
   onPlanItemNavigate?: (href: string) => void
@@ -55,6 +66,8 @@ export function HomeMobile({
   plan = null,
   allComplete = false,
   onRegenerate = NOOP,
+  projected = null,
+  diagnosticMemory = null,
   onPlanItemNavigate,
   coach: coachProp,
   showStreak,
@@ -80,11 +93,14 @@ export function HomeMobile({
   const viewport = forceLayout ?? detectedViewport
   const isPhone = viewport === 'phone'
 
-  const statusHints = [renderStreak ? `streak ${streakValue} d` : null, '⌘k palett'].filter(
-    Boolean,
-  ) as string[]
+  // Streak is rendered as the chrome badge top-right (StreakBadge) and
+  // also shows on /progress; the status-line "streak 1 d" was a third
+  // copy of the same fact. Audit recommended consolidating — drop the
+  // status-line streak; badge + /progress remain.
+  const statusHints = ['⌘k palett']
 
   const greetingHeadline = hourGreeting(today)
+  const hasAnySignal = projected != null && (projected.verbal != null || projected.quant != null)
 
   return (
     <MobileFrame
@@ -137,6 +153,36 @@ export function HomeMobile({
               >
                 {days} dagar kvar · {sitting.label.toLowerCase()}
               </div>
+              {diagnosticMemory && (
+                <a
+                  href="/diagnostik"
+                  data-testid="home-diagnostic-memory"
+                  style={{
+                    display: 'inline-flex',
+                    gap: 6,
+                    alignItems: 'baseline',
+                    marginTop: 6,
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 11,
+                    letterSpacing: 'var(--font-mono-track)',
+                    textTransform: 'uppercase',
+                    color: 'var(--ink-2)',
+                    fontVariantNumeric: 'tabular-nums',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <span>Diagnostik</span>
+                  <span style={{ color: 'var(--muted)' }}>·</span>
+                  <span>{formatTimeSince(diagnosticMemory.lastAt, today)}</span>
+                  {diagnosticMemory.baselineScore != null && (
+                    <>
+                      <span style={{ color: 'var(--muted)' }}>·</span>
+                      <span>baseline {formatScore(diagnosticMemory.baselineScore)}</span>
+                    </>
+                  )}
+                  <span style={{ color: 'var(--accent)', marginLeft: 4 }}>rebaseline →</span>
+                </a>
+              )}
             </div>
             {renderStreak && <StreakBadge value={streakValue} />}
           </header>
@@ -168,6 +214,32 @@ export function HomeMobile({
             >
               {greetingHeadline}.
             </h1>
+
+            {hasAnySignal && projected && (
+              <div
+                data-testid="home-score-line"
+                style={{
+                  marginTop: 'clamp(-12px, -1vh, -4px)',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 12,
+                  letterSpacing: 'var(--font-mono-track)',
+                  color: 'var(--ink-2)',
+                  fontVariantNumeric: 'tabular-nums',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: 'clamp(8px, 1vw, 14px)',
+                  alignItems: 'baseline',
+                }}
+              >
+                <span style={{ color: 'var(--ink)' }}>
+                  just nu · {formatScore(projected.total)} / 2.0
+                </span>
+                <span style={{ color: 'var(--muted)' }}>·</span>
+                <span>verbal {formatScore(projected.verbal)}</span>
+                <span style={{ color: 'var(--muted)' }}>·</span>
+                <span>kvant {formatScore(projected.quant)}</span>
+              </div>
+            )}
 
             {plan ? (
               <DailyPlanCard

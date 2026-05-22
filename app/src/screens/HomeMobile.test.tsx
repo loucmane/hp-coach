@@ -69,9 +69,11 @@ describe('HomeMobile — plan rendering', () => {
     expect(screen.getByText('KVA-drill · 10 frågor')).toBeInTheDocument()
   })
 
-  it('shows the total estimated minutes in the eyebrow', () => {
+  it('shows the total estimated minutes in the eyebrow with the "uppskattat" qualifier', () => {
     render(<HomeMobile forceLayout="phone" plan={makePlan()} />)
-    expect(screen.getByText(/idag · 18 min/i)).toBeInTheDocument()
+    // "~N min · uppskattat" — the qualifier sets expectation that the
+    // total is heuristic, not a measured commitment.
+    expect(screen.getByText(/idag · ~18 min · uppskattat/i)).toBeInTheDocument()
   })
 
   it('renders the "Klart för idag" complete panel when allComplete is true', () => {
@@ -79,6 +81,91 @@ describe('HomeMobile — plan rendering', () => {
     expect(screen.getByTestId('daily-plan-complete')).toBeInTheDocument()
     expect(screen.getByText(/perfect game/i)).toBeInTheDocument()
     expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
+  })
+})
+
+describe('HomeMobile — score line', () => {
+  it('hides the score line when projected is null (cold-start / loading)', () => {
+    render(<HomeMobile forceLayout="phone" plan={makePlan()} projected={null} />)
+    expect(screen.queryByTestId('home-score-line')).not.toBeInTheDocument()
+  })
+
+  it('hides the score line when both halves are null', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        projected={{ total: null, verbal: null, quant: null }}
+      />,
+    )
+    expect(screen.queryByTestId('home-score-line')).not.toBeInTheDocument()
+  })
+
+  it('renders just-nu / verbal / kvant when any half has signal', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        projected={{ total: 0.65, verbal: 0.81, quant: 0.49 }}
+      />,
+    )
+    const line = screen.getByTestId('home-score-line')
+    expect(line).toHaveTextContent(/just nu · 0\.65 \/ 2\.0/i)
+    expect(line).toHaveTextContent(/verbal 0\.81/i)
+    expect(line).toHaveTextContent(/kvant 0\.49/i)
+  })
+
+  it('renders em-dash for missing halves but still shows the line', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        projected={{ total: null, verbal: 0.81, quant: null }}
+      />,
+    )
+    const line = screen.getByTestId('home-score-line')
+    expect(line).toHaveTextContent('verbal 0.81')
+    expect(line).toHaveTextContent('kvant —')
+  })
+})
+
+describe('HomeMobile — diagnostic memory', () => {
+  it('hides the memory line when no diagnostic has run', () => {
+    render(<HomeMobile forceLayout="phone" plan={makePlan()} diagnosticMemory={null} />)
+    expect(screen.queryByTestId('home-diagnostic-memory')).not.toBeInTheDocument()
+  })
+
+  it('renders memory line with elapsed time + baseline when present', () => {
+    const now = new Date(2026, 4, 22, 12)
+    // 2 days ago
+    const lastAt = now.getTime() - 2 * 24 * 60 * 60 * 1000
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        now={now}
+        diagnosticMemory={{ version: 1, lastAt, baselineScore: 0.62 }}
+      />,
+    )
+    const line = screen.getByTestId('home-diagnostic-memory')
+    expect(line).toHaveTextContent('Diagnostik')
+    expect(line).toHaveTextContent('2 dagar sedan')
+    expect(line).toHaveTextContent('baseline 0.62')
+    expect(line).toHaveTextContent('rebaseline')
+  })
+
+  it('omits baseline when score is null but still shows the line', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        diagnosticMemory={{ version: 1, lastAt: Date.now(), baselineScore: null }}
+      />,
+    )
+    const line = screen.getByTestId('home-diagnostic-memory')
+    expect(line).toHaveTextContent('Diagnostik')
+    // "baseline 0.62" should be absent — only the "rebaseline →" CTA remains.
+    expect(line).not.toHaveTextContent(/baseline \d/)
   })
 })
 

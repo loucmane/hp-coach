@@ -133,10 +133,23 @@ function meanIgnoringNull(values: (number | null)[]): number | null {
  *
  *  Returns sections ordered most-to-least-urgent, clamped to those
  *  with at least one attempt — we don't recommend drilling something
- *  we have no signal on yet. */
+ *  we have no signal on yet.
+ *
+ *  CONFIDENCE FLOOR: low-confidence sections are excluded entirely
+ *  unless ALL eligible sections are low-confidence (cold-start corner
+ *  case). The 0.6× discount in `weaknessWeight` proved insufficient on
+ *  its own — a 0.00-on-3-attempts section can still outweigh a
+ *  1.89-on-1035-attempts section ~11×. The dogfood user landed on
+ *  `LÄS 0.00 (3 försök · liten provstorlek) — lägsta sektionen just nu`
+ *  which is "noise, not coaching". Surfaced in audit/_homescreen_audit.md. */
 export function rankWeakness(scores: SectionScore[]): SectionScore[] {
-  return [...scores]
-    .filter((s) => s.score != null)
+  const scored = scores.filter((s) => s.score != null)
+  // Prefer medium/high-confidence sections; only fall back to low when
+  // nothing else qualifies. This stops the daily plan from prescribing
+  // work on a section we've seen 3-5 times.
+  const confident = scored.filter((s) => s.confidence !== 'low')
+  const pool = confident.length > 0 ? confident : scored
+  return [...pool]
     .map((s) => ({ s, w: weaknessWeight(s) }))
     .sort((a, b) => b.w - a.w)
     .map((x) => x.s)

@@ -35,8 +35,14 @@ export function useDueMistakes(section?: string) {
   return useQuery({
     queryKey: dueKeyForSection(section),
     queryFn: async () => {
+      // Limit 500: the playable session is capped at REPETITION_SESSION_SIZE
+      // (10) but the *displayed* total ("10 av 71 missar") needs the full
+      // count, so the hook must return at least as many rows as the worker
+      // would count(). Real users won't accumulate 500+ active missar —
+      // and the SRS spacing keeps the active set bounded — so this is
+      // effectively uncapped at dogfood scale.
       const res = await api.api.mistakes.due.$get({
-        query: { section, limit: '50' },
+        query: { section, limit: '500' },
       })
       if (!res.ok) {
         throw new Error(`GET /api/mistakes/due failed: ${res.status}`)

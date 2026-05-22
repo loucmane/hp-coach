@@ -16,8 +16,16 @@
 //   5. Cold start — early return, replaces all other rules
 
 import type { Section } from '@/data/questions'
+import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { rankWeakness, type SectionScore } from '@/lib/scoring'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
+
+/** Average wall-clock minutes per repetition rep — used to estimate
+ *  the daily-plan minutes budget. 10 reps at ~0.75 min/rep ≈ 8 min,
+ *  which matches what the user actually experiences. The previous
+ *  `Math.max(1, count)` produced ~50 min for 50 missar, contradicting
+ *  the 10-question session cap. */
+const MINUTES_PER_REP = 0.75
 
 export type PlanItemKind = 'lesson' | 'drill' | 'repetition'
 
@@ -52,8 +60,13 @@ export type PlanItem = {
  *  - v3: KVA/MEK/DTK/LÄS/ELF framework copy translated to Swedish in
  *    #51. Lesson-item headlines capture the framework headword at
  *    plan-generation time, so plans cached before #51 still display
- *    English lesson titles. */
-export const PLAN_SCHEMA_VERSION = 3
+ *    English lesson titles.
+ *  - v4: repetition session-size sanity (#74). Headline shape
+ *    changed from `Repetition · 50 missar` to `Repetition · 10 av
+ *    50 missar` when the backlog overflows the per-session cap;
+ *    estimatedMinutes recalibrated to ~0.75 min/rep. Plans cached
+ *    before #74 still show the misleading raw count. */
+export const PLAN_SCHEMA_VERSION = 4
 
 export type DailyPlan = {
   /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are
@@ -194,18 +207,31 @@ function finalize(date: string, items: PlanItem[]): DailyPlan {
 }
 
 function repetitionItem(count: number, date: string): PlanItem {
-  const noun = count === 1 ? 'miss' : 'missar'
+  // Cap the displayed count to the per-session size so prescription and
+  // execution agree. `playable` is what /repetition actually plays;
+  // `queueTotal` is how many missar exist in the backlog. The headline
+  // surfaces both ("10 av 50 missar") when the backlog overflows so the
+  // user knows there's more behind today's session.
+  const playable = Math.min(count, REPETITION_SESSION_SIZE)
+  const queueTotal = count
+  const noun = playable === 1 ? 'miss' : 'missar'
+  const headline =
+    queueTotal > playable
+      ? `Repetition · ${playable} av ${queueTotal} ${noun}`
+      : `Repetition · ${playable} ${noun}`
   const rationale =
-    count === 1
+    queueTotal === 1
       ? '1 miss väntar på repetition — gör den först, den förlorar effekt om den väntar för länge.'
-      : `${count} missar väntar på repetition — gör dem först, de förlorar effekt om de väntar för länge.`
+      : queueTotal > playable
+        ? `${playable} av ${queueTotal} missar denna session — de äldsta först, de förlorar effekt om de väntar för länge.`
+        : `${queueTotal} missar väntar på repetition — gör dem först, de förlorar effekt om de väntar för länge.`
   return {
     id: `rep-${date}`,
     kind: 'repetition',
     section: null,
-    headline: `Repetition · ${count} ${noun}`,
+    headline,
     rationale,
-    estimatedMinutes: Math.max(1, count),
+    estimatedMinutes: Math.max(1, Math.ceil(playable * MINUTES_PER_REP)),
     href: '/repetition',
     completed: false,
   }

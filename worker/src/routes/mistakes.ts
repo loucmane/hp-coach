@@ -57,8 +57,12 @@ const DueQuery = z
     // Optional section filter — "ORD", "MEK", etc. The questionId already
     // carries section as the 4th hyphenated part, so we filter via LIKE.
     section: z.string().min(2).max(8).optional(),
-    // 1..50 — protects against accidental dataset dumps.
-    limit: z.coerce.number().int().min(1).max(50).default(10),
+    // 1..500 — protects against accidental dataset dumps. Bumped from
+    // 50 to match the client's display needs: Home shows "10 av N
+    // missar" where N is the full backlog count, so the hook needs
+    // enough rows to render the total accurately. Dogfood scale
+    // (single user, SRS spacing) keeps the active set well under 500.
+    limit: z.coerce.number().int().min(1).max(500).default(10),
   })
   .strict()
 

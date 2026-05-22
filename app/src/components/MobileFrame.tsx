@@ -113,7 +113,9 @@ const TABS: ReadonlyArray<{
   { id: 'home', label: 'Hem', Icon: Home },
   { id: 'drill', label: 'Övning', Icon: Pencil },
   { id: 'lektion', label: 'Lektion', Icon: Book },
-  { id: 'coach', label: 'Coach', Icon: User },
+  // /coach hosts the dogfood-feedback exporter, not coaching. Audit
+  // rec #5 — rename the user-facing label so the tab matches reality.
+  { id: 'coach', label: 'Feedback', Icon: User },
   { id: 'progress', label: 'Framsteg', Icon: Chart },
 ]
 

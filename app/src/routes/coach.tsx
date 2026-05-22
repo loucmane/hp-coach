@@ -73,19 +73,19 @@ function CoachView() {
   return (
     <MobileFrame tabs activeTab="coach" onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}>
       <Page
-        runningHead={['HP · COACH', 'Coach']}
+        runningHead={['HP · COACH', 'Feedback']}
         status={{
-          mode: 'COACH',
-          context: 'dogfood-feedback',
+          mode: 'FEEDBACK',
+          context: 'dogfood-export',
           hints: ['esc tillbaka', '⌘k palett'],
         }}
       >
         <div style={{ padding: '20px 22px 24px', height: '100%', overflowY: 'auto' }}>
           <Stack gap={18}>
             <div>
-              <Eyebrow>Coach</Eyebrow>
+              <Eyebrow>Feedback</Eyebrow>
               <div style={{ fontFamily: 'var(--font-display)', fontSize: 24, marginTop: 6 }}>
-                Dogfood-feedback
+                Dogfood-export
               </div>
             </div>
 

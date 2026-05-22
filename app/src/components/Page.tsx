@@ -153,7 +153,11 @@ const NAV_LINKS = [
   { to: '/', label: 'Hem' },
   { to: '/drill', label: 'Övning' },
   { to: '/lektion', label: 'Lektion' },
-  { to: '/coach', label: 'Coach' },
+  // /coach is the dogfood feedback exporter, not coaching. The product
+  // is named HP-Coach, so a tab labeled "Coach" pointing to a feedback
+  // tool was self-contradictory (audit rec #5). Route + TabKey stay
+  // 'coach' to avoid churning testids.
+  { to: '/coach', label: 'Feedback' },
   { to: '/progress', label: 'Framsteg' },
 ] as const
 

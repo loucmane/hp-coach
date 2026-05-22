@@ -15,7 +15,7 @@ import { useMemo } from 'react'
 
 import { useDueMistakes, useRecordMistake, useResolveMistake } from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
-import { DEFAULT_REPLAY_LENGTH, pickReplayQuestions } from '@/lib/replay'
+import { pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
 
 export const Route = createFileRoute('/repetition')({
   component: RepetitionScreen,
@@ -59,17 +59,25 @@ function RepetitionScreen() {
       activeTab="drill"
       pickQuestions={async () => {
         const dueRows = due.data ?? []
-        const items = await pickReplayQuestions(dueRows, DEFAULT_REPLAY_LENGTH)
+        const items = await pickReplayQuestions(dueRows, REPETITION_SESSION_SIZE)
         return items.map((r) => r.question)
       }}
       idleEyebrow="Repetition"
       idleHeadline="Dina missar"
       idleSubcopy={
         dueCount && dueCount > 0
-          ? `Repetera ${Math.min(dueCount, DEFAULT_REPLAY_LENGTH)} frågor du svarat fel på.`
+          ? dueCount > REPETITION_SESSION_SIZE
+            ? `Repetera ${REPETITION_SESSION_SIZE} av ${dueCount} missar denna session — de äldsta först.`
+            : `Repetera ${dueCount} ${dueCount === 1 ? 'fråga' : 'frågor'} du svarat fel på.`
           : 'Du har inga missar att repetera just nu.'
       }
-      idleMeta={dueCount && dueCount > 0 ? `${dueCount} att repetera nu` : undefined}
+      idleMeta={
+        dueCount && dueCount > 0
+          ? dueCount > REPETITION_SESSION_SIZE
+            ? `${REPETITION_SESSION_SIZE} AV ${dueCount} I KÖN`
+            : `${dueCount} ATT REPETERA NU`
+          : undefined
+      }
       emptyCopy="Inga missar att repetera. När du svarar fel i en övning landar frågan här."
       disableStart={startDisabled}
       disableStartLabel={disabledLabel}

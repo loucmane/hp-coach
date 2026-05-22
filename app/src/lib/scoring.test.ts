@@ -177,6 +177,31 @@ describe('rankWeakness', () => {
     // don't tell the user to drill it as a priority — KVA wins.
     expect(r[0].section).toBe('KVA')
   })
+
+  it('drops low-confidence sections entirely when any medium/high exists', () => {
+    // The dogfood case from audit: LÄS 0.00 on 3 attempts vs ORD 1.89
+    // on 1035 attempts. The 0.6× discount alone produced (2-0)*0.6 = 1.2
+    // for LÄS vs (2-1.89)*1.0 = 0.11 for ORD — LÄS ranked 11× higher
+    // even though we *know* the LÄS reading is noise. The floor moves
+    // LÄS out of the ranking pool entirely so the prescription stops
+    // chasing tiny-sample sections.
+    const lowConf = mkScoreWith({ section: 'LÄS', score: 0.0, confidence: 'low' })
+    const highConf = mkScoreWith({ section: 'ORD', score: 1.89, confidence: 'high' })
+    const r = rankWeakness([lowConf, highConf])
+    expect(r.map((s) => s.section)).toEqual(['ORD'])
+  })
+
+  it('falls back to low-confidence pool when nothing else exists', () => {
+    // Edge case: a user with only low-confidence sections (post-diagnostic
+    // but pre-drilling). We still rank them so the daily plan has
+    // *something* to prescribe — better than empty.
+    const onlyLow = [
+      mkScoreWith({ section: 'XYZ', score: 0.6, confidence: 'low' }),
+      mkScoreWith({ section: 'KVA', score: 1.0, confidence: 'low' }),
+    ]
+    const r = rankWeakness(onlyLow)
+    expect(r.map((s) => s.section)).toEqual(['XYZ', 'KVA']) // lower score first
+  })
 })
 
 describe('formatScore / formatTrend', () => {

@@ -6,10 +6,14 @@
 // independently of the plan readiness.
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useStats } from '@/api/hooks/useStats'
+import { SECTION_KEYS } from '@/data/questions'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
+import { type DiagnosticMemory, loadDiagnosticMemory } from '@/lib/diagnosticMemory'
 import { TAB_ROUTE } from '@/lib/nav'
+import { computeProjected, computeSectionScore } from '@/lib/scoring'
 import { HomeMobile } from '@/screens/HomeMobile'
 
 export const Route = createFileRoute('/')({
@@ -22,6 +26,35 @@ function HomeRoute() {
   const { plan, allComplete, regenerate } = useDailyPlan()
 
   const streakDays = stats.data?.streakDays
+
+  // Projected total + verbal/quant halves for the Home score line.
+  // Pure derivation from stats.data; route owns the computation so
+  // HomeMobile stays a presentational component (and its tests don't
+  // need a QueryClient wrapper). Returns null while stats are loading
+  // so the score line stays hidden during the skeleton state.
+  const projected = useMemo(() => {
+    if (!stats.data) return null
+    const now = new Date()
+    const sectionScores = SECTION_KEYS.map((s) =>
+      computeSectionScore(s, stats.data.bySection[s], now),
+    )
+    return computeProjected(sectionScores)
+  }, [stats.data])
+
+  // Diagnostic memory — read once on mount so the localStorage hit
+  // doesn't run on every render. Lives client-side per
+  // diagnosticMemory.ts; an effect resyncs when the user returns to
+  // Home after running the diagnostic.
+  const [diagnosticMemory, setDiagnosticMemory] = useState<DiagnosticMemory | null>(() =>
+    loadDiagnosticMemory(),
+  )
+  useEffect(() => {
+    // Refresh on focus — covers the "ran /diagnostik, came back to /"
+    // path without remounting the route.
+    const refresh = () => setDiagnosticMemory(loadDiagnosticMemory())
+    window.addEventListener('focus', refresh)
+    return () => window.removeEventListener('focus', refresh)
+  }, [])
 
   // The scheduler emits hrefs as raw URL strings (e.g.
   // `/lektion?section=KVA`). TanStack's `navigate({ to })` treats `to`
@@ -43,6 +76,8 @@ function HomeRoute() {
       plan={plan}
       allComplete={allComplete}
       onRegenerate={regenerate}
+      projected={projected}
+      diagnosticMemory={diagnosticMemory}
       onPlanItemNavigate={navigateHref}
       streakDays={streakDays}
       onAvancerat={() => navigate({ to: '/avancerat' })}
