@@ -20,6 +20,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { loadExplanation } from '@/data/explanations'
 import type { Section } from '@/data/questions'
+import { computeTrapTrend, recordTrapSnapshot, type TrapTrend } from '@/lib/trapHistory'
 
 import { useDueMistakes } from './useMistakes'
 
@@ -30,6 +31,10 @@ export type TopTrap = {
   /** tldr or pattern_description from the framework JSON; null when
    *  the framework file isn't loaded yet (or doesn't define one). */
   headline: string | null
+  /** Week-over-week trend. Computed against a snapshot taken ~7 days
+   *  ago (any in the [5, 10]-day band). `unknown` when there's no
+   *  historical signal yet (cold start). */
+  trend: TrapTrend
 }
 
 const FRAMEWORK_FILES: Record<string, string> = {
@@ -118,6 +123,16 @@ export function useTopTraps(opts: UseTopTrapsOptions = {}): TopTrap[] {
         setTraps([])
         return
       }
+      // Record today's snapshot — drives the week-over-week trend
+      // computation below. Idempotent within a day (replaces same-date).
+      // We record only the candidates that *qualified* as patterns
+      // (count >= minCount); single-miss noise is intentionally excluded.
+      const now = new Date()
+      const history = recordTrapSnapshot(
+        now,
+        candidates.map((c) => ({ framework_id: c.framework_id, count: c.count })),
+      )
+
       // Best-effort headline lookup per unique section.
       const sections = Array.from(new Set(top.map((t) => t.section)))
       Promise.all(sections.map((s) => loadFrameworkHeadlines(s))).then((maps) => {
@@ -130,6 +145,7 @@ export function useTopTraps(opts: UseTopTrapsOptions = {}): TopTrap[] {
             section: t.section,
             count: t.count,
             headline: merged[t.framework_id] || null,
+            trend: computeTrapTrend(now, t.framework_id, t.count, history),
           })),
         )
       })

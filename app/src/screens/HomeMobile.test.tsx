@@ -186,12 +186,14 @@ describe('HomeMobile — top traps', () => {
             section: 'NOG',
             count: 4,
             headline: 'Statement (2) ger ingen ny information.',
+            trend: { kind: 'unknown' },
           },
           {
             framework_id: 'KVA-TRAP-001',
             section: 'KVA',
             count: 2,
             headline: 'Kvadratlikhet låser inte tecknet — x² = y² öppnar både x = y och x = −y.',
+            trend: { kind: 'unknown' },
           },
         ]}
       />,
@@ -209,10 +211,78 @@ describe('HomeMobile — top traps', () => {
       <HomeMobile
         forceLayout="phone"
         plan={makePlan()}
-        topTraps={[{ framework_id: 'XYZ-TRAP-040', section: 'XYZ', count: 3, headline: null }]}
+        topTraps={[
+          {
+            framework_id: 'XYZ-TRAP-040',
+            section: 'XYZ',
+            count: 3,
+            headline: null,
+            trend: { kind: 'unknown' },
+          },
+        ]}
       />,
     )
     expect(screen.getByTestId('home-top-traps')).toHaveTextContent('Öva detta mönster')
+  })
+
+  it('renders trend arrow when delta is present', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        topTraps={[
+          {
+            framework_id: 'NOG-TRAP-007',
+            section: 'NOG',
+            count: 2,
+            headline: 'x',
+            trend: { kind: 'delta', delta: -2, daysAgo: 7 },
+          },
+        ]}
+      />,
+    )
+    const chip = screen.getByTestId('trap-trend')
+    expect(chip.getAttribute('data-trend')).toBe('down')
+    expect(chip.textContent).toContain('↓')
+    expect(chip.textContent).toContain('2')
+  })
+
+  it('renders "ny" when the trap is new this week', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        topTraps={[
+          {
+            framework_id: 'KVA-TRAP-024',
+            section: 'KVA',
+            count: 3,
+            headline: 'x',
+            trend: { kind: 'new' },
+          },
+        ]}
+      />,
+    )
+    expect(screen.getByTestId('trap-trend')).toHaveTextContent('ny')
+  })
+
+  it('hides the trend chip when no history is available', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        topTraps={[
+          {
+            framework_id: 'NOG-TRAP-007',
+            section: 'NOG',
+            count: 4,
+            headline: 'x',
+            trend: { kind: 'unknown' },
+          },
+        ]}
+      />,
+    )
+    expect(screen.queryByTestId('trap-trend')).not.toBeInTheDocument()
   })
 
   it('row link points to the framework-drill deep-link', () => {
@@ -220,7 +290,15 @@ describe('HomeMobile — top traps', () => {
       <HomeMobile
         forceLayout="phone"
         plan={makePlan()}
-        topTraps={[{ framework_id: 'NOG-TRAP-007', section: 'NOG', count: 4, headline: 'x' }]}
+        topTraps={[
+          {
+            framework_id: 'NOG-TRAP-007',
+            section: 'NOG',
+            count: 4,
+            headline: 'x',
+            trend: { kind: 'unknown' },
+          },
+        ]}
       />,
     )
     const link = screen.getByTestId('top-trap-link') as HTMLAnchorElement
