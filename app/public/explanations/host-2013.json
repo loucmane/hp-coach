@@ -87,7 +87,7 @@
       }
     ],
     "technique": "När två kvantiteter är produkter med faktorer som skiljer sig med ±1, bryt ut den gemensamma faktorn istället för att räkna produkterna. Triggern är: \"två tvåsiffriga produkter, faktorerna ligger nära varandra\". Du förvandlar då jämförelsen till en enkel subtraktion.",
-    "pitfall": "Botemedlet mot \"jag måste räkna båda\": leta strukturen 69 = 68 + 1 innan du tar fram pennan. Skriv om så att en gemensam term {m('68 \\cdot 116')} dyker upp i båda kvantiteterna och stryk den.",
+    "pitfall": "Botemedlet mot \"jag måste räkna båda\": leta strukturen 69 = 68 + 1 innan du tar fram pennan. Skriv om så att en gemensam term 68 \\cdot 116 dyker upp i båda kvantiteterna och stryk den.",
     "framework_id": "KVA-TRAP-024",
     "pregrade_tactic": {
       "handle": "Gemensam-faktor-tricket",
@@ -153,7 +153,7 @@
       {
         "n": 9,
         "title": "Sammanställ",
-        "text": "Båda riktningar är möjliga under villkoret. Ingen entydig rangordning finns mellan {m('xw')} och {m('yz')}.",
+        "text": "Båda riktningar är möjliga under villkoret. Ingen entydig rangordning finns mellan xw och yz.",
         "tier": "essential"
       },
       {
@@ -171,15 +171,15 @@
       {
         "n": 12,
         "title": "Slutsats",
-        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: en produktlikhet {m('AB = CD')} med fyra variabler bestämmer inte korsparet {m('AD')} mot {m('BC')} — testa två extrema fall för att bevisa fri rangordning.",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: en produktlikhet AB = CD med fyra variabler bestämmer inte korsparet AD mot BC — testa två extrema fall för att bevisa fri rangordning.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att se {m('xy = zw')} och hoppa till att alla parvisa produkter är lika eller att I dominerar.",
-        "why_wrong": "Som steg 6 visar finns det giltiga val ({m('x=2,y=10,z=10,w=2')}) där {m('xw = 4 < 100 = yz')}."
+        "why_tempting": "Det är lätt att se xy = zw och hoppa till att alla parvisa produkter är lika eller att I dominerar.",
+        "why_wrong": "Som steg 6 visar finns det giltiga val (x=2,y=10,z=10,w=2) där xw = 4 < 100 = yz."
       },
       {
         "letter": "B",
@@ -188,12 +188,12 @@
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att {m('xy = zw')} och drar slutsatsen att andra omkastningar också ger likhet.",
-        "why_wrong": "Likhet kräver specialfall (t.ex. {m('x=z, y=w')}); steg 6 och 8 visar att olikhet är allmänfallet."
+        "why_tempting": "Många stannar vid att xy = zw och drar slutsatsen att andra omkastningar också ger likhet.",
+        "why_wrong": "Likhet kräver specialfall (t.ex. x=z, y=w); steg 6 och 8 visar att olikhet är allmänfallet."
       }
     ],
     "technique": "När ett villkor är en algebraisk produktlikhet med fyra variabler och frågan jämför en korsparning, försök inte härleda — testa två konkreta talvärden där den enda kopplingen är villkoret. Triggern är: \"villkor binder två par, fråga om annat par\".",
-    "pitfall": "Botemedlet mot \"likhet i ett ställe ⇒ likhet överallt\": skriv ned exakt vilket par villkoret binder ihop. Här binder det {m('(x,y)')} med {m('(z,w)')} — men inte {m('(x,w)')} med {m('(y,z)')}.",
+    "pitfall": "Botemedlet mot \"likhet i ett ställe ⇒ likhet överallt\": skriv ned exakt vilket par villkoret binder ihop. Här binder det (x,y) med (z,w) — men inte (x,w) med (y,z).",
     "framework_id": null,
     "pregrade_tactic": {
       "handle": "Två-extremer-testet",
@@ -279,7 +279,7 @@
       {
         "letter": "A",
         "why_tempting": "Om du minns regeln som \"-y är negativt\" landar du på att x alltid är negativt och y alltid positivt — fel om y < 0.",
-        "why_wrong": "Steg 6 visar att {m('y = -1')} ger {m('x = 1 > -1 = y')}, alltså I > II — bara EN av tre möjliga rangordningar."
+        "why_wrong": "Steg 6 visar att y = -1 ger x = 1 > -1 = y, alltså I > II — bara EN av tre möjliga rangordningar."
       },
       {
         "letter": "B",
@@ -293,7 +293,7 @@
       }
     ],
     "technique": "När villkoret är linjärt med en variabel fri (t.ex. y:s tecken är ospecifierat), pröva alltid y > 0, y = 0 och y < 0. Triggern är: \"variabel utan teckenbegränsning\".",
-    "pitfall": "Botemedlet mot \"minustecknet betyder negativt\": minustecknet INVERTERAR tecknet, det skapar inte ett negativt tal. {m('-y')} är positivt när {m('y')} är negativt.",
+    "pitfall": "Botemedlet mot \"minustecknet betyder negativt\": minustecknet INVERTERAR tecknet, det skapar inte ett negativt tal. -y är positivt när y är negativt.",
     "framework_id": "KVA-TRAP-037",
     "pregrade_tactic": {
       "handle": "Tre-tecken-testet",
@@ -377,7 +377,7 @@
       {
         "n": 12,
         "title": "Slutsats",
-        "text": "Svaret är B: II är större än I. Insikten i en mening: vid {m('(-a)^n')}-jämförelser, kolla pariteten på n FÖRST — om tecknen skiljer sig är magnituden irrelevant.",
+        "text": "Svaret är B: II är större än I. Insikten i en mening: vid (-a)^n-jämförelser, kolla pariteten på n FÖRST — om tecknen skiljer sig är magnituden irrelevant.",
         "tier": "essential"
       }
     ],
@@ -398,7 +398,7 @@
         "why_wrong": "Steg 3-7 löser jämförelsen via paritet allena — ingen ytterligare information behövs."
       }
     ],
-    "technique": "Vid {m('(-a)^n')}: bedöm pariteten på n innan magnituden. Trigger: \"negativ bas upphöjt till heltal\". När en exponent är udda och den andra är jämn, är teckenfrågan ensam tillräcklig.",
+    "technique": "Vid (-a)^n: bedöm pariteten på n innan magnituden. Trigger: \"negativ bas upphöjt till heltal\". När en exponent är udda och den andra är jämn, är teckenfrågan ensam tillräcklig.",
     "pitfall": "Botemedlet mot \"räkna magnituden\": skriv ner tecknet bredvid varje potens. Om tecknen skiljer sig kan du sluta räkna direkt.",
     "framework_id": "KVA-TRAP-013",
     "pregrade_tactic": {
@@ -505,7 +505,7 @@
       }
     ],
     "technique": "När en geometrisk kvantitet beror på en form med en frihetsgrad (t.ex. rektangel med fixerad omkrets), hitta intervallet av möjliga värden och kolla om jämförelsetalet ligger inuti det. Trigger: \"längsta sidan / största arean / minsta avståndet\" + en enda begränsning.",
-    "pitfall": "Botemedlet mot \"specifika fallet\": tänk ALDRIG på en bestämd rektangel — tänk på hela familjen som uppfyller villkoret. Två gränspunkter ({m('l=9')} och {m('l \\to 18')}) plus ett mellanvärde räcker.",
+    "pitfall": "Botemedlet mot \"specifika fallet\": tänk ALDRIG på en bestämd rektangel — tänk på hela familjen som uppfyller villkoret. Två gränspunkter (l=9 och l \\to 18) plus ett mellanvärde räcker.",
     "framework_id": "KVA-TRAP-004",
     "pregrade_tactic": {
       "handle": "Intervalljakten",
@@ -535,7 +535,7 @@
       {
         "n": 3,
         "title": "Idén bakom motexempel-strategin",
-        "text": "Om man kan välja {m('a_i')} och {m('b_j')} fritt så länge summorna är lika, är n och m i princip frikopplade. Bevisa det genom två konkreta val.",
+        "text": "Om man kan välja a_i och b_j fritt så länge summorna är lika, är n och m i princip frikopplade. Bevisa det genom två konkreta val.",
         "tier": "detail"
       },
       {
@@ -702,21 +702,21 @@
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att blanda ihop med fallet x > 1, där {m('x^2 > x')}.",
-        "why_wrong": "Som steg 5 visar är fall 2 ({m('x > 1')}) helt utesluten av villkoret; steg 8 ger strikt {m('x > x^2')}."
+        "why_tempting": "Det är lätt att blanda ihop med fallet x > 1, där x^2 > x.",
+        "why_wrong": "Som steg 5 visar är fall 2 (x > 1) helt utesluten av villkoret; steg 8 ger strikt x > x^2."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att {m('x = 1')} ger likhet och tror att det gäller över hela definitionsmängden.",
-        "why_wrong": "Steg 6 visar att {m('x = 1')} är utesluten ({m('1 \\cdot 0 = 0')}, inte > 0); inom öppna intervallet (0,1) är olikheten strikt."
+        "why_tempting": "Många stannar vid att x = 1 ger likhet och tror att det gäller över hela definitionsmängden.",
+        "why_wrong": "Steg 6 visar att x = 1 är utesluten (1 \\cdot 0 = 0, inte > 0); inom öppna intervallet (0,1) är olikheten strikt."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att man inte vet x:s tecken eller intervall.",
-        "why_wrong": "Steg 3-6 låser intervallet entydigt till {m('(0, 1)')}; villkoret är fullt informationsbärande."
+        "why_wrong": "Steg 3-6 låser intervallet entydigt till (0, 1); villkoret är fullt informationsbärande."
       }
     ],
-    "technique": "Vid {m('x')} mot {m('x^2')}: identifiera tre regimer beroende på var x ligger relativt 0 och 1. Trigger: \"jämför x och en potens av x\". Skriv ner skillnaden {m('x - x^2 = x(1-x)')} och utnyttja olikhetsvillkoret direkt om det är samma uttryck.",
+    "technique": "Vid x mot x^2: identifiera tre regimer beroende på var x ligger relativt 0 och 1. Trigger: \"jämför x och en potens av x\". Skriv ner skillnaden x - x^2 = x(1-x) och utnyttja olikhetsvillkoret direkt om det är samma uttryck.",
     "pitfall": "Botemedlet mot \"kvadrering förstorar alltid\": kvadrering FÖRMINSKAR i intervallet (0,1) och FÖRSTORAR utanför [0,1]; vid 0 och 1 är värdena lika.",
     "framework_id": null,
     "pregrade_tactic": {
@@ -2488,13 +2488,13 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att blanda omkrets och diameter — om du tror omkretsen är 2 m är diametern större än {m('6/\\pi')}.",
-        "why_wrong": "Som steg 4-5 visar är omkretsen {m('\\pi d')}, inte d; diametern är {m('6/\\pi \\approx 1{,}91 < 2')}."
+        "why_tempting": "Det är lätt att blanda omkrets och diameter — om du tror omkretsen är 2 m är diametern större än 6/\\pi.",
+        "why_wrong": "Som steg 4-5 visar är omkretsen \\pi d, inte d; diametern är 6/\\pi \\approx 1{,}91 < 2."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att {m('6/\\pi \\approx 2')} och kalla det jämnt.",
-        "why_wrong": "Steg 7-9: {m('6/\\pi \\approx 1{,}91')}, märkbart mindre än 2 — approximationen {m('\\pi \\approx 3')} är för grov här."
+        "why_tempting": "Snabbsvar är ofta att 6/\\pi \\approx 2 och kalla det jämnt.",
+        "why_wrong": "Steg 7-9: 6/\\pi \\approx 1{,}91, märkbart mindre än 2 — approximationen \\pi \\approx 3 är för grov här."
       },
       {
         "letter": "D",
@@ -2502,8 +2502,8 @@
         "why_wrong": "Steg 2-3: sträcka per varv = omkrets är hela kopplingen — inget mer behövs för att räkna ut diametern."
       }
     ],
-    "technique": "Rullande hjul: sträcka per varv = omkrets = {m('\\pi d')}. Trigger: \"hjul rullar utan att glida, x meter på n varv\". Dela med n för omkrets, sedan med {m('\\pi')} för diameter eller {m('2\\pi')} för radie.",
-    "pitfall": "Botemedlet mot \"6 m är diametern\": SKRIV alltid ut {m('\\pi d')} bredvid omkretsen — det påminner dig att dela med {m('\\pi')}.",
+    "technique": "Rullande hjul: sträcka per varv = omkrets = \\pi d. Trigger: \"hjul rullar utan att glida, x meter på n varv\". Dela med n för omkrets, sedan med \\pi för diameter eller 2\\pi för radie.",
+    "pitfall": "Botemedlet mot \"6 m är diametern\": SKRIV alltid ut \\pi d bredvid omkretsen — det påminner dig att dela med \\pi.",
     "framework_id": null,
     "pregrade_tactic": {
       "handle": "Rullnings-receptet",
@@ -2600,7 +2600,7 @@
       {
         "letter": "B",
         "why_tempting": "Om du minns regeln som \"(x+z)(y+x) ≈ xy + zx\" missar du de två extra termerna och underskattar II.",
-        "why_wrong": "Som steg 6 visar ger hela utvecklingen FYRA termer ({m('xy + x^2 + zy + zx')}) — exakt vad I har enligt steg 5."
+        "why_wrong": "Som steg 6 visar ger hela utvecklingen FYRA termer (xy + x^2 + zy + zx) — exakt vad I har enligt steg 5."
       },
       {
         "letter": "D",
