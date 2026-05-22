@@ -127,6 +127,46 @@ describe('HomeMobile — score line', () => {
   })
 })
 
+describe('HomeMobile — diagnostic memory', () => {
+  it('hides the memory line when no diagnostic has run', () => {
+    render(<HomeMobile forceLayout="phone" plan={makePlan()} diagnosticMemory={null} />)
+    expect(screen.queryByTestId('home-diagnostic-memory')).not.toBeInTheDocument()
+  })
+
+  it('renders memory line with elapsed time + baseline when present', () => {
+    const now = new Date(2026, 4, 22, 12)
+    // 2 days ago
+    const lastAt = now.getTime() - 2 * 24 * 60 * 60 * 1000
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        now={now}
+        diagnosticMemory={{ version: 1, lastAt, baselineScore: 0.62 }}
+      />,
+    )
+    const line = screen.getByTestId('home-diagnostic-memory')
+    expect(line).toHaveTextContent('Diagnostik')
+    expect(line).toHaveTextContent('2 dagar sedan')
+    expect(line).toHaveTextContent('baseline 0.62')
+    expect(line).toHaveTextContent('rebaseline')
+  })
+
+  it('omits baseline when score is null but still shows the line', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        diagnosticMemory={{ version: 1, lastAt: Date.now(), baselineScore: null }}
+      />,
+    )
+    const line = screen.getByTestId('home-diagnostic-memory')
+    expect(line).toHaveTextContent('Diagnostik')
+    // "baseline 0.62" should be absent — only the "rebaseline →" CTA remains.
+    expect(line).not.toHaveTextContent(/baseline \d/)
+  })
+})
+
 describe('HomeMobile — greeting', () => {
   it('renders the time-of-day greeting', () => {
     // 09:00 local → "God morgon."

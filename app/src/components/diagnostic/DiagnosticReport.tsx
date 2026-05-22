@@ -26,6 +26,7 @@ import { Btn, Eyebrow, Hairline } from '@/components/primitives'
 import { loadExplanation } from '@/data/explanations'
 import { wiredSections } from '@/data/frameworks'
 import type { AnswerLetter, Question, Section } from '@/data/questions'
+import { markDiagnosticComplete } from '@/lib/diagnosticMemory'
 
 export type DiagnosticSummary = {
   questions: Question[]
@@ -75,6 +76,21 @@ export function DiagnosticReport({ summary, onReplay, onHome }: Props) {
     [questions, picks],
   )
   const cluster = useTrapCluster(missedQids)
+
+  // Persist "diagnostic just finished" so Home can render a memory
+  // line ("DIAGNOSTIK · 2 d sedan · baseline 0.62 · rebaseline →").
+  // The baseline score is the overall accuracy on this 10-question
+  // diagnostic, scaled to the HP 0.0–2.0 grade. (It's a coarse signal
+  // — 10 questions is a tiny n — but it's what the user *saw* at the
+  // moment, which is the right semantic for "your baseline.")
+  const baselineScore = total > 0 ? (correct / total) * 2 : null
+  // Mark only once per mount — the report renders at the END of the
+  // session, so baselineScore is already final. Re-running the effect
+  // on every score recompute would write the same value.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only intentional
+  useEffect(() => {
+    markDiagnosticComplete(baselineScore)
+  }, [])
 
   return (
     <div
