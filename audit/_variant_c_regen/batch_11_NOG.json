@@ -1,0 +1,500 @@
+{
+  "batch_id": "batch_11_NOG",
+  "section": "NOG",
+  "count": 7,
+  "tasks": [
+    {
+      "exam": "var-2022-1",
+      "qid": "var-2022-1-kvant2-NOG-028",
+      "question": {
+        "qid": "var-2022-1-kvant2-NOG-028",
+        "exam_id": "var-2022-1",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 28,
+        "prompt": "Bo ställer sig sist i en kö för att åka berg- och dalbana. Efter 10 minuter står det 100 personer i kön. Hur många personer står före Bo i kön vid denna tidpunkt? (1)\t Sedan Bo ställde sig i kön har antalet personer före honom i kön minskat med 55. (2)\t Sedan Bo ställde sig i kön har antalet personer efter honom i kön ökat med 36. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778427342052,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att en absolut minskning räcker.",
+            "why_wrong": "(1) säger inget om hur många som var där från början — bara hur mycket."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "(2) räcker ensamt eftersom \"sist\" är en fast nollpunkt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "(1) saknar absolut nollpunkt — minskning utan starttal är inte konstruktivt."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att två förändringar inte räcker utan ursprungstal.",
+            "why_wrong": "(2) implicit har 0 som ursprung (Bo var sist)."
+          }
+        ],
+        "pitfall": "Det är lätt att missa implicita nollpunkter (Bo sist → efter=0).",
+        "solution_path": "(2) räcker: när Bo ställde sig var han sist, så ingen var efter honom. Nu är 36 personer efter honom. Med 100 totalt och Bo själv blir före=100−1−36=63. (1) saknar utgångsläge.",
+        "technique": "\"Sist i kön\" ger ett implicit utgångsläge — använd det."
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant2-NOG-023",
+      "question": {
+        "qid": "var-2025-kvant2-NOG-023",
+        "exam_id": "var-2025",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 23,
+        "prompt": "På ett fat ligger det melonskivor och vindruvor. Hur många fler vindruvor än melonskivor ligger det på fatet? (1)\t Det ligger dubbelt så många vindruvor som melonskivor på fatet. (2)\t Det ligger sammanlagt 57 melonskivor och vindruvor på fatet. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778426454211,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att förhållandet 2:1 ensamt ger skillnaden.",
+            "why_wrong": "Skillnaden v−m=m beror på m — utan absolutvärde kan den vara vad som helst."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att totalsumman 57 räcker.",
+            "why_wrong": "Utan förhållandet kan v−m vara allt från 1 till 55."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du läser båda som självständigt kompletta landar du här.",
+            "why_wrong": "Ingen av utsagorna ensamt fixerar både absolut antal och förhållande."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att två ekvationer i två obekanta inte räcker när udda termer blandas.",
+            "why_wrong": "Linjärt system v=2m, v+m=57 har exakt en lösning (m=19, v=38)."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Båda krävs: (1) ger v=2m så skillnaden är m, men m är okänt. (2) ger v+m=57 men inte förhållandet. Tillsammans: m+2m=57 → m=19, v=38, skillnaden=19.",
+        "technique": "Förhållande + summa = två ekvationer i två obekanta — alltid lösbart.",
+        "framework_id": "NOG-TRAP-003"
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant2-NOG-024",
+      "question": {
+        "qid": "var-2025-kvant2-NOG-024",
+        "exam_id": "var-2025",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 24,
+        "prompt": "Alexandra, Björn och Charlotte befinner sig på olika platser i en lägenhet. En av dem är i hallen, en är i köket och en är i vardagsrummet. Var är Charlotte? (1)\t Alexandra är i köket. Björn är inte i hallen. (2)\t Charlotte är inte i köket. Björn är i vardagsrummet. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778426454211,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att fastna vid (1) eftersom köket pekas ut direkt.",
+            "why_wrong": "(2) når samma slutsats — Björn i vardagsrum + Charlotte≠kök tvingar Charlotte till hallen."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Många stannar vid (2) som mer detaljerat och avfärdar (1).",
+            "why_wrong": "(1) räcker lika bra: Alex i kök + Björn≠hall → Björn=vardagsrum → Charlotte=hall."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda när tre rum och tre personer ska matchas.",
+            "why_wrong": "Båda villkoren räcker ensamma — kombinationen tillför inget."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att negationsvillkor aldrig räcker för unik tilldelning.",
+            "why_wrong": "Två villkor (en bekräftelse + en negation) räcker för att placera tre personer i tre rum."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Var för sig räcker. (1): Alexandra i kök + Björn ej i hall → Björn i vardagsrum → Charlotte i hall. (2): Björn i vardagsrum + Charlotte ej i kök → Alexandra i kök → Charlotte i hall.",
+        "technique": "I tilldelningsproblem med 3 entiteter räcker det ofta att låsa två platser — den tredje följer automatiskt.",
+        "framework_id": "NOG-TRAP-014"
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant2-NOG-025",
+      "question": {
+        "qid": "var-2025-kvant2-NOG-025",
+        "exam_id": "var-2025",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 25,
+        "prompt": "x är ett positivt heltal. Vilket värde har x? (1)\t Skillnaden mellan 50 % av x och 30 % av x är 22. (2)\t x är jämnt delbart med både 10 och 11. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778426454211,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tro att delbarhetsvillkor med två tal räcker.",
+            "why_wrong": "Det finns oändligt många multiplum av 110 — (2) plockar inte ut ett specifikt."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera för att vara säker.",
+            "why_wrong": "(1) ger redan exakt x=110 — (2) tillför inget."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du missar att (2) ger oändligt många kandidater landar du här.",
+            "why_wrong": "(2) ensamt smalnar inte av till en lösning eftersom inget intervall begränsar x."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att avfärda procentdifferensen i (1) som otillräcklig.",
+            "why_wrong": "20 % av x = 22 är en sluten ekvation i en obekant och löses entydigt."
+          }
+        ],
+        "pitfall": "Modulo-villkor är aldrig ensamma tillräckliga utan ett intervall som begränsar kandidatmängden.",
+        "solution_path": "(1) räcker: 0,5x−0,3x=0,2x=22 ger x=110. (2) ger x∈{110, 220, 330, …} eftersom alla multiplum av 110 är delbara med både 10 och 11.",
+        "technique": "Delbarhetsvillkor utan övre gräns lämnar alltid oändligt många lösningar.",
+        "framework_id": "NOG-TRAP-017"
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant2-NOG-026",
+      "question": {
+        "qid": "var-2025-kvant2-NOG-026",
+        "exam_id": "var-2025",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 26,
+        "prompt": "På ett barnkalas med 27 barn äter varje barn varsin korv med bröd. Till korven finns det senap och ketchup som valfria tillbehör. Hur många barn har ketchup på korven? (1)\t Av de barn som har senap på korven är det 60 procent som också har ketchup på korven. 1/9 av barnen har både senap och ketchup på korven. (2)\t 5 av barnen har senap på korven. 15 av barnen har varken senap eller ketchup på korven. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778426454211,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att en procentsats inom senap-gruppen räcker.",
+            "why_wrong": "(1) ger \"båda\"=3 men säger inget om ketchup-utan-senap."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att senap=5 och varken=15 räcker.",
+            "why_wrong": "(2) ger inte \"båda\" — utan det kan ketchup-totalt vara olika tal."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker för en Venn-tabell landar du här.",
+            "why_wrong": "Ingen av dem ensamt ger alla fyra cellerna {bara senap, bara ketchup, båda, varken}."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att avfärda problemet när två villkor blandar procent och absolut.",
+            "why_wrong": "Tillsammans ger de exakt fyra ekvationer som låser hela Venn-tabellen."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Båda krävs: (1) ger \"båda\"=27/9=3 och senap totalt=5 (eftersom 60 %·5=3), men inte bara-ketchup. (2) ger senap=5 och varken=15, alltså 12 har minst ett tillbehör. Tillsammans: bara-ketchup=12−5=7, så ketchup totalt=7+3=10.",
+        "technique": "I Venn-tab- eller behövs hela cellen \"båda\" plus två yttre summor för att räkna ut alla fyra cellerna.",
+        "framework_id": "NOG-TRAP-018"
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant2-NOG-027",
+      "question": {
+        "qid": "var-2025-kvant2-NOG-027",
+        "exam_id": "var-2025",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 27,
+        "prompt": "Är AB > BC? (1)\t x = z = 60° (2)\t x = 180° - y Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2025-kvant2-NOG-027.svg",
+          "aspect_ratio": 1.668
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778426454211,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tro att en supplementär relation x=180°−y signalerar något.",
+            "why_wrong": "(2) återger bara att x och y är bivinklar — ingen ny information om AB:s eller BC:s längd."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att alltid kombinera båda när vinklar och sidor blandas.",
+            "why_wrong": "(1) räcker ensamt; (2) tillför ingen ny information."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett ensamt ger ett geometriskt svar landar du här.",
+            "why_wrong": "(2) saknar verklig geometrisk substans — den är bara en identitet."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att vinkelvärden utan sidlängder aldrig räcker.",
+            "why_wrong": "Vinkelförhållandena i (1) bestämmer trianglarnas form upp till skala och därmed sidornas inbördes ordning."
+          }
+        ],
+        "pitfall": "Identitetspåståenden (typ x+y=180° när x och y redan är bivinklar) bär ingen ny information.",
+        "solution_path": "(1) räcker: x=z=60° fixerar for- men så att sidorna kan jämföras direkt — i den givna figuren tvingar det AB>BC. (2):s likhet x=180°−y är typiskt en bivinkelidentitet längs en rät linje och tillför ingen geometrisk information utöver det redan givna.",
+        "technique": "Skilj på substantiella geometriska villkor och triviala identiteter (som bivinkelsumma 180°).",
+        "framework_id": "NOG-TRAP-007"
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant2-NOG-028",
+      "question": {
+        "qid": "var-2025-kvant2-NOG-028",
+        "exam_id": "var-2025",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 28,
+        "prompt": "Två tal togs bort från mätserien –10, –8, 0, 6, 7. Vilka två tal togs bort? (1)\t Medianen förblev densamma. (2)\t Medelvärdet ändrades. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "E",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778500764310,
+          "generated_at": 1778426454211,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att medianvillkoret i (1) ensamt räcker när 0 är ett tydligt center.",
+            "why_wrong": "(1) tillåter fyra par som alla bevarar medianen 0 — alltså otillräckligt."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att medelvärdesvillkoret i (2) ensamt räcker eftersom det är restriktivare.",
+            "why_wrong": "(2) ger bara x+y≠−2 och lämnar många lösningar — otillräckligt ensamt."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet — två statistiska villkor måste väl låsa paret.",
+            "why_wrong": "Tillsammans kvarstår {−10,6}, {−10,7} och {−8,7} — inte unikt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tolkade båda som var för sig tillräckliga och missade att fyra par passar (1) skulle du landa här.",
+            "why_wrong": "Median-bevarande lämnar 4 par, medel-ändring lämnar fler — inget villkor är ensamt tillräckligt."
+          }
+        ],
+        "pitfall": "Ekvivalenta sammansättningar med samma summa (här x+y=−4 och x+y=−1) ger samma medelvärdeändring och kan inte separeras enbart via medelvärdet.",
+        "solution_path": "Inget villkor avgör paret entydigt — inte heller tillsammans. (1) ensamt: median 0 bevaras av fyra par från {−10,−8,6,7} (par med 0 kvar). (2) ensamt: ursprungligt medel −1, så medelvärdet ändras om paret summerar ≠ −2 — många par uppfyller det. Tillsammans utesluts bara (−8, 6) (summa −2), kvar tre par som fortfarande inte går att skilja.",
+        "technique": "Räkna alltid antalet kandidater efter varje villkor — är det >1, är villkoret otillräckligt.",
+        "framework_id": "NOG-TRAP-025"
+      }
+    }
+  ]
+}

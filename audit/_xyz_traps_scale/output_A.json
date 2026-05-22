@@ -1,0 +1,170 @@
+[
+  {
+    "id": "XYZ-TRAP-001",
+    "tldr": "Minustecken framför parentes är multiplikation — varje term innanför byter tecken, inte bara den första.",
+    "recognition_cue": "När uttrycket innehåller −(a+b+c) eller en negativ koefficient k·(…) som ska distribueras, särskilt om parentesen har tre eller fler termer eller en redan negativ inre term.",
+    "worked_example": {
+      "setup": "Förenkla uttrycket 8 − 3·(5x − 3) − 4x − (2 − 9x).",
+      "trap_thinking": "Studenten distribuerar −3 över (5x − 3) som −15x − 3 (missar att byta tecken på andra termen), och behandlar −(2 − 9x) som −2 − 9x. Får 8 − 15x − 3 − 4x − 2 − 9x = 3 − 28x och väljer B.",
+      "correct_thinking": "Distribuera in tecknet på varje term: −3·(5x − 3) = −15x + 9, och −(2 − 9x) = −2 + 9x. Hela uttrycket blir 8 − 15x + 9 − 4x − 2 + 9x = (8 + 9 − 2) + (−15 − 4 + 9)x = 15 − 10x.",
+      "answer": "A — −10x + 15, varje term i parentesen har fått tecknet flippat."
+    },
+    "counter_example": "Om uttrycket istället hade plus framför parentesen, +3·(5x − 3) + (2 − 9x), då bevaras alla tecken oförändrat och fällan är död — ingen distributionsväxling behövs."
+  },
+  {
+    "id": "XYZ-TRAP-002",
+    "tldr": "Term som korsar likhetstecknet byter tecken — alltid, även när den ligger gömd i kedjan.",
+    "recognition_cue": "När en linjär ekvation har x-termer och konstanter blandade på båda sidorna, särskilt efter parentesutveckling där flera termer ska flyttas över på en gång.",
+    "worked_example": {
+      "setup": "Lös ekvationen 35x + 60 = 47x − 24 för x.",
+      "trap_thinking": "Studenten flyttar 35x till höger som +35x istället för −35x och flyttar −24 till vänster som −24 istället för +24. Får 60 − 24 = 47x + 35x, det vill säga 36 = 82x, och väljer B (ungefärligt negativt värde).",
+      "correct_thinking": "Subtrahera 35x från båda leden: 60 = 12x − 24. Addera 24 till båda leden: 84 = 12x. Dela med 12: x = 7. Varje term som korsade tecknet fick tecknet flippat, ingen blev kvar.",
+      "answer": "D — x = 7, verifierat: 35·7 + 60 = 305 och 47·7 − 24 = 305."
+    },
+    "counter_example": "Om ekvationen istället hade samma x-koefficient på båda sidorna, 35x + 60 = 35x − 24, då försvinner x helt vid samling och ekvationen blir motsägelsefull (60 = −24) — ingen lösning."
+  },
+  {
+    "id": "XYZ-TRAP-003",
+    "tldr": "FOIL kräver alla fyra produkterna — och konjugatformen gäller bara när andra-termerna är samma tal med motsatt tecken.",
+    "recognition_cue": "När uttrycket är en produkt av binomer (x+a)(x+b), eller en kedja av tre binomer (a+b)(c+d)(e+f), och svaren skiljer sig i mellantermerna eller antalet termer.",
+    "worked_example": {
+      "setup": "Beräkna uttrycket (a + b)(c + d)(e + f) i utvecklad form.",
+      "trap_thinking": "Studenten FOIL:ar de två första parenteserna till ac + ad + bc + bd, men glömmer sedan att VARJE av dessa fyra termer ska multipliceras med BÅDA termerna i (e + f). Får bara ac + ad + bc + bd + e + f och väljer A.",
+      "correct_thinking": "Multiplicera först (a + b)(c + d) = ac + ad + bc + bd. Multiplicera sedan hela summan med (e + f): varje av de fyra termerna gångrar både e och f, vilket ger åtta termer ace + acf + ade + adf + bce + bcf + bde + bdf.",
+      "answer": "D — ace + acf + ade + adf + bce + bcf + bde + bdf, åtta termer totalt (2·2·2)."
+    },
+    "counter_example": "Om uttrycket istället var (a + b)(a − b), då gäller konjugatregeln och resultatet kollapsar till a² − b² — två termer istället för fyra, eftersom korstermerna tar ut varandra."
+  },
+  {
+    "id": "XYZ-TRAP-004",
+    "tldr": "Punkt på linje betyder att koordinaterna satisfierar ekvationen — substituera direkt, lös ut parametern.",
+    "recognition_cue": "När problemet säger att punkten (x₀, y₀) ligger på en linje y = kx + m, särskilt när någon av koordinaterna är ett uttryck i parametern som ska bestämmas.",
+    "worked_example": {
+      "setup": "Givet att punkten (a, 2a) ligger på linjen y = 3x − 60. Vilket värde har a?",
+      "trap_thinking": "Studenten ser \"a\" och \"2a\" som två obekanta och försöker ställa upp två ekvationer, eller använder lutningen 3 isolerat och dividerar −60 med 3 för att få a = 20 — väljer fel alternativ.",
+      "correct_thinking": "Substituera x = a och y = 2a direkt i linjens ekvation: 2a = 3a − 60. Subtrahera 3a från båda leden: −a = −60. Multiplicera med −1: a = 60. En ekvation, en obekant.",
+      "answer": "D — a = 60, kontroll: punkten (60, 120) ligger på y = 3·60 − 60 = 120."
+    },
+    "counter_example": "Om punkten istället angavs som (a, 3a − 60), då skulle substitutionen ge 3a − 60 = 3a − 60, en identitet — fällan är död eftersom punkten ligger på linjen för alla a."
+  },
+  {
+    "id": "XYZ-TRAP-005",
+    "tldr": "Olikhet vänds endast när man multiplicerar eller dividerar med ett negativt tal — markera koefficienten innan du delar.",
+    "recognition_cue": "När en olikhet löses och koefficienten på x blir negativ efter samling av termer, eller när båda leden multipliceras med ett uttryck vars tecken inte är låst.",
+    "worked_example": {
+      "setup": "Lös olikheten 3 − 2x < 1 för x.",
+      "trap_thinking": "Studenten subtraherar 3 från båda leden korrekt och får −2x < −2, men delar sedan med −2 utan att vända olikheten. Får x < 1 och väljer A.",
+      "correct_thinking": "Subtrahera 3 från båda leden: −2x < −2. Dela båda leden med −2 — koefficienten är negativ, så olikheten vänds: x > 1. Det negativa tecknet är den enda strukturella effekten.",
+      "answer": "B — x > 1, kontroll med x = 2: 3 − 4 = −1 < 1, stämmer."
+    },
+    "counter_example": "Om olikheten istället var 3 + 2x < 1, då är koefficienten på x positiv (+2) efter samling och olikheten vänds inte — den vanliga algebrarutinen räcker, x < −1."
+  },
+  {
+    "id": "XYZ-TRAP-006",
+    "tldr": "Multiplikation och division före addition och subtraktion — räkneordning kapar uttrycket innan du sätter ihop det.",
+    "recognition_cue": "När uttrycket blandar +, −, · och / utan parenteser som styr ordningen, eller när det innehåller en bråkmultiplikation insprängd mellan additionstermer.",
+    "worked_example": {
+      "setup": "Beräkna värdet av 1 + ½ · ⅓.",
+      "trap_thinking": "Studenten räknar från vänster till höger: först 1 + ½ = 3/2, sedan 3/2 · ⅓ = 3/6 = ½. Väljer A (3/6).",
+      "correct_thinking": "Multiplikation har högre prioritet än addition. Räkna först ½ · ⅓ = 1/6. Addera sedan: 1 + 1/6 = 6/6 + 1/6 = 7/6.",
+      "answer": "B — 7/6, multiplikationen utförs före additionen."
+    },
+    "counter_example": "Om uttrycket istället var (1 + ½) · ⅓, då tvingar parenteserna additionen först och resultatet blir 3/2 · ⅓ = ½ — fällan är död eftersom parentesen styr ordningen."
+  },
+  {
+    "id": "XYZ-TRAP-007",
+    "tldr": "Vid substitution av negativt värde: sätt alltid parentes runt det — annars slarvar tecknet med exponenter och produkter.",
+    "recognition_cue": "När en funktion ska evalueras vid ett negativt argument, särskilt om uttrycket innehåller potenser eller där tecknet på den insatta variabeln kombineras med ett yttre tecken.",
+    "worked_example": {
+      "setup": "Beräkna g(2) − h(2) där g(z) = 2(z − 1) och h(z) = 3(1 − z).",
+      "trap_thinking": "Studenten räknar g(2) = 2(2 − 1) = 2 korrekt, men slarvar med h(2) = 3(1 − 2) och tappar tecknet, läser det som +3 istället för −3. Får 2 − 3 = −1 och väljer A.",
+      "correct_thinking": "Substituera z = 2 in varje funktion med parenteser runt argumentet: g(2) = 2·(2 − 1) = 2·1 = 2, och h(2) = 3·(1 − 2) = 3·(−1) = −3. Differensen är g(2) − h(2) = 2 − (−3) = 2 + 3 = 5.",
+      "answer": "D — 5, parentesen runt (1 − 2) hindrar tecknet från att försvinna."
+    },
+    "counter_example": "Om funktionen istället var h(z) = 3·|1 − z| med absolutbelopp, då försvinner tecknet helt vid substitution och differensen blir 2 − 3 = −1 — fällan är död eftersom absolutbeloppet låser tecknet positivt."
+  },
+  {
+    "id": "XYZ-TRAP-008",
+    "tldr": "Andragradsekvation utan konstantterm faktoriseras — dela aldrig med x, för då tappar du roten x = 0.",
+    "recognition_cue": "När ekvationen har formen ax² + bx = 0 (ingen konstantterm) och svarsalternativen listar enskilda x-värden istället för par.",
+    "worked_example": {
+      "setup": "Lös ekvationen 5x² + 3x = 0 och välj ett möjligt värde på x.",
+      "trap_thinking": "Studenten delar båda leden med x och får 5x + 3 = 0, alltså x = −3/5. Tycker sig ha löst klart och väljer A, men har samtidigt tappat den andra roten x = 0.",
+      "correct_thinking": "Faktorisera istället: 5x² + 3x = x(5x + 3) = 0. Nollproduktsregeln ger x = 0 ELLER 5x + 3 = 0. Den andra grenen ger x = −3/5. Båda värdena är giltiga lösningar — om svarsalternativen bara listar ett, är det det som är icke-trivialt.",
+      "answer": "A — −3/5, den icke-triviala roten utöver x = 0."
+    },
+    "counter_example": "Om ekvationen istället var 5x² + 3x + 2 = 0 (med konstantterm), då är x = 0 inte längre en lösning och det går bra att lösa med pq-formeln eller faktorisering utan att tappa rötter."
+  },
+  {
+    "id": "XYZ-TRAP-009",
+    "tldr": "x² = k ger två rötter ±√k — skriv alltid ut tecknet, även när villkoret begränsar grenen.",
+    "recognition_cue": "När ekvationen reducerar till en kvadrat lika med ett positivt tal, ofta efter substitution eller utveckling, och svarsalternativen blandar positiva och negativa värden.",
+    "worked_example": {
+      "setup": "Givet att x < 0, lös ekvationen (x − 7)² = 144.",
+      "trap_thinking": "Studenten drar kvadratrot och tar bara den positiva grenen: x − 7 = 12, alltså x = 19. Glömmer att x < 0 är angivet och ignorerar den negativa roten — väljer A (närmast 19 med fel tecken).",
+      "correct_thinking": "Dra kvadratrot med ± explicit: x − 7 = ±12. Två grenar: x = 7 + 12 = 19 och x = 7 − 12 = −5. Villkoret x < 0 utesluter 19 och låser svaret till x = −5.",
+      "answer": "D — −5, den negativa grenen är den som uppfyller villkoret x < 0."
+    },
+    "counter_example": "Om villkoret istället varit x > 0, då skulle samma uppdelning ge x = 19 som enda giltiga rot — fällan kvarstår, men på den andra grenen."
+  },
+  {
+    "id": "XYZ-TRAP-010",
+    "tldr": "Faktorisera x² + bx + c kräver två tal med rätt produkt OCH rätt summa — kontrollera båda, inte bara den ena.",
+    "recognition_cue": "När en andragradsekvation eller kurva på formen x² + bx + c ska faktoriseras eller dess rötter bestämmas, och svarsalternativen ger rätt produkt men varierar i summa.",
+    "worked_example": {
+      "setup": "Kurvan y = x² + x − 6 skär x-axeln i två punkter. Bestäm punkternas x-värden.",
+      "trap_thinking": "Studenten söker två tal vars produkt är −6 och provar 3 och −2 — produkten stämmer, men summan blir 1 (korrekt) — sedan vänder studenten tecknen i förhastat skick och väljer B (x = 3 och x = −2).",
+      "correct_thinking": "Sätt y = 0: x² + x − 6 = 0. Sök två tal med produkt −6 OCH summa +1. Paret är +3 och −2, eftersom 3·(−2) = −6 och 3 + (−2) = 1. Faktoriseringen blir (x + 3)(x − 2) = 0, alltså rötterna x = −3 och x = 2.",
+      "answer": "C — x = −3 och x = 2, tecknen är omvända jämfört med talen i faktoriseringen."
+    },
+    "counter_example": "Om kurvan istället var y = x² + x + 6, då finns inget reellt par med produkt +6 och summa +1 (diskriminanten är negativ) — ekvationen saknar reella rötter och kurvan skär inte x-axeln alls."
+  },
+  {
+    "id": "XYZ-TRAP-011",
+    "tldr": "Största gemensamma faktor omfattar både siffra och variabel — bryt ut allt som finns i varje term.",
+    "recognition_cue": "När uttrycket är en summa av termer som delar både en numerisk faktor och en gemensam variabel, och svarsalternativen blandar fullständig och partiell utbrytning.",
+    "worked_example": {
+      "setup": "I uttrycket 3xy² + 2x²y, bryt ut största gemensamma faktor.",
+      "trap_thinking": "Studenten ser att båda termerna har x men missar att de också har y. Bryter ut bara x och skriver x(3y² + 2xy), eller går åt andra hållet och försöker bryta ut numeriskt 5 (felaktig summa av koefficienter) — väljer B eller C.",
+      "correct_thinking": "Identifiera vad som finns i BÅDA termerna: x finns i båda (lägst exponent 1), y finns i båda (lägst exponent 1). Största gemensamma faktor är xy. Dela varje term med xy: 3xy²/xy = 3y och 2x²y/xy = 2x. Resultatet blir xy(3y + 2x).",
+      "answer": "A — xy(3y + 2x), både variabel och blandtermen är utbrutna."
+    },
+    "counter_example": "Om uttrycket istället var 3xy² + 2z²w (utan gemensam variabel), då finns ingen variabel att bryta ut och uttrycket är redan på sin enklaste form — fällan är död utan delade faktorer."
+  },
+  {
+    "id": "XYZ-TRAP-012",
+    "tldr": "Konjugatregeln (a+b)(a−b) = a²−b² ger tecknet minus — tillämpa bara när andra-termerna är samma tal med motsatt tecken.",
+    "recognition_cue": "När uttrycket är en differens av två kvadrater eller en produkt där den ena binomen har plus och den andra minus mellan samma två termer, t.ex. (x+7)² − (x−7)² eller (a+b)(a−b).",
+    "worked_example": {
+      "setup": "Förenkla uttrycket (x + 7)² − (x − 7)².",
+      "trap_thinking": "Studenten kvadrerar varje parentes och tappar korstermerna: (x+7)² blir x² + 49 och (x−7)² blir x² + 49 (eller liknande slarvfel), och differensen blir 0 — väljer fel alternativ. Eller kvadrerar korrekt men subtraherar fel och får x² eller 49x.",
+      "correct_thinking": "Behandla hela uttrycket som en konjugat-skillnad på formen A² − B² där A = (x+7) och B = (x−7): resultatet är (A+B)(A−B) = (2x)·(14) = 28x. Alternativt: utveckla varje kvadrat fullt — (x+7)² = x² + 14x + 49 och (x−7)² = x² − 14x + 49 — och subtrahera, vilket också ger 28x.",
+      "answer": "A — 28x, korstermerna är det som överlever subtraktionen."
+    },
+    "counter_example": "Om uttrycket istället var (x + 7)² + (x − 7)², då tar korstermerna ut varandra med samma tecken och resultatet blir 2x² + 98 — fällan är död eftersom det inte längre är en konjugatstruktur."
+  },
+  {
+    "id": "XYZ-TRAP-013",
+    "tldr": "(a+b)² är inte a²+b² — kvadreringsregeln har en korsterm 2ab som lätt försvinner.",
+    "recognition_cue": "När uttrycket innehåller en binom i kvadrat, (a+b)² eller (a−b)², särskilt när det jämförs med eller subtraheras från ett annat kvadratiskt uttryck.",
+    "worked_example": {
+      "setup": "Sidan i kvadraten K₁ är x + y och sidan i kvadraten K₂ är x. Beräkna differensen mellan areorna av K₁ och K₂.",
+      "trap_thinking": "Studenten skriver area(K₁) = (x + y)² och utvecklar slarvigt som x² + y² (glömmer korstermen 2xy). Differensen blir då x² + y² − x² = y² och väljer C.",
+      "correct_thinking": "Tillämpa kvadreringsregeln korrekt: (x + y)² = x² + 2xy + y². Differensen mellan areorna är (x + y)² − x² = x² + 2xy + y² − x² = 2xy + y². Korstermen 2xy är det som syns när x²-termerna tar ut varandra.",
+      "answer": "D — 2xy + y², korstermen 2xy överlever subtraktionen."
+    },
+    "counter_example": "Om sidan i K₁ istället var bara y (utan x), då blir differensen y² − x² (konjugat) — fällan är död eftersom det inte längre är en kvadrering utan en differens av kvadrater."
+  },
+  {
+    "id": "XYZ-TRAP-014",
+    "tldr": "Vid multiplikation med nämnare: hela båda leden gångras, varje term — inte bara bråktermen.",
+    "recognition_cue": "När ekvationen har x i nämnaren eller är på formen bråk = polynom, och båda leden ska multipliceras med nämnaren för att rensa ut bråket.",
+    "worked_example": {
+      "setup": "Lös ekvationen 45x/7 = 5x + 10 för x.",
+      "trap_thinking": "Studenten multiplicerar bara vänsterledet med 7 och får 45x = 5x + 10 (glömmer att också multiplicera högerledets termer med 7). Lös ger 40x = 10, alltså x = 1/4 — väljer A eller B (närmaste små bråk).",
+      "correct_thinking": "Multiplicera HELA båda leden med 7, term för term: vänsterledet blir 45x, högerledet blir 7·5x + 7·10 = 35x + 70. Ekvationen är nu 45x = 35x + 70. Subtrahera 35x: 10x = 70. Dela med 10: x = 7.",
+      "answer": "D — x = 7, kontroll: 45·7/7 = 45 och 5·7 + 10 = 45."
+    },
+    "counter_example": "Om ekvationen istället var 45x/7 = 5x (utan konstantterm), då försvinner asymmetrin — multiplikation med 7 ger 45x = 35x, alltså 10x = 0 och x = 0 — fällan är död utan extra term som måste hängas med."
+  }
+]

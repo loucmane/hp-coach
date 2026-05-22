@@ -1,0 +1,22 @@
+{
+  "id": "KVA-TRAP-001",
+  "pattern_description": "Student ser x² = y² (eller kvadratlikhet) och drar slutsatsen x = y — missar att x = -y är lika giltigt.",
+  "why_it_occurs": "Den naturliga läsningen av 'kvadraterna är lika' är 'talen är lika'. Studenten glömmer att kvadrering raderar tecknet, så villkoret splittras i två fall: x = y OCH x = -y, båda förenliga med given info.",
+  "common_distractor_signature": "Väljer C (I = II) när D är rätt — ser den algebraiska matchningen och stannar innan den negativa grenen är kontrollerad.",
+  "countermeasure": "Varje gång du tar kvadratrot eller jämför kvadrater: skriv ut BÅDA fallen x = ±y och kolla om båda är förenliga med villkoren. Om ja → svaret är D.",
+  "example_questions": [
+    "host-2017-kvant1-KVA-021",
+    "host-2016-kvant2-KVA-020",
+    "host-2023-kvant1-KVA-018"
+  ],
+  "notes": null,
+  "tldr": "Kvadratlikhet låser inte tecknet — x² = y² öppnar både x = y och x = −y.",
+  "recognition_cue": "När problemet jämför kvadrater (x² = y², \"kvadraterna är lika\", a² ger b²) eller drar kvadratrot ur en variabel.",
+  "worked_example": {
+    "setup": "Givet att x² = 9 och inga andra villkor på x. Jämför I: x med II: 3.",
+    "trap_thinking": "Studenten löser x² = 9 som x = 3 och drar slutsatsen I = II = 3 — väljer C.",
+    "correct_thinking": "x² = 9 har två rötter: x = 3 OCH x = −3. Om x = 3: I = 3 = II. Om x = −3: I = −3 < II = 3. Båda fallen är förenliga med villkoret, så förhållandet mellan I och II är inte unikt fastlagt.",
+    "answer": "D — informationen är otillräcklig."
+  },
+  "counter_example": "Om problemet lägger till \"x > 0\" (eller \"x ≠ 0 och x är positivt\"), då är tecknet låst och fällan är död — x = 3 unikt, svaret blir C."
+}

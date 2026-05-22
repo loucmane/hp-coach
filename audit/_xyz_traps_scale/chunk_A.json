@@ -1,0 +1,202 @@
+[
+  {
+    "id": "XYZ-TRAP-001",
+    "pattern_description": "Distribuera ett minustecken (eller negativ koefficient) över en parentes — student byter tecken på första termen men inte resten.",
+    "why_it_occurs": "-(a+b) ser ut som '-a+b' om man bara ser minustecknet framför a. Den 'osynliga' multiplikationen mellan minustecknet och de senare termerna missas — speciellt när parentesen har 3+ termer eller en negativ inre term redan.",
+    "common_distractor_signature": "Resultat med ena tecknet rätt och resten oförändrade — t.ex. -(x+y) som ger -x+y, eller -3(a-2) som ger -3a-6 istället för -3a+6.",
+    "countermeasure": "När du tar bort en parentes med minustecken eller negativ koefficient framför: stryk över VARJE term i parentesen och byt tecknet, en i taget. Aldrig 'minus framför, klart' — alltid distribuera in.",
+    "example_questions": [
+      "host-2015-kvant2-XYZ-007",
+      "host-2018-kvant2-XYZ-008",
+      "host-2023-kvant1-XYZ-007",
+      "var-2014-kvant1-XYZ-007",
+      "var-2014-kvant2-XYZ-004"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-002",
+    "pattern_description": "Linjär ekvation: samla x på en sida, konstanter på andra — student missar teckenflipp på en term som korsar likhetstecknet.",
+    "why_it_occurs": "När man 'flyttar över' en term kommer studenten ihåg regeln 'byt tecken' för EN term åt gången, men missar den när den ligger inbäddad i en lång kedja eller dyker upp efter en parentes-utveckling.",
+    "common_distractor_signature": "Slutsvar där x har räknats med ett missat tecknebyte — vanligen ett halverat värde eller ett tal med fel tecken jämfört med rätt svar.",
+    "countermeasure": "Multiplicera ut ALLA parenteser FÖRST, samla SEDAN x-termer på en sida och konstanter på den andra — varje term som korsar = får sitt tecken flippat, ingen får stå kvar.",
+    "example_questions": [
+      "host-2017-kvant1-XYZ-006",
+      "host-2021-kvant2-XYZ-001",
+      "host-2023-kvant2-XYZ-003",
+      "host-ver1-2019-kvant1-XYZ-005",
+      "var-2017-kvant1-XYZ-004",
+      "var-2022-2-kvant1-XYZ-001",
+      "var-2024-kvant2-XYZ-001",
+      "var-2025-kvant1-XYZ-001",
+      "var-2026-kvant2-XYZ-001"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-003",
+    "pattern_description": "FOIL-multiplikation av två binomer (x+a)(x+b) — student tappar en av korstermerna eller får fel tecken på konstanten.",
+    "why_it_occurs": "Studenten kommer ihåg 'multiplicera först och sist' men missar ena korstermen, eller läser (x+a)(x-b) som konjugatformen och hoppar över korstermerna helt. Konstanten = a·b inklusive tecken är också lätt att slarva med.",
+    "common_distractor_signature": "Svar med fel x-term (för stor eller för liten koefficient) eller fel tecken på konstanten — uttryck som ser ut som 'nästan-konjugat' x² + (a+b)x utan korrekt konstant.",
+    "countermeasure": "FOIL = First, Outer, Inner, Last — räkna ALLA fyra produkter separat och kombinera. Konjugatformen (x+a)(x-a)=x²-a² gäller BARA när a-värdena är identiska med olika tecken.",
+    "example_questions": [
+      "host-2022-kvant2-XYZ-008",
+      "host-2025-kvant1-XYZ-003",
+      "var-2017-kvant1-XYZ-007",
+      "var-2019-kvant2-XYZ-004",
+      "var-2022-1-kvant1-XYZ-004",
+      "var-2026-kvant1-XYZ-001"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-004",
+    "pattern_description": "Punkt på linje — student glömmer att substituera koordinaterna i ekvationen för att lösa ut en parameter.",
+    "why_it_occurs": "'Linjen går genom punkten (x₀, y₀)' känns som information OM linjen, men det är faktiskt EKVATIONEN på linjen som ska verifieras: y₀ = k·x₀ + m. Studenten försöker gissa eller använda lutningsformler innan substitution.",
+    "common_distractor_signature": "Svar baserat på ena koordinaten ignorerad, eller fel tecken vid substitution av negativ koordinat (t.ex. (-2, 3) gör -2 till +2 vid substitution).",
+    "countermeasure": "Vid 'punkt på linje': stoppa in koordinaterna DIREKT i ekvationen, behåll alla tecken, och lös ut den okända parametern. En ekvation, en obekant.",
+    "example_questions": [
+      "host-2024-kvant1-XYZ-010",
+      "host-ver1-2019-kvant2-XYZ-008",
+      "host-ver2-2019-kvant2-XYZ-008",
+      "var-2018-1-kvant1-XYZ-006",
+      "var-2022-2-kvant1-XYZ-011",
+      "var-2022-2-kvant2-XYZ-010",
+      "var-2023-kvant2-XYZ-008",
+      "var-2024-kvant2-XYZ-009"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-005",
+    "pattern_description": "Linjär olikhet löst som ekvation — student missar att vända olikheten vid multiplikation/division med negativt tal.",
+    "why_it_occurs": "Algebraiska steg ser identiska ut mellan ekvation och olikhet, så man kör på autopilot. Tecknet på koefficienten på x är den enda saken som triggar omvändningen, och den är lätt att missa när den hamnar negativt EFTER samling av termer.",
+    "common_distractor_signature": "Svar med rätt magnitud men fel riktning på olikheten — t.ex. x>1 istället för x<1.",
+    "countermeasure": "Markera koefficienten på x EXPLICIT innan du delar/multiplicerar. Om den är negativ: vänd olikheten i samma steg. 'Negativ → vänd' är den enda strukturella effekten — ingen annan operation kräver tecknebyte.",
+    "example_questions": [
+      "host-2015-kvant1-XYZ-010",
+      "host-2018-kvant1-XYZ-011",
+      "var-2017-kvant2-XYZ-009",
+      "var-2026-kvant2-XYZ-012"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-006",
+    "pattern_description": "Räkneordning (PEMDAS) i blandat uttryck — student räknar från vänster till höger utan att respektera prioritet.",
+    "why_it_occurs": "Uttryck som 5 - 3·2 läses naivt som '5 - 3 = 2, sen 2·2 = 4' istället för '3·2 = 6, sen 5 - 6 = -1'. Multiplikation och division HAR högre prioritet än addition och subtraktion.",
+    "common_distractor_signature": "Värde som motsvarar vänster-till-höger-räkning utan prioritet — alltid 'rimligt' men matematiskt fel.",
+    "countermeasure": "PEMDAS: Parenteser → Exponent → Multiplikation/Division → Addition/Subtraktion. Identifiera ALLA multiplikationer och divisioner FÖRST, räkna ut dem, ersätt med resultaten, sen kör addition/subtraktion vänster→höger.",
+    "example_questions": [
+      "host-2013-kvant1-XYZ-001",
+      "host-2016-kvant1-XYZ-009",
+      "host-2020-kvant2-XYZ-010",
+      "host-2021-kvant1-XYZ-003",
+      "var-2013-kvant1-XYZ-001",
+      "var-2022-1-kvant1-XYZ-001"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-007",
+    "pattern_description": "Sätt in koordinater/värde i funktion — student missar tecken eller exponent på den insatta variabeln.",
+    "why_it_occurs": "Vid f(-2) ska -2 ersätta x ÖVERALLT, inkl. inom potenser och i kombination med tecken: (-2)² = +4 men -(2²) = -4. Studenten skriver mekaniskt -2² och tappar parenteserna.",
+    "common_distractor_signature": "Svar där (-värde)² tolkas som -värde² (tecknet bevaras felaktigt) — magnituden rätt, tecknet fel.",
+    "countermeasure": "Vid substitution av negativt värde: SÄTT ALLTID PARENTESER runt det. f(-2) räknas som f((-2)). Då kan exponent och multiplikation inte slarva med tecknet.",
+    "example_questions": [
+      "host-2014-kvant2-XYZ-010",
+      "host-2017-kvant2-XYZ-011",
+      "host-2022-kvant1-XYZ-006",
+      "var-2018-1-kvant2-XYZ-008",
+      "var-2026-kvant1-XYZ-002"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-008",
+    "pattern_description": "Andragradsekvation utan konstantterm (x² + bx = 0) — student delar med x istället för att faktorisera och tappar lösningen x = 0.",
+    "why_it_occurs": "'Förkortning' är en stark vana från linjär algebra: x² + bx = 0 verkar bli x + b = 0 om man delar med x. Men det förutsätter x ≠ 0, vilket utesluter en av lösningarna.",
+    "common_distractor_signature": "Svar som listar bara x = -b utan x = 0, eller summa/produkt av rötter beräknad med bara en rot.",
+    "countermeasure": "Andragradsekvation utan konstantterm: faktorisera ALLTID till x(x + b) = 0, sätt VARJE faktor lika med 0. x = 0 och x = -b är båda lösningar.",
+    "example_questions": [
+      "host-2021-kvant1-XYZ-011",
+      "var-2019-kvant2-XYZ-011",
+      "var-2025-kvant2-XYZ-001"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-009",
+    "pattern_description": "Lös x² = k via rotutdragning — student tar bara den positiva roten och missar x = -√k.",
+    "why_it_occurs": "Roten på en räknare är alltid positiv (huvudgrenen), och 'kvadratrot' i vanligt språk syftar på den positiva. Men ekvationen x² = k har TVÅ lösningar för k > 0: x = +√k OCH x = -√k.",
+    "common_distractor_signature": "Svar med bara positiva roten, eller fall där frågan kräver båda rötternas summa/produkt och studenten har missat den negativa.",
+    "countermeasure": "x² = k ⇒ x = ±√k. Skriv ALLTID ut ± explicit när du tar kvadratrot för att lösa en ekvation. Specialfall: k = 0 ger bara x = 0.",
+    "example_questions": [
+      "host-2020-kvant1-XYZ-011",
+      "var-2013-kvant2-XYZ-011",
+      "var-2015-kvant1-XYZ-007",
+      "var-2025-kvant2-XYZ-004"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-010",
+    "pattern_description": "Faktorisera x² + bx + c — student hittar fel par av tal (rätt produkt, fel summa eller tvärtom).",
+    "why_it_occurs": "Vid c > 0 söker man två tal med samma tecken; vid c < 0 olika tecken. Studenten testar talen utifrån produkten c men kontrollerar inte att summan blir b — eller tvärtom.",
+    "common_distractor_signature": "Faktorisering som ger rätt konstant men fel mellantermkoefficient (eller vice versa) — t.ex. (x+2)(x+6) = x²+8x+12 förväxlat med (x+3)(x+4) = x²+7x+12.",
+    "countermeasure": "Hitta TVÅ tal vars PRODUKT = c OCH SUMMA = b. Lista alla faktorpar av |c|, kolla vilken som ger b efter tecknehantering. Verifiera genom att multiplicera ut.",
+    "example_questions": [
+      "var-2013-kvant1-XYZ-004",
+      "var-2023-kvant2-XYZ-003",
+      "var-2025-kvant2-XYZ-001"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-011",
+    "pattern_description": "Bryt ut största gemensamma faktor — student missar att bryta ut variabeln, taldelen, eller tecknet konsekvent.",
+    "why_it_occurs": "ax + bx = x(a+b) är klar, men 6x² + 9x kräver att man bryter ut 3x (både taldel och variabel). Studenten bryter ut bara en, eller fel tecken på resterande termer.",
+    "common_distractor_signature": "Svar med bara delfaktorisering — t.ex. 3(2x²+3x) istället för 3x(2x+3), eller fel tecken på en kvarvarande term inne i parentesen.",
+    "countermeasure": "Hitta största gemensamma siffra OCH alla variabler som finns i ALLA termer. Skriv faktorerna utanför, resterande del innanför parentesen — varje term genom GCF, behåll dess tecken.",
+    "example_questions": [
+      "host-2016-kvant1-XYZ-001",
+      "host-2020-kvant2-XYZ-006",
+      "host-2025-kvant2-XYZ-012",
+      "var-2016-kvant1-XYZ-001",
+      "var-2026-kvant2-XYZ-008"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-012",
+    "pattern_description": "Konjugatregel (a+b)(a-b) = a²-b² — student tillämpar den på (a+b)(a+c) där c ≠ -b, eller missar tecknet på b².",
+    "why_it_occurs": "Konjugatformen är så distinkt att studenten letar efter den, och tolkar (a+3)(a-3) korrekt men missapplicerar på (a+3)(a-5). Eller får a²+b² istället för a²-b².",
+    "common_distractor_signature": "Svar med a²+b² istället för a²-b², eller konjugatresultat tillämpat på en icke-konjugat-multiplikation.",
+    "countermeasure": "Konjugatregeln gäller ENDAST när de två andra-termerna är samma tal med olika tecken: (a+b)(a-b) = a²-b². Tecknet är ALLTID minus. Vid annan kombination: full FOIL.",
+    "example_questions": [
+      "host-2020-kvant1-XYZ-010",
+      "host-2022-kvant1-XYZ-009",
+      "var-2015-kvant1-XYZ-005",
+      "var-2017-kvant1-XYZ-005",
+      "var-2019-kvant2-XYZ-004",
+      "var-2023-kvant2-XYZ-005"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-013",
+    "pattern_description": "Kvadreringsregeln (a±b)² — student glömmer korstermen 2ab.",
+    "why_it_occurs": "Den intuitiva utvidgningen (a+b)² = a² + b² är falsk men superkonsekvent — den behandlar kvadratet som distributivt över addition. Korstermen 2ab är 'osynlig' om man inte FOIL:ar parentesen två gånger.",
+    "common_distractor_signature": "Svar med a² + b² istället för a² + 2ab + b² — saknar en hel term.",
+    "countermeasure": "Memorera: (a+b)² = a² + 2ab + b² (PLUS korsterm). (a-b)² = a² - 2ab + b² (MINUS korsterm). Vid osäkerhet: skriv ut som (a+b)(a+b) och FOIL:a.",
+    "example_questions": [
+      "host-2014-kvant1-XYZ-008",
+      "host-2017-kvant1-XYZ-010",
+      "var-2013-kvant2-XYZ-012",
+      "var-2022-2-kvant2-XYZ-012"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-014",
+    "pattern_description": "Ekvation med x i nämnaren — student multiplicerar bara EN term med nämnaren och tappar de andra.",
+    "why_it_occurs": "Vid (3/x) + 2 = 5 ser studenten 'multiplicera båda led med x' som en operation på vänsterledet och missar att HÖGERLEDETS termer också multipliceras: 3 + 2x = 5x, inte 3 + 2 = 5x.",
+    "common_distractor_signature": "Svar baserat på ekvation där bara bråktermerna har eliminerats men de andra termerna är oförändrade.",
+    "countermeasure": "Multiplicera HELA båda leden med nämnaren — varje term, även de utan x i nämnaren. Skriv om så ALLA termer är produkten 'term · nämnare' innan förenkling.",
+    "example_questions": [
+      "host-2022-kvant2-XYZ-003",
+      "host-2025-kvant1-XYZ-001",
+      "var-2014-kvant2-XYZ-007",
+      "var-2015-kvant2-XYZ-001",
+      "var-2018-1-kvant1-XYZ-009",
+      "var-2022-1-kvant1-XYZ-008"
+    ]
+  }
+]

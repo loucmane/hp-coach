@@ -1,0 +1,206 @@
+[
+  {
+    "id": "XYZ-TRAP-029",
+    "pattern_description": "Tecken på (-a)^n vs -a^n — student behandlar dem som identiska.",
+    "why_it_occurs": "Parenteser kring negativ bas är subtila: (-2)^2 = +4, men -2^2 = -4 (kvadrering binder hårdare än minustecknet). Skriftliga uttryck slarvar ofta med parenteserna.",
+    "common_distractor_signature": "Svar med fel tecken på en potens av negativ bas — antingen +4 där det skulle vara -4 eller tvärtom.",
+    "countermeasure": "Sätt ALLTID parenteser runt negativ bas innan exponentiering. (-a)^n ⇒ tecken beror på paritet (n udda → negativt, n jämn → positivt). -a^n betyder -(a^n) och har ALLTID minustecken kvar.",
+    "example_questions": [
+      "host-2014-kvant2-XYZ-010",
+      "host-2016-kvant2-XYZ-010",
+      "host-2021-kvant2-XYZ-008",
+      "host-2023-kvant2-XYZ-010"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-030",
+    "pattern_description": "Potens av produkt (ab)^n — student behandlar bara en faktor med exponenten.",
+    "why_it_occurs": "(2x)^3 ses som 2·x^3 = 2x^3 istället för 2^3·x^3 = 8x^3. Exponenten 'glömmer' att gå till siffran framför.",
+    "common_distractor_signature": "Svar med koefficient oförändrad (eller bara delvis exponentierad) — fel storleksordning.",
+    "countermeasure": "(ab)^n = a^n · b^n. Varje faktor under parentesen får exponenten. Detsamma för bråk: (a/b)^n = a^n/b^n.",
+    "example_questions": [
+      "host-2013-kvant2-XYZ-008",
+      "host-2017-kvant2-XYZ-006",
+      "var-2017-kvant2-XYZ-006",
+      "var-2019-kvant1-XYZ-012"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-031",
+    "pattern_description": "Multiplikation av tiopotenser med decimaltal — student adderar exponenter men slarvar med mantissan.",
+    "why_it_occurs": "(3·10^4) · (4·10^5) räknas korrekt som 12·10^9, men mantissan 12 är ≥ 10 och behöver normaliseras till 1,2·10^10. Eller mantissor multipliceras fel.",
+    "common_distractor_signature": "Svar med ej-normaliserad mantissa (≥10) eller felaktig mantissa-multiplikation.",
+    "countermeasure": "Multiplicera mantissor (talen före 10^n) först, addera exponenter, normalisera om mantissan blir ≥10 (flytta decimal en steg vänster och addera 1 till exponenten).",
+    "example_questions": [
+      "host-2013-kvant2-XYZ-005",
+      "host-2015-kvant2-XYZ-009",
+      "host-2016-kvant2-XYZ-005",
+      "host-2025-kvant2-XYZ-011",
+      "host-ver1-2019-kvant2-XYZ-010",
+      "host-ver2-2019-kvant2-XYZ-010"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-032",
+    "pattern_description": "Förenkla √(a²·b) — student tar inte ut perfekta kvadrater och lämnar svaret som √(stort tal).",
+    "why_it_occurs": "√72 är inte i sin enklaste form. Studenten avrundar eller väljer 'närmaste' alternativ utan att inse att √72 = √(36·2) = 6√2.",
+    "common_distractor_signature": "Svar i form av decimalapproximation eller stort tal under roten, när rätt svar är ett snyggt n√k.",
+    "countermeasure": "Vid √n: faktorisera n och leta efter perfekta kvadrater (4, 9, 16, 25, ...). √(a²·b) = a·√b. Drag ut det största perfekta kvadrat-faktorn.",
+    "example_questions": [
+      "host-2018-kvant1-XYZ-008",
+      "host-2018-kvant1-XYZ-012",
+      "host-2020-kvant2-XYZ-003",
+      "host-2023-kvant2-XYZ-012",
+      "host-ver1-2019-kvant1-XYZ-011",
+      "host-ver2-2019-kvant1-XYZ-010",
+      "var-2016-kvant2-XYZ-012"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-033",
+    "pattern_description": "Differens av rotor √a - √b — student räknar som √(a-b).",
+    "why_it_occurs": "Mönsterigenkänning från Multiplikation av rötter (√a · √b = √(ab)) överförs felaktigt till addition/subtraktion: √a + √b ≠ √(a+b), √a - √b ≠ √(a-b).",
+    "common_distractor_signature": "Svar där roten av skillnaden av två tal föreslås istället för differensen av deras rotor.",
+    "countermeasure": "Roten distribuerar ÖVER multiplikation och division (√(ab)=√a·√b), inte över addition eller subtraktion. Räkna √a och √b separat och subtrahera — eller förenkla först om en av dem har perfekt kvadrat.",
+    "example_questions": [
+      "var-2015-kvant1-XYZ-003",
+      "var-2017-kvant2-XYZ-008",
+      "var-2024-kvant2-XYZ-010"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-034",
+    "pattern_description": "a^0 = 1 — student räknar a^0 som 0 eller a.",
+    "why_it_occurs": "Exponent 0 är ett gränsvärde som strider mot vanan 'a^n är produkten av n stycken a'. För n=0 betyder det 'inget' = 1 (per konvention), inte 0.",
+    "common_distractor_signature": "Svar där a^0 har räknats som 0 eller a — vanligen i exponentialekvationer eller funktionsvärden vid x=0.",
+    "countermeasure": "ALLA a^0 = 1 (för a ≠ 0). Memorera som specialfall. Exponentialfunktioner C·a^x ger ALLTID C när x=0.",
+    "example_questions": [
+      "host-2020-kvant1-XYZ-012",
+      "host-2021-kvant2-XYZ-012",
+      "var-2015-kvant1-XYZ-012",
+      "var-2022-1-kvant2-XYZ-007"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-035",
+    "pattern_description": "Triangelns vinkelsumma = 180° — student adderar eller subtraherar fel.",
+    "why_it_occurs": "Givet två vinklar av en triangel, den tredje = 180° - (de andra två). Studenten subtraherar från 360° (förväxling med fyrhörning) eller adderar alla tre och får för stort tal.",
+    "common_distractor_signature": "Svar som motsvarar 360° minus de kända vinklarna, eller där två kända vinklar adderats utan att subtraheras från 180°.",
+    "countermeasure": "Triangel: vinkelsumma = 180°. Fyrhörning: 360°. Generellt n-hörning: (n-2)·180°. Hitta n först, applicera regeln.",
+    "example_questions": [
+      "host-2013-kvant2-XYZ-004",
+      "host-2014-kvant2-XYZ-004",
+      "host-2016-kvant1-XYZ-002",
+      "var-2014-kvant1-XYZ-010",
+      "var-2026-kvant1-XYZ-003"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-036",
+    "pattern_description": "Förhållande över fast summa (vinkelförhållande 180°, antal/total, ålder) — student tolkar förhållandetalen som de faktiska storheterna.",
+    "why_it_occurs": "'Vinklarna förhåller sig 2:3:4' eller 'pojkar:flickor = 3:2 av 30 elever' kräver att man inser att talen är RATIOTERMER, inte faktiska värden. Totalt antal/180° måste delas med summan av ratiotermerna för att få enhetsstorleken k.",
+    "common_distractor_signature": "Svar med ratiotalen själva som storheter (t.ex. 2°, 3°, 4° istället för 40°, 60°, 80°), eller där totalen delats med fel ratioterm.",
+    "countermeasure": "Vid förhållande a:b:c med fast summa S: addera ratiotermerna (a+b+c), dela S med summan för att få enhetsstorleken k = S/(a+b+c), multiplicera med varje ratio: a·k, b·k, c·k.",
+    "example_questions": [
+      "host-2015-kvant2-XYZ-011",
+      "host-2023-kvant1-XYZ-002",
+      "var-2016-kvant1-XYZ-002",
+      "var-2018-1-kvant1-XYZ-007"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-037",
+    "pattern_description": "Vinklar mellan parallella linjer — student förväxlar alternat, likbelägna, och konsekutiva vinklar.",
+    "why_it_occurs": "Tre olika vinkelpar har olika regler: alternatvinklar (Z-mönster) är LIKA, likbelägna (F-mönster) är LIKA, konsekutiva (samma sida av transversal) SUMMERAR till 180°. Studenten väljer fel relation.",
+    "common_distractor_signature": "Svar där två vinklar antas lika när de borde summera till 180°, eller där 180° subtraheras felaktigt.",
+    "countermeasure": "Rita ut transversalen och identifiera mönstret: Z = alternat (lika), F = likbelägna (lika), U/C = konsekutiva på samma sida (180°). Det är vinkelparets POSITION som bestämmer relationen, inte storleken.",
+    "example_questions": [
+      "host-2014-kvant1-XYZ-004",
+      "host-2016-kvant2-XYZ-006",
+      "host-2017-kvant2-XYZ-002",
+      "host-2020-kvant1-XYZ-003",
+      "host-2023-kvant2-XYZ-002",
+      "var-2015-kvant2-XYZ-004",
+      "var-2017-kvant2-XYZ-002",
+      "var-2019-kvant2-XYZ-007"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-038",
+    "pattern_description": "Yttervinkelregeln — student behandlar yttervinkeln som triangelns vinkelsumma minus en annan.",
+    "why_it_occurs": "Yttervinkeln = SUMMAN av de två icke-angränsande inre vinklarna (en direkt regel). Studenten räknar omvägen via 180° - (angränsande inre vinkel) och sedan kedjar fel.",
+    "common_distractor_signature": "Svar där yttervinkeln räknats som komplement (90°) eller supplement (180°) till EN inre vinkel istället för summan av de andra två.",
+    "countermeasure": "Yttervinkel = summan av de två motstående inre vinklarna. Det är en direkt identitet — använd den för att 'slingra' okända vinklar genom kedja av trianglar.",
+    "example_questions": [
+      "host-2025-kvant1-XYZ-002",
+      "host-ver1-2019-kvant1-XYZ-006",
+      "host-ver2-2019-kvant1-XYZ-005",
+      "var-2013-kvant2-XYZ-001",
+      "var-2019-kvant1-XYZ-008",
+      "var-2022-2-kvant2-XYZ-006",
+      "var-2023-kvant1-XYZ-002",
+      "var-2024-kvant1-XYZ-006"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-039",
+    "pattern_description": "Vertikalvinklar (vinklar i kors) — student tror motstående vinklar är supplement (180°) istället för lika.",
+    "why_it_occurs": "När två linjer korsas bildas fyra vinklar; angränsande pair är supplement (180°), motstående pair är LIKA. Studenten blandar ihop dem.",
+    "common_distractor_signature": "Svar som tar 180° minus en vinkel istället för att inse att den motstående är samma.",
+    "countermeasure": "Två linjer korsar i en punkt: motstående vinklar (vertikalvinklar) är LIKA. Närliggande vinklar är SUPPLEMENT (180°). Alla fyra vinklar summerar till 360°.",
+    "example_questions": [
+      "host-2024-kvant1-XYZ-004",
+      "var-2014-kvant1-XYZ-010",
+      "var-2015-kvant1-XYZ-008"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-040",
+    "pattern_description": "Pythagoras — student blandar ihop hypotenusan med kateterna eller missar att identifiera den rätvinkliga triangeln.",
+    "why_it_occurs": "a² + b² = c² gäller BARA när c är hypotenusan (motsatt rätvinkeln). Studenten skriver c² + a² = b² eller använder formeln på en triangel som inte är rätvinklig.",
+    "common_distractor_signature": "Svar baserat på fel sida som hypotenusa — vanligen den 'långa' sidan istället för 'motsatt rätvinkeln'.",
+    "countermeasure": "Pythagoras a² + b² = c² gäller ENDAST i rätvinklig triangel där c är motsatt 90°-vinkeln. Identifiera rätvinkeln FÖRST, sen är hypotenusan motsatt sida. Kateterna är de två som bildar rätvinkeln.",
+    "example_questions": [
+      "host-2018-kvant1-XYZ-008",
+      "host-2023-kvant2-XYZ-008",
+      "host-2023-kvant2-XYZ-011",
+      "host-2025-kvant2-XYZ-005",
+      "host-ver2-2019-kvant2-XYZ-009",
+      "var-2013-kvant1-XYZ-002",
+      "var-2022-2-kvant1-XYZ-004",
+      "var-2024-kvant1-XYZ-001",
+      "var-2025-kvant2-XYZ-009"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-041",
+    "pattern_description": "Sammansatt figur — student försöker tillämpa en enskild formel istället för att dekomponera i grundformer.",
+    "why_it_occurs": "Komplicerade figurer ser ut att kräva ny formel, men de är nästan alltid kombinationer av rektanglar, trianglar och cirkelsektorer. Studenten letar efter exotisk formel istället för enkla bitar.",
+    "common_distractor_signature": "Svar baserat på felaktig 'total formel' eller där en av del-areorna har glömts/dubbelräknats.",
+    "countermeasure": "Sammansatt figur: dekomponera i grundformer (rektangel, triangel, cirkelsektor). Räkna varje delareea separat. Addera (om sammanslagna) eller subtrahera (om en del klippts bort) för totalen.",
+    "example_questions": [
+      "host-ver1-2019-kvant1-XYZ-003",
+      "host-ver1-2019-kvant1-XYZ-006",
+      "var-2016-kvant1-XYZ-003",
+      "var-2018-1-kvant2-XYZ-010",
+      "var-2024-kvant1-XYZ-001",
+      "var-2024-kvant1-XYZ-006",
+      "var-2025-kvant2-XYZ-006"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-042",
+    "pattern_description": "Cirkelarea/-omkrets — student använder diameter där radie krävs (eller tvärtom).",
+    "why_it_occurs": "A = πr² och O = 2πr använder båda radien. När problemet ger diametern måste man halvera först. Studenten stoppar in diametern direkt och får 4× för stor area eller 2× för stor omkrets.",
+    "common_distractor_signature": "Svar 2× för stor (omkrets) eller 4× för stor (area) — multipel av π som inte stämmer storleksmässigt.",
+    "countermeasure": "Cirkel: A = πr², O = 2πr = πd. Identifiera radie vs diameter EXPLICIT från frågan. d = 2r, så r = d/2. Markera vilket du har, sen tillämpa formeln.",
+    "example_questions": [
+      "host-2021-kvant2-XYZ-011",
+      "host-2022-kvant2-XYZ-009",
+      "host-2024-kvant2-XYZ-007",
+      "host-ver1-2019-kvant1-XYZ-009",
+      "var-2013-kvant1-XYZ-012",
+      "var-2017-kvant2-XYZ-012"
+    ]
+  }
+]

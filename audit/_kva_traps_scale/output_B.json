@@ -1,0 +1,134 @@
+[
+  {
+    "id": "KVA-TRAP-016",
+    "tldr": "Lutning och y-skärning är fristående — k säger ingenting om m.",
+    "recognition_cue": "Linjeproblem på formen y = kx + m där villkoret bara nämner den ena parametern (\"positiv lutning\", \"k_{1} > k_{2}\") men frågan jämför den andra (m, y-skärningen).",
+    "worked_example": {
+      "setup": "Två linjer L_{1}: y = k_{1}x + m_{1} och L_{2}: y = k_{2}x + m_{2} är givna med k_{1} > k_{2}. Jämför I: m_{1} med II: m_{2}.",
+      "trap_thinking": "Studenten tolkar \"L_{1} är brantare\" som \"L_{1} ligger högre upp\" och drar slutsatsen m_{1} > m_{2} — väljer A.",
+      "correct_thinking": "Lutningarna säger bara hur linjerna vinklas, inte var de skär y-axeln. Två linjer med k_{1} > k_{2} kan ha m_{1} > m_{2}, m_{1} < m_{2} eller m_{1} = m_{2} — välj vilka tal du vill för m och villkoret håller fortfarande.",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om problemet lägger till att båda linjerna går genom samma punkt (t.ex. origo), då är m_{1} = m_{2} = 0 låst och svaret blir C."
+  },
+  {
+    "id": "KVA-TRAP-017",
+    "tldr": "Vinkelräta lutningar är negativa inverser — inte bara byta tecken.",
+    "recognition_cue": "Ordet \"vinkelrät\" tillsammans med en given lutning eller två punkter, där I/II jämför riktningskoefficienter eller k-värden för de två linjerna.",
+    "worked_example": {
+      "setup": "Linjen L_{1} går genom (-1, 3) och (1, 2). L_{2} är vinkelrät mot L_{1} och går genom origo. Jämför I: riktningskoefficienten för L_{1} med II: riktningskoefficienten för L_{2}.",
+      "trap_thinking": "Studenten räknar k_{1} = (2 - 3)/(1 - (-1)) = -1/2 och tar k_{2} = -k_{1} = 1/2. Då är II > I → väljer B på rätt sätt men av fel skäl, och faller i samma fälla nästa gång formeln byter förtecken.",
+      "correct_thinking": "Vinkelrätt betyder k_{1} · k_{2} = -1, så k_{2} = -1/k_{1} = -1/(-1/2) = 2. Jämför I = -1/2 med II = 2 — II är klart större.",
+      "answer": "B — II är större än I."
+    },
+    "counter_example": "Om L_{1} istället hade lutning 1, då blir k_{2} = -1, och nu är I > II — svaret kantrar till A så snart magnituden av k_{1} flyttar förbi 1."
+  },
+  {
+    "id": "KVA-TRAP-018",
+    "tldr": "Bas under 1 vänder regeln — större exponent ger då mindre värde.",
+    "recognition_cue": "Potensuttryck a^m vs a^n där basen ligger nära 1 eller är ett decimaltal (0,99, 1,1, 0,5) — och inget villkor explicit säger att basen är större än 1.",
+    "worked_example": {
+      "setup": "Jämför I: 0,99^{99} med II: 1,1^{11}.",
+      "trap_thinking": "Studenten ser den mycket större exponenten 99 mot 11 och tänker \"99-potensen vinner\" — väljer A.",
+      "correct_thinking": "Basen 0,99 ligger under 1, så 0,99^{99} krymper med varje multiplikation och hamnar långt under 1. Basen 1,1 ligger över 1, så 1,1^{11} växer över 1 (ungefär 2,85). Sidan med basen över 1 vinner oavsett hur stor exponenten i I är.",
+      "answer": "B — II är större än I."
+    },
+    "counter_example": "Om basen i I byts till 1,01 istället för 0,99, då växer båda sidorna och den långa exponenten tar över — 1,01^{99} > 1,1^{11} och svaret blir A."
+  },
+  {
+    "id": "KVA-TRAP-019",
+    "tldr": "a − b och b − a är motsatser, inte tvillingar — tecknet bär all info.",
+    "recognition_cue": "Två differenser med samma två termer i omkastad ordning, ofta presenterade som spegelvända uttryck i I och II (\"5/13 − 4/15\" mot \"4/15 − 5/13\").",
+    "worked_example": {
+      "setup": "Jämför I: 5/13 − 4/15 med II: 4/15 − 5/13.",
+      "trap_thinking": "Studenten ser \"samma två bråk, samma differens\" och drar slutsatsen att skillnaden är densamma i magnitud, alltså lika — väljer C.",
+      "correct_thinking": "De två uttrycken är varandras motsatser: II = −I. Eftersom 5/13 ≈ 0,385 är större än 4/15 ≈ 0,267 blir I positivt och II negativt. Ett positivt tal är alltid större än sin motsats.",
+      "answer": "A — I är större än II."
+    },
+    "counter_example": "Om båda termerna råkar vara lika (säg 5/13 − 5/13 mot 5/13 − 5/13), då kollapsar båda differenserna till noll och svaret blir C — men det kräver explicit likhet."
+  },
+  {
+    "id": "KVA-TRAP-020",
+    "tldr": "Radien kvadreras i cylindervolymen — den dominerar över höjden.",
+    "recognition_cue": "Cylinderproblem där radie och höjd anges i samma storleksklass (3 cm radie, 3 cm höjd) eller där studenten frestas att summera/multiplicera r och h linjärt.",
+    "worked_example": {
+      "setup": "En cylinder har basytans radie 3 cm och höjden 3 cm. Jämför I: cylinderns volym med II: 30π cm³.",
+      "trap_thinking": "Studenten ser att radie och höjd är lika och tänker \"3 · 3 · π = 9π per enhet\", multiplicerar slarvigt till runt 27π eller överskattar till 30π+ och väljer A eller C.",
+      "correct_thinking": "Volymen är πr²h = π · 3² · 3 = 27π cm³. Eftersom 27π < 30π är II större. Notera att radien gick in som 9 (3²), inte som 3 — det är r²-faktorn som styr.",
+      "answer": "B — II är större än I."
+    },
+    "counter_example": "Om höjden växte till 4 cm istället för 3, då blir I = π · 9 · 4 = 36π, klart större än 30π — och svaret kantrar till A."
+  },
+  {
+    "id": "KVA-TRAP-021",
+    "tldr": "Median och medelvärde rör sig oberoende — den ena låser inte den andra.",
+    "recognition_cue": "Frågor som ställer medianen mot medelvärdet för samma serie, eller två serier med specificerat medelvärde men ospecificerad fördelning — t.ex. \"medianen av tio tal med medelvärdet 0\" mot \"medianen av tio tal med medelvärdet 100\".",
+    "worked_example": {
+      "setup": "Jämför I: medianen av tio tal med medelvärdet 0 med II: medianen av tio tal med medelvärdet 100.",
+      "trap_thinking": "Studenten resonerar att \"högre medelvärde ⇒ högre median\" och väljer B utan vidare.",
+      "correct_thinking": "Medelvärdet säger inget om hur talen är fördelade. Serien {−1000, 50, 50, 50, 50, 50, 50, 50, 50, 650} har medelvärde 0 men median 50; serien {0, 0, 0, 0, 0, 0, 0, 0, 0, 1000} har medelvärde 100 men median 0. Båda är förenliga med villkoren, så förhållandet är inte fastlagt.",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om båda serierna istället var symmetriska (t.ex. uppgavs vara likformigt fördelade), då skulle median sammanfalla med medelvärde och svaret blir B."
+  },
+  {
+    "id": "KVA-TRAP-022",
+    "tldr": "Andragradsfunktionen är symmetrisk — speglade x-värden ger samma y.",
+    "recognition_cue": "Funktionen f(x) = x² + bx + c (eller liknande andragradsuttryck) där I och II ber dig jämföra f(a) och f(b) i två punkter som ser olika ut men ligger lika långt från symmetriaxeln x = −b/2.",
+    "worked_example": {
+      "setup": "Låt f(x) = x² + 2x − 2. Jämför I: f(−2) med II: f(0).",
+      "trap_thinking": "Studenten räknar f(−2) = 4 − 4 − 2 = −2 och f(0) = −2 och vacklar mellan att tro på sin egen aritmetik — eller räknar fel på minustecknet och landar på A/B.",
+      "correct_thinking": "Symmetriaxeln ligger vid x = −b/2 = −1. Avstånden från axeln är |−2 − (−1)| = 1 och |0 − (−1)| = 1, alltså lika. Speglade punkter ger identiska f-värden utan att man behöver räkna ut dem.",
+      "answer": "C — I är lika med II."
+    },
+    "counter_example": "Om I istället var f(−3) (avstånd 2 från axeln) och II f(0) (avstånd 1), då bryts spegelvändningen och f(−3) = 9 − 6 − 2 = 1 > −2 — svaret kantrar till A."
+  },
+  {
+    "id": "KVA-TRAP-023",
+    "tldr": "Bråk jämförs via gemensam nämnare — täljare och nämnare räcker inte ensamma.",
+    "recognition_cue": "Bråk eller summor av bråk där täljare och nämnare skiljer sig samtidigt (5/13 vs 4/15), eller en summa av enkla bråk som ska jämföras med ett enstaka bråk nära 1.",
+    "worked_example": {
+      "setup": "Jämför I: 1/2 + 1/4 + 1/7 + 1/14 + 1/28 med II: 55/56.",
+      "trap_thinking": "Studenten ser att alla termer i I är små bråk och uppskattar grovt till runt 0,9, vilket är mindre än 55/56 ≈ 0,98 — väljer B utan att räkna gemensam nämnare.",
+      "correct_thinking": "Gör om I på gemensam nämnare 28: 14/28 + 7/28 + 4/28 + 2/28 + 1/28 = 28/28 = 1. Och 55/56 < 56/56 = 1, så I är strikt större. Heuristiken \"många små termer ⇒ ungefär lika\" missar att alla nämnare delar 28.",
+      "answer": "A — I är större än II."
+    },
+    "counter_example": "Om en av termerna i I tappas (säg 1/28), då blir I = 27/28 = 54/56 < 55/56 och svaret kantrar till B."
+  },
+  {
+    "id": "KVA-TRAP-024",
+    "tldr": "Faktorisera först — utvärdering är dyr och felbenägen.",
+    "recognition_cue": "Produkter eller summor med näraliggande tal (69·116 vs 68·117) eller algebraiska uttryck där samma variabel återkommer på båda sidor och kan kanselleras genom distribution.",
+    "worked_example": {
+      "setup": "Jämför I: 69 · 116 med II: 68 · 117.",
+      "trap_thinking": "Studenten räknar ut båda produkterna för hand — 69 · 116 = 8004 och 68 · 117 = 7956 — och hoppas att hen inte tappar en siffra på vägen.",
+      "correct_thinking": "Skriv om: I = 69 · 116 och II = (69 − 1)(116 + 1) = 69 · 116 + 69 − 116 − 1 = I − 48. Så I är exakt 48 större än II, utan att räkna ut själva produkten.",
+      "answer": "A — I är större än II."
+    },
+    "counter_example": "Om uppgiften vore 69 · 116 mot 70 · 115, då ger samma faktorisering II = I + 116 − 70 − 1 = I + 45 och svaret kantrar till B."
+  },
+  {
+    "id": "KVA-TRAP-025",
+    "tldr": "När kronor och procent blandas i en kedja — ordningen ändrar resultatet.",
+    "recognition_cue": "Två rabattsteg där minst ett är angivet i kronor och minst ett i procent, presenterade som \"först A sedan B\" mot \"först B sedan A\" — eller två butiker där en sänkning är i procent och en i kr.",
+    "worked_example": {
+      "setup": "Varan kostar 500 kr. Kupong A ger 100 kr rabatt; kupong B ger 20 % rabatt. Jämför I: total rabatt om A används först och därefter B med II: total rabatt om B används först och därefter A.",
+      "trap_thinking": "Studenten tänker \"100 kr och 20 % är fasta rabatter — ordningen kvittar\" och väljer C.",
+      "correct_thinking": "Ordning I: 500 − 100 = 400; sedan 20 % rabatt ger 320. Total rabatt 180 kr. Ordning II: 500 · 0,8 = 400; sedan 100 kr rabatt ger 300. Total rabatt 200 kr. Skillnaden är 20 kr — den 20-procentiga rabatten verkar på olika baser i de två ordningarna.",
+      "answer": "B — II är större än I."
+    },
+    "counter_example": "Om båda kupongerna istället var procentuella (säg 20 % och 10 %), då blir slutpriset 500 · 0,8 · 0,9 = 360 oavsett ordning och svaret blir C."
+  },
+  {
+    "id": "KVA-TRAP-026",
+    "tldr": "Olika enheter måste konverteras innan jämförelse — råa tal ljuger.",
+    "recognition_cue": "Storheter angivna i ojämförliga enheter (km vs mm, m/s vs km/h, timmar vs minuter), ofta kombinerat med en tiopotensfaktor som ser stor ut men kan förta sig genom omräkning.",
+    "worked_example": {
+      "setup": "Jämför I: 0,00541 km med II: 5,41 · 10³ mm.",
+      "trap_thinking": "Studenten ser 5,41 · 10³ = 5410 mot 0,00541 och drar slutsatsen att II är många storleksordningar större — väljer B.",
+      "correct_thinking": "Konvertera till samma enhet, säg meter: I = 0,00541 km · 1000 = 5,41 m. II = 5410 mm / 1000 = 5,41 m. Talen ser radikalt olika ut men beskriver exakt samma längd.",
+      "answer": "C — I är lika med II."
+    },
+    "counter_example": "Om I istället var 0,00542 km, då blir I = 5,42 m mot II = 5,41 m och svaret kantrar till A — så fort en enda siffra rubbas spricker likheten."
+  }
+]

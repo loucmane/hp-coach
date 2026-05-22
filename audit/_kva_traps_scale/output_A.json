@@ -1,0 +1,146 @@
+[
+  {
+    "id": "KVA-TRAP-004",
+    "tldr": "Fixerad area eller omkrets — sidlängderna förblir helt fria.",
+    "recognition_cue": "Formuleringar som \"en rektangel med arean …\" eller \"omkretsen är …\" utan att en sida, ett sidförhållande eller en formrestriktion (\"kvadrat\", \"liksidig\") nämns; ofta gäller frågan en specifik sida eller den längsta sidan.",
+    "worked_example": {
+      "setup": "Givet en rektangel med omkretsen 36 cm utan villkor på formen. Jämför I: längsta sidan i rektangeln med II: omkretsen av en kvadrat med sidan 3 cm (alltså 12 cm).",
+      "trap_thinking": "Studenten tänker sig en \"snäll\" rektangel nära 9×9 — längsta sidan blir då ungefär 9 — och drar slutsatsen att I < 12, alltså B.",
+      "correct_thinking": "Omkretsen 36 betyder bara att längd + bredd = 18. Den längsta sidan kan vara strax över 9 (nästan kvadratisk) eller ligga godtyckligt nära 18 (en nålsmal remsa). Värdet 12 ligger inuti det möjliga intervallet, så verdikten flippar mellan A och B beroende på vald form.",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om problemet lägger till \"rektangeln är en kvadrat\" eller \"längden är dubbla bredden\", då låses sidlängderna och fällan dör — svaret blir entydigt."
+  },
+  {
+    "id": "KVA-TRAP-005",
+    "tldr": "\"k ≠ 0\" är inte ett villkor — det är tre öppna fall i förklädnad.",
+    "recognition_cue": "En obunden konstant beskriven som \"k ≠ 0\", \"b är ett tal\" eller \"a är ett reellt tal\" som multipliceras med en variabel; villkoret utesluter bara nollan och lämnar både tecken och magnitud fritt.",
+    "worked_example": {
+      "setup": "Villkoret är k ≠ 0 utan ytterligare restriktioner på x eller k. Jämför I: x med II: x·k.",
+      "trap_thinking": "Studenten antar tyst att k > 1 (\"det normala fallet\") och drar slutsatsen att x·k är större än x — väljer B.",
+      "correct_thinking": "Tre fall måste prövas separat. För k = 2 och x = 1: I = 1, II = 2 — B. För k = 1/2 och x = 1: I = 1, II = 1/2 — A. För k = −1 och x = 1: I = 1, II = −1 — också A. Verdikten beror på både tecknet och magnituden hos k, och inget av detta är fastlagt.",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om problemet skärper villkoret till \"k > 1 och x > 0\", då blir x·k entydigt större än x och svaret är B."
+  },
+  {
+    "id": "KVA-TRAP-006",
+    "tldr": "Marginalsummor är inte cellinformation — den inre fördelningen är fri.",
+    "recognition_cue": "Tvåvägs-uppdelning där bara rad- och kolumntotaler ges (\"60 av 90 är pojkar, 40 är vänsterhänta\") utan korsuppgift om hur kategorierna överlappar; frågan gäller en enskild cell.",
+    "worked_example": {
+      "setup": "En grupp på 90 personer består av 60 pojkar och 30 flickor; 40 är vänsterhänta. Jämför I: antalet vänsterhänta pojkar med II: 20.",
+      "trap_thinking": "Studenten antar proportionell fördelning: 2/3 av de 40 vänsterhänta är pojkar, alltså cirka 27 — väljer A.",
+      "correct_thinking": "Marginalerna säger inget om överlappningen. Antalet vänsterhänta pojkar kan ligga var som helst mellan 10 (alla 30 flickor är vänsterhänta, så bara 10 vänsterhänta pojkar kvar) och 40 (alla vänsterhänta är pojkar). Värdet 20 ligger inuti intervallet, så förhållandet är inte fastlagt.",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om problemet anger en inre cell — t.ex. \"15 av pojkarna är vänsterhänta\" — då är hela tabellen bestämd och svaret blir entydigt."
+  },
+  {
+    "id": "KVA-TRAP-007",
+    "tldr": "Två ekvationer på pappret kan vara ett enda villkor i förklädnad.",
+    "recognition_cue": "Två relationer som ser olika ut men kan förenklas till samma uttryck — typiskt när den ena är en linjärkombination eller proportionell omskrivning av den andra; antalet obekanta överstiger antalet oberoende villkor.",
+    "worked_example": {
+      "setup": "2 pennor + 1 linjal + 5 sudd kostar lika mycket som 10 sudd, och 4 pennor + 2 linjaler kostar också lika mycket som 10 sudd. Jämför I: kostnaden för 2 pennor med II: kostnaden för 1 linjal.",
+      "trap_thinking": "Studenten räknar två rader, ser två ekvationer i tre obekanta och försöker ändå lösa ut förhållandet pennor mot linjaler — landar på C eller försöker en numerisk gissning.",
+      "correct_thinking": "Första ekvationen ger 2p + l = 5s. Andra ekvationen ger 4p + 2l = 10s, vilket är exakt dubbelt så stort som första. De två raderna är samma villkor, så bara EN oberoende ekvation finns för tre obekanta. Förhållandet 2p mot l är inte låst.",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om problemet byter ut andra ekvationen mot \"4 pennor och 1 linjal kostar 8 sudd\", då är raderna linjärt oberoende och förhållandet blir bestämt."
+  },
+  {
+    "id": "KVA-TRAP-008",
+    "tldr": "\"Rätvinklig\" eller \"likbent\" beskriver en familj — inte en figur.",
+    "recognition_cue": "Geometrisk beskrivning som anger en typegenskap (\"rätvinklig triangel\", \"likbent triangel\", \"romb\") utan att specificera VAR den utmärkande egenskapen sitter; frågan gäller en vinkel, en sida eller ett hörn vars roll varierar mellan konfigurationerna.",
+    "worked_example": {
+      "setup": "Punkterna (−1, a), (2, 2) och (2, 4) utgör hörnen i en rätvinklig triangel. Jämför I: a med II: 2.",
+      "trap_thinking": "Studenten antar att rätvinkeln sitter i den \"naturliga\" punkten (−1, a), löser ut a = 3 via Pythagoras eller skalärprodukt — väljer A.",
+      "correct_thinking": "Rätvinkeln kan ligga i vilket som helst av de tre hörnen. Om rätvinkeln sitter i (2, 2) eller (2, 4) ger geometrin a = 2; om den sitter i (−1, a) ger den två andra värden. Flera konfigurationer uppfyller \"rätvinklig\", och de ger olika verdikter för a mot 2.",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om problemet specificerar \"rätvinkeln ligger i hörnet (−1, a)\", då är konfigurationen låst och a:s värde blir entydigt."
+  },
+  {
+    "id": "KVA-TRAP-009",
+    "tldr": "Härledd relation mellan variabler — själva värdet kan fortfarande vandra.",
+    "recognition_cue": "Algebraisk manipulation som leder till en ekvation mellan variablerna (x = y, x = −y, x + y = 0) medan frågan jämför en variabel mot en konstant; relationen låser förhållandet, inte magnituden.",
+    "worked_example": {
+      "setup": "Villkoret x − y = y − x gäller. Jämför I: 0 med II: x.",
+      "trap_thinking": "Studenten förenklar och får 2x = 2y, alltså x = y; tolkar det som att x är låst och drar slutsatsen att I och II är lika — väljer C.",
+      "correct_thinking": "Ekvationen x − y = y − x ger 2x − 2y = 0, alltså x = y — men inget värde fixeras. Både x = y = 0 (då I = II = 0, svaret C) och x = y = 5 (då I = 0 < 5 = II, svaret B) uppfyller villkoret. Förhållandet mellan x och y är låst, men x självt vandrar fritt.",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om problemet lägger till \"x > 0\", då är I = 0 entydigt mindre än II = x och svaret blir B."
+  },
+  {
+    "id": "KVA-TRAP-010",
+    "tldr": "Medel låser summan — de enskilda termerna kan vandra fritt.",
+    "recognition_cue": "Påståenden i stil med \"medelvärdet av fem tal är …\" eller \"medel = m\" där frågan handlar om en enskild term, en yttre extrempunkt eller medelvärdets förhållande till noll snarare än till totalsumman.",
+    "worked_example": {
+      "setup": "Fem positiva och fem negativa heltal bildar en mängd om tio tal. Jämför I: medelvärdet av de tio talen med II: 0.",
+      "trap_thinking": "Studenten tänker \"lika många positiva som negativa, alltså balanserat\" och drar slutsatsen att medelvärdet är 0 — väljer C.",
+      "correct_thinking": "Symmetri i ANTAL betyder inte symmetri i SUMMA. Mängden {1, 1, 1, 1, 1, −1, −1, −1, −1, −1} ger medel 0 (svaret C), men {1, 1, 1, 1, 1, −10, −10, −10, −10, −10} ger medel −4,5 (svaret B). Båda uppfyller villkoret \"fem positiva, fem negativa heltal\".",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om problemet lägger till \"de fem positiva och de fem negativa är spegelbilder\" (t.ex. {a, b, c, d, e, −a, −b, −c, −d, −e}), då blir summan exakt noll och svaret är C."
+  },
+  {
+    "id": "KVA-TRAP-011",
+    "tldr": "Procent låser förhållandet — det absoluta antalet vandrar med totalen.",
+    "recognition_cue": "Påståenden i stil med \"x procent av y\" eller \"75 % av kvinnorna är …\" där varken totalmängden eller bråkdelens nämnare ges; frågan handlar om ett absolut antal snarare än om en kvot.",
+    "worked_example": {
+      "setup": "x procent av y är lika med 50, och x procent av z är lika med 60. Jämför I: y med II: 60.",
+      "trap_thinking": "Studenten ser \"60\" dyka upp på båda sidor och låser sig på proportionalitet — gissar att y ≈ 50, alltså B.",
+      "correct_thinking": "Procentvillkoret ger y · x/100 = 50 och z · x/100 = 60, alltså y/z = 5/6 — bara förhållandet är fastlagt. Om x = 1 så är y = 5000 (då I > II); om x = 100 så är y = 50 (då I < II). Båda fallen är förenliga med villkoret, så jämförelsen mot 60 vandrar.",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om problemet specificerar \"x = 10\", då blir y = 500 entydigt och svaret är A."
+  },
+  {
+    "id": "KVA-TRAP-012",
+    "tldr": "Hastighetsintervall ger tidsintervall — målvärdet kan ligga mitt i.",
+    "recognition_cue": "Textuppgifter där hastighet, tid eller sträcka anges som ett intervall (\"mellan 80 och 100 km/h\", \"minst 30 minuter\") och frågan jämför en härledd storhet mot ett konkret tal som kan ligga inuti det resulterande intervallet.",
+    "worked_example": {
+      "setup": "Karin kör 120 km med en hastighet som ligger mellan 80 km/h och 100 km/h. Jämför I: körtiden med II: 85 minuter.",
+      "trap_thinking": "Studenten plockar mittpunkten 90 km/h, räknar 120/90 ≈ 80 minuter och drar slutsatsen att I < 85 — väljer B.",
+      "correct_thinking": "Båda ändpunkterna måste prövas. Vid 100 km/h tar det 72 minuter (I < 85, svaret B); vid 80 km/h tar det 90 minuter (I > 85, svaret A). Målvärdet 85 minuter ligger inuti det resulterande tidsintervallet [72, 90], så verdikten flippar inom det tillåtna hastighetsspannet.",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om problemet skärper villkoret till \"hastighet mellan 90 och 100 km/h\", då ligger körtiden inom [72, 80] minuter och är entydigt mindre än 85 — svaret blir B."
+  },
+  {
+    "id": "KVA-TRAP-013",
+    "tldr": "Negativ bas — pariteten avgör tecknet före magnituden räknas.",
+    "recognition_cue": "Uttryck av formen (−a)^n där exponenten n är ett heltal; magnituden är iögonfallande men tecknet beror helt på om n är udda eller jämn, vilket kan flippa hela storleksjämförelsen.",
+    "worked_example": {
+      "setup": "Jämför I: (−10)^11 med II: (−11)^10.",
+      "trap_thinking": "Studenten räknar magnituder: 10^11 är ett tiopotenser större än 11^10 (ungefär), alltså väljer A baserat på storlek.",
+      "correct_thinking": "Bestäm tecknet FÖRST. Exponenten 11 är udda, så (−10)^11 är negativ. Exponenten 10 är jämn, så (−11)^10 är positiv. Ett negativt tal är alltid mindre än ett positivt — magnituden spelar ingen roll alls.",
+      "answer": "B — II är större än I."
+    },
+    "counter_example": "Om problemet byter ut exponenten till (−10)^12, då blir båda kvantiteterna positiva och magnitudjämförelsen blir relevant — svaret beror på vilken potens som dominerar."
+  },
+  {
+    "id": "KVA-TRAP-014",
+    "tldr": "Multiplikation med okänt tecken — olikheten kan vända riktning.",
+    "recognition_cue": "Manipulation av en olikhet eller jämförelse där båda sidor multipliceras, delas eller flyttas med ett uttryck (y, 1/x, x − 1) vars tecken inte är garanterat; varje obevisad teckenantagande öppnar en gren.",
+    "worked_example": {
+      "setup": "x och y är negativa tal så att x = 2y. Jämför I: 5x − y med II: 2x + 4y.",
+      "trap_thinking": "Studenten flyttar termer och förenklar I − II = 3x − 5y, sätter in x = 2y och får 6y − 5y = y; eftersom y är negativ ser det ut som I < II — väljer B, vilket råkar bli rätt MEN av fel skäl om man inte hanterar tecknet medvetet.",
+      "correct_thinking": "Sätt in x = 2y direkt. I = 5(2y) − y = 9y och II = 2(2y) + 4y = 8y. Skillnaden I − II = y. Eftersom y < 0 är y negativ, alltså I − II < 0 — I är mindre än II. Tecknet på y är vad som låser verdikten; om y hade varit positiv hade riktningen flippat.",
+      "answer": "B — II är större än I."
+    },
+    "counter_example": "Om problemet tog bort villkoret \"x och y är negativa\" och bara behöll x = 2y, då skulle tecknet på y vara fritt och verdikten flippa — svaret skulle bli D."
+  },
+  {
+    "id": "KVA-TRAP-015",
+    "tldr": "Negativa tal — större betyder närmare noll, inte längre bort.",
+    "recognition_cue": "Jämförelse mellan två negativa storheter (x · x mot x + x när x < 0, en negativ funktionsrot mot en annan, två negativa produkter) där det är frestande att läsa absolutvärde som storlek.",
+    "worked_example": {
+      "setup": "x = −2. Jämför I: x · x med II: x + x.",
+      "trap_thinking": "Studenten räknar |I| = 4 och |II| = 4, ser samma absolutvärde och väljer C.",
+      "correct_thinking": "Behåll tecknen. I = (−2)·(−2) = +4, alltså positivt. II = (−2) + (−2) = −4, alltså negativt. Ett positivt tal är alltid större än ett negativt — absolutvärdena råkar matcha, men det är tecknet som avgör.",
+      "answer": "A — I är större än II."
+    },
+    "counter_example": "Om problemet ersätter x = −2 med x = 2, då blir I = 4 och II = 4 lika i både tecken och magnitud — svaret blir C."
+  }
+]

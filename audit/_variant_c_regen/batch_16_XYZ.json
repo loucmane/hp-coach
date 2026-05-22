@@ -1,0 +1,1355 @@
+{
+  "batch_id": "batch_16_XYZ",
+  "section": "XYZ",
+  "count": 22,
+  "tasks": [
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant2-XYZ-011",
+      "question": {
+        "qid": "var-2015-kvant2-XYZ-011",
+        "exam_id": "var-2015",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 11,
+        "prompt": "Punkten (3, 3) ligger på linjen y = kx-3. Vad är y då x = -3?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "–9"
+          },
+          {
+            "letter": "B",
+            "text": "–3"
+          },
+          {
+            "letter": "C",
+            "text": "0"
+          },
+          {
+            "letter": "D",
+            "text": "6 1"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415987299,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna y = -3 utan att lösa k.",
+            "why_wrong": "−9, inte −3."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 0.",
+            "why_wrong": "−9."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 6.",
+            "why_wrong": "−9."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "k = 2. y=2(-3)-3=-9.",
+        "technique": "Linje med okänd k: substituera given punkt för att lösa k."
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant2-XYZ-012",
+      "question": {
+        "qid": "var-2015-kvant2-XYZ-012",
+        "exam_id": "var-2015",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 12,
+        "prompt": "Vad är x om = 8? x^{5} · x",
+        "options": [
+          {
+            "letter": "A",
+            "text": "1/2"
+          },
+          {
+            "letter": "B",
+            "text": "1 2"
+          },
+          {
+            "letter": "C",
+            "text": "2"
+          },
+          {
+            "letter": "D",
+            "text": "2"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415987299,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tappa minustecknet i exponenten.",
+            "why_wrong": "x⁻³ = 8 → x = 1/2; x³ = 8 ger x = 2 (annat svar)."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 2.",
+            "why_wrong": "x = 1/2 (med negativ exponent)."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 8.",
+            "why_wrong": "x³ är 1/8, så x = 1/2."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Om x^{-3}=8: \\frac{1}{x^{3}}=8 → x^{3}=\\frac{1}{8} → x = 1/2.",
+        "technique": "Negativ exponent: x⁻ⁿ = 1/xⁿ; lös ut x via inversion och rotning.",
+        "framework_id": "XYZ-TRAP-028"
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant1-XYZ-008",
+      "question": {
+        "qid": "var-2016-kvant1-XYZ-008",
+        "exam_id": "var-2016",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "Erik frågade sina 29 klasskamrater hur många timmar de hade pluggat under föregående helg. Svaren redovisas i ett stolpdiagram. Vad är medianen för svaren som Erik fick?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "3 timmar"
+          },
+          {
+            "letter": "B",
+            "text": "3,5 timmar"
+          },
+          {
+            "letter": "C",
+            "text": "4 timmar"
+          },
+          {
+            "letter": "D",
+            "text": "7,5 timmar xyz"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2016-kvant1-XYZ-008.svg",
+          "aspect_ratio": 1.518
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416091073,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 3 (modus eller fel värde).",
+            "why_wrong": "Median är 15:e värdet i sorterad ordning, inte modus."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 3,5.",
+            "why_wrong": "Median är ETT värde (för udda antal), inte medelvärde."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 7,5.",
+            "why_wrong": "Inte närvarande som data; 4 timmar är medianen."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av 29 svar är medianen den 15:e i sorterad ordning. Stolpdiagrammet ger 4 timmar.",
+        "technique": "Median av udda antal: mittenvärdet i sorterad lista.",
+        "framework_id": "XYZ-TRAP-049"
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-XYZ-002",
+      "question": {
+        "qid": "var-2016-kvant2-XYZ-002",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 2,
+        "prompt": "Inträdet till en simhall kostar 50 kr för barn och 90 kr för vuxna. En dag kom det totalt 150 betalande besökare. Barnens inträde gav 2 750 kr i intäkter. Hur många vuxna betalade inträde till simhallen denna dag?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "95"
+          },
+          {
+            "letter": "B",
+            "text": "100"
+          },
+          {
+            "letter": "C",
+            "text": "105"
+          },
+          {
+            "letter": "D",
+            "text": "130"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416091073,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att avrunda till 100.",
+            "why_wrong": "95 exakt."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 105.",
+            "why_wrong": "95."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 130.",
+            "why_wrong": "95."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Barn: b=2750/50=55. Vuxna: 150 − 55 = 95.",
+        "technique": "Två-värde-ekvation: lös ena först (barn), dra ifrån från total."
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-XYZ-004",
+      "question": {
+        "qid": "var-2016-kvant2-XYZ-004",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 4,
+        "prompt": "4a + 3b + 2c + d –5b + 4c + 3d + 2a –6c + 5d + 4a + 3b –7d – 6a + 5b + 4c Vad är hälften av summan av de fyra ovanstående uttrycken?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "–14a + 6b + 14c + 10d"
+          },
+          {
+            "letter": "B",
+            "text": "8a + 3b + 2c + d"
+          },
+          {
+            "letter": "C",
+            "text": "10a + 6b + 4c + 2d"
+          },
+          {
+            "letter": "D",
+            "text": "2a + 3b + 2c + d xyz"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2016-kvant2-XYZ-004.svg",
+          "aspect_ratio": 0.239
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416091073,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel tecken och få −14a+...",
+            "why_wrong": "Räkna noggrant; resultatet är 2a+3b+2c+d."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att glömma division: 8a+3b+2c+d.",
+            "why_wrong": "Halvera summan."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid 10a+6b+4c+2d.",
+            "why_wrong": "2a+3b+2c+d."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Addera alla fyra uttryck och dela med 2: resultat 2a+3b+2c+d.",
+        "technique": "Polynomaddition: addera koefficienter per term."
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-XYZ-006",
+      "question": {
+        "qid": "var-2016-kvant2-XYZ-006",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "n är ett jämnt heltal. Vilket svarsalternativ är ett udda heltal?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "3n – 2"
+          },
+          {
+            "letter": "B",
+            "text": "3(n – 1)"
+          },
+          {
+            "letter": "C",
+            "text": "n^{2}"
+          },
+          {
+            "letter": "D",
+            "text": "n/3"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2016-kvant2-XYZ-006.svg",
+          "aspect_ratio": 0.696
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416091073,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro 3n - 2 udda.",
+            "why_wrong": "3·jämn − 2 = jämn − jämn = jämn."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta n² udda.",
+            "why_wrong": "Jämn² = jämn."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid n/3.",
+            "why_wrong": "n/3 är inte garanterat udda heltal."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "n jämn, n−1 udda. 3·udda = udda. 3(n-1) udda.",
+        "technique": "Paritet: jämn ± jämn = jämn; jämn · vad-som-helst = jämn; udda · udda = udda.",
+        "framework_id": "XYZ-TRAP-047"
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-XYZ-007",
+      "question": {
+        "qid": "var-2016-kvant2-XYZ-007",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 7,
+        "prompt": "En rektangulär kaka tas ut ur ugnen och delas i rektangulära bitar. Man skär tvärs över hela kakan åtta gånger på längden och fem gånger på bredden. Hur många kakbitar blir det?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "13"
+          },
+          {
+            "letter": "B",
+            "text": "40"
+          },
+          {
+            "letter": "C",
+            "text": "45"
+          },
+          {
+            "letter": "D",
+            "text": "54"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416091073,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 8+5 = 13.",
+            "why_wrong": "Skärningar bildar mer än linjär addition."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 8·5 = 40.",
+            "why_wrong": "54 (n+1 rader vid n skär)."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid 9·5 = 45.",
+            "why_wrong": "54 = 9·6."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "8 skär längs ger 9 rader; 5 skär över ger 6 kolumner. 9\\cdot 6=54.",
+        "technique": "Skär en bricka: n skär ger n+1 delar."
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-XYZ-010",
+      "question": {
+        "qid": "var-2016-kvant2-XYZ-010",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "80 % av 160 är x. 80 % av y är 160. Vad är \\frac{100x}{y} ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "64"
+          },
+          {
+            "letter": "B",
+            "text": "125"
+          },
+          {
+            "letter": "C",
+            "text": "625 4"
+          },
+          {
+            "letter": "D",
+            "text": "256"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416091073,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna 125.",
+            "why_wrong": "64."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 625/4.",
+            "why_wrong": "64."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 256.",
+            "why_wrong": "64."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "x = 128, y = 200. \\frac{100\\cdot 128}{200}=64.",
+        "technique": "Två-procent-ekvation: lös x och y separat, beräkna kvoten."
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-XYZ-011",
+      "question": {
+        "qid": "var-2016-kvant2-XYZ-011",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 11,
+        "prompt": "Vad är 3^{50} + +27·3^{47} ? \\frac{352}{9}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "3^{49}"
+          },
+          {
+            "letter": "B",
+            "text": "3^{50}"
+          },
+          {
+            "letter": "C",
+            "text": "3^{51}"
+          },
+          {
+            "letter": "D",
+            "text": "3^{52}"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416091073,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 3⁴⁹.",
+            "why_wrong": "3⁵¹, inte 3⁴⁹."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 3⁵⁰.",
+            "why_wrong": "Total är 3·3⁵⁰ = 3⁵¹."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 3⁵².",
+            "why_wrong": "3⁵¹."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "27\\cdot 3^{47}=3^{50}. Sum: 2\\cdot 3^{50}+3^{50}=3\\cdot 3^{50}=3^{51}.",
+        "technique": "Potensaddition med matchande exponenter: faktorisera ut den minsta potensen, addera koefficienter."
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-XYZ-012",
+      "question": {
+        "qid": "var-2016-kvant2-XYZ-012",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 12,
+        "prompt": "För en kvadrat gäller att längden av sidan är a och längden av diagonalen är d. Vad är d uttryckt i a?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "a 2"
+          },
+          {
+            "letter": "B",
+            "text": "2a"
+          },
+          {
+            "letter": "C",
+            "text": "2 a"
+          },
+          {
+            "letter": "D",
+            "text": "a 2 xyz"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416091073,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tappa rotteckenbunden notation och svara a√2 men felskrivet.",
+            "why_wrong": "d = a√2 (rota)."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 2a.",
+            "why_wrong": "Diagonal är a√2 ≈ 1,41a, inte 2a."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid √2·a.",
+            "why_wrong": "Samma som a√2 — beror på notation."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Pythagoras: d=a\\sqrt{2}.",
+        "technique": "Kvadratdiagonal: d = a√2 (Pythagoras med två kateter = a).",
+        "framework_id": "XYZ-TRAP-032"
+      }
+    },
+    {
+      "exam": "var-2017",
+      "qid": "var-2017-kvant1-XYZ-005",
+      "question": {
+        "qid": "var-2017-kvant1-XYZ-005",
+        "exam_id": "var-2017",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 5,
+        "prompt": "Vilket uttryck gäller för arean av rektangeln R?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "a^{2}"
+          },
+          {
+            "letter": "B",
+            "text": "a^{2} – 1"
+          },
+          {
+            "letter": "C",
+            "text": "a^{2} + 2a – 1"
+          },
+          {
+            "letter": "D",
+            "text": "0"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2017-kvant1-XYZ-005.svg",
+          "aspect_ratio": 1.54
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416194027,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna a² (kvadrat).",
+            "why_wrong": "Sidorna är a+1 och a−1 (inte båda a)."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta a²+2a-1.",
+            "why_wrong": "Konjugat ger a²−1, inte +2a."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 0.",
+            "why_wrong": "a²−1, inte 0."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av figuren: rektangelarea = (a+1)(a-1)=a^{2}-1.",
+        "technique": "Konjugatregel: (a+1)(a−1) = a²−1.",
+        "framework_id": "XYZ-TRAP-012"
+      }
+    },
+    {
+      "exam": "var-2017",
+      "qid": "var-2017-kvant1-XYZ-006",
+      "question": {
+        "qid": "var-2017-kvant1-XYZ-006",
+        "exam_id": "var-2017",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "Vilken av graferna går genom de tre punkterna: (–8; 0), (–1; 3,5) och (4; 0)?",
+        "options": [
+          {
+            "letter": "A",
+            "text": ""
+          },
+          {
+            "letter": "B",
+            "text": ""
+          },
+          {
+            "letter": "C",
+            "text": ""
+          },
+          {
+            "letter": "D",
+            "text": ""
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416194027,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att välja linjär graf.",
+            "why_wrong": "Tre punkter med två nollställen och en mellan kräver parabel."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta annan parabelform.",
+            "why_wrong": "Verifiera nollställen och mellanvärdet."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid omvänd parabel.",
+            "why_wrong": "Specifika punkter avgör for- men."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Tre punkter med y = 0 vid x = −8 och x = 4 är parabelnollställen. Toppunkten ligger ungefär mellan, vid x = −2. Kontrollera y vid (−1; 3,5).",
+        "technique": "Matcha parabeln mot punkterna: identifiera nollställen, kontrollera mellanvärde."
+      }
+    },
+    {
+      "exam": "var-2017",
+      "qid": "var-2017-kvant1-XYZ-007",
+      "question": {
+        "qid": "var-2017-kvant1-XYZ-007",
+        "exam_id": "var-2017",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 7,
+        "prompt": "Vilket svarsförslag är lika med uttrycket 2^x-2yh-x^x+3yh+3y^x-yh?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "-x^{2} +3xy+2x"
+          },
+          {
+            "letter": "B",
+            "text": "-x^{2} -3y^{2} +2x-4y"
+          },
+          {
+            "letter": "C",
+            "text": "-x^{2} -3y^{2} +6xy+2x-4y"
+          },
+          {
+            "letter": "D",
+            "text": "-x^{2} -3y^{2} +6xy+2x+4y"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416194027,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tappa termer och få −x²+3xy+2x.",
+            "why_wrong": "tar ut varandra; inte +3xy kvar."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att glömma att termerna tar ut varandra.",
+            "why_wrong": "3xy − 3xy = 0; tas bort."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid +4y istället för −4y.",
+            "why_wrong": "−4y (negativ)."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Distribuera: 2x-4y-x^{2}-3xy+3xy-3y^{2}=-x^{2}+2x-4y-3y^{2}.",
+        "technique": "Polynomutveckling: utveckla varje parentes, samla termer.",
+        "framework_id": "XYZ-TRAP-003"
+      }
+    },
+    {
+      "exam": "var-2017",
+      "qid": "var-2017-kvant1-XYZ-008",
+      "question": {
+        "qid": "var-2017-kvant1-XYZ-008",
+        "exam_id": "var-2017",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "Vad är 0 25 ?  ,",
+        "options": [
+          {
+            "letter": "A",
+            "text": "0,05"
+          },
+          {
+            "letter": "B",
+            "text": "0,125"
+          },
+          {
+            "letter": "C",
+            "text": "0,5"
+          },
+          {
+            "letter": "D",
+            "text": "2 xyz"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416194027,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 0,05.",
+            "why_wrong": "0,25 = 0,5², så √0,25 = 0,5."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 0,125.",
+            "why_wrong": "0,5."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 2.",
+            "why_wrong": "0,5."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "\\sqrt{0{,}25}=0{,}5.",
+        "technique": "Decimalrot: 0,25 = (0,5)², så √0,25 = 0,5."
+      }
+    },
+    {
+      "exam": "var-2017",
+      "qid": "var-2017-kvant1-XYZ-012",
+      "question": {
+        "qid": "var-2017-kvant1-XYZ-012",
+        "exam_id": "var-2017",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 12,
+        "prompt": "x > 1 Vilket alternativ anger värden på m och n så att x^{m} ·x^{n} = ^x^{m} h^{n} gäller?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "m = \\frac{1}{2} n = 2"
+          },
+          {
+            "letter": "B",
+            "text": "m = 1 n = 1"
+          },
+          {
+            "letter": "C",
+            "text": "m = \\frac{1}{2} n = -\\frac{1}{2}"
+          },
+          {
+            "letter": "D",
+            "text": "m = 2 n = 2 xyz"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416194027,
+          "model": "claude-opus-4-7",
+          "pedagogy_regenerated_at": 1778510870035,
+          "regen_source": "persona_pass_phase_e_2026_05_11"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att m = 1/2, n = 2 fungerar eftersom 1/2 + 2 = 2,5 ≈ 1/2 · 2 = 1.",
+            "why_wrong": "Sätt in: m + n = 2,5 men mn = 1 — inte lika, så likheten gäller inte."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta de enklaste värdena: m = n = 1.",
+            "why_wrong": "m + n = 2 men mn = 1 — inte lika; m = n = 1 löser inte ekvationen."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att testa motsatta tecken: m = 1/2, n = −1/2.",
+            "why_wrong": "m + n = 0 men mn = −1/4 — inte lika; och negativ exponent skapar problem för likheten."
+          }
+        ],
+        "pitfall": "Blanda inte ihop x^m \\cdot x^n (addera exponenter) med (x^m)^n (multiplicera exponenter) — det är två olika regler som ofta blandas ihop.",
+        "solution_path": "Ekvationen x^m \\cdot x^n = (x^m)^n blir x^{m+n} = x^{mn}. Eftersom x > 1 kräver likhet att exponenterna är lika: m + n = mn. Testa alternativen: m = n = 2 ger 2 + 2 = 4 och 2·2 = 4 ✓.",
+        "technique": "Exponentregler: x^m \\cdot x^n = x^{m+n} (samma bas, addera exponenter) och (x^m)^n = x^{mn} (potens av potens, multiplicera exponenter).",
+        "framework_id": "XYZ-TRAP-026"
+      }
+    },
+    {
+      "exam": "var-2017",
+      "qid": "var-2017-kvant2-XYZ-002",
+      "question": {
+        "qid": "var-2017-kvant2-XYZ-002",
+        "exam_id": "var-2017",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 2,
+        "prompt": "Linjerna L_{1} och L_{2} är parallella. Vad är 3x+2y?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "60°"
+          },
+          {
+            "letter": "B",
+            "text": "90°"
+          },
+          {
+            "letter": "C",
+            "text": "120°"
+          },
+          {
+            "letter": "D",
+            "text": "150°"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2017-kvant2-XYZ-002.svg",
+          "aspect_ratio": 1.611
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416194027,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna en av vinklarna för litet och få 60°.",
+            "why_wrong": "60° kommer ofta av att man bara tar 2x eller 3y; frågan är hela summan 3x+2y, inte ett led."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 120° om man läser supplementvinkeln istället.",
+            "why_wrong": "180°-60°=120° är supplementet till en delvinkel, inte summan 3x+2y."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten är att addera båda triangelvinklar och få 150°.",
+            "why_wrong": "Triangelvinklar summerar till 180°; den summa figuren låser här är 3x+2y=90^\\circ via parallellitet."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "x och y ligger båda mot samma transversal mellan L1 och L2, vilket binder dem via likbelägna/alternatvinklar till de markerade vinklarna i figuren. Kombinationen 3x+2y förenklas direkt av sambandet: figurens vinkelpar ger 3x+2y=90^\\circ utan att x eller y behöver lösas separat.",
+        "technique": "Parallella linjer + transversal: x och y är alternatvinklar eller likbelägna till vinklar man kan läsa direkt — sätt upp en linjär kombination innan du löser varje variabel för sig.",
+        "framework_id": "XYZ-TRAP-037"
+      }
+    },
+    {
+      "exam": "var-2017",
+      "qid": "var-2017-kvant2-XYZ-004",
+      "question": {
+        "qid": "var-2017-kvant2-XYZ-004",
+        "exam_id": "var-2017",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 4,
+        "prompt": "x och y är positiva heltal sådana att x # 6 och y # 3. Vilket är det största möjliga primtal som 2x+y kan vara?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "11"
+          },
+          {
+            "letter": "B",
+            "text": "13"
+          },
+          {
+            "letter": "C",
+            "text": "17"
+          },
+          {
+            "letter": "D",
+            "text": "19 xyz"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416194027,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 11 (= 2·5+1).",
+            "why_wrong": "13 är större och prim."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 17.",
+            "why_wrong": "2x+y ≤ 12+3 = 15, inte 17."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 19.",
+            "why_wrong": "15 är max möjligt."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Max 2x+y med x ≤ 6, y ≤ 3. Pröva: x=6, y=3 → 15 (ej primtal). x=6, y=1 → 13 (prim). Max prim = 13.",
+        "technique": "Maximera under bivillkor: prova hörnpunkter, kontrollera om talet är primtal."
+      }
+    },
+    {
+      "exam": "var-2017",
+      "qid": "var-2017-kvant2-XYZ-008",
+      "question": {
+        "qid": "var-2017-kvant2-XYZ-008",
+        "exam_id": "var-2017",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "Vad är \\frac{3}{3} ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "1 3"
+          },
+          {
+            "letter": "B",
+            "text": "1"
+          },
+          {
+            "letter": "C",
+            "text": "3"
+          },
+          {
+            "letter": "D",
+            "text": "3 xyz"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416194027,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna 1.",
+            "why_wrong": "1/√3 ≈ 0,577."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta √3.",
+            "why_wrong": "Invers av √3."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 3.",
+            "why_wrong": "1/√3."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av uttrycket: värdet är \\frac{1}{\\sqrt{3}} (efter rationalisering).",
+        "technique": "Förenkla rot-uttryck.",
+        "framework_id": "XYZ-TRAP-033"
+      }
+    },
+    {
+      "exam": "var-2017",
+      "qid": "var-2017-kvant2-XYZ-011",
+      "question": {
+        "qid": "var-2017-kvant2-XYZ-011",
+        "exam_id": "var-2017",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 11,
+        "prompt": "x ≠-1 Vilket av uttrycken motsvarar \\frac{1 2}{2x+2 6x+6}- ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "- \\frac{1}{4x+4}"
+          },
+          {
+            "letter": "B",
+            "text": "- \\frac{1}{2x+2}"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{1}{4x+4}"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{1}{6x+6}"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416194027,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tappa tecken och få −1/(4x+4).",
+            "why_wrong": "1/(6x+6)."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta −1/(2x+2).",
+            "why_wrong": "Positiv kvot."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid 1/(4x+4).",
+            "why_wrong": "1/(6x+6)."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Bryt ut: \\frac{1}{2(x+1)}-\\frac{2}{6(x+1)}=\\frac{3-2}{6(x+1)}=\\frac{1}{6x+6}.",
+        "technique": "Bråk-subtraktion med faktoriserad nämnare: bryt ut gemensam, kombinera täljare."
+      }
+    },
+    {
+      "exam": "var-2018-1",
+      "qid": "var-2018-1-kvant1-XYZ-001",
+      "question": {
+        "qid": "var-2018-1-kvant1-XYZ-001",
+        "exam_id": "var-2018-1",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 1,
+        "prompt": "Vilket svarsalternativ motsvarar 2 ? 4b c 12a^{2}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "4c 3a^{2}"
+          },
+          {
+            "letter": "B",
+            "text": "bc"
+          },
+          {
+            "letter": "C",
+            "text": "3a^{2} c 3a^{2} b"
+          },
+          {
+            "letter": "D",
+            "text": "c"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416310926,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tappa b och få 4c/(3a²).",
+            "why_wrong": "Faktor 4 ska vara borta efter förkortning."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta bc.",
+            "why_wrong": "Förenklingen ger c, inte bc."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid 3a²c/(3a²b).",
+            "why_wrong": "Förkorta 3a² i båda leden."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Förenkla bråk: bryt ut gemensamma faktorer; resultatet är \\frac{c}{3a^{2}} eller motsvarande.",
+        "technique": "Förkorta polynom-bråk: identifiera gemensamma faktorer.",
+        "framework_id": "XYZ-TRAP-018"
+      }
+    },
+    {
+      "exam": "var-2018-1",
+      "qid": "var-2018-1-kvant2-XYZ-003",
+      "question": {
+        "qid": "var-2018-1-kvant2-XYZ-003",
+        "exam_id": "var-2018-1",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 3,
+        "prompt": "Vilket uttryck motsvarar ett heltal? 2",
+        "options": [
+          {
+            "letter": "A",
+            "text": "` 7 + 7 j"
+          },
+          {
+            "letter": "B",
+            "text": "7 7"
+          },
+          {
+            "letter": "C",
+            "text": "7 + 7"
+          },
+          {
+            "letter": "D",
+            "text": "7 + \\frac{7}{7}"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416310926,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro (7+7)² = 196 är ENDA heltal.",
+            "why_wrong": "196 är heltal men √7·√7 är enklare."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 7+7 = 14.",
+            "why_wrong": "14 är heltal men det är en heltalsaddition, inte på √-form."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 7 + 7/7 = 8.",
+            "why_wrong": "8 är heltal också; men for- men passar inte uppgiften."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "\\sqrt{7}\\cdot\\sqrt{7}=7, heltal.",
+        "technique": "Multiplikation av samma rot: √a·√a = a."
+      }
+    },
+    {
+      "exam": "var-2018-1",
+      "qid": "var-2018-1-kvant2-XYZ-007",
+      "question": {
+        "qid": "var-2018-1-kvant2-XYZ-007",
+        "exam_id": "var-2018-1",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 7,
+        "prompt": "= 2 \\frac{6}{x} Vad är x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "4"
+          },
+          {
+            "letter": "B",
+            "text": "6"
+          },
+          {
+            "letter": "C",
+            "text": "8"
+          },
+          {
+            "letter": "D",
+            "text": "9"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416310926,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna 6.",
+            "why_wrong": "4."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 8.",
+            "why_wrong": "4."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 9.",
+            "why_wrong": "4."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Korsmultiplicera: 3x=12 → x = 4.",
+        "technique": "Proportion: korsmultiplicera.",
+        "framework_id": "XYZ-TRAP-025"
+      }
+    }
+  ]
+}

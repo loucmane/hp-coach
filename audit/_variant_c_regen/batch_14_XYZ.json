@@ -1,0 +1,1367 @@
+{
+  "batch_id": "batch_14_XYZ",
+  "section": "XYZ",
+  "count": 22,
+  "tasks": [
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-005",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-005",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 5,
+        "prompt": "Vad är differensen mellan medianen och medelvärdet av de sex talen -1, 1, 2, 4, 5 och 7?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "0"
+          },
+          {
+            "letter": "B",
+            "text": "1"
+          },
+          {
+            "letter": "C",
+            "text": "2"
+          },
+          {
+            "letter": "D",
+            "text": "3"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna fel summa och få medel 4 → diff 1.",
+            "why_wrong": "Summan är 18, dela med 6 = 3. Medel = median här."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 2 av att räkna median som 4 (felaktigt).",
+            "why_wrong": "Median av 6 tal är medel av de två mittersta: (2+4)/2 = 3, inte 4."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 3 utan att räkna ut differensen.",
+            "why_wrong": "Diff = 0 (medel = median här). 3 är värdet på båda, inte differensen."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Median: \\frac{2+4}{2}=3. Medel: \\frac{-1+1+2+4+5+7}{6}=\\frac{18}{6}=3. Differens 0.",
+        "technique": "Median av jämnt antal tal: medelvärdet av de två mittersta i sorterad ordning.",
+        "framework_id": "XYZ-TRAP-049"
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-006",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-006",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "Vad är 5x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "80°"
+          },
+          {
+            "letter": "B",
+            "text": "100°"
+          },
+          {
+            "letter": "C",
+            "text": "120°"
+          },
+          {
+            "letter": "D",
+            "text": "140°"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel grundvinkel och få 80°.",
+            "why_wrong": "Räkna noggrant från figuren: 5x = 100°."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 120°.",
+            "why_wrong": "Den specifika konfigurationen ger 100°, inte 120°."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 140° av räknemiss.",
+            "why_wrong": "5x = 100°."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av figurens vinkelförhållanden ger 5x=100°.",
+        "technique": "Vinkelräkning från figur: använd vinkelsumma + kompletterande/supplementära vinklar."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-007",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-007",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 7,
+        "prompt": "Vilket svarsalternativ är en funktion som uppfyller att f(1) > f(0)?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "f(x) = 2"
+          },
+          {
+            "letter": "B",
+            "text": "f(x) = x - 2"
+          },
+          {
+            "letter": "C",
+            "text": "f(x) = x^{2} - 2x + 1"
+          },
+          {
+            "letter": "D",
+            "text": "f(x) = -2x + 2"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att konstant funktion 'växer'.",
+            "why_wrong": "f(x) = 2 ger samma värde för alla x. Inte STRIKT större."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att kvadratiska funktioner uppåt går = växer.",
+            "why_wrong": "f(x) = x² − 2x + 1 = (x−1)². f(1) = 0, f(0) = 1. f(1) < f(0)."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid f(x) = −2x+2: f(1)=0, f(0)=2. f(1) < f(0).",
+            "why_wrong": "Negativ lutning ⇒ f(1) < f(0). Inte uppfyllt."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "För B: f(1)=-1 och f(0)=-2. -1>-2, så villkoret är uppfyllt.",
+        "technique": "Strikt växande mellan x=0 och x=1: lutningen mellan punkterna måste vara positiv."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-008",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-008",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "Vilket svarsalternativ motsvarar uttrycket (a+b)(c+d)(e+f)?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "ac+ad+bc+bd+e+f"
+          },
+          {
+            "letter": "B",
+            "text": "ac+ad+bc+bd+ae+af+be+bf"
+          },
+          {
+            "letter": "C",
+            "text": "ace+bdf"
+          },
+          {
+            "letter": "D",
+            "text": "ace+acf+ade+adf+bce+bcf+bde+bdf"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att utveckla bara två parenteser och stanna vid 4 termer + e + f.",
+            "why_wrong": "Du måste utveckla med ALLA tre parenteser. e och f är inte separata termer; de måste multipliceras med varje term ur (a+b)(c+d)."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att tappa en av parenteserna och få 8 termer av (a+b)(c+d)·1 form.",
+            "why_wrong": "(a+b)(c+d)(e+f) ger 2³ = 8 termer."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid ace+bdf (bara ytterhörn).",
+            "why_wrong": "Alla 8 kombinationer behövs; ace och bdf är två av dem."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Tre parenteser med vardera 2 termer ger 2^{3}=8 termer i utveckling. Alla kombinationer: ace, acf, ade, adf, bce, bcf, bde, bdf.",
+        "technique": "Distributiv lag: produkten av n parenteser med vardera m termer ger m^n termer i utveckling.",
+        "framework_id": "XYZ-TRAP-003"
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-009",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-009",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 9,
+        "prompt": "Arean av en cirkel är 27 \\mathrm{cm}^{2} . Vilket av svarsalternativen är det bästa närmevärdet för cirkelns diameter?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "1,5 cm"
+          },
+          {
+            "letter": "B",
+            "text": "4,5 cm"
+          },
+          {
+            "letter": "C",
+            "text": "6 cm"
+          },
+          {
+            "letter": "D",
+            "text": "9 cm"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tappa π och räkna \\sqrt{27}\\approx 5{,}2 → diameter 10 → 1,5? Räknemissar.",
+            "why_wrong": "Inkludera π: r² = 27/π ≈ 8,6, r ≈ 2,9, diameter ≈ 5,9 ≈ 6."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att räkna RADIE istället för diameter och få 4,5 (felaktigt).",
+            "why_wrong": "Diametern är dubbla radien. r ≈ 3, diameter ≈ 6 cm."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 9 av räknemiss.",
+            "why_wrong": "Diameter 9 ger r 4,5 → area π·20,25 ≈ 64 — inte 27."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "r=\\sqrt{27/\\pi}\\approx 3 cm, alltså diameter ≈ 6 cm.",
+        "technique": "Diameter från cirkelarea: r = √(A/π); diameter = 2r.",
+        "framework_id": "XYZ-TRAP-042"
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-010",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-010",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "Vilket värde har x om \\frac{1}{3} -x = \\frac{1}{2} - \\frac{1}{3} ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "- \\frac{1}{2}"
+          },
+          {
+            "letter": "B",
+            "text": "- \\frac{1}{6}"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{1}{6}"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{1}{2}"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tappa minustecken och få −1/2.",
+            "why_wrong": "Räkna noggrant: x = 1/6 (positiv)."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta -\\frac{1}{6} av tecken-fel.",
+            "why_wrong": "x = 1/3 − 1/6 = 1/6 (positiv)."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid \\frac{1}{2} av räknefel.",
+            "why_wrong": "Om x = 1/2: 1/3 − 1/2 = −1/6, inte 1/6. Fel."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Räkna höger: \\frac{1}{2}-\\frac{1}{3}=\\frac{3-2}{6}=\\frac{1}{6}. Då x = \\frac{1}{3}-\\frac{1}{6}=\\frac{2-1}{6}=\\frac{1}{6}.",
+        "technique": "Lös ut x ur a − x = b: x = a − b. Räkna båda sidor först."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-011",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-011",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 11,
+        "prompt": "För en viss sorts garn gäller att ett nystan med 130 meter garn väger 50 gram. Emma använder 430 gram av garnet för att sticka en tröja. Vilket svarsalternativ är ett uttryck för att beräkna hur många meter garn Emma använder till tröjan?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "\\frac{50}{130} ·430"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{50}{430} ·130"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{130}{50} ·430"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{430}{130} ·50"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna \\frac{50}{130}\\cdot 430 (gram per meter).",
+            "why_wrong": "Det skulle ge gram, inte meter. Använd m/g (130/50)."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta \\frac{50}{430}\\cdot 130 (felaktig kombination).",
+            "why_wrong": "50 ska vara nämnare, inte täljare i hastighetsfaktorn. Och 430 ska multipliceras, inte stå i nämnare."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid \\frac{430}{130}\\cdot 50 (omvänd).",
+            "why_wrong": "Det skulle ge gram, inte meter. Räkna enheter: m/g · g = m."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Längd per gram: \\frac{130}{50} m/g. För 430 g: \\frac{130}{50}\\cdot 430.",
+        "technique": "Proportionellt samband: bestäm enheten av faktorn (m/g eller g/m), multiplicera med rätt mängd för rätt utfallsenhet."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-012",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-012",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 12,
+        "prompt": "Vilket svarsalternativ motsvarar 4·2^{x} ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "2^{x+2}"
+          },
+          {
+            "letter": "B",
+            "text": "2^{2x}"
+          },
+          {
+            "letter": "C",
+            "text": "4^{x-1}"
+          },
+          {
+            "letter": "D",
+            "text": "8^{x}"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tro att 4·2^x = 2^(2x) (multiplicera exponenten).",
+            "why_wrong": "4 = 2² är en POTENS av basen. Multiplikation av potenser ADDERAR exponenter, inte multiplicerar."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 4^{x-1}.",
+            "why_wrong": "Vänsterledet är 4·2^x; 4^(x-1) skulle vara annan funktion av x."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 8^{x} av att tro att 4·2 = 8.",
+            "why_wrong": "4·2^x ≠ (4·2)^x = 8^x. Lagen är 2² · 2^x = 2^(x+2)."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "4=2^{2}, så 4\\cdot 2^{x}=2^{2}\\cdot 2^{x}=2^{x+2}.",
+        "technique": "Förenkla potens-uttryck: skriv om koefficienter som potenser av samma bas, addera exponenter."
+      }
+    },
+    {
+      "exam": "host-2023",
+      "qid": "host-2023-kvant1-XYZ-008",
+      "question": {
+        "qid": "host-2023-kvant1-XYZ-008",
+        "exam_id": "host-2023",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "Ekvationen för en rät linje kan skrivas y = kx + m. För vilken av nedanstående linjer är produkten k·m störst?",
+        "options": [
+          {
+            "letter": "A",
+            "text": ""
+          },
+          {
+            "letter": "B",
+            "text": ""
+          },
+          {
+            "letter": "C",
+            "text": ""
+          },
+          {
+            "letter": "D",
+            "text": ""
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415036026,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att välja linje med största lutning utan att kolla y-skärning.",
+            "why_wrong": "Produkten kräver båda; en stor k och m=0 ger 0."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta linje med största y-skärning.",
+            "why_wrong": "Behöver också beräkna lutningen; en stor m och k=0 ger också 0."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid linje med 'snyggast' utseende.",
+            "why_wrong": "Räkna k·m för varje linje från figurens avlästa värden."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av figurens linjer: identifiera lutning k och y-skärning m. Produkt k·m är störst i alternativ C (positiv lutning + positiv y-skärning med högsta produkt).",
+        "technique": "Produkt av lutning och y-skärning: båda måste vara samma tecken (positiva eller båda negativa) för positiv produkt; storleken bestäms av produkten av deras absolutbelopp."
+      }
+    },
+    {
+      "exam": "host-2023",
+      "qid": "host-2023-kvant2-XYZ-002",
+      "question": {
+        "qid": "host-2023-kvant2-XYZ-002",
+        "exam_id": "host-2023",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 2,
+        "prompt": "L_{1} och L_{2} är parallella linjer. Hur stor är vinkeln v?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "49°"
+          },
+          {
+            "letter": "B",
+            "text": "61°"
+          },
+          {
+            "letter": "C",
+            "text": "64°"
+          },
+          {
+            "letter": "D",
+            "text": "67°"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2023-kvant2-XYZ-002.svg",
+          "aspect_ratio": 1.332
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415036026,
+          "model": "claude-opus-4-7",
+          "pedagogy_regenerated_at": 1778510870035,
+          "regen_source": "persona_pass_phase_e_2026_05_11"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel och tro att v + den givna vinkeln summerar till 113° i stället för att vara lika.",
+            "why_wrong": "Alternatvinklar är LIKA stora, inte komplement — 49° kommer från en feltolkning."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Första instinkten är att uppskatta visuellt — 61° ser nära ut.",
+            "why_wrong": "Vinklarna i figuren är exakt angivna; läs av siffran, inte ögonmåttet."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid att avläsa fel grad-tal från figuren — 67° är nära 64°.",
+            "why_wrong": "Den markerade vinkeln på L{M0}_1{M1} är 64°, och alternatvinkeln v är exakt lika stor."
+          }
+        ],
+        "pitfall": "Förväxla inte alternatvinklar (Z-mönster, lika) med likbelägna vinklar (F-mönster, också lika) eller med konsekutiva vinklar (samma sida om transversalen, summerar till 180°).",
+        "solution_path": "Vinkeln v ligger på L_2 och har samma transversal som en vinkel på L_1. Eftersom linjerna är parallella är alternatvinklarna lika: vinkeln på L_1 = 64° i figuren, alltså v = 64°.",
+        "technique": "När en transversal korsar två parallella linjer är alternatvinklar (på olika sidor om transversalen, mellan linjerna) lika stora — leta efter Z-mönstret.",
+        "framework_id": "XYZ-TRAP-037"
+      }
+    },
+    {
+      "exam": "host-2023",
+      "qid": "host-2023-kvant2-XYZ-008",
+      "question": {
+        "qid": "host-2023-kvant2-XYZ-008",
+        "exam_id": "host-2023",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "Hur lång är sträckan BC?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "13 cm"
+          },
+          {
+            "letter": "B",
+            "text": "14 cm"
+          },
+          {
+            "letter": "C",
+            "text": "15 cm"
+          },
+          {
+            "letter": "D",
+            "text": "16 cm"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2023-kvant2-XYZ-008.svg",
+          "aspect_ratio": 0.738
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778410520622,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Att räkna ut Pythagoras med slarv kan ge värden som ligger nära det rätta — 14 är ett vanligt 'avrundnings-fel'.",
+            "why_wrong": "\\sqrt{169}=13 exakt — 14 kommer från \\sqrt{196}, vilket motsvarar fel kvadratsumma."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du missminns sidorna som 9 och 12 ger Pythagoras 9^{2}+12^{2}=81+144=225=15^{2} — också ett snyggt pythagoreiskt par.",
+            "why_wrong": "9-12-15 är ett giltigt pythagoreiskt taltrippel men passar inte sidornas längder i den här figuren. Kontrollera vilka sidlängder som är angivna."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "16 är jämnt och ligger nära 13 — kan kännas som ett rimligt avrundat svar.",
+            "why_wrong": "Pythagoras ger ett EXAKT värde när sidorna är heltal i ett taltrippel. 16 motsvarar inget enkelt taltrippel med de givna sidorna."
+          }
+        ],
+        "pitfall": "Antag att svaret är ett 'snyggt' heltal när sidorna är heltal — HP-uppgifter är konstruerade så. Decimal-svar tyder ofta på att du läst figuren fel.",
+        "solution_path": "Sträckan BC ligger i en rätvinklig triangel — lös via Pythagoras' sats: c^{2}=a^{2}+b^{2}. Triangeln 5-12-13 är ett välkänt pythagoreiskt taltrippel (5^{2}+12^{2}=25+144=169=13^{2}), vilket ger BC = 13 cm direkt.",
+        "technique": "Pythagoreiska taltripplar att memorera: 3-4-5, 5-12-13, 8-15-17, 7-24-25. När en HP-uppgift visar två sidor ur en av dessa serier är hypotenusan ofta det saknade tredje värdet.",
+        "framework_id": "XYZ-TRAP-040"
+      }
+    },
+    {
+      "exam": "host-2024",
+      "qid": "host-2024-kvant1-XYZ-004",
+      "question": {
+        "qid": "host-2024-kvant1-XYZ-004",
+        "exam_id": "host-2024",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 4,
+        "prompt": "Tre linjer skär varandra i samma punkt. Vad är x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "15°"
+          },
+          {
+            "letter": "B",
+            "text": "20°"
+          },
+          {
+            "letter": "C",
+            "text": "25°"
+          },
+          {
+            "letter": "D",
+            "text": "30°"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2024-kvant1-XYZ-004.svg",
+          "aspect_ratio": 1.308
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415183309,
+          "model": "claude-opus-4-7",
+          "pedagogy_regenerated_at": 1778510870035,
+          "regen_source": "persona_pass_phase_e_2026_05_11"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna ett steg för lite och stanna på 15°.",
+            "why_wrong": "Kontrollräkna: när du sätter in x = 15° i ekvationen från figuren stämmer inte 360°-summan."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta mellanvärdet 25° när man inte slutför algebran.",
+            "why_wrong": "x = 25° ger en summa som överstiger 360° runt punkten."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du minns regeln som '90° delat på 3 linjer = 30°' landar du här.",
+            "why_wrong": "Linjerna är inte vinkelräta — det är de specifika vinklarna i figuren som styr, inte en jämn fördelning."
+          }
+        ],
+        "pitfall": "Tänk på skillnaden: komplementvinklar summerar till 90°, supplementvinklar till 180°. En rät linje ger 180° (supplement), inte 90°.",
+        "solution_path": "Tre linjer i samma punkt skapar sex vinklar som tillsammans är 360°, och varje vinkel har en lika stor vertikalvinkel mittemot. Sätt upp ekvationen med de markerade vinklarna i figuren och lös ut x — det ger x = 20°.",
+        "technique": "När linjer korsas i en punkt summerar alla vinklar runt punkten till 360°, och vertikalvinklar (mittemot varandra) är lika stora.",
+        "framework_id": "XYZ-TRAP-039"
+      }
+    },
+    {
+      "exam": "host-2024",
+      "qid": "host-2024-kvant2-XYZ-005",
+      "question": {
+        "qid": "host-2024-kvant2-XYZ-005",
+        "exam_id": "host-2024",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 5,
+        "prompt": "Ett tåg startar från någon av stationerna P, Q, R eller S. När tåget stannar vid station T har det färdats i 6 timmar med medelhastigheten 90 km/h. Från vilken station startade tåget?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "P"
+          },
+          {
+            "letter": "B",
+            "text": "Q"
+          },
+          {
+            "letter": "C",
+            "text": "R"
+          },
+          {
+            "letter": "D",
+            "text": "S"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2024-kvant2-XYZ-005.svg",
+          "aspect_ratio": 3.174
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415183309,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna fel medelhastighet och välja Q.",
+            "why_wrong": "Q ligger på annat avstånd; P är den med 540 km."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta R utan att räkna.",
+            "why_wrong": "R är inte 540 km från T."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid sista alternativet utan beräkning.",
+            "why_wrong": "Avståndet 540 km motsvarar P på kartan."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Avstånd: 6\\cdot 90=540 km. P är stationen 540 km från T.",
+        "technique": "Avstånd = hastighet · tid. Identifiera den station som motsvarar avståndet."
+      }
+    },
+    {
+      "exam": "host-2024",
+      "qid": "host-2024-kvant2-XYZ-007",
+      "question": {
+        "qid": "host-2024-kvant2-XYZ-007",
+        "exam_id": "host-2024",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 7,
+        "prompt": "En kvadrat har lika stor area som en cirkel med radien 2 cm. Vilken sidlängd har kvadraten?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "2π  cm"
+          },
+          {
+            "letter": "B",
+            "text": "2 π  cm"
+          },
+          {
+            "letter": "C",
+            "text": "π 2 cm"
+          },
+          {
+            "letter": "D",
+            "text": "2π cm"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415183309,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 2π utan rot.",
+            "why_wrong": "4π är arean, inte sidan. Sidan = √(4π) = 2√π."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta π/2.",
+            "why_wrong": "För litet — sidan måste matcha 4π i area."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 2π (utan rot).",
+            "why_wrong": "Sidlängd = √area = 2√π, inte 2π."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Cirkelarea: \\pi\\cdot 2^{2}=4\\pi. Kvadratsidlängd: \\sqrt{4\\pi}=2\\sqrt{\\pi}.",
+        "technique": "Kvadratsida från area: √area; var noga med rotteckenshanteringen.",
+        "framework_id": "XYZ-TRAP-042"
+      }
+    },
+    {
+      "exam": "host-2024",
+      "qid": "host-2024-kvant2-XYZ-009",
+      "question": {
+        "qid": "host-2024-kvant2-XYZ-009",
+        "exam_id": "host-2024",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 9,
+        "prompt": "Vilket svarsalternativ är lika med uttrycket 10· \\frac{3-x 5x}{15 3}+ ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "\\frac{10+8x}{5}"
+          },
+          {
+            "letter": "B",
+            "text": "2 - x"
+          },
+          {
+            "letter": "C",
+            "text": "2 + x"
+          },
+          {
+            "letter": "D",
+            "text": "2 + 8x"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415183309,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel täljare och få (10+8x)/5.",
+            "why_wrong": "Korrekt täljare: 30 + 15x. Förkorta med 15: 2 + x."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att tappa tecken: 2 − x.",
+            "why_wrong": "x har positivt tecken efter alla utvecklingar."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 2 + 8x av räknemiss.",
+            "why_wrong": "Räkna noggrant: 2 + x."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Gemensam nämnare 15: \\frac{10(3-x)}{15}+\\frac{25x}{15}=\\frac{30-10x+25x}{15}=\\frac{30+15x}{15}=2+x.",
+        "technique": "Bråkaddition med olika nämnare: gemensam nämnare, addera täljare, förenkla.",
+        "framework_id": "XYZ-TRAP-016"
+      }
+    },
+    {
+      "exam": "host-2024",
+      "qid": "host-2024-kvant2-XYZ-010",
+      "question": {
+        "qid": "host-2024-kvant2-XYZ-010",
+        "exam_id": "host-2024",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "Vilket svarsalternativ är lika med _2 3 +3 3 i_4 3 - 3 i?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "15"
+          },
+          {
+            "letter": "B",
+            "text": "15 3"
+          },
+          {
+            "letter": "C",
+            "text": "45"
+          },
+          {
+            "letter": "D",
+            "text": "135"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415183309,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 5·3 = 15 utan √3·√3.",
+            "why_wrong": "√3·√3 = 3 (inte 1). Multiplicera in: 15·3 = 45."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 15√3 av att lämna kvadratrot.",
+            "why_wrong": "√3·√3 = 3, så slutprodukten har INGEN √3."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 135 av räknefel.",
+            "why_wrong": "15·3 = 45, inte 135."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Faktor 1: 2\\sqrt{3}+3\\sqrt{3}=5\\sqrt{3}. Faktor 2: 4\\sqrt{3}-\\sqrt{3}=3\\sqrt{3}. Produkt: 5\\sqrt{3}\\cdot 3\\sqrt{3}=15\\cdot 3=45.",
+        "technique": "Multiplikation av rötter: kombinera först termer av samma rot, multiplicera sedan ut."
+      }
+    },
+    {
+      "exam": "host-2025",
+      "qid": "host-2025-kvant1-XYZ-002",
+      "question": {
+        "qid": "host-2025-kvant1-XYZ-002",
+        "exam_id": "host-2025",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 2,
+        "prompt": "Linjerna L_{1} och L_{2} är parallella. Hur stor är vinkeln v?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "102°"
+          },
+          {
+            "letter": "B",
+            "text": "115°"
+          },
+          {
+            "letter": "C",
+            "text": "139°"
+          },
+          {
+            "letter": "D",
+            "text": "143°"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2025-kvant1-XYZ-002.svg",
+          "aspect_ratio": 1.891
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778408443638,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "102° är redan markerat i figuren och kan kännas som korresponderande vinkel till v.",
+            "why_wrong": "Korresponderande vinklar ligger på samma sida av samma transversal — v skapas där två transversaler skär varandra, inte där en transversal skär en parallell linje."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid att 37°+102°=139° och tar det som svar.",
+            "why_wrong": "102° måste först omvandlas till sin inre triangelvinkel (78°) innan adderingen — annars räknas yttre och inre vinkel mot varandra."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten kan vara att v är supplementvinkeln till 37°, alltså 180°-37°=143°.",
+            "why_wrong": "Supplementregeln gäller för vinklar på SAMMA räta linje. v ligger där två olika transversaler möts — supplement gäller inte här."
+          }
+        ],
+        "pitfall": "Avgör för varje given vinkel om den är inre eller yttre triangelvinkel innan du adderar — felklassificering av 102° är dominanten i den här uppgiften.",
+        "solution_path": "v är yttervinkeln vid toppen av triangeln som L₂ och de två transversalerna bildar — och en yttervinkel är alltid summan av de två motstående inre vinklarna. Här är de inre vinklarna 37° (direkt) och 180°-102°=78° (eftersom 102° är yttervinkeln vid den högra basen). Alltså v=37°+78°=115°.",
+        "technique": "Yttervinkel = summa av två motstående inre vinklar. Identifiera triangeln som transversalerna och en parallell linje bildar.",
+        "framework_id": "XYZ-TRAP-038"
+      }
+    },
+    {
+      "exam": "host-2025",
+      "qid": "host-2025-kvant2-XYZ-004",
+      "question": {
+        "qid": "host-2025-kvant2-XYZ-004",
+        "exam_id": "host-2025",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 4,
+        "prompt": "f(x) = 7x^{2} - 7 För vilket av följande värden på x gäller att f(x) = 7?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "1"
+          },
+          {
+            "letter": "B",
+            "text": "2"
+          },
+          {
+            "letter": "C",
+            "text": "2"
+          },
+          {
+            "letter": "D",
+            "text": "7"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415412056,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 7x² = 0 → x = 1.",
+            "why_wrong": "7x² = 14, inte 0. x = √2, inte 1."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta x² = 2 → x = 2 (utan att dra roten ur).",
+            "why_wrong": "Kvadrera bara om du vill kvadrera; här ska du DRA ROTEN UR: x = √2."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 7 (av 7 i ekvationen).",
+            "why_wrong": "x = √2 ≈ 1,41, mycket mindre än 7."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "7x^{2}-7=7 → x^{2}=2 → x=\\sqrt{2}.",
+        "technique": "Lös x² = k: x = ±√k."
+      }
+    },
+    {
+      "exam": "host-2025",
+      "qid": "host-2025-kvant2-XYZ-005",
+      "question": {
+        "qid": "host-2025-kvant2-XYZ-005",
+        "exam_id": "host-2025",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 5,
+        "prompt": "För rektangeln ABCD gäller att AB = 5 cm och BC = 7 cm. Hur lång är sträckan PQ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "26  cm"
+          },
+          {
+            "letter": "B",
+            "text": "29  cm"
+          },
+          {
+            "letter": "C",
+            "text": "34  cm"
+          },
+          {
+            "letter": "D",
+            "text": "45  cm"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2025-kvant2-XYZ-005.svg",
+          "aspect_ratio": 1.031
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415412056,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna \\sqrt{26} av räknemiss.",
+            "why_wrong": "PQ = √29, inte √26. Räkna noggrant Pythagoras-uttrycket."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta \\sqrt{34}.",
+            "why_wrong": "√29 är korrekt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid \\sqrt{45}.",
+            "why_wrong": "√45 är för stor; PQ = √29."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "PQ-längd via Pythagoras eller likformighet i figurens konfiguration: PQ=\\sqrt{29} cm.",
+        "technique": "Pythagoras i rektangel: kvadratrot av summan av kateter².",
+        "framework_id": "XYZ-TRAP-040"
+      }
+    },
+    {
+      "exam": "host-2025",
+      "qid": "host-2025-kvant2-XYZ-011",
+      "question": {
+        "qid": "host-2025-kvant2-XYZ-011",
+        "exam_id": "host-2025",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 11,
+        "prompt": "Vilket svarsalternativ är lika med _2, 5·10^{-11} i·_4·10^{-18} i?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "10^{-28}"
+          },
+          {
+            "letter": "B",
+            "text": "10^{28}"
+          },
+          {
+            "letter": "C",
+            "text": "10^{-30}"
+          },
+          {
+            "letter": "D",
+            "text": "10^{30}"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415412056,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tappa minustecken på exponent.",
+            "why_wrong": "Exponenten är negativ summa: −11 + −18 = −29; mantissan 10 ger −28 totalt."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 10^{-30}.",
+            "why_wrong": "Räkna noggrant: −29 + 1 (mantissan 10) = −28."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 10^30.",
+            "why_wrong": "Resultatet är litet (negativ exponent), inte stort."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "2{,}5\\cdot 4=10 och 10^{-11}\\cdot 10^{-18}=10^{-29}. Total: 10\\cdot 10^{-29}=10^{-28}.",
+        "technique": "Multiplikation av tiopotenser: multiplicera mantissor, addera exponenter; justera om mantissan blir ≥10.",
+        "framework_id": "XYZ-TRAP-031"
+      }
+    },
+    {
+      "exam": "host-2025",
+      "qid": "host-2025-kvant2-XYZ-012",
+      "question": {
+        "qid": "host-2025-kvant2-XYZ-012",
+        "exam_id": "host-2025",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 12,
+        "prompt": "xy ≠-1 Vilket svarsalternativ motsvarar uttrycket ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "xy"
+          },
+          {
+            "letter": "B",
+            "text": "xy + 1"
+          },
+          {
+            "letter": "C",
+            "text": "x^{2} y^{2}"
+          },
+          {
+            "letter": "D",
+            "text": "x^{2} y^{2} + 1 x^{2} y^{2} +xy xy+1"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415412056,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tappa förkortning och svara xy + 1.",
+            "why_wrong": "(xy+1) i täljaren förkortas mot (xy+1) i nämnaren — kvar är xy."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta x^{2}y^{2} (täljarens första term).",
+            "why_wrong": "Hela bråket förkortas; resultatet är xy."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid x^{2}y^{2}+1.",
+            "why_wrong": "Förkorta båda termer; xy + 1 i nämnaren tas bort av faktorn (xy+1) i täljaren."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Bryt ut xy: \\frac{xy(xy+1)}{xy+1}=xy.",
+        "technique": "Förkortning av algebraiska bråk: bryt ut gemensam faktor, förkorta.",
+        "framework_id": "XYZ-TRAP-011"
+      }
+    },
+    {
+      "exam": "host-ver1-2019",
+      "qid": "host-ver1-2019-kvant1-XYZ-003",
+      "question": {
+        "qid": "host-ver1-2019-kvant1-XYZ-003",
+        "exam_id": "host-ver1-2019",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 3,
+        "prompt": "En femhörning är inritad i ett koordinatsystem som figuren visar. Vilken area har femhörningen?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "5 areaenheter"
+          },
+          {
+            "letter": "B",
+            "text": "6 areaenheter"
+          },
+          {
+            "letter": "C",
+            "text": "8 areaenheter"
+          },
+          {
+            "letter": "D",
+            "text": "10 areaenheter"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": {
+          "src": "figures/host-ver1-2019-kvant1-XYZ-003.svg",
+          "aspect_ratio": 0.956
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415638489,
+          "model": "claude-opus-4-7",
+          "pedagogy_regenerated_at": 1778510870035,
+          "regen_source": "persona_pass_phase_e_2026_05_11"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att glömma en del av uppdelningen och bara räkna huvudrektangeln eller en triangel.",
+            "why_wrong": "5 areaenheter motsvarar ungefär halva figuren — du missar minst en del när du delar upp."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Första instinkten är att räkna varje ruta som figuren passerar utan att skilja på hel och halv täckning.",
+            "why_wrong": "Räkning av rutor som femhörningen 'rör vid' underskattar arean — det ger ca 6, men korrekt area är 10."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du minns regeln som 'femhörning ≈ 8 enheter' gissar du 8.",
+            "why_wrong": "Det finns ingen sådan tumregel — arean beror helt på var hörnen ligger i koordinatsystemet."
+          }
+        ],
+        "pitfall": "Räkna noga med kvadratrutorna i koordinatsystemet — ett räknefel i basen eller höjden gör hela arean fel.",
+        "solution_path": "Dela femhörningen i två trianglar och en rektangel genom att rita räta linjer mellan lämpliga hörn (eller dra ut figuren till en omslutande rektangel och dra bort hörnen). Summera delarna: t.ex. rektangel 4·2 = 8 plus två trianglar 1·2·1/2 vardera = 1 + 1 = 2, totalt 10 areaenheter.",
+        "technique": "Polygon i koordinatsystem: dela upp i rektanglar och rätvinkliga trianglar — varje del räknar du med grundformler (rektangel = b·h, triangel = b·h/2).",
+        "framework_id": "XYZ-TRAP-021"
+      }
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+[
+  {
+    "id": "NOG-TRAP-001",
+    "tldr": "Yttre marginaler är inte en fylld tabell — radsummor och kolumnsummor lämnar varje cell fri.",
+    "recognition_cue": "När frågan gäller en specifik cell i en 2×2-uppdelning (kön × hårfärg, anställd × avdelning) och påståendena bara levererar två rad- eller kolumnsummor utan någon enskild cell eller ett 'varken'-tal.",
+    "worked_example": {
+      "setup": "Frågan: hur många ljushåriga flickor finns i en grupp på 100 barn? (1) 40 % av barnen är ljushåriga. (2) I gruppen finns 60 pojkar.",
+      "trap_thinking": "Studenten ser totalantalet 100, andelen 40 % ljushåriga (40 barn) och 60 pojkar (alltså 40 flickor) och drar slutsatsen att tabellen är 'fylld' — väljer C med svaret 'alla 40 flickor är ljushåriga eller någon enkel skärning'.",
+      "correct_thinking": "(1) ensam: bara totalandelen ljushåriga, ingen könsfördelning av dem → otillräcklig. (2) ensam: bara könsfördelning, ingen hårfärg → otillräcklig. Tillsammans: vi har radsummorna (40 ljushåriga, 60 mörka) och kolumnsummorna (60 pojkar, 40 flickor), men ingen cell är låst — antalet ljushåriga flickor kan vara allt från 0 till 40. Marginalerna räcker inte.",
+      "answer": "E — informationen är otillräcklig även tillsammans."
+    },
+    "counter_example": "Om utsaga (2) istället sade 'av pojkarna är 25 ljushåriga', då vore en cell låst och de återstående tre cellerna följer av marginalerna — svaret skulle bli C med 15 ljushåriga flickor."
+  },
+  {
+    "id": "NOG-TRAP-002",
+    "tldr": "Tre obekanta kräver tre oberoende ekvationer — två räcker aldrig, oavsett hur konkreta talen ser ut.",
+    "recognition_cue": "När problemet introducerar fler okända storheter (flickor, pojkar, lågstadiebarn, mellanstadiebarn) än det totala antalet ekvationer du kan extrahera ur stammen plus båda påståendena.",
+    "worked_example": {
+      "setup": "På en skola finns flickor och pojkar; flickorna är 39 fler än pojkarna. Hur många elever finns på skolan? (1) Det finns 53 fler elever på lågstadiet än på mellanstadiet. (2) På lågstadiet finns lika många pojkar som på mellanstadiet.",
+      "trap_thinking": "Studenten räknar tre konkreta tal (39, 53, 'lika många') och tre kategorier och antar att tre fakta måste låsa tre obekanta — väljer C.",
+      "correct_thinking": "Inför variabler: f = flickor, p = pojkar, lp = pojkar på lågstadiet, mp = pojkar på mellanstadiet, lf = flickor på lågstadiet, mf = flickor på mellanstadiet. Stammen ger f − p = 39. (1) ger (lp+lf) − (mp+mf) = 53. (2) ger lp = mp. Det blir tre ekvationer i sex obekanta; totalantalet f + p är inte låst. Båda tillsammans räcker inte.",
+      "answer": "E — systemet är underbestämt även med båda påståendena."
+    },
+    "counter_example": "Om utsaga (2) istället sade 'på mellanstadiet finns 80 elever', då skulle (1) ge lågstadiet = 133 och totalen = 213 — påståendena tillsammans räcker och svaret blir C."
+  },
+  {
+    "id": "NOG-TRAP-003",
+    "tldr": "Ett förhållande låser kvoten, inte mängderna — du behöver minst ett absolut tal någonstans.",
+    "recognition_cue": "När stammen säger 'dubbelt så många', 'andelen är 3:5', 'A är k gånger B' och frågan gäller ett absolut antal — leta efter ett konkret tal (summa, differens, eller en enskild kategoris antal) i påståendena.",
+    "worked_example": {
+      "setup": "Påse A innehåller dubbelt så många äpplen som påse B. Hur många äpplen innehåller påsarna tillsammans? (1) Om man tar bort 10 äpplen från vardera påse innehåller A tre gånger så många som B. (2) A innehåller 20 fler äpplen än B.",
+      "trap_thinking": "Studenten avskriver (1) som 'bara ännu ett förhållande' och tror att bara (2) ger ett absolut tal — väljer B.",
+      "correct_thinking": "Sätt b = antalet i B, då är A = 2b. (1) ger 2b − 10 = 3(b − 10), alltså b = 20 → totalen 60. Påståendet räcker ensamt. (2) ger 2b − b = 20, alltså b = 20 → totalen 60. Räcker också ensamt. Båda låser samma absoluta tal var för sig.",
+      "answer": "D — vardera påståendet räcker ensamt."
+    },
+    "counter_example": "Om utsaga (2) istället sade 'förhållandet A:B är 2:1', då upprepar den bara stammen och tillför inget absolut tal — varken (1) eller (2) skulle räcka ensamt och svaret skulle bli A."
+  },
+  {
+    "id": "NOG-TRAP-004",
+    "tldr": "En giltig tilldelning är inte detsamma som en unik — disjunktiva villkor lämnar ofta två kandidater kvar.",
+    "recognition_cue": "När påståendena innehåller 'eller'-konstruktioner ('skor eller mössa', 'salong 1 eller 3') eller bara delordningar — räkna alltid alla tilldelningar som uppfyller villkoren, inte bara den första du hittar.",
+    "worked_example": {
+      "setup": "Emelie tar på sig mössa, vantar, jacka och skor i någon ordning. Vilken ordning? (1) När hon tar på vantarna har hon redan tagit på skorna; hon tar inte mössan sist. (2) Hon tar på jackan först; hon tar på skorna innan mössan.",
+      "trap_thinking": "Studenten hittar snabbt en giltig ordning från (1) — t.ex. skor, vantar, mössa, jacka — och en annan från (2) — t.ex. jacka, skor, mössa, vantar — och tror att vardera påståendet räcker, väljer D.",
+      "correct_thinking": "(1) ensam: skor före vantar, mössa ej sist → flera ordningar uppfyller (t.ex. skor, vantar, mössa, jacka eller jacka, skor, vantar, mössa). Otillräcklig. (2) ensam: jacka först, skor före mössa → ordningen jacka, skor, vantar, mössa och jacka, skor, mössa, vantar och jacka, vantar, skor, mössa — flera kvar. Otillräcklig. Tillsammans: jacka först, skor före vantar, skor före mössa, mössa ej sist → unik ordning jacka, skor, mössa, vantar.",
+      "answer": "C — endast tillsammans låses permutationen."
+    },
+    "counter_example": "Om utsaga (1) istället sade 'hon tar på sig vantarna sist', då skulle (1) ensam ge två kandidater och (2) skulle behövas för att fixera resten — men nu är (1) starkare och fungerar tillsammans med stammen på ett sätt som kan göra svaret A."
+  },
+  {
+    "id": "NOG-TRAP-005",
+    "tldr": "Att skära två kandidatmängder ger inte automatiskt en singleton — räkna sluttalet innan du landar på C.",
+    "recognition_cue": "När båda påståendena ger delordningar eller 'X ligger i mängden {a, b}'-villkor — du måste explicit räkna ut snittet och kontrollera att exakt en tilldelning återstår.",
+    "worked_example": {
+      "setup": "En biograf har tre salonger med ett drama, en komedi och en skräckfilm — en film per salong. Vilken film i vilken salong? (1) Komedin visas inte i salong 2; skräckfilmen visas i salong 1 eller 3. (2) Komedin visas i salong 1; skräckfilmen visas i salong 2 eller 3.",
+      "trap_thinking": "Studenten ser att båda påståendena ger 'eller'-villkor för skräckfilmen och avskriver dem som otillräckliga — väljer E.",
+      "correct_thinking": "(1) ensam: komedi ∈ {1, 3}, skräck ∈ {1, 3}, drama = 2; två kandidater (komedi=1/skräck=3 eller komedi=3/skräck=1). Otillräcklig. (2) ensam: komedi = 1, skräck ∈ {2, 3}, drama på resten; två kandidater. Otillräcklig. Tillsammans: komedi = 1 (från (2)), skräck ∈ {1, 3} ∩ {2, 3} = {3}, drama = 2 — unikt.",
+      "answer": "C — räcker tillsammans men inte var för sig."
+    },
+    "counter_example": "Om utsaga (2) istället bara sade 'skräckfilmen visas i salong 2 eller 3', utan att fixera komedins salong, då skulle snittet av påståendena lämna två kandidater kvar och svaret skulle bli E."
+  },
+  {
+    "id": "NOG-TRAP-006",
+    "tldr": "Olikheter ringar in intervall — frågar stammen efter ett exakt antal räcker stränga olikheter aldrig ensamma.",
+    "recognition_cue": "När påståendena innehåller 'fler än', 'färre än', 'mer än hälften' eller modifierade scenarier ('om k lämnar') och frågan kräver ett bestämt antal — kontrollera att åtminstone en utsaga är en likhet, inte en olikhet.",
+    "worked_example": {
+      "setup": "På ett hunddagis finns pudlar, schäfrar och taxar. Hur många schäfrar finns på dagiset? (1) Om 15 pudlar och 2 schäfrar lämnar dagiset finns det färre pudlar än schäfrar men fler pudlar än taxar kvar. (2) Det finns 7 taxar på dagiset och pudlarna är 17 fler än taxarna.",
+      "trap_thinking": "Studenten räknar ihop (1) och (2) — får 24 pudlar, vet att efter avgång gäller 9 pudlar < schäfrar − 2 — och tror att olikheten räknas som likhet, väljer C med schäfrar = 11 eller liknande.",
+      "correct_thinking": "(2) ensam: ger antalet pudlar (24) och taxar (7), men inget om schäfrar. Otillräcklig. (1) ensam: efter avgång gäller pudlar < schäfrar och pudlar > taxar, vilket är ett intervallvillkor utan absoluta tal för schäfrar. Otillräcklig. Tillsammans: efter avgång finns 9 pudlar och 7 taxar; villkoret blir 9 < schäfrar − 2 < … oj, övre gränsen mot taxar misslyckas — schäfrar − 2 > 9, alltså schäfrar > 11. Intervall, inte exakt tal.",
+      "answer": "E — olikheterna binder bara ett intervall, inte ett bestämt antal."
+    },
+    "counter_example": "Om utsaga (1) istället sade 'om 15 pudlar och 2 schäfrar lämnar dagiset finns exakt lika många pudlar som schäfrar kvar', då skulle likheten ge schäfrar − 2 = 9, alltså schäfrar = 11 — och svaret skulle bli C."
+  },
+  {
+    "id": "NOG-TRAP-007",
+    "tldr": "En geometrisk identitet upprepar bara en sats — den binder inte ett värde, oavsett hur konkret den ser ut.",
+    "recognition_cue": "När ett påstående i en geometri-uppgift ser ut som en relation mellan vinklar eller sidor — fråga dig om relationen gäller för ALLA figurer av samma typ. Om ja, är det en identitet utan informationsvärde.",
+    "worked_example": {
+      "setup": "Vinkeln d är yttervinkel till c i triangeln ABC. Hur stor är yttervinkeln d? (1) Vinkeln c är 1/4 av vinkeln b. (2) Vinkeln d är summan av vinklarna a och b.",
+      "trap_thinking": "Studenten ser att (2) ger en relation mellan d, a och b — räknar den som ett oberoende villkor och tror att den tillsammans med (1) räcker, väljer C.",
+      "correct_thinking": "(2) är yttervinkelsatsen — den gäller per definition för varje triangel och tillför ingenting nytt. Behandla (2) som om den vore tom. (1) ensam: c = b/4, men inga absoluta tal för a, b eller c → otillräcklig. (2) ensam: trivial identitet → otillräcklig. Tillsammans: vi har bara (1) plus en identitet, fortfarande inga absoluta vinklar.",
+      "answer": "E — den triviala satsen i (2) tillför ingen information."
+    },
+    "counter_example": "Om utsaga (2) istället sade 'vinkeln a är 60°', då skulle (1) och (2) tillsammans ge ett ekvationssystem som låser alla vinklar — svaret skulle bli C."
+  },
+  {
+    "id": "NOG-TRAP-008",
+    "tldr": "Två sätt att uttrycka samma villkor är fortfarande ett villkor — omformuleringar adderar inga frihetsgrader.",
+    "recognition_cue": "När de två påståendena ser ut som varandras spegelbild ('Albert är 0,5 h långsammare än Ida' / 'Ida är 0,5 h snabbare än Albert') eller använder olika notation för samma andel — skriv om båda som ekvationer och jämför.",
+    "worked_example": {
+      "setup": "Albert och Ida klipper en fotbollsplan tillsammans, var och en med konstant hastighet. Hur lång tid tar det? (1) Ensam skulle Albert klippa hela planen 0,5 timmar långsammare än Ida. (2) Ensam skulle Ida klippa hela planen 0,5 timmar snabbare än Albert.",
+      "trap_thinking": "Studenten ser två separata påståenden med konkreta tal och tror att de tillsammans ger två ekvationer i två obekanta — väljer C.",
+      "correct_thinking": "Sätt a = Alberts tid, i = Idas tid. (1) ger a = i + 0,5. (2) ger i = a − 0,5, vilket är samma ekvation flyttad. (1) och (2) är logiskt identiska. (1) ensam: en ekvation, två obekanta → otillräcklig. (2) ensam: samma → otillräcklig. Tillsammans: fortfarande en ekvation i två obekanta.",
+      "answer": "E — påståendena är ekvivalenta och tillsammans är de bara ett villkor."
+    },
+    "counter_example": "Om utsaga (2) istället sade 'Ida klipper hela planen ensam på 2 timmar', då skulle (1) och (2) tillsammans ge a = 2,5 och i = 2 — svaret skulle bli C."
+  },
+  {
+    "id": "NOG-TRAP-009",
+    "tldr": "En framtida åldersskillnad är samma som dagens — tidsförflyttning ger ingen ny information om en invariant differens.",
+    "recognition_cue": "När stammen redan ger en konstant skillnad (åldersskillnad, längdskillnad) och ett påstående återupprepar samma skillnad i framtid eller dåtid — kontrollera om förflyttningen tillför något utöver vad stammen redan låst.",
+    "worked_example": {
+      "setup": "Bengt är 14 år yngre än Alice. Hur gammal är Bengt? (1) Om 10 år är Alice dubbelt så gammal som Bengt. (2) Om 10 år är Alice 14 år äldre än Bengt.",
+      "trap_thinking": "Studenten ser två 'om 10 år'-påståenden, räknar dem som två oberoende framtidsekvationer och väljer C eller D.",
+      "correct_thinking": "Sätt b = Bengts ålder, då är Alice b + 14. (1) ger b + 14 + 10 = 2(b + 10), alltså b = 4. Påståendet räcker ensamt. (2) säger att åldersskillnaden om 10 år är 14 år — men åldersskillnaden är alltid 14 enligt stammen, så (2) är en trivial omformulering utan information. Otillräcklig ensamt. Bara (1) räcker.",
+      "answer": "A — endast (1) räcker; (2) upprepar en invariant skillnad."
+    },
+    "counter_example": "Om utsaga (2) istället sade 'om 10 år är Alice tre gånger så gammal som Bengt', då skulle (2) också låsa Bengts ålder och svaret bli D — vardera räckte ensamt."
+  },
+  {
+    "id": "NOG-TRAP-010",
+    "tldr": "En hypotetisk räkning kan vara tom — om scenariot inte introducerar nya obekanta är resultatet redan inbakat.",
+    "recognition_cue": "När ett påstående börjar 'om affären säljer X procent' eller 'om priset varit Y' — kontrollera om hypotetiken landar på ett konkret tal (meter, kronor, antal) eller bara på en procentuell omräkning av ursprungsmängden.",
+    "worked_example": {
+      "setup": "Ett tyg säljs från en rulle. Hur många meter tyg finns på rullen? (1) Om affären säljer en femtedel av tyget och därefter en fjärdedel av återstoden så finns 60 procent kvar. (2) Om affären säljer hälften av tyget och därefter en femtedel av återstoden så finns åtta meter kvar.",
+      "trap_thinking": "Studenten ser två konkreta hypotetiska scenarier och antar att båda räcker — väljer D.",
+      "correct_thinking": "Sätt m = meter på rullen. (1): efter första försäljningen finns 0,8m kvar, sedan 0,75 · 0,8m = 0,6m, alltså 60 % — gäller för varje m. (1) är en räkneidentitet utan information om m. Otillräcklig. (2): efter första försäljningen finns 0,5m kvar, sedan 0,8 · 0,5m = 0,4m = 8, alltså m = 20. (2) räcker ensamt.",
+      "answer": "B — endast (2) introducerar ett absolut tal."
+    },
+    "counter_example": "Om utsaga (1) istället sade 'om affären säljer en femtedel och därefter en fjärdedel av återstoden finns 12 meter kvar', då skulle (1) ge 0,6m = 12, alltså m = 20 — och svaret skulle bli D."
+  },
+  {
+    "id": "NOG-TRAP-011",
+    "tldr": "Ett 'om'-scenario kan vara en fullvärdig ekvation — avskriv inte hypotetik utan att skriva ner den algebraiskt.",
+    "recognition_cue": "När ett påstående konstruerar ett hypotetiskt scenario kring antalet personer eller mängden ('om åtta avstår', 'om var och en fick lika') — skriv ut det som en ekvation i den enda obekanta innan du dömer det som otillräckligt.",
+    "worked_example": {
+      "setup": "En grupp personer har vunnit pengar som ska fördelas lika. Hur stor är vinstsumman? (1) Om åtta personer avstår sin del får de övriga 20 kr mer per person. (2) Gruppen består av 20 personer.",
+      "trap_thinking": "Studenten ser ordet 'om' i (1) och avskriver den som hypotetisk spekulation — räknar bara (2) som verklig information och väljer B eller E.",
+      "correct_thinking": "Sätt n = antalet personer, s = summan. (1): s/n + 20 = s/(n − 8), en ekvation i två obekanta → otillräcklig ensamt. (2): n = 20, men ingenting om s → otillräcklig ensamt. Tillsammans: n = 20, så s/20 + 20 = s/12, alltså s = 600. Räcker tillsammans men inte var för sig.",
+      "answer": "C — den hypotetiska ekvationen och antalet personer låser summan tillsammans."
+    },
+    "counter_example": "Om utsaga (1) istället sade 'om åtta personer avstår sin del får de övriga 20 kr mer per person, och gruppen består av 20 personer', då skulle (1) ensam räcka och svaret bli A."
+  },
+  {
+    "id": "NOG-TRAP-012",
+    "tldr": "Två parallella 'X under Y'-kedjor med samma typ av relation ordnar inte topparna mot varandra.",
+    "recognition_cue": "När två påståenden ger var sin lokal ordningsrelation ('A bor under C', 'B bor under D') utan att koppla ihop kedjorna — rita relationerna som pilar och leta efter par utan transitiv väg.",
+    "worked_example": {
+      "setup": "Familjerna Andersson, Berg, Cedergren och Dahlman bor i ett trevåningshus: en familj på första, två på andra, en på tredje. Vilken familj bor på tredje våningen? (1) Cedergren bor under Andersson. (2) Berg bor under Dahlman.",
+      "trap_thinking": "Studenten ser två 'under'-relationer, tror att två kedjor + våningsfördelningen entydigt placerar översta familjen och väljer C.",
+      "correct_thinking": "(1) ensam: Cedergren under Andersson, men ingenting om Berg och Dahlman → flera tilldelningar. Otillräcklig. (2) ensam: Berg under Dahlman, ingenting om de övriga → otillräcklig. Tillsammans: kedjan Cedergren < Andersson plus kedjan Berg < Dahlman. Tredje våningen kan vara Andersson (med Cedergren+en till på andra, Berg eller Dahlman på första) eller Dahlman (analogt). Två kandidater för tredje våningen.",
+      "answer": "E — topparna av de två kedjorna är fortfarande inte ordnade mot varandra."
+    },
+    "counter_example": "Om utsaga (2) istället sade 'Berg bor under Cedergren', då skulle båda kedjorna mynna i Andersson och placera Andersson entydigt på tredje våningen — svaret skulle bli C."
+  },
+  {
+    "id": "NOG-TRAP-013",
+    "tldr": "En 'intill'-block plus en ändlåsning kan låsa hela permutationen — döm inte ut kedjevillkor som svaga.",
+    "recognition_cue": "När ett påstående bygger ett intill-block ('B står intill både C och E') och kombinerar det med en uteslutning av en ändposition ('A längst till höger', 'D ej längst till höger') — testa om blocket plus ändlåsningen lämnar exakt en permutation.",
+    "worked_example": {
+      "setup": "Bokstäverna A, B, C, D och E står på rad. I vilken ordning från vänster till höger? (1) D står längst till vänster; B står intill både C och E; A står längst till höger. (2) Varken D eller E står längst till höger; C står intill både A och B; B står intill både C och E.",
+      "trap_thinking": "Studenten ser fyra delvillkor i (2) och tror att de bara begränsar utan att fixera — väljer C eller E.",
+      "correct_thinking": "(1) ensam: D på position 1, A på position 5; B intill C och E ger blocket C-B-E eller E-B-C i positionerna 2-3-4 → två permutationer kvar. Otillräcklig. (2) ensam: C intill både A och B ger blocket A-C-B (eller B-C-A); B intill både C och E ger blocket C-B-E (eller E-B-C); kombinerat blir blocket A-C-B-E. Varken D eller E längst till höger → E ej position 5. Då måste A-C-B-E ligga i positionerna 1-2-3-4 och D på position 5. Unikt: A, C, B, E, D.",
+      "answer": "B — endast (2) räcker; (1) lämnar två permutationer."
+    },
+    "counter_example": "Om utsaga (1) istället sade 'D längst till vänster, A längst till höger, C står intill både A och B', då skulle (1) också fixera blocket B-C-A i slutet och hela ordningen — svaret skulle bli D."
+  }
+]

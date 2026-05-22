@@ -1,0 +1,146 @@
+[
+  {
+    "id": "NOG-TRAP-014",
+    "tldr": "I tilldelnings-problem räcker N−1 villkor — den sista platsen har inget val.",
+    "recognition_cue": "När en uppgift fördelar N distinkta entiteter på N platser och utsagorna eliminerar kandidater plats för plats; misstänk att N−1 elimineringar redan räcker, eftersom den sista platsen är forcerad.",
+    "worked_example": {
+      "setup": "Anna har tre kaffekoppar (röd, grön, blå) i tre storlekar. Vilken färg har den minsta? (1) Den näst minsta är varken grön eller blå. (2) Den största är varken röd eller blå.",
+      "trap_thinking": "Studenten ser att (1) bara låser mellan-koppen och (2) bara låser den största — och tänker att den minsta står fri i båda fallen. Eftersom inget påstående direkt nämner den minsta drar studenten slutsatsen att informationen är otillräcklig och väljer E.",
+      "correct_thinking": "(1) ensam: den näst minsta är röd, men då återstår grön och blå för minsta och största — otillräcklig. (2) ensam: den största är grön, men då återstår röd och blå för minsta och näst minsta — otillräcklig. Tillsammans: näst minsta är röd och största är grön, vilket tvingar minsta att vara blå. Två platser låsta räcker — den tredje följer.",
+      "answer": "C — påståendena räcker tillsammans men inte var för sig."
+    },
+    "counter_example": "Om utsaga (2) istället sade att den största är röd, då skulle (1) och (2) motsäga varandra och systemet bli olösbart — svaret skulle bli E."
+  },
+  {
+    "id": "NOG-TRAP-015",
+    "tldr": "Frågan söker x+y — då räcker en ekvation som binder summan, även om varken x eller y är låst.",
+    "recognition_cue": "När frågan efterfrågar en kombination (summa, differens, medel, kvot) av flera obekanta och en utsaga isolerar exakt den kombinationen utan att lösa ut variablerna individuellt.",
+    "worked_example": {
+      "setup": "Vilket värde har x + y? (1) (x+y)/2 + 3 = 10. (2) y = 6x.",
+      "trap_thinking": "Studenten ser två obekanta och resonerar att man behöver två ekvationer för att lösa ut x och y. (1) ger bara ett uttryck i x+y, inte i x och y separat, så studenten avfärdar det och tror att (1) och (2) krävs tillsammans — väljer C.",
+      "correct_thinking": "(1) ensam: (x+y)/2 = 7, alltså x+y = 14 — frågan är besvarad, även om x och y var för sig är okända. Räcker. (2) ensam: y = 6x ger x+y = 7x, vilket varierar med x — otillräcklig. Studenten behöver inte lösa ut variablerna; det är summan som efterfrågas.",
+      "answer": "A — frågan kan besvaras med (1) men inte med (2)."
+    },
+    "counter_example": "Om frågan istället sade 'Vilket värde har x?', då skulle (1) ensam ge en relation mellan x och y utan att låsa x, och båda påståendena skulle behövas tillsammans — svaret skulle bli C."
+  },
+  {
+    "id": "NOG-TRAP-016",
+    "tldr": "Ja/nej-frågor om tecken kräver bara att tecknet är låst — inte att värdet är känt.",
+    "recognition_cue": "När frågan är binär ('är produkten negativ?', 'är x < 0?', 'är n jämnt?') och en utsaga ger paritet, en olikhet eller en udda potens utan numeriskt värde — tecknet kan vara fastställt även om talet inte är det.",
+    "worked_example": {
+      "setup": "Anders skriver n tal på en lapp. Är produkten av talen negativ? (1) Alla talen är negativa och n är ett udda tal. (2) Om två tal vars produkt är positiv stryks, så är produkten av de övriga negativ.",
+      "trap_thinking": "Studenten konstaterar att varken n eller talen är låsta numeriskt och drar slutsatsen att produktens tecken inte kan avgöras från någotdera påståendet. Eftersom frågan ändå är binär krävs båda — väljer C.",
+      "correct_thinking": "(1) ensam: ett udda antal negativa tal ger negativ produkt — ja, produkten är negativ. Räcker. (2) ensam: hela produkten = (de två strukna) · (resten) = (positiv) · (negativ) = negativ — ja, produkten är negativ. Räcker också. Tecknet låses i båda fallen, även utan att veta n eller talen.",
+      "answer": "D — vart och ett av påståendena räcker var för sig."
+    },
+    "counter_example": "Om (1) istället sade att n är ett jämnt tal (men talen fortfarande alla negativa), då skulle produkten bli positiv — fortfarande sufficient men med motsatt svar; svaret förblir D."
+  },
+  {
+    "id": "NOG-TRAP-017",
+    "tldr": "Delbarhet utan övre gräns ger oändligt många lösningar — låser aldrig ett unikt tal.",
+    "recognition_cue": "När en utsaga säger att talet är 'jämnt delbart med k' (eller 'multipel av k') utan att kombineras med en övre eller nedre gräns — kandidaterna 0, k, 2k, 3k, … är oändliga och kan aldrig avgöra en specifik storhet.",
+    "worked_example": {
+      "setup": "x är ett positivt heltal. Vilket värde har x? (1) Skillnaden mellan 50 % av x och 30 % av x är 22. (2) x är jämnt delbart med både 10 och 11.",
+      "trap_thinking": "Studenten ser i (2) två konkreta delbarhetsvillkor och tänker att 'delbart med 10 och 11' låser x till en multipel av 110. Det känns specifikt och studenten väljer D eller B i tron att (2) räcker.",
+      "correct_thinking": "(1) ensam: 0,50x − 0,30x = 0,20x = 22 → x = 110 unikt. Räcker. (2) ensam: x är en multipel av 110, alltså 110, 220, 330, … — oändligt många kandidater utan övre gräns. Otillräcklig. Delbarhet utan intervall pekar inte ut ett enskilt tal.",
+      "answer": "A — frågan kan besvaras med (1) men inte med (2)."
+    },
+    "counter_example": "Om stammen tillade 'x < 200', då skulle (2) ensam ge x = 110 unikt och vart och ett av påståendena räcka — svaret skulle bli D."
+  },
+  {
+    "id": "NOG-TRAP-018",
+    "tldr": "Tre av fyra Venn-tal pinnar inte den fjärde — utan 'varken' förblir totalen öppen.",
+    "recognition_cue": "När en uppgift räknar element i två överlappande mängder (A, B, snittet) och frågar efter totalen — leta efter om antalet 'varken A eller B' är angivet, annars saknas en partitionsregel.",
+    "worked_example": {
+      "setup": "15 elever har både miniräknare och linjal. Hur många elever är det i klassen? (1) 17 elever har miniräknare och 21 elever har linjal. (2) 5 elever har varken miniräknare eller linjal.",
+      "trap_thinking": "Studenten ser i (1) att |A| = 17 och |B| = 21 och adderar dem direkt till 38, eller kompenserar för snittet och får 17 + 21 − 15 = 23. Studenten utelämnar 'varken'-gruppen och väljer A i tron att (1) ensam räcker.",
+      "correct_thinking": "(1) ensam: |A∪B| = 17 + 21 − 15 = 23, men totalen är |A∪B| + |varken|, och |varken| är okänt — otillräcklig. (2) ensam: bara 'varken' = 5, inget om A eller B — otillräcklig. Tillsammans: 23 + 5 = 28. Båda partitionsbitarna behövs.",
+      "answer": "C — påståendena räcker tillsammans men inte var för sig."
+    },
+    "counter_example": "Om stammen istället sade att alla elever har antingen miniräknare eller linjal (alltså |varken| = 0), då skulle (1) ensam ge totalen 23 och svaret bli A."
+  },
+  {
+    "id": "NOG-TRAP-019",
+    "tldr": "Procentkedjor binder förhållanden — för absoluta tal krävs ett ankare någonstans i kedjan.",
+    "recognition_cue": "När en utsaga beskriver successiva procentändringar utan att nämna ett absolut värde — kedjan låser bara kvoter och måste paras med minst ett konkret tal (slut-, mellan-, eller startvärde) för att ge absoluta storheter.",
+    "worked_example": {
+      "setup": "Hur mycket vatten finns det i tunnan innan Magnus tar något? (1) När Magnus är klar finns 42 liter kvar. (2) Magnus tar först 20 % av vattnet, sedan 1/4 av det som är kvar, och därefter är han klar.",
+      "trap_thinking": "Studenten ser att (1) bara ger slutvärdet och att (2) bara beskriver procentsteg och tänker att ingendera ensamt avgör startmängden. Procentkedjan i (2) känns 'för relativ' och studenten väljer E.",
+      "correct_thinking": "(1) ensam: 42 liter kvar, men ingen koppling till start — otillräcklig. (2) ensam: kvar-andelen är 0,80 · 0,75 = 0,60 av starten, men ingen absolut nivå — otillräcklig. Tillsammans: 0,60 · V = 42 → V = 70 liter. Procentkedjan + ett absolutvärde låser starten.",
+      "answer": "C — påståendena räcker tillsammans men inte var för sig."
+    },
+    "counter_example": "Om frågan istället sökte 'hur många procent av vattnet använde Magnus?', då skulle (2) ensam räcka (40 %) och (1) bli överflödig — svaret skulle bli B."
+  },
+  {
+    "id": "NOG-TRAP-020",
+    "tldr": "Medel binder summor och median binder mitten — enskilda värden förblir fria.",
+    "recognition_cue": "När utsagor bara ger medelvärden eller medianer för delmängder av en talserie och frågan söker ett specifikt enskilt tal (medianen, ett extremvärde, ett mittenelement) — aggregat låser inte individer.",
+    "worked_example": {
+      "setup": "På ett papper står sju negativa tal. Vad är medianen av talen? (1) Medelvärdet av de tre minsta talen är −45. (2) Medelvärdet av de tre största talen är −15.",
+      "trap_thinking": "Studenten ser att (1) och (2) tillsammans täcker sex av sju tal och tror att det fjärde talet — medianen — då måste vara klämd mellan grupperna. Studenten väljer C i tron att de två medelvärdena låser mittenvärdet.",
+      "correct_thinking": "(1) ensam: summan av de tre minsta är −135, men medianen är det fjärde talet och berörs inte — otillräcklig. (2) ensam: summan av de tre största är −45, men medianen ligger utanför — otillräcklig. Tillsammans: medianen kan vara vilket negativt tal som helst mellan −45 (största av de minsta) och −15 (minsta av de största). Aggregaten begränsar grannarna, inte mitten.",
+      "answer": "E — informationen är otillräcklig även med båda påståendena."
+    },
+    "counter_example": "Om en utsaga istället angav medelvärdet av samtliga sju tal, då skulle summan vara känd och medianen följa direkt av (1) och (2) — svaret skulle bli C."
+  },
+  {
+    "id": "NOG-TRAP-021",
+    "tldr": "I rätvinklig triangel räcker en spetsig vinkel — den låser formen lika starkt som en sida.",
+    "recognition_cue": "När en rätvinklig triangel ska bestämmas till vinklar eller form och en utsaga ger en spetsig vinkel eller en symmetriegenskap (likbent, halv av hypotenusan) — vinkel-information väger lika tungt som sid-information.",
+    "worked_example": {
+      "setup": "Arean av en rätvinklig triangel är 50 cm². Hur stora är triangelns vinklar? (1) Triangeln är likbent. (2) Minst en av triangelns vinklar är 45°.",
+      "trap_thinking": "Studenten letar efter sidlängder och tänker att bara arean inte räcker. (1) ger en symmetri men 'ingen sida'; (2) ger en vinkel men 'inget värde'. Studenten kombinerar dem och väljer C i tron att enbart symmetrin eller enbart vinkeln inte avgör formen.",
+      "correct_thinking": "(1) ensam: en rätvinklig likbent triangel måste ha kateterna lika stora, alltså vinklarna 45°, 45°, 90°. Räcker. (2) ensam: i en rätvinklig triangel är vinkelsumman 90° för de spetsiga vinklarna; om en är 45° måste den andra också vara 45°. Räcker. Båda låser formen 45-45-90 utan att arean behövs för vinkelfrågan.",
+      "answer": "D — vart och ett av påståendena räcker var för sig."
+    },
+    "counter_example": "Om frågan istället sökte triangelns sidlängder (inte vinklarna), då skulle båda utsagorna behöva paras med arean — och svaret skulle bli C, eftersom var för sig låser de bara formen, inte skalan."
+  },
+  {
+    "id": "NOG-TRAP-022",
+    "tldr": "Fart-sträcka-tid kräver minst ett absolutvärde — bara kvoter ger ingen klocka.",
+    "recognition_cue": "När en uppgift jämför tider, ankomster eller hastigheter för två resor och utsagorna ger förhållanden eller medelvärden utan att binda en av sträcka, hastighet eller tid till ett konkret tal — kvoter låser inte klockslag.",
+    "worked_example": {
+      "setup": "Alma går hemifrån 8:02, Karin 8:05. Vem är först fram till skolan? (1) De har samma medelhastighet. (2) Alma har 500 m att gå och är framme 8:10.",
+      "trap_thinking": "Studenten ser att (2) ger Almas hela resa och (1) ger samma medelhastighet, och drar slutsatsen att samma fart + Almas data räcker för att räkna ut Karins tid. Studenten väljer C.",
+      "correct_thinking": "(1) ensam: lika hastighet men inga sträckor eller tider — otillräcklig. (2) ensam: bara Almas resa, ingenting om Karin — otillräcklig. Tillsammans: hastigheten är låst till 500/8 m/min, men Karins sträcka är fortfarande okänd, så hennes tid kan inte beräknas. Båda kvoterna är fastställda, men Karins absoluta sträcka saknas.",
+      "answer": "E — informationen är otillräcklig även med båda påståendena."
+    },
+    "counter_example": "Om (2) också angav Karins sträcka (säg 600 m), då skulle samma hastighet ge Karins tid och frågan kunna avgöras — svaret skulle bli C."
+  },
+  {
+    "id": "NOG-TRAP-023",
+    "tldr": "'Avvek med k' är ett absolutvärde — två kandidater, inte en.",
+    "recognition_cue": "När en utsaga uttrycker en skillnad med absolutvärdesformuleringar ('avvek med', 'skillnaden är', 'skiljde sig med k från') utan tecken — det signerade värdet kan vara +k eller −k och utsagan ensam ger två möjliga svar.",
+    "worked_example": {
+      "setup": "Hur lång tid tog det för Göran att cykla 120 km? (1) Göran trodde att hans medelhastighet var 32 km/h, vilket var en avvikelse med 2 km/h från den verkliga. (2) Första 60 km gick i 40 km/h, sista 60 km i 24 km/h.",
+      "trap_thinking": "Studenten läser (1) som 'verklig fart = 32 − 2 = 30 km/h' och räknar tiden till 4 h. Det stämmer med (2):s 4 h, så studenten väljer D eftersom båda verkar ge samma svar.",
+      "correct_thinking": "(1) ensam: avvikelse 2 km/h betyder att verklig fart är 30 km/h eller 34 km/h — två tider (4 h respektive ≈ 3,53 h), inget unikt svar. Otillräcklig. (2) ensam: 60/40 + 60/24 = 1,5 + 2,5 = 4 h. Räcker. Absolutvärdet i (1) kan inte lösas utan en extra ledtråd om tecknet.",
+      "answer": "B — frågan kan besvaras med (2) men inte med (1)."
+    },
+    "counter_example": "Om (1) istället sade 'Göran överskattade sin medelhastighet med 2 km/h', då skulle tecknet vara låst, verklig fart bli 30 km/h och (1) ensam räcka — svaret skulle bli D."
+  },
+  {
+    "id": "NOG-TRAP-024",
+    "tldr": "Förhållande + summa är två fullvärdiga ekvationer — alltid lösbart system.",
+    "recognition_cue": "När en utsaga ger ett förhållande mellan två obekanta (A:B = k, A är p % av B, A överstiger B med x) och en annan utsaga eller stammen ger summan eller differensen — två linjära ekvationer i två obekanta är ett slutet system.",
+    "worked_example": {
+      "setup": "Två bilar körde åt motsatta håll i 2 timmar och tillryggalade tillsammans 234 km. Vilken var respektive bils medelhastighet? (1) Den röda bilens medelhastighet var 27 km/h högre än den grönas. (2) Den röda bilens medelhastighet var 60 procent högre än den grönas.",
+      "trap_thinking": "Studenten räknar varje utsaga som 'bara en relation' mellan två obekanta och tänker att man behöver båda för att låsa farterna. Studenten väljer C i tron att förhållandet i sig inte är en fullvärdig ekvation.",
+      "correct_thinking": "Stammen ger r + g = 117 km/h. (1) ensam: r = g + 27, så g + 27 + g = 117 → g = 45, r = 72. Räcker. (2) ensam: r = 1,6g, så g + 1,6g = 117 → g = 45, r = 72. Räcker också. Förhållandet är likvärdigt med en ekvation och varje utsaga sluter systemet på egen hand.",
+      "answer": "D — vart och ett av påståendena räcker var för sig."
+    },
+    "counter_example": "Om stammen utelämnat summan 234 km, då skulle (1) och (2) ge två ekvationer i två obekanta endast tillsammans — och svaret skulle ändå inte räcka, eftersom (1) och (2) tillsammans bara skulle ge ett enda förhållande och svaret skulle bli E."
+  },
+  {
+    "id": "NOG-TRAP-025",
+    "tldr": "Strukturen kan låsas utan att den efterfrågade attributen blir låst — kolla målet.",
+    "recognition_cue": "När en uppgift bygger upp en konfiguration (placeringar, ordning, par) och utsagorna bestämmer positioner eller relationer, men frågan söker en specifik egenskap (vinnare, kön, identitet) som inte direkt följer av strukturen.",
+    "worked_example": {
+      "setup": "Arne, Karin, Muhammed och Elisabeth sitter vid varsin sida av ett kvadratiskt bord. Vem vinner? (1) Karin sitter till höger om vinnaren och mittemot Elisabeth; Muhammed sitter mellan Karin och Elisabeth. (2) Arne sitter mittemot Muhammed; vinnaren sitter till höger om Elisabeth.",
+      "trap_thinking": "Studenten ritar bordet utifrån (1), placerar Karin mittemot Elisabeth med Muhammed mellan, och konstaterar att alla fyra sitter på bestämda platser. Eftersom placeringen är låst tror studenten att vinnaren också är det och väljer A.",
+      "correct_thinking": "(1) ensam: positionerna kan ordnas Karin-Muhammed-Elisabeth-Arne, men 'till höger' om Karin är Arne eller Muhammed beroende på orientering — vinnaren är inte unikt utpekad. Otillräcklig. (2) ensam: Arne och Muhammed sitter mittemot varandra, vinnaren sitter till höger om Elisabeth, men vem som är vinnaren är fortfarande inte fastställd. Otillräcklig. Tillsammans: konfigurationen är låst men 'höger om' kan tolkas från två perspektiv och vinnaren kan vara antingen Muhammed eller Arne. Strukturen är låst, attributen är inte.",
+      "answer": "E — informationen är otillräcklig även med båda påståendena."
+    },
+    "counter_example": "Om (2) istället sade 'Arne är vinnaren och sitter mittemot Muhammed', då skulle frågan besvaras direkt av (2) och svaret bli B."
+  }
+]

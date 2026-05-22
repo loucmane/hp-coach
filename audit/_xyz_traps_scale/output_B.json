@@ -1,0 +1,170 @@
+[
+  {
+    "id": "XYZ-TRAP-015",
+    "tldr": "Dela med koefficient — hela högerledet måste delas, inte bara den snyggaste termen.",
+    "recognition_cue": "När en ekvation har formen ax = b + c (eller ax + d = e) och du löser ut x genom att dela med a — varje term i högerledet måste delas, inte bara den första.",
+    "worked_example": {
+      "setup": "Lös ekvationen y = 4x − 5 för x.",
+      "trap_thinking": "Studenten tänker att x = y/4 − 5 — flyttar femman till andra sidan och delar bara y med 4, glömmer att −5 också måste delas. Hamnar nära alternativ B (x = y/4 + 5) och väljer det.",
+      "correct_thinking": "Lägg till 5 på båda sidor: y + 5 = 4x. Hela vänsterledet är nu täljaren när du delar med 4, så x = (y + 5)/4. Båda termerna i täljaren delas av nämnaren samtidigt — det är hela poängen med bråkstrecket.",
+      "answer": "D — x = (y + 5)/4, hela uttrycket över 4."
+    },
+    "counter_example": "Om problemet istället bara hade en term i högerledet (säg y = 4x), då finns ingen risk för halverad delning — x = y/4 är direkt, fällan är inaktiv."
+  },
+  {
+    "id": "XYZ-TRAP-016",
+    "tldr": "Bråkaddition kräver gemensam nämnare — addera aldrig täljare och nämnare var för sig.",
+    "recognition_cue": "När uttrycket innehåller a/b + c/d med olika nämnare och svarsalternativen frestar med formen (a+c)/(b+d) eller en summa som ser ut som direktaddition.",
+    "worked_example": {
+      "setup": "Beräkna 1/2 + 1/10 och avgör vilket alternativ som motsvarar resultatet.",
+      "trap_thinking": "Studenten adderar täljare och nämnare separat: (1+1)/(2+10) = 2/12 = 1/6. Resultatet ser litet och rimligt ut, men det är fel regel — det matchar inget alternativ exakt, så studenten gissar.",
+      "correct_thinking": "Hitta gemensam nämnare: MGM(2, 10) = 10. Skriv om 1/2 som 5/10. Då blir 1/2 + 1/10 = 5/10 + 1/10 = 6/10 = 3/5. Nämnaren förblir 10 genom hela additionen — bara täljarna adderas.",
+      "answer": "B — 1/2 + 1/10 = 3/5, vilket är exakt det värde frågan söker."
+    },
+    "counter_example": "Om bråken istället hade samma nämnare från början (1/10 + 3/10), då är gemensam nämnare redan på plats och studenten adderar bara täljarna — fällan saknar bränsle."
+  },
+  {
+    "id": "XYZ-TRAP-017",
+    "tldr": "Division med ett bråk är multiplikation med dess invers — vänd nämnar-bråket innan du räknar.",
+    "recognition_cue": "När uttrycket är ett bråk vars täljare eller nämnare själv är ett bråk, eller när du löser ut en variabel ur en ekvation där koefficienten är ett bråk.",
+    "worked_example": {
+      "setup": "Lös ekvationen (8/15)·x = 2/3 för x.",
+      "trap_thinking": "Studenten ska dela båda sidor med 8/15, men multiplicerar istället nämnarna mekaniskt: x = 2/(3·8/15) eller bara x = (2·8)/(3·15) = 16/45 — väljer alternativ C utan att invertera bråket.",
+      "correct_thinking": "Att dela med 8/15 är samma sak som att multiplicera med 15/8. Alltså x = (2/3) · (15/8) = (2·15)/(3·8) = 30/24 = 5/4. Vänd nämnar-bråket upp och ned innan multiplikationen — annars hamnar du alltid på fel sida av ett.",
+      "answer": "B — x = 5/4, eftersom (2/3) ÷ (8/15) = (2/3) · (15/8) = 5/4."
+    },
+    "counter_example": "Om koefficienten istället varit ett heltal (säg 8·x = 2/3), då räcker det att dela direkt med 8 och svaret blir x = 1/12 — ingen invertering behövs och fällan är inaktiv."
+  },
+  {
+    "id": "XYZ-TRAP-018",
+    "tldr": "Stryk faktorer, aldrig termer — additionsled i täljaren kan inte förkortas individuellt.",
+    "recognition_cue": "När polynombråket har formen (ax + b)/c eller liknande och studenten frestas att stryka mot något i nämnaren utan att först faktorisera täljaren.",
+    "worked_example": {
+      "setup": "Förenkla uttrycket 2(x + 4)/2 + 8.",
+      "trap_thinking": "Studenten ser 2 i täljaren och 2 i nämnaren, stryker dem mekaniskt utan att tänka, men slarvar samtidigt med åttan: skriver x + 4 + 8 men kanske glömmer fyran och får x + 8 eller blandar termerna och hamnar på alternativ A (x + 10).",
+      "correct_thinking": "Tvåan i täljaren är en FAKTOR som multiplicerar hela parentesen (x + 4), och nämnaren är också 2 — den strykningen är laglig. Kvar blir (x + 4) + 8 = x + 12. Varje term i parentesen följde med tvåan ut.",
+      "answer": "B — x + 12, eftersom faktorn 2 strök mot nämnaren utan att röra termerna inom parentesen."
+    },
+    "counter_example": "Om uttrycket istället var (2x + 5)/2 utan parentes, då kan inte tvåan strykas mot femman — den ena är en faktor till x, den andra en självständig term — och förenklingen blir x + 5/2."
+  },
+  {
+    "id": "XYZ-TRAP-019",
+    "tldr": "Bråkjämförelse kräver gemensam nämnare — en ensam täljare eller nämnare avgör ingenting.",
+    "recognition_cue": "När problemet ber dig sortera tre eller fler bråk med olika nämnare i storleksordning, eller välja vilket av flera bråk som är störst/minst.",
+    "worked_example": {
+      "setup": "Sortera bråken 3/4, 13/16 och 25/32 i stigande ordning.",
+      "trap_thinking": "Studenten jämför täljarna mekaniskt: 3 < 13 < 25, så bråken måste vara i den ordningen, alltså 3/4 < 13/16 < 25/32 — och väljer det alternativet. Men nämnarna är olika, så täljarjämförelsen är meningslös.",
+      "correct_thinking": "Gör gemensam nämnare 32: 3/4 = 24/32, 13/16 = 26/32, 25/32 = 25/32. Nu kan täljarna jämföras direkt: 24 < 25 < 26, så 3/4 < 25/32 < 13/16. Ordningen är annorlunda än vad täljarna ensamma antyder.",
+      "answer": "D — 3/4 < 25/32 < 13/16, vilket bara syns när nämnarna gjorts gemensamma."
+    },
+    "counter_example": "Om bråken redan hade samma nämnare (säg 24/32, 25/32, 26/32), då räcker det att jämföra täljarna direkt — fällan är inte aktiv när nämnarna sammanfaller."
+  },
+  {
+    "id": "XYZ-TRAP-020",
+    "tldr": "Procent betyder hundradelar — p% av N är (p/100)·N, inte p·N.",
+    "recognition_cue": "När problemet skriver \"p% av\" eller \"p procent av\" och du ska beräkna ett konkret tal eller lösa ut en okänd från en procentrelation.",
+    "worked_example": {
+      "setup": "Beräkna 0,2 % av 50.",
+      "trap_thinking": "Studenten ignorerar procenttecknet och räknar 0,2 · 50 = 10 — väljer alternativ D. Eller delar bara en gång och får 0,2/100 · 50 fel uppställt och hamnar på alternativ C (1).",
+      "correct_thinking": "0,2 % betyder 0,2/100 = 0,002. Sedan 0,002 · 50 = 0,1. Procenttecknet flyttar alltid decimaltecknet två steg åt vänster innan du multiplicerar.",
+      "answer": "B — 0,1, vilket är 0,2 % av 50 efter att procenten omvandlats till 0,002."
+    },
+    "counter_example": "Om problemet istället hade frågat \"0,2 av 50\" utan procenttecken, då är 0,2 · 50 = 10 rätt svar — det är just procenttecknet som tvingar fram hundradels-omskrivningen."
+  },
+  {
+    "id": "XYZ-TRAP-021",
+    "tldr": "Procentändring är multiplikativ — addera aldrig procenttalet rakt av till priset.",
+    "recognition_cue": "När en text beskriver att ett pris höjs eller sänks med p procent och svarsalternativen frestar med priset plus eller minus procenttalet som ett absolut belopp.",
+    "worked_example": {
+      "setup": "Givet att en vara kostar 250 kronor och priset höjs med 12 procent — vad blir det nya priset?",
+      "trap_thinking": "Studenten räknar 250 + 12 = 262 kronor — adderar procenttalet rakt av som om det vore kronor — och väljer alternativ A.",
+      "correct_thinking": "12 procents ökning betyder multiplikation med (1 + 12/100) = 1,12. Nya priset är 250 · 1,12 = 280 kronor. Procenten räknas på ursprungspriset, inte som ett fast tillägg.",
+      "answer": "D — 280 kronor, eftersom 12 % av 250 är 30 och 250 + 30 = 280."
+    },
+    "counter_example": "Om problemet istället hade sagt \"priset höjs med 12 kronor\", då är 250 + 12 = 262 kronor rätt — det är just ordet \"procent\" som tvingar fram multiplikationen med 1,12."
+  },
+  {
+    "id": "XYZ-TRAP-022",
+    "tldr": "Successiva procent multipliceras — addera dem inte och räkna inte heller på samma utgångspris två gånger.",
+    "recognition_cue": "När problemet kedjar två eller flera procentändringar efter varandra, eller frågar efter \"p procent av q procent av N\".",
+    "worked_example": {
+      "setup": "Beräkna 150 % av 50 % av 60.",
+      "trap_thinking": "Studenten tänker att 150 % + 50 % på något sätt ska bli 200 % eller att man tar 100 % av 60 och får 60 — eller räknar bara den ena och får 90 (150 % av 60) och väljer alternativ D.",
+      "correct_thinking": "Tillämpa stegen i tur och ordning, multiplikativt. Först 50 % av 60 = 0,5 · 60 = 30. Sedan 150 % av 30 = 1,5 · 30 = 45. Ekvivalent: 1,5 · 0,5 · 60 = 0,75 · 60 = 45.",
+      "answer": "A — 45, produkten av båda procentfaktorerna mot 60."
+    },
+    "counter_example": "Om problemet istället bara hade frågat efter 150 % av 60, då gäller en enkel multiplikation 1,5 · 60 = 90 — fällan kräver kedjan av två steg för att aktiveras."
+  },
+  {
+    "id": "XYZ-TRAP-023",
+    "tldr": "Förhållandetal är andelar av en helhet — totalen delas efter summan av termerna, inte efter ett av talen.",
+    "recognition_cue": "När problemet anger ett förhållande a:b (eller a:b:c) mellan grupper och frågar efter det totala antalet eller hur många av en kategori som ingår.",
+    "worked_example": {
+      "setup": "I en låda finns det 3 gånger så många äpplen som päron och 9 gånger så många päron som bananer. Om x är antalet äpplen, vilket uttryck motsvarar det totala antalet frukter?",
+      "trap_thinking": "Studenten tar antalet som x + x/3 + x/9 utan att gå hela vägen tillbaka till bananerna och hamnar på 13/3 · x — alternativ C — eftersom 1 + 1/3 + 1/9 förenklat felaktigt blir 13/9 och sedan kvar som 13/3.",
+      "correct_thinking": "Äpplen = x. Päron = x/3. Bananer = päron/9 = x/27. Totalen blir x + x/3 + x/27 = 27x/27 + 9x/27 + x/27 = 37x/27. Varje led i kedjan måste skrivas ut i samma variabel innan summan tas.",
+      "answer": "D — (37/27)·x, summan av alla tre fruktgrupperna uttryckta i x."
+    },
+    "counter_example": "Om problemet istället hade gett konkreta antal (säg 27 äpplen) i stället för förhållanden, då räknas päron och bananer direkt och fällan med osynliga andelar är inte aktiv."
+  },
+  {
+    "id": "XYZ-TRAP-024",
+    "tldr": "Distribuera först — strukturell kancellering sparar tid och slipper räknefel.",
+    "recognition_cue": "När båda sidor av en ekvation eller jämförelse innehåller produkter eller parenteser som efter utveckling kan ha gemensamma termer som tar ut varandra.",
+    "worked_example": {
+      "setup": "Givet att x · (y + 1) = (x + 1) · y. Vilket samband gäller mellan x och y?",
+      "trap_thinking": "Studenten räknar mekaniskt med specifika tal eller försöker isolera x utan att utveckla först — landar i något fel uttryck som x = y + 1 (alternativ A) eller x = 1/y (alternativ D).",
+      "correct_thinking": "Utveckla båda sidor: vänster blir xy + x, höger blir xy + y. Termen xy förekommer i båda leden och kancellerar — kvar är x = y. Hade vi räknat numeriskt eller hoppat över utvecklingen hade vi missat den rena strukturen.",
+      "answer": "C — x = y, vilket framträder direkt när xy-termerna stryks från båda sidor."
+    },
+    "counter_example": "Om ekvationen istället var x · (y + 1) = (x + 2) · y, då lämnar utvecklingen x = 2y kvar — kancellationen finns men slutsatsen ändras eftersom konstanten 2 inte tar ut sig själv."
+  },
+  {
+    "id": "XYZ-TRAP-025",
+    "tldr": "Korsmultiplikation går på diagonalerna — a/b = c/d ger ad = bc, inte ab = cd.",
+    "recognition_cue": "När du har en likhet mellan två bråk eller en proportion mellan likformiga figurer och ska lösa ut en variabel ur en av nämnarna eller täljarna.",
+    "worked_example": {
+      "setup": "Givet att två parallellogrammer är likformiga med sidorna a och b respektive c och d, så att a/c = b/d. Lös ut a uttryckt i b, c och d.",
+      "trap_thinking": "Studenten korsmultiplicerar fel diagonal och får a·b = c·d, alltså a = cd/b — väljer alternativ B utan att verifiera vilka termer som faktiskt sitter på diagonalerna.",
+      "correct_thinking": "Korsmultiplikation av a/c = b/d är att multiplicera täljaren i ena bråket med nämnaren i andra bråket: a · d = c · b, alltså ad = bc. Lös ut a genom att dela båda sidor med d: a = bc/d. Tänk på diagonalerna som ett kryss över likhetstecknet — det avgör vilka faktorer som hör ihop.",
+      "answer": "A — a = bc/d, produkten av motsatta diagonal-element delat med den fjärde."
+    },
+    "counter_example": "Om proportionen istället innehållit samma variabel i båda nämnarna (säg a/c = b/c), då försvinner risken att gå vilse — c förkortas och relationen reduceras direkt till a = b."
+  },
+  {
+    "id": "XYZ-TRAP-026",
+    "tldr": "Potens av potens multiplicerar exponenterna — adderar gör man bara vid samma bas i produkt.",
+    "recognition_cue": "När uttrycket har formen (x^a)^b eller motsvarande och svarsalternativen blandar x^(a+b) och x^(a·b).",
+    "worked_example": {
+      "setup": "Förenkla (x³)².",
+      "trap_thinking": "Studenten blandar ihop reglerna och adderar exponenterna: 3 + 2 = 5, alltså x⁵ — och väljer alternativ A. Adderingsregeln gäller för x^a · x^b, inte för potens av potens.",
+      "correct_thinking": "Regeln (x^a)^b = x^(a·b) säger att exponenterna multipliceras. Här blir det 3 · 2 = 6, så (x³)² = x⁶. Tänk på det som x³ · x³ — då går additionsregeln igång och 3 + 3 = 6 stämmer.",
+      "answer": "B — x⁶, eftersom potens av potens multiplicerar exponenterna."
+    },
+    "counter_example": "Om uttrycket istället var x³ · x² (produkt av potenser med samma bas), då skulle 3 + 2 = 5 vara rätt och svaret x⁵ — det är just parentesen som flyttar regeln från addition till multiplikation."
+  },
+  {
+    "id": "XYZ-TRAP-027",
+    "tldr": "Exponentialekvation löses genom gemensam bas — undvik att gissa heltal.",
+    "recognition_cue": "När båda sidor av en ekvation är potenser och baserna ser olika ut, men kan faktoriseras till samma primtal eller samma grundpotens.",
+    "worked_example": {
+      "setup": "Givet att 8^x är lika med en av produkterna nedan, vilken är det? Alternativen är 16·16, 16·32, 32·32, 32·64.",
+      "trap_thinking": "Studenten testar småtal: 8¹ = 8, 8² = 64, 8³ = 512. Letar efter dessa bland alternativen och tror att 32·32 = 1024 motsvarar 8³ — väljer alternativ C utan att verifiera.",
+      "correct_thinking": "Skriv allt på basen 2: 8 = 2³, så 8^x = 2^(3x). Alternativ B: 16·32 = 2⁴ · 2⁵ = 2⁹ = 2^(3·3) = 8³. Andra alternativ ger udda exponenter (2⁸, 2¹⁰, 2¹¹) som inte är delbara med 3 — alltså inte heltalspotenser av 8.",
+      "answer": "B — 16·32 = 2⁹ = 8³, den enda produkten som blir en heltalspotens av 8."
+    },
+    "counter_example": "Om ekvationen istället varit 8^x = 64 utan produktstruktur, då räcker det att se 64 = 8² och svaret x = 2 — det är just produktformen som tvingar fram primtalsbasen."
+  },
+  {
+    "id": "XYZ-TRAP-028",
+    "tldr": "Negativ exponent inverterar basen — den gör inte resultatet negativt.",
+    "recognition_cue": "När en potens skrivs med minustecken i exponenten, som a^(-n), och alternativen frestar med ett negativt tal istället för ett positivt bråk.",
+    "worked_example": {
+      "setup": "Givet att 10^(2x) = 36. Beräkna 10^(-2x).",
+      "trap_thinking": "Studenten tolkar minustecknet i exponenten som ett tecken på resultatet och svarar −36 eller −1/36 — väljer alternativ A. Minustecknet ser ut som om det hör hemma framför värdet.",
+      "correct_thinking": "Regeln säger att 10^(-2x) = 1/10^(2x). Eftersom 10^(2x) = 36 blir 10^(-2x) = 1/36 — ett positivt tal, inverterat. Negativ exponent gör basen till en reciprok, aldrig värdet till ett negativt tal.",
+      "answer": "B — 1/36, den positiva reciprokala värdet av 36."
+    },
+    "counter_example": "Om exponenten istället varit positiv (säg 10^(2x) ges direkt och du ska beräkna det), då finns ingen invertering — svaret är 36 och fällan med teckenförväxling försvinner."
+  }
+]

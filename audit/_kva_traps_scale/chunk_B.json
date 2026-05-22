@@ -1,0 +1,147 @@
+[
+  {
+    "id": "KVA-TRAP-016",
+    "pattern_description": "Lutning k och y-skärning m är oberoende — studenten härleder den ena från den andra.",
+    "why_it_occurs": "Både k och m beskriver 'var linjen ligger'. Studenten blandar ihop 'brant linje' med 'hög y-skärning' eller tvärtom, och behandlar den ena som proxy för den andra.",
+    "common_distractor_signature": "Väljer A/B genom att överföra info om k till m (eller tvärtom), t.ex. 'positiv lutning' tas som tecken på 'positiv m'.",
+    "countermeasure": "y = kx + m har TVÅ oberoende parametrar. Information om k säger inget om m och tvärtom — markera vilken du faktiskt har innan du svarar.",
+    "example_questions": [
+      "host-2014-kvant1-KVA-018",
+      "host-2022-kvant1-KVA-021",
+      "var-2026-kvant1-KVA-022"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-017",
+    "pattern_description": "Vinkelräta linjer — studenten använder k₂ = -k₁ istället för k₂ = -1/k₁.",
+    "why_it_occurs": "'Vinkelrät' antyder 'motsatt riktning', och minustecknet är rätt — men relationen är den NEGATIVA INVERSEN, inte negativen. Studenten tappar inverteringen.",
+    "common_distractor_signature": "Väljer alternativet som bygger på k₂ = -k₁ — fel magnitud men rätt tecken på relationen, ser ytligt rätt ut.",
+    "countermeasure": "Vinkelräta lutningar: produkten är -1, dvs k₂ = -1/k₁. Aldrig bara -k₁. Memorera: 'NEGATIVA INVERSER, inte motsatser'.",
+    "example_questions": [
+      "var-2024-kvant1-KVA-020",
+      "host-2023-kvant2-KVA-021",
+      "var-2025-kvant1-KVA-015"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-018",
+    "pattern_description": "Basen i ett exponentuttryck — studenten glömmer att bas i (0,1) vänder storleksmonotonicitet i exponenten.",
+    "why_it_occurs": "'Större exponent = större värde' är regeln för bas > 1, och studenten tillämpar den universellt. För 0 < bas < 1 vänds relationen.",
+    "common_distractor_signature": "Väljer A/B genom att lita på att större exponent ger större värde, missar att för bas < 1 ger det ett mindre värde.",
+    "countermeasure": "Innan du jämför a^m vs a^n: lokalisera basen mot 1. Bas > 1 → större exponent större värde. 0 < bas < 1 → omvänt. Bas = 1 → alltid 1.",
+    "example_questions": [
+      "host-2018-kvant1-KVA-013",
+      "var-2015-kvant1-KVA-013",
+      "var-2015-kvant1-KVA-016",
+      "host-ver2-2019-kvant1-KVA-013"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-019",
+    "pattern_description": "Differens mellan två ordnade storheter (a − b vs b − a) — studenten läser fel tecken.",
+    "why_it_occurs": "De två differenserna är varandras motsatser; vilken som är positiv beror på vilken av a, b som är störst. Studenten behandlar dem som lika i magnitud och ignorerar tecknet.",
+    "common_distractor_signature": "Väljer C (lika) när svaret är D, genom att läsa 'samma skillnad' som om ordningen inte spelade roll.",
+    "countermeasure": "a − b vs b − a är ALDRIG lika (såvida inte a = b). Tecknet beror på vilken är större, och om det är okänt → D.",
+    "example_questions": [
+      "host-2023-kvant2-KVA-015",
+      "var-2024-kvant2-KVA-021",
+      "var-2022-2-kvant2-KVA-019"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-020",
+    "pattern_description": "Cylindervolym πr²h — studenten behandlar r och h som lika viktade.",
+    "why_it_occurs": "Både r och h ser linjära ut i formeln. Men r är KVADRERAT, så en liten förändring i radien dominerar över en proportionell höjdförändring.",
+    "common_distractor_signature": "Väljer A/B genom att jämföra r + h eller r × h, missar att radien dominerar pga r²-faktorn.",
+    "countermeasure": "I cylindervolym väger r² alltid tyngre än h. Vid jämförelse: räkna r² explicit och jämför r²h direkt, inte r + h.",
+    "example_questions": [
+      "host-2015-kvant2-KVA-017",
+      "host-2017-kvant1-KVA-015",
+      "host-ver1-2019-kvant1-KVA-017",
+      "host-ver2-2019-kvant1-KVA-017",
+      "var-2022-1-kvant2-KVA-015"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-021",
+    "pattern_description": "Median vs medelvärde — studenten behandlar dem som utbytbara eller antar att den ena binder den andra.",
+    "why_it_occurs": "För symmetriska små serier sammanfaller de ofta. Studenten generaliserar och antar att en förändring i den ena förskjuter den andra.",
+    "common_distractor_signature": "Väljer A/B/C genom att använda median när medel efterfrågas (eller tvärtom), missar att de två är oberoende statistikor som kan röra sig åt motsatta håll.",
+    "countermeasure": "Median och medelvärde är OBEROENDE — räkna båda explicit (sortera för median, summa/n för medel) och jämför separat. En kan ändras utan att påverka den andra.",
+    "example_questions": [
+      "host-2025-kvant2-KVA-020",
+      "var-2014-kvant1-KVA-017",
+      "var-2019-kvant2-KVA-017",
+      "host-2024-kvant1-KVA-020"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-022",
+    "pattern_description": "Parabeln f(x) = x² + bx + c är symmetrisk kring x = -b/2 — studenten jämför f(a), f(b) i icke-symmetriska punkter utan att utnyttja axeln.",
+    "why_it_occurs": "Studenten räknar ut f(a) och f(b) direkt, vilket fungerar men är långsamt och felbenäget. De missar att punkter på samma avstånd från -b/2 ger identiska f-värden.",
+    "common_distractor_signature": "Väljer A eller B genom att räkna fel på ett av värdena, när symmetrin kring x = -b/2 hade gett C direkt.",
+    "countermeasure": "För parabel x² + bx + c: identifiera symmetriaxeln x = -b/2 först. Punkter spegelvänt kring den ger LIKA värden (C).",
+    "example_questions": [
+      "host-2024-kvant2-KVA-017",
+      "var-2019-kvant1-KVA-015",
+      "host-2023-kvant1-KVA-014"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-023",
+    "pattern_description": "Bråk med olika nämnare — studenten jämför täljare eller nämnare direkt utan att likställa.",
+    "why_it_occurs": "När studenten ser '5/7 vs 4/9' väljer hen den större täljaren eller mindre nämnaren utan att konvertera till gemensam bas.",
+    "common_distractor_signature": "Väljer A eller B baserat på en-komponents-heuristik ('större täljare = större bråk' eller 'mindre nämnare = större bråk'), missar att båda komponenterna spelar roll.",
+    "countermeasure": "Bråk med olika nämnare: gör ALLTID gemensam nämnare (multiplicera nämnarna) och jämför täljare. Aldrig en-komponents-heuristik.",
+    "example_questions": [
+      "host-2018-kvant1-KVA-015",
+      "host-2020-kvant1-KVA-013",
+      "host-ver1-2019-kvant1-KVA-014",
+      "var-2016-kvant1-KVA-014",
+      "var-2022-2-kvant1-KVA-016",
+      "host-2024-kvant2-KVA-013"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-024",
+    "pattern_description": "Algebraiska uttryck med gemensam struktur — studenten räknar båda sidor numeriskt istället för att distribuera/faktorisera bort variablerna.",
+    "why_it_occurs": "Direkt utvärdering känns säkert. Men många KVA-uttryck är designade så att distribution eller faktorisering kancellerar variablerna och bara konstanterna återstår att jämföra — sparar tid och undviker räknefel.",
+    "common_distractor_signature": "Den långa vägen ger räknefel som hamnar i A/B när uttrycken faktiskt är lika (C) eller skiljer sig med en pytteliten konstant.",
+    "countermeasure": "Innan du räknar: distribuera båda sidor fullständigt OCH bryt ut gemensamma faktorer. Om variablerna kancellerar, jämför bara konstanterna.",
+    "example_questions": [
+      "host-2013-kvant1-KVA-013",
+      "host-2013-kvant2-KVA-021",
+      "host-2020-kvant2-KVA-019",
+      "host-ver1-2019-kvant1-KVA-016",
+      "host-ver2-2019-kvant1-KVA-016",
+      "host-2018-kvant1-KVA-022"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-025",
+    "pattern_description": "Sammansatta rabatter som blandar procent och absolutbelopp (kr) — studenten antar att ordningen inte spelar roll.",
+    "why_it_occurs": "Procentoperationer ensamma är kommutativa (10 % sedan 20 % = 20 % sedan 10 %). Att blanda kr-rabatt med %-rabatt bryter kommutativiteten — kr först sedan % skiljer sig från % först sedan kr.",
+    "common_distractor_signature": "Väljer C (lika) när de två ordningarna faktiskt ger olika slutpris — svaret är A eller B beroende på riktning.",
+    "countermeasure": "Vid sammansatta rabatter: om någon är i kronor (inte procent), spelar ordningen ALLTID roll — räkna båda ordningarna explicit.",
+    "example_questions": [
+      "host-ver1-2019-kvant2-KVA-014",
+      "host-ver2-2019-kvant2-KVA-014",
+      "host-2023-kvant2-KVA-018"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-026",
+    "pattern_description": "Storheter angivna i olika enheter — studenten jämför råa tal utan att konvertera.",
+    "why_it_occurs": "Tal ser större eller mindre ut beroende på enhet (1000 m vs 1 km vs 100 cm). Studenten missar att '50 m/s vs 100 km/h' kräver konvertering före jämförelse.",
+    "common_distractor_signature": "Väljer A eller B baserat på det råa talet, missar att enheten ändrar magnituden — det faktiska svaret är ofta det motsatta.",
+    "countermeasure": "Vid jämförelse mellan olika enheter: konvertera ALLTID till samma minsta enhet först. Memorera: m/s → km/h multiplicera med 3,6.",
+    "example_questions": [
+      "host-2018-kvant2-KVA-017",
+      "host-2022-kvant2-KVA-021",
+      "var-2016-kvant1-KVA-016",
+      "var-2022-1-kvant1-KVA-022",
+      "var-2022-2-kvant2-KVA-013",
+      "host-2020-kvant1-KVA-017"
+    ]
+  }
+]

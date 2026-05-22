@@ -1,0 +1,180 @@
+[
+  {
+    "id": "XYZ-TRAP-043",
+    "pattern_description": "Skalning av area/volym — student använder linjär faktor istället för kvadrat (area) eller kub (volym).",
+    "why_it_occurs": "'Alla sidor dubblas' känns som 'arean dubblas', men area skalas med k² och volym med k³. Studenten överför linjär skalning till areor och volymer felaktigt.",
+    "common_distractor_signature": "Svar för en area som motsvarar en linjär skalning (k istället för k²), eller för en volym som motsvarar k² eller k.",
+    "countermeasure": "Linjärt mått skalas med k → area skalas med k², volym skalas med k³. Vid omvänd riktning: om area-skalan är A_skala, är sidan √A_skala; om volym-skalan är V_skala, är sidan ∛V_skala.",
+    "example_questions": [
+      "host-2013-kvant1-XYZ-008",
+      "host-2016-kvant1-XYZ-010",
+      "host-ver1-2019-kvant1-XYZ-009",
+      "host-ver2-2019-kvant1-XYZ-009",
+      "var-2023-kvant1-XYZ-010"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-044",
+    "pattern_description": "Diagonal i kvadrat/rektangel — student använder fel formel eller glömmer √2-faktorn.",
+    "why_it_occurs": "Kvadratdiagonalen är d = s√2 (Pythagoras med kateter = s), inte 2s eller s² eller s+s. Det är en specialformel som glöms när man inte härleder via Pythagoras.",
+    "common_distractor_signature": "Svar med d = 2s (förväxling) eller d = s (helt missat) — eller felaktig användning av d² = 2s² utan att ta roten.",
+    "countermeasure": "Kvadrat med sida s: diagonal = s√2. Rektangel med sidor a och b: diagonal = √(a²+b²). När en ekvation kräver diagonal²: använd 2s² (kvadrat) eller a²+b² (rektangel) direkt.",
+    "example_questions": [
+      "host-2024-kvant1-XYZ-007",
+      "var-2015-kvant1-XYZ-008",
+      "var-2016-kvant2-XYZ-012",
+      "var-2022-1-kvant2-XYZ-010"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-045",
+    "pattern_description": "Likformiga trianglar — student vänder på proportionen eller använder fel motsvarande sidor.",
+    "why_it_occurs": "Likformighet kräver att man identifierar MOTSVARANDE sidor (samma position relativt vinklarna). Studenten parar ihop sidor visuellt (samma 'sida' av figuren) istället för funktionellt.",
+    "common_distractor_signature": "Svar med fel proportion — kvoten omvänd eller fel sidor parade ihop.",
+    "countermeasure": "Likformighet: identifiera motsvarande VINKLAR först. Sidorna mittemot lika vinklar är motsvarande och har konstant förhållande. Sätt upp proportion sida_stor/sida_liten = k för alla par.",
+    "example_questions": [
+      "host-2021-kvant2-XYZ-003",
+      "host-2022-kvant1-XYZ-007",
+      "var-2018-1-kvant1-XYZ-011",
+      "var-2024-kvant1-XYZ-001"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-046",
+    "pattern_description": "Tre på varandra följande heltal — student använder fel uttryck och missar att summan = 3n.",
+    "why_it_occurs": "n, n+1, n+2 summerar till 3n+3 = 3(n+1). Eller med mittenvärde m: m-1, m, m+1, summa = 3m. Studenten räknar summan termvis och missar identiteten 'alltid delbar med 3'.",
+    "common_distractor_signature": "Svar som föreslår delbarhet med 2 eller annat (när det är 3 som är garanterat), eller missar att medianen = medelvärdet i sådan följd.",
+    "countermeasure": "Tre på varandra följande heltal: parametrisera som (m-1, m, m+1). Summa = 3m (alltid delbar med 3). Medel = median = m. Min·max = m² - 1.",
+    "example_questions": [
+      "host-2017-kvant2-XYZ-006",
+      "host-2018-kvant2-XYZ-009",
+      "host-2023-kvant2-XYZ-004",
+      "host-2025-kvant2-XYZ-002",
+      "var-2025-kvant1-XYZ-006"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-047",
+    "pattern_description": "Paritetsregler — student räknar inte ut tecknet/pariteten innan han räknar exakta värden.",
+    "why_it_occurs": "Vid frågor om 'är summan udda eller jämn?' eller 'är produkten positiv?' kan man svara med paritetsregler utan att räkna exakt. Studenten räknar fram värdet och slarvar.",
+    "common_distractor_signature": "Räknefel i mellansteg när snabb paritetsanalys hade gett svar direkt — eller fel slutsats om alternativ kräver paritet/tecken-analys.",
+    "countermeasure": "Memorera: jämn ± jämn = jämn; udda ± udda = jämn; jämn ± udda = udda; jämn · vad-som-helst = jämn; udda · udda = udda. För tecken: lika tecken → positivt; olika → negativt.",
+    "example_questions": [
+      "host-2015-kvant1-XYZ-007",
+      "host-2018-kvant1-XYZ-009",
+      "host-2024-kvant1-XYZ-011",
+      "var-2016-kvant2-XYZ-006",
+      "var-2019-kvant1-XYZ-001",
+      "var-2025-kvant2-XYZ-002"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-048",
+    "pattern_description": "Medelvärde med okända — student försöker lösa ut enskild term innan totalsumman.",
+    "why_it_occurs": "Medelvärdesformeln är total = medel · antal. När en term saknas: total - kända = okänd term. Studenten försöker andra omvägar (medel av delgrupper, etc.) som introducerar fel.",
+    "common_distractor_signature": "Svar baserat på medelvärden av delgrupper eller felaktig division (delat med fel antal).",
+    "countermeasure": "Medel = total/antal. Räkna total först (medel · antal), sen subtrahera kända termer för att få okända. Räkna ALLA tal — inkludera den okända i antalsräkningen.",
+    "example_questions": [
+      "host-2014-kvant1-XYZ-009",
+      "host-2018-kvant2-XYZ-006",
+      "host-2024-kvant2-XYZ-001",
+      "var-2014-kvant2-XYZ-003",
+      "var-2015-kvant2-XYZ-009",
+      "var-2017-kvant2-XYZ-003",
+      "var-2025-kvant2-XYZ-003"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-049",
+    "pattern_description": "Median av jämnt antal — student tar ena mittentermen istället för medelvärdet av två.",
+    "why_it_occurs": "Vid udda antal är medianen ett enskilt tal; vid jämnt antal är det medelvärdet av de två mittersta i sorterad ordning. Studenten tar 'mittenvärdet' utan att inse att det inte är ett enskilt tal.",
+    "common_distractor_signature": "Svar som motsvarar en av de två mittersta värdena, inte deras medelvärde.",
+    "countermeasure": "Sortera först. Udda antal n: median = (n+1)/2-positionen. Jämnt antal n: median = (n/2 och n/2+1-positionerna)/2 (medel av två).",
+    "example_questions": [
+      "host-2022-kvant2-XYZ-005",
+      "var-2014-kvant1-XYZ-011",
+      "var-2016-kvant1-XYZ-008",
+      "var-2025-kvant1-XYZ-011"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-050",
+    "pattern_description": "Sannolikhet utan återläggning — student använder samma nämnare för alla drag.",
+    "why_it_occurs": "Vid drag 'utan återläggning' minskar både täljare (om gynnsam dragen) och nämnare (totalen) för varje drag. Studenten använder ursprungsnämnaren genomgående och får för stor sannolikhet.",
+    "common_distractor_signature": "Svar baserat på P^n (med återläggning-formel) istället för P(1) · P(2|1) · P(3|2,1) ...",
+    "countermeasure": "Utan återläggning: efter varje drag minska BÅDA nämnaren (totala bollar) OCH täljaren om en gynnsam dragits. Multiplicera de villkorade sannolikheterna.",
+    "example_questions": [
+      "host-2014-kvant2-XYZ-008",
+      "host-2015-kvant1-XYZ-006",
+      "var-2026-kvant1-XYZ-006"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-051",
+    "pattern_description": "Lutning k från graf — student räknar Δx/Δy istället för Δy/Δx, eller missar tecknet.",
+    "why_it_occurs": "Lutning = ändring i y / ändring i x. Studenten räknar i fel ordning (vanlig vid stress) eller missar att negativ lutning ger negativ k även när beloppen ser 'positiva' ut.",
+    "common_distractor_signature": "Svar med reciprokt värde av rätt lutning (1/k istället för k), eller fel tecken på lutningen.",
+    "countermeasure": "Lutning k = Δy/Δx (rise over run). Välj två tydliga punkter, räkna y-skillnaden / x-skillnaden, behåll tecken. Linje uppåt mot höger: k > 0. Linje nedåt mot höger: k < 0.",
+    "example_questions": [
+      "host-2014-kvant1-XYZ-006",
+      "host-2018-kvant1-XYZ-003",
+      "host-2020-kvant1-XYZ-007",
+      "host-ver2-2019-kvant2-XYZ-002",
+      "var-2018-1-kvant2-XYZ-008",
+      "var-2022-1-kvant1-XYZ-007",
+      "var-2024-kvant2-XYZ-002",
+      "var-2025-kvant1-XYZ-009",
+      "var-2026-kvant2-XYZ-004"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-052",
+    "pattern_description": "Linjär funktions differens f(b) - f(a) — student räknar f-värdena enskilt istället för att se k·(b-a).",
+    "why_it_occurs": "För f(x) = kx + m är f(b) - f(a) = k(b-a) — konstanten m kancellerar. Studenten räknar varje f-värde separat och introducerar räknefel.",
+    "common_distractor_signature": "Räknefel där m har inkluderats fel, eller där differensen räknats utan att inse att den bara beror på k.",
+    "countermeasure": "För linjär f(x) = kx + m: f(b) - f(a) = k(b - a). Identifiera k från grafen eller ekvationen, multiplicera med x-skillnaden. m är irrelevant för differenser.",
+    "example_questions": [
+      "host-2018-kvant2-XYZ-010",
+      "var-2023-kvant1-XYZ-004",
+      "var-2026-kvant2-XYZ-009"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-053",
+    "pattern_description": "Volym med blandade enheter — student multiplicerar ihop utan att konvertera.",
+    "why_it_occurs": "1 m · 50 cm · 20 cm räknas naivt som 1000 cm³ eller 50 m³ utan att alla dimensioner ligger på samma enhet. Volymberäkning kräver KONSEKVENTA enheter.",
+    "common_distractor_signature": "Svar med felaktig storleksordning — vanligen tusen eller miljon-fel pga felaktig enhetsbehandling.",
+    "countermeasure": "Före volym/area-multiplikation: konvertera ALLA dimensioner till samma enhet (minsta är säkrast). 1 m = 100 cm = 1000 mm. Volym i cm³ kräver alla sidor i cm.",
+    "example_questions": [
+      "host-2018-kvant1-XYZ-010",
+      "host-2025-kvant1-XYZ-007",
+      "var-2025-kvant1-XYZ-002"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-054",
+    "pattern_description": "Aritmetisk talföljd — student använder fel indexering i formeln a_n = a_1 + (n-1)d.",
+    "why_it_occurs": "Den n:te termen baseras på (n-1) steg från första termen — INTE n steg. Studenten räknar a_n = a_1 + n·d och får ett steg för mycket.",
+    "common_distractor_signature": "Svar som motsvarar en term för långt — t.ex. a_5 räknas som a_1 + 5d istället för a_1 + 4d.",
+    "countermeasure": "Aritmetisk följd: a_n = a_1 + (n-1)·d. Antal STEG från term 1 till term n är (n-1), inte n. Verifiera med första två termer: a_2 = a_1 + d, alltså bara EN steg.",
+    "example_questions": [
+      "host-2018-kvant1-XYZ-006",
+      "host-2023-kvant2-XYZ-004",
+      "var-2018-1-kvant1-XYZ-010"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-055",
+    "pattern_description": "Översätt 'A är x gånger så stor som B' — student vänder på riktningen.",
+    "why_it_occurs": "'A är 3 gånger så stor som B' betyder A = 3B (alltså B = A/3, dvs B mindre än A). Studenten skriver felaktigt B = 3A eller A = B/3.",
+    "common_distractor_signature": "Svar 9× eller 1/9 fel — riktningen i förhållandet inverterad.",
+    "countermeasure": "'A är x gånger så stor som B' ⇒ A = x·B. Subjektet (A) är multiplikatorn gånger objektet (B). Vid tveksamhet: testa med konkret tal — '3 gånger så stor som 2' = 6, så A = 3B stämmer.",
+    "example_questions": [
+      "host-2013-kvant1-XYZ-011",
+      "host-2021-kvant1-XYZ-002",
+      "host-ver1-2019-kvant1-XYZ-002",
+      "host-ver2-2019-kvant1-XYZ-004",
+      "var-2018-1-kvant1-XYZ-007"
+    ]
+  }
+]

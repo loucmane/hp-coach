@@ -1,0 +1,146 @@
+[
+  {
+    "id": "KVA-TRAP-027",
+    "tldr": "Två sidor fixar inte den tredje — triangelolikheten lämnar ett helt öppet intervall.",
+    "recognition_cue": "Två kända sidor i en triangel (eller summa/förhållande mellan dem) och en jämförelse mot den tredje sidan, t.ex. \"summan av de två andra sidorna är 17 cm\" eller \"sidan AB är dubbelt så lång som sidan BC\".",
+    "worked_example": {
+      "setup": "I rektangeln ABCD är inga sidlängder utskrivna. Jämför I: diagonalen i ABCD med II: halva omkretsen i ABCD.",
+      "trap_thinking": "Studenten skissar en kvadrat och ser att diagonalen sticker ut längre än en sida — drar slutsatsen att diagonalen alltid slår halva omkretsen och väljer A.",
+      "correct_thinking": "Halva omkretsen är a + b, och diagonalen är roten ur a² + b². Triangelolikheten i den halva rektangeln säger att a + b > roten ur a² + b² för alla positiva a, b — halva omkretsen är alltid den längre sträckan.",
+      "answer": "B — II är större än I."
+    },
+    "counter_example": "Om problemet i stället nämner enbart en sida och frågar efter diagonalen, då är förhållandet inte fastlagt — svaret blir D."
+  },
+  {
+    "id": "KVA-TRAP-028",
+    "tldr": "Sannolikhet kräver räknade utfall — magkänsla räcker inte mot exakta bråk.",
+    "recognition_cue": "Två kvantiteter där minst en är formulerad som \"sannolikheten att …\" eller jämförs mot ett fixerat bråk som 1/4, 1/3 eller 1/2 utan att den exakta strukturen pekas ut.",
+    "worked_example": {
+      "setup": "Eva satsar på fyra fält på ett lyckohjul med 20 fält; endast ett fält ger vinst och alla fält är lika sannolika. Jämför I: sannolikheten att Eva får vinst med II: 1/4.",
+      "trap_thinking": "Studenten ser \"fyra fält av tjugo\" och tänker att fyra av tjugo = 1/5, men hakar upp sig på att 4 fält känns nära 1/4 av hjulet — väljer C på intuition.",
+      "correct_thinking": "Gynnsamma utfall är 1 (det enda vinstfältet ligger bland Evas fyra fält), totala utfall är 20. P = 1/20 · 4 = 4/20 = 1/5. Eftersom 1/5 < 1/4 är II den större kvantiteten.",
+      "answer": "B — II är större än I."
+    },
+    "counter_example": "Om problemet i stället sa att fem av tjugo fält gav vinst, då skulle P = 5/20 = 1/4 och svaret blir C."
+  },
+  {
+    "id": "KVA-TRAP-029",
+    "tldr": "Sammansatt bråksumma — slå inte ihop med decimaler, jämför strukturellt mot referensen.",
+    "recognition_cue": "En summa av enkla bråk (t.ex. 1/2 + 2/5 + 3/7) som jämförs mot ett enda \"udda\" bråk som 93/71 — bråken inbjuder till numerisk räkning men har en strukturell genväg.",
+    "worked_example": {
+      "setup": "Jämför I: 1/2 + 2/5 + 3/7 med II: 93/71.",
+      "trap_thinking": "Studenten försöker hitta gemensam nämnare för 2, 5, 7 (= 70), räknar 1/2 + 2/5 + 3/7 = 35/70 + 28/70 + 30/70 = 93/70 — och ser då 93/70 vs 93/71. Lika täljare, så hen tittar på nämnarna och väljer C på reflex att \"större nämnare = större bråk\".",
+      "correct_thinking": "Med samma täljare 93 har det bråk med MINDRE nämnare det större värdet. 93/70 > 93/71 eftersom 70 < 71. Slutsatsen vänds: I är större.",
+      "answer": "A — I är större än II."
+    },
+    "counter_example": "Om problemet i stället jämförde 93/70 med 93/70 (samma nämnare), då vore kvantiteterna identiska och svaret blir C."
+  },
+  {
+    "id": "KVA-TRAP-030",
+    "tldr": "Dubbel sträcka på dubbel tid — kvoten är oförändrad och hastigheten densamma.",
+    "recognition_cue": "Två rörelseuppgifter där både sträcka och tid skalas proportionellt mellan personerna (\"x km på y/2 timmar\" vs \"2x km på y timmar\") — symmetrin signalerar att hastighetskvoten är låst.",
+    "worked_example": {
+      "setup": "Mia går x kilometer på y/2 timmar. Pia går 2x kilometer på y timmar. Jämför I: Mias medelhastighet med II: Pias medelhastighet.",
+      "trap_thinking": "Studenten ser att Pia går dubbelt så långt och drar slutsatsen att Pia är snabbare — väljer B utan att kolla tiden.",
+      "correct_thinking": "Mias hastighet = x ÷ (y/2) = 2x/y. Pias hastighet = 2x ÷ y = 2x/y. Båda har skalats med faktor 2 i sträcka och tid, så kvoten — och därmed hastigheten — är identisk.",
+      "answer": "C — I är lika med II."
+    },
+    "counter_example": "Om Pia i stället gick 2x kilometer på y/2 timmar, då skulle Pias hastighet vara 4x/y och kvantitet II vore större — svaret blir B."
+  },
+  {
+    "id": "KVA-TRAP-031",
+    "tldr": "Åldersgåtor förankras vid en tidpunkt — låt allt uttryckas i nuet och Δ.",
+    "recognition_cue": "Formuleringar som blandar \"nu\" och \"för X år sedan / om X år\" med två personer och en multiplikativ relation (\"dubbelt så gammal\", \"hälften så gammal\") — tidsförskjutningen är där fallet bor.",
+    "worked_example": {
+      "setup": "Julia är 5 år äldre än Rut. För 3 år sedan var Julia dubbelt så gammal som Rut. Jämför I: Ruts nuvarande ålder med II: 8 år.",
+      "trap_thinking": "Studenten läser \"Julia dubbelt så gammal\" och sätter J = 2R, lägger sedan på 5-årsgapet på nuet och kommer fram till en orimlig ålder — gissar D eftersom relationerna känns motsägelsefulla.",
+      "correct_thinking": "Sätt Ruts ålder nu = R, Julias ålder nu = R + 5. För 3 år sedan: Rut = R − 3, Julia = R + 2. Villkoret R + 2 = 2(R − 3) ger R + 2 = 2R − 6, alltså R = 8. Ruts nuvarande ålder är exakt 8 år.",
+      "answer": "C — I är lika med II."
+    },
+    "counter_example": "Om problemet bara hade sagt \"Julia är 5 år äldre än Rut\" utan tidsvillkoret, då vore Ruts ålder helt obestämd — svaret blir D."
+  },
+  {
+    "id": "KVA-TRAP-032",
+    "tldr": "Andragradare har två rötter — kolla båda innan du svarar.",
+    "recognition_cue": "En andragradsfunktion eller -ekvation där frågan jämför f(a) med f(b) för två olika argument, eller där x bestäms via x² = k — strukturen inbjuder till att stanna vid en lösning.",
+    "worked_example": {
+      "setup": "f(x) = x² − 2x − 3. Jämför I: f(3) med II: f(−1).",
+      "trap_thinking": "Studenten beräknar f(3) = 9 − 6 − 3 = 0 och stannar — gissar därefter på A eller B utan att räkna f(−1).",
+      "correct_thinking": "f(x) = x² − 2x − 3 faktoriseras som (x − 3)(x + 1), så både x = 3 och x = −1 är nollställen. Alltså f(3) = 0 och f(−1) = 0 — kvantiteterna är identiskt noll.",
+      "answer": "C — I är lika med II."
+    },
+    "counter_example": "Om funktionen i stället var f(x) = x² − 2x − 4, då skulle 3 och −1 inte längre vara nollställen, f(3) = −1 och f(−1) = −1 — fortfarande C men av en annan anledning, och om talen valts olikt hade svaret kunnat bli A eller B."
+  },
+  {
+    "id": "KVA-TRAP-033",
+    "tldr": "Lika omkrets betyder inte lika area — formen styr ytan.",
+    "recognition_cue": "Två figurer (triangel + kvadrat, rektangel + cirkel, kvadrat + romb) där problemet uttryckligen säger att en av storheterna är gemensam — area eller omkrets — och frågar efter den andra.",
+    "worked_example": {
+      "setup": "Den rätvinkliga triangeln T har sidlängderna 3 cm, 4 cm och 5 cm. T har samma omkrets som kvadraten K. Jämför I: arean av T med II: arean av K.",
+      "trap_thinking": "Studenten ser \"samma omkrets\" och drar slutsatsen att areorna också måste vara lika — väljer C utan att räkna.",
+      "correct_thinking": "T:s omkrets är 3 + 4 + 5 = 12 cm, så K:s sida är 12/4 = 3 cm och K:s area = 9 cm². T:s area är (3 · 4)/2 = 6 cm². För given omkrets är kvadraten den effektivare formen (större area), så II är större.",
+      "answer": "B — II är större än I."
+    },
+    "counter_example": "Om problemet i stället fixerade arean (\"T och K har samma area\") och frågade om omkretsen, då vore T:s omkrets större — svaret blir A av samma effektivitetsskäl."
+  },
+  {
+    "id": "KVA-TRAP-034",
+    "tldr": "Inversen vänder ordningen — större positivt tal ger mindre 1/x.",
+    "recognition_cue": "Uttryck på formen 1/x, 1/a eller \"x⁻¹\" där villkoret är en olikhet (\"x > 4\", \"a > 0\") snarare än ett exakt värde — inversens monotonicitet är där fallet sitter.",
+    "worked_example": {
+      "setup": "Det är givet att x > 4. Jämför I: 1/x med II: 1/4.",
+      "trap_thinking": "Studenten resonerar att x är större än 4, så 1/x måste vara större än 1/4 — överför ordningen direkt och väljer A.",
+      "correct_thinking": "För positiva tal är 1/x avtagande i x: ju större x, desto mindre 1/x. Eftersom x > 4 gäller 1/x < 1/4 strikt. II är den större kvantiteten.",
+      "answer": "B — II är större än I."
+    },
+    "counter_example": "Om villkoret i stället var 0 < x < 4, då vore 1/x > 1/4 och svaret blir A."
+  },
+  {
+    "id": "KVA-TRAP-035",
+    "tldr": "Båda argument är nollställen — faktorisera först, räkna sen.",
+    "recognition_cue": "En kvadratisk f(x) där frågan jämför f(a) med f(b) för två specifika tal — särskilt när a + b matchar koefficientmönstret för rötter (Vietas formler).",
+    "worked_example": {
+      "setup": "f(x) = 10x² − 100x. Jämför I: f(10) med II: f(0).",
+      "trap_thinking": "Studenten räknar f(10) = 10 · 100 − 100 · 10 = 1000 − 1000, men slarvar i tempo och får 100 eller −100 — väljer A eller B på fel räknesvar.",
+      "correct_thinking": "Faktorisera först: f(x) = 10x(x − 10). Då syns det direkt att f(0) = 0 och f(10) = 0 — båda är nollställen. Kvantiteterna är identiska utan ytterligare räkning.",
+      "answer": "C — I är lika med II."
+    },
+    "counter_example": "Om frågan i stället jämförde f(5) med f(0), då vore f(5) = 10 · 25 − 500 = −250 och f(0) = 0 — svaret blir B."
+  },
+  {
+    "id": "KVA-TRAP-036",
+    "tldr": "\"Positiva heltal\" är ett delbarhetsfilter — inte bara ett teckenvillkor.",
+    "recognition_cue": "Frasen \"positiva heltal\" eller \"heltal\" tillsammans med en linjär ekvation i två variabler (5x + 10y = N, ax + by = c) — frågan handlar nästan alltid om största/minsta tillåtna värde.",
+    "worked_example": {
+      "setup": "x och y är positiva heltal med 5x + 10y = 270 580. Jämför I: största möjliga värdet på x med II: största möjliga värdet på y.",
+      "trap_thinking": "Studenten löser för x och y som om de vore reella tal: maximalt x ≈ 54 116 (då y ≈ 0) och maximalt y = 27 058 (då x = 0). Drar slutsatsen att x kan bli mycket större och väljer A utan att kolla heltalskravet.",
+      "correct_thinking": "Eftersom y måste vara minst 1 (positivt heltal), maximal x = (270 580 − 10)/5 = 54 114. Eftersom x måste vara minst 1, maximal y = (270 580 − 5)/10 — men det ger 27 057,5, inte ett heltal; så x måste vara 2 och y = (270 580 − 10)/10 = 27 057. Jämför 54 114 med 27 057: I är dubbelt så stort.",
+      "answer": "A — I är större än II."
+    },
+    "counter_example": "Om villkoret slopade heltalskravet och bara krävde \"positiva tal\", då skulle x och y bägge kunna närma sig sina kontinuerliga maxima — fortfarande A i det här fallet, men gränsvärdena skulle skjutas marginellt."
+  },
+  {
+    "id": "KVA-TRAP-037",
+    "tldr": "|x| eller x² låser inte tecknet — pröva +värde och −värde separat.",
+    "recognition_cue": "Villkor på formen x² = k, |x| = k eller ett kvadratrots-uttryck där tecknet inte är explicit specificerat — och en jämförelse som beror på x:s tecken.",
+    "worked_example": {
+      "setup": "Det är givet att x² = y² (utan teckenvillkor). Jämför I: x med II: y.",
+      "trap_thinking": "Studenten drar kvadratrot på båda sidor och får x = y — väljer C utan att överväga den negativa grenen.",
+      "correct_thinking": "x² = y² betyder att x = y ELLER x = −y. Om x = 3, y = 3: I = II. Om x = −3, y = 3: I < II. Båda fallen är förenliga med villkoret, så förhållandet är inte fastlagt.",
+      "answer": "D — informationen är otillräcklig."
+    },
+    "counter_example": "Om problemet lägger till \"x och y har samma tecken\" (eller \"båda positiva\"), då försvinner den negativa grenen och svaret blir C."
+  },
+  {
+    "id": "KVA-TRAP-038",
+    "tldr": "Procent är kommutativt — a% av b är exakt b% av a.",
+    "recognition_cue": "Två kvantiteter på formen \"a % av b\" och \"b % av a\" med tal som ser asymmetriska ut (21 % av 2482 vs 42 % av 1241) — symmetrin är dold bakom en faktor 2 eller 10.",
+    "worked_example": {
+      "setup": "Jämför I: 21 % av 2482 med II: 42 % av 1241.",
+      "trap_thinking": "Studenten börjar räkna 21 % av 2482 ≈ 521 och 42 % av 1241 ≈ 521, blir osäker på decimalerna och väljer A eller B på en räkneslarv.",
+      "correct_thinking": "Skriv om båda sidor: 21 % av 2482 = (21/100) · 2482. 42 % av 1241 = (42/100) · 1241 = (21/100) · 2 · 1241 = (21/100) · 2482. Identiska uttryck — multiplikation är kommutativ.",
+      "answer": "C — I är lika med II."
+    },
+    "counter_example": "Om II i stället var \"42 % av 1242\", då bryts symmetrin och II blir marginellt större — svaret blir B."
+  }
+]

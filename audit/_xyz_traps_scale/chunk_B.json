@@ -1,0 +1,204 @@
+[
+  {
+    "id": "XYZ-TRAP-015",
+    "pattern_description": "Lös ut variabel ur ax = b — student delar bara halva högerledet med a, inte hela uttrycket.",
+    "why_it_occurs": "Vid 2x = 6 + b skriver studenten x = 3 + b (delar bara '6' med 2). Eller (a+b)/c hanteras som a/c + b — utan att inse att hela täljaren ska delas.",
+    "common_distractor_signature": "Svar där bara den 'snygga' delen är delad, resten oförändrad — t.ex. 2x = 10 + y → x = 5 + y istället för x = 5 + y/2.",
+    "countermeasure": "När du delar med en koefficient: skriv hela högerledet som ETT bråk över a, sen dela varje term. (a+b)/c = a/c + b/c, aldrig a/c + b.",
+    "example_questions": [
+      "host-2018-kvant1-XYZ-007",
+      "host-2021-kvant1-XYZ-004",
+      "var-2019-kvant1-XYZ-009",
+      "var-2026-kvant1-XYZ-005"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-016",
+    "pattern_description": "Bråkaddition med olika nämnare — student adderar täljare OCH nämnare direkt.",
+    "why_it_occurs": "Mönsterigenkänning från multiplikation, där täljare-för-täljare och nämnare-för-nämnare är rätt regel. Studenten överför detta felaktigt till addition: a/b + c/d ≠ (a+c)/(b+d).",
+    "common_distractor_signature": "Svar som ser ut som '(a+c)/(b+d)' — täljare och nämnare adderade separat, alltid ett FÖR LITET bråk.",
+    "countermeasure": "Bråkaddition: gemensam nämnare (multiplicera nämnarna eller hitta MGM), skriv om varje täljare relativt den nya nämnaren, ADDERA TÄLJARE — nämnaren förblir den gemensamma.",
+    "example_questions": [
+      "host-2016-kvant1-XYZ-006",
+      "host-2017-kvant2-XYZ-004",
+      "host-2022-kvant2-XYZ-001",
+      "host-2024-kvant1-XYZ-003",
+      "host-2024-kvant2-XYZ-009",
+      "var-2018-1-kvant1-XYZ-005",
+      "var-2019-kvant1-XYZ-010",
+      "var-2023-kvant1-XYZ-012",
+      "var-2025-kvant1-XYZ-010"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-017",
+    "pattern_description": "Sammansatt bråk (bråk inuti bråk) — student tappar inversen vid division.",
+    "why_it_occurs": "(a/b) / (c/d) kräver multiplikation med inversen av nämnar-bråket: (a/b) · (d/c). Studenten räknar bara täljaren eller multiplicerar utan att invertera.",
+    "common_distractor_signature": "Svar som ser ut som (a·c)/(b·d) — alla nämnare multiplicerade tillsammans utan invertering.",
+    "countermeasure": "Sammansatt bråk: räkna ut täljaren OCH nämnaren separat först. Sedan 'dela med ett bråk' = 'multiplicera med inversen'. Vänd nämnar-bråket upp och ned, multiplicera.",
+    "example_questions": [
+      "host-2017-kvant1-XYZ-009",
+      "var-2016-kvant1-XYZ-009",
+      "var-2022-1-kvant2-XYZ-005",
+      "var-2026-kvant1-XYZ-005",
+      "var-2026-kvant2-XYZ-005"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-018",
+    "pattern_description": "Förkortning av polynombråk — student stryker termer istället för faktorer.",
+    "why_it_occurs": "(x²+3x)/x ser ut som man kan stryka x i täljare och nämnare → x+3, vilket är rätt. Men (x²+3)/x kan INTE stryka — bara x² delas med x. Studenten generaliserar strykningsregeln.",
+    "common_distractor_signature": "Svar där en konstant i täljaren har behandlats som om den var multiplicerad med variabeln — alltid räkningsförenkling som ger fel.",
+    "countermeasure": "Du får BARA stryka FAKTORER (saker som är multiplicerade), aldrig TERMER (saker som är adderade). Faktorisera täljaren först — finns gemensam faktor med nämnaren, stryk den. Annars dela varje term separat.",
+    "example_questions": [
+      "host-2013-kvant2-XYZ-001",
+      "host-2016-kvant2-XYZ-004",
+      "host-2023-kvant2-XYZ-001",
+      "var-2014-kvant1-XYZ-006",
+      "var-2018-1-kvant1-XYZ-001",
+      "var-2024-kvant1-XYZ-009"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-019",
+    "pattern_description": "Bråkjämförelse med olika nämnare — student jämför täljare eller nämnare ensamma.",
+    "why_it_occurs": "5/7 vs 4/9: studenten ser '5 > 4' eller '7 < 9' och drar slutsats utan att jämföra båda komponenterna gemensamt. Heuristiken 'större täljare = större bråk' fungerar BARA vid gemensam nämnare.",
+    "common_distractor_signature": "Val baserat på en-komponents-heuristik — felaktigt åt motsatta hållet om båda komponenterna pekar olika.",
+    "countermeasure": "Bråkjämförelse: gör gemensam nämnare och jämför täljare, ELLER jämför båda bråken mot en enkel referens (1/2, 1, 3/4). Aldrig ensam täljare/nämnare-jämförelse.",
+    "example_questions": [
+      "host-2024-kvant1-XYZ-005",
+      "var-2014-kvant1-XYZ-001",
+      "var-2015-kvant2-XYZ-003",
+      "var-2018-1-kvant1-XYZ-002"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-020",
+    "pattern_description": "Procentekvation a%·x = b — student behandlar a% som om det vore talet a istället för a/100.",
+    "why_it_occurs": "25%·x = 10 ses som 25·x = 10 → x = 0,4 istället för 0,25·x = 10 → x = 40. Procenttecknet ignoreras eller behandlas som dekoration.",
+    "common_distractor_signature": "Svar 100 gånger fel åt något håll — antingen 100× för stort (procenttecknet hoppat) eller 100× för litet (delat med procentet två gånger).",
+    "countermeasure": "Ersätt ALLTID a% med a/100 innan räkning. 'p% av N' = (p/100)·N. När du löser ut: x = b/(a/100) = 100b/a.",
+    "example_questions": [
+      "host-2018-kvant1-XYZ-002",
+      "var-2014-kvant2-XYZ-006",
+      "var-2015-kvant1-XYZ-011",
+      "var-2017-kvant1-XYZ-002",
+      "var-2019-kvant1-XYZ-003",
+      "var-2022-1-kvant2-XYZ-009",
+      "var-2022-2-kvant2-XYZ-009"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-021",
+    "pattern_description": "Procentökning/-minskning — student adderar/subtraherar procenttalet direkt från priset istället för att multiplicera.",
+    "why_it_occurs": "'Priset ökar med 20%' tolkas som 'priset + 20' eller liknande absolutbelopp. Procent är RELATIVT priset, så ny pris = pris · (1 + p/100).",
+    "common_distractor_signature": "Svar som motsvarar pris + 20 istället för pris · 1,2 — fungerar bara för väldigt specifika fall där talet råkar matcha.",
+    "countermeasure": "Procentökning: multiplicera med (1 + p/100). Procentminskning: multiplicera med (1 - p/100). Aldrig addition/subtraktion direkt av procenttalet med priset.",
+    "example_questions": [
+      "host-2023-kvant2-XYZ-010",
+      "host-2025-kvant2-XYZ-001",
+      "host-ver1-2019-kvant1-XYZ-003",
+      "var-2026-kvant1-XYZ-006"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-022",
+    "pattern_description": "Successiva procentändringar — student adderar procenttalen istället för att multiplicera faktorerna.",
+    "why_it_occurs": "Ökning 50% sen minskning 50% känns intuitivt som 'ingen förändring'. Faktiskt: 100 → 150 → 75, en NETTO-MINSKNING med 25%. Procenttal kombineras MULTIPLIKATIVT, inte additivt.",
+    "common_distractor_signature": "Svar baserat på p₁ + p₂ (eller p₁ - p₂) istället för (1+p₁/100)·(1+p₂/100).",
+    "countermeasure": "Successiva procentändringar: multiplicera faktorerna. +50% sedan -50% = 1,5 · 0,5 = 0,75 (alltså -25% totalt). Ordning spelar ingen roll, men STEGEN måste alla med.",
+    "example_questions": [
+      "host-2021-kvant2-XYZ-005",
+      "var-2025-kvant2-XYZ-007",
+      "var-2026-kvant1-XYZ-010"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-023",
+    "pattern_description": "Förhållande/proportion — student behandlar förhållandetal som absoluta antal.",
+    "why_it_occurs": "'Pojkar : flickor = 3 : 2' tolkas som '3 pojkar och 2 flickor' istället för 'för var 3 pojkar finns 2 flickor'. Totalt antal måste delas enligt summan av förhållandetermerna (5 delar).",
+    "common_distractor_signature": "Svar som tar förhållandetalen som direkta antal, eller delar totalen med ett av talen istället för summan.",
+    "countermeasure": "Förhållande a:b betyder total = a·k + b·k = (a+b)·k där k är enhetsstorleken. Totalen MÅSTE vara delbar med (a+b). Lös ut k från totalen, multiplicera för varje del.",
+    "example_questions": [
+      "host-2013-kvant1-XYZ-011",
+      "host-2018-kvant2-XYZ-007",
+      "host-2021-kvant1-XYZ-002",
+      "var-2016-kvant1-XYZ-002",
+      "var-2018-1-kvant1-XYZ-007"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-024",
+    "pattern_description": "Distribuera och kancellera variabler — student räknar båda sidor numeriskt istället för att se algebraisk struktur.",
+    "why_it_occurs": "När båda sidor av en ekvation/jämförelse har samma x² eller x-term i utvidgad form, kommer de att kancellera och lämna en simpel linjär ekvation. Studenten räknar mekaniskt utan att se mönstret.",
+    "common_distractor_signature": "Räknefel i mellansteg när lång aritmetisk beräkning hade kunnat ersättas av strukturell kancellering.",
+    "countermeasure": "Innan du räknar fram värden: distribuera båda sidor fullständigt OCH bryt ut gemensamma faktorer. Om x²-termer (eller andra höggradiga) kancellerar, lös bara det som blir kvar.",
+    "example_questions": [
+      "host-2018-kvant1-XYZ-004",
+      "host-2022-kvant1-XYZ-001",
+      "var-2016-kvant1-XYZ-005",
+      "var-2019-kvant2-XYZ-008",
+      "var-2024-kvant1-XYZ-005"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-025",
+    "pattern_description": "Korsmultiplikation av proportion a/b = c/d — student multiplicerar fel diagonal.",
+    "why_it_occurs": "Regeln a/b = c/d ⇒ ad = bc kräver att man identifierar diagonalerna. Studenten skriver ab = cd (samma sida) eller ac = bd (samma rad).",
+    "common_distractor_signature": "Svar baserat på felaktig produkt-likhet — fungerar bara i specialfall där talen råkar matcha.",
+    "countermeasure": "Korsmultiplikation: täljare i ena = täljare-position i andra · nämnare i ena. Dra ett kryss över likhetstecknet: a·d och b·c är de två produkterna som blir lika.",
+    "example_questions": [
+      "var-2013-kvant2-XYZ-004",
+      "var-2018-1-kvant1-XYZ-011",
+      "var-2018-1-kvant2-XYZ-007"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-026",
+    "pattern_description": "Potens av potens (x^a)^b — student adderar exponenterna istället för att multiplicera.",
+    "why_it_occurs": "Exponentlagarna känns lika ('hantera båda exponenterna'), och studenten kommer ihåg att 'man gör något med exponenterna' utan att skilja på reglerna. x^a · x^b = x^(a+b) blandas ihop med (x^a)^b = x^(a·b).",
+    "common_distractor_signature": "Svar med x^(a+b) istället för x^(a·b) — eller vice versa.",
+    "countermeasure": "Lär in tre olika regler explicit: x^a · x^b = x^(a+b) (samma bas, multiplicera → addera exponenter); (x^a)^b = x^(a·b) (potens av potens → multiplicera); x^a / x^b = x^(a-b) (division → subtrahera).",
+    "example_questions": [
+      "host-2017-kvant1-XYZ-005",
+      "host-2018-kvant2-XYZ-001",
+      "var-2014-kvant2-XYZ-002",
+      "var-2016-kvant1-XYZ-006",
+      "var-2017-kvant1-XYZ-012",
+      "var-2019-kvant1-XYZ-012",
+      "var-2022-2-kvant2-XYZ-003"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-027",
+    "pattern_description": "Exponentialekvation — student försöker testa värden istället för att skriva båda sidor på samma bas.",
+    "why_it_occurs": "8 = 2^x känns gissningsbart, men 27^x = 9 kräver att man inser 27 = 3³ och 9 = 3² och får 3^(3x) = 3² ⇒ 3x = 2 ⇒ x = 2/3. Studenten provar heltal och fastnar.",
+    "common_distractor_signature": "Endast heltalslösningar testade — när rätt svar är ett bråktal eller negativt missar studenten det.",
+    "countermeasure": "Exponentialekvation: hitta gemensam bas för BÅDA sidor (faktorisera till primtalspotenser). När båda sidor har samma bas, sätt exponenterna lika. Lös sedan den linjära ekvationen.",
+    "example_questions": [
+      "host-2017-kvant2-XYZ-010",
+      "host-2021-kvant2-XYZ-012",
+      "host-2024-kvant1-XYZ-012",
+      "var-2013-kvant2-XYZ-007",
+      "var-2014-kvant1-XYZ-009",
+      "var-2015-kvant1-XYZ-006",
+      "var-2025-kvant1-XYZ-003"
+    ]
+  },
+  {
+    "id": "XYZ-TRAP-028",
+    "pattern_description": "Negativ exponent a^(-n) — student tolkar det som -a^n istället för 1/a^n.",
+    "why_it_occurs": "Minustecknet i exponenten ser ut som ett tecken på resultatet. 2^(-3) tolkas som -8 istället för 1/8. Reciprokationen är osynlig om man inte har övat regeln.",
+    "common_distractor_signature": "Svar med negativt värde istället för positivt bråk (eller vice versa) — magnitud helt fel.",
+    "countermeasure": "a^(-n) = 1/a^n. Minustecknet i exponenten betyder ALDRIG ett negativt resultat — det betyder INVERTERA basen. För att lösa ut: a^(-n) = k ⇔ a^n = 1/k.",
+    "example_questions": [
+      "host-2015-kvant1-XYZ-005",
+      "host-2016-kvant2-XYZ-010",
+      "host-2020-kvant2-XYZ-012",
+      "host-2025-kvant1-XYZ-012",
+      "var-2015-kvant2-XYZ-012",
+      "var-2022-1-kvant1-XYZ-010",
+      "var-2022-2-kvant1-XYZ-009"
+    ]
+  }
+]

@@ -1,0 +1,152 @@
+[
+  {
+    "id": "KVA-TRAP-004",
+    "pattern_description": "Geometrisk figur med fixerad area ELLER fixerad omkrets, men fri form — studenten antar att sidlängderna är låsta.",
+    "why_it_occurs": "'En rektangel med area 24' låter konkret. Men area = bas·höjd har oändligt många (bas, höjd)-par som uppfyller villkoret; den längsta sidan kan variera från ett minimum (mest kompakt) upp till godtyckligt stort.",
+    "common_distractor_signature": "Väljer A eller B genom att föreställa sig en 'typisk' rektangel (ofta nästan kvadratisk), missar att samma villkor också tillåter en nålsmal rektangel med helt andra sidlängder.",
+    "countermeasure": "Vid fixerad area/omkrets: testa två extremfall — den mest kompakta formen (närmast kvadrat/cirkel) OCH en mycket avlång variant. Om verdikten skiljer sig → D.",
+    "example_questions": [
+      "host-2013-kvant1-KVA-019",
+      "host-2016-kvant1-KVA-020",
+      "host-2022-kvant2-KVA-016",
+      "host-2014-kvant1-KVA-020"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-005",
+    "pattern_description": "En fri parameter k (ofta beskriven som 'k ≠ 0' eller 'b är ett tal') multipliceras med en variabel; tecknet och magnituden på k öppnar var för sig olika fall.",
+    "why_it_occurs": "'k ≠ 0' låter restriktivt men är i själva verket mycket tillåtande: k kan vara stort, litet (0 < k < 1) eller negativt — och varje val ger en annan relation mellan x och kx.",
+    "common_distractor_signature": "Väljer A eller B genom att tyst anta k > 1 ('det normala fallet'), missar att 0 < k < 1 vänder storleksordningen och k < 0 vänder tecknet.",
+    "countermeasure": "När en fri parameter multipliceras: testa MINST tre värden — k = 2, k = 1/2, k = -1. Om verdikten skiljer sig mellan dem → D.",
+    "example_questions": [
+      "host-2015-kvant2-KVA-016",
+      "host-2024-kvant1-KVA-022",
+      "var-2019-kvant1-KVA-014",
+      "var-2022-2-kvant2-KVA-019",
+      "var-2024-kvant2-KVA-021"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-006",
+    "pattern_description": "En tvåvägstabell ger rad- och kolumnsummor men ingen samverkansfördelning — studenten behandlar den som fullständigt specificerad.",
+    "why_it_occurs": "Marginalsummor ser ut som fullständig information. Men utan minst ett inre cellvärde (eller oberoendeantagande) är cellfördelningen fri inom marginalerna.",
+    "common_distractor_signature": "Väljer A/B/C genom att anta proportionell/uniform fördelning över cellerna, missar att de inre cellerna kan ligga var som helst inom villkoret.",
+    "countermeasure": "Vid tvåvägs-tabell utan korsinformation: konstruera TVÅ giltiga ifyllnader som ger olika svar på frågan. Lyckas du → D.",
+    "example_questions": [
+      "var-2015-kvant2-KVA-014",
+      "var-2017-kvant2-KVA-020",
+      "var-2023-kvant2-KVA-015"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-007",
+    "pattern_description": "Två givna ekvationer ser olika ut men den ena är en multipel/proportionell omskrivning av den andra — bara EN oberoende villkor återstår.",
+    "why_it_occurs": "Två ekvationer 'borde' bestämma två obekanta. Studenten räknar rader på pappret istället för att kontrollera linjärt oberoende; om ekvation två är en multipel av ettan har du i själva verket ett ett-ekvation-två-obekanta-system.",
+    "common_distractor_signature": "Väljer A/B/C genom att lösa systemet som om det hade unik lösning, missar beroendet. Rätt svar är oftast D.",
+    "countermeasure": "Innan du löser ett ekvationssystem: dela ekvation 2 med ekvation 1 (eller multiplicera den ena med en konstant) — om de blir identiska har du bara ETT oberoende villkor.",
+    "example_questions": [
+      "host-ver1-2019-kvant1-KVA-022",
+      "host-ver2-2019-kvant1-KVA-022",
+      "host-2016-kvant1-KVA-016"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-008",
+    "pattern_description": "Geometrisk uppgift med en 'utmärkande' egenskap (t.ex. 'rätvinklig triangel', 'likbent') har flera giltiga konfigurationer — studenten låser sig vid en.",
+    "why_it_occurs": "'En rätvinklig triangel' låter som EN triangel. Men rätvinkeln kan sitta i vilken som helst av tre hörn, och 'likbent' har tre val för vilken sida som är bas — varje konfiguration ger olika vinklar/sidor.",
+    "common_distractor_signature": "Väljer A/B/C genom att rita den mest symmetriska eller 'självklara' konfigurationen, missar att andra konfigurationer uppfyller samma beskrivning men ger ett annat svar.",
+    "countermeasure": "Vid geometriska beskrivningar: lista ALLA möjliga konfigurationer av den utmärkande egenskapen (var sitter rätvinkeln? vilken sida är basen?) innan du svarar. Två giltiga config → D.",
+    "example_questions": [
+      "host-2013-kvant2-KVA-022",
+      "host-2023-kvant1-KVA-022",
+      "var-2015-kvant2-KVA-021"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-009",
+    "pattern_description": "Ekvationen tvingar fram x = y (eller x = -y) men fixerar inte själva värdet — studenten jämför I mot ett konkret tal utan att kolla den okändas intervall.",
+    "why_it_occurs": "När du väl härlett 'x = y' känns algebran klar. Men om kvantiteten som jämförs beror på magnituden (t.ex. 'x' vs '0') och x är fortfarande fri, är jämförelsen inte bestämd.",
+    "common_distractor_signature": "Väljer C eftersom den algebraiska relationen ser ut som en match, missar att jämförelsemålet (en konstant) inte låses av 'x = y' ensamt.",
+    "countermeasure": "Efter att ha löst en relation mellan variabler: fråga 'är värdet låst, eller bara förhållandet?' Om bara förhållandet är låst och kvantiteten beror på det absoluta värdet → D.",
+    "example_questions": [
+      "var-2015-kvant2-KVA-016",
+      "host-2017-kvant1-KVA-021",
+      "host-2024-kvant1-KVA-022"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-010",
+    "pattern_description": "Medelvärde ges — studenten antar att de enskilda värdena är bestämda.",
+    "why_it_occurs": "Medel = summa / antal, så medelvärdet låser SUMMAN men inte de enskilda termerna. Studenten behandlar 'medel = 5' som om varje värde vore 5 (eller nära).",
+    "common_distractor_signature": "Väljer A/B/C genom att anta att medelvärdet är lika med jämförelsevärdet, missar att enskilda termer kan vara godtyckligt större/mindre så länge summan balanseras.",
+    "countermeasure": "Skriv 'medelvärde × antal = totalsumma' och fråga: är totalsumman det jag behöver, eller behöver jag en enskild term? Om en enskild term efterfrågas och inga ytterligare villkor finns → D.",
+    "example_questions": [
+      "host-2018-kvant2-KVA-014",
+      "var-2016-kvant1-KVA-017",
+      "host-2022-kvant1-KVA-014",
+      "host-2025-kvant1-KVA-017"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-011",
+    "pattern_description": "Procentvillkor (t.ex. '40 % är blå') låser FÖRHÅLLANDET men inte det absoluta antalet — studenten behandlar det som konkreta tal.",
+    "why_it_occurs": "Procent känns som ett antal. Men '40 % blå' är förenligt med 4 av 10, 40 av 100, 400 av 1000 — det absoluta antalet är fritt om inte totalen ges.",
+    "common_distractor_signature": "Väljer A/B/C genom att låtsas att totalen är 100, missar att jämförelsen kan bero på absoluta antal som procenten inte låser.",
+    "countermeasure": "När bara procent ges utan totalmängd: pröva två totaler (t.ex. 10 och 100). Skiljer sig verdikten → D.",
+    "example_questions": [
+      "host-ver2-2019-kvant1-KVA-021",
+      "host-2021-kvant2-KVA-015",
+      "var-2022-1-kvant1-KVA-019"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-012",
+    "pattern_description": "Hastighets-/sträcka-/tidsuppgift där en storhet ligger i ett intervall — studenten plockar en ändpunkt istället för att testa hela intervallet.",
+    "why_it_occurs": "Textuppgifter med hastighetsintervall känns lösbara: 'mellan 50 och 60 km/h' låter som ett konkret intervall. Studenten räknar med en ändpunkt och jämför; om målvärdet ligger INUTI det resulterande tid-/sträcka-intervallet är svaret D.",
+    "common_distractor_signature": "Väljer A eller B genom att räkna med mittpunkten eller en ändpunkt, missar att den andra ändpunkten flippar jämförelsen.",
+    "countermeasure": "Vid hastighet/tid/sträcka-intervall: räkna båda ändpunkterna. Om målvärdet ligger i intervallet [v_min, v_max] eller [t_min, t_max] → D.",
+    "example_questions": [
+      "host-2024-kvant2-KVA-021",
+      "var-2016-kvant1-KVA-020",
+      "host-2016-kvant1-KVA-020"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-013",
+    "pattern_description": "Negativ bas upphöjd till en potens — studenten ignorerar exponentens paritet.",
+    "why_it_occurs": "Magnituden är det iögonenfallande; teckenflippen från udda mot jämn exponent är lätt att glömma. Studenten räknar |(-a)^n| och väljer A/B utan att flippa tecknet för udda n.",
+    "common_distractor_signature": "Väljer alternativet som om resultatet vore positivt, missar att udda n bevarar det negativa tecknet — vilket flippar storleksjämförelsen.",
+    "countermeasure": "Vid (-a)^n: bestäm tecknet FÖRST via paritet (n udda → negativt, n jämn → positivt), magnituden SEDAN. Aldrig tvärtom.",
+    "example_questions": [
+      "host-2013-kvant1-KVA-018",
+      "var-2026-kvant1-KVA-016",
+      "host-2015-kvant1-KVA-013",
+      "host-2015-kvant1-KVA-018"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-014",
+    "pattern_description": "Multiplicera eller dela en olikhet med ett variabeluttryck vars tecken är okänt — studenten behåller riktningen.",
+    "why_it_occurs": "Olikheter känns som ekvationer under algebraisk manipulation. Studenten multiplicerar båda sidor med y (eller 1/y) utan att först kolla sign(y); om y kan vara negativ vänds olikheten.",
+    "common_distractor_signature": "Väljer A eller B genom att behandla olikheten som bevarad genom operationen, missar att svaret beror på sign(y) — det faktiska svaret är ofta D.",
+    "countermeasure": "Innan du multiplicerar/delar en olikhet med ett uttryck: är tecknet känt? Om nej, bryt i fall (positivt / negativt) — om verdikten skiljer sig → D.",
+    "example_questions": [
+      "var-2014-kvant1-KVA-021",
+      "var-2017-kvant2-KVA-022",
+      "host-ver1-2019-kvant2-KVA-016",
+      "host-ver2-2019-kvant2-KVA-016"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-015",
+    "pattern_description": "Jämför två negativa tal — studenten väljer det med större absolutvärde, glömmer att 'större' betyder närmare noll.",
+    "why_it_occurs": "På tallinjen sammanfaller 'större' och 'längre från noll' oftast. För negativa tal gör de det inte: -3 < -2 även om |-3| > |-2|.",
+    "common_distractor_signature": "Väljer A eller B genom att läsa absolutvärde som magnitud, missar teckenflippen — svaret hamnar exakt omvänt.",
+    "countermeasure": "För negativa tal: större = närmare noll. Rita en tallinje om du är osäker; 'större' = längre till höger, ALLTID.",
+    "example_questions": [
+      "host-2017-kvant1-KVA-022",
+      "var-2013-kvant2-KVA-013",
+      "host-2014-kvant1-KVA-021"
+    ]
+  }
+]

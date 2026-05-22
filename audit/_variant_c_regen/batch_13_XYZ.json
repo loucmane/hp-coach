@@ -1,0 +1,1379 @@
+{
+  "batch_id": "batch_13_XYZ",
+  "section": "XYZ",
+  "count": 22,
+  "tasks": [
+    {
+      "exam": "host-2016",
+      "qid": "host-2016-kvant1-XYZ-009",
+      "question": {
+        "qid": "host-2016-kvant1-XYZ-009",
+        "exam_id": "host-2016",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 9,
+        "prompt": "Vad är 6-5·^8-3h-b\\frac{12}{4} -2l?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "–24"
+          },
+          {
+            "letter": "B",
+            "text": "–20"
+          },
+          {
+            "letter": "C",
+            "text": "0"
+          },
+          {
+            "letter": "D",
+            "text": "4"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414059975,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att glömma att multiplicera 5 mot parentes-resultatet och få 6-5(5)-1\\cdot(-1)=6-25+1=-18 eller -24 av annat slarv.",
+            "why_wrong": "Förtecken på sista parentesen är subtraktion, inte addition. 6-25-1=-20."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid att räkna parenteser men glömma multiplikationen: 6-5-1=0.",
+            "why_wrong": "5 multiplicerar parentes-resultatet 5: 5\\cdot 5=25, inte bara 5."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att tappa minustecken: 6+25-1=30 → klipp till 4.",
+            "why_wrong": "−5·(8−3) = −5·5 = −25. Tecknet är negativt; håll ihop det."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Räkna parenteser först: 8-3=5 och 12/4-2=3-2=1. Sen: 6-5\\cdot 5-1=6-25-1=-20.",
+        "technique": "PEMDAS-räkning: parenteser först, sen multiplikation, sen addition/subtraktion. Tecknen behålls genom hela kedjan.",
+        "framework_id": "XYZ-TRAP-006"
+      }
+    },
+    {
+      "exam": "host-2016",
+      "qid": "host-2016-kvant2-XYZ-004",
+      "question": {
+        "qid": "host-2016-kvant2-XYZ-004",
+        "exam_id": "host-2016",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 4,
+        "prompt": "Vilket svarsalternativ motsvarar uttrycket ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "x – 13"
+          },
+          {
+            "letter": "B",
+            "text": "7x^{2} – 13"
+          },
+          {
+            "letter": "C",
+            "text": "x + 13"
+          },
+          {
+            "letter": "D",
+            "text": "7x^{2} + 13 7x^{2} +91x 7x"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414059975,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att 'förkorta' fel och få x-13 med teckenslarv.",
+            "why_wrong": "Originaltäljaren är +91x, så efter brytning kvarstår +13, inte −13."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Många stannar vid 7x^{2}-13 av glöm-att-förkorta.",
+            "why_wrong": "Hela täljaren delas med 7x; ingen kvadratterm kvarstår. Resultatet är linjärt: x + 13."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att tro att 7x² överlever delningen: 7x^{2}+13.",
+            "why_wrong": "\\frac{7x^{2}}{7x}=x, inte 7x². Hela koefficienten 7x försvinner från täljaren."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Förenkla \\frac{7x^{2}+91x}{7x}: bryt ut 7x i täljaren: \\frac{7x(x+13)}{7x}=x+13.",
+        "technique": "Förenkling av polynom-bråk: faktorisera täljaren, förkorta gemensamma faktorer mot nämnaren.",
+        "framework_id": "XYZ-TRAP-018"
+      }
+    },
+    {
+      "exam": "host-2016",
+      "qid": "host-2016-kvant2-XYZ-006",
+      "question": {
+        "qid": "host-2016-kvant2-XYZ-006",
+        "exam_id": "host-2016",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "0° < x < 180° Linjerna L_{1} och L_{2} är parallella. Vad är vinkeln v uttryckt i x? x",
+        "options": [
+          {
+            "letter": "A",
+            "text": "6 x"
+          },
+          {
+            "letter": "B",
+            "text": "4 x"
+          },
+          {
+            "letter": "C",
+            "text": "3"
+          },
+          {
+            "letter": "D",
+            "text": "x"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2016-kvant2-XYZ-006.svg",
+          "aspect_ratio": 1.752
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414059975,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna v=\\frac{x}{6} av halvering två gånger.",
+            "why_wrong": "Vinkelsatserna ger tredjedelsförhållande, inte sjättedel. v = x/3."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta v=\\frac{x}{4}.",
+            "why_wrong": "Förhållandet bestäms av figurens specifika konfiguration; här ger den x/3."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid v=x (lika med).",
+            "why_wrong": "Om v = x skulle vinklarna vara identiska — men figuren visar att v är klart mindre än x. Förhållande 1:3."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Med L1 parallell med L2 och två transversaler ger figurens vinkelförhållanden v=\\frac{x}{3} via alternativa-/likbelägna vinklar.",
+        "technique": "Vinklar mellan parallella linjer med flera transversaler: använd alternativa, likbelägna och vinkelsumma-satser för att uttrycka okända vinklar i kända.",
+        "framework_id": "XYZ-TRAP-037"
+      }
+    },
+    {
+      "exam": "host-2017",
+      "qid": "host-2017-kvant1-XYZ-009",
+      "question": {
+        "qid": "host-2017-kvant1-XYZ-009",
+        "exam_id": "host-2017",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 9,
+        "prompt": "Vad är ? 4· \\frac{5}{6}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "\\frac{1}{5}"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{2}{5}"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{5}{18}"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{5}{36}"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414240798,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna fel täljare och få 2/5.",
+            "why_wrong": "2/3 · 6/20 = 12/60 = 1/5. 2/5 skulle kräva annan täljare-nämnare-kombination."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta \\frac{5}{18} av annan multiplikation.",
+            "why_wrong": "Förkorta steg-för-steg: 12/60 förkortas med 12 till 1/5, inte 5/18."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid \\frac{5}{36}.",
+            "why_wrong": "Räkna noggrant; resultatet är 1/5 efter förkortning."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Förenkla: \\frac{2\\cdot\\frac{1}{3}}{4\\cdot\\frac{5}{6}}=\\frac{2/3}{20/6}=\\frac{2}{3}\\cdot\\frac{6}{20}=\\frac{12}{60}=\\frac{1}{5}.",
+        "technique": "Sammansatt bråk: lös täljare och nämnare separat, multiplicera täljare med inversen av nämnare, förkorta.",
+        "framework_id": "XYZ-TRAP-017"
+      }
+    },
+    {
+      "exam": "host-2018",
+      "qid": "host-2018-kvant1-XYZ-003",
+      "question": {
+        "qid": "host-2018-kvant1-XYZ-003",
+        "exam_id": "host-2018",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 3,
+        "prompt": "Linjen y = kx+m är inritad i ett koordinatsystem. Vilket värde har riktningskoefficienten k?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "-\\frac{1}{2}"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{1}{2}"
+          },
+          {
+            "letter": "C",
+            "text": "-2"
+          },
+          {
+            "letter": "D",
+            "text": "2"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2018-kvant1-XYZ-003.svg",
+          "aspect_ratio": 1.347
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778498287386,
+          "generated_at": 1778414413083,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tappa minustecknet på lutningen.",
+            "why_wrong": "Linjen lutar nedåt (avtagande y med växande x), så lutningen är negativ. -\\frac{1}{2}, inte +1/2."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att kasta om Δy och Δx: −2 istället för −1/2.",
+            "why_wrong": "Lutning = Δy/Δx, inte Δx/Δy. Räkna lodrät förändring DELAT med vågrät."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 'positiv lutning' = +2.",
+            "why_wrong": "Linjen lutar nedåt → negativ lutning. Storlek 1/2, inte 2."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av figuren framgår lutningen genom Δy/Δx mellan två avlästa punkter. Här ger linjen lutning -\\frac{1}{2}.",
+        "technique": "Lutning från graf: läs två punkter på linjen, beräkna \\frac{\\Delta y}{\\Delta x}, ta tecken efter lutningens riktning.",
+        "framework_id": "XYZ-TRAP-051"
+      }
+    },
+    {
+      "exam": "host-2018",
+      "qid": "host-2018-kvant1-XYZ-006",
+      "question": {
+        "qid": "host-2018-kvant1-XYZ-006",
+        "exam_id": "host-2018",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "Med hjälp av lika stora kvadrater bildas figurer enligt mönstret nedan. Antalet kvadrater i figurerna bildar en aritmetisk talföljd. Hur många kvadrater finns det i figur 150?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "298"
+          },
+          {
+            "letter": "B",
+            "text": "299"
+          },
+          {
+            "letter": "C",
+            "text": "300"
+          },
+          {
+            "letter": "D",
+            "text": "301"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2018-kvant1-XYZ-006.svg",
+          "aspect_ratio": 3.158
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778498287386,
+          "generated_at": 1778414413083,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 2\\cdot 150-2=298 av off-by-one-fel.",
+            "why_wrong": "Formeln är a_n=a_1+(n-1)d; med a_1=1, d=2 ger a_{150}=1+149\\cdot 2=299, inte 298."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 2\\cdot 150=300 utan justering.",
+            "why_wrong": "Korrekt formel inkluderar -1-justeringen. 300 är off-by-one."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 2\\cdot 150+1=301.",
+            "why_wrong": "Den linjära följden ger a_{150}=299, inte 301."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Aritmetisk talföljd med första värde a_1 och differens d. Av figurens första två termer: a_n=a_1+(n-1)d. Här ger a_{150}=299 (linjär extrapolation).",
+        "technique": "Aritmetisk talföljd: a_n=a_1+(n-1)d. Identifiera a_1 och d från första två termer i figuren.",
+        "framework_id": "XYZ-TRAP-054"
+      }
+    },
+    {
+      "exam": "host-2018",
+      "qid": "host-2018-kvant1-XYZ-008",
+      "question": {
+        "qid": "host-2018-kvant1-XYZ-008",
+        "exam_id": "host-2018",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "Vad är sidlängden x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "3 cm"
+          },
+          {
+            "letter": "B",
+            "text": "18  cm"
+          },
+          {
+            "letter": "C",
+            "text": "3,5 cm"
+          },
+          {
+            "letter": "D",
+            "text": "20  cm"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2018-kvant1-XYZ-008.svg",
+          "aspect_ratio": 1.791
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778498287386,
+          "generated_at": 1778414413083,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel diagonal och få 3 cm.",
+            "why_wrong": "3 cm skulle vara fel storlek; figuren ger \\sqrt{18}\\approx 4{,}24."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta avrundning åt 3,5 cm.",
+            "why_wrong": "Resultatet är exakt \\sqrt{18} (ungefär 4,24). 3,5 är för litet."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 'hypotenusa = summan av kateter' eller liknande heltal.",
+            "why_wrong": "Pythagoras ger kvadratrotvärden, inte alltid hela tal. Här \\sqrt{18}."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av Pythagoras eller given proportionalitet i figuren: x=\\sqrt{18}=3\\sqrt{2} cm.",
+        "technique": "Pythagoras: hypotenusa² = a² + b². Resultatet är ofta \\sqrt{n}-formig och inte hel.",
+        "framework_id": "XYZ-TRAP-032"
+      }
+    },
+    {
+      "exam": "host-2018",
+      "qid": "host-2018-kvant2-XYZ-011",
+      "question": {
+        "qid": "host-2018-kvant2-XYZ-011",
+        "exam_id": "host-2018",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 11,
+        "prompt": "Vad är_{13} ? 2·10",
+        "options": [
+          {
+            "letter": "A",
+            "text": "-1,4·10^{14}"
+          },
+          {
+            "letter": "B",
+            "text": "-1,4·10^{2}"
+          },
+          {
+            "letter": "C",
+            "text": "40"
+          },
+          {
+            "letter": "D",
+            "text": "4·10^{2}"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414413083,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att MULTIPLICERA istället för att subtrahera och få -1{,}4\\cdot 10^{14}.",
+            "why_wrong": "Differens, inte produkt. Och tecken: 1,2·10¹⁶ är STÖRRE än 4·10¹⁵, så differensen är POSITIV."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta -1{,}4\\cdot 10^{2} av annat teckenfel.",
+            "why_wrong": "Resultatet är positivt 400 = 4·10²."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid 40 av exponentslarv.",
+            "why_wrong": "4·10² = 400, inte 40. Räkna exponenten: 15−13 = 2."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Skriv om: 1{,}2\\cdot 10^{16}=12\\cdot 10^{15}. Differens: 12\\cdot 10^{15}-4\\cdot 10^{15}=8\\cdot 10^{15}. Dela: \\frac{8\\cdot 10^{15}}{2\\cdot 10^{13}}=4\\cdot 10^{2}=400.",
+        "technique": "Differens av tiopotenser: omvandla till samma exponent först, subtrahera mantissor, dela på samma sätt."
+      }
+    },
+    {
+      "exam": "host-2018",
+      "qid": "host-2018-kvant2-XYZ-012",
+      "question": {
+        "qid": "host-2018-kvant2-XYZ-012",
+        "exam_id": "host-2018",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 12,
+        "prompt": "Tre linjer och en cirkel avgränsar den skuggade ytan i figuren. Vilken area har den skuggade ytan?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "x + 2πx 2 2πx"
+          },
+          {
+            "letter": "B",
+            "text": "2x - 2 2 πx2"
+          },
+          {
+            "letter": "C",
+            "text": "x + 4"
+          },
+          {
+            "letter": "D",
+            "text": "2x - 2 πx2 4"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2018-kvant2-XYZ-012.svg",
+          "aspect_ratio": 1.78
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414413083,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att ADDERA istället för att subtrahera cirkelytan.",
+            "why_wrong": "Skuggat område är kvadrat MINUS cirkelsektor — inte plus."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att tappa kvartfaktorn på cirkeln.",
+            "why_wrong": "Det är en KVARTcirkel, så area = πr²/4, inte πr²."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid x^{2}+4 (additionsfel).",
+            "why_wrong": "Operationen är subtraktion av cirkelområdet från kvadratens area."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Skuggad area = (kvadrat med sida 2x) − (kvartcirkel med radie x) = (2x)^{2}-\\frac{1}{4}\\pi x^{2}=4x^{2}-\\frac{\\pi x^{2}}{4}, vilket matchar D.",
+        "technique": "Sammansatt area: identifiera de geometriska delarna, addera och subtrahera enligt vad som ingår i skuggad region."
+      }
+    },
+    {
+      "exam": "host-2020",
+      "qid": "host-2020-kvant1-XYZ-003",
+      "question": {
+        "qid": "host-2020-kvant1-XYZ-003",
+        "exam_id": "host-2020",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 3,
+        "prompt": "L_{1} och L_{2} är parallella linjer. Vad är 1,5x + 3y?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "45°"
+          },
+          {
+            "letter": "B",
+            "text": "90°"
+          },
+          {
+            "letter": "C",
+            "text": "135°"
+          },
+          {
+            "letter": "D",
+            "text": "180°"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2020-kvant1-XYZ-003.svg",
+          "aspect_ratio": 1.366
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414576370,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel grundvinkel och få 45°.",
+            "why_wrong": "Vinklarna i figuren ger exakt 90° efter de gällande satserna; 45° passar inte."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att kombinera fel: 135°.",
+            "why_wrong": "Inga satser ger 135° i denna konfiguration. Räkna utifrån alternativvinkel-satsen."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 180° (rät linje).",
+            "why_wrong": "Resultatet är 90°, inte 180°. Inga par av vinklar ligger på en rät linje här."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av parallellitetssatserna och figurens specifika konfiguration ger 1{,}5x+3y=90°.",
+        "technique": "Parallella linjer med transversaler: kombinera alternativ- och likbelägna vinklar plus trianglens vinkelsumma för att uttrycka okända vinklar.",
+        "framework_id": "XYZ-TRAP-037"
+      }
+    },
+    {
+      "exam": "host-2020",
+      "qid": "host-2020-kvant1-XYZ-005",
+      "question": {
+        "qid": "host-2020-kvant1-XYZ-005",
+        "exam_id": "host-2020",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 5,
+        "prompt": "a ≠ 0 Vilket svarsalternativ motsvarar med säkerhet \\frac{a-b b}{a a}+ ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "\\frac{1}{2}"
+          },
+          {
+            "letter": "B",
+            "text": "1"
+          },
+          {
+            "letter": "C",
+            "text": "b"
+          },
+          {
+            "letter": "D",
+            "text": "a"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414576370,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro 'medelvärde av två bråk' = 1/2.",
+            "why_wrong": "Bråken ADDERAS, inte medelvärdesbildas. Resultatet 1, inte 1/2."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att 'tappa a' och svara b.",
+            "why_wrong": "Räkna noggrant: täljare a−b+b = a, dela med a → 1, ingenting med b kvarstår."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid att tro 'a kvarstår' i täljaren.",
+            "why_wrong": "a förkortar mot a i nämnaren. Resultatet är 1, en konstant."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Slå ihop bråken: \\frac{a-b}{a}+\\frac{b}{a}=\\frac{a-b+b}{a}=\\frac{a}{a}=1.",
+        "technique": "Bråkaddition med samma nämnare: addera täljarna direkt; förenkla resultatet."
+      }
+    },
+    {
+      "exam": "host-2020",
+      "qid": "host-2020-kvant1-XYZ-007",
+      "question": {
+        "qid": "host-2020-kvant1-XYZ-007",
+        "exam_id": "host-2020",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 7,
+        "prompt": "Vilket svarsalternativ motsvarar linjen i figuren?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "y =-3x+1"
+          },
+          {
+            "letter": "B",
+            "text": "y = 3x+1"
+          },
+          {
+            "letter": "C",
+            "text": "y =-3x+3"
+          },
+          {
+            "letter": "D",
+            "text": "y = 3x+3"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2020-kvant1-XYZ-007.svg",
+          "aspect_ratio": 0.99
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414576370,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att läsa fel y-skärning som 1.",
+            "why_wrong": "Linjen skär y-axeln i 3 (avläst), inte 1."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att tappa minustecken på lutning.",
+            "why_wrong": "Linjen lutar nedåt → negativ lutning. y = −3x + 3, inte +3x."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid att kombinera fel tecken på lutning men rätt y-skärning.",
+            "why_wrong": "Lutning är negativ. y = −3x + 3."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av figuren framgår y-skärning 3 och negativ lutning −3: y=-3x+3.",
+        "technique": "Linje från graf: lutning från Δy/Δx mellan två punkter; y-skärning direkt från y-axelns skärning.",
+        "framework_id": "XYZ-TRAP-051"
+      }
+    },
+    {
+      "exam": "host-2020",
+      "qid": "host-2020-kvant2-XYZ-008",
+      "question": {
+        "qid": "host-2020-kvant2-XYZ-008",
+        "exam_id": "host-2020",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "Vilket svarsalternativ är störst? 10^{2} ·10^{-5}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "-3 10 10^{-3} ·10^{-5}"
+          },
+          {
+            "letter": "B",
+            "text": "2 10"
+          },
+          {
+            "letter": "C",
+            "text": "-5 10^{2} ·10^{-3} 10 10^{-5}"
+          },
+          {
+            "letter": "D",
+            "text": "2 -3 10 ·10"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414576370,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel exponent och välja A.",
+            "why_wrong": "A:s exponentsumma är mindre än C:s; räkna a+b för varje alternativ."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att titta på 'störst mantissa' utan exponent.",
+            "why_wrong": "Exponenten dominerar storleken. Mantissan kan vara samma men exponenten avgör."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid att 'mest negativ exponent = störst' (omvänt).",
+            "why_wrong": "Negativ exponent ger LITET tal; positiv ger stort. Räkna noggrant exponenten."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Räkna varje alternativ: 10^{a}\\cdot 10^{b}=10^{a+b}; det med STÖRSTA exponentsumman är störst. Här ger C det största värdet.",
+        "technique": "Jämförelse av tiopotenser: addera exponenter inom varje produkt; det med störst exponentsumma är störst."
+      }
+    },
+    {
+      "exam": "host-2020",
+      "qid": "host-2020-kvant2-XYZ-012",
+      "question": {
+        "qid": "host-2020-kvant2-XYZ-012",
+        "exam_id": "host-2020",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 12,
+        "prompt": "Vilket svarsalternativ är ett möjligt värde på a om a 16?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "-4"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{1}{256}"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{1}{4}"
+          },
+          {
+            "letter": "D",
+            "text": "256 -2 ="
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778498287388,
+          "generated_at": 1778414576370,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tappa kvadratrot och svara −4 (av \\sqrt{16}=4, sen tecken).",
+            "why_wrong": "a är 1/4 (efter byte av exponentens tecken), inte 4. Negativ exponent flippar."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta \\frac{1}{256} (kvadrera 1/16).",
+            "why_wrong": "a² = 1/16, alltså a = √(1/16) = 1/4. Inte kvadratisk."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 256 (positiv kvadrat).",
+            "why_wrong": "256 = 16², men frågan är om a, inte a². a^{-2}=16 → a = 1/4."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "a^{-2}=16 ger a^{2}=\\frac{1}{16}, alltså a=\\pm\\frac{1}{4}.",
+        "technique": "Negativ exponent: a^{-n}=\\frac{1}{a^{n}}. Lös ut a via a^{n}=\\frac{1}{k}, sen rot.",
+        "framework_id": "XYZ-TRAP-028"
+      }
+    },
+    {
+      "exam": "host-2021",
+      "qid": "host-2021-kvant1-XYZ-005",
+      "question": {
+        "qid": "host-2021-kvant1-XYZ-005",
+        "exam_id": "host-2021",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 5,
+        "prompt": "Fyra linjer skär varandra i samma punkt. Vad är x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "15°"
+          },
+          {
+            "letter": "B",
+            "text": "20°"
+          },
+          {
+            "letter": "C",
+            "text": "22,5°"
+          },
+          {
+            "letter": "D",
+            "text": "25°"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2021-kvant1-XYZ-005.svg",
+          "aspect_ratio": 1.026
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414728638,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna \\frac{360}{24} osv och få 15°.",
+            "why_wrong": "Fyra linjer ger åtta sektorer (vid skärning i en punkt). Inte 24."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta \\frac{360}{18}=20°.",
+            "why_wrong": "Räkna utifrån antalet sektorer (8 vid 4 linjer): 360/8 = 45°. Här är x EN HALV av sektorvinkeln."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 25° av avrundning.",
+            "why_wrong": "Resultatet är exakt 22,5°."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av figuren framgår att åtta vinklar bildas av fyra linjer. När de är symmetriska delar 360° i åtta lika delar: \\frac{360°}{8}=45°. Här ger figurens specifika geometri x = 22,5° (halv av 45°).",
+        "technique": "Linjer som skär i samma punkt: 2n linjer ger 2n sektorer; vinkelsumman 360° fördelas enligt figurens specifika konfiguration."
+      }
+    },
+    {
+      "exam": "host-2021",
+      "qid": "host-2021-kvant1-XYZ-010",
+      "question": {
+        "qid": "host-2021-kvant1-XYZ-010",
+        "exam_id": "host-2021",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "Rektangeln ABCD är sammansatt av 12 lika stora kvadrater, enligt figuren. Rektangelns area är 300 \\mathrm{cm}^{2} . Hur lång är sidan AB?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "300  cm"
+          },
+          {
+            "letter": "B",
+            "text": "20 cm"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{4}{3} 300  cm"
+          },
+          {
+            "letter": "D",
+            "text": "25 cm"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2021-kvant1-XYZ-010.svg",
+          "aspect_ratio": 1.332
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414728638,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna \\sqrt{300}\\approx 17{,}3 och välja \\sqrt{300}.",
+            "why_wrong": "Rektangeln är inte kvadratisk. AB är en specifik sida (4 enheter), inte sqrt(300)."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta \\frac{4}{3}\\sqrt{300}.",
+            "why_wrong": "Beräkningen ger 20, inte ett bråk-rotvärde."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 25 cm av att tro att hela arean är på ena sidan.",
+            "why_wrong": "Arean av en kvadrat är 25, men AB är 4 sådana sidor i rad: 20."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "12 kvadrater och total area 300 ⇒ varje kvadrat har area 25 cm², sida 5 cm. Med AB som lång sida (4 kvadrater): AB=4\\cdot 5=20 cm.",
+        "technique": "Sammansatta figurer från lika kvadrater: total area / antal = enskild area; sida = √enskild area; specifik dimension = antal·sida."
+      }
+    },
+    {
+      "exam": "host-2021",
+      "qid": "host-2021-kvant2-XYZ-003",
+      "question": {
+        "qid": "host-2021-kvant2-XYZ-003",
+        "exam_id": "host-2021",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 3,
+        "prompt": "Vilket värde har x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "\\frac{7}{3}"
+          },
+          {
+            "letter": "B",
+            "text": "3"
+          },
+          {
+            "letter": "C",
+            "text": "3,5"
+          },
+          {
+            "letter": "D",
+            "text": "13"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2021-kvant2-XYZ-003.svg",
+          "aspect_ratio": 1.911
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778498287390,
+          "generated_at": 1778414728638,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna \\frac{7}{3}\\approx 2{,}3 av annan formel.",
+            "why_wrong": "Räkna noggrant från Pythagoras eller relevant geometrisats: x = 3."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta avrundning åt 3,5.",
+            "why_wrong": "Resultatet är heltal 3."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 13 av annat fel.",
+            "why_wrong": "x = 3 (litet heltal), inte 13."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av Pythagoras eller annan vinkelsats i figuren: x=3.",
+        "technique": "Geometriska räkningar i figur: Pythagoras eller likformighet ger ofta heltal eller \\sqrt{n}-värden.",
+        "framework_id": "XYZ-TRAP-045"
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant1-XYZ-007",
+      "question": {
+        "qid": "host-2022-kvant1-XYZ-007",
+        "exam_id": "host-2022",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 7,
+        "prompt": "Triangeln ABE är likformig med triangeln CDE. Hur lång är AE?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "56 cm"
+          },
+          {
+            "letter": "B",
+            "text": "60 cm"
+          },
+          {
+            "letter": "C",
+            "text": "64 cm"
+          },
+          {
+            "letter": "D",
+            "text": "68 cm"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2022-kvant1-XYZ-007.svg",
+          "aspect_ratio": 1.648
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel proportion och få 56.",
+            "why_wrong": "Räkna noggrant: AE = 60 cm baserat på likformighetsproportionerna."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta avrundning åt 64.",
+            "why_wrong": "Resultatet är exakt 60 cm."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 68 av annan räknemiss.",
+            "why_wrong": "AE = 60 cm enligt likformighetsförhållandet."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Likformighet: motsvarande sidor i samma proportion. Av figuren: AE=60 cm.",
+        "technique": "Likformighet: motsvarande sidor i konstant förhållande. Sätt upp proportion, lös ut okänd.",
+        "framework_id": "XYZ-TRAP-045"
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-001",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-001",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 1,
+        "prompt": "Vilket svarsalternativ är lika med \\frac{1}{3} + \\frac{3}{4} + \\frac{5}{12} ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "\\frac{9}{4}"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{9}{6}"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{9}{12}"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{9}{19}"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 9/4 av annan kombination.",
+            "why_wrong": "Resultatet är 9/6 (= 3/2 = 1,5), inte 9/4 (= 2,25)."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 9/12 (felaktig förkortning av 18/12).",
+            "why_wrong": "18/12 förkortas till 3/2 (som är 9/6), inte 9/12."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 9/19.",
+            "why_wrong": "Bråkaddition kräver gemensam nämnare; nämnare adderas inte. 18/12, inte 9/19."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Gemensam nämnare 12: \\frac{4}{12}+\\frac{9}{12}+\\frac{5}{12}=\\frac{18}{12}=\\frac{3}{2}=\\frac{9}{6}.",
+        "technique": "Bråkaddition: gemensam nämnare, addera täljare.",
+        "framework_id": "XYZ-TRAP-016"
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-002",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-002",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 2,
+        "prompt": "L_{1} : y = 2x - 4 L_{2} : y = x - 1 Linjerna L_{1} och L_{2} skär varandra i punkten P. Vilka koordinater har punkten P?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "(-4, -1)"
+          },
+          {
+            "letter": "B",
+            "text": "(1, 0)"
+          },
+          {
+            "letter": "C",
+            "text": "(2, -4)"
+          },
+          {
+            "letter": "D",
+            "text": "(3, 2)"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel y och få (−4, −1) (genom att substituera x=0 i båda).",
+            "why_wrong": "Skärningen kräver att lösa systemet, inte att avläsa axelskärningar."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att gissa (1, 0) — y=0 vid x=1 i andra linjen.",
+            "why_wrong": "Det är x-axelskärningen för y = x−1, inte skärningen mellan båda linjerna."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid (2, −4) av att substituera fel.",
+            "why_wrong": "Skärningen är (3, 2) — räkna systemet noggrant."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Sätt lika: 2x-4=x-1 → x = 3, sedan y = x − 1 = 2. Punkt (3, 2).",
+        "technique": "Linje-skärning: lös linjernas y-uttryck mot varandra för x, sätt sedan in x i en av ekvationerna för y."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-003",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-003",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 3,
+        "prompt": "\\frac{45x}{7} = 5x+10 Vad är x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "\\frac{7}{8}"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{7}{4}"
+          },
+          {
+            "letter": "C",
+            "text": "5"
+          },
+          {
+            "letter": "D",
+            "text": "7"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel multiplicering och få 7/8.",
+            "why_wrong": "Räkna noggrant: 45x = 35x+70 → x = 7 (heltal)."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 7/4 av att glömma att multiplicera.",
+            "why_wrong": "Multiplicera båda led med 7 för att eliminera bråket. Resultat: x = 7."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid 5 av räknemiss.",
+            "why_wrong": "5·5+10 = 35; 45·5/7 = 225/7 ≈ 32. Inte lika. x = 7 är korrekt."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Multiplicera båda led med 7: 45x=35x+70, alltså 10x=70 och x = 7.",
+        "technique": "Ekvation med bråk: multiplicera båda led med nämnaren för att eliminera bråk.",
+        "framework_id": "XYZ-TRAP-014"
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-XYZ-004",
+      "question": {
+        "qid": "host-2022-kvant2-XYZ-004",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 4,
+        "prompt": "Vad är 7 procent av 15?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "1"
+          },
+          {
+            "letter": "B",
+            "text": "1,05"
+          },
+          {
+            "letter": "C",
+            "text": "1,1"
+          },
+          {
+            "letter": "D",
+            "text": "1,15"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778414892961,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att avrunda 7% till 'ungefär 1/15' och få 1.",
+            "why_wrong": "Räkna exakt: 7% = 0,07; 0,07·15 = 1,05."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta avrundning åt 1,1.",
+            "why_wrong": "Resultatet är exakt 1,05."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 1,15 av räknemiss.",
+            "why_wrong": "0,07·15 = 1,05 exakt."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "0{,}07\\cdot 15=1{,}05.",
+        "technique": "Procent: a% = a/100; multiplicera direkt."
+      }
+    }
+  ]
+}

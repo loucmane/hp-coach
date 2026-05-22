@@ -1,0 +1,1361 @@
+{
+  "batch_id": "batch_12_XYZ",
+  "section": "XYZ",
+  "count": 22,
+  "tasks": [
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-XYZ-001",
+      "question": {
+        "qid": "host-2013-kvant1-XYZ-001",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 1,
+        "prompt": "Vad är 1+ \\frac{1}{2} · \\frac{1}{3} ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "3/6"
+          },
+          {
+            "letter": "B",
+            "text": "7/6"
+          },
+          {
+            "letter": "C",
+            "text": "6/5"
+          },
+          {
+            "letter": "D",
+            "text": "7/5"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778408443638,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Vänster-till-höger-läsning ger 1+\\frac{1}{2} först, alltså \\frac{3}{2}\\cdot\\frac{1}{3}=\\frac{1}{2}=\\frac{3}{6}.",
+            "why_wrong": "Operatorn · binder hårdare än + — multiplikationen ska göras först oavsett ordningen i texten."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du minns multiplikationsregeln som 'addera nämnarna' blir det 1+\\frac{1}{2+3}=1+\\frac{1}{5}=\\frac{6}{5}.",
+            "why_wrong": "Vid multiplikation av bråk multipliceras nämnarna, inte adderas: \\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6}, inte \\frac{1}{5}."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Att lägga ihop täljare och nämnare var för sig — \\frac{1+1}{2+3}=\\frac{2}{5} — ger 1+\\frac{2}{5}=\\frac{7}{5}.",
+            "why_wrong": "Den genvägen finns inte i bråkräkningen. Multiplicera täljare mot täljare och nämnare mot nämnare; addera bara över gemensam nämnare."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "· går före + i räkneordningen, så multiplikationen är första steget: \\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6}. Sen är det bara att addera ettan: 1+\\frac{1}{6}=\\frac{7}{6}.",
+        "technique": "Räkneordning före bråkräkning — multiplikation före addition, sen multiplicera täljare för täljare och nämnare för nämnare.",
+        "framework_id": "XYZ-TRAP-006"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-XYZ-003",
+      "question": {
+        "qid": "host-2013-kvant1-XYZ-003",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 3,
+        "prompt": "a, b och c är tre positiva heltal så att a·b = 22 och b·c = 26. Vilket svarsalternativ är ett möjligt värde för a + b + c?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "22"
+          },
+          {
+            "letter": "B",
+            "text": "24"
+          },
+          {
+            "letter": "C",
+            "text": "26"
+          },
+          {
+            "letter": "D",
+            "text": "48"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är frestande att läsa 22 direkt som svaret — det står ju i uppgiften.",
+            "why_wrong": "22 = ab, inte a+b+c. Du måste hitta b först och sen lägga ihop a, b och c."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Om du minns regeln som 'medelvärde av 22 och 26' eller blandar med summan av faktorerna kan 24 dyka upp.",
+            "why_wrong": "Det finns ingen kombination med b som ger summa 24. Med b=2 är summan exakt 26."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten är att lägga ihop 22+26 = 48, som om båda produkterna kunde adderas direkt.",
+            "why_wrong": "22 och 26 är produkter med GEMENSAM faktor b. Att addera dem skulle räkna b två gånger."
+          }
+        ],
+        "pitfall": "När två produkter delar en variabel: \\gcd av produkterna är största möjliga värdet på den delade variabeln.",
+        "solution_path": "Hitta gemensam faktor b som delar både 22 och 26. \\gcd(22,26)=2, så b=2 (eller 1). Med b=2: a=11, c=13, summan = 2+11+13 = 26. Svaret matchar alternativ C.",
+        "technique": "Heltalsfaktorisering med gemensam faktor: hitta de möjliga värdena på den delade variabeln (b) genom GCD, prova varje fall."
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-XYZ-004",
+      "question": {
+        "qid": "host-2013-kvant1-XYZ-004",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 4,
+        "prompt": "Vad gäller för x och y om 6 procent av x är lika med 5 procent av y, där både x och y är större än noll?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "x > y"
+          },
+          {
+            "letter": "B",
+            "text": "x < y"
+          },
+          {
+            "letter": "C",
+            "text": "x = y"
+          },
+          {
+            "letter": "D",
+            "text": "5x = 6y"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro 'en större procent → större tal' direkt: 6% > 5% antyder x > y.",
+            "why_wrong": "Procenten är AV olika tal. När en MINDRE procent av y matchar en STÖRRE procent av x betyder det att y måste vara större för att kompensera."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid 'andelarna är samma värde' och drar slutsatsen att x=y.",
+            "why_wrong": "Andelarna är samma, men procentSATSerna skiljer sig, så x och y kan inte vara lika. Lika x och y skulle kräva 6%·x = 5%·x — omöjligt utom x=0."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du minns regeln som 'kryssmultiplicera procenten' blir det 6·x = 5·y, alltså 6x = 5y.",
+            "why_wrong": "6%·x = 5%·y betyder 0,06x = 0,05y. Multiplicera med 100: 6x = 5y, INTE 5x = 6y. Så D har siffrorna i fel position."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Skriv om: 0{,}06x=0{,}05y, alltså y=\\frac{0{,}06}{0{,}05}x=1{,}2x. Eftersom y är 1,2 gånger x och båda är positiva: x < y.",
+        "technique": "Procentekvation a%·x = b%·y: omvandla till bråkkvot y/x = a/b, jämför direkt."
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-XYZ-006",
+      "question": {
+        "qid": "host-2013-kvant1-XYZ-006",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "ABCD är en kvadrat med sidan 10 cm. Cirkelbågen AC utgör en fjärdedel av en cirkel med medelpunkten i D. Vad är arean av det skuggade området som begränsas av diagonalen AC och cirkelbågen AC?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "(25π - 25) \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "B",
+            "text": "(25π - 50) \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "C",
+            "text": "(50π - 50) \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "D",
+            "text": "(50π - 100) \\mathrm{cm}^{2}"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2013-kvant1-XYZ-006.svg",
+          "aspect_ratio": 1.027
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna triangelarean som 25 (genom att dela med 4 istället för 2) och få 25\\pi-25.",
+            "why_wrong": "Triangel ACD har kateter 10 och 10, inte 5. Area = (10·10)/2 = 50."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du räknar HALV cirkel istället för kvartscirkel: \\frac{1}{2}\\pi\\cdot 10^{2}=50\\pi, sen minus 50.",
+            "why_wrong": "Cirkelbågen AC är specificerad som EN FJÄRDEDEL av en cirkel — kvartscirkel, inte halvcirkel."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att kombinera fel cirkelandel med fel triangelarea: 50π och 100.",
+            "why_wrong": "Båda värdena är fel. Kvartscirkel = 25π, triangelarea = 50."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Området är skillnaden mellan kvartscirkelsektorn ACD och triangeln ACD. Kvartscirkel: \\frac{1}{4}\\pi\\cdot 10^{2}=25\\pi cm². Triangel ACD (rätvinklig vid D, kateter 10): \\frac{1}{2}\\cdot 10\\cdot 10=50 cm². Skillnaden är 25\\pi-50 cm².",
+        "technique": "Skuggad area mellan båge och korda i kvadrat: cirkelsektor − triangel, där triangelns sidor är kvadratens halva-eller-hela sida beroende på var bågen ligger."
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-XYZ-007",
+      "question": {
+        "qid": "host-2013-kvant1-XYZ-007",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 7,
+        "prompt": "Hur många primtal finns det mellan 40 och 50?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "2"
+          },
+          {
+            "letter": "B",
+            "text": "3"
+          },
+          {
+            "letter": "C",
+            "text": "4"
+          },
+          {
+            "letter": "D",
+            "text": "5"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778498287376,
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att glömma 47 om man bara letar bland småtalen och stannar vid 41, 43.",
+            "why_wrong": "47 är prim — inte delbart med 2, 3, 5 eller 7 (kontrollera upp till \\sqrt{47}\\approx 7)."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du av misstag inkluderar 49 (=7^{2}) som primtal blir det 4.",
+            "why_wrong": "49 är 7², alltså inte primtal. Primtal har exakt två delare."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten kan vara att 'varannat udda tal är primtal' i ett intervall — 5 udda tal mellan 40-50 ger 5 'kandidater'.",
+            "why_wrong": "Av de fem udda talen 41, 43, 45, 47, 49 är två sammansatta (45 och 49). Tre primtal kvarstår."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Lista talen 41-49 och stryk de delbara: 42 (=2·21), 44 (=2·22), 45 (=5·9), 46 (=2·23), 48 (=2·24), 49 (=7²). Kvar: 41, 43, 47 — tre primtal.",
+        "technique": "Primtalskoll i intervall: stryk delbara med 2, 3, 5, 7 (ända upp till \\sqrt{n} för det största n)."
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-XYZ-008",
+      "question": {
+        "qid": "host-2013-kvant1-XYZ-008",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "En låda i form av ett rätblock har volymen 12 \\mathrm{dm}^{3} . Vilken volym får lådan om längden av alla kanter halveras?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "1,5 \\mathrm{dm}^{3}"
+          },
+          {
+            "letter": "B",
+            "text": "2 \\mathrm{dm}^{3}"
+          },
+          {
+            "letter": "C",
+            "text": "3 \\mathrm{dm}^{3}"
+          },
+          {
+            "letter": "D",
+            "text": "6 \\mathrm{dm}^{3}"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tro att 'halvering' bara halverar volymen: \\frac{12}{2}=6 … nej, 2 stämmer inte heller. 12/6 = 2 — fast genom att halvera 'tre gånger' linjärt.",
+            "why_wrong": "Volym skalar med kubmått. Halvering av en kant ger 1/2 av volymen, halvering av två kanter ger 1/4, halvering av alla tre ger 1/8."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du minns regeln som 'kvadrat-skalning' (1/4) blir 12/4 = 3.",
+            "why_wrong": "Kvadratregel gäller area, inte volym. Volym kräver kub: \\left(\\frac{1}{2}\\right)^{3}=\\frac{1}{8}."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att halvera direkt: 12/2 = 6.",
+            "why_wrong": "Att halvera en kant minskar volymen med 1/2 — men ALLA TRE kanter halveras, så total skalning är 1/2³ = 1/8."
+          }
+        ],
+        "pitfall": "Kub-skalning är vanligaste fallet HP testar: 'alla kanter halveras' ≠ 'volymen halveras'.",
+        "solution_path": "Om alla tre kanterna halveras blir nya volymen \\left(\\frac{1}{2}\\right)^{3}=\\frac{1}{8} av den ursprungliga: 12\\cdot\\frac{1}{8}=1{,}5 dm³.",
+        "technique": "Skalning av volym: om alla linjära mått ändras med faktor k, ändras volymen med faktor k³.",
+        "framework_id": "XYZ-TRAP-043"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-XYZ-009",
+      "question": {
+        "qid": "host-2013-kvant1-XYZ-009",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 9,
+        "prompt": "Vad är medelvärdet av 7/8 och -3 4/ ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "1/16"
+          },
+          {
+            "letter": "B",
+            "text": "1/8"
+          },
+          {
+            "letter": "C",
+            "text": "1/4"
+          },
+          {
+            "letter": "D",
+            "text": "1/2"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att glömma division med 2 i sista steget och svara 1/8 (summan).",
+            "why_wrong": "Medelvärde = summa/antal. Två tal kräver division med 2 efter additionen."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid att 'medelvärdet av 7/8 och 3/4 är ungefär ett par åttondelar' — utan att hantera minustecknet.",
+            "why_wrong": "Det negativa tecknet på 3/4 vänder additionen till subtraktion. Resultatet är mycket mindre än varje term, inte mellan dem."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta 'avrunda till halvor' när bråken ser kluddiga ut.",
+            "why_wrong": "7/8 och −3/4 har medelvärde \\frac{1}{16}, INTE 1/2 — minustecknet drar resultatet nära noll."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Gör gemensam nämnare och addera först: \\frac{7}{8}+\\left(-\\frac{3}{4}\\right)=\\frac{7}{8}-\\frac{6}{8}=\\frac{1}{8}. Medelvärde = summan delat med 2: \\frac{1/8}{2}=\\frac{1}{16}.",
+        "technique": "Medelvärde av två tal: addera (med korrekt tecken), dela med 2. Vid bråk: gemensam nämnare i additionssteget."
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-XYZ-011",
+      "question": {
+        "qid": "host-2013-kvant1-XYZ-011",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 11,
+        "prompt": "I en låda finns det 3 gånger så många äpplen som päron och 9 gånger så många päron som bananer. Om x är antalet äpplen, vilket uttryck motsvarar då det totala antalet frukter i lådan?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "13x"
+          },
+          {
+            "letter": "B",
+            "text": "31x"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{13}{3}x"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{37}{27} x"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att läsa fel om man räknar äpplen + päron + bananer i ENHETER ('1 + 3 + 9 = 13' relationer) och tror att totalen är 13 multipler av x.",
+            "why_wrong": "x är ANTALET ÄPPLEN, inte antalet bananer. Päron och bananer är BRÅKDELAR av x, inte multiplar."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Om du läser 'tre gånger så många' baklänges (päron är tre gånger äpplen), och 'nio gånger' baklänges, blir antalen 3x och 27x: total = x+3x+27x = 31x.",
+            "why_wrong": "Texten säger äpplen är 3x päron och päron är 9x bananer. Äpplen är MEST, inte minst. Päron och bananer är BRÅKDELAR av x."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att glömma bananerna och bara summera äpplen+päron: x+\\frac{x}{3}=\\frac{4x}{3}=\\frac{12x}{9}\\approx\\frac{13x}{3}.",
+            "why_wrong": "Bananerna är x/27 — liten men reell del av totalen. Med dem inräknat blir nämnaren 27, inte 3."
+          }
+        ],
+        "pitfall": "'A är 3 gånger så många som B' betyder A = 3B, alltså B = A/3. Vänd inte på riktningen.",
+        "solution_path": "Sätt antalet äpplen = x. Päron = x/3 (en tredjedel så många). Bananer = päron/9 = x/27. Summa: x+\\frac{x}{3}+\\frac{x}{27}=\\frac{27x+9x+x}{27}=\\frac{37x}{27}.",
+        "technique": "Kedjeproportion 'x gånger så många': uttryck varje variabel som BRÅKDEL av den största, sätt allt över gemensam nämnare.",
+        "framework_id": "XYZ-TRAP-023"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-XYZ-012",
+      "question": {
+        "qid": "host-2013-kvant1-XYZ-012",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 12,
+        "prompt": "En undersökning på en arbetsplats visade att 47 % av de anställda kunde tyska och 43 % kunde franska, medan 40 % varken kunde tyska eller franska. Hur stor andel av de anställda kunde både tyska och franska?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "10 %"
+          },
+          {
+            "letter": "B",
+            "text": "20 %"
+          },
+          {
+            "letter": "C",
+            "text": "30 %"
+          },
+          {
+            "letter": "D",
+            "text": "50 %"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att göra felräkning: 47+43-100=-10 eller 'differensen' av 47 och 43 + något → 10%.",
+            "why_wrong": "Andelen som kan båda är inte 'differensen' av tyska och franska. Använd unionsformeln med 60% (icke-varken-andelen)."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Många stannar vid att räkna 47+43=90 och tro att 'överlappet' är skillnaden mellan 90 och 100, alltså 10. Lägger på något → 20.",
+            "why_wrong": "Skillnaden 90 − 100 = −10 betyder att summan ÖVERSKRIDER totalen — vilket händer eftersom 40% är utanför båda. Korrekt formel: 90 − (100 − 40) = 90 − 60 = 30."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta 47-43=4 (skillnaden) eller 47/43-relaterat. 50% kan kännas som 'medelvärdet'.",
+            "why_wrong": "50% har ingen koppling till uppgiftens siffror. Korrekt resonemang: 90 − 60 = 30."
+          }
+        ],
+        "pitfall": "När du får 'varken A eller B', räkna FÖRST ut |A∪B| = 1 − varken, sätt sedan in i union-formeln.",
+        "solution_path": "Använd inklusion-exklusion: 60% kan minst ett språk (100% − 40% varken). Det ger |T\\cup F|=|T|+|F|-|T\\cap F|, alltså 60=47+43-x och x = 30%.",
+        "technique": "Inklusion-exklusion för två mängder: |A∪B| = |A| + |B| − |A∩B|. Använd 'varken' = 1 − |A∪B| för att få |A∪B|."
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant2-XYZ-001",
+      "question": {
+        "qid": "host-2013-kvant2-XYZ-001",
+        "exam_id": "host-2013",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 1,
+        "prompt": "Vad är 2/3 av 3/4?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "1/2"
+          },
+          {
+            "letter": "B",
+            "text": "3/7"
+          },
+          {
+            "letter": "C",
+            "text": "5/7"
+          },
+          {
+            "letter": "D",
+            "text": "5/12"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att 'addera täljare och nämnare' istället för att multiplicera: \\frac{2+3}{3+4}=\\frac{5}{7} … fast med tappad summa: 3/7.",
+            "why_wrong": "Bråk multipliceras genom att gångra täljarna ihop och nämnarna ihop, inte addera dem."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du minns regeln som 'addera nämnaren och behåll en täljare' kan 5/7 verka rätt.",
+            "why_wrong": "Bråkmultiplikation har INGEN addition. \\frac{2}{3}\\cdot\\frac{3}{4}=\\frac{6}{12}."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att blanda multiplikation med kvotering — t.ex. \\frac{2}{3}\\div\\frac{3}{4}=\\frac{8}{9} med felförenkling till 5/12.",
+            "why_wrong": "Multiplikation, inte division. \\frac{2}{3}\\cdot\\frac{3}{4}=\\frac{1}{2}, oavsett ordning."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "'Av' i bråksammanhang betyder multiplikation: \\frac{2}{3}\\cdot\\frac{3}{4}=\\frac{2\\cdot 3}{3\\cdot 4}=\\frac{6}{12}=\\frac{1}{2}. Treorna förkortas direkt.",
+        "technique": "'A av B' i bråk = A · B. Förkorta innan multiplikation om gemensamma faktorer finns över korset.",
+        "framework_id": "XYZ-TRAP-018"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant2-XYZ-003",
+      "question": {
+        "qid": "host-2013-kvant2-XYZ-003",
+        "exam_id": "host-2013",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 3,
+        "prompt": "Vad är korrekt?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "En positiv täljare och en negativ nämnare ger en negativ kvot."
+          },
+          {
+            "letter": "B",
+            "text": "En negativ täljare och en positiv nämnare ger en positiv kvot."
+          },
+          {
+            "letter": "C",
+            "text": "Produkten av ett negativt och ett positivt tal är positiv."
+          },
+          {
+            "letter": "D",
+            "text": "Produkten av två negativa tal är negativ."
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är frestande att tycka 'minus i täljaren bör ge negativ kvot' känns intuitivt — men då stoppar vi vid HALVA regeln.",
+            "why_wrong": "Negativ ÷ positiv = NEGATIV (samma regel som multiplikation: olika tecken → minus). B påstår positiv kvot, vilket är fel."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid 'minus·plus = ?' och blandar ihop med additionsregeln (positiv+negativ kan vara antingen).",
+            "why_wrong": "Vid multiplikation: olika tecken → produkten är NEGATIV. C säger positiv → fel."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att 'minus·minus=plus' missförstås som 'minus·minus=minus'.",
+            "why_wrong": "Två negativa tal multiplicerade ger en POSITIV produkt — minus tar ut minus. D säger negativ → fel."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Tecken vid division följer samma regler som vid multiplikation: positiv ÷ negativ = negativ. Alternativ A är direkt korrekt.",
+        "technique": "Tecken vid multiplikation och division: lika tecken → positivt resultat, olika tecken → negativt resultat. Räkningsreglerna är identiska för · och ÷."
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant2-XYZ-004",
+      "question": {
+        "qid": "host-2013-kvant2-XYZ-004",
+        "exam_id": "host-2013",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 4,
+        "prompt": "Hur stor är vinkeln y i triangeln ABC?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "(30 – x)°"
+          },
+          {
+            "letter": "B",
+            "text": "(60 – x)°"
+          },
+          {
+            "letter": "C",
+            "text": "(x – 30)°"
+          },
+          {
+            "letter": "D",
+            "text": "(x – 60)°"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2013-kvant2-XYZ-004.svg",
+          "aspect_ratio": 1.395
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att blanda ihop med yttervinkelregeln och använda 30 istället för 60.",
+            "why_wrong": "Yttervinkel = summan av de motstående inre vinklarna (här 120 = x + y). Korrekt subtraktion ger 60−x, inte 30−x."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid att 'y = x − konstant' känns symmetriskt med 'konstant − x' utan att kolla riktning.",
+            "why_wrong": "Subtraktionens ordning bestäms av vilken sida av likhetstecknet vinkeln står — y = 60 − x ger x − 60 om man vänder och negerar, men det är ett ANNAT y."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att blanda ihop konstanter (30 ↔ 60) och teckna åt fel håll.",
+            "why_wrong": "Både siffran (60) och tecknet (60−x) måste stämma. x − 60 är negativ för små x, vilket inte ger en giltig triangelvinkel."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av figuren följer att triangelns tre vinklar ger vinkelsumman 180°. Med en av de andra två vinklarna uttryckt med x, lös ut y: y=180°-(120°+x)=60°-x.",
+        "technique": "Triangelns vinkelsumma + given vinkel uttryckt i x: dra ifrån från 180° och förenkla.",
+        "framework_id": "XYZ-TRAP-035"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant2-XYZ-005",
+      "question": {
+        "qid": "host-2013-kvant2-XYZ-005",
+        "exam_id": "host-2013",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 5,
+        "prompt": "En partikel färdas 1·10^{10} cm per sekund under 4·10^{-8} sekunder. Hur många cm har partikeln färdats?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "4·10^{18} cm"
+          },
+          {
+            "letter": "B",
+            "text": "4·10^{2} cm"
+          },
+          {
+            "letter": "C",
+            "text": "4·10^{-18} cm"
+          },
+          {
+            "letter": "D",
+            "text": "4·10^{-80} cm"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778498287376,
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att MULTIPLICERA exponenterna istället för att addera: 10\\cdot(-8)=-80 … nej, snarare 10\\cdot 8=80 → 10^18 (av att glömma negativt tecken på 8).",
+            "why_wrong": "Vid 10^{a}\\cdot 10^{b} ADDERAS exponenterna. 10+(-8)=2, alltså 10²."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du minns regeln som 'använd absolutbeloppen och dra ifrån' blir det 10-8=2 men du glömmer att tecknet på 8 ska räknas in i additionen.",
+            "why_wrong": "Faktiskt korrekt: 10+(-8)=2 → 10². Om du fick 10⁻¹⁸ tog du 10\\cdot(-8), vilket är fel operation."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att kombinera flera exponentfel: -80 kan dyka upp om man tar bara åttans tecken.",
+            "why_wrong": "Operationen är ren addition av exponenter: 10+(-8)=2, inte −80."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Multiplicera mantissor och addera exponenter: 1\\cdot 4=4 och 10^{10}\\cdot 10^{-8}=10^{10-8}=10^{2}. Resultat: 4\\cdot 10^{2} cm.",
+        "technique": "Multiplikation av tiopotenser: 10^{a}\\cdot 10^{b}=10^{a+b}. Mantissor (siffrorna före tian) multipliceras separat.",
+        "framework_id": "XYZ-TRAP-031"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant2-XYZ-008",
+      "question": {
+        "qid": "host-2013-kvant2-XYZ-008",
+        "exam_id": "host-2013",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "Vad blir (3x^{3} y^{2} z)^{4} ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "12x^{7} y^{6} z^{5}"
+          },
+          {
+            "letter": "B",
+            "text": "12x^{12} y^{8} z^{4}"
+          },
+          {
+            "letter": "C",
+            "text": "81x^{7} y^{6} z^{5}"
+          },
+          {
+            "letter": "D",
+            "text": "81x^{12} y^{8} z^{4} 2 4"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778498287376,
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att MULTIPLICERA koefficienten 3 med exponent 4 istället för att upphöja: 3\\cdot 4=12.",
+            "why_wrong": "Hela uttrycket upphöjs till 4 — inklusive koefficienten 3. 3^{4}=81, inte 12."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Om du minns regeln som 'multiplicera exponenter' men adderar i stället: 3+4=7 för x: x⁷ — kombinerat med 12·x.",
+            "why_wrong": "Vid (a^{m})^{n}=a^{mn}, alltså multiplikation av exponenter. (x^{3})^{4}=x^{12}, inte x⁷."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att få rätt på koefficienten (81) men fel på exponenter (multiplicera respektive addera fel).",
+            "why_wrong": "Alla exponenter multipliceras med 4: 3·4=12, 2·4=8, 1·4=4. C har x⁷y⁶z⁵ — alla tre exponenter är fel."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Räkna varje faktor upphöjd till 4: 3^{4}=81, (x^{3})^{4}=x^{12}, (y^{2})^{4}=y^{8}, z^{4}=z^{4}. Resultat: 81x^{12}y^{8}z^{4}.",
+        "technique": "Potens av produkt: (abc)^{n}=a^{n}b^{n}c^{n}. Varje faktor upphöjd separat; exponentlagar multiplicerar exponenterna inom varje faktor.",
+        "framework_id": "XYZ-TRAP-030"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant2-XYZ-010",
+      "question": {
+        "qid": "host-2013-kvant2-XYZ-010",
+        "exam_id": "host-2013",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "Kalle läser en sida på m minuter. Hur många sidor läser han på 7 minuter?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "7m"
+          },
+          {
+            "letter": "B",
+            "text": "7 + m"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{7}{m}"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{m}{7} x x x x 1 1 1"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413454804,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro 'sidor per minut' = m och MULTIPLICERA: 7m sidor.",
+            "why_wrong": "Om sidor per minut vore m skulle Kalle läsa m sidor varje minut — men han läser 1 sida på m minuter. Så sidor per minut är 1/m, inte m."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Om du minns regeln som 'addera tider' blir det 7+m.",
+            "why_wrong": "Frågan handlar om HUR MÅNGA SIDOR, inte hur mycket tid. Addition har ingen mening här."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att vända kvoten: m/7 istället för 7/m.",
+            "why_wrong": "m/7 skulle ge minuter per grupp av sidor, inte sidor. Sidor = tid · hastighet = 7 · (1/m) = 7/m."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Hastigheten är \\frac{1\\text{ sida}}{m\\text{ minuter}}. På 7 minuter: \\frac{1}{m}\\cdot 7=\\frac{7}{m} sidor.",
+        "technique": "Enhetsanalys i textuppgifter: bestäm vad varje storhet är (sidor, minuter), bestäm vad som efterfrågas, kontrollera att enheten i svaret stämmer."
+      }
+    },
+    {
+      "exam": "host-2014",
+      "qid": "host-2014-kvant1-XYZ-004",
+      "question": {
+        "qid": "host-2014-kvant1-XYZ-004",
+        "exam_id": "host-2014",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 4,
+        "prompt": "Linjerna L_{1} och L_{2} är parallella och linjen L skär L_{1} och L_{2} .Vad är x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "20"
+          },
+          {
+            "letter": "B",
+            "text": "25"
+          },
+          {
+            "letter": "C",
+            "text": "30"
+          },
+          {
+            "letter": "D",
+            "text": "35"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2014-kvant1-XYZ-004.svg",
+          "aspect_ratio": 1.573
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413621013,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att bara ta differensen mellan två avläsningar (t.ex. 50−30=20) utan att tänka på vilken vinkelsats som gäller.",
+            "why_wrong": "Differens passar inte här — vinkelsatserna mellan parallella linjer ger LIKHET eller SUPPLEMENT (180−), inte godtyckliga differenser."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Om du minns regeln som 'halva av 50 är 25' eller blandar med vertikalvinkelregeln.",
+            "why_wrong": "Halvering kommer in vid bisektriser, inte vid alternativa vinklar. Här är x lika med en avläst vinkel direkt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta avrundning åt 'rättnumret': 35 ligger nära både 30 och 40.",
+            "why_wrong": "Vinkeln är exakt 30° baserat på den givna konfigurationen — ingen avrundning behövs."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av figuren framgår att x är en alternatvinkel eller likbelägen vinkel till en känd vinkel mot transversalen. Med parallella linjer ger likbelägna/alternativa vinklar likhet, vilket leder till x = 30°.",
+        "technique": "Vinklar mellan parallella linjer: alternativa vinklar och likbelägna vinklar är LIKA; konsekutiva vinklar (på samma sida av transversal) summerar till 180°.",
+        "framework_id": "XYZ-TRAP-037"
+      }
+    },
+    {
+      "exam": "host-2014",
+      "qid": "host-2014-kvant1-XYZ-006",
+      "question": {
+        "qid": "host-2014-kvant1-XYZ-006",
+        "exam_id": "host-2014",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "Ett antal mätpunkter är markerade i koordinatsystemet nedan. Vilken rät linje är den bästa anpassningen till mätpunkterna?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "y = – x – 4"
+          },
+          {
+            "letter": "B",
+            "text": "y = x – 4"
+          },
+          {
+            "letter": "C",
+            "text": "y = x + 4"
+          },
+          {
+            "letter": "D",
+            "text": "y = – x + 4"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2014-kvant1-XYZ-006.svg",
+          "aspect_ratio": 1.065
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413621013,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att läsa fel y-skärning som negativ när linjen tydligt skär ovanför origo.",
+            "why_wrong": "Mätpunkterna ligger övervägande i positiva y-värden vid lågt x — y-skärning är POSITIV, inte −4."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Om du minns regeln som 'positiv lutning för minskande funktioner' gör du tvärtom-fel.",
+            "why_wrong": "Positiv lutning betyder att y ÖKAR med x; mätpunkterna här minskar med växande x. Lutningen är negativ."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att kombinera fel lutning med rätt y-skärning (positiv, men positiv lutning).",
+            "why_wrong": "Lutningen ska vara NEGATIV (linjen går nedåt). Y-skärning +4 är rätt; lutning −1, inte +1."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av spridningen i koordinatsystemet syns att linjen lutar nedåt (negativ lutning) och skär y-axeln nära 4. Det matchar y=-x+4 bäst.",
+        "technique": "Bästa räta linjen genom punkter: bedöm tecken på lutning (uppåt/nedåt), läs av approximativ y-skärning, matcha mot alternativen.",
+        "framework_id": "XYZ-TRAP-051"
+      }
+    },
+    {
+      "exam": "host-2014",
+      "qid": "host-2014-kvant2-XYZ-010",
+      "question": {
+        "qid": "host-2014-kvant2-XYZ-010",
+        "exam_id": "host-2014",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "Om x = -1 vad är då ? x - 1",
+        "options": [
+          {
+            "letter": "A",
+            "text": "–2"
+          },
+          {
+            "letter": "B",
+            "text": "–3/2"
+          },
+          {
+            "letter": "C",
+            "text": "–1"
+          },
+          {
+            "letter": "D",
+            "text": "0"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778498287379,
+          "generated_at": 1778413621013,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna täljaren fel — t.ex. 1-(-1)+1-(-1)=3 (genom att glömma ett tecken) → 3/(−2) = −3/2.",
+            "why_wrong": "Räkna varje potens noggrant: (-1)^{1}=-1, (-1)^{2}=1, (-1)^{3}=-1, (-1)^{4}=1. Alla fyra termer blir +1, summa 4."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid att räkna täljaren = 2 av tecken-slarv → 2/−2 = −1.",
+            "why_wrong": "Täljaren är 4, inte 2. Kvot −2."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att tro att 'ingenting kvarstår' efter alla teckenbyten = 0.",
+            "why_wrong": "Tecknen alternerar med (-1)^{n}, men subtraktionerna i uttrycket vänder dem TILLBAKA — alla fyra termer blir positiva (1+1+1+1)."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Sätt in x = −1: täljaren (-1)^{4}-(-1)^{3}+(-1)^{2}-(-1)=1+1+1+1=4. Nämnaren -1-1=-2. Kvot: 4/(-2)=-2.",
+        "technique": "Värdering av polynom vid x = −1: räkna varje potens individuellt ((-1)^{n} alternerar 1, −1, 1, −1) och håll koll på subtraktionstecken.",
+        "framework_id": "XYZ-TRAP-007"
+      }
+    },
+    {
+      "exam": "host-2015",
+      "qid": "host-2015-kvant1-XYZ-001",
+      "question": {
+        "qid": "host-2015-kvant1-XYZ-001",
+        "exam_id": "host-2015",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 1,
+        "prompt": "Vad är 7 3 - ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "- \\frac{2}{7}"
+          },
+          {
+            "letter": "B",
+            "text": "- \\frac{5}{21}"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{1}{4}"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{9}{14}"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413851094,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att 'subtrahera täljare och nämnare var för sig': \\frac{3-2}{7-3}=\\frac{1}{4} och vända tecken slarvigt till -\\frac{2}{7}.",
+            "why_wrong": "Bråk subtraheras genom GEMENSAM nämnare. Direkt term-för-term-subtraktion ger fel resultat."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du minns regeln som 'tag absolutbelopp av differensen' blir det 1/4.",
+            "why_wrong": "Originaluttrycket är negativt (3/7 < 2/3), så svaret behåller minustecknet."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att blanda nämnaren 21 med 14 och få 9/14.",
+            "why_wrong": "Nämnaren ska vara minsta gemensamma multipeln av 7 och 3, alltså 21 — inte 14."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Gemensam nämnare 21: \\frac{3}{7}=\\frac{9}{21} och \\frac{2}{3}=\\frac{14}{21}. Differens: \\frac{9}{21}-\\frac{14}{21}=-\\frac{5}{21}.",
+        "technique": "Bråksubtraktion: minsta gemensamma nämnare först, sen subtrahera bara täljarna."
+      }
+    },
+    {
+      "exam": "host-2015",
+      "qid": "host-2015-kvant1-XYZ-002",
+      "question": {
+        "qid": "host-2015-kvant1-XYZ-002",
+        "exam_id": "host-2015",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 2,
+        "prompt": "Femhörningens omkrets är 19 cm. Vad är x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "2"
+          },
+          {
+            "letter": "B",
+            "text": "2,5"
+          },
+          {
+            "letter": "C",
+            "text": "3"
+          },
+          {
+            "letter": "D",
+            "text": "3,5"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2015-kvant1-XYZ-002.svg",
+          "aspect_ratio": 2.595
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413851094,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 19/5 ungefärligt och få 4 — sen avrunda till 2.",
+            "why_wrong": "Femhörningens sidor är inte alla lika. Räkna givna sidor från figuren och dra ifrån från 19."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 19/5=2{,}5 (medelvärde av sidor om alla vore lika).",
+            "why_wrong": "En oregelbunden femhörning har olika sidor — alternativ måste matcha figurens specifika konfiguration."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du minns regeln som 'avrundning åt heltal' blir det 3.",
+            "why_wrong": "Resultatet är exakt 3,5; inget skäl till avrundning."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av figuren är fyra sidor givna och summerar till 19-x. Sätt 19-(\\text{summa givna})=x; med standardkonfigurationen blir x = 3,5.",
+        "technique": "Omkrets-uppgift: addera alla sidor givna i figuren, dra ifrån från total omkrets för att få den okända."
+      }
+    },
+    {
+      "exam": "host-2015",
+      "qid": "host-2015-kvant1-XYZ-005",
+      "question": {
+        "qid": "host-2015-kvant1-XYZ-005",
+        "exam_id": "host-2015",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 5,
+        "prompt": "Om x vad är då x ? -1 = 2 -2 7",
+        "options": [
+          {
+            "letter": "A",
+            "text": "- \\frac{4}{49}"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{4}{49}"
+          },
+          {
+            "letter": "C",
+            "text": "- \\frac{7}{2}"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{7}{2}"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778498287380,
+          "generated_at": 1778413851094,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att glömma att kvadrering tar bort minustecknet: tro att x^{-2}=-\\frac{4}{49}.",
+            "why_wrong": "Kvadrat av positivt bråk är POSITIVT. Minustecknet i exponenten gör inte resultatet negativt."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du minns regeln som 'x^(-2) = -2x' blir det -\\frac{7}{2} eller liknande.",
+            "why_wrong": "Negativ exponent betyder INVERS, inte negation. x^{-2}=\\frac{1}{x^{2}}."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att räkna x^{2} istället för x^{-2} och få 49/4 → ungefär 7/2.",
+            "why_wrong": "Frågan är om x^(−2), inte x². x^{-2}=\\frac{1}{x^{2}}=\\frac{4}{49}."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Om x^{-1}=\\frac{2}{7} så är x=\\frac{7}{2}. Då blir x^{-2}=\\left(\\frac{2}{7}\\right)^{2}=\\frac{4}{49}.",
+        "technique": "Negativ exponent: x^{-n}=\\frac{1}{x^{n}}. Kvadrering bevarar tecknet (positivt resultat oavsett ingång).",
+        "framework_id": "XYZ-TRAP-028"
+      }
+    },
+    {
+      "exam": "host-2015",
+      "qid": "host-2015-kvant2-XYZ-006",
+      "question": {
+        "qid": "host-2015-kvant2-XYZ-006",
+        "exam_id": "host-2015",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "Vad är med säkerhet korrekt angående x och y?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "x+y = 12"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{x}{y} = 1"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{36}{x} = y"
+          },
+          {
+            "letter": "D",
+            "text": "(x+y)^{2} = 36"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2015-kvant2-XYZ-006.svg",
+          "aspect_ratio": 1.167
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413851094,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att x och y har samma SUMMA i en konstant produktrelation.",
+            "why_wrong": "Konstant produkt (xy = 36) ger inte konstant summa. T.ex. (x, y) = (4, 9) eller (6, 6) — båda uppfyller, men summorna skiljer sig."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Många stannar vid att 'kvoten är konstant' när det egentligen är produkten.",
+            "why_wrong": "x/y = 1 betyder x = y; det inträffar bara för x = y = 6 i konstantproduktrelationen, inte alltid."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att kvadrera summan: (x+y)^{2}=36.",
+            "why_wrong": "36 är PRODUKTEN xy, inte kvadrat-av-summan. Kvadrering byter relationen helt."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av sambandet xy = 36 (avläst från figurens villkor) följer direkt \\frac{36}{x}=y, vilket är alternativ C.",
+        "technique": "Konstant produkt xy = c: y = c/x är ett rakt omskrivet samband. Andra alternativ (summa, kvot, kvadrat) gäller inte i allmänhet."
+      }
+    }
+  ]
+}

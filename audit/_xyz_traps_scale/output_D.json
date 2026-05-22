@@ -1,0 +1,158 @@
+[
+  {
+    "id": "XYZ-TRAP-043",
+    "tldr": "Linjär skalfaktor ljuger om area och volym — k för sidan blir k² för arean och k³ för volymen.",
+    "recognition_cue": "När texten ändrar alla kanter, alla sidor eller alla mått med samma faktor (\"halveras\", \"dubblas\", \"ökas till det tredubbla\") och sedan frågar efter ny area eller volym.",
+    "worked_example": {
+      "setup": "En låda i form av ett rätblock har volymen 12 dm³. Vilken volym får lådan om längden av alla kanter halveras?",
+      "trap_thinking": "Studenten tänker \"alla kanter halveras, alltså halveras volymen\" och delar 12 med 2 → 6 dm³ och väljer D.",
+      "correct_thinking": "Volym skalas med k³, inte k. När varje kant multipliceras med 1/2 multipliceras volymen med (1/2)³ = 1/8. Den nya volymen blir 12 · 1/8 = 1,5 dm³.",
+      "answer": "A — 1,5 dm³, eftersom volymen skalas med kuben av den linjära faktorn."
+    },
+    "counter_example": "Om frågan istället gällde lådans kantsumma eller en enstaka kantlängd, då räcker den linjära faktorn 1/2 — det är bara area (k²) och volym (k³) som kräver upphöjning."
+  },
+  {
+    "id": "XYZ-TRAP-044",
+    "tldr": "Diagonalen är inte 2s — i en kvadrat gäller d = s√2 via Pythagoras.",
+    "recognition_cue": "När uttrycket innehåller både sidan s och diagonalen d i en kvadrat eller rektangel, särskilt när d² eller 2s² dyker upp i en ekvation.",
+    "worked_example": {
+      "setup": "En kvadrat har sidan s cm och diagonalen d cm. Givet att 2s² + d² = 64, vad är s?",
+      "trap_thinking": "Studenten antar att d = 2s och ersätter d² = 4s² i ekvationen: 2s² + 4s² = 6s² = 64 → s² ≈ 10,7 → s ≈ 3,3. Eftersom inget svar passar exakt gissar studenten på A (s = 2).",
+      "correct_thinking": "I en kvadrat ger Pythagoras d² = s² + s² = 2s². Sätt in i villkoret: 2s² + 2s² = 4s² = 64, så s² = 16 och s = 4.",
+      "answer": "B — s = 4 cm, efter att d² = 2s² används korrekt."
+    },
+    "counter_example": "Om figuren istället vore en rektangel med sidor a och b, då gäller d² = a² + b² och en enstaka sida räcker inte — formeln s√2 är förbehållen kvadraten."
+  },
+  {
+    "id": "XYZ-TRAP-045",
+    "tldr": "Likformighet kräver motsvarande sidor — visuell parning ger omvänd proportion.",
+    "recognition_cue": "När problemet säger att två trianglar är likformiga och två sidor är kända i den ena medan den motsvarande sidan i den andra söks — särskilt när figurerna är olika orienterade.",
+    "worked_example": {
+      "setup": "Triangeln ABE är likformig med triangeln CDE. Sidorna i CDE är kända och AE söks utifrån de givna måtten.",
+      "trap_thinking": "Studenten parar ihop sidor visuellt utan att kontrollera vilka vinklar de står emot, vänder kvoten upp och ned, och hamnar på en längd som motsvarar den omvända proportionen — väljer A (56 cm).",
+      "correct_thinking": "Identifiera motsvarande vinklar först: E är gemensam, och de parallella sidornas vinklar matchas mellan trianglarna. Sätt upp proportionen AE/CE = AB/CD med rätt riktning, lös ut AE och få 60 cm.",
+      "answer": "B — AE = 60 cm, när proportionen sätts upp mellan motsvarande sidor."
+    },
+    "counter_example": "Om uppgiften istället angav skalfaktorn k direkt (\"ABE är 1,2 gånger så stor som CDE\"), då försvinner valet av motsvarande sidor — multiplikationen är riktningsbestämd från start."
+  },
+  {
+    "id": "XYZ-TRAP-046",
+    "tldr": "Tre på varandra följande heltal summerar alltid till 3m — bara multipler av 3 är möjliga.",
+    "recognition_cue": "När problemet säger \"tre på varandra följande heltal\" och frågar efter ett möjligt värde på summan, medel eller liknande.",
+    "worked_example": {
+      "setup": "x är summan av tre på varandra följande heltal. Vad är ett möjligt värde på x?",
+      "trap_thinking": "Studenten testar ett enskilt fall som 10 + 11 + 12 = 33, ser att 33 inte finns bland alternativen och börjar gissa — landar lätt på 53 eller 62 eftersom de \"ser rimliga\" ut.",
+      "correct_thinking": "Skriv talen som m − 1, m, m + 1. Summan är 3m, alltså alltid delbar med 3. Testa alternativen: 45 = 3 · 15 (möjligt), 53, 62, 79 är inte delbara med 3.",
+      "answer": "A — 45, det enda alternativet som är en multipel av 3."
+    },
+    "counter_example": "Om följden istället bestod av tre på varandra följande jämna tal (m − 2, m, m + 2), då blir summan 3m fortfarande, men nu med m jämn — kravet skärps till delbarhet med 6."
+  },
+  {
+    "id": "XYZ-TRAP-047",
+    "tldr": "Paritet avgör innan räknandet börjar — jämn × vad-som-helst är jämn, udda × udda är udda.",
+    "recognition_cue": "När frågan handlar om huruvida ett uttryck \"kan vara udda\", \"måste vara jämnt\" eller liknande, särskilt med villkor som \"x och y är jämna tal\".",
+    "worked_example": {
+      "setup": "Både x och y är jämna tal. Vilket av uttrycken kan vara ett udda tal: A) x + y − 2, B) x(y + 1), C) (x + 1)/(y + 1), D) (x − y)²?",
+      "trap_thinking": "Studenten testar x = 2, y = 2 i varje uttryck och får alla jämna utom B där x(y + 1) = 2 · 3 = 6 (jämn). Eftersom inget verkar udda väljer studenten A på måfå.",
+      "correct_thinking": "Tillämpa paritetsregler: A är jämn + jämn − jämn = jämn. B är jämn · udda = jämn. D är (jämn − jämn)² = jämn. C däremot är (udda)/(udda) som kan ge ett udda heltal, t.ex. x = 2, y = 0 ger 3/1 = 3.",
+      "answer": "C — (x + 1)/(y + 1) kan landa på ett udda heltal eftersom både täljare och nämnare är udda."
+    },
+    "counter_example": "Om villkoret istället var \"x är udda och y är jämn\", då flippar paritetstabellen helt — t.ex. x + y blir nu udda och uttryck A skulle ge ett udda värde."
+  },
+  {
+    "id": "XYZ-TRAP-048",
+    "tldr": "Medelvärde börjar med totalsumman — försök inte lösa ut enskilda termer i förväg.",
+    "recognition_cue": "När problemet ger flera relationer mellan okända (x + y, y + z, x + z) eller en lista där några tal saknas och frågar efter medelvärdet.",
+    "worked_example": {
+      "setup": "Givet att x + y = 7,5, y + z = 12,5 och x + z = 10. Vad är medelvärdet av x, y och z?",
+      "trap_thinking": "Studenten försöker lösa ut x, y och z var för sig genom substitution, gör räknefel under vägen och får ett medelvärde som inte stämmer — landar på 7,5 (C) eftersom det \"känns rimligt\".",
+      "correct_thinking": "Addera alla tre ekvationer: (x + y) + (y + z) + (x + z) = 2(x + y + z) = 30, alltså x + y + z = 15. Medelvärdet är total/antal = 15/3 = 5.",
+      "answer": "B — medelvärdet är 5, eftersom totalsumman dividerad med 3 räcker."
+    },
+    "counter_example": "Om frågan istället bad om enskilda värden för x, y eller z, då räcker inte totalen — då måste systemet faktiskt lösas och varje variabel räknas fram."
+  },
+  {
+    "id": "XYZ-TRAP-049",
+    "tldr": "Vid jämnt antal är medianen medelvärdet av två tal — inte en av dem.",
+    "recognition_cue": "När en lista innehåller ett jämnt antal tal och frågan rör median, särskilt när medianen jämförs med medelvärdet eller en annan statistik.",
+    "worked_example": {
+      "setup": "Beräkna differensen mellan medianen och medelvärdet av talen −1, 1, 2, 4, 5 och 7.",
+      "trap_thinking": "Studenten sorterar talen och plockar 2 som median (en av de två mittersta), räknar medelvärdet till 3 och får differensen 1 — väljer B.",
+      "correct_thinking": "Vid sex tal är medianen medelvärdet av tredje och fjärde talet, alltså (2 + 4)/2 = 3. Medelvärdet är (−1 + 1 + 2 + 4 + 5 + 7)/6 = 18/6 = 3. Differensen blir 3 − 3 = 0.",
+      "answer": "A — differensen är 0, eftersom medianen och medelvärdet sammanfaller på 3."
+    },
+    "counter_example": "Om listan istället bestod av fem tal, då finns ett unikt mittersta element och medianen är ett enskilt tal — ingen halvering av två tal behövs."
+  },
+  {
+    "id": "XYZ-TRAP-050",
+    "tldr": "Utan återläggning krymper både täljare och nämnare för varje drag — sannolikheten är inte konstant.",
+    "recognition_cue": "När texten säger \"utan att lägga tillbaka\", \"plockar två bollar i följd\" eller på annat sätt beskriver flera drag från samma begränsade pool.",
+    "worked_example": {
+      "setup": "I en låda finns tjugo bollar numrerade 1–20. Siri har redan plockat bollarna 11 och 18 utan att lägga tillbaka. Hon plockar slumpmässigt en tredje boll. Hur stor är sannolikheten att numret är större än 11 och mindre än 18?",
+      "trap_thinking": "Studenten räknar gynnsamma som tal mellan 12 och 17, alltså 6 stycken, och delar med 20 (ursprungstotalen). Resultatet blir 6/20 = 3/10 och studenten väljer D.",
+      "correct_thinking": "Efter två dragningar finns bara 18 bollar kvar. Talen 12, 13, 14, 15, 16, 17 finns alla kvar (eftersom 11 och 18 är borttagna), så det är 6 gynnsamma av 18. Sannolikheten blir 6/18 = 1/3.",
+      "answer": "A — 1/3, när nämnaren justeras till de återstående 18 bollarna."
+    },
+    "counter_example": "Om Siri istället lade tillbaka varje dragen boll, då skulle nämnaren bestå som 20 och svaret bli 6/20 = 3/10 — utan återläggning krymper poolen."
+  },
+  {
+    "id": "XYZ-TRAP-051",
+    "tldr": "Lutning är Δy delat med Δx — räkna i den ordningen och behåll tecknet.",
+    "recognition_cue": "När problemet visar en linje i ett koordinatsystem eller ger en linjes ekvation och frågar efter lutningen, k-värdet eller den \"bästa anpassningen\".",
+    "worked_example": {
+      "setup": "I ett koordinatsystem ligger mätpunkterna ungefär längs en linje som går från övre vänstra hörnet ned mot nedre högra och korsar y-axeln vid 4. Vilken rät linje passar bäst: A) y = −x − 4, B) y = x − 4, C) y = x + 4, D) y = −x + 4?",
+      "trap_thinking": "Studenten ser att linjen korsar y-axeln vid +4 men registrerar inte att linjen lutar nedåt, så positivt k känns naturligare — väljer C (y = x + 4).",
+      "correct_thinking": "Linjen går nedåt mot höger, alltså k < 0. Δy är negativ när Δx är positiv. Skärningen med y-axeln vid +4 ger m = 4. Ekvationen är y = −x + 4.",
+      "answer": "D — y = −x + 4, eftersom negativ lutning kräver minustecknet framför x."
+    },
+    "counter_example": "Om mätpunkterna istället steg från nedre vänstra mot övre högra hörnet, då vore k positivt och C (y = x + 4) skulle vara rätt — tecknet på Δy/Δx avgör allt."
+  },
+  {
+    "id": "XYZ-TRAP-052",
+    "tldr": "För linjär f gäller f(b) − f(a) = k(b − a) — konstanten m faller bort.",
+    "recognition_cue": "När uttrycket har formen f(b) − f(a) eller f(a + 1) − f(a) för en linjär funktion f(x) = kx + m, oavsett vad m är.",
+    "worked_example": {
+      "setup": "Givet att f(x) = 3x + m där m är en konstant. Vad är f(a + 1) − f(a)?",
+      "trap_thinking": "Studenten skriver ut f(a + 1) = 3(a + 1) + m = 3a + 3 + m och f(a) = 3a + m, fastnar på att m \"borde finnas kvar\" och väljer C (m).",
+      "correct_thinking": "Differensen är (3a + 3 + m) − (3a + m) = 3 — termen 3a försvinner och m faller bort. Mer direkt: f(b) − f(a) = k(b − a) = 3 · 1 = 3.",
+      "answer": "D — differensen är 3, oberoende av m och a."
+    },
+    "counter_example": "Om f istället var kvadratisk, exempelvis f(x) = x² + m, då försvinner m fortfarande men differensen beror på både a och b — den linjära genvägen k(b − a) gäller inte längre."
+  },
+  {
+    "id": "XYZ-TRAP-053",
+    "tldr": "Volym kräver samma enhet på alla sidor — m och cm får inte blandas under multiplikation.",
+    "recognition_cue": "När problemet anger dimensioner i blandade enheter (m och cm, dm och mm) och frågar efter volym eller area.",
+    "worked_example": {
+      "setup": "En rektangel med längden 2 dm och bredden 5 cm utgör basytan av ett rätblock med höjden 3 m. Vilken volym har rätblocket?",
+      "trap_thinking": "Studenten multiplicerar talen direkt utan att konvertera — 2 · 5 · 3 = 30 — och gissar på enhet, hamnar på 30 cm³ (A) eftersom cm dyker upp i texten.",
+      "correct_thinking": "Konvertera allt till dm först: 2 dm, 5 cm = 0,5 dm, 3 m = 30 dm. Volymen blir 2 · 0,5 · 30 = 30 dm³.",
+      "answer": "B — 30 dm³, efter konvertering till samma enhet."
+    },
+    "counter_example": "Om alla mått redan var i samma enhet från början (t.ex. allt i cm), då försvinner fällan — själva multiplikationen är aldrig problemet, bara enhetsbytet."
+  },
+  {
+    "id": "XYZ-TRAP-054",
+    "tldr": "Term nummer n ligger (n − 1) steg från första termen — inte n steg.",
+    "recognition_cue": "När uppgiften beskriver en aritmetisk följd eller ett mönster som växer med fast skillnad och frågar efter en specifik term långt fram (figur 150, term 20 etc.).",
+    "worked_example": {
+      "setup": "Med hjälp av lika stora kvadrater bildas figurer i ett mönster där antalet kvadrater i figurerna bildar en aritmetisk talföljd som börjar med 1 och växer med 2 per steg. Hur många kvadrater finns i figur 150?",
+      "trap_thinking": "Studenten ser \"figur 150\" och multiplicerar 150 · 2 = 300, väljer C — har räknat 150 steg från start istället för 149.",
+      "correct_thinking": "Använd a_n = a_1 + (n − 1)d med a_1 = 1, d = 2 och n = 150. Då blir a_150 = 1 + 149 · 2 = 1 + 298 = 299.",
+      "answer": "B — 299 kvadrater, eftersom 150:e figuren ligger 149 steg från den första."
+    },
+    "counter_example": "Om frågan istället gällde antalet steg mellan figur 1 och figur 150, då är svaret faktiskt 149 — felgreppet kommer från att förväxla termindex med stegantal."
+  },
+  {
+    "id": "XYZ-TRAP-055",
+    "tldr": "\"A är x gånger så stor som B\" betyder A = x·B — subjektet är det multiplicerade.",
+    "recognition_cue": "När texten kedjar relationer av typen \"3 gånger så många äpplen som päron\" och \"9 gånger så många päron som bananer\" och söker en total uttryckt i en av sorterna.",
+    "worked_example": {
+      "setup": "I en låda finns det 3 gånger så många äpplen som päron och 9 gånger så många päron som bananer. Om x är antalet äpplen, vilket uttryck motsvarar då det totala antalet frukter?",
+      "trap_thinking": "Studenten vänder på riktningen och tänker \"päron = 3 · äpplen\", får ett uppblåst antal och landar på A (13x) som ser snyggt ut.",
+      "correct_thinking": "Riktningen är A = x · B. Äpplen = 3 · päron ger päron = x/3. Päron = 9 · bananer ger bananer = päron/9 = x/27. Totalen blir x + x/3 + x/27 = (27 + 9 + 1)x/27 = 37x/27.",
+      "answer": "D — 37x/27, när varje \"x gånger så stor som\" tolkas med subjektet som multiplikator."
+    },
+    "counter_example": "Om uppgiften istället sa \"antalet päron är 3 gånger antalet äpplen\", då vänds riktningen helt och päron = 3x — formuleringen styr vilken sida som blir multiplicerad."
+  }
+]

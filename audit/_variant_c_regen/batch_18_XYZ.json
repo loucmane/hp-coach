@@ -1,0 +1,938 @@
+{
+  "batch_id": "batch_18_XYZ",
+  "section": "XYZ",
+  "count": 15,
+  "tasks": [
+    {
+      "exam": "var-2024",
+      "qid": "var-2024-kvant1-XYZ-006",
+      "question": {
+        "qid": "var-2024-kvant1-XYZ-006",
+        "exam_id": "var-2024",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "Hur stor är vinkeln x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "25°"
+          },
+          {
+            "letter": "B",
+            "text": "32°"
+          },
+          {
+            "letter": "C",
+            "text": "57°"
+          },
+          {
+            "letter": "D",
+            "text": "58°"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2024-kvant1-XYZ-006.svg",
+          "aspect_ratio": 1.306
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna med en vinkel som är 7° för liten och få 25°.",
+            "why_wrong": "25° kommer av ett avläsningsfel eller att man hoppar över ett vinkelsteg; rätt summa ger 32^\\circ."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 57° om man tar supplementvinkeln till 123° istället.",
+            "why_wrong": "57° är komplementet till 33°, inte x; vinkelsumman i rätt triangel ger 32^\\circ."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 58° om de räknar komplement istället för inre vinkel.",
+            "why_wrong": "58° = 90°-32°, alltså komplementet — x är själv 32^\\circ, inte dess komplement."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Identifiera den triangel där x är en inre vinkel och två andra är markerade. Vinkelsumman ger x=180^\\circ-(a+b); alternativt fungerar yttervinkelregeln om en av vinklarna är yttre. Figurens vinklar kedjar ihop till x=32^\\circ.",
+        "technique": "Trianglar i sammansatt figur: kombinera vinkelsumma 180° med yttervinkelregeln så att kedjan från kända vinklar når x.",
+        "framework_id": "XYZ-TRAP-038"
+      }
+    },
+    {
+      "exam": "var-2024",
+      "qid": "var-2024-kvant1-XYZ-009",
+      "question": {
+        "qid": "var-2024-kvant1-XYZ-009",
+        "exam_id": "var-2024",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 9,
+        "prompt": "xy ≠ 0 2xy(3xy+15y) Vilket svarsalternativ motsvarar 2 ? 6xy",
+        "options": [
+          {
+            "letter": "A",
+            "text": "x + 5"
+          },
+          {
+            "letter": "B",
+            "text": "3x + 15"
+          },
+          {
+            "letter": "C",
+            "text": "x + 15y 2x^{2} y+5"
+          },
+          {
+            "letter": "D",
+            "text": "2xy"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna 3x+15.",
+            "why_wrong": "Förkorta hela koefficienten."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta x+15y.",
+            "why_wrong": "y tar ut varandra."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 2x²y+5/(2xy).",
+            "why_wrong": "x+5."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Förenkla: \\frac{6x^{2}y^{2}+30xy^{2}}{6xy^{2}}=x+5.",
+        "technique": "Förkortning av polynom-bråk.",
+        "framework_id": "XYZ-TRAP-018"
+      }
+    },
+    {
+      "exam": "var-2024",
+      "qid": "var-2024-kvant2-XYZ-002",
+      "question": {
+        "qid": "var-2024-kvant2-XYZ-002",
+        "exam_id": "var-2024",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 2,
+        "prompt": "Vilken av punkterna ligger på linjen L?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "(-5, 1)"
+          },
+          {
+            "letter": "B",
+            "text": "(-3, -2)"
+          },
+          {
+            "letter": "C",
+            "text": "(1, -5)"
+          },
+          {
+            "letter": "D",
+            "text": "(3, -3)"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2024-kvant2-XYZ-002.svg",
+          "aspect_ratio": 0.99
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att blanda ihop x och y och välja (-5, 1).",
+            "why_wrong": "(-5, 1) är (1, -5) med koordinaterna bytta — vid x=-5 ger linjen ett helt annat y."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta (-3, -2) om man tar en punkt nära linjen utan att räkna.",
+            "why_wrong": "(-3, -2) ligger nära men inte på linjen; sätt in i y=kx+m och du ser att y inte stämmer."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten är (3, -3) om man tror linjen är y=-x.",
+            "why_wrong": "Linjen i figuren har annan lutning eller y-skärning än y=-x — endast (1, -5) löser ekvationen."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Läs av två rutnätspunkter ur figuren för att låsa linjens ekvation y=kx+m. Sätt in varje alternativs x-värde och kontrollera att y stämmer — (1, -5) är det enda alternativ där y stämmer med linjens värde vid x=1.",
+        "technique": "Punkt på linje från graf: läs av två tydliga punkter ur figuren, bestäm linjens k och m, och stoppa in varje alternativ — den som uppfyller y=kx+m ligger på linjen.",
+        "framework_id": "XYZ-TRAP-051"
+      }
+    },
+    {
+      "exam": "var-2024",
+      "qid": "var-2024-kvant2-XYZ-003",
+      "question": {
+        "qid": "var-2024-kvant2-XYZ-003",
+        "exam_id": "var-2024",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 3,
+        "prompt": "Vad är \\frac{1}{3} -b \\frac{1}{2} + \\frac{1}{6} l?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "- \\frac{2}{3}"
+          },
+          {
+            "letter": "B",
+            "text": "- \\frac{1}{3}"
+          },
+          {
+            "letter": "C",
+            "text": "0"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{1}{3}"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna −2/3.",
+            "why_wrong": "−1/3."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 0.",
+            "why_wrong": "−1/3."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 1/3.",
+            "why_wrong": "−1/3."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "\\frac{1}{2}+\\frac{1}{6}=\\frac{2}{3}. \\frac{1}{3}-\\frac{2}{3}=-\\frac{1}{3}.",
+        "technique": "Bråk-subtraktion."
+      }
+    },
+    {
+      "exam": "var-2024",
+      "qid": "var-2024-kvant2-XYZ-010",
+      "question": {
+        "qid": "var-2024-kvant2-XYZ-010",
+        "exam_id": "var-2024",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "a, b och c är positiva tal sådana att \\frac{a}{b} = \\frac{b}{c} och c = 2a. Vad är b uttryckt i a?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "b = a 2"
+          },
+          {
+            "letter": "B",
+            "text": "b = \\frac{a}{2}"
+          },
+          {
+            "letter": "C",
+            "text": "b = 2 a"
+          },
+          {
+            "letter": "D",
+            "text": "b = \\frac{a}{2}"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna a/2.",
+            "why_wrong": "a√2."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 2√a.",
+            "why_wrong": "a√2."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid a/2.",
+            "why_wrong": "a√2."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "b^{2}=a\\cdot 2a=2a^{2} → b = a√2.",
+        "technique": "Geometriskt medelvärde: b = √(ac).",
+        "framework_id": "XYZ-TRAP-033"
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant1-XYZ-008",
+      "question": {
+        "qid": "var-2025-kvant1-XYZ-008",
+        "exam_id": "var-2025",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "Vad är 4 ? 3·10",
+        "options": [
+          {
+            "letter": "A",
+            "text": "7"
+          },
+          {
+            "letter": "B",
+            "text": "70"
+          },
+          {
+            "letter": "C",
+            "text": "700"
+          },
+          {
+            "letter": "D",
+            "text": "7 000"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 7.",
+            "why_wrong": "70."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 700.",
+            "why_wrong": "70."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 7000.",
+            "why_wrong": "70."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "\\frac{2{,}1\\cdot 10^{6}}{3\\cdot 10^{4}}=0{,}7\\cdot 10^{2}=70.",
+        "technique": "Division av tiopotenser."
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant1-XYZ-009",
+      "question": {
+        "qid": "var-2025-kvant1-XYZ-009",
+        "exam_id": "var-2025",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 9,
+        "prompt": "Linjen L har ekvationen y + 2x - 2 = 0. Vilket svarsalternativ visar linjen L?",
+        "options": [
+          {
+            "letter": "A",
+            "text": ""
+          },
+          {
+            "letter": "B",
+            "text": ""
+          },
+          {
+            "letter": "C",
+            "text": ""
+          },
+          {
+            "letter": "D",
+            "text": ""
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tappa minustecknet och välja en stigande linje med lutning 2.",
+            "why_wrong": "Lutningen är -2, alltså fallande åt höger — A stiger eller har fel tecken."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta en linje med lutning -\\frac{1}{2} om man förväxlar koefficienten 2 med 1/2.",
+            "why_wrong": "Efter isolering är k=-2, alltså brant; -\\frac{1}{2} vore flack och negativ — fel branthet."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten är att välja en linje med rätt lutning men fel y-skärning.",
+            "why_wrong": "Lutning -2 räcker inte — y-skärning +2 måste också stämma; C matchar båda."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Isolera y: y+2x-2=0\\Rightarrow y=-2x+2, alltså k=-2 (brant fallande) och m=+2 (skär y-axeln uppåt). Sök grafen med dessa två egenskaper — alternativ C.",
+        "technique": "Linje från ekvation: isolera y till for- men y=kx+m, läs av k (lutning) och m (y-skärning), matcha mot grafens riktning och y-skärning.",
+        "framework_id": "XYZ-TRAP-051"
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant1-XYZ-010",
+      "question": {
+        "qid": "var-2025-kvant1-XYZ-010",
+        "exam_id": "var-2025",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "b ≠ 0 Vilket svarsalternativ är lika med uttrycket \\frac{a+b b-a}{b b}+ ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "0"
+          },
+          {
+            "letter": "B",
+            "text": "1"
+          },
+          {
+            "letter": "C",
+            "text": "2"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{2a}{b}"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 0.",
+            "why_wrong": "2."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 1.",
+            "why_wrong": "2."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 2a/b.",
+            "why_wrong": "2 (a förkortas bort)."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "\\frac{a+b+b-a}{b}=\\frac{2b}{b}=2.",
+        "technique": "Bråkaddition: gemensam nämnare, samla täljare.",
+        "framework_id": "XYZ-TRAP-016"
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant1-XYZ-012",
+      "question": {
+        "qid": "var-2025-kvant1-XYZ-012",
+        "exam_id": "var-2025",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 12,
+        "prompt": "De tre cirklarna har radien 1 cm. Cirklarnas medelpunkter ligger i triangelns hörn. Hur stor är den sammanlagda arean av de skuggade områdena?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "2π \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "B",
+            "text": "2, 25π \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "C",
+            "text": "2, 5π \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "D",
+            "text": "2, 75π \\mathrm{cm}^{2}"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2025-kvant1-XYZ-012.svg",
+          "aspect_ratio": 1.28
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7",
+          "pedagogy_regenerated_at": 1778510870035,
+          "regen_source": "persona_pass_phase_e_2026_05_11"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 2π om man glömmer en av tre cirklar i totalen.",
+            "why_wrong": "Tre hela cirklar ger 3π i råmaterial, inte 2π — sedan subtraheras π/2."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 2,25π när man feluppskattar sektor-arean inuti.",
+            "why_wrong": "Vinkelsumman 180° (inte 270°) ger π/2 inuti — 3π − 0,75π = 2,25π skulle kräva 270° vinkelsumma."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du minns regeln som 'alltid subtrahera en kvarts cirkel per hörn' kan du landa på 2,75π.",
+            "why_wrong": "Det är triangelns INTERNA vinklar (totalt 180°) som styr, inte 90° per hörn."
+          }
+        ],
+        "pitfall": "Vinkelsumman 180° gäller triangelns INRE vinklar — det är just dessa som bestämmer hur stor del av cirklarna som ligger inuti triangeln, oavsett om triangeln är likbent eller godtycklig.",
+        "solution_path": "Varje cirkel har arean \\pi \\cdot 1^2 = π, så tre cirklar ger 3π totalt. Sektorerna inuti triangeln (en per hörn) har vinklar som summerar till 180° eftersom det är triangelns vinkelsumma — sammanlagd sektor-area inuti = (\\frac{180}{360})·π = π/2. Skuggad area utanför triangeln = 3π − π/2 = 5π/2 = 2,5π cm^2.",
+        "technique": "Tre cirklar med medelpunkter i triangelns hörn: använd att triangelns inre vinkelsumma är 180° för att hitta hur mycket av cirklarna som ligger innanför triangeln, resten ligger utanför."
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant2-XYZ-003",
+      "question": {
+        "qid": "var-2025-kvant2-XYZ-003",
+        "exam_id": "var-2025",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 3,
+        "prompt": "Medelvärdet av de fyra talen 2x, 3x, 5x och 8x är 45. Vad är x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "5"
+          },
+          {
+            "letter": "B",
+            "text": "10"
+          },
+          {
+            "letter": "C",
+            "text": "15"
+          },
+          {
+            "letter": "D",
+            "text": "20 5 ?"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 5.",
+            "why_wrong": "10."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 15.",
+            "why_wrong": "10."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 20.",
+            "why_wrong": "10."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "18x=180 → x = 10.",
+        "technique": "Medelvärde: total/antal.",
+        "framework_id": "XYZ-TRAP-048"
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant2-XYZ-006",
+      "question": {
+        "qid": "var-2025-kvant2-XYZ-006",
+        "exam_id": "var-2025",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "Hur stor är arean av sexhörningen ABCDEF?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "100 \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "B",
+            "text": "105 \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "C",
+            "text": "110 \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "D",
+            "text": "115 \\mathrm{cm}^{2}"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2025-kvant2-XYZ-006.svg",
+          "aspect_ratio": 1.028
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att glömma ett litet hörnstycke och få 100.",
+            "why_wrong": "100 cm² är 10 cm² för litet — kontrollera att alla delar är med innan du summerar; total 110 cm²."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 105 om man räknar med fel sidlängd i en triangel.",
+            "why_wrong": "5 cm² fel kommer typiskt av en sida som lästs 1 cm fel — sanna areadelar summerar till 110 cm²."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten är att dubbelräkna en överlappande del och få 115.",
+            "why_wrong": "115 cm² är 5 för stort — ett område har räknats två gånger; korrekt summa är 110 cm²."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Oregelbundna polygoner saknar en enskild formel — den överförbara tekniken är att dekomponera i rektanglar och rätvinkliga trianglar. Med figurens sidlängder summerar del-areorna till A_{tot} = 110 cm².",
+        "technique": "Polygon-area via dekomponering: dela sexhörningen i rektanglar och rätvinkliga trianglar; addera (eller subtrahera) areorna istället för att försöka en formel.",
+        "framework_id": "XYZ-TRAP-041"
+      }
+    },
+    {
+      "exam": "var-2025",
+      "qid": "var-2025-kvant2-XYZ-009",
+      "question": {
+        "qid": "var-2025-kvant2-XYZ-009",
+        "exam_id": "var-2025",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 9,
+        "prompt": "Vilket svarsalternativ visar en rätvinklig triangel?",
+        "options": [
+          {
+            "letter": "A",
+            "text": ""
+          },
+          {
+            "letter": "B",
+            "text": ""
+          },
+          {
+            "letter": "C",
+            "text": ""
+          },
+          {
+            "letter": "D",
+            "text": ""
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778416807595,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att gissa rätvinklighet ur ‘ser ut som 90°’.",
+            "why_wrong": "Visuell uppskattning räcker inte — endast sidornas a^2+b^2=c^2 bevisar 90°-vinkeln. B uppfyller inte."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att välja triangeln med proportionerna 3-4-5.",
+            "why_wrong": "Om C:s sidor inte exakt uppfyller a^2+b^2=c^2 är den inte rätvinklig — endast A passar."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten är att välja en likbent triangel.",
+            "why_wrong": "Likbenthet säger inget om rätvinklighet — testa a^2+b^2=c^2 på sidlängderna istället."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Läs av sidlängderna i varje alternativ och kvadrera. För alternativ A stämmer Pythagoras-likheten: a^2+b^2=c^2 där c är den längsta sidan. Övriga alternativ ger olikhet och kan strykas.",
+        "technique": "Pythagoras-test för rätvinklighet: en triangel är rätvinklig omm den längsta sidan c uppfyller a^2+b^2=c^2 — testa varje alternativ med dess avlästa sidlängder.",
+        "framework_id": "XYZ-TRAP-040"
+      }
+    },
+    {
+      "exam": "var-2026",
+      "qid": "var-2026-kvant2-XYZ-004",
+      "question": {
+        "qid": "var-2026-kvant2-XYZ-004",
+        "exam_id": "var-2026",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 4,
+        "prompt": "Vilket svarsalternativ är en ekvation för den räta linjen i figuren?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "y = \\frac{2}{3} x-2"
+          },
+          {
+            "letter": "B",
+            "text": "y = \\frac{3}{2} x-2"
+          },
+          {
+            "letter": "C",
+            "text": "y = \\frac{2}{3} x+3"
+          },
+          {
+            "letter": "D",
+            "text": "y = \\frac{3}{2} x+3 \\frac{1}{4} + \\frac{1}{5}"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2026-kvant2-XYZ-004.svg",
+          "aspect_ratio": 0.99
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413273816,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att kasta om delta-x och delta-y: 2 åt höger och 3 upp ger lutning 3/2 istället för 2/3.",
+            "why_wrong": "Lutning = Δy/Δx, inte Δx/Δy. Räkna alltid lodrät förändring DELAT med vågrät."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du läser fel y-skärning från figuren (positivt istället för negativt) får du y-skärning +3.",
+            "why_wrong": "Figuren visar tydligt att linjen passerar y-axeln under origo, alltså negativ skärning. m = −2."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att kombinera båda felen (ombytt lutning + fel tecken på y-skärningen).",
+            "why_wrong": "Lutning är 2/3 (inte 3/2) och y-skärning −2 (inte +3). Båda ska stämma."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av figuren framgår att linjen skär y-axeln i -2 och lutar uppåt med lutning \\frac{2}{3} (för varje 3 steg höger går linjen 2 steg upp). Det ger ekvationen y=\\frac{2}{3}x-2.",
+        "technique": "Linje från graf: läs y-skärningen direkt vid x=0, läs lutningen som Δy/Δx mellan två avlästa punkter.",
+        "framework_id": "XYZ-TRAP-051"
+      }
+    },
+    {
+      "exam": "var-2026",
+      "qid": "var-2026-kvant2-XYZ-005",
+      "question": {
+        "qid": "var-2026-kvant2-XYZ-005",
+        "exam_id": "var-2026",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 5,
+        "prompt": "Vad är ? \\frac{1}{6}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "\\frac{1}{27}"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{2}{3}"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{3}{2}"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{27}{10}"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413273816,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Om du minns regeln som 'addera täljare och nämnare var för sig' blir täljaren \\frac{1+1}{4+5}=\\frac{2}{9}, sen delat med 1/6 = 12/9 = 4/3 — fel men nära 1/27 om man dessutom inverterar.",
+            "why_wrong": "Bråkaddition kräver gemensam nämnare. \\frac{1}{4}+\\frac{1}{5}=\\frac{9}{20}, inte \\frac{2}{9}."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Många stannar vid täljaren (\\frac{9}{20}) och MULTIPLICERAR med 1/6 istället för att dela: \\frac{9}{20}\\cdot\\frac{1}{6}=\\frac{3}{40} ≈ 2/3 vid avrundning.",
+            "why_wrong": "Att dela med ett bråk = multiplicera med dess INVERS, inte med själva bråket. Vänd 1/6 till 6/1."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten kan vara att dela 9/20 med 6 istället för med 1/6: \\frac{9}{20\\cdot 6}=\\frac{9}{120}=\\frac{3}{40}, fel inverterad gradigt.",
+            "why_wrong": "Dela med 1/6 är att GÅNGA med 6, inte att dela med 6. Resultatet blir större, inte mindre."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Räkna täljaren först: \\frac{1}{4}+\\frac{1}{5}=\\frac{5+4}{20}=\\frac{9}{20}. Att dela med 1/6 = att multiplicera med 6: \\frac{9}{20}\\cdot 6=\\frac{54}{20}=\\frac{27}{10}.",
+        "technique": "Sammansatt bråk: lös täljare och nämnare var för sig, dela sedan = multiplicera med inversen av nämnaren.",
+        "framework_id": "XYZ-TRAP-017"
+      }
+    },
+    {
+      "exam": "var-2026",
+      "qid": "var-2026-kvant2-XYZ-010",
+      "question": {
+        "qid": "var-2026-kvant2-XYZ-010",
+        "exam_id": "var-2026",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "Fyrhörningen ABDF är en kvadrat. Hur stor är arean av triangeln ACE?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "3,5 \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "B",
+            "text": "4 \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "C",
+            "text": "4,5 \\mathrm{cm}^{2}"
+          },
+          {
+            "letter": "D",
+            "text": "5 \\mathrm{cm}^{2}"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2026-kvant2-XYZ-010.svg",
+          "aspect_ratio": 1.277
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778413273816,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna med fel höjd — t.ex. ta hela kvadratens sida som höjd när bas är diagonalen: \\frac{1}{2}\\cdot 7\\cdot 1=3{,}5 cm².",
+            "why_wrong": "Triangelns höjd är inte hela kvadratens sida när basen är diagonalt orienterad. Använd vinkelrätt avstånd från E till linjen AC."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid att triangeln är hälften av kvadraten — fast det är bara fallet när två hörn av triangeln är hörn av kvadraten på samma sida.",
+            "why_wrong": "Beroende på var E ligger inuti kvadraten varierar arean. Här ger figuren area exakt 4 cm², inte halva kvadraten."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta att avrunda uppåt om man tror sig ha gjort något fel: 4 → 5.",
+            "why_wrong": "Areaformeln ger ett exakt heltal (4 cm²) i den här konfigurationen — ingen avrundning behövs."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av figuren bildar ACE en triangel inuti kvadraten ABDF. Med kvadratens sidlängd avläst i figuren och triangelns bas och höjd identifierade ger areaformeln \\frac{1}{2}\\cdot bas\\cdot höjd=4 cm².",
+        "technique": "Triangelarea inuti polygon: identifiera bas (sida av triangeln längs en lättavläst riktning) och höjd (vinkelrätt avstånd från tredje hörnet till bas)."
+      }
+    }
+  ]
+}

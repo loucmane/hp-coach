@@ -1,0 +1,160 @@
+[
+  {
+    "id": "KVA-TRAP-027",
+    "pattern_description": "Triangelolikheten — studenten glömmer att tredje sidan måste ligga i (|a − b|, a + b).",
+    "why_it_occurs": "Att känna till två sidor känns som 'nästan hela triangeln'. Studenten jämför intervall för tredje sidan fel, ofta genom att plocka ett enskilt 'rimligt' värde istället för det öppna intervallet.",
+    "common_distractor_signature": "Väljer A eller B genom att anta att tredje sidan är något 'naturligt' värde (som medelvärdet), missar att det faktiska intervallet kan korsa jämförelsemålet → D.",
+    "countermeasure": "Tredje sidan i triangel med två sidor a, b ligger i intervallet (|a-b|, a+b). Jämför mot målvärdet via intervallets ändpunkter.",
+    "example_questions": [
+      "var-2013-kvant1-KVA-014",
+      "var-2022-2-kvant2-KVA-017",
+      "host-ver1-2019-kvant2-KVA-021",
+      "host-ver2-2019-kvant2-KVA-021",
+      "var-2023-kvant1-KVA-021",
+      "var-2014-kvant1-KVA-015"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-028",
+    "pattern_description": "Sannolikhet — studenten jämför utan att explicit räkna både gynnsamma och totala utfall.",
+    "why_it_occurs": "Sannolikheter känns intuitiva. Studenten ögonmäter 'mest sannolikt' istället för att räkna gynnsamma/totala för båda alternativen, och missar ofta komplementär eller kombinatorisk struktur.",
+    "common_distractor_signature": "Väljer A/B på intuition, missar att den explicita räkningen ger motsatt svar — eller väljer C utan att kolla de exakta talen.",
+    "countermeasure": "Sannolikhet = gynnsamma / totala. Räkna BÅDA explicit för varje sida innan du jämför — använd komplementhändelse (1 − P(motsatsen)) om direkt räkning är svår.",
+    "example_questions": [
+      "host-2015-kvant1-KVA-016",
+      "host-2017-kvant1-KVA-014",
+      "host-2020-kvant1-KVA-014",
+      "var-2015-kvant2-KVA-013",
+      "var-2025-kvant2-KVA-022",
+      "var-2013-kvant1-KVA-015"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-029",
+    "pattern_description": "Identisk täljare, olika nämnare — studenten misslyckas tillämpa 'mindre nämnare = större bråk'.",
+    "why_it_occurs": "När täljarna ser oskyldigt lika ut (t.ex. 93/70 vs 93/71) försöker studenten ändå konvertera mentalt till decimaler eller uppskatta, och drar in räknefel.",
+    "common_distractor_signature": "Väljer C (lika) genom att titta på samma täljare, eller väljer fel riktning genom att blanda ihop nämnar-storlek med bråk-storlek.",
+    "countermeasure": "Lika täljare ⇒ den med MINDRE nämnare är större. Memorera regeln; pröva inte att räkna ut bråken numeriskt.",
+    "example_questions": [
+      "host-2014-kvant1-KVA-013",
+      "host-2025-kvant1-KVA-018",
+      "var-2026-kvant1-KVA-013"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-030",
+    "pattern_description": "Hastighet = sträcka / tid — studenten jämför hastigheter utan att normalisera tidsbaserna.",
+    "why_it_occurs": "När 'Pia cyklade dubbelt så långt på dubbelt så lång tid', drar studenten slutsatsen att hon är dubbelt så snabb (eller långsam). Det är kvoten som spelar roll, inte absolutvärdena.",
+    "common_distractor_signature": "Väljer A eller B genom att läsa sträcka ELLER tid ensamt, missar att proportionell skalning av båda lämnar hastigheten oförändrad (C).",
+    "countermeasure": "Medelhastighet är förhållandet sträcka/tid. Om båda skalas med samma faktor ändras INTE hastigheten. Reducera kvoterna eller korsmultiplicera.",
+    "example_questions": [
+      "var-2017-kvant1-KVA-013",
+      "var-2025-kvant1-KVA-020",
+      "host-ver1-2019-kvant2-KVA-020",
+      "host-ver2-2019-kvant2-KVA-020",
+      "host-2018-kvant2-KVA-022"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-031",
+    "pattern_description": "Åldersuppgift med flera personer — studenten tappar bort sig i 'tidigare/senare'-tidsförskjutningar.",
+    "why_it_occurs": "Åldersuppgifter komprimerar flera tidpunkter och relationer. Studenten blandar ihop 'ålder då' med 'ålder nu' och förlorar koll på vilken Δ som gäller för vem.",
+    "common_distractor_signature": "Väljer A/B genom att förankra sig vid fel tidpunkt eller tillämpa Δ på bara en person — svaret är ofta omvänt.",
+    "countermeasure": "Skriv alla åldrar i termer av EN gemensam person + tid: 'idag = X', 'tidigare = X − Δ'. Skillnaderna är konstanta över tid; använd det.",
+    "example_questions": [
+      "host-2017-kvant1-KVA-020",
+      "host-2023-kvant1-KVA-019",
+      "host-2025-kvant2-KVA-013",
+      "var-2013-kvant2-KVA-014",
+      "var-2016-kvant2-KVA-020"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-032",
+    "pattern_description": "Andragradsekvation med två rötter — studenten plockar en rot och fortsätter, missar att den andra kan ge ett annat svar.",
+    "why_it_occurs": "När en rot är funnen slutar studenten lösa. Men x² = a (eller x² − 2x − 3 = 0) har TVÅ rötter; om jämförelsen beror på vilken rot x är, kan svaret vara D.",
+    "common_distractor_signature": "Väljer A/B baserat på en rot (ofta den positiva), missar den negativa grenen som flippar svaret → D.",
+    "countermeasure": "Vid kvadratisk ekvation: skriv ut BÅDA rötterna (faktorisera eller pq-formel). Om båda rötterna ger olika svar på frågan → D.",
+    "example_questions": [
+      "host-2021-kvant1-KVA-018",
+      "var-2016-kvant2-KVA-018",
+      "var-2017-kvant1-KVA-020",
+      "var-2025-kvant2-KVA-018"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-033",
+    "pattern_description": "Samma area men olika form — studenten antar samma omkrets (eller tvärtom).",
+    "why_it_occurs": "Area och omkrets känns kopplade ('större area = större omkrets'). De är det inte: för fixerad area har den mest effektiva formen (cirkel/kvadrat) minst omkrets; långsmala former har större omkrets.",
+    "common_distractor_signature": "Väljer C (lika) vid jämförelse av en kvadrats omkrets med en triangels vid samma area, missar att kvadraten har den mindre omkretsen.",
+    "countermeasure": "Samma area ≠ samma omkrets. För given area: cirkel har minst omkrets, sedan kvadrat, sedan andra former. Räkna båda omkretsarna explicit.",
+    "example_questions": [
+      "var-2024-kvant1-KVA-021",
+      "var-2026-kvant2-KVA-021",
+      "host-2016-kvant1-KVA-020"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-034",
+    "pattern_description": "Jämförelse av invers — studenten glömmer att för positiva tal ger ett större värde en mindre invers.",
+    "why_it_occurs": "Reciprokens monotonicitet vänds (för positiva tal). Studenten blandar ihop 'större a' med 'större 1/a'.",
+    "common_distractor_signature": "Väljer A när B är rätt (eller tvärtom), genom att överföra ordningen från a till 1/a direkt.",
+    "countermeasure": "För positiva tal: 1/a är AVTAGANDE i a — större a ger mindre 1/a. (För negativa tal är 1/a också negativt; rita tallinje.)",
+    "example_questions": [
+      "var-2026-kvant1-KVA-013",
+      "host-2016-kvant2-KVA-018",
+      "host-2014-kvant1-KVA-013"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-035",
+    "pattern_description": "Kvadratisk f(x) är identisk vid två icke-triviala nollställen av f — studenten räknar båda värden numeriskt utan att se att f(a) = f(b) = 0.",
+    "why_it_occurs": "Numerisk utvärdering känns säkert men missar den strukturella genvägen: om a, b båda är nollställen till f, så är f(a) = f(b) (ofta 0). Studenten bränner tid och riskerar räknefel.",
+    "common_distractor_signature": "Väljer A eller B pga en räkneslarv, när faktorisering hade visat att båda kvantiteterna är lika (C) direkt.",
+    "countermeasure": "Innan du räknar f(a) och f(b) direkt: faktorisera f. Om både a och b är nollställen ⇒ f(a) = f(b) = 0 → C.",
+    "example_questions": [
+      "var-2017-kvant1-KVA-020",
+      "host-2021-kvant1-KVA-018",
+      "var-2016-kvant2-KVA-018"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-036",
+    "pattern_description": "Heltalsvillkor ('positiva heltal') — studenten behandlar det som 'positiva tal' och missar delbarhetsfilter.",
+    "why_it_occurs": "'Positiv' är det iögonenfallande ordet; 'heltal' tappas. Men heltalsvillkoret tvingar fram delbarhet — t.ex. x + 2y = 54 med x, y positiva heltal begränsar y till heltalsvärden, inte 0,5 eller 1,7.",
+    "common_distractor_signature": "Väljer A/B genom att plocka det algebraiskt minsta x, missar delbarhetsgolvet som tvingar fram ett större minimum.",
+    "countermeasure": "Vid 'positiva heltal': räkna upp delbarhetsvillkoret. Vilka värden av variabeln ger heltalslösning för den andra? Det är dina tillåtna val.",
+    "example_questions": [
+      "var-2013-kvant1-KVA-022",
+      "var-2022-2-kvant1-KVA-021",
+      "host-2018-kvant2-KVA-018",
+      "var-2017-kvant1-KVA-017",
+      "host-2023-kvant1-KVA-021"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-037",
+    "pattern_description": "Substitution med |x| eller ospecificerat tecken på x — studenten plockar ett tecken utan att testa det andra.",
+    "why_it_occurs": "När uppgiften ger |x| = 3 eller x² = 9 kan x vara +3 ELLER -3. Studenten tar den positiva grenen tyst och missar det negativa fallet.",
+    "common_distractor_signature": "Väljer A/B/C genom att räkna med x = +3, missar att x = -3 kan flippa jämförelsen → D.",
+    "countermeasure": "När du har |x| eller x² i ett villkor: lista x = +värde och x = -värde explicit. Räkna båda; verdikt kan vara D.",
+    "example_questions": [
+      "host-ver1-2019-kvant2-KVA-016",
+      "host-ver2-2019-kvant2-KVA-016",
+      "host-2013-kvant1-KVA-016",
+      "host-2017-kvant1-KVA-021"
+    ]
+  },
+  {
+    "id": "KVA-TRAP-038",
+    "pattern_description": "Procentmultiplikation är kommutativ (a % av b = b % av a) — studenten behandlar den som ordningsberoende.",
+    "why_it_occurs": "Procent känns som en enkelriktad operation ('30 % av 80' ser inte visuellt symmetriskt ut med '80 % av 30'). Algebraiskt: a % · b = (a/100) · b = (b/100) · a = b % · a.",
+    "common_distractor_signature": "Väljer A eller B genom att försöka räkna båda sidor, missar att värdena är identiska per konstruktion (C).",
+    "countermeasure": "a % av b = b % av a (alltid, eftersom multiplikation är kommutativ). Spotta den symmetrin innan du räknar — det är ofta direkt C.",
+    "example_questions": [
+      "host-2018-kvant1-KVA-020",
+      "host-2022-kvant1-KVA-015",
+      "var-2026-kvant2-KVA-016"
+    ]
+  }
+]

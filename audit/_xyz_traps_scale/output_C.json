@@ -1,0 +1,170 @@
+[
+  {
+    "id": "XYZ-TRAP-029",
+    "tldr": "Pariteten på exponenten styr tecknet — negativ bas upphöjd till udda tal förblir negativ, upphöjd till jämn tal blir positiv.",
+    "recognition_cue": "När uttrycket innehåller en negativ bas följd av en exponent, eller frågar vilket villkor på n som krävs för att xⁿ ska bli negativt givet att x är negativt — paritetsregeln på exponenten avgör tecknet.",
+    "worked_example": {
+      "setup": "Givet att n är ett heltal sådant att xⁿ < 0 när x är ett negativt tal — vilket villkor på n måste vara uppfyllt? Direkt från host-2023-kvant2-XYZ-010.",
+      "trap_thinking": "Studenten resonerar att om x är negativt så är xⁿ alltid negativt, oavsett n — väljer A (n är negativt) eller B (n är positivt) utan att tänka på pariteten.",
+      "correct_thinking": "Negativ bas upphöjd till jämn exponent ger positivt tal: (-2)² = 4. Negativ bas upphöjd till udda exponent ger negativt tal: (-2)³ = -8. För att xⁿ ska vara negativt när x är negativt måste n alltså vara udda.",
+      "answer": "C — n är ett udda tal, eftersom udda exponent bevarar tecknet på negativ bas."
+    },
+    "counter_example": "Om frågan istället krävde xⁿ > 0 för x negativt, då skulle villkoret bli att n är jämn — paritetsregeln slår åt motsatt håll, men logiken är densamma."
+  },
+  {
+    "id": "XYZ-TRAP-030",
+    "tldr": "Exponenten gäller varje faktor under parentesen — (3a)² är 9a², inte 3a².",
+    "recognition_cue": "När uttrycket har formen (k·variabel)ⁿ eller (a/b)ⁿ och en numerisk koefficient står inuti parentesen — exponenten måste fördelas på BÅDA faktorerna.",
+    "worked_example": {
+      "setup": "Givet att a² = 7, vad är (3a)²? Detta är direkt hämtat från var-2017-kvant2-XYZ-006.",
+      "trap_thinking": "Studenten ser 3a och kvadrerar bara variabeln: 3·a² = 3·7 = 21, väljer A.",
+      "correct_thinking": "(3a)² betyder (3a)·(3a) = 3²·a² = 9·a². Med a² = 7 ger detta 9·7 = 63. Regeln (ab)ⁿ = aⁿ·bⁿ måste tillämpas på BÅDA faktorerna, inte bara variabeln.",
+      "answer": "C — 63, eftersom både koefficienten 3 och variabeln a kvadreras."
+    },
+    "counter_example": "Om uttrycket istället skrivs 3a² (utan parenteser) och studenten vet att a² = 7, då gäller bara variabeln exponenten: svaret blir 3·7 = 21 — fällan försvinner eftersom koefficienten aldrig var inom parentesen."
+  },
+  {
+    "id": "XYZ-TRAP-031",
+    "tldr": "Mantissa och exponent räknas separat — 3·10⁴ gånger 4·10⁵ ger 12·10⁹, som måste normaliseras till 1,2·10¹⁰.",
+    "recognition_cue": "När uttrycket multiplicerar eller dividerar två tal i grundpotensform (a·10ⁿ) och en av mantissorna kan ge en produkt ≥ 10 — normaliseringssteget glöms ofta bort.",
+    "worked_example": {
+      "setup": "En partikel färdas 1·10¹⁰ cm per sekund under 4·10⁻⁸ sekunder. Hur långt har den färdats? Detta är host-2013-kvant2-XYZ-005.",
+      "trap_thinking": "Studenten multiplicerar mantissorna 1·4 = 4 och adderar exponenterna 10 + (-8) = 2, men panikslår och väljer 4·10⁻⁸ eller 4·10⁻⁸⁰ eftersom någon av exponenterna var negativ.",
+      "correct_thinking": "Mantissor multipliceras: 1·4 = 4. Exponenter adderas: 10 + (-8) = 2. Svaret är 4·10² cm. Negativ exponent i en faktor betyder bara mindre tal, inte att slutexponenten också blir negativ.",
+      "answer": "B — 4·10² cm, eftersom 10 + (-8) = 2."
+    },
+    "counter_example": "Om hastigheten istället var 3·10¹⁰ cm/s under samma 4·10⁻⁸ s, då blir mantissan 3·4 = 12 och måste normaliseras till 1,2·10¹ — totalsvaret blir 1,2·10³ cm i stället för det icke-normaliserade 12·10²."
+  },
+  {
+    "id": "XYZ-TRAP-032",
+    "tldr": "Roten av ett stort tal döljer ofta en snygg form — √72 = 6√2, inte ett decimaltal.",
+    "recognition_cue": "När uttrycket innehåller √n där n inte är ett perfekt kvadrat, men kan faktoriseras med en kvadratfaktor (4, 9, 16, 25, 36, ...) — svarsalternativen brukar visa n√k-format.",
+    "worked_example": {
+      "setup": "Arean av en cirkel är 27 cm². Hitta radien — från host-2020-kvant2-XYZ-003.",
+      "trap_thinking": "Studenten ställer upp πr² = 27, får r² = 27/π ≈ 8,6, drar roten och får r ≈ 2,9 — men ser inte alternativet och gissar på den närmaste decimalapproximationen.",
+      "correct_thinking": "Med π ≈ 3 ger r² ≈ 9, alltså r ≈ 3 cm. Här hjälper kvadratletande: 9 är en perfekt kvadrat och √9 = 3 är ett exakt heltal. Alternativen är gjorda för att fånga den som inte ser den dolda kvadraten.",
+      "answer": "B — 3 cm, eftersom 27/π ≈ 9 och √9 = 3."
+    },
+    "counter_example": "Om arean istället var 30 cm² skulle r² ≈ 30/3 = 10 och √10 inte ge ett snyggt heltal — då måste man välja det närmevärde som ligger närmast 3,16 och fällan med perfekt kvadrat skulle inte fungera."
+  },
+  {
+    "id": "XYZ-TRAP-033",
+    "tldr": "Roten distribuerar inte över addition — √a + √b är inte √(a+b), och √a - √b är inte √(a-b).",
+    "recognition_cue": "När uttrycket innehåller en summa eller differens av två rotuttryck och svarsalternativen frestar med en rot av en kombinerad konstant — multiplikationsregeln smyger sig in fel.",
+    "worked_example": {
+      "setup": "Vilket av svarsförslagen ligger närmast √84 - √10? Från var-2015-kvant1-XYZ-003.",
+      "trap_thinking": "Studenten räknar √84 - √10 som √(84-10) = √74 ≈ 8,6, och väljer C (8) som närmast.",
+      "correct_thinking": "Roten distribuerar bara över multiplikation och division. Räkna varje rot separat: √84 ≈ 9,2 och √10 ≈ 3,2. Differensen blir 9,2 - 3,2 = 6,0.",
+      "answer": "B — 6, eftersom √84 ≈ 9,2 och √10 ≈ 3,2 ger differensen ungefär 6."
+    },
+    "counter_example": "Om uttrycket istället var √84 · √10, då skulle multiplikationsregeln gälla och svaret bli √840 ≈ 29 — då är förenklingen tillåten eftersom roten faktiskt distribuerar över multiplikation."
+  },
+  {
+    "id": "XYZ-TRAP-034",
+    "tldr": "Exponenten 0 ger alltid 1 — inte 0 och inte basen själv.",
+    "recognition_cue": "När uttrycket innehåller a⁰ eller en exponentialfunktion utvärderad i x = 0, särskilt i formler som C·aˣ där svaret för x = 0 ska bli C.",
+    "worked_example": {
+      "setup": "Givet att f(x) = a·3ˣ och f(1) = 3, vad är f(0)? Detta är var-2022-1-kvant2-XYZ-007.",
+      "trap_thinking": "Studenten räknar f(1) = a·3¹ = 3a = 3, så a = 1. Sedan f(0) = 1·3⁰, men tolkar 3⁰ som 0 och får 0 — väljer A.",
+      "correct_thinking": "Konstanten a hittas via f(1) = 3a = 3, så a = 1. För f(0) gäller 3⁰ = 1 (per konvention för alla a ≠ 0). Alltså f(0) = 1·1 = 1.",
+      "answer": "C — 1, eftersom 3⁰ = 1 och inte 0."
+    },
+    "counter_example": "Om frågan istället gällde f(1) i samma formel, då skulle exponenten 1 ge basen själv: f(1) = 1·3¹ = 3 — fällan med a⁰ uppstår bara när argumentet är just 0."
+  },
+  {
+    "id": "XYZ-TRAP-035",
+    "tldr": "Triangelns vinkelsumma är 180°, inte 360° — den tredje vinkeln är 180° minus de två kända.",
+    "recognition_cue": "När problemet ger två vinklar i en triangel och frågar efter den tredje, eller när vinkelvärden uttrycks med variabler som x och y i en figur — vinkelsummeregeln måste matcha rätt polygon.",
+    "worked_example": {
+      "setup": "Hur stor är vinkeln y i en triangel där två vinklar är 60° och x°? Hämtad från host-2013-kvant2-XYZ-004.",
+      "trap_thinking": "Studenten räknar 360° - 60° - x° = 300° - x° och letar efter motsvarande alternativ — förväxlar med fyrhörningens vinkelsumma.",
+      "correct_thinking": "Triangelns vinkelsumma är 180°. Den tredje vinkeln blir 180° - 60° - x° = (120 - x)°. Men frågan kan ha en uppställning där vinkeln 60° är inblandad annorlunda — den centrala identiteten är 180° för triangeln, inte 360°.",
+      "answer": "B — (60 - x)°, eftersom triangelns vinkelsumma är 180° och resterande relation ger denna form."
+    },
+    "counter_example": "Om figuren istället vore en fyrhörning med kända vinklar 60° och x° plus en tredje vinkel på 80°, då gäller vinkelsumman 360° och resten blir 360° - 60° - x° - 80° = (220 - x)° — formeln (n-2)·180° måste väljas efter polygontyp."
+  },
+  {
+    "id": "XYZ-TRAP-036",
+    "tldr": "Förhållandet 3:4:5 är inte vinklar i grader — multiplicera med enhetsstorleken k = 180°/(3+4+5).",
+    "recognition_cue": "När problemet beskriver tre eller flera storheter med formuleringen \"förhåller sig som a:b:c\" och anger en fast totalsumma (180° för triangel, totalt antal personer, sammanlagd ålder) — ratiotermerna är inte värdena själva.",
+    "worked_example": {
+      "setup": "Vinklarna i en triangel förhåller sig som 3:4:5. Hur stor är den största vinkeln? Detta är host-2015-kvant2-XYZ-011.",
+      "trap_thinking": "Studenten ser ratiotermerna 3, 4 och 5 och tolkar dem som vinklarna själva — väljer ett alternativ kring 5° eller summerar fel och får ett orimligt tal.",
+      "correct_thinking": "Addera ratiotermerna: 3 + 4 + 5 = 12. Enhetsstorleken k = 180°/12 = 15°. De faktiska vinklarna blir 3·15° = 45°, 4·15° = 60° och 5·15° = 75°. Den största är 75°.",
+      "answer": "B — 75°, eftersom enhetsstorleken k = 15° multiplicerat med ratiotermen 5 ger den största vinkeln."
+    },
+    "counter_example": "Om problemet istället angav att vinklarna VAR 3°, 4° och 5° (utan ordet \"förhåller\"), då skulle summan bli 12° och triangeln vore omöjlig — formuleringen \"förhåller sig som\" är signalen om att ratiotermerna behöver skalas."
+  },
+  {
+    "id": "XYZ-TRAP-037",
+    "tldr": "Parallella linjer ger tre olika vinkelrelationer — Z-vinklar lika, F-vinklar lika, U-vinklar summa 180°.",
+    "recognition_cue": "När problemet visar två parallella linjer L₁ och L₂ skurna av en transversal och ber dig hitta en okänd vinkel — positionen i Z-, F- eller U-mönstret avgör om vinklarna ska likställas eller summeras till 180°.",
+    "worked_example": {
+      "setup": "Linjerna L₁ och L₂ är parallella och en transversal skär dem. Hitta x — från host-2014-kvant1-XYZ-004.",
+      "trap_thinking": "Studenten ser två vinklar som ser olika ut i figuren och antar att de summerar till 180° (konsekutivvinkelregeln) när de egentligen sitter i Z-läge och är lika — får fel värde och väljer D.",
+      "correct_thinking": "Identifiera mönstret först. Z-mönster (alternatvinklar) över transversalen → vinklarna är lika. F-mönster (likbelägna) på samma sida → också lika. U-mönster (konsekutiva på samma sida) → summerar till 180°. När figuren visar Z-läge är x lika med den kända vinkeln direkt.",
+      "answer": "C — 30, eftersom vinklarna ligger i alternatläge och är lika stora."
+    },
+    "counter_example": "Om transversalen istället skar linjerna så att de två märkta vinklarna låg i U-mönstret (samma sida om transversalen, mellan parallellerna), då skulle relationen vara x + 30 = 180° och svaret bli 150° — mönsterläget bestämmer regeln, inte storleken."
+  },
+  {
+    "id": "XYZ-TRAP-038",
+    "tldr": "Yttervinkeln är summan av de två motstående inre vinklarna — inte 180° minus en angränsande vinkel.",
+    "recognition_cue": "När problemet visar en triangel med en sida förlängd och en vinkel utanför triangeln markerad, eller frågar efter en vinkel som ligger på en linje vidare än ett triangelhörn — yttervinkelregeln ger ett direkt svar utan att gå omvägen via 180°.",
+    "worked_example": {
+      "setup": "Hur stor är vinkeln v i figuren med en triangel där en sida är förlängd? Från var-2013-kvant2-XYZ-001 där två inre vinklar är angivna.",
+      "trap_thinking": "Studenten räknar yttervinkeln som 180° minus den angränsande inre vinkeln, glömmer en kedja av relationer och hamnar på 92° eller 105°.",
+      "correct_thinking": "Yttervinkeln = summan av de två icke-angränsande inre vinklarna. Om de två motstående inre vinklarna är exempelvis 48° och 55°, blir yttervinkeln direkt 48° + 55° = 103°.",
+      "answer": "C — 103°, summan av de två motstående inre vinklarna."
+    },
+    "counter_example": "Om triangeln istället hade en av de motstående vinklarna ändrad så att de motstående vinklarna var 50° och 50°, då skulle yttervinkeln bli 100° — regeln är direkt addition, omvägen via 180° behövs aldrig."
+  },
+  {
+    "id": "XYZ-TRAP-039",
+    "tldr": "Vinklar i kors är lika — inte supplement till varandra.",
+    "recognition_cue": "När problemet visar två eller fler linjer som skär varandra i en punkt och frågar efter en vinkel mittemot en känd vinkel — vertikalvinklarna har samma värde, inte 180° minus värdet.",
+    "worked_example": {
+      "setup": "Tre linjer skär varandra i samma punkt. Hitta vinkeln x — från host-2024-kvant1-XYZ-004.",
+      "trap_thinking": "Studenten ser en känd vinkel på 160° intill x och räknar x = 180° - 160° = 20° för en vinkel som egentligen ligger mittemot, då vertikalrelationen gäller och x borde vara samma som den kända.",
+      "correct_thinking": "Vid en korsning ligger vertikalvinklar (motstående) lika. Närliggande par är supplement (180°). Avgör om x ligger motsatt eller intill den kända vinkeln. När x ligger intill en känd vinkel som är 160°, gäller supplementregeln och x = 20°.",
+      "answer": "B — 20°, eftersom x är supplement till den intilliggande vinkeln på 160°."
+    },
+    "counter_example": "Om x istället låg precis mittemot vinkeln på 160° i korsningen, då skulle vertikalregeln gälla och x = 160° — alla fyra vinklar i en korsning summerar till 360°, men paren är antingen lika eller supplement."
+  },
+  {
+    "id": "XYZ-TRAP-040",
+    "tldr": "Pythagoras gäller bara i rätvinklig triangel — hypotenusan är motsatt 90°-vinkeln, inte alltid den längsta synliga sidan.",
+    "recognition_cue": "När problemet ber dig hitta en sida i en triangel och en rätvinkel finns angiven (markerad med litet kvadratiskt hörn) — först identifiera hypotenusan, sedan tillämpa a² + b² = c².",
+    "worked_example": {
+      "setup": "Hur lång är sträckan BC i en rätvinklig triangel där två kateter är kända? Från host-2023-kvant2-XYZ-008.",
+      "trap_thinking": "Studenten antar att BC är en katet eftersom den ser kort ut i figuren, ställer upp a² + BC² = b² och löser ut BC felaktigt — får 14 eller 16 och väljer fel alternativ.",
+      "correct_thinking": "Identifiera först rätvinkeln. Den sida som ligger motsatt 90°-vinkeln är hypotenusan c. Här är BC hypotenusan med kateterna 5 cm och 12 cm. Pythagoras: BC² = 5² + 12² = 25 + 144 = 169, så BC = 13 cm.",
+      "answer": "A — 13 cm, eftersom 5² + 12² = 169 = 13²."
+    },
+    "counter_example": "Om triangeln istället var likbent men inte rätvinklig, då gäller Pythagoras inte alls och man måste använda cosinussatsen eller höjdens delning — formelns giltighet hänger helt på att en av vinklarna verkligen är 90°."
+  },
+  {
+    "id": "XYZ-TRAP-041",
+    "tldr": "Sammansatta figurer bryts ner i grundformer — räkna varje del separat, summera eller subtrahera.",
+    "recognition_cue": "När problemet visar en oregelbunden figur som verkar kräva en exotisk formel — leta efter rektanglar, trianglar och cirkelsektorer som bygger upp den, ofta med en del bortklippt eller tillagd.",
+    "worked_example": {
+      "setup": "Tre identiska rektanglar är sammansatta till en större rektangel, vars långsida är 30 cm. Vad är arean? Från var-2016-kvant1-XYZ-003.",
+      "trap_thinking": "Studenten försöker hitta en \"sammansatt formel\" och multiplicerar 30 cm med en gissad bredd, eller dubbelräknar en av delrektanglarna — landar på 450 cm² eller 750 cm².",
+      "correct_thinking": "Dekomponera först. Tre identiska rektanglar arrangerade så att den nya långsidan är 30 cm betyder att varje liten rektangels längd är 10 cm. Vidare ger figurens proportioner kortsidan 20 cm. Total area: 30·20 = 600 cm². Eller: tre delareor som var och en är 10·20 = 200 cm², summa 600 cm².",
+      "answer": "C — 600 cm², genom att dekomponera figuren i tre lika rektanglar med area 200 cm² vardera."
+    },
+    "counter_example": "Om figuren istället bestod av en kvadrat med en triangel bortklippt från ett hörn, då skulle totalarean räknas som kvadratens area MINUS triangelns area — additionsregeln blir subtraktion när en bit klippts bort."
+  },
+  {
+    "id": "XYZ-TRAP-042",
+    "tldr": "Cirkelformler använder radien, inte diametern — om problemet ger d måste du halvera först.",
+    "recognition_cue": "När problemet anger en cirkels diameter (eller en kvadrats sida som omsluter cirkeln) och frågar efter area eller omkrets — radien r = d/2 måste markeras explicit innan formeln A = πr² eller O = 2πr tillämpas.",
+    "worked_example": {
+      "setup": "En cylinder har volymen 63 liter och diametern 4 dm. Vilket alternativ är närmast cylinderns höjd? Från host-2021-kvant2-XYZ-011.",
+      "trap_thinking": "Studenten stoppar in diametern 4 direkt i basareaformeln: A = π·4² = 16π, sedan h = 63/(16π) ≈ 1,25 dm — väljer A (4 dm) av desperation.",
+      "correct_thinking": "Diametern är 4 dm, så radien r = 2 dm. Basarean: A = π·r² = π·4 = 4π dm². Höjden: h = V/A = 63/(4π) ≈ 63/12,6 ≈ 5 dm.",
+      "answer": "B — 5 dm, eftersom radien är 2 dm och basarean 4π ger höjden 63/(4π) ≈ 5."
+    },
+    "counter_example": "Om problemet istället angav radien r = 4 dm direkt, då skulle basarean bli π·16 = 16π och höjden 63/(16π) ≈ 1,25 dm — fällan dyker upp bara när det är diametern som ges och steget r = d/2 hoppas över."
+  }
+]
