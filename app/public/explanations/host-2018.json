@@ -1538,103 +1538,97 @@
     "technique": "Procentsstrategin: först skriv om procentsatsen som ett decimaltal genom att flytta decimaltecknet två steg åt vänster, sedan tolka ordet 'av' som multiplikation. Triggern: när frågan har for- men 'X % av Y', är planen alltid (X/100) · Y."
   },
   "host-2018-kvant1-XYZ-003": {
-    "solution_path": "Läs två tydliga punkter på linjen. Lutningen är k=\\frac{\\Delta y}{\\Delta x}. Eftersom linjen lutar nedåt och y minskar med 1 medan x ökar med 2: k=-\\frac{1}{2}. Svar A.",
+    "solution_path": "Avläs två tydliga punkter på linjen: y-axelns skärning vid ungefär (0, 2) och x-axelns skärning vid ungefär (4, 0). Lutningen k = Δy/Δx = (0 − 2)/(4 − 0) = −2/4 = −1/2. Linjen lutar nedåt åt höger, så k är negativ.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "En linje y=kx+m är inritad i ett koordinatsystem. Du ska bestämma k — riktningskoefficienten, även kallad lutningen. Det säger hur brant linjen lutar OCH åt vilket håll.",
+        "text": "En linje y = kx + m är inritad. Vi söker riktningskoefficienten k. Koordinatsystemet visar rutnät med gradering vid −3 och 3 på båda axlarna.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad betyder k?",
-        "text": "I y=kx+m är k hur mycket y ändras när x ökar med 1. Positiv k = linjen går uppåt åt höger. Negativ = nedåt åt höger. Stor |k| = brant. Liten |k| = flack.",
-        "tier": "detail"
+        "title": "Observera lutningsriktning",
+        "text": "Linjen går från övre vänster till nedre höger — det betyder k < 0 direkt. Alternativen B (1/2) och D (2) kan strykas.",
+        "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Formeln för lutning",
-        "text": "För två punkter (x_{1},y_{1}) och (x_{2},y_{2}) på linjen: k=\\frac{y_{2}-y_{1}}{x_{2}-x_{1}}=\\frac{\\Delta y}{\\Delta x}. \\Delta (delta) betyder 'förändring i'.",
-        "tier": "detail"
+        "title": "Hitta första referenspunkt",
+        "text": "Linjen skär y-axeln strax under 3-strecket, vid ungefär y = 2. Alltså punkt (0, 2).",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Avgör tecknet visuellt",
-        "text": "Innan du räknar — titta på linjen. Lutar den uppåt eller nedåt åt höger? I denna uppgift lutar linjen NEDÅT åt höger. Alltså är k NEGATIV. Det utesluter omedelbart alternativ B och D.",
+        "title": "Hitta andra referenspunkt",
+        "text": "Linjen skär x-axeln strax efter 3-strecket, vid ungefär x = 4. Alltså punkt (4, 0).",
         "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Hitta två tydliga punkter",
-        "text": "Välj två punkter på linjen där den passerar exakt genom rutnätet — t.ex. där linjen skär y-axeln och en annan tydlig korsning. Anta linjen passerar genom (0,1) och (2,0).",
+        "title": "Räkna Δy",
+        "text": "Δy = 0 − 2 = −2 (när x ökar från 0 till 4 minskar y med 2).",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Räkna Δy",
-        "text": "\\Delta y=y_{2}-y_{1}=0-1=-1. När du går från första till andra punkten minskar y med 1.",
+        "title": "Räkna Δx",
+        "text": "Δx = 4 − 0 = 4.",
         "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Räkna Δx",
-        "text": "\\Delta x=x_{2}-x_{1}=2-0=2. Du går 2 steg åt höger.",
+        "title": "Beräkna k",
+        "text": "k = Δy/Δx = −2/4 = −1/2.",
         "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Sätt in i formeln",
-        "text": "k=\\frac{\\Delta y}{\\Delta x}=\\frac{-1}{2}=-\\frac{1}{2}. Tecknet stämmer med den visuella check vi gjorde i steg 4.",
-        "tier": "essential"
+        "title": "Tolka brantheten",
+        "text": "|k| = 1/2 < 1, vilket innebär linjen är flackare än 45°. Det syns i figuren — linjen är tydligt mer horisontell än diagonal.",
+        "tier": "support"
       },
       {
         "n": 9,
-        "title": "Storlekskontroll",
-        "text": "|k|=1/2 betyder att linjen är FLACK — för varje steg åt höger sjunker den bara en halv enhet. Det syns på figuren: linjen är inte brant.",
-        "tier": "detail"
-      },
-      {
-        "n": 10,
-        "title": "Verifiera med en tredje punkt",
-        "text": "Om k=-1/2 och m=1: linjen är y=-\\frac{1}{2}x+1. Vid x=4: y=-2+1=-1. Stämmer det med figuren? Ja.",
+        "title": "Verifiera",
+        "text": "Med k = −1/2 och m = 2 ger y = −x/2 + 2. Sätter vi x = 4: y = −2 + 2 = 0 ✓. Sätter vi x = −2: y = 1 + 2 = 3 — stämmer också mot figuren.",
         "tier": "essential"
       },
       {
-        "n": 11,
+        "n": 10,
         "title": "Slutsats",
-        "text": "Svaret är A = -1/2. Insikten i en mening: när du läser lutning ur en graf, gör ALLTID tecken-kollen FÖRST (uppåt = +, nedåt = -) — då har du redan halverat svarsmängden innan du räknar.",
+        "text": "Svaret är A, −1/2. Insikten i en mening: Två avlästa punkter ger Δy/Δx — tecknet bestäms av om linjen lutar uppåt eller nedåt.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tappa minustecknet och svara +\\frac{1}{2}.",
-        "why_wrong": "Steg 4 fastställer att linjen lutar NEDÅT, så k är negativ. +\\frac{1}{2} skulle innebära en stigande linje."
+        "why_tempting": "1/2 är rätt absolut värde, men eleven missar att linjen lutar nedåt. Vanligt fel: ta |Δy|/|Δx| utan tecken.",
+        "why_wrong": "Tecknet räknas — en linje som faller har negativ riktningskoefficient. 1/2 motsvarar en stigande linje, inte denna."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att kasta om \\Delta y och \\Delta x och få -2.",
-        "why_wrong": "Steg 3 definierar formeln som \\Delta y/\\Delta x, inte tvärtom. Lodrät förändring delat med vågrät — alltid i den ordningen."
+        "why_tempting": "−2 lockar om eleven förväxlar Δx och Δy, alltså räknar Δx/Δy = 4/(−2) = −2.",
+        "why_wrong": "Lutning definieras som Δy delat med Δx, inte tvärtom. Här är linjen flackare än 45°, så |k| måste vara mindre än 1."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 'positiv lutning = 2' av två fel samtidigt (fel tecken och fel räkneordning).",
-        "why_wrong": "Steg 4 utesluter positivt tecken; steg 9 utesluter brant lutning. k=-1/2, inte +2."
+        "why_tempting": "2 är samma räknefel som C men utan tecken — eleven både inverterar kvoten och missar minustecknet.",
+        "why_wrong": "Två fel på samma gång: fel kvot OCH fel tecken. k är negativ och mindre än 1 i belopp."
       }
     ],
-    "technique": "Lutning från graf: läs två tydliga punkter, räkna Δy och Δx, dela i ordningen Δy/Δx. Tecken bestäms av om linjen lutar uppåt eller nedåt.",
-    "pitfall": "Vanligaste fällan är att hoppa direkt på räkneformeln utan att titta på riktningen — då tappar man tecknet. Botemedlet: ringa in 'uppåt eller nedåt?' innan du rör pennan; det utesluter halva alternativen.",
+    "technique": "Riktningskoefficient k = Δy/Δx, räknat mellan två tydliga punkter på linjen — ofta axelskärningarna (0, m) och (x₀, 0).",
+    "pitfall": "Att glömma tecknet — en fallande linje har negativ k även om Δy/Δx-räkningen ser ut som ett positivt bråk när man slarvar.",
     "framework_id": "XYZ-TRAP-051",
     "pregrade_tactic": {
       "handle": "Lutningsavläsningen",
-      "move": "Avgör tecknet visuellt FÖRST (uppåt/nedåt), räkna sedan Δy delat med Δx mellan två tydliga rutnätspunkter."
+      "move": "Två punkter, Δy/Δx, behåll tecknet — fallande linje ger negativ k."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2018-kvant1-XYZ-004": {
@@ -1956,109 +1950,103 @@
     "technique": "Bråkekvationsstrategin: behandla bråk-koefficienter som vanliga tal — flytta konstanten, multiplicera med inversen av koefficienten. Triggern: ax + b = c där a är ett bråk. Plan: (1) addera/subtrahera b, (2) multiplicera båda sidor med 1/a."
   },
   "host-2018-kvant1-XYZ-008": {
-    "solution_path": "Pythagoras sats i den rätvinkliga triangeln: x^{2}=3^{2}+3^{2}=18, alltså x=\\sqrt{18}=3\\sqrt{2} cm. Svar B.",
+    "solution_path": "Figuren visar en stor triangel med en höjd nedfälld till basen. Basen delas i två delar: 4 cm till vänster och 3 cm till höger. Den vänstra sidan i hela triangeln är 5 cm. I den vänstra rätvinkliga halvtriangeln ger Pythagoras höjden h² = 5² − 4² = 9, alltså h = 3. I den högra rätvinkliga halvtriangeln är x hypotenusan: x² = h² + 3² = 9 + 9 = 18, alltså x = √18 cm.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Du har en figur med en sidlängd märkt x och två andra givna sidor. Det är en rätvinklig triangel — du ska räkna ut x med Pythagoras sats.",
+        "text": "En triangel har en höjd som möter basen i en rät vinkel och delar basen i två delar 4 cm och 3 cm. Vänster sida är 5 cm; sidan x är höger sida.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad är en rätvinklig triangel?",
-        "text": "En rätvinklig triangel har en vinkel som är exakt 90° (ofta markerad med en liten kvadrat i hörnet). De två sidor som möts i den räta vinkeln kallas KATETER. Den motstående sidan, den längsta, kallas HYPOTENUSA.",
-        "tier": "detail"
-      },
-      {
-        "n": 3,
-        "title": "Pythagoras sats",
-        "text": "I varje rätvinklig triangel gäller: a^{2}+b^{2}=c^{2}, där a och b är kateterna och c är hypotenusan. Kvadraten på hypotenusan = summan av kvadraterna på kateterna.",
-        "tier": "detail"
-      },
-      {
-        "n": 4,
-        "title": "Vad betyder kvadrat?",
-        "text": "a^{2} betyder a\\cdot a. Till exempel 3^{2}=3\\cdot 3=9. Det är 'a multiplicerat med sig själv'.",
-        "tier": "detail"
-      },
-      {
-        "n": 5,
-        "title": "Identifiera sidorna i figuren",
-        "text": "Antag att figuren visar två kateter med längd 3 cm var, och x är hypotenusan (eller motsvarande konfiguration som ger Pythagoras-resultat 18). Identifiera vilken sida som är hypotenusan visuellt — det är den motsatt den räta vinkeln.",
+        "title": "Identifiera två rätvinkliga trianglar",
+        "text": "Höjden skapar två rätvinkliga delfigurer som delar samma höjd h.",
         "tier": "essential"
       },
       {
+        "n": 3,
+        "title": "Räkna höjden via vänster halvtriangel",
+        "text": "Vänster halvtriangel: kateter 4 och h, hypotenusa 5. Pythagoras: 4² + h² = 5².",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lös ut h",
+        "text": "16 + h² = 25, så h² = 9, alltså h = 3 cm (positiv längd).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Känn igen 3-4-5-triangeln",
+        "text": "Vänster halvtriangel är en klassisk 3-4-5-rätvinklig — bra sanity-check på h = 3.",
+        "tier": "support"
+      },
+      {
         "n": 6,
-        "title": "Sätt in i Pythagoras",
-        "text": "x^{2}=3^{2}+3^{2}. (Kateterna är 3 vardera; x är hypotenusan.)",
+        "title": "Applicera Pythagoras i höger halvtriangel",
+        "text": "Höger halvtriangel: kateter h = 3 och 3, hypotenusa x. Alltså 3² + 3² = x².",
         "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Räkna ut kvadraterna",
-        "text": "3^{2}=9 och 3^{2}=9. Alltså: x^{2}=9+9=18.",
+        "title": "Räkna ut x²",
+        "text": "9 + 9 = 18, så x² = 18.",
         "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Vad är kvadratrot?",
-        "text": "För att gå från x^{2} till x drar man kvadratroten: x=\\sqrt{x^{2}}. Kvadratroten av a är 'det positiva tal som ger a när det kvadreras'.",
-        "tier": "detail"
-      },
-      {
-        "n": 9,
-        "title": "Dra roten",
-        "text": "x=\\sqrt{18}. Är \\sqrt{18} ett 'snyggt' tal? Nej — \\sqrt{16}=4 och \\sqrt{25}=5, så \\sqrt{18} ligger mellan 4 och 5.",
+        "title": "Ta roten",
+        "text": "x = √18 cm. (≈ 4,24 cm)",
         "tier": "essential"
       },
       {
+        "n": 9,
+        "title": "Förenkla för intuition",
+        "text": "√18 = √(9·2) = 3√2 — höger halvtriangel är en likbent rätvinklig (3,3,3√2). Användbart att veta vid kontroll.",
+        "tier": "support"
+      },
+      {
         "n": 10,
-        "title": "Förenkla roten",
-        "text": "\\sqrt{18}=\\sqrt{9\\cdot 2}=\\sqrt{9}\\cdot\\sqrt{2}=3\\sqrt{2}. Det är den exakta formen. Numeriskt: \\sqrt{2}\\approx 1{,}414, så x\\approx 4{,}24 cm.",
+        "title": "Verifiera mot alternativen",
+        "text": "Bland alternativen står √18 cm explicit som B. 3 cm (A) är höjden h, inte hypotenusan. 3,5 cm (C) är genomsnittet av delbaserna — ingen geometrisk grund. √20 cm (D) skulle kräva katet 4 + 1 eller liknande.",
         "tier": "essential"
       },
       {
         "n": 11,
-        "title": "Verifiera",
-        "text": "Kvadrera tillbaka: (3\\sqrt{2})^{2}=9\\cdot 2=18 ✓. Stämmer med Pythagoras.",
-        "tier": "essential"
-      },
-      {
-        "n": 12,
         "title": "Slutsats",
-        "text": "Svaret är B (avser \\sqrt{18} cm, även om alternativtexten är förkortat tryckt som '18'). Insikten i en mening: när du ser en rätvinklig triangel där kateterna är jämna heltal som inte är ett Pythagoreiskt tripel, blir hypotenusan en kvadratrot — räkna inte fram ett decimaltal i onödan.",
+        "text": "Svaret är B, √18 cm. Insikten i en mening: När en höjd delar basen i en triangel, kör Pythagoras två gånger — först ut till höjden, sen till okänd sida.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel kateter och få 3 cm — t.ex. tro att x är en katet i stället för hypotenusan.",
-        "why_wrong": "Steg 5 identifierar x som hypotenusan, alltså längre än varje katet. x>3 cm."
+        "why_tempting": "3 cm är höjden h som man räknat fram i mellansteget — eleven stannar för tidigt och rapporterar h istället för x.",
+        "why_wrong": "x är hypotenusan i höger delsubsektion, inte höjden. Räkningen måste fortsätta med en andra Pythagoras."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att avrunda \\sqrt{18} fel åt 3,5 cm.",
-        "why_wrong": "Steg 10 visar att \\sqrt{18}\\approx 4{,}24 cm, inte 3,5. 3{,}5^{2}=12{,}25, för litet."
+        "why_tempting": "3,5 cm är medelvärdet av 4 och 3 (delbaserna). Lockar om eleven tror att x ligger \"i mitten\" eller försöker triangelmedelvärde.",
+        "why_wrong": "Det finns ingen geometrisk regel som ger sidlängden som medelvärdet av basdelarna. Pythagoras krävs."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid att tro hypotenusan = kateternas summa = 6, eller heltal som 20.",
-        "why_wrong": "Steg 3 säger c^{2}=a^{2}+b^{2}, inte c=a+b. Hypotenusan är ALDRIG en linjär summa av kateterna."
+        "why_tempting": "√20 cm kommer av räknefel: om eleven tror höjden är 4 (förväxlar med basdelen) får hen 4² + 3² = 25 fel — eller missar att basdelen är 3, inte 4, vid höger triangel.",
+        "why_wrong": "Höger halvtriangel har kateter 3 och 3, inte 4 och 2 eller liknande. Korrekt summa är 9 + 9 = 18, inte 20."
       }
     ],
-    "technique": "Pythagoras sats: i en rätvinklig triangel är hypotenusans kvadrat lika med summan av katetenas kvadrater. När resultatet inte är ett perfekt kvadrattal, lämna det som rot och förenkla via faktorisering.",
-    "pitfall": "Vanligaste fällan är att räkna hypotenusan som summa av kateterna — det är ALDRIG sant utom när en av kateterna är noll. Botemedlet: lägg på kvadrat-tecken på allt i Pythagoras INNAN du börjar räkna — då kan du inte glömma att 'kvadrera bort'.",
-    "framework_id": "XYZ-TRAP-032",
+    "technique": "Höjd mot bas → två rätvinkliga delfigurer som delar samma h. Pythagoras först ger h via den kända sidan; en andra Pythagoras ger den sökta hypotenusan på andra sidan.",
+    "pitfall": "Att rapportera höjden som svar — h är ett mellansteg, inte slutet. Läs frågan igen: vad är x?",
+    "framework_id": "XYZ-TRAP-040",
     "pregrade_tactic": {
-      "handle": "Pythagoras-receptet",
-      "move": "Identifiera vilken sida som är hypotenusan, skriv upp a²+b²=c², sätt in värdena, dra roten — och förenkla via faktorisering om resultatet inte är hela tal."
+      "handle": "Dubbla Pythagoras",
+      "move": "När en höjd delar basen: kör Pythagoras i halvtriangeln med kända sidor, sen i den andra halvtriangeln med den nyfunna höjden."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2018-kvant1-XYZ-009": {
@@ -13140,203 +13128,203 @@
     }
   },
   "host-2018-kvant1-XYZ-005": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Värdemängden består av alla y-värden som funktionen antar när x går genom sitt definitionsintervall. Eftersom f(x) = x² är växande för x ≥ 0 räcker det att utvärdera ändpunkterna: f(0) = 0 och f(3) = 9, så värdemängden är 0 ≤ f(x) ≤ 9.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "Frågan handlar om värdemängden — alltså vilka utvärden f(x) kan ta. Definitionsmängden är given: x ligger mellan 0 och 3 inklusive. Funktionen är f(x) = x².",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Definiera värdemängd",
+        "text": "Värdemängd betyder \"alla möjliga y-värden\". Du sätter in varje tillåtet x och samlar resultaten. Definitionsmängden ger inmaten, värdemängden ger utmaten.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Notera kvadratens egenskap",
+        "text": "Kvadrering ger alltid icke-negativt resultat: x^2 \\geq 0 för alla reella x. Det utesluter direkt alla svar med negativa värden i värdemängden.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Kontrollera monotoni på intervallet",
+        "text": "På 0 \\leq x \\leq 3 är f(x) = x^2 strikt växande — större x ger större x^2. Det betyder att minsta och största värdet ligger i ändpunkterna, inte någonstans i mitten.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Utvärdera vänster ändpunkt",
+        "text": "Sätt in det minsta x-värdet: f(0) = 0^2 = 0. Det är värdemängdens nedre gräns.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Utvärdera höger ändpunkt",
+        "text": "Sätt in det största x-värdet: f(3) = 3^2 = 9. Det är värdemängdens övre gräns.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "title": "Bekräfta att intervallet är obrutet",
+        "text": "x^2 är kontinuerlig, så när x rör sig från 0 till 3 antar f(x) varje värde mellan 0 och 9. Det finns inga hål.",
         "tier": "detail"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Sätt ihop värdemängden",
+        "text": "Värdemängden blir 0 \\leq f(x) \\leq 9. Båda ändarna är inkluderade eftersom även x = 0 och x = 3 är inkluderade.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Varför inte definitionsmängden?",
+        "text": "Alternativ C, 0 \\leq f(x) \\leq 3, är frestande eftersom 3 är synligt i frågan — men 3 är gränsen för x, inte för f(x). Värdemängden tar emot x^2, inte x.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Testa ett mellanvärde: f(2) = 4, som ligger mellan 0 och 9. Det matchar svar D och inget annat alternativ.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är D: 0 \\leq f(x) \\leq 9. Insikten i en mening: värdemängden för en monoton funktion på ett slutet intervall bestäms av ändpunkternas funktionsvärden.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är frestande att tänka att kvadrering kan ge negativa värden när x kan vara negativt — men här är x ≥ 0.",
+        "why_wrong": "Som steg 3 visar är x^2 \\geq 0 alltid, och steg 4 fastslår att x inte ens får vara negativt här."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att kopiera definitionsmängdens gränser (−3 och 3) som om de var f-värden.",
+        "why_wrong": "Steg 5–6 visar att ändpunkterna f(0) = 0 och f(3) = 9 — inte −3 och 3 — definierar värdemängden."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att läsa av talet 3 ur uppgiften och stoppa in det som övre gräns för f(x).",
+        "why_wrong": "Steg 9 catches it: 3 är max för x, men f(3) = 9 är max för f(x). Talet 3 ska kvadreras innan det blir en värdemängdsgräns."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "När du ska bestämma värdemängden för en kontinuerlig monoton funktion på ett slutet intervall: utvärdera funktionen i ändpunkterna och låt resten av värdemängden fylla intervallet mellan. Trigger: orden \"värdemängd\" plus angiven definitionsmängd.",
+    "pitfall": "Förväxla aldrig definitionsmängd (x-värden) med värdemängd (y-värden). Botemedlet: skriv alltid x → f(x) explicit innan du formulerar gränserna.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Ändpunktskontrollen",
+      "move": "När funktionen är monoton på ett slutet intervall, räkna ut f på båda ändpunkterna och låt dem definiera värdemängden."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2018-kvant2-XYZ-002": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Avläs de tre markerade punkterna i koordinatsystemet och jämför med alternativen — alternativet som INTE finns på diagrammet är svaret. Markerade punkter i bilden är (−1, 2), (2, −1) och (1, −2); kvar i alternativlistan är (−2, 1).",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "text": "Frågan är inverterad: du letar efter en punkt som INTE är markerad i diagrammet. Tre av fyra alternativ ska gå att hitta som prickar; det fjärde är svaret.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Definiera koordinatläsning",
+        "text": "En punkt (x, y) ligger x steg horisontellt från origo (höger om y-axeln när x > 0, vänster när x < 0) och y steg vertikalt (uppåt när y > 0, nedåt när y < 0). Skalan är 1 ruta = 1 enhet.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Identifiera översta pricken",
+        "text": "Den övre pricken ligger två rutor ovanför x-axeln och en ruta till vänster om y-axeln. Det är punkten (−1, 2).",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Identifiera pricken till höger om y-axeln",
+        "text": "En prick ligger två rutor till höger om y-axeln och en ruta under x-axeln. Det är punkten (2, −1).",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Identifiera pricken under x-axeln",
+        "text": "Den tredje pricken ligger en ruta till höger om y-axeln och två rutor under x-axeln. Det är punkten (1, −2).",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "title": "Lista de markerade punkterna",
+        "text": "Sammanställ: {(−1, 2), (2, −1), (1, −2)}. Notera att två av alternativens första-koordinater är negativa men bara en av prickarna ligger i andra kvadranten.",
         "tier": "detail"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Matcha mot alternativen",
+        "text": "B = (−1, 2) ✓, C = (1, −2) ✓, D = (2, −1) ✓. Kvar är A = (−2, 1), som skulle ligga i andra kvadranten två steg till vänster om y-axeln och en uppåt — där finns ingen prick.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Varning för koordinatomkastning",
+        "text": "Punkten (−2, 1) och (−1, 2) ser lika ut tills man räknar rutorna. Alla par i alternativen är spegelvarianter av varandra med ombytta siffror; det är därför uppgiften provar din vana att läsa x före y.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Tolka diagrammet en gång till",
+        "text": "Inga andra prickar finns i diagrammet — fyra alternativ, tre prickar, ett saknas. Skanna kvadrant för kvadrant så att inte en svag prick missas.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "(−2, 1) skulle ligga längst åt vänster, lite ovanför x-axeln. Den positionen är tom — ingen prick. Svaret stämmer.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är A: (−2, 1). Insikten i en mening: när uppgiften har ordet \"inte\" understrukt, vänd hjärnan baklänges och matcha bort de tre alternativ som DU kan hitta — det fjärde är svaret.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att kasta om x och y och tro att (−1, 2) inte finns där.",
+        "why_wrong": "Steg 3 visar att pricken längst upp till vänster ligger på x = −1, y = 2 — den ÄR markerad."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att (1, −2) ser exotisk ut och antar att den är den udda.",
+        "why_wrong": "Steg 5 visar pricken vid en ruta höger om y-axeln och två ner — exakt (1, −2)."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att en punkt nära x-axeln är ovanlig och därför saknas.",
+        "why_wrong": "Steg 4 placerar pricken på (2, −1) — den är markerad."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "När uppgiften frågar efter punkten som INTE är markerad: läs först av varje prick som ett (x, y)-par, sammanställ listan, och stryk sedan de alternativ som matchar. Trigger: ordet \"inte\" plus ett koordinatsystem med ett par utspridda prickar.",
+    "pitfall": "Vanligaste misstaget är att vända (x, y) till (y, x). Botemedlet: säg alltid \"höger/vänster först, upp/ner sen\" när du läser av en prick.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Punktelimineringen",
+      "move": "Läs varje prick som (x, y), bocka av motsvarande alternativ, och välj det som blir kvar."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2018-kvant2-XYZ-003": {
@@ -13440,203 +13428,215 @@
     }
   },
   "host-2018-kvant2-XYZ-004": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar C; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Figuren visar en triangel mellan L₁ och L₂ med toppvinkeln vid L₁, en rät vinkel inne i triangeln, och 30° där triangeln möter L₂. Beräkna triangelns övre inre vinkel via vinkelsumman 180° = 90° + 30° + topp, vilket ger topp = 60°. Vid topp-hörnet ligger tre vinklar längs L₁ på undersidan: 50°, triangelns topp (60°) och x — sammanlagt 180°. Alltså x = 180° − 50° − 60° = 70°.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "text": "En triangel är instängd mellan två parallella linjer L₁ och L₂. Toppvertex ligger på L₁. Inuti triangeln finns en rät vinkel (90°). Vid bottenhörnet på L₂ är vinkeln mellan L₂ och triangelns sida 30°. Bredvid toppen står 50° angiven och du ska bestämma x intill.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ C. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Räkna in vinklarna längs L₁",
+        "text": "Varje rät linje delar planet i två halvor — vinklarna på en sida av L₁ vid toppvertexet summerar till 180°. Tre vinklar nedanför L₁ delar denna summa: 50°, triangelns inre toppvinkel, och x.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "title": "Vinkelsumman i en triangel",
+        "text": "I varje triangel summerar de tre inre vinklarna till 180°. Det är grundregeln vi ska använda för att hitta toppvinkeln inuti triangeln.",
         "tier": "detail"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Identifiera triangelns två kända inre vinklar",
+        "text": "Triangeln har en rät vinkel (90°) vid mellanhörnet och 30° vid bottenhörnet på L₂. Det är två av tre inre vinklar.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Beräkna triangelns toppvinkel",
+        "text": "180° − 90° − 30° = 60°. Triangelns inre vinkel vid toppvertexet (mellan triangelns två sidor som möts där) är 60°.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "title": "Definiera rät vinkel som markör",
+        "text": "En rät vinkel är 90° och markeras med en liten kvadrat. När du ser symbolen kan du direkt sätta värdet 90° i räkningen.",
         "tier": "detail"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Sätt upp vinkelekvationen vid toppen",
+        "text": "Under L₁ vid toppvertexet ligger tre vinklar i rad: 50° (mellan L₁ och en sida) + 60° (triangelns inre toppvinkel) + x (mellan andra sidan och L₁) = 180°.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Lös ut x",
+        "text": "x = 180° − 50° − 60° = 70°.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Tolka resultatet",
+        "text": "Vinkeln x är 70°, vilket är större än 50° men mindre än en rät vinkel. Det är plausibelt givet att triangeln \"lutar\" till höger.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "title": "Parallella linjer som ramverk",
+        "text": "Det här är ett klassiskt parallell-linje-uppgift: nyckeln är att L₁ ger en 180°-budget vid toppvertexet, och triangeln tar 60° av den budgeten. Resten fördelas mellan 50° och x.",
         "tier": "detail"
       },
       {
         "n": 11,
+        "title": "Verifiera",
+        "text": "Kontroll: 50° + 60° + 70° = 180° ✓. Allt stämmer med en rak linje längs L₁.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
         "title": "Slutsats",
-        "text": "Facit anger svaret C. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är C: 70°. Insikten i en mening: vid en parallell-linje-triangel räcker det att lägga ihop vinkelsumman i triangeln OCH den raka linjen vid toppvertexet — två 180°-regler bredvid varandra.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är frestande att gissa att x = 50° eftersom 50° redan står bredvid — symmetrigissning.",
+        "why_wrong": "Steg 7–8 visar att x ligger på andra sidan av triangelns toppvinkel, och summan kräver x ≠ 50°."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid triangelns inre toppvinkel (60°) och tror att x också är 60°.",
+        "why_wrong": "Steg 5 räknar inre toppvinkeln till 60°, men steg 7 visar att x är en SEPARAT vinkel utanför triangeln — inte samma."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att lägga ihop 50° + 30° = 80° via exteriörvinkelsatsen.",
+        "why_wrong": "Som steg 7 visar gäller exteriörvinkelsatsen 50° + 30° = topp inte här — vi har en rät vinkel inne i triangeln, så de \"motsatta\" inre vinklarna är 90° och 30°, inte 50° och 30°."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Vid figurer med parallella linjer och en infogad triangel: räkna alltid två separata 180°-regler — triangelns vinkelsumma OCH den raka linjen vid det vertex som ligger på en av de parallella linjerna. Trigger: orden \"parallella linjer\" plus minst en triangel.",
+    "pitfall": "Vanligt fel är att hoppa till exteriörvinkelsatsen (x = summan av de två motsatta inre vinklarna) utan att kolla vilka inre vinklar som faktiskt är motsatta. Botemedlet: rita alltid in alla tre vinklarna längs L₁ vid toppen och tvinga dem att summera till 180°.",
+    "framework_id": "XYZ-TRAP-035",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Dubbel-180-regeln",
+      "move": "När en triangel sitter med ett hörn på en av två parallella linjer, sätt upp 180°-summan både för triangelns vinklar och för vinklarna längs den raka linjen — lös sedan systemet."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2018-kvant2-XYZ-005": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Bråk delat med bråk = bråk gångrat med inverterad nämnar-bråk. Alltså (4/9) ÷ (8/3) = (4/9) · (3/8) = 12/72 = 1/6.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Uttrycket är ett \"bråk i bråk\": täljaren 4/9 och nämnaren 8/3. Frågan är vad detta sammansatta bråk är värt.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Tolka brak-i-brak som division",
+        "text": "Ett bråkstreck betyder alltid division. När både täljare och nämnare själva är bråk handlar uppgiften om (4/9) ÷ (8/3).",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Regeln för division av bråk",
+        "text": "Att dela med ett bråk är samma sak som att multiplicera med dess invers (det inverterade bråket). Alltså a/b ÷ c/d = (a/b) · (d/c).",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Invertera nämnar-bråket",
+        "text": "Vänd 8/3 upp och ner och få 3/8. Detta är det inverterade bråket — täljare blir nämnare och tvärtom.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Skriv om som multiplikation",
+        "text": "(4/9) ÷ (8/3) = (4/9) · (3/8). Nu är det en vanlig bråkmultiplikation.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "title": "Definiera bråkmultiplikation",
+        "text": "Vid multiplikation av bråk: täljare gånger täljare, nämnare gånger nämnare. (a/b) · (c/d) = (a·c)/(b·d).",
         "tier": "detail"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Utför multiplikationen",
+        "text": "(4 · 3)/(9 · 8) = 12/72.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Förkorta bråket",
+        "text": "Hitta gemensam faktor i 12 och 72. Båda är delbara med 12: 12/12 = 1 och 72/12 = 6. Alltså 12/72 = 1/6.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Alternativ förkortning under räknandet",
+        "text": "Du kan också förkorta innan multiplikation: 4 och 8 har faktor 4 → 1 och 2; 3 och 9 har faktor 3 → 1 och 3. Det ger (1/3) · (1/2) = 1/6 direkt — mindre tal att handskas med.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "title": "Sanity-check storleksordningen",
+        "text": "4/9 är ungefär 0,44. 8/3 är ungefär 2,67. Att dela ~0,44 med ~2,67 ger ~0,17, vilket är ungefär 1/6 ≈ 0,167 ✓.",
         "tier": "detail"
       },
       {
         "n": 11,
+        "title": "Verifiera",
+        "text": "Multiplikation tillbaka: 1/6 · 8/3 = 8/18 = 4/9 ✓. Originaltäljaren är reproducerad.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är A: 1/6. Insikten i en mening: när du ser ett bråk-i-bråk, byt direkt till multiplikation med inverten och förkorta före du multiplicerar — det sparar både tid och slarvfel.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att råka multiplicera 4/9 med 8/3 i stället för att dela, och därmed få 32/27 — och sedan kasta om till 27/32 i ett extra slarvfel.",
+        "why_wrong": "Steg 3 visar att division kräver INVERTERING av nämnar-bråket, inte raksak multiplikation; och steg 8 räknar fram 1/6, inte 27/32."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att multiplicera (4/9) · (8/3) = 32/27 och tror att det är svaret — de glömmer att invertera den ena.",
+        "why_wrong": "Steg 4 visar att 8/3 ska vändas till 3/8 INNAN multiplikation. Utan inverteringen är produkten 32/27, inte vad uppgiften ber om."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att räkna 9/3 · ... och fastna i ett heltal som 6 = 18/3 eller liknande.",
+        "why_wrong": "Steg 11 visar att 1/6, inte 6, är reproducerbart via baklängesmultiplikation. 6 hör inte hemma här."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Division av bråk löses alltid med \"keep, change, flip\": behåll första bråket, byt tecken till multiplikation, vänd det andra. Trigger: ett bråk skrivet med både täljare och nämnare som bråk, eller direkt division mellan två bråk.",
+    "pitfall": "Vanligt fel är att vända täljar-bråket i stället för nämnar-bråket. Botemedlet: säg högt \"jag flippar den under bråkstrecket\" innan du vänder.",
+    "framework_id": "XYZ-TRAP-017",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Inverteringen",
+      "move": "När du ser bråk delat med bråk, vänd genast nämnar-bråket och förkorta innan du multiplicerar — minsta möjliga räkneoperation först."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   }
 }

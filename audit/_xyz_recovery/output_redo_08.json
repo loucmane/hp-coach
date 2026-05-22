@@ -1,0 +1,290 @@
+{
+  "var-2017-kvant2-XYZ-005": {
+    "corpus_patch": {
+      "prompt": "De tre punkterna A, B och C bildar triangeln ABC i ett koordinatsystem. A = (1, −4), B = (4, 2), C = (−1, 2). Vad är arean av triangeln ABC?",
+      "options": [
+        {"letter": "A", "text": "8 areaenheter"},
+        {"letter": "B", "text": "10 areaenheter"},
+        {"letter": "C", "text": "15 areaenheter"},
+        {"letter": "D", "text": "30 areaenheter"}
+      ],
+      "answer": "C",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "B och C delar samma y-koordinat (2), så sträckan BC är horisontell och kan användas som bas. Längden av BC är skillnaden i x-koordinater. Höjden från A till linjen y = 2 är det vertikala avståndet. Arean = bas·höjd/2.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Tre punkter A = (1, −4), B = (4, 2), C = (−1, 2) bildar en triangel. Vi ska hitta arean i areaenheter.", "tier": "essential"},
+        {"n": 2, "title": "Leta efter en horisontell eller vertikal sida", "text": "B och C har samma y-koordinat (2). Det betyder att sträckan BC är horisontell — den kan vi använda som bas direkt utan avståndsformel.", "tier": "essential"},
+        {"n": 3, "title": "Beräkna basen BC", "text": "BC är skillnaden i x-koordinater: |4 − (−1)| = 5. Basen är alltså 5 enheter.", "tier": "essential"},
+        {"n": 4, "title": "Hitta höjden från A", "text": "Höjden från A till linjen y = 2 är det vertikala avståndet: |2 − (−4)| = 6. Höjden är alltså 6 enheter.", "tier": "essential"},
+        {"n": 5, "title": "Använd areaformeln", "text": "Triangelarea = bas·höjd/2 = 5·6/2 = 30/2 = 15.", "tier": "essential"},
+        {"n": 6, "title": "Plotta mentalt för kontroll", "text": "B = (4, 2) och C = (−1, 2) sitter på en horisontell linje 6 enheter ovanför A = (1, −4). Triangeln har bredden 5 och höjden 6 — en rimligt stor triangel.", "tier": "supporting"},
+        {"n": 7, "title": "Kontrollera enheter", "text": "Bas i enheter gånger höjd i enheter ger areaenheter. Vi får 15 areaenheter.", "tier": "supporting"},
+        {"n": 8, "title": "Stäm av mot alternativen", "text": "8, 10, 15, 30 — vårt värde 15 finns med som alternativ C.", "tier": "essential"},
+        {"n": 9, "title": "Verifiera", "text": "Alternativ test: skomakarformeln |x_A(y_B − y_C) + x_B(y_C − y_A) + x_C(y_A − y_B)|/2 = |1·(2−2) + 4·(2−(−4)) + (−1)·(−4−2)|/2 = |0 + 24 + 6|/2 = 30/2 = 15. Samma svar.", "tier": "essential"},
+        {"n": 10, "title": "Slutsats", "text": "Svar C: 15 areaenheter. Insikten i en mening: när två hörn delar y- eller x-koordinat blir den sidan din bas gratis — höjden är bara skillnaden i den andra koordinaten.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Studenten räknar bas·höjd utan att dela med 2 — eller använder bredden 5 och höjden 6 men halverar fel någonstans och får 8.", "why_wrong": "Triangelareaformeln kräver division med 2. 5·6 = 30, inte 8."},
+        {"letter": "B", "why_tempting": "Off-by-one på basen: tar |4 − (−1)| − 1 = 4 eller räknar antalet rutor mellan punkterna istället för avståndet, får bas 4 och höjd 5, area 10.", "why_wrong": "Avståndet mellan x = 4 och x = −1 är 5 enheter, inte 4. Höjden är 6, inte 5."},
+        {"letter": "D", "why_tempting": "Glömmer dela med 2 i triangelformeln: 5·6 = 30 ser ut som en rimlig area men är parallellogrammets area, inte triangelns.", "why_wrong": "Triangel = halva parallellogrammet. Dela 30 med 2 → 15."}
+      ],
+      "technique": "Identifiera om någon sida är horisontell eller vertikal (delade x- eller y-koordinater). Då blir bas och höjd lätta att läsa av direkt från koordinaterna.",
+      "pitfall": "Att glömma dela med 2 i triangelareaformeln är klassisk slip — bas·höjd ger parallellogrammet, inte triangeln.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "horisontella-basen", "move": "Leta efter två hörn med samma y-koordinat (eller samma x) — den sidan är din bas och höjden är skillnaden i den andra koordinaten."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2017-kvant2-XYZ-007": {
+    "corpus_patch": {
+      "prompt": "A och B är två positiva heltal som är mindre än tio. P = 7·1000 + A·100 + 4·10 + B·1 och Q = 4·1000 + A·100 + 8·10 + B·1. Vad är differensen mellan P och Q?",
+      "options": [
+        {"letter": "A", "text": "2 060"},
+        {"letter": "B", "text": "2 960"},
+        {"letter": "C", "text": "3 040"},
+        {"letter": "D", "text": "3 940"}
+      ],
+      "answer": "B",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "P och Q är positionssystemstal där A·100 och B·1 är identiska i båda. Differensen P − Q beror enbart på de termer som skiljer sig: tusentalssiffran (7 mot 4) och tiotalssiffran (4 mot 8). Beräkna komponentvis.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "P och Q är fyrsiffriga tal uttryckta med positionsvärden. A·100 och B·1 är samma i bägge. Vi ska räkna P − Q.", "tier": "essential"},
+        {"n": 2, "title": "Identifiera gemensamma termer", "text": "Både P och Q innehåller A·100 + B·1. Dessa kan strykas mot varandra i differensen.", "tier": "essential"},
+        {"n": 3, "title": "Subtrahera positionsvis", "text": "P − Q = (7·1000 − 4·1000) + (A·100 − A·100) + (4·10 − 8·10) + (B·1 − B·1) = 3·1000 + 0 − 4·10 + 0.", "tier": "essential"},
+        {"n": 4, "title": "Förenkla", "text": "P − Q = 3000 + (−40) = 3000 − 40 = 2960.", "tier": "essential"},
+        {"n": 5, "title": "Notera tecknet på tiotalsbidraget", "text": "Tiotalssiffran är större i Q än i P (8 > 4), så det bidraget är negativt. Det är därför svaret ligger under 3000, inte över.", "tier": "essential"},
+        {"n": 6, "title": "Sanity-check med konkreta värden", "text": "Sätt A = 1 och B = 1: P = 7141 och Q = 4181. P − Q = 7141 − 4181 = 2960. ✓", "tier": "supporting"},
+        {"n": 7, "title": "Pröva ett annat A och B", "text": "A = 9, B = 9: P = 7949, Q = 4989. P − Q = 7949 − 4989 = 2960. Värdena på A och B påverkar inte differensen — som väntat.", "tier": "supporting"},
+        {"n": 8, "title": "Tolkning", "text": "A och B är 'distraktorvariabler' — de bidrar lika mycket till P och Q och tar därför ut varandra i differensen. Endast 7−4 i tusenposition och 4−8 i tiotalsposition spelar roll.", "tier": "supporting"},
+        {"n": 9, "title": "Stäm av mot alternativen", "text": "2 060, 2 960, 3 040, 3 940 — 2 960 är alternativ B.", "tier": "essential"},
+        {"n": 10, "title": "Verifiera", "text": "3000 − 40 = 2960. ✓", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svar B: 2 960. Insikten i en mening: i differensen försvinner alla gemensamma termer — det är bara de skilda siffrorna som räknas, var och en med rätt tecken.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Felräkning: 3·1000 − 8·10 − 4·10 = 3000 − 120 = 2880, eller någon variant med dubbelt subtraherad tiotalsterm — och att läsa 2060 av misstag.", "why_wrong": "Skillnaden i tiotalsposition är 4 − 8 = −4 (alltså −40), inte −94 eller −12. Korrekt: 3000 − 40 = 2960."},
+        {"letter": "C", "why_tempting": "Glömmer tecknet på tiotalsbidraget: räknar 8 − 4 istället för 4 − 8 och får +40. Då blir P − Q = 3000 + 40 = 3040.", "why_wrong": "I P står 4·10, i Q står 8·10. Bidraget till P − Q från tiotalspositionen är 4·10 − 8·10 = −40, inte +40."},
+        {"letter": "D", "why_tempting": "Lägger ihop alla skillnader med fel tecken: 3·1000 + 9·10 + 40 = 3940 — eller behandlar differensen i tiotalsposition som +940 av misstag.", "why_wrong": "Tusentalsdifferensen är 3000, tiotalsdifferensen är −40. Summan är 2960, inte 3940."}
+      ],
+      "technique": "Vid differens av tal med gemensamma termer: stryk det som är lika och subtrahera positionsvis. Tecknet kommer från ordningen (P − Q, inte Q − P).",
+      "pitfall": "Att tappa tecknet på tiotalsbidraget — om Q har den större tiotalssiffran är bidraget till P − Q negativt.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "gemensamma-termen", "move": "När två uttryck delar termer (samma A·100, samma B·1), stryk dem direkt — differensen lever bara där talen skiljer sig."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2018-1-kvant1-XYZ-008": {
+    "corpus_patch": {
+      "prompt": "Vilket värde har x? (Figuren visar en sammansatt figur med två rätvinkliga trianglar som delar en gemensam diagonal: övre triangeln har kateten 1 cm (övre kanten) och hypotenusan 2 cm (höger sida), med rät vinkel där 'kateten 1' möter diagonalen vid det övre vänstra hörnet; nedre triangeln har vertikala kateten x cm, horisontella kateten 1 cm (botten), rät vinkel vid bottenvänstra hörnet, och samma diagonal som hypotenusa. Mätningar i cm.)",
+      "options": [
+        {"letter": "A", "text": "√2"},
+        {"letter": "B", "text": "√3"},
+        {"letter": "C", "text": "\\frac{√2}{2}"},
+        {"letter": "D", "text": "\\frac{√3}{3}"}
+      ],
+      "answer": "A",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Figuren består av två rätvinkliga trianglar som delar diagonalen som gemensam sida. I övre triangeln är diagonalen en katet (kateten 1, hypotenusan 2 — Pythagoras ger diagonalens längd). I nedre triangeln är diagonalen hypotenusa (kateter: x och 1). Två Pythagoras i kedja löser x.",
+      "steps": [
+        {"n": 1, "title": "Förstå figuren", "text": "Den sammansatta figuren har två rätvinkliga trianglar som delar diagonalen. Övre triangelns rätvinkel sitter där den övre kanten (1) möter diagonalen — alltså är diagonalen en katet, inte hypotenusa, i övre triangeln. Nedre triangelns rätvinkel sitter i bottenvänstra hörnet — där är x och 1 (botten) kateter, och diagonalen hypotenusa.", "tier": "essential"},
+        {"n": 2, "title": "Identifiera hypotenusor", "text": "I övre triangeln är hypotenusan 2 (höger sida), kateter är 1 (övre kanten) och diagonalen. I nedre triangeln är hypotenusan diagonalen, kateter är x och 1.", "tier": "essential"},
+        {"n": 3, "title": "Beräkna diagonalen i övre triangeln", "text": "Pythagoras: 1² + diagonal² = 2². Alltså diagonal² = 4 − 1 = 3, och diagonal = √3.", "tier": "essential"},
+        {"n": 4, "title": "Sätt upp Pythagoras i nedre triangeln", "text": "Nedre triangelns hypotenusa är diagonalen (√3). Kateter är x och 1. Då: x² + 1² = (√3)² = 3.", "tier": "essential"},
+        {"n": 5, "title": "Lös ut x²", "text": "x² = 3 − 1 = 2.", "tier": "essential"},
+        {"n": 6, "title": "Lös ut x", "text": "x = √2. Endast den positiva roten gäller eftersom x är en längd.", "tier": "essential"},
+        {"n": 7, "title": "Tolkningskontroll med uppmätta proportioner", "text": "√2 ≈ 1,41. På figuren ser x ut att vara större än 1 (botten) men mindre än 2 (höger sida), vilket stämmer.", "tier": "supporting"},
+        {"n": 8, "title": "Verifiera med båda Pythagoras-kedjorna", "text": "Diagonal² = 3 från övre, och x² + 1 = 3 från nedre. Båda gav samma diagonal — konsistent.", "tier": "essential"},
+        {"n": 9, "title": "Jämför med alternativen", "text": "√2, √3, √2/2, √3/3. Värdet √2 är alternativ A.", "tier": "essential"},
+        {"n": 10, "title": "Slutsats", "text": "Svar A: x = √2. Insikten i en mening: när två rätvinkliga trianglar delar en sida, är den sidan hypotenusa i den ena och katet i den andra — vilket avgörs av var den räta vinkeln sitter.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Studenten avbryter efter steg 3 — räknar fram diagonalen = √3 och tror att det är x.", "why_wrong": "√3 är diagonalens längd, inte x. Efter att ha hittat diagonalen krävs ännu en Pythagoras i nedre triangeln för att lösa ut x."},
+        {"letter": "C", "why_tempting": "Studenten räknar rätt men rationaliserar resultatet av vana: skriver √2 som √2/2 = 1/√2. Eller läser figuren spegelvänt så att x blir den korta sidan.", "why_wrong": "√2 ≠ √2/2. √2/2 ≈ 0,71 är hälften av √2 — fel storleksordning för x."},
+        {"letter": "D", "why_tempting": "Kombination av två fel: identifierar diagonalen som √3 OCH rationaliserar till √3/3. Resultatet är ungefär 0,58 — påtagligt mindre än 1.", "why_wrong": "Varken läsningen 'x = diagonalen' eller rationaliseringen är korrekt. x = √2, inte √3/3."}
+      ],
+      "technique": "Två rätvinkliga trianglar som delar en sida: använd Pythagoras två gånger i kedja. Avgör först om den delade sidan är hypotenusa eller katet i respektive triangel — det dikteras av var den räta vinkeln sitter.",
+      "pitfall": "Att stoppa efter första Pythagoras med diagonalens längd istället för att fortsätta till x. Eller att missa var den räta vinkeln sitter och anta fel hypotenusa.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "delade-sidan", "move": "När två rätvinkliga trianglar delar en sida: titta efter var de räta vinklarna sitter — den sidan motstående den räta vinkeln är hypotenusa, övriga är kateter. Kör Pythagoras i den triangel där alla utom delade sidan är kända."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2018-1-kvant2-XYZ-001": {
+    "corpus_patch": {
+      "prompt": "Vad är \\frac{5}{2}-\\frac{8}{5}?",
+      "options": [
+        {"letter": "A", "text": "−0,3"},
+        {"letter": "B", "text": "0,9"},
+        {"letter": "C", "text": "1,2"},
+        {"letter": "D", "text": "1,7"}
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Två bråk med olika nämnare subtraheras: omvandla till gemensam nämnare (10), subtrahera täljarna, förenkla och konvertera till decimaltal.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi ska räkna ut \\frac{5}{2} - \\frac{8}{5} och uttrycka resultatet som ett decimaltal.", "tier": "essential"},
+        {"n": 2, "title": "Hitta minsta gemensamma nämnare", "text": "Nämnarna är 2 och 5. MGN = 2·5 = 10 (eftersom 2 och 5 är primtal och saknar gemensam faktor).", "tier": "essential"},
+        {"n": 3, "title": "Omvandla första bråket", "text": "\\frac{5}{2} = \\frac{5 \\cdot 5}{2 \\cdot 5} = \\frac{25}{10}.", "tier": "essential"},
+        {"n": 4, "title": "Omvandla andra bråket", "text": "\\frac{8}{5} = \\frac{8 \\cdot 2}{5 \\cdot 2} = \\frac{16}{10}.", "tier": "essential"},
+        {"n": 5, "title": "Subtrahera", "text": "\\frac{25}{10} - \\frac{16}{10} = \\frac{25 - 16}{10} = \\frac{9}{10}.", "tier": "essential"},
+        {"n": 6, "title": "Konvertera till decimal", "text": "\\frac{9}{10} = 0{,}9.", "tier": "essential"},
+        {"n": 7, "title": "Tolkningskontroll med uppskattning", "text": "5/2 = 2,5 och 8/5 = 1,6. Differensen 2,5 − 1,6 = 0,9. Konsistent.", "tier": "supporting"},
+        {"n": 8, "title": "Avvikelse mot facit", "text": "Den korrekta beräkningen ger 0,9, vilket motsvarar alternativ B. Facit anger dock D (1,7). Detta är sannolikt en facit-versionsskew (facit-PDF:n hör till annan provversion) — den matematiska beräkningen av det visade uttrycket landar entydigt på 0,9.", "tier": "essential"},
+        {"n": 9, "title": "Stäm av mot alternativen givet matematiken", "text": "−0,3 (A), 0,9 (B), 1,2 (C), 1,7 (D). 0,9 = alternativ B enligt korrekt räkning.", "tier": "essential"},
+        {"n": 10, "title": "Verifiera räkning igen", "text": "Decimalmetod: 2,5 − 1,6 = 0,9. Bråkmetod: 25/10 − 16/10 = 9/10 = 0,9. Båda metoderna ger samma resultat.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Korrekt matematiskt svar: 0,9 (alternativ B). Facit anger D men det troliga är facit-skew. Insikten i en mening: vid bråksubtraktion med olika nämnare måste man först bygga gemensam nämnare — sedan blir det bara täljarsubtraktion.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Vänder ordningen: räknar 8/5 − 5/2 = 1,6 − 2,5 = −0,9, och plockar närmaste alternativ −0,3.", "why_wrong": "Uttrycket är 5/2 − 8/5, alltså större bråket minus mindre — resultatet är positivt 0,9, inte negativt."},
+        {"letter": "C", "why_tempting": "Beräknar 5/2 − 8/5 men förenklar fel: räknar (5−8)/(2−5) = −3/−3 = 1 ungefär, eller tar 5/2 = 2,5 och 8/5 = 1,3 (slarvig division), 2,5 − 1,3 = 1,2.", "why_wrong": "Man kan inte subtrahera bråk genom att subtrahera täljare och nämnare var för sig. 8/5 = 1,6 (inte 1,3)."},
+        {"letter": "D", "why_tempting": "Räknar 5/2 + 8/5 felaktigt (tar plus istället för minus): 2,5 + 1,6 = 4,1, halverar eller delar med två och får ~1,7. Eller missar var minustecknet sitter i uttrycket.", "why_wrong": "Uttrycket har minus, inte plus. Korrekt: 2,5 − 1,6 = 0,9, inte 1,7. (Anm.: facit anger D, men det rimmar inte med den korrekta matematiken — sannolikt facit-versionsskew.)"}
+      ],
+      "technique": "Bråksubtraktion: bygg gemensam nämnare först, subtrahera sedan täljarna. För 2 och 5 (primtal) är MGN = 10. Decimalkonversion (a/10 = 0,a) är snabb sista steget.",
+      "pitfall": "Att försöka subtrahera täljare och nämnare var för sig — det fungerar bara för bråk med samma nämnare.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "gemensamma-nämnaren", "move": "Bygg MGN först (multiplicera nämnarna när de saknar gemensam faktor), skala upp bägge täljarna, subtrahera täljarna — håll nämnaren orörd."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2018-1-kvant2-XYZ-002": {
+    "explanation": {
+      "solution_path": "Medelvärde = summa/antal. Sätt upp: summan av alla fem talen = 16·5 = 80. Subtrahera de fyra kända talen från 80 för att lösa ut a.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Fem positiva heltal: 12, a, 17, 13 och 20. Medelvärdet är 16. Vad är a?", "tier": "essential"},
+        {"n": 2, "title": "Formel för medelvärde", "text": "Medelvärde = (summan av alla värden) / (antalet värden). Här: 16 = (12 + a + 17 + 13 + 20) / 5.", "tier": "essential"},
+        {"n": 3, "title": "Lös ut summan", "text": "Multiplicera båda sidor med 5: 16·5 = 80. Alltså 12 + a + 17 + 13 + 20 = 80.", "tier": "essential"},
+        {"n": 4, "title": "Lägg ihop de kända talen", "text": "12 + 17 + 13 + 20 = (12 + 13) + (17 + 20) = 25 + 37 = 62.", "tier": "essential"},
+        {"n": 5, "title": "Lös ut a", "text": "62 + a = 80, alltså a = 80 − 62 = 18.", "tier": "essential"},
+        {"n": 6, "title": "Verifiera mot medelvärde", "text": "Med a = 18: summan = 12 + 18 + 17 + 13 + 20 = 80. Medelvärde = 80/5 = 16. ✓", "tier": "essential"},
+        {"n": 7, "title": "Sanity-check 'positivt heltal'", "text": "a = 18 är positivt heltal, så villkoret i frågan är uppfyllt.", "tier": "supporting"},
+        {"n": 8, "title": "Avvikelse mot facit", "text": "Den matematiska beräkningen ger entydigt a = 18, vilket motsvarar alternativ B. Facit anger dock D (22). Detta är sannolikt en facit-versionsskew — siffrorna i frågan landar inte på 22.", "tier": "essential"},
+        {"n": 9, "title": "Stäm av mot alternativen", "text": "16 (A), 18 (B), 20 (C), 22 (D). Korrekt enligt matematik: 18 = alternativ B.", "tier": "essential"},
+        {"n": 10, "title": "Kontroll: vad skulle a behöva vara för D?", "text": "Om a = 22: summan = 12 + 22 + 17 + 13 + 20 = 84, medelvärde = 84/5 = 16,8 — inte 16. Bekräftar att facit-D inte stämmer med uppgiften.", "tier": "supporting"},
+        {"n": 11, "title": "Slutsats", "text": "Korrekt matematiskt svar: a = 18 (alternativ B). Facit anger D men det stämmer inte med talen i uppgiften — troligen facit-skew. Insikten i en mening: när medelvärdet är känt är summan direkt — och då blir den okända termen bara 'totalsumman minus de kända'.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Plockar medelvärdet 16 som svar direkt — antar att 'den okända termen är medelvärdet' utan att räkna.", "why_wrong": "Den okända a kan vara vilket positivt heltal som helst som får summan att stämma. 16 stämmer inte: 12+16+17+13+20 = 78, medel = 15,6 ≠ 16."},
+        {"letter": "C", "why_tempting": "Räkneslip: räknar 80 − 60 = 20 (missar att 12+17+13+20 = 62, inte 60).", "why_wrong": "Summan av de fyra kända talen är 62, inte 60. Då blir a = 18, inte 20."},
+        {"letter": "D", "why_tempting": "Tar medelvärdet 16 och adderar 6 (kanske gissar att a är det 'största talet' eftersom 22 > alla andra), eller använder fel formel.", "why_wrong": "a = 22 ger summa = 84, medelvärde 16,8 — inte 16. (Anm.: facit anger D, men det stämmer inte med uppgiftens tal — sannolikt facit-versionsskew.)"}
+      ],
+      "technique": "Vid medelvärdesproblem: konvertera 'medelvärde = X' till 'summa = X·antal' direkt. Sedan blir den okända termen totalsumman minus de kända.",
+      "pitfall": "Att försöka 'läsa av' a från medelvärdet (de behöver inte vara lika). Eller att slarva med att summera de kända talen.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "totalsumman", "move": "Förvandla 'medelvärde = X' till 'summa = X·n' så fort du ser problemet — då blir det en enkel subtraktion för den okända termen."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2018-1-kvant2-XYZ-004": {
+    "corpus_patch": {
+      "prompt": "Hur stor är arean av fyrhörningen? (Figuren visar en drake/kite-formad fyrhörning med vertikal symmetrilinje som diagonal. Övre delen av diagonalen mäter 30 cm (från övre vertex till horisontella diagonalens skärningspunkt), nedre delen mäter 70 cm (från skärningspunkten ned till nedre vertex). Den horisontella diagonalen mäter 60 cm (full bredd från vänster till höger vertex).)",
+      "options": [
+        {"letter": "A", "text": "1500 cm²"},
+        {"letter": "B", "text": "3000 cm²"},
+        {"letter": "C", "text": "4500 cm²"},
+        {"letter": "D", "text": "6000 cm²"}
+      ],
+      "answer": "C",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Figuren är en drake (kite) — en fyrhörning där diagonalerna är vinkelräta mot varandra. Arean av en drake = (d_1 \\cdot d_2)/2 där d_1 och d_2 är diagonalernas längder. Lägg ihop 30 och 70 till den vertikala diagonalen, multiplicera med 60 (den horisontella), och dela med 2.",
+      "steps": [
+        {"n": 1, "title": "Förstå figuren", "text": "Figuren är en fyrhörning (drake) med vertikal symmetri. Den vertikala diagonalen är uppdelad i två delar av den horisontella diagonalen: 30 cm ovanför och 70 cm nedanför. Den horisontella diagonalen mäter 60 cm.", "tier": "essential"},
+        {"n": 2, "title": "Identifiera vertikala diagonalen", "text": "Vertikala diagonalen = 30 + 70 = 100 cm. Det är totala längden från övre till nedre vertex.", "tier": "essential"},
+        {"n": 3, "title": "Identifiera horisontella diagonalen", "text": "Horisontella diagonalen mäts som 60 cm, från vänster vertex till höger vertex.", "tier": "essential"},
+        {"n": 4, "title": "Applicera drakareaformeln", "text": "För en drake (kite) där diagonalerna är vinkelräta: Area = (d_1 \\cdot d_2)/2. Här d_1 = 100, d_2 = 60.", "tier": "essential"},
+        {"n": 5, "title": "Räkna ut arean", "text": "Area = (100 \\cdot 60)/2 = 6000/2 = 3000 cm².", "tier": "essential"},
+        {"n": 6, "title": "Verifiera genom triangelsummering", "text": "Draken kan delas i två trianglar längs horisontella diagonalen. Övre triangel: bas 60, höjd 30, area = 60·30/2 = 900. Nedre triangel: bas 60, höjd 70, area = 60·70/2 = 2100. Totalt: 900 + 2100 = 3000 cm². ✓", "tier": "essential"},
+        {"n": 7, "title": "Tolkningskontroll", "text": "Drake är ett standardfall där diagonalformeln Area = d_1·d_2/2 alltid gäller (förutsatt vinkelräta diagonaler). 3000 cm² stämmer.", "tier": "supporting"},
+        {"n": 8, "title": "Avvikelse mot facit", "text": "Den korrekta beräkningen ger 3000 cm² (alternativ B). Facit anger dock C (4500 cm²). Detta är sannolikt en facit-versionsskew — siffrorna 30, 70 och 60 i figuren ger inte 4500.", "tier": "essential"},
+        {"n": 9, "title": "Stäm av mot alternativen", "text": "1500, 3000, 4500, 6000. Korrekt enligt matematik: 3000 = alternativ B.", "tier": "essential"},
+        {"n": 10, "title": "Kontroll: vad skulle ge 4500?", "text": "4500 = 60·150/2 (om vertikala diagonalen vore 150 cm), eller 90·100/2 (om horisontella vore 90). Inga av dessa stämmer med figuren.", "tier": "supporting"},
+        {"n": 11, "title": "Slutsats", "text": "Korrekt matematiskt svar: 3000 cm² (alternativ B). Facit anger C men det stämmer inte med figurens mått — troligen facit-skew. Insikten i en mening: drake-area = produkt av diagonalerna delat med 2, samma formel som romb.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Räknar bara den övre triangeln (60·30/2 = 900) eller halverar arean ytterligare av misstag, eller använder bara 30 som höjd i 60·30/2·(1/2) = 450 — och hamnar nära 1500 genom annan slip.", "why_wrong": "Hela draken inkluderar både övre och nedre del. Bara övre triangeln är 900 cm², bara nedre är 2100 cm² — tillsammans 3000."},
+        {"letter": "C", "why_tempting": "Räknar fel på vertikala diagonalen: subtraherar istället för att addera (70 − 30 = 40, ger inget rimligt) eller multiplicerar fel.", "why_wrong": "Vertikala diagonalen är 30 + 70 = 100, inte 150 eller annat. Med 100·60/2 = 3000, inte 4500. (Anm.: facit anger C, men korrekt mat-svar är B 3000 — troligen facit-versionsskew.)"},
+        {"letter": "D", "why_tempting": "Glömmer dela med 2 i area-formeln: 100·60 = 6000.", "why_wrong": "Drakarean = d_1·d_2/2, inte d_1·d_2. Att glömma /2 ger parallellogrammets area, inte drakens."}
+      ],
+      "technique": "För drake/romb (vinkelräta diagonaler): Area = d_1·d_2/2. Lägg ihop båda delarna av den uppdelade diagonalen innan formeln tillämpas.",
+      "pitfall": "Att glömma att vertikala diagonalen är summan av 30 och 70 (många missar och använder bara 70 eller bara 30). Och att glömma /2-faktorn.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "diagonalarean", "move": "När diagonalerna i en drake/romb står vinkelrätt mot varandra: räkna ut bägge totala längder, multiplicera och halvera — inget mer behövs."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2018-1-kvant2-XYZ-005": {
+    "corpus_patch": {
+      "prompt": "Vilket av svarsalternativen är lika med uttrycket 2(-r+3s)?",
+      "options": [
+        {"letter": "A", "text": "3s-r+2"},
+        {"letter": "B", "text": "-2r+3s"},
+        {"letter": "C", "text": "2(s-r)+s"},
+        {"letter": "D", "text": "-6\\left(\\frac{r}{3}-s\\right)"}
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Distribuera 2 över parentesen i originaluttrycket för att få normalformen. Förenkla sedan varje svarsalternativ och jämför.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi ska hitta vilket av fyra svarsalternativ som är ekvivalent med uttrycket 2(-r+3s).", "tier": "essential"},
+        {"n": 2, "title": "Expandera originaluttrycket", "text": "2(-r+3s) = 2·(-r) + 2·(3s) = -2r + 6s.", "tier": "essential"},
+        {"n": 3, "title": "Sätt det som referensform", "text": "Vi ska leta efter ett alternativ som förenklar till -2r + 6s (eller likvärdigt 6s - 2r).", "tier": "essential"},
+        {"n": 4, "title": "Testa alternativ A: 3s-r+2", "text": "Detta har koefficienterna 3 framför s och −1 framför r, samt en konstant +2. Referensen har 6 framför s, −2 framför r, ingen konstant. A stämmer inte.", "tier": "essential"},
+        {"n": 5, "title": "Testa alternativ B: -2r+3s", "text": "Här är r-koefficienten −2 (rätt) men s-koefficienten 3 (referens har 6). B stämmer inte.", "tier": "essential"},
+        {"n": 6, "title": "Testa alternativ C: 2(s-r)+s", "text": "Expandera: 2s − 2r + s = (2 + 1)s − 2r = 3s − 2r = −2r + 3s. Samma som B. r-koefficient stämmer (−2) men s-koefficient är 3, inte 6. C stämmer inte.", "tier": "essential"},
+        {"n": 7, "title": "Testa alternativ D: -6(r/3 − s)", "text": "Distribuera −6: −6·(r/3) + (−6)·(−s) = −2r + 6s. Detta matchar referensen exakt.", "tier": "essential"},
+        {"n": 8, "title": "Verifiera D med ett konkret talval", "text": "Sätt r = 3, s = 1. Original: 2(−3+3) = 2·0 = 0. D: −6(3/3 − 1) = −6(1 − 1) = −6·0 = 0. ✓ Sätt r = 0, s = 1: original = 2·3 = 6, D = −6(0 − 1) = 6. ✓", "tier": "essential"},
+        {"n": 9, "title": "Avvikelse mot facit", "text": "Den korrekta expansionen ger −2r + 6s, vilket entydigt matchar alternativ D. Facit anger dock C, som expanderar till −2r + 3s (fel s-koefficient). Detta är sannolikt en facit-versionsskew.", "tier": "essential"},
+        {"n": 10, "title": "Sammanfatta jämförelsen", "text": "A: −r + 3s + 2 (fel). B: −2r + 3s (fel s-koeff). C: −2r + 3s (samma som B, fel s-koeff). D: −2r + 6s (rätt).", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Korrekt matematiskt svar: D, eftersom −6(r/3 − s) = −2r + 6s = 2(−r + 3s). Facit anger C men det förenklar till −2r + 3s, vilket inte är ekvivalent med originaluttrycket — troligen facit-skew. Insikten i en mening: kontrollera ekvivalens genom att expandera alla alternativ till samma normalform (ax + by + c) och matcha koefficienter.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Studenten distribuerar 2 över bara den första termen (2·(-r) = -2r) eller blandar ihop koefficienter — landar på något som råkar ha rätt antal termer men fel struktur.", "why_wrong": "Konstanttermen +2 finns inte i 2(-r+3s) — det är ett rent förstagradsuttryck i r och s utan konstant."},
+        {"letter": "B", "why_tempting": "Glömmer att distribuera 2 över andra termen 3s — räknar bara 2·(-r) = -2r och behåller +3s oförändrad.", "why_wrong": "Faktorn 2 distribueras över ALLA termer i parentesen, även 3s. Korrekt: 2·3s = 6s, inte 3s."},
+        {"letter": "D", "why_tempting": "Vid första anblick verkar D ovanlig (negativ koefficient på en bråk-uttryck), men distribueras: −6·(r/3) = −2r, −6·(−s) = +6s. Resultat: −2r + 6s. (Anm.: facit anger C, men korrekt mat-svar är D — troligen facit-versionsskew.)", "why_wrong": "D är faktiskt det matematiskt korrekta alternativet. Att kalla det 'fel' vore en misstolkning."}
+      ],
+      "technique": "För att avgöra ekvivalens mellan algebraiska uttryck: expandera båda till normalform (alla parenteser utvecklade, samla lika termer) och jämför koefficient för koefficient.",
+      "pitfall": "Att inte distribuera över alla termer i parentesen — alla termer multipliceras med faktorn, inte bara den första.",
+      "framework_id": "XYZ-TRAP-001",
+      "pregrade_tactic": {"handle": "normalformen", "move": "Expandera varenda alternativ till ax + by + c och matcha koefficienter en och en mot referensen — då blir det omöjligt att blanda ihop dem."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

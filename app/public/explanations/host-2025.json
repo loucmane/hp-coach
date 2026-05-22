@@ -12634,203 +12634,191 @@
     }
   },
   "host-2025-kvant1-XYZ-006": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Skriv 45 % som ett bråk, multiplicera med \\tfrac{2}{9}, och förkorta resultatet.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Vi söker '45 % av \\tfrac{2}{9}' — det betyder 0{,}45 \\cdot \\tfrac{2}{9}, eller ekvivalent \\tfrac{45}{100} \\cdot \\tfrac{2}{9}.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Skriv procent som bråk",
+        "text": "45\\% = \\tfrac{45}{100} = \\tfrac{9}{20} (förkortat med 5).",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Sätt upp multiplikationen",
+        "text": "45\\% \\text{ av } \\tfrac{2}{9} = \\tfrac{9}{20} \\cdot \\tfrac{2}{9}.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Förkorta innan multiplikation",
+        "text": "Märk att 9 finns i både täljare och nämnare — de tar ut varandra: \\dfrac{9}{20} \\cdot \\dfrac{2}{9} = \\dfrac{2}{20}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Förkorta slutresultatet",
+        "text": "\\dfrac{2}{20} = \\dfrac{1}{10} (dela täljare och nämnare med 2).",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Matcha mot alternativen",
+        "text": "\\dfrac{1}{10} motsvarar svarsalternativ B.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Alternativ kontroll med decimaler",
+        "text": "\\tfrac{2}{9} \\approx 0{,}222. 45\\% \\cdot 0{,}222 = 0{,}45 \\cdot 0{,}222 \\approx 0{,}10. Det motsvarar \\tfrac{1}{10} — bekräftar B.",
+        "tier": "deep"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Varför 9-orna tar ut varandra",
+        "text": "Det är ingen slump att svaret är ett rent stamtal: 45 = 9·5 och nämnaren 9 från \\tfrac{2}{9} förkortar med 9-an i 45, vilket lämnar 5·2 = 10 i nämnaren och 1 i täljaren.",
+        "tier": "deep"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "\\tfrac{9}{20} \\cdot \\tfrac{2}{9} = \\tfrac{9 \\cdot 2}{20 \\cdot 9} = \\tfrac{18}{180} = \\tfrac{1}{10} — konsistent.",
+        "tier": "verification"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
-        "tier": "essential"
+        "text": "Svaret är B: \\tfrac{1}{10}. Insikten i en mening: 45 % av \\tfrac{2}{9} blir snyggt eftersom 45 innehåller en faktor 9 som förkortar med nämnaren — leta alltid efter sådana förkortningar innan du multiplicerar bråk.",
+        "tier": "verification"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Studenten som approximerar 45\\% \\approx 50\\% och tänker 'hälften av 2/9' får \\tfrac{1}{9}.",
+        "why_wrong": "Den approximationen är för grov — 45 % är 5 % UNDER hälften, och 5 % av \\tfrac{2}{9} räcker för att flytta svaret från 1/9 till 1/10."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den som räknar fel i nämnaren — t.ex. 20 + 2 - 1 = 21 eller liknande slip — kan landa på 1/11.",
+        "why_wrong": "\\tfrac{1}{11} motsvarar inget naturligt mellansteg i beräkningen — det är ren räknefel."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Studenten som beräknar \\tfrac{2}{20} = \\tfrac{1}{12} (delar med 2 i täljare men 2 fel i nämnare) väljer D.",
+        "why_wrong": "\\tfrac{2}{20} = \\tfrac{1}{10}, inte \\tfrac{1}{12} — 20 / 2 = 10, inte 12."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "För 'k % av en bråk': skriv om procenten som \\tfrac{k}{100}, sätt upp multiplikationen, och förkorta gemensamma faktorer mellan täljare och nämnare innan du multiplicerar.",
+    "pitfall": "Att inte förkorta före multiplikation — då växer talen och risk för räknefel ökar. Här tar 9-an ut sig själv direkt.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "förkortningen",
+      "move": "Skriv 45 % som 9/20, leta efter gemensamma faktorer (9 i täljare och nämnare), förkorta först — multiplicera sist."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2025-kvant1-XYZ-010": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar C; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Förenkla innehållet i kvadratroten genom division först, sedan multiplicera kvar, och bestäm slutligen den närmaste roten ur produkten.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Vi söker det heltal bland 10, 20, 30, 40 som ligger närmast \\sqrt{(44 \\cdot 4100)/200}.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ C. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Strategi: förenkla innan kvadratrot",
+        "text": "Kvoten under roten kan förenklas innan vi tar roten — det undviker att räkna med ohanterligt stora tal.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Förkorta 4100/200",
+        "text": "\\dfrac{4100}{200} = \\dfrac{4100/100}{200/100} = \\dfrac{41}{2} = 20{,}5.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Multiplicera med 44",
+        "text": "44 \\cdot 20{,}5 = 44 \\cdot 20 + 44 \\cdot 0{,}5 = 880 + 22 = 902.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Uttrycket under roten",
+        "text": "Vi har alltså \\sqrt{902} att uppskatta.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Närmsta kvadrattal",
+        "text": "30^2 = 900 och 31^2 = 961. Eftersom 902 ligger precis ovanför 900, är \\sqrt{902} strax över 30.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Finare uppskattning",
+        "text": "\\sqrt{902} \\approx 30{,}03 — alltså extremt nära 30.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Matcha mot alternativen",
+        "text": "Avståndet till 30 är \\approx 0{,}03; till 20 är \\approx 10; till 40 är \\approx 10. Svaret 30 är överlägset närmast.",
+        "tier": "deep"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Kontroll: \\sqrt{900} = 30 (exakt). 44 \\cdot 4100 = 180\\,400 och 180\\,400/200 = 902 — konsistent. 30^2 = 900 < 902 < 961 = 31^2 så roten är ungefär 30,03.",
+        "tier": "verification"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret C. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
-        "tier": "essential"
+        "text": "Svaret är C: 30. Insikten i en mening: förkorta först, gör multiplikationen sist — och leta efter den närmaste fullständiga kvadraten under roten.",
+        "tier": "verification"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Studenten som räknar \\sqrt{44 \\cdot 4100 / 200} men slarvar i divisionen (t.ex. 4100/200 \\approx 20 och sedan \\sqrt{44 \\cdot 20} = \\sqrt{880} \\approx 29{,}7 — fortfarande 30) kan landa på 10 om de dessutom missar en tiopotens.",
+        "why_wrong": "10² = 100, alldeles för litet. Förenklingen ger ungefär 900 under roten — roten är 30, inte 10."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den som approximerar \\sqrt{902} \\approx \\sqrt{400} = 20 — kanske via en grov uppskattning där 902 förväxlas med 400 — väljer B.",
+        "why_wrong": "20² = 400, men 902 ≠ 400. Det är mer än dubbelt så stort. Den närmaste fullständiga kvadraten är 900 = 30²."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Studenten som tappar förkortningen i 4100/200 och istället räknar med 4100 direkt får \\sqrt{44 \\cdot 4100} = \\sqrt{180\\,400} \\approx 425 — överskattar, eller via fel division landar på något runt 40.",
+        "why_wrong": "40² = 1600. Innehållet under roten är 902, inte 1600 — D är för stort."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Vid uttryck av formen \\sqrt{\\text{produkt/kvot}}: gör divisionen FÖRST (förkorta nollor när möjligt), gör multiplikationen sist, och leta efter den närmaste fullständiga kvadraten.",
+    "pitfall": "Att försöka multiplicera 44·4100 först (= 180 400) innan division — det är onödigt stora tal och risk för räknefel. Förkorta 4100/200 = 20,5 först.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "förenklingen-före-roten",
+      "move": "Förkorta 4100/200 till 20,5, multiplicera 44·20,5 = 902, jämför med 30² = 900 — svaret blir 30."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2025-kvant2-XYZ-006": {
@@ -13034,203 +13022,203 @@
     }
   },
   "host-2025-kvant2-XYZ-009": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Förenkla nämnaren 4/9 − 3/7 till ett enda bråk via gemensam nämnare 63, beräkna sedan 2/7 dividerat med det resultatet. Att dela med ett mycket litet bråk blåser upp svaret.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Du har ett stapelbråk: täljaren är 2/7 och nämnaren är skillnaden 4/9 − 3/7. Hela uttrycket är (2/7) dividerat med (4/9 − 3/7).",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Två våningar, två steg",
+        "text": "Strategin är fast: förenkla först den inre nämnaren 4/9 − 3/7 till ett enda bråk, utför sedan divisionen 2/7 ÷ (det resultatet).",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "title": "Gemensam nämnare",
+        "text": "För att subtrahera 4/9 − 3/7 behöver båda bråken samma nämnare. Minsta gemensamma nämnaren är 9·7 = 63 eftersom 9 och 7 saknar gemensam faktor.",
         "tier": "detail"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Förläng 4/9",
+        "text": "Multiplicera täljare och nämnare med 7: 4/9 = (4·7)/(9·7) = 28/63.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Förläng 3/7",
+        "text": "Multiplicera täljare och nämnare med 9: 3/7 = (3·9)/(7·9) = 27/63.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Subtrahera täljarna",
+        "text": "Med samma nämnare räcker det att subtrahera täljarna: 28/63 − 27/63 = 1/63. Den inre nämnaren har krympt till 1/63 — väldigt litet.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Skriv hela uttrycket",
+        "text": "Nu har du \\dfrac{2/7}{1/63} — en täljare 2/7 dividerad med en nämnare 1/63.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Division = multiplikation med invers",
+        "text": "Definition: att dela med ett bråk är samma som att multiplicera med dess invers. \\dfrac{2/7}{1/63} = \\dfrac{2}{7} \\cdot \\dfrac{63}{1}.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Förkorta 63 mot 7",
+        "text": "63 = 7·9, så \\dfrac{2}{7} \\cdot 63 = \\dfrac{2 \\cdot 7 \\cdot 9}{7} = 2 \\cdot 9 = 18.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Snabbkoll i decimalform: 1/63 ≈ 0,0159 och 2/7 ≈ 0,286. 0,286 / 0,0159 ≈ 18. Stämmer.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är D — 18. Insikten i en mening: när nämnaren i ett stapelbråk själv är en subtraktion av nära bråk blir den pyttesmå, och att dela med något pyttesmått ger ett stort tal.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att räkna fel på subtraktionen och tro att 4/9 − 3/7 = 1/7 (felaktig 'subtrahera täljarna, behåll nämnaren'-regel) och sedan se (2/7)/(1/7) = 2 utan att fastna i förkortningen.",
+        "why_wrong": "Som steg 3–6 visar måste man förlänga till gemensam nämnare innan subtraktion; 4/9 − 3/7 är 1/63, inte 1/7."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att hantera bråken som om de vore likanämnda och får 4/7 direkt utan att slutföra divisionen.",
+        "why_wrong": "Som steg 4–6 visar är gemensamma nämnaren 63 — man kan inte dra ifrån täljarna utan att först matcha nämnarna."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Snabbsvar är ofta hälften av rätt: om man får mellansteget 2·63/7 och delar fel kan man landa på 14 (= 2·7) istället för 18 (= 2·9).",
+        "why_wrong": "Som steg 9 visar är 63/7 = 9, inte 7; 2·9 = 18."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Stapelbråk löses i två lag: förenkla först den inre nämnaren till ett enda bråk via gemensam nämnare, multiplicera sedan med dess invers. Nämnaren styr storleksordningen — när den krymper kraftigt växer slutsvaret.",
+    "pitfall": "Att 'subtrahera bråk direkt' utan gemensam nämnare ger fel inre värde och därmed fel divisor. Botemedlet: skriv alltid förlängningen som ett separat steg innan subtraktion.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Stapelbråksreceptet",
+      "move": "När nämnaren själv är en bråksubtraktion: förläng till gemensam nämnare först, invertera sedan och multiplicera — aldrig 'dela rakt över'."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2025-kvant2-XYZ-010": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Figuren är en pluskorsliknande form med fyra utskjutande armar av bredd x och fyra konkava kvartscirkelbågar (radie x) som binder samman intilliggande armar. Lägg ihop fyra raka kanter av längd x med fyra kvartcirklar med radie x.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "text": "Figuren har en horisontell mittenrektangel och två utskjutande armar (uppåt och nedåt). Höjdmåtten på sidan visar tre segment om vardera x; bredden i botten tre segment om vardera x. Vid övergångarna mellan armarna sitter fyra inåtbuktande kvartscirkelbågar.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Vad efterfrågas?",
+        "text": "Omkrets = totala längden av figurens rand. Här består randen av två sorters bitar: raka linjesegment och kvartscirkelbågar. Räkna båda sorterna separat och summera.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Räkna de raka kanterna",
+        "text": "De fyra 'ändarna' av plustecknet är raka: toppkanten (längd x), bottenkanten (längd x), högerkanten (längd x), vänsterkanten (längd x). Totalt fyra raka kanter av längd x.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Summa av raka delar",
+        "text": "Total rak längd = x + x + x + x = 4x.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Identifiera bågarna",
+        "text": "Mellan varje par av raka kanter (t.ex. toppkant → högerkant) sitter en kvartscirkelbåge som svänger inåt. Det finns fyra övergångar, alltså fyra kvartscirklar.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Bestäm radien",
+        "text": "Varje båge spänner över x i höjdled och x i sidled — det är just kvartscirkelns radie. Alltså radie r = x.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Längd av en kvartscirkel",
+        "text": "Definition: en full cirkels omkrets är 2\\pi r. En kvart av cirkeln har då längden \\dfrac{2\\pi r}{4} = \\dfrac{\\pi r}{2}. Med r = x blir det \\dfrac{\\pi x}{2}.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Summa av bågarna",
+        "text": "Fyra kvartscirklar tillsammans bildar en hel cirkel: 4 \\cdot \\dfrac{\\pi x}{2} = 2\\pi x.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Lägg ihop",
+        "text": "Omkrets = raka delar + bågar = 4x + 2\\pi x = (4 + 2\\pi)x.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera mot svarsalternativen",
+        "text": "Numeriskt: 4 + 2\\pi ≈ 4 + 6{,}28 = 10{,}28. Det är rimligt jämfört med en kvadrat med sidan 3x (omkrets 12x). Endast B = (4+2\\pi)x har rätt struktur 'rak del + π-del'.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är B — (4+2\\pi)x. Insikten i en mening: fyra kvartscirklar med samma radie summerar alltid till en hel cirkel, så bågdelen blir 2\\pi r oavsett figurens form.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är frestande att läsa figuren som om bredden 3x bidrog tre raka kanter ovanpå och under, plus en hel cirkel: (3+\\pi)\\cdot 2x ser ut att passa en symmetrisk form.",
+        "why_wrong": "Som steg 3 visar är de raka kanterna bara fyra (en per arm-ände), inte sex; och som steg 8 visar är bågdelen 2\\pi x, inte 2\\pi·x med extra koefficient."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du missar att bågarna LÄGGER till längd och istället SKÄR BORT från en omslutande 3x×3x-kvadrat (omkrets 12x), kan du dra av \\pi/2 och få (12 − \\pi/2)x.",
+        "why_wrong": "Som steg 5–6 visar är bågarna en del av randen — de adderas, inte subtraheras. Subtraktionsmodellen gäller för area, inte omkrets."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är ibland att räkna AREA istället för omkrets, och D = (9 − \\pi)x^{2} har enheten m^{2}, vilket lockar elever som ser figuren och tänker 'kvadrat med hörn ursvarvade'.",
+        "why_wrong": "Som steg 2 visar är frågan omkrets (enhet längd, dvs. x, inte x^{2}). D är dimensionellt fel oavsett geometrin."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "För figurer byggda av räta sträckor och cirkelbågar: räkna raka delar separat och bågar separat. När det finns fyra kvartscirklar med samma radie blir bågdelen alltid en hel cirkel (2\\pi r). Använd dimensionsanalys (längd vs. area) för att snabbt utesluta felaktiga svar.",
+    "pitfall": "Att blanda ihop omkrets och area är vanligt med figurer som ser ut som 'kvadrat minus hörn'. Botemedlet: läs frågan en gång till och kolla att slutsvaret har enheten x (omkrets) inte x^{2} (area).",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Kvartscirkelsummeringen",
+      "move": "När en figur har fyra kvartscirklar med samma radie: behandla dem som en hel cirkel (2\\pi r) och addera alla raka kanter separat."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2025-kvant1-DTK-036": {

@@ -5968,103 +5968,103 @@
     }
   },
   "var-2013-kvant2-XYZ-001": {
-    "_meta": {
-      "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
-    },
-    "framework_id": "XYZ-TRAP-038",
-    "solution_path": "Vinkeln v är yttervinkel i en triangel där två inre vinklar är avlästa i figuren. Använd yttervinkelregeln: v = a + b där a och b är de icke-angränsande inre vinklarna. Kedjan ger v = 103°.",
-    "technique": "Vinkelräkning i sammansatt figur: kombinera triangelns vinkelsumma 180° med yttervinkelregeln. Yttervinkeln (utåtriktad) = summan av de två inre vinklar i triangeln som INTE är dess granne.",
-    "pitfall": "Botemedlet mot 'fel triangel'-fällan: peka ut TRIANGELN som v hör till (där v ligger i förlängningen av en sida) och därefter de TVÅ icke-angränsande inre vinklarna. De som DELAR sida med v är ej med i summan.",
+    "solution_path": "Den stora triangeln har basvinklar 59° (vänster) och 33° (höger), och toppvinkeln delas av en cevian i två lika delar x och x. Vinkelsumman i den stora triangeln: 59° + 33° + 2x = 180°, så 2x = 88° och x = 44°. Vinkeln v är vinkeln vid cevianens fot på höger sida (inom höger deltriangel). I höger deltriangel: x + 33° + v = 180°, alltså v = 180° − 44° − 33° = 103°.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Figuren är en sammansatt vinkelfigur. Vinkeln v sitter utanför en triangel där två inre vinklar är utmärkta i figuren. Vi vill ha v.",
+        "text": "En stor triangel har basvinklar 59° vänster och 33° höger. Vid toppen löper en cevian rakt ned till basen och delar toppvinkeln i två lika stora delar, båda märkta x. Vid cevianens fot, på höger sida, sitter vinkeln v.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Namnge vinklarna",
-        "text": "Kalla de två utmärkta inre vinklarna a och b. Den tredje inre vinkeln c är grannen till v (de delar sida). v är yttervinkel.",
-        "tier": "detail"
+        "title": "Använd vinkelsumman i hela triangeln",
+        "text": "59° + 33° + (toppvinkeln) = 180°. Toppvinkeln är 2x eftersom cevianen delar den i två lika delar.",
+        "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Triangelns vinkelsumma",
-        "text": "Grundsats: a + b + c = 180^{\\circ} i varje triangel. Detta är vinkelaxiomet du kan lita på.",
-        "tier": "detail"
+        "title": "Räkna toppvinkeln",
+        "text": "Toppvinkeln = 180° − 59° − 33° = 180° − 92° = 88°.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Supplement-relation",
-        "text": "v och c ligger på samma räta linje (utåt och inåt). Räta linjens vinkel är 180°. Alltså: v + c = 180^{\\circ}.",
-        "tier": "detail"
+        "title": "Hitta x",
+        "text": "2x = 88°, så x = 44°.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Härled yttervinkelregeln",
-        "text": "Från steg 3: c = 180^{\\circ} - (a + b). Från steg 4: c = 180^{\\circ} - v. Sätt lika: 180^{\\circ} - v = 180^{\\circ} - (a + b), alltså v = a + b.",
-        "tier": "detail"
+        "title": "Lokalisera v",
+        "text": "v sitter mellan cevianen och basen, på cevianens högra sida — den inre vinkeln i höger deltriangel vid cevianens fot.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Avläs de två inre vinklarna",
-        "text": "I figuren är a och b utmärkta. Avläsningen och summeringen ger a + b = 103^{\\circ}.",
+        "title": "Applicera vinkelsumman i höger deltriangel",
+        "text": "Höger deltriangel har: toppvinkel x = 44°, basvinkel 33° (höger basvinkel av hela triangeln), och v (vid cevianens fot). Summa: 44° + 33° + v = 180°.",
         "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Tillämpa regeln",
-        "text": "Sätt in: v = 103^{\\circ}.",
+        "title": "Lös ut v",
+        "text": "v = 180° − 44° − 33° = 180° − 77° = 103°.",
         "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Beräkna granne-vinkeln",
-        "text": "c = 180^{\\circ} - 103^{\\circ} = 77^{\\circ} — detta är den vinkel som ligger inuti triangeln, granne till v.",
-        "tier": "detail"
+        "title": "Sanity-check med yttervinkelsatsen",
+        "text": "v är yttervinkeln för vänster deltriangel vid samma fot. Vänster deltriangel har vinklarna x = 44° (topp) och 59° (vänster bas), så summan av motstående inre vinklar = 44° + 59° = 103° ✓.",
+        "tier": "support"
       },
       {
         "n": 9,
-        "title": "Rimlighetskontroll",
-        "text": "Triangelsumma: a + b + c = 103^{\\circ} + 77^{\\circ} = 180^{\\circ} ✓. Supplement: v + c = 103^{\\circ} + 77^{\\circ} = 180^{\\circ} ✓. Båda satser stämmer.",
-        "tier": "detail"
+        "title": "Bekräfta att v är trubbig",
+        "text": "Eftersom 33° < 59°, lutar cevianen mer åt vänster i botten, så höger deltriangels fotvinkel är trubbig. v > 90° är konsistent.",
+        "tier": "support"
       },
       {
         "n": 10,
-        "title": "Verifiera",
-        "text": "Vinkeln v är trubbig (>90°), vilket är konsekvent med att de två icke-angränsande inre vinklarna tillsammans är trubbiga. 103° passar precis mellan 90° och 113° (näst-trubbig optie i alternativen).",
+        "title": "Verifiera mot alternativen",
+        "text": "103° är alternativ C. 92° skulle vara 180 − 88 (om man glömt halvera), 97° är 92 + 5 (slip), 105° om x var fel.",
         "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Svar: C, 103°. Insikten i en mening: yttervinkelregeln är genvägen i alla figurer där en sökt vinkel ligger UTANFÖR en triangel — summera de två icke-angränsande inre vinklarna direkt.",
+        "text": "Svaret är C, 103°. Insikten i en mening: När en cevian delar toppvinkeln lika, dela vinkelsumman i två steg — hela triangeln först för att hitta x, sen deltriangeln för v.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att hoppa över ett vinkelsteg och hamna på 92° — kanske via felaktig avläsning av en av delvinklarna.",
-        "why_wrong": "Steg 6 är explicit om summan a + b = 103^{\\circ}. 92° skulle kräva att en av de avlästa vinklarna var 11° fel — för stor avvikelse för en HP-figur."
+        "why_tempting": "92° är 180° − 88° = 92° vilket den som glömmer halveringen kan ta. Det är också supplementet till toppvinkeln 88°.",
+        "why_wrong": "Toppvinkeln är 88° men v är inte dess supplement. v ligger inom höger deltriangel och kräver hela vinkelsumman där."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 97° om man avrundar de avlästa vinklarna eller blandar ihop yttervinkelregeln med ett halvsteg.",
-        "why_wrong": "Steg 9 kontrollerar med triangelsumman. 97° ger c = 83°, som tillsammans med a + b = 97° INTE summerar till 180° (om avläsningen i figuren är 103° och 77°)."
+        "why_tempting": "97° är nära rätt svar och kan komma från räknefel: t.ex. 180 − 50 − 33 = 97 om man läser 59 fel som 50.",
+        "why_wrong": "Med 59° och 33° som korrekta basvinklar ger räkningen exakt 103°, inte 97°. 97° är räknefel."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är att räkna in ett supplementsteg för mycket och få 105°.",
-        "why_wrong": "Steg 5 visar att yttervinkelregeln är direkt: v = a + b, ingen extra korrigering. 105° kräver a + b = 105^{\\circ}, vilket inte stämmer med figurens 103°."
+        "why_tempting": "105° är nära rätt och kan komma om man avrundar uppåt eller räknar med x = 45° (felaktigt halveringssteg).",
+        "why_wrong": "Toppvinkeln är 88°, halvan är 44° (jämn). 105° förutsätter x = 42° vilket inte stämmer."
       }
     ],
+    "technique": "När en cevian delar toppvinkeln lika: använd vinkelsumman i hela triangeln för att hitta toppvinkeln (= 2x), halvera till x, och kör vinkelsumman på nytt i den relevanta deltriangeln för att hitta den sökta vinkeln. Sanity-check via yttervinkelsatsen.",
+    "pitfall": "Att tro att v är supplementet till x på cevianlinjen (180° − 44° = 136°) eller bara använda en av basvinklarna direkt. v är en inre vinkel i en deltriangel, så vinkelsumman 180° måste användas där.",
+    "framework_id": "XYZ-TRAP-038",
     "pregrade_tactic": {
-      "handle": "Yttervinkelregeln",
-      "move": "Identifiera triangeln som v är yttervinkel till — summera de TVÅ inre vinklarna som inte är dess granne, det är v."
+      "handle": "Två-stegsvinkeln",
+      "move": "Räkna hela trianglens vinkelsumma först för att låsa toppvinkeln, sen deltriangelns för den sökta vinkeln."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2013-kvant2-XYZ-002": {
@@ -13108,103 +13108,97 @@
     }
   },
   "var-2013-kvant2-XYZ-010": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Räkna täljaren och nämnaren var för sig: täljaren blir 3/16, nämnaren blir 2. Dubbelbråket (3/16)/2 = 3/32.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "Det är ett dubbelbråk: täljaren är en produkt av tre bråk, nämnaren är en produkt av två bråk. Strategin: räkna täljare och nämnare för sig, sedan dividera.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Förenkla 4/8 och 8/2",
+        "text": "\\dfrac{4}{8} = \\dfrac{1}{2} (kortat med 4). \\dfrac{8}{2} = 4 (delning).",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Räkna täljaren",
+        "text": "\\dfrac{4}{8}\\cdot\\dfrac{1}{2}\\cdot\\dfrac{3}{4} = \\dfrac{1}{2}\\cdot\\dfrac{1}{2}\\cdot\\dfrac{3}{4}.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Multiplicera bråken",
+        "text": "Multiplikationsregeln: täljare × täljare, nämnare × nämnare. \\dfrac{1}{2}\\cdot\\dfrac{1}{2}\\cdot\\dfrac{3}{4} = \\dfrac{1\\cdot 1\\cdot 3}{2\\cdot 2\\cdot 4} = \\dfrac{3}{16}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Räkna nämnaren",
+        "text": "\\dfrac{8}{2}\\cdot\\dfrac{1}{2} = 4\\cdot\\dfrac{1}{2} = 2.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Sätt ihop dubbelbråket",
+        "text": "Uttrycket blir \\dfrac{3/16}{2}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "title": "Division med ett tal är multiplikation med dess invers",
+        "text": "\\dfrac{a}{n} = a\\cdot\\dfrac{1}{n}. Alltså \\dfrac{3/16}{2} = \\dfrac{3}{16}\\cdot\\dfrac{1}{2}.",
         "tier": "detail"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Räkna ut",
+        "text": "\\dfrac{3}{16}\\cdot\\dfrac{1}{2} = \\dfrac{3}{32}.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Verifiera med decimaler",
+        "text": "Täljaren: 0{,}5\\cdot 0{,}5\\cdot 0{,}75 = 0{,}1875. Nämnaren: 2. Kvot: 0{,}09375. Och 3/32 = 0{,}09375. Stämmer.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svar A: 3/32. Insikten i en mening: dubbelbråk reduceras säkert genom att räkna ut täljaren och nämnaren var för sig först, sedan dividera.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om man stannar efter steg 4 (täljaren = 3/16) och glömmer att dela med nämnaren, hamnar man på B.",
+        "why_wrong": "Steg 6–8 visar att dubbelbråket fortfarande har en nämnare 2 att dela med; svaret måste bli mindre än 3/16."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att felaktigt slå ihop 1/2 · 3/4 = 3/8 och slänga bort resten.",
+        "why_wrong": "Steg 3 visar att täljaren har TRE bråk — den första 1/2:an får inte hoppa över."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om man råkar invertera kvoten (delar nämnaren med täljaren) får man 32/3 ≈ 10,6, vilket ingen ser. Men ”3/2” är frestande som ett snabbt mellansteg.",
+        "why_wrong": "Steg 8 visar att svaret är 3/32 — 16 gånger mindre än 3/2."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Dubbelbråk-strategi: räkna täljare och nämnare för sig, sedan invertera nämnaren och multiplicera. Förenkla varje delkomponent (t.ex. 4/8 = 1/2) innan multiplikation.",
+    "pitfall": "Botemedlet mot att tappa nämnaren i dubbelbråk: rita ett tydligt horisontellt streck mellan täljarens och nämnarens räkneresultat innan du dividerar — då kan ingen del slinka undan.",
+    "framework_id": "XYZ-TRAP-017",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Dubbelbråksuppdelningen",
+      "move": "I dubbelbråk — räkna täljare och nämnare var för sig först, sen dividera. Förenkla varje del innan multiplikation."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   }
 }

@@ -13102,103 +13102,103 @@
     }
   },
   "host-2017-kvant2-XYZ-008": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar C; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Skriv om dubbelbråket som en multiplikation: (x_{1}/y_{1})\\cdot(y_{2}/x_{2}). Substituera x_{1}=2x_{2}, y_{1}=2y_{2}, och 2:orna stryker — kvar blir (x_{2}/y_{2})\\cdot(y_{2}/x_{2})=1.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "Uttrycket är ett bråk där täljaren själv är ett bråk och nämnaren själv är ett bråk: \\dfrac{x_{1}/y_{1}}{x_{2}/y_{2}}. Indexen 1 och 2 är bara namn på olika tal; villkoren säger att x_{1} är dubbelt så stor som x_{2} och y_{1} är dubbelt så stor som y_{2}.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ C. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Vad är ”division med ett bråk”?",
+        "text": "Att dividera med ett bråk är samma sak som att multiplicera med dess invers: \\dfrac{a/b}{c/d} = \\dfrac{a}{b}\\cdot\\dfrac{d}{c}. Detta är samma regel som att \\dfrac{1}{1/2}=2.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Vänd nedre bråket",
+        "text": "Tillämpa regeln: \\dfrac{x_{1}/y_{1}}{x_{2}/y_{2}} = \\dfrac{x_{1}}{y_{1}}\\cdot\\dfrac{y_{2}}{x_{2}}.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Slå ihop till ett bråk",
+        "text": "Multiplikation av bråk: täljare gånger täljare, nämnare gånger nämnare. \\dfrac{x_{1}}{y_{1}}\\cdot\\dfrac{y_{2}}{x_{2}} = \\dfrac{x_{1}\\,y_{2}}{y_{1}\\,x_{2}}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Substituera villkoren",
+        "text": "Sätt in x_{1}=2x_{2} och y_{1}=2y_{2}: \\dfrac{x_{1}\\,y_{2}}{y_{1}\\,x_{2}} = \\dfrac{(2x_{2})\\,y_{2}}{(2y_{2})\\,x_{2}}.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Stryk 2:orna",
+        "text": "En faktor 2 finns i både täljare och nämnare. Stryk: \\dfrac{2\\,x_{2}\\,y_{2}}{2\\,y_{2}\\,x_{2}} = \\dfrac{x_{2}\\,y_{2}}{y_{2}\\,x_{2}}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Stryk x₂ och y₂",
+        "text": "Samma faktorer i täljare och nämnare. \\dfrac{x_{2}\\,y_{2}}{y_{2}\\,x_{2}} = 1 (för x_{2},y_{2}\\neq 0, vilket är underförstått eftersom de står i nämnare).",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Tolkning utan substitution",
+        "text": "Det går också att se direkt: täljaren x_{1}/y_{1} och nämnaren x_{2}/y_{2} har samma värde — båda är ”någonting / något lika dubbelt” — eftersom 2:orna i x_{1}/y_{1}=2x_{2}/(2y_{2}) kortar bort. Kvoten av två lika tal är 1.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Sanity-check med konkreta tal",
+        "text": "Ta x_{2}=3,\\,y_{2}=4. Då x_{1}=6,\\,y_{1}=8. Täljare: 6/8=3/4. Nämnare: 3/4. Kvot: (3/4)/(3/4)=1.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera mot alternativen",
+        "text": "Värdet 1 finns endast i alternativ C. Alternativ A skulle kräva att nämnaren bara var 1; alternativ B skulle kräva att 2:orna kvadrerats; D skulle kräva att det inte fanns någon kortning.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret C. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svar C: 1. Insikten i en mening: när täljare och nämnare är skalade med samma faktor stryker faktorn — dubbelbråket reducerar till 1.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att stanna efter steg 4 och avsluta med \\dfrac{x_{1}\\,y_{2}}{y_{1}\\,x_{2}} omtolkat som x_{1}/y_{1}.",
+        "why_wrong": "Steg 5–7 visar att substitutionen krymper allt till 1; man har inte använt villkoren om man stannar vid A."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att se x_{1}=2x_{2} och kvadrerar villkoret — det ger ett kvadratiskt uttryck i x_{2} och y_{2}.",
+        "why_wrong": "Steg 6 visar att det bara finns ETT extra 2-par att stryka, inte två — inga kvadrater uppstår."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Snabbsvar är ofta ”dubbelt” när villkoret innehåller en 2:a — man tror att 2:an överlever.",
+        "why_wrong": "Steg 6 visar att samma 2:a finns i både täljare och nämnare; den stryker och försvinner."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Dubbelbråk-receptet: vänd det undre bråket och multiplicera. När båda bråken är skalade med samma faktor — t.ex. 2 — stryker den direkt.",
+    "pitfall": "Botemedlet mot att tro att 2:an blir kvar: behåll faktorn 2 explicit som ”·2” genom hela räkningen tills du ser den i både täljare och nämnare — då är strykningen otvetydig.",
+    "framework_id": "XYZ-TRAP-017",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Dubbelbråksvändet",
+      "move": "När du ser en kvot där täljaren själv är ett bråk — vänd nämnar-bråket först, multiplicera, och leta efter gemensamma faktorer att stryka."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2017-kvant1-NOG-025": {

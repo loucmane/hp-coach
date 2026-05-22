@@ -12937,103 +12937,97 @@
     }
   },
   "host-2013-kvant2-XYZ-002": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Vi har likhet mellan två bråk med samma täljare b. Eftersom b ≠ 0 kan vi förkorta bort b och få en likhet mellan nämnarna a+x = 2x, vilket genast ger x = a.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Ekvationen \\dfrac{b}{a+x} = \\dfrac{b}{2x} har samma täljare b på båda sidor. Villkoren a ≠ 0 och b ≠ 0 finns för att nollor inte ska tillkomma i nämnaren eller täljaren. Mål: hitta x i termer av a (och eventuellt b).",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Identifiera den lediga genvägen",
+        "text": "Två bråk med IDENTISK täljare är lika ↔ deras nämnare är lika (så länge täljaren ≠ 0, vilket vi har via b ≠ 0). Det är mycket snabbare än att korsmultiplicera.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Förkorta bort b",
+        "text": "Multiplicera båda led med 1/b (definierat eftersom b ≠ 0). Kvar blir \\dfrac{1}{a+x} = \\dfrac{1}{2x}.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Ta inverser av båda led",
+        "text": "Två bråk med täljare 1 är lika om och endast om deras nämnare är lika. Alltså: a + x = 2x.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Samla x på en sida",
+        "text": "Subtrahera x från båda led: a + x - x = 2x - x, alltså a = x.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Skriv om",
+        "text": "Lösningen blir därmed x = a. Märk: b försvann helt ur slutsvaret — det var bara en proportionalitetsfaktor som uppträdde på båda sidor.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Kontrollera definitionsmängd",
+        "text": "Med x = a måste vi kolla att nämnarna inte blir noll: a + x = 2a ≠ 0 (sant eftersom a ≠ 0), och 2x = 2a ≠ 0 (samma villkor). Alltså är lösningen tillgänglig.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Verifiera genom insättning",
+        "text": "Sätt x = a i originalet: Vänster led blir \\dfrac{b}{a+a} = \\dfrac{b}{2a} och höger led blir \\dfrac{b}{2a}. Likhet — rätt.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Notera varför distraktorerna lurar",
+        "text": "Svarsalternativen ab/2 och ab fångar studenten som insåg att korsmultiplikation skulle ge b \\cdot 2x = b(a+x) men sedan behöll b kvar på vägen istället för att direkt förkorta bort det.",
+        "tier": "optional"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är D: x = a. Insikten i en mening: när två bråk har identisk täljare ≠ 0 är de lika exakt när nämnarna är lika — ingen korsmultiplikation behövs.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Korsmultiplikation b \\cdot 2x = b(a+x) ger bx = b(a+x)/2 om man tappar tålamodet och delar högerledet med 2 i fel ordning — ab/2 dyker upp som ett halvfabrikat.",
+        "why_wrong": "Det är ett uttryck för något annat än x: ab/2 har enheten av en produkt, inte av en variabel som a. Dessutom kan b ≠ 0 elimineras direkt, så b kan inte finnas kvar i slutsvaret."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om man korsmultiplicerar och får b(a+x) = 2bx och försöker lösa för x utan att först förkorta b, kan man fastna och tro att slutsvaret bevarar b.",
+        "why_wrong": "b försvinner alltid: dela båda led med b (lagligt eftersom b ≠ 0) och du får en rent linjär ekvation i x och a. Slutsvaret kan inte innehålla b."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Bråket a/3 ser ut som ett rimligt 'låt-mig-dela-med-något' svar om man räknar fel på koefficienten — t.ex. tolkar 2x som 3x av distraktion.",
+        "why_wrong": "Ekvationen ger entydigt a + x = 2x \\Rightarrow x = a. Det finns ingen 3:a i ekvationen som kan dyka upp i nämnaren av lösningen."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "När två bråk med samma täljare (≠ 0) är lika: sätt deras nämnare lika direkt. Genvägen sparar tid och eliminerar onyttiga variabler som b ur slutsvaret.",
+    "pitfall": "Att korsmultiplicera reflexmässigt och dra med b genom hela räkningen — många elever slösar tid och får b-fyllda mellansvar som matchar distraktorerna A och B.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Spegelregeln",
+      "move": "Om båda bråkens täljare är identiska och nollskilda, sätt nämnarna lika direkt och hoppa över korsmultiplikationen."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2013-kvant2-XYZ-006": {
@@ -13237,303 +13231,297 @@
     }
   },
   "host-2013-kvant2-XYZ-009": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Skärningspunkten hittas genom att sätta linjernas y-uttryck lika och lösa för x. Vi får x_1 = 5 och y_1 = 2, så båda koordinaterna är positiva — alternativ A.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "Två räta linjer y = -x + 7 och y = \\dfrac{2}{3}x - \\dfrac{4}{3} skär i en punkt P = (x_1, y_1). Frågan är inte exakt värde — bara vilka tecken x_1 och y_1 har.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Sätt upp skärningsekvationen",
+        "text": "I skärningspunkten har båda linjerna samma y. Likställ höger leden: -x + 7 = \\dfrac{2}{3}x - \\dfrac{4}{3}.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Multiplicera bort nämnaren",
+        "text": "Multiplicera båda led med 3 för att slippa bråken: 3(-x + 7) = 3 \\cdot \\dfrac{2}{3}x - 3 \\cdot \\dfrac{4}{3}, alltså -3x + 21 = 2x - 4.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Samla x-termerna",
+        "text": "Addera 3x till båda led: 21 = 5x - 4.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Samla konstanterna",
+        "text": "Addera 4 till båda led: 25 = 5x.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Lös ut x_1",
+        "text": "Dela med 5: x_1 = 5. Eftersom 5 > 0 har vi redan slagit fast att x_1 > 0 — alltså är svar C och D uteslutna.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Beräkna y_1",
+        "text": "Sätt x = 5 i den enklare linjen: y_1 = -5 + 7 = 2. Så y_1 = 2 > 0.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Korskontroll mot andra linjen",
+        "text": "Kontrollera med y = \\dfrac{2}{3} \\cdot 5 - \\dfrac{4}{3} = \\dfrac{10}{3} - \\dfrac{4}{3} = \\dfrac{6}{3} = 2. Samma värde — punkten ligger på båda linjerna.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "P = (5, 2). Båda koordinater är positiva. Tecken-mönster matchar alternativ A: x_1 > 0; y_1 > 0.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är A. Insikten i en mening: skärningspunkten löses genom att sätta y-uttrycken lika och beräkna x — sedan stoppas x in i den enklaste linjen för y.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Eleven som löser för x korrekt (x_1 = 5) men sedan slarvar med tecken i y-beräkningen — t.ex. tolkar -x + 7 som -(5+7) = -12 — får y_1 < 0 och hamnar fel.",
+        "why_wrong": "Insättningen -x + 7 vid x = 5 ger -5 + 7 = 2, inte -12. Subtraktionen ska göras på rätt sätt: minustecknet binder bara till x, inte till hela uttrycket."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om man flyttar fel term över likhetstecknet och får -5x = 25 istället för 5x = 25, så blir x_1 = -5 < 0. Med x = -5 i andra linjen blir y = -2/3 \\cdot 5 - 4/3 = -14/3 < 0 — men intercepten 7 är så stor att man kanske gissar y_1 > 0 ändå.",
+        "why_wrong": "Korrekt teckenhantering ger 5x = 25, inte -5x = 25. När man flyttar -3x till höger blir det +3x på höger sida, och 2x + 3x = 5x. x_1 = 5, inte -5."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den som tappar tecken på BÅDA termer på samma gång kan trasla sig fram till både x_1 < 0 och y_1 < 0.",
+        "why_wrong": "Båda linjer har positiva y-värden i området x = 5: den första (y = -x + 7) blir 2, den andra blir också 2. Båda koordinater är strikt positiva."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Skärningspunkt mellan två linjer: likställ y-uttrycken, lös för x, sätt sedan in x i den enklaste linjen för att få y. Multiplicera bort nämnare först om bråk är inblandade.",
+    "pitfall": "Att glömma multiplicera båda led med nämnarens 3 INNAN man samlar termer — leder ofta till räknefel i mellansteg där x-koefficienten halveras eller förskjuts.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Korsskärningen",
+      "move": "Sätt y-uttrycken lika, rensa nämnare med multiplikation, och beräkna x först; sätt sedan in x i den linje med enklast intercept för att få y."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2013-kvant2-XYZ-011": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Bryt ut x ur vänstra ledet. Båda leden får då samma teckenstruktur (+\\,-\\,+\\,-) — kvoten mellan dem är x:s värde.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Ekvationen \\frac{x}{5} - \\frac{x}{10} + \\frac{x}{15} - \\frac{x}{20} = 1 - \\frac{1}{2} + \\frac{1}{3} - \\frac{1}{4} har x i varje term i vänstra ledet. Höger led är ett rent talvärde. Strategin: isolera x genom att bryta ut.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Strukturen i båda leden",
+        "text": "Lägg märke till att nämnarna 5,\\,10,\\,15,\\,20 i VL är fyra gånger nämnarna 1,\\,2,\\,3,\\,4 i HL — och tecknen +\\,-\\,+\\,- är identiska. Det är ingen slump; ekvationen är konstruerad så.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "title": "Vad betyder utbrytning?",
+        "text": "Distributiva lagen baklänges: om varje term har samma faktor x, så är \\tfrac{x}{5} - \\tfrac{x}{10} + \\tfrac{x}{15} - \\tfrac{x}{20} = x\\bigl(\\tfrac{1}{5} - \\tfrac{1}{10} + \\tfrac{1}{15} - \\tfrac{1}{20}\\bigr). Faktorn x flyttas utanför parentesen.",
         "tier": "detail"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Bryt ut x",
+        "text": "VL blir alltså x\\bigl(\\tfrac{1}{5} - \\tfrac{1}{10} + \\tfrac{1}{15} - \\tfrac{1}{20}\\bigr) = 1 - \\tfrac{1}{2} + \\tfrac{1}{3} - \\tfrac{1}{4}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "title": "Gemensam nämnare i HL",
+        "text": "Bråkaddition kräver gemensam nämnare. För 1,\\,2,\\,3,\\,4 är MGN = 12. Skriv om: 1 = \\tfrac{12}{12},\\ \\tfrac{1}{2}=\\tfrac{6}{12},\\ \\tfrac{1}{3}=\\tfrac{4}{12},\\ \\tfrac{1}{4}=\\tfrac{3}{12}.",
         "tier": "detail"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Räkna HL",
+        "text": "\\tfrac{12}{12} - \\tfrac{6}{12} + \\tfrac{4}{12} - \\tfrac{3}{12} = \\tfrac{12 - 6 + 4 - 3}{12} = \\tfrac{7}{12}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "title": "Gemensam nämnare i VL-parentesen",
+        "text": "För 5,\\,10,\\,15,\\,20 är MGN = 60. Skriv om: \\tfrac{1}{5}=\\tfrac{12}{60},\\ \\tfrac{1}{10}=\\tfrac{6}{60},\\ \\tfrac{1}{15}=\\tfrac{4}{60},\\ \\tfrac{1}{20}=\\tfrac{3}{60}.",
         "tier": "detail"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Räkna VL-parentesen",
+        "text": "\\tfrac{12}{60} - \\tfrac{6}{60} + \\tfrac{4}{60} - \\tfrac{3}{60} = \\tfrac{7}{60}. Samma täljare 7 — det är poängen med uppgiften.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Sätt in i ekvationen",
+        "text": "x\\cdot\\tfrac{7}{60} = \\tfrac{7}{12}.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Lös ut x",
+        "text": "Multiplicera båda led med \\tfrac{60}{7}: x = \\tfrac{7}{12}\\cdot\\tfrac{60}{7} = \\tfrac{60}{12} = 5.",
+        "tier": "essential"
       },
       {
         "n": 11,
+        "title": "Verifiera",
+        "text": "Sätt in x=5 i VL: \\tfrac{5}{5} - \\tfrac{5}{10} + \\tfrac{5}{15} - \\tfrac{5}{20} = 1 - \\tfrac{1}{2} + \\tfrac{1}{3} - \\tfrac{1}{4} — identiskt med HL. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svar D: x = 5. Insikten i en mening: när varje VL-nämnare är en konstant faktor större än motsvarande HL-nämnare avslöjar utbrytning direkt den konstanten.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att blanda ihop tecken och tro att skillnaden mellan leden ger ett negativt x. ",
+        "why_wrong": "Steg 10 visar att kvoten 60/12 är positiv — det finns inget tecken som vänder under räkningen."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att läsa av nämnaren i HL (12) och täljaren i VL-parentesen (7) och försöker bilda ett ”invers-värde” som -1/5.",
+        "why_wrong": "Steg 8–9 visar att x = (7/12)/(7/60), inte (7/60)/(7/12); inversen är felställd."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om man råkar dividera VL-parentesen med HL istället för tvärtom hamnar man på 1/5.",
+        "why_wrong": "Steg 10 cementerar riktningen: x = HL / (faktorn framför x i VL), alltså (7/12) / (7/60) = 5."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Mönster-utbrytning: när vänster led är en summa av termer som alla innehåller x, faktorisera x först — sedan reduceras hela ekvationen till x · K = HL, där K är en talkonstant.",
+    "pitfall": "Botemedlet mot att räkna fyra separata bråkledamöter: notera att vänster- och högerled har samma teckenmönster och en konstant nämnarfaktor — då räcker det att räkna ut ETT bråkuttryck.",
+    "framework_id": "XYZ-TRAP-016",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Utbrytningsblicken",
+      "move": "När varje term i ett led har samma okända faktor — bryt ut den först och hantera resten som ett rent talsamband."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2013-kvant2-XYZ-012": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Vid slumpmässigt urval är sannolikheten för pojke = pojkar/totala. Villkoret P(pojke) = (2/3) P(flicka) översätts till p/totala = (2/3) · f/totala, vilket förenklas till p = (2/3)f. Med p = 2k, f = 3k blir kvoten p/(p+f) = 2/5.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "En klass har p pojkar och f flickor; totala antalet är p + f. Vid slumpmässigt val är P(pojke) = p/(p+f) och P(flicka) = f/(p+f). Mål: hitta p/(p+f) givet att P(pojke) = (2/3) P(flicka).",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Översätt villkoret till en ekvation",
+        "text": "P(pojke) = (2/3) P(flicka) blir \\dfrac{p}{p+f} = \\dfrac{2}{3} \\cdot \\dfrac{f}{p+f}.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Eliminera den gemensamma nämnaren",
+        "text": "Båda sidor har samma nämnare p + f (≠ 0 eftersom klassen inte är tom). Multiplicera båda led med (p + f) — kvar blir den rena relationen p = \\dfrac{2}{3} f.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Tolka resultatet som ett förhållande",
+        "text": "p = (2/3)f betyder att om f = 3 så är p = 2. Förhållandet pojkar : flickor är alltså 2 : 3. (Detta är intuitivt: sannolikheten för pojke är 2/3 av flicka-sannolikheten, så det finns 2/3 så många pojkar som flickor.)",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Välj ett bekvämt heltalsexempel",
+        "text": "Sätt f = 3, p = 2 (det enklaste valet som ger heltal). Totala = p + f = 2 + 3 = 5.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Beräkna den efterfrågade kvoten",
+        "text": "Kvoten pojkar/totala = p/(p+f) = 2/5.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Verifiera villkoret",
+        "text": "Med p = 2, f = 3, totala = 5: P(pojke) = 2/5, P(flicka) = 3/5. Är P(pojke) = (2/3) · P(flicka)? (2/3) · (3/5) = 2/5 — ja, det stämmer.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Skala-invarians",
+        "text": "Svaret beror inte på storleken på klassen — om vi istället tar p = 4, f = 6 ger totala = 10 och kvoten 4/10 = 2/5. Samma svar, vilket bekräftar att kvoten är invariant.",
+        "tier": "optional"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Notera fallgroparna",
+        "text": "Distraktor A (1/3) frestar elever som tror 'pojke 2/3 av flicka' betyder 'pojke utgör 1/3 av totala'. Distraktor C (2/3) frestar elever som direkt tolkar 'pojke är 2/3 av flicka' som 'pojke/totala = 2/3'. Distraktor D (3/5) är flickornas andel — fel håll.",
+        "tier": "optional"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är B: kvoten pojkar/totala är 2/5. Insikten i en mening: när 'P(A) = k · P(B)' i ett urval där A och B är de enda kategorierna, blir antalsförhållandet A:B = k:1, och totala är (k+1) enheter.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Ytlig läsning: 'pojke 2/3 av flicka' kan höras som 'pojkar är 1/3 av klassen' om man räknar fel: 2/3 + 1 ≠ 1, men i hetstunden förväxlar elever 'andel' med 'differens'.",
+        "why_wrong": "Andelarna måste summera till 1. Om pojkar utgjorde 1/3 så skulle flickor vara 2/3, och P(pojke)/P(flicka) = (1/3)/(2/3) = 1/2, inte 2/3 som problemet kräver."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den direktöversättande felgreppet: 'pojke är 2/3 av flicka' tolkas som 'pojkar/totala = 2/3'. Det är samma tal som 2/3-koefficienten i villkoret.",
+        "why_wrong": "Villkoret jämför pojkar med flickor, inte pojkar med totala. Pojkar/totala måste vara MINDRE än 1/2 eftersom pojkar är färre än flickor — så svaret 2/3 (som är > 1/2) är geometriskt orimligt."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den som löser problemet rätt men sedan svarar med flickornas andel istället för pojkarnas — 3/5 är f/totala = 3/5. Lätt att svara på 'fel kön' om uppmärksamheten dippar.",
+        "why_wrong": "Frågan efterfrågar kvoten pojkar/totala, inte flickor/totala. Med p = 2, f = 3 är pojkarnas andel 2/5, inte 3/5."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "När en ratio mellan sannolikheter inom samma urval ges (P(A) = k·P(B)), reduceras antalsförhållandet till A:B = k:1. Välj minsta heltalsexempel och räkna kvoten direkt.",
+    "pitfall": "Att svara med fel kategoris andel — om frågan ber om pojkarnas kvot och man säger flickornas, hamnar man på distraktor D. Läs slutfrågan en gång till innan svar.",
+    "framework_id": "XYZ-TRAP-055",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Mini-klassmodellen",
+      "move": "Sätt antalsförhållandet pojkar:flickor som 2:3 och låt klassen vara 5 stycken; läs av kvoten direkt som 2/5."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2013-kvant2-NOG-028": {

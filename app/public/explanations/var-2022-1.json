@@ -12956,103 +12956,97 @@
     }
   },
   "var-2022-1-kvant1-XYZ-005": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Lägg figuren i ett koordinatsystem. Den snedlinje x går från (0, 4) till (6, 8). Pythagoras på den rätvinkliga triangeln med kateter 6 och 4 ger x = √(36 + 16) = √52.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "text": "Vi har en femhörning där tre hörn är räta vinklar. Sidorna är: vänster lodrät 4, botten 10, höger lodrät 8, topp 4 (vågrät), och en sned sida x (uppe till vänster). Vi ska räkna x.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Sätt koordinater",
+        "text": "Lägg nedre vänstra hörnet i origo (0, 0). Räta vinkeln där betyder att botten går rakt höger och vänster sida rakt upp. Hörnen längs kanten blir: (0,0) → (10,0) → (10,8) → (?,8) → (0,4) → tillbaka till (0,0).",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Hitta toppens hörn",
+        "text": "Topp-sidan är 4 lång och horisontell (rät vinkel mot höger lodrät 8). Den går från (10, 8) åt vänster 4 steg, vilket hamnar i (6, 8).",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Identifiera x-sidan",
+        "text": "x går från (6, 8) ner till (0, 4) — det är vår snedlinje.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Räkna horisontell skillnad",
+        "text": "Δx = 6 − 0 = 6. Den vågräta kateten i den hjälptriangel vi snart skapar är alltså 6.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Räkna vertikal skillnad",
+        "text": "Δy = 8 − 4 = 4. Den lodräta kateten är 4.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "title": "Vad är Pythagoras sats?",
+        "text": "I en rätvinklig triangel med kateter a och b och hypotenusa c gäller a^2 + b^2 = c^2. Hypotenusan ligger mittemot 90°-vinkeln och är den längsta sidan.",
         "tier": "detail"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Tillämpa Pythagoras",
+        "text": "Tänk x som hypotenusa i en rätvinklig hjälptriangel med kateter 6 och 4 (vågrätt och lodrätt mellan punkterna). Då x^2 = 6^2 + 4^2 = 36 + 16 = 52.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "x = √52. Numeriskt: √52 ≈ 7,21, vilket är rimligt — längre än 6 och längre än 4 (en hypotenusa ska vara längst), och kortare än 10 (bottenlinjen).",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Alternativ D: x = √52. Insikten i en mening: när en sned sida ligger mellan två räta sidor, bygg en rätvinklig hjälptriangel av de horisontella och vertikala avstånden och applicera Pythagoras.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att gissa 7 om man räknar Δx + Δy / 2 ≈ 5 eller bara avläser ett ungefärligt värde från figuren — √52 ≈ 7,2 ligger nära 7.",
+        "why_wrong": "Steg 8 visar att Pythagoras ger x^2 = 52, så x = √52 ≈ 7,21, inte exakt 7. Att avrunda är inte att räkna."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är frestande att tro att x är lika med bottensidan 10, kanske för att figuren ser 'balanserad' ut.",
+        "why_wrong": "Steg 5 och 6 visar att hjälptriangelns kateter är 6 och 4 — hypotenusan måste vara mindre än 6 + 4 = 10 (triangelolikheten). x ≈ 7,2, inte 10."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du minns regeln som 'lägg ihop kateternas kvadrater' men bara använder en katet (t.ex. 4^2 + 2^2 = 20) hamnar du på √20.",
+        "why_wrong": "Steg 5 och 6 visar att Δx = 6 (inte 2). Båda kateterna måste användas, och deras kvadrater måste summeras korrekt: 36 + 16 = 52."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "För snedlinjer mellan räta vinklar: bygg en rätvinklig hjälptriangel av Δx (horisontell skillnad) och Δy (vertikal skillnad) och tillämpa Pythagoras. Sätt gärna koordinater för att inte tappa bort dimensionerna.",
+    "pitfall": "Räkna Δx och Δy från de RIKTIGA hörnpunkterna, inte från enstaka sidlängder direkt — i den här figuren är Δx = 10 − 4 = 6, inte 4.",
+    "framework_id": "XYZ-TRAP-040",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Koordinat-tricket",
+      "move": "Lägg figuren i ett koordinatsystem och räkna Δx och Δy mellan de två ändpunkterna — Pythagoras ger snedlinjens längd direkt."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2022-1-kvant2-XYZ-002": {

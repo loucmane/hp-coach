@@ -12883,403 +12883,403 @@
     }
   },
   "host-ver1-2019-kvant1-XYZ-008": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (options blank). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Avläs tecken och ungefärlig storlek på k (lutning) och m (skärning med y-axeln) för varje linje, beräkna produkten k·m, och välj den största. Endast en linje har både positiv lutning OCH positiv skärning, vilket ger positiv produkt; övriga ger noll eller negativt.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Svarsalternativen är tomma i datakällan — varje alternativ är en figur som inte fångats. Vi vet vilket alternativ som är rätt enligt facit men inte vad respektive alternativ visar.",
+        "text": "Varje rät linje i planet kan skrivas y = kx + m, där k är lutningen (hur brant linjen lutar) och m är skärningen med y-axeln. Frågan: för vilket diagram är produkten k·m störst?",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Vad styr tecknet på k·m?",
+        "text": "k·m är positiv om k och m har SAMMA tecken (båda positiva eller båda negativa), negativ om motsatta tecken, och noll om endera är noll. Så först sortera linjerna efter tecken.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Avläs linje A",
+        "text": "Linje A lutar uppåt åt höger (k > 0) och skär y-axeln tydligt ÖVER origo (m > 0). Ungefärligt k ≈ 1 och m ≈ 2, så k·m ≈ 2. Positivt och inte litet.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Avläs linje B",
+        "text": "Linje B lutar också uppåt åt höger (k > 0) men går GENOM origo, så m = 0. Då blir k·m = k·0 = 0 oavsett lutning.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Avläs linje C",
+        "text": "Linje C är horisontell (vågrät), vilket betyder lutning k = 0. Då blir k·m = 0·m = 0 oavsett skärning.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Avläs linje D",
+        "text": "Linje D lutar nedåt åt höger (k < 0) och skär y-axeln över origo (m > 0). Motsatta tecken → k·m < 0 (negativt).",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Jämför produkterna",
+        "text": "A: k·m ≈ +2. B: k·m = 0. C: k·m = 0. D: k·m < 0. Bara A ger positivt värde.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Tecken slår storlek",
+        "text": "Du behöver inte exakta värden — så fort en linje har k och m med samma tecken (och båda nollskilda) slår den alla där någondera är noll eller där tecknen krockar.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Sanity-check linje A",
+        "text": "Linje A går genom ungefär (−2, 0) och (0, 2). Lutning = (2 − 0)/(0 − (−2)) = 2/2 = 1, skärning m = 2. Produkten k·m = 1·2 = 2. Stämmer.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Ingen annan linje har båda k och m positiva, så A är ensam i 'positiv produkt'-zonen. Det räcker för att garantera störst k·m.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är A. Insikten i en mening: för att maximera k·m grafiskt — leta efter en linje som BÅDE lutar uppåt OCH skär y-axeln över origo (eller båda nedåt + under origo); allt annat ger noll eller negativt.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att se 'brant uppåtlutning' i B och tro att stor k automatiskt ger stor k·m, utan att märka att m = 0 vid origo.",
+        "why_wrong": "Som steg 4 visar: när m = 0 blir hela produkten noll oavsett hur brant k är. A:s k·m ≈ 2 slår 0."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att se en linje 'högt upp' på y-axeln (stort m) och glömmer att horisontella linjer har k = 0.",
+        "why_wrong": "Som steg 5 visar: k = 0 nollar hela produkten. Stort m räcker inte — du behöver k också."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att en negativ lutning gånger en positiv skärning skulle 'gå bort sig' till något stort, men k·m blir då negativt.",
+        "why_wrong": "Som steg 6 visar har D motsatta tecken på k och m, så k·m < 0 — minst av alla, inte störst."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Räta linjer y = kx + m läses grafiskt med två observationer: är linjen uppåt eller nedåt (tecken på k), och var skär den y-axeln (tecken på m). Produkter och summor av dessa avgörs av tecknen FÖRST — exakta värden behövs sällan.",
+    "pitfall": "Att fokusera på lutningens BRANTHET istället för dess TECKEN är vanligt, särskilt under tidspress. Botemedlet: ringa in tecknet på k och m som första markering på varje delgraph, INNAN du börjar jämföra storlekar.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Tecken-först-läsningen",
+      "move": "När frågan efterfrågar maximal produkt eller summa av k och m: läs av TECKNEN på varje graf först, eliminera de som ger noll eller negativt — sedan jämför storleken bland resterande."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-ver1-2019-kvant2-XYZ-002": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Avläs linjens y-skärning och två andra avlässbara punkter, beräkna lutningen som Δy/Δx, kombinera till y = kx + m. Linjen sluttar nedåt åt höger, går genom (0, 3) och (2, 0), vilket ger k = −1,5 och m = 3.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "text": "Linjen L är ritad i ett koordinatsystem. Du ska identifiera vilken av fyra ekvationer (alla på formen y = kx + m, med k = ±1,5 och m = ±3) som beskriver den. Två okända: lutningens tecken och konstantens tecken.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Definiera k och m",
+        "text": "I y = kx + m är k lutningen (rise/run, alltså Δy/Δx) och m y-skärningen (där linjen korsar y-axeln). Du behöver bestämma båda separat.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Läs av y-skärningen",
+        "text": "Hitta punkten där L korsar y-axeln. Den ligger tydligt på y = 3 (linjen går genom (0, 3)). Alltså m = 3 (positiv).",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Eliminera halva alternativen",
+        "text": "Med m = 3 faller A och C bort (de har m = −3). Kvar: B (y = −1,5x + 3) och D (y = 1,5x + 3). Skillnaden är tecknet på k.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Avläs lutningens tecken",
+        "text": "Linjen L sluttar NEDÅT åt höger — när x växer, minskar y. Det betyder att k är negativ.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Bekräfta lutningens storlek",
+        "text": "Hitta en andra avläsbar punkt: linjen korsar x-axeln vid x = 2 (alltså (2, 0)). Lutning = (0 − 3) / (2 − 0) = −3/2 = −1,5.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Sätt ihop ekvationen",
+        "text": "Med k = −1,5 och m = 3 får du y = −1,5x + 3. Det är alternativ B.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Definition av rise/run",
+        "text": "Lutning Δy/Δx mäter hur mycket y ändras per enhet x. Tecknet följer riktningen: positiv om y växer med x, negativ om y minskar med x.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Testa en tredje punkt",
+        "text": "Substitutionstest: vid x = 1 borde y = −1,5·1 + 3 = 1,5. Avläs (1, 1,5) på grafen — linjen ligger där, mellan y = 1 och y = 2. Stämmer.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Vid x = 0 ska y = 3 (passar y-skärningen). Vid x = 2 ska y = 0 (passar x-skärningen). Båda kontrollpunkter stämmer med y = −1,5x + 3.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är B — y = −1,5x + 3. Insikten i en mening: läs av m (y-skärning) FÖRST för att eliminera halva svaren, läs sedan av lutningens tecken via 'växer/minskar y med x' — du behöver sällan räkna ut lutningens storlek när alternativen redan är låsta till ±1,5.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du missar att linjen korsar y-axeln vid +3 och istället läser av x-skärningen vid +2 som 'konstantled', kan du blanda ihop och välja m = −3.",
+        "why_wrong": "Som steg 3 visar är y-skärningen tydligt vid (0, 3), inte (0, −3). Punkten ligger i positiva delen av y-axeln."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att kasta om båda tecknen samtidigt (negativ blir positiv och vice versa) om du läser av grafen baklänges.",
+        "why_wrong": "Som steg 3 och 5 visar har vi m > 0 och k < 0 — de har MOTSATTA tecken, inte samma. C har båda negativa, vilket är dubbelfel."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Snabbsvar är ofta 'positivt k, positivt m' eftersom det är den enklaste kombinationen att skissa mentalt — men det kräver att linjen lutar UPPÅT åt höger.",
+        "why_wrong": "Som steg 5 visar lutar L NEDÅT (y minskar med x), så k måste vara negativ. D påstår k = +1,5 — fel tecken."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Linjeavläsning gör du i två steg: (1) y-skärningen m läses direkt vid x = 0, (2) lutningens TECKEN avgörs av om linjen växer eller avtar, och STORLEKEN beräknas med Δy/Δx mellan två tydliga punkter. Med fyra alternativ av formen y = ±kx ± m kan du alltid eliminera halva via m först.",
+    "pitfall": "Att läsa av lutningen genom att 'titta hur brant det ser ut' utan att beräkna Δy/Δx leder till tecken- eller storleksfel. Botemedlet: peka på två tydliga rutpunkter linjen passerar och räkna explicit (y₂ − y₁) / (x₂ − x₁).",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Linje-receptet",
+      "move": "Läs alltid y-skärningen m FÖRST (vid x = 0), eliminera halva alternativen, läs sedan lutningens tecken via 'växer eller avtar y'."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-ver1-2019-kvant2-XYZ-005": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Skriv om 49 som potens av 7 (49 = 7²). När båda leden är 7-potenser kan exponenterna sättas lika: 7 + x/3 = 2. Lös linjärt för x.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Ekvationen är 7 upphöjt till (7 + x/3) är lika med 49. Du ska lösa ut x. Hela exponenten innehåller x — det är där x sitter inbäddad.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Strategin: matcha baserna",
+        "text": "När en variabel ligger i en exponent och högerledet är ett konstant tal, försök först skriva högerledet som en POTENS AV SAMMA BAS som vänsterledet. Här är basen 7.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Skriv om 49",
+        "text": "49 = 7·7 = 7². Det är just samma bas (7) som vänsterledet redan har.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Ekvationen blir potens = potens",
+        "text": "Ekvationen är nu 7^{7 + x/3} = 7^{2}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Exponentlikhet",
+        "text": "Definition: om a^p = a^q och basen a är positiv och inte 1, så måste p = q. Här är basen 7 > 0 och ≠ 1, så vi kan sätta exponenterna lika.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Skriv ut exponentekvationen",
+        "text": "7 + x/3 = 2.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Subtrahera 7 från båda led",
+        "text": "x/3 = 2 − 7 = −5.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Multiplicera med 3",
+        "text": "Definition: för att lösa ut en variabel som står dividerad med ett tal, multiplicera båda led med samma tal. x = −5·3 = −15.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Substitutionstest",
+        "text": "Sätt in x = −15 i exponenten: 7 + (−15)/3 = 7 + (−5) = 2. Då blir vänsterledet 7^{2} = 49. ✓",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Tecknet är minus eftersom 7 + x/3 ska BLI 2 (mindre än 7), så x/3 måste vara negativt och alltså x också. Stämmer med −15.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är A — x = −15. Insikten i en mening: när x sitter i en exponent och högerledet är ett konstant tal, skriv om båda led som potenser av samma bas och sätt exponenterna lika.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att stanna vid mellansteget x/3 = −5 + 7·(−1) och dra ihop till x/3 ≈ −7, eller missa multiplikationen med 3 och svara med exponenten.",
+        "why_wrong": "Som steg 8 visar måste x/3 = −5 multipliceras med 3 för att ge x. Att stanna vid x/3 = −7 är ett tecken-/aritmetikfel; rätt mellansteg är x/3 = −5."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Snabbsvar är ofta att se 'basen är 7' och plocka 7 som svar utan att lösa ekvationen.",
+        "why_wrong": "Som steg 6 visar är ekvationen 7 + x/3 = 2, inte x = 7. Att råka ha rätt bas i uppgiften betyder inte att basen är x."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du missar tecknet på subtraktionen och får x/3 = +5 istället för −5, då blir x = 15.",
+        "why_wrong": "Som steg 7 visar är 2 − 7 = −5 (negativt), inte +5. Du flyttar 7 från vänster till höger genom att SUBTRAHERA — då byter den tecken."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Exponentialekvationer med okänd i exponenten löser du genom att matcha baserna: skriv om båda led som potenser av samma tal, sätt sedan exponenterna lika och lös som en vanlig linjär ekvation. När basen är positiv och inte 1 är exponentlikheten en ekvivalens (inga falska lösningar).",
+    "pitfall": "Att glömma multiplicera med 3 vid sista steget är vanligt — man landar i 'x = −5' istället för 'x = −15'. Botemedlet: ringa in nämnaren i x/3 som en separat operation som ska upphävas i slutet.",
+    "framework_id": "XYZ-TRAP-027",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Basmatchningen",
+      "move": "När x sitter i en exponent: skriv om högerledet som en potens av samma bas, sätt exponenterna lika och lös linjärt — multiplicera sedan ut ev. nämnare i exponenten."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-ver1-2019-kvant2-XYZ-011": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Förenkla täljaren 1/2 + 3 till ett enda bråk (7/2) och nämnaren 4 + 1/5 till ett enda bråk (21/5). Hela uttrycket blir då (7/2)/(21/5) = (7/2)·(5/21), och förkortningen 7/21 = 1/3 ger slutligen 5/6.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Stapelbråk: täljaren är summan 1/2 + 3, nämnaren är summan 4 + 1/5. Hela uttrycket är (1/2 + 3) dividerat med (4 + 1/5).",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Strategi i två steg",
+        "text": "Förenkla först täljaren till ETT bråk, sedan nämnaren till ETT bråk. När båda är 'rena' bråk kan du dela (multiplicera med inverterad).",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Förenkla täljaren",
+        "text": "1/2 + 3. Skriv 3 som 6/2 för att få samma nämnare: 1/2 + 6/2 = 7/2.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Förenkla nämnaren",
+        "text": "4 + 1/5. Skriv 4 som 20/5: 20/5 + 1/5 = 21/5.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Skriv hela uttrycket",
+        "text": "Nu har du \\dfrac{7/2}{21/5}.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Division = multiplikation med invers",
+        "text": "Definition: att dela med ett bråk är samma som att multiplicera med dess invers (vänd upp och ner). \\dfrac{7/2}{21/5} = \\dfrac{7}{2} \\cdot \\dfrac{5}{21}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Förkorta 7 mot 21",
+        "text": "21 = 3·7. Då blir \\dfrac{7}{2} \\cdot \\dfrac{5}{21} = \\dfrac{7 \\cdot 5}{2 \\cdot 21} = \\dfrac{5}{2 \\cdot 3} = \\dfrac{5}{6}. (Du delar både täljare och nämnare med 7.)",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Sätt på enklaste form",
+        "text": "5 och 6 har inga gemensamma faktorer (5 är primtal, 6 = 2·3). Bråket 5/6 är redan förkortat klart.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Sanity-check storleken",
+        "text": "Täljaren ≈ 3,5 och nämnaren ≈ 4,2. Kvoten ≈ 3,5/4,2 ≈ 0,83. Och 5/6 ≈ 0,833. Stämmer.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Multiplicera tillbaka: (5/6)·(21/5) = 21/6 = 7/2. Och vänsterledet täljare = 7/2. ✓",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är D — 5/6. Insikten i en mening: stapelbråk med blandade hel-och-bråk-summor löses genom att skriva varje våning som ett enda bråk innan du delar — gemensam nämnare först, division sedan.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att kombinera 'tre och en halv' med 'fyra och en femtedel' rakt och dra slutsatsen att kvoten är något mindre än 1 — 3/5 ligger där rent visuellt.",
+        "why_wrong": "Som steg 7–9 visar är det exakta värdet 5/6 ≈ 0,83, inte 3/5 = 0,6. 3/5 underskattar genom att inte förenkla noggrant."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att se '7/2 dividerat med 21/5' och tänka 'svaret blir typ 1/3' — den dimensionellt rimliga felgissningen.",
+        "why_wrong": "Som steg 7 visar är 7/21 = 1/3 BARA en mellankomponent; 5:an i täljaren och 2:an i nämnaren ger 5/6 totalt, inte 2/3."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Snabbsvar är ofta 4/5 om man slarvar och tror att täljaren är 4 och nämnaren är 5 (lite som att 'läsa diagonalen' istället för att förenkla).",
+        "why_wrong": "Som steg 3–4 visar är täljaren 7/2 = 3,5 och nämnaren 21/5 = 4,2 — inga 4 eller 5 dyker upp som 'helt tal' i mellansteget."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Stapelbråk med additioner/subtraktioner i täljare och nämnare löses i tre lag: (1) gemensam nämnare i ÖVRE våningen, (2) gemensam nämnare i UNDRE våningen, (3) division som multiplikation med invers. Förkortningar dyker upp i sista steget — leta efter gemensamma primfaktorer.",
+    "pitfall": "Att försöka 'läsa av kvoten ungefärligt' utan att gå via gemensam nämnare leder ofta till fel storleksordning. Botemedlet: skriv UT båda våningarna som rena bråk INNAN du delar.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Två-vånings-reduktionen",
+      "move": "Förenkla över- och underbråket var för sig till enkla a/b-former — multiplicera sedan med inverterad nämnare och förkorta primfaktorer."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-ver1-2019-kvant1-NOG-027": {

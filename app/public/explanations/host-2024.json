@@ -3954,109 +3954,109 @@
     }
   },
   "host-2024-kvant2-XYZ-005": {
-    "_meta": {
-      "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
-    },
-    "solution_path": "Tillryggalagd sträcka: 6\\;\\text{h}\\cdot 90\\;\\text{km/h}=540 km. P är stationen som ligger 540 km från T enligt kartan. Svar A.",
+    "solution_path": "Total körd sträcka = 6 h × 90 km/h = 540 km. Figuren visar en T-formad linje med en vänster förgreningspunkt (J1) och en höger förgreningspunkt (J2). Avstånd: P→J1 = 245, Q→J1 = 155, J1→T = 295, T→J2 = 260, J2→R = 270, J2→S = 300 (alla km). Räkna ut hela vägen från varje station till T och jämför med 540: från P blir det 245 + 295 = 540 — exakt match.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Ett tåg har en av stationerna P, Q, R, S som startpunkt och stannar vid T. Du vet att resan tog 6 h med medelhastigheten 90 km/h. Med detta kan du räkna ut tillryggalagd sträcka och matcha den mot kartans avstånd.",
+        "text": "Ett tåg startar från en av stationerna P, Q, R eller S och stannar vid T efter 6 h med snittfart 90 km/h. Frågan: vilken startstation?",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Formeln avstånd = hastighet × tid",
-        "text": "s=v\\cdot t där s är sträckan, v hastigheten och t tiden. Enheterna måste matcha: timmar och km/h ger km.",
-        "tier": "detail"
+        "title": "Räkna total sträcka",
+        "text": "Sträcka = hastighet · tid = 90 km/h · 6 h = 540 km.",
+        "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Sätt in värdena",
-        "text": "Med v=90 km/h och t=6 h: s=90\\cdot 6 km.",
+        "title": "Läs av kartan",
+        "text": "Figuren är en kartlik graf: P och Q sitter till vänster och förenas i en korsning (J1) som länkar till T (295 km). T länkar vidare till en högerkorsning (J2) som förgrenar sig till R och S.",
         "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Räkna ut sträckan",
-        "text": "90\\cdot 6. Tänk: 9\\cdot 6=54, alltså 90\\cdot 6=540. Sträckan är 540 km.",
+        "title": "Lista avstånden",
+        "text": "Från figurens etiketter: P→J1 = 245, Q→J1 = 155, J1→T = 295, T→J2 = 260, J2→R = 270, J2→S = 300 (alla km).",
         "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Vad betyder medelhastighet?",
-        "text": "Medelhastighet = total sträcka / total tid. Om tåget mestadels håller en högre fart men stannar emellanåt, blir medelhastigheten lägre än maxfart. Här ges medelvärdet, så vi behöver inte bry oss om variationer.",
-        "tier": "detail"
+        "title": "Räkna P → T",
+        "text": "P → T = 245 + 295 = 540 km. Detta matchar exakt 540.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Identifiera 540 km på kartan",
-        "text": "Läs av kartans skalstreck eller markerade avstånd för P, Q, R, S till T. Den station som ligger 540 km från T är start­stationen.",
+        "title": "Räkna Q → T",
+        "text": "Q → T = 155 + 295 = 450 km. För kort (90 km fattas).",
         "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Avläs P:s avstånd",
-        "text": "Enligt figuren ligger P 540 km från T. Detta matchar exakt med beräkningen i steg 4.",
+        "title": "Räkna R → T",
+        "text": "R → T = 270 + 260 = 530 km. Nära men inte exakt.",
         "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Eliminera Q, R, S",
-        "text": "Q, R och S ligger på andra avstånd från T (kortare eller längre — beroende av figuren). Endast P uppfyller villkoret 540 km.",
+        "title": "Räkna S → T",
+        "text": "S → T = 300 + 260 = 560 km. För långt (20 km över).",
         "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Sanity-check via baklängesräkning",
-        "text": "Om resan var 540 km på 6 h: medelhastighet = 540/6=90 km/h. ✓ Matchar uppgiften.",
+        "title": "Jämför med 540 km",
+        "text": "Endast P → T blir exakt 540 km. De andra avviker med 90, 10 respektive 20 km.",
         "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Tänk på riktningen",
-        "text": "Tåget åker mot T, så startstationen är på den sida av T där 540 km matchar. Använd kartans orientering.",
-        "tier": "detail"
+        "title": "Sanity-check med medelhastighet",
+        "text": "Eftersom medelhastighet anges (inte konstant), kunde flera värden tekniskt fungera om tåget stannat på vägen — men frågan letar efter \"vilken station\" och det enda totala avståndet som ger snitt 90 km/h över 6 timmar är 540 km, så P är entydigt rätt.",
+        "tier": "support"
       },
       {
         "n": 11,
         "title": "Verifiera",
-        "text": "Sätt P som start: avstånd 540 km / 90 km/h = 6 h. Stämmer med given tid. ✓",
+        "text": "Kontrollera att 245 + 295 verkligen är 540: 245 + 295 = 245 + 300 − 5 = 540 ✓.",
         "tier": "essential"
       },
       {
         "n": 12,
         "title": "Slutsats",
-        "text": "Svaret är A (P). Insikten i en mening: för 'hitta startstation' med hastighet och tid, räkna s=v\\cdot t och matcha mot kartan — verifiera genom att räkna baklänges.",
+        "text": "Svaret är A, P. Insikten i en mening: Räkna ut total sträcka som hastighet · tid och jämför med kartans olika rutter — bara en matchar.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna fel produkt (t.ex. 90·6 = 480 eller 580) och välja Q som passar fel avstånd.",
-        "why_wrong": "Steg 4 ger exakt 540 km. Q:s avstånd matchar inte 540 km, så Q är fel start."
+        "why_tempting": "Q ligger nära P på samma sida av kartan och utgör en naturlig \"andra gissning\" om eleven inte räknat noga.",
+        "why_wrong": "Q→T = 155 + 295 = 450 km, vilket motsvarar 5 timmar i 90 km/h — alltför kort tid."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta R om man gissar mitt-alternativ utan att räkna.",
-        "why_wrong": "Steg 7 fastställer att P (inte R) ligger 540 km från T. R är på ett annat avstånd."
+        "why_tempting": "R→T = 270 + 260 = 530 km, bara 10 km kortare än 540. Lockar om eleven approximerar eller läser etiketten 270 som något annat.",
+        "why_wrong": "Frågan kräver exakt 540 km eftersom hastighet och tid är exakta. 530 ger snitt 88,3 km/h, inte 90."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid sista alternativet om de inte räknar avståndet alls.",
-        "why_wrong": "Steg 4 + 7 visar: 540 km motsvarar P, inte S. Räkna alltid sträckan och avläs kartan."
+        "why_tempting": "S→T = 560 km är nära 540 och eleven kan landa på S om hen läser 300 som 280 eller blandar S med R.",
+        "why_wrong": "560 km på 6 h ger snitt 93,3 km/h, inte 90 km/h. Exakt match krävs."
       }
     ],
-    "technique": "Sträcka-hastighet-tid-rutinen: räkna ut sträckan med s = v·t, matcha mot kartan, verifiera baklänges med t = s/v. Triggern är 'medelhastighet + tid + sök startpunkt'.",
-    "pitfall": "Botemedlet mot 'gissa kartan': räkna ut sträckan först, sedan avläs. Aldrig tvärtom — gissning från kartan utan beräkning är fel taktik.",
+    "technique": "Konvertera tid · hastighet till en total sträcka, läs av nodavstånden i kartfiguren, och summera varje möjlig väg till T — den enda exakta matchningen är svaret.",
+    "pitfall": "Att missa att etiketterna sitter på olika segment (245 + 295, inte bara 245). Spåra hela vägen från startpunkt till T innan du summerar.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Sträcka-formeln",
-      "move": "Räkna s = v·t först, matcha sedan kartans avstånd — verifiera med t = s/v."
+      "handle": "Sträckmatchen",
+      "move": "Räkna v · t först, summera varje rutts segment, jämför med totalen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2024-kvant2-XYZ-006": {
@@ -13100,203 +13100,191 @@
     }
   },
   "host-2024-kvant1-XYZ-006": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (options blank). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Beräkna g(x) explicit genom att utveckla -\\tfrac{1}{2} \\cdot (2x - 4), identifiera lutning och y-skärning, och matcha mot grafalternativen.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Svarsalternativen är tomma i datakällan — varje alternativ är en figur som inte fångats. Vi vet vilket alternativ som är rätt enligt facit men inte vad respektive alternativ visar.",
+        "text": "Vi har f(x) = 2x - 4 och g(x) = -\\tfrac{1}{2} \\cdot f(x). Uppgift: identifiera vilken graf bland fyra som visar g.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Skriv ut g explicit",
+        "text": "Substituera f(x): g(x) = -\\tfrac{1}{2}(2x - 4).",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Distribuera in -1/2",
+        "text": "Tecknet ska distribueras över BÅDA termerna: g(x) = -\\tfrac{1}{2} \\cdot 2x + (-\\tfrac{1}{2})(-4) = -x + 2.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Identifiera lutning och m",
+        "text": "g(x) = -x + 2 är på formen y = kx + m med k = -1 (negativ lutning) och m = 2 (skär y-axeln vid y = 2).",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Tolka grafen",
+        "text": "Grafen ska: falla från vänster till höger (k = -1, negativ); passera (0, 2) (y-skärning); ha lutning exakt -1 (för varje steg höger faller den ett steg).",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Hitta x-skärningen",
+        "text": "När g(x) = 0: -x + 2 = 0 \\Rightarrow x = 2. Linjen passerar (2, 0).",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Eliminera positiva lutningar",
+        "text": "Grafer A och C visar linjer med positiv lutning — utesluts direkt, eftersom g har k = -1 < 0.",
+        "tier": "deep"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Skilj B från D",
+        "text": "Båda B och D har negativ lutning. Graf B faller BRANT (lutning -2 eller mer) och skär y-axeln vid -1 eller liknande. Graf D faller MÅTTLIGT (lutning -1) och skär y-axeln vid +2. Vår g har k = -1 och m = +2 — det är D.",
+        "tier": "deep"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Verifiera med testpunkt",
+        "text": "Vid x = 0: g(0) = -0 + 2 = 2 — D visar (0, 2). Vid x = 2: g(2) = -2 + 2 = 0 — D visar (2, 0). Båda stämmer.",
+        "tier": "verification"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
-        "tier": "essential"
+        "text": "Svaret är D — en linje med lutning -1 som skär y-axeln vid 2 och x-axeln vid 2. Insikten i en mening: när man multiplicerar en linjär funktion med en negativ konstant FLIPPAR lutningens tecken och m skalas — distribuera noggrant och läs av k och m direkt.",
+        "tier": "verification"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Studenten som glömmer minustecknet beräknar \\tfrac{1}{2}(2x - 4) = x - 2 — positiv lutning, skär y-axeln vid -2. Det matchar A.",
+        "why_wrong": "Att glömma minustecknet ger g(x) = x - 2 istället för -x + 2 — fel tecken på BÅDE lutning och y-skärning."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Att felaktigt distribuera -\\tfrac{1}{2} som ren multiplikation av lutningen i f (-\\tfrac{1}{2} \\cdot 2 = -1 men förlora konstantledet) kan ge tankar om brantare lutning.",
+        "why_wrong": "B har för brant lutning (cirka -2) och fel y-skärning. Den korrekta lutningen är exakt -1 och y-skärningen +2."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Studenten som glömmer både minustecknet och distribueringen tänker 'g är bara f fast med halverade värden' — g = x - 2, positiv lutning.",
+        "why_wrong": "Multiplikationen med -\\tfrac{1}{2} vänder tecknet på BÅDA termerna; C visar positiv lutning som inte stämmer."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Vid sammansättning g = c \\cdot f: skriv ut f explicit, distribuera in c över VARJE term (inklusive konstanten), och läs av nya lutningen och y-skärningen.",
+    "pitfall": "Att distribuera -\\tfrac{1}{2} bara på x-termen och låta -4 stå kvar oförändrad — eller att glömma att minustecknet flippar BÅDE termers tecken.",
+    "framework_id": "XYZ-TRAP-001",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "distributionen",
+      "move": "Skriv g(x) = -\\tfrac{1}{2}(2x - 4) och distribuera in -1/2 över både 2x och -4 — -x + 2 — innan du matchar mot graferna."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2024-kvant2-XYZ-003": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Substituera x = 2 direkt i täljare och nämnare, beräkna varje del separat, och dividera till slut.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Vi har ett rationellt uttryck \\dfrac{2/x}{1/x + x/(x-1)} och ska räkna ut värdet vid x = 2.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Strategi: substituera först, förenkla sedan",
+        "text": "Eftersom vi har ett specifikt x-värde, sätt in det överallt direkt — inga onödiga algebraiska förenklingar.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Beräkna täljaren",
+        "text": "Täljare: \\dfrac{2}{x} = \\dfrac{2}{2} = 1.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Beräkna nämnarens första term",
+        "text": "\\dfrac{1}{x} = \\dfrac{1}{2}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Beräkna nämnarens andra term",
+        "text": "\\dfrac{x}{x-1} = \\dfrac{2}{2-1} = \\dfrac{2}{1} = 2.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Summera nämnaren",
+        "text": "Nämnare: \\dfrac{1}{2} + 2 = \\dfrac{1}{2} + \\dfrac{4}{2} = \\dfrac{5}{2}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Dividera täljare med nämnare",
+        "text": "Hela uttrycket: \\dfrac{1}{5/2}. Att dividera med en bråk är att multiplicera med dess invers: 1 \\cdot \\dfrac{2}{5} = \\dfrac{2}{5}.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Dimensionskontroll",
+        "text": "Täljaren ≈ 1, nämnaren ≈ 2,5, så kvoten ≈ 0,4 — väl mellan 0 och 1. Alternativ A (-2), C (1) och D (5/2) ligger fel storleksordning eller fel tecken. Endast B (2/5 = 0,4) passar.",
+        "tier": "deep"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Stäm av: \\dfrac{2}{5} är 0,4. Och vi beräknade kvoten 1/(5/2) = 2/5 — konsistent. Inget tecknebyte eller bråk-flip har missats.",
+        "tier": "verification"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
-        "tier": "essential"
+        "text": "Svaret är B: \\dfrac{2}{5}. Insikten i en mening: vid sammansatta bråk med specifika x-värden, substituera direkt — räkna täljare och nämnare separat innan du delar.",
+        "tier": "verification"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Studenten som råkar invertera fel eller får ett minustecken någonstans (t.ex. läser x - 1 som 1 - x vid x = 2, ger -1) kan landa på -2.",
+        "why_wrong": "Alla termer är positiva vid x = 2, så uttrycket är positivt. -2 har fel tecken och fel belopp."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den som glömmer att dividera i sista steget och bara tar täljaren \\dfrac{2}{x} = 1 vid x = 2 kan välja C.",
+        "why_wrong": "1 är värdet på TÄLJAREN ensamt, inte hela uttrycket — det är ofullständig substitution."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den som inverterar fel i sista steget — multiplicerar istället för att dividera med nämnaren — får 1 \\cdot \\dfrac{5}{2} = \\dfrac{5}{2}.",
+        "why_wrong": "\\dfrac{5}{2} är inversen av rätt svar — vid division med ett bråk ska man multiplicera med inverterade bråket, inte själva bråket."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "För sammansatta bråk med givet x: substituera värdet direkt, beräkna täljare och nämnare som separata tal, och dividera till slut genom att multiplicera täljaren med nämnarens invers.",
+    "pitfall": "Att försöka algebraiskt förenkla det sammansatta bråket innan substitution — det öppnar för teckenfel och tappade termer. Direkt substitution är säkrare när x är ett enkelt heltal.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "substitutionen",
+      "move": "Stoppa in x = 2 i varje deluttryck separat (2/x, 1/x, x/(x-1)), summera nämnaren, dividera täljaren med nämnaren."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2024-kvant2-XYZ-011": {

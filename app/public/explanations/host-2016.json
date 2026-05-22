@@ -4170,103 +4170,103 @@
     "technique": "Vetenskaplig notation-strategin: skriv alla tal som a \\cdot 10^{n} där 1 ≤ a < 10; multiplicera koefficienterna och addera exponenterna. Slipper räkna med många nollor och decimaler."
   },
   "host-2016-kvant2-XYZ-006": {
-    "solution_path": "Med L_{1}\\parallel L_{2} ger alternativvinklar och vinkelsumma att den vinkel som är märkt v relaterar till x genom delning i tre lika sektorer: v=x/3. Svar C.",
+    "solution_path": "Dra en hjälplinje genom vertex parallell med L₁ och L₂. Den alternat-vinkeln med 2x/3 på L₁ ligger ovanför hjälplinjen vid vertex; resten av vinkeln x är x − 2x/3 = x/3, vilket är alternat-vinkeln med v vid L₂.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Du har två parallella linjer L_{1} och L_{2} och en vinkel x (mellan 0° och 180°) markerad någonstans i figuren. Frågan: uttryck en annan vinkel v som ett bråk av x.",
+        "text": "Två parallella linjer L₁ (övre) och L₂ (nedre). En linje börjar uppe till höger på L₁, vinkel 2x/3 med L₁, går snett ned-vänster till en vertex mellan L₁ och L₂, böjer av, går snett ner-höger till L₂ och korsar där med vinkel v. Hela böjpunkten har vinkel x mellan de två segmenten.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad betyder parallella linjer?",
-        "text": "Parallella linjer (L_{1}\\parallel L_{2}) är linjer som ALDRIG möts. De har samma lutning. När en TREDJE linje (en 'transversal') skär bägge, uppstår par av lika stora vinklar.",
-        "tier": "detail"
+        "title": "Strategin: hjälplinje genom vertex",
+        "text": "Klassiska tricket vid zig-zag mellan två parallella linjer: dra en TREDJE linje genom vertexen, parallell med L₁ och L₂. Då delas vinkeln x vid vertex i två delar — en mot L₁, en mot L₂.",
+        "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Tre viktiga vinkelsatser",
-        "text": "Tre satser gäller när två parallella linjer skärs av en transversal: (1) likbelägna vinklar (på samma sida) är lika, (2) alternativvinklar (zickzack-formationen) är lika, (3) sidovinklar (samma sida av transversalen, mellan linjerna) summerar till 180°.",
+        "title": "Alternat-vinkel-satsen",
+        "text": "När en transversal (vårt övre segment) skär två parallella linjer (L₁ och hjälplinjen), så är de alternat-INTERIOR-vinklarna lika. Vinkeln 2x/3 vid L₁ alternerar med vinkeln vid vertex MELLAN det övre segmentet och hjälplinjen.",
         "tier": "detail"
       },
       {
         "n": 4,
-        "title": "Vinkelsumma i triangel",
-        "text": "En extra regel: i varje triangel summerar de tre vinklarna till 180°. Den används ofta tillsammans med parallell-satserna när transversalerna bildar en triangel mellan linjerna.",
-        "tier": "detail"
+        "title": "Övre delvinkeln vid vertex",
+        "text": "Den övre delen av x (mellan det övre segmentet och hjälplinjen) = 2x/3 (per alternat-vinkel-satsen i steg 3).",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Identifiera vinklarna i figuren",
-        "text": "Figuren visar x vid ena linjen och v vid den andra. Mellan dem finns transversaler som bildar ett mönster. Markera alla 'samma-storlek-vinklar' med samma färg så ser du strukturen.",
+        "title": "Hela vinkeln vid vertex är x",
+        "text": "Per problemet är vinkeln mellan de två segmenten exakt x. Hjälplinjen delar denna vinkel i två delar: övre = 2x/3, nedre = ?",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Identifiera trisektionsmönstret",
-        "text": "Figurens transversaler delar x i tre lika stora delar (eller skapar via alternativ- och likbelägna vinklar en kedja av tre lika sektorer). Vinkeln v motsvarar EN sådan sektor.",
+        "title": "Räkna ut nedre delvinkeln",
+        "text": "Nedre delvinkeln = totala vinkeln − övre delvinkeln = x - \\dfrac{2x}{3} = \\dfrac{3x-2x}{3} = \\dfrac{x}{3}.",
         "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Skriv upp ekvationen",
-        "text": "Tre lika sektorer som tillsammans bildar x betyder att varje sektor är x/3. Vinkeln v är en av dem.",
+        "title": "Alternat-vinkel mot L₂",
+        "text": "Det undre segmentet är transversal mellan hjälplinjen och L₂. Den nedre delvinkeln vid vertex (= x/3) alternerar med vinkeln v vid L₂.",
         "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Lös ut v",
-        "text": "v=\\frac{x}{3}. Ingen ytterligare räkning behövs — det är direkt avläsning från det utbrutna mönstret.",
+        "title": "Slutsats om v",
+        "text": "v = x/3.",
         "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Storleksrimlighet",
-        "text": "Eftersom 0°<x<180° blir v mellan 0° och 60°. Det är en spetsig vinkel, mycket mindre än x — exakt så figuren ser ut.",
+        "title": "Sanity-check med konkret värde",
+        "text": "Sätt x = 90°. Då är 2x/3 = 60° (vinkeln på L₁). Och x/3 = 30° (vår väntade v). Rita: övre segment lutar 60° relativt L₁; det undre lutar 30° relativt L₂ — vilket gör att totalvinkeln vid vertex blir 60° + 30° = 90° ✓.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Kontrollera med specialfall",
-        "text": "Sätt x=90°: då ska v=30°. I figuren ser den lilla vinkeln v ut att vara ungefär en tredjedel av en rät vinkel. Stämmer.",
+        "title": "Verifiera",
+        "text": "Den centrala invarianten: avbrutet sicksacksegment mellan två parallella linjer — summan av vinklarna mot de parallella linjerna = avvinklingen vid vertex. Vår räkning bekräftar exakt detta.",
         "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Svaret är C (vilket i texten står som '3' men avser x/3 — alternativen är feltranskriberade). Insikten i en mening: när du ser parallella linjer + flera transversaler, leta efter vinkel-KEDJOR som delar en större vinkel i lika stora bitar.",
+        "text": "Svar C: v = x/3. Insikten i en mening: en sicksack-vinkel mellan två parallella linjer delas i två alternat-vinklar genom en hjälpparallell vid vertex — deras summa = avvinklingen vid vertex.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna v=\\frac{x}{6} om man halverar ETT steg för mycket.",
-        "why_wrong": "Steg 6 visar att figuren delar x i TRE lika sektorer, inte sex."
+        "why_tempting": "Om man missförstår alternat-vinkel-satsen och tror att vinklarna mot L₁ och L₂ är symmetriska (var och en hälften av kvarvarande), hamnar man på x/6.",
+        "why_wrong": "Steg 6 visar att övre delvinkeln redan är 2x/3 (inte hälften av något); resten är x/3 — inte x/6."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta v=\\frac{x}{4} om man räknar fyra sektorer i stället för tre.",
-        "why_wrong": "Steg 6 och 10 visar att antalet sektorer är 3 — pröva med x=90° och du ser att v hamnar på 30°, inte 22{,}5°."
+        "why_tempting": "Om man försöker dela hela vinkeln med 4 (kanske för att det finns 4 vinklar i bilden) hamnar man på x/4.",
+        "why_wrong": "Steg 6 är aritmetiskt entydig: x − 2x/3 = x/3 — inget av detta motiverar /4."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid att tro att v=x eftersom de är 'lika' via någon alternativsats.",
-        "why_wrong": "Steg 9 visar att v är mycket mindre än x i figuren — om v=x skulle de vara identiska, men de är synligt olika."
+        "why_tempting": "Snabbsvar är ofta att v = x (samma vinkel), om man tror att hela vinkeln vid vertex bara är upprepad.",
+        "why_wrong": "Steg 4 visar att vinkeln 2x/3 vid L₁ är en del av x — inte hela; resten (x/3) går till L₂."
       }
     ],
-    "technique": "Vinklar mellan parallella linjer med flera transversaler: använd alternativvinkel-, likbelägna och vinkelsumma-satserna för att bygga en kedja av lika vinklar. Sektor-räkning ger då bråket direkt.",
-    "pitfall": "Vanligaste fällan är att gissa på 'enklast bråk' utan att räkna sektorerna. Botemedlet: markera ALLA vinklar i figuren med samma storlek i samma färg — då dyker mönstret upp visuellt.",
+    "technique": "Hjälpparallell-tricket: när en bruten linje korsar två parallella, dra en tredje parallell genom vertexen. Alternat-vinklar mot var parallell summeras till hela avvinklingen.",
+    "pitfall": "Botemedlet mot att gissa: rita ALLTID hjälpparallellen genom vertex; använd alternat-vinkel-satsen två gånger (en gång mot L₁, en gång mot L₂); aldrig anta att vinklarna mot L₁ och L₂ är lika.",
     "framework_id": "XYZ-TRAP-037",
     "pregrade_tactic": {
-      "handle": "Vinkeljakten",
-      "move": "Färglägg alla lika vinklar i figuren via parallell-satserna; räkna sedan hur många likadana sektorer som bygger upp den okända vinkeln."
+      "handle": "Hjälpparallellen",
+      "move": "Vid bruten linje mellan två parallella — dra en tredje parallell genom böjpunkten och hantera vinklarna i två omgångar (en mot var sida)."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2016-kvant2-XYZ-007": {

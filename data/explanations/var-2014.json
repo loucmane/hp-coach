@@ -13168,203 +13168,203 @@
     }
   },
   "var-2014-kvant1-XYZ-012": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Förenkla det sammansatta bråket x/(2x/3) genom att invertera nämnaren — x:en försvinner och vänsterledet kollapsar till 3/2. Lös sedan den linjära ekvationen 3/2 = 8 + 4x och kolla i vilket intervall lösningen ligger.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Du får ekvationen x/(2x/3) = 8 + 4x med villkoret x ≠ 0, och ska avgöra vilket av fyra intervall som innehåller lösningen. Du behöver alltså lösa ut x exakt och sedan placera det.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Tolka det sammansatta bråket",
+        "text": "Uttrycket x/(2x/3) är ett bråk där täljaren är x och nämnaren är hela bråket 2x/3. Att dela med ett bråk = att multiplicera med dess invers.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Invertera nämnaren",
+        "text": "Inversen av 2x/3 är 3/(2x). Därför blir x/(2x/3) = x · 3/(2x) = 3x/(2x).",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Förkorta x:en",
+        "text": "Eftersom x ≠ 0 får vi förkorta med x i 3x/(2x), vilket ger 3/2. Vänsterledet är alltså bara talet 3/2 — variabeln försvann helt från VL.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Skriv om ekvationen",
+        "text": "Ekvationen reduceras till 3/2 = 8 + 4x. Det är nu en helt vanlig linjär ekvation i x.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Isolera 4x",
+        "text": "Subtrahera 8 från båda led: 3/2 − 8 = 4x. För att räkna 3/2 − 8 skriver vi 8 som 16/2, så 3/2 − 16/2 = −13/2.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Lös ut x",
+        "text": "Dividera båda led med 4: x = (−13/2)/4 = −13/8. Att dela ett bråk med ett heltal = multiplicera nämnaren med det heltalet.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Räkna om till decimal",
+        "text": "−13/8 = −1,625. Eftersom 13/8 = 1 + 5/8 och 5/8 = 0,625.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Placera x i ett intervall",
+        "text": "x = −1,625 ligger mellan −2 och −1. Specifikt: −2 ≤ −1,625 < −1, alltså intervallet A.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Sätt in x = −13/8 i högerledet: 8 + 4·(−13/8) = 8 − 13/2 = 16/2 − 13/2 = 3/2. Det matchar vänsterledet 3/2 — ekvationen stämmer.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svar A: −2 ≤ x < −1. Insikten i en mening: när en variabel uppträder symmetriskt i ett sammansatt bråk försvinner den ofta vid förkortning — leta efter den genvägen innan du jagar algebra.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att tro att x måste bli litet och negativt eftersom ekvationen ger ett litet vänsterled (3/2), och därmed gissa intervallet närmast noll.",
+        "why_wrong": "Som steg 7–8 visar är x = −1,625, vilket ligger UNDER −1, inte mellan −1 och 0."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid 3/2 = 1,5 i vänsterledet och drar slutsatsen att x självt måste ligga nära 0 < x < 1 eftersom 'svaret är litet'.",
+        "why_wrong": "Steg 6 visar att 4x = −13/2, alltså negativt — x kan omöjligt vara positivt."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att läsa av 3/2 = 1,5 och tro att x självt ligger runt 1,5, så intervallet 1 ≤ x < 2 lockar.",
+        "why_wrong": "Det är 4x + 8 som ska bli 3/2, inte x. Steg 6 visar att 4x faktiskt är negativt (−6,5), så x är negativt."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "När du ser ett sammansatt bråk med samma variabel i täljare och nämnare: invertera den inre nämnaren först och förkorta. Variabeln dör ofta direkt och ekvationen kollapsar till något linjärt eller numeriskt — du behöver inte hantera bråk i bråk när du löser ut.",
+    "pitfall": "Botemedlet mot 'panik vid bråk-i-bråk' är att alltid skriva om delning som multiplikation med inversen INNAN du försöker korsmultiplicera eller bråka med nämnare. När x:en förkortas slutar ekvationen vara icke-linjär.",
+    "framework_id": "XYZ-TRAP-017",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Bråk-i-bråk-vändningen",
+      "move": "När du ser en variabel både i ytterbråkets täljare och i innerbråkets täljare — invertera innerbråket först och förkorta; vänstersidan blir då ofta bara ett tal."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2014-kvant2-XYZ-010": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (options blank). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Avläs nollställena direkt ur den faktoriserade formen: y = 0 när x = 3 eller x = −2. Avgör sedan öppningsriktningen från ledande koefficient (positiv → uppåt) och kontrollera y-skärningen (−6). Den graf som har öppning uppåt, nollställen vid −2 och 3, och y-axelskärning runt −6 är B.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Svarsalternativen är tomma i datakällan — varje alternativ är en figur som inte fångats. Vi vet vilket alternativ som är rätt enligt facit men inte vad respektive alternativ visar.",
+        "text": "Du ska matcha funktionen y = (x − 3)(x + 2) med en av fyra parabelgrafer. Du behöver tre saker: nollställen, öppningsriktning och en referenspunkt (t.ex. y-skärning).",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Vad är ett nollställe?",
+        "text": "Ett nollställe är ett x-värde där y = 0 — alltså där grafen skär x-axeln. För en produkt (A)(B) = 0 gäller att antingen A = 0 eller B = 0 (nollproduktregeln).",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Hitta nollställena",
+        "text": "(x − 3)(x + 2) = 0 ger x − 3 = 0 eller x + 2 = 0, alltså x = 3 eller x = −2. Grafen skär x-axeln vid −2 och vid 3.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Tolka öppningsriktningen",
+        "text": "Multiplicera ihop ledande termerna: x · x = x². Koefficienten framför x² är +1, alltså positiv. Positiv ledande koefficient ⇒ parabeln öppnar UPPÅT (U-form).",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Eliminera nedåt-öppningarna",
+        "text": "Alternativ A och C visar parabler som öppnar nedåt (∩-form, toppunkt över x-axeln). Båda är därmed uteslutna — de skulle ha negativ ledande koefficient.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Räkna ut y-skärningen",
+        "text": "y-skärningen är värdet av y när x = 0: y = (0 − 3)(0 + 2) = (−3)(2) = −6. Grafen passerar alltså genom punkten (0, −6) — under x-axeln.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Hitta symmetriaxeln",
+        "text": "En parabels minimum ligger mitt emellan nollställena. Mitten av −2 och 3 är (−2 + 3)/2 = 0,5. Symmetriaxeln är alltså x = 0,5 — strax till höger om y-axeln.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Jämför B mot D",
+        "text": "B och D öppnar båda uppåt, men D ser symmetrisk ut kring y-axeln (lika långt nollställe åt vardera håll). Det stämmer inte med x = −2 och x = 3, där höger nollställe ligger längre från y-axeln än det vänstra.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Bekräfta att B passar",
+        "text": "B visar en parabel som öppnar uppåt, har en negativ och en positiv x-skärning (med höger nollställe längre bort från origo), och y-axelskärning klart under x-axeln. Det matchar nollställen {−2, 3} och y(0) = −6.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera med en extra punkt",
+        "text": "Testa x = 1: y = (1 − 3)(1 + 2) = (−2)(3) = −6. Vid x = 1 är y fortfarande negativt — alltså ligger minimum mellan x = −2 och x = 3, vilket B visar.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svar B. Insikten i en mening: en faktoriserad andragradare ger nollställena gratis — kombinera dem med tecknet på ledande koefficient så har du grafens skelett på två sekunder.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att se 'minus' i (x − 3) och tro att parabeln vänds upp och ned, eller att blanda ihop egenskaperna hos en negativ rot med en negativ öppningsriktning.",
+        "why_wrong": "Steg 4 visar att ledande termen är +x², alltså öppnar grafen uppåt. A öppnar nedåt och kan inte vara svaret."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att läsa av en av faktorerna och tror att grafen ska 'spegla sig' i x-axeln, eller minns formen y = −(x²) som default.",
+        "why_wrong": "Som steg 4 och 5 visar är ledande koefficienten +1; C öppnar nedåt och har dessutom toppunkt över x-axeln, vilket motsäger y(0) = −6."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att hitta en uppåtöppning och stanna där — D ser ut som en 'snäll' U-parabel och kan kännas som rätt familj.",
+        "why_wrong": "Steg 7–8 visar att symmetriaxeln ligger vid x = 0,5, INTE på y-axeln. D är ungefär symmetrisk kring y-axeln, vilket motsvarar nollställen som ±k, inte −2 och 3."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Faktoriserad andragradsform (x − a)(x − b) avslöjar två saker direkt: nollställen vid a och b, och ledande koefficient = produkten av x-koefficienterna. Skissa: två fötter på x-axeln, U eller ∩ beroende på tecken, y-skärning = a·b (med tecken). Tre data räcker för att eliminera tre av fyra grafer.",
+    "pitfall": "Botemedlet mot 'gissa form från bilden': räkna ALLTID ut y(0) som referenspunkt — det skiljer ofta två kandidatgrafer åt även när nollställen och öppning ser lika ut. Och kolla att symmetriaxeln (medelvärdet av nollställena) inte ligger på y-axeln om nollställena är asymmetriska.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Parabel-skelettet",
+      "move": "När du ser en faktoriserad andragradare: läs av nollställena, multiplicera ihop ledande x-koefficienterna för öppningsriktningen, och räkna y(0) — då är fyra grafer alltid tre för många."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2014-verb2-ELF-036": {

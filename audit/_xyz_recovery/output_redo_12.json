@@ -1,0 +1,236 @@
+{
+  "var-2026-kvant1-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "En cylinder har volymen 16 cm³ och höjden 1 cm. Vilket svarsalternativ ligger närmast cylinderns radie?",
+      "options": [
+        {"letter": "A", "text": "2 cm"},
+        {"letter": "B", "text": "4 cm"},
+        {"letter": "C", "text": "5 cm"},
+        {"letter": "D", "text": "√5 cm"}
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Skriv cylinderns volymformel V = πr²h, sätt in V = 16 och h = 1, lös ut r² = 16/π, approximera π ≈ 3,14 så r² ≈ 5,1 och r ≈ 2,26 cm. Jämför med alternativen: √5 ≈ 2,24 cm ligger närmast.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "En cylinder har V = 16 cm³ och h = 1 cm. Vi söker radien r i centimeter, närmast bland fyra alternativ.", "tier": "essential"},
+        {"n": 2, "title": "Plocka fram cylinderformeln", "text": "Volymen ges av V = πr²h. Eftersom h = 1 kollapsar formeln till V = πr².", "tier": "essential"},
+        {"n": 3, "title": "Sätt in värdena", "text": "16 = π · r² · 1, alltså πr² = 16.", "tier": "essential"},
+        {"n": 4, "title": "Lös ut r²", "text": "Dela båda leden med π: r² = 16/π.", "tier": "essential"},
+        {"n": 5, "title": "Approximera π", "text": "Med π ≈ 3,14 får vi r² ≈ 16/3,14 ≈ 5,1.", "tier": "essential"},
+        {"n": 6, "title": "Ta roten", "text": "r ≈ √5,1 ≈ 2,26 cm.", "tier": "essential"},
+        {"n": 7, "title": "Översätt alternativen till decimal", "text": "A 2 cm, B 4 cm, C 5 cm, D √5 cm ≈ 2,236 cm.", "tier": "essential"},
+        {"n": 8, "title": "Jämför avstånd", "text": "|2,26 − 2| = 0,26 och |2,26 − 2,236| = 0,024. Övriga är längre bort.", "tier": "essential"},
+        {"n": 9, "title": "Identifiera den exakta formen", "text": "r² = 16/π ger r = 4/√π; eftersom π är nära 5 ligger 4/√π nära 4/√5 = √(16/5) ≈ √3,2 — alternativ D √5 är därmed den enda kandidaten i samma storleksordning.", "tier": "support"},
+        {"n": 10, "title": "Verifiera", "text": "Pi-uppskattningen är trubbig men säkert mellan 3,1 och 3,2, så r ligger mellan √5 och √5,2 — fortfarande närmast √5.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är D, √5 cm. Insikten i en mening: När h = 1 reduceras cylinderns volym till πr², så radien blir kvadratroten av V/π.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "2 cm är ett rent heltal nära det verkliga värdet 2,26, och eleven kan tro att π ≈ 4 så att r² = 16/4 = 4 och r = 2.", "why_wrong": "π är inte 4 utan ~3,14; avrundningen ger ett synligt fel på 0,26 medan √5 ligger inom 0,03."},
+        {"letter": "B", "why_tempting": "Den som tar roten ur 16 utan att dela med π hamnar direkt på 4 cm.", "why_wrong": "Att hoppa över delningen med π är att glömma cylinderns bottenarea — formeln är πr², inte r²."},
+        {"letter": "C", "why_tempting": "Om man läser \"volym 16, höjd 1\" som att basytan är 16 och blandar ihop area med radie, blir 5 ett gissningsnära värde till √16 eller r² = 16/π ≈ 5.", "why_wrong": "5 cm är r², inte r — eleven har missat att ta roten."}
+      ],
+      "technique": "Cylinderns volym V = πr²h med en känd höjd reducerar problemet till att lösa ut r² och ta roten. När h = 1 är r² helt enkelt V/π.",
+      "pitfall": "Att tolka kvadratroten i alternativ D som ett räknefel — √5 är ofta den exakta formen som siktar närmast V/π när π ≈ 3,2.",
+      "framework_id": "XYZ-TRAP-042",
+      "pregrade_tactic": {"handle": "Cylinderkollapsen", "move": "När höjden är 1 cm: skriv V = πr², lös r² = V/π och ta sedan roten."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-ver2-2019-kvant1-XYZ-005": {
+    "explanation": {
+      "solution_path": "Triangeln vilar på en horisontell linje; vid de två basvinklarna är de markerade 130° och 117° yttervinklar på den rätta linjen. De inre basvinklarna blir 180° − 130° = 50° och 180° − 117° = 63°. Vinkelsumman 180° ger v = 180° − 50° − 63° = 67°.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "En triangel står på en horisontell baslinje. De två basvinklarna har yttervinklar 130° (vänster) och 117° (höger). Toppvinkeln är v.", "tier": "essential"},
+        {"n": 2, "title": "Identifiera yttervinklarna", "text": "130° och 117° är markerade utanför triangeln, mellan baslinjens förlängning och triangelns sidor — alltså yttervinklar.", "tier": "essential"},
+        {"n": 3, "title": "Översätt till inre vinklar", "text": "Yttervinkel + inre vinkel = 180° (rät vinkel-supplement). Inre vinkel vänster = 180° − 130° = 50°.", "tier": "essential"},
+        {"n": 4, "title": "Räkna höger inre vinkel", "text": "Inre vinkel höger = 180° − 117° = 63°.", "tier": "essential"},
+        {"n": 5, "title": "Använd vinkelsumman", "text": "Triangelns tre inre vinklar summerar till 180°: 50° + 63° + v = 180°.", "tier": "essential"},
+        {"n": 6, "title": "Lös ut v", "text": "v = 180° − 50° − 63° = 180° − 113° = 67°.", "tier": "essential"},
+        {"n": 7, "title": "Sanity-check via yttervinkelsatsen", "text": "Den yttre vinkeln på höger sida (117°) ska vara summan av de motstående inre vinklarna 50° + 67° = 117° ✓.", "tier": "support"},
+        {"n": 8, "title": "Sanity-check vänster sida", "text": "Yttre vänster (130°) = 63° + 67° = 130° ✓. Båda kontrollerna stämmer.", "tier": "support"},
+        {"n": 9, "title": "Verifiera bland alternativen", "text": "67° finns som alternativ C. 50° och 63° är de inre basvinklarna (lockbeten), 77° är 180° − 50° − 53° (fel räkneoperation).", "tier": "essential"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är C, 67°. Insikten i en mening: Vid en yttervinkel på baslinjen läs av den inre vinkeln som 180° − yttervinkel, sen sluter triangelsumman tillsammans.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "50° är den inre basvinkeln på vänster sida (180° − 130°). Den som stannar efter första subtraktionen plockar den siffran direkt.", "why_wrong": "50° är en delvinkel inuti triangeln, inte toppvinkeln v. Man måste fortsätta med vinkelsumman."},
+        {"letter": "B", "why_tempting": "63° är den inre basvinkeln på höger sida. Samma fälla som A — vald om eleven tror att v ligger nere vid basen.", "why_wrong": "v är markerat vid toppen av triangeln, inte vid basen; 63° är en annan vinkel i samma figur."},
+        {"letter": "D", "why_tempting": "Felaktig räkning 180° − (130° + 117°) + 180° eller liknande kan ge 77°; även 50° + 27° (om man bytte 117 → 153) ger 77.", "why_wrong": "Den korrekta vinkelsumman är 180° − 50° − 63° = 67°, inte 77°. 77° kommer från en aritmetisk slip."}
+      ],
+      "technique": "På en horisontell baslinje: yttervinkel + inre vinkel = 180°. Räkna fram de två inre basvinklarna och dra båda från 180° för att få toppvinkeln.",
+      "pitfall": "Att försöka använda de markerade vinklarna 130° och 117° direkt i triangelsumman — då blir 130 + 117 = 247 vilket är meningslöst eftersom de är utanför triangeln.",
+      "framework_id": "XYZ-TRAP-038",
+      "pregrade_tactic": {"handle": "Yttervinkelregeln", "move": "Yttervinkel + inre vinkel = 180° — översätt först, summera sedan i triangeln."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2018-kvant1-XYZ-003": {
+    "explanation": {
+      "solution_path": "Avläs två tydliga punkter på linjen: y-axelns skärning vid ungefär (0, 2) och x-axelns skärning vid ungefär (4, 0). Lutningen k = Δy/Δx = (0 − 2)/(4 − 0) = −2/4 = −1/2. Linjen lutar nedåt åt höger, så k är negativ.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "En linje y = kx + m är inritad. Vi söker riktningskoefficienten k. Koordinatsystemet visar rutnät med gradering vid −3 och 3 på båda axlarna.", "tier": "essential"},
+        {"n": 2, "title": "Observera lutningsriktning", "text": "Linjen går från övre vänster till nedre höger — det betyder k < 0 direkt. Alternativen B (1/2) och D (2) kan strykas.", "tier": "essential"},
+        {"n": 3, "title": "Hitta första referenspunkt", "text": "Linjen skär y-axeln strax under 3-strecket, vid ungefär y = 2. Alltså punkt (0, 2).", "tier": "essential"},
+        {"n": 4, "title": "Hitta andra referenspunkt", "text": "Linjen skär x-axeln strax efter 3-strecket, vid ungefär x = 4. Alltså punkt (4, 0).", "tier": "essential"},
+        {"n": 5, "title": "Räkna Δy", "text": "Δy = 0 − 2 = −2 (när x ökar från 0 till 4 minskar y med 2).", "tier": "essential"},
+        {"n": 6, "title": "Räkna Δx", "text": "Δx = 4 − 0 = 4.", "tier": "essential"},
+        {"n": 7, "title": "Beräkna k", "text": "k = Δy/Δx = −2/4 = −1/2.", "tier": "essential"},
+        {"n": 8, "title": "Tolka brantheten", "text": "|k| = 1/2 < 1, vilket innebär linjen är flackare än 45°. Det syns i figuren — linjen är tydligt mer horisontell än diagonal.", "tier": "support"},
+        {"n": 9, "title": "Verifiera", "text": "Med k = −1/2 och m = 2 ger y = −x/2 + 2. Sätter vi x = 4: y = −2 + 2 = 0 ✓. Sätter vi x = −2: y = 1 + 2 = 3 — stämmer också mot figuren.", "tier": "essential"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är A, −1/2. Insikten i en mening: Två avlästa punkter ger Δy/Δx — tecknet bestäms av om linjen lutar uppåt eller nedåt.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "1/2 är rätt absolut värde, men eleven missar att linjen lutar nedåt. Vanligt fel: ta |Δy|/|Δx| utan tecken.", "why_wrong": "Tecknet räknas — en linje som faller har negativ riktningskoefficient. 1/2 motsvarar en stigande linje, inte denna."},
+        {"letter": "C", "why_tempting": "−2 lockar om eleven förväxlar Δx och Δy, alltså räknar Δx/Δy = 4/(−2) = −2.", "why_wrong": "Lutning definieras som Δy delat med Δx, inte tvärtom. Här är linjen flackare än 45°, så |k| måste vara mindre än 1."},
+        {"letter": "D", "why_tempting": "2 är samma räknefel som C men utan tecken — eleven både inverterar kvoten och missar minustecknet.", "why_wrong": "Två fel på samma gång: fel kvot OCH fel tecken. k är negativ och mindre än 1 i belopp."}
+      ],
+      "technique": "Riktningskoefficient k = Δy/Δx, räknat mellan två tydliga punkter på linjen — ofta axelskärningarna (0, m) och (x₀, 0).",
+      "pitfall": "Att glömma tecknet — en fallande linje har negativ k även om Δy/Δx-räkningen ser ut som ett positivt bråk när man slarvar.",
+      "framework_id": "XYZ-TRAP-051",
+      "pregrade_tactic": {"handle": "Lutningsavläsningen", "move": "Två punkter, Δy/Δx, behåll tecknet — fallande linje ger negativ k."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2018-kvant1-XYZ-008": {
+    "explanation": {
+      "solution_path": "Figuren visar en stor triangel med en höjd nedfälld till basen. Basen delas i två delar: 4 cm till vänster och 3 cm till höger. Den vänstra sidan i hela triangeln är 5 cm. I den vänstra rätvinkliga halvtriangeln ger Pythagoras höjden h² = 5² − 4² = 9, alltså h = 3. I den högra rätvinkliga halvtriangeln är x hypotenusan: x² = h² + 3² = 9 + 9 = 18, alltså x = √18 cm.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "En triangel har en höjd som möter basen i en rät vinkel och delar basen i två delar 4 cm och 3 cm. Vänster sida är 5 cm; sidan x är höger sida.", "tier": "essential"},
+        {"n": 2, "title": "Identifiera två rätvinkliga trianglar", "text": "Höjden skapar två rätvinkliga delfigurer som delar samma höjd h.", "tier": "essential"},
+        {"n": 3, "title": "Räkna höjden via vänster halvtriangel", "text": "Vänster halvtriangel: kateter 4 och h, hypotenusa 5. Pythagoras: 4² + h² = 5².", "tier": "essential"},
+        {"n": 4, "title": "Lös ut h", "text": "16 + h² = 25, så h² = 9, alltså h = 3 cm (positiv längd).", "tier": "essential"},
+        {"n": 5, "title": "Känn igen 3-4-5-triangeln", "text": "Vänster halvtriangel är en klassisk 3-4-5-rätvinklig — bra sanity-check på h = 3.", "tier": "support"},
+        {"n": 6, "title": "Applicera Pythagoras i höger halvtriangel", "text": "Höger halvtriangel: kateter h = 3 och 3, hypotenusa x. Alltså 3² + 3² = x².", "tier": "essential"},
+        {"n": 7, "title": "Räkna ut x²", "text": "9 + 9 = 18, så x² = 18.", "tier": "essential"},
+        {"n": 8, "title": "Ta roten", "text": "x = √18 cm. (≈ 4,24 cm)", "tier": "essential"},
+        {"n": 9, "title": "Förenkla för intuition", "text": "√18 = √(9·2) = 3√2 — höger halvtriangel är en likbent rätvinklig (3,3,3√2). Användbart att veta vid kontroll.", "tier": "support"},
+        {"n": 10, "title": "Verifiera mot alternativen", "text": "Bland alternativen står √18 cm explicit som B. 3 cm (A) är höjden h, inte hypotenusan. 3,5 cm (C) är genomsnittet av delbaserna — ingen geometrisk grund. √20 cm (D) skulle kräva katet 4 + 1 eller liknande.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är B, √18 cm. Insikten i en mening: När en höjd delar basen i en triangel, kör Pythagoras två gånger — först ut till höjden, sen till okänd sida.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "3 cm är höjden h som man räknat fram i mellansteget — eleven stannar för tidigt och rapporterar h istället för x.", "why_wrong": "x är hypotenusan i höger delsubsektion, inte höjden. Räkningen måste fortsätta med en andra Pythagoras."},
+        {"letter": "C", "why_tempting": "3,5 cm är medelvärdet av 4 och 3 (delbaserna). Lockar om eleven tror att x ligger \"i mitten\" eller försöker triangelmedelvärde.", "why_wrong": "Det finns ingen geometrisk regel som ger sidlängden som medelvärdet av basdelarna. Pythagoras krävs."},
+        {"letter": "D", "why_tempting": "√20 cm kommer av räknefel: om eleven tror höjden är 4 (förväxlar med basdelen) får hen 4² + 3² = 25 fel — eller missar att basdelen är 3, inte 4, vid höger triangel.", "why_wrong": "Höger halvtriangel har kateter 3 och 3, inte 4 och 2 eller liknande. Korrekt summa är 9 + 9 = 18, inte 20."}
+      ],
+      "technique": "Höjd mot bas → två rätvinkliga delfigurer som delar samma h. Pythagoras först ger h via den kända sidan; en andra Pythagoras ger den sökta hypotenusan på andra sidan.",
+      "pitfall": "Att rapportera höjden som svar — h är ett mellansteg, inte slutet. Läs frågan igen: vad är x?",
+      "framework_id": "XYZ-TRAP-040",
+      "pregrade_tactic": {"handle": "Dubbla Pythagoras", "move": "När en höjd delar basen: kör Pythagoras i halvtriangeln med kända sidor, sen i den andra halvtriangeln med den nyfunna höjden."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2024-kvant2-XYZ-005": {
+    "explanation": {
+      "solution_path": "Total körd sträcka = 6 h × 90 km/h = 540 km. Figuren visar en T-formad linje med en vänster förgreningspunkt (J1) och en höger förgreningspunkt (J2). Avstånd: P→J1 = 245, Q→J1 = 155, J1→T = 295, T→J2 = 260, J2→R = 270, J2→S = 300 (alla km). Räkna ut hela vägen från varje station till T och jämför med 540: från P blir det 245 + 295 = 540 — exakt match.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Ett tåg startar från en av stationerna P, Q, R eller S och stannar vid T efter 6 h med snittfart 90 km/h. Frågan: vilken startstation?", "tier": "essential"},
+        {"n": 2, "title": "Räkna total sträcka", "text": "Sträcka = hastighet · tid = 90 km/h · 6 h = 540 km.", "tier": "essential"},
+        {"n": 3, "title": "Läs av kartan", "text": "Figuren är en kartlik graf: P och Q sitter till vänster och förenas i en korsning (J1) som länkar till T (295 km). T länkar vidare till en högerkorsning (J2) som förgrenar sig till R och S.", "tier": "essential"},
+        {"n": 4, "title": "Lista avstånden", "text": "Från figurens etiketter: P→J1 = 245, Q→J1 = 155, J1→T = 295, T→J2 = 260, J2→R = 270, J2→S = 300 (alla km).", "tier": "essential"},
+        {"n": 5, "title": "Räkna P → T", "text": "P → T = 245 + 295 = 540 km. Detta matchar exakt 540.", "tier": "essential"},
+        {"n": 6, "title": "Räkna Q → T", "text": "Q → T = 155 + 295 = 450 km. För kort (90 km fattas).", "tier": "essential"},
+        {"n": 7, "title": "Räkna R → T", "text": "R → T = 270 + 260 = 530 km. Nära men inte exakt.", "tier": "essential"},
+        {"n": 8, "title": "Räkna S → T", "text": "S → T = 300 + 260 = 560 km. För långt (20 km över).", "tier": "essential"},
+        {"n": 9, "title": "Jämför med 540 km", "text": "Endast P → T blir exakt 540 km. De andra avviker med 90, 10 respektive 20 km.", "tier": "essential"},
+        {"n": 10, "title": "Sanity-check med medelhastighet", "text": "Eftersom medelhastighet anges (inte konstant), kunde flera värden tekniskt fungera om tåget stannat på vägen — men frågan letar efter \"vilken station\" och det enda totala avståndet som ger snitt 90 km/h över 6 timmar är 540 km, så P är entydigt rätt.", "tier": "support"},
+        {"n": 11, "title": "Verifiera", "text": "Kontrollera att 245 + 295 verkligen är 540: 245 + 295 = 245 + 300 − 5 = 540 ✓.", "tier": "essential"},
+        {"n": 12, "title": "Slutsats", "text": "Svaret är A, P. Insikten i en mening: Räkna ut total sträcka som hastighet · tid och jämför med kartans olika rutter — bara en matchar.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Q ligger nära P på samma sida av kartan och utgör en naturlig \"andra gissning\" om eleven inte räknat noga.", "why_wrong": "Q→T = 155 + 295 = 450 km, vilket motsvarar 5 timmar i 90 km/h — alltför kort tid."},
+        {"letter": "C", "why_tempting": "R→T = 270 + 260 = 530 km, bara 10 km kortare än 540. Lockar om eleven approximerar eller läser etiketten 270 som något annat.", "why_wrong": "Frågan kräver exakt 540 km eftersom hastighet och tid är exakta. 530 ger snitt 88,3 km/h, inte 90."},
+        {"letter": "D", "why_tempting": "S→T = 560 km är nära 540 och eleven kan landa på S om hen läser 300 som 280 eller blandar S med R.", "why_wrong": "560 km på 6 h ger snitt 93,3 km/h, inte 90 km/h. Exakt match krävs."}
+      ],
+      "technique": "Konvertera tid · hastighet till en total sträcka, läs av nodavstånden i kartfiguren, och summera varje möjlig väg till T — den enda exakta matchningen är svaret.",
+      "pitfall": "Att missa att etiketterna sitter på olika segment (245 + 295, inte bara 245). Spåra hela vägen från startpunkt till T innan du summerar.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "Sträckmatchen", "move": "Räkna v · t först, summera varje rutts segment, jämför med totalen."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2025-kvant2-XYZ-006": {
+    "explanation": {
+      "solution_path": "Sexhörningen ABCDEF består av en rektangel ABCF i botten plus en trapets FCDE ovanpå. Rektangeln har AB = 10 och AF = BC = 7, så area = 10·7 = 70 cm². Trapetset har de parallella sidorna FC = 10 (samma som AB) och ED = 6, och höjd 5 (lodrätt streck mellan ED och FC). Area = (10 + 6)/2 · 5 = 8 · 5 = 40 cm². Total = 70 + 40 = 110 cm².",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Sexhörningen ABCDEF visas i figuren. Markerade mått: AB = 10, AF = 7, BC = 7, ED = 6, höjd 5 mellan ED och FC. Rätvinkliga hörn vid A, B, F, C (uppåt/inåt).", "tier": "essential"},
+        {"n": 2, "title": "Dela upp i grundformer", "text": "Den horisontella sidan FC delar figuren i två: en rektangel ABCF nedanför och en trapets FCDE ovanför.", "tier": "essential"},
+        {"n": 3, "title": "Identifiera rektangeln", "text": "ABCF har AB = 10 (botten), BC = 7 (höger), CF = 10 (övre), FA = 7 (vänster). Räta vinklar vid alla fyra hörn enligt markeringen.", "tier": "essential"},
+        {"n": 4, "title": "Räkna rektangelns area", "text": "A_rekt = 10 · 7 = 70 cm².", "tier": "essential"},
+        {"n": 5, "title": "Identifiera trapetset", "text": "FCDE har FC = 10 nedtill, ED = 6 upptill (parallell med FC), och höjd 5 (lodräta strecket från ED ner till FC).", "tier": "essential"},
+        {"n": 6, "title": "Använd trapetsformeln", "text": "A_trap = (a + b)/2 · h, där a = 10, b = 6, h = 5.", "tier": "essential"},
+        {"n": 7, "title": "Räkna trapetsets area", "text": "A_trap = (10 + 6)/2 · 5 = 16/2 · 5 = 8 · 5 = 40 cm².", "tier": "essential"},
+        {"n": 8, "title": "Summera totala arean", "text": "A_tot = 70 + 40 = 110 cm².", "tier": "essential"},
+        {"n": 9, "title": "Verifiera dimensionerna", "text": "Sidoutsprången av trapetset är (10 − 6)/2 = 2 cm på varje sida — det stämmer med figurens utseende där E och D ligger inåt jämfört med F och C.", "tier": "support"},
+        {"n": 10, "title": "Sanity-check via bounding-rectangle", "text": "Om man drar en omslutande rektangel 10 · 12 = 120 cm² (höjd 7 + 5), drar man bort de två småtrianglarna i hörnen vid E och D: var och en har bas 2 och höjd 5, area = 5. Total: 120 − 2·5 = 110 cm² ✓.", "tier": "support"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är C, 110 cm². Insikten i en mening: Bryt en sammansatt figur i en rektangel och en trapets, räkna varje del, summera.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "100 cm² är en \"snäll\" siffra och ligger nära. Eleven kan ha räknat rektangeln 70 + en gissad trapets med area 30 (t.ex. genom att använda fel höjd eller bara ED · 5 = 30).", "why_wrong": "Trapetset har två parallella sidor (10 och 6) — formeln kräver medelvärdet 8, inte 6. (10+6)/2 · 5 = 40, inte 30."},
+        {"letter": "B", "why_tempting": "105 cm² ligger precis emellan 100 och 110 och kan vara resultatet av att räkna 70 + 7·5 = 105 (om eleven använder höjden 7 från rektangeln för trapetset).", "why_wrong": "Höjden i trapetset är 5 (uttryckligen utskrivet på det lodräta strecket), inte 7. 7 är AF/BC, alltså rektangelns sida."},
+        {"letter": "D", "why_tempting": "115 cm² kommer av räknefel där eleven adderar 10·5 + 70 − något fel, eller tar trapetset som rektangel: 6·5 + ändtrianglarna räknat fel.", "why_wrong": "Trapetsens area är exakt (10+6)·5/2 = 40, inte 45. Total blir 110, inte 115."}
+      ],
+      "technique": "Bryt sammansatta figurer i grundformer (rektanglar, trapetser, trianglar). Beräkna varje delyta och summera. För trapets: medelvärdet av parallella sidor gånger höjden.",
+      "pitfall": "Att blanda ihop trapetshöjden (5) med rektangelns sida (7) eller att glömma medelvärdet i trapetsformeln och bara använda en av de parallella sidorna.",
+      "framework_id": "XYZ-TRAP-041",
+      "pregrade_tactic": {"handle": "Sammansatta figuren", "move": "Dra en linje för att dela i rektangel + trapets, räkna var del, summera."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2013-kvant2-XYZ-001": {
+    "explanation": {
+      "solution_path": "Den stora triangeln har basvinklar 59° (vänster) och 33° (höger), och toppvinkeln delas av en cevian i två lika delar x och x. Vinkelsumman i den stora triangeln: 59° + 33° + 2x = 180°, så 2x = 88° och x = 44°. Vinkeln v är vinkeln vid cevianens fot på höger sida (inom höger deltriangel). I höger deltriangel: x + 33° + v = 180°, alltså v = 180° − 44° − 33° = 103°.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "En stor triangel har basvinklar 59° vänster och 33° höger. Vid toppen löper en cevian rakt ned till basen och delar toppvinkeln i två lika stora delar, båda märkta x. Vid cevianens fot, på höger sida, sitter vinkeln v.", "tier": "essential"},
+        {"n": 2, "title": "Använd vinkelsumman i hela triangeln", "text": "59° + 33° + (toppvinkeln) = 180°. Toppvinkeln är 2x eftersom cevianen delar den i två lika delar.", "tier": "essential"},
+        {"n": 3, "title": "Räkna toppvinkeln", "text": "Toppvinkeln = 180° − 59° − 33° = 180° − 92° = 88°.", "tier": "essential"},
+        {"n": 4, "title": "Hitta x", "text": "2x = 88°, så x = 44°.", "tier": "essential"},
+        {"n": 5, "title": "Lokalisera v", "text": "v sitter mellan cevianen och basen, på cevianens högra sida — den inre vinkeln i höger deltriangel vid cevianens fot.", "tier": "essential"},
+        {"n": 6, "title": "Applicera vinkelsumman i höger deltriangel", "text": "Höger deltriangel har: toppvinkel x = 44°, basvinkel 33° (höger basvinkel av hela triangeln), och v (vid cevianens fot). Summa: 44° + 33° + v = 180°.", "tier": "essential"},
+        {"n": 7, "title": "Lös ut v", "text": "v = 180° − 44° − 33° = 180° − 77° = 103°.", "tier": "essential"},
+        {"n": 8, "title": "Sanity-check med yttervinkelsatsen", "text": "v är yttervinkeln för vänster deltriangel vid samma fot. Vänster deltriangel har vinklarna x = 44° (topp) och 59° (vänster bas), så summan av motstående inre vinklar = 44° + 59° = 103° ✓.", "tier": "support"},
+        {"n": 9, "title": "Bekräfta att v är trubbig", "text": "Eftersom 33° < 59°, lutar cevianen mer åt vänster i botten, så höger deltriangels fotvinkel är trubbig. v > 90° är konsistent.", "tier": "support"},
+        {"n": 10, "title": "Verifiera mot alternativen", "text": "103° är alternativ C. 92° skulle vara 180 − 88 (om man glömt halvera), 97° är 92 + 5 (slip), 105° om x var fel.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är C, 103°. Insikten i en mening: När en cevian delar toppvinkeln lika, dela vinkelsumman i två steg — hela triangeln först för att hitta x, sen deltriangeln för v.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "92° är 180° − 88° = 92° vilket den som glömmer halveringen kan ta. Det är också supplementet till toppvinkeln 88°.", "why_wrong": "Toppvinkeln är 88° men v är inte dess supplement. v ligger inom höger deltriangel och kräver hela vinkelsumman där."},
+        {"letter": "B", "why_tempting": "97° är nära rätt svar och kan komma från räknefel: t.ex. 180 − 50 − 33 = 97 om man läser 59 fel som 50.", "why_wrong": "Med 59° och 33° som korrekta basvinklar ger räkningen exakt 103°, inte 97°. 97° är räknefel."},
+        {"letter": "D", "why_tempting": "105° är nära rätt och kan komma om man avrundar uppåt eller räknar med x = 45° (felaktigt halveringssteg).", "why_wrong": "Toppvinkeln är 88°, halvan är 44° (jämn). 105° förutsätter x = 42° vilket inte stämmer."}
+      ],
+      "technique": "När en cevian delar toppvinkeln lika: använd vinkelsumman i hela triangeln för att hitta toppvinkeln (= 2x), halvera till x, och kör vinkelsumman på nytt i den relevanta deltriangeln för att hitta den sökta vinkeln. Sanity-check via yttervinkelsatsen.",
+      "pitfall": "Att tro att v är supplementet till x på cevianlinjen (180° − 44° = 136°) eller bara använda en av basvinklarna direkt. v är en inre vinkel i en deltriangel, så vinkelsumman 180° måste användas där.",
+      "framework_id": "XYZ-TRAP-038",
+      "pregrade_tactic": {"handle": "Två-stegsvinkeln", "move": "Räkna hela trianglens vinkelsumma först för att låsa toppvinkeln, sen deltriangelns för den sökta vinkeln."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

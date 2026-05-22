@@ -4038,104 +4038,104 @@
     "technique": "Lös f(x) = c: ersätt f(x) med talet c, omforma till en vanlig linjär ekvation, lös. Triggern: 'för vilket x gäller f(x) = c?' → sätt funktionsuttrycket = c."
   },
   "var-2025-kvant2-XYZ-006": {
-    "_meta": {
-      "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
-    },
-    "framework_id": "XYZ-TRAP-041",
-    "solution_path": "Oregelbundna polygoner saknar enskild formel — dekomponera istället i rektanglar och rätvinkliga trianglar. Räkna ut varje delarea med A = b \\cdot h (rektangel) eller A = \\frac{b \\cdot h}{2} (triangel). Summera del-areorna: totalt 110 cm².",
-    "technique": "Dekomponering av polygon: dela figuren i basformer (rektanglar, trianglar) längs befintliga linjer. Räkna varje delareas formel och addera. Alternativt: omslut i en stor rektangel och subtrahera 'utbuktningar'.",
-    "pitfall": "Botemedlet mot 'dubbelräkning': rita upp dina delningar TYDLIGT så att inga områden överlappar och ingen del räknas två gånger. Kontrollera att alla delareor täcker hela polygonen.",
-    "pregrade_tactic": {
-      "handle": "Dekompositions-receptet",
-      "move": "Dela polygonen i rektanglar och rätvinkliga trianglar längs lättavlästa linjer — räkna varje del med b·h eller b·h/2 och addera."
-    },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Det är lätt att glömma ett litet hörnstycke i dekomponeringen och landa på 100 cm².",
-        "why_wrong": "Steg 8 påminner: kontrollera att summa av del-areor TÄCKER hela polygonen. 100 cm² är 10 cm² för litet — en del har missats. Rätt summa är 110."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 105 om man läser av en sidlängd 1 cm fel och får en delarea 5 cm² mindre.",
-        "why_wrong": "Steg 5 betonar noggrann avläsning av sidlängder. Med rätt avlästa mått blir summan exakt 110, inte 105."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Första instinkten är att dubbelräkna en överlappande del och få 115.",
-        "why_wrong": "Steg 7 påminner: delarna får aldrig överlappa. 115 är 5 för stort — något har räknats två gånger. Rätt summa är 110."
-      }
-    ],
+    "solution_path": "Sexhörningen ABCDEF består av en rektangel ABCF i botten plus en trapets FCDE ovanpå. Rektangeln har AB = 10 och AF = BC = 7, så area = 10·7 = 70 cm². Trapetset har de parallella sidorna FC = 10 (samma som AB) och ED = 6, och höjd 5 (lodrätt streck mellan ED och FC). Area = (10 + 6)/2 · 5 = 8 · 5 = 40 cm². Total = 70 + 40 = 110 cm².",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Sexhörningen ABCDEF är oregelbunden — alla sex sidor är inte lika långa. Vi ska räkna ut dess area utifrån avläsbara sidlängder i figuren.",
+        "text": "Sexhörningen ABCDEF visas i figuren. Markerade mått: AB = 10, AF = 7, BC = 7, ED = 6, höjd 5 mellan ED och FC. Rätvinkliga hörn vid A, B, F, C (uppåt/inåt).",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad är en oregelbunden polygon?",
-        "text": "En polygon vars sidor inte alla är lika långa och vars vinklar inte alla är samma. För dessa finns INGEN enskild areaformel.",
-        "tier": "detail"
+        "title": "Dela upp i grundformer",
+        "text": "Den horisontella sidan FC delar figuren i två: en rektangel ABCF nedanför och en trapets FCDE ovanför.",
+        "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Areaformel rektangel",
-        "text": "Grundregel: rektangelns area = bas · höjd, dvs A = b \\cdot h.",
-        "tier": "detail"
+        "title": "Identifiera rektangeln",
+        "text": "ABCF har AB = 10 (botten), BC = 7 (höger), CF = 10 (övre), FA = 7 (vänster). Räta vinklar vid alla fyra hörn enligt markeringen.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Areaformel rätvinklig triangel",
-        "text": "Grundregel: triangelns area = (bas · höjd)/2, dvs A = \\frac{b \\cdot h}{2}, där höjden är vinkelrät mot basen.",
-        "tier": "detail"
+        "title": "Räkna rektangelns area",
+        "text": "A_rekt = 10 · 7 = 70 cm².",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Läs av sidlängder",
-        "text": "Notera alla sidlängder som anges i figuren. Markera dem på en egen skiss så att inget missas.",
+        "title": "Identifiera trapetset",
+        "text": "FCDE har FC = 10 nedtill, ED = 6 upptill (parallell med FC), och höjd 5 (lodräta strecket från ED ner till FC).",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Dela polygonen",
-        "text": "Dra hjälplinjer parallella med koordinataxlarna så att sexhörningen delas i några rektanglar och eventuellt en eller två rätvinkliga trianglar.",
+        "title": "Använd trapetsformeln",
+        "text": "A_trap = (a + b)/2 · h, där a = 10, b = 6, h = 5.",
         "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Kontrollera dekompositionen",
-        "text": "Delarna får inte överlappa, och de ska tillsammans täcka HELA sexhörningen. Rita upp och kontrollera innan du räknar.",
+        "title": "Räkna trapetsets area",
+        "text": "A_trap = (10 + 6)/2 · 5 = 16/2 · 5 = 8 · 5 = 40 cm².",
         "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Räkna varje del",
-        "text": "För varje rektangel: b · h. För varje rätvinklig triangel: (b · h)/2. Skriv upp varje delarea var för sig.",
+        "title": "Summera totala arean",
+        "text": "A_tot = 70 + 40 = 110 cm².",
         "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Summera",
-        "text": "Lägg ihop alla delareor. För denna sexhörning landar summan på exakt 110 cm² givet figurens sidlängder.",
-        "tier": "essential"
+        "title": "Verifiera dimensionerna",
+        "text": "Sidoutsprången av trapetset är (10 − 6)/2 = 2 cm på varje sida — det stämmer med figurens utseende där E och D ligger inåt jämfört med F och C.",
+        "tier": "support"
       },
       {
         "n": 10,
-        "title": "Verifiera med inhägnad",
-        "text": "Alternativ kontroll: omslut sexhörningen i minsta möjliga rektangel, räkna dess area, och subtrahera de utskärningar som inte är del av sexhörningen. Resultatet ska bli detsamma — 110 cm².",
-        "tier": "detail"
+        "title": "Sanity-check via bounding-rectangle",
+        "text": "Om man drar en omslutande rektangel 10 · 12 = 120 cm² (höjd 7 + 5), drar man bort de två småtrianglarna i hörnen vid E och D: var och en har bas 2 och höjd 5, area = 5. Total: 120 − 2·5 = 110 cm² ✓.",
+        "tier": "support"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Svar C: 110 cm². Insikten i en mening: oregelbundna polygoner saknar formel — DEKOMPONERA i rektanglar och rätvinkliga trianglar, räkna varje del, addera (eller subtrahera vid inhägnads-metoden).",
+        "text": "Svaret är C, 110 cm². Insikten i en mening: Bryt en sammansatt figur i en rektangel och en trapets, räkna varje del, summera.",
         "tier": "essential"
       }
-    ]
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "100 cm² är en \"snäll\" siffra och ligger nära. Eleven kan ha räknat rektangeln 70 + en gissad trapets med area 30 (t.ex. genom att använda fel höjd eller bara ED · 5 = 30).",
+        "why_wrong": "Trapetset har två parallella sidor (10 och 6) — formeln kräver medelvärdet 8, inte 6. (10+6)/2 · 5 = 40, inte 30."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "105 cm² ligger precis emellan 100 och 110 och kan vara resultatet av att räkna 70 + 7·5 = 105 (om eleven använder höjden 7 från rektangeln för trapetset).",
+        "why_wrong": "Höjden i trapetset är 5 (uttryckligen utskrivet på det lodräta strecket), inte 7. 7 är AF/BC, alltså rektangelns sida."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "115 cm² kommer av räknefel där eleven adderar 10·5 + 70 − något fel, eller tar trapetset som rektangel: 6·5 + ändtrianglarna räknat fel.",
+        "why_wrong": "Trapetsens area är exakt (10+6)·5/2 = 40, inte 45. Total blir 110, inte 115."
+      }
+    ],
+    "technique": "Bryt sammansatta figurer i grundformer (rektanglar, trapetser, trianglar). Beräkna varje delyta och summera. För trapets: medelvärdet av parallella sidor gånger höjden.",
+    "pitfall": "Att blanda ihop trapetshöjden (5) med rektangelns sida (7) eller att glömma medelvärdet i trapetsformeln och bara använda en av de parallella sidorna.",
+    "framework_id": "XYZ-TRAP-041",
+    "pregrade_tactic": {
+      "handle": "Sammansatta figuren",
+      "move": "Dra en linje för att dela i rektangel + trapets, räkna var del, summera."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
+    }
   },
   "var-2025-kvant2-XYZ-007": {
     "_meta": {
@@ -13136,303 +13136,303 @@
     }
   },
   "var-2025-kvant1-XYZ-005": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Division med ett bråk är multiplikation med dess invers. Skriv om (6/25)\\div(36/5) som (6/25)\\cdot(5/36) och förkorta — resultatet blir 1/30.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Du har en bråkstreck-konstruktion där täljaren är \\frac{6}{25} och nämnaren är \\frac{36}{5}. Du ska räkna ut värdet och välja rätt alternativ.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Tolka som division",
+        "text": "Det stora bråkstrecket betyder \"dela\". Skriv om uttrycket som \\dfrac{6}{25}\\div\\dfrac{36}{5}.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Regeln: dividera = multiplicera med inversen",
+        "text": "Att dividera med ett bråk är samma sak som att multiplicera med bråkets invers (täljaren och nämnaren byter plats). Alltså: \\dfrac{6}{25}\\div\\dfrac{36}{5} = \\dfrac{6}{25}\\cdot\\dfrac{5}{36}.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Multiplikation av bråk",
+        "text": "Multiplicera täljare med täljare och nämnare med nämnare: \\dfrac{6\\cdot 5}{25\\cdot 36} = \\dfrac{30}{900}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Förkorta innan du multiplicerar",
+        "text": "Smartare: korsförkorta först. 6 och 36 delas båda med 6 (blir 1 och 6), 5 och 25 delas båda med 5 (blir 1 och 5). Då återstår \\dfrac{1}{5}\\cdot\\dfrac{1}{6} = \\dfrac{1}{30}.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "title": "Eller förkorta efter",
+        "text": "Om du hellre räknar fram 30/900 förkortas det med 30: \\dfrac{30}{900}=\\dfrac{1}{30}. Samma svar — välj den väg du tycker är snabbast.",
         "tier": "detail"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "title": "Sanity-check med decimal",
+        "text": "Räkna grovt: \\frac{6}{25}=0{,}24 och \\frac{36}{5}=7{,}2. 0{,}24/7{,}2\\approx 0{,}033 — och 1/30\\approx 0{,}033. Stämmer.",
         "tier": "detail"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Varför C och D inte stämmer",
+        "text": "Alternativen 125/216 och 216/125 dyker upp om man råkar kvadrera eller kuba talen 5 och 6 — felaktiga räkningar som ger 5^{3}=125 och 6^{3}=216. Inget i frågan begär kuber.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Varför B inte stämmer",
+        "text": "5/6 är värdet på \\frac{5}{6} direkt — det är vad du får om du av misstag bara läser nämnaren upp och ner i stället för att utföra divisionen.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Mångdubbla baklänges: \\dfrac{1}{30}\\cdot\\dfrac{36}{5}=\\dfrac{36}{150}=\\dfrac{6}{25}. Det stämmer med ursprungstäljaren — alltså är 1/30 rätt.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är A: 1/30. Insikten i en mening: när nämnaren själv är ett bråk, vänd nämnar-bråket upp och ner och multiplicera — sedan förkortar du innan du multiplicerar.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att se siffrorna 5 och 6 i nämnaren och tro att svaret är \\dfrac{5}{6} utan att utföra själva divisionen.",
+        "why_wrong": "Steg 5 visar att den fullständiga räkningen ger 1/30 — 5/6 är ingen del av räkningen utan en hopfösning av siffror."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att 5^{3}=125 och 6^{3}=216 och tror att uttrycket på något sätt blir en kub.",
+        "why_wrong": "Steg 4 visar att talen 25 och 36 inte är kuber utan andragradstal (5² och 6²); de kubas aldrig under räkningen."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du minns regeln som \"vänd nämnaren\" och sedan multiplicerar fel håll kan du landa på 216/125 — den inverterade versionen av C.",
+        "why_wrong": "Steg 3 säger uttryckligen att man multiplicerar med inversen av nämnaren, inte med inversen av hela uttrycket; resultatet blir 1/30, inte ett tal större än 1."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Division med ett bråk är multiplikation med dess invers. Triggern är ett bråkstreck som har bråk både över och under sig — vänd det undre bråket upp och ner och byt operation. Korsförkorta innan multiplikationen så slipper du jonglera trecifriga produkter.",
+    "pitfall": "Att invertera fel bråk (täljaren i stället för nämnaren) är vanligt. Botemedlet: skriv om explicit som \\frac{6}{25}\\div\\frac{36}{5} först, så är det glasklart vilket bråk som ska vändas.",
+    "framework_id": "XYZ-TRAP-017",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Invertinstinkten",
+      "move": "När bråkstrecket är dubbel-vänster och du ser bråk över bråk, vänd det undre bråket på en gång och multiplicera — korsförkorta innan du multiplicerar talen."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2025-kvant2-XYZ-004": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar C; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Procent betyder hundradelar. 4% av 5/4 är 0{,}04\\cdot 1{,}25 = 0{,}05, eller bråkvägen \\dfrac{4}{100}\\cdot\\dfrac{5}{4}=\\dfrac{5}{100}=0{,}05.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Du ska räkna ut 4 procent av talet 5/4 och välja det decimaltal som passar. Ingen variabel — bara en procenträkning.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ C. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Vad betyder procent?",
+        "text": "Per definition betyder \"p procent\" detsamma som p/100 eller p·0{,}01. Alltså är 4% = 4/100 = 0{,}04.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Översätt frågan till multiplikation",
+        "text": "\"X procent av Y\" är alltid (X/100)·Y. Här: (4/100)·(5/4) eller likvärdigt 0{,}04·(5/4).",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "title": "Förenkla 5/4",
+        "text": "Bråket 5/4 är ett tal större än 1: 5/4 = 1{,}25. Du kan jobba i bråkform eller decimalform — välj det som känns lättast.",
         "tier": "detail"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Bråkväg: korsförkorta",
+        "text": "Räkna \\dfrac{4}{100}\\cdot\\dfrac{5}{4}. Fyrorna i täljare och nämnare tar ut varandra: \\dfrac{1}{100}\\cdot\\dfrac{5}{1} = \\dfrac{5}{100}.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Decimalväg: enkel multiplikation",
+        "text": "Eller räkna 0{,}04\\cdot 1{,}25. Räkna 4\\cdot 125 = 500 och placera kommat: 0{,}04 har 2 decimaler, 1{,}25 har 2 decimaler — totalt 4 decimaler — så svaret blir 0{,}0500 = 0{,}05.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Bråk till decimal",
+        "text": "5/100 = 0{,}05 (eftersom 1/100 = 0{,}01, så 5/100 = 5\\cdot 0{,}01).",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Sanity-check",
+        "text": "4% är litet, ungefär 1/25. En 25-del av 1{,}25 är 0{,}05 — och det är just C. Allt rimmar.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Sortera bort fel-decimaler",
+        "text": "A (0{,}01) är 1% av 1; B (0{,}02) är 4% av 1/2; D (0{,}06) är 4% av 1{,}5 — alla skulle stämma med fel \"av-tal\".",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Vänd på frågan: 0{,}05 är hur många procent av 5/4? Räkna 0{,}05/1{,}25 = 0{,}04 = 4%. Bekräftat.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret C. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är C: 0{,}05. Insikten i en mening: \"p procent av N\" är alltid (p/100)·N — korsförkorta i bråkform så slipper du decimalförflytta i huvudet.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att skumma frågan, läsa \"4 % av\" och dela 4/4 = 1 och därefter multiplicera med 0{,}01 — ett dubbelfel som råkar landa på 0{,}01.",
+        "why_wrong": "Steg 3 visar att procent gäller hela talet 5/4, inte bara nämnaren — bråket dyker inte ut, det multipliceras."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid 4 % och tänker \"ungefär en tjugofemdel av 1\" utan att lägga märke till att talet är 5/4 och inte 1/2.",
+        "why_wrong": "Steg 6 räknar 0{,}04\\cdot 1{,}25 = 0{,}05; 0{,}02 skulle bara stämma om \"av-talet\" var 1/2."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du minns regeln som \"4 % av 1{,}5\" snarare än 1{,}25 — kanske av en hopblandning med 3/2 — får du 0{,}06.",
+        "why_wrong": "Steg 4 fastställer att 5/4 = 1{,}25, inte 1{,}5; värdet 0{,}06 hör till 4% av 1{,}5."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Procent betyder hundradelar. När frågan har formen \"p % av N\", skriv det som (p/100)·N och välj sedan bråk- eller decimalvägen efter vilken som ger snyggast räkning. Här är bråkvägen snabbast eftersom 4 och 4/1 nollar ut varandra.",
+    "pitfall": "Att glömma att 5/4 är ett tal större än 1 (inte ett bråk som ska \"bli till en procent\") är den vanligaste felklicken. Botemedlet: räkna alltid om bråket till decimalform om du är osäker — då ser du värdet 1{,}25 svart på vitt.",
+    "framework_id": "XYZ-TRAP-020",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Hundradelsregeln",
+      "move": "När du läser \"p % av N\", skriv om procenten till p/100 och multiplicera direkt — korsförkorta om både p och N har gemensamma faktorer."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2025-kvant2-XYZ-012": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Räkna inifrån och ut: \\sqrt{9}=3 och \\sqrt{36}=6, så uttrycket blir \\sqrt{3\\cdot 6}=\\sqrt{18}. Bryt ut största kvadrat ur 18: 18 = 9·2 ger \\sqrt{18}=3\\sqrt{2}.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "Du har en kvadratrot vars innehåll är produkten av två andra kvadratrötter. Räkna ut värdet och välj rätt alternativ.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Räkna inifrån och ut",
+        "text": "Sammansatta uttryck förenklas alltid inifrån. Börja med \\sqrt{9} och \\sqrt{36} var för sig.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Definition: kvadratrot",
+        "text": "\\sqrt{a} är det icke-negativa tal vars kvadrat är a. Alltså \\sqrt{9}=3 (eftersom 3^{2}=9) och \\sqrt{36}=6 (eftersom 6^{2}=36).",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Sätt in värdena",
+        "text": "Uttrycket blir nu \\sqrt{3\\cdot 6} = \\sqrt{18}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Är 18 en kvadrat?",
+        "text": "Nej: 4^{2}=16 och 5^{2}=25, så 18 ligger mellan dem och har ingen heltalsrot. Du behöver bryta ut en kvadrat ur 18.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Faktorisera 18",
+        "text": "Sök största kvadrattal som delar 18. Pröva: 18 = 9·2, och 9 är en kvadrat (3^{2}). Det räcker — 9·2 är den bästa uppdelningen.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Rotregeln \\sqrt{ab}=\\sqrt{a}\\sqrt{b}",
+        "text": "Roten av en produkt är produkten av rötterna (gäller när a,b\\geq 0). Alltså \\sqrt{18}=\\sqrt{9\\cdot 2}=\\sqrt{9}\\cdot\\sqrt{2}=3\\sqrt{2}.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Numerisk kontroll",
+        "text": "\\sqrt{2}\\approx 1{,}414, så 3\\sqrt{2}\\approx 4{,}243. Pröva mot \\sqrt{18}: 4{,}24^{2}\\approx 17{,}98 — bra, stämmer.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Varför inte 3\\sqrt{6}?",
+        "text": "3\\sqrt{6} skulle kvadrerat ge 9·6=54, inte 18. Det är roten ur 54, inte ur 18.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Kvadrera B baklänges: (3\\sqrt{2})^{2}=9\\cdot 2=18. Och \\sqrt{9}\\cdot\\sqrt{36}=3\\cdot 6=18 — samma värde innan ytterroten. Allt stämmer.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är B: 3\\sqrt{2}. Insikten i en mening: när du landar på \\sqrt{N} där N inte är en kvadrat, leta efter största kvadrat som delar N och dra ut den ur roten.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att stanna vid \\sqrt{9}=3 och tro att svaret \"börjar och slutar\" där, särskilt om man förbiser ytterroten.",
+        "why_wrong": "Steg 4 visar att produkten innanför ytterroten är 18, inte 9 — och \\sqrt{18}\\neq 3."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid \\sqrt{36}=6 och tar det som slutsvar utan att utföra ytterroten.",
+        "why_wrong": "Steg 4 visar att man måste räkna roten ur 18 efter att de två inre rötterna har förenklats; det blir inte 6."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du minns regeln som \"hoppa över de inre rötterna och multiplicera bara talen\", får du \\sqrt{9\\cdot 36}=\\sqrt{324}=18 — och sedan tippar du att svaret är 3\\sqrt{6} genom att kvadrera fel.",
+        "why_wrong": "Steg 3 säger att de inre rötterna ska räknas ut först, så produkten är 3·6=18 och inte 9·36 — och 3\\sqrt{6} kvadrerat ger 54, inte 18."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Roten ur en kvadratrotsprodukt löses alltid inifrån. Räkna varje inre rot för sig, multiplicera, och bryt sedan ut största kvadrat ur det som hamnar under ytterroten. Inget snabbtrick — bara ordning.",
+    "pitfall": "Att blanda ihop \\sqrt{ab} med \\sqrt{a}+\\sqrt{b} är den klassiska rotfällan, men här är största risken att man hoppar över ytterroten. Botemedlet: läs uttrycket högt — \"roten ur (... gånger ...)\" — så ser du var rötterna sitter.",
+    "framework_id": "XYZ-TRAP-032",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Inifrån-och-ut-receptet",
+      "move": "När en rot innehåller en annan rot, räkna alltid den innersta först — sedan får du ett vanligt tal under ytterroten som du kan faktorisera och förenkla."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   }
 }

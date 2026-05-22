@@ -12823,103 +12823,109 @@
     }
   },
   "host-2020-kvant1-XYZ-002": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Räkna ut produktionstakten per maskin: 150/6 = 25 enheter per maskin och minut. Multiplicera med antalet maskiner (10) och antalet minuter (4): 25 · 10 · 4 = 1000.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "Vi har 6 maskiner som tillsammans gör 150 enheter på 1 minut. Frågan: hur mycket gör 10 sådana maskiner på 4 minuter? Antalet maskiner och tiden ändras.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Definiera produktionstakt",
+        "text": "Produktionstakt är enheter per maskin per minut. Med konstant takt gäller: totala enheter = takt · maskiner · minuter.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Räkna ut takten per maskin",
+        "text": "6 maskiner gör 150 enheter per minut tillsammans. Då gör en enskild maskin 150/6 = 25 enheter per minut.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "title": "Sanity-check delningen",
+        "text": "Kontroll: 25 · 6 = 150 ✓. Takten 25 enheter/maskin/minut stämmer.",
         "tier": "detail"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Skala upp till 10 maskiner",
+        "text": "Om en maskin gör 25 enheter per minut, gör 10 maskiner 25 · 10 = 250 enheter per minut.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Skala upp till 4 minuter",
+        "text": "250 enheter per minut, gånger 4 minuter, ger 250 · 4 = 1000 enheter totalt.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "title": "Alternativ formel",
+        "text": "Direkt: totala enheter = (150 enheter/min) · (10 maskiner / 6 maskiner) · 4 minuter = 150 · (10/6) · 4 = 150 · 40/6 = 6000/6 = 1000.",
         "tier": "detail"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Definiera linjär skalning",
+        "text": "Produktionsproblem är linjära i både antal maskiner och tid: dubbla maskiner → dubbel produktion, dubbel tid → dubbel produktion. Det är därför enkel proportion fungerar.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Storleksordningskontroll",
+        "text": "6 maskiner ger 150 enheter/min. På 4 min ger 6 maskiner 600 enheter. 10 maskiner gör ~67 % mer än 6, vilket ger 600 · (10/6) = 1000. ✓",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "title": "Notera enheterna",
+        "text": "Faktorerna är enheter/maskin/minut · maskiner · minuter — \"maskiner\" och \"minuter\" stryker varandra, kvar blir enheter. Dimensionsanalys bekräftar att 1000 har rätt sort.",
         "tier": "detail"
       },
       {
         "n": 11,
+        "title": "Verifiera",
+        "text": "Pröva varje delsteg igen: 150/6 = 25 ✓; 25·10 = 250 ✓; 250·4 = 1000 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är B: 1000. Insikten i en mening: vid arbetstaktsuppgifter — räkna alltid ner till takten per enhet (här per maskin och minut), skala sedan upp linjärt.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är frestande att räkna 150 enheter dividerat med något — t.ex. 150 · 4 / något — och hamna på ett tresiffrigt tal.",
+        "why_wrong": "Steg 5–6 visar att rätt skalning ger 1000 enheter, inte 360. Sifferkombinationen 360 framgår av t.ex. 6 maskiner · 60 enheter eller liknande felräkning."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid 150 · 40 = 6000 och tror att det är svaret (dvs. multiplicerar tar dem direkt utan att korrigera för antalet maskiner).",
+        "why_wrong": "Steg 7 visar att man måste justera för förhållandet 10/6 maskiner. 6000 är resultatet om man missar att 10 är fler maskiner än 6, och inte delar med 6."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten kan vara att multiplicera alla tre tal: 150 · 10 · 4 · 6 = 36000 — \"alla siffror i en\".",
+        "why_wrong": "Steg 2 visar att formeln är takt · maskiner · minuter, inte enheter/min · maskiner · minuter · maskiner. 36000 dubbelräknar antalet maskiner."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "För arbetstakt-problem: dela ner till enhetstakt (per maskin per minut, per arbetare per timme, etc.), skala sedan linjärt. Trigger: \"X enheter på Y tid med Z maskiner\" plus frågor om annan tid och/eller annat antal maskiner.",
+    "pitfall": "Vanligt fel är att skala upp utan att dela ner först, eller att glömma att också skala med tiden. Botemedlet: skriv alltid takten per enhet som ett delsteg innan multiplikationen.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Enhetstakten",
+      "move": "Vid arbets- eller produktionsproblem, räkna alltid först ut takten per maskin/arbetare/minut innan du skalar upp till efterfrågat scenario."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2020-kvant1-XYZ-009": {
@@ -13023,103 +13029,109 @@
     }
   },
   "host-2020-kvant2-XYZ-002": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Grafen visar en nedåtvänd parabel som korsar x-axeln strax efter x = 1 och strax efter x = 5, med maximum ungefär vid x = 3 där y ≈ 4. f(x) är positiv mellan nollställena, alltså 1 < x < 5.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "text": "Frågan är: för vilka x ligger funktionsvärdet f(x) ovanför x-axeln? Det är där grafen står OVANFÖR x-axeln, inte under.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Definiera \"positiv funktion\"",
+        "text": "f(x) > 0 betyder y-koordinaten är större än noll — punkten på grafen ligger ovanför x-axeln. Negativ f(x) är under, noll f(x) är på axeln.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Identifiera grafens form",
+        "text": "Kurvan är en nedåtvänd parabel — den öppnar nedåt med ett maxvärde i mitten. Den korsar x-axeln vid två punkter (nollställen) och är positiv mellan dem.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Avläs vänster nollställe",
+        "text": "Parabeln korsar x-axeln första gången vid x = 1. Strax efter 1 är f(x) precis vid noll på väg uppåt.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Avläs höger nollställe",
+        "text": "Parabeln korsar x-axeln andra gången vid x = 5. Strax före 5 är f(x) positivt; strax efter blir det negativt.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "title": "Bekräfta maxläget",
+        "text": "Maximum ligger mitt emellan nollställena, alltså vid x = (1+5)/2 = 3. Vid x = 3 är f(x) ≈ 4 (toppen av kurvan), vilket stämmer med skalan på y-axeln.",
         "tier": "detail"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Sätt ihop intervallet",
+        "text": "f(x) > 0 mellan nollställena: 1 < x < 5. Ingen del av detta intervall ligger på x-axeln eller under.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Diskvalificera negativa intervall",
+        "text": "Utanför 1 < x < 5 (alltså x ≤ 1 eller x ≥ 5) är parabeln på eller under x-axeln. Där är f(x) inte positiv.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Skarpa olikheter eller mjuka?",
+        "text": "Vid x = 1 och x = 5 är f(x) = 0, inte positiv. Därför är gränserna STRIKT olikhet (< ), inte ≤ — endpunkterna är inte med.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "title": "Varför inte de andra intervallen?",
+        "text": "Alt A (x > 0) inkluderar t.ex. x = 0.5 där parabeln är NEGATIV. Alt B (0 < x < 4) börjar för tidigt och slutar för tidigt. Alt C (x > 1) glömmer att det tar slut vid x = 5.",
         "tier": "detail"
       },
       {
         "n": 11,
+        "title": "Verifiera",
+        "text": "Spotcheck: x = 3 → f(3) ≈ 4 > 0 ✓. x = 6 → f(6) under x-axeln, alltså < 0 ✓. x = 0 → under axeln, < 0 ✓. Intervallet 1 < x < 5 fångar exakt det positiva.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är D: 1 < x < 5. Insikten i en mening: för \"var är f(x) positiv\" — leta efter nollställena på x-axeln och välj intervallet DÄREMELLAN där kurvan står över axeln.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är frestande att gissa att en \"positiv graf\" betyder x > 0, dvs. höger om y-axeln.",
+        "why_wrong": "Steg 4 visar att parabeln är negativ för x mellan 0 och 1. Så \"x > 0\" inkluderar punkter där f(x) faktiskt är NEGATIV — fel."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid de etiketterade markeringarna på x-axeln (2 och 4) och tror att kurvan korsar där.",
+        "why_wrong": "Steg 4–5 visar att nollställena är vid x = 1 och x = 5, INTE vid 2 och 4. Talen 2 och 4 är bara skalmarkeringar, inte nollställen."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att se vänster nollställe (x = 1) och anta att kurvan stannar positiv för allt x större än 1.",
+        "why_wrong": "Steg 5 visar att det finns ett andra nollställe vid x = 5 — efter det är kurvan negativ igen. Intervallet är begränsat i båda ändar."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "För att hitta var en graf är positiv: läs av nollställena (där grafen korsar x-axeln) och välj det/de intervall där kurvan står OVANFÖR axeln. Trigger: ord som \"positiv\", \"negativ\", \"över/under x-axeln\".",
+    "pitfall": "Vanligaste fallgropen är att förväxla skaletiketter med faktiska nollställen. Botemedlet: spåra alltid hela kurvan med fingret och markera exakt var den korsar axeln — inte bara där en skaltext råkar stå.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Nollställeshämtaren",
+      "move": "När frågan är \"var är f positiv\", peka först på nollställena, sedan välj det intervall där kurvan står ovanför x-axeln."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2020-kvant2-XYZ-009": {
