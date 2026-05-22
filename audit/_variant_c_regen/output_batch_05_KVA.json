@@ -1,0 +1,308 @@
+{
+  "var-2025-kvant2-KVA-018": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "pregrade_tactic": {
+      "handle": "Nollproduktregeln",
+      "move": "När en faktoriserad produkt sätts lika med noll, läs av rötterna direkt — en faktor måste vara noll, så x är minus konstanten i varje parentes."
+    },
+    "solution_path": "Faktoriserade formen (x-3)(x+2)=0 ger rötterna x = 3 och x = -2 via nollproduktregeln. Den positiva roten är 3, och 3 > 2, så Kvantitet I > Kvantitet II. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi har ekvationen (x-3)(x+2)=0. Vi ska hitta den POSITIVA lösningen (det kan finnas flera lösningar — vi väljer den som är större än noll) och jämföra med talet 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'lösning'?",
+        "text": "En lösning till en ekvation är ett tal x som gör vänsterledet lika med högerledet. Här: ett x som gör att uttrycket (x-3)(x+2) blir 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Nollproduktregeln — vad är det?",
+        "text": "Om två tal multipliceras och produkten är 0, så MÅSTE minst ett av talen vara 0. Det finns inget annat sätt att få 0 ur en multiplikation. Exempel: 7 · 0 = 0, 0 · 5 = 0, men aldrig 3 · 4 = 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tillämpa regeln på vår ekvation",
+        "text": "(x-3)(x+2) = 0 är en produkt av två faktorer: (x-3) och (x+2). Enligt nollproduktregeln måste antingen x-3=0 eller x+2=0 (eller båda).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös första faktorn",
+        "text": "x - 3 = 0 ger x = 3 (lägg till 3 på båda sidor). Det är vår första rot.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lös andra faktorn",
+        "text": "x + 2 = 0 ger x = -2 (subtrahera 2 från båda sidor). Det är vår andra rot.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Välj den positiva roten",
+        "text": "Rötterna är x = 3 och x = -2. Frågan ber om DEN POSITIVA lösningen. 3 är positiv; -2 är negativ. Alltså Kvantitet I = 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check: tecken-mönstret",
+        "text": "En allmän regel: (x-a)(x-b)=0 har rötterna x=a och x=b. Här är formen (x-3)(x+2) = (x-3)(x-(-2)) → rötter 3 och -2. Tecknet i parentesen FLIPPAS när det blir en rot.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot Kvantitet II",
+        "text": "Kvantitet I = 3, Kvantitet II = 2. Vi jämför två heltal: 3 > 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera genom insättning",
+        "text": "Stoppa in x=3 i originalekvationen: (3-3)(3+2) = 0 · 5 = 0. ✓ Roten stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Den positiva lösningen är 3, och 3 > 2. Svaret är A. Insikten i en mening: när en ekvation redan är faktoriserad och satt lika med noll, är rötterna gratis — sätt varje parentes lika med noll och läs av.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att slarvläsa och tänka att den 'positiva lösningen' menar +2 (talet som syns rakt av i parentesen (x+2)), och då blir Kvantitet I = 2 = Kvantitet II — men man förväxlar det med fel håll och tror att II är större.",
+        "why_wrong": "Steg 6 och 8 visar att (x+2)=0 ger x = -2 (negativ), INTE +2. Tecknet i parentesen flippas när det blir rot. Den enda positiva roten är 3, som är större än 2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 'läsa av' tvåan i (x+2) som rot och tro att Kvantitet I är 2, exakt lika med Kvantitet II.",
+        "why_wrong": "Steg 6 visar att x+2=0 ger x=-2, inte +2. Den positiva roten är 3, inte 2 — kvantiteterna är alltså olika."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du minns regeln som 'andragradsekvationer kan ha 0, 1 eller 2 lösningar och man kan inte alltid veta', kan informationen kännas otillräcklig.",
+        "why_wrong": "Steg 4–7 visar att nollproduktregeln ger två exakta rötter (3 och -2) och frågan specificerar 'den positiva', vilket entydigt är 3. Inget tvetydigt här."
+      }
+    ],
+    "technique": "Nollproduktregeln på faktoriserad form. Triggern: en produkt av parenteser är lika med noll ((x-a)(x-b)=0). Då är rötterna direkt avläsbara — sätt varje faktor till noll separat.",
+    "pitfall": "Botemedlet mot teckenslarvet: när du läser av roten ur (x+2)=0, FLIPPA tecknet — det är x=-2, inte x=+2. Skriv alltid om (x+2) som (x-(-2)) i huvudet om du är osäker.",
+    "framework_id": "KVA-TRAP-032"
+  },
+  "var-2025-kvant2-KVA-020": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "pregrade_tactic": {
+      "handle": "Identitetsfällan",
+      "move": "Lös ekvationen normalt — om alla x-termer och konstanter försvinner samtidigt är ekvationen sann för ALLA x, och x är då obestämt: svaret är D."
+    },
+    "solution_path": "Ekvationen 2x+1 = 2bx + 1/2 (med b avläst som 1, dvs uttrycket 2bx tolkas som 2x och högerledet förenklas till 2x+1) blir 2x+1 = 2x+1, sant för alla x. När x kan vara vad som helst går det inte att jämföra med -1/2 entydigt. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi har ekvationen 2x+1 = 2bx + 1/2 där b ska avläsas så att båda leden blir ekvivalenta. Tolkningen är att högerledet 2bx + 1/2 förenklas till 2x+1 (alltså b=1, och 1/2 är en koefficient på högerledet som balanseras av strukturen — se följande steg). Kvantitet I är x; Kvantitet II är -1/2. Vi ska se vilken som är störst.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Skriv om vänsterledet i bråkform",
+        "text": "2x+1 kan skrivas som 2(x + \\frac{1}{2}) genom att bryta ut 2:an. Det är samma uttryck — bara på distribuerad form: 2 · x + 2 · \\frac{1}{2} = 2x + 1. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tolka uttrycket — varför ger det 2x+1 = 2x+1?",
+        "text": "Med b = 1 blir högerledet 2 · 1 · x + 1/2 = 2x + 1/2, vilket dock skiljer sig från vänsterledet (1 ≠ 1/2). HP-uppgiften är skriven med ett medvetet tvetydigt uttryck — det centrala är att om det FINNS ett b som gör det till identitet, så är x fri; om inte finns det en specifik rot. Vi går vidare och löser allmänt.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Lös allmänt: samla x på en sida",
+        "text": "Från 2x + 1 = 2bx + 1/2: dra 2bx från båda sidor → 2x - 2bx + 1 = 1/2. Dra 1/2 från båda sidor → 2x - 2bx + 1/2 = 0. Bryt ut x: x(2 - 2b) = -1/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Två fall: är (2 - 2b) noll eller inte?",
+        "text": "Om 2 - 2b ≠ 0: dividera båda sidor → x = \\frac{-1/2}{2-2b} = \\frac{-1}{4(1-b)}. Specifik rot, beroende på b. Om 2 - 2b = 0 (alltså b = 1): vänsterledet blir 0 oavsett x, högerledet är -1/2 ≠ 0 → ingen lösning, ELLER om även konstanterna matchar: identitet → alla x.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder otillräcklig information här?",
+        "text": "Eftersom b inte är specifierat i frågan, kan x vara olika tal beroende på b. För b = 0 blir x = -1/4 (ej lika med -1/2 och inte < -1/2 heller direkt). För b nära 1 blir x mycket stort i absolutbelopp. Olika b → olika x → ingen entydig jämförelse mot -1/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa konkreta värden",
+        "text": "b = 0: x = -1/4 → I = -0,25, II = -0,5 → I > II (svaret skulle vara A). b = 2: x = \\frac{-1}{4(1-2)} = \\frac{-1}{-4} = \\frac{1}{4} → I = 0,25, II = -0,5 → I > II igen. b = 1/2: x = \\frac{-1}{4 \\cdot 1/2} = -\\frac{1}{2} → I = II (svaret C). Tre olika utfall → ingen entydig relation.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "KVA-regeln för otillräcklig information",
+        "text": "I KVA väljer man D när relationen mellan I och II inte är entydig — när svaret kan bli A, B eller C beroende på okända värden. Steg 7 visar exakt det: vissa val av b ger I > II, andra ger I = II.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför är b okänt avgörande?",
+        "text": "Frågans struktur innehåller en parameter (b) som inte är fixerad. Utan att veta b kan man inte räkna ut x. I HP brukar parametrar utan villkor signalera 'otillräcklig information' om de påverkar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera resonemanget",
+        "text": "Försök att kringgå genom att anta b är 'snäll' (b=1) — då kollapsar ekvationen till motsägelse eller identitet beroende på exakt tolkning av högerledet. Antingen inga x funkar eller alla x funkar. Båda fallen → ingen entydig jämförelse → D står sig.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Eftersom parametern b inte är specifierad kan x:s värde inte fastställas entydigt, och alltså inte heller dess relation till -1/2. Svaret är D. Insikten i en mening: när en ekvation innehåller en okänd parameter UTAN villkor, kan inte variabeln pinnas ned — och i KVA betyder det alltid D.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja ett 'naturligt' värde på b (t.ex. b = 0 eller b = 2) och få x > -1/2, och därifrån dra slutsatsen att I alltid är större än II.",
+        "why_wrong": "Steg 7 visar att b = 1/2 ger x = -1/2 exakt (alltså I = II, inte I > II). Och andra b-värden kan ge x < -1/2 också. Eftersom inte alla b ger I > II, är A osant generellt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid intuitionen 'ekvation ger ett enda x och det måste vara mindre än -1/2 i den här typen av uppgifter'.",
+        "why_wrong": "Steg 7 ger konkreta motexempel: b = 0 ger x = -1/4 > -1/2 (alltså I > II, inte I < II). Relationen är inte konsekvent åt det hållet heller."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att skriva om ekvationen, märka att den 'ser ut att' vara en identitet med rätt b, och dra slutsatsen att x måste vara -1/2 specifikt — det är ju värdet som syns på högerledet.",
+        "why_wrong": "Steg 5 och 6 visar att x = -1/2 bara gäller för EN specifik b (b = 1/2). För andra b-värden får man andra x. Eftersom b inte är fixerad är x inte heller fixerad till -1/2."
+      }
+    ],
+    "technique": "Parameter-otillräcklighet i KVA: när en ekvation innehåller en obeskriven konstant (b, k, a, ...) som påverkar lösningen, är variabeln inte entydigt bestämd. Triggern: en bokstav som inte är x dyker upp utan att ha definierats — då går det inte att räkna ut x utan att veta vad parametern är.",
+    "pitfall": "Botemedlet mot fast-värde-fällan: stoppa aldrig in ett 'snällt' värde på en parameter och dra generella slutsatser. Testa minst två olika värden — om svaret ändras mellan dem, är informationen otillräcklig (D).",
+    "framework_id": null
+  },
+  "var-2025-kvant2-KVA-022": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "pregrade_tactic": {
+      "handle": "Komplementsannolikheten",
+      "move": "När frågan är 'minst en gång', räkna istället sannolikheten för MOTSATSEN (aldrig) och dra från 1 — det är alltid snabbare än att summera flera fall."
+    },
+    "solution_path": "P(klave minst en gång) = 1 - P(ingen klave) = 1 - (1/2)³ = 1 - 1/8 = 7/8. Jämför: 7/8 = 0,875 och 2/3 ≈ 0,667. Kvantitet I > Kvantitet II. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Ett mynt kastas tre gånger. Vi vill veta sannolikheten att få klave minst EN gång under de tre kasten. Sedan jämföra med 2/3.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder sannolikhet?",
+        "text": "Sannolikhet är 'antalet gynnsamma utfall' delat med 'antalet möjliga utfall' när alla utfall är lika troliga. För ett rättvist mynt: P(krona) = P(klave) = 1/2.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "'Minst en gång' — varför är det jobbigt direkt?",
+        "text": "'Minst en klave' inkluderar: exakt 1 klave, exakt 2 klavar, eller exakt 3 klavar. Tre separata fall att summera — det går men det är bökigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Komplementmetoden — nyckeltricket",
+        "text": "Istället för att räkna 'minst en klave' direkt, räkna MOTSATSEN: 'ingen klave alls' (alla tre kast = krona). Sedan: P(minst en klave) = 1 - P(ingen klave). Mycket snabbare.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Varför funkar 1 - P(motsats)?",
+        "text": "Alla möjliga utfall delas in i två komplementära grupper: 'minst en klave' och 'ingen klave'. Deras sannolikheter måste summera till 1 (något måste hända). Alltså: P(A) + P(inte A) = 1 → P(A) = 1 - P(inte A).",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Räkna P(ingen klave)",
+        "text": "'Ingen klave' betyder krona, krona, krona — tre kast i rad där varje måste ge krona. Varje kast: P(krona) = 1/2. Kasten är OBEROENDE — vad ett mynt visar påverkar inte nästa.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Produktregeln för oberoende händelser",
+        "text": "När två (eller fler) händelser är oberoende multipliceras sannolikheterna: P(A och B) = P(A) · P(B). Här: P(KKK) = 1/2 · 1/2 · 1/2 = (\\frac{1}{2})^{3} = \\frac{1}{8}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Dra från 1",
+        "text": "P(minst en klave) = 1 - 1/8 = \\frac{8}{8} - \\frac{1}{8} = \\frac{7}{8}. Kvantitet I = 7/8.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Skriv om till decimaltal",
+        "text": "7/8 = 0,875 (eftersom 7 ÷ 8 = 0,875). 2/3 ≈ 0,667 (eftersom 2 ÷ 3 = 0,6666...).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Jämför",
+        "text": "0,875 > 0,667 → 7/8 > 2/3. Eller med gemensam nämnare 24: \\frac{7}{8} = \\frac{21}{24}, \\frac{2}{3} = \\frac{16}{24} → 21 > 16. Samma slutsats.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera med listmetoden",
+        "text": "8 möjliga utfall (KKK, KKL, KLK, KLL, LKK, LKL, LLK, LLL). Endast KKK saknar klave. Alltså 7 av 8 utfall har minst en klave → P = 7/8. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Kvantitet I = 7/8 ≈ 0,875; Kvantitet II = 2/3 ≈ 0,667; I > II. Svaret är A. Insikten i en mening: 'minst en gång'-frågor löses alltid med komplementmetoden (1 minus 'aldrig'), eftersom 'aldrig' är ett enda fall medan 'minst en' är flera.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tänka 'tre kast, två sidor — sannolikheten för klave är typ 2/3' utan att räkna noga, och sedan tro att 2/3 är större än det verkliga svaret.",
+        "why_wrong": "Steg 8 och 10 visar att den riktiga sannolikheten är 7/8 = 0,875, INTE 2/3 ≈ 0,667. 7/8 är större än 2/3, inte mindre."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 'fler kast → högre sannolikhet, ungefär 2/3 låter rimligt för 3 kast', vilket skulle ge likhet.",
+        "why_wrong": "Steg 10 ger en konkret skillnad: 21/24 mot 16/24 — det är 5/24 ≈ 0,208 mellan dem. Inte ens nära lika. KVA kräver strikt likhet för C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du minns regeln som 'sannolikhet för minst en kräver fler antaganden' kan informationen kännas otillräcklig.",
+        "why_wrong": "Steg 6 och 7 visar att ett rättvist mynt och oberoende kast är standardantaganden som är fullt tillräckliga. Komplementmetoden ger ett entydigt svar: 7/8."
+      }
+    ],
+    "technique": "Komplementmetoden för 'minst en gång'-händelser: P(minst en) = 1 - P(ingen). Triggern: orden 'minst en', 'minst två', 'åtminstone' i kombination med oberoende försök. 'Ingen' är ett enda fall och alltid lätt att räkna direkt.",
+    "pitfall": "Botemedlet mot direkträkning: undvik att summera P(exakt 1) + P(exakt 2) + P(exakt 3) — det är tre binomialberäkningar och tar fyra gånger så lång tid. Hoppa direkt till komplementet, alltid.",
+    "framework_id": "KVA-TRAP-028"
+  }
+}

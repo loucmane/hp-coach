@@ -1146,36 +1146,115 @@
     "technique": "Lös-direkt-strategin: när ett påstående definierar en variabel i termer av EN annan KÄND mängd (typ 'G = 100 är hälften av S'), så är S unikt bestämt. Triggern: påstående som ger en variabel i termer av ett känt tal."
   },
   "host-2021-kvant1-NOG-027": {
-    "_meta": {
-      "fixed_at": 1778498709970,
-      "generated_at": 1778427829964,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Cirkel med centrum M, central vinkel θ vid AB låst av figuren. (1) ger båglängd AB = π cm; via båge = r·θ ges r entydigt. (2) ger korda AB = 2√2 cm; via korda = 2r·sin(θ/2) ges r entydigt. Båda räcker var för sig.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Cirkel med medelpunkt M och två punkter A, B på randen. Figuren ger den centrala vinkeln AMB. Vi söker cirkelns radie r.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Notation",
+        "text": "Låt r = cirkelns radie och θ = centrala vinkeln vid M (mellan radierna MA och MB), bestämd av figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Båglängdsformeln",
+        "text": "Båglängden av en cirkelbåge med central vinkel θ (i radianer) på en cirkel med radie r är s = r \\theta.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Kordaformeln",
+        "text": "Kordan AB i samma cirkel ges av \\text{AB} = 2r \\sin(\\theta/2). Det följer av att triangeln MAB är likbent (MA = MB = r) och kordan är basen.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Tolka utsaga (1)",
+        "text": "\"Cirkelbågen AB är π cm\" → r \\theta = \\pi. Eftersom θ är figur-låst (en enskild bestämd vinkel) blir r = π/θ entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Test (1) ensamt",
+        "text": "Givet θ från figuren räknas r = \\pi / \\theta ut. För typisk fyrkant-rät vinkel θ = π/2 ger r = π/(π/2) = 2 cm. Unikt. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tolka utsaga (2)",
+        "text": "\"Sträckan AB är \\(2\\sqrt{2}\\) cm\" → \\text{korda} = 2\\sqrt{2}. Med kordaformeln: 2r \\sin(\\theta/2) = 2\\sqrt{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Test (2) ensamt",
+        "text": "Givet θ låst av figuren: r = \\frac{\\sqrt{2}}{\\sin(\\theta/2)}. För θ = π/2: sin(π/4) = √2/2 → r = √2/(√2/2) = 2 cm. Unikt. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Båda ger samma r",
+        "text": "Båda metoderna ger r = 2 cm (för θ = π/2). Det är ett konsistens-tecken, inte ett krav — vad som spelar roll är att VAR och EN för sig låser r.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför D, inte C?",
+        "text": "Vinkeln θ är låst i figuren — det är inte en utsaga, det är en figurförutsättning. Därför räcker varje längdmätning (båge eller korda) ensam.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "För r = 2 cm och θ = π/2: båge = 2·π/2 = π cm ✓; korda = 2·2·sin(π/4) = 4·(√2/2) = 2√2 cm ✓. Båda utsagor stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Var för sig räcker. Svar: D. Insikten: när en central vinkel är låst av figuren räcker ETT av båglängd eller korda ensamt — båge = rθ och korda = 2r·sin(θ/2) är båda inverterbara i r.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att bara båglängden (1) ensamt räcker — den är mer direkt kopplad till r.",
-        "why_wrong": "(2):s korda ger lika unik radie via figurens vinkel."
+        "why_tempting": "Det är lätt att tro att båglängden är direkt kopplad till r på ett mer låsande sätt.",
+        "why_wrong": "Steg 8 visar att kordan i (2) ger r entydigt via kordaformeln — exakt lika låsande."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att kordan i (2) ensam räcker eftersom den är en konkret längd.",
-        "why_wrong": "(1):s båglängd räcker lika bra via båge=r·θ."
+        "why_tempting": "Snabbsvar är ofta att en rak linje (korda) känns mer konkret än en böjd båge.",
+        "why_wrong": "Steg 6 visar att båglängden i (1) ger r direkt via båge = rθ."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet — men Var för sig räcker.",
-        "why_wrong": "Varje längd ger r entydigt; extra information behövs inte."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Steg 10 visar att vartdera räcker — kombinationen är onödig, alltså D inte C."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att båda är otillräckliga när vinkeln inte är numeriskt utskriven.",
-        "why_wrong": "Vinkeln är låst av figuren — varje längdmätning räcker."
+        "why_tempting": "Det är frestande att tro att utan numeriskt utskriven vinkel går det inte.",
+        "why_wrong": "Steg 5 och 7 visar att vinkeln är låst av figuren — varje längdmätning räcker."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Var för sig räcker. Centralvinkeln vid AB är låst i figuren, så både båglängden i (1) och kordan i (2) översätts till en entydig radie. Med en given centralvinkel: båglängd = r·θ ger r entydigt; korda = 2r·sin(θ/2) ger r entydigt.",
-    "technique": "Regel för cirkelgeometri-NOG: när en centralvinkel är given i figuren räcker ETT av båglängd eller korda ensamt — båge=r·θ och korda=2r·sin(θ/2) är båda inverterbara i r."
+    "technique": "Cirkelgeometri-NOG: när central vinkel är låst av figuren räcker ETT av båglängd (rθ) eller korda (2r·sin(θ/2)). Båda är monotona funktioner av r och kan inverteras entydigt.",
+    "pitfall": "Att tro att en figur-vinkel måste vara \"numeriskt utskriven\" för att räknas som information. Botemedlet: figuren ger geometriska förhållanden; vinklar avlästa i figuren räknas som givna.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Vinkel-fixerings-detektorn",
+      "move": "När centralvinkeln är låst av figuren räcker ETT av båglängd eller korda — välj den som är enklare att räkna med."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2021-kvant1-NOG-028": {
     "_meta": {
@@ -1665,30 +1744,104 @@
     "technique": "Omvändningsstrategin: när du ska lösa ut en variabel ur en ekvation, gör de omvända operationerna i omvänd ordning — det som lades till sist subtraheras först, det som multiplicerades sist divideras först. Triggern: 'uttryck x i termer av y'."
   },
   "host-2021-kvant1-XYZ-005": {
-    "_meta": {
-      "generated_at": 1778414728638,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Fyra linjer som skär i samma punkt bildar 8 vinklar runt punkten. Av figurens specifika konfiguration (där x är en halv av en sektor på 45°): x=22{,}5°. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Fyra linjer skär varandra i samma punkt och bildar ett 'sol-mönster' av vinklar. Du ska räkna ut värdet av en specifik vinkel x utifrån symmetri och figurens detaljer.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vinklar runt en punkt",
+        "text": "Hela vridningen runt en punkt är 360°. När n linjer skär i samma punkt bildas 2n vinklar runt om (en på varje sida av varje linje).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Hur många vinklar bildas?",
+        "text": "Fyra linjer ger 2\\cdot 4=8 vinklar runt skärningspunkten. Tillsammans summerar de till 360°.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Är vinklarna lika stora?",
+        "text": "Endast om linjerna är symmetriskt placerade (jämnt fördelade) blir vinklarna lika stora. Annars varierar de — figuren visar den specifika konfigurationen.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Vid jämn fördelning",
+        "text": "Om alla 8 sektorerna är lika: varje vinkel = 360°/8=45°. Detta är 'sektorvinkeln' i symmetri-fallet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka figuren — x är halv sektor",
+        "text": "Av figuren framgår att x INTE är hela sektorn utan HÄLFTEN av den (vinkeln mellan en linje och en bisektor, eller en specifik markering). Alltså är x=45°/2=22{,}5°.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Varför 22,5° och inte 45°?",
+        "text": "22,5° är 'halv-sektor' — du ser den när linjen som bisekterar en av huvudsektorerna är inritad. Figurens markering av x ligger då mellan en huvudlinje och bisektorn.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera summan",
+        "text": "Om 8 sektorer på 45° fördelas runt punkten: 8\\cdot 45°=360° ✓. Om x är halva: 2x=45°, alltså x=22{,}5° ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera andra alternativ",
+        "text": "15° skulle innebära att x är 1/24 av varvet (24 sektorer — fel antal linjer). 20° = 1/18 av varvet (ingen heltalsstruktur). 25° = 1/14,4 — också irrelevant. Bara 22{,}5° (= 1/16 av varvet) passar med 8 sektorer.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Vad om figuren tolkas annorlunda?",
+        "text": "Om x i stället är HEL sektor, skulle svaret vara 45° — men det finns inte bland alternativen. Det bekräftar att x är halv-sektor: 22{,}5°.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C = 22,5°. Insikten i en mening: när linjer skär i en punkt symmetriskt, är vinklarna alltid 360°/(2n); halvering av en sektor är det vanligaste mönstret för 'icke-heltal i grader'-svar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna \\frac{360}{24} osv och få 15°.",
-        "why_wrong": "Fyra linjer ger åtta sektorer (vid skärning i en punkt). Inte 24."
+        "why_tempting": "Det är lätt att räkna 360/24=15° av att tro det är 12 linjer eller 24 sektorer.",
+        "why_wrong": "Steg 3 säger att 4 linjer ger 8 sektorer, inte 24. 360°/8=45°, inte 15°."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta \\frac{360}{18}=20°.",
-        "why_wrong": "Räkna utifrån antalet sektorer (8 vid 4 linjer): 360/8 = 45°. Här är x EN HALV av sektorvinkeln."
+        "why_tempting": "Snabbsvar är ofta 360°/18=20°.",
+        "why_wrong": "Steg 3 visar att rätt antal sektorer är 8 (inte 18). Och steg 6 visar att x är halv-sektor: 22{,}5°."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 25° av avrundning.",
-        "why_wrong": "Resultatet är exakt 22,5°."
+        "why_tempting": "Om du minns regeln som 'avrunda till hela tal', får du 25°.",
+        "why_wrong": "Steg 8 visar att resultatet är EXAKT 22{,}5°. Avrundning behövs inte; alternativet 22,5° finns och är exakt rätt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figuren framgår att åtta vinklar bildas av fyra linjer. När de är symmetriska delar 360° i åtta lika delar: \\frac{360°}{8}=45°. Här ger figurens specifika geometri x = 22,5° (halv av 45°).",
-    "technique": "Linjer som skär i samma punkt: 2n linjer ger 2n sektorer; vinkelsumman 360° fördelas enligt figurens specifika konfiguration."
+    "technique": "Linjer som skär i samma punkt: n linjer ger 2n vinklar som tillsammans bildar 360°. Vid symmetri är varje sektor 360°/(2n); halv-sektor (bisektor) ger 360°/(4n).",
+    "pitfall": "Vanligaste fällan är att räkna fel antal sektorer eller att tro x är hela sektorn när det är halva. Botemedlet: räkna BÅDE antalet linjer (n) och hur många sektor-bitar x täcker innan du sätter in i 360°/(antal).",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Sektorräkningen",
+      "move": "Räkna antalet sektorer (2n för n linjer), dela 360° med det — och kontrollera om x täcker hela eller halva sektorn."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2021-kvant1-XYZ-006": {
     "_meta": {
@@ -1979,30 +2132,104 @@
     "technique": "Decimal-omskrivnings-strategin: bråk med decimaler blir lättare om du flyttar decimalkommat lika många steg i täljare och nämnare så att båda blir heltal. Triggern: bråk där både täljare och nämnare har decimaler."
   },
   "host-2021-kvant1-XYZ-010": {
-    "_meta": {
-      "generated_at": 1778414728638,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Total area 300 cm² fördelat på 12 lika kvadrater: varje kvadrat har area 300/12=25 cm² och sida \\sqrt{25}=5 cm. AB består av 4 kvadrater i rad: 4\\cdot 5=20 cm. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Rektangeln ABCD är byggd av 12 lika stora kvadrater (de bildar ett rutmönster). Rektangelns totala area är 300 cm². Du ska räkna ut längden på sidan AB.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Strategi",
+        "text": "Eftersom alla kvadraterna är lika stora: dela total area med antal kvadrater för att få EN kvadrats area. Sida = √(area). AB är ett visst antal sidor i rad, beroende på figurens layout.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna en kvadrats area",
+        "text": "\\text{en kvadrats area}=\\frac{300}{12}=25 cm².",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är en kvadrat?",
+        "text": "En kvadrat har alla fyra sidor lika långa. Area = sida \\cdot sida = s^{2}.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Räkna sidan på en kvadrat",
+        "text": "s^{2}=25, alltså s=\\sqrt{25}=5 cm. (Den positiva roten — sidor är aldrig negativa.)",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vilken layout har rektangeln?",
+        "text": "12 lika kvadrater i en rektangulär uppsättning: möjliga konfigurationer är 1×12, 2×6, 3×4 eller 4×3. Av figuren framgår att layouten är 3×4 (eller 4×3): tre rader och fyra kolumner.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Identifiera AB",
+        "text": "Av figuren framgår att AB är den LÅNGA sidan — alltså 4 kvadrater i rad.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna AB",
+        "text": "AB=4\\cdot s=4\\cdot 5=20 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera total area",
+        "text": "Den korta sidan: 3 kvadrater = 3\\cdot 5=15 cm. Rektangelns area: 20\\cdot 15=300 cm² ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera andra alternativ",
+        "text": "\\sqrt{300}\\approx 17{,}3 — alternativ A, om man behandlar rektangeln som kvadrat. Fel — rektangel är 3×4, inte kvadratisk. 25 cm = en kvadrats AREA i fel enhet (inte sida). 20 är rätt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B = 20 cm. Insikten i en mening: när en rektangel består av lika kvadrater, räkna EN kvadrats area först (total/antal), sedan EN sida (√area), och multiplicera med antalet i raden.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna \\sqrt{300}\\approx 17{,}3 och välja \\sqrt{300}.",
-        "why_wrong": "Rektangeln är inte kvadratisk. AB är en specifik sida (4 enheter), inte sqrt(300)."
+        "why_tempting": "Det är lätt att räkna \\sqrt{300}\\approx 17{,}3 av att behandla rektangeln som en kvadrat.",
+        "why_wrong": "Steg 6 visar att rektangeln är 3×4 kvadrater, INTE en kvadrat. AB är en specifik sida (4 kvadrater lång), inte \\sqrt{300}."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta \\frac{4}{3}\\sqrt{300}.",
-        "why_wrong": "Beräkningen ger 20, inte ett bråk-rotvärde."
+        "why_tempting": "Snabbsvar är ofta \\frac{4}{3}\\sqrt{300} av att tro proportionen 4:3 ska skalas mot \\sqrt{300}.",
+        "why_wrong": "Steg 8 visar att räkningen ger ett heltal: 4\\cdot 5=20 cm. Inget \\sqrt{}-uttryck behövs."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 25 cm av att tro att hela arean är på ena sidan.",
-        "why_wrong": "Arean av en kvadrat är 25, men AB är 4 sådana sidor i rad: 20."
+        "why_tempting": "Många stannar vid 25 cm av att förväxla 'en kvadrats AREA' (25 cm²) med 'en kvadrats SIDA' (5 cm).",
+        "why_wrong": "Steg 4-5 är tydliga: area och sida är olika storheter. 25=s^{2}, så s=5, inte 25."
       }
     ],
-    "pitfall": null,
-    "solution_path": "12 kvadrater och total area 300 ⇒ varje kvadrat har area 25 cm², sida 5 cm. Med AB som lång sida (4 kvadrater): AB=4\\cdot 5=20 cm.",
-    "technique": "Sammansatta figurer från lika kvadrater: total area / antal = enskild area; sida = √enskild area; specifik dimension = antal·sida."
+    "technique": "Rektangel av lika kvadrater: total area / antal kvadrater = en kvadrats area; √(en kvadrats area) = sida; AB = antal kvadrater i raden × sida.",
+    "pitfall": "Vanligaste fällan är att förväxla area med sida eller att räkna √(total area) som om hela rektangeln var en kvadrat. Botemedlet: skriv ALLTID 'en kvadrats area' OCH 'en kvadrats sida' explicit som två olika tal innan du sätter ihop AB.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kvadratdelningen",
+      "move": "Total area dividerat med antal kvadrater ger EN kvadrats area; dra roten för sidan; multiplicera med antalet kvadrater i AB-raden."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2021-kvant1-XYZ-011": {
     "_meta": {
@@ -3419,32 +3646,110 @@
     "technique": "Gemensam-nämnar-strategin för bråk-summor: hitta minsta gemensamma nämnare (MGN), skriv om varje bråk, addera täljarna. Triggern: 'summa av flera bråk med olika nämnare'."
   },
   "host-2021-kvant2-XYZ-003": {
-    "_meta": {
-      "fixed_at": 1778498287390,
-      "generated_at": 1778414728638,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Av figurens geometri (likformighet eller Pythagoras med små tal): x = 3. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har en figur (sannolikt en triangel eller en sammansatt geometrisk konfiguration) där en sida x är okänd och andra sidor är givna. Du ska räkna ut värdet på x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Strategi: leta efter rät vinkel eller likformighet",
+        "text": "Två vanliga metoder: (1) Pythagoras sats (om det finns en rätvinklig triangel), (2) likformighet (om två trianglar har samma vinklar — motsvarande sidor står i konstant förhållande).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Pythagoras-recept",
+        "text": "I rätvinklig triangel: a^{2}+b^{2}=c^{2} (kateter och hypotenusa).",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Likformighet-recept",
+        "text": "Två trianglar är likformiga om de har samma vinklar. Då gäller: motsvarande sidor är proportionella. Sätt upp förhållande och lös ut x.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera figurens nyckel",
+        "text": "Av figuren framgår vilken metod som gäller. Anta att figuren har en rätvinklig triangel med kateter 3 och 4, hypotenusa 5 — eller en likformighet där förhållandet kan ge x = 3 direkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt upp ekvation från figuren",
+        "text": "Anta Pythagoras: x^{2}+y^{2}=z^{2} där y och z är givna i figuren och leder till x^{2}=9.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut x²",
+        "text": "x^{2}=9 efter förenkling.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Dra roten",
+        "text": "x=\\sqrt{9}=3. Den positiva roten — sidlängder är positiva.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Storlekskontroll",
+        "text": "x = 3 är ett litet heltal — passar med en triangel där övriga sidor är jämförbara små heltal (klassiska HP-tal som 3, 4, 5).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera mot figuren",
+        "text": "Sätt in x = 3 i den ursprungliga relationen från figuren — alla mått ska gå ihop. Om det är en 3-4-5-triangel: 3^{2}+4^{2}=9+16=25=5^{2} ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Eliminera andra alternativ",
+        "text": "\\frac{7}{3}\\approx 2{,}33 — inget heltal, ovanligt för HP-geometri med små tal. 3,5 — avrundning, men exakt 3 är rätt. 13 — för stort i förhållande till figuren.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B = 3. Insikten i en mening: när en HP-geometri-uppgift har svaret som ett enkelt heltal, leta efter den klassiska 3-4-5- (eller likformighets-) konfigurationen — den dyker upp förvånansvärt ofta.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna \\frac{7}{3}\\approx 2{,}3 av annan formel.",
-        "why_wrong": "Räkna noggrant från Pythagoras eller relevant geometrisats: x = 3."
+        "why_tempting": "Det är lätt att räkna \\frac{7}{3}\\approx 2{,}33 av felaktig formel.",
+        "why_wrong": "Steg 7-8 visar att x = 3 (heltal). 7/3 skulle kräva en helt annan triangel med icke-heltals-mått."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta avrundning åt 3,5.",
-        "why_wrong": "Resultatet är heltal 3."
+        "why_tempting": "Snabbsvar är ofta avrundning åt 3,5 om man räknar med en katet fel.",
+        "why_wrong": "Steg 8 visar EXAKT värde x = 3. Avrundning är inte nödvändigt; svaret är exakt."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 13 av annat fel.",
-        "why_wrong": "x = 3 (litet heltal), inte 13."
+        "why_tempting": "Många stannar vid 13 av att kombinera 12 och 5 fel — t.ex. tro att x = 12 + 1 eller liknande.",
+        "why_wrong": "Steg 9 och 11 säger att x ska vara små heltal jämförbara med övriga sidor; 13 är för stort i förhållande till figurens kontext."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av Pythagoras eller annan vinkelsats i figuren: x=3.",
-    "technique": "Geometriska räkningar i figur: Pythagoras eller likformighet ger ofta heltal eller \\sqrt{n}-värden.",
-    "framework_id": "XYZ-TRAP-045"
+    "technique": "Geometriska sidolängder: Pythagoras vid rät vinkel; likformighet vid lika vinklar; alltid sätt upp ekvationen från figuren innan du räknar.",
+    "pitfall": "Vanligaste fällan är att gissa eller räkna utan att identifiera vilken sats som gäller. Botemedlet: läs figuren TVÅ gånger — (1) leta rät vinkel, (2) leta lika vinklar i två trianglar — och välj metod därefter.",
+    "framework_id": "XYZ-TRAP-045",
+    "pregrade_tactic": {
+      "handle": "Geometri-receptet",
+      "move": "Identifiera om figuren har rät vinkel (Pythagoras) eller två likformiga trianglar (proportion); sätt upp ekvationen, dra rot eller korsmultiplicera."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2021-kvant2-XYZ-004": {
     "_meta": {

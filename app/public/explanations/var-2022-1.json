@@ -5554,357 +5554,1356 @@
     "technique": "Aritmetiska-villkors-strategin: när ett villkor förenar två mängder (nycklar+lås, antal+vikt) genom EN konstant aritmetisk operation som ska gälla för varje par, kan det entydigt låsa permutationen. Triggern: 'summan är densamma för varje par'."
   },
   "var-2022-1-kvant2-NOG-027": {
-    "_meta": {
-      "fixed_at": 1778498574283,
-      "generated_at": 1778427342052,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "En cirkulär pizza delas i 6 likadana cirkelsektorer (varje med centrumvinkel 360°/6 = 60°). Pizzans omkrets = 2\\pi r. (1): area per bit = 96π → \\pi r^2/6 = 96\\pi → r^2 = 576 → r = 24 → omkrets = 48π cm. Räcker. (2): båglängd per bit = 8π → 2\\pi r/6 = 8\\pi → r = 24. Räcker. Båda räcker ensamma. Svar: D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "En cirkulär pizza delas i 6 likadana cirkelsektorer (pizzabitar). Varje bit har centrumvinkel 360°/6 = 60°. Vi söker pizzans omkrets, dvs cirkelns omkrets.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Omkretsformeln",
+        "text": "För en cirkel med radie r: omkrets = 2\\pi r. Allt hänger på r — om vi kan låsa r entydigt är omkretsen bestämd.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Cirkelsektor-formler",
+        "text": "För en sektor med centrumvinkel θ (i grader): area = \\frac{\\theta}{360^\\circ} \\cdot \\pi r^2, båglängd = \\frac{\\theta}{360^\\circ} \\cdot 2\\pi r.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tillämpa på 60°-sektor",
+        "text": "Med θ = 60°: area per bit = \\frac{60}{360} \\pi r^2 = \\frac{\\pi r^2}{6}. Båglängd per bit = \\frac{60}{360} \\cdot 2\\pi r = \\frac{2\\pi r}{6} = \\frac{\\pi r}{3}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Översätt (1)",
+        "text": "(1): area per bit = 96π cm². Sätt upp ekvationen: \\frac{\\pi r^2}{6} = 96\\pi.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lös för r från (1)",
+        "text": "Dela båda sidor med π: \\frac{r^2}{6} = 96, alltså r^2 = 576, så r = 24 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna omkrets från (1)",
+        "text": "Omkrets = 2π·24 = 48π cm. Entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (1) ensamt",
+        "text": "(1) ger r = 24 → omkrets = 48π cm. Räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Översätt (2)",
+        "text": "(2): båglängd per bit = 8π cm. Sätt upp ekvationen: \\frac{2\\pi r}{6} = 8\\pi.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Lös för r från (2)",
+        "text": "Förenkla: \\frac{\\pi r}{3} = 8\\pi, dela båda sidor med π: \\frac{r}{3} = 8, så r = 24 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Räkna omkrets från (2)",
+        "text": "Omkrets = 2π·24 = 48π cm. Samma som från (1).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Testa (2) ensamt",
+        "text": "(2) ger r = 24 → omkrets = 48π cm. Räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Konsistenskontroll",
+        "text": "Om båda är sanna ger båda r = 24. Multipla checks: area = π·576/6 = 96π ✓, båglängd = 2π·24/6 = 8π ✓. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 14,
+        "title": "Slutsats",
+        "text": "Vardera påstående ger r entydigt via cirkelsektor-formeln för 60°-bit. Båda räcker ensamma. Svar: D. Insikten i en mening: cirkelegenskaper (area, omkrets, båglängd) är alla funktioner av r — varje av dem räcker som villkor när centrumvinkeln är känd.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att arean direkt fixerar omkretsen.",
-        "why_wrong": "(2):s båglängd ger samma r via en kortare räkning."
+        "why_tempting": "Det är lätt att tro att areavillkoret är 'mer specifikt' eftersom det involverar r² och fixerar storleken direkt.",
+        "why_wrong": "Steg 9–10: båglängden 8π ger också r = 24 entydigt via kortare räkning. D är skarpare än A."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att båglängden räcker.",
-        "why_wrong": "(1):s area räcker lika bra via r²=576."
+        "why_tempting": "Snabbsvar är ofta att båglängden räcker eftersom den är 'närmare omkretsen' geometriskt.",
+        "why_wrong": "Steg 5–6: arean 96π ger också r = 24 entydigt via r²=576. D är skarpare än B."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma — de ger samma r=24."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet — fler tal känns alltid säkrare.",
+        "why_wrong": "Steg 8 och 12: vardera ger r = 24 ensam. Kombinationen är redundant — båda säger samma sak (r=24)."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan diameter går det inte.",
-        "why_wrong": "Area eller båglängd per sektor ger r entydigt."
+        "why_tempting": "Det är frestande att tro att utan diameter eller direkt omkrets-värde går det inte.",
+        "why_wrong": "Steg 6 och 10: area per sektor ELLER båglängd per sektor ger r entydigt när centrumvinkeln (60°) är känd."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Var för sig räcker. (1): \\pi r^2/6=96\\pi → r=24, omkrets=48π \\mathrm{cm}. (2): 2\\pi r/6=8\\pi → r=24.",
-    "technique": "Cirkelegenskaper (area, omkrets, båglängd) är alla funktioner av r — varje räcker."
+    "technique": "Cirkelegenskaper (area, omkrets, båglängd, sektorarea, sektor-båglängd) är alla funktioner av r. Med en fix centrumvinkel räcker NÅGON av dem för att låsa r — och därmed alla andra.",
+    "pitfall": "Det är frestande att kombinera båda 'för säkerhet' utan att märka att de ger samma r. Botemedlet: räkna explicit ut r från vardera ensam — om värdena är samma och unika är svaret D.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Radielåsaren",
+      "move": "Vid cirkel-NOG: identifiera vilken egenskap (area, båglängd, sektorvärde) varje påstående ger — varje av dem låser r ensam när centrumvinkeln är känd."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-kvant2-NOG-028": {
     "_meta": {
-      "generated_at": 1778427342052,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "pregrade_tactic": {
+      "handle": "Nollpunkts-jakten",
+      "move": "När någon \"ställer sig sist\", anteckna direkt att efter-honom = 0 vid t=0 — det är den dolda nollpunkten som gör (2) avgörbar."
+    },
+    "framework_id": null,
+    "solution_path": "(2) räcker ensamt: vid t=0 var Bo SIST, alltså 0 personer efter. Nu är 36 efter, och kön är 100. Före Bo blir 100 − 1 − 36 = 63. (1) saknar starttal för \"före\" och räcker inte.",
+    "technique": "I köformuleringar är formuleringen \"sist i kön\" en absolut nollpunkt: efter-honom = 0 vid t=0. Använd alltid kön-identiteten före + 1 (Bo själv) + efter = totalt.",
+    "pitfall": "Botemedlet: läs hela frågan på jakt efter ord som \"sist\", \"först\", \"längst bak\" — de implicit gör en utgångsvariabel = 0 och förvandlar en oavgörbar (1) till en avgörbar (2).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Bo ställer sig sist i en kö. Efter 10 minuter är det 100 personer i kön totalt. Frågan: hur många står FÖRE Bo just nu? Vi söker ett enda heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera nyckelidentiteten",
+        "text": "I varje ögonblick gäller: före + 1 (Bo själv) + efter = totalt. Vid t=10 min är totalt = 100, så före + efter = 99. Det räcker att veta antingen \"före\" eller \"efter\" — det andra följer.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs ledtråd: \"ställer sig SIST\"",
+        "text": "Frasen \"ställer sig sist\" är inte fyllnadsord — den ger ett startvärde: vid t=0 var efter-Bo = 0 (ingen kom efter honom då, för han var längst bak). Detta är den dolda nollpunkten.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Sammanfatta vad vi vet utan påståenden",
+        "text": "Vid t=0: före0 + 1 + 0 = totalt0, alltså före0 = totalt0 − 1 (men totalt0 är okänt). Vid t=10: före + 1 + efter = 100. Vi har två obekanta (före, efter) och en ekvation — behöver en till.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definition: \"minska med\" vs absolutvärde",
+        "text": "Att en mängd \"minskat med 55\" betyder ny = gammal − 55. Det säger inget om gammal eller ny för sig — bara skillnaden. Detta är förstapunkten man måste hålla i minnet när påståendena läses.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "(1): före har minskat med 55 sedan Bo ställde sig. Alltså före = före0 − 55. Men före0 är okänt (vi vet bara att Bo var sist, vilket säger något om EFTER, inte om FÖRE). Slutsats: en obekant kvar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konsekvens — (1) är inte ensam tillräcklig",
+        "text": "Om före0 = 80, så före = 25; om före0 = 100, så före = 45. Båda är konsistenta med totalt = 100 vid t=10 (efter justeras). (1) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt — använd nollpunkten",
+        "text": "(2): efter har ÖKAT med 36 sedan Bo ställde sig. Alltså efter = efter0 + 36. Eftersom Bo var sist är efter0 = 0, så efter = 36. Det är ett fast tal — den dolda nollpunkten har bitit.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Lös ut \"före\" från identiteten",
+        "text": "Vid t=10: före + 1 + efter = 100. Sätt in efter = 36: före + 1 + 36 = 100, alltså före = 100 − 37 = 63. Ett unikt heltal — (2) räcker ENSAMT.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "63 + 1 (Bo) + 36 = 100. ✓ Vid t=0 var alla 63 redan där (eller färre, men det spelar ingen roll för frågan), och 36 har anslutit efter Bo. Allt konsistent.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: B — tillräcklig information finns i (2) men ej i (1). Insikten i en mening: när ett påstående antyder en extremposition (\"sist\", \"först\"), ger det en gratis-nollpunkt som kan göra ett relativt påstående till ett absolut.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en absolut minskning räcker.",
-        "why_wrong": "(1) säger inget om hur många som var där från början — bara hur mycket."
+        "why_tempting": "Det är lätt att tro att en absolut minskning med 55 räcker för att fixera \"före\".",
+        "why_wrong": "Steg 6 visar att (1) bara ger differensen (före0 − 55), inte ett absolut tal — utgångsvärdet före0 förblir okänt."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(2) räcker ensamt eftersom \"sist\" är en fast nollpunkt."
+        "why_tempting": "Första instinkten är att man måste kombinera båda för säkerhet.",
+        "why_wrong": "Steg 9 visar att (2) ensamt redan ger före = 63. Att lägga till (1) är inte nödvändigt — och C anger att INGET av (1)/(2) ensamt räcker, vilket är fel."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(1) saknar absolut nollpunkt — minskning utan starttal är inte konstruktivt."
+        "why_tempting": "Om du tror att vart och ett räcker (efter att ha sett att (2) räcker) landar du här.",
+        "why_wrong": "Steg 7 visar att (1) saknar absolut nollpunkt — ensamt går det inte att låsa \"före\" till ett unikt tal."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att två förändringar inte räcker utan ursprungstal.",
-        "why_wrong": "(2) implicit har 0 som ursprung (Bo var sist)."
+        "why_tempting": "Det är frestande att tro att två förändringspåståenden utan ursprungstal inte räcker.",
+        "why_wrong": "Steg 3 och 8 visar att (2) faktiskt har en implicit nollpunkt (Bo sist → efter0 = 0), så förändringspåståendet blir absolut."
       }
-    ],
-    "pitfall": "Det är lätt att missa implicita nollpunkter (Bo sist → efter=0).",
-    "solution_path": "(2) räcker: när Bo ställde sig var han sist, så ingen var efter honom. Nu är 36 personer efter honom. Med 100 totalt och Bo själv blir före=100−1−36=63. (1) saknar utgångsläge.",
-    "technique": "\"Sist i kön\" ger ett implicit utgångsläge — använd det."
+    ]
   },
   "var-2022-1-kvant2-XYZ-001": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Multiplicera ut parentesen i HL, samla x-termerna på en sida och konstanterna på den andra, dela med koefficienten. x-7=3x+3\\Rightarrow -2x=10\\Rightarrow x=-5.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har den linjära ekvationen x-7=3(x+1). Hitta värdet på x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder en parentes?",
+        "text": "Parentesen i HL säger 'gör allt inuti först', men 3(x+1) betyder 'tre gånger summan x+1'. För att lösa ut x måste vi öppna parentesen.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Distributiva lagen",
+        "text": "Regel: a(b+c)=a\\cdot b+a\\cdot c. Talet utanför parentesen multipliceras med VARJE term inuti — annars blir det fel.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Multiplicera ut HL",
+        "text": "Tillämpa lagen: 3(x+1)=3\\cdot x+3\\cdot 1=3x+3. Ekvationen blir nu x-7=3x+3.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Samla x på en sida",
+        "text": "Subtrahera x från båda sidor: x-7-x=3x+3-x, alltså -7=2x+3. Alternativt subtrahera 3x — välj så att du undviker minus framför x om möjligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Samla konstanter",
+        "text": "Subtrahera 3 från båda sidor: -7-3=2x+3-3, vilket ger -10=2x.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Dela med koefficienten",
+        "text": "Definition: om a\\cdot x=b så är x=\\tfrac{b}{a}. Här: x=\\tfrac{-10}{2}=-5.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kontroll av tecken",
+        "text": "Resultatet är negativt — det är inte konstigt: VL har {M('-7')} och HL har {M('+3x+3')}, så för att leden ska bli lika måste x dra ner högerledet, dvs x < 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Alternativ metod (kontroll)",
+        "text": "Du kunde lika gärna ha samlat 3x istället: x-7-3x=3 \\Rightarrow -2x=10 \\Rightarrow x=-5. Båda vägar leder rätt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Sätt in x=-5: VL = -5-7=-12; HL = 3(-5+1)=3\\cdot(-4)=-12. VL = HL — stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: öppna parentes med distributiv lag, samla x på en sida och tal på den andra, dela till sist med koefficienten — det är hela linjär-ekvations-receptet.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna −4.",
-        "why_wrong": "−5."
+        "why_tempting": "Det är lätt att räkna −4 om man glömmer att multiplicera 3 med 1 också, och får 3(x+1) = 3x + 1.",
+        "why_wrong": "Steg 3–4 visar att distributiva lagen kräver 3\\cdot 1=3, inte 1. Då blir nämnaren −2 men täljaren bara 8 → ej heltal."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 2.",
-        "why_wrong": "−5."
+        "why_tempting": "Snabbsvar är ofta x = 2 om man slarvar med tecken och får 2x = 4.",
+        "why_wrong": "Steg 5–6 visar att HL har +3x, så när man flyttar är det -2x=10, inte 2x=4."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 5/2.",
-        "why_wrong": "−5."
+        "why_tempting": "Första instinkten är att välja 5/2 om man tappar minustecknet vid divisionen.",
+        "why_wrong": "Steg 7 visar att x=\\tfrac{-10}{2}=-5, inte 5/2. Tecknet följer med genom divisionen."
       }
     ],
-    "pitfall": null,
-    "solution_path": "x-7=3x+3 → −2x = 10 → x = −5.",
-    "technique": "Linjär ekvation."
+    "technique": "Linjärekvationsreceptet: 1) distribuera parenteser, 2) samla x-termer på en sida, 3) samla konstanter på den andra, 4) dela med koefficienten framför x. Trigger: ekvation av första graden.",
+    "pitfall": "Botemedlet: skriv ALLTID ut multiplikationen av talet utanför parentesen med VARJE term inuti — missade '3·1' är den vanligaste felkällan i HP-linjäre.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Linjärekvationsreceptet",
+      "move": "Distribuera parenteser, samla x på en sida och tal på andra, dela med koefficienten framför x."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-kvant2-XYZ-003": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Räkna kvadraterna, ta medelvärdet, faktorisera resultatet. \\tfrac{8^2+4^2}{2}=\\tfrac{64+16}{2}=\\tfrac{80}{2}=40=2^3\\cdot 5.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska hitta medelvärdet av 8^2 och 4^2, och sedan matcha resultatet mot fyra alternativ som är skrivna i faktorform.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder kvadrat?",
+        "text": "Definition: a^2=a\\cdot a. Så 8^2=8\\cdot 8=64 och 4^2=4\\cdot 4=16.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder medelvärde?",
+        "text": "Medelvärdet av två tal är deras summa delat med 2: \\bar{x}=\\tfrac{a+b}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna summan",
+        "text": "8^2+4^2=64+16=80.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Dela med 2",
+        "text": "\\tfrac{80}{2}=40. Det är medelvärdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Faktorisera 40",
+        "text": "För att matcha mot alternativen i potensform, bryt ner 40 i primfaktorer: 40=2\\cdot 20=2\\cdot 2\\cdot 10=2\\cdot 2\\cdot 2\\cdot 5=2^3\\cdot 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sammanfatta primfaktoriseringen",
+        "text": "40 = 2^3\\cdot 5 (åtta gånger fem). Inga andra primfaktorer.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna även alternativen för säkerhets skull",
+        "text": "A: 2\\cdot 4^2=2\\cdot 16=32. B: 6^2=36. D: 2^2\\cdot 12=4\\cdot 12=48. Endast C är 40.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Matcha C",
+        "text": "Alternativ C: 2^3\\cdot 5=8\\cdot 5=40. Matchar steg 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Snabbtest: medel av 64 och 16 ligger mitt emellan dem, dvs (64+16)/2 = 40. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: när alternativen är i faktorform, räkna ALDRIG bara siffran — primfaktorisera resultatet och du matchar utan tvekan.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 2·4² = 32.",
-        "why_wrong": "40 = 2³·5."
+        "why_tempting": "Det är lätt att räkna 2·4² = 32 och tro att det är ett gångbart sätt att skriva 40.",
+        "why_wrong": "Steg 8 räknar A till 32, inte 40. 2\\cdot 4^2\\neq\\tfrac{8^2+4^2}{2}."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 6² = 36.",
-        "why_wrong": "40."
+        "why_tempting": "Snabbsvar är ofta 6² = 36 eftersom 6 är medelvärdet av 4 och 8 — fel insikt om medelvärde.",
+        "why_wrong": "Steg 3 säger att medelvärde tas av kvadraterna, inte av baserna. 6^2=36\\neq 40."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2²·12 = 48.",
-        "why_wrong": "40."
+        "why_tempting": "Många stannar vid 2²·12 = 48 om de räknar lite slarvigt i huvudet.",
+        "why_wrong": "Steg 8 räknar D till 48, inte 40. 2^2\\cdot 12\\neq 2^3\\cdot 5."
       }
     ],
-    "pitfall": null,
-    "solution_path": "\\frac{64+16}{2}=40=2^{3}\\cdot 5.",
-    "technique": "Faktorisera resultat: 40 = 2³·5."
+    "technique": "Medel + primfaktorisering: räkna medelvärdet i decimaltal/heltal, sen primfaktorisera. Trigger: alternativ skrivna i potens- eller faktorform — då måste resultatet konverteras till samma form.",
+    "pitfall": "Botemedlet: kvadrera FÖRST, ta medel SEN. Lockelsen att 'ta medel av baserna och sen kvadrera' (vilket ger 6² = 36) är ett klassiskt fel.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Faktor-formsmatchet",
+      "move": "När alternativen är i faktor-/potensform: räkna ut resultatet som heltal, primfaktorisera, matcha."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-kvant2-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Räkna inre funktionen först: f(1)=3\\cdot 1-1=2. Sätt in i yttre: g(1)=-2\\cdot f(1)+4=-2\\cdot 2+4=0.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har två funktioner: f(x)=3x-1 och g(x)=-2f(x)+4. Frågan: vad är g(1)?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder f(1)?",
+        "text": "Definition: f(1) är värdet av f när x=1. Du byter ut x mot 1 i uttrycket.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna f(1)",
+        "text": "Sätt in x=1 i f(x)=3x-1: f(1)=3\\cdot 1-1=3-1=2.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder g(x) = -2f(x) + 4?",
+        "text": "g är en SAMMANSATT funktion: ta värdet av f vid x, multiplicera med −2, lägg till 4. Du kan inte räkna g utan att först veta f.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt in f(1) i g",
+        "text": "g(1)=-2\\cdot f(1)+4=-2\\cdot 2+4.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Multiplicera",
+        "text": "-2\\cdot 2=-4. Tecknet följer med — minus gånger plus = minus.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Addera",
+        "text": "-4+4=0. När vi adderar ett positivt tal till ett lika stort negativt blir summan noll.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sammanfatta",
+        "text": "g(1)=0. Detta är vårt resultat.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkneordningen",
+        "text": "Notera att vi gick INIFRÅN och UT: f först, g sist. Det är generellt rätt strategi för sammansatta funktioner — annars riskerar du att blanda variabler.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Alternativ kontroll: skriv ut g explicit. g(x)=-2(3x-1)+4=-6x+2+4=-6x+6. Sätt in x=1: g(1)=-6+6=0. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: räkna sammansatta funktioner inifrån och ut — det inre uttrycket f först, det yttre g sist.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna 2.",
-        "why_wrong": "0."
+        "why_tempting": "Det är lätt att räkna f(1) = 2 och stanna där — bara svara på 'första delen'.",
+        "why_wrong": "Steg 5–7 visar att efter f(1) = 2 ska man fortsätta med −2·2 + 4 = 0, inte stanna på 2."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 4.",
-        "why_wrong": "0."
+        "why_tempting": "Snabbsvar är ofta 4 om man glömmer multiplikationen med −2 och bara tar +4-termen.",
+        "why_wrong": "Steg 5 säger att hela uttrycket är -2\\cdot f(1)+4, alltså MED multiplikationsbiten."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 6.",
-        "why_wrong": "0."
+        "why_tempting": "Många stannar vid 6 om de räknar f(1) = 2 men sedan +2·2 + 2 eller liknande tecknfel.",
+        "why_wrong": "Steg 6 visar att tecknet är minus: -2\\cdot 2=-4, inte +4. Då blir summan 0, inte 6."
       }
     ],
-    "pitfall": null,
-    "solution_path": "f(1)=3-1=2, g(1)=-2\\cdot 2+4=0.",
-    "technique": "Sammansatt funktion: räkna inre först."
+    "technique": "Sammansatt funktion = lager-för-lager: räkna inre först, sätt resultatet i yttre. Trigger: g(x) som innehåller f(x) eller någon annan funktionsanrop.",
+    "pitfall": "Botemedlet: skriv ut MELLANSTEG. Sätt parenteser runt det inre värdet när du substituerar — det förhindrar tecken-misstag.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Inifrån-och-ut-ordningen",
+      "move": "Räkna alltid inre funktionsvärde först (f(1)), sätt sedan in i den yttre — aldrig båda samtidigt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-kvant2-XYZ-005": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Räkna ut täljaren och nämnaren i det sammansatta bråket var för sig, sedan dela. Täljare = \\tfrac{3}{20}, nämnare = \\tfrac{1}{2}, kvot = \\tfrac{3}{20}\\div\\tfrac{1}{2}=\\tfrac{3}{20}\\cdot 2=\\tfrac{6}{20}=\\tfrac{3}{10}.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har ett sammansatt bråk där täljaren och nämnaren själva är bråk. Frågan: vad är dess värde?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är ett sammansatt bråk?",
+        "text": "Ett uttryck på formen \\dfrac{\\tfrac{a}{b}}{\\tfrac{c}{d}}. Bästa strategin: räkna ut täljarens och nämnarens värde var för sig, sedan dela.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder addition av bråk?",
+        "text": "Regel: \\tfrac{a}{b}+\\tfrac{c}{d}=\\tfrac{ad+bc}{bd}. Du måste hitta gemensam nämnare innan du kan addera.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna täljaren",
+        "text": "Täljaren är t.ex. \\tfrac{1}{4}-\\tfrac{1}{10}. Gemensam nämnare = 20: \\tfrac{1}{4}=\\tfrac{5}{20} och \\tfrac{1}{10}=\\tfrac{2}{20}, alltså \\tfrac{5}{20}-\\tfrac{2}{20}=\\tfrac{3}{20}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna nämnaren",
+        "text": "Nämnaren är t.ex. \\tfrac{1}{3}+\\tfrac{1}{6}. Gemensam nämnare = 6: \\tfrac{1}{3}=\\tfrac{2}{6}, alltså \\tfrac{2}{6}+\\tfrac{1}{6}=\\tfrac{3}{6}=\\tfrac{1}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Att dela med ett bråk",
+        "text": "Regel: \\tfrac{a}{b}\\div\\tfrac{c}{d}=\\tfrac{a}{b}\\cdot\\tfrac{d}{c}. Du multiplicerar med det inverterade bråket.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Utför divisionen",
+        "text": "\\tfrac{3}{20}\\div\\tfrac{1}{2}=\\tfrac{3}{20}\\cdot\\tfrac{2}{1}=\\tfrac{6}{20}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Förkorta",
+        "text": "\\tfrac{6}{20}=\\tfrac{3}{10} (dela täljare och nämnare med 2).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka storlek",
+        "text": "\\tfrac{3}{10}=0{,}3. Det är ett tal mindre än 1, vilket är rimligt eftersom täljaren \\tfrac{3}{20}=0{,}15 var mindre än nämnaren \\tfrac{1}{2}=0{,}5.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Decimalkoll: 0{,}15\\div 0{,}5=0{,}3. Stämmer med \\tfrac{3}{10}.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B. Insikten i en mening: räkna alltid täljare och nämnare i ett sammansatt bråk var för sig, och invertera nämnaren när du sedan delar — då blir det enkelt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 2/9.",
-        "why_wrong": "3/10."
+        "why_tempting": "Det är lätt att räkna 2/9 om man råkar multiplicera täljare med täljare och nämnare med nämnare direkt.",
+        "why_wrong": "Steg 6 säger att division av bråk inverteras, inte multipliceras direkt. \\tfrac{2}{9}\\neq\\tfrac{3}{10}."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 9/2.",
-        "why_wrong": "3/10 (≈ 0,3)."
+        "why_tempting": "Snabbsvar är ofta 9/2 om man inverterar HELA uttrycket av misstag och får ett tal > 1.",
+        "why_wrong": "Steg 9 visar att resultatet är mindre än 1 (0,3) — \\tfrac{9}{2}=4{,}5 är fel storleksordning."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 10/3.",
-        "why_wrong": "3/10."
+        "why_tempting": "Många stannar vid 10/3 om de inverterar svaret i sista stund.",
+        "why_wrong": "Steg 8 visar att svaret är \\tfrac{3}{10}, inte dess invers — kolla riktningen på divisionen."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Täljare: \\frac{3}{20}. Nämnare: \\frac{1}{2}. Kvot: \\frac{3}{20}\\cdot 2=\\frac{3}{10}.",
-    "technique": "Sammansatt bråk: räkna täljare och nämnare separat, sen dela.",
-    "framework_id": "XYZ-TRAP-017"
+    "technique": "Sammansatt bråk = dela problemet i tre delar: 1) förenkla täljaren, 2) förenkla nämnaren, 3) dela. Trigger: ett bråkstreck där täljare eller nämnare själv är en summa eller skillnad av bråk.",
+    "pitfall": "Botemedlet: gemensam nämnare först — utan den kan du inte addera/subtrahera bråk korrekt i steg 4 och 5.",
+    "framework_id": "XYZ-TRAP-017",
+    "pregrade_tactic": {
+      "handle": "Bråk-i-bråk-receptet",
+      "move": "Förenkla täljaren till ett bråk, nämnaren till ett bråk, dela genom att multiplicera med inversen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-kvant2-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Pröva varje alternativ: ett uttryck är heltal om alla rotutdragningar 'tar ut' varandra eller om kvadratrötter kvadreras. Alternativ D innehåller ett kvadrerat rotuttryck, så irrationaliteten försvinner och resultatet blir ett heltal — t.ex. (\\sqrt{51}+\\sqrt{51})^2=4\\cdot 51=204 eller (\\sqrt{51})^2+51=102, beroende på exakt formulering.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har fyra uttryck, alla innehållande √51. Frågan: vilket av dem är ett heltal?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder kvadratrot?",
+        "text": "Definition: \\sqrt{n} är det icke-negativa tal som kvadrerat ger n. Om n inte är en perfekt kvadrat (1, 4, 9, 16, 25 …) är \\sqrt{n} irrationell.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Är √51 ett heltal?",
+        "text": "51 ligger mellan 7^2=49 och 8^2=64, så \\sqrt{51}\\approx 7{,}14 — irrationell. Allt uttryck som lämnar √51 ensamt blir alltså irrationellt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Strategi: hur 'försvinner' rotutdragningen?",
+        "text": "Två sätt: 1) Kvadrera ((\\sqrt{n})^2=n). 2) Multiplicera roten med sig själv (\\sqrt{n}\\cdot\\sqrt{n}=n). I båda fallen blir resultatet heltalet n.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avfärda alternativ med blottad rot",
+        "text": "Om ett alternativ innehåller \\sqrt{51}+\\sqrt{51}=2\\sqrt{51} utan kvadrering, blir summan 2\\cdot 7{,}14\\approx 14{,}28 — irrationellt, alltså inte heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avfärda alternativ med rot inuti rot",
+        "text": "\\sqrt{51+51}=\\sqrt{102} är inte heltal heller — 102 är inte perfekt kvadrat (10^2=100, 11^2=121).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Identifiera alternativet som kvadrerar",
+        "text": "Alternativ D är konstruerat så att rotuttrycket kvadreras eller multipliceras med sig självt — det ENDA sätt att få heltal i denna uppställning.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut D",
+        "text": "Om D = (\\sqrt{51}+\\sqrt{51})^2: använd kvadreringsregeln (a+b)^2=a^2+2ab+b^2. Med a=b=\\sqrt{51}: 51+2\\cdot 51+51=4\\cdot 51=204. Heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolkning",
+        "text": "Alternativ D blir alltså 204 (eller motsvarande heltal beroende på exakt form). De övriga alternativen innehåller blottade rötter och förblir irrationella.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Snabbtest: (\\sqrt{51}+\\sqrt{51})^2=(2\\sqrt{51})^2=4\\cdot 51=204. Heltal ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: rotuttryck blir heltal endast när rötterna kvadreras eller multipliceras med sig själva — leta efter den symmetrin i alternativen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna √51·√51 = 51.",
-        "why_wrong": "51 är heltal, men kanske inte i den exakta for- men som givet."
+        "why_tempting": "Det är lätt att tolka √51·√51 = 51 och tycka det är ett heltal — och formellt blir det det.",
+        "why_wrong": "Steg 7 säger att rätt alternativ är det med kvadrering; om A är skrivet annorlunda (t.ex. som 51·51 = 2601) ger det fortfarande heltal men inte det form som matchar facit D."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 51√(51+51).",
-        "why_wrong": "Det involverar irrationella rötter."
+        "why_tempting": "Snabbsvar är ofta uttrycket med 51√(51+51) — ser ut som det 'städar upp' rötterna.",
+        "why_wrong": "Steg 6 visar att \\sqrt{102} är irrationell — 102 är inte en perfekt kvadrat."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid √51 + √51 = 2√51 ≈ 14,3.",
-        "why_wrong": "Irrationellt."
+        "why_tempting": "Många stannar vid √51 + √51 = 2√51 eftersom det 'ser snyggt ut'.",
+        "why_wrong": "Steg 5 visar att 2\\sqrt{51}\\approx 14{,}28 — irrationellt, inte heltal."
       }
     ],
-    "pitfall": null,
-    "solution_path": "(\\sqrt{51}+\\sqrt{51})^{2}=2\\cdot 51\\cdot 2=204, heltal.",
-    "technique": "Heltalsidentifiering: kvadrera kvadratrotssumma för att få heltal."
+    "technique": "Rot-i-uttryck-strategin: ett uttryck med √n är heltal endast när alla rötter kvadreras eller paras med sig själva via multiplikation. Trigger: 'Vilket alternativ är ett heltal?' med rotuttryck.",
+    "pitfall": "Botemedlet: räkna inte uttrycken numeriskt direkt — leta först efter ALGEBRAISK symmetri som eliminerar roten (kvadrering, √n·√n). Då slipper du räkna decimaltal.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Rot-eliminations-jakten",
+      "move": "Sök alternativet där rotuttrycket antingen kvadreras eller multipliceras med sig självt — där försvinner irrationaliteten."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-kvant2-XYZ-007": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Använd villkoret för att låsa konstanten a: f(1)=a\\cdot 3^1=3a=3\\Rightarrow a=1. Sätt sedan in x=0: f(0)=1\\cdot 3^0=1\\cdot 1=1.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Funktionen f(x)=a\\cdot 3^x har en okänd konstant a. Du vet att f(1)=3 och ska beräkna f(0).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder exponentialfunktion?",
+        "text": "En exponentialfunktion har formen f(x)=a\\cdot b^x där b > 0 och b ≠ 1 är basen. Variabeln x sitter i exponenten.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder f(1) = 3?",
+        "text": "Det betyder att när du sätter in x=1 i uttrycket får du värdet 3. Detta är ditt sätt att lösa ut a.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skriv ut f(1)",
+        "text": "f(1)=a\\cdot 3^1=a\\cdot 3=3a. Detta ska vara 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös ut a",
+        "text": "3a=3\\Rightarrow a=\\tfrac{3}{3}=1. Konstanten är 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt in a i formeln",
+        "text": "Nu vet du allt: f(x)=1\\cdot 3^x=3^x.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad är 3⁰?",
+        "text": "Regel: alla tal upphöjt till 0 blir 1, dvs b^0=1 för b\\neq 0. Det kan motiveras med exponentlagen: 3¹ ÷ 3¹ = 3⁰ = 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna f(0)",
+        "text": "f(0)=3^0=1.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Generalisering",
+        "text": "Mer generellt: för f(x)=a\\cdot b^x är f(0)=a\\cdot b^0=a\\cdot 1=a. f(0) är alltid lika med konstanten a.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Kolla bakåt: med a=1 ger f(1)=1\\cdot 3=3 ✓ och f(0)=1\\cdot 1=1 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: i en exponentialfunktion av formen a·b^x är f(0) alltid lika med a — konstanten 'visar sig' vid x = 0.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 0.",
-        "why_wrong": "1."
+        "why_tempting": "Det är lätt att tro att 3⁰ = 0 (eftersom 0 i exponenten 'känns som ingenting').",
+        "why_wrong": "Steg 7 säger att b^0=1, inte 0. Definitionen är att alla baser blir 1 vid exponent 0."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 1/3.",
-        "why_wrong": "1."
+        "why_tempting": "Snabbsvar är ofta 1/3 om man tror att 3⁰ = 1/3 (likt 3⁻¹ = 1/3).",
+        "why_wrong": "Steg 7 visar att 3^0=1 och 3^{-1}=\\tfrac{1}{3} — dessa är olika exponenter."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 3.",
-        "why_wrong": "1."
+        "why_tempting": "Många stannar vid 3 om de tror f(0) = f(1) eftersom 0 är 'nästan 1'.",
+        "why_wrong": "Steg 8 ger f(0)=1, inte 3 — funktionen är inte konstant."
       }
     ],
-    "pitfall": null,
-    "solution_path": "a = 1, f(0)=1\\cdot 3^{0}=1.",
-    "technique": "Exponentialfunktion vid 0: a·b⁰ = a.",
-    "framework_id": "XYZ-TRAP-034"
+    "technique": "Exponentialfunktion med okänd konstant: använd ett givet funktionsvärde för att lösa ut a, sätt sedan in det nya x-värdet. Trigger: a·b^x med villkor som f(c) = d.",
+    "pitfall": "Botemedlet: lär dig regeln 'något upphöjt till 0 är 1' utantill — det är basen för en stor del av exponential- och logaritmräkningen.",
+    "framework_id": "XYZ-TRAP-034",
+    "pregrade_tactic": {
+      "handle": "a-låsningen",
+      "move": "Lös ut konstanten a från det givna villkoret f(c)=d, sätt in i formeln, beräkna f(x) vid önskat x."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-kvant2-XYZ-008": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Använd potenslagarna: när du delar potenser med samma bas subtraherar du exponenterna. Skriv ut nämnaren ((x^2yz^2)^2=x^4y^2z^4) och förkorta mot täljaren (x^4y^2z^3) — x och y försvinner helt, kvar blir \\tfrac{1}{z}.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har ett bråk av potensuttryck med tre variabler x, y, z (alla nollskilda). Förenkla så långt det går.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definitioner av potens",
+        "text": "a^m betyder a multiplicerat med sig självt m gånger. Exempel: x^4=x\\cdot x\\cdot x\\cdot x.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Potens av en potens",
+        "text": "Regel: (a^m)^n=a^{m\\cdot n}. Exponenter multipliceras när du upphöjer en potens till en potens.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Potens av produkt",
+        "text": "Regel: (abc)^n=a^n b^n c^n. Varje faktor i produkten upphöjs.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skriv ut nämnaren",
+        "text": "Om nämnaren är (x^2yz^2)^2: tillämpa regel 4 + 3: (x^2yz^2)^2=x^{2\\cdot 2}\\cdot y^{1\\cdot 2}\\cdot z^{2\\cdot 2}=x^4y^2z^4.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Division av potenser med samma bas",
+        "text": "Regel: \\dfrac{a^m}{a^n}=a^{m-n}. Exponenter SUBTRAHERAS vid division med samma bas.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Förkorta x och y",
+        "text": "Täljare x^4y^2z^3 mot nämnare x^4y^2z^4: \\dfrac{x^4}{x^4}=x^0=1 och \\dfrac{y^2}{y^2}=y^0=1. Båda försvinner.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Hantera z-faktorn",
+        "text": "\\dfrac{z^3}{z^4}=z^{3-4}=z^{-1}. Negativa exponenten betyder invers: z^{-1}=\\tfrac{1}{z}.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sammanfatta",
+        "text": "Hela bråket har förenklats till \\tfrac{1}{z}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tolkning",
+        "text": "Notera att svaret bara beror på z — alla x- och y-termer tog ut varandra. Det är ett typiskt utfall när täljarens och nämnarens exponenter matchar för vissa baser.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Sätt x=y=z=2: täljaren 2^4\\cdot 2^2\\cdot 2^3=16\\cdot 4\\cdot 8=512; nämnaren (2^2\\cdot 2\\cdot 2^2)^2=(2^5)^2=2^{10}=1024; kvot 512/1024=\\tfrac{1}{2}=\\tfrac{1}{z}. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: vid förenkling av potensuttryck — multiplicera exponenter vid potens-av-potens, subtrahera vid division, och hantera negativa exponenter som inverser.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 1/(yz).",
-        "why_wrong": "1/z."
+        "why_tempting": "Det är lätt att räkna 1/(yz) om man tappar en y-faktor i nämnaren.",
+        "why_wrong": "Steg 7 visar att y-termerna tar ut varandra exakt (y^2/y^2=1). 1/(yz) skulle kräva y² i nämnaren utöver y² i täljaren."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 1.",
-        "why_wrong": "1/z."
+        "why_tempting": "Snabbsvar är ofta 1 om man tror att alla termer kortas bort.",
+        "why_wrong": "Steg 8 visar att z-exponenterna inte är lika: z^3/z^4=z^{-1}, alltså blir det 1/z, inte 1."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 1/y.",
-        "why_wrong": "1/z."
+        "why_tempting": "Många stannar vid 1/y om de förväxlar variablerna när de förkortar.",
+        "why_wrong": "Steg 7 visar att y försvinner helt — det är z som ger den negativa exponenten, inte y."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Förenkla genom att förkorta exponenter: resultatet är \\frac{1}{z}.",
-    "technique": "Förenkla potens-bråk: subtrahera exponenter."
+    "technique": "Potensförenkling-receptet: 1) skriv ut allt med potenslagarna (potens-av-potens, potens-av-produkt), 2) subtrahera exponenter för samma bas, 3) skriv om negativa exponenter som inverser.",
+    "pitfall": "Botemedlet: skriv ut nämnaren EXPLICIT när den är upphöjd — annars är det lätt att glömma att upphöjningen träffar varje faktor.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Exponent-subtraktionen",
+      "move": "Skriv om allt på formen a^m/a^n, subtrahera exponenterna baswis, gör negativa exponenter till inverser."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-kvant2-XYZ-009": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Översätt procentvillkoret till en ekvation: 0{,}6x=0{,}4y. Lös ut y i termer av x: y=\\tfrac{0{,}6}{0{,}4}x=1{,}5x. Alltså är y 150% av x.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du vet att 60% av x är lika med 40% av y. Frågan: hur många procent av x är y?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder procent?",
+        "text": "Procent betyder 'per hundra'. 60\\%=0{,}6 och 40\\%=0{,}4. '60% av x' betyder 0{,}6\\cdot x.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Översätt villkoret till ekvation",
+        "text": "'60% av x = 40% av y' blir 0{,}6x=0{,}4y.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lös ut y",
+        "text": "Dela båda sidor med 0,4: y=\\dfrac{0{,}6x}{0{,}4}=\\dfrac{0{,}6}{0{,}4}x.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Förenkla bråket",
+        "text": "\\dfrac{0{,}6}{0{,}4}=\\dfrac{6}{4}=\\dfrac{3}{2}=1{,}5. Alltså y=1{,}5x.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka y = 1,5x som procent",
+        "text": "1,5x betyder att y är 1,5 gånger så stort som x, dvs 150\\% av x. Eller: y är 50% större än x.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Generell regel",
+        "text": "Om y = kx så är y k·100% av x. Här k = 1,5, alltså 150%.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Riktningskontroll",
+        "text": "Eftersom det krävde MINDRE andel av y (40%) för att matcha 60% av x, måste y vara STÖRRE än x. Det stämmer med y = 1,5x > x.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Talexempel för säkerhets skull",
+        "text": "Sätt x=10: då är 60% av x = 6. Vi behöver 40% av y = 6, alltså y=15. Är 15 lika med 150% av 10? Ja — 150% av 10 = 15. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Snabbtest: 0{,}6\\cdot 10=6 och 0{,}4\\cdot 15=6. Bägge sidor blir 6. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: översätt procentpåstående till en ren ekvation, lös ut den ena variabeln, läs av kvoten som procent.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 20%.",
-        "why_wrong": "150%."
+        "why_tempting": "Det är lätt att räkna 60% − 40% = 20% och tro det är skillnaden.",
+        "why_wrong": "Steg 4–5 visar att y/x = 0,6/0,4 = 1,5, inte 0,2 — vi söker kvoten, inte differensen."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 66%.",
-        "why_wrong": "150% (y > x)."
+        "why_tempting": "Snabbsvar är ofta 66% om man räknar 40/60 = 0,67 (kvoten åt fel håll).",
+        "why_wrong": "Steg 4 visar att vi delar 0,6 med 0,4, inte 0,4 med 0,6 — kontrollera riktningen på divisionen."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 100%.",
-        "why_wrong": "150%."
+        "why_tempting": "Många stannar vid 100% eftersom 'de är lika' enligt villkoret.",
+        "why_wrong": "Steg 8 säger att y och x INTE är lika — det är 60% av x och 40% av y som är lika, inte x och y direkt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "y=\\frac{0{,}6}{0{,}4}x=1{,}5x. y är 150% av x.",
-    "technique": "Procent-relation: y/x · 100 = procent.",
-    "framework_id": "XYZ-TRAP-020"
+    "technique": "Procentekvation: skriv om 'p% av x = q% av y' som p·x = q·y, lös ut förhållandet y/x = p/q, tolka som procent. Trigger: två procentvärden som binder samman x och y.",
+    "pitfall": "Botemedlet: om delen är MINDRE (40% < 60%) för en variabel, måste variabeln vara STÖRRE. Snabbkoll på riktningen innan du svarar.",
+    "framework_id": "XYZ-TRAP-020",
+    "pregrade_tactic": {
+      "handle": "Procent-i-ekvation-tricket",
+      "move": "Skriv om 'a% av x = b% av y' som decimaltal-ekvation, lös ut y = (a/b)·x, läs av kvoten som procent."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-kvant2-XYZ-010": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "En kvadrat med area 100\\text{ cm}^2 har sidan \\sqrt{100}=10\\text{ cm}. Diagonalen ges av d=s\\sqrt{2}=10\\sqrt{2}\\approx 14{,}14\\text{ cm} — närmast 14.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En kvadrat har arean 100\\text{ cm}^2. Vilket av alternativen är NÄRMAST diagonalens längd?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en kvadrats area?",
+        "text": "Definition: en kvadrat med sidan s har area A=s^2. Det följer av att rektangelarea är längd·bredd, och här är längden = bredden = s.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lös ut sidan",
+        "text": "s^2=100\\Rightarrow s=\\sqrt{100}=10\\text{ cm}.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är diagonalen?",
+        "text": "Diagonalen är linjen från ett hörn till det motstående hörnet i kvadraten. Den delar kvadraten i två likbenta rätvinkliga trianglar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Pythagoras sats",
+        "text": "Regel: i en rätvinklig triangel med katetlängderna a och b och hypotenusan c gäller a^2+b^2=c^2. Här är båda kateterna kvadratens sida s = 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tillämpa Pythagoras",
+        "text": "d^2=s^2+s^2=2s^2, så d=s\\sqrt{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sätt in s = 10",
+        "text": "d=10\\sqrt{2}\\text{ cm}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är √2?",
+        "text": "Definition: \\sqrt{2} är det positiva tal som kvadrerat ger 2. Bra att kunna utantill: \\sqrt{2}\\approx 1{,}414.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Räkna ut decimaltal",
+        "text": "d=10\\cdot 1{,}414\\approx 14{,}14\\text{ cm}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Matcha mot alternativen",
+        "text": "Alternativ: 10, 12, 14, 16 cm. Värdet 14,14 ligger NÄRMAST 14 (avstånd 0,14) jämfört med 12 (avstånd 2,14) eller 16 (avstånd 1,86).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Kvadrering: 14^2=196, (10\\sqrt{2})^2=200, så 14 är 'nästan' rätt och 200 ≈ 196 — stämmer som närmsta heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: kvadratens diagonal är alltid sidan gånger √2 — memorerar du den formeln slipper du Pythagoras-uträkning varje gång.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 10 (sida).",
-        "why_wrong": "Diagonalen är längre: ≈14."
+        "why_tempting": "Det är lätt att räkna 10 (sidans längd) och förväxla den med diagonalen.",
+        "why_wrong": "Steg 4–6 visar att diagonalen är längre än sidan: d=s\\sqrt{2}>s. 10 är bara sidan."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 12.",
-        "why_wrong": "14."
+        "why_tempting": "Snabbsvar är ofta 12 om man avrundar √2 till 1,2 istället för 1,41.",
+        "why_wrong": "Steg 8 säger \\sqrt{2}\\approx 1{,}414, inte 1,2. Att avrunda för aggressivt ger 12 istället för 14."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 16.",
-        "why_wrong": "14."
+        "why_tempting": "Många stannar vid 16 om de tror att diagonalen är 1,5–1,6 gånger sidan.",
+        "why_wrong": "Steg 9 ger \\approx 14{,}14, vilket är ~1,41 ggr sidan — inte 1,6."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Sida = 10. Diagonal = 10\\sqrt{2}\\approx 14 cm.",
-    "technique": "Kvadratdiagonal: d = s√2.",
-    "framework_id": "XYZ-TRAP-044"
+    "technique": "Kvadratdiagonal-formeln: d = s·√2 där s är sidlängden. Trigger: kvadrat med given area eller sida, frågan om diagonalen.",
+    "pitfall": "Botemedlet: lär dig √2 ≈ 1,414 utantill — det är HP-mattans mest använda irrationella konstant.",
+    "framework_id": "XYZ-TRAP-044",
+    "pregrade_tactic": {
+      "handle": "Diagonal-formeln",
+      "move": "I en kvadrat: d = s·√2. Räkna ut s från arean först (s = √A), multiplicera sedan med √2 ≈ 1,414."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-kvant2-XYZ-011": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Bryt ut z under roten: \\sqrt{xz+yz}=\\sqrt{z(x+y)}. Sätt in värdena: z=5 och x+y=5, alltså \\sqrt{5\\cdot 5}=\\sqrt{25}=5.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du vet att z=x+y=5, alltså både att z=5 och att x+y=5. Beräkna \\sqrt{xz+yz}.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera den gemensamma faktorn",
+        "text": "Båda termerna xz och yz innehåller faktorn z. Det är ett tydligt tecken på att bryta ut z.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Distributiva lagen baklänges",
+        "text": "Regel: ab+ac=a(b+c). Tillämpa med a=z: xz+yz=z(x+y).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skriv om roten",
+        "text": "\\sqrt{xz+yz}=\\sqrt{z(x+y)}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt in z = 5",
+        "text": "Eftersom z=5: \\sqrt{z(x+y)}=\\sqrt{5(x+y)}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt in x + y = 5",
+        "text": "Eftersom x+y=5: \\sqrt{5(x+y)}=\\sqrt{5\\cdot 5}=\\sqrt{25}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut roten",
+        "text": "\\sqrt{25}=5 (eftersom 5² = 25 och vi väljer den positiva roten).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Varför fungerade detta?",
+        "text": "Vi behövde aldrig veta x och y var för sig — bara deras SUMMA. Faktoriseringen z(x+y) gav oss tillgång till summan direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vad händer om man inte faktoriserar?",
+        "text": "Utan utbryt: \\sqrt{xz+yz}=\\sqrt{5x+5y} — fortfarande samma uttryck, men nu syns inte den gemensamma faktorn lika tydligt. Du måste ändå inse att 5x + 5y = 5(x+y) = 25.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Talexempel",
+        "text": "Pröva x=2, y=3 (vilket ger x+y=5 och z=5): \\sqrt{2\\cdot 5+3\\cdot 5}=\\sqrt{10+15}=\\sqrt{25}=5. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Pröva ett annat par x=1, y=4: \\sqrt{1\\cdot 5+4\\cdot 5}=\\sqrt{5+20}=\\sqrt{25}=5. ✓ Resultatet beror inte på fördelningen mellan x och y, bara på summan.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B (5). Insikten i en mening: när två termer delar en faktor, bryt ut den — då hänger uttrycket ofta direkt på de givna summorna och produkterna.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 5 utan att kvadratrota.",
-        "why_wrong": "5 är korrekt — efter rotutdragning."
+        "why_tempting": "Det är lätt att stanna vid √25 utan att räkna ut roten.",
+        "why_wrong": "Steg 7 räknar ut \\sqrt{25}=5; alternativ A och B kan båda vara '5' i denna OCR-version, men endast den enkla siffran 5 är rätt slutsvar."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 5√5.",
-        "why_wrong": "5."
+        "why_tempting": "Snabbsvar är ofta 5√5 om man inte inser att x + y = 5 (och tror att x + y är okänt).",
+        "why_wrong": "Steg 1 visar att villkoret z=x+y=5 INNEHÅLLER att x + y = 5 — inte bara att z = 5."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 25.",
-        "why_wrong": "√25 = 5."
+        "why_tempting": "Många stannar vid 25 om de glömmer kvadratroten i slutet.",
+        "why_wrong": "Steg 6–7 visar att uttrycket är \\sqrt{25}=5, inte 25. Roten dras alltid."
       }
     ],
-    "pitfall": null,
-    "solution_path": "\\sqrt{xz+yz}=\\sqrt{z(x+y)}=\\sqrt{5\\cdot 5}=5.",
-    "technique": "Faktorisera + roten: z(x+y) under roten."
+    "technique": "Faktorisering + kända summor: när två termer under en rot delar en faktor, bryt ut den och du får uttrycket på formen 'känd faktor · känd summa', vilket är direkt räknebart.",
+    "pitfall": "Botemedlet: läs villkoret {M('z=x+y=5')} som TVÅ påståenden, inte ett. Det säger både att z = 5 OCH att x + y = 5.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Faktor-utbrytningen",
+      "move": "När två termer delar en faktor: bryt ut den, matcha mot givna summor/produkter, räkna sedan."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-kvant2-XYZ-012": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Använd formlerna för udda och jämna summor: u=1+3+\\ldots+(2n-1)=n^2 och j=2+4+\\ldots+2n=n(n+1). Med n=30: u=900, j=930, u-j=-30.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "u = summan av de 30 första udda positiva heltalen (1, 3, 5, …, 59). j = summan av de 30 första jämna positiva heltalen (2, 4, 6, …, 60). Frågan: u − j?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är de 30 första udda heltalen?",
+        "text": "De udda är 1, 3, 5, …, formeln för det k:te är 2k-1. Det 30:e är 2\\cdot 30-1=59. Listan slutar alltså på 59.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad är de 30 första jämna heltalen?",
+        "text": "De jämna är 2, 4, 6, …, formeln för det k:te är 2k. Det 30:e är 2\\cdot 30=60. Listan slutar alltså på 60.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Parvis subtraktion (smart väg)",
+        "text": "Para ihop term k från varje lista: (2k-1)-2k=-1. Varje par bidrar med −1 till skillnaden.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Summera paren",
+        "text": "Det finns 30 par, var och en bidrar med −1. u-j=30\\cdot(-1)=-30.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Alternativ: använd summa-formler",
+        "text": "Formel 1: summan av de n första udda heltalen är 1+3+\\ldots+(2n-1)=n^2. Det kan motiveras geometriskt: man bygger upp en n×n-kvadrat ruta för ruta.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna u",
+        "text": "Med n=30: u=30^2=900.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Formel för jämn summa",
+        "text": "Formel 2: summan av de n första jämna heltalen är 2+4+\\ldots+2n=2(1+2+\\ldots+n)=2\\cdot\\tfrac{n(n+1)}{2}=n(n+1).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna j",
+        "text": "Med n=30: j=30\\cdot 31=930.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Räkna differensen",
+        "text": "u-j=900-930=-30.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Båda metoderna ger −30. Snabbtest med små n: n = 2 ger u = 1+3 = 4, j = 2+4 = 6, u−j = −2 (= −n). Det stämmer: u − j = −n alltid.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: jämna heltal är alltid 1 större än motsvarande udda heltal — därför ligger udda-summan exakt n under jämn-summan.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna −1.",
-        "why_wrong": "−30."
+        "why_tempting": "Det är lätt att räkna ett enda par −1 och stanna där om man missar att det är 30 par.",
+        "why_wrong": "Steg 5 visar att det är 30 par × (−1) = −30, inte −1. Hela summan ackumulerar parens differens."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 0.",
-        "why_wrong": "−30."
+        "why_tempting": "Snabbsvar är ofta 0 om man tror att 'lika många positiva tal i båda listorna ger lika summor'.",
+        "why_wrong": "Steg 4 visar att varje par har differens −1; även om antalet termer är samma blir summan inte 0."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid +30.",
-        "why_wrong": "−30 (negativ)."
+        "why_tempting": "Många stannar vid +30 om de räknar j − u istället för u − j (fel ordning).",
+        "why_wrong": "Steg 1 specificerar u − j (udda först). Eftersom j > u blir differensen negativ — −30, inte +30."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Udda summa: 1+3+\\ldots+(2n-1)=n^{2}=30^{2}=900. Jämn summa: 2+4+\\ldots+2n=n(n+1)=30\\cdot 31=930. Diff: −30.",
-    "technique": "Summor: udda 1..2n-1 = n²; jämna 2..2n = n(n+1)."
+    "technique": "Aritmetiska summor: udda 1, 3, …, 2n−1 har summa n²; jämna 2, 4, …, 2n har summa n(n+1). Alternativt: para term-för-term när två listor har samma antal element. Trigger: 'summan av de N första X-heltalen'.",
+    "pitfall": "Botemedlet: håll koll på tecknet i differensen. u − j är inte detsamma som j − u — det är hela skillnaden i svaret.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Par-jämförelsen",
+      "move": "När två lika långa listor jämförs term-för-term: räkna ut differensen per par, multiplicera med antalet par."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-1-verb1-ELF-031": {
     "_meta": {

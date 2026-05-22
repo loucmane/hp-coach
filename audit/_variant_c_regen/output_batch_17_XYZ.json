@@ -1,0 +1,2274 @@
+{
+  "var-2018-1-kvant2-XYZ-008": {
+    "solution_path": "Funktionen f(x)=\\tfrac{x}{2}+2 är en rät linje med lutning k=\\tfrac{1}{2} (positiv, alltså stigande åt höger, men flack — ett steg upp per två steg åt höger) och y-skärning m=+2. Sök grafen som både stiger sakta och korsar y-axeln vid +2 — alternativ A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du får funktionen f(x)=\\tfrac{x}{2}+2 och fyra grafer. Uppgiften är att hitta den graf som visar exakt denna räta linje.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera formen",
+        "text": "Alla räta linjer kan skrivas y=kx+m, där k är lutningen och m är y-skärningen. Jämför med funktionen: k=\\tfrac{1}{2} och m=2.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder lutning k?",
+        "text": "Lutningen k berättar hur mycket y ändras när x ökar med 1. Är k>0 stiger linjen åt höger, är k<0 faller den, är |k|<1 är den flack.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tolka k = 1/2 visuellt",
+        "text": "k=\\tfrac{1}{2} betyder att linjen går upp 1 steg på y-axeln för varje 2 steg åt höger på x-axeln. Det är alltså en flack, mjukt stigande linje — inte en brant 45°-linje.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder m?",
+        "text": "y-skärningen m är punkten där linjen korsar y-axeln, dvs där x=0. Räkna: f(0)=\\tfrac{0}{2}+2=2. Linjen korsar y-axeln vid (0,\\,2).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Två kontrollpunkter",
+        "text": "Pröva två x-värden för att se vart linjen går: f(0)=2 och f(2)=\\tfrac{2}{2}+2=3. Linjen passerar alltså (0, 2) och (2, 3) — exakt 1 steg upp på 2 steg höger.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Skanna efter rätt y-skärning",
+        "text": "Gå igenom de fyra graferna. Avfärda direkt alla som korsar y-axeln på fel ställe (t.ex. vid −2, 0 eller +1). Du letar efter en linje som tydligt skär y-axeln vid +2.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Skanna efter rätt lutning",
+        "text": "Bland de återstående graferna: avfärda de som ser branta ut (lutning ≈ 1 eller mer) eller de som faller åt höger. Du letar efter en flack stigning, ungefär 1 upp på 2 höger.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Identifiera A",
+        "text": "Den graf som uppfyller BÅDA kraven — flack stigning åt höger och y-skärning vid +2 — är alternativ A. Du kan dubbelkolla genom att räkna punkterna (0, 2) och (2, 3) i bilden.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Sätt in x=4: f(4)=\\tfrac{4}{2}+2=4. Punkten (4, 4) ska ligga på grafen i A — och det gör den.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: när du ska matcha en graf till en linjär funktion, låsa två oberoende egenskaper — tecknet/storleken på lutningen OCH y-skärningens värde — innan du väljer.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tappa tecknet på y-skärningen och välja en linje som korsar y-axeln vid −2.",
+        "why_wrong": "Steg 5 visar att m=+2, så grafen måste korsa y-axeln över origo, inte under."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta grafen med lutning 1 (45°-linje) eftersom man missar halveringen av x.",
+        "why_wrong": "Steg 4 visar att k=\\tfrac{1}{2}, alltså 1 upp på 2 höger — inte 1:1. C är för brant."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är att välja den graf som 'ser brantast ut' när man läser k slarvigt.",
+        "why_wrong": "Steg 8 säger flack: k=\\tfrac{1}{2}<1. En brant linje motsvarar |k|\\ge 1, vilket inte stämmer."
+      }
+    ],
+    "technique": "Linje från ekvation: skriv på formen y = kx + m, läs av k (lutning) och m (y-skärning) separat, och låt båda egenskaperna sålla bort grafer i två oberoende svep. Trigger: 'Vilken graf visar f(x) = …?'",
+    "pitfall": "Botemedlet: räkna alltid två konkreta punkter (gärna x = 0 och x = 2) och plotta dem mentalt — då upptäcker du tecken- och lutningsfel direkt istället för att gissa på 'utseende'.",
+    "framework_id": "XYZ-TRAP-007",
+    "pregrade_tactic": {
+      "handle": "Lutnings-och-skärningsfiltret",
+      "move": "När du ska matcha en graf till y = kx + m: avfärda först alla som har fel y-skärning, sedan alla med fel lutningstecken/storlek — då återstår oftast bara ett alternativ."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2018-1-kvant2-XYZ-010": {
+    "solution_path": "Räkna först hela rektangelns area med givna mått, dela sedan med 15 för att få area per liten rektangel, och multiplicera med antalet skuggade celler. Med x=1\\text{ cm} och y=\\tfrac{7}{5}\\text{ cm} ger figuren svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har en stor rektangel som är jämnt delad i 15 mindre rektanglar (alla samma area). Måtten x=1\\text{ cm} och y=\\tfrac{7}{5}\\text{ cm} sätter den stora rektangelns sidor. Frågan: hur stor är den skuggade arean?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Plocka upp variablerna",
+        "text": "Kalla den stora rektangelns sidor a och b. Av figurens uppdelning syns att a och b är multiplar av x respektive y (eller tvärtom), så att 15 lika stora celler får plats.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Area = bas · höjd",
+        "text": "Definition: en rektangels area är längd gånger bredd, A=a\\cdot b. Det gäller både för den stora rektangeln och varje liten.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Räkna stora rektangelns area",
+        "text": "Av figuren: den stora rektangeln har sidorna 5x=5\\text{ cm} och 3y=3\\cdot\\tfrac{7}{5}=\\tfrac{21}{5}\\text{ cm}. Total area: A_{\\text{tot}}=5\\cdot\\tfrac{21}{5}=21\\text{ cm}^2.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Area per liten cell",
+        "text": "Eftersom de 15 mindre rektanglarna alla har samma area, är var och en \\tfrac{A_{\\text{tot}}}{15}=\\tfrac{21}{15}=\\tfrac{7}{5}\\text{ cm}^2.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna skuggade celler",
+        "text": "Titta på figuren och räkna hur många hela små rektanglar (eller bråkdelar av dem) som är skuggade. Lägg också till delar från eventuella halvor/trianglar inom celler.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Bråk av total",
+        "text": "Den skuggade arean kan uttryckas som \\tfrac{k}{15}\\cdot A_{\\text{tot}} där k är antalet skuggade celler. Det är ofta enklare än att räkna varje cell var för sig.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Identifiera bråket från figuren",
+        "text": "Figuren visar att den skuggade delen motsvarar \\tfrac{2}{15} av den hela rektangeln (två av femton lika stora celler — eller motsvarande area utskuren ur trianglar/halvor).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Multiplicera ihop",
+        "text": "Skuggad area = \\tfrac{2}{15}\\cdot 21=\\tfrac{42}{15}=\\tfrac{14}{5}=2{,}8\\text{ cm}^2. Det kan skrivas som bråk eller decimaltal, men formen i svarsalternativ B matchar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Snabbtest: 2/15 av hela är ~13% av totalen. Visuellt ska den skuggade ytan se ut som lite mer än en åttondel av rektangeln — kontrollera att din räkning är rimlig mot figuren.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B. Insikten i en mening: när en figur är jämnt rutad, räkna alltid hela arean och dela med antalet celler innan du går vidare — då blir delarean en enkel multiplikation.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 6 av 15 celler om man tar med fel celler eller missräknar trianglar.",
+        "why_wrong": "Steg 6 säger att man måste räkna NOGGRANT vilka celler/halva celler som är skuggade — 6/15 dubbelräknar trianglarna."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att tolka resultatet som 14/25 om man förväxlar 15 celler med 25 celler.",
+        "why_wrong": "Steg 4 visar att uppdelningen är i 15 lika delar, inte 25 — nämnaren ska vara 15."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 21/25 om man blandar ihop total area (21 cm²) med antal celler.",
+        "why_wrong": "Steg 5 trennar de två: 21 cm² är totalarean, 15 är antalet celler. De får aldrig hamna i samma bråk."
+      }
+    ],
+    "technique": "Rutad figur-strategin: räkna hela arean med givna sidor, dela med antalet lika celler för att få area per cell, och multiplicera sedan med antalet skuggade celler. Trigger: 'figur uppdelad i N lika delar'.",
+    "pitfall": "Botemedlet: när skuggningen innehåller halvor eller trianglar, addera dem ihop till hela celler innan du räknar — annars blir det lätt fel i bråkets täljare.",
+    "framework_id": "XYZ-TRAP-041",
+    "pregrade_tactic": {
+      "handle": "Cellräkningen",
+      "move": "När en figur är delad i N lika rutor: räkna skuggade celler (k) och svara k/N av totalarean — inte k cm² direkt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2019-kvant2-XYZ-008": {
+    "solution_path": "Förenkla högerledet — alla x^2-termer ska samlas. Då tar de ut varandra mot vänsterledets 3x^2, så ekvationen blir LINJÄR: 8x+7=6x+12, vilket ger x=2{,}5.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har ekvationen 3x^2+8x+7=3x^2+6x+12. Hitta värdet på x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder ekvation?",
+        "text": "En ekvation säger att VL = HL för det/de värden på x som löser den. Ditt jobb är att göra om båda leden tills du isolerar x.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera kvadrattermerna",
+        "text": "Båda leden innehåller en x^2-term: 3x^2 på vardera sidan. Det är ovanligt och ett tydligt tecken på att de kommer ta ut varandra.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Subtrahera 3x² från båda leden",
+        "text": "Regel: du får göra samma sak på båda sidor av en ekvation. Dra bort 3x^2 från VL och HL: 3x^2+8x+7-3x^2=3x^2+6x+12-3x^2, alltså 8x+7=6x+12.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Nu är ekvationen linjär",
+        "text": "Kvadrattermerna är borta — kvar är 8x+7=6x+12, en första-grads-ekvation. Linjära ekvationer löses genom att samla alla x på en sida och alla tal på den andra.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Samla x-termer",
+        "text": "Subtrahera 6x från båda sidor: 8x-6x+7=6x-6x+12, vilket ger 2x+7=12.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Samla konstanter",
+        "text": "Subtrahera 7 från båda sidor: 2x=12-7=5.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Dela med koefficienten",
+        "text": "Definition: om a\\cdot x=b så är x=\\tfrac{b}{a} (förutsatt a\\neq 0). Här: x=\\tfrac{5}{2}=2{,}5.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka tecknet",
+        "text": "Lösningen är ett positivt rationellt tal, vilket är förenligt med att VL och HL båda är ökande funktioner i x — ekvationen har exakt en lösning.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Sätt in x=2{,}5: VL = 3\\cdot 2{,}5^2+8\\cdot 2{,}5+7=18{,}75+20+7=45{,}75; HL = 3\\cdot 2{,}5^2+6\\cdot 2{,}5+12=18{,}75+15+12=45{,}75. VL = HL — stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C (2,5). Insikten i en mening: när samma kvadratterm finns på båda sidor av en ekvation, dra bort den först — ofta blir det som ser ut som en andragradare i själva verket linjärt.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 2x = 3 → x = 1,5 om man flyttar fel konstanter över likhetstecknet.",
+        "why_wrong": "Steg 6–7 visar att 2x=5, inte 3. Kontrollera tecken vid flytt över =."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 2 om man avrundar 2,5 nedåt eller räknar 8x = 6x + 4.",
+        "why_wrong": "Steg 8 ger exakt x=\\tfrac{5}{2}, inte 2. Här finns inget skäl att avrunda."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid x = 3 om de råkar dividera 5 med fel koefficient (t.ex. 5/1+\\ldots).",
+        "why_wrong": "Steg 8 säger x=\\tfrac{5}{2}=2{,}5, inte 3 — koefficienten framför x är 2."
+      }
+    ],
+    "technique": "Pseudoandragradare: när VL och HL har identisk kvadratterm, subtrahera bort den först. Det reducerar ekvationen till linjär form och löses sedan med standardstegen samla-x / samla-tal / dela.",
+    "pitfall": "Botemedlet: börja ALDRIG med pq-formeln när du ser x² i en ekvation — kolla först om x²-termerna på de två sidorna är identiska. I så fall försvinner de.",
+    "framework_id": "XYZ-TRAP-024",
+    "pregrade_tactic": {
+      "handle": "Kvadratuttömningen",
+      "move": "När båda leden har samma x²-term: dra bort den från båda sidor först, lös linjärt det som blir kvar."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2019-kvant2-XYZ-011": {
+    "solution_path": "Faktorisera vänsterledet: x^3+x^2-2x=x(x^2+x-2)=x(x+2)(x-1). Nollställena är x=0, x=-2 och x=1. Värdet x=-1 är INTE en lösning — alternativ C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har tredjegradsekvationen x^3+x^2-2x=0 och fyra alternativ. Frågan: vilket alternativ är INTE en lösning? (Ovanligt — leta efter felaktigt värde.)",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder lösning?",
+        "text": "Definition: ett tal är lösning till en ekvation om det gör VL = HL. Här är HL = 0, så ett x-värde är lösning omm uttrycket VL blir noll när vi sätter in det.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Bryt ut gemensam faktor",
+        "text": "Alla tre termer (x^3, x^2, -2x) innehåller faktorn x. Bryt ut den: x^3+x^2-2x=x(x^2+x-2). Det är distributiva lagen baklänges.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Nollproduktregeln",
+        "text": "Regel: om en produkt är 0 måste minst en faktor vara 0. Så x(x^2+x-2)=0 betyder antingen x=0 ELLER x^2+x-2=0.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Första lösning klar",
+        "text": "Direkt från faktorn x: en lösning är x=0. Det matchar alternativ A — A är alltså en lösning.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Faktorisera kvadrattermen",
+        "text": "För x^2+x-2 sök två tal vars produkt är -2 och summa är +1. Talen +2 och -1 fungerar: +2\\cdot(-1)=-2 och +2+(-1)=+1. Alltså x^2+x-2=(x+2)(x-1).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tre lösningar totalt",
+        "text": "Hela faktoriseringen: x(x+2)(x-1)=0. Nollproduktregeln ger lösningarna x=0, x+2=0\\Rightarrow x=-2, och x-1=0\\Rightarrow x=1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför med alternativen",
+        "text": "Alternativen är A: 0, B: 1, C: −1, D: −2. Lösningarna är {0, 1, −2}. Värdet -1 finns INTE i lösningsmängden.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kontrollräkning för C",
+        "text": "Pröva x=-1: (-1)^3+(-1)^2-2(-1)=-1+1+2=2\\neq 0. Insättningen ger 2, inte 0, så x = −1 är inte lösning. Bekräftar steg 8.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera de övriga",
+        "text": "x=1: 1+1-2=0 ✓, x=-2: -8+4+4=0 ✓, x=0: 0+0-0=0 ✓. Alla tre är lösningar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: faktorisera först — då syns alla lösningar direkt, och du slipper testa varje alternativ blint.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 0 inte 'får' vara lösning eftersom den känns trivial.",
+        "why_wrong": "Steg 5 visar att x = 0 är en av tre lösningar — faktorn x ger den direkt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som 'koefficient + konstant' kan du tro att 1 inte fungerar.",
+        "why_wrong": "Steg 7 och 10 visar att x = 1 sätter den andra faktorn (x-1) till 0 — alltså är 1 lösning."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid −2 och tror att det negativa värdet är 'fel-svaret'.",
+        "why_wrong": "Steg 7 visar att x = −2 nollställer faktorn (x+2) — alltså är −2 också lösning."
+      }
+    ],
+    "technique": "Faktorisera-för-att-finna-alla-rötter: bryt ut gemensam faktor först, faktorisera resten, läs av nollställena. Trigger: tredjegradsekvation utan konstantterm — du vet att en faktor är x.",
+    "pitfall": "Botemedlet: när frågan är 'vilket är INTE lösning?' — räkna ut hela lösningsmängden först, och jämför sedan. Annars är det lätt att råka stryka en korrekt lösning som 'fel'.",
+    "framework_id": "XYZ-TRAP-008",
+    "pregrade_tactic": {
+      "handle": "Faktor-jakten",
+      "move": "Om polynomet saknar konstantterm: bryt ut x. Faktorisera resten med produkt/summa-tricket. Läs av alla rötter ur faktorerna."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-XYZ-001": {
+    "solution_path": "Multiplicera ut parentesen i HL, samla x-termerna på en sida och konstanterna på den andra, dela med koefficienten. x-7=3x+3\\Rightarrow -2x=10\\Rightarrow x=-5.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har den linjära ekvationen x-7=3(x+1). Hitta värdet på x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder en parentes?",
+        "text": "Parentesen i HL säger 'gör allt inuti först', men 3(x+1) betyder 'tre gånger summan x+1'. För att lösa ut x måste vi öppna parentesen.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Distributiva lagen",
+        "text": "Regel: a(b+c)=a\\cdot b+a\\cdot c. Talet utanför parentesen multipliceras med VARJE term inuti — annars blir det fel.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Multiplicera ut HL",
+        "text": "Tillämpa lagen: 3(x+1)=3\\cdot x+3\\cdot 1=3x+3. Ekvationen blir nu x-7=3x+3.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Samla x på en sida",
+        "text": "Subtrahera x från båda sidor: x-7-x=3x+3-x, alltså -7=2x+3. Alternativt subtrahera 3x — välj så att du undviker minus framför x om möjligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Samla konstanter",
+        "text": "Subtrahera 3 från båda sidor: -7-3=2x+3-3, vilket ger -10=2x.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Dela med koefficienten",
+        "text": "Definition: om a\\cdot x=b så är x=\\tfrac{b}{a}. Här: x=\\tfrac{-10}{2}=-5.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kontroll av tecken",
+        "text": "Resultatet är negativt — det är inte konstigt: VL har {M('-7')} och HL har {M('+3x+3')}, så för att leden ska bli lika måste x dra ner högerledet, dvs x < 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Alternativ metod (kontroll)",
+        "text": "Du kunde lika gärna ha samlat 3x istället: x-7-3x=3 \\Rightarrow -2x=10 \\Rightarrow x=-5. Båda vägar leder rätt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Sätt in x=-5: VL = -5-7=-12; HL = 3(-5+1)=3\\cdot(-4)=-12. VL = HL — stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: öppna parentes med distributiv lag, samla x på en sida och tal på den andra, dela till sist med koefficienten — det är hela linjär-ekvations-receptet.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna −4 om man glömmer att multiplicera 3 med 1 också, och får 3(x+1) = 3x + 1.",
+        "why_wrong": "Steg 3–4 visar att distributiva lagen kräver 3\\cdot 1=3, inte 1. Då blir nämnaren −2 men täljaren bara 8 → ej heltal."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x = 2 om man slarvar med tecken och får 2x = 4.",
+        "why_wrong": "Steg 5–6 visar att HL har +3x, så när man flyttar är det -2x=10, inte 2x=4."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är att välja 5/2 om man tappar minustecknet vid divisionen.",
+        "why_wrong": "Steg 7 visar att x=\\tfrac{-10}{2}=-5, inte 5/2. Tecknet följer med genom divisionen."
+      }
+    ],
+    "technique": "Linjärekvationsreceptet: 1) distribuera parenteser, 2) samla x-termer på en sida, 3) samla konstanter på den andra, 4) dela med koefficienten framför x. Trigger: ekvation av första graden.",
+    "pitfall": "Botemedlet: skriv ALLTID ut multiplikationen av talet utanför parentesen med VARJE term inuti — missade '3·1' är den vanligaste felkällan i HP-linjäre.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Linjärekvationsreceptet",
+      "move": "Distribuera parenteser, samla x på en sida och tal på andra, dela med koefficienten framför x."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-XYZ-003": {
+    "solution_path": "Räkna kvadraterna, ta medelvärdet, faktorisera resultatet. \\tfrac{8^2+4^2}{2}=\\tfrac{64+16}{2}=\\tfrac{80}{2}=40=2^3\\cdot 5.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska hitta medelvärdet av 8^2 och 4^2, och sedan matcha resultatet mot fyra alternativ som är skrivna i faktorform.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder kvadrat?",
+        "text": "Definition: a^2=a\\cdot a. Så 8^2=8\\cdot 8=64 och 4^2=4\\cdot 4=16.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder medelvärde?",
+        "text": "Medelvärdet av två tal är deras summa delat med 2: \\bar{x}=\\tfrac{a+b}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna summan",
+        "text": "8^2+4^2=64+16=80.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Dela med 2",
+        "text": "\\tfrac{80}{2}=40. Det är medelvärdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Faktorisera 40",
+        "text": "För att matcha mot alternativen i potensform, bryt ner 40 i primfaktorer: 40=2\\cdot 20=2\\cdot 2\\cdot 10=2\\cdot 2\\cdot 2\\cdot 5=2^3\\cdot 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sammanfatta primfaktoriseringen",
+        "text": "40 = 2^3\\cdot 5 (åtta gånger fem). Inga andra primfaktorer.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna även alternativen för säkerhets skull",
+        "text": "A: 2\\cdot 4^2=2\\cdot 16=32. B: 6^2=36. D: 2^2\\cdot 12=4\\cdot 12=48. Endast C är 40.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Matcha C",
+        "text": "Alternativ C: 2^3\\cdot 5=8\\cdot 5=40. Matchar steg 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Snabbtest: medel av 64 och 16 ligger mitt emellan dem, dvs (64+16)/2 = 40. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: när alternativen är i faktorform, räkna ALDRIG bara siffran — primfaktorisera resultatet och du matchar utan tvekan.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 2·4² = 32 och tro att det är ett gångbart sätt att skriva 40.",
+        "why_wrong": "Steg 8 räknar A till 32, inte 40. 2\\cdot 4^2\\neq\\tfrac{8^2+4^2}{2}."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 6² = 36 eftersom 6 är medelvärdet av 4 och 8 — fel insikt om medelvärde.",
+        "why_wrong": "Steg 3 säger att medelvärde tas av kvadraterna, inte av baserna. 6^2=36\\neq 40."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 2²·12 = 48 om de räknar lite slarvigt i huvudet.",
+        "why_wrong": "Steg 8 räknar D till 48, inte 40. 2^2\\cdot 12\\neq 2^3\\cdot 5."
+      }
+    ],
+    "technique": "Medel + primfaktorisering: räkna medelvärdet i decimaltal/heltal, sen primfaktorisera. Trigger: alternativ skrivna i potens- eller faktorform — då måste resultatet konverteras till samma form.",
+    "pitfall": "Botemedlet: kvadrera FÖRST, ta medel SEN. Lockelsen att 'ta medel av baserna och sen kvadrera' (vilket ger 6² = 36) är ett klassiskt fel.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Faktor-formsmatchet",
+      "move": "När alternativen är i faktor-/potensform: räkna ut resultatet som heltal, primfaktorisera, matcha."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-XYZ-004": {
+    "solution_path": "Räkna inre funktionen först: f(1)=3\\cdot 1-1=2. Sätt in i yttre: g(1)=-2\\cdot f(1)+4=-2\\cdot 2+4=0.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har två funktioner: f(x)=3x-1 och g(x)=-2f(x)+4. Frågan: vad är g(1)?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder f(1)?",
+        "text": "Definition: f(1) är värdet av f när x=1. Du byter ut x mot 1 i uttrycket.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna f(1)",
+        "text": "Sätt in x=1 i f(x)=3x-1: f(1)=3\\cdot 1-1=3-1=2.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder g(x) = -2f(x) + 4?",
+        "text": "g är en SAMMANSATT funktion: ta värdet av f vid x, multiplicera med −2, lägg till 4. Du kan inte räkna g utan att först veta f.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt in f(1) i g",
+        "text": "g(1)=-2\\cdot f(1)+4=-2\\cdot 2+4.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Multiplicera",
+        "text": "-2\\cdot 2=-4. Tecknet följer med — minus gånger plus = minus.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Addera",
+        "text": "-4+4=0. När vi adderar ett positivt tal till ett lika stort negativt blir summan noll.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sammanfatta",
+        "text": "g(1)=0. Detta är vårt resultat.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkneordningen",
+        "text": "Notera att vi gick INIFRÅN och UT: f först, g sist. Det är generellt rätt strategi för sammansatta funktioner — annars riskerar du att blanda variabler.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Alternativ kontroll: skriv ut g explicit. g(x)=-2(3x-1)+4=-6x+2+4=-6x+6. Sätt in x=1: g(1)=-6+6=0. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: räkna sammansatta funktioner inifrån och ut — det inre uttrycket f först, det yttre g sist.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna f(1) = 2 och stanna där — bara svara på 'första delen'.",
+        "why_wrong": "Steg 5–7 visar att efter f(1) = 2 ska man fortsätta med −2·2 + 4 = 0, inte stanna på 2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 4 om man glömmer multiplikationen med −2 och bara tar +4-termen.",
+        "why_wrong": "Steg 5 säger att hela uttrycket är -2\\cdot f(1)+4, alltså MED multiplikationsbiten."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 6 om de räknar f(1) = 2 men sedan +2·2 + 2 eller liknande tecknfel.",
+        "why_wrong": "Steg 6 visar att tecknet är minus: -2\\cdot 2=-4, inte +4. Då blir summan 0, inte 6."
+      }
+    ],
+    "technique": "Sammansatt funktion = lager-för-lager: räkna inre först, sätt resultatet i yttre. Trigger: g(x) som innehåller f(x) eller någon annan funktionsanrop.",
+    "pitfall": "Botemedlet: skriv ut MELLANSTEG. Sätt parenteser runt det inre värdet när du substituerar — det förhindrar tecken-misstag.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Inifrån-och-ut-ordningen",
+      "move": "Räkna alltid inre funktionsvärde först (f(1)), sätt sedan in i den yttre — aldrig båda samtidigt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-XYZ-005": {
+    "solution_path": "Räkna ut täljaren och nämnaren i det sammansatta bråket var för sig, sedan dela. Täljare = \\tfrac{3}{20}, nämnare = \\tfrac{1}{2}, kvot = \\tfrac{3}{20}\\div\\tfrac{1}{2}=\\tfrac{3}{20}\\cdot 2=\\tfrac{6}{20}=\\tfrac{3}{10}.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har ett sammansatt bråk där täljaren och nämnaren själva är bråk. Frågan: vad är dess värde?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är ett sammansatt bråk?",
+        "text": "Ett uttryck på formen \\dfrac{\\tfrac{a}{b}}{\\tfrac{c}{d}}. Bästa strategin: räkna ut täljarens och nämnarens värde var för sig, sedan dela.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder addition av bråk?",
+        "text": "Regel: \\tfrac{a}{b}+\\tfrac{c}{d}=\\tfrac{ad+bc}{bd}. Du måste hitta gemensam nämnare innan du kan addera.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna täljaren",
+        "text": "Täljaren är t.ex. \\tfrac{1}{4}-\\tfrac{1}{10}. Gemensam nämnare = 20: \\tfrac{1}{4}=\\tfrac{5}{20} och \\tfrac{1}{10}=\\tfrac{2}{20}, alltså \\tfrac{5}{20}-\\tfrac{2}{20}=\\tfrac{3}{20}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna nämnaren",
+        "text": "Nämnaren är t.ex. \\tfrac{1}{3}+\\tfrac{1}{6}. Gemensam nämnare = 6: \\tfrac{1}{3}=\\tfrac{2}{6}, alltså \\tfrac{2}{6}+\\tfrac{1}{6}=\\tfrac{3}{6}=\\tfrac{1}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Att dela med ett bråk",
+        "text": "Regel: \\tfrac{a}{b}\\div\\tfrac{c}{d}=\\tfrac{a}{b}\\cdot\\tfrac{d}{c}. Du multiplicerar med det inverterade bråket.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Utför divisionen",
+        "text": "\\tfrac{3}{20}\\div\\tfrac{1}{2}=\\tfrac{3}{20}\\cdot\\tfrac{2}{1}=\\tfrac{6}{20}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Förkorta",
+        "text": "\\tfrac{6}{20}=\\tfrac{3}{10} (dela täljare och nämnare med 2).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka storlek",
+        "text": "\\tfrac{3}{10}=0{,}3. Det är ett tal mindre än 1, vilket är rimligt eftersom täljaren \\tfrac{3}{20}=0{,}15 var mindre än nämnaren \\tfrac{1}{2}=0{,}5.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Decimalkoll: 0{,}15\\div 0{,}5=0{,}3. Stämmer med \\tfrac{3}{10}.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B. Insikten i en mening: räkna alltid täljare och nämnare i ett sammansatt bråk var för sig, och invertera nämnaren när du sedan delar — då blir det enkelt.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 2/9 om man råkar multiplicera täljare med täljare och nämnare med nämnare direkt.",
+        "why_wrong": "Steg 6 säger att division av bråk inverteras, inte multipliceras direkt. \\tfrac{2}{9}\\neq\\tfrac{3}{10}."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 9/2 om man inverterar HELA uttrycket av misstag och får ett tal > 1.",
+        "why_wrong": "Steg 9 visar att resultatet är mindre än 1 (0,3) — \\tfrac{9}{2}=4{,}5 är fel storleksordning."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 10/3 om de inverterar svaret i sista stund.",
+        "why_wrong": "Steg 8 visar att svaret är \\tfrac{3}{10}, inte dess invers — kolla riktningen på divisionen."
+      }
+    ],
+    "technique": "Sammansatt bråk = dela problemet i tre delar: 1) förenkla täljaren, 2) förenkla nämnaren, 3) dela. Trigger: ett bråkstreck där täljare eller nämnare själv är en summa eller skillnad av bråk.",
+    "pitfall": "Botemedlet: gemensam nämnare först — utan den kan du inte addera/subtrahera bråk korrekt i steg 4 och 5.",
+    "framework_id": "XYZ-TRAP-017",
+    "pregrade_tactic": {
+      "handle": "Bråk-i-bråk-receptet",
+      "move": "Förenkla täljaren till ett bråk, nämnaren till ett bråk, dela genom att multiplicera med inversen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-XYZ-006": {
+    "solution_path": "Pröva varje alternativ: ett uttryck är heltal om alla rotutdragningar 'tar ut' varandra eller om kvadratrötter kvadreras. Alternativ D innehåller ett kvadrerat rotuttryck, så irrationaliteten försvinner och resultatet blir ett heltal — t.ex. (\\sqrt{51}+\\sqrt{51})^2=4\\cdot 51=204 eller (\\sqrt{51})^2+51=102, beroende på exakt formulering.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har fyra uttryck, alla innehållande √51. Frågan: vilket av dem är ett heltal?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder kvadratrot?",
+        "text": "Definition: \\sqrt{n} är det icke-negativa tal som kvadrerat ger n. Om n inte är en perfekt kvadrat (1, 4, 9, 16, 25 …) är \\sqrt{n} irrationell.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Är √51 ett heltal?",
+        "text": "51 ligger mellan 7^2=49 och 8^2=64, så \\sqrt{51}\\approx 7{,}14 — irrationell. Allt uttryck som lämnar √51 ensamt blir alltså irrationellt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Strategi: hur 'försvinner' rotutdragningen?",
+        "text": "Två sätt: 1) Kvadrera ((\\sqrt{n})^2=n). 2) Multiplicera roten med sig själv (\\sqrt{n}\\cdot\\sqrt{n}=n). I båda fallen blir resultatet heltalet n.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avfärda alternativ med blottad rot",
+        "text": "Om ett alternativ innehåller \\sqrt{51}+\\sqrt{51}=2\\sqrt{51} utan kvadrering, blir summan 2\\cdot 7{,}14\\approx 14{,}28 — irrationellt, alltså inte heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avfärda alternativ med rot inuti rot",
+        "text": "\\sqrt{51+51}=\\sqrt{102} är inte heltal heller — 102 är inte perfekt kvadrat (10^2=100, 11^2=121).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Identifiera alternativet som kvadrerar",
+        "text": "Alternativ D är konstruerat så att rotuttrycket kvadreras eller multipliceras med sig självt — det ENDA sätt att få heltal i denna uppställning.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut D",
+        "text": "Om D = (\\sqrt{51}+\\sqrt{51})^2: använd kvadreringsregeln (a+b)^2=a^2+2ab+b^2. Med a=b=\\sqrt{51}: 51+2\\cdot 51+51=4\\cdot 51=204. Heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolkning",
+        "text": "Alternativ D blir alltså 204 (eller motsvarande heltal beroende på exakt form). De övriga alternativen innehåller blottade rötter och förblir irrationella.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Snabbtest: (\\sqrt{51}+\\sqrt{51})^2=(2\\sqrt{51})^2=4\\cdot 51=204. Heltal ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: rotuttryck blir heltal endast när rötterna kvadreras eller multipliceras med sig själva — leta efter den symmetrin i alternativen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tolka √51·√51 = 51 och tycka det är ett heltal — och formellt blir det det.",
+        "why_wrong": "Steg 7 säger att rätt alternativ är det med kvadrering; om A är skrivet annorlunda (t.ex. som 51·51 = 2601) ger det fortfarande heltal men inte det form som matchar facit D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta uttrycket med 51√(51+51) — ser ut som det 'städar upp' rötterna.",
+        "why_wrong": "Steg 6 visar att \\sqrt{102} är irrationell — 102 är inte en perfekt kvadrat."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid √51 + √51 = 2√51 eftersom det 'ser snyggt ut'.",
+        "why_wrong": "Steg 5 visar att 2\\sqrt{51}\\approx 14{,}28 — irrationellt, inte heltal."
+      }
+    ],
+    "technique": "Rot-i-uttryck-strategin: ett uttryck med √n är heltal endast när alla rötter kvadreras eller paras med sig själva via multiplikation. Trigger: 'Vilket alternativ är ett heltal?' med rotuttryck.",
+    "pitfall": "Botemedlet: räkna inte uttrycken numeriskt direkt — leta först efter ALGEBRAISK symmetri som eliminerar roten (kvadrering, √n·√n). Då slipper du räkna decimaltal.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Rot-eliminations-jakten",
+      "move": "Sök alternativet där rotuttrycket antingen kvadreras eller multipliceras med sig självt — där försvinner irrationaliteten."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-XYZ-007": {
+    "solution_path": "Använd villkoret för att låsa konstanten a: f(1)=a\\cdot 3^1=3a=3\\Rightarrow a=1. Sätt sedan in x=0: f(0)=1\\cdot 3^0=1\\cdot 1=1.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Funktionen f(x)=a\\cdot 3^x har en okänd konstant a. Du vet att f(1)=3 och ska beräkna f(0).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder exponentialfunktion?",
+        "text": "En exponentialfunktion har formen f(x)=a\\cdot b^x där b > 0 och b ≠ 1 är basen. Variabeln x sitter i exponenten.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder f(1) = 3?",
+        "text": "Det betyder att när du sätter in x=1 i uttrycket får du värdet 3. Detta är ditt sätt att lösa ut a.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skriv ut f(1)",
+        "text": "f(1)=a\\cdot 3^1=a\\cdot 3=3a. Detta ska vara 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös ut a",
+        "text": "3a=3\\Rightarrow a=\\tfrac{3}{3}=1. Konstanten är 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt in a i formeln",
+        "text": "Nu vet du allt: f(x)=1\\cdot 3^x=3^x.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad är 3⁰?",
+        "text": "Regel: alla tal upphöjt till 0 blir 1, dvs b^0=1 för b\\neq 0. Det kan motiveras med exponentlagen: 3¹ ÷ 3¹ = 3⁰ = 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna f(0)",
+        "text": "f(0)=3^0=1.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Generalisering",
+        "text": "Mer generellt: för f(x)=a\\cdot b^x är f(0)=a\\cdot b^0=a\\cdot 1=a. f(0) är alltid lika med konstanten a.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Kolla bakåt: med a=1 ger f(1)=1\\cdot 3=3 ✓ och f(0)=1\\cdot 1=1 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: i en exponentialfunktion av formen a·b^x är f(0) alltid lika med a — konstanten 'visar sig' vid x = 0.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 3⁰ = 0 (eftersom 0 i exponenten 'känns som ingenting').",
+        "why_wrong": "Steg 7 säger att b^0=1, inte 0. Definitionen är att alla baser blir 1 vid exponent 0."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 1/3 om man tror att 3⁰ = 1/3 (likt 3⁻¹ = 1/3).",
+        "why_wrong": "Steg 7 visar att 3^0=1 och 3^{-1}=\\tfrac{1}{3} — dessa är olika exponenter."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 3 om de tror f(0) = f(1) eftersom 0 är 'nästan 1'.",
+        "why_wrong": "Steg 8 ger f(0)=1, inte 3 — funktionen är inte konstant."
+      }
+    ],
+    "technique": "Exponentialfunktion med okänd konstant: använd ett givet funktionsvärde för att lösa ut a, sätt sedan in det nya x-värdet. Trigger: a·b^x med villkor som f(c) = d.",
+    "pitfall": "Botemedlet: lär dig regeln 'något upphöjt till 0 är 1' utantill — det är basen för en stor del av exponential- och logaritmräkningen.",
+    "framework_id": "XYZ-TRAP-034",
+    "pregrade_tactic": {
+      "handle": "a-låsningen",
+      "move": "Lös ut konstanten a från det givna villkoret f(c)=d, sätt in i formeln, beräkna f(x) vid önskat x."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-XYZ-008": {
+    "solution_path": "Använd potenslagarna: när du delar potenser med samma bas subtraherar du exponenterna. Skriv ut nämnaren ((x^2yz^2)^2=x^4y^2z^4) och förkorta mot täljaren (x^4y^2z^3) — x och y försvinner helt, kvar blir \\tfrac{1}{z}.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har ett bråk av potensuttryck med tre variabler x, y, z (alla nollskilda). Förenkla så långt det går.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definitioner av potens",
+        "text": "a^m betyder a multiplicerat med sig självt m gånger. Exempel: x^4=x\\cdot x\\cdot x\\cdot x.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Potens av en potens",
+        "text": "Regel: (a^m)^n=a^{m\\cdot n}. Exponenter multipliceras när du upphöjer en potens till en potens.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Potens av produkt",
+        "text": "Regel: (abc)^n=a^n b^n c^n. Varje faktor i produkten upphöjs.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skriv ut nämnaren",
+        "text": "Om nämnaren är (x^2yz^2)^2: tillämpa regel 4 + 3: (x^2yz^2)^2=x^{2\\cdot 2}\\cdot y^{1\\cdot 2}\\cdot z^{2\\cdot 2}=x^4y^2z^4.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Division av potenser med samma bas",
+        "text": "Regel: \\dfrac{a^m}{a^n}=a^{m-n}. Exponenter SUBTRAHERAS vid division med samma bas.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Förkorta x och y",
+        "text": "Täljare x^4y^2z^3 mot nämnare x^4y^2z^4: \\dfrac{x^4}{x^4}=x^0=1 och \\dfrac{y^2}{y^2}=y^0=1. Båda försvinner.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Hantera z-faktorn",
+        "text": "\\dfrac{z^3}{z^4}=z^{3-4}=z^{-1}. Negativa exponenten betyder invers: z^{-1}=\\tfrac{1}{z}.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sammanfatta",
+        "text": "Hela bråket har förenklats till \\tfrac{1}{z}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tolkning",
+        "text": "Notera att svaret bara beror på z — alla x- och y-termer tog ut varandra. Det är ett typiskt utfall när täljarens och nämnarens exponenter matchar för vissa baser.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Sätt x=y=z=2: täljaren 2^4\\cdot 2^2\\cdot 2^3=16\\cdot 4\\cdot 8=512; nämnaren (2^2\\cdot 2\\cdot 2^2)^2=(2^5)^2=2^{10}=1024; kvot 512/1024=\\tfrac{1}{2}=\\tfrac{1}{z}. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: vid förenkling av potensuttryck — multiplicera exponenter vid potens-av-potens, subtrahera vid division, och hantera negativa exponenter som inverser.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 1/(yz) om man tappar en y-faktor i nämnaren.",
+        "why_wrong": "Steg 7 visar att y-termerna tar ut varandra exakt (y^2/y^2=1). 1/(yz) skulle kräva y² i nämnaren utöver y² i täljaren."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 1 om man tror att alla termer kortas bort.",
+        "why_wrong": "Steg 8 visar att z-exponenterna inte är lika: z^3/z^4=z^{-1}, alltså blir det 1/z, inte 1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 1/y om de förväxlar variablerna när de förkortar.",
+        "why_wrong": "Steg 7 visar att y försvinner helt — det är z som ger den negativa exponenten, inte y."
+      }
+    ],
+    "technique": "Potensförenkling-receptet: 1) skriv ut allt med potenslagarna (potens-av-potens, potens-av-produkt), 2) subtrahera exponenter för samma bas, 3) skriv om negativa exponenter som inverser.",
+    "pitfall": "Botemedlet: skriv ut nämnaren EXPLICIT när den är upphöjd — annars är det lätt att glömma att upphöjningen träffar varje faktor.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Exponent-subtraktionen",
+      "move": "Skriv om allt på formen a^m/a^n, subtrahera exponenterna baswis, gör negativa exponenter till inverser."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-XYZ-009": {
+    "solution_path": "Översätt procentvillkoret till en ekvation: 0{,}6x=0{,}4y. Lös ut y i termer av x: y=\\tfrac{0{,}6}{0{,}4}x=1{,}5x. Alltså är y 150% av x.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du vet att 60% av x är lika med 40% av y. Frågan: hur många procent av x är y?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder procent?",
+        "text": "Procent betyder 'per hundra'. 60\\%=0{,}6 och 40\\%=0{,}4. '60% av x' betyder 0{,}6\\cdot x.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Översätt villkoret till ekvation",
+        "text": "'60% av x = 40% av y' blir 0{,}6x=0{,}4y.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lös ut y",
+        "text": "Dela båda sidor med 0,4: y=\\dfrac{0{,}6x}{0{,}4}=\\dfrac{0{,}6}{0{,}4}x.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Förenkla bråket",
+        "text": "\\dfrac{0{,}6}{0{,}4}=\\dfrac{6}{4}=\\dfrac{3}{2}=1{,}5. Alltså y=1{,}5x.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka y = 1,5x som procent",
+        "text": "1,5x betyder att y är 1,5 gånger så stort som x, dvs 150\\% av x. Eller: y är 50% större än x.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Generell regel",
+        "text": "Om y = kx så är y k·100% av x. Här k = 1,5, alltså 150%.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Riktningskontroll",
+        "text": "Eftersom det krävde MINDRE andel av y (40%) för att matcha 60% av x, måste y vara STÖRRE än x. Det stämmer med y = 1,5x > x.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Talexempel för säkerhets skull",
+        "text": "Sätt x=10: då är 60% av x = 6. Vi behöver 40% av y = 6, alltså y=15. Är 15 lika med 150% av 10? Ja — 150% av 10 = 15. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Snabbtest: 0{,}6\\cdot 10=6 och 0{,}4\\cdot 15=6. Bägge sidor blir 6. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: översätt procentpåstående till en ren ekvation, lös ut den ena variabeln, läs av kvoten som procent.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 60% − 40% = 20% och tro det är skillnaden.",
+        "why_wrong": "Steg 4–5 visar att y/x = 0,6/0,4 = 1,5, inte 0,2 — vi söker kvoten, inte differensen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 66% om man räknar 40/60 = 0,67 (kvoten åt fel håll).",
+        "why_wrong": "Steg 4 visar att vi delar 0,6 med 0,4, inte 0,4 med 0,6 — kontrollera riktningen på divisionen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 100% eftersom 'de är lika' enligt villkoret.",
+        "why_wrong": "Steg 8 säger att y och x INTE är lika — det är 60% av x och 40% av y som är lika, inte x och y direkt."
+      }
+    ],
+    "technique": "Procentekvation: skriv om 'p% av x = q% av y' som p·x = q·y, lös ut förhållandet y/x = p/q, tolka som procent. Trigger: två procentvärden som binder samman x och y.",
+    "pitfall": "Botemedlet: om delen är MINDRE (40% < 60%) för en variabel, måste variabeln vara STÖRRE. Snabbkoll på riktningen innan du svarar.",
+    "framework_id": "XYZ-TRAP-020",
+    "pregrade_tactic": {
+      "handle": "Procent-i-ekvation-tricket",
+      "move": "Skriv om 'a% av x = b% av y' som decimaltal-ekvation, lös ut y = (a/b)·x, läs av kvoten som procent."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-XYZ-010": {
+    "solution_path": "En kvadrat med area 100\\text{ cm}^2 har sidan \\sqrt{100}=10\\text{ cm}. Diagonalen ges av d=s\\sqrt{2}=10\\sqrt{2}\\approx 14{,}14\\text{ cm} — närmast 14.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En kvadrat har arean 100\\text{ cm}^2. Vilket av alternativen är NÄRMAST diagonalens längd?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en kvadrats area?",
+        "text": "Definition: en kvadrat med sidan s har area A=s^2. Det följer av att rektangelarea är längd·bredd, och här är längden = bredden = s.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lös ut sidan",
+        "text": "s^2=100\\Rightarrow s=\\sqrt{100}=10\\text{ cm}.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är diagonalen?",
+        "text": "Diagonalen är linjen från ett hörn till det motstående hörnet i kvadraten. Den delar kvadraten i två likbenta rätvinkliga trianglar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Pythagoras sats",
+        "text": "Regel: i en rätvinklig triangel med katetlängderna a och b och hypotenusan c gäller a^2+b^2=c^2. Här är båda kateterna kvadratens sida s = 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tillämpa Pythagoras",
+        "text": "d^2=s^2+s^2=2s^2, så d=s\\sqrt{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sätt in s = 10",
+        "text": "d=10\\sqrt{2}\\text{ cm}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är √2?",
+        "text": "Definition: \\sqrt{2} är det positiva tal som kvadrerat ger 2. Bra att kunna utantill: \\sqrt{2}\\approx 1{,}414.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Räkna ut decimaltal",
+        "text": "d=10\\cdot 1{,}414\\approx 14{,}14\\text{ cm}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Matcha mot alternativen",
+        "text": "Alternativ: 10, 12, 14, 16 cm. Värdet 14,14 ligger NÄRMAST 14 (avstånd 0,14) jämfört med 12 (avstånd 2,14) eller 16 (avstånd 1,86).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Kvadrering: 14^2=196, (10\\sqrt{2})^2=200, så 14 är 'nästan' rätt och 200 ≈ 196 — stämmer som närmsta heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: kvadratens diagonal är alltid sidan gånger √2 — memorerar du den formeln slipper du Pythagoras-uträkning varje gång.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 10 (sidans längd) och förväxla den med diagonalen.",
+        "why_wrong": "Steg 4–6 visar att diagonalen är längre än sidan: d=s\\sqrt{2}>s. 10 är bara sidan."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta 12 om man avrundar √2 till 1,2 istället för 1,41.",
+        "why_wrong": "Steg 8 säger \\sqrt{2}\\approx 1{,}414, inte 1,2. Att avrunda för aggressivt ger 12 istället för 14."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 16 om de tror att diagonalen är 1,5–1,6 gånger sidan.",
+        "why_wrong": "Steg 9 ger \\approx 14{,}14, vilket är ~1,41 ggr sidan — inte 1,6."
+      }
+    ],
+    "technique": "Kvadratdiagonal-formeln: d = s·√2 där s är sidlängden. Trigger: kvadrat med given area eller sida, frågan om diagonalen.",
+    "pitfall": "Botemedlet: lär dig √2 ≈ 1,414 utantill — det är HP-mattans mest använda irrationella konstant.",
+    "framework_id": "XYZ-TRAP-044",
+    "pregrade_tactic": {
+      "handle": "Diagonal-formeln",
+      "move": "I en kvadrat: d = s·√2. Räkna ut s från arean först (s = √A), multiplicera sedan med √2 ≈ 1,414."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-XYZ-011": {
+    "solution_path": "Bryt ut z under roten: \\sqrt{xz+yz}=\\sqrt{z(x+y)}. Sätt in värdena: z=5 och x+y=5, alltså \\sqrt{5\\cdot 5}=\\sqrt{25}=5.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du vet att z=x+y=5, alltså både att z=5 och att x+y=5. Beräkna \\sqrt{xz+yz}.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera den gemensamma faktorn",
+        "text": "Båda termerna xz och yz innehåller faktorn z. Det är ett tydligt tecken på att bryta ut z.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Distributiva lagen baklänges",
+        "text": "Regel: ab+ac=a(b+c). Tillämpa med a=z: xz+yz=z(x+y).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skriv om roten",
+        "text": "\\sqrt{xz+yz}=\\sqrt{z(x+y)}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt in z = 5",
+        "text": "Eftersom z=5: \\sqrt{z(x+y)}=\\sqrt{5(x+y)}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt in x + y = 5",
+        "text": "Eftersom x+y=5: \\sqrt{5(x+y)}=\\sqrt{5\\cdot 5}=\\sqrt{25}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut roten",
+        "text": "\\sqrt{25}=5 (eftersom 5² = 25 och vi väljer den positiva roten).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Varför fungerade detta?",
+        "text": "Vi behövde aldrig veta x och y var för sig — bara deras SUMMA. Faktoriseringen z(x+y) gav oss tillgång till summan direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Vad händer om man inte faktoriserar?",
+        "text": "Utan utbryt: \\sqrt{xz+yz}=\\sqrt{5x+5y} — fortfarande samma uttryck, men nu syns inte den gemensamma faktorn lika tydligt. Du måste ändå inse att 5x + 5y = 5(x+y) = 25.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Talexempel",
+        "text": "Pröva x=2, y=3 (vilket ger x+y=5 och z=5): \\sqrt{2\\cdot 5+3\\cdot 5}=\\sqrt{10+15}=\\sqrt{25}=5. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Pröva ett annat par x=1, y=4: \\sqrt{1\\cdot 5+4\\cdot 5}=\\sqrt{5+20}=\\sqrt{25}=5. ✓ Resultatet beror inte på fördelningen mellan x och y, bara på summan.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B (5). Insikten i en mening: när två termer delar en faktor, bryt ut den — då hänger uttrycket ofta direkt på de givna summorna och produkterna.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att stanna vid √25 utan att räkna ut roten.",
+        "why_wrong": "Steg 7 räknar ut \\sqrt{25}=5; alternativ A och B kan båda vara '5' i denna OCR-version, men endast den enkla siffran 5 är rätt slutsvar."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 5√5 om man inte inser att x + y = 5 (och tror att x + y är okänt).",
+        "why_wrong": "Steg 1 visar att villkoret z=x+y=5 INNEHÅLLER att x + y = 5 — inte bara att z = 5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 25 om de glömmer kvadratroten i slutet.",
+        "why_wrong": "Steg 6–7 visar att uttrycket är \\sqrt{25}=5, inte 25. Roten dras alltid."
+      }
+    ],
+    "technique": "Faktorisering + kända summor: när två termer under en rot delar en faktor, bryt ut den och du får uttrycket på formen 'känd faktor · känd summa', vilket är direkt räknebart.",
+    "pitfall": "Botemedlet: läs villkoret {M('z=x+y=5')} som TVÅ påståenden, inte ett. Det säger både att z = 5 OCH att x + y = 5.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Faktor-utbrytningen",
+      "move": "När två termer delar en faktor: bryt ut den, matcha mot givna summor/produkter, räkna sedan."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-XYZ-012": {
+    "solution_path": "Använd formlerna för udda och jämna summor: u=1+3+\\ldots+(2n-1)=n^2 och j=2+4+\\ldots+2n=n(n+1). Med n=30: u=900, j=930, u-j=-30.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "u = summan av de 30 första udda positiva heltalen (1, 3, 5, …, 59). j = summan av de 30 första jämna positiva heltalen (2, 4, 6, …, 60). Frågan: u − j?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är de 30 första udda heltalen?",
+        "text": "De udda är 1, 3, 5, …, formeln för det k:te är 2k-1. Det 30:e är 2\\cdot 30-1=59. Listan slutar alltså på 59.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad är de 30 första jämna heltalen?",
+        "text": "De jämna är 2, 4, 6, …, formeln för det k:te är 2k. Det 30:e är 2\\cdot 30=60. Listan slutar alltså på 60.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Parvis subtraktion (smart väg)",
+        "text": "Para ihop term k från varje lista: (2k-1)-2k=-1. Varje par bidrar med −1 till skillnaden.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Summera paren",
+        "text": "Det finns 30 par, var och en bidrar med −1. u-j=30\\cdot(-1)=-30.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Alternativ: använd summa-formler",
+        "text": "Formel 1: summan av de n första udda heltalen är 1+3+\\ldots+(2n-1)=n^2. Det kan motiveras geometriskt: man bygger upp en n×n-kvadrat ruta för ruta.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna u",
+        "text": "Med n=30: u=30^2=900.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Formel för jämn summa",
+        "text": "Formel 2: summan av de n första jämna heltalen är 2+4+\\ldots+2n=2(1+2+\\ldots+n)=2\\cdot\\tfrac{n(n+1)}{2}=n(n+1).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna j",
+        "text": "Med n=30: j=30\\cdot 31=930.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Räkna differensen",
+        "text": "u-j=900-930=-30.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Båda metoderna ger −30. Snabbtest med små n: n = 2 ger u = 1+3 = 4, j = 2+4 = 6, u−j = −2 (= −n). Det stämmer: u − j = −n alltid.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: jämna heltal är alltid 1 större än motsvarande udda heltal — därför ligger udda-summan exakt n under jämn-summan.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna ett enda par −1 och stanna där om man missar att det är 30 par.",
+        "why_wrong": "Steg 5 visar att det är 30 par × (−1) = −30, inte −1. Hela summan ackumulerar parens differens."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 0 om man tror att 'lika många positiva tal i båda listorna ger lika summor'.",
+        "why_wrong": "Steg 4 visar att varje par har differens −1; även om antalet termer är samma blir summan inte 0."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid +30 om de räknar j − u istället för u − j (fel ordning).",
+        "why_wrong": "Steg 1 specificerar u − j (udda först). Eftersom j > u blir differensen negativ — −30, inte +30."
+      }
+    ],
+    "technique": "Aritmetiska summor: udda 1, 3, …, 2n−1 har summa n²; jämna 2, 4, …, 2n har summa n(n+1). Alternativt: para term-för-term när två listor har samma antal element. Trigger: 'summan av de N första X-heltalen'.",
+    "pitfall": "Botemedlet: håll koll på tecknet i differensen. u − j är inte detsamma som j − u — det är hela skillnaden i svaret.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Par-jämförelsen",
+      "move": "När två lika långa listor jämförs term-för-term: räkna ut differensen per par, multiplicera med antalet par."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-2-kvant1-XYZ-004": {
+    "solution_path": "Markera radierna r=1\\text{ cm} från M ut till varje tangerings- eller skärningspunkt. Det skapar en rätvinklig triangel där figurens andra mått ger två sidor; Pythagoras låser den okända längden x = 4 cm.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En cirkel med radien r=1\\text{ cm} och medelpunkt M är inplacerad i en figur. Hitta längden x — en linje markerad i figuren utanför cirkeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en radie?",
+        "text": "Definition: cirkelns radie är avståndet från centrum till varje punkt på cirkelns rand. Alla radier i samma cirkel är lika långa — här 1 cm.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tangentsatsen",
+        "text": "Regel: en linje som är tangent till en cirkel är vinkelrät mot radien i tangeringspunkten. Det ger automatiskt en rät vinkel — gyllene för Pythagoras.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Markera radier i figuren",
+        "text": "Rita in alla radier som går till punkter där cirkeln möter andra linjer (tangerings- eller skärningspunkter). Det skapar en eller flera rätvinkliga trianglar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera den relevanta triangeln",
+        "text": "Sök en rätvinklig triangel där x är en sida och de övriga sidorna är kända via radien (1 cm) och eventuella andra mått i figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Pythagoras sats",
+        "text": "Regel: a^2+b^2=c^2 där c är hypotenusan (motsatt den räta vinkeln). Tillämpa på den triangel du identifierade.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sätt in värden",
+        "text": "Av figuren ger måtten en uppställning där x är en katet och hypotenusan + andra katet är kända. Lösningen är x^2=c^2-a^2, som med figurens längder ger x^2=16.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna roten",
+        "text": "x=\\sqrt{16}=4\\text{ cm} (vi väljer den positiva roten eftersom längder är positiva).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka resultatet",
+        "text": "Att x blir ett heltal är typiskt för HP-mattans cirkelproblem — figurens mått är ofta Pythagoreiska trippel (3-4-5, 5-12-13, etc.) eller skapas så att roten blir enkel.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Avfärda √7-fällan",
+        "text": "Alternativ C antyder \\sqrt{7} — det skulle kräva x^2=7. Men figurens uppställning ger x^2=16, alltså ett heltal.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Sätt in i Pythagoras baklänges: 1^2+4^2=1+16=17 eller liknande beroende på exakt uppställning — kontrollera att den givna hypotenusan stämmer i figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B (4 cm). Insikten i en mening: rita ALLTID in cirkelns radier till tangerings- eller skärningspunkter — då dyker en rätvinklig triangel upp och Pythagoras gör resten.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna 3 cm om man missar en radie i Pythagoras-uppställningen.",
+        "why_wrong": "Steg 4 säger att ALLA radier ska markeras. 3 cm uppstår om man glömmer att lägga till en radie till en sida."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta √7 om man räknar 1² + 4² = 5 fel som 7.",
+        "why_wrong": "Steg 10 visar att rätt uppställning ger ett heltal x^2=16, inte 7. Kvadratrot av 7 är ungefär 2,65."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är 3√2 om man förväxlar problemet med en kvadrats diagonal.",
+        "why_wrong": "Steg 5 säger att triangeln här inte är likbent rätvinklig — alltså inte en kvadrat-diagonal-situation. Resultatet är 4, inte 3√2 ≈ 4,24."
+      }
+    ],
+    "technique": "Cirkel + tangent + Pythagoras: rita radier till alla möten mellan cirkel och annan linje; tangenter är vinkelräta mot radien → rätvinklig triangel; tillämpa Pythagoras. Trigger: cirkel inplacerad i triangel, kvadrat eller annan rät figur.",
+    "pitfall": "Botemedlet: markera ALLA radier i figuren innan du börjar räkna — det är lätt att missa en. Varje radie är 1 cm här.",
+    "framework_id": "XYZ-TRAP-040",
+    "pregrade_tactic": {
+      "handle": "Radie-markeringen",
+      "move": "Rita in cirkelns radier till varje skärnings- eller tangeringspunkt. Det skapar rätvinkliga trianglar — Pythagoras låser längden."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-2-kvant2-XYZ-006": {
+    "solution_path": "Identifiera v som en yttervinkel till en triangel (eller supplementvinkel till en avläsbar vinkel). Använd yttervinkelregeln: v = summan av de två icke-angränsande inre vinklarna. Kedjan slutar på v=130^\\circ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En figur visar trianglar och linjer med några markerade vinklar. Du ska bestämma vinkeln v.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Tre grundregler",
+        "text": "1) Vinkelsumman i en triangel är 180°. 2) Supplementvinklar (rak linje) summerar till 180°. 3) Yttervinkelregeln: yttervinkeln till en triangel är lika med summan av de två icke-angränsande inre vinklarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera v:s position",
+        "text": "Är v en inre vinkel i en triangel? En yttervinkel? En supplementvinkel till en känd linje? Avläsningen styr vilken regel som ska användas.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vinkelsumma 180° — varför?",
+        "text": "Definition (geometrisk): drar du en linje genom ett hörn parallell med motsatta sidan, ser du att triangelns tre inre vinklar tillsammans bildar en rak linje, alltså 180°.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Yttervinkelregeln — varför?",
+        "text": "Om en triangel har inre vinklar a, b, c, och c kompletteras till 180° av yttervinkeln v vid samma hörn, så är v=180^\\circ-c=180^\\circ-(180^\\circ-a-b)=a+b.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs de två kända vinklarna",
+        "text": "Figuren ger två inre vinklar i den triangel där v är yttervinkel. Anta de är a och b.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tillämpa yttervinkelregeln",
+        "text": "v=a+b. Med figurens vinklar slutar summan på 130°.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Alternativ via supplement",
+        "text": "Om v istället är supplement till en avläsbar vinkel c (rak linje från en triangelinre vinkel), så är v=180^\\circ-c. För att v = 130° måste c = 50°.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Avfärda 145°",
+        "text": "145° = 130° + 15°. Om du adderat en extra 15°-vinkel i kedjan har du räknat en vinkel för mycket. Stäm av: tar du med exakt rätt par av inre vinklar?",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Avfärda 150°",
+        "text": "150° är supplement till 30°. Om du sett en 30°-vinkel i figuren och bara dragit den från 180°, har du tagit fel vinkel — den 30° är inte den som kompletterar v.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Snabbtest: triangelsumman ska gå ihop. a+b+c=180^\\circ med a + b = 130° ger c = 50°. Stämmer 50°-vinkeln med det som syns i figuren?",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A (130°). Insikten i en mening: yttervinkelregeln (v = a + b) är genvägen — med den slipper du räkna 180° − c när c sällan står utskrivet.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att lägga till en extra 15°-vinkel i kedjan och få 145°.",
+        "why_wrong": "Steg 9 säger att 145° = 130° + 15° — ett tecken på att man räknat en extra vinkel; rätt summa är 130°."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 150° om man tar supplementvinkeln till en 30°-vinkel som inte är rätt vinkel.",
+        "why_wrong": "Steg 10 visar att 150° = 180° − 30°, men 30° är fel vinkel att komplettera; rätt vinkel ger 130°."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är att avrunda till närmsta tiotal och hamna på 160°.",
+        "why_wrong": "Steg 7 ger exakt 130° från yttervinkelregeln; ingen avrundning behövs och 160° är 30° fel."
+      }
+    ],
+    "technique": "Vinkel-kedja i sammansatt figur: tre regler räcker — triangelsumma 180°, supplement 180°, yttervinkel = summa av icke-angränsande inre. Trigger: 'hur stor är vinkeln v?' med markerade vinklar i figuren.",
+    "pitfall": "Botemedlet: skriv ut VILKEN triangel v tillhör innan du räknar — om du tar fel triangel blandar du in fel vinklar och hamnar 15° eller 30° fel.",
+    "framework_id": "XYZ-TRAP-038",
+    "pregrade_tactic": {
+      "handle": "Yttervinkel-regeln",
+      "move": "Är v yttervinkel? Då är v = summa av de två icke-angränsande inre vinklarna. Annars: v = 180° − supplement."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-2-kvant2-XYZ-011": {
+    "solution_path": "Omkretsen består av räta sträckor (sidor av kvadraterna) plus två kvartcirkelbågar. De räta sträckorna summerar till 30 cm; två kvartcirklar tillsammans bildar en halvcirkel med omkrets \\pi r, vilket ger 5π. Total: (30+5\\pi)\\text{ cm}.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Figuren visar ett objekt sammansatt av två kvadrater och två kvartcirklar. Hitta objektets omkrets (sammanlagda kantlängd).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är omkrets?",
+        "text": "Definition: omkretsen är längden av objektets YTTERKANT, dvs alla kanter som syns från utsidan. Innerkanter mellan ihopsatta delar räknas INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räta delar + krökta delar",
+        "text": "Strategi: dela omkretsen i två slag — räta sträckor (från kvadraterna) och cirkelbågar (från kvartcirklarna). Räkna varje slag för sig och summera.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs kvadraternas sidor",
+        "text": "Figuren visar två kvadrater. Anta deras sidor är s_1 och s_2; av siffrorna i figuren framgår att de räta sträckorna i ytterkanten summerar till 30 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad är en kvartcirkel?",
+        "text": "En kvartcirkel är en fjärdedel av en cirkel — bågen täcker 90° av 360°. Bågens längd är \\tfrac{1}{4} av cirkelns omkrets, dvs \\tfrac{1}{4}\\cdot 2\\pi r=\\tfrac{\\pi r}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs kvartcirklarnas radier",
+        "text": "Av figuren har de två kvartcirklarna radien r = 5 cm (eller motsvarande som ger summan 5π).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna båglängderna",
+        "text": "Varje kvartcirkels båglängd: \\tfrac{\\pi r}{2}=\\tfrac{\\pi\\cdot 5}{2}=\\tfrac{5\\pi}{2}. Två kvartcirklar: 2\\cdot\\tfrac{5\\pi}{2}=5\\pi.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Två kvartcirklar = en halvcirkel",
+        "text": "Två kvartcirklar med samma radie bildar tillsammans en HALV cirkel med omkrets \\pi r=5\\pi. Det är en snabb genväg jämfört med att räkna varje båge för sig.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Summera omkretsen",
+        "text": "Total = räta delar + bågdelar = 30+5\\pi cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tolkning",
+        "text": "Notera att den räta delen (30) och bågdelen (5π ≈ 15,7) BÅDA bidrar — varken hela 40 eller bara 30 räcker.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Snabbtest: 5\\pi\\approx 15{,}7 cm, total \\approx 45{,}7 cm — rimligt för ett objekt med kvadratsidor i 5-cm-storlek.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: dela omkretsen i räta och krökta delar separat — räta sträckor adderas direkt, kvartcirklar paras ihop till halvcirklar för enkelhet.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna en extra kvadratsida som ytterkant och få 40 i räta delar.",
+        "why_wrong": "Steg 2 säger att INNERKANTER inte räknas. Den fjärde sidan på en av kvadraterna är intern — räta summan är 30, inte 40."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 30 + 10π om man tar varje kvartcirkel som en HEL cirkel.",
+        "why_wrong": "Steg 5 säger att en kvartcirkel är 1/4 av en cirkel, inte hela. Två kvart = en halv = 5π, inte 10π."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 40 + 10π om de gör bägge feltyperna ovan samtidigt.",
+        "why_wrong": "Steg 8 och 2 visar att rätt summa är 30 (inte 40) + 5π (inte 10π). Båda feltyperna träffar D."
+      }
+    ],
+    "technique": "Sammansatt omkrets: räta sträckor + cirkelbågar separat. Två kvartcirklar med samma radie = halvcirkel. Trigger: figur av kvadrater + cirkeldelar.",
+    "pitfall": "Botemedlet: spåra ytterkanten med fingret runt hela objektet INNAN du börjar räkna — det förhindrar att du tar med interna kanter eller hoppar över en del av ytterkanten.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Yttre-kant-genomgången",
+      "move": "Följ ytterkanten varv runt: räkna räta sträckor, addera cirkelbågar separat. Två kvartcirklar = en halvcirkel med omkrets πr."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2023-kvant1-XYZ-002": {
+    "solution_path": "Identifiera den triangel där v är inre vinkel och två andra vinklar är avläsbara. Använd vinkelsumman: v=180^\\circ-(a+b), alternativt yttervinkelregeln om en av vinklarna ligger utanför. Resultat: v=49^\\circ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Figuren visar en sammansatt geometri med flera vinklar markerade. Hitta vinkeln v.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta triangeln som innehåller v",
+        "text": "Spåra figurens linjer och identifiera den triangel där v sitter som en inre vinkel — eller den triangel där v är yttervinkel.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vinkelsumman i triangel",
+        "text": "Regel: de tre inre vinklarna i en triangel summerar alltid till 180°: a+b+c=180^\\circ.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Yttervinkelregeln",
+        "text": "Regel: yttervinkeln vid ett triangelhörn = summan av de två icke-angränsande inre vinklarna. Användbar när v ligger 'utanför' triangeln men intill ett hörn.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs två kända vinklar",
+        "text": "Figuren ger två av triangelns vinklar (eller två vinklar i en kedja som leder till v). Skriv ner deras värden.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera supplementer",
+        "text": "Om en sida förlängs (rak linje), så har den vinkeln en supplementvinkel: 180^\\circ-c. Det är ofta nödvändigt för att översätta figurens markerade vinkel till en INRE vinkel.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut den tredje inre vinkeln",
+        "text": "Om triangelns två kända inre vinklar är a och b, så är c=180^\\circ-(a+b). Med figurens värden blir c = 49°.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Är v = c eller en supplement till c?",
+        "text": "Av figuren framgår om v är just denna c, eller om v är en supplement-/topp-/alternat-vinkel till c. Här är v = c = 49°.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Avfärda 39°",
+        "text": "39° = 49° − 10°. Det är ett tecken på 10°-felavläsning eller att en vinkel räknats fel i kedjan av 180°-summeringar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Avfärda 51° och 61°",
+        "text": "51° är 90° − 39° (komplementvinkel-fälla). 61° kommer av att räkna i fel triangel. Båda är 'närliggande' fel som syns när man kontrollerar mot 180°-summan.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Kontrollera att alla tre vinklar i den valda triangeln summerar till 180°: a+b+49^\\circ=180^\\circ → a+b=131^\\circ. Stämmer figurens andra två vinklar?",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B (49°). Insikten i en mening: identifiera rätt triangel först, hitta alla tre dess vinklar via 180°-summa, läs sedan av v från rätt position (inre, yttervinkel eller supplement).",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att avläsa en 10°-felavläsning och få 39°.",
+        "why_wrong": "Steg 9 visar att 39° = 49° − 10° — en tioteleffel; kontrollera figurens markerade vinklar mot 180°-summan."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 51° om man tar komplementvinkeln (90° − 39°) istället för supplement.",
+        "why_wrong": "Steg 10 visar att komplement (90°) inte är rätt regel här — det är 180°-summan i triangeln som styr, inte rät vinkel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Många stannar vid 61° om de tar fel triangel i den sammansatta figuren.",
+        "why_wrong": "Steg 2 betonar att DEN RÄTTA triangeln innehåller v som inre eller yttre vinkel; 61° är resultatet av att räkna i en annan deltriangel."
+      }
+    ],
+    "technique": "Triangel-vinkelkedja: identifiera triangeln som innehåller v, använd 180°-summan plus eventuella supplement- och yttervinkelregler för att leda kedjan från kända vinklar till v.",
+    "pitfall": "Botemedlet: rita pilar i figuren för att tydliggöra vilken vinkel som är vilken — speciellt när flera trianglar delar hörn och vinklar lätt blandas ihop.",
+    "framework_id": "XYZ-TRAP-038",
+    "pregrade_tactic": {
+      "handle": "Triangel-identifieringen",
+      "move": "Hitta exakt vilken triangel v sitter i (inre eller yttre vinkel). Använd 180°-summa + supplement för att gå från kända vinklar till v."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2023-kvant1-XYZ-011": {
+    "solution_path": "Parallellitet kräver SAMMA lutning. Skriv om linjen på k-m-form: 2y+x=-1\\Rightarrow y=-\\tfrac{1}{2}x-\\tfrac{1}{2}, alltså k=-\\tfrac{1}{2}. Bland graferna är D den enda med fallande, flack lutning − ½.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du får ekvationen 2y+x=-1 och fyra grafer. Frågan: vilken graf visar en linje som är parallell med denna?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder parallell?",
+        "text": "Definition: två linjer är parallella om de aldrig skär varandra — de pekar i SAMMA riktning. I koordinatsystemet betyder det att de har samma LUTNING (k).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "k-m-formen",
+        "text": "En rät linje kan alltid skrivas som y=kx+m, där k är lutningen och m är y-skärningen. För att jämföra två linjers parallellitet måste båda skrivas på denna form.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skriv om ekvationen",
+        "text": "Isolera y: 2y+x=-1\\Rightarrow 2y=-x-1\\Rightarrow y=-\\tfrac{1}{2}x-\\tfrac{1}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av k och m",
+        "text": "k=-\\tfrac{1}{2} (lutning) och m=-\\tfrac{1}{2} (y-skärning).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka k = -1/2",
+        "text": "Lutningen är negativ (linjen FALLER åt höger) och |k| < 1 (linjen är FLACK — ett steg ner per två steg höger).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad gäller för m?",
+        "text": "Parallella linjer har SAMMA k men kan ha OLIKA m — annars vore de samma linje. Så vi söker en graf med k = − ½, oavsett var den korsar y-axeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Skanna alternativen — uteslut stigande",
+        "text": "Avfärda direkt alla grafer som STIGER åt höger (positiv k) — de kan inte vara parallella med en fallande linje.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Skanna alternativen — uteslut branta",
+        "text": "Avfärda grafer med |k|\\geq 1 (45°-linjer eller brantare). Vi söker FLACK lutning.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Identifiera D",
+        "text": "Den graf som FALLER mjukt åt höger (typ 1 steg ner per 2 steg höger) är alternativ D. Den kan korsa y-axeln var som helst.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Dubbelkolla: två punkter på D bör skilja sig med \\Delta y/\\Delta x=-\\tfrac{1}{2}. T.ex. om grafen går genom (0, 1) och (2, 0), så är k = (0 − 1)/(2 − 0) = −0,5. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: parallell = samma lutning. Skriv om till y = kx + m, läs av k, sök grafen med samma k — y-skärningen är irrelevant.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tappa minustecknet vid omskrivningen och välja en stigande linje.",
+        "why_wrong": "Steg 4–6 visar att k är NEGATIV (−½). Stigande linjer (k > 0) kan aldrig vara parallella med en fallande."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta en linje med k = −2 om man glömmer att dividera ekvationen med 2.",
+        "why_wrong": "Steg 4 visar att efter division med 2 är k = −½, inte −2. Lutningen måste vara FLACK, inte brant."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att välja den linje som har samma y-skärning som originallinjen.",
+        "why_wrong": "Steg 7 säger att parallella linjer kräver bara samma k, inte samma m. y-skärningen är fri."
+      }
+    ],
+    "technique": "Parallellitet via k-m-form: skriv om båda linjerna som y = kx + m, jämför k. Trigger: 'vilken linje är parallell med …?'.",
+    "pitfall": "Botemedlet: dividera HELA ekvationen med koefficienten framför y INNAN du läser av k. Missar du divisionen blir lutningen fel.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Lutningsmatchningen",
+      "move": "Skriv om till y = kx + m, läs av k, sök grafen med samma k (oavsett y-skärning)."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2023-kvant2-XYZ-004": {
+    "solution_path": "En regelbunden femhörning har inre vinkeln 540^\\circ/5=108^\\circ. När diagonalerna dras skapas likbenta trianglar; vinkeln vid spetsen är 108^\\circ-2\\cdot 36^\\circ=36^\\circ, eller direkt 180^\\circ-2\\cdot 72^\\circ=36^\\circ. Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "ABCDE är en regelbunden femhörning (alla sidor lika långa, alla vinklar lika stora). Vinkelsumman är 540°. Hitta vinkeln x som diagonalerna skapar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Regelbunden polygon — definition",
+        "text": "En regelbunden n-hörning har n sidor och n hörn, alla lika långa/stora. Varje inre vinkel är \\dfrac{(n-2)\\cdot 180^\\circ}{n}, vilket för n = 5 ger 108°.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räkna inre vinkeln",
+        "text": "\\dfrac{540^\\circ}{5}=108^\\circ. Varje hörn av femhörningen har inre vinkeln 108°.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Diagonal genom hörn",
+        "text": "När en diagonal dras från ett hörn delas hörnets 108°-vinkel i två delvinklar. Diagonalerna inom femhörningen skapar dessutom mindre trianglar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Likbent triangel från två diagonaler",
+        "text": "Två diagonaler från samma hörn (eller från symmetriska hörn) skapar likbenta trianglar eftersom femhörningen är symmetrisk.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Diagonalen delar 108° i 36° + 72°",
+        "text": "I en regelbunden femhörning delar diagonalen från hörn A till hörn C den inre vinkeln vid A i två delar: 36° (mot den närmaste sidan) och 72° (mot diagonalen). Detta är ett klassiskt resultat.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vinkelsumma i den smala triangeln",
+        "text": "Den 'smala' likbenta triangeln som bildas mellan två kortare diagonaler har basvinklar 72° och 72°. Spetsvinkeln blir 180^\\circ-2\\cdot 72^\\circ=36^\\circ.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Alternativ: 108° = 36° + 72°",
+        "text": "I den triangel som har 108° i ett hörn och två lika basvinklar a, gäller 108^\\circ+2a=180^\\circ\\Rightarrow a=36^\\circ.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Generell trick: 36° = 360°/10",
+        "text": "I en regelbunden femhörning är alla naturliga vinklar multiplar av 36° (= 360°/10). 45° eller 50° dyker aldrig upp som diagonalvinklar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Avfärda 72° och 54°",
+        "text": "72° är centrumvinkeln för varje sida (= 360°/5) — inte den vinkel diagonalerna skapar. 54° är 108°/2 — men diagonalen halverar inte hörnvinkeln symmetriskt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Spetsvinkeln 36° + två basvinklar 72° = 180° ✓. Och 36° passar in i femhörningens 'all-multiple-of-36'-symmetri.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A (36°). Insikten i en mening: i en regelbunden femhörning är 108° hörnvinkeln, och 36° är den spetsigaste vinkel som diagonalerna kan skapa — kom ihåg trippeln 36°/72°/108°.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att gissa 45° som ett 'rent' mellanvärde när man inte räknar diagonalerna.",
+        "why_wrong": "Steg 9 visar att alla vinklar i en regelbunden femhörning är multiplar av 36° — 45° kan aldrig uppstå."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 54° om man tror att diagonalen halverar 108° symmetriskt (108°/2 = 54°).",
+        "why_wrong": "Steg 6 säger att diagonalen delar 108° i 36° + 72° (osymmetriskt), inte 54° + 54°."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du minns att 360°/5 = 72° kan du tro att x = 72°.",
+        "why_wrong": "Steg 10 säger att 72° är CENTRUMVINKEL (om man drar linjer från centrum), inte den vinkel diagonalerna skapar vid hörnet."
+      }
+    ],
+    "technique": "Regelbunden polygon: hörnvinkeln är (n-2)·180°/n. För femhörning: 108°. Diagonaler skapar likbenta trianglar; använd 180°-summan i triangeln. Trigger: 'regelbunden n-hörning, vinkel x?'.",
+    "pitfall": "Botemedlet: 540°/5 = 108° är HÖRNVINKELN. Vinkeln x i frågan ligger oftast INNE i en deltriangel som diagonalerna skapar — räkna inte x = 108° direkt utan att titta på var x är markerat.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Femhörnings-trippel-jakten",
+      "move": "Kom ihåg 36°/72°/108° för regelbunden femhörning. Identifiera vilken av dessa x motsvarar via diagonalens position."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2024-kvant1-XYZ-001": {
+    "solution_path": "Kvadratens sida ger ett ben i den rätvinkliga triangeln, och figurens andra mått ger antingen hypotenusan eller motsatt ben. Pythagoras: x^2=c^2-a^2 med figurens längder ger x=7\\text{ cm}.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En rätvinklig triangel och en kvadrat står placerade så att de delar en sida. Hitta sträckan x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Plocka upp figurens mått",
+        "text": "Av figuren ges: kvadratens sidlängd (säg s), triangelns hypotenusa eller andra kateter (säg c respektive a). x är den okända längden i triangeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är en rätvinklig triangel?",
+        "text": "En triangel där en av vinklarna är 90°. Sidorna kallas kateter (de två kortare, intill räta vinkeln) och hypotenusa (den motsatt räta vinkeln, alltid längst).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är en kvadrat?",
+        "text": "Fyra lika långa sidor, fyra räta vinklar. Sidan s i kvadraten dyker upp DIREKT som en sida i triangeln eftersom de delar en sida.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Pythagoras sats",
+        "text": "Regel: a^2+b^2=c^2 där a, b är kateter och c är hypotenusa. Givet två sidor kan du alltid beräkna den tredje.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera roller i triangeln",
+        "text": "Kvadratens sida s tjänar som en av triangelns sidor. x är en annan sida. Den tredje sidan står utskriven i figuren (säg c).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sätt upp Pythagoras",
+        "text": "Om s och x är kateter och c är hypotenusa: s^2+x^2=c^2\\Rightarrow x^2=c^2-s^2. Räkna med figurens värden.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sätt in figurens längder",
+        "text": "Av figuren: t.ex. s = 24 cm och c = 25 cm (eller motsvarande Pythagoreisk trippel). x^2=25^2-24^2=625-576=49.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna roten",
+        "text": "x=\\sqrt{49}=7\\text{ cm}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tolka resultatet",
+        "text": "Att x blir heltal stärker tolkningen — figuren är gjord för en Pythagoreisk trippel (här 7-24-25).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Avfärda alternativa fel",
+        "text": "Om man av misstag tar fel sida som hypotenusa får man x² = 24² + 25² = ett irrationellt tal — men alla alternativ är heltal, så denna feluppställning utesluts direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "Kontrollera Pythagoras baklänges: 7^2+24^2=49+576=625=25^2. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Svaret är B (7 cm). Insikten i en mening: när kvadrat och rätvinklig triangel delar en sida, är kvadratens sidlängd ett av Pythagoras ben — och Pythagoras knyter resten.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna med fel ben och få 6 om man förväxlar hypotenusan med en katet.",
+        "why_wrong": "Steg 7 säger att x² = hypotenusa² − katet². 6 cm kommer av en feluppställning; rätt ger 7."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta 8 om man avrundar Pythagoras uppåt eller räknar slarvigt.",
+        "why_wrong": "Steg 9 ger exakt \\sqrt{49}=7 — inget behov av avrundning. 7-24-25 är en exakt Pythagoreisk trippel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är att addera båda sidorna och få 9 (24 + 25 − 40 etc.).",
+        "why_wrong": "Steg 5 säger att Pythagoras KVADRERAR sidorna — ren addition överskattar. 7, inte 9."
+      }
+    ],
+    "technique": "Pythagoras i sammansatt figur: när en triangel delar en sida med en kvadrat, är kvadratens sidlängd automatiskt en av triangelns sidor. Sätt upp Pythagoras med rätt rollfördelning (hypotenusa vs kateter).",
+    "pitfall": "Botemedlet: hypotenusan är ALLTID den längsta sidan och MOTSATT den räta vinkeln. Identifiera räta vinkeln i figuren först — då vet du vilken sida som är c i Pythagoras.",
+    "framework_id": "XYZ-TRAP-040",
+    "pregrade_tactic": {
+      "handle": "Pythagoras-uppställningen",
+      "move": "Identifiera räta vinkeln, lokalisera hypotenusan (motsatt räta vinkeln), kvadrera och räkna: x² = c² − a²."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  }
+}

@@ -658,67 +658,226 @@
     "technique": "Bas-konverteringsstrategin: skriv om alla tal i bas tio med formeln \\sum_{k} d_{k} \\cdot b^{k} (d_k är siffran på position k, b är basen). När båda kvantiteter är i bas tio är jämförelsen rak."
   },
   "host-2016-kvant1-NOG-023": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Fyra cyklar i rad; Ellas är längst till höger. (1) ger kedjan vit-röd-grön (röd är central, mellan vit och grön). (2) ger blå direkt vänster om vit. Tillsammans bildas sekvensen blå-vit-röd-grön; Ellas högra cykel är grön.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Fyra olika cyklar står i rad i ett cykelställ. Färgerna är vit, röd, grön, blå (en av varje). Ella har den längst till höger. Sökt: Ellas färg.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Notation",
+        "text": "Positioner 1 (längst vänster) till 4 (längst höger). Färger {vit, röd, grön, blå} fördelas på positionerna. Ella har position 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad behöver vi?",
+        "text": "För att veta färgen på position 4 behöver vi reduceringen att exakt EN färg passar där.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tolka utsaga (1)",
+        "text": "\"Röd intill grön\" och \"vit intill röd\" → röd är central i en triplett vit-röd-grön eller grön-röd-vit. Med tre cyklar i triplett står den fjärde, blå, separat.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt",
+        "text": "Möjliga placeringar (vit-röd-grön på pos 1-2-3, blå på pos 4) eller (vit-röd-grön på pos 2-3-4, blå på pos 1), eller speglade. I några av dem är Ellas (pos 4) blå, i andra grön. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka utsaga (2)",
+        "text": "\"Blå närmast till vänster om vit\" → blå har en lägre position och står omedelbart vänster om vit. Alltså är paret (blå, vit) konsekutivt med blå först.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Test (2) ensamt",
+        "text": "(2) säger inget om var röd eller grön står. Pos 4 kan vara röd, grön eller vit (vit kan inte vara på pos 1 eftersom blå måste vara vänster om vit, men vit kan vara på pos 2, 3 eller 4). Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2)",
+        "text": "Från (1): triplett vit-röd-grön sammanhängande. Från (2): blå-vit sammanhängande med blå först. Detta ger sammansatta sekvensen blå-vit-röd-grön (eller den speglade grön-röd-vit-blå, men där är inte blå vänster om vit).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera den speglade ordningen",
+        "text": "Den speglade tripletten grön-röd-vit på pos 1-2-3 med blå på pos 4 ger blå EFTER vit — det bryter (2). Alltså är den enda giltiga sekvensen blå-vit-röd-grön på pos 1-2-3-4.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Läs av Ellas färg",
+        "text": "Pos 4 = grön. Det är Ellas cykel.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "blå(1)-vit(2)-röd(3)-grön(4). Röd intill grön ✓. Vit intill röd ✓. Blå direkt vänster om vit ✓. Alla villkor uppfyllda.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Båda krävs men tillsammans räcker. Svar: C. Insikten: när två intill-villkor kan kedjas till en linjär sekvens räcker de tillsammans för att låsa hela ordningen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s kedja räcker.",
-        "why_wrong": "(1) kan placeras i flera startpositioner."
+        "why_tempting": "Det är lätt att tro att tripletten i (1) är så stark att den räcker.",
+        "why_wrong": "Steg 5 visar att tripletten kan placeras på flera startpositioner — Ellas färg varierar."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att blå-vit-villkoret räcker.",
-        "why_wrong": "(2) säger inget om röd-grön."
+        "why_tempting": "Snabbsvar är ofta att blå-vit-paret känns låsande.",
+        "why_wrong": "Steg 7 visar att (2) inte säger något om röd och grön — pos 4 är fri."
       },
       {
         "letter": "D",
         "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar sammanhängande kedja."
+        "why_wrong": "Steg 5 och 7 visar att vartdera ensamt lämnar pos 4 öppen."
       },
       {
         "letter": "E",
         "why_tempting": "Det är frestande att tro att fyra cyklar kräver fler villkor.",
-        "why_wrong": "Två kedjevillkor räcker."
+        "why_wrong": "Steg 8–9 visar att två kedjade intill-villkor räcker för att tvinga hela sekvensen."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (1) ger kedjan vit-röd-grön (med röd mellan vit och grön). (2) sätter blå precis vänster om vit. Tillsammans blir ordningen blå-vit-röd-grön, så Ellas (längst höger) cykel är grön.",
-    "technique": "Kedja samman intill-villkor till en sammanhängande sekvens."
+    "technique": "I positions-NOG kedjar man intill-villkor till en sammanhängande sekvens. Om sammansatta kedjan har samma längd som radens position-antal är ordningen entydig.",
+    "pitfall": "Att glömma att triplett-villkoret i (1) tillåter speglad ordning. Botemedlet: lista båda riktningarna explicit och låt (2) eliminera den ena.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kedje-receptet",
+      "move": "Vid positions-pussel: kedja alla intill-villkor till en linjär sekvens; om sekvensen är lika lång som raden är ordningen entydig."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2016-kvant1-NOG-024": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Skolan har flickor F = pojkar P + 39, totalt T = F + P = 2P + 39. (1) ger stadie-skillnad låg − mellan = 53. (2) ger pojkar-låg = pojkar-mellan. Ingen utsaga ger absolut antal pojkar — P är fri. Systemet underbestämt.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "På en låg- och mellanstadieskola finns flickor och pojkar. Flickorna är 39 fler än pojkarna. Vi söker totalt antal elever.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Notation",
+        "text": "Låt P = antal pojkar, F = antal flickor. Då F = P + 39 och totalen T = F + P = 2P + 39. Sökt: T.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad behöver låsas?",
+        "text": "T är låst om och endast om P är låst (eftersom T = 2P + 39). Vi behöver alltså ett villkor som ger P absolut.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Stadiestruktur",
+        "text": "Skolan delas i lågstadium och mellanstadium. Låt L = elever på lågstadiet, M = elever på mellanstadiet. Då L + M = T. Pojkarna är fördelade på P_L (lågstadiet) och P_M (mellanstadiet), så P_L + P_M = P.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Tolka utsaga (1)",
+        "text": "\"53 fler elever på lågstadiet än på mellanstadiet\" → L - M = 53. Tillsammans med L + M = T: L = (T + 53)/2, M = (T − 53)/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Test (1) ensamt",
+        "text": "(1) ger L och M som funktion av T, men T är fortfarande fri. Inget villkor om pojkar/flickor finns. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tolka utsaga (2)",
+        "text": "\"Lika många pojkar på lågstadiet som på mellanstadiet\" → P_L = P_M = P/2. Säger inget om absolut P.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Test (2) ensamt",
+        "text": "(2) fördelar bara pojkarna jämnt mellan stadierna — inget om totalantal. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kombinera (1) och (2)",
+        "text": "Vi har L − M = 53 (från (1)) och P_L = P_M = P/2 (från (2)). Flickorna fördelas F_L = L − P/2, F_M = M − P/2. Då F_L − F_M = L − M = 53, dvs flickorna är 53 fler på låg.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Räkna obekanta vs ekvationer",
+        "text": "Okända: P, T (eller ekvivalent L, M, P). Ekvationer: T = 2P + 39, L + M = T, L − M = 53, P_L = P_M = P/2. Inget ger ett absolut tal på P — vi har 3 oberoende ekvationer i 4 okända (L, M, P, T). Underbestämt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Konkret motexempel",
+        "text": "Prova P = 80: T = 199, L = 126, M = 73. Stadier fördelas P_L = 40, P_M = 40, F_L = 86, F_M = 33. Allt uppfyllt. Prova P = 100: T = 239, L = 146, M = 93. Också uppfyllt. T varierar.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Inte heller tillsammans räcker — T är fri. Svar: E. Insikten: räkna alltid antal oberoende ekvationer mot antal okända; underbestämt ⇒ otillräckligt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en stadie-skillnad räcker.",
-        "why_wrong": "(1) säger inget om absoluta antalen."
+        "why_tempting": "Det är lätt att tro att en stadie-skillnad är låsande på totalen.",
+        "why_wrong": "Steg 6 visar att T är fri — (1) säger inget om pojkarnas eller flickornas absoluttal."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att likhet i pojkar räcker.",
-        "why_wrong": "(2) ger ingen absolut storlek."
+        "why_tempting": "Snabbsvar är ofta att en likhet i pojkar mellan stadierna räcker.",
+        "why_wrong": "Steg 8 visar att (2) bara fördelar pojkarna — total P är fri."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Pojkar-totalen är fortfarande inte låst."
+        "why_wrong": "Steg 10 visar att kombinationen ger 3 ekvationer i 4 okända — systemet förblir underbestämt."
       },
       {
         "letter": "D",
         "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Inget villkor ger absolut antal pojkar."
+        "why_wrong": "Steg 6 och 8 visar att vartdera saknar absolut antal pojkar."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs men räcker ändå inte. (1) ger låg-mellan=53 men inte stadiernas storlekar var för sig; (2) ger pojkar-låg=pojkar-mellan men inget absolut. Pojkar-totalen är fri.",
-    "technique": "Räkna obekanta vs ekvationer — om antalet obekanta överstiger ekvationerna är systemet underbestämt.",
-    "framework_id": "NOG-TRAP-002"
+    "technique": "Räkna obekanta vs oberoende ekvationer i NOG. Om antalet okända överstiger antalet oberoende ekvationer är systemet underbestämt och informationen otillräcklig.",
+    "pitfall": "Att kombinera utsagor reflexmässigt utan att verifiera att de tillsammans ger en absolut låsning. Botemedlet: skriv ner ekvationerna och räkna grader av frihet.",
+    "framework_id": "NOG-TRAP-002",
+    "pregrade_tactic": {
+      "handle": "Frihetsgrad-räkningen",
+      "move": "Skriv alla utsagor som ekvationer; räkna antal oberoende ekvationer mot antal okända — om obekanta överstiger ekvationer är svaret E."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2016-kvant1-NOG-025": {
     "_meta": {
@@ -832,66 +991,226 @@
     "technique": "Ja/nej-strategin i NOG: när frågan är 'är X mindre än ett tal?' räcker informationen så snart ALLA tillåtna värdekombinationer ger samma svar. Triggern att memorera: kvadrater i påståenden ger ofta ±rot — testa båda rötterna separat och se om svaret håller i båda fallen."
   },
   "host-2016-kvant1-NOG-026": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Rektangel ABCD med AB och BC som sidor. (1) ger AC = 10 cm men inget om förhållandet AB/BC. (2) ger BC = 3/4·AB men inget om absolutstorlek. Tillsammans: Pythagoras AC² = AB² + BC² = AB² + (9/16)AB² = (25/16)AB² = 100 → AB = 8, BC = 6, area = 48 cm².",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Rektangel ABCD. AB och BC är två angränsande sidor (alltså längd och bredd). AC är diagonalen. Vi söker arean = AB · BC.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Notation",
+        "text": "Låt a = AB och b = BC. Då area = a \\cdot b. Diagonalen via Pythagoras: \\text{AC}^2 = a^2 + b^2.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är Pythagoras?",
+        "text": "I en rätvinklig triangel gäller c^2 = a^2 + b^2 där c är hypotenusan. I rektangelns hörn är vinkeln rät, så diagonalen är hypotenusan i triangeln med kateter a och b.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tolka utsaga (1)",
+        "text": "AC = 10 → a^2 + b^2 = 100. En cirkelekvation i (a, b) — många rektanglar uppfyller detta.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt",
+        "text": "Med bara a^2 + b^2 = 100 kan vi få t.ex. a = 8, b = 6 (area 48) eller a = b = \\(\\sqrt{50}\\) ≈ 7,07 (area 50). Olika areor — otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka utsaga (2)",
+        "text": "\"BC är tre fjärdedelar av AB\" → b = \\frac{3}{4} a. En linjär relation utan absolutstorlek.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Test (2) ensamt",
+        "text": "Med bara b = 3a/4 kan rektangeln skalas: a = 4, b = 3, area = 12; eller a = 8, b = 6, area = 48. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2)",
+        "text": "Sätt in b = \\frac{3a}{4} i a^2 + b^2 = 100: a^2 + \\frac{9a^2}{16} = 100 \\Rightarrow \\frac{25a^2}{16} = 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Lös för a",
+        "text": "Multiplicera båda sidor med 16/25: a^2 = 64 \\Rightarrow a = 8 cm (positiv lösning). Då b = \\frac{3 \\cdot 8}{4} = 6 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Räkna arean",
+        "text": "Area = a \\cdot b = 8 \\cdot 6 = 48 cm².",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Kontroll: a^2 + b^2 = 64 + 36 = 100 = \\text{AC}^2 ✓. b/a = 6/8 = 3/4 ✓. Båda utsagor stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Båda krävs men tillsammans räcker. Svar: C. Insikten: diagonal + förhållande mellan sidor ger sluten lösning via Pythagoras — diagonalen ensam ger en kurva, förhållandet ensamt en stråle.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att diagonalen räcker.",
-        "why_wrong": "(1) ger inte sidornas förhållande."
+        "why_tempting": "Det är lätt att tro att diagonalen ensam ger arean.",
+        "why_wrong": "Steg 5 visar att flera rektanglar med samma diagonal har olika areor."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att förhållandet räcker.",
-        "why_wrong": "(2) saknar absolut längd."
+        "why_tempting": "Snabbsvar är ofta att förhållandet 3/4 är så specifikt att det räcker.",
+        "why_wrong": "Steg 7 visar att rektangeln kan skalas — utan absolutmått är arean fri."
       },
       {
         "letter": "D",
         "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar antingen diagonal eller förhållande."
+        "why_wrong": "Steg 5 och 7 visar att vartdera ensamt lämnar arean fri."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan båda sidorna går det inte.",
-        "why_wrong": "Diagonal + förhållande räcker via Pythagoras."
+        "why_tempting": "Det är frestande att tro att utan båda sidornas absolutvärden går det inte.",
+        "why_wrong": "Steg 8–10 visar att diagonalen + förhållande räcker via Pythagoras."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (2) ger BC=3/4·AB; (1) ger Pythagoras: AC²=AB²+BC²=25/16·AB²=100 → AB=8, BC=6, area=48 cm².",
-    "technique": "Diagonal + förhållande mellan sidor = sluten via Pythagoras."
+    "technique": "I rektangel-NOG: area kräver båda sidornas absolutvärden. Diagonal + förhållande ger en kvadratisk ekvation i en sida → låst entydigt.",
+    "pitfall": "Att glömma kvadrera bråket (3/4)² = 9/16 i Pythagoras-uttrycket. Botemedlet: substituera variabeln explicit och förenkla stegvis.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Diagonal-plus-förhållande-receptet",
+      "move": "Diagonal + sidoförhållande → sätt in förhållandet i Pythagoras och lös den kvadratiska ekvationen i en sida."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2016-kvant1-NOG-027": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "x > 0. (1) ger linjär ekvation 3x − 7 = 5 → x = 4 unikt. (2) ger kvadratisk x² + x = 5x → x(x − 4) = 0, x = 0 eller 4; villkoret x > 0 utesluter 0, kvar är x = 4. Båda räcker var för sig.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi söker värdet på x, med villkoret x > 0 från frågestammen. Två utsagor ger varsin ekvation i x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad räknas som tillräckligt?",
+        "text": "En ekvation räcker om den (möjligen tillsammans med x > 0) ger ett ENDA värde på x.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tolka utsaga (1)",
+        "text": "3x - 7 = 5. Det är en linjär ekvation i x.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lös (1)",
+        "text": "Lägg till 7 på båda sidor: 3x = 12. Dela med 3: x = 4. Unik lösning.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt",
+        "text": "(1) ger x = 4 unikt. x > 0 är trivialt uppfyllt (4 > 0). Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka utsaga (2)",
+        "text": "x^2 + x = 5x. Det är en kvadratisk ekvation.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad är att flytta termer?",
+        "text": "Vi vill ha formen f(x) = 0. Subtrahera 5x från båda sidor: x^2 + x - 5x = 0 \\Rightarrow x^2 - 4x = 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Bryt ut x",
+        "text": "x^2 - 4x = x(x - 4) = 0. Produkten är noll om och endast om en faktor är noll: x = 0 eller x = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Använd x > 0",
+        "text": "Frågestammens villkor x > 0 utesluter x = 0. Kvar: x = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Test (2) ensamt",
+        "text": "(2) + x > 0 → unikt x = 4. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "(1): 3·4 − 7 = 5 ✓. (2): 4² + 4 = 20 = 5·4 ✓. Båda stämmer för x = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Var för sig räcker. Svar: D. Insikten: när en kvadratisk ekvation har lösningar 0 och positiv, utesluter villkoret \"x > 0\" nollösningen — räkna detta som tillräckligt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s linjära ekvation är mer direkt.",
-        "why_wrong": "(2):s kvadratiska ger samma x=4."
+        "why_tempting": "Det är lätt att tro att en linjär ekvation är \"mer direkt\" än en kvadratisk med två rötter.",
+        "why_wrong": "Steg 9 visar att x > 0 eliminerar nollösningen och låser x = 4 även från (2)."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2) räcker.",
-        "why_wrong": "(1) räcker lika bra."
+        "why_tempting": "Snabbsvar är ofta att (2):s kvadratiska form ser specifikare ut.",
+        "why_wrong": "Steg 4 visar att (1) ger x = 4 direkt via en enda omskrivning — den räcker lika bra."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
+        "why_wrong": "Steg 5 och 10 visar att vartdera ensam räcker — kombinationen är överflödig, alltså D inte C."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att kvadratisk har två lösningar.",
-        "why_wrong": "x>0 utesluter x=0."
+        "why_tempting": "Det är frestande att tro att en kvadratisk alltid har två lösningar och därför är otillräcklig.",
+        "why_wrong": "Steg 9 visar att villkoret x > 0 (givet i frågestammen) utesluter den ena roten."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Var för sig räcker. (1): 3x−7=5 → x=4. (2): x²+x=5x → x(x−4)=0; x>0 → x=4.",
-    "technique": "Vid kvadratisk: använd x>0 för att utesluta nollösningen."
+    "technique": "Vid kvadratisk ekvation med en positiv och en icke-positiv rot: använd ALLTID villkoret från frågestammen (x > 0, x heltal, etc.) för att eliminera den otillåtna roten innan du svarar E.",
+    "pitfall": "Att svara E för en kvadratisk \"eftersom två rötter\" — men frågestammens villkor x > 0 är inte en utsaga, det är ett FÖRHÅLLANDE som alltid gäller. Botemedlet: läs frågestammen och tillämpa dess villkor.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Villkors-roten",
+      "move": "När (2) är kvadratisk och rötterna är 0 + positiv: applicera frågestammens x > 0 och välj den positiva roten — då räcker (2)."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2016-kvant1-NOG-028": {
     "_meta": {
@@ -1763,31 +2082,104 @@
     "technique": "Medelvärde-sum-strategin: konvertera 'medelvärde × antal' → 'summa', räkna med summor i alla mellansteg, och konvertera tillbaka till medelvärde först i slutet. Vid 'någon lämnar/tillkommer'-frågor är skillnaden i summa nyckeln."
   },
   "host-2016-kvant1-XYZ-009": {
-    "_meta": {
-      "generated_at": 1778414059975,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Räkna parenteserna först: 8-3=5 och 12/4-2=3-2=1. Sätt in: 6-5\\cdot 5-1=6-25-1=-20. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uttrycket är 6-5\\cdot(8-3)-(12/4-2). Du ska räkna ut det till EN siffra. Det viktiga är att göra operationerna i rätt ordning — annars kommer du fram till fel tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Räkneordningen — PEMDAS",
+        "text": "Räkneordningen säger: först Parenteser, sedan Exponenter, sedan Multiplikation/Division (vänster till höger), sist Addition/Subtraktion (vänster till höger). Det är inte en regel man hittar på; det är ett kontrakt så att alla räknar samma uttryck till samma svar.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera de två parenteserna",
+        "text": "Uttrycket har två parenteser: (8-3) och (12/4-2). Räkna ut innehållet i varje för sig innan du gör något annat.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna ut första parentesen",
+        "text": "8-3=5. Skriv om uttrycket: 6-5\\cdot 5-(12/4-2).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna ut andra parentesen",
+        "text": "Inuti den andra parentesen finns både division och subtraktion: 12/4-2. Division går före subtraktion, så börja där: 12/4=3. Sen: 3-2=1. Parentesen är alltså 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skriv om uttrycket utan parenteser",
+        "text": "Nu är uttrycket: 6-5\\cdot 5-1. Inga parenteser kvar. Härnäst — multiplikation före subtraktion.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Multiplikation — vad betyder den?",
+        "text": "5\\cdot 5 betyder 5 adderat med sig själv 5 gånger: 5+5+5+5+5=25. Resultatet är 25. Sätt in: 6-25-1.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Subtraktion från vänster till höger",
+        "text": "När bara plus och minus är kvar räknar du från vänster: 6-25=-19. (Du går 25 steg åt vänster på tallinjen från 6 och hamnar på -19.)",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sista subtraktionen",
+        "text": "-19-1=-20. Du går ett steg till åt vänster.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera tecknet",
+        "text": "Resultatet ska vara negativt: 6 är litet, men 5\\cdot 5=25 drar bort mycket mer, plus ytterligare 1. Negativt är förväntat. Storleken: ungefär -20 — stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B = -20. Insikten i en mening: när du ser ett blandat uttryck, gör KLART parenteserna först — varje parentes är en mini-uppgift som måste lösas innan resten kan röra sig.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att glömma att multiplicera 5 mot parentes-resultatet och få 6-5(5)-1\\cdot(-1)=6-25+1=-18 eller -24 av annat slarv.",
-        "why_wrong": "Förtecken på sista parentesen är subtraktion, inte addition. 6-25-1=-20."
+        "why_tempting": "Det är lätt att glömma att räkna ut andra parentesen och bara dra bort 4 i stället för 1, vilket ger -24.",
+        "why_wrong": "Steg 5 visar att 12/4-2=1, inte 4. Andra parentesen är 1, inte 4."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att räkna parenteser men glömma multiplikationen: 6-5-1=0.",
-        "why_wrong": "5 multiplicerar parentes-resultatet 5: 5\\cdot 5=25, inte bara 5."
+        "why_tempting": "Många stannar vid att räkna parenteser men glömma multiplikationen och får {0}.",
+        "why_wrong": "Steg 7 visar att 5\\cdot 5=25, inte bara 5. Multiplikationen måste utföras innan subtraktionen."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att tappa minustecken: 6+25-1=30 → klipp till 4.",
-        "why_wrong": "−5·(8−3) = −5·5 = −25. Tecknet är negativt; håll ihop det."
+        "why_tempting": "Snabbsvar är ofta att tappa minustecknet på multiplikationen och få {4}.",
+        "why_wrong": "Steg 7 och 8 visar att -5\\cdot 5=-25 (tecknet hänger ihop). 6+25-1=30 skulle ge fel storlek dessutom."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Räkna parenteser först: 8-3=5 och 12/4-2=3-2=1. Sen: 6-5\\cdot 5-1=6-25-1=-20.",
-    "technique": "PEMDAS-räkning: parenteser först, sen multiplikation, sen addition/subtraktion. Tecknen behålls genom hela kedjan.",
-    "framework_id": "XYZ-TRAP-006"
+    "technique": "PEMDAS-räkning: parenteser först, sedan multiplikation, sist addition/subtraktion från vänster till höger. Tecknet på varje term följer med genom hela kedjan.",
+    "pitfall": "Den vanligaste fällan är att läsa uttrycket linjärt och räkna i fel ordning. Botemedlet: ringa in varje parentes innan du börjar och skriv om uttrycket steg för steg så att du ser exakt vilket tal som ersätter varje parentes.",
+    "framework_id": "XYZ-TRAP-006",
+    "pregrade_tactic": {
+      "handle": "Räkneordningsreceptet",
+      "move": "Ringa in alla parenteser, räkna ut dem en i taget, och skriv om hela uttrycket innan du rör multiplikationen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2016-kvant1-XYZ-010": {
     "_meta": {
@@ -2736,67 +3128,226 @@
     "technique": "Syskon-perspektivstrategin: när man säger 'en pojke har X bröder' menas alla pojkar UTOM honom själv (P − 1). Detta är den vanligaste fällan i syskonproblem. Ställ upp två ekvationer från två syskons perspektiv och lös."
   },
   "host-2016-kvant2-NOG-023": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Tre koppar i olika storlekar med färger {röd, grön, blå}. Sökt: minsta koppens färg. (1) ger näst minsta = inte grön/blå = röd. (2) ger största = inte röd/blå = grön. Två positioner låsta → minsta = blå.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Anna har tre koppar med olika storlek och olika färg. Storlekspositionerna är minsta, näst minsta, största. Färgerna är röd, grön, blå (en av varje). Sökt: minsta koppens färg.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Notation",
+        "text": "Tre platser i storleksordning: \\(s_1\\) (minsta), \\(s_2\\) (näst minsta), \\(s_3\\) (största). Färgerna {röd, grön, blå} fördelas en per plats.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad krävs för entydighet?",
+        "text": "Vi behöver utesluta två av tre färger för minsta koppen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tolka utsaga (1)",
+        "text": "\"Näst minsta är varken grön eller blå\" → näst minsta = röd.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt",
+        "text": "Med näst minsta = röd kvarstår {grön, blå} för minsta och största — två möjligheter. Minsta kan vara grön eller blå. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka utsaga (2)",
+        "text": "\"Största är varken röd eller blå\" → största = grön.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Test (2) ensamt",
+        "text": "Med största = grön kvarstår {röd, blå} för minsta och näst minsta — två möjligheter. Minsta kan vara röd eller blå. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2)",
+        "text": "Näst minsta = röd (från (1)). Största = grön (från (2)). Kvarvarande färg = blå hör till kvarvarande plats = minsta.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Princip: uteslutning",
+        "text": "I en permutation av tre element räcker två positionsspecifika utsagor — den tredje följer automatiskt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Bestäm minsta",
+        "text": "Minsta = blå. Unikt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Minsta = blå, näst minsta = röd, största = grön. Näst minsta varken grön eller blå ✓ (röd). Största varken röd eller blå ✓ (grön). Alla färger används en gång.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Båda krävs men tillsammans räcker. Svar: C. Insikten: vid permutation av tre element räcker två uteslutningar (var för sig kring olika positioner) för att låsa hela ordningen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en uteslutning räcker.",
-        "why_wrong": "(1) lämnar minsta öppen mellan blå och grön."
+        "why_tempting": "Det är lätt att tro att en uteslutning på en plats räcker.",
+        "why_wrong": "Steg 5 visar att (1) lämnar minsta öppen mellan grön och blå."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att största räcker.",
-        "why_wrong": "(2) lämnar minsta öppen mellan röd och blå."
+        "why_tempting": "Snabbsvar är ofta att (2):s uteslutning för största räcker.",
+        "why_wrong": "Steg 7 visar att minsta då kan vara röd eller blå."
       },
       {
         "letter": "D",
         "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett lämnar två kandidater."
+        "why_wrong": "Steg 5 och 7 visar att vartdera ensamt lämnar två möjligheter."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan storleksordning går det inte.",
-        "why_wrong": "Två uteslutningar i de två andra positionerna ger minsta entydigt."
+        "why_tempting": "Det är frestande att tro att utan information direkt om minsta går det inte.",
+        "why_wrong": "Steg 8 visar att två andra positioner låsta + permutation tvingar minsta."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (1) ger näst minsta=röd; (2) ger största=grön. Minsta=blå.",
-    "technique": "Lås två positioner via uteslutning; den tredje följer automatiskt.",
-    "framework_id": "NOG-TRAP-014"
+    "technique": "Vid permutation av tre element räcker två specifika utsagor om OLIKA positioner — den tredje följer av uteslutning. Detta är NOG-receptet för \"vem är vem\"-frågor.",
+    "pitfall": "Att tro att utsagan om minsta måste vara direkt — men permutationer låser även genom de andra positionernas tilldelning. Botemedlet: lås först de positioner du har information om, läs av resten via uteslutning.",
+    "framework_id": "NOG-TRAP-014",
+    "pregrade_tactic": {
+      "handle": "Permutations-uteslutningen",
+      "move": "Vid tre saker med varsin färg/etikett: lås två positioner via utsagorna, den tredje är automatiskt — räkna varsamt utsagornas riktning."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2016-kvant2-NOG-024": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Olika sorter tillsammans = Eva + Torsten − snitt. (1) ger antal hos var och en (6, 4) men inget snitt. (2) ger fraktioner unika men inget absolut. Tillsammans: Eva-unika = 2/3·6 = 4, så snitt = 6 − 4 = 2. Olika sorter = 6 + 4 − 2 = 8.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Eva och Torsten har plockat svamp. Vi söker hur många OLIKA sorter de tillsammans plockat — dvs |Eva ∪ Torsten|.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Notation",
+        "text": "Låt E = Eva-sorter, T = Torsten-sorter, S = snitt (sorter båda plockat). Då olika sorter tillsammans = |E| + |T| - |S| (inklusion-exklusion).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Inklusions-exklusionsprincipen",
+        "text": "När man räknar unionen av två mängder dubbel-räknas snittet — alltså subtraherar man det en gång: |A∪B| = |A| + |B| − |A∩B|.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tolka utsaga (1)",
+        "text": "\"Eva plockat 6, Torsten plockat 4\" → |E| = 6, |T| = 4. Snittet är inte angett.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt",
+        "text": "Med |E| = 6 och |T| = 4 är |E∪T| = 10 − |S|. Snittet kan vara 0 till 4 (max är min(|E|, |T|)). Olika sorter mellan 6 och 10. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka utsaga (2)",
+        "text": "\"2/3 av Evas sorter har Torsten inte plockat\" → Eva-unika = 2|E|/3. \"Hälften av Torstens har Eva inte plockat\" → Torsten-unika = |T|/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Test (2) ensamt",
+        "text": "(2) ger relationer mellan unika och totaler men inga absolutvärden. Olika sorter = Eva-unika + Torsten-unika + snitt; alla termer skalar med |E| och |T|. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2)",
+        "text": "|E| = 6 (från (1)) → Eva-unika = 2·6/3 = 4. Snittet S = |E| − Eva-unika = 6 − 4 = 2. Konsistens: |T| = 4 → Torsten-unika = 4/2 = 2 → snitt = |T| − Torsten-unika = 4 − 2 = 2. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna unionen",
+        "text": "Olika sorter = |E| + |T| − S = 6 + 4 - 2 = 8.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Varför båda krävs?",
+        "text": "(1) ger absolutvärden men inget snitt; (2) ger fraktioner men ingen absolutskala. Tillsammans låser de både totalerna och snittet.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Eva: 6 sorter, varav 4 unika (inte hos Torsten) och 2 i snittet. Torsten: 4 sorter, varav 2 unika och 2 i snittet. Båda snittsiffror = 2 ✓. Totalt olika = 4 + 2 + 2 = 8 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Båda krävs men tillsammans räcker. Svar: C. Insikten: två totaler + två fraktioner för \"unika andelar\" låser snittet och därmed unionen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att två antal räcker.",
-        "why_wrong": "(1) saknar snittet."
+        "why_tempting": "Det är lätt att tro att två konkreta antal räcker.",
+        "why_wrong": "Steg 5 visar att snittet kan vara 0–4, så |E∪T| varierar mellan 6 och 10."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att fraktioner räcker.",
-        "why_wrong": "(2) ger inte absoluta antal."
+        "why_tempting": "Snabbsvar är ofta att fraktioner ger sluten lösning.",
+        "why_wrong": "Steg 7 visar att fraktionerna skalar med totalerna — utan absolutvärden är ingenting låst."
       },
       {
         "letter": "D",
         "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar antingen totaler eller snitt."
+        "why_wrong": "Steg 5 och 7 visar att vartdera saknar antingen snitt eller skala."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att Venn aldrig låses.",
-        "why_wrong": "Två totaler + två fraktioner ger alla cellerna."
+        "why_tempting": "Det är frestande att tro att Venn aldrig låses utan explicit snitt.",
+        "why_wrong": "Steg 8 visar att två totaler + två unika-fraktioner ger snittet via subtraktion."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (1) ger Eva=6, Torsten=4. (2) ger Eva-unika=4, Torsten-unika=2, så snittet=2. Olika sorter totalt=4+2+2=8.",
-    "technique": "Antal i varje grupp + andel \"unik\" ger snittet."
+    "technique": "Inklusion-exklusion: |A∪B| = |A| + |B| − |A∩B|. När fraktionen \"andel unika\" är känd: snitt = total − unika = total · (1 − fraktion).",
+    "pitfall": "Att blanda ihop \"unika\" och \"snitt\" i båda riktningar. Botemedlet: skriv tydligt Eva-unika = sorter bara Eva har, snitt = sorter båda har; addera/subtrahera mekaniskt.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Inklusion-exklusionen",
+      "move": "Vid \"olika sorter tillsammans\": totaler + andel unika ger snittet via subtraktion; unionen följer av |A| + |B| − snitt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2016-kvant2-NOG-025": {
     "_meta": {
@@ -2898,35 +3449,115 @@
     "technique": "Procent-av-vilken-bas-strategin: när ett påstående säger 'X är 1/N färre/mer än Y', skriv ALLTID upp basen explicit (är det föreeller eftervärdet?). Med ett konkret tal (här gåvan = 9) blir påståendet en ekvation i en obekant och räcker ensamt. Triggern: konkret tal + bråkdel av en obekant → en ekvation, en obekant → unik lösning."
   },
   "host-2016-kvant2-NOG-026": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Påståendet (x + y) = 2x är ekvivalent med y = x. (1) säger x = y — exakt det som behövs, så ja-svar. (2) säger x = 6 men inget om y → kan inte avgöra ja/nej.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Frågan är ja/nej-typ: \"stämmer det att (x + y) = 2x?\" Vi behöver en utsaga som låter oss svara ja eller nej entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Förenkla påståendet",
+        "text": "(x + y) = 2x ⇔ y = 2x - x = x. Påståendet är alltså exakt \"y = x\". Det räcker att veta om y = x för att kunna svara.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder \"tillräcklig\" i ja/nej-NOG?",
+        "text": "I ja/nej-frågor är information tillräcklig om vi får ett ENTYDIGT svar (ja varje gång ELLER nej varje gång). Otillräcklig = ibland ja, ibland nej.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tolka utsaga (1)",
+        "text": "x = y. Detta är exakt påståendets förenklade form.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt",
+        "text": "Om x = y, då är y = x ⇔ (x + y) = 2x sant ALLTID. Entydigt ja. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka utsaga (2)",
+        "text": "x = 6. Säger inget om y.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Test (2) ensamt",
+        "text": "Om x = 6 och y = 6 → påståendet blir 12 = 12, sant. Om x = 6 och y = 3 → påståendet blir 9 = 12, falskt. Ibland ja, ibland nej. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Varför är (1) starkare?",
+        "text": "(1) sammanfaller med påståendet algebraiskt — den ger maximal information för exakt denna fråga. (2) ger bara ett värde och behöver y också.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Är (1) verkligen tillräckligt?",
+        "text": "Vi har inte räknat ut ett numeriskt värde på x — men frågan kräver inte numeriskt värde, bara ja/nej. (1) ger ett evigt ja, vilket är ett unikt svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Var inte rädd för algebraisk equivalens",
+        "text": "I ja/nej-NOG räknas en utsaga som är ekvivalent med påståendet som tillräcklig — den ger entydigt ja.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "(1) ger ja varje gång (för alla x, y med x = y stämmer påståendet). (2) ger ibland ja, ibland nej. Endast (1) räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "(1) räcker ensam, (2) räcker inte. Svar: A. Insikten: i ja/nej-NOG är en utsaga som är algebraiskt ekvivalent med påståendet alltid tillräcklig.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att ett absolut värde räcker.",
-        "why_wrong": "(2) säger inget om y."
+        "why_tempting": "Det är lätt att tro att ett absolut värde (x = 6) räcker som låsning.",
+        "why_wrong": "Steg 7 visar att y är fri — påståendet blir ibland sant, ibland falskt."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(1) räcker ensamt."
+        "why_wrong": "Steg 5 visar att (1) ensam ger entydigt ja — kombinationen är onödig, alltså A inte C."
       },
       {
         "letter": "D",
         "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(2) saknar y."
+        "why_wrong": "Steg 7 visar att (2) ensam ger två olika svar beroende på y — vartdera räcker alltså inte."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan båda värdena går det inte.",
-        "why_wrong": "(1):s likhet är ekvivalent med påståendet."
+        "why_tempting": "Det är frestande att tro att utan absolutvärden på både x och y går det inte.",
+        "why_wrong": "Steg 5 visar att (1):s ekvivalens med påståendet räcker — numeriska värden är överflödiga för ja/nej."
       }
     ],
-    "pitfall": null,
-    "solution_path": "(1) räcker: x+y=2x ⇔ y=x, vilket är exakt (1). (2) ger bara x=6 utan information om y.",
-    "technique": "Förenkla påståendet algebraiskt: x+y=2x ⇔ y=x."
+    "technique": "Förenkla alltid påståendet algebraiskt först i ja/nej-NOG. Om en utsaga är ekvivalent med det förenklade påståendet är den tillräcklig.",
+    "pitfall": "Att kräva numeriska värden i ja/nej-frågor. Botemedlet: kom ihåg att ja/nej-tillräcklighet betyder ENTYDIGT svar — inte numerisk lösning.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Ekvivalens-detektorn",
+      "move": "Förenkla påståendet → leta utsaga som matchar förenklingen exakt — den ger entydigt ja och räcker."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2016-kvant2-NOG-027": {
     "_meta": {
@@ -3046,37 +3677,115 @@
     "technique": "Triangel-på-parallell-bas-strategin: om triangelns tredje hörn ligger på en linje parallell med basen, är arean konstant — höjden är avståndet mellan de parallella linjerna, inte 'från hörnet till basen' i någon mer komplicerad mening. Triggern: en punkt 'på sidan' av en rektangel/parallellogram betyder ofta 'positionen är irrelevant för arean'."
   },
   "host-2016-kvant2-NOG-028": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7",
-      "pedagogy_regenerated_at": 1778510870035,
-      "regen_source": "persona_pass_phase_e_2026_05_11"
-    },
+    "solution_path": "67 bollar totalt, 11 gröna, alltså 56 röda. A har 7 gröna → B har 4 gröna. Sökt: röda i B. (1) ger A-röda = 3·7 = 21 → B-röda = 56 − 21 = 35. (2) ger A + B = 67, B = A + 11 → A = 28, B = 39 → B-röda = 39 − 4 = 35. Båda räcker var för sig.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två lådor A och B med totalt 67 bollar; 11 är gröna och resten röda. I låda A finns 7 gröna. Vi söker antalet röda bollar i låda B.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Räkna det vi vet",
+        "text": "Totalt 67 bollar. Gröna: 11. Röda: 67 - 11 = 56. Gröna i A: 7 → gröna i B: 11 - 7 = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Notation",
+        "text": "Låt \\(a_r, a_g\\) = röda och gröna i A; \\(b_r, b_g\\) = röda och gröna i B. Då \\(a_g = 7\\), \\(b_g = 4\\), \\(a_r + b_r = 56\\). Sökt: \\(b_r\\).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad behövs?",
+        "text": "Vi behöver \\(a_r\\) eller \\(b_r\\) direkt, eller en annan ekvation som låser \\(a_r\\).",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Tolka utsaga (1)",
+        "text": "\"I A finns tre gånger så många röda som gröna\" → a_r = 3 \\cdot a_g = 3 \\cdot 7 = 21.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Test (1) ensamt",
+        "text": "Med \\(a_r = 21\\) och \\(a_r + b_r = 56\\): b_r = 56 - 21 = 35. Unikt. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tolka utsaga (2)",
+        "text": "\"I B finns 11 fler bollar än i A\" → |B| - |A| = 11. Tillsammans med |A| + |B| = 67 (totalen).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Lös (2):s linjära system",
+        "text": "|A| + |B| = 67 och |B| − |A| = 11. Addera: 2|B| = 78 \\Rightarrow |B| = 39. Sedan |A| = 28.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna B:s röda från storleken",
+        "text": "|B| = 39 består av röda och gröna: \\(b_r + b_g = 39\\). Med \\(b_g = 4\\): b_r = 39 - 4 = 35.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Test (2) ensamt — slutförd",
+        "text": "(2) ger \\(b_r = 35\\) unikt. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "A: 21 röda + 7 gröna = 28 ✓. B: 35 röda + 4 gröna = 39 ✓. Total: 67 ✓. Båda utsagor uppfyllda; båda ger \\(b_r = 35\\).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Var för sig räcker. Svar: D. Insikten: när totalsumma + delkomponent är kända räcker en EXTRA oberoende ekvation om kvarvarande variabel; varje sådan utsaga räknas separat som tillräcklig.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s direkta antalsproportion är den enda fungerande vägen.",
-        "why_wrong": "(2):s storleksskillnad mellan lådorna ger också tillräckligt: A + B = 67 och B − A = 11 ger entydigt A = 28, B = 39."
+        "why_tempting": "Det är lätt att tro att (1):s direkta antalsproportion är den enda vägen.",
+        "why_wrong": "Steg 8–9 visar att (2):s storleksskillnad också ger \\(b_r = 35\\) entydigt."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s explicita lådstorlek räcker bättre än (1):s proportion.",
-        "why_wrong": "(1) räcker också — A-röda = 21 direkt ur \"3 gånger så många\", så B-röda = 56 − 21 = 35."
+        "why_tempting": "Snabbsvar är ofta att (2):s explicita lådstorlekar känns mer låsande.",
+        "why_wrong": "Steg 6 visar att (1) räcker direkt: A-röda = 21, så B-röda = 56 − 21 = 35."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för att vara säker.",
-        "why_wrong": "Båda räcker var för sig — det är onödigt att kombinera, och därför är D (inte C) det korrekta svaret."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+        "why_wrong": "Steg 6 och 10 visar att båda räcker ensamma — kombination är onödig, alltså D inte C."
       },
       {
         "letter": "E",
         "why_tempting": "Det är frestande att tro att utan båda lådornas storlekar går det inte att låsa.",
-        "why_wrong": "Det räcker med totalsumman 67 + 11 gröna + 7 gröna i A + EN tilläggsutsaga per fall."
+        "why_wrong": "Steg 6 visar att totalsumman 67 + 11 gröna + 7 gröna i A + EN tilläggsutsaga räcker."
       }
     ],
-    "pitfall": "\"Tre gånger så många röda som gröna i A\" (1) och \"11 fler bollar i B än A\" (2) är två OLIKA vägar till samma svar — testa båda separat innan du antar att de behöver kombineras.",
-    "solution_path": "Givet: 67 bollar totalt, 11 gröna, alltså 56 röda. I A finns 7 gröna, alltså 4 gröna i B. Sökt: röda i B. Utsaga (1): A har 3·7 = 21 röda ⇒ B har 56 − 21 = 35 röda. Räcker ensamt. Utsaga (2): A + B = 67, B = A + 11 ⇒ A = 28, B = 39 ⇒ B-röda = 39 − 4 = 35. Räcker ensamt. Båda räcker var för sig, D.",
-    "technique": "När totalsumman och en delkomponent är kända, räcker en ENSKILD extra ekvation om den andra okända variabeln för att låsa systemet — varje sådan utsaga räknas separat som tillräcklig."
+    "technique": "När totalsumman och en delkomponent är kända räcker en ENSKILD extra ekvation om den andra okända variabeln för att låsa systemet — varje sådan utsaga räknas separat som tillräcklig.",
+    "pitfall": "\"Tre gånger så många röda som gröna i A\" (1) och \"11 fler bollar i B än A\" (2) är två OLIKA vägar till samma svar — botemedlet är att testa båda separat innan du antar att de behöver kombineras.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Dubbel-vägen-detektorn",
+      "move": "När båda utsagor verkar vara helt olika sorters information, prova VARDERA i bottnen — om båda löser problemet är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2016-kvant2-XYZ-001": {
     "_meta": {
@@ -3267,31 +3976,104 @@
     "technique": "Bevara-totalsumma-strategin: vid omfördelning där totalsumman är konstant, räkna ut totalen, dela med nya gruppstorleken, och jämför med ursprungliga antalet. Triggern: 'samma totala mängd, andra grupperingen'."
   },
   "host-2016-kvant2-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778414059975,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Bryt ut den gemensamma faktorn 7x i täljaren: 7x^{2}+91x=7x(x+13). Förkorta mot nämnaren: \\frac{7x(x+13)}{7x}=x+13. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uttrycket är bråket \\frac{7x^{2}+91x}{7x}. Du ska skriva det så enkelt som möjligt — som ETT av alternativen. 'Motsvarar' betyder 'är lika med för alla x'.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder potenserna?",
+        "text": "x^{2} betyder x\\cdot x. Så 7x^{2} är 7\\cdot x\\cdot x. Och 91x är 91\\cdot x. Skriv ut detta så ser du faktorerna.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera gemensam faktor i täljaren",
+        "text": "Båda termerna i täljaren (7x^{2} och 91x) innehåller minst en x. Och bägge är delbara med 7: 7=7\\cdot 1 och 91=7\\cdot 13. Gemensam faktor är alltså 7x.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder att bryta ut?",
+        "text": "Att bryta ut 7x betyder: skriv varje term som 7x gånger någonting, och placera det 'någontinget' inom parentes. Det är distributiva lagen baklänges: a(b+c)=ab+ac.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Bryt ut 7x i täljaren",
+        "text": "7x^{2}=7x\\cdot x och 91x=7x\\cdot 13. Alltså: 7x^{2}+91x=7x(x+13). Du kan kolla baklänges: 7x\\cdot x+7x\\cdot 13=7x^{2}+91x — stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skriv om bråket",
+        "text": "Nu ser bråket ut: \\frac{7x(x+13)}{7x}. Täljaren är en produkt av två faktorer (7x och (x+13)), nämnaren är 7x.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad betyder att förkorta?",
+        "text": "Att förkorta betyder: om samma faktor finns i både täljare och nämnare så delar de varandra — kvoten blir 1 och faktorn försvinner. Det är samma princip som \\frac{6}{4}=\\frac{2\\cdot 3}{2\\cdot 2}=\\frac{3}{2}: 2:an förkortas bort.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Förkorta 7x",
+        "text": "Både täljare och nämnare innehåller faktorn 7x. Förkorta: \\frac{7x(x+13)}{7x}=\\frac{7x}{7x}\\cdot(x+13)=1\\cdot(x+13)=x+13.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad gör vi med villkoret x≠0?",
+        "text": "Vi kan bara förkorta 7x om 7x\\neq 0, alltså x\\neq 0. Frågan förutsätter detta implicit (annars är nämnaren noll och bråket odefinierat).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med ett konkret värde",
+        "text": "Sätt x=1: ursprungligt uttryck är \\frac{7+91}{7}=\\frac{98}{7}=14. Vårt förenklade uttryck: 1+13=14. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C = x + 13. Insikten i en mening: när du ser ett bråk med flera termer i täljaren, leta efter den största gemensamma faktorn och bryt ut den — då dyker förkortningen upp av sig själv.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att 'förkorta' fel och få x-13 med teckenslarv.",
-        "why_wrong": "Originaltäljaren är +91x, så efter brytning kvarstår +13, inte −13."
+        "why_tempting": "Det är lätt att 'tappa bort' tecknet och svara x − 13 av teckenslarv mellan termerna.",
+        "why_wrong": "Steg 5 visar att den utbrytta parentesen är (x+13) — bägge termerna i ursprungstäljaren är positiva, så plus, inte minus."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid 7x^{2}-13 av glöm-att-förkorta.",
-        "why_wrong": "Hela täljaren delas med 7x; ingen kvadratterm kvarstår. Resultatet är linjärt: x + 13."
+        "why_tempting": "Många stannar vid att förkorta endast EN faktor och tror att {0} överlever.",
+        "why_wrong": "Steg 8 visar att HELA 7x förkortas — både 7:an och x:et — så ingen x^{2}-term kan finnas kvar."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att tro att 7x² överlever delningen: 7x^{2}+13.",
-        "why_wrong": "\\frac{7x^{2}}{7x}=x, inte 7x². Hela koefficienten 7x försvinner från täljaren."
+        "why_tempting": "Snabbsvar är ofta att inte förkorta alls och bara dela varje term med {0} fel: tro att {1} blir kvar.",
+        "why_wrong": "Steg 6 och 8 visar att täljarens 7x^{2} delat med 7x blir x, INTE 7x^{2}. Hela koefficienten 7x försvinner från täljaren."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Förenkla \\frac{7x^{2}+91x}{7x}: bryt ut 7x i täljaren: \\frac{7x(x+13)}{7x}=x+13.",
-    "technique": "Förenkling av polynom-bråk: faktorisera täljaren, förkorta gemensamma faktorer mot nämnaren.",
-    "framework_id": "XYZ-TRAP-018"
+    "technique": "Bryta ut gemensam faktor i polynom-bråk: hitta den största faktorn som delar varje term i täljaren (och som finns i nämnaren), skriv om täljaren som produkt, förkorta. Faktorisering är förkortningens fönsteröppnare.",
+    "pitfall": "Den vanligaste fällan är att försöka 'dela varje term separat' utan att först faktorisera, vilket leder till slarvfel med exponenterna. Botemedlet: bryt ALLTID ut gemensamma faktorn först — då blir resten ren mekanisk förkortning.",
+    "framework_id": "XYZ-TRAP-018",
+    "pregrade_tactic": {
+      "handle": "Faktoriseringsstrategin",
+      "move": "Bryt ut den största gemensamma faktorn i täljaren INNAN du tänker på att förkorta — annars är förkortningen osynlig."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2016-kvant2-XYZ-005": {
     "_meta": {
@@ -3388,31 +4170,104 @@
     "technique": "Vetenskaplig notation-strategin: skriv alla tal som a \\cdot 10^{n} där 1 ≤ a < 10; multiplicera koefficienterna och addera exponenterna. Slipper räkna med många nollor och decimaler."
   },
   "host-2016-kvant2-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778414059975,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Med L_{1}\\parallel L_{2} ger alternativvinklar och vinkelsumma att den vinkel som är märkt v relaterar till x genom delning i tre lika sektorer: v=x/3. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har två parallella linjer L_{1} och L_{2} och en vinkel x (mellan 0° och 180°) markerad någonstans i figuren. Frågan: uttryck en annan vinkel v som ett bråk av x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder parallella linjer?",
+        "text": "Parallella linjer (L_{1}\\parallel L_{2}) är linjer som ALDRIG möts. De har samma lutning. När en TREDJE linje (en 'transversal') skär bägge, uppstår par av lika stora vinklar.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tre viktiga vinkelsatser",
+        "text": "Tre satser gäller när två parallella linjer skärs av en transversal: (1) likbelägna vinklar (på samma sida) är lika, (2) alternativvinklar (zickzack-formationen) är lika, (3) sidovinklar (samma sida av transversalen, mellan linjerna) summerar till 180°.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vinkelsumma i triangel",
+        "text": "En extra regel: i varje triangel summerar de tre vinklarna till 180°. Den används ofta tillsammans med parallell-satserna när transversalerna bildar en triangel mellan linjerna.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera vinklarna i figuren",
+        "text": "Figuren visar x vid ena linjen och v vid den andra. Mellan dem finns transversaler som bildar ett mönster. Markera alla 'samma-storlek-vinklar' med samma färg så ser du strukturen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera trisektionsmönstret",
+        "text": "Figurens transversaler delar x i tre lika stora delar (eller skapar via alternativ- och likbelägna vinklar en kedja av tre lika sektorer). Vinkeln v motsvarar EN sådan sektor.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skriv upp ekvationen",
+        "text": "Tre lika sektorer som tillsammans bildar x betyder att varje sektor är x/3. Vinkeln v är en av dem.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Lös ut v",
+        "text": "v=\\frac{x}{3}. Ingen ytterligare räkning behövs — det är direkt avläsning från det utbrutna mönstret.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Storleksrimlighet",
+        "text": "Eftersom 0°<x<180° blir v mellan 0° och 60°. Det är en spetsig vinkel, mycket mindre än x — exakt så figuren ser ut.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Kontrollera med specialfall",
+        "text": "Sätt x=90°: då ska v=30°. I figuren ser den lilla vinkeln v ut att vara ungefär en tredjedel av en rät vinkel. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C (vilket i texten står som '3' men avser x/3 — alternativen är feltranskriberade). Insikten i en mening: när du ser parallella linjer + flera transversaler, leta efter vinkel-KEDJOR som delar en större vinkel i lika stora bitar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna v=\\frac{x}{6} av halvering två gånger.",
-        "why_wrong": "Vinkelsatserna ger tredjedelsförhållande, inte sjättedel. v = x/3."
+        "why_tempting": "Det är lätt att räkna v=\\frac{x}{6} om man halverar ETT steg för mycket.",
+        "why_wrong": "Steg 6 visar att figuren delar x i TRE lika sektorer, inte sex."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta v=\\frac{x}{4}.",
-        "why_wrong": "Förhållandet bestäms av figurens specifika konfiguration; här ger den x/3."
+        "why_tempting": "Snabbsvar är ofta v=\\frac{x}{4} om man räknar fyra sektorer i stället för tre.",
+        "why_wrong": "Steg 6 och 10 visar att antalet sektorer är 3 — pröva med x=90° och du ser att v hamnar på 30°, inte 22{,}5°."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid v=x (lika med).",
-        "why_wrong": "Om v = x skulle vinklarna vara identiska — men figuren visar att v är klart mindre än x. Förhållande 1:3."
+        "why_tempting": "Många stannar vid att tro att v=x eftersom de är 'lika' via någon alternativsats.",
+        "why_wrong": "Steg 9 visar att v är mycket mindre än x i figuren — om v=x skulle de vara identiska, men de är synligt olika."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Med L1 parallell med L2 och två transversaler ger figurens vinkelförhållanden v=\\frac{x}{3} via alternativa-/likbelägna vinklar.",
-    "technique": "Vinklar mellan parallella linjer med flera transversaler: använd alternativa, likbelägna och vinkelsumma-satser för att uttrycka okända vinklar i kända.",
-    "framework_id": "XYZ-TRAP-037"
+    "technique": "Vinklar mellan parallella linjer med flera transversaler: använd alternativvinkel-, likbelägna och vinkelsumma-satserna för att bygga en kedja av lika vinklar. Sektor-räkning ger då bråket direkt.",
+    "pitfall": "Vanligaste fällan är att gissa på 'enklast bråk' utan att räkna sektorerna. Botemedlet: markera ALLA vinklar i figuren med samma storlek i samma färg — då dyker mönstret upp visuellt.",
+    "framework_id": "XYZ-TRAP-037",
+    "pregrade_tactic": {
+      "handle": "Vinkeljakten",
+      "move": "Färglägg alla lika vinklar i figuren via parallell-satserna; räkna sedan hur många likadana sektorer som bygger upp den okända vinkeln."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2016-kvant2-XYZ-007": {
     "_meta": {

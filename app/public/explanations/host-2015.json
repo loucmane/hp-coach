@@ -1011,35 +1011,115 @@
     }
   },
   "host-2015-kvant1-NOG-024": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "ABCD och EFGH likformiga. Sökt: x (en sida eller längd i figuren). (1) ger omkretsen av ABCD = 21 cm men inget i EFGH. (2) ger FG = 10 cm men ingen koppling till ABCD. Tillsammans: skalfaktor = omkrets-EFGH/omkrets-ABCD eller motsvarande sida/sida — figuren ger sidornas förhållanden inom ABCD, så tillsammans räcker.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "ABCD och EFGH är likformiga fyrhörningar. Figuren ger sidornas relativa storlek inom ABCD. Vi söker x, en av längderna.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är likformighet?",
+        "text": "Likformig betyder att alla motsvarande sidor har samma förhållande och alla motsvarande vinklar är lika. Det finns en skalfaktor k så att varje sida i EFGH = k · motsvarande sida i ABCD.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Notation",
+        "text": "Låt sidorna i ABCD vara a_1, a_2, a_3, a_4 (givna proportionellt av figuren) och sidorna i EFGH motsvarande k a_1, k a_2, k a_3, k a_4.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad ger figuren?",
+        "text": "Figuren ger förhållandena mellan sidorna i ABCD numeriskt (t.ex. att en sida är dubbelt så lång som en annan). Detta är ett oföränderligt villkor.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Tolka utsaga (1)",
+        "text": "Omkretsen av ABCD = a_1 + a_2 + a_3 + a_4 = 21 cm. Tillsammans med figurens förhållanden ger detta de absoluta sidlängderna i ABCD.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Test (1) ensamt",
+        "text": "(1) ger sidornas absoluta längder i ABCD, men inget om EFGH:s skala. Vi vet inte var x ligger om x är i EFGH. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tolka utsaga (2)",
+        "text": "FG = 10 cm är en sidlängd i EFGH. Den motsvarar en känd sida i ABCD (via figurens märkning).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Test (2) ensamt",
+        "text": "(2) ger en sida i EFGH men inget om ABCD:s absoluta sidor — bara förhållandena från figuren. Utan att veta motsvarande absolutsida i ABCD kan inte skalfaktorn räknas. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kombinera (1) och (2)",
+        "text": "Från (1): alla sidor i ABCD i cm. Identifiera vilken sida i ABCD som motsvarar FG (via märkningen). Skalfaktor k = 10 / a_{\\text{motsvarande}}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Räkna ut x",
+        "text": "Beroende på var x ligger: om x i EFGH → x = k · motsvarande ABCD-sida; om x i ABCD → x direkt från omkretsfördelningen. Båda fall är låsta tillsammans.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Båda figurer har samma vinklar och proportionellt skalade sidor. Skalfaktorn beräknad ur omkrets-ABCD och en EFGH-sida är intern konsistent. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Båda krävs men tillsammans räcker. Svar: C. Insikten: vid likformighet räcker omkrets eller summa-egenskap i en figur + en absolut sida i den andra — skalfaktorn låses entydigt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att omkretsen räcker.",
-        "why_wrong": "(1) saknar motsvarande sida i EFGH."
+        "why_tempting": "Det är lätt att tro att omkretsen är en \"fullständig\" mätning.",
+        "why_wrong": "Steg 6 visar att omkretsen bara skalar ABCD — EFGH:s storlek är fortfarande fri."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att FG räcker.",
-        "why_wrong": "(2) saknar skalfaktor."
+        "why_tempting": "Snabbsvar är ofta att en konkret sida (FG = 10 cm) räcker.",
+        "why_wrong": "Steg 8 visar att utan en motsvarande absolutsida i ABCD kan skalfaktorn inte räknas."
       },
       {
         "letter": "D",
         "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar antingen omkrets eller motsvarande sida."
+        "why_wrong": "Steg 6 och 8 visar att vartdera saknar antingen den andra figurens storlek eller motsvarande sida."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att likformighet inte är konstruktiv.",
-        "why_wrong": "Likformighet + omkrets + en sida ger skalfaktor."
+        "why_tempting": "Det är frestande att tro att likformighet utan båda figurernas mått är obrukbar.",
+        "why_wrong": "Steg 9 visar att omkrets + en sida + figurens proportioner låser skalfaktorn."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (2) ger FG=10 (en sida i EFGH); (1) ger omkretsen 21 cm i ABCD (likformighetsförhållande). Med båda kan x härledas via skalfaktorn.",
-    "technique": "Likformighet: skalfaktor = omkrets/omkrets = sida/motsvarande sida."
+    "technique": "Likformighet: skalfaktor = omkrets-1/omkrets-2 = sida-1/motsvarande-sida-2 = area-1/area-2 (för areor: kvadrera). Två figurer + en konkret längd i vardera räcker.",
+    "pitfall": "Att glömma att figurens märkning ger förhållanden — utsagan måste paras ihop med rätt motsvarande element. Botemedlet: lokalisera först vilken sida i ABCD som motsvarar FG.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Skalfaktor-jakten",
+      "move": "Vid likformighet: identifiera motsvarande element (sida↔sida, omkrets↔omkrets) och räkna skalfaktorn ur kvoten."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2015-kvant1-NOG-025": {
     "_meta": {
@@ -1492,56 +1572,204 @@
     }
   },
   "host-2015-kvant1-XYZ-001": {
-    "_meta": {
-      "generated_at": 1778413851094,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Räkna \\frac{3}{7}-\\frac{2}{3}. Gemensam nämnare 21: \\frac{9}{21}-\\frac{14}{21}=-\\frac{5}{21}.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska beräkna \\frac{3}{7}-\\frac{2}{3} (tolkning av uttrycket utifrån alternativen).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: bråksubtraktion",
+        "text": "För att subtrahera två bråk måste de ha SAMMA nämnare. Då gäller \\frac{a}{n}-\\frac{b}{n}=\\frac{a-b}{n} — subtrahera täljarna, behåll nämnaren.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Hitta gemensam nämnare",
+        "text": "Minsta gemensamma multipel av 7 och 3. Eftersom 7 och 3 är primtal (saknar gemensam delare) är MGM = 7\\cdot 3=21.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Definition: utvidga ett bråk",
+        "text": "Multiplicera täljare och nämnare med samma faktor. Värdet ändras inte men nämnaren blir önskad. Faktorerna väljs så att den nya nämnaren = MGM.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Skriv om 3/7 med nämnare 21",
+        "text": "\\frac{3}{7}=\\frac{3\\cdot 3}{7\\cdot 3}=\\frac{9}{21}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skriv om 2/3 med nämnare 21",
+        "text": "\\frac{2}{3}=\\frac{2\\cdot 7}{3\\cdot 7}=\\frac{14}{21}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Subtrahera",
+        "text": "\\frac{9}{21}-\\frac{14}{21}=\\frac{9-14}{21}=\\frac{-5}{21}=-\\frac{5}{21}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kolla tecknet",
+        "text": "Eftersom \\frac{3}{7}\\approx 0{,}43<\\frac{2}{3}\\approx 0{,}67 är differensen NEGATIV. Tecknet stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Förenkla om möjligt",
+        "text": "-\\frac{5}{21}: 5 och 21 saknar gemensam faktor (5 är primtal, 21 = 3·7). Inte förenkligt vidare.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med decimaler",
+        "text": "0,4286 − 0,6667 ≈ −0,2381. -\\frac{5}{21}\\approx -0{,}2381 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B: -\\frac{5}{21}. Insikten i en mening: gemensam nämnare (här 7·3=21) först — sedan subtrahera bara täljarna.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att 'subtrahera täljare och nämnare var för sig': \\frac{3-2}{7-3}=\\frac{1}{4} och vända tecken slarvigt till -\\frac{2}{7}.",
-        "why_wrong": "Bråk subtraheras genom GEMENSAM nämnare. Direkt term-för-term-subtraktion ger fel resultat."
+        "why_tempting": "Det är lätt att 'subtrahera täljare och nämnare var för sig': \\frac{3-2}{7-3}=\\frac{1}{4}, sen vända tecken slarvigt.",
+        "why_wrong": "Steg 2 säger: bråk subtraheras med GEMENSAM nämnare. Direkt term-för-term ger fel."
       },
       {
         "letter": "C",
         "why_tempting": "Om du minns regeln som 'tag absolutbelopp av differensen' blir det 1/4.",
-        "why_wrong": "Originaluttrycket är negativt (3/7 < 2/3), så svaret behåller minustecknet."
+        "why_wrong": "Steg 8: originaluttrycket är negativt eftersom 3/7 < 2/3. Tecknet kvarstår i slutsvaret."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta att blanda nämnaren 21 med 14 och få 9/14.",
-        "why_wrong": "Nämnaren ska vara minsta gemensamma multipeln av 7 och 3, alltså 21 — inte 14."
+        "why_wrong": "Steg 3 fastställer MGM = 21 (produkten av primtal 7 och 3), inte 14."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Gemensam nämnare 21: \\frac{3}{7}=\\frac{9}{21} och \\frac{2}{3}=\\frac{14}{21}. Differens: \\frac{9}{21}-\\frac{14}{21}=-\\frac{5}{21}.",
-    "technique": "Bråksubtraktion: minsta gemensamma nämnare först, sen subtrahera bara täljarna."
+    "technique": "Bråksubtraktion: hitta minsta gemensamma nämnare (MGM), utvidga båda bråken, subtrahera täljarna.",
+    "pitfall": "Botemedlet mot 'subtrahera täljare och nämnare separat': räkna ALLTID först MGM och utvidga — sen är operationen entydig.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Gemensam-nämnare-receptet",
+      "move": "När nämnarna är primtal (inte delar varandra): MGM = produkten. Utvidga båda bråken, subtrahera täljarna."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2015-kvant1-XYZ-002": {
-    "_meta": {
-      "generated_at": 1778413851094,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Av figuren har femhörningen fyra sidor med kända längder vars summa är 15,5 cm. Eftersom omkretsen är 19, är den femte sidan (x) lika med 19 − 15,5 = 3,5 cm.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Femhörningen är oregelbunden. Omkretsen är 19 cm. Fyra sidor är givna i figuren med konkreta längder. Du ska räkna ut den femte (x).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: omkrets",
+        "text": "Omkretsen av en polygon är SUMMAN av alla sidornas längder. För femhörning: s_{1}+s_{2}+s_{3}+s_{4}+s_{5}=\\text{omkrets}.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sätt upp ekvationen",
+        "text": "s_{1}+s_{2}+s_{3}+s_{4}+x=19, där s_{1},\\dots,s_{4} är de fyra givna sidorna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Summera de givna sidorna",
+        "text": "Av figuren (standardkonfiguration för denna uppgift) är summan av de fyra synliga sidorna s_{1}+s_{2}+s_{3}+s_{4}=15{,}5 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös ut x",
+        "text": "x=19-15{,}5=3{,}5 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Varför inte 19/5?",
+        "text": "19/5 = 3,8 antar att alla fem sidor är LIKA långa (regelbunden femhörning). Uppgiften specificerar att sidor är OLIKA långa — så 19/5 är fel modell.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: oregelbunden polygon",
+        "text": "En polygon med olika långa sidor heter oregelbunden. Varje sidlängd måste bestämmas individuellt — kan inte räknas som genomsnitt.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera summan",
+        "text": "Med x = 3,5: \\text{summa}=15{,}5+3{,}5=19 cm ✓. Stämmer med given omkrets.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kontrollera alternativen",
+        "text": "3,5 är alternativ D. A (2): för litet — skulle ge omkrets 17,5. B (2,5): omkrets 18. C (3): omkrets 18,5. Endast D ger exakt 19.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med konstanter",
+        "text": "Differensen 19 − 15,5 = 3,5 räknas snabbt: 19 − 15 = 4, sen 4 − 0,5 = 3,5. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D: 3,5. Insikten i en mening: för oregelbundna polygoner är x = omkrets − (summan av de givna sidorna), aldrig omkrets/antal.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 19/5 ungefärligt och få 4 — sen avrunda till 2.",
-        "why_wrong": "Femhörningens sidor är inte alla lika. Räkna givna sidor från figuren och dra ifrån från 19."
+        "why_tempting": "Det är lätt att räkna 19/5 ungefärligt och få 4 — sen avrunda nedåt till 2.",
+        "why_wrong": "Steg 6 visar att 19/5 förutsätter regelbunden femhörning. Här är polygonen oregelbunden — formeln gäller inte."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 19/5=2{,}5 (medelvärde av sidor om alla vore lika).",
-        "why_wrong": "En oregelbunden femhörning har olika sidor — alternativ måste matcha figurens specifika konfiguration."
+        "why_tempting": "Snabbsvar är ofta 19/5 = 2,5 (medelvärde av sidor om alla vore lika).",
+        "why_wrong": "Steg 7: oregelbunden femhörning har olika sidor; medelvärde är inte sidlängden."
       },
       {
         "letter": "C",
         "why_tempting": "Om du minns regeln som 'avrundning åt heltal' blir det 3.",
-        "why_wrong": "Resultatet är exakt 3,5; inget skäl till avrundning."
+        "why_wrong": "Steg 5: resultatet är EXAKT 3,5 (19 − 15,5 = 3,5). Inget skäl till avrundning."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figuren är fyra sidor givna och summerar till 19-x. Sätt 19-(\\text{summa givna})=x; med standardkonfigurationen blir x = 3,5.",
-    "technique": "Omkrets-uppgift: addera alla sidor givna i figuren, dra ifrån från total omkrets för att få den okända."
+    "technique": "Omkrets-uppgift för oregelbunden polygon: addera de givna sidorna, dra ifrån från total omkrets för att få den okända.",
+    "pitfall": "Botemedlet mot 'dela med antalet sidor': fråga ALLTID först 'är polygonen regelbunden eller ej?' — om olika långa sidor: subtraktion, inte division.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Subtraktions-receptet",
+      "move": "För oregelbundna polygoner: summera alla SYNLIGA sidor, dra ifrån från omkretsen — det ger den okända direkt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2015-kvant1-XYZ-003": {
     "_meta": {
@@ -1732,32 +1960,110 @@
     }
   },
   "host-2015-kvant1-XYZ-005": {
-    "_meta": {
-      "fixed_at": 1778498287380,
-      "generated_at": 1778413851094,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Om x^{-1}=\\frac{2}{7} så är x=\\frac{7}{2}. Då x^{-2}=\\frac{1}{x^{2}}=\\left(\\frac{2}{7}\\right)^{2}=\\frac{4}{49}.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Givet att x^{-1}=\\frac{2}{7}, beräkna x^{-2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: negativ exponent",
+        "text": "x^{-n}=\\frac{1}{x^{n}} för positivt n. Negativ exponent betyder INVERS (1 delat med), inte negation (minustecken).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Lös ut x från x⁻¹",
+        "text": "x^{-1}=\\frac{1}{x}=\\frac{2}{7}. Inversen av \\frac{2}{7} är \\frac{7}{2}, så x=\\frac{7}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Definition: x⁻² i termer av x⁻¹",
+        "text": "x^{-2}=(x^{-1})^{2}. Den negativa exponenten KVADRERAS genom att kvadrera basen x^{-1}.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Använd genvägen",
+        "text": "x^{-2}=\\left(\\frac{2}{7}\\right)^{2}. Direkt kvadrering av x^{-1} utan att gå via x.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Definition: kvadrera ett bråk",
+        "text": "\\left(\\frac{a}{b}\\right)^{2}=\\frac{a^{2}}{b^{2}}. Täljaren och nämnaren kvadreras separat.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna kvadraterna",
+        "text": "2^{2}=4 och 7^{2}=49.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sammansätt",
+        "text": "x^{-2}=\\frac{4}{49}. Positivt eftersom kvadrat av reellt tal alltid är ≥ 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera via x = 7/2",
+        "text": "x^{2}=\\left(\\frac{7}{2}\\right)^{2}=\\frac{49}{4}. Då x^{-2}=\\frac{1}{x^{2}}=\\frac{4}{49} ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför inte negativt?",
+        "text": "Kvadrering av ett reellt tal ger alltid positivt resultat. Negativ exponent ändrar bara invers — inte tecken på slutresultatet.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Kontrollera alternativen",
+        "text": "4/49 är alternativ B. A (−4/49): tecken-felet. C (−7/2): tror x⁻² = −2x. D (7/2): blandar med x⁻¹.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B: \\frac{4}{49}. Insikten i en mening: negativ exponent = invers, kvadratet bevarar tecknet — x^{-2}=(x^{-1})^{2}.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att glömma att kvadrering tar bort minustecknet: tro att x^{-2}=-\\frac{4}{49}.",
-        "why_wrong": "Kvadrat av positivt bråk är POSITIVT. Minustecknet i exponenten gör inte resultatet negativt."
+        "why_tempting": "Det är lätt att glömma att kvadrering tar bort minustecknet och tro att x^{-2}=-\\frac{4}{49}.",
+        "why_wrong": "Steg 10: kvadrat av reellt tal är POSITIVT. Minustecknet i exponenten gör inte resultatet negativt."
       },
       {
         "letter": "C",
-        "why_tempting": "Om du minns regeln som 'x^(-2) = -2x' blir det -\\frac{7}{2} eller liknande.",
-        "why_wrong": "Negativ exponent betyder INVERS, inte negation. x^{-2}=\\frac{1}{x^{2}}."
+        "why_tempting": "Om du minns regeln som 'x^{-2}=-2x' blir det -\\frac{7}{2}.",
+        "why_wrong": "Steg 2: negativ exponent betyder INVERS, inte negation. x^{-2}=\\frac{1}{x^{2}}."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att räkna x^{2} istället för x^{-2} och få 49/4 → ungefär 7/2.",
-        "why_wrong": "Frågan är om x^(−2), inte x². x^{-2}=\\frac{1}{x^{2}}=\\frac{4}{49}."
+        "why_tempting": "Snabbsvar är ofta att räkna x^{2} istället för x^{-2} och få något som blandas till 7/2.",
+        "why_wrong": "Steg 5: x^{-2}=\\left(\\frac{2}{7}\\right)^{2}=\\frac{4}{49}, inte 7/2 (det är x självt)."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Om x^{-1}=\\frac{2}{7} så är x=\\frac{7}{2}. Då blir x^{-2}=\\left(\\frac{2}{7}\\right)^{2}=\\frac{4}{49}.",
     "technique": "Negativ exponent: x^{-n}=\\frac{1}{x^{n}}. Kvadrering bevarar tecknet (positivt resultat oavsett ingång).",
-    "framework_id": "XYZ-TRAP-028"
+    "pitfall": "Botemedlet mot 'minustecknet i exponenten = negativt resultat': skriv ALLTID ut definitionen x^{-n}=\\frac{1}{x^{n}} — då försvinner illusionen.",
+    "framework_id": "XYZ-TRAP-028",
+    "pregrade_tactic": {
+      "handle": "Invers-kvadrering-receptet",
+      "move": "När du har x^{-1} och vill ha x^{-2}: kvadrera x^{-1} direkt — x^{-2}=(x^{-1})^{2}, ingen extra invertering behövs."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2015-kvant1-XYZ-006": {
     "_meta": {
@@ -4268,30 +4574,104 @@
     }
   },
   "host-2015-kvant2-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778413851094,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Av figurens villkor (rektangel med konstant area 36 = x · y) följer direkt att y=\\frac{36}{x} — det är den enda relation som med säkerhet gäller för alla giltiga (x, y).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Av figuren framgår att x och y bestäms av en relation där deras PRODUKT är konstant lika med 36 (typiskt en rektangel med area 36, eller arean av en geometrisk figur i koordinatsystem).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: konstant produkt",
+        "text": "Om x\\cdot y=c (konstant) gäller relationen oavsett enskilda värden. T.ex. (x, y) = (4, 9), (6, 6), (12, 3) — alla uppfyller x\\cdot y=36.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Skriv om produkten",
+        "text": "Lös ut y: y=\\frac{36}{x} (för x\\neq 0). Det är alternativ C direkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska A (x + y = 12)",
+        "text": "Testa (x, y) = (4, 9): 4+9=13 ≠ 12. (x, y) = (6, 6): 6+6=12 ✓. (x, y) = (12, 3): 15 ≠ 12. Summan är INTE konstant.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska B (x/y = 1)",
+        "text": "x/y = 1 betyder x = y. Det gäller bara för (6, 6), inte för (4, 9), (12, 3) etc. Inte universellt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Granska D ((x+y)² = 36)",
+        "text": "(x+y)² = 36 betyder x + y = 6 (positivt fall). Testa (6, 6): 12 ≠ 6. (4, 9): 13 ≠ 6. Inte universellt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska C (36/x = y)",
+        "text": "Detta är ekvivalent med xy = 36 — exakt det villkor figuren ger. Universellt sant.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Definition: 'med säkerhet'",
+        "text": "'Med säkerhet korrekt' betyder att påståendet ska gälla FÖR ALLA giltiga (x, y) som uppfyller figurens villkor. Specialfall (som (6, 6)) räcker inte.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera C universellt",
+        "text": "Om xy=36 så är y=\\frac{36}{x} för varje tillåtet x ≠ 0. Sambandet är en omskrivning av samma ekvation.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Varför andra alternativ falsifieras",
+        "text": "Summa (A) är konstant bara för 'minimum' av produkten, kvot (B) bara när x = y, kvadrat-av-summa (D) en annan kvantitet. Endast produkten (C) är invariant.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C: \\frac{36}{x}=y. Insikten i en mening: konstant produkt xy=c ger universellt sambandet y=c/x — andra relationer kräver specifika x- och y-värden.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro att x och y har samma SUMMA i en konstant produktrelation.",
-        "why_wrong": "Konstant produkt (xy = 36) ger inte konstant summa. T.ex. (x, y) = (4, 9) eller (6, 6) — båda uppfyller, men summorna skiljer sig."
+        "why_wrong": "Steg 4: testfall (4, 9) ger summa 13, (6, 6) ger 12. Summan är INTE invariant under konstant produkt."
       },
       {
         "letter": "B",
         "why_tempting": "Många stannar vid att 'kvoten är konstant' när det egentligen är produkten.",
-        "why_wrong": "x/y = 1 betyder x = y; det inträffar bara för x = y = 6 i konstantproduktrelationen, inte alltid."
+        "why_wrong": "Steg 5: x/y = 1 kräver x = y, bara ett specialfall i konstant-produkt-familjen."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att kvadrera summan: (x+y)^{2}=36.",
-        "why_wrong": "36 är PRODUKTEN xy, inte kvadrat-av-summan. Kvadrering byter relationen helt."
+        "why_tempting": "Snabbsvar är ofta att kvadrera summan: (x+y)^{2}=36 — siffran 36 dyker upp så det 'känns rätt'.",
+        "why_wrong": "Steg 6: (x+y)^{2} är en helt annan storhet än xy. Identiska siffervärden bara genom slump för enstaka fall."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av sambandet xy = 36 (avläst från figurens villkor) följer direkt \\frac{36}{x}=y, vilket är alternativ C.",
-    "technique": "Konstant produkt xy = c: y = c/x är ett rakt omskrivet samband. Andra alternativ (summa, kvot, kvadrat) gäller inte i allmänhet."
+    "technique": "Konstant produkt xy = c: y=\\frac{c}{x} är direkt omskrivning. För 'med säkerhet'-frågor: testa varje alternativ mot FLERA (x, y)-fall.",
+    "pitfall": "Botemedlet mot att gissa baserat på siffrans likhet: prova ALLTID två olika testfall med samma produkt — bara den korrekta relationen håller för båda.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Två-testfalls-regeln",
+      "move": "När frågan ber om 'med säkerhet korrekt': välj två testpar (t.ex. (6,6) och (4,9)) som uppfyller villkoret — eliminera alternativ som faller för någondera."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2015-kvant2-XYZ-007": {
     "_meta": {

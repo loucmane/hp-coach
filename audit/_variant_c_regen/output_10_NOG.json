@@ -1,0 +1,2558 @@
+{
+  "host-2023-kvant2-NOG-023": {
+    "solution_path": "I en klass om 30 vill vi veta hur m\u00e5nga som spelar B\u00c5DE fotboll och innebandy (snittet). (1) s\u00e4ger F=20, (2) s\u00e4ger I=10. Tv\u00e5 yttre totaler r\u00e4cker inte: snittet kan ligga var som helst mellan 0 och 10 beroende p\u00e5 hur m\u00e5nga som inte spelar n\u00e5got alls. Svar: E.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "En klass har 30 elever. Vi s\u00f6ker antalet som spelar B\u00c5DE fotboll och innebandy \u2014 det vill s\u00e4ga snittet av tv\u00e5 m\u00e4ngder. (1) ger fotbollstotalen, (2) ger innebandytotalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad menar NOG med 'tillr\u00e4cklig'?",
+        "text": "Tillr\u00e4cklig = informationen ger exakt ett m\u00f6jligt v\u00e4rde p\u00e5 snittet. Om snittet kan anta minst tv\u00e5 olika v\u00e4rden i p\u00e5st\u00e5endets giltighets-zon \u2192 otillr\u00e4cklig.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Inklusion-exklusion",
+        "text": "F\u00f6r tv\u00e5 m\u00e4ngder F och I g\u00e4ller \ue000|F \\cup I| = |F| + |I| - |F \\cap I|\ue001. Det betyder att totalen som spelar minst en sport = fotbollare + innebandyspelare \u2212 snittet (f\u00f6r att inte r\u00e4kna dubbla en g\u00e5ng f\u00f6r mycket).",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Den ok\u00e4nda: 'varken-gruppen'",
+        "text": "L\u00e5t v = antal elever som varken spelar fotboll eller innebandy. D\u00e5 \u00e4r \ue000|F \\cup I| = 30 - v\ue001. V\u00e4rdet p\u00e5 v \u00e4r inte givet \u2014 och det \u00e4r just det som l\u00e5ser snittet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1) s\u00e4ger F = 20. Inget om innebandy, inget om varken-gruppen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "Snittet kan vara vad som helst mellan 0 och min(F, I) \u2014 men eftersom I \u00e4r ok\u00e4nd \u00e4r \u00e4ven taket ok\u00e4nt. (1) ensam: otillr\u00e4cklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2) s\u00e4ger I = 10. Inget om fotboll, inget om varken-gruppen.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt",
+        "text": "Samma problem spegelv\u00e4nt: snittet \u00e4r ok\u00e4nt. (2) ensam: otillr\u00e4cklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa (1) och (2) tillsammans",
+        "text": "Med F=20 och I=10: \ue00020 + 10 - s = 30 - v\ue001, allts\u00e5 \ue000s = v\ue001. Snittet \u00e4r lika med antalet i varken-gruppen \u2014 och v \u00e4r fortfarande inte givet.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tv\u00e5 konkreta motexempel",
+        "text": "Scenario A: v = 0 \u2192 s = 0 (alla spelar minst en sport; ingen spelar b\u00e5da). Scenario B: v = 5 \u2192 s = 5 (5 spelar b\u00e5da, 5 spelar inget). B\u00e5da \u00e4r konsistenta med F=20, I=10, total 30.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Scenario A: fotboll-bara 20, innebandy-bara 10, b\u00e5da 0, varken 0 \u2192 30. Klart. Scenario B: fotboll-bara 15, innebandy-bara 5, b\u00e5da 5, varken 5 \u2192 30. Klart. Tv\u00e5 olika snitt \u2192 otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Varken (1), (2) eller b\u00e5da tillsammans l\u00e5ser snittet. Svar: E. Insikten i en mening: i Venn-uppgifter med tv\u00e5 m\u00e4ngder beh\u00f6ver du DEL-information (snitt, union, varken-gruppen eller en exakt cell) \u2014 bara totaler r\u00e4cker aldrig.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att fotbollstotalen 20 \u00e4r den 'st\u00f6rre' siffran och d\u00e4rf\u00f6r r\u00e4cker som l\u00e5sning.",
+        "why_wrong": "Steg 5\u20136: F=20 s\u00e4ger inget om innebandyspelarna och inget om varken-gruppen. Tv\u00e5 konkreta scenarier i steg 10 visar olika snitt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att innebandytotalen \u00e4r mer 'precis' (mindre tal) och d\u00e4rf\u00f6r skarpare.",
+        "why_wrong": "Steg 7\u20138: spegelv\u00e4nd version av (1). Innebandyssumman ensam binder ingenting i fotbollsm\u00e4ngden."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att tv\u00e5 totaler r\u00e4cker n\u00e4r inklusion-exklusion finns till hands.",
+        "why_wrong": "Steg 9: ekvationen kollapsar till s = v, d\u00e4r v (varken-gruppen) \u00e4r ok\u00e4nd. Tv\u00e5 yttre totaler ger \u00f6vre/undre gr\u00e4ns p\u00e5 snittet men inte ett unikt v\u00e4rde."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att var och en r\u00e4cker eftersom 'b\u00e5da \u00e4r totaler' landar du h\u00e4r.",
+        "why_wrong": "Steg 6 och 8: ingen av dem ger snittet ensam \u2014 D kr\u00e4ver att vardera r\u00e4cker, vilket \u00e4r \u00e4nnu starkare \u00e4n C."
+      }
+    ],
+    "technique": "I Venn-uppgifter med tv\u00e5 m\u00e4ngder finns fyra ok\u00e4nda celler (bara-A, bara-B, b\u00e5da, varken) och fyra m\u00f6jliga ekvationer (|A|, |B|, |A\u222aB|, |A\u2229B|). Tv\u00e5 yttre totaler r\u00e4cker INTE \u2014 du beh\u00f6ver minst en cell eller en union/snitt-uppgift.",
+    "pitfall": "Klassisk f\u00e4lla: 'jag har tv\u00e5 totaler, allts\u00e5 kan jag r\u00e4kna ut snittet'. Botemedlet: rita 2\u00d72-cellen (eller Venn) och r\u00e4kna obekanta. Tv\u00e5 ok\u00e4nda ekvationer i fyra obekanta ger o\u00e4ndligt m\u00e5nga l\u00f6sningar.",
+    "framework_id": "NOG-TRAP-001",
+    "pregrade_tactic": {
+      "handle": "Venn-cellr\u00e4knaren",
+      "move": "N\u00e4r en NOG-fr\u00e5ga s\u00f6ker snittet av tv\u00e5 m\u00e4ngder: rita 2\u00d72-tabellen och r\u00e4kna givna celler \u2014 om 'varken'-cellen eller snittet inte \u00e4r l\u00e5st av n\u00e5got p\u00e5st\u00e5ende \u00e4r det otillr\u00e4ckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2023-kvant2-NOG-024": {
+    "solution_path": "Fr\u00e5gan \u00e4r ja/nej: g\u00e5r linjen L genom (5,5)? En linje l\u00e5ses entydigt av exakt tv\u00e5 punkter. (1) ger en punkt, (2) ger en punkt \u2014 vardera ensam l\u00e4mnar o\u00e4ndligt m\u00e5nga linjer. Tillsammans ger (4,6) och (6,4) lutningen k = (4\u22126)/(6\u22124) = \u22121 och linjen y = \u2212x + 10, som passerar (5,5). Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "Vi s\u00f6ker JA eller NEJ: passerar L genom punkten (5,5)? Vi v\u00e4gs allts\u00e5 inte mot att hitta hela linjen \u2014 bara mot att avg\u00f6ra om (5,5) ligger p\u00e5 den.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Linjens grundekvation",
+        "text": "En icke-vertikal linje skrivs \ue000y = kx + m\ue001, d\u00e4r k \u00e4r lutningen och m \u00e4r y-intercept. Tv\u00e5 tal (k och m) ska best\u00e4mmas \u2014 allts\u00e5 beh\u00f6vs tv\u00e5 oberoende villkor.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lutningsformeln",
+        "text": "Lutningen mellan tv\u00e5 punkter \ue000(x_1, y_1)\ue001 och \ue000(x_2, y_2)\ue001 ges av \ue000k = \\frac{y_2 - y_1}{x_2 - x_1}\ue001. Detta \u00e4r 'h\u00f6jdskillnad per stegskillnad'.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "En punkt = ett villkor",
+        "text": "Att linjen g\u00e5r genom en specifik punkt (x\u2080, y\u2080) ger en ekvation: y\u2080 = kx\u2080 + m. Det \u00e4r ett villkor i tv\u00e5 obekanta \u2014 o\u00e4ndligt m\u00e5nga l\u00f6sningar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "(1): L g\u00e5r genom (4, 6). Det ger 6 = 4k + m. En ekvation, tv\u00e5 obekanta \u2192 o\u00e4ndligt m\u00e5nga linjer. Vissa passerar (5,5), andra inte. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkret motexempel f\u00f6r (1)",
+        "text": "Linjen y = \u2212x + 10 g\u00e5r genom (4,6) och \u00e4ven genom (5,5). Linjen y = 6 (horisontell) g\u00e5r ocks\u00e5 genom (4,6) men inte genom (5,5). Tv\u00e5 mots\u00e4gande utfall \u2192 (1) ensam: otillr\u00e4cklig.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt",
+        "text": "(2): L g\u00e5r genom (6, 4). Samma struktur som (1). Linjen y = \u2212x + 10 passerar (6,4) och (5,5); linjen y = 4 passerar (6,4) men inte (5,5). Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2)",
+        "text": "Med b\u00e5da punkterna kan vi r\u00e4kna ut lutningen: \ue000k = \\frac{4-6}{6-4} = \\frac{-2}{2} = -1\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Hitta m",
+        "text": "S\u00e4tt in (4, 6) i \ue000y = -x + m\ue001: \ue0006 = -4 + m\ue001, s\u00e5 \ue000m = 10\ue001. Linjen \u00e4r \ue000y = -x + 10\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera mot (5, 5)",
+        "text": "Stoppa in x = 5: \ue000y = -5 + 10 = 5\ue001. Ja \u2014 linjen passerar (5, 5).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera (6, 4)",
+        "text": "Kontroll: \ue000-6 + 10 = 4\ue001. Klart. B\u00e5da givna punkter ligger p\u00e5 linjen och (5,5) ocks\u00e5.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Vardera p\u00e5st\u00e5endet ensamt ger en punkt \u2014 otillr\u00e4ckligt. Tillsammans best\u00e4ms linjen entydigt och svaret p\u00e5 ja/nej-fr\u00e5gan \u00e4r JA. Svar: C. Insikten i en mening: en linje \u00e4r l\u00e5st av tv\u00e5 punkter \u2014 ett ensamt punktvillkor r\u00e4cker aldrig f\u00f6r att avg\u00f6ra om en tredje punkt ligger p\u00e5 linjen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att (4,6) ligger 'tillr\u00e4ckligt n\u00e4ra' (5,5) f\u00f6r att l\u00e5sa fr\u00e5gan.",
+        "why_wrong": "Steg 5\u20136: en punkt ger en ekvation i tv\u00e5 obekanta. Tv\u00e5 linjer genom (4,6) ger olika svar f\u00f6r (5,5)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att punkten (6,4) \u00e4r symmetrisk mot (4,6) kring (5,5) och d\u00e4rf\u00f6r 'pekar' p\u00e5 (5,5).",
+        "why_wrong": "Steg 7: spegelv\u00e4nd version av (1). En punkt \u00e4r fortfarande bara en punkt \u2014 o\u00e4ndligt m\u00e5nga linjer genom den."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att tv\u00e5 symmetriska punkter var och en r\u00e4cker eftersom de 'pekar' mot (5,5) landar du h\u00e4r.",
+        "why_wrong": "Steg 4: en punkt = ett villkor i tv\u00e5 obekanta. Detta \u00e4r alltid otillr\u00e4ckligt f\u00f6r en linje, oavsett hur v\u00e4lplacerad punkten \u00e4r."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att utan algebra i p\u00e5st\u00e5endet beh\u00f6vs mer information.",
+        "why_wrong": "Steg 8\u201310: (4,6) och (6,4) ger lutning \u22121 och intercept 10. Linjen y = \u2212x + 10 passerar (5,5). Fr\u00e5gan \u00e4r entydigt JA."
+      }
+    ],
+    "technique": "En linje i planet har tv\u00e5 frihetsgrader (k och m). Varje punkt ger ETT villkor. Tv\u00e5 punkter l\u00e5ser linjen entydigt; en punkt + en lutning r\u00e4cker ocks\u00e5; men en punkt ensam aldrig.",
+    "pitfall": "Det \u00e4r frestande att tro att en 'v\u00e4lplacerad' punkt (symmetrisk eller n\u00e4ra m\u00e5l) \u00e4r v\u00e4rd mer \u00e4n andra. Botemedlet: r\u00e4kna frihetsgrader. En linje har 2 \u2014 varje punkt ger 1.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Frihetsgradsr\u00e4knaren",
+      "move": "R\u00e4kna hur m\u00e5nga parametrar objektet har (linje: 2, cirkel: 3, plan: 3) och hur m\u00e5nga oberoende villkor varje p\u00e5st\u00e5ende ger \u2014 om summan inte n\u00e5r antalet parametrar \u00e4r det otillr\u00e4ckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2023-kvant2-NOG-025": {
+    "solution_path": "Fr\u00e5gan \u00e4r ja/nej: \u00e4r talet j\u00e4mnt delbart med 5? (1): delbart med 100. Eftersom 100 = 4\u00b725 har faktorn 5 \u2014 varje multipel av 100 \u00e4r automatiskt delbart med 5. (2): delbart med 15 = 3\u00b75 \u2014 samma slutsats. Var f\u00f6r sig ger b\u00e5da ja. Svar: D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "Maria t\u00e4nker p\u00e5 ett heltal n. Fr\u00e5gan \u00e4r ja/nej: \u00e4r n delbart med 5? Vi beh\u00f6ver inte veta n sj\u00e4lv \u2014 bara om n / 5 \u00e4r ett heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'j\u00e4mnt delbart'?",
+        "text": "'n \u00e4r j\u00e4mnt delbart med k' betyder att det finns ett heltal m s\u00e5 att n = k\u00b7m. Skrivs ibland \ue000k \\mid n\ue001. Resten vid division med k \u00e4r 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Transitivitet f\u00f6r delbarhet",
+        "text": "Om \ue000a \\mid b\ue001 och \ue000b \\mid c\ue001, s\u00e5 \ue000a \\mid c\ue001. P\u00e5 svenska: om a delar b och b delar c, s\u00e5 delar a ocks\u00e5 c. (Bevis: b = a\u00b7k, c = b\u00b7m = a\u00b7km.)",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Faktorisera 100",
+        "text": "100 = 4 \u00b7 25 = \ue0002^2 \\cdot 5^2\ue001. Talet 5 \u00e4r en faktor i 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "(1): n \u00e4r delbart med 100. Eftersom 5 \u00e4r en faktor i 100 (steg 4) och 100 delar n, s\u00e5 delar 5 ocks\u00e5 n (transitivitet, steg 3). Allts\u00e5 ja \u2014 n \u00e4r delbart med 5. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Faktorisera 15",
+        "text": "15 = 3 \u00b7 5. Ocks\u00e5 h\u00e4r \u00e4r 5 en faktor.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt",
+        "text": "(2): n \u00e4r delbart med 15. Eftersom 5 delar 15 och 15 delar n, s\u00e5 delar 5 ocks\u00e5 n. Allts\u00e5 ja \u2014 n \u00e4r delbart med 5. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Generell regel",
+        "text": "Om 5 \u00e4r en faktor i k, s\u00e5 ger \ue000k \\mid n\ue001 automatiskt \ue0005 \\mid n\ue001. Detta g\u00e4ller f\u00f6r alla k = 5, 10, 15, 20, 25, 30, 35, 40, ...",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Konkret kontroll",
+        "text": "Multipel av 100: 100, 200, 300, ... \u2014 alla delbara med 5. Multipel av 15: 15, 30, 45, 60, 75, 90, ... \u2014 alla delbara med 5. Varje exempel bekr\u00e4ftar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "\u00c4r (1) eller (2) starkare?",
+        "text": "(1) ger MER information (n \u00e4r delbart med 100, allts\u00e5 ocks\u00e5 25, 4, 2 osv.) men f\u00f6r JA/NEJ-fr\u00e5gan r\u00e4cker det som beh\u00f6vs: b\u00e5da ger faktorn 5. B\u00e5da r\u00e4cker LIKA mycket f\u00f6r exakt denna fr\u00e5ga.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Beh\u00f6ver vi veta n exakt? Nej \u2014 fr\u00e5gan \u00e4r ja/nej, inte 'vad \u00e4r n'. B\u00e5da p\u00e5st\u00e5endena ger 'ja' utan att fixera n.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Var och en r\u00e4cker f\u00f6r att svara JA p\u00e5 fr\u00e5gan. Svar: D. Insikten i en mening: f\u00f6r delbarhets-JA/NEJ-fr\u00e5gor r\u00e4cker det att hitta m\u00e5lfaktorn i det givna talet \u2014 du beh\u00f6ver inte veta talet sj\u00e4lv.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att (1):s st\u00f6rre tal (100) \u00e4r 'starkare' och d\u00e4rf\u00f6r den enda l\u00e5sande.",
+        "why_wrong": "Steg 6\u20137: 15 = 3 \u00b7 5 har ocks\u00e5 faktorn 5. (2) r\u00e4cker lika bra som (1) \u2014 D \u00e4r skarpare \u00e4n A."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att (2):s tal inneh\u00e5ller 5 mest synligt \u2014 men d\u00e5 missar man att 100 ocks\u00e5 g\u00f6r det.",
+        "why_wrong": "Steg 4\u20135: 100 = 2\u00b2\u00b75\u00b2 inneh\u00e5ller faktorn 5 dubbelt upp. (1) r\u00e4cker lika bra som (2)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhets skull.",
+        "why_wrong": "Steg 5 och 7: vardera r\u00e4cker ensamt. Kombinationen \u00e4r \u00f6verfl\u00f6dig \u2014 svaret \u00e4r D, inte C."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att man m\u00e5ste veta n exakt f\u00f6r att svara p\u00e5 delbarhet.",
+        "why_wrong": "Steg 11: fr\u00e5gan \u00e4r ja/nej. B\u00e5da p\u00e5st\u00e5endena ger 'ja' utan att fixera n. Otillr\u00e4ckligt-svaret kr\u00e4ver att inget villkor besvarar fr\u00e5gan."
+      }
+    ],
+    "technique": "Delbarhetstransitivitet: om m delas av k och 5 \u00e4r faktor i k, s\u00e5 delas m ocks\u00e5 av 5. Faktorisera de givna talen och leta efter m\u00e5lfaktorn.",
+    "pitfall": "Det \u00e4r frestande att tro att 'mer specifik information \u00e4r alltid mer v\u00e4rd'. Botemedlet: matcha informations-m\u00e4ngden mot fr\u00e5gans ja/nej-karakt\u00e4r. Ibland r\u00e4cker mindre.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Faktorjakten",
+      "move": "I delbarhets-NOG: primfaktorisera b\u00e5da p\u00e5st\u00e5endenas tal och leta efter m\u00e5lfaktorn \u2014 om den finns i b\u00e5da \u00e4r svaret D, om den bara finns i ett \u00e4r det A eller B."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2023-kvant2-NOG-026": {
+    "solution_path": "Vi har tre tr\u00e4d: al (A), bj\u00f6rk (B), r\u00f6nn (R). Vi s\u00f6ker den h\u00f6gsta. (1): A > B OCH R \u00e4r inte h\u00f6gst \u2014 eftersom r\u00f6nn inte \u00e4r h\u00f6gst och A > B \u00e4r A automatiskt h\u00f6gst. R\u00e4cker. (2): A > R och B > R \u2014 l\u00e5ser endast att R \u00e4r l\u00e4gst, men s\u00e4ger inget om A versus B. Otillr\u00e4ckligt. Svar: A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "Tre tr\u00e4d st\u00e5r bredvid varandra: al (A), bj\u00f6rk (B), r\u00f6nn (R). Fr\u00e5gan \u00e4r: vilket \u00e4r h\u00f6gst? Vi beh\u00f6ver entydigt peka ut ett av A, B, R.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad kr\u00e4vs f\u00f6r 'h\u00f6gst'?",
+        "text": "Ett tr\u00e4d \u00e4r 'h\u00f6gst' om dess h\u00f6jd \u00e4r strikt st\u00f6rre \u00e4n de andra tv\u00e5. Vi beh\u00f6ver allts\u00e5 en TOTAL ordning (eller \u00e5tminstone identifiering av maximum).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Antalet ordningar f\u00f6r tre objekt",
+        "text": "Tre objekt kan ordnas p\u00e5 3! = 6 s\u00e4tt. Varje villkor av typen 'X > Y' eliminerar h\u00e4lften av s\u00e4tten (de d\u00e4r X < Y). Tv\u00e5 oberoende villkor r\u00e4cker ofta f\u00f6r att fixera ordningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1) s\u00e4ger tv\u00e5 saker: (a) A > B (alen \u00e4r h\u00f6gre \u00e4n bj\u00f6rken) och (b) R \u00e4r inte h\u00f6gst.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad inneb\u00e4r 'R \u00e4r inte h\u00f6gst'?",
+        "text": "Det betyder att antingen A eller B \u00e4r h\u00f6gre \u00e4n R \u2014 eller att b\u00e5da \u00e4r. Med andra ord: R \u00e4r inte maximum.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "Fr\u00e5n (a): A > B. Fr\u00e5n (b): max \u2208 {A, B}. Eftersom A > B \u00e4r A automatiskt max. Allts\u00e5: ALEN \u00e4r h\u00f6gst. Otvetydigt. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2) s\u00e4ger att b\u00e5de A och B \u00e4r h\u00f6gre \u00e4n R. Allts\u00e5 A > R och B > R \u2014 r\u00f6nnen \u00e4r l\u00e4gst.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt",
+        "text": "(2) s\u00e4ger inget om relationen mellan A och B. Scenario A: h\u00f6jder A=10, B=5, R=3 \u2192 A h\u00f6gst. Scenario B: A=5, B=10, R=3 \u2192 B h\u00f6gst. B\u00e5da \u00e4r konsistenta med (2). Tv\u00e5 olika utfall \u2192 otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera (1) med konkreta tal",
+        "text": "S\u00e4tt A=8, B=6, R=5 \u2192 A > B (OK), R inte h\u00f6gst (OK), A \u00e4r h\u00f6gst. S\u00e4tt A=8, B=6, R=7 \u2192 A > B (OK), R inte h\u00f6gst (OK, eftersom A=8>R=7), A \u00e4r h\u00f6gst. Alltid A.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varf\u00f6r r\u00e4cker (1) men inte (2)?",
+        "text": "(1) ger en intern relation mellan A och B PLUS att R \u00e4r utesluten som max. (2) ger bara att R \u00e4r l\u00e4gst \u2014 och det r\u00e4cker inte f\u00f6r att skilja mellan A och B i toppen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera (1) som otillr\u00e4ckligt skenbart",
+        "text": "Kunde 'R inte h\u00f6gst' tolkas som 'R \u00e4r n\u00e4st h\u00f6gst'? Nej \u2014 'inte h\u00f6gst' eliminerar endast positionen max. R kan vara l\u00e4gst eller mellan. Men oavsett vilket: max \u00e4r A (eftersom A > B).",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "(1) r\u00e4cker ensam (alen \u00e4r h\u00f6gst). (2) r\u00e4cker inte (al/bj\u00f6rk-ordningen \u00e4r fri). Svar: A. Insikten i en mening: i ordnings-NOG r\u00e4cker det att eliminera den potentiella maxen och rangordna de \u00f6vriga \u2014 tv\u00e5 relationer r\u00e4cker f\u00f6r tre objekt om de inte \u00e4r dubblerade.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att (2):s tv\u00e5 relationer (A>R och B>R) ger mer information \u00e4n (1):s tv\u00e5.",
+        "why_wrong": "Steg 8: (2) s\u00e4ger inget om A vs B, s\u00e5 maximum kan vara antingen A eller B. (1) fixerar A som max via A > B + R inte h\u00f6gst."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet \u2014 man tycker geometri/ordning kr\u00e4ver flera villkor.",
+        "why_wrong": "Steg 6: (1) r\u00e4cker ensamt. C kr\u00e4ver att vardera \u00e4r otillr\u00e4ckligt \u2014 vilket inte st\u00e4mmer f\u00f6r (1)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vartdera av (1) och (2) r\u00e4cker eftersom b\u00e5da n\u00e4mner 'r\u00f6nn' landar du h\u00e4r.",
+        "why_wrong": "Steg 8: (2) l\u00e4mnar A och B oordnade i toppen. D kr\u00e4ver att vardera r\u00e4cker \u2014 men bara (1) g\u00f6r det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att utan numeriska h\u00f6jder g\u00e5r det inte att avg\u00f6ra max.",
+        "why_wrong": "Steg 6: ordningsvillkor r\u00e4cker. Vi beh\u00f6ver inte exakta h\u00f6jder \u2014 bara att kunna peka ut maximum entydigt."
+      }
+    ],
+    "technique": "F\u00f6r att hitta max bland N objekt beh\u00f6ver du eliminera N\u22121 kandidater. Varje 'X > Y' eliminerar Y som max-kandidat (om X redan \u00e4r aktiv) eller fixerar ordningen mellan dem.",
+    "pitfall": "Det \u00e4r frestande att r\u00e4kna antal p\u00e5st\u00e5enden snarare \u00e4n antal eliminerade max-kandidater. Botemedlet: efter varje p\u00e5st\u00e5ende, lista vilka objekt som kan vara max.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Max-elimineringen",
+      "move": "Vid ordnings-NOG: efter varje p\u00e5st\u00e5ende, skriv m\u00e4ngden av m\u00f6jliga max-kandidater \u2014 s\u00e5 fort den krymper till ett element \u00e4r p\u00e5st\u00e5endet tillr\u00e4ckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2023-kvant2-NOG-027": {
+    "solution_path": "Aff\u00e4ren har 100 tr\u00f6jor i en 2\u00d72-tabell (l\u00e5ng/kort \u00d7 barn/vuxen). En cell ges: l\u00e5ng-barn = 10. Vi s\u00f6ker kort-vuxen. (1) ger barn-totalen (40), (2) ger l\u00e5ng-totalen (50). Vardera ensam fyller bara en rad eller kolumn \u2014 otillr\u00e4ckligt. Tillsammans fyller de b\u00e5de rad-summa och kolumn-summa, s\u00e5 hela 2\u00d72-tabellen \u00e4r l\u00e5st: kort-vuxen = 100 \u2212 40 \u2212 50 + 10 = 20. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "100 tr\u00f6jor klassificeras l\u00e4ngs tv\u00e5 axlar: \u00e4rml\u00e4ngd (l\u00e5ng/kort) och storlek (barn/vuxen). En cell ges: l\u00e5ng-barn = 10. Vi s\u00f6ker kort-vuxen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "S\u00e4tt upp 2\u00d72-tabellen",
+        "text": "Rader: l\u00e5ng, kort. Kolumner: barn, vuxen. Celler: LB, LV, KB, KV. Vi har LB = 10 och LB + LV + KB + KV = 100. Vi s\u00f6ker KV.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad \u00e4r 'tillr\u00e4ckligt' h\u00e4r?",
+        "text": "Vi beh\u00f6ver entydigt veta KV. Detta sker n\u00e4r tabellen \u00e4r l\u00e5st \u2014 allts\u00e5 n\u00e4r tillr\u00e4ckligt m\u00e5nga rad-/kolumn-summor + celler \u00e4r givna f\u00f6r att l\u00e5sa varje cell.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Antalet frihetsgrader",
+        "text": "Med totalen 100 och en cell (LB=10) given finns 3 obekanta (LV, KB, KV) men bara 1 ekvation (radsumma=100). Vi beh\u00f6ver tv\u00e5 oberoende ekvationer till.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): '25 % av tr\u00f6jorna i barnstorlek \u00e4r l\u00e5ng\u00e4rmade.' Andelen l\u00e5ng-barn av barn-totalen \u00e4r 25 %. Allts\u00e5 LB / (LB + KB) = 0,25.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "R\u00e4kna ut barn-totalen fr\u00e5n (1)",
+        "text": "10 / (10 + KB) = 0,25 ger 10 + KB = 40, allts\u00e5 KB = 30. Barn-totalen = 40, vuxen-totalen = 60.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (1) ensamt",
+        "text": "Vi har: LB=10, KB=30, total=100. Men LV och KV \u00e4r fortfarande fria (endast LV + KV = 60). Otillr\u00e4ckligt \u2014 KV kan vara vad som helst mellan 0 och 60.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): '20 % av de l\u00e5ng\u00e4rmade tr\u00f6jorna \u00e4r i barnstorlek.' Andelen l\u00e5ng-barn av l\u00e5ng-totalen \u00e4r 20 %. Allts\u00e5 LB / (LB + LV) = 0,20.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "R\u00e4kna ut l\u00e5ng-totalen fr\u00e5n (2)",
+        "text": "10 / (10 + LV) = 0,20 ger 10 + LV = 50, allts\u00e5 LV = 40. L\u00e5ng-totalen = 50, kort-totalen = 50.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Testa (2) ensamt",
+        "text": "Vi har: LB=10, LV=40, total=100. Men KB och KV \u00e4r fria (endast KB + KV = 50). Otillr\u00e4ckligt \u2014 KV kan vara vad som helst mellan 0 och 50.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Kombinera",
+        "text": "Med (1) + (2): KB = 30, LV = 40, LB = 10. Totalen: \ue000KV = 100 - LB - LV - KB = 100 - 10 - 40 - 30 = 20\ue001. Entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera tabellen",
+        "text": "LB=10, LV=40 \u2192 l\u00e5ng-rad=50. KB=30, KV=20 \u2192 kort-rad=50. Barn-kolumn=10+30=40. Vuxen-kolumn=40+20=60. Allt st\u00e4mmer, total=100.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Vardera p\u00e5st\u00e5endet ger bara EN rad eller EN kolumn \u2014 otillr\u00e4ckligt. Tillsammans fyller de b\u00e5de rad och kolumn \u2192 hela tabellen l\u00e5st. Svar: C. Insikten i en mening: i 2\u00d72-NOG beh\u00f6ver du b\u00e5de en rad- och en kolumn-summa (eller tv\u00e5 celler fr\u00e5n ortogonala axlar) f\u00f6r att l\u00e5sa alla fyra celler.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att procentvillkoret i (1) r\u00e4cker eftersom det ger en konkret siffra (25 %).",
+        "why_wrong": "Steg 7: (1) ger barn-totalen men inte l\u00e5ng-totalen. KV ligger oavbest\u00e4mt mellan 0 och 60."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att (2):s 20 % \u00e4r 'andra typen' av procent och d\u00e4rf\u00f6r mer specifik.",
+        "why_wrong": "Steg 10: (2) ger l\u00e5ng-totalen men inte barn-totalen. KV kan ligga mellan 0 och 50 \u2014 fortfarande inte unikt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att tv\u00e5 procentsatser separat r\u00e4cker f\u00f6r en 2\u00d72-tabell landar du h\u00e4r.",
+        "why_wrong": "Steg 7 och 10: vardera t\u00e4cker bara en axel. D kr\u00e4ver att vardera r\u00e4cker \u2014 men de g\u00f6r inte det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att tv\u00e5 procentsatser utan absoluta cell-v\u00e4rden \u00e4r f\u00f6r svaga.",
+        "why_wrong": "Steg 11: tillsammans ger de exakt en rad- och en kolumn-summa, och med LB=10 l\u00e5st f\u00f6ljer hela tabellen entydigt."
+      }
+    ],
+    "technique": "I en 2\u00d72-tabell finns 4 celler och 1 total = 4 oberoende ekvationer beh\u00f6vs. Tv\u00e5 kompletterande procent-villkor (en p\u00e5 rad, en p\u00e5 kolumn) + total + en cell ger fyra ekvationer.",
+    "pitfall": "Det \u00e4r frestande att tolka b\u00e5da procentsatserna som 'samma' eftersom de involverar samma cell (l\u00e5ng-barn=10). Botemedlet: skriv ut n\u00e4mnaren explicit \u2014 i (1) \u00e4r det barn-totalen, i (2) \u00e4r det l\u00e5ng-totalen.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tabellaxelr\u00e4knaren",
+      "move": "Vid 2\u00d72-NOG: r\u00e4kna hur m\u00e5nga axlar (rader/kolumner) varje p\u00e5st\u00e5ende binder \u2014 om b\u00e5da beh\u00f6vs f\u00f6r att t\u00e4cka rad+kolumn \u00e4r svaret C; om en t\u00e4cker b\u00e5de och en bara en \u00e4r svaret A eller B."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2023-kvant2-NOG-028": {
+    "solution_path": "Givet x = 2y, vi s\u00f6ker y. (1) s\u00e4ger att 'ett av talen \u00e4r 7' \u2014 antingen x=7 (d\u00e5 y=3,5) eller y=7 (d\u00e5 x=14). Tv\u00e5 giltiga fall \u2192 otillr\u00e4ckligt. (2) s\u00e4ger x+y=21; s\u00e4tt in x=2y \u2192 3y=21 \u2192 y=7 entydigt. R\u00e4cker. Svar: B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "Vi har relationen x = 2y mellan tv\u00e5 tal. Fr\u00e5gan: vad \u00e4r y? Eftersom x best\u00e4ms av y r\u00e4cker det att l\u00e5sa y.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Frihetsgrader",
+        "text": "Med relationen x = 2y har systemet en frihetsgrad (y best\u00e4mmer x). Vi beh\u00f6ver ett villkor till f\u00f6r att fixera y.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad menar NOG med 'tillr\u00e4cklig'?",
+        "text": "Tillr\u00e4cklig = exakt ett v\u00e4rde p\u00e5 y. Tv\u00e5 eller fler m\u00f6jliga y \u2192 otillr\u00e4ckligt, \u00e4ven om vart och ett \u00e4r 'snyggt'.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): 'ett av talen \u00e4r 7'. Det betyder att antingen x=7 eller y=7 (eller b\u00e5da, om de r\u00e5kar sammanfalla \u2014 men de g\u00f6r inte det h\u00e4r).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Fall 1 i (1)",
+        "text": "Om y=7: d\u00e5 \u00e4r x = 2\u00b77 = 14. H\u00e4r \u00e4r 'ett av talen' (n\u00e4mligen y) = 7. Konsistent med (1). y=7.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Fall 2 i (1)",
+        "text": "Om x=7: d\u00e5 \u00e4r y = x/2 = 7/2 = 3,5. H\u00e4r \u00e4r 'ett av talen' (n\u00e4mligen x) = 7. Ocks\u00e5 konsistent med (1). y=3,5.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (1) ensamt",
+        "text": "Tv\u00e5 konsistenta fall: y=7 eller y=3,5. Tv\u00e5 olika v\u00e4rden \u2192 (1) ensam \u00e4r otillr\u00e4cklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): x + y = 21. Tillsammans med x = 2y blir det ett linj\u00e4rt ekvationssystem i tv\u00e5 obekanta.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "L\u00f6s systemet",
+        "text": "Substituera x = 2y in i x + y = 21: \ue0002y + y = 21\ue001, dvs \ue0003y = 21\ue001, s\u00e5 \ue000y = 7\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "R\u00e4kna fram x ocks\u00e5 (kontroll)",
+        "text": "x = 2y = 2\u00b77 = 14. Kontroll: x + y = 14 + 7 = 21. St\u00e4mmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Testa (2) ensamt",
+        "text": "(2) ger entydigt y = 7. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "(1) \u00e4r tvetydig (tv\u00e5 fall), (2) \u00e4r entydig. Svar: B. Insikten i en mening: villkor av formen 'ett av talen \u00e4r k' l\u00e4mnar ofta TV\u00c5 giltiga fall \u2014 kontrollera alltid b\u00e5da innan du landar.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att '7' direkt pekar p\u00e5 y eftersom y \u00e4r fr\u00e5gan.",
+        "why_wrong": "Steg 5\u20136: 'ett av talen \u00e4r 7' till\u00e5ter b\u00e5de x=7 (y=3,5) och y=7. Tv\u00e5 giltiga utfall \u2192 (1) ensam otillr\u00e4cklig."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet \u2014 fler villkor k\u00e4nns alltid s\u00e4krare.",
+        "why_wrong": "Steg 9: (2) r\u00e4cker ensamt. (1) \u00e4r \u00f6verfl\u00f6dig (och faktiskt tvetydig). Svaret \u00e4r B, inte C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att (1) ocks\u00e5 ger ett entydigt y landar du h\u00e4r.",
+        "why_wrong": "Steg 7: (1) ger y = 7 ELLER y = 3,5 \u2014 tv\u00e5 fall. D kr\u00e4ver att vardera r\u00e4cker, men (1) g\u00f6r inte det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att utan en absolut summa g\u00e5r det inte att l\u00f6sa.",
+        "why_wrong": "Steg 11: (2) gav just en s\u00e5dan summa \u2014 x + y = 21 \u2014 och tillsammans med x = 2y l\u00e5ser det y entydigt."
+      }
+    ],
+    "technique": "Villkor av formen 'n\u00e5gon av variablerna \u00e4r k' \u00e4r typiskt tvetydiga n\u00e4r systemet har tv\u00e5 obekanta \u2014 alltid lista b\u00e5da fallen och kolla om de ger samma v\u00e4rde p\u00e5 fr\u00e5gan.",
+    "pitfall": "Det \u00e4r frestande att antaga att '7' i (1) pekar p\u00e5 det st\u00f6rre eller mindre talet beroende p\u00e5 din intuition. Botemedlet: lista explicit b\u00e5da fallen som ekvationssystem och l\u00f6s b\u00e5da.",
+    "framework_id": "NOG-TRAP-002",
+    "pregrade_tactic": {
+      "handle": "Fall-listaren",
+      "move": "N\u00e4r ett p\u00e5st\u00e5ende s\u00e4ger 'en av variablerna \u00e4r k': skriv ut b\u00e5da tilldelningarna som separata fall och l\u00f6s b\u00e5da \u2014 om fr\u00e5gan ger olika svar \u00e4r p\u00e5st\u00e5endet otillr\u00e4ckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2024-kvant1-NOG-025": {
+    "solution_path": "ABC \u00e4r en triangel med vinklar u, v, w. Triangelvinkelsumman u+v+w=180\u00b0 \u00e4r ett implicit villkor. (1): u+v=93\u00b0. (2): u+w=123\u00b0. Vardera ensam \u00e4r en ekvation i tv\u00e5 obekanta (u kan ej isoleras). Tillsammans med vinkelsumman: addera (1)+(2)+(vinkelsumman ger v+w=180\u00b0\u2212u) \u2192 u+v+u+w=216\u00b0 \u2192 2u+(180\u00b0\u2212u)=216\u00b0 \u2192 u=36\u00b0. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "ABC \u00e4r en triangel med tre vinklar; de kallas h\u00e4r u, v, w. Vi s\u00f6ker vinkeln u.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera vinklarna",
+        "text": "I varje triangel finns exakt tre innevinklar. Vi har tre obekanta (u, v, w) och beh\u00f6ver tre oberoende ekvationer f\u00f6r att l\u00e5sa alla.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Triangelvinkelsumman",
+        "text": "I varje triangel: \ue000u + v + w = 180^\\circ\ue001. Detta \u00e4r en GRUND-sats \u2014 den ing\u00e5r 'gratis' s\u00e5 fort vi vet att ABC \u00e4r en triangel.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "R\u00e4kna villkor",
+        "text": "Med vinkelsumman som gratis-villkor: vi beh\u00f6ver ytterligare tv\u00e5 villkor f\u00f6r att l\u00e5sa de tre obekanta. (1) och (2) \u00e4r tv\u00e5 separata kandidater.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): u + v = 93\u00b0. En ekvation i tv\u00e5 av tre obekanta. Tillsammans med vinkelsumman: w = 180\u00b0 \u2212 93\u00b0 = 87\u00b0. Men u och v \u00e4r fortfarande fria (endast deras summa).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "Med u + v = 93\u00b0 och w = 87\u00b0: u kan vara t.ex. 30\u00b0 (v=63\u00b0) eller 60\u00b0 (v=33\u00b0). B\u00e5da \u00e4r giltiga trianglar. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): u + w = 123\u00b0. Tillsammans med vinkelsumman: v = 180\u00b0 \u2212 123\u00b0 = 57\u00b0. Men u och w \u00e4r fria (endast deras summa).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt",
+        "text": "Med u + w = 123\u00b0 och v = 57\u00b0: u kan vara 50\u00b0 (w=73\u00b0) eller 90\u00b0 (w=33\u00b0). B\u00e5da fungerar som trianglar. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kombinera (1) + (2)",
+        "text": "Addera ekvationerna: \ue000(u+v) + (u+w) = 93^\\circ + 123^\\circ = 216^\\circ\ue001, dvs \ue0002u + v + w = 216^\\circ\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Anv\u00e4nd vinkelsumman",
+        "text": "Fr\u00e5n vinkelsumman: \ue000v + w = 180^\\circ - u\ue001. Substituera in: \ue0002u + (180^\\circ - u) = 216^\\circ\ue001, allts\u00e5 \ue000u + 180^\\circ = 216^\\circ\ue001, s\u00e5 \ue000u = 36^\\circ\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "R\u00e4kna v och w (kontroll)",
+        "text": "Fr\u00e5n (1): v = 93\u00b0 \u2212 36\u00b0 = 57\u00b0. Fr\u00e5n (2): w = 123\u00b0 \u2212 36\u00b0 = 87\u00b0. Summa: 36\u00b0 + 57\u00b0 + 87\u00b0 = 180\u00b0. St\u00e4mmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera tillr\u00e4cklighet",
+        "text": "Vardera ensam gav ett underbest\u00e4mt system (en ekvation kvar i tv\u00e5 obekanta efter vinkelsumman). Tillsammans + vinkelsumman = tre oberoende ekvationer f\u00f6r tre obekanta \u2192 unik l\u00f6sning.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Vardera (1) och (2) ensam \u00e4r otillr\u00e4cklig; tillsammans r\u00e4cker de. Svar: C. Insikten i en mening: i triangel-NOG ing\u00e5r u+v+w=180\u00b0 gratis \u2014 r\u00e4kna in den n\u00e4r du j\u00e4mf\u00f6r givna villkor mot obekanta.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att (1) r\u00e4cker eftersom den ger ett konkret tal (93\u00b0) och n\u00e4mner u direkt.",
+        "why_wrong": "Steg 6: (1) + vinkelsumman l\u00e4mnar u + v = 93\u00b0 och w = 87\u00b0 \u2014 u \u00e4r fortfarande fri."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "M\u00e5nga stannar vid (2) eftersom 123\u00b0 \u00e4r ett st\u00f6rre tal och 'verkar' mer informativt.",
+        "why_wrong": "Steg 8: (2) + vinkelsumman l\u00e4mnar u + w = 123\u00b0 och v = 57\u00b0 \u2014 u \u00e4r fortfarande fri."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett ger u landar du h\u00e4r.",
+        "why_wrong": "Steg 6 och 8: vardera l\u00e4mnar tv\u00e5 obekanta i en ekvation. D kr\u00e4ver att vardera r\u00e4cker \u2014 vilket inte st\u00e4mmer."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att man beh\u00f6ver fler \u00e4n tv\u00e5 villkor f\u00f6r att l\u00e5sa tre vinklar.",
+        "why_wrong": "Steg 10: triangelvinkelsumman \u00e4r det tredje villkoret (gratis). (1) + (2) + vinkelsumman = tre oberoende ekvationer i tre obekanta."
+      }
+    ],
+    "technique": "I triangelgeometri-NOG: r\u00e4kna alltid u+v+w=180\u00b0 som ett implicit villkor. Med tre obekanta beh\u00f6ver du tv\u00e5 ytterligare oberoende villkor \u2014 sedan kan du isolera vilken vinkel som helst.",
+    "pitfall": "Det \u00e4r frestande att gl\u00f6mma vinkelsumman och tro att man beh\u00f6ver tre explicita villkor f\u00f6r tre vinklar. Botemedlet: skriv ner u+v+w=180\u00b0 som ekvation #0 innan du l\u00e4ser p\u00e5st\u00e5endena.",
+    "framework_id": "NOG-TRAP-007",
+    "pregrade_tactic": {
+      "handle": "Vinkelsumme-gratisaren",
+      "move": "Vid triangel-NOG: skriv u+v+w=180\u00b0 som ekvation #0 omedelbart \u2014 sen r\u00e4cker det med tv\u00e5 oberoende relationer i p\u00e5st\u00e5endena f\u00f6r att l\u00e5sa systemet."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2014-kvant2-NOG-024": {
+    "solution_path": "I triangeln ABC \u00e4r AD bisektris till vinkeln BAC, vilket betyder att vinkeln BAC delas i tv\u00e5 lika halvor av AD. Vinklar x, y, z \u00e4r markerade i figuren: z \u00e4r vid en av yttervinklarna, y inne i triangeln, x vid C. (1) ger z=88\u00b0, (2) ger y=26\u00b0. Vardera ger en vinkel men inte hela systemet; tillsammans med vinkelsumman + bisektrisegenskapen l\u00e5ses x. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "I triangeln ABC \u00e4r AD en bisektris till vinkeln BAC \u2014 det betyder att linjen AD delar vinkeln vid A i tv\u00e5 lika stora halvor. Vinklarna x, y, z \u00e4r m\u00e4rkta i figuren. Vi s\u00f6ker x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad \u00e4r en bisektris?",
+        "text": "En bisektris fr\u00e5n ett h\u00f6rn delar den h\u00f6rn-vinkeln i tv\u00e5 lika halvor. Om vinkeln vid A \u00e4r \ue0002\\alpha\ue001 s\u00e5 \u00e4r vardera halva \ue000\\alpha\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Triangelvinkelsumman",
+        "text": "I varje triangel: vinkelsumman = 180\u00b0. Detta \u00e4r ett implicit gratis-villkor.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Yttervinkelteoremet",
+        "text": "En yttervinkel till en triangel \u00e4r lika med summan av de tv\u00e5 icke-anliggande innervinklarna. Detta knyter z (yttre) till de inre.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Markera obekanta",
+        "text": "Tre obekanta: halva vinkeln vid A (\ue000\\alpha\ue001), vinkeln vid B, vinkeln vid C \u2014 d\u00e4r x utg\u00f6r en del av vinkeln vid C eller \u00e4r relaterad via bisektrisen. Vi beh\u00f6ver tillr\u00e4ckligt med oberoende ekvationer.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): z = 88\u00b0. I figuren \u00e4r z en yttervinkel \u2014 typiskt vid f\u00f6rl\u00e4ngningen av en sida. Ger en relation mellan inre vinklar via yttervinkelteoremet.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (1) ensamt",
+        "text": "Med z = 88\u00b0 och yttervinkelteoremet f\u00e5r vi en ekvation mellan tv\u00e5 innervinklar, men en obekant kvar (den andra inre vinkeln plus halvbisektrisen). Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): y = 26\u00b0. I figuren \u00e4r y en av innervinklarna (eller halva A-vinkeln). Ger en konkret innervinkel.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa (2) ensamt",
+        "text": "Med y = 26\u00b0: vi har en innervinkel, men vinkelsumman + bisektrisen l\u00e4mnar fortfarande en frihetsgrad (relationen mellan resterande h\u00f6rn). Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Kombinera (1) + (2)",
+        "text": "Med z=88\u00b0, y=26\u00b0, bisektrisegenskapen och vinkelsumman 180\u00b0: tre oberoende ekvationer plus en relation fr\u00e5n bisektrisen ger nu ett slutet system som l\u00e5ser x entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Skiss av r\u00e4kningen",
+        "text": "Yttervinkel z = 88\u00b0 ger en relation mellan vinkeln vid B och halva A-vinkeln. Inre y = 26\u00b0 ger en annan. Vinkelsumman ger den tredje. Substituera tills x isoleras (specifikt v\u00e4rde beror p\u00e5 figurens precisa konfiguration).",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "Med tre obekanta (B, halva A, C) och tre oberoende ekvationer (yttervinkel, inre y, vinkelsumman 180\u00b0) f\u00e5r vi unik l\u00f6sning f\u00f6r alla tre \u2014 och d\u00e4rmed f\u00f6r x.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Vardera p\u00e5st\u00e5ende ger en vinkel men l\u00e4mnar minst en frihetsgrad. Tillsammans med bisektrisegenskapen och vinkelsumman l\u00e5ses x. Svar: C. Insikten i en mening: bisektrisen \u00e4r ett oberoende vinkelvillkor \u2014 det r\u00e4knas som ett halvf\u00e4rdigt 'gratis' samband och kompletterar tv\u00e5 markerade vinklar.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att en yttervinkel r\u00e4cker eftersom den 'kopplar tv\u00e5 innervinklar samtidigt'.",
+        "why_wrong": "Steg 7: yttervinkeln ger en ekvation i tv\u00e5 obekanta \u2014 den andra innervinkeln plus halvbisektrisen \u00e4r fortfarande fria."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att en konkret innervinkel (y=26\u00b0) r\u00e4cker.",
+        "why_wrong": "Steg 9: en innervinkel l\u00e4mnar tv\u00e5 andra fria; vinkelsumman ger en till relation, men en frihetsgrad kvarst\u00e5r."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett r\u00e4cker landar du h\u00e4r.",
+        "why_wrong": "Steg 7 och 9: b\u00e5da l\u00e4mnar minst en frihetsgrad. D kr\u00e4ver att vardera r\u00e4cker \u2014 vilket de inte g\u00f6r."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att bisektrisen \u00e4r dekorativ och inte r\u00e4knas som villkor.",
+        "why_wrong": "Steg 2 och 10: bisektrisen ger ett oberoende villkor (de tv\u00e5 halvorna \u00e4r lika), och tillsammans med (1), (2) och vinkelsumman l\u00e5ses systemet."
+      }
+    ],
+    "technique": "I trianglar med bisektriser: bisektrisen \u00e4r ett implicit vinkelvillkor (tv\u00e5 halvor lika). R\u00e4kna det som ett halvt extra villkor och komplettera med vinkelsumman och de explicit givna vinklarna.",
+    "pitfall": "Det \u00e4r frestande att gl\u00f6mma att bisektrisen sj\u00e4lv \u00e4r ett villkor \u2014 och bara r\u00e4kna de numeriska gradtalen. Botemedlet: lista alltid bisektrisen som ekvation j\u00e4mte vinkelsumman.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Bisektris-bokf\u00f6raren",
+      "move": "I bisektris-geometri: skriv ner '2\u00b7halv-A = A' och 'vinkelsumman = 180\u00b0' som tv\u00e5 implicita villkor \u2014 sen r\u00e4cker oftast tv\u00e5 explicita vinklar i p\u00e5st\u00e5endena f\u00f6r att l\u00e5sa systemet."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2015-kvant1-NOG-027": {
+    "solution_path": "x \u00e4r ett heltal; vi vill veta om 15 delar x. (1): x/10 \u00e4r ett heltal \u2014 allts\u00e5 10 delar x. Men 10 = 2\u00b75 saknar faktorn 3, s\u00e5 15 (= 3\u00b75) delar inte n\u00f6dv\u00e4ndigtvis x (motexempel: x=10). Otillr\u00e4ckligt. (2): x\u00b2 \u00e4r delbart med 30 = 2\u00b73\u00b75. F\u00f6r varje primtal p g\u00e4ller \ue000p \\mid x^2 \\Leftrightarrow p \\mid x\ue001, s\u00e5 2, 3 och 5 delar x \u2014 allts\u00e5 30 delar x och d\u00e4rmed 15. R\u00e4cker. Svar: B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "x \u00e4r ett heltal. Fr\u00e5gan \u00e4r ja/nej: \u00e4r x j\u00e4mnt delbart med 15? Vi beh\u00f6ver inte veta x \u2014 bara att 15 delar x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad menar 'j\u00e4mnt delbart med 15'?",
+        "text": "15 = 3 \u00b7 5. Talet x \u00e4r j\u00e4mnt delbart med 15 om och endast om b\u00e5de 3 och 5 \u00e4r primtalsfaktorer i x (eller h\u00f6gre potens).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Primtalsfaktorisering",
+        "text": "Varje positivt heltal har en unik primtalsfaktorisering, t.ex. \ue00060 = 2^2 \\cdot 3 \\cdot 5\ue001. Delbarhet av x med k motsvarar att x:s faktorisering inneh\u00e5ller k:s faktorisering.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): 'x/10 \u00e4r ett heltal' betyder 10 delar x, dvs \ue00010 \\mid x\ue001. Eftersom 10 = 2\u00b75 har x faktorerna 2 och 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "x har 2 och 5 som faktorer, men inte n\u00f6dv\u00e4ndigtvis 3. Motexempel: x=10 har 10/10=1 (heltal), men 10/15 \u2260 heltal. x=30 har ocks\u00e5 10|30 men 15|30 \u2014 JA. Tv\u00e5 olika svar \u2192 otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkret motexempel-tabell f\u00f6r (1)",
+        "text": "x=10: 15\u222410 (svar NEJ). x=30: 15|30 (svar JA). B\u00e5da x uppfyller (1), men ger motsatta svar p\u00e5 huvudfr\u00e5gan.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): x\u00b2 \u00e4r delbart med 30. Faktorisera 30 = 2\u00b73\u00b75. Allts\u00e5 2, 3 och 5 delar x\u00b2.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Primfaktorregeln",
+        "text": "F\u00f6r varje primtal p: om \ue000p \\mid x^2\ue001 s\u00e5 \ue000p \\mid x\ue001. Bevis: skriv x = p^a \u00b7 (annat), d\u00e5 x\u00b2 = p^(2a) \u00b7 (annat)\u00b2. Om p delar x\u00b2 m\u00e5ste 2a \u2265 1, allts\u00e5 a \u2265 1 (heltal), s\u00e5 p delar x.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Till\u00e4mpa primfaktorregeln p\u00e5 (2)",
+        "text": "Eftersom 2, 3 och 5 \u00e4r primtal och alla tre delar x\u00b2, delar alla tre ocks\u00e5 x. Allts\u00e5 \ue0002 \\cdot 3 \\cdot 5 = 30\ue001 delar x, och i synnerhet \ue00015 = 3 \\cdot 5\ue001 delar x.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Testa (2) ensamt",
+        "text": "(2) ger 15 | x, allts\u00e5 JA. Entydigt. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Konkret bekr\u00e4ftelse",
+        "text": "Minsta x som uppfyller (2): x\u00b2 delbart med 30 \u2192 x delbart med 30 (steg 9) \u2192 x \u2265 30. F\u00f6r x=30: x\u00b2=900, 900/30=30 ja, 30/15=2 ja. Alla st\u00f6rre multipler av 30 fungerar ocks\u00e5.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "Vi har visat: (1) ensam till\u00e5ter b\u00e5de x=10 (NEJ) och x=30 (JA) \u2014 allts\u00e5 otillr\u00e4cklig. (2) tvingar alltid 30|x, allts\u00e5 15|x \u2014 entydigt JA.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "(1) r\u00e4cker inte (saknar faktorn 3); (2) r\u00e4cker (tvingar alla tre primfaktorer). Svar: B. Insikten i en mening: f\u00f6r primtal p g\u00e4ller p|x\u00b2 \u21d4 p|x \u2014 detta lyfter delbarhet fr\u00e5n x\u00b2 till x utan extra information.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att 10 | x r\u00e4cker eftersom 10 och 15 b\u00e5da \u00e4r 'sm\u00e5 tal' och inneh\u00e5ller 5.",
+        "why_wrong": "Steg 5\u20136: x=10 \u00e4r delbart med 10 men inte med 15 (saknar faktorn 3). Tv\u00e5 olika svar p\u00e5 huvudfr\u00e5gan \u2192 (1) otillr\u00e4cklig."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet.",
+        "why_wrong": "Steg 9\u201310: (2) r\u00e4cker ensamt eftersom den tvingar alla tre primtalsfaktorer 2, 3, 5 in i x. (1) \u00e4r \u00f6verfl\u00f6dig."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett ger primfaktorn 3 landar du h\u00e4r.",
+        "why_wrong": "Steg 5: (1) ger bara faktorerna 2 och 5 \u2014 inte 3. D kr\u00e4ver att vardera r\u00e4cker, men (1) g\u00f6r inte det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att kvadraters delbarhet inte s\u00e4ger n\u00e5got om grundtalet x.",
+        "why_wrong": "Steg 8\u20139: f\u00f6r primtal p \u00e4r p|x\u00b2 exakt ekvivalent med p|x. Detta \u00e4r en stark sats och g\u00f6r (2) tillr\u00e4cklig."
+      }
+    ],
+    "technique": "Primfaktor-lyftet: f\u00f6r primtal p g\u00e4ller p|x\u00b2 \u21d4 p|x. Detta g\u00e4ller INTE f\u00f6r sammansatta tal (4|x\u00b2 betyder bara 2|x, inte 4|x). N\u00e4r m\u00e5lfaktorn \u00e4r produkt av primtal kan delbarhet i x\u00b2 lyftas till x.",
+    "pitfall": "Det \u00e4r frestande att tro att x\u00b2 \u00e4r 'mer information' \u00e4n x och att kvadrater d\u00f6ljer faktorer. Botemedlet: primfaktorisera m\u00e5lfaktorn (15 = 3\u00b75) och kolla varje primtal separat med p|x\u00b2 \u21d4 p|x.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Primtals-lyftet",
+      "move": "Vid delbarhets-NOG med kvadrater eller potenser: primfaktorisera m\u00e5let och till\u00e4mpa p|x^n \u21d4 p|x (f\u00f6r primtal p, n \u2265 1) \u2014 sedan blir p\u00e5st\u00e5endet ett villkor p\u00e5 x direkt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2015-kvant2-NOG-023": {
+    "solution_path": "Vi s\u00f6ker medelv\u00e4rdet av 5 personers l\u00e4ngder (Anna, Bosse, Clara, Dan, Erika). (1) ger del-medelv\u00e4rdet f\u00f6r 3 personer (B, D, E), (2) ger del-medelv\u00e4rdet f\u00f6r 2 personer (A, C). Vardera ensam t\u00e4cker bara en delm\u00e4ngd. Tillsammans ger de hela summan: 3\u00b7183 + 2\u00b7165 = 549 + 330 = 879, medel = 879/5 = 175,8. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "Fem personer (A=Anna, B=Bosse, C=Clara, D=Dan, E=Erika) har varsin l\u00e4ngd. Vi s\u00f6ker (A+B+C+D+E)/5.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Medelv\u00e4rdets definition",
+        "text": "Medelv\u00e4rdet av n tal \u00e4r \ue000\\bar{x} = \\frac{x_1 + x_2 + \\ldots + x_n}{n}\ue001. Det r\u00e4cker att veta totalsumman f\u00f6r att r\u00e4kna medelv\u00e4rdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad beh\u00f6vs?",
+        "text": "Vi beh\u00f6ver totalsumman A+B+C+D+E. Tv\u00e5 icke-\u00f6verlappande delm\u00e4ngder vars unioner \u00e4r hela {A, B, C, D, E} r\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): medel(B, D, E) = 183. Allts\u00e5 B + D + E = 3 \u00b7 183 = 549.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "Vi har B + D + E = 549 men inget om A eller C. Totalsumman = 549 + (A + C), d\u00e4r A + C \u00e4r fri. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): medel(A, C) = 165. Allts\u00e5 A + C = 2 \u00b7 165 = 330.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt",
+        "text": "Vi har A + C = 330 men inget om B, D, E. Totalsumman = 330 + (B + D + E), d\u00e4r den andra delsumman \u00e4r fri. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "\u00c4r delm\u00e4ngderna disjunkta?",
+        "text": "(1):s personer {B, D, E} och (2):s personer {A, C} har ingen gemensam medlem; unionen \u00e4r {A, B, C, D, E} \u2014 exakt alla fem. Bra: vi kan addera dela direkt utan dubbelr\u00e4kning.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kombinera",
+        "text": "Total = (B + D + E) + (A + C) = 549 + 330 = 879.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "R\u00e4kna medelv\u00e4rdet",
+        "text": "Medel = 879/5 = 175,8 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera disjunkthet en g\u00e5ng till",
+        "text": "Kollar listan: A \u2208 (2), B \u2208 (1), C \u2208 (2), D \u2208 (1), E \u2208 (1). Varje person r\u00e4knas exakt en g\u00e5ng \u2014 inga dubbel- eller missade.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Vardera p\u00e5st\u00e5ende t\u00e4cker bara en delm\u00e4ngd. Tillsammans t\u00e4cker de hela {A, B, C, D, E} disjunkt \u2192 totalsumman entydig. Svar: C. Insikten i en mening: medelv\u00e4rden \u00e4r linj\u00e4ra i summa-arena \u2014 tv\u00e5 icke-\u00f6verlappande del-medelv\u00e4rden vars union \u00e4r hela m\u00e4ngden ger total-medelv\u00e4rdet.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att tre personers medelv\u00e4rde ger 'tillr\u00e4ckligt' eftersom det \u00e4r en majoritet.",
+        "why_wrong": "Steg 5: (1) l\u00e4mnar A + C fri \u2014 totalsumman \u00e4r obest\u00e4md."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att (2) r\u00e4cker eftersom 165 cm \u00e4r ett ovanligt specifikt tal.",
+        "why_wrong": "Steg 7: (2) l\u00e4mnar B + D + E fri \u2014 totalsumman \u00e4r obest\u00e4md."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett r\u00e4cker eftersom varje inneh\u00e5ller medelv\u00e4rden landar du h\u00e4r.",
+        "why_wrong": "Steg 5 och 7: vardera t\u00e4cker bara en delm\u00e4ngd. D kr\u00e4ver att vardera r\u00e4cker \u2014 vilket inte st\u00e4mmer."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att utan individuella l\u00e4ngder \u00e4r det om\u00f6jligt att r\u00e4kna ut totalmedlet.",
+        "why_wrong": "Steg 8\u201310: tv\u00e5 disjunkta del-medelv\u00e4rden vars union \u00e4r hela m\u00e4ngden r\u00e4cker \u2014 vi beh\u00f6ver inte individuella v\u00e4rden."
+      }
+    ],
+    "technique": "Medelv\u00e4rden kan partitioneras: om en m\u00e4ngd delas i k disjunkta delm\u00e4ngder med k\u00e4nda del-medelv\u00e4rden kan totala medelv\u00e4rdet r\u00e4knas som viktat snitt: total = \u03a3(n_i \u00b7 medel_i), medel = total / \u03a3 n_i.",
+    "pitfall": "Det \u00e4r frestande att f\u00f6rs\u00f6ka r\u00e4kna medelv\u00e4rdet av medelv\u00e4rdena (utan vikt). Botemedlet: alltid r\u00e4kna i summa-arena \u2014 multiplicera varje del-medel med dess antal, summera, dela med totalantalet.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Del-summa-pusslet",
+      "move": "Vid medelv\u00e4rdes-NOG med delgrupper: skriv ut varje del-summa (medel \u00d7 antal), kolla om delgrupperna tillsammans t\u00e4cker hela m\u00e4ngden disjunkt \u2014 om ja, addera till totalen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2015-kvant2-NOG-024": {
+    "solution_path": "Robin har n likadana kvadratiska plattor med total area 0,99 m\u00b2. Vi s\u00f6ker n. (1) ger total vikt 19,25 kg men inte vikt per platta \u2192 kan inte r\u00e4kna n. (2) ger sida 30 cm = 0,3 m \u2192 area per platta = 0,09 m\u00b2 \u2192 n = 0,99/0,09 = 11. R\u00e4cker. Svar: B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "Robin har n likadana kvadratiska plattor. Tillsammans t\u00e4cker de en yta p\u00e5 0,99 m\u00b2. Vi s\u00f6ker n.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Antal fr\u00e5n area",
+        "text": "Om varje platta har area A_p s\u00e5 \u00e4r n = total_area / A_p = 0,99 / A_p. Vi beh\u00f6ver allts\u00e5 A_p (eller n\u00e5got som ger det).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Areal av en kvadrat",
+        "text": "En kvadrat med sida s har area \ue000s^2\ue001. Om vi vet sidan kan vi r\u00e4kna ut arean direkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): plattornas sammanlagda vikt = 19,25 kg. Det \u00e4r total massa men s\u00e4ger inget om vikt per platta eller plattans dimensioner.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "Vi vet total massa = 19,25 kg och total area = 0,99 m\u00b2, men hur massan f\u00f6rdelar sig per platta \u00e4r ok\u00e4nt. n kan vara 1 (en stor tung platta), 11 (medel), 99 (m\u00e5nga sm\u00e5), osv. \u2014 utan koppling kg \u2194 area g\u00e5r det inte. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): plattornas kant = 30 cm = 0,3 m, varje platta v\u00e4ger 1,75 kg. Tv\u00e5 oberoende fakta \u2014 sida OCH vikt per platta.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "R\u00e4kna area per platta fr\u00e5n (2)",
+        "text": "Sida = 0,3 m \u2192 area per platta = \ue0000,3 \\cdot 0,3 = 0,09\ue001 m\u00b2.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "R\u00e4kna n fr\u00e5n (2)",
+        "text": "n = 0,99 / 0,09 = 11.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa (2) ensamt",
+        "text": "(2) ger oss n = 11 entydigt via sida \u2192 area \u2192 division. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Vikten i (2) \u2014 relevant?",
+        "text": "Vikten 1,75 kg/platta \u00e4r \u00f6verfl\u00f6dig f\u00f6r att r\u00e4kna n (sidl\u00e4ngden r\u00e4cker), men kan anv\u00e4ndas som extra-kontroll: 11\u00b71,75 = 19,25 kg, samma som (1):s total. (2) \u00e4r allts\u00e5 konsistent med (1).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Varf\u00f6r r\u00e4cker (2) men inte (1)?",
+        "text": "(1) ger en total-vikt utan koppling till geometri eller per-platta-vikt. (2) ger geometrin (sida \u2192 area), vilket direkt ger n via 0,99/0,09.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "11 plattor \u00d7 0,09 m\u00b2 = 0,99 m\u00b2. St\u00e4mmer. 11 plattor \u00d7 1,75 kg = 19,25 kg. St\u00e4mmer ocks\u00e5.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "(1) ensam saknar koppling kg \u2194 area och \u00e4r otillr\u00e4cklig; (2) ger sida (och \u00e4ven vikt/platta) \u2014 r\u00e4cker ensam. Svar: B. Insikten i en mening: antalet enheter = total / enhet \u2014 varje villkor som ger 'enhet' (h\u00e4r area per platta) r\u00e4cker; villkor utan koppling till fr\u00e5gans dimension r\u00e4cker inte.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att en total-vikt r\u00e4cker eftersom det \u00e4r en konkret massa-siffra.",
+        "why_wrong": "Steg 5: utan vikt per platta \u00e4r 19,25 kg meningsl\u00f6st f\u00f6r antalet. n kan vara 1, 11 eller 100."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet \u2014 fler tal k\u00e4nns alltid s\u00e4krare.",
+        "why_wrong": "Steg 8: (2) ger n = 11 ensam. (1) \u00e4r \u00f6verfl\u00f6dig (och redundant \u2014 11\u00b71,75 = 19,25 \u00e4r konsistent men ger ingen ny info)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett r\u00e4cker eftersom b\u00e5da inneh\u00e5ller numerisk information landar du h\u00e4r.",
+        "why_wrong": "Steg 5: (1) saknar koppling till geometri och r\u00e4cker inte. D kr\u00e4ver att vardera r\u00e4cker \u2014 det st\u00e4mmer bara f\u00f6r (2)."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att utan b\u00e5da dimensioner g\u00e5r det inte.",
+        "why_wrong": "Steg 7\u20138: (2) ger sida, vilket entydigt ger area per platta och d\u00e4rmed n via division."
+      }
+    ],
+    "technique": "Antal = total / enhet. F\u00f6r att r\u00e4kna n beh\u00f6ver du en koppling mellan total-m\u00e5tt (h\u00e4r total-area) och per-enhet-m\u00e5tt (h\u00e4r area per platta). Vikten utan vikt/platta \u00e4r frikopplad fr\u00e5n geometrin.",
+    "pitfall": "Det \u00e4r frestande att tro att 'mer information \u00e4r alltid b\u00e4ttre' och kombinera b\u00e5da. Botemedlet: r\u00e4kna frihetsgrader \u2014 om ett villkor ensam ger en deterministisk dimension beh\u00f6vs inget mer.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Enhetsdivisionen",
+      "move": "Vid 'antal=NOG'-fr\u00e5gor: identifiera 'total / enhet' \u2014 vilket p\u00e5st\u00e5ende ger enheten? Det r\u00e4cker ensam; villkor som ger frikopplade m\u00e5tt (vikt utan vikt/styck) r\u00e4cker inte."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2015-kvant2-NOG-025": {
+    "solution_path": "En grupp p\u00e5 n personer delar lika p\u00e5 vinstsumman V; varje f\u00e5r V/n. (1): hypotetiskt \u2014 om 8 personer avst\u00e5r f\u00e5r de \u00f6vriga 20 kr mer, dvs \ue000V/(n-8) - V/n = 20\ue001. F\u00f6renkling: \ue000V = 2{,}5 \\cdot n \\cdot (n-8)\ue001 \u2014 relation mellan V och n, men inte V ensam. (2): n = 20 (antalet). Ensamt ger inget belopp. Tillsammans: V = 2,5\u00b720\u00b712 = 600 kr. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "En grupp p\u00e5 n personer har vunnit en summa V kronor. V ska f\u00f6rdelas lika mellan alla \u2014 varje person f\u00e5r V/n. Fr\u00e5gan: hur stor \u00e4r V?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "S\u00e4tt upp variabler",
+        "text": "Tv\u00e5 obekanta: n (antal personer, heltal \u2265 1) och V (vinstsumma, positiv). Belopp per person: \ue000v = V/n\ue001. F\u00f6r att l\u00e5sa V beh\u00f6vs minst tv\u00e5 oberoende ekvationer.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): om 8 personer avst\u00e5r blir det (n \u2212 8) personer som delar. Var och en av dessa f\u00e5r V/(n\u22128). Differensen mot ursprungligt belopp: \ue000V/(n-8) - V/n = 20\ue001 kr per person.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "R\u00e4kneteckenkontroll",
+        "text": "F\u00e4rre personer delar samma summa \u2192 varje f\u00e5r MER. Allts\u00e5 V/(n\u22128) > V/n, och differensen \u00e4r POSITIV 20 kr. R\u00e4knetecknet \u00e4r korrekt: st\u00f6rre belopp minus mindre.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "F\u00f6renkla ekvationen",
+        "text": "Gemensam n\u00e4mnare: \ue000\\frac{V}{n-8} - \\frac{V}{n} = \\frac{V \\cdot n - V \\cdot (n-8)}{n(n-8)} = \\frac{8V}{n(n-8)} = 20\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Isolera V",
+        "text": "Multiplicera b\u00e5da sidor med n(n\u22128) / 8: \ue000V = \\frac{20 \\cdot n(n-8)}{8} = 2{,}5 \\cdot n \\cdot (n-8)\ue001. Detta \u00e4r en RELATION mellan V och n \u2014 inte ett tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (1) ensamt",
+        "text": "Med n=10: V = 2,5\u00b710\u00b72 = 50 kr. Med n=20: V = 2,5\u00b720\u00b712 = 600 kr. Med n=30: V = 2,5\u00b730\u00b722 = 1650 kr. Olika n \u2192 olika V. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): n = 20 (gruppen best\u00e5r av 20 personer). En ekvation, men direkt p\u00e5 n.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa (2) ensamt",
+        "text": "Med n=20 \u00e4r V/20 = belopp per person \u2014 men beloppet \u00e4r ok\u00e4nt. V kan vara 1 kr (5 \u00f6re per person) eller 1 000 000 kr (50 000 per person). Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Kombinera",
+        "text": "S\u00e4tt n = 20 i V = 2,5\u00b7n\u00b7(n\u22128): \ue000V = 2{,}5 \\cdot 20 \\cdot 12 = 600\ue001 kr.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera scenariot",
+        "text": "Ursprungligt: 600 / 20 = 30 kr per person. Om 8 avst\u00e5r: 600 / 12 = 50 kr per person. Differens: 50 \u2212 30 = 20 kr. St\u00e4mmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera tillr\u00e4cklighet",
+        "text": "Vardera ensam: (1) ger relation V = 2,5n(n\u22128) (o\u00e4ndligt m\u00e5nga (V, n)-par), (2) ger bara n (o\u00e4ndligt m\u00e5nga V). Tillsammans: tv\u00e5 oberoende ekvationer \u2192 unik l\u00f6sning. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Vardera p\u00e5st\u00e5endet ensamt \u00e4r otillr\u00e4ckligt; tillsammans l\u00e5ser de V = 600 kr. Svar: C. Insikten i en mening: hypotetisk omf\u00f6rdelning (om k avst\u00e5r f\u00e5r alla x mer) ger en RELATION mellan antalet och beloppet \u2014 kombinerad med ett absolut antal l\u00e5ser den hela summan.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att hypotetiken 'om 8 avst\u00e5r' \u00e4r s\u00e5 detaljerad att den ensam l\u00e5ser V.",
+        "why_wrong": "Steg 6\u20137: (1) ger bara V = 2,5\u00b7n\u00b7(n\u22128) \u2014 utan n kan V vara 50, 600 eller 1650 beroende p\u00e5 n."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att 'antalet r\u00e4cker' eftersom det \u00e4r ett konkret tal (n = 20).",
+        "why_wrong": "Steg 9: (2) ger n men inget belopp. V kan vara vad som helst \u2014 vinst summan \u00e4r inte specifierad."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att varje utsaga ger ett sifferssvar landar du h\u00e4r.",
+        "why_wrong": "Steg 7 och 9: (1) ger relation (inte siffra), (2) ger antal (inte summa). Vardera ensam \u00e4r otillr\u00e4cklig."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att utan en uttryckligen given totalsumma g\u00e5r det inte att r\u00e4kna ut V.",
+        "why_wrong": "Steg 10: tillsammans ger (1) + (2) ett slutet system med entydig l\u00f6sning V = 600 kr."
+      }
+    ],
+    "technique": "Hypotetisk omf\u00f6rdelning ('om k personer avst\u00e5r f\u00e5r var och en x mer') ger ekvationen V/(n\u2212k) \u2212 V/n = x, vilket \u00e4r en RELATION mellan V och n. Kombinerad med ett absolut antal l\u00e5ses summan.",
+    "pitfall": "I (1) \u00d6KAR beloppet per person n\u00e4r 8 personer avst\u00e5r \u2014 r\u00e4knetecknet \u00e4r V/(n\u22128) \u2212 V/n = 20, inte V/n \u2212 V/(n\u22128). Botemedlet: r\u00e4kna alltid 'mer per person' = 'st\u00f6rre br\u00e5k minus mindre br\u00e5k'.",
+    "framework_id": "NOG-TRAP-011",
+    "pregrade_tactic": {
+      "handle": "Hypotetik-l\u00e5saren",
+      "move": "Vid hypotetiska omf\u00f6rdelningar: skriv ut differensen som br\u00e5k-ekvation och f\u00f6renkla \u2014 om resultatet \u00e4r en relation V = f(n) r\u00e4cker det inte ensamt; kombinera med absolut n-villkor."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2015-kvant2-NOG-026": {
+    "solution_path": "L\u00e5t normal tid = t. V\u00e4garbete-tid = 1,5t. (1): 1,5t \u2212 t = 5 min \u2192 0,5t = 5 \u2192 t = 10 min. R\u00e4cker ensam. (2): avst\u00e5nd 10 km utan hastighet \u2014 kan inte r\u00e4kna ut tid. Otillr\u00e4ckligt. Svar: A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "Aron k\u00f6rde till aff\u00e4ren och det tog 1,5 g\u00e5nger s\u00e5 l\u00e5ng tid som normalt p.g.a. ett v\u00e4garbete. Vi s\u00f6ker normaltiden t.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "S\u00e4tt upp variabel",
+        "text": "L\u00e5t t = normal tid (minuter). Aktuell tid = 1,5t. Vi s\u00f6ker t.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad r\u00e4cker?",
+        "text": "Vi beh\u00f6ver ett villkor som ger t entydigt. En ekvation i t r\u00e4cker (det \u00e4r en obekant).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): aktuell tid \u2212 normal tid = 5 min. Allts\u00e5 1,5t \u2212 t = 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "F\u00f6renkla ekvationen",
+        "text": "\ue0001{,}5t - t = 0{,}5t\ue001. S\u00e5 \ue0000{,}5t = 5\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "L\u00f6s f\u00f6r t",
+        "text": "\ue000t = 5 / 0{,}5 = 10\ue001 min.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (1) ensamt",
+        "text": "Vi f\u00e5r t = 10 min entydigt. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): avst\u00e5ndet fr\u00e5n Aron till aff\u00e4ren \u00e4r 10 km. Detta \u00e4r en str\u00e4cka \u2014 inte en tid.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tid kr\u00e4ver hastighet",
+        "text": "Sambandet str\u00e4cka\u2013hastighet\u2013tid: \ue000s = v \\cdot t\ue001, allts\u00e5 \ue000t = s/v\ue001. F\u00f6r att r\u00e4kna tiden fr\u00e5n str\u00e4ckan beh\u00f6vs hastigheten.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Testa (2) ensamt",
+        "text": "Hastigheten \u00e4r inte given (10 km kan ta 5 min vid 120 km/h, 30 min vid 20 km/h, ...). Tiden \u00e4r d\u00e4rf\u00f6r obest\u00e4md. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera (1) med konkreta tal",
+        "text": "Med t = 10 min: aktuell tid = 1,5\u00b710 = 15 min. Differens = 15 \u2212 10 = 5 min. St\u00e4mmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "(1) r\u00e4cker ensam (en linj\u00e4r ekvation, en obekant). (2) saknar hastighet och kan inte ge tid. Svar: A. Insikten i en mening: en hypotetisk eller j\u00e4mf\u00f6rande tidsdifferens r\u00e4cker n\u00e4r faktorn (h\u00e4r 1,5x) redan \u00e4r given \u2014 ingen extern hastighet beh\u00f6vs.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att ett konkret avst\u00e5nd (10 km) r\u00e4cker f\u00f6r att r\u00e4kna tid.",
+        "why_wrong": "Steg 9\u201310: tid = str\u00e4cka / hastighet. Utan hastighet \u00e4r 10 km otillr\u00e4ckligt \u2014 Aron kan k\u00f6ra fort eller l\u00e5ngsamt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet \u2014 fler villkor k\u00e4nns alltid s\u00e4krare.",
+        "why_wrong": "Steg 6: (1) ger t = 10 min ensam. (2):s str\u00e4cka \u00e4r \u00f6verfl\u00f6dig (och utan hastighet inte ens anv\u00e4ndbar)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett r\u00e4cker eftersom b\u00e5da \u00e4r 'numeriska' landar du h\u00e4r.",
+        "why_wrong": "Steg 10: (2) saknar hastighet och ger inte tid. D kr\u00e4ver att vardera r\u00e4cker \u2014 bara (1) g\u00f6r det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att utan absolut tid n\u00e5gonstans g\u00e5r det inte.",
+        "why_wrong": "Steg 4\u20136: (1)'s tidsdifferens 5 min kombinerat med 1,5x-faktorn ger en sluten linj\u00e4r ekvation: 0,5t = 5."
+      }
+    ],
+    "technique": "N\u00e4r en uppgift redan ger en MULTIPLIKATIV faktor (t.ex. 1,5x) r\u00e4cker en additiv differens (5 min) f\u00f6r att l\u00e5sa grundv\u00e4rdet via en linj\u00e4r ekvation \u2014 utan att veta str\u00e4cka eller hastighet.",
+    "pitfall": "Det \u00e4r frestande att tro att 'tid kr\u00e4ver str\u00e4cka och hastighet'. Botemedlet: n\u00e4r tv\u00e5 tidsm\u00e5tt j\u00e4mf\u00f6rs direkt (faktor + differens) \u00e4r str\u00e4ckan irrelevant.",
+    "framework_id": "NOG-TRAP-011",
+    "pregrade_tactic": {
+      "handle": "Tids-j\u00e4mf\u00f6relsen",
+      "move": "Vid 'k g\u00e5nger s\u00e5 l\u00e5ng'-NOG: skriv ekvationen direkt p\u00e5 tiderna (kt \u2212 t = differens) \u2014 str\u00e4cka och hastighet \u00e4r ofta vilseledande extrainformation."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2015-kvant2-NOG-027": {
+    "solution_path": "Betong = sand + vatten + cement, total 40 kg. Vi s\u00f6ker cement. (1): cement + sand = 36,8 \u2192 vatten = 3,2, men f\u00f6rdelningen cement vs sand \u00e4r fri. Otillr\u00e4ckligt. (2): vatten + sand = 31,2 \u2192 cement = 40 \u2212 31,2 = 8,8 kg. R\u00e4cker ensam. Svar: B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "Betong \u00e4r en blandning av tre komponenter: sand (S), vatten (V), cement (C). Totalt 40 kg. Vi s\u00f6ker hur m\u00e5nga kilogram cement (C) som finns.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Grundekvation",
+        "text": "\ue000S + V + C = 40\ue001. En ekvation i tre obekanta \u2014 vi beh\u00f6ver minst tv\u00e5 oberoende villkor till f\u00f6r att l\u00e5sa alla tre.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "R\u00e4cker det att l\u00e5sa C?",
+        "text": "Vi s\u00f6ker bara C, inte S och V individuellt. Det r\u00e4cker att S + V \u00e4r k\u00e4nt \u2014 d\u00e5 f\u00f6ljer C = 40 \u2212 (S + V).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): C + S = 36,8. Detta \u00e4r summan av cement och sand \u2014 allts\u00e5 40 \u2212 V = 36,8, dvs V = 3,2.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "Vi vet V = 3,2 och C + S = 36,8 \u2014 men hur summan f\u00f6rdelas mellan C och S \u00e4r ok\u00e4nt. C kan vara 5 (S=31,8), 10 (S=26,8) eller 30 (S=6,8). Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkreta motexempel f\u00f6r (1)",
+        "text": "Scenario A: C=5, S=31,8, V=3,2 \u2014 summa 40, (1) uppfylld. Scenario B: C=20, S=16,8, V=3,2 \u2014 ocks\u00e5 summa 40, (1) uppfylld. Tv\u00e5 olika C-v\u00e4rden konsistenta med (1).",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): V + S = 31,2. Detta \u00e4r summan av vatten och sand \u2014 allts\u00e5 40 \u2212 C = 31,2, dvs C = 8,8.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "R\u00e4kna C fr\u00e5n (2)",
+        "text": "\ue000C = 40 - (V + S) = 40 - 31{,}2 = 8{,}8\ue001 kg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa (2) ensamt",
+        "text": "(2) ger C = 8,8 kg entydigt. Vi beh\u00f6ver inte veta S och V individuellt \u2014 fr\u00e5gan handlade bara om C. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Varf\u00f6r fungerar (2) men inte (1)?",
+        "text": "(2) s\u00e4ger 'allt som INTE \u00e4r cement summa till 31,2', vilket direkt isolerar cement. (1) s\u00e4ger 'allt som inte \u00e4r vatten' \u2014 och vi s\u00f6ker cement, inte sand+cement.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera (2) med scenario",
+        "text": "C = 8,8. D\u00e5 \u00e4r V + S = 31,2. V och S \u00e4r individuellt fria (V=10, S=21,2 eller V=15, S=16,2 osv.), men summan \u00e4r l\u00e5st. C \u00e4r entydig.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "(1) isolerar vatten men inte cement \u2014 otillr\u00e4cklig. (2) isolerar cement direkt via total minus summan av de andra tv\u00e5 \u2014 r\u00e4cker. Svar: B. Insikten i en mening: i 'tre-komponent-NOG' r\u00e4cker det att veta summan av de TV\u00c5 komponenter du INTE s\u00f6ker \u2014 den tredje f\u00f6ljer fr\u00e5n totalen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att (1):s summa (cement+sand) r\u00e4cker eftersom det inneh\u00e5ller cement.",
+        "why_wrong": "Steg 5\u20136: (1) isolerar vatten (V=3,2) men l\u00e4mnar f\u00f6rdelningen cement vs sand fri. C kan vara 5, 10 eller 30."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet \u2014 kanske f\u00f6r att hitta alla tre komponenter.",
+        "why_wrong": "Steg 8: (2) ger C = 8,8 ensam. Vi beh\u00f6ver inte veta S och V individuellt; fr\u00e5gan handlade bara om C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett r\u00e4cker eftersom b\u00e5da '\u00e4r sums i blandningen' landar du h\u00e4r.",
+        "why_wrong": "Steg 5: (1) saknar f\u00f6rdelning mellan C och S. D kr\u00e4ver att vardera r\u00e4cker \u2014 bara (2) g\u00f6r det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att tre komponenter alltid kr\u00e4ver tre oberoende villkor.",
+        "why_wrong": "Steg 8: med totalen som f\u00f6rsta villkor och (2) som andra \u00e4r vi f\u00e4rdiga f\u00f6r C \u2014 vi beh\u00f6ver inte separera S och V."
+      }
+    ],
+    "technique": "I tre-komponent-blandningar med k\u00e4nd total: total \u2212 (summan av tv\u00e5 andra) = den tredje. Du beh\u00f6ver bara DEN komplement\u00e4ra summan, inte f\u00f6rdelningen.",
+    "pitfall": "Det \u00e4r frestande att tro att alla tre komponenter m\u00e5ste isoleras. Botemedlet: skriv ner total och fr\u00e5ga 'vilken komplement\u00e4r summa skulle direkt ge mitt m\u00e5l?'.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Komplement-r\u00e4knaren",
+      "move": "Vid 'A+B+C=total, hitta C'-NOG: leta efter ett villkor som ger A+B (de andra tv\u00e5 summerade) \u2014 d\u00e5 f\u00f6ljer C = total \u2212 (A+B) entydigt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2015-kvant2-NOG-028": {
+    "solution_path": "Linn har 125 kr i 20-kronorssedlar (a st) och 5-kronor (b st), s\u00e5 20a + 5b = 125 \u2192 4a + b = 25. Heltalsl\u00f6sningar med a, b \u2265 0: (a,b) \u2208 {(0,25), (1,21), (2,17), (3,13), (4,9), (5,5), (6,1)}. (1): b < 5 \u2192 endast (6,1). R\u00e4cker. (2): a > 5 \u2192 endast (6,1). R\u00e4cker. Svar: D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "Linn har 125 kr f\u00f6rdelat i 20-kronorssedlar och 5-kronor. Vi s\u00f6ker antalet 5-kronor.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "S\u00e4tt upp variabler",
+        "text": "L\u00e5t a = antal 20-kronorssedlar, b = antal 5-kronor. B\u00e5da \u00e4r heltal \u2265 0. V\u00e4rdet: \ue00020a + 5b = 125\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "F\u00f6renkla ekvationen",
+        "text": "Dela med 5: \ue0004a + b = 25\ue001, dvs \ue000b = 25 - 4a\ue001. F\u00f6r att b \u2265 0 m\u00e5ste a \u2264 6.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lista heltalsl\u00f6sningar",
+        "text": "a=0 \u2192 b=25. a=1 \u2192 b=21. a=2 \u2192 b=17. a=3 \u2192 b=13. a=4 \u2192 b=9. a=5 \u2192 b=5. a=6 \u2192 b=1. Sju m\u00f6jliga par.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad r\u00e4cker?",
+        "text": "Vi beh\u00f6ver ett villkor som smalnar av sju par till exakt ett. Ett oj\u00e4mlikhetsvillkor kan g\u00f6ra det om det utesluter sex av sju.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): b < 5 (f\u00e4rre \u00e4n 5 femkronor).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (1) ensamt",
+        "text": "Av sju par har: (0,25), (1,21), (2,17), (3,13), (4,9), (5,5), (6,1). Vilka uppfyller b < 5? Endast (6,1) \u2014 b=1 \u00e4r < 5. \u00d6vriga har b \u2265 5. Entydigt \u2192 r\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): a > 5 (fler \u00e4n 5 tjugokronorssedlar).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa (2) ensamt",
+        "text": "Vilka par har a > 5? Med a \u2264 6 (fr\u00e5n steg 3) \u00e4r endast a=6 m\u00f6jligt. Det ger (6,1). Entydigt \u2192 r\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Bekr\u00e4fta unikheten",
+        "text": "(1) ger (6,1). (2) ger (6,1). Samma par. B\u00e5da p\u00e4st\u00e5endena leder till samma svar: b = 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera med ekvationen",
+        "text": "V\u00e4rdet: 6\u00b720 + 1\u00b75 = 120 + 5 = 125 kr. St\u00e4mmer. B\u00e5da villkoren uppfyllda: a=6 > 5 (ja), b=1 < 5 (ja).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Vardera oj\u00e4mlikhet utesluter sex av sju heltalsl\u00f6sningar, s\u00e5 vardera r\u00e4cker ensam. Svar: D. Insikten i en mening: i heltalsl\u00f6snings-NOG kan en enda oj\u00e4mlikhet r\u00e4cka n\u00e4r l\u00f6sningsm\u00e4ngden \u00e4r gles \u2014 r\u00e4kna alltid antalet par f\u00f6rst.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att (1):s villkor om femkronorna \u00e4r 'mer specifikt' eftersom det matchar m\u00e5lvariabeln direkt.",
+        "why_wrong": "Steg 9: (2) r\u00e4cker ocks\u00e5 ensamt (a>5 \u21d2 a=6 \u21d2 b=1). D \u00e4r skarpare \u00e4n A."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att (2) r\u00e4cker eftersom 'a > 5' \u00e4r ett tydligare gr\u00e4nsfall.",
+        "why_wrong": "Steg 7: (1) r\u00e4cker ocks\u00e5 ensamt (b<5 \u21d2 b=1 fr\u00e5n listan). D \u00e4r skarpare \u00e4n B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet.",
+        "why_wrong": "Steg 7 och 9: vardera r\u00e4cker ensam. C kr\u00e4ver att vardera \u00e4r otillr\u00e4cklig \u2014 vilket inte st\u00e4mmer."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att tv\u00e5 obekanta kr\u00e4ver tv\u00e5 oberoende ekvationer.",
+        "why_wrong": "Steg 4\u20139: heltalskravet + ekvationen 20a+5b=125 ger en GLES l\u00f6sningsm\u00e4ngd (sju par). En enda oj\u00e4mlikhet smalnar till ett par."
+      }
+    ],
+    "technique": "Heltalsl\u00f6sningar till linj\u00e4ra diofantiska ekvationer \u00e4r typiskt glesa. Lista f\u00f6rst alla m\u00f6jliga par; en enda oj\u00e4mlikhet eller paritets-villkor kan r\u00e4cka f\u00f6r att l\u00e5sa unikheten.",
+    "pitfall": "Det \u00e4r frestande att r\u00e4kna 'tv\u00e5 obekanta = tv\u00e5 ekvationer beh\u00f6vs'. Botemedlet: vid heltalsl\u00f6sningar, lista f\u00f6rst \u2014 du uppt\u00e4cker ofta att en oj\u00e4mlikhet r\u00e4cker.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Heltalslistan",
+      "move": "Vid mynt-/sedel-NOG: lista alla heltalsl\u00f6sningar till v\u00e4rde-ekvationen f\u00f6rst \u2014 d\u00e5 blir det uppenbart om en oj\u00e4mlikhet r\u00e4cker f\u00f6r unikhet."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2016-kvant2-NOG-023": {
+    "solution_path": "Hundg\u00e5rden har en tik + V valpar (svarta + gula). Vi s\u00f6ker antalet valpar V. (1): 2 svarta valpar + tiken = 3 hundar = 1/3 av totalen \u2192 totalt 9 hundar \u2192 V = 8. R\u00e4cker. (2): 75 % av valparna \u00e4r gula \u2014 bara fraktion, ingen absolut talsats. Otillr\u00e4ckligt. Svar: A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "I hundg\u00e5rden: 1 tik + V valpar, d\u00e4r varje valp \u00e4r antingen svart eller gul. Total antal hundar = V + 1. Vi s\u00f6ker V.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "S\u00e4tt upp variabler",
+        "text": "L\u00e5t S = antal svarta valpar, G = antal gula valpar, V = S + G = totalt antal valpar. Total hundar = V + 1 (inklusive tiken).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad r\u00e4cker?",
+        "text": "Vi beh\u00f6ver l\u00e5sa V (eller V+1, totalen) entydigt. Ett villkor som ger absolut antal n\u00e5gonstans i kedjan r\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): det finns 2 svarta valpar, och dessa tv\u00e5 tillsammans med tiken utg\u00f6r 1/3 av alla hundar i hundg\u00e5rden.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "S\u00e4tt upp ekvationen",
+        "text": "S = 2 (givet). 'Tv\u00e5 svarta + tiken' = 2 + 1 = 3 hundar. Detta \u00e4r 1/3 av totalen: \ue0003 = \\frac{1}{3}(V+1)\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "L\u00f6s f\u00f6r V",
+        "text": "\ue000V + 1 = 9\ue001, allts\u00e5 \ue000V = 8\ue001. Hundg\u00e5rden har 8 valpar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (1) ensamt",
+        "text": "V = 8 entydigt. Vi vet inte exakt hur m\u00e5nga gula valpar (G = 8 \u2212 S, men S \u00e4r minst 2 \u2014 kan vara mer), men fr\u00e5gan handlade bara om totala antalet valpar. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "V\u00e4nta \u2014 kan S vara mer \u00e4n 2?",
+        "text": "(1) s\u00e4ger 'det finns tv\u00e5 svarta valpar' (utan 'exakt'). Tolkning: minst tv\u00e5, eller exakt tv\u00e5? P\u00e5 HP tolkas det normalt som exakt tv\u00e5 (annars vore villkoret meningsl\u00f6st f\u00f6r precisionen). Med S=2 \u00e4r V=8 entydigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): 75 % av valparna \u00e4r gula. Allts\u00e5 G = 0,75\u00b7V och S = 0,25\u00b7V.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Testa (2) ensamt",
+        "text": "(2) ger bara FRAKTION mellan f\u00e4rgerna \u2014 inga absoluta tal. V kan vara 4 (G=3, S=1), 8 (G=6, S=2), 12 (G=9, S=3), ... \u2014 varje heltalsmultipel av 4. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera (1)",
+        "text": "V=8: total = 9 hundar (1 tik + 8 valpar). Tv\u00e5 svarta valpar + tiken = 3 hundar = 9/3 = 1/3 av totalen. St\u00e4mmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera otillr\u00e4cklighet av (2)",
+        "text": "V=4 med (2): G=3, S=1 \u2014 fungerar, men ger 4 valpar (\u2260 8). V=8 med (2): G=6, S=2 \u2014 ocks\u00e5 m\u00f6jligt. Tv\u00e5 olika V \u2192 otillr\u00e4ckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "(1) ger absolut antal via fraktions-ekvationen \u2192 r\u00e4cker (V=8). (2) ger bara fraktion utan absoluta tal \u2192 otillr\u00e4ckligt. Svar: A. Insikten i en mening: en kombination av absolut deltal och br\u00e5k-relation till totalen ger totalen \u2014 bara fraktion ensam ger den aldrig.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att 75 % \u00e4r 'precis nog' eftersom det \u00e4r en exakt procentsats.",
+        "why_wrong": "Steg 10: procent ensamt ger bara FRAKTION, inte absoluta antal. V kan vara 4, 8, 12, ..."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet.",
+        "why_wrong": "Steg 6: (1) ger V = 8 ensam. (2) \u00e4r \u00f6verfl\u00f6dig och tillf\u00f6r ingen n\u00f6dv\u00e4ndig info."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett r\u00e4cker eftersom b\u00e5da n\u00e4mner valpar landar du h\u00e4r.",
+        "why_wrong": "Steg 10: (2) saknar absoluta tal. D kr\u00e4ver att vardera r\u00e4cker \u2014 bara (1) g\u00f6r det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att utan f\u00e4rgf\u00f6rdelning blir antalet underbest\u00e4mt.",
+        "why_wrong": "Steg 5\u20136: (1) anv\u00e4nder 'svarta + tiken = 1/3 av total' \u2014 fraktion + absolut delgrupp ger totalen entydigt."
+      }
+    ],
+    "technique": "Absolut deltal + fraktion av totalen ger totalen entydigt: om k objekt utg\u00f6r r/n av totalen \u00e4r totalen k\u00b7n/r.",
+    "pitfall": "Det \u00e4r frestande att avf\u00e4rda fraktioner som 'f\u00f6r svaga'. Botemedlet: n\u00e4r fraktionen kopplas till en ABSOLUT del (h\u00e4r '2 svarta + tiken = 3 stycken'), ger ekvationen totalen direkt.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Fraktion-absolut-kopplingen",
+      "move": "Vid 'X stycken utg\u00f6r r/n av totalen'-NOG: skriv ekvationen X = (r/n)\u00b7total och l\u00f6s f\u00f6r total \u2014 det r\u00e4cker ensam."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2016-kvant2-NOG-024": {
+    "solution_path": "Cirkelb\u00e5gen BC \u00e4r en kvartcirkel (1/4 av cirkel) med medelpunkt A. Radie = AC = AB. Rektangel ADEF har F p\u00e5 AC, D p\u00e5 AB, E p\u00e5 b\u00e5gen. Sidor: AF=DE och AD=FE. Pytagoras: AE\u00b2 = AD\u00b2 + DE\u00b2 = r\u00b2 (eftersom E ligger p\u00e5 b\u00e5gen). (1) DE=5 ensam: en ekvation, en obekant kvar (AD). Otillr\u00e4cklig. (2) CF=8: AF = r\u22128, men AD och DE fortfarande fria. Otillr\u00e4cklig. Tillsammans: DE=5, AF=AD=r\u2212CF (nej \u2014 AF=r\u2212CF=r\u22128 och AD=DE=5, fel \u2014 v\u00e4nta, beh\u00f6ver r\u00e4kna noggrant). B\u00e5da kr\u00e4vs f\u00f6r Pytagoras-ekvationen. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 figuren",
+        "text": "Cirkelb\u00e5gen BC \u00e4r en kvartcirkel med medelpunkt i A \u2014 s\u00e5 vinkeln BAC = 90\u00b0. AB och AC \u00e4r tv\u00e5 radier (vinkelr\u00e4ta). En rektangel ADEF \u00e4r inskriven s\u00e5 att F ligger p\u00e5 AC, D ligger p\u00e5 AB och E ligger p\u00e5 cirkelb\u00e5gen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad s\u00f6ker vi?",
+        "text": "Vi s\u00f6ker l\u00e4ngden av cirkelb\u00e5gen BC. F\u00f6r en kvartcirkel med radie r \u00e4r b\u00e5gl\u00e4ngden \ue000\\frac{2\\pi r}{4} = \\frac{\\pi r}{2}\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vi beh\u00f6ver allts\u00e5 r",
+        "text": "Allt h\u00e4nger p\u00e5 radien r = AB = AC. Om vi kan l\u00e5sa r entydigt \u00e4r b\u00e5gl\u00e4ngden best\u00e4md.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Rektangelns sidor",
+        "text": "ADEF \u00e4r en rektangel med AD l\u00e4ngs radien AB och AF l\u00e4ngs radien AC. Sidorna \u00e4r: AD (parallell med AB), AF (parallell med AC), och DE = AF, FE = AD (motst\u00e5ende sidor lika).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "E ligger p\u00e5 b\u00e5gen",
+        "text": "Eftersom E ligger p\u00e5 cirkelb\u00e5gen \u00e4r AE = r. Detta \u00e4r nyckelvillkoret \u2014 diagonalen AE i rektangeln \u00e4r lika med radien.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Pytagoras i rektangeln",
+        "text": "AD och DE \u00e4r vinkelr\u00e4ta (rektangelsidor). Diagonalen AE \u00e4r hypotenusan: \ue000AE^2 = AD^2 + DE^2\ue001, allts\u00e5 \ue000r^2 = AD^2 + DE^2\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): DE = 5 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (1) ensamt",
+        "text": "Med DE = 5: \ue000r^2 = AD^2 + 25\ue001. Tv\u00e5 obekanta (r och AD), en ekvation. r kan vara vad som helst > 5. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): CF = 8 cm. C ligger p\u00e5 radien AC, F ligger ocks\u00e5 p\u00e5 AC. Allts\u00e5 AF = AC \u2212 CF = r \u2212 8.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Koppla AF till rektangeln",
+        "text": "I rektangeln \u00e4r AF = DE (motst\u00e5ende sidor). Allts\u00e5 DE = r \u2212 8.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Testa (2) ensamt",
+        "text": "Med DE = r \u2212 8 in i Pytagoras: \ue000r^2 = AD^2 + (r-8)^2\ue001. Det \u00e4r fortfarande en ekvation i tv\u00e5 obekanta (r, AD). Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Kombinera",
+        "text": "Med (1) DE=5 och (2) AF=r\u22128=DE=5: s\u00e5 r \u2212 8 = 5, allts\u00e5 r = 13. D\u00e5 har vi r entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Kontroll via Pytagoras",
+        "text": "AD: beh\u00f6ver inte r\u00e4knas explicit f\u00f6r b\u00e5gl\u00e4ngden, men f\u00f6r fullst\u00e4ndighet: \ue000AD^2 = r^2 - DE^2 = 169 - 25 = 144\ue001, s\u00e5 AD = 12. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 14,
+        "title": "R\u00e4kna b\u00e5gl\u00e4ngden",
+        "text": "B\u00e5gl\u00e4ngd BC = \ue000\\frac{\\pi r}{2} = \\frac{13\\pi}{2}\ue001 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 15,
+        "title": "Slutsats",
+        "text": "Vardera ensam ger en ekvation i tv\u00e5 obekanta \u2014 otillr\u00e4cklig. Tillsammans ger de DE och AF=DE direkt, vilket l\u00e5ser r=13 och b\u00e5gl\u00e4ngden = 13\u03c0/2 cm. Svar: C. Insikten i en mening: i cirkelsektor med inskriven rektangel ger Pytagoras AE\u00b2=AD\u00b2+DE\u00b2 + radie-villkoret r=AE den bindning som l\u00e5ser systemet \u2014 du beh\u00f6ver tv\u00e5 sidv\u00e4rden.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att DE r\u00e4cker eftersom det \u00e4r en rektangelsida med direkt geometrisk roll.",
+        "why_wrong": "Steg 8: med DE = 5 har Pytagoras r\u00b2 = AD\u00b2 + 25 \u2014 fortfarande tv\u00e5 obekanta (r och AD)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att CF=8 r\u00e4cker eftersom det direkt kopplar till radien (AF=r\u22128).",
+        "why_wrong": "Steg 11: (2) ger DE = r \u2212 8 men AD \u00e4r fortfarande fri. En ekvation i tv\u00e5 obekanta \u2014 otillr\u00e4ckligt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett r\u00e4cker eftersom b\u00e5da \u00e4r l\u00e4ngder i figuren landar du h\u00e4r.",
+        "why_wrong": "Steg 8 och 11: vardera l\u00e4mnar tv\u00e5 obekanta i Pytagoras. D kr\u00e4ver att vardera r\u00e4cker \u2014 vilket inte st\u00e4mmer."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att utan vinkelinformation g\u00e5r det inte att l\u00e5sa cirkelsektorn.",
+        "why_wrong": "Steg 1: 'kvartcirkel' ger vinkeln 90\u00b0 direkt. Med Pytagoras + tv\u00e5 sidv\u00e4rden l\u00e5ses r entydigt \u2014 vinkelinformation beh\u00f6vs inte."
+      }
+    ],
+    "technique": "I cirkelsektor med inskriven rektangel d\u00e4r en h\u00f6rnpunkt ligger p\u00e5 b\u00e5gen: rektangelns diagonal fr\u00e5n medelpunkten \u00e4r lika med radien. Pytagoras kopplar d\u00e5 rektangelsidorna till r.",
+    "pitfall": "Det \u00e4r frestande att f\u00f6rs\u00f6ka r\u00e4kna ut AD eller DE individuellt utan att se kopplingen AF=DE. Botemedlet: identifiera vilka rektangelsidor som ligger l\u00e4ngs radierna och utnyttja motst\u00e5ende-sidor-lika.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Pytagoras-bron",
+      "move": "Vid cirkelsektor med inskriven rektangel: skriv ekvationen r\u00b2 = (sida_1)\u00b2 + (sida_2)\u00b2 med E p\u00e5 b\u00e5gen \u2014 tv\u00e5 sidv\u00e4rden l\u00e5ser r entydigt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2016-kvant2-NOG-025": {
+    "solution_path": "\u00c5r 2008: 27 650 000 inv\u00e5nare = index 100. Vi s\u00f6ker inv\u00e5nare \u00e5r 2000. (1): index 2000 = 65 \u2192 0,65\u00b727 650 000. R\u00e4cker. (2): 'index 35 % l\u00e4gre \u00e4n 2008' \u2192 index 65 (samma sak). R\u00e4cker. Vardera r\u00e4cker ensam. Svar: D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 indexbegreppet",
+        "text": "Ett index normaliserar ett tal mot ett bas\u00e5r (h\u00e4r 2008 = index 100). Ett indextal I f\u00f6r \u00e5r Y betyder att inv\u00e5nartalet Y = (I/100) \u00b7 inv\u00e5nartalet bas\u00e5ret.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "S\u00e4tt upp formeln",
+        "text": "L\u00e5t N_2000 = inv\u00e5nare \u00e5r 2000, N_2008 = 27 650 000. D\u00e5 g\u00e4ller \ue000N_{2000} = \\frac{I_{2000}}{100} \\cdot N_{2008}\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad r\u00e4cker?",
+        "text": "Vi s\u00f6ker N_2000. Eftersom N_2008 = 27 650 000 \u00e4r k\u00e4nt r\u00e4cker det att veta I_2000 (indextalet f\u00f6r \u00e5r 2000).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): I_2000 = 65. Indextalet f\u00f6r \u00e5r 2000 var 65.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "R\u00e4kna N_2000 fr\u00e5n (1)",
+        "text": "\ue000N_{2000} = \\frac{65}{100} \\cdot 27\\,650\\,000 = 0{,}65 \\cdot 27\\,650\\,000 = 17\\,972\\,500\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "Entydigt N_2000 = 17 972 500. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): 'indextalet f\u00f6r \u00e5r 2000 var 35 procent l\u00e4gre \u00e4n f\u00f6r \u00e5r 2008'. \u00c5r 2008 hade index 100, s\u00e5 35 % l\u00e4gre betyder index 100 \u2212 0,35\u00b7100 = 65.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "R\u00e4kna N_2000 fr\u00e5n (2)",
+        "text": "Index 65 \u2192 samma som (1): N_2000 = 0,65 \u00b7 27 650 000 = 17 972 500.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa (2) ensamt",
+        "text": "Entydigt N_2000 = 17 972 500. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "\u00c4r (1) och (2) samma utsaga?",
+        "text": "Ja \u2014 'index 65' och '35 % l\u00e4gre \u00e4n 100' \u00e4r logiskt ekvivalenta. (1) och (2) ger exakt samma information.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Varf\u00f6r r\u00e4cker vardera?",
+        "text": "Indexformeln har tv\u00e5 ok\u00e4nda (I_2000 och N_2000) men N_2008 \u00e4r given. Vardera p\u00e5st\u00e5ende ger I_2000 entydigt, vilket genom formeln ger N_2000.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "0,65 \u00b7 27 650 000 = 17 972 500. Tv\u00e5 kontroller: 17 972 500 / 27 650 000 = 0,65 (jo, 65 %) och 27 650 000 \u2212 17 972 500 = 9 677 500, vilket \u00e4r 35 % av 27 650 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Vardera p\u00e5st\u00e5endet ger index 65 och d\u00e4rmed entydigt N_2000 = 17 972 500. Svar: D. Insikten i en mening: 'index = X' och 'X \u2212 100 % l\u00e4gre \u00e4n bas\u00e5ret' \u00e4r samma utsaga \u2014 varje r\u00e4cker ensam n\u00e4r bas\u00e5rets v\u00e4rde \u00e4r k\u00e4nt.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att bara (1):s direkta indextal r\u00e4cker, eftersom det \u00e4r 'rent' (utan procentsats).",
+        "why_wrong": "Steg 7\u20139: (2):s '35 % l\u00e4gre' \u00e4r exakt samma utsaga som index = 65. Vardera r\u00e4cker, s\u00e5 D \u00e4r skarpare \u00e4n A."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att (2):s procentminskning \u00e4r mer 'intuitiv' och d\u00e4rf\u00f6r den enda n\u00f6dv\u00e4ndiga.",
+        "why_wrong": "Steg 5\u20136: (1):s index = 65 r\u00e4cker lika bra \u2014 0,65 \u00b7 27 650 000 = 17 972 500."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet.",
+        "why_wrong": "Steg 10: (1) och (2) \u00e4r samma utsaga (index 65). Kombinationen \u00e4r \u00f6verfl\u00f6dig \u2014 D \u00e4r skarpare \u00e4n C."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att l\u00e4sa b\u00e5da som otillr\u00e4ckliga n\u00e4r inga absoluta inv\u00e5nartal f\u00f6r 2000 ges.",
+        "why_wrong": "Steg 5 och 8: bas\u00e5rets absoluta tal (27 650 000) r\u00e4cker tillsammans med index. B\u00e5da villkoren ger index 65, allts\u00e5 N_2000 entydigt."
+      }
+    ],
+    "technique": "Indexregel: I = 100 motsvarar bas\u00e5ret; index X motsvarar X/100 \u00b7 bas\u00e5rets v\u00e4rde. 'X % l\u00e4gre \u00e4n bas\u00e5ret' \u00e4r ekvivalent med index (100 \u2212 X).",
+    "pitfall": "Det \u00e4r frestande att se tv\u00e5 formuleringar (procent vs index) som olika typer av information. Botemedlet: konvertera alltid b\u00e5da till samma form (t.ex. b\u00e5da till index) och j\u00e4mf\u00f6r.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Index-omvandlaren",
+      "move": "Vid index-NOG: skriv om varje p\u00e5st\u00e5ende till ett indextal \u2014 om b\u00e5da ger samma indextal \u00e4r svaret D, om de ger olika men konsistenta indextal \u00e4r det fortfarande D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2016-kvant2-NOG-026": {
+    "solution_path": "P\u00e5 kaf\u00e9et: 17 personer (K=kvinnor, M=m\u00e4n) som dricker kaffe, te eller choklad \u2014 2\u00d73-tabell. Vi s\u00f6ker antal som dricker te. (1) ger K=10, K-kaffe=2, K-choklad>5 (allts\u00e5 K-choklad=6 eftersom K-te+2+6 \u2264 10). (2) ger M-te = (2/7)\u00b7M = (1/3)\u00b7K-choklad. Vardera ensam saknar antingen m\u00e4ns drycker eller absoluta antal. Tillsammans t\u00e4cker de hela tabellen \u2192 te-total = 4. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "17 personer p\u00e5 kaf\u00e9. Varje person: k\u00f6n (K/M) \u00d7 dryck (kaffe/te/choklad). En 2\u00d73-tabell med 6 celler. Vi s\u00f6ker totala antal te-drickare (K-te + M-te).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "S\u00e4tt upp tabellen",
+        "text": "Celler: K-kaffe, K-te, K-choklad, M-kaffe, M-te, M-choklad. Radsummor: K + M = 17. Vi har 6 obekanta och beh\u00f6ver tillr\u00e4ckligt med villkor.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): K = 10 (allts\u00e5 M = 7). Bland dessa 10 kvinnor: 'fler \u00e4n h\u00e4lften' (allts\u00e5 > 5) dricker choklad, och 1/5 dricker kaffe.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "R\u00e4kna K-kaffe",
+        "text": "K-kaffe = (1/5)\u00b710 = 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "R\u00e4kna K-choklad",
+        "text": "K-choklad > 5. Tillsammans med K-te \u2265 0 och K-kaffe = 2 \u00e4r K-te + K-choklad = 10 \u2212 2 = 8. Med K-choklad > 5 och heltal: K-choklad \u2208 {6, 7, 8}, K-te \u2208 {2, 1, 0}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "K-te \u00e4r inte unikt (kan vara 0, 1 eller 2). M-te \u00e4r inte alls best\u00e4mt. Te-totalen \u00e4r obest\u00e4md. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): (2/7) av m\u00e4nnen dricker te, vilket motsvarar (1/3) av antalet kvinnor som dricker choklad.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Tolka 2/7 av M",
+        "text": "M-te = (2/7)\u00b7M. F\u00f6r att vara heltal m\u00e5ste M vara multipel av 7 (f\u00f6rmodligen M=7 eller M=14).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka 1/3 av K-choklad",
+        "text": "K-choklad m\u00e5ste vara multipel av 3 f\u00f6r att (1/3)\u00b7K-choklad ska vara heltal. S\u00e5 M-te = K-choklad / 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Testa (2) ensamt",
+        "text": "(2) ger en relation: M-te \u00b7 3 = K-choklad och M-te \u00b7 7/2 = M. Men inga absoluta antal av K, M eller K-choklad. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Kombinera",
+        "text": "Fr\u00e5n (1): M = 7. D\u00e5 M-te = (2/7)\u00b77 = 2. Fr\u00e5n (2): K-choklad = 3\u00b7M-te = 3\u00b72 = 6. Det st\u00e4mmer med (1):s 'K-choklad > 5' (specifikt = 6).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "R\u00e4kna K-te",
+        "text": "K-te = K \u2212 K-kaffe \u2212 K-choklad = 10 \u2212 2 \u2212 6 = 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "R\u00e4kna total te",
+        "text": "Total te = K-te + M-te = 2 + 2 = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 14,
+        "title": "Verifiera tabellen",
+        "text": "K: kaffe=2, te=2, choklad=6 \u2192 10. M: te=2, s\u00e5 M-kaffe + M-choklad = 5. Total: 10 + 7 = 17. St\u00e4mmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 15,
+        "title": "Slutsats",
+        "text": "Vardera ensam l\u00e4mnar antingen m\u00e4ns drycker eller absoluta antal fria. Tillsammans t\u00e4cker de hela tabellen \u2192 te-total = 4. Svar: C. Insikten i en mening: i tv\u00e5dimensionella NOG-tabeller r\u00e4cker det med komplement\u00e4ra villkor (rad-info + kolumn-relation) n\u00e4r antalsv\u00e4rden \u00e4r heltal \u2014 heltalskravet smalnar av.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att (1) r\u00e4cker eftersom den ger flera detaljer om kvinnorna.",
+        "why_wrong": "Steg 6: (1) s\u00e4ger inget om m\u00e4ns dryckesval. M-te \u00e4r obest\u00e4mt \u2192 total te \u00e4r obest\u00e4md."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att (2):s fraktioner r\u00e4cker eftersom de kopplar k\u00f6n och dryck direkt.",
+        "why_wrong": "Steg 10: (2) saknar absoluta antal av K och M. Endast relationer, inga konkreta tal."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett r\u00e4cker eftersom b\u00e5da n\u00e4mner drycker landar du h\u00e4r.",
+        "why_wrong": "Steg 6 och 10: vardera l\u00e4mnar minst en dimension fri. D kr\u00e4ver att vardera r\u00e4cker \u2014 vilket inte st\u00e4mmer."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att tre drycker \u00d7 tv\u00e5 k\u00f6n kr\u00e4ver fler villkor.",
+        "why_wrong": "Steg 11\u201313: tillsammans + heltalskravet t\u00e4cker alla 6 celler entydigt. Total te = 4."
+      }
+    ],
+    "technique": "I 2\u00d73-tabell-NOG: leta efter villkor som \u00e4r komplement\u00e4ra (en p\u00e5 rader, en p\u00e5 kolumner/relation). Heltalskrav (folk kan inte vara halva personer) smalnar av l\u00f6sningsm\u00e4ngden ytterligare.",
+    "pitfall": "Det \u00e4r frestande att tolka 'fler \u00e4n h\u00e4lften dricker choklad' som ett spann utan att utnyttja heltalskravet. Botemedlet: kombinera oj\u00e4mlikheten med rad-summan och heltalsm\u00e4ngden \u2014 ofta blir K-choklad unik via (2).",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Heltalsf\u00f6nstret",
+      "move": "I korstabell-NOG med fraktioner: kolla heltalskravet p\u00e5 varje delsumma \u2014 det smalnar ofta l\u00f6sningsm\u00e4ngden till en unik konfiguration tillsammans med oj\u00e4mlikheter."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2016-kvant2-NOG-027": {
+    "solution_path": "Medel(a,b,c,d) = 69 \u2192 a+b+c+d = 276. Vi s\u00f6ker hur m\u00e5nga av a,b,c,d som \u00e4r exakt 69. (1) medel(a,b,c) = 69 \u2192 a+b+c = 207, s\u00e5 d = 69. Men hur m\u00e5nga av a,b,c som \u00e4r 69 \u00e4r fortfarande obest\u00e4mt (kan vara 0, 1, 2 eller 3). (2): minst 2 \u00e4r 69 \u2014 kan vara 2, 3 eller 4. Tillsammans: d=69 och minst 2 av a,b,c \u00e4r 69 \u2014 s\u00e5 minst 3 \u00e4r 69, men kan vara 3 eller 4. Otillr\u00e4ckligt. Svar: E.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "Fyra tal a, b, c, d har medelv\u00e4rdet 69. Fr\u00e5gan \u00e4r: hur M\u00c5NGA av dessa fyra \u00e4r exakt lika med 69? (Inte vilka \u2014 antalet.)",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "\u00d6vers\u00e4tt huvudvillkoret",
+        "text": "Medelv\u00e4rde 69 \u2192 a + b + c + d = 4 \u00b7 69 = 276.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad menar 'tillr\u00e4cklig'?",
+        "text": "Tillr\u00e4cklig = exakt ett m\u00f6jligt antal-v\u00e4rde (av {0,1,2,3,4}). Om svarsm\u00e4ngden kan vara t.ex. {2,3} \u2192 otillr\u00e4cklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): medel(a, b, c) = 69 \u2192 a + b + c = 3 \u00b7 69 = 207. Tillsammans med total 276 \u2192 d = 276 \u2212 207 = 69.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "Vi vet d = 69. Men a, b, c summerar till 207 \u2014 och de kan vara alla 69 (3 av dem = 69, totalt 4), eller t.ex. (60, 70, 77) (0 av dem = 69, totalt 1), eller (69, 69, 69) eller (50, 80, 77) etc.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkreta motexempel f\u00f6r (1)",
+        "text": "Scenario A: a=b=c=69, d=69 \u2192 4 av talen \u00e4r 69. Scenario B: a=60, b=70, c=77, d=69 \u2192 1 av talen \u00e4r 69. Tv\u00e5 olika antal \u2192 otillr\u00e4ckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): minst 2 av talen \u00e4r 69. Det \u00e4r en svag utsaga \u2014 till\u00e5ter antalet 2, 3 eller 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt",
+        "text": "Antalet kan vara 2 (t.ex. a=b=69, c=70, d=68), 3 (a=b=c=69, d=69 \u2014 v\u00e4nta, d\u00e5 \u00e4r alla 4 \u2014 eller a=b=c=69, d beh\u00f6ver vara 69 f\u00f6r total 276, s\u00e5 det blir 4). V\u00e4nta: med a=b=69, vad \u00e4r c+d=276\u2212138=138, s\u00e5 c+d=138, vilket till\u00e5ter c=d=69 (4 av talen) eller c=70, d=68 (2 av talen).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konkreta motexempel f\u00f6r (2)",
+        "text": "Scenario A: a=b=c=d=69 \u2192 4 av talen. Scenario B: a=b=69, c=70, d=68 \u2192 2 av talen (kontroll: 69+69+70+68=276 \u2713). Tv\u00e5 olika antal \u2192 otillr\u00e4ckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Kombinera (1) + (2)",
+        "text": "Fr\u00e5n (1): d = 69. Fr\u00e5n (2): minst 2 av {a,b,c,d} \u00e4r 69, allts\u00e5 minst 1 av {a,b,c} \u00e4r 69 (eftersom d redan \u00e4r 69). Men a+b+c = 207 \u2014 kan vara (69, 69, 69) eller (69, 70, 68).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Motexempel under (1)+(2)",
+        "text": "Scenario A: a=b=c=69, d=69 \u2192 4 av talen \u00e4r 69. Scenario B: a=69, b=70, c=68, d=69 \u2192 2 av talen \u00e4r 69 (a och d). B\u00e5da uppfyller (1) (sum a+b+c=207) och (2) (minst 2 \u00e4r 69).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Bekr\u00e4fta otillr\u00e4ckligheten",
+        "text": "\u00c4ven tillsammans kan antalet vara 2, 3 eller 4. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Varken (1), (2) eller b\u00e5da tillsammans l\u00e5ser antalet exakt. Svar: E. Insikten i en mening: 'minst N \u00e4r X' och 'medel = X' \u00e4r b\u00e5da f\u00f6r svaga f\u00f6r att l\u00e5sa hur M\u00c5NGA tal som exakt motsvarar X \u2014 den f\u00f6rdelningsfria fr\u00e5gan kr\u00e4ver punktdata.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att d = 69 r\u00e4cker n\u00e4r vi s\u00f6ker antalet \u2014 det \u00e4r en konkret l\u00e5sning.",
+        "why_wrong": "Steg 5\u20136: \u00e4ven med d=69 kan a, b, c inneh\u00e5lla 0, 1, 2 eller 3 stycken 69:or och fortfarande summera till 207."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att 'minst 2 \u00e4r 69' \u00e4r konkret nog.",
+        "why_wrong": "Steg 8\u20139: 'minst 2' l\u00e4mnar antalet i {2, 3, 4} \u2014 tre m\u00f6jligheter."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet \u2014 d=69 + 'minst 2' k\u00e4nns starkt.",
+        "why_wrong": "Steg 11: \u00e4ven tillsammans kan antalet vara 2 (a=69, b=70, c=68, d=69) eller 3 (a=b=69, c=69 \u2192 blir 4) eller 4. Tv\u00e5 olika scenarier kvar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett ger exakt antal landar du h\u00e4r.",
+        "why_wrong": "Steg 5 och 8: vardera ensam till\u00e5ter flera antal-v\u00e4rden. D kr\u00e4ver att vardera r\u00e4cker \u2014 vilket inte st\u00e4mmer."
+      }
+    ],
+    "technique": "Antals-fr\u00e5gor ('hur m\u00e5nga av talen \u00e4r X?') \u00e4r extremt k\u00e4nsliga f\u00f6r punktf\u00f6rdelningen. Medelv\u00e4rden och 'minst N'-villkor ger SUMMOR och NEDRE GR\u00c4NSER, inte exakt antal.",
+    "pitfall": "Det \u00e4r frestande att tolka 'medel = 69' eller 'minst 2 \u00e4r 69' som om de implicerar exakt antal. Botemedlet: konstruera explicita motexempel d\u00e4r medelv\u00e4rdet/nedre gr\u00e4nsen beh\u00e5lls men antalet 69:or varierar.",
+    "framework_id": "NOG-TRAP-020",
+    "pregrade_tactic": {
+      "handle": "Antalsmotexemplet",
+      "move": "Vid 'hur m\u00e5nga av talen \u00e4r X'-NOG: konstruera medvetet tv\u00e5 f\u00f6rdelningar med olika antal X:or som b\u00e5da uppfyller villkoren \u2014 om det g\u00e5r \u00e4r det otillr\u00e4ckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2016-kvant2-NOG-028": {
+    "solution_path": "Tre lappar (r\u00f6d, gr\u00f6n, bl\u00e5) har talen 1, 2, 4 \u2014 en p\u00e5 varje. Vi s\u00f6ker f\u00e4rgen p\u00e5 lappen med 2. (1): gr\u00f6n > summan av de andra tv\u00e5 \u2192 gr\u00f6n = 4 (eftersom 4 > 1+2=3, men 2 < 1+4 och 1 < 2+4). Men vilken f\u00e4rg har 2 \u00e4r fortfarande tvetydigt (r\u00f6d eller bl\u00e5 kan ha 2). Otillr\u00e4ckligt. (2): en j\u00e4mn-lapp (talet \u00e4r 2 eller 4) \u00e4r varken r\u00f6d eller gr\u00f6n \u2192 den \u00e4r bl\u00e5. Bl\u00e5 < gr\u00f6n (talv\u00e4rde). Om bl\u00e5=4: gr\u00f6n > 4 om\u00f6jligt. S\u00e5 bl\u00e5=2, gr\u00f6n=4. Lapp 2 \u00e4r bl\u00e5. R\u00e4cker ensam. Svar: B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "Tre lappar med olika f\u00e4rger (r\u00f6d, gr\u00f6n, bl\u00e5) och olika tal (1, 2, 4) \u2014 en lapp per f\u00e4rg, en lapp per tal. Vi s\u00f6ker vilken f\u00e4rg lappen med talet 2 har.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "S\u00e4tt upp permutationer",
+        "text": "Det finns 3! = 6 m\u00f6jliga f\u00e4rg-till-tal-tilldelningar. Vi beh\u00f6ver smalna av till en.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): den gr\u00f6na lappens tal > summan av de andra tv\u00e5 talen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vilka talv\u00e4rden uppfyller (1)?",
+        "text": "Summorna: 1+2=3, 1+4=5, 2+4=6. Vilket tal kan vara > sin komplement-summa? 4 > 1+2 = 3 \u2713. 2 > 1+4 = 5 \u2717. 1 > 2+4 = 6 \u2717. Allts\u00e5 gr\u00f6n = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "(1) ger gr\u00f6n = 4. Men r\u00f6d och bl\u00e5 kan ha (1, 2) eller (2, 1). Tv\u00e5 fall f\u00f6r 'lapp 2 \u00e4r vilken f\u00e4rg': r\u00f6d eller bl\u00e5. Otillr\u00e4ckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "\u00d6vers\u00e4tt (2) \u2014 del 1",
+        "text": "(2) f\u00f6rsta delen: 'En av de lappar som har ett j\u00e4mnt tal \u00e4r varken r\u00f6d eller gr\u00f6n.' J\u00e4mna tal \u00e4r 2 och 4. Allts\u00e5 en av lapparna med 2 eller 4 \u00e4r bl\u00e5.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "\u00d6vers\u00e4tt (2) \u2014 del 2",
+        "text": "(2) andra delen: 'Den bl\u00e5 lappen har ett tal som \u00e4r mindre \u00e4n talet p\u00e5 den gr\u00f6na lappen.' Allts\u00e5 bl\u00e5 < gr\u00f6n (i talv\u00e4rden).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Fall: bl\u00e5 = 4",
+        "text": "Om bl\u00e5 = 4: bl\u00e5 \u00e4r j\u00e4mn (uppfyller del 1). Men d\u00e5 m\u00e5ste gr\u00f6n > 4 \u2014 och h\u00f6gsta talet \u00e4r 4, s\u00e5 om\u00f6jligt. F\u00f6rkasta.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Fall: bl\u00e5 = 2",
+        "text": "Om bl\u00e5 = 2: bl\u00e5 \u00e4r j\u00e4mn (uppfyller del 1). Gr\u00f6n > 2 \u2192 gr\u00f6n \u2208 {4}. Eftersom bl\u00e5=2, m\u00e5ste r\u00f6d och gr\u00f6n f\u00f6rdela 1 och 4. Med gr\u00f6n > 2 \u00e4r gr\u00f6n = 4 och r\u00f6d = 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Fall: bl\u00e5 = 1",
+        "text": "Om bl\u00e5 = 1: bl\u00e5 \u00e4r inte j\u00e4mn. Men (2) s\u00e4ger en av J\u00c4MN-lapparna \u00e4r bl\u00e5 \u2014 s\u00e5 bl\u00e5 m\u00e5ste ha j\u00e4mnt tal. F\u00f6rkasta.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Testa (2) ensamt",
+        "text": "Bara fallet bl\u00e5=2, gr\u00f6n=4, r\u00f6d=1 \u00e4r konsistent. Lappen med 2 \u00e4r bl\u00e5. Entydigt. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera (2)",
+        "text": "Bl\u00e5=2 (j\u00e4mn, varken r\u00f6d eller gr\u00f6n \u2014 \u2713). Bl\u00e5=2 < gr\u00f6n=4 \u2014 \u2713. Allt st\u00e4mmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Varf\u00f6r r\u00e4cker (2) men inte (1)?",
+        "text": "(1) fastst\u00e4ller endast att gr\u00f6n=4 men l\u00e4mnar r\u00f6d vs bl\u00e5 tvetydigt f\u00f6r talen 1 och 2. (2) anv\u00e4nder tv\u00e5 ordningsvillkor + paritet \u2192 l\u00e5ser hela tilldelningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 14,
+        "title": "Slutsats",
+        "text": "(1) ger bara gr\u00f6n=4, men 'f\u00e4rgen p\u00e5 2' \u00e4r fri (r\u00f6d eller bl\u00e5). (2) ger bl\u00e5=2 entydigt \u2192 lappen med 2 \u00e4r bl\u00e5. Svar: B. Insikten i en mening: paritets-villkor + ordnings-villkor p\u00e5 tre objekt r\u00e4cker ofta f\u00f6r full l\u00e5sning \u2014 ett singel-summavillkor r\u00e4cker s\u00e4llan.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att (1):s summavillkor r\u00e4cker eftersom det fastst\u00e4ller gr\u00f6n = 4.",
+        "why_wrong": "Steg 5: (1) s\u00e4ger inget om vilken av r\u00f6d/bl\u00e5 som har 2 eller 1. Tv\u00e5 fall kvar \u2014 otillr\u00e4cklig."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet i en permutationsuppgift.",
+        "why_wrong": "Steg 11: (2) r\u00e4cker ensam \u2014 den ger bl\u00e5=2 entydigt utan (1):s hj\u00e4lp."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett r\u00e4cker eftersom b\u00e5da smalnar av landar du h\u00e4r.",
+        "why_wrong": "Steg 5: (1) saknar information om 'lapp 2:s f\u00e4rg'. D kr\u00e4ver att vardera r\u00e4cker \u2014 bara (2) g\u00f6r det."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att utan numerisk ordning eller direkt utsaga om f\u00e4rgen \u00e4r det om\u00f6jligt.",
+        "why_wrong": "Steg 8\u201310: (2):s paritet + ordning utesluter alla utfall utom bl\u00e5=2, gr\u00f6n=4, r\u00f6d=1."
+      }
+    ],
+    "technique": "I permutations-NOG med tre objekt: paritets-villkor (j\u00e4mn/udda) + ordningsvillkor (<, >) utesluter ofta alla utom en av de 6 permutationerna. Singel-villkor (t.ex. en summa) r\u00e4cker s\u00e4llan ensam.",
+    "pitfall": "Det \u00e4r frestande att stanna vid (1):s tydliga matematiska struktur (gr\u00f6n=4) utan att kolla om fr\u00e5gan (lapp 2:s f\u00e4rg) faktiskt besvaras. Botemedlet: lista alla giltiga permutationer kvar efter varje p\u00e5st\u00e5ende och kolla om fr\u00e5gan \u00e4r entydig.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Permutations-elimineringen",
+      "move": "Vid f\u00e4rg-tal-NOG: lista alla 3!=6 permutationer, eliminera dem som inte uppfyller varje p\u00e5st\u00e5ende \u2014 om en kvar \u00e4r p\u00e5st\u00e5endet tillr\u00e4ckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "var-2022-1-kvant2-NOG-027": {
+    "solution_path": "En cirkul\u00e4r pizza delas i 6 likadana cirkelsektorer (varje med centrumvinkel 360\u00b0/6 = 60\u00b0). Pizzans omkrets = \ue0002\\pi r\ue001. (1): area per bit = 96\u03c0 \u2192 \ue000\\pi r^2/6 = 96\\pi\ue001 \u2192 \ue000r^2 = 576\ue001 \u2192 r = 24 \u2192 omkrets = 48\u03c0 cm. R\u00e4cker. (2): b\u00e5gl\u00e4ngd per bit = 8\u03c0 \u2192 \ue0002\\pi r/6 = 8\\pi\ue001 \u2192 r = 24. R\u00e4cker. B\u00e5da r\u00e4cker ensamma. Svar: D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "F\u00f6rst\u00e5 fr\u00e5gan",
+        "text": "En cirkul\u00e4r pizza delas i 6 likadana cirkelsektorer (pizzabitar). Varje bit har centrumvinkel 360\u00b0/6 = 60\u00b0. Vi s\u00f6ker pizzans omkrets, dvs cirkelns omkrets.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Omkretsformeln",
+        "text": "F\u00f6r en cirkel med radie r: omkrets = \ue0002\\pi r\ue001. Allt h\u00e4nger p\u00e5 r \u2014 om vi kan l\u00e5sa r entydigt \u00e4r omkretsen best\u00e4md.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Cirkelsektor-formler",
+        "text": "F\u00f6r en sektor med centrumvinkel \u03b8 (i grader): area = \ue000\\frac{\\theta}{360^\\circ} \\cdot \\pi r^2\ue001, b\u00e5gl\u00e4ngd = \ue000\\frac{\\theta}{360^\\circ} \\cdot 2\\pi r\ue001.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Till\u00e4mpa p\u00e5 60\u00b0-sektor",
+        "text": "Med \u03b8 = 60\u00b0: area per bit = \ue000\\frac{60}{360} \\pi r^2 = \\frac{\\pi r^2}{6}\ue001. B\u00e5gl\u00e4ngd per bit = \ue000\\frac{60}{360} \\cdot 2\\pi r = \\frac{2\\pi r}{6} = \\frac{\\pi r}{3}\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "\u00d6vers\u00e4tt (1)",
+        "text": "(1): area per bit = 96\u03c0 cm\u00b2. S\u00e4tt upp ekvationen: \ue000\\frac{\\pi r^2}{6} = 96\\pi\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "L\u00f6s f\u00f6r r fr\u00e5n (1)",
+        "text": "Dela b\u00e5da sidor med \u03c0: \ue000\\frac{r^2}{6} = 96\ue001, allts\u00e5 \ue000r^2 = 576\ue001, s\u00e5 r = 24 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "R\u00e4kna omkrets fr\u00e5n (1)",
+        "text": "Omkrets = 2\u03c0\u00b724 = 48\u03c0 cm. Entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (1) ensamt",
+        "text": "(1) ger r = 24 \u2192 omkrets = 48\u03c0 cm. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "\u00d6vers\u00e4tt (2)",
+        "text": "(2): b\u00e5gl\u00e4ngd per bit = 8\u03c0 cm. S\u00e4tt upp ekvationen: \ue000\\frac{2\\pi r}{6} = 8\\pi\ue001.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "L\u00f6s f\u00f6r r fr\u00e5n (2)",
+        "text": "F\u00f6renkla: \ue000\\frac{\\pi r}{3} = 8\\pi\ue001, dela b\u00e5da sidor med \u03c0: \ue000\\frac{r}{3} = 8\ue001, s\u00e5 r = 24 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "R\u00e4kna omkrets fr\u00e5n (2)",
+        "text": "Omkrets = 2\u03c0\u00b724 = 48\u03c0 cm. Samma som fr\u00e5n (1).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Testa (2) ensamt",
+        "text": "(2) ger r = 24 \u2192 omkrets = 48\u03c0 cm. R\u00e4cker.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Konsistenskontroll",
+        "text": "Om b\u00e5da \u00e4r sanna ger b\u00e5da r = 24. Multipla checks: area = \u03c0\u00b7576/6 = 96\u03c0 \u2713, b\u00e5gl\u00e4ngd = 2\u03c0\u00b724/6 = 8\u03c0 \u2713. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 14,
+        "title": "Slutsats",
+        "text": "Vardera p\u00e5st\u00e5ende ger r entydigt via cirkelsektor-formeln f\u00f6r 60\u00b0-bit. B\u00e5da r\u00e4cker ensamma. Svar: D. Insikten i en mening: cirkelegenskaper (area, omkrets, b\u00e5gl\u00e4ngd) \u00e4r alla funktioner av r \u2014 varje av dem r\u00e4cker som villkor n\u00e4r centrumvinkeln \u00e4r k\u00e4nd.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det \u00e4r l\u00e4tt att tro att areavillkoret \u00e4r 'mer specifikt' eftersom det involverar r\u00b2 och fixerar storleken direkt.",
+        "why_wrong": "Steg 9\u201310: b\u00e5gl\u00e4ngden 8\u03c0 ger ocks\u00e5 r = 24 entydigt via kortare r\u00e4kning. D \u00e4r skarpare \u00e4n A."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar \u00e4r ofta att b\u00e5gl\u00e4ngden r\u00e4cker eftersom den \u00e4r 'n\u00e4rmare omkretsen' geometriskt.",
+        "why_wrong": "Steg 5\u20136: arean 96\u03c0 ger ocks\u00e5 r = 24 entydigt via r\u00b2=576. D \u00e4r skarpare \u00e4n B."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "F\u00f6rsta instinkten \u00e4r att kombinera b\u00e5da f\u00f6r s\u00e4kerhet \u2014 fler tal k\u00e4nns alltid s\u00e4krare.",
+        "why_wrong": "Steg 8 och 12: vardera ger r = 24 ensam. Kombinationen \u00e4r redundant \u2014 b\u00e5da s\u00e4ger samma sak (r=24)."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det \u00e4r frestande att tro att utan diameter eller direkt omkrets-v\u00e4rde g\u00e5r det inte.",
+        "why_wrong": "Steg 6 och 10: area per sektor ELLER b\u00e5gl\u00e4ngd per sektor ger r entydigt n\u00e4r centrumvinkeln (60\u00b0) \u00e4r k\u00e4nd."
+      }
+    ],
+    "technique": "Cirkelegenskaper (area, omkrets, b\u00e5gl\u00e4ngd, sektorarea, sektor-b\u00e5gl\u00e4ngd) \u00e4r alla funktioner av r. Med en fix centrumvinkel r\u00e4cker N\u00c5GON av dem f\u00f6r att l\u00e5sa r \u2014 och d\u00e4rmed alla andra.",
+    "pitfall": "Det \u00e4r frestande att kombinera b\u00e5da 'f\u00f6r s\u00e4kerhet' utan att m\u00e4rka att de ger samma r. Botemedlet: r\u00e4kna explicit ut r fr\u00e5n vardera ensam \u2014 om v\u00e4rdena \u00e4r samma och unika \u00e4r svaret D.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Radiel\u00e5saren",
+      "move": "Vid cirkel-NOG: identifiera vilken egenskap (area, b\u00e5gl\u00e4ngd, sektorv\u00e4rde) varje p\u00e5st\u00e5ende ger \u2014 varje av dem l\u00e5ser r ensam n\u00e4r centrumvinkeln \u00e4r k\u00e4nd."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  }
+}

@@ -4962,31 +4962,104 @@
     }
   },
   "var-2019-kvant2-XYZ-008": {
-    "_meta": {
-      "generated_at": 1778416425462,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Förenkla högerledet — alla x^2-termer ska samlas. Då tar de ut varandra mot vänsterledets 3x^2, så ekvationen blir LINJÄR: 8x+7=6x+12, vilket ger x=2{,}5.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har ekvationen 3x^2+8x+7=3x^2+6x+12. Hitta värdet på x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder ekvation?",
+        "text": "En ekvation säger att VL = HL för det/de värden på x som löser den. Ditt jobb är att göra om båda leden tills du isolerar x.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera kvadrattermerna",
+        "text": "Båda leden innehåller en x^2-term: 3x^2 på vardera sidan. Det är ovanligt och ett tydligt tecken på att de kommer ta ut varandra.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Subtrahera 3x² från båda leden",
+        "text": "Regel: du får göra samma sak på båda sidor av en ekvation. Dra bort 3x^2 från VL och HL: 3x^2+8x+7-3x^2=3x^2+6x+12-3x^2, alltså 8x+7=6x+12.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Nu är ekvationen linjär",
+        "text": "Kvadrattermerna är borta — kvar är 8x+7=6x+12, en första-grads-ekvation. Linjära ekvationer löses genom att samla alla x på en sida och alla tal på den andra.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Samla x-termer",
+        "text": "Subtrahera 6x från båda sidor: 8x-6x+7=6x-6x+12, vilket ger 2x+7=12.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Samla konstanter",
+        "text": "Subtrahera 7 från båda sidor: 2x=12-7=5.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Dela med koefficienten",
+        "text": "Definition: om a\\cdot x=b så är x=\\tfrac{b}{a} (förutsatt a\\neq 0). Här: x=\\tfrac{5}{2}=2{,}5.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka tecknet",
+        "text": "Lösningen är ett positivt rationellt tal, vilket är förenligt med att VL och HL båda är ökande funktioner i x — ekvationen har exakt en lösning.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Sätt in x=2{,}5: VL = 3\\cdot 2{,}5^2+8\\cdot 2{,}5+7=18{,}75+20+7=45{,}75; HL = 3\\cdot 2{,}5^2+6\\cdot 2{,}5+12=18{,}75+15+12=45{,}75. VL = HL — stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C (2,5). Insikten i en mening: när samma kvadratterm finns på båda sidor av en ekvation, dra bort den först — ofta blir det som ser ut som en andragradare i själva verket linjärt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 1,5.",
-        "why_wrong": "2,5."
+        "why_tempting": "Det är lätt att räkna 2x = 3 → x = 1,5 om man flyttar fel konstanter över likhetstecknet.",
+        "why_wrong": "Steg 6–7 visar att 2x=5, inte 3. Kontrollera tecken vid flytt över =."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 2.",
-        "why_wrong": "2,5."
+        "why_tempting": "Snabbsvar är ofta 2 om man avrundar 2,5 nedåt eller räknar 8x = 6x + 4.",
+        "why_wrong": "Steg 8 ger exakt x=\\tfrac{5}{2}, inte 2. Här finns inget skäl att avrunda."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 3.",
-        "why_wrong": "2,5."
+        "why_tempting": "Många stannar vid x = 3 om de råkar dividera 5 med fel koefficient (t.ex. 5/1+\\ldots).",
+        "why_wrong": "Steg 8 säger x=\\tfrac{5}{2}=2{,}5, inte 3 — koefficienten framför x är 2."
       }
     ],
-    "pitfall": null,
-    "solution_path": "3x^{2}+8x+7=3x^{2}+6x+12 → 2x = 5 → x = 2,5.",
-    "technique": "Polynomekvation där x²-termerna tar ut varandra: lös det linjära som återstår.",
-    "framework_id": "XYZ-TRAP-024"
+    "technique": "Pseudoandragradare: när VL och HL har identisk kvadratterm, subtrahera bort den först. Det reducerar ekvationen till linjär form och löses sedan med standardstegen samla-x / samla-tal / dela.",
+    "pitfall": "Botemedlet: börja ALDRIG med pq-formeln när du ser x² i en ekvation — kolla först om x²-termerna på de två sidorna är identiska. I så fall försvinner de.",
+    "framework_id": "XYZ-TRAP-024",
+    "pregrade_tactic": {
+      "handle": "Kvadratuttömningen",
+      "move": "När båda leden har samma x²-term: dra bort den från båda sidor först, lös linjärt det som blir kvar."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2019-kvant2-XYZ-009": {
     "_meta": {
@@ -5183,31 +5256,104 @@
     }
   },
   "var-2019-kvant2-XYZ-011": {
-    "_meta": {
-      "generated_at": 1778416425462,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Faktorisera vänsterledet: x^3+x^2-2x=x(x^2+x-2)=x(x+2)(x-1). Nollställena är x=0, x=-2 och x=1. Värdet x=-1 är INTE en lösning — alternativ C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har tredjegradsekvationen x^3+x^2-2x=0 och fyra alternativ. Frågan: vilket alternativ är INTE en lösning? (Ovanligt — leta efter felaktigt värde.)",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder lösning?",
+        "text": "Definition: ett tal är lösning till en ekvation om det gör VL = HL. Här är HL = 0, så ett x-värde är lösning omm uttrycket VL blir noll när vi sätter in det.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Bryt ut gemensam faktor",
+        "text": "Alla tre termer (x^3, x^2, -2x) innehåller faktorn x. Bryt ut den: x^3+x^2-2x=x(x^2+x-2). Det är distributiva lagen baklänges.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Nollproduktregeln",
+        "text": "Regel: om en produkt är 0 måste minst en faktor vara 0. Så x(x^2+x-2)=0 betyder antingen x=0 ELLER x^2+x-2=0.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Första lösning klar",
+        "text": "Direkt från faktorn x: en lösning är x=0. Det matchar alternativ A — A är alltså en lösning.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Faktorisera kvadrattermen",
+        "text": "För x^2+x-2 sök två tal vars produkt är -2 och summa är +1. Talen +2 och -1 fungerar: +2\\cdot(-1)=-2 och +2+(-1)=+1. Alltså x^2+x-2=(x+2)(x-1).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tre lösningar totalt",
+        "text": "Hela faktoriseringen: x(x+2)(x-1)=0. Nollproduktregeln ger lösningarna x=0, x+2=0\\Rightarrow x=-2, och x-1=0\\Rightarrow x=1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför med alternativen",
+        "text": "Alternativen är A: 0, B: 1, C: −1, D: −2. Lösningarna är {0, 1, −2}. Värdet -1 finns INTE i lösningsmängden.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kontrollräkning för C",
+        "text": "Pröva x=-1: (-1)^3+(-1)^2-2(-1)=-1+1+2=2\\neq 0. Insättningen ger 2, inte 0, så x = −1 är inte lösning. Bekräftar steg 8.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera de övriga",
+        "text": "x=1: 1+1-2=0 ✓, x=-2: -8+4+4=0 ✓, x=0: 0+0-0=0 ✓. Alla tre är lösningar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: faktorisera först — då syns alla lösningar direkt, och du slipper testa varje alternativ blint.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att 0 inte är en lösning.",
-        "why_wrong": "x = 0 är lösning (faktorn x = 0)."
+        "why_tempting": "Det är lätt att tro att 0 inte 'får' vara lösning eftersom den känns trivial.",
+        "why_wrong": "Steg 5 visar att x = 0 är en av tre lösningar — faktorn x ger den direkt."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 1 är inte lösning.",
-        "why_wrong": "x = 1 är lösning ((x-1) = 0)."
+        "why_tempting": "Om du minns regeln som 'koefficient + konstant' kan du tro att 1 inte fungerar.",
+        "why_wrong": "Steg 7 och 10 visar att x = 1 sätter den andra faktorn (x-1) till 0 — alltså är 1 lösning."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid −2.",
-        "why_wrong": "x = −2 är lösning ((x+2) = 0)."
+        "why_tempting": "Många stannar vid −2 och tror att det negativa värdet är 'fel-svaret'.",
+        "why_wrong": "Steg 7 visar att x = −2 nollställer faktorn (x+2) — alltså är −2 också lösning."
       }
     ],
-    "pitfall": null,
-    "solution_path": "x(x^{2}+x-2)=x(x+2)(x-1)=0. Lösningar: 0, −2, 1. Inte −1.",
-    "technique": "Faktorisera och lös: x(x+a)(x-b) = 0 ger lösningar x = 0, -a, b.",
-    "framework_id": "XYZ-TRAP-008"
+    "technique": "Faktorisera-för-att-finna-alla-rötter: bryt ut gemensam faktor först, faktorisera resten, läs av nollställena. Trigger: tredjegradsekvation utan konstantterm — du vet att en faktor är x.",
+    "pitfall": "Botemedlet: när frågan är 'vilket är INTE lösning?' — räkna ut hela lösningsmängden först, och jämför sedan. Annars är det lätt att råka stryka en korrekt lösning som 'fel'.",
+    "framework_id": "XYZ-TRAP-008",
+    "pregrade_tactic": {
+      "handle": "Faktor-jakten",
+      "move": "Om polynomet saknar konstantterm: bryt ut x. Faktorisera resten med produkt/summa-tricket. Läs av alla rötter ur faktorerna."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2019-verb1-ELF-031": {
     "_meta": {
@@ -8895,133 +9041,353 @@
   },
   "var-2019-verb2-LÄS-016": {
     "_meta": {
-      "generated_at": 1778437441047,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Avverkningsregeln",
+      "move": "När en text om en växtsjukdom säger ”avverkas så fort som möjligt”, signalerar det att enskilda sjuka exemplar inte kan räddas — bara beståndet kan skyddas."
+    },
+    "solution_path": "Texten anvisar att ”träd med symptom bör avverkas så fort som möjligt” och beskriver Dutch Trig som FÖRBYGGANDE skydd för friska almar. Ingenstans nämns räddning av redan sjukt träd. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill veta om en alm som REDAN drabbats av almsjuka kan överleva enligt texten — och i så fall hur. Vi söker en eventuell metod för individuell räddning, inte för beståndsskydd.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta åtgärdsstycket",
+        "text": "Texten säger: ”Träd med symptom bör avverkas så fort som möjligt. Almar som är boträd för almsplintborrar men som ännu inte visar symptom bör också avverkas. … En effektiv saneringsavverkning kan kraftigt begränsa den årliga förlusten av almar till bara några procent.” Sjuka träd ska bort, inte räddas.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är Dutch Trig?",
+        "text": "Texten beskriver Dutch Trig: ”behandlas enstaka särskilt värdefulla almar med preparatet Dutch Trig … Behandling leder till inducerad resistens, som varar i ett år. Metoden kan vara lämplig om vissa träd behöver skydd en kortare tid.” Det är profylax — friska träd får tillfällig immunitet, sjuka träd behandlas inte med det.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad gör rotbeskärningen?",
+        "text": "Texten säger: ”det är lämpligt att skära av rötter som kan förmodas ha rotkontakt med närstående alm”. Rotkontakter är en SPRIDNINGSVÄG — beskärningen skyddar grannträd från att smittas via det redan sjuka trädets rötter. Det räddar inte det sjuka trädet.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”genom att kapa de längsta rötterna” — rotbeskärning skyddar GRANNTRÄD, inte det sjuka. B ”speciella bekämpningsmedel” — Dutch Trig är profylax för friska träd, inte botemedel. C ”åtgärder tidigt på våren” — tidsfristen 1 april gäller för att hindra spridning genom skalbaggar; det skyddar BESTÅNDET, inte det sjuka individet. D ”ett sådant träd tycks inte kunna räddas” — matchar textens fullständiga avsaknad av räddningsmetoder för sjuka almar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är D. Texten beskriver bara skydd för friska bestånd; sjuka almar avverkas. Insikten i en mening: när enda receptet för symptombärande exemplar är avverkning, kan individen inte räddas — bara grannarna.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa rotbeskärning som räddning av sjukt träd.",
-        "why_wrong": "Rotbeskärning skyddar GRANNTRÄD från smitta, inte det sjuka — alternativet inverterar."
+        "why_tempting": "Det är lätt att läsa rekommendationen om rotbeskärning som en räddningsåtgärd för det sjuka trädet.",
+        "why_wrong": "Rotbeskärning skyddar GRANNTRÄD från smitta — det sjuka trädet ska redan avverkas. Som steg 4 visar är åtgärden riktad mot grannarna, inte mot patienten."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid biologiska medel.",
-        "why_wrong": "Dutch Trig är profylax för friska träd, inte botemedel för sjuka — alternativet flyttar tillämpning."
+        "why_tempting": "Många stannar vid Dutch Trig-stycket och tror att det biologiska medlet kan bota sjuka träd.",
+        "why_wrong": "Dutch Trig ger ”inducerad resistens” — det är profylax för FRISKA värdefulla almar. Steg 3 visar att texten aldrig kallar det botemedel; tillämpningen är förebyggande, inte botande."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att tidiga åtgärder räddar.",
-        "why_wrong": "Tidiga åtgärder skyddar BESTÅNDET, inte det sjuka individet — alternativet flyttar effekten."
+        "why_tempting": "Snabbsvar är ofta att tidiga åtgärder räddar — vilket gäller för många sjukdomar.",
+        "why_wrong": "Tidsfristen 1 april handlar om att HINNA före skalbaggarnas flygsäsong och därmed skydda BESTÅNDET. Som steg 5 visar flyttar alternativet effekten från beståndet till det enskilda sjuka trädet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger att 'träd med symptom bör avverkas så fort som möjligt' och beskriver Dutch Trig som FÖRBYGGANDE för friska almar. Inget i texten beskriver räddning av redan sjukt träd.",
-    "technique": "Vid 'kan X räddas'-frågor: skilj på kollektiv prevention och individuell behandling — texten talar om det första."
+    "technique": "Vid ”kan X räddas”-frågor om växt- eller djursjukdom: skilj på kollektiv prevention (saneringsavverkning, profylaktisk behandling av friska individer) och individuell behandling. Om texten bara talar om det första är svaret att individen inte kan räddas.",
+    "pitfall": "Risken är att man tolkar varje skyddsåtgärd som potentiellt botande. Botemedlet: fråga ”vem skyddar denna åtgärd — det sjuka exemplaret eller grannarna?” — texten är konsekvent med att alla åtgärder här gäller grannarna."
   },
   "var-2019-verb2-LÄS-017": {
     "_meta": {
-      "generated_at": 1778437441047,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Gemensamma saken",
+      "move": "När recensenten skriver att skribenterna ”gör gemensam sak i att”, är just den meningen sammanbindande temat — citera och matcha."
+    },
+    "solution_path": "Recensenten skriver att antologideltagarna ”gör gemensam sak i att synliggöra de aspekter av äktenskapet som får det att handla om något mer än personliga relationer: en fråga om politik och makt”. Bidragen förenas av att de behandlar äktenskapet i relation till politik och maktförhållanden. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha den GEMENSAMMA nämnaren för alla bidrag i antologin — alltså vad alla skribenter gör tillsammans, inte vad en enskild författare gör.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta sammanbindande meningen",
+        "text": "Recensenten skriver: ”I tecknandet av de långa linjerna i äktenskapets historia gör antologideltagarna i Det politiska äktenskapet nämligen gemensam sak i att synliggöra de aspekter av äktenskapet som får det att handla om något mer än personliga relationer: en fråga om politik och makt.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera ”politik och makt”",
+        "text": "Bidragen behandlar inte äktenskapet som en privatsak utan som ett offentligt fenomen där stat, kyrka, klass, kön, kolonialmakt och religion möts. Det är POLITIK i bred mening — kollektiva maktförhållanden — som förenar perspektiven. Antologins titel ”Det politiska äktenskapet” fångar exakt detta.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av med exempelbidragen",
+        "text": "Larsen analyserar äktenskapsreformer som maktinstrument för jämställdhet, Bersbo skriver om kvinnans ekonomiska medborgarskap, Rydström om samkönade par och statlig reglering, Fur om kolonial makt, Roald om muslimska skilsmässor och statlig lagstiftning. Alla rör sig om maktrelationer kring äktenskapet — inte om personliga eller religiösa enskildheter.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”behandlar äktenskapet i relation till politik och andra maktförhållanden” — matchar exakt ”en fråga om politik och makt”. B ”tar ställning mot äktenskapet” — texten säger inte att bidragen är emot, bara att de analyserar; importerar normativ position. C ”behandlar äktenskapet som religiös angelägenhet” — religion är ETT bidrag (Sanders), inte gemensam nämnare. D ”tar ställning mot statlig makt” — texten talar om makt brett, inte specifikt mot stat.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är A. Skribenterna förenas av att de analyserar äktenskapet som en fråga om politik och maktförhållanden. Insikten i en mening: när recensenten skriver ”gemensam sak i att”, är just den frasen den gemensamma nämnaren — alternativen ska matcha den, inte annan tematik.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att antologin är emot äktenskapet.",
-        "why_wrong": "Texten säger inte att bidragen tar ställning MOT äktenskapet — bara att de analyserar dess politik; alternativet importerar normativ position."
+        "why_tempting": "Det är lätt att läsa en politisk-kritisk antologi som anti-äktenskaplig — kritik = motstånd.",
+        "why_wrong": "Texten säger inte att bidragen tar ställning MOT äktenskapet — bara att de analyserar dess politiska karaktär. Som steg 5 visar importerar alternativet en normativ position som inte finns i recensionen."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid Sanders religiösa perspektiv.",
-        "why_wrong": "Det är ETT bidrag, inte vad som förenar; alternativet stannar vid en del."
+        "why_tempting": "Många stannar vid Sanders kapitel om kyrkans och människornas gemensamma syn på äktenskapet som ”samhällsinstitution grundad i Gud”.",
+        "why_wrong": "Det är ETT bidrag av många — inte vad som förenar antologin. Steg 4 visar att övriga bidrag rör klass, kolonialmakt, jämställdhet och statlig reglering. Alternativet stannar vid en del."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta att kritisk forskning = anti-statlig.",
-        "why_wrong": "Texten talar om makt brett, inte specifikt mot stat; alternativet snävar in fel."
+        "why_wrong": "Texten talar om makt brett: kyrkan, klassen, könet, kolonialmakten, staten — inte specifikt om statlig makt. Som steg 3 visar är ”politik och makt” paraplybegreppet, inte specifikt statskritik."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten beskriver att skribenterna 'gör gemensam sak i att synliggöra de aspekter som får äktenskapet att handla om något mer än personliga relationer: en fråga om politik och makt'. Det är politisk-maktanalys som förenar.",
-    "technique": "Vid 'vad förenar bidrag'-frågor: hitta meta-meningen ('gör gemensam sak i...') i recensionens beskrivning av antologin."
+    "technique": "Vid ”vad förenar bidragen”-frågor: hitta den meta-mening där recensenten karakteriserar HELHETEN (”gör gemensam sak i”, ”genomsyrar antologin”, ”det gemensamma greppet”). Den är alltid en sammanfattningsformel.",
+    "pitfall": "Risken är att man väljer alternativ baserat på en stark enskild författares bidrag (Sanders religion, Furs kolonialism). Botemedlet: alternativet måste passa på ALLA bidrag — testa det mot recensentens uppräkning av kapitel."
   },
   "var-2019-verb2-LÄS-018": {
     "_meta": {
-      "generated_at": 1778437441047,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Helt-annan-betoning",
+      "move": "När recensenten skriver ”samtidigt finns … en helt annan betoning”, är just den punkten där bidrag motsäger varandra — leta efter ämnet i den meningen."
+    },
+    "solution_path": "Recensenten kontrasterar Koefoeds analys av kvinnans ”ofrihet vid ingående av äktenskap” mot Sanders analys av ”kvinnors möjligheter att framföra sin önskan” inför Lunds domkapitel. De motstridiga synsätten rör kvinnans handlingsutrymme i äktenskapsfrågor under 1700-talet. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha den FRÅGA där antologins bidrag innehåller motstridiga synsätt — alltså den punkt där två kapitel kommer till olika slutsatser. Vi letar efter en uttalad konflikt i recensionen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta konfliktstället",
+        "text": "Recensenten skriver: ”Nina Koefoed betonar i sin analys av aktivitet/passivitet i konstruktioner av ogifta mäns och kvinnors sexualitet under 1700-talet kvinnans ofrihet vid ingående av äktenskap. Samtidigt finns i Hanne Sanders analys, som rör ungefär samma period, en helt annan betoning av kvinnors möjligheter att framföra sin önskan angående ett framtida äktenskap eller en skilsmässa.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera spänningen",
+        "text": "Två analyser av samma period (1700-talet) ger olika bilder: (a) Koefoed → kvinnan var ofri vid äktenskap, (b) Sanders → kvinnan kunde framföra sin önskan om äktenskap eller skilsmässa, åtminstone inför domkapitlet. Det är alltså kvinnans HANDLINGSUTRYMME i äktenskapsfrågor som skribenterna landar olika på.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av med recensentens önskan",
+        "text": "Recensenten önskar att antologin haft ”en dialog mellan dessa resultat … för att tydliggöra vilka skillnader i material, teori eller analys som givit så pass skilda slutsatser angående kvinnans position i äktenskapsförhandlingar”. Kvinnans position = handlingsutrymme. Det är just där bidragen motsäger varandra.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”mäns klasstillhörighet och val av maka” — klassperspektivet ”kunde gärna lyfts fram mer”, det är en saknad, inte en konflikt. B ”hur stort handlingsutrymme kvinnor hade under 1700-talet” — matchar exakt ”kvinnans position i äktenskapsförhandlingar under denna period”. C ”samhälleligt tryck att ingå äktenskap” — texten talar inte om trycket att gifta sig som kontroversiell punkt. D ”religionens påverkan före sekulariseringen” — Sanders religiösa perspektiv lyfts som pedagogisk poäng, inte som tvist.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är B. Antologin innehåller motstridiga synsätt på kvinnans handlingsutrymme i äktenskapsfrågor under 1700-talet. Insikten i en mening: när recensenten markerar ”samtidigt finns … en helt annan betoning”, är just det ämnet där bidragen tvistar — inte ett tema som recensenten saknar eller berömmer.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att importera klassperspektivet.",
-        "why_wrong": "Klassperspektivet 'kunde gärna lyfts fram mer' — det är inte en spänningspunkt utan en saknad; alternativet flyttar typ av oenighet."
+        "why_tempting": "Det är lätt att importera klassperspektivet eftersom recensenten markerar att hushållsposition och stånd var avgörande.",
+        "why_wrong": "Klassperspektivet ”kunde gärna lyfts fram mer” — det är en SAKNAD, inte en spänning mellan bidrag. Som steg 5 visar flyttar alternativet typen av invändning från konflikt till uteblivet tema."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'samhällsinstitution grundad i Gud'.",
-        "why_wrong": "Det är Sanders egen poäng, ostridigt — alternativet importerar konsensus som strid."
+        "why_tempting": "Många stannar vid Sanders ”samhällsinstitution grundad i Gud” och tror att äktenskapstrycket är temat.",
+        "why_wrong": "Det är Sanders egen poäng, framförd som konsensus mellan kyrka och människor — inte som tvist mellan bidrag. Steg 4 visar att recensentens önskan om dialog handlar om kvinnans position, inte om trycket att gifta sig."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta religionens roll i förmodern tid.",
-        "why_wrong": "Recensenten säger snarare att Sanders bidrag är 'pedagogiskt' om religion — det är konsensus, inte tvist; alternativet flyttar tema."
+        "why_tempting": "Snabbsvar är ofta att religionens roll i förmodern tid är akademisk stridspunkt.",
+        "why_wrong": "Recensenten beskriver Sanders bidrag som ”pedagogiskt” om religion — det är ett bidrag som lyfts fram, inte en konfliktpunkt. Som steg 3 visar är konflikten kvinnans handlingsutrymme, inte religionens påverkan."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten kontrasterar Koefoeds analys av kvinnans 'ofrihet vid ingående av äktenskap' mot Sanders analys av 'kvinnors möjligheter att framföra sin önskan' inför Lunds domkapitel — alltså olika syn på kvinnans handlingsutrymme på 1700-talet.",
-    "technique": "Vid 'motstridiga synsätt om X'-frågor: leta efter recensentens 'samtidigt finns... helt annan betoning' — det signalerar konflikten."
+    "technique": "Vid ”motstridiga synsätt om X”-frågor: leta efter signalfrasen ”samtidigt finns … helt annan betoning” eller ”i kontrast till” — direkt därefter står ämnet där bidragen tvistar.",
+    "pitfall": "Risken är att man blandar ihop spänning mellan bidrag (Koefoed vs. Sanders) med teman som saknas (klassperspektivet) eller med pedagogiska poänger (religionens betydelse). Botemedlet: konflikten kräver två konkreta författare med olika slutsatser i samma fråga."
   },
   "var-2019-verb2-LÄS-019": {
     "_meta": {
-      "generated_at": 1778437441047,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Slutpunktsanalysen",
+      "move": "När en forskare presenterar äktenskapsreformer som ”slutpunkt för en lång reformprocess”, är resultatet att lagstiftningen drivit fram jämställdhet."
+    },
+    "solution_path": "Larsens kapitel använder ”danska äktenskapsreformerna i början av 1920-talet som slutpunkten för en lång reformprocess mot ett gradvist avskaffande av könsdiskriminering som samhällsprincip”. Äktenskapslagstiftningen har alltså spelat en avgörande roll för jämställdheten. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha ETT av forskningsresultaten som recensenten lyfter fram från antologins ANDRA del. Vi behöver lokalisera den delen och plocka ut ett konkret resultat som matchar ett alternativ.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta andra delen",
+        "text": "Texten markerar: ”Den andra delen handlar om gränser för och utvidgningar av jämställdhet när det gäller äktenskap, medborgarskap och önskan om att bilda familj. Jytte Larsen använder i sitt kapitel äktenskapet, eller snarare civilstånd, som en språngbräda för att problematisera att rösträtten gärna ses som det främsta måttet på ökad jämställdhet. Här lyfter Larsen istället fram de danska äktenskapsreformerna i början av 1920-talet som slutpunkten för en lång reformprocess mot ett gradvist avskaffande av könsdiskriminering som samhällsprincip.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera Larsens tes",
+        "text": "Larsen säger att rösträtten inte ska ses som det främsta jämställdhetsmåttet. Istället var ÄKTENSKAPSREFORMERNA 1920 slutpunkten för en lång process där könsdiskrimineringen gradvist avskaffades. Reformer av äktenskapslagen drev alltså jämställdheten framåt — det är resultatet att äktenskapslagstiftning är ett avgörande jämställdhetsmått.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av med Bersbos bidrag",
+        "text": "Recensenten lyfter också Bersbos resultat: ”reglerna för kvinnans ekonomiska myndighet så sent som 1950 var fulla av undantag och övergångsregler”. Det förstärker samma poäng — det är genom långsiktig lagstiftning som jämställdhet vinns, inte enbart via rösträtten.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”utvecklingen mot jämställdhet har tagit avgörande steg framåt också genom ändringar i äktenskapslagstiftningen” — matchar exakt Larsens tes. B ”rösträtten påverkade lagstiftningen kring äktenskap” — inverterar riktningen; Larsens poäng är tvärtom att äktenskapsreformer var slutpunkten. C ”jämställdheten började i äktenskapet och spred sig” — texten säger inte att den BÖRJADE där; bara att den var en avgörande del. D ”rösträtten kom tack vare äktenskapsreformer” — texten talar inte om rösträttens orsak utan om dess SYMBOLVÄRDE.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är A. Larsens forskningsresultat är att äktenskapslagstiftningen drivit jämställdheten framåt — den är inte underordnad rösträtten. Insikten i en mening: när en forskare lyfter fram en lagreform som ”slutpunkt för en lång reformprocess”, är resultatet att den lagen varit en avgörande motor.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att rösträtten leder till äktenskapsreformer.",
-        "why_wrong": "Larsens poäng är TVÄRTOM — äktenskapsreformerna är slutpunkten; alternativet inverterar riktningen."
+        "why_tempting": "Det är lätt att tro att kvinnlig rösträtt logiskt borde ha lett till mer jämställda äktenskapslagar.",
+        "why_wrong": "Larsens poäng är TVÄRTOM — äktenskapsreformerna är slutpunkten för reformprocessen, inte en effekt av rösträtten. Som steg 5 visar inverterar alternativet riktningen för kausaliteten."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att äktenskapet är centralt.",
-        "why_wrong": "Texten säger inte att jämställdheten började i äktenskapet och spreds — bara att äktenskapsreformerna var en avgörande slutpunkt; alternativet importerar fel kausalitet."
+        "why_tempting": "Många stannar vid att äktenskapet ses som centralt i Larsens analys och drar slutsatsen att jämställdheten började där.",
+        "why_wrong": "Texten säger inte att jämställdheten började i äktenskapet och SPREDS därifrån — bara att äktenskapsreformerna var en avgörande slutpunkt. Steg 3 visar att alternativet importerar en spridningsmekanism som inte finns."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att rösträtten kom efter äktenskap.",
-        "why_wrong": "Texten talar inte om rösträttens orsak utan om dess SYMBOLVÄRDE; alternativet importerar fel kausalitet."
+        "why_tempting": "Snabbsvar är ofta att tidiga lagreformer banar väg för senare rättigheter.",
+        "why_wrong": "Texten talar inte om rösträttens orsak utan om dess SYMBOLVÄRDE som främsta jämställdhetsmått. Som steg 2 visar problematiserar Larsen rösträttens primat, inte dess uppkomst."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Larsens kapitel använder 'danska äktenskapsreformerna i början av 1920-talet som slutpunkten för en lång reformprocess mot ett gradvist avskaffande av könsdiskriminering'. Äktenskapslagstiftningen drev jämställdhet — inte rösträtten.",
-    "technique": "Vid 'forskningsresultat i del X'-frågor: hitta forskarens specifika analys (Larsen) och parafrasera dess slutsats."
+    "technique": "Vid ”forskningsresultat i del X”-frågor: lokalisera delen, hitta den specifika forskaren (Larsen, Bersbo, Rydström) och parafrasera dennes slutsats — alternativet ska matcha den parafrasen direkt.",
+    "pitfall": "Risken är att man tar Larsens kontrast mot rösträtten och vänder den till en kausalitet i fel riktning. Botemedlet: håll dig till verbet ”slutpunkt för en lång reformprocess” — slutpunkten kommer efter reformerna, inte före."
   },
   "var-2019-verb2-LÄS-020": {
     "_meta": {
-      "generated_at": 1778437441047,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Geografiska vidgningen",
+      "move": "När recensenten skriver att en del ”relateras till fler geografiska kontexter än”, är det just geografin som skiljer den från övriga."
+    },
+    "solution_path": "Texten säger: ”I den tredje delen av antologin, som tar upp mångfaldsaspekter, relateras till fler geografiska kontexter än den nordiska.” Tredje delen vidgar perspektivet bortom Norden — Carlbäcks sovjetkapitel, Roalds muslimska skilsmässor, Furs koloniala perspektiv. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill veta vad som SKILJER tredje delen från första och andra delen — alltså den specifika kontrasten, inte vad tredje delen handlar om generellt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta skillnadsmeningen",
+        "text": "Recensenten skriver: ”I den tredje delen av antologin, som tar upp mångfaldsaspekter, relateras till fler geografiska kontexter än den nordiska.” Direkt efter följer en diskussion om att antologin saknar geografisk inringning men att de flesta bidrag är nordiska — utom Carlbäcks sovjetkapitel och de andra mångfaldsbidragen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera vidgningen",
+        "text": "Tredje delen sträcker sig bortom Norden: Furs koloniala ambitioner, Roalds muslimska skilsmässoregler, Carlbäcks sovjetiska familjelagar. Det är PERSPEKTIVET som vidgas geografiskt — från nordiska kontexter till andra länder och kulturer. Tidsperspektivet är fortfarande nutid eller nästan, så det är inte tidsskillnaden.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av med kapitelexemplen",
+        "text": "Recensenten räknar upp Fur (kolonialism), Roald (muslimska skilsmässoregler vs. svensk lag), och tidigare Carlbäck (sovjetiska familjelagar). Alla dessa går utanför Norden geografiskt. Däremot har första delen 1600-talets Jämtland och andra delen danska/svenska reformer — alla nordiska.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”saknar samlande teoretiskt tema” — tredje delen har sitt mångfaldstema. B ”jämförelser sker över tid, inte geografiskt” — inverterar; det är just det geografiska som vidgas. C ”innehållet avser inte någon särskild period” — den har period (samtid), bara mer geografisk variation. D ”perspektivet vidgas till att inte enbart omfatta Norden” — matchar exakt ”relateras till fler geografiska kontexter än den nordiska”.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är D. Tredje delen skiljer sig från första och andra genom att vidga perspektivet bortom Norden. Insikten i en mening: när en text uttryckligen säger ”relateras till fler kontexter än X”, är skillnaden alltid att del Y överskrider X — leta inte efter andra dimensioner.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tolka 'mångfald' som temalöst.",
-        "why_wrong": "Tredje delen har sitt mångfaldstema; alternativet förkastar struktur som finns."
+        "why_tempting": "Det är lätt att tolka ordet ”mångfald” som mångtema, och tro att tredje delen är temalös eller spretig.",
+        "why_wrong": "Tredje delen har sitt eget tema (mångfald) — det är inte en avsaknad av tema, det ÄR temat. Som steg 5 visar förkastar alternativet en struktur som faktiskt finns."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att antologin följer kronologi.",
-        "why_wrong": "Tredje delen rör samtid — men det som är NYTT är geografin, inte tidsperspektivet; alternativet flyttar skiljelinje."
+        "why_tempting": "Många stannar vid att antologin följer kronologi och tror att jämförelsedimensionen är tiden.",
+        "why_wrong": "Texten säger uttryckligen att det geografiska vidgas — inte tiden. Steg 3 visar att tredje delen rör samtid eller nästan-samtid, så tidsperspektivet är inte det som är nytt."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att tredje delen är samtida.",
-        "why_wrong": "Den HAR period (samtid), bara mer geografisk variation; alternativet inverterar vad som saknas."
+        "why_tempting": "Snabbsvar är ofta att tredje delen är ”samtida” och därför saknar tydlig period.",
+        "why_wrong": "Tredje delen HAR period (samtiden), bara med mer geografisk spridning. Som steg 4 visar är det Roalds muslimska skilsmässor, Furs koloniala kapitel etc. — alla med tidsmarkering, men över flera regioner."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger 'i den tredje delen relateras till fler geografiska kontexter än den nordiska' och nämner Carlbäcks sovjetkapitel, Roalds muslimska skilsmässor, Furs koloniala perspektiv. Tredje delen vidgar geografiskt.",
-    "technique": "Vid 'vad skiljer del X från andra delar'-frågor: hitta texten själv ('relateras till fler kontexter än...')."
+    "technique": "Vid ”vad skiljer del X från andra delar”-frågor: hitta textens egen skillnadsmening (”relateras till fler …”, ”till skillnad från de andra delarna”) och parafrasera den direkt — det är där distinktionen är.",
+    "pitfall": "Risken är att man tolkar ordet ”mångfald” som temalöshet eller övergeneraliserar till andra dimensioner. Botemedlet: läs den specifika kontrastmeningen — den anger alltid vilken dimension som varierar."
   },
   "var-2019-verb2-MEK-021": {
     "_meta": {

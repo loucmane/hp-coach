@@ -2938,31 +2938,110 @@
     "technique": "Förenkla-före-distribuera-strategin: om en parentes innehåller liknande termer som kan slås ihop, gör det FÖRST — sedan distribuera. Triggern: '(termer som kan slås ihop)(annat uttryck)'."
   },
   "var-2023-kvant1-XYZ-002": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Identifiera den triangel där v är inre vinkel och två andra vinklar är avläsbara. Använd vinkelsumman: v=180^\\circ-(a+b), alternativt yttervinkelregeln om en av vinklarna ligger utanför. Resultat: v=49^\\circ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Figuren visar en sammansatt geometri med flera vinklar markerade. Hitta vinkeln v.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta triangeln som innehåller v",
+        "text": "Spåra figurens linjer och identifiera den triangel där v sitter som en inre vinkel — eller den triangel där v är yttervinkel.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vinkelsumman i triangel",
+        "text": "Regel: de tre inre vinklarna i en triangel summerar alltid till 180°: a+b+c=180^\\circ.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Yttervinkelregeln",
+        "text": "Regel: yttervinkeln vid ett triangelhörn = summan av de två icke-angränsande inre vinklarna. Användbar när v ligger 'utanför' triangeln men intill ett hörn.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs två kända vinklar",
+        "text": "Figuren ger två av triangelns vinklar (eller två vinklar i en kedja som leder till v). Skriv ner deras värden.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera supplementer",
+        "text": "Om en sida förlängs (rak linje), så har den vinkeln en supplementvinkel: 180^\\circ-c. Det är ofta nödvändigt för att översätta figurens markerade vinkel till en INRE vinkel.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut den tredje inre vinkeln",
+        "text": "Om triangelns två kända inre vinklar är a och b, så är c=180^\\circ-(a+b). Med figurens värden blir c = 49°.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Är v = c eller en supplement till c?",
+        "text": "Av figuren framgår om v är just denna c, eller om v är en supplement-/topp-/alternat-vinkel till c. Här är v = c = 49°.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Avfärda 39°",
+        "text": "39° = 49° − 10°. Det är ett tecken på 10°-felavläsning eller att en vinkel räknats fel i kedjan av 180°-summeringar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Avfärda 51° och 61°",
+        "text": "51° är 90° − 39° (komplementvinkel-fälla). 61° kommer av att räkna i fel triangel. Båda är 'närliggande' fel som syns när man kontrollerar mot 180°-summan.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Kontrollera att alla tre vinklar i den valda triangeln summerar till 180°: a+b+49^\\circ=180^\\circ → a+b=131^\\circ. Stämmer figurens andra två vinklar?",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B (49°). Insikten i en mening: identifiera rätt triangel först, hitta alla tre dess vinklar via 180°-summa, läs sedan av v från rätt position (inre, yttervinkel eller supplement).",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna med en 10°-felavläsning och få 39°.",
-        "why_wrong": "39° vs 49° är 10° fel — kontrollera vinkelsumman 180° innan du svarar; rätt värde är 49^\\circ."
+        "why_tempting": "Det är lätt att avläsa en 10°-felavläsning och få 39°.",
+        "why_wrong": "Steg 9 visar att 39° = 49° − 10° — en tioteleffel; kontrollera figurens markerade vinklar mot 180°-summan."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 51° om man tar komplementvinkeln till 39° istället.",
-        "why_wrong": "51° är 90°-39°, alltså ett komplement; v ligger i triangelns vinkelsumma och blir 49^\\circ."
+        "why_tempting": "Snabbsvar är ofta 51° om man tar komplementvinkeln (90° − 39°) istället för supplement.",
+        "why_wrong": "Steg 10 visar att komplement (90°) inte är rätt regel här — det är 180°-summan i triangeln som styr, inte rät vinkel."
       },
       {
         "letter": "D",
         "why_tempting": "Många stannar vid 61° om de tar fel triangel i den sammansatta figuren.",
-        "why_wrong": "61° kommer av att man räknar i fel deltriangel; rätt triangel ger v=49^\\circ."
+        "why_wrong": "Steg 2 betonar att DEN RÄTTA triangeln innehåller v som inre eller yttre vinkel; 61° är resultatet av att räkna i en annan deltriangel."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Identifiera den triangel där v är en inre vinkel och två andra vinklar är markerade. Vinkelsumman ger v=180^\\circ-(a+b), alternativt yttervinkelregeln om en av vinklarna ligger utanför triangeln. Kedjan från figurens vinklar slutar på v=49^\\circ.",
-    "technique": "Trianglar i sammansatt figur: använd vinkelsumma 180° plus yttervinkelregeln för att gå från kända vinklar till en innesluten okänd.",
-    "framework_id": "XYZ-TRAP-038"
+    "technique": "Triangel-vinkelkedja: identifiera triangeln som innehåller v, använd 180°-summan plus eventuella supplement- och yttervinkelregler för att leda kedjan från kända vinklar till v.",
+    "pitfall": "Botemedlet: rita pilar i figuren för att tydliggöra vilken vinkel som är vilken — speciellt när flera trianglar delar hörn och vinklar lätt blandas ihop.",
+    "framework_id": "XYZ-TRAP-038",
+    "pregrade_tactic": {
+      "handle": "Triangel-identifieringen",
+      "move": "Hitta exakt vilken triangel v sitter i (inre eller yttre vinkel). Använd 180°-summa + supplement för att gå från kända vinklar till v."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2023-kvant1-XYZ-004": {
     "_meta": {
@@ -3553,30 +3632,110 @@
     "technique": "Längd-vs-area-skalning: areaförhållande a:b → längdförhållande √a:√b. Triggern: 'areor förhåller sig som n:m, hitta sidlängd'."
   },
   "var-2023-kvant1-XYZ-011": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Parallellitet kräver SAMMA lutning. Skriv om linjen på k-m-form: 2y+x=-1\\Rightarrow y=-\\tfrac{1}{2}x-\\tfrac{1}{2}, alltså k=-\\tfrac{1}{2}. Bland graferna är D den enda med fallande, flack lutning − ½.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du får ekvationen 2y+x=-1 och fyra grafer. Frågan: vilken graf visar en linje som är parallell med denna?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder parallell?",
+        "text": "Definition: två linjer är parallella om de aldrig skär varandra — de pekar i SAMMA riktning. I koordinatsystemet betyder det att de har samma LUTNING (k).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "k-m-formen",
+        "text": "En rät linje kan alltid skrivas som y=kx+m, där k är lutningen och m är y-skärningen. För att jämföra två linjers parallellitet måste båda skrivas på denna form.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skriv om ekvationen",
+        "text": "Isolera y: 2y+x=-1\\Rightarrow 2y=-x-1\\Rightarrow y=-\\tfrac{1}{2}x-\\tfrac{1}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Läs av k och m",
+        "text": "k=-\\tfrac{1}{2} (lutning) och m=-\\tfrac{1}{2} (y-skärning).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka k = -1/2",
+        "text": "Lutningen är negativ (linjen FALLER åt höger) och |k| < 1 (linjen är FLACK — ett steg ner per två steg höger).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad gäller för m?",
+        "text": "Parallella linjer har SAMMA k men kan ha OLIKA m — annars vore de samma linje. Så vi söker en graf med k = − ½, oavsett var den korsar y-axeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Skanna alternativen — uteslut stigande",
+        "text": "Avfärda direkt alla grafer som STIGER åt höger (positiv k) — de kan inte vara parallella med en fallande linje.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Skanna alternativen — uteslut branta",
+        "text": "Avfärda grafer med |k|\\geq 1 (45°-linjer eller brantare). Vi söker FLACK lutning.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Identifiera D",
+        "text": "Den graf som FALLER mjukt åt höger (typ 1 steg ner per 2 steg höger) är alternativ D. Den kan korsa y-axeln var som helst.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Dubbelkolla: två punkter på D bör skilja sig med \\Delta y/\\Delta x=-\\tfrac{1}{2}. T.ex. om grafen går genom (0, 1) och (2, 0), så är k = (0 − 1)/(2 − 0) = −0,5. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: parallell = samma lutning. Skriv om till y = kx + m, läs av k, sök grafen med samma k — y-skärningen är irrelevant.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa minustecknet och välja en stigande linje.",
-        "why_wrong": "Lutningen är -\\frac{1}{2}, alltså fallande åt höger — A stiger eller har fel tecken."
+        "why_tempting": "Det är lätt att tappa minustecknet vid omskrivningen och välja en stigande linje.",
+        "why_wrong": "Steg 4–6 visar att k är NEGATIV (−½). Stigande linjer (k > 0) kan aldrig vara parallella med en fallande."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta en linje med lutning -2 om man glömmer att dividera ekvationen med 2.",
-        "why_wrong": "Efter division med 2 är lutningen -\\frac{1}{2}, inte -2 — den måste vara flack."
+        "why_tempting": "Snabbsvar är ofta en linje med k = −2 om man glömmer att dividera ekvationen med 2.",
+        "why_wrong": "Steg 4 visar att efter division med 2 är k = −½, inte −2. Lutningen måste vara FLACK, inte brant."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att välja den linje som korsar samma y-skärning.",
-        "why_wrong": "Parallella linjer kräver bara samma lutning, inte samma y-skärning — kolla att k matchar, m får vara olika."
+        "why_tempting": "Första instinkten är att välja den linje som har samma y-skärning som originallinjen.",
+        "why_wrong": "Steg 7 säger att parallella linjer kräver bara samma k, inte samma m. y-skärningen är fri."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Parallellitet låser endast lutningen, så bara k måste matcha. Isolering ger 2y+x=-1\\Rightarrow y=-\\frac{1}{2}x-\\frac{1}{2}, alltså är lutningen k=-\\frac{1}{2}. Sök bland graferna den med samma negativa, flacka lutning — alternativ D.",
-    "technique": "Parallella linjer = samma lutning: skriv om till y=kx+m och matcha bara k — y-skärning m får skilja sig."
+    "technique": "Parallellitet via k-m-form: skriv om båda linjerna som y = kx + m, jämför k. Trigger: 'vilken linje är parallell med …?'.",
+    "pitfall": "Botemedlet: dividera HELA ekvationen med koefficienten framför y INNAN du läser av k. Missar du divisionen blir lutningen fel.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Lutningsmatchningen",
+      "move": "Skriv om till y = kx + m, läs av k, sök grafen med samma k (oavsett y-skärning)."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2023-kvant1-XYZ-012": {
     "_meta": {
@@ -6651,32 +6810,110 @@
     "technique": "Andragrads-faktoriseringen för x² + bx + c: hitta två tal med produkt c och summa b. Triggern: 'faktorisera x² + bx + c' → leta talpar."
   },
   "var-2023-kvant2-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7",
-      "pedagogy_regenerated_at": 1778510870035,
-      "regen_source": "persona_pass_phase_e_2026_05_11"
-    },
+    "solution_path": "En regelbunden femhörning har inre vinkeln 540^\\circ/5=108^\\circ. När diagonalerna dras skapas likbenta trianglar; vinkeln vid spetsen är 108^\\circ-2\\cdot 36^\\circ=36^\\circ, eller direkt 180^\\circ-2\\cdot 72^\\circ=36^\\circ. Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "ABCDE är en regelbunden femhörning (alla sidor lika långa, alla vinklar lika stora). Vinkelsumman är 540°. Hitta vinkeln x som diagonalerna skapar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Regelbunden polygon — definition",
+        "text": "En regelbunden n-hörning har n sidor och n hörn, alla lika långa/stora. Varje inre vinkel är \\dfrac{(n-2)\\cdot 180^\\circ}{n}, vilket för n = 5 ger 108°.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räkna inre vinkeln",
+        "text": "\\dfrac{540^\\circ}{5}=108^\\circ. Varje hörn av femhörningen har inre vinkeln 108°.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Diagonal genom hörn",
+        "text": "När en diagonal dras från ett hörn delas hörnets 108°-vinkel i två delvinklar. Diagonalerna inom femhörningen skapar dessutom mindre trianglar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Likbent triangel från två diagonaler",
+        "text": "Två diagonaler från samma hörn (eller från symmetriska hörn) skapar likbenta trianglar eftersom femhörningen är symmetrisk.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Diagonalen delar 108° i 36° + 72°",
+        "text": "I en regelbunden femhörning delar diagonalen från hörn A till hörn C den inre vinkeln vid A i två delar: 36° (mot den närmaste sidan) och 72° (mot diagonalen). Detta är ett klassiskt resultat.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vinkelsumma i den smala triangeln",
+        "text": "Den 'smala' likbenta triangeln som bildas mellan två kortare diagonaler har basvinklar 72° och 72°. Spetsvinkeln blir 180^\\circ-2\\cdot 72^\\circ=36^\\circ.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Alternativ: 108° = 36° + 72°",
+        "text": "I den triangel som har 108° i ett hörn och två lika basvinklar a, gäller 108^\\circ+2a=180^\\circ\\Rightarrow a=36^\\circ.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Generell trick: 36° = 360°/10",
+        "text": "I en regelbunden femhörning är alla naturliga vinklar multiplar av 36° (= 360°/10). 45° eller 50° dyker aldrig upp som diagonalvinklar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Avfärda 72° och 54°",
+        "text": "72° är centrumvinkeln för varje sida (= 360°/5) — inte den vinkel diagonalerna skapar. 54° är 108°/2 — men diagonalen halverar inte hörnvinkeln symmetriskt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Spetsvinkeln 36° + två basvinklar 72° = 180° ✓. Och 36° passar in i femhörningens 'all-multiple-of-36'-symmetri.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A (36°). Insikten i en mening: i en regelbunden femhörning är 108° hörnvinkeln, och 36° är den spetsigaste vinkel som diagonalerna kan skapa — kom ihåg trippeln 36°/72°/108°.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
         "why_tempting": "Det är lätt att gissa 45° som ett 'rent' mellanvärde när man inte räknar diagonalerna.",
-        "why_wrong": "45° är inte en naturlig vinkel i en regelbunden femhörning — alla vinklar är multiplar av 36°."
+        "why_wrong": "Steg 9 visar att alla vinklar i en regelbunden femhörning är multiplar av 36° — 45° kan aldrig uppstå."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 108°/2 = 54° när man halverar hörnvinkeln.",
-        "why_wrong": "Diagonalen halverar inte hörnvinkeln symmetriskt i en femhörning — den delar 108° i 36° + 72°."
+        "why_tempting": "Snabbsvar är ofta 54° om man tror att diagonalen halverar 108° symmetriskt (108°/2 = 54°).",
+        "why_wrong": "Steg 6 säger att diagonalen delar 108° i 36° + 72° (osymmetriskt), inte 54° + 54°."
       },
       {
         "letter": "D",
         "why_tempting": "Om du minns att 360°/5 = 72° kan du tro att x = 72°.",
-        "why_wrong": "72° är centrumvinkeln för varje sida, inte den vinkel som diagonalerna skapar vid hörnet."
+        "why_wrong": "Steg 10 säger att 72° är CENTRUMVINKEL (om man drar linjer från centrum), inte den vinkel diagonalerna skapar vid hörnet."
       }
     ],
-    "pitfall": "Räkna inte 540°/5 = 108° och sätt direkt x = 108° — x är en vinkel inne i en triangel som diagonalerna skapar, inte en hörnvinkel.",
-    "solution_path": "Diagonalerna i en regelbunden femhörning bildar en likbent triangel där två sidor är diagonaler och en vinkel är ett hörn av femhörningen (108°). Vinkeln x är en av basvinklarna eller spetsvinkeln i en sådan triangel. Om x är spetsvinkeln i en av de smala trianglarna: 108° − 2·36° = 36°, så x = 36°.",
-    "technique": "Regelbunden femhörning: varje inre vinkel är 108° (eftersom 540°/5 = 108°). När du drar diagonaler bildas likbenta trianglar — använd vinkelsumman 180° i varje triangel."
+    "technique": "Regelbunden polygon: hörnvinkeln är (n-2)·180°/n. För femhörning: 108°. Diagonaler skapar likbenta trianglar; använd 180°-summan i triangeln. Trigger: 'regelbunden n-hörning, vinkel x?'.",
+    "pitfall": "Botemedlet: 540°/5 = 108° är HÖRNVINKELN. Vinkeln x i frågan ligger oftast INNE i en deltriangel som diagonalerna skapar — räkna inte x = 108° direkt utan att titta på var x är markerat.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Femhörnings-trippel-jakten",
+      "move": "Kom ihåg 36°/72°/108° för regelbunden femhörning. Identifiera vilken av dessa x motsvarar via diagonalens position."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2023-kvant2-XYZ-005": {
     "_meta": {
@@ -11052,133 +11289,353 @@
   },
   "var-2023-verb2-LÄS-016": {
     "_meta": {
-      "generated_at": 1778436890710,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tidskapselns logik",
+      "move": "När en text säger att hårceller ”är döda” redan vid skalpen och därför ”bryts ned lång- samt”, är fördelen mot blodprovet alltid tidsstabiliteten."
+    },
+    "solution_path": "Texten säger att hårcellerna ”har ingen blodcirkulation eller annan ämnesomsättning” och därför är döda redan vid skalpen — ”ett hårprov bryts därför ned mycket lång- samt”. Ett blodprov ger bara en ögonblicksbild medan hårprovet bevarar en hel tidsserie. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha den FÖRKLARING varför hårstråanalys ger mer information än ett blodprov. Vi söker den specifika egenskap hos hårceller som gör dem informationsrikare över tid.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta jämförelsemeningen",
+        "text": "Texten säger: ”Hårceller har ingen blodcirkulation eller annan ämnesomsättning, så cellerna i ett hårstrå är döda när de har lämnat hårsäcken. Ett hårprov bryts därför ned mycket lång- samt — och är lika användbart oavsett om det kommer från en död eller en levande person.” Och vidare: ”Ett blod- eller urinprov kan endast ge en ögonblicksbild från provtillfället.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera bevaringsmekanismen",
+        "text": "Eftersom hårceller saknar ämnesomsättning bryts de ned mycket långsamt — ämnen som lagrats in när cellen var levande sitter kvar i det döda materialet. Hårstrået fungerar som en tidskapsel som bevarar en hel rad ögonblicksbilder i sekvens, hårtillväxt för hårtillväxt. Blodet däremot byts ut hela tiden.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av med segmentmetoden",
+        "text": "Druid beskriver sekventiell håranalys: ”man klipper en liten hårtofs i halvcentimeterlånga avsnitt. Sedan undersöks förekomsten av olika ämnen i respektive håravsnitt.” Det fungerar bara om gamla segment är BEVARADE — alltså om de bryts ned långsamt. Det är just den egenskapen som ger fördelen över blodprovet.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”hårceller har högre hormonnivåer” — texten talar om informationstäthet över tid, inte högre koncentration. B ”hårceller bevaras längre än blodceller” — matchar exakt ”bryts därför ned mycket lång- samt”. C ”hårceller kan ta upp fler typer av ämnen” — texten säger inte att hårceller har bredare upptag; båda får i sig blod-burna ämnen. D ”hårceller lever längre än blodceller” — hårcellerna är just DÖDA; ”lever” är fel verb. De BEVARAS, inte lever.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är B. Hårcellerna bevaras länge eftersom de saknar ämnesomsättning — och det är den långsamma nedbrytningen som gör hårprovet till en tidsserie istället för en ögonblicksbild. Insikten i en mening: när texten kontrasterar ”ögonblicksbild från provtillfället” mot något som bevaras, är fördelen alltid tidsstabilitet.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa hormoner i samma stycke och dra fel slutsats.",
-        "why_wrong": "Hormoner påverkar tillväxt, inte informationstäthet i hårc- eller — alternativet importerar fel mekanism."
+        "why_tempting": "Det är lätt att läsa avsnittet om hormoner och dra slutsatsen att hårceller har högre nivåer.",
+        "why_wrong": "Hormoner påverkar hårtillväxt — det är en helt annan poäng än informationstätheten i hårprovet. Som steg 5 visar importerar alternativet fel mekanism."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att 'allt vi får i oss lämnar spår'.",
-        "why_wrong": "Det är inte fler ÄMNESTYPER utan TIDSSPANN — blod ger ögonblicksbild, hår en historia; missar fördelens karaktär."
+        "why_tempting": "Många stannar vid att ”i princip allt vi får i oss lämnar spår i vårt hår” och tror att det är fler ämnestyper.",
+        "why_wrong": "Det är inte fler ÄMNESTYPER utan längre TIDSSPANN som ger fördelen. Blodet får också i sig de flesta ämnena — det är bara att blodet byts ut. Steg 3 visar att bevaringen är poängen, inte upptagsbredden."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att 'lever längre' låter som bevaras.",
-        "why_wrong": "Hårcellerna är just DÖDA — de bevaras genom att ej förmultna; alternativet missar att 'lever' är fel verb."
+        "why_tempting": "Snabbsvar är ofta att ”lever längre” låter som ”bevaras längre” — formuleringen är enkel och bekväm.",
+        "why_wrong": "Hårcellerna är just DÖDA när de lämnar hårsäcken — de bevaras genom att inte förmultna, inte genom att leva. Steg 5 visar att ”lever” är fel verb; biologiskt liv hos hårcellen är inte vad som ger bevarandet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger att 'hårc- eller har ingen blodcirkulation eller annan ämnesomsättning' så cellerna är döda redan vid skalpen — och 'hårprov bryts därför ned mycket lång- samt'. Hårceller bevaras längre, vilket gör hårprov tidsstabilt.",
-    "technique": "Vid 'vad förklarar X bättre än Y'-frågor: hitta den specifika fördelen texten markerar ('bryts ned mycket lång- samt')."
+    "technique": "Vid ”vad förklarar X bättre än Y”-frågor om biologiska provtyper: hitta den specifika fördelen texten markerar (”bryts ned mycket lång- samt”, ”ögonblicksbild från provtillfället”) och matcha mot mekanismen — det är där fördelen sitter.",
+    "pitfall": "Risken är att man förväxlar ”lever länge” med ”bevaras länge” — hårcellerna är döda, de förmultnar bara långsamt. Botemedlet: hårprovets fördel är arkivvärdet, inte cellens livsspann."
   },
   "var-2023-verb2-LÄS-017": {
     "_meta": {
-      "generated_at": 1778436890710,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Konjunkturdeterminismen",
+      "move": "När en teori beskrivs som ”lagbunden utveckling” eller ”konjunkturdeterminism”, är karaktäristiken förutsägbarhet — inte oförutsägbarhet eller pessimistisk osäkerhet."
+    },
+    "solution_path": "Texten säger att van Bath och Malthus ”såg en mer eller mindre lagbunden utveckling, där expansionsperioder följdes av regressioner till följd av olika mättnadsfaktorer”. Senare kallar recensenten van Baths position ”konjunkturdeterminism”. Det är en hög grad av förutsägbarhet i konjunkturväxlingarna. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill veta vad som var UTMÄRKANDE för agrarsamhället enligt VAN BATHS teori specifikt — alltså hans modell, inte recensentens egen syn, inte Berglunds resultat.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta van Bath-meningen",
+        "text": "Texten säger: ”Här presenteras bland annat Slicher van Bath och Thomas Robert Malthus, som i sina beskrivningar av det förindustriella agrarsamhället båda kan sägas representera en pessimistisk syn. De såg en mer eller mindre lagbunden utveckling, där expansionsperioder följdes av regressioner till följd av olika mättnadsfaktorer.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera ”lagbunden utveckling”",
+        "text": "”Lagbunden” = följer regler, är förutsägbar. Expansion → mättnad → regression → ny expansion = ett återkommande, lagbundet konjunkturmönster. Pessimismen ligger i UTFALLET (regression följer alltid expansion), inte i osäkerheten. Cykeln är just deterministisk.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av med ”konjunkturdeterminism”",
+        "text": "Längre ner kallar recensenten van Baths position ”konjunkturdeterminism”: ”van Baths 'konjunkturdeterminism' blir till viss del falsifierad, men har ändå relevans för norrbottniska förhållanden.” Determinism = utveckling enligt fasta lagar = hög förutsägbarhet. Det är textens egen etikett på van Baths position.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”oförutsägbara svängningar” — direkt motsats; ”lagbunden” = förutsägbar. B ”stor osäkerhet om riktningen” — pessimismen är inte osäkerhet; den är förvissningen om regression. C ”minskade ekonomiska skillnader” — det är Berglunds RESULTAT om Norrbotten (”svag utjämning av samhällsklyftorna”), inte van Baths teori. D ”hög grad av förutsägbarhet vad gäller konjunkturens växlingar” — matchar exakt ”lagbunden utveckling” + ”konjunkturdeterminism”.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är D. Van Baths teori utmärks av förutsägbara konjunkturväxlingar — lagbundenheten är poängen. Insikten i en mening: när en teori kallas ”lagbunden” eller ”deterministisk”, är karaktäristiken alltid förutsägbarhet, oavsett om utfallet är pessimistiskt eller optimistiskt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'svängningar' som oförutsägbara.",
-        "why_wrong": "Texten säger uttryckligen 'lagbunden utveckling' — det är förutsägbart, inte oförutsägbart; alternativet inverterar."
+        "why_tempting": "Det är lätt att läsa ”expansion följt av regression” som oförutsägbara svängningar — det LÅTER instabilt.",
+        "why_wrong": "Texten säger uttryckligen ”lagbunden utveckling” — det är förutsägbart, inte oförutsägbart. Som steg 3 visar inverterar alternativet karaktären; svängningarna är just regelbundna."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid 'pessimistisk syn' som osäkerhet.",
-        "why_wrong": "Pessimismen rör utfallet (regression), inte osäkerheten — texten betonar tvärtom modellens determinism; missar nyansen."
+        "why_tempting": "Många stannar vid ”pessimistisk syn” och tolkar pessimism som osäkerhet.",
+        "why_wrong": "Pessimismen rör UTFALLET (regression följer alltid expansion) — inte osäkerheten. Texten betonar tvärtom modellens determinism. Steg 4 visar att etiketten ”konjunkturdeterminism” utesluter osäkerhetstolkningen."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att 1500-talet hade 'utjämning' enligt Berglund.",
-        "why_wrong": "Det är Berglunds RESULTAT, inte van Baths teori; alternativet blandar källor."
+        "why_tempting": "Snabbsvar är ofta att 1500-talet hade utjämning enligt forskningen.",
+        "why_wrong": "Det är BERGLUNDS resultat om Norrbotten, inte van Baths teori. Som steg 5 visar blandar alternativet källor — vi söker van Baths position, inte avhandlingens fynd."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger att van Bath och Malthus såg 'en mer eller mindre lagbunden utveckling, där expansionsperioder följdes av regressioner' — alltså förutsägbara konjunktursvängningar. Recensenten kallar senare van Baths position 'konjunkturdeterminism'.",
-    "technique": "Vid 'enligt teori X'-frågor: håll teoretikern och recensenten åtskilda — alternativet kan komma från fel källa."
+    "technique": "Vid ”enligt teori X”-frågor: håll teoretikern och recensenten och de empiriska resultaten åtskilda — alternativet kan komma från fel källa. Markera vem som säger vad innan du svarar.",
+    "pitfall": "Risken är att man tolkar ”pessimistisk” som osäkerhet eller kaos. Botemedlet: pessimism = entydigt dystert utfall, ofta ihop med determinism. Det är inte osäkerhet."
   },
   "var-2023-verb2-LÄS-018": {
     "_meta": {
-      "generated_at": 1778436890710,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Saknadsstycket",
+      "move": "När recensenten skriver ”Han följer dock inte upp denna viktiga aspekt”, är just det område som inte följs upp brist nummer ett."
+    },
+    "solution_path": "Recensenten skriver att Berglund redovisar de naturgeografiska förutsättningarna ”utifrån tidigare forskning i ett ganska tidigt skede av avhandlingen” men ”följer dock inte upp denna viktiga aspekt”. Det är topografi och miljö som inte används tillräckligt i analysen. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha det område som RECENSENTEN anser att Berglund INTE har uppmärksammat tillräckligt — alltså den specifika bristen i avhandlingens analys.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta saknadsmeningen",
+        "text": "Texten säger: ”Dock saknar jag en diskussion om ytterligare faktorer som var med och påverkade utvecklingen. Det handlar närmast om de icke-sociala strukturernas påverkan. Berglund redovisar utifrån tidigare forskning i ett ganska tidigt skede av avhandlingen de topografiska och miljörelaterade faktorer som utmärkte undersökningsområdet, kort sagt de naturgeografiska förutsättningarna. Han följer dock inte upp denna viktiga aspekt.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera ”icke-sociala strukturer”",
+        "text": "Recensenten markerar att Berglund saknar diskussion om ”icke-sociala strukturer” — och specificerar dessa som ”topografiska och miljörelaterade faktorer” = naturgeografiska förutsättningar. Det är klimat, vattenvägar, jordmån, terräng — saker som påverkade bebyggelse och befolkning oberoende av sociala strukturer.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avgränsa från andra kritikpunkter",
+        "text": "Recensenten har också andra invändningar: (a) Berglunds slutsatser bygger på generaliserbara orsakssammanhang (missväxt, pest) som inte alltid är direkt påvisbara — men det är en annan brist; (b) tresektorsmodellen integreras inte — också separat. Den NATURGEOGRAFISKA bristen är specifikt formulerad som ”följer dock inte upp”.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”källmaterialets tillförlitlighet” — recensenten BERÖMMER källhanteringen, inte kritiserar. B ”teoretiska modeller” — modellerna nämns men ”integreras inte nämnvärt i analysen”; det är dock en annan typ av brist (dålig integration vs. utebliven uppföljning). C ”agrarsamhällets unika struktur” — utjämningen är ett RESULTAT Berglund presenterar, inte något som saknas. D ”naturgeografiska förhållandena i Norrbotten” — matchar exakt ”följer dock inte upp denna viktiga aspekt” om topografin.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är D. Recensenten saknar uppföljning av de naturgeografiska faktorer som Berglund själv inledningsvis redovisar. Insikten i en mening: när recensenten skriver ”följer dock inte upp denna viktiga aspekt” om något specifikt, är just det området bristen — inte allmänna metodologiska invändningar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa diskussionen om jordskattemantal som källkritik.",
-        "why_wrong": "Texten BERÖMMER källhanteringen — alternativet inverterar; det är just det Berglund GÖR bra."
+        "why_tempting": "Det är lätt att läsa den omfattande diskussionen om jordskattemantal kontra gårdetal som källkritik som inte räcker.",
+        "why_wrong": "Texten BERÖMMER tvärtom källhanteringen: ”Berglund visar att han kan materialet och vet dess begränsningar.” Som steg 5 visar är det just det han gör BRA — alternativet inverterar."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att tresektorsmodellen kritiseras.",
-        "why_wrong": "Berglund hanterar modellerna men 'tresektorsmodellen integreras inte'; det är dock inte 'inte uppmärksammat' utan 'integreras dåligt' — missar bristen."
+        "why_tempting": "Många stannar vid att tresektorsmodellen kritiseras och tror att teoretiska modeller är det som saknas.",
+        "why_wrong": "Berglund hanterar modellerna men ”integreras inte nämnvärt”. Det är dock inte ”inte uppmärksammat” utan ”integreras dåligt” — och dessutom inte rangordnad som huvudbristen. Steg 4 visar att naturgeografin är den specifika ”följer inte upp”-bristen."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att den sociala utjämningen är specifikt svensk.",
-        "why_wrong": "Det är ett RESULTAT Berglund presenterar, inte något recensenten saknar; importerar fel sak."
+        "why_tempting": "Snabbsvar är ofta att den sociala utjämningen som svensk särväg är speciell.",
+        "why_wrong": "Det är ett RESULTAT Berglund presenterar (”socialt sker det en (svag) utjämning av samhällsklyftorna”), inte något recensenten saknar. Som steg 5 visar importerar alternativet ett av Berglunds bidrag som om det vore en brist."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Recensenten skriver att Berglund redovisar de naturgeografiska förutsättningarna men 'följer dock inte upp denna viktiga aspekt'. Det är topografi och miljö som inte används i analysen.",
-    "technique": "Vid 'vad har inte uppmärksammats tillräckligt'-frågor: leta efter 'följer dock inte upp', 'saknar jag en diskussion' i kritikstycket."
+    "technique": "Vid ”vad har inte uppmärksammats tillräckligt”-frågor i recensioner: leta efter ”följer dock inte upp”, ”saknar jag en diskussion om”, ”dock”. Dessa signalord ringar in den specifika saknaden.",
+    "pitfall": "Risken är att man tolkar generella kritiska kommentarer (om modellerna, om generaliserbarheten) som svaret. Botemedlet: håll dig till den explicita saknadsformuleringen — ofta är den mycket konkret och pekar ut ett specifikt område."
   },
   "var-2023-verb2-LÄS-019": {
-    "_meta": {
-      "generated_at": 1778436890710,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten påpekar att 'med tiden ökade de skattebefriade hemmanen så kraftigt att en beräkning av antalet gårdar enbart på jordskattemantalen ger en hög felprocent'. Jordskattemantalet säger alltså bara hur många gårdar som BESKATTADES — det är alternativ A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan är vad jordskattemantalet — alltså den specifika källan — faktiskt visar om 1500-talets Norrbotten. Inte vad historikerna VILL veta, utan vad just denna källtyp REGISTRERAR.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är jordskattemantal?",
+        "text": "Av ordlistan: 'kameral = som rör statens finansförvaltning, särskilt jordegendom'. Jordskattemantal är alltså en post i statens skatteböcker — varje gård som betalade jordskatt fick ett mantal noterat. Det är en BESKATTNINGS-räkning, inte en folkräkning av alla gårdar som fanns.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Hitta nyckelmeningen",
+        "text": "I tredje stycket dyker problemet upp tydligt: 'Med tiden ökade de skattebefriade hemmanen så kraftigt att en beräkning av antalet gårdar enbart på jordskattemantalen ger en hög felprocent.' Det avslöjar att skattemantalet räknar EN delmängd — de beskattade — och MISSAR de skattebefriade.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad mäter källan?",
+        "text": "Den mäter alltså inte 'gårdar i Norrbotten' utan 'gårdar som betalade jordskatt'. Övriga gårdar — skattebefriade hemman, nybyggen som inte ännu hade beskattats — syns helt enkelt INTE i jordskattemantalet. Det är därför historikerna behöver korrigera siffran.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A talar exakt om 'gårdar som beskattades' — det matchar textens beskrivning. B handlar om andelen hemman, men texten skiljer mellan beskattade och befriade, inte mellan hemman och annat. C och D handlar om avskiljningar och nybyggen, som texten introducerar i NÄSTA stycke som en separat problematik (inre kontra yttre expansion) — jordskattemantalet säger ingenting direkt om dessa kategorier.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är A: jordskattemantalet visar hur många gårdar som beskattades. Insikten i en mening: när texten själv förklarar varför en källa är OTILLRÄCKLIG, så är just den begränsningen ofta facit-svaret på 'vad kan man utläsa'.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att läsa 'hemman' (begrepp definierat i ordlistan) som relevant.",
-        "why_wrong": "Skillnaden är beskattade vs befriade, inte hemman vs annat — alternativet importerar fel kategori."
+        "why_tempting": "Det är lätt att läsa ordet 'hemman' (definierat längst ner i ordlistan) som relevant — och tro att skattemantalet skiljer hemman från andra gårdstyper.",
+        "why_wrong": "Som steg 4 visar är distinktionen i texten beskattade kontra skattebefriade — inte hemman kontra annat. Hemman var själva kategori-namnet på jordbruksfastigheter; både de beskattade OCH de befriade var hemman."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att texten också nämner avskiljningar.",
-        "why_wrong": "Avskiljningar/nybyggen är ANNAN problematik än beskattning; alternativet kopplar fel mekanism."
+        "why_tempting": "Många stannar vid att texten också nämner avskiljningar och drar slutsatsen att skattemantalet räknar dem.",
+        "why_wrong": "Steg 5 trycker på att avskiljningar/nybyggen introduceras som en HELT ANNAN problematik (inre kontra yttre expansion), parallell till skatte-frågan. Jordskattemantalet säger ingenting om gårdsdelningar."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att skattedata visar nybyggen.",
-        "why_wrong": "Tvärtom — nybyggen var ofta skattebefriade och syns INTE; alternativet inverterar."
+        "why_tempting": "Snabbsvar är ofta att skattedata visar nybyggen — nybyggen låter ju som något staten skulle vilja registrera.",
+        "why_wrong": "Tvärtom: textens hela poäng (steg 3) är att nybyggen ofta var skattebefriade och därför OSYNLIGA i jordskattemantalet. Alternativet inverterar precis det förhållande som driver textens kritik."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten påpekar att 'med tiden ökade de skattebefriade hemmanen så kraftigt att en beräkning av antalet gårdar enbart på jordskattemantalen ger en hög felprocent'. Jordskattemantalet visar alltså bara hur många gårdar som beskattades — inte hur många som fanns totalt.",
-    "technique": "Vid 'vad kan man utläsa av X'-frågor i historisk text: håll fast vid vad källan SPECIFIKT mäter — inte vad man önskar att den mätte."
+    "technique": "När en LÄS-text själv pekar ut en KÄLLBEGRÄNSNING ('hög felprocent', 'otillräckligt', 'inbjuder till feltolkningar'), så är just den begränsade utsagan oftast facit-svaret. Triggern: när frågan är 'vad kan man utläsa av X' och texten har en explicit metodologisk varning om X — välj det snäva, bokstavliga som källan FAKTISKT mäter.",
+    "pitfall": "Det är lätt att blanda ihop alla gårdskategorier som texten räknar upp (hemman, avskiljningar, nybyggen) och tro att källan mäter någon av dem som ANDEL av totalen. Botemedlet: fråga 'vilken specifik kolumn finns i denna bok?' — jordskattemantalet har en kolumn för beskattade gårdar, inte för proportioner av kategorier.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Källbegränsningen",
+      "move": "När texten själv säger att en källa har 'hög felprocent' eller 'är otillräcklig' — välj alternativet som matchar den SNÄVA, bokstavliga utsagan källan faktiskt registrerar."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2023-verb2-LÄS-020": {
-    "_meta": {
-      "generated_at": 1778436890710,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Sista stycket säger att avhandlingen 'förhoppningsvis kan medverka till en renässans för bebyggelse- och befolkningshistoria'. Renässans = nytt liv, nytt intresse — alternativ C, ett ökat intresse för forskningsområdet.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta vad RECENSENTEN hoppas att avhandlingen ska LEDA FRAM TILL — alltså den önskade EFFEKTEN på forskningsfältet, inte avhandlingens egna resultat.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta hoppmeningen",
+        "text": "Slutorden är direkta: 'Oaktat min kritik har Berglund skrivit en avhandling av mycket hög kvalitet som FÖRHOPPNINGSVIS kan medverka till en renässans för bebyggelse- och befolkningshistoria med tonvikten på det förindustriella samhället.' Det är där förhoppningen formuleras — orden 'förhoppningsvis kan medverka till' är signalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder 'renässans' här?",
+        "text": "Renässans i bildlig mening = återuppvaknande, nytt intresse, ny blomstring. Texten har redan konstaterat att fältet är 'gammalt, om än alltjämt gångbart' och att 'dagens svenska historikerskrå' ogärna ägnar sig åt det. En renässans är alltså förnyat ENGAGEMANG från forskarkåren — fler som arbetar med ämnet.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Matcha mot alternativen",
+        "text": "A talar om forskarmod att tackla stora källmaterial — det är en KVALITET texten berömmer hos Berglund, inte ett MÅL för fältet. B om omvärdering av äldre material fångar inte renässans-tanken: målet är inte att ompröva gamla data utan att skapa nytt intresse. C träffar rakt: 'ökat intresse för forskningsområdet' = renässans. D om återgång till källkritik vänder upp och ner: Berglund BERÖMS för sin källkritik, men recensenten vill ha MER av fältet, inte tillbaka till något.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera",
+        "text": "Den följande meningen bekräftar: 'Det är angeläget, inte minst för att utmana det rådande forskningsläget som är gammalt, om än alltjämt gångbart.' Att UTMANA ett gammalt läge handlar om att blåsa nytt liv i fältet — alltså öka intresset.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är C: ett ökat intresse för forskningsområdet i fråga. Insikten i en mening: när recensenten signalerar en VISION ('förhoppningsvis kan...'), leta efter den bildliga termen ('renässans', 'nystart') och översätt den till alternativens vardagsspråk.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa diskussionen om svår källhantering som modkritik.",
-        "why_wrong": "Recensenten talar om fältets RENÄSSANS, inte forskarmod; alternativet importerar fel kvalitet."
+        "why_tempting": "Det är lätt att läsa diskussionen om svår källhantering som en uppmaning till mer mod hos forskarna — fältet är ju 'avskräckande'.",
+        "why_wrong": "Som steg 4 visar är forskarmod en kvalitet recensenten BERÖMMER hos Berglund (han 'kan materialet'), inte vad han hoppas blir resultatet. Avhandlingens verkan ska riktas mot FÄLTET (renässans), inte mot enskilda forskares karaktärsegenskaper."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid 'utmana det rådande forskningsläget'.",
-        "why_wrong": "Det är ett medel, inte målet — målet är ökat intresse; alternativet stannar vid mekanis- men."
+        "why_tempting": "Många stannar vid frasen 'utmana det rådande forskningsläget' och tolkar det som omvärdering av äldre forskningsmaterial.",
+        "why_wrong": "Som steg 5 visar är 'utmana' MEDLET som flyter ur renässansen — målet är ökat intresse (C), inte specifikt omprövning av äldre data. Recensenten vill ha tillväxt i fältet, inte ompackning av befintligt."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att 'källkritik' = återgång till grunderna.",
-        "why_wrong": "Recensenten vill ha mer, inte mindre, av fältet — och berömmer Berglunds källkritik som nyhet; missar nivån."
+        "why_tempting": "Snabbsvar är ofta att 'källkritik' = återgång till grundläggande historieforskning.",
+        "why_wrong": "Recensenten vill ha MER, inte mindre, av fältet — och berömmer just Berglunds källkritik som något fältet redan har. Steg 4 visar att 'återgång' missar tonen: visionen är framåtblickande renässans, inte regression till en tidigare praktik."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Recensenten hoppas att avhandlingen 'kan medverka till en renässans för bebyggelseoch befolkningshistoria' — alltså öka intresset för detta forskningsfält som är 'gammalt, om än alltjämt gångbart'.",
-    "technique": "Vid 'vad hoppas X'-frågor: hitta recensentens slutord ('förhoppningsvis kan medverka till...') där visionen formuleras."
+    "technique": "Vid 'vad hoppas X'-frågor: lokalisera den explicita hoppmeningen — ord som 'förhoppningsvis', 'kan medverka till', 'angeläget' — och översätt den bildliga termen där (här 'renässans') till alternativens prosa. Triggern: avslutande stycket är nästan alltid där en recension landar sin vision.",
+    "pitfall": "Det är lätt att blanda ihop vad recensenten BERÖMMER hos avhandlingen och vad hen HOPPAS att avhandlingen ska åstadkomma. Botemedlet: separera 'kvalitet hos verket' från 'verkan på fältet' — frågan handlar bara om det senare.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Hoppmeningen",
+      "move": "När frågan är vad recensenten hoppas — gå direkt till sista stycket och leta efter 'förhoppningsvis kan medverka till X', sedan översätt X till alternativens vardagsspråk."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2023-verb2-MEK-021": {
     "_meta": {

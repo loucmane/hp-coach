@@ -1,0 +1,1347 @@
+{
+  "batch_id": "batch_03_KVA",
+  "section": "KVA",
+  "count": 22,
+  "tasks": [
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-KVA-013",
+      "question": {
+        "qid": "host-2013-kvant1-KVA-013",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "KVA",
+        "number": 13,
+        "prompt": "Kvantitet I:\t 69·116 Kvantitet II:\t 68·117",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778423798258,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att se att 117 > 116 och dra slutsatsen att 68·117 vinner.",
+            "why_wrong": "Den extra ettan i 69 mot 68 ger 116 extra; den extra ettan i 117 mot 116 ger bara 68 extra. I vinner med 48."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att summan av faktorerna är samma (69+116=68+117=185) och därför produkterna också.",
+            "why_wrong": "För en fast summa maximeras produkten när faktorerna ligger närmast varandra; 69·116 har mindre spridning än 68·117 och blir därmed större."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att två så lika produkter kräver räknare för att jämföras.",
+            "why_wrong": "Bryt ut faktorerna och teckenfrågan blir helt deterministisk — ingen brist på information."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Skillnaden 69\\cdot 116-68\\cdot 117=69\\cdot 116-68\\cdot 116-68=116-68=48, alltså är I större än II. Bryt ut den gemensamma faktorn istället för att räkna båda produkterna i huvudet — det avslöjar tecknet på ett par sekunder.",
+        "technique": "Jämför produkter genom att bryta ut den gemensamma faktorn — slipp räkna båda sidorna.",
+        "framework_id": "KVA-TRAP-024"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-KVA-014",
+      "question": {
+        "qid": "host-2013-kvant1-KVA-014",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "KVA",
+        "number": 14,
+        "prompt": "x procent av y är lika med z procent av w. Kvantitet I: x·w Kvantitet II:\t y·z",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778423798258,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att se xy=zw och hoppa till att alla parvisa produkter är lika eller att I dominerar.",
+            "why_wrong": "Likheten gäller bara för paret (x,y) mot (z,w) — inte för korsprodukten (x,w) mot (y,z), som beror på de individuella storlekarna."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att gå på spegelvändningen och anta att korsade par är omvänt rangordnade.",
+            "why_wrong": "Spegelvändningen är inte symmetrisk i produktvillkoret; båda riktningarna går att konstruera som testfallen visar."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid att xy=zw och drar slutsatsen att andra omkastningar också ger likhet.",
+            "why_wrong": "Likhet kräver specialfall (t.ex. x=z, y=w). I allmänhet är xw\\neq yz."
+          }
+        ],
+        "pitfall": "Att tolka xy = zw som om alla parvisa produkter mellan x,y,z,w blir lika — ett vanligt språkligt felsteg.",
+        "solution_path": "Villkoret ger xy=zw men säger ingenting direkt om xw mot yz. Testa två fall: med x=2,y=10,z=10,w=2 blir xw=4<yz=100; med x=10,y=2,z=2,w=10 blir xw=100>yz=4. Båda riktningarna är möjliga, så svaret är D.",
+        "technique": "När ett villkor ger en produktlikhet, testa konkreta värden i båda riktningarna innan du konkluderar."
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-KVA-016",
+      "question": {
+        "qid": "host-2013-kvant1-KVA-016",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "KVA",
+        "number": 16,
+        "prompt": "x = -y Kvantitet I:\t x Kvantitet II:\t y",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778423798258,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Om du minns regeln som \"-y är negativt\" landar du på att x alltid är negativt och y alltid positivt — fel om y < 0.",
+            "why_wrong": "-y är bara negativt när y > 0; för negativa y är x positiv och I > II."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Första instinkten är att negativtecknet alltid gör I mindre än II.",
+            "why_wrong": "Negativtecknet beter sig olika beroende på y:s tecken — riktningen vänder helt om y är negativ."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Det är lätt att låsa sig vid att y=0 ger likhet och anta att det gäller alltid.",
+            "why_wrong": "Likhet inträffar bara i det enskilda fallet y = 0; alla andra y skapar skillnad åt något håll."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Villkoret x=-y tillåter alla tre utfall: vid y=0 blir x=0=y (lika), vid y=1 blir x=-1<y (II>I), och vid y=-1 blir x=1>y (I>II). Information saknas.",
+        "technique": "Identifiera när information är otillräcklig genom att testa både y = 0 och y med olika tecken.",
+        "framework_id": "KVA-TRAP-037"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-KVA-018",
+      "question": {
+        "qid": "host-2013-kvant1-KVA-018",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "KVA",
+        "number": 18,
+        "prompt": "Kvantitet I:\t (–10)^{11} Kvantitet II:\t (–11)^{10}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778423798258,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att jämföra basernas storlek — 11 > 10 — och tro att basen \"11\" gör II större men missa exponenten 11 i I.",
+            "why_wrong": "Storleken på basen är irrelevant när teckenparitet skiljer kvantiteterna åt; tecknet vinner alltid över magnitud i den här jämförelsen."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att exponenterna 10 och 11 är så nära varandra att uttrycken är ungefär lika.",
+            "why_wrong": "Magnituden spelar ingen roll här — den ena är negativ och den andra positiv, så de kan aldrig vara lika."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att man måste räkna ut båda potenserna för att jämföra.",
+            "why_wrong": "Tecknet är helt bestämt av paritet hos exponenten; ingen ytterligare information behövs."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "(-10)^{11} har udda exponent och blir negativt; (-11)^{10} har jämn exponent och blir positivt. Ett positivt tal är alltid större än ett negativt, alltså II > I.",
+        "technique": "Vid (-a)^{n}: kolla pariteten hos n innan du försöker räkna magnituden.",
+        "framework_id": "KVA-TRAP-013"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-KVA-019",
+      "question": {
+        "qid": "host-2013-kvant1-KVA-019",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "KVA",
+        "number": 19,
+        "prompt": "Kvantitet I:\t Längsta sidan i en rektangel med omkretsen 36 cm Kvantitet II:\t Omkretsen av en kvadrat med sidan 3 cm",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778423798258,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tänka att en rektangel med omkrets 36 är \"stor\" och längsta sidan måste vara > 12.",
+            "why_wrong": "Längsta sidan kan vara bara strax över 9 — t.ex. en rektangel 10×8 har längsta sidan 10, mindre än 12."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Många stannar vid kvadratfallet (9\\times 9) där längsta sidan är 9, mindre än 12.",
+            "why_wrong": "Kvadraten är bara ett av många möjliga val; en lång smal rektangel ger längsta sidan upp mot 18."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Det är frestande att låsa fast vid den specifika rektangel där längsta sidan = 12 (då blir kortsidan 6) och kalla det entydigt.",
+            "why_wrong": "Likhet är bara ett av oändligt många utfall — utan ytterligare villkor kan längsta sidan ligga både under och över 12."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Rektangelns omkrets 2(l+b)=36 ger l+b=18, så längsta sidan kan ligga var som helst i intervallet [9, 18). II = 4·3 = 12. Längsta sidan kan vara mindre (t.ex. l=10, b=8), lika med 12, eller större (t.ex. l=15, b=3) — D.",
+        "technique": "En enskild omkrets eller area låser inte sidlängderna — testa intervallets ändpunkter.",
+        "framework_id": "KVA-TRAP-004"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-KVA-020",
+      "question": {
+        "qid": "host-2013-kvant1-KVA-020",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "KVA",
+        "number": 20,
+        "prompt": "Summan av n positiva tal är lika med summan av m positiva tal. Kvantitet I: n Kvantitet II: m",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778423798258,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att intuitivt tänka att fler termer ger större summa, så lika summa kräver fler i den ena.",
+            "why_wrong": "Termernas storlek är fri — ett enda stort tal kan väga upp många små, så antalet är inte entydigt."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Första instinkten är att om summorna är lika så måste den med färre termer ha större tal, vilket på något sätt ger m > n.",
+            "why_wrong": "Inget i villkoret rangordnar n och m — båda riktningarna är fullt möjliga."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Det är frestande att anta att lika summor måste komma från lika många termer.",
+            "why_wrong": "Antalet termer och summan är oberoende; lika summor kan byggas av helt olika antal positiva tal."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Två summor av positiva tal kan vara lika med vilken kombination som helst av antal termer. Exempelvis ger 1+1+1=3 (n=3) och 3=3 (m=1) lika summor med n>m; och 2=2 (n=1) mot 1+1=2 (m=2) ger n<m. Information saknas.",
+        "technique": "En summa-likhet säger inget om antalet termer — testa olika partitionsvarianter.",
+        "framework_id": "KVA-TRAP-002"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant1-KVA-022",
+      "question": {
+        "qid": "host-2013-kvant1-KVA-022",
+        "exam_id": "host-2013",
+        "provpass": "kvant1",
+        "section": "KVA",
+        "number": 22,
+        "prompt": "x(1 – x) > 0 Kvantitet I:\t x Kvantitet II:\t x^{2}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778423798258,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att blanda ihop med fallet x > 1, där x^{2}>x.",
+            "why_wrong": "Här begränsar villkoret x till intervallet (0,1) där kvadrering krymper talet, inte växer det."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid att x = 1 ger likhet och tror att det gäller över hela definitionsmängden.",
+            "why_wrong": "x = 1 är utesluten av villkoret x(1-x)>0 (då blir vänsterledet noll, inte strikt positivt)."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att man inte vet x:s tecken eller intervall.",
+            "why_wrong": "Olikheten x(1-x)>0 fastslår entydigt att 0 < x < 1, inget annat värde går."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "x(1-x)>0 kräver att båda faktorerna har samma tecken; eftersom 1−x och x inte kan vara samtidigt negativa här, gäller 0<x<1. I det intervallet är x>x^{2} (t.ex. 0,5 > 0,25), alltså I > II.",
+        "technique": "För x mot x^{2}: tre regimer — krymper i (0,1), lika vid 0 och 1, växer utanför."
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant2-KVA-020",
+      "question": {
+        "qid": "host-2013-kvant2-KVA-020",
+        "exam_id": "host-2013",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 20,
+        "prompt": "Ett cykelhjul rullar längs en rät linje utan att glida och på 3 varv rullar hjulet sträckan 18 meter. Kvantitet I: Hjulets diameter Kvantitet II: 2 meter",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778423798258,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att blanda omkrets och diameter — om du tror omkretsen är 2 m är diametern större än 6/π.",
+            "why_wrong": "Omkretsen är \\pi d, inte d, så diametern är alltid omkretsen dividerat med π ≈ 3,14."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att 6/π ≈ 2 och kalla det jämnt.",
+            "why_wrong": "6/π är ungefär 1,91 — märkbart mindre än 2. Approximationen π ≈ 3 är för grov här."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att man behöver veta hjulets bredd eller annan dimension.",
+            "why_wrong": "Sträckan per varv är hjulets omkrets — inget mer behövs för att räkna ut diametern."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Tre varv på 18 m ger omkretsen 18/3=6 m, alltså diametern 6/\\pi\\approx 1{,}91 m. Det är mindre än 2 m, så II > I.",
+        "technique": "Rullande hjul: sträcka per varv = omkrets = \\pi d; lös ut diametern direkt."
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant2-KVA-021",
+      "question": {
+        "qid": "host-2013-kvant2-KVA-021",
+        "exam_id": "host-2013",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 21,
+        "prompt": "Kvantitet I:\t x(y + z) + x^{2} + yz Kvantitet II:\t (x + z)(y + x)",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778423798258,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel på en av termerna — t.ex. missa zx i II — och tro att I har en extra term.",
+            "why_wrong": "Vid noggrann distribution dyker varje term i I upp exakt en gång i II."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Om du minns regeln som \"(x+z)(y+x) ≈ xy + zx\" missar du de två extra termerna och underskattar II.",
+            "why_wrong": "Hela utvecklingen ger fyra termer: xy+x^{2}+zy+zx — exakt vad I har."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att man behöver veta tecken eller storlek på x, y, z.",
+            "why_wrong": "Likheten är algebraisk — den gäller för alla värden på variablerna."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "I: x(y+z)+x^{2}+yz=xy+xz+x^{2}+yz. II: (x+z)(y+x)=xy+x^{2}+zy+zx. Termvis identiska — C.",
+        "technique": "Distribuera båda sidor fullständigt och jämför term för term innan du gissar olikhet.",
+        "framework_id": "KVA-TRAP-024"
+      }
+    },
+    {
+      "exam": "host-2013",
+      "qid": "host-2013-kvant2-KVA-022",
+      "question": {
+        "qid": "host-2013-kvant2-KVA-022",
+        "exam_id": "host-2013",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 22,
+        "prompt": "I ett koordinatsystem utgör punkterna (–1, a), (2, 2) och (2, 4) hörnen i en rätvinklig triangel. Kvantitet I: a Kvantitet II: 2",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778423798258,
+          "model": "claude-opus-4-7",
+          "pedagogy_regenerated_at": 1778510870035,
+          "regen_source": "persona_pass_phase_e_2026_05_11"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att fastna vid fallet a = 4 (rätvinkel vid (2,4)) och dra slutsatsen att I alltid > II.",
+            "why_wrong": "Det är ett av två giltiga fall — om rätvinkeln istället sitter vid (2,2) får man a = 2, dvs I = II."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att gissa a < 2 utan att räkna konfigurationen.",
+            "why_wrong": "Båda giltiga värden (a = 2 och a = 4) är ≥ 2 — inget gör I mindre än II."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid fallet rätvinkel-vid-(2,2) → a = 2 = II och kallar likhet.",
+            "why_wrong": "Rätvinkeln kan lika gärna sitta vid (2,4), vilket ger a = 4 ≠ 2 och bryter likheten."
+          }
+        ],
+        "pitfall": "\"Rätvinkeln\" i en rätvinklig triangel är 90°-vinkeln — den kan sitta vid VILKET som helst av de tre hörnen. Räkna alla tre fallen.",
+        "solution_path": "Punkterna (2,2) och (2,4) ligger lodrätt över varandra (samma x-värde). Rätvinkeln kan sitta vid (2,2): då måste benet till (−1,a) vara vågrätt, dvs a = 2. Eller vid (2,4): då måste benet vara vågrätt på höjden 4, dvs a = 4. Två giltiga värden ger I = 2 (lika med II) respektive I = 4 (större än II) — informationen räcker inte.",
+        "technique": "I geometriska KVA-problem: pröva ALLA möjliga placeringar av den utmärkande egenskapen (här: var rätvinkeln sitter) innan du svarar — flera giltiga konfigurationer betyder D.",
+        "framework_id": "KVA-TRAP-008"
+      }
+    },
+    {
+      "exam": "host-2018",
+      "qid": "host-2018-kvant1-KVA-015",
+      "question": {
+        "qid": "host-2018-kvant1-KVA-015",
+        "exam_id": "host-2018",
+        "provpass": "kvant1",
+        "section": "KVA",
+        "number": 15,
+        "prompt": "Kvantitet I:\t + + + + 28 14 7 4 2 Kvantitet II:\t \\frac{55}{56}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778424317530,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna 55/56 ≈ 1 och tro att I också är ungefär 55/56.",
+            "why_wrong": "I är exakt 1; II är 55/56 = 1 - 1/56, alltså strikt mindre."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att teleskopisk summa råkar bli 55/56.",
+            "why_wrong": "Här är summan exakt 1 vid valet av nämnare 1, 2, 4, 7, 14, 28."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att fortgående bråk är otydliga utan räknare.",
+            "why_wrong": "Gemensam nämnare ger en exakt summa."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Tolkning: 1/28+1/14+1/7+1/4+1/2. Gemensam nämnare 28: 1/28+2/28+4/28+7/28+14/28=28/28=1. 1 > 55/56 — A.",
+        "technique": "Bråk med olika nämnare: gemensam nämnare → summera täljare.",
+        "framework_id": "KVA-TRAP-023"
+      }
+    },
+    {
+      "exam": "host-2020",
+      "qid": "host-2020-kvant2-KVA-022",
+      "question": {
+        "qid": "host-2020-kvant2-KVA-022",
+        "exam_id": "host-2020",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 22,
+        "prompt": "En mätserie består av värdena -5, x, y, 3. Seriens medelvärde är -1. Kvantitet I: x + y Kvantitet II: -1",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778424621013,
+          "model": "claude-opus-4-7",
+          "pedagogy_regen_source": "manual_kva_review_2026_05_11",
+          "pedagogy_regenerated_at": 1778506283652
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel och få x + y = 0.",
+            "why_wrong": "(-5 + 3) = -2; medelvärde -1 ger summa -4 totalt; så x + y = -2."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta x + y = -1 (lika med medelvärdet).",
+            "why_wrong": "Medelvärdet är -1, men summan av x + y är -2 efter justering för -5 och 3."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att x och y individuellt behövs.",
+            "why_wrong": "Bara summan x + y behövs, och den är entydig."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Medelvärdet av 4 värden = (-5 + x + y + 3)/4 = -1 → x + y - 2 = -4 → x + y = -2. -2 < -1 — B.",
+        "technique": "Medelvärde gånger antal = totalsumma; lös ut den okända delen ur ekvationen och jämför mot II — här ger x + y = −2 mindre än −1, alltså B."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant1-KVA-021",
+      "question": {
+        "qid": "host-2022-kvant1-KVA-021",
+        "exam_id": "host-2022",
+        "provpass": "kvant1",
+        "section": "KVA",
+        "number": 21,
+        "prompt": "Linjen L går genom punkten (-10, -1) och har positiv lutning. Kvantitet I:\t y-koordinaten för den punkt där L skär y-axeln Kvantitet II:\t 0",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778424621016,
+          "model": "claude-opus-4-7",
+          "pedagogy_regenerated_at": 1778510870035,
+          "regen_source": "persona_pass_phase_e_2026_05_11"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att associera \"positiv lutning\" med \"positiv y-skärning\".",
+            "why_wrong": "Linjen passerar (−10, −1) som ligger nere till vänster — en flack linje (k nära 0) skär y-axeln nedanför origo."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att y-skärning < 0 eftersom (−10, −1) är negativ.",
+            "why_wrong": "För stor lutning (k = 1) blir m = 9, så y-skärningen kan absolut vara positiv."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid specifikt fall där y-skärning = 0 (k = 0,1).",
+            "why_wrong": "Det är ett av oändligt många fall — lutningen är inte fixerad."
+          }
+        ],
+        "pitfall": "\"Positiv lutning\" säger bara att linjen lutar uppåt — det säger inget om VAR den korsar y-axeln. En brant linje (stor k) startar långt ovanför x-axeln; en flack linje (liten k) startar nedanför.",
+        "solution_path": "Linjen passerar (−10, −1) med positiv lutning k > 0. Y-skärningen m är y-värdet vid x = 0: m = −1 + 10k. För liten k (t.ex. k = 0,05) är m = −0,5 < 0. För stor k (t.ex. k = 1) är m = 9 > 0. Y-skärningen kan alltså vara negativ, noll eller positiv — D.",
+        "technique": "En linje y = kx + m går genom (x₀, y₀) ⇒ y₀ = k·x₀ + m. Lös ut m: m = y₀ − k·x₀. För en linje genom (−10, −1) blir y-skärningen m = −1 − k·(−10) = 10k − 1.",
+        "framework_id": "KVA-TRAP-016"
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant1-KVA-022",
+      "question": {
+        "qid": "host-2022-kvant1-KVA-022",
+        "exam_id": "host-2022",
+        "provpass": "kvant1",
+        "section": "KVA",
+        "number": 22,
+        "prompt": "y ≠ 0 \\frac{2x}{3y} = 7 Kvantitet I:\t y Kvantitet II:\t \\frac{2}{21} x",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778424621016,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel och få y = 21x/2.",
+            "why_wrong": "Korrekt: 2x = 21y ⇒ y = 2x/21."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att 2x/21 är mycket större än y.",
+            "why_wrong": "De är samma sak."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att y är fri.",
+            "why_wrong": "Förhållandet låser y entydigt i termer av x."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "2x/(3y) = 7 → 2x = 21y → x = 21y/2 → 2x/21 = y. Jämför med II = 2x/21. Lika — C.",
+        "technique": "Lös ut y i termer av x; jämför."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-KVA-013",
+      "question": {
+        "qid": "host-2022-kvant2-KVA-013",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 13,
+        "prompt": "2(x + 3) = 3(x + 4) Kvantitet I: x Kvantitet II: 0",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778424621016,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna fel och få x = +6.",
+            "why_wrong": "2x + 6 = 3x + 12 ger x = -6 (negativ)."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta x = 0.",
+            "why_wrong": "Vid x = 0: 6 ≠ 12; lösningen är x = -6."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att lösningen är komplicerad.",
+            "why_wrong": "En linjär ekvation har exakt en lösning."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "2(x+3) = 3(x+4) → 2x + 6 = 3x + 12 → -x = 6 → x = -6. -6 < 0 — B.",
+        "technique": "Linjär ekvation: distribuera och lös."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-KVA-014",
+      "question": {
+        "qid": "host-2022-kvant2-KVA-014",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 14,
+        "prompt": "Två vanliga sexsidiga tärningar kastas slumpmässigt en gång. Kvantitet I: Sannolikheten att summan av det tärningarna visar är 10 Kvantitet II: Sannolikheten att summan av det tärningarna visar är 4",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778424621016,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att summa 10 är \"mer specifik\" och mindre sannolik.",
+            "why_wrong": "Båda har 3 utfall av 36; symmetri kring 7."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att lägre summor är vanligare.",
+            "why_wrong": "Symmetrin gör att P(4) = P(10) exakt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att man behöver räkna alla utfall.",
+            "why_wrong": "Symmetri ger lika sannolikhet utan komplicerad räkning."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "P(summa = 10) = 3/36 (4-6, 5-5, 6-4). P(summa = 4) = 3/36 (1-3, 2-2, 3-1). Lika — C.",
+        "technique": "Symmetri kring 7 för två tärningar: P(s) = P(14-s)."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-KVA-015",
+      "question": {
+        "qid": "host-2022-kvant2-KVA-015",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 15,
+        "prompt": "Kvantitet I: \\frac{5}{6} + \\frac{5}{6} Kvantitet II: \\frac{5}{6} · \\frac{5}{6}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778424621016,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tro att multiplikation av \"stora\" bråk ger ännu större.",
+            "why_wrong": "Multiplikation av tal mellan 0 och 1 minskar; 5/6 · 5/6 < 5/6."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att operationerna ger ungefär lika resultat.",
+            "why_wrong": "10/6 vs 25/36 — skillnad på nästan 1."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att operationerna är förvirrande.",
+            "why_wrong": "Direktberäkning ger entydigt svar."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "I: 5/6 + 5/6 = 10/6 ≈ 1,67. II: 5/6 · 5/6 = 25/36 ≈ 0,69. 1,67 > 0,69 — A.",
+        "technique": "Två bråk < 1: addition gör större, multiplikation gör mindre."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-KVA-016",
+      "question": {
+        "qid": "host-2022-kvant2-KVA-016",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 16,
+        "prompt": "Kvantitet I:\t Arean av en triangel med basen b och höjden h_{1} Kvantitet II:\t Arean av en triangel med basen b - 1 och höjden h_{2}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778424621016,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att större bas alltid ger större area.",
+            "why_wrong": "Höjderna h₁ och h₂ är fria; II kan vara större om h₂ är mycket större."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att II har mindre bas och därmed mindre area.",
+            "why_wrong": "Höjden kan kompensera; ojämlikheten är fri."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid b·h₁ = (b-1)·h₂ specifikt.",
+            "why_wrong": "Likhet inträffar bara för specifika h-värden; tre utfall är möjliga."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Triangelarea = b·h/2; två trianglar med olika baser och höjder kan ha olika area. Inget i villkoret rangordnar dem — D.",
+        "technique": "Trianglar med fria baser och höjder: area-jämförelse är obestämd.",
+        "framework_id": "KVA-TRAP-004"
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-KVA-018",
+      "question": {
+        "qid": "host-2022-kvant2-KVA-018",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 18,
+        "prompt": "Kvantitet I:\t En fjärdedel av arean av en cirkel med radien 1 cm Kvantitet II:\t Tre fjärdedelar av arean av en kvadrat med sidan 1 cm",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778424621016,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tro att 3/4 > π/4 eftersom 3 < π — nej, just det: 3 < π så 3/4 < π/4.",
+            "why_wrong": "π ≈ 3,14, så π/4 ≈ 0,785 > 3/4 = 0,75. I vinner."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att π ≈ 3 → likhet.",
+            "why_wrong": "π > 3 strikt; skillnaden är nödvändigtvis i I:s favör."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att man behöver veta π exakt.",
+            "why_wrong": "π > 3 är välkänt och räcker."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "I: π·1²/4 = π/4 ≈ 0,785. II: 3·1²/4 = 3/4 = 0,75. π/4 > 3/4 eftersom π > 3 — A.",
+        "technique": "π > 3 ⇒ π/4 > 3/4; rena bråkjämförelser via π-konstanten."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-KVA-020",
+      "question": {
+        "qid": "host-2022-kvant2-KVA-020",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 20,
+        "prompt": "x och y är positiva heltal sådana att xy = 36. Kvantitet I:\t x + y Kvantitet II:\t 18",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fix_note": "persona_fix: corrected factual slip (sums NOT all <= 18)",
+          "fixed_at": 1778509169151,
+          "generated_at": 1778424621016,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att x + y ≥ 2√(xy) = 12 alltid.",
+            "why_wrong": "AM-GM ger nedre gräns 12, men ingen övre; x + y kan vara 37 > 18."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att x + y < 18.",
+            "why_wrong": "Vid (1, 36) är x + y = 37 > 18."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid (4, 9) eller (6, 6) där summa är ≤ 18.",
+            "why_wrong": "Bara ett av flera utfall; 37 är också möjligt."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "xy = 36 med positiva heltal. Faktorparen: (1,36), (2,18), (3,12), (4,9), (6,6). Summan x + y blir 37, 20, 15, 13, 12 respektive. Vid (1,36) är summan 37 > 18 (I > II); vid (6,6) är summan 12 < 18 (II > I). Båda riktningar möjliga — D.",
+        "technique": "AM-GM eller direkt enumeration: x + y kan ligga både över och under 18."
+      }
+    },
+    {
+      "exam": "host-2022",
+      "qid": "host-2022-kvant2-KVA-021",
+      "question": {
+        "qid": "host-2022-kvant2-KVA-021",
+        "exam_id": "host-2022",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 21,
+        "prompt": "Kvantitet I:\t Antalet minuter som det tar at tfärdas 40 km med hastigheten 100 km/h Kvantitet II:\t Antalet minuter som det tar att färdas 40 km med hastigheten 40 m/s",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778424621016,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att blanda enheterna och tro att m/s är långsammare.",
+            "why_wrong": "40 m/s = 144 km/h, mycket snabbare än 100 km/h; därmed kortare tid."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att tiderna är ungefär lika.",
+            "why_wrong": "Skillnaden ~ 7 min är märkbar."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att enhetskonverteringar är otydliga.",
+            "why_wrong": "1 m/s = 3,6 km/h är standarddefinition."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "I: 40 km / 100 km/h = 0,4 h = 24 min. II: 40 m/s = 144 km/h, 40/144 h = 1/3,6 h ≈ 0,278 h ≈ 16,67 min. 24 > 16,67 — A.",
+        "technique": "Konvertera m/s till km/h: multiplicera med 3,6.",
+        "framework_id": "KVA-TRAP-026"
+      }
+    },
+    {
+      "exam": "host-2023",
+      "qid": "host-2023-kvant2-KVA-018",
+      "question": {
+        "qid": "host-2023-kvant2-KVA-018",
+        "exam_id": "host-2023",
+        "provpass": "kvant2",
+        "section": "KVA",
+        "number": 18,
+        "prompt": "Det ordinarie priset på en vara är 20 % lägre i butik A än i butik B. Kvantitet I: Priset på varan i butik A om de sänker priset med 5 % Kvantitet II: Priset på varan i butik B om de sänker priset med 25 %",
+        "options": [
+          {
+            "letter": "A",
+            "text": "I är större än II"
+          },
+          {
+            "letter": "B",
+            "text": "II är större än I"
+          },
+          {
+            "letter": "C",
+            "text": "I är lika med II"
+          },
+          {
+            "letter": "D",
+            "text": "informationen är otillräcklig"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778424621017,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna 25% rabatt på B = 0,75B och tro att A:s 5% rabatt på 0,80B är mindre.",
+            "why_wrong": "0,95·0,80 = 0,76 > 0,75; A vinner med liten marginal."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att 5% av lägre pris ≈ 25% av högre.",
+            "why_wrong": "Procentmatten ger 0,76B vs 0,75B; skillnad 0,01B (litet men reellt)."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Det är frestande att tro att man behöver veta B.",
+            "why_wrong": "Bara förhållandet 0,76 vs 0,75 betyder något."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "A:s ordpris = 0,80·B. I: 0,95·0,80·B = 0,76B. II: 0,75·B. 0,76 > 0,75 — A.",
+        "technique": "Sammansatta procentsatser: multiplicera faktorerna.",
+        "framework_id": "KVA-TRAP-025"
+      }
+    }
+  ]
+}

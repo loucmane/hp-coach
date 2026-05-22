@@ -6399,57 +6399,203 @@
   },
   "var-2026-kvant2-XYZ-004": {
     "_meta": {
-      "generated_at": 1778413273816,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": "XYZ-TRAP-051",
+    "solution_path": "Från figuren: linjen skär y-axeln vid y = −2, alltså m = −2. Lutningen avläses från två rutnätspunkter: för varje 3 steg åt höger går linjen 2 steg upp, så k = \\frac{2}{3}. Ekvation: y = \\frac{2}{3}x - 2 — alternativ A.",
+    "technique": "Linje-ekvation från graf: läs y-skärningen direkt vid x = 0, räkna lutningen Δy/Δx mellan två avlästa rutnätspunkter, sätt ihop till y = kx + m.",
+    "pitfall": "Botemedlet mot 'kastad-bråklutning': lutningen är ALLTID Δy/Δx (lodrät/vågrät), aldrig tvärtom. Markera Δy uppåt först, sedan Δx åt höger — och dela alltid uppåt med åt höger.",
+    "pregrade_tactic": {
+      "handle": "Avläs-och-bygg-receptet",
+      "move": "Läs y-skärningen där linjen korsar y-axeln (= m), räkna lutningen som lodrät genom vågrät mellan två rutnätspunkter (= k), bygg y = kx + m."
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att kasta om delta-x och delta-y: 2 åt höger och 3 upp ger lutning 3/2 istället för 2/3.",
-        "why_wrong": "Lutning = Δy/Δx, inte Δx/Δy. Räkna alltid lodrät förändring DELAT med vågrät."
+        "why_tempting": "Det är lätt att kasta om Δy och Δx och få k = 3/2 istället för 2/3.",
+        "why_wrong": "Steg 6 visar att lutning = Δy/Δx (LODRÄT delat med VÅGRÄT), inte tvärtom. Linjen går 2 upp per 3 åt höger — så k = 2/3, inte 3/2."
       },
       {
         "letter": "C",
-        "why_tempting": "Om du läser fel y-skärning från figuren (positivt istället för negativt) får du y-skärning +3.",
-        "why_wrong": "Figuren visar tydligt att linjen passerar y-axeln under origo, alltså negativ skärning. m = −2."
+        "why_tempting": "Om du läser y-skärningen positivt istället för negativt landar du på m = +3.",
+        "why_wrong": "Steg 5 visar att figuren har linjen som korsar y-axeln UNDER origo, alltså negativ skärning. m = −2, inte +3."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att kombinera båda felen (ombytt lutning + fel tecken på y-skärningen).",
-        "why_wrong": "Lutning är 2/3 (inte 3/2) och y-skärning −2 (inte +3). Båda ska stämma."
+        "why_tempting": "Snabbsvar är ofta att kombinera båda felen (k vänt fel + m positiv).",
+        "why_wrong": "Steg 8 påminner att BÅDA värdena måste stämma. k = 2/3 (inte 3/2) OCH m = −2 (inte +3) — D fallerar på båda räkningar."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figuren framgår att linjen skär y-axeln i -2 och lutar uppåt med lutning \\frac{2}{3} (för varje 3 steg höger går linjen 2 steg upp). Det ger ekvationen y=\\frac{2}{3}x-2.",
-    "technique": "Linje från graf: läs y-skärningen direkt vid x=0, läs lutningen som Δy/Δx mellan två avlästa punkter.",
-    "framework_id": "XYZ-TRAP-051"
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Figuren visar en rät linje i ett koordinatsystem. Vi ska välja den ekvation som matchar linjen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "k-form igen",
+        "text": "Standardformen är y = kx + m. Vi ska bestämma k och m ur figuren och matcha mot alternativen.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad är lutning?",
+        "text": "Lutningen k = \\frac{\\Delta y}{\\Delta x} = lodrät förändring delat med vågrät förändring mellan två punkter på linjen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vad är y-skärning?",
+        "text": "y-skärningen m är y-värdet där linjen korsar y-axeln (vid x = 0). Läs av direkt i figuren.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Läs av y-skärningen",
+        "text": "Linjen passerar y-axeln under origo, vid y = −2. Alltså m = −2.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Välj två rutnätspunkter",
+        "text": "Identifiera två punkter där linjen tydligt passerar genom rutnätshörn — t.ex. (0, −2) och (3, 0). Räkna Δy = 0 − (−2) = 2 och Δx = 3 − 0 = 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna lutningen",
+        "text": "k = \\frac{\\Delta y}{\\Delta x} = \\frac{2}{3}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Bygg ekvationen",
+        "text": "Sätt ihop: y = \\frac{2}{3}x + (-2) = \\frac{2}{3}x - 2. Detta är alternativ A.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera med en punkt",
+        "text": "Testa x = 3: y = (2/3)·3 − 2 = 2 − 2 = 0. Linjen ska passera (3, 0) — det stämmer med figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med en till",
+        "text": "Testa x = 6: y = (2/3)·6 − 2 = 4 − 2 = 2. Linjen ska passera (6, 2) — kontrollera mot figuren, stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar A: y = \\frac{2}{3}x - 2. Insikten i en mening: läs y-skärningen direkt vid x = 0, räkna lutningen Δy/Δx mellan två rutnätspunkter, sätt ihop till y = kx + m.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2026-kvant2-XYZ-005": {
     "_meta": {
-      "generated_at": 1778413273816,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": "XYZ-TRAP-017",
+    "solution_path": "Räkna täljaren först: \\frac{1}{4} + \\frac{1}{5} = \\frac{5 + 4}{20} = \\frac{9}{20}. Dela med 1/6 = multiplicera med 6: \\frac{9}{20} \\cdot 6 = \\frac{54}{20} = \\frac{27}{10}.",
+    "technique": "Sammansatt bråk: lös täljare för sig (gemensam nämnare → addera täljare), använd sedan att 'dela med ett bråk = multiplicera med dess invers' för huvudoperationen.",
+    "pitfall": "Botemedlet mot 'dela-med-själva-bråket': att dela med 1/6 är att MULTIPLICERA med 6, inte att multiplicera med 1/6. Resultatet blir större, inte mindre.",
+    "pregrade_tactic": {
+      "handle": "Invers-multiplikationen",
+      "move": "Vid 'dela med ett bråk', vänd bråket upp och ner och multiplicera istället — då försvinner alla sammansatta bråk."
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Om du minns regeln som 'addera täljare och nämnare var för sig' blir täljaren \\frac{1+1}{4+5}=\\frac{2}{9}, sen delat med 1/6 = 12/9 = 4/3 — fel men nära 1/27 om man dessutom inverterar.",
-        "why_wrong": "Bråkaddition kräver gemensam nämnare. \\frac{1}{4}+\\frac{1}{5}=\\frac{9}{20}, inte \\frac{2}{9}."
+        "why_tempting": "Om du minns regeln som 'addera täljare och nämnare var för sig' kan du få fel täljare och hamna långt från sanningen.",
+        "why_wrong": "Steg 4 visar att 1/4 + 1/5 = 9/20 (gemensam nämnare först!), INTE 2/9. Med fel täljare blir hela divisionen fel."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid täljaren (\\frac{9}{20}) och MULTIPLICERAR med 1/6 istället för att dela: \\frac{9}{20}\\cdot\\frac{1}{6}=\\frac{3}{40} ≈ 2/3 vid avrundning.",
-        "why_wrong": "Att dela med ett bråk = multiplicera med dess INVERS, inte med själva bråket. Vänd 1/6 till 6/1."
+        "why_tempting": "Många stannar vid att multiplicera 9/20 med 1/6 istället för att dela med 1/6 — det ger 9/120 ≈ liten siffra.",
+        "why_wrong": "Steg 7 visar att DELA med 1/6 = MULTIPLICERA med 6, inte med 1/6. Skillnaden är en faktor 36, så svaret blir helt annorlunda."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten kan vara att dela 9/20 med 6 istället för med 1/6: \\frac{9}{20\\cdot 6}=\\frac{9}{120}=\\frac{3}{40}, fel inverterad gradigt.",
-        "why_wrong": "Dela med 1/6 är att GÅNGA med 6, inte att dela med 6. Resultatet blir större, inte mindre."
+        "why_tempting": "Första instinkten kan vara att dela 9/20 med 6 (snarare än med 1/6) och få 9/120 = 3/40.",
+        "why_wrong": "Steg 6 påminner: 'dela med ett bråk' är inte samma som 'dela med dess nämnare'. 1/6 ≠ 6 i en division — invertera bråket istället."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Räkna täljaren först: \\frac{1}{4}+\\frac{1}{5}=\\frac{5+4}{20}=\\frac{9}{20}. Att dela med 1/6 = att multiplicera med 6: \\frac{9}{20}\\cdot 6=\\frac{54}{20}=\\frac{27}{10}.",
-    "technique": "Sammansatt bråk: lös täljare och nämnare var för sig, dela sedan = multiplicera med inversen av nämnaren.",
-    "framework_id": "XYZ-TRAP-017"
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Beräkna värdet av \\frac{\\frac{1}{4} + \\frac{1}{5}}{\\frac{1}{6}}. Ett sammansatt bråk där täljaren är en summa och nämnaren är ett bråk.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Räkneordning för sammansatta bråk",
+        "text": "Räkna täljare och nämnare var för sig först (förenkla dem till enkla bråk), gör sedan den yttre divisionen.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Gemensam nämnare",
+        "text": "Två bråk kan adderas endast med gemensam nämnare. För 1/4 och 1/5: MGN = 4·5 = 20 (eftersom 4 och 5 saknar gemensamma faktorer).",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Räkna täljaren",
+        "text": "\\frac{1}{4} = \\frac{5}{20}, \\frac{1}{5} = \\frac{4}{20}. Summa: \\frac{5 + 4}{20} = \\frac{9}{20}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skriv om bråket",
+        "text": "Efter steg 4: \\frac{9/20}{1/6}. Bara den yttre divisionen kvar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Regel: dela med ett bråk",
+        "text": "Grundregel: \\frac{a}{b} \\div \\frac{c}{d} = \\frac{a}{b} \\cdot \\frac{d}{c}. 'Vänd det andra bråket och multiplicera.'",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tillämpa regeln",
+        "text": "\\frac{9}{20} \\div \\frac{1}{6} = \\frac{9}{20} \\cdot \\frac{6}{1} = \\frac{9 \\cdot 6}{20}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Multiplicera",
+        "text": "\\frac{9 \\cdot 6}{20} = \\frac{54}{20}.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Förkorta",
+        "text": "54 och 20 har gemensam faktor 2: \\frac{54}{20} = \\frac{27}{10}. Det är slutsvaret.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med decimaltal",
+        "text": "1/4 + 1/5 = 0,25 + 0,20 = 0,45. 0,45 / (1/6) = 0,45 · 6 = 2,7. Och 27/10 = 2,7. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar D: \\frac{27}{10}. Insikten i en mening: lös täljare för sig (gemensam nämnare!), använd sedan 'dela med ett bråk = multiplicera med dess invers' — så löses sammansatta bråk mekaniskt.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2026-kvant2-XYZ-007": {
     "pregrade_tactic": {
@@ -6741,29 +6887,103 @@
   },
   "var-2026-kvant2-XYZ-010": {
     "_meta": {
-      "generated_at": 1778413273816,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": null,
+    "solution_path": "Identifiera triangeln ACE inuti kvadraten ABDF. Välj en bas av triangeln längs en riktning där höjden är lättavläst (vinkelräta avstånd ur figuren). Tillämpa areaformeln A = \\frac{1}{2} \\cdot bas \\cdot höjd. Med figurens mått ger formeln A = 4 cm².",
+    "technique": "Triangelarea inuti polygon: välj en bas längs en lätt riktning (helst horisontellt eller vertikalt), bestäm höjden som det vinkelräta avståndet från tredje hörnet till basen, multiplicera enligt b·h/2.",
+    "pitfall": "Botemedlet mot 'antagen-halva-kvadraten': att triangel inuti kvadrat = halva kvadraten gäller BARA när två hörn ligger på samma sida av kvadraten. Annars beror arean på var hörnen ligger — räkna med b·h/2.",
+    "pregrade_tactic": {
+      "handle": "Bas-och-höjd-receptet",
+      "move": "Välj triangelns bas längs en riktning där höjden (vinkelrätt avstånd) är lättavläst — sedan är b·h/2 mekaniskt."
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna med fel höjd — t.ex. ta hela kvadratens sida som höjd när bas är diagonalen: \\frac{1}{2}\\cdot 7\\cdot 1=3{,}5 cm².",
-        "why_wrong": "Triangelns höjd är inte hela kvadratens sida när basen är diagonalt orienterad. Använd vinkelrätt avstånd från E till linjen AC."
+        "why_tempting": "Det är lätt att räkna med fel höjd — t.ex. ta hela kvadratens sida som höjd när basen är diagonalt orienterad.",
+        "why_wrong": "Steg 6 understryker att höjden måste vara VINKELRÄT mot vald bas, inte längs någon annan riktning. Med rätt vinkelrät höjd blir arean 4 cm², inte 3,5."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att triangeln är hälften av kvadraten — fast det är bara fallet när två hörn av triangeln är hörn av kvadraten på samma sida.",
-        "why_wrong": "Beroende på var E ligger inuti kvadraten varierar arean. Här ger figuren area exakt 4 cm², inte halva kvadraten."
+        "why_tempting": "Många stannar vid att triangel inuti kvadrat = halva kvadraten — men det gäller bara i specialfallet med två hörn på samma sida.",
+        "why_wrong": "Steg 7 visar att om E ligger på en annan sida eller inuti kvadraten varierar arean. Här ger figurens placering exakt 4 cm² via b·h/2, inte hälften av kvadraten (4,5 cm²)."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta att avrunda uppåt om man tror sig ha gjort något fel: 4 → 5.",
-        "why_wrong": "Areaformeln ger ett exakt heltal (4 cm²) i den här konfigurationen — ingen avrundning behövs."
+        "why_wrong": "Steg 9 visar att areaformeln ger ett EXAKT heltal (4 cm²) — ingen avrundning behövs. Slumpvis 'rundning uppåt' är inte en räknemetod."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figuren bildar ACE en triangel inuti kvadraten ABDF. Med kvadratens sidlängd avläst i figuren och triangelns bas och höjd identifierade ger areaformeln \\frac{1}{2}\\cdot bas\\cdot höjd=4 cm².",
-    "technique": "Triangelarea inuti polygon: identifiera bas (sida av triangeln längs en lättavläst riktning) och höjd (vinkelrätt avstånd från tredje hörnet till bas)."
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "ABDF är en kvadrat. Punkterna C och E är markerade i figuren (på sidor av kvadraten eller relativa till den). Vi ska räkna ut arean av triangeln ACE.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en kvadrat?",
+        "text": "En fyrhörning med alla sidor lika långa och alla vinklar 90°. Kvadratens area = s² där s är sidlängden.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Areaformel triangel",
+        "text": "Grundregel: A_{triangel} = \\frac{1}{2} \\cdot bas \\cdot höjd, där höjden är det VINKELRÄTA avståndet från det tredje hörnet till basen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 'höjd' i en triangel?",
+        "text": "Höjden är inte 'någon sida' — den är det vinkelräta avståndet från ett hörn till motsatt sida (basen). Höjden ligger inuti triangeln för spetsiga trianglar, utanför för trubbiga.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Läs av kvadraten",
+        "text": "Bestäm kvadratens sidlängd ur figuren — det är referensmåttet. Markera hörn A, B, D, F och därefter punkterna C och E på kvadratens sidor.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Välj triangelns bas",
+        "text": "Välj den sida av triangeln ACE som är lättast att läsa av — gärna en som ligger längs en av kvadratens sidor eller diagonal. Notera basens längd.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Bestäm höjden",
+        "text": "Mät det vinkelräta avståndet från det tredje hörnet (det som inte ligger på basen) till basen. Använd kvadratens rutnät som hjälp.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut arean",
+        "text": "Tillämpa A = \\frac{1}{2} \\cdot bas \\cdot höjd. Med figurens mått ger formeln A = 4 cm².",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera med alternativ bas",
+        "text": "Välj en ANNAN sida av triangeln som bas och räkna höjden vinkelrätt mot den. Areaformeln ska ge samma resultat (4 cm²) — det är en suverän konsekvenskontroll.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity check mot kvadraten",
+        "text": "Triangeln ACE ska vara mindre än kvadraten ABDF. Om kvadraten har sida t.ex. 3 cm är dess area 9 cm², och 4 cm² ligger rimligt under det — pratar inte om halva kvadraten heller, så c (4,5) är fel utan motivering.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar B: 4 cm². Insikten i en mening: triangelns area = ½ · bas · vinkelrät höjd — välj basen längs en lätt riktning, läs höjden ur rutnätet, multiplicera mekaniskt.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2026-kvant2-XYZ-012": {
     "pregrade_tactic": {
@@ -6866,238 +7086,688 @@
     "technique": "Tecken-faktoriserings-strategin: när uttrycket innehåller hög-grads-termer (a²b, ab²), faktorisera till produkt av enklare termer (ab(a - b)) och analysera tecknen var för sig. Triggern: 'tecken-villkor på produkt → faktorisera, sedan tecken-analysera varje faktor'."
   },
   "var-2026-verb1-ELF-031": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage lists comics' inherent strengths but then pivots: 'making good comics takes as much time and skill as making a good documentary' and 'the communication of science in comics will be only as good as the comics themselves'. Effectiveness depends on design quality. Answer B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need the writer's central argument about comics for science learning. Not just one feature — the conclusion they reach about what makes comics actually work.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Promising tool' = potentially useful but not yet proven. 'A more fundamental question' = the deeper test the writer wants to apply. When an author flags a 'fundamental question' or a 'however', the argument's centre of gravity is downstream of that pivot.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Track the pivot",
+        "text": "Paragraph one praises comics: storytelling + diagrams + metaphor. Then comes 'A more fundamental question, however, remains to be answered: Do comics actually improve learning or engagement with science?' That 'however' signals the writer is moving from features to test.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Read the verdict",
+        "text": "The writer concedes some research is encouraging but then warns: 'although they may be easy to read, making good comics takes as much time and skill as making a good documentary. At the end of the day, the communication of science in comics will be only as good as the comics themselves.' The verdict is conditional on craft.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option B — 'Making them effective requires them to be very well designed' — paraphrases 'as much time and skill as a good documentary' + 'only as good as the comics themselves'. Effectiveness hinges on design quality.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A says comics mainly simplify — but the passage credits comics with story + structure + metaphor, not simplification specifically. C predicts entertainment-only — the passage frames comics as a learning tool. D says they target the already-interested — contradicted by 'engaging those readers who are less likely to seek other forms of science communication'.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer B. The insight in one sentence: when a passage names a tool's promise and then attaches a 'but only if…' clause, the right answer captures the condition, not the promise.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read comics as inherently simplified.",
-        "why_wrong": "The passage credits comics with combining storytelling, structure, metaphor — not simplification specifically."
+        "why_tempting": "It's easy to read 'comics' and assume the writer's point is that they simplify science.",
+        "why_wrong": "Step 4 shows the writer credits comics with combining storytelling, diagram structure, and metaphor — not bare simplification. The argument is about craft, not dumbing down."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at 'engaging storytelling' and infer entertainment-only future.",
-        "why_wrong": "The passage frames comics as a learning tool — not destined for pure entertainment."
+        "why_tempting": "Many stop at 'engaging storytelling' and predict comics will drift toward entertainment.",
+        "why_wrong": "Step 3 shows the writer treats comics as a science-communication tool throughout — the question is whether they educate, not whether they entertain. The 'entertainment-only future' is not the argument."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on a science-communication tool is preaching to the converted.",
-        "why_wrong": "The passage explicitly says comics may reach 'readers who are less likely to seek other forms of science communication' — they target NEW audiences."
+        "why_tempting": "First instinct on niche media is that they preach to the converted.",
+        "why_wrong": "Step 6 shows the passage explicitly says comics may engage 'readers who are less likely to seek other forms of science communication' — they target NEW audiences, not just current science fans."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage says 'making good comics takes as much time and skill as making a good documentary' and 'the communication of science in comics will be only as good as the comics themselves'. Quality requires real craft. Answer B.",
-    "technique": "When the passage names design quality as the deciding factor for effectiveness, the right answer captures the design-craft requirement."
+    "technique": "On 'what is argued' questions, find the conditional sentence — usually a 'however', 'yet', or 'only as good as' clause near the end of the passage. The writer's actual argument lives in that condition, not in the upstream list of features.",
+    "pitfall": "The cure for picking 'feature' answers: ask 'what does the writer say has to be TRUE for this to work?' Features describe what comics could do; the argument is the condition that decides whether they actually will.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The only-as-good-as clause",
+      "move": "Find the 'only as good as…' or 'requires…' clause in the closing — the right answer paraphrases the condition, not the upstream promise."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb1-ELF-032": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Olivola and Todorov's conclusion: appearance-based judgments are 'particularly hard to correct' because they are 'speedy, automatic, and implicit', and 'often people don't even recognize they are forming judgments about others from their appearances'. Unconscious opinions resist change. Answer D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "'What is said here?' — i.e. what claim is the passage making? We're looking for the option that the text actually supports, not the option that sounds true in general.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Implicit' = below the level of conscious awareness. 'Trait inference' = guess about someone's personality. 'Unawares' / 'unconscious' = without the person noticing. These are technical terms the passage hangs its argument on.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Locate the conclusion sentence",
+        "text": "Olivola and Todorov say plainly: 'Getting people to overcome the influence of first impressions will not be an easy task. The speed, automaticity, and implicit nature of appearance-based trait inferences make them particularly hard to correct.' That's the explicit claim.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Read the second part",
+        "text": "And: 'Moreover, often people don't even recognize that they are forming judgments about others from their appearances.' That extends the point — unconscious formation makes correction harder.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option D — 'Opinions formed unawares are often more difficult to change than conscious ones' — paraphrases 'implicit… particularly hard to correct' + 'don't even recognize they are forming judgments'. Direct hit on the conclusion.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A invents an overconfident-vs-clever-looking comparison the passage never makes. B says the brain is good at distinguishing inherent traits — but the passage describes voters being SWAYED by appearance, not being accurate. C says elections are decided ENTIRELY by appearance — the passage says voters 'rely heavily', not exclusively.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer D. The insight in one sentence: 'what is said here' questions reward the option that paraphrases an actual sentence — not the option that sounds like a reasonable extension.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'rapid judgments' as preferring confident-looking candidates.",
-        "why_wrong": "The passage doesn't compare overconfident to clever-looking — it describes general appearance-based trait inferences."
+        "why_tempting": "It's easy to read 'rapid judgments about personality' and import a familiar finding about confident-looking candidates.",
+        "why_wrong": "Step 6 shows the passage never compares overconfident-looking to clever-looking candidates. Bringing in outside knowledge is exactly the trap on 'what is said here' questions."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at 'predict electoral success' and infer brain accuracy.",
-        "why_wrong": "The passage describes voters being SWAYED by appearance — not that those judgments are accurate."
+        "why_tempting": "Many stop at 'predict electoral success' and infer the brain is accurate at reading inherent traits.",
+        "why_wrong": "Step 6 shows the passage describes voters being swayed by appearance — it does not claim those appearance-based inferences are accurate. Predicting election outcomes is about what voters DO, not what is TRUE."
       },
       {
         "letter": "C",
-        "why_tempting": "First instinct on appearance-driven voting is to overstate the role.",
-        "why_wrong": "Appearance influences voting heavily but voters also navigate other information — the passage doesn't say elections are decided ENTIRELY by appearance."
+        "why_tempting": "First instinct on appearance-driven voting is to maximize: elections are decided entirely by looks.",
+        "why_wrong": "Step 6 shows the passage says voters 'rely heavily' on appearance and navigate 'a flood of information' — appearance is a major shortcut, but not the only input."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Olivola and Todorov conclude that appearance-based judgments are 'particularly hard to correct' because they are 'speedy, automatic, and implicit' — and people 'don't even recognize that they are forming judgments about others from their appearances'. Unconscious opinions resist change. Answer D.",
-    "technique": "When the passage names judgments as 'speedy, automatic, implicit' and 'hard to correct', the right answer captures unconscious opinions' resistance to change."
+    "technique": "On 'what is said here?' questions, find the option that quotes — almost verbatim — a sentence from the passage. Reject options that generalise, maximise ('entirely'), or import outside knowledge.",
+    "pitfall": "The cure for over-reading: anchor every wrong option against a specific sentence. If the option's claim doesn't appear anywhere in the passage, no matter how plausible, it's not 'said here'.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The said-here paraphrase",
+      "move": "Pick the option that is the tightest paraphrase of an actual sentence — reject anything that says 'entirely', 'never' or imports beyond-text knowledge."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb1-ELF-033": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The first two paragraphs set up the romantic 'bygone era' image and then deliver an 'unexpected plot twist – independent bookstores are actually really healthy', backed by seven straight years of growth. The death story was exaggerated. Answer D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need the basic message of paragraphs 1 and 2 — the headline a reader would take away after the first 200 words.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Moribund' = nearly dead. 'Plot twist' = an unexpected reversal. 'Greatly exaggerated' alludes to Mark Twain's joke ('reports of my death have been greatly exaggerated') — a common idiom for 'they're not as dead as you thought'.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Trace the structure of paragraph 1",
+        "text": "Paragraph 1 paints bookstores as romantic, moribund, 'last chance to see' — the standard story. Then it flips: 'Ironically, that reputation may have contributed to an unexpected plot twist – independent bookstores are actually really healthy.' The pivot is the punchline.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Confirm with the numbers in paragraph 2",
+        "text": "Paragraph 2 backs the twist with data: ABA membership grew from 1,712 to 1,775 in one year, seven straight years of growth, sales up ~5% in early 2016, share up from 7% to 10%. The death narrative is clearly contradicted.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option D — 'The death of the bookstore seems to have been greatly exaggerated' — is the exact idiomatic match for 'unexpected plot twist + seven straight years of growth'. The Twain echo is doing the work.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A says demand has been in gradual decline — contradicted by 'seven straight years' growth. B says the emotional image can be retired — the passage uses the romance, doesn't reject it. C says paper is dying — the passage celebrates indies and (later) paper books holding their own.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer D. The insight in one sentence: when a passage opens with a 'reports-of-death' twist, the right answer almost always names the exaggeration.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'bygone era' as gradual decline.",
-        "why_wrong": "The passage notes that the actual numbers are GROWING — long-decline is the wrong story."
+        "why_tempting": "It's easy to read 'bygone era' and 'moribund' as evidence of long, gradual decline.",
+        "why_wrong": "Step 4 shows the numbers refute decline: seven straight years of growth and rising sales. The 'bygone era' framing is precisely what the passage flips."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at 'romantic feelings' and infer dismissing the emotion as outdated.",
-        "why_wrong": "The passage doesn't say the emotional image is now obsolete — it just notes that the death is exaggerated."
+        "why_tempting": "Many stop at the romantic-feelings opening and assume the writer is dismissing that image as outdated.",
+        "why_wrong": "Step 3 shows the passage uses the romantic image as setup, not as a target. The pivot isn't 'stop being sentimental' — it's 'these stores aren't actually dying'."
       },
       {
         "letter": "C",
-        "why_tempting": "First instinct on book-market change is the end of paper.",
-        "why_wrong": "The passage's whole point is paper books AND indie bookstores are alive — not the end of paper."
+        "why_tempting": "First instinct on a piece about bookstore survival is to frame it against the death of paper books.",
+        "why_wrong": "Step 6 shows the first two paragraphs say nothing about paper-vs-digital — that argument arrives later in the passage. The opening is about bookstores, not formats."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The first two paragraphs reveal 'an unexpected plot twist – independent bookstores are actually really healthy' — the death narrative was overdone. Answer D.",
-    "technique": "When the passage's main twist is 'reports of death exaggerated', the right answer names that exaggeration."
+    "technique": "On 'message of the first two paragraphs' questions, locate the pivot sentence ('Ironically', 'But', 'an unexpected twist') — the message is whatever comes AFTER the pivot, not the setup before it.",
+    "pitfall": "The cure for choosing the setup: ignore the romantic/dystopian opening framing. The writer is telling you they're going to overturn it. The right answer is the overturning, not the thing being overturned.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The reports-of-death twist",
+      "move": "When the opening builds a 'dying' image then pivots with 'ironically' or 'plot twist', pick the option that names the exaggeration of the original obituary."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb1-ELF-034": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage contrasts the US (seven straight years of indie growth) with the UK ('the number of independent bookstores shrank 3% in 2015'). Prospects vary by country. Answer C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need what the passage argues about independent bookstores — specifically the geographic and market picture, not their cultural appeal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Prospects' = outlook, future trajectory. 'Vary' = differ. When an option says 'vary a great deal between countries', look in the passage for explicit country contrasts.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Find the US-UK contrast",
+        "text": "The passage says US indies are growing (1,712 → 1,775 stores, seventh straight year) and 'indies accounted for about 10% of all books sold in 2015, up from 7%'. Then: 'It's also not true in the U.K., where the number of independent bookstores (sorry, bookshops) shrank 3% in 2015.'",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Notice the contrast marker",
+        "text": "'It's also not true in the U.K.' is the explicit signal that the writer is drawing a country contrast. The growth story is US-specific; the UK has the opposite trend. Two countries, opposite directions.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option C — 'Their prospects seem to vary a great deal between countries' — is the direct paraphrase of US-growing-vs-UK-shrinking. The 'vary' lands cleanly on the US/UK split.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A says they have a 'dominant market share' — 10% is notable but not dominant. B predicts 'a brilliant future on a global scale' — the UK shrinkage rules out global. D says 'still a long way from realizing their full market potential' — the passage doesn't speak to untapped market; it celebrates current growth where it exists.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer C. The insight in one sentence: when the passage offers a 'true in X, not true in Y' contrast, the right answer captures the variation, not a global generalisation in either direction.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'about 10% of all books sold' as dominant share.",
-        "why_wrong": "10% is a notable but minority share — not dominant."
+        "why_tempting": "It's easy to read 'seven straight years' of growth and 10% share as a dominant position.",
+        "why_wrong": "Step 6 shows 10% is a notable but minority share — chain stores and online retailers still hold the larger pieces. 'Dominant' overstates what the numbers support."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at 'seven straight years' growth and project global brilliance.",
-        "why_wrong": "The UK decline contradicts this — global brilliance isn't the story."
+        "why_tempting": "Many stop at the upbeat US numbers and project a 'brilliant global future' for indies.",
+        "why_wrong": "Step 4 shows the UK 3% shrinkage is the explicit counterexample. A global-brilliant story collapses the moment you account for the UK contrast."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on emerging-market framing is unmet potential.",
-        "why_wrong": "The passage doesn't claim there's much untapped market — it celebrates current growth."
+        "why_tempting": "First instinct on a small-share-but-growing story is to say there's untapped market potential ahead.",
+        "why_wrong": "Step 6 shows the passage doesn't argue indies have unrealised market potential — it argues they have a clear (and modest) niche in the US and are shrinking in the UK. Potential isn't the frame."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage contrasts US (growing indies) with the UK 'where the number of independent bookstores shrank 3% in 2015'. Country variation. Answer C.",
-    "technique": "When the passage contrasts US growth with UK decline, the right answer is country-by-country variation."
+    "technique": "On 'what is argued in relation to X' questions, hunt for the explicit contrast marker ('also not true in', 'unlike in', 'by contrast'). The right answer almost always paraphrases the contrast itself rather than picking one side as universal.",
+    "pitfall": "The cure for projecting US growth globally: read the next paragraph. The writer almost always offsets one country's story with another — when they do, 'vary by country' is the answer, not 'brilliant future everywhere'.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The country-by-country split",
+      "move": "When a passage cites growth data and then says 'it's also not true in [other country]', pick the option that names cross-country variation, not the cheerleader option."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb1-ELF-035": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Brian Lampkin, the Scuppernong owner, says 'We're letting Amazon and Barnes & Noble take care of the best sellers. Where are you going to get poetry? Some Barnes & Nobles you walk into, you're lucky to find Emily Dickinson.' Indies fill a niche — poetry and specialised literature — that chains and online retailers ignore. Answer A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need what is implied about the indie comeback — the deeper reason indies are doing well, not just the surface tactics.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Implied' = suggested but not stated outright. 'Limited readership' = niche audience, smaller than mainstream. When an option says 'fill a gap', look in the passage for things big retailers DON'T do.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Read the Lampkin quote",
+        "text": "Lampkin says Scuppernong stocks a 'literary-leaning list' and adds: 'We're letting Amazon and Barnes & Noble take care of the best sellers. Where are you going to get poetry? Some Barnes & Nobles you walk into, you're lucky to find Emily Dickinson.' Indies cede the mainstream and pick up the niche.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Connect to discovery research",
+        "text": "Right after Lampkin, the passage cites consumer research: 'the best method for book discovery is still standing in a roomful of books and browsing — ahead even of click-tracking, data-mining algorithms.' Indies enable browsing in a curated literary space — exactly the niche-discovery service.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option A — 'They fill a gap with regard to literature aimed at a more limited readership' — is the direct implication of the poetry/literary-leaning quote. Niche literature = limited readership.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "B says e-books threaten indies — but the passage describes e-books receding (28% → 24%). C says social media drives indie profits — social media is one of several mundane causes, not the centre. D predicts online retailers will kill indies — but the passage says both are growing.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer A. The insight in one sentence: when an indie's owner says 'we let the chains have the best sellers, we cover what they don't', the right answer is the niche-filling story.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "It's easy to assume e-books threaten indies.",
-        "why_wrong": "The passage actually describes paper books holding their own — and indie growth coincides with e-book setback."
+        "why_tempting": "It's easy to assume e-books are the natural enemy of any bookstore.",
+        "why_wrong": "Step 6 shows the passage actually frames e-books as receding (from 28% to 24%), and indie growth coincides with that retreat. E-books aren't threatening indies in this story."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at social media boost and infer it as the main revenue driver.",
-        "why_wrong": "Social media is one of several mundane causes — the deeper reason is the niche-market fit."
+        "why_tempting": "Many stop at the social-media mention among the causes and infer it as the main revenue driver.",
+        "why_wrong": "Step 6 shows social media is listed alongside accounting tools and Borders' collapse as 'prosaic' reasons. The deeper, less-tangible reason is the niche fit Lampkin describes."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on online retail share is to predict indie demise.",
-        "why_wrong": "The passage notes online retailers booming AND indies gaining ground — not zero-sum competition."
+        "why_tempting": "First instinct on online competition is that bricks-and-mortar will eventually lose.",
+        "why_wrong": "Step 6 shows the passage explicitly notes online retailers booming AND indies gaining ground in parallel — not a zero-sum fight. Even Amazon opened physical stores."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Lampkin says 'We're letting Amazon and Barnes & Noble take care of the best sellers. Where are you going to get poetry?' Indies serve niche readers. Answer A.",
-    "technique": "When the passage cites a specific niche (poetry) indies cover that chains don't, the right answer captures specialised-readership service."
+    "technique": "On 'what is implied' questions about why a niche player is winning, hunt for a quote where the niche player explicitly cedes the mainstream ('we let X take care of Y') and names what they cover instead. That quoted division of labour is the implication.",
+    "pitfall": "The cure for picking 'social media' or 'e-book threat' answers: separate the prosaic causes (technology, social media, Borders' collapse) from the deeper reason. The question asks about implication — that's the deeper, less-tangible reason, not the bullet-list mundane ones.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The niche-division quote",
+      "move": "Find the quote where the owner says 'we let the big guys take care of X' — the answer is the gap they fill, not the cause-list earlier in the paragraph."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb1-ELF-036": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage tracks e-books from 9% of unit sales in 2010 to 28% in 2013, when 'eventual dominance began to feel like technological manifest destiny'. Then in 2015 'the share of e-books actually receded to 24%' — an unexpected setback to the conquest story. Answer D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need the passage's claim about e-books — specifically how their trajectory has played out, not whether they're good or bad for reading.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Setback' = an unexpected reverse after progress. 'Manifest destiny' = a sense of inevitable expansion (from US 19th-century rhetoric). 'Receded' = pulled back. The combination 'unexpected setback' fits 'rose then fell back' tightly.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Trace the numbers",
+        "text": "9% (2010) → 28% (2013) → 24% (2015). The 28% peak was when dominance 'began to feel like technological manifest destiny'. The 24% is a real, measurable retreat — not the trajectory anyone predicted.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Note the writer's framing",
+        "text": "The writer prefaces the data with 'a surprise twist in the story of the e-book' — i.e. an unexpected development. That phrase is the structural marker that the answer involves surprise plus reversal.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option D — 'Their continuing success story has suffered an unexpected setback' — pairs 'success story' (9% → 28%) with 'unexpected setback' (28% → 24%). It mirrors both the rise and the surprise reversal.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A says e-books were never seen as a serious threat — contradicted by 'began to feel like technological manifest destiny'. B says takeover is unstoppable — contradicted by the 24% retreat. C says e-books will stay marginal for serious literature — 24% is far from marginal, and the passage doesn't carve out literary readers.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer D. The insight in one sentence: when a passage gives three data points showing rise-then-fall and calls the fall a 'surprise twist', the answer pairs the trajectory with 'unexpected setback'.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read e-book share growth as never a threat.",
-        "why_wrong": "The passage explicitly says e-book dominance 'began to feel like technological manifest destiny' — threat was perceived."
+        "why_tempting": "It's easy to read the e-book retreat as proof e-books were never really threatening.",
+        "why_wrong": "Step 6 shows the passage explicitly says e-book dominance 'began to feel like technological manifest destiny' — the threat was real and widely felt at the 28% peak."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at the initial growth and predict unstoppable takeover.",
-        "why_wrong": "The passage's whole twist is that growth STOPPED — takeover wasn't unstoppable."
+        "why_tempting": "Many stop at the early growth curve (9% → 28%) and project unstoppable takeover.",
+        "why_wrong": "Step 3 shows the trajectory actually reversed: the 24% in 2015 is lower than the 28% in 2013. Unstoppable takeovers don't go backwards."
       },
       {
         "letter": "C",
-        "why_tempting": "First instinct on e-book setback is literary niche resistance.",
-        "why_wrong": "The passage describes e-books at 24% — that's far from marginal."
+        "why_tempting": "First instinct on a setback is that e-books are being rejected for serious literature.",
+        "why_wrong": "Step 6 shows 24% market share is substantial, not marginal. And the passage doesn't draw a 'serious literature vs popular' line — it tracks the overall non-self-published market."
       }
     ],
-    "pitfall": null,
-    "solution_path": "E-books rose from 9% (2010) to 28% (2013), then 'receded to 24%' by 2015 — a setback after years of conquest. Answer D.",
-    "technique": "When the passage names a KULMEN-then-retreat trajectory, the right answer captures the unexpected setback."
+    "technique": "On 'what is said as regards X' questions involving numbers, lay the data points end to end. If they describe rise-then-fall and the writer flags the fall as 'surprise' or 'unexpected', the answer is 'setback to the success story', not 'never a threat' or 'inevitable triumph'.",
+    "pitfall": "The cure for over-correcting either direction: 24% isn't 0% and 28% wasn't 100%. Pick the option that honours both the rise and the reversal — not the option that erases one of them.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The rise-then-recede arc",
+      "move": "When the numbers go up then down and the writer says 'surprise twist', pick the option that says 'success story + unexpected setback' — not the option that nukes either end of the arc."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb1-ELF-037": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The closing says indies face challenges, 'theirs is not a huge growth business. No one's getting rich' — and Lampkin notes 'there's no real reason to do this other than love and commitment'. The motive is non-financial. Answer B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need the passage's concluding take on indie bookstores — not the early data on growth, but the final note the writer wants to leave the reader with.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'In simplistic terms' = boiled down to its essence. 'Not in it just for the money' = motivated by something other than profit. When an owner quote names 'love and commitment' as the reason, look for an option that captures non-financial motivation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Read the closing paragraph",
+        "text": "'No question, indie bookstores face challenges. Theirs is not a huge growth business. No one's getting rich.' Then Lampkin: 'I think they sort of get that there's no real reason to do this other than love and commitment.' The closing pivots from market data to motive.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Compare to option language",
+        "text": "Option B says 'In simplistic terms, they do not seem to be in it just for the money.' 'Simplistic terms' echoes the punchy closing tone ('No one's getting rich'). 'Not in it just for the money' is the exact paraphrase of 'no real reason to do this other than love and commitment'.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option B captures both the closing data ('no one's getting rich') and the closing quote (love/commitment as the motive). It's the only option that names motive rather than predicting market outcomes.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A says long-term profitability is beyond doubt — contradicted by 'no one's getting rich'. C says they'll be temporary — the passage notes seven years of growth and ongoing gain. D says lucrative business — contradicted by Lampkin's 'no real reason… other than love and commitment'.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer B. The insight in one sentence: when a passage ends with a market dataset and an owner quote about motive, the conclusion is usually about motive — not extrapolated profitability.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'gain ground' as a profitable strategy.",
-        "why_wrong": "The passage says explicitly 'no one's getting rich' — profitability isn't beyond doubt."
+        "why_tempting": "It's easy to take 'gaining ground' as evidence of a long-term profitable strategy.",
+        "why_wrong": "Step 6 shows the closing says explicitly 'no one's getting rich' — long-term profitability isn't being claimed, let alone 'beyond doubt'."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at the closing online-retail boom and predict indie demise.",
-        "why_wrong": "The passage's overall message is indie survival — not as a temporary blip."
+        "why_tempting": "Many stop at the closing notes on Amazon's brick-and-mortar push and predict indies will be eclipsed.",
+        "why_wrong": "Step 6 shows the passage celebrates seven straight years of indie growth and frames their survival as the story — not a temporary blip."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on rising sales is lucrative business.",
-        "why_wrong": "The passage celebrates indie GROWTH but says no one's getting rich — modest, not lucrative."
+        "why_tempting": "First instinct on rising sales and store counts is that the business is becoming lucrative.",
+        "why_wrong": "Step 3 shows the closing flatly contradicts this: 'No one's getting rich' and 'love and commitment' as the reason. Growth without lucrativeness is exactly the writer's point."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The closing: 'No one's getting rich' and Lampkin notes 'there's no real reason to do this other than love and commitment'. The motivation is non-financial. Answer B.",
-    "technique": "When the passage closes with 'no one's getting rich' and 'love and commitment', the right answer captures non-pecuniary motivation."
+    "technique": "On 'what is concluded at the end' questions, locate the final owner quote — it often distils the writer's verdict. If the quote names motivation rather than market outcome, the answer is the motivation paraphrase, not the projected business prospect.",
+    "pitfall": "The cure for confusing growth with profit: track the two separately. The passage shows growth ('seventh straight year', 5% sales up) AND modest economics ('no one's getting rich'). The right closing answer holds both — growth happens, but profits don't drive the story.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The love-and-commitment close",
+      "move": "When the final owner quote names motive ('love', 'commitment', 'thank you') rather than dollars, pick the option that says 'not in it just for the money'."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb1-ELF-038": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage argues that as recipes get reinscribed across generations and cultures, 'each new layer tells us something about a different group of consumers: their tastes, their economy, their language and their relationship with those from whom they adopted the dish'. Modifications reveal the eaters. Answer D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need the passage's main argument — the thesis it builds toward, not the surface observation that recipes change.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Reinscribed' = rewritten / re-marked. 'Accretion' = a slow build-up of layers. 'Indirect clues' = signals you read off the artefact rather than being told directly. When the passage talks about 'each new layer tells us something', think 'modifications = evidence about the modifiers'.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Locate the thesis sentence",
+        "text": "'But while the accretion of such alterations may obscure the original, each new \"layer\" tells us something about a different group of consumers: their tastes, their economy, their language and their relationship with those from whom they adopted the dish.' That sentence is the writer's thesis.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Note the diagnostic function",
+        "text": "The thesis treats recipe modifications as DATA about the people who do the modifying. Their tastes, economy, language, and intercultural relationships all leave traces in the new version of the dish. The dish, in other words, indirectly reveals its eaters.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option D — 'Modified dishes may give indirect clues about the people who eat them' — is a direct paraphrase: 'each new layer tells us something about a different group of consumers' = 'indirect clues about the people who eat them'.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A says recipe changes appeal to new consumers — the passage isn't about marketing strategy. B says taste evolution causes acceptance of foreign dishes — the passage tracks what changes reveal, not how acceptance grows. C says modified dishes are only loosely tied to originals — partially true but it's a side observation, not the main argument.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer D. The insight in one sentence: when a passage frames an artefact's changes as evidence about its users, the main argument is the diagnostic claim — not the appeal claim or the drift-from-original claim.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'passed between cultures' as appealing to consumers.",
-        "why_wrong": "The passage doesn't argue for the appeal-strategy of changing recipes — it argues for what the changes REVEAL."
+        "why_tempting": "It's easy to read 'passed between cultures' as a marketing story about appealing to new consumers.",
+        "why_wrong": "Step 6 shows the passage doesn't argue recipe changes are designed to appeal — it argues recipe changes REVEAL who is adapting them. The frame is diagnostic, not commercial."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at the cross-cultural framing and infer taste evolution.",
-        "why_wrong": "The passage doesn't track foreign-food acceptance — it tracks what adaptations tell us about adopters."
+        "why_tempting": "Many stop at 'passed between cultures' and infer the argument is about how foreign food becomes accepted.",
+        "why_wrong": "Step 3 shows the thesis sentence is about what modifications REVEAL — not how new tastes drive acceptance. Acceptance is upstream of the writer's point."
       },
       {
         "letter": "C",
-        "why_tempting": "First instinct on recipe evolution is improvement.",
-        "why_wrong": "The passage doesn't call the modifications improvements — only that they accumulate, sometimes obscuring origins."
+        "why_tempting": "First instinct on accumulated changes is to focus on how far the new version drifts from the original.",
+        "why_wrong": "Step 6 shows that 'obscure the original' is mentioned in passing — the writer immediately pivots to what the layers TELL US about consumers. Drift is acknowledged; it's not the main argument."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage says each new layer of recipe adaptation 'tells us something about a different group of consumers: their tastes, their economy, their language and their relationship'. Modified dishes reveal their eaters. Answer D.",
-    "technique": "When the passage names recipe changes as evidence about their consumers, the right answer captures the diagnostic function."
+    "technique": "On 'main argument' questions, find the sentence where the writer says 'X tells us about Y'. That diagnostic move is almost always the thesis — adaptation as evidence about the adapters.",
+    "pitfall": "The cure for picking the surface observation: ask 'what does the writer want me to LEARN from these changes?' If the answer is 'something about the eaters', pick the option that names that diagnostic reading.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The artefact-as-clue thesis",
+      "move": "When the passage says modifications 'tell us something about' a group, pick the option that says modifications give indirect clues — not the option about appeal, evolution, or drift."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb1-ELF-039": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage says when an albatross female deems a partnership unsuccessful, 'the process is relatively understated and free from noisy squabbles', and 'she will simply appear with a different male in the following breeding season'. The implicit contrast is with human breakups, which the passage frames via 'divorce' and 'romantic-seeming marriages'. Less dramatic than humans. Answer A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need what is IMPLIED about albatross couples — what the passage suggests without saying outright, especially through the comparison with humans.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Understated' = quiet, low-key. 'Free from noisy squabbles' = without loud fights. 'Mate for life' = lifelong partnership. The passage uses human words for animal behaviour — 'marriage', 'divorce', 'partnership' — which sets up an implicit comparison with humans.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Locate the separation description",
+        "text": "'The process is relatively understated and free from noisy squabbles, says University of Lisbon biologist Francesco Ventura. Often when a female deems the partnership unsuccessful over the course of a year, she will simply appear with a different male in the following breeding season.' Quiet swap, not high drama.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Read the implicit human comparison",
+        "text": "By using 'divorce' and 'marriage' in scare quotes for albatrosses, the writer invites the reader to compare with human breakups — which famously involve squabbles, drama, court fights. The contrast is the implication.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option A — 'They separate in a less dramatic fashion than humans do' — is the precise implication: understated + no noisy squabbles + simply appearing with a new partner = less dramatic than the human equivalent.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "B says less stable than most birds — passage says they 'often mate for life', i.e. quite stable. C says behaviour not yet understood — the passage gives a clear account from a named biologist. D says partnerships more temporary than humans' — opposite: 'often mate for life' is typically longer than human marriages.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer A. The insight in one sentence: when a passage uses human words (marriage, divorce) for animal behaviour and then describes the animal version as 'understated', the implication is 'less dramatic than the human version'.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "It's easy to read 'divorce is not unheard of' as instability.",
-        "why_wrong": "The passage says they 'often mate for life' — partnerships are quite stable; divorce is the exception."
+        "why_tempting": "It's easy to read 'divorce is not unheard of' as evidence partnerships are less stable than other birds'.",
+        "why_wrong": "Step 6 shows the passage explicitly says albatrosses 'often mate for life' — they're highly stable as bird partnerships go. Divorce being possible isn't the same as instability being the norm."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at 'not unheard of' and infer ongoing mystery.",
-        "why_wrong": "The passage gives a clear behavioural account — the female 'simply appears with a different male' the next season."
+        "why_tempting": "Many stop at 'a female will simply appear with a different male' and infer the underlying mechanism isn't yet understood.",
+        "why_wrong": "Step 6 shows the passage gives a clear behavioural account from a named biologist (Ventura) with a plausible reason (lack of breeding success). The behaviour is well-described, not mysterious."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on bird partnerships is short-term.",
-        "why_wrong": "The passage stresses 'often mate for life' — their partnerships are typically longer than human ones, not more temporary."
+        "why_tempting": "First instinct on bird relationships is to assume short attachment compared to humans.",
+        "why_wrong": "Step 6 shows the passage says albatrosses 'mate for life' — that's typically LONGER than current human marriage averages, not shorter. The temporal comparison goes the opposite way."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage says 'the process is relatively understated and free from noisy squabbles' — albatross divorce is less dramatic than the human equivalent. Answer A.",
-    "technique": "When the passage names albatross separation as 'understated and free from noisy squabbles', the right answer is less dramatic than human."
+    "technique": "On 'what is implied' questions about animal behaviour described in human vocabulary ('marriage', 'divorce'), the implication is usually a CONTRAST: the animal version is quieter, simpler, or more practical than the human equivalent the writer is invoking.",
+    "pitfall": "The cure for inverting the comparison: re-read the description. If the animal behaviour is described as 'understated' or 'free from noisy squabbles', the implied contrast is with the loud, dramatic human equivalent — not in the other direction.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The understated-animal contrast",
+      "move": "When the passage uses human terms ('marriage', 'divorce') for animals and adds 'understated' or 'quiet', pick the option that says the animal version is less dramatic than the human one."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb1-ELF-040": {
     "pregrade_tactic": {
@@ -9496,134 +10166,384 @@
     "technique": "'___ abound that …' is a fixed English collocation that almost always takes 'rumours' or 'reports' as its subject. Trigger: '___ abound that …' + unconfirmed assertion about a future or behind-the-scenes development = 'Rumours'."
   },
   "var-2026-verb2-ELF-036": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage contrasts US owners (70% indoor cats, motivated by wildlife and traffic concerns) with UK and European owners (70% outdoor, justified by 'cats' wellbeing'). The cats-on-wildlife conversation is well-developed in the US but has had limited reach in Britain. Answer B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need what can be concluded from the first two paragraphs — the takeaway from the US-vs-UK setup, not the later debate about specific solutions.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Limited attention' = the topic has been discussed but not much. 'Laissez-faire' = a hands-off attitude. The US has shifted from 35% indoor cats in the 1990s to 70% today; the UK is still at 70% outdoor — that's where the asymmetry in attention lies.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Trace the US vs UK contrast",
+        "text": "Paragraph 1: US debate 'raging for years'; research shows cats kill billions; 70% of US owners keep cats indoors. Paragraph 2: UK owners 'feel differently'; 70% let cats out; 'cats' wellbeing' is the framing; the EU even endorses free movement. McDonald: 'massive societal difference [from the US].'",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identify the implied claim",
+        "text": "The first two paragraphs show one country (US) actively wrestling with cats-killing-wildlife and another (UK + Europe) prioritising cat wellbeing instead. The implicit conclusion: in Britain, the wildlife-harm angle has had relatively little airtime — not zero, but limited.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option B — 'The negative impact of cats has so far received limited attention in Britain' — paraphrases the US-engaged / UK-cat-wellbeing-first framing. Limited attention is exactly the asymmetry described.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A says European cats are 'overprotected' — the passage describes them being LET OUT, not over-protected. C says Europeans 'deliberately ignored' risks — the passage doesn't say deliberate, just that wellbeing is the priority. D says Americans exaggerate figures — the passage cites US research approvingly, not skeptically.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer B. The insight in one sentence: when a passage shows two countries with opposite priorities, the right takeaway is the relative attention gap in the country where the topic gets less focus — not a moral judgement on either side.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'wellbeing' as cats being overprotected.",
-        "why_wrong": "The UK position prioritises CAT freedom, not protection — wildlife protection is what's missing."
+        "why_tempting": "It's easy to read 'cats' wellbeing' framing as evidence European cats are over-protected.",
+        "why_wrong": "Step 6 shows the European framing emphasises FREEDOM (free movement, outdoor access) — the opposite of over-protection. Cats roam more, not less."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at 'EU declared belief in free movement' and infer deliberate dismissal.",
-        "why_wrong": "The passage doesn't say Europeans CONSCIOUSLY ignored risks — only that risks haven't been the central concern."
+        "why_tempting": "Many stop at 'feel differently' and infer European owners are deliberately dismissing the wildlife risks.",
+        "why_wrong": "Step 6 shows the passage frames the difference as cultural priority, not conscious dismissal. The wildlife risks haven't been the central concern — but that's distance, not active ignoring."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on cross-country differences is to suspect data inflation.",
-        "why_wrong": "The passage doesn't say American figures are exaggerated — it cites US research approvingly."
+        "why_tempting": "First instinct on a cross-country contrast is to suspect the more alarming figures are inflated.",
+        "why_wrong": "Step 6 shows the passage cites US research uncritically and later applies the same logic to the UK ('UK cats kill 160 to 270 million animals annually'). The numbers aren't being challenged."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage contrasts US owners (70% keep cats indoors after wildlife concerns) with UK owners (70% let them out) — and notes the UK position 'considered good for cats' wellbeing'. UK has paid limited attention to cat impact on wildlife. Answer B.",
-    "technique": "When the passage contrasts US wildlife concern with UK cat-wellbeing focus, the right answer captures British under-attention to wildlife impact."
+    "technique": "On 'conclusion from the first two paragraphs' questions, find the explicit cross-country contrast and ask which side has been engaging less with the topic. The right answer names the attention gap, not the moral character of either side.",
+    "pitfall": "The cure for inferring deliberateness: read the framing words. 'Feel differently' and 'considered good for cats' wellbeing' are cultural-priority phrases, not 'consciously ignoring risk' phrases. Limited attention is the right diagnosis.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The attention-asymmetry conclusion",
+      "move": "When two countries have opposite practices (70% indoor vs 70% outdoor) for opposite reasons, pick the option that names the under-discussed angle in the second country — not deliberate dismissal."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb2-ELF-037": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage states 'cats are prolific hunters of wildlife in the UK and Europe, too', cites UK cats killing 160–270 million animals annually, and notes the real figure may be higher. The 'too' explicitly equates UK/European cats with American ones as predators. Answer C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need what the passage says about UK and European cats specifically — their hunting impact compared with American cats.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Prolific hunters' = kill a lot of prey. The word 'too' is doing critical work: 'cats are prolific hunters in the UK and Europe, too' presupposes the same is already true elsewhere — and joins the UK side to the American side as equally dangerous.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Locate the equating sentence",
+        "text": "'But cats are prolific hunters of wildlife in the UK and Europe, too. A study based on the 2011 pet population estimates that UK cats kill 160 to 270 million animals annually, a quarter of them birds. The real figure is likely to be even higher.' That's the direct claim.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Distinguish cats from wildlife adaptation",
+        "text": "Later, the passage says Europeans have 'a much longer history of dealing with' cats — but that's about wildlife adapting, not about cats becoming less dangerous. The cats themselves still hunt at the same scale; the ecosystems have had longer to absorb the pressure.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option C — 'They are no less dangerous to other animals than are American cats' — paraphrases 'prolific hunters… too'. 'No less dangerous' is the negative-construction equivalent of 'equally dangerous'.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A says they cause less harm than American cats — contradicted by the 'too' and the 160–270 million figure. B says hunting behaviour modified by long history — the passage attributes the adaptation to wildlife, not cat behaviour. D says owners domesticated cats differently — the passage describes the same species, with variation only in owner practice (indoor vs outdoor), not in domestication.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer C. The insight in one sentence: the word 'too' in 'prolific hunters… too' is a tight equating signal — the answer says UK cats are 'no less dangerous' than American ones.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'much longer history' as adaptation reducing harm.",
-        "why_wrong": "The passage compares LONGER coexistence (so wildlife may have adapted) but cats themselves haven't become less dangerous."
+        "why_tempting": "It's easy to read 'much longer history of dealing with any impact' as evidence cats cause less harm in Europe.",
+        "why_wrong": "Step 6 shows the 160–270 million annual kills (and 'likely even higher') match or exceed the American framing. The 'history' point is about wildlife adapting, not cats hunting less."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at the long history and infer modified behaviour.",
-        "why_wrong": "The passage doesn't claim cats hunt less now — only that European wildlife has had more time to deal with them."
+        "why_tempting": "Many stop at the long European history and infer cats have evolved more gentle hunting behaviour.",
+        "why_wrong": "Step 4 shows the adaptation belongs to the WILDLIFE, not the cats. Cats are still 'prolific hunters' in the UK — their behaviour is not modified, only the ecosystem's tolerance is."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on cultural differences is varying domestication.",
-        "why_wrong": "The passage describes the same species behaving similarly — the variation is in OWNER PRACTICE, not cat domestication."
+        "why_tempting": "First instinct on cross-country cat behaviour differences is to credit different domestication.",
+        "why_wrong": "Step 6 shows the passage talks about owner practice (indoor vs outdoor), not about cats themselves being domesticated differently. The species is the same; the management differs."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage says 'cats are prolific hunters of wildlife in the UK and Europe, too' and gives 160-270 million animals killed annually by UK cats. Equally dangerous. Answer C.",
-    "technique": "When the passage explicitly says UK cats are 'prolific hunters... too', the right answer captures equal dangerousness."
+    "technique": "On 'what is said about X' questions involving cross-country comparisons, look for the equating word — 'too', 'as well', 'no less than'. These words signal that the answer flattens the apparent geographic difference, not amplifies it.",
+    "pitfall": "The cure for confusing wildlife adaptation with cat adaptation: separate the actor. If the passage says 'we've had longer to deal with the impact', the WILDLIFE has had longer — not the cats. Cats remain equally lethal predators.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The prolific-too equating",
+      "move": "When the passage says 'cats are prolific hunters in X, too', pick the option that says UK cats are no less dangerous — not the option that credits long coexistence to softer cats."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb2-ELF-038": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The RSPB 'is not particularly concerned about the impact of cats on the British mainland' and points to global warming, intensive agriculture, and urban expansion as the actual drivers. Cats mostly take 'the doomed surplus' — weak or injured birds. Cats aren't a significant role in bird decline. Answer C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need the conclusion about cats specifically as a CAUSE of bird decline in Britain — not just whether cats kill birds, but whether they meaningfully drive population decline.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Significant role' = a meaningful contribution to the trend. 'Doomed surplus' = ecology term for individuals likely to die anyway from non-predator causes. If predators take from the doomed surplus, they don't lower the population — they just consume what was already lost.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Read the RSPB position",
+        "text": "'The UK's biggest bird charity, the Royal Society for the Protection of Birds, is not particularly concerned about the impact of cats on the British mainland. Instead, it focuses on what it says is driving UK bird declines: global warming, intensive agriculture and expanding towns and cities leading to habitat and food loss.' That's the central UK authority's view.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Add the doomed-surplus argument",
+        "text": "'A big reason why it is less worried is the evidence that cats primarily take \"the doomed surplus\": weak or injured birds likely to die anyway.' This is the mechanism that exonerates cats from driving decline — they don't subtract additional birds beyond the natural baseline.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option C — 'Overall, cats can hardly be assigned a significant role' — paraphrases 'not particularly concerned' + 'doomed surplus' + 'climate/agriculture/urbanisation are the drivers'. Cats aren't the meaningful actor in the decline story.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A says cats have been universally blamed — the RSPB and Baker explicitly don't blame them. B says cat owners fail their responsibility — the question is about cats' role in DECLINE, not about owner duty. D says cats' impact on bird habitats is beyond doubt — habitat loss is attributed to climate/agriculture/urbanisation, not cats.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer C. The insight in one sentence: when the leading bird-protection authority isn't worried about predator X and names other causes for the decline, the right answer downgrades X's role.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read the public debate as universal blame.",
-        "why_wrong": "The passage shows the RSPB and Baker both downplaying cats' role in bird declines — blame isn't universal."
+        "why_tempting": "It's easy to read the cats-kill-millions framing as 'universally blamed' for bird decline.",
+        "why_wrong": "Step 6 shows both the RSPB and Baker explicitly DON'T blame cats — they name climate, agriculture, urbanisation. Universal blame is the opposite of the experts' position."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at the controversy and infer owner failures.",
-        "why_wrong": "The question is about cats' role in bird decline, not about owner responsibility — and cats are exonerated for declines."
+        "why_tempting": "Many stop at the welfare-issue framing and infer the answer is about owner responsibility.",
+        "why_wrong": "Step 6 shows the question is about cats' role in bird DECLINE, not about whether owners are responsible. Owner duty is a separate axis the passage doesn't pin to bird-decline causality."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on cat impact is harmful habitat effect.",
-        "why_wrong": "Cats kill individual birds, but the passage attributes habitat loss to humans (climate, agriculture, urbanisation), not cats."
+        "why_tempting": "First instinct on cats and birds is that cats clearly harm bird habitats.",
+        "why_wrong": "Step 3 shows habitat loss is attributed to human activity (climate, agriculture, urbanisation). Cats are predators, not habitat destroyers — the harm pathway in option D is misassigned."
       }
     ],
-    "pitfall": null,
-    "solution_path": "RSPB 'is not particularly concerned about the impact of cats on the British mainland' and points to climate, agriculture, urbanisation as drivers. Cats take 'the doomed surplus' — not a significant role. Answer C.",
-    "technique": "When the passage names cats taking 'the doomed surplus' and other factors as bird-decline drivers, the right answer downgrades cat role."
+    "technique": "On 'conclusion about cats and decline' questions, look for the named drivers of the decline. If the passage lists climate, agriculture, urbanisation, and the predator authority isn't worried, the predator gets a small role — not the headline blame.",
+    "pitfall": "The cure for conflating 'cats kill birds' with 'cats drive population decline': those are different claims. Cats can kill many individuals without lowering the population if they take the doomed surplus. That distinction is the whole answer.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The doomed-surplus exoneration",
+      "move": "When the passage cites 'doomed surplus' and names climate/agriculture as decline drivers, pick the option that says cats can hardly be assigned a significant role — not the option that blames cats universally."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb2-ELF-039": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage describes 'a growing minority' of British cat owners keeping cats fully indoors and Cats Protection recommending a 'dusk-till-dawn cat curfew'. Even the conflicted experts (Pirie, Cummings) discuss buffer zones and curfews. The trend is toward LESS outdoor freedom. Answer A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need what the passage tells us about the current British debate on cats — the direction it's moving, not the static state of practice.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Trend' = the direction of change. 'Curfew' = a time-limited restriction on movement. 'Growing minority' = still a minority but increasing. When the article describes a movement away from current practice, the trend points away from the status quo.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Read the direction signals",
+        "text": "'Though it is early days, a growing minority are keeping their cats fully indoors.' Cats Protection 'recommends a dusk-till-dawn cat curfew'. Pirie suggests 'cat-free buffer zones around conservation areas'. All three signals point AWAY from unrestricted outdoor access.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Note the counter-current",
+        "text": "Cummings warns that if indoor-only became the norm, some cats would have 'significantly reduced welfare' — there's pushback. But the direction of motion is still toward more restriction; the pushback is a brake, not a reversal.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option A — 'The current trend seems to be heading towards less freedom for cats to spend time outdoors' — paraphrases 'growing minority indoors' + 'curfew' + 'buffer zones'. The qualifier 'seems' fits 'it is early days'.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "B says little interest in the basic issues — but the passage describes active debate with multiple named experts. C says most cat-owners are worried — passage says 'a growing minority', not most. D says cat lovers are 'dead against' restriction — Cummings recommends a curfew, Pirie suggests buffer zones; they're conflicted, not dead against.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer A. The insight in one sentence: when a passage describes 'a growing minority' moving in a new direction and lists specific restrictive proposals, the trend is toward that direction — even if it isn't yet the norm.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "It's easy to read 'British laissez-faire' as continued apathy.",
-        "why_wrong": "The passage describes active discussion, indoor-cat trend, dusk-dawn curfew advice — interest is rising."
+        "why_tempting": "It's easy to read 'British laissez-faire' framing as evidence of continuing public apathy.",
+        "why_wrong": "Step 6 shows the passage describes active discussion — Cats Protection's curfew advice, Pirie's buffer zones, growing indoor-only practice. Apathy is the opposite of what's being described."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at the wildlife framing and assume widespread owner worry.",
-        "why_wrong": "The passage says 'a growing minority' — most owners aren't worried, but some are."
+        "why_tempting": "Many stop at the curfew and indoor-only mentions and infer most owners are worried.",
+        "why_wrong": "Step 6 shows the passage says 'a growing MINORITY' are restricting their cats — explicitly not most. The trend exists but hasn't reached majority yet."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on cat lovers is resistance to restriction.",
-        "why_wrong": "Cat lovers are described as conflicted — they care about wildlife impact too, not 'dead against restriction'."
+        "why_tempting": "First instinct on outdoor-cat lovers is that they'll resist any restriction outright.",
+        "why_wrong": "Step 4 shows that even Cats Protection (a cat-welfare body) recommends a dusk-till-dawn curfew. Cat lovers are conflicted and proposing compromises — not dead against restriction."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage says 'a growing minority are keeping their cats fully indoors' and discusses British movements toward restricting cat freedom (curfews, indoor-only). Trend toward less outdoor freedom. Answer A.",
-    "technique": "When the passage names a growing minority restricting outdoor access, the right answer captures the trend toward less freedom."
+    "technique": "On 'what are we told about the debate' questions, separate the current state (most cats outdoor) from the direction of change (growing minority indoor). The 'trend' answer always describes the direction of motion, not the static majority.",
+    "pitfall": "The cure for picking 'apathy' or 'dead against restriction' answers: count the named experts and proposals. Active debate with curfew recommendations and buffer-zone ideas = engagement, not indifference. Compromise proposals = conflicted, not dead against.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The growing-minority trend",
+      "move": "When the passage says 'a growing minority' plus names restrictive proposals (curfew, buffer zones, indoor-only), pick the option that describes a trend toward less outdoor freedom."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb2-ELF-040": {
-    "_meta": {
-      "generated_at": 1778447640471,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The closing contrasts British voices (Cummings recommending curfews, Pirie suggesting buffer zones, both seeking compromise) with American Peter Marra: 'I don't think there should be a compromise… It's about people taking responsibility for their animal.' The passage ends 'What that means, however, might prove to be a cultural difference.' Clear cross-Atlantic attitude gap. Answer D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need the best summary of the closing remarks specifically — the verdict the passage leaves on the British-vs-American framing of the cat issue.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Clear differences' = distinct, identifiable contrasts. 'Cultural difference' = a difference rooted in shared social attitudes, not just policy. When the closing literally says 'cultural difference', look for the option that names the difference.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Map the two closing camps",
+        "text": "British voices: Cummings (dusk-till-dawn curfew, 'sensible compromise'), Pirie (buffer zones, listen to people's concerns). American voice: Marra ('I don't think there should be a compromise… It's about people taking responsibility'). Compromise vs no-compromise — that's the explicit contrast.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Read the final line",
+        "text": "'But from the perspective of Peter Marra… \"I don't think there should be a compromise,\" he says. \"It's about people taking responsibility for their animal.\" What that means, however, might prove to be a cultural difference.' The passage's last sentence names the difference.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option D — 'Clear differences are to be found between British and American attitudes' — is the direct paraphrase of 'cultural difference'. The British compromise stance vs the American no-compromise stance maps onto 'clear differences in attitudes'.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A says 'profound disagreement on environmental harm' — both sides agree cats hunt wildlife; they disagree on the response. B says British are more ignorant — passage describes informed British debate. C says broad consensus on outdoor access — passage shows opposite: US wants indoor, UK wants compromise.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer D. The insight in one sentence: when a passage closes with explicit comparative phrasing ('a cultural difference'), the right answer paraphrases that phrase — clear differences in attitudes, not in facts.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read the closing as deep disagreement on environmental harm.",
-        "why_wrong": "Both sides ACKNOWLEDGE cats hunt wildlife — the disagreement is on what to do about it, not on the harm itself."
+        "why_tempting": "It's easy to read the disagreement on what-to-do as disagreement on the underlying environmental harm.",
+        "why_wrong": "Step 6 shows both Marra and the British experts accept cats hunt wildlife. The disagreement is about the RESPONSE (compromise vs no-compromise), not about whether harm is real."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at the British downplay-the-impact framing and infer ignorance.",
-        "why_wrong": "The passage describes British discussion as informed — Baker and RSPB engage seriously, not from ignorance."
+        "why_tempting": "Many stop at the British not-particularly-concerned framing and infer broader British ignorance.",
+        "why_wrong": "Step 6 shows the closing British voices are well-informed (Cummings of Cats Protection, Pirie the cat ecologist). The British view is engaged, not ignorant — it's just calibrated differently."
       },
       {
         "letter": "C",
-        "why_tempting": "First instinct on cat owners is shared belief in outdoor access.",
-        "why_wrong": "The US 70% indoor and UK 70% outdoor split shows the OPPOSITE of consensus — clear cultural divide."
+        "why_tempting": "First instinct on a cross-country cat piece is to look for shared belief in outdoor access.",
+        "why_wrong": "Step 6 shows the data refutes consensus: US 70% indoor vs UK 70% outdoor. And Marra explicitly rejects compromise. There is no broad consensus on outdoor access in the closing."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The closing quotes Peter Marra in the US calling for no compromise while UK voices propose curfews and indoor-cat options. 'It's a cultural difference'. Clear differences between US and UK attitudes. Answer D.",
-    "technique": "When the closing names the difference as 'a cultural difference', the right answer captures the British-American attitude divide."
+    "technique": "On 'how can the closing remarks best be summarised' questions, find the explicit summarising phrase at the very end — 'cultural difference', 'a question of priorities', 'unresolved tension'. The right answer paraphrases that exact phrase.",
+    "pitfall": "The cure for inventing 'consensus' or 'profound disagreement on facts': separate fact agreement from response disagreement. Both sides agree cats hunt; they differ on what to do. That's a values/attitude split — a 'cultural difference', not a factual one.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The cultural-difference closer",
+      "move": "When the passage ends with the literal phrase 'cultural difference' (or its near-equivalent), pick the option that names attitude differences between the named countries — not consensus or factual disagreement."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2026-verb2-LÄS-011": {
     "pregrade_tactic": {

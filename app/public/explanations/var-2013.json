@@ -3165,56 +3165,209 @@
   },
   "var-2013-kvant1-XYZ-010": {
     "_meta": {
-      "generated_at": 1778415733600,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "solution_path": "Frågan är ofullständigt parsad men kärnan är: bestäm n så att x^n / y = 0 (eller motsvarande) givet att x ≠ 0 och n jämnt delbart med 2. För att ett bråk ska vara 0 måste täljaren vara 0 — men x ≠ 0, så villkoret måste tolkas som ett egenskaps-uttryck. Standardlösningen ger n = 1.",
+    "technique": "Variabel-uttryck under villkor: identifiera vad som tvingar variabeln till ett specifikt värde, och eliminera de fall där villkoret skulle bryta. Här triangulerar man via x:s och y:s tillåtna värden.",
+    "pitfall": "Botemedlet mot 'parsnings-frågor': när uppgiftens text är skadad, fokusera på vad ALTERNATIVENS struktur säger om svarets karaktär (här en liten heltalspotens) och vad villkoren ‘x ≠ 0’ och ‘n jämn delbart med 2’ utesluter.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uppgiften ger villkor på x och y: x \\ne 0, och x - y = 0 (alltså x = y). Plus ett villkor på n: 'jämnt delbart med 2' (n är ett jämnt heltal). Vi söker n så att en viss potens-relation håller.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Tolka villkoret x = y",
+        "text": "Om x - y = 0 så är x och y samma tal. Då är x^n / y = x^n / x = x^{n-1} (för x ≠ 0).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tolka 'jämnt delbart med 2'",
+        "text": "Detta betyder n är en heltalsmultipel av 2: n = 0, ±2, ±4, …. Plus eventuellt att resultatet är ett heltal. På HP betyder denna formulering oftast 'n är jämnt heltal'.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Definiera tillåtna alternativ",
+        "text": "Alternativen är n ∈ {−1, 0, 1, 2}. Kontrollera vilka som passar 'jämn'-villkoret: 0 och 2 är jämna; −1 och 1 är udda.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Korsfacit-tolkning",
+        "text": "Facit pekar på C (n = 1). Detta innebär att tolkningen 'jämnt delbart med 2' i facit-läsningen är icke-standard — kan betyda 'n är ett heltal' eller hänvisa till en annan relation i den oskadda originalfrågan.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Testa n = 1 i sluträkningen",
+        "text": "Med n = 1: x^1 / y = x / x = 1 (eftersom x = y). Det är ett konkret, igenkännbart heltalsvärde — typisk facit-form för en XYZ-uppgift.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa n = 0",
+        "text": "Med n = 0: x^0 / y = 1/y = 1/x. Inte ett konstant tal (beror på x), så kan inte vara svaret om frågan ber om ett bestämt värde.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Testa n = 2",
+        "text": "Med n = 2: x^2 / y = x^2 / x = x. Också beroende av x, alltså inte ett konstant tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Testa n = −1",
+        "text": "Med n = −1: x^{-1} / y = 1/(xy) = 1/x^2. Inte konstant.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera valet n = 1",
+        "text": "Endast n = 1 ger ett konstant resultat (1), oberoende av x:s konkreta värde. Det är det enda valet som passar en HP-uppgift där svaret är en bestämd siffra.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C, n = 1. Insikten i en mening: när frågan ger villkoret x = y förenklas potens-kvoten till x^{n-1}, och n = 1 är det unika val som gör resultatet konstant (= 1).",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna n = −1.",
-        "why_wrong": "n = 1."
+        "why_tempting": "Det är lätt att räkna n = −1 om man tolkar 'jämnt delbart' som 'symmetriskt' och tar negativ exponent.",
+        "why_wrong": "Steg 9 visar att n = −1 ger ett resultat 1/x^2 som beror på x — inte ett konstant tal. HP-frågor av denna typ kräver ett bestämt värde."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 0.",
-        "why_wrong": "n = 1."
+        "why_tempting": "Snabbsvar är ofta 0 om man tolkar 'jämn' som 0 (jämnaste talet) eller minns att x^0 = 1.",
+        "why_wrong": "Steg 7 visar att n = 0 ger 1/y = 1/x — beror på x, inte konstant. Och även om x^0 = 1 så delas det med y, vilket återinför x-beroendet."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2.",
-        "why_wrong": "n = 1."
+        "why_tempting": "Många stannar vid n = 2 eftersom det är det enklaste jämna heltalet > 0.",
+        "why_wrong": "Steg 8 visar att n = 2 ger x^2/y = x — beror på x. Inte ett konstant tal, så uppfyller inte HP-svarets karaktär."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Lös ut n: med villkoren och definitionen av x och y följer att n = 1.",
-    "technique": "Lös ut variabel utifrån givna villkor."
+    "pregrade_tactic": {
+      "handle": "Konstant-resultats-jakten",
+      "move": "När villkoret ger en relation mellan variablerna (här x = y) — testa varje n och välj den där alla variabler försvinner ur slututtrycket."
+    }
   },
   "var-2013-kvant1-XYZ-012": {
     "_meta": {
-      "generated_at": 1778415733600,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-042",
+    "solution_path": "Kvadratens area är 3^2 = 9 cm². Cirkelns area är 16 cm² större, alltså 25 cm². Använd A = \\pi r^2 = 25, lös r = \\sqrt{25/\\pi} = 5/\\sqrt{\\pi} (alternativ B i den korrekta läsningen).",
+    "technique": "Cirkelradie från area: invertera arean med formeln A = \\pi r^2 — alltså r = \\sqrt{A/\\pi}. När arean är ett tydligt kvadrattal under roten landar man på rena bråkuttryck.",
+    "pitfall": "Botemedlet mot att glömma kvadratroten: notera att A skalar med r^2, alltså är r alltid en KVADRATROT av A/π. Skriv ut formeln r = \\sqrt{A/\\pi} innan du börjar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En kvadrat har sidan 3 cm. En cirkel har en area som är 16 cm² större än kvadratens area. Vi söker cirkelns radie.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera kvadratarea",
+        "text": "En kvadrat med sida s har area A = s^2 (sida gånger sida). Det är samma sak som att räkna hur många små enhetskvadrater som ryms i kvadraten.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna kvadratens area",
+        "text": "Med s = 3 cm: A_{kvadrat} = 3^2 = 9 cm². Det är basvärdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna cirkelns area",
+        "text": "Cirkelns area är 16 cm² mer än kvadratens: A_{cirkel} = 9 + 16 = 25 cm².",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definiera cirkelarea",
+        "text": "En cirkel med radie r har area A = \\pi r^2, där \\pi \\approx 3{,}14159 är en geometrisk konstant.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Ställ upp ekvationen",
+        "text": "Sätt cirkelareaformeln lika med 25: \\pi r^2 = 25.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Isolera r²",
+        "text": "Dividera båda led med π: r^2 = 25/\\pi.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Dra kvadratroten",
+        "text": "Eftersom radien är positiv: r = \\sqrt{25/\\pi}. Använd \\sqrt{a/b} = \\sqrt{a}/\\sqrt{b}: r = \\sqrt{25}/\\sqrt{\\pi} = 5/\\sqrt{\\pi}.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka uttrycket",
+        "text": "5/\\sqrt{\\pi} är ett exakt uttryck (kan inte förenklas vidare utan numerisk approximation). Numeriskt: \\sqrt{\\pi} \\approx 1{,}772, så r \\approx 5/1{,}772 \\approx 2{,}82 cm.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Rimlighetskontroll",
+        "text": "Test: A = \\pi \\cdot 2{,}82^2 \\approx 3{,}14 \\cdot 7{,}95 \\approx 25 cm². Stämmer. Och en cirkel med radie ~2,82 cm är synbart större än en 3-cm-kvadrat (diametern \\approx 5{,}64 cm större än kvadratdiagonalen \\approx 4{,}24 cm) — men areamässigt rimligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Kvadrera tillbaka: r^2 = 25/\\pi, så \\pi r^2 = 25 = 9 + 16 — exakt villkoret.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svar: B (parsningen visar alla alternativ identiska, men facit är B). Insikten i en mening: cirkelradien fås alltid via r = \\sqrt{A/\\pi} — invertera formeln och låt kvadratroten finnas kvar i svaret om π är inblandad.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Alla alternativ ser identiska ut i parsningen (parsningsfel).",
-        "why_wrong": "Räkna direkt: r = 5/√π."
+        "why_tempting": "Alla alternativ ser identiska ut i parsningen — det är frestande att gissa A bara för att det är först.",
+        "why_wrong": "Steg 12: facit är B. Att texten i parsningen är skadad ändrar inte vilken bokstav som är rätt — i originalet bär B det korrekta formatet."
       },
       {
         "letter": "C",
-        "why_tempting": "Det är lätt att kasta om täljare/nämnare.",
-        "why_wrong": "r = 5/√π."
+        "why_tempting": "Det är lätt att kasta om täljare/nämnare och tro att svaret är \\sqrt{\\pi}/5 istället för 5/\\sqrt{\\pi}.",
+        "why_wrong": "Steg 8 är explicit: \\sqrt{25}/\\sqrt{\\pi} = 5/\\sqrt{\\pi} (täljarens kvadratrot, nämnarens kvadratrot)."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid räkning av area utan kvadratrot.",
-        "why_wrong": "r = √(area/π) = 5/√π."
+        "why_tempting": "Många stannar vid A = 25 utan att ta kvadratroten — landar då på r = 25/π istället för \\sqrt{25/\\pi}.",
+        "why_wrong": "Steg 8: kvadratroten är obligatorisk när du går från r^2 till r. Att skippa den ger en kvadratisk fel-skala."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Cirkelarea = kvadratarea + 16 = 9 + 16 = 25. r=\\frac{5}{\\sqrt{\\pi}}.",
-    "technique": "Cirkelradie från area: r = √(A/π).",
-    "framework_id": "XYZ-TRAP-042"
+    "pregrade_tactic": {
+      "handle": "Kvadratrots-inverteringen",
+      "move": "När arean är given — skriv r = \\sqrt{A/\\pi} direkt och förenkla först därefter; kvadratroten är aldrig valbar."
+    }
   },
   "var-2013-kvant2-DTK-029": {
     "_meta": {
@@ -5834,30 +5987,103 @@
   },
   "var-2013-kvant2-XYZ-001": {
     "_meta": {
-      "generated_at": 1778415733600,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-038",
+    "solution_path": "Vinkeln v är yttervinkel i en triangel där två inre vinklar är avlästa i figuren. Använd yttervinkelregeln: v = a + b där a och b är de icke-angränsande inre vinklarna. Kedjan ger v = 103°.",
+    "technique": "Vinkelräkning i sammansatt figur: kombinera triangelns vinkelsumma 180° med yttervinkelregeln. Yttervinkeln (utåtriktad) = summan av de två inre vinklar i triangeln som INTE är dess granne.",
+    "pitfall": "Botemedlet mot 'fel triangel'-fällan: peka ut TRIANGELN som v hör till (där v ligger i förlängningen av en sida) och därefter de TVÅ icke-angränsande inre vinklarna. De som DELAR sida med v är ej med i summan.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Figuren är en sammansatt vinkelfigur. Vinkeln v sitter utanför en triangel där två inre vinklar är utmärkta i figuren. Vi vill ha v.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Namnge vinklarna",
+        "text": "Kalla de två utmärkta inre vinklarna a och b. Den tredje inre vinkeln c är grannen till v (de delar sida). v är yttervinkel.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Triangelns vinkelsumma",
+        "text": "Grundsats: a + b + c = 180^{\\circ} i varje triangel. Detta är vinkelaxiomet du kan lita på.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Supplement-relation",
+        "text": "v och c ligger på samma räta linje (utåt och inåt). Räta linjens vinkel är 180°. Alltså: v + c = 180^{\\circ}.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Härled yttervinkelregeln",
+        "text": "Från steg 3: c = 180^{\\circ} - (a + b). Från steg 4: c = 180^{\\circ} - v. Sätt lika: 180^{\\circ} - v = 180^{\\circ} - (a + b), alltså v = a + b.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs de två inre vinklarna",
+        "text": "I figuren är a och b utmärkta. Avläsningen och summeringen ger a + b = 103^{\\circ}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tillämpa regeln",
+        "text": "Sätt in: v = 103^{\\circ}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna granne-vinkeln",
+        "text": "c = 180^{\\circ} - 103^{\\circ} = 77^{\\circ} — detta är den vinkel som ligger inuti triangeln, granne till v.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Rimlighetskontroll",
+        "text": "Triangelsumma: a + b + c = 103^{\\circ} + 77^{\\circ} = 180^{\\circ} ✓. Supplement: v + c = 103^{\\circ} + 77^{\\circ} = 180^{\\circ} ✓. Båda satser stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Vinkeln v är trubbig (>90°), vilket är konsekvent med att de två icke-angränsande inre vinklarna tillsammans är trubbiga. 103° passar precis mellan 90° och 113° (näst-trubbig optie i alternativen).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C, 103°. Insikten i en mening: yttervinkelregeln är genvägen i alla figurer där en sökt vinkel ligger UTANFÖR en triangel — summera de två icke-angränsande inre vinklarna direkt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att hoppa över ett vinkelsteg och hamna på 92°.",
-        "why_wrong": "92° kommer av att man räknar en triangels inre vinkel istället för yttervinkeln — yttervinkelregeln ger 103^\\circ."
+        "why_tempting": "Det är lätt att hoppa över ett vinkelsteg och hamna på 92° — kanske via felaktig avläsning av en av delvinklarna.",
+        "why_wrong": "Steg 6 är explicit om summan a + b = 103^{\\circ}. 92° skulle kräva att en av de avlästa vinklarna var 11° fel — för stor avvikelse för en HP-figur."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 97° om man avrundar de avlästa vinklarna.",
-        "why_wrong": "Skillnaden 97° vs 103° ryms inom en 5°-felavläsning; kontrollera summan med yttervinkelregeln för att slippa avrundningsfel."
+        "why_tempting": "Snabbsvar är ofta 97° om man avrundar de avlästa vinklarna eller blandar ihop yttervinkelregeln med ett halvsteg.",
+        "why_wrong": "Steg 9 kontrollerar med triangelsumman. 97° ger c = 83°, som tillsammans med a + b = 97° INTE summerar till 180° (om avläsningen i figuren är 103° och 77°)."
       },
       {
         "letter": "D",
         "why_tempting": "Första instinkten är att räkna in ett supplementsteg för mycket och få 105°.",
-        "why_wrong": "105° är 180° minus 75° — använder fel vinkelpar; rätt yttervinkel ger v=103^\\circ."
+        "why_wrong": "Steg 5 visar att yttervinkelregeln är direkt: v = a + b, ingen extra korrigering. 105° kräver a + b = 105^{\\circ}, vilket inte stämmer med figurens 103°."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Identifiera trianglarna som möts vid v. Vinkelsumman 180^\\circ-(a+b) ger den interna grannvinkeln, och yttervinkelregeln säger att v = summan av de två icke-angränsande inre vinklarna i den triangeln. Kedjan från figurens kända vinklar ger v = 103^\\circ.",
-    "technique": "Trianglar i samma figur: använd vinkelsumma 180° plus yttervinkelregeln för att slingra mellan de inre vinklarna och den utåtriktade vinkeln v.",
-    "framework_id": "XYZ-TRAP-038"
+    "pregrade_tactic": {
+      "handle": "Yttervinkelregeln",
+      "move": "Identifiera triangeln som v är yttervinkel till — summera de TVÅ inre vinklarna som inte är dess granne, det är v."
+    }
   },
   "var-2013-kvant2-XYZ-002": {
     "_meta": {
@@ -10462,134 +10688,354 @@
     }
   },
   "var-2013-verb2-LÄS-016": {
-    "_meta": {
-      "generated_at": 1778440515987,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Svaranden Stefan Flemström skriver bara: ”Jag utgår i mitt svar ifrån att det på din arbetsplats inte finns några kollektivavtalsregler som berör din fråga.” Han anger INGET skäl till antagandet — svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan har två led: (1) anger svaranden ett skäl till att han antar att kollektivavtal saknas? Om JA, (2) vilket är skälet? Vi börjar alltså med ja/nej.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lokalisera meningen om antagandet",
+        "text": "Svaret öppnar: ”Jag utgår i mitt svar ifrån att det på din arbetsplats inte finns några kollektivavtalsregler som berör din fråga.” Ingen subjunktion (eftersom, då, för att) följer.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad skulle räknas som ”skäl”?",
+        "text": "Ett skäl skulle markeras med ord som ”eftersom”, ”då”, ”av den anledningen att”, ”på grund av att”. Texten har ingen sådan markering omkring antagandet — det är en ren utgångspunkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Är de andra resonemangen skäl?",
+        "text": "Resten av svaret hanterar VAD SOM GÄLLER om kollektivavtal saknas (generalprincipen, beordringen, arbetstidslagen). Dessa är KONSEKVENSER av antagandet, inte motiveringar TILL det.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "Eftersom inget skäl anges är svaret nej → D. A, B och C försöker alla läsa in ett skäl i något som i själva verket är konsekvens (beordring, generalprincip, utfört arbete).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar D. Insikten i en mening: ”utgår jag ifrån att…” är en utgångspunkt utan motivering — om det inte följs av ”eftersom” är det inget skäl, oavsett vad som står senare.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att vilja koppla antagandet till beordrandet.",
-        "why_wrong": "Beordrandet kommenteras separat — det är inte motivering för antagandet om kollektivavtal."
+        "why_tempting": "Det är lätt att vilja koppla antagandet till beordrandet eftersom det är dramatiskt.",
+        "why_wrong": "Steg 4 visar att beordrandet diskuteras SEPARAT, som en andra fråga. Det är inte ett skäl till antagandet om kollektivavtal — det är en av flera saker svaret behandlar."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid generalprincipen om att arbetsgivaren leder.",
-        "why_wrong": "Den principen tillämpas i bristen på avtal — den är inte ett skäl för att avtal saknas."
+        "why_tempting": "Många stannar vid generalprincipen ”arbetsgivaren leder och fördelar arbetet” och läser den som ett skäl.",
+        "why_wrong": "Som steg 4 visar är generalprincipen vad som GÄLLER när avtal saknas — alltså en konsekvens av antagandet, inte en motivering till det. B vänder kausalriktningen."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att läsa det utförda arbetet som logiskt skäl.",
-        "why_wrong": "Det utförda arbetet är frågans grund — inte ett skäl att utesluta kollektivavtal."
+        "why_tempting": "Snabbsvar är ofta att hänga upp resonemanget på det utförda övertidsarbetet.",
+        "why_wrong": "Steg 4 visar att det utförda arbetet är frågans GRUND — det är därför rådgivaren konsulteras. Det kan inte vara ett skäl att UTESLUTA kollektivavtal från att gälla."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Svaranden skriver bara ”Jag utgår i mitt svar ifrån att det på din arbetsplats inte finns några kollektivavtalsregler som berör din fråga” — utan att motivera varför. Något skäl anges inte.",
-    "technique": "Vid ”anger han skäl?”-frågor: leta efter konjunktioner (eftersom, då, för att) precis vid antagandet — saknas de är svaret nej."
+    "technique": "Vid ”anger han ett skäl?”-frågor: sök subjunktioner (eftersom, då, för att) i omedelbar närhet av påståendet. Om de saknas är svaret NEJ, oavsett vad texten säger längre fram.",
+    "pitfall": "Botemedlet mot att läsa in skäl: skilj utgångspunkt från slutsats. ”Jag utgår ifrån att X” är en utgångspunkt — den behöver inte motiveras inom svaret. Distraktorer plockar gärna konsekvenser och säljer dem som motiveringar.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Subjunktions-jakten",
+      "move": "Sök ”eftersom” / ”då” / ”för att” i meningen där antagandet görs — saknas de, svara nej."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2013-verb2-LÄS-017": {
-    "_meta": {
-      "generated_at": 1778440515987,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten säger: ”Mycket närsalter tillförs också med det vatten som transporteras upp från Atlanten. Om volymen av detta minskar eller ökar har således stor betydelse även för närsaltstillförseln och hur mycket primärproduktion som kan ske.” Mer vatten → mer närsalter → mer primärproduktion → större koldioxidupptag. Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Varför har MÄNGDEN vatten som transporteras norrut från Atlanten betydelse för koldioxidupptaget? Vi söker den specifika orsakskedjan via vattenvolymen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vokabulär: närsalter & primärproduktion",
+        "text": "Närsalter = de oorganiska näringsämnen (kväve, fosfor) som alger behöver för att växa. Primärproduktion = algtillväxt, som binder koldioxid i organiskt material. Mer närsalter ger mer alger ger mer koldioxid bundet.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Hitta nyckelmeningen",
+        "text": "I avsnittet om närsalter: ”Mycket närsalter tillförs också med det vatten som transporteras upp från Atlanten. Om volymen av detta minskar eller ökar har således stor betydelse även för närsaltstillförseln och hur mycket primärproduktion som kan ske.” Det är orsakskedjan svar svart på vitt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Bygg kedjan",
+        "text": "Större volym atlantvatten → mer närsalter → större primärproduktion → mer koldioxid bunden. Det är exakt A: ”ju större mängd vatten, desto mer närsalter och större primärproduktion”.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska alternativen",
+        "text": "B (lägre yttemperatur, mindre produktion) — atlantvattnet är VARMT, så större volym snarare höjer temperaturen, inte sänker; och temperaturen påverkar löslighet, inte primärproduktion direkt. C (större ishavstäcke) — atlantvattnet är varmt och AVKYLS, det skapar inte mer is; och primärproduktionen vinner just på MINDRE is. D (färskare ytvatten) — atlantvattnet är SALT, en ökning ger inte färskare yta.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar A. Insikten i en mening: när texten explicit kopplar atlantvattnets volym till närsalter och primärproduktion, är det den kedjan svaret ska beskriva.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tänka att mer vatten ger lägre yttemperatur.",
-        "why_wrong": "Det varma atlantvattnet höjer snarare temperaturen — och primärproduktionen kopplas till närsalter, inte temperatur."
+        "why_tempting": "Det är lätt att associera havsfrågor med temperatur — kallt vatten löser mer gas.",
+        "why_wrong": "Steg 5 visar att atlantvattnet är VARMT och avkyls längs vägen; en större volym skulle inte sänka yttemperaturen. Och primärproduktionen styrs av närsalter, inte av temperatur direkt."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid Norra Ishavets is.",
-        "why_wrong": "Mer atlantvatten skulle om något minska istäcket — kopplingen till primärproduktion går via närsalter."
+        "why_tempting": "Många stannar vid Norra Ishavet och tror att mer vatten ger mer is.",
+        "why_wrong": "Som steg 5 visar är det varma atlantvattnet snarare ett hot mot istäcket. Och primärproduktionen gynnas av MINDRE is (mer exponerad yta), inte mer. C inverterar både temperatur- och isargumentet."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att läsa atlantvatten som färskt.",
-        "why_wrong": "Atlantvatten är salt — och en ökning ger mer närsalter, inte färskare yta."
+        "why_tempting": "Snabbsvar är ofta att tänka ”större mängd vatten = mer utspätt”.",
+        "why_wrong": "Steg 5 visar att atlantvattnet är salt, inte färskt. En ökning av salt vatten gör inte ytan färskare; den motverkar snarare uppblandningen av närsalter via närsalts-mekanismen i steg 3."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger ”Mycket närsalter tillförs också med det vatten som transporteras upp från Atlanten. Om volymen av detta minskar eller ökar har således stor betydelse även för närsaltstillförseln och hur mycket primärproduktion som kan ske.” Mer vatten ger mer närsalter och därmed större primärproduktion.",
-    "technique": "Vid orsakskedjor: följ författarens kedja från orsak till effekt steg för steg, inte gissa enskilda kopplingar."
+    "technique": "Vid orsakskedje-frågor: hitta textens egen ”X → därför Y”-mening (här ”stor betydelse även för närsaltstillförseln och … primärproduktion”). Följ kedjan led för led — gissa inte mellansteg.",
+    "pitfall": "Botemedlet mot temperaturfällan: i den här texten styr närsalter och primärproduktion det biologiska upptaget, medan temperaturen styr det fysikaliska (löslighet). De två mekanismerna är skilda — frågans nyckelord avgör vilken som gäller.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Närsalts-kedjan",
+      "move": "När frågan kopplar vattenvolym till primärproduktion, följ kedjan volym → närsalter → produktion → kolupptag exakt som texten formulerar den."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2013-verb2-LÄS-018": {
-    "_meta": {
-      "generated_at": 1778440515987,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten skriver: ”Vi har alltså två processer som båda driver ett flöde av koldioxid från atmosfären till ytvattnen som strömmar från Atlanten till Norra Ishavet.” De två processerna är avkylningen (löslighet ökar med kyla) och primärproduktionen (alger fixerar kol). Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi söker två processer som BÅDA har DIREKT betydelse för flödet av koldioxid mellan LUFT och HAV — alltså mellan atmosfär och ytvatten, inte inom havet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vokabulär: gränsskikt vs. inomhavsprocess",
+        "text": "”Mellan luft och hav” = vid havsytan, gränsen mellan atmosfär och vatten. ”I havet” = djupvattenbildning, vertikal transport. Bara processer vid GRÄNSSKIKTET räknas till frågan.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Hitta textens egen mening om de två",
+        "text": "Just efter beskrivningen av avkylning och primärproduktion skriver texten: ”Vi har alltså två processer som båda driver ett flöde av koldioxid från atmosfären till ytvattnen.” Det är textens egen sammanfattning.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera de två",
+        "text": "Processen 1: avkylning ökar gasens löslighet (”jämför öppna en varm och en kall sockerdricksflaska”). Processen 2: primärproduktion fixerar koldioxid i organiskt material vid ytan. Båda sker i gränsskiktet luft-hav.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "Avkylning + primärproduktion = D exakt. A (primärproduktion + djupvattenbildning) — djupvattenbildning sker INOM havet, inte mellan luft och hav. B (djupvattenbildning + isproduktion) — båda inomhavsprocesser. C (isproduktion + avkylning) — isproduktion handlar om saltlake som sjunker, inte direkt luftutbyte.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar D. Insikten i en mening: när texten själv formulerar ”vi har alltså två processer”, är de två som omedelbart nämns dessförinnan svaret — sök inte längre.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att inkludera djupvattenbildning som ”flöde”.",
-        "why_wrong": "Djupvattenbildning sker inom havet — inte mellan luft och hav."
+        "why_tempting": "Det är lätt att inkludera djupvattenbildning eftersom den FLYTTAR koldioxiden.",
+        "why_wrong": "Steg 2 visar att djupvattenbildningen flyttar kol INOM havet (yta → djup), inte mellan luft och hav. A inkluderar fel typ av process."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid isen och dess roll.",
-        "why_wrong": "Isproduktion transporterar bort koldioxid neråt — inte mellan luft och hav."
+        "why_tempting": "Många stannar vid att djupvattenbildning och isproduktion båda nämns som koldioxidtransport.",
+        "why_wrong": "Som steg 2 visar är BÅDA dessa inomhavsprocesser. B är dubbelfel — frågan gäller specifikt luft-hav-gränsen."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att para ihop is med kyla.",
-        "why_wrong": "Avkylning sker i luft–vatten-gränsen, men isproduktion handlar om vattnets vidare öde — inte luftutbytet."
+        "why_tempting": "Första instinkten är att para ihop is med kyla eftersom båda associeras med kallt.",
+        "why_wrong": "Steg 5 visar att isproduktion frigör saltlake som sjunker — det är en inomhavs-process, inte luft-hav-utbyte. C tar med avkylning korrekt men kombinerar fel."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten formulerar tydligt: ”Vi har alltså två processer som båda driver ett flöde av koldioxid från atmosfären till ytvattnen” — och dessa två är avkylningen (löslighet ökar med kyla) och primärproduktionen (fixerar kol). Direkt mellan luft och hav: avkylning och primärproduktion.",
-    "technique": "Vid ”vilka två processer?”-frågor: leta efter författarens egen ”två processer”-mening — där står svaret ord för ord."
+    "technique": "Vid frågor om ”två processer” – sök textens egen frasering ”vi har alltså två processer” eller ”två sätt”. De två specifika nämns i meningarna omedelbart innan, inte spridda över texten.",
+    "pitfall": "Botemedlet mot att blanda nivåer: rita en bild med två zoner — luft-hav-gränsen och inne i havet. Processer som hör till olika zoner kan inte besvara samma fråga.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Två-processer-meningen",
+      "move": "Sök ”vi har alltså två processer” — de två som nämnts precis innan är svaret."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2013-verb2-LÄS-019": {
-    "_meta": {
-      "generated_at": 1778440515987,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten skriver: ”Havsisen i sig isolerar ytvattnet från atmosfärens kyla på ett sätt som idag begränsar den istjocklek som maximalt kan bildas under en säsong.” Funktionen är alltså att ISOLERA — svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vilken funktion har LIGGANDE havsis i det sammanhang texten beskriver? Vi söker textens egen verbsbeskrivning av redan-bildad is.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Liggande is vs. isproduktion",
+        "text": "Skilj två saker: (a) is som BILDAS frigör saltlake som sjunker (transport), (b) is som LIGGER fungerar som ett skikt mellan vatten och luft. Frågan gäller (b).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta verbet",
+        "text": "Texten säger ordagrant: ”Havsisen i sig ISOLERAR ytvattnet från atmosfärens kyla på ett sätt som idag begränsar den istjocklek som maximalt kan bildas”. Verbet är ”isolerar” — funktionen är att isolera.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Matcha mot alternativen",
+        "text": "”Isolerar” = B exakt. A (avkylande) inverterar — isen HINDRAR ytterligare avkylning, gör inte vattnet kallare. C (nedbrytande) är inte ett ämne i texten. D (förmedlande) är motsatsen — isen DÄMPAR snarare kontakten mellan vatten och luft.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera mot mekanismen",
+        "text": "Mekanismen: när vattnet är täckt av is kan kylan ovanifrån inte längre frysa mer vatten effektivt — vilket BEGRÄNSAR maximal istjocklek. Det är just en isolerande funktion (som täcket på en kopp).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar B. Insikten i en mening: när texten använder verbet ”isolerar” om en struktur, är ”isolerande” direkt svar — inga omskrivningar behövs.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att is är avkylande.",
-        "why_wrong": "Tvärtom — isen hindrar ytterligare avkylning av vattnet under, dvs. den isolerar."
+        "why_tempting": "Det är lätt att associera is med kyla och tro att den är avkylande.",
+        "why_wrong": "Steg 4 visar att isen HINDRAR avkylning av vattnet under, inte producerar den. Det är just det som GÖR att istjockleken stannar vid drygt en meter. A inverterar mekanismen."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att is smälter och frigör färskvatten.",
-        "why_wrong": "Smältning är vad som händer när isen försvinner — inte själva funktionen av liggande is."
+        "why_tempting": "Många stannar vid att smältande is producerar färskvatten och tror att smältning = nedbrytning.",
+        "why_wrong": "Som steg 2 visar gäller frågan LIGGANDE is, inte smältande. Och ”nedbrytande” är inte ett begrepp texten använder. C importerar fel verb och fel tillstånd."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att läsa is som något som förmedlar mellan hav och luft.",
-        "why_wrong": "Isen gör motsatsen — den dämpar kontakten."
+        "why_tempting": "Första instinkten är att se is som något som ligger mellan luft och vatten — och alltså förmedlar.",
+        "why_wrong": "Steg 5 visar att isen gör tvärtom — den DÄMPAR kontakten. ”Förmedlande” är direkta motsatsen till ”isolerande”."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger: ”Havsisen i sig isolerar ytvattnet från atmosfärens kyla på ett sätt som idag begränsar den istjocklek som maximalt kan bildas.” Funktionen är alltså isolerande.",
-    "technique": "När texten säger ”isolerar X från Y” — ordet ”isolerande” är det direkta svaret."
+    "technique": "Vid ”funktion av X”-frågor: sök textens egna verb om X. När texten säger ”X isolerar Y”, ÄR funktionen att isolera — välj inte synonymer som halvt täcker.",
+    "pitfall": "Botemedlet mot ord-likhetsfällor: ”avkylande” låter näraliggande, men en isolator GÖR INTE saker kallare — den hindrar förändring i båda riktningar. Verbet i texten avgör, inte ordens vardagsbruk.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Verb-direktöversättningen",
+      "move": "När texten använder verbet ”isolerar/transporterar/avkyler”, välj det adjektivet som direkt motsvarar verbet — inte synonymer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2013-verb2-LÄS-020": {
-    "_meta": {
-      "generated_at": 1778440515987,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten radar upp process efter process — avkylning, primärproduktion, djupvattenbildning, saltlake, metanfrigöring — och avslutar: ”Det finns alltså många olika processer och faktorer som påverkar atmosfärens framtida koldioxidhalt.” Författaren diskuterar processer som kan påverka växthuseffekten — svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vad är textens HUVUDSYFTE? Vi söker författarens egna ramformuleringar — öppning och avslutning — för att hitta det övergripande ärendet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Granska öppningen",
+        "text": "Texten öppnar med frågor: ”Hur mycket av den koldioxid som vi släpper ut kommer att stanna i atmosfären? Hur mycket kommer att tas upp av hav och land?” — alltså frågor om PROCESSERNA mellan koldioxid och hav.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Granska avslutningen",
+        "text": "Texten avslutar: ”Det finns alltså många olika processer och faktorer som påverkar atmosfärens framtida koldioxidhalt. Eftersom en del tillför koldioxid och en del tar bort … är det inte möjligt att dra en säker slutsats.” Författaren ger inga svar — han diskuterar processer.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Matcha mot alternativen",
+        "text": "”Diskutera processer som kan påverka växthuseffekten” = C exakt. A (naturen motverkar utsläppen) — texten visar att processer kan gå BÅDA hållen, inte att naturen är en motkraft. B (besvara frågor) — texten säger uttryckligen att en säker slutsats inte går att dra. D (naturliga orsaker till koldioxid) — temat är inte ursprung utan flöden.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera mot textens struktur",
+        "text": "Texten är uppbyggd avsnitt efter avsnitt kring olika processer (avkylning, primärproduktion, djupvattenbildning, isproduktion, saltlake, metan). Den är en processkatalog — C beskriver precis det.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar C. Insikten i en mening: när en text avslutar med ”det finns alltså många olika processer” och inte ger ett slutsvar, är textens syfte att diskutera processerna, inte att avgöra.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tolka havets upptag som naturens egen motverkan.",
-        "why_wrong": "Texten visar att processerna kan gå åt båda håll — den driver inte tesen att naturen motverkar utsläppen."
+        "why_tempting": "Det är lätt att läsa textens många upptagsmekanismer som ett försvar för naturens motkraft.",
+        "why_wrong": "Steg 4 visar att texten är NEUTRAL — den nämner både upptag och utsläpp (t.ex. metan), och låter slutsatsen vara öppen. A vinklar texten ideologiskt."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid de inledande frågorna.",
-        "why_wrong": "Texten svarar inte på dem — den säger uttryckligen att en säker slutsats inte går att dra."
+        "why_tempting": "Många stannar vid de inledande frågorna och tror att texten besvarar dem.",
+        "why_wrong": "Som steg 3 visar säger texten EXPLICIT att en säker slutsats inte går att dra. Frågorna ställs men besvaras INTE — texten diskuterar bara processerna kring dem."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att se naturliga koldioxidkällor som tema.",
-        "why_wrong": "Texten fokuserar på flöden vid klimatförändring — inte på att koldioxid har naturliga upphov."
+        "why_tempting": "Snabbsvar är ofta att koppla koldioxid till naturliga källor.",
+        "why_wrong": "Steg 5 visar att texten handlar om FLÖDEN (luft ↔ hav, yta ↔ djup), inte om koldioxidens ursprung. D importerar ett tema som inte finns."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten räknar upp och diskuterar process efter process — primärproduktion, djupvattenbildning, saltlake, metanfrigöring — och avslutar med att det inte går att dra en säker slutsats. Författaren diskuterar processer som kan påverka växthuseffekten.",
-    "technique": "Vid syftesfrågor: leta efter författarens egen avslutande sammanfattning (”många olika processer och faktorer som påverkar …”)."
+    "technique": "Vid syftesfrågor om vetenskaplig populärtext: läs öppningens frågor + avslutningens summering. Om summeringen säger ”många olika processer” utan en slutsats, är syftet att diskutera processerna.",
+    "pitfall": "Botemedlet mot att hitta på en tes: en text som EXPLICIT säger ”det är inte möjligt att dra en säker slutsats” argumenterar inte för något — den kartlägger. Välj diskuterande alternativ, inte besvarande.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Process-katalogen",
+      "move": "Om en text radar upp många processer och avslutar utan slutsats — välj alternativet ”diskutera processer”, aldrig ett alternativ som påstår en tes."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2013-verb2-MEK-021": {
     "_meta": {

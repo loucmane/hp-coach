@@ -1618,31 +1618,104 @@
     "technique": "Lika-nämnare-strategin: när en ekvation har bråk med samma nämnare på båda sidor, hoppa direkt till \"täljarna är lika\" och lös som vanlig linjär ekvation. Triggern: \"a/n = b/n\" → a = b."
   },
   "host-2014-kvant1-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778413621013,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Vid en transversal som skär två parallella linjer är alternat- och likbelägna vinklar lika. Av figuren följer att x motsvarar en av de givna vinklarna (30°) direkt.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "L₁ och L₂ är parallella, och linjen L skär båda. Vinkeln x markeras vid en av skärningarna. Givet en annan vinkel i figuren, hitta x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: transversal",
+        "text": "En transversal är en linje som skär minst två andra linjer. När de två andra linjerna är PARALLELLA uppstår speciella vinkel-relationer vid skärningspunkterna.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definition: likbelägna vinklar",
+        "text": "Likbelägna vinklar (motsvarande vinklar) är två vinklar som ligger på SAMMA sida om transversalen och SAMMA sida om den respektive parallella linjen. De är LIKA när linjerna är parallella.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Definition: alternativa vinklar",
+        "text": "Alternativa vinklar ligger på MOTSATTA sidor om transversalen och MELLAN de parallella linjerna. De är också LIKA.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definition: konsekutiva vinklar",
+        "text": "Vinklar på samma sida om transversalen och MELLAN de parallella linjerna (kosekutiva inre vinklar) SUMMERAR till 180°.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera vinkelpar i figuren",
+        "text": "Av figurens markeringar framgår att x och en annan markerad vinkel (av storleksordningen 30°) utgör likbelägna eller alternativa vinklar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tillämpa likhetsregeln",
+        "text": "Eftersom L₁ ∥ L₂ och dessa två vinklar är alternativa/likbelägna: x=30\\degree.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kolla rimligheten",
+        "text": "x = 30° är ett av de fyra alternativen. Det är också konsistent med en typisk figurkonfiguration för denna typ av uppgift.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte differens eller halvering?",
+        "text": "Differens (50 − 30 = 20) eller halvering (50/2 = 25) hör inte hit. Parallell-vinkel-satser ger LIKHET eller SUPPLEMENT (180 −), inte godtyckliga aritmetiska operationer.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera mot alternativen",
+        "text": "30° är alternativ C. A (20°) är differens-felet. B (25°) är halvering. D (35°) är avrundning utan grund.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C: 30°. Insikten i en mening: vid parallella linjer skurna av en transversal är alternat- och likbelägna vinklar exakt LIKA — letar du efter ekvivalens, inte aritmetik.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att bara ta differensen mellan två avläsningar (t.ex. 50−30=20) utan att tänka på vilken vinkelsats som gäller.",
-        "why_wrong": "Differens passar inte här — vinkelsatserna mellan parallella linjer ger LIKHET eller SUPPLEMENT (180−), inte godtyckliga differenser."
+        "why_tempting": "Det är lätt att bara ta differensen mellan två avläsningar (t.ex. 50 − 30 = 20) utan att tänka på vinkelsatsen.",
+        "why_wrong": "Steg 9: vinkelsatsen vid parallella linjer ger LIKHET (eller supplement 180−), inte godtycklig differens."
       },
       {
         "letter": "B",
-        "why_tempting": "Om du minns regeln som 'halva av 50 är 25' eller blandar med vertikalvinkelregeln.",
-        "why_wrong": "Halvering kommer in vid bisektriser, inte vid alternativa vinklar. Här är x lika med en avläst vinkel direkt."
+        "why_tempting": "Om du minns regeln som 'halva av en given vinkel' eller blandar med vertikalvinkelregeln.",
+        "why_wrong": "Halvering kommer in vid bisektriser, inte vid alternativa vinklar. Steg 7: x är direkt LIKA med en avläst vinkel."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta avrundning åt 'rättnumret': 35 ligger nära både 30 och 40.",
-        "why_wrong": "Vinkeln är exakt 30° baserat på den givna konfigurationen — ingen avrundning behövs."
+        "why_tempting": "Snabbsvar är ofta avrundning åt 'rättnumret': 35° ligger nära både 30° och 40°.",
+        "why_wrong": "Steg 7 ger exakt 30° genom parallell-vinkel-satsen. Avrundning är inte aktuell vid exakta vinkelmått."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figuren framgår att x är en alternatvinkel eller likbelägen vinkel till en känd vinkel mot transversalen. Med parallella linjer ger likbelägna/alternativa vinklar likhet, vilket leder till x = 30°.",
-    "technique": "Vinklar mellan parallella linjer: alternativa vinklar och likbelägna vinklar är LIKA; konsekutiva vinklar (på samma sida av transversal) summerar till 180°.",
-    "framework_id": "XYZ-TRAP-037"
+    "technique": "Vinklar mellan parallella linjer: alternat- och likbelägna vinklar är LIKA; konsekutiva (på samma sida) summerar till 180°.",
+    "pitfall": "Botemedlet mot 'göra aritmetik': fråga ALLTID först 'är de likbelägna, alternativa eller konsekutiva?' — sen tillämpa likhet eller supplement.",
+    "framework_id": "XYZ-TRAP-037",
+    "pregrade_tactic": {
+      "handle": "Parallell-vinkel-receptet",
+      "move": "Markera transversalens skärningar, klassificera vinkelparet (likbeläget / alternativt / konsekutivt) — sen är x antingen lika eller 180− den andra."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2014-kvant1-XYZ-005": {
     "_meta": {
@@ -1745,31 +1818,104 @@
     "technique": "Arbete-tid-strategin: räkna totala \"enhets-dagar\" (antal · tid) som konstant; dela med den nya tiden för att få nya antalet. Triggern: \"X enheter klarar jobbet på T dagar, hur många behövs för T' dagar?\" → totalt arbete = X·T, nytt antal = X·T/T'."
   },
   "host-2014-kvant1-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778413621013,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Av spridningen i koordinatsystemet ser man att linjen lutar nedåt (negativ lutning) och skär y-axeln ungefär vid +4. Det matchar y=-x+4.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Mätpunkter finns spridda i ett koordinatsystem. Du ska välja den räta linje (bland fyra alternativ) som passar punkterna bäst.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: räta linjens ekvation",
+        "text": "En rät linje skrivs som y=kx+m, där k är LUTNINGEN (förändring i y per enhet x) och m är y-SKÄRNINGEN (där linjen korsar y-axeln, dvs vid x = 0).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Avläs trend i punkterna",
+        "text": "Studera om punkterna i figuren går UPPÅT (positiv k) eller NEDÅT (negativ k) när x ökar. Här går de nedåt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Tecken på lutningen",
+        "text": "Nedåtgående trend ⇒ k är NEGATIV. Det utesluter alternativ B (y = x − 4) och C (y = x + 4), som båda har k = +1.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs y-skärning",
+        "text": "Vid x = 0 ligger punkterna kring +4 på y-axeln (ovanför origo). Det betyder m är POSITIV, ungefär 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tecken på y-skärningen",
+        "text": "Positiv y-skärning utesluter A (y = −x − 4), som har m = −4. Kvar: D (y = −x + 4).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: 'bästa anpassning'",
+        "text": "Den linje som passar punkterna bäst är den som ligger närmast genomsnittet av punkterna. Kvalitativ bedömning (tecken på k och approximativ m) räcker oftast för flervalsfrågor.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Kontrollera D vid två punkter",
+        "text": "y = −x + 4. Vid x = 0: y = 4. Vid x = 4: y = 0. Vid x = −2: y = 6. Detta matchar punktmolnets riktning.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte A, B, C?",
+        "text": "A har fel y-skärning (negativ). B har fel lutning (positiv). C har fel lutning (positiv).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera tecknen explicit",
+        "text": "k = −1 ⇒ nedåt ✓. m = +4 ⇒ ovanför origo ✓. Båda tecken stämmer med figuren.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D: y=-x+4. Insikten i en mening: vid 'bästa räta linje' utesluts tre alternativ genom att läsa av TECKEN på lutning och y-skärning — sällan behövs siffer-räkning.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa fel y-skärning som negativ när linjen tydligt skär ovanför origo.",
-        "why_wrong": "Mätpunkterna ligger övervägande i positiva y-värden vid lågt x — y-skärning är POSITIV, inte −4."
+        "why_tempting": "Det är lätt att läsa y-skärningen som negativ när linjen tydligt skär ovanför origo.",
+        "why_wrong": "Steg 5 visar att punkterna ligger övervägande i positiva y-värden vid lågt x — y-skärningen är POSITIV, inte −4."
       },
       {
         "letter": "B",
         "why_tempting": "Om du minns regeln som 'positiv lutning för minskande funktioner' gör du tvärtom-fel.",
-        "why_wrong": "Positiv lutning betyder att y ÖKAR med x; mätpunkterna här minskar med växande x. Lutningen är negativ."
+        "why_wrong": "Steg 4: positiv lutning betyder y ÖKAR med x; mätpunkterna här MINSKAR med växande x. Lutningen är negativ."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att kombinera fel lutning med rätt y-skärning (positiv, men positiv lutning).",
-        "why_wrong": "Lutningen ska vara NEGATIV (linjen går nedåt). Y-skärning +4 är rätt; lutning −1, inte +1."
+        "why_tempting": "Snabbsvar är ofta att kombinera fel lutning med rätt y-skärning.",
+        "why_wrong": "Steg 4: lutningen är NEGATIV. y-skärning +4 är rätt, men k = +1 är fel — det ska vara k = −1."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av spridningen i koordinatsystemet syns att linjen lutar nedåt (negativ lutning) och skär y-axeln nära 4. Det matchar y=-x+4 bäst.",
-    "technique": "Bästa räta linjen genom punkter: bedöm tecken på lutning (uppåt/nedåt), läs av approximativ y-skärning, matcha mot alternativen.",
-    "framework_id": "XYZ-TRAP-051"
+    "technique": "Bästa räta linjen: bedöm TECKEN på lutning (uppåt/nedåt), läs av approximativ y-skärning, eliminera alternativ med fel tecken.",
+    "pitfall": "Botemedlet mot 'mätfel': separera de två frågorna — TECKEN på k och TECKEN/storlek på m — innan du jämför med alternativen.",
+    "framework_id": "XYZ-TRAP-051",
+    "pregrade_tactic": {
+      "handle": "Tecken-elimination-receptet",
+      "move": "Fråga först: lutar linjen uppåt eller nedåt? Sedan: är y-skärningen positiv eller negativ? Två frågor räcker för att eliminera 3 av 4 alternativ."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2014-kvant1-XYZ-007": {
     "_meta": {
@@ -3790,32 +3936,110 @@
     "technique": "Före/efter-sannolikhetsstrategin: för en händelse efter en uppdatering, räkna explicit ut nya räknarstorleken OCH nya totala antalet — båda separat — innan du sätter ihop kvoten. Triggern: \"vad blir sannolikheten EFTER att vi lagt till...\" → uppdatera båda sidor av bråket."
   },
   "host-2014-kvant2-XYZ-010": {
-    "_meta": {
-      "fixed_at": 1778498287379,
-      "generated_at": 1778413621013,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Sätt in x = −1 i \\frac{x^{4}-x^{3}+x^{2}-x}{x-1} (tolkning av uttrycket). Täljaren: 1-(-1)+1-(-1)=1+1+1+1=4. Nämnare: -1-1=-2. Kvot: \\frac{4}{-2}=-2.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uppgiften ber dig värdera ett rationellt uttryck \\frac{x^{4}-x^{3}+x^{2}-x}{x-1} vid x = −1.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: substitution",
+        "text": "Att 'sätta in' x = −1 betyder att ersätta varje x i uttrycket med −1, sen räkna ut.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definition: negativ bas i potens",
+        "text": "(-1)^{n} är 1 om n är jämnt och −1 om n är udda. Så (-1)^{1}=-1, (-1)^{2}=1, (-1)^{3}=-1, (-1)^{4}=1.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Räkna täljaren term för term",
+        "text": "x^{4}=(-1)^{4}=1. -x^{3}=-(-1)^{3}=-(-1)=1. x^{2}=(-1)^{2}=1. -x=-(-1)=1.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Addera täljarens fyra termer",
+        "text": "1+1+1+1=4. Alla fyra termer blir +1 efter teckenbytena.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna nämnaren",
+        "text": "x-1=-1-1=-2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sätt upp kvoten",
+        "text": "\\frac{4}{-2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Definition: tecken vid division",
+        "text": "Positiv ÷ negativ = NEGATIV. Lika tecken ger plus, olika tecken ger minus.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Räkna kvoten",
+        "text": "\\frac{4}{-2}=-2. Absolutbelopp 2, tecken negativt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Varför blir alla täljarens termer positiva?",
+        "text": "I x^{4}-x^{3}+x^{2}-x alternerar tecknen + − + −. När x = −1 ger varje potens alternativt +1 och −1 — men teckenbytena framför vänder dem ALLA till +1. Slumpen är inte slumpen: x = −1 är en speciell rot där just detta händer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera via faktorisering",
+        "text": "Täljaren x^{4}-x^{3}+x^{2}-x=x(x^{3}-x^{2}+x-1)=x(x-1)(x^{2}+1). Förkortad form: x(x^{2}+1). Vid x = −1: (-1)(1+1)=-2 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: −2. Insikten i en mening: vid substitution i polynom hjälper det att räkna varje term separat och hålla teckenbokföringen rigorös.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna täljaren fel — t.ex. 1-(-1)+1-(-1)=3 (genom att glömma ett tecken) → 3/(−2) = −3/2.",
-        "why_wrong": "Räkna varje potens noggrant: (-1)^{1}=-1, (-1)^{2}=1, (-1)^{3}=-1, (-1)^{4}=1. Alla fyra termer blir +1, summa 4."
+        "why_tempting": "Det är lätt att räkna täljaren fel — t.ex. 1-(-1)+1-(-1)=3 (genom att glömma ett tecken) → \\frac{3}{-2}=-\\frac{3}{2}.",
+        "why_wrong": "Steg 4 fångar varje teckenbyte. Alla fyra termer blir +1; summan är 4, inte 3."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att räkna täljaren = 2 av tecken-slarv → 2/−2 = −1.",
-        "why_wrong": "Täljaren är 4, inte 2. Kvot −2."
+        "why_tempting": "Många stannar vid att räkna täljaren = 2 av tecken-slarv → \\frac{2}{-2}=-1.",
+        "why_wrong": "Steg 5: summan av fyra +1-termer är 4. Kvot \\frac{4}{-2}=-2, inte −1."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att tro att 'ingenting kvarstår' efter alla teckenbyten = 0.",
-        "why_wrong": "Tecknen alternerar med (-1)^{n}, men subtraktionerna i uttrycket vänder dem TILLBAKA — alla fyra termer blir positiva (1+1+1+1)."
+        "why_tempting": "Snabbsvar är ofta att tro att 'ingenting kvarstår' efter teckenbyten = 0.",
+        "why_wrong": "Steg 10: tecknen alternerar i potenserna men subtraktionerna i uttrycket vänder dem tillbaka — alla termer blir +1, inte 0."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Sätt in x = −1: täljaren (-1)^{4}-(-1)^{3}+(-1)^{2}-(-1)=1+1+1+1=4. Nämnaren -1-1=-2. Kvot: 4/(-2)=-2.",
-    "technique": "Värdering av polynom vid x = −1: räkna varje potens individuellt ((-1)^{n} alternerar 1, −1, 1, −1) och håll koll på subtraktionstecken.",
-    "framework_id": "XYZ-TRAP-007"
+    "technique": "Värdering av polynom vid x = −1: räkna varje potens separat ((−1)^n alternerar 1, −1, 1, −1), kombinera med tecknen framför termerna.",
+    "pitfall": "Botemedlet mot teckenslarv: notera potensens paritet (jämn/udda) FÖR varje term, multiplicera in det yttre tecknet sist.",
+    "framework_id": "XYZ-TRAP-007",
+    "pregrade_tactic": {
+      "handle": "Tecken-bokföringen",
+      "move": "Vid x = −1: skriv ut varje term som '(yttre tecken) · (potens-tecken)' separat — då ackumuleras inte fel."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2014-kvant2-XYZ-011": {
     "_meta": {

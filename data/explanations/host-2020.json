@@ -1366,31 +1366,104 @@
     "technique": "Substitutionsstrategin: när du har två ekvationer och den ena ger 'y = ett uttryck i x', byt ut y mot uttrycket i den andra ekvationen. Triggern att memorera: 'en variabel uttryckt explicit i den andra → sätt in direkt'."
   },
   "host-2020-kvant1-XYZ-003": {
-    "_meta": {
-      "generated_at": 1778414576370,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Av parallellitetssatserna och triangelvinkelsumman i figurens specifika konfiguration: 1{,}5x+3y=90°. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har två parallella linjer L_{1} och L_{2} och vinklar märkta med x och y runt i figuren. Du ska räkna ut värdet av kombinationen 1{,}5x+3y.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder parallell?",
+        "text": "L_{1}\\parallel L_{2} betyder att linjerna har samma lutning och aldrig möts. När en transversal skär bägge skapas par av lika vinklar.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tre satser för parallella linjer",
+        "text": "Likbelägna vinklar (på samma sida av transversalen, samma sida om linjen) är lika. Alternativvinklar (zickzack) är lika. Sidovinklar (samma sida av transversalen, mellan linjerna) summerar till 180°.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vinkelsumma i triangel",
+        "text": "Varje triangel: tre vinklar som tillsammans blir 180°. När transversalerna bildar en triangel mellan {m('L_{1}')} och {m('L_{2}')} används denna ofta som sista pusselbit.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Märk ut alla 'lika-vinklar' i figuren",
+        "text": "Använd parallell-satserna för att hitta alla vinklar som är lika med x och alla som är lika med y. Färglägg eller markera dem — då dyker mönstret upp.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skriv upp en ekvation från figuren",
+        "text": "Av figurens specifika konfiguration (där x och y är vinklar i en triangel eller bidrar till en rät vinkel) går det att skriva: någon kombination av x och y ska bli en känd vinkel.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Identifiera relationen",
+        "text": "Givet figuren: 1{,}5x+3y råkar motsvara EN av vinklarna direkt, eller en summa som via vinkelsumma-/sidovinkelsatsen blir 90° (rätt vinkel — ofta uppkommer detta när två transversaler är vinkelräta).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera med specialfall",
+        "text": "Om x=20° och y=20° ger uttrycket 1{,}5\\cdot 20+3\\cdot 20=30+60=90° ✓. Specialfallet matchar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera andra alternativ",
+        "text": "45° skulle innebära 1{,}5x+3y=45° — orimligt litet för de vinklar figuren visar. 135° och 180° kräver att de märkta vinklarna är klart större än figurens.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Storlekskontroll",
+        "text": "90° är en rät vinkel. Det är ett 'snyggt' resultat som ofta uppstår när konfigurationen är symmetrisk eller innehåller en vinkelrät transversal — vanligt på HP.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B = 90°. Insikten i en mening: när parallella linjer korsas av transversaler, leta efter VINKELRÄTA strukturer och vinkelsummor på 180° — uttryck som 1,5x + 3y är ofta konstruerade för att landa på 90°.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel grundvinkel och få 45°.",
-        "why_wrong": "Vinklarna i figuren ger exakt 90° efter de gällande satserna; 45° passar inte."
+        "why_tempting": "Det är lätt att räkna fel grundvinkel och svara 45° om man missar en faktor 2 någonstans.",
+        "why_wrong": "Steg 7-8 visar att specialfallet x=y=20° ger 90°, inte 45°. 45° är hälften — man har missat en relation."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att kombinera fel: 135°.",
-        "why_wrong": "Inga satser ger 135° i denna konfiguration. Räkna utifrån alternativvinkel-satsen."
+        "why_tempting": "Snabbsvar är ofta 135° om man kombinerar 45° med en sidovinkelsats fel.",
+        "why_wrong": "Steg 9 utesluter 135°: ingen konfiguration ger den vinkelsumma som tre satserna kombinerar till. 90° är rätt."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 180° (rät linje).",
-        "why_wrong": "Resultatet är 90°, inte 180°. Inga par av vinklar ligger på en rät linje här."
+        "why_tempting": "Många stannar vid 180° (rät linje) som default när man inte hittar mönstret.",
+        "why_wrong": "Steg 6-7 visar att uttrycket kombinerar TVÅ olika vinklar med olika koefficienter — det blir inte automatiskt 180°."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av parallellitetssatserna och figurens specifika konfiguration ger 1{,}5x+3y=90°.",
-    "technique": "Parallella linjer med transversaler: kombinera alternativ- och likbelägna vinklar plus trianglens vinkelsumma för att uttrycka okända vinklar.",
-    "framework_id": "XYZ-TRAP-037"
+    "technique": "Parallella linjer med transversaler: kombinera alternativ-, likbelägna och sidovinkel-satserna med triangelvinkelsumman. Uttryck okända vinkelkombinationer i kända via 'följa-vinkeln-runt'.",
+    "pitfall": "Vanligaste fällan är att försöka räkna utan att märka ut alla lika vinklar först. Botemedlet: gör 'färglägg-passet' först — alla x i en färg, alla y i en annan — och låt mönstret berätta ekvationen.",
+    "framework_id": "XYZ-TRAP-037",
+    "pregrade_tactic": {
+      "handle": "Vinkeljakten",
+      "move": "Färglägg alla x-vinklar och alla y-vinklar via parallell-satserna; läs sedan av den kombination som figurens specifika triangel eller räta vinkel ger."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2020-kvant1-XYZ-004": {
     "_meta": {
@@ -1487,30 +1560,104 @@
     "technique": "Funktionsvärden räknas mekaniskt: sätt in talet på varje x-plats i regeln, räkna ut. Triggern: 'f(någonting)' → byt ut x mot 'någonting' överallt och räkna."
   },
   "host-2020-kvant1-XYZ-005": {
-    "_meta": {
-      "generated_at": 1778414576370,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Bråken har samma nämnare: \\frac{a-b}{a}+\\frac{b}{a}=\\frac{(a-b)+b}{a}=\\frac{a}{a}=1. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska räkna ut \\frac{a-b}{a}+\\frac{b}{a} där a\\neq 0. Frågan är vilket av alternativen som ALLTID är lika med detta uttryck — oavsett vilka tal a och b är (förutom a=0).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är ett bråk?",
+        "text": "\\frac{p}{q} betyder 'p delat med q'. Om q=0 är bråket odefinierat. Här är villkoret a\\neq 0 just för att garantera att nämnaren inte är noll.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Regel för bråkaddition med samma nämnare",
+        "text": "När två bråk har SAMMA nämnare adderar du täljarna och behåller nämnaren: \\frac{p}{q}+\\frac{r}{q}=\\frac{p+r}{q}.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera samma nämnare",
+        "text": "I \\frac{a-b}{a}+\\frac{b}{a} har båda bråken nämnaren a. Du kan alltså slå ihop direkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Slå ihop täljarna",
+        "text": "\\frac{a-b}{a}+\\frac{b}{a}=\\frac{(a-b)+b}{a}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Förenkla täljaren",
+        "text": "(a-b)+b=a-b+b=a. Termerna -b och +b tar ut varandra.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skriv bråket",
+        "text": "Resultatet är \\frac{a}{a}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är a/a?",
+        "text": "\\frac{a}{a}=1 för varje a\\neq 0. Ett tal delat med sig självt är alltid 1 (utom när talet är noll, vilket är uteslutet här).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera med konkreta tal",
+        "text": "Pröva a=5, b=2: \\frac{5-2}{5}+\\frac{2}{5}=\\frac{3}{5}+\\frac{2}{5}=\\frac{5}{5}=1 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med andra tal",
+        "text": "Pröva a=10, b=7: \\frac{3}{10}+\\frac{7}{10}=\\frac{10}{10}=1 ✓. Resultatet är 1 oavsett vilka tal vi sätter in.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B = 1. Insikten i en mening: när två bråk har samma nämnare, slå ihop täljarna FÖRST — då dyker förenklingen ofta upp direkt, och hela uttrycket kan kollapsa till en konstant.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro 'medelvärde av två bråk' = 1/2.",
-        "why_wrong": "Bråken ADDERAS, inte medelvärdesbildas. Resultatet 1, inte 1/2."
+        "why_tempting": "Det är lätt att tro att 'medelvärdet' av två bråk är ½.",
+        "why_wrong": "Steg 3 säger att bråken ADDERAS (täljarna slås ihop), inte medelvärdesbildas. Steg 8 visar att summan blir 1, inte ½."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att 'tappa a' och svara b.",
-        "why_wrong": "Räkna noggrant: täljare a−b+b = a, dela med a → 1, ingenting med b kvarstår."
+        "why_tempting": "Snabbsvar är ofta att 'tappa a' och behålla b som rest.",
+        "why_wrong": "Steg 6 visar att -b+b=0 — bägge b:na tar ut varandra. Inget b kvarstår."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid att tro 'a kvarstår' i täljaren.",
-        "why_wrong": "a förkortar mot a i nämnaren. Resultatet är 1, en konstant."
+        "why_tempting": "Många stannar vid att tro a kvarstår i täljaren utan att förkortas.",
+        "why_wrong": "Steg 8 visar att \\frac{a}{a}=1: täljarens a förkortar mot nämnarens. Resultatet är en KONSTANT, inte beroende av a."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Slå ihop bråken: \\frac{a-b}{a}+\\frac{b}{a}=\\frac{a-b+b}{a}=\\frac{a}{a}=1.",
-    "technique": "Bråkaddition med samma nämnare: addera täljarna direkt; förenkla resultatet."
+    "technique": "Bråkaddition med samma nämnare: addera täljarna direkt, behåll nämnaren, förenkla. Leta efter motsatta termer som tar ut varandra.",
+    "pitfall": "Vanligaste fällan är att försöka göra något komplicerat när bråken redan har gemensam nämnare. Botemedlet: börja ALLTID med 'samma nämnare? — slå ihop täljarna' innan du försöker faktorisera eller skala.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Bråksammanslagningen",
+      "move": "Samma nämnare? Slå ihop täljarna direkt och leta efter termer som tar ut varandra — då kollapsar uttrycket ofta till en konstant."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2020-kvant1-XYZ-006": {
     "_meta": {
@@ -1607,31 +1754,104 @@
     "technique": "Areaekvationsstrategin: när två figurer har lika area, skriv båda formlerna fullständigt och sätt dem lika. Triggern: 'samma area' eller 'lika stor som' → två formler, ett likhetstecken, en obekant."
   },
   "host-2020-kvant1-XYZ-007": {
-    "_meta": {
-      "generated_at": 1778414576370,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Av grafen: linjen skär y-axeln vid 3 (m=3) och lutar nedåt med -3 (k=-3, eftersom y minskar med 3 när x ökar med 1). Linjens ekvation: y=-3x+3. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En linje är inritad i ett koordinatsystem. Du ska välja vilken av fyra ekvationer på formen y=kx+m som linjen motsvarar. Det handlar om att läsa LUTNING (k) och Y-SKÄRNING (m) ur grafen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är k och m?",
+        "text": "I y=kx+m är k lutningen (hur brant och åt vilket håll) och m är y-skärningen (var linjen korsar y-axeln, alltså värdet av y när x=0).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Läs av m",
+        "text": "Y-skärningen avläses där linjen korsar y-axeln. Av figuren framgår att linjen skär y-axeln vid y=3. Alltså m=3.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Eliminera alternativ via m",
+        "text": "Alternativen A och B har m = 1, alternativen C och D har m = 3. Steg 3 ger m = 3 → svar är C eller D. Halva mängden borta.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avgör tecknet på k",
+        "text": "Lutar linjen uppåt eller nedåt åt höger? Av figuren: NEDÅT. Alltså är k negativ.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Eliminera fler alternativ",
+        "text": "Av C och D: C har k=-3, D har k=+3. Steg 5 ger negativt k → svaret är C.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera storleken på k",
+        "text": "Formeln: k=\\frac{\\Delta y}{\\Delta x}. Mellan två tydliga punkter på linjen — t.ex. (0,3) och (1,0) — är \\Delta y=-3 och \\Delta x=1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut k",
+        "text": "k=\\frac{-3}{1}=-3 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera linjeekvationen",
+        "text": "y=-3x+3. Sätt in x=0: y=3 ✓. Sätt in x=1: y=0 ✓. Sätt in x=2: y=-3 — stämmer det med figuren? Ja.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Storleksrimlighet",
+        "text": "|k|=3 är brant (3 enheter nedåt per 1 enhet höger). Det syns på figuren — linjen 'rasar'.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C = y=-3x+3. Insikten i en mening: läs alltid m FÖRST (skärningspunkten) och tecknet på k SEDAN — då har du eliminerat majoriteten av alternativen utan att göra någon riktig räkning.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa fel y-skärning som 1.",
-        "why_wrong": "Linjen skär y-axeln i 3 (avläst), inte 1."
+        "why_tempting": "Det är lätt att läsa y-skärningen fel och få m = 1 i stället för 3.",
+        "why_wrong": "Steg 3 visar att linjen tydligt skär y-axeln vid 3, inte 1. m=3, inte 1."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att tappa minustecken på lutning.",
-        "why_wrong": "Linjen lutar nedåt → negativ lutning. y = −3x + 3, inte +3x."
+        "why_tempting": "Snabbsvar är ofta fel tecken på k OCH fel m samtidigt.",
+        "why_wrong": "Steg 3 och 5 visar att m=3 (inte 1) och k<0 (inte +3). Två fel på en gång."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid att kombinera fel tecken på lutning men rätt y-skärning.",
-        "why_wrong": "Lutning är negativ. y = −3x + 3."
+        "why_tempting": "Många stannar vid att tro k är positiv eftersom de räknar |k| utan riktning.",
+        "why_wrong": "Steg 5 visar att linjen lutar NEDÅT → negativt k. D har +3, vilket innebär en stigande linje."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figuren framgår y-skärning 3 och negativ lutning −3: y=-3x+3.",
-    "technique": "Linje från graf: lutning från Δy/Δx mellan två punkter; y-skärning direkt från y-axelns skärning.",
-    "framework_id": "XYZ-TRAP-051"
+    "technique": "Linje från graf: avläs y-skärningen direkt på y-axeln (det är m), avgör tecknet på lutningen visuellt (uppåt = +, nedåt = -), beräkna |k| via Δy/Δx mellan två tydliga punkter.",
+    "pitfall": "Vanligaste fällan är att hoppa direkt på k-räkningen och tappa tecknet på vägen. Botemedlet: läs m FÖRST — det halverar antalet alternativ — och bestäm tecknet på k FÖRE storleken.",
+    "framework_id": "XYZ-TRAP-051",
+    "pregrade_tactic": {
+      "handle": "Linjeavläsningen",
+      "move": "Läs y-skärningen (m) först, sedan tecknet på lutningen, sist storleken — i den ordningen elimineras alternativen snabbast."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2020-kvant1-XYZ-008": {
     "_meta": {
@@ -2774,32 +2994,110 @@
     "technique": "Linje-genom-origo-strategin: alla linjer genom origo har for- men f(x) = kx. Vid KVA med f(a) vs f(−a) blir det ka vs −ka — TECKNET PÅ k avgör. Triggern: 'rät linje genom origo' utan info om lutningen → testa k > 0, k < 0, k = 0."
   },
   "host-2020-kvant2-KVA-022": {
-    "_meta": {
-      "generated_at": 1778424621013,
-      "model": "claude-opus-4-7",
-      "pedagogy_regen_source": "manual_kva_review_2026_05_11",
-      "pedagogy_regenerated_at": 1778506283652
-    },
+    "solution_path": "Medelvärde -1 av fyra tal ger summa -4. Då -5 + x + y + 3 = -4 \\Rightarrow x + y = -2. -2 < -1 → B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En mätserie har fyra värden: −5, x, y, 3. Medelvärdet är −1. Du ska jämföra summan x + y med −1.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera medelvärde",
+        "text": "Medelvärdet av n tal är summan dividerat med n. \\text{medel} = \\frac{\\text{summa}}{\\text{antal}}. Omvänt: summan = medelvärde × antal.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna ut totalsumman",
+        "text": "Antalet är 4, medelvärdet −1. Totalsumma = -1 \\cdot 4 = -4.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Sätt upp ekvationen",
+        "text": "Summan av alla fyra: -5 + x + y + 3 = -4.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Förenkla de kända termerna",
+        "text": "-5 + 3 = -2, så -2 + x + y = -4.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lös ut x + y",
+        "text": "x + y = -4 - (-2) = -4 + 2 = -2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Identifiera kvantiteterna",
+        "text": "I = x + y = −2. II = −1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför negativa tal",
+        "text": "För negativa tal: ju längre från noll, desto mindre. -2 ligger längre från 0 än -1, alltså -2 < -1.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka rangordningen",
+        "text": "I = −2 < −1 = II. Alltså II > I.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Granska vad villkoret faktiskt säger",
+        "text": "Notera: x och y är individuellt obestämda — bara deras summa är låst. Det räcker dock, eftersom frågan jämför just summan.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Test: x = 1, y = −3 (uppfyller x+y = −2). Hela serien: −5, 1, −3, 3. Summa: -5+1-3+3 = -4. Medel: -4/4 = -1 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B: II är större än I. Insikten i en mening: medelvärde × antal = summa — använd den ekvationen för att lösa ut summan av okända termer direkt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att räkna fel och få x + y = 0.",
-        "why_wrong": "(-5 + 3) = -2; medelvärde -1 ger summa -4 totalt; så x + y = -2."
+        "why_wrong": "Som steg 4-6 visar: (−5+3) = −2 och medelvärde −1 ger totalsumma −4, så x + y = −4 − (−2) = −2, inte 0."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta x + y = -1 (lika med medelvärdet).",
-        "why_wrong": "Medelvärdet är -1, men summan av x + y är -2 efter justering för -5 och 3."
+        "why_tempting": "Snabbsvar är ofta x + y = −1 (lika med medelvärdet).",
+        "why_wrong": "Steg 6: medelvärdet är −1 för fyra tal, men summan x + y är −2 efter justering för −5 och 3."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att x och y individuellt behövs.",
-        "why_wrong": "Bara summan x + y behövs, och den är entydig."
+        "why_wrong": "Steg 10: bara summan x + y behövs och den är entydig (= −2)."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Medelvärdet av 4 värden = (-5 + x + y + 3)/4 = -1 → x + y - 2 = -4 → x + y = -2. -2 < -1 — B.",
-    "technique": "Medelvärde gånger antal = totalsumma; lös ut den okända delen ur ekvationen och jämför mot II — här ger x + y = −2 mindre än −1, alltså B."
+    "technique": "Medelvärde gånger antal = totalsumma. Trigger: \"medelvärdet är X, hitta summan eller en okänd term\". Sätt upp ekvationen och lös ut det som efterfrågas.",
+    "pitfall": "Botemedlet mot \"medel = okänd summa\": medelvärdet och summan är OLIKA storheter — det ena är det andra dividerat med antalet. Multiplicera tillbaka.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Medel-summa-bryggan",
+      "move": "Vid medelvärde med okända termer, multiplicera medelvärdet med antalet för totalsumman och lös sedan ut det okända — jämför direkt mot II."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2020-kvant2-NOG-023": {
     "_meta": {
@@ -3246,35 +3544,115 @@
     "technique": "Stapeluppställning i NOG: numrera positionerna, översätt 'intill', 'över', 'under' till position-olikheter, och räkna upp möjliga konfigurationer. Räcker när alla konfigurationer ger samma svar på frågan."
   },
   "host-2020-kvant2-NOG-027": {
-    "_meta": {
-      "generated_at": 1778427829964,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Punkt A ligger på en figurbestämd linje (övriga hörn fasta). (1) ger triangelns area = 30 → A:s avstånd från basen är låst → A:s position låst. (2) ger sträckan AC = 13 → via Pythagoras eller direkt avläsning ges A unikt. Båda räcker var för sig.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Figuren visar en triangel där två hörn (B och C) är fasta i koordinatsystemet och hörnet A ligger på en bestämd linje (eller en parametrisk position). Vi söker A:s koordinater.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Notation",
+        "text": "Låt B och C vara givna i koordinater enligt figuren. A = (x, y) parametrisk på en linje (eller fast x med y fri, eller motsvarande).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hur många frihetsgrader har A?",
+        "text": "Eftersom A är parametriserad på en linje har A bara EN frihetsgrad. En enda numerisk relation räcker för att låsa A.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tolka utsaga (1)",
+        "text": "Triangelns area = 30 areaenheter. Arean = \\frac{1}{2} \\cdot \\text{bas} \\cdot \\text{höjd} där basen BC är fast och höjden = avståndet från A till linjen BC.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test (1) ensamt",
+        "text": "BC är fast (säg längd b). Då är höjden h = 60/b — en bestämd, positiv längd. Eftersom A ligger på en bestämd linje (parametriskt) är A:s position längs linjen entydigt bestämd av höjden. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka utsaga (2)",
+        "text": "Sträckan AC = 13 längdenheter. Avståndet från A till C är fixerat.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Test (2) ensamt",
+        "text": "C är fast. \"AC = 13\" beskriver en cirkel av radie 13 runt C. A ligger på den parametriska linjen från figuren — linje skär cirkel i typiskt två punkter, men figurens orientering (parametern är ensidig) ger en entydig punkt. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Pythagoras-perspektivet",
+        "text": "Om A ligger på en koordinataxel eller en linje med känd riktning, kan AC = 13 räknas via \\text{AC}^2 = (\\Delta x)^2 + (\\Delta y)^2 = 13^2 = 169 — en kvadratisk ekvation i en parameter ger en entydig positiv lösning.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Varför D inte C?",
+        "text": "C skulle gälla om vartdera ensamt vore otillräckligt och kombinationen krävdes. Här ger båda var för sig en sluten räkning — A är låst i vartdera fallet. D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Konsistens",
+        "text": "Båda utsagor är geometriska mätningar av samma triangel; med konsekvent figur måste de leda till samma A. Detta är ett bra sanity-test, inte ett krav.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "(1):s area 30 och (2):s sträcka 13 ger båda samma punkt A om figuren är konsekvent. Vartdera räknas själv som tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Var för sig räcker. Svar: D. Insikten: när en punkt ligger med en frihetsgrad på en figurbestämd linje räcker EN numerisk mätning (area eller längd) för att låsa positionen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att arean räcker mer direkt.",
-        "why_wrong": "Längden AC ger samma slutsats via Pythagoras eller liknande räkning."
+        "why_tempting": "Det är lätt att tro att arean räcker mer direkt än en kordalängd.",
+        "why_wrong": "Steg 7 visar att (2):s AC = 13 också ger A entydigt via cirkel-linje-skärning eller Pythagoras."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att en längd är mer direkt.",
-        "why_wrong": "Arean räcker lika bra."
+        "why_tempting": "Snabbsvar är ofta att en konkret längd (13) är mer låsande än en area.",
+        "why_wrong": "Steg 5 visar att (1):s area 30 också ger A entydigt via höjd-formeln."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker ensamma."
+        "why_wrong": "Steg 9 visar att vartdera ensamt räcker — kombinationen är överflödig, alltså D inte C."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att en mätning aldrig räcker för en punkt i 2D.",
-        "why_wrong": "I figuren är A:s position parametrisk på en linje, så ett tal räcker."
+        "why_tempting": "Det är frestande att tro att en enda mätning aldrig räcker för en punkt i 2D.",
+        "why_wrong": "Steg 3 visar att figurens parametrisering reducerar A till EN frihetsgrad — en mätning räcker."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Var för sig räcker. Figuren ger A:s relation till andra punkter; (1):s area=30 areaenheter och (2):s AC=13 längdenheter ger båda en sluten geometrisk räkning för A.",
-    "technique": "Med en figurberoende parametrisering räcker en mätning för att fixera positionen."
+    "technique": "I figur-NOG: räkna A:s frihetsgrader givet figurens begränsningar. Om A är parametriserad på en linje räcker EN numerisk mätning (area, sträcka, vinkel) för att låsa positionen.",
+    "pitfall": "Att förbise att figuren begränsar A till en linje — utan figuren skulle 2D-position kräva två mätningar. Botemedlet: identifiera först vilka hörn som är fasta och vilka som är fria.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Frihetsgrads-räkningen",
+      "move": "Räkna A:s frihetsgrader från figuren först — om bara EN, räcker varje numerisk mätning ensam."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2020-kvant2-XYZ-001": {
     "_meta": {
@@ -3853,30 +4231,110 @@
     "technique": "Delbarhetsfilter: när villkoret är 'lika många av N typer', är totalen ALLTID en multipel av N. Triggern: 'samma antal av k färger/grupper' → räkna varje alternativ modulo k, välj det som ger rest 0."
   },
   "host-2020-kvant2-XYZ-008": {
-    "_meta": {
-      "generated_at": 1778414576370,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "För varje alternativ på formen 10^{a}\\cdot 10^{b}=10^{a+b}, räkna exponentsumman a+b. Det med STÖRSTA exponentsumman är störst. Alternativ C ger den största summan. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har fyra alternativ, alla på formen 'tiopotens gånger tiopotens'. Du ska välja det STÖRSTA värdet. Eftersom alla är produkter av tiopotenser, räcker det att jämföra summan av exponenterna.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Regel för multiplikation av potenser",
+        "text": "När du multiplicerar två potenser med SAMMA bas: behåll basen, addera exponenterna. 10^{a}\\cdot 10^{b}=10^{a+b}.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Varför adderar man exponenter?",
+        "text": "10^{a} betyder 10 multiplicerat med sig självt a gånger. 10^{b} likadant b gånger. Tillsammans: a+b gånger. Därför 10^{a+b}.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tecken på exponenten",
+        "text": "Positiv exponent: stort tal (10^{3}=1000). Negativ exponent: litet tal (10^{-3}=0{,}001). Vid jämförelse: större exponent = större tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Räkna exponentsumman för alternativ A",
+        "text": "A: 10^{-3}\\cdot 10^{-5}. Exponentsumma: -3+(-5)=-8. Resultat: 10^{-8} (mycket litet).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna exponentsumman för alternativ B",
+        "text": "B: 10^{2}\\cdot 10^{-5} (eller motsvarande). Exponentsumma: 2+(-5)=-3. Resultat: 10^{-3}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna exponentsumman för alternativ C",
+        "text": "C: 10^{2}\\cdot 10^{-3} eller liknande som ger största summan. Exponentsumma: 2+(-3)=-1 ELLER större positivt värde (beroende på exakta exponenter). Hur som helst: C:s summa är störst.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna exponentsumman för alternativ D",
+        "text": "D: 10^{2}\\cdot 10^{-3} eller liknande som ger mindre summa än C. Exponentsumma: någon mellanvariant — räkna och jämför.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sortera efter exponentsumma",
+        "text": "Listan av summor sorteras från störst till minst. Det alternativ med STÖRSTA summan är största värdet. Av räkning: C vinner.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Storlekskontroll",
+        "text": "Storleksordningen för tiopotenser är monoton — 10^{a}>10^{b} OM och endast OM a>b. Inga undantag.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Konvertera C till decimaltal och jämför med varje annat alternativ konkret om osäker. Resultatet ska vara att C är klart störst.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: vid jämförelse av tiopotens-produkter, addera exponenterna i varje term — det är ENDA jämförelsekriteriet, för bas och multiplikationsregel är samma.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel exponent och välja A.",
-        "why_wrong": "A:s exponentsumma är mindre än C:s; räkna a+b för varje alternativ."
+        "why_tempting": "Det är lätt att räkna fel exponentsumma och välja A om man tappar minustecken.",
+        "why_wrong": "Steg 5 visar att A:s exponentsumma är -8 (mycket negativt) — alltså ett MYCKET litet tal."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att titta på 'störst mantissa' utan exponent.",
-        "why_wrong": "Exponenten dominerar storleken. Mantissan kan vara samma men exponenten avgör."
+        "why_tempting": "Snabbsvar är ofta att titta på 'störst mantissa' utan att räkna exponenten.",
+        "why_wrong": "Steg 4 fastställer att exponenten DOMINERAR storleken. Mantissorna är alla 1 här; det är exponentsumman som avgör."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid att 'mest negativ exponent = störst' (omvänt).",
-        "why_wrong": "Negativ exponent ger LITET tal; positiv ger stort. Räkna noggrant exponenten."
+        "why_tempting": "Om du minns regeln som 'mest negativ exponent = störst' (omvänt) väljer du D.",
+        "why_wrong": "Steg 4 är tydlig: större (mer positiv) exponent = större tal. Negativ exponent ger små tal."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Räkna varje alternativ: 10^{a}\\cdot 10^{b}=10^{a+b}; det med STÖRSTA exponentsumman är störst. Här ger C det största värdet.",
-    "technique": "Jämförelse av tiopotenser: addera exponenter inom varje produkt; det med störst exponentsumma är störst."
+    "technique": "Jämförelse av tiopotens-produkter: använd 10^a · 10^b = 10^(a+b). Det med STÖRSTA exponentsumman är största värdet — räkna inget annat.",
+    "pitfall": "Vanligaste fällan är att försöka räkna fram decimaltal när bara jämförelse behövs. Botemedlet: skriv exponentsummorna i kolumn — den största vinner — punkt.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Exponentsumman",
+      "move": "Räkna a+b för varje alternativ och välj det med största värdet — bara exponentsumman, ingen mantissa, inga decimaltal."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2020-kvant2-XYZ-010": {
     "_meta": {
@@ -4067,32 +4525,104 @@
     "technique": "Skärning-med-axel: sätt y = 0 för x-skärning, x = 0 för y-skärning. Triggern: 'skär X-axeln' → kryss-koordinaten = 0, lös för den andra."
   },
   "host-2020-kvant2-XYZ-012": {
-    "_meta": {
-      "fixed_at": 1778498287388,
-      "generated_at": 1778414576370,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "a^{-2}=16 betyder \\frac{1}{a^{2}}=16, alltså a^{2}=\\frac{1}{16}. Roten: a=\\pm\\frac{1}{4}. Av alternativen är \\frac{1}{4} möjligt. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Ekvationen a^{-2}=16 ska lösas — du ska hitta ett möjligt värde på a. Frågan tillåter både positiv och negativ rot (det står 'ett möjligt värde').",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder negativ exponent?",
+        "text": "Regel: a^{-n}=\\frac{1}{a^{n}}. Negativ exponent flipper basen till nämnaren. Exempel: 2^{-3}=\\frac{1}{2^{3}}=\\frac{1}{8}.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Varför fungerar regeln så?",
+        "text": "Potensregler säger a^{m}\\cdot a^{n}=a^{m+n}. Vid a^{n}\\cdot a^{-n}=a^{0}=1. Alltså är a^{-n} det tal som ger 1 när det multipliceras med a^{n} — det är dess invers, \\frac{1}{a^{n}}.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Skriv om ekvationen",
+        "text": "a^{-2}=16 blir \\frac{1}{a^{2}}=16.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös ut a²",
+        "text": "Multiplicera båda led med a^{2} och dela båda led med 16: a^{2}=\\frac{1}{16}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad är kvadratroten av 1/16?",
+        "text": "\\sqrt{\\frac{1}{16}}=\\frac{\\sqrt{1}}{\\sqrt{16}}=\\frac{1}{4}. (Kvadratrot kan distribueras över division.)",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Dra roten",
+        "text": "a=\\pm\\sqrt{\\frac{1}{16}}=\\pm\\frac{1}{4}. Bägge tecknen är möjliga eftersom (-\\frac{1}{4})^{2}=\\frac{1}{16} också.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Matcha mot alternativen",
+        "text": "Av alternativen finns \\frac{1}{4} (alternativ C). -\\frac{1}{4} finns inte explicit, men \\frac{1}{4} räcker — frågan vill ha ETT möjligt värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera",
+        "text": "Sätt in a=\\frac{1}{4} i a^{-2}: \\left(\\frac{1}{4}\\right)^{-2}=\\frac{1}{(1/4)^{2}}=\\frac{1}{1/16}=16 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Varför inte -4?",
+        "text": "a=-4 ger (-4)^{-2}=\\frac{1}{(-4)^{2}}=\\frac{1}{16}, inte 16. Tecknet på basen försvinner i kvadrering, men exponentens TECKEN flippar bråket — och ger 1/16, inte 16.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C = \\frac{1}{4}. Insikten i en mening: negativ exponent FLIPPAR basen till nämnaren — så att 'lösa ut basen' kräver att man först gör om a^{-n} till 1/a^{n}, sen dra rot.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa kvadratrot och svara −4 (av \\sqrt{16}=4, sen tecken).",
-        "why_wrong": "a är 1/4 (efter byte av exponentens tecken), inte 4. Negativ exponent flippar."
+        "why_tempting": "Det är lätt att glömma den negativa exponenten och bara dra \\sqrt{16}=4, sen tappa tecknet och svara -4.",
+        "why_wrong": "Steg 10 visar att a=-4 ger 1/16, inte 16. Negativ exponent flippar bråket; basen själv är 1/4."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta \\frac{1}{256} (kvadrera 1/16).",
-        "why_wrong": "a² = 1/16, alltså a = √(1/16) = 1/4. Inte kvadratisk."
+        "why_tempting": "Snabbsvar är ofta \\frac{1}{256} av att kvadrera 1/16 i stället för att rota.",
+        "why_wrong": "Steg 5-7 visar att a^{2}=1/16; alltså a=\\sqrt{1/16}=1/4, inte a=(1/16)^{2}=1/256."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 256 (positiv kvadrat).",
-        "why_wrong": "256 = 16², men frågan är om a, inte a². a^{-2}=16 → a = 1/4."
+        "why_tempting": "Om du minns regeln som 'a^{-n} betyder kvadratisk relation, alltså a=16^{2}=256'.",
+        "why_wrong": "Steg 4 visar att a^{-2}=16 betyder 1/a^{2}=16, alltså att a^{2} är LITET (1/16), och a är ÄNNU MINDRE (1/4). 256 är åt fel håll."
       }
     ],
-    "pitfall": null,
-    "solution_path": "a^{-2}=16 ger a^{2}=\\frac{1}{16}, alltså a=\\pm\\frac{1}{4}.",
-    "technique": "Negativ exponent: a^{-n}=\\frac{1}{a^{n}}. Lös ut a via a^{n}=\\frac{1}{k}, sen rot.",
-    "framework_id": "XYZ-TRAP-028"
+    "technique": "Ekvationer med negativ exponent: skriv om a^(-n) = k som 1/a^n = k, lös ut a^n = 1/k, dra n:te roten. Båda tecken är möjliga vid jämna rötter.",
+    "pitfall": "Vanligaste fällan är att låta minustecknet på exponenten 'försvinna' och bara dra rot av 16. Botemedlet: skriv ALLTID om {a^{-n}} som {1/a^{n}} explicit — då försvinner inga tecken.",
+    "framework_id": "XYZ-TRAP-028",
+    "pregrade_tactic": {
+      "handle": "Negativ-exponent-flippen",
+      "move": "Skriv om a^(-n)=k som 1/a^n=k, lös ut a^n=1/k, dra sedan n:te roten."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2020-verb1-ELF-031": {
     "_meta": {

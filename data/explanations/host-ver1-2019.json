@@ -2698,32 +2698,127 @@
   },
   "host-ver1-2019-kvant1-XYZ-003": {
     "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7",
-      "pedagogy_regenerated_at": 1778510870035,
-      "regen_source": "persona_pass_phase_e_2026_05_11"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Dela upp femhörningen i en rektangel (4·2 = 8 areaenheter) plus två rätvinkliga trianglar med bas och höjd 1·2·½ = 1 vardera. Totalt: 8+1+1=10 areaenheter. Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En femhörning (polygon med 5 hörn) är inritad i ett koordinatsystem. Du ska bestämma dess area i 'areaenheter' — där 1 areaenhet = en kvadratruta med sida 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Strategi: dela upp i enkla figurer",
+        "text": "Areor av oregelbundna polygoner i koordinatsystem beräknas enklast genom uppdelning i rektanglar och rätvinkliga trianglar — figurer med direkt areaformel.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Rektangel-area",
+        "text": "En rektangel med bas b och höjd h har area A=b\\cdot h.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Triangel-area",
+        "text": "En triangel med bas b och höjd h har area A=\\frac{1}{2}b\\cdot h — alltid halva rektangelns area med samma bas och höjd.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera huvudrektangeln",
+        "text": "Mitten av femhörningen kan tolkas som en rektangel. Avläs dess basbredd och höjd från koordinatsystemet — säg bredd 4 och höjd 2 (enligt figurens utseende).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna huvudrektangelns area",
+        "text": "A_{\\text{rekt}}=4\\cdot 2=8 areaenheter.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Identifiera de två trianglarna",
+        "text": "Två trianglar 'sticker ut' från rektangeln — vid två av femhörningens hörn. Avläs varje triangels bas och höjd: säg bas 1 och höjd 2 vardera.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna trianglarnas area",
+        "text": "Varje triangel: \\frac{1}{2}\\cdot 1\\cdot 2=1 areaenhet. Två trianglar tillsammans: 2 areaenheter.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Summera alla delar",
+        "text": "Total area = rektangel + 2 trianglar = 8+1+1=10 areaenheter.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Alternativ strategi: omslutande rektangel",
+        "text": "Ett annat sätt: rita en stor rektangel som precis omsluter femhörningen, beräkna dess area, och dra av areorna av de 'utskurna' hörnen. Båda metoder ska ge samma svar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Eliminera 5 areaenheter (alt A)",
+        "text": "5 areaenheter är ungefär halva figuren. Det motsvarar att man bara räknat med någon av delarna (rektangeln EUR triangelpaketet, inte båda).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Eliminera 6 areaenheter (alt B)",
+        "text": "6 areaenheter motsvarar att räkna varje ruta som femhörningen 'rör vid' utan att skilja på hel täckning och partiell — det underskattar arean.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Eliminera 8 areaenheter (alt C)",
+        "text": "8 areaenheter är exakt rektangelns area — man har glömt de två tilläggs-trianglarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 14,
+        "title": "Verifiera med Picks formel (om koordinaterna är hela)",
+        "text": "Picks formel: A=I+B/2-1, där I = antal heltalsgitterpunkter inuti och B = antal på randen. Om uppgiftens femhörning har hela hörn, ger denna formel direkt samma svar.",
+        "tier": "detail"
+      },
+      {
+        "n": 15,
+        "title": "Slutsats",
+        "text": "Svaret är D (10 areaenheter). Insikten i en mening: dela upp polygonen i rektanglar och rätvinkliga trianglar — använd b·h respektive ½b·h och summera.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att glömma en del av uppdelningen och bara räkna huvudrektangeln eller en triangel.",
-        "why_wrong": "5 areaenheter motsvarar ungefär halva figuren — du missar minst en del när du delar upp."
+        "why_wrong": "Steg 11 visar: 5 areaenheter motsvarar ungefär halva figuren. Steg 9 ger korrekt summan 10 efter att alla delar räknats."
       },
       {
         "letter": "B",
-        "why_tempting": "Första instinkten är att räkna varje ruta som figuren passerar utan att skilja på hel och halv täckning.",
-        "why_wrong": "Räkning av rutor som femhörningen 'rör vid' underskattar arean — det ger ca 6, men korrekt area är 10."
+        "why_tempting": "Första instinkten är att räkna varje ruta som figuren 'passerar' utan att skilja på hel och halv täckning.",
+        "why_wrong": "Steg 12 visar: 'rör vid'-räkning underskattar arean. Korrekt metod (uppdelning + areaformler) ger 10, inte 6."
       },
       {
         "letter": "C",
-        "why_tempting": "Om du minns regeln som 'femhörning ≈ 8 enheter' gissar du 8.",
-        "why_wrong": "Det finns ingen sådan tumregel — arean beror helt på var hörnen ligger i koordinatsystemet."
+        "why_tempting": "Om du minns regeln som 'femhörning ≈ 8 enheter' eller bara räknar huvudrektangeln, landar du på 8.",
+        "why_wrong": "Steg 13 visar: 8 är rektangelns area utan trianglarna. De två trianglarna lägger till 2 areaenheter (1+1) för totalt 10."
       }
     ],
-    "pitfall": "Räkna noga med kvadratrutorna i koordinatsystemet — ett räknefel i basen eller höjden gör hela arean fel.",
-    "solution_path": "Dela femhörningen i två trianglar och en rektangel genom att rita räta linjer mellan lämpliga hörn (eller dra ut figuren till en omslutande rektangel och dra bort hörnen). Summera delarna: t.ex. rektangel 4·2 = 8 plus två trianglar 1·2·1/2 vardera = 1 + 1 = 2, totalt 10 areaenheter.",
-    "technique": "Polygon i koordinatsystem: dela upp i rektanglar och rätvinkliga trianglar — varje del räknar du med grundformler (rektangel = b·h, triangel = b·h/2).",
-    "framework_id": "XYZ-TRAP-021"
+    "technique": "Polygon-uppdelnings-rutinen: dela polygonen i rektanglar och rätvinkliga trianglar, räkna areorna med b·h respektive ½b·h, summera. Triggern är 'oregelbunden polygon i koordinatsystem'.",
+    "pitfall": "Botemedlet mot 'glömde en del': skriv ut varje delfigurs area separat och summera explicit. Räkna inte 'i huvudet' — det ökar risken för utelämnande.",
+    "framework_id": "XYZ-TRAP-021",
+    "pregrade_tactic": {
+      "handle": "Polygon-uppdelningen",
+      "move": "Dela in i rektanglar och rätvinkliga trianglar, räkna ut varje delarea med b·h eller ½b·h, summera — verifiera med en omslutande rektangel."
+    }
   },
   "host-ver1-2019-kvant1-XYZ-004": {
     "_meta": {
@@ -2927,30 +3022,103 @@
   },
   "host-ver1-2019-kvant1-XYZ-006": {
     "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-038",
+    "solution_path": "Figuren visar en sammansatt vinkelfigur där v är en yttervinkel till en triangel. Använd yttervinkelregeln (yttervinkel = summan av de två icke-angränsande inre vinklarna) och kedja vinkelsumman 180° för att gå från de avlästa vinklarna till v = 67°.",
+    "technique": "Vinkelräkning i sammansatt figur: kombinera triangelns vinkelsumma 180° med yttervinkelregeln. När en vinkel ligger UTANFÖR en triangel men i förlängningen av en sida, är den lika med summan av de TVÅ inre vinklarna i triangeln som INTE är dess granne.",
+    "pitfall": "Botemedlet mot att 'gissa' i vinkelfigurer: identifiera ALLTID vilken triangel den okända vinkeln tillhör — som inre vinkel, yttervinkel eller motstående vinkel. Skriv ut det innan du börjar räkna, så slipper du blanda ihop vinkelpar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Figuren visar två linjer som möts och bildar en triangel där två inre vinklar är utmärkta i figuren. Vinkeln v sitter utanför triangeln, i den utåtriktade ‘kilen’. Vårt jobb är att hitta v utan miniräknare.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Namnge vinklarna",
+        "text": "Kalla de två kända inre vinklarna a och b. Den tredje inre vinkeln i triangeln kallar vi c. v sitter på utsidan av sidan som är motsatt c — alltså i förlängningen av en av triangelns sidor.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definiera triangelns vinkelsumma",
+        "text": "Grundregel: i VARJE triangel är de tre inre vinklarna tillsammans alltid 180°. Det betyder: a + b + c = 180^{\\circ}. Detta är en sats du kan lita på utan att bevisa.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Definiera yttervinkel",
+        "text": "En yttervinkel uppstår när du förlänger en sida av triangeln rakt ut. Den utåtriktade vinkel som bildas mellan förlängningen och den andra sidan kallas yttervinkel. Här är v en yttervinkel.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Härleda yttervinkelregeln",
+        "text": "Yttervinkeln v och den inre vinkeln c är supplementära (ligger på en rät linje): v + c = 180^{\\circ}. Men c = 180^{\\circ} - (a + b). Sätter du in får du v = 180^{\\circ} - (180^{\\circ} - (a+b)) = a + b. Med andra ord: yttervinkeln = summan av de två andra inre vinklarna.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs de inre vinklarna",
+        "text": "I figuren går de två markerade inre vinklarna att läsa direkt. Summan av dem (de två icke-angränsande till v) är värdet vi behöver. Avläsningen ger a + b = 67^{\\circ}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tillämpa regeln",
+        "text": "Sätt in i yttervinkelregeln från steg 5: v = a + b = 67^{\\circ}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kolla rimligheten",
+        "text": "Yttervinkeln måste vara mindre än 180° (annars vore det inte en vinkel utan en hel-vridning) och större än någon av de två inre vinklarna (eftersom den är deras SUMMA). 67° är klart mindre än 180° och större än varje enskild komponent — rimligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via inre vinkeln",
+        "text": "Den tredje inre vinkeln c blir 180^{\\circ} - 67^{\\circ} = 113^{\\circ}. Och v + c = 67^{\\circ} + 113^{\\circ} = 180^{\\circ} — supplement-paret stämmer. Inget tecken på räknefel.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Summan a + b + c = 67° + 113° = 180° ger en giltig triangel, och v är konsekvent med både yttervinkelregeln och supplement-regeln. Inga andra alternativ uppfyller båda.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C, 67°. Insikten i en mening: i alla figurer där en okänd vinkel sitter på UTSIDAN av en triangel är yttervinkelregeln (yttervinkel = summan av de två andra inre vinklarna) den snabbaste vägen — den hoppar över ett mellansteg.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att glömma yttervinkelsteget och få 50°.",
-        "why_wrong": "50° hoppar över ett mellansteg — yttervinkeln till en triangel = summan av de två icke-angränsande inre vinklarna, vilket leder till v = 67^\\circ."
+        "why_tempting": "Det är lätt att glömma yttervinkelsteget och avläsa en av de inre vinklarna direkt som svar, vilket kan landa på 50°.",
+        "why_wrong": "Steg 5 visar att yttervinkeln är SUMMAN av två inre vinklar — inte en enskild avläsning. 50° hoppar över hela yttervinkelregeln."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 63° om man räknar med fel vinkelpar.",
-        "why_wrong": "63° kommer av att man tar fel triangel — rätt kedja genom yttervinkeln ger 67^\\circ."
+        "why_tempting": "Snabbsvar är ofta 63° om man tar fel triangel ur den sammansatta figuren eller blandar ihop två närbelägna vinkelpar.",
+        "why_wrong": "Steg 6 kräver att du läser de TVÅ icke-angränsande inre vinklarna till v. 63° kommer av att fel par adderats — typiskt om man tar grannvinkeln istället för den icke-angränsande."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är att addera istället för subtrahera och få 77°.",
-        "why_wrong": "77° kommer av tecknet fel i vinkelsumman; rätt riktning ger v = 67^\\circ."
+        "why_tempting": "Första instinkten är att addera istället för subtrahera när man kombinerar supplement med yttervinkel, och då hamnar man på 77°.",
+        "why_wrong": "Steg 9 kontrollerar med v + c = 180°. 77° ger 77 + 113 = 190^{\\circ}, vilket spränger den raka linjen — alltså omöjligt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Sök en kedja från givna vinklar till v via triangelns vinkelsumma. Lös trianglarna: figurens kända vinklar ger v genom 180^\\circ - (a+b) där a och b läses direkt ur figuren — kedjan landar på v = 67^\\circ.",
-    "technique": "Vinkelräkning i sammansatt figur: använd vinkelsumma 180° i triangel plus yttervinkelregeln för att härleda vinkeln från det kända till det sökta.",
-    "framework_id": "XYZ-TRAP-038"
+    "pregrade_tactic": {
+      "handle": "Yttervinkelregeln",
+      "move": "När den sökta vinkeln sitter på utsidan av en triangel — addera de två icke-angränsande inre vinklarna direkt, hoppa över vinkelsumman."
+    }
   },
   "host-ver1-2019-kvant1-XYZ-007": {
     "_meta": {
@@ -3048,30 +3216,103 @@
   },
   "host-ver1-2019-kvant1-XYZ-009": {
     "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-042",
+    "solution_path": "Cirkel A har radie 3 cm → area 9\\pi. Cirkel B:s area är 4× A:s area, alltså 36\\pi. Radien i B fås ur r^2 = 36, alltså r = 6 cm.",
+    "technique": "Area skalar med kvadraten på radien. Om en cirkels area är k gånger en annans, så är radien \\sqrt{k} gånger så stor — inte k gånger. Triggern: alla ‘x gånger area’-uppgifter med cirklar eller kvadrater.",
+    "pitfall": "Botemedlet mot att räkna linjärt: när du ser ‘area’, tänk genast 'kvadrat på radien'. Skriv ut formeln A = \\pi r^2 FÖRST, så undviker du att skala r med samma faktor som A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Cirkel A har radie 3 cm. Cirkel A:s area är 1/4 av cirkel B:s area — alltså är B:s area FYRA gånger A:s area. Vi söker B:s radie.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera cirkelarea",
+        "text": "Grundformel: en cirkels area är A = \\pi r^2, där r är radien. Här betyder r^2 helt enkelt r \\cdot r — radien gånger sig själv.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna area för cirkel A",
+        "text": "Sätt in r = 3 i formeln: A_A = \\pi \\cdot 3^2 = \\pi \\cdot 9 = 9\\pi kvadratcentimeter.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt det verbala villkoret",
+        "text": "‘A:s area är 1/4 av B:s area’ betyder A_A = \\tfrac{1}{4} A_B. Multiplicera båda led med 4: A_B = 4 A_A. B:s area är alltså fyra gånger så stor som A:s.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna area för cirkel B",
+        "text": "A_B = 4 \\cdot 9\\pi = 36\\pi kvadratcentimeter.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Ställ upp ekvationen för B:s radie",
+        "text": "Med samma cirkelareaformel: A_B = \\pi r_B^2. Sätt in A_B = 36\\pi: 36\\pi = \\pi r_B^2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla genom att stryka π",
+        "text": "Dividera båda led med π (π ≠ 0): 36 = r_B^2. π försvinner alltid när du jämför cirklars areor — det är samma proportionalitetskonstant överallt.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Dra kvadratroten",
+        "text": "Kvadratroten är motsatsen till kvadrering: om r^2 = 36 så är r = \\sqrt{36} = 6 (radien måste vara positiv).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Generalisera insikten",
+        "text": "Om area-faktorn är 4, så är radie-faktorn \\sqrt{4} = 2. Alltså: B:s radie är 2 × A:s radie = 2 · 3 = 6 cm — samma svar via genvägen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Substituera tillbaka: A_B = \\pi \\cdot 6^2 = 36\\pi, vilket är precis 4 × 9π = 4 × A_A. Villkoret A_A = \\tfrac{1}{4} A_B stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: B, 6 cm. Insikten i en mening: area skalar med kvadraten på radien, så area-faktor k ger radie-faktor \\sqrt{k} — aldrig k självt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna r linjärt och få 4.",
-        "why_wrong": "Area skalar med r²; faktor 4 i area = faktor 2 i r. Här 9π → 36π betyder r går från 3 till 6, inte 4."
+        "why_tempting": "Det är lätt att tänka 'A:s area är ¼ av B:s, så B är 4 gånger A, alltså 3 + 1 = 4 cm' — en blandning av addition och faktor.",
+        "why_wrong": "Steg 4–5 visar att 4 är AREA-faktorn, inte radie-faktorn eller en additiv ökning. 4 cm ger area 16\\pi, inte 36\\pi."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 9 (skala 3).",
-        "why_wrong": "Skalfaktorn för r är 2 (sqrt(4))."
+        "why_tempting": "Snabbsvar är ofta 9 cm — student multiplicerar radien med 3 (eftersom A:s radie är 3 och man tänker 'tredubbla').",
+        "why_wrong": "Steg 9 visar att radie-faktorn är \\sqrt{4} = 2, inte 3. 9 cm skulle ge area 81\\pi — alldeles för stort."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 12 (skala 4 i r).",
-        "why_wrong": "r-skalfaktor = √(area-faktor) = √4 = 2."
+        "why_tempting": "Många stannar vid 12 cm genom att skala radien med samma faktor 4 som arean — den klassiska linjär-fällan.",
+        "why_wrong": "Steg 8 visar att radien = \\sqrt{36} = 6, inte 12. Om r = 12 vore area 144\\pi, alltså 16 × A — inte 4 ×."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Cirkel A: area = 9π. Cirkel B är 4× → 36π → r_B=\\sqrt{36}=6 cm.",
-    "technique": "Skalning av cirkelarea: A = πr² → A skalas med r²; r-skala = √(area-skala).",
-    "framework_id": "XYZ-TRAP-042"
+    "pregrade_tactic": {
+      "handle": "Kvadratrots-skalan",
+      "move": "När arean växer med faktor k — multiplicera radien med \\sqrt{k}, aldrig med k självt."
+    }
   },
   "host-ver1-2019-kvant1-XYZ-010": {
     "_meta": {
@@ -3181,30 +3422,103 @@
   },
   "host-ver1-2019-kvant1-XYZ-011": {
     "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-032",
+    "solution_path": "Förenkla \\sqrt{32xy^2} genom att bryta ut perfekta kvadrater: 32 = 16 \\cdot 2 och y^2 är redan en perfekt kvadrat. Resultat: \\sqrt{32xy^2} = 4y\\sqrt{2x} (alternativ B).",
+    "technique": "Förenkling av rotuttryck: dela upp talet under roten i ‘perfekt kvadrat × resten’ och dra ut kvadraten. För variabler: varje jämn potens går ut, udda lämnar en faktor kvar.",
+    "pitfall": "Botemedlet mot rotslarv: faktorisera ALLTID talet under roten innan du försöker dra ut något. 32 = 16 \\cdot 2 — inte 4 · 8, eftersom 8 inte är en perfekt kvadrat.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi har uttrycket \\sqrt{32xy^2} med x, y > 0. Målet är att skriva om det i formen ‘konstant · variabel · \\sqrt{...}’ — dvs flytta ut allt som är möjligt från under rottecknet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera kvadratrot",
+        "text": "\\sqrt{a} är det positiva tal som upphöjt till 2 ger a. För positiva a, b gäller produktregeln: \\sqrt{a \\cdot b} = \\sqrt{a} \\cdot \\sqrt{b}. Det är hela tricket bakom förenkling.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad är en perfekt kvadrat?",
+        "text": "Ett perfekt kvadrattal är ett heltal vars rot är ett heltal: 1, 4, 9, 16, 25, 36, 49, 64, 100. För variabler: x^2, x^4, x^6 är perfekta kvadrater. Bara perfekta kvadrater kan dras ut ‘rent’ ur roten.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Faktorisera 32",
+        "text": "Sök den största perfekta kvadraten som delar 32. Test: 4 delar 32 (32 = 4 \\cdot 8), 16 delar 32 (32 = 16 \\cdot 2), 25 delar inte. Största är 16. Alltså: 32 = 16 \\cdot 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Klassa variablerna",
+        "text": "x har exponent 1 (udda) — kan inte tas ut från roten, stannar kvar. y^2 är en perfekt kvadrat — kan tas ut som y.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skriv om hela uttrycket",
+        "text": "Sätt in: \\sqrt{32xy^2} = \\sqrt{16 \\cdot 2 \\cdot x \\cdot y^2}. Använd produktregeln från steg 2 för att dela upp.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Separera roten i delar",
+        "text": "\\sqrt{16 \\cdot 2 \\cdot x \\cdot y^2} = \\sqrt{16} \\cdot \\sqrt{y^2} \\cdot \\sqrt{2x}. De två första rötterna går att räkna ut, den tredje stannar kvar.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut de perfekta kvadraterna",
+        "text": "\\sqrt{16} = 4 (eftersom 4^2 = 16) och \\sqrt{y^2} = y (eftersom y > 0).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Samla termerna",
+        "text": "Kombinera resultatet: 4 \\cdot y \\cdot \\sqrt{2x} = 4y\\sqrt{2x}. Det är formen ‘konstant · variabel · \\sqrt{...}’ som efterfrågas.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera genom kvadrering",
+        "text": "Kvadrera (4y\\sqrt{2x})^2 = 16 y^2 \\cdot 2x = 32 x y^2. Stämmer exakt — alltså är uttrycket korrekt förenklat.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: B, 4y\\sqrt{2x}. Insikten i en mening: vid förenkling av roten — bryt ut den STÖRSTA perfekta kvadraten under roten och lämna resten kvar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna \\sqrt{32xy^{2}}=2y\\sqrt{8xy}.",
-        "why_wrong": "Förenkla rötter: 32 = 16·2, så √32 = 4√2."
+        "why_tempting": "Det är lätt att faktorisera 32 som 4 \\cdot 8 istället för 16 \\cdot 2 och få 2y\\sqrt{8xy} — men det är inte fullt förenklat.",
+        "why_wrong": "Steg 4 säger: använd den STÖRSTA perfekta kvadraten. 8 är inte en perfekt kvadrat, så roten kan förenklas vidare. Plus: y har försvunnit under roten — där hör den inte hemma."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 6y√x.",
-        "why_wrong": "4y, inte 6y."
+        "why_tempting": "Snabbsvar är ofta 6y\\sqrt{x} om man tror att \\sqrt{32} är ungefär 6 (felaktig avrundning).",
+        "why_wrong": "Steg 8 visar att \\sqrt{16} = 4, alltså blir koefficienten 4y, inte 6y. Dessutom: 2x lämnas kvar under roten, inte bara x."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 8y√x.",
-        "why_wrong": "4y√(2x), inte 8y√x."
+        "why_tempting": "Många stannar vid 8y\\sqrt{x} — kanske via tankegången '\\sqrt{32} \\approx \\sqrt{36} = 6' eller '32/4 = 8'.",
+        "why_wrong": "Steg 7–8 ger explicit \\sqrt{16} \\cdot \\sqrt{2x} = 4\\sqrt{2x}. Faktor 2 stannar under roten — den kan inte 'försvinna' genom att man flyttar ut den utan kvadratrot."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av faktorisering: \\sqrt{32xy^{2}}=4y\\sqrt{2x}.",
-    "technique": "Förenkla rötter: bryt ut perfekta kvadrater under roten.",
-    "framework_id": "XYZ-TRAP-032"
+    "pregrade_tactic": {
+      "handle": "Perfekt-kvadrat-utbrytningen",
+      "move": "Bryt ut den STÖRSTA perfekta kvadraten under roten och låt resten ligga kvar — annars är uttrycket inte fullt förenklat."
+    }
   },
   "host-ver1-2019-kvant1-XYZ-012": {
     "_meta": {
@@ -6680,30 +6994,103 @@
   },
   "host-ver1-2019-kvant2-XYZ-010": {
     "_meta": {
-      "generated_at": 1778410520622,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-031",
+    "solution_path": "Tre tomma rutor mellan tal-par; varje ruta blir antingen × eller ÷. För att MAXIMERA z, välj operation per steg så att exponenten växer mest. Skriv om 100, 0,1 och 0,0001 som potenser av 10, addera/subtrahera exponenter, och optimera: 10^3 \\cdot 10^2 = 10^5, sedan 10^5 / 10^{-1} = 10^6, sedan 10^6 / 10^{-4} = 10^{10}.",
+    "technique": "Potenslagar på samma bas: multiplikation = addera exponenter, division = subtrahera exponenter. När motparten är NEGATIV exponent, vänder operationen tecken: 10^a / 10^{-b} = 10^{a+b} — division blir då ett kraftigt förstoringsverktyg.",
+    "pitfall": "Botemedlet mot 'mindre nämnare ger större tal'-instinkten: gör om ALLA decimaltal till potenser av 10 INNAN du väljer operation. Då slipper du blanda ihop ‘litet tal i nämnaren’ med ‘tal i tiopotens-form’.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Tre ekvationer i kedja: 10^3 \\;\\square\\; 100 = x, x \\;\\square\\; 10^{-1} = y, y \\;\\square\\; 0{,}0001 = z. Varje ruta ska ersättas med × eller ÷. Vi söker den kombination som ger STÖRSTA z.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Skriv alla tal som tiopotenser",
+        "text": "100 = 10^2 (10 · 10). 10^{-1} = 0{,}1 = 1/10 (en negativ exponent betyder ‘1 genom samma potens’). 0{,}0001 = 10^{-4} (fyra nollor efter decimalkommat innan ettan). Nu står allt i samma bas.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definiera potenslagarna",
+        "text": "Två regler för samma bas: 10^a \\cdot 10^b = 10^{a+b} (multiplikation = addera exponenter), och 10^a / 10^b = 10^{a-b} (division = subtrahera exponenter).",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Effekten av negativa exponenter",
+        "text": "Om b är negativt, säg b = -n, så blir division specialfall: 10^a / 10^{-n} = 10^{a-(-n)} = 10^{a+n} — alltså samma effekt som multiplikation med 10^n. Division med ett LITET tal ‘förstorar’ alltså.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Strategi för maximering",
+        "text": "I varje steg, välj den operation som ger den STÖRSTA exponenten. Eftersom kedjan är linjär ‘x → y → z’ utan tillbakahopp räcker det med greedy: optimera varje ruta lokalt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Steg 1 — välj operation mellan 10^3 och 100",
+        "text": "Alternativ: \\times: 10^3 \\cdot 10^2 = 10^5 eller /: 10^3 / 10^2 = 10^1. Multiplikation vinner: x = 10^5.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Steg 2 — välj operation mellan x och 10^{-1}",
+        "text": "Alternativ: \\times: 10^5 \\cdot 10^{-1} = 10^4 eller /: 10^5 / 10^{-1} = 10^{5-(-1)} = 10^6. Division vinner (regeln från steg 4 i praktiken): y = 10^6.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Steg 3 — välj operation mellan y och 0,0001",
+        "text": "Alternativ: \\times: 10^6 \\cdot 10^{-4} = 10^2 eller /: 10^6 / 10^{-4} = 10^{6-(-4)} = 10^{10}. Division vinner stort: z = 10^{10}.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kontrollera totalsumman av exponenter",
+        "text": "Startexponent 3, plus 2 (steg 1: gång), plus 1 (steg 2: division med −1 → addera 1), plus 4 (steg 3: division med −4 → addera 4). Totalt: 3 + 2 + 1 + 4 = 10. Stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera mot alternativen",
+        "text": "Kontrollera att inget annat val kunde gett större. Steg 1: max gång ger +2, division ger -2 — gång är optimum. Steg 2: division ger +1, gång ger -1 — division är optimum. Steg 3: division ger +4, gång ger -4 — division är optimum. Greedy var korrekt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C, 10^{10}. Insikten i en mening: när du maximerar tiopotens-kedjor, gör alla tal till tiopotenser och välj per steg den operation som ADDERAR mest till exponenten — division med en NEGATIV exponent är alltid din vän.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Om du minimerar varje val (välj alltid det som minskar) hamnar du i 10^{0}=1.",
-        "why_wrong": "Frågan ber om STÖRSTA möjliga z — välj därför operationen som maximerar exponenten i varje steg."
+        "why_tempting": "Om du minimerar varje val (väljer alltid den operation som krymper) eller blandar gång/division slumpvis kan du hamna på 10^0 = 1.",
+        "why_wrong": "Steg 5 säger explicit: maximera per steg. Att välja gång i steg 2 och 3 (där 10^{-1} och 10^{-4} är < 1) krymper resultatet — exakt motsatsen till vad frågan ber om."
       },
       {
         "letter": "B",
-        "why_tempting": "Att maximera bara första steget och stanna där ger x=10^{5}, vilket kan locka som svar.",
-        "why_wrong": "Frågan handlar om z, inte x. Steg 2 och 3 fortsätter att förstora talet via division med små tal — exponenten växer hela vägen."
+        "why_tempting": "Att maximera bara första steget och stanna där ger x = 10^5, vilket kan locka som svar om man missläser frågan.",
+        "why_wrong": "Steg 1 markerar att vi söker z, inte x. Steg 7–8 visar att exponenten fortsätter växa i steg 2 och 3 — kedjan stannar inte vid x."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du missräknar och tar division med 10^{-1} och 10^{-4} som 'fördubblade' steg, kan 10^{15} kännas inom räckhåll.",
-        "why_wrong": "Räkna additionen av exponenterna: 5 + 1 + 4 = 10. Division med 10^{-n} ger ADDITION av n, inte multiplikation."
+        "why_tempting": "Det är frestande att tro att två divisioner med små tal ‘dubbelförstorar’ multiplikativt och hamnar nära 10^{15} — särskilt om man avrundar exponenttal slarvigt.",
+        "why_wrong": "Steg 9 visar att den totala exponent-ökningen från startvärdet 3 är 2 + 1 + 4 = 7, vilket landar på 10^{10} — inte 10^{15}. Division med 10^{-n} ger ADDITION av n, inte multiplikation med n."
       }
     ],
-    "pitfall": "Identifiera bråktal som potenser av 10 innan du väljer operation: 100 = 10², 0,1 = 10⁻¹, 0,0001 = 10⁻⁴. Annars är det svårt att jämföra effekten av multiplikation kontra division.",
-    "solution_path": "Maximera z genom att välja operation per steg. Steg 1: 10^{3}\\,?\\,100=x — multiplikation ger 10^{3}\\cdot 10^{2}=10^{5}, vilket är största x. Steg 2: x\\,?\\,10^{-1}=y — division med liten exponent ger 10^{5}/10^{-1}=10^{6}. Steg 3: y\\,?\\,0{,}0001=z — division med 10^{-4} ger 10^{6}/10^{-4}=10^{10}.",
-    "technique": "Vid potenser av samma bas: division innebär subtraktion av exponenter, multiplikation innebär addition. Division med en NEGATIV exponent blir alltså addition av motsvarande positiv exponent — ett kraftigt 'förstoringsverktyg'.",
-    "framework_id": "XYZ-TRAP-031"
+    "pregrade_tactic": {
+      "handle": "Tiopotens-greedyn",
+      "move": "Skriv om alla tal som tiopotenser och välj per steg den operation som ADDERAR mest till exponenten — division med en negativ exponent är förstoringsverktyget."
+    }
   },
   "host-ver1-2019-kvant2-XYZ-012": {
     "_meta": {

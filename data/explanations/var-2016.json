@@ -3414,31 +3414,98 @@
     "technique": "Linjär ekvation med parenteser: 1) multiplicera ut alla parenteser (var noggrann med tecken), 2) slå ihop liknande termer, 3) samla x på ena sidan, konstanter på andra, 4) dela med koefficienten. Triggern: 'parenteser med tecken framför' → distributiva lagen är första moven, inte sista."
   },
   "var-2016-kvant1-XYZ-008": {
-    "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Med 29 svar är medianen det 15:e värdet i sorterad ordning. Räknar man stolpdiagrammets staplar från lägsta uppåt landar den 15:e personen på 4 timmar. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Erik har frågat 29 klasskamrater hur många timmar de pluggat. Svaren visas som ett stolpdiagram där varje stapel anger ANTAL elever per timantal. Vi söker medianen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är median?",
+        "text": "Definition: medianen är mittvärdet i en sorterad lista. Vid ett UDDA antal observationer är medianen det enda mittvärdet; vid jämnt antal är den medelvärdet av de två mittersta.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Hitta mittpositionen",
+        "text": "29 är udda. Mittpositionen är \\frac{29 + 1}{2} = 15. Medianen är alltså det 15:e värdet i sorterad ordning.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Tolka stolpdiagrammet",
+        "text": "Varje stapel säger 'så här många elever pluggade X timmar'. Att sortera 29 svar är samma sak som att läsa staplarna från lägsta timantal till högsta — varje stapels höjd anger hur många positioner den fyller.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Kumulera stapelhöjder",
+        "text": "Räkna ihop antal elever från lägsta timantalet uppåt: efter 1 timme har du n_{1} elever, efter 2 timmar n_{1} + n_{2}, och så vidare. Hitta första staplen där summan når 15.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera 15:e värdet",
+        "text": "Avläsning av diagrammet ger kumulerade summor som passerar 15 vid 4-timmars-stapeln. Den 15:e personen i sorterad ordning pluggade alltså 4 timmar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skilj median från typvärde",
+        "text": "Typvärdet (modus) är det MEST FREKVENTA värdet — ofta den högsta stapeln. Det är inte samma som medianen, som handlar om POSITION, inte frekvens.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Skilj median från medelvärde",
+        "text": "Medelvärdet är summan av alla värden delat med 29. Det kan dra iväg från medianen om extremvärden finns. Frågan ber om mittvärdet, inte snittet.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera",
+        "text": "Med 14 personer som pluggat MINDRE än 4 timmar och resten 4 eller fler, ligger den 15:e exakt vid 4. Den symmetri-egenskap medianen har (lika många på vardera sidan) är uppfylld.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är C: 4 timmar. Insikten i en mening: median av n udda observationer är värdet på position \\frac{n+1}{2} — och kumulering av stolpdiagrammets staplar ger den positionen utan att man behöver lista alla värden.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 3 (modus eller fel värde).",
-        "why_wrong": "Median är 15:e värdet i sorterad ordning, inte modus."
+        "why_tempting": "Det är lätt att läsa av 3 timmar om den staplen är högst — då känns 3 som 'mittenpunkten'.",
+        "why_wrong": "Som steg 7 visar är högsta stapeln typvärdet, inte medianen. Den 15:e personen i kumulering når 4 timmar, inte 3."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 3,5.",
-        "why_wrong": "Median är ETT värde (för udda antal), inte medelvärde."
+        "why_tempting": "Snabbsvar är ofta 3,5 om man tror att medianen är medelvärdet av två angränsande staplar.",
+        "why_wrong": "Steg 3 låser fast: vid 29 (udda) är medianen ETT värde, inte ett snitt. 3,5 förutsätter jämnt antal."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 7,5.",
-        "why_wrong": "Inte närvarande som data; 4 timmar är medianen."
+        "why_tempting": "Många stannar vid 7,5 om de förväxlar medianen med medelvärdet och uppskattar snittet högt.",
+        "why_wrong": "Steg 8 påpekar att medelvärdet och medianen är olika mått. 7,5 är dessutom inte ett av de avlästa datavärdena i diagrammet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av 29 svar är medianen den 15:e i sorterad ordning. Stolpdiagrammet ger 4 timmar.",
-    "technique": "Median av udda antal: mittenvärdet i sorterad lista.",
-    "framework_id": "XYZ-TRAP-049"
+    "technique": "Median av udda antal observationer: hitta position \\frac{n+1}{2} och kumulera stolpdiagrammets staplar från lägsta värdet uppåt tills du passerar den positionen.",
+    "pitfall": "Det kluriga är att stolpdiagrammet visar FREKVENS (höjd per kategori) — det är frestande att tolka högsta stapeln som median. Botemedlet: räkna positioner, inte stapelhöjder.",
+    "framework_id": "XYZ-TRAP-049",
+    "pregrade_tactic": {
+      "handle": "Positionsjakten",
+      "move": "När frågan är median i ett stolpdiagram: räkna mittpositionen \\frac{n+1}{2}, kumulera staplarna från vänster, och svara med första stapeln där summan passerar den positionen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant1-XYZ-009": {
     "_meta": {
@@ -5013,535 +5080,2042 @@
     "technique": "DTK-strategi för flervillkorsidentifiering på flera vindrosor: identifiera vilken vindros respektive villkor hör till, gå alternativ för alternativ, läs av varje villkors värde, bocka av. Triggern: 'vilket väderstreck avses, givet X, Y, Z' → tre avläsningar per alternativ i tre olika vindrosor."
   },
   "var-2016-kvant2-KVA-014": {
-    "_meta": {
-      "generated_at": 1778425152540,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Vinkelsumman i en triangel är 180°. Medelvärdet är 60°, så minst en vinkel måste vara \\geq 60^\\circ. Därmed är största vinkeln alltid minst 60°, vilket överstiger 50° — svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi ska jämföra den största vinkeln i en (ospecificerad) triangel mot 50°. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vinkelsumman i en triangel",
+        "text": "För varje triangel gäller \\alpha + \\beta + \\gamma = 180^\\circ där \\alpha, \\beta, \\gamma är de tre inre vinklarna. Detta är grundsatsen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder „största”?",
+        "text": "Den största vinkeln är maximet M = \\max(\\alpha, \\beta, \\gamma) — det största av de tre talen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Medelvärde → maximum",
+        "text": "Medelvärdet av de tre vinklarna är (180/3)^\\circ = 60^\\circ. Maximumet är alltid minst lika med medelvärdet — annars vore summan för liten.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Formellt bevis",
+        "text": "Antag M < 60°. Då är alla tre vinklar < 60° (eftersom övriga \\leq M). Summan < 3·60° = 180°, motsäger \\alpha + \\beta + \\gamma = 180^\\circ. Alltså M \\geq 60^\\circ.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Likhet när?",
+        "text": "M = 60° endast om alla tre vinklar är 60° (liksidig triangel). I alla andra trianglar är M > 60^\\circ.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Jämför mot 50°",
+        "text": "Kvantitet II = 50° < 60°. Eftersom M \\geq 60^\\circ i varje triangel gäller M > 50^\\circ.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa: liksidig",
+        "text": "Alla vinklar 60°, största = 60° > 50° ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Testa: spetsig 50-60-70",
+        "text": "Vinklar 50, 60, 70: största = 70° > 50° ✓. Detta är en triangel där 50° inte alls är maximum.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Testa: degenererat „smalt”",
+        "text": "Vinklar 1, 1, 178: största = 178° > 50° ✓. Trubbig triangel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Inget mot-exempel möjligt",
+        "text": "För att största vinkel < 50° skulle alla tre vara < 50° — men då summan < 150° < 180° — omöjligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Största vinkeln är alltid \\geq 60^\\circ > 50^\\circ, oavsett triangel — svar A. Insikten i en mening: medelvärdesargumentet ger en hård nedre gräns på maximum i alla trianglar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att det finns trianglar med max < 50°.",
-        "why_wrong": "Vinkelsumma 180°/3 = 60°; medelvärdet, så största ≥ 60° > 50°."
+        "why_tempting": "Det är lätt att tro att det finns trianglar där alla vinklar är små.",
+        "why_wrong": "Steg 5 visar att om alla < 60° blir summan < 180° — omöjligt."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att största = 50°.",
-        "why_wrong": "Aldrig mindre än 60°."
+        "why_tempting": "Snabbsvar är ofta att största = 50° i en specifik triangel.",
+        "why_wrong": "Steg 6 visar att likhet M = 60^\\circ kräver liksidig triangel, alltså 50° är aldrig själva maxvärdet."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att triangelns form är otydlig.",
-        "why_wrong": "För varje triangel är största ≥ 60°."
+        "why_tempting": "Det är frestande att tro att triangelformen är för vag.",
+        "why_wrong": "Steg 5 ger en universell gräns M \\geq 60^\\circ oberoende av specifik form."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Största vinkeln i en triangel kan vara allt från > 60° (om \"största\" så > medel = 60°) till strax under 180°. 50° < 60° < största. A.",
-    "technique": "Triangel: alltid en vinkel ≥ 60° (medelvärdet). Största är minst 60°."
+    "technique": "För KVA om max/min i en summa: använd medelvärdesargumentet — maximum \\geq medel, minimum \\leq medel. För trianglar: max-vinkel \\geq 60^\\circ alltid.",
+    "pitfall": "Botemedlet mot att tänka „allt är möjligt utan info”: vinkelsumman är ett hårt villkor som ger en deterministisk nedre gräns.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Medelvärdesreceptet",
+      "move": "När en KVA-fråga handlar om „största vinkeln” i en triangel: största \\geq 60^\\circ alltid; jämför mot tröskeltalet direkt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-KVA-016": {
-    "_meta": {
-      "generated_at": 1778425152540,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Givet att de två första kulorna var svarta finns 10 svarta, 10 röda, 8 blå kvar (totalt 28). Sannolikheten att tredje kulan är svart är 10/28; sannolikheten att den är röd är också 10/28. Lika — svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Påsen börjar med 12 svarta, 10 röda, 8 blå kulor (30 totalt). Tre kulor dras utan återläggning; de två första är svarta. Vi jämför P(tredje är svart) mot P(tredje är röd). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Betingad sannolikhet",
+        "text": "„Givet att” signalerar betingad sannolikhet — vi villkorar på händelsen att de första två är svarta. Själva frågan blir då: vad finns kvar i påsen?",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad är återläggning?",
+        "text": "„Utan återläggning” betyder att en kula som dras inte läggs tillbaka. Antalet i påsen minskar med 1 per dragning.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Antal kulor kvar efter två dragna",
+        "text": "Efter två dragningar är 30 − 2 = 28 kulor kvar. Detta är totalantalet i nämnaren för tredje dragningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Svarta kvar",
+        "text": "Två svarta har dragits, så svarta kvar = 12 − 2 = 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Röda kvar",
+        "text": "Inga röda har dragits, så röda kvar = 10 (ingen förändring).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Blå kvar",
+        "text": "Inga blå har dragits, så blå kvar = 8 (ingen förändring).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Kontroll: summan",
+        "text": "10 + 10 + 8 = 28 — stjämmer med antal kvar enligt steg 4.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Beräkna P(tredje är svart)",
+        "text": "P(\\text{svart}_3) = 10/28 = 5/14. Detta är Kvantitet I.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Beräkna P(tredje är röd)",
+        "text": "P(\\text{röd}_3) = 10/28 = 5/14. Detta är Kvantitet II.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Direkt jämförelse",
+        "text": "Båda är exakt 10/28. Likheten kommer från att antalet svarta kvar (10) råkar matcha antalet röda kvar (10).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "Känslokontroll: efter att två svarta tagits bort blir svart „jämställda” med röd eftersom det från början var 2 fler svarta än röda. Detta är exakt vad som gör kvantiteterna lika.",
+        "tier": "detail"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Kvantitet I = Kvantitet II = 10/28, svar C. Insikten i en mening: efter återläggningsfri dragning beror nya sannolikheter helt på vad som är kvar — jämför kvarvarande antal direkt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att svarta dominerar (då 12 från början).",
-        "why_wrong": "Efter två svarta borta är 10 svarta, lika med 10 röda."
+        "why_tempting": "Det är lätt att tro att svart fortfarande dominerar (eftersom det från början var 12).",
+        "why_wrong": "Steg 5-6 visar att efter två svarta dragits är 10 svarta = 10 röda kvar."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att röda är fler.",
-        "why_wrong": "Lika exakt."
+        "why_tempting": "Snabbsvar är ofta att röda nu är fler.",
+        "why_wrong": "Steg 9-10 visar att båda sannolikheter är 10/28 exakt."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att man behöver veta vad de två första var.",
-        "why_wrong": "Givet att två svarta togs, blir kvarvarande 10/10/8."
+        "why_tempting": "Det är frestande att tro att man behöver veta något om de två första uttömmande.",
+        "why_wrong": "Steg 2 fastslår att betingningen redan fixar de två första — villkorad sannolikhet beror bara på vad som är kvar."
       }
     ],
-    "pitfall": null,
-    "solution_path": "12 svarta - 2 borttagna = 10 svarta. Röda = 10. Lika antal kvar — sannolikheten att tredje är svart eller röd är båda 10/28 — C.",
-    "technique": "Borttagning av specifika kulor: räkna kvarvarande."
+    "technique": "För återläggningsfria dragningar villkorade på tidigare: räkna kvarvarande antal av varje slag och dividera med kvarvarande total. Det är en ständig förenkling — ingen multiplikationskedja behövs.",
+    "pitfall": "Botemedlet mot att blanda återläggning och utan-återläggning: läs „lagger tillbaka” kontra „lagger inte tillbaka” explicit innan du räknar.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kvarvarande-uppräkningen",
+      "move": "Vid betingad dragning utan återläggning: lista vad som är kvar före sista dragningen och dela direkt — ofta försvinner hälften av komplexiteten."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-KVA-018": {
-    "_meta": {
-      "generated_at": 1778425152540,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Från f(a) = a - a^3 = 0 faktorisera till a(1-a)(1+a) = 0. Lösningar: a = 0, 1, -1. Eftersom a kan vara negativt, noll eller positivt är jämförelsen mot 0 tvetydig — svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Funktionen f(x) = x - x^3 ges. Det finns ett tal a med f(a) = 0. Vi jämför a (Kvantitet I) mot 0 (Kvantitet II). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp ekvationen",
+        "text": "f(a) = 0 översätts till a - a^3 = 0 genom substitution x → a.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Bryt ut gemensam faktor",
+        "text": "Notera att båda termerna innehåller faktorn a: a(1 - a^2) = 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Konjugatregeln",
+        "text": "Uttrycket 1 - a^2 är en differens av kvadrater 1^2 - a^2 = (1-a)(1+a) — standardidentitet.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Fullständig faktorisering",
+        "text": "a(1-a)(1+a) = 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Noll-produkt-principen",
+        "text": "En produkt är noll omm minst en av faktorerna är noll: a = 0 eller 1-a = 0 eller 1+a = 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Lös varje fall",
+        "text": "a = 0, a = 1, eller a = -1. Tre lösningar.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kontrollera lösningarna",
+        "text": "f(0) = 0 − 0 = 0 ✓; f(1) = 1 − 1 = 0 ✓; f(−1) = −1 − (−1) = −1 + 1 = 0 ✓. Alla tre är giltiga.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot 0",
+        "text": "Om a = -1: a < 0 (II > I). Om a = 0: a = 0 (lika). Om a = 1: a > 0 (I > II).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tre olika utfall",
+        "text": "Alla tre möjliga ordningar förekommer. Eftersom problemet inte specificerar vilket av de tre värdena a tar är jämförelsen otydlig.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera fullständighet",
+        "text": "Polynomet x - x^3 är av grad 3, så max 3 nollställen — vi har hittat alla. Inga fler möjligheter.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "a kan vara −1, 0 eller 1 — jämförelsen mot 0 ger tre olika svar — svar D. Insikten i en mening: när „f(a) = 0” ger flera lösningar i olika tecken är KVA-svaret D — enumerera alltid alla nollställen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att a = 1 specifikt.",
-        "why_wrong": "Tre nollställen; tecknet på a är fritt."
+        "why_tempting": "Det är lätt att tro att a = 1 är den naturliga lösningen.",
+        "why_wrong": "Steg 9 visar att a = −1 är en lika giltig lösning, vilket ger I < II."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att a < 0.",
-        "why_wrong": "a = 1 också giltigt."
+        "why_tempting": "Snabbsvar är ofta att a måste vara negativ.",
+        "why_wrong": "Steg 7-8 visar a = 1 som giltig positiv lösning — motexempel."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid a = 0.",
-        "why_wrong": "Ett av tre fall."
+        "why_tempting": "Många stannar vid lösningen a = 0.",
+        "why_wrong": "Steg 10 visar att 0 bara är en av tre lösningar; de andra ger I ≠ II."
       }
     ],
-    "pitfall": null,
-    "solution_path": "f(a) = 0 → a - a³ = 0 → a(1 - a²) = 0 → a = 0, ±1. Tre värden, varav -1 < 0, 0 = 0, 1 > 0. D.",
-    "technique": "Faktorisera polynom: nollställen är ±1 och 0.",
-    "framework_id": "KVA-TRAP-032"
+    "technique": "För kubiska och polynomekvationer: bryt ut gemensam faktor först, sedan konjugatregeln om möjligt. Noll-produkt-principen ger alla nollställen — i KVA är flera nollställen i olika tecken en stark D-signal.",
+    "pitfall": "Botemedlet mot att stanna vid första nollstället: faktorisera fullständigt och lista alla lösningar innan du jämför.",
+    "framework_id": "KVA-TRAP-032",
+    "pregrade_tactic": {
+      "handle": "Faktoriseringsdiagrammet",
+      "move": "När en polynomekvation har flera nollställen i olika tecken: lista alla, jämför mot tröskeltalet — om utfallen är blandade är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-KVA-019": {
-    "_meta": {
-      "generated_at": 1778425152540,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Lös ekvationen -9(x+1) = -11(x-1): distribuera till -9x - 9 = -11x + 11 och förenkla till 2x = 20, alltså x = 10. Eftersom 10 > 0 är Kvantitet I > Kvantitet II — svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Linjär ekvation -9(x+1) = -11(x-1) ger ett unikt värde på x. Vi jämför x (Kvantitet I) mot 0 (Kvantitet II). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Distributiva lagen",
+        "text": "a(b+c) = ab + ac — ett tal multiplicerat med en parentes fördelas över termerna. Detta gäller även för negativa a.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Distribuera vänster led",
+        "text": "-9(x+1) = -9x + (-9)(1) = -9x - 9. Tecknet smålär in på båda termerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Distribuera höger led",
+        "text": "-11(x-1) = -11x + (-11)(-1) = -11x + 11. Negativ gånger negativ = positiv.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skriv om ekvationen",
+        "text": "-9x - 9 = -11x + 11. Nu är båda sidor i „ax + b”-form.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Samla x-termer",
+        "text": "Addera 11x till båda sidor: -9x + 11x - 9 = 11, dvs 2x - 9 = 11.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Samla konstanter",
+        "text": "Addera 9 till båda sidor: 2x = 20.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Lös ut x",
+        "text": "Dela båda sidor med 2: x = 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Substituera tillbaka (verifiera)",
+        "text": "Vänster: -9(10+1) = -9 \\cdot 11 = -99. Höger: -11(10-1) = -11 \\cdot 9 = -99. Lika — lösningen stjämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Jämför mot 0",
+        "text": "x = 10; 10 > 0. Tydligt positivt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Kvantitet I = 10 > 0 = Kvantitet II, svar A. Insikten i en mening: distribuera, samla x, lös, verifiera — fyra mekaniska steg som löser varje linjär ekvation utan tvetydighet.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna fel och få x < 0.",
-        "why_wrong": "2x = 20 ger x = 10, positivt."
+        "why_tempting": "Det är lätt att räkna fel på tecknen och få x < 0.",
+        "why_wrong": "Steg 6-7 visar 2x = 20 vilket entydigt ger x = 10 > 0."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta x = 0.",
-        "why_wrong": "Vid x = 0: -9 ≠ 11; lösningen är x = 10."
+        "why_tempting": "Snabbsvar är ofta x = 0 från „symmetri”.",
+        "why_wrong": "Steg 9 visar att x = 0 inte uppfyller ekvationen — vänster blir −9 medan höger blir 11."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att lösningen är otydlig.",
-        "why_wrong": "Linjär ekvation, entydig lösning."
+        "why_tempting": "Det är frestande att tro att förhållandet är tvetydigt.",
+        "why_wrong": "Steg 5-8 visar att linjär ekvation har en unik lösning när koefficienterna inte tar ut varandra."
       }
     ],
-    "pitfall": null,
-    "solution_path": "-9(x+1) = -11(x-1) → -9x - 9 = -11x + 11 → 2x = 20 → x = 10. 10 > 0 — A.",
-    "technique": "Linjär ekvation: distribuera och lös."
+    "technique": "För linjära ekvationer: distribuera över parenteser → samla x-termer på en sida → samla konstanter på andra → dela. Verifiera alltid med substitution.",
+    "pitfall": "Botemedlet mot tecken-glitchar vid distribution: skriv ut varje produkt med dess tecken, t.ex. -9 \\cdot 1 = -9 och -11 \\cdot (-1) = +11.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Linjärekvationsreceptet",
+      "move": "När ekvationen har en variabel: distribuera, samla x-termer, dela koefficienten — verifiera genom substitution."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-KVA-020": {
-    "_meta": {
-      "generated_at": 1778425152540,
-      "model": "claude-opus-4-7",
-      "pedagogy_regen_source": "manual_kva_review_2026_05_11",
-      "pedagogy_regenerated_at": 1778506405222
-    },
+    "solution_path": "Låt E vara Eriks nuvarande ålder och D Davids. Om 20 år har Erik blivit E + 20 = 4D, alltså E = 4D − 20. För att E ≥ 0 (Erik existerar) måste D ≥ 5. Därmed är Davids ålder alltid minst 5 > 4 — svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Erik och David är syskon. Om 20 år är Eriks ålder fyra gånger Davids NUVARANDE ålder (inte hans framtida). Vi jämför Davids nuvarande ålder mot 4 år. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Inför variabler",
+        "text": "Låt E = Eriks nuvarande ålder (i år) och D = Davids nuvarande ålder. Båda är icke-negativa reella tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Tolka „om 20 år”",
+        "text": "Om 20 år har Erik blivit E + 20 år. David har blivit D + 20 år men det används inte direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Skriv villkoret",
+        "text": "„Eriks ålder om 20 år = 4 gånger Davids nuvarande” → E + 20 = 4D.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös ut E i termer av D",
+        "text": "E = 4D - 20. Detta ger Eriks ålder som funktion av Davids.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Implicit villkor: E ≥ 0",
+        "text": "Eriks ålder kan inte vara negativ (han måste finnas idag). Alltså E \\geq 0 → 4D - 20 \\geq 0 → D \\geq 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vad om E = 0? Tolkning",
+        "text": "E = 0 betyder Erik just född. Det är en gränsfall. Med strikt E > 0 fås D > 5. Med E \\geq 0 fås D \\geq 5. Antingen tolkning ger D > 4.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Testa D = 5",
+        "text": "Med D = 5 blir E = 20 − 20 = 0. Erik 0 år idag, om 20 år 20 år. David nu 5, om 20 år 25. Villkor: 20 = 4 · 5 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Testa D = 10",
+        "text": "Med D = 10 blir E = 40 − 20 = 20. Om 20 år är Erik 40, David 30. Villkor: 40 = 4 · 10 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Testa D = 4 (mot-pröva)",
+        "text": "Med D = 4 blir E = 16 − 20 = −4, vilket innebär att Erik inte existerar än. Det strider mot att de är syskon idag. Alltså D = 4 är omöjligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sammanfatta intervall",
+        "text": "Giltiga D-värden: D \\geq 5 (eller strikt > 4 i alla fall). I alla giltiga fall är D > 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Jämför mot Kvantitet II = 4",
+        "text": "Eftersom D \\geq 5 > 4 är Kvantitet I > Kvantitet II i alla giltiga fall.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Davids nuvarande ålder är minst 5 år, alltså alltid större än 4 — svar A. Insikten i en mening: åldersgator har ofta implicita gränser (icke-negativa åldrar) som låser upp KVA-svaret när ekvationen själv är underbestämd.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna fel och få D < 4.",
-        "why_wrong": "D ≥ 5 från Eriks ålder ≥ 0."
+        "why_tempting": "Det är lätt att räkna fel och få D mindre än 4.",
+        "why_wrong": "Steg 10 visar att D = 4 ger E = −4, omöjligt — D < 5 utesluts."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta D = 4.",
-        "why_wrong": "D = 4 ger E = -4 < 0, omöjligt; D ≥ 5."
+        "why_tempting": "Snabbsvar är ofta D = 4 från någon „elegant” substitution.",
+        "why_wrong": "Steg 10 visar att D = 4 är oförenligt med att Erik existerar."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att problemet kräver mer info.",
-        "why_wrong": "Med rimliga gränser (E ≥ 0) är D minst 5."
+        "why_tempting": "Det är frestande att tro att problemet behöver Eriks ålder explicit.",
+        "why_wrong": "Steg 6 visar att gränsen E \\geq 0 ger en hård nedre gräns på D oberoende av Eriks exakta ålder."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Låt E vara Eriks nuvarande ålder; om 20 år har E blivit E + 20 = 4·D, alltså E = 4D − 20. För att E är minst 0 (Erik existerar) krävs D är minst 5. Eftersom D är minst 5 är D större än 4 i alla giltiga fall — A.",
-    "technique": "I åldersgåtor med ojämlikheter: skriv villkoret som E = f(D) och pålägg den implicita gränsen E är minst 0 — det ger en nedre gräns på D som ofta avgör jämförelsen; här D är minst 5 större än 4 ⇒ A.",
-    "framework_id": "KVA-TRAP-031"
+    "technique": "För KVA-åldersgator: skriv ekvationen, lös ut den ena variabeln, pålägg gränsen att åldrar ≥ 0 — ofta ger detta exakt den olikhet som avgör jämförelsen.",
+    "pitfall": "Botemedlet mot att glömma realismsvillkoret: skriv ut E \\geq 0 explicit som tillläggsekvation innan du tolkar tvetydighet.",
+    "framework_id": "KVA-TRAP-031",
+    "pregrade_tactic": {
+      "handle": "Åldersgränsen",
+      "move": "I åldersgator: skriv åldersrelationen som E = f(D), pålägg E ≥ 0 — det ger ofta en nedre gräns för D som löser KVA."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-KVA-021": {
-    "_meta": {
-      "generated_at": 1778425152540,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Känn igen 200^2 - 2 \\cdot 200 \\cdot 300 + 300^2 = (200 - 300)^2 = 10000 via kvadreringsregeln. 101^2 = 10201. Eftersom 10201 > 10000 är II > I — svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Kvantitet I = 200^2 - 2 \\cdot 200 \\cdot 300 + 300^2; Kvantitet II = 101^2. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Känn igen kvadreringsregeln",
+        "text": "Den andra kvadreringsregeln („kvadrat av differens”): (a - b)^2 = a^2 - 2ab + b^2. Detta är en standardidentitet i algebra.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera mönstret",
+        "text": "Kvantitet I matchar regeln med a = 200, b = 300: a^2 = 200^2, 2ab = 2 \\cdot 200 \\cdot 300, b^2 = 300^2. Helt rakt på.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skriv om I som kvadrat",
+        "text": "\\text{I} = (200 - 300)^2 = (-100)^2.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad är (−100)²?",
+        "text": "Kvadrat av ett negativt tal är positivt: (-100)^2 = 100^2 = 10000. Tecknet försvinner i kvadreringen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Alltså I = 10000",
+        "text": "Detta är Kvantitet I i sin slutgiltiga form.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna 101²",
+        "text": "Använd den första kvadreringsregeln („kvadrat av summa”): (100 + 1)^2 = 100^2 + 2 \\cdot 100 \\cdot 1 + 1^2 = 10000 + 200 + 1 = 10201.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Alltså II = 10201",
+        "text": "Detta är Kvantitet II i sin slutgiltiga form.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Direkt jämförelse",
+        "text": "I = 10000, II = 10201. Skillnaden är 201, alltså II > I.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med direkt uträkning",
+        "text": "Bråkräkning: 200^2 = 40000, 2 \\cdot 200 \\cdot 300 = 120000, 300^2 = 90000. Summa: 40000 - 120000 + 90000 = 10000 \\checkmark.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera 101²",
+        "text": "Direkt: 101 \\cdot 101 = 101 \\cdot 100 + 101 \\cdot 1 = 10100 + 101 = 10201 \\checkmark.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "II > I (skillnad 201), svar B. Insikten i en mening: känn igen kvadreringsregler i „aa − 2ab + bb”-form innan du räknar med stora tal — ofta kollapsar uttrycket till en enkel kvadrat.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel och få I > II.",
-        "why_wrong": "(200-300)² = 10000; 101² = 10201; differens 201."
+        "why_tempting": "Det är lätt att tro att I dominerar från de stora ingredienserna (200², 300²).",
+        "why_wrong": "Steg 4-6 visar att uttrycket kollapsar till en kvadrat av differensen −1002, alltså bara 10000 — mindre än 10201."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att de är lika.",
-        "why_wrong": "Skillnad 201 är klart märkbar."
+        "why_tempting": "Snabbsvar är ofta att skillnaden är försumbar mellan 10000 och 10201.",
+        "why_wrong": "Steg 9 visar skillnad 201 som procentuellt 2% — inte försumbar."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att uttrycken är kryptiska.",
-        "why_wrong": "(a-b)² är standardidentitet; lätt att räkna."
+        "why_tempting": "Det är frestande att tro att uttrycket kräver mer information.",
+        "why_wrong": "Steg 3 visar att mönstret är en exakt kvadreringsregel — inget okjänt kvarstår."
       }
     ],
-    "pitfall": null,
-    "solution_path": "200² - 2·200·300 + 300² = (200 - 300)² = (-100)² = 10000. 101² = 10201. 10201 > 10000 — B.",
-    "technique": "Kvadratutveckling: a² - 2ab + b² = (a - b)²."
+    "technique": "Lyssna alltid efter a^2 \\pm 2ab + b^2-mönstret innan du räknar med stora kvadrater. Den ena regeln (±) gör att hela uttrycket kollapsar till en enkel kvadrat.",
+    "pitfall": "Botemedlet mot att brute-force-räkna 200^2 - 120000 + 300^2: leta efter regelmönstret först, det sparar ofta minuter och eliminerar räknefel.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kvadreringsregeln",
+      "move": "När ett uttryck har formen a^2 \\pm 2ab + b^2: kollapsa direkt till (a \\pm b)^2 — ingen stor-tal-aritmetik behövs."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-NOG-023": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Hundgården har en tik + V valpar (svarta + gula). Vi söker antalet valpar V. (1): 2 svarta valpar + tiken = 3 hundar = 1/3 av totalen → totalt 9 hundar → V = 8. Räcker. (2): 75 % av valparna är gula — bara fraktion, ingen absolut talsats. Otillräckligt. Svar: A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "I hundgården: 1 tik + V valpar, där varje valp är antingen svart eller gul. Total antal hundar = V + 1. Vi söker V.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp variabler",
+        "text": "Låt S = antal svarta valpar, G = antal gula valpar, V = S + G = totalt antal valpar. Total hundar = V + 1 (inklusive tiken).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad räcker?",
+        "text": "Vi behöver låsa V (eller V+1, totalen) entydigt. Ett villkor som ger absolut antal någonstans i kedjan räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt (1)",
+        "text": "(1): det finns 2 svarta valpar, och dessa två tillsammans med tiken utgör 1/3 av alla hundar i hundgården.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt upp ekvationen",
+        "text": "S = 2 (givet). 'Två svarta + tiken' = 2 + 1 = 3 hundar. Detta är 1/3 av totalen: 3 = \\frac{1}{3}(V+1).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lös för V",
+        "text": "V + 1 = 9, alltså V = 8. Hundgården har 8 valpar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (1) ensamt",
+        "text": "V = 8 entydigt. Vi vet inte exakt hur många gula valpar (G = 8 − S, men S är minst 2 — kan vara mer), men frågan handlade bara om totala antalet valpar. Räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vänta — kan S vara mer än 2?",
+        "text": "(1) säger 'det finns två svarta valpar' (utan 'exakt'). Tolkning: minst två, eller exakt två? På HP tolkas det normalt som exakt två (annars vore villkoret meningslöst för precisionen). Med S=2 är V=8 entydigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Översätt (2)",
+        "text": "(2): 75 % av valparna är gula. Alltså G = 0,75·V och S = 0,25·V.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Testa (2) ensamt",
+        "text": "(2) ger bara FRAKTION mellan färgerna — inga absoluta tal. V kan vara 4 (G=3, S=1), 8 (G=6, S=2), 12 (G=9, S=3), ... — varje heltalsmultipel av 4. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera (1)",
+        "text": "V=8: total = 9 hundar (1 tik + 8 valpar). Två svarta valpar + tiken = 3 hundar = 9/3 = 1/3 av totalen. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera otillräcklighet av (2)",
+        "text": "V=4 med (2): G=3, S=1 — fungerar, men ger 4 valpar (≠ 8). V=8 med (2): G=6, S=2 — också möjligt. Två olika V → otillräckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "(1) ger absolut antal via fraktions-ekvationen → räcker (V=8). (2) ger bara fraktion utan absoluta tal → otillräckligt. Svar: A. Insikten i en mening: en kombination av absolut deltal och bråk-relation till totalen ger totalen — bara fraktion ensam ger den aldrig.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att 75 % räcker.",
-        "why_wrong": "(2) saknar absoluta tal."
+        "why_tempting": "Det är lätt att tro att 75 % är 'precis nog' eftersom det är en exakt procentsats.",
+        "why_wrong": "Steg 10: procent ensamt ger bara FRAKTION, inte absoluta antal. V kan vara 4, 8, 12, ..."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(1) räcker ensamt."
+        "why_wrong": "Steg 6: (1) ger V = 8 ensam. (2) är överflödig och tillför ingen nödvändig info."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(2) saknar absolutvärden."
+        "why_tempting": "Om du tror att vart och ett räcker eftersom båda nämner valpar landar du här.",
+        "why_wrong": "Steg 10: (2) saknar absoluta tal. D kräver att vardera räcker — bara (1) gör det."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan färgfördelning går det inte.",
-        "why_wrong": "(1) ger total via fraktion + absolut antal."
+        "why_tempting": "Det är frestande att tro att utan färgfördelning blir antalet underbestämt.",
+        "why_wrong": "Steg 5–6: (1) använder 'svarta + tiken = 1/3 av total' — fraktion + absolut delgrupp ger totalen entydigt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "(1) räcker: 2 svarta valpar + tiken=3=1/3 av hundarna → totalt=9 hundar, valpar=8. (2) ger bara andel utan absoluta antal.",
-    "technique": "Absolut delgrupp + dess fraktion av totalen = totalantal."
+    "technique": "Absolut deltal + fraktion av totalen ger totalen entydigt: om k objekt utgör r/n av totalen är totalen k·n/r.",
+    "pitfall": "Det är frestande att avfärda fraktioner som 'för svaga'. Botemedlet: när fraktionen kopplas till en ABSOLUT del (här '2 svarta + tiken = 3 stycken'), ger ekvationen totalen direkt.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Fraktion-absolut-kopplingen",
+      "move": "Vid 'X stycken utgör r/n av totalen'-NOG: skriv ekvationen X = (r/n)·total och lös för total — det räcker ensam."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-NOG-024": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Cirkelbågen BC är en kvartcirkel (1/4 av cirkel) med medelpunkt A. Radie = AC = AB. Rektangel ADEF har F på AC, D på AB, E på bågen. Sidor: AF=DE och AD=FE. Pytagoras: AE² = AD² + DE² = r² (eftersom E ligger på bågen). (1) DE=5 ensam: en ekvation, en obekant kvar (AD). Otillräcklig. (2) CF=8: AF = r−8, men AD och DE fortfarande fria. Otillräcklig. Tillsammans: DE=5, AF=AD=r−CF (nej — AF=r−CF=r−8 och AD=DE=5, fel — vänta, behöver räkna noggrant). Båda krävs för Pytagoras-ekvationen. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå figuren",
+        "text": "Cirkelbågen BC är en kvartcirkel med medelpunkt i A — så vinkeln BAC = 90°. AB och AC är två radier (vinkelräta). En rektangel ADEF är inskriven så att F ligger på AC, D ligger på AB och E ligger på cirkelbågen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad söker vi?",
+        "text": "Vi söker längden av cirkelbågen BC. För en kvartcirkel med radie r är båglängden \\frac{2\\pi r}{4} = \\frac{\\pi r}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vi behöver alltså r",
+        "text": "Allt hänger på radien r = AB = AC. Om vi kan låsa r entydigt är båglängden bestämd.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Rektangelns sidor",
+        "text": "ADEF är en rektangel med AD längs radien AB och AF längs radien AC. Sidorna är: AD (parallell med AB), AF (parallell med AC), och DE = AF, FE = AD (motstående sidor lika).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "E ligger på bågen",
+        "text": "Eftersom E ligger på cirkelbågen är AE = r. Detta är nyckelvillkoret — diagonalen AE i rektangeln är lika med radien.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Pytagoras i rektangeln",
+        "text": "AD och DE är vinkelräta (rektangelsidor). Diagonalen AE är hypotenusan: AE^2 = AD^2 + DE^2, alltså r^2 = AD^2 + DE^2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Översätt (1)",
+        "text": "(1): DE = 5 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (1) ensamt",
+        "text": "Med DE = 5: r^2 = AD^2 + 25. Två obekanta (r och AD), en ekvation. r kan vara vad som helst > 5. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Översätt (2)",
+        "text": "(2): CF = 8 cm. C ligger på radien AC, F ligger också på AC. Alltså AF = AC − CF = r − 8.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Koppla AF till rektangeln",
+        "text": "I rektangeln är AF = DE (motstående sidor). Alltså DE = r − 8.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Testa (2) ensamt",
+        "text": "Med DE = r − 8 in i Pytagoras: r^2 = AD^2 + (r-8)^2. Det är fortfarande en ekvation i två obekanta (r, AD). Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Kombinera",
+        "text": "Med (1) DE=5 och (2) AF=r−8=DE=5: så r − 8 = 5, alltså r = 13. Då har vi r entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Kontroll via Pytagoras",
+        "text": "AD: behöver inte räknas explicit för båglängden, men för fullständighet: AD^2 = r^2 - DE^2 = 169 - 25 = 144, så AD = 12. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 14,
+        "title": "Räkna båglängden",
+        "text": "Båglängd BC = \\frac{\\pi r}{2} = \\frac{13\\pi}{2} cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 15,
+        "title": "Slutsats",
+        "text": "Vardera ensam ger en ekvation i två obekanta — otillräcklig. Tillsammans ger de DE och AF=DE direkt, vilket låser r=13 och båglängden = 13π/2 cm. Svar: C. Insikten i en mening: i cirkelsektor med inskriven rektangel ger Pytagoras AE²=AD²+DE² + radie-villkoret r=AE den bindning som låser systemet — du behöver två sidvärden.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att DE räcker.",
-        "why_wrong": "(1) saknar CF."
+        "why_tempting": "Det är lätt att tro att DE räcker eftersom det är en rektangelsida med direkt geometrisk roll.",
+        "why_wrong": "Steg 8: med DE = 5 har Pytagoras r² = AD² + 25 — fortfarande två obekanta (r och AD)."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att CF räcker.",
-        "why_wrong": "(2) saknar DE."
+        "why_tempting": "Snabbsvar är ofta att CF=8 räcker eftersom det direkt kopplar till radien (AF=r−8).",
+        "why_wrong": "Steg 11: (2) ger DE = r − 8 men AD är fortfarande fri. En ekvation i två obekanta — otillräckligt."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar minst en sida."
+        "why_tempting": "Om du tror att vart och ett räcker eftersom båda är längder i figuren landar du här.",
+        "why_wrong": "Steg 8 och 11: vardera lämnar två obekanta i Pytagoras. D kräver att vardera räcker — vilket inte stämmer."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan vinklar går det inte.",
-        "why_wrong": "Pythagoras + två sidor räcker för r."
+        "why_tempting": "Det är frestande att tro att utan vinkelinformation går det inte att låsa cirkelsektorn.",
+        "why_wrong": "Steg 1: 'kvartcirkel' ger vinkeln 90° direkt. Med Pytagoras + två sidvärden låses r entydigt — vinkelinformation behövs inte."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: rektangelns sidor är AD och DE. AE=r (E på cirkelbåge). Pythagoras: r²=(r−CF)²+DE²=(r−8)²+5² → r=89/16, båglängd=π·89/32 cm.",
-    "technique": "I cirkelsektor med inskriven rektangel: Pythagoras AE²=AD²+DE² ger r."
+    "technique": "I cirkelsektor med inskriven rektangel där en hörnpunkt ligger på bågen: rektangelns diagonal från medelpunkten är lika med radien. Pytagoras kopplar då rektangelsidorna till r.",
+    "pitfall": "Det är frestande att försöka räkna ut AD eller DE individuellt utan att se kopplingen AF=DE. Botemedlet: identifiera vilka rektangelsidor som ligger längs radierna och utnyttja motstående-sidor-lika.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Pytagoras-bron",
+      "move": "Vid cirkelsektor med inskriven rektangel: skriv ekvationen r² = (sida_1)² + (sida_2)² med E på bågen — två sidvärden låser r entydigt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-NOG-025": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "År 2008: 27 650 000 invånare = index 100. Vi söker invånare år 2000. (1): index 2000 = 65 → 0,65·27 650 000. Räcker. (2): 'index 35 % lägre än 2008' → index 65 (samma sak). Räcker. Vardera räcker ensam. Svar: D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå indexbegreppet",
+        "text": "Ett index normaliserar ett tal mot ett basår (här 2008 = index 100). Ett indextal I för år Y betyder att invånartalet Y = (I/100) · invånartalet basåret.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp formeln",
+        "text": "Låt N_2000 = invånare år 2000, N_2008 = 27 650 000. Då gäller N_{2000} = \\frac{I_{2000}}{100} \\cdot N_{2008}.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad räcker?",
+        "text": "Vi söker N_2000. Eftersom N_2008 = 27 650 000 är känt räcker det att veta I_2000 (indextalet för år 2000).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt (1)",
+        "text": "(1): I_2000 = 65. Indextalet för år 2000 var 65.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna N_2000 från (1)",
+        "text": "N_{2000} = \\frac{65}{100} \\cdot 27\\,650\\,000 = 0{,}65 \\cdot 27\\,650\\,000 = 17\\,972\\,500.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "Entydigt N_2000 = 17 972 500. Räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Översätt (2)",
+        "text": "(2): 'indextalet för år 2000 var 35 procent lägre än för år 2008'. År 2008 hade index 100, så 35 % lägre betyder index 100 − 0,35·100 = 65.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna N_2000 från (2)",
+        "text": "Index 65 → samma som (1): N_2000 = 0,65 · 27 650 000 = 17 972 500.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa (2) ensamt",
+        "text": "Entydigt N_2000 = 17 972 500. Räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Är (1) och (2) samma utsaga?",
+        "text": "Ja — 'index 65' och '35 % lägre än 100' är logiskt ekvivalenta. (1) och (2) ger exakt samma information.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Varför räcker vardera?",
+        "text": "Indexformeln har två okända (I_2000 och N_2000) men N_2008 är given. Vardera påstående ger I_2000 entydigt, vilket genom formeln ger N_2000.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "0,65 · 27 650 000 = 17 972 500. Två kontroller: 17 972 500 / 27 650 000 = 0,65 (jo, 65 %) och 27 650 000 − 17 972 500 = 9 677 500, vilket är 35 % av 27 650 000.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Vardera påståendet ger index 65 och därmed entydigt N_2000 = 17 972 500. Svar: D. Insikten i en mening: 'index = X' och 'X − 100 % lägre än basåret' är samma utsaga — varje räcker ensam när basårets värde är känt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att bara (1):s direkta indextal räcker ensamt.",
-        "why_wrong": "(2):s '35 % lägre' är samma utsaga som index=65 — även den räcker ensam."
+        "why_tempting": "Det är lätt att tro att bara (1):s direkta indextal räcker, eftersom det är 'rent' (utan procentsats).",
+        "why_wrong": "Steg 7–9: (2):s '35 % lägre' är exakt samma utsaga som index = 65. Vardera räcker, så D är skarpare än A."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s procentminskning är mer direkt och ensamt räcker.",
-        "why_wrong": "(1):s index=65 räcker lika bra: 27 650 000·0,65."
+        "why_tempting": "Snabbsvar är ofta att (2):s procentminskning är mer 'intuitiv' och därför den enda nödvändiga.",
+        "why_wrong": "Steg 5–6: (1):s index = 65 räcker lika bra — 0,65 · 27 650 000 = 17 972 500."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Båda räcker var för sig eftersom de uttrycker exakt samma minskning."
+        "why_wrong": "Steg 10: (1) och (2) är samma utsaga (index 65). Kombinationen är överflödig — D är skarpare än C."
       },
       {
         "letter": "E",
         "why_tempting": "Det är frestande att läsa båda som otillräckliga när inga absoluta invånartal för 2000 ges.",
-        "why_wrong": "Index 65 ⇔ 35 % lägre — varje villkor räcker när basårets 27 650 000 är given."
+        "why_wrong": "Steg 5 och 8: basårets absoluta tal (27 650 000) räcker tillsammans med index. Båda villkoren ger index 65, alltså N_2000 entydigt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Var för sig räcker. (1): index=65 → invånare=27 650 000·0,65. (2): \"35 % lägre\" → index=65, samma.",
-    "technique": "Regel för index-NOG: ett indextal och 'X % lägre än basåret' är ekvivalenta formuleringar — varje räcker ensamt när basårets absoluta värde är känt."
+    "technique": "Indexregel: I = 100 motsvarar basåret; index X motsvarar X/100 · basårets värde. 'X % lägre än basåret' är ekvivalent med index (100 − X).",
+    "pitfall": "Det är frestande att se två formuleringar (procent vs index) som olika typer av information. Botemedlet: konvertera alltid båda till samma form (t.ex. båda till index) och jämför.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Index-omvandlaren",
+      "move": "Vid index-NOG: skriv om varje påstående till ett indextal — om båda ger samma indextal är svaret D, om de ger olika men konsistenta indextal är det fortfarande D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-NOG-026": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "På kaféet: 17 personer (K=kvinnor, M=män) som dricker kaffe, te eller choklad — 2×3-tabell. Vi söker antal som dricker te. (1) ger K=10, K-kaffe=2, K-choklad>5 (alltså K-choklad=6 eftersom K-te+2+6 ≤ 10). (2) ger M-te = (2/7)·M = (1/3)·K-choklad. Vardera ensam saknar antingen mäns drycker eller absoluta antal. Tillsammans täcker de hela tabellen → te-total = 4. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "17 personer på kafé. Varje person: kön (K/M) × dryck (kaffe/te/choklad). En 2×3-tabell med 6 celler. Vi söker totala antal te-drickare (K-te + M-te).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp tabellen",
+        "text": "Celler: K-kaffe, K-te, K-choklad, M-kaffe, M-te, M-choklad. Radsummor: K + M = 17. Vi har 6 obekanta och behöver tillräckligt med villkor.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Översätt (1)",
+        "text": "(1): K = 10 (alltså M = 7). Bland dessa 10 kvinnor: 'fler än hälften' (alltså > 5) dricker choklad, och 1/5 dricker kaffe.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna K-kaffe",
+        "text": "K-kaffe = (1/5)·10 = 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna K-choklad",
+        "text": "K-choklad > 5. Tillsammans med K-te ≥ 0 och K-kaffe = 2 är K-te + K-choklad = 10 − 2 = 8. Med K-choklad > 5 och heltal: K-choklad ∈ {6, 7, 8}, K-te ∈ {2, 1, 0}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "K-te är inte unikt (kan vara 0, 1 eller 2). M-te är inte alls bestämt. Te-totalen är obestämd. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Översätt (2)",
+        "text": "(2): (2/7) av männen dricker te, vilket motsvarar (1/3) av antalet kvinnor som dricker choklad.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Tolka 2/7 av M",
+        "text": "M-te = (2/7)·M. För att vara heltal måste M vara multipel av 7 (förmodligen M=7 eller M=14).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka 1/3 av K-choklad",
+        "text": "K-choklad måste vara multipel av 3 för att (1/3)·K-choklad ska vara heltal. Så M-te = K-choklad / 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Testa (2) ensamt",
+        "text": "(2) ger en relation: M-te · 3 = K-choklad och M-te · 7/2 = M. Men inga absoluta antal av K, M eller K-choklad. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Kombinera",
+        "text": "Från (1): M = 7. Då M-te = (2/7)·7 = 2. Från (2): K-choklad = 3·M-te = 3·2 = 6. Det stämmer med (1):s 'K-choklad > 5' (specifikt = 6).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Räkna K-te",
+        "text": "K-te = K − K-kaffe − K-choklad = 10 − 2 − 6 = 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Räkna total te",
+        "text": "Total te = K-te + M-te = 2 + 2 = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 14,
+        "title": "Verifiera tabellen",
+        "text": "K: kaffe=2, te=2, choklad=6 → 10. M: te=2, så M-kaffe + M-choklad = 5. Total: 10 + 7 = 17. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 15,
+        "title": "Slutsats",
+        "text": "Vardera ensam lämnar antingen mäns drycker eller absoluta antal fria. Tillsammans täcker de hela tabellen → te-total = 4. Svar: C. Insikten i en mening: i tvådimensionella NOG-tabeller räcker det med komplementära villkor (rad-info + kolumn-relation) när antalsvärden är heltal — heltalskravet smalnar av.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att kvinnor-fördelningen räcker.",
-        "why_wrong": "(1) säger inget om mäns dryckesval."
+        "why_tempting": "Det är lätt att tro att (1) räcker eftersom den ger flera detaljer om kvinnorna.",
+        "why_wrong": "Steg 6: (1) säger inget om mäns dryckesval. M-te är obestämt → total te är obestämd."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att fraktionerna i (2) räcker.",
-        "why_wrong": "(2) saknar absoluta antal kvinnor och män."
+        "why_tempting": "Snabbsvar är ofta att (2):s fraktioner räcker eftersom de kopplar kön och dryck direkt.",
+        "why_wrong": "Steg 10: (2) saknar absoluta antal av K och M. Endast relationer, inga konkreta tal."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar minst en kategori."
+        "why_tempting": "Om du tror att vart och ett räcker eftersom båda nämner drycker landar du här.",
+        "why_wrong": "Steg 6 och 10: vardera lämnar minst en dimension fri. D kräver att vardera räcker — vilket inte stämmer."
       },
       {
         "letter": "E",
         "why_tempting": "Det är frestande att tro att tre drycker × två kön kräver fler villkor.",
-        "why_wrong": "Tillsammans täcker villkoren alla 6 cellerna i tabellen."
+        "why_wrong": "Steg 11–13: tillsammans + heltalskravet täcker alla 6 celler entydigt. Total te = 4."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (1) ger K=10, M=7, kvinnor-kaffe=2, kvinnor-choklad>5. (2) ger män-te=(2/7)·7=2 och chok_K=3·2=6. Kvinnor-te=10−6−2=2, total te=4.",
-    "technique": "Två komplementära korstabell-villkor (rader+kolumner) räcker för cellerna."
+    "technique": "I 2×3-tabell-NOG: leta efter villkor som är komplementära (en på rader, en på kolumner/relation). Heltalskrav (folk kan inte vara halva personer) smalnar av lösningsmängden ytterligare.",
+    "pitfall": "Det är frestande att tolka 'fler än hälften dricker choklad' som ett spann utan att utnyttja heltalskravet. Botemedlet: kombinera ojämlikheten med rad-summan och heltalsmängden — ofta blir K-choklad unik via (2).",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Heltalsfönstret",
+      "move": "I korstabell-NOG med fraktioner: kolla heltalskravet på varje delsumma — det smalnar ofta lösningsmängden till en unik konfiguration tillsammans med ojämlikheter."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-NOG-027": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Medel(a,b,c,d) = 69 → a+b+c+d = 276. Vi söker hur många av a,b,c,d som är exakt 69. (1) medel(a,b,c) = 69 → a+b+c = 207, så d = 69. Men hur många av a,b,c som är 69 är fortfarande obestämt (kan vara 0, 1, 2 eller 3). (2): minst 2 är 69 — kan vara 2, 3 eller 4. Tillsammans: d=69 och minst 2 av a,b,c är 69 — så minst 3 är 69, men kan vara 3 eller 4. Otillräckligt. Svar: E.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Fyra tal a, b, c, d har medelvärdet 69. Frågan är: hur MÅNGA av dessa fyra är exakt lika med 69? (Inte vilka — antalet.)",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Översätt huvudvillkoret",
+        "text": "Medelvärde 69 → a + b + c + d = 4 · 69 = 276.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad menar 'tillräcklig'?",
+        "text": "Tillräcklig = exakt ett möjligt antal-värde (av {0,1,2,3,4}). Om svarsmängden kan vara t.ex. {2,3} → otillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt (1)",
+        "text": "(1): medel(a, b, c) = 69 → a + b + c = 3 · 69 = 207. Tillsammans med total 276 → d = 276 − 207 = 69.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "Vi vet d = 69. Men a, b, c summerar till 207 — och de kan vara alla 69 (3 av dem = 69, totalt 4), eller t.ex. (60, 70, 77) (0 av dem = 69, totalt 1), eller (69, 69, 69) eller (50, 80, 77) etc.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkreta motexempel för (1)",
+        "text": "Scenario A: a=b=c=69, d=69 → 4 av talen är 69. Scenario B: a=60, b=70, c=77, d=69 → 1 av talen är 69. Två olika antal → otillräckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Översätt (2)",
+        "text": "(2): minst 2 av talen är 69. Det är en svag utsaga — tillåter antalet 2, 3 eller 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt",
+        "text": "Antalet kan vara 2 (t.ex. a=b=69, c=70, d=68), 3 (a=b=c=69, d=69 — vänta, då är alla 4 — eller a=b=c=69, d behöver vara 69 för total 276, så det blir 4). Vänta: med a=b=69, vad är c+d=276−138=138, så c+d=138, vilket tillåter c=d=69 (4 av talen) eller c=70, d=68 (2 av talen).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konkreta motexempel för (2)",
+        "text": "Scenario A: a=b=c=d=69 → 4 av talen. Scenario B: a=b=69, c=70, d=68 → 2 av talen (kontroll: 69+69+70+68=276 ✓). Två olika antal → otillräckligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Kombinera (1) + (2)",
+        "text": "Från (1): d = 69. Från (2): minst 2 av {a,b,c,d} är 69, alltså minst 1 av {a,b,c} är 69 (eftersom d redan är 69). Men a+b+c = 207 — kan vara (69, 69, 69) eller (69, 70, 68).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Motexempel under (1)+(2)",
+        "text": "Scenario A: a=b=c=69, d=69 → 4 av talen är 69. Scenario B: a=69, b=70, c=68, d=69 → 2 av talen är 69 (a och d). Båda uppfyller (1) (sum a+b+c=207) och (2) (minst 2 är 69).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Bekräfta otillräckligheten",
+        "text": "Även tillsammans kan antalet vara 2, 3 eller 4. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Varken (1), (2) eller båda tillsammans låser antalet exakt. Svar: E. Insikten i en mening: 'minst N är X' och 'medel = X' är båda för svaga för att låsa hur MÅNGA tal som exakt motsvarar X — den fördelningsfria frågan kräver punktdata.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att d=69 räcker.",
-        "why_wrong": "Inget i (1) säger något om resten."
+        "why_tempting": "Det är lätt att tro att d = 69 räcker när vi söker antalet — det är en konkret låsning.",
+        "why_wrong": "Steg 5–6: även med d=69 kan a, b, c innehålla 0, 1, 2 eller 3 stycken 69:or och fortfarande summera till 207."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att \"minst 2\" räcker.",
-        "why_wrong": "(2) ger inte exakt antal."
+        "why_tempting": "Snabbsvar är ofta att 'minst 2 är 69' är konkret nog.",
+        "why_wrong": "Steg 8–9: 'minst 2' lämnar antalet i {2, 3, 4} — tre möjligheter."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "Antal exakt 69 kan vara 2, 3 eller 4."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet — d=69 + 'minst 2' känns starkt.",
+        "why_wrong": "Steg 11: även tillsammans kan antalet vara 2 (a=69, b=70, c=68, d=69) eller 3 (a=b=69, c=69 → blir 4) eller 4. Två olika scenarier kvar."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Inget villkor specificerar exakt antal."
+        "why_tempting": "Om du tror att vart och ett ger exakt antal landar du här.",
+        "why_wrong": "Steg 5 och 8: vardera ensam tillåter flera antal-värden. D kräver att vardera räcker — vilket inte stämmer."
       }
     ],
-    "pitfall": "Median/medelvärde ensamma låser inte hur många exakt motsvarar ett specifikt värde.",
-    "solution_path": "Båda krävs men räcker ändå inte. (1) ger d=69 men a, b, c kan kombineras så att 0, 1, 2 eller 3 av dem också är 69 så länge summan är 207. (2) säger \"minst 2\" är 69 men kan vara 2, 3 eller 4. Tillsammans: minst 2 (inkl d), men det exakta antalet är fortfarande tvetydigt.",
-    "technique": "\"Minst N är X\" är inte exakt antal — kontrollera om frågan kräver exakt.",
-    "framework_id": "NOG-TRAP-020"
+    "technique": "Antals-frågor ('hur många av talen är X?') är extremt känsliga för punktfördelningen. Medelvärden och 'minst N'-villkor ger SUMMOR och NEDRE GRÄNSER, inte exakt antal.",
+    "pitfall": "Det är frestande att tolka 'medel = 69' eller 'minst 2 är 69' som om de implicerar exakt antal. Botemedlet: konstruera explicita motexempel där medelvärdet/nedre gränsen behålls men antalet 69:or varierar.",
+    "framework_id": "NOG-TRAP-020",
+    "pregrade_tactic": {
+      "handle": "Antalsmotexemplet",
+      "move": "Vid 'hur många av talen är X'-NOG: konstruera medvetet två fördelningar med olika antal X:or som båda uppfyller villkoren — om det går är det otillräckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-NOG-028": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Tre lappar (röd, grön, blå) har talen 1, 2, 4 — en på varje. Vi söker färgen på lappen med 2. (1): grön > summan av de andra två → grön = 4 (eftersom 4 > 1+2=3, men 2 < 1+4 och 1 < 2+4). Men vilken färg har 2 är fortfarande tvetydigt (röd eller blå kan ha 2). Otillräckligt. (2): en jämn-lapp (talet är 2 eller 4) är varken röd eller grön → den är blå. Blå < grön (talvärde). Om blå=4: grön > 4 omöjligt. Så blå=2, grön=4. Lapp 2 är blå. Räcker ensam. Svar: B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Tre lappar med olika färger (röd, grön, blå) och olika tal (1, 2, 4) — en lapp per färg, en lapp per tal. Vi söker vilken färg lappen med talet 2 har.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp permutationer",
+        "text": "Det finns 3! = 6 möjliga färg-till-tal-tilldelningar. Vi behöver smalna av till en.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Översätt (1)",
+        "text": "(1): den gröna lappens tal > summan av de andra två talen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vilka talvärden uppfyller (1)?",
+        "text": "Summorna: 1+2=3, 1+4=5, 2+4=6. Vilket tal kan vara > sin komplement-summa? 4 > 1+2 = 3 ✓. 2 > 1+4 = 5 ✗. 1 > 2+4 = 6 ✗. Alltså grön = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "(1) ger grön = 4. Men röd och blå kan ha (1, 2) eller (2, 1). Två fall för 'lapp 2 är vilken färg': röd eller blå. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Översätt (2) — del 1",
+        "text": "(2) första delen: 'En av de lappar som har ett jämnt tal är varken röd eller grön.' Jämna tal är 2 och 4. Alltså en av lapparna med 2 eller 4 är blå.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Översätt (2) — del 2",
+        "text": "(2) andra delen: 'Den blå lappen har ett tal som är mindre än talet på den gröna lappen.' Alltså blå < grön (i talvärden).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Fall: blå = 4",
+        "text": "Om blå = 4: blå är jämn (uppfyller del 1). Men då måste grön > 4 — och högsta talet är 4, så omöjligt. Förkasta.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Fall: blå = 2",
+        "text": "Om blå = 2: blå är jämn (uppfyller del 1). Grön > 2 → grön ∈ {4}. Eftersom blå=2, måste röd och grön fördela 1 och 4. Med grön > 2 är grön = 4 och röd = 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Fall: blå = 1",
+        "text": "Om blå = 1: blå är inte jämn. Men (2) säger en av JÄMN-lapparna är blå — så blå måste ha jämnt tal. Förkasta.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Testa (2) ensamt",
+        "text": "Bara fallet blå=2, grön=4, röd=1 är konsistent. Lappen med 2 är blå. Entydigt. Räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera (2)",
+        "text": "Blå=2 (jämn, varken röd eller grön — ✓). Blå=2 < grön=4 — ✓. Allt stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Varför räcker (2) men inte (1)?",
+        "text": "(1) fastställer endast att grön=4 men lämnar röd vs blå tvetydigt för talen 1 och 2. (2) använder två ordningsvillkor + paritet → låser hela tilldelningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 14,
+        "title": "Slutsats",
+        "text": "(1) ger bara grön=4, men 'färgen på 2' är fri (röd eller blå). (2) ger blå=2 entydigt → lappen med 2 är blå. Svar: B. Insikten i en mening: paritets-villkor + ordnings-villkor på tre objekt räcker ofta för full låsning — ett singel-summavillkor räcker sällan.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s summavillkor räcker.",
-        "why_wrong": "(1) ger grön=4 men inte färg på lapp 2."
+        "why_tempting": "Det är lätt att tro att (1):s summavillkor räcker eftersom det fastställer grön = 4.",
+        "why_wrong": "Steg 5: (1) säger inget om vilken av röd/blå som har 2 eller 1. Två fall kvar — otillräcklig."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(2) räcker ensamt."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet i en permutationsuppgift.",
+        "why_wrong": "Steg 11: (2) räcker ensam — den ger blå=2 entydigt utan (1):s hjälp."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(1) saknar information om lapp 2:s färg."
+        "why_tempting": "Om du tror att vart och ett räcker eftersom båda smalnar av landar du här.",
+        "why_wrong": "Steg 5: (1) saknar information om 'lapp 2:s färg'. D kräver att vardera räcker — bara (2) gör det."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan numerisk ordning går det inte.",
-        "why_wrong": "Två villkor om jämn-lappar + ordning ger låsning."
+        "why_tempting": "Det är frestande att tro att utan numerisk ordning eller direkt utsaga om färgen är det omöjligt.",
+        "why_wrong": "Steg 8–10: (2):s paritet + ordning utesluter alla utfall utom blå=2, grön=4, röd=1."
       }
     ],
-    "pitfall": null,
-    "solution_path": "(2) räcker: en jämn-lapp är blå, och blå<grön — om blå=4 skulle grön>4 omöjligt, så blå=2 och grön=4. (1) ger bara att grön=4 utan att låsa lapp 2.",
-    "technique": "Kombinera \"en av X är Y\" med ordningsvillkor för att smalna av."
+    "technique": "I permutations-NOG med tre objekt: paritets-villkor (jämn/udda) + ordningsvillkor (<, >) utesluter ofta alla utom en av de 6 permutationerna. Singel-villkor (t.ex. en summa) räcker sällan ensam.",
+    "pitfall": "Det är frestande att stanna vid (1):s tydliga matematiska struktur (grön=4) utan att kolla om frågan (lapp 2:s färg) faktiskt besvaras. Botemedlet: lista alla giltiga permutationer kvar efter varje påstående och kolla om frågan är entydig.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Permutations-elimineringen",
+      "move": "Vid färg-tal-NOG: lista alla 3!=6 permutationer, eliminera dem som inte uppfyller varje påstående — om en kvar är påståendet tillräckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-XYZ-002": {
-    "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Antal barn: \\frac{2750}{50} = 55. Antal vuxna: 150 - 55 = 95. Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En simhall tar 50 kr av barn och 90 kr av vuxna. En dag kom 150 betalande totalt och barnens intäkter uppgick till 2 750 kr. Vi söker antalet VUXNA.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera variabler",
+        "text": "Låt b = antal barn och v = antal vuxna. Två villkor: b + v = 150 (totalt) och 50b = 2750 (barnens intäkter).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilken ekvation har EN okänd?",
+        "text": "Ekvationen 50b = 2750 innehåller bara b — den kan lösas direkt utan att blanda in v eller vuxenpriset 90 kr.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Lös ut b",
+        "text": "Dela båda leden med 50: b = \\frac{2750}{50}. Räkna: \\frac{2750}{50} = \\frac{275}{5} = 55. Det fanns alltså 55 barn.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Använd totalvillkoret",
+        "text": "Den andra ekvationen säger att barn + vuxna = 150. Sätt in b = 55: 55 + v = 150.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lös ut v",
+        "text": "Subtrahera 55 från båda leden: v = 150 - 55 = 95. Det fanns 95 vuxna.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Notera att 90 kr inte behövdes",
+        "text": "Vuxenpriset 90 kr har inte använts. Det är en distraktor — frågan ger mer information än som behövs, vilket är vanligt i HP.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera totalen",
+        "text": "Kolla: 55 + 95 = 150 ✓ — matchar antalet besökare.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera barnens intäkt",
+        "text": "Kolla: 55 \\cdot 50 = 2750 ✓ — matchar de 2 750 kr som barnen genererade.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är A: 95 vuxna. Insikten i en mening: när en ekvation har bara EN okänd, lös den först — den ger resten via totalvillkoret utan att man behöver vuxenpriset.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att avrunda till 100.",
-        "why_wrong": "95 exakt."
+        "why_tempting": "Det är lätt att avrunda 95 till en jämn 100 vid mental räkning eller missräkna \\frac{2750}{50} till 50 istället för 55.",
+        "why_wrong": "Som steg 4 visar är \\frac{2750}{50} = 55 exakt — inte 50. Då blir v = 150 - 55 = 95 exakt, inte 100."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 105.",
-        "why_wrong": "95."
+        "why_tempting": "Snabbsvar är ofta 105 om man räknar fel division — till exempel \\frac{2750}{60} \\approx 46 och sedan 150 - 45 = 105.",
+        "why_wrong": "Steg 4 fastställer att barnens pris är 50 kr (inte 60), så delningen blir 55 och slutsvaret 95."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 130.",
-        "why_wrong": "95."
+        "why_tempting": "Många stannar vid 130 om de räknar fel intäktsekvation — till exempel \\frac{2750}{50} fel till 20 barn.",
+        "why_wrong": "Steg 4 visar tydligt att b = 55. Att få så få barn (20) skulle innebära att intäkten bara vore 1 000 kr, inte 2 750 kr."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Barn: b=2750/50=55. Vuxna: 150 − 55 = 95.",
-    "technique": "Två-värde-ekvation: lös ena först (barn), dra ifrån från total."
+    "technique": "Två-variabel-ord-problem: hitta ekvationen med EN okänd först (här barnens intäkter), lös den och använd totalvillkoret för att läsa av den andra.",
+    "pitfall": "Det kluriga är att vuxenpriset 90 kr ligger framme och frestar till en onödig 90-kr-ekvation. Botemedlet: först leta efter ekvationen med en okänd — om priset på 90 kr inte krävs är det en distraktor.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Endokumentet",
+      "move": "Vid två-variabel-ord-problem: skanna alla siffror och leta upp den ekvation som har bara EN okänd — lös den först, resten faller ut från totalvillkoret."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Summera kolumnvis: a-koefficienterna ger 4+2+4-6 = 4; b: 3-5+3+5 = 6; c: 2+4-6+4 = 4; d: 1+3+5-7 = 2. Summan är 4a + 6b + 4c + 2d och hälften blir 2a + 3b + 2c + d. Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Fyra uttryck är givna, vart och ett en linjär kombination av variablerna a, b, c, d. Vi ska först addera dem och sedan dela med 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp koefficient-tabell",
+        "text": "Skriv koefficienterna kolumnvis per variabel. Uttryck 1: (4, 3, 2, 1) för (a, b, c, d). Uttryck 2: (2, -5, 4, 3). Uttryck 3: (4, 3, -6, 5). Uttryck 4: (-6, 5, 4, -7).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är polynomaddition?",
+        "text": "Definition: man adderar polynom genom att samla termer med samma variabel-mönster och addera deras koefficienter — som att lägga ihop kronor med kronor och ören med ören.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Addera a-koefficienterna",
+        "text": "4 + 2 + 4 + (-6). Räkna i par: 4 + 2 = 6, 6 + 4 = 10, 10 - 6 = 4. Totalt: 4a.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Addera b-koefficienterna",
+        "text": "3 + (-5) + 3 + 5. 3 - 5 = -2, -2 + 3 = 1, 1 + 5 = 6. Totalt: 6b.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Addera c-koefficienterna",
+        "text": "2 + 4 + (-6) + 4. 2 + 4 = 6, 6 - 6 = 0, 0 + 4 = 4. Totalt: 4c.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Addera d-koefficienterna",
+        "text": "1 + 3 + 5 + (-7). 1 + 3 = 4, 4 + 5 = 9, 9 - 7 = 2. Totalt: 2d.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Skriv summan",
+        "text": "Totala summan av de fyra uttrycken: 4a + 6b + 4c + 2d.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Halvera varje koefficient",
+        "text": "Att dela ett polynom med 2 betyder att dela varje koefficient med 2: \\frac{4a + 6b + 4c + 2d}{2} = 2a + 3b + 2c + d.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera tecken på b",
+        "text": "Kontroll: b-koefficienterna är +3, -5, +3, +5 — summa 6, hälften 3. Tecknet är POSITIVT på 3b i alternativ D ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D: 2a + 3b + 2c + d. Insikten i en mening: addera polynom kolumnvis per variabel — håll en koefficient-tabell och dela alla med 2 till sist.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel tecken och få −14a+...",
-        "why_wrong": "Räkna noggrant; resultatet är 2a+3b+2c+d."
+        "why_tempting": "Det är lätt att tappa tecken-bokföring och få stora negativa koefficienter som -14a + 6b + 14c + 10d.",
+        "why_wrong": "Steg 4–7 visar exakt summa 4a + 6b + 4c + 2d — tecknena bokförs korrekt i kolumn-tabellen, inte fyra och tolv gånger för stora."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att glömma division: 8a+3b+2c+d.",
-        "why_wrong": "Halvera summan."
+        "why_tempting": "Snabbsvar är ofta att GLÖMMA divisionen med 2 och svara med summan 8a + 3b + 2c + d (alternativ B kommer från fel a-summa).",
+        "why_wrong": "Steg 9 är obligatoriskt: frågan vill ha HÄLFTEN av summan. Dela varje koefficient med 2."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 10a+6b+4c+2d.",
-        "why_wrong": "2a+3b+2c+d."
+        "why_tempting": "Många stannar vid 10a + 6b + 4c + 2d om de adderar fel på a-kolumnen (missar -6) men ändå minns att halvera.",
+        "why_wrong": "Steg 4 räknar 4 + 2 + 4 - 6 = 4 (inte 10). Sista uttrycket har -6a som måste räknas in."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Addera alla fyra uttryck och dela med 2: resultat 2a+3b+2c+d.",
-    "technique": "Polynomaddition: addera koefficienter per term."
+    "technique": "Polynomaddition kolumnvis: lista koefficienterna per variabel i en tabell, summera varje kolumn för sig, dela slutligen med 2 om uppgiften kräver hälft.",
+    "pitfall": "Det kluriga är att uttrycken är långa och tecknen blandade — det är lätt att tappa något - mitt i. Botemedlet: skriv ner koefficienterna som en 4 \\times 4-tabell innan du börjar addera.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Koefficient-tabellen",
+      "move": "När många polynom ska adderas: skriv en tabell med en rad per uttryck och en kolumn per variabel — summera kolumn för kolumn istället för att läsa i tur och ordning."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Med n jämn är n - 1 udda, så 3(n - 1) = 3 \\cdot \\text{udda} = \\text{udda}. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi vet att n är ett JÄMNT heltal. Frågan är vilket av alternativen som garanterat blir ett UDDA heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är paritet?",
+        "text": "Definitioner: ett heltal är JÄMNT om det är delbart med 2 (skrivs n = 2k), och UDDA om resten vid delning med 2 är 1 (n = 2k + 1).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Paritets-regler",
+        "text": "Två grundregler: (1) jämn + jämn = jämn, jämn + udda = udda, udda + udda = jämn. (2) jämn · vad-som-helst = jämn; udda · udda = udda.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa A: 3n − 2",
+        "text": "n är jämn, så 3n är 3 gånger ett jämnt tal = jämn. Sedan jämn − 2 = jämn (jämn ± jämn = jämn). Alternativ A är JÄMN, inte udda.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa B: 3(n − 1)",
+        "text": "n - 1: jämn − 1 = udda. Sedan 3 \\cdot \\text{udda}: 3 är udda, udda · udda = udda. Så 3(n - 1) är UDDA.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa C: n²",
+        "text": "n^{2} = n \\cdot n: jämn · jämn = jämn. Alternativ C är JÄMN.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa D: n/3",
+        "text": "\\frac{n}{3} är inte ens GARANTERAT ett heltal: n = 4 ger \\frac{4}{3}, inte ett heltal. Och även om det vore (t.ex. n = 6 ger 2) är 2 jämn, inte udda.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med konkret n",
+        "text": "Ta n = 4. A: 12 - 2 = 10 (jämn). B: 3(4 - 1) = 9 (udda). C: 16 (jämn). D: \\frac{4}{3} (inte heltal). B är rätt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med ännu ett n",
+        "text": "Ta n = 10. B: 3(10 - 1) = 27 (udda) ✓. Regeln håller oberoende av vilket jämnt tal n är.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är B: 3(n - 1). Insikten i en mening: paritets-frågor löses snabbast med två regler — jämn ± udda flippar pariteten och udda · udda förblir udda.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro 3n - 2 udda.",
-        "why_wrong": "3·jämn − 2 = jämn − jämn = jämn."
+        "why_tempting": "Det är lätt att tro att 3n - 2 är udda eftersom -2 ser ut som en 'tecken-flippare'.",
+        "why_wrong": "Som steg 4 visar: 3 \\cdot \\text{jämn} = \\text{jämn}, och \\text{jämn} - \\text{jämn} = \\text{jämn}. Subtraktion av ett jämnt tal ändrar inte pariteten."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta n² udda.",
-        "why_wrong": "Jämn² = jämn."
+        "why_tempting": "Första instinkten är att se n^{2} som något 'speciellt' och anta att kvadrater ofta är udda.",
+        "why_wrong": "Steg 6 låser fast regeln: \\text{jämn} \\cdot \\text{jämn} = \\text{jämn}. Kvadraten av ett jämnt tal är alltid jämn (t.ex. 4^{2} = 16)."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid n/3.",
-        "why_wrong": "n/3 är inte garanterat udda heltal."
+        "why_tempting": "Det är frestande att se \\frac{n}{3} och tro att 3 är 'specialregel-numret' som kan ge udda.",
+        "why_wrong": "Steg 7 visar att \\frac{n}{3} inte ens måste vara ett heltal när n är jämn — och även när det är, t.ex. \\frac{6}{3} = 2, blir det jämnt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "n jämn, n−1 udda. 3·udda = udda. 3(n-1) udda.",
-    "technique": "Paritet: jämn ± jämn = jämn; jämn · vad-som-helst = jämn; udda · udda = udda.",
-    "framework_id": "XYZ-TRAP-047"
+    "technique": "Paritets-resonemang: använd reglerna jämn ± jämn = jämn, udda · udda = udda — och testa med ett konkret jämnt tal (t.ex. n = 4) som sanity-check.",
+    "pitfall": "Det kluriga är att 3n - 2 och 3(n - 1) ser nästan likadana ut — båda har en 3:a och en subtraktion. Botemedlet: utveckla parentesen mentalt — 3(n - 1) = 3n - 3 (jämn − udda = udda) men 3n - 2 är jämn − jämn = jämn.",
+    "framework_id": "XYZ-TRAP-047",
+    "pregrade_tactic": {
+      "handle": "Paritets-snabben",
+      "move": "Vid 'vilket är udda/jämnt'-frågor: sätt in n = 2 (eller annat litet jämnt tal) i varje alternativ och läs av pariteten direkt — algebran är säker, men det numeriska testet är snabbast."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-XYZ-007": {
-    "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "8 skär på längden ger 8 + 1 = 9 rader; 5 skär på bredden ger 5 + 1 = 6 kolumner. Totalt 9 \\cdot 6 = 54 bitar. Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En rektangulär kaka skärs tvärs över hela kakan 8 gånger på längden och 5 gånger på bredden. Vi söker totalt antal bitar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Bygg en mental modell",
+        "text": "Tänk på kakan som ett rutnät. Varje skär tvärs hela kakan blir en linje som delar den i fler strimlor. Bitarna är rektanglarna i rutnätet som linjerna bildar.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Regel: n skär ger n+1 delar",
+        "text": "Definition: om man gör n parallella skär tvärs över ett objekt får man n + 1 delar. Ett skär = 2 delar, två skär = 3 delar, osv.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Räkna rader (skär på längden)",
+        "text": "8 skär på längden delar kakan i 8 + 1 = 9 rader.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna kolumner (skär på bredden)",
+        "text": "5 skär på bredden delar kakan i 5 + 1 = 6 kolumner.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Varför multiplicera, inte addera?",
+        "text": "Bitarna är ett rutnät: varje rad korsar varje kolumn och skapar en bit. Antalet bitar är därför \\text{rader} \\cdot \\text{kolumner}, inte \\text{rader} + \\text{kolumner}.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Multiplicera",
+        "text": "Antal bitar: 9 \\cdot 6. Räkna: 10 \\cdot 6 = 60, dra bort en 6:a: 60 - 6 = 54.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med mindre kaka",
+        "text": "Pröva med 1 skär på längden och 1 på bredden: ger 2 rader och 2 kolumner, alltså 4 bitar. Korrekt — kakan delas i 4 rektanglar.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera dimensions-logiken",
+        "text": "Vid 9 rader och 6 kolumner är rutnätet 9 \\times 6 = 54 — överensstämmer med alternativ D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är D: 54 kakbitar. Insikten i en mening: n skär på längden och m skär på bredden ger (n + 1)(m + 1) bitar — inte nm, inte n + m.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 8+5 = 13.",
-        "why_wrong": "Skärningar bildar mer än linjär addition."
+        "why_tempting": "Det är lätt att direkt addera 8 + 5 = 13 om man tänker 'skär totalt' istället för 'bitar totalt'.",
+        "why_wrong": "Som steg 6 visar är bitarna ett rutnät av rader och kolumner — addition räknar bara totalt antal skärlinjer, inte rektanglarna mellan dem."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 8·5 = 40.",
-        "why_wrong": "54 (n+1 rader vid n skär)."
+        "why_tempting": "Snabbsvar är ofta 8 \\cdot 5 = 40, ett vanligt fel där man glömmer +1-regeln på båda sidor.",
+        "why_wrong": "Steg 3 är central: n skär ger n + 1 delar, så det blir 9 \\cdot 6 = 54, inte 8 \\cdot 5 = 40."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 9·5 = 45.",
-        "why_wrong": "54 = 9·6."
+        "why_tempting": "Om du minns regeln som '+1 på ena sidan men inte den andra' landar du på 9 \\cdot 5 = 45.",
+        "why_wrong": "Steg 4–5 visar att +1-regeln gäller på BÅDA dimensioner: längd-skär ger 8 + 1 = 9 OCH bredd-skär ger 5 + 1 = 6."
       }
     ],
-    "pitfall": null,
-    "solution_path": "8 skär längs ger 9 rader; 5 skär över ger 6 kolumner. 9\\cdot 6=54.",
-    "technique": "Skär en bricka: n skär ger n+1 delar."
+    "technique": "Rutnätsräkning: n parallella skär ger n + 1 strimlor; två oberoende skärriktningar ger rutnät (n + 1) \\cdot (m + 1) bitar.",
+    "pitfall": "Det kluriga är att 8 och 5 ligger framme och frestar till en snabb 8 \\cdot 5-multiplikation. Botemedlet: skissa en liten kaka först — testa med 1 skär per riktning och se 4 bitar.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Plus-ett-regeln",
+      "move": "Vid skär-räkning: lägg alltid till 1 till varje riktnings antal skär innan du multiplicerar — n skär ger n + 1 delar, aldrig n."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-XYZ-010": {
-    "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "x = 0{,}8 \\cdot 160 = 128 och 0{,}8y = 160 ger y = 200. Då blir \\frac{100x}{y} = \\frac{100 \\cdot 128}{200} = 64. Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två procent-relationer är givna: '80 % av 160 är x' och '80 % av y är 160'. Vi söker värdet av \\frac{100x}{y}.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder '80 % av'?",
+        "text": "Definition: 'p % av a' = \\frac{p}{100} \\cdot a. Här blir 80 % = 0,8.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna x",
+        "text": "Första villkoret: x = 0{,}8 \\cdot 160. Räkna: 0{,}8 \\cdot 160 = \\frac{8}{10} \\cdot 160 = \\frac{8 \\cdot 160}{10} = \\frac{1280}{10} = 128.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Sätt upp ekvationen för y",
+        "text": "Andra villkoret: '80 % av y är 160' = 0{,}8y = 160.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös ut y",
+        "text": "Dela båda leden med 0,8: y = \\frac{160}{0{,}8}. Multiplicera täljare och nämnare med 10: \\frac{1600}{8} = 200. Alltså y = 200.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skriv uttrycket som ska beräknas",
+        "text": "Vi söker \\frac{100x}{y} med x = 128 och y = 200.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Multiplicera täljaren",
+        "text": "100 \\cdot 128 = 12{,}800 (gångra med 100 = lägg till två nollor).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Dividera",
+        "text": "\\frac{12800}{200}. Förkorta med 100: \\frac{128}{2} = 64. Alltså \\frac{100x}{y} = 64.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera",
+        "text": "Snabbkoll: \\frac{100 \\cdot 128}{200} = \\frac{128}{2} = 64 (eftersom 100/200 = 1/2). Hänger ihop med svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är A: 64. Insikten i en mening: när två procent-uttryck pekar åt motsatt håll (x är 80 % av en bas, y har 80 % lika med en bas), lös båda var för sig — proportionerna är inte symmetriska.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna 125.",
-        "why_wrong": "64."
+        "why_tempting": "Det är lätt att räkna fel \\frac{x}{y} om man tar 100 ut ur uttrycket först och delar 160/128 = 1,25 = 125 %.",
+        "why_wrong": "Som steg 6–8 visar är \\frac{100x}{y} = \\frac{100 \\cdot 128}{200} = 64, inte 125. Förväxling med inverterat förhållande."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 625/4.",
-        "why_wrong": "64."
+        "why_tempting": "Snabbsvar är ofta \\frac{625}{4} om man räknar \\frac{100 \\cdot 160}{128} av misstag (sätter in x = 160 istället för y = 200 i nämnaren).",
+        "why_wrong": "Steg 5 fastställer att y = 200 (inte 128). \\frac{100 \\cdot 128}{200} = 64."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 256.",
-        "why_wrong": "64."
+        "why_tempting": "Många stannar vid 256 om de räknar x \\cdot y = 128 · 200 / 100 = 256 istället för \\frac{x}{y}.",
+        "why_wrong": "Steg 6 visar uttrycket: 100 gånger x DELAT med y, inte multiplicerat. Operatorn är division."
       }
     ],
-    "pitfall": null,
-    "solution_path": "x = 128, y = 200. \\frac{100\\cdot 128}{200}=64.",
-    "technique": "Två-procent-ekvation: lös x och y separat, beräkna kvoten."
+    "technique": "Procent-ekvationer med två okända: skriv om 'p % av a är b' som \\frac{p}{100} \\cdot a = b och lös båda separat innan kvoten beräknas.",
+    "pitfall": "Det kluriga är att de två satserna ser symmetriska ut men inte är det — i den ena är x RESULTATET av 80 %, i den andra är y BASEN. Botemedlet: skriv explicit 'x = 0{,}8 \\cdot 160' och '0{,}8y = 160' för att tvinga fram skillnaden.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Procent-riktningen",
+      "move": "Vid 'p % av X är Y'-uttryck: läs noga vilken sida som är basen och vilken som är resultatet — basen är ALLTID multiplicerad med procenttalet, aldrig det som står ensamt på höger sida."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-XYZ-011": {
-    "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Faktorisera: 27 \\cdot 3^{47} = 3^{3} \\cdot 3^{47} = 3^{50}. Uttrycket blir 3^{50} + 3^{50} + 3^{50} = 3 \\cdot 3^{50} = 3^{51}. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Tre termer ska summeras: 3^{50} + 3^{50} + 27 \\cdot 3^{47}. Vi söker det enklaste uttrycket på formen 3^{k}.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Mål: gemensam grundpotens",
+        "text": "Strategi: skriv om alla termer som koefficient gånger SAMMA potens av 3. Då kan man addera koefficienterna och få 3 \\cdot 3^{k}-form.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Skriv om 27 som potens av 3",
+        "text": "27 = 3 \\cdot 3 \\cdot 3 = 3^{3}. Detta är nyckelobservationen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Potensregel för multiplikation",
+        "text": "Definition: a^{m} \\cdot a^{n} = a^{m + n} (samma bas, addera exponenter). Detta gäller för alla heltalsexponenter m, n.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Förenkla tredje termen",
+        "text": "27 \\cdot 3^{47} = 3^{3} \\cdot 3^{47} = 3^{3 + 47} = 3^{50}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skriv om hela uttrycket",
+        "text": "Alla tre termer är nu 3^{50}: 3^{50} + 3^{50} + 3^{50}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Faktorisera ut den gemensamma potensen",
+        "text": "Tre kopior av samma faktor: 3^{50} + 3^{50} + 3^{50} = 3 \\cdot 3^{50}. Detta är ren talräkning — som 'a + a + a = 3a'.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Använd potensregeln igen",
+        "text": "3 \\cdot 3^{50} = 3^{1} \\cdot 3^{50} = 3^{1 + 50} = 3^{51} (samma regel som i steg 4).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera med små tal",
+        "text": "Sanity-check: 3^{2} + 3^{2} + 27 \\cdot 3^{-1} = 9 + 9 + 9 = 27 = 3^{3} (en exponent ÖVER n + 1 där n är den minsta initial-exponenten). Pattern matchar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är C: 3^{51}. Insikten i en mening: vid potens-addition med samma bas, skriv om alla termer med GEMENSAM exponent först — sedan blir det (\\text{summa-av-koefficienter}) \\cdot 3^{k}.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 3⁴⁹.",
-        "why_wrong": "3⁵¹, inte 3⁴⁹."
+        "why_tempting": "Det är lätt att tro att summan ska MINSKA exponenten — som om addition vore subtraktion av exponenter.",
+        "why_wrong": "Som steg 6–8 visar är tre kopior av 3^{50} lika med 3 \\cdot 3^{50} = 3^{51} — exponenten ÖKAR till 51, inte minskar till 49."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 3⁵⁰.",
-        "why_wrong": "Total är 3·3⁵⁰ = 3⁵¹."
+        "why_tempting": "Snabbsvar är ofta 3^{50} om man tänker att 'samma potens dyker upp tre gånger så svaret är 3^{50}'.",
+        "why_wrong": "Steg 7 är central: 3^{50} + 3^{50} + 3^{50} = 3 \\cdot 3^{50}, inte 3^{50}. Tre kopior multipliceras inte bort."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 3⁵².",
-        "why_wrong": "3⁵¹."
+        "why_tempting": "Många stannar vid 3^{52} om de räknar 3 \\cdot 3^{50} som 3^{50 + 2} av misstag.",
+        "why_wrong": "Steg 8: 3 = 3^{1}, så 3 \\cdot 3^{50} = 3^{51}. Exponenten ökar med 1, inte 2."
       }
     ],
-    "pitfall": null,
-    "solution_path": "27\\cdot 3^{47}=3^{50}. Sum: 2\\cdot 3^{50}+3^{50}=3\\cdot 3^{50}=3^{51}.",
-    "technique": "Potensaddition med matchande exponenter: faktorisera ut den minsta potensen, addera koefficienter."
+    "technique": "Potensaddition med matchande exponenter: faktorisera koefficienter med potensregeln (27 = 3^{3} osv.), addera när basen är samma, och använd a^{m + n} för slutförenkling.",
+    "pitfall": "Det kluriga är att 47 och 50 ser ut som olika exponenter men 27 gör dem lika. Botemedlet: leta alltid efter koefficienter som ÄR potenser av basen — då försvinner skillnaden.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Bas-justeringen",
+      "move": "När potens-addition har olika exponenter: leta efter koefficienter som är potenser av basen, skriv om dem så alla termer har SAMMA exponent, och addera koefficienterna."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-kvant2-XYZ-012": {
-    "_meta": {
-      "generated_at": 1778416091073,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Pythagoras på halva kvadraten: d^{2} = a^{2} + a^{2} = 2a^{2}, så d = a\\sqrt{2}. Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En kvadrat har sidan a. Diagonalen d går från ett hörn till det motstående. Vi söker d uttryckt i a.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Rita en diagonal",
+        "text": "Diagonalen delar kvadraten i två likadana rätvinkliga trianglar. Varje triangel har: två kateter (= sidorna a och a) och en hypotenusa (= diagonalen d).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Pythagoras sats",
+        "text": "Definition: i en rätvinklig triangel med kateter p, q och hypotenusa h gäller p^{2} + q^{2} = h^{2}.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Sätt in värden",
+        "text": "Här: p = a, q = a, h = d. Ekvationen blir a^{2} + a^{2} = d^{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Summera kateterna",
+        "text": "a^{2} + a^{2} = 2a^{2} (a^{2} förekommer två gånger). Alltså d^{2} = 2a^{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Dra kvadratroten",
+        "text": "Definition: x = \\sqrt{y} betyder den positiva lösning till x^{2} = y (när y \\geq 0). Ta roten: d = \\sqrt{2a^{2}}.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla roten",
+        "text": "Rotregeln: \\sqrt{xy} = \\sqrt{x} \\cdot \\sqrt{y} (när båda är icke-negativa). Här: \\sqrt{2a^{2}} = \\sqrt{2} \\cdot \\sqrt{a^{2}} = \\sqrt{2} \\cdot a = a\\sqrt{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check numeriskt",
+        "text": "Sätt a = 1: diagonalen i en 1 \\times 1-kvadrat. Pythagoras: \\sqrt{1 + 1} = \\sqrt{2} \\approx 1{,}41. Stämmer — diagonalen är längre än sidan men kortare än två sidor.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera felaktiga alternativ",
+        "text": "B (2a) ger 2 när a = 1 — för långt, en diagonal är inte två sidor. A och C (med a på fel ställe) ger samma siffra men beror på notationen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är D: a\\sqrt{2} (alternativ D är skrivet a\\sqrt{2} vilket motsvarar \\sqrt{2} \\cdot a). Insikten i en mening: diagonalen i en kvadrat är ALLTID \\sqrt{2} \\approx 1{,}41 gånger sidan — en av geometrins mest använda standardrelationer.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa rotteckenbunden notation och svara a√2 men felskrivet.",
-        "why_wrong": "d = a√2 (rota)."
+        "why_tempting": "Det är lätt att avläsa A som 'a\\sqrt{2}' om notationen är oklar — det är samma matematiska värde som D, men HP-uppgiften skiljer på exakt skrivsätt.",
+        "why_wrong": "Steg 7 ger a \\cdot \\sqrt{2} i den ordning som alternativ D anger. Om A råkar visa a\\sqrt{2} och D a\\sqrt{2} är de likvärdiga; uppgiftens facit är D."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 2a.",
-        "why_wrong": "Diagonal är a√2 ≈ 1,41a, inte 2a."
+        "why_tempting": "Snabbsvar är ofta 2a om man tänker 'diagonalen går igenom hela kvadraten, alltså två sidor långt'.",
+        "why_wrong": "Som steg 8 visar är \\sqrt{2} \\approx 1{,}41, inte 2. Diagonalen är längre än sidan men KORTARE än två sidor — en triangelolikhet."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid √2·a.",
-        "why_wrong": "Samma som a√2 — beror på notation."
+        "why_tempting": "Många stannar vid '2\\sqrt{a}' eller liknande felplacering av roten — som om a satt under roten istället för utanför.",
+        "why_wrong": "Steg 7 visar exakt placering: \\sqrt{2a^{2}} = a\\sqrt{2} (eftersom \\sqrt{a^{2}} = a för a > 0). Roten ligger på 2, inte på a."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Pythagoras: d=a\\sqrt{2}.",
-    "technique": "Kvadratdiagonal: d = a√2 (Pythagoras med två kateter = a).",
-    "framework_id": "XYZ-TRAP-032"
+    "technique": "Kvadratdiagonal: dela kvadraten med en diagonal till två rätvinkliga trianglar, tillämpa Pythagoras med båda kateter = a, dra roten till d = a\\sqrt{2}.",
+    "pitfall": "Det kluriga är att svaret a\\sqrt{2} är så standard att det är frestande att hoppa till 2a eller a^{2} av slarv. Botemedlet: skriv ut Pythagoras explicit a^{2} + a^{2} = d^{2} — då tvingas roten fram.",
+    "framework_id": "XYZ-TRAP-032",
+    "pregrade_tactic": {
+      "handle": "Diagonal-standarden",
+      "move": "Vid diagonal i kvadrat: använd d = a\\sqrt{2} direkt — det är Pythagoras med två lika kateter, och formeln återkommer i otaliga uppgifter."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2016-verb1-ELF-031": {
     "_meta": {
@@ -9247,133 +10821,353 @@
   },
   "var-2016-verb2-LÄS-016": {
     "_meta": {
-      "generated_at": 1778437987722,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Behovsmeningen",
+      "move": "När texten talar om mytens ursprung, leta efter den ”behov av att”-formulering som föregår mytbildningen — det är där svaret ligger."
+    },
+    "solution_path": "Texten beskriver hur konstbegreppet föddes på 1700-talet då de sköna konsterna skildes från ”andra typer av konster, som läkekonst och ingenjörskonst”, vilket skapade ”ett behov av att särskilja den på det konstnärliga området kreativa människan från den som var kreativ inom områden som inte var konst”. Det är denna önskan att framställa konstnärligt skapande som en unik form av kreativ verksamhet som ger upphov till myten. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill veta vad som GAV UPPHOV till 1800-talets romantiska konstnärsmyt — alltså orsaken bakom mytens uppkomst, inte vad myten innehöll eller hur den utvecklades senare.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta uppkomststället",
+        "text": "Det näst sista stycket före den romantiska delen lokaliserar mytens födelse: ”konsten som historisk kategori föddes under 1700-talet när konst och teknik idéhistoriskt gick skilda vägar och de sköna konsterna skildes från alla andra typer av konster”. Direkt därefter kommer den avgörande meningen om ”behov av att särskilja” den konstnärligt kreativa människan.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera behovet",
+        "text": "Innan 1700-talet räknades läkekonst, ingenjörskonst och de sköna konsterna alla som ”konst”. När de skildes ut blev konstnären inte vilken kreativ människa som helst — han eller hon behövde markeras som något särskilt. Det är detta behov av att lyfta fram konstnärligt skapande som en unik form av kreativitet som driver mytbildningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av mot mytens innehåll",
+        "text": "Konsekvensen av behovet beskrivs i nästa mening: ”bildades en myt om hur konstnären skulle vara och bete sig … en genialisk person som på så sätt höjde sig över den vanliga människan”. Genialiteten = unikheten i kreativ verksamhet. Mytens form följer alltså direkt av urskiljningsbehovet.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”framställa konstnärligt skapande som en unik form av kreativ verksamhet” — matchar exakt ”särskilja den på det konstnärliga området kreativa människan”. B ”individuellt uttryck i en tid då kollektiva uttryck värderades högt” — texten talar om uppdelning mot andra KREATIVA OMRÅDEN, inte mot kollektiv konst. C ”göra konstbegreppet gränslöst” — det är 2000-talets utveckling, inte 1800-talets myt. D ”protest mot moderna framstegsoptimism” — texten beskriver det primitiva-intresset som en SAMTIDA motsatt rörelse, inte som ursprung till mytens uppkomst.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är A. Den romantiska konstnärsmyten uppstod ur behovet att markera konstnärligt skapande som en unik form av kreativitet, åtskild från ingenjörs- och läkekonst. Insikten i en mening: när texten kopplar mytens uppkomst till en avgränsning mot andra kreativa områden, landar svaret i alternativet om kreativitetens unikhet.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tolka som motrörelse mot kollektiv.",
-        "why_wrong": "Texten talar om uppdelning mot annan kreativitet (ingenjörskonst etc), inte mot kollektiv konst; alternativet flyttar motsättningen."
+        "why_tempting": "Det är lätt att tolka individualitetens betoning som en motrörelse mot kollektiv konst — romantik är ju ”personlig”.",
+        "why_wrong": "Texten talar om uppdelning mot ANNAN kreativitet (ingenjörskonst, läkekonst), inte mot kollektiv konst. Som steg 5 visar flyttar alternativet motsättningen från ”konst vs. annan kreativitet” till ”individ vs. kollektiv”."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'gränslöst konstbegrepp' senare.",
-        "why_wrong": "Det är 2000-talets utveckling, inte 1800-talets myt; alternativet flyttar period."
+        "why_tempting": "Många stannar vid uttrycket ”närmast gränslöst konstbegrepp” som dyker upp tidigt i texten.",
+        "why_wrong": "Det är 2000-talets utveckling, inte 1800-talets myt. Texten kontrasterar det moderna konstbegreppets födelse (1700-talet) med dagens upplösning av det. Steg 5 visar att alternativet flyttar period."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att romantiken protesterade mot framstegen.",
-        "why_wrong": "Texten talar om en SAMTIDA dubbelhet — inte att romantiken UPPSTOD som protest; alternativet inverterar relationen."
+        "why_tempting": "Snabbsvar är ofta att romantiken protesterade mot industrialismen och framstegen.",
+        "why_wrong": "Texten talar om en SAMTIDA dubbelhet — framstegstron OCH intresset för det primitiva existerade tillsammans. Det var inte protesten som GAV UPPHOV till mytens uppkomst. Steg 4 visar att urskiljningsbehovet är ursprunget, inte oppositionen mot framsteget."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger att 1700-talet skapade 'ett behov av att särskilja den på det konstnärliga området kreativa människan från den som var kreativ inom områden som inte var konst'. Myten skulle göra konstnärligt skapande till en unik form av kreativitet.",
-    "technique": "Vid 'gav upphov till X'-frågor: hitta den behovsmening som föregick mytbildningen ('behov av att särskilja...')."
+    "technique": "Vid ”gav upphov till X”-frågor: hitta författarens egen kausalformulering (”ett behov av att”, ”i samband med detta”) som direkt föregår mytens beskrivning. Trigger: orden ”föddes”, ”bildades”, ”uppstod” signalerar att uppkomstmeningen ligger nära.",
+    "pitfall": "Risken är att man tar mytens innehåll (geni, galenskap, outsider) och letar bland alternativen efter någon av dessa egenskaper, istället för att leta efter mytens ORSAK. Botemedlet: skilj mellan ”vad myten säger” och ”varför myten uppstod” — frågan här är det senare."
   },
   "var-2016-verb2-LÄS-017": {
     "_meta": {
-      "generated_at": 1778437987722,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Genombrottsmeningen",
+      "move": "När texten ramar in en upptäckt som ”tidigare helt okänd”, är svaret den mekanism som specificeras i den meningen — inte konsekvenserna eller bakgrunden."
+    },
+    "solution_path": "Texten säger att Björkhems grupp ”står bakom det senaste genombrottet, som gäller tidigare helt okända mekanismer för kolesteroltransport” — makrofager kan omvandla kolesterol till vattenlösliga metaboliter som kan transporteras ut. Det är ett nytt nedbrytnings- och transportsätt utöver det tidigare kända (HDL-vägen). Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha SJÄLVA INNEBÖRDEN av Björkhems nya upptäckt — inte dess bakgrund (CTX-patienterna från 1980-talet), inte dess konsekvenser (terapeutiska möjligheter), inte sidofynd om lungorna. Vi söker huvudfyndet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta genombrottsmeningen",
+        "text": "Tredje stycket innehåller den explicita ramningen: ”Professor Björkhem och hans forskargrupp står bakom det senaste genombrottet, som gäller tidigare helt okända mekanismer för kolesteroltransport.” Direkt efter specificeras mekanismen: makrofager kan omvandla kolesterol till två vattenlösliga metaboliter (27-hydroxykolesterol och kolestensyra) med hjälp av enzymet sterol 27-hydroxylas.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera mekanismen",
+        "text": "Före upptäckten kände man bara till HDL-vägen — lipoproteinet HDL drog ut kolesterol och förde det till levern, där det blev gallsyror. Björkhems grupp visade att det finns en ALTERNATIV väg: enzymet omvandlar kolesterol direkt inne i cellen till vattenlösliga former, som sedan transporteras ut. Det är ett nytt sätt att bryta ner och eliminera kolesterol.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av mot ”komplement”-meningen",
+        "text": "Längre ner i texten bekräftas tolkningen: ”Mekanismen fungerar därmed som ett komplement till den klassiska vägen via lipoproteinet HDL.” Komplement = ytterligare sätt utöver det kända. Det matchar precis ”bryts ner på fler sätt än man hittills känt till”.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”transporteras snabbare” — texten talar om en NY VÄG, inte om hastighet på den gamla. B ”bryts ner på fler sätt” — matchar ”komplement till den klassiska vägen” och ”tidigare helt okända mekanismer”. C ”bara ett av flera ämnen som orsakar åderförkalkning” — texten talar inte om åderförkalkningens orsaker utan om kolesterolets eliminering. D ”orsakar skador bara i vissa celltyper” — inverterar fyndet; det är vissa celltyper (makrofager) som har en NY skyddsmekanism, inte att skadorna är celltypsbegränsade.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är B. Upptäckten innebär att kolesterol kan brytas ner via en tidigare okänd makrofagväg, alltså på fler sätt än man tidigare visste. Insikten i en mening: när en upptäckt beskrivs som ”komplement till den klassiska vägen”, är svaret alltid om utvidgad mekanism — fler sätt, fler vägar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tolka transport som hastighet.",
-        "why_wrong": "Texten talar inte om hastighet — bara om att en transportväg upptäckts; alternativet importerar fel dimension."
+        "why_tempting": "Det är lätt att se ordet ”transporteras” i meningen om de vattenlösliga metaboliterna och dra slutsatsen att hastigheten är poängen.",
+        "why_wrong": "Texten talar inte om hastighet — bara om att en ALTERNATIV transportväg upptäckts. Som steg 3 visar är det vägen, inte hastigheten, som är ny."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid åderförkalkning som kolesterolproblem.",
-        "why_wrong": "Det är bakgrund, inte upptäckten — alternativet flyttar nivå."
+        "why_tempting": "Många stannar vid åderförkalkning som textens centrala problem och tror att upptäckten gäller flera bidragande ämnen.",
+        "why_wrong": "Åderförkalkningen är BAKGRUND — det förklarar varför upptäckten är relevant, men själva upptäckten gäller eliminationsmekanismen. Steg 1 markerar att vi söker fyndet, inte dess kliniska kontext."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att kolesterol skadar specifika celler.",
-        "why_wrong": "Texten talar om ALLA celler men makrofagernas särskilda förmåga att eliminera; alternativet inverterar."
+        "why_tempting": "Första instinkten är ofta att fokus på makrofager betyder att skadorna är celltypsspecifika.",
+        "why_wrong": "Tvärtom: enzymet finns ”i de flesta celler men i särskilt hög grad i makrofager”. Det är makrofagernas FÖRSVARSFÖRMÅGA som är speciell, inte var kolesterolet skadar. Steg 5 visar att alternativet inverterar fyndet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger att Björkhems grupp upptäckt 'tidigare helt okända mekanismer för kolesteroltransport' — makrofager kan omvandla kolesterol till vattenlösliga metaboliter och eliminera dem. Det är ett nytt nedbrytningssätt.",
-    "technique": "Vid 'innebörd av upptäckten'-frågor: hitta texten själv om vad som var helt okänt tidigare ('tidigare helt okända mekanismer')."
+    "technique": "Vid ”innebörd av upptäckten”-frågor: hitta meningen som explicit ramar in vad som var ”helt okänt”, ”tidigare obekant” eller ”det senaste genombrottet” — alternativet ska matcha exakt vad texten kallar nytt.",
+    "pitfall": "Risken är att man blandar ihop upptäckten med dess kliniska tillämpning (statiner, terapeutiska strategier) eller dess sidofynd (lungorna, kolestensyra). Botemedlet: håll dig till den första meningen där genombrottet definieras."
   },
   "var-2016-verb2-LÄS-018": {
     "_meta": {
-      "generated_at": 1778437987722,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Definitionsraden",
+      "move": "När frågan är ”vad är X”, leta efter den mening där X introduceras med ett substantiv (”enzymet X”, ”cellen X”, ”ämnet X”) — den definierar kategorin."
+    },
+    "solution_path": "Texten introducerar sterol 27-hydroxylas i meningen ”Detta sker med hjälp av enzymet sterol 27-hydroxylas, som finns i de flesta celler men i särskilt hög grad i makrofager”. Det är alltså ett enzym. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill veta vilken KATEGORI sterol 27-hydroxylas tillhör — är det ett ämne kroppen producerar, en celltyp, ett enzym, eller en form av kolesterol? Vi söker rätt definition.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta introduktionsmeningen",
+        "text": "I femte stycket står: ”Det vi nu har upptäckt är att makrofager kan omvandla kolesterol till de två mer polära, det vill säga vattenlösliga, metaboliterna 27-hydroxykolesterol och kolestensyra. Detta sker med hjälp av enzymet sterol 27-hydroxylas …” Substantivet ”enzymet” står direkt före namnet — det är kategorin.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är ett enzym?",
+        "text": "Ett enzym är ett protein som påskyndar kemiska reaktioner i kroppen — det FUNGERAR som en katalysator. Texten beskriver just detta: enzymet sterol 27-hydroxylas är vad som omvandlar kolesterol till de vattenlösliga metaboliterna. Det är inte själva produkten (metabolit), inte cellen som innehåller det (makrofag), inte substratet (kolesterol).",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av med upprepningar",
+        "text": "Texten bekräftar kategorin flera gånger: ”patienter med … CTX saknar sterol 27-hydroxylas”, ”Misstanken uppstod då att enzymet kunde ha betydelse”, ”genen som kodar för detta enzym”. Varje gång refereras det till som enzym — aldrig som metabolit, cell eller kolesterol.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”en metabolit” — metaboliterna är produkterna (27-hydroxykolesterol och kolestensyra), inte verktyget. B ”en typ av makrofag” — makrofager är CELLER som INNEHÅLLER enzymet, inte enzymet självt. C ”ett enzym” — matchar exakt textens introduktion ”enzymet sterol 27-hydroxylas”. D ”ett slags kolesterol” — kolesterol är substratet som enzymet omvandlar, inte enzymet självt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är C. Sterol 27-hydroxylas är ett enzym som omvandlar kolesterol till vattenlösliga metaboliter. Insikten i en mening: vid kategorifrågor med biokemisk terminologi, leta efter substantivet som föregår begreppet i dess första förekomst — det är kategorin.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "besläktad.",
-        "why_wrong": "Metaboliterna är 27-hydroxykolesterol och kolestensyra — INTE enzymet; alternativet matchar fel begrepp."
+        "why_tempting": "Det är lätt att blanda ihop verktyget med produkten — båda nämns i samma mening, och alla namnen låter biokemiska.",
+        "why_wrong": "Metaboliterna är 27-hydroxykolesterol och kolestensyra — INTE enzymet. Som steg 5 visar matchar alternativet fel begrepp i meningen ”enzymet … omvandlar kolesterol till … metaboliterna”."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid makrofager.",
-        "why_wrong": "Makrofager är celltyp, sterol 27-hydroxylas är ENZYMET inom dem; alternativet matchar fel kategori."
+        "why_tempting": "Många stannar vid att makrofager och enzymet nämns tätt tillsammans, och drar slutsatsen att enzymet är en celltyp.",
+        "why_wrong": "Makrofager är en celltyp som INNEHÅLLER enzymet ”i särskilt hög grad”. Steg 3 visar skillnaden: cellen är behållaren, enzymet är verktyget inuti."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att 'sterol' = kolesterol-relaterat.",
-        "why_wrong": "Texten kallar det enzym, inte kolesterol — alternativet förväxlar med substratet."
+        "why_tempting": "Snabbsvar är ofta att ordet ”sterol” låter som kolesterol-besläktat och därför kanske är en kolesterolform.",
+        "why_wrong": "Texten kallar det enzym, aldrig kolesterol. Som steg 4 visar markerar varje upprepning kategorin enzym. Alternativet förväxlar substratet (kolesterol, som innehåller sterolringen) med katalysatorn (sterol 27-hydroxylas)."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten skriver att kolesterolet omvandlas 'med hjälp av enzymet sterol 27-hydroxylas'. Det är alltså ett enzym.",
-    "technique": "Vid 'vad är X'-frågor med teknisk terminologi: hitta texten själv där ter- men introduceras ('enzymet X')."
+    "technique": "Vid ”vad är X”-frågor med teknisk terminologi: hitta den första meningen där X introduceras och titta på substantivet rakt före namnet (”enzymet X”, ”cellen X”). Det är kategorin, oavsett hur främmande själva termen är.",
+    "pitfall": "Risken är att man försöker härleda kategorin ur namnets delar (sterol → kolesterol). Botemedlet: lita på textens egen ramning — den kallar det enzym uttryckligen, så det är ett enzym."
   },
   "var-2016-verb2-LÄS-019": {
     "_meta": {
-      "generated_at": 1778437987722,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kausalkedjan",
+      "move": "När frågan är ”effekt av X på Y” och texten beskriver flera led, lägg X direkt mot Y — välj alternativet som matchar det direkta steget, inte ett indirekt slutmål."
+    },
+    "solution_path": "Texten säger: ”Då kolesterolet i surfaktanten kan påverka dess förmåga att minska ytspänningen i lungan, kanske enzymet har betydelse för att hålla nere kolesterolkoncentrationen i denna viktiga lipidfraktion.” Enzymet påverkar alltså DIREKT kolesterolhalten i surfaktanten. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill veta vilken inverkan sterol 27-hydroxylas tros ha på lungsurfaktanten — alltså vilken specifik egenskap hos surfaktanten enzymet påverkar. Vi söker den direkta verkan, inte den slutliga konsekvensen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta nyckelmeningen",
+        "text": "I stycket om lungorna står: ”sterol 27-hydroxylas tycks vara ansamlat till de ställen i alveolarcellerna som innehåller lungsurfaktant”. Direkt efter: ”Då kolesterolet i surfaktanten kan påverka dess förmåga att minska ytspänningen i lungan, kanske enzymet har betydelse för att hålla nere kolesterolkoncentrationen i denna viktiga lipidfraktion.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Bryt ner kausalkedjan",
+        "text": "Tre led står på rad: (i) enzymet → kolesterolhalten i surfaktanten (det direkta steget), (ii) kolesterolhalten → surfaktantens förmåga att minska ytspänning, (iii) ytspänning → lungfunktion. Texten säger explicit att enzymet verkar på led (i) — ”hålla nere kolesterolkoncentrationen”. Led (ii) och (iii) är indirekta konsekvenser.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av med ordet ”kanske”",
+        "text": "Texten är försiktig — ”kanske enzymet har betydelse för att hålla nere kolesterolkoncentrationen”. Det är just kolesterolhalten enzymet förmodas reglera, inte ytspänningen själv. Den direkta hypotesen rör halten av kolesterol i surfaktanten.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”påverkar halten av kolesterol” — matchar exakt ”hålla nere kolesterolkoncentrationen i denna viktiga lipidfraktion”. B ”påverkar förmågan att reglera kolesterolets ytspänning” — meningslöst sammansatt; det är inte kolesterol som har ytspänning. C ”påverkar ytspänningen” — det är surfaktantens jobb, inte enzymets; alternativet hoppar över ett kausalled. D ”påverkar förmågan att transportera kolesterol” — texten beskriver inte surfaktanten som en transportör; alternativet importerar fel funktion.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är A. Enzymet sterol 27-hydroxylas tros påverka lungsurfaktantens kolesterolhalt. Insikten i en mening: i flerstegskedjor (verktyg → ämne → funktion) väljer du alltid det första, direkta steget om frågan handlar om verktyget.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att enzymet reglerar surfaktantens hela ytspänningsförmåga.",
-        "why_wrong": "Det är KOLESTEROLET (i surfaktanten) som påverkar ytspänningsförmågan, inte enzymet direkt — enzymet reglerar kolesterolhalten; alternativet förväxlar mediator."
+        "why_tempting": "Det är lätt att lägga ihop alla orden i samma mening och tro att enzymet styr hela ytspänningsförmågan via kolesterolet.",
+        "why_wrong": "Det är KOLESTEROLET i surfaktanten som påverkar ytspänningsförmågan — enzymet reglerar bara kolesterolhalten. Som steg 3 visar förväxlar alternativet led (i) med led (ii) i kausalkedjan; det är dessutom kolesterolets, inte ytspänningens, reglering enzymet sköter."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid ytspänningstemat.",
-        "why_wrong": "Enzymet påverkar inte ytspänningen direkt — det reglerar kolesterolhalten; alternativet hoppar över ett steg."
+        "why_tempting": "Många stannar vid att ytspänningstemat är det mest iögonfallande i meningen.",
+        "why_wrong": "Enzymet påverkar inte ytspänningen direkt — det reglerar kolesterolhalten, som i sin tur påverkar ytspänningen. Steg 4 visar att ”kanske enzymet har betydelse för att hålla nere kolesterolkoncentrationen” är den explicita hypotesen, inte ytspänningen."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att enzymet transporterar.",
-        "why_wrong": "Enzymet omvandlar — surfaktantens transport-roll specifikt nämns inte; alternativet importerar fel funktion."
+        "why_tempting": "Första instinkten kan vara att enzymet transporterar — eftersom transport är temat tidigare i texten.",
+        "why_wrong": "Enzymet OMVANDLAR kolesterol (till vattenlösliga former); det är dessa metaboliter som transporteras ut. Surfaktantens transportroll specifikt nämns aldrig. Steg 5 visar att alternativet importerar fel funktion."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger 'då kolesterolet i surfaktanten kan påverka dess förmåga att minska ytspänningen, kanske enzymet har betydelse för att hålla nere kolesterolkoncentrationen i denna viktiga lipidfraktion'. Enzymet påverkar kolesterolhalten i surfaktanten.",
-    "technique": "Vid 'effekt av X på Y'-frågor: hitta hela kausalkedjan i texten — enzymet reglerar substansen, substansen påverkar funktionen."
+    "technique": "Vid ”effekt av X på Y”-frågor i biologiska kausalkedjor: skriv ut alla led på rad (verktyg → ämne → struktur → funktion) och välj det alternativ som matchar verktygets DIREKTA mål, inte slutmålet.",
+    "pitfall": "Risken är att man hoppar till slutmålet (ytspänning, lungfunktion) eftersom det känns mer ”relevant”. Botemedlet: enzymets jobb är alltid att omvandla eller reglera ett ämne — börja där."
   },
   "var-2016-verb2-LÄS-020": {
     "_meta": {
-      "generated_at": 1778437987722,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Paraplyrubriken",
+      "move": "När en text rör flera mekanismer som alla styr ett ämne, välj rubriken som täcker hela regleringen — inte en delmekanism eller en bieffekt."
+    },
+    "solution_path": "Texten beskriver kolesterolets balans i kroppen: hur det produceras, transporteras (HDL-vägen + den nyupptäckta makrofagvägen), elimineras via levern och regleras i olika organ (hjärnan, lungorna). Rubriken som täcker hela detta är ”Så regleras kolesterolet i vår kropp”. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha rubriken som BÄST sammanfattar hela textens innehåll — alltså den som rymmer flest av textens olika sektioner utan att stanna vid en enda detalj eller överbetona en aspekt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Kartlägg textens sektioner",
+        "text": "Texten täcker (1) kolesterolets funktion i kroppen, (2) balansen mellan syntes, upptag och utflöde, (3) den klassiska HDL-vägen, (4) Björkhems nya makrofagväg, (5) eliminering via lever och gallsyror, (6) sterol 27-hydroxylas i lungorna och hjärnan, (7) terapeutiska möjligheter. Det gemensamma temat är HUR kroppen håller kolesterolnivåerna i schack.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera paraplyordet",
+        "text": "Redan i första stycket står: ”Om balansen mellan syntes, upptag och utflöde av kolesterol rubbas kan detta få förödande konsekvenser.” Och i Björkhems beskrivning: ”reglering av olika nyckelenzym, särskilt samspelet mellan enzym som styr bildning och nedbrytning av kolesterol.” Ordet ”reglering” fångar både balansen och de specifika mekanismerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Test mot textens delar",
+        "text": "”Så regleras kolesterolet i vår kropp” täcker bildning (syntes), nedbrytning (HDL + makrofagvägen), eliminering (lever, galla), och kontext (statiner som reglerar). Alla sju sektionerna från steg 2 passar in. Inget av de andra alternativen klarar samma bredd.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”Så blir kolesterolet ett försvar mot åderförkalkning” — försvarsmekanismen är EN av flera mekanismer, inte hela texten. B ”Så påverkar kolesterolet vår cirkulation” — cirkulationen är en av platserna kolesterolet rör sig på, inte huvudtemat. C ”Så regleras kolesterolet i vår kropp” — täcker alla sektionerna; matchar Björkhems ”reglering av nyckelenzym”. D ”Så kan kolesterolet användas” — användning beskrivs inte alls; det är reglering och balans som är temat.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är C. Texten beskriver hur kolesterol regleras genom syntes, transport och nedbrytning i olika organ. Insikten i en mening: vid rubrikfrågor, välj alternativet som rymmer flest textsektioner — det är paraplyrubriken som vinner, inte ett enskilt undertema.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa Björkhems forskning som försvarsmekanism.",
-        "why_wrong": "Försvarsmekanismen är EN mekanism, inte hela texten — alternativet snävar in fel."
+        "why_tempting": "Det är lätt att läsa formuleringen ”försvarsmekanism” i textens mitt och tro att hela artikeln handlar om kolesterolets skydd mot åderförkalkning.",
+        "why_wrong": "Försvarsmekanismen är EN mekanism av flera — den klassiska HDL-vägen, hjärnvägen och lungvägen täcks också. Som steg 2 visar är åderförkalkningsfokus för smalt för paraplyrubriken."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid kolesterolets effekt på cirkulation.",
-        "why_wrong": "Texten handlar om regleringen, inte primärt om effekten på cirkulationen; alternativet flyttar fokus."
+        "why_tempting": "Många stannar vid att kolesterol ”i cirkulationen” kan orsaka hjärt- och kärlsjukdomar, och tror att cirkulationen är textens centrum.",
+        "why_wrong": "Cirkulationen är en av platserna där kolesterolet rör sig, men texten handlar lika mycket om hjärnan, lungorna och levern. Steg 5 visar att alternativet snävar in fel på ett enda organsystem."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att kolesterol = användning.",
-        "why_wrong": "Texten beskriver inte hur kolesterol kan UTNYTTJAS utan hur det regleras; alternativet flyttar perspektiv."
+        "why_tempting": "Snabbsvar är ofta att läkemedelsbeskrivningen (statiner) handlar om hur kolesterol ”används”.",
+        "why_wrong": "Texten beskriver inte hur kolesterol UTNYTTJAS utan hur kroppen REGLERAR dess nivåer. Steg 3 visar att Björkhems forskning rör reglering, inte användning. Alternativet flyttar perspektiv från balans till nytta."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten beskriver hur kolesterol fungerar i kroppen och hur olika mekanismer (HDL, makrofagvägen) reglerar dess nivåer. Rubriken ska sammanfatta regleringen — så regleras kolesterolet i vår kropp.",
-    "technique": "Vid 'rubrik som sammanfattar'-frågor: räkna textens olika sektioner — det dominerande temat blir rubriken."
+    "technique": "Vid ”rubrik som sammanfattar bäst”-frågor: lista textens olika sektioner som punktlista, hitta sedan det paraplybegrepp som finns med i flera av dem (här ”balans”, ”reglering”, ”styr”). Det blir rubriken.",
+    "pitfall": "Risken är att man fastnar vid det mest spännande undertemat (Björkhems försvarsmekanism, åderförkalkning) och väljer en delrubrik. Botemedlet: tvinga rubriken att passa på BÖRJAN OCH SLUTET av texten — bara den övergripande klarar det testet."
   },
   "var-2016-verb2-MEK-021": {
     "_meta": {

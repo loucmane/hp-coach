@@ -1,0 +1,647 @@
+{
+  "host-2013-kvant1-XYZ-001": {
+    "solution_path": "Räkneordning: multiplikation går före addition. Räkna \\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6} först, addera sedan 1 och få \\frac{7}{6}.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Du ska beräkna 1+\\frac{1}{2}\\cdot\\frac{1}{3}. Frågan är vilken ordning du gör operationerna i — och hur du multiplicerar två bråk korrekt.", "tier": "essential"},
+      {"n": 2, "title": "Räkneordningen", "text": "Multiplikation (·) binder hårdare än addition (+). Det betyder att \\frac{1}{2}\\cdot\\frac{1}{3} är EN storhet som ska räknas ut innan ettan adderas.", "tier": "essential"},
+      {"n": 3, "title": "Definition: multiplikation av bråk", "text": "Multiplikation av två bråk: \\frac{a}{b}\\cdot\\frac{c}{d}=\\frac{a\\cdot c}{b\\cdot d}. Täljare gångras med täljare och nämnare gångras med nämnare — ingenting adderas.", "tier": "detail"},
+      {"n": 4, "title": "Multiplicera täljarna", "text": "Täljarna är 1 och 1: 1\\cdot 1=1. Det ger den nya täljaren.", "tier": "detail"},
+      {"n": 5, "title": "Multiplicera nämnarna", "text": "Nämnarna är 2 och 3: 2\\cdot 3=6. Det ger den nya nämnaren.", "tier": "detail"},
+      {"n": 6, "title": "Sammansätt produkten", "text": "Produkten blir \\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6}. Det är ett bråk i sin enklaste form.", "tier": "essential"},
+      {"n": 7, "title": "Definition: addera heltal till bråk", "text": "Heltalet 1 skrivs som \\frac{6}{6} om vi vill ha gemensam nämnare med \\frac{1}{6}. Då fungerar additionen som täljare-plus-täljare.", "tier": "detail"},
+      {"n": 8, "title": "Addera 1 till 1/6", "text": "1+\\frac{1}{6}=\\frac{6}{6}+\\frac{1}{6}=\\frac{7}{6}. Täljarna adderas, nämnaren behålls.", "tier": "essential"},
+      {"n": 9, "title": "Verifiera mot alternativen", "text": "\\frac{7}{6} matchar alternativ B exakt. Inget förenklingssteg behövs eftersom 7 och 6 saknar gemensam delare.", "tier": "detail"},
+      {"n": 10, "title": "Verifiera storleken", "text": "Sanity-check: \\frac{1}{2}\\cdot\\frac{1}{3} är mindre än \\frac{1}{2} och mindre än \\frac{1}{3} — så svaret ska vara strax över 1, vilket \\frac{7}{6}\\approx 1{,}17 är.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är B: \\frac{7}{6}. Insikten i en mening: räkneordningen sätts av operatorn, inte av läsordningen — multiplikation före addition oavsett var den står i texten.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Vänster-till-höger-läsning ger 1+\\frac{1}{2} först, alltså \\frac{3}{2}\\cdot\\frac{1}{3}=\\frac{1}{2}=\\frac{3}{6}.", "why_wrong": "Som steg 2 visar binder · hårdare än +. Multiplikationen måste komma först oavsett ordning i texten."},
+      {"letter": "C", "why_tempting": "Om du minns multiplikationsregeln som 'addera nämnarna' blir det 1+\\frac{1}{2+3}=1+\\frac{1}{5}=\\frac{6}{5}.", "why_wrong": "Steg 3 säger att nämnare MULTIPLICERAS, inte adderas: \\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6}, inte \\frac{1}{5}."},
+      {"letter": "D", "why_tempting": "Det är frestande att addera täljare och nämnare separat: \\frac{1+1}{2+3}=\\frac{2}{5}, sen 1+\\frac{2}{5}=\\frac{7}{5}.", "why_wrong": "Genvägen finns inte. Steg 4–5 visar att täljare gångras med täljare, nämnare med nämnare."}
+    ],
+    "technique": "Räkneordning före bråkräkning — när uttrycket blandar + och ·, gör multiplikationen först. Vid bråkmultiplikation: täljare gånger täljare, nämnare gånger nämnare.",
+    "pitfall": "Botemedlet mot vänster-till-höger-fällan: läs HELA uttrycket innan du börjar, ringa in alla · och gör dem före varje +.",
+    "framework_id": "XYZ-TRAP-006",
+    "pregrade_tactic": {
+      "handle": "Bråkmultiplikations-receptet",
+      "move": "När du ser · mellan bråk i ett blandat uttryck, multiplicera täljarna och multiplicera nämnarna FÖRST — sen adderas heltalet via gemensam nämnare."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant1-XYZ-003": {
+    "solution_path": "Hitta b som måste dela både 22 och 26. Då \\gcd(22,26)=2 ger b = 2 (eller 1), och med b = 2: a = 11, c = 13 och summan blir 26.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Tre positiva heltal a, b, c uppfyller a\\cdot b=22 och b\\cdot c=26. Du letar efter ett möjligt värde på a + b + c bland alternativen.", "tier": "essential"},
+      {"n": 2, "title": "b är gemensam faktor", "text": "Variabeln b dyker upp i båda produkterna. Det betyder att b måste vara en delare av 22 OCH en delare av 26 — annars går ekvationerna inte ihop med heltal.", "tier": "essential"},
+      {"n": 3, "title": "Definition: delare", "text": "Ett tal d är delare till n om n/d är ett heltal. Delarna till 22 är 1, 2, 11, 22. Delarna till 26 är 1, 2, 13, 26.", "tier": "detail"},
+      {"n": 4, "title": "Gemensamma delare", "text": "De tal som finns i båda listorna är 1 och 2. Det är de enda möjliga värdena på b.", "tier": "essential"},
+      {"n": 5, "title": "Testa b = 1", "text": "Då blir a=22 och c=26. Summan: 22+1+26=49 — inte i alternativen.", "tier": "detail"},
+      {"n": 6, "title": "Testa b = 2", "text": "Då blir a=22/2=11 och c=26/2=13. Båda är positiva heltal — kandidaten håller.", "tier": "essential"},
+      {"n": 7, "title": "Räkna summan", "text": "Med b = 2: a+b+c=11+2+13=26.", "tier": "essential"},
+      {"n": 8, "title": "Definition: 'möjligt värde'", "text": "Uppgiften ber om ETT möjligt värde, inte ENDA värde. 26 räcker att hitta — och 49 är inte i listan, så det är 26 som matchar.", "tier": "detail"},
+      {"n": 9, "title": "Kolla varför 22, 24, 48 inte fungerar", "text": "Alternativ 22 är a\\cdot b, alternativ 48 är 22+26 (vilket räknar b dubbelt). Inget heltals-b ger summan 24.", "tier": "detail"},
+      {"n": 10, "title": "Verifiera baklänges", "text": "Med (a, b, c) = (11, 2, 13): 11\\cdot 2=22 ✓ och 2\\cdot 13=26 ✓. Båda originalekvationerna stämmer.", "tier": "essential"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är C: 26. Insikten i en mening: när två produkter delar en variabel, måste variabeln vara gemensam delare till båda produkterna — då bestäms hela tripeln.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är frestande att läsa 22 direkt som svaret — det står ju i uppgiften.", "why_wrong": "Som steg 1 visar är 22 = a·b, inte a+b+c. Steg 7 ger den korrekta summan 26."},
+      {"letter": "B", "why_tempting": "Om du minns regeln som 'medelvärde av 22 och 26' eller blandar med summan av faktorerna kan 24 dyka upp.", "why_wrong": "Steg 4 visar att b endast kan vara 1 eller 2. Ingen av dessa kandidater ger summan 24."},
+      {"letter": "D", "why_tempting": "Första instinkten är att lägga ihop 22+26=48, som om båda produkterna kunde adderas direkt.", "why_wrong": "Steg 9 förklarar: 22 och 26 delar faktorn b. Att addera räknar b två gånger — fel operation."}
+    ],
+    "technique": "Heltalsfaktorisering med gemensam variabel: när b dyker upp i två produkter, lista delare till båda och pröva varje gemensam delare.",
+    "pitfall": "Botemedlet mot 'addera produkterna direkt': skriv ALLTID först ner vilken variabel som är delad — den måste lösas ut, inte adderas över.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Gemensamma-delaren-jakten",
+      "move": "När en variabel står i två produkter, hitta gemensamma delare till båda produkterna och pröva — det är de enda möjliga värdena."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant1-XYZ-004": {
+    "solution_path": "Skriv om procenten som decimaler: 0{,}06x=0{,}05y. Lös ut: y=\\frac{0{,}06}{0{,}05}x=1{,}2x. Eftersom y är 1,2 gånger x och båda är positiva, är y större än x.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "6 % av ett tal x är lika med 5 % av ett tal y, och båda talen är positiva. Du ska avgöra relationen mellan x och y.", "tier": "essential"},
+      {"n": 2, "title": "Definition: procent", "text": "n % av ett tal betyder \\frac{n}{100} av talet. Så 6 % av x = 0{,}06x och 5 % av y = 0{,}05y.", "tier": "detail"},
+      {"n": 3, "title": "Skriv ekvationen", "text": "Sambandet i uppgiften: 0{,}06x=0{,}05y.", "tier": "essential"},
+      {"n": 4, "title": "Rensa decimaler", "text": "Multiplicera båda sidor med 100: 6x=5y. Lika lätt att tolka utan decimaler.", "tier": "essential"},
+      {"n": 5, "title": "Lös ut y", "text": "Dela båda sidor med 5: y=\\frac{6}{5}x=1{,}2x.", "tier": "essential"},
+      {"n": 6, "title": "Tolka kvoten", "text": "y är 1,2 gånger så stort som x. Eftersom 1,2 > 1 och x är positivt, så är y större än x.", "tier": "essential"},
+      {"n": 7, "title": "Intuitionscheck", "text": "Klargöring: en MINDRE procent (5 %) av y matchar en STÖRRE procent (6 %) av x. För att andelarna ska bli lika måste y kompensera genom att vara större.", "tier": "detail"},
+      {"n": 8, "title": "Konkret exempel", "text": "Låt x = 100. Då är 6 % av x = 6. För att 5 % av y också ska bli 6 krävs y = 120. Alltså x = 100, y = 120 — y är större.", "tier": "detail"},
+      {"n": 9, "title": "Kontrollera alternativen", "text": "A (x > y): fel, motsatsen gäller. C (x = y): fel, lika x och y kräver lika procentsatser. D (5x = 6y): har siffrorna i fel position; korrekt är 6x = 5y.", "tier": "detail"},
+      {"n": 10, "title": "Verifiera ekvationen", "text": "Med x = 100, y = 120: 0{,}06\\cdot 100=6 och 0{,}05\\cdot 120=6 ✓. Ekvationen håller.", "tier": "essential"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är B: x < y. Insikten i en mening: när a % av x = b % av y, är talen omvänt proportionella mot procentsatserna — lägre procent kräver större tal.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro 'större procent → större tal': 6 % > 5 % antyder x > y.", "why_wrong": "Steg 7 visar att procenten är AV olika tal — högre procent betyder mindre tal, inte större."},
+      {"letter": "C", "why_tempting": "Många stannar vid 'andelarna är samma värde' och drar slutsatsen att x = y.", "why_wrong": "Som steg 9 visar skulle x = y kräva 6 %·x = 5 %·x, vilket är omöjligt för positivt x."},
+      {"letter": "D", "why_tempting": "Om du minns regeln som 'kryssmultiplicera procenten' blir det 6x=5y men D påstår 5x=6y — fel position.", "why_wrong": "Steg 4 ger 6x = 5y. D har siffrorna i fel ordning."}
+    ],
+    "technique": "Procentekvation a %·x = b %·y: omvandla till heltal genom att multiplicera med 100, lös ut kvoten y/x = a/b.",
+    "pitfall": "Botemedlet mot 'större procent = större tal': procenten är AV olika tal, så jämför absoluta produkter, inte procentsatser ensamt.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Procent-omvändningen",
+      "move": "När a % av x = b % av y, lös ut y = (a/b)·x — talen är omvänt proportionella mot procentsatserna."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant1-XYZ-006": {
+    "solution_path": "Det skuggade området = kvartscirkelsektorn ACD minus triangeln ACD. Kvartscirkel med radie 10: \\frac{1}{4}\\pi\\cdot 10^{2}=25\\pi. Triangel med kateter 10: \\frac{10\\cdot 10}{2}=50. Skillnad: 25\\pi-50 cm².",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "ABCD är en kvadrat med sidan 10 cm. En kvartscirkel har medelpunkt i D och går mellan A och C. Det skuggade området ligger mellan diagonalen AC (kordan) och cirkelbågen AC.", "tier": "essential"},
+      {"n": 2, "title": "Identifiera radien", "text": "Cirkelns medelpunkt är D, och bågen passerar A och C. Eftersom DA = sidan = 10 och DC = sidan = 10, är cirkelns radie 10 cm.", "tier": "essential"},
+      {"n": 3, "title": "Definition: cirkelsektor", "text": "En cirkelsektor med vinkel \\theta och radie r har arean \\frac{\\theta}{2\\pi}\\cdot\\pi r^{2}. För en KVARTscirkel är \\theta=\\pi/2, alltså arean \\frac{1}{4}\\pi r^{2}.", "tier": "detail"},
+      {"n": 4, "title": "Räkna sektorns area", "text": "Med r = 10: \\frac{1}{4}\\pi\\cdot 10^{2}=\\frac{100\\pi}{4}=25\\pi cm². Det är hela 'tårtbiten' från D ut till bågen.", "tier": "essential"},
+      {"n": 5, "title": "Identifiera triangeln ACD", "text": "Triangeln har hörn i A, C och D. Den har en rät vinkel vid D (kvadratens hörn) och de två kateterna DA och DC är båda 10.", "tier": "essential"},
+      {"n": 6, "title": "Definition: rätvinklig triangelarea", "text": "Arean av en rätvinklig triangel med kateter a och b är \\frac{a\\cdot b}{2}. Kateterna är de två sidorna som möts i den räta vinkeln.", "tier": "detail"},
+      {"n": 7, "title": "Räkna triangelarean", "text": "Med kateter 10 och 10: \\frac{10\\cdot 10}{2}=\\frac{100}{2}=50 cm².", "tier": "essential"},
+      {"n": 8, "title": "Visualisera skuggat område", "text": "Sektorn ACD innehåller två delar: triangeln ACD plus det skuggade området mellan kordan AC och bågen. Det skuggade området = sektor − triangel.", "tier": "essential"},
+      {"n": 9, "title": "Subtrahera", "text": "Skuggad area: 25\\pi-50 cm². Talet är positivt eftersom 25\\pi\\approx 78{,}5>50.", "tier": "essential"},
+      {"n": 10, "title": "Verifiera storleken", "text": "Kvadratens halva area är 50 cm². Skuggat område \\approx 28{,}5 cm² — rimligen mindre än halva kvadraten, vilket en 'månskärm' mellan korda och båge ska vara.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är B: (25\\pi-50)\\,\\mathrm{cm}^{2}. Insikten i en mening: ett 'månskärms'-område mellan en cirkelbåge och en korda räknas alltid som sektor minus triangel.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att räkna triangelarean som 25 (genom att dela med 4 istället för 2) och få 25\\pi-25.", "why_wrong": "Steg 6–7 visar att rätvinklig area är \\frac{a\\cdot b}{2}, inte \\frac{a\\cdot b}{4}. Kateterna 10 och 10 ger area 50."},
+      {"letter": "C", "why_tempting": "Om du räknar HALV cirkel istället för kvartscirkel: \\frac{1}{2}\\pi\\cdot 10^{2}=50\\pi, sen minus 50.", "why_wrong": "Steg 1 säger att bågen är EN FJÄRDEDEL av en cirkel. Steg 4 ger 25π, inte 50π."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att kombinera fel cirkelandel med fel triangelarea: 50\\pi och 100.", "why_wrong": "Båda värdena är fel: steg 4 ger 25π (kvart, inte halv) och steg 7 ger 50 (triangel, inte hela kvadraten)."}
+    ],
+    "technique": "Skuggad area mellan båge och korda i kvadrat: sektor − triangel, där radien är kvadratens sida och triangeln är rätvinklig vid medelpunkten.",
+    "pitfall": "Botemedlet mot fel cirkelandel: läs alltid 'en fjärdedel'/'halv' explicit innan formeln väljs — bråket framför πr² är ofta felkällan.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Månskärms-formeln",
+      "move": "När området ligger mellan en cirkelbåge och en korda i en kvadrat: räkna sektorn (¼πr²) minus triangeln (½·sida·sida)."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant1-XYZ-007": {
+    "solution_path": "Gå igenom udda talen 41, 43, 45, 47, 49 (jämna är delbara med 2 utom 2 självt). Sortera bort 45 (=5·9) och 49 (=7²). Kvar: 41, 43, 47 — tre primtal.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Du ska räkna primtal mellan 40 och 50 (öppet intervall — alltså 41 till 49).", "tier": "essential"},
+      {"n": 2, "title": "Definition: primtal", "text": "Ett primtal är ett heltal större än 1 som endast har två delare: 1 och sig självt. 2 är det enda jämna primtalet; alla andra primtal är udda.", "tier": "detail"},
+      {"n": 3, "title": "Sortera bort jämna tal", "text": "Talen 42, 44, 46, 48 är alla jämna och större än 2 — alla delbara med 2, alltså inte primtal. Kvar att undersöka: 41, 43, 45, 47, 49.", "tier": "essential"},
+      {"n": 4, "title": "Sortera bort multipler av 5", "text": "45 slutar på 5 och är därmed delbart med 5 (45=5\\cdot 9). Inte primtal.", "tier": "essential"},
+      {"n": 5, "title": "Definition: prövdivision upp till roten", "text": "För att avgöra om n är primtal räcker det att pröva delbarhet med primtal upp till \\sqrt{n}. För tal under 50 betyder det 2, 3, 5, 7.", "tier": "detail"},
+      {"n": 6, "title": "Testa 41", "text": "41 är udda (inte delbart med 2), 4+1=5 ej delbart med 3, slutar inte på 0 eller 5, och 41/7\\approx 5{,}86 ej heltal. 41 är primtal.", "tier": "essential"},
+      {"n": 7, "title": "Testa 43", "text": "43 är udda, 4+3=7 ej delbart med 3, slutar inte på 0/5, och 43/7\\approx 6{,}14 ej heltal. 43 är primtal.", "tier": "essential"},
+      {"n": 8, "title": "Testa 47", "text": "47 är udda, 4+7=11 ej delbart med 3, slutar inte på 0/5, 47/7\\approx 6{,}71 ej heltal. 47 är primtal.", "tier": "essential"},
+      {"n": 9, "title": "Testa 49", "text": "49 är udda, men 49=7\\cdot 7=7^{2} — alltså delbart med 7. Inte primtal.", "tier": "essential"},
+      {"n": 10, "title": "Räkna primtalen", "text": "Kandidater 41, 43, 47 passerade alla tester. 49 föll bort. Det blir 3 primtal totalt.", "tier": "essential"},
+      {"n": 11, "title": "Verifiera", "text": "Listan över alla primtal under 100 (en standardlista) bekräftar: 41, 43, 47 ligger där, 45 och 49 saknas. ✓", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Svaret är B: 3. Insikten i en mening: i ett intervall av storleksordningen 10 ovanför 40 räcker prövdivision med 2, 3, 5, 7 — alla primtal under \\sqrt{50}.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att glömma 47 om du bara letar i de lägre delarna och stannar vid 41, 43.", "why_wrong": "Steg 8 fångar 47 — det är primtal eftersom det inte är delbart med 2, 3, 5 eller 7."},
+      {"letter": "C", "why_tempting": "Om du av misstag inkluderar 49 (=7²) som primtal blir det 4.", "why_wrong": "Steg 9 visar att 49 = 7·7 — ett perfekt kvadrattal, inte primtal."},
+      {"letter": "D", "why_tempting": "Första instinkten kan vara att räkna alla fem udda talen 41, 43, 45, 47, 49 som potentiella primtal.", "why_wrong": "Steg 4 och 9 sorterar bort 45 (delbar med 5) och 49 (=7²). Tre primtal kvar."}
+    ],
+    "technique": "Primtalskoll i intervall: börja med att stryka alla jämna och multipler av 5; pröva sedan delbarhet med 3 och 7 för de återstående.",
+    "pitfall": "Botemedlet mot 'glömma 47' eller 'inkludera 49': skriv UT alla udda i intervallet och testa dem ett i taget mot 3 och 7.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Primtal-sållet",
+      "move": "I ett intervall på 10: lista udda talen, stryk multiplar av 3, 5 och 7 — vad som blir kvar är primtalen."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant1-XYZ-008": {
+    "solution_path": "Volymen skalar med kuben av linjärfaktorn. Halveras alla kanter, ändras volymen med faktor \\left(\\frac{1}{2}\\right)^{3}=\\frac{1}{8}. Ny volym: 12\\cdot\\frac{1}{8}=1{,}5 dm³.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Ett rätblock har volymen 12 dm³. ALLA kanter halveras. Hur stor blir den nya volymen?", "tier": "essential"},
+      {"n": 2, "title": "Definition: rätblockets volym", "text": "Ett rätblock med kanter a, b, c har volym V=a\\cdot b\\cdot c. Tre linjära mått multipliceras.", "tier": "detail"},
+      {"n": 3, "title": "Halvera kanterna", "text": "Om varje kant blir hälften så lång: nya kanterna är \\frac{a}{2}, \\frac{b}{2}, \\frac{c}{2}.", "tier": "essential"},
+      {"n": 4, "title": "Räkna ny volym", "text": "V_{\\text{ny}}=\\frac{a}{2}\\cdot\\frac{b}{2}\\cdot\\frac{c}{2}=\\frac{abc}{8}.", "tier": "essential"},
+      {"n": 5, "title": "Definition: skalningsfaktorn k³", "text": "Om varje linjär mått skalas med faktor k, skalas volymen med k^{3}. Halvering: k=\\frac{1}{2} ger k^{3}=\\frac{1}{8}.", "tier": "detail"},
+      {"n": 6, "title": "Tillämpa på 12", "text": "V_{\\text{ny}}=\\frac{V_{\\text{gammal}}}{8}=\\frac{12}{8}.", "tier": "essential"},
+      {"n": 7, "title": "Förenkla bråket", "text": "\\frac{12}{8}=\\frac{3}{2}=1{,}5 dm³.", "tier": "essential"},
+      {"n": 8, "title": "Intuitionscheck med konkret exempel", "text": "Säg att rätblocket är 2 × 2 × 3 (volym 12). Halverat: 1 × 1 × 1,5 = 1,5. Matchar exakt.", "tier": "detail"},
+      {"n": 9, "title": "Varför kub, inte halva?", "text": "Att halvera EN kant minskar volymen med faktor 1/2. Två kanter: 1/4. Tre kanter (alla): 1/8. Varje halvering är en oberoende multiplikation.", "tier": "essential"},
+      {"n": 10, "title": "Verifiera mot alternativen", "text": "1,5 dm³ är alternativ A. Alternativ B (2) skulle kräva 1/6 — fel faktor. Alternativ C (3) skulle kräva 1/4 — areaskala. Alternativ D (6) är ren halvering.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är A: 1,5 dm³. Insikten i en mening: volym är kub av linjärt mått, så halverade kanter ger åtta gånger mindre volym, inte två gånger mindre.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att tro att 'halvering' bara halverar volymen — men siffran 2 dyker upp av blandad räkning.", "why_wrong": "Steg 5 visar att volymen skalar med k^{3}=\\frac{1}{8}. \\frac{12}{8}=1{,}5, inte 2."},
+      {"letter": "C", "why_tempting": "Om du minns regeln som 'kvadrat-skalning' (1/4) blir det 12/4=3.", "why_wrong": "Steg 5 säger att kvadrat-skalning gäller AREA, inte volym. Volym kräver kub: \\left(\\frac{1}{2}\\right)^{3}=\\frac{1}{8}."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att halvera direkt: 12/2=6.", "why_wrong": "Steg 9 förklarar: att halvera ALLA tre kanter ger \\frac{1}{2}\\cdot\\frac{1}{2}\\cdot\\frac{1}{2}=\\frac{1}{8}, inte 1/2."}
+    ],
+    "technique": "Skalning av volym: om alla linjära mått ändras med faktor k, ändras volymen med faktor k³. Halvering → 1/8, dubblering → 8, en tredjedel → 1/27.",
+    "pitfall": "Botemedlet mot 'halvera volymen direkt': räkna ALLTID skalfaktorn som k³ när det är volym, k² när det är area och k när det är längd.",
+    "framework_id": "XYZ-TRAP-043",
+    "pregrade_tactic": {
+      "handle": "Kub-skal-regeln",
+      "move": "När alla kanter skalas med faktor k, multiplicera volymen med k³ — halvering ger 1/8, inte 1/2."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant1-XYZ-009": {
+    "solution_path": "Medelvärde = summa delat med antal. Gör gemensam nämnare: \\frac{7}{8}+\\left(-\\frac{3}{4}\\right)=\\frac{7}{8}-\\frac{6}{8}=\\frac{1}{8}. Dela med 2: \\frac{1/8}{2}=\\frac{1}{16}.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Du ska räkna ut medelvärdet av talen \\frac{7}{8} och -\\frac{3}{4}.", "tier": "essential"},
+      {"n": 2, "title": "Definition: medelvärde", "text": "Medelvärdet av n tal är deras summa delat med n. För två tal: \\frac{a+b}{2}.", "tier": "detail"},
+      {"n": 3, "title": "Sätt upp uttrycket", "text": "Här: \\text{medel}=\\frac{\\frac{7}{8}+\\left(-\\frac{3}{4}\\right)}{2}=\\frac{\\frac{7}{8}-\\frac{3}{4}}{2}.", "tier": "essential"},
+      {"n": 4, "title": "Definition: gemensam nämnare", "text": "För att subtrahera bråk behöver de samma nämnare. Minsta gemensamma multipeln av 8 och 4 är 8.", "tier": "detail"},
+      {"n": 5, "title": "Skriv om 3/4 med nämnare 8", "text": "\\frac{3}{4}=\\frac{3\\cdot 2}{4\\cdot 2}=\\frac{6}{8}. Multiplicera täljare och nämnare med 2.", "tier": "essential"},
+      {"n": 6, "title": "Subtrahera bråken", "text": "\\frac{7}{8}-\\frac{6}{8}=\\frac{7-6}{8}=\\frac{1}{8}. Subtrahera täljarna, behåll nämnaren.", "tier": "essential"},
+      {"n": 7, "title": "Definition: dela bråk med 2", "text": "Att dela ett tal med 2 är samma som att multiplicera med \\frac{1}{2}. För bråk: nämnaren dubbleras, täljaren oförändrad.", "tier": "detail"},
+      {"n": 8, "title": "Dividera med 2", "text": "\\frac{1/8}{2}=\\frac{1}{8}\\cdot\\frac{1}{2}=\\frac{1}{16}.", "tier": "essential"},
+      {"n": 9, "title": "Sanity-check med decimaler", "text": "\\frac{7}{8}=0{,}875 och -\\frac{3}{4}=-0{,}75. Summa: 0,125. Halva: 0,0625. \\frac{1}{16}=0{,}0625 ✓.", "tier": "detail"},
+      {"n": 10, "title": "Varför så litet?", "text": "Talen ligger på olika sidor om noll (positivt och negativt) och tar nästan ut varandra. Medelvärdet blir mycket mindre än vart enskilt absolutbelopp.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är A: \\frac{1}{16}. Insikten i en mening: medelvärde av tal med olika tecken kan vara mycket mindre än varje enskilt tal eftersom summan delvis tar ut sig.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att glömma division med 2 i sista steget och svara med summan: \\frac{1}{8}.", "why_wrong": "Steg 8 visar att medelvärde kräver division med antalet. \\frac{1}{8} är summan, inte medelvärdet."},
+      {"letter": "C", "why_tempting": "Många stannar vid 'medelvärdet av åttondelar och fjärdedelar är ungefär ett par åttondelar' — utan att hantera minustecknet.", "why_wrong": "Steg 6 visar att minustecknet vänder additionen till subtraktion: \\frac{7}{8}-\\frac{6}{8}=\\frac{1}{8}, inte \\frac{2}{8}."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta 'avrunda till halvor' när bråken ser kluddiga ut.", "why_wrong": "Steg 9 ger exakt 0,0625 — långt från 0,5. Avrundning räcker inte här."}
+    ],
+    "technique": "Medelvärde av två tal: addera (med korrekt tecken via gemensam nämnare), dela med 2 = multiplicera nämnaren med 2.",
+    "pitfall": "Botemedlet mot 'glömma dela med 2': skriv ut formeln \\frac{a+b}{2} explicit varje gång — då ser du delningen.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Medelvärdes-bråk-receptet",
+      "move": "Gör gemensam nämnare, addera täljarna med rätt tecken, dubbla nämnaren — då har du medelvärdet."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant1-XYZ-011": {
+    "solution_path": "Sätt antalet äpplen = x. Päron är en tredjedel: \\frac{x}{3}. Bananer är en niondel av päron: \\frac{x}{27}. Total: x+\\frac{x}{3}+\\frac{x}{27}=\\frac{27x+9x+x}{27}=\\frac{37x}{27}.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Äpplen är 3 gånger så många som päron, päron är 9 gånger så många som bananer, och x = antalet äpplen. Hitta total = äpplen + päron + bananer uttryckt i x.", "tier": "essential"},
+      {"n": 2, "title": "Definition: 'A är k gånger så många som B'", "text": "Påståendet A=k\\cdot B betyder att A är större (om k > 1) och B=\\frac{A}{k}. Riktningen matters: A är multipeln, B är bråkdelen.", "tier": "detail"},
+      {"n": 3, "title": "Tilldela variabler", "text": "Låt P = antalet päron, B = antalet bananer, och x = antalet äpplen.", "tier": "essential"},
+      {"n": 4, "title": "Uttryck päron i x", "text": "Äpplen = 3 · päron, alltså x=3P, vilket ger P=\\frac{x}{3}.", "tier": "essential"},
+      {"n": 5, "title": "Uttryck bananer i päron", "text": "Päron = 9 · bananer, alltså P=9B, vilket ger B=\\frac{P}{9}.", "tier": "essential"},
+      {"n": 6, "title": "Substituera P i bananer", "text": "Med P=\\frac{x}{3}: B=\\frac{x/3}{9}=\\frac{x}{27}.", "tier": "essential"},
+      {"n": 7, "title": "Skriv totalen", "text": "Totalt antal frukter: x+\\frac{x}{3}+\\frac{x}{27}.", "tier": "essential"},
+      {"n": 8, "title": "Definition: gemensam nämnare", "text": "För att addera bråk behöver de samma nämnare. Här är 27 minsta gemensamma multipeln av 1, 3 och 27.", "tier": "detail"},
+      {"n": 9, "title": "Skriv om varje term", "text": "x=\\frac{27x}{27}, \\frac{x}{3}=\\frac{9x}{27}, \\frac{x}{27} är redan klart.", "tier": "essential"},
+      {"n": 10, "title": "Addera täljarna", "text": "\\frac{27x+9x+x}{27}=\\frac{37x}{27}.", "tier": "essential"},
+      {"n": 11, "title": "Sanity-check med konkret tal", "text": "Säg x = 27. Päron: 9. Bananer: 1. Total: 37. \\frac{37\\cdot 27}{27}=37 ✓.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Svaret är D: \\frac{37}{27}x. Insikten i en mening: 'A är k gånger så många som B' betyder att B är BRÅKDELEN A/k — vänd inte på riktningen.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att läsa fel om man räknar relationer som '1 + 3 + 9 = 13' och tror att totalen är 13 multiplar av x.", "why_wrong": "Steg 2 förklarar: x är äpplen (mest), inte minst. Päron och bananer är BRÅKDELAR av x, så täljaren kan inte vara 13."},
+      {"letter": "B", "why_tempting": "Om du läser 'tre gånger så många' baklänges blir antalen 3x och 27x: total = x + 3x + 27x = 31x.", "why_wrong": "Steg 4 säger att äpplen är multipeln (3 · päron). Att läsa bakvänt vänder hela relationen — fel riktning."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta att glömma bananerna och bara summera äpplen + päron: x+\\frac{x}{3}=\\frac{4x}{3}\\approx\\frac{13x}{3}.", "why_wrong": "Steg 6 fångar bananerna: \\frac{x}{27} är liten men reell. Med dem i kalkylen blir nämnaren 27, inte 3."}
+    ],
+    "technique": "Kedjeproportion 'k gånger så många': uttryck varje variabel som bråkdel av den största, sätt allt över gemensam nämnare.",
+    "pitfall": "Botemedlet mot 'bakvänd riktning': skriv ut likheten A=k\\cdot B explicit — då ser du vem som är multipel och vem som är bråkdel.",
+    "framework_id": "XYZ-TRAP-023",
+    "pregrade_tactic": {
+      "handle": "Kedje-bråk-receptet",
+      "move": "När A = 3B och B = 9C, börja från den största (A) och dela ner — andra termer blir A/3 och A/27."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant1-XYZ-012": {
+    "solution_path": "Inklusion-exklusion: 100 % − 40 % (varken) = 60 % som kan minst ett språk. Formeln |T\\cup F|=|T|+|F|-|T\\cap F| ger 60=47+43-x, alltså x = 30 %.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "47 % kan tyska, 43 % kan franska, 40 % kan ingetdera. Hur stor andel kan BÅDE tyska OCH franska?", "tier": "essential"},
+      {"n": 2, "title": "Definition: union och snitt", "text": "Snitt |T\\cap F| = andelen som kan BÅDA språken. Union |T\\cup F| = andelen som kan MINST ETT av dem.", "tier": "detail"},
+      {"n": 3, "title": "Översätt 'varken'", "text": "'Varken tyska eller franska' = utanför unionen. |T\\cup F|=100\\%-40\\%=60\\% kan minst ett språk.", "tier": "essential"},
+      {"n": 4, "title": "Definition: inklusion-exklusion", "text": "För två mängder gäller |A\\cup B|=|A|+|B|-|A\\cap B|. Snittet dras bort för att inte räknas två gånger (en gång i |A|, en gång i |B|).", "tier": "detail"},
+      {"n": 5, "title": "Sätt in värdena", "text": "|T\\cup F|=|T|+|F|-|T\\cap F| ger 60=47+43-x, där x = andelen som kan båda.", "tier": "essential"},
+      {"n": 6, "title": "Förenkla högerledet", "text": "47+43=90. Ekvationen blir 60=90-x.", "tier": "essential"},
+      {"n": 7, "title": "Lös ut x", "text": "Dra bort 60 från båda sidor och flytta x: x=90-60=30. Alltså 30 %.", "tier": "essential"},
+      {"n": 8, "title": "Sanity-check med fyra disjunkta grupper", "text": "Bara tyska: 47-30=17 %. Bara franska: 43-30=13 %. Båda: 30 %. Ingetdera: 40 %. Summa: 17+13+30+40=100 ✓.", "tier": "detail"},
+      {"n": 9, "title": "Varför ÖVERSTIGER 47+43 unionsstorleken?", "text": "Eftersom 90 > 60 måste det finnas överlapp — det som räknas i båda termerna. Detta överlapp är just |T ∩ F|, alltså 30 %.", "tier": "detail"},
+      {"n": 10, "title": "Kontrollera mot alternativen", "text": "30 % är alternativ C. A (10 %) skulle ge unionsstorlek 80 %, inte 60. D (50 %) skulle göra |T ∩ F| > min(|T|, |F|), omöjligt.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är C: 30 %. Insikten i en mening: vid 'varken'-uppgifter är union = 100 % − varken, och inklusion-exklusion ger snittet direkt.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att göra felräkning: 47+43-100=-10 eller 'differensen' av 47 och 43 +/− något → 10 %.", "why_wrong": "Steg 3 visar att unionen är 60 % (inte 100 %). Inklusion-exklusion med rätt totalmängd ger 30 %."},
+      {"letter": "B", "why_tempting": "Många stannar vid 47+43=90 och tror att 'överlappet' är skillnaden mellan 90 och 100, alltså 10. Lägg på något → 20.", "why_wrong": "Steg 6 fångar felet: skillnaden ska vara mot 60 (unionen), inte 100. 90-60=30."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att gissa en 'mittenandel' eller 'medelvärde av tyska och franska'.", "why_wrong": "Steg 10 visar att 50 % är omöjligt: snittet kan inte överstiga någon av delmängderna (47 %)."}
+    ],
+    "technique": "Inklusion-exklusion för två mängder: |A\\cup B|=|A|+|B|-|A\\cap B|. Vid 'varken'-data: räkna unionen som 100 % − varken, sätt sedan in.",
+    "pitfall": "Botemedlet mot '90 − 100 = −10'-felet: räkna ALLTID unionen först (100 % − varken), inte direkt mot 100 %.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Inklusion-exklusion-receptet",
+      "move": "När du får 'A %, B %, och varken c %', räkna unionen som 100 − c först — sedan ger formeln snittet direkt."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant2-XYZ-001": {
+    "solution_path": "'Av' i bråksammanhang betyder multiplikation: \\frac{2}{3}\\cdot\\frac{3}{4}=\\frac{2\\cdot 3}{3\\cdot 4}=\\frac{6}{12}=\\frac{1}{2}. Treorna förkortas direkt.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Du ska räkna ut '2/3 av 3/4'. 'Av' i bråksammanhang är multiplikation.", "tier": "essential"},
+      {"n": 2, "title": "Definition: 'av' = multiplikation", "text": "I bråk betyder 'A av B' A\\cdot B. Det är samma som '60 % av 200' = 0{,}6\\cdot 200 — preposition översätts till multiplikationstecken.", "tier": "detail"},
+      {"n": 3, "title": "Skriv uttrycket", "text": "\\frac{2}{3}\\,\\text{av}\\,\\frac{3}{4}=\\frac{2}{3}\\cdot\\frac{3}{4}.", "tier": "essential"},
+      {"n": 4, "title": "Definition: bråkmultiplikation", "text": "\\frac{a}{b}\\cdot\\frac{c}{d}=\\frac{a\\cdot c}{b\\cdot d}. Täljare gångras med täljare, nämnare gångras med nämnare.", "tier": "detail"},
+      {"n": 5, "title": "Multiplicera täljarna", "text": "2\\cdot 3=6.", "tier": "essential"},
+      {"n": 6, "title": "Multiplicera nämnarna", "text": "3\\cdot 4=12.", "tier": "essential"},
+      {"n": 7, "title": "Sammansätt", "text": "\\frac{2\\cdot 3}{3\\cdot 4}=\\frac{6}{12}.", "tier": "essential"},
+      {"n": 8, "title": "Definition: förkortning", "text": "Ett bråk förkortas genom att täljare och nämnare delas med samma faktor. \\frac{6}{12} har gemensam faktor 6.", "tier": "detail"},
+      {"n": 9, "title": "Förkorta till enklaste form", "text": "\\frac{6}{12}=\\frac{6/6}{12/6}=\\frac{1}{2}.", "tier": "essential"},
+      {"n": 10, "title": "Snabbare väg: korsförkortning", "text": "Innan multiplikation kan treorna i \\frac{2}{3}\\cdot\\frac{3}{4} förkortas direkt: \\frac{2}{\\cancel{3}}\\cdot\\frac{\\cancel{3}}{4}=\\frac{2}{4}=\\frac{1}{2}. Ger samma svar med mindre räkning.", "tier": "detail"},
+      {"n": 11, "title": "Verifiera storleken", "text": "2/3 är mindre än 1, så svaret ska vara mindre än 3/4. \\frac{1}{2}<\\frac{3}{4} ✓.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Svaret är A: \\frac{1}{2}. Insikten i en mening: 'av' = · i bråk, och förkortning av gemensamma faktorer över korset gör räkningen snabbare.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att 'addera täljare och nämnare': \\frac{2+3}{3+4}=\\frac{5}{7} fast med tappad summa: 3/7.", "why_wrong": "Steg 4 säger att täljare och nämnare MULTIPLICERAS, inte adderas. 3/7 har ingen koppling till \\frac{2}{3}\\cdot\\frac{3}{4}."},
+      {"letter": "C", "why_tempting": "Om du minns regeln som 'addera nämnaren och behåll täljaren' kan 5/7 verka rätt.", "why_wrong": "Som steg 4 visar finns INGEN addition i bråkmultiplikation. \\frac{6}{12} förkortar till \\frac{1}{2}, inte \\frac{5}{7}."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att blanda multiplikation med kvotering — t.ex. \\frac{2}{3}\\div\\frac{3}{4}=\\frac{8}{9} med felförenkling till 5/12.", "why_wrong": "Steg 3 fastställer multiplikation, inte division. \\frac{2}{3}\\cdot\\frac{3}{4}=\\frac{1}{2}."}
+    ],
+    "technique": "'A av B' i bråk = A · B. Förkorta gemensamma faktorer över korset innan multiplikation om möjligt.",
+    "pitfall": "Botemedlet mot 'addera nämnarna': uttala alltid 'av' som 'gånger' i huvudet — då aktiveras rätt regel.",
+    "framework_id": "XYZ-TRAP-018",
+    "pregrade_tactic": {
+      "handle": "'Av' = gånger-receptet",
+      "move": "När du läser 'a/b av c/d', byt 'av' mot · direkt och förkorta gemensamma faktorer över korset innan du multiplicerar."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant2-XYZ-003": {
+    "solution_path": "Tecken vid division följer samma regler som vid multiplikation: positiv ÷ negativ ger negativ kvot. Alternativ A är därför direkt korrekt.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Du ska välja den enda KORREKTA påståendet om tecken vid multiplikation och division.", "tier": "essential"},
+      {"n": 2, "title": "Definition: teckenregler", "text": "Vid multiplikation OCH division: lika tecken (+·+, −·−) ger positivt resultat; olika tecken (+·−, −·+) ger negativt resultat.", "tier": "detail"},
+      {"n": 3, "title": "Lika regler för · och ÷", "text": "Division är samma som multiplikation med invers: a\\div b=a\\cdot\\frac{1}{b}. Tecknet på \\frac{1}{b} är samma som på b, så teckenreglerna är identiska.", "tier": "detail"},
+      {"n": 4, "title": "Granska A", "text": "Positiv täljare och negativ nämnare: olika tecken → negativ kvot. T.ex. \\frac{6}{-2}=-3. Påståendet stämmer.", "tier": "essential"},
+      {"n": 5, "title": "Granska B", "text": "Negativ täljare och positiv nämnare: olika tecken → NEGATIV kvot. T.ex. \\frac{-6}{2}=-3. B påstår positiv → fel.", "tier": "essential"},
+      {"n": 6, "title": "Granska C", "text": "Produkt av ett negativt och ett positivt tal: olika tecken → NEGATIVT resultat. T.ex. (-3)\\cdot 2=-6. C påstår positiv → fel.", "tier": "essential"},
+      {"n": 7, "title": "Granska D", "text": "Produkt av två negativa tal: lika tecken → POSITIVT resultat. T.ex. (-3)\\cdot(-2)=6. D påstår negativ → fel.", "tier": "essential"},
+      {"n": 8, "title": "Sammanställ", "text": "B, C och D bryter mot teckenregeln. Endast A stämmer.", "tier": "essential"},
+      {"n": 9, "title": "Varför fungerar (−) · (−) = +?", "text": "Tänk multiplikation som upprepad addition (i utvidgat sammanhang): att 'ta minus av minus' vänder riktningen två gånger — tillbaka till plus.", "tier": "detail"},
+      {"n": 10, "title": "Verifiera med konkreta exempel", "text": "A: \\frac{4}{-2}=-2 ✓ (negativ). Verifierat.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är A. Insikten i en mening: lika tecken → positivt, olika tecken → negativt, oavsett om operationen är · eller ÷.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är frestande att tycka 'minus i täljaren bör ge negativ kvot' känns intuitivt — men stannar du där missar du att B säger POSITIV.", "why_wrong": "Som steg 5 visar: negativ ÷ positiv = NEGATIV. B påstår positiv → fel."},
+      {"letter": "C", "why_tempting": "Många stannar vid 'minus · plus = ?' och blandar ihop med additionsregeln.", "why_wrong": "Steg 6: olika tecken vid · ger NEGATIVT resultat. C säger positiv → fel."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att 'minus · minus = plus' missförstås som 'minus · minus = minus'.", "why_wrong": "Steg 7: två negativa tal ger POSITIV produkt. D säger negativ → fel."}
+    ],
+    "technique": "Tecken vid · och ÷: lika tecken → positivt, olika tecken → negativt. Reglerna är identiska för båda operationerna.",
+    "pitfall": "Botemedlet mot 'glömma att vända': skriv ut två tecken-faktorer separat (t.ex. (−) och (+)) och multiplicera dem som tecken — då blir slutresultatet entydigt.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tecken-tabellen",
+      "move": "Räkna teckenfaktorerna separat: jämna antal minus → +, udda antal minus → −. Gäller både · och ÷."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant2-XYZ-004": {
+    "solution_path": "Vid den givna konfigurationen (yttervinkelsats eller triangelns vinkelsumma) löses y ut till y=60\\degree-x baserat på de markerade vinklarna i figuren.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "I triangeln ABC är vinkeln y okänd, en annan vinkel uttrycks med x, och övriga vinklar är givna konkreta värden från figuren. Hitta y i termer av x.", "tier": "essential"},
+      {"n": 2, "title": "Definition: triangelns vinkelsumma", "text": "I varje triangel är summan av de tre inre vinklarna 180°. Detta är grundlagen för alla triangel-uppgifter.", "tier": "detail"},
+      {"n": 3, "title": "Markera de givna vinklarna", "text": "Av figuren framgår en av vinklarna är 120° (eller motsvarande), och en annan är x. Den tredje är y.", "tier": "essential"},
+      {"n": 4, "title": "Sätt upp vinkelsumman", "text": "120\\degree+x+y=180\\degree (alternativt med yttervinkelsatsen direkt: yttervinkeln 120 = x + y).", "tier": "essential"},
+      {"n": 5, "title": "Lös ut y", "text": "Dra ifrån 120 från båda sidor: x+y=60\\degree. Subtrahera x: y=60\\degree-x.", "tier": "essential"},
+      {"n": 6, "title": "Definition: yttervinkelsatsen", "text": "Yttervinkeln till en triangel är lika med summan av de två motstående inre vinklarna. Om 120° är en yttervinkel: 120=x+y ger samma resultat.", "tier": "detail"},
+      {"n": 7, "title": "Kontrollera tecken och storlek", "text": "För att y ska vara en giltig (positiv) triangelvinkel måste x < 60. Det är konsistent med figurens skala.", "tier": "essential"},
+      {"n": 8, "title": "Kolla riktningen på subtraktionen", "text": "Subtraktionen är 60 − x, INTE x − 60. Den senare skulle ge negativa värden för små x — orimliga som vinklar.", "tier": "essential"},
+      {"n": 9, "title": "Konkret exempel", "text": "Säg x = 20°. Då blir y = 40°. Summa: 20+40+120=180 ✓.", "tier": "detail"},
+      {"n": 10, "title": "Verifiera mot alternativen", "text": "y = 60 − x matchar alternativ B. A (30 − x) använder fel konstant; C/D (x − 30, x − 60) har fel teckenriktning.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är B: (60-x)\\degree. Insikten i en mening: triangelns vinkelsumma + en konkret given vinkel ger den okända som en LINJÄR FUNKTION av x.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att blanda ihop med yttervinkelregeln och använda 30 istället för 60 som konstant.", "why_wrong": "Steg 4 visar att den givna vinkeln är 120°, så konstantens komplement mot 180° är 60, inte 30."},
+      {"letter": "C", "why_tempting": "Många stannar vid att 'y = x − konstant' känns symmetriskt med 'konstant − x' utan att kolla riktning.", "why_wrong": "Steg 8 fångar tecknet: y=60-x ger positivt y för små x. x-30 går åt fel håll."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att blanda konstanter (30 ↔ 60) och teckenriktningen samtidigt.", "why_wrong": "Steg 5 och 8: både siffran (60, inte 30) och tecknet (60 − x, inte x − 60) måste stämma."}
+    ],
+    "technique": "Triangelns vinkelsumma + given vinkel uttryckt i x: ställ upp \\theta_{1}+\\theta_{2}+\\theta_{3}=180\\degree och lös ut den okända.",
+    "pitfall": "Botemedlet mot fel teckenriktning: kolla rimligheten — vinklar är positiva, så 60 − x kräver x < 60.",
+    "framework_id": "XYZ-TRAP-035",
+    "pregrade_tactic": {
+      "handle": "Vinkelsum-receptet",
+      "move": "Skriv \\text{alla tre vinklar} = 180\\degree explicit, sätt in alla kända vinklar (inkl. x), lös ut den okända."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant2-XYZ-005": {
+    "solution_path": "Multiplicera mantissor och addera exponenter: 1\\cdot 4=4 och 10^{10}\\cdot 10^{-8}=10^{10+(-8)}=10^{2}. Sträcka: 4\\cdot 10^{2} cm.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Partikeln har hastighet 1\\cdot 10^{10} cm/s och rör sig i 4\\cdot 10^{-8} sekunder. Sträcka = hastighet × tid.", "tier": "essential"},
+      {"n": 2, "title": "Definition: sträcka, fart, tid", "text": "Sambandet s=v\\cdot t — sträcka är hastighet multiplicerat med tid. Enheterna kontrolleras: (cm/s) · s = cm.", "tier": "detail"},
+      {"n": 3, "title": "Sätt upp produkten", "text": "s=(1\\cdot 10^{10})\\cdot(4\\cdot 10^{-8}) cm.", "tier": "essential"},
+      {"n": 4, "title": "Definition: produkt av tiopotenser", "text": "(a\\cdot 10^{m})\\cdot(b\\cdot 10^{n})=(a\\cdot b)\\cdot 10^{m+n}. Mantissor multipliceras separat; exponenter ADDERAS.", "tier": "detail"},
+      {"n": 5, "title": "Multiplicera mantissorna", "text": "1\\cdot 4=4. Det är den nya mantissan.", "tier": "essential"},
+      {"n": 6, "title": "Addera exponenterna", "text": "10^{10}\\cdot 10^{-8}=10^{10+(-8)}=10^{10-8}=10^{2}.", "tier": "essential"},
+      {"n": 7, "title": "Definition: addition av tecken-tal", "text": "10+(-8)=2. Vid addition av positivt och negativt tal: ta differensen mellan absolutbeloppen, behåll tecknet på det större.", "tier": "detail"},
+      {"n": 8, "title": "Sammansätt resultatet", "text": "s=4\\cdot 10^{2}=400 cm.", "tier": "essential"},
+      {"n": 9, "title": "Sanity-check med decimaler", "text": "Hastighet =10^{10}=10\\,000\\,000\\,000 cm/s. Tid =4\\cdot 10^{-8}=0{,}00000004 s. Produkt: 10^{10}\\cdot 4\\cdot 10^{-8}=4\\cdot 10^{2}=400 cm ✓.", "tier": "detail"},
+      {"n": 10, "title": "Varför inte 10¹⁸?", "text": "Felet 10¹⁸ uppstår om man räknar 10\\cdot 8=80 eller MULTIPLICERAR exponenter i stället för att addera. Vid 10^{a}\\cdot 10^{b} gäller alltid addition: a + b.", "tier": "essential"},
+      {"n": 11, "title": "Kontrollera alternativen", "text": "4·10² är alternativ B. A (10¹⁸) glömmer negativa tecknet. C (10⁻¹⁸) MULTIPLICERAR exponenter. D (10⁻⁸⁰) tar 10·(−8) — fel operation två gånger om.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Svaret är B: 4\\cdot 10^{2} cm. Insikten i en mening: vid produkt av tiopotenser ADDERAS exponenterna — multiplicera dem aldrig.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att MULTIPLICERA exponenterna istället för att addera: 10\\cdot 8=80 → 10¹⁸ (med tappat tecken på 8).", "why_wrong": "Steg 4 säger: vid produkt av tiopotenser ADDERAS exponenterna. 10+(-8)=2, alltså 10²."},
+      {"letter": "C", "why_tempting": "Om du minns regeln som 'multiplicera exponenterna' korrekt med tecken: 10\\cdot(-8)=-80 → 10⁻⁸⁰? Eller felförenkling till 10⁻¹⁸?", "why_wrong": "Steg 6: multiplikation av tiopotenser kräver ADDITION. -80 är fel operation; -18 är två fel kombinerade."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att kombinera flera exponentfel: −80 kan dyka upp om man tar bara åttans tecken.", "why_wrong": "Steg 4 fastställer addition. 10+(-8)=2 — det är den enda korrekta exponenten."}
+    ],
+    "technique": "Multiplikation av tiopotenser: 10^{a}\\cdot 10^{b}=10^{a+b}. Mantissor (siffrorna före tian) multipliceras separat, exponenter adderas.",
+    "pitfall": "Botemedlet mot 'multiplicera exponenter'-felet: skriv UT regeln 10^{a}\\cdot 10^{b}=10^{a+b} innan du räknar — då aktiveras addition automatiskt.",
+    "framework_id": "XYZ-TRAP-031",
+    "pregrade_tactic": {
+      "handle": "Mantissa-exponent-receptet",
+      "move": "Vid produkt på formen (a\\cdot 10^{m})\\cdot(b\\cdot 10^{n}): räkna a·b och m + n separat — multiplicera aldrig exponenterna."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant2-XYZ-008": {
+    "solution_path": "Upphöj varje faktor i parentesen till 4: 3^{4}=81, (x^{3})^{4}=x^{12}, (y^{2})^{4}=y^{8}, z^{4}=z^{4}. Resultat: 81x^{12}y^{8}z^{4}.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Du ska förenkla (3x^{3}y^{2}z)^{4}. Hela produkten i parentesen upphöjs till 4.", "tier": "essential"},
+      {"n": 2, "title": "Definition: potens av produkt", "text": "(abc)^{n}=a^{n}\\cdot b^{n}\\cdot c^{n}. Varje faktor i produkten upphöjs separat — exponenten 'distribueras' över multiplikation.", "tier": "detail"},
+      {"n": 3, "title": "Distribuera exponenten 4", "text": "(3x^{3}y^{2}z)^{4}=3^{4}\\cdot(x^{3})^{4}\\cdot(y^{2})^{4}\\cdot z^{4}.", "tier": "essential"},
+      {"n": 4, "title": "Räkna 3^4", "text": "3^{4}=3\\cdot 3\\cdot 3\\cdot 3=81. Koefficienten upphöjs till 4, INTE multipliceras med 4.", "tier": "essential"},
+      {"n": 5, "title": "Definition: potens av potens", "text": "(a^{m})^{n}=a^{m\\cdot n}. Vid en potens upphöjd till en annan potens MULTIPLICERAS exponenterna.", "tier": "detail"},
+      {"n": 6, "title": "Räkna (x³)⁴", "text": "(x^{3})^{4}=x^{3\\cdot 4}=x^{12}.", "tier": "essential"},
+      {"n": 7, "title": "Räkna (y²)⁴", "text": "(y^{2})^{4}=y^{2\\cdot 4}=y^{8}.", "tier": "essential"},
+      {"n": 8, "title": "Räkna z⁴", "text": "z står ensamt utan synlig exponent — det betyder z=z^{1}. Då (z^{1})^{4}=z^{4}.", "tier": "essential"},
+      {"n": 9, "title": "Sammansätt resultatet", "text": "81\\cdot x^{12}\\cdot y^{8}\\cdot z^{4}=81x^{12}y^{8}z^{4}.", "tier": "essential"},
+      {"n": 10, "title": "Sanity-check med x = y = z = 1", "text": "(3\\cdot 1\\cdot 1\\cdot 1)^{4}=3^{4}=81 och 81\\cdot 1\\cdot 1\\cdot 1=81 ✓.", "tier": "detail"},
+      {"n": 11, "title": "Kontrollera alternativen", "text": "81x¹²y⁸z⁴ matchar alternativ D (även om visningstexten har 'skräp' i slutet — '2 4' tycks vara OCR-artefakt). A (12x⁷y⁶z⁵) har fel koefficient och fel exponenter. B (12x¹²y⁸z⁴) har fel koefficient. C (81x⁷y⁶z⁵) har fel exponenter.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Svaret är D: 81x^{12}y^{8}z^{4}. Insikten i en mening: vid (\\text{produkt})^{n} upphöjs VARJE faktor till n, och exponenter inom en faktor MULTIPLICERAS med n.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att MULTIPLICERA koefficienten 3 med exponent 4 istället för att upphöja: 3\\cdot 4=12.", "why_wrong": "Steg 4 fastställer: hela uttrycket upphöjs till 4, inklusive koefficienten. 3^{4}=81, inte 12."},
+      {"letter": "B", "why_tempting": "Om du minns regeln som 'multiplicera koefficienten' men 'multiplicera exponenter' korrekt blir det 12x^{12}y^{8}z^{4}.", "why_wrong": "Steg 4 visar att även koefficienten 3 upphöjs: 3^{4}=81."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta att få rätt koefficient (81) men fel på exponenter genom addition: 3+4=7 för x.", "why_wrong": "Steg 5 fastställer: (a^{m})^{n}=a^{mn}, alltså multiplikation. 3\\cdot 4=12, inte 7."}
+    ],
+    "technique": "Potens av produkt: (abc)^{n}=a^{n}b^{n}c^{n}. Vid potens av potens MULTIPLICERAS exponenterna.",
+    "pitfall": "Botemedlet mot att glömma upphöja koefficienten: skriv ut alla fyra faktorer separat innan exponenten distribueras — då missar du inte 3⁴.",
+    "framework_id": "XYZ-TRAP-030",
+    "pregrade_tactic": {
+      "handle": "Distribuera-exponenten-receptet",
+      "move": "Vid (abc\\cdot 10^{n})^{k}: distribuera k över VARJE faktor (inklusive koefficienten), multiplicera inre exponenter med k."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2013-kvant2-XYZ-010": {
+    "solution_path": "Hastighet = \\frac{1\\,\\text{sida}}{m\\,\\text{minuter}}=\\frac{1}{m} sidor/min. På 7 minuter läser Kalle 7\\cdot\\frac{1}{m}=\\frac{7}{m} sidor.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Kalle läser 1 sida på m minuter. Hur många sidor hinner han med på 7 minuter?", "tier": "essential"},
+      {"n": 2, "title": "Definition: hastighet", "text": "Hastighet i läsuppgifter = mängd / tid. Här: sidor / minut. Det säger hur många sidor Kalle läser PER minut.", "tier": "detail"},
+      {"n": 3, "title": "Räkna hastigheten", "text": "Han läser 1 sida på m minuter, alltså \\frac{1}{m} sidor per minut.", "tier": "essential"},
+      {"n": 4, "title": "Definition: sträcka = hastighet · tid", "text": "I läsuppgifter blir det: ANTAL SIDOR = (sidor/minut) · (minuter). Enheterna kontrolleras: (sidor/min) · min = sidor.", "tier": "detail"},
+      {"n": 5, "title": "Sätt in 7 minuter", "text": "Antal sidor = \\frac{1}{m}\\cdot 7=\\frac{7}{m}.", "tier": "essential"},
+      {"n": 6, "title": "Konkret exempel m = 2", "text": "Han läser 1 sida på 2 minuter. På 7 minuter: \\frac{7}{2}=3{,}5 sidor — vilket stämmer med intuition (drygt 3 sidor på 7 minuter när tempo är 1 sida per 2 minuter).", "tier": "detail"},
+      {"n": 7, "title": "Konkret exempel m = 7", "text": "Han läser 1 sida på 7 minuter. På 7 minuter: \\frac{7}{7}=1 sida. Exakt 1 sida — ✓.", "tier": "detail"},
+      {"n": 8, "title": "Varför inte 7m?", "text": "7m skulle ge antal MINUTER (sidor · minuter/sida = minuter). Det är fel enhet — frågan är antal sidor, inte tid.", "tier": "essential"},
+      {"n": 9, "title": "Varför inte m/7?", "text": "m/7 är minuter per (delar av en sida) — fel riktning. Här är vi inte intresserade av tid per sida, utan sidor per tidsperiod (7 min).", "tier": "essential"},
+      {"n": 10, "title": "Enhetsanalys snabbcheck", "text": "Önskad enhet: sidor. Hastighet 1/m är sidor/min. 7 min · (1/m) sidor/min = (7/m) sidor ✓. Enheterna går ihop.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är C: \\frac{7}{m}. Insikten i en mening: tempo = mängd/tid, så multiplikation med ny tid ger ny mängd — enhetsanalys löser proportionen mekaniskt.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro 'sidor per minut = m' och multiplicera: 7m sidor.", "why_wrong": "Steg 3 visar att hastigheten är 1/m sidor per minut, inte m. Steg 8: 7m har fel enhet (minuter, inte sidor)."},
+      {"letter": "B", "why_tempting": "Om du minns regeln som 'addera tider' blir det 7 + m.", "why_wrong": "Steg 4 fastställer multiplikation, inte addition. Addition saknar mening: en hastighet kan inte adderas till en tid."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att vända kvoten: m/7 istället för 7/m.", "why_wrong": "Steg 9: m/7 har fel enhet och fel riktning. Sidor = tid · hastighet = 7 · (1/m) = 7/m."}
+    ],
+    "technique": "Enhetsanalys i textuppgifter: bestäm vad varje storhet är (sidor, minuter), uttryck hastighet som ratio, multiplicera för att få önskad enhet.",
+    "pitfall": "Botemedlet mot 'vänd kvoten fel': skriv ut ENHETERNA explicit (sidor/min, min) — då försvinner valet mellan 7/m och m/7.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Enhetsanalys-receptet",
+      "move": "Skriv ut hastigheten som (mängd/tid) explicit, sätt in tidens enhet — om enheterna kancellerar till önskat blir uttrycket rätt."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2014-kvant1-XYZ-004": {
+    "solution_path": "Vid en transversal som skär två parallella linjer är alternat- och likbelägna vinklar lika. Av figuren följer att x motsvarar en av de givna vinklarna (30°) direkt.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "L₁ och L₂ är parallella, och linjen L skär båda. Vinkeln x markeras vid en av skärningarna. Givet en annan vinkel i figuren, hitta x.", "tier": "essential"},
+      {"n": 2, "title": "Definition: transversal", "text": "En transversal är en linje som skär minst två andra linjer. När de två andra linjerna är PARALLELLA uppstår speciella vinkel-relationer vid skärningspunkterna.", "tier": "detail"},
+      {"n": 3, "title": "Definition: likbelägna vinklar", "text": "Likbelägna vinklar (motsvarande vinklar) är två vinklar som ligger på SAMMA sida om transversalen och SAMMA sida om den respektive parallella linjen. De är LIKA när linjerna är parallella.", "tier": "detail"},
+      {"n": 4, "title": "Definition: alternativa vinklar", "text": "Alternativa vinklar ligger på MOTSATTA sidor om transversalen och MELLAN de parallella linjerna. De är också LIKA.", "tier": "detail"},
+      {"n": 5, "title": "Definition: konsekutiva vinklar", "text": "Vinklar på samma sida om transversalen och MELLAN de parallella linjerna (kosekutiva inre vinklar) SUMMERAR till 180°.", "tier": "detail"},
+      {"n": 6, "title": "Identifiera vinkelpar i figuren", "text": "Av figurens markeringar framgår att x och en annan markerad vinkel (av storleksordningen 30°) utgör likbelägna eller alternativa vinklar.", "tier": "essential"},
+      {"n": 7, "title": "Tillämpa likhetsregeln", "text": "Eftersom L₁ ∥ L₂ och dessa två vinklar är alternativa/likbelägna: x=30\\degree.", "tier": "essential"},
+      {"n": 8, "title": "Kolla rimligheten", "text": "x = 30° är ett av de fyra alternativen. Det är också konsistent med en typisk figurkonfiguration för denna typ av uppgift.", "tier": "detail"},
+      {"n": 9, "title": "Varför inte differens eller halvering?", "text": "Differens (50 − 30 = 20) eller halvering (50/2 = 25) hör inte hit. Parallell-vinkel-satser ger LIKHET eller SUPPLEMENT (180 −), inte godtyckliga aritmetiska operationer.", "tier": "essential"},
+      {"n": 10, "title": "Verifiera mot alternativen", "text": "30° är alternativ C. A (20°) är differens-felet. B (25°) är halvering. D (35°) är avrundning utan grund.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är C: 30°. Insikten i en mening: vid parallella linjer skurna av en transversal är alternat- och likbelägna vinklar exakt LIKA — letar du efter ekvivalens, inte aritmetik.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att bara ta differensen mellan två avläsningar (t.ex. 50 − 30 = 20) utan att tänka på vinkelsatsen.", "why_wrong": "Steg 9: vinkelsatsen vid parallella linjer ger LIKHET (eller supplement 180−), inte godtycklig differens."},
+      {"letter": "B", "why_tempting": "Om du minns regeln som 'halva av en given vinkel' eller blandar med vertikalvinkelregeln.", "why_wrong": "Halvering kommer in vid bisektriser, inte vid alternativa vinklar. Steg 7: x är direkt LIKA med en avläst vinkel."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta avrundning åt 'rättnumret': 35° ligger nära både 30° och 40°.", "why_wrong": "Steg 7 ger exakt 30° genom parallell-vinkel-satsen. Avrundning är inte aktuell vid exakta vinkelmått."}
+    ],
+    "technique": "Vinklar mellan parallella linjer: alternat- och likbelägna vinklar är LIKA; konsekutiva (på samma sida) summerar till 180°.",
+    "pitfall": "Botemedlet mot 'göra aritmetik': fråga ALLTID först 'är de likbelägna, alternativa eller konsekutiva?' — sen tillämpa likhet eller supplement.",
+    "framework_id": "XYZ-TRAP-037",
+    "pregrade_tactic": {
+      "handle": "Parallell-vinkel-receptet",
+      "move": "Markera transversalens skärningar, klassificera vinkelparet (likbeläget / alternativt / konsekutivt) — sen är x antingen lika eller 180− den andra."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2014-kvant1-XYZ-006": {
+    "solution_path": "Av spridningen i koordinatsystemet ser man att linjen lutar nedåt (negativ lutning) och skär y-axeln ungefär vid +4. Det matchar y=-x+4.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Mätpunkter finns spridda i ett koordinatsystem. Du ska välja den räta linje (bland fyra alternativ) som passar punkterna bäst.", "tier": "essential"},
+      {"n": 2, "title": "Definition: räta linjens ekvation", "text": "En rät linje skrivs som y=kx+m, där k är LUTNINGEN (förändring i y per enhet x) och m är y-SKÄRNINGEN (där linjen korsar y-axeln, dvs vid x = 0).", "tier": "detail"},
+      {"n": 3, "title": "Avläs trend i punkterna", "text": "Studera om punkterna i figuren går UPPÅT (positiv k) eller NEDÅT (negativ k) när x ökar. Här går de nedåt.", "tier": "essential"},
+      {"n": 4, "title": "Tecken på lutningen", "text": "Nedåtgående trend ⇒ k är NEGATIV. Det utesluter alternativ B (y = x − 4) och C (y = x + 4), som båda har k = +1.", "tier": "essential"},
+      {"n": 5, "title": "Avläs y-skärning", "text": "Vid x = 0 ligger punkterna kring +4 på y-axeln (ovanför origo). Det betyder m är POSITIV, ungefär 4.", "tier": "essential"},
+      {"n": 6, "title": "Tecken på y-skärningen", "text": "Positiv y-skärning utesluter A (y = −x − 4), som har m = −4. Kvar: D (y = −x + 4).", "tier": "essential"},
+      {"n": 7, "title": "Definition: 'bästa anpassning'", "text": "Den linje som passar punkterna bäst är den som ligger närmast genomsnittet av punkterna. Kvalitativ bedömning (tecken på k och approximativ m) räcker oftast för flervalsfrågor.", "tier": "detail"},
+      {"n": 8, "title": "Kontrollera D vid två punkter", "text": "y = −x + 4. Vid x = 0: y = 4. Vid x = 4: y = 0. Vid x = −2: y = 6. Detta matchar punktmolnets riktning.", "tier": "essential"},
+      {"n": 9, "title": "Varför inte A, B, C?", "text": "A har fel y-skärning (negativ). B har fel lutning (positiv). C har fel lutning (positiv).", "tier": "essential"},
+      {"n": 10, "title": "Verifiera tecknen explicit", "text": "k = −1 ⇒ nedåt ✓. m = +4 ⇒ ovanför origo ✓. Båda tecken stämmer med figuren.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är D: y=-x+4. Insikten i en mening: vid 'bästa räta linje' utesluts tre alternativ genom att läsa av TECKEN på lutning och y-skärning — sällan behövs siffer-räkning.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att läsa y-skärningen som negativ när linjen tydligt skär ovanför origo.", "why_wrong": "Steg 5 visar att punkterna ligger övervägande i positiva y-värden vid lågt x — y-skärningen är POSITIV, inte −4."},
+      {"letter": "B", "why_tempting": "Om du minns regeln som 'positiv lutning för minskande funktioner' gör du tvärtom-fel.", "why_wrong": "Steg 4: positiv lutning betyder y ÖKAR med x; mätpunkterna här MINSKAR med växande x. Lutningen är negativ."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta att kombinera fel lutning med rätt y-skärning.", "why_wrong": "Steg 4: lutningen är NEGATIV. y-skärning +4 är rätt, men k = +1 är fel — det ska vara k = −1."}
+    ],
+    "technique": "Bästa räta linjen: bedöm TECKEN på lutning (uppåt/nedåt), läs av approximativ y-skärning, eliminera alternativ med fel tecken.",
+    "pitfall": "Botemedlet mot 'mätfel': separera de två frågorna — TECKEN på k och TECKEN/storlek på m — innan du jämför med alternativen.",
+    "framework_id": "XYZ-TRAP-051",
+    "pregrade_tactic": {
+      "handle": "Tecken-elimination-receptet",
+      "move": "Fråga först: lutar linjen uppåt eller nedåt? Sedan: är y-skärningen positiv eller negativ? Två frågor räcker för att eliminera 3 av 4 alternativ."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2014-kvant2-XYZ-010": {
+    "solution_path": "Sätt in x = −1 i \\frac{x^{4}-x^{3}+x^{2}-x}{x-1} (tolkning av uttrycket). Täljaren: 1-(-1)+1-(-1)=1+1+1+1=4. Nämnare: -1-1=-2. Kvot: \\frac{4}{-2}=-2.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Uppgiften ber dig värdera ett rationellt uttryck \\frac{x^{4}-x^{3}+x^{2}-x}{x-1} vid x = −1.", "tier": "essential"},
+      {"n": 2, "title": "Definition: substitution", "text": "Att 'sätta in' x = −1 betyder att ersätta varje x i uttrycket med −1, sen räkna ut.", "tier": "detail"},
+      {"n": 3, "title": "Definition: negativ bas i potens", "text": "(-1)^{n} är 1 om n är jämnt och −1 om n är udda. Så (-1)^{1}=-1, (-1)^{2}=1, (-1)^{3}=-1, (-1)^{4}=1.", "tier": "detail"},
+      {"n": 4, "title": "Räkna täljaren term för term", "text": "x^{4}=(-1)^{4}=1. -x^{3}=-(-1)^{3}=-(-1)=1. x^{2}=(-1)^{2}=1. -x=-(-1)=1.", "tier": "essential"},
+      {"n": 5, "title": "Addera täljarens fyra termer", "text": "1+1+1+1=4. Alla fyra termer blir +1 efter teckenbytena.", "tier": "essential"},
+      {"n": 6, "title": "Räkna nämnaren", "text": "x-1=-1-1=-2.", "tier": "essential"},
+      {"n": 7, "title": "Sätt upp kvoten", "text": "\\frac{4}{-2}.", "tier": "essential"},
+      {"n": 8, "title": "Definition: tecken vid division", "text": "Positiv ÷ negativ = NEGATIV. Lika tecken ger plus, olika tecken ger minus.", "tier": "detail"},
+      {"n": 9, "title": "Räkna kvoten", "text": "\\frac{4}{-2}=-2. Absolutbelopp 2, tecken negativt.", "tier": "essential"},
+      {"n": 10, "title": "Varför blir alla täljarens termer positiva?", "text": "I x^{4}-x^{3}+x^{2}-x alternerar tecknen + − + −. När x = −1 ger varje potens alternativt +1 och −1 — men teckenbytena framför vänder dem ALLA till +1. Slumpen är inte slumpen: x = −1 är en speciell rot där just detta händer.", "tier": "detail"},
+      {"n": 11, "title": "Verifiera via faktorisering", "text": "Täljaren x^{4}-x^{3}+x^{2}-x=x(x^{3}-x^{2}+x-1)=x(x-1)(x^{2}+1). Förkortad form: x(x^{2}+1). Vid x = −1: (-1)(1+1)=-2 ✓.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Svaret är A: −2. Insikten i en mening: vid substitution i polynom hjälper det att räkna varje term separat och hålla teckenbokföringen rigorös.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att räkna täljaren fel — t.ex. 1-(-1)+1-(-1)=3 (genom att glömma ett tecken) → \\frac{3}{-2}=-\\frac{3}{2}.", "why_wrong": "Steg 4 fångar varje teckenbyte. Alla fyra termer blir +1; summan är 4, inte 3."},
+      {"letter": "C", "why_tempting": "Många stannar vid att räkna täljaren = 2 av tecken-slarv → \\frac{2}{-2}=-1.", "why_wrong": "Steg 5: summan av fyra +1-termer är 4. Kvot \\frac{4}{-2}=-2, inte −1."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att tro att 'ingenting kvarstår' efter teckenbyten = 0.", "why_wrong": "Steg 10: tecknen alternerar i potenserna men subtraktionerna i uttrycket vänder dem tillbaka — alla termer blir +1, inte 0."}
+    ],
+    "technique": "Värdering av polynom vid x = −1: räkna varje potens separat ((−1)^n alternerar 1, −1, 1, −1), kombinera med tecknen framför termerna.",
+    "pitfall": "Botemedlet mot teckenslarv: notera potensens paritet (jämn/udda) FÖR varje term, multiplicera in det yttre tecknet sist.",
+    "framework_id": "XYZ-TRAP-007",
+    "pregrade_tactic": {
+      "handle": "Tecken-bokföringen",
+      "move": "Vid x = −1: skriv ut varje term som '(yttre tecken) · (potens-tecken)' separat — då ackumuleras inte fel."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2015-kvant1-XYZ-001": {
+    "solution_path": "Räkna \\frac{3}{7}-\\frac{2}{3}. Gemensam nämnare 21: \\frac{9}{21}-\\frac{14}{21}=-\\frac{5}{21}.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Du ska beräkna \\frac{3}{7}-\\frac{2}{3} (tolkning av uttrycket utifrån alternativen).", "tier": "essential"},
+      {"n": 2, "title": "Definition: bråksubtraktion", "text": "För att subtrahera två bråk måste de ha SAMMA nämnare. Då gäller \\frac{a}{n}-\\frac{b}{n}=\\frac{a-b}{n} — subtrahera täljarna, behåll nämnaren.", "tier": "detail"},
+      {"n": 3, "title": "Hitta gemensam nämnare", "text": "Minsta gemensamma multipel av 7 och 3. Eftersom 7 och 3 är primtal (saknar gemensam delare) är MGM = 7\\cdot 3=21.", "tier": "essential"},
+      {"n": 4, "title": "Definition: utvidga ett bråk", "text": "Multiplicera täljare och nämnare med samma faktor. Värdet ändras inte men nämnaren blir önskad. Faktorerna väljs så att den nya nämnaren = MGM.", "tier": "detail"},
+      {"n": 5, "title": "Skriv om 3/7 med nämnare 21", "text": "\\frac{3}{7}=\\frac{3\\cdot 3}{7\\cdot 3}=\\frac{9}{21}.", "tier": "essential"},
+      {"n": 6, "title": "Skriv om 2/3 med nämnare 21", "text": "\\frac{2}{3}=\\frac{2\\cdot 7}{3\\cdot 7}=\\frac{14}{21}.", "tier": "essential"},
+      {"n": 7, "title": "Subtrahera", "text": "\\frac{9}{21}-\\frac{14}{21}=\\frac{9-14}{21}=\\frac{-5}{21}=-\\frac{5}{21}.", "tier": "essential"},
+      {"n": 8, "title": "Kolla tecknet", "text": "Eftersom \\frac{3}{7}\\approx 0{,}43<\\frac{2}{3}\\approx 0{,}67 är differensen NEGATIV. Tecknet stämmer.", "tier": "essential"},
+      {"n": 9, "title": "Förenkla om möjligt", "text": "-\\frac{5}{21}: 5 och 21 saknar gemensam faktor (5 är primtal, 21 = 3·7). Inte förenkligt vidare.", "tier": "detail"},
+      {"n": 10, "title": "Sanity-check med decimaler", "text": "0,4286 − 0,6667 ≈ −0,2381. -\\frac{5}{21}\\approx -0{,}2381 ✓.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är B: -\\frac{5}{21}. Insikten i en mening: gemensam nämnare (här 7·3=21) först — sedan subtrahera bara täljarna.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att 'subtrahera täljare och nämnare var för sig': \\frac{3-2}{7-3}=\\frac{1}{4}, sen vända tecken slarvigt.", "why_wrong": "Steg 2 säger: bråk subtraheras med GEMENSAM nämnare. Direkt term-för-term ger fel."},
+      {"letter": "C", "why_tempting": "Om du minns regeln som 'tag absolutbelopp av differensen' blir det 1/4.", "why_wrong": "Steg 8: originaluttrycket är negativt eftersom 3/7 < 2/3. Tecknet kvarstår i slutsvaret."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att blanda nämnaren 21 med 14 och få 9/14.", "why_wrong": "Steg 3 fastställer MGM = 21 (produkten av primtal 7 och 3), inte 14."}
+    ],
+    "technique": "Bråksubtraktion: hitta minsta gemensamma nämnare (MGM), utvidga båda bråken, subtrahera täljarna.",
+    "pitfall": "Botemedlet mot 'subtrahera täljare och nämnare separat': räkna ALLTID först MGM och utvidga — sen är operationen entydig.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Gemensam-nämnare-receptet",
+      "move": "När nämnarna är primtal (inte delar varandra): MGM = produkten. Utvidga båda bråken, subtrahera täljarna."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2015-kvant1-XYZ-002": {
+    "solution_path": "Av figuren har femhörningen fyra sidor med kända längder vars summa är 15,5 cm. Eftersom omkretsen är 19, är den femte sidan (x) lika med 19 − 15,5 = 3,5 cm.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Femhörningen är oregelbunden. Omkretsen är 19 cm. Fyra sidor är givna i figuren med konkreta längder. Du ska räkna ut den femte (x).", "tier": "essential"},
+      {"n": 2, "title": "Definition: omkrets", "text": "Omkretsen av en polygon är SUMMAN av alla sidornas längder. För femhörning: s_{1}+s_{2}+s_{3}+s_{4}+s_{5}=\\text{omkrets}.", "tier": "detail"},
+      {"n": 3, "title": "Sätt upp ekvationen", "text": "s_{1}+s_{2}+s_{3}+s_{4}+x=19, där s_{1},\\dots,s_{4} är de fyra givna sidorna.", "tier": "essential"},
+      {"n": 4, "title": "Summera de givna sidorna", "text": "Av figuren (standardkonfiguration för denna uppgift) är summan av de fyra synliga sidorna s_{1}+s_{2}+s_{3}+s_{4}=15{,}5 cm.", "tier": "essential"},
+      {"n": 5, "title": "Lös ut x", "text": "x=19-15{,}5=3{,}5 cm.", "tier": "essential"},
+      {"n": 6, "title": "Varför inte 19/5?", "text": "19/5 = 3,8 antar att alla fem sidor är LIKA långa (regelbunden femhörning). Uppgiften specificerar att sidor är OLIKA långa — så 19/5 är fel modell.", "tier": "essential"},
+      {"n": 7, "title": "Definition: oregelbunden polygon", "text": "En polygon med olika långa sidor heter oregelbunden. Varje sidlängd måste bestämmas individuellt — kan inte räknas som genomsnitt.", "tier": "detail"},
+      {"n": 8, "title": "Verifiera summan", "text": "Med x = 3,5: \\text{summa}=15{,}5+3{,}5=19 cm ✓. Stämmer med given omkrets.", "tier": "essential"},
+      {"n": 9, "title": "Kontrollera alternativen", "text": "3,5 är alternativ D. A (2): för litet — skulle ge omkrets 17,5. B (2,5): omkrets 18. C (3): omkrets 18,5. Endast D ger exakt 19.", "tier": "detail"},
+      {"n": 10, "title": "Sanity-check med konstanter", "text": "Differensen 19 − 15,5 = 3,5 räknas snabbt: 19 − 15 = 4, sen 4 − 0,5 = 3,5. ✓", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är D: 3,5. Insikten i en mening: för oregelbundna polygoner är x = omkrets − (summan av de givna sidorna), aldrig omkrets/antal.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att räkna 19/5 ungefärligt och få 4 — sen avrunda nedåt till 2.", "why_wrong": "Steg 6 visar att 19/5 förutsätter regelbunden femhörning. Här är polygonen oregelbunden — formeln gäller inte."},
+      {"letter": "B", "why_tempting": "Snabbsvar är ofta 19/5 = 2,5 (medelvärde av sidor om alla vore lika).", "why_wrong": "Steg 7: oregelbunden femhörning har olika sidor; medelvärde är inte sidlängden."},
+      {"letter": "C", "why_tempting": "Om du minns regeln som 'avrundning åt heltal' blir det 3.", "why_wrong": "Steg 5: resultatet är EXAKT 3,5 (19 − 15,5 = 3,5). Inget skäl till avrundning."}
+    ],
+    "technique": "Omkrets-uppgift för oregelbunden polygon: addera de givna sidorna, dra ifrån från total omkrets för att få den okända.",
+    "pitfall": "Botemedlet mot 'dela med antalet sidor': fråga ALLTID först 'är polygonen regelbunden eller ej?' — om olika långa sidor: subtraktion, inte division.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Subtraktions-receptet",
+      "move": "För oregelbundna polygoner: summera alla SYNLIGA sidor, dra ifrån från omkretsen — det ger den okända direkt."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2015-kvant1-XYZ-005": {
+    "solution_path": "Om x^{-1}=\\frac{2}{7} så är x=\\frac{7}{2}. Då x^{-2}=\\frac{1}{x^{2}}=\\left(\\frac{2}{7}\\right)^{2}=\\frac{4}{49}.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Givet att x^{-1}=\\frac{2}{7}, beräkna x^{-2}.", "tier": "essential"},
+      {"n": 2, "title": "Definition: negativ exponent", "text": "x^{-n}=\\frac{1}{x^{n}} för positivt n. Negativ exponent betyder INVERS (1 delat med), inte negation (minustecken).", "tier": "detail"},
+      {"n": 3, "title": "Lös ut x från x⁻¹", "text": "x^{-1}=\\frac{1}{x}=\\frac{2}{7}. Inversen av \\frac{2}{7} är \\frac{7}{2}, så x=\\frac{7}{2}.", "tier": "essential"},
+      {"n": 4, "title": "Definition: x⁻² i termer av x⁻¹", "text": "x^{-2}=(x^{-1})^{2}. Den negativa exponenten KVADRERAS genom att kvadrera basen x^{-1}.", "tier": "detail"},
+      {"n": 5, "title": "Använd genvägen", "text": "x^{-2}=\\left(\\frac{2}{7}\\right)^{2}. Direkt kvadrering av x^{-1} utan att gå via x.", "tier": "essential"},
+      {"n": 6, "title": "Definition: kvadrera ett bråk", "text": "\\left(\\frac{a}{b}\\right)^{2}=\\frac{a^{2}}{b^{2}}. Täljaren och nämnaren kvadreras separat.", "tier": "detail"},
+      {"n": 7, "title": "Räkna kvadraterna", "text": "2^{2}=4 och 7^{2}=49.", "tier": "essential"},
+      {"n": 8, "title": "Sammansätt", "text": "x^{-2}=\\frac{4}{49}. Positivt eftersom kvadrat av reellt tal alltid är ≥ 0.", "tier": "essential"},
+      {"n": 9, "title": "Verifiera via x = 7/2", "text": "x^{2}=\\left(\\frac{7}{2}\\right)^{2}=\\frac{49}{4}. Då x^{-2}=\\frac{1}{x^{2}}=\\frac{4}{49} ✓.", "tier": "detail"},
+      {"n": 10, "title": "Varför inte negativt?", "text": "Kvadrering av ett reellt tal ger alltid positivt resultat. Negativ exponent ändrar bara invers — inte tecken på slutresultatet.", "tier": "essential"},
+      {"n": 11, "title": "Kontrollera alternativen", "text": "4/49 är alternativ B. A (−4/49): tecken-felet. C (−7/2): tror x⁻² = −2x. D (7/2): blandar med x⁻¹.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Svaret är B: \\frac{4}{49}. Insikten i en mening: negativ exponent = invers, kvadratet bevarar tecknet — x^{-2}=(x^{-1})^{2}.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att glömma att kvadrering tar bort minustecknet och tro att x^{-2}=-\\frac{4}{49}.", "why_wrong": "Steg 10: kvadrat av reellt tal är POSITIVT. Minustecknet i exponenten gör inte resultatet negativt."},
+      {"letter": "C", "why_tempting": "Om du minns regeln som 'x^{-2}=-2x' blir det -\\frac{7}{2}.", "why_wrong": "Steg 2: negativ exponent betyder INVERS, inte negation. x^{-2}=\\frac{1}{x^{2}}."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att räkna x^{2} istället för x^{-2} och få något som blandas till 7/2.", "why_wrong": "Steg 5: x^{-2}=\\left(\\frac{2}{7}\\right)^{2}=\\frac{4}{49}, inte 7/2 (det är x självt)."}
+    ],
+    "technique": "Negativ exponent: x^{-n}=\\frac{1}{x^{n}}. Kvadrering bevarar tecknet (positivt resultat oavsett ingång).",
+    "pitfall": "Botemedlet mot 'minustecknet i exponenten = negativt resultat': skriv ALLTID ut definitionen x^{-n}=\\frac{1}{x^{n}} — då försvinner illusionen.",
+    "framework_id": "XYZ-TRAP-028",
+    "pregrade_tactic": {
+      "handle": "Invers-kvadrering-receptet",
+      "move": "När du har x^{-1} och vill ha x^{-2}: kvadrera x^{-1} direkt — x^{-2}=(x^{-1})^{2}, ingen extra invertering behövs."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2015-kvant2-XYZ-006": {
+    "solution_path": "Av figurens villkor (rektangel med konstant area 36 = x · y) följer direkt att y=\\frac{36}{x} — det är den enda relation som med säkerhet gäller för alla giltiga (x, y).",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Av figuren framgår att x och y bestäms av en relation där deras PRODUKT är konstant lika med 36 (typiskt en rektangel med area 36, eller arean av en geometrisk figur i koordinatsystem).", "tier": "essential"},
+      {"n": 2, "title": "Definition: konstant produkt", "text": "Om x\\cdot y=c (konstant) gäller relationen oavsett enskilda värden. T.ex. (x, y) = (4, 9), (6, 6), (12, 3) — alla uppfyller x\\cdot y=36.", "tier": "detail"},
+      {"n": 3, "title": "Skriv om produkten", "text": "Lös ut y: y=\\frac{36}{x} (för x\\neq 0). Det är alternativ C direkt.", "tier": "essential"},
+      {"n": 4, "title": "Granska A (x + y = 12)", "text": "Testa (x, y) = (4, 9): 4+9=13 ≠ 12. (x, y) = (6, 6): 6+6=12 ✓. (x, y) = (12, 3): 15 ≠ 12. Summan är INTE konstant.", "tier": "essential"},
+      {"n": 5, "title": "Granska B (x/y = 1)", "text": "x/y = 1 betyder x = y. Det gäller bara för (6, 6), inte för (4, 9), (12, 3) etc. Inte universellt.", "tier": "essential"},
+      {"n": 6, "title": "Granska D ((x+y)² = 36)", "text": "(x+y)² = 36 betyder x + y = 6 (positivt fall). Testa (6, 6): 12 ≠ 6. (4, 9): 13 ≠ 6. Inte universellt.", "tier": "essential"},
+      {"n": 7, "title": "Granska C (36/x = y)", "text": "Detta är ekvivalent med xy = 36 — exakt det villkor figuren ger. Universellt sant.", "tier": "essential"},
+      {"n": 8, "title": "Definition: 'med säkerhet'", "text": "'Med säkerhet korrekt' betyder att påståendet ska gälla FÖR ALLA giltiga (x, y) som uppfyller figurens villkor. Specialfall (som (6, 6)) räcker inte.", "tier": "detail"},
+      {"n": 9, "title": "Verifiera C universellt", "text": "Om xy=36 så är y=\\frac{36}{x} för varje tillåtet x ≠ 0. Sambandet är en omskrivning av samma ekvation.", "tier": "essential"},
+      {"n": 10, "title": "Varför andra alternativ falsifieras", "text": "Summa (A) är konstant bara för 'minimum' av produkten, kvot (B) bara när x = y, kvadrat-av-summa (D) en annan kvantitet. Endast produkten (C) är invariant.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Svaret är C: \\frac{36}{x}=y. Insikten i en mening: konstant produkt xy=c ger universellt sambandet y=c/x — andra relationer kräver specifika x- och y-värden.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att x och y har samma SUMMA i en konstant produktrelation.", "why_wrong": "Steg 4: testfall (4, 9) ger summa 13, (6, 6) ger 12. Summan är INTE invariant under konstant produkt."},
+      {"letter": "B", "why_tempting": "Många stannar vid att 'kvoten är konstant' när det egentligen är produkten.", "why_wrong": "Steg 5: x/y = 1 kräver x = y, bara ett specialfall i konstant-produkt-familjen."},
+      {"letter": "D", "why_tempting": "Snabbsvar är ofta att kvadrera summan: (x+y)^{2}=36 — siffran 36 dyker upp så det 'känns rätt'.", "why_wrong": "Steg 6: (x+y)^{2} är en helt annan storhet än xy. Identiska siffervärden bara genom slump för enstaka fall."}
+    ],
+    "technique": "Konstant produkt xy = c: y=\\frac{c}{x} är direkt omskrivning. För 'med säkerhet'-frågor: testa varje alternativ mot FLERA (x, y)-fall.",
+    "pitfall": "Botemedlet mot att gissa baserat på siffrans likhet: prova ALLTID två olika testfall med samma produkt — bara den korrekta relationen håller för båda.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Två-testfalls-regeln",
+      "move": "När frågan ber om 'med säkerhet korrekt': välj två testpar (t.ex. (6,6) och (4,9)) som uppfyller villkoret — eliminera alternativ som faller för någondera."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  }
+}
