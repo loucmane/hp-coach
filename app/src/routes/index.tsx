@@ -9,6 +9,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react'
 
 import { useStats } from '@/api/hooks/useStats'
+import { useTopTraps } from '@/api/hooks/useTopTraps'
 import { SECTION_KEYS } from '@/data/questions'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { type DiagnosticMemory, loadDiagnosticMemory } from '@/lib/diagnosticMemory'
@@ -26,6 +27,7 @@ function HomeRoute() {
   const { plan, allComplete, regenerate } = useDailyPlan()
 
   const streakDays = stats.data?.streakDays
+  const topTraps = useTopTraps()
 
   // Projected total + verbal/quant halves for the Home score line.
   // Pure derivation from stats.data; route owns the computation so
@@ -78,6 +80,7 @@ function HomeRoute() {
       onRegenerate={regenerate}
       projected={projected}
       diagnosticMemory={diagnosticMemory}
+      topTraps={topTraps}
       onPlanItemNavigate={navigateHref}
       streakDays={streakDays}
       onAvancerat={() => navigate({ to: '/avancerat' })}

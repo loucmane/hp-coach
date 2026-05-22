@@ -15,7 +15,9 @@
 // useDailyPlan resolves stats + due + framework hints, which takes a
 // round-trip; flashing the old masthead in that window would be jarring.
 
+import type { TopTrap } from '@/api/hooks/useTopTraps'
 import { DailyPlanCard } from '@/components/home/DailyPlanCard'
+import { TopTrapsCard } from '@/components/home/TopTrapsCard'
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
@@ -43,6 +45,10 @@ type HomeMobileProps = {
    *  0.62 · rebaseline →`. Closes B4: the diagnostic seeds the score
    *  model, but without this line the user has no way to feel it. */
   diagnosticMemory?: DiagnosticMemory | null
+  /** Top recurring trap patterns from the active mistake queue.
+   *  Rendered between the score line and the plan card. Empty array
+   *  hides the section — silent on signal-less days. */
+  topTraps?: TopTrap[]
   /** Called when a plan item is tapped. Receives the item's href so
    *  the route can dispatch SPA navigation. */
   onPlanItemNavigate?: (href: string) => void
@@ -68,6 +74,7 @@ export function HomeMobile({
   onRegenerate = NOOP,
   projected = null,
   diagnosticMemory = null,
+  topTraps = [],
   onPlanItemNavigate,
   coach: coachProp,
   showStreak,
@@ -240,6 +247,8 @@ export function HomeMobile({
                 <span>kvant {formatScore(projected.quant)}</span>
               </div>
             )}
+
+            {topTraps.length > 0 && <TopTrapsCard traps={topTraps} />}
 
             {plan ? (
               <DailyPlanCard
