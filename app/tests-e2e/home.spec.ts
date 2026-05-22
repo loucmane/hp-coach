@@ -39,14 +39,14 @@ authedTest('Daily Home renders the prescriptive plan card', async ({ page }) => 
   await authedExpect(card.or(skeleton)).toBeVisible({ timeout: 10_000 })
 })
 
-authedTest('Bottom tabs visible on phone (Hem/Övning/Coach/Framsteg)', async ({ page }, testInfo) => {
+authedTest('Bottom tabs visible on phone (Hem/Övning/Feedback/Framsteg)', async ({ page }, testInfo) => {
   test.skip(
     testInfo.project.name !== 'mobile',
     'BottomTabs render only at phone viewport (EDITION dropped them on desktop)',
   )
   await authedExpect(page.getByRole('button', { name: 'Hem' })).toBeVisible()
   await authedExpect(page.getByRole('button', { name: 'Övning' })).toBeVisible()
-  await authedExpect(page.getByRole('button', { name: 'Coach' })).toBeVisible()
+  await authedExpect(page.getByRole('button', { name: 'Feedback' })).toBeVisible()
   await authedExpect(page.getByRole('button', { name: 'Framsteg' })).toBeVisible()
 })
 
