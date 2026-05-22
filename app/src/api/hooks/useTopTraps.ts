@@ -98,10 +98,11 @@ export function useTopTraps(opts: UseTopTrapsOptions = {}): TopTrap[] {
   useEffect(() => {
     let alive = true
     if (qids.length === 0) {
-      setTraps([])
+      setTraps((prev) => (prev.length === 0 ? prev : []))
       return
     }
-    Promise.all(qids.map((qid) => loadExplanation(qid))).then((entries) => {
+    void (async () => {
+      const entries = await Promise.all(qids.map((qid) => loadExplanation(qid)))
       if (!alive) return
       // Count by framework_id.
       const counts = new Map<string, number>()
@@ -120,13 +121,11 @@ export function useTopTraps(opts: UseTopTrapsOptions = {}): TopTrap[] {
       candidates.sort((a, b) => b.count - a.count || a.framework_id.localeCompare(b.framework_id))
       const top = candidates.slice(0, limit)
       if (top.length === 0) {
-        setTraps([])
+        setTraps((prev) => (prev.length === 0 ? prev : []))
         return
       }
       // Record today's snapshot — drives the week-over-week trend
       // computation below. Idempotent within a day (replaces same-date).
-      // We record only the candidates that *qualified* as patterns
-      // (count >= minCount); single-miss noise is intentionally excluded.
       const now = new Date()
       const history = recordTrapSnapshot(
         now,
@@ -135,27 +134,46 @@ export function useTopTraps(opts: UseTopTrapsOptions = {}): TopTrap[] {
 
       // Best-effort headline lookup per unique section.
       const sections = Array.from(new Set(top.map((t) => t.section)))
-      Promise.all(sections.map((s) => loadFrameworkHeadlines(s))).then((maps) => {
-        if (!alive) return
-        const merged: Record<string, string> = {}
-        for (const m of maps) Object.assign(merged, m)
-        setTraps(
-          top.map((t) => ({
-            framework_id: t.framework_id,
-            section: t.section,
-            count: t.count,
-            headline: merged[t.framework_id] || null,
-            trend: computeTrapTrend(now, t.framework_id, t.count, history),
-          })),
-        )
-      })
-    })
+      const maps = await Promise.all(sections.map((s) => loadFrameworkHeadlines(s)))
+      if (!alive) return
+      const merged: Record<string, string> = {}
+      for (const m of maps) Object.assign(merged, m)
+      const next = top.map((t) => ({
+        framework_id: t.framework_id,
+        section: t.section,
+        count: t.count,
+        headline: merged[t.framework_id] || null,
+        trend: computeTrapTrend(now, t.framework_id, t.count, history),
+      }))
+      // Functional update + equality short-circuit — keeps React from
+      // tripping the "Maximum update depth" guard when the resolved
+      // value matches what's already in state. The deep-eq cost here
+      // is tiny (top-N ≤ 3).
+      setTraps((prev) => (sameTraps(prev, next) ? prev : next))
+    })()
     return () => {
       alive = false
     }
   }, [qids, limit, minCount])
 
   return traps
+}
+
+function sameTraps(a: TopTrap[], b: TopTrap[]): boolean {
+  if (a === b) return true
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    const x = a[i]
+    const y = b[i]
+    if (x.framework_id !== y.framework_id) return false
+    if (x.count !== y.count) return false
+    if (x.headline !== y.headline) return false
+    if (x.trend.kind !== y.trend.kind) return false
+    if (x.trend.kind === 'delta' && y.trend.kind === 'delta') {
+      if (x.trend.delta !== y.trend.delta || x.trend.daysAgo !== y.trend.daysAgo) return false
+    }
+  }
+  return true
 }
 
 /** Test-only: clear the framework headline cache. */
