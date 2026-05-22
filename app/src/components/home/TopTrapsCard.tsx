@@ -4,14 +4,13 @@
 // Sits between the score line ("just nu · 0.65 / 2.0") and the
 // daily plan card. Renders only when at least one trap meets the
 // minimum miss-count threshold — empty state is intentionally silent
-// so the surface vanishes during the user's good days. A signal-
-// without-noise card.
+// so the surface vanishes during the user's good days.
 //
 // Each row:
 //   1. Trap ID (mono, like KVA-TRAP-010)
 //   2. Headline (display italic, from frameworks JSON tldr)
-//   3. Miss count (mono, tabular nums)
-//   4. Tap-target: the whole row links to /lektion#trap-id
+//   3. Miss count + week-over-week trend chip (mono, tabular nums)
+//   4. Tap-target: the whole row links to /drill?framework=ID
 //
 // Mirrors the editorial rhythm of DiagnosticReport's ClusterCallout
 // so the dogfood user feels the *same* aesthetic in both surfaces —
@@ -19,6 +18,7 @@
 
 import type { TopTrap } from '@/api/hooks/useTopTraps'
 import { Eyebrow, Hairline } from '@/components/primitives'
+import type { TrapTrend } from '@/lib/trapHistory'
 
 type TopTrapsCardProps = {
   traps: TopTrap[]
@@ -72,10 +72,7 @@ function TrapRow({ trap }: { trap: TopTrap }) {
   // Target is `/drill?framework=ID` rather than the lesson page —
   // action-first per ADHD-PI: the user has already missed this trap
   // 2+ times, so they don't need to re-read it; they need fresh
-  // exposure to the same pattern. The drill route's `?framework=`
-  // deep-link (B1.1) plays the framework entry's authored
-  // example_questions. The lesson is still one tap away via the
-  // framework chip inside the drill flow.
+  // exposure to the same pattern.
   const href = `/drill?framework=${trap.framework_id}`
   return (
     <a
@@ -106,14 +103,18 @@ function TrapRow({ trap }: { trap: TopTrap }) {
         style={{
           gridColumn: '2 / 3',
           gridRow: '1 / 3',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          gap: 3,
           fontFamily: 'var(--font-mono)',
           fontSize: 12,
-          color: 'var(--ink)',
           fontVariantNumeric: 'tabular-nums',
           whiteSpace: 'nowrap',
         }}
       >
-        {trap.count} ggr
+        <span style={{ color: 'var(--ink)' }}>{trap.count} ggr</span>
+        <TrendChip trend={trap.trend} />
       </div>
       <div
         style={{
@@ -129,5 +130,52 @@ function TrapRow({ trap }: { trap: TopTrap }) {
         {trap.headline ?? 'Öva detta mönster →'}
       </div>
     </a>
+  )
+}
+
+/** Small trend signal next to the miss count. Renders nothing when
+ *  there's no comparable history — week 1 users see plain counts
+ *  until snapshots build up. */
+function TrendChip({ trend }: { trend: TrapTrend }) {
+  if (trend.kind === 'unknown') {
+    return null
+  }
+  if (trend.kind === 'new') {
+    return (
+      <span
+        data-testid="trap-trend"
+        data-trend="new"
+        style={{ color: 'var(--muted)', fontSize: 10 }}
+      >
+        ny
+      </span>
+    )
+  }
+  const { delta } = trend
+  if (delta === 0) {
+    return (
+      <span
+        data-testid="trap-trend"
+        data-trend="flat"
+        style={{ color: 'var(--muted)', fontSize: 10 }}
+      >
+        ↔
+      </span>
+    )
+  }
+  const arrow = delta < 0 ? '↓' : '↑'
+  // Down = good (fewer misses), up = struggling. We don't color these
+  // — the arrow direction carries the meaning, and chroma would push
+  // a value judgement onto every glance. Subtle muted tone keeps the
+  // chip background-noise rather than alarm-stripe.
+  return (
+    <span
+      data-testid="trap-trend"
+      data-trend={delta < 0 ? 'down' : 'up'}
+      style={{ color: 'var(--ink-2)', fontSize: 10 }}
+    >
+      {arrow}
+      {Math.abs(delta)}
+    </span>
   )
 }
