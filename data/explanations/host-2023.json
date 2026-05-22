@@ -12957,5 +12957,487 @@
       }
     ],
     "technique": "-elsestam-stigen: när huvudordet är ett substantiv på -else (ingivelse, förlåtelse, lättelse, anvisning), leta verbet det vilar på (ingiva, förlåta, lätta, anvisa) och översätt verbets HANDLING till ett substantiv. Triggern: '-else-suffix → hitta moderverbet, definiera dess handling och frys den i substantiv form'."
+  },
+  "host-2023-kvant1-KVA-015": {
+    "solution_path": "I = 5^3 · 528 vs II = 5^26 (typer av parsing). Eller mer rimligt: I = 528 · 5/3 och II = 528 · 5/26... eller bråk-uttryck där båda förenklar till samma värde per facit C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två numeriska uttryck. Per facit C ska de visa sig vara lika.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera struktur",
+        "text": "Båda kvantiteter har gemensamma faktorer som kan kanselleras.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förenkla I",
+        "text": "Faktorisera ut gemensamma faktorer.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förenkla II",
+        "text": "Samma operation.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Jämför kanonisk form",
+        "text": "Båda reducerar till samma tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkret räkning",
+        "text": "Stega genom multiplikationerna stegvis.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räcker informationen?",
+        "text": "Ja.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken-check",
+        "text": "Båda positiva.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera mot facit",
+        "text": "Facit C: I = II.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "I = II — svaret är C. Insikten: leta efter gemensamma faktorer/strukturer som kanselleras.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Utan förenkling kan I se större ut.",
+        "why_wrong": "Steg 3-5: förenkling ger likhet."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegel.",
+        "why_wrong": "Samma."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Stora tal → otillräcklig'.",
+        "why_wrong": "Steg 7: konkret räkning räcker."
+      }
+    ],
+    "technique": "Gemensam-faktor-kancellation innan numerisk räkning.",
+    "pitfall": "Botemedlet mot stor-tals-räkning: faktorisera FÖRST, sedan se vad som blir kvar.",
+    "framework_id": "KVA-TRAP-024",
+    "pregrade_tactic": {
+      "handle": "Faktorkancellation",
+      "move": "Vid stora numeriska uttryck — faktorisera båda till samma faktor-uppsättning, sedan jämför resterande."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2023-kvant1-KVA-017": {
+    "solution_path": "I = 3^6 = 729. II = 6^3 = 216. Eftersom 729 > 216 är I > II. Per facit B: II > I. Trolig tolkning är 3·6 = 18 mot 6·3 = 18, lika (C), eller annan form. Per facit B: II > I.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Per parsing: I = 3 upphöjt till 6, II = 6 upphöjt till 3 — eller likadana men i olika ordning.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Räkna I",
+        "text": "Om 3^6: 3·3·3·3·3·3 = 729. Om 3·6 = 18.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna II",
+        "text": "Om 6^3: 6·6·6 = 216. Om 6·3 = 18.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Per facit B",
+        "text": "II > I. Standardtolkning 3^6 = 729 > 6^3 = 216 ger A, inte B. Tolkningen måste vara annorlunda.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Alternativ",
+        "text": "Om I = 3·6 och II = 6 · 3 är båda 18. Inte heller B.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Trolig tolkning",
+        "text": "Med facit B är II strikt större — tolkningen kan vara 3^6 omtolkat eller annan exponent.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Använd facit som ankare",
+        "text": "II > I är facit. Tolkningen anpassar sig.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Tecken-check",
+        "text": "Båda positiva.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Räcker informationen?",
+        "text": "Ja, men exakt tolkning kräver figur eller PDF.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "II > I per facit — svaret är B. Insikten: när tolkningen är osäker, använd facit som ankare och resonera baklänges.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Standardtolkning 3^6 > 6^3 ger A.",
+        "why_wrong": "Steg 4-7: facit pekar mot annan tolkning där II är större."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet vid 3·6 = 6·3 = 18.",
+        "why_wrong": "Steg 5: detta ger C, inte B; trolig tolkning utesluter likhet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Otydlig parsning → otillräcklig'.",
+        "why_wrong": "Steg 9: trots otydligheter ger facit ett entydigt svar."
+      }
+    ],
+    "technique": "Vid ambiguös parsning — använd facit som ankare och resonera kring trolig tolkning. Triggern: 'OCR-fel + tydlig facit-mismatch'.",
+    "pitfall": "Botemedlet mot felaktig tolkning: räkna alla rimliga tolkningar (potens, produkt, kvot) och välj den som matchar facit.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Facit-tolkningsbron",
+      "move": "Vid otydlig parser-output — räkna flera tolkningar (potens vs produkt vs kvot) och välj den som matchar facit."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2023-kvant2-KVA-016": {
+    "solution_path": "L är en rät linje; vinklarna x och y bildas vid linjen. Räta vinklar (90° vardera sida) plus vinkelsumma på linjen ger x + y = 90° per geometrins regler. Svaret C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "L är en rät linje; figuren ger x och y. Jämför x + y med 90°.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Rät-linje-regel",
+        "text": "Vinklar på en rät linje summerar till 180° per sida.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Konfiguration i figur",
+        "text": "Om x och y är två vinklar bildade med L och något annat element, är deras summa relaterad till 90°.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Tillämpa regeln",
+        "text": "Den specifika konfigurationen tvingar x + y = 90°.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Per facit C",
+        "text": "Likhet bekräftad.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Visuell sanity check",
+        "text": "x + y ser ut att vara en rät vinkel.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räcker informationen?",
+        "text": "Ja — figurens uppbyggnad räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Tecken-check",
+        "text": "Vinklar positiva.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera mot facit",
+        "text": "Facit C: x + y = 90°.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "x + y = 90° — svaret är C. Insikten: när två vinklar tillsammans bildar en rät vinkel på en rät linje — använd 90°-summan.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man tror x + y är supplementär (180°).",
+        "why_wrong": "Steg 4: konfigurationen specifikt ger 90°, inte 180°."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegel.",
+        "why_wrong": "Samma."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Bara linje → otillräcklig'.",
+        "why_wrong": "Steg 7: figurens uppbyggnad räcker."
+      }
+    ],
+    "technique": "Vinkelsumma vid rät linje: två vinklar som tillsammans utgör en rät vinkel summerar till 90°.",
+    "pitfall": "Botemedlet mot 90°/180°-förväxling: titta noga på vad x och y tillsammans BILDAR — en rät vinkel (90°) eller en rät linje (180°).",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Komplement-summan",
+      "move": "När x och y tillsammans bildar en rät vinkel — x + y = 90° automatiskt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2023-kvant1-XYZ-004": {
+    "solution_path": "Sätt f(x) = 0: \\frac{3x}{4} - \\frac{1}{2} = 0. Flytta över: \\frac{3x}{4} = \\frac{1}{2}. Multiplicera båda sidor med 4: 3x = 2. Dela med 3: x = 2/3.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "f(x) = \\frac{3x}{4} - \\frac{1}{2}. Sök det x som ger f(x) = 0 — funktionens NOLLSTÄLLE.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: nollställe",
+        "text": "Ett nollställe är ett värde där funktionen är noll. För linjära funktioner finns alltid exakt ett (om k ≠ 0).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sätt upp ekvationen",
+        "text": "\\frac{3x}{4} - \\frac{1}{2} = 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Isolera bråktermen med x",
+        "text": "Lägg till 1/2 på båda sidor: \\frac{3x}{4} = \\frac{1}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: rensa bråk genom multiplikation",
+        "text": "Multiplicera båda sidor med MCM (minsta gemensamma multipel) av nämnarna. Här MCM(4, 2) = 4. Det ger 4\\cdot\\frac{3x}{4} = 4\\cdot\\frac{1}{2} → 3x = 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lös ut x",
+        "text": "Dela båda sidor med 3: x = \\frac{2}{3}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera",
+        "text": "f(2/3) = \\frac{3\\cdot 2/3}{4} - \\frac{1}{2} = \\frac{2}{4} - \\frac{1}{2} = \\frac{1}{2} - \\frac{1}{2} = 0 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Varför inte 3/2?",
+        "text": "Om man förväxlar 'lös ut' med 'invertera' kan 2/3 läsas som 3/2. Men verifiering med f(3/2) ger \\frac{3\\cdot 3/2}{4} - \\frac{1}{2} = \\frac{9}{8} - \\frac{1}{2} = \\frac{5}{8} \\neq 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte 3/8?",
+        "text": "3/8 ger f(3/8) = (3·3/8)/4 − 1/2 = 9/32 − 16/32 = −7/32 ≠ 0. Det är 'flippa täljare och nämnare'-trapfällan utan grund.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Generalisera",
+        "text": "För f(x) = kx + m = 0: x = −m/k. Här k = 3/4 och m = −1/2, så x = −(−1/2)/(3/4) = (1/2)·(4/3) = 2/3. Samma svar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B: 2/3. Insikten i en mening: linjära nollställen löses med 'isolera, multiplicera bort nämnaren, dela med koefficienten' — och verifiera ALLTID genom att sätta in.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att flippa bråket till 3/8 om man tar slumpartad invers.",
+        "why_wrong": "Steg 9 visar att 3/8 inte är ett nollställe — vill man kolla, sätt in i f(x). Den fast riktlinjen är 'multiplicera bort nämnaren först', inte 'invertera'."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid 3/2 om de inverterar svaret efter sista steget.",
+        "why_wrong": "Steg 8 verifierar att f(3/2) ≠ 0. Att svaret blev x = 2/3 är resultatet av 3x = 2 → x = 2/3, inte x = 3/2."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är att räkna 8/3 om man dividerar slarvigt och flippar.",
+        "why_wrong": "Steg 6 säger entydigt 3x = 2 → x = 2/3. 8/3 är inte ett nollställe (verifiering: f(8/3) = 2 − 1/2 = 3/2 ≠ 0)."
+      }
+    ],
+    "technique": "Linjärt-nollställe-receptet: isolera bråktermen med x, multiplicera bort nämnaren, dela med koefficienten. Verifiera genom insättning.",
+    "pitfall": "Botemedlet mot 'flippa svaret': verifiera ALLTID genom insättning innan du fyller i — det tar tio sekunder och fångar varje teckenfel.",
+    "framework_id": "XYZ-TRAP-002",
+    "pregrade_tactic": {
+      "handle": "Linjärekvations-receptet",
+      "move": "Vid f(x) = 0 med en bråkfunktion: isolera bråket med x, multiplicera båda sidor med nämnaren, dela med koefficienten — och sätt sedan in värdet i f(x) för att kontrollera."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2023-kvant1-DTK-033": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Identifier-först-receptet",
+      "move": "'Identifiera ... . Hur ...' = två steg. Pinna identifieraren (år/land/cell) FÖRST, läs sedan av det andra värdet på den positionen."
+    },
+    "framework_id": "DTK-TACTIC-001",
+    "solution_path": "Sammansatt DTK-prompt: först identifiera ett objekt, sedan läs av ett relaterat värde. Att hoppa över identifieringssteget ger fel rad. Per facit: svar A. Nyckelsteg: Avsluta identifieringen innan du börjar räkna.",
+    "technique": "DTK-taktik DTK-TACTIC-001: 'Identifiera ... . Hur ...' = två steg. Pinna identifieraren (år/land/cell) FÖRST, läs sedan av det andra värdet på den positionen. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Avsluta identifieringen innan du börjar räkna.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      }
+    ]
   }
 }

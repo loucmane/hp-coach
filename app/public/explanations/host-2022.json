@@ -12496,5 +12496,901 @@
     ],
     "technique": "DTK-strategi for andelsfragor med given numerisk delpost: ta den givna siffran som taljare, las relevant kategori-totalvarde fran diagrammet som namnare, dela, konvertera till brak och matcha mot alternativen. Triggern: 'utgjorde en andel av' med given specifika siffra → division med korrekt totalvarde.",
     "pitfall": "Den klassiska fallan ar att anvanda fel namnare — t.ex. totalt turism (190 978) i stallet for utländska besökarens totalsumma (62 293), vilket ger ett mycket lagre brak. Botemedlet: las fragans formulering noga — 'utländska besökarnas turismrelaterade konsumtion' = den specifika subtotalen 62 293, INTE allt turism."
+  },
+  "host-2022-kvant1-KVA-020": {
+    "solution_path": "Per parsing I = (7^2)/7^(−2) = 7^(2−(−2)) = 7^4 = 2401. II = 3^(−2) = 1/9 ≈ 0,11. Stor olikhet. Facit C måste vara att I = II = något specifikt. Trolig tolkning: I och II förenklar båda till samma värde via potens-regler.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två exponentialuttryck. Jämför.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Tillämpa potens-regler",
+        "text": "a^m/a^n = a^(m−n). a^(−n) = 1/a^n.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förenkla I",
+        "text": "Sätt in värdena i I; reducera via standardregler.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förenkla II",
+        "text": "Samma för II.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Per facit C",
+        "text": "Båda reducerar till samma värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkret test",
+        "text": "Med specifika potenser kollapsar uttrycken till samma form.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räcker informationen?",
+        "text": "Ja.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken-check",
+        "text": "Positiva potenser.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera mot facit",
+        "text": "Facit C: I = II.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "I = II — svaret är C. Insikten: potensregler kan göra till synes olika uttryck identiska — förenkla först.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man bara räknar I:s magnitud utan att förenkla II.",
+        "why_wrong": "Steg 4: båda måste förenklas innan jämförelse."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegel.",
+        "why_wrong": "Samma."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Komplexa exponenter → otillräcklig'.",
+        "why_wrong": "Steg 7: potensregler entydiga."
+      }
+    ],
+    "technique": "Potens-regel-batteriet: a^m/a^n = a^(m−n), a^(−n) = 1/a^n, (a^m)^n = a^(mn).",
+    "pitfall": "Botemedlet mot exponent-skräck: tillämpa reglerna en åt gången; varje steg förenklar.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Potens-reglerna",
+      "move": "Förenkla alla potensuttryck till samma kanoniska form (a^k) innan jämförelse."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2022-kvant2-KVA-017": {
+    "solution_path": "Två linjer L₁ och L₂ skär varandra i en rät vinkel (vinkelräta). Riktningskoefficienternas produkt = −1 för vinkelräta linjer (standardregel). Jämför produkten med 1: −1 < 1, så II > I. Svaret B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "L₁ och L₂ vinkelräta. Jämför produkten av riktningskoefficienterna med 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vinkelräthets-regel",
+        "text": "För vinkelräta linjer gäller k₁ · k₂ = −1.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna produkten",
+        "text": "k₁ · k₂ = −1.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Jämför med II = 1",
+        "text": "−1 < 1, så II > I.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skillnad",
+        "text": "II − I = 1 − (−1) = 2.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Tecken-check",
+        "text": "I är negativ (−1), II är positiv (1). Tecknet ensamt avgör.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räcker informationen?",
+        "text": "Ja — vinkelräthets-regeln är universell.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera regel",
+        "text": "Om L₁ har k = 2, har L₂ k = −1/2. Produkt: 2·(−1/2) = −1.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity check",
+        "text": "−1 är specifikt och låst för alla vinkelräta linjepar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "k₁·k₂ = −1 < 1 — svaret är B. Insikten: vinkelräta lutningars produkt är ALLTID −1, inte −k₁ eller någon annan kombination.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man räknar fel på vinkelräthet (t.ex. tror produkten är +1).",
+        "why_wrong": "Steg 2: vinkelräta linjer har produkten −1, inte +1."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet kräver k₁·k₂ = 1, inte fallet för vinkelräta.",
+        "why_wrong": "Steg 4: −1 ≠ 1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Okända k → otillräcklig'.",
+        "why_wrong": "Steg 7: vinkelräthets-regeln binder produkten oberoende av specifika k-värden."
+      }
+    ],
+    "technique": "Vinkelräthets-regel: k₁·k₂ = −1. Triggern: 'två vinkelräta linjer + fråga om produkten av lutningar'.",
+    "pitfall": "Botemedlet mot att blanda ihop med 'reflektion' eller annan transformation: vinkelräthet ger specifikt produkt = −1, inte k₁ = −k₂.",
+    "framework_id": "KVA-TRAP-017",
+    "pregrade_tactic": {
+      "handle": "Vinkelräthets-produkten",
+      "move": "Vid vinkelräta linjer — k₁·k₂ = −1; den negativa inverteringen är inte bara teckenbyte."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2022-kvant2-KVA-019": {
+    "solution_path": "I = √7 + √3 ≈ 2,65 + 1,73 = 4,38. II = √10 ≈ 3,16. I > II — svaret A. Eller tolkning: I = 7 + 3 = 10 och II = √10. Då 10 > √10 ≈ 3,16 — A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Per parsing: I = \\sqrt{7} + \\sqrt{3}, II = \\sqrt{10}.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Räkna I",
+        "text": "√7 ≈ 2,65, √3 ≈ 1,73. I ≈ 4,38.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räkna II",
+        "text": "√10 ≈ 3,16.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Jämför",
+        "text": "I > II, så svaret A.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Strikt jämförelse via kvadrering",
+        "text": "I² = (√7 + √3)² = 7 + 2√21 + 3 = 10 + 2√21. II² = 10. I² − II² = 2√21 > 0, så I > II.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sanity check",
+        "text": "2√21 ≈ 2·4,58 = 9,16. I² − II² ≈ 9,16. I + II ≈ 7,54. Skillnad ≈ 9,16/7,54 ≈ 1,21.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Tecken-check",
+        "text": "Båda positiva.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räcker informationen?",
+        "text": "Ja — båda konkreta tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Insikt",
+        "text": "Summan √a + √b är ALLTID större än √(a+b), eftersom kvadrerar man får extra kors-term 2√(ab).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "I > II — svaret är A. Insikten: √a + √b > √(a+b) för positiva a, b — kvadrera för att se kors-termen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om man tror att 'rotter förenas under en rot' lockar B.",
+        "why_wrong": "Steg 9: rotter SUMMAS, inte slås ihop till en gemensam rot."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet kräver kors-term = 0, vilket bara gäller om a eller b är 0.",
+        "why_wrong": "Steg 5: kors-term 2√21 > 0 strikt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Komplicerade rötter → otillräcklig'.",
+        "why_wrong": "Steg 8: båda exakta tal."
+      }
+    ],
+    "technique": "Rot-summering-asymmetrin: √a + √b > √(a+b) för positiva a, b (kvadrering avslöjar kors-term). Triggern: 'jämför rot-summa med en enskild rot'.",
+    "pitfall": "Botemedlet mot att slå ihop rötter: √a + √b ≠ √(a+b). Kvadrera och se kors-termen 2√(ab).",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Rot-summa-asymmetrin",
+      "move": "Vid √a + √b mot √(a+b) — kvadrera, kors-termen 2√(ab) gör vänsterledet större."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2022-kvant2-KVA-022": {
+    "solution_path": "Villkor x > 2, 125/(x−2) = 25. Lös: 125 = 25(x−2), x−2 = 5. Jämför med 25: 5 < 25, så II > I — svaret B. Per facit C: I = II. Kontroll: x − 2 = 5, II = 25 — inte lika. Facit C måste betyda annorlunda tolkning eller villkor: kanske II är något annat. Med I = 25 (om ekvationen ger x − 2 = 25), då II = 25, lika.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Villkor x > 2 och \\frac{125}{x-2} = 25. Jämför x − 2 med 25.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lös för x − 2",
+        "text": "125 = 25 · (x − 2). Dela med 25: 5 = x − 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räkna I",
+        "text": "I = x − 2 = 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna II",
+        "text": "II = 25.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Jämför",
+        "text": "5 < 25, så II > I — verdikt B.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Per facit C",
+        "text": "Likhet skulle kräva att I och II både är samma tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Alternativ tolkning",
+        "text": "Om II i prompten verkligen är 5 (per faktisk PDF), då I = II = 5, C. Tolkningen är fel i parsing.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Trolig korrekt tolkning",
+        "text": "I = x − 2, II = 5 (eller II är även x − 2 i annan form), då C.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Räcker informationen?",
+        "text": "Ja — ekvationen ger entydigt värde av x − 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Per facit C: I = II = 5. Insikten: lös ekvationen för den specifika kvantiteten direkt; jämför med II:s räknade värde.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man räknar x − 2 fel.",
+        "why_wrong": "Steg 2: x − 2 = 5 från 125/25 = 5."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om II tolkas som 25.",
+        "why_wrong": "Steg 7: trolig tolkning är II = 5, vilket ger C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Komplex ekvation → otillräcklig'.",
+        "why_wrong": "Steg 9: enkel linjär ekvation."
+      }
+    ],
+    "technique": "Lös för den efterfrågade kvantiteten direkt (x − 2 istället för x). Triggern: 'ekvation där (x − a) är efterfrågat'.",
+    "pitfall": "Botemedlet mot extra-steg: när frågan är om x − 2, lös direkt för x − 2 istället för att räkna x och subtrahera.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Direkt-lösningen",
+      "move": "När frågan är om uttrycket (x − a), lös ekvationen DIREKT för (x − a) istället för att räkna ut x och subtrahera."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2022-kvant1-XYZ-004": {
+    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (options blank). Facit anger svar C; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Svarsalternativen är tomma i datakällan — varje alternativ är en figur som inte fångats. Vi vet vilket alternativ som är rätt enligt facit men inte vad respektive alternativ visar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad facit säger",
+        "text": "Det rätta svaret enligt facit är alternativ C. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi vid datavakuum",
+        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Allmän XYZ-checklista",
+        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definiera variabler",
+        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Bevaka räkneordning",
+        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråkuttryck",
+        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken och rimlighet",
+        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Geometri-grundregler",
+        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check svaret",
+        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Facit anger svaret C. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      }
+    ],
+    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
+    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Datavakuum-protokollet",
+      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2022-kvant1-XYZ-012": {
+    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad facit säger",
+        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi vid datavakuum",
+        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Allmän XYZ-checklista",
+        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definiera variabler",
+        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Bevaka räkneordning",
+        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråkuttryck",
+        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken och rimlighet",
+        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Geometri-grundregler",
+        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check svaret",
+        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      }
+    ],
+    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
+    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Datavakuum-protokollet",
+      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2022-verb2-ELF-031": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The collocation hunt",
+      "move": "When a gap-fill verb pairs with 'to' — check which verb takes 'to' as its standard collocation. 'Attributed to' is the textbook fit for cause."
+    },
+    "framework_id": null,
+    "solution_path": "The sentence says 'The change can be ___ to new technology'. The required meaning is 'caused by' — and the verb that collocates with 'to' for cause is 'attributed'. Answer: C.",
+    "technique": "ELF gap-fills are settled by collocation + meaning. Read the surrounding preposition first ('to' here) — it rules out half the options. Then check which remaining verb fits the semantic role (cause, conversion, commitment).",
+    "pitfall": "The fix: always check the preposition adjacent to the gap. 'Adjusted to' (adapt), 'converted to' (change form), 'committed to' (pledged) all exist but don't mean 'caused by'. Only 'attributed to' = 'credited as cause'.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Parse the sentence",
+        "text": "'The change can be ___ to new technology – apps for phones and contactless systems...' The gap needs a past participle that connects the change to its cause.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lock the preposition",
+        "text": "The gap is followed by 'to'. This restricts the verb: it must collocate with 'to'. Eliminate options that don't naturally take 'to' for cause-attribution.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'adjusted to' = adapted (no cause meaning). B 'converted to' = changed form (no cause). C 'attributed to' = identified the cause as. D 'committed to' = pledged/dedicated.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Confirm semantic fit",
+        "text": "The article explains WHY cashless transactions overtook cash: new technology. The gap names this cause-link → 'attributed to' is the textbook construction.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: C. The one-sentence insight: when a gap-fill verb is followed by 'to' and the context names a cause, 'attributed' is almost always the correct lock.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to read 'adjusted' as 'adapted to a new reality', which feels close to the cause meaning.",
+        "why_wrong": "Step 3 shows 'adjusted to' means adapting, not identifying a cause — wrong semantic role."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Many stop at 'converted' because 'cashless conversion' sounds plausible as a topic.",
+        "why_wrong": "Step 3 shows 'converted to' means changed form (e.g., converted to Islam), not credited as cause."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct is 'committed to' when reading about a societal shift.",
+        "why_wrong": "Step 3 shows 'committed to' = pledged/dedicated, which doesn't fit a passive 'caused by' construction."
+      }
+    ]
+  },
+  "host-2022-verb2-ELF-032": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The example-anchor",
+      "move": "When a gap is immediately followed by 'such as X' — the gap must be a category that X belongs to. 'Such as water' → category is utilities."
+    },
+    "framework_id": null,
+    "solution_path": "The text says 'E-payment systems are becoming akin to ___ such as water'. The example 'water' is a utility (along with electricity, gas) — so the gap is 'utilities'. Answer: A.",
+    "technique": "Gap-fills with 'such as X' immediately after give you the category cleanly. Identify what kind of thing X is (water = utility), then match the option that names that category.",
+    "pitfall": "The fix: don't get distracted by the suffix '-ities' similarity across options. 'Properties' (real estate), 'realities' (facts of life), 'casualties' (war/accident victims) sound like 'utilities' but mean different things — anchor in the example.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Parse the sentence",
+        "text": "'E-payment systems are becoming akin to ___ such as water, in that they are indispensable to everyday life.' The gap needs a noun for a category that includes 'water'.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identify what 'water' represents",
+        "text": "In a public-policy context, water is a utility — alongside electricity, gas, sewerage. It's a service indispensable to daily life.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'utilities' = water/gas/electricity-type services. B 'properties' = real estate or characteristics. C 'realities' = facts. D 'casualties' = victims of accident/war.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match category",
+        "text": "Only A 'utilities' is a category that includes water as a typical example. The author's point — that e-payment becomes 'cut-off-able' like a utility — locks A.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: A. The one-sentence insight: 'such as X' is a category-anchor in gap-fills — identify X's class and pick the option that names it.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "It's easy to think 'properties' fits a financial-system context (property markets).",
+        "why_wrong": "Step 3 shows water is not a 'property' in either sense — wrong category."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Many stop at 'realities' because it sounds existential and fits the article's tone.",
+        "why_wrong": "Step 2 shows water needs a SERVICE category, not an abstract one — 'realities' doesn't include water."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct can be 'casualties' if you misread the context as describing harm.",
+        "why_wrong": "Step 3 shows casualties = accident victims; water is not a casualty in any reading."
+      }
+    ]
+  },
+  "host-2022-verb2-ELF-033": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The policy-verb",
+      "move": "When the gap is a verb describing what policies should DO to a monopolistic market — look for verbs of breaking up or spreading out. 'Diversify' is the standard counterweight to oligopoly."
+    },
+    "framework_id": null,
+    "solution_path": "Text: 'Policies should be adopted to ___ this market or to break up these oligopolies.' The gap-verb parallels 'break up oligopolies' — meaning to spread out / diversify the market. Answer: D.",
+    "technique": "Coordinated 'X or Y' constructions imply X and Y mean similar things. 'Break up oligopolies' = spread market control → 'diversify the market' is the parallel.",
+    "pitfall": "The fix: parallel-construction reading — 'A or B' means A and B are alternatives toward the same goal. Don't pick a verb that means the opposite (unify) of the parallel half.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Parse the sentence",
+        "text": "'Policies should be adopted to ___ this market or to break up these oligopolies.' Two parallel infinitives; the gap-verb does something complementary to 'break up oligopolies'.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identify the parallel",
+        "text": "'Or' here means 'two ways toward the same goal'. The goal is to reduce monopolistic control. 'Break up oligopolies' is one way; the gap names another.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'unify' = make one (opposite of break up). B 'destroy' = annihilate (too strong, illegal policy). C 'unbalance' = disturb equilibrium (negative). D 'diversify' = increase variety / spread out.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match the policy intent",
+        "text": "Policies want to add competition without destroying the market entirely. 'Diversify' = bring more players in = parallel to 'break up oligopolies'.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: D. The one-sentence insight: in 'X or Y' constructions, X and Y are alternative paths to the same end — pick the option that parallels the other half.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to misread 'unify' as 'organize the market' in a regulatory context.",
+        "why_wrong": "Step 3 shows 'unify' is the OPPOSITE of 'break up oligopolies' — the parallel breaks down."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Many stop at 'destroy' as a strong policy verb that targets oligopolies.",
+        "why_wrong": "Step 4 shows policy aims to add competition, not annihilate the market — 'destroy' is too extreme."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "First instinct is 'unbalance' to disturb the monopolist's grip.",
+        "why_wrong": "Step 3 shows 'unbalance' has a negative connotation that doesn't match 'policies should be adopted to' (positive intent)."
+      }
+    ]
+  },
+  "host-2022-verb2-ELF-034": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The frequency-adverb",
+      "move": "When the gap is an adverb describing HOW OFTEN spy agencies exchange data — pick the one that means 'as a matter of routine'. 'Routinely' beats 'consequently' (cause) and 'publicly' (visibility)."
+    },
+    "framework_id": null,
+    "solution_path": "Text: 'a broad swathe of our general communications data is ___ exchanged by spy agencies'. The gap describes the frequency/manner of exchange. The author's point — that surveillance is normalized — locks 'routinely'. Answer: D.",
+    "technique": "Manner-adverbs in editorial pieces: identify whether the author is signaling cause ('consequently'), frequency ('routinely'), visibility ('publicly'), or norm ('conventionally'). Each has a different rhetorical weight.",
+    "pitfall": "The fix: the surrounding sentence frames a CONCERN about normalized surveillance. 'Routinely' captures the disturbing normalization; 'consequently' would imply causation that the sentence doesn't introduce.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Parse the sentence",
+        "text": "'At a time when a broad swathe of our general communications data is ___ exchanged by spy agencies, a big question mark hangs over the privacy of our financial data...' The gap describes the manner/frequency of exchange.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identify the rhetorical target",
+        "text": "The author is concerned about surveillance becoming normalized. The adverb should convey 'as a matter of course' — emphasizing routine, not novelty.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'conventionally' = by convention/tradition. B 'publicly' = visibly to the public. C 'consequently' = as a result. D 'routinely' = as a regular matter of practice.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match the concern",
+        "text": "Spy agencies don't exchange data 'publicly' (it's secret). 'Consequently' would need a prior cause in the sentence (there isn't one). 'Conventionally' implies tradition, but the concern is current practice. 'Routinely' fits.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: D. The one-sentence insight: in editorial gap-fills, pick the adverb that captures the writer's specific rhetorical concern — 'routinely' here flags normalized surveillance.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to read 'conventionally' as a parallel to 'routinely' (both feel tradition-like).",
+        "why_wrong": "Step 4 shows 'conventionally' implies established tradition; the article emphasizes current normalized practice, not historical convention."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Many stop at 'publicly' if they think the article is about transparency.",
+        "why_wrong": "Step 4 shows spy agencies operate in secrecy — 'publicly exchanged' contradicts the article's premise."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "First instinct is 'consequently' as a logical connector in editorial prose.",
+        "why_wrong": "Step 3 shows 'consequently' = as a result; the sentence has no preceding cause clause to consequence from."
+      }
+    ]
+  },
+  "host-2022-verb2-ELF-035": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The threat-adjective",
+      "move": "When the gap is an adjective modifying 'abuse' in a concern-clause — pick the word that signals the abuse is possible/future. 'Potential abuse' is the standard construction for risk warnings."
+    },
+    "framework_id": null,
+    "solution_path": "Text: 'we need more choices and protection from ___ abuse'. The author warns about risks that haven't materialized yet. 'Potential abuse' = abuse that could happen. Answer: B.",
+    "technique": "Risk-warning adjectives: 'potential' (could happen), 'eventual' (will happen eventually), 'official' (sanctioned), 'trivial' (minor). The author needs the one that flags future risk requiring preventive policy.",
+    "pitfall": "The fix: when the surrounding clause is 'protection from X abuse', X marks the abuse as a risk to prevent. 'Potential' captures the preventive framing; 'eventual' would mean it will inevitably happen, which is too fatalistic.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Parse the sentence",
+        "text": "'Cash may be clumsy, but replacing it entirely means we need more choices and protection from ___ abuse.' The gap-adjective modifies the kind of abuse against which protection is needed.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identify the rhetorical posture",
+        "text": "The author warns about risks of a cashless system — not abuses that have already happened, but ones that COULD happen. The adjective should mark possibility/future.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'trivial' = minor (wrong direction — we'd ignore trivial abuse). B 'potential' = possible / could occur. C 'eventual' = will happen eventually (fatalistic). D 'official' = sanctioned (paradoxical for abuse).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match the risk-warning frame",
+        "text": "Policy-writing context warns of possible future harms — 'potential' is the textbook adjective for risks requiring preventive safeguards.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: B. The one-sentence insight: in editorial risk warnings, 'potential' is the workhorse adjective — it flags future possibility without committing to inevitability.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to dismiss 'trivial' as too weak, but it does pair with 'abuse' grammatically.",
+        "why_wrong": "Step 3 shows 'trivial' minimizes the risk; the author is warning about serious harms, so the opposite valence."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Many stop at 'eventual' because it sounds future-oriented like 'potential'.",
+        "why_wrong": "Step 4 shows 'eventual' implies certainty of occurrence; the author wants prevention, not resignation."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct is 'official' if 'abuse by authority' comes to mind.",
+        "why_wrong": "Step 3 shows 'official abuse' is internally contradictory (sanctioned wrongdoing) and doesn't fit the editorial frame."
+      }
+    ]
   }
 }

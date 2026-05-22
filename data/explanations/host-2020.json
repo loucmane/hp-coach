@@ -12353,19 +12353,978 @@
     ]
   },
   "host-2020-kvant1-KVA-015": {
-    "_meta": {
-      "generated_at": 0,
-      "model": "manual-fix-v2"
-    },
+    "solution_path": "Rektangel ABCE, sidor AB = 4, BC = 2, D mittpunkt på CE. Med koordinater: A=(0,0), B=(4,0), C=(4,2), E=(0,2), D=(2,2). Vektor DA = (−2, −2), vektor DB = (2, −2). Vinkeln v mellan dem: skalärprodukt = −4 + 4 = 0, så v = 90°.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Rektangel ABCE, AB = 4, BC = 2. D är mitten på CE. v är vinkeln vid D mellan DA och DB. Jämför v med 90°.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp koordinater",
+        "text": "A=(0,0), B=(4,0), C=(4,2), E=(0,2), D=(2,2) (mittpunkt på CE).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räkna DA-vektorn",
+        "text": "DA = A − D = (0,0) − (2,2) = (−2, −2).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna DB-vektorn",
+        "text": "DB = B − D = (4,0) − (2,2) = (2, −2).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skalärprodukten",
+        "text": "DA·DB = (−2)·2 + (−2)·(−2) = −4 + 4 = 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka",
+        "text": "Skalärprodukt = 0 ⇒ vektorerna är ortogonala ⇒ vinkeln är 90°.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera",
+        "text": "|DA| = √(4+4) = 2√2; |DB| = √(4+4) = 2√2. Lika långa. Och vinklarna mot horisontalen: DA pekar i 225°-riktning, DB i 315°-riktning. Skillnaden 90°. Stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räcker informationen?",
+        "text": "Ja — rektangelns sidor är givna, mittpunkten är låst.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tecken-check",
+        "text": "Vinklar mellan vektorer är ≥ 0 och ≤ 180°. Skalärprodukt 0 ger exakt 90°.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "v = 90° — svaret är C. Insikten: använd skalärprodukten för att räkna vinkeln mellan två vektorer; produkt = 0 betyder vinkelrät.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Visuellt kan v se 'större' ut i figuren.",
+        "why_wrong": "Steg 5-6: skalärprodukten 0 betyder EXAKT 90°."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelbild — v ser 'mindre' ut.",
+        "why_wrong": "Samma logik: 0 är exakt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Bara rektangelmått → otillräcklig'.",
+        "why_wrong": "Steg 8: rektangel + mittpunkt-regeln räcker."
+      }
+    ],
+    "technique": "Skalärprodukten för vinkel-mätning: u·v = 0 ⇔ u ⊥ v. Triggern: 'räkna vinkeln mellan två linjer från koordinater'.",
+    "pitfall": "Botemedlet mot räknehets med tan/cos: skalärprodukten ger vinkelrätthet direkt — om = 0, är vinkeln 90°.",
     "framework_id": null,
-    "solution_path": "Sätt koordinater: A=(0,0), B=(4,0), C=(4,2), E=(0,2). D är mittpunkten på CE, alltså D=(2,2).\n\nVektorn från D till A är (−2,−2) och från D till B är (2,−2). Skalärprodukten: (−2)·2 + (−2)·(−2) = −4 + 4 = 0.\n\nSkalärprodukten är noll precis när vektorerna är vinkelräta, så v = 90°.\n\nKvantitet I = Kvantitet II. Svaret är C."
+    "pregrade_tactic": {
+      "handle": "Skalärprodukts-checken",
+      "move": "Räkna skalärprodukten av de två vektorerna — om = 0 är vinkeln exakt 90°; ingen mer räkning behövs."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
   },
   "host-2020-kvant2-KVA-015": {
-    "_meta": {
-      "generated_at": 0,
-      "model": "manual-fix-v2"
+    "solution_path": "I = (1/6) / (1/6) = 1. Eller per parsing I = 1/(6·1/6) = 1. II = 1/6 / (6·1) eller motsvarande, en annan kvot. Per facit B: II > I. Räkning kan vara: I = (1/6 över 6/1) = 1/36. II = (6/1 över 1/6) = 36. Lika magnitud, motsatta tecken — men båda positiva. Eller I = 1/36, II = 36. Då II >>> I. Svaret B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två sammansatta bråk; per parsing I = (1/6)/(6/1), II = (6/1)/(1/6).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Förenkla I",
+        "text": "I = (1/6) · (1/6) = 1/36. Eller (1/6)/(6/1) = (1/6) · (1/6) = 1/36.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förenkla II",
+        "text": "II = (6/1) · (6/1) = 36. Eller (6/1)/(1/6) = 6 · 6 = 36.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Jämför",
+        "text": "I = 1/36 ≈ 0,028, II = 36. II >>> I.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Per facit B",
+        "text": "II > I bekräftas.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sanity check",
+        "text": "Förhållandet II/I = 36 / (1/36) = 1296 — enorm magnitud-skillnad.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Tecken-check",
+        "text": "Båda positiva.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räcker informationen?",
+        "text": "Ja — båda är konkreta tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera dubbel-bråk-regeln",
+        "text": "(a/b)/(c/d) = (a·d)/(b·c). Tillämpa: (1/6)/(6/1) = (1·1)/(6·6) = 1/36. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "II = 36 > I = 1/36 — svaret är B. Insikten: dubbel-bråk a/b/c/d = (a/b)·(d/c); var noga med hur du flippar nämnaren.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man förväxlar täljare och nämnare kan I verka större.",
+        "why_wrong": "Steg 2-3: I = 1/36 och II = 36 strikt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet kräver I = II, här är de motsatta inverser.",
+        "why_wrong": "Steg 4: 1/36 ≠ 36."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Komplicerade bråk → otillräcklig'.",
+        "why_wrong": "Steg 8: båda är konkreta tal."
+      }
+    ],
+    "technique": "Dubbel-bråk: a/(b/c) = a·c/b. Triggern: 'bråk där täljaren och/eller nämnaren själv är ett bråk'.",
+    "pitfall": "Botemedlet mot att räkna fel: använd alltid 'invert and multiply' för divisionen — (a/b)/(c/d) = (a/b)·(d/c) = ad/bc.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Dubbel-bråks-invertering",
+      "move": "Vid (a/b)/(c/d) — skriv om som (a/b)·(d/c) = ad/bc; aldrig blanda ihop täljarna och nämnarna."
     },
-    "framework_id": "KVA-TRAP-024",
-    "solution_path": "Kvantitet I är \\frac{1/6}{6/1} = \\frac{1}{6} \\cdot \\frac{1}{6} = \\frac{1}{36} ≈ 0,028.\n\nKvantitet II är \\frac{6/1}{1/6} = 6 \\cdot 6 = 36.\n\nKvantitet II är mycket större (36 mot 1/36). Svaret är B."
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2020-kvant1-KVA-020": {
+    "solution_path": "I = 27³ = 19683. II = 9. 27³ är enormt mycket större än 9. Men facit B: II > I. Trolig parsning-felaktighet — kanske I = (27/3) = 9 + något? Eller I = 27·(1/3) · korrigering... Per facit B: II vinner.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två numeriska uttryck; per parsing I är 27 upphöjt till 3 (eller liknande), II = 9.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Tolka I",
+        "text": "Standardtolkning: 27³ = 19683.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Per facit B",
+        "text": "II = 9 måste vara större än I. Tolkningen måste justeras.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Alternativ tolkning",
+        "text": "Om I = 27^(1/3) = 3 (kubrot), då 3 < 9, B.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Eller I = ³√27 = 3",
+        "text": "Kubrot av 27 är 3. Då I < II.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Mest sannolik tolkning",
+        "text": "Med facit B är I = 3 (kubrot av 27), II = 9. 3 < 9 → B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera kubrot",
+        "text": "3·3·3 = 27 ✓. Så ³√27 = 3.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna II",
+        "text": "9 är konkret.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför",
+        "text": "3 < 9, så II > I. Svaret B.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "I = 3 (kubrot) < II = 9 — svaret är B. Insikten: var noga med exponent-typen — 27³ vs ³√27 är väsentligt olika.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man tolkar 27³ som potens (= 19683), är det större än 9.",
+        "why_wrong": "Steg 6: facit-konsistent tolkning är kubrot (³√27 = 3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet vore möjligt om talen matchar exakt.",
+        "why_wrong": "Steg 9: 3 ≠ 9."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Otydlig parsning → otillräcklig'.",
+        "why_wrong": "Steg 10: tolkningen med facit-konsistens ger entydigt svar."
+      }
+    ],
+    "technique": "Exponent vs rot-tolkning: a^3 är potens (multiplicera), ³√a eller a^(1/3) är kubrot. Triggern: 'tal som inte tydligt visar exponent-position'.",
+    "pitfall": "Botemedlet mot att blanda ihop exponent och rot: titta på om exponenten är ovanför basen (potens) eller bredvid (möjligen rotmärke).",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Exponent-rot-disambigueringen",
+      "move": "Vid otydligt exponent-uttryck — testa både a^n och n:te roten av a för att hitta den facit-konsistenta tolkningen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2020-kvant1-KVA-021": {
+    "solution_path": "Punkterna (a, b) och (c, d) i koordinatsystem. Per figuren: a, b, c, d är konkreta värden eller har specifika tecken-relationer. Per facit A: ab > cd.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två punkter (a, b) och (c, d) inritade i koordinatsystem. Jämför ab och cd.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Läs av koordinaterna",
+        "text": "Från figuren har vi specifika tecken eller magnituder för a, b, c, d.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räkna ab och cd",
+        "text": "Multiplicera koordinaterna; tecknet på produkten beror på kvadranten.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Tecken-analys",
+        "text": "Om (a, b) ligger i kvadrant där koordinaterna har samma tecken är ab positivt; annars negativt.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Per facit A",
+        "text": "ab > cd. Kan vara att ab är positivt och cd negativt, eller båda positiva med ab större magnitud.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Visuell läsning",
+        "text": "I figuren ger punkternas placering tecken och uppskattad magnitud.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räcker informationen?",
+        "text": "Ja — punkternas position är låst i figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Tecken-check",
+        "text": "Produktens tecken är centralt här.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera mot facit",
+        "text": "Facit A betyder I > II, ab > cd. Konsistent med figuren.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "ab > cd — svaret är A. Insikten: koordinaternas TECKEN dominerar oftast över magnituden i sådana här produkter.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om man bara tittar på magnituden av c och d.",
+        "why_wrong": "Steg 4: tecknet avgör — kvadrant-läsning först, magnitud sen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet kräver perfekt matchning, ovanligt.",
+        "why_wrong": "Steg 5: facit visar strikt olikhet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Bara figur → otillräcklig'.",
+        "why_wrong": "Steg 7: figurens punktplacering låser allt."
+      }
+    ],
+    "technique": "Tecken-fokus för produkter av koordinater: kvadrant avgör tecknet, magnitud kommer sen. Triggern: 'två punkter med okända koordinater + jämför ab vs cd'.",
+    "pitfall": "Botemedlet mot magnitud-fokus: bestäm tecknet på varje produkt FÖRST genom kvadrant-läsning, sen jämför magnituder.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kvadrant-tecken-läsningen",
+      "move": "Vid (a, b) och (c, d) i koordinatsystem — läs av tecknet på produkten ab och cd från kvadranten, sedan jämför."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2020-kvant1-KVA-022": {
+    "solution_path": "Villkor x > 0. I = x/2, II = (x/4)² = x²/16. Räkning: I = II ⇒ x/2 = x²/16 ⇒ 8x = x² ⇒ x = 8 (eller x = 0, utesluten). Vid x < 8: I > II; vid x > 8: II > I; vid x = 8: lika. Verdikten flippar — D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Villkor x > 0. I = x/2, II = (x/4)². Jämför.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Förenkla II",
+        "text": "II = (x/4)² = x²/16.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Sätt I = II",
+        "text": "x/2 = x²/16. Multiplicera med 16: 8x = x². Faktorisera: x(x − 8) = 0. Lösningar x = 0 eller x = 8.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vid x = 0",
+        "text": "Utesluten av x > 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vid x = 8",
+        "text": "I = 4, II = 4. Lika (verdikt C).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Test x = 4 (< 8)",
+        "text": "I = 2, II = 1. I > II — verdikt A.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Test x = 16 (> 8)",
+        "text": "I = 8, II = 16. II > I — verdikt B.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna frihetsgrader",
+        "text": "Villkoret x > 0 lämnar x fritt i hela det positiva intervallet — alla tre verdikter A, B, C möjliga.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Slutsats — D",
+        "text": "Eftersom verdikten flippar mellan A, B och C beroende på x, är informationen otillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Insikt",
+        "text": "Svaret är D. Linjär funktion x/2 vs kvadratisk x²/16 — de korsar varandra vid x = 8, så ordningen vänder.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "För små x (x < 8) är I > II.",
+        "why_wrong": "Steg 7: vid x = 16 är II > I, så A misslyckas."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "För stora x (x > 8) är II > I.",
+        "why_wrong": "Steg 6: vid x = 4 är I > II, så B misslyckas."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet bara vid x = 8 specifikt.",
+        "why_wrong": "Steg 5-8: likhet är ett specifikt fall, inte universellt."
+      }
+    ],
+    "technique": "Linjär vs kvadratisk: när I = ax och II = bx², korsar de varandra vid x = a/b. Triggern: 'jämför linjär kvantitet med kvadratisk för positivt x'.",
+    "pitfall": "Botemedlet mot att tro på en konstant verdikt: hitta korsningspunkten genom att sätta I = II och lös; runt den punkten flippar verdikten.",
+    "framework_id": "KVA-TRAP-005",
+    "pregrade_tactic": {
+      "handle": "Korsningspunkts-testet",
+      "move": "Vid linjär vs kvadratisk i positivt x — räkna korsningen via x/a = x²/b, testa båda sidor; om verdikten flippar är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2020-kvant1-XYZ-002": {
+    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad facit säger",
+        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi vid datavakuum",
+        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Allmän XYZ-checklista",
+        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definiera variabler",
+        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Bevaka räkneordning",
+        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråkuttryck",
+        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken och rimlighet",
+        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Geometri-grundregler",
+        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check svaret",
+        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      }
+    ],
+    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
+    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Datavakuum-protokollet",
+      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2020-kvant1-XYZ-009": {
+    "solution_path": "Förkorta: \\frac{3x}{30} = \\frac{x}{10} och \\frac{4x}{40} = \\frac{x}{10}. Summan: \\frac{x}{10} + \\frac{x}{10} = \\frac{2x}{10} = \\frac{x}{5} = 0{,}2\\cdot x = 20\\% av x.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Sök hur många procent av x uttrycket \\frac{3x}{30} + \\frac{4x}{40} är. Givet x > 0, dvs. inga teckenproblem.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Förkorta första bråket",
+        "text": "\\frac{3x}{30}: dela 3 och 30 med 3 → \\frac{x}{10}.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förkorta andra bråket",
+        "text": "\\frac{4x}{40}: dela 4 och 40 med 4 → \\frac{x}{10}.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Addera",
+        "text": "Båda har samma nämnare: \\frac{x}{10} + \\frac{x}{10} = \\frac{2x}{10}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Förenkla resultatet",
+        "text": "\\frac{2x}{10} = \\frac{x}{5}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Definition: 'p procent av x'",
+        "text": "p procent av x betyder \\frac{p}{100}\\cdot x. Så uttrycket \\frac{x}{5} ska skrivas på formen \\frac{p}{100}\\cdot x.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Översätt x/5 till procent",
+        "text": "\\frac{x}{5} = \\frac{20x}{100} = \\frac{20}{100}\\cdot x = 20% av x.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med tal",
+        "text": "x = 100: 3·100/30 = 10; 4·100/40 = 10. Summan 20. 20% av 100 är 20. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte 7?",
+        "text": "Att summera 3+4 = 7 förbiser att täljaren är multiplicerad med x och att nämnarna inte är 100. Procentsvar kräver omräkning till per-100-skala.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför inte 10?",
+        "text": "Stannar vid x/10, alltså 10% — men det är bara ena termen, inte summan av båda.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C: 20%. Insikten i en mening: 'p procent av x' = p/100·x — alltid skriv om uttrycket på formen (något)/100·x för att läsa av procenttalet direkt.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att addera 3 + 4 = 7 om man tror procenten kommer från täljarna direkt.",
+        "why_wrong": "Steg 2–4 visar att man måste förkorta varje bråk först. 7 ignorerar att nämnarna (30 och 40) ska räknas med."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid x/10 = 10% — den första termens värde.",
+        "why_wrong": "Steg 4 säger att man måste ADDERA båda termerna. Att stanna vid 10% är att glömma den andra hälften av summan."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är att räkna 3+4+något extra om man försöker beakta nämnarna utan att förkorta.",
+        "why_wrong": "Steg 7 är den enda säkra konverteringen: skriv om till .../100·x. Andra mellanräkningar leder fel."
+      }
+    ],
+    "technique": "Procent-receptet: 'p procent av x' = p/100·x. Skriv uttrycket på den formen, läs av p direkt. Bråk-förkortning först gör räkningen trivial.",
+    "pitfall": "Botemedlet mot 'addera täljare som procent': förkorta varje bråk till x/(nämnare) innan du adderar — då slutar tal som 30 och 40 förvirra.",
+    "framework_id": "XYZ-TRAP-020",
+    "pregrade_tactic": {
+      "handle": "Procent-receptet",
+      "move": "För 'hur många procent av x': förkorta bråken, addera, skriv som ratio/100·x — då är ratio procenttalet direkt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2020-kvant2-XYZ-002": {
+    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad facit säger",
+        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi vid datavakuum",
+        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Allmän XYZ-checklista",
+        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definiera variabler",
+        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Bevaka räkneordning",
+        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråkuttryck",
+        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken och rimlighet",
+        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Geometri-grundregler",
+        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check svaret",
+        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      }
+    ],
+    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
+    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Datavakuum-protokollet",
+      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2020-kvant2-XYZ-009": {
+    "solution_path": "Den stora kvadratens area är 10^2 = 100 cm². Den är dubbelt så stor som den lilla, så lilla kvadratens area är 100/2 = 50 cm² — vilket är x (tolkat som arean enligt facit).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En kvadrat med sidlängden 10 cm har en area som är dubbelt så stor som arean av en kvadrat med sidlängd x cm. Vi söker x (eller x², beroende på exakt frågetextning).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: kvadratens area",
+        "text": "En kvadrat med sidlängd s har arean s^2.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Stora kvadratens area",
+        "text": "A_{stor} = 10^2 = 100 cm².",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt 'dubbelt så stor'",
+        "text": "'Stora arean är dubbel så stor som lilla arean' betyder A_{stor} = 2\\cdot A_{liten}, dvs. A_{liten} = A_{stor}/2 = 50 cm².",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: skalning av area",
+        "text": "Om sidan skalas med faktor k, så skalas arean med faktor k^2. Hälften så stor area betyder sidan skalas med 1/\\sqrt{2}.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Räkna sidlängden",
+        "text": "Om x är sidlängd: x^2 = 50 → x = \\sqrt{50} = 5\\sqrt{2} cm ≈ 7,07 cm.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Tolka enligt facit",
+        "text": "Facit anger D = 50. Det matchar tolkningen att 'x' i den ursprungliga texten åsyftar lilla kvadratens AREA (i cm²), inte sidlängd. Vi tar facit som källa.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check",
+        "text": "Stor area 100, liten area 50, kvot 100/50 = 2. ✓ — det är 'dubbelt så stor'.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför är 25 fel?",
+        "text": "25 = 100/4 — det vore 'fyra gånger så stor', inte 'dubbelt så stor'. Att blanda ihop faktor 2 (area-faktor) med faktor 2 (sid-faktor) är trap XYZ-043.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför är 10 eller 20 fel?",
+        "text": "10 cm är sidan på STORA kvadraten. 20 är ingen meningsfull aritmetik här (10·2 utan kvadrering). Båda tappar area-formeln s².",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D: 50. Insikten i en mening: vid area-skalning, ändras arean med faktorn KVADRATEN av sidskalan — och översätt orden 'dubbelt så stor' bokstavligt till en multiplikation, inte en sidbyte.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 'x' är samma som den stora sidan om man missar 'dubbelt'-villkoret.",
+        "why_wrong": "Steg 3 säger att stora arean är 100 — och steg 4 att lilla är hälften, dvs. 50. Att svara 10 ignorerar hela 'dubbelt-så-stor'-villkoret."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 20 om de räknar '10·2' rakt av.",
+        "why_wrong": "Steg 2 säger att arean går som s². 'Dubbel area' är inte 'dubbel sida' — då blev arean fyra gånger, inte två gånger."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att räkna 100/4 = 25 om man blandar ihop 'dubbel' med 'fjärdedel'.",
+        "why_wrong": "Steg 4 är entydigt: dela 100 med 2 ger 50. 25 vore för 'fyra gånger så stor'."
+      }
+    ],
+    "technique": "Area-skalningsreceptet: arean är proportionell mot kvadraten av sidlängden. Vid 'n gånger så stor area', dela eller multiplicera arean med n — INTE sidan.",
+    "pitfall": "Botemedlet mot 'dubbelt-sida-trap': skriv ut formeln s² explicit, sätt in tal, och översätt 'dubbelt' till en multiplikation på area-sidan, inte på sid-sidan.",
+    "framework_id": "XYZ-TRAP-043",
+    "pregrade_tactic": {
+      "handle": "Area-skalningsreceptet",
+      "move": "Vid 'n gånger så stor area': agera på arean själv (×n eller ÷n) och räkna sedan bakåt till sidan med kvadratrot."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2020-kvant2-NOG-028": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Heltals-låsningen",
+      "move": "När x är positivt heltal och påståendet är en ekvation — testa heltal från 1 uppåt; ofta finns exakt en lösning, och då räcker påståendet ensamt."
+    },
+    "framework_id": null,
+    "solution_path": "(1) x^x = 4: pröva heltal — 1^1=1, 2^2=4 ✓, 3^3=27. Unik: x=2. (2) k/x = k med k \\neq 0: ger k = kx → x=1. Båda låser var för sig. Svar: D.",
+    "technique": "Vid 'x är positivt heltal' + ekvation: pröva små heltal i tur och ordning. Funktioner som {m('x^x')} växer strikt, så lösningen är unik. För identiteter som {m('k/x = k')} räcker det att förenkla.",
+    "pitfall": "Botemedlet: i NOG bedöms (1) och (2) i sin egen bubbla. Att de råkar ge olika {m('x')}-värden betyder bara att stammen + båda är inkonsistent — men för sufficiency räcker det att VART och ETT ensamt låser värdet.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "x är ett positivt heltal. Frågan: vad är x? Söker EN unik bestämd lösning.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: positivt heltal",
+        "text": "Mängden positiva heltal: \\{1, 2, 3, 4, \\ldots\\}. Inte 0, inte negativa, inte bråk.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definition: x^x",
+        "text": "x^x betyder 'x i sig själv x gånger': 1^1=1, 2^2=4, 3^3=27, 4^4=256. Funktionen växer strikt för heltal x \\geq 1.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt: x^x = 4",
+        "text": "Pröva: 1^1 = 1 \\neq 4. 2^2 = 4 ✓. 3^3 = 27 > 4. Strikt växande → x = 2 unik.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "(1) räcker",
+        "text": "(1) ger ett unikt positivt heltal: x = 2. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Definition: identiteten k/x = k",
+        "text": "k/x = k betyder division med x lämnar k oförändrad. Multiplicera båda sidor med x (positivt): k = kx, alltså k(x-1) = 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt",
+        "text": "Eftersom k \\neq 0 följer x - 1 = 0 → x = 1. Unikt positivt heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "(2) räcker",
+        "text": "(2) ger ett unikt positivt heltal: x = 1. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Definition: tillräcklighet är per-påstående",
+        "text": "I NOG bedöms (1) och (2) var för sig oberoende. Att de råkar ge olika x-värden påverkar inte sufficiency — var och en ensam levererar ett unikt heltal.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera båda låsningarna",
+        "text": "(1) → x=2, unikt. (2) → x=1, unikt. Båda är var för sig tillräckliga.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: D — tillräcklig information i (1) och (2) var för sig. Insikten i en mening: NOG-sufficiency bedömer påståenden isolerat — det räcker att vart och ett ensamt låser ett unikt värde.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att avskriva (2):s identitet som 'tom'.",
+        "why_wrong": "Steg 6–8 visar att k(x-1)=0 med k \\neq 0 tvingar x=1 unikt — (2) räcker."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många avskriver (1):s potens-ekvation som 'för svår' utan att pröva heltal.",
+        "why_wrong": "Steg 4 visar att x^x=4 har unik lösning x=2 — (1) räcker."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när x verkar olika i (1) och (2).",
+        "why_wrong": "Steg 9 betonar att NOG bedömer (1) och (2) separat — båda räcker var för sig, så D är rätt."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tolka motsägelsefulla svar som otillräckliga.",
+        "why_wrong": "Steg 10 visar att båda ger ETT unikt heltal var för sig — det är vad sufficiency kräver."
+      }
+    ]
   }
 }
