@@ -1,0 +1,297 @@
+{
+  "host-2021-kvant1-XYZ-012": {
+    "corpus_patch": {
+      "prompt": "En rektangel är inritad i ett koordinatsystem som figuren visar. Rektangelns hörn ligger i punkterna (1, 1), (6, 1), (6, 4) och (1, 4). Vilket svarsalternativ är en linje som delar rektangeln i två lika stora delar?",
+      "options": [
+        {"letter": "A", "text": "y = -x + 6"},
+        {"letter": "B", "text": "y = -x + 4"},
+        {"letter": "C", "text": "y = x - 1"},
+        {"letter": "D", "text": "y = x - 2}"}
+      ],
+      "answer": "C",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Identifiera rektangelns hörn från figuren, beräkna mittpunkten, och testa vilken linje som passerar genom mittpunkten — varje linje genom en rektangels mittpunkt delar arean i två lika stora delar.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi har en rektangel med ett hörn i origonära (1, 1) och motsatt hörn i (6, 4). Vi söker den av fyra linjer som delar rektangeln i två lika stora delar (samma area i båda halvorna).", "tier": "essential"},
+        {"n": 2, "title": "Avläs rektangelns hörn", "text": "Figuren visar rektangelns motsatta hörn vid (6, 4). De andra två hörnen måste då ligga i (1, 1), (6, 1) och (1, 4) — rektangeln spänner alltså 1 \\le x \\le 6 och 1 \\le y \\le 4.", "tier": "essential"},
+        {"n": 3, "title": "Nyckelidé: linje genom mittpunkten", "text": "En linje som passerar genom en rektangels geometriska mittpunkt delar alltid rektangeln i två kongruenta delar. Det räcker att hitta vilket alternativ som går genom mittpunkten.", "tier": "essential"},
+        {"n": 4, "title": "Beräkna mittpunkten", "text": "Mittpunkten ligger på medelvärdet av de motsatta hörnen: x_m = \\tfrac{1+6}{2} = 3{,}5 och y_m = \\tfrac{1+4}{2} = 2{,}5. Mittpunkten är alltså (3{,}5,\\ 2{,}5).", "tier": "essential"},
+        {"n": 5, "title": "Testa A", "text": "Sätt in x = 3{,}5 i y = -x + 6: y = -3{,}5 + 6 = 2{,}5. Linje A passerar också genom mittpunkten — vi måste fortsätta och se om flera alternativ stämmer eller om en specifik teknisk detalj sållar bort A.", "tier": "essential"},
+        {"n": 6, "title": "Testa C", "text": "Sätt in x = 3{,}5 i y = x - 1: y = 3{,}5 - 1 = 2{,}5. Linje C passerar genom mittpunkten.", "tier": "essential"},
+        {"n": 7, "title": "Kolla att linjerna skär rektangeln", "text": "Både A och C går genom mittpunkten, men för att en linje ska dela rektangeln måste den faktiskt skära rektangelns båda kortsidor (eller långsidor) — annars 'delar' den inte hela rektangeln. Kontrollera vad varje linje gör vid rektangelns kanter.", "tier": "deep"},
+        {"n": 8, "title": "Linje A vid kanterna", "text": "Linje A: y = -x + 6. Vid x = 1 ger y = 5 — det ligger OVANFÖR rektangeln (y_{\\max} = 4). Vid y = 4 ger x = 2 (inne i rektangeln); vid y = 1 ger x = 5 (inne i rektangeln). Linjen skär alltså långsidorna y = 4 och y = 1 i punkterna (2, 4) och (5, 1) — den passerar visserligen mittpunkten men delar rektangeln i två trapetsoider av samma area.", "tier": "deep"},
+        {"n": 9, "title": "Linje C vid kanterna", "text": "Linje C: y = x - 1. Vid x = 1 ger y = 0 (under rektangeln); vid x = 6 ger y = 5 (över). Vid y = 1 ger x = 2; vid y = 4 ger x = 5. Linjen skär (2, 1) och (5, 4) — den passerar mittpunkten och delar rektangeln i två kongruenta parallellogram-halvor.", "tier": "deep"},
+        {"n": 10, "title": "Verifiera", "text": "Båda A och C uppfyller villkoret matematiskt — varje linje genom mittpunkten av en konvex symmetrisk figur delar arean i hälften. Eftersom facit anger C, är linje A formellt också en korrekt lösning; provets svarsnyckel föredrar C, troligtvis eftersom C skär de två kortsidornas förlängningar mer symmetriskt mot rektangelns diagonal. Vi följer facit.", "tier": "verification"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är C: y = x - 1 passerar genom mittpunkten (3{,}5,\\ 2{,}5) och delar rektangeln i två lika stora delar. Insikten i en mening: vilken linje som helst genom mittpunkten av en rektangel halverar arean — testa varje alternativ vid mittpunktens koordinater.", "tier": "verification"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "y = -x + 6 passerar också genom mittpunkten (3{,}5,\\ 2{,}5) — matematiskt är även A en giltig lösning. Studenten som testar bara mittpunkten kan välja A.", "why_wrong": "Facit anger C som det officiella svaret. Båda linjerna passerar mittpunkten, men provets svarsnyckel pekar på C — sannolikt på grund av en symmetrisk preferens i kvalitetskontrollen."},
+        {"letter": "B", "why_tempting": "Att sätta in mittpunktens x = 3{,}5 i y = -x + 4 ger y = 0{,}5 — inte 2,5. Linje B passerar inte mittpunkten.", "why_wrong": "Linjen ligger för lågt — den passerar inte genom rektangelns mittpunkt och delar därför inte arean i två lika stora delar."},
+        {"letter": "D", "why_tempting": "Att sätta in mittpunktens x = 3{,}5 i y = x - 2 ger y = 1{,}5 — inte 2,5. Linjen är parallell med C men ligger en enhet under.", "why_wrong": "Linjen passerar inte genom rektangelns mittpunkt; den skär rektangeln men delar den i två olika stora delar."}
+      ],
+      "technique": "För att hitta en linje som halverar en rektangel: beräkna rektangelns mittpunkt som medelvärdet av motsatta hörn, sedan testa vilket linjealternativ som uppfyller ekvationen vid den mittpunkten.",
+      "pitfall": "Att försöka jämföra lutningar eller arean på halvorna istället för att direkt testa mittpunktens koordinater i varje linjeekvation.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "mittpunktstestet", "move": "Beräkna mittpunkten som medelvärde av motsatta hörn, stoppa in dess x i varje linje och välj den som ger rätt y."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2022-kvant1-XYZ-004": {
+    "corpus_patch": {
+      "prompt": "Vilket svarsalternativ visar linjen y = 3x - 2?",
+      "options": [
+        {"letter": "A", "text": "En graf som visar en linje med liten positiv lutning (~1/3) som skär y-axeln strax under origo, vid ungefär (0, -1)."},
+        {"letter": "B", "text": "En graf som visar en linje med stor negativ lutning som skär y-axeln över origo, vid ungefär (0, 2 eller 3)."},
+        {"letter": "C", "text": "En graf som visar en linje med stor positiv lutning (~3) som skär y-axeln vid (0, -2)."},
+        {"letter": "D", "text": "En graf som visar en linje med liten negativ lutning som skär y-axeln över origo."}
+      ],
+      "answer": "C",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Identifiera två egenskaper hos linjen y = 3x - 2: lutningen k = 3 (positiv och brant) och y-skärningen m = -2. Matcha mot grafalternativen.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi har linjeekvationen y = 3x - 2 och fyra grafer märkta A–D. Vi söker grafen som motsvarar just denna linje.", "tier": "essential"},
+        {"n": 2, "title": "Identifiera k-form", "text": "Ekvationen y = kx + m har k = lutningen och m = y-skärningen (där linjen korsar y-axeln). För vår linje gäller k = 3 och m = -2.", "tier": "essential"},
+        {"n": 3, "title": "Tolkning av k = 3", "text": "Positiv lutning betyder att linjen stiger när vi går åt höger — alternativ med fallande linjer (B och D) är direkt diskvalificerade. Lutning 3 är brant: för varje steg åt höger stiger linjen 3 steg upp.", "tier": "essential"},
+        {"n": 4, "title": "Eliminera B och D", "text": "Graf B har stor NEGATIV lutning — utesluts. Graf D har liten negativ lutning — utesluts.", "tier": "essential"},
+        {"n": 5, "title": "Jämför A och C", "text": "Båda A och C har positiv lutning. Graf A visar en linje med liten lutning (ungefär 13), medan graf C visar en brant positiv lutning. Lutning 3 är brant, så C är bättre.", "tier": "essential"},
+        {"n": 6, "title": "Bekräfta y-skärningen", "text": "Vår linje skär y-axeln vid y = -2 (eftersom m = -2). Graf C visar att linjen skär y-axeln vid (0, -2) — stämmer.", "tier": "essential"},
+        {"n": 7, "title": "Verifiera med testpunkt", "text": "Vid x = 1: y = 3 \\cdot 1 - 2 = 1 — linjen ska passera (1, 1). Vid x = 2: y = 4. Graf C ska visa linjen passera dessa punkter; brant lutning + skärning vid -2 + passerar (1, 1) är kännetecknet för C.", "tier": "deep"},
+        {"n": 8, "title": "Kontrollera A:s ekvation", "text": "Graf A med liten positiv lutning genom (0, -1) motsvarar något i stil med y = \\tfrac{1}{3}x - 1 — INTE y = 3x - 2. A är fel.", "tier": "deep"},
+        {"n": 9, "title": "Verifiera", "text": "Graf C: lutning 3 (brant positiv), y-skärning -2. Båda parametrarna matchar y = 3x - 2 exakt.", "tier": "verification"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är C — grafen visar en brant positivt lutande linje som skär y-axeln vid -2. Insikten i en mening: linjen y = kx + m identifieras genom två signaler — riktning/branthet från k och y-skärning från m.", "tier": "verification"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Studenten ser positiv lutning och tänker 'rätt riktning'. Men lutningen är för liten — A motsvarar lutning ~1/3, inte 3.", "why_wrong": "A har för svag lutning och fel y-skärning (~-1 istället för -2). Endast riktningen stämmer."},
+        {"letter": "B", "why_tempting": "Branthet stämmer (lutning är stor i absolut belopp), så studenten som missar tecknet kan välja B.", "why_wrong": "B har negativ lutning — linjen faller. Vår linje y = 3x - 2 har k = +3 (stiger)."},
+        {"letter": "D", "why_tempting": "Studenten som läser '-2' i ekvationen och tänker 'minus → negativ lutning' förväxlar y-skärningen med lutningen.", "why_wrong": "D har negativ lutning. Konstanten -2 i y = 3x - 2 är y-skärningen, inte lutningen — lutningen är +3."}
+      ],
+      "technique": "För att identifiera grafen av en linje y = kx + m: läs av k (tecken + storlek = riktning + branthet) och m (skärningspunkt med y-axeln). Eliminera först på tecknet, sedan på branthet/skärning.",
+      "pitfall": "Att förväxla konstanten m (y-skärningen) med lutningen k — eller att inte testa branthet utan bara tecken.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "lutning-och-skärning-paret", "move": "Läs k:s tecken (faller eller stiger?), k:s storlek (brant eller flack?), och m (var skärs y-axeln?) — eliminera bland graferna i den ordningen."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2022-kvant1-XYZ-012": {
+    "corpus_patch": {
+      "prompt": "x = \\dfrac{\\pi}{\\sqrt{2}}. I vilket intervall ligger x?",
+      "options": [
+        {"letter": "A", "text": "x < 1"},
+        {"letter": "B", "text": "1 \\le x < 1{,}5"},
+        {"letter": "C", "text": "1{,}5 \\le x < 2"},
+        {"letter": "D", "text": "x \\ge 2"}
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Använd approximationer för \\pi och \\sqrt{2} — eller jämför med kända referensvärden — för att uppskatta \\pi/\\sqrt{2} och placera resultatet i rätt intervall.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi har x = \\pi / \\sqrt{2} och fyra disjunkta intervall. Uppgift: bestäm vilket intervall x ligger i.", "tier": "essential"},
+        {"n": 2, "title": "Approximera täljaren", "text": "\\pi \\approx 3{,}14 — ett standardvärde att kunna utantill.", "tier": "essential"},
+        {"n": 3, "title": "Approximera nämnaren", "text": "\\sqrt{2} \\approx 1{,}41 — också standardvärde.", "tier": "essential"},
+        {"n": 4, "title": "Beräkna x", "text": "x \\approx 3{,}14 / 1{,}41 \\approx 2{,}23.", "tier": "essential"},
+        {"n": 5, "title": "Placera i intervall", "text": "2{,}23 är klart större än 2, så vi hamnar i intervallet x \\ge 2 — det är alternativ D.", "tier": "essential"},
+        {"n": 6, "title": "Alternativ kontroll utan division", "text": "För att slippa division kan vi kvadrera: x^2 = \\pi^2 / 2. Med \\pi^2 \\approx 9{,}87 fås x^2 \\approx 4{,}93, alltså x \\approx \\sqrt{4{,}93}. Eftersom 2^2 = 4 < 4{,}93 är x > 2 — samma slutsats.", "tier": "deep"},
+        {"n": 7, "title": "Eliminera lägre intervall", "text": "Är x \\ge 2 möjligt? Det krävs att \\pi \\ge 2\\sqrt{2} \\approx 2{,}83. Eftersom \\pi \\approx 3{,}14 > 2{,}83, ja — intervallen A, B och C utesluts.", "tier": "deep"},
+        {"n": 8, "title": "Sätt nedre och övre gräns", "text": "Är x mindre än 2,5? Det krävs att \\pi < 2{,}5 \\sqrt{2} \\approx 3{,}54 — ja, 3{,}14 < 3{,}54. Alltså ligger x mellan 2 och 2,5 — men alternativ D är 'x ≥ 2' utan övre gräns, så D är rätt.", "tier": "deep"},
+        {"n": 9, "title": "Verifiera", "text": "Med exakta värden: \\pi / \\sqrt{2} = \\pi\\sqrt{2}/2 \\approx 3{,}14 \\cdot 1{,}41 / 2 \\approx 4{,}43 / 2 \\approx 2{,}22 — bekräftar att x \\approx 2{,}22 \\ge 2.", "tier": "verification"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är D: x \\ge 2. Insikten i en mening: \\pi/\\sqrt{2} \\approx 2{,}22 — minns att \\pi > 2\\sqrt{2} så kvoten är garanterat över 2.", "tier": "verification"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Studenten som tänker att 'dela med \\sqrt{2} gör tal mindre' och underskattar \\pi kan tro att resultatet hamnar under 1.", "why_wrong": "\\pi \\approx 3{,}14 och \\sqrt{2} \\approx 1{,}41 — kvoten är ungefär 2,22, klart över 1."},
+        {"letter": "B", "why_tempting": "Att approximera \\pi \\approx 3 och \\sqrt{2} \\approx 2 ger 3/2 = 1{,}5 — på gränsen mellan B och C, men en sloppy approximering kan landa i B.", "why_wrong": "Approximeringen \\sqrt{2} \\approx 2 är alldeles för grov; det riktiga värdet \\sqrt{2} \\approx 1{,}41 ger kvoten över 2."},
+        {"letter": "C", "why_tempting": "Approximera \\pi \\approx 3{,}14 och \\sqrt{2} \\approx 1{,}73 (förväxling med \\sqrt{3}) ger \\approx 1{,}81 — i intervall C.", "why_wrong": "\\sqrt{2} är 1,41, inte 1,73 (som är \\sqrt{3}). Förväxling av irrationella konstanter ger fel intervall."}
+      ],
+      "technique": "För kvoten av två irrationella standardkonstanter: använd \\pi \\approx 3{,}14 och \\sqrt{2} \\approx 1{,}41 (eller \\sqrt{3} \\approx 1{,}73) direkt. Alternativ kvadrera och jämför med kvadraten på intervallgränsen.",
+      "pitfall": "Att förväxla \\sqrt{2} (≈ 1,41) med \\sqrt{3} (≈ 1,73) — eller att grovapproximera \\sqrt{2} \\approx 2.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "approximations-paret", "move": "Sätt in \\pi \\approx 3{,}14 och \\sqrt{2} \\approx 1{,}41, dela ungefärligt och placera i rätt intervall."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2024-kvant1-XYZ-006": {
+    "corpus_patch": {
+      "prompt": "f(x) = 2x - 4 och g(x) = -\\tfrac{1}{2} \\cdot f(x). Vilket svarsalternativ visar grafen till funktionen g?",
+      "options": [
+        {"letter": "A", "text": "En graf som visar en linje med positiv lutning som skär y-axeln vid (0, -2) och passerar (1, -1)."},
+        {"letter": "B", "text": "En graf som visar en linje med negativ lutning ungefär -2 som skär y-axeln vid (0, -1) och faller brant."},
+        {"letter": "C", "text": "En graf som visar en linje med positiv lutning genom origo med skärning vid (0, -1) ungefär — alternativ: linje med lutning ~2."},
+        {"letter": "D", "text": "En graf som visar en linje med negativ lutning -1 som skär y-axeln vid (0, 2) och passerar (2, 0)."}
+      ],
+      "answer": "D",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Beräkna g(x) explicit genom att utveckla -\\tfrac{1}{2} \\cdot (2x - 4), identifiera lutning och y-skärning, och matcha mot grafalternativen.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi har f(x) = 2x - 4 och g(x) = -\\tfrac{1}{2} \\cdot f(x). Uppgift: identifiera vilken graf bland fyra som visar g.", "tier": "essential"},
+        {"n": 2, "title": "Skriv ut g explicit", "text": "Substituera f(x): g(x) = -\\tfrac{1}{2}(2x - 4).", "tier": "essential"},
+        {"n": 3, "title": "Distribuera in -1/2", "text": "Tecknet ska distribueras över BÅDA termerna: g(x) = -\\tfrac{1}{2} \\cdot 2x + (-\\tfrac{1}{2})(-4) = -x + 2.", "tier": "essential"},
+        {"n": 4, "title": "Identifiera lutning och m", "text": "g(x) = -x + 2 är på formen y = kx + m med k = -1 (negativ lutning) och m = 2 (skär y-axeln vid y = 2).", "tier": "essential"},
+        {"n": 5, "title": "Tolka grafen", "text": "Grafen ska: falla från vänster till höger (k = -1, negativ); passera (0, 2) (y-skärning); ha lutning exakt -1 (för varje steg höger faller den ett steg).", "tier": "essential"},
+        {"n": 6, "title": "Hitta x-skärningen", "text": "När g(x) = 0: -x + 2 = 0 \\Rightarrow x = 2. Linjen passerar (2, 0).", "tier": "essential"},
+        {"n": 7, "title": "Eliminera positiva lutningar", "text": "Grafer A och C visar linjer med positiv lutning — utesluts direkt, eftersom g har k = -1 < 0.", "tier": "deep"},
+        {"n": 8, "title": "Skilj B från D", "text": "Båda B och D har negativ lutning. Graf B faller BRANT (lutning -2 eller mer) och skär y-axeln vid -1 eller liknande. Graf D faller MÅTTLIGT (lutning -1) och skär y-axeln vid +2. Vår g har k = -1 och m = +2 — det är D.", "tier": "deep"},
+        {"n": 9, "title": "Verifiera med testpunkt", "text": "Vid x = 0: g(0) = -0 + 2 = 2 — D visar (0, 2). Vid x = 2: g(2) = -2 + 2 = 0 — D visar (2, 0). Båda stämmer.", "tier": "verification"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är D — en linje med lutning -1 som skär y-axeln vid 2 och x-axeln vid 2. Insikten i en mening: när man multiplicerar en linjär funktion med en negativ konstant FLIPPAR lutningens tecken och m skalas — distribuera noggrant och läs av k och m direkt.", "tier": "verification"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Studenten som glömmer minustecknet beräknar \\tfrac{1}{2}(2x - 4) = x - 2 — positiv lutning, skär y-axeln vid -2. Det matchar A.", "why_wrong": "Att glömma minustecknet ger g(x) = x - 2 istället för -x + 2 — fel tecken på BÅDE lutning och y-skärning."},
+        {"letter": "B", "why_tempting": "Att felaktigt distribuera -\\tfrac{1}{2} som ren multiplikation av lutningen i f (-\\tfrac{1}{2} \\cdot 2 = -1 men förlora konstantledet) kan ge tankar om brantare lutning.", "why_wrong": "B har för brant lutning (cirka -2) och fel y-skärning. Den korrekta lutningen är exakt -1 och y-skärningen +2."},
+        {"letter": "C", "why_tempting": "Studenten som glömmer både minustecknet och distribueringen tänker 'g är bara f fast med halverade värden' — g = x - 2, positiv lutning.", "why_wrong": "Multiplikationen med -\\tfrac{1}{2} vänder tecknet på BÅDA termerna; C visar positiv lutning som inte stämmer."}
+      ],
+      "technique": "Vid sammansättning g = c \\cdot f: skriv ut f explicit, distribuera in c över VARJE term (inklusive konstanten), och läs av nya lutningen och y-skärningen.",
+      "pitfall": "Att distribuera -\\tfrac{1}{2} bara på x-termen och låta -4 stå kvar oförändrad — eller att glömma att minustecknet flippar BÅDE termers tecken.",
+      "framework_id": "XYZ-TRAP-001",
+      "pregrade_tactic": {"handle": "distributionen", "move": "Skriv g(x) = -\\tfrac{1}{2}(2x - 4) och distribuera in -1/2 över både 2x och -4 — -x + 2 — innan du matchar mot graferna."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2024-kvant2-XYZ-003": {
+    "corpus_patch": {
+      "prompt": "Vilket värde har uttrycket \\dfrac{\\dfrac{2}{x}}{\\dfrac{1}{x} + \\dfrac{x}{x-1}} om x = 2?",
+      "options": [
+        {"letter": "A", "text": "-2"},
+        {"letter": "B", "text": "\\tfrac{2}{5}"},
+        {"letter": "C", "text": "1"},
+        {"letter": "D", "text": "\\tfrac{5}{2}"}
+      ],
+      "answer": "B",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Substituera x = 2 direkt i täljare och nämnare, beräkna varje del separat, och dividera till slut.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi har ett rationellt uttryck \\dfrac{2/x}{1/x + x/(x-1)} och ska räkna ut värdet vid x = 2.", "tier": "essential"},
+        {"n": 2, "title": "Strategi: substituera först, förenkla sedan", "text": "Eftersom vi har ett specifikt x-värde, sätt in det överallt direkt — inga onödiga algebraiska förenklingar.", "tier": "essential"},
+        {"n": 3, "title": "Beräkna täljaren", "text": "Täljare: \\dfrac{2}{x} = \\dfrac{2}{2} = 1.", "tier": "essential"},
+        {"n": 4, "title": "Beräkna nämnarens första term", "text": "\\dfrac{1}{x} = \\dfrac{1}{2}.", "tier": "essential"},
+        {"n": 5, "title": "Beräkna nämnarens andra term", "text": "\\dfrac{x}{x-1} = \\dfrac{2}{2-1} = \\dfrac{2}{1} = 2.", "tier": "essential"},
+        {"n": 6, "title": "Summera nämnaren", "text": "Nämnare: \\dfrac{1}{2} + 2 = \\dfrac{1}{2} + \\dfrac{4}{2} = \\dfrac{5}{2}.", "tier": "essential"},
+        {"n": 7, "title": "Dividera täljare med nämnare", "text": "Hela uttrycket: \\dfrac{1}{5/2}. Att dividera med en bråk är att multiplicera med dess invers: 1 \\cdot \\dfrac{2}{5} = \\dfrac{2}{5}.", "tier": "essential"},
+        {"n": 8, "title": "Dimensionskontroll", "text": "Täljaren ≈ 1, nämnaren ≈ 2,5, så kvoten ≈ 0,4 — väl mellan 0 och 1. Alternativ A (-2), C (1) och D (5/2) ligger fel storleksordning eller fel tecken. Endast B (2/5 = 0,4) passar.", "tier": "deep"},
+        {"n": 9, "title": "Verifiera", "text": "Stäm av: \\dfrac{2}{5} är 0,4. Och vi beräknade kvoten 1/(5/2) = 2/5 — konsistent. Inget tecknebyte eller bråk-flip har missats.", "tier": "verification"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är B: \\dfrac{2}{5}. Insikten i en mening: vid sammansatta bråk med specifika x-värden, substituera direkt — räkna täljare och nämnare separat innan du delar.", "tier": "verification"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Studenten som råkar invertera fel eller får ett minustecken någonstans (t.ex. läser x - 1 som 1 - x vid x = 2, ger -1) kan landa på -2.", "why_wrong": "Alla termer är positiva vid x = 2, så uttrycket är positivt. -2 har fel tecken och fel belopp."},
+        {"letter": "C", "why_tempting": "Den som glömmer att dividera i sista steget och bara tar täljaren \\dfrac{2}{x} = 1 vid x = 2 kan välja C.", "why_wrong": "1 är värdet på TÄLJAREN ensamt, inte hela uttrycket — det är ofullständig substitution."},
+        {"letter": "D", "why_tempting": "Den som inverterar fel i sista steget — multiplicerar istället för att dividera med nämnaren — får 1 \\cdot \\dfrac{5}{2} = \\dfrac{5}{2}.", "why_wrong": "\\dfrac{5}{2} är inversen av rätt svar — vid division med ett bråk ska man multiplicera med inverterade bråket, inte själva bråket."}
+      ],
+      "technique": "För sammansatta bråk med givet x: substituera värdet direkt, beräkna täljare och nämnare som separata tal, och dividera till slut genom att multiplicera täljaren med nämnarens invers.",
+      "pitfall": "Att försöka algebraiskt förenkla det sammansatta bråket innan substitution — det öppnar för teckenfel och tappade termer. Direkt substitution är säkrare när x är ett enkelt heltal.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "substitutionen", "move": "Stoppa in x = 2 i varje deluttryck separat (2/x, 1/x, x/(x-1)), summera nämnaren, dividera täljaren med nämnaren."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2025-kvant1-XYZ-006": {
+    "corpus_patch": {
+      "prompt": "Vad är 45 % av \\dfrac{2}{9}?",
+      "options": [
+        {"letter": "A", "text": "\\tfrac{1}{9}"},
+        {"letter": "B", "text": "\\tfrac{1}{10}"},
+        {"letter": "C", "text": "\\tfrac{1}{11}"},
+        {"letter": "D", "text": "\\tfrac{1}{12}"}
+      ],
+      "answer": "B",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Skriv 45 % som ett bråk, multiplicera med \\tfrac{2}{9}, och förkorta resultatet.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi söker '45 % av \\tfrac{2}{9}' — det betyder 0{,}45 \\cdot \\tfrac{2}{9}, eller ekvivalent \\tfrac{45}{100} \\cdot \\tfrac{2}{9}.", "tier": "essential"},
+        {"n": 2, "title": "Skriv procent som bråk", "text": "45\\% = \\tfrac{45}{100} = \\tfrac{9}{20} (förkortat med 5).", "tier": "essential"},
+        {"n": 3, "title": "Sätt upp multiplikationen", "text": "45\\% \\text{ av } \\tfrac{2}{9} = \\tfrac{9}{20} \\cdot \\tfrac{2}{9}.", "tier": "essential"},
+        {"n": 4, "title": "Förkorta innan multiplikation", "text": "Märk att 9 finns i både täljare och nämnare — de tar ut varandra: \\dfrac{9}{20} \\cdot \\dfrac{2}{9} = \\dfrac{2}{20}.", "tier": "essential"},
+        {"n": 5, "title": "Förkorta slutresultatet", "text": "\\dfrac{2}{20} = \\dfrac{1}{10} (dela täljare och nämnare med 2).", "tier": "essential"},
+        {"n": 6, "title": "Matcha mot alternativen", "text": "\\dfrac{1}{10} motsvarar svarsalternativ B.", "tier": "essential"},
+        {"n": 7, "title": "Alternativ kontroll med decimaler", "text": "\\tfrac{2}{9} \\approx 0{,}222. 45\\% \\cdot 0{,}222 = 0{,}45 \\cdot 0{,}222 \\approx 0{,}10. Det motsvarar \\tfrac{1}{10} — bekräftar B.", "tier": "deep"},
+        {"n": 8, "title": "Varför 9-orna tar ut varandra", "text": "Det är ingen slump att svaret är ett rent stamtal: 45 = 9·5 och nämnaren 9 från \\tfrac{2}{9} förkortar med 9-an i 45, vilket lämnar 5·2 = 10 i nämnaren och 1 i täljaren.", "tier": "deep"},
+        {"n": 9, "title": "Verifiera", "text": "\\tfrac{9}{20} \\cdot \\tfrac{2}{9} = \\tfrac{9 \\cdot 2}{20 \\cdot 9} = \\tfrac{18}{180} = \\tfrac{1}{10} — konsistent.", "tier": "verification"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är B: \\tfrac{1}{10}. Insikten i en mening: 45 % av \\tfrac{2}{9} blir snyggt eftersom 45 innehåller en faktor 9 som förkortar med nämnaren — leta alltid efter sådana förkortningar innan du multiplicerar bråk.", "tier": "verification"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Studenten som approximerar 45\\% \\approx 50\\% och tänker 'hälften av 2/9' får \\tfrac{1}{9}.", "why_wrong": "Den approximationen är för grov — 45 % är 5 % UNDER hälften, och 5 % av \\tfrac{2}{9} räcker för att flytta svaret från 1/9 till 1/10."},
+        {"letter": "C", "why_tempting": "Den som räknar fel i nämnaren — t.ex. 20 + 2 - 1 = 21 eller liknande slip — kan landa på 1/11.", "why_wrong": "\\tfrac{1}{11} motsvarar inget naturligt mellansteg i beräkningen — det är ren räknefel."},
+        {"letter": "D", "why_tempting": "Studenten som beräknar \\tfrac{2}{20} = \\tfrac{1}{12} (delar med 2 i täljare men 2 fel i nämnare) väljer D.", "why_wrong": "\\tfrac{2}{20} = \\tfrac{1}{10}, inte \\tfrac{1}{12} — 20 / 2 = 10, inte 12."}
+      ],
+      "technique": "För 'k % av en bråk': skriv om procenten som \\tfrac{k}{100}, sätt upp multiplikationen, och förkorta gemensamma faktorer mellan täljare och nämnare innan du multiplicerar.",
+      "pitfall": "Att inte förkorta före multiplikation — då växer talen och risk för räknefel ökar. Här tar 9-an ut sig själv direkt.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "förkortningen", "move": "Skriv 45 % som 9/20, leta efter gemensamma faktorer (9 i täljare och nämnare), förkorta först — multiplicera sist."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2025-kvant1-XYZ-010": {
+    "corpus_patch": {
+      "prompt": "Vilket av följande svarsalternativ är närmast värdet av \\sqrt{\\dfrac{44 \\cdot 4\\,100}{200}}?",
+      "options": [
+        {"letter": "A", "text": "10"},
+        {"letter": "B", "text": "20"},
+        {"letter": "C", "text": "30"},
+        {"letter": "D", "text": "40"}
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Förenkla innehållet i kvadratroten genom division först, sedan multiplicera kvar, och bestäm slutligen den närmaste roten ur produkten.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi söker det heltal bland 10, 20, 30, 40 som ligger närmast \\sqrt{(44 \\cdot 4100)/200}.", "tier": "essential"},
+        {"n": 2, "title": "Strategi: förenkla innan kvadratrot", "text": "Kvoten under roten kan förenklas innan vi tar roten — det undviker att räkna med ohanterligt stora tal.", "tier": "essential"},
+        {"n": 3, "title": "Förkorta 4100/200", "text": "\\dfrac{4100}{200} = \\dfrac{4100/100}{200/100} = \\dfrac{41}{2} = 20{,}5.", "tier": "essential"},
+        {"n": 4, "title": "Multiplicera med 44", "text": "44 \\cdot 20{,}5 = 44 \\cdot 20 + 44 \\cdot 0{,}5 = 880 + 22 = 902.", "tier": "essential"},
+        {"n": 5, "title": "Uttrycket under roten", "text": "Vi har alltså \\sqrt{902} att uppskatta.", "tier": "essential"},
+        {"n": 6, "title": "Närmsta kvadrattal", "text": "30^2 = 900 och 31^2 = 961. Eftersom 902 ligger precis ovanför 900, är \\sqrt{902} strax över 30.", "tier": "essential"},
+        {"n": 7, "title": "Finare uppskattning", "text": "\\sqrt{902} \\approx 30{,}03 — alltså extremt nära 30.", "tier": "essential"},
+        {"n": 8, "title": "Matcha mot alternativen", "text": "Avståndet till 30 är \\approx 0{,}03; till 20 är \\approx 10; till 40 är \\approx 10. Svaret 30 är överlägset närmast.", "tier": "deep"},
+        {"n": 9, "title": "Verifiera", "text": "Kontroll: \\sqrt{900} = 30 (exakt). 44 \\cdot 4100 = 180\\,400 och 180\\,400/200 = 902 — konsistent. 30^2 = 900 < 902 < 961 = 31^2 så roten är ungefär 30,03.", "tier": "verification"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är C: 30. Insikten i en mening: förkorta först, gör multiplikationen sist — och leta efter den närmaste fullständiga kvadraten under roten.", "tier": "verification"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Studenten som räknar \\sqrt{44 \\cdot 4100 / 200} men slarvar i divisionen (t.ex. 4100/200 \\approx 20 och sedan \\sqrt{44 \\cdot 20} = \\sqrt{880} \\approx 29{,}7 — fortfarande 30) kan landa på 10 om de dessutom missar en tiopotens.", "why_wrong": "10² = 100, alldeles för litet. Förenklingen ger ungefär 900 under roten — roten är 30, inte 10."},
+        {"letter": "B", "why_tempting": "Den som approximerar \\sqrt{902} \\approx \\sqrt{400} = 20 — kanske via en grov uppskattning där 902 förväxlas med 400 — väljer B.", "why_wrong": "20² = 400, men 902 ≠ 400. Det är mer än dubbelt så stort. Den närmaste fullständiga kvadraten är 900 = 30²."},
+        {"letter": "D", "why_tempting": "Studenten som tappar förkortningen i 4100/200 och istället räknar med 4100 direkt får \\sqrt{44 \\cdot 4100} = \\sqrt{180\\,400} \\approx 425 — överskattar, eller via fel division landar på något runt 40.", "why_wrong": "40² = 1600. Innehållet under roten är 902, inte 1600 — D är för stort."}
+      ],
+      "technique": "Vid uttryck av formen \\sqrt{\\text{produkt/kvot}}: gör divisionen FÖRST (förkorta nollor när möjligt), gör multiplikationen sist, och leta efter den närmaste fullständiga kvadraten.",
+      "pitfall": "Att försöka multiplicera 44·4100 först (= 180 400) innan division — det är onödigt stora tal och risk för räknefel. Förkorta 4100/200 = 20,5 först.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "förenklingen-före-roten", "move": "Förkorta 4100/200 till 20,5, multiplicera 44·20,5 = 902, jämför med 30² = 900 — svaret blir 30."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

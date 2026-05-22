@@ -1,0 +1,276 @@
+{
+  "host-2018-kvant1-XYZ-005": {
+    "corpus_patch": {
+      "prompt": "För funktionen f gäller att f(x) = x² och 0 ≤ x ≤ 3. Vilken värdemängd har funktionen?",
+      "options": [
+        {"letter": "A", "text": "−9 ≤ f(x) ≤ 9"},
+        {"letter": "B", "text": "−3 ≤ f(x) ≤ 3"},
+        {"letter": "C", "text": "0 ≤ f(x) ≤ 3"},
+        {"letter": "D", "text": "0 ≤ f(x) ≤ 9"}
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Värdemängden består av alla y-värden som funktionen antar när x går genom sitt definitionsintervall. Eftersom f(x) = x² är växande för x ≥ 0 räcker det att utvärdera ändpunkterna: f(0) = 0 och f(3) = 9, så värdemängden är 0 ≤ f(x) ≤ 9.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Frågan handlar om värdemängden — alltså vilka utvärden f(x) kan ta. Definitionsmängden är given: x ligger mellan 0 och 3 inklusive. Funktionen är f(x) = x².", "tier": "essential"},
+        {"n": 2, "title": "Definiera värdemängd", "text": "Värdemängd betyder \"alla möjliga y-värden\". Du sätter in varje tillåtet x och samlar resultaten. Definitionsmängden ger inmaten, värdemängden ger utmaten.", "tier": "detail"},
+        {"n": 3, "title": "Notera kvadratens egenskap", "text": "Kvadrering ger alltid icke-negativt resultat: x^2 \\geq 0 för alla reella x. Det utesluter direkt alla svar med negativa värden i värdemängden.", "tier": "essential"},
+        {"n": 4, "title": "Kontrollera monotoni på intervallet", "text": "På 0 \\leq x \\leq 3 är f(x) = x^2 strikt växande — större x ger större x^2. Det betyder att minsta och största värdet ligger i ändpunkterna, inte någonstans i mitten.", "tier": "essential"},
+        {"n": 5, "title": "Utvärdera vänster ändpunkt", "text": "Sätt in det minsta x-värdet: f(0) = 0^2 = 0. Det är värdemängdens nedre gräns.", "tier": "essential"},
+        {"n": 6, "title": "Utvärdera höger ändpunkt", "text": "Sätt in det största x-värdet: f(3) = 3^2 = 9. Det är värdemängdens övre gräns.", "tier": "essential"},
+        {"n": 7, "title": "Bekräfta att intervallet är obrutet", "text": "x^2 är kontinuerlig, så när x rör sig från 0 till 3 antar f(x) varje värde mellan 0 och 9. Det finns inga hål.", "tier": "detail"},
+        {"n": 8, "title": "Sätt ihop värdemängden", "text": "Värdemängden blir 0 \\leq f(x) \\leq 9. Båda ändarna är inkluderade eftersom även x = 0 och x = 3 är inkluderade.", "tier": "essential"},
+        {"n": 9, "title": "Varför inte definitionsmängden?", "text": "Alternativ C, 0 \\leq f(x) \\leq 3, är frestande eftersom 3 är synligt i frågan — men 3 är gränsen för x, inte för f(x). Värdemängden tar emot x^2, inte x.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera", "text": "Testa ett mellanvärde: f(2) = 4, som ligger mellan 0 och 9. Det matchar svar D och inget annat alternativ.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är D: 0 \\leq f(x) \\leq 9. Insikten i en mening: värdemängden för en monoton funktion på ett slutet intervall bestäms av ändpunkternas funktionsvärden.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är frestande att tänka att kvadrering kan ge negativa värden när x kan vara negativt — men här är x ≥ 0.", "why_wrong": "Som steg 3 visar är x^2 \\geq 0 alltid, och steg 4 fastslår att x inte ens får vara negativt här."},
+        {"letter": "B", "why_tempting": "Många stannar vid att kopiera definitionsmängdens gränser (−3 och 3) som om de var f-värden.", "why_wrong": "Steg 5–6 visar att ändpunkterna f(0) = 0 och f(3) = 9 — inte −3 och 3 — definierar värdemängden."},
+        {"letter": "C", "why_tempting": "Första instinkten är att läsa av talet 3 ur uppgiften och stoppa in det som övre gräns för f(x).", "why_wrong": "Steg 9 catches it: 3 är max för x, men f(3) = 9 är max för f(x). Talet 3 ska kvadreras innan det blir en värdemängdsgräns."}
+      ],
+      "technique": "När du ska bestämma värdemängden för en kontinuerlig monoton funktion på ett slutet intervall: utvärdera funktionen i ändpunkterna och låt resten av värdemängden fylla intervallet mellan. Trigger: orden \"värdemängd\" plus angiven definitionsmängd.",
+      "pitfall": "Förväxla aldrig definitionsmängd (x-värden) med värdemängd (y-värden). Botemedlet: skriv alltid x → f(x) explicit innan du formulerar gränserna.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "Ändpunktskontrollen", "move": "När funktionen är monoton på ett slutet intervall, räkna ut f på båda ändpunkterna och låt dem definiera värdemängden."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2018-kvant2-XYZ-002": {
+    "explanation": {
+      "solution_path": "Avläs de tre markerade punkterna i koordinatsystemet och jämför med alternativen — alternativet som INTE finns på diagrammet är svaret. Markerade punkter i bilden är (−1, 2), (2, −1) och (1, −2); kvar i alternativlistan är (−2, 1).",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Frågan är inverterad: du letar efter en punkt som INTE är markerad i diagrammet. Tre av fyra alternativ ska gå att hitta som prickar; det fjärde är svaret.", "tier": "essential"},
+        {"n": 2, "title": "Definiera koordinatläsning", "text": "En punkt (x, y) ligger x steg horisontellt från origo (höger om y-axeln när x > 0, vänster när x < 0) och y steg vertikalt (uppåt när y > 0, nedåt när y < 0). Skalan är 1 ruta = 1 enhet.", "tier": "detail"},
+        {"n": 3, "title": "Identifiera översta pricken", "text": "Den övre pricken ligger två rutor ovanför x-axeln och en ruta till vänster om y-axeln. Det är punkten (−1, 2).", "tier": "essential"},
+        {"n": 4, "title": "Identifiera pricken till höger om y-axeln", "text": "En prick ligger två rutor till höger om y-axeln och en ruta under x-axeln. Det är punkten (2, −1).", "tier": "essential"},
+        {"n": 5, "title": "Identifiera pricken under x-axeln", "text": "Den tredje pricken ligger en ruta till höger om y-axeln och två rutor under x-axeln. Det är punkten (1, −2).", "tier": "essential"},
+        {"n": 6, "title": "Lista de markerade punkterna", "text": "Sammanställ: {(−1, 2), (2, −1), (1, −2)}. Notera att två av alternativens första-koordinater är negativa men bara en av prickarna ligger i andra kvadranten.", "tier": "detail"},
+        {"n": 7, "title": "Matcha mot alternativen", "text": "B = (−1, 2) ✓, C = (1, −2) ✓, D = (2, −1) ✓. Kvar är A = (−2, 1), som skulle ligga i andra kvadranten två steg till vänster om y-axeln och en uppåt — där finns ingen prick.", "tier": "essential"},
+        {"n": 8, "title": "Varning för koordinatomkastning", "text": "Punkten (−2, 1) och (−1, 2) ser lika ut tills man räknar rutorna. Alla par i alternativen är spegelvarianter av varandra med ombytta siffror; det är därför uppgiften provar din vana att läsa x före y.", "tier": "detail"},
+        {"n": 9, "title": "Tolka diagrammet en gång till", "text": "Inga andra prickar finns i diagrammet — fyra alternativ, tre prickar, ett saknas. Skanna kvadrant för kvadrant så att inte en svag prick missas.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera", "text": "(−2, 1) skulle ligga längst åt vänster, lite ovanför x-axeln. Den positionen är tom — ingen prick. Svaret stämmer.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är A: (−2, 1). Insikten i en mening: när uppgiften har ordet \"inte\" understrukt, vänd hjärnan baklänges och matcha bort de tre alternativ som DU kan hitta — det fjärde är svaret.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Det är lätt att kasta om x och y och tro att (−1, 2) inte finns där.", "why_wrong": "Steg 3 visar att pricken längst upp till vänster ligger på x = −1, y = 2 — den ÄR markerad."},
+        {"letter": "C", "why_tempting": "Många stannar vid att (1, −2) ser exotisk ut och antar att den är den udda.", "why_wrong": "Steg 5 visar pricken vid en ruta höger om y-axeln och två ner — exakt (1, −2)."},
+        {"letter": "D", "why_tempting": "Första instinkten är att en punkt nära x-axeln är ovanlig och därför saknas.", "why_wrong": "Steg 4 placerar pricken på (2, −1) — den är markerad."}
+      ],
+      "technique": "När uppgiften frågar efter punkten som INTE är markerad: läs först av varje prick som ett (x, y)-par, sammanställ listan, och stryk sedan de alternativ som matchar. Trigger: ordet \"inte\" plus ett koordinatsystem med ett par utspridda prickar.",
+      "pitfall": "Vanligaste misstaget är att vända (x, y) till (y, x). Botemedlet: säg alltid \"höger/vänster först, upp/ner sen\" när du läser av en prick.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "Punktelimineringen", "move": "Läs varje prick som (x, y), bocka av motsvarande alternativ, och välj det som blir kvar."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2018-kvant2-XYZ-004": {
+    "corpus_patch": {
+      "prompt": "L₁ och L₂ är parallella linjer. Hur stor är vinkeln x?",
+      "options": [
+        {"letter": "A", "text": "50°"},
+        {"letter": "B", "text": "60°"},
+        {"letter": "C", "text": "70°"},
+        {"letter": "D", "text": "80°"}
+      ],
+      "answer": "C",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Figuren visar en triangel mellan L₁ och L₂ med toppvinkeln vid L₁, en rät vinkel inne i triangeln, och 30° där triangeln möter L₂. Beräkna triangelns övre inre vinkel via vinkelsumman 180° = 90° + 30° + topp, vilket ger topp = 60°. Vid topp-hörnet ligger tre vinklar längs L₁ på undersidan: 50°, triangelns topp (60°) och x — sammanlagt 180°. Alltså x = 180° − 50° − 60° = 70°.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "En triangel är instängd mellan två parallella linjer L₁ och L₂. Toppvertex ligger på L₁. Inuti triangeln finns en rät vinkel (90°). Vid bottenhörnet på L₂ är vinkeln mellan L₂ och triangelns sida 30°. Bredvid toppen står 50° angiven och du ska bestämma x intill.", "tier": "essential"},
+        {"n": 2, "title": "Räkna in vinklarna längs L₁", "text": "Varje rät linje delar planet i två halvor — vinklarna på en sida av L₁ vid toppvertexet summerar till 180°. Tre vinklar nedanför L₁ delar denna summa: 50°, triangelns inre toppvinkel, och x.", "tier": "essential"},
+        {"n": 3, "title": "Vinkelsumman i en triangel", "text": "I varje triangel summerar de tre inre vinklarna till 180°. Det är grundregeln vi ska använda för att hitta toppvinkeln inuti triangeln.", "tier": "detail"},
+        {"n": 4, "title": "Identifiera triangelns två kända inre vinklar", "text": "Triangeln har en rät vinkel (90°) vid mellanhörnet och 30° vid bottenhörnet på L₂. Det är två av tre inre vinklar.", "tier": "essential"},
+        {"n": 5, "title": "Beräkna triangelns toppvinkel", "text": "180° − 90° − 30° = 60°. Triangelns inre vinkel vid toppvertexet (mellan triangelns två sidor som möts där) är 60°.", "tier": "essential"},
+        {"n": 6, "title": "Definiera rät vinkel som markör", "text": "En rät vinkel är 90° och markeras med en liten kvadrat. När du ser symbolen kan du direkt sätta värdet 90° i räkningen.", "tier": "detail"},
+        {"n": 7, "title": "Sätt upp vinkelekvationen vid toppen", "text": "Under L₁ vid toppvertexet ligger tre vinklar i rad: 50° (mellan L₁ och en sida) + 60° (triangelns inre toppvinkel) + x (mellan andra sidan och L₁) = 180°.", "tier": "essential"},
+        {"n": 8, "title": "Lös ut x", "text": "x = 180° − 50° − 60° = 70°.", "tier": "essential"},
+        {"n": 9, "title": "Tolka resultatet", "text": "Vinkeln x är 70°, vilket är större än 50° men mindre än en rät vinkel. Det är plausibelt givet att triangeln \"lutar\" till höger.", "tier": "detail"},
+        {"n": 10, "title": "Parallella linjer som ramverk", "text": "Det här är ett klassiskt parallell-linje-uppgift: nyckeln är att L₁ ger en 180°-budget vid toppvertexet, och triangeln tar 60° av den budgeten. Resten fördelas mellan 50° och x.", "tier": "detail"},
+        {"n": 11, "title": "Verifiera", "text": "Kontroll: 50° + 60° + 70° = 180° ✓. Allt stämmer med en rak linje längs L₁.", "tier": "essential"},
+        {"n": 12, "title": "Slutsats", "text": "Svaret är C: 70°. Insikten i en mening: vid en parallell-linje-triangel räcker det att lägga ihop vinkelsumman i triangeln OCH den raka linjen vid toppvertexet — två 180°-regler bredvid varandra.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är frestande att gissa att x = 50° eftersom 50° redan står bredvid — symmetrigissning.", "why_wrong": "Steg 7–8 visar att x ligger på andra sidan av triangelns toppvinkel, och summan kräver x ≠ 50°."},
+        {"letter": "B", "why_tempting": "Många stannar vid triangelns inre toppvinkel (60°) och tror att x också är 60°.", "why_wrong": "Steg 5 räknar inre toppvinkeln till 60°, men steg 7 visar att x är en SEPARAT vinkel utanför triangeln — inte samma."},
+        {"letter": "D", "why_tempting": "Första instinkten är att lägga ihop 50° + 30° = 80° via exteriörvinkelsatsen.", "why_wrong": "Som steg 7 visar gäller exteriörvinkelsatsen 50° + 30° = topp inte här — vi har en rät vinkel inne i triangeln, så de \"motsatta\" inre vinklarna är 90° och 30°, inte 50° och 30°."}
+      ],
+      "technique": "Vid figurer med parallella linjer och en infogad triangel: räkna alltid två separata 180°-regler — triangelns vinkelsumma OCH den raka linjen vid det vertex som ligger på en av de parallella linjerna. Trigger: orden \"parallella linjer\" plus minst en triangel.",
+      "pitfall": "Vanligt fel är att hoppa till exteriörvinkelsatsen (x = summan av de två motsatta inre vinklarna) utan att kolla vilka inre vinklar som faktiskt är motsatta. Botemedlet: rita alltid in alla tre vinklarna längs L₁ vid toppen och tvinga dem att summera till 180°.",
+      "framework_id": "XYZ-TRAP-035",
+      "pregrade_tactic": {"handle": "Dubbel-180-regeln", "move": "När en triangel sitter med ett hörn på en av två parallella linjer, sätt upp 180°-summan både för triangelns vinklar och för vinklarna längs den raka linjen — lös sedan systemet."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2018-kvant2-XYZ-005": {
+    "corpus_patch": {
+      "prompt": "Vad är (4/9) ÷ (8/3)?",
+      "options": [
+        {"letter": "A", "text": "1/6"},
+        {"letter": "B", "text": "27/32"},
+        {"letter": "C", "text": "32/27"},
+        {"letter": "D", "text": "6"}
+      ],
+      "answer": "A",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Bråk delat med bråk = bråk gångrat med inverterad nämnar-bråk. Alltså (4/9) ÷ (8/3) = (4/9) · (3/8) = 12/72 = 1/6.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Uttrycket är ett \"bråk i bråk\": täljaren 4/9 och nämnaren 8/3. Frågan är vad detta sammansatta bråk är värt.", "tier": "essential"},
+        {"n": 2, "title": "Tolka brak-i-brak som division", "text": "Ett bråkstreck betyder alltid division. När både täljare och nämnare själva är bråk handlar uppgiften om (4/9) ÷ (8/3).", "tier": "essential"},
+        {"n": 3, "title": "Regeln för division av bråk", "text": "Att dela med ett bråk är samma sak som att multiplicera med dess invers (det inverterade bråket). Alltså a/b ÷ c/d = (a/b) · (d/c).", "tier": "essential"},
+        {"n": 4, "title": "Invertera nämnar-bråket", "text": "Vänd 8/3 upp och ner och få 3/8. Detta är det inverterade bråket — täljare blir nämnare och tvärtom.", "tier": "essential"},
+        {"n": 5, "title": "Skriv om som multiplikation", "text": "(4/9) ÷ (8/3) = (4/9) · (3/8). Nu är det en vanlig bråkmultiplikation.", "tier": "essential"},
+        {"n": 6, "title": "Definiera bråkmultiplikation", "text": "Vid multiplikation av bråk: täljare gånger täljare, nämnare gånger nämnare. (a/b) · (c/d) = (a·c)/(b·d).", "tier": "detail"},
+        {"n": 7, "title": "Utför multiplikationen", "text": "(4 · 3)/(9 · 8) = 12/72.", "tier": "essential"},
+        {"n": 8, "title": "Förkorta bråket", "text": "Hitta gemensam faktor i 12 och 72. Båda är delbara med 12: 12/12 = 1 och 72/12 = 6. Alltså 12/72 = 1/6.", "tier": "essential"},
+        {"n": 9, "title": "Alternativ förkortning under räknandet", "text": "Du kan också förkorta innan multiplikation: 4 och 8 har faktor 4 → 1 och 2; 3 och 9 har faktor 3 → 1 och 3. Det ger (1/3) · (1/2) = 1/6 direkt — mindre tal att handskas med.", "tier": "detail"},
+        {"n": 10, "title": "Sanity-check storleksordningen", "text": "4/9 är ungefär 0,44. 8/3 är ungefär 2,67. Att dela ~0,44 med ~2,67 ger ~0,17, vilket är ungefär 1/6 ≈ 0,167 ✓.", "tier": "detail"},
+        {"n": 11, "title": "Verifiera", "text": "Multiplikation tillbaka: 1/6 · 8/3 = 8/18 = 4/9 ✓. Originaltäljaren är reproducerad.", "tier": "essential"},
+        {"n": 12, "title": "Slutsats", "text": "Svaret är A: 1/6. Insikten i en mening: när du ser ett bråk-i-bråk, byt direkt till multiplikation med inverten och förkorta före du multiplicerar — det sparar både tid och slarvfel.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Det är lätt att råka multiplicera 4/9 med 8/3 i stället för att dela, och därmed få 32/27 — och sedan kasta om till 27/32 i ett extra slarvfel.", "why_wrong": "Steg 3 visar att division kräver INVERTERING av nämnar-bråket, inte raksak multiplikation; och steg 8 räknar fram 1/6, inte 27/32."},
+        {"letter": "C", "why_tempting": "Många stannar vid att multiplicera (4/9) · (8/3) = 32/27 och tror att det är svaret — de glömmer att invertera den ena.", "why_wrong": "Steg 4 visar att 8/3 ska vändas till 3/8 INNAN multiplikation. Utan inverteringen är produkten 32/27, inte vad uppgiften ber om."},
+        {"letter": "D", "why_tempting": "Första instinkten är att räkna 9/3 · ... och fastna i ett heltal som 6 = 18/3 eller liknande.", "why_wrong": "Steg 11 visar att 1/6, inte 6, är reproducerbart via baklängesmultiplikation. 6 hör inte hemma här."}
+      ],
+      "technique": "Division av bråk löses alltid med \"keep, change, flip\": behåll första bråket, byt tecken till multiplikation, vänd det andra. Trigger: ett bråk skrivet med både täljare och nämnare som bråk, eller direkt division mellan två bråk.",
+      "pitfall": "Vanligt fel är att vända täljar-bråket i stället för nämnar-bråket. Botemedlet: säg högt \"jag flippar den under bråkstrecket\" innan du vänder.",
+      "framework_id": "XYZ-TRAP-017",
+      "pregrade_tactic": {"handle": "Inverteringen", "move": "När du ser bråk delat med bråk, vänd genast nämnar-bråket och förkorta innan du multiplicerar — minsta möjliga räkneoperation först."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2020-kvant1-XYZ-002": {
+    "corpus_patch": {
+      "prompt": "6 likadana maskiner kan sammanlagt producera 150 enheter per minut. Hur många enheter kan 10 sådana maskiner producera på 4 minuter?",
+      "options": [
+        {"letter": "A", "text": "360"},
+        {"letter": "B", "text": "1 000"},
+        {"letter": "C", "text": "6 000"},
+        {"letter": "D", "text": "36 000"}
+      ],
+      "answer": "B",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Räkna ut produktionstakten per maskin: 150/6 = 25 enheter per maskin och minut. Multiplicera med antalet maskiner (10) och antalet minuter (4): 25 · 10 · 4 = 1000.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi har 6 maskiner som tillsammans gör 150 enheter på 1 minut. Frågan: hur mycket gör 10 sådana maskiner på 4 minuter? Antalet maskiner och tiden ändras.", "tier": "essential"},
+        {"n": 2, "title": "Definiera produktionstakt", "text": "Produktionstakt är enheter per maskin per minut. Med konstant takt gäller: totala enheter = takt · maskiner · minuter.", "tier": "essential"},
+        {"n": 3, "title": "Räkna ut takten per maskin", "text": "6 maskiner gör 150 enheter per minut tillsammans. Då gör en enskild maskin 150/6 = 25 enheter per minut.", "tier": "essential"},
+        {"n": 4, "title": "Sanity-check delningen", "text": "Kontroll: 25 · 6 = 150 ✓. Takten 25 enheter/maskin/minut stämmer.", "tier": "detail"},
+        {"n": 5, "title": "Skala upp till 10 maskiner", "text": "Om en maskin gör 25 enheter per minut, gör 10 maskiner 25 · 10 = 250 enheter per minut.", "tier": "essential"},
+        {"n": 6, "title": "Skala upp till 4 minuter", "text": "250 enheter per minut, gånger 4 minuter, ger 250 · 4 = 1000 enheter totalt.", "tier": "essential"},
+        {"n": 7, "title": "Alternativ formel", "text": "Direkt: totala enheter = (150 enheter/min) · (10 maskiner / 6 maskiner) · 4 minuter = 150 · (10/6) · 4 = 150 · 40/6 = 6000/6 = 1000.", "tier": "detail"},
+        {"n": 8, "title": "Definiera linjär skalning", "text": "Produktionsproblem är linjära i både antal maskiner och tid: dubbla maskiner → dubbel produktion, dubbel tid → dubbel produktion. Det är därför enkel proportion fungerar.", "tier": "detail"},
+        {"n": 9, "title": "Storleksordningskontroll", "text": "6 maskiner ger 150 enheter/min. På 4 min ger 6 maskiner 600 enheter. 10 maskiner gör ~67 % mer än 6, vilket ger 600 · (10/6) = 1000. ✓", "tier": "detail"},
+        {"n": 10, "title": "Notera enheterna", "text": "Faktorerna är enheter/maskin/minut · maskiner · minuter — \"maskiner\" och \"minuter\" stryker varandra, kvar blir enheter. Dimensionsanalys bekräftar att 1000 har rätt sort.", "tier": "detail"},
+        {"n": 11, "title": "Verifiera", "text": "Pröva varje delsteg igen: 150/6 = 25 ✓; 25·10 = 250 ✓; 250·4 = 1000 ✓.", "tier": "essential"},
+        {"n": 12, "title": "Slutsats", "text": "Svaret är B: 1000. Insikten i en mening: vid arbetstaktsuppgifter — räkna alltid ner till takten per enhet (här per maskin och minut), skala sedan upp linjärt.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är frestande att räkna 150 enheter dividerat med något — t.ex. 150 · 4 / något — och hamna på ett tresiffrigt tal.", "why_wrong": "Steg 5–6 visar att rätt skalning ger 1000 enheter, inte 360. Sifferkombinationen 360 framgår av t.ex. 6 maskiner · 60 enheter eller liknande felräkning."},
+        {"letter": "C", "why_tempting": "Många stannar vid 150 · 40 = 6000 och tror att det är svaret (dvs. multiplicerar tar dem direkt utan att korrigera för antalet maskiner).", "why_wrong": "Steg 7 visar att man måste justera för förhållandet 10/6 maskiner. 6000 är resultatet om man missar att 10 är fler maskiner än 6, och inte delar med 6."},
+        {"letter": "D", "why_tempting": "Första instinkten kan vara att multiplicera alla tre tal: 150 · 10 · 4 · 6 = 36000 — \"alla siffror i en\".", "why_wrong": "Steg 2 visar att formeln är takt · maskiner · minuter, inte enheter/min · maskiner · minuter · maskiner. 36000 dubbelräknar antalet maskiner."}
+      ],
+      "technique": "För arbetstakt-problem: dela ner till enhetstakt (per maskin per minut, per arbetare per timme, etc.), skala sedan linjärt. Trigger: \"X enheter på Y tid med Z maskiner\" plus frågor om annan tid och/eller annat antal maskiner.",
+      "pitfall": "Vanligt fel är att skala upp utan att dela ner först, eller att glömma att också skala med tiden. Botemedlet: skriv alltid takten per enhet som ett delsteg innan multiplikationen.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "Enhetstakten", "move": "Vid arbets- eller produktionsproblem, räkna alltid först ut takten per maskin/arbetare/minut innan du skalar upp till efterfrågat scenario."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2020-kvant2-XYZ-002": {
+    "explanation": {
+      "solution_path": "Grafen visar en nedåtvänd parabel som korsar x-axeln strax efter x = 1 och strax efter x = 5, med maximum ungefär vid x = 3 där y ≈ 4. f(x) är positiv mellan nollställena, alltså 1 < x < 5.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Frågan är: för vilka x ligger funktionsvärdet f(x) ovanför x-axeln? Det är där grafen står OVANFÖR x-axeln, inte under.", "tier": "essential"},
+        {"n": 2, "title": "Definiera \"positiv funktion\"", "text": "f(x) > 0 betyder y-koordinaten är större än noll — punkten på grafen ligger ovanför x-axeln. Negativ f(x) är under, noll f(x) är på axeln.", "tier": "detail"},
+        {"n": 3, "title": "Identifiera grafens form", "text": "Kurvan är en nedåtvänd parabel — den öppnar nedåt med ett maxvärde i mitten. Den korsar x-axeln vid två punkter (nollställen) och är positiv mellan dem.", "tier": "essential"},
+        {"n": 4, "title": "Avläs vänster nollställe", "text": "Parabeln korsar x-axeln första gången vid x = 1. Strax efter 1 är f(x) precis vid noll på väg uppåt.", "tier": "essential"},
+        {"n": 5, "title": "Avläs höger nollställe", "text": "Parabeln korsar x-axeln andra gången vid x = 5. Strax före 5 är f(x) positivt; strax efter blir det negativt.", "tier": "essential"},
+        {"n": 6, "title": "Bekräfta maxläget", "text": "Maximum ligger mitt emellan nollställena, alltså vid x = (1+5)/2 = 3. Vid x = 3 är f(x) ≈ 4 (toppen av kurvan), vilket stämmer med skalan på y-axeln.", "tier": "detail"},
+        {"n": 7, "title": "Sätt ihop intervallet", "text": "f(x) > 0 mellan nollställena: 1 < x < 5. Ingen del av detta intervall ligger på x-axeln eller under.", "tier": "essential"},
+        {"n": 8, "title": "Diskvalificera negativa intervall", "text": "Utanför 1 < x < 5 (alltså x ≤ 1 eller x ≥ 5) är parabeln på eller under x-axeln. Där är f(x) inte positiv.", "tier": "detail"},
+        {"n": 9, "title": "Skarpa olikheter eller mjuka?", "text": "Vid x = 1 och x = 5 är f(x) = 0, inte positiv. Därför är gränserna STRIKT olikhet (< ), inte ≤ — endpunkterna är inte med.", "tier": "detail"},
+        {"n": 10, "title": "Varför inte de andra intervallen?", "text": "Alt A (x > 0) inkluderar t.ex. x = 0.5 där parabeln är NEGATIV. Alt B (0 < x < 4) börjar för tidigt och slutar för tidigt. Alt C (x > 1) glömmer att det tar slut vid x = 5.", "tier": "detail"},
+        {"n": 11, "title": "Verifiera", "text": "Spotcheck: x = 3 → f(3) ≈ 4 > 0 ✓. x = 6 → f(6) under x-axeln, alltså < 0 ✓. x = 0 → under axeln, < 0 ✓. Intervallet 1 < x < 5 fångar exakt det positiva.", "tier": "essential"},
+        {"n": 12, "title": "Slutsats", "text": "Svaret är D: 1 < x < 5. Insikten i en mening: för \"var är f(x) positiv\" — leta efter nollställena på x-axeln och välj intervallet DÄREMELLAN där kurvan står över axeln.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är frestande att gissa att en \"positiv graf\" betyder x > 0, dvs. höger om y-axeln.", "why_wrong": "Steg 4 visar att parabeln är negativ för x mellan 0 och 1. Så \"x > 0\" inkluderar punkter där f(x) faktiskt är NEGATIV — fel."},
+        {"letter": "B", "why_tempting": "Många stannar vid de etiketterade markeringarna på x-axeln (2 och 4) och tror att kurvan korsar där.", "why_wrong": "Steg 4–5 visar att nollställena är vid x = 1 och x = 5, INTE vid 2 och 4. Talen 2 och 4 är bara skalmarkeringar, inte nollställen."},
+        {"letter": "C", "why_tempting": "Första instinkten är att se vänster nollställe (x = 1) och anta att kurvan stannar positiv för allt x större än 1.", "why_wrong": "Steg 5 visar att det finns ett andra nollställe vid x = 5 — efter det är kurvan negativ igen. Intervallet är begränsat i båda ändar."}
+      ],
+      "technique": "För att hitta var en graf är positiv: läs av nollställena (där grafen korsar x-axeln) och välj det/de intervall där kurvan står OVANFÖR axeln. Trigger: ord som \"positiv\", \"negativ\", \"över/under x-axeln\".",
+      "pitfall": "Vanligaste fallgropen är att förväxla skaletiketter med faktiska nollställen. Botemedlet: spåra alltid hela kurvan med fingret och markera exakt var den korsar axeln — inte bara där en skaltext råkar stå.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "Nollställeshämtaren", "move": "När frågan är \"var är f positiv\", peka först på nollställena, sedan välj det intervall där kurvan står ovanför x-axeln."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2021-kvant1-XYZ-007": {
+    "explanation": {
+      "solution_path": "g(x) är den nedåtvända parabeln, f(x) är den räta linjen. g > f gäller på intervallet mellan deras två skärningspunkter — den vänstra ligger ungefär vid x = a, den högra ungefär vid x = d. Mellan dem ligger parabeln ovanför linjen, så svaret är a < x < d.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du ska hitta ett intervall på x-axeln där parabelns y-värde är större än linjens y-värde för VARJE x i intervallet. \"g > f\" betyder att g:s kurva ligger ovanför f:s i den vertikala riktningen.", "tier": "essential"},
+        {"n": 2, "title": "Identifiera vilken kurva som är vilken", "text": "Etiketten y = g(x) ligger vid den nedåtvända parabeln; y = f(x) ligger vid den räta linjen som lutar uppåt-höger. Förväxla inte — många misstag i den här typen kommer från fel etikettläsning.", "tier": "essential"},
+        {"n": 3, "title": "Avläs parabelns nollställen", "text": "Parabeln (g) korsar x-axeln vid x = b (vänster) och x = e (höger). Mellan b och e ligger den ovanför axeln, dvs. g > 0.", "tier": "detail"},
+        {"n": 4, "title": "Avläs linjens nollställe", "text": "Linjen (f) korsar x-axeln vid x = c. Till vänster om c är f negativ, till höger är f positiv.", "tier": "detail"},
+        {"n": 5, "title": "Identifiera skärningspunkterna mellan g och f", "text": "Linjen och parabeln korsar varandra vid TVÅ punkter i diagrammet: en vänster skärning vid ungefär x = a (där båda kurvorna är under x-axeln) och en höger skärning vid ungefär x = d (där båda är ovanför axeln).", "tier": "essential"},
+        {"n": 6, "title": "Bestäm vilken kurva som är högre mellan skärningspunkterna", "text": "Pick a test point mellan a och d, t.ex. x = c. Vid x = c gäller f(c) = 0 (linjen korsar axeln), och g(c) > 0 (parabeln ligger ovanför axeln där). Alltså g(c) > f(c). ✓", "tier": "essential"},
+        {"n": 7, "title": "Bekräfta åt höger om d", "text": "Test x mellan d och e: nu går parabeln neråt mot e, medan linjen fortsätter uppåt. Linjen ligger ovanför parabeln, så f > g — och g > f gäller INTE.", "tier": "essential"},
+        {"n": 8, "title": "Bekräfta åt vänster om a", "text": "Test x till vänster om a: båda kurvorna är under x-axeln. Parabeln dyker brantare nedåt (mot -∞) än linjen, så linjen ligger ovanför, dvs. f > g — och g > f gäller INTE.", "tier": "detail"},
+        {"n": 9, "title": "Definiera \"intervall där olikheten gäller hela tiden\"", "text": "Frågan begär ett intervall där g > f för ALLA x i intervallet — inte bara för någon enstaka punkt. Därför måste hela intervallet ligga MELLAN de två skärningspunkterna.", "tier": "detail"},
+        {"n": 10, "title": "Sätt ihop intervallet", "text": "Skärningspunkterna ligger vid a och d. Mellan dem gäller g > f. Alltså a < x < d. Skarpa olikheter eftersom vid själva skärningspunkterna gäller g = f (likhet, inte strikt större).", "tier": "essential"},
+        {"n": 11, "title": "Diskvalificera de andra alternativen", "text": "Alt A (x > a): för stort intervall — efter d gäller f > g. Alt B (b < x < e): liknande problem, efter d gäller fel olikhet. Alt C (c < x < e): börjar för långt höger och slutar för långt höger, hoppar över delar där g > f och inkluderar delar där g < f.", "tier": "detail"},
+        {"n": 12, "title": "Verifiera", "text": "Spotcheck x = b: g(b) = 0, f(b) < 0 (b < c). Så g > f vid b ✓, och b ligger inom (a, d). Spotcheck x = e: g(e) = 0, f(e) > 0 (e > c). Så g < f vid e, vilket stämmer med att e ligger UTANFÖR (a, d).", "tier": "essential"},
+        {"n": 13, "title": "Slutsats", "text": "Svaret är D: a < x < d. Insikten i en mening: när du jämför två kurvor, är de relevanta x-värdena alltid skärningspunkterna — mellan dem håller en av kurvorna konstant övertaget.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att tänka att eftersom g > f startar vid a, så fortsätter det för alltid mot höger.", "why_wrong": "Steg 7 visar att efter den högra skärningspunkten vid d, är linjen f större än parabeln g. Olikheten håller bara på ett begränsat intervall."},
+        {"letter": "B", "why_tempting": "Många stannar vid att b och e är parabelns nollställen och tror att olikheten gäller i hela det intervallet.", "why_wrong": "Steg 7 visar att även inom (b, e) finns en del — efter d — där g < f. Nollställena på axeln är inte automatiskt skärningspunkter mellan kurvorna."},
+        {"letter": "C", "why_tempting": "Första instinkten är att välja det intervall där BÅDA kurvorna är positiva, alltså c < x < e.", "why_wrong": "Steg 11 visar att i delen c < x < d är g > f, men i delen d < x < e gäller motsatsen. Alternativet skulle alltså bara fungera på halva intervallet."}
+      ],
+      "technique": "För frågor om vilken kurva som är större på ett intervall: hitta skärningspunkterna mellan kurvorna (inte mellan en kurva och x-axeln), och testa ett mellanvärde mellan dem för att avgöra vilken som är överst. Trigger: två kurvor i samma diagram, frågor i formen \"f > g\" eller \"f < g\".",
+      "pitfall": "Förväxla aldrig kurvornas nollställen (där kurvorna möter x-axeln) med skärningspunkterna mellan kurvorna (där de möter varandra). Botemedlet: leta efter punkter där pennan slits BÅDA kurvorna samtidigt, inte bara där en av dem korsar axeln.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "Skärningspunktsjakten", "move": "När två kurvor jämförs, markera först deras skärningspunkter på x-axeln — sedan testa ett mellanvärde för att avgöra vem som leder."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

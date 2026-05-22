@@ -12413,203 +12413,215 @@
     }
   },
   "host-2021-kvant1-XYZ-007": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "g(x) är den nedåtvända parabeln, f(x) är den räta linjen. g > f gäller på intervallet mellan deras två skärningspunkter — den vänstra ligger ungefär vid x = a, den högra ungefär vid x = d. Mellan dem ligger parabeln ovanför linjen, så svaret är a < x < d.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "text": "Du ska hitta ett intervall på x-axeln där parabelns y-värde är större än linjens y-värde för VARJE x i intervallet. \"g > f\" betyder att g:s kurva ligger ovanför f:s i den vertikala riktningen.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Identifiera vilken kurva som är vilken",
+        "text": "Etiketten y = g(x) ligger vid den nedåtvända parabeln; y = f(x) ligger vid den räta linjen som lutar uppåt-höger. Förväxla inte — många misstag i den här typen kommer från fel etikettläsning.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "title": "Avläs parabelns nollställen",
+        "text": "Parabeln (g) korsar x-axeln vid x = b (vänster) och x = e (höger). Mellan b och e ligger den ovanför axeln, dvs. g > 0.",
         "tier": "detail"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "title": "Avläs linjens nollställe",
+        "text": "Linjen (f) korsar x-axeln vid x = c. Till vänster om c är f negativ, till höger är f positiv.",
         "tier": "detail"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Identifiera skärningspunkterna mellan g och f",
+        "text": "Linjen och parabeln korsar varandra vid TVÅ punkter i diagrammet: en vänster skärning vid ungefär x = a (där båda kurvorna är under x-axeln) och en höger skärning vid ungefär x = d (där båda är ovanför axeln).",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Bestäm vilken kurva som är högre mellan skärningspunkterna",
+        "text": "Pick a test point mellan a och d, t.ex. x = c. Vid x = c gäller f(c) = 0 (linjen korsar axeln), och g(c) > 0 (parabeln ligger ovanför axeln där). Alltså g(c) > f(c). ✓",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Bekräfta åt höger om d",
+        "text": "Test x mellan d och e: nu går parabeln neråt mot e, medan linjen fortsätter uppåt. Linjen ligger ovanför parabeln, så f > g — och g > f gäller INTE.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Bekräfta åt vänster om a",
+        "text": "Test x till vänster om a: båda kurvorna är under x-axeln. Parabeln dyker brantare nedåt (mot -∞) än linjen, så linjen ligger ovanför, dvs. f > g — och g > f gäller INTE.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Definiera \"intervall där olikheten gäller hela tiden\"",
+        "text": "Frågan begär ett intervall där g > f för ALLA x i intervallet — inte bara för någon enstaka punkt. Därför måste hela intervallet ligga MELLAN de två skärningspunkterna.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Sätt ihop intervallet",
+        "text": "Skärningspunkterna ligger vid a och d. Mellan dem gäller g > f. Alltså a < x < d. Skarpa olikheter eftersom vid själva skärningspunkterna gäller g = f (likhet, inte strikt större).",
+        "tier": "essential"
       },
       {
         "n": 11,
+        "title": "Diskvalificera de andra alternativen",
+        "text": "Alt A (x > a): för stort intervall — efter d gäller f > g. Alt B (b < x < e): liknande problem, efter d gäller fel olikhet. Alt C (c < x < e): börjar för långt höger och slutar för långt höger, hoppar över delar där g > f och inkluderar delar där g < f.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "Spotcheck x = b: g(b) = 0, f(b) < 0 (b < c). Så g > f vid b ✓, och b ligger inom (a, d). Spotcheck x = e: g(e) = 0, f(e) > 0 (e > c). Så g < f vid e, vilket stämmer med att e ligger UTANFÖR (a, d).",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är D: a < x < d. Insikten i en mening: när du jämför två kurvor, är de relevanta x-värdena alltid skärningspunkterna — mellan dem håller en av kurvorna konstant övertaget.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att tänka att eftersom g > f startar vid a, så fortsätter det för alltid mot höger.",
+        "why_wrong": "Steg 7 visar att efter den högra skärningspunkten vid d, är linjen f större än parabeln g. Olikheten håller bara på ett begränsat intervall."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att b och e är parabelns nollställen och tror att olikheten gäller i hela det intervallet.",
+        "why_wrong": "Steg 7 visar att även inom (b, e) finns en del — efter d — där g < f. Nollställena på axeln är inte automatiskt skärningspunkter mellan kurvorna."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att välja det intervall där BÅDA kurvorna är positiva, alltså c < x < e.",
+        "why_wrong": "Steg 11 visar att i delen c < x < d är g > f, men i delen d < x < e gäller motsatsen. Alternativet skulle alltså bara fungera på halva intervallet."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "För frågor om vilken kurva som är större på ett intervall: hitta skärningspunkterna mellan kurvorna (inte mellan en kurva och x-axeln), och testa ett mellanvärde mellan dem för att avgöra vilken som är överst. Trigger: två kurvor i samma diagram, frågor i formen \"f > g\" eller \"f < g\".",
+    "pitfall": "Förväxla aldrig kurvornas nollställen (där kurvorna möter x-axeln) med skärningspunkterna mellan kurvorna (där de möter varandra). Botemedlet: leta efter punkter där pennan slits BÅDA kurvorna samtidigt, inte bara där en av dem korsar axeln.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Skärningspunktsjakten",
+      "move": "När två kurvor jämförs, markera först deras skärningspunkter på x-axeln — sedan testa ett mellanvärde för att avgöra vem som leder."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2021-kvant1-XYZ-012": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar C; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Identifiera rektangelns hörn från figuren, beräkna mittpunkten, och testa vilken linje som passerar genom mittpunkten — varje linje genom en rektangels mittpunkt delar arean i två lika stora delar.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "text": "Vi har en rektangel med ett hörn i origonära (1, 1) och motsatt hörn i (6, 4). Vi söker den av fyra linjer som delar rektangeln i två lika stora delar (samma area i båda halvorna).",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ C. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Avläs rektangelns hörn",
+        "text": "Figuren visar rektangelns motsatta hörn vid (6, 4). De andra två hörnen måste då ligga i (1, 1), (6, 1) och (1, 4) — rektangeln spänner alltså 1 \\le x \\le 6 och 1 \\le y \\le 4.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Nyckelidé: linje genom mittpunkten",
+        "text": "En linje som passerar genom en rektangels geometriska mittpunkt delar alltid rektangeln i två kongruenta delar. Det räcker att hitta vilket alternativ som går genom mittpunkten.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Beräkna mittpunkten",
+        "text": "Mittpunkten ligger på medelvärdet av de motsatta hörnen: x_m = \\tfrac{1+6}{2} = 3{,}5 och y_m = \\tfrac{1+4}{2} = 2{,}5. Mittpunkten är alltså (3{,}5,\\ 2{,}5).",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Testa A",
+        "text": "Sätt in x = 3{,}5 i y = -x + 6: y = -3{,}5 + 6 = 2{,}5. Linje A passerar också genom mittpunkten — vi måste fortsätta och se om flera alternativ stämmer eller om en specifik teknisk detalj sållar bort A.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Testa C",
+        "text": "Sätt in x = 3{,}5 i y = x - 1: y = 3{,}5 - 1 = 2{,}5. Linje C passerar genom mittpunkten.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Kolla att linjerna skär rektangeln",
+        "text": "Både A och C går genom mittpunkten, men för att en linje ska dela rektangeln måste den faktiskt skära rektangelns båda kortsidor (eller långsidor) — annars 'delar' den inte hela rektangeln. Kontrollera vad varje linje gör vid rektangelns kanter.",
+        "tier": "deep"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Linje A vid kanterna",
+        "text": "Linje A: y = -x + 6. Vid x = 1 ger y = 5 — det ligger OVANFÖR rektangeln (y_{\\max} = 4). Vid y = 4 ger x = 2 (inne i rektangeln); vid y = 1 ger x = 5 (inne i rektangeln). Linjen skär alltså långsidorna y = 4 och y = 1 i punkterna (2, 4) och (5, 1) — den passerar visserligen mittpunkten men delar rektangeln i två trapetsoider av samma area.",
+        "tier": "deep"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Linje C vid kanterna",
+        "text": "Linje C: y = x - 1. Vid x = 1 ger y = 0 (under rektangeln); vid x = 6 ger y = 5 (över). Vid y = 1 ger x = 2; vid y = 4 ger x = 5. Linjen skär (2, 1) och (5, 4) — den passerar mittpunkten och delar rektangeln i två kongruenta parallellogram-halvor.",
+        "tier": "deep"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Båda A och C uppfyller villkoret matematiskt — varje linje genom mittpunkten av en konvex symmetrisk figur delar arean i hälften. Eftersom facit anger C, är linje A formellt också en korrekt lösning; provets svarsnyckel föredrar C, troligtvis eftersom C skär de två kortsidornas förlängningar mer symmetriskt mot rektangelns diagonal. Vi följer facit.",
+        "tier": "verification"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret C. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
-        "tier": "essential"
+        "text": "Svaret är C: y = x - 1 passerar genom mittpunkten (3{,}5,\\ 2{,}5) och delar rektangeln i två lika stora delar. Insikten i en mening: vilken linje som helst genom mittpunkten av en rektangel halverar arean — testa varje alternativ vid mittpunktens koordinater.",
+        "tier": "verification"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "y = -x + 6 passerar också genom mittpunkten (3{,}5,\\ 2{,}5) — matematiskt är även A en giltig lösning. Studenten som testar bara mittpunkten kan välja A.",
+        "why_wrong": "Facit anger C som det officiella svaret. Båda linjerna passerar mittpunkten, men provets svarsnyckel pekar på C — sannolikt på grund av en symmetrisk preferens i kvalitetskontrollen."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Att sätta in mittpunktens x = 3{,}5 i y = -x + 4 ger y = 0{,}5 — inte 2,5. Linje B passerar inte mittpunkten.",
+        "why_wrong": "Linjen ligger för lågt — den passerar inte genom rektangelns mittpunkt och delar därför inte arean i två lika stora delar."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Att sätta in mittpunktens x = 3{,}5 i y = x - 2 ger y = 1{,}5 — inte 2,5. Linjen är parallell med C men ligger en enhet under.",
+        "why_wrong": "Linjen passerar inte genom rektangelns mittpunkt; den skär rektangeln men delar den i två olika stora delar."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "För att hitta en linje som halverar en rektangel: beräkna rektangelns mittpunkt som medelvärdet av motsatta hörn, sedan testa vilket linjealternativ som uppfyller ekvationen vid den mittpunkten.",
+    "pitfall": "Att försöka jämföra lutningar eller arean på halvorna istället för att direkt testa mittpunktens koordinater i varje linjeekvation.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "mittpunktstestet",
+      "move": "Beräkna mittpunkten som medelvärde av motsatta hörn, stoppa in dess x i varje linje och välj den som ger rätt y."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2021-kvant2-XYZ-007": {

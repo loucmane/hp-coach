@@ -1,0 +1,327 @@
+{
+  "var-2024-kvant2-XYZ-006": {
+    "corpus_patch": {
+      "prompt": "Vilket av svarsalternativen är lika med 7?",
+      "options": [
+        {"letter": "A", "text": "\\sqrt{29}+\\sqrt{20}"},
+        {"letter": "B", "text": "7^{1}-7^{0}"},
+        {"letter": "C", "text": "\\dfrac{14}{7}+\\dfrac{49}{14}"},
+        {"letter": "D", "text": "\\left(\\dfrac{7}{\\sqrt{7}}\\right)^{2}"}
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Pröva varje uttryck med basreglerna för rotuttryck, exponenter och bråk. Bara D förenklas exakt till 7 eftersom (7/\\sqrt{7})^{2} = 49/7 = 7.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du ska identifiera vilket av de fyra uttrycken som har det exakta värdet 7. Approximera bara om du måste — räkneregler räcker långt.", "tier": "essential"},
+        {"n": 2, "title": "Strategi: testa varje alternativ", "text": "Inget enskilt knep löser alla fyra; varje rad är en miniövning i en räkneregel. Gå A → B → C → D och förenkla exakt.", "tier": "detail"},
+        {"n": 3, "title": "A: rotsumma distribuerar inte", "text": "Roten ur en summa är inte summan av rötterna. Här kan du dock räkna: \\sqrt{29}\\approx 5{,}385 och \\sqrt{20}\\approx 4{,}472, så A \\approx 9{,}86 — alldeles för stort.", "tier": "essential"},
+        {"n": 4, "title": "B: exponentregeln a^{0}=1", "text": "Per definition är varje icke-nolltal upphöjt till 0 lika med 1. Då blir 7^{1}-7^{0}=7-1=6, inte 7.", "tier": "essential"},
+        {"n": 5, "title": "C: gemensam nämnare", "text": "Bråkaddition kräver att nämnarna är lika. Förläng \\frac{14}{7} till \\frac{28}{14} så blir summan \\frac{28}{14}+\\frac{49}{14}=\\frac{77}{14}=5{,}5. Inte 7.", "tier": "essential"},
+        {"n": 6, "title": "D: skriv om nämnaren", "text": "Använd att \\sqrt{7}=7^{1/2} så att \\dfrac{7}{\\sqrt{7}}=\\dfrac{7^{1}}{7^{1/2}}=7^{1-1/2}=7^{1/2}=\\sqrt{7}.", "tier": "essential"},
+        {"n": 7, "title": "D: kvadrera resultatet", "text": "Kvadrering tar bort kvadratroten: (\\sqrt{7})^{2}=7. Alltså är hela uttrycket exakt 7.", "tier": "essential"},
+        {"n": 8, "title": "Alternativ väg för D", "text": "Du kan också först kvadrera direkt: \\left(\\dfrac{7}{\\sqrt{7}}\\right)^{2}=\\dfrac{7^{2}}{(\\sqrt{7})^{2}}=\\dfrac{49}{7}=7. Båda vägarna leder rätt.", "tier": "detail"},
+        {"n": 9, "title": "Sanity-kolla mot 7", "text": "A ger ungefär 9,9, B ger 6, C ger 5,5 och D ger exakt 7 — bara D passar.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera", "text": "Räkna en sista gång: 49/7=7. Inget avrundningsfel, ingen dold faktor — D är vattentätt.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är D. Insikten i en mening: när ett bråk har samma bas i täljare och nämnare, subtrahera exponenterna — sedan blir kvadreringen trivial.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att tro att \\sqrt{29}+\\sqrt{20} \"ungefär\" blir 7 eftersom 29+20 = 49 och \\sqrt{49}=7.", "why_wrong": "Som steg 3 visar distribuerar inte kvadratroten över addition — \\sqrt{a+b}\\neq\\sqrt{a}+\\sqrt{b} — och uttrycket landar på cirka 9,9."},
+        {"letter": "B", "why_tempting": "Många stannar vid 7^{0} och tippar att det blir 0, vilket gör att 7^{1}-7^{0} skulle bli 7.", "why_wrong": "Steg 4 påminner om regeln a^{0}=1: uttrycket är 7−1 = 6, inte 7."},
+        {"letter": "C", "why_tempting": "Första instinkten är att slå ihop 14/7 och 49/14 utan att förlänga, eller att tro att 14+49 = 63 ger 63/14 som råkar bli nära 7.", "why_wrong": "Steg 5 visar att med gemensam nämnare blir summan 77/14=5{,}5 — för litet för att vara 7."}
+      ],
+      "technique": "När alternativen är fyra olika räkneuttryck och bara ett ska bli ett exakt tal, gå igenom dem ett i taget och tillämpa standardreglerna: rotens distribution, a^{0}=1, gemensam nämnare och potens med samma bas. Tre alternativ faller på sina egna fällor och det fjärde reduceras snyggt.",
+      "pitfall": "Att approximera A med \\sqrt{49}=7 är ett klassiskt slarvfel — botemedlet är att alltid testa rotregeln på små tal (\\sqrt{4}+\\sqrt{9}=2+3=5 men \\sqrt{4+9}=\\sqrt{13}\\approx 3{,}6) innan du tror på distributionen.",
+      "framework_id": "XYZ-TRAP-033",
+      "pregrade_tactic": {
+        "handle": "Sambasknepet",
+        "move": "När ett alternativ har samma tal i täljare och nämnare under ett rotuttryck, skriv om till exponentform och dra ihop exponenterna — då försvinner roten och du ser värdet direkt."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2024-kvant2-XYZ-008": {
+    "corpus_patch": {
+      "prompt": "A, B och C är tre av hörnen i en kvadrat med sidlängden 4 cm. Kvadratens fjärde hörn, M, är medelpunkten för en cirkel med radien 2 cm. Hur stor är arean av det skuggade området i figuren?",
+      "options": [
+        {"letter": "A", "text": "\\left(12+\\dfrac{\\pi}{2}\\right)\\,\\text{cm}^{2}"},
+        {"letter": "B", "text": "\\left(12+\\dfrac{\\pi}{4}\\right)\\,\\text{cm}^{2}"},
+        {"letter": "C", "text": "\\left(16-\\dfrac{\\pi}{2}\\right)\\,\\text{cm}^{2}"},
+        {"letter": "D", "text": "(16-\\pi)\\,\\text{cm}^{2}"}
+      ],
+      "answer": "D",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Det skuggade området är kvadraten (sida 4) minus den del av cirkeln som ligger inuti kvadraten. Eftersom M sitter i ett kvadrathörn ligger exakt en fjärdedel av cirkeln innanför, så arean blir 16 - π.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du har en kvadrat ABCD med sidan 4 cm där hörnet M är medelpunkt för en cirkel med radien 2 cm. Det skuggade området är kvadraten utan den bit av cirkelskivan som hamnar innanför kvadraten.", "tier": "essential"},
+        {"n": 2, "title": "Avläs figuren", "text": "Figuren visar att M ligger i kvadratens övre vänstra hörn. Cirkeln har radien 2 cm — exakt halva sidlängden 4 — och sträcker sig 2 cm åt höger (mot C) och 2 cm nedåt (mot A).", "tier": "essential"},
+        {"n": 3, "title": "Subtraktionsstrategin", "text": "När en figur är \"helhet minus utklippt del\" är receptet: räkna helheten, räkna det som tas bort, dra ifrån. Här gäller skuggat = kvadrat − cirkelbit innanför.", "tier": "essential"},
+        {"n": 4, "title": "Kvadratens area", "text": "Area av en kvadrat är sidan i kvadrat: 4\\cdot 4 = 16\\,\\text{cm}^{2}.", "tier": "essential"},
+        {"n": 5, "title": "Cirkelns hela area", "text": "Cirkelarea är \\pi r^{2}. Med r=2 blir det \\pi\\cdot 2^{2}=4\\pi\\,\\text{cm}^{2}. Men hela cirkeln ligger inte i kvadraten.", "tier": "essential"},
+        {"n": 6, "title": "Vilken bråkdel ligger innanför?", "text": "M sitter i ett hörn av kvadraten. De två kvadratsidorna som möts i M delar planet i fyra rätvinkliga sektorer, och endast den sektor som pekar in i kvadraten täcker cirkeln. Det är exakt en fjärdedel.", "tier": "essential"},
+        {"n": 7, "title": "Räkna kvartscirkelns area", "text": "En fjärdedel av cirkeln: \\dfrac{1}{4}\\cdot 4\\pi = \\pi\\,\\text{cm}^{2}.", "tier": "essential"},
+        {"n": 8, "title": "Kolla att kvarten ryms", "text": "Radien 2 är mindre än sidan 4, så hela kvartsskivan ligger faktiskt innanför kvadraten — ingen extra trimning behövs.", "tier": "detail"},
+        {"n": 9, "title": "Dra ifrån", "text": "Skuggat = kvadrat − kvartscirkel = 16 - \\pi\\,\\text{cm}^{2}.", "tier": "essential"},
+        {"n": 10, "title": "Numerisk rimlighet", "text": "\\pi\\approx 3{,}14, så svaret är cirka 12{,}86 cm². Kvadraten är 16, kvartsbiten cirka 3 — figurens skuggade del ser ut att vara lite mer än tre fjärdedelar, vilket stämmer.", "tier": "detail"},
+        {"n": 11, "title": "Verifiera", "text": "Mata in i alla fyra alternativen: bara D ger ett tal mellan 12 och 13. A, B ger drygt 12, C ger cirka 14,4 — bara D klockas.", "tier": "essential"},
+        {"n": 12, "title": "Slutsats", "text": "Svaret är D: (16-\\pi)\\,\\text{cm}^{2}. Insikten i en mening: när cirkelns medelpunkt ligger i ett hörn av en figur skär bara en kvart av cirkeln in i figuren — multiplicera \\pi r^{2} med 1/4 och dra av.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att tro att det skuggade området är kvadraten minus halva cirkeln, eftersom diagonalen \"verkar\" dela cirkeln på mitten — då skulle svaret bli 16 − 2\\pi, vilket också felaktigt skrivs som 12 + \\pi/2 om man slarvar med tecken.", "why_wrong": "Steg 6 visar att hörnvinkeln är 90°, inte 180° — så det är en kvart av cirkeln som ligger inne, inte en halva."},
+        {"letter": "B", "why_tempting": "Om du multiplicerar cirkelarean fel (tar 4\\pi/16 i stället för 4\\pi/4) hamnar du på en åttondel och slutar med 16 − \\pi/4, som kan skrivas om till 12 + \\pi/4 om du dessutom byter tecken.", "why_wrong": "Steg 7 låser fast bråkdelen som 1/4, vilket ger \\pi (inte \\pi/4) som tas bort — och basen 16, inte 12."},
+        {"letter": "C", "why_tempting": "Snabbsvar är ofta att hörnsektorn är en åttondel av cirkeln, vilket ger 4\\pi/8 = \\pi/2 som ska subtraheras från 16.", "why_wrong": "Steg 6 fastställer att hörnvinkeln 90° motsvarar 1/4, inte 1/8 av varvet — sektorn är en kvart, inte åttondel."}
+      ],
+      "technique": "Sammansatta figurer bryts ner i grundformer. Här är receptet \"kvadrat − cirkelsektor\": räkna helheten separat, räkna den utklippta sektorn separat, dra ifrån. Vinkelmått vid medelpunkten avgör bråkdelen — 90° = 1/4 varv.",
+      "pitfall": "Att tippa bråkdelen utan att tänka på vinkeln är vanligaste felet. Botemedlet: rita in de två kvadratsidor som möts i M och fråga \"hur stor del av cirkelplanet hamnar mellan dessa sidor?\" — det svaret avgör om du delar med 2, 4 eller 8.",
+      "framework_id": "XYZ-TRAP-041",
+      "pregrade_tactic": {
+        "handle": "Hörnvinkelregeln",
+        "move": "När en cirkels medelpunkt sitter i ett hörn av en månghörning, mät vinkeln vid hörnet i grader och multiplicera \\pi r^{2} med (vinkel/360°) — det är cirkelbiten som ska dras av."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2025-kvant1-XYZ-005": {
+    "corpus_patch": {
+      "prompt": "Vad är \\dfrac{\\frac{6}{25}}{\\frac{36}{5}}?",
+      "options": [
+        {"letter": "A", "text": "\\dfrac{1}{30}"},
+        {"letter": "B", "text": "\\dfrac{5}{6}"},
+        {"letter": "C", "text": "\\dfrac{125}{216}"},
+        {"letter": "D", "text": "\\dfrac{216}{125}"}
+      ],
+      "answer": "A",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Division med ett bråk är multiplikation med dess invers. Skriv om (6/25)\\div(36/5) som (6/25)\\cdot(5/36) och förkorta — resultatet blir 1/30.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du har en bråkstreck-konstruktion där täljaren är \\frac{6}{25} och nämnaren är \\frac{36}{5}. Du ska räkna ut värdet och välja rätt alternativ.", "tier": "essential"},
+        {"n": 2, "title": "Tolka som division", "text": "Det stora bråkstrecket betyder \"dela\". Skriv om uttrycket som \\dfrac{6}{25}\\div\\dfrac{36}{5}.", "tier": "essential"},
+        {"n": 3, "title": "Regeln: dividera = multiplicera med inversen", "text": "Att dividera med ett bråk är samma sak som att multiplicera med bråkets invers (täljaren och nämnaren byter plats). Alltså: \\dfrac{6}{25}\\div\\dfrac{36}{5} = \\dfrac{6}{25}\\cdot\\dfrac{5}{36}.", "tier": "essential"},
+        {"n": 4, "title": "Multiplikation av bråk", "text": "Multiplicera täljare med täljare och nämnare med nämnare: \\dfrac{6\\cdot 5}{25\\cdot 36} = \\dfrac{30}{900}.", "tier": "essential"},
+        {"n": 5, "title": "Förkorta innan du multiplicerar", "text": "Smartare: korsförkorta först. 6 och 36 delas båda med 6 (blir 1 och 6), 5 och 25 delas båda med 5 (blir 1 och 5). Då återstår \\dfrac{1}{5}\\cdot\\dfrac{1}{6} = \\dfrac{1}{30}.", "tier": "essential"},
+        {"n": 6, "title": "Eller förkorta efter", "text": "Om du hellre räknar fram 30/900 förkortas det med 30: \\dfrac{30}{900}=\\dfrac{1}{30}. Samma svar — välj den väg du tycker är snabbast.", "tier": "detail"},
+        {"n": 7, "title": "Sanity-check med decimal", "text": "Räkna grovt: \\frac{6}{25}=0{,}24 och \\frac{36}{5}=7{,}2. 0{,}24/7{,}2\\approx 0{,}033 — och 1/30\\approx 0{,}033. Stämmer.", "tier": "detail"},
+        {"n": 8, "title": "Varför C och D inte stämmer", "text": "Alternativen 125/216 och 216/125 dyker upp om man råkar kvadrera eller kuba talen 5 och 6 — felaktiga räkningar som ger 5^{3}=125 och 6^{3}=216. Inget i frågan begär kuber.", "tier": "detail"},
+        {"n": 9, "title": "Varför B inte stämmer", "text": "5/6 är värdet på \\frac{5}{6} direkt — det är vad du får om du av misstag bara läser nämnaren upp och ner i stället för att utföra divisionen.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera", "text": "Mångdubbla baklänges: \\dfrac{1}{30}\\cdot\\dfrac{36}{5}=\\dfrac{36}{150}=\\dfrac{6}{25}. Det stämmer med ursprungstäljaren — alltså är 1/30 rätt.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är A: 1/30. Insikten i en mening: när nämnaren själv är ett bråk, vänd nämnar-bråket upp och ner och multiplicera — sedan förkortar du innan du multiplicerar.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Det är lätt att se siffrorna 5 och 6 i nämnaren och tro att svaret är \\dfrac{5}{6} utan att utföra själva divisionen.", "why_wrong": "Steg 5 visar att den fullständiga räkningen ger 1/30 — 5/6 är ingen del av räkningen utan en hopfösning av siffror."},
+        {"letter": "C", "why_tempting": "Många stannar vid att 5^{3}=125 och 6^{3}=216 och tror att uttrycket på något sätt blir en kub.", "why_wrong": "Steg 4 visar att talen 25 och 36 inte är kuber utan andragradstal (5² och 6²); de kubas aldrig under räkningen."},
+        {"letter": "D", "why_tempting": "Om du minns regeln som \"vänd nämnaren\" och sedan multiplicerar fel håll kan du landa på 216/125 — den inverterade versionen av C.", "why_wrong": "Steg 3 säger uttryckligen att man multiplicerar med inversen av nämnaren, inte med inversen av hela uttrycket; resultatet blir 1/30, inte ett tal större än 1."}
+      ],
+      "technique": "Division med ett bråk är multiplikation med dess invers. Triggern är ett bråkstreck som har bråk både över och under sig — vänd det undre bråket upp och ner och byt operation. Korsförkorta innan multiplikationen så slipper du jonglera trecifriga produkter.",
+      "pitfall": "Att invertera fel bråk (täljaren i stället för nämnaren) är vanligt. Botemedlet: skriv om explicit som \\frac{6}{25}\\div\\frac{36}{5} först, så är det glasklart vilket bråk som ska vändas.",
+      "framework_id": "XYZ-TRAP-017",
+      "pregrade_tactic": {
+        "handle": "Invertinstinkten",
+        "move": "När bråkstrecket är dubbel-vänster och du ser bråk över bråk, vänd det undre bråket på en gång och multiplicera — korsförkorta innan du multiplicerar talen."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2025-kvant2-XYZ-004": {
+    "corpus_patch": {
+      "prompt": "Vad är 4 % av \\dfrac{5}{4}?",
+      "options": [
+        {"letter": "A", "text": "0{,}01"},
+        {"letter": "B", "text": "0{,}02"},
+        {"letter": "C", "text": "0{,}05"},
+        {"letter": "D", "text": "0{,}06"}
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Procent betyder hundradelar. 4% av 5/4 är 0{,}04\\cdot 1{,}25 = 0{,}05, eller bråkvägen \\dfrac{4}{100}\\cdot\\dfrac{5}{4}=\\dfrac{5}{100}=0{,}05.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du ska räkna ut 4 procent av talet 5/4 och välja det decimaltal som passar. Ingen variabel — bara en procenträkning.", "tier": "essential"},
+        {"n": 2, "title": "Vad betyder procent?", "text": "Per definition betyder \"p procent\" detsamma som p/100 eller p·0{,}01. Alltså är 4% = 4/100 = 0{,}04.", "tier": "essential"},
+        {"n": 3, "title": "Översätt frågan till multiplikation", "text": "\"X procent av Y\" är alltid (X/100)·Y. Här: (4/100)·(5/4) eller likvärdigt 0{,}04·(5/4).", "tier": "essential"},
+        {"n": 4, "title": "Förenkla 5/4", "text": "Bråket 5/4 är ett tal större än 1: 5/4 = 1{,}25. Du kan jobba i bråkform eller decimalform — välj det som känns lättast.", "tier": "detail"},
+        {"n": 5, "title": "Bråkväg: korsförkorta", "text": "Räkna \\dfrac{4}{100}\\cdot\\dfrac{5}{4}. Fyrorna i täljare och nämnare tar ut varandra: \\dfrac{1}{100}\\cdot\\dfrac{5}{1} = \\dfrac{5}{100}.", "tier": "essential"},
+        {"n": 6, "title": "Decimalväg: enkel multiplikation", "text": "Eller räkna 0{,}04\\cdot 1{,}25. Räkna 4\\cdot 125 = 500 och placera kommat: 0{,}04 har 2 decimaler, 1{,}25 har 2 decimaler — totalt 4 decimaler — så svaret blir 0{,}0500 = 0{,}05.", "tier": "essential"},
+        {"n": 7, "title": "Bråk till decimal", "text": "5/100 = 0{,}05 (eftersom 1/100 = 0{,}01, så 5/100 = 5\\cdot 0{,}01).", "tier": "essential"},
+        {"n": 8, "title": "Sanity-check", "text": "4% är litet, ungefär 1/25. En 25-del av 1{,}25 är 0{,}05 — och det är just C. Allt rimmar.", "tier": "detail"},
+        {"n": 9, "title": "Sortera bort fel-decimaler", "text": "A (0{,}01) är 1% av 1; B (0{,}02) är 4% av 1/2; D (0{,}06) är 4% av 1{,}5 — alla skulle stämma med fel \"av-tal\".", "tier": "detail"},
+        {"n": 10, "title": "Verifiera", "text": "Vänd på frågan: 0{,}05 är hur många procent av 5/4? Räkna 0{,}05/1{,}25 = 0{,}04 = 4%. Bekräftat.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är C: 0{,}05. Insikten i en mening: \"p procent av N\" är alltid (p/100)·N — korsförkorta i bråkform så slipper du decimalförflytta i huvudet.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att skumma frågan, läsa \"4 % av\" och dela 4/4 = 1 och därefter multiplicera med 0{,}01 — ett dubbelfel som råkar landa på 0{,}01.", "why_wrong": "Steg 3 visar att procent gäller hela talet 5/4, inte bara nämnaren — bråket dyker inte ut, det multipliceras."},
+        {"letter": "B", "why_tempting": "Många stannar vid 4 % och tänker \"ungefär en tjugofemdel av 1\" utan att lägga märke till att talet är 5/4 och inte 1/2.", "why_wrong": "Steg 6 räknar 0{,}04\\cdot 1{,}25 = 0{,}05; 0{,}02 skulle bara stämma om \"av-talet\" var 1/2."},
+        {"letter": "D", "why_tempting": "Om du minns regeln som \"4 % av 1{,}5\" snarare än 1{,}25 — kanske av en hopblandning med 3/2 — får du 0{,}06.", "why_wrong": "Steg 4 fastställer att 5/4 = 1{,}25, inte 1{,}5; värdet 0{,}06 hör till 4% av 1{,}5."}
+      ],
+      "technique": "Procent betyder hundradelar. När frågan har formen \"p % av N\", skriv det som (p/100)·N och välj sedan bråk- eller decimalvägen efter vilken som ger snyggast räkning. Här är bråkvägen snabbast eftersom 4 och 4/1 nollar ut varandra.",
+      "pitfall": "Att glömma att 5/4 är ett tal större än 1 (inte ett bråk som ska \"bli till en procent\") är den vanligaste felklicken. Botemedlet: räkna alltid om bråket till decimalform om du är osäker — då ser du värdet 1{,}25 svart på vitt.",
+      "framework_id": "XYZ-TRAP-020",
+      "pregrade_tactic": {
+        "handle": "Hundradelsregeln",
+        "move": "När du läser \"p % av N\", skriv om procenten till p/100 och multiplicera direkt — korsförkorta om både p och N har gemensamma faktorer."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2025-kvant2-XYZ-012": {
+    "corpus_patch": {
+      "prompt": "Vilket svarsalternativ är lika med \\sqrt{\\sqrt{9}\\cdot\\sqrt{36}}?",
+      "options": [
+        {"letter": "A", "text": "3"},
+        {"letter": "B", "text": "3\\sqrt{2}"},
+        {"letter": "C", "text": "6"},
+        {"letter": "D", "text": "3\\sqrt{6}"}
+      ],
+      "answer": "B",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Räkna inifrån och ut: \\sqrt{9}=3 och \\sqrt{36}=6, så uttrycket blir \\sqrt{3\\cdot 6}=\\sqrt{18}. Bryt ut största kvadrat ur 18: 18 = 9·2 ger \\sqrt{18}=3\\sqrt{2}.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du har en kvadratrot vars innehåll är produkten av två andra kvadratrötter. Räkna ut värdet och välj rätt alternativ.", "tier": "essential"},
+        {"n": 2, "title": "Räkna inifrån och ut", "text": "Sammansatta uttryck förenklas alltid inifrån. Börja med \\sqrt{9} och \\sqrt{36} var för sig.", "tier": "essential"},
+        {"n": 3, "title": "Definition: kvadratrot", "text": "\\sqrt{a} är det icke-negativa tal vars kvadrat är a. Alltså \\sqrt{9}=3 (eftersom 3^{2}=9) och \\sqrt{36}=6 (eftersom 6^{2}=36).", "tier": "essential"},
+        {"n": 4, "title": "Sätt in värdena", "text": "Uttrycket blir nu \\sqrt{3\\cdot 6} = \\sqrt{18}.", "tier": "essential"},
+        {"n": 5, "title": "Är 18 en kvadrat?", "text": "Nej: 4^{2}=16 och 5^{2}=25, så 18 ligger mellan dem och har ingen heltalsrot. Du behöver bryta ut en kvadrat ur 18.", "tier": "essential"},
+        {"n": 6, "title": "Faktorisera 18", "text": "Sök största kvadrattal som delar 18. Pröva: 18 = 9·2, och 9 är en kvadrat (3^{2}). Det räcker — 9·2 är den bästa uppdelningen.", "tier": "essential"},
+        {"n": 7, "title": "Rotregeln \\sqrt{ab}=\\sqrt{a}\\sqrt{b}", "text": "Roten av en produkt är produkten av rötterna (gäller när a,b\\geq 0). Alltså \\sqrt{18}=\\sqrt{9\\cdot 2}=\\sqrt{9}\\cdot\\sqrt{2}=3\\sqrt{2}.", "tier": "essential"},
+        {"n": 8, "title": "Numerisk kontroll", "text": "\\sqrt{2}\\approx 1{,}414, så 3\\sqrt{2}\\approx 4{,}243. Pröva mot \\sqrt{18}: 4{,}24^{2}\\approx 17{,}98 — bra, stämmer.", "tier": "detail"},
+        {"n": 9, "title": "Varför inte 3\\sqrt{6}?", "text": "3\\sqrt{6} skulle kvadrerat ge 9·6=54, inte 18. Det är roten ur 54, inte ur 18.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera", "text": "Kvadrera B baklänges: (3\\sqrt{2})^{2}=9\\cdot 2=18. Och \\sqrt{9}\\cdot\\sqrt{36}=3\\cdot 6=18 — samma värde innan ytterroten. Allt stämmer.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är B: 3\\sqrt{2}. Insikten i en mening: när du landar på \\sqrt{N} där N inte är en kvadrat, leta efter största kvadrat som delar N och dra ut den ur roten.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att stanna vid \\sqrt{9}=3 och tro att svaret \"börjar och slutar\" där, särskilt om man förbiser ytterroten.", "why_wrong": "Steg 4 visar att produkten innanför ytterroten är 18, inte 9 — och \\sqrt{18}\\neq 3."},
+        {"letter": "C", "why_tempting": "Många stannar vid \\sqrt{36}=6 och tar det som slutsvar utan att utföra ytterroten.", "why_wrong": "Steg 4 visar att man måste räkna roten ur 18 efter att de två inre rötterna har förenklats; det blir inte 6."},
+        {"letter": "D", "why_tempting": "Om du minns regeln som \"hoppa över de inre rötterna och multiplicera bara talen\", får du \\sqrt{9\\cdot 36}=\\sqrt{324}=18 — och sedan tippar du att svaret är 3\\sqrt{6} genom att kvadrera fel.", "why_wrong": "Steg 3 säger att de inre rötterna ska räknas ut först, så produkten är 3·6=18 och inte 9·36 — och 3\\sqrt{6} kvadrerat ger 54, inte 18."}
+      ],
+      "technique": "Roten ur en kvadratrotsprodukt löses alltid inifrån. Räkna varje inre rot för sig, multiplicera, och bryt sedan ut största kvadrat ur det som hamnar under ytterroten. Inget snabbtrick — bara ordning.",
+      "pitfall": "Att blanda ihop \\sqrt{ab} med \\sqrt{a}+\\sqrt{b} är den klassiska rotfällan, men här är största risken att man hoppar över ytterroten. Botemedlet: läs uttrycket högt — \"roten ur (... gånger ...)\" — så ser du var rötterna sitter.",
+      "framework_id": "XYZ-TRAP-032",
+      "pregrade_tactic": {
+        "handle": "Inifrån-och-ut-receptet",
+        "move": "När en rot innehåller en annan rot, räkna alltid den innersta först — sedan får du ett vanligt tal under ytterroten som du kan faktorisera och förenkla."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2026-kvant1-XYZ-008": {
+    "corpus_patch": {
+      "prompt": "2^{3}\\cdot 8^{2}=2^{x}. Vilket värde har x?",
+      "options": [
+        {"letter": "A", "text": "6"},
+        {"letter": "B", "text": "9"},
+        {"letter": "C", "text": "15"},
+        {"letter": "D", "text": "18"}
+      ],
+      "answer": "B",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Skriv 8 som 2^{3} så att båda sidor får samma bas. Då blir vänsterledet 2^{3}\\cdot(2^{3})^{2} = 2^{3}\\cdot 2^{6} = 2^{9}, vilket ger x = 9.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du har en exponentialekvation där vänsterledet ska skrivas som en enda 2-potens. Sök det heltal x som gör likheten sann.", "tier": "essential"},
+        {"n": 2, "title": "Mål: gemensam bas", "text": "För att jämföra exponenter behöver båda sidor stå på samma bas. Höger sida har basen 2, men vänster sida innehåller 8 — gör om 8 till en 2-potens.", "tier": "essential"},
+        {"n": 3, "title": "Skriv om 8 som potens av 2", "text": "8 = 2\\cdot 2\\cdot 2 = 2^{3}. Det är den enda 2-potens som ger 8.", "tier": "essential"},
+        {"n": 4, "title": "Substituera", "text": "8^{2} = (2^{3})^{2}. Hela vänsterledet blir då 2^{3}\\cdot(2^{3})^{2}.", "tier": "essential"},
+        {"n": 5, "title": "Regeln (a^{m})^{n}=a^{m\\cdot n}", "text": "Potens av potens multiplicerar exponenterna. Alltså (2^{3})^{2} = 2^{3\\cdot 2} = 2^{6}. Adderar exponenterna gör man bara vid samma bas multipliceras, inte vid potens-av-potens.", "tier": "essential"},
+        {"n": 6, "title": "Regeln a^{m}\\cdot a^{n}=a^{m+n}", "text": "Multiplikation av potenser med samma bas adderar exponenterna. Vänsterledet blir 2^{3}\\cdot 2^{6} = 2^{3+6} = 2^{9}.", "tier": "essential"},
+        {"n": 7, "title": "Likhetsmatchning", "text": "Nu står ekvationen 2^{9} = 2^{x}. När baserna är lika och positiva (och olika 1) måste exponenterna också vara lika.", "tier": "essential"},
+        {"n": 8, "title": "Lös ut x", "text": "x = 9.", "tier": "essential"},
+        {"n": 9, "title": "Numerisk kontroll", "text": "2^{3}=8, 8^{2}=64. Produkten är 8\\cdot 64 = 512. Och 2^{9} = 512. Stämmer.", "tier": "detail"},
+        {"n": 10, "title": "Sortera bort fel-summor", "text": "A (6) får man om man bara adderar 3+ \"2\" från exponenten på 8 utan att justera basen. D (18) får man om man multiplicerar 3·2·3 felaktigt. C (15) blandar samman flera regler.", "tier": "detail"},
+        {"n": 11, "title": "Verifiera", "text": "Räkna baklänges: 2^{9} = 2^{3}\\cdot 2^{6} = 8\\cdot 64 = 512, och 2^{3}\\cdot 8^{2}=8\\cdot 64 = 512. Båda sidor är 512 — bevisat.", "tier": "essential"},
+        {"n": 12, "title": "Slutsats", "text": "Svaret är B: x = 9. Insikten i en mening: gör om alla tal till samma bas, multiplicera potens-av-potens genom att multiplicera exponenterna, och addera exponenterna när du multiplicerar potenser med samma bas.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att tro att 2^{3}\\cdot 8^{2}=2^{3+2+?} och bara lägga ihop synliga exponenter 3 och 2 plus 1 = 6, eller att 8^{2}=16 misstolkas som 2^{4}.", "why_wrong": "Steg 5 visar att 8^{2}=(2^{3})^{2}=2^{6}, inte 2^{2}. Tre och sex ger nio."},
+        {"letter": "C", "why_tempting": "Om du minns regeln som \"multiplicera alla exponenter\" blir det 3\\cdot 2 = 6 plus 3·3=9; en hopplockning kan landa på 15.", "why_wrong": "Steg 5 och 6 skiljer på multiplikation och addition av exponenter — du multiplicerar bara vid potens-av-potens, sedan adderar du vid multiplikation av potenser."},
+        {"letter": "D", "why_tempting": "Snabbsvar är ofta att multiplicera ihop alla exponenter rakt av: 3\\cdot 2\\cdot 3 = 18. Det är frestande när tre treor och en två syns på sidan.", "why_wrong": "Steg 6 fastställer att den yttre operationen är multiplikation av potenser, vilket adderar exponenterna 3 och 6 till 9 — inte multiplicerar dem till 18."}
+      ],
+      "technique": "Exponentialekvationer löses genom gemensam bas. Skriv om alla tal som potenser av samma primtal, tillämpa potens-av-potens-regeln (multiplicera exponenter) och multiplikationsregeln (addera exponenter), och matcha exponenterna när baserna är lika.",
+      "pitfall": "Vanligaste felet är att blanda ihop a^{m}\\cdot a^{n} (adderar) med (a^{m})^{n} (multiplicerar). Botemedlet: påminn dig själv om att två potenser bredvid varandra adderar sina exponenter, men en potens som lyfts till en ny exponent multiplicerar dem.",
+      "framework_id": "XYZ-TRAP-027",
+      "pregrade_tactic": {
+        "handle": "Gemensambasregeln",
+        "move": "När du ser tal som 4, 8, 16 eller 32 i en 2-potensekvation, skriv om dem som 2-potenser först — sedan blir resten ren exponentaritmetik."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2026-kvant1-XYZ-009": {
+    "corpus_patch": {
+      "prompt": "Den räta linjen L ges av ekvationen 2y + x = 2. Vilket svarsalternativ visar linjen L?",
+      "options": [
+        {"letter": "A", "text": "Diagram: linje med negativ lutning, brant — m-värdet syns vara större än 1 (skär y-axeln över 1, x-axeln vid 1)."},
+        {"letter": "B", "text": "Diagram: linje med flack negativ lutning, m = 1 (skär y-axeln vid 1, x-axeln vid 2)."},
+        {"letter": "C", "text": "Diagram: linje med positiv lutning, m = 0 (går genom origo, lutning cirka 1)."},
+        {"letter": "D", "text": "Diagram: linje med flack positiv lutning, m = 0 (går genom origo, lutning cirka 1/2)."}
+      ],
+      "answer": "B",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Skriv om 2y + x = 2 på k-form: y = -x/2 + 1. Då är lutningen k = -1/2 (negativ och flack) och y-skärningen m = 1. Bara alternativ B visar en linje som skär y-axeln vid 1 och lutar svagt nedåt.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du har en linjär ekvation 2y + x = 2 och fyra diagram. Du ska avgöra vilket diagram som visar linjen.", "tier": "essential"},
+        {"n": 2, "title": "Mål: k-form y = kx + m", "text": "I formen y = kx + m läser man av lutningen k och y-skärningen m direkt. Skriv om 2y + x = 2 till den formen.", "tier": "essential"},
+        {"n": 3, "title": "Flytta x", "text": "Subtrahera x från båda leden: 2y = -x + 2.", "tier": "essential"},
+        {"n": 4, "title": "Dela med koefficienten framför y", "text": "Dela hela ekvationen med 2 — hela högerledet, varje term — så att y står ensam: y = -\\dfrac{x}{2} + 1, alltså y = -\\dfrac{1}{2}x + 1.", "tier": "essential"},
+        {"n": 5, "title": "Läs av lutning och m", "text": "Lutningen är k = -1/2 (negativ — linjen lutar nedåt; flack — för varje steg åt höger sjunker y med 0,5). y-skärningen är m = 1 (linjen skär y-axeln i punkten (0, 1)).", "tier": "essential"},
+        {"n": 6, "title": "Räkna x-skärningen som kontrollpunkt", "text": "Sätt y = 0 i originalekvationen: 0 + x = 2, så x = 2. Linjen passerar punkten (2, 0).", "tier": "essential"},
+        {"n": 7, "title": "Sammanfatta linjens utseende", "text": "Linjen passerar (0, 1) och (2, 0). Den lutar svagt nedåt åt höger.", "tier": "essential"},
+        {"n": 8, "title": "Avläs figuren — alternativ A", "text": "A visar en linje som skär y-axeln över 1 (cirka 2) och har en brant negativ lutning (cirka -2). Det motsvarar ekvationen y = -2x + 2, inte vår.", "tier": "detail"},
+        {"n": 9, "title": "Avläs figuren — alternativ B", "text": "B visar en linje som skär y-axeln vid y = 1 och fortsätter ned till x-axeln vid x = 2 med en svag nedåtlutning. Det matchar både m = 1, k = -1/2 och x-skärning vid 2 — exakt vår linje.", "tier": "essential"},
+        {"n": 10, "title": "Avläs figuren — alternativ C och D", "text": "C och D visar positiva lutningar (linjerna går uppåt åt höger). Vår lutning är negativ, så dessa kan uteslutas direkt — oavsett om de skär axlarna rätt.", "tier": "essential"},
+        {"n": 11, "title": "Verifiera med en punkt", "text": "Testa (0, 1) i originalekvationen: 2\\cdot 1 + 0 = 2. \\checkmark Testa (2, 0): 2\\cdot 0 + 2 = 2. \\checkmark Båda punkterna som B visar uppfyller ekvationen.", "tier": "essential"},
+        {"n": 12, "title": "Slutsats", "text": "Svaret är B. Insikten i en mening: skriv om ekvationen till y = kx + m, läs av tecknet på k för att veta åt vilket håll linjen lutar och m för att veta var den korsar y-axeln — då blir matchningen mekanisk.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att flytta x-termen utan att dela med 2 och tro att ekvationen är y = -x + 2, vilket ger m = 2 och en brantare nedåtlutning som A visar.", "why_wrong": "Steg 4 visar att hela högerledet, inte bara x-termen, måste delas med 2 — annars dubblas både lutning och y-skärning."},
+        {"letter": "C", "why_tempting": "Många stannar vid \"linje genom origo med lutning 1\" eftersom siffran 2 dyker upp på flera ställen och man tippar på en proportionalitet.", "why_wrong": "Steg 5 ger k = -1/2 (negativ) och m = 1 (inte 0). C har positiv lutning och passerar origo — ingenting stämmer."},
+        {"letter": "D", "why_tempting": "Om du minns regeln som \"flack lutning på 1/2\" men glömmer tecknet, blir D:s positiva 1/2-lutning genom origo en frestande matchning.", "why_wrong": "Steg 5 låser fast tecknet: k = -1/2, inte +1/2, och m = 1, inte 0. D är spegelvänd och förskjuten."}
+      ],
+      "technique": "Linjär ekvation matchas mot figur via k-form: lös ut y, läs av k (tecken = lutningsriktning, absolutbelopp = branthet) och m (y-skärningen). Två sanitetspunkter — y-skärningen och x-skärningen — räcker för att bekräfta vilken graf det är.",
+      "pitfall": "Att glömma dela hela högerledet med koefficienten framför y är det enskilt vanligaste felet och förklarar varför alternativ A finns. Botemedlet: skriv y = (...)/2 med parentes runt hela högerledet innan du delar, så ser du att både -x och +2 ska igenom delningen.",
+      "framework_id": "XYZ-TRAP-015",
+      "pregrade_tactic": {
+        "handle": "k-form-receptet",
+        "move": "När ekvationen står på formen ax + by = c, lös först ut y ensam genom att flytta x och dela hela högerledet med b — då läser du av lutning och m direkt och kan matcha mot diagrammen."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

@@ -1,0 +1,324 @@
+{
+  "host-2025-kvant2-XYZ-009": {
+    "corpus_patch": {
+      "prompt": "Vad är \\dfrac{\\tfrac{2}{7}}{\\tfrac{4}{9}-\\tfrac{3}{7}}?",
+      "options": [
+        {"letter": "A", "text": "\\dfrac{1}{7}"},
+        {"letter": "B", "text": "\\dfrac{4}{7}"},
+        {"letter": "C", "text": "14"},
+        {"letter": "D", "text": "18"}
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Förenkla nämnaren 4/9 − 3/7 till ett enda bråk via gemensam nämnare 63, beräkna sedan 2/7 dividerat med det resultatet. Att dela med ett mycket litet bråk blåser upp svaret.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du har ett stapelbråk: täljaren är 2/7 och nämnaren är skillnaden 4/9 − 3/7. Hela uttrycket är (2/7) dividerat med (4/9 − 3/7).", "tier": "essential"},
+        {"n": 2, "title": "Två våningar, två steg", "text": "Strategin är fast: förenkla först den inre nämnaren 4/9 − 3/7 till ett enda bråk, utför sedan divisionen 2/7 ÷ (det resultatet).", "tier": "essential"},
+        {"n": 3, "title": "Gemensam nämnare", "text": "För att subtrahera 4/9 − 3/7 behöver båda bråken samma nämnare. Minsta gemensamma nämnaren är 9·7 = 63 eftersom 9 och 7 saknar gemensam faktor.", "tier": "detail"},
+        {"n": 4, "title": "Förläng 4/9", "text": "Multiplicera täljare och nämnare med 7: 4/9 = (4·7)/(9·7) = 28/63.", "tier": "essential"},
+        {"n": 5, "title": "Förläng 3/7", "text": "Multiplicera täljare och nämnare med 9: 3/7 = (3·9)/(7·9) = 27/63.", "tier": "essential"},
+        {"n": 6, "title": "Subtrahera täljarna", "text": "Med samma nämnare räcker det att subtrahera täljarna: 28/63 − 27/63 = 1/63. Den inre nämnaren har krympt till 1/63 — väldigt litet.", "tier": "essential"},
+        {"n": 7, "title": "Skriv hela uttrycket", "text": "Nu har du \\dfrac{2/7}{1/63} — en täljare 2/7 dividerad med en nämnare 1/63.", "tier": "essential"},
+        {"n": 8, "title": "Division = multiplikation med invers", "text": "Definition: att dela med ett bråk är samma som att multiplicera med dess invers. \\dfrac{2/7}{1/63} = \\dfrac{2}{7} \\cdot \\dfrac{63}{1}.", "tier": "essential"},
+        {"n": 9, "title": "Förkorta 63 mot 7", "text": "63 = 7·9, så \\dfrac{2}{7} \\cdot 63 = \\dfrac{2 \\cdot 7 \\cdot 9}{7} = 2 \\cdot 9 = 18.", "tier": "essential"},
+        {"n": 10, "title": "Verifiera", "text": "Snabbkoll i decimalform: 1/63 ≈ 0,0159 och 2/7 ≈ 0,286. 0,286 / 0,0159 ≈ 18. Stämmer.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är D — 18. Insikten i en mening: när nämnaren i ett stapelbråk själv är en subtraktion av nära bråk blir den pyttesmå, och att dela med något pyttesmått ger ett stort tal.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att räkna fel på subtraktionen och tro att 4/9 − 3/7 = 1/7 (felaktig 'subtrahera täljarna, behåll nämnaren'-regel) och sedan se (2/7)/(1/7) = 2 utan att fastna i förkortningen.", "why_wrong": "Som steg 3–6 visar måste man förlänga till gemensam nämnare innan subtraktion; 4/9 − 3/7 är 1/63, inte 1/7."},
+        {"letter": "B", "why_tempting": "Många stannar vid att hantera bråken som om de vore likanämnda och får 4/7 direkt utan att slutföra divisionen.", "why_wrong": "Som steg 4–6 visar är gemensamma nämnaren 63 — man kan inte dra ifrån täljarna utan att först matcha nämnarna."},
+        {"letter": "C", "why_tempting": "Snabbsvar är ofta hälften av rätt: om man får mellansteget 2·63/7 och delar fel kan man landa på 14 (= 2·7) istället för 18 (= 2·9).", "why_wrong": "Som steg 9 visar är 63/7 = 9, inte 7; 2·9 = 18."}
+      ],
+      "technique": "Stapelbråk löses i två lag: förenkla först den inre nämnaren till ett enda bråk via gemensam nämnare, multiplicera sedan med dess invers. Nämnaren styr storleksordningen — när den krymper kraftigt växer slutsvaret.",
+      "pitfall": "Att 'subtrahera bråk direkt' utan gemensam nämnare ger fel inre värde och därmed fel divisor. Botemedlet: skriv alltid förlängningen som ett separat steg innan subtraktion.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Stapelbråksreceptet",
+        "move": "När nämnaren själv är en bråksubtraktion: förläng till gemensam nämnare först, invertera sedan och multiplicera — aldrig 'dela rakt över'."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2025-kvant2-XYZ-010": {
+    "corpus_patch": {
+      "prompt": "En figur är konstruerad av sträckor och cirkelbågar. Cirkelbågarna är kvartscirklar. Vilken omkrets har figuren?",
+      "options": [
+        {"letter": "A", "text": "(3+\\pi)\\cdot 2x"},
+        {"letter": "B", "text": "(4+2\\pi)x"},
+        {"letter": "C", "text": "\\left(12-\\dfrac{\\pi}{2}\\right)x"},
+        {"letter": "D", "text": "(9-\\pi)x^{2}"}
+      ],
+      "answer": "B",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Figuren är en pluskorsliknande form med fyra utskjutande armar av bredd x och fyra konkava kvartscirkelbågar (radie x) som binder samman intilliggande armar. Lägg ihop fyra raka kanter av längd x med fyra kvartcirklar med radie x.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Figuren har en horisontell mittenrektangel och två utskjutande armar (uppåt och nedåt). Höjdmåtten på sidan visar tre segment om vardera x; bredden i botten tre segment om vardera x. Vid övergångarna mellan armarna sitter fyra inåtbuktande kvartscirkelbågar.", "tier": "essential"},
+        {"n": 2, "title": "Vad efterfrågas?", "text": "Omkrets = totala längden av figurens rand. Här består randen av två sorters bitar: raka linjesegment och kvartscirkelbågar. Räkna båda sorterna separat och summera.", "tier": "essential"},
+        {"n": 3, "title": "Räkna de raka kanterna", "text": "De fyra 'ändarna' av plustecknet är raka: toppkanten (längd x), bottenkanten (längd x), högerkanten (längd x), vänsterkanten (längd x). Totalt fyra raka kanter av längd x.", "tier": "essential"},
+        {"n": 4, "title": "Summa av raka delar", "text": "Total rak längd = x + x + x + x = 4x.", "tier": "essential"},
+        {"n": 5, "title": "Identifiera bågarna", "text": "Mellan varje par av raka kanter (t.ex. toppkant → högerkant) sitter en kvartscirkelbåge som svänger inåt. Det finns fyra övergångar, alltså fyra kvartscirklar.", "tier": "essential"},
+        {"n": 6, "title": "Bestäm radien", "text": "Varje båge spänner över x i höjdled och x i sidled — det är just kvartscirkelns radie. Alltså radie r = x.", "tier": "essential"},
+        {"n": 7, "title": "Längd av en kvartscirkel", "text": "Definition: en full cirkels omkrets är 2\\pi r. En kvart av cirkeln har då längden \\dfrac{2\\pi r}{4} = \\dfrac{\\pi r}{2}. Med r = x blir det \\dfrac{\\pi x}{2}.", "tier": "essential"},
+        {"n": 8, "title": "Summa av bågarna", "text": "Fyra kvartscirklar tillsammans bildar en hel cirkel: 4 \\cdot \\dfrac{\\pi x}{2} = 2\\pi x.", "tier": "essential"},
+        {"n": 9, "title": "Lägg ihop", "text": "Omkrets = raka delar + bågar = 4x + 2\\pi x = (4 + 2\\pi)x.", "tier": "essential"},
+        {"n": 10, "title": "Verifiera mot svarsalternativen", "text": "Numeriskt: 4 + 2\\pi ≈ 4 + 6{,}28 = 10{,}28. Det är rimligt jämfört med en kvadrat med sidan 3x (omkrets 12x). Endast B = (4+2\\pi)x har rätt struktur 'rak del + π-del'.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är B — (4+2\\pi)x. Insikten i en mening: fyra kvartscirklar med samma radie summerar alltid till en hel cirkel, så bågdelen blir 2\\pi r oavsett figurens form.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är frestande att läsa figuren som om bredden 3x bidrog tre raka kanter ovanpå och under, plus en hel cirkel: (3+\\pi)\\cdot 2x ser ut att passa en symmetrisk form.", "why_wrong": "Som steg 3 visar är de raka kanterna bara fyra (en per arm-ände), inte sex; och som steg 8 visar är bågdelen 2\\pi x, inte 2\\pi·x med extra koefficient."},
+        {"letter": "C", "why_tempting": "Om du missar att bågarna LÄGGER till längd och istället SKÄR BORT från en omslutande 3x×3x-kvadrat (omkrets 12x), kan du dra av \\pi/2 och få (12 − \\pi/2)x.", "why_wrong": "Som steg 5–6 visar är bågarna en del av randen — de adderas, inte subtraheras. Subtraktionsmodellen gäller för area, inte omkrets."},
+        {"letter": "D", "why_tempting": "Första instinkten är ibland att räkna AREA istället för omkrets, och D = (9 − \\pi)x^{2} har enheten m^{2}, vilket lockar elever som ser figuren och tänker 'kvadrat med hörn ursvarvade'.", "why_wrong": "Som steg 2 visar är frågan omkrets (enhet längd, dvs. x, inte x^{2}). D är dimensionellt fel oavsett geometrin."}
+      ],
+      "technique": "För figurer byggda av räta sträckor och cirkelbågar: räkna raka delar separat och bågar separat. När det finns fyra kvartscirklar med samma radie blir bågdelen alltid en hel cirkel (2\\pi r). Använd dimensionsanalys (längd vs. area) för att snabbt utesluta felaktiga svar.",
+      "pitfall": "Att blanda ihop omkrets och area är vanligt med figurer som ser ut som 'kvadrat minus hörn'. Botemedlet: läs frågan en gång till och kolla att slutsvaret har enheten x (omkrets) inte x^{2} (area).",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Kvartscirkelsummeringen",
+        "move": "När en figur har fyra kvartscirklar med samma radie: behandla dem som en hel cirkel (2\\pi r) och addera alla raka kanter separat."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-ver1-2019-kvant1-XYZ-008": {
+    "corpus_patch": {
+      "prompt": "Ekvationen för en rät linje kan skrivas y = kx + m. För vilken av nedanstående linjer är produkten k·m störst?",
+      "options": [
+        {"letter": "A", "text": "[Diagram: linje med positiv lutning som skär y-axeln över origo — k > 0 och m > 0; ungefärligt k = 1, m = 2.]"},
+        {"letter": "B", "text": "[Diagram: linje med positiv lutning som går genom origo — k > 0 och m = 0.]"},
+        {"letter": "C", "text": "[Diagram: horisontell linje över x-axeln — k = 0 och m > 0.]"},
+        {"letter": "D", "text": "[Diagram: linje med negativ lutning som skär y-axeln över origo — k < 0 och m > 0.]"}
+      ],
+      "answer": "A",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Avläs tecken och ungefärlig storlek på k (lutning) och m (skärning med y-axeln) för varje linje, beräkna produkten k·m, och välj den största. Endast en linje har både positiv lutning OCH positiv skärning, vilket ger positiv produkt; övriga ger noll eller negativt.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Varje rät linje i planet kan skrivas y = kx + m, där k är lutningen (hur brant linjen lutar) och m är skärningen med y-axeln. Frågan: för vilket diagram är produkten k·m störst?", "tier": "essential"},
+        {"n": 2, "title": "Vad styr tecknet på k·m?", "text": "k·m är positiv om k och m har SAMMA tecken (båda positiva eller båda negativa), negativ om motsatta tecken, och noll om endera är noll. Så först sortera linjerna efter tecken.", "tier": "essential"},
+        {"n": 3, "title": "Avläs linje A", "text": "Linje A lutar uppåt åt höger (k > 0) och skär y-axeln tydligt ÖVER origo (m > 0). Ungefärligt k ≈ 1 och m ≈ 2, så k·m ≈ 2. Positivt och inte litet.", "tier": "essential"},
+        {"n": 4, "title": "Avläs linje B", "text": "Linje B lutar också uppåt åt höger (k > 0) men går GENOM origo, så m = 0. Då blir k·m = k·0 = 0 oavsett lutning.", "tier": "essential"},
+        {"n": 5, "title": "Avläs linje C", "text": "Linje C är horisontell (vågrät), vilket betyder lutning k = 0. Då blir k·m = 0·m = 0 oavsett skärning.", "tier": "essential"},
+        {"n": 6, "title": "Avläs linje D", "text": "Linje D lutar nedåt åt höger (k < 0) och skär y-axeln över origo (m > 0). Motsatta tecken → k·m < 0 (negativt).", "tier": "essential"},
+        {"n": 7, "title": "Jämför produkterna", "text": "A: k·m ≈ +2. B: k·m = 0. C: k·m = 0. D: k·m < 0. Bara A ger positivt värde.", "tier": "essential"},
+        {"n": 8, "title": "Tecken slår storlek", "text": "Du behöver inte exakta värden — så fort en linje har k och m med samma tecken (och båda nollskilda) slår den alla där någondera är noll eller där tecknen krockar.", "tier": "detail"},
+        {"n": 9, "title": "Sanity-check linje A", "text": "Linje A går genom ungefär (−2, 0) och (0, 2). Lutning = (2 − 0)/(0 − (−2)) = 2/2 = 1, skärning m = 2. Produkten k·m = 1·2 = 2. Stämmer.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera", "text": "Ingen annan linje har båda k och m positiva, så A är ensam i 'positiv produkt'-zonen. Det räcker för att garantera störst k·m.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är A. Insikten i en mening: för att maximera k·m grafiskt — leta efter en linje som BÅDE lutar uppåt OCH skär y-axeln över origo (eller båda nedåt + under origo); allt annat ger noll eller negativt.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Det är lätt att se 'brant uppåtlutning' i B och tro att stor k automatiskt ger stor k·m, utan att märka att m = 0 vid origo.", "why_wrong": "Som steg 4 visar: när m = 0 blir hela produkten noll oavsett hur brant k är. A:s k·m ≈ 2 slår 0."},
+        {"letter": "C", "why_tempting": "Många stannar vid att se en linje 'högt upp' på y-axeln (stort m) och glömmer att horisontella linjer har k = 0.", "why_wrong": "Som steg 5 visar: k = 0 nollar hela produkten. Stort m räcker inte — du behöver k också."},
+        {"letter": "D", "why_tempting": "Första instinkten är att en negativ lutning gånger en positiv skärning skulle 'gå bort sig' till något stort, men k·m blir då negativt.", "why_wrong": "Som steg 6 visar har D motsatta tecken på k och m, så k·m < 0 — minst av alla, inte störst."}
+      ],
+      "technique": "Räta linjer y = kx + m läses grafiskt med två observationer: är linjen uppåt eller nedåt (tecken på k), och var skär den y-axeln (tecken på m). Produkter och summor av dessa avgörs av tecknen FÖRST — exakta värden behövs sällan.",
+      "pitfall": "Att fokusera på lutningens BRANTHET istället för dess TECKEN är vanligt, särskilt under tidspress. Botemedlet: ringa in tecknet på k och m som första markering på varje delgraph, INNAN du börjar jämföra storlekar.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Tecken-först-läsningen",
+        "move": "När frågan efterfrågar maximal produkt eller summa av k och m: läs av TECKNEN på varje graf först, eliminera de som ger noll eller negativt — sedan jämför storleken bland resterande."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-ver1-2019-kvant2-XYZ-002": {
+    "corpus_patch": {
+      "prompt": "Vilket svarsalternativ motsvarar ekvationen för linjen L?",
+      "options": [
+        {"letter": "A", "text": "y = -1{,}5x - 3"},
+        {"letter": "B", "text": "y = -1{,}5x + 3"},
+        {"letter": "C", "text": "y = 1{,}5x - 3"},
+        {"letter": "D", "text": "y = 1{,}5x + 3"}
+      ],
+      "answer": "B",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Avläs linjens y-skärning och två andra avlässbara punkter, beräkna lutningen som Δy/Δx, kombinera till y = kx + m. Linjen sluttar nedåt åt höger, går genom (0, 3) och (2, 0), vilket ger k = −1,5 och m = 3.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Linjen L är ritad i ett koordinatsystem. Du ska identifiera vilken av fyra ekvationer (alla på formen y = kx + m, med k = ±1,5 och m = ±3) som beskriver den. Två okända: lutningens tecken och konstantens tecken.", "tier": "essential"},
+        {"n": 2, "title": "Definiera k och m", "text": "I y = kx + m är k lutningen (rise/run, alltså Δy/Δx) och m y-skärningen (där linjen korsar y-axeln). Du behöver bestämma båda separat.", "tier": "essential"},
+        {"n": 3, "title": "Läs av y-skärningen", "text": "Hitta punkten där L korsar y-axeln. Den ligger tydligt på y = 3 (linjen går genom (0, 3)). Alltså m = 3 (positiv).", "tier": "essential"},
+        {"n": 4, "title": "Eliminera halva alternativen", "text": "Med m = 3 faller A och C bort (de har m = −3). Kvar: B (y = −1,5x + 3) och D (y = 1,5x + 3). Skillnaden är tecknet på k.", "tier": "essential"},
+        {"n": 5, "title": "Avläs lutningens tecken", "text": "Linjen L sluttar NEDÅT åt höger — när x växer, minskar y. Det betyder att k är negativ.", "tier": "essential"},
+        {"n": 6, "title": "Bekräfta lutningens storlek", "text": "Hitta en andra avläsbar punkt: linjen korsar x-axeln vid x = 2 (alltså (2, 0)). Lutning = (0 − 3) / (2 − 0) = −3/2 = −1,5.", "tier": "essential"},
+        {"n": 7, "title": "Sätt ihop ekvationen", "text": "Med k = −1,5 och m = 3 får du y = −1,5x + 3. Det är alternativ B.", "tier": "essential"},
+        {"n": 8, "title": "Definition av rise/run", "text": "Lutning Δy/Δx mäter hur mycket y ändras per enhet x. Tecknet följer riktningen: positiv om y växer med x, negativ om y minskar med x.", "tier": "detail"},
+        {"n": 9, "title": "Testa en tredje punkt", "text": "Substitutionstest: vid x = 1 borde y = −1,5·1 + 3 = 1,5. Avläs (1, 1,5) på grafen — linjen ligger där, mellan y = 1 och y = 2. Stämmer.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera", "text": "Vid x = 0 ska y = 3 (passar y-skärningen). Vid x = 2 ska y = 0 (passar x-skärningen). Båda kontrollpunkter stämmer med y = −1,5x + 3.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är B — y = −1,5x + 3. Insikten i en mening: läs av m (y-skärning) FÖRST för att eliminera halva svaren, läs sedan av lutningens tecken via 'växer/minskar y med x' — du behöver sällan räkna ut lutningens storlek när alternativen redan är låsta till ±1,5.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Om du missar att linjen korsar y-axeln vid +3 och istället läser av x-skärningen vid +2 som 'konstantled', kan du blanda ihop och välja m = −3.", "why_wrong": "Som steg 3 visar är y-skärningen tydligt vid (0, 3), inte (0, −3). Punkten ligger i positiva delen av y-axeln."},
+        {"letter": "C", "why_tempting": "Det är lätt att kasta om båda tecknen samtidigt (negativ blir positiv och vice versa) om du läser av grafen baklänges.", "why_wrong": "Som steg 3 och 5 visar har vi m > 0 och k < 0 — de har MOTSATTA tecken, inte samma. C har båda negativa, vilket är dubbelfel."},
+        {"letter": "D", "why_tempting": "Snabbsvar är ofta 'positivt k, positivt m' eftersom det är den enklaste kombinationen att skissa mentalt — men det kräver att linjen lutar UPPÅT åt höger.", "why_wrong": "Som steg 5 visar lutar L NEDÅT (y minskar med x), så k måste vara negativ. D påstår k = +1,5 — fel tecken."}
+      ],
+      "technique": "Linjeavläsning gör du i två steg: (1) y-skärningen m läses direkt vid x = 0, (2) lutningens TECKEN avgörs av om linjen växer eller avtar, och STORLEKEN beräknas med Δy/Δx mellan två tydliga punkter. Med fyra alternativ av formen y = ±kx ± m kan du alltid eliminera halva via m först.",
+      "pitfall": "Att läsa av lutningen genom att 'titta hur brant det ser ut' utan att beräkna Δy/Δx leder till tecken- eller storleksfel. Botemedlet: peka på två tydliga rutpunkter linjen passerar och räkna explicit (y₂ − y₁) / (x₂ − x₁).",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Linje-receptet",
+        "move": "Läs alltid y-skärningen m FÖRST (vid x = 0), eliminera halva alternativen, läs sedan lutningens tecken via 'växer eller avtar y'."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-ver1-2019-kvant2-XYZ-005": {
+    "corpus_patch": {
+      "prompt": "Vilket värde har x om 7^{\\,7 + x/3} = 49?",
+      "options": [
+        {"letter": "A", "text": "-15"},
+        {"letter": "B", "text": "-7"},
+        {"letter": "C", "text": "7"},
+        {"letter": "D", "text": "15"}
+      ],
+      "answer": "A",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Skriv om 49 som potens av 7 (49 = 7²). När båda leden är 7-potenser kan exponenterna sättas lika: 7 + x/3 = 2. Lös linjärt för x.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Ekvationen är 7 upphöjt till (7 + x/3) är lika med 49. Du ska lösa ut x. Hela exponenten innehåller x — det är där x sitter inbäddad.", "tier": "essential"},
+        {"n": 2, "title": "Strategin: matcha baserna", "text": "När en variabel ligger i en exponent och högerledet är ett konstant tal, försök först skriva högerledet som en POTENS AV SAMMA BAS som vänsterledet. Här är basen 7.", "tier": "essential"},
+        {"n": 3, "title": "Skriv om 49", "text": "49 = 7·7 = 7². Det är just samma bas (7) som vänsterledet redan har.", "tier": "essential"},
+        {"n": 4, "title": "Ekvationen blir potens = potens", "text": "Ekvationen är nu 7^{7 + x/3} = 7^{2}.", "tier": "essential"},
+        {"n": 5, "title": "Exponentlikhet", "text": "Definition: om a^p = a^q och basen a är positiv och inte 1, så måste p = q. Här är basen 7 > 0 och ≠ 1, så vi kan sätta exponenterna lika.", "tier": "essential"},
+        {"n": 6, "title": "Skriv ut exponentekvationen", "text": "7 + x/3 = 2.", "tier": "essential"},
+        {"n": 7, "title": "Subtrahera 7 från båda led", "text": "x/3 = 2 − 7 = −5.", "tier": "essential"},
+        {"n": 8, "title": "Multiplicera med 3", "text": "Definition: för att lösa ut en variabel som står dividerad med ett tal, multiplicera båda led med samma tal. x = −5·3 = −15.", "tier": "essential"},
+        {"n": 9, "title": "Substitutionstest", "text": "Sätt in x = −15 i exponenten: 7 + (−15)/3 = 7 + (−5) = 2. Då blir vänsterledet 7^{2} = 49. ✓", "tier": "essential"},
+        {"n": 10, "title": "Verifiera", "text": "Tecknet är minus eftersom 7 + x/3 ska BLI 2 (mindre än 7), så x/3 måste vara negativt och alltså x också. Stämmer med −15.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är A — x = −15. Insikten i en mening: när x sitter i en exponent och högerledet är ett konstant tal, skriv om båda led som potenser av samma bas och sätt exponenterna lika.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Det är lätt att stanna vid mellansteget x/3 = −5 + 7·(−1) och dra ihop till x/3 ≈ −7, eller missa multiplikationen med 3 och svara med exponenten.", "why_wrong": "Som steg 8 visar måste x/3 = −5 multipliceras med 3 för att ge x. Att stanna vid x/3 = −7 är ett tecken-/aritmetikfel; rätt mellansteg är x/3 = −5."},
+        {"letter": "C", "why_tempting": "Snabbsvar är ofta att se 'basen är 7' och plocka 7 som svar utan att lösa ekvationen.", "why_wrong": "Som steg 6 visar är ekvationen 7 + x/3 = 2, inte x = 7. Att råka ha rätt bas i uppgiften betyder inte att basen är x."},
+        {"letter": "D", "why_tempting": "Om du missar tecknet på subtraktionen och får x/3 = +5 istället för −5, då blir x = 15.", "why_wrong": "Som steg 7 visar är 2 − 7 = −5 (negativt), inte +5. Du flyttar 7 från vänster till höger genom att SUBTRAHERA — då byter den tecken."}
+      ],
+      "technique": "Exponentialekvationer med okänd i exponenten löser du genom att matcha baserna: skriv om båda led som potenser av samma tal, sätt sedan exponenterna lika och lös som en vanlig linjär ekvation. När basen är positiv och inte 1 är exponentlikheten en ekvivalens (inga falska lösningar).",
+      "pitfall": "Att glömma multiplicera med 3 vid sista steget är vanligt — man landar i 'x = −5' istället för 'x = −15'. Botemedlet: ringa in nämnaren i x/3 som en separat operation som ska upphävas i slutet.",
+      "framework_id": "XYZ-TRAP-027",
+      "pregrade_tactic": {
+        "handle": "Basmatchningen",
+        "move": "När x sitter i en exponent: skriv om högerledet som en potens av samma bas, sätt exponenterna lika och lös linjärt — multiplicera sedan ut ev. nämnare i exponenten."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-ver1-2019-kvant2-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "Vad är \\dfrac{\\tfrac{1}{2} + 3}{4 + \\tfrac{1}{5}}?",
+      "options": [
+        {"letter": "A", "text": "\\dfrac{3}{5}"},
+        {"letter": "B", "text": "\\dfrac{2}{3}"},
+        {"letter": "C", "text": "\\dfrac{4}{5}"},
+        {"letter": "D", "text": "\\dfrac{5}{6}"}
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Förenkla täljaren 1/2 + 3 till ett enda bråk (7/2) och nämnaren 4 + 1/5 till ett enda bråk (21/5). Hela uttrycket blir då (7/2)/(21/5) = (7/2)·(5/21), och förkortningen 7/21 = 1/3 ger slutligen 5/6.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Stapelbråk: täljaren är summan 1/2 + 3, nämnaren är summan 4 + 1/5. Hela uttrycket är (1/2 + 3) dividerat med (4 + 1/5).", "tier": "essential"},
+        {"n": 2, "title": "Strategi i två steg", "text": "Förenkla först täljaren till ETT bråk, sedan nämnaren till ETT bråk. När båda är 'rena' bråk kan du dela (multiplicera med inverterad).", "tier": "essential"},
+        {"n": 3, "title": "Förenkla täljaren", "text": "1/2 + 3. Skriv 3 som 6/2 för att få samma nämnare: 1/2 + 6/2 = 7/2.", "tier": "essential"},
+        {"n": 4, "title": "Förenkla nämnaren", "text": "4 + 1/5. Skriv 4 som 20/5: 20/5 + 1/5 = 21/5.", "tier": "essential"},
+        {"n": 5, "title": "Skriv hela uttrycket", "text": "Nu har du \\dfrac{7/2}{21/5}.", "tier": "essential"},
+        {"n": 6, "title": "Division = multiplikation med invers", "text": "Definition: att dela med ett bråk är samma som att multiplicera med dess invers (vänd upp och ner). \\dfrac{7/2}{21/5} = \\dfrac{7}{2} \\cdot \\dfrac{5}{21}.", "tier": "essential"},
+        {"n": 7, "title": "Förkorta 7 mot 21", "text": "21 = 3·7. Då blir \\dfrac{7}{2} \\cdot \\dfrac{5}{21} = \\dfrac{7 \\cdot 5}{2 \\cdot 21} = \\dfrac{5}{2 \\cdot 3} = \\dfrac{5}{6}. (Du delar både täljare och nämnare med 7.)", "tier": "essential"},
+        {"n": 8, "title": "Sätt på enklaste form", "text": "5 och 6 har inga gemensamma faktorer (5 är primtal, 6 = 2·3). Bråket 5/6 är redan förkortat klart.", "tier": "detail"},
+        {"n": 9, "title": "Sanity-check storleken", "text": "Täljaren ≈ 3,5 och nämnaren ≈ 4,2. Kvoten ≈ 3,5/4,2 ≈ 0,83. Och 5/6 ≈ 0,833. Stämmer.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera", "text": "Multiplicera tillbaka: (5/6)·(21/5) = 21/6 = 7/2. Och vänsterledet täljare = 7/2. ✓", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är D — 5/6. Insikten i en mening: stapelbråk med blandade hel-och-bråk-summor löses genom att skriva varje våning som ett enda bråk innan du delar — gemensam nämnare först, division sedan.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att kombinera 'tre och en halv' med 'fyra och en femtedel' rakt och dra slutsatsen att kvoten är något mindre än 1 — 3/5 ligger där rent visuellt.", "why_wrong": "Som steg 7–9 visar är det exakta värdet 5/6 ≈ 0,83, inte 3/5 = 0,6. 3/5 underskattar genom att inte förenkla noggrant."},
+        {"letter": "B", "why_tempting": "Många stannar vid att se '7/2 dividerat med 21/5' och tänka 'svaret blir typ 1/3' — den dimensionellt rimliga felgissningen.", "why_wrong": "Som steg 7 visar är 7/21 = 1/3 BARA en mellankomponent; 5:an i täljaren och 2:an i nämnaren ger 5/6 totalt, inte 2/3."},
+        {"letter": "C", "why_tempting": "Snabbsvar är ofta 4/5 om man slarvar och tror att täljaren är 4 och nämnaren är 5 (lite som att 'läsa diagonalen' istället för att förenkla).", "why_wrong": "Som steg 3–4 visar är täljaren 7/2 = 3,5 och nämnaren 21/5 = 4,2 — inga 4 eller 5 dyker upp som 'helt tal' i mellansteget."}
+      ],
+      "technique": "Stapelbråk med additioner/subtraktioner i täljare och nämnare löses i tre lag: (1) gemensam nämnare i ÖVRE våningen, (2) gemensam nämnare i UNDRE våningen, (3) division som multiplikation med invers. Förkortningar dyker upp i sista steget — leta efter gemensamma primfaktorer.",
+      "pitfall": "Att försöka 'läsa av kvoten ungefärligt' utan att gå via gemensam nämnare leder ofta till fel storleksordning. Botemedlet: skriv UT båda våningarna som rena bråk INNAN du delar.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Två-vånings-reduktionen",
+        "move": "Förenkla över- och underbråket var för sig till enkla a/b-former — multiplicera sedan med inverterad nämnare och förkorta primfaktorer."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-ver2-2019-kvant1-XYZ-006": {
+    "corpus_patch": {
+      "prompt": "Ekvationen för en rät linje kan skrivas y = kx + m. För vilken av nedanstående linjer är produkten k·m störst?",
+      "options": [
+        {"letter": "A", "text": "[Diagram: linje med positiv lutning som skär y-axeln över origo — k > 0 och m > 0; passerar ungefär (−2, 0) och (0, 2).]"},
+        {"letter": "B", "text": "[Diagram: linje med positiv lutning som går genom origo — k > 0 och m = 0.]"},
+        {"letter": "C", "text": "[Diagram: horisontell linje över x-axeln — k = 0 och m > 0.]"},
+        {"letter": "D", "text": "[Diagram: linje med negativ lutning som skär y-axeln över origo — k < 0 och m > 0.]"}
+      ],
+      "answer": "A",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "För varje linje, avgör tecknen på k (lutning) och m (y-skärning). Produkten k·m är positiv endast när båda har SAMMA tecken; noll om endera är noll. Sortera linjerna och välj den med störst positiv produkt.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Varje rät linje skrivs y = kx + m: k är lutningen och m är där linjen korsar y-axeln. Frågan: vilken av A–D maximerar produkten k·m?", "tier": "essential"},
+        {"n": 2, "title": "Vad styr produktens tecken?", "text": "k·m är positiv om k och m har SAMMA tecken, noll om endera är 0, negativ om motsatta tecken. Tecknen avgör alltså rangordningen innan storleken börjar spela roll.", "tier": "essential"},
+        {"n": 3, "title": "Avläs linje A", "text": "Linje A lutar uppåt åt höger (k > 0) och korsar y-axeln över origo (m > 0). Med två tydliga punkter (−2, 0) och (0, 2) får du k = 1 och m = 2, alltså k·m = 2 (positiv).", "tier": "essential"},
+        {"n": 4, "title": "Avläs linje B", "text": "Linje B lutar också uppåt (k > 0), men passerar genom origo. Det betyder m = 0. Då blir k·m = k·0 = 0.", "tier": "essential"},
+        {"n": 5, "title": "Avläs linje C", "text": "Linje C är vågrät — lutningen är 0. Då blir k·m = 0·m = 0 även om m är stort.", "tier": "essential"},
+        {"n": 6, "title": "Avläs linje D", "text": "Linje D lutar nedåt åt höger (k < 0) och har positiv y-skärning (m > 0). Motsatta tecken → k·m < 0.", "tier": "essential"},
+        {"n": 7, "title": "Jämför värdena", "text": "A: +2. B: 0. C: 0. D: negativ. Alltså är A klart störst.", "tier": "essential"},
+        {"n": 8, "title": "Varför du inte behöver exakta värden", "text": "Eftersom bara A har positiv produkt och övriga är 0 eller negativa, räcker det att identifiera tecknen. Du behöver inte räkna ut k = 1 eller m = 2 exakt för att veta att A vinner.", "tier": "detail"},
+        {"n": 9, "title": "Definition av lutning", "text": "Lutning = (y₂ − y₁)/(x₂ − x₁) mellan två avlässbara punkter. Positiv om linjen 'går upp' när du läser från vänster till höger, negativ om den 'går ner'.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera", "text": "Dubbelkolla att alla andra alternativ har en defekt: B saknar m (= 0), C saknar k (= 0), D har fel tecken på k. Endast A klarar 'både positiv k och positiv m'.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är A. Insikten i en mening: för att maximera k·m grafiskt — leta efter en linje som BÅDE lutar uppåt OCH ligger över origo vid y-axeln (eller båda nedåt + under origo).", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Om du minns regeln som 'större lutning ger större k·m' kan B verka stark eftersom den lutar tydligt uppåt — men ekvationen kräver m också.", "why_wrong": "Som steg 4 visar är m = 0 (linjen går genom origo), så k·m = 0 oavsett k. A:s +2 slår 0."},
+        {"letter": "C", "why_tempting": "Snabbsvar är ofta 'högt placerad linje = stort m = stort k·m', vilket frestar med C som ligger högt upp.", "why_wrong": "Som steg 5 visar har en horisontell linje k = 0; produkten blir 0 även om m är stort."},
+        {"letter": "D", "why_tempting": "Första instinkten är ibland att negativa tecken på lutning och positiva på m 'jämnar ut sig' — men de multipliceras, inte adderas.", "why_wrong": "Som steg 6 visar är (negativ)·(positiv) = negativ. D ger k·m < 0, vilket är mindre än både 0 och +2."}
+      ],
+      "technique": "Linjefrågor om k·m löses i två lag: tecken FÖRST (positiv? noll? negativ?), storlek SEDAN. Bara linjer där k och m har samma tecken kan ge positiv produkt — alla andra är diskvalificerade direkt.",
+      "pitfall": "Att räkna ut exakt k och m för alla fyra linjerna är slöseri med tid. Botemedlet: ringa in tecknen först — då eliminerar du oftast tre av fyra alternativ utan att räkna.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Tecken-först-läsningen",
+        "move": "När frågan efterfrågar maximal produkt eller summa av k och m: läs av TECKNEN på varje graf först, eliminera de som ger noll eller negativt — sedan jämför storleken bland resterande."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

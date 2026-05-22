@@ -1802,97 +1802,97 @@
     "technique": "Procent-till-bråk-strategin: skriv p % som ett förkortat bråk, identifiera nämnaren, och kräv att x är delbar med den nämnaren. Triggern: 'p % av x är heltal' → förkorta p/100 fullt ut och kolla nämnaren."
   },
   "host-ver2-2019-kvant1-XYZ-005": {
-    "_meta": {
-      "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
-    },
-    "framework_id": "XYZ-TRAP-038",
-    "solution_path": "Vinkeln v sitter på utsidan av en triangel där två inre vinklar går att läsa direkt. Använd yttervinkelregeln: v = a + b där a och b är de icke-angränsande inre vinklarna. Avläsningen ger v = 67°.",
-    "technique": "Vinkelräkning i sammansatt figur: kombinera triangelns vinkelsumma 180° och yttervinkelregeln. Yttervinkeln till en triangel är alltid lika med summan av de två INNRE vinklar som inte är dess granne — en enstegsgenväg.",
-    "pitfall": "Botemedlet mot 'fel triangel': peka först ut VILKEN triangel v är yttervinkel till, sedan peka ut de TVÅ inre vinklar som ligger LÅNGT BORT från v. De som ligger nära (delar en sida med v) är inte med i regeln.",
+    "solution_path": "Triangeln vilar på en horisontell linje; vid de två basvinklarna är de markerade 130° och 117° yttervinklar på den rätta linjen. De inre basvinklarna blir 180° − 130° = 50° och 180° − 117° = 63°. Vinkelsumman 180° ger v = 180° − 50° − 63° = 67°.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Sammansatt vinkelfigur: två linjer korsar och bildar en triangel. Vinkeln v sitter utanför triangeln, längs förlängningen av en sida. Vi vill ha v utan miniräknare.",
+        "text": "En triangel står på en horisontell baslinje. De två basvinklarna har yttervinklar 130° (vänster) och 117° (höger). Toppvinkeln är v.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Namnge vinklarna",
-        "text": "Inne i triangeln finns tre vinklar — två är utmärkta med tal i figuren, kalla dem a och b. Den tredje (granne till v) kallar vi c. v är yttervinkel till triangeln, supplementär med c.",
-        "tier": "detail"
+        "title": "Identifiera yttervinklarna",
+        "text": "130° och 117° är markerade utanför triangeln, mellan baslinjens förlängning och triangelns sidor — alltså yttervinklar.",
+        "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Definiera vinkelsumma i triangel",
-        "text": "Grundsats: i varje triangel är de tre inre vinklarna tillsammans 180°. a + b + c = 180^{\\circ}. Detta är en av geometrins kärnregler — bevisas via parallella linjer men kan användas direkt.",
-        "tier": "detail"
+        "title": "Översätt till inre vinklar",
+        "text": "Yttervinkel + inre vinkel = 180° (rät vinkel-supplement). Inre vinkel vänster = 180° − 130° = 50°.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Definiera supplementvinklar",
-        "text": "Två vinklar är supplementära om deras summa är 180°. Det händer alltid när två strålar delar startpunkt och bildar en RÄT LINJE — den ‘delas’ i 180°.",
-        "tier": "detail"
+        "title": "Räkna höger inre vinkel",
+        "text": "Inre vinkel höger = 180° − 117° = 63°.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Härled yttervinkelregeln",
-        "text": "v är supplement till c: v + c = 180^{\\circ}, så c = 180^{\\circ} - v. Från vinkelsumman: c = 180^{\\circ} - (a+b). Sätt lika: 180^{\\circ} - v = 180^{\\circ} - (a+b), alltså v = a + b.",
-        "tier": "detail"
+        "title": "Använd vinkelsumman",
+        "text": "Triangelns tre inre vinklar summerar till 180°: 50° + 63° + v = 180°.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Avläs inre vinklar",
-        "text": "I figuren är de två icke-angränsande inre vinklarna utmärkta. Avläsningen och summeringen ger a + b = 67^{\\circ}.",
+        "title": "Lös ut v",
+        "text": "v = 180° − 50° − 63° = 180° − 113° = 67°.",
         "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Tillämpa regeln",
-        "text": "Sätt in i v = a + b: v = 67^{\\circ}.",
-        "tier": "essential"
+        "title": "Sanity-check via yttervinkelsatsen",
+        "text": "Den yttre vinkeln på höger sida (117°) ska vara summan av de motstående inre vinklarna 50° + 67° = 117° ✓.",
+        "tier": "support"
       },
       {
         "n": 8,
-        "title": "Rimlighetskontroll",
-        "text": "Yttervinkeln ska vara större än varje enskild ‘långt-bort’-vinkel (för den är deras summa) och mindre än 180°. 67° uppfyller båda — och eftersom triangeln har en tredje vinkel c = 113^{\\circ} (trubbig) passar geometrin med en spetsig triangelvinkel mot en trubbig.",
-        "tier": "detail"
+        "title": "Sanity-check vänster sida",
+        "text": "Yttre vänster (130°) = 63° + 67° = 130° ✓. Båda kontrollerna stämmer.",
+        "tier": "support"
       },
       {
         "n": 9,
-        "title": "Verifiera",
-        "text": "Kontroll: v + c = 67^{\\circ} + 113^{\\circ} = 180^{\\circ} (supplement OK), och a + b + c = 67^{\\circ} + 113^{\\circ} = 180^{\\circ} (vinkelsumma OK). Båda satser stämmer.",
+        "title": "Verifiera bland alternativen",
+        "text": "67° finns som alternativ C. 50° och 63° är de inre basvinklarna (lockbeten), 77° är 180° − 50° − 53° (fel räkneoperation).",
         "tier": "essential"
       },
       {
         "n": 10,
         "title": "Slutsats",
-        "text": "Svar: C, 67°. Insikten i en mening: yttervinkelregeln (yttervinkel = summan av två icke-angränsande inre vinklar) är genvägen i alla figurer där den sökta vinkeln sitter UTANFÖR en triangel.",
+        "text": "Svaret är C, 67°. Insikten i en mening: Vid en yttervinkel på baslinjen läs av den inre vinkeln som 180° − yttervinkel, sen sluter triangelsumman tillsammans.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att avläsa fel sida av yttervinkeln och hamna på den närliggande inre vinkeln c = 180^{\\circ} - 67^{\\circ} = 113^{\\circ} — fast om man halvgissar kan man trycka på 50°.",
-        "why_wrong": "Steg 5 visar att v är yttervinkeln, inte dess komplement eller supplement. 50° är varken yttervinkeln eller någon av de avlästa inre vinklarna."
+        "why_tempting": "50° är den inre basvinkeln på vänster sida (180° − 130°). Den som stannar efter första subtraktionen plockar den siffran direkt.",
+        "why_wrong": "50° är en delvinkel inuti triangeln, inte toppvinkeln v. Man måste fortsätta med vinkelsumman."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 63° om man avläser ena delvinkeln 'rätt' men hoppar över att SUMMERA båda — eller blandar in fel granne.",
-        "why_wrong": "Steg 6 är explicit: SUMMAN av de två icke-angränsande inre vinklarna är 67°, inte 63°. 63° är typiskt om bara ena vinkeln räknas eller fel par adderats."
+        "why_tempting": "63° är den inre basvinkeln på höger sida. Samma fälla som A — vald om eleven tror att v ligger nere vid basen.",
+        "why_wrong": "v är markerat vid toppen av triangeln, inte vid basen; 63° är en annan vinkel i samma figur."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är att räkna in ett supplementsteg för mycket och hamna på 77° — kanske via 180^{\\circ} - 103^{\\circ} från en närliggande figur.",
-        "why_wrong": "Steg 9 kontrollerar med v + c = 180^{\\circ}. 77° ger c = 103°, men då blir a + b = 103^{\\circ}, vilket inte stämmer med figurens avläsning på 67°."
+        "why_tempting": "Felaktig räkning 180° − (130° + 117°) + 180° eller liknande kan ge 77°; även 50° + 27° (om man bytte 117 → 153) ger 77.",
+        "why_wrong": "Den korrekta vinkelsumman är 180° − 50° − 63° = 67°, inte 77°. 77° kommer från en aritmetisk slip."
       }
     ],
+    "technique": "På en horisontell baslinje: yttervinkel + inre vinkel = 180°. Räkna fram de två inre basvinklarna och dra båda från 180° för att få toppvinkeln.",
+    "pitfall": "Att försöka använda de markerade vinklarna 130° och 117° direkt i triangelsumman — då blir 130 + 117 = 247 vilket är meningslöst eftersom de är utanför triangeln.",
+    "framework_id": "XYZ-TRAP-038",
     "pregrade_tactic": {
       "handle": "Yttervinkelregeln",
-      "move": "När v sitter utanför triangeln — addera de två inre vinklarna som inte är dess granne, hoppa över vinkelsumman."
+      "move": "Yttervinkel + inre vinkel = 180° — översätt först, summera sedan i triangeln."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-ver2-2019-kvant1-XYZ-007": {
@@ -13112,203 +13112,197 @@
     }
   },
   "host-ver2-2019-kvant1-XYZ-006": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (options blank). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "För varje linje, avgör tecknen på k (lutning) och m (y-skärning). Produkten k·m är positiv endast när båda har SAMMA tecken; noll om endera är noll. Sortera linjerna och välj den med störst positiv produkt.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Svarsalternativen är tomma i datakällan — varje alternativ är en figur som inte fångats. Vi vet vilket alternativ som är rätt enligt facit men inte vad respektive alternativ visar.",
+        "text": "Varje rät linje skrivs y = kx + m: k är lutningen och m är där linjen korsar y-axeln. Frågan: vilken av A–D maximerar produkten k·m?",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Vad styr produktens tecken?",
+        "text": "k·m är positiv om k och m har SAMMA tecken, noll om endera är 0, negativ om motsatta tecken. Tecknen avgör alltså rangordningen innan storleken börjar spela roll.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Avläs linje A",
+        "text": "Linje A lutar uppåt åt höger (k > 0) och korsar y-axeln över origo (m > 0). Med två tydliga punkter (−2, 0) och (0, 2) får du k = 1 och m = 2, alltså k·m = 2 (positiv).",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Avläs linje B",
+        "text": "Linje B lutar också uppåt (k > 0), men passerar genom origo. Det betyder m = 0. Då blir k·m = k·0 = 0.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Avläs linje C",
+        "text": "Linje C är vågrät — lutningen är 0. Då blir k·m = 0·m = 0 även om m är stort.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Avläs linje D",
+        "text": "Linje D lutar nedåt åt höger (k < 0) och har positiv y-skärning (m > 0). Motsatta tecken → k·m < 0.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Jämför värdena",
+        "text": "A: +2. B: 0. C: 0. D: negativ. Alltså är A klart störst.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Varför du inte behöver exakta värden",
+        "text": "Eftersom bara A har positiv produkt och övriga är 0 eller negativa, räcker det att identifiera tecknen. Du behöver inte räkna ut k = 1 eller m = 2 exakt för att veta att A vinner.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Definition av lutning",
+        "text": "Lutning = (y₂ − y₁)/(x₂ − x₁) mellan två avlässbara punkter. Positiv om linjen 'går upp' när du läser från vänster till höger, negativ om den 'går ner'.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Dubbelkolla att alla andra alternativ har en defekt: B saknar m (= 0), C saknar k (= 0), D har fel tecken på k. Endast A klarar 'både positiv k och positiv m'.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är A. Insikten i en mening: för att maximera k·m grafiskt — leta efter en linje som BÅDE lutar uppåt OCH ligger över origo vid y-axeln (eller båda nedåt + under origo).",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du minns regeln som 'större lutning ger större k·m' kan B verka stark eftersom den lutar tydligt uppåt — men ekvationen kräver m också.",
+        "why_wrong": "Som steg 4 visar är m = 0 (linjen går genom origo), så k·m = 0 oavsett k. A:s +2 slår 0."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Snabbsvar är ofta 'högt placerad linje = stort m = stort k·m', vilket frestar med C som ligger högt upp.",
+        "why_wrong": "Som steg 5 visar har en horisontell linje k = 0; produkten blir 0 även om m är stort."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är ibland att negativa tecken på lutning och positiva på m 'jämnar ut sig' — men de multipliceras, inte adderas.",
+        "why_wrong": "Som steg 6 visar är (negativ)·(positiv) = negativ. D ger k·m < 0, vilket är mindre än både 0 och +2."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Linjefrågor om k·m löses i två lag: tecken FÖRST (positiv? noll? negativ?), storlek SEDAN. Bara linjer där k och m har samma tecken kan ge positiv produkt — alla andra är diskvalificerade direkt.",
+    "pitfall": "Att räkna ut exakt k och m för alla fyra linjerna är slöseri med tid. Botemedlet: ringa in tecknen först — då eliminerar du oftast tre av fyra alternativ utan att räkna.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Tecken-först-läsningen",
+      "move": "När frågan efterfrågar maximal produkt eller summa av k och m: läs av TECKNEN på varje graf först, eliminera de som ger noll eller negativt — sedan jämför storleken bland resterande."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-ver2-2019-kvant2-XYZ-005": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Skriv om 49 som potens av 7: 49 = 7^{2}. Då måste exponenterna vara lika: 7 + x/3 = 2. Lös: x/3 = -5, alltså x = -15.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Ekvationen 7^{\\,7 + x/3} = 49 har en variabel exponent. Strategin för sådana ekvationer: gör båda leden till potenser av SAMMA bas, sedan kan exponenterna jämställas.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Vilken är basen?",
+        "text": "Vänstra ledet har bas 7. Höger led, 49, måste skrivas som en potens av 7 för att exponenterna ska kunna jämföras.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Skriv 49 som potens av 7",
+        "text": "7\\cdot 7 = 49, alltså 49 = 7^{2}. Detta är en av de viktigaste talen att kunna utantill: 7^{2}=49.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Sätt in i ekvationen",
+        "text": "7^{\\,7 + x/3} = 7^{2}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "title": "Lika baser ⇒ lika exponenter",
+        "text": "Exponentialfunktionen b^{u} är injektiv för b>0,\\,b\\neq 1 (varje y-värde har bara ett x-värde). Alltså: om 7^{A}=7^{B} så är A=B.",
         "tier": "detail"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Sätt upp exponentekvationen",
+        "text": "7 + \\dfrac{x}{3} = 2.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Subtrahera 7 i båda led",
+        "text": "\\dfrac{x}{3} = 2 - 7 = -5.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Multiplicera båda led med 3",
+        "text": "x = -5 \\cdot 3 = -15.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Sätt in x=-15: exponenten blir 7 + (-15)/3 = 7 - 5 = 2, och 7^{2}=49. Stämmer.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svar A: x = -15. Insikten i en mening: exponentialekvationer löses genom att hitta en gemensam bas; därefter blir exponenterna en vanlig linjär ekvation.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om man fastnar för att 7 finns i båda leden och ”någon 7:a försvinner”, lockas man till -7.",
+        "why_wrong": "Steg 6 visar att vi inte tar bort siffran 7 utan subtraherar — och dessutom delar med 3 — vilket ger -15, inte -7."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Snabbsvar är ofta att läsa av basen själv (7) som svar.",
+        "why_wrong": "Steg 8 visar att x = -15; basen 7 är inte lika med exponenten eller variabeln."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om man missar att x/3 = -5 ger x = -15 och istället tar +15, byts tecknet bara.",
+        "why_wrong": "Steg 7 visar att x/3 är NEGATIVT (-5); steg 8 bevarar tecknet vid multiplikation med positiva 3."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Gemensam bas: vid exponentialekvation, skriv om båda leden som potenser av samma bas och jämställ exponenterna. För 7^?=49 är basen 7 och 49 = 7².",
+    "pitfall": "Botemedlet mot att gissa heltal: skriv ALLTID om talsidan som en potens av basen innan du försöker matcha exponenten — annars frestas du till siffermatchning som inte är giltig.",
+    "framework_id": "XYZ-TRAP-027",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Bas-matchningen",
+      "move": "När båda sidor kan skrivas med samma bas — gör det först, sedan jämställ exponenterna och lös som en linjär ekvation."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-ver2-2019-kvant2-XYZ-011": {

@@ -12814,203 +12814,203 @@
     }
   },
   "var-2024-kvant1-XYZ-012": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Inne i parentesen är två lika potenser: 2^{5}+2^{5}=2\\cdot 2^{5}=2^{6}. Multiplicera sedan med 2 utanför: 2\\cdot 2^{6}=2^{7}.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Uttrycket är 2\\bigl(2^{5}+2^{5}\\bigr). Inne i parentesen står SAMMA potens två gånger; utanför står faktorn 2. Allt är på basen 2 — målet är en enskild potens av 2.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Vad betyder ”samma sak två gånger”?",
+        "text": "a+a=2a, alltid. Då blir 2^{5}+2^{5}=2\\cdot 2^{5}.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Potens-multiplikation med samma bas",
+        "text": "a^{m}\\cdot a^{n}=a^{m+n}. Här: 2\\cdot 2^{5}=2^{1}\\cdot 2^{5}=2^{1+5}=2^{6}.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Parentesen ger 2^6",
+        "text": "2^{5}+2^{5}=2^{6}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Multiplicera med faktorn utanför",
+        "text": "2\\cdot\\bigl(2^{6}\\bigr)=2^{1}\\cdot 2^{6}=2^{1+6}=2^{7}.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "title": "Sanity-check via siffror",
+        "text": "2^{5}=32, så parentesen är 32+32=64=2^{6}. Och 2\\cdot 64=128=2^{7}. Stämmer.",
         "tier": "detail"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "title": "Tolka alternativen",
+        "text": "A: 2^{6}=64 (för litet, har inte multiplicerat med 2:an utanför). B: 2^{7}=128 (vårt svar). C: 2^{11} (skulle kräva multiplikation av potenserna, inte addition). D: 2^{12} (skulle kräva både fel addition OCH multiplikation av exponenter).",
         "tier": "detail"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Varför är 2^{10} fel mönster?",
+        "text": "En vanlig fälla är att tro 2^{5}+2^{5}=2^{5+5}=2^{10}. Men addition av potenser ger INTE addition av exponenter; det skulle bara gälla om de multiplicerades.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Bekräfta exponentlagarna en gång till",
+        "text": "Addition av exponenter gäller vid a^{m}\\cdot a^{n}. Multiplikation av exponenter gäller vid (a^{m})^{n}. Här har vi addition av potenser, inte multiplikation — så ingen lag tillåter exponenterna att läggas ihop.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera med decimal",
+        "text": "2\\cdot(32+32)=2\\cdot 64=128. Och 2^{7}=128. Identiskt.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svar B: 2⁷. Insikten i en mening: 2^n + 2^n = 2·2^n = 2^(n+1) — addition av lika potenser höjer exponenten med 1.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om man räknar bara parentesen rätt (2⁶) men glömmer multiplikationen med 2:an utanför, hamnar man på A.",
+        "why_wrong": "Steg 5 multiplicerar ytterligare med 2:an, vilket höjer exponenten till 7."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är frestande att se 2·2⁵·2⁵ och multiplicera potenserna: exponent 5+5+1 = 11.",
+        "why_wrong": "Steg 2 visar att det är ADDITION i parentesen, inte multiplikation; därför uppstår ingen 2⁵·2⁵."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om man råkar både multiplicera potenserna OCH multiplicera resultatet med 2 från fel håll, hamnar man kring 2¹² (5+5+2).",
+        "why_wrong": "Steg 5 ger exponent 7 totalt; D är ett resultat av två sammanlagda misstag och kan uteslutas redan via sanity-check (128, inte 4096)."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Addition av lika potenser: a^n + a^n = 2·a^n = a^(n+1) när basen a = 2. Använd alltid faktorisering före exponentregler.",
+    "pitfall": "Botemedlet mot att addera exponenter felaktigt: kom ihåg att exponenter ADDERAS endast vid MULTIPLIKATION av samma bas — aldrig vid addition av potenser.",
+    "framework_id": "XYZ-TRAP-026",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Faktoriseringsknepet",
+      "move": "När du ser samma potens flera gånger — faktorisera ut den först (a^n + a^n = 2·a^n), sedan applicera exponentlagar."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2024-kvant2-XYZ-006": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Pröva varje uttryck med basreglerna för rotuttryck, exponenter och bråk. Bara D förenklas exakt till 7 eftersom (7/\\sqrt{7})^{2} = 49/7 = 7.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Du ska identifiera vilket av de fyra uttrycken som har det exakta värdet 7. Approximera bara om du måste — räkneregler räcker långt.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Strategi: testa varje alternativ",
+        "text": "Inget enskilt knep löser alla fyra; varje rad är en miniövning i en räkneregel. Gå A → B → C → D och förenkla exakt.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "A: rotsumma distribuerar inte",
+        "text": "Roten ur en summa är inte summan av rötterna. Här kan du dock räkna: \\sqrt{29}\\approx 5{,}385 och \\sqrt{20}\\approx 4{,}472, så A \\approx 9{,}86 — alldeles för stort.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "B: exponentregeln a^{0}=1",
+        "text": "Per definition är varje icke-nolltal upphöjt till 0 lika med 1. Då blir 7^{1}-7^{0}=7-1=6, inte 7.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "C: gemensam nämnare",
+        "text": "Bråkaddition kräver att nämnarna är lika. Förläng \\frac{14}{7} till \\frac{28}{14} så blir summan \\frac{28}{14}+\\frac{49}{14}=\\frac{77}{14}=5{,}5. Inte 7.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "D: skriv om nämnaren",
+        "text": "Använd att \\sqrt{7}=7^{1/2} så att \\dfrac{7}{\\sqrt{7}}=\\dfrac{7^{1}}{7^{1/2}}=7^{1-1/2}=7^{1/2}=\\sqrt{7}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "D: kvadrera resultatet",
+        "text": "Kvadrering tar bort kvadratroten: (\\sqrt{7})^{2}=7. Alltså är hela uttrycket exakt 7.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Alternativ väg för D",
+        "text": "Du kan också först kvadrera direkt: \\left(\\dfrac{7}{\\sqrt{7}}\\right)^{2}=\\dfrac{7^{2}}{(\\sqrt{7})^{2}}=\\dfrac{49}{7}=7. Båda vägarna leder rätt.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Sanity-kolla mot 7",
+        "text": "A ger ungefär 9,9, B ger 6, C ger 5,5 och D ger exakt 7 — bara D passar.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Räkna en sista gång: 49/7=7. Inget avrundningsfel, ingen dold faktor — D är vattentätt.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är D. Insikten i en mening: när ett bråk har samma bas i täljare och nämnare, subtrahera exponenterna — sedan blir kvadreringen trivial.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att tro att \\sqrt{29}+\\sqrt{20} \"ungefär\" blir 7 eftersom 29+20 = 49 och \\sqrt{49}=7.",
+        "why_wrong": "Som steg 3 visar distribuerar inte kvadratroten över addition — \\sqrt{a+b}\\neq\\sqrt{a}+\\sqrt{b} — och uttrycket landar på cirka 9,9."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid 7^{0} och tippar att det blir 0, vilket gör att 7^{1}-7^{0} skulle bli 7.",
+        "why_wrong": "Steg 4 påminner om regeln a^{0}=1: uttrycket är 7−1 = 6, inte 7."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att slå ihop 14/7 och 49/14 utan att förlänga, eller att tro att 14+49 = 63 ger 63/14 som råkar bli nära 7.",
+        "why_wrong": "Steg 5 visar att med gemensam nämnare blir summan 77/14=5{,}5 — för litet för att vara 7."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "När alternativen är fyra olika räkneuttryck och bara ett ska bli ett exakt tal, gå igenom dem ett i taget och tillämpa standardreglerna: rotens distribution, a^{0}=1, gemensam nämnare och potens med samma bas. Tre alternativ faller på sina egna fällor och det fjärde reduceras snyggt.",
+    "pitfall": "Att approximera A med \\sqrt{49}=7 är ett klassiskt slarvfel — botemedlet är att alltid testa rotregeln på små tal (\\sqrt{4}+\\sqrt{9}=2+3=5 men \\sqrt{4+9}=\\sqrt{13}\\approx 3{,}6) innan du tror på distributionen.",
+    "framework_id": "XYZ-TRAP-033",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Sambasknepet",
+      "move": "När ett alternativ har samma tal i täljare och nämnare under ett rotuttryck, skriv om till exponentform och dra ihop exponenterna — då försvinner roten och du ser värdet direkt."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2024-kvant2-XYZ-007": {
@@ -13114,103 +13114,109 @@
     }
   },
   "var-2024-kvant2-XYZ-008": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Det skuggade området är kvadraten (sida 4) minus den del av cirkeln som ligger inuti kvadraten. Eftersom M sitter i ett kvadrathörn ligger exakt en fjärdedel av cirkeln innanför, så arean blir 16 - π.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "Du har en kvadrat ABCD med sidan 4 cm där hörnet M är medelpunkt för en cirkel med radien 2 cm. Det skuggade området är kvadraten utan den bit av cirkelskivan som hamnar innanför kvadraten.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Avläs figuren",
+        "text": "Figuren visar att M ligger i kvadratens övre vänstra hörn. Cirkeln har radien 2 cm — exakt halva sidlängden 4 — och sträcker sig 2 cm åt höger (mot C) och 2 cm nedåt (mot A).",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Subtraktionsstrategin",
+        "text": "När en figur är \"helhet minus utklippt del\" är receptet: räkna helheten, räkna det som tas bort, dra ifrån. Här gäller skuggat = kvadrat − cirkelbit innanför.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Kvadratens area",
+        "text": "Area av en kvadrat är sidan i kvadrat: 4\\cdot 4 = 16\\,\\text{cm}^{2}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Cirkelns hela area",
+        "text": "Cirkelarea är \\pi r^{2}. Med r=2 blir det \\pi\\cdot 2^{2}=4\\pi\\,\\text{cm}^{2}. Men hela cirkeln ligger inte i kvadraten.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Vilken bråkdel ligger innanför?",
+        "text": "M sitter i ett hörn av kvadraten. De två kvadratsidorna som möts i M delar planet i fyra rätvinkliga sektorer, och endast den sektor som pekar in i kvadraten täcker cirkeln. Det är exakt en fjärdedel.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Räkna kvartscirkelns area",
+        "text": "En fjärdedel av cirkeln: \\dfrac{1}{4}\\cdot 4\\pi = \\pi\\,\\text{cm}^{2}.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Kolla att kvarten ryms",
+        "text": "Radien 2 är mindre än sidan 4, så hela kvartsskivan ligger faktiskt innanför kvadraten — ingen extra trimning behövs.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Dra ifrån",
+        "text": "Skuggat = kvadrat − kvartscirkel = 16 - \\pi\\,\\text{cm}^{2}.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "title": "Numerisk rimlighet",
+        "text": "\\pi\\approx 3{,}14, så svaret är cirka 12{,}86 cm². Kvadraten är 16, kvartsbiten cirka 3 — figurens skuggade del ser ut att vara lite mer än tre fjärdedelar, vilket stämmer.",
         "tier": "detail"
       },
       {
         "n": 11,
+        "title": "Verifiera",
+        "text": "Mata in i alla fyra alternativen: bara D ger ett tal mellan 12 och 13. A, B ger drygt 12, C ger cirka 14,4 — bara D klockas.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är D: (16-\\pi)\\,\\text{cm}^{2}. Insikten i en mening: när cirkelns medelpunkt ligger i ett hörn av en figur skär bara en kvart av cirkeln in i figuren — multiplicera \\pi r^{2} med 1/4 och dra av.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att tro att det skuggade området är kvadraten minus halva cirkeln, eftersom diagonalen \"verkar\" dela cirkeln på mitten — då skulle svaret bli 16 − 2\\pi, vilket också felaktigt skrivs som 12 + \\pi/2 om man slarvar med tecken.",
+        "why_wrong": "Steg 6 visar att hörnvinkeln är 90°, inte 180° — så det är en kvart av cirkeln som ligger inne, inte en halva."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du multiplicerar cirkelarean fel (tar 4\\pi/16 i stället för 4\\pi/4) hamnar du på en åttondel och slutar med 16 − \\pi/4, som kan skrivas om till 12 + \\pi/4 om du dessutom byter tecken.",
+        "why_wrong": "Steg 7 låser fast bråkdelen som 1/4, vilket ger \\pi (inte \\pi/4) som tas bort — och basen 16, inte 12."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Snabbsvar är ofta att hörnsektorn är en åttondel av cirkeln, vilket ger 4\\pi/8 = \\pi/2 som ska subtraheras från 16.",
+        "why_wrong": "Steg 6 fastställer att hörnvinkeln 90° motsvarar 1/4, inte 1/8 av varvet — sektorn är en kvart, inte åttondel."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Sammansatta figurer bryts ner i grundformer. Här är receptet \"kvadrat − cirkelsektor\": räkna helheten separat, räkna den utklippta sektorn separat, dra ifrån. Vinkelmått vid medelpunkten avgör bråkdelen — 90° = 1/4 varv.",
+    "pitfall": "Att tippa bråkdelen utan att tänka på vinkeln är vanligaste felet. Botemedlet: rita in de två kvadratsidor som möts i M och fråga \"hur stor del av cirkelplanet hamnar mellan dessa sidor?\" — det svaret avgör om du delar med 2, 4 eller 8.",
+    "framework_id": "XYZ-TRAP-041",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Hörnvinkelregeln",
+      "move": "När en cirkels medelpunkt sitter i ett hörn av en månghörning, mät vinkeln vid hörnet i grader och multiplicera \\pi r^{2} med (vinkel/360°) — det är cirkelbiten som ska dras av."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2024-kvant1-NOG-023": {

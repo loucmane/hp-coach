@@ -12894,503 +12894,479 @@
     }
   },
   "host-2014-kvant1-XYZ-011": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Lös ut x från villkoret 5x/11 = 45/77 → x = 9/7. Beräkna sedan (1/3)·x = (1/3)·(9/7) = 9/21 = 3/7.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Vi vet att \\dfrac{5}{11} av x är \\dfrac{45}{77}. Vi vill hitta \\dfrac{1}{3} av x. Två steg: först hitta x, sedan ta en tredjedel.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Skriv ut villkoret",
+        "text": "\\dfrac{5}{11} \\cdot x = \\dfrac{45}{77}.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Isolera x",
+        "text": "Multiplicera båda led med 11/5 (inversen av 5/11): x = \\dfrac{45}{77} \\cdot \\dfrac{11}{5}.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Förkorta innan multiplikation",
+        "text": "45/5 = 9 och 11/77 = 1/7. Alltså x = \\dfrac{9}{7}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Sanity-kontroll av x",
+        "text": "Verifiera: \\dfrac{5}{11} \\cdot \\dfrac{9}{7} = \\dfrac{45}{77}. Korrekt — matchar villkoret.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Beräkna efterfrågat värde",
+        "text": "Frågan vill ha \\dfrac{1}{3} \\cdot x = \\dfrac{1}{3} \\cdot \\dfrac{9}{7}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Förkorta multiplikationen",
+        "text": "9 och 3 har gemensam faktor 3. Förkorta: \\dfrac{1}{3} \\cdot \\dfrac{9}{7} = \\dfrac{9}{21} = \\dfrac{3}{7}.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Genväg via direkt skalning",
+        "text": "Alternativ rutt utan att lösa ut x: (1/3) av x i förhållande till (5/11) av x är (1/3) : (5/11) = (1/3)·(11/5) = 11/15. Så (1/3)·x = (11/15) · (45/77) = (11·45)/(15·77) = (11·3)/77 = 33/77 = 3/7. Samma svar.",
+        "tier": "optional"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "3/7 ≈ 0,428. Sanity check: x = 9/7 ≈ 1,286 och en tredjedel av det är ≈ 0,429. Stämmer.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är A: 3/7. Insikten i en mening: 'a/b av x = c' låter dig hämta x direkt genom multiplikation med inversen b/a — sedan tillämpas den önskade andelen.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "15/77 kan komma från att ta (1/3) · (45/77) direkt — som om problemet bad om 'en tredjedel av det givna värdet' istället för 'en tredjedel av x'.",
+        "why_wrong": "Det givna 45/77 är (5/11) av x, inte x självt. Du måste först lösa ut x = 9/7. Då blir (1/3)·x = 3/7, inte 15/77."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "5/33 fås om man försöker beräkna (1/3) · (5/11) = 5/33 och tror att svaret bara är skalningen mellan andelarna utan att blanda in det numeriska värdet 45/77.",
+        "why_wrong": "5/33 är förhållandet mellan andelarna, inte själva svaret. Du måste applicera (1/3) på det faktiska x, inte på koefficienten 5/11."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "1/3 ser ut som rätt svar för någon som tolkar frågan som 'vad är andelen 1/3' istället för 'vad är 1/3 av x' — en koefficient mot ett värde.",
+        "why_wrong": "1/3 är BRÅKDELEN av x som efterfrågas, inte själva svarsvärdet. Med x = 9/7 är (1/3) av x faktiskt 3/7, inte 1/3."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "När 'k₁ av x = m', isolera x genom att dela m med k₁ (multiplicera med inversen). Tillämpa sedan den efterfrågade andelen k₂ på x.",
+    "pitfall": "Att applicera den nya andelen direkt på det givna värdet (15/77 = (1/3) · (45/77)) istället för på x — distraktor B fångar exakt det misstaget.",
+    "framework_id": "XYZ-TRAP-023",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Två-stegsmodellen",
+      "move": "Hämta först x ur villkoret 'k₁·x = m' med x = m/k₁, applicera sedan den nya andelen — gör inte snabbgreppet att skala m direkt med k₂/k₁ såvida du inte kontrollerat enheten."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2014-kvant1-XYZ-012": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Bryt ut perfekta kvadrater: √32 = √(16·2) = 4√2 och √18 = √(9·2) = 3√2. Subtraktionen blir 4√2 − 3√2 = √2.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "Uttrycket \\sqrt{32} - \\sqrt{18} är en differens av två kvadratrötter. Mål: förenkla till ett av de fyra svarsformaten.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Identifiera den lediga genvägen",
+        "text": "Båda tal under rotmärket innehåller faktorn 2. Om vi kan dela upp 32 = 16·2 och 18 = 9·2 så får vi √2 som gemensam faktor och kan förenkla differensen.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Faktorisera 32",
+        "text": "32 = 16 · 2, där 16 är en perfekt kvadrat (4²). Alltså \\sqrt{32} = \\sqrt{16 \\cdot 2} = \\sqrt{16} \\cdot \\sqrt{2} = 4\\sqrt{2}.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Faktorisera 18",
+        "text": "18 = 9 · 2, där 9 är en perfekt kvadrat (3²). Alltså \\sqrt{18} = \\sqrt{9 \\cdot 2} = 3\\sqrt{2}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Skriv om differensen",
+        "text": "\\sqrt{32} - \\sqrt{18} = 4\\sqrt{2} - 3\\sqrt{2}.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Bryt ut den gemensamma faktorn √2",
+        "text": "4\\sqrt{2} - 3\\sqrt{2} = (4 - 3)\\sqrt{2} = 1 \\cdot \\sqrt{2} = \\sqrt{2}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Kontrollera mot fallgrop",
+        "text": "Den klassiska fällan: tro att \\sqrt{32} - \\sqrt{18} = \\sqrt{32 - 18} = \\sqrt{14}. Detta är FEL — rotutdragning distribuerar inte över subtraktion (eller addition).",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Numerisk verifiering",
+        "text": "Räkna decimalt: \\sqrt{32} ≈ 5,657 och \\sqrt{18} ≈ 4,243. Differens ≈ 1,414, vilket är just \\sqrt{2} ≈ 1,414. Stämmer.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Kolla av distraktorerna numeriskt",
+        "text": "\\sqrt{14} ≈ 3,742, 2\\sqrt{2} ≈ 2,828, 2\\sqrt{7} ≈ 5,291. Inget av dessa är 1,414. Bara A passar.",
+        "tier": "optional"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är A: \\sqrt{2}. Insikten i en mening: faktorisera ut perfekta kvadrater under rotmärket, då blir summor och differenser av rötter ofta enkla.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den största fällan: 'rotmärket distribuerar' lurar studenten att skriva \\sqrt{32} - \\sqrt{18} = \\sqrt{32-18} = \\sqrt{14}.",
+        "why_wrong": "Rotutdragning distribuerar BARA över multiplikation och division, inte över addition eller subtraktion. \\sqrt{a-b} ≠ \\sqrt{a} - \\sqrt{b} i allmänhet. Sanity check: \\sqrt{14} ≈ 3,74, men differensen är ≈ 1,41."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Räknefel där studenten skriver \\sqrt{32} = 4\\sqrt{2} men \\sqrt{18} = 2\\sqrt{2} (förväxlar 9 med 4 som perfekt kvadratfaktor i 18) — då blir differensen 4√2 − 2√2 = 2√2.",
+        "why_wrong": "18 = 9·2, inte 4·... Faktorisera 18 noga: 9·2 stämmer eftersom 9 är största kvadratfaktor (4·... ger inte 18 som heltal). Korrekt: \\sqrt{18} = 3\\sqrt{2}, så differensen är (4-3)√2 = √2."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "2√7 kan komma från en blandning av faktorfel: om man tar 32 = 4·8 och tror på 4·8 = 32 ger \\sqrt{32} = 2\\sqrt{8} = 4\\sqrt{2}, och liknande slump kan ge formen 2\\sqrt{7}.",
+        "why_wrong": "Numeriskt: 2\\sqrt{7} ≈ 5,29 vilket är mer än hela \\sqrt{32} ≈ 5,66 minus nästan ingenting — orimligt stor för differensen. Korrekt värde är \\sqrt{2} ≈ 1,41."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "För att förenkla \\sqrt{n}: faktorisera n så att en perfekt kvadrat ingår, dra ut roten av kvadraten. För summor/differenser av rötter: leta efter gemensam rot-faktor.",
+    "pitfall": "Att tro att \\sqrt{a} - \\sqrt{b} = \\sqrt{a-b} — den enskilt vanligaste fällan med rötter. Distraktor B är specifikt designad för detta felgrepp.",
+    "framework_id": "XYZ-TRAP-033",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Rotfaktoreringen",
+      "move": "Innan du subtraherar rötter, bryt ut perfekta kvadratfaktorer ur varje rot tills bara samma irrationella rest kvarstår; subtrahera då koefficienterna."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2014-kvant2-XYZ-002": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar C; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Potens av bråk: (a/b)^n = a^n / b^n. Eftersom exponenten 3 är udda bevaras minustecknet. (-5/2)^3 = (-5)^3/2^3 = -125/8.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Beräkna \\left(-\\dfrac{5}{2}\\right)^3 — ett bråk med negativt tecken upphöjt till tre. Två saker att hålla isär: storleken (5^3/2^3) och tecknet ((-)^3 = -).",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ C. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Använd regeln för potens av kvot",
+        "text": "Regel: \\left(\\dfrac{a}{b}\\right)^n = \\dfrac{a^n}{b^n}. Tillämpat: \\left(-\\dfrac{5}{2}\\right)^3 = \\dfrac{(-5)^3}{2^3}.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Beräkna täljaren",
+        "text": "(-5)^3 = (-5) \\cdot (-5) \\cdot (-5). Två negativa ger positivt: (-5)·(-5) = 25. Multiplicera sedan med (-5): 25 · (-5) = -125.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Granska tecken-mekaniken",
+        "text": "Generell regel: (-a)^n är negativt om n är udda, positivt om n är jämnt. Här är n = 3 (udda), alltså bevaras minustecknet.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Beräkna nämnaren",
+        "text": "2^3 = 2 \\cdot 2 \\cdot 2 = 8.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Sätt ihop bråket",
+        "text": "\\dfrac{(-5)^3}{2^3} = \\dfrac{-125}{8} = -\\dfrac{125}{8}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Kontrollera storleksordning",
+        "text": "Storleken: |5/2| = 2,5, och 2,5^3 = 15,625 = 125/8. Tecknet: negativt eftersom exponenten är udda. Slutsvar -125/8 = -15,625.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Identifiera fallgroparna",
+        "text": "Distraktor A (+125/8) frestar elever som glömmer tecknet. Distraktor B (15/6) frestar elever som RÄKNAR FEL: tar 5·3=15 och 2·3=6 istället för potens. Distraktor D (-15/6) kombinerar båda misstagen samtidigt.",
+        "tier": "optional"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Verifiera numeriskt",
+        "text": "(-5/2)^3 = (-2,5)^3 = -2,5 · -2,5 · -2,5 = 6,25 · -2,5 = -15,625. Och -125/8 = -15,625. Stämmer.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret C. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är C: -125/8. Insikten i en mening: potens av ett bråk räknas genom att upphöja täljare och nämnare separat — tecknet följer pariteten på exponenten.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Räknar storleken rätt (5³ = 125, 2³ = 8) men tappar minustecknet — vanligt när man tänker '(-1)² = 1' och felaktigt antar samma sak gäller alla negativa baser i alla potenser.",
+        "why_wrong": "Exponenten 3 är UDDA, så minustecknet bevaras: (-5)^3 = -125. Svaret måste vara negativt."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Klassiskt 'potens som multiplikation' fel: tror att (a/b)^n betyder att multiplicera täljare och nämnare med n. 5·3 = 15 och 2·3 = 6, så 15/6. Plus glömt minustecknet.",
+        "why_wrong": "Potens är upprepad multiplikation av basen med sig själv, inte multiplikation med exponenten. (5/2)^3 = (5/2)·(5/2)·(5/2) = 125/8, inte 15/6."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Samma 'potens = multiplikation med n' fel som distraktor B, men med rätt tecken bevarat: minus framför svaret eftersom basen är negativ.",
+        "why_wrong": "Tecknet är rätt men storleken fel. (-5/2)^3 har storleken 125/8, inte 15/6. Räkna potensen som upprepad multiplikation, inte som koefficient-multiplikation."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "(a/b)^n = a^n / b^n. För negativ bas: (-a)^n är negativt om n udda, positivt om n jämnt. Skild beräkning av storlek och tecken är säkrare än att försöka göra båda samtidigt.",
+    "pitfall": "Att förväxla 'upphöja' med 'multiplicera koefficient-vis': att tro (5/2)^3 = (5·3)/(2·3) = 15/6 är en av de vanligaste tidiga algebra-fällorna.",
+    "framework_id": "XYZ-TRAP-029",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Tecken-och-storlek-isärtagningen",
+      "move": "Vid potens av negativt bråk: räkna storleken som (täljare^n)/(nämnare^n), sedan sätt tecken via pariteten på exponenten (udda → minus, jämn → plus)."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2014-kvant2-XYZ-006": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Korsmultiplikation ger 16(2x+3) = 22(3x-4). Utveckla: 32x + 48 = 66x - 88. Samla x: 136 = 34x, alltså x = 4.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Ekvationen \\dfrac{16}{3x-4} = \\dfrac{22}{2x+3} är en proportion mellan två bråk med x i nämnaren. Mål: lös för x.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Korsmultiplicera",
+        "text": "För en proportion a/b = c/d gäller a·d = b·c. Här: 16 · (2x+3) = 22 · (3x-4).",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Distribuera vänster led",
+        "text": "16(2x + 3) = 16·2x + 16·3 = 32x + 48.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Distribuera höger led",
+        "text": "22(3x - 4) = 22·3x + 22·(-4) = 66x - 88. (Tecknet ändras på 4:an eftersom -4 multipliceras med +22.)",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Skriv ut den linjära ekvationen",
+        "text": "32x + 48 = 66x - 88.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Samla x på en sida",
+        "text": "Subtrahera 32x från båda led: 48 = 34x - 88.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Samla konstanterna",
+        "text": "Addera 88 till båda led: 48 + 88 = 34x, alltså 136 = 34x.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Lös ut x",
+        "text": "Dela båda led med 34: x = 136/34 = 4. (Snabbcheck: 34·4 = 136, stämmer.)",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Sätt x = 4 i originalet: vänster led = 16/(3·4 - 4) = 16/8 = 2. Höger led = 22/(2·4 + 3) = 22/11 = 2. Likhet — rätt.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är D: x = 4. Insikten i en mening: en proportion mellan två bråk löses genom korsmultiplikation, vilket reducerar problemet till en linjär ekvation.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Eleven som tappar tecken vid distribution: tror 22(3x-4) = 66x - 4 (multiplicerar 22 med 3x men inte med -4) och får ekvationen 32x + 48 = 66x - 4 → 52 = 34x, eller lite hetare räknefel landar på -2.",
+        "why_wrong": "Distributionen är 22·(3x) + 22·(-4) = 66x - 88, INTE 66x - 4. Varje term i parentesen får sin multiplikator. Med korrekt distribution är x = 4."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "0 är ett 'fri-prov': om man testar x = 0 så blir 16/-4 = -4 och 22/3 ≈ 7,33, vilket inte stämmer — men x = 0 lockar som det enklaste numret att försöka först.",
+        "why_wrong": "Insättning visar direkt: vid x = 0 blir vänster led -4 och höger led 22/3. De är olika, så x = 0 är inte en lösning."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Räknefel där 32x + 48 = 66x - 88 hanteras med fel tecken: 48 + 88 = 66x + 32x istället för 66x - 32x. Ger 136 = 98x → x ≈ 1,4, men resonemang som approximerar uppåt kan landa på 2.",
+        "why_wrong": "När man flyttar 32x från vänster till höger byter den tecken: 48 = (66 - 32)x - 88 = 34x - 88, inte 98x. Med rätt algebra blir x = 4."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Proportion a/b = c/d ⇒ a·d = b·c (korsmultiplikation). Distribuera noggrant på båda led — varje term i parentesen får sin multiplikator. Verifiera alltid genom insättning i originalet.",
+    "pitfall": "Att missa att den negativa termen i parentesen också ska multipliceras: 22(3x - 4) får BÅDA termer multiplicerade, alltså -88 (inte -4). Felgreppet ger ofta något av distraktorerna A eller C.",
+    "framework_id": "XYZ-TRAP-025",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Korsmultiplikations-disciplinen",
+      "move": "Vid a/b = c/d: skriv direkt a·d = b·c, distribuera varje konstant över VARJE term i parentesen, samla sedan x och konstanter på var sin sida innan division."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2014-kvant2-XYZ-009": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Den inre vinkeln vid mötespunkten är 180° − 130° = 50°; den lilla triangeln (rätvinklig) ger att lutningen för AC mot horisontalen är 40°. Det fastställer x = 50° och z = 180° − 40° = 140°, så x + z = 190°.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "text": "Den stora triangeln ABC är rätvinklig vid B. Inne i den finns en vinkelrät linje från sidan AB upp till sidan AC; vid mötespunkten är en vinkel märkt 130° (mätt åt C). Vinkeln x är vid C, vinkeln z är vid A på utsidan (mot vänster, längs basen förlängd).",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
-      },
-      {
-        "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "title": "Vad innebär ”yttervinkel z”?",
+        "text": "På bilden ligger z mellan baslinjen som fortsätter åt vänster och linjen AC som går upp åt höger. Det är alltså supplementet till den inre vinkeln BAC: z = 180° − (vinkel BAC). En rak linje ger 180°.",
         "tier": "detail"
       },
       {
+        "n": 3,
+        "title": "Vad 130° säger",
+        "text": "Mötespunkten M på AC delar AC i två riktningar. Den markerade 130°-vinkeln ligger mellan strecket MB (lodrätt nedåt) och MC (uppåt-höger). Den vinkel på MOTSATT sida av samma rätlinje är dess supplement: 180° − 130° = 50°. Den 50°-vinkeln ligger inne i den lilla triangeln (mellan MB och MA).",
+        "tier": "essential"
+      },
+      {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "title": "Den lilla rätvinkliga triangeln",
+        "text": "Den lilla triangeln har: rät vinkel vid foten på AB (90°), 50° vid M, och resterande vinkel vid A. Vinkelsumman i en triangel är 180°.",
         "tier": "detail"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Räkna vinkeln vid A",
+        "text": "180° − 90° − 50° = 40°. Det är samma vinkel som BAC i den stora triangeln, eftersom A är gemensam och de två trianglarna delar sidan AC vid A.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Räkna x i stora triangeln",
+        "text": "Stora triangeln ABC är rätvinklig vid B. Vinkelsumma: 90° + (vinkel A) + (vinkel C) = 180°, alltså vinkel C = 180° − 90° − 40° = 50°. Det är x.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Räkna z (yttervinkeln vid A)",
+        "text": "Från steg 2: z = 180° − (vinkel A) = 180° − 40° = 140°.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Summan x + z",
+        "text": "x + z = 50° + 140° = 190°.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Snabbcheck via yttervinkelsatsen",
+        "text": "Yttervinkeln vid A är lika med summan av de två motstående inre vinklarna: vinkel B + vinkel C = 90° + 50° = 140°. Stämmer med vårt z.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Värdena 40° + 50° + 90° = 180° i stora triangeln; 90° + 50° + 40° = 180° i lilla triangeln; 130° + 50° = 180° vid M. Alla tre stämmer.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svar D: x + z = 190°. Insikten i en mening: en yttervinkel sluker alltid summan av de två icke-angränsande inre vinklarna — vid en rätvinklig triangel blir det 90° plus den motstående spetsiga.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att läsa den enda numeriska vinkeln (130°) och svara den rakt av.",
+        "why_wrong": "Steg 3 visar att 130° är vinkeln vid M — inte x + z."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att räkna ut yttervinkeln z = 140° och glömmer att lägga till x.",
+        "why_wrong": "Steg 8 visar att x och z båda ska bidra; ensam ger z 140°, men x = 50° måste med."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är frestande att tro att x och z är supplement (på samma linje) och därför summerar till 180°.",
+        "why_wrong": "Steg 7 visar att z = 180° − ∠A medan x = ∠C; deras summa är 180° − ∠A + ∠C, inte 180°."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Yttervinkelsatsen: en yttervinkel vid ett hörn = summan av de två icke-angränsande inre vinklarna. Använd den både för att bekräfta z och för att slippa räkna via supplement.",
+    "pitfall": "Botemedlet mot att blanda 130° med x eller z: lokalisera 130° geometriskt först (vid M, inte vid hörnen A/B/C) — då försvinner frestelsen att kopiera siffran rakt av.",
+    "framework_id": "XYZ-TRAP-038",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Yttervinkelvägen",
+      "move": "När en uppgift blandar en inre vinkel och en yttervinkel — använd att yttervinkel = summan av de två motstående inre, så slipper du räkna supplement separat."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   }
 }

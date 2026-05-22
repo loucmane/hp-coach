@@ -1,0 +1,751 @@
+{
+  "host-2013-kvant2-XYZ-002": {
+    "corpus_patch": {
+      "prompt": "a ≠ 0\nb ≠ 0\nVad är x om \\dfrac{b}{a+x} = \\dfrac{b}{2x}?",
+      "options": [
+        {"letter": "A", "text": "\\dfrac{ab}{2}"},
+        {"letter": "B", "text": "ab"},
+        {"letter": "C", "text": "\\dfrac{a}{3}"},
+        {"letter": "D", "text": "a"}
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Vi har likhet mellan två bråk med samma täljare b. Eftersom b ≠ 0 kan vi förkorta bort b och få en likhet mellan nämnarna a+x = 2x, vilket genast ger x = a.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Ekvationen \\dfrac{b}{a+x} = \\dfrac{b}{2x} har samma täljare b på båda sidor. Villkoren a ≠ 0 och b ≠ 0 finns för att nollor inte ska tillkomma i nämnaren eller täljaren. Mål: hitta x i termer av a (och eventuellt b).",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Identifiera den lediga genvägen",
+          "text": "Två bråk med IDENTISK täljare är lika ↔ deras nämnare är lika (så länge täljaren ≠ 0, vilket vi har via b ≠ 0). Det är mycket snabbare än att korsmultiplicera.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Förkorta bort b",
+          "text": "Multiplicera båda led med 1/b (definierat eftersom b ≠ 0). Kvar blir \\dfrac{1}{a+x} = \\dfrac{1}{2x}.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Ta inverser av båda led",
+          "text": "Två bråk med täljare 1 är lika om och endast om deras nämnare är lika. Alltså: a + x = 2x.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Samla x på en sida",
+          "text": "Subtrahera x från båda led: a + x - x = 2x - x, alltså a = x.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Skriv om",
+          "text": "Lösningen blir därmed x = a. Märk: b försvann helt ur slutsvaret — det var bara en proportionalitetsfaktor som uppträdde på båda sidor.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Kontrollera definitionsmängd",
+          "text": "Med x = a måste vi kolla att nämnarna inte blir noll: a + x = 2a ≠ 0 (sant eftersom a ≠ 0), och 2x = 2a ≠ 0 (samma villkor). Alltså är lösningen tillgänglig.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Verifiera genom insättning",
+          "text": "Sätt x = a i originalet: Vänster led blir \\dfrac{b}{a+a} = \\dfrac{b}{2a} och höger led blir \\dfrac{b}{2a}. Likhet — rätt.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Notera varför distraktorerna lurar",
+          "text": "Svarsalternativen ab/2 och ab fångar studenten som insåg att korsmultiplikation skulle ge b \\cdot 2x = b(a+x) men sedan behöll b kvar på vägen istället för att direkt förkorta bort det.",
+          "tier": "optional"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Svaret är D: x = a. Insikten i en mening: när två bråk har identisk täljare ≠ 0 är de lika exakt när nämnarna är lika — ingen korsmultiplikation behövs.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Korsmultiplikation b \\cdot 2x = b(a+x) ger bx = b(a+x)/2 om man tappar tålamodet och delar högerledet med 2 i fel ordning — ab/2 dyker upp som ett halvfabrikat.",
+          "why_wrong": "Det är ett uttryck för något annat än x: ab/2 har enheten av en produkt, inte av en variabel som a. Dessutom kan b ≠ 0 elimineras direkt, så b kan inte finnas kvar i slutsvaret."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "Om man korsmultiplicerar och får b(a+x) = 2bx och försöker lösa för x utan att först förkorta b, kan man fastna och tro att slutsvaret bevarar b.",
+          "why_wrong": "b försvinner alltid: dela båda led med b (lagligt eftersom b ≠ 0) och du får en rent linjär ekvation i x och a. Slutsvaret kan inte innehålla b."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Bråket a/3 ser ut som ett rimligt 'låt-mig-dela-med-något' svar om man räknar fel på koefficienten — t.ex. tolkar 2x som 3x av distraktion.",
+          "why_wrong": "Ekvationen ger entydigt a + x = 2x \\Rightarrow x = a. Det finns ingen 3:a i ekvationen som kan dyka upp i nämnaren av lösningen."
+        }
+      ],
+      "technique": "När två bråk med samma täljare (≠ 0) är lika: sätt deras nämnare lika direkt. Genvägen sparar tid och eliminerar onyttiga variabler som b ur slutsvaret.",
+      "pitfall": "Att korsmultiplicera reflexmässigt och dra med b genom hela räkningen — många elever slösar tid och får b-fyllda mellansvar som matchar distraktorerna A och B.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Spegelregeln",
+        "move": "Om båda bråkens täljare är identiska och nollskilda, sätt nämnarna lika direkt och hoppa över korsmultiplikationen."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2013-kvant2-XYZ-009": {
+    "corpus_patch": {
+      "prompt": "Linjerna y = -x + 7 och y = \\dfrac{2}{3}x - \\dfrac{4}{3} skär varandra i punkten P = (x_1, y_1).\nVad gäller för koordinaterna i punkten P?",
+      "options": [
+        {"letter": "A", "text": "x_1 > 0; y_1 > 0"},
+        {"letter": "B", "text": "x_1 > 0; y_1 < 0"},
+        {"letter": "C", "text": "x_1 < 0; y_1 > 0"},
+        {"letter": "D", "text": "x_1 < 0; y_1 < 0"}
+      ],
+      "answer": "A",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Skärningspunkten hittas genom att sätta linjernas y-uttryck lika och lösa för x. Vi får x_1 = 5 och y_1 = 2, så båda koordinaterna är positiva — alternativ A.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Två räta linjer y = -x + 7 och y = \\dfrac{2}{3}x - \\dfrac{4}{3} skär i en punkt P = (x_1, y_1). Frågan är inte exakt värde — bara vilka tecken x_1 och y_1 har.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Sätt upp skärningsekvationen",
+          "text": "I skärningspunkten har båda linjerna samma y. Likställ höger leden: -x + 7 = \\dfrac{2}{3}x - \\dfrac{4}{3}.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Multiplicera bort nämnaren",
+          "text": "Multiplicera båda led med 3 för att slippa bråken: 3(-x + 7) = 3 \\cdot \\dfrac{2}{3}x - 3 \\cdot \\dfrac{4}{3}, alltså -3x + 21 = 2x - 4.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Samla x-termerna",
+          "text": "Addera 3x till båda led: 21 = 5x - 4.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Samla konstanterna",
+          "text": "Addera 4 till båda led: 25 = 5x.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Lös ut x_1",
+          "text": "Dela med 5: x_1 = 5. Eftersom 5 > 0 har vi redan slagit fast att x_1 > 0 — alltså är svar C och D uteslutna.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Beräkna y_1",
+          "text": "Sätt x = 5 i den enklare linjen: y_1 = -5 + 7 = 2. Så y_1 = 2 > 0.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Korskontroll mot andra linjen",
+          "text": "Kontrollera med y = \\dfrac{2}{3} \\cdot 5 - \\dfrac{4}{3} = \\dfrac{10}{3} - \\dfrac{4}{3} = \\dfrac{6}{3} = 2. Samma värde — punkten ligger på båda linjerna.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Verifiera",
+          "text": "P = (5, 2). Båda koordinater är positiva. Tecken-mönster matchar alternativ A: x_1 > 0; y_1 > 0.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Svaret är A. Insikten i en mening: skärningspunkten löses genom att sätta y-uttrycken lika och beräkna x — sedan stoppas x in i den enklaste linjen för y.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "B",
+          "why_tempting": "Eleven som löser för x korrekt (x_1 = 5) men sedan slarvar med tecken i y-beräkningen — t.ex. tolkar -x + 7 som -(5+7) = -12 — får y_1 < 0 och hamnar fel.",
+          "why_wrong": "Insättningen -x + 7 vid x = 5 ger -5 + 7 = 2, inte -12. Subtraktionen ska göras på rätt sätt: minustecknet binder bara till x, inte till hela uttrycket."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Om man flyttar fel term över likhetstecknet och får -5x = 25 istället för 5x = 25, så blir x_1 = -5 < 0. Med x = -5 i andra linjen blir y = -2/3 \\cdot 5 - 4/3 = -14/3 < 0 — men intercepten 7 är så stor att man kanske gissar y_1 > 0 ändå.",
+          "why_wrong": "Korrekt teckenhantering ger 5x = 25, inte -5x = 25. När man flyttar -3x till höger blir det +3x på höger sida, och 2x + 3x = 5x. x_1 = 5, inte -5."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Den som tappar tecken på BÅDA termer på samma gång kan trasla sig fram till både x_1 < 0 och y_1 < 0.",
+          "why_wrong": "Båda linjer har positiva y-värden i området x = 5: den första (y = -x + 7) blir 2, den andra blir också 2. Båda koordinater är strikt positiva."
+        }
+      ],
+      "technique": "Skärningspunkt mellan två linjer: likställ y-uttrycken, lös för x, sätt sedan in x i den enklaste linjen för att få y. Multiplicera bort nämnare först om bråk är inblandade.",
+      "pitfall": "Att glömma multiplicera båda led med nämnarens 3 INNAN man samlar termer — leder ofta till räknefel i mellansteg där x-koefficienten halveras eller förskjuts.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Korsskärningen",
+        "move": "Sätt y-uttrycken lika, rensa nämnare med multiplikation, och beräkna x först; sätt sedan in x i den linje med enklast intercept för att få y."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2013-kvant2-XYZ-012": {
+    "corpus_patch": {
+      "prompt": "En elev ska väljas slumpmässigt ur klassen. Sannolikheten att en pojke väljs är 2/3 av sannolikheten att en flicka väljs. Vad är kvoten mellan antalet pojkar och det totala antalet elever i klassen?",
+      "options": [
+        {"letter": "A", "text": "\\dfrac{1}{3}"},
+        {"letter": "B", "text": "\\dfrac{2}{5}"},
+        {"letter": "C", "text": "\\dfrac{2}{3}"},
+        {"letter": "D", "text": "\\dfrac{3}{5}"}
+      ],
+      "answer": "B",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Vid slumpmässigt urval är sannolikheten för pojke = pojkar/totala. Villkoret P(pojke) = (2/3) P(flicka) översätts till p/totala = (2/3) · f/totala, vilket förenklas till p = (2/3)f. Med p = 2k, f = 3k blir kvoten p/(p+f) = 2/5.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "En klass har p pojkar och f flickor; totala antalet är p + f. Vid slumpmässigt val är P(pojke) = p/(p+f) och P(flicka) = f/(p+f). Mål: hitta p/(p+f) givet att P(pojke) = (2/3) P(flicka).",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Översätt villkoret till en ekvation",
+          "text": "P(pojke) = (2/3) P(flicka) blir \\dfrac{p}{p+f} = \\dfrac{2}{3} \\cdot \\dfrac{f}{p+f}.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Eliminera den gemensamma nämnaren",
+          "text": "Båda sidor har samma nämnare p + f (≠ 0 eftersom klassen inte är tom). Multiplicera båda led med (p + f) — kvar blir den rena relationen p = \\dfrac{2}{3} f.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Tolka resultatet som ett förhållande",
+          "text": "p = (2/3)f betyder att om f = 3 så är p = 2. Förhållandet pojkar : flickor är alltså 2 : 3. (Detta är intuitivt: sannolikheten för pojke är 2/3 av flicka-sannolikheten, så det finns 2/3 så många pojkar som flickor.)",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Välj ett bekvämt heltalsexempel",
+          "text": "Sätt f = 3, p = 2 (det enklaste valet som ger heltal). Totala = p + f = 2 + 3 = 5.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Beräkna den efterfrågade kvoten",
+          "text": "Kvoten pojkar/totala = p/(p+f) = 2/5.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Verifiera villkoret",
+          "text": "Med p = 2, f = 3, totala = 5: P(pojke) = 2/5, P(flicka) = 3/5. Är P(pojke) = (2/3) · P(flicka)? (2/3) · (3/5) = 2/5 — ja, det stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Skala-invarians",
+          "text": "Svaret beror inte på storleken på klassen — om vi istället tar p = 4, f = 6 ger totala = 10 och kvoten 4/10 = 2/5. Samma svar, vilket bekräftar att kvoten är invariant.",
+          "tier": "optional"
+        },
+        {
+          "n": 9,
+          "title": "Notera fallgroparna",
+          "text": "Distraktor A (1/3) frestar elever som tror 'pojke 2/3 av flicka' betyder 'pojke utgör 1/3 av totala'. Distraktor C (2/3) frestar elever som direkt tolkar 'pojke är 2/3 av flicka' som 'pojke/totala = 2/3'. Distraktor D (3/5) är flickornas andel — fel håll.",
+          "tier": "optional"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Svaret är B: kvoten pojkar/totala är 2/5. Insikten i en mening: när 'P(A) = k · P(B)' i ett urval där A och B är de enda kategorierna, blir antalsförhållandet A:B = k:1, och totala är (k+1) enheter.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Ytlig läsning: 'pojke 2/3 av flicka' kan höras som 'pojkar är 1/3 av klassen' om man räknar fel: 2/3 + 1 ≠ 1, men i hetstunden förväxlar elever 'andel' med 'differens'.",
+          "why_wrong": "Andelarna måste summera till 1. Om pojkar utgjorde 1/3 så skulle flickor vara 2/3, och P(pojke)/P(flicka) = (1/3)/(2/3) = 1/2, inte 2/3 som problemet kräver."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Den direktöversättande felgreppet: 'pojke är 2/3 av flicka' tolkas som 'pojkar/totala = 2/3'. Det är samma tal som 2/3-koefficienten i villkoret.",
+          "why_wrong": "Villkoret jämför pojkar med flickor, inte pojkar med totala. Pojkar/totala måste vara MINDRE än 1/2 eftersom pojkar är färre än flickor — så svaret 2/3 (som är > 1/2) är geometriskt orimligt."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Den som löser problemet rätt men sedan svarar med flickornas andel istället för pojkarnas — 3/5 är f/totala = 3/5. Lätt att svara på 'fel kön' om uppmärksamheten dippar.",
+          "why_wrong": "Frågan efterfrågar kvoten pojkar/totala, inte flickor/totala. Med p = 2, f = 3 är pojkarnas andel 2/5, inte 3/5."
+        }
+      ],
+      "technique": "När en ratio mellan sannolikheter inom samma urval ges (P(A) = k·P(B)), reduceras antalsförhållandet till A:B = k:1. Välj minsta heltalsexempel och räkna kvoten direkt.",
+      "pitfall": "Att svara med fel kategoris andel — om frågan ber om pojkarnas kvot och man säger flickornas, hamnar man på distraktor D. Läs slutfrågan en gång till innan svar.",
+      "framework_id": "XYZ-TRAP-055",
+      "pregrade_tactic": {
+        "handle": "Mini-klassmodellen",
+        "move": "Sätt antalsförhållandet pojkar:flickor som 2:3 och låt klassen vara 5 stycken; läs av kvoten direkt som 2/5."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2014-kvant1-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "Vad är \\dfrac{1}{3} av x, om \\dfrac{5}{11} av x är \\dfrac{45}{77}?",
+      "options": [
+        {"letter": "A", "text": "\\dfrac{3}{7}"},
+        {"letter": "B", "text": "\\dfrac{15}{77}"},
+        {"letter": "C", "text": "\\dfrac{5}{33}"},
+        {"letter": "D", "text": "\\dfrac{1}{3}"}
+      ],
+      "answer": "A",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Lös ut x från villkoret 5x/11 = 45/77 → x = 9/7. Beräkna sedan (1/3)·x = (1/3)·(9/7) = 9/21 = 3/7.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Vi vet att \\dfrac{5}{11} av x är \\dfrac{45}{77}. Vi vill hitta \\dfrac{1}{3} av x. Två steg: först hitta x, sedan ta en tredjedel.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Skriv ut villkoret",
+          "text": "\\dfrac{5}{11} \\cdot x = \\dfrac{45}{77}.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Isolera x",
+          "text": "Multiplicera båda led med 11/5 (inversen av 5/11): x = \\dfrac{45}{77} \\cdot \\dfrac{11}{5}.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Förkorta innan multiplikation",
+          "text": "45/5 = 9 och 11/77 = 1/7. Alltså x = \\dfrac{9}{7}.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Sanity-kontroll av x",
+          "text": "Verifiera: \\dfrac{5}{11} \\cdot \\dfrac{9}{7} = \\dfrac{45}{77}. Korrekt — matchar villkoret.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Beräkna efterfrågat värde",
+          "text": "Frågan vill ha \\dfrac{1}{3} \\cdot x = \\dfrac{1}{3} \\cdot \\dfrac{9}{7}.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Förkorta multiplikationen",
+          "text": "9 och 3 har gemensam faktor 3. Förkorta: \\dfrac{1}{3} \\cdot \\dfrac{9}{7} = \\dfrac{9}{21} = \\dfrac{3}{7}.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Genväg via direkt skalning",
+          "text": "Alternativ rutt utan att lösa ut x: (1/3) av x i förhållande till (5/11) av x är (1/3) : (5/11) = (1/3)·(11/5) = 11/15. Så (1/3)·x = (11/15) · (45/77) = (11·45)/(15·77) = (11·3)/77 = 33/77 = 3/7. Samma svar.",
+          "tier": "optional"
+        },
+        {
+          "n": 9,
+          "title": "Verifiera",
+          "text": "3/7 ≈ 0,428. Sanity check: x = 9/7 ≈ 1,286 och en tredjedel av det är ≈ 0,429. Stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Svaret är A: 3/7. Insikten i en mening: 'a/b av x = c' låter dig hämta x direkt genom multiplikation med inversen b/a — sedan tillämpas den önskade andelen.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "B",
+          "why_tempting": "15/77 kan komma från att ta (1/3) · (45/77) direkt — som om problemet bad om 'en tredjedel av det givna värdet' istället för 'en tredjedel av x'.",
+          "why_wrong": "Det givna 45/77 är (5/11) av x, inte x självt. Du måste först lösa ut x = 9/7. Då blir (1/3)·x = 3/7, inte 15/77."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "5/33 fås om man försöker beräkna (1/3) · (5/11) = 5/33 och tror att svaret bara är skalningen mellan andelarna utan att blanda in det numeriska värdet 45/77.",
+          "why_wrong": "5/33 är förhållandet mellan andelarna, inte själva svaret. Du måste applicera (1/3) på det faktiska x, inte på koefficienten 5/11."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "1/3 ser ut som rätt svar för någon som tolkar frågan som 'vad är andelen 1/3' istället för 'vad är 1/3 av x' — en koefficient mot ett värde.",
+          "why_wrong": "1/3 är BRÅKDELEN av x som efterfrågas, inte själva svarsvärdet. Med x = 9/7 är (1/3) av x faktiskt 3/7, inte 1/3."
+        }
+      ],
+      "technique": "När 'k₁ av x = m', isolera x genom att dela m med k₁ (multiplicera med inversen). Tillämpa sedan den efterfrågade andelen k₂ på x.",
+      "pitfall": "Att applicera den nya andelen direkt på det givna värdet (15/77 = (1/3) · (45/77)) istället för på x — distraktor B fångar exakt det misstaget.",
+      "framework_id": "XYZ-TRAP-023",
+      "pregrade_tactic": {
+        "handle": "Två-stegsmodellen",
+        "move": "Hämta först x ur villkoret 'k₁·x = m' med x = m/k₁, applicera sedan den nya andelen — gör inte snabbgreppet att skala m direkt med k₂/k₁ såvida du inte kontrollerat enheten."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2014-kvant1-XYZ-012": {
+    "corpus_patch": {
+      "prompt": "Vad är \\sqrt{32} - \\sqrt{18}?",
+      "options": [
+        {"letter": "A", "text": "\\sqrt{2}"},
+        {"letter": "B", "text": "\\sqrt{14}"},
+        {"letter": "C", "text": "2\\sqrt{2}"},
+        {"letter": "D", "text": "2\\sqrt{7}"}
+      ],
+      "answer": "A",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Bryt ut perfekta kvadrater: √32 = √(16·2) = 4√2 och √18 = √(9·2) = 3√2. Subtraktionen blir 4√2 − 3√2 = √2.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Uttrycket \\sqrt{32} - \\sqrt{18} är en differens av två kvadratrötter. Mål: förenkla till ett av de fyra svarsformaten.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Identifiera den lediga genvägen",
+          "text": "Båda tal under rotmärket innehåller faktorn 2. Om vi kan dela upp 32 = 16·2 och 18 = 9·2 så får vi √2 som gemensam faktor och kan förenkla differensen.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Faktorisera 32",
+          "text": "32 = 16 · 2, där 16 är en perfekt kvadrat (4²). Alltså \\sqrt{32} = \\sqrt{16 \\cdot 2} = \\sqrt{16} \\cdot \\sqrt{2} = 4\\sqrt{2}.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Faktorisera 18",
+          "text": "18 = 9 · 2, där 9 är en perfekt kvadrat (3²). Alltså \\sqrt{18} = \\sqrt{9 \\cdot 2} = 3\\sqrt{2}.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Skriv om differensen",
+          "text": "\\sqrt{32} - \\sqrt{18} = 4\\sqrt{2} - 3\\sqrt{2}.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Bryt ut den gemensamma faktorn √2",
+          "text": "4\\sqrt{2} - 3\\sqrt{2} = (4 - 3)\\sqrt{2} = 1 \\cdot \\sqrt{2} = \\sqrt{2}.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Kontrollera mot fallgrop",
+          "text": "Den klassiska fällan: tro att \\sqrt{32} - \\sqrt{18} = \\sqrt{32 - 18} = \\sqrt{14}. Detta är FEL — rotutdragning distribuerar inte över subtraktion (eller addition).",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Numerisk verifiering",
+          "text": "Räkna decimalt: \\sqrt{32} ≈ 5,657 och \\sqrt{18} ≈ 4,243. Differens ≈ 1,414, vilket är just \\sqrt{2} ≈ 1,414. Stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Kolla av distraktorerna numeriskt",
+          "text": "\\sqrt{14} ≈ 3,742, 2\\sqrt{2} ≈ 2,828, 2\\sqrt{7} ≈ 5,291. Inget av dessa är 1,414. Bara A passar.",
+          "tier": "optional"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Svaret är A: \\sqrt{2}. Insikten i en mening: faktorisera ut perfekta kvadrater under rotmärket, då blir summor och differenser av rötter ofta enkla.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "B",
+          "why_tempting": "Den största fällan: 'rotmärket distribuerar' lurar studenten att skriva \\sqrt{32} - \\sqrt{18} = \\sqrt{32-18} = \\sqrt{14}.",
+          "why_wrong": "Rotutdragning distribuerar BARA över multiplikation och division, inte över addition eller subtraktion. \\sqrt{a-b} ≠ \\sqrt{a} - \\sqrt{b} i allmänhet. Sanity check: \\sqrt{14} ≈ 3,74, men differensen är ≈ 1,41."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Räknefel där studenten skriver \\sqrt{32} = 4\\sqrt{2} men \\sqrt{18} = 2\\sqrt{2} (förväxlar 9 med 4 som perfekt kvadratfaktor i 18) — då blir differensen 4√2 − 2√2 = 2√2.",
+          "why_wrong": "18 = 9·2, inte 4·... Faktorisera 18 noga: 9·2 stämmer eftersom 9 är största kvadratfaktor (4·... ger inte 18 som heltal). Korrekt: \\sqrt{18} = 3\\sqrt{2}, så differensen är (4-3)√2 = √2."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "2√7 kan komma från en blandning av faktorfel: om man tar 32 = 4·8 och tror på 4·8 = 32 ger \\sqrt{32} = 2\\sqrt{8} = 4\\sqrt{2}, och liknande slump kan ge formen 2\\sqrt{7}.",
+          "why_wrong": "Numeriskt: 2\\sqrt{7} ≈ 5,29 vilket är mer än hela \\sqrt{32} ≈ 5,66 minus nästan ingenting — orimligt stor för differensen. Korrekt värde är \\sqrt{2} ≈ 1,41."
+        }
+      ],
+      "technique": "För att förenkla \\sqrt{n}: faktorisera n så att en perfekt kvadrat ingår, dra ut roten av kvadraten. För summor/differenser av rötter: leta efter gemensam rot-faktor.",
+      "pitfall": "Att tro att \\sqrt{a} - \\sqrt{b} = \\sqrt{a-b} — den enskilt vanligaste fällan med rötter. Distraktor B är specifikt designad för detta felgrepp.",
+      "framework_id": "XYZ-TRAP-033",
+      "pregrade_tactic": {
+        "handle": "Rotfaktoreringen",
+        "move": "Innan du subtraherar rötter, bryt ut perfekta kvadratfaktorer ur varje rot tills bara samma irrationella rest kvarstår; subtrahera då koefficienterna."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2014-kvant2-XYZ-002": {
+    "corpus_patch": {
+      "prompt": "Vad är \\left(-\\dfrac{5}{2}\\right)^3?",
+      "options": [
+        {"letter": "A", "text": "\\dfrac{125}{8}"},
+        {"letter": "B", "text": "\\dfrac{15}{6}"},
+        {"letter": "C", "text": "-\\dfrac{125}{8}"},
+        {"letter": "D", "text": "-\\dfrac{15}{6}"}
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Potens av bråk: (a/b)^n = a^n / b^n. Eftersom exponenten 3 är udda bevaras minustecknet. (-5/2)^3 = (-5)^3/2^3 = -125/8.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Beräkna \\left(-\\dfrac{5}{2}\\right)^3 — ett bråk med negativt tecken upphöjt till tre. Två saker att hålla isär: storleken (5^3/2^3) och tecknet ((-)^3 = -).",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Använd regeln för potens av kvot",
+          "text": "Regel: \\left(\\dfrac{a}{b}\\right)^n = \\dfrac{a^n}{b^n}. Tillämpat: \\left(-\\dfrac{5}{2}\\right)^3 = \\dfrac{(-5)^3}{2^3}.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Beräkna täljaren",
+          "text": "(-5)^3 = (-5) \\cdot (-5) \\cdot (-5). Två negativa ger positivt: (-5)·(-5) = 25. Multiplicera sedan med (-5): 25 · (-5) = -125.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Granska tecken-mekaniken",
+          "text": "Generell regel: (-a)^n är negativt om n är udda, positivt om n är jämnt. Här är n = 3 (udda), alltså bevaras minustecknet.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Beräkna nämnaren",
+          "text": "2^3 = 2 \\cdot 2 \\cdot 2 = 8.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Sätt ihop bråket",
+          "text": "\\dfrac{(-5)^3}{2^3} = \\dfrac{-125}{8} = -\\dfrac{125}{8}.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Kontrollera storleksordning",
+          "text": "Storleken: |5/2| = 2,5, och 2,5^3 = 15,625 = 125/8. Tecknet: negativt eftersom exponenten är udda. Slutsvar -125/8 = -15,625.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Identifiera fallgroparna",
+          "text": "Distraktor A (+125/8) frestar elever som glömmer tecknet. Distraktor B (15/6) frestar elever som RÄKNAR FEL: tar 5·3=15 och 2·3=6 istället för potens. Distraktor D (-15/6) kombinerar båda misstagen samtidigt.",
+          "tier": "optional"
+        },
+        {
+          "n": 9,
+          "title": "Verifiera numeriskt",
+          "text": "(-5/2)^3 = (-2,5)^3 = -2,5 · -2,5 · -2,5 = 6,25 · -2,5 = -15,625. Och -125/8 = -15,625. Stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Svaret är C: -125/8. Insikten i en mening: potens av ett bråk räknas genom att upphöja täljare och nämnare separat — tecknet följer pariteten på exponenten.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Räknar storleken rätt (5³ = 125, 2³ = 8) men tappar minustecknet — vanligt när man tänker '(-1)² = 1' och felaktigt antar samma sak gäller alla negativa baser i alla potenser.",
+          "why_wrong": "Exponenten 3 är UDDA, så minustecknet bevaras: (-5)^3 = -125. Svaret måste vara negativt."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "Klassiskt 'potens som multiplikation' fel: tror att (a/b)^n betyder att multiplicera täljare och nämnare med n. 5·3 = 15 och 2·3 = 6, så 15/6. Plus glömt minustecknet.",
+          "why_wrong": "Potens är upprepad multiplikation av basen med sig själv, inte multiplikation med exponenten. (5/2)^3 = (5/2)·(5/2)·(5/2) = 125/8, inte 15/6."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Samma 'potens = multiplikation med n' fel som distraktor B, men med rätt tecken bevarat: minus framför svaret eftersom basen är negativ.",
+          "why_wrong": "Tecknet är rätt men storleken fel. (-5/2)^3 har storleken 125/8, inte 15/6. Räkna potensen som upprepad multiplikation, inte som koefficient-multiplikation."
+        }
+      ],
+      "technique": "(a/b)^n = a^n / b^n. För negativ bas: (-a)^n är negativt om n udda, positivt om n jämnt. Skild beräkning av storlek och tecken är säkrare än att försöka göra båda samtidigt.",
+      "pitfall": "Att förväxla 'upphöja' med 'multiplicera koefficient-vis': att tro (5/2)^3 = (5·3)/(2·3) = 15/6 är en av de vanligaste tidiga algebra-fällorna.",
+      "framework_id": "XYZ-TRAP-029",
+      "pregrade_tactic": {
+        "handle": "Tecken-och-storlek-isärtagningen",
+        "move": "Vid potens av negativt bråk: räkna storleken som (täljare^n)/(nämnare^n), sedan sätt tecken via pariteten på exponenten (udda → minus, jämn → plus)."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2014-kvant2-XYZ-006": {
+    "corpus_patch": {
+      "prompt": "Vad är x om \\dfrac{16}{3x-4} = \\dfrac{22}{2x+3}?",
+      "options": [
+        {"letter": "A", "text": "-2"},
+        {"letter": "B", "text": "0"},
+        {"letter": "C", "text": "2"},
+        {"letter": "D", "text": "4"}
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Korsmultiplikation ger 16(2x+3) = 22(3x-4). Utveckla: 32x + 48 = 66x - 88. Samla x: 136 = 34x, alltså x = 4.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Ekvationen \\dfrac{16}{3x-4} = \\dfrac{22}{2x+3} är en proportion mellan två bråk med x i nämnaren. Mål: lös för x.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Korsmultiplicera",
+          "text": "För en proportion a/b = c/d gäller a·d = b·c. Här: 16 · (2x+3) = 22 · (3x-4).",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Distribuera vänster led",
+          "text": "16(2x + 3) = 16·2x + 16·3 = 32x + 48.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Distribuera höger led",
+          "text": "22(3x - 4) = 22·3x + 22·(-4) = 66x - 88. (Tecknet ändras på 4:an eftersom -4 multipliceras med +22.)",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Skriv ut den linjära ekvationen",
+          "text": "32x + 48 = 66x - 88.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Samla x på en sida",
+          "text": "Subtrahera 32x från båda led: 48 = 34x - 88.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Samla konstanterna",
+          "text": "Addera 88 till båda led: 48 + 88 = 34x, alltså 136 = 34x.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Lös ut x",
+          "text": "Dela båda led med 34: x = 136/34 = 4. (Snabbcheck: 34·4 = 136, stämmer.)",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Verifiera",
+          "text": "Sätt x = 4 i originalet: vänster led = 16/(3·4 - 4) = 16/8 = 2. Höger led = 22/(2·4 + 3) = 22/11 = 2. Likhet — rätt.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Svaret är D: x = 4. Insikten i en mening: en proportion mellan två bråk löses genom korsmultiplikation, vilket reducerar problemet till en linjär ekvation.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Eleven som tappar tecken vid distribution: tror 22(3x-4) = 66x - 4 (multiplicerar 22 med 3x men inte med -4) och får ekvationen 32x + 48 = 66x - 4 → 52 = 34x, eller lite hetare räknefel landar på -2.",
+          "why_wrong": "Distributionen är 22·(3x) + 22·(-4) = 66x - 88, INTE 66x - 4. Varje term i parentesen får sin multiplikator. Med korrekt distribution är x = 4."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "0 är ett 'fri-prov': om man testar x = 0 så blir 16/-4 = -4 och 22/3 ≈ 7,33, vilket inte stämmer — men x = 0 lockar som det enklaste numret att försöka först.",
+          "why_wrong": "Insättning visar direkt: vid x = 0 blir vänster led -4 och höger led 22/3. De är olika, så x = 0 är inte en lösning."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Räknefel där 32x + 48 = 66x - 88 hanteras med fel tecken: 48 + 88 = 66x + 32x istället för 66x - 32x. Ger 136 = 98x → x ≈ 1,4, men resonemang som approximerar uppåt kan landa på 2.",
+          "why_wrong": "När man flyttar 32x från vänster till höger byter den tecken: 48 = (66 - 32)x - 88 = 34x - 88, inte 98x. Med rätt algebra blir x = 4."
+        }
+      ],
+      "technique": "Proportion a/b = c/d ⇒ a·d = b·c (korsmultiplikation). Distribuera noggrant på båda led — varje term i parentesen får sin multiplikator. Verifiera alltid genom insättning i originalet.",
+      "pitfall": "Att missa att den negativa termen i parentesen också ska multipliceras: 22(3x - 4) får BÅDA termer multiplicerade, alltså -88 (inte -4). Felgreppet ger ofta något av distraktorerna A eller C.",
+      "framework_id": "XYZ-TRAP-025",
+      "pregrade_tactic": {
+        "handle": "Korsmultiplikations-disciplinen",
+        "move": "Vid a/b = c/d: skriv direkt a·d = b·c, distribuera varje konstant över VARJE term i parentesen, samla sedan x och konstanter på var sin sida innan division."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

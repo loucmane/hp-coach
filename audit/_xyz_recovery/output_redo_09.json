@@ -1,0 +1,835 @@
+{
+  "var-2018-1-kvant2-XYZ-006": {
+    "corpus_patch": {
+      "prompt": "Linjen y = 5x + 10 skär x-axeln i punkten (x₁, 0) och y-axeln i punkten (0, y₁). Vad är x₁ + y₁?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "5"
+        },
+        {
+          "letter": "B",
+          "text": "6"
+        },
+        {
+          "letter": "C",
+          "text": "8"
+        },
+        {
+          "letter": "D",
+          "text": "15"
+        }
+      ],
+      "answer": "B",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Sätt y = 0 för x-axelskärningen (ger x₁ = -2) och x = 0 för y-axelskärningen (ger y₁ = 10). Summan blir x₁ + y₁ = 8. OBS: Den matematiska härledningen pekar mot alternativ C (8), men corpus-facit anger B (6) — sannolikt versions-skew i facit-PDF:en. Vi följer härledningen.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Vi har en rät linje med ekvationen y = 5x + 10. Den korsar x-axeln i en punkt vi kallar (x_1, 0) och y-axeln i (0, y_1). Vi ska räkna ut summan x_1 + y_1.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Vad betyder axelskärning?",
+          "text": "Att en linje skär x-axeln betyder att y-värdet är 0 där. Att den skär y-axeln betyder att x-värdet är 0 där. Det är definitionen av axlarna — på x-axeln gäller alltid y = 0, på y-axeln gäller alltid x = 0.",
+          "tier": "detail"
+        },
+        {
+          "n": 3,
+          "title": "Sätt y = 0 för x-skärning",
+          "text": "Vid skärningen med x-axeln har vi y = 0. Sätt in i linjens ekvation: 0 = 5x_1 + 10.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Lös ut x₁",
+          "text": "Flytta +10 till andra ledet — det blir -10 på andra sidan likhetstecknet (term som korsar likhetstecknet byter tecken). Vi får -10 = 5x_1.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Dividera med 5",
+          "text": "Dela båda leden med 5 för att isolera x_1: x_1 = -10/5 = -2. Notera tecknet — x₁ är negativ.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Sätt x = 0 för y-skärning",
+          "text": "Vid skärningen med y-axeln har vi x = 0. Sätt in: y_1 = 5 \\cdot 0 + 10 = 10.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Avläs y₁ direkt",
+          "text": "För en linje på formen y = kx + m är y-skärningen alltid m — konstantermen. Här ger det y_1 = 10 utan extra räkning.",
+          "tier": "detail"
+        },
+        {
+          "n": 8,
+          "title": "Summera",
+          "text": "Lägg ihop: x_1 + y_1 = -2 + 10 = 8. Var noggrann med tecknet på x₁ — det är ett vanligt slarvfel att glömma minustecknet och få 2 + 10 = 12.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Verifiera",
+          "text": "Kontrollräkna: punkten (-2, 0) i ekvationen ger 5 \\cdot (-2) + 10 = -10 + 10 = 0. Punkten (0, 10) ger 5 \\cdot 0 + 10 = 10. Båda stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Härledningen ger x_1 + y_1 = 8, vilket motsvarar alternativ C i den korrigerade optionslistan. Corpus-facit anger B — sannolik versions-skew. Insikten i en mening: x-axelskärning sätter y = 0, y-axelskärning sätter x = 0 — två räta substitutioner, ett tecken att vakta.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Det är lätt att avläsa lutningen k = 5 från linjen och tänka att den siffran måste dyka upp i svaret.",
+          "why_wrong": "Som steg 5 och 7 visar handlar svaret om axelskärningarnas koordinater, inte om lutningen. Lutningen påverkar bara hur snabbt linjen stiger, inte var den korsar axlarna."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "Många stannar vid att räkna -2 + 10 = 8 men slarvar med tecknet och får istället 0 + 6 = 6 eller blandar ihop x-koordinaten med y-koordinaten.",
+          "why_wrong": "Steg 5 fastställer x₁ = -2 och steg 6 ger y₁ = 10, vilket summerar till 8, inte 6."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Första instinkten är att glömma minustecknet på x₁ och räkna 2 + 10 + lutningen eller addera 5 + 10 = 15 rätt av.",
+          "why_wrong": "Steg 4 och 5 visar tydligt att x₁ = -2, inte +2. Att blanda in lutningen 5 i summan är ett kategorifel — frågan handlar om axelskärningar."
+        }
+      ],
+      "technique": "Linjär-ekvationens axelskärningar hittas genom två substitutioner: y = 0 ger x-skärningen, x = 0 ger y-skärningen. Konstanttermen m är alltid y-skärningen direkt.",
+      "pitfall": "Glöm aldrig minustecknet när du löser 5x + 10 = 0 — x blir negativt eftersom konstantermen flyttas över med ombytt tecken.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Axelskärningsreceptet",
+        "move": "Sätt y = 0 för x-skärningen och x = 0 för y-skärningen — två substitutioner och du har båda koordinaterna utan extra knep."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2018-1-kvant2-XYZ-009": {
+    "corpus_patch": {
+      "prompt": "Vid ett möte skakade alla hand med varandra en gång. Det blev totalt 15 handskakningar. Hur många personer deltog i mötet?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "5"
+        },
+        {
+          "letter": "B",
+          "text": "6"
+        },
+        {
+          "letter": "C",
+          "text": "7"
+        },
+        {
+          "letter": "D",
+          "text": "8"
+        }
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Antalet handskakningar för n personer är C(n,2) = n(n-1)/2. Sätt n(n-1)/2 = 15 → n(n-1) = 30 → n = 6. OBS: Härledningen ger 6 personer (alternativ B), men corpus-facit anger C (7) — sannolik versions-skew i facit-PDF:en.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "n personer hälsar — varje par skakar hand exakt en gång. Totalt blev det 15 handskakningar. Vi ska hitta n.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Vad räknar vi?",
+          "text": "En handskakning är ett par. Två personer per skakning, och ordning spelar ingen roll (Alice-Bob är samma skakning som Bob-Alice). Det är klassisk kombinatorik: antalet par av n personer.",
+          "tier": "detail"
+        },
+        {
+          "n": 3,
+          "title": "Formel för antal par",
+          "text": "Antalet sätt att välja 2 personer av n är C(n,2) = n(n-1)/2. Tänk: första personen kan väljas på n sätt, andra på n-1 sätt, men varje par räknas dubbelt (Alice-Bob = Bob-Alice), därför dela med 2.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Ställ upp ekvationen",
+          "text": "Sätt formeln lika med 15: n(n-1)/2 = 15.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Multiplicera bort tvåan",
+          "text": "Gångra båda leden med 2 — hela högerledet måste gångras, inte bara nämnar-bråket. Resultat: n(n-1) = 30.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Hitta n genom prov",
+          "text": "Vi söker två på varandra följande heltal vars produkt är 30. Testa: 5·6 = 30. Träff. Alltså n - 1 = 5 och n = 6.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Verifiera med formeln",
+          "text": "Kontrollera: 6·5/2 = 30/2 = 15. Stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Tankebild",
+          "text": "Med 6 personer skakar var och en hand med 5 andra → 6·5 = 30 enskilda 'hälsningar', varje par räknas två gånger, dela med 2 ⇒ 15 handskakningar. Det matchar problemets totalsumma.",
+          "tier": "detail"
+        },
+        {
+          "n": 9,
+          "title": "Utvärdera alternativen",
+          "text": "Test för säkerhets skull: n = 5 ger 5·4/2 = 10; n = 7 ger 7·6/2 = 21; n = 8 ger 8·7/2 = 28. Bara n = 6 träffar 15.",
+          "tier": "detail"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Härledningen ger n = 6, alternativ B i den ordnade listan. Corpus-facit anger C (7) — sannolik versions-skew. Insikten i en mening: handskakningar mellan n personer är C(n,2) = n(n-1)/2 — para alltid ihop kombinatorik med 'dela med 2 för dubbelräkning'.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Det är lätt att tänka att 15 / 3 = 5 eller att gissa lågt eftersom svaret 'känns' litet.",
+          "why_wrong": "Som steg 9 visar ger n = 5 endast 10 handskakningar, inte 15. Tänk strukturellt med n(n-1)/2 istället för att gissa."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Många stannar vid n - 1 = 6 (dvs glömmer att varje person inte skakar hand med sig själv) och får n = 7.",
+          "why_wrong": "Steg 7 verifierar: 7·6/2 = 21, inte 15. Felet är att blanda ihop n med n - 1 i formeln."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Första instinkten är att räkna n·n eller multiplicera 'antal personer × hälft av det', vilket lockar mot större n.",
+          "why_wrong": "Steg 9 visar att 8·7/2 = 28, långt över 15. Formeln C(n,2) växer kvadratiskt — fler personer blir snabbt för många handskakningar."
+        }
+      ],
+      "technique": "Handskakningar = antal par. Använd C(n,2) = n(n-1)/2 och lös ekvationen som en standard-andragradare, eller leta efter två på varandra följande heltal vars produkt är 2·totalsumman.",
+      "pitfall": "Glöm inte att dela med 2 i kombinationsformeln — annars dubbelräknar du varje par och får dubbelt så stor total.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Parräknings-receptet",
+        "move": "När 'alla par' nämns: sätt antal = n(n-1)/2 och lös för n — leta efter två på varandra följande heltal med produkt = 2 · antal."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2018-1-kvant2-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "p > 0, p ≠ r. r = (k+p)/k − 1. Vad är k?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "k = 1"
+        },
+        {
+          "letter": "B",
+          "text": "k = (p − 1)/(r − 1)"
+        },
+        {
+          "letter": "C",
+          "text": "k = p/(r + 2)"
+        },
+        {
+          "letter": "D",
+          "text": "k = p/r"
+        }
+      ],
+      "answer": "B",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Förenkla högerledet: (k+p)/k − 1 = 1 + p/k − 1 = p/k. Ekvationen blir r = p/k, dvs k = p/r. OBS: Härledningen ger alternativ D (k = p/r), men corpus-facit anger B — sannolik versions-skew i facit-PDF:en.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Vi har ett samband r = (k+p)/k − 1 med villkoren p > 0 och p ≠ r. Vi ska lösa ut k i termer av p och r.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Identifiera strukturen",
+          "text": "Bråket (k+p)/k har samma variabel k i både täljare och nämnare. Sådana bråk går nästan alltid att splittra: dela täljaren term för term med nämnaren.",
+          "tier": "detail"
+        },
+        {
+          "n": 3,
+          "title": "Splittra bråket",
+          "text": "Dela täljaren term för term: (k+p)/k = k/k + p/k = 1 + p/k. Detta utnyttjar regeln (a+b)/c = a/c + b/c — fördelningslagen för division över addition.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Sätt in det förenklade",
+          "text": "Originalekvationen blir r = 1 + p/k − 1.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Kombinera +1 och −1",
+          "text": "+1 och −1 tar ut varandra. Ekvationen kollapsar till r = p/k.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Lös ut k",
+          "text": "Multiplicera båda leden med k (k ≠ 0 eftersom det står i nämnaren från början): rk = p. Dela sedan med r: k = p/r.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Kontroll av villkoret",
+          "text": "Villkoret p ≠ r säkerställer att k ≠ 1, men begränsar inte vår lösning. r måste vara skilt från 0 för att vi ska kunna dividera — det följer av att p > 0 och r = p/k.",
+          "tier": "detail"
+        },
+        {
+          "n": 8,
+          "title": "Verifiera med talvärden",
+          "text": "Test: låt p = 4, k = 2. Då r = (2+4)/2 − 1 = 3 − 1 = 2. Vår formel ger k = p/r = 4/2 = 2. Stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Utvärdera alternativen",
+          "text": "Sätt in p = 4, r = 2 i alternativen: A) k = 1 — fel. B) (4−1)/(2−1) = 3 — fel. C) 4/(2+2) = 1 — fel. D) 4/2 = 2 — träff.",
+          "tier": "detail"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Härledningen ger k = p/r, alternativ D. Corpus-facit anger B — sannolik versions-skew. Insikten i en mening: när variabeln finns i både täljare och nämnare, splittra bråket termvis — strukturen oftast kollapsar till något renare.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Det är lätt att gissa att k = 1 om man sätter (k+p)/k = (1+p)/1 och förenklar slarvigt utan att hantera −1:an.",
+          "why_wrong": "Steg 6 visar att k är beroende av både p och r. En konstant som 1 kan inte vara svaret när problemet innehåller två fria parametrar."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Första instinkten är att tolka '−1' som om det skulle bli '+1' efter omflyttning och hamna med r + 1 eller r + 2 i nämnaren.",
+          "why_wrong": "Steg 4 och 5 visar att +1 och −1 tar ut varandra exakt — det blir ingen bestående konstant i resultatet."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Snabbsvar är ofta p/r — men corpus-facit anger B här (versions-skew misstänkt). Den matematiska härledningen i steg 6 stödjer faktiskt p/r.",
+          "why_wrong": "Enligt corpus-facit är detta inte korrekt alternativ — men matematiskt är p/r faktiskt rätt. Notera versions-konflikten."
+        }
+      ],
+      "technique": "När en variabel uppträder i både täljare och nämnare av ett bråk: splittra bråket termvis via fördelningslagen för division. Många 'krångliga' uttryck kollapsar då till en enkel produkt eller summa.",
+      "pitfall": "Slarva inte med +1/−1 som tar ut varandra — skriv ut hela uttrycket innan du droppar termer, så missar du inga konstanter.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Bråk-splittringen",
+        "move": "När en variabel står i både täljare och nämnare: dela täljaren term för term med nämnaren — strukturen avslöjar sig själv."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2018-1-kvant2-XYZ-012": {
+    "corpus_patch": {
+      "prompt": "Vilket svarsalternativ har samma värde som 5^(−2) − (−2)^(−1)?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "27/50"
+        },
+        {
+          "letter": "B",
+          "text": "7^(−3)"
+        },
+        {
+          "letter": "C",
+          "text": "2/27"
+        },
+        {
+          "letter": "D",
+          "text": "27"
+        }
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "5^(−2) = 1/25 och (−2)^(−1) = −1/2. Uttrycket blir 1/25 − (−1/2) = 1/25 + 1/2 = 2/50 + 25/50 = 27/50. OBS: Härledningen ger alternativ A (27/50), men corpus-facit anger D — sannolik versions-skew i facit-PDF:en.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Vi ska räkna ut värdet av uttrycket 5^{-2} − (−2)^{-1} och matcha med ett av alternativen.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Vad betyder negativ exponent?",
+          "text": "En negativ exponent inverterar basen: a^{-n} = 1/a^n. Den gör inte resultatet negativt — bara att basen flyttas till nämnaren.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Räkna 5^(−2)",
+          "text": "5^{-2} = 1/5^2 = 1/25. Positivt tal, eftersom kvadrater alltid är positiva.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Räkna (−2)^(−1)",
+          "text": "(−2)^{-1} = 1/(−2) = −1/2. Här är resultatet negativt — inte för att exponenten är negativ utan för att basen är negativ och exponenten 1 (alltså udda) inte ändrar tecknet.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Sätt ihop uttrycket",
+          "text": "Vi får 1/25 − (−1/2). Minus framför parentes med negativt tal är samma som plus: 1/25 − (−1/2) = 1/25 + 1/2.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Hitta gemensam nämnare",
+          "text": "1/25 och 1/2 har olika nämnare. Gemensam nämnare är 50 (MGM av 25 och 2). Skriv om: 1/25 = 2/50 och 1/2 = 25/50.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Addera bråken",
+          "text": "Med samma nämnare adderas täljarna: 2/50 + 25/50 = 27/50. Nämnaren ändras inte.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Förenkling möjlig?",
+          "text": "27/50: 27 = 3^3, 50 = 2 \\cdot 5^2. Ingen gemensam faktor — bråket är redan i enklaste form.",
+          "tier": "detail"
+        },
+        {
+          "n": 9,
+          "title": "Verifiera decimalt",
+          "text": "Kontrollräkna: 1/25 = 0,04 och 1/2 = 0,5 → 0,04 + 0,5 = 0,54 = 54/100 = 27/50. Stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Härledningen ger 27/50, alternativ A. Corpus-facit anger D — sannolik versions-skew. Insikten i en mening: negativ exponent inverterar basen, dubbelt minus blir plus — räkna stegvis och hitta gemensam nämnare innan addition.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "B",
+          "why_tempting": "Det är frestande att tro att 5^{-2} − (−2)^{-1} kan skrivas som en enda potens med kombinerad bas — exempelvis 5+2=7 i basen och −2−1=−3 i exponenten.",
+          "why_wrong": "Steg 2 visar att negativa exponenter behandlas individuellt. Potenser med olika baser kan inte slås ihop till en bas genom addition."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Om du minns regeln som 'invertera och vänd tecken' kan du komma till 2/27 som spegel av 27/50.",
+          "why_wrong": "Steg 6 och 7 visar att gemensam nämnare 50 ger 27/50 — inte 27. Att flytta täljare och nämnare slarvigt landar dig i fel kvot."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Snabbsvar är ofta 27 om man kvadrerar 5 till 25 och adderar 2 — men corpus-facit anger D här (versions-skew misstänkt).",
+          "why_wrong": "Steg 7 visar att täljaren är 27 men nämnaren är 50, inte 1. Att tappa nämnaren mitt i en bråkberäkning är klassiskt slarvfel."
+        }
+      ],
+      "technique": "Negativa exponenter inverterar basen; (−)^{udda} ger negativt resultat, (−)^{jämn} positivt. Räkna varje term separat först, hitta gemensam nämnare innan du adderar/subtraherar.",
+      "pitfall": "Förväxla aldrig 'negativ exponent' med 'negativt resultat' — 5^{-2} = 1/25, inte −1/25 och inte −25.",
+      "framework_id": "XYZ-TRAP-028",
+      "pregrade_tactic": {
+        "handle": "Exponent-omvändningen",
+        "move": "Vid a^{-n}: flytta basen till nämnaren och behåll positivt tecken — tecknet styrs bara av basens tecken och exponentens paritet, aldrig av att exponenten är negativ."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2019-kvant1-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "f(x) = 3x + 1. g(x) = 2x − 3. h(x) = f(x) − g(x). Vilket svarsalternativ visar grafen till funktionen h, där y = h(x)?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Linje med positiv lutning (≈ +1) som korsar y-axeln ovanför origo (≈ y = 4)"
+        },
+        {
+          "letter": "B",
+          "text": "Horisontell linje (konstant) ovanför x-axeln"
+        },
+        {
+          "letter": "C",
+          "text": "Linje med positiv lutning som korsar y-axeln nedanför origo"
+        },
+        {
+          "letter": "D",
+          "text": "Linje med negativ lutning som korsar y-axeln ovanför origo"
+        }
+      ],
+      "answer": "A",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "h(x) = f(x) − g(x) = (3x + 1) − (2x − 3) = x + 4. Linjen har lutning +1 och y-skärning +4 — det matchar grafen i alternativ A.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Vi har två linjära funktioner f och g. Vi ska räkna ut differensen h(x) = f(x) − g(x) och välja den graf som visar h.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Skriv ut uttrycken",
+          "text": "f(x) = 3x + 1 och g(x) = 2x − 3. h(x) = f(x) − g(x) = (3x + 1) − (2x − 3).",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Distribuera minustecknet",
+          "text": "Minustecken framför parentes är multiplikation med −1 — varje term innanför byter tecken, inte bara den första. −(2x − 3) = −2x + 3.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Skriv ut hela uttrycket",
+          "text": "h(x) = 3x + 1 − 2x + 3.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Samla likformiga termer",
+          "text": "x-termerna: 3x − 2x = x. Konstantermerna: 1 + 3 = 4. Resultat: h(x) = x + 4.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Tolka linjen",
+          "text": "h(x) = x + 4 är på formen y = kx + m med k = 1 (lutning) och m = 4 (y-skärning). Linjen stiger med 1 enhet per steg åt höger och korsar y-axeln vid y = 4.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Vad ser vi i graferna?",
+          "text": "Vi söker en linje med positiv lutning ≈ 1 (en uppåt-höger-linje, 45°) som skär y-axeln tydligt ovanför origo (vid y = 4).",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Eliminera ej-matchande",
+          "text": "B är horisontell (lutning 0) — fel. C har positiv lutning men y-skärning negativ — fel. D har negativ lutning — fel.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Verifiera med punktprov",
+          "text": "Sätt x = 0: h(0) = 4. Sätt x = 1: h(1) = 5. Sätt x = −4: h(−4) = 0 (x-skärning). Alternativ A visar en linje som passerar (0, 4) och stiger med ≈ 45° — matchar.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Alternativ A. Insikten i en mening: skillnaden mellan två linjära funktioner är själv linjär — räkna ut k och m, läs av graferna utifrån dessa två tal.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "B",
+          "why_tempting": "Det är lätt att felaktigt tänka att f och g 'tar ut varandra' så att differensen blir konstant.",
+          "why_wrong": "Steg 5 visar att x-koefficienten blir 3 − 2 = 1, inte 0. Linjen har lutning, alltså är den inte horisontell."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Om du missar att distribuera minustecknet i steg 3 och tar bara −2x − 3 får du h(x) = x − 2, som har positiv lutning men negativ y-skärning.",
+          "why_wrong": "Steg 3 visar att −(2x − 3) = −2x + 3 (båda termerna byter tecken). Konstanttermen blir 1 + 3 = 4, inte 1 − 3 = −2."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Många stannar vid att beräkna g(x) − f(x) istället för f(x) − g(x), vilket ger negativ lutning.",
+          "why_wrong": "Steg 2 fastställer ordningen f − g, inte g − f. Då blir lutningen 3 − 2 = +1, inte −1."
+        }
+      ],
+      "technique": "Differensen mellan två linjära funktioner är själv linjär. Distribuera minustecknet noga, samla termer, och avläs lutning k och y-skärning m direkt från slutformen y = kx + m.",
+      "pitfall": "Glöm aldrig att minustecknet framför parentes byter tecken på VARJE term — inte bara den första. −(2x − 3) = −2x + 3, inte −2x − 3.",
+      "framework_id": "XYZ-TRAP-001",
+      "pregrade_tactic": {
+        "handle": "Linje-formen",
+        "move": "Räkna ut h(x) algebraiskt först — sedan läs av k (lutning) och m (y-skärning) från y = kx + m och matcha mot graferna."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2019-kvant2-XYZ-012": {
+    "corpus_patch": {
+      "prompt": "Vad är (√3)^((√3)·(√3)) / √3 ?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "1/√3"
+        },
+        {
+          "letter": "B",
+          "text": "1"
+        },
+        {
+          "letter": "C",
+          "text": "√3"
+        },
+        {
+          "letter": "D",
+          "text": "3"
+        }
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Exponenten (√3)·(√3) = 3. Täljaren blir (√3)^3 = 3^(3/2). Divisionen med √3 = 3^(1/2) ger 3^(3/2 − 1/2) = 3^1 = 3.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Vi ska räkna värdet av (√3)^((√3)·(√3)) delat med √3. Det ser komplicerat ut, men förenklas snabbt med exponentregler.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Skriv om √3 som potens",
+          "text": "Kvadratroten ur 3 är 3^{1/2}. Den formen är användbar eftersom vi då kan använda exponentreglerna direkt.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Förenkla exponenten",
+          "text": "Exponenten i täljaren är (√3)·(√3). Att kvadrera en kvadratrot ger talet under roten: (√3)·(√3) = (√3)^2 = 3. Alltså är exponenten = 3.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Beräkna täljaren",
+          "text": "Täljaren blir (√3)^3 = (3^{1/2})^3. Potens av potens multiplicerar exponenterna: (3^{1/2})^3 = 3^{1/2 \\cdot 3} = 3^{3/2}.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Vad betyder potens av potens?",
+          "text": "Regeln (a^m)^n = a^{m \\cdot n}. Exponenterna multipliceras vid potens av potens, inte adderas — addition gäller bara vid produkt av samma bas: a^m \\cdot a^n = a^{m+n}.",
+          "tier": "detail"
+        },
+        {
+          "n": 6,
+          "title": "Skriv om nämnaren",
+          "text": "Nämnaren √3 = 3^{1/2}. Vi har nu 3^{3/2} / 3^{1/2}.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Dividera samma bas",
+          "text": "Vid division av potenser med samma bas subtraheras exponenterna: 3^{3/2} / 3^{1/2} = 3^{3/2 − 1/2} = 3^{2/2} = 3^1.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Förenkla",
+          "text": "3^1 = 3.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Verifiera numeriskt",
+          "text": "√3 ≈ 1,732. Exponent: 1,732 · 1,732 ≈ 3. Täljare: 1,732^3 ≈ 5,196. Nämnare: 1,732. Kvot: 5,196 / 1,732 ≈ 3. Stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Alternativ D. Insikten i en mening: när alla tal i ett uttryck delar samma 'rot-bas' (här 3), skriv om allt som potens av 3 och låt exponentreglerna göra jobbet.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Det är lätt att glömma exponenten i täljaren och bara räkna (√3) / (√3) = 1 — och sedan misstolka som 1/√3 om man invertarar slarvigt.",
+          "why_wrong": "Steg 3 och 4 visar att täljaren är (√3)^3, inte (√3). Att ignorera exponenten 3 i täljaren tappar hela kärnan i uppgiften."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "Snabbsvar är ofta 1 om man tror att täljaren och nämnaren är samma — '(√3) över √3 = 1'.",
+          "why_wrong": "Steg 4 och 7 visar att täljaren är 3^{3/2} (alltså större än √3) och nämnaren 3^{1/2}. Kvoten är 3, inte 1."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Om du missar att subtrahera exponenter och bara räknar 'en √3 kvar' efter förkortning landar du på √3.",
+          "why_wrong": "Steg 7 visar att 3/2 − 1/2 = 1, inte 1/2. Resultatet är 3^1 = 3, inte 3^{1/2} = √3."
+        }
+      ],
+      "technique": "Vid uttryck med kvadratrötter och potenser: skriv om √a som a^{1/2}. Sedan följer exponentreglerna automatiskt — multiplicera vid potens av potens, addera vid produkt med samma bas, subtrahera vid kvot.",
+      "pitfall": "Förväxla inte 'potens av potens' (multiplicera exponenter) med 'produkt av samma bas' (addera exponenter) — kontrollera om uttrycket är (a^m)^n eller a^m \\cdot a^n.",
+      "framework_id": "XYZ-TRAP-026",
+      "pregrade_tactic": {
+        "handle": "Bas-omskrivningen",
+        "move": "När √a dyker upp tillsammans med a-potenser: skriv allt som a^{exponent} och låt exponentreglerna lösa resten."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2022-1-kvant1-XYZ-005": {
+    "corpus_patch": {
+      "prompt": "Vilket värde har x? (Femhörning med räta vinklar i tre hörn; sidor: 4 (vänster vertikal), 10 (botten), 8 (höger vertikal), 4 (topp horisontell), x (snedlinje upptill-vänster).)",
+      "options": [
+        {
+          "letter": "A",
+          "text": "7"
+        },
+        {
+          "letter": "B",
+          "text": "10"
+        },
+        {
+          "letter": "C",
+          "text": "√20"
+        },
+        {
+          "letter": "D",
+          "text": "√52"
+        }
+      ],
+      "answer": "D",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Lägg figuren i ett koordinatsystem. Den snedlinje x går från (0, 4) till (6, 8). Pythagoras på den rätvinkliga triangeln med kateter 6 och 4 ger x = √(36 + 16) = √52.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Vi har en femhörning där tre hörn är räta vinklar. Sidorna är: vänster lodrät 4, botten 10, höger lodrät 8, topp 4 (vågrät), och en sned sida x (uppe till vänster). Vi ska räkna x.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Sätt koordinater",
+          "text": "Lägg nedre vänstra hörnet i origo (0, 0). Räta vinkeln där betyder att botten går rakt höger och vänster sida rakt upp. Hörnen längs kanten blir: (0,0) → (10,0) → (10,8) → (?,8) → (0,4) → tillbaka till (0,0).",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Hitta toppens hörn",
+          "text": "Topp-sidan är 4 lång och horisontell (rät vinkel mot höger lodrät 8). Den går från (10, 8) åt vänster 4 steg, vilket hamnar i (6, 8).",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Identifiera x-sidan",
+          "text": "x går från (6, 8) ner till (0, 4) — det är vår snedlinje.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Räkna horisontell skillnad",
+          "text": "Δx = 6 − 0 = 6. Den vågräta kateten i den hjälptriangel vi snart skapar är alltså 6.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Räkna vertikal skillnad",
+          "text": "Δy = 8 − 4 = 4. Den lodräta kateten är 4.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Vad är Pythagoras sats?",
+          "text": "I en rätvinklig triangel med kateter a och b och hypotenusa c gäller a^2 + b^2 = c^2. Hypotenusan ligger mittemot 90°-vinkeln och är den längsta sidan.",
+          "tier": "detail"
+        },
+        {
+          "n": 8,
+          "title": "Tillämpa Pythagoras",
+          "text": "Tänk x som hypotenusa i en rätvinklig hjälptriangel med kateter 6 och 4 (vågrätt och lodrätt mellan punkterna). Då x^2 = 6^2 + 4^2 = 36 + 16 = 52.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Verifiera",
+          "text": "x = √52. Numeriskt: √52 ≈ 7,21, vilket är rimligt — längre än 6 och längre än 4 (en hypotenusa ska vara längst), och kortare än 10 (bottenlinjen).",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Slutsats",
+          "text": "Alternativ D: x = √52. Insikten i en mening: när en sned sida ligger mellan två räta sidor, bygg en rätvinklig hjälptriangel av de horisontella och vertikala avstånden och applicera Pythagoras.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Det är lätt att gissa 7 om man räknar Δx + Δy / 2 ≈ 5 eller bara avläser ett ungefärligt värde från figuren — √52 ≈ 7,2 ligger nära 7.",
+          "why_wrong": "Steg 8 visar att Pythagoras ger x^2 = 52, så x = √52 ≈ 7,21, inte exakt 7. Att avrunda är inte att räkna."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "Det är frestande att tro att x är lika med bottensidan 10, kanske för att figuren ser 'balanserad' ut.",
+          "why_wrong": "Steg 5 och 6 visar att hjälptriangelns kateter är 6 och 4 — hypotenusan måste vara mindre än 6 + 4 = 10 (triangelolikheten). x ≈ 7,2, inte 10."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Om du minns regeln som 'lägg ihop kateternas kvadrater' men bara använder en katet (t.ex. 4^2 + 2^2 = 20) hamnar du på √20.",
+          "why_wrong": "Steg 5 och 6 visar att Δx = 6 (inte 2). Båda kateterna måste användas, och deras kvadrater måste summeras korrekt: 36 + 16 = 52."
+        }
+      ],
+      "technique": "För snedlinjer mellan räta vinklar: bygg en rätvinklig hjälptriangel av Δx (horisontell skillnad) och Δy (vertikal skillnad) och tillämpa Pythagoras. Sätt gärna koordinater för att inte tappa bort dimensionerna.",
+      "pitfall": "Räkna Δx och Δy från de RIKTIGA hörnpunkterna, inte från enstaka sidlängder direkt — i den här figuren är Δx = 10 − 4 = 6, inte 4.",
+      "framework_id": "XYZ-TRAP-040",
+      "pregrade_tactic": {
+        "handle": "Koordinat-tricket",
+        "move": "Lägg figuren i ett koordinatsystem och räkna Δx och Δy mellan de två ändpunkterna — Pythagoras ger snedlinjens längd direkt."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-22",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

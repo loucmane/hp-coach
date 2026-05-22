@@ -12992,303 +12992,315 @@
     }
   },
   "var-2026-kvant1-XYZ-008": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Skriv 8 som 2^{3} så att båda sidor får samma bas. Då blir vänsterledet 2^{3}\\cdot(2^{3})^{2} = 2^{3}\\cdot 2^{6} = 2^{9}, vilket ger x = 9.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Du har en exponentialekvation där vänsterledet ska skrivas som en enda 2-potens. Sök det heltal x som gör likheten sann.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Mål: gemensam bas",
+        "text": "För att jämföra exponenter behöver båda sidor stå på samma bas. Höger sida har basen 2, men vänster sida innehåller 8 — gör om 8 till en 2-potens.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Skriv om 8 som potens av 2",
+        "text": "8 = 2\\cdot 2\\cdot 2 = 2^{3}. Det är den enda 2-potens som ger 8.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Substituera",
+        "text": "8^{2} = (2^{3})^{2}. Hela vänsterledet blir då 2^{3}\\cdot(2^{3})^{2}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Regeln (a^{m})^{n}=a^{m\\cdot n}",
+        "text": "Potens av potens multiplicerar exponenterna. Alltså (2^{3})^{2} = 2^{3\\cdot 2} = 2^{6}. Adderar exponenterna gör man bara vid samma bas multipliceras, inte vid potens-av-potens.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Regeln a^{m}\\cdot a^{n}=a^{m+n}",
+        "text": "Multiplikation av potenser med samma bas adderar exponenterna. Vänsterledet blir 2^{3}\\cdot 2^{6} = 2^{3+6} = 2^{9}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Likhetsmatchning",
+        "text": "Nu står ekvationen 2^{9} = 2^{x}. När baserna är lika och positiva (och olika 1) måste exponenterna också vara lika.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Lös ut x",
+        "text": "x = 9.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Numerisk kontroll",
+        "text": "2^{3}=8, 8^{2}=64. Produkten är 8\\cdot 64 = 512. Och 2^{9} = 512. Stämmer.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "title": "Sortera bort fel-summor",
+        "text": "A (6) får man om man bara adderar 3+ \"2\" från exponenten på 8 utan att justera basen. D (18) får man om man multiplicerar 3·2·3 felaktigt. C (15) blandar samman flera regler.",
         "tier": "detail"
       },
       {
         "n": 11,
+        "title": "Verifiera",
+        "text": "Räkna baklänges: 2^{9} = 2^{3}\\cdot 2^{6} = 8\\cdot 64 = 512, och 2^{3}\\cdot 8^{2}=8\\cdot 64 = 512. Båda sidor är 512 — bevisat.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är B: x = 9. Insikten i en mening: gör om alla tal till samma bas, multiplicera potens-av-potens genom att multiplicera exponenterna, och addera exponenterna när du multiplicerar potenser med samma bas.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att tro att 2^{3}\\cdot 8^{2}=2^{3+2+?} och bara lägga ihop synliga exponenter 3 och 2 plus 1 = 6, eller att 8^{2}=16 misstolkas som 2^{4}.",
+        "why_wrong": "Steg 5 visar att 8^{2}=(2^{3})^{2}=2^{6}, inte 2^{2}. Tre och sex ger nio."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du minns regeln som \"multiplicera alla exponenter\" blir det 3\\cdot 2 = 6 plus 3·3=9; en hopplockning kan landa på 15.",
+        "why_wrong": "Steg 5 och 6 skiljer på multiplikation och addition av exponenter — du multiplicerar bara vid potens-av-potens, sedan adderar du vid multiplikation av potenser."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Snabbsvar är ofta att multiplicera ihop alla exponenter rakt av: 3\\cdot 2\\cdot 3 = 18. Det är frestande när tre treor och en två syns på sidan.",
+        "why_wrong": "Steg 6 fastställer att den yttre operationen är multiplikation av potenser, vilket adderar exponenterna 3 och 6 till 9 — inte multiplicerar dem till 18."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Exponentialekvationer löses genom gemensam bas. Skriv om alla tal som potenser av samma primtal, tillämpa potens-av-potens-regeln (multiplicera exponenter) och multiplikationsregeln (addera exponenter), och matcha exponenterna när baserna är lika.",
+    "pitfall": "Vanligaste felet är att blanda ihop a^{m}\\cdot a^{n} (adderar) med (a^{m})^{n} (multiplicerar). Botemedlet: påminn dig själv om att två potenser bredvid varandra adderar sina exponenter, men en potens som lyfts till en ny exponent multiplicerar dem.",
+    "framework_id": "XYZ-TRAP-027",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Gemensambasregeln",
+      "move": "När du ser tal som 4, 8, 16 eller 32 i en 2-potensekvation, skriv om dem som 2-potenser först — sedan blir resten ren exponentaritmetik."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2026-kvant1-XYZ-009": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (options blank). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Skriv om 2y + x = 2 på k-form: y = -x/2 + 1. Då är lutningen k = -1/2 (negativ och flack) och y-skärningen m = 1. Bara alternativ B visar en linje som skär y-axeln vid 1 och lutar svagt nedåt.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Svarsalternativen är tomma i datakällan — varje alternativ är en figur som inte fångats. Vi vet vilket alternativ som är rätt enligt facit men inte vad respektive alternativ visar.",
+        "text": "Du har en linjär ekvation 2y + x = 2 och fyra diagram. Du ska avgöra vilket diagram som visar linjen.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Mål: k-form y = kx + m",
+        "text": "I formen y = kx + m läser man av lutningen k och y-skärningen m direkt. Skriv om 2y + x = 2 till den formen.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Flytta x",
+        "text": "Subtrahera x från båda leden: 2y = -x + 2.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Dela med koefficienten framför y",
+        "text": "Dela hela ekvationen med 2 — hela högerledet, varje term — så att y står ensam: y = -\\dfrac{x}{2} + 1, alltså y = -\\dfrac{1}{2}x + 1.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Läs av lutning och m",
+        "text": "Lutningen är k = -1/2 (negativ — linjen lutar nedåt; flack — för varje steg åt höger sjunker y med 0,5). y-skärningen är m = 1 (linjen skär y-axeln i punkten (0, 1)).",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Räkna x-skärningen som kontrollpunkt",
+        "text": "Sätt y = 0 i originalekvationen: 0 + x = 2, så x = 2. Linjen passerar punkten (2, 0).",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Sammanfatta linjens utseende",
+        "text": "Linjen passerar (0, 1) och (2, 0). Den lutar svagt nedåt åt höger.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Avläs figuren — alternativ A",
+        "text": "A visar en linje som skär y-axeln över 1 (cirka 2) och har en brant negativ lutning (cirka -2). Det motsvarar ekvationen y = -2x + 2, inte vår.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Avläs figuren — alternativ B",
+        "text": "B visar en linje som skär y-axeln vid y = 1 och fortsätter ned till x-axeln vid x = 2 med en svag nedåtlutning. Det matchar både m = 1, k = -1/2 och x-skärning vid 2 — exakt vår linje.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Avläs figuren — alternativ C och D",
+        "text": "C och D visar positiva lutningar (linjerna går uppåt åt höger). Vår lutning är negativ, så dessa kan uteslutas direkt — oavsett om de skär axlarna rätt.",
+        "tier": "essential"
       },
       {
         "n": 11,
+        "title": "Verifiera med en punkt",
+        "text": "Testa (0, 1) i originalekvationen: 2\\cdot 1 + 0 = 2. \\checkmark Testa (2, 0): 2\\cdot 0 + 2 = 2. \\checkmark Båda punkterna som B visar uppfyller ekvationen.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är B. Insikten i en mening: skriv om ekvationen till y = kx + m, läs av tecknet på k för att veta åt vilket håll linjen lutar och m för att veta var den korsar y-axeln — då blir matchningen mekanisk.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att flytta x-termen utan att dela med 2 och tro att ekvationen är y = -x + 2, vilket ger m = 2 och en brantare nedåtlutning som A visar.",
+        "why_wrong": "Steg 4 visar att hela högerledet, inte bara x-termen, måste delas med 2 — annars dubblas både lutning och y-skärning."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid \"linje genom origo med lutning 1\" eftersom siffran 2 dyker upp på flera ställen och man tippar på en proportionalitet.",
+        "why_wrong": "Steg 5 ger k = -1/2 (negativ) och m = 1 (inte 0). C har positiv lutning och passerar origo — ingenting stämmer."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du minns regeln som \"flack lutning på 1/2\" men glömmer tecknet, blir D:s positiva 1/2-lutning genom origo en frestande matchning.",
+        "why_wrong": "Steg 5 låser fast tecknet: k = -1/2, inte +1/2, och m = 1, inte 0. D är spegelvänd och förskjuten."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Linjär ekvation matchas mot figur via k-form: lös ut y, läs av k (tecken = lutningsriktning, absolutbelopp = branthet) och m (y-skärningen). Två sanitetspunkter — y-skärningen och x-skärningen — räcker för att bekräfta vilken graf det är.",
+    "pitfall": "Att glömma dela hela högerledet med koefficienten framför y är det enskilt vanligaste felet och förklarar varför alternativ A finns. Botemedlet: skriv y = (...)/2 med parentes runt hela högerledet innan du delar, så ser du att både -x och +2 ska igenom delningen.",
+    "framework_id": "XYZ-TRAP-015",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "k-form-receptet",
+      "move": "När ekvationen står på formen ax + by = c, lös först ut y ensam genom att flytta x och dela hela högerledet med b — då läser du av lutning och m direkt och kan matcha mot diagrammen."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2026-kvant1-XYZ-011": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Skriv cylinderns volymformel V = πr²h, sätt in V = 16 och h = 1, lös ut r² = 16/π, approximera π ≈ 3,14 så r² ≈ 5,1 och r ≈ 2,26 cm. Jämför med alternativen: √5 ≈ 2,24 cm ligger närmast.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "En cylinder har V = 16 cm³ och h = 1 cm. Vi söker radien r i centimeter, närmast bland fyra alternativ.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Plocka fram cylinderformeln",
+        "text": "Volymen ges av V = πr²h. Eftersom h = 1 kollapsar formeln till V = πr².",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Sätt in värdena",
+        "text": "16 = π · r² · 1, alltså πr² = 16.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Lös ut r²",
+        "text": "Dela båda leden med π: r² = 16/π.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Approximera π",
+        "text": "Med π ≈ 3,14 får vi r² ≈ 16/3,14 ≈ 5,1.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Ta roten",
+        "text": "r ≈ √5,1 ≈ 2,26 cm.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Översätt alternativen till decimal",
+        "text": "A 2 cm, B 4 cm, C 5 cm, D √5 cm ≈ 2,236 cm.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Jämför avstånd",
+        "text": "|2,26 − 2| = 0,26 och |2,26 − 2,236| = 0,024. Övriga är längre bort.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Identifiera den exakta formen",
+        "text": "r² = 16/π ger r = 4/√π; eftersom π är nära 5 ligger 4/√π nära 4/√5 = √(16/5) ≈ √3,2 — alternativ D √5 är därmed den enda kandidaten i samma storleksordning.",
+        "tier": "support"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Pi-uppskattningen är trubbig men säkert mellan 3,1 och 3,2, så r ligger mellan √5 och √5,2 — fortfarande närmast √5.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är D, √5 cm. Insikten i en mening: När h = 1 reduceras cylinderns volym till πr², så radien blir kvadratroten av V/π.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "2 cm är ett rent heltal nära det verkliga värdet 2,26, och eleven kan tro att π ≈ 4 så att r² = 16/4 = 4 och r = 2.",
+        "why_wrong": "π är inte 4 utan ~3,14; avrundningen ger ett synligt fel på 0,26 medan √5 ligger inom 0,03."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den som tar roten ur 16 utan att dela med π hamnar direkt på 4 cm.",
+        "why_wrong": "Att hoppa över delningen med π är att glömma cylinderns bottenarea — formeln är πr², inte r²."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om man läser \"volym 16, höjd 1\" som att basytan är 16 och blandar ihop area med radie, blir 5 ett gissningsnära värde till √16 eller r² = 16/π ≈ 5.",
+        "why_wrong": "5 cm är r², inte r — eleven har missat att ta roten."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Cylinderns volym V = πr²h med en känd höjd reducerar problemet till att lösa ut r² och ta roten. När h = 1 är r² helt enkelt V/π.",
+    "pitfall": "Att tolka kvadratroten i alternativ D som ett räknefel — √5 är ofta den exakta formen som siktar närmast V/π när π ≈ 3,2.",
+    "framework_id": "XYZ-TRAP-042",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Cylinderkollapsen",
+      "move": "När höjden är 1 cm: skriv V = πr², lös r² = V/π och ta sedan roten."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2026-kvant2-XYZ-006": {
@@ -13392,103 +13404,103 @@
     }
   },
   "var-2026-kvant2-XYZ-011": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Bryt ut 3⁴ ur parentesen: 4\\cdot 3^{4}-3^{4}=3^{4}(4-1)=3\\cdot 3^{4}=3^{5}. Multiplicera sedan med 3:an utanför: 3\\cdot 3^{5}=3^{6}.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Uttrycket är 3\\bigl(4\\cdot 3^{4}-3^{4}\\bigr). Inne i parentesen står en multipel av 3⁴ minus 3⁴ ensamt. Hela uttrycket multipliceras sedan med 3. Målet: enkel potens av 3.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Identifiera gemensam faktor",
+        "text": "Båda termerna i parentesen innehåller 3⁴. Den första är 4·3⁴, den andra är 1·3⁴ (eftersom −3⁴ = −1·3⁴).",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Bryt ut 3⁴",
+        "text": "Distributiva lagen baklänges: 4\\cdot 3^{4}-3^{4}=3^{4}(4-1).",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Räkna parentesen",
+        "text": "4-1=3, alltså 3^{4}(4-1)=3^{4}\\cdot 3.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Slå ihop potenserna",
+        "text": "3^{4}\\cdot 3=3^{4}\\cdot 3^{1}=3^{4+1}=3^{5} (regeln a^{m}\\cdot a^{n}=a^{m+n}).",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Multiplicera med 3:an utanför",
+        "text": "3\\cdot 3^{5}=3^{1}\\cdot 3^{5}=3^{1+5}=3^{6}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "title": "Sanity-check med siffror",
+        "text": "3^{4}=81. Parentesen: 4\\cdot 81-81=324-81=243=3^{5}. Hela uttrycket: 3\\cdot 243=729=3^{6}. Stämmer.",
         "tier": "detail"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Tolka alternativen",
+        "text": "A (12) = 4·3, ren slump i siffrorna. B (3⁵) är vad parentesen alone reducerar till — men man har glömt 3:an utanför. C (4·3⁵) skulle gälla om man INTE bröt ut, utan delade ut 3 till varje term — då blir det 12·3⁴ − 3⁵, inte 4·3⁵. D (3⁶) är vårt korrekta svar.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Varför INTE 4·3⁵ (alt. C)?",
+        "text": "Om man distribuerar 3:an utanför INNAN man förenklar inne i parentesen: 3\\cdot(4\\cdot 3^{4})-3\\cdot 3^{4}=4\\cdot 3^{5}-3^{5}. Detta är inte 4·3⁵, det är 4·3⁵ − 3⁵ som sedan ÄR 3·3⁵ = 3⁶. Att stanna efter halvvägs distribution är fällan.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "3^{6}=729, vilket vi redan såg numeriskt i steg 7. Identiskt.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svar D: 3⁶. Insikten i en mening: när två termer har samma potens-faktor — bryt ut den först, då blir resten en enkel räkning på basens exponent.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om man bara läser siffrorna utanför potenserna (3, 4, -1) och multiplicerar: 3·(4-1) = 9 eller likn., kan man fastna i räkningen och svara 12 (= 4·3).",
+        "why_wrong": "Steg 7 visar att hela uttrycket är 729; A (12) är två storleksordningar för litet."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar efter steg 5 (parentesen = 3⁵) och glömmer att 3:an utanför fortfarande väntar.",
+        "why_wrong": "Steg 6 multiplicerar med 3:an utanför och höjer exponenten till 6."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är frestande att distribuera 3:an INNAN man bryter ut — då lockas man av 4·3^{5} som ett mellansteg.",
+        "why_wrong": "Steg 9 visar att även efter distribution kvarstår en avdragsterm 3⁵; det är 4·3⁵ − 3⁵ = 3·3⁵ = 3⁶, inte 4·3⁵."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Faktorisering före distribution: när båda termerna i en parentes har samma faktor, bryt ut den först — det halverar antalet steg och eliminerar slarvfel.",
+    "pitfall": "Botemedlet mot att lockas till alternativ C: motstå impulsen att distribuera 3:an utanför direkt — bryt ALLTID ut den gemensamma faktorn inne i parentesen först.",
+    "framework_id": "XYZ-TRAP-024",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Faktoriseringsblicken",
+      "move": "När båda termer i en parentes delar på en potens-faktor — bryt ut den först, så blir parentesen ett enkelt heltal."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2026-kvant1-DTK-038": {
