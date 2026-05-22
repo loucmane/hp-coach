@@ -90,6 +90,17 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
   }, [])
 
   // Build / load the plan when all inputs are ready.
+  //
+  // `now` is intentionally EXCLUDED from the dep array. The caller
+  // (HomeRoute) calls `useDailyPlan()` without an argument, so the
+  // default `new Date()` evaluates to a fresh reference every render.
+  // Including it would re-fire this effect on every render —
+  // combined with `loadPlan()` returning a JSON.parse'd fresh object,
+  // setPlan saw a new reference each time and React entered an
+  // infinite render loop. `today` (memoized from `now` as a stable
+  // YYYY-MM-DD string) is the cache key — that's the right signal
+  // for "the day rolled over, regenerate."
+  // biome-ignore lint/correctness/useExhaustiveDependencies: `now` excluded by design
   useEffect(() => {
     if (!stats.data || due.data === undefined || hints === null) return
 
@@ -102,7 +113,7 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
     const fresh = buildPlan(now, stats.data.bySection, due.data.length, hints, topTraps)
     savePlan(fresh)
     setPlan(deriveCompletion(fresh, due.data.length, loadLessonReads(), stats.data.bySection))
-  }, [stats.data, due.data, hints, today, now, topTraps])
+  }, [stats.data, due.data, hints, today, topTraps])
 
   // Re-run derivation when due count or stats change mid-session
   // (user just finished /repetition or a drill and bounced back).
