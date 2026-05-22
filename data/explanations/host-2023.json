@@ -3178,29 +3178,109 @@
   },
   "host-2023-kvant1-XYZ-008": {
     "_meta": {
-      "generated_at": 1778415036026,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "För varje linje, läs av lutningen k och y-skärningen m ur figuren, beräkna produkten k\\cdot m. Linje C har både stor positiv lutning och stor positiv y-skärning — deras produkt är störst. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Fyra räta linjer A, B, C, D är ritade i koordinatsystemet. Varje linje har formen y=kx+m. Du ska bestämma vilken linje som ger den STÖRSTA produkten k\\cdot m.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är k och m?",
+        "text": "I ekvationen y=kx+m är k linjens lutning (hur brant den stiger eller faller per enhet x) och m är y-skärningen (där linjen korsar y-axeln).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tecken på k och m",
+        "text": "Lutningen k är positiv om linjen stiger (vänster lågt → höger högt), negativ om den faller. Y-skärningen m är positiv om linjen korsar y-axeln OVANFÖR origo, negativ om under.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Avläs k för varje linje",
+        "text": "Räkna 'rise över run' mellan två synliga punkter på linjen: k=\\frac{\\Delta y}{\\Delta x}. Skriv ner värdena: k_A, k_B, k_C, k_D.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avläs m för varje linje",
+        "text": "M är y-värdet där linjen skär y-axeln. Läs av direkt. Skriv ner m_A, m_B, m_C, m_D.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tänk på teckenkombinationer",
+        "text": "För maximal produkt k\\cdot m vill du ha BÅDA positiva (eller båda negativa, men då blir produkten 'absolut' positiv). En linje med k=0 (horisontell) eller m=0 (genom origo) ger produkt 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Multiplicera värdena per linje",
+        "text": "Räkna produkten för var och en: k_A\\cdot m_A, k_B\\cdot m_B, k_C\\cdot m_C, k_D\\cdot m_D. Skriv dem bredvid varandra.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför produkterna",
+        "text": "Den som har störst positivt värde vinner. Var observant på tecken: en linje med båda negativa har positiv produkt också, men dess absolutbelopp måste överstiga linje C:s för att vinna.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Identifiera vinnaren",
+        "text": "Av figurens linjer har C både kraftig positiv lutning och relativt hög positiv y-skärning. Deras produkt överstiger alla övriga linjers produkter.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera linjer genom origo eller horisontella",
+        "text": "Om någon linje passerar genom origo (m = 0) eller är horisontell (k = 0), är dess produkt automatiskt 0 och kan inte vara störst.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera linje C",
+        "text": "Mät igen: k_C och m_C båda positiva, båda relativt stora. Produkten är positiv och störst av de fyra. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: maximal produkt k\\cdot m kräver att både lutning och y-skärning bidrar — antingen båda positiva eller båda negativa, och båda måste ha stort absolutbelopp.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja linje med största lutning utan att kolla y-skärning.",
-        "why_wrong": "Produkten kräver båda; en stor k och m=0 ger 0."
+        "why_tempting": "Det är lätt att fokusera bara på lutningen — välja linjen med största k utan att titta på m.",
+        "why_wrong": "Steg 6 påminner: om m är liten eller noll blir hela produkten liten eller noll oavsett k. Du måste betrakta båda."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta linje med största y-skärning.",
-        "why_wrong": "Behöver också beräkna lutningen; en stor m och k=0 ger också 0."
+        "why_tempting": "Snabbsvar är ofta linjen med högsta y-skärning (störst m), men då glömmer man att lutningen kan vara nära 0.",
+        "why_wrong": "Steg 4 + 6: en stor m och liten/negativ k ger en liten eller negativ produkt. Båda faktorerna måste vara medstora."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid linje med 'snyggast' utseende.",
-        "why_wrong": "Räkna k·m för varje linje från figurens avlästa värden."
+        "why_tempting": "Många stannar vid 'snyggast utseende' eller väljer slumpmässigt sista alternativet utan att räkna.",
+        "why_wrong": "Steg 7–9 kräver konkret beräkning av k·m för var och en. D:s produkt är mindre än C:s i den givna figuren."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figurens linjer: identifiera lutning k och y-skärning m. Produkt k·m är störst i alternativ C (positiv lutning + positiv y-skärning med högsta produkt).",
-    "technique": "Produkt av lutning och y-skärning: båda måste vara samma tecken (positiva eller båda negativa) för positiv produkt; storleken bestäms av produkten av deras absolutbelopp."
+    "technique": "Produktjämförelse-rutinen: avläs k och m för varje linje från grafen, multiplicera, jämför absolutbeloppen tillsammans med tecknen. Triggern är 'störst k·m' eller liknande tvåfaktorsfråga.",
+    "pitfall": "Botemedlet mot 'tittade bara på ena faktorn': skriv ner BÅDA värdena innan du multiplicerar. Tecknet är lika viktigt som storleken.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Linje-produkt-räkningen",
+      "move": "Avläs k och m för varje linje, multiplicera explicit och skriv ner produkten — den största positiva produkten vinner."
+    }
   },
   "host-2023-kvant1-XYZ-009": {
     "_meta": {
@@ -5239,324 +5319,1194 @@
     "technique": "Pythagoras-monotonicitet-strategin: hypotenusan i en rätvinklig triangel är alltid strikt längre än vardera kateten (om båda kateterna har positiv längd). Algebraisk version: i x² + y² = z² med x, y > 0 är z > x och z > y. Triggern: villkor som ser ut som Pythagoras-relation."
   },
   "host-2023-kvant2-KVA-018": {
-    "_meta": {
-      "generated_at": 1778424621017,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "A:s ordinarie pris = 0{,}80 \\cdot B. I = 0{,}95 \\cdot 0{,}80 \\cdot B = 0{,}76B. II = 0{,}75 \\cdot B. Då 0,76 > 0,75 → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Butik A:s ordinarie pris är 20 % lägre än butik B:s. A sänker sitt pris med 5 %; B sänker sitt pris med 25 %. Jämför slutpriserna.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Inför variabel",
+        "text": "Låt B = butik B:s ordinarie pris. A:s ordinarie pris = B − 20 % av B = (1 - 0{,}20) \\cdot B = 0{,}80 \\cdot B.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Procent som multiplikator",
+        "text": "\"Sänker priset med p %\" multiplicerar med (1 - \\tfrac{p}{100}). 5 % sänkning → ×0,95. 25 % sänkning → ×0,75.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Räkna I (A:s nya pris)",
+        "text": "I = 0,95 · (A:s ordpris) = 0{,}95 \\cdot 0{,}80 \\cdot B.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Multiplicera ut",
+        "text": "0{,}95 \\cdot 0{,}80 = 0{,}76. Alltså I = 0{,}76 \\cdot B.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna II (B:s nya pris)",
+        "text": "II = 0{,}75 \\cdot B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Jämför koefficienterna",
+        "text": "Båda är multiplar av B (positivt). Jämförelsen reduceras till 0,76 mot 0,75.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "0,76 vs 0,75",
+        "text": "0,76 > 0,75. Skillnad 0,01.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Behövs B:s värde?",
+        "text": "Nej — eftersom båda kvantiteter är samma multipel av B (positivt), spelar B:s storlek ingen roll för rangordningen. Förutsatt B > 0 (det är ett pris) räcker koefficientjämförelsen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med ett konkret B",
+        "text": "Sätt B = 100 kr. I = 76 kr; II = 75 kr. 76 > 75 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Granska intuitionen",
+        "text": "Räkneresultat: en stor procentuell sänkning (25 %) från ett högt pris vinner inte alltid över en liten sänkning (5 %) från ett lägre pris — kolla multiplikatorn 0,80 · 0,95 mot 0,75.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: sammansatta procentsatser ska multipliceras, inte adderas — 20 % + 5 % = 25 % är fel; 0{,}80 \\cdot 0{,}95 = 0{,}76, inte 0,75.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna 25% rabatt på B = 0,75B och tro att A:s 5% rabatt på 0,80B är mindre.",
-        "why_wrong": "0,95·0,80 = 0,76 > 0,75; A vinner med liten marginal."
+        "why_tempting": "Det är lätt att räkna 25 % rabatt på B = 0,75B och tro att A:s 5 % rabatt på 0,80B är mindre.",
+        "why_wrong": "Steg 5: 0,95 · 0,80 = 0,76 > 0,75; A:s priskedja vinner med liten marginal."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att 5% av lägre pris ≈ 25% av högre.",
-        "why_wrong": "Procentmatten ger 0,76B vs 0,75B; skillnad 0,01B (litet men reellt)."
+        "why_tempting": "Snabbsvar är ofta att 5 % av lägre pris ≈ 25 % av högre.",
+        "why_wrong": "Steg 8: 0,76B − 0,75B = 0,01B; skillnad liten men strikt — inte likhet."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att man behöver veta B.",
-        "why_wrong": "Bara förhållandet 0,76 vs 0,75 betyder något."
+        "why_wrong": "Steg 9: båda kvantiteter är samma multipel av B (positivt), så B faktoriseras ut och bara förhållandet 0,76 vs 0,75 betyder något."
       }
     ],
-    "pitfall": null,
-    "solution_path": "A:s ordpris = 0,80·B. I: 0,95·0,80·B = 0,76B. II: 0,75·B. 0,76 > 0,75 — A.",
-    "technique": "Sammansatta procentsatser: multiplicera faktorerna.",
-    "framework_id": "KVA-TRAP-025"
+    "technique": "Sammansatta procentsatser multipliceras: två efter varandra ger en multiplikator. Trigger: \"X % lägre + ytterligare Y % sänkning\". Räkna (1 − x/100) · (1 − y/100) och jämför mot motsvarande på andra sidan.",
+    "pitfall": "Botemedlet mot \"20 % + 5 % = 25 % sänkning\": procentsatser av OLIKA basvärden adderas inte. Använd multiplikatorer (0,80 · 0,95) — det är den enda rätta sammansättningen.",
+    "framework_id": "KVA-TRAP-025",
+    "pregrade_tactic": {
+      "handle": "Multiplikator-receptet",
+      "move": "Vid procentsänkningar i serie: omvandla varje sänkning till en multiplikator (1 − p/100) och multiplicera dem — jämför slutmultiplikatorerna mellan kvantiteterna."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-kvant2-KVA-019": {
-    "_meta": {
-      "generated_at": 1778424621017,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Cirkelarean med radie 5 cm är \\pi r^2 = 25\\pi cm². Eftersom \\pi > 3{,}14 blir 25\\pi > 78, vilket klart överstiger 75 — svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi ska jämföra arean av en cirkel med radie 5 cm (Kvantitet I) mot talet 75 cm² (Kvantitet II). KVA-svaren är: A = I > II, B = II > I, C = I = II, D = informationen är otillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Skriv formeln",
+        "text": "Cirkelarean ges av A = \\pi r^2 där r är radien. Detta är en standardidentitet — „ptå” kommer av att arean är „radien gånger radien gånger pi”.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder kvadrering?",
+        "text": "Att kvadrera ett tal betyder att multiplicera det med sig självt: 5^2 = 5 \\cdot 5 = 25. Det är inte detsamma som att multiplicera med 2.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Sätt in r = 5",
+        "text": "Med r = 5 cm blir arean A = \\pi \\cdot 5^2 = 25\\pi cm². Detta är ett exakt värde — ingen avrundning görs än.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad är π?",
+        "text": "Talet \\pi (pi) är förhållandet mellan en cirkels omkrets och dess diameter, ett irrationellt tal med värdet \\pi \\approx 3{,}14159. Det är viktigt att \\pi > 3 strikt.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Etablera olikheten π > 3",
+        "text": "Eftersom \\pi \\approx 3{,}14 > 3 gäller 25\\pi > 25 \\cdot 3 = 75. Vi har redan visat att I > 75 utan att behöva exakt värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skarpare uppskattning",
+        "text": "För säkerhetsskull: 25 \\cdot 3{,}14 = 78{,}5. Med fler decimaler: 25\\pi \\approx 78{,}54 cm².",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Jämför med Kvantitet II",
+        "text": "Kvantitet II = 75 cm² är ett fixt tal. Vi har Kvantitet I \\approx 78{,}54, vilket är ungefär 3,54 enheter större.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kontrollera enheterna",
+        "text": "Båda uttrycks i cm², så jämförelsen är meningsfull. Inga enhetsbyten behövs.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Test: skulle radien varit \\sqrt{75/\\pi} \\approx 4{,}89 cm hade arean varit exakt 75. Vi har 5 cm > 4,89 cm, så arean måste vara > 75 — olikheten håller.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Kvantitet I \\approx 78{,}5 > 75 = Kvantitet II, svaret är A. Insikten i en mening: när en area innehåller \\pi räcker det ofta att använda \\pi > 3 för att avgöra jämförelsen mot ett heltal.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att 25π ≈ 75 (om π ≈ 3).",
-        "why_wrong": "25π ≈ 78,54; π > 3."
+        "why_tempting": "Det är lätt att tro att 25π ≈ 75 om man approximerar \\pi \\approx 3.",
+        "why_wrong": "Som steg 6 visar är \\pi > 3 strikt, så 25\\pi > 75 — Kvantitet I är större, inte mindre."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att 25π = 75 grovt approximerat.",
-        "why_wrong": "Differensen 25(π - 3) ≈ 3,54 är inte försumbar."
+        "why_tempting": "Snabbsvar är ofta att 25π = 75 vid grov överslagsräkning.",
+        "why_wrong": "Steg 7 ger 25\\pi \\approx 78{,}54 — differensen på ca 3,5 är inte försumbar."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att π ger osäkerhet.",
-        "why_wrong": "π > 3 är fastställt; 25π > 75 entydigt."
+        "why_tempting": "Det är frestande att tro att π gör värdet ospäcifikt.",
+        "why_wrong": "Steg 5-6 fastslår \\pi > 3 som matematiskt faktum, så ordningen är entydigt bestämd."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Cirkel area = π·25 = 25π ≈ 78,54. 78,54 > 75 — A.",
-    "technique": "Cirkelarea: πr², direkt utvärdering."
+    "technique": "När en cirkelarea jämförs mot ett heltal: beräkna \\pi r^2 symboliskt och använd uppskattningen \\pi \\approx 3{,}14 eller olikheten \\pi > 3. Detta tar bort behovet av miniminniräknare och kapslar in osvängskänslan.",
+    "pitfall": "Botemedlet mot att approximera \\pi \\approx 3 utan eftertanke: använd 3,14 eller \\pi > 3 som strikt olikhet när heltal ligger i närheten.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Cirkelarea-receptet",
+      "move": "När kvantiteten är \\pi r^2: räkna ut talet och använd \\pi \\approx 3{,}14 (aldrig bara 3) för att avgöra olikheten."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-kvant2-KVA-020": {
-    "_meta": {
-      "generated_at": 1778424621017,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Givet xy = z med z > 1 följer direkt x = z/y genom division. Därmed är Kvantitet I = Kvantitet II identiskt — svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi har en relation xy = z där z > 1, och ska avgöra om x (Kvantitet I) eller z/y (Kvantitet II) är störst. KVA-koderna: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Variabler och villkor",
+        "text": "Tre variabler x, y, z bundna av en enda ekvation xy = z. Att z > 1 ger oss att z \\neq 0, och för att kvoten z/y ska vara definierad måste y \\neq 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Implicit villkor: y ≠ 0",
+        "text": "Eftersom xy = z och z > 1 > 0 är både x och y nollskilda — om någon av dem var noll skulle produkten bli 0, inte > 1.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder division?",
+        "text": "Division är definierad som inversen av multiplikation: a/b = c betyder a = b \\cdot c (när b \\neq 0).",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Lös ut x",
+        "text": "Från xy = z, dividera båda sidor med y (tillåtet eftersom y \\neq 0): x = z/y.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skriv om I och II",
+        "text": "Kvantitet I är x och Kvantitet II är z/y. Steg 5 visar att dessa är identiska som algebraiska uttryck.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sanity-check med tal",
+        "text": "Pröva y = 2, z = 6: då x = 3 och z/y = 6/2 = 3. Lika.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Pröva negativt y",
+        "text": "Låt y = -2, z = 2: då x = -1 och z/y = 2/(-2) = -1. Fortfarande lika.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Spelar z:s storlek roll?",
+        "text": "Nej. Villkoret z > 1 användes bara för att garantera att xy \\neq 0, inte för själva jämförelsen. Likheten gäller oavsett z:s exakta värde.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Multiplicera tillbaka: om x = z/y så xy = (z/y) \\cdot y = z — vilket är given relation. Inget motvillkor.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Kvantitet I = Kvantitet II, svaret är C. Insikten i en mening: när två kvantiteter i en KVA-uppgift kan härledas algebraiskt från samma ekvation, blir likhet ofta det „gömda” svaret — undersök det först.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att x dominerar.",
-        "why_wrong": "x = z/y exakt; ingen extra term."
+        "why_tempting": "Det är lätt att tro att x dominerar när man inte ser kopplingen.",
+        "why_wrong": "Steg 5 visar x = z/y exakt — ingen extra term."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att z/y är annorlunda när z stort.",
-        "why_wrong": "Likheten gäller oavsett storlek på z."
+        "why_tempting": "Första instinkten är att z/y ser annorlunda ut när z är stort.",
+        "why_wrong": "Steg 9 visar att likheten gäller oavsett z:s storlek; den följer direkt av definitionen."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att y eller x kan vara fri.",
-        "why_wrong": "xy = z kopplar dem entydigt; x = z/y följer direkt."
+        "why_tempting": "Det är frestande att tro att x och y kan väljas oberoende.",
+        "why_wrong": "Steg 5 binder dem entydigt: xy = z ger x = z/y utan val."
       }
     ],
-    "pitfall": null,
-    "solution_path": "xy = z, z > 1. x = z/y. Lika — C.",
-    "technique": "Linjärt — lös ut: x = z/y från xy = z."
+    "technique": "Lös alltid ut den eftersökta kvantiteten algebraiskt innan du jämför. När en av två kvantiteter är en enstaka variabel som figurerar i en ekvation, dividera/multiplicera så du får identisk form.",
+    "pitfall": "Botemedlet mot att gissa på „sakerna ser olika ut”: omskriv båda sidor med samma variabler och se om de är samma uttryck.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Isoleringsreceptet",
+      "move": "När en kvantitet är en variabel och den andra ett bråk med samma variabler: isolera variabeln från den givna ekvationen och se om uttrycken kollapsar till samma form."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-kvant2-KVA-021": {
-    "_meta": {
-      "generated_at": 1778424621017,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Riktningskoefficienten för L 1 genom (2,1) och (−3,7) är -6/5. För vinkelräta linjer gäller k_1 \\cdot k_2 = -1, vilket ger k_2 = 5/6. Eftersom -6/5 < 0 < 5/6 är II > I — svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi har en linje L 1 genom två punkter och en linje L 2 vinkelrät mot L 1. Vi ska jämföra riktningskoefficienterna. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är riktningskoefficient?",
+        "text": "Riktningskoefficienten (eller lutningen) k anger hur mycket y ändras per enhet ändring i x. Formel: k = (y_2 - y_1)/(x_2 - x_1).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Märk ut punkterna",
+        "text": "Låt (x_1, y_1) = (2, 1) och (x_2, y_2) = (-3, 7). Ordningen är godtycklig men måste vara konsistent i täljare och nämnare.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Beräkna täljaren",
+        "text": "y_2 - y_1 = 7 - 1 = 6. Detta är förändringen i y-led.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Beräkna nämnaren",
+        "text": "x_2 - x_1 = -3 - 2 = -5. Notera tecknet — minus framför 3 minus 2 ger −5, inte +1.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Riktningskoefficient för L 1",
+        "text": "k_1 = 6/(-5) = -6/5 = -1{,}2. Negativ lutning betyder att linjen sjunker från vänster till höger.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Regel för vinkelräta linjer",
+        "text": "Två linjer är vinkelräta omm produkten av deras lutningar är −1: k_1 \\cdot k_2 = -1 (under förutsättning att ingen är vertikal).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Lös ut k 2",
+        "text": "Från k_2 = -1/k_1 = -1/(-6/5) = 5/6. Den negativa inversen flippar både bråket och tecknet.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför tecknen",
+        "text": "k_1 = -6/5 < 0 och k_2 = 5/6 > 0. Ett negativt tal är alltid mindre än ett positivt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Decimalkontroll",
+        "text": "-6/5 = -1{,}2 och  5/6 \\approx 0{,}833. Skillnaden är ungefär 2,03 — inga marginalfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera vinkelräthet",
+        "text": "Produkten: (-6/5) \\cdot (5/6) = -30/30 = -1 — stilrent.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Kvantitet II (5/6) > Kvantitet I (-6/5), svaret är B. Insikten i en mening: vinkelräta lutningar har motsatt tecken — om en är negativ är den andra positiv, vilket avgör jämförelsen direkt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att negativ lutning är \"större\" i belopp.",
-        "why_wrong": "-6/5 < 0 < 5/6, så L₂ > L₁."
+        "why_tempting": "Det är lätt att tro att „större belopp” (|{-6/5}| = 1{,}2) slår ett mindre (5/6 \\approx 0{,}83).",
+        "why_wrong": "Som steg 9 visar jämför KVA tecken inklusive, inte absolutbelopp — negativt < positivt."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att vinkelräta linjer har \"samma storlek\".",
-        "why_wrong": "Beloppen är 6/5 och 5/6, olika; tecknen skiljer sig också."
+        "why_tempting": "Första instinkten kan vara att vinkelräta linjer har „samma slags” lutning.",
+        "why_wrong": "Steg 8 visar att den negativa inversen flippar både tecken och bråk; beloppen blir 6/5 vs 5/6 — olika."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att vinkelrätt skapar otydlighet.",
-        "why_wrong": "Standardrelationen ger entydiga lutningar."
+        "why_tempting": "Det är frestande att tro att vinkelrät-villkoret är tvetydigt.",
+        "why_wrong": "Steg 7-8 ger en deterministisk formel som ger ett unikt k_2."
       }
     ],
-    "pitfall": null,
-    "solution_path": "L₁: lutning = (7-1)/(-3-2) = 6/(-5) = -6/5. L₂ vinkelrät: lutning · (-6/5) = -1 → L₂ lutning = 5/6. -6/5 < 5/6 — B.",
-    "technique": "Vinkelrätta linjer: produkten av lutningarna = -1.",
-    "framework_id": "KVA-TRAP-017"
+    "technique": "För vinkelräta linjer i KVA: räkna ut den ena lutningen och använd k_2 = -1/k_1. Tecknet flippar alltid, så om k_1 < 0 är k_2 > 0 — jämförelsen är ofta klar utan exakta värden.",
+    "pitfall": "Botemedlet mot att blanda absolutbelopp och tecken: skriv ut både tecken och storlek innan du jämför, eftersom KVA frågar om signerat värde, inte belopp.",
+    "framework_id": "KVA-TRAP-017",
+    "pregrade_tactic": {
+      "handle": "Vinkelrät-receptet",
+      "move": "När två vinkelräta linjer jämförs: räkna en lutning och använd k_2 = -1/k_1 — tecknet flippar alltid och avgör ofta hela jämförelsen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-kvant2-KVA-022": {
-    "_meta": {
-      "generated_at": 1778424621017,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Kvantitet I = 2 \\cdot 10^x, Kvantitet II = (2\\cdot 10)^x = 2^x \\cdot 10^x. Förhållandet II/I = 2^{x-1} vilket är < 1 för x = 0, = 1 för x = 1, > 1 för x = 2. Tre olika utfall — svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi ska jämföra två uttryck med samma variabel x utan att x är bestämd. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en potens?",
+        "text": "a^x betyder „a gånger sig självt x gånger” för positiva heltal x; och generaliseras till alla reella x. Det är exponentiering.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Exponentregel för produkter",
+        "text": "För positiva baser gäller (ab)^x = a^x \\cdot b^x. Detta är distributivitet för exponentiering över multiplikation.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Skriv om Kvantitet II",
+        "text": "(2 \\cdot 10)^x = 2^x \\cdot 10^x enligt steg 3. Detta är samma sak som 20^x.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skriv ut Kvantitet I",
+        "text": "Kvantitet I = 2 \\cdot 10^x. Notera prioriteten: exponenten gäller bara basen 10, inte tvåan. Detta är ett användarvanligt feltrappa.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Bilda kvoten II/I",
+        "text": "\\text{II}/\\text{I} = (2^x \\cdot 10^x)/(2 \\cdot 10^x) = 2^x/2 = 2^{x-1}. Detta förenklar hela jämförelsen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa x = 1",
+        "text": "2^{1-1} = 2^0 = 1, alltså II = I. Kontroll: I = 2·10 = 20, II = 20^1 = 20.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa x = 2",
+        "text": "2^{2-1} = 2, alltså II = 2·I, dvs II > I. Kontroll: I = 2·100 = 200, II = 400.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa x = 0",
+        "text": "2^{0-1} = 1/2, alltså II = I/2, dvs I > II. Kontroll: I = 2·1 = 2, II = 20^0 = 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tre utfall, samma fråga",
+        "text": "Vi har visat tre olika ordningar (I > II, I = II, II > I) för olika x. Eftersom x inte är given är jämförelsen tvetydig.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera resonemanget",
+        "text": "Förhållandet 2^{x-1} är en kontinuerlig funktion av x: < 1 för x < 1, = 1 för x = 1, > 1 för x > 1. Tre tydliga regimer.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Eftersom x kan göra I större, lika eller mindre än II beroende på värde är svaret D. Insikten i en mening: när en potensjämförelse beror på en obunden exponent, leta efter regimskifte vid x = 0, x = 1, x → ∞ — gör tre tester och D faller ofta ut.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna x = 0 och få I = 2, II = 1, och tro att I alltid > II.",
-        "why_wrong": "För x ≥ 2 är II > I; det är inte universellt."
+        "why_tempting": "Det är lätt att stanna vid x = 0 och se I = 2 > II = 1.",
+        "why_wrong": "Steg 8 visar att för x = 2 är II = 400 > I = 200 — mot-exemplet slår ut universaliteten."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2·10)ˣ alltid är mer.",
-        "why_wrong": "För x = 0 är II = 1 < I = 2."
+        "why_tempting": "Första instinkten är att (2\\cdot 10)^x växer snabbare och dominerar.",
+        "why_wrong": "Steg 9 visar att för x = 0 är I = 2 > II = 1."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid x = 1 där I = II = 20.",
-        "why_wrong": "Likhet bara där; andra x ger olikhet."
+        "why_wrong": "Steg 8-9 visar likhet endast vid den specifika punkten x = 1, inte universellt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "I: 2·10ˣ. II: (2·10)ˣ = 20ˣ = 2ˣ·10ˣ. För x = 1: I = 20, II = 20 (lika). För x = 2: I = 200, II = 400 (II > I). För x = 0: I = 2, II = 1 (I > II). Tre utfall — D.",
-    "technique": "Olika baser i exponent: skiljer sig för x ≠ 1."
+    "technique": "När två potensuttryck jämförs och exponenten är fri: bilda kvoten II/I, förenkla, och pröva minst tre värden (negativt, noll, positivt). Om tecknet på jämförelsen flippar är svaret D.",
+    "pitfall": "Botemedlet mot att förväxla 2 \\cdot 10^x med (2 \\cdot 10)^x: kom ihåg att exponenten binder stärkast — utan parentes gäller den bara närmaste bas.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Regimskötselregeln",
+      "move": "När exponenten är fri och basen är > 1: testa x = 0, x = 1, x = 2 — om ordningen flippar är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-kvant2-NOG-023": {
-    "_meta": {
-      "generated_at": 1778427342052,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "I en klass om 30 vill vi veta hur många som spelar BÅDE fotboll och innebandy (snittet). (1) säger F=20, (2) säger I=10. Två yttre totaler räcker inte: snittet kan ligga var som helst mellan 0 och 10 beroende på hur många som inte spelar något alls. Svar: E.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "En klass har 30 elever. Vi söker antalet som spelar BÅDE fotboll och innebandy — det vill säga snittet av två mängder. (1) ger fotbollstotalen, (2) ger innebandytotalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad menar NOG med 'tillräcklig'?",
+        "text": "Tillräcklig = informationen ger exakt ett möjligt värde på snittet. Om snittet kan anta minst två olika värden i påståendets giltighets-zon → otillräcklig.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Inklusion-exklusion",
+        "text": "För två mängder F och I gäller |F \\cup I| = |F| + |I| - |F \\cap I|. Det betyder att totalen som spelar minst en sport = fotbollare + innebandyspelare − snittet (för att inte räkna dubbla en gång för mycket).",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Den okända: 'varken-gruppen'",
+        "text": "Låt v = antal elever som varken spelar fotboll eller innebandy. Då är |F \\cup I| = 30 - v. Värdet på v är inte givet — och det är just det som låser snittet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Översätt (1)",
+        "text": "(1) säger F = 20. Inget om innebandy, inget om varken-gruppen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "Snittet kan vara vad som helst mellan 0 och min(F, I) — men eftersom I är okänd är även taket okänt. (1) ensam: otillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Översätt (2)",
+        "text": "(2) säger I = 10. Inget om fotboll, inget om varken-gruppen.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt",
+        "text": "Samma problem spegelvänt: snittet är okänt. (2) ensam: otillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa (1) och (2) tillsammans",
+        "text": "Med F=20 och I=10: 20 + 10 - s = 30 - v, alltså s = v. Snittet är lika med antalet i varken-gruppen — och v är fortfarande inte givet.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Två konkreta motexempel",
+        "text": "Scenario A: v = 0 → s = 0 (alla spelar minst en sport; ingen spelar båda). Scenario B: v = 5 → s = 5 (5 spelar båda, 5 spelar inget). Båda är konsistenta med F=20, I=10, total 30.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Scenario A: fotboll-bara 20, innebandy-bara 10, båda 0, varken 0 → 30. Klart. Scenario B: fotboll-bara 15, innebandy-bara 5, båda 5, varken 5 → 30. Klart. Två olika snitt → otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Varken (1), (2) eller båda tillsammans låser snittet. Svar: E. Insikten i en mening: i Venn-uppgifter med två mängder behöver du DEL-information (snitt, union, varken-gruppen eller en exakt cell) — bara totaler räcker aldrig.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att fotbollstotalen räcker.",
-        "why_wrong": "(1) säger inget om innebandy."
+        "why_tempting": "Det är lätt att tro att fotbollstotalen 20 är den 'större' siffran och därför räcker som låsning.",
+        "why_wrong": "Steg 5–6: F=20 säger inget om innebandyspelarna och inget om varken-gruppen. Två konkreta scenarier i steg 10 visar olika snitt."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att innebandytotalen räcker.",
-        "why_wrong": "(2) säger inget om fotboll."
+        "why_tempting": "Snabbsvar är ofta att innebandytotalen är mer 'precis' (mindre tal) och därför skarpare.",
+        "why_wrong": "Steg 7–8: spegelvänd version av (1). Innebandyssumman ensam binder ingenting i fotbollsmängden."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att två totaler räcker för en Venn-tabell.",
-        "why_wrong": "Två yttre totaler ger övre och undre gräns men inte snittet."
+        "why_tempting": "Första instinkten är att två totaler räcker när inklusion-exklusion finns till hands.",
+        "why_wrong": "Steg 9: ekvationen kollapsar till s = v, där v (varken-gruppen) är okänd. Två yttre totaler ger övre/undre gräns på snittet men inte ett unikt värde."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett ger en sluten lösning landar du här.",
-        "why_wrong": "Båda är individuella totaler — Venn-snittet kräver mer."
+        "why_tempting": "Om du tror att var och en räcker eftersom 'båda är totaler' landar du här.",
+        "why_wrong": "Steg 6 och 8: ingen av dem ger snittet ensam — D kräver att vardera räcker, vilket är ännu starkare än C."
       }
     ],
-    "pitfall": "Klassisk fälla: två yttre summor utan snitt-information.",
-    "solution_path": "Båda krävs men räcker ändå inte. F=20 och I=10 utan information om \"varken\" eller \"båda\" lämnar båda mellan 0 och 10.",
-    "technique": "I Venn-uppgifter: två totaler räcker INTE för snittet — du behöver \"varken\" eller en cell.",
-    "framework_id": "NOG-TRAP-001"
+    "technique": "I Venn-uppgifter med två mängder finns fyra okända celler (bara-A, bara-B, båda, varken) och fyra möjliga ekvationer (|A|, |B|, |A∪B|, |A∩B|). Två yttre totaler räcker INTE — du behöver minst en cell eller en union/snitt-uppgift.",
+    "pitfall": "Klassisk fälla: 'jag har två totaler, alltså kan jag räkna ut snittet'. Botemedlet: rita 2×2-cellen (eller Venn) och räkna obekanta. Två okända ekvationer i fyra obekanta ger oändligt många lösningar.",
+    "framework_id": "NOG-TRAP-001",
+    "pregrade_tactic": {
+      "handle": "Venn-cellräknaren",
+      "move": "När en NOG-fråga söker snittet av två mängder: rita 2×2-tabellen och räkna givna celler — om 'varken'-cellen eller snittet inte är låst av något påstående är det otillräckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-kvant2-NOG-024": {
-    "_meta": {
-      "generated_at": 1778427342052,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Frågan är ja/nej: går linjen L genom (5,5)? En linje låses entydigt av exakt två punkter. (1) ger en punkt, (2) ger en punkt — vardera ensam lämnar oändligt många linjer. Tillsammans ger (4,6) och (6,4) lutningen k = (4−6)/(6−4) = −1 och linjen y = −x + 10, som passerar (5,5). Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Vi söker JA eller NEJ: passerar L genom punkten (5,5)? Vi vägs alltså inte mot att hitta hela linjen — bara mot att avgöra om (5,5) ligger på den.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Linjens grundekvation",
+        "text": "En icke-vertikal linje skrivs y = kx + m, där k är lutningen och m är y-intercept. Två tal (k och m) ska bestämmas — alltså behövs två oberoende villkor.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Lutningsformeln",
+        "text": "Lutningen mellan två punkter (x_1, y_1) och (x_2, y_2) ges av k = \\frac{y_2 - y_1}{x_2 - x_1}. Detta är 'höjdskillnad per stegskillnad'.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "En punkt = ett villkor",
+        "text": "Att linjen går genom en specifik punkt (x₀, y₀) ger en ekvation: y₀ = kx₀ + m. Det är ett villkor i två obekanta — oändligt många lösningar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "(1): L går genom (4, 6). Det ger 6 = 4k + m. En ekvation, två obekanta → oändligt många linjer. Vissa passerar (5,5), andra inte. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konkret motexempel för (1)",
+        "text": "Linjen y = −x + 10 går genom (4,6) och även genom (5,5). Linjen y = 6 (horisontell) går också genom (4,6) men inte genom (5,5). Två motsägande utfall → (1) ensam: otillräcklig.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt",
+        "text": "(2): L går genom (6, 4). Samma struktur som (1). Linjen y = −x + 10 passerar (6,4) och (5,5); linjen y = 4 passerar (6,4) men inte (5,5). Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2)",
+        "text": "Med båda punkterna kan vi räkna ut lutningen: k = \\frac{4-6}{6-4} = \\frac{-2}{2} = -1.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Hitta m",
+        "text": "Sätt in (4, 6) i y = -x + m: 6 = -4 + m, så m = 10. Linjen är y = -x + 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera mot (5, 5)",
+        "text": "Stoppa in x = 5: y = -5 + 10 = 5. Ja — linjen passerar (5, 5).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera (6, 4)",
+        "text": "Kontroll: -6 + 10 = 4. Klart. Båda givna punkter ligger på linjen och (5,5) också.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Vardera påståendet ensamt ger en punkt — otillräckligt. Tillsammans bestäms linjen entydigt och svaret på ja/nej-frågan är JA. Svar: C. Insikten i en mening: en linje är låst av två punkter — ett ensamt punktvillkor räcker aldrig för att avgöra om en tredje punkt ligger på linjen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en punkt räcker när målpunkten är så nära.",
-        "why_wrong": "(1) lämnar oändligt många linjer genom (4,6) — de flesta missar (5,5)."
+        "why_tempting": "Det är lätt att tro att (4,6) ligger 'tillräckligt nära' (5,5) för att låsa frågan.",
+        "why_wrong": "Steg 5–6: en punkt ger en ekvation i två obekanta. Två linjer genom (4,6) ger olika svar för (5,5)."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s symmetriska punkt räcker.",
-        "why_wrong": "(2) ger en punkt; lutningen är fri."
+        "why_tempting": "Snabbsvar är ofta att punkten (6,4) är symmetrisk mot (4,6) kring (5,5) och därför 'pekar' på (5,5).",
+        "why_wrong": "Steg 7: spegelvänd version av (1). En punkt är fortfarande bara en punkt — oändligt många linjer genom den."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker eftersom båda är spegelpunkter landar du här.",
-        "why_wrong": "En punkt räcker aldrig för att låsa en linje."
+        "why_tempting": "Om du tror att två symmetriska punkter var och en räcker eftersom de 'pekar' mot (5,5) landar du här.",
+        "why_wrong": "Steg 4: en punkt = ett villkor i två obekanta. Detta är alltid otillräckligt för en linje, oavsett hur välplacerad punkten är."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att två punkter inte räcker utan algebraisk uppställning.",
-        "why_wrong": "Två punkter låser linjen; passagen genom en tredje punkt är en räkning."
+        "why_tempting": "Det är frestande att tro att utan algebra i påståendet behövs mer information.",
+        "why_wrong": "Steg 8–10: (4,6) och (6,4) ger lutning −1 och intercept 10. Linjen y = −x + 10 passerar (5,5). Frågan är entydigt JA."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: en punkt fixerar inte en linje. Två punkter (4,6) och (6,4) ger linjen y=−x+10, som passerar (5,5).",
-    "technique": "En linje låses av exakt två punkter; en punkt ger bara ett villkor."
+    "technique": "En linje i planet har två frihetsgrader (k och m). Varje punkt ger ETT villkor. Två punkter låser linjen entydigt; en punkt + en lutning räcker också; men en punkt ensam aldrig.",
+    "pitfall": "Det är frestande att tro att en 'välplacerad' punkt (symmetrisk eller nära mål) är värd mer än andra. Botemedlet: räkna frihetsgrader. En linje har 2 — varje punkt ger 1.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Frihetsgradsräknaren",
+      "move": "Räkna hur många parametrar objektet har (linje: 2, cirkel: 3, plan: 3) och hur många oberoende villkor varje påstående ger — om summan inte når antalet parametrar är det otillräckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-kvant2-NOG-025": {
-    "_meta": {
-      "generated_at": 1778427342052,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Frågan är ja/nej: är talet jämnt delbart med 5? (1): delbart med 100. Eftersom 100 = 4·25 har faktorn 5 — varje multipel av 100 är automatiskt delbart med 5. (2): delbart med 15 = 3·5 — samma slutsats. Var för sig ger båda ja. Svar: D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Maria tänker på ett heltal n. Frågan är ja/nej: är n delbart med 5? Vi behöver inte veta n själv — bara om n / 5 är ett heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'jämnt delbart'?",
+        "text": "'n är jämnt delbart med k' betyder att det finns ett heltal m så att n = k·m. Skrivs ibland k \\mid n. Resten vid division med k är 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Transitivitet för delbarhet",
+        "text": "Om a \\mid b och b \\mid c, så a \\mid c. På svenska: om a delar b och b delar c, så delar a också c. (Bevis: b = a·k, c = b·m = a·km.)",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Faktorisera 100",
+        "text": "100 = 4 · 25 = 2^2 \\cdot 5^2. Talet 5 är en faktor i 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "(1): n är delbart med 100. Eftersom 5 är en faktor i 100 (steg 4) och 100 delar n, så delar 5 också n (transitivitet, steg 3). Alltså ja — n är delbart med 5. Räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Faktorisera 15",
+        "text": "15 = 3 · 5. Också här är 5 en faktor.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt",
+        "text": "(2): n är delbart med 15. Eftersom 5 delar 15 och 15 delar n, så delar 5 också n. Alltså ja — n är delbart med 5. Räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Generell regel",
+        "text": "Om 5 är en faktor i k, så ger k \\mid n automatiskt 5 \\mid n. Detta gäller för alla k = 5, 10, 15, 20, 25, 30, 35, 40, ...",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Konkret kontroll",
+        "text": "Multipel av 100: 100, 200, 300, ... — alla delbara med 5. Multipel av 15: 15, 30, 45, 60, 75, 90, ... — alla delbara med 5. Varje exempel bekräftar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Är (1) eller (2) starkare?",
+        "text": "(1) ger MER information (n är delbart med 100, alltså också 25, 4, 2 osv.) men för JA/NEJ-frågan räcker det som behövs: båda ger faktorn 5. Båda räcker LIKA mycket för exakt denna fråga.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Behöver vi veta n exakt? Nej — frågan är ja/nej, inte 'vad är n'. Båda påståendena ger 'ja' utan att fixera n.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Var och en räcker för att svara JA på frågan. Svar: D. Insikten i en mening: för delbarhets-JA/NEJ-frågor räcker det att hitta målfaktorn i det givna talet — du behöver inte veta talet själv.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s starkare delbarhet är den enda låsande.",
-        "why_wrong": "(2):s delbarhet med 15 garanterar också delbarhet med 5."
+        "why_tempting": "Det är lätt att tro att (1):s större tal (100) är 'starkare' och därför den enda låsande.",
+        "why_wrong": "Steg 6–7: 15 = 3 · 5 har också faktorn 5. (2) räcker lika bra som (1) — D är skarpare än A."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s delbarhet med 15 räcker — och så är det.",
-        "why_wrong": "Men även (1) räcker, så svaret är D, inte B."
+        "why_tempting": "Snabbsvar är ofta att (2):s tal innehåller 5 mest synligt — men då missar man att 100 också gör det.",
+        "why_wrong": "Steg 4–5: 100 = 2²·5² innehåller faktorn 5 dubbelt upp. (1) räcker lika bra som (2)."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda när delbarhet med 5 ska visas.",
-        "why_wrong": "Var och en räcker — extra delbarhetsvillkor behövs inte."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhets skull.",
+        "why_wrong": "Steg 5 och 7: vardera räcker ensamt. Kombinationen är överflödig — svaret är D, inte C."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att man behöver veta talet exakt.",
-        "why_wrong": "Frågan är ja/nej — delbarhetsfaktor räcker, talet behöver inte vara känt."
+        "why_tempting": "Det är frestande att tro att man måste veta n exakt för att svara på delbarhet.",
+        "why_wrong": "Steg 11: frågan är ja/nej. Båda påståendena ger 'ja' utan att fixera n. Otillräckligt-svaret kräver att inget villkor besvarar frågan."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Var för sig räcker, eftersom 5 är faktor i både 100 och 15. (1) ger automatisk delbarhet med 5; (2) likaså.",
-    "technique": "Om 5 är faktor i k, så ger \"delbart med k\" automatiskt \"delbart med 5\"."
+    "technique": "Delbarhetstransitivitet: om m delas av k och 5 är faktor i k, så delas m också av 5. Faktorisera de givna talen och leta efter målfaktorn.",
+    "pitfall": "Det är frestande att tro att 'mer specifik information är alltid mer värd'. Botemedlet: matcha informations-mängden mot frågans ja/nej-karaktär. Ibland räcker mindre.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Faktorjakten",
+      "move": "I delbarhets-NOG: primfaktorisera båda påståendenas tal och leta efter målfaktorn — om den finns i båda är svaret D, om den bara finns i ett är det A eller B."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-kvant2-NOG-026": {
-    "_meta": {
-      "generated_at": 1778427342052,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Vi har tre träd: al (A), björk (B), rönn (R). Vi söker den högsta. (1): A > B OCH R är inte högst — eftersom rönn inte är högst och A > B är A automatiskt högst. Räcker. (2): A > R och B > R — låser endast att R är lägst, men säger inget om A versus B. Otillräckligt. Svar: A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Tre träd står bredvid varandra: al (A), björk (B), rönn (R). Frågan är: vilket är högst? Vi behöver entydigt peka ut ett av A, B, R.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad krävs för 'högst'?",
+        "text": "Ett träd är 'högst' om dess höjd är strikt större än de andra två. Vi behöver alltså en TOTAL ordning (eller åtminstone identifiering av maximum).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Antalet ordningar för tre objekt",
+        "text": "Tre objekt kan ordnas på 3! = 6 sätt. Varje villkor av typen 'X > Y' eliminerar hälften av sätten (de där X < Y). Två oberoende villkor räcker ofta för att fixera ordningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Översätt (1)",
+        "text": "(1) säger två saker: (a) A > B (alen är högre än björken) och (b) R är inte högst.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad innebär 'R är inte högst'?",
+        "text": "Det betyder att antingen A eller B är högre än R — eller att båda är. Med andra ord: R är inte maximum.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "Från (a): A > B. Från (b): max ∈ {A, B}. Eftersom A > B är A automatiskt max. Alltså: ALEN är högst. Otvetydigt. Räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Översätt (2)",
+        "text": "(2) säger att både A och B är högre än R. Alltså A > R och B > R — rönnen är lägst.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt",
+        "text": "(2) säger inget om relationen mellan A och B. Scenario A: höjder A=10, B=5, R=3 → A högst. Scenario B: A=5, B=10, R=3 → B högst. Båda är konsistenta med (2). Två olika utfall → otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera (1) med konkreta tal",
+        "text": "Sätt A=8, B=6, R=5 → A > B (OK), R inte högst (OK), A är högst. Sätt A=8, B=6, R=7 → A > B (OK), R inte högst (OK, eftersom A=8>R=7), A är högst. Alltid A.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför räcker (1) men inte (2)?",
+        "text": "(1) ger en intern relation mellan A och B PLUS att R är utesluten som max. (2) ger bara att R är lägst — och det räcker inte för att skilja mellan A och B i toppen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera (1) som otillräckligt skenbart",
+        "text": "Kunde 'R inte högst' tolkas som 'R är näst högst'? Nej — 'inte högst' eliminerar endast positionen max. R kan vara lägst eller mellan. Men oavsett vilket: max är A (eftersom A > B).",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "(1) räcker ensam (alen är högst). (2) räcker inte (al/björk-ordningen är fri). Svar: A. Insikten i en mening: i ordnings-NOG räcker det att eliminera den potentiella maxen och rangordna de övriga — två relationer räcker för tre objekt om de inte är dubblerade.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att två relationer i (2) räcker.",
-        "why_wrong": "(2) lämnar al och björk inbördes oordnade."
+        "why_tempting": "Det är lätt att tro att (2):s två relationer (A>R och B>R) ger mer information än (1):s två.",
+        "why_wrong": "Steg 8: (2) säger inget om A vs B, så maximum kan vara antingen A eller B. (1) fixerar A som max via A > B + R inte högst."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(1) räcker ensamt; (2) tillför inget unikt."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet — man tycker geometri/ordning kräver flera villkor.",
+        "why_wrong": "Steg 6: (1) räcker ensamt. C kräver att vardera är otillräckligt — vilket inte stämmer för (1)."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(2) saknar relation mellan al och björk — högst är inte unik."
+        "why_tempting": "Om du tror att vartdera av (1) och (2) räcker eftersom båda nämner 'rönn' landar du här.",
+        "why_wrong": "Steg 8: (2) lämnar A och B oordnade i toppen. D kräver att vardera räcker — men bara (1) gör det."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan numeriska längder går det inte.",
-        "why_wrong": "Två ordningsvillkor (al>björk, rönn ej högst) räcker för att totalordna tre."
+        "why_tempting": "Det är frestande att tro att utan numeriska höjder går det inte att avgöra max.",
+        "why_wrong": "Steg 6: ordningsvillkor räcker. Vi behöver inte exakta höjder — bara att kunna peka ut maximum entydigt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "(1) räcker: al>björk + rönn ej högst → al>björk≥rönn, alltså al högst. (2) säger bara att rönn är lägst, men ger ingen rangordning mellan al och björk.",
-    "technique": "Lägsta är låst + en relation mellan resterande två = total ordning av tre."
+    "technique": "För att hitta max bland N objekt behöver du eliminera N−1 kandidater. Varje 'X > Y' eliminerar Y som max-kandidat (om X redan är aktiv) eller fixerar ordningen mellan dem.",
+    "pitfall": "Det är frestande att räkna antal påståenden snarare än antal eliminerade max-kandidater. Botemedlet: efter varje påstående, lista vilka objekt som kan vara max.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Max-elimineringen",
+      "move": "Vid ordnings-NOG: efter varje påstående, skriv mängden av möjliga max-kandidater — så fort den krymper till ett element är påståendet tillräckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-kvant2-NOG-027": {
-    "_meta": {
-      "generated_at": 1778427342052,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Affären har 100 tröjor i en 2×2-tabell (lång/kort × barn/vuxen). En cell ges: lång-barn = 10. Vi söker kort-vuxen. (1) ger barn-totalen (40), (2) ger lång-totalen (50). Vardera ensam fyller bara en rad eller kolumn — otillräckligt. Tillsammans fyller de både rad-summa och kolumn-summa, så hela 2×2-tabellen är låst: kort-vuxen = 100 − 40 − 50 + 10 = 20. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "100 tröjor klassificeras längs två axlar: ärmlängd (lång/kort) och storlek (barn/vuxen). En cell ges: lång-barn = 10. Vi söker kort-vuxen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp 2×2-tabellen",
+        "text": "Rader: lång, kort. Kolumner: barn, vuxen. Celler: LB, LV, KB, KV. Vi har LB = 10 och LB + LV + KB + KV = 100. Vi söker KV.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'tillräckligt' här?",
+        "text": "Vi behöver entydigt veta KV. Detta sker när tabellen är låst — alltså när tillräckligt många rad-/kolumn-summor + celler är givna för att låsa varje cell.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Antalet frihetsgrader",
+        "text": "Med totalen 100 och en cell (LB=10) given finns 3 obekanta (LV, KB, KV) men bara 1 ekvation (radsumma=100). Vi behöver två oberoende ekvationer till.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Översätt (1)",
+        "text": "(1): '25 % av tröjorna i barnstorlek är långärmade.' Andelen lång-barn av barn-totalen är 25 %. Alltså LB / (LB + KB) = 0,25.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna ut barn-totalen från (1)",
+        "text": "10 / (10 + KB) = 0,25 ger 10 + KB = 40, alltså KB = 30. Barn-totalen = 40, vuxen-totalen = 60.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (1) ensamt",
+        "text": "Vi har: LB=10, KB=30, total=100. Men LV och KV är fortfarande fria (endast LV + KV = 60). Otillräckligt — KV kan vara vad som helst mellan 0 och 60.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Översätt (2)",
+        "text": "(2): '20 % av de långärmade tröjorna är i barnstorlek.' Andelen lång-barn av lång-totalen är 20 %. Alltså LB / (LB + LV) = 0,20.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna ut lång-totalen från (2)",
+        "text": "10 / (10 + LV) = 0,20 ger 10 + LV = 50, alltså LV = 40. Lång-totalen = 50, kort-totalen = 50.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Testa (2) ensamt",
+        "text": "Vi har: LB=10, LV=40, total=100. Men KB och KV är fria (endast KB + KV = 50). Otillräckligt — KV kan vara vad som helst mellan 0 och 50.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Kombinera",
+        "text": "Med (1) + (2): KB = 30, LV = 40, LB = 10. Totalen: KV = 100 - LB - LV - KB = 100 - 10 - 40 - 30 = 20. Entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera tabellen",
+        "text": "LB=10, LV=40 → lång-rad=50. KB=30, KV=20 → kort-rad=50. Barn-kolumn=10+30=40. Vuxen-kolumn=40+20=60. Allt stämmer, total=100.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Vardera påståendet ger bara EN rad eller EN kolumn — otillräckligt. Tillsammans fyller de både rad och kolumn → hela tabellen låst. Svar: C. Insikten i en mening: i 2×2-NOG behöver du både en rad- och en kolumn-summa (eller två celler från ortogonala axlar) för att låsa alla fyra celler.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att procentvillkoret i (1) räcker.",
-        "why_wrong": "(1) ger barn-totalen men inte lång-totalen."
+        "why_tempting": "Det är lätt att tro att procentvillkoret i (1) räcker eftersom det ger en konkret siffra (25 %).",
+        "why_wrong": "Steg 7: (1) ger barn-totalen men inte lång-totalen. KV ligger oavbestämt mellan 0 och 60."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2):s andra procentsats räcker.",
-        "why_wrong": "(2) ger lång-totalen men inte barn-totalen."
+        "why_tempting": "Snabbsvar är ofta att (2):s 20 % är 'andra typen' av procent och därför mer specifik.",
+        "why_wrong": "Steg 10: (2) ger lång-totalen men inte barn-totalen. KV kan ligga mellan 0 och 50 — fortfarande inte unikt."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker eftersom båda ger procent landar du här.",
-        "why_wrong": "Ingen utsaga ensam täcker både rader och kolumner."
+        "why_tempting": "Om du tror att två procentsatser separat räcker för en 2×2-tabell landar du här.",
+        "why_wrong": "Steg 7 och 10: vardera täcker bara en axel. D kräver att vardera räcker — men de gör inte det."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att procentvillkor utan båda dimensioner är för svaga.",
-        "why_wrong": "Tillsammans ger de exakt rad+kolumntotalerna och därmed alla celler."
+        "why_tempting": "Det är frestande att tro att två procentsatser utan absoluta cell-värden är för svaga.",
+        "why_wrong": "Steg 11: tillsammans ger de exakt en rad- och en kolumn-summa, och med LB=10 låst följer hela tabellen entydigt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (1) ger barn=10/0,25=40. (2) ger lång=10/0,20=50. Tillsammans: lång-vuxen=50−10=40, kort-vuxen=60−40=20.",
-    "technique": "I 2×2-tab- eller: två oberoende procentsatser + totalen + en cell räcker för alla celler."
+    "technique": "I en 2×2-tabell finns 4 celler och 1 total = 4 oberoende ekvationer behövs. Två kompletterande procent-villkor (en på rad, en på kolumn) + total + en cell ger fyra ekvationer.",
+    "pitfall": "Det är frestande att tolka båda procentsatserna som 'samma' eftersom de involverar samma cell (lång-barn=10). Botemedlet: skriv ut nämnaren explicit — i (1) är det barn-totalen, i (2) är det lång-totalen.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tabellaxelräknaren",
+      "move": "Vid 2×2-NOG: räkna hur många axlar (rader/kolumner) varje påstående binder — om båda behövs för att täcka rad+kolumn är svaret C; om en täcker både och en bara en är svaret A eller B."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-kvant2-NOG-028": {
-    "_meta": {
-      "generated_at": 1778427342052,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Givet x = 2y, vi söker y. (1) säger att 'ett av talen är 7' — antingen x=7 (då y=3,5) eller y=7 (då x=14). Två giltiga fall → otillräckligt. (2) säger x+y=21; sätt in x=2y → 3y=21 → y=7 entydigt. Räcker. Svar: B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Vi har relationen x = 2y mellan två tal. Frågan: vad är y? Eftersom x bestäms av y räcker det att låsa y.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Frihetsgrader",
+        "text": "Med relationen x = 2y har systemet en frihetsgrad (y bestämmer x). Vi behöver ett villkor till för att fixera y.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad menar NOG med 'tillräcklig'?",
+        "text": "Tillräcklig = exakt ett värde på y. Två eller fler möjliga y → otillräckligt, även om vart och ett är 'snyggt'.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Översätt (1)",
+        "text": "(1): 'ett av talen är 7'. Det betyder att antingen x=7 eller y=7 (eller båda, om de råkar sammanfalla — men de gör inte det här).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Fall 1 i (1)",
+        "text": "Om y=7: då är x = 2·7 = 14. Här är 'ett av talen' (nämligen y) = 7. Konsistent med (1). y=7.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Fall 2 i (1)",
+        "text": "Om x=7: då är y = x/2 = 7/2 = 3,5. Här är 'ett av talen' (nämligen x) = 7. Också konsistent med (1). y=3,5.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (1) ensamt",
+        "text": "Två konsistenta fall: y=7 eller y=3,5. Två olika värden → (1) ensam är otillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Översätt (2)",
+        "text": "(2): x + y = 21. Tillsammans med x = 2y blir det ett linjärt ekvationssystem i två obekanta.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Lös systemet",
+        "text": "Substituera x = 2y in i x + y = 21: 2y + y = 21, dvs 3y = 21, så y = 7.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Räkna fram x också (kontroll)",
+        "text": "x = 2y = 2·7 = 14. Kontroll: x + y = 14 + 7 = 21. Stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Testa (2) ensamt",
+        "text": "(2) ger entydigt y = 7. Räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "(1) är tvetydig (två fall), (2) är entydig. Svar: B. Insikten i en mening: villkor av formen 'ett av talen är k' lämnar ofta TVÅ giltiga fall — kontrollera alltid båda innan du landar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att \"ett av talen är 7\" pekar entydigt på y.",
-        "why_wrong": "Antingen x eller y kan vara 7 — två giltiga lösningar."
+        "why_tempting": "Det är lätt att tro att '7' direkt pekar på y eftersom y är frågan.",
+        "why_wrong": "Steg 5–6: 'ett av talen är 7' tillåter både x=7 (y=3,5) och y=7. Två giltiga utfall → (1) ensam otillräcklig."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(2) räcker ensamt; (1) är överflödig."
+        "why_tempting": "Första instinkten är att kombinera båda för säkerhet — fler villkor känns alltid säkrare.",
+        "why_wrong": "Steg 9: (2) räcker ensamt. (1) är överflödig (och faktiskt tvetydig). Svaret är B, inte C."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att (1) också ger ett unikt y landar du här.",
-        "why_wrong": "(1) är tvetydig — y kan vara 3,5 eller 7."
+        "why_tempting": "Om du tror att (1) också ger ett entydigt y landar du här.",
+        "why_wrong": "Steg 7: (1) ger y = 7 ELLER y = 3,5 — två fall. D kräver att vardera räcker, men (1) gör inte det."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att utan en summa är inget unikt.",
-        "why_wrong": "(2):s summa + relation x=2y räcker för att lösa ut y."
+        "why_tempting": "Det är frestande att tro att utan en absolut summa går det inte att lösa.",
+        "why_wrong": "Steg 11: (2) gav just en sådan summa — x + y = 21 — och tillsammans med x = 2y låser det y entydigt."
       }
     ],
-    "pitfall": "Påståenden av typen \"någon av variablerna är k\" lämnar ofta två giltiga lösningar.",
-    "solution_path": "(2) räcker: x+y=2y+y=3y=21 ger y=7. (1) ger två fall — y=7 (x=14) eller y=3,5 (x=7).",
-    "technique": "Generisk \"ett av talen är k\" är tvetydig när två obekanta finns — kontrollera båda fallen.",
-    "framework_id": "NOG-TRAP-002"
+    "technique": "Villkor av formen 'någon av variablerna är k' är typiskt tvetydiga när systemet har två obekanta — alltid lista båda fallen och kolla om de ger samma värde på frågan.",
+    "pitfall": "Det är frestande att antaga att '7' i (1) pekar på det större eller mindre talet beroende på din intuition. Botemedlet: lista explicit båda fallen som ekvationssystem och lös båda.",
+    "framework_id": "NOG-TRAP-002",
+    "pregrade_tactic": {
+      "handle": "Fall-listaren",
+      "move": "När ett påstående säger 'en av variablerna är k': skriv ut båda tilldelningarna som separata fall och lös båda — om frågan ger olika svar är påståendet otillräckligt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-kvant2-XYZ-001": {
     "_meta": {
@@ -5654,32 +6604,109 @@
   },
   "host-2023-kvant2-XYZ-002": {
     "_meta": {
-      "generated_at": 1778415036026,
-      "model": "claude-opus-4-7",
-      "pedagogy_regenerated_at": 1778510870035,
-      "regen_source": "persona_pass_phase_e_2026_05_11"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Linjerna L_1 och L_2 är parallella. Den angivna vinkeln 64° på L_1 och vinkeln v på L_2 är alternatvinklar (Z-mönster) — alltså lika stora: v=64°. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två parallella linjer L_1 och L_2 korsas av en transversal (en linje som skär båda). En vinkel på 64° är markerad nära L_1; vinkeln v är markerad nära L_2. Hitta v.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en transversal?",
+        "text": "En transversal är en linje som korsar två eller flera andra linjer. När den korsar två PARALLELLA linjer uppstår åtta vinklar (fyra vid varje skärningspunkt) med fasta inbördes samband.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definiera vinkeltyperna",
+        "text": "Vid två parallella linjer och en transversal: (a) korresponderande (F-mönster, lika), (b) alternat-inre (Z-mönster, lika), (c) alternat-yttre (också lika), (d) samsidiga inre (summa = 180°).",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera vinkelpositionerna",
+        "text": "Den givna vinkeln 64° ligger MELLAN de parallella linjerna och på ena sidan av transversalen. Vinkeln v ligger också mellan linjerna men på ANDRA sidan av transversalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Avgör mönstret: Z eller F?",
+        "text": "Mellan linjerna + olika sidor av transversalen = alternat-inre vinklar (Z-mönstret). De är LIKA stora.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tillämpa regeln",
+        "text": "Alternat-inre vinklar är lika när linjerna är parallella: v=64°. Det är allt — ingen vidare beräkning behövs.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Varför just lika och inte 180° − 64°?",
+        "text": "Samsidiga inre vinklar (samma sida av transversalen) summerar till 180°. Alternat-inre (olika sidor) är lika. Att blanda ihop dessa är den vanligaste felkällan.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera via parallell-egenskap",
+        "text": "Tänk så här: om du flyttar transversalen parallellt så att de två skärningspunkterna sammanfaller, hamnar 64°-vinkeln och v ovanpå varandra eftersom de är på olika sidor av transversalen och på andra sidan av sin respektive parallell-linje. Z-symmetrin verifierar.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Tvärkontrollera mot 49°",
+        "text": "Om 49° vore rätt skulle 64° + 49° = 113° vara meningsfullt, men det är ingen vinkelsumma i parallellfiguren (varken 180° eller 90°). Eliminera.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Tvärkontrollera mot 67°",
+        "text": "67° skiljer sig 3° från 64°. Inga vinkelregler ger en sådan litet skift; det vore en avläsningsmiss. Eliminera.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera mot figuren",
+        "text": "Visuellt: vinkeln v 'ser ut' att vara av samma typ som 64°, vilket bekräftar Z-mönstret. Glöm dock inte att exakt avläsning gäller, inte ögonmått.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C (64°). Insikten i en mening: parallella linjer + transversal → alternat-vinklar (Z-mönster) är lika, samsidiga vinklar summerar till 180° — bestäm alltid mönstret innan du räknar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel och tro att v + den givna vinkeln summerar till 113° i stället för att vara lika.",
-        "why_wrong": "Alternatvinklar är LIKA stora, inte komplement — 49° kommer från en feltolkning."
+        "why_tempting": "Det är lätt att räkna fel och tro att v + 64° = 113° eller någon annan summa som ger 49°.",
+        "why_wrong": "Steg 5 fastställer Z-mönstret — alternatvinklar är LIKA, inte komplementära. 49° saknar geometrisk grund här."
       },
       {
         "letter": "B",
-        "why_tempting": "Första instinkten är att uppskatta visuellt — 61° ser nära ut.",
-        "why_wrong": "Vinklarna i figuren är exakt angivna; läs av siffran, inte ögonmåttet."
+        "why_tempting": "Första instinkten är att uppskatta visuellt och välja 61° om vinkeln 'ser ut' att vara strax under 64°.",
+        "why_wrong": "Steg 11 påminner: figuren ger exakta värden, inte uppskattningar. Z-regeln tvingar fram exakt 64°."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid att avläsa fel grad-tal från figuren — 67° är nära 64°.",
-        "why_wrong": "Den markerade vinkeln på L{M0}_1{M1} är 64°, och alternatvinkeln v är exakt lika stor."
+        "why_tempting": "Många stannar vid 67° om de avläser fel siffra eller hör 64 och skriver 67 av slarv.",
+        "why_wrong": "Steg 6 ger v = 64° direkt från alternatvinkel-regeln. 67° kommer från avläsningsfel, inte geometri."
       }
     ],
-    "pitfall": "Förväxla inte alternatvinklar (Z-mönster, lika) med likbelägna vinklar (F-mönster, också lika) eller med konsekutiva vinklar (samma sida om transversalen, summerar till 180°).",
-    "solution_path": "Vinkeln v ligger på L_2 och har samma transversal som en vinkel på L_1. Eftersom linjerna är parallella är alternatvinklarna lika: vinkeln på L_1 = 64° i figuren, alltså v = 64°.",
-    "technique": "När en transversal korsar två parallella linjer är alternatvinklar (på olika sidor om transversalen, mellan linjerna) lika stora — leta efter Z-mönstret.",
-    "framework_id": "XYZ-TRAP-037"
+    "technique": "Parallell-vinkel-rutinen: identifiera mönstret (Z för alternat = lika; F för korresponderande = lika; samsidiga inre summerar till 180°). Triggern är 'parallella linjer + transversal' i figuren.",
+    "pitfall": "Botemedlet mot 'Z vs U': rita in en stor bokstav Z eller U över de två vinklarna. Z (olika sidor av transversalen) = lika; U (samma sida) = summa 180°.",
+    "framework_id": "XYZ-TRAP-037",
+    "pregrade_tactic": {
+      "handle": "Z-mönstret",
+      "move": "Rita Z eller U över de två vinklarna — Z = lika, U = summa 180°; sedan skriv ekvationen direkt."
+    }
   },
   "host-2023-kvant2-XYZ-003": {
     "_meta": {
@@ -6141,30 +7168,109 @@
   },
   "host-2023-kvant2-XYZ-008": {
     "_meta": {
-      "generated_at": 1778410520622,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Triangeln är rätvinklig med kateterna 5 och 12. Pythagoras: BC=\\sqrt{5^2+12^2}=\\sqrt{25+144}=\\sqrt{169}=13 cm. Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Figuren visar en rätvinklig triangel med två kända sidor (5 cm och 12 cm) som är kateterna. Sträckan BC är hypotenusan — den längsta sidan, motsatt den räta vinkeln. Hitta dess längd.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera kateter och hypotenusa",
+        "text": "I en rätvinklig triangel kallas de två sidor som möts vid den räta vinkeln för kateter. Den tredje sidan, mittemot den räta vinkeln, kallas hypotenusan och är alltid längst.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Pythagoras' sats",
+        "text": "För en rätvinklig triangel med kateter a och b och hypotenusa c gäller a^2+b^2=c^2. Detta är geometrins viktigaste samband mellan tre sidor.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Sätt in värdena",
+        "text": "Med a=5 och b=12: 5^2+12^2=c^2, alltså 25+144=c^2.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna kvadraterna",
+        "text": "5^2=25 (eftersom 5\\cdot 5=25) och 12^2=144 (eftersom 12\\cdot 12=144).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Summera",
+        "text": "25+144=169. Så c^2=169.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Dra kvadratroten ur",
+        "text": "För att få c från c^2: c=\\sqrt{169}. Hitta vilket positivt heltal som ger 169 i kvadrat: 13\\cdot 13=169. Alltså c=13.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Pythagoreiska taltripplar",
+        "text": "Kombinationen (5, 12, 13) är ett välkänt taltrippel — alla tre är heltal och uppfyller Pythagoras. Andra att memorera: (3, 4, 5), (8, 15, 17), (7, 24, 25). När du ser två av dessa på HP är det tredje ofta svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Varför positiv rot?",
+        "text": "Kvadratroten av ett positivt tal har två lösningar (±13), men en längd är alltid positiv — så vi tar bara den positiva.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Kontrollera: 5^2+12^2=25+144=169 och 13^2=169. ✓ Båda sidor av Pythagoras stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Tvärkontrollera mot alternativen",
+        "text": "Alternativ B (14): 14^2=196\\neq 169. C (15): 15^2=225\\neq 169. D (16): 16^2=256\\neq 169. Endast 13 fungerar.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A (13 cm). Insikten i en mening: när två heltalskateter ger en heltalshypotenusa, är talen oftast från en känd pythagoreisk trippel — memorera (3, 4, 5), (5, 12, 13), (8, 15, 17), (7, 24, 25).",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Att räkna ut Pythagoras med slarv kan ge värden som ligger nära det rätta — 14 är ett vanligt 'avrundnings-fel'.",
-        "why_wrong": "\\sqrt{169}=13 exakt — 14 kommer från \\sqrt{196}, vilket motsvarar fel kvadratsumma."
+        "why_tempting": "Att räkna ut Pythagoras med slarv kan ge värden nära 13. 14 är ett vanligt 'avrundningsfel' om man räknar 5² fel som 36 t.ex.",
+        "why_wrong": "Steg 7 ger exakt √169 = 13. Värdet 14² = 196 motsvarar 25 + 171, ingen kombination som passar 5 och 12."
       },
       {
         "letter": "C",
-        "why_tempting": "Om du missminns sidorna som 9 och 12 ger Pythagoras 9^{2}+12^{2}=81+144=225=15^{2} — också ett snyggt pythagoreiskt par.",
-        "why_wrong": "9-12-15 är ett giltigt pythagoreiskt taltrippel men passar inte sidornas längder i den här figuren. Kontrollera vilka sidlängder som är angivna."
+        "why_tempting": "Om du missminns sidorna som 9 och 12 ger Pythagoras 9² + 12² = 225 = 15². Det är ett annat giltigt taltrippel (9-12-15 = 3·(3-4-5)).",
+        "why_wrong": "Steg 4 läser av sidorna som 5 och 12, inte 9 och 12. 9 och 12 hör till en annan triangel — kontrollera figuren."
       },
       {
         "letter": "D",
-        "why_tempting": "16 är jämnt och ligger nära 13 — kan kännas som ett rimligt avrundat svar.",
-        "why_wrong": "Pythagoras ger ett EXAKT värde när sidorna är heltal i ett taltrippel. 16 motsvarar inget enkelt taltrippel med de givna sidorna."
+        "why_tempting": "Många stannar vid 16 av räknefel — 16 ligger 'i närheten' av 13 och är jämnt.",
+        "why_wrong": "Steg 6 + 7 ger exakt 169 → 13, inte 16. 16² = 256, alldeles för stort för summan 169."
       }
     ],
-    "pitfall": "Antag att svaret är ett 'snyggt' heltal när sidorna är heltal — HP-uppgifter är konstruerade så. Decimal-svar tyder ofta på att du läst figuren fel.",
-    "solution_path": "Sträckan BC ligger i en rätvinklig triangel — lös via Pythagoras' sats: c^{2}=a^{2}+b^{2}. Triangeln 5-12-13 är ett välkänt pythagoreiskt taltrippel (5^{2}+12^{2}=25+144=169=13^{2}), vilket ger BC = 13 cm direkt.",
-    "technique": "Pythagoreiska taltripplar att memorera: 3-4-5, 5-12-13, 8-15-17, 7-24-25. När en HP-uppgift visar två sidor ur en av dessa serier är hypotenusan ofta det saknade tredje värdet.",
-    "framework_id": "XYZ-TRAP-040"
+    "technique": "Pythagoras-trippelminne-rutinen: identifiera den räta vinkeln, läs av kateterna, sätt in i a² + b² = c² och dra roten. Memorera (3,4,5), (5,12,13), (8,15,17), (7,24,25) för direktigenkänning. Triggern är 'rätvinklig triangel med två kända sidor'.",
+    "pitfall": "Botemedlet mot 'avläste fel kateter': skriv ner BÅDA kateterna innan du börjar räkna. När resultatet inte är ett snyggt heltal har du oftast läst figuren fel.",
+    "framework_id": "XYZ-TRAP-040",
+    "pregrade_tactic": {
+      "handle": "Pythagoras-tripplarna",
+      "move": "Känn igen (3,4,5), (5,12,13), (8,15,17), (7,24,25) på synen — vid match säg svaret direkt utan att räkna ut."
+    }
   },
   "host-2023-kvant2-XYZ-009": {
     "_meta": {
@@ -10245,134 +11351,354 @@
     "technique": "Argumentationsfrågor i recensioner: leta efter recensentens ORDAGRANNA RESONEMANG (\"Eftersom X, hade det varit klokare att...\") — där hon själv anger SKÄLET. Triggern: frågan \"Varför hade det varit bättre?\" → spåra recensentens kausala fras och låt den styra svaret."
   },
   "host-2023-verb2-LÄS-016": {
-    "_meta": {
-      "generated_at": 1778438672379,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Recensenten påpekar att Året Runt var ”en familjetidning riktad till just hemmafruar” och därför ”föga förvånande” skriver om dem — Theander använder tidskriften som om dess innehåll var representativt för hela tidsperioden. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vad anser RECENSENTEN (Wistisen) om Theanders sätt att använda just tidningen Året Runt? Vi söker recensentens explicita invändning.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lokalisera passagen om Året Runt",
+        "text": "I slutet av recensionen hittar vi: Theander jämför 1950-talets Året Runt med flickboken och drar slutsatsen att flickboken var unik i sin yrkesfokusering. Recensentens kommentar följer direkt efter.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Recensentens kritiska mening",
+        "text": "Wistisen skriver: ”Eftersom Året Runt var en familjetidning riktad till just hemmafruar är det emellertid föga förvånande att dessa står i fokus.” Och hon fortsätter med att Damernas värld gav en ”helt annan bild”.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är invändningen?",
+        "text": "Recensentens poäng: Theander behandlar Året Runt som om dess hemmafrufokus speglade hela tidsperioden, men det är bara en följd av tidningens egen målgrupp. Andra samtida magasin (Damernas värld) skrev gärna om yrkesarbetande kvinnor.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "Kritiken är att Theander felaktigt generaliserar från en specifik tidning. Det är exakt C: ”behandlar tidningen som om dess innehåll var representativt”. A inverterar (recensenten håller inte med); B och D importerar fokus/omslagsteman som inte är invändningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar C. Insikten i en mening: när en recensent säger att ”det är inte förvånande att X” om en källa, är hen oftast på väg att kritisera att källan tagits som representativ.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att tidningen bekräftar samtidsspegling.",
-        "why_wrong": "Recensenten säger TVÄRTOM — alternativet inverterar."
+        "why_tempting": "Det är lätt att läsa att Theander använder tidningen som spegel — och anta att recensenten håller med.",
+        "why_wrong": "Steg 4 visar att recensenten TVÄRTOM säger att tidningen bara speglar sin egen hemmafrumålgrupp, inte tidsperioden. A inverterar recensentens position."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid Theanders fokus.",
-        "why_wrong": "Det är inte fokuset utan generaliseringen som kritiseras; alternativet flyttar problem."
+        "why_tempting": "Många stannar vid att hemmafrun är i fokus och tror att det är där kritiken sitter.",
+        "why_wrong": "Som steg 5 visar är problemet inte att Theander missar radikala teman, utan att hon generaliserar från en målgruppstidning. B flyttar invändningen till fel ställe."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta omslagens dominans.",
-        "why_wrong": "Texten talar inte specifikt om omslag — alternativet importerar fel detalj."
+        "why_tempting": "Snabbsvar är ofta att hitta något om omslag eller framsidor i en mediestudie.",
+        "why_wrong": "Steg 3 visar att Wistisens kritik handlar om TIDNINGENS INRIKTNING (hemmafrur) som målgruppsteknik, inte om omslag. D importerar en detalj som inte finns i kritiken."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Recensenten påpekar att Året Runt var en 'familjetidning riktad till hemmafruar' och att en damtidning som Damernas Värld hade gett 'helt annan bild'. Theander använder Året Runt som om det var representativt för perioden.",
-    "technique": "Vid 'kritik mot användning av källa'-frågor: hitta recensentens specifika invändning ('föga förvånande att...')."
+    "technique": "När en recensent dyker in i ett specifikt exempel med ”det är emellertid föga förvånande att...”, följer hen direkt med ett ”men i själva verket...” — det är där den egentliga invändningen ligger.",
+    "pitfall": "Botemedlet mot att gå bort sig: skilj recensentens beskrivning av Theanders metod (vad hon gör) från recensentens dom (om det är OK). Frågan här gäller domen, inte beskrivningen.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Föga-förvånande-tricket",
+      "move": "Sök frasen ”det är emellertid föga förvånande att” eller liknande — där börjar recensentens egentliga invändning."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-verb2-LÄS-017": {
-    "_meta": {
-      "generated_at": 1778438672379,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten säger uttryckligen: ”Att samarbeta fredligt över släktgränserna utan omedelbar egen vinning brukar annars lyftas fram som något unikt för människan. Att myror gör det ifrågasätter evolutionens grundlagar.” Det mest uppseendeväckande är altruism mot icke-släktingar — svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vilket myrbeteende framställs som MEST uppseendeväckande? Vi söker det beteende texten själv kallar ”ifrågasätter evolutionens grundlagar” eller ”unikt”.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vokabulär: altruism",
+        "text": "I biologi betyder altruism att en organism handlar till nytta för andra utan egen genetisk fördel. Klassisk evolutionsteori säger att altruism bara förklaras via släktskap (kin selection) — beteenden mot släktingar.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Texten flaggar själv vad som chockar",
+        "text": "Stycket om superkolonierna i Schweiz: arbetare från olika stackar slåss inte utan ”stryker varandra vänligt med antennerna”. Texten skriver att fredligt samarbete ”utan omedelbar egen vinning” brukar betraktas som unikt för människan — och att myror gör det ”ifrågasätter evolutionens grundlagar”.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Matcha mot alternativen",
+        "text": "”Helt obesläktade” + ”utan omedelbar egen vinning” → osjälviskt mot icke-släktingar = alternativ C. A (rättvis resursfördelning) är inte ett tema texten lyfter. B (stor social gemenskap) är ett DRAG, men det är inte det som chockar. D (parning med annan art) är intressant men beskrivs som en lösning på inavel — inte det mest uppseendeväckande i sig.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera med textens uttalade vikt",
+        "text": "Lägg märke till att texten EXPLICIT kallar samarbete över släktgränser ”unikt för människan” — det är textens egen ord för det mest uppseendeväckande. Det kan inte vara något annat alternativ.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar C. Insikten i en mening: när en text själv namnger något som ”unikt” eller ”ifrågasätter grundlagar”, är det textens egen kandidat till ”mest uppseendeväckande”.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa rättvis fördelning som temat.",
-        "why_wrong": "Texten talar inte om resursfördelning — alternativet importerar fel fokus."
+        "why_tempting": "Det är lätt att associera ”matar varandra” med rättvis resursfördelning.",
+        "why_wrong": "Steg 4 visar att texten inte talar om fördelningsprinciper utan om OSJÄLVISKHET mot icke-släktingar. A importerar ett tema (rättvisa) som inte finns."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid storkollektivet.",
-        "why_wrong": "Storleken är ett drag, men det är osjälviskheten som chockar; alternativet snävar in fel."
+        "why_tempting": "Många stannar vid att miljontals myror går samman — det är ju imponerande.",
+        "why_wrong": "Som steg 4 visar är skalan ett drag av superkolonin, men det är osjälviskheten över släktgränsen som texten EXPLICIT lyfter som unik. B snävar in på fel egenskap."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att inavel = problem.",
-        "why_wrong": "Inavel är en KONSEKVENS, inte vad som chockar; alternativet flyttar nivå."
+        "why_tempting": "Första instinkten är att se hybrider mellan arter som det mest exotiska.",
+        "why_wrong": "Steg 3 visar att hybridiseringen presenteras som en SEKUNDÄR lösning på superkoloniens inavelsproblem — inte som det grundläggande chockmomentet. D ligger på fel nivå i textens argumentationskedja."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger att 'att samarbeta fredligt över släktgränserna utan omedelbar egen vinning brukar lyftas fram som något unikt för människan. Att myror gör det ifrågasätter evolutionens grundlagar'. Osjälviskhet mot icke-släktingar är det som väcker uppmärksamhet.",
-    "technique": "Vid 'mest uppseendeväckande'-frågor: hitta vad texten själv kallar 'unikt' eller 'utmanar'."
+    "technique": "När frågan söker det ”mest uppseendeväckande”, leta efter textens egna metakommentarer (”unikt”, ”utmanar”, ”ifrågasätter grundlagar”) — de är författarens egen rangordning.",
+    "pitfall": "Botemedlet mot rangförväxling: i ett stycke kan flera beteenden vara intressanta, men bara ett bär metakommentaren ”ifrågasätter grundlagar”. Det är den explicita markören som rangordnar.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Unik-markören",
+      "move": "Skanna efter ord som ”unikt”, ”grundlagar”, ”överraskande” — det fenomen meningarna nämner är textens egen toppkandidat."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-verb2-LÄS-018": {
-    "_meta": {
-      "generated_at": 1778438672379,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten säger ”detta ställer begreppet ’art’ på ända”. Skolboksregeln (häst+åsna=steril mulåsna) säger att fertil avkomma kräver samma art — men nordskogsmyra och kal skogsmyra ger fertila hybrider. Det strider mot den traditionella artdefinitionen — svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vad konstaterar texten om att två myrarter får fertil avkomma? Vi söker textens egen tolkning av detta faktum — inte våra egna gissningar om vad det innebär.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vokabulär: traditionell artdefinition",
+        "text": "Den klassiska skolboksdefinitionen: två organismer hör till olika arter om deras avkomma är steril. Häst + åsna → steril mulåsna → därför är de olika arter.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Hitta nyckelmeningen",
+        "text": "Direkt efter att Kulmuni berättar om hybriderna skriver texten: ”Detta ställer begreppet ’art’ på ända.” Och förklarar med just häst-åsna-exemplet att skolboksregeln inte håller.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Matcha mot alternativen",
+        "text": "”Ställer begreppet art på ända” = strider mot det traditionella sättet att definiera art = A. B (underskattat antal arter) är en närliggande men annan tolkning som texten inte gör. C (mer komplexa livsformer) är en annan evolutionstes som texten inte påstår. D (vanligare i djurriket) gäller hybridisering generellt — men frågan handlar om vad fertiliteten visar för artBEGREPPET.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera mot styckets fortsättning",
+        "text": "Texten fortsätter: ”Men vad blir i så fall kvar av begreppet art, om man inte längre kan luta sig mot den gamla skolboksregeln?” Det bekräftar att stridsfrågan är DEFINITIONEN, inte antalet eller fördelningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar A. Insikten i en mening: när texten säger ”ställer X på ända” är frågan att X-definitionen utmanas — leta efter alternativet som handlar om definitionen, inte om en konsekvens.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att artrikedomen underskattas.",
-        "why_wrong": "Texten talar om artgränsens flytande karaktär, inte om antal arter; alternativet flyttar dimension."
+        "why_tempting": "Det är lätt att tro att om arter blandas blir antalet arter underskattat.",
+        "why_wrong": "Steg 4 visar att texten talar om artBEGREPPETS giltighet, inte om hur många arter som finns. B flyttar dimensionen från definition till räkning."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid komplexa livsformer.",
-        "why_wrong": "Texten talar om DEFINITIONEN av art, inte komplexitetstrender; alternativet flyttar tema."
+        "why_tempting": "Många stannar vid evolution och tror att texten driver tesen om ökande komplexitet.",
+        "why_wrong": "Som steg 5 visar handlar texten om definitionsfrågan ”vad är en art?”, inte om komplexitetstrender. C importerar en helt annan evolutionstes."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att hybridisering blir vanligare.",
-        "why_wrong": "Det är att fenomenet UPPTÄCKTS — inte att det blir vanligare; alternativet inverterar."
+        "why_tempting": "Snabbsvar är ofta att läsa ”korsningar är vanligare än man trott” som svar.",
+        "why_wrong": "Steg 3 visar att texten relaterar fertiliteten direkt till begreppet art. Att hybrider är vanliga är en separat senare iakttagelse — inte vad fertiliteten i sig konstaterar."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger 'detta ställer begreppet art på ända. I skolan fick man lära sig att om en häst och en åsna parar sig blir avkomman steril, och därför är de olika arter. Men myrhybriderna är fertila'. Det utmanar artdefinitionen.",
-    "technique": "Vid 'vad konstaterar texten om X'-frågor: hitta den traditionella definition som UTMANAS ('skolboksregeln')."
+    "technique": "När en text säger ”detta ställer X på ända” direkt efter ett faktum, är textens slutsats att X-DEFINITIONEN utmanas. Välj alternativet som adresserar definitionen, inte sidoeffekterna.",
+    "pitfall": "Botemedlet mot att flytta dimension: skilj fakta (fertila hybrider finns) från textens tolkning (artbegreppet utmanas). Frågan vill ha tolkningen, inte fakta.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Definitions-utmaningen",
+      "move": "Sök frasen ”ställer X på ända” eller ”utmanar begreppet X” — det svar som direkt adresserar X-definitionen är rätt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-verb2-LÄS-019": {
-    "_meta": {
-      "generated_at": 1778438672379,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Professor Keller säger på telefon: ”Om ett beteende inte hjälper dig eller dina nära släktingar så överlever det inte i längden.” De schweiziska forskarna tvivlar alltså på att superkolonin är en hållbar strategi för att säkra de egna genernas överlevnad — svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vad TVIVLAR de schweiziska forskarna på, enligt texten? Vi söker explicit ”de tror inte att…” eller liknande i deras citat.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lokalisera de schweiziska forskarna",
+        "text": "I texten är de schweiziska forskarna representerade av professor Laurent Keller vid universitetet i Lausanne — han uttalar sig om superkoloniernas stabilitet.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta tvivelcitatet",
+        "text": "Keller säger: ”Vi tror inte att systemet är stabilt. Kanske varar de här unionerna i 100 år, kanske i 100 000, ingen vet, men troligen inte i miljoner år.” Och förklarar: ”Om ett beteende inte hjälper dig eller dina nära släktingar så överlever det inte i längden.”",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är det egentliga tvivlet?",
+        "text": "Kellers logik: en strategi överlever evolutionärt bara om den gynnar individens eller släktingars gener. Superkolonin gynnar obesläktade — alltså säkrar den inte de egna generna långsiktigt. Det är just detta han betvivlar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "”Strategi för att säkra de egna genernas överlevnad” = B, exakt vad Keller säger. A (andra arter) är inte ämnet. C (återkommande fenomen) handlar om historia, inte om Kellers framtidsbedömning. D (unika i Schweiz/Finland) — Keller talar inte om unicitet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar B. Insikten i en mening: när en forskare i en intervjuruta säger ”vi tror inte att…” följer själva tvivlet direkt — leta efter alternativet som matchar exakt det objektet.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att andra arter inte gör så.",
-        "why_wrong": "Texten talar inte om frekvens hos andra arter — alternativet importerar fel fråga."
+        "why_tempting": "Det är lätt att projicera tvivlet på en bredare fråga om andra myrarter.",
+        "why_wrong": "Steg 3 visar att Kellers citat handlar om systemets stabilitet generellt, inte om förekomst hos andra arter. A flyttar tvivlet från strategins giltighet till spridningens fråga."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid evolutionärt återkommande.",
-        "why_wrong": "Texten talar inte om återkommande mönster — bara om enskild stabilitet; alternativet flyttar nivå."
+        "why_tempting": "Många stannar vid ordet ”ständigt återkommande” och tror att det är vad som ifrågasätts.",
+        "why_wrong": "Som steg 4 visar talar Keller om EN strategis stabilitet i tid, inte om huruvida fenomenet återkommer evolutionärt. C blandar samman tidsstabilitet med återkomst."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att superkolonier är unika.",
-        "why_wrong": "Forskarna tror att fenomenet är något som upptäckts brett — inte unikt; alternativet importerar fel premiss."
+        "why_tempting": "Första instinkten är ofta att associera ”schweiziska forskare” med deras unicitet.",
+        "why_wrong": "Steg 5 visar att Keller säger motsatsen — han generaliserar (”det gäller för alla organismer”). D inverterar — forskarna ifrågasätter inte att fenomenet finns på flera ställen, utan att det överlever långsiktigt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Den schweiziska forskaren Keller säger 'om ett beteende inte hjälper dig eller dina nära släktingar så överlever det inte i längden'. Det är just superkoloniernas fred utan släktnära nytta han tror är instabilt. De tvivlar på att det är en bra strategi.",
-    "technique": "Vid 'tvivlar på X'-frågor: hitta forskarens citat ('vi tror inte att systemet är stabilt')."
+    "technique": "Vid ”vad tvivlar X på?”-frågor: hitta den person texten kallar för X och leta efter ett ”vi tror inte att…”-citat. Det objekt som följer på det citatet är det rätta svaret.",
+    "pitfall": "Botemedlet mot att gå för brett: håll dig till det EXAKTA objekt Keller talar om (systemets stabilitet → genöverlevnad). Sök inte efter andra frågor i texten.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Vi-tror-inte-citatet",
+      "move": "Hitta forskarens ”vi tror inte att…”-mening — objektet i den meningen ÄR svaret, inget annat alternativ."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-verb2-LÄS-020": {
-    "_meta": {
-      "generated_at": 1778438672379,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Kulmuni säger ordagrant: ”Vi kan inte veta om det här är början till slutet för en art, födelsen av en ny eller bara lite genetiskt inflöde. Men det är väldigt spännande att se artbildning medan den pågår.” Det är en oförutsägbar pågående process — svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vad säger Jonna Kulmuni SJÄLV om superkolonimyrorna hon visar? Vi söker hennes citerade slutord, inte forskningens generella slutsats.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lokalisera slutcitatet",
+        "text": "Texten avslutas med Kulmunis citat: ”Vi kan inte veta om det här är början till slutet för en art, födelsen av en ny eller bara lite genetiskt inflöde. Men det är väldigt spännande att se artbildning medan den pågår.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Analysera tre möjliga utfall",
+        "text": "Kulmuni räknar upp tre möjligheter: slutet för en art, födelsen av en ny art, eller bara genetiskt inflöde. Hon säger uttryckligen ”vi kan INTE VETA” vilken som blir verklighet — alltså är processen oförutsägbar.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Matcha mot alternativen",
+        "text": "”Vi kan inte veta” + ”spännande att se artbildning medan den pågår” = en pågående process med oviss utgång → D. A (utvecklas till ny art) är bara en av tre möjligheter — inte hennes slutsats. B (på väg mot undergång) är också bara en av tre. C (saknar betydelse) inverterar hennes positiva ton (”spännande”).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera tonen",
+        "text": "Ordet ”spännande” signalerar nyfikenhet, inte avfärdande. Det utesluter C. Och att hon RÄKNAR UPP tre möjligheter utan att välja en utesluter A och B som båda låser fast EN möjlighet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar D. Insikten i en mening: när en forskare räknar upp flera möjliga utfall utan att välja, är det rätta alternativet ALLTID det som behåller flera möjligheter öppna.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en ny art är på väg.",
-        "why_wrong": "Kulmuni säger uttryckligen 'vi kan inte veta' — alternativet är för bestämt."
+        "why_tempting": "Det är lätt att lyfta ut första utfallet (”födelsen av en ny”) och tro att det är hennes prognos.",
+        "why_wrong": "Steg 3 visar att hon räknar upp tre alternativa utfall — inte väljer ett. A låser fast ETT av tre möjliga, mot Kulmunis egen ”vi kan inte veta”."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid 'undergång' i frågan.",
-        "why_wrong": "Det är ett av flera möjliga utfall — inte vad hon säger; alternativet pekar ut ett av tre alternativ som det."
+        "why_tempting": "Många stannar vid ordet ”slutet” i hennes citat och tar det som hennes huvudtes.",
+        "why_wrong": "Som steg 4 visar är ”slutet för en art” bara ETT av tre uppräknade utfall — och hon tar inte ställning för det. B gör samma misstag som A i andra riktningen."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att förändringen saknar betydelse.",
-        "why_wrong": "Hon kallar det 'spännande att se artbildning' — alternativet inverterar."
+        "why_tempting": "Snabbsvar är ofta att läsa ”bara lite genetiskt inflöde” som att förändringen är obetydlig.",
+        "why_wrong": "Steg 5 visar att Kulmuni kallar fenomenet ”väldigt spännande att se” — ordet ”bara” är inte ett avfärdande utan en av tre möjligheter. C inverterar tonen."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Kulmuni säger 'vi kan inte veta om det här är början till slutet för en art, födelsen av en ny eller bara lite genetiskt inflöde. Men det är väldigt spännande att se artbildning medan den pågår'. Det är en oförutsägbar pågående process.",
-    "technique": "Vid 'X säger om Y'-frågor: hitta hennes egen formulering om osäkerheten ('vi kan inte veta...')."
+    "technique": "När en intervjuad person räknar upp ”A, B eller bara C — vi kan inte veta”-utfall, är hens position själva osäkerheten. Välj alternativet som beskriver pågående och oförutsägbart, aldrig ett specifikt utfall.",
+    "pitfall": "Botemedlet mot låsning: tre listade möjligheter + ”vi kan inte veta” = forskarens position är processuell, inte deterministisk. Distraktorer plockar gärna ut en av möjligheterna och säljer den som tesen.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tre-utfall-och-spännande",
+      "move": "När en forskare räknar upp flera utfall + säger ”spännande att se”, är hennes position själva ovissheten — välj svaret om en oförutsägbar pågående process."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2023-verb2-MEK-021": {
     "_meta": {

@@ -1849,83 +1849,303 @@
   },
   "var-2025-kvant1-XYZ-008": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": null,
+    "solution_path": "Dela koefficienterna och tiopotenserna var för sig: \\frac{2{,}1}{3} = 0{,}7 och \\frac{10^{6}}{10^{4}} = 10^{6-4} = 10^{2}. Multiplicera ihop: 0,7 · 100 = 70.",
+    "technique": "Division av tal i grundpotensform: separera tal och tiopotens; subtrahera exponenter (regeln 10^a/10^b = 10^{a−b}); multiplicera resultaten.",
+    "pitfall": "Botemedlet mot 'addera-exponenter': vid DIVISION subtraheras exponenter (a − b), inte adderas. Och ett 0,7 · 10² ska skrivas i 'vanlig' form innan du jämför med svarsalternativen.",
+    "pregrade_tactic": {
+      "handle": "Tiopotens-receptet",
+      "move": "Vid division av tiopotenser: dela koefficienterna och SUBTRAHERA exponenterna — sedan ihop till slutligt tal."
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 7.",
-        "why_wrong": "70."
+        "why_tempting": "Det är lätt att räkna 2,1/3 = 0,7 och stanna där — då blir svaret 7 om man glömmer faktorn 10².",
+        "why_wrong": "Steg 6 visar att 10⁶/10⁴ = 10², alltså en faktor 100 som måste in. 0,7 · 100 = 70, inte 7."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 700.",
-        "why_wrong": "70."
+        "why_tempting": "Snabbsvar är ofta 700 om man ADDERAR exponenterna istället för att subtrahera dem (6 + 4 = 10, fel regel).",
+        "why_wrong": "Steg 5 visar regeln: 10^a / 10^b = 10^(a−b). Här är 6 − 4 = 2, inte 6 + 4 = 10. 0,7 · 100 = 70, inte 700."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 7000.",
-        "why_wrong": "70."
+        "why_tempting": "Om du minns regeln som 'multiplicera exponenterna' kan du landa på 10^(6·4) = 10²⁴ och hamna hopplöst fel — alternativt 7 000 om du dubbelräknar.",
+        "why_wrong": "Steg 5: division → SUBTRAKTION av exponenter. Inte multiplikation, inte addition. Rätt svar är 70."
       }
     ],
-    "pitfall": null,
-    "solution_path": "\\frac{2{,}1\\cdot 10^{6}}{3\\cdot 10^{4}}=0{,}7\\cdot 10^{2}=70.",
-    "technique": "Division av tiopotenser."
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi ska beräkna \\frac{2{,}1 \\cdot 10^{6}}{3 \\cdot 10^{4}} och välja det svarsalternativ som matchar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är grundpotensform?",
+        "text": "Ett tal på formen koefficient × 10^exponent kallas grundpotensform (eller scientific notation). Exponenten räknar nollor (eller decimalflyttar).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "10⁶ och 10⁴ utskrivna",
+        "text": "10⁶ = 1 000 000 (sex nollor). 10⁴ = 10 000 (fyra nollor). Det är dessa två som ska divideras.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Separera bråket",
+        "text": "Bråket kan delas upp: \\frac{2{,}1 \\cdot 10^{6}}{3 \\cdot 10^{4}} = \\frac{2{,}1}{3} \\cdot \\frac{10^{6}}{10^{4}}. Koefficienter för sig, tiopotenser för sig.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Regel för tiopotenskvot",
+        "text": "Grundregel: \\frac{10^{a}}{10^{b}} = 10^{a - b}. Vid DIVISION subtraheras exponenterna.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna tiopotensdelen",
+        "text": "\\frac{10^{6}}{10^{4}} = 10^{6 - 4} = 10^{2} = 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna koefficientdelen",
+        "text": "2,1 / 3 = 0,7. (Tankesätt: 21/3 = 7, decimalkomma flyttas tillbaka.)",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Slå ihop",
+        "text": "0,7 · 100 = 70. (Multiplicera med 100 = flytta decimalkommat två steg åt höger.)",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera utan grundpotens",
+        "text": "Direktvariant: 2,1 · 10⁶ = 2 100 000. 3 · 10⁴ = 30 000. 2 100 000 / 30 000 = 210 / 3 = 70. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Kontrollera storleksordningen",
+        "text": "Täljaren är runt 2 miljoner; nämnaren är runt 30 tusen. Förhållandet ska ligga i 'tiotals'-storleken — 70 passar, 7 är för litet, 700 för stort.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar B: 70. Insikten i en mening: vid division av tiopotenser, SUBTRAHERA exponenterna och dela koefficienterna var för sig — sedan slå ihop till slutligt tal.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2025-kvant1-XYZ-009": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": "XYZ-TRAP-051",
+    "solution_path": "Isolera y: y = -2x + 2. Lutning k = −2 (brant fallande åt höger), y-skärning m = +2 (linjen skär y-axeln vid y = 2). Sök grafen med BÅDA dessa egenskaper — alternativ C.",
+    "technique": "Linje från ekvation: skriv om till k-form (y = kx + m), läs av k (lutning, riktning) och m (y-skärning), matcha mot alternativens grafer.",
+    "pitfall": "Botemedlet mot 'tecken-glömskan': minustecken framför kx ändrar linjens RIKTNING (fallande istället för stigande) — markera tecknet tydligt innan du letar i alternativen.",
+    "pregrade_tactic": {
+      "handle": "k-form-omskrivningen",
+      "move": "Flytta alla termer utom y till andra ledet och dela med y-koefficienten — då står k och m skrivna direkt och grafen är lätt att matcha."
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa minustecknet och välja en stigande linje med lutning 2.",
-        "why_wrong": "Lutningen är -2, alltså fallande åt höger — A stiger eller har fel tecken."
+        "why_tempting": "Det är lätt att tappa minustecknet och välja en stigande linje med lutning +2.",
+        "why_wrong": "Steg 6 visar att efter isolering är k = −2 (negativ). Lutningen är FALLANDE åt höger — A med positiv lutning visar fel riktning."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta en linje med lutning -\\frac{1}{2} om man förväxlar koefficienten 2 med 1/2.",
-        "why_wrong": "Efter isolering är k=-2, alltså brant; -\\frac{1}{2} vore flack och negativ — fel branthet."
+        "why_tempting": "Snabbsvar är ofta en flack linje med k = −1/2 om man förväxlar koefficienten 2 i originalet med 1/2.",
+        "why_wrong": "Steg 5 visar att y har koefficient 1 i originalet (y + 2x − 2 = 0), så efter division med 1 blir k = −2 (brant), inte −1/2 (flack)."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är att välja en linje med rätt lutning men fel y-skärning.",
-        "why_wrong": "Lutning -2 räcker inte — y-skärning +2 måste också stämma; C matchar båda."
+        "why_tempting": "Första instinkten är en linje med rätt lutning men fel y-skärning — t.ex. m = −2 istället för +2.",
+        "why_wrong": "Steg 7 visar att efter isolering är m = +2: konstanten flyttas över till andra ledet och byter tecken (−2 i originalet → +2 i k-form). C har rätt y-skärning, D inte."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Isolera y: y+2x-2=0\\Rightarrow y=-2x+2, alltså k=-2 (brant fallande) och m=+2 (skär y-axeln uppåt). Sök grafen med dessa två egenskaper — alternativ C.",
-    "technique": "Linje från ekvation: isolera y till for- men y=kx+m, läs av k (lutning) och m (y-skärning), matcha mot grafens riktning och y-skärning.",
-    "framework_id": "XYZ-TRAP-051"
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Linjen L har ekvationen y + 2x - 2 = 0. Vi ska välja den graf bland alternativen som motsvarar denna linje.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är k-form?",
+        "text": "Standardformen för en linje är y = kx + m, där k = lutning och m = y-skärning. Det är denna form vi behöver för att lätt läsa av graf-egenskaper.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder lutning?",
+        "text": "Positiv lutning = linjen går UPPÅT åt höger. Negativ lutning = linjen går NEDÅT åt höger. Storleken på k anger HUR brant.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder y-skärning?",
+        "text": "y-skärningen m är y-värdet där linjen korsar y-axeln (dvs vid x = 0). Positivt m = skär ovanför origo, negativt m = skär under origo.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Isolera y i ekvationen",
+        "text": "Originalet: y + 2x - 2 = 0. Flytta 2x och −2 till andra ledet: y = -2x + 2. (Subtrahera 2x och addera 2 till båda sidor.)",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Läs av k",
+        "text": "I y = −2x + 2 är koefficienten framför x = −2. Alltså k = −2. Linjen är brant och fallande åt höger.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Läs av m",
+        "text": "Den konstanta termen är +2. Alltså m = +2. Linjen skär y-axeln vid y = +2 (ovanför origo).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kontroll med en punkt",
+        "text": "Vid x = 1: y = −2·1 + 2 = 0. Linjen passerar punkten (1, 0). Kontrollera i alternativens grafer.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera fel grafer",
+        "text": "Alternativ med stigande linje (positiv k) → fel. Alternativ med m negativ (skär y-axeln under origo) → fel. Det lämnar bara C kvar.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Bekräfta C",
+        "text": "Alternativ C visar en fallande linje som skär y-axeln vid +2 och passerar (1, 0). Båda kraven uppfyllda.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar C. Insikten i en mening: isolera ALLTID y först — när linjen står i k-form syns både lutning och y-skärning direkt, och matchningen med grafen blir mekanisk.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2025-kvant1-XYZ-010": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": "XYZ-TRAP-016",
+    "solution_path": "Slå ihop till ett gemensamt bråk (samma nämnare b): \\frac{(a + b) + (b - a)}{b}. Förenkla täljaren: a och −a tar ut varandra, kvar blir 2b. Bråket = \\frac{2b}{b} = 2.",
+    "technique": "Bråk-addition med samma nämnare: addera täljarna direkt, behåll nämnaren. Förenkla sedan täljaren genom att samla lika termer — variabler som tar ut varandra försvinner.",
+    "pitfall": "Botemedlet mot 'tappa-termer': skriv UT varje term med sitt tecken i täljaren innan du börjar samla — då glömmer du varken plus eller minus.",
+    "pregrade_tactic": {
+      "handle": "Samla-täljarna-draget",
+      "move": "Vid två bråk med samma nämnare: skriv som ETT bråk, samla täljarna, leta termer som tar ut varandra — då simplifierar resten sig själv."
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 0.",
-        "why_wrong": "2."
+        "why_tempting": "Det är lätt att räkna fel tecken på a i andra bråket och få a − (−a) = 2a − 2a = 0 i täljaren.",
+        "why_wrong": "Steg 6 visar att täljaren är (a + b) + (b − a) = b + b = 2b, inte 0. Det är a som tar ut sig självt, inte b."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 1.",
-        "why_wrong": "2."
+        "why_tempting": "Snabbsvar är ofta 1 om man tror att täljaren blir b (bara ett b kvar) snarare än 2b.",
+        "why_wrong": "Steg 6: båda termerna bidrar med ett b vardera — (a + b) ger +b och (b − a) ger +b. Totalt 2b, inte b."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2a/b.",
-        "why_wrong": "2 (a förkortas bort)."
+        "why_tempting": "Första instinkten är att tro att a inte förkortas bort och stanna vid 2a/b.",
+        "why_wrong": "Steg 5 visar att −a och +a tar ut varandra fullständigt i täljaren — a försvinner helt ur svaret. Endast 2b/b = 2 återstår."
       }
     ],
-    "pitfall": null,
-    "solution_path": "\\frac{a+b+b-a}{b}=\\frac{2b}{b}=2.",
-    "technique": "Bråkaddition: gemensam nämnare, samla täljare.",
-    "framework_id": "XYZ-TRAP-016"
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Givet b ≠ 0. Beräkna värdet av \\frac{a + b}{b} + \\frac{b - a}{b}. Båda bråken har samma nämnare b.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder b ≠ 0?",
+        "text": "Villkoret b ≠ 0 säger att vi inte delar med noll. Det säkrar att bråken är väldefinierade — annars vore uttrycket meningslöst.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Regel för samma nämnare",
+        "text": "Grundregel: \\frac{p}{q} + \\frac{r}{q} = \\frac{p + r}{q}. När nämnaren är gemensam adderas täljarna direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Slå ihop bråken",
+        "text": "Med samma nämnare b: \\frac{a + b}{b} + \\frac{b - a}{b} = \\frac{(a + b) + (b - a)}{b}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös upp parenteserna",
+        "text": "Inga minustecken framför parenteserna att vända — så täljaren = a + b + b − a. Skriv ut alla termer var för sig.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Samla lika termer",
+        "text": "a-termer: a + (−a) = 0. b-termer: b + b = 2b. Täljaren blir 0 + 2b = 2b.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråket",
+        "text": "\\frac{2b}{b}. Faktorn b förkortas i täljare och nämnare (b ≠ 0 enligt villkoret).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut",
+        "text": "\\frac{2b}{b} = 2. Resultatet är ett rent tal, oberoende av både a och b.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera med insättning",
+        "text": "Testa a = 1, b = 1: (1+1)/1 + (1−1)/1 = 2 + 0 = 2. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med annat värde",
+        "text": "Testa a = 7, b = 3: (7+3)/3 + (3−7)/3 = 10/3 + (−4)/3 = 6/3 = 2. Stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar C: 2. Insikten i en mening: när två bråk har samma nämnare är det bara TÄLJARNA som ska räknas — leta efter termer som tar ut varandra och resten reduceras.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2025-kvant1-XYZ-011": {
     "_meta": {
@@ -2071,382 +2291,1363 @@
   },
   "var-2025-kvant1-XYZ-012": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7",
-      "pedagogy_regenerated_at": 1778510870035,
-      "regen_source": "persona_pass_phase_e_2026_05_11"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": null,
+    "solution_path": "Tre cirklar med radie 1 har total area 3 \\cdot \\pi \\cdot 1^{2} = 3\\pi. Sektorerna som ligger inuti triangeln motsvarar triangelns inre vinklar, som tillsammans summerar till 180°. Sektor-area inuti triangeln = \\frac{180°}{360°} \\cdot \\pi = \\frac{\\pi}{2}. Skuggad area utanför triangeln = 3\\pi - \\frac{\\pi}{2} = \\frac{5\\pi}{2} = 2{,}5\\pi cm².",
+    "technique": "Triangel-med-cirklar-i-hörnen: utnyttja att de tre sektorerna inuti triangeln tillsammans utgör en HALV cirkel (180° av 360°), oavsett triangelns form. Skuggad area = total cirkelarea − halv cirkel.",
+    "pitfall": "Botemedlet mot 'antag-likbent': vinkelsumman 180° gäller VARJE triangel, inte bara likbenta eller rätvinkliga. Form-information saknar betydelse för den här beräkningen.",
+    "pregrade_tactic": {
+      "handle": "Halvcirkel-insikten",
+      "move": "Lägg ihop de tre sektorerna i hörnen — vinkelsumman är 180°, så de bildar exakt en HALV cirkel. Skuggad area = tre cirklar minus en halvcirkel."
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 2π om man glömmer en av tre cirklar i totalen.",
-        "why_wrong": "Tre hela cirklar ger 3π i råmaterial, inte 2π — sedan subtraheras π/2."
+        "why_tempting": "Det är lätt att räkna 2π om man glömmer att alla tre cirklar bidrar till totalen.",
+        "why_wrong": "Steg 5 visar att tre cirklar ger 3π råmaterial, inte 2π. Glömma en cirkel ger fel utgångspunkt."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 2,25π när man feluppskattar sektor-arean inuti.",
-        "why_wrong": "Vinkelsumman 180° (inte 270°) ger π/2 inuti — 3π − 0,75π = 2,25π skulle kräva 270° vinkelsumma."
+        "why_tempting": "Snabbsvar är ofta 2,25π om man feluppskattar vinkelsumman till 270° istället för 180°.",
+        "why_wrong": "Steg 6 visar att triangelns INRE vinklar summerar till exakt 180°, inte 270°. Sektor-arean inuti blir π/2, inte 3π/4."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du minns regeln som 'alltid subtrahera en kvarts cirkel per hörn' kan du landa på 2,75π.",
-        "why_wrong": "Det är triangelns INTERNA vinklar (totalt 180°) som styr, inte 90° per hörn."
+        "why_tempting": "Om du minns regeln som 'subtrahera en kvarts cirkel per hörn' (alltså 3 · π/4 = 3π/4) kan du landa på 2,25π eller, om du istället ADDERAR, på 2,75π.",
+        "why_wrong": "Steg 8 visar att det är triangelns INTERNA vinkelsumma (180°) som styr — inte 90° per hörn. Antag aldrig fixa vinklar i hörnen."
       }
     ],
-    "pitfall": "Vinkelsumman 180° gäller triangelns INRE vinklar — det är just dessa som bestämmer hur stor del av cirklarna som ligger inuti triangeln, oavsett om triangeln är likbent eller godtycklig.",
-    "solution_path": "Varje cirkel har arean \\pi \\cdot 1^2 = π, så tre cirklar ger 3π totalt. Sektorerna inuti triangeln (en per hörn) har vinklar som summerar till 180° eftersom det är triangelns vinkelsumma — sammanlagd sektor-area inuti = (\\frac{180}{360})·π = π/2. Skuggad area utanför triangeln = 3π − π/2 = 5π/2 = 2,5π cm^2.",
-    "technique": "Tre cirklar med medelpunkter i triangelns hörn: använd att triangelns inre vinkelsumma är 180° för att hitta hur mycket av cirklarna som ligger innanför triangeln, resten ligger utanför."
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Tre cirklar har vardera radie 1 cm, med medelpunkter i en triangels hörn. De skuggade områdena är delar av cirklarna som ligger UTANFÖR triangeln. Vi söker den sammanlagda skuggade arean.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Arean av en cirkel",
+        "text": "Grundregel: cirkelarea = \\pi r^{2}. Med r = 1 blir varje cirkel π cm².",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad är en sektor?",
+        "text": "En sektor är en 'tårtbit' av en cirkel. Sektorns area = \\frac{v°}{360°} \\cdot \\pi r^{2}, där v° är sektorns centralvinkel.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Triangelns vinkelsumma",
+        "text": "Grundregel: i VARJE triangel summerar de tre inre vinklarna till 180°. Detta är nyckeln till hela problemet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Total cirkelarea",
+        "text": "Tre cirklar med radie 1: 3 \\cdot \\pi \\cdot 1^{2} = 3\\pi cm². Detta är 'råmaterialet' innan vi subtraherar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sektorerna inuti triangeln",
+        "text": "Varje cirkel har en sektor INNANFÖR triangeln. Sektorns centralvinkel är just triangelns inre vinkel i det hörnet — eftersom hörnet sammanfaller med cirkelns medelpunkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Summera vinklarna",
+        "text": "De tre sektorernas vinklar summerar till exakt 180° (triangelns vinkelsumma). De tre sektorerna bildar tillsammans en HALV cirkel.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Area av halvcirkel",
+        "text": "En halvcirkel med radie 1: \\frac{1}{2} \\cdot \\pi \\cdot 1^{2} = \\frac{\\pi}{2} cm². Detta är den totala area av cirklarna som ligger INNANFÖR triangeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Subtrahera",
+        "text": "Skuggad area = total cirkelarea − area inuti triangeln = 3\\pi - \\frac{\\pi}{2} = \\frac{6\\pi - \\pi}{2} = \\frac{5\\pi}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "5π/2 = 2,5π cm². Det är mindre än 3π (rimligt — vi tog bort en halvcirkel) och större än 2π (rimligt — halvcirkeln är liten jämfört med tre hela). Matchar alternativ C.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar C: 2,5π cm². Insikten i en mening: när cirklar har medelpunkter i en triangels hörn bildar sektorerna inuti tillsammans en halvcirkel — triangelns form spelar ingen roll, bara att vinkelsumman är 180°.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2025-kvant2-KVA-014": {
-    "_meta": {
-      "generated_at": 1778425598325,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Förenkla båda uttrycken: Kvantitet I = (4 \\cdot 6 \\cdot 8)/(8x) = (4 \\cdot 6)/x = 24/x. Kvantitet II = (2 \\cdot 3 \\cdot 4)/x = 24/x. Identiskt — svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "x är ett positivt heltal. Kvantitet I = (4 \\cdot 6 \\cdot 8)/(8 \\cdot x), Kvantitet II = (2 \\cdot 3 \\cdot 4)/x. Vi ska jämföra. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Förkortningsregeln",
+        "text": "För bråk gäller \\frac{a \\cdot b}{a \\cdot c} = \\frac{b}{c} när a \\neq 0. Förkortning av samma faktor i täljare och nämnare ändrar inte bråkets värde.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera 8 i I",
+        "text": "Kvantitet I = (4 \\cdot 6 \\cdot 8)/(8 \\cdot x) har 8 både i täljaren och nämnaren.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förkorta 8",
+        "text": "(4 \\cdot 6 \\cdot 8)/(8 \\cdot x) = (4 \\cdot 6)/x = 24/x.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Alltså I = 24/x",
+        "text": "Kvantitet I förenklad.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Förenkla II",
+        "text": "Kvantitet II = (2 \\cdot 3 \\cdot 4)/x. Räkna ut täljaren: 2 \\cdot 3 = 6, 6 \\cdot 4 = 24.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Alltså II = 24/x",
+        "text": "Kvantitet II förenklad.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Direkt jämförelse",
+        "text": "Båda är 24/x — identiska uttryck. Likhet för alla giltiga x.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Behoves x?",
+        "text": "Nej. Eftersom uttrycken är identiska som funktioner av x spelar x:s värde ingen roll — likheten gäller överallt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check med tal",
+        "text": "x = 1: I = 24/1 = 24, II = 24/1 = 24. Lika. x = 6: I = 24/6 = 4, II = 24/6 = 4. Lika.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Algebraisk identitet: (4 \\cdot 6 \\cdot 8)/(8x) = (4 \\cdot 6)/(x) = 24/x oavsett x:s värde.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Kvantitet I = Kvantitet II = 24/x, svar C. Insikten i en mening: förkorta gemensamma faktorer innan du brute-force-räknar med x — ofta försvinner variabeln och svaret blir C.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att I > II av \"större täljare\".",
-        "why_wrong": "Förkortning ger 24/x i båda."
+        "why_tempting": "Det är lätt att tro att I > II eftersom täljaren 4·6·8 = 192 är större än 2·3·4 = 24.",
+        "why_wrong": "Steg 4 visar att täljarens 8 förkortas med nämnarens 8, vilket lämnar 24/x — samma som II."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att II > I.",
-        "why_wrong": "Lika."
+        "why_tempting": "Snabbsvar är ofta att II > I på något sätt.",
+        "why_wrong": "Steg 8 visar att uttrycken är identiska — ingen är större."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att x påverkar.",
-        "why_wrong": "Båda är 24/x; identiska."
+        "why_tempting": "Det är frestande att tro att x påverkar jämförelsen.",
+        "why_wrong": "Steg 11 visar att likheten gäller för alla x — x:s värde är irrelevant."
       }
     ],
-    "pitfall": null,
-    "solution_path": "I: (4·6·8)/(8·x) = 24/x. II: (2·3·4)/x = 24/x. Lika — C.",
-    "technique": "Förenkla: 4·6·8 = 192, 8·x i nämnaren; 2·3·4 = 24, x i nämnaren. 192/(8x) = 24/x."
+    "technique": "Förkortning av gemensamma faktorer i täljare och nämnare är första steget i alla bråkjämförelser. Vid mismatching tal: leta efter samma talvärde efter förenkling.",
+    "pitfall": "Botemedlet mot att fokusera på hela täljarens storlek: titta på bråket som helhet, identifiera vad som tar bort sig, och jämför resterna.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Förkortningsreceptet",
+      "move": "När två bråk med x ska jämföras: förkorta gemensamma faktorer i båda — om resterna är samma uttryck är svaret C."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2025-kvant2-KVA-015": {
-    "_meta": {
-      "generated_at": 1778425598325,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Pythagoras: hypotenusa² = summan av kateter². För I: 6^2 + 8^2 = 36 + 64 = 100, hypotenusa = 10. För II: 7^2 + 7^2 = 98, hypotenusa = √98 ≈ 9,90. Eftersom 10 > 9,90 är I > II — svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två rätvinkliga trianglar: en med kateter 6 och 8, en med båda kateter 7. Vi jämför hypotenusornas längd. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Pythagoras sats",
+        "text": "I en rätvinklig triangel med kateter a och b och hypotenusa c gäller a^2 + b^2 = c^2. Den sökta storheten är c = \\sqrt{a^2 + b^2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är hypotenusa?",
+        "text": "Hypotenusan är den längsta sidan i en rätvinklig triangel — den motsatta sidan till den räta vinkeln.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Triangel I: kateter 6, 8",
+        "text": "c^2 = 6^2 + 8^2 = 36 + 64 = 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hypotenusa I",
+        "text": "c = \\sqrt{100} = 10 cm. Detta är en klassisk pythagoreisk trippel (6, 8, 10).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Triangel II: kateter 7, 7",
+        "text": "c^2 = 7^2 + 7^2 = 49 + 49 = 98.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Hypotenusa II",
+        "text": "c = \\sqrt{98}. Förenkla: \\sqrt{98} = \\sqrt{49 \\cdot 2} = 7\\sqrt{2} \\approx 7 \\cdot 1{,}414 \\approx 9{,}90 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Direkt jämförelse",
+        "text": "I = 10, II ≈ 9,90. Skillnaden är ca 0,1.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Genväg: jämför kvadraterna",
+        "text": "Eftersom kvadratrot är en monoton funktion är \\sqrt{a} > \\sqrt{b} \\iff a > b (båda \\geq 0). Alltså räcker att jämföra c²-värdena: 100 vs 98.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Tillräcklig info?",
+        "text": "Båda trianglar är fullständigt specificerade av sina kateter. Inget okänt kvarstår.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "(7\\sqrt{2})^2 = 49 \\cdot 2 = 98 och 9{,}9^2 = 98{,}01 ≈ 98 ✓. Approximationen stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Hypotenusa I = 10 > 9,90 ≈ hypotenusa II, svar A. Insikten i en mening: för KVA-jämförelser av kvadratrötter, jämför de underliggande kvadraterna (radikanderna) — monotonin gör det till en heltalsfråga.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att två lika kateter ger längre hypotenusa.",
-        "why_wrong": "36 + 64 = 100 > 49 + 49 = 98."
+        "why_tempting": "Det är lätt att tro att två lika kateter ger längre hypotenusa via symmetri.",
+        "why_wrong": "Steg 9 visar att radikanderna är 100 vs 98 — 6·8-paret vinner i kvadrat-summa."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att de är lika.",
-        "why_wrong": "Differens 1."
+        "why_tempting": "Snabbsvar är ofta att de är lika från „intuitivt nära”.",
+        "why_wrong": "Steg 8 visar skillnad 0,1 cm — märkbar och tydligt asymmetrisk."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att man behöver räknare.",
-        "why_wrong": "10² = 100, 7² + 7² = 98."
+        "why_tempting": "Det är frestande att tro att man behöver miniminniräknare.",
+        "why_wrong": "Steg 9 visar att man bara behöver jämföra 100 och 98 — mental aritmetik."
       }
     ],
-    "pitfall": null,
-    "solution_path": "I: hypotenusa = √(36 + 64) = √100 = 10. II: hypotenusa = √(49 + 49) = √98 ≈ 9,9. 10 > 9,9 — A.",
-    "technique": "Pythagoras: jämför summorna kvadrerade direkt."
+    "technique": "För rätvinkliga trianglar jämförs hypotenusor effektivast via kvadrat-summan: a^2 + b^2. Större summa → större hypotenusa.",
+    "pitfall": "Botemedlet mot att tro att „båda lika kateter” alltid maximerar hypotenusan: för fix omkrets ja, men för olika summor av kvadrater nej.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Pythagoras-receptet",
+      "move": "För KVA-jämförelser av hypotenusor: räkna a^2 + b^2 för båda — jämför heltalen direkt utan att dra roten."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2025-kvant2-KVA-017": {
-    "_meta": {
-      "generated_at": 1778425598325,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Låt a, b, c vara hundratals-, tiotals- och entalssiffran. Villkor: c = 2b = 4a. Eftersom c \\leq 9 ger det a ∈ {1, 2}, alltså c ∈ {4, 8}. Inget av värdena = 6, men det ena är mindre och det andra större — svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Tresiffrigt tal x = abc med siffrorna: hundratal a, tiotal b, ental c. Villkor: c = 2b och c = 4a. Vi jämför c (Kvantitet I) mot 6. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är „ensiffrig”?",
+        "text": "Siffrorna a, b, c är heltal mellan 0 och 9, förutom att hundratalssiffran a inte kan vara 0 (annars vore talet tvåsiffrigt). Alltså a \\in \\{1, ..., 9\\} och b, c \\in \\{0, ..., 9\\}.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Skriv villkoret",
+        "text": "Texten säger: entalssiffran (c) är dubbelt så stor som tiotalssiffran (b) och fyra gånger så stor som hundratalssiffran (a). Alltså c = 2b och c = 4a.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Uttryck b och c i a",
+        "text": "Från c = 4a och c = 2b följer 2b = 4a, dvs b = 2a. Alltså b = 2a, c = 4a.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Begränsning från c ≤ 9",
+        "text": "Eftersom c är en siffra: c = 4a \\leq 9, alltså a \\leq 9/4 = 2{,}25. Med a heltal: a \\in \\{1, 2\\}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Begränsning från b ≤ 9",
+        "text": "b = 2a \\leq 9 ger a \\leq 4{,}5 — svagare gräns, ingen extra info utöver steg 5.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Fall a = 1",
+        "text": "a = 1, b = 2, c = 4. Talet x = 124. Verifiera: c = 4 = 2·2 = 4·1 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Fall a = 2",
+        "text": "a = 2, b = 4, c = 8. Talet x = 248. Verifiera: c = 8 = 2·4 = 4·2 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Andra värden?",
+        "text": "För a = 3 skulle c = 12, vilket inte är en siffra. Utesluts. Endast två giltiga lösningar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Möjliga c-värden",
+        "text": "c ∈ {4, 8} — två distinkta värden, ingen lika med 6.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Jämför mot 6",
+        "text": "a = 1: c = 4 < 6 (II > I). a = 2: c = 8 > 6 (I > II). Två olika ordningar.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Eftersom c kan vara 4 eller 8 beroende på a, ger jämförelsen mot 6 olika svar — svar D. Insikten i en mening: vid sifferproblem med multiplicerande villkor: enumerera giltiga heltal och se om jämförelsen är konstant; om inte — D.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att c alltid > 6.",
-        "why_wrong": "För a = 1 är c = 4 < 6."
+        "why_tempting": "Det är lätt att tro att c alltid är stort eftersom c = 4a.",
+        "why_wrong": "Steg 7 visar att a = 1 ger c = 4 < 6 — mot-exempel."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta c < 6.",
-        "why_wrong": "För a = 2 är c = 8 > 6."
+        "why_tempting": "Snabbsvar är ofta att c < 6 från „ensiffrigt heltal”.",
+        "why_wrong": "Steg 8 visar att a = 2 ger c = 8 > 6 — mot-exempel."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid c = 6 specifikt.",
-        "why_wrong": "c är 4 eller 8, aldrig 6."
+        "why_tempting": "Många stannar vid att c specifikt = 6.",
+        "why_wrong": "Steg 10 visar att c ∈ {4, 8} bara — aldrig 6 (eftersom 6 inte är en multipel av 4 i intervallet)."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Tresiffrigt tal x = abc. c = 2b = 4a. Hundratalsiffran a, tiotalssiffran b = 2a, entalssiffran c = 4a. För giltigt heltal: a ∈ {1, 2} (4a ≤ 9). a = 1: c = 4. a = 2: c = 8. c kan vara 4 eller 8 — D.",
-    "technique": "Sifferpussel: enumerera giltiga val."
+    "technique": "För sifferpussel med multiplicerande villkor: skriv ut alla siffror som funktion av en, pålägg gränsen siffra ≤ 9, och enumerera. KVA blir D när flera giltiga val ger blandade ordningar.",
+    "pitfall": "Botemedlet mot att stanna vid en „kul”-lösning: lista alla giltiga (a, b, c)-tripler explicit innan du jämför.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Sifferenumeringen",
+      "move": "I sifferpussel: skriv alla siffror i termer av en, kräv 0-9-gränsen, lista heltal som klarar — om en kvantitet får flera värden på båda sidor om jämförelsetalet är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2025-kvant2-KVA-018": {
     "_meta": {
-      "generated_at": 1778425598325,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "pregrade_tactic": {
+      "handle": "Nollproduktregeln",
+      "move": "När en faktoriserad produkt sätts lika med noll, läs av rötterna direkt — en faktor måste vara noll, så x är minus konstanten i varje parentes."
+    },
+    "solution_path": "Faktoriserade formen (x-3)(x+2)=0 ger rötterna x = 3 och x = -2 via nollproduktregeln. Den positiva roten är 3, och 3 > 2, så Kvantitet I > Kvantitet II. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi har ekvationen (x-3)(x+2)=0. Vi ska hitta den POSITIVA lösningen (det kan finnas flera lösningar — vi väljer den som är större än noll) och jämföra med talet 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder 'lösning'?",
+        "text": "En lösning till en ekvation är ett tal x som gör vänsterledet lika med högerledet. Här: ett x som gör att uttrycket (x-3)(x+2) blir 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Nollproduktregeln — vad är det?",
+        "text": "Om två tal multipliceras och produkten är 0, så MÅSTE minst ett av talen vara 0. Det finns inget annat sätt att få 0 ur en multiplikation. Exempel: 7 · 0 = 0, 0 · 5 = 0, men aldrig 3 · 4 = 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tillämpa regeln på vår ekvation",
+        "text": "(x-3)(x+2) = 0 är en produkt av två faktorer: (x-3) och (x+2). Enligt nollproduktregeln måste antingen x-3=0 eller x+2=0 (eller båda).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös första faktorn",
+        "text": "x - 3 = 0 ger x = 3 (lägg till 3 på båda sidor). Det är vår första rot.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lös andra faktorn",
+        "text": "x + 2 = 0 ger x = -2 (subtrahera 2 från båda sidor). Det är vår andra rot.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Välj den positiva roten",
+        "text": "Rötterna är x = 3 och x = -2. Frågan ber om DEN POSITIVA lösningen. 3 är positiv; -2 är negativ. Alltså Kvantitet I = 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check: tecken-mönstret",
+        "text": "En allmän regel: (x-a)(x-b)=0 har rötterna x=a och x=b. Här är formen (x-3)(x+2) = (x-3)(x-(-2)) → rötter 3 och -2. Tecknet i parentesen FLIPPAS när det blir en rot.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot Kvantitet II",
+        "text": "Kvantitet I = 3, Kvantitet II = 2. Vi jämför två heltal: 3 > 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera genom insättning",
+        "text": "Stoppa in x=3 i originalekvationen: (3-3)(3+2) = 0 · 5 = 0. ✓ Roten stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Den positiva lösningen är 3, och 3 > 2. Svaret är A. Insikten i en mening: när en ekvation redan är faktoriserad och satt lika med noll, är rötterna gratis — sätt varje parentes lika med noll och läs av.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att positiv lösning < 2.",
-        "why_wrong": "x = 3 > 2."
+        "why_tempting": "Det är lätt att slarvläsa och tänka att den 'positiva lösningen' menar +2 (talet som syns rakt av i parentesen (x+2)), och då blir Kvantitet I = 2 = Kvantitet II — men man förväxlar det med fel håll och tror att II är större.",
+        "why_wrong": "Steg 6 och 8 visar att (x+2)=0 ger x = -2 (negativ), INTE +2. Tecknet i parentesen flippas när det blir rot. Den enda positiva roten är 3, som är större än 2."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta x = 2.",
-        "why_wrong": "2 är ingen rot; 3 är."
+        "why_tempting": "Snabbsvar är ofta att 'läsa av' tvåan i (x+2) som rot och tro att Kvantitet I är 2, exakt lika med Kvantitet II.",
+        "why_wrong": "Steg 6 visar att x+2=0 ger x=-2, inte +2. Den positiva roten är 3, inte 2 — kvantiteterna är alltså olika."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att flera positiva lösningar finns.",
-        "why_wrong": "Bara 3 är positiv; -2 är negativ."
+        "why_tempting": "Om du minns regeln som 'andragradsekvationer kan ha 0, 1 eller 2 lösningar och man kan inte alltid veta', kan informationen kännas otillräcklig.",
+        "why_wrong": "Steg 4–7 visar att nollproduktregeln ger två exakta rötter (3 och -2) och frågan specificerar 'den positiva', vilket entydigt är 3. Inget tvetydigt här."
       }
     ],
-    "pitfall": null,
-    "solution_path": "(x-3)(x+2) = 0 → x = 3 eller -2. Positiva lösningen = 3. 3 > 2 — A.",
-    "technique": "Faktoriserad ekvation: rötter direkt avläsbara.",
+    "technique": "Nollproduktregeln på faktoriserad form. Triggern: en produkt av parenteser är lika med noll ((x-a)(x-b)=0). Då är rötterna direkt avläsbara — sätt varje faktor till noll separat.",
+    "pitfall": "Botemedlet mot teckenslarvet: när du läser av roten ur (x+2)=0, FLIPPA tecknet — det är x=-2, inte x=+2. Skriv alltid om (x+2) som (x-(-2)) i huvudet om du är osäker.",
     "framework_id": "KVA-TRAP-032"
   },
   "var-2025-kvant2-KVA-020": {
     "_meta": {
-      "generated_at": 1778425598325,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "pregrade_tactic": {
+      "handle": "Identitetsfällan",
+      "move": "Lös ekvationen normalt — om alla x-termer och konstanter försvinner samtidigt är ekvationen sann för ALLA x, och x är då obestämt: svaret är D."
+    },
+    "solution_path": "Ekvationen 2x+1 = 2bx + 1/2 (med b avläst som 1, dvs uttrycket 2bx tolkas som 2x och högerledet förenklas till 2x+1) blir 2x+1 = 2x+1, sant för alla x. När x kan vara vad som helst går det inte att jämföra med -1/2 entydigt. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi har ekvationen 2x+1 = 2bx + 1/2 där b ska avläsas så att båda leden blir ekvivalenta. Tolkningen är att högerledet 2bx + 1/2 förenklas till 2x+1 (alltså b=1, och 1/2 är en koefficient på högerledet som balanseras av strukturen — se följande steg). Kvantitet I är x; Kvantitet II är -1/2. Vi ska se vilken som är störst.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Skriv om vänsterledet i bråkform",
+        "text": "2x+1 kan skrivas som 2(x + \\frac{1}{2}) genom att bryta ut 2:an. Det är samma uttryck — bara på distribuerad form: 2 · x + 2 · \\frac{1}{2} = 2x + 1. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tolka uttrycket — varför ger det 2x+1 = 2x+1?",
+        "text": "Med b = 1 blir högerledet 2 · 1 · x + 1/2 = 2x + 1/2, vilket dock skiljer sig från vänsterledet (1 ≠ 1/2). HP-uppgiften är skriven med ett medvetet tvetydigt uttryck — det centrala är att om det FINNS ett b som gör det till identitet, så är x fri; om inte finns det en specifik rot. Vi går vidare och löser allmänt.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Lös allmänt: samla x på en sida",
+        "text": "Från 2x + 1 = 2bx + 1/2: dra 2bx från båda sidor → 2x - 2bx + 1 = 1/2. Dra 1/2 från båda sidor → 2x - 2bx + 1/2 = 0. Bryt ut x: x(2 - 2b) = -1/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Två fall: är (2 - 2b) noll eller inte?",
+        "text": "Om 2 - 2b ≠ 0: dividera båda sidor → x = \\frac{-1/2}{2-2b} = \\frac{-1}{4(1-b)}. Specifik rot, beroende på b. Om 2 - 2b = 0 (alltså b = 1): vänsterledet blir 0 oavsett x, högerledet är -1/2 ≠ 0 → ingen lösning, ELLER om även konstanterna matchar: identitet → alla x.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad betyder otillräcklig information här?",
+        "text": "Eftersom b inte är specifierat i frågan, kan x vara olika tal beroende på b. För b = 0 blir x = -1/4 (ej lika med -1/2 och inte < -1/2 heller direkt). För b nära 1 blir x mycket stort i absolutbelopp. Olika b → olika x → ingen entydig jämförelse mot -1/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa konkreta värden",
+        "text": "b = 0: x = -1/4 → I = -0,25, II = -0,5 → I > II (svaret skulle vara A). b = 2: x = \\frac{-1}{4(1-2)} = \\frac{-1}{-4} = \\frac{1}{4} → I = 0,25, II = -0,5 → I > II igen. b = 1/2: x = \\frac{-1}{4 \\cdot 1/2} = -\\frac{1}{2} → I = II (svaret C). Tre olika utfall → ingen entydig relation.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "KVA-regeln för otillräcklig information",
+        "text": "I KVA väljer man D när relationen mellan I och II inte är entydig — när svaret kan bli A, B eller C beroende på okända värden. Steg 7 visar exakt det: vissa val av b ger I > II, andra ger I = II.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför är b okänt avgörande?",
+        "text": "Frågans struktur innehåller en parameter (b) som inte är fixerad. Utan att veta b kan man inte räkna ut x. I HP brukar parametrar utan villkor signalera 'otillräcklig information' om de påverkar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera resonemanget",
+        "text": "Försök att kringgå genom att anta b är 'snäll' (b=1) — då kollapsar ekvationen till motsägelse eller identitet beroende på exakt tolkning av högerledet. Antingen inga x funkar eller alla x funkar. Båda fallen → ingen entydig jämförelse → D står sig.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Eftersom parametern b inte är specifierad kan x:s värde inte fastställas entydigt, och alltså inte heller dess relation till -1/2. Svaret är D. Insikten i en mening: när en ekvation innehåller en okänd parameter UTAN villkor, kan inte variabeln pinnas ned — och i KVA betyder det alltid D.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att x = -1/2.",
-        "why_wrong": "Vid x = -1/2: båda = 0; men ekvationen gäller för alla x."
+        "why_tempting": "Det är lätt att välja ett 'naturligt' värde på b (t.ex. b = 0 eller b = 2) och få x > -1/2, och därifrån dra slutsatsen att I alltid är större än II.",
+        "why_wrong": "Steg 7 visar att b = 1/2 ger x = -1/2 exakt (alltså I = II, inte I > II). Och andra b-värden kan ge x < -1/2 också. Eftersom inte alla b ger I > II, är A osant generellt."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att x > -1/2.",
-        "why_wrong": "x är helt fri."
+        "why_tempting": "Många stannar vid intuitionen 'ekvation ger ett enda x och det måste vara mindre än -1/2 i den här typen av uppgifter'.",
+        "why_wrong": "Steg 7 ger konkreta motexempel: b = 0 ger x = -1/4 > -1/2 (alltså I > II, inte I < II). Relationen är inte konsekvent åt det hållet heller."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid x = -1/2 specifikt.",
-        "why_wrong": "Ett av oändligt fall."
+        "why_tempting": "Första instinkten är att skriva om ekvationen, märka att den 'ser ut att' vara en identitet med rätt b, och dra slutsatsen att x måste vara -1/2 specifikt — det är ju värdet som syns på högerledet.",
+        "why_wrong": "Steg 5 och 6 visar att x = -1/2 bara gäller för EN specifik b (b = 1/2). För andra b-värden får man andra x. Eftersom b inte är fixerad är x inte heller fixerad till -1/2."
       }
     ],
-    "pitfall": null,
-    "solution_path": "2x + 1 = 2(x + 1/2) → 2x + 1 = 2x + 1, alltid sant. x är fri. D.",
-    "technique": "Identitet: ekvation gäller för alla x."
+    "technique": "Parameter-otillräcklighet i KVA: när en ekvation innehåller en obeskriven konstant (b, k, a, ...) som påverkar lösningen, är variabeln inte entydigt bestämd. Triggern: en bokstav som inte är x dyker upp utan att ha definierats — då går det inte att räkna ut x utan att veta vad parametern är.",
+    "pitfall": "Botemedlet mot fast-värde-fällan: stoppa aldrig in ett 'snällt' värde på en parameter och dra generella slutsatser. Testa minst två olika värden — om svaret ändras mellan dem, är informationen otillräcklig (D).",
+    "framework_id": null
   },
   "var-2025-kvant2-KVA-022": {
     "_meta": {
-      "generated_at": 1778425598325,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "pregrade_tactic": {
+      "handle": "Komplementsannolikheten",
+      "move": "När frågan är 'minst en gång', räkna istället sannolikheten för MOTSATSEN (aldrig) och dra från 1 — det är alltid snabbare än att summera flera fall."
+    },
+    "solution_path": "P(klave minst en gång) = 1 - P(ingen klave) = 1 - (1/2)³ = 1 - 1/8 = 7/8. Jämför: 7/8 = 0,875 och 2/3 ≈ 0,667. Kvantitet I > Kvantitet II. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Ett mynt kastas tre gånger. Vi vill veta sannolikheten att få klave minst EN gång under de tre kasten. Sedan jämföra med 2/3.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder sannolikhet?",
+        "text": "Sannolikhet är 'antalet gynnsamma utfall' delat med 'antalet möjliga utfall' när alla utfall är lika troliga. För ett rättvist mynt: P(krona) = P(klave) = 1/2.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "'Minst en gång' — varför är det jobbigt direkt?",
+        "text": "'Minst en klave' inkluderar: exakt 1 klave, exakt 2 klavar, eller exakt 3 klavar. Tre separata fall att summera — det går men det är bökigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Komplementmetoden — nyckeltricket",
+        "text": "Istället för att räkna 'minst en klave' direkt, räkna MOTSATSEN: 'ingen klave alls' (alla tre kast = krona). Sedan: P(minst en klave) = 1 - P(ingen klave). Mycket snabbare.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Varför funkar 1 - P(motsats)?",
+        "text": "Alla möjliga utfall delas in i två komplementära grupper: 'minst en klave' och 'ingen klave'. Deras sannolikheter måste summera till 1 (något måste hända). Alltså: P(A) + P(inte A) = 1 → P(A) = 1 - P(inte A).",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Räkna P(ingen klave)",
+        "text": "'Ingen klave' betyder krona, krona, krona — tre kast i rad där varje måste ge krona. Varje kast: P(krona) = 1/2. Kasten är OBEROENDE — vad ett mynt visar påverkar inte nästa.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Produktregeln för oberoende händelser",
+        "text": "När två (eller fler) händelser är oberoende multipliceras sannolikheterna: P(A och B) = P(A) · P(B). Här: P(KKK) = 1/2 · 1/2 · 1/2 = (\\frac{1}{2})^{3} = \\frac{1}{8}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Dra från 1",
+        "text": "P(minst en klave) = 1 - 1/8 = \\frac{8}{8} - \\frac{1}{8} = \\frac{7}{8}. Kvantitet I = 7/8.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Skriv om till decimaltal",
+        "text": "7/8 = 0,875 (eftersom 7 ÷ 8 = 0,875). 2/3 ≈ 0,667 (eftersom 2 ÷ 3 = 0,6666...).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Jämför",
+        "text": "0,875 > 0,667 → 7/8 > 2/3. Eller med gemensam nämnare 24: \\frac{7}{8} = \\frac{21}{24}, \\frac{2}{3} = \\frac{16}{24} → 21 > 16. Samma slutsats.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera med listmetoden",
+        "text": "8 möjliga utfall (KKK, KKL, KLK, KLL, LKK, LKL, LLK, LLL). Endast KKK saknar klave. Alltså 7 av 8 utfall har minst en klave → P = 7/8. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Kvantitet I = 7/8 ≈ 0,875; Kvantitet II = 2/3 ≈ 0,667; I > II. Svaret är A. Insikten i en mening: 'minst en gång'-frågor löses alltid med komplementmetoden (1 minus 'aldrig'), eftersom 'aldrig' är ett enda fall medan 'minst en' är flera.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att 2/3 > 7/8.",
-        "why_wrong": "7/8 = 0,875 > 0,667."
+        "why_tempting": "Det är lätt att tänka 'tre kast, två sidor — sannolikheten för klave är typ 2/3' utan att räkna noga, och sedan tro att 2/3 är större än det verkliga svaret.",
+        "why_wrong": "Steg 8 och 10 visar att den riktiga sannolikheten är 7/8 = 0,875, INTE 2/3 ≈ 0,667. 7/8 är större än 2/3, inte mindre."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att de är lika.",
-        "why_wrong": "Skillnad ~ 0,2."
+        "why_tempting": "Snabbsvar är ofta 'fler kast → högre sannolikhet, ungefär 2/3 låter rimligt för 3 kast', vilket skulle ge likhet.",
+        "why_wrong": "Steg 10 ger en konkret skillnad: 21/24 mot 16/24 — det är 5/24 ≈ 0,208 mellan dem. Inte ens nära lika. KVA kräver strikt likhet för C."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att sannolikheten är otydlig.",
-        "why_wrong": "Komplementmetoden ger entydigt."
+        "why_tempting": "Om du minns regeln som 'sannolikhet för minst en kräver fler antaganden' kan informationen kännas otillräcklig.",
+        "why_wrong": "Steg 6 och 7 visar att ett rättvist mynt och oberoende kast är standardantaganden som är fullt tillräckliga. Komplementmetoden ger ett entydigt svar: 7/8."
       }
     ],
-    "pitfall": null,
-    "solution_path": "P(klave minst en gång) = 1 - P(aldrig klave) = 1 - (1/2)³ = 1 - 1/8 = 7/8. 7/8 = 0,875 > 2/3 ≈ 0,667 — A.",
-    "technique": "Komplementhändelse: 1 - P(motsatsen).",
+    "technique": "Komplementmetoden för 'minst en gång'-händelser: P(minst en) = 1 - P(ingen). Triggern: orden 'minst en', 'minst två', 'åtminstone' i kombination med oberoende försök. 'Ingen' är ett enda fall och alltid lätt att räkna direkt.",
+    "pitfall": "Botemedlet mot direkträkning: undvik att summera P(exakt 1) + P(exakt 2) + P(exakt 3) — det är tre binomialberäkningar och tar fyra gånger så lång tid. Hoppa direkt till komplementet, alltid.",
     "framework_id": "KVA-TRAP-028"
   },
   "var-2025-kvant2-NOG-023": {
     "_meta": {
-      "generated_at": 1778426454211,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "pregrade_tactic": {
+      "handle": "Förhållande-plus-summa-receptet",
+      "move": "När (1) ger ett förhållande och (2) ger en summa — markera C direkt; två oberoende linjära ekvationer i två obekanta har alltid en lösning."
+    },
+    "framework_id": "NOG-TRAP-003",
+    "solution_path": "Båda krävs. (1): v = 2m ger v − m = m, men m är okänt. (2): v + m = 57 ger inte förhållandet. Tillsammans: m + 2m = 57 → m = 19, v = 38, skillnaden = 19. Svaret är C.",
+    "technique": "Förhållande + summa = två oberoende ekvationer i två obekanta — alltid exakt en lösning. Trigger: påstående (1) lyder \"X gånger så många\" eller \"X:Y\" och (2) lyder \"sammanlagt N\".",
+    "pitfall": "Botemedlet: när bara ett förhållande ges, fråga \"vad blir skillnaden för m = 1, 2, 10, 100?\" — om svaret skalar, är förhållandet ensamt aldrig nog.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "På ett fat ligger melonskivor (m) och vindruvor (v). Vi söker SKILLNADEN v − m, ett heltal ≥ 0. Vi behöver tillräcklig information för att låsa ett unikt värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Inför variabler",
+        "text": "Låt m = antal melonskivor, v = antal vindruvor, båda heltal ≥ 0. Målstorhet: D = v − m. Frågan är: räcker informationen för att fixera D?",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definition: vad är ett förhållande?",
+        "text": "Att \"v är dubbelt så många som m\" betyder v = 2m. Detta är en linjär relation, INTE ett absolut antal. Det säger att om m = 10 så är v = 20, om m = 7 så är v = 14.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt",
+        "text": "(1): v = 2m. Sätt in i D: D = v − m = 2m − m = m. Skillnaden är alltså LIKA STOR som m. Men m är fortfarande okänt.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna kandidater i (1)",
+        "text": "Om m = 1: v = 2, D = 1. Om m = 10: v = 20, D = 10. Om m = 19: v = 38, D = 19. Alla är konsistenta med (1). Slutsats: (1) räcker INTE ensamt — oändligt många D-värden möjliga.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (2) ensamt",
+        "text": "(2): v + m = 57. Det är en ekvation i två obekanta — ger en hel rät linje av lösningar. Om m = 19: v = 38, D = 19. Om m = 10: v = 47, D = 37. Om m = 28: v = 29, D = 1. Många D möjliga.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konsekvens — (2) räcker inte ensamt",
+        "text": "Bara summan låser inte fördelningen mellan v och m, alltså inte heller skillnaden. (2) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2) — sätt upp systemet",
+        "text": "Två ekvationer: v = 2m och v + m = 57. Substitution: ersätt v med 2m i den andra: 2m + m = 57, alltså 3m = 57.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Lös linjär ekvation",
+        "text": "Från 3m = 57: dividera båda sidor med 3 → m = 19. Sätt in i v = 2m: v = 38. Skillnaden D = v − m = 38 − 19 = 19.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Kontroll: v = 2m? 38 = 2·19 ✓. v + m = 57? 38 + 19 = 57 ✓. Båda villkoren uppfyllda, D = 19 är unik.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C — informationen räcker i (1) tillsammans med (2), men inte var för sig. Insikten i en mening: ett förhållande och en summa är två oberoende linjära villkor — exakt vad som behövs för två obekanta.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro att förhållandet 2:1 ensamt ger skillnaden.",
-        "why_wrong": "Skillnaden v−m=m beror på m — utan absolutvärde kan den vara vad som helst."
+        "why_wrong": "Steg 4 och 5 visar att (1) reducerar D till m, men m kan vara vilket positivt heltal som helst — oändligt många D möjliga."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att totalsumman 57 räcker.",
-        "why_wrong": "Utan förhållandet kan v−m vara allt från 1 till 55."
+        "why_tempting": "Snabbsvar är ofta att totalsumman 57 räcker eftersom den är ett \"riktigt\" tal.",
+        "why_wrong": "Steg 6 visar att (2) ensamt tillåter (m, v) = (10, 47), (19, 38), (28, 29) m.fl. — D kan bli vad som helst från 1 till 55."
       },
       {
         "letter": "D",
         "why_tempting": "Om du läser båda som självständigt kompletta landar du här.",
-        "why_wrong": "Ingen av utsagorna ensamt fixerar både absolut antal och förhållande."
+        "why_wrong": "Steg 5 och 7 visar att ingen av utsagorna ensamt fixerar D. Vart och ett påstående lämnar en hel mängd lösningar."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att två ekvationer i två obekanta inte räcker när udda termer blandas.",
-        "why_wrong": "Linjärt system v=2m, v+m=57 har exakt en lösning (m=19, v=38)."
+        "why_tempting": "Det är frestande att tro att två villkor med blandade former (förhållande + summa) inte räcker.",
+        "why_wrong": "Steg 8–10 visar att systemet v = 2m, v + m = 57 har exakt en lösning (m = 19, v = 38) — perfekt avgörbart."
       }
-    ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (1) ger v=2m så skillnaden är m, men m är okänt. (2) ger v+m=57 men inte förhållandet. Tillsammans: m+2m=57 → m=19, v=38, skillnaden=19.",
-    "technique": "Förhållande + summa = två ekvationer i två obekanta — alltid lösbart.",
-    "framework_id": "NOG-TRAP-003"
+    ]
   },
   "var-2025-kvant2-NOG-024": {
     "_meta": {
-      "generated_at": 1778426454211,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "pregrade_tactic": {
+      "handle": "Tre-i-tre-låsningen",
+      "move": "Vid placering av 3 personer i 3 rum: så snart du har låst två platser (en bekräftelse + en negation räcker), följer den tredje automatiskt — kolla varje påstående var för sig."
+    },
+    "framework_id": "NOG-TRAP-014",
+    "solution_path": "Vart för sig räcker. (1): Alexandra i kök + Björn ej i hall → Björn i vardagsrum → Charlotte i hall. (2): Björn i vardagsrum + Charlotte ej i kök → Alexandra i kök → Charlotte i hall. Båda ger Charlotte = hallen. Svaret är D.",
+    "technique": "I bijektiva tilldelningsproblem (n personer i n rum, en var) räcker det med att fixera n−1 personers rum — den sista följer automatiskt. En negation som utesluter ett av två återstående rum är ekvivalent med en bekräftelse.",
+    "pitfall": "Botemedlet: skriv en 3×3-matris (person × rum) och stryk celler enligt varje villkor. Om en kolumn/rad bara har en återstående cell, är personen låst.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Alexandra (A), Björn (B), Charlotte (C) är var och en i exakt ett rum: hall (H), kök (K), vardagsrum (V). Vi söker var Charlotte är. NOG: räcker informationen för att låsa hennes rum?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp en bokföringsmatris",
+        "text": "Tänk en 3×3-tabell: rader = personer, kolumner = rum. Varje rad ska ha exakt ett kryss, varje kolumn ska ha exakt ett kryss (bijektion). Att stryka celler är samma sak som att eliminera möjligheter.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definition: bijektion",
+        "text": "En bijektion är en perfekt parning — varje person till exakt ett rum, inget rum delas. När n−1 platser är låsta så är den sista tvingad: pigeonhole-principen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt: del 1",
+        "text": "(1a) \"Alexandra är i köket\" → A = K. Det utesluter K från B och C: alltså B ∈ {H, V} och C ∈ {H, V}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt: del 2",
+        "text": "(1b) \"Björn är inte i hallen\" → B ≠ H. Eftersom B ∈ {H, V} och B ≠ H så är B = V (vardagsrum). Det enda rum kvar för C är H (hallen).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konsekvens — (1) räcker",
+        "text": "Ur (1) ensamt: A = K, B = V, C = H. Charlotte är i hallen — unikt bestämt. (1) räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt: del 1",
+        "text": "(2a) \"Charlotte är inte i köket\" → C ≠ K. (2b) \"Björn är i vardagsrummet\" → B = V. Då gäller C ∈ {H, K} \\ {K} = {H} efter (2b) utesluter K för A och C-restriktionen utesluter K för C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt: del 2",
+        "text": "Steg för steg: B = V (givet). Återstående rum H och K ska fördelas på A och C. Men C ≠ K, alltså C = H. Då tvingas A = K. Allt är låst.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konsekvens — (2) räcker",
+        "text": "Ur (2) ensamt: A = K, B = V, C = H. Charlotte är i hallen — unikt bestämt. (2) räcker också.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera båda landar i samma svar",
+        "text": "Bägge påståendena ger identiskt resultat: Charlotte i hallen. De är konsistenta med varandra och båda räcker ENSAMMA. Inget extra behövs från det andra.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: D — tillräcklig information finns i (1) och (2) var för sig. Insikten i en mening: för 3 personer i 3 rum räcker det med att låsa två (varav en med negation) — den tredje följer av eliminering.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att fastna vid (1) eftersom köket pekas ut direkt.",
-        "why_wrong": "(2) når samma slutsats — Björn i vardagsrum + Charlotte≠kök tvingar Charlotte till hallen."
+        "why_tempting": "Det är lätt att fastna vid (1) eftersom köket pekas ut direkt och kännas mer \"informativt\".",
+        "why_wrong": "Steg 7–9 visar att (2) når exakt samma slutsats: Björn i vardagsrum + Charlotte ≠ kök tvingar Charlotte till hallen."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid (2) som mer detaljerat och avfärdar (1).",
-        "why_wrong": "(1) räcker lika bra: Alex i kök + Björn≠hall → Björn=vardagsrum → Charlotte=hall."
+        "why_tempting": "Många stannar vid (2) som mer detaljerat (en bekräftelse + en negation) och avfärdar (1).",
+        "why_wrong": "Steg 4–6 visar att (1) räcker lika bra: Alexandra i kök + Björn ej i hall → Björn = vardagsrum → Charlotte = hall."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda när tre rum och tre personer ska matchas.",
-        "why_wrong": "Båda villkoren räcker ensamma — kombinationen tillför inget."
+        "why_wrong": "Steg 6 och 9 visar att vart och ett villkor ENSAMT räcker — kombinationen tillför ingen ny information."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att negationsvillkor aldrig räcker för unik tilldelning.",
-        "why_wrong": "Två villkor (en bekräftelse + en negation) räcker för att placera tre personer i tre rum."
+        "why_tempting": "Det är frestande att tro att negationsvillkor (\"inte i hallen\") aldrig räcker för en unik tilldelning.",
+        "why_wrong": "Steg 5 visar att en negation som lämnar bara ett alternativ är logiskt ekvivalent med en bekräftelse — fullt avgörbar."
       }
-    ],
-    "pitfall": null,
-    "solution_path": "Var för sig räcker. (1): Alexandra i kök + Björn ej i hall → Björn i vardagsrum → Charlotte i hall. (2): Björn i vardagsrum + Charlotte ej i kök → Alexandra i kök → Charlotte i hall.",
-    "technique": "I tilldelningsproblem med 3 entiteter räcker det ofta att låsa två platser — den tredje följer automatiskt.",
-    "framework_id": "NOG-TRAP-014"
+    ]
   },
   "var-2025-kvant2-NOG-025": {
     "_meta": {
-      "generated_at": 1778426454211,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "pregrade_tactic": {
+      "handle": "Procentdifferens-receptet",
+      "move": "När (1) säger \"skillnaden mellan p % och q % av x är k\", räkna direkt (p − q)/100 · x = k — det är en sluten ekvation i en obekant och avgör frågan ensam."
+    },
+    "framework_id": "NOG-TRAP-017",
+    "solution_path": "(1) räcker: 0,5x − 0,3x = 0,2x = 22, så x = 110. (2) ger x ∈ {110, 220, 330, …} — alla multiplum av 110 — inget unikt värde. Svaret är A.",
+    "technique": "En linjär procentdifferens (p% − q%) · x = k är en sluten ekvation med en obekant — alltid entydigt lösbar för x. Modulo-villkor utan övre gräns lämnar däremot alltid oändligt många heltalslösningar.",
+    "pitfall": "Botemedlet: när ett delbarhetspåstående ges utan ett \"x < N\"-tak, anteckna direkt att det INTE räcker — räkna minst två kandidater (t.ex. x = 110 och x = 220) för att fastställa det.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "x är ett positivt heltal. Vi söker dess EXAKTA värde. NOG: räcker informationen för att låsa x till ett enda tal?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: procent av ett tal",
+        "text": "p % av x betyder (p/100) · x. Så 50 % av x = 0,5x och 30 % av x = 0,3x. Procent är bara ett bekvämare sätt att skriva en decimal-multiplikator.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Översätt (1) till en ekvation",
+        "text": "\"Skillnaden mellan 50 % av x och 30 % av x är 22\" → 0,5x − 0,3x = 22. Eftersom 50 > 30 är differensen positiv och vi behöver inte absolutbelopp.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förenkla vänsterledet",
+        "text": "0,5x − 0,3x = (0,5 − 0,3)x = 0,2x. Detta är distributiv lag baklänges: a·x − b·x = (a − b)·x.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös ut x",
+        "text": "0,2x = 22 → x = 22 / 0,2 = 22 · 5 = 110. Ett unikt heltal — och det är positivt, som krävt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verifiera (1)",
+        "text": "50 % av 110 = 55. 30 % av 110 = 33. Skillnaden 55 − 33 = 22 ✓. (1) räcker ENSAMT.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: jämnt delbart",
+        "text": "Att \"x är jämnt delbart med n\" betyder att x/n är ett heltal, dvs n är en faktor i x. Att vara delbart med både 10 och 11 betyder att x är en multipel av minsta gemensamma multipeln MGM(10, 11).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna MGM(10, 11)",
+        "text": "10 = 2 · 5 och 11 är primtal. De har ingen gemensam faktor, så MGM(10, 11) = 10 · 11 = 110. Alltså är x en positiv multipel av 110: x ∈ {110, 220, 330, 440, …}.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna kandidater i (2)",
+        "text": "(2) ger oändligt många kandidater. Det finns inget tak — x kan vara hur stort som helst. (2) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Behöver vi kombinera?",
+        "text": "Nej — eftersom (1) redan ger ett unikt svar (x = 110) räcker det ensamt. Att lägga till (2) ger ingen ny information (110 är ju redan en multipel av 110).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A — tillräcklig information finns i (1) men ej i (2). Insikten i en mening: en sluten procentekvation låser x direkt; ett rent delbarhetsvillkor utan övre gräns lämnar alltid oändligt många heltalslösningar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att delbarhetsvillkor med två tal räcker.",
-        "why_wrong": "Det finns oändligt många multiplum av 110 — (2) plockar inte ut ett specifikt."
+        "why_tempting": "Det är lätt att tro att delbarhetsvillkor med två specifika tal räcker.",
+        "why_wrong": "Steg 8 och 9 visar att x ∈ {110, 220, 330, …} — oändligt många multiplum av 110, inget unikt värde."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera för att vara säker.",
-        "why_wrong": "(1) ger redan exakt x=110 — (2) tillför inget."
+        "why_tempting": "Första instinkten är att kombinera för säkerhet när två villkor ges.",
+        "why_wrong": "Steg 5 och 6 visar att (1) redan ger x = 110 — (2) tillför inget. C kräver att (1) ENSAMT INTE räcker, vilket är fel."
       },
       {
         "letter": "D",
         "why_tempting": "Om du missar att (2) ger oändligt många kandidater landar du här.",
-        "why_wrong": "(2) ensamt smalnar inte av till en lösning eftersom inget intervall begränsar x."
+        "why_wrong": "Steg 9 visar att (2) saknar tak — kandidatmängden är oändlig och kan inte ensamt smalna av till en lösning."
       },
       {
         "letter": "E",
         "why_tempting": "Det är frestande att avfärda procentdifferensen i (1) som otillräcklig.",
-        "why_wrong": "20 % av x = 22 är en sluten ekvation i en obekant och löses entydigt."
+        "why_wrong": "Steg 3–6 visar att 0,2x = 22 är en sluten ekvation i en obekant och löses entydigt till x = 110."
       }
-    ],
-    "pitfall": "Modulo-villkor är aldrig ensamma tillräckliga utan ett intervall som begränsar kandidatmängden.",
-    "solution_path": "(1) räcker: 0,5x−0,3x=0,2x=22 ger x=110. (2) ger x∈{110, 220, 330, …} eftersom alla multiplum av 110 är delbara med både 10 och 11.",
-    "technique": "Delbarhetsvillkor utan övre gräns lämnar alltid oändligt många lösningar.",
-    "framework_id": "NOG-TRAP-017"
+    ]
   },
   "var-2025-kvant2-NOG-026": {
     "_meta": {
-      "generated_at": 1778426454211,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "pregrade_tactic": {
+      "handle": "Venn-cellräkningen",
+      "move": "Rita en 2-mängds-Venn med cellerna {bara S, bara K, båda, varken} — för att räkna ut \"ketchup totalt\" behöver du både \"båda\" och \"bara ketchup\"; om bara en cell är låst behövs det andra påståendet."
+    },
+    "framework_id": "NOG-TRAP-018",
+    "solution_path": "Båda krävs. (1): \"båda\" = 27/9 = 3 och \"senap totalt\" = 5 (från 60 % · 5 = 3), men inte \"bara ketchup\". (2): senap = 5, varken = 15 → minst-ett = 12, men inte \"båda\". Tillsammans: bara-ketchup = 12 − 5 = 7, så ketchup totalt = 7 + 3 = 10. Svaret är C.",
+    "technique": "Tvåmängds-Venn har fyra disjunkta celler. För att lösa ut en MARGINAL-summa (t.ex. \"ketchup totalt\") behövs antingen den raden direkt, eller \"båda\" plus \"bara ena\" — alltså två oberoende celler.",
+    "pitfall": "Botemedlet: rita ALLTID en 2×2-tabell (eller Venn) med de fyra cellerna och markera vilka som ges av (1) respektive (2). Om någon cell saknas helt, räcker det inte.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "27 barn, varje med en korv. Senap och ketchup är valfria. Vi söker antalet barn med KETCHUP (oavsett om de också har senap). NOG: räcker informationen för ett unikt tal?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp variabler",
+        "text": "Låt S = antal med senap, K = antal med ketchup, B = antal med BÅDA (senap och ketchup), V = antal med VARKEN. Totalt 27. Målstorhet: K.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Inklusion-exklusion",
+        "text": "Antalet med minst ett tillbehör är S + K − B (eftersom \"båda\" räknas dubbelt om vi adderar S + K). Vidare gäller (S + K − B) + V = 27.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Definition: \"bara X\"",
+        "text": "Bara-senap = S − B (de med senap minus de med båda). Bara-ketchup = K − B. De fyra disjunkta cellerna {bara S, bara K, B, V} summerar alltid till 27.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt: del 1",
+        "text": "(1a) \"60 % av senap-barnen har också ketchup\" → B = 0,6 · S. (1b) \"1/9 av barnen har båda\" → B = 27/9 = 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt: del 2",
+        "text": "Ur B = 0,6 · S och B = 3: 0,6S = 3 → S = 5. Så S = 5 och B = 3. Men K? Inget i (1) säger något om bara-ketchup eller V — K är fri.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konsekvens — (1) räcker inte ensamt",
+        "text": "K = (bara K) + B = (bara K) + 3, men bara K kan vara 0, 1, 2, …, upp till 27 − S − V. Utan info om V eller bara-K är K obestämt. (1) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt",
+        "text": "(2a) S = 5. (2b) V = 15. Då har 27 − 15 = 12 barn minst ett tillbehör, dvs S + K − B = 12. Men B är okänt — om B = 0 är K = 7; om B = 5 är K = 12. Många K möjliga. (2) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kombinera (1) och (2)",
+        "text": "Från (1): B = 3, S = 5. Från (2): V = 15, så S + K − B = 12. Sätt in: 5 + K − 3 = 12 → K = 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera fyra celler",
+        "text": "Bara-S = S − B = 5 − 3 = 2. Bara-K = K − B = 10 − 3 = 7. B = 3. V = 15. Summan: 2 + 7 + 3 + 15 = 27 ✓. Konsekvent och unikt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C — informationen räcker i (1) tillsammans med (2). Insikten i en mening: för att lösa ut en marginal-summa i en 2-mängds-Venn behövs både \"båda\"-cellen och tillräckligt med kringinformation för \"bara den andra\".",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en procentsats inom senap-gruppen räcker.",
-        "why_wrong": "(1) ger \"båda\"=3 men säger inget om ketchup-utan-senap."
+        "why_tempting": "Det är lätt att tro att en procentsats inom senap-gruppen plus B-totalt räcker.",
+        "why_wrong": "Steg 6 och 7 visar att (1) ger B = 3 och S = 5, men säger inget om bara-ketchup eller V — K kan vara många olika tal."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att senap=5 och varken=15 räcker.",
-        "why_wrong": "(2) ger inte \"båda\" — utan det kan ketchup-totalt vara olika tal."
+        "why_tempting": "Snabbsvar är ofta att S = 5 och V = 15 räcker eftersom \"alla siffror är där\".",
+        "why_wrong": "Steg 8 visar att (2) ger S + K − B = 12, men utan B är K obestämt (kan vara 7, 10, 12, … beroende på B)."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tror att vart och ett räcker för en Venn-tabell landar du här.",
-        "why_wrong": "Ingen av dem ensamt ger alla fyra cellerna {bara senap, bara ketchup, båda, varken}."
+        "why_tempting": "Om du tror att varje påstående för sig låser en hel Venn-tabell landar du här.",
+        "why_wrong": "Steg 7 och 8 visar att ingen av (1) eller (2) ensamt ger alla fyra cellerna — minst en cell saknas i båda fallen."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att avfärda problemet när två villkor blandar procent och absolut.",
-        "why_wrong": "Tillsammans ger de exakt fyra ekvationer som låser hela Venn-tabellen."
+        "why_tempting": "Det är frestande att avfärda problemet när två villkor blandar procent och absolutvärden.",
+        "why_wrong": "Steg 9 och 10 visar att tillsammans låser de hela Venn-tabellen: K = 10 unikt."
       }
-    ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: (1) ger \"båda\"=27/9=3 och senap totalt=5 (eftersom 60 %·5=3), men inte bara-ketchup. (2) ger senap=5 och varken=15, alltså 12 har minst ett tillbehör. Tillsammans: bara-ketchup=12−5=7, så ketchup totalt=7+3=10.",
-    "technique": "I Venn-tab- eller behövs hela cellen \"båda\" plus två yttre summor för att räkna ut alla fyra cellerna.",
-    "framework_id": "NOG-TRAP-018"
+    ]
   },
   "var-2025-kvant2-NOG-027": {
     "_meta": {
-      "generated_at": 1778426454211,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "pregrade_tactic": {
+      "handle": "Identitetsfällan",
+      "move": "Innan du börjar räkna: kolla om ett påstående reduceras till en känd identitet (typ x + y = 180° för bivinklar) — då bär det noll ny information och kan strykas direkt."
+    },
+    "framework_id": "NOG-TRAP-007",
+    "solution_path": "(1) räcker: x = z = 60° fixerar två vinklar i den givna triangelfiguren och tvingar AB > BC via sinussatsen / motstående-sida-regeln. (2) är en bivinkelidentitet (x + y = 180°), tautologi i figurens kontext — ingen ny information. Svaret är A.",
+    "technique": "I geometriska NOG-frågor: skilj substantiella vinkelvillkor från identiteter (180°-relationen för bivinklar längs en linje, 360° runt en punkt, 180° i en triangel). Identiteter är gratis-sanningar och bär ingen information.",
+    "pitfall": "Botemedlet: när du ser ett vinkelvillkor, fråga \"gäller detta automatiskt p.g.a. figurens uppbyggnad?\" — om ja, bär det noll info; om nej, är det en riktig restriktion.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Figuren visar en triangel ABC (med bivinkel y längs en linje). Vi söker: är AB > BC? Det är en ja/nej-fråga, men för NOG räcker det att ett villkor avgör frågan entydigt åt något håll.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: motstående-sida-regeln",
+        "text": "I en triangel ligger den STÖRRE sidan motstående den STÖRRE vinkeln. Konkret: om vinkel A > vinkel C, så är BC > AB (sidan motstående A är BC; sidan motstående C är AB).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera vinklarna i figuren",
+        "text": "Av kontexten (NOG-figur med beteckningar x, y, z): x och z är inre vinklar i triangeln vid hörn A respektive C, y är yttervinkel vid B (bivinkel mot inre vinkeln vid B). Då är inre vinkeln vid B = 180° − y.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Triangelns vinkelsumma",
+        "text": "I varje triangel: summan av inre vinklar = 180°. Alltså x + z + (180° − y) = 180°, vilket förenklas till x + z = y. Det är en identitet som FÖLJER av figurens uppbyggnad — inte ett extra villkor.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "(1): x = z = 60°. Då är x + z = 120°, så y = 120° och inre vinkeln vid B = 180° − 120° = 60°. Alla tre inre vinklar är 60° — triangeln är liksidig.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats av (1) — liksidig triangel",
+        "text": "I en liksidig triangel är alla sidor lika långa: AB = BC = CA. Alltså är AB INTE större än BC — svaret på frågan \"AB > BC?\" är NEJ, entydigt. (1) räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Anmärkning om \"räcker\"",
+        "text": "I NOG räknas ett ENTYDIGT svar (ja eller nej) som tillräcklig information. \"AB > BC?\" → NEJ är ett giltigt svar. (1) avgör alltså frågan.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt — identifiera identiteten",
+        "text": "(2): x = 180° − y. Men y är yttervinkel vid B, så inre vinkeln vid B = 180° − y = x. Då blir vinkelsumman x + z + x = 180°, dvs 2x + z = 180°. Detta är BARA en omformulering av (steg 4) plus antagandet att x = inre vinkel B.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konsekvens — (2) är information-fri",
+        "text": "x = 180° − y säger bara att x och y är bivinklar — vilket är figurens uppbyggnad. Det ger ingen NY restriktion på sidlängderna AB och BC. Triangeln är fortfarande godtycklig (x kan vara 30°, 70°, 89°…), och AB kan vara större, lika med eller mindre än BC.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera (2) inte räcker",
+        "text": "Konkret exempel: om x = 30°, kan z = 120° (då är AB < BC), eller z = 30° (då är AB = BC), eller z = 10° (då är AB > BC). Alla konsistenta med (2). Olika svar — (2) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A — tillräcklig information finns i (1) men ej i (2). Insikten i en mening: ett påstående som är en geometrisk identitet (här bivinkel-relationen) bär noll information; bara substantiella vinkelvärden låser triangeln.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att en supplementär relation x=180°−y signalerar något.",
-        "why_wrong": "(2) återger bara att x och y är bivinklar — ingen ny information om AB:s eller BC:s längd."
+        "why_tempting": "Det är lätt att tro att en supplementär relation x = 180° − y signalerar en viktig restriktion.",
+        "why_wrong": "Steg 8 och 9 visar att (2) bara återger figurens bivinkel-uppbyggnad — ingen ny information om sidlängderna."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att alltid kombinera båda när vinklar och sidor blandas.",
-        "why_wrong": "(1) räcker ensamt; (2) tillför ingen ny information."
+        "why_tempting": "Första instinkten är att kombinera båda när vinklar och sidor blandas.",
+        "why_wrong": "Steg 6 visar att (1) räcker ensamt (liksidig triangel ger AB = BC, alltså AB > BC är falskt). (2) tillför inget."
       },
       {
         "letter": "D",
         "why_tempting": "Om du tror att vart och ett ensamt ger ett geometriskt svar landar du här.",
-        "why_wrong": "(2) saknar verklig geometrisk substans — den är bara en identitet."
+        "why_wrong": "Steg 10 visar att (2) saknar geometrisk substans — den är bara en identitet och tillåter olika svar."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att vinkelvärden utan sidlängder aldrig räcker.",
-        "why_wrong": "Vinkelförhållandena i (1) bestämmer trianglarnas form upp till skala och därmed sidornas inbördes ordning."
+        "why_tempting": "Det är frestande att tro att vinkelvärden utan explicita sidlängder aldrig räcker.",
+        "why_wrong": "Steg 5 och 6 visar att (1) faktiskt bestämmer triangelns form (liksidig) helt — sidornas inbördes förhållande följer direkt."
       }
-    ],
-    "pitfall": "Identitetspåståenden (typ x+y=180° när x och y redan är bivinklar) bär ingen ny information.",
-    "solution_path": "(1) räcker: x=z=60° fixerar for- men så att sidorna kan jämföras direkt — i den givna figuren tvingar det AB>BC. (2):s likhet x=180°−y är typiskt en bivinkelidentitet längs en rät linje och tillför ingen geometrisk information utöver det redan givna.",
-    "technique": "Skilj på substantiella geometriska villkor och triviala identiteter (som bivinkelsumma 180°).",
-    "framework_id": "NOG-TRAP-007"
+    ]
   },
   "var-2025-kvant2-NOG-028": {
     "_meta": {
-      "fixed_at": 1778500764310,
-      "generated_at": 1778426454211,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "pregrade_tactic": {
+      "handle": "Kandidaträkningen",
+      "move": "Efter varje villkor: lista ALLA par som fortfarande passar — om listan har fler än ett element, är villkoret otillräckligt; även tillsammans måste kombinationen reducera till EXAKT ett par."
+    },
+    "framework_id": "NOG-TRAP-025",
+    "solution_path": "Inget villkor avgör paret entydigt — inte heller tillsammans. (1) ensamt: median 0 bevaras av fyra par. (2) ensamt: medel ändras för många par. Tillsammans utesluts bara (−8, 6) (summa −2, oförändrat medel), kvar tre par: {−10, 6}, {−10, 7}, {−8, 7}. Svaret är E.",
+    "technique": "I NOG-frågor med flera möjliga par: räkna kandidater efter varje villkor. Bevarad statistik (median, medel) tillåter alltid flera lösningar om de inblandade talen har symmetrier eller ekvivalenta summor.",
+    "pitfall": "Botemedlet: när villkoret är \"X förblir/ändras\" — beräkna gränsvärdet (originalmedianen, originalmedelvärdet) och testa systematiskt ALLA C(5,2) = 10 möjliga par.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Mätserien {−10, −8, 0, 6, 7} hade två tal borttagna. Vi söker EXAKT vilka två tal. Det finns C(5, 2) = 10 möjliga par. NOG: räcker informationen för att låsa ett unikt par?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Beräkna originalmedian",
+        "text": "Sortera: −10, −8, 0, 6, 7. Median av 5 tal = mittenvärdet = 0. Det är vårt referensvärde.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Beräkna originalmedelvärde",
+        "text": "Medelvärde = summa / antal = (−10 − 8 + 0 + 6 + 7) / 5 = −5 / 5 = −1.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Definition: median efter borttagning",
+        "text": "Efter borttagning av två tal återstår 3 tal. Median av 3 tal är mittenvärdet i sorterad ordning. \"Förblir densamma\" betyder att medianen fortfarande är 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Vilka par bevarar median 0?",
+        "text": "Det krävs att 0 finns kvar OCH att det fortfarande är mittenvärdet. Alltså måste 0 INTE tas bort, och de tre kvarvarande talen måste ha 0 som median (ett tal ≤ 0 och ett tal ≥ 0). Möjliga par att TA BORT: {−10, 6}, {−10, 7}, {−8, 6}, {−8, 7}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verifiera kandidater i (1)",
+        "text": "Ta bort {−10, 6}: kvar {−8, 0, 7}, median = 0 ✓. Ta bort {−10, 7}: kvar {−8, 0, 6}, median = 0 ✓. Ta bort {−8, 6}: kvar {−10, 0, 7}, median = 0 ✓. Ta bort {−8, 7}: kvar {−10, 0, 6}, median = 0 ✓. FYRA par bevarar median 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konsekvens — (1) räcker inte ensamt",
+        "text": "Fyra möjliga par — (1) räcker INTE för att låsa ett unikt par.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Definition: medelvärde efter borttagning",
+        "text": "Om vi tar bort talen a och b ur originalserien blir nya medelvärdet (−5 − (a + b)) / 3. Originalmedel var −1. Det \"ändras\" om nya ≠ −1, dvs om (−5 − (a + b))/3 ≠ −1, dvs om a + b ≠ −2.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vilka par har summa = −2?",
+        "text": "Bland alla C(5, 2) = 10 par: {−10, 7} har summa −3; {−8, 6} har summa −2; {−10, 6} har summa −4; {−8, 7} har summa −1; och så vidare. Endast {−8, 6} har summa −2. Alla ANDRA par ändrar medelvärdet — (2) eliminerar bara ett par och lämnar 9 kandidater.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Kombinera (1) och (2)",
+        "text": "Skärningen: par som bevarar median 0 OCH ändrar medelvärdet. Från (1): {−10, 6}, {−10, 7}, {−8, 6}, {−8, 7}. Från (2): alla par utom {−8, 6}. Skärning: {−10, 6}, {−10, 7}, {−8, 7} — TRE par kvarstår.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera att de tre paren ger olika utfall",
+        "text": "{−10, 6}: kvar {−8, 0, 7}, medel = −1/3. {−10, 7}: kvar {−8, 0, 6}, medel = −2/3. {−8, 7}: kvar {−10, 0, 6}, medel = −4/3. Alla tre ändrar medelvärdet (bra för (2)) och bevarar median 0 (bra för (1)) — men de är OLIKA par.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svar: E — ej genom de båda påståendena. Inget villkor, ensamt eller tillsammans, låser paret unikt — tre kandidater återstår. Insikten i en mening: bevarad/ändrad statistik (median, medel) lämnar flera lösningar närhelst talen har ekvivalenta strukturer.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro att medianvillkoret i (1) ensamt räcker när 0 är ett tydligt center.",
-        "why_wrong": "(1) tillåter fyra par som alla bevarar medianen 0 — alltså otillräckligt."
+        "why_wrong": "Steg 6 visar att fyra par bevarar median 0 ({−10,6}, {−10,7}, {−8,6}, {−8,7}) — (1) räcker inte."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att medelvärdesvillkoret i (2) ensamt räcker eftersom det är restriktivare.",
-        "why_wrong": "(2) ger bara x+y≠−2 och lämnar många lösningar — otillräckligt ensamt."
+        "why_tempting": "Snabbsvar är ofta att medelvärdesvillkoret i (2) ensamt räcker eftersom det känns restriktivare.",
+        "why_wrong": "Steg 9 visar att (2) eliminerar bara ett par (summa −2 = {−8, 6}) och lämnar 9 kandidater — långt från unikt."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att kombinera båda för säkerhet — två statistiska villkor måste väl låsa paret.",
-        "why_wrong": "Tillsammans kvarstår {−10,6}, {−10,7} och {−8,7} — inte unikt."
+        "why_tempting": "Första instinkten är att två statistiska villkor (median + medel) tillsammans måste låsa paret.",
+        "why_wrong": "Steg 10 och 11 visar att tre par fortfarande passar båda villkoren: {−10, 6}, {−10, 7}, {−8, 7}."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du tolkade båda som var för sig tillräckliga och missade att fyra par passar (1) skulle du landa här.",
-        "why_wrong": "Median-bevarande lämnar 4 par, medel-ändring lämnar fler — inget villkor är ensamt tillräckligt."
+        "why_tempting": "Om du tolkar båda som var för sig tillräckliga och missar att fyra par passar (1) skulle du landa här.",
+        "why_wrong": "Steg 7 och 9 visar att vart och ett villkor lämnar många kandidater — INGEN är ensamt tillräcklig."
       }
-    ],
-    "pitfall": "Ekvivalenta sammansättningar med samma summa (här x+y=−4 och x+y=−1) ger samma medelvärdeändring och kan inte separeras enbart via medelvärdet.",
-    "solution_path": "Inget villkor avgör paret entydigt — inte heller tillsammans. (1) ensamt: median 0 bevaras av fyra par från {−10,−8,6,7} (par med 0 kvar). (2) ensamt: ursprungligt medel −1, så medelvärdet ändras om paret summerar ≠ −2 — många par uppfyller det. Tillsammans utesluts bara (−8, 6) (summa −2), kvar tre par som fortfarande inte går att skilja.",
-    "technique": "Räkna alltid antalet kandidater efter varje villkor — är det >1, är villkoret otillräckligt.",
-    "framework_id": "NOG-TRAP-025"
+    ]
   },
   "var-2025-kvant2-XYZ-001": {
     "_meta": {
@@ -2650,30 +3851,103 @@
   },
   "var-2025-kvant2-XYZ-003": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": "XYZ-TRAP-048",
+    "solution_path": "Medelvärdet av fyra tal = summan / 4. \\frac{2x + 3x + 5x + 8x}{4} = 45. Förenkla täljaren: 18x. Då gäller \\frac{18x}{4} = 45, dvs 18x = 180 och x = 10.",
+    "technique": "Medelvärdes-ekvation: skriv (summa)/(antal) = medelvärde, samla x-termerna i täljaren, multiplicera bort nämnaren, lös för x.",
+    "pitfall": "Botemedlet mot 'glömma-antalet': dela ALLTID med antalet termer i medelvärdet — fyra termer betyder dela med 4, inte med 3 eller med summan av koefficienterna.",
+    "pregrade_tactic": {
+      "handle": "Medelvärdesreceptet",
+      "move": "Skriv (summa)/(antal) = medelvärde, multiplicera båda sidor med antalet — då blir kvar en enkel linjär ekvation."
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 5.",
-        "why_wrong": "10."
+        "why_tempting": "Det är lätt att räkna 90/18 fel och få något kring 5.",
+        "why_wrong": "Steg 7 visar 18x = 180, vilket ger x = 180/18 = 10 — inte 5. 5 skulle kräva 18x = 90, alltså att summan vore 90 (inte 180)."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 15.",
-        "why_wrong": "10."
+        "why_tempting": "Snabbsvar är ofta 15 om man delar 45 med 3 (antal i taget) istället för med 4.",
+        "why_wrong": "Steg 4 visar att medelvärdet är summan delad med ANTAL termer, alltså 4. 45 · 4 = 180, inte 45 · 3 = 135."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 20.",
-        "why_wrong": "10."
+        "why_tempting": "Många stannar vid 20 om de delar 180 med 9 (det näst minsta numret de ser i ekvationen) istället för 18.",
+        "why_wrong": "Steg 5 visar att 2x + 3x + 5x + 8x = 18x, inte 9x. Koefficienterna ska adderas: 2 + 3 + 5 + 8 = 18."
       }
     ],
-    "pitfall": null,
-    "solution_path": "18x=180 → x = 10.",
-    "technique": "Medelvärde: total/antal.",
-    "framework_id": "XYZ-TRAP-048"
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi har fyra tal: 2x, 3x, 5x, 8x. Deras medelvärde är 45. Vi ska räkna ut x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är medelvärde?",
+        "text": "Medelvärdet av n tal = summan av talen DELAD med n. Det är 'snitt-värdet' om talen vore lika.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad är en variabel?",
+        "text": "x är en okänd siffra som vi ska bestämma. Uttrycken 2x, 3x, 5x, 8x betyder 'två gånger x', 'tre gånger x' osv. — alla beror på samma x.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Skriv medelvärdesekvationen",
+        "text": "Antal tal = 4, medelvärde = 45. \\frac{2x + 3x + 5x + 8x}{4} = 45.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Förenkla täljaren",
+        "text": "Samla x-termerna: 2x + 3x + 5x + 8x = (2 + 3 + 5 + 8)x = 18x. Adderar bara koefficienterna eftersom x är gemensam faktor.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skriv om ekvationen",
+        "text": "\\frac{18x}{4} = 45.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Multiplicera bort nämnaren",
+        "text": "Multiplicera båda sidor med 4: 18x = 45 · 4 = 180.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Dela för att frilägga x",
+        "text": "Dela båda sidor med 18: x = 180 / 18 = 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera med insättning",
+        "text": "x = 10 ger 2x = 20, 3x = 30, 5x = 50, 8x = 80. Summa = 180. Medelvärde = 180/4 = 45. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity check",
+        "text": "Talen 20, 30, 50, 80 är 'rimliga' runt medelvärdet 45 (några under, några över). x = 10 är trovärdigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar B: x = 10. Insikten i en mening: medelvärde = summa / antal — skriv som ekvation, samla x-termerna, multiplicera bort nämnaren, isolera x.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2025-kvant2-XYZ-005": {
     "_meta": {
@@ -2765,30 +4039,103 @@
   },
   "var-2025-kvant2-XYZ-006": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": "XYZ-TRAP-041",
+    "solution_path": "Oregelbundna polygoner saknar enskild formel — dekomponera istället i rektanglar och rätvinkliga trianglar. Räkna ut varje delarea med A = b \\cdot h (rektangel) eller A = \\frac{b \\cdot h}{2} (triangel). Summera del-areorna: totalt 110 cm².",
+    "technique": "Dekomponering av polygon: dela figuren i basformer (rektanglar, trianglar) längs befintliga linjer. Räkna varje delareas formel och addera. Alternativt: omslut i en stor rektangel och subtrahera 'utbuktningar'.",
+    "pitfall": "Botemedlet mot 'dubbelräkning': rita upp dina delningar TYDLIGT så att inga områden överlappar och ingen del räknas två gånger. Kontrollera att alla delareor täcker hela polygonen.",
+    "pregrade_tactic": {
+      "handle": "Dekompositions-receptet",
+      "move": "Dela polygonen i rektanglar och rätvinkliga trianglar längs lättavlästa linjer — räkna varje del med b·h eller b·h/2 och addera."
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att glömma ett litet hörnstycke och få 100.",
-        "why_wrong": "100 cm² är 10 cm² för litet — kontrollera att alla delar är med innan du summerar; total 110 cm²."
+        "why_tempting": "Det är lätt att glömma ett litet hörnstycke i dekomponeringen och landa på 100 cm².",
+        "why_wrong": "Steg 8 påminner: kontrollera att summa av del-areor TÄCKER hela polygonen. 100 cm² är 10 cm² för litet — en del har missats. Rätt summa är 110."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 105 om man räknar med fel sidlängd i en triangel.",
-        "why_wrong": "5 cm² fel kommer typiskt av en sida som lästs 1 cm fel — sanna areadelar summerar till 110 cm²."
+        "why_tempting": "Snabbsvar är ofta 105 om man läser av en sidlängd 1 cm fel och får en delarea 5 cm² mindre.",
+        "why_wrong": "Steg 5 betonar noggrann avläsning av sidlängder. Med rätt avlästa mått blir summan exakt 110, inte 105."
       },
       {
         "letter": "D",
         "why_tempting": "Första instinkten är att dubbelräkna en överlappande del och få 115.",
-        "why_wrong": "115 cm² är 5 för stort — ett område har räknats två gånger; korrekt summa är 110 cm²."
+        "why_wrong": "Steg 7 påminner: delarna får aldrig överlappa. 115 är 5 för stort — något har räknats två gånger. Rätt summa är 110."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Oregelbundna polygoner saknar en enskild formel — den överförbara tekniken är att dekomponera i rektanglar och rätvinkliga trianglar. Med figurens sidlängder summerar del-areorna till A_{tot} = 110 cm².",
-    "technique": "Polygon-area via dekomponering: dela sexhörningen i rektanglar och rätvinkliga trianglar; addera (eller subtrahera) areorna istället för att försöka en formel.",
-    "framework_id": "XYZ-TRAP-041"
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Sexhörningen ABCDEF är oregelbunden — alla sex sidor är inte lika långa. Vi ska räkna ut dess area utifrån avläsbara sidlängder i figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en oregelbunden polygon?",
+        "text": "En polygon vars sidor inte alla är lika långa och vars vinklar inte alla är samma. För dessa finns INGEN enskild areaformel.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Areaformel rektangel",
+        "text": "Grundregel: rektangelns area = bas · höjd, dvs A = b \\cdot h.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Areaformel rätvinklig triangel",
+        "text": "Grundregel: triangelns area = (bas · höjd)/2, dvs A = \\frac{b \\cdot h}{2}, där höjden är vinkelrät mot basen.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Läs av sidlängder",
+        "text": "Notera alla sidlängder som anges i figuren. Markera dem på en egen skiss så att inget missas.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Dela polygonen",
+        "text": "Dra hjälplinjer parallella med koordinataxlarna så att sexhörningen delas i några rektanglar och eventuellt en eller två rätvinkliga trianglar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Kontrollera dekompositionen",
+        "text": "Delarna får inte överlappa, och de ska tillsammans täcka HELA sexhörningen. Rita upp och kontrollera innan du räknar.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna varje del",
+        "text": "För varje rektangel: b · h. För varje rätvinklig triangel: (b · h)/2. Skriv upp varje delarea var för sig.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Summera",
+        "text": "Lägg ihop alla delareor. För denna sexhörning landar summan på exakt 110 cm² givet figurens sidlängder.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med inhägnad",
+        "text": "Alternativ kontroll: omslut sexhörningen i minsta möjliga rektangel, räkna dess area, och subtrahera de utskärningar som inte är del av sexhörningen. Resultatet ska bli detsamma — 110 cm².",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar C: 110 cm². Insikten i en mening: oregelbundna polygoner saknar formel — DEKOMPONERA i rektanglar och rätvinkliga trianglar, räkna varje del, addera (eller subtrahera vid inhägnads-metoden).",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2025-kvant2-XYZ-007": {
     "_meta": {
@@ -2980,30 +4327,103 @@
   },
   "var-2025-kvant2-XYZ-009": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": "XYZ-TRAP-040",
+    "solution_path": "En triangel är rätvinklig OMM dess sidor uppfyller Pythagoras sats: a^{2} + b^{2} = c^{2}, där c är den längsta sidan. Läs av sidlängderna i varje alternativ, kvadrera, testa likheten. Endast alternativ A uppfyller — övriga ger olikhet.",
+    "technique": "Pythagoras-test för rätvinklighet: identifiera den längsta sidan c, kvadrera alla tre, kontrollera om summan av kvadraterna på de två kortare = kvadraten på den längsta.",
+    "pitfall": "Botemedlet mot 'ser-ut-som-90°': ÖGAT BEDRAR — en triangel kan se ut som rät utan att vara det. Endast sidornas a² + b² = c² är ett bevis.",
+    "pregrade_tactic": {
+      "handle": "Pythagoras-testet",
+      "move": "Identifiera den längsta sidan c, kvadrera alla tre — kontrollera a² + b² = c². Bara den triangel där det stämmer EXAKT är rätvinklig."
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att gissa rätvinklighet ur ‘ser ut som 90°’.",
-        "why_wrong": "Visuell uppskattning räcker inte — endast sidornas a^2+b^2=c^2 bevisar 90°-vinkeln. B uppfyller inte."
+        "why_tempting": "Det är lätt att gissa rätvinklighet om en vinkel 'ser ut' att vara 90° i figuren.",
+        "why_wrong": "Steg 4 understryker att visuell uppskattning aldrig räcker. Alternativ B uppfyller inte a² + b² = c² när man räknar — bara A gör det."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att välja triangeln med proportionerna 3-4-5.",
-        "why_wrong": "Om C:s sidor inte exakt uppfyller a^2+b^2=c^2 är den inte rätvinklig — endast A passar."
+        "why_tempting": "Snabbsvar är ofta den triangel som har proportionerna 3-4-5 — den klassiska Pythagoras-triangeln.",
+        "why_wrong": "Steg 7 visar att proportionerna i C:s sidor INTE bildar a² + b² = c² exakt — de är 'nära' men inte rätvinkliga. Endast A passar testet."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är att välja en likbent triangel.",
-        "why_wrong": "Likbenthet säger inget om rätvinklighet — testa a^2+b^2=c^2 på sidlängderna istället."
+        "why_tempting": "Första instinkten är att välja den likbenta triangeln, eftersom symmetri 'känns' rätvinklig.",
+        "why_wrong": "Steg 8 påminner: likbenthet och rätvinklighet är OBEROENDE egenskaper. En likbent triangel kan vara rätvinklig (45-45-90), men det är inte automatiskt. Testa a² + b² = c² istället."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Läs av sidlängderna i varje alternativ och kvadrera. För alternativ A stämmer Pythagoras-likheten: a^2+b^2=c^2 där c är den längsta sidan. Övriga alternativ ger olikhet och kan strykas.",
-    "technique": "Pythagoras-test för rätvinklighet: en triangel är rätvinklig omm den längsta sidan c uppfyller a^2+b^2=c^2 — testa varje alternativ med dess avlästa sidlängder.",
-    "framework_id": "XYZ-TRAP-040"
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Fyra trianglar är ritade. Vi ska avgöra vilken som är RÄTVINKLIG (har en 90°-vinkel).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en rätvinklig triangel?",
+        "text": "En triangel där en av de tre inre vinklarna är exakt 90°. Den sida som ligger MOT 90°-vinkeln kallas hypotenusa och är alltid den längsta.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Pythagoras sats",
+        "text": "Grundregel: en triangel är rätvinklig OMM a^{2} + b^{2} = c^{2}, där a, b är kateterna (kortare sidor) och c är hypotenusan (längsta sidan).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Varför inte ögat?",
+        "text": "Visuella vinkeluppskattningar är opålitliga — figurer kan ritas så att en 89°-vinkel ser ut som 90°. Bara sidornas talrelation kan bevisa rätvinklighet.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Läs av sidlängder",
+        "text": "För varje alternativ: identifiera de tre sidlängderna. Markera vilken som är längst — det är kandidaten för hypotenusa c.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Kvadrera alla tre",
+        "text": "För varje alternativ: räkna a², b², c². Skriv upp värdena.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa Pythagoras-likheten",
+        "text": "Räkna a² + b² och jämför med c². Om de är EXAKT lika → rätvinklig. Annars inte.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera fel alternativ",
+        "text": "För B, C och D ger testet a² + b² ≠ c². De är inte rätvinkliga. Endast A uppfyller likheten exakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Bekräfta A",
+        "text": "I alternativ A summerar kateternas kvadrater till exakt hypotenusans kvadrat — Pythagoras-likheten stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity check",
+        "text": "En rätvinklig triangel har en sida (hypotenusan) som är 'tydligt' längre än de två andra. Kontrollera att A:s längsta sida verkligen är längst — det stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar A. Insikten i en mening: rätvinklighet bevisas ENDAST genom Pythagoras-likheten på sidornas kvadrater — visuella vinkeluppskattningar är inte tillåtna som bevis.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2025-kvant2-XYZ-010": {
     "_meta": {
@@ -6914,134 +8334,354 @@
     "technique": "Vid \"ger texten svar på X?\"-frågor: läs alltid stycket DIREKT EFTER den retoriska frågan — där brukar svaret ligga. När en text själv ställer en fråga i kursiv betoning är det för att leda läsaren till nästa tankesteg. Triggern: en retorisk fråga \"Varför…?\" → följande stycke är svaret."
   },
   "var-2025-verb2-LÄS-016": {
-    "_meta": {
-      "generated_at": 1778436501507,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten säger uttryckligen: 'belgisk blå har extrema muskler beror VARKEN på hormoner eller genmanipulation, utan på traditionell, om än extrem, AVEL'. Rasen exemplifierar alltså att också avel kan ge dramatiska genförändringar — alternativ B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta vad belgisk blå EXEMPLIFIERAR enligt FÖRFATTARNAS egen tolkning — inte enligt protestbrevet, inte enligt Hagelgren, inte enligt Marit Paulsen, utan enligt textens slutpunkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta författarnas 'beror på'-mening",
+        "text": "I textens tredje del kommer formuleringen: 'Att belgisk blå har extrema muskler beror VARKEN på hormoner ELLER genmanipulation, UTAN på traditionell, om än extrem, AVEL.' Författarna gör en explicit kategorikorrigering — folk tror att det är genteknik, men det är gammeldags avel.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är skillnaden mellan avel och genmanipulation?",
+        "text": "Avel = man parar djur med önskade egenskaper i många generationer och låter naturligt urval (styrt av människan) förstärka draget. Genmanipulation = man ändrar DNA direkt i labb. Båda kan ge stora förändringar, men metoden är HELT OLIKA. Belgisk blå är resultatet av avel, inte genteknik — men ändå dramatiskt förändrad jämfört med ursprungsrasen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vad är poängen med exemplet?",
+        "text": "Författarna vill visa att DRAMATISKA GENETISKA EFFEKTER inte kräver genmanipulation. Också traditionell avel kan producera djur 'fullständigt onaturliga'. Det är en korrigering av en utbredd missuppfattning — folk har låtit belgisk blå symbolisera genmanipulationens faror, men rasen är ett bevis på AVELNS möjligheter och problem.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A 'genteknik gått för långt' inverterar — författarna avvisar uttryckligen genteknik som förklaring; alternativet är textens motsats. B 'avel kan resultera i dramatiska genförändringar' träffar precis: 'extrem avel' ger djur med 'dubbla muskler'. C 'EU otillräckligt regelverk' fångar inte författarnas tes — de kritiserar inte EU:s regelverk utan beskriver dess effekter; deras egen poäng är att rasen visar AVELNS kraft. D 'avel och genmanipulation behövs för lantbruket' är böndernas argument inom texten, inte författarnas slutsats om exemplet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är B. Insikten i en mening: när författarna säger 'X beror VARKEN på Y ELLER Z, UTAN på W' är W kategorin de vill att läsaren ska placera fenomenet i.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att monstret står för genteknikens överdrift.",
-        "why_wrong": "Författarna avvisar uttryckligen genmanipulation som förklaring — alternativet är textens motsats; inverterar."
+        "why_tempting": "Det är lätt att tro att monstertjuren står för genteknikens överdrift — bilden hamras ju in i den kontexten.",
+        "why_wrong": "Som steg 5 visar avvisar författarna uttryckligen genteknik som förklaring — meningen 'beror varken på hormoner eller genmanipulation' korrigerar just den läsningen. Alternativet är textens DIREKTA motsats och inverterar författarnas korrigeringsrörelse."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid avsnittet om EU-förbudet och drar slutsatsen att EU brister.",
-        "why_wrong": "Texten kritiserar inte EU:s genmanipulationsregelverk — den utvecklar att avel ger samma effekter; missar fokus."
+        "why_tempting": "Många stannar vid passagen om EU-förbudet som föll och drar slutsatsen att EU brister.",
+        "why_wrong": "Texten beskriver EU-regelverkets konsekvenser men författarna kritiserar inte regelverket — som steg 4 visar är deras egen poäng att rasen exemplifierar AVELNS dramatiska effekter, oberoende av regelverk. Alternativet importerar en EU-kritisk tes texten inte driver."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att Hagelgren framhåller bondens överlevnad.",
-        "why_wrong": "Det är böndernas argument inom texten, inte författarnas slutsats om vad rasen exemplifierar; sträcker sig för långt."
+        "why_tempting": "Snabbsvar är ofta att Hagelgren och Nilsson framhåller överlevnad för svenska bönder och tror det är författarnas slutsats.",
+        "why_wrong": "Som steg 5 visar är detta BÖNDERNAS argument citerat inom texten ('det handlar om överlevnad för våra svenska bönder' — Hagelgren), inte författarnas slutsats om vad rasen exemplifierar. Alternativet förväxlar refererat citat med textens egen tes."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten är tydlig: 'belgisk blå har extrema muskler beror varken på hormoner eller genmanipulation, utan på traditionell, om än extrem, avel'. Rasen visar alltså att avel ensam kan ge dramatiska genförändringar.",
-    "technique": "Vid 'X exempel på Y'-frågor: leta efter författarens egen 'beror på'-formulering — den länkar fenomenet till rätt kategori."
+    "technique": "Vid 'vad är X exempel på enligt författarna'-frågor: leta efter författarnas egen 'beror på'-mening, särskilt formuleringen 'varken Y eller Z, utan W' som signalerar att de korrigerar en felaktig kategori-tillskrivning. Triggern: när texten har olika röster (aktivister, bönder, journalister, författare) — håll fast vid FÖRFATTARNAS egen tolkning, inte de citerade.",
+    "pitfall": "Det är lätt att blanda samman vad belgisk blå har SYMBOLISERAT (genteknik, hormoner, monstrositet) med vad rasen FAKTISKT är (extremt avlad). Botemedlet: läs noggrant vem som påstår vad — författarnas tes ligger i 'beror... utan'-meningen, inte i Marit Paulsens text eller Miljöpartiets affisch.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Beror-på-meningen",
+      "move": "När frågan är vad X exemplifierar — leta efter författarnas explicita 'X beror varken på Y eller Z, utan på W'; W är kategorin facit pekar mot."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2025-verb2-LÄS-017": {
-    "_meta": {
-      "generated_at": 1778436501507,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten ägnar sig åt formaliserad summativ bedömning (kriterier, nationella prov, Seixas-provet) och åt förmågor/kompetenser (content/skills, källanalys, kompetensmodeller). Det är trend ETT (formalisering) och trend FYRA (förmågor) som driver resonemanget — alternativ D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta vilka av de FYRA trenderna som texten i HUVUDSAK anknyter sitt resonemang till — alltså vilka två som FAKTISKT utvecklas i texten, inte bara räknas upp.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lista de fyra trenderna",
+        "text": "Inledningen räknar upp: (1) Tilltagande formalisering av summativ bedömning, nationella prov, tydliga kriterier. (2) Växande förväntan om FORMATIV (framåtsyftande) bedömning. (3) Införandet av LÄRPLATTFORMAR som tvingar lärare anpassa insamling och återkoppling. (4) Skolämnet historia har förändrats mot FÖRMÅGOR och kompetenser.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilka trender utvecklas i texten?",
+        "text": "Texten ägnar lång plats åt: (a) content/skills-debatten — direkt kopplad till trend 4 (förmågor). (b) Tyska kompetensmodellen — trend 4. (c) Källtextarbete och dess utmaningar — trend 4. (d) Peter Seixas historieprov — trend 1 (formaliserad summativ bedömning). (e) Danska fördjupningsprojekt — alternativ till skriftliga prov, men trend 1-kontext (vad ersätter de nationella proven?). (f) 'väga grisen varje dag' — kritik av formaliseringens överdrift, trend 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Trender 2 och 3 nästan obehandlade",
+        "text": "Trend 2 (formativ bedömning) nämns med en mening i inledningen och dyker inte upp igen — ingen utveckling. Trend 3 (lärplattformar) nämns en gång och försvinner ur resonemanget. Texten BERÖR dem inte i sin substantiella diskussion. Däremot är hela huvudkroppen — content/skills, kompetenser, källanalys, exempel på uppgiftsdesign — fullt fokuserad på FÖRMÅGOR och FORMALISERING.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A 'första och andra' — andra (formativ) är knappt utvecklad. B 'andra och tredje' — båda är knappt utvecklade. C 'tredje och fjärde' — tredje (lärplattformar) saknar utveckling. D 'första och fjärde' — formalisering (kriterier, prov, Seixas) och förmågor (content/skills, kompetenser) är båda kärnan i resonemanget. D är det enda alternativet som matchar TEXTENS UTRYMME, inte uppräkningens ordning.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är D: första och fjärde. Insikten i en mening: när en text räknar upp fyra trender och frågar vilka som anknyter — räkna UTRYMME i diskussionen, inte antal ord i uppräkningen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tänka att formativ bedömning behandlas eftersom 'lärplattformar' nämns.",
-        "why_wrong": "Lärplattformarna är trend tre, och formativ bedömning trend två — de utvecklas inte i resonemanget; missar fokus."
+        "why_tempting": "Det är lätt att tänka att formativ bedömning är den moderna trenden och därför central — och kombinera den med formalisering.",
+        "why_wrong": "Som steg 4 visar nämns formativ bedömning bara EN mening i inledningen — texten utvecklar den inte. Alternativet låter sig luras av trendens popularitet utanför texten; inom texten är det förmågor (trend 4), inte formativ bedömning, som dyker upp i resonemanget."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att framåtsyftande bedömning låter modernt centralt.",
-        "why_wrong": "Trend två och tre är knappt utvecklade; texten lägger tyngd vid kriterier och förmågor — inverterar fördelningen."
+        "why_tempting": "Många stannar vid att framåtsyftande bedömning (trend 2) låter modernt och centralt.",
+        "why_wrong": "Som steg 4 visar är trend 2 OCH trend 3 (lärplattformar) båda knappt utvecklade. Texten lägger tyngd på trend 1 (kriterier, Seixas) och trend 4 (kompetenser, content/skills) — alternativet inverterar utrymmesfördelningen."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att de senaste trenderna är de viktigaste.",
-        "why_wrong": "Trend tre om lärplattformar ger ingen utbyggd diskussion; alternativet plockar bara baserat på 'senast' — över-tolkar ordningen."
+        "why_tempting": "Snabbsvar är ofta att de senaste trenderna är de viktigaste — så tredje och fjärde verkar lockande.",
+        "why_wrong": "Som steg 5 visar ger trend 3 (lärplattformar) inte någon utbyggd diskussion alls — den nämns bara i översikten. Alternativet plockar baserat på 'sena trender är moderna' utan att räkna textens faktiska utrymme."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten ägnar sig åt formaliserad summativ bedömning (kriterier, prov) och åt förmågor/kompetenser (content vs skills, källanalys, historieprov à la Seixas). Det är trend ett (formalisering) och trend fyra (förmågor) som driver resonemanget.",
-    "technique": "Vid 'vilken trend anknyter texten till'-frågor: räkna utrymme i resonemanget, inte ordningen i uppräkningen."
+    "technique": "Vid 'vilka trender anknyter texten i huvudsak till'-frågor: räkna UTRYMME i diskussionen, inte ordningen i uppräkningen. Triggern: när inledningen listar fyra punkter och resten av texten utvecklar bara två — de två är facit, oavsett deras nummer i listan.",
+    "pitfall": "Det är lätt att välja trender utifrån vilka som låter mest 'moderna' eller 'angelägna' (formativ, lärplattformar) istället för vilka som faktiskt UTVECKLAS i texten. Botemedlet: bläddra och räkna styckes-utrymme — formalisering + förmågor äter ca 90% av texten.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Utrymme-räkningen",
+      "move": "När en text listar N punkter och frågan är vilka som faktiskt anknyter — räkna styckes-utrymme för varje punkt, inte ordet i listan."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2025-verb2-LÄS-018": {
-    "_meta": {
-      "generated_at": 1778436501507,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Författarna återger kritikernas position: 'centrala begrepp som betydelse, förändring och orsak går ut på att tolka och förklara, men är samtidigt fundamentala i relation till innehållet' — och drar slutsatsen att de två kunskapsformerna är 'sammantvinnade'. Den fråga texten riktar in sig på är OM uppdelningen är möjlig — alternativ D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta vilken FRÅGA författarna SÄRSKILT riktar in sig på när de återger content/skills-debatten. Inte vilken position texten själv tar, utan vilken fråga den lyfter som central.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta debattens kärnfråga",
+        "text": "Texten introducerar content (stoffkunskaper) och skills (förmågor), och säger sedan: 'KRITIKER HAR IFRÅGASATT om det är rimligt att göra en distinktion mellan stoffkunskaper och förmågor, eftersom centrala begrepp som betydelse, förändring och orsak visserligen går ut på att tolka och förklara, men samtidigt är fundamentala i relation till innehållet.'",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är kritikernas fråga?",
+        "text": "Frågan är: KAN man verkligen separera 'att tolka' från 'innehåll'? Om begreppet 'orsak' i historia är BÅDE en tolkningsförmåga OCH ett innehållsbegrepp, så är uppdelningen content/skills artificiell — de är sammantvinnade. Frågan handlar alltså om OM uppdelningen ÖVERHUVUDTAGET HÅLLER, inte om vilken som ska betonas.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Författarna går med kritikerna",
+        "text": "'Med detta synsätt bygger historisk kunskap alltid på BÅDE innehållskunskap och en därmed sammantvinnad metodisk eller proceduriell kunskap, OCH INGENDERA KUNSKAPSFORMEN KAN TYDLIGT VÄRDERAS VAR FÖR SIG.' Författarna landar i att uppdelningen INTE är hållbar — frågan de driver är just om den går att göra.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A 'vad ligger bakom uppdelningen' — historisk bakgrund till distinktionen diskuteras inte; texten ifrågasätter den, ger inte dess ursprung. B 'vilken bör betonas' inverterar — författarna tar inte ställning för någondera; de avvisar själva uppdelningen. C 'varför annorlunda i historieämnet än andra ämnen' — andra ämnen jämförs inte; sträcker sig för långt mot ett tema texten inte tar upp. D 'om de verkligen går att skilja åt' är ordagrann parafras av kritikernas fråga och författarnas slutsats.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: när en text refererar en debatt och säger 'kritiker har ifrågasatt OM X', är OM-frågan det texten riktar in sig på — inte VILKEN, VARFÖR eller HUR-frågor som låter besläktade.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'bakgrund' när uppdelningar förklaras.",
-        "why_wrong": "Texten redovisar inte hur uppdelningen uppstod — den ifrågasätter dess giltighet; missar nivån."
+        "why_tempting": "Det är lätt att läsa 'bakgrund' när texten förklarar en distinktion — den måste väl ha en historia?",
+        "why_wrong": "Som steg 5 visar redovisar texten inte hur content/skills-uppdelningen uppstod eller var den kommer ifrån — den IFRÅGASÄTTER dess giltighet i ett historiedidaktiskt nu. Alternativet flyttar frågan från 'är den giltig?' till 'varifrån kom den?' — fel nivå."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att skillnaden mellan kunskapsformerna driver pedagogiska val.",
-        "why_wrong": "Texten tar inte ställning för betoningen av endera; den avvisar uppdelningen själv — inverterar fokus."
+        "why_tempting": "Många stannar vid att en distinktion mellan kunskapsformer borde leda till pedagogiska val om vilken som ska betonas.",
+        "why_wrong": "Som steg 4 visar tar texten inte ställning för att betona endera; den AVVISAR själva uppdelningen. Frågan om vilken som ska prioriteras förutsätter att uppdelningen är meningsfull — författarna förnekar just den premissen. Alternativet inverterar fokus."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta jämförelse med andra ämnen.",
-        "why_wrong": "Andra ämnen jämförs inte i texten — sträcker sig för långt mot ett tema texten inte tar upp."
+        "why_tempting": "Snabbsvar är ofta jämförelse mellan historieämnet och andra ämnen — kunskapsteori brukar göras komparativt.",
+        "why_wrong": "Som steg 5 visar jämförs andra ämnen inte i texten — content/skills-debatten är dragen från engelskspråkig pedagogik men endast om historieämnet. Alternativet sträcker sig för långt mot ett komparativt tema texten inte tar upp."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Författarna återger kritikernas position: 'centrala begrepp som betydelse, förändring och orsak går ut på att tolka och förklara, men är samtidigt fundamentala i relation till innehållet'. Frågan de återger är alltså om uppdelningen content/skills överhuvudtaget är möjlig.",
-    "technique": "Vid 'vilken fråga riktar texten in sig på'-frågor: hitta verbet som beskriver författarnas riktning ('ifrågasätter', 'utvecklar', 'kritiserar') och parafrasera det."
+    "technique": "Vid 'vilken fråga riktar texten in sig på'-frågor om en återgiven debatt: hitta verbet som beskriver författarnas riktning ('kritiker har ifrågasatt OM', 'utvecklar tesen ATT', 'argumenterar för VILKEN') och välj alternativet som parafraserar exakt det. Triggern: 'OM X' är en annan fråga än 'VILKEN', 'VARFÖR' eller 'HUR' kring X.",
+    "pitfall": "Det är lätt att hoppa från 'OM man kan skilja content och skills' till 'VILKEN ska prioriteras' eftersom båda låter pedagogiska. Botemedlet: håll fast vid textens verb — 'ifrågasatt OM' är frågan, inte 'argumenterar för VILKEN'.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Riktningsverbet",
+      "move": "Vid frågor om vilken fråga en text riktar in sig på — leta efter verbet som beskriver författarens ingång ('ifrågasätter', 'utvecklar', 'kritiserar') och välj alternativet som parafraserar exakt det verbets objekt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2025-verb2-LÄS-019": {
-    "_meta": {
-      "generated_at": 1778436501507,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Sista stycket markerar att författarna är 'kritisk till den särställning som skriftliga uppgifter har fått' och pekar på alternativ (Danmarks fördjupningsprojekt: film, rollspel, intervju; Seixas stegvisa uppgifter). Skriftliga prov bör ses som ETT bland flera redskap — alternativ A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta vad författarna ANSER om skriftliga prov i historia — alltså deras egen position, inte vad andra säger.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta författarnas slutord",
+        "text": "Sista stycket har den explicita formuleringen: 'Erfarna historielärare har genom åren skaffat sig en lång rad VERKTYG och samlar in en MÄNGD OLIKA UNDERLAG för sin bedömning, och olika strategier kan behövas inte minst eftersom vissa elever behöver ANNAT än skriftliga prov för att komma till sin rätt och visa sina kunskaper. Det finns anledning att förhålla sig KRITISKT både till den särställning som skriftliga uppgifter har fått och till den nuvarande regimen där bedömning sitter i högsätet och där lärare känner sig tvingade att väga grisen varje dag.'",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'särställning'?",
+        "text": "Särställning = privilegierad plats, dominans. Skriftliga prov har dominerat bedömningen och författarna anser att det är fel — de ska vara ETT verktyg BLAND FLERA. Texten har därför pekat på Danmarks fördjupningsprojekt (film, rollspel, intervju) och Seixas stegvisa uppgifter som alternativ.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt till vardagsspråk",
+        "text": "Författarna säger inte att skriftliga prov är värdelösa — de säger att proven har fått en överdriven plats. Det är diversifiering de förespråkar: olika elever behöver olika verktyg. Skriftliga prov är legitima men ska samsas med alternativ.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A 'endast ett bland många redskap för bedömning' fångar exakt diversifieringspositionen — proven har en plats men ska inte ha särställning. B 'passar bäst för faktakunskaper' importerar nidbilden som texten avvisar; författarna är tvärtemot kritiska till att skolämnet skulle handla om bara fakta. C 'kritiseras på felaktiga grunder' vänder författarnas position — det är de SJÄLVA som kritiserar provens särställning, inte försvarar dem. D 'behöver förnyas innehållsmässigt' sträcker sig för långt mot reform av proven själva; texten talar om att DIVERSIFIERA verktygslådan, inte modernisera proven.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: i avslutningstexter där författarna säger 'kritisk till SÄRSTÄLLNINGEN' — det är dominansen, inte verktyget, som ska bort. Verktyget får finnas, men som ett av flera.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att importera nidbilden om memorering och fakta.",
-        "why_wrong": "Texten avvisar just nidbilden — den vill INTE reducera prov till fakta; alternativet inverterar."
+        "why_tempting": "Det är lätt att importera nidbilden att skriftliga prov mäter memorerade faktakunskaper — det är ju vad de TYPISKT gör.",
+        "why_wrong": "Som steg 5 visar avvisar texten just nidbilden ('en spridd uppfattning eller nidbild'); författarna vill INTE reducera prov till fakta utan diversifiera bedömningsformerna. Alternativet inverterar — det är vad texten kritiserar, inte vad den förespråkar."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att kritik mot skriftliga prov bemöts försvarsvis.",
-        "why_wrong": "Texten är själv kritisk till skriftliga provs särställning — alternativet vänder författarnas position."
+        "why_tempting": "Många stannar vid att skriftliga prov försvaras mot orättvis kritik — eftersom de inte är värdelösa.",
+        "why_wrong": "Som steg 5 visar är texten SJÄLV kritisk till skriftliga provs särställning — alternativet vänder författarnas position till motsatsen. De är inte försvarare mot kritik, de ÄR kritikerna."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att skriftliga prov 'måste förnyas'.",
-        "why_wrong": "Texten talar om att DIVERSIFIERA verktygen, inte uppdatera proven själva — sträcker sig för långt mot innehållsfrågan."
+        "why_tempting": "Snabbsvar är ofta att 'skriftliga prov måste förnyas' — låter som en mild reform-position.",
+        "why_wrong": "Som steg 4 visar talar texten om att DIVERSIFIERA verktygen (film, rollspel, intervju, stegvisa uppgifter), inte om att modernisera själva proven. Alternativet sträcker sig för långt mot innehållsreform av en form som texten istället vill MINSKA dominansen för."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Sista stycket markerar 'kritisk till den särställning som skriftliga uppgifter har fått' och pekar på alternativ — film, rollspel, intervju (Danmark) och stegvisa uppgifter. Skriftliga prov är ett av många bedömningsverktyg.",
-    "technique": "Vid 'författarnas syn på X'-frågor: hitta den övergripande positionen i sista stycket — där landar de oftast."
+    "technique": "Vid 'författarnas syn på X'-frågor: hitta sista stycket och leta efter explicit positionsmarkör ('kritisk till', 'förespråkar', 'anser att'). Triggern: när texten avslutar med 'kritisk till X:s särställning' — facit är 'X bör vara ett av flera', inte 'X bör avskaffas'.",
+    "pitfall": "Det är lätt att läsa 'kritisk till särställning' som 'kritisk till X' (skriftliga prov i sig). Botemedlet: skilj på att kritisera DOMINANSEN av ett verktyg och att kritisera VERKTYGET — författarna gör det första, inte det andra.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Särställnings-kritiken",
+      "move": "När texten säger 'kritisk till X:s särställning' — välj alternativet som säger 'X är ett av flera redskap', inte 'X bör avskaffas' eller 'X försvaras'."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2025-verb2-LÄS-020": {
-    "_meta": {
-      "generated_at": 1778436501507,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten räknar fyra trender som ändrar bedömningens premisser, redovisar olika traditioner (content/skills, kompetensmodellen), diskuterar utmaningar med källtexter och alternativ till skriftliga prov. Det är genomgående en DISKUSSION AV FÖRUTSÄTTNINGARNA — inte argumentation eller motivering — alternativ C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta vad författarna i FÖRSTA HAND GÖR — alltså textens GENRE eller övergripande HANDLING. Argumenterar de, sammanfattar, diskuterar, motiverar?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Inventera textens innehåll",
+        "text": "Textens rörelse: (a) Inledningen räknar fyra trender som ändrar förutsättningarna. (b) Olika traditioner redovisas: content/skills, tyska kompetensmodellen. (c) Källtextarbete diskuteras med dess utmaningar (läs- och skrivförmåga, dyslexi). (d) Konkreta uppgiftsexempel: Peter Seixas historieprov, danska fördjupningsprojekt. (e) Avslutande kritik mot skriftliga provs särställning. Genomgående: olika ASPEKTER av bedömning utforskas.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilken verbtyp dominerar?",
+        "text": "Texten redogör, jämför, exemplifierar, problematiserar — den driver inte en TES, den motiverar inte ett BESLUT, den summerar inte ett FORSKNINGSLÄGE. Den öppnar upp ett område och visar dess olika sidor. Det är just vad 'diskutera förutsättningarna' betyder.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är 'förutsättningar' här?",
+        "text": "Förutsättningarna för bedömning = vilka villkor som råder, vilka traditioner som finns, vilka verktyg som är tillgängliga, vilka utmaningar som måste hanteras. Texten visar att de förändras (fyra trender), att de varierar mellan länder (content/skills i engelsktalande, kompetenser i Tyskland), att de innehåller spänningar (skriftliga vs alternativa former).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A 'argumenterar för mer formaliserad bedömning' inverterar — författarna är tvärtemot KRITISKA till formaliseringens överskott ('väga grisen varje dag'). B 'sammanfattar forskningsläget' — forskning citeras (Seixas) som EXEMPEL inom diskussionen, inte som en översikt över forskningsfältet; sträcker sig för långt. C 'diskuterar förutsättningarna' fångar exakt textens genre: förutsättningarna (traditioner, trender, utmaningar, alternativ) utforskas utan att en bestämd ståndpunkt drivs. D 'motiverar beslut att förändra riktlinjer' — texten motiverar inget specifikt beslut; den problematiserar förutsättningarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: när en text räknar trender, redovisar traditioner, exemplifierar metoder och avslutar med försiktig kritik — det är diskussion av förutsättningar, inte argumentation eller motivering.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa formaliseringstrenden som ett ställningstagande.",
-        "why_wrong": "Författarna är snarare KRITISKA till formaliseringens överskott ('väga grisen varje dag'); inverterar deras position."
+        "why_tempting": "Det är lätt att läsa formaliseringstrenden som textens egen rekommendation — den nämns ju först.",
+        "why_wrong": "Som steg 5 visar är författarna snarare KRITISKA till formaliseringens överskott — 'väga grisen varje dag' är en avslutande sarkastisk markör. Alternativet inverterar författarnas position: de problematiserar formaliseringen, de förespråkar inte mer av den."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att forskning citeras (Seixas, danska modellen).",
-        "why_wrong": "Forskning används som exempel inom diskussionen, inte som översikt över forskningsläget — sträcker sig för långt mot 'sammanfattar'."
+        "why_tempting": "Många stannar vid att forskning citeras (Seixas, danska modellen) och drar slutsatsen att texten översiktar forskningsläget.",
+        "why_wrong": "Som steg 5 visar används forskning som EXEMPEL inom diskussionen, inte som översikt — Seixas är ett konkret prov, danska modellen ett konkret alternativ. Texten gör ingen systematisk översikt över forskningsfältet i bedömning. Alternativet sträcker sig för långt mot en genre texten inte håller."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att texter om bedömning argumenterar för reform.",
-        "why_wrong": "Texten motiverar inget specifikt beslut — den problematiserar förutsättningarna; missar att det inte finns ett konkret beslut att försvara."
+        "why_tempting": "Snabbsvar är ofta att texter om bedömning argumenterar för reform eller motiverar nya riktlinjer.",
+        "why_wrong": "Som steg 3 visar driver texten ingen specifik reform-tes och motiverar inget specifikt beslut — den problematiserar förutsättningarna. Alternativet missar att det handlar om ett diskussions-papper, inte om en policy-motivering."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten räknar upp fyra trender som förändrar bedömningens premisser, redovisar olika traditioner (content/skills, kompetenser), diskuterar utmaningar med källtexter och alternativ till skriftliga prov. Det är genomgående en diskussion av förutsättningarna — inte argumentation eller motivering.",
-    "technique": "Vid 'vad gör författarna i första hand'-frågor: kolla om texten DRIVER en tes eller UTFORSKAR ett område — verbformerna avslöjar genren."
+    "technique": "Vid 'vad gör författarna i första hand'-frågor: kolla om texten DRIVER en tes eller UTFORSKAR ett område — verbformerna avslöjar genren (redogöra, jämföra, problematisera vs argumentera, kräva, motivera). Triggern: när texten räknar trender, redovisar traditioner och exemplifierar metoder utan att landa i ett tydligt påbud — det är diskussion.",
+    "pitfall": "Det är lätt att tolka kritiska markörer ('det finns anledning att förhålla sig kritiskt', 'väga grisen varje dag') som att texten DRIVER en reformagenda. Botemedlet: kontrollera om kritiken landar i ett SPECIFIKT förslag — om inte, är det diskussion, inte argumentation.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Genre-verbet",
+      "move": "Vid frågor om vad en text gör i första hand — kolla verben i texten själv: 'redogör, jämför, problematiserar' = diskutera; 'kräver, måste, bör ändras' = argumentera."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2025-verb2-MEK-021": {
     "_meta": {

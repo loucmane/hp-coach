@@ -1803,30 +1803,97 @@
   },
   "host-ver2-2019-kvant1-XYZ-005": {
     "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-038",
+    "solution_path": "Vinkeln v sitter på utsidan av en triangel där två inre vinklar går att läsa direkt. Använd yttervinkelregeln: v = a + b där a och b är de icke-angränsande inre vinklarna. Avläsningen ger v = 67°.",
+    "technique": "Vinkelräkning i sammansatt figur: kombinera triangelns vinkelsumma 180° och yttervinkelregeln. Yttervinkeln till en triangel är alltid lika med summan av de två INNRE vinklar som inte är dess granne — en enstegsgenväg.",
+    "pitfall": "Botemedlet mot 'fel triangel': peka först ut VILKEN triangel v är yttervinkel till, sedan peka ut de TVÅ inre vinklar som ligger LÅNGT BORT från v. De som ligger nära (delar en sida med v) är inte med i regeln.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Sammansatt vinkelfigur: två linjer korsar och bildar en triangel. Vinkeln v sitter utanför triangeln, längs förlängningen av en sida. Vi vill ha v utan miniräknare.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Namnge vinklarna",
+        "text": "Inne i triangeln finns tre vinklar — två är utmärkta med tal i figuren, kalla dem a och b. Den tredje (granne till v) kallar vi c. v är yttervinkel till triangeln, supplementär med c.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definiera vinkelsumma i triangel",
+        "text": "Grundsats: i varje triangel är de tre inre vinklarna tillsammans 180°. a + b + c = 180^{\\circ}. Detta är en av geometrins kärnregler — bevisas via parallella linjer men kan användas direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Definiera supplementvinklar",
+        "text": "Två vinklar är supplementära om deras summa är 180°. Det händer alltid när två strålar delar startpunkt och bildar en RÄT LINJE — den ‘delas’ i 180°.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Härled yttervinkelregeln",
+        "text": "v är supplement till c: v + c = 180^{\\circ}, så c = 180^{\\circ} - v. Från vinkelsumman: c = 180^{\\circ} - (a+b). Sätt lika: 180^{\\circ} - v = 180^{\\circ} - (a+b), alltså v = a + b.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs inre vinklar",
+        "text": "I figuren är de två icke-angränsande inre vinklarna utmärkta. Avläsningen och summeringen ger a + b = 67^{\\circ}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tillämpa regeln",
+        "text": "Sätt in i v = a + b: v = 67^{\\circ}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Rimlighetskontroll",
+        "text": "Yttervinkeln ska vara större än varje enskild ‘långt-bort’-vinkel (för den är deras summa) och mindre än 180°. 67° uppfyller båda — och eftersom triangeln har en tredje vinkel c = 113^{\\circ} (trubbig) passar geometrin med en spetsig triangelvinkel mot en trubbig.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera",
+        "text": "Kontroll: v + c = 67^{\\circ} + 113^{\\circ} = 180^{\\circ} (supplement OK), och a + b + c = 67^{\\circ} + 113^{\\circ} = 180^{\\circ} (vinkelsumma OK). Båda satser stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svar: C, 67°. Insikten i en mening: yttervinkelregeln (yttervinkel = summan av två icke-angränsande inre vinklar) är genvägen i alla figurer där den sökta vinkeln sitter UTANFÖR en triangel.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att avläsa fel sida av yttervinkeln och få 50°.",
-        "why_wrong": "50° är yttervinkelns komplement, inte yttervinkeln själv — rätt regel ger v = 67^\\circ."
+        "why_tempting": "Det är lätt att avläsa fel sida av yttervinkeln och hamna på den närliggande inre vinkeln c = 180^{\\circ} - 67^{\\circ} = 113^{\\circ} — fast om man halvgissar kan man trycka på 50°.",
+        "why_wrong": "Steg 5 visar att v är yttervinkeln, inte dess komplement eller supplement. 50° är varken yttervinkeln eller någon av de avlästa inre vinklarna."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 63° om man avrundar fel led i kedjan.",
-        "why_wrong": "63° kommer av att en delvinkel räknats utan yttervinkelregeln; rätt summering ger 67^\\circ."
+        "why_tempting": "Snabbsvar är ofta 63° om man avläser ena delvinkeln 'rätt' men hoppar över att SUMMERA båda — eller blandar in fel granne.",
+        "why_wrong": "Steg 6 är explicit: SUMMAN av de två icke-angränsande inre vinklarna är 67°, inte 63°. 63° är typiskt om bara ena vinkeln räknas eller fel par adderats."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är att ta supplementvinkeln till 67° och hamna på 113°…men då fastnar man oftare på 77°.",
-        "why_wrong": "77° är 10° fel från 67° — typiskt om man räknar 180^\\circ - (a+b) med ett vinkelpar i fel triangel."
+        "why_tempting": "Första instinkten är att räkna in ett supplementsteg för mycket och hamna på 77° — kanske via 180^{\\circ} - 103^{\\circ} från en närliggande figur.",
+        "why_wrong": "Steg 9 kontrollerar med v + c = 180^{\\circ}. 77° ger c = 103°, men då blir a + b = 103^{\\circ}, vilket inte stämmer med figurens avläsning på 67°."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Identifiera den triangel där två vinklar är kända ur figuren. Vinkelsumman ger den tredje via 180^\\circ-(a+b), och en yttervinkel = summan av de två icke-angränsande inre vinklarna. Den kedjan landar på v = 67^\\circ.",
-    "technique": "Trianglar i samma figur: använd vinkelsumma 180° plus yttervinkelregeln för att slingra runt mellan de inre och yttre vinklarna.",
-    "framework_id": "XYZ-TRAP-038"
+    "pregrade_tactic": {
+      "handle": "Yttervinkelregeln",
+      "move": "När v sitter utanför triangeln — addera de två inre vinklarna som inte är dess granne, hoppa över vinkelsumman."
+    }
   },
   "host-ver2-2019-kvant1-XYZ-007": {
     "_meta": {
@@ -2130,30 +2197,109 @@
   },
   "host-ver2-2019-kvant1-XYZ-010": {
     "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-032",
+    "solution_path": "Förenkla \\sqrt{12xy^4 z^3} genom att faktorisera 12, y^4 och z^3 i perfekta kvadrater. 12 = 4 \\cdot 3, y^4 = (y^2)^2, z^3 = z^2 \\cdot z. Resultat: 2y^2 z \\sqrt{3xz} (alternativ B).",
+    "technique": "Förenkling av rotuttryck med flera variabler: faktorisera varje del separat. Jämna exponenter (2, 4, 6...) går ut HEL. Udda exponenter (1, 3, 5...) går ut med ett varv kvar under roten.",
+    "pitfall": "Botemedlet mot förenklings-slarv: räkna varje variabels och varje primtals exponent var för sig. 12 = 4 \\cdot 3 — perfekt kvadrat är 4, inte 12 självt. z^3 = z^2 \\cdot z — perfekta kvadraten är z^2, inte hela z^3.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uttrycket är \\sqrt{12 x y^4 z^3} med x, y, z > 0. Vi ska skriva det i formen 'konstant · variabler · \\sqrt{...}' — alltså dra ut allt som är möjligt från under rottecknet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Produktregeln för rötter",
+        "text": "För positiva a, b gäller: \\sqrt{a \\cdot b} = \\sqrt{a} \\cdot \\sqrt{b}. Det betyder att vi kan separera roten faktor för faktor och dra ut varje del oberoende.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definiera perfekt kvadrat",
+        "text": "Ett tal eller variabel är en perfekt kvadrat om dess rot är 'rent' (utan rotsymbol kvar). 1, 4, 9, 16 är perfekta kvadrater bland heltal. För variabler: x^2, x^4, x^6, ... — alla JÄMNA exponenter.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Faktorisera 12",
+        "text": "Sök största perfekta kvadraten i 12. Test: 4 delar 12 (12 = 4 \\cdot 3). 9 delar inte 12. Så största perfekta kvadrat är 4: 12 = 4 \\cdot 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Klassa variabeln x",
+        "text": "x har exponent 1 (udda) — kan inte tas ut från roten. Stannar kvar under rottecknet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Klassa y^4",
+        "text": "Exponenten 4 är jämn. y^4 = (y^2)^2, alltså en perfekt kvadrat. Den går ut HEL: \\sqrt{y^4} = y^2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Klassa z^3",
+        "text": "Exponenten 3 är udda. Dela upp: z^3 = z^2 \\cdot z. z^2 är perfekt kvadrat (går ut som z), och en enstaka z stannar kvar.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Skriv om hela roten",
+        "text": "\\sqrt{12 x y^4 z^3} = \\sqrt{4 \\cdot 3 \\cdot x \\cdot y^4 \\cdot z^2 \\cdot z}. Använd produktregeln: = \\sqrt{4} \\cdot \\sqrt{y^4} \\cdot \\sqrt{z^2} \\cdot \\sqrt{3xz}.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna ut de tre perfekta kvadraterna",
+        "text": "\\sqrt{4} = 2, \\sqrt{y^4} = y^2, \\sqrt{z^2} = z. Multiplicera: koefficienten utanför roten blir 2 y^2 z.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Samla resultatet",
+        "text": "2 y^2 z \\cdot \\sqrt{3xz} = 2y^2 z \\sqrt{3xz}. Det är formen 'konstant · variabel · \\sqrt{...}'.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera genom kvadrering",
+        "text": "Kvadrera tillbaka: (2y^2 z)^2 \\cdot 3xz = 4 y^4 z^2 \\cdot 3xz = 12 x y^4 z^3. Stämmer exakt — förenklingen är korrekt.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svar: B, 2y^2 z \\sqrt{3xz}. Insikten i en mening: faktorisera varje del under roten separat — perfekta kvadrater går ut, resten stannar kvar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 2yz√(3xz) genom att tappa exponenten.",
-        "why_wrong": "y⁴ ger y² utanför roten (perfekt kvadrat)."
+        "why_tempting": "Det är lätt att räkna 2yz\\sqrt{3xz} genom att tappa en exponent på y (skriva \\sqrt{y^4} = y istället för y^2).",
+        "why_wrong": "Steg 6 visar att \\sqrt{y^4} = y^2, inte y. Y-exponenten halveras vid rotutdragning: 4/2 = 2."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 6yz√(2xz).",
-        "why_wrong": "√12 = 2√3 (inte 6 eller 2√2)."
+        "why_tempting": "Snabbsvar är ofta 6yz\\sqrt{2xz} om man tror att \\sqrt{12} = 6\\sqrt{...} eller blandar ihop faktorisering.",
+        "why_wrong": "Steg 4 säger 12 = 4 \\cdot 3, så \\sqrt{12} = 2\\sqrt{3} — inte 6 eller \\sqrt{2}-kombo. Plus: y-exponenten är fel (samma fel som A)."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 6y²z√(2xz).",
-        "why_wrong": "√12 = 2√3."
+        "why_tempting": "Många stannar vid 6y^2 z\\sqrt{2xz} — y-delen rätt men 12-faktoriseringen fel.",
+        "why_wrong": "Steg 9: \\sqrt{4} = 2, inte 6. Sammansättningsfelet ger koefficienten 6 istället för 2, och tappar att 3 ligger kvar under roten."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Förenkla: \\sqrt{12xy^{4}z^{3}}=2y^{2}z\\sqrt{3xz}.",
-    "technique": "Förenkla rötter med variabler: bryt ut perfekta kvadrater för varje variabel.",
-    "framework_id": "XYZ-TRAP-032"
+    "pregrade_tactic": {
+      "handle": "Variabel-rotutdragningen",
+      "move": "Faktorisera varje variabels exponent som 'jämn del + 1' om udda — jämn del går ut, en enstaka faktor stannar kvar under roten."
+    }
   },
   "host-ver2-2019-kvant1-XYZ-011": {
     "_meta": {
@@ -4083,30 +4229,103 @@
   },
   "host-ver2-2019-kvant2-XYZ-002": {
     "_meta": {
-      "generated_at": 1778415638489,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-051",
+    "solution_path": "Linjens ekvation har formen y = kx + m. Avläs m direkt som y-skärningen (där linjen korsar y-axeln) — m = 3. Bestäm k från lutningens tecken (linjen faller åt höger, så k < 0) och belopp (\\Delta y / \\Delta x = 1{,}5). Alltså y = -1{,}5x + 3 (alternativ B).",
+    "technique": "Linje från graf: två avläsningar — y-skärningen m (var linjen korsar y-axeln) och lutningen k (förändring i y dividerat med förändring i x mellan två punkter). Tecknet på k ges av om linjen stiger (+) eller faller (−) åt höger.",
+    "pitfall": "Botemedlet mot tecken-blanding: rita en hjälp-pil från vänster till höger längs linjen och fråga: 'går pilen UPP eller NER?' Upp = positivt k, ner = negativt k. Räkna ALDRIG belopp utan att först fastställa tecken.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Grafen visar en rät linje L i ett xy-koordinatsystem. Vi ska välja den ekvation bland fyra alternativ som beskriver den linjen. Alla alternativ har formen y = kx + m med olika tecken på k och m.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera räta linjens ekvation",
+        "text": "Varje rät linje (som inte är vertikal) kan skrivas y = kx + m, där k är lutningen (hur brant) och m är y-skärningen (var linjen träffar y-axeln, dvs x = 0).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definiera y-skärning",
+        "text": "y-skärningen m är y-värdet där linjen korsar y-axeln. Detta är samma sak som att sätta x = 0 i ekvationen: y = k \\cdot 0 + m = m. Avläsbart direkt från grafen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Avläs m från grafen",
+        "text": "Följ linjen tills den korsar y-axeln. Den korsar y-axeln OVANFÖR origo (positivt y-värde). Avläsningen ger y-värdet 3. Alltså m = +3 (inte −3).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definiera lutning",
+        "text": "Lutningen k = \\Delta y / \\Delta x — hur mycket y ändras per enhet x. Beräknas mellan två punkter på linjen: k = (y_2 - y_1) / (x_2 - x_1).",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Bestäm tecken på k",
+        "text": "Titta på linjens lutning åt höger. Om linjen STIGER (går upp) åt höger → k > 0. Om linjen FALLER (går ner) åt höger → k < 0. Här faller linjen åt höger, alltså k < 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs två rutnätspunkter",
+        "text": "Hitta två klara skärningspunkter på linjen. Typisk avläsning från en standardgraf: linjen går från (0, 3) på y-axeln till (2, 0) på x-axeln. Det är två rena rutnätspunkter.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut beloppet av k",
+        "text": "Använd lutningsformeln: k = (0 - 3) / (2 - 0) = -3/2 = -1{,}5. Tecknet stämmer (negativ, som väntat från steg 6), beloppet är 1,5.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sätt ihop ekvationen",
+        "text": "y = k x + m med k = -1{,}5 och m = +3 ger y = -1{,}5x + 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med en punkt",
+        "text": "Substituera (2, 0): -1{,}5 \\cdot 2 + 3 = -3 + 3 = 0. ✓. Substituera (0, 3): -1{,}5 \\cdot 0 + 3 = 3. ✓. Båda punkter ligger på linjen — ekvationen stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: B, y = -1{,}5x + 3. Insikten i en mening: bestäm ALLTID tecken på k FÖRST (faller/stiger) och m FÖRST (var linjen korsar y-axeln) — beloppen är räkneövning, men teckenfelen är poäng-tjuven.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa tecken på m och skriva −3.",
-        "why_wrong": "Linjen skär y-axeln på den positiva sidan, alltså m = +3, inte −3."
+        "why_tempting": "Det är lätt att slarva med tecknet på m och skriva −3 (kanske för att linjen 'lutar mot negativa y-värden' åt höger).",
+        "why_wrong": "Steg 4 är explicit: linjen KORSAR y-axeln i +3, alltså m = +3. Att linjen sedan går ner åt höger påverkar k, inte m."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att tappa minustecknet på lutningen.",
-        "why_wrong": "En linje som faller åt höger har k<0; k=+1{,}5 ger en stigande linje, fel riktning."
+        "why_tempting": "Snabbsvar är ofta att tappa minustecknet på k — räkna lutningens belopp 1,5 utan att kontrollera om linjen stiger eller faller.",
+        "why_wrong": "Steg 6 säger: faller åt höger = negativ lutning. k = +1{,}5 skulle ge en STIGANDE linje — fel riktning enligt grafen."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är att ta både k och m som positiva när man räknar belopp.",
-        "why_wrong": "Tecknen är k=-1{,}5 och m=+3 — D blandar fel tecken med fel y-skärning i båda leden."
+        "why_tempting": "Första instinkten är att ta alla värden som positiva när man räknar belopp — får 1{,}5 och 3, sätter ihop som y = 1{,}5x + 3.",
+        "why_wrong": "Steg 6 och steg 8 låser fast tecknet på k som negativt. D blandar fel tecken med rätt belopp på k — typisk 'belopps-bara'-tankefälla."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Avläs skärningen med y-axeln — linjen skär y-axeln i 3, så m=3. Linjen lutar nedåt åt höger, alltså är k negativt; lutningens belopp läses som Δy/Δx mellan två rutnätspunkter och blir 1,5. Ekvationen är y = -1{,}5x + 3, alternativ B.",
-    "technique": "Linje från graf: läs av y-skärning m direkt på y-axeln, och bestäm tecknet på lutningen k från om linjen lutar uppåt eller nedåt åt höger.",
-    "framework_id": "XYZ-TRAP-051"
+    "pregrade_tactic": {
+      "handle": "Tecken-först-läsningen",
+      "move": "Innan du räknar belopp — fastställ TECKNET på k (stiger/faller åt höger) och PLATSEN för m (var linjen korsar y-axeln). Belopp kommer sist."
+    }
   },
   "host-ver2-2019-kvant2-XYZ-003": {
     "_meta": {
@@ -7913,134 +8132,354 @@
     "technique": "On cloze 'X or ___' constructions, look at the surrounding sentence for the direction signal — words like 'poorly', 'limited', 'modest' point DOWN ('or less'); words like 'highly', 'advanced', 'further' point UP ('or more'). 'Or less' and 'or more' are the two real options 90% of the time; 'or not' and 'or so' are usually grammar traps."
   },
   "host-ver2-2019-verb2-ELF-036": {
-    "_meta": {
-      "generated_at": 1778446519522,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage says four-year-olds who were 'paragons of executive function waited up to 15 minutes; school-age kids with high delay skills waited so long that Mischel himself could no longer stand to watch'. Older children outlasted younger children — a developmental difference in waiting ability. Answer A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need what was SHOWN in the ORIGINAL marshmallow test — not later findings, not theories built on it.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Find the original setup",
+        "text": "The 'so-called marshmallow test, first conducted at Stanford University in the late 1960s, monitors the ability of a child to resist a treat when left alone with it.' Subjects could ring a bell to eat one treat immediately or wait for two.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Read the two age comparisons",
+        "text": "Four-year-olds at their best 'waited up to 15 minutes'. School-age kids (typically 5–11) with high skills 'waited so long that Mischel himself could no longer stand to watch'. School-age waited LONGER than four-year-olds. That is the developmental finding.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Paraphrase in plain English",
+        "text": "Older kids could wait longer than younger kids. Young children had MORE difficulty waiting for the bigger reward than more mature ones. That matches option A's wording exactly.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verify against the options",
+        "text": "Option A names the age effect; B names situational dependence (a LATER Mischel finding about personality, not the original test); C denies age effects; D introduces adults who weren't tested. Only A fits the original test as described.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer A. Insight in one line: when an ELF question asks what an ORIGINAL study showed, restrict yourself to data from the experiment itself — not theories the researcher developed later.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "It's easy to read Mischel's situational framing onto this finding.",
-        "why_wrong": "The situational framing is a later finding about adult behaviour — the original test showed age effects, not situation effects."
+        "why_tempting": "It's easy to read Mischel's later situationalist views back into the original test.",
+        "why_wrong": "Step 2 locates the original test in the 1960s; step 3 reads its findings. Situationalism comes later in the passage as a separate research thread. The original test demonstrated age differences, not situational determination."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at 'paragons of executive function' and infer age was secondary.",
-        "why_wrong": "The passage explicitly compares 4-year-olds to school-age kids — age was relevant to performance."
+        "why_tempting": "Many stop at 'paragons of executive function' and infer age was secondary to individual skill.",
+        "why_wrong": "Step 3 directly contradicts this: the passage compares four-year-olds to school-age kids and reports different waiting times. Age was clearly relevant — older could wait longer."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on a willpower test is to compare children to adults.",
-        "why_wrong": "The original test was on children only — no adult comparison group is mentioned."
+        "why_tempting": "First instinct on willpower research is to expect a children-versus-adults comparison.",
+        "why_wrong": "Step 5 catches it: the original test used children only. No adult control group is mentioned. The option imports a comparison that the passage never makes."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage says 'four-year-old paragons of executive function waited up to 15 minutes; school-age kids with high delay skills waited so long' — older kids waited longer. Answer A.",
-    "technique": "When the passage compares younger and older kids on the same task, the right answer names the developmental progression."
+    "technique": "When the question specifies 'original' or 'first', restrict to what that experiment alone demonstrated. Strip out later theoretical extensions before scanning options.",
+    "pitfall": "The cure for the 'later-theory' trap: highlight 'original' in the prompt and treat any option mentioning concepts the passage adds later (situational triggers, if-then patterns) as automatically out of scope for this question.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The original-only filter",
+      "move": "When the prompt says 'original' or 'first', restrict to data from the experiment itself — discard any option that imports later theoretical layers."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-ver2-2019-verb2-ELF-037": {
-    "_meta": {
-      "generated_at": 1778446519522,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage says the 'cooling mental transformations that help a kid wait... are the BEDROCK PROCESSES that allow that same person to stay future-focused enough to earn a college degree or to reliably invest in a long-term pension plan'. The same underlying mechanism drives both childhood waiting and adult planning — that connection is what makes the test broadly interesting. Answer C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need why the test has WIDER psychological interest — beyond the immediate childhood finding. The keyword is 'wider'.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Find the bridge sentence",
+        "text": "Locate: 'The cooling mental transformations that help a kid wait agonizing minutes... are the bedrock processes that allow that same person to stay future-focused enough to earn a college degree or to reliably invest in a long-term pension plan.'",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Translate 'bedrock processes'",
+        "text": "'Bedrock' = foundational, underlying. 'Same person' connects child and adult. The sentence says one underlying mechanism explains both the toddler resisting a marshmallow and the adult investing in a pension. Same machinery, different outputs.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match to options",
+        "text": "Option C: 'the same kind of underlying reasoning explains a person's behavior regardless of age'. 'Underlying reasoning' = bedrock processes; 'regardless of age' = same person from child to adult. Direct mapping.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verify by checking the prefrontal cortex line",
+        "text": "Backing this: 'Those with the ability to delay have a well-oiled prefrontal cortex that successfully regulates their abstract thinking as well as impulse control.' Same brain region, dual function — child impulse control AND adult abstract thinking. Confirms the unified-mechanism reading.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer C. Insight in one line: 'wider interest' questions reward options that show a single mechanism explaining many behaviours across the lifespan — not options that report a specific finding.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read continuity-of-processes as identical-results.",
-        "why_wrong": "Adults haven't been shown to match children's literal performance — they share the underlying machinery, not exact behaviours."
+        "why_tempting": "It's easy to read 'same person' as 'same results' and infer adults perform identically to children.",
+        "why_wrong": "Step 3 separates the two: the MECHANISM is shared, not the behaviour. The passage compares marshmallow-waiting to pension-investing — clearly not identical behaviours, just outputs of the same underlying control system."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at 'prefrontal cortex' and infer brain-dysfunction insight.",
-        "why_wrong": "The passage uses brain mechanism to explain success and self-control, not dysfunction."
+        "why_tempting": "Many stop at 'prefrontal cortex' and infer the wider relevance is about brain dysfunction.",
+        "why_wrong": "Step 5 reads the brain line in context: the prefrontal cortex is named as the source of SUCCESS (delay, future-focus), not dysfunction. The ADHD mention is about cultural interest, not the test's psychological payoff."
       },
       {
         "letter": "D",
         "why_tempting": "First instinct on waiting tasks is stress tolerance.",
-        "why_wrong": "Stress tolerance is mentioned as one correlate; it isn't the reason the test interests psychologists broadly."
+        "why_wrong": "Stress tolerance is named as one correlate, not THE reason for wider interest. Step 2 locates the actual answer in the bedrock-processes sentence, which goes much broader — academic success, income, life outcomes — than just stress."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage explains 'the cooling mental transformations that help a kid wait... are the bedrock processes that allow that same person to stay future-focused enough to earn a college degree or to reliably invest in a long-term pension plan' — same reasoning underlies childhood and adult behaviour. Answer C.",
-    "technique": "When the passage links childhood and adult outcomes through the same underlying mechanism, the right answer names that shared underlying basis."
+    "technique": "When an ELF passage links childhood and adult outcomes through one mechanism (bedrock processes, prefrontal cortex, if-then patterns), the wider-interest answer names that shared mechanism, not any specific outcome.",
+    "pitfall": "The cure for the 'pick a single correlate' trap: 'wider interest' or 'broader implication' phrasing in the prompt is a signal — the right option will be the most ABSTRACT framing in the list, not the most concrete finding.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The bedrock bridge",
+      "move": "When the passage uses 'bedrock', 'underlying', 'same person', the right answer names the SHARED mechanism behind disparate behaviours — pick the most abstract option, not a specific correlate."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-ver2-2019-verb2-ELF-038": {
-    "_meta": {
-      "generated_at": 1778446519522,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Tolstoy 'preached a love of humanity' yet 'fought incessantly with his wife' and 'was critical and demanding of his family'. He embodied a gap between professed ideals and actual behaviour — and Mischel uses him to illustrate that personality manifests differently in different situations. Answer B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need the rhetorical purpose Tolstoy serves in this article — why the writer chose this specific example.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Catalogue what the passage says about Tolstoy",
+        "text": "(i) 'A man of ferocious complexity and contradiction'. (ii) 'Fought incessantly with his wife.' (iii) 'Critical and demanding of his family even as he preached a love of humanity.' Every fact pairs a stated ideal with a contrary behaviour.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Read the framing sentence",
+        "text": "Right after the Tolstoy list, the writer says 'This may surprise some people, but it would not surprise Mischel.' Mischel's explanation follows — the if-then theory says personality looks contradictory because behaviour depends on situation.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Name the rhetorical role",
+        "text": "Tolstoy is exhibit A for a person whose stated ideals (love humanity) clash with day-to-day behaviour (cruel to family). That is the textbook 'ideals vs actual behaviour' gap.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option B: 'an illustration of the conflict between personal ideals and actual behavior.' Direct match for the preach-love/fight-family contradiction.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer B. Insight in one line: when an ELF passage uses a named historical figure, ask 'what specific thing about this person illustrates the theory?' — the answer is usually a stated-vs-actual gap or a context-dependent behaviour.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read famous-writer Tolstoy as a writer-personality archetype.",
-        "why_wrong": "The passage uses Tolstoy as a personality case study, not as 'how writers think'."
+        "why_tempting": "It's easy to lean on Tolstoy's fame as a writer and assume he stands for writers in general.",
+        "why_wrong": "Step 2 catalogues the actual claims about Tolstoy — none of them concern his writing or generalise to other writers. He is used as a personality case, not a writer-type."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at the contradictions and infer the concept of self-control collapses.",
-        "why_wrong": "The passage uses Tolstoy to ILLUSTRATE Mischel's if-then theory of self-control — strengthening, not dissolving, the concept."
+        "why_tempting": "Many stop at the contradictions and conclude that self-control as a concept must be unstable.",
+        "why_wrong": "Step 3 catches the opposite: Mischel uses Tolstoy to STRENGTHEN his if-then theory, not undermine self-control. The passage explicitly frames Tolstoy's contradictions as PREDICTABLE under Mischel's framework."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on contradictions is to call for therapy.",
-        "why_wrong": "The passage uses Tolstoy diagnostically, not therapeutically — no treatment is proposed."
+        "why_tempting": "First instinct on a 'troubled' biography is to suggest therapy.",
+        "why_wrong": "Step 4 names the role: theoretical illustration, not clinical case. The passage proposes no treatment for Tolstoy — only an explanation of him."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Tolstoy preached love of humanity but 'fought incessantly with his wife' and was 'critical and demanding of his family' — preaching one thing, doing another. A model conflict between personal ideals and actual behaviour. Answer B.",
-    "technique": "When the passage names someone as preaching X while doing not-X, the case illustrates ideal-versus-behaviour conflict."
+    "technique": "When an ELF passage drops a famous biographical example next to a theoretical claim, the question is almost always 'what does this person show'. Look for the specific pairing (stated X but did Y) that the passage emphasises.",
+    "pitfall": "The cure for 'use famous trait of the person' trap: ignore everything you know ABOUT the historical figure outside the passage. Only the specific facts the writer chose to include count for the question.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The said-but-did pairing",
+      "move": "When a famous example is introduced, list what they SAID and what they DID inside the passage — the mismatch between those two is the illustration the writer wants you to name."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-ver2-2019-verb2-ELF-039": {
-    "_meta": {
-      "generated_at": 1778446519522,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Mischel proposes that 'personality inscribes itself in if-then behavioral patterns' — meaning 'the behavioral signature of personality specifies what the individual does predictably if particular situational triggers occur.' Personality produces a given behaviour only when a matching trigger appears. Answer C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need the BASIC POINT of the if-then argument — the most compact possible summary of Mischel's claim.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Locate the if-then sentence",
+        "text": "'He argues that the key to exercising self-control and to understanding why people appear to behave erratically resides in the slimmest of phrases: if-then.' Followed by the job/home conscientiousness example.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Unpack the job/home example",
+        "text": "Being conscientious at work doesn't predict being conscientious about bills at home. BUT it does predict you'll keep being conscientious AT WORK. So personality is consistent WITHIN a context. The 'if' is the situation; the 'then' is the behaviour.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Read the formal claim",
+        "text": "'The behavioral signature of personality specifies what the individual does predictably IF particular situational triggers occur.' Translation: personality + matching situation = predictable behaviour. No situation match = no expression.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option C: 'Personality may give rise to a certain behavior only under specific conditions.' 'Specific conditions' = situational triggers; 'give rise to behavior' = the 'then' output. Tight match.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer C. Insight in one line: 'if-then' in psychology means 'conditional on context' — pick the option that frames behaviour as CONDITIONAL on specific situations.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'erratic behaviour' as personality not predicting action.",
-        "why_wrong": "Mischel says personality DOES predict, just conditionally — there is a link, but through if-then patterns."
+        "why_tempting": "It's easy to read 'erratically' in the passage as 'no link between personality and action'.",
+        "why_wrong": "Step 4 establishes the opposite: Mischel says behaviour is PREDICTABLE — just within a situation rather than across all situations. The link exists; it is conditional, not absent."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at 'norms' and pick the social-norms option.",
-        "why_wrong": "Mischel's claim isn't about hidden social norms — it's about person-specific situational triggers."
+        "why_tempting": "Many stop at 'patterns... characterize most people' and infer that behavioural norms are doing the work.",
+        "why_wrong": "Step 3 names the source: each person has their OWN if-then pattern. The passage is not about shared norms — it is about person-specific situational triggers."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on complex behaviour is to declare it mysterious.",
-        "why_wrong": "Mischel's whole point is to demystify by adding the 'situation' axis — behaviour IS explainable via if-then patterns."
+        "why_tempting": "First instinct on contradictory behaviour is to declare it inexplicable.",
+        "why_wrong": "Step 2 catches it: Mischel's whole point is that if-then patterns RESOLVE the apparent mystery. Option D's 'neither personality nor behavior can explain' is the exact position the passage refutes."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Mischel: 'the behavioral signature of personality specifies what the individual does predictably if particular situational triggers occur' — personality manifests only under specific conditions. Answer C.",
-    "technique": "When the passage names 'if particular situational triggers occur, the individual does X', the right answer captures conditional manifestation."
+    "technique": "When an ELF passage names an 'if-then' or 'situational trigger' theory, the right answer always frames behaviour as conditional, not absent or random. Look for option words like 'only under', 'when', 'in certain'.",
+    "pitfall": "The cure for 'no link / unpredictable' traps: 'if-then' explicitly preserves predictability — the trick is that the IF must match. Reject any option claiming behaviour is unexplainable or unlinked.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The conditional trigger",
+      "move": "When the passage names an 'if-then' or 'situational trigger' theory, pick the option with 'only under', 'when', or 'specific conditions' — never the one calling behaviour random or unlinked."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-ver2-2019-verb2-ELF-040": {
-    "_meta": {
-      "generated_at": 1778446519522,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The closing paragraph ends 'Mischel has said that he is most interested in the subjects who failed the marshmallow test but went on to succeed in life.' Mischel highlights the OUTLIERS — the cases that don't follow the standard prediction. The test, on this reading, also exposes less-typical personality profiles for study. Answer D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need a conclusion that follows from the CLOSING paragraph specifically. Not the whole article; the final framing of the test.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Read the closing sentences carefully",
+        "text": "Two key claims: 'We are, each of us, that complicated' and 'Mischel has said that he is most interested in the subjects who failed the marshmallow test but went on to succeed in life. There's no way to know whether Tolstoy would fit the bill, but if so, Mischel would have an idea why.'",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identify the focal group",
+        "text": "'Failed the test but succeeded in life' = atypical cases. They contradict the simple prediction (low delay skill → poor outcomes). Mischel says these are the MOST interesting subjects — the test's value extends to studying them.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Translate to plain English",
+        "text": "The marshmallow test isn't just a screening tool that sorts winners from losers. It also flags atypical individuals — people whose later life doesn't match their childhood result — and that makes it useful for studying unusual personality profiles.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option D: 'It gives an opportunity to study some less typical personality profiles.' 'Less typical' = the failure-then-success group; 'opportunity to study' = Mischel's research interest. Match.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer D. Insight in one line: when an ELF passage's final sentence names a researcher's 'most interested in' group, that group identifies the conclusion the writer wants you to draw.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to infer the test will be enhanced.",
-        "why_wrong": "The closing paragraph doesn't predict improvements to the test — it pivots to who Mischel finds most interesting."
+        "why_tempting": "It's easy to read 'continuing interest' from earlier paragraphs as a promise of improvement.",
+        "why_wrong": "Step 2 stays inside the closing paragraph: nothing there mentions improving the test. The 'most interested in failures who succeed' line points to a research direction, not a methodological upgrade."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at Mischel's interest in failures and infer methodological doubt.",
-        "why_wrong": "Mischel still cherishes the test — interest in the 'failures who succeeded' is theoretical exploration, not test-doubt."
+        "why_tempting": "Many stop at Mischel's interest in 'failures' and infer that the test is methodologically suspect.",
+        "why_wrong": "Step 3 reads it the other way: Mischel still treats the test as central — the failure-then-success cases are intellectually exciting, not evidence the test is broken."
       },
       {
         "letter": "C",
-        "why_tempting": "First instinct on a famous test is to praise its prediction.",
-        "why_wrong": "The closing paragraph highlights the cases where prediction failed — that contradicts a 'more remarkable than assumed' reading."
+        "why_tempting": "First instinct on a famous test is to praise its predictive power.",
+        "why_wrong": "Step 4 catches the contradiction: the closing paragraph specifically highlights the cases where prediction FAILED. That is the opposite of 'even more remarkable prediction'."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The closing line: 'Mischel has said he is most interested in the subjects who failed the marshmallow test but went on to succeed in life'. The test isn't just a screening tool — it also helps study atypical paths. Answer D.",
-    "technique": "When the closing paragraph highlights atypical outliers as theoretically interesting, the right answer names the study of atypical profiles."
+    "technique": "When an ELF passage closes by naming a researcher's preferred subgroup, look for the option that frames the test or theory as useful for studying THAT subgroup — usually the atypical or outlier cases.",
+    "pitfall": "The cure for the 'praise the test' trap: scan the closing paragraph for any negative or counter-example framing ('failed', 'unexpected', 'surprising'). When the writer ends on a counter-example, the answer is about studying counter-examples, not celebrating the rule.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The outlier interest",
+      "move": "When the closing paragraph names 'most interested in those who failed/succeeded against type', pick the option that frames the test as a tool for studying atypical profiles."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-ver2-2019-verb2-LÄS-011": {
     "_meta": {

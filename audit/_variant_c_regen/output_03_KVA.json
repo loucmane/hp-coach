@@ -1,0 +1,2322 @@
+{
+  "host-2013-kvant1-KVA-013": {
+    "solution_path": "Bryt ut gemensam faktor: 69 \\cdot 116 - 68 \\cdot 117 = 116(69-68) - 68 = 116 - 68 = 48 > 0. Alltså är I större än II, utan att räkna ut produkterna.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska jämföra 69 \\cdot 116 med 68 \\cdot 117 utan miniräknare. Båda produkter har två tvåsiffriga faktorer och ligger nära varandra — direktberäkning slukar tid och är felbenägen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt namn på storheterna",
+        "text": "Kalla I = 69 \\cdot 116 och II = 68 \\cdot 117. Du vill veta tecknet på I − II; om det är positivt vinner I, negativt vinner II, noll betyder likhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Sök gemensam struktur",
+        "text": "Observera att 69 = 68 + 1 och 117 = 116 + 1 — varje faktor i II är \"en mindre\" eller \"en mer\" än motsvarande i I. Det är en gemensam-faktor-signal: bryt ut.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Distributiva lagen",
+        "text": "Distributiva lagen säger a(b+c) = ab + ac: en produkt med en sumfaktor kan klyvas i två delprodukter. Den fungerar baklänges också — det är just det vi behöver för att klumpa ihop termer.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Skriv om II med 116",
+        "text": "Ersätt 117 = 116 + 1 i II: 68 \\cdot 117 = 68 \\cdot (116 + 1) = 68 \\cdot 116 + 68. Nu har II en 68 \\cdot 116-bit, samma struktur som I.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skriv om I med 116",
+        "text": "Ersätt 69 = 68 + 1 i I: 69 \\cdot 116 = (68+1) \\cdot 116 = 68 \\cdot 116 + 116. Nu syns den gemensamma 68 \\cdot 116-stommen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Bilda skillnaden",
+        "text": "Subtrahera: I - II = (68 \\cdot 116 + 116) - (68 \\cdot 116 + 68). Den gemensamma stommen 68 \\cdot 116 försvinner.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Förenkla skillnaden",
+        "text": "Kvar blir I - II = 116 - 68 = 48. Skillnaden är ett rent litet heltal — inga stora produkter behövdes.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka tecknet",
+        "text": "48 > 0 betyder att I − II är positivt, alltså I > II. Detta är hela hemligheten med \"två produkter som ligger nära varandra\"-typen.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med uppskattning",
+        "text": "Snabb sanity check: båda produkter är runt 68{,}5 \\cdot 116{,}5 \\approx 7980. I är ungefär 24 över medelvärdet, II ungefär 24 under — skillnad ≈ 48. Stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: när två produkter skiljer sig med ±1 i båda faktorerna, ge dig på skillnaden via distributiva lagen istället för på produkterna.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att se att 117 > 116 och dra slutsatsen att 68·117 vinner.",
+        "why_wrong": "Som steg 8 visar är skillnaden 116 − 68 = 48 till I:s favör; den extra ettan i 117 ger bara 68 i tillägg, medan den extra ettan i 69 ger 116."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att summan av faktorerna är samma (69+116 = 68+117 = 185) och därför produkterna också.",
+        "why_wrong": "Steg 7-8 visar I − II = 48 ≠ 0; för fast summa maximeras produkten när faktorerna ligger närmast varandra, och 69·116 har mindre spridning än 68·117."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att två så lika produkter kräver räknare för att jämföras.",
+        "why_wrong": "Steg 3-8 löser jämförelsen exakt utan räknare — distributiva lagen ger ett rent heltalssvar 48."
+      }
+    ],
+    "technique": "När två kvantiteter är produkter med faktorer som skiljer sig med ±1, bryt ut den gemensamma faktorn istället för att räkna produkterna. Triggern är: \"två tvåsiffriga produkter, faktorerna ligger nära varandra\". Du förvandlar då jämförelsen till en enkel subtraktion.",
+    "pitfall": "Botemedlet mot \"jag måste räkna båda\": leta strukturen 69 = 68 + 1 innan du tar fram pennan. Skriv om så att en gemensam term {m('68 \\cdot 116')} dyker upp i båda kvantiteterna och stryk den.",
+    "framework_id": "KVA-TRAP-024",
+    "pregrade_tactic": {
+      "handle": "Gemensam-faktor-tricket",
+      "move": "När båda kvantiteter är produkter och faktorerna skiljer sig med ±1, skriv om varje produkt så en gemensam term dyker upp och jämför resten — tecknet faller ut direkt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2013-kvant1-KVA-014": {
+    "solution_path": "Villkoret ger xy = zw, men säger inget om xw mot yz. Två testfall — (x=2, y=10, z=10, w=2) ger I < II; (x=10, y=2, z=2, w=10) ger I > II — räcker för att slå fast D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "\"x procent av y\" betyder \\frac{x}{100} \\cdot y = \\frac{xy}{100}. På samma sätt z procent av w är \\frac{zw}{100}. Likheten i texten översätts alltså till en enda algebraisk identitet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Översätt villkoret",
+        "text": "Multiplicera båda led med 100: xy = zw. Det är allt vi vet. Du ska jämföra xw (kvantitet I) med yz (kvantitet II).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förstå frågan strukturellt",
+        "text": "Villkoret xy = zw parar ihop (x, y) med (z, w), men frågan parar (x, w) mot (y, z) — en KORS-parning. Det är ingen automatisk implikation.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Verktyget: testa konkreta tal",
+        "text": "När ett algebraiskt villkor inte direkt avgör jämförelsen, är D-svaret nästan alltid sant — och det bevisas genom att konstruera ETT exempel åt varje håll.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Konstruera testfall 1",
+        "text": "Välj x = 2, y = 10, då xy = 20. Hitta z, w med zw = 20: ta z = 10, w = 2. Då blir xw = 2 \\cdot 2 = 4 och yz = 10 \\cdot 10 = 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tolka testfall 1",
+        "text": "xw = 4 < yz = 100, alltså I < II i detta fall. Det utesluter A (I > II) och C (I = II) som universella svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konstruera testfall 2",
+        "text": "Spegla värdena: x = 10, y = 2, z = 2, w = 10. Kontroll: xy = 20 = zw. Då xw = 10 \\cdot 10 = 100 och yz = 2 \\cdot 2 = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Tolka testfall 2",
+        "text": "xw = 100 > yz = 4, alltså I > II i detta fall. Det utesluter B (II > I) som universellt svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sammanställ",
+        "text": "Båda riktningar är möjliga under villkoret. Ingen entydig rangordning finns mellan {m('xw')} och {m('yz')}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Generaliserad insikt",
+        "text": "xy = zw kan skrivas som \\frac{x}{z} = \\frac{w}{y} — ett förhållande som inte säger något om absolut storlek. xw/yz = (x/y)(w/z), vilket är fritt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera båda fall",
+        "text": "Kontrollera testfall 1: 2 \\cdot 10 = 20 = 10 \\cdot 2 ✓. Kontrollera testfall 2: 10 \\cdot 2 = 20 = 2 \\cdot 10 ✓. Båda är giltiga ingångar.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: en produktlikhet {m('AB = CD')} med fyra variabler bestämmer inte korsparet {m('AD')} mot {m('BC')} — testa två extrema fall för att bevisa fri rangordning.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att se {m('xy = zw')} och hoppa till att alla parvisa produkter är lika eller att I dominerar.",
+        "why_wrong": "Som steg 6 visar finns det giltiga val ({m('x=2,y=10,z=10,w=2')}) där {m('xw = 4 < 100 = yz')}."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att gå på spegelvändningen och anta att korsade par är omvänt rangordnade.",
+        "why_wrong": "Steg 8 ger ett motexempel där I = 100 > II = 4; spegelvändningen är inte deterministisk."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att {m('xy = zw')} och drar slutsatsen att andra omkastningar också ger likhet.",
+        "why_wrong": "Likhet kräver specialfall (t.ex. {m('x=z, y=w')}); steg 6 och 8 visar att olikhet är allmänfallet."
+      }
+    ],
+    "technique": "När ett villkor är en algebraisk produktlikhet med fyra variabler och frågan jämför en korsparning, försök inte härleda — testa två konkreta talvärden där den enda kopplingen är villkoret. Triggern är: \"villkor binder två par, fråga om annat par\".",
+    "pitfall": "Botemedlet mot \"likhet i ett ställe ⇒ likhet överallt\": skriv ned exakt vilket par villkoret binder ihop. Här binder det {m('(x,y)')} med {m('(z,w)')} — men inte {m('(x,w)')} med {m('(y,z)')}.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Två-extremer-testet",
+      "move": "När villkoret är en produktlikhet men frågan jämför ett annat par av variablerna, konstruera två talval (en spegling) — om båda riktningar kan uppstå är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2013-kvant1-KVA-016": {
+    "solution_path": "x = -y betyder att x och y är spegelbilder i 0. Tre fall: y = 0 \\Rightarrow x = y (C); y > 0 \\Rightarrow x < 0 < y (B); y < 0 \\Rightarrow x > 0 > y (A). Alla tre möjliga — D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå villkoret",
+        "text": "x = -y är en linjär koppling: x är y med ombytt tecken. Det säger ingenting om y:s storlek eller tecken — y kan vara vilket reellt tal som helst.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp jämförelsen",
+        "text": "Du ska jämföra I = x med II = y. Ersätt x med -y från villkoret: jämförelsen blir -y mot y.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definiera negation",
+        "text": "För varje reellt tal a är -a det tal som ligger lika långt från noll som a men på motsatt sida. Speciellt: -(positivt) = negativt, -(negativt) = positivt, -0 = 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Fall 1: y = 0",
+        "text": "Då blir x = -0 = 0 = y. I = II — rangordningen är likhet (kandidat C).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Fall 2: y > 0",
+        "text": "Då blir x = -y < 0 < y. Konkret med y = 1: x = -1, alltså -1 < 1 → I < II (kandidat B).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Fall 3: y < 0",
+        "text": "Då blir x = -y > 0 > y. Konkret med y = -1: x = -(-1) = 1, alltså 1 > -1 → I > II (kandidat A).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Granska fallen",
+        "text": "Alla tre rangordningar kan uppstå beroende på y:s tecken. Inget i villkoret förbjuder något av fallen.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Geometrisk bild",
+        "text": "På tallinjen ligger x och y symmetriskt kring 0. Vänd ena sidan: om y står till höger står x till vänster — och vice versa. Vid 0 möts de.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Algebraisk bild",
+        "text": "Skillnaden I - II = x - y = -y - y = -2y. Tecknet på -2y beror helt på y:s tecken.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera de tre testfallen",
+        "text": "y = 0: I − II = 0 (likhet). y = 1: I − II = -2 (I < II). y = -1: I − II = 2 (I > II). Alla matchar ovanstående slutsats.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: ett enda villkor i två variabler som inte fixerar tecknet ger alltid alla tre rangordningsutfall — testa y = 0 och y med varje tecken.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om du minns regeln som \"-y är negativt\" landar du på att x alltid är negativt och y alltid positivt — fel om y < 0.",
+        "why_wrong": "Steg 6 visar att {m('y = -1')} ger {m('x = 1 > -1 = y')}, alltså I > II — bara EN av tre möjliga rangordningar."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Första instinkten är att negativtecknet alltid gör I mindre än II.",
+        "why_wrong": "Steg 5 ger den rangordningen, men steg 6 visar motsatsen — riktningen styrs av y:s tecken, inte av minustecknet."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är lätt att låsa sig vid att y = 0 ger likhet och anta att det gäller alltid.",
+        "why_wrong": "Steg 4 är bara fall 1 av 3; steg 5 och 6 ger strikta olikheter åt varsitt håll."
+      }
+    ],
+    "technique": "När villkoret är linjärt med en variabel fri (t.ex. y:s tecken är ospecifierat), pröva alltid y > 0, y = 0 och y < 0. Triggern är: \"variabel utan teckenbegränsning\".",
+    "pitfall": "Botemedlet mot \"minustecknet betyder negativt\": minustecknet INVERTERAR tecknet, det skapar inte ett negativt tal. {m('-y')} är positivt när {m('y')} är negativt.",
+    "framework_id": "KVA-TRAP-037",
+    "pregrade_tactic": {
+      "handle": "Tre-tecken-testet",
+      "move": "När en variabel saknar teckenvillkor, prova y > 0, y = 0 och y < 0 var för sig — om olika utfall uppstår är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2013-kvant1-KVA-018": {
+    "solution_path": "(-10)^{11} har udda exponent → negativt. (-11)^{10} har jämn exponent → positivt. Ett positivt tal är alltid större än ett negativt, alltså II > I → B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska jämföra (-10)^{11} med (-11)^{10}. Båda är negativa baser upphöjda till stora exponenter — magnituderna är gigantiska och osmidiga.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt namn",
+        "text": "Kalla I = (-10)^{11} och II = (-11)^{10}. Du letar tecknet på I − II — men först vill du veta tecknet på var och en separat.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definiera potens av negativt tal",
+        "text": "(-a)^n = (-1)^n \\cdot a^n. Tecknet styrs alltså av (-1)^n: (-1)^n = -1 om n är udda, (-1)^n = +1 om n är jämn.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Pariteten styr tecknet",
+        "text": "En udda exponent bevarar tecknet på basen; en jämn exponent gör alltid resultatet icke-negativt. Det är hela teckenregeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Tecknet på I",
+        "text": "Exponenten 11 är udda. Alltså (-10)^{11} = -10^{11} — ett stort negativt tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tecknet på II",
+        "text": "Exponenten 10 är jämn. Alltså (-11)^{10} = 11^{10} — ett stort POSITIVT tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Jämför tecken mot tecken",
+        "text": "Vilket negativt tal som helst är mindre än vilket positivt tal som helst — det är teckenaxiomet. Magnituderna spelar ingen roll så länge tecknen skiljer sig.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Tillämpa på I och II",
+        "text": "I är negativt, II är positivt → I < II → II > I. Du behöver aldrig räkna ut 10^{11} eller 11^{10}.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Bekräfta storleksgrov",
+        "text": "Som bonus: 10^{11} = 100\\,000\\,000\\,000 och 11^{10} \\approx 2{,}6 \\cdot 10^{10}. Men det är överflödigt — tecknet räcker.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Granska fällan",
+        "text": "Den enda fällan är att tro att större bas eller exponent automatiskt ger större tal — det glömmer tecknet. Här är 11 > 10, men det gör inte II > I av magnitud-skäl; det är paritetens skull.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Test med små tal: (-2)^3 = -8 (udda exponent → negativ); (-3)^2 = 9 (jämn → positiv). Samma mönster, småskaligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B: II är större än I. Insikten i en mening: vid {m('(-a)^n')}-jämförelser, kolla pariteten på n FÖRST — om tecknen skiljer sig är magnituden irrelevant.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att jämföra basernas storlek — 11 > 10 — och tro att basen \"11\" gör II större men missa exponenten 11 i I.",
+        "why_wrong": "Steg 5-6 visar att I är negativt och II positivt; ingen storlek på basen kan rädda I från att vara mindre."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att exponenterna 10 och 11 är så nära varandra att uttrycken är ungefär lika.",
+        "why_wrong": "Steg 5-6: I < 0 < II, så I ≠ II — magnituden spelar ingen roll när tecknen skiljer sig."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man måste räkna ut båda potenserna för att jämföra.",
+        "why_wrong": "Steg 3-7 löser jämförelsen via paritet allena — ingen ytterligare information behövs."
+      }
+    ],
+    "technique": "Vid {m('(-a)^n')}: bedöm pariteten på n innan magnituden. Trigger: \"negativ bas upphöjt till heltal\". När en exponent är udda och den andra är jämn, är teckenfrågan ensam tillräcklig.",
+    "pitfall": "Botemedlet mot \"räkna magnituden\": skriv ner tecknet bredvid varje potens. Om tecknen skiljer sig kan du sluta räkna direkt.",
+    "framework_id": "KVA-TRAP-013",
+    "pregrade_tactic": {
+      "handle": "Paritets-tecknet",
+      "move": "Vid negativ bas: kolla om exponenten är udda (negativt resultat) eller jämn (positivt) — om en kvantitet är negativ och den andra positiv stannar du där."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2013-kvant1-KVA-019": {
+    "solution_path": "Omkrets 36 ger l + b = 18, där l \\geq b > 0. Längsta sidan l ligger i [9, 18). Kvadratomkretsen är 4 \\cdot 3 = 12. Eftersom 12 är inuti intervallet kan l vara <, =, eller > 12 → D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har två kvantiteter: I = längsta sidan i en rektangel med omkretsen 36 cm; II = omkretsen av en kvadrat med sidan 3 cm. Du ska jämföra dem.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Räkna ut II först",
+        "text": "En kvadrat med sida 3 cm har omkrets 4 \\cdot 3 = 12 cm. II = 12 är ett fast tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definiera rektangelns omkrets",
+        "text": "En rektangel med längd l och bredd b har omkrets 2l + 2b = 2(l+b). Det är två gånger summan av sidorna.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Översätt villkoret",
+        "text": "2(l + b) = 36 \\Rightarrow l + b = 18. Det är den enda begränsningen. Notera att l, b > 0 (positiva sidor) och vi definierar l \\geq b så att l är längsta sidan.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta nedre gräns för l",
+        "text": "Eftersom l \\geq b och l + b = 18, måste l \\geq 9 — annars vore b > l. Likhet l = 9 inträffar exakt när rektangeln är en kvadrat med sida 9.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Hitta övre gräns för l",
+        "text": "b > 0 ger l < 18. Värdet l = 18 skulle kräva b = 0, vilket inte är en rektangel. Alltså 9 \\leq l < 18.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Placera II i intervallet",
+        "text": "II = 12 ligger inuti [9, 18): 9 \\leq 12 < 18. Båda riktningar av jämförelsen är geometriskt möjliga.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Konstruera fall I = II",
+        "text": "För l = 12: b = 18 - 12 = 6. Rektangel 12×6 har omkrets 2(12+6) = 36 ✓. Då I = 12 = II.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konstruera fall I < II",
+        "text": "För l = 10: b = 8. Rektangel 10×8, omkrets 2(10+8) = 36 ✓. Då I = 10 < 12 = II.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Konstruera fall I > II",
+        "text": "För l = 15: b = 3. Rektangel 15×3, omkrets 2(15+3) = 36 ✓. Då I = 15 > 12 = II.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sammanställ",
+        "text": "Tre olika lagliga rektanglar ger tre olika rangordningar mot II = 12. Villkoret \"omkrets = 36\" är inte tillräckligt för att fixera längsta sidan.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: en enda omkrets eller area låser inte rektangelns sidor — ange alltid båda sidor (eller en sida + en form) för att fixera längsta sidan.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tänka att en rektangel med omkrets 36 är \"stor\" och längsta sidan måste vara > 12.",
+        "why_wrong": "Steg 9 visar rektangeln 10×8 med omkrets 36 och längsta sidan 10 < 12; \"stor omkrets\" säger inget om längsta sidan."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid kvadratfallet (9×9) där längsta sidan är 9, mindre än 12.",
+        "why_wrong": "Som steg 10 visar finns rektangeln 15×3 med längsta sida 15 > 12 — kvadraten är bara en av många möjligheter."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att låsa fast vid den specifika rektangel där längsta sidan = 12 (då blir kortsidan 6) och kalla det entydigt.",
+        "why_wrong": "Steg 8 är ett av oändligt många utfall; steg 9 och 10 visar att olikhet åt båda håll också är möjligt."
+      }
+    ],
+    "technique": "När en geometrisk kvantitet beror på en form med en frihetsgrad (t.ex. rektangel med fixerad omkrets), hitta intervallet av möjliga värden och kolla om jämförelsetalet ligger inuti det. Trigger: \"längsta sidan / största arean / minsta avståndet\" + en enda begränsning.",
+    "pitfall": "Botemedlet mot \"specifika fallet\": tänk ALDRIG på en bestämd rektangel — tänk på hela familjen som uppfyller villkoret. Två gränspunkter ({m('l=9')} och {m('l \\to 18')}) plus ett mellanvärde räcker.",
+    "framework_id": "KVA-TRAP-004",
+    "pregrade_tactic": {
+      "handle": "Intervalljakten",
+      "move": "När en geometrisk parameter är delvis fri, räkna ut hela intervallet av möjliga värden — om jämförelsetalet ligger inuti är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2013-kvant1-KVA-020": {
+    "solution_path": "Två lika summor av positiva tal kan ha vilken kombination av antal termer som helst. Ett enda tal (n=1) kan vara lika med en summa av många små (m \\geq 2) — och vice versa. Båda riktningar möjliga → D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har en summa av n positiva tal och en annan summa av m positiva tal, och båda summorna är lika. Du ska jämföra antalen n och m.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp notation",
+        "text": "Skriv a_1 + a_2 + \\dots + a_n = b_1 + b_2 + \\dots + b_m där alla a_i > 0 och alla b_j > 0. Den enda kopplingen är likheten — termernas storlekar är fria.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Idén bakom motexempel-strategin",
+        "text": "Om man kan välja {m('a_i')} och {m('b_j')} fritt så länge summorna är lika, är n och m i princip frikopplade. Bevisa det genom två konkreta val.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Bygg fall där n > m",
+        "text": "Välj a_1 = a_2 = a_3 = 1 (n = 3, summa 3). Välj b_1 = 3 (m = 1, summa 3). Summor lika. Här är n = 3 > 1 = m.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Tolka fall 1",
+        "text": "Det visar att I > II är möjligt — kandidat A. Men: är det alltid så? Behövs ett motexempel åt andra hållet.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Bygg fall där n < m",
+        "text": "Välj a_1 = 2 (n = 1, summa 2). Välj b_1 = b_2 = 1 (m = 2, summa 2). Summor lika. Här är n = 1 < 2 = m.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tolka fall 2",
+        "text": "Det visar att I < II också är möjligt — kandidat B. Tillsammans med fall 1 utesluts A och B som universella svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Bygg fall där n = m",
+        "text": "Välj a_1 = a_2 = 1, b_1 = b_2 = 1 (n = 2, m = 2, båda summor 2). Likhet kan också uppstå.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Generell princip",
+        "text": "En summa av positiva tal är fullständigt definierad av sitt totala värde — inte av antalet termer. Du kan splittra ett tal i hur många positiva bitar du vill, eller klumpa ihop bitar till färre.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Granska om något villkor undslunger sig",
+        "text": "Inget i problemet kräver heltal eller minsta termstorlek; bara \"positiva tal\". Friheten är total.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Fall 1: 1+1+1 = 3 = 3 ✓ (n=3 > m=1). Fall 2: 2 = 1+1 ✓ (n=1 < m=2). Båda giltiga.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: när bara totalsumman binder två talsekvenser, kan antalet termer variera fritt åt båda håll.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att intuitivt tänka att fler termer ger större summa, så lika summa kräver fler i den ena.",
+        "why_wrong": "Steg 6 visar att en enda 2:a är lika med två 1:or — så summan kan vara lika trots m > n."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Första instinkten är att om summorna är lika så måste den med färre termer ha större tal, vilket på något sätt ger m > n.",
+        "why_wrong": "Steg 4 visar tre 1:or = en 3:a, alltså n > m är fullt möjligt; ingen riktning är tvingad."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Det är frestande att anta att lika summor måste komma från lika många termer.",
+        "why_wrong": "Steg 4 och 6 visar att n och m kan skilja sig drastiskt och ändå ge lika summor."
+      }
+    ],
+    "technique": "När villkoret är en summa-likhet med fritt antal termer och fria värden, antalet termer är obestämt. Trigger: \"summan av n positiva tal = summan av m positiva tal, jämför n och m\". Bygg två motexempel — ett där n > m, ett där n < m.",
+    "pitfall": "Botemedlet mot \"antal styr storlek\": kom ihåg att termerna kan vara godtyckligt stora eller små positiva tal — en enda jättterm slår alla små.",
+    "framework_id": "KVA-TRAP-002",
+    "pregrade_tactic": {
+      "handle": "Partitionsfriheten",
+      "move": "Vid en summa-likhet med okänt antal termer, splittra ett tal i många små bitar OCH klumpa många små i ett — om båda går är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2013-kvant1-KVA-022": {
+    "solution_path": "x(1-x) > 0 kräver att båda faktorerna har samma tecken; eftersom 1−x och x inte kan vara negativa samtidigt (det skulle kräva x < 0 OCH x > 1), måste båda vara positiva: 0 < x < 1. I det intervallet gäller x > x^2 → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå villkoret",
+        "text": "x(1-x) > 0 är en olikhet — produkten av två uttryck ska vara strikt positiv. Frågan jämför sedan x med x^2.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "När är en produkt positiv?",
+        "text": "a \\cdot b > 0 kräver att a och b har SAMMA tecken: båda positiva, eller båda negativa. Aldrig blandat.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tillämpa på vår produkt",
+        "text": "Här är faktorerna x och 1-x. Fall 1: båda positiva — x > 0 och 1-x > 0. Fall 2: båda negativa — x < 0 och 1-x < 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lös fall 1",
+        "text": "x > 0 och 1-x > 0 \\Leftrightarrow x < 1. Snitt: 0 < x < 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös fall 2",
+        "text": "x < 0 och 1-x < 0 \\Leftrightarrow x > 1. Snitt: x < 0 OCH x > 1 samtidigt — omöjligt, tom mängd.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sammanfatta lösningsmängden",
+        "text": "Bara fall 1 ger något. x måste ligga i öppna intervallet (0, 1): strikt mellan 0 och 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Jämför x och x^2 — sätt upp skillnaden",
+        "text": "x - x^2 = x(1-x). Hoppsan — det är EXAKT vänsterledet i villkoret.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Använd villkoret igen",
+        "text": "Eftersom x(1-x) > 0 enligt antagandet, gäller x - x^2 > 0 \\Leftrightarrow x > x^2. Det är direkt svaret.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Bygg intuition om x mot x^2",
+        "text": "För x \\in (0, 1) krymper kvadrering talet: 0,5 → 0,25; 0,9 → 0,81; 0,1 → 0,01. Multiplikation med ett tal mindre än 1 minskar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med ett tal",
+        "text": "Välj x = 0{,}5. Kontrollera villkoret: 0{,}5 \\cdot 0{,}5 = 0{,}25 > 0 ✓. Jämför: x = 0{,}5 mot x^2 = 0{,}25 — I > II ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Granska de tre regimerna",
+        "text": "Generellt: x > x^2 \\Leftrightarrow x > 0 OCH x < 1 (i.e. x \\in (0,1)); x = x^2 \\Leftrightarrow x = 0 eller x = 1; x < x^2 annars. Vi är i den första regimen.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: x(1-x) > 0 är exakt villkoret för x > x^2 — samma uttryck dyker upp på båda sidor.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att blanda ihop med fallet x > 1, där {m('x^2 > x')}.",
+        "why_wrong": "Som steg 5 visar är fall 2 ({m('x > 1')}) helt utesluten av villkoret; steg 8 ger strikt {m('x > x^2')}."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid att {m('x = 1')} ger likhet och tror att det gäller över hela definitionsmängden.",
+        "why_wrong": "Steg 6 visar att {m('x = 1')} är utesluten ({m('1 \\cdot 0 = 0')}, inte > 0); inom öppna intervallet (0,1) är olikheten strikt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man inte vet x:s tecken eller intervall.",
+        "why_wrong": "Steg 3-6 låser intervallet entydigt till {m('(0, 1)')}; villkoret är fullt informationsbärande."
+      }
+    ],
+    "technique": "Vid {m('x')} mot {m('x^2')}: identifiera tre regimer beroende på var x ligger relativt 0 och 1. Trigger: \"jämför x och en potens av x\". Skriv ner skillnaden {m('x - x^2 = x(1-x)')} och utnyttja olikhetsvillkoret direkt om det är samma uttryck.",
+    "pitfall": "Botemedlet mot \"kvadrering förstorar alltid\": kvadrering FÖRMINSKAR i intervallet (0,1) och FÖRSTORAR utanför [0,1]; vid 0 och 1 är värdena lika.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tre-regim-tricket",
+      "move": "Vid x mot x²: bestäm vilket av intervallen (−∞, 0), (0, 1), (1, ∞) som x ligger i — i (0, 1) gäller x > x², i (1, ∞) gäller x² > x."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2013-kvant2-KVA-020": {
+    "solution_path": "3 varv på 18 m ger omkrets 18/3 = 6 m. Omkrets = \\pi d → diameter d = 6/\\pi \\approx 1{,}91 m, mindre än 2 m → B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Ett cykelhjul rullar 18 meter på 3 hela varv utan att glida. Du ska bestämma diametern och jämföra med 2 meter.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera \"rulla utan att glida\"",
+        "text": "När ett hjul rullar utan att glida tillryggalägger det exakt en hjulomkrets per varv. Sträckan = antal varv × omkrets.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna ut omkretsen",
+        "text": "3 \\cdot O = 18 \\text{ m} \\Rightarrow O = 6 \\text{ m}. Ett varv = 6 meter.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Formel för cirkels omkrets",
+        "text": "För en cirkel med diameter d gäller O = \\pi \\cdot d. (\\pi är förhållandet mellan omkrets och diameter — definitionen av \\pi.)",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Lös ut diametern",
+        "text": "\\pi d = 6 \\Rightarrow d = \\frac{6}{\\pi} meter.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Approximera π",
+        "text": "Standardvärde: \\pi \\approx 3{,}1416. För grov uppskattning räcker \\pi \\approx 3{,}14 eller till och med \\pi > 3.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut numeriskt",
+        "text": "d = 6 / 3{,}1416 \\approx 1{,}9099 meter — ungefär 1,91 m.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför med II = 2 m",
+        "text": "1,91 m < 2 m. Skillnaden är ungefär 9 cm — märkbar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kontrollera med π > 3",
+        "text": "Om \\pi > 3 så är d = 6/\\pi < 6/3 = 2. Denna grova uppskattning räcker — ingen exakt \\pi behövs för svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Granska fällan: omkrets vs diameter",
+        "text": "En vanlig miss är att tro att 6 m är diametern. Men 6 m är OMKRETSEN — diametern är omkretsen dividerat med \\pi, alltid ungefär en tredjedel av omkretsen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Bakåtkoll: om d = 1{,}91, blir omkretsen \\pi \\cdot 1{,}91 \\approx 6{,}00 m. 3 varv = 3 \\cdot 6 = 18 m ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B: II är större än I. Insikten i en mening: för rullande hjul, sträcka per varv är omkretsen (\\pi d), inte diametern — dela med \\pi för att hitta d.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att blanda omkrets och diameter — om du tror omkretsen är 2 m är diametern större än {m('6/\\pi')}.",
+        "why_wrong": "Som steg 4-5 visar är omkretsen {m('\\pi d')}, inte d; diametern är {m('6/\\pi \\approx 1{,}91 < 2')}."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att {m('6/\\pi \\approx 2')} och kalla det jämnt.",
+        "why_wrong": "Steg 7-9: {m('6/\\pi \\approx 1{,}91')}, märkbart mindre än 2 — approximationen {m('\\pi \\approx 3')} är för grov här."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta hjulets bredd eller annan dimension.",
+        "why_wrong": "Steg 2-3: sträcka per varv = omkrets är hela kopplingen — inget mer behövs för att räkna ut diametern."
+      }
+    ],
+    "technique": "Rullande hjul: sträcka per varv = omkrets = {m('\\pi d')}. Trigger: \"hjul rullar utan att glida, x meter på n varv\". Dela med n för omkrets, sedan med {m('\\pi')} för diameter eller {m('2\\pi')} för radie.",
+    "pitfall": "Botemedlet mot \"6 m är diametern\": SKRIV alltid ut {m('\\pi d')} bredvid omkretsen — det påminner dig att dela med {m('\\pi')}.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Rullnings-receptet",
+      "move": "Vid rullande hjul: sträcka / antal varv = omkrets, sedan omkrets / π = diameter — använd π > 3 för att klara jämförelser utan räknare."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2013-kvant2-KVA-021": {
+    "solution_path": "Distribuera båda. I: x(y+z) + x^2 + yz = xy + xz + x^2 + yz. II: (x+z)(y+x) = xy + x^2 + zy + zx. Termvis identiska — C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska jämföra två polynomuttryck i x, y, z. Det är allmänt — gäller för alla värden — så strategin är ALGEBRAISK förenkling, inte talval.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Notation",
+        "text": "Kalla I = x(y+z) + x^2 + yz och II = (x+z)(y+x). Du vill kolla om I − II = 0 (likhet) eller har bestämt tecken.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Distributiva lagen",
+        "text": "Distributiva lagen: a(b+c) = ab + ac. Den klyver en faktor över en summa. För en produkt av två summor: (a+b)(c+d) = ac + ad + bc + bd — alla par.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Distribuera I — första termen",
+        "text": "x(y+z) = xy + xz. Använd distributiva lagen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skriv ut I fullständigt",
+        "text": "I = xy + xz + x^2 + yz. Fyra termer.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Distribuera II — paren",
+        "text": "(x+z)(y+x) = x \\cdot y + x \\cdot x + z \\cdot y + z \\cdot x = xy + x^2 + zy + zx.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skriv ut II fullständigt",
+        "text": "II = xy + x^2 + zy + zx. Fyra termer.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Identifiera likadana termer",
+        "text": "Multiplikation är kommutativ: zy = yz, zx = xz. Skriv om II: II = xy + x^2 + yz + xz.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför term för term",
+        "text": "I: xy + xz + x^2 + yz. II: xy + x^2 + yz + xz. Båda har exakt samma fyra termer (bara ordningen skiljer).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats av jämförelsen",
+        "text": "I − II = 0, oberoende av variablernas värden. De är samma uttryck.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera med konkreta tal",
+        "text": "Sätt x=1, y=2, z=3. I: 1(2+3) + 1 + 6 = 5 + 1 + 6 = 12. II: (1+3)(2+1) = 4 \\cdot 3 = 12 ✓. Likhet bekräftad.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C: I är lika med II. Insikten i en mening: när två polynomuttryck ser olika ut, distribuera båda fullständigt och kontrollera term för term — kommutativitet kan dölja en identitet.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel på en av termerna — t.ex. missa zx i II — och tro att I har en extra term.",
+        "why_wrong": "Steg 6-9: vid noggrann distribution dyker varje term i I upp exakt en gång i II."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om du minns regeln som \"(x+z)(y+x) ≈ xy + zx\" missar du de två extra termerna och underskattar II.",
+        "why_wrong": "Som steg 6 visar ger hela utvecklingen FYRA termer ({m('xy + x^2 + zy + zx')}) — exakt vad I har enligt steg 5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta tecken eller storlek på x, y, z.",
+        "why_wrong": "Steg 10: likheten är algebraisk — den gäller för alla värden, så inget mer behövs."
+      }
+    ],
+    "technique": "Vid polynomuttryck mot polynomuttryck, distribuera BÅDA fullständigt och jämför termvis. Trigger: \"två uttryck med parenteser och flera variabler\". Stryk inga termer tills du ser hela utvecklingen.",
+    "pitfall": "Botemedlet mot \"de ser olika ut\": utseendet är polynomets förklädnad. Räkna alla termer; ordning och kommutativitet gör att identitet ofta är gömd.",
+    "framework_id": "KVA-TRAP-024",
+    "pregrade_tactic": {
+      "handle": "Distribuera-allt-receptet",
+      "move": "Vid två polynom som ser olika ut, distribuera båda fullständigt och samla likadana termer — om termuppsättningarna matchar är svaret C."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2013-kvant2-KVA-022": {
+    "solution_path": "(2,2) och (2,4) är lodrätt placerade. Rätvinkeln kan sitta vid (2,2) ⇒ benet till (−1, a) måste vara vågrätt ⇒ a = 2; eller vid (2,4) ⇒ benet vågrätt ⇒ a = 4. Två giltiga värden ger I = II och I > II — D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har tre hörn i ett koordinatsystem: (−1, a), (2, 2), (2, 4). De ska bilda en rätvinklig triangel. Jämför a mot 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera \"rätvinklig\"",
+        "text": "En rätvinklig triangel har EN vinkel på 90°. Den kan sitta vid VILKET som helst av de tre hörnen — formuleringen säger inte vid vilket.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Analysera de två fixa hörnen",
+        "text": "(2, 2) och (2, 4) har samma x-koordinat (2) — de ligger på en lodrät linje. Avståndet mellan dem är |4-2| = 2 enheter.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad krävs för 90° vid (2,2)?",
+        "text": "En vinkel vid (2,2) är 90° om benen från (2,2) är vinkelräta. Det ena benet går till (2,4) — det är LODRÄTT. För 90° måste det andra benet (till (−1, a)) vara VÅGRÄTT.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vågrät linje genom (2, 2)",
+        "text": "En vågrät linje har konstant y-koordinat. För att (−1, a) ska ligga på linjen genom (2, 2) krävs a = 2. Då blir konfigurationen: (−1, 2), (2, 2), (2, 4) — höger triangel med ben 3 (vågrätt) och 2 (lodrätt). ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Vad krävs för 90° vid (2,4)?",
+        "text": "Vid (2,4) går ena benet ner till (2, 2) — lodrätt. Andra benet (till (−1, a)) måste då vara vågrätt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Vågrät linje genom (2, 4)",
+        "text": "För att (−1, a) ska ligga vågrätt från (2, 4) krävs a = 4. Konfiguration: (−1, 4), (2, 2), (2, 4) — höger triangel med ben 3 (vågrätt) och 2 (lodrätt). ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad krävs för 90° vid (−1, a)?",
+        "text": "Benen från (−1, a) går till (2, 2) och till (2, 4). De ska vara vinkelräta. Riktningsvektorer: (3, 2-a) och (3, 4-a).",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Lös skalärprodukt = 0",
+        "text": "Vinkelräthet: (3)(3) + (2-a)(4-a) = 0 \\Rightarrow 9 + (2-a)(4-a) = 0. Expansion: (2-a)(4-a) = 8 - 2a - 4a + a^2 = a^2 - 6a + 8. Ger 9 + a^2 - 6a + 8 = 0 \\Rightarrow a^2 - 6a + 17 = 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Diskriminanten",
+        "text": "a^2 - 6a + 17 = 0 \\Rightarrow a = \\frac{6 \\pm \\sqrt{36 - 68}}{2}. Diskriminanten 36 - 68 = -32 < 0 — ingen reell lösning. Rätvinkel vid (−1, a) är geometriskt omöjligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sammanställ alla giltiga a-värden",
+        "text": "a = 2 (rätvinkel vid (2,2)) eller a = 4 (rätvinkel vid (2,4)). I = 2: I = II. I = 4: I > II. Två rangordningar möjliga.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: i en \"rätvinklig triangel\" är 90°-vinkeln inte automatiskt vid det utpekade hörnet — pröva alla tre placeringar.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att fastna vid fallet a = 4 (rätvinkel vid (2,4)) och dra slutsatsen att I alltid > II.",
+        "why_wrong": "Som steg 5 visar är a = 2 också giltigt (rätvinkel vid (2,2)), vilket ger I = II — alltså inte alltid I > II."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att gissa a < 2 utan att räkna konfigurationen.",
+        "why_wrong": "Steg 5 och 7: båda giltiga värden (a = 2 och a = 4) är ≥ 2 — inget gör I mindre än II."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid fallet rätvinkel-vid-(2,2) → a = 2 = II och kallar likhet.",
+        "why_wrong": "Steg 7 ger a = 4 ≠ 2 — rätvinkeln kan lika gärna sitta vid (2,4), så likhet är inte garanterad."
+      }
+    ],
+    "technique": "I geometriska KVA: pröva ALLA placeringar av den utmärkande egenskapen (här: var rätvinkeln sitter) innan du svarar. Trigger: \"rätvinklig triangel\" eller \"likbent triangel\" utan specificerat hörn. Flera giltiga konfigurationer ⇒ D.",
+    "pitfall": "Botemedlet mot \"rätvinkeln sitter där jag tänker\": rita upp punkterna och fundera EXPLICIT vid varje hörn — kan 90° sitta här? Om ja: vilket a krävs?",
+    "framework_id": "KVA-TRAP-008",
+    "pregrade_tactic": {
+      "handle": "Tre-hörn-testet",
+      "move": "Vid rätvinklig triangel utan utpekat 90°-hörn: pröva 90° vid varje hörn och lös för den fria koordinaten — om flera giltiga värden uppstår är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2018-kvant1-KVA-015": {
+    "solution_path": "Tolkning: I = \\frac{1}{28} + \\frac{1}{14} + \\frac{1}{7} + \\frac{1}{4} + \\frac{1}{2}. Gemensam nämnare 28 ger \\frac{1+2+4+7+14}{28} = \\frac{28}{28} = 1. 1 > \\frac{55}{56} → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Kvantitet I är en summa av fem bråk med nämnare 2, 4, 7, 14, 28 (täljare 1 var). Kvantitet II är \\frac{55}{56}. Jämför.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta gemensam nämnare",
+        "text": "För att addera bråk behöver alla samma nämnare. Listan: 2, 4, 7, 14, 28. 28 = 4 \\cdot 7 = 2 \\cdot 14, så 28 är delbart med 2, 4, 7 och 14. Gemensam nämnare = 28.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förläng varje term till nämnare 28",
+        "text": "\\frac{1}{2} = \\frac{14}{28}, \\frac{1}{4} = \\frac{7}{28}, \\frac{1}{7} = \\frac{4}{28}, \\frac{1}{14} = \\frac{2}{28}, \\frac{1}{28} = \\frac{1}{28}.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Addera täljarna",
+        "text": "Med gemensam nämnare summeras täljarna: 14 + 7 + 4 + 2 + 1 = 28.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Förkorta",
+        "text": "I = \\frac{28}{28} = 1. Summan blev exakt 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Definiera II",
+        "text": "II = \\frac{55}{56}. Det är ett bråk strax under 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skriv II som 1 − något",
+        "text": "\\frac{55}{56} = 1 - \\frac{1}{56}. Det är 1 minus en liten positiv del.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Jämför",
+        "text": "I = 1; II = 1 - \\frac{1}{56}. Eftersom \\frac{1}{56} > 0, är II < 1 = I. Alltså I > II.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Storlek på skillnaden",
+        "text": "I - II = 1 - \\frac{55}{56} = \\frac{1}{56} \\approx 0{,}018. Liten men strikt positiv.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Granska tolkningsfällan",
+        "text": "Originaltexten skrev kvantitet I som \"+ + + + 28 14 7 4 2\" (skadad layout) — du måste läsa det som \\tfrac{1}{28}+\\tfrac{1}{14}+\\tfrac{1}{7}+\\tfrac{1}{4}+\\tfrac{1}{2}. Andra läsningar (t.ex. 28 + 14 + \\dots) ger absurda värden ojämförbara med 55/56.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Räkna: 14/28 + 7/28 + 4/28 + 2/28 + 1/28 = (14+7+4+2+1)/28 = 28/28 = 1 ✓. 1 > 55/56 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: vid bråksummor leta efter en \"perfekt\" gemensam nämnare som gör täljarsumman till samma tal — det signalerar ofta att summan blir exakt 1.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna {m('\\tfrac{55}{56} \\approx 1')} och tro att I också är ungefär 55/56.",
+        "why_wrong": "Som steg 5 visar är I exakt 1, inte 55/56; steg 8 ger I > II med skillnad 1/56."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att teleskopisk summa råkar bli 55/56.",
+        "why_wrong": "Steg 4-5: vid valet av nämnare 2, 4, 7, 14, 28 blir summan exakt 28/28 = 1, inte 55/56."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att fortgående bråk är otydliga utan räknare.",
+        "why_wrong": "Steg 2-5: gemensam nämnare 28 ger en exakt summa utan räknare."
+      }
+    ],
+    "technique": "Bråk med olika nämnare: hitta minsta gemensamma nämnare, förläng varje term, addera täljarna. Trigger: \"summa av bråk att jämföra med ett tal nära 1\". Sätter ofta nämnaren som produkten av primfaktorerna.",
+    "pitfall": "Botemedlet mot \"approximera utan kontroll\": förkorta innan du approximerar — exakt 28/28 är inte 55/56, även om båda är nära 1.",
+    "framework_id": "KVA-TRAP-023",
+    "pregrade_tactic": {
+      "handle": "Gemensam-nämnar-receptet",
+      "move": "Vid bråksumma jämförd med ett tal nära 1, sätt gemensam nämnare och addera täljarna — om summan landar exakt på 1 har du oftast vunnit jämförelsen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2020-kvant2-KVA-022": {
+    "solution_path": "Medelvärde -1 av fyra tal ger summa -4. Då -5 + x + y + 3 = -4 \\Rightarrow x + y = -2. -2 < -1 → B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En mätserie har fyra värden: −5, x, y, 3. Medelvärdet är −1. Du ska jämföra summan x + y med −1.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera medelvärde",
+        "text": "Medelvärdet av n tal är summan dividerat med n. \\text{medel} = \\frac{\\text{summa}}{\\text{antal}}. Omvänt: summan = medelvärde × antal.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna ut totalsumman",
+        "text": "Antalet är 4, medelvärdet −1. Totalsumma = -1 \\cdot 4 = -4.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Sätt upp ekvationen",
+        "text": "Summan av alla fyra: -5 + x + y + 3 = -4.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Förenkla de kända termerna",
+        "text": "-5 + 3 = -2, så -2 + x + y = -4.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lös ut x + y",
+        "text": "x + y = -4 - (-2) = -4 + 2 = -2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Identifiera kvantiteterna",
+        "text": "I = x + y = −2. II = −1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför negativa tal",
+        "text": "För negativa tal: ju längre från noll, desto mindre. -2 ligger längre från 0 än -1, alltså -2 < -1.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka rangordningen",
+        "text": "I = −2 < −1 = II. Alltså II > I.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Granska vad villkoret faktiskt säger",
+        "text": "Notera: x och y är individuellt obestämda — bara deras summa är låst. Det räcker dock, eftersom frågan jämför just summan.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Test: x = 1, y = −3 (uppfyller x+y = −2). Hela serien: −5, 1, −3, 3. Summa: -5+1-3+3 = -4. Medel: -4/4 = -1 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B: II är större än I. Insikten i en mening: medelvärde × antal = summa — använd den ekvationen för att lösa ut summan av okända termer direkt.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få x + y = 0.",
+        "why_wrong": "Som steg 4-6 visar: (−5+3) = −2 och medelvärde −1 ger totalsumma −4, så x + y = −4 − (−2) = −2, inte 0."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x + y = −1 (lika med medelvärdet).",
+        "why_wrong": "Steg 6: medelvärdet är −1 för fyra tal, men summan x + y är −2 efter justering för −5 och 3."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att x och y individuellt behövs.",
+        "why_wrong": "Steg 10: bara summan x + y behövs och den är entydig (= −2)."
+      }
+    ],
+    "technique": "Medelvärde gånger antal = totalsumma. Trigger: \"medelvärdet är X, hitta summan eller en okänd term\". Sätt upp ekvationen och lös ut det som efterfrågas.",
+    "pitfall": "Botemedlet mot \"medel = okänd summa\": medelvärdet och summan är OLIKA storheter — det ena är det andra dividerat med antalet. Multiplicera tillbaka.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Medel-summa-bryggan",
+      "move": "Vid medelvärde med okända termer, multiplicera medelvärdet med antalet för totalsumman och lös sedan ut det okända — jämför direkt mot II."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2022-kvant1-KVA-021": {
+    "solution_path": "Linjen y = kx + m genom (−10, −1) med k > 0 ger m = -1 + 10k. För liten k (t.ex. 0,05) är m < 0; för stor k (t.ex. 1) är m > 0. Y-skärningen kan vara negativ, noll eller positiv — D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Linjen L har positiv lutning och går genom (−10, −1). Du ska jämföra y-skärningen (där L korsar y-axeln) med 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Linjens ekvation",
+        "text": "En rät linje skrivs y = kx + m, där k är lutningen (riktningskoefficienten) och m är y-skärningen (y-värdet vid x = 0).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Använd den givna punkten",
+        "text": "(−10, −1) ligger på L, alltså -1 = k \\cdot (-10) + m \\Rightarrow -1 = -10k + m.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lös ut m",
+        "text": "m = -1 + 10k. Y-skärningen är beroende av k.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Begränsning på k",
+        "text": "\"Positiv lutning\" betyder k > 0. Inget mer sägs — k kan vara hur liten (nära 0) eller hur stor som helst.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "När är m = 0?",
+        "text": "m = 0 \\Leftrightarrow 10k = 1 \\Leftrightarrow k = 0{,}1. Det är ett LAGLIGT värde för k (positivt).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "När är m < 0?",
+        "text": "m < 0 \\Leftrightarrow 10k < 1 \\Leftrightarrow k < 0{,}1. Lagligt: alla k mellan 0 och 0,1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "När är m > 0?",
+        "text": "m > 0 \\Leftrightarrow 10k > 1 \\Leftrightarrow k > 0{,}1. Lagligt: alla k > 0,1.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konkreta testfall",
+        "text": "k = 0,05 (flack): m = −1 + 0,5 = −0,5 < 0. k = 0,1: m = 0. k = 1 (brant): m = −1 + 10 = 9 > 0. Alla tre utfall.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Geometrisk intuition",
+        "text": "Punkten (−10, −1) ligger till vänster om y-axeln och under x-axeln. För liten lutning når linjen y-axeln just under origo; för stor lutning skjuter den upp långt över origo.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sammanställ",
+        "text": "Y-skärningen m kan vara negativ, noll eller positiv beroende på k. Alla tre relationer mot II = 0 är möjliga.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: \"positiv lutning\" säger bara att linjen lutar uppåt — y-skärningen styrs av lutningens storlek, inte dess tecken.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att associera \"positiv lutning\" med \"positiv y-skärning\".",
+        "why_wrong": "Steg 7 visar att flack lutning (k = 0,05) ger m = −0,5 < 0 — positiv lutning räcker inte för positiv y-skärning."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att y-skärning < 0 eftersom (−10, −1) är negativ.",
+        "why_wrong": "Steg 8 visar att brant lutning (k = 1) ger m = 9 > 0; den givna punkten kan ligga negativt men y-skärningen kan ändå vara positiv."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid specifikt fall där y-skärning = 0 (k = 0,1).",
+        "why_wrong": "Steg 6: det är bara ETT av oändligt många k-värden; steg 7 och 8 ger m ≠ 0 i andra fall."
+      }
+    ],
+    "technique": "En linje {m('y = kx + m')} genom {m('(x_0, y_0)')} ger {m('m = y_0 - k x_0')}. Trigger: \"linje genom given punkt, jämför y-skärning med ett tal\". När lutningen bara har teckenvillkor (k > 0 t.ex.), kolla intervallet av m och se var jämförelsetalet hamnar.",
+    "pitfall": "Botemedlet mot \"positiv lutning ⇒ positiv y-skärning\": lutningen säger bara HUR linjen lutar, inte VAR den skär. För punkter under x-axeln avgör lutningens STORLEK om skärningen blir positiv eller negativ.",
+    "framework_id": "KVA-TRAP-016",
+    "pregrade_tactic": {
+      "handle": "Brant-eller-flack-testet",
+      "move": "Vid linje med positiv lutning genom en punkt under x-axeln: pröva en flack k (liten positiv) och en brant k (stor) — om y-skärningen byter tecken är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2022-kvant1-KVA-022": {
+    "solution_path": "\\frac{2x}{3y} = 7 \\Rightarrow 2x = 21y \\Rightarrow y = \\frac{2x}{21}. Det är exakt II. Lika — C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har villkoret \\frac{2x}{3y} = 7 med y \\neq 0. Jämför y (kvantitet I) med \\frac{2}{21}x (kvantitet II).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Korsmultiplicera",
+        "text": "\\frac{2x}{3y} = 7 kan skrivas 2x = 7 \\cdot 3y genom att multiplicera båda sidor med 3y. (Tillåtet eftersom y \\neq 0, alltså 3y ≠ 0.)",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förenkla",
+        "text": "2x = 21y. En ren proportionell koppling mellan x och y.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lös ut y",
+        "text": "Dela båda sidor med 21: y = \\frac{2x}{21}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Jämför med II",
+        "text": "II = \\frac{2}{21}x = \\frac{2x}{21}. Identiskt med uttrycket för y.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Algebraisk likhet",
+        "text": "I = y = \\frac{2x}{21} = II. För alla värden av x (och motsvarande y från villkoret) gäller likhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definitionsmängd",
+        "text": "Villkoret kräver y \\neq 0; från 2x = 21y betyder det också x \\neq 0. Inom denna lagliga mängd: alltid I = II.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Granska potentiella fällor",
+        "text": "En vanlig miss är att kasta om: y = \\frac{21x}{2} (fel — det vore om man hade \\frac{3y}{2x} = 7). Originalvillkoret har 2x i täljaren, så y kommer ut delat med 21, inte ganget.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Testa med konkret tal",
+        "text": "Välj y = 2. Då \\frac{2x}{6} = 7 \\Rightarrow 2x = 42 \\Rightarrow x = 21. Kontrollera II: \\frac{2}{21} \\cdot 21 = 2. Likhet med y = 2 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Testa med annat tal",
+        "text": "Välj x = 1. y = 2/21 \\approx 0{,}095. Kontrollera villkoret: \\frac{2}{3 \\cdot 2/21} = \\frac{2 \\cdot 21}{6} = 7 ✓. Och II = \\frac{2}{21} = y ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sammanställ",
+        "text": "Villkoret låser y entydigt till {m('\\frac{2x}{21}')}, vilket är samma som II. Likhet gäller alltid.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C: I är lika med II. Insikten i en mening: en rationell ekvation som \\frac{2x}{3y} = k kan korsmultipliceras och lösas ut till en linjär koppling — kolla om kvantitet II är just den lösta formen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få {m('y = 21x/2')}.",
+        "why_wrong": "Steg 3-4: korrekt är {m('2x = 21y')}, alltså {m('y = 2x/21')}, INTE 21x/2 — täljaren och nämnaren får inte byta plats."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att {m('2x/21')} är mycket större än y.",
+        "why_wrong": "Steg 5-6: de är samma uttryck — algebraiskt identiska, inte ett större än det andra."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att y är fri.",
+        "why_wrong": "Steg 7: förhållandet låser y entydigt i termer av x ({m('y = 2x/21')}); informationen är fullständig."
+      }
+    ],
+    "technique": "Vid rationell ekvation, korsmultiplicera och lös ut den variabel som efterfrågas. Trigger: \"jämför y med ett uttryck i x\" + \"villkor är ett bråk = konstant\". Jämför sedan med II algebraiskt.",
+    "pitfall": "Botemedlet mot \"flippa fel håll\": skriv noggrant ut {m('\\frac{täljare}{nämnare} = k \\Rightarrow täljare = k \\cdot nämnare')}. Här är täljaren {m('2x')} (inte {m('3y')}), så det är {m('2x')} som blir {m('21y')}.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Korsmultiplicering-receptet",
+      "move": "När villkoret är ett bråk som är lika med en konstant, korsmultiplicera till en linjär koppling och lös ut variabeln — jämför uttrycket direkt med II."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2022-kvant2-KVA-013": {
+    "solution_path": "2(x+3) = 3(x+4) \\Rightarrow 2x+6 = 3x+12 \\Rightarrow -x = 6 \\Rightarrow x = -6. -6 < 0 → B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har ekvationen 2(x+3) = 3(x+4) och ska jämföra lösningen x med 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Distributiva lagen",
+        "text": "a(b+c) = ab + ac. Tillämpas på båda sidor för att eliminera parenteser.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Distribuera vänster led",
+        "text": "2(x+3) = 2x + 6.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Distribuera höger led",
+        "text": "3(x+4) = 3x + 12.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt ihop ekvationen",
+        "text": "2x + 6 = 3x + 12.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Samla x-termer på ena sidan",
+        "text": "Subtrahera 2x från båda sidor: 6 = x + 12.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Samla konstanter",
+        "text": "Subtrahera 12 från båda sidor: -6 = x, eller x = -6.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför med 0",
+        "text": "x = −6. II = 0. −6 < 0, alltså I < II.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Storleksintuition",
+        "text": "Sex steg nedanför noll på tallinjen är klart mindre än noll. Negativa tal är alltid mindre än 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera lösningen",
+        "text": "Sätt in x = −6: vänster 2(-6+3) = 2 \\cdot (-3) = -6; höger 3(-6+4) = 3 \\cdot (-2) = -6. Båda sidor lika ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Granska tecknet på koefficienten",
+        "text": "Notera: vid steg 6 ger vi att x-koefficienten på höger sida blir +1 (efter att 2x flyttats över). Det är positivt, så när vi flyttar 12 till vänster blir x = −6 (inte +6).",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B: II är större än I. Insikten i en mening: vid linjär ekvation, distribuera båda sidor först, samla x-termer på ena sidan, konstanter på andra — en linjär ekvation har exakt en lösning.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att räkna fel och få x = +6.",
+        "why_wrong": "Som steg 6-7 visar: vänster led har FÄRRE x än höger led, så när vi subtraherar 2x från båda sidor blir koefficienten på x = +1, och konstanten flyttas så x = −6."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta x = 0.",
+        "why_wrong": "Steg 10: vid x = 0 blir vänster {m('2(3) = 6')} och höger {m('3(4) = 12')} — INTE lika; rätt lösning är x = −6."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att lösningen är komplicerad.",
+        "why_wrong": "Steg 2-7: en linjär ekvation har exakt EN lösning, här x = −6 — inget tvetydigt."
+      }
+    ],
+    "technique": "Linjär ekvation: distribuera, samla x-termer, samla konstanter, dela med x-koefficienten. Trigger: \"a(x+b) = c(x+d)\". Resultatet är ett enda tal — jämför direkt mot II.",
+    "pitfall": "Botemedlet mot teckenmiss: skriv ut HELA flytten — \"flytta 2x till höger\" = subtrahera 2x på BÅDA sidor; resulterande koefficient är (3 − 2) = +1, så x kommer ut med samma tecken som högerkonstanten minus vänsterkonstanten.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Linjärekvations-receptet",
+      "move": "Distribuera båda sidor, flytta alla x till en sida och konstanter till andra, dela med koefficienten — sätt in i originalet för att verifiera."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2022-kvant2-KVA-014": {
+    "solution_path": "P(summa = 10) = 3/36 (utfall 4-6, 5-5, 6-4). P(summa = 4) = 3/36 (utfall 1-3, 2-2, 3-1). Lika — C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två sexsidiga tärningar kastas en gång. Du ska jämföra sannolikheten för summa = 10 med sannolikheten för summa = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Utfallsrum",
+        "text": "Varje tärning visar 1–6 oberoende. Antalet ordnade utfall är 6 \\cdot 6 = 36. Alla är lika sannolika.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Sannolikhetens definition",
+        "text": "P(händelse) = \\frac{\\text{antal gynnsamma utfall}}{\\text{antal möjliga utfall}}. Här blir nämnaren 36.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Räkna utfall för summa = 4",
+        "text": "Tärning 1 + tärning 2 = 4. Möjliga par (a, b) med 1 \\leq a, b \\leq 6: (1, 3), (2, 2), (3, 1). Tre utfall.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Beräkna P(summa = 4)",
+        "text": "P = 3/36 = 1/12.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna utfall för summa = 10",
+        "text": "Par (a, b) med a + b = 10: (4, 6), (5, 5), (6, 4). Tre utfall. ((3, 7) går inte — 7 är inte på en vanlig tärning.)",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna P(summa = 10)",
+        "text": "P = 3/36 = 1/12.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför",
+        "text": "P(summa = 10) = 1/12 = P(summa = 4). Lika.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Bakomliggande symmetri",
+        "text": "För två sexsidiga tärningar är fördelningen symmetrisk kring 7 (medelvärdet 2 + 12 = 14 dividerat med 2). Det gäller P(\\text{summa} = s) = P(\\text{summa} = 14 - s). Här: 14 − 10 = 4 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför symmetri?",
+        "text": "Bytet a \\to 7 - a, b \\to 7 - b är en bijektion på \\{1, \\dots, 6\\}^2: summan av paret blir 14 - (a + b). Det parar 1:1 ihop utfall för summa s med utfall för summa 14 − s.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Granska",
+        "text": "Ingen feltolkning av \"summan av de tärningarna visar\" — det är helt enkelt a + b. Antalet sätt är 3 i båda fallen.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C: I är lika med II. Insikten i en mening: två sexsidiga tärningar har symmetrisk summa-fördelning kring 7, så P(s) = P(14 − s) — det gör 4 och 10 till spegelsummor.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att summa 10 är \"mer specifik\" och mindre sannolik.",
+        "why_wrong": "Steg 4-7: båda summorna har exakt 3 gynnsamma utfall av 36; specificiteten är spegelvänd kring 7."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att lägre summor är vanligare.",
+        "why_wrong": "Steg 9-10: symmetri kring 7 ger P(4) = P(10) exakt — varken låga eller höga summor dominerar, det är avståndet från 7 som styr."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver räkna alla utfall.",
+        "why_wrong": "Steg 9: symmetrin {m('P(s) = P(14-s)')} ger likhet utan att enumerera alla 36 utfall."
+      }
+    ],
+    "technique": "Vid sannolikhet med två sexsidiga tärningar: utnyttja symmetrin {m('P(s) = P(14-s)')}. Trigger: \"P(summa = a) jämfört med P(summa = b) där a + b = 14\". Annars enumerera utfallen.",
+    "pitfall": "Botemedlet mot \"låga summor vanligare\": fördelningen är triangulär — toppen är vid 7, och 6 och 8 är lika sannolika, 5 och 9 är lika sannolika, osv. Spegelpar har lika sannolikhet.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tärningsspegeln",
+      "move": "Vid P(summa) för två sexsidiga tärningar: kontrollera om de två summorna är spegelsymmetriska kring 7 (a + b = 14) — om ja är sannolikheterna lika."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2022-kvant2-KVA-015": {
+    "solution_path": "I: \\frac{5}{6} + \\frac{5}{6} = \\frac{10}{6} \\approx 1{,}67. II: \\frac{5}{6} \\cdot \\frac{5}{6} = \\frac{25}{36} \\approx 0{,}69. I > II → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska jämföra \\frac{5}{6} + \\frac{5}{6} med \\frac{5}{6} \\cdot \\frac{5}{6}. Samma bråk, olika operationer.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Addition av bråk med samma nämnare",
+        "text": "\\frac{a}{n} + \\frac{b}{n} = \\frac{a+b}{n}. Lägg ihop täljarna.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna I",
+        "text": "\\frac{5}{6} + \\frac{5}{6} = \\frac{10}{6} = \\frac{5}{3} \\approx 1{,}67.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Multiplikation av bråk",
+        "text": "\\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{ac}{bd}. Multiplicera täljare med täljare och nämnare med nämnare.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Räkna II",
+        "text": "\\frac{5}{6} \\cdot \\frac{5}{6} = \\frac{25}{36} \\approx 0{,}694.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Jämför direkt",
+        "text": "I ≈ 1,67; II ≈ 0,69. Skillnaden är ungefär 0,98 — nästan ett helt. I är klart större.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Generell princip — addition",
+        "text": "Att addera samma tal q till sig självt ger 2q. Det är ALLTID dubbelt så stort som q (för positiva q).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Generell princip — multiplikation",
+        "text": "Att multiplicera q med sig själv ger q^2. För 0 < q < 1 gäller q^2 < q < 2q. Här är q = 5/6 < 1.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Exakt jämförelse utan decimaler",
+        "text": "Gemensam nämnare 36: I = 10/6 = 60/36, II = 25/36. 60 > 25 → I > II.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Granska för dolda fällor",
+        "text": "Det finns ingen alternativ tolkning av uttrycken — båda är otvetydiga aritmetiska operationer på samma bråk.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Bakåtkoll: 10/6 = 1,666...; 25/36 = 0,694... ; 1,67 > 0,69 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: för bråk mellan 0 och 1 är q + q (= 2q > q) större än q · q (= q² < q) — addition växer, multiplikation krymper.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att multiplikation av \"stora\" bråk ger ännu större.",
+        "why_wrong": "Steg 8: multiplikation av tal mellan 0 och 1 KRYMPER; {m('(5/6)^2 = 25/36')} är mindre än {m('5/6')}."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att operationerna ger ungefär lika resultat.",
+        "why_wrong": "Steg 6 och 9: I = 60/36, II = 25/36 — skillnad 35/36 ≈ 0,97, nästan ett helt."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att operationerna är förvirrande.",
+        "why_wrong": "Steg 3 och 5: direktberäkning ger entydigt svar — ingen tvetydighet."
+      }
+    ],
+    "technique": "Vid q + q jämfört med q · q för {m('0 < q < 1')}: addition ger 2q (växer), multiplikation ger q² (krymper). Trigger: \"samma bråk, två operationer\".",
+    "pitfall": "Botemedlet mot \"multiplikation gör större\": multiplikation av två tal under 1 ger något ÄNNU mindre än bägge faktorerna — det är därför produkter av bråk konvergerar mot 0.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Addera-mot-multiplicera-regeln",
+      "move": "Vid q + q mot q · q: om q är mellan 0 och 1, vinner addition; om q > 1, vinner multiplikation; vid q = 0 eller q = 2 är de lika."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2022-kvant2-KVA-016": {
+    "solution_path": "Areorna är \\frac{bh_1}{2} och \\frac{(b-1)h_2}{2}. Höjderna h₁, h₂ är fria, så jämförelsen kan gå åt vilket håll som helst → D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du jämför arean av en triangel med basen b och höjden h₁ med arean av en triangel med basen b − 1 och höjden h₂. b, h₁, h₂ är fria parametrar (förutsatt b > 1 så att b − 1 > 0).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Triangelareans formel",
+        "text": "Arean av en triangel är A = \\frac{1}{2} \\cdot \\text{bas} \\cdot \\text{höjd}. Höjden är vinkelrät mot basen.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Skriv ut I och II",
+        "text": "I = \\frac{b \\cdot h_1}{2}. II = \\frac{(b-1) \\cdot h_2}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera frihetsgrader",
+        "text": "Tre fria parametrar — b, h₁, h₂. Ingen ekvation kopplar dem. Det är 3 grader av frihet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Konstruera fall I > II",
+        "text": "Sätt b = 10, h₁ = 10, h₂ = 1. I = (10·10)/2 = 50; II = (9·1)/2 = 4,5. I > II.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konstruera fall I < II",
+        "text": "Sätt b = 10, h₁ = 1, h₂ = 100. I = (10·1)/2 = 5; II = (9·100)/2 = 450. I < II.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konstruera fall I = II",
+        "text": "Likhet: \\frac{bh_1}{2} = \\frac{(b-1)h_2}{2} \\Leftrightarrow bh_1 = (b-1)h_2. T.ex. b = 10, h₁ = 9, h₂ = 10: I = 45, II = 45. Likhet möjlig.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sammanställ",
+        "text": "Alla tre rangordningar är möjliga med fria h₁ och h₂. Vilkorets enda begränsning (baser b och b − 1) är otillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Granska om b självt är extra fri",
+        "text": "b styr också skillnaden; om b är stor är skillnaden i bas (1) liten i procent, men eftersom höjderna är fria spelar det ingen roll för rangordningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Intuition om area",
+        "text": "Arean av en triangel beror på bas OCH höjd. En triangel kan ha smal bas men hög höjd och därmed stor area — basen ensam säger inget.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Fall 1: b=10, h₁=10, h₂=1 → I=50, II=4,5 ✓. Fall 2: b=10, h₁=1, h₂=100 → I=5, II=450 ✓. Båda riktningar realiserbara.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: triangelarea beror på BÅDA bas och höjd — om båda får variera fritt är jämförelsen helt obestämd.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att större bas alltid ger större area.",
+        "why_wrong": "Steg 6 visar fall där b = 10 men h₂ = 100 ger II = 450 > I = 5 — höjden h₂ kan kompensera mer än väl."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att II har mindre bas och därmed mindre area.",
+        "why_wrong": "Steg 5: med h₁ = 10 mot h₂ = 1 är I = 50 > II = 4,5; höjden vänder ordningen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid b·h₁ = (b-1)·h₂ specifikt.",
+        "why_wrong": "Steg 7 visar att likhet är möjlig men bara för specifika (h₁, h₂)-par; fall 1 och 2 ger olikhet."
+      }
+    ],
+    "technique": "Vid jämförelse av areor med fria höjder, två frihetsgrader gör jämförelsen obestämd. Trigger: \"area av triangel/rektangel med icke-specificerade höjder\". Konstruera fall där höjden i den ena sätts stor och i den andra liten.",
+    "pitfall": "Botemedlet mot \"basen styr arean\": kom ihåg att A = (bas × höjd) / 2 — båda parametrar krävs; en ensam bas säger inte mer än att triangeln finns.",
+    "framework_id": "KVA-TRAP-004",
+    "pregrade_tactic": {
+      "handle": "Frihets-räkningen",
+      "move": "Vid geometrisk area med flera obegränsade parametrar, räkna frihetsgraderna — om ≥ 2 är obestämda är svaret normalt D; bekräfta med två extrema talval."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2022-kvant2-KVA-018": {
+    "solution_path": "I = \\frac{1}{4} \\cdot \\pi \\cdot 1^2 = \\frac{\\pi}{4} \\approx 0{,}785. II = \\frac{3}{4} \\cdot 1^2 = 0{,}75. Eftersom \\pi > 3 är \\pi/4 > 3/4 → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "I = en fjärdedel av arean av en cirkel med radien 1 cm. II = tre fjärdedelar av arean av en kvadrat med sidan 1 cm. Jämför.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Cirkelns area",
+        "text": "En cirkel med radien r har area A = \\pi r^2. För r = 1: A = \\pi \\cdot 1^2 = \\pi cm².",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna I",
+        "text": "I = \\frac{1}{4} \\cdot \\pi = \\frac{\\pi}{4} cm².",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Kvadratens area",
+        "text": "En kvadrat med sidan s har area A = s^2. För s = 1: A = 1 cm².",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Räkna II",
+        "text": "II = \\frac{3}{4} \\cdot 1 = \\frac{3}{4} = 0{,}75 cm².",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Direkt jämförelse mellan π/4 och 3/4",
+        "text": "Båda har samma nämnare 4. Jämförelsen reduceras till täljarna: \\pi mot 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "π vs 3",
+        "text": "Standardresultat: \\pi \\approx 3{,}14159 > 3. Strikt olikhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Slutsats av täljarjämförelse",
+        "text": "\\pi > 3 \\Rightarrow \\frac{\\pi}{4} > \\frac{3}{4} \\Rightarrow I > II.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Numerisk verifiering",
+        "text": "\\pi/4 \\approx 0{,}7854; 3/4 = 0{,}75. Skillnaden ≈ 0,035 — liten men strikt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Granska tolkning",
+        "text": "Notera: \"radien 1\" (inte diametern). Cirkelarean är {m('\\pi r^2')}, inte {m('\\pi d^2/4')} — kontrollera att du läst rätt mått.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Granska teckenfälla",
+        "text": "En vanlig miss är att tro \"3 < π så 3/4 < π/4\" är fel håll. Nej: 3 < \\pi \\Rightarrow 3/4 < \\pi/4 (dela båda sidor med samma positiva tal). Rätt riktning.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: när två bråk har samma nämnare, är det större av dem som har större täljare — och \\pi > 3 är ett standardresultat du bör använda direkt.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att 3/4 > π/4 eftersom 3 < π — nej, just det: 3 < π så 3/4 < π/4.",
+        "why_wrong": "Steg 7-8: {m('\\pi \\approx 3{,}14 > 3')}, så {m('\\pi/4 \\approx 0{,}785 > 3/4 = 0{,}75')} — I vinner med marginal."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att π ≈ 3 → likhet.",
+        "why_wrong": "Steg 7: π > 3 STRIKT (π ≈ 3,14159...); skillnaden 0,14/4 = 0,035 är nödvändigtvis i I:s favör."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta π exakt.",
+        "why_wrong": "Steg 7: π > 3 är välkänt (faktiskt π > 3,14) och räcker för en strikt jämförelse."
+      }
+    ],
+    "technique": "Vid jämförelser med π: använd kända gränser (π > 3, π < 22/7) hellre än räknarvärden. Trigger: \"cirkel-relaterat tal mot rationellt tal\". Skriv båda kvantiteter som bråk med samma nämnare så att täljarjämförelsen blir trivial.",
+    "pitfall": "Botemedlet mot \"π = 3 i huvudet\": π är STRIKT större än 3, ungefär 3,14. Använd π > 3 som nedre gräns när du jämför med rationella tal.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Pi-gränsen",
+      "move": "Vid π-relaterad jämförelse: ersätt π med en känd ram (π > 3, π < 22/7) och reducera till en heltalsjämförelse — räknarvärdet behövs sällan."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2022-kvant2-KVA-020": {
+    "solution_path": "Faktorpar (positiva heltal) av 36: (1,36), (2,18), (3,12), (4,9), (6,6). Summor x + y: 37, 20, 15, 13, 12. Vid (1,36) är summan 37 > 18; vid (6,6) är summan 12 < 18 — båda riktningar möjliga → D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "x och y är POSITIVA HELTAL med produkt 36. Jämför x + y med 18.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta alla faktorpar",
+        "text": "Alla positiva heltalspar (x, y) med xy = 36, där vi tillåter ordningen x ≤ y: (1, 36), (2, 18), (3, 12), (4, 9), (6, 6).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Varför just dessa?",
+        "text": "36 = 2^2 \\cdot 3^2. Divisorer: 1, 2, 3, 4, 6, 9, 12, 18, 36. Varje divisor d ger paret (d, 36/d). Med x ≤ y blir det fem distinkta par.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Beräkna summa för varje par",
+        "text": "(1, 36) → 37. (2, 18) → 20. (3, 12) → 15. (4, 9) → 13. (6, 6) → 12.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Jämför varje summa med 18",
+        "text": "37 > 18; 20 > 18; 15 < 18; 13 < 18; 12 < 18.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Fall 1: I > II",
+        "text": "(1, 36): I = 37 > II = 18. Realiserbart.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Fall 2: I < II",
+        "text": "(6, 6): I = 12 < II = 18. Också realiserbart.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Fall 3: I = II?",
+        "text": "Existerar inte: ingen av summorna 37, 20, 15, 13, 12 är 18. Så likhet är OMÖJLIG, men det räcker att olikhet finns åt båda håll för D.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Generaliserad princip",
+        "text": "Vid fast produkt xy = P, är x + y minimerat när x = y = √P (AM-GM nedre gräns) och växer obegränsat när faktorerna blir asymmetriska. Här är √36 = 6, så min-summa = 12.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "AM-GM-olikheten",
+        "text": "För positiva tal: \\frac{x + y}{2} \\geq \\sqrt{xy}, alltså x + y \\geq 2\\sqrt{xy} = 2\\sqrt{36} = 12. Detta är NEDRE gräns; ÖVRE gräns saknas.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sammanställ",
+        "text": "Summan x + y kan vara 12 (likhetsfallet) upp till 37, beroende på faktorparet. Båda riktningar mot 18 är möjliga (utom likhet exakt, vilket inte krävs för D).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: vid fast produkt och heltalsfaktorer är minsta summa vid kvadraten (x = y), maxsumman vid (1, P) — frågan är om jämförelsetalet ligger inuti intervallet [2√P, P + 1].",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att x + y ≥ 2√(xy) = 12 alltid betyder x + y > 18.",
+        "why_wrong": "Steg 10: AM-GM ger nedre gräns 12, men inte att summan alltid > 18; steg 7 visar (6,6) → 12 < 18."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att x + y < 18.",
+        "why_wrong": "Steg 6: vid (1, 36) är x + y = 37 > 18 — alla små faktorpar (1, 36) och (2, 18) ger summor över 18."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid (4, 9) eller (6, 6) där summa är ≤ 18.",
+        "why_wrong": "Steg 6: (1, 36) ger 37 > 18; bara fokuset på balanserade faktorer missar de skeva."
+      }
+    ],
+    "technique": "Vid xy = P med positiva heltal, enumerera alla faktorpar och räkna alla möjliga summor. Trigger: \"x, y positiva heltal med fast produkt, jämför x + y med ett tal\". AM-GM ger nedre gräns; (1, P) ger övre gräns P + 1.",
+    "pitfall": "Botemedlet mot AM-GM-fixering: AM-GM ger bara EN sida av jämförelsen (nedre gräns) — den säger inget om hur stor summan kan bli. Lista alla faktorpar.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Faktorpars-listan",
+      "move": "Vid fast produkt med positiva heltal, lista alla faktorpar (1, P), (2, P/2), ..., (√P, √P) — kolla om jämförelsetalet ligger mellan minsumman och maxsumman."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2022-kvant2-KVA-021": {
+    "solution_path": "I: 40/100 h = 0,4 h = 24 min. II: 40 m/s = 40·3,6 = 144 km/h, så 40/144 h ≈ 0,278 h ≈ 16,67 min. 24 > 16,67 → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Båda kvantiteterna är tiden (i minuter) att färdas 40 km. I: hastighet 100 km/h. II: hastighet 40 m/s. Olika enheter — konvertera.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Tids-formeln",
+        "text": "\\text{tid} = \\frac{\\text{sträcka}}{\\text{hastighet}}. Båda måste vara i samma enhetssystem.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna I (h)",
+        "text": "40 km / 100 km/h = 0,4 h.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Konvertera I till minuter",
+        "text": "0,4 h × 60 min/h = 24 min.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Konvertering m/s → km/h",
+        "text": "1 m/s = (1/1000 km) / (1/3600 h) = 3600/1000 km/h = 3,6 km/h. Standardfaktor: multiplicera m/s med 3,6 för att få km/h.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Konvertera II:s hastighet",
+        "text": "40 m/s × 3,6 = 144 km/h.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna II (h)",
+        "text": "40 km / 144 km/h = 40/144 h = 5/18 h ≈ 0,2778 h.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Konvertera II till minuter",
+        "text": "5/18 h × 60 min/h = 300/18 min = 50/3 min ≈ 16,67 min.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför",
+        "text": "I = 24 min; II ≈ 16,67 min. 24 > 16,67, alltså I > II.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity check via hastigheter",
+        "text": "II har hastighet 144 km/h > 100 km/h (I), så II tar kortare tid. Det matchar att I = 24 > II = 16,67. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Granska enhetsfällan",
+        "text": "Vanlig miss: tolka 40 m/s som långsamt (\"bara 40 enheter\"). Men m/s är en betydligt större enhet än km/h — en faktor 3,6 skiljer dem. Konvertera ALLTID.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: konvertera ALLA hastigheter till samma enhet (m/s × 3,6 = km/h) innan du jämför restider — annars är mätarna oförenliga.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att blanda enheterna och tro att m/s är långsammare.",
+        "why_wrong": "Steg 5-6: 40 m/s = 144 km/h, MYCKET snabbare än 100 km/h; därmed kortare tid för II → I > II."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att tiderna är ungefär lika.",
+        "why_wrong": "Steg 4 och 8: 24 min mot 16,67 min — skillnad ~ 7 min, märkbar."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att enhetskonverteringar är otydliga.",
+        "why_wrong": "Steg 5: 1 m/s = 3,6 km/h är en standarddefinition (eftersom 1000 m / 3600 s = 1/3,6)."
+      }
+    ],
+    "technique": "Vid hastighet/tid med olika enheter, konvertera m/s till km/h (multiplicera med 3,6) eller tvärtom (dividera med 3,6). Trigger: \"hastighet i m/s och km/h i samma problem\".",
+    "pitfall": "Botemedlet mot \"40 < 100, så m/s tar längre\": jämför ALDRIG hastigheter i olika enheter direkt — det är ett klassiskt enhetsfel. 40 m/s är snabbare än 100 km/h.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Enhetsbryggan",
+      "move": "Vid m/s mot km/h: multiplicera m/s med 3,6 för km/h (eller dela km/h med 3,6 för m/s) — räkna sedan tid = sträcka / hastighet i samma enhet."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  },
+  "host-2023-kvant2-KVA-018": {
+    "solution_path": "A:s ordinarie pris = 0{,}80 \\cdot B. I = 0{,}95 \\cdot 0{,}80 \\cdot B = 0{,}76B. II = 0{,}75 \\cdot B. Då 0,76 > 0,75 → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Butik A:s ordinarie pris är 20 % lägre än butik B:s. A sänker sitt pris med 5 %; B sänker sitt pris med 25 %. Jämför slutpriserna.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Inför variabel",
+        "text": "Låt B = butik B:s ordinarie pris. A:s ordinarie pris = B − 20 % av B = (1 - 0{,}20) \\cdot B = 0{,}80 \\cdot B.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Procent som multiplikator",
+        "text": "\"Sänker priset med p %\" multiplicerar med (1 - \\tfrac{p}{100}). 5 % sänkning → ×0,95. 25 % sänkning → ×0,75.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Räkna I (A:s nya pris)",
+        "text": "I = 0,95 · (A:s ordpris) = 0{,}95 \\cdot 0{,}80 \\cdot B.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Multiplicera ut",
+        "text": "0{,}95 \\cdot 0{,}80 = 0{,}76. Alltså I = 0{,}76 \\cdot B.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna II (B:s nya pris)",
+        "text": "II = 0{,}75 \\cdot B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Jämför koefficienterna",
+        "text": "Båda är multiplar av B (positivt). Jämförelsen reduceras till 0,76 mot 0,75.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "0,76 vs 0,75",
+        "text": "0,76 > 0,75. Skillnad 0,01.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Behövs B:s värde?",
+        "text": "Nej — eftersom båda kvantiteter är samma multipel av B (positivt), spelar B:s storlek ingen roll för rangordningen. Förutsatt B > 0 (det är ett pris) räcker koefficientjämförelsen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med ett konkret B",
+        "text": "Sätt B = 100 kr. I = 76 kr; II = 75 kr. 76 > 75 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Granska intuitionen",
+        "text": "Räkneresultat: en stor procentuell sänkning (25 %) från ett högt pris vinner inte alltid över en liten sänkning (5 %) från ett lägre pris — kolla multiplikatorn 0,80 · 0,95 mot 0,75.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: sammansatta procentsatser ska multipliceras, inte adderas — 20 % + 5 % = 25 % är fel; 0{,}80 \\cdot 0{,}95 = 0{,}76, inte 0,75.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att räkna 25 % rabatt på B = 0,75B och tro att A:s 5 % rabatt på 0,80B är mindre.",
+        "why_wrong": "Steg 5: 0,95 · 0,80 = 0,76 > 0,75; A:s priskedja vinner med liten marginal."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta att 5 % av lägre pris ≈ 25 % av högre.",
+        "why_wrong": "Steg 8: 0,76B − 0,75B = 0,01B; skillnad liten men strikt — inte likhet."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Det är frestande att tro att man behöver veta B.",
+        "why_wrong": "Steg 9: båda kvantiteter är samma multipel av B (positivt), så B faktoriseras ut och bara förhållandet 0,76 vs 0,75 betyder något."
+      }
+    ],
+    "technique": "Sammansatta procentsatser multipliceras: två efter varandra ger en multiplikator. Trigger: \"X % lägre + ytterligare Y % sänkning\". Räkna (1 − x/100) · (1 − y/100) och jämför mot motsvarande på andra sidan.",
+    "pitfall": "Botemedlet mot \"20 % + 5 % = 25 % sänkning\": procentsatser av OLIKA basvärden adderas inte. Använd multiplikatorer (0,80 · 0,95) — det är den enda rätta sammansättningen.",
+    "framework_id": "KVA-TRAP-025",
+    "pregrade_tactic": {
+      "handle": "Multiplikator-receptet",
+      "move": "Vid procentsänkningar i serie: omvandla varje sänkning till en multiplikator (1 − p/100) och multiplicera dem — jämför slutmultiplikatorerna mellan kvantiteterna."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
+  }
+}

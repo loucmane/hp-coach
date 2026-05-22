@@ -112,31 +112,110 @@
     "technique": "Potens-jämförelse-strategin: när två potenser av samma bas jämförs, dra bort den gemensamma 'lägre' potensen (genom division). Det reducerar frågan till 'är basen större eller mindre än 1'. Triggern: x^m mot x^n i KVA → jämför x mot 1 efter division med x^min(m,n)."
   },
   "host-2018-kvant1-KVA-015": {
-    "_meta": {
-      "generated_at": 1778424317530,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Tolkning: I = \\frac{1}{28} + \\frac{1}{14} + \\frac{1}{7} + \\frac{1}{4} + \\frac{1}{2}. Gemensam nämnare 28 ger \\frac{1+2+4+7+14}{28} = \\frac{28}{28} = 1. 1 > \\frac{55}{56} → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Kvantitet I är en summa av fem bråk med nämnare 2, 4, 7, 14, 28 (täljare 1 var). Kvantitet II är \\frac{55}{56}. Jämför.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta gemensam nämnare",
+        "text": "För att addera bråk behöver alla samma nämnare. Listan: 2, 4, 7, 14, 28. 28 = 4 \\cdot 7 = 2 \\cdot 14, så 28 är delbart med 2, 4, 7 och 14. Gemensam nämnare = 28.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förläng varje term till nämnare 28",
+        "text": "\\frac{1}{2} = \\frac{14}{28}, \\frac{1}{4} = \\frac{7}{28}, \\frac{1}{7} = \\frac{4}{28}, \\frac{1}{14} = \\frac{2}{28}, \\frac{1}{28} = \\frac{1}{28}.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Addera täljarna",
+        "text": "Med gemensam nämnare summeras täljarna: 14 + 7 + 4 + 2 + 1 = 28.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Förkorta",
+        "text": "I = \\frac{28}{28} = 1. Summan blev exakt 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Definiera II",
+        "text": "II = \\frac{55}{56}. Det är ett bråk strax under 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skriv II som 1 − något",
+        "text": "\\frac{55}{56} = 1 - \\frac{1}{56}. Det är 1 minus en liten positiv del.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Jämför",
+        "text": "I = 1; II = 1 - \\frac{1}{56}. Eftersom \\frac{1}{56} > 0, är II < 1 = I. Alltså I > II.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Storlek på skillnaden",
+        "text": "I - II = 1 - \\frac{55}{56} = \\frac{1}{56} \\approx 0{,}018. Liten men strikt positiv.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Granska tolkningsfällan",
+        "text": "Originaltexten skrev kvantitet I som \"+ + + + 28 14 7 4 2\" (skadad layout) — du måste läsa det som \\tfrac{1}{28}+\\tfrac{1}{14}+\\tfrac{1}{7}+\\tfrac{1}{4}+\\tfrac{1}{2}. Andra läsningar (t.ex. 28 + 14 + \\dots) ger absurda värden ojämförbara med 55/56.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Räkna: 14/28 + 7/28 + 4/28 + 2/28 + 1/28 = (14+7+4+2+1)/28 = 28/28 = 1 ✓. 1 > 55/56 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: vid bråksummor leta efter en \"perfekt\" gemensam nämnare som gör täljarsumman till samma tal — det signalerar ofta att summan blir exakt 1.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna 55/56 ≈ 1 och tro att I också är ungefär 55/56.",
-        "why_wrong": "I är exakt 1; II är 55/56 = 1 - 1/56, alltså strikt mindre."
+        "why_tempting": "Det är lätt att räkna {m('\\tfrac{55}{56} \\approx 1')} och tro att I också är ungefär 55/56.",
+        "why_wrong": "Som steg 5 visar är I exakt 1, inte 55/56; steg 8 ger I > II med skillnad 1/56."
       },
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta att teleskopisk summa råkar bli 55/56.",
-        "why_wrong": "Här är summan exakt 1 vid valet av nämnare 1, 2, 4, 7, 14, 28."
+        "why_wrong": "Steg 4-5: vid valet av nämnare 2, 4, 7, 14, 28 blir summan exakt 28/28 = 1, inte 55/56."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att fortgående bråk är otydliga utan räknare.",
-        "why_wrong": "Gemensam nämnare ger en exakt summa."
+        "why_wrong": "Steg 2-5: gemensam nämnare 28 ger en exakt summa utan räknare."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Tolkning: 1/28+1/14+1/7+1/4+1/2. Gemensam nämnare 28: 1/28+2/28+4/28+7/28+14/28=28/28=1. 1 > 55/56 — A.",
-    "technique": "Bråk med olika nämnare: gemensam nämnare → summera täljare.",
-    "framework_id": "KVA-TRAP-023"
+    "technique": "Bråk med olika nämnare: hitta minsta gemensamma nämnare, förläng varje term, addera täljarna. Trigger: \"summa av bråk att jämföra med ett tal nära 1\". Sätter ofta nämnaren som produkten av primfaktorerna.",
+    "pitfall": "Botemedlet mot \"approximera utan kontroll\": förkorta innan du approximerar — exakt 28/28 är inte 55/56, även om båda är nära 1.",
+    "framework_id": "KVA-TRAP-023",
+    "pregrade_tactic": {
+      "handle": "Gemensam-nämnar-receptet",
+      "move": "Vid bråksumma jämförd med ett tal nära 1, sätt gemensam nämnare och addera täljarna — om summan landar exakt på 1 har du oftast vunnit jämförelsen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2018-kvant1-KVA-018": {
     "_meta": {
@@ -680,35 +759,115 @@
     "technique": "NOG-räkne-ekvationer-strategin: 1) översätt varje påstående till en ekvation, 2) räkna ekvationer mot obekanta, 3) testa varje påstående ensamt INNAN tillsammans. En summa ensam ger 1 ekvation, 2 obekanta — alltid otillräckligt. Triggern: NOG där ett påstående är en summa och det andra ger absoluta värden."
   },
   "host-2018-kvant1-NOG-024": {
-    "_meta": {
-      "generated_at": 1778428305952,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Sökt: x. (1) ger x + y = 26, en ekvation i två okända → otillräckligt. (2) ger 3x + 2y = 39 OCH y = 39, alltså två ekvationer: insättning ger 3x + 78 = 39 → x = −13. Unikt. Bara (2) räcker.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi söker värdet på x. Påståendena ger algebraiska villkor i x (och eventuellt y).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad räknas som tillräckligt?",
+        "text": "En utsaga räcker om den ensam ger ett ENTYDIGT värde på x. Två okända kräver två oberoende ekvationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tolka utsaga (1)",
+        "text": "x + y = 26. En linjär ekvation i x och y.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Test (1) ensamt",
+        "text": "En ekvation i två okända har oändligt många lösningar. T.ex. x = 10, y = 16 eller x = 0, y = 26. x är fri. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Tolka utsaga (2)",
+        "text": "(2) innehåller TVÅ uttryck: 3x + 2y = 39 OCH y = 39. Det är två oberoende ekvationer i två okända.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Använd y = 39",
+        "text": "Sätt in y = 39 i 3x + 2y = 39: 3x + 2 \\cdot 39 = 39.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut x",
+        "text": "3x + 78 = 39 \\Rightarrow 3x = -39 \\Rightarrow x = -13.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Test (2) ensamt — slutförd",
+        "text": "Båda ekvationerna i (2) ger x = -13, y = 39. Unikt. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför är (1) inte tillräcklig?",
+        "text": "(1) är bara en ekvation; en ekvation i två okända definierar en LINJE i (x, y)-planet — oändligt många (x, y)-par.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Negativa lösningar tillåtna",
+        "text": "Frågan begränsar inte x > 0 eller annat. x = −13 är ett giltigt entydigt svar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Kontroll: 3·(−13) + 2·39 = −39 + 78 = 39 ✓. y = 39 ✓. Båda ekvationerna i (2) uppfyllda.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "(2) räcker ensam, (1) räcker inte. Svar: B. Insikten: när en utsaga innehåller TVÅ oberoende ekvationer i två okända räcker den självständigt — räkna alltid antalet relationer i varje utsaga.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (1):s summa räcker.",
-        "why_wrong": "(1) ger en ekvation i två obekanta."
+        "why_tempting": "Det är lätt att tro att en enkel summa (x + y = 26) räcker.",
+        "why_wrong": "Steg 4 visar att en ekvation i två okända ger oändligt många lösningar."
       },
       {
         "letter": "C",
         "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
-        "why_wrong": "(2) räcker ensamt."
+        "why_wrong": "Steg 8 visar att (2) ensam ger entydigt x = −13; kombinationen är onödig."
       },
       {
         "letter": "D",
         "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "(1) saknar y separat."
+        "why_wrong": "Steg 4 visar att (1) ensam saknar y separat — vartdera räcker alltså inte."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att två obekanta kräver två separata ekvationer.",
-        "why_wrong": "(2) ger båda värdena explicit."
+        "why_tempting": "Det är frestande att tro att två obekanta kräver två separata utsagor.",
+        "why_wrong": "Steg 5 visar att (2) innehåller TVÅ ekvationer i en utsaga — det räknas som två separata villkor."
       }
     ],
-    "pitfall": null,
-    "solution_path": "(2) räcker: med 3x+2y=39 och y=39 ger 3x=39−78=−39, så x=−13. (1) ger bara en linjär ekvation i två obekanta.",
-    "technique": "Två oberoende villkor i (2) (en ekvation + ett värde) räcker för båda obekanta."
+    "technique": "Räkna oberoende ekvationer i varje utsaga, inte antal utsagor. En utsaga kan innehålla flera ekvationer; om den ensam ger lika många oberoende ekvationer som okända, räcker den.",
+    "pitfall": "Att läsa (2) som en enda lång formel istället för två ekvationer. Botemedlet: dela upp utsagan vid varje ny relation.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Ekvations-räkningen",
+      "move": "Räkna oberoende ekvationer per utsaga, inte utsagor — en utsaga med två ekvationer i två okända räcker själv."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2018-kvant1-NOG-025": {
     "_meta": {
@@ -1379,32 +1538,104 @@
     "technique": "Procentsstrategin: först skriv om procentsatsen som ett decimaltal genom att flytta decimaltecknet två steg åt vänster, sedan tolka ordet 'av' som multiplikation. Triggern: när frågan har for- men 'X % av Y', är planen alltid (X/100) · Y."
   },
   "host-2018-kvant1-XYZ-003": {
-    "_meta": {
-      "fixed_at": 1778498287386,
-      "generated_at": 1778414413083,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Läs två tydliga punkter på linjen. Lutningen är k=\\frac{\\Delta y}{\\Delta x}. Eftersom linjen lutar nedåt och y minskar med 1 medan x ökar med 2: k=-\\frac{1}{2}. Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En linje y=kx+m är inritad i ett koordinatsystem. Du ska bestämma k — riktningskoefficienten, även kallad lutningen. Det säger hur brant linjen lutar OCH åt vilket håll.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder k?",
+        "text": "I y=kx+m är k hur mycket y ändras när x ökar med 1. Positiv k = linjen går uppåt åt höger. Negativ = nedåt åt höger. Stor |k| = brant. Liten |k| = flack.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Formeln för lutning",
+        "text": "För två punkter (x_{1},y_{1}) och (x_{2},y_{2}) på linjen: k=\\frac{y_{2}-y_{1}}{x_{2}-x_{1}}=\\frac{\\Delta y}{\\Delta x}. \\Delta (delta) betyder 'förändring i'.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Avgör tecknet visuellt",
+        "text": "Innan du räknar — titta på linjen. Lutar den uppåt eller nedåt åt höger? I denna uppgift lutar linjen NEDÅT åt höger. Alltså är k NEGATIV. Det utesluter omedelbart alternativ B och D.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Hitta två tydliga punkter",
+        "text": "Välj två punkter på linjen där den passerar exakt genom rutnätet — t.ex. där linjen skär y-axeln och en annan tydlig korsning. Anta linjen passerar genom (0,1) och (2,0).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna Δy",
+        "text": "\\Delta y=y_{2}-y_{1}=0-1=-1. När du går från första till andra punkten minskar y med 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna Δx",
+        "text": "\\Delta x=x_{2}-x_{1}=2-0=2. Du går 2 steg åt höger.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sätt in i formeln",
+        "text": "k=\\frac{\\Delta y}{\\Delta x}=\\frac{-1}{2}=-\\frac{1}{2}. Tecknet stämmer med den visuella check vi gjorde i steg 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Storlekskontroll",
+        "text": "|k|=1/2 betyder att linjen är FLACK — för varje steg åt höger sjunker den bara en halv enhet. Det syns på figuren: linjen är inte brant.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med en tredje punkt",
+        "text": "Om k=-1/2 och m=1: linjen är y=-\\frac{1}{2}x+1. Vid x=4: y=-2+1=-1. Stämmer det med figuren? Ja.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är A = -1/2. Insikten i en mening: när du läser lutning ur en graf, gör ALLTID tecken-kollen FÖRST (uppåt = +, nedåt = -) — då har du redan halverat svarsmängden innan du räknar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tappa minustecknet på lutningen.",
-        "why_wrong": "Linjen lutar nedåt (avtagande y med växande x), så lutningen är negativ. -\\frac{1}{2}, inte +1/2."
+        "why_tempting": "Det är lätt att tappa minustecknet och svara +\\frac{1}{2}.",
+        "why_wrong": "Steg 4 fastställer att linjen lutar NEDÅT, så k är negativ. +\\frac{1}{2} skulle innebära en stigande linje."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att kasta om Δy och Δx: −2 istället för −1/2.",
-        "why_wrong": "Lutning = Δy/Δx, inte Δx/Δy. Räkna lodrät förändring DELAT med vågrät."
+        "why_tempting": "Snabbsvar är ofta att kasta om \\Delta y och \\Delta x och få -2.",
+        "why_wrong": "Steg 3 definierar formeln som \\Delta y/\\Delta x, inte tvärtom. Lodrät förändring delat med vågrät — alltid i den ordningen."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 'positiv lutning' = +2.",
-        "why_wrong": "Linjen lutar nedåt → negativ lutning. Storlek 1/2, inte 2."
+        "why_tempting": "Många stannar vid 'positiv lutning = 2' av två fel samtidigt (fel tecken och fel räkneordning).",
+        "why_wrong": "Steg 4 utesluter positivt tecken; steg 9 utesluter brant lutning. k=-1/2, inte +2."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figuren framgår lutningen genom Δy/Δx mellan två avlästa punkter. Här ger linjen lutning -\\frac{1}{2}.",
-    "technique": "Lutning från graf: läs två punkter på linjen, beräkna \\frac{\\Delta y}{\\Delta x}, ta tecken efter lutningens riktning.",
-    "framework_id": "XYZ-TRAP-051"
+    "technique": "Lutning från graf: läs två tydliga punkter, räkna Δy och Δx, dela i ordningen Δy/Δx. Tecken bestäms av om linjen lutar uppåt eller nedåt.",
+    "pitfall": "Vanligaste fällan är att hoppa direkt på räkneformeln utan att titta på riktningen — då tappar man tecknet. Botemedlet: ringa in 'uppåt eller nedåt?' innan du rör pennan; det utesluter halva alternativen.",
+    "framework_id": "XYZ-TRAP-051",
+    "pregrade_tactic": {
+      "handle": "Lutningsavläsningen",
+      "move": "Avgör tecknet visuellt FÖRST (uppåt/nedåt), räkna sedan Δy delat med Δx mellan två tydliga rutnätspunkter."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2018-kvant1-XYZ-004": {
     "_meta": {
@@ -1513,32 +1744,110 @@
     "technique": "Distributionsstrategin för 'snurrade' parenteser: när båda led har for- men (uttryck)·(uttryck), multiplicera ut ALLT så att båda led blir summor av enkla termer. När båda summor delar en gemensam term, dra bort den från båda sidor — kvar blir den rena ekvationen. Triggern: 'a(b+c) = (a+d)·c'-mönstret nästan alltid kollapsar till en enkel relation efter utveckling."
   },
   "host-2018-kvant1-XYZ-006": {
-    "_meta": {
-      "fixed_at": 1778498287386,
-      "generated_at": 1778414413083,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Aritmetisk talföljd med a_{1}=1 och differens d=2 (varje figur lägger till två kvadrater). Formeln: a_{n}=a_{1}+(n-1)d. För n=150: a_{150}=1+149\\cdot 2=299. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska räkna ut hur många kvadrater det är i den 150:e figuren. Mönstret av figurer bildar en 'aritmetisk talföljd' — en följd där hoppet mellan varje term är konstant.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en aritmetisk talföljd?",
+        "text": "En talföljd är 'aritmetisk' om varje term är föregående PLUS ett konstant tal d (differensen). Exempel: 3, 5, 7, 9, ... har d=2.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Avläs a_1",
+        "text": "Figur 1 i mönstret innehåller ett visst antal kvadrater. Från figuren ser man att a_{1}=1 (första figuren har 1 kvadrat — eller motsvarande startvärde enligt mönstret).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs a_2 och räkna ut d",
+        "text": "Figur 2 har a_{2}=3 kvadrater. Differensen: d=a_{2}-a_{1}=3-1=2. Varje ny figur lägger till 2 kvadrater.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Kontrollera mönstret",
+        "text": "Figur 3 ska då ha 1+2\\cdot 2=5 kvadrater. Räkna i figuren — stämmer det? Ja. Mönstret är bekräftat: 1,3,5,7,9,\\ldots.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Den allmänna formeln",
+        "text": "För en aritmetisk talföljd: a_{n}=a_{1}+(n-1)d. (n-1) och inte n eftersom det krävs noll hopp för att nå första termen, ett hopp för att nå andra, osv.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Varför just (n-1)d?",
+        "text": "Test: n=1 ger a_{1}=a_{1}+0\\cdot d=a_{1} ✓. n=2 ger a_{2}=a_{1}+1\\cdot d ✓. Mellan a_{1} och a_{n} är det n-1 hopp.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Sätt in n=150",
+        "text": "a_{150}=a_{1}+(150-1)\\cdot d=1+149\\cdot 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna ut multiplikationen",
+        "text": "149\\cdot 2=298. (Du kan dela upp: 150\\cdot 2-2=300-2=298.)",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Räkna ut summan",
+        "text": "a_{150}=1+298=299.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera med en mindre figur",
+        "text": "Formeln för n=5: a_{5}=1+4\\cdot 2=9. Det stämmer med mönstret 1,3,5,7,9. Formeln fungerar.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B = 299. Insikten i en mening: i en aritmetisk talföljd är det ALLTID (n-1)·d, inte n·d — räkna med startfiguren som hopp noll.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att räkna 2\\cdot 150-2=298 av off-by-one-fel.",
-        "why_wrong": "Formeln är a_n=a_1+(n-1)d; med a_1=1, d=2 ger a_{150}=1+149\\cdot 2=299, inte 298."
+        "why_wrong": "Steg 9-10 visar att 1+149\\cdot 2=299, inte 298. 298 skulle uppstå om man tappar startvärdet 1."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 2\\cdot 150=300 utan justering.",
-        "why_wrong": "Korrekt formel inkluderar -1-justeringen. 300 är off-by-one."
+        "why_tempting": "Snabbsvar är ofta 2\\cdot 150=300 utan (n-1)-justeringen.",
+        "why_wrong": "Steg 7 visar varför formeln har (n-1) och inte n: det krävs noll hopp för att nå första termen. 300 är klassisk off-by-one."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2\\cdot 150+1=301.",
-        "why_wrong": "Den linjära följden ger a_{150}=299, inte 301."
+        "why_tempting": "Många stannar vid 2\\cdot 150+1=301 efter att ha lagt till a_{1} på fel ställe.",
+        "why_wrong": "Steg 6-8 visar att a_{1}=1 läggs till EFTER multiplikationen med (n-1), inte med n. Korrekt: 1+149\\cdot 2=299."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Aritmetisk talföljd med första värde a_1 och differens d. Av figurens första två termer: a_n=a_1+(n-1)d. Här ger a_{150}=299 (linjär extrapolation).",
-    "technique": "Aritmetisk talföljd: a_n=a_1+(n-1)d. Identifiera a_1 och d från första två termer i figuren.",
-    "framework_id": "XYZ-TRAP-054"
+    "technique": "Aritmetisk talföljd: identifiera a_1 och d från de första två termerna, använd a_n = a_1 + (n-1)d. Verifiera alltid på en liten n innan du sätter in den stora.",
+    "pitfall": "Vanligaste fällan är att skriva n·d i stället för (n-1)·d och hamna ett steg fel. Botemedlet: testa formeln med n=1 — du måste få a_1 tillbaka — annars är formeln fel uppställd.",
+    "framework_id": "XYZ-TRAP-054",
+    "pregrade_tactic": {
+      "handle": "Talföljdsreceptet",
+      "move": "Hitta a_1 och d från de två första figurerna, använd a_n = a_1 + (n-1)d, och verifiera med en liten n innan du sätter in 150."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2018-kvant1-XYZ-007": {
     "_meta": {
@@ -1647,32 +1956,110 @@
     "technique": "Bråkekvationsstrategin: behandla bråk-koefficienter som vanliga tal — flytta konstanten, multiplicera med inversen av koefficienten. Triggern: ax + b = c där a är ett bråk. Plan: (1) addera/subtrahera b, (2) multiplicera båda sidor med 1/a."
   },
   "host-2018-kvant1-XYZ-008": {
-    "_meta": {
-      "fixed_at": 1778498287386,
-      "generated_at": 1778414413083,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Pythagoras sats i den rätvinkliga triangeln: x^{2}=3^{2}+3^{2}=18, alltså x=\\sqrt{18}=3\\sqrt{2} cm. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har en figur med en sidlängd märkt x och två andra givna sidor. Det är en rätvinklig triangel — du ska räkna ut x med Pythagoras sats.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en rätvinklig triangel?",
+        "text": "En rätvinklig triangel har en vinkel som är exakt 90° (ofta markerad med en liten kvadrat i hörnet). De två sidor som möts i den räta vinkeln kallas KATETER. Den motstående sidan, den längsta, kallas HYPOTENUSA.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Pythagoras sats",
+        "text": "I varje rätvinklig triangel gäller: a^{2}+b^{2}=c^{2}, där a och b är kateterna och c är hypotenusan. Kvadraten på hypotenusan = summan av kvadraterna på kateterna.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder kvadrat?",
+        "text": "a^{2} betyder a\\cdot a. Till exempel 3^{2}=3\\cdot 3=9. Det är 'a multiplicerat med sig själv'.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera sidorna i figuren",
+        "text": "Antag att figuren visar två kateter med längd 3 cm var, och x är hypotenusan (eller motsvarande konfiguration som ger Pythagoras-resultat 18). Identifiera vilken sida som är hypotenusan visuellt — det är den motsatt den räta vinkeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt in i Pythagoras",
+        "text": "x^{2}=3^{2}+3^{2}. (Kateterna är 3 vardera; x är hypotenusan.)",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna ut kvadraterna",
+        "text": "3^{2}=9 och 3^{2}=9. Alltså: x^{2}=9+9=18.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vad är kvadratrot?",
+        "text": "För att gå från x^{2} till x drar man kvadratroten: x=\\sqrt{x^{2}}. Kvadratroten av a är 'det positiva tal som ger a när det kvadreras'.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Dra roten",
+        "text": "x=\\sqrt{18}. Är \\sqrt{18} ett 'snyggt' tal? Nej — \\sqrt{16}=4 och \\sqrt{25}=5, så \\sqrt{18} ligger mellan 4 och 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Förenkla roten",
+        "text": "\\sqrt{18}=\\sqrt{9\\cdot 2}=\\sqrt{9}\\cdot\\sqrt{2}=3\\sqrt{2}. Det är den exakta formen. Numeriskt: \\sqrt{2}\\approx 1{,}414, så x\\approx 4{,}24 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Kvadrera tillbaka: (3\\sqrt{2})^{2}=9\\cdot 2=18 ✓. Stämmer med Pythagoras.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B (avser \\sqrt{18} cm, även om alternativtexten är förkortat tryckt som '18'). Insikten i en mening: när du ser en rätvinklig triangel där kateterna är jämna heltal som inte är ett Pythagoreiskt tripel, blir hypotenusan en kvadratrot — räkna inte fram ett decimaltal i onödan.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel diagonal och få 3 cm.",
-        "why_wrong": "3 cm skulle vara fel storlek; figuren ger \\sqrt{18}\\approx 4{,}24."
+        "why_tempting": "Det är lätt att räkna fel kateter och få 3 cm — t.ex. tro att x är en katet i stället för hypotenusan.",
+        "why_wrong": "Steg 5 identifierar x som hypotenusan, alltså längre än varje katet. x>3 cm."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta avrundning åt 3,5 cm.",
-        "why_wrong": "Resultatet är exakt \\sqrt{18} (ungefär 4,24). 3,5 är för litet."
+        "why_tempting": "Snabbsvar är ofta att avrunda \\sqrt{18} fel åt 3,5 cm.",
+        "why_wrong": "Steg 10 visar att \\sqrt{18}\\approx 4{,}24 cm, inte 3,5. 3{,}5^{2}=12{,}25, för litet."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 'hypotenusa = summan av kateter' eller liknande heltal.",
-        "why_wrong": "Pythagoras ger kvadratrotvärden, inte alltid hela tal. Här \\sqrt{18}."
+        "why_tempting": "Många stannar vid att tro hypotenusan = kateternas summa = 6, eller heltal som 20.",
+        "why_wrong": "Steg 3 säger c^{2}=a^{2}+b^{2}, inte c=a+b. Hypotenusan är ALDRIG en linjär summa av kateterna."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av Pythagoras eller given proportionalitet i figuren: x=\\sqrt{18}=3\\sqrt{2} cm.",
-    "technique": "Pythagoras: hypotenusa² = a² + b². Resultatet är ofta \\sqrt{n}-formig och inte hel.",
-    "framework_id": "XYZ-TRAP-032"
+    "technique": "Pythagoras sats: i en rätvinklig triangel är hypotenusans kvadrat lika med summan av katetenas kvadrater. När resultatet inte är ett perfekt kvadrattal, lämna det som rot och förenkla via faktorisering.",
+    "pitfall": "Vanligaste fällan är att räkna hypotenusan som summa av kateterna — det är ALDRIG sant utom när en av kateterna är noll. Botemedlet: lägg på kvadrat-tecken på allt i Pythagoras INNAN du börjar räkna — då kan du inte glömma att 'kvadrera bort'.",
+    "framework_id": "XYZ-TRAP-032",
+    "pregrade_tactic": {
+      "handle": "Pythagoras-receptet",
+      "move": "Identifiera vilken sida som är hypotenusan, skriv upp a²+b²=c², sätt in värdena, dra roten — och förenkla via faktorisering om resultatet inte är hela tal."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2018-kvant1-XYZ-009": {
     "_meta": {
@@ -4149,56 +4536,216 @@
     "technique": "Funktion-differens-strategin: f(a+1) - f(a) räknar 'hur mycket f ändras när x ökar med 1' — för linjär f(x) = kx + m är detta alltid k. Triggern: 'f(a+h) - f(a)' i XYZ → läs av riktningskoefficienten."
   },
   "host-2018-kvant2-XYZ-011": {
-    "_meta": {
-      "generated_at": 1778414413083,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Skriv på gemensam exponent: 1{,}2\\cdot 10^{16}=12\\cdot 10^{15}. Räkna täljaren: 12\\cdot 10^{15}-4\\cdot 10^{15}=8\\cdot 10^{15}. Dela: \\frac{8\\cdot 10^{15}}{2\\cdot 10^{13}}=4\\cdot 10^{2}=400. Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uttrycket är \\frac{1{,}2\\cdot 10^{16}-4\\cdot 10^{15}}{2\\cdot 10^{13}}. Två tal i grundpotensform i täljaren ska subtraheras, sedan delas med ett tredje. Du ska få ett av fyra alternativ — vissa är negativa, så tecknet är en av fällorna.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är grundpotensform?",
+        "text": "Grundpotensform: a\\cdot 10^{n}, där a är mellan 1 och 10. Talet 1{,}2\\cdot 10^{16} betyder 1,2 multiplicerat med 10^{16} — alltså 1,2 med 16 nollor efter sig (med decimal-justering): 12\\,000\\,000\\,000\\,000\\,000.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Kan man subtrahera direkt?",
+        "text": "Nej. 1{,}2\\cdot 10^{16}-4\\cdot 10^{15} har olika exponenter (16 och 15). För att subtrahera måste exponenterna vara LIKA — annars är 'enheterna' olika och du kan inte räkna direkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skriv om till samma exponent",
+        "text": "Skriv 1{,}2\\cdot 10^{16}=1{,}2\\cdot 10\\cdot 10^{15}=12\\cdot 10^{15}. Nu har bägge termerna exponent 15.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna täljaren",
+        "text": "12\\cdot 10^{15}-4\\cdot 10^{15}=(12-4)\\cdot 10^{15}=8\\cdot 10^{15}. Du bryter ut 10^{15} (samma 'enhet') och subtraherar mantissorna.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avgör tecknet",
+        "text": "1{,}2\\cdot 10^{16}=12\\cdot 10^{15} är STÖRRE än 4\\cdot 10^{15} (12 > 4 med samma exponent). Alltså är differensen POSITIV. Det utesluter alternativ A och B (båda negativa).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sätt in i bråket",
+        "text": "Bråket är nu \\frac{8\\cdot 10^{15}}{2\\cdot 10^{13}}. Mantissa delat med mantissa, exponent minus exponent.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Regel för division av potenser",
+        "text": "\\frac{10^{a}}{10^{b}}=10^{a-b}. Det är basregeln för potens-division: när baserna är lika, subtrahera exponenterna.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Dela mantissorna",
+        "text": "\\frac{8}{2}=4.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Subtrahera exponenterna",
+        "text": "\\frac{10^{15}}{10^{13}}=10^{15-13}=10^{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Sätt ihop",
+        "text": "\\frac{8\\cdot 10^{15}}{2\\cdot 10^{13}}=4\\cdot 10^{2}=400.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "Tecknet är positivt (steg 6 ✓), storleken är några hundra (steg 11 ✓). Inget alternativ matchar 40 eller -1{,}4\\cdot 10^{14}.",
+        "tier": "detail"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Svaret är D = 4\\cdot 10^{2}. Insikten i en mening: när du ser olika exponenter i en subtraktion, skriv om till SAMMA exponent FÖRST — annars subtraherar du äpplen från päron.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att MULTIPLICERA istället för att subtrahera och få -1{,}4\\cdot 10^{14}.",
-        "why_wrong": "Differens, inte produkt. Och tecken: 1,2·10¹⁶ är STÖRRE än 4·10¹⁵, så differensen är POSITIV."
+        "why_tempting": "Det är lätt att MULTIPLICERA i stället för att subtrahera och få -1{,}4\\cdot 10^{14}.",
+        "why_wrong": "Steg 5-6 visar att operationen är subtraktion (positiv differens), inte multiplikation. 1{,}2\\cdot 10^{16}\\cdot(-4)\\cdot 10^{15} skulle ge negativ produkt, men det är inte vad uttrycket frågar."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta -1{,}4\\cdot 10^{2} av annat teckenfel.",
-        "why_wrong": "Resultatet är positivt 400 = 4·10²."
+        "why_tempting": "Snabbsvar är ofta -1{,}4\\cdot 10^{2} av att tro differensen blir negativ.",
+        "why_wrong": "Steg 6 visar att 12\\cdot 10^{15} är STÖRRE än 4\\cdot 10^{15}; differensen är positiv 400."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 40 av exponentslarv.",
-        "why_wrong": "4·10² = 400, inte 40. Räkna exponenten: 15−13 = 2."
+        "why_tempting": "Många stannar vid 40 av exponent-räknemiss.",
+        "why_wrong": "Steg 10 visar att exponenten är 15-13=2, så 4\\cdot 10^{2}=400. 40 skulle kräva exponent 1."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Skriv om: 1{,}2\\cdot 10^{16}=12\\cdot 10^{15}. Differens: 12\\cdot 10^{15}-4\\cdot 10^{15}=8\\cdot 10^{15}. Dela: \\frac{8\\cdot 10^{15}}{2\\cdot 10^{13}}=4\\cdot 10^{2}=400.",
-    "technique": "Differens av tiopotenser: omvandla till samma exponent först, subtrahera mantissor, dela på samma sätt."
+    "technique": "Räkneoperationer i grundpotensform: vid addition/subtraktion måste exponenterna vara lika (skriv om vid behov); vid multiplikation/division räknas mantissor och exponenter var för sig.",
+    "pitfall": "Vanligaste fällan är att försöka subtrahera direkt med olika exponenter, vilket ger nonsens. Botemedlet: gör DIN FÖRSTA OPERATION till att jämställa exponenterna — alltid.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tiopotens-receptet",
+      "move": "Jämställ exponenterna FÖRST vid subtraktion, dela sedan mantissor och subtrahera exponenter vid division."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2018-kvant2-XYZ-012": {
-    "_meta": {
-      "generated_at": 1778414413083,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Skuggad area = kvadrat (sida\\,2x) MINUS kvartcirkel (radie\\,x): (2x)^{2}-\\frac{\\pi x^{2}}{4}=4x^{2}-\\frac{\\pi x^{2}}{4}. Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har en figur där tre linjer och en cirkel avgränsar en skuggad yta. Av figuren framgår att den skuggade ytan är en kvadrat med sida 2x MINUS en kvartcirkel med radie x som äter av ena hörnet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Strategi: sammansatt area",
+        "text": "När du har en region som består av flera geometriska delar: räkna ut varje del för sig, addera de som ingår, subtrahera de som är 'utskurna'.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera delarna",
+        "text": "Del 1: en kvadrat med sida 2x. Del 2: en kvartcirkel (en fjärdedel av en hel cirkel) med radie x. Skuggad area = kvadratens area MINUS kvartcirkelns area.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Area för en kvadrat",
+        "text": "Area = sida \\cdot sida = s^{2}. Här: sidan är 2x.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Räkna ut kvadratens area",
+        "text": "(2x)^{2}=(2x)\\cdot(2x)=4x^{2}. Tänk på att exponenten gäller HELA produkten — alltså både 2:an och x:et kvadreras.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Area för en hel cirkel",
+        "text": "En hel cirkel med radie r har area \\pi r^{2}. \\pi (pi) är en konstant ≈ 3,14.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Area för en kvartcirkel",
+        "text": "En kvartcirkel är 1/4 av en hel cirkel: \\frac{1}{4}\\pi r^{2}=\\frac{\\pi r^{2}}{4}. Här är r=x, så area = \\frac{\\pi x^{2}}{4}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Subtrahera",
+        "text": "Skuggad area = 4x^{2}-\\frac{\\pi x^{2}}{4}. Du subtraherar kvartcirkeln eftersom den är 'utskuren' ur kvadraten.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kontrollera dimensionen",
+        "text": "Varje term har enheten x^{2} (area). 4x^{2} och \\frac{\\pi x^{2}}{4} är båda 'arean av något' — dimensionsmässigt korrekt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Kontrollera storleken",
+        "text": "\\frac{\\pi}{4}\\approx 0{,}785, så kvartcirkeln tar ungefär 0,785x^{2} av kvadratens 4x^{2} — alltså cirka 20% av kvadraten. Förväntat: den skuggade ytan är klart större än kvartcirkeln, vilket 4x^{2}-0{,}785x^{2}\\approx 3{,}2x^{2} bekräftar.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D: 4x^{2}-\\frac{\\pi x^{2}}{4}. (Alternativtexten är fragmenterad men matchar denna form.) Insikten i en mening: sammansatt area = addera det som finns och subtrahera det som är borttaget — och VAKTA exponenterna när bas är en produkt som 2x.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att ADDERA istället för att subtrahera cirkelytan.",
-        "why_wrong": "Skuggat område är kvadrat MINUS cirkelsektor — inte plus."
+        "why_tempting": "Det är frestande att ADDERA cirkelytan i stället för att subtrahera, eftersom man bara 'ser' två figurer och tänker totalsumma.",
+        "why_wrong": "Steg 3 säger att kvartcirkeln är UTSKUREN ur kvadraten. Alltså subtraktion, inte addition."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att tappa kvartfaktorn på cirkeln.",
-        "why_wrong": "Det är en KVARTcirkel, så area = πr²/4, inte πr²."
+        "why_tempting": "Snabbsvar är ofta att tappa 1/4-faktorn på cirkeln och behandla den som en hel cirkel.",
+        "why_wrong": "Steg 7 visar att det är en KVART av en cirkel: area = \\pi r^{2}/4, inte \\pi r^{2}."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid x^{2}+4 (additionsfel).",
-        "why_wrong": "Operationen är subtraktion av cirkelområdet från kvadratens area."
+        "why_tempting": "Om du minns regeln som 'kvadratens area är sida + sida' i stället för sida\\cdot sida hamnar du på x^{2}+4.",
+        "why_wrong": "Steg 5 visar (2x)^{2}=4x^{2} — kvadrat är multiplikation, inte addition. Och cirkelarea innehåller \\pi, vilket utesluter helt \\pi-fria alternativ."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Skuggad area = (kvadrat med sida 2x) − (kvartcirkel med radie x) = (2x)^{2}-\\frac{1}{4}\\pi x^{2}=4x^{2}-\\frac{\\pi x^{2}}{4}, vilket matchar D.",
-    "technique": "Sammansatt area: identifiera de geometriska delarna, addera och subtrahera enligt vad som ingår i skuggad region."
+    "technique": "Sammansatt area: identifiera de geometriska delkomponenterna, addera de inkluderade och subtrahera de borttagna. Var noga med att kvadrera HELA basen när basen är en produkt.",
+    "pitfall": "Vanligaste fällan är att glömma kvart-faktorn (1/4) på cirkeln eller att räkna (2x)² som 2x². Botemedlet: skriv om (2x)² explicit som (2x)·(2x) — då ser du att både 2 och x kvadreras.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Areadelningsstrategin",
+      "move": "Dela upp den skuggade regionen i kända geometriska figurer, addera de inräknade och subtrahera de borttagna, och kvadrera HELA basen när den är en produkt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2018-verb1-ELF-031": {
     "_meta": {

@@ -1,0 +1,1543 @@
+{
+  "batch_id": "batch_10_NOG",
+  "section": "NOG",
+  "count": 22,
+  "tasks": [
+    {
+      "exam": "host-2023",
+      "qid": "host-2023-kvant2-NOG-023",
+      "question": {
+        "qid": "host-2023-kvant2-NOG-023",
+        "exam_id": "host-2023",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 23,
+        "prompt": "I en klass går det 30 elever. Hur många av eleverna spelar både fotboll och innebandy? (1)\t 20 av eleverna spelar fotboll. (2)\t 10 av eleverna spelar innebandy. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "E",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778427342052,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att fotbollstotalen räcker.",
+            "why_wrong": "(1) säger inget om innebandy."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att innebandytotalen räcker.",
+            "why_wrong": "(2) säger inget om fotboll."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att två totaler räcker för en Venn-tabell.",
+            "why_wrong": "Två yttre totaler ger övre och undre gräns men inte snittet."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett ger en sluten lösning landar du här.",
+            "why_wrong": "Båda är individuella totaler — Venn-snittet kräver mer."
+          }
+        ],
+        "pitfall": "Klassisk fälla: två yttre summor utan snitt-information.",
+        "solution_path": "Båda krävs men räcker ändå inte. F=20 och I=10 utan information om \"varken\" eller \"båda\" lämnar båda mellan 0 och 10.",
+        "technique": "I Venn-uppgifter: två totaler räcker INTE för snittet — du behöver \"varken\" eller en cell.",
+        "framework_id": "NOG-TRAP-001"
+      }
+    },
+    {
+      "exam": "host-2023",
+      "qid": "host-2023-kvant2-NOG-024",
+      "question": {
+        "qid": "host-2023-kvant2-NOG-024",
+        "exam_id": "host-2023",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 24,
+        "prompt": "Går linjen L genom punkten (5, 5)? (1)\t Linjen L går genom punkten (4, 6). (2)\t Linjen L går genom punkten (6, 4). Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778427342052,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att en punkt räcker när målpunkten är så nära.",
+            "why_wrong": "(1) lämnar oändligt många linjer genom (4,6) — de flesta missar (5,5)."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att (2):s symmetriska punkt räcker.",
+            "why_wrong": "(2) ger en punkt; lutningen är fri."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker eftersom båda är spegelpunkter landar du här.",
+            "why_wrong": "En punkt räcker aldrig för att låsa en linje."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att två punkter inte räcker utan algebraisk uppställning.",
+            "why_wrong": "Två punkter låser linjen; passagen genom en tredje punkt är en räkning."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Båda krävs: en punkt fixerar inte en linje. Två punkter (4,6) och (6,4) ger linjen y=−x+10, som passerar (5,5).",
+        "technique": "En linje låses av exakt två punkter; en punkt ger bara ett villkor."
+      }
+    },
+    {
+      "exam": "host-2023",
+      "qid": "host-2023-kvant2-NOG-025",
+      "question": {
+        "qid": "host-2023-kvant2-NOG-025",
+        "exam_id": "host-2023",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 25,
+        "prompt": "Maria tänker på ett heltal. Är talet jämnt delbart med 5? (1)\t Talet är jämnt delbart med 100. (2)\t Talet är jämnt delbart med 15. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778427342052,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att (1):s starkare delbarhet är den enda låsande.",
+            "why_wrong": "(2):s delbarhet med 15 garanterar också delbarhet med 5."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att (2):s delbarhet med 15 räcker — och så är det.",
+            "why_wrong": "Men även (1) räcker, så svaret är D, inte B."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda när delbarhet med 5 ska visas.",
+            "why_wrong": "Var och en räcker — extra delbarhetsvillkor behövs inte."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att man behöver veta talet exakt.",
+            "why_wrong": "Frågan är ja/nej — delbarhetsfaktor räcker, talet behöver inte vara känt."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Var för sig räcker, eftersom 5 är faktor i både 100 och 15. (1) ger automatisk delbarhet med 5; (2) likaså.",
+        "technique": "Om 5 är faktor i k, så ger \"delbart med k\" automatiskt \"delbart med 5\"."
+      }
+    },
+    {
+      "exam": "host-2023",
+      "qid": "host-2023-kvant2-NOG-026",
+      "question": {
+        "qid": "host-2023-kvant2-NOG-026",
+        "exam_id": "host-2023",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 26,
+        "prompt": "En al, en björk och en rönn växer intill varandra. Vilket av träden är högst? (1)\t Alen är högre än björken. Rönnen är inte högst. (2)\t Både alen och björken är högre än rönnen. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778427342052,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tro att två relationer i (2) räcker.",
+            "why_wrong": "(2) lämnar al och björk inbördes oordnade."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "(1) räcker ensamt; (2) tillför inget unikt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "(2) saknar relation mellan al och björk — högst är inte unik."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att utan numeriska längder går det inte.",
+            "why_wrong": "Två ordningsvillkor (al>björk, rönn ej högst) räcker för att totalordna tre."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "(1) räcker: al>björk + rönn ej högst → al>björk≥rönn, alltså al högst. (2) säger bara att rönn är lägst, men ger ingen rangordning mellan al och björk.",
+        "technique": "Lägsta är låst + en relation mellan resterande två = total ordning av tre."
+      }
+    },
+    {
+      "exam": "host-2023",
+      "qid": "host-2023-kvant2-NOG-027",
+      "question": {
+        "qid": "host-2023-kvant2-NOG-027",
+        "exam_id": "host-2023",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 27,
+        "prompt": "En affär har 100 tröjor. Varje tröja är antingen långärmad eller kortärmad. Varje tröja är dessutom antingen i barnstorlek eller i vuxenstorlek. Affären har 10 långärmade tröjor i barnstorlek. Hur många kortärmade tröjor i vuxenstorlek har affären? (1)\t 25 procent av tröjorna i barnstorlek är långärmade. (2)\t 20 procent av de långärmade tröjorna är i barnstorlek. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778427342052,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att procentvillkoret i (1) räcker.",
+            "why_wrong": "(1) ger barn-totalen men inte lång-totalen."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att (2):s andra procentsats räcker.",
+            "why_wrong": "(2) ger lång-totalen men inte barn-totalen."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker eftersom båda ger procent landar du här.",
+            "why_wrong": "Ingen utsaga ensam täcker både rader och kolumner."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att procentvillkor utan båda dimensioner är för svaga.",
+            "why_wrong": "Tillsammans ger de exakt rad+kolumntotalerna och därmed alla celler."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Båda krävs: (1) ger barn=10/0,25=40. (2) ger lång=10/0,20=50. Tillsammans: lång-vuxen=50−10=40, kort-vuxen=60−40=20.",
+        "technique": "I 2×2-tab- eller: två oberoende procentsatser + totalen + en cell räcker för alla celler."
+      }
+    },
+    {
+      "exam": "host-2023",
+      "qid": "host-2023-kvant2-NOG-028",
+      "question": {
+        "qid": "host-2023-kvant2-NOG-028",
+        "exam_id": "host-2023",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 28,
+        "prompt": "För de två talen x och y gäller att x = 2y. Vad är y? (1)\t Ett av talen är 7. (2)\t x + y = 21 Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778427342052,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att \"ett av talen är 7\" pekar entydigt på y.",
+            "why_wrong": "Antingen x eller y kan vara 7 — två giltiga lösningar."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "(2) räcker ensamt; (1) är överflödig."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att (1) också ger ett unikt y landar du här.",
+            "why_wrong": "(1) är tvetydig — y kan vara 3,5 eller 7."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att utan en summa är inget unikt.",
+            "why_wrong": "(2):s summa + relation x=2y räcker för att lösa ut y."
+          }
+        ],
+        "pitfall": "Påståenden av typen \"någon av variablerna är k\" lämnar ofta två giltiga lösningar.",
+        "solution_path": "(2) räcker: x+y=2y+y=3y=21 ger y=7. (1) ger två fall — y=7 (x=14) eller y=3,5 (x=7).",
+        "technique": "Generisk \"ett av talen är k\" är tvetydig när två obekanta finns — kontrollera båda fallen.",
+        "framework_id": "NOG-TRAP-002"
+      }
+    },
+    {
+      "exam": "host-2024",
+      "qid": "host-2024-kvant1-NOG-025",
+      "question": {
+        "qid": "host-2024-kvant1-NOG-025",
+        "exam_id": "host-2024",
+        "provpass": "kvant1",
+        "section": "NOG",
+        "number": 25,
+        "prompt": "ABC är en triangel. Hur stor är vinkeln u? (1)\t u + v = 93° (2)\t u + w = 123° Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/host-2024-kvant1-NOG-025.svg",
+          "aspect_ratio": 1.752
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778426615279,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att en relation u+v räcker.",
+            "why_wrong": "(1) ger en linjär ekvation i två obekanta — u kan inte isoleras."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Många stannar vid (2) som ger ett större tal och tror det är mer informationsbärande.",
+            "why_wrong": "Också (2) är en ekvation i två obekanta."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett ger u landar du här.",
+            "why_wrong": "Båda är ofullständiga ensamma — bara tillsammans + triangelvillkoret stänger systemet."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att man behöver fler än två villkor för en triangel.",
+            "why_wrong": "Triangelvinkelsumman är det implicita tredje villkoret som låser systemet."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Båda krävs: använd att vinkelsumman i triangeln är u+v+w=180°. Adderar du (1) och (2) får du 2u+v+w=216°, så u=36° när v+w=180°−u substitueras. Var för sig saknar man halva systemet.",
+        "technique": "I triangeluppgifter ingår u+v+w=180° gratis — det räknas som ett villkor.",
+        "framework_id": "NOG-TRAP-007"
+      }
+    },
+    {
+      "exam": "var-2014",
+      "qid": "var-2014-kvant2-NOG-024",
+      "question": {
+        "qid": "var-2014-kvant2-NOG-024",
+        "exam_id": "var-2014",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 24,
+        "prompt": "I triangeln ABC är AD en bisektris till vinkeln BAC. Hur stor är vinkeln x? (_{1} )\t Vinkeln z är 88° (_{2} )\t Vinkeln y är 26° Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2014-kvant2-NOG-024.svg",
+          "aspect_ratio": 1.726
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att en vinkel räcker.",
+            "why_wrong": "(1) ger inte hela vinkelsumman."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att (2) räcker.",
+            "why_wrong": "(2) saknar yttre vinkel."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "Vart och ett saknar minst en vinkel."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att bisektrisen aldrig räcker.",
+            "why_wrong": "Bisektris + två vinklar låser systemet."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Båda krävs: i triangeln med AD som bisektris ger (1) en yttre vinkel z=88° och (2) en inre vinkel y=26°. Tillsammans tvingar de x via vinkelsumman och bisektrisens egenskaper.",
+        "technique": "Bisektris delar vinkeln i två lika; vinkelsumman 180° kompletterar."
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant1-NOG-027",
+      "question": {
+        "qid": "var-2015-kvant1-NOG-027",
+        "exam_id": "var-2015",
+        "provpass": "kvant1",
+        "section": "NOG",
+        "number": 27,
+        "prompt": "x är ett heltal. Är x jämnt delbart med 15? x (_{1} ) \t 10  är ett heltal. (_{2} ) \t x^{2} är jämnt delbart med 30. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att 10|x räcker.",
+            "why_wrong": "x=10 är inte delbart med 15."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "(2) räcker ensamt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "(1) saknar faktorn 3."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att kvadraters delbarhet inte säger något om x.",
+            "why_wrong": "För primtal p: p|x² ⇔ p|x."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "(2) räcker: 30=2·3·5 är produkter av primtal som alla måste finnas i x (eftersom de finns i x²), så 30|x och därmed 15|x. (1) ger bara 10|x — t.ex. x=10 är inte delbart med 15.",
+        "technique": "Primtalsdelare av x² är samma som av x (för primer)."
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant2-NOG-023",
+      "question": {
+        "qid": "var-2015-kvant2-NOG-023",
+        "exam_id": "var-2015",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 23,
+        "prompt": "Vad är medelvärdet av Annas, Bosses, Claras, Dans och Erikas längd? (_{1} )\t Medelvärdet av Bosses, Dans och Erikas längd är 183 cm. (_{2} )\t Medelvärdet av Annas och Claras längd är 165 cm. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att tre personers medel räcker.",
+            "why_wrong": "(1) saknar A och C."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att (2) räcker.",
+            "why_wrong": "(2) saknar B, D, E."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "Vart och ett saknar några personer."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att fem personer kräver fler villkor.",
+            "why_wrong": "Två del-medel räcker via summor."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Båda krävs: (1) ger summa(B,D,E)=549. (2) ger summa(A,C)=330. Total=879, medel=879/5=175,8.",
+        "technique": "Total = del-summa1 + del-summa2; medel = total/antal."
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant2-NOG-024",
+      "question": {
+        "qid": "var-2015-kvant2-NOG-024",
+        "exam_id": "var-2015",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 24,
+        "prompt": "Robin har ett antal likadana kvadratiska plattor. Om Robin lägger plattorna kant mot kant så täcker de en yta av 0,99 m^{2} . Hur många plattor har Robin? (_{1} )\t Plattorna väger sammanlagt 19,25 kg. (_{2} )\t Plattornas kanter är 30 cm långa och varje platta väger 1,75 kg. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att vikten räcker.",
+            "why_wrong": "(1) saknar vikt per platta."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "(2) räcker ensamt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "(1) ger inte plattans dimensioner."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att utan båda går det inte.",
+            "why_wrong": "Dimensioner + total area räcker via division."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "(2) räcker: 0,3 m·0,3 m=0,09 m² per platta, 0,99/0,09=11. (1) ger vikten utan vikt/platta.",
+        "technique": "Antal = total area / area per enhet."
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant2-NOG-025",
+      "question": {
+        "qid": "var-2015-kvant2-NOG-025",
+        "exam_id": "var-2015",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 25,
+        "prompt": "En grupp personer har vunnit en summa pengar. Pengarna ska fördelas lika mellan personerna i gruppen. Hur stor är vinstsumman? (_{1} )\t Om åtta personer avstår från sin del av vinstsumman så får de övriga 20 kr mer per person. (_{2} )\t Gruppen består av 20 personer. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7",
+          "pedagogy_regenerated_at": 1778510870035,
+          "regen_source": "persona_pass_phase_e_2026_05_11"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att hypotetiken om 8 avstående räcker som låsning.",
+            "why_wrong": "(1) ger bara en relation V = 2,5·n·(n−8) — utan att veta n är V inte fastställd."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att antalet personer (20) räcker som låsning.",
+            "why_wrong": "(2) ger n = 20 men inget belopp per person — summan V kan vara vilket positivt tal som helst."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att varje utsaga ger ett siffersvar landar du här.",
+            "why_wrong": "Varken (1) ensamt (bara relation) eller (2) ensamt (bara antal) räcker — du behöver båda."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att utan en uttryckligen given totalsumma går det inte att räkna ut summan.",
+            "why_wrong": "Totalsumman härleds via V = n·v, där v räknas ut ur (1) med n från (2)."
+          }
+        ],
+        "pitfall": "I (1): de 20 kr ÖKAR per person när 8 personer avstår — så det är V/(n−8) − V/n = 20, inte V/n − V/(n−8). Räknetecknet matters.",
+        "solution_path": "Kalla antal personer n och summa V. Var och en får V/n. Utsaga (1): om 8 personer avstår får de (n − 8) övriga 20 kr mer var: V/(n−8) − V/n = 20. Förenkla: V·8/(n·(n−8)) = 20 ⇒ V = 2,5·n·(n−8). En relation mellan V och n — räcker inte ensamt. Utsaga (2): n = 20. Ensamt ger det inget belopp. Tillsammans: V = 2,5 · 20 · 12 = 600 kr. C.",
+        "technique": "Hypotetisk omfördelning ger en RELATION mellan antal personer och belopp per person — kombinerad med ett absolut antal låser den hela summan.",
+        "framework_id": "NOG-TRAP-011"
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant2-NOG-026",
+      "question": {
+        "qid": "var-2015-kvant2-NOG-026",
+        "exam_id": "var-2015",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 26,
+        "prompt": "På grund av ett vägarbete tog det Aron 1,5 gånger så lång tid som det normalt tar att köra till affären. Hur lång tid tar det normalt att köra till affären? (_{1} )\t Det tog Aron 5 min längre att köra till affären än vad det normalt tar. (_{2} )\t Aron har 10 km till affären. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tro att avståndet räcker.",
+            "why_wrong": "(2) saknar hastighet — tid kan inte räknas ut."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "(1) räcker ensamt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "(2) saknar hastighet."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att utan absolut tid går det inte.",
+            "why_wrong": "(1):s hypotetiska tidsdifferens ger sluten ekvation."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "(1) räcker: 1,5t−t=0,5t=5 min → t=10 min. (2) ger bara avståndet utan hastighet.",
+        "technique": "Hypotetisk \"x mer = y % mer\" + absolut differens ger sluten linjär ekvation.",
+        "framework_id": "NOG-TRAP-011"
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant2-NOG-027",
+      "question": {
+        "qid": "var-2015-kvant2-NOG-027",
+        "exam_id": "var-2015",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 27,
+        "prompt": "Betong består av sand, vatten och cement. Hur många kilogram cement finns det i 40 kilogram färdigblandad betong? (_{1} )\t Det finns sammanlagt 36,8 kilogram cement och sand i blandningen. (_{2} )\t Det finns sammanlagt 31,2 kilogram vatten och sand i blandningen. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att (1):s summa räcker.",
+            "why_wrong": "(1) ger sand+cement men inte cement enskilt."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "(2) räcker ensamt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "(1) saknar fördelning."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att tre komponenter kräver fler villkor.",
+            "why_wrong": "Total + sum av två andra = den tredje."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "(2) räcker: cement=40−31,2=8,8 kg. (1) ger vatten=3,2 men inte fördelningen mellan cement och sand.",
+        "technique": "Total − summa(övriga) = sökta värde."
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant2-NOG-028",
+      "question": {
+        "qid": "var-2015-kvant2-NOG-028",
+        "exam_id": "var-2015",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 28,
+        "prompt": "Linn har 125 kr i tjugokronorssedlar och femkronor. Hur många femkronor har Linn? (_{1} )\t Linn har färre än 5 femkronor. (_{2} )\t Linn har fler än 5 tjugokronorssedlar. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att (1):s ojämlikhet räcker.",
+            "why_wrong": "(2):s ojämlikhet ger samma unika lösning."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att (2) räcker.",
+            "why_wrong": "(1) räcker lika bra."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "Båda räcker ensamma."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att två obekanta kräver två oberoende villkor.",
+            "why_wrong": "Heltalskravet + en ojämlikhet smalnar av till en lösning."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Var för sig räcker. 20a+5b=125 ger heltalslösningar (a, b)∈{(6,1), (5,5), (4,9), ...}. (1): b<5 → bara (6,1). (2): a>5 → bara (6,1).",
+        "technique": "Heltalslösningar till 4a+b=25 + en ojämlikhet kan ge unik lösning."
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-NOG-023",
+      "question": {
+        "qid": "var-2016-kvant2-NOG-023",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 23,
+        "prompt": "I Viktors hundgård finns det endast en tik och hennes valpar. Varje valp är antingen svart eller gul. Hur många valpar finns det i Viktors hundgård? (_{1} )\t I hundgården finns det två svarta valpar, vilka tillsammans med tiken utgör 1/3 av hundarna i hundgården. (_{2} )\t 75 procent av valparna är gula. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att tro att 75 % räcker.",
+            "why_wrong": "(2) saknar absoluta tal."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "(1) räcker ensamt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "(2) saknar absolutvärden."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att utan färgfördelning går det inte.",
+            "why_wrong": "(1) ger total via fraktion + absolut antal."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "(1) räcker: 2 svarta valpar + tiken=3=1/3 av hundarna → totalt=9 hundar, valpar=8. (2) ger bara andel utan absoluta antal.",
+        "technique": "Absolut delgrupp + dess fraktion av totalen = totalantal."
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-NOG-024",
+      "question": {
+        "qid": "var-2016-kvant2-NOG-024",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 24,
+        "prompt": "Cirkelbågen BC utgör en fjärdedel av en cirkel med medelpunkten i A. Rektangeln ADEF är inritad så att F ligger på radien AC, D ligger på radien AB och E ligger på cirkelbågen BC. Vilken längd har cirkelbågen BC? (_{1} )\t DE är 5 cm. (_{2} )\t CF är 8 cm. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2016-kvant2-NOG-024.svg",
+          "aspect_ratio": 0.966
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att DE räcker.",
+            "why_wrong": "(1) saknar CF."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att CF räcker.",
+            "why_wrong": "(2) saknar DE."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "Vart och ett saknar minst en sida."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att utan vinklar går det inte.",
+            "why_wrong": "Pythagoras + två sidor räcker för r."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Båda krävs: rektangelns sidor är AD och DE. AE=r (E på cirkelbåge). Pythagoras: r²=(r−CF)²+DE²=(r−8)²+5² → r=89/16, båglängd=π·89/32 cm.",
+        "technique": "I cirkelsektor med inskriven rektangel: Pythagoras AE²=AD²+DE² ger r."
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-NOG-025",
+      "question": {
+        "qid": "var-2016-kvant2-NOG-025",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 25,
+        "prompt": "För att visa förändring över tid används index. År 2008 hade ett land 27 650 000 invånare (index = 100). Hur många invånare hade detta land år 2000? (_{1} )\t Indextalet för år 2000 var 65. (_{2} )\t Indextalet för år 2000 var 35 procent lägre än för år 2008. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att bara (1):s direkta indextal räcker ensamt.",
+            "why_wrong": "(2):s '35 % lägre' är samma utsaga som index=65 — även den räcker ensam."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att (2):s procentminskning är mer direkt och ensamt räcker.",
+            "why_wrong": "(1):s index=65 räcker lika bra: 27 650 000·0,65."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "Båda räcker var för sig eftersom de uttrycker exakt samma minskning."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att läsa båda som otillräckliga när inga absoluta invånartal för 2000 ges.",
+            "why_wrong": "Index 65 ⇔ 35 % lägre — varje villkor räcker när basårets 27 650 000 är given."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Var för sig räcker. (1): index=65 → invånare=27 650 000·0,65. (2): \"35 % lägre\" → index=65, samma.",
+        "technique": "Regel för index-NOG: ett indextal och 'X % lägre än basåret' är ekvivalenta formuleringar — varje räcker ensamt när basårets absoluta värde är känt."
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-NOG-026",
+      "question": {
+        "qid": "var-2016-kvant2-NOG-026",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 26,
+        "prompt": "På ett kafé finns 17 personer (kvinnor och män) som dricker antingen kaffe, te eller choklad. Hur många personer dricker te? (_{1} )\t På kaféet finns 10 kvinnor. Av dem är det fler än hälften som dricker choklad och 1/5 som dricker kaffe. (_{2} )\t Av männen dricker 2/7 te, vilket motsvarar 1/3 av det antal kvinnor som dricker choklad. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att kvinnor-fördelningen räcker.",
+            "why_wrong": "(1) säger inget om mäns dryckesval."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att fraktionerna i (2) räcker.",
+            "why_wrong": "(2) saknar absoluta antal kvinnor och män."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "Vart och ett saknar minst en kategori."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att tre drycker × två kön kräver fler villkor.",
+            "why_wrong": "Tillsammans täcker villkoren alla 6 cellerna i tabellen."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Båda krävs: (1) ger K=10, M=7, kvinnor-kaffe=2, kvinnor-choklad>5. (2) ger män-te=(2/7)·7=2 och chok_K=3·2=6. Kvinnor-te=10−6−2=2, total te=4.",
+        "technique": "Två komplementära korstabell-villkor (rader+kolumner) räcker för cellerna."
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-NOG-027",
+      "question": {
+        "qid": "var-2016-kvant2-NOG-027",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 27,
+        "prompt": "Medelvärdet av de fyra talen a, b, c och d är 69. Hur många av talen är lika med 69? (_{1} ) \t Medelvärdet av de tre talen a, b och c är 69. (_{2} ) \t Minst två av talen är 69. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "E",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att d=69 räcker.",
+            "why_wrong": "Inget i (1) säger något om resten."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att \"minst 2\" räcker.",
+            "why_wrong": "(2) ger inte exakt antal."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "Antal exakt 69 kan vara 2, 3 eller 4."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "Inget villkor specificerar exakt antal."
+          }
+        ],
+        "pitfall": "Median/medelvärde ensamma låser inte hur många exakt motsvarar ett specifikt värde.",
+        "solution_path": "Båda krävs men räcker ändå inte. (1) ger d=69 men a, b, c kan kombineras så att 0, 1, 2 eller 3 av dem också är 69 så länge summan är 207. (2) säger \"minst 2\" är 69 men kan vara 2, 3 eller 4. Tillsammans: minst 2 (inkl d), men det exakta antalet är fortfarande tvetydigt.",
+        "technique": "\"Minst N är X\" är inte exakt antal — kontrollera om frågan kräver exakt.",
+        "framework_id": "NOG-TRAP-020"
+      }
+    },
+    {
+      "exam": "var-2016",
+      "qid": "var-2016-kvant2-NOG-028",
+      "question": {
+        "qid": "var-2016-kvant2-NOG-028",
+        "exam_id": "var-2016",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 28,
+        "prompt": "Johanna har tre lappar. En lapp är röd, en är grön och en är blå. På varje lapp skriver hon ett tal. En lapp har talet 1, en lapp har talet 2 och en lapp har talet 4. Vilken färg är det på lappen som har talet 2? (_{1} )\t Den gröna lappen har ett tal som är större än summan av talen på de andra lapparna. (_{2} )\t En av de lappar som har ett jämnt tal är varken röd eller grön. Den blå lappen har ett tal som är mindre än talet på den gröna lappen. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (_{1} ) men ej i (_{2} )"
+          },
+          {
+            "letter": "B",
+            "text": "i (_{2} ) men ej i (_{1} )"
+          },
+          {
+            "letter": "C",
+            "text": "i (_{1} ) tillsammans med (_{2} )"
+          },
+          {
+            "letter": "D",
+            "text": "i (_{1} ) och (_{2} ) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778429079240,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att (1):s summavillkor räcker.",
+            "why_wrong": "(1) ger grön=4 men inte färg på lapp 2."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "(2) räcker ensamt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du tror att vart och ett räcker landar du här.",
+            "why_wrong": "(1) saknar information om lapp 2:s färg."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att utan numerisk ordning går det inte.",
+            "why_wrong": "Två villkor om jämn-lappar + ordning ger låsning."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "(2) räcker: en jämn-lapp är blå, och blå<grön — om blå=4 skulle grön>4 omöjligt, så blå=2 och grön=4. (1) ger bara att grön=4 utan att låsa lapp 2.",
+        "technique": "Kombinera \"en av X är Y\" med ordningsvillkor för att smalna av."
+      }
+    },
+    {
+      "exam": "var-2022-1",
+      "qid": "var-2022-1-kvant2-NOG-027",
+      "question": {
+        "qid": "var-2022-1-kvant2-NOG-027",
+        "exam_id": "var-2022-1",
+        "provpass": "kvant2",
+        "section": "NOG",
+        "number": 27,
+        "prompt": "En cirkelformad pizza delas i sex likadana bitar i form av cirkelsektorer. Hur stor är pizzans omkrets? (1)\t Arean av varje bit är 96π \\mathrm{cm}^{2} . (2)\t Cirkelbågen på varje bit är 8π cm. Tillräcklig information för lösningen erhålls",
+        "options": [
+          {
+            "letter": "A",
+            "text": "i (1) men ej i (2)"
+          },
+          {
+            "letter": "B",
+            "text": "i (2) men ej i (1)"
+          },
+          {
+            "letter": "C",
+            "text": "i (1) tillsammans med (2)"
+          },
+          {
+            "letter": "D",
+            "text": "i (1) och (2) var för sig"
+          },
+          {
+            "letter": "E",
+            "text": "ej genom de båda påståendena"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "fixed_at": 1778498574283,
+          "generated_at": 1778427342052,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att arean direkt fixerar omkretsen.",
+            "why_wrong": "(2):s båglängd ger samma r via en kortare räkning."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta att båglängden räcker.",
+            "why_wrong": "(1):s area räcker lika bra via r²=576."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Första instinkten är att kombinera båda för säkerhet.",
+            "why_wrong": "Båda räcker ensamma — de ger samma r=24."
+          },
+          {
+            "letter": "E",
+            "why_tempting": "Det är frestande att tro att utan diameter går det inte.",
+            "why_wrong": "Area eller båglängd per sektor ger r entydigt."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Var för sig räcker. (1): \\pi r^2/6=96\\pi → r=24, omkrets=48π \\mathrm{cm}. (2): 2\\pi r/6=8\\pi → r=24.",
+        "technique": "Cirkelegenskaper (area, omkrets, båglängd) är alla funktioner av r — varje räcker."
+      }
+    }
+  ]
+}

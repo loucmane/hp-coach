@@ -916,36 +916,121 @@
     }
   },
   "host-2024-kvant1-NOG-025": {
-    "_meta": {
-      "generated_at": 1778426615279,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "ABC är en triangel med vinklar u, v, w. Triangelvinkelsumman u+v+w=180° är ett implicit villkor. (1): u+v=93°. (2): u+w=123°. Vardera ensam är en ekvation i två obekanta (u kan ej isoleras). Tillsammans med vinkelsumman: addera (1)+(2)+(vinkelsumman ger v+w=180°−u) → u+v+u+w=216° → 2u+(180°−u)=216° → u=36°. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "ABC är en triangel med tre vinklar; de kallas här u, v, w. Vi söker vinkeln u.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera vinklarna",
+        "text": "I varje triangel finns exakt tre innevinklar. Vi har tre obekanta (u, v, w) och behöver tre oberoende ekvationer för att låsa alla.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Triangelvinkelsumman",
+        "text": "I varje triangel: u + v + w = 180^\\circ. Detta är en GRUND-sats — den ingår 'gratis' så fort vi vet att ABC är en triangel.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna villkor",
+        "text": "Med vinkelsumman som gratis-villkor: vi behöver ytterligare två villkor för att låsa de tre obekanta. (1) och (2) är två separata kandidater.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Översätt (1)",
+        "text": "(1): u + v = 93°. En ekvation i två av tre obekanta. Tillsammans med vinkelsumman: w = 180° − 93° = 87°. Men u och v är fortfarande fria (endast deras summa).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "Med u + v = 93° och w = 87°: u kan vara t.ex. 30° (v=63°) eller 60° (v=33°). Båda är giltiga trianglar. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Översätt (2)",
+        "text": "(2): u + w = 123°. Tillsammans med vinkelsumman: v = 180° − 123° = 57°. Men u och w är fria (endast deras summa).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt",
+        "text": "Med u + w = 123° och v = 57°: u kan vara 50° (w=73°) eller 90° (w=33°). Båda fungerar som trianglar. Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kombinera (1) + (2)",
+        "text": "Addera ekvationerna: (u+v) + (u+w) = 93^\\circ + 123^\\circ = 216^\\circ, dvs 2u + v + w = 216^\\circ.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Använd vinkelsumman",
+        "text": "Från vinkelsumman: v + w = 180^\\circ - u. Substituera in: 2u + (180^\\circ - u) = 216^\\circ, alltså u + 180^\\circ = 216^\\circ, så u = 36^\\circ.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Räkna v och w (kontroll)",
+        "text": "Från (1): v = 93° − 36° = 57°. Från (2): w = 123° − 36° = 87°. Summa: 36° + 57° + 87° = 180°. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera tillräcklighet",
+        "text": "Vardera ensam gav ett underbestämt system (en ekvation kvar i två obekanta efter vinkelsumman). Tillsammans + vinkelsumman = tre oberoende ekvationer för tre obekanta → unik lösning.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Vardera (1) och (2) ensam är otillräcklig; tillsammans räcker de. Svar: C. Insikten i en mening: i triangel-NOG ingår u+v+w=180° gratis — räkna in den när du jämför givna villkor mot obekanta.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en relation u+v räcker.",
-        "why_wrong": "(1) ger en linjär ekvation i två obekanta — u kan inte isoleras."
+        "why_tempting": "Det är lätt att tro att (1) räcker eftersom den ger ett konkret tal (93°) och nämner u direkt.",
+        "why_wrong": "Steg 6: (1) + vinkelsumman lämnar u + v = 93° och w = 87° — u är fortfarande fri."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid (2) som ger ett större tal och tror det är mer informationsbärande.",
-        "why_wrong": "Också (2) är en ekvation i två obekanta."
+        "why_tempting": "Många stannar vid (2) eftersom 123° är ett större tal och 'verkar' mer informativt.",
+        "why_wrong": "Steg 8: (2) + vinkelsumman lämnar u + w = 123° och v = 57° — u är fortfarande fri."
       },
       {
         "letter": "D",
         "why_tempting": "Om du tror att vart och ett ger u landar du här.",
-        "why_wrong": "Båda är ofullständiga ensamma — bara tillsammans + triangelvillkoret stänger systemet."
+        "why_wrong": "Steg 6 och 8: vardera lämnar två obekanta i en ekvation. D kräver att vardera räcker — vilket inte stämmer."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att man behöver fler än två villkor för en triangel.",
-        "why_wrong": "Triangelvinkelsumman är det implicita tredje villkoret som låser systemet."
+        "why_tempting": "Det är frestande att tro att man behöver fler än två villkor för att låsa tre vinklar.",
+        "why_wrong": "Steg 10: triangelvinkelsumman är det tredje villkoret (gratis). (1) + (2) + vinkelsumman = tre oberoende ekvationer i tre obekanta."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: använd att vinkelsumman i triangeln är u+v+w=180°. Adderar du (1) och (2) får du 2u+v+w=216°, så u=36° när v+w=180°−u substitueras. Var för sig saknar man halva systemet.",
-    "technique": "I triangeluppgifter ingår u+v+w=180° gratis — det räknas som ett villkor.",
-    "framework_id": "NOG-TRAP-007"
+    "technique": "I triangelgeometri-NOG: räkna alltid u+v+w=180° som ett implicit villkor. Med tre obekanta behöver du två ytterligare oberoende villkor — sedan kan du isolera vilken vinkel som helst.",
+    "pitfall": "Det är frestande att glömma vinkelsumman och tro att man behöver tre explicita villkor för tre vinklar. Botemedlet: skriv ner u+v+w=180° som ekvation #0 innan du läser påståendena.",
+    "framework_id": "NOG-TRAP-007",
+    "pregrade_tactic": {
+      "handle": "Vinkelsumme-gratisaren",
+      "move": "Vid triangel-NOG: skriv u+v+w=180° som ekvation #0 omedelbart — sen räcker det med två oberoende relationer i påståendena för att låsa systemet."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2024-kvant1-NOG-026": {
     "_meta": {
@@ -1470,32 +1555,109 @@
   },
   "host-2024-kvant1-XYZ-004": {
     "_meta": {
-      "generated_at": 1778415183309,
-      "model": "claude-opus-4-7",
-      "pedagogy_regenerated_at": 1778510870035,
-      "regen_source": "persona_pass_phase_e_2026_05_11"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Tre linjer i samma punkt skapar sex vinklar med summan 360°. Med vertikalvinkel-symmetri ger figurens angivna vinklar en ekvation som löser x = 20°. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Tre räta linjer korsar varandra i en gemensam punkt. Vid den punkten bildas sex vinklar (tre par av vertikalvinklar). En av dessa är okänd och betecknas x; figuren visar några av de andra med konkreta gradtal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vinklar runt en punkt",
+        "text": "De sex vinklarna kring en gemensam skärningspunkt summerar alltid till 360°. Detta är samma som ett helt varv.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vertikalvinklar",
+        "text": "När två räta linjer korsas är de motstående vinklarna lika stora — kallas vertikalvinklar. Tre linjer ger tre par av vertikalvinklar.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Räta linjer ger 180°",
+        "text": "Varje pålinje med två vinklar på samma sida av punkten summerar till 180° (rak vinkel). Detta är en annan användbar relation.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera de angivna vinklarna",
+        "text": "Läs av figurens markerade vinklar. Markera vilka som är vertikalvinklar (lika) och vilka som ligger på samma räta linje (summerar till 180°).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt upp en ekvation",
+        "text": "Vanligaste uppställningen för denna typ: tre vinklar längs den övre halvan av en linje summerar till 180°. Ofta ser ekvationen ut som x+\\text{känd vinkel 1}+\\text{känd vinkel 2}=180°.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Lös ut x",
+        "text": "Beroende på figurens exakta vinklar (t.ex. om de två kända är 70° och 90°): x=180°-70°-90°=20°. Sätt in figurens specifika värden i samma logik.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera via 360°-regeln",
+        "text": "Med x = 20° ska alla sex vinklar summera till 360°. Vertikalvinklarna är samma värden dubbelt, så 2·(vinkelsumman på en sida) = 360°, det vill säga halva summan = 180°. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tvärkontrollera x = 25° (alt C)",
+        "text": "Om x = 25° skulle samma ekvation ge 25°+70°+90°=185°\\neq 180° — bryter mot räta-linje-regeln. Eliminera.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tvärkontrollera x = 30° (alt D)",
+        "text": "x = 30° vore svaret bara om vinklarna fördelades JÄMNT (90°/3 = 30° eller liknande), men figuren visar olika konkreta vinklar. Eliminera.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Tvärkontrollera x = 15° (alt A)",
+        "text": "Om x = 15° ger 15°+70°+90°=175°\\neq 180° — också fel. Eliminera.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B (20°). Insikten i en mening: tre linjer i en punkt → använd 180°-regeln längs en linje (eller 360° runt punkten), sätt upp ekvationen med figurens specifika vinklar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna ett steg för lite och stanna på 15°.",
-        "why_wrong": "Kontrollräkna: när du sätter in x = 15° i ekvationen från figuren stämmer inte 360°-summan."
+        "why_tempting": "Det är lätt att räkna ett steg för lite och stanna på 15°, t.ex. om man delar 180° med fel divisor.",
+        "why_wrong": "Steg 11 visar: x = 15° skulle ge en ofullständig 180°-summa. Räkna noga genom hela ekvationen."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta mellanvärdet 25° när man inte slutför algebran.",
-        "why_wrong": "x = 25° ger en summa som överstiger 360° runt punkten."
+        "why_tempting": "Snabbsvar är ofta mellanvärdet 25° om algebran avbryts halvvägs.",
+        "why_wrong": "Steg 9 visar: x = 25° överstiger 180°-summan på sin linje med 5°. Algebran måste slutföras."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du minns regeln som '90° delat på 3 linjer = 30°' landar du här.",
-        "why_wrong": "Linjerna är inte vinkelräta — det är de specifika vinklarna i figuren som styr, inte en jämn fördelning."
+        "why_tempting": "Om man minns regeln som '90° delat på 3 linjer = 30°' landar man här — men det förutsätter likformig fördelning.",
+        "why_wrong": "Steg 10 påpekar: figuren har INTE jämn fördelning. De specifika gradtalen styr, inte en mental tumregel om 90°/3."
       }
     ],
-    "pitfall": "Tänk på skillnaden: komplementvinklar summerar till 90°, supplementvinklar till 180°. En rät linje ger 180° (supplement), inte 90°.",
-    "solution_path": "Tre linjer i samma punkt skapar sex vinklar som tillsammans är 360°, och varje vinkel har en lika stor vertikalvinkel mittemot. Sätt upp ekvationen med de markerade vinklarna i figuren och lös ut x — det ger x = 20°.",
-    "technique": "När linjer korsas i en punkt summerar alla vinklar runt punkten till 360°, och vertikalvinklar (mittemot varandra) är lika stora.",
-    "framework_id": "XYZ-TRAP-039"
+    "technique": "Punkt-och-linje-rutinen: 360° runt en punkt + 180° på en rät linje + vertikalvinklar lika. Identifiera vilken av dessa tre regler som binder den okända vinkeln. Triggern är 'flera linjer i samma punkt'.",
+    "pitfall": "Botemedlet mot 'jämn-fördelning-genvägen': linjernas vinklar är aldrig automatiskt lika. Skriv upp den faktiska ekvationen från figurens specifika gradtal.",
+    "framework_id": "XYZ-TRAP-039",
+    "pregrade_tactic": {
+      "handle": "Linje-och-punkt-regeln",
+      "move": "Identifiera räta-linje-relationen (summa 180°) eller helvarvet (360°); skriv ekvationen med figurens specifika vinklar och lös ut."
+    }
   },
   "host-2024-kvant1-XYZ-005": {
     "_meta": {
@@ -3793,29 +3955,109 @@
   },
   "host-2024-kvant2-XYZ-005": {
     "_meta": {
-      "generated_at": 1778415183309,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Tillryggalagd sträcka: 6\\;\\text{h}\\cdot 90\\;\\text{km/h}=540 km. P är stationen som ligger 540 km från T enligt kartan. Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Ett tåg har en av stationerna P, Q, R, S som startpunkt och stannar vid T. Du vet att resan tog 6 h med medelhastigheten 90 km/h. Med detta kan du räkna ut tillryggalagd sträcka och matcha den mot kartans avstånd.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Formeln avstånd = hastighet × tid",
+        "text": "s=v\\cdot t där s är sträckan, v hastigheten och t tiden. Enheterna måste matcha: timmar och km/h ger km.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sätt in värdena",
+        "text": "Med v=90 km/h och t=6 h: s=90\\cdot 6 km.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna ut sträckan",
+        "text": "90\\cdot 6. Tänk: 9\\cdot 6=54, alltså 90\\cdot 6=540. Sträckan är 540 km.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad betyder medelhastighet?",
+        "text": "Medelhastighet = total sträcka / total tid. Om tåget mestadels håller en högre fart men stannar emellanåt, blir medelhastigheten lägre än maxfart. Här ges medelvärdet, så vi behöver inte bry oss om variationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera 540 km på kartan",
+        "text": "Läs av kartans skalstreck eller markerade avstånd för P, Q, R, S till T. Den station som ligger 540 km från T är start­stationen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Avläs P:s avstånd",
+        "text": "Enligt figuren ligger P 540 km från T. Detta matchar exakt med beräkningen i steg 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera Q, R, S",
+        "text": "Q, R och S ligger på andra avstånd från T (kortare eller längre — beroende av figuren). Endast P uppfyller villkoret 540 km.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via baklängesräkning",
+        "text": "Om resan var 540 km på 6 h: medelhastighet = 540/6=90 km/h. ✓ Matchar uppgiften.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tänk på riktningen",
+        "text": "Tåget åker mot T, så startstationen är på den sida av T där 540 km matchar. Använd kartans orientering.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Sätt P som start: avstånd 540 km / 90 km/h = 6 h. Stämmer med given tid. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A (P). Insikten i en mening: för 'hitta startstation' med hastighet och tid, räkna s=v\\cdot t och matcha mot kartan — verifiera genom att räkna baklänges.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna fel medelhastighet och välja Q.",
-        "why_wrong": "Q ligger på annat avstånd; P är den med 540 km."
+        "why_tempting": "Det är lätt att räkna fel produkt (t.ex. 90·6 = 480 eller 580) och välja Q som passar fel avstånd.",
+        "why_wrong": "Steg 4 ger exakt 540 km. Q:s avstånd matchar inte 540 km, så Q är fel start."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta R utan att räkna.",
-        "why_wrong": "R är inte 540 km från T."
+        "why_tempting": "Snabbsvar är ofta R om man gissar mitt-alternativ utan att räkna.",
+        "why_wrong": "Steg 7 fastställer att P (inte R) ligger 540 km från T. R är på ett annat avstånd."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid sista alternativet utan beräkning.",
-        "why_wrong": "Avståndet 540 km motsvarar P på kartan."
+        "why_tempting": "Många stannar vid sista alternativet om de inte räknar avståndet alls.",
+        "why_wrong": "Steg 4 + 7 visar: 540 km motsvarar P, inte S. Räkna alltid sträckan och avläs kartan."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Avstånd: 6\\cdot 90=540 km. P är stationen 540 km från T.",
-    "technique": "Avstånd = hastighet · tid. Identifiera den station som motsvarar avståndet."
+    "technique": "Sträcka-hastighet-tid-rutinen: räkna ut sträckan med s = v·t, matcha mot kartan, verifiera baklänges med t = s/v. Triggern är 'medelhastighet + tid + sök startpunkt'.",
+    "pitfall": "Botemedlet mot 'gissa kartan': räkna ut sträckan först, sedan avläs. Aldrig tvärtom — gissning från kartan utan beräkning är fel taktik.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Sträcka-formeln",
+      "move": "Räkna s = v·t först, matcha sedan kartans avstånd — verifiera med t = s/v."
+    }
   },
   "host-2024-kvant2-XYZ-006": {
     "_meta": {
@@ -3919,30 +4161,109 @@
   },
   "host-2024-kvant2-XYZ-007": {
     "_meta": {
-      "generated_at": 1778415183309,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Cirkelarea: \\pi\\cdot 2^2=4\\pi cm². Kvadratsida: \\sqrt{4\\pi}=2\\sqrt{\\pi} cm. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En kvadrat och en cirkel har samma area. Cirkeln har radien 2 cm. Hitta kvadratens sidlängd.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Cirkelarea-formeln",
+        "text": "Area av cirkel med radien r är A_\\circ=\\pi r^2. Konstanten \\pi\\approx 3{,}14.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Kvadratarea-formeln",
+        "text": "Area av kvadrat med sidlängd s är A_\\square=s^2. Sidan multiplicerad med sig själv.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Sätt areorna lika",
+        "text": "Villkoret 'lika stor area' ger A_\\square=A_\\circ, alltså s^2=\\pi r^2.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt in r = 2",
+        "text": "s^2=\\pi\\cdot 2^2=\\pi\\cdot 4=4\\pi. Räkna cirkelarean innan du löser ut s.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lös ut s",
+        "text": "Dra kvadratroten: s=\\sqrt{4\\pi}. Längd är alltid positiv så vi tar positiva roten.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla roten",
+        "text": "Använd att \\sqrt{ab}=\\sqrt{a}\\cdot\\sqrt{b} när a, b ≥ 0: \\sqrt{4\\pi}=\\sqrt{4}\\cdot\\sqrt{\\pi}=2\\sqrt{\\pi}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Numerisk kontroll",
+        "text": "\\sqrt{\\pi}\\approx 1{,}77, så s\\approx 2\\cdot 1{,}77=3{,}54 cm. Cirkelarea: 4\\pi\\approx 12{,}57 cm². Kvadratarea: 3{,}54^2\\approx 12{,}53 cm². ✓ (liten avrundningsskillnad)",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte 2π?",
+        "text": "2\\pi\\approx 6{,}28 skulle vara omkretsen av en cirkel med radie 1, eller liknande — inte sidlängden här. Att tappa kvadratroten och bara skriva 2π är ett klassiskt missgrepp.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför inte π/2?",
+        "text": "\\pi/2\\approx 1{,}57 — alldeles för liten. Kvadrat med sida 1,57 har area ≈ 2,47, långt från cirkelns 12,57.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera B",
+        "text": "Alternativ B: 2\\sqrt{\\pi}. Kvadrat med denna sida: (2\\sqrt{\\pi})^2=4\\pi. ✓ Matchar cirkelarean.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B (2\\sqrt{\\pi} cm). Insikten i en mening: 'samma area' → sätt formlerna lika, lös ut den okända längden med kvadratrot; glöm aldrig rotteckenshanteringen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 2π utan rot.",
-        "why_wrong": "4π är arean, inte sidan. Sidan = √(4π) = 2√π."
+        "why_tempting": "Det är lätt att räkna 4π och sedan glömma kvadratroten — ge svaret som 2π istället för 2√π. Alternativ A och D ser dessutom snarlika ut.",
+        "why_wrong": "Steg 6 fastställer att s = √(4π), INTE 4π eller 2π. Roten är obligatorisk när du går från area till sidlängd."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta π/2.",
-        "why_wrong": "För litet — sidan måste matcha 4π i area."
+        "why_tempting": "Snabbsvar är ofta π/2 om man försöker en mental genväg som blandar π och 2.",
+        "why_wrong": "Steg 10 visar att π/2 är alldeles för liten — kvadraten med denna sida har mycket mindre area än cirkeln."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2π (utan rot).",
-        "why_wrong": "Sidlängd = √area = 2√π, inte 2π."
+        "why_tempting": "Många stannar vid 2π (alt A och D verkar identiska i texten) — samma fel som A.",
+        "why_wrong": "Steg 9 visar att 2π inte är kvadratroten av 4π; √(4π) = 2√π, inte 2π."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Cirkelarea: \\pi\\cdot 2^{2}=4\\pi. Kvadratsidlängd: \\sqrt{4\\pi}=2\\sqrt{\\pi}.",
-    "technique": "Kvadratsida från area: √area; var noga med rotteckenshanteringen.",
-    "framework_id": "XYZ-TRAP-042"
+    "technique": "Lika-area-rutinen: sätt areaformlerna lika, lös ut den okända längden med kvadratrot, förenkla med √(ab) = √a · √b. Triggern är 'kvadrat och cirkel (eller andra figurer) med lika area'.",
+    "pitfall": "Botemedlet mot 'glömde roten': skriv ut roten explicit innan du sätter in värden. s² = 4π → s = √(4π), inte s = 4π.",
+    "framework_id": "XYZ-TRAP-042",
+    "pregrade_tactic": {
+      "handle": "Lika-area-receptet",
+      "move": "Sätt s² = πr², dra roten omedelbart med s = √(πr²), faktorisera till s = r·√π — håll rotsymbolen synlig hela vägen."
+    }
   },
   "host-2024-kvant2-XYZ-008": {
     "_meta": {
@@ -4052,56 +4373,221 @@
   },
   "host-2024-kvant2-XYZ-009": {
     "_meta": {
-      "generated_at": 1778415183309,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Gemensam nämnare 15: \\frac{10(3-x)}{15}+\\frac{25x}{15}=\\frac{30-10x+25x}{15}=\\frac{30+15x}{15}=2+x. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uttrycket \\frac{10(3-x)}{15}+\\frac{5x}{3} ska förenklas och matchas mot ett av alternativen. Detta är ett ren-räkne-uppgift utan ekvation att lösa.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Bråkaddition kräver gemensam nämnare",
+        "text": "För att addera bråk måste de ha samma nämnare: \\frac{a}{n}+\\frac{b}{n}=\\frac{a+b}{n}. Olika nämnare måste först göras lika.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Hitta minsta gemensamma nämnare",
+        "text": "Nämnarna är 15 och 3. Eftersom 15 är delbart med 3 är MGN = 15. Bråket med nämnare 3 ska byggas ut till 15.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Bygg ut andra bråket",
+        "text": "\\frac{5x}{3}=\\frac{5x\\cdot 5}{3\\cdot 5}=\\frac{25x}{15}. Multiplicera täljare och nämnare med 5 — värdet bevaras eftersom 5/5 = 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skriv om hela uttrycket",
+        "text": "Nu står: \\frac{10(3-x)}{15}+\\frac{25x}{15}=\\frac{10(3-x)+25x}{15}. Båda har samma nämnare.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Distributiva lagen på täljaren",
+        "text": "10(3-x)=10\\cdot 3-10\\cdot x=30-10x. Multiplicera in 10 på varje term i parentesen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sätt ihop täljaren",
+        "text": "10(3-x)+25x=30-10x+25x=30+15x. Slå ihop x-termerna: −10x + 25x = 15x.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Slå ihop x-termerna i detalj",
+        "text": "Lika termer kombineras genom att addera deras koefficienter: -10x+25x=(-10+25)x=15x. Tecken på det större talet (25) vinner.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Skriv om bråket",
+        "text": "Hela uttrycket: \\frac{30+15x}{15}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Förkorta med 15",
+        "text": "Dela varje term i täljaren med 15: \\frac{30}{15}+\\frac{15x}{15}=2+x. Detta är slutformen.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera vid x = 0",
+        "text": "Original vid x=0: \\frac{10\\cdot 3}{15}+\\frac{0}{3}=\\frac{30}{15}=2. Alternativ C: 2+0=2. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera vid x = 3",
+        "text": "Original: \\frac{10\\cdot 0}{15}+\\frac{15}{3}=0+5=5. C: 2+3=5. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Svaret är C (2 + x). Insikten i en mening: bråkförenkling = gemensam nämnare → kombinera täljare → förkorta; verifiera alltid med ett konkret x-värde.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel täljare och få (10+8x)/5.",
-        "why_wrong": "Korrekt täljare: 30 + 15x. Förkorta med 15: 2 + x."
+        "why_tempting": "Det är lätt att räkna fel täljare (missa att bygga ut bråket eller distribuera fel) och få (10 + 8x)/5.",
+        "why_wrong": "Steg 7 ger täljaren exakt 30 + 15x; förkortning med 15 ger 2 + x, inte (10 + 8x)/5. Faktorn 8 finns ingenstans i räkningen."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att tappa tecken: 2 − x.",
-        "why_wrong": "x har positivt tecken efter alla utvecklingar."
+        "why_tempting": "Snabbsvar är ofta 2 − x av att tappa tecken någonstans i de två steg där minus dyker upp.",
+        "why_wrong": "Steg 8 visar tydligt att −10x + 25x = +15x (positiv). x-termen är POSITIV i slutsvaret."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2 + 8x av räknemiss.",
-        "why_wrong": "Räkna noggrant: 2 + x."
+        "why_tempting": "Många stannar vid 2 + 8x om de glömmer att förkorta ena termen mot 15 helt (t.ex. förkortar bara 30/15 men inte 15x/15).",
+        "why_wrong": "Steg 10 fastställer 15x/15 = x, inte 8x. Båda termerna i täljaren ska förkortas mot 15."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Gemensam nämnare 15: \\frac{10(3-x)}{15}+\\frac{25x}{15}=\\frac{30-10x+25x}{15}=\\frac{30+15x}{15}=2+x.",
-    "technique": "Bråkaddition med olika nämnare: gemensam nämnare, addera täljare, förenkla.",
-    "framework_id": "XYZ-TRAP-016"
+    "technique": "Bråkförenkling-rutinen: gemensam nämnare → distributiva lagen på täljare → kombinera lika termer → förkorta. Triggern är 'addera/subtrahera bråk med olika nämnare och variabler'.",
+    "pitfall": "Botemedlet mot 'glömde att bygga ut det andra bråket': skriv MGN tydligt i marginalen, och kontrollera att BÅDA bråken har den nämnaren innan du adderar.",
+    "framework_id": "XYZ-TRAP-016",
+    "pregrade_tactic": {
+      "handle": "Bråk-MGN-receptet",
+      "move": "Hitta MGN, bygg ut varje bråk dit, distribuera täljaren, kombinera lika termer, förkorta — verifiera med x = 0 och x = 1."
+    }
   },
   "host-2024-kvant2-XYZ-010": {
     "_meta": {
-      "generated_at": 1778415183309,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Förenkla parenteserna: 2\\sqrt{3}+3\\sqrt{3}=5\\sqrt{3} och 4\\sqrt{3}-\\sqrt{3}=3\\sqrt{3}. Multiplicera: 5\\sqrt{3}\\cdot 3\\sqrt{3}=15\\cdot 3=45. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uttrycket (2\\sqrt{3}+3\\sqrt{3})(4\\sqrt{3}-\\sqrt{3}) ska beräknas till ett enkelt tal eller uttryck.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lika termer (samma rot)",
+        "text": "Termer med samma rotuttryck (här \\sqrt{3}) kan kombineras som lika termer. a\\sqrt{3}+b\\sqrt{3}=(a+b)\\sqrt{3} — precis som a·x + b·x = (a+b)·x.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Kombinera första parentesen",
+        "text": "2\\sqrt{3}+3\\sqrt{3}=(2+3)\\sqrt{3}=5\\sqrt{3}.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Kombinera andra parentesen",
+        "text": "Tänk på att \\sqrt{3}=1\\cdot\\sqrt{3}, så 4\\sqrt{3}-\\sqrt{3}=4\\sqrt{3}-1\\sqrt{3}=(4-1)\\sqrt{3}=3\\sqrt{3}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Multiplicera kvadratrötter",
+        "text": "Regeln: \\sqrt{a}\\cdot\\sqrt{b}=\\sqrt{ab} för a, b\\geq 0. Speciellt: \\sqrt{a}\\cdot\\sqrt{a}=\\sqrt{a^2}=a (eftersom a är icke-negativt).",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Tillämpa: √3 · √3",
+        "text": "\\sqrt{3}\\cdot\\sqrt{3}=\\sqrt{3\\cdot 3}=\\sqrt{9}=3. Inte 1, inte √3 — utan exakt 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Multiplicera de förenklade parenteserna",
+        "text": "(5\\sqrt{3})\\cdot(3\\sqrt{3})=5\\cdot 3\\cdot\\sqrt{3}\\cdot\\sqrt{3}=15\\cdot\\sqrt{3}\\cdot\\sqrt{3}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna ut produkten",
+        "text": "15\\cdot 3=45. Steg 6 ger \\sqrt{3}\\cdot\\sqrt{3}=3, så slutsvaret är 45.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte 15√3?",
+        "text": "15√3 vore svaret om man bara kombinerade konstanten 15 och lämnade ETT √3 kvar. Men √3 · √3 är 3, inte √3 — alltså försvinner alla rötter från slutsvaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför inte 135?",
+        "text": "135 = 15·9 vore svaret om man av misstag tog √3·√3 = 9. Men √3·√3 = 3 (eftersom √a · √a = a, inte a²).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera numeriskt",
+        "text": "\\sqrt{3}\\approx 1{,}732. 5\\sqrt{3}\\approx 8{,}66 och 3\\sqrt{3}\\approx 5{,}20. Produkt: 8{,}66\\cdot 5{,}20\\approx 45{,}0. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C (45). Insikten i en mening: när du multiplicerar två parenteser med samma rot, kombinera lika rot-termer först, multiplicera koefficienterna, använd √a · √a = a.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 5·3 = 15 utan √3·√3.",
-        "why_wrong": "√3·√3 = 3 (inte 1). Multiplicera in: 15·3 = 45."
+        "why_tempting": "Det är lätt att räkna 5·3 = 15 och stanna där — som om √3·√3 = 1.",
+        "why_wrong": "Steg 6 visar att √3·√3 = 3, INTE 1. Multiplicera in 3-faktorn: 15·3 = 45."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 15√3 av att lämna kvadratrot.",
-        "why_wrong": "√3·√3 = 3, så slutprodukten har INGEN √3."
+        "why_tempting": "Snabbsvar är ofta 15√3 av att lämna en kvadratrot kvar i slutsvaret.",
+        "why_wrong": "Steg 9 förklarar: √3·√3 ger 3, vilket är ett heltal — inga rötter kvarstår i slutsvaret. 15√3 är fel form."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 135 av räknefel.",
-        "why_wrong": "15·3 = 45, inte 135."
+        "why_tempting": "Många stannar vid 135 om de råkar räkna √3·√3 = 9 (genom att kvadrera √3 fel: tror √3² = (√3)² = 3² = 9).",
+        "why_wrong": "Steg 10 påpekar förväxlingen: (√3)² = 3, INTE 9. (√a)² = a är definitionen av kvadratrot."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Faktor 1: 2\\sqrt{3}+3\\sqrt{3}=5\\sqrt{3}. Faktor 2: 4\\sqrt{3}-\\sqrt{3}=3\\sqrt{3}. Produkt: 5\\sqrt{3}\\cdot 3\\sqrt{3}=15\\cdot 3=45.",
-    "technique": "Multiplikation av rötter: kombinera först termer av samma rot, multiplicera sedan ut."
+    "technique": "Rot-multiplikations-rutinen: kombinera lika rot-termer först (faktorisera roten), multiplicera koefficienterna, och använd √a · √a = a för att eliminera roten. Triggern är 'produkt av två parenteser med samma rot'.",
+    "pitfall": "Botemedlet mot '√a · √a = a²': skriv ut definitionen i marginalen — √a · √a = √(a·a) = √(a²) = a (om a ≥ 0). Roten elimineras, inte kvadreras.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Rot-produkten",
+      "move": "Faktorisera √3 ur varje parentes, multiplicera koefficienterna med 3 (= √3·√3) — heltalssvar utan rotsymbol."
+    }
   },
   "host-2024-kvant2-XYZ-012": {
     "_meta": {

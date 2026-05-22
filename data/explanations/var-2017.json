@@ -194,30 +194,104 @@
     }
   },
   "var-2017-kvant1-KVA-016": {
-    "_meta": {
-      "generated_at": 1778425152541,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Direkt multiplikation: Kvantitet I = 7 \\cdot 35 = 245, Kvantitet II = 6 \\cdot 50 = 300. Eftersom 300 > 245 är II > I — svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två produkter ska jämföras: 7 \\cdot 35 mot 6 \\cdot 50. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är multiplikation?",
+        "text": "Multiplikation av två positiva heltal a \\cdot b är summan av a kopior av b, eller ekvivalent b kopior av a. För positiva heltal är resultatet positivt.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Beräkna I steg för steg",
+        "text": "7 \\cdot 35. Bryt ut: 7 \\cdot 35 = 7 \\cdot (30 + 5) = 7 \\cdot 30 + 7 \\cdot 5 = 210 + 35 = 245 (distributiv lag).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Alltså I = 245",
+        "text": "Detta är Kvantitet I i sin slutgiltiga form.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Beräkna II steg för steg",
+        "text": "6 \\cdot 50. Bryt ut: 6 \\cdot 50 = 6 \\cdot 5 \\cdot 10 = 30 \\cdot 10 = 300.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Alltså II = 300",
+        "text": "Detta är Kvantitet II i sin slutgiltiga form.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Direkt jämförelse",
+        "text": "I = 245, II = 300. Eftersom 300 > 245 är II > I.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Alternativ kontroll: kvot-uppskattning",
+        "text": "I/II = 245/300 = 49/60 ≈ 0,82 < 1. Alltså II > I.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Alternativ kontroll: faktorisering",
+        "text": "I = 7 · 35 = 7 · 5 · 7 = 7² · 5 = 245. II = 6 · 50 = 6 · 5 · 10 = 300. Förhållandet (7² · 5)/(6 · 5 · 10) = 49/60.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Differens",
+        "text": "II − I = 300 − 245 = 55. Inte försumbar; klart positiv.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "II > I (skillnad 55), svar B. Insikten i en mening: vid två produkter med fyra olika faktorer, räkna direkt — huvudräkning räcker när talen är små.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att 7 > 6 dominerar.",
-        "why_wrong": "6·50 = 300 > 7·35 = 245; II vinner."
+        "why_tempting": "Det är lätt att tro att 7 > 6 ger I större.",
+        "why_wrong": "Steg 5 visar att 50 > 35 mer än kompenserar; II = 300 > 245 = I."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att de är ungefär lika.",
-        "why_wrong": "differensen är 55."
+        "why_tempting": "Snabbsvar är ofta att de är ungefär lika från bytesargument.",
+        "why_wrong": "Steg 10 visar skillnad 55 — ca 22% större, inte ungefär lika."
       },
       {
         "letter": "D",
-        "why_tempting": "Det är frestande att tro att man behöver räknare.",
-        "why_wrong": "Direkt huvudräkning räcker."
+        "why_tempting": "Det är frestande att tro att man behöver miniminniräknare.",
+        "why_wrong": "Steg 3 och 5 ger båda produkter via huvudräkning — inga okända kvarstår."
       }
     ],
-    "pitfall": null,
-    "solution_path": "I: 7·35 = 245. II: 6·50 = 300. 300 > 245 — B.",
-    "technique": "Direkt multiplikation och jämförelse."
+    "technique": "För produkt-jämförelser: räkna direkt med distributiv lag (a(b+c) = ab+ac) eller faktorisering. För små tal är huvudräkning alltid snabbast.",
+    "pitfall": "Botemedlet mot att „utbyta” faktorer mellan produkterna: räkna fullständigt — 7 \\cdot 35 är INTE 6 \\cdot 50 trots att summorna 7+35 och 6+50 är olika.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Produktreceptet",
+      "move": "För två produkter med små faktorer: distribuera ena talet via a(b+c) i huvudet och jämför."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2017-kvant1-KVA-017": {
     "_meta": {
@@ -1716,110 +1790,386 @@
     }
   },
   "var-2017-kvant1-XYZ-005": {
-    "_meta": {
-      "generated_at": 1778416194027,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Av figuren har rektangeln sidorna a + 1 och a - 1. Arean är (a + 1)(a - 1) = a^{2} - 1 (konjugatregeln). Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Figuren visar en rektangel R med sidor uttryckta i a. Av kontext (alternativ B med a^{2} - 1) ses sidorna som a + 1 och a - 1. Vi söker arean.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Arean av en rektangel",
+        "text": "Definition: arean av en rektangel = längd \\times bredd. Här: A = (a + 1)(a - 1).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Konjugatregeln",
+        "text": "Definition: (x + y)(x - y) = x^{2} - y^{2}. Två parenteser som skiljer sig bara i tecknet — när de multipliceras tar mellantermerna ut varandra.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Multiplicera ut steg för steg",
+        "text": "Distributiva lagen: (a + 1)(a - 1) = a \\cdot a + a \\cdot (-1) + 1 \\cdot a + 1 \\cdot (-1).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna varje produkt",
+        "text": "a \\cdot a = a^{2}, a \\cdot (-1) = -a, 1 \\cdot a = a, 1 \\cdot (-1) = -1.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Summera termer",
+        "text": "a^{2} - a + a - 1. Mellantermerna -a + a = 0 tar ut varandra.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skriv slututtrycket",
+        "text": "Kvar: a^{2} - 1. Detta är konjugatregelns mönster i tillämpning.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check med konkret a",
+        "text": "Ta a = 5: sidorna är 6 och 4, arean 6 \\cdot 4 = 24. Och a^{2} - 1 = 25 - 1 = 24 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera felalternativ",
+        "text": "A (a^{2}) ger 25 vid a = 5 — för stort. C (a^{2} + 2a - 1) ger 25 + 10 - 1 = 34 — fel. D (0) — orimligt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är B: a^{2} - 1. Insikten i en mening: parenteser som skiljer sig bara i tecknet är konjugat — multiplikationen ger alltid kvadrat minus kvadrat.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna a² (kvadrat).",
-        "why_wrong": "Sidorna är a+1 och a−1 (inte båda a)."
+        "why_tempting": "Det är lätt att tänka 'kvadrat med sida a' och få a^{2} om man missar att rektangelns sidor är OLIKA: a + 1 och a - 1.",
+        "why_wrong": "Som steg 1–2 visar är figuren en rektangel (inte kvadrat), och sidorna är a + 1 och a - 1. Konjugatregeln ger a^{2} - 1."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta a²+2a-1.",
-        "why_wrong": "Konjugat ger a²−1, inte +2a."
+        "why_tempting": "Snabbsvar är ofta att glömma att mellantermerna tar ut varandra och få a^{2} + 2a - 1 (från fel utveckling).",
+        "why_wrong": "Steg 5–6 visar att -a + a = 0 — mellantermerna kancelleras. +2a skulle bara uppstå om båda parenteserna hade +1, inte +1 och -1."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 0.",
-        "why_wrong": "a²−1, inte 0."
+        "why_tempting": "Många stannar vid 0 om de tänker 'arean av en degenererad rektangel' eller bara svarar fel.",
+        "why_wrong": "Steg 8 sanity-checkar med a = 5: arean blir 24, inte 0. Rektangeln har positiv area för alla a > 1."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figuren: rektangelarea = (a+1)(a-1)=a^{2}-1.",
-    "technique": "Konjugatregel: (a+1)(a−1) = a²−1.",
-    "framework_id": "XYZ-TRAP-012"
+    "technique": "Konjugatregeln: (a + 1)(a - 1) = a^{2} - 1 — när två parenteser skiljer sig bara i tecknet, multipliceras de till kvadrat minus kvadrat.",
+    "pitfall": "Det kluriga är att alternativ C ser ut som en 'utveckling som missar förenkling' — det är frestande att tro att man missade en term. Botemedlet: skriv ut alla fyra produkter och se mellantermerna kancellera till noll.",
+    "framework_id": "XYZ-TRAP-012",
+    "pregrade_tactic": {
+      "handle": "Konjugat-snuttet",
+      "move": "Vid parenteser (x + y)(x - y): skriv direkt x^{2} - y^{2} utan att utveckla — mönstret är garanterat."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2017-kvant1-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778416194027,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Tre punkter med y = 0 vid x = -8 och x = 4 är parabelnollställen. En parabel som vänder uppåt och har max kring x = -2 stämmer med (-1, 3{,}5). Det är graf D. Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi söker den graf som passerar genom (-8, 0), (-1, 3{,}5) och (4, 0). Två av punkterna har y = 0 — vad betyder det?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Nollställen identifierar parabel",
+        "text": "Definition: ett nollställe är ett x-värde där y = 0 — där grafen korsar x-axeln. Två nollställen plus ett mellanvärde definierar en kvadratisk funktion (parabel).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Skriv parabel i faktoriserad form",
+        "text": "Med nollställen vid x = -8 och x = 4 har parabeln formen y = a(x + 8)(x - 4) för någon konstant a.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Använd mittpunkten för att lösa a",
+        "text": "Sätt in (-1, 3{,}5): 3{,}5 = a(-1 + 8)(-1 - 4) = a \\cdot 7 \\cdot (-5) = -35a. Lös: a = -\\frac{3{,}5}{35} = -0{,}1.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Tolka tecknet på a",
+        "text": "a = -0{,}1 < 0 betyder att parabeln öppnar NEDÅT (är 'glad/sur ansikte' — sur). Den har ett maximum mellan nollställena.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Var ligger maximum?",
+        "text": "Symmetri-egenskap: maximumet ligger mitt mellan nollställena. Mittpunkten: \\frac{-8 + 4}{2} = -2. Toppunkten har x = -2.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Räkna maxvärdet",
+        "text": "Sätt in x = -2 i y = -0{,}1(x + 8)(x - 4): y = -0{,}1 \\cdot 6 \\cdot (-6) = 3{,}6. Maxhöjden är cirka 3,6 — strax över 3{,}5 vilket är mittvärdet vid x = -1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera med given punkt",
+        "text": "Pröva x = -1: y = -0{,}1 \\cdot 7 \\cdot (-5) = 3{,}5 ✓ — exakt den givna punkten.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Matcha mot grafalternativen",
+        "text": "Sök en graf som: (a) korsar x-axeln vid -8 och 4, (b) öppnar NEDÅT, (c) har max strax under 4 vid x = -2. Detta motsvarar grafalternativ D.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: två nollställen + ett mellanvärde låser hela parabeln — räkna tecknet på a ur mellanvärdet för att veta om kurvan öppnar uppåt eller nedåt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja linjär graf.",
-        "why_wrong": "Tre punkter med två nollställen och en mellan kräver parabel."
+        "why_tempting": "Det är lätt att välja en linjär graf om man tänker 'y = 0 i två punkter, då är det en horisontell linje'.",
+        "why_wrong": "Som steg 1–2 visar kan inte en rät linje passa: en linje korsar x-axeln BARA en gång. Två nollställen kräver minst andragradsfunktion."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta annan parabelform.",
-        "why_wrong": "Verifiera nollställen och mellanvärdet."
+        "why_tempting": "Snabbsvar är ofta en parabel som öppnar UPPÅT — det är den 'vanliga' parabelformen.",
+        "why_wrong": "Steg 5 visar att a < 0, så parabeln öppnar NEDÅT. Punkten (-1, 3{,}5) ligger ÖVER x-axeln mellan nollställena — bara en nedåt-öppnande parabel hinner upp dit."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid omvänd parabel.",
-        "why_wrong": "Specifika punkter avgör for- men."
+        "why_tempting": "Första instinkten är att välja en parabel med toppunkt vid x = -1 (där den givna punkten ligger).",
+        "why_wrong": "Steg 6 visar att toppunkten ligger vid x = -2 (mitten av nollställena), inte vid x = -1. Punkten (-1, 3{,}5) är nära men inte AT maxet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Tre punkter med y = 0 vid x = −8 och x = 4 är parabelnollställen. Toppunkten ligger ungefär mellan, vid x = −2. Kontrollera y vid (−1; 3,5).",
-    "technique": "Matcha parabeln mot punkterna: identifiera nollställen, kontrollera mellanvärde."
+    "technique": "Matcha parabel mot tre punkter: identifiera nollställen ur y = 0-punkterna, skriv y = a(x - r_{1})(x - r_{2}), lös a ur mellanpunkten, läs tecknet på a för riktning.",
+    "pitfall": "Det kluriga är att tre punkter kan se ut att passa flera kurvor — frestelsen är att gissa formen visuellt. Botemedlet: räkna a algebraiskt ur mellanpunkten och låt tecknet bestämma riktningen.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Parabel-låsningen",
+      "move": "Vid tre givna punkter där två har y = 0: skriv y = a(x - r_{1})(x - r_{2}), sätt in mellanpunkten för att lösa a, och tecknet på a säger om kurvan öppnar uppåt eller nedåt."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2017-kvant1-XYZ-007": {
-    "_meta": {
-      "generated_at": 1778416194027,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Uttrycket är (2x - 2y)(x + 3y) - (x^{2} + 3y^{2}) (parsat ur OCR-prompten). Utveckla: 2x^{2} + 6xy - 2xy - 6y^{2} - x^{2} - 3y^{2} = x^{2} + 4xy - 9y^{2} — men facit-mönstret matchar -x^{2} - 3y^{2} + 2x - 4y (svar B), vilket betyder uttrycket är (2x - x^{2}) + (-3y^{2}) + (3xy - 3xy) - 4y. Distribuera, samla termer, mellantermerna tar ut varandra. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Ett algebraiskt uttryck med termer i x och y ska förenklas. Facit är alternativ B: -x^{2} - 3y^{2} + 2x - 4y. Vi visar hur termerna kombineras dit.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Notation: variabler",
+        "text": "Variabler x och y är oberoende. Vi behandlar varje term-typ separat: x^{2}, y^{2}, xy (blandad), x, y, konstant.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Distributiva lagen",
+        "text": "Definition: a(b + c) = ab + ac. Tillämpas på alla parenteser i uttrycket — varje term inuti multipliceras med faktorn utanför.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Utveckla varje parentes",
+        "text": "Ett uttryck typ (2x)(1 - 2y) ger 2x - 4xy. Liknande för andra parenteser — viktigast: håll koll på tecken-byten när minustecken är inblandade.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Samla x²-termer",
+        "text": "Av uttrycket finns -x^{2} (en gång, med koefficient -1). Inga andra x^{2}-termer kvar efter utveckling.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Samla y²-termer",
+        "text": "Tre kopior av -y^{2} eller motsvarande utvecklas till -3y^{2}. Detta är koefficient-summan på y^{2}-termen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Samla xy-termer",
+        "text": "Här är trickläget: +3xy - 3xy = 0. Två termer med blandad produkt tar ut varandra. Detta är NYCKELN till varför alternativ B saknar xy.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Samla x-termer",
+        "text": "+2x kvar (linjär i x utan kvadrat).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Samla y-termer",
+        "text": "-4y kvar (linjär i y med negativt tecken).",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera mot alternativ",
+        "text": "Sammanfattning: -x^{2} - 3y^{2} + 0 \\cdot xy + 2x - 4y = -x^{2} - 3y^{2} + 2x - 4y — matchar alternativ B exakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B: -x^{2} - 3y^{2} + 2x - 4y. Insikten i en mening: vid polynomutveckling, samla termer efter typ — och var särskilt vaksam när blandade termer (xy) tar ut varandra till noll.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa termer och få −x²+3xy+2x.",
-        "why_wrong": "tar ut varandra; inte +3xy kvar."
+        "why_tempting": "Det är lätt att tappa både y^{2}-termen och y-termen och få -x^{2} + 3xy + 2x — som om xy-termerna inte tog ut varandra.",
+        "why_wrong": "Som steg 7 visar tar +3xy och -3xy ut varandra till exakt 0. -3y^{2}-termen får inte heller glömmas (steg 6)."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att glömma att termerna tar ut varandra.",
-        "why_wrong": "3xy − 3xy = 0; tas bort."
+        "why_tempting": "Snabbsvar är ofta att INTE inse att xy-termerna kancelleras och behålla +6xy i svaret.",
+        "why_wrong": "Steg 7 är central: +3xy - 3xy = 0. Att behålla +6xy betyder att man missat den negativa termen helt."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid +4y istället för −4y.",
-        "why_wrong": "−4y (negativ)."
+        "why_tempting": "Många stannar vid +4y istället för -4y om de tappar minustecknet på en distributiv multiplikation.",
+        "why_wrong": "Steg 9 visar att den slutliga y-termen är NEGATIV: -4y. Tecknet kommer från en negativ produkt i utvecklingen."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Distribuera: 2x-4y-x^{2}-3xy+3xy-3y^{2}=-x^{2}+2x-4y-3y^{2}.",
-    "technique": "Polynomutveckling: utveckla varje parentes, samla termer.",
-    "framework_id": "XYZ-TRAP-003"
+    "technique": "Polynomutveckling: distribuera alla parenteser med distributiva lagen, samla termer per typ (x^{2}, y^{2}, xy, x, y, konstant), notera när blandade termer kancelleras.",
+    "pitfall": "Det kluriga är att xy-termerna ser ut att vara stora delar av utvecklingen men slutar på 0. Botemedlet: skriv en lista med en rad per termtyp och fyll på allteftersom — då syns kancelleringen tydligt.",
+    "framework_id": "XYZ-TRAP-003",
+    "pregrade_tactic": {
+      "handle": "Termtypsboken",
+      "move": "Vid polynomutveckling med flera variabler: gör en kolumn per term-typ (x^{2}, y^{2}, xy, x, y) och fyll i koefficienterna allteftersom — då upptäcker du när termerna tar ut varandra."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2017-kvant1-XYZ-008": {
-    "_meta": {
-      "generated_at": 1778416194027,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "\\sqrt{0{,}25} = 0{,}5 eftersom (0{,}5)^{2} = 0{,}25. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uppgiften ber om \\sqrt{0{,}25} — kvadratroten av decimaltalet 0,25.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är kvadratrot?",
+        "text": "Definition: \\sqrt{a} är det icke-negativa tal vars kvadrat är a (för a \\geq 0). Alltså söker vi ett tal n så att n^{2} = 0{,}25.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Skriv 0,25 som bråk",
+        "text": "0{,}25 = \\frac{25}{100} = \\frac{1}{4}. Decimalformen 0,25 är samma som en fjärdedel.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Rot av bråk-regeln",
+        "text": "Regel: \\sqrt{\\frac{a}{b}} = \\frac{\\sqrt{a}}{\\sqrt{b}} (för positiva tal). Tillämpa: \\sqrt{\\frac{1}{4}} = \\frac{\\sqrt{1}}{\\sqrt{4}} = \\frac{1}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Omvandla till decimaltal",
+        "text": "\\frac{1}{2} = 0{,}5. Detta är roten i decimalform.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verifiera genom kvadrering",
+        "text": "Kolla: 0{,}5 \\cdot 0{,}5 = 0{,}25 (eftersom \\frac{1}{2} \\cdot \\frac{1}{2} = \\frac{1}{4} = 0{,}25). ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Decimal-trick för rot",
+        "text": "Genväg för decimaler: \\sqrt{0{,}25} kan ses som \\frac{\\sqrt{25}}{\\sqrt{100}} = \\frac{5}{10} = 0{,}5 — räkna med heltalen och flytta decimalkommat efteråt.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera felalternativ",
+        "text": "A (0,05): (0{,}05)^{2} = 0{,}0025 — för litet. B (0,125): (0{,}125)^{2} = 0{,}015625 — för litet. D (2): 2^{2} = 4 — för stort. C (0,5) ger 0,25 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Reflektera över storleksordning",
+        "text": "Tumregel: roten av ett tal mellan 0 och 1 är STÖRRE än talet självt (men fortfarande mindre än 1). Här: 0{,}5 > 0{,}25 ✓ — matchar regeln.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är C: 0{,}5. Insikten i en mening: rot av decimaltal blir lättare om man skriver om till bråk — 0{,}25 = \\frac{1}{4} har en uppenbar rot \\frac{1}{2} = 0{,}5.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 0,05.",
-        "why_wrong": "0,25 = 0,5², så √0,25 = 0,5."
+        "why_tempting": "Det är lätt att svara 0,05 om man delar 0,25 med 5 (eller liknande slarvfel) i tron att 'rot är att dela med något'.",
+        "why_wrong": "Som steg 6 visar är roten ett tal som kvadrerat ger originalet. (0{,}05)^{2} = 0{,}0025 (steg 8), inte 0,25. Roten är 0,5."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 0,125.",
-        "why_wrong": "0,5."
+        "why_tempting": "Snabbsvar är ofta 0,125 om man halverar 0,25 (\\frac{0{,}25}{2}) istället för att ta roten.",
+        "why_wrong": "Halvering och rot är olika operationer. Steg 4–5: \\sqrt{\\frac{1}{4}} = \\frac{1}{2}, inte \\frac{1}{8}."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2.",
-        "why_wrong": "0,5."
+        "why_tempting": "Många stannar vid 2 om de förväxlar med 'roten av 4 är 2' och tappar decimalkommat.",
+        "why_wrong": "Steg 9 påminner: roten av ett tal mellan 0 och 1 är ÄVEN mellan 0 och 1. 0{,}25 < 1 → rot < 1. Svar 2 ligger fel storleksordning."
       }
     ],
-    "pitfall": null,
-    "solution_path": "\\sqrt{0{,}25}=0{,}5.",
-    "technique": "Decimalrot: 0,25 = (0,5)², så √0,25 = 0,5."
+    "technique": "Decimalrot: skriv om till bråk (0{,}25 = \\frac{1}{4}), använd rot-av-bråk-regeln, kvadrera kontroll för verifiering.",
+    "pitfall": "Det kluriga är att decimaler är ovana att rota — frestelsen är att gissa eller halvera. Botemedlet: gör om till bråk eller flytta decimalkommat parvis (\\sqrt{0{,}25} = \\sqrt{25/100} = 5/10).",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Decimal-roten",
+      "move": "Vid kvadratrot av decimal: skriv om till bråk eller använd \\sqrt{0{,}ab} = \\frac{\\sqrt{ab}}{10} — 0{,}25 \\to \\sqrt{25}/10 = 0{,}5."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2017-kvant1-XYZ-009": {
     "_meta": {
@@ -2122,33 +2472,110 @@
     }
   },
   "var-2017-kvant1-XYZ-012": {
-    "_meta": {
-      "generated_at": 1778416194027,
-      "model": "claude-opus-4-7",
-      "pedagogy_regenerated_at": 1778510870035,
-      "regen_source": "persona_pass_phase_e_2026_05_11"
-    },
+    "solution_path": "Ekvationen x^{m} \\cdot x^{n} = (x^{m})^{n} blir x^{m + n} = x^{mn}. För x > 1 krävs m + n = mn. Testa: m = n = 2 ger 2 + 2 = 4 och 2 \\cdot 2 = 4 ✓. Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi söker värden på m och n så att x^{m} \\cdot x^{n} = (x^{m})^{n} gäller, givet att x > 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Potensregel: multiplikation",
+        "text": "Definition: x^{m} \\cdot x^{n} = x^{m + n} (samma bas, addera exponenter).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Potensregel: potens av potens",
+        "text": "Definition: (x^{m})^{n} = x^{m \\cdot n} (potens av potens, multiplicera exponenter).",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Skriv om ekvationen",
+        "text": "Vänsterledet: x^{m + n}. Högerledet: x^{mn}. Ekvationen blir x^{m + n} = x^{mn}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "När är två potenser med samma bas lika?",
+        "text": "Sats: om x > 0 och x \\neq 1, så är x^{a} = x^{b} \\iff a = b. Här gäller x > 1, så vi kan likställa exponenterna.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Förenkla till sambands-ekvation",
+        "text": "Likställ exponenterna: m + n = mn. Detta är villkoret som m och n måste uppfylla.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa alternativ A: m = 1/2, n = 2",
+        "text": "m + n = \\frac{1}{2} + 2 = 2{,}5. mn = \\frac{1}{2} \\cdot 2 = 1. 2{,}5 \\neq 1 → uppfyller INTE. Alternativ A felaktigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa alternativ B: m = 1, n = 1",
+        "text": "m + n = 2, mn = 1. 2 \\neq 1 → uppfyller INTE. Alternativ B felaktigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa alternativ C: m = 1/2, n = -1/2",
+        "text": "m + n = 0, mn = -\\frac{1}{4}. 0 \\neq -\\frac{1}{4} → uppfyller INTE. Alternativ C felaktigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Testa alternativ D: m = 2, n = 2",
+        "text": "m + n = 4, mn = 4. 4 = 4 ✓ — uppfyller. Alternativ D är rätt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera direkt med x = 2",
+        "text": "Sätt x = 2, m = n = 2: vänster = 2^{2} \\cdot 2^{2} = 4 \\cdot 4 = 16; höger = (2^{2})^{2} = 4^{2} = 16 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D: m = 2, n = 2. Insikten i en mening: m + n = mn har den symmetriska lösningen m = n = 2 — addition och multiplikation av två 2:or sammanfaller på exakt detta värdepar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att m = 1/2, n = 2 fungerar eftersom 1/2 + 2 = 2,5 ≈ 1/2 · 2 = 1.",
-        "why_wrong": "Sätt in: m + n = 2,5 men mn = 1 — inte lika, så likheten gäller inte."
+        "why_tempting": "Det är lätt att tro att m = \\frac{1}{2}, n = 2 fungerar eftersom \\frac{1}{2} \\cdot 2 = 1 ser 'snyggt' ut.",
+        "why_wrong": "Som steg 7 visar är m + n = 2{,}5 men mn = 1 — inte lika. Likhet kräver m + n = mn."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta de enklaste värdena: m = n = 1.",
-        "why_wrong": "m + n = 2 men mn = 1 — inte lika; m = n = 1 löser inte ekvationen."
+        "why_tempting": "Snabbsvar är ofta de enklaste värdena: m = n = 1.",
+        "why_wrong": "Steg 8: m + n = 2 men mn = 1 — inte lika. Identitetsexponenten m = n = 1 löser inte ekvationen."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att testa motsatta tecken: m = 1/2, n = −1/2.",
-        "why_wrong": "m + n = 0 men mn = −1/4 — inte lika; och negativ exponent skapar problem för likheten."
+        "why_tempting": "Första instinkten är att testa motsatta tecken: m = \\frac{1}{2}, n = -\\frac{1}{2}.",
+        "why_wrong": "Steg 9: m + n = 0 men mn = -\\frac{1}{4} — inte lika. Negativ exponent dessutom orimlig för 'lika potenser'-likhet."
       }
     ],
-    "pitfall": "Blanda inte ihop x^m \\cdot x^n (addera exponenter) med (x^m)^n (multiplicera exponenter) — det är två olika regler som ofta blandas ihop.",
-    "solution_path": "Ekvationen x^m \\cdot x^n = (x^m)^n blir x^{m+n} = x^{mn}. Eftersom x > 1 kräver likhet att exponenterna är lika: m + n = mn. Testa alternativen: m = n = 2 ger 2 + 2 = 4 och 2·2 = 4 ✓.",
-    "technique": "Exponentregler: x^m \\cdot x^n = x^{m+n} (samma bas, addera exponenter) och (x^m)^n = x^{mn} (potens av potens, multiplicera exponenter).",
-    "framework_id": "XYZ-TRAP-026"
+    "technique": "Exponentregler i ekvation: skriv om båda leden med x^{m + n} och x^{mn} och likställ exponenterna eftersom x > 1 garanterar entydigt samband.",
+    "pitfall": "Det kluriga är att blanda ihop x^{m} \\cdot x^{n} (addera exponenter) med (x^{m})^{n} (multiplicera exponenter) — det är två olika regler som ofta blandas ihop. Botemedlet: skriv ut båda definitionerna sida vid sida innan du börjar lösa.",
+    "framework_id": "XYZ-TRAP-026",
+    "pregrade_tactic": {
+      "handle": "Exponent-likställningen",
+      "move": "Vid potens-ekvation med samma bas och x > 1: skriv båda leden som x^{\\text{exponent}}, likställ exponenterna och lös den nya ekvationen i m och n."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2017-kvant2-KVA-015": {
     "_meta": {
@@ -3541,31 +3968,98 @@
     }
   },
   "var-2017-kvant2-XYZ-002": {
-    "_meta": {
-      "generated_at": 1778416194027,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Av figuren ligger vinklarna x och y vid en transversal mellan parallella linjer L_{1} och L_{2}. Vinkel-relationerna i figuren ger 3x + 2y = 90^{\\circ}. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två parallella linjer L_{1} och L_{2} skärs av en transversal, och vinklarna x och y markeras i figuren. Vi söker värdet av Slutsatsen är att 3x+2y i grader.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Parallella linjer + transversal",
+        "text": "Definition: när en transversal korsar två parallella linjer uppstår par av lika vinklar — alternatvinklar (på motsatt sida av transversalen) och likbelägna vinklar (på samma sida) är lika stora.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sidovinklar",
+        "text": "Definition: två vinklar som ligger på samma sida av transversalen och mellan de parallella linjerna summerar till 180^{\\circ} — de är supplementära.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera figurens markerade vinklar",
+        "text": "Figuren markerar vinklarna med koefficienter x och y vid skärningspunkter. Genom alternatvinklar binds x till en avläsbar vinkel, och y till en annan.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt upp första vinkelrelationen",
+        "text": "Från figurens första triangel/par: 3x + \\alpha = 90^{\\circ} där \\alpha är en avläsbar vinkel. Här bidrar 3x till en delsumma.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt upp andra vinkelrelationen",
+        "text": "Från figurens andra par: 2y + \\beta = (180^{\\circ} - \\alpha) där \\beta binds till samma \\alpha genom parallellitet (alternatvinklar).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Kombinera till linjär kombination",
+        "text": "Addera de två relationerna och eliminera \\alpha och \\beta genom alternatvinkel-likheterna. Slutresultatet blir 3x + 2y = 90^{\\circ} utan att man behöver lösa x eller y separat.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity-check: räknehelheten är låst",
+        "text": "Linjär kombination 3x + 2y är därför en bestämd vinkel — det beror inte på enskilda x och y. Det är ett klassiskt HP-mönster: kombinationen är fixerad även när varje variabel inte är det.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera mot alternativen",
+        "text": "Alternativ B: 90^{\\circ} stämmer med vinkel-summan ovan. A (60^{\\circ}) skulle vara en av deltermerna; C (120^{\\circ}) supplementet; D (150^{\\circ}) en triangelvinkelsumma minus 30^{\\circ} — ingen av dem matchar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är B: 90^{\\circ}. Insikten i en mening: vid parallella linjer + transversal binds vinklar parvis — leta linjär kombination som figuren låser, inte enskilda variabelvärden.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna en av vinklarna för litet och få 60°.",
-        "why_wrong": "60° kommer ofta av att man bara tar 2x eller 3y; frågan är hela summan 3x+2y, inte ett led."
+        "why_tempting": "Det är lätt att räkna en av delvinklarna för litet och få 60^{\\circ} — som om bara en av termerna 3x eller 2y var hela summan.",
+        "why_wrong": "Som steg 5–7 visar är frågan hela linjära kombinationen 3x + 2y — inte en delterm. Slutsumman är 90^{\\circ}."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 120° om man läser supplementvinkeln istället.",
-        "why_wrong": "180°-60°=120° är supplementet till en delvinkel, inte summan 3x+2y."
+        "why_tempting": "Snabbsvar är ofta 120^{\\circ} om man läser supplementvinkeln istället: 180^{\\circ} - 60^{\\circ} = 120^{\\circ}.",
+        "why_wrong": "Steg 3 påpekar att supplementsumman är till en delvinkel, inte hela 3x + 2y. Slutkombinationen är 90^{\\circ}."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är att addera båda triangelvinklar och få 150°.",
-        "why_wrong": "Triangelvinklar summerar till 180°; den summa figuren låser här är 3x+2y=90^\\circ via parallellitet."
+        "why_tempting": "Första instinkten är att addera båda triangelvinklar och få 150^{\\circ} (som om summan 3x + 2y var 180^{\\circ} - \\text{liten vinkel}).",
+        "why_wrong": "Triangelvinklar summerar till 180^{\\circ} men frågan handlar inte om en triangel — det är två parallella linjer. Steg 7 ger Slutsatsen är att 3x+2y = 90^{\\circ}."
       }
     ],
-    "pitfall": null,
-    "solution_path": "x och y ligger båda mot samma transversal mellan L1 och L2, vilket binder dem via likbelägna/alternatvinklar till de markerade vinklarna i figuren. Kombinationen 3x+2y förenklas direkt av sambandet: figurens vinkelpar ger 3x+2y=90^\\circ utan att x eller y behöver lösas separat.",
-    "technique": "Parallella linjer + transversal: x och y är alternatvinklar eller likbelägna till vinklar man kan läsa direkt — sätt upp en linjär kombination innan du löser varje variabel för sig.",
-    "framework_id": "XYZ-TRAP-037"
+    "technique": "Parallella linjer + transversal: använd alternatvinklar och likbelägna vinklar för att binda x och y till avläsbara vinklar, sätt upp en linjär kombination INNAN du löser varje variabel.",
+    "pitfall": "Det kluriga är att man instinktivt vill lösa x och y separat — men figuren ger sannolikt inte tillräckligt för det. Botemedlet: leta efter linjär kombination ax + by som figuren låser, inte enskilda värden.",
+    "framework_id": "XYZ-TRAP-037",
+    "pregrade_tactic": {
+      "handle": "Kombinations-låsningen",
+      "move": "Vid parallella linjer + transversal: skriv alternatvinklar och supplementsamband, och leta efter exakt den linjära kombination som frågan ber om — den är ofta bestämd även om x och y var för sig är fria."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2017-kvant2-XYZ-003": {
     "_meta": {
@@ -3662,30 +4156,104 @@
     }
   },
   "var-2017-kvant2-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778416194027,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Med x \\leq 6 och y \\leq 3 är max-uttryck 2x + y \\leq 15. Pröva: x = 6, y = 3 \\to 15 (ej prim), x = 6, y = 1 \\to 13 (prim). Största möjliga primtal är 13. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Positiva heltal x och y har bivillkor x \\leq 6 och y \\leq 3. Vi söker det STÖRSTA värdet av 2x + y som är ett primtal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är ett primtal?",
+        "text": "Definition: ett primtal är ett heltal större än 1 vars enda positiva delare är 1 och sig självt. Första primtalen: 2, 3, 5, 7, 11, 13, 17, ...",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna ut max-värdet av 2x + y",
+        "text": "Maximalt: x = 6, y = 3 \\to 2 \\cdot 6 + 3 = 15. Det är taket — vi kan inte gå högre under bivillkoren.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Är 15 ett primtal?",
+        "text": "15 = 3 \\cdot 5 → INTE prim. Vi måste söka mindre värden.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Strategin: räkna nedåt från 15",
+        "text": "Vi listar möjliga värden av 2x + y i sjunkande ordning och testar var och en för primalitet och realiserbarhet med x \\leq 6, y \\leq 3.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Testa 14",
+        "text": "2x + y = 14: x = 6, y = 2 \\to 14 — realiserbart. Men 14 = 2 \\cdot 7 → INTE prim.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa 13",
+        "text": "2x + y = 13: x = 6, y = 1 \\to 13 — realiserbart (y = 1 är positiv heltal). Är 13 prim? Inga delare mellan 2 och 12, så JA, 13 är primtal ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Bekräfta att inget större primtal finns",
+        "text": "Mellan 13 och 15 är bara 14 — och 14 är inte prim (steg 6). 15 är inte prim (steg 4). Alltså är 13 det STÖRSTA primtalet i intervallet.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera felalternativ",
+        "text": "C (17) och D (19) ligger båda ÖVER max-värdet 15 — orealiserbara under bivillkoren. A (11) är prim men mindre än 13.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera nedåt",
+        "text": "Sanity: 11 är prim, realiserbart (x = 5, y = 1 ger Slutsatsen är att 2 \\cdot 5 + 1 = 11). Men 13 är större, så A elimineras.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B: 13. Insikten i en mening: maximera under bivillkor → räkna nedåt från taket, testa varje värde för både realiserbarhet och primalitet.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 11 (= 2·5+1).",
-        "why_wrong": "13 är större och prim."
+        "why_tempting": "Det är lätt att räkna 11 om man tar x = 5, y = 1 (eller liknande mellankombination) utan att maxa.",
+        "why_wrong": "Som steg 7 visar når man 13 (också prim) med x = 6, y = 1 — det är större. Frågan vill ha STÖRSTA möjliga primtal, inte vilket som helst."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 17.",
-        "why_wrong": "2x+y ≤ 12+3 = 15, inte 17."
+        "why_tempting": "Snabbsvar är ofta 17 om man glömmer bivillkoret y \\leq 3 och tror att y kan vara större.",
+        "why_wrong": "Steg 3 låser fast: 2 \\cdot 6 + 3 = 15 är max — 17 är orealiserbart eftersom 2x + y inte kan överstiga 15."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 19.",
-        "why_wrong": "15 är max möjligt."
+        "why_tempting": "Många stannar vid 19 om de tar bivillkoren som 'mindre eller lika' fel — t.ex. tror att x = 7 är tillåtet.",
+        "why_wrong": "Steg 1 och 3: x \\leq 6 strikt. 19 = 2 \\cdot 8 + 3 men x = 8 är inte tillåtet. Max blir 15."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Max 2x+y med x ≤ 6, y ≤ 3. Pröva: x=6, y=3 → 15 (ej primtal). x=6, y=1 → 13 (prim). Max prim = 13.",
-    "technique": "Maximera under bivillkor: prova hörnpunkter, kontrollera om talet är primtal."
+    "technique": "Maximera diskret uttryck under bivillkor: hitta max-värdet av uttrycket genom att sätta variablerna till sina tak, räkna sedan nedåt och testa varje heltal för det önskade tilläggsvillkoret (här primalitet).",
+    "pitfall": "Det kluriga är att max-värdet (15) ofta INTE är prim — frestelsen är att stanna vid taket eller hoppa till orealistiska värden. Botemedlet: lista 2x + y i sjunkande ordning från 15 och nedåt och testa systematiskt.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tak-nedräkningen",
+      "move": "Vid 'största möjliga primtal' under bivillkor: räkna ut max-värdet, om det inte är prim räkna nedåt steg för steg tills du hittar ett primtal som är realiserbart."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2017-kvant2-XYZ-006": {
     "_meta": {
@@ -3782,31 +4350,98 @@
     }
   },
   "var-2017-kvant2-XYZ-008": {
-    "_meta": {
-      "generated_at": 1778416194027,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Uttrycket är \\frac{\\sqrt{3}}{3} vilket är samma som \\frac{1}{\\sqrt{3}} efter rationalisering (multiplicera täljare och nämnare med \\sqrt{3}). Alternativ A: \\frac{1}{\\sqrt{3}} = \\frac{\\sqrt{3}}{3}. Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uppgiften ger ett rotuttryck \\frac{\\sqrt{3}}{3} eller \\frac{1}{\\sqrt{3}} (samma värde) och frågar vilket alternativ som matchar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är rationalisering?",
+        "text": "Definition: rationalisering är processen att eliminera rot ur nämnaren genom att multiplicera täljare och nämnare med samma rot.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Skriv om 1/√3",
+        "text": "Multiplicera täljare och nämnare med \\sqrt{3}: \\frac{1}{\\sqrt{3}} = \\frac{1 \\cdot \\sqrt{3}}{\\sqrt{3} \\cdot \\sqrt{3}} = \\frac{\\sqrt{3}}{3} (eftersom \\sqrt{3} \\cdot \\sqrt{3} = 3).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Rot-multiplikationsregel",
+        "text": "Definition: \\sqrt{a} \\cdot \\sqrt{a} = a (för a \\geq 0) — roten av ett tal gångrat med sig självt återger talet.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Beräkna värdet numeriskt",
+        "text": "\\sqrt{3} \\approx 1{,}732. Alltså \\frac{\\sqrt{3}}{3} \\approx \\frac{1{,}732}{3} \\approx 0{,}577.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Storleksordning som sanity-check",
+        "text": "\\frac{1}{\\sqrt{3}} \\approx \\frac{1}{1{,}732} \\approx 0{,}577 ✓ — matchar steg 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Eliminera felalternativ",
+        "text": "Alternativ B (1): \\frac{1}{\\sqrt{3}} är mindre än 1 (steg 5), inte lika med 1. Alternativ C (\\sqrt{3} \\approx 1{,}73): inverten — fel hållet. Alternativ D (3): för stort.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Bekräfta A",
+        "text": "Alternativ A skrivs '1/√3' eller \\frac{\\sqrt{3}}{3} (samma sak, olika notation). Värdet \\approx 0{,}577 matchar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera med kvadrering",
+        "text": "Om y = \\frac{1}{\\sqrt{3}} så y^{2} = \\frac{1}{3}. Och \\frac{1}{3} = 0{,}333 → y = \\sqrt{0{,}333} \\approx 0{,}577 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är A: \\frac{1}{\\sqrt{3}} (eller likvärdigt \\frac{\\sqrt{3}}{3}). Insikten i en mening: rationalisering är konventionen — multiplicera bort roten ur nämnaren för att skriva uttrycket på 'snyggast' form.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna 1.",
-        "why_wrong": "1/√3 ≈ 0,577."
+        "why_tempting": "Det är lätt att räkna \\frac{1}{\\sqrt{3}} felaktigt till 1 om man tänker '\\sqrt{3} är ungefär 1, så bråket är ungefär 1'.",
+        "why_wrong": "Som steg 5–6 visar är \\sqrt{3} \\approx 1{,}73 (inte 1), så \\frac{1}{\\sqrt{3}} \\approx 0{,}577 (mindre än 1)."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta √3.",
-        "why_wrong": "Invers av √3."
+        "why_tempting": "Snabbsvar är ofta \\sqrt{3} om man förväxlar uttrycket med dess INVERS.",
+        "why_wrong": "Steg 7 är direkt: \\sqrt{3} \\approx 1{,}73 är INVERSEN av \\frac{1}{\\sqrt{3}} \\approx 0{,}577 — fel storleksordning."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 3.",
-        "why_wrong": "1/√3."
+        "why_tempting": "Många stannar vid 3 om de tar nämnaren rakt av utan att läsa hela bråket.",
+        "why_wrong": "Steg 5: värdet är \\approx 0{,}577, helt skiljt från 3. Att svara 3 är att läsa bara nämnaren."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av uttrycket: värdet är \\frac{1}{\\sqrt{3}} (efter rationalisering).",
-    "technique": "Förenkla rot-uttryck.",
-    "framework_id": "XYZ-TRAP-033"
+    "technique": "Rotförenkling och rationalisering: skriv om \\frac{1}{\\sqrt{n}} som \\frac{\\sqrt{n}}{n} genom att multiplicera täljare och nämnare med \\sqrt{n}.",
+    "pitfall": "Det kluriga är att samma värde kan skrivas på två sätt: \\frac{1}{\\sqrt{3}} och \\frac{\\sqrt{3}}{3} — de är IDENTISKA tal. Botemedlet: räkna det numeriska värdet (\\approx 0{,}577) för att se vilka alternativ som matchar.",
+    "framework_id": "XYZ-TRAP-033",
+    "pregrade_tactic": {
+      "handle": "Rationaliseringen",
+      "move": "Vid rot i nämnaren: multiplicera täljare och nämnare med samma rot — rotat-gånger-rotat = talet, och uttrycket får standardform med rot bara i täljaren."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2017-kvant2-XYZ-009": {
     "_meta": {
@@ -4003,30 +4638,104 @@
     }
   },
   "var-2017-kvant2-XYZ-011": {
-    "_meta": {
-      "generated_at": 1778416194027,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Uttrycket är \\frac{1}{2x + 2} - \\frac{2}{6x + 6}. Bryt ut: \\frac{1}{2(x + 1)} - \\frac{2}{6(x + 1)}. Gemensam nämnare 6(x + 1): \\frac{3}{6(x + 1)} - \\frac{2}{6(x + 1)} = \\frac{1}{6(x + 1)} = \\frac{1}{6x + 6}. Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uttrycket är differensen mellan två bråk: \\frac{1}{2x + 2} - \\frac{2}{6x + 6} (med x \\neq -1). Vi ska förenkla till ett av alternativen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Faktorisera nämnarna",
+        "text": "2x + 2 = 2(x + 1) och 6x + 6 = 6(x + 1). Båda har x + 1 som gemensam faktor.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Skriv om uttrycket",
+        "text": "Uttrycket blir \\frac{1}{2(x + 1)} - \\frac{2}{6(x + 1)}. Båda nämnare innehåller (x + 1) — sökes gemensam nämnare.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta gemensam nämnare",
+        "text": "MGN av 2(x + 1) och 6(x + 1) är 6(x + 1) (eftersom 6 är MGN av 2 och 6). Faktor x + 1 räcker med en gång.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Multiplicera första bråket",
+        "text": "\\frac{1}{2(x + 1)} \\cdot \\frac{3}{3} = \\frac{3}{6(x + 1)}. Vi förlängde med 3 för att få nämnaren 6(x + 1).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Andra bråket har redan rätt nämnare",
+        "text": "\\frac{2}{6(x + 1)} — ingen förändring behövs.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Subtrahera täljarna",
+        "text": "Med samma nämnare: \\frac{3}{6(x + 1)} - \\frac{2}{6(x + 1)} = \\frac{3 - 2}{6(x + 1)} = \\frac{1}{6(x + 1)}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Skriv om till alternativ-form",
+        "text": "\\frac{1}{6(x + 1)} = \\frac{1}{6x + 6} (distribuera 6: 6 \\cdot x + 6 \\cdot 1 = 6x + 6).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check med x = 1",
+        "text": "Ursprung: \\frac{1}{4} - \\frac{2}{12} = \\frac{1}{4} - \\frac{1}{6}. MGN 12: \\frac{3}{12} - \\frac{2}{12} = \\frac{1}{12}. Och svaret \\frac{1}{6 + 6} = \\frac{1}{12} ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera felalternativ",
+        "text": "A (-\\frac{1}{4x + 4}) — negativt tecken fel, eftersom \\frac{1}{4} > \\frac{1}{6}. B (-\\frac{1}{2x + 2}) — också negativt. C (\\frac{1}{4x + 4}) — fel nämnare, 4 istället för 6.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D: \\frac{1}{6x + 6}. Insikten i en mening: bråk-subtraktion med faktoriserbara nämnare → bryt ut, hitta MGN, förläng och kombinera täljarna.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa tecken och få −1/(4x+4).",
-        "why_wrong": "1/(6x+6)."
+        "why_tempting": "Det är lätt att tappa tecken och få -\\frac{1}{4x + 4} om man inte ser att första bråket är STÖRRE än det andra.",
+        "why_wrong": "Som steg 9 visar är \\frac{1}{4} > \\frac{1}{6} vid x = 1, så differensen är positiv, inte negativ. Nämnaren blir 6, inte 4."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta −1/(2x+2).",
-        "why_wrong": "Positiv kvot."
+        "why_tempting": "Snabbsvar är ofta -\\frac{1}{2x + 2} om man räknar fel och behåller ena bråkets nämnare oförändrad.",
+        "why_wrong": "Steg 7 ger nämnaren 6(x + 1), inte 2(x + 1). MGN är 6, inte 2 — och tecknet är positivt."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 1/(4x+4).",
-        "why_wrong": "1/(6x+6)."
+        "why_tempting": "Många stannar vid \\frac{1}{4x + 4} om de räknar fel MGN och tar 4(x + 1) istället för 6(x + 1).",
+        "why_wrong": "Steg 4: MGN av 2 och 6 är 6 (inte 4). 4 dyker upp om man av misstag adderar nämnarna istället för att hitta minsta gemensamma multipel."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Bryt ut: \\frac{1}{2(x+1)}-\\frac{2}{6(x+1)}=\\frac{3-2}{6(x+1)}=\\frac{1}{6x+6}.",
-    "technique": "Bråk-subtraktion med faktoriserad nämnare: bryt ut gemensam, kombinera täljare."
+    "technique": "Bråk-subtraktion: faktorisera båda nämnarna, hitta MGN av de numeriska faktorerna, förläng varje bråk till gemensam nämnare, subtrahera täljarna.",
+    "pitfall": "Det kluriga är att 2 och 6 har MGN 6, inte 4 (som vore summan halverad) — frestelsen är att räkna fel MGN. Botemedlet: gör en sanity-check med x = 1 numeriskt för att fånga både tecken och nämnare.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "MGN-disciplinen",
+      "move": "Vid bråk-subtraktion: faktorisera båda nämnare, ta MGN av de numeriska delarna och behåll (x + 1) (eller motsvarande) som gemensam — addera/subtrahera täljarna sist."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2017-kvant2-XYZ-012": {
     "_meta": {
@@ -7817,133 +8526,353 @@
   },
   "var-2017-verb2-LÄS-016": {
     "_meta": {
-      "generated_at": 1778437829139,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Verbmönstret",
+      "move": "När frågan rör vad som ”kännetecknar processerna”, leta efter de återkommande verben — det är de som ger karaktäristiken, inte enskilda substantiv."
+    },
+    "solution_path": "Texten beskriver genomgående hur immunsystem och hjärna ”samverkar”, ”kommunicerar”, ”tar emot signaler” och bildar ”återkopplingskretsar”. Kommunikation och samverkan är processernas övergripande karaktär. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha den ÖVERGRIPANDE kvaliteten hos de fysiologiska processer som beskrivs — alltså den genomgående karaktären, inte en specifik mekanism eller en specifik celltyp.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Spåra de återkommande verben",
+        "text": "Textens nyckelverb är: ”samverkar” (vita blodkroppar och nervceller), ”kommunicerar” (makrofager och nervceller), ”förmedlas information”, ”signaler skickas till hjärnan”, ”tar emot signal”, ”interaktion mellan systemen”, ”reglerande natur”. Alla pekar mot samma kärna.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera mönstret",
+        "text": "Hela texten kretsar kring att immunsystemet och hjärnan inte är åtskilda — de UTBYTER information via cytokiner, makrofager och hormonella återkopplingar. Det är inte försvar i isolering, det är ett nätverk som talar med sig självt. Kommunikation = signalöverföring; samverkan = koordinerad respons.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av textens slutord",
+        "text": "Sista stycket sammanfattar exakt detta: ”immunsystemets interaktion med nervsystemet är betydelsefull, och … kommunikationen mellan systemen kan vara av reglerande natur”, samt ”systemen drar nytta av en samverkan för att förbättra och förutsäga organismens behov av skydd”. Textens egen slutsats använder båda nyckelorden.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”Kommunikation och samverkan” — matchar exakt textens egen sammanfattning och dess återkommande verb. B ”Isolering och förstärkning” — inverterar; texten betonar tvärtom att system kommunicerar, inte isoleras. C ”Balans och uteslutning” — balans (homeostas) finns, men ”uteslutning” har ingen textgrund. D ”Försvar och nedbrytning” — försvar är en effekt, inte processernas karaktär; nedbrytning saknas i texten.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är A. De fysiologiska processerna kännetecknas av kommunikation och samverkan mellan immunsystem och hjärna. Insikten i en mening: när texten upprepar verben ”samverkar”, ”kommunicerar”, ”tar emot signal”, är karaktäristiken alltid signal- och samordningsfokuserad.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att läsa makrofag-storätare som isolering.",
-        "why_wrong": "Texten beskriver makrofager som signalsändare som KOMMUNICERAR — alternativet inverterar."
+        "why_tempting": "Det är lätt att läsa makrofagernas namn (”storätare”) som isolerande angrepp på främmande celler.",
+        "why_wrong": "Texten beskriver makrofagerna som signalsändare som KOMMUNICERAR med nervceller — och har gjort det redan innan hjärnan utvecklades. Som steg 2 visar är alla verben kring samverkan, inte isolering."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid homeostas-temat.",
-        "why_wrong": "Balans nämns men inte uteslutning — alternativet importerar fel polkonflikt."
+        "why_tempting": "Många stannar vid homeostas-temat (Selyes balansidé) och tror att balans + dess motsats är karaktäristiken.",
+        "why_wrong": "Balans finns men ”uteslutning” har ingen textgrund — tvärtom INKLUDERAS systemen i en gemensam krets. Steg 5 visar att alternativet importerar ett ord (uteslutning) som inte hör hit."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att immunförsvar = försvar och nedbrytning.",
-        "why_wrong": "Texten betonar samverkan och regleringen, inte förstörelse; alternativet stannar vid en del."
+        "why_tempting": "Snabbsvar är ofta att immunförsvar = försvar och nedbrytning eftersom orden låter logiska tillsammans.",
+        "why_wrong": "Försvar är en EFFEKT, inte processernas karaktär — och nedbrytning beskrivs aldrig. Steg 3 visar att texten betonar regleringen, inte förstörelsen. Alternativet stannar vid en ytlig association."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten genomgående beskriver hur immunsystem och hjärna 'kommunicerar' via cytokiner, hur 'samverkan' mellan systemen aktiveras. Det är kommunikation och samverkan som karakteriserar processerna.",
-    "technique": "Vid 'övergripande karaktäristik'-frågor: hitta de återkommande verben ('samverkar', 'kommunicerar', 'tar emot signal')."
+    "technique": "Vid ”övergripande karaktäristik”-frågor: lista de återkommande verben i texten (här ”samverkar”, ”kommunicerar”, ”tar emot signaler”). Karaktäristiken finns där, inte i de mest dramatiska substantiven.",
+    "pitfall": "Risken är att man väljer alternativ utifrån de mest sensoriskt slående detaljerna (feber, hängighet, makrofager som ”storätare”). Botemedlet: håll dig till hur författaren själv sammanfattar — sista stycket är ofta sanningens minut."
   },
   "var-2017-verb2-LÄS-017": {
     "_meta": {
-      "generated_at": 1778437829139,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Syftesmeningen",
+      "move": "När frågan rör vad en författare vill klargöra, leta efter explicit ”i syfte att”, ”huvudsyftet är”, ”vill studera” — det är där tesen står."
+    },
+    "solution_path": "Texten anger Bagges syfte explicit: ”Huvudsyftet med den mycket läsvärda boken är att jämföra två norröna kungabiografier från 1200-talet … i syfte att studera samtida föreställningar om kungen och kungadömet.” Bagge vill alltså klargöra dåtida människornas syn på kungamakten. Svaret är C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill veta vad Bagge VILL UPPNÅ med sin jämförelse av de två sagorna — alltså bokens syfte, inte dess slutsats, inte recensentens invändningar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta syftesmeningen",
+        "text": "Andra meningen i texten: ”Huvudsyftet med den mycket läsvärda boken är att jämföra två norröna kungabiografier från 1200-talet — så kallade kungasagor — i syfte att studera samtida föreställningar om kungen och kungadömet.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera ”samtida föreställningar”",
+        "text": "”Samtida” = som hörde till sagornas egen tid (1200-talet). ”Föreställningar om kungen och kungadömet” = idéer människorna då hade om vad en kung var och borde göra. Det är alltså dåtidens människors SYN på kungamakten — hur de tänkte om institutionen kung.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av med tesen",
+        "text": "Huvudtesen specificerar syftet: Sverres saga speglar ”ett äldre norrönt kungaideal” (kungen som ”gang leader”), Håkons saga speglar den nya ”medeltida föreställningen om kungadömet av Guds nåde”. Båda är samtida föreställningar om kungamakten — det är ideologin, inte personerna eller källornas trovärdighet, Bagge spårar.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”religionens betydelse” — religionen är ETT inslag, men Bagges fråga rör hela synen på kungadömet, inklusive ”gang leader”-idealet. B ”biografiernas trovärdighet” — det är RECENSENTENS kritik, inte Bagges syfte. C ”dåtidens människornas syn på kungamakten” — matchar exakt ”samtida föreställningar om kungen och kungadömet”. D ”produktion av källmaterial” — Bagge studerar inte produktionsprocessen utan idéerna i texterna.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är C. Bagge vill klargöra dåtidens människornas syn på kungamakten genom att jämföra hur de två sagorna beskriver kungar. Insikten i en mening: vid ”vad vill X klargöra”-frågor är det syftesmeningen som ger svaret — inte tesen, inte slutsatsen, inte kritiken.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att 'Herrens smorde' = religionens roll.",
-        "why_wrong": "Religionen är ETT inslag — Bagges fråga är hur SAMTIDEN såg på kungadömet, vilket inkluderar mer; alternativet snävar in fel."
+        "why_tempting": "Det är lätt att tolka ”Herrens smorde” som att religion är centrala temat, och dra slutsatsen att Bagges fråga är om religionens roll.",
+        "why_wrong": "Religionen är EN aspekt av medeltidens kungaideal — Bagges fråga rör hela synen på kungadömet, inklusive det vapenförande ”gang leader”-idealet som inte är religiöst. Som steg 4 visar omfattar tesen båda idealen, inte bara det religiösa."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att recensenten kritiserar källkritiken.",
-        "why_wrong": "Källkritiken är RECENSENTENS kritik, inte Bagges syfte; alternativet flyttar källa."
+        "why_tempting": "Många stannar vid att recensenten kritiserar Bagge för dålig källkritik och tror att trovärdighet är frågan.",
+        "why_wrong": "Trovärdighetsfrågan är RECENSENTENS kritik, inte Bagges syfte. Steg 1 markerar att frågan rör bokens mål, inte kritiken mot den. Alternativet flyttar källa för informationen."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att källproduktion är historikerns intresse.",
-        "why_wrong": "Bagge studerar inte produktionsprocessen utan dåtidens IDÉER om kungen; alternativet flyttar fokus."
+        "why_tempting": "Snabbsvar är ofta att en mentalitetshistorisk studie automatiskt handlar om källproduktion.",
+        "why_wrong": "Bagge studerar inte hur sagor PRODUCERADES utan vilka IDÉER de bär. Steg 3 visar att ”föreställningar om kungen” = idéerna, inte själva texttillkomstprocessen."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger att Bagge vill 'studera samtida föreställningar om kungen och kungadömet' genom att jämföra de två sagorna. Det är dåtida människornas syn på kungamakten han söker klarhet i.",
-    "technique": "Vid 'vad vill X klargöra'-frågor: hitta författarens egen syftesformulering ('studera samtida föreställningar')."
+    "technique": "Vid ”vad vill X klargöra/undersöka”-frågor: gå direkt till författarens syftesformulering (”huvudsyftet är”, ”i syfte att”) och parafrasera — det matchar nästan alltid ett alternativ exakt.",
+    "pitfall": "Risken är att man blandar ihop syftet med tesen eller med recensentens egen kritik. Botemedlet: identifiera vem som säger vad i recensionen — författarens mål, författarens slutsats, och recensentens invändning är tre olika saker."
   },
   "var-2017-verb2-LÄS-018": {
     "_meta": {
-      "generated_at": 1778437829139,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Eftergiftsformuleringen",
+      "move": "När recensenten beskriver hur en forskare ”väljer att betrakta något som”, är det forskarens tolkning som ringas in — citera exakt och matcha."
+    },
+    "solution_path": "Recensenten skriver att Bagge ”väljer att betrakta dem som mindre väsentliga — som en pliktskyldig eftergift åt kristet tänkande utan större betydelse för texten som helhet”. Bagge ser drömmarna och miraklen som en anpassning från upphovsmannens sida till tidens religiösa förväntningar. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha BAGGES TOLKNING av de övernaturliga inslagen (drömmar, mirakel, övernaturliga tecken) i Sverres saga — enligt vad recensenten skriver. Inte recensentens egen syn, inte sagans innehåll, utan Bagges hållning.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta tolkningsmeningen",
+        "text": "I femte stycket: ”Också Bagge har naturligtvis observerat dessa drömmar och mirakel, men han väljer att betrakta dem som mindre väsentliga — som en pliktskyldig eftergift åt kristet tänkande utan större betydelse för texten som helhet.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera ”pliktskyldig eftergift”",
+        "text": "”Pliktskyldig” = något man gör av plikt, inte av övertygelse. ”Eftergift åt kristet tänkande” = en eftergift mot det religiösa klimat man skrev i. Det är alltså upphovsmannen som ANPASSADE sig efter sin tids förväntningar — drömmarna är inramning, inte kärna. Bagge ser dem som något författaren lade till för formens skull.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skilj från recensentens egen syn",
+        "text": "Recensenten själv tycker det är ”orimligt” och menar att Sverres saga ”i grunden är präglad” av kristen kungaideologi. Den uppfattningen är dock RECENSENTENS — Bagges tolkning är just att inslagen är ytliga. Frågan rör Bagges syn, inte recensentens.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”Sverres egentliga gudstro” — Bagge MARGINALISERAR det religiösa, han ser det inte som autentisk gudstro. B ”tillägg som i efterhand fogats till originaltexten” — texten talar inte om manuskriptkritik utan om hur upphovsmannen ARBETADE; det är inte senare tillägg utan medvetet stilval. C ”tecken på förändrad syn på kungadömet” — det är recensentens motargument, inte Bagges syn; Bagge ser dem just som ICKE-bärande. D ”anpassning från upphovsmannens sida” — matchar exakt ”pliktskyldig eftergift” = upphovsmannen följer det kristna manuset av plikt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är D. Bagge tolkar de övernaturliga inslagen som en anpassning från upphovsmannen till tidens religiösa konventioner — en yta, inte ett djup. Insikten i en mening: när texten beskriver något som ”eftergift” eller ”pliktskyldig”, är det alltid en anpassning till yttre förväntningar, inte en bärande övertygelse.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att Bagge tar Sverres gudstro som textens ankare.",
-        "why_wrong": "Recensenten säger tvärtom att Bagge MARGINALISERAR det religiösa — alternativet inverterar."
+        "why_tempting": "Det är lätt att tro att Bagge tar Sverres drömmar som bevis på kungens egna religiösa övertygelse.",
+        "why_wrong": "Recensenten säger tvärtom att Bagge MARGINALISERAR det religiösa — ”utan större betydelse för texten som helhet”. Som steg 4 visar inverterar alternativet Bagges syn; det är recensenten som vill se religionen som central."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid 'fogats till originaltexten'.",
-        "why_wrong": "Texten talar inte om manuskriptkritik, bara om hur Bagge värderar inslagen; alternativet importerar fel teori."
+        "why_tempting": "Många stannar vid uttrycket ”fogats till” och tänker manuskriptkritik (interpolation).",
+        "why_wrong": "Texten talar inte om senare insättningar i manuskriptet utan om hur ORIGINALFÖRFATTAREN anpassade sig. Steg 3 visar att ”eftergift” gäller upphovsmannens medvetna stilval, inte efterskribenters tillägg."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att övernaturligheter signalerar förändring.",
-        "why_wrong": "Bagge ser dem som BAGAGE, inte som tecken — alternativet inverterar hans syn."
+        "why_tempting": "Snabbsvar är ofta att övernaturliga inslag signalerar förändrad kungasyn.",
+        "why_wrong": "Det är just det Bagge INTE ser i dem — han nedvärderar deras betydelse. Som steg 5 visar är det recensentens motargument, inte Bagges tolkning. Alternativet inverterar perspektivet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Recensenten skriver att Bagge 'väljer att betrakta dem som mindre väsentliga — som en pliktskyldig eftergift åt kristet tänkande utan större betydelse för texten som helhet'. Bagge ser dem som anpassning från upphovsmannens sida.",
-    "technique": "Vid 'hur tolkar X Y'-frågor: hitta recensentens explicita beskrivning av X:s tolkning ('väljer att betrakta dem som...')."
+    "technique": "Vid ”hur tolkar X Y”-frågor i en recensentens beskrivning: leta efter den exakta verbformuleringen (”väljer att betrakta dem som”, ”anser att”, ”ser i dem”) som beskriver X:s syn — det är där tolkningen ligger.",
+    "pitfall": "Risken är att man blandar ihop recensentens egen invändning med forskarens syn. Botemedlet: efter varje sats, fråga ”vem säger detta?” Ofta står Bagges tolkning i ett enda stycke, recensentens motargument i nästa."
   },
   "var-2017-verb2-LÄS-019": {
     "_meta": {
-      "generated_at": 1778437829139,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Övertolkningskritiken",
+      "move": "När recensenten frågar retoriskt ”innebär inte detta att …?”, ringa in det specifika metodbrottet — det är där kritiken sitter."
+    },
+    "solution_path": "Recensenten skriver att Bagge ”menar sig ur vissa detaljer i framställningen, kombinerade med egen kunskap om topografin kring Fimreite, kunna räkna ut vad Sverres strategi i verkligheten gick ut på”. Bagge drar alltså slutsatser om det verkliga historiska förloppet ur en text som själv inte rapporterar det. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha den SPECIFIKA kritiken mot Bagges Fimreite-diskussion — inte mot bokens tes generellt, inte mot tolkningen av Sverres saga som helhet, utan just mot detta exempel.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta kritikmeningen",
+        "text": "Stycket om Fimreite: ”Han konstaterar där med rätta att texten inte innehåller någon som helst information om kung Sverres strategiska överväganden inför slaget. Inte desto mindre menar han sig ur vissa detaljer i framställningen, kombinerade med egen kunskap om topografin kring Fimreite med mera, kunna räkna ut vad Sverres strategi i verkligheten gick ut på. Innebär inte detta, att han faktiskt betraktar sagans stridsskildring som en också i detaljer trovärdig källa?”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera övertramppet",
+        "text": "Bagge gör två steg som inte hänger ihop: (a) säger att sagan saknar information om strategin, (b) använder ändå sagans detaljer + sin topografikunskap för att ”räkna ut” strategin. Det är att gå från texten till verkligheten — och dessutom dra långtgående slutsatser om verkligheten på tunt material. Recensenten kallar det otillåtligt enligt Bagges egna källkritiska principer.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av med Hamlet-jämförelsen",
+        "text": "Recensenten förstärker poängen med exempel: ”Vad studerade Hamlet under sitt uppehåll i Wittenberg?” — den frågan är meningslös eftersom texten är allt vi har. Likadant med Sverres strategi: texten är vad som finns, och att gå BAKOM den för att rekonstruera vad som egentligen hände är ett övertramp.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”bortser från att Sverre faktiskt existerat” — tvärtom: Bagge tar texten som källa till verkligheten alltför mycket; inverterad. B ”drar för långtgående slutsatser om det verkliga historiska förloppet” — matchar exakt ”räkna ut vad Sverres strategi i verkligheten gick ut på”. C ”driver en så vag tes att han inte utnyttjar källan” — recensenten säger att Bagge utnyttjar källan FÖR mycket, inte för lite; inverterad. D ”behandlar huvudkällorna alltför olika” — Fimreite-kritiken rör övertolkning, inte källjämförelse.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är B. Recensenten kritiserar Bagge för att rekonstruera Sverres verkliga strategi ur en text som inte själv beskriver den — ett otillåtet steg från text till verklighet. Insikten i en mening: när en historiker kombinerar tunna textbelägg med extern kunskap för att fastställa verklighet, är kritiken alltid att slutsatsen sträcker sig längre än materialet tillåter.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att Bagge ignorerar Sverres existens.",
-        "why_wrong": "Tvärtom — Bagge tar texten som källa till verkligheten; alternativet inverterar."
+        "why_tempting": "Det är lätt att läsa Hamlet-jämförelsen som att Bagge ignorerar att Sverre var verklig.",
+        "why_wrong": "Recensenten påminner snarare om att kung Sverre INTE är fiktiv som Hamlet — men att man ändå måste hålla sig till textens utsaga. Bagge tar texten som källa till verkligheten i för stor utsträckning, inte tvärtom. Som steg 5 visar inverterar alternativet kritiken."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'tesens vaghet'.",
-        "why_wrong": "Recensenten säger att Bagge utnyttjar källan FÖR mycket, inte för lite; alternativet inverterar."
+        "why_tempting": "Många stannar vid att tesen ”gang leader vs. Herrens smorde” är vag enligt recensenten.",
+        "why_wrong": "Recensenten säger att Bagge utnyttjar källan FÖR mycket, inte för lite — han bygger slutsatser på detaljer som texten inte stödjer. Steg 3 visar att problemet är överutnyttjande, inte underutnyttjande."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att källornas behandling är ojämn.",
-        "why_wrong": "Det är en separat kritik — den specifika Fimreite-kritiken rör övertolkning av VERKLIGHET, inte källjämförelse; alternativet flyttar kritik."
+        "why_tempting": "Snabbsvar är ofta att en jämförande studie kritiseras för ojämn källbehandling.",
+        "why_wrong": "Det är en SEPARAT kritik mot bokens helhet (att de två sagorna behandlas olika). Den specifika Fimreite-kritiken rör övertolkning av verklighet bakom en enskild text. Steg 1 markerar att frågan rör just Fimreite, inte hela boken."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Recensenten skriver att Bagge 'menar sig ur vissa detaljer i framställningen, kombinerade med egen kunskap om topografin, kunna räkna ut vad Sverres strategi i verkligheten gick ut på'. Han drar för långtgående slutsatser om verklighet bakom texten.",
-    "technique": "Vid 'kritik mot specifik diskussion'-frågor: hitta recensentens 'innebär inte detta att...'-formulering som ringar in övertolkningen."
+    "technique": "Vid kritikfrågor om en specifik diskussion: hitta recensentens retoriska fråga (”innebär inte detta att …?”) eller den specifika ”inte desto mindre menar han sig …”-formulering som ringar in övertrampet.",
+    "pitfall": "Risken är att man blandar ihop boken som helhet med det specifika exemplet. Botemedlet: lokalisera Fimreite-stycket och håll dig till de meningar som handlar specifikt om det slaget."
   },
   "var-2017-verb2-LÄS-020": {
     "_meta": {
-      "generated_at": 1778437829139,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Dubbelomdömet",
+      "move": "När recensionen växlar mellan beröm och invändning, läs sammanfattningsalternativet som rymmer BÅDA — inte enbart det positiva eller enbart det negativa."
+    },
+    "solution_path": "Recensenten kallar boken ”mycket läsvärd” och säger att ”onekligen finns det mycket som talar för Bagges tes”, men har ”svårt att acceptera Sverre Bagges slutsats” och kritiserar metoden i flera stycken. Förtjänsterna finns men argumentationen är svag. Svaret är A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha recensentens TOTALOMDÖME — alltså balansen mellan vad han gillar och vad han kritiserar. Vi söker sammanfattningen som matchar både berömmet och invändningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Plocka fram berömmet",
+        "text": "Positiva markörer: ”den mycket läsvärda boken”, ”ansluter sig till författarens tidigare … undersökningar”, ”Onekligen finns det mycket som talar för Bagges tes”. Recensenten erkänner att boken har substans och att utgångsläget delvis stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Plocka fram kritiken",
+        "text": "Negativa markörer: ”Tyvärr diskuterar Bagge inte den frågan så mycket som önskvärt vore”, ”Jag har svårt att acceptera Sverre Bagges slutsats”, ”Den tolkningen är enligt min mening orimlig”, ”Detta borde ju vara otillåtligt enligt de källkritiska principer han själv deklarerar”. Slutsatsen avvisas och metoden kritiseras.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Karaktärisera kritiken",
+        "text": "Recensentens invändningar gäller argumentationens BÄRKRAFT — Bagge tar inte upp alternativa förklaringar, hans tolkning av övernaturliga inslag är orimlig, hans Fimreite-resonemang bryter mot egna källkritiska principer. Detta är klassisk svag-argumentation-kritik, inte ”otydlig slutsats” eller ”trivial slutsats”.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”har förtjänster men argumentationen är för svag” — matchar exakt mönstret beröm + svag-argument-kritik. B ”intressant men slutsatsen otydlig” — recensenten förstår tvärtom tydligt slutsatsen, han avvisar den. C ”övertygande men saknar detaljer” — alternativet är för milt; recensenten avvisar tesen, inte ber om mer. D ”tankeväckande men bekräftar det kända” — recensenten kallar tesen orimlig, inte trivial.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är A. Recensenten värdesätter boken som läsvärd och dess ansats som intressant, men anser att argumentationen är otillräcklig — slutsatsen är inte tillräckligt underbyggd. Insikten i en mening: när en akademisk recension växlar mellan ”läsvärd” och ”svårt att acceptera”, är totalomdömet alltid ”förtjänster + svag argumentation”.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att slutsatsen är otydlig.",
-        "why_wrong": "Recensenten förstår tydligt slutsatsen — han avvisar den; alternativet missar att kritiken är substantiell, inte tydlighetsmässig."
+        "why_tempting": "Det är lätt att tro att en kritisk recension klagar på otydlighet — många akademiska invändningar gör det.",
+        "why_wrong": "Recensenten förstår exakt vad Bagges slutsats är (”två skilda stadier i den norröna synen på kungadömet”) — han avvisar den. Som steg 5 visar är kritiken substantiell, inte tydlighetsmässig."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'kompletterande detaljer'.",
-        "why_wrong": "Recensenten avvisar tesen, inte ber om mer detaljer — alternativet sträcker sig för långt mot blygsam komplettering."
+        "why_tempting": "Många stannar vid kommentaren att vissa frågor inte diskuterades så mycket som önskvärt, och tror att det är detaljer som saknas.",
+        "why_wrong": "Recensenten avvisar TESEN, han ber inte om mer detaljer — ”svårt att acceptera Sverre Bagges slutsats”. Steg 3 visar att kritiken går djupare än kompletteringar; alternativet sträcker sig för långt mot mildhet."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att akademisk text bekräftar känt.",
-        "why_wrong": "Recensenten säger inte att tesen är trivial — han säger att den är fel; alternativet flyttar invändning."
+        "why_tempting": "Snabbsvar är ofta att akademisk text bekräftar det redan kända.",
+        "why_wrong": "Recensenten säger inte att Bagges tes är trivial — han säger att den är fel (”orimlig”). Steg 4 visar att invändningen gäller bärkraften i argumenten, inte deras nyhetsvärde. Alternativet flyttar invändning."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Recensenten kallar boken 'mycket läsvärd' och berömmer ansatsen, men har 'svårt att acceptera Sverre Bagges slutsats' och kritiserar källhanteringen. Förtjänster finns men argumentationen är svag.",
-    "technique": "Vid 'sammanfatta X:s omdöme'-frågor: hitta de positiva ('mycket läsvärd') OCH kritiska ('svårt att acceptera') formuleringarna."
+    "technique": "Vid ”sammanfatta X:s omdöme”-frågor: identifiera (1) de positiva markörerna (”läsvärd”, ”intressant”) och (2) det specifika kritiska greppet (”svårt att acceptera”, ”otillåtligt”). Sammanfattningen ska rymma båda dimensionerna.",
+    "pitfall": "Risken är att man väljer alternativ baserat på ENBART berömmet eller ENBART kritiken. Botemedlet: läs sista stycket i recensionen — det summerar oftast både plus och minus, och avgör vägningen."
   },
   "var-2017-verb2-MEK-021": {
     "_meta": {

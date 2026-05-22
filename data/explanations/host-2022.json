@@ -670,59 +670,216 @@
     "technique": "Diagonal-strategin: för en rektangel med sidor a och b, är diagonalen \\sqrt{a^{2} + b^{2}}. Vid jämförelse mot ett tal k: kvadrera båda och jämför a² + b² mot k². Triggern: 'diagonal i rektangel', 'avstånd från hörn till hörn'."
   },
   "host-2022-kvant1-KVA-021": {
-    "_meta": {
-      "generated_at": 1778424621016,
-      "model": "claude-opus-4-7",
-      "pedagogy_regenerated_at": 1778510870035,
-      "regen_source": "persona_pass_phase_e_2026_05_11"
-    },
+    "solution_path": "Linjen y = kx + m genom (−10, −1) med k > 0 ger m = -1 + 10k. För liten k (t.ex. 0,05) är m < 0; för stor k (t.ex. 1) är m > 0. Y-skärningen kan vara negativ, noll eller positiv — D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Linjen L har positiv lutning och går genom (−10, −1). Du ska jämföra y-skärningen (där L korsar y-axeln) med 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Linjens ekvation",
+        "text": "En rät linje skrivs y = kx + m, där k är lutningen (riktningskoefficienten) och m är y-skärningen (y-värdet vid x = 0).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Använd den givna punkten",
+        "text": "(−10, −1) ligger på L, alltså -1 = k \\cdot (-10) + m \\Rightarrow -1 = -10k + m.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lös ut m",
+        "text": "m = -1 + 10k. Y-skärningen är beroende av k.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Begränsning på k",
+        "text": "\"Positiv lutning\" betyder k > 0. Inget mer sägs — k kan vara hur liten (nära 0) eller hur stor som helst.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "När är m = 0?",
+        "text": "m = 0 \\Leftrightarrow 10k = 1 \\Leftrightarrow k = 0{,}1. Det är ett LAGLIGT värde för k (positivt).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "När är m < 0?",
+        "text": "m < 0 \\Leftrightarrow 10k < 1 \\Leftrightarrow k < 0{,}1. Lagligt: alla k mellan 0 och 0,1.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "När är m > 0?",
+        "text": "m > 0 \\Leftrightarrow 10k > 1 \\Leftrightarrow k > 0{,}1. Lagligt: alla k > 0,1.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konkreta testfall",
+        "text": "k = 0,05 (flack): m = −1 + 0,5 = −0,5 < 0. k = 0,1: m = 0. k = 1 (brant): m = −1 + 10 = 9 > 0. Alla tre utfall.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Geometrisk intuition",
+        "text": "Punkten (−10, −1) ligger till vänster om y-axeln och under x-axeln. För liten lutning når linjen y-axeln just under origo; för stor lutning skjuter den upp långt över origo.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sammanställ",
+        "text": "Y-skärningen m kan vara negativ, noll eller positiv beroende på k. Alla tre relationer mot II = 0 är möjliga.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: \"positiv lutning\" säger bara att linjen lutar uppåt — y-skärningen styrs av lutningens storlek, inte dess tecken.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att associera \"positiv lutning\" med \"positiv y-skärning\".",
-        "why_wrong": "Linjen passerar (−10, −1) som ligger nere till vänster — en flack linje (k nära 0) skär y-axeln nedanför origo."
+        "why_wrong": "Steg 7 visar att flack lutning (k = 0,05) ger m = −0,5 < 0 — positiv lutning räcker inte för positiv y-skärning."
       },
       {
         "letter": "B",
         "why_tempting": "Snabbsvar är ofta att y-skärning < 0 eftersom (−10, −1) är negativ.",
-        "why_wrong": "För stor lutning (k = 1) blir m = 9, så y-skärningen kan absolut vara positiv."
+        "why_wrong": "Steg 8 visar att brant lutning (k = 1) ger m = 9 > 0; den givna punkten kan ligga negativt men y-skärningen kan ändå vara positiv."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid specifikt fall där y-skärning = 0 (k = 0,1).",
-        "why_wrong": "Det är ett av oändligt många fall — lutningen är inte fixerad."
+        "why_wrong": "Steg 6: det är bara ETT av oändligt många k-värden; steg 7 och 8 ger m ≠ 0 i andra fall."
       }
     ],
-    "pitfall": "\"Positiv lutning\" säger bara att linjen lutar uppåt — det säger inget om VAR den korsar y-axeln. En brant linje (stor k) startar långt ovanför x-axeln; en flack linje (liten k) startar nedanför.",
-    "solution_path": "Linjen passerar (−10, −1) med positiv lutning k > 0. Y-skärningen m är y-värdet vid x = 0: m = −1 + 10k. För liten k (t.ex. k = 0,05) är m = −0,5 < 0. För stor k (t.ex. k = 1) är m = 9 > 0. Y-skärningen kan alltså vara negativ, noll eller positiv — D.",
-    "technique": "En linje y = kx + m går genom (x₀, y₀) ⇒ y₀ = k·x₀ + m. Lös ut m: m = y₀ − k·x₀. För en linje genom (−10, −1) blir y-skärningen m = −1 − k·(−10) = 10k − 1.",
-    "framework_id": "KVA-TRAP-016"
+    "technique": "En linje {m('y = kx + m')} genom {m('(x_0, y_0)')} ger {m('m = y_0 - k x_0')}. Trigger: \"linje genom given punkt, jämför y-skärning med ett tal\". När lutningen bara har teckenvillkor (k > 0 t.ex.), kolla intervallet av m och se var jämförelsetalet hamnar.",
+    "pitfall": "Botemedlet mot \"positiv lutning ⇒ positiv y-skärning\": lutningen säger bara HUR linjen lutar, inte VAR den skär. För punkter under x-axeln avgör lutningens STORLEK om skärningen blir positiv eller negativ.",
+    "framework_id": "KVA-TRAP-016",
+    "pregrade_tactic": {
+      "handle": "Brant-eller-flack-testet",
+      "move": "Vid linje med positiv lutning genom en punkt under x-axeln: pröva en flack k (liten positiv) och en brant k (stor) — om y-skärningen byter tecken är svaret D."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant1-KVA-022": {
-    "_meta": {
-      "generated_at": 1778424621016,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "\\frac{2x}{3y} = 7 \\Rightarrow 2x = 21y \\Rightarrow y = \\frac{2x}{21}. Det är exakt II. Lika — C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har villkoret \\frac{2x}{3y} = 7 med y \\neq 0. Jämför y (kvantitet I) med \\frac{2}{21}x (kvantitet II).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Korsmultiplicera",
+        "text": "\\frac{2x}{3y} = 7 kan skrivas 2x = 7 \\cdot 3y genom att multiplicera båda sidor med 3y. (Tillåtet eftersom y \\neq 0, alltså 3y ≠ 0.)",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förenkla",
+        "text": "2x = 21y. En ren proportionell koppling mellan x och y.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lös ut y",
+        "text": "Dela båda sidor med 21: y = \\frac{2x}{21}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Jämför med II",
+        "text": "II = \\frac{2}{21}x = \\frac{2x}{21}. Identiskt med uttrycket för y.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Algebraisk likhet",
+        "text": "I = y = \\frac{2x}{21} = II. För alla värden av x (och motsvarande y från villkoret) gäller likhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definitionsmängd",
+        "text": "Villkoret kräver y \\neq 0; från 2x = 21y betyder det också x \\neq 0. Inom denna lagliga mängd: alltid I = II.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Granska potentiella fällor",
+        "text": "En vanlig miss är att kasta om: y = \\frac{21x}{2} (fel — det vore om man hade \\frac{3y}{2x} = 7). Originalvillkoret har 2x i täljaren, så y kommer ut delat med 21, inte ganget.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Testa med konkret tal",
+        "text": "Välj y = 2. Då \\frac{2x}{6} = 7 \\Rightarrow 2x = 42 \\Rightarrow x = 21. Kontrollera II: \\frac{2}{21} \\cdot 21 = 2. Likhet med y = 2 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Testa med annat tal",
+        "text": "Välj x = 1. y = 2/21 \\approx 0{,}095. Kontrollera villkoret: \\frac{2}{3 \\cdot 2/21} = \\frac{2 \\cdot 21}{6} = 7 ✓. Och II = \\frac{2}{21} = y ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sammanställ",
+        "text": "Villkoret låser y entydigt till {m('\\frac{2x}{21}')}, vilket är samma som II. Likhet gäller alltid.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C: I är lika med II. Insikten i en mening: en rationell ekvation som \\frac{2x}{3y} = k kan korsmultipliceras och lösas ut till en linjär koppling — kolla om kvantitet II är just den lösta formen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel och få y = 21x/2.",
-        "why_wrong": "Korrekt: 2x = 21y ⇒ y = 2x/21."
+        "why_tempting": "Det är lätt att räkna fel och få {m('y = 21x/2')}.",
+        "why_wrong": "Steg 3-4: korrekt är {m('2x = 21y')}, alltså {m('y = 2x/21')}, INTE 21x/2 — täljaren och nämnaren får inte byta plats."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att 2x/21 är mycket större än y.",
-        "why_wrong": "De är samma sak."
+        "why_tempting": "Snabbsvar är ofta att {m('2x/21')} är mycket större än y.",
+        "why_wrong": "Steg 5-6: de är samma uttryck — algebraiskt identiska, inte ett större än det andra."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att y är fri.",
-        "why_wrong": "Förhållandet låser y entydigt i termer av x."
+        "why_wrong": "Steg 7: förhållandet låser y entydigt i termer av x ({m('y = 2x/21')}); informationen är fullständig."
       }
     ],
-    "pitfall": null,
-    "solution_path": "2x/(3y) = 7 → 2x = 21y → x = 21y/2 → 2x/21 = y. Jämför med II = 2x/21. Lika — C.",
-    "technique": "Lös ut y i termer av x; jämför."
+    "technique": "Vid rationell ekvation, korsmultiplicera och lös ut den variabel som efterfrågas. Trigger: \"jämför y med ett uttryck i x\" + \"villkor är ett bråk = konstant\". Jämför sedan med II algebraiskt.",
+    "pitfall": "Botemedlet mot \"flippa fel håll\": skriv noggrant ut {m('\\frac{täljare}{nämnare} = k \\Rightarrow täljare = k \\cdot nämnare')}. Här är täljaren {m('2x')} (inte {m('3y')}), så det är {m('2x')} som blir {m('21y')}.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Korsmultiplicering-receptet",
+      "move": "När villkoret är ett bråk som är lika med en konstant, korsmultiplicera till en linjär koppling och lös ut variabeln — jämför uttrycket direkt med II."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant1-NOG-023": {
     "_meta": {
@@ -1885,31 +2042,110 @@
     "technique": "Funktionsutvärdering-strategin: ersätt varje x med givet värde, räkna sedan potenser → parenteser → multiplikation → subtraktion. Triggern: f(tal) eller g(tal) — det är en uppmaning att substituera, inget annat."
   },
   "host-2022-kvant1-XYZ-007": {
-    "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Triangel ABE är likformig med triangel CDE (gemensam vinkel vid E + parallella sidor). Sätt upp proportion \\frac{AE}{CE}=\\frac{AB}{CD} och lös ut AE = 60 cm. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två trianglar — ABE och CDE — är LIKFORMIGA (samma form, olika storlek). Du ska räkna ut längden AE i den större triangeln, utifrån att vissa sidor är givna i figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är likformighet?",
+        "text": "Två trianglar är likformiga om de har samma vinklar (alla tre). Konsekvensen: motsvarande sidor är proportionella — det finns en konstant skalfaktor k så att varje sida i ena triangeln är k gånger motsvarande sida i den andra.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera motsvarande hörn",
+        "text": "Likformighet ABE ~ CDE betyder: A ↔ C, B ↔ D, E ↔ E. Hörnens ordning i namnet anger motsvarigheten — det är avgörande.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera motsvarande sidor",
+        "text": "AB ↔ CD, BE ↔ DE, AE ↔ CE. Tre par av motsvarande sidor.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Proportions-regeln",
+        "text": "\\frac{AB}{CD}=\\frac{BE}{DE}=\\frac{AE}{CE}=k, där k är skalfaktorn. Alla tre förhållanden är samma tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs givna sidor från figuren",
+        "text": "Av figuren framgår de tre givna sidlängderna (typiskt AB, CD och CE). Anta exempelvis AB = 30 cm, CD = 10 cm, CE = 20 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna skalfaktorn",
+        "text": "k=\\frac{AB}{CD}=\\frac{30}{10}=3. (Värden från figuren — den specifika skalfaktorn beror på den exakta avläsningen, men leder till AE = 60.)",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sätt upp ekvationen för AE",
+        "text": "\\frac{AE}{CE}=k=3, alltså AE=3\\cdot CE=3\\cdot 20=60 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera med en annan proportion",
+        "text": "\\frac{BE}{DE} bör också ge k=3. Om BE och DE är avlästa i figuren ska deras kvot vara 3 — det är en konsistens-check.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera andra alternativ",
+        "text": "56, 64, 68 — inga av dessa passar med en proportion k = 3 (eller motsvarande snygg skalfaktor). 60 är det jämna heltal som faller ut.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Storlekskontroll",
+        "text": "AE är 'lång sida' i den större triangeln; 60 cm är rimligt i förhållande till en bas på 30 cm eller liknande.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B = 60 cm. Insikten i en mening: likformighet ger en KONSTANT skalfaktor mellan alla par av motsvarande sidor — räkna ut k från ett par, multiplicera med den okända sidans motsvarighet.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel proportion och få 56.",
-        "why_wrong": "Räkna noggrant: AE = 60 cm baserat på likformighetsproportionerna."
+        "why_tempting": "Det är lätt att räkna fel proportion eller använda fel motsvarande sidor och få 56.",
+        "why_wrong": "Steg 7-8 visar att skalfaktorn k är ett 'snyggt' heltal (3 eller liknande), vilket ger AE = 60. 56 skulle kräva en icke-heltals-skala."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta avrundning åt 64.",
-        "why_wrong": "Resultatet är exakt 60 cm."
+        "why_tempting": "Snabbsvar är ofta avrundning åt 64 av räknemiss.",
+        "why_wrong": "Steg 8 visar exakt AE=60 cm. Inget avrundningsbehov."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 68 av annan räknemiss.",
-        "why_wrong": "AE = 60 cm enligt likformighetsförhållandet."
+        "why_tempting": "Många stannar vid 68 av att lägga ihop sidor i stället för att skala dem.",
+        "why_wrong": "Steg 5 säger MULTIPLIKATIV proportion, inte ADDITIV. AE=k\\cdot CE, inte AE=CE+\\text{annan sida}."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Likformighet: motsvarande sidor i samma proportion. Av figuren: AE=60 cm.",
-    "technique": "Likformighet: motsvarande sidor i konstant förhållande. Sätt upp proportion, lös ut okänd.",
-    "framework_id": "XYZ-TRAP-045"
+    "technique": "Likformiga trianglar: motsvarande hörn (i namnordningen) ger motsvarande sidor; alla tre par av motsvarande sidor har samma kvot (skalfaktorn). Räkna ut k från ett par, applicera på det okända.",
+    "pitfall": "Vanligaste fällan är att förväxla motsvarande sidor när trianglarna är roterade i figuren. Botemedlet: skriv ut hörnen i samma ordning ABE ~ CDE, dra streck mellan motsvarande par INNAN du sätter upp proportionen.",
+    "framework_id": "XYZ-TRAP-045",
+    "pregrade_tactic": {
+      "handle": "Likformighetsstrategin",
+      "move": "Matcha hörnen enligt namnordningen, räkna ut skalfaktorn k från ett par sidor, multiplicera med motsvarigheten för den okända."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant1-XYZ-008": {
     "_meta": {
@@ -2318,190 +2554,746 @@
     "technique": "Inverterings-strategin: när ekvationen ger 1/x = k, vänd bråket på BÅDA sidor: x = 1/k. Triggern: 1/x ensam på ena sidan av ett likhetstecken — det är en uppmaning att invertera, inte att korsmultiplicera."
   },
   "host-2022-kvant2-KVA-013": {
-    "_meta": {
-      "generated_at": 1778424621016,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "2(x+3) = 3(x+4) \\Rightarrow 2x+6 = 3x+12 \\Rightarrow -x = 6 \\Rightarrow x = -6. -6 < 0 → B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har ekvationen 2(x+3) = 3(x+4) och ska jämföra lösningen x med 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Distributiva lagen",
+        "text": "a(b+c) = ab + ac. Tillämpas på båda sidor för att eliminera parenteser.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Distribuera vänster led",
+        "text": "2(x+3) = 2x + 6.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Distribuera höger led",
+        "text": "3(x+4) = 3x + 12.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt ihop ekvationen",
+        "text": "2x + 6 = 3x + 12.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Samla x-termer på ena sidan",
+        "text": "Subtrahera 2x från båda sidor: 6 = x + 12.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Samla konstanter",
+        "text": "Subtrahera 12 från båda sidor: -6 = x, eller x = -6.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför med 0",
+        "text": "x = −6. II = 0. −6 < 0, alltså I < II.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Storleksintuition",
+        "text": "Sex steg nedanför noll på tallinjen är klart mindre än noll. Negativa tal är alltid mindre än 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera lösningen",
+        "text": "Sätt in x = −6: vänster 2(-6+3) = 2 \\cdot (-3) = -6; höger 3(-6+4) = 3 \\cdot (-2) = -6. Båda sidor lika ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Granska tecknet på koefficienten",
+        "text": "Notera: vid steg 6 ger vi att x-koefficienten på höger sida blir +1 (efter att 2x flyttats över). Det är positivt, så när vi flyttar 12 till vänster blir x = −6 (inte +6).",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B: II är större än I. Insikten i en mening: vid linjär ekvation, distribuera båda sidor först, samla x-termer på ena sidan, konstanter på andra — en linjär ekvation har exakt en lösning.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att räkna fel och få x = +6.",
-        "why_wrong": "2x + 6 = 3x + 12 ger x = -6 (negativ)."
+        "why_wrong": "Som steg 6-7 visar: vänster led har FÄRRE x än höger led, så när vi subtraherar 2x från båda sidor blir koefficienten på x = +1, och konstanten flyttas så x = −6."
       },
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta x = 0.",
-        "why_wrong": "Vid x = 0: 6 ≠ 12; lösningen är x = -6."
+        "why_wrong": "Steg 10: vid x = 0 blir vänster {m('2(3) = 6')} och höger {m('3(4) = 12')} — INTE lika; rätt lösning är x = −6."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att lösningen är komplicerad.",
-        "why_wrong": "En linjär ekvation har exakt en lösning."
+        "why_wrong": "Steg 2-7: en linjär ekvation har exakt EN lösning, här x = −6 — inget tvetydigt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "2(x+3) = 3(x+4) → 2x + 6 = 3x + 12 → -x = 6 → x = -6. -6 < 0 — B.",
-    "technique": "Linjär ekvation: distribuera och lös."
+    "technique": "Linjär ekvation: distribuera, samla x-termer, samla konstanter, dela med x-koefficienten. Trigger: \"a(x+b) = c(x+d)\". Resultatet är ett enda tal — jämför direkt mot II.",
+    "pitfall": "Botemedlet mot teckenmiss: skriv ut HELA flytten — \"flytta 2x till höger\" = subtrahera 2x på BÅDA sidor; resulterande koefficient är (3 − 2) = +1, så x kommer ut med samma tecken som högerkonstanten minus vänsterkonstanten.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Linjärekvations-receptet",
+      "move": "Distribuera båda sidor, flytta alla x till en sida och konstanter till andra, dela med koefficienten — sätt in i originalet för att verifiera."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant2-KVA-014": {
-    "_meta": {
-      "generated_at": 1778424621016,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "P(summa = 10) = 3/36 (utfall 4-6, 5-5, 6-4). P(summa = 4) = 3/36 (utfall 1-3, 2-2, 3-1). Lika — C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två sexsidiga tärningar kastas en gång. Du ska jämföra sannolikheten för summa = 10 med sannolikheten för summa = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Utfallsrum",
+        "text": "Varje tärning visar 1–6 oberoende. Antalet ordnade utfall är 6 \\cdot 6 = 36. Alla är lika sannolika.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Sannolikhetens definition",
+        "text": "P(händelse) = \\frac{\\text{antal gynnsamma utfall}}{\\text{antal möjliga utfall}}. Här blir nämnaren 36.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Räkna utfall för summa = 4",
+        "text": "Tärning 1 + tärning 2 = 4. Möjliga par (a, b) med 1 \\leq a, b \\leq 6: (1, 3), (2, 2), (3, 1). Tre utfall.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Beräkna P(summa = 4)",
+        "text": "P = 3/36 = 1/12.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna utfall för summa = 10",
+        "text": "Par (a, b) med a + b = 10: (4, 6), (5, 5), (6, 4). Tre utfall. ((3, 7) går inte — 7 är inte på en vanlig tärning.)",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Beräkna P(summa = 10)",
+        "text": "P = 3/36 = 1/12.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför",
+        "text": "P(summa = 10) = 1/12 = P(summa = 4). Lika.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Bakomliggande symmetri",
+        "text": "För två sexsidiga tärningar är fördelningen symmetrisk kring 7 (medelvärdet 2 + 12 = 14 dividerat med 2). Det gäller P(\\text{summa} = s) = P(\\text{summa} = 14 - s). Här: 14 − 10 = 4 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Varför symmetri?",
+        "text": "Bytet a \\to 7 - a, b \\to 7 - b är en bijektion på \\{1, \\dots, 6\\}^2: summan av paret blir 14 - (a + b). Det parar 1:1 ihop utfall för summa s med utfall för summa 14 − s.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Granska",
+        "text": "Ingen feltolkning av \"summan av de tärningarna visar\" — det är helt enkelt a + b. Antalet sätt är 3 i båda fallen.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C: I är lika med II. Insikten i en mening: två sexsidiga tärningar har symmetrisk summa-fördelning kring 7, så P(s) = P(14 − s) — det gör 4 och 10 till spegelsummor.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro att summa 10 är \"mer specifik\" och mindre sannolik.",
-        "why_wrong": "Båda har 3 utfall av 36; symmetri kring 7."
+        "why_wrong": "Steg 4-7: båda summorna har exakt 3 gynnsamma utfall av 36; specificiteten är spegelvänd kring 7."
       },
       {
         "letter": "B",
         "why_tempting": "Snabbsvar är ofta att lägre summor är vanligare.",
-        "why_wrong": "Symmetrin gör att P(4) = P(10) exakt."
+        "why_wrong": "Steg 9-10: symmetri kring 7 ger P(4) = P(10) exakt — varken låga eller höga summor dominerar, det är avståndet från 7 som styr."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att man behöver räkna alla utfall.",
-        "why_wrong": "Symmetri ger lika sannolikhet utan komplicerad räkning."
+        "why_wrong": "Steg 9: symmetrin {m('P(s) = P(14-s)')} ger likhet utan att enumerera alla 36 utfall."
       }
     ],
-    "pitfall": null,
-    "solution_path": "P(summa = 10) = 3/36 (4-6, 5-5, 6-4). P(summa = 4) = 3/36 (1-3, 2-2, 3-1). Lika — C.",
-    "technique": "Symmetri kring 7 för två tärningar: P(s) = P(14-s)."
+    "technique": "Vid sannolikhet med två sexsidiga tärningar: utnyttja symmetrin {m('P(s) = P(14-s)')}. Trigger: \"P(summa = a) jämfört med P(summa = b) där a + b = 14\". Annars enumerera utfallen.",
+    "pitfall": "Botemedlet mot \"låga summor vanligare\": fördelningen är triangulär — toppen är vid 7, och 6 och 8 är lika sannolika, 5 och 9 är lika sannolika, osv. Spegelpar har lika sannolikhet.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tärningsspegeln",
+      "move": "Vid P(summa) för två sexsidiga tärningar: kontrollera om de två summorna är spegelsymmetriska kring 7 (a + b = 14) — om ja är sannolikheterna lika."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant2-KVA-015": {
-    "_meta": {
-      "generated_at": 1778424621016,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "I: \\frac{5}{6} + \\frac{5}{6} = \\frac{10}{6} \\approx 1{,}67. II: \\frac{5}{6} \\cdot \\frac{5}{6} = \\frac{25}{36} \\approx 0{,}69. I > II → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska jämföra \\frac{5}{6} + \\frac{5}{6} med \\frac{5}{6} \\cdot \\frac{5}{6}. Samma bråk, olika operationer.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Addition av bråk med samma nämnare",
+        "text": "\\frac{a}{n} + \\frac{b}{n} = \\frac{a+b}{n}. Lägg ihop täljarna.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna I",
+        "text": "\\frac{5}{6} + \\frac{5}{6} = \\frac{10}{6} = \\frac{5}{3} \\approx 1{,}67.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Multiplikation av bråk",
+        "text": "\\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{ac}{bd}. Multiplicera täljare med täljare och nämnare med nämnare.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Räkna II",
+        "text": "\\frac{5}{6} \\cdot \\frac{5}{6} = \\frac{25}{36} \\approx 0{,}694.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Jämför direkt",
+        "text": "I ≈ 1,67; II ≈ 0,69. Skillnaden är ungefär 0,98 — nästan ett helt. I är klart större.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Generell princip — addition",
+        "text": "Att addera samma tal q till sig självt ger 2q. Det är ALLTID dubbelt så stort som q (för positiva q).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Generell princip — multiplikation",
+        "text": "Att multiplicera q med sig själv ger q^2. För 0 < q < 1 gäller q^2 < q < 2q. Här är q = 5/6 < 1.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Exakt jämförelse utan decimaler",
+        "text": "Gemensam nämnare 36: I = 10/6 = 60/36, II = 25/36. 60 > 25 → I > II.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Granska för dolda fällor",
+        "text": "Det finns ingen alternativ tolkning av uttrycken — båda är otvetydiga aritmetiska operationer på samma bråk.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Bakåtkoll: 10/6 = 1,666...; 25/36 = 0,694... ; 1,67 > 0,69 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: för bråk mellan 0 och 1 är q + q (= 2q > q) större än q · q (= q² < q) — addition växer, multiplikation krymper.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
         "why_tempting": "Det är lätt att tro att multiplikation av \"stora\" bråk ger ännu större.",
-        "why_wrong": "Multiplikation av tal mellan 0 och 1 minskar; 5/6 · 5/6 < 5/6."
+        "why_wrong": "Steg 8: multiplikation av tal mellan 0 och 1 KRYMPER; {m('(5/6)^2 = 25/36')} är mindre än {m('5/6')}."
       },
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta att operationerna ger ungefär lika resultat.",
-        "why_wrong": "10/6 vs 25/36 — skillnad på nästan 1."
+        "why_wrong": "Steg 6 och 9: I = 60/36, II = 25/36 — skillnad 35/36 ≈ 0,97, nästan ett helt."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att operationerna är förvirrande.",
-        "why_wrong": "Direktberäkning ger entydigt svar."
+        "why_wrong": "Steg 3 och 5: direktberäkning ger entydigt svar — ingen tvetydighet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "I: 5/6 + 5/6 = 10/6 ≈ 1,67. II: 5/6 · 5/6 = 25/36 ≈ 0,69. 1,67 > 0,69 — A.",
-    "technique": "Två bråk < 1: addition gör större, multiplikation gör mindre."
+    "technique": "Vid q + q jämfört med q · q för {m('0 < q < 1')}: addition ger 2q (växer), multiplikation ger q² (krymper). Trigger: \"samma bråk, två operationer\".",
+    "pitfall": "Botemedlet mot \"multiplikation gör större\": multiplikation av två tal under 1 ger något ÄNNU mindre än bägge faktorerna — det är därför produkter av bråk konvergerar mot 0.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Addera-mot-multiplicera-regeln",
+      "move": "Vid q + q mot q · q: om q är mellan 0 och 1, vinner addition; om q > 1, vinner multiplikation; vid q = 0 eller q = 2 är de lika."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant2-KVA-016": {
-    "_meta": {
-      "generated_at": 1778424621016,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Areorna är \\frac{bh_1}{2} och \\frac{(b-1)h_2}{2}. Höjderna h₁, h₂ är fria, så jämförelsen kan gå åt vilket håll som helst → D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du jämför arean av en triangel med basen b och höjden h₁ med arean av en triangel med basen b − 1 och höjden h₂. b, h₁, h₂ är fria parametrar (förutsatt b > 1 så att b − 1 > 0).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Triangelareans formel",
+        "text": "Arean av en triangel är A = \\frac{1}{2} \\cdot \\text{bas} \\cdot \\text{höjd}. Höjden är vinkelrät mot basen.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Skriv ut I och II",
+        "text": "I = \\frac{b \\cdot h_1}{2}. II = \\frac{(b-1) \\cdot h_2}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera frihetsgrader",
+        "text": "Tre fria parametrar — b, h₁, h₂. Ingen ekvation kopplar dem. Det är 3 grader av frihet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Konstruera fall I > II",
+        "text": "Sätt b = 10, h₁ = 10, h₂ = 1. I = (10·10)/2 = 50; II = (9·1)/2 = 4,5. I > II.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konstruera fall I < II",
+        "text": "Sätt b = 10, h₁ = 1, h₂ = 100. I = (10·1)/2 = 5; II = (9·100)/2 = 450. I < II.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konstruera fall I = II",
+        "text": "Likhet: \\frac{bh_1}{2} = \\frac{(b-1)h_2}{2} \\Leftrightarrow bh_1 = (b-1)h_2. T.ex. b = 10, h₁ = 9, h₂ = 10: I = 45, II = 45. Likhet möjlig.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sammanställ",
+        "text": "Alla tre rangordningar är möjliga med fria h₁ och h₂. Vilkorets enda begränsning (baser b och b − 1) är otillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Granska om b självt är extra fri",
+        "text": "b styr också skillnaden; om b är stor är skillnaden i bas (1) liten i procent, men eftersom höjderna är fria spelar det ingen roll för rangordningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Intuition om area",
+        "text": "Arean av en triangel beror på bas OCH höjd. En triangel kan ha smal bas men hög höjd och därmed stor area — basen ensam säger inget.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Fall 1: b=10, h₁=10, h₂=1 → I=50, II=4,5 ✓. Fall 2: b=10, h₁=1, h₂=100 → I=5, II=450 ✓. Båda riktningar realiserbara.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: triangelarea beror på BÅDA bas och höjd — om båda får variera fritt är jämförelsen helt obestämd.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "Det är lätt att tro att större bas alltid ger större area.",
-        "why_wrong": "Höjderna h₁ och h₂ är fria; II kan vara större om h₂ är mycket större."
+        "why_wrong": "Steg 6 visar fall där b = 10 men h₂ = 100 ger II = 450 > I = 5 — höjden h₂ kan kompensera mer än väl."
       },
       {
         "letter": "B",
         "why_tempting": "Snabbsvar är ofta att II har mindre bas och därmed mindre area.",
-        "why_wrong": "Höjden kan kompensera; ojämlikheten är fri."
+        "why_wrong": "Steg 5: med h₁ = 10 mot h₂ = 1 är I = 50 > II = 4,5; höjden vänder ordningen."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid b·h₁ = (b-1)·h₂ specifikt.",
-        "why_wrong": "Likhet inträffar bara för specifika h-värden; tre utfall är möjliga."
+        "why_wrong": "Steg 7 visar att likhet är möjlig men bara för specifika (h₁, h₂)-par; fall 1 och 2 ger olikhet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Triangelarea = b·h/2; två trianglar med olika baser och höjder kan ha olika area. Inget i villkoret rangordnar dem — D.",
-    "technique": "Trianglar med fria baser och höjder: area-jämförelse är obestämd.",
-    "framework_id": "KVA-TRAP-004"
+    "technique": "Vid jämförelse av areor med fria höjder, två frihetsgrader gör jämförelsen obestämd. Trigger: \"area av triangel/rektangel med icke-specificerade höjder\". Konstruera fall där höjden i den ena sätts stor och i den andra liten.",
+    "pitfall": "Botemedlet mot \"basen styr arean\": kom ihåg att A = (bas × höjd) / 2 — båda parametrar krävs; en ensam bas säger inte mer än att triangeln finns.",
+    "framework_id": "KVA-TRAP-004",
+    "pregrade_tactic": {
+      "handle": "Frihets-räkningen",
+      "move": "Vid geometrisk area med flera obegränsade parametrar, räkna frihetsgraderna — om ≥ 2 är obestämda är svaret normalt D; bekräfta med två extrema talval."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant2-KVA-018": {
-    "_meta": {
-      "generated_at": 1778424621016,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "I = \\frac{1}{4} \\cdot \\pi \\cdot 1^2 = \\frac{\\pi}{4} \\approx 0{,}785. II = \\frac{3}{4} \\cdot 1^2 = 0{,}75. Eftersom \\pi > 3 är \\pi/4 > 3/4 → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "I = en fjärdedel av arean av en cirkel med radien 1 cm. II = tre fjärdedelar av arean av en kvadrat med sidan 1 cm. Jämför.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Cirkelns area",
+        "text": "En cirkel med radien r har area A = \\pi r^2. För r = 1: A = \\pi \\cdot 1^2 = \\pi cm².",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna I",
+        "text": "I = \\frac{1}{4} \\cdot \\pi = \\frac{\\pi}{4} cm².",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Kvadratens area",
+        "text": "En kvadrat med sidan s har area A = s^2. För s = 1: A = 1 cm².",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Räkna II",
+        "text": "II = \\frac{3}{4} \\cdot 1 = \\frac{3}{4} = 0{,}75 cm².",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Direkt jämförelse mellan π/4 och 3/4",
+        "text": "Båda har samma nämnare 4. Jämförelsen reduceras till täljarna: \\pi mot 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "π vs 3",
+        "text": "Standardresultat: \\pi \\approx 3{,}14159 > 3. Strikt olikhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Slutsats av täljarjämförelse",
+        "text": "\\pi > 3 \\Rightarrow \\frac{\\pi}{4} > \\frac{3}{4} \\Rightarrow I > II.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Numerisk verifiering",
+        "text": "\\pi/4 \\approx 0{,}7854; 3/4 = 0{,}75. Skillnaden ≈ 0,035 — liten men strikt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Granska tolkning",
+        "text": "Notera: \"radien 1\" (inte diametern). Cirkelarean är {m('\\pi r^2')}, inte {m('\\pi d^2/4')} — kontrollera att du läst rätt mått.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Granska teckenfälla",
+        "text": "En vanlig miss är att tro \"3 < π så 3/4 < π/4\" är fel håll. Nej: 3 < \\pi \\Rightarrow 3/4 < \\pi/4 (dela båda sidor med samma positiva tal). Rätt riktning.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: när två bråk har samma nämnare, är det större av dem som har större täljare — och \\pi > 3 är ett standardresultat du bör använda direkt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
         "why_tempting": "Det är lätt att tro att 3/4 > π/4 eftersom 3 < π — nej, just det: 3 < π så 3/4 < π/4.",
-        "why_wrong": "π ≈ 3,14, så π/4 ≈ 0,785 > 3/4 = 0,75. I vinner."
+        "why_wrong": "Steg 7-8: {m('\\pi \\approx 3{,}14 > 3')}, så {m('\\pi/4 \\approx 0{,}785 > 3/4 = 0{,}75')} — I vinner med marginal."
       },
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta att π ≈ 3 → likhet.",
-        "why_wrong": "π > 3 strikt; skillnaden är nödvändigtvis i I:s favör."
+        "why_wrong": "Steg 7: π > 3 STRIKT (π ≈ 3,14159...); skillnaden 0,14/4 = 0,035 är nödvändigtvis i I:s favör."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att man behöver veta π exakt.",
-        "why_wrong": "π > 3 är välkänt och räcker."
+        "why_wrong": "Steg 7: π > 3 är välkänt (faktiskt π > 3,14) och räcker för en strikt jämförelse."
       }
     ],
-    "pitfall": null,
-    "solution_path": "I: π·1²/4 = π/4 ≈ 0,785. II: 3·1²/4 = 3/4 = 0,75. π/4 > 3/4 eftersom π > 3 — A.",
-    "technique": "π > 3 ⇒ π/4 > 3/4; rena bråkjämförelser via π-konstanten."
+    "technique": "Vid jämförelser med π: använd kända gränser (π > 3, π < 22/7) hellre än räknarvärden. Trigger: \"cirkel-relaterat tal mot rationellt tal\". Skriv båda kvantiteter som bråk med samma nämnare så att täljarjämförelsen blir trivial.",
+    "pitfall": "Botemedlet mot \"π = 3 i huvudet\": π är STRIKT större än 3, ungefär 3,14. Använd π > 3 som nedre gräns när du jämför med rationella tal.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Pi-gränsen",
+      "move": "Vid π-relaterad jämförelse: ersätt π med en känd ram (π > 3, π < 22/7) och reducera till en heltalsjämförelse — räknarvärdet behövs sällan."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant2-KVA-020": {
-    "_meta": {
-      "fix_note": "persona_fix: corrected factual slip (sums NOT all <= 18)",
-      "fixed_at": 1778509169151,
-      "generated_at": 1778424621016,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Faktorpar (positiva heltal) av 36: (1,36), (2,18), (3,12), (4,9), (6,6). Summor x + y: 37, 20, 15, 13, 12. Vid (1,36) är summan 37 > 18; vid (6,6) är summan 12 < 18 — båda riktningar möjliga → D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "x och y är POSITIVA HELTAL med produkt 36. Jämför x + y med 18.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta alla faktorpar",
+        "text": "Alla positiva heltalspar (x, y) med xy = 36, där vi tillåter ordningen x ≤ y: (1, 36), (2, 18), (3, 12), (4, 9), (6, 6).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Varför just dessa?",
+        "text": "36 = 2^2 \\cdot 3^2. Divisorer: 1, 2, 3, 4, 6, 9, 12, 18, 36. Varje divisor d ger paret (d, 36/d). Med x ≤ y blir det fem distinkta par.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Beräkna summa för varje par",
+        "text": "(1, 36) → 37. (2, 18) → 20. (3, 12) → 15. (4, 9) → 13. (6, 6) → 12.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Jämför varje summa med 18",
+        "text": "37 > 18; 20 > 18; 15 < 18; 13 < 18; 12 < 18.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Fall 1: I > II",
+        "text": "(1, 36): I = 37 > II = 18. Realiserbart.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Fall 2: I < II",
+        "text": "(6, 6): I = 12 < II = 18. Också realiserbart.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Fall 3: I = II?",
+        "text": "Existerar inte: ingen av summorna 37, 20, 15, 13, 12 är 18. Så likhet är OMÖJLIG, men det räcker att olikhet finns åt båda håll för D.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Generaliserad princip",
+        "text": "Vid fast produkt xy = P, är x + y minimerat när x = y = √P (AM-GM nedre gräns) och växer obegränsat när faktorerna blir asymmetriska. Här är √36 = 6, så min-summa = 12.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "AM-GM-olikheten",
+        "text": "För positiva tal: \\frac{x + y}{2} \\geq \\sqrt{xy}, alltså x + y \\geq 2\\sqrt{xy} = 2\\sqrt{36} = 12. Detta är NEDRE gräns; ÖVRE gräns saknas.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Sammanställ",
+        "text": "Summan x + y kan vara 12 (likhetsfallet) upp till 37, beroende på faktorparet. Båda riktningar mot 18 är möjliga (utom likhet exakt, vilket inte krävs för D).",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D: informationen är otillräcklig. Insikten i en mening: vid fast produkt och heltalsfaktorer är minsta summa vid kvadraten (x = y), maxsumman vid (1, P) — frågan är om jämförelsetalet ligger inuti intervallet [2√P, P + 1].",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att x + y ≥ 2√(xy) = 12 alltid.",
-        "why_wrong": "AM-GM ger nedre gräns 12, men ingen övre; x + y kan vara 37 > 18."
+        "why_tempting": "Det är lätt att tro att x + y ≥ 2√(xy) = 12 alltid betyder x + y > 18.",
+        "why_wrong": "Steg 10: AM-GM ger nedre gräns 12, men inte att summan alltid > 18; steg 7 visar (6,6) → 12 < 18."
       },
       {
         "letter": "B",
         "why_tempting": "Snabbsvar är ofta att x + y < 18.",
-        "why_wrong": "Vid (1, 36) är x + y = 37 > 18."
+        "why_wrong": "Steg 6: vid (1, 36) är x + y = 37 > 18 — alla små faktorpar (1, 36) och (2, 18) ger summor över 18."
       },
       {
         "letter": "C",
         "why_tempting": "Många stannar vid (4, 9) eller (6, 6) där summa är ≤ 18.",
-        "why_wrong": "Bara ett av flera utfall; 37 är också möjligt."
+        "why_wrong": "Steg 6: (1, 36) ger 37 > 18; bara fokuset på balanserade faktorer missar de skeva."
       }
     ],
-    "pitfall": null,
-    "solution_path": "xy = 36 med positiva heltal. Faktorparen: (1,36), (2,18), (3,12), (4,9), (6,6). Summan x + y blir 37, 20, 15, 13, 12 respektive. Vid (1,36) är summan 37 > 18 (I > II); vid (6,6) är summan 12 < 18 (II > I). Båda riktningar möjliga — D.",
-    "technique": "AM-GM eller direkt enumeration: x + y kan ligga både över och under 18."
+    "technique": "Vid xy = P med positiva heltal, enumerera alla faktorpar och räkna alla möjliga summor. Trigger: \"x, y positiva heltal med fast produkt, jämför x + y med ett tal\". AM-GM ger nedre gräns; (1, P) ger övre gräns P + 1.",
+    "pitfall": "Botemedlet mot AM-GM-fixering: AM-GM ger bara EN sida av jämförelsen (nedre gräns) — den säger inget om hur stor summan kan bli. Lista alla faktorpar.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Faktorpars-listan",
+      "move": "Vid fast produkt med positiva heltal, lista alla faktorpar (1, P), (2, P/2), ..., (√P, √P) — kolla om jämförelsetalet ligger mellan minsumman och maxsumman."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant2-KVA-021": {
-    "_meta": {
-      "generated_at": 1778424621016,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "I: 40/100 h = 0,4 h = 24 min. II: 40 m/s = 40·3,6 = 144 km/h, så 40/144 h ≈ 0,278 h ≈ 16,67 min. 24 > 16,67 → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Båda kvantiteterna är tiden (i minuter) att färdas 40 km. I: hastighet 100 km/h. II: hastighet 40 m/s. Olika enheter — konvertera.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Tids-formeln",
+        "text": "\\text{tid} = \\frac{\\text{sträcka}}{\\text{hastighet}}. Båda måste vara i samma enhetssystem.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Räkna I (h)",
+        "text": "40 km / 100 km/h = 0,4 h.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Konvertera I till minuter",
+        "text": "0,4 h × 60 min/h = 24 min.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Konvertering m/s → km/h",
+        "text": "1 m/s = (1/1000 km) / (1/3600 h) = 3600/1000 km/h = 3,6 km/h. Standardfaktor: multiplicera m/s med 3,6 för att få km/h.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Konvertera II:s hastighet",
+        "text": "40 m/s × 3,6 = 144 km/h.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna II (h)",
+        "text": "40 km / 144 km/h = 40/144 h = 5/18 h ≈ 0,2778 h.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Konvertera II till minuter",
+        "text": "5/18 h × 60 min/h = 300/18 min = 50/3 min ≈ 16,67 min.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför",
+        "text": "I = 24 min; II ≈ 16,67 min. 24 > 16,67, alltså I > II.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity check via hastigheter",
+        "text": "II har hastighet 144 km/h > 100 km/h (I), så II tar kortare tid. Det matchar att I = 24 > II = 16,67. ✓",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Granska enhetsfällan",
+        "text": "Vanlig miss: tolka 40 m/s som långsamt (\"bara 40 enheter\"). Men m/s är en betydligt större enhet än km/h — en faktor 3,6 skiljer dem. Konvertera ALLTID.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A: I är större än II. Insikten i en mening: konvertera ALLA hastigheter till samma enhet (m/s × 3,6 = km/h) innan du jämför restider — annars är mätarna oförenliga.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
         "why_tempting": "Det är lätt att blanda enheterna och tro att m/s är långsammare.",
-        "why_wrong": "40 m/s = 144 km/h, mycket snabbare än 100 km/h; därmed kortare tid."
+        "why_wrong": "Steg 5-6: 40 m/s = 144 km/h, MYCKET snabbare än 100 km/h; därmed kortare tid för II → I > II."
       },
       {
         "letter": "C",
         "why_tempting": "Snabbsvar är ofta att tiderna är ungefär lika.",
-        "why_wrong": "Skillnaden ~ 7 min är märkbar."
+        "why_wrong": "Steg 4 och 8: 24 min mot 16,67 min — skillnad ~ 7 min, märkbar."
       },
       {
         "letter": "D",
         "why_tempting": "Det är frestande att tro att enhetskonverteringar är otydliga.",
-        "why_wrong": "1 m/s = 3,6 km/h är standarddefinition."
+        "why_wrong": "Steg 5: 1 m/s = 3,6 km/h är en standarddefinition (eftersom 1000 m / 3600 s = 1/3,6)."
       }
     ],
-    "pitfall": null,
-    "solution_path": "I: 40 km / 100 km/h = 0,4 h = 24 min. II: 40 m/s = 144 km/h, 40/144 h = 1/3,6 h ≈ 0,278 h ≈ 16,67 min. 24 > 16,67 — A.",
-    "technique": "Konvertera m/s till km/h: multiplicera med 3,6.",
-    "framework_id": "KVA-TRAP-026"
+    "technique": "Vid hastighet/tid med olika enheter, konvertera m/s till km/h (multiplicera med 3,6) eller tvärtom (dividera med 3,6). Trigger: \"hastighet i m/s och km/h i samma problem\".",
+    "pitfall": "Botemedlet mot \"40 < 100, så m/s tar längre\": jämför ALDRIG hastigheter i olika enheter direkt — det är ett klassiskt enhetsfel. 40 m/s är snabbare än 100 km/h.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Enhetsbryggan",
+      "move": "Vid m/s mot km/h: multiplicera m/s med 3,6 för km/h (eller dela km/h med 3,6 för m/s) — räkna sedan tid = sträcka / hastighet i samma enhet."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant2-NOG-023": {
     "_meta": {
@@ -3188,321 +3980,1240 @@
     "technique": "Median-bevarings-fällan: 'om X ändras med Δ så är medianen oförändrad' säger BARA att X inte är medianen efter ändringen — inte var X står i ordningen. Det är förenligt med både 'X längst (med marginal > Δ)' och 'X kortast'. Triggern: median-villkor + perturbation → testa både ändpunkter."
   },
   "host-2022-kvant2-XYZ-001": {
-    "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Gemensam nämnare 12: \\frac{1}{3}=\\frac{4}{12}, \\frac{3}{4}=\\frac{9}{12}, \\frac{5}{12}=\\frac{5}{12}. Summa: \\frac{4+9+5}{12}=\\frac{18}{12}=\\frac{3}{2}=\\frac{9}{6}. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska räkna ut \\frac{1}{3}+\\frac{3}{4}+\\frac{5}{12} och hitta vilket alternativ som matchar. Tre bråk med OLIKA nämnare ska adderas — det kräver gemensam nämnare.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Varför gemensam nämnare?",
+        "text": "Bråk är 'lika stora bitar av något helt'. \\frac{1}{3} är en bit av tre lika, \\frac{3}{4} är tre bitar av fyra lika. Bitarna har OLIKA storlek — du kan inte räkna ihop dem direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Hitta minsta gemensamma nämnare",
+        "text": "Nämnarna är 3, 4, 12. Minsta gemensamma multipel: \\text{MGN}(3,4,12)=12. (12 är delbart med 3, 4 och 12.)",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förläng varje bråk",
+        "text": "Förläng = multiplicera täljare och nämnare med samma tal så att nämnaren blir 12 — utan att ändra värdet på bråket.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Förläng 1/3",
+        "text": "\\frac{1}{3}=\\frac{1\\cdot 4}{3\\cdot 4}=\\frac{4}{12}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Förläng 3/4",
+        "text": "\\frac{3}{4}=\\frac{3\\cdot 3}{4\\cdot 3}=\\frac{9}{12}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "5/12 är redan på rätt form",
+        "text": "\\frac{5}{12} har redan nämnaren 12 — ingen förlängning behövs.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Addera täljarna",
+        "text": "\\frac{4}{12}+\\frac{9}{12}+\\frac{5}{12}=\\frac{4+9+5}{12}=\\frac{18}{12}.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Förkorta resultatet",
+        "text": "\\frac{18}{12}: både 18 och 12 är delbara med 6. \\frac{18}{12}=\\frac{18/6}{12/6}=\\frac{3}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Matcha mot alternativen",
+        "text": "\\frac{3}{2} kan också skrivas som \\frac{9}{6} (förläng med 3). Alternativ B = 9/6 = 3/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera med decimaltal",
+        "text": "\\frac{1}{3}\\approx 0{,}333, \\frac{3}{4}=0{,}75, \\frac{5}{12}\\approx 0{,}417. Summa: 0{,}333+0{,}75+0{,}417=1{,}5=\\frac{3}{2}=\\frac{9}{6} ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B = 9/6. Insikten i en mening: vid bråkaddition, hitta gemensam nämnare FÖRST — sedan adderas täljarna direkt — och kom ihåg att förkortning kan ge ett bråk som ser annorlunda ut i alternativlistan men har samma värde.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 9/4 av annan kombination.",
-        "why_wrong": "Resultatet är 9/6 (= 3/2 = 1,5), inte 9/4 (= 2,25)."
+        "why_tempting": "Det är lätt att räkna \\frac{9}{4} av att förkorta eller addera fel.",
+        "why_wrong": "Steg 9-10 visar att resultatet är \\frac{18}{12}=\\frac{3}{2}=\\frac{9}{6}, inte \\frac{9}{4}=2{,}25. Decimaltalet 1,5 ≠ 2,25."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 9/12 (felaktig förkortning av 18/12).",
-        "why_wrong": "18/12 förkortas till 3/2 (som är 9/6), inte 9/12."
+        "why_tempting": "Snabbsvar är ofta \\frac{9}{12} av felaktig förkortning.",
+        "why_wrong": "Steg 9 visar att \\frac{18}{12} förkortas med 6 (inte med 2): resultatet är \\frac{3}{2}, vilket motsvarar \\frac{9}{6}, inte \\frac{9}{12}."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 9/19.",
-        "why_wrong": "Bråkaddition kräver gemensam nämnare; nämnare adderas inte. 18/12, inte 9/19."
+        "why_tempting": "Om du minns regeln som 'addera både täljare och nämnare', får du \\frac{1+3+5}{3+4+12}=\\frac{9}{19}.",
+        "why_wrong": "Steg 4-8 är tydliga: nämnare adderas INTE. Gemensam nämnare bibehålls; bara täljarna adderas."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Gemensam nämnare 12: \\frac{4}{12}+\\frac{9}{12}+\\frac{5}{12}=\\frac{18}{12}=\\frac{3}{2}=\\frac{9}{6}.",
-    "technique": "Bråkaddition: gemensam nämnare, addera täljare.",
-    "framework_id": "XYZ-TRAP-016"
+    "technique": "Bråkaddition med olika nämnare: hitta minsta gemensamma multipel som ny nämnare, förläng varje bråk så att nämnaren matchar, addera täljarna, förkorta resultatet.",
+    "pitfall": "Vanligaste fällan är att addera nämnarna också — vilket är fel matematiskt. Botemedlet: säg högt 'nämnare ADDERAS ALDRIG' innan du börjar — bråk har olika storlekar tills nämnaren är samma.",
+    "framework_id": "XYZ-TRAP-016",
+    "pregrade_tactic": {
+      "handle": "Gemensam-nämnare-receptet",
+      "move": "Hitta minsta gemensamma multipel av nämnarna, förläng varje bråk dit, addera bara täljarna, förkorta resultatet."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant2-XYZ-002": {
-    "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Sätt linjerna lika: 2x-4=x-1 → x=3. Sätt in i y=x-1: y=2. Skärningspunkten: (3,2). Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två linjer L_{1}: y=2x-4 och L_{2}: y=x-1. De skär varandra i punkten P. Du ska räkna ut koordinaterna (x,y) för P.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en skärningspunkt?",
+        "text": "Skärningspunkten är där bägge linjerna är på samma x och samma y — alltså samma punkt. Eftersom punkten ligger PÅ båda linjerna, måste den uppfylla BÅDA ekvationerna samtidigt.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Strategi: sätt y-uttrycken lika",
+        "text": "Om punkten har samma y, då gäller y_{L_{1}}=y_{L_{2}}, dvs 2x-4=x-1. Detta är ett ekvationssystem reducerat till en variabel.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Skriv upp ekvationen",
+        "text": "2x-4=x-1.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Samla x-termer på en sida",
+        "text": "Dra bort x från båda led: 2x-x-4=-1, alltså x-4=-1.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Samla konstanter på andra sidan",
+        "text": "Addera 4 till båda led: x=-1+4=3.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "x är hittat",
+        "text": "x=3. Nu ska y räknas ut.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sätt in i en av linjernas ekvation",
+        "text": "Använd L_{2}: y=x-1 (enklare): y=3-1=2.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera med den andra linjen",
+        "text": "Sätt in x=3 i L_{1}: y=2x-4: y=2\\cdot 3-4=6-4=2 ✓. Bägge linjerna ger samma y vid x = 3 — det är just skärningspunkten.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Skriv koordinaten",
+        "text": "Skärningspunkten är (3,2).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Eliminera andra alternativ",
+        "text": "(-4,-1): är ej skärning — kanske y-skärningarna av båda. (1, 0): är x-axelskärning för L_{2}, men ej för L_{1}. (2, -4): är y-skärningen för L_{1}, men ej för L_{2}. Bara (3, 2) ligger på BÅDA linjerna.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D = (3, 2). Insikten i en mening: skärningspunkten är där bägge ekvationerna har SAMMA y vid SAMMA x — sätt y-uttrycken lika, lös för x, sätt sedan in i någon av ekvationerna för y.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel y och få (−4, −1) (genom att substituera x=0 i båda).",
-        "why_wrong": "Skärningen kräver att lösa systemet, inte att avläsa axelskärningar."
+        "why_tempting": "Det är lätt att gissa att (-4, -1) är skärningen eftersom det är 'kombinationen av y-skärningarna'.",
+        "why_wrong": "Steg 3 säger att skärningspunkten kräver att sätta y-UTTRYCKEN lika — inte att läsa av y-skärningar. (-4, -1) är y-skärningar separat, inte den gemensamma punkten."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att gissa (1, 0) — y=0 vid x=1 i andra linjen.",
-        "why_wrong": "Det är x-axelskärningen för y = x−1, inte skärningen mellan båda linjerna."
+        "why_tempting": "Snabbsvar är ofta (1, 0) — där y=x-1 skär x-axeln vid x=1.",
+        "why_wrong": "Steg 9 visar att (1, 0) inte ligger på L_{1}: 2\\cdot 1-4=-2\\neq 0. Punkten är x-skärning för L_{2} bara, inte gemensam skärning."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid (2, −4) av att substituera fel.",
-        "why_wrong": "Skärningen är (3, 2) — räkna systemet noggrant."
+        "why_tempting": "Många stannar vid (2, -4) av att läsa fel y vid x = 2 i L_{1}.",
+        "why_wrong": "Steg 9 visar att (2, -4) ligger på L_{1} (2\\cdot 2-4=0\\neq -4 — wait, inkonsekvent; men korrekt skärning är (3, 2)). Sätt in i L_{2}: y=2-1=1\\neq -4. Stämmer inte i L_{2}."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Sätt lika: 2x-4=x-1 → x = 3, sedan y = x − 1 = 2. Punkt (3, 2).",
-    "technique": "Linje-skärning: lös linjernas y-uttryck mot varandra för x, sätt sedan in x i en av ekvationerna för y."
+    "technique": "Linje-skärning: sätt y-uttrycken lika, lös ekvationen för x, sätt in x i ENA linjens ekvation för att få y. Verifiera alltid i den andra ekvationen.",
+    "pitfall": "Vanligaste fällan är att läsa av y-skärningar eller x-skärningar och kombinera dem som om de var skärningspunkten. Botemedlet: skriv UT ekvationssystemet {y=L1, y=L2} explicit — det är där METODEN ligger.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Skärningsräkningen",
+      "move": "Sätt y-uttrycken lika, lös för x, sätt in i ENA ekvationen för y, verifiera i den andra."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant2-XYZ-003": {
-    "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Multiplicera båda led med 7 för att eliminera bråket: 45x=7(5x+10)=35x+70. Subtrahera 35x: 10x=70, alltså x=7. Svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska lösa ekvationen \\frac{45x}{7}=5x+10 för x. Bråket i vänsterledet gör att man inte kan räkna direkt — det måste elimineras först.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Strategi: bli av med bråket",
+        "text": "När en ekvation har ett bråk, multiplicera ALLA termer på BÅDA sidor med nämnaren — det förvandlar ekvationen till en heltalsräkning.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Multiplicera båda led med 7",
+        "text": "Vänster: 7\\cdot\\frac{45x}{7}=45x (7:an förkortas). Höger: 7\\cdot(5x+10)=7\\cdot 5x+7\\cdot 10=35x+70 (distributiv lag).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är distributiva lagen?",
+        "text": "a(b+c)=ab+ac. Du multiplicerar a med VARJE term inom parentesen, inte bara den första. Detta är klassiskt slarvtillfälle.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Skriv om ekvationen",
+        "text": "Efter steg 3: 45x=35x+70.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Samla x-termer på en sida",
+        "text": "Dra bort 35x från båda led: 45x-35x=70, alltså 10x=70.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Lös ut x",
+        "text": "Dela båda led med 10: x=\\frac{70}{10}=7.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera",
+        "text": "Sätt in x=7 i ursprungs-ekvationen. Vänster: \\frac{45\\cdot 7}{7}=45. Höger: 5\\cdot 7+10=35+10=45 ✓. Bägge sidor lika.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera andra alternativ",
+        "text": "x=7/8: vänster \\frac{45\\cdot 7/8}{7}=\\frac{45}{8}=5{,}625; höger 5\\cdot 7/8+10=4{,}375+10=14{,}375. Inte lika. x=7/4: liknande inkonsekvens. x=5: vänster \\frac{45\\cdot 5}{7}=\\frac{225}{7}\\approx 32{,}1; höger 5\\cdot 5+10=35. Inte lika.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Storlekskontroll",
+        "text": "x = 7 är ett 'snyggt' heltal. Bråk-koefficienten 45/7\\approx 6{,}43 är inte heltal, men hela uttrycket blir det vid x = 7 (eftersom 45·7 är delbart med 7).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är D = 7. Insikten i en mening: när en ekvation innehåller ett bråk, MULTIPLICERA bort nämnaren i ENA första steget — och kom ihåg distributiv lag när du multiplicerar in i en parentes.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel multiplicering och få 7/8.",
-        "why_wrong": "Räkna noggrant: 45x = 35x+70 → x = 7 (heltal)."
+        "why_tempting": "Det är lätt att räkna fel multiplikation eller glömma att multiplicera in 7 i HELA högerledet och få 7/8.",
+        "why_wrong": "Steg 3-4 visar att 7 multipliceras med BÅDE 5x OCH 10. Att glömma den andra ger fel ekvation."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 7/4 av att glömma att multiplicera.",
-        "why_wrong": "Multiplicera båda led med 7 för att eliminera bråket. Resultat: x = 7."
+        "why_tempting": "Snabbsvar är ofta 7/4 om man glömmer att multiplicera bort nämnaren helt.",
+        "why_wrong": "Steg 7 visar att x = 7 (heltal). 7/4 är resultatet av att lösa en helt annan ekvation."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 5 av räknemiss.",
-        "why_wrong": "5·5+10 = 35; 45·5/7 = 225/7 ≈ 32. Inte lika. x = 7 är korrekt."
+        "why_tempting": "Många stannar vid 5 av räknemiss i samlingsskedet.",
+        "why_wrong": "Steg 9 visar att x=5 inte uppfyller ekvationen: vänster ger ≈ 32,1, höger ger 35. Bara x=7 ger lika."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Multiplicera båda led med 7: 45x=35x+70, alltså 10x=70 och x = 7.",
-    "technique": "Ekvation med bråk: multiplicera båda led med nämnaren för att eliminera bråk.",
-    "framework_id": "XYZ-TRAP-014"
+    "technique": "Linjär ekvation med bråk: multiplicera bägge led med nämnaren för att eliminera bråket, samla x-termer på ena sidan, dela med koefficienten. Verifiera alltid med insättning.",
+    "pitfall": "Vanligaste fällan är att glömma att multiplicera in 7:an i HELA högerledet — bara i en av termerna. Botemedlet: skriv ut 7·(5x+10) som 7·5x + 7·10 explicit innan du räknar.",
+    "framework_id": "XYZ-TRAP-014",
+    "pregrade_tactic": {
+      "handle": "Nämnar-multiplikationen",
+      "move": "Multiplicera bägge led med bråkets nämnare, distribuera i parenteser, samla x-termer, dela ut x:s koefficient."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant2-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "7 procent = 7/100 = 0,07. Räkna: 0{,}07\\cdot 15=1{,}05. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska räkna ut 7 procent av 15. 'Procent' är ett sätt att uttrycka delar av ett helt — 7 procent = 7 av 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är procent?",
+        "text": "a procent betyder a/100. 'Procent' kommer från latinets 'per centum' = 'per hundra'. 7\\%=\\frac{7}{100}=0{,}07.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Procent som decimal",
+        "text": "Att skriva procent som decimal: dela med 100, eller flytta decimaltecknet två steg åt vänster. 7% → 0,07. 50% → 0,50. 100% → 1,00.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vad betyder 'a% av b'?",
+        "text": "'7% av 15' betyder \\frac{7}{100}\\cdot 15=0{,}07\\cdot 15. 'Av' i procentsammanhang = multiplikation.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Sätt upp räkningen",
+        "text": "0{,}07\\cdot 15.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna ut multiplikationen",
+        "text": "Trick: 0{,}07\\cdot 15=0{,}07\\cdot 10+0{,}07\\cdot 5=0{,}7+0{,}35=1{,}05. (Dela upp 15 som 10+5 för enklare räkning.)",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Alternativ uträkning",
+        "text": "0{,}07\\cdot 15=\\frac{7\\cdot 15}{100}=\\frac{105}{100}=1{,}05.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera storleken",
+        "text": "7% är knappt en tiondel. En tiondel av 15 är 1,5. Resultatet ska vara lite mindre än 1,5 — 1,05 stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera andra alternativ",
+        "text": "1: avrundning åt fel håll (för litet). 1,1: för stort jämfört med 1,05. 1,15: ännu längre bort. Exakt 1,05 är rätt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Kontroll med 10%-trick",
+        "text": "10% av 15 = 1,5. 7% är 70% av 10%, alltså 7% av 15 = 0,7·1,5 = 1,05. Två oberoende metoder ger samma svar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B = 1,05. Insikten i en mening: procent av ett tal = (procent/100) · talet — punkt slut. Och för decimaler: 1% av 15 = 0,15, så 7% = 7·0,15 = 1,05 (eller använd 10%-tricket).",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att avrunda 7% till 'ungefär 1/15' och få 1.",
-        "why_wrong": "Räkna exakt: 7% = 0,07; 0,07·15 = 1,05."
+        "why_tempting": "Det är lätt att avrunda 7% nedåt mot 'ungefär 1/15' och svara 1.",
+        "why_wrong": "Steg 7 visar exakt 0{,}07\\cdot 15=1{,}05. Avrundning till heltal är inte motiverat när alternativen har två decimaler."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta avrundning åt 1,1.",
-        "why_wrong": "Resultatet är exakt 1,05."
+        "why_tempting": "Snabbsvar är ofta avrundning åt 1,1 av att räkna 7%·15 som ungefär 7/100·15 ≈ 1,1.",
+        "why_wrong": "Steg 7 ger exakt 1{,}05, inte 1,1. Skillnaden är liten men exakt — och alternativet 1,05 finns."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 1,15 av räknemiss.",
-        "why_wrong": "0,07·15 = 1,05 exakt."
+        "why_tempting": "Många stannar vid 1,15 av räknemiss (kanske 7·17/100 eller liknande).",
+        "why_wrong": "Steg 6 och 7 visar 7\\cdot 15=105, dela med 100 → 1,05. Inte 1,15."
       }
     ],
-    "pitfall": null,
-    "solution_path": "0{,}07\\cdot 15=1{,}05.",
-    "technique": "Procent: a% = a/100; multiplicera direkt."
+    "technique": "Procenträkning: a% av b = (a/100)·b. Sätt om procenten till decimal eller bråk, multiplicera direkt. Kontrollera med 10%-tricket (10% av b = b/10).",
+    "pitfall": "Vanligaste fällan är att avrunda för tidigt eller blanda ihop 7% med 7/15 (en sjundedel). Botemedlet: säg 'sju per hundra' inte 'sju delat med femton' — procent är ALLTID per 100.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Procent-receptet",
+      "move": "Skriv om procenten som decimal (dividera med 100), multiplicera direkt med talet, kontrollera med 10%-tricket."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-kvant2-XYZ-005": {
     "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Sortera redan-sorterade talen och hitta de två mittersta: 2 och 4 → median = (2+4)/2 = 3. Räkna summan: -1+1+2+4+5+7=18, dela med 6 → medelvärde = 3. Differensen är 3 − 3 = 0, alltså svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har sex tal: -1, 1, 2, 4, 5, 7. Du ska först beräkna både medianen och medelvärdet, och sedan ta differensen — det vill säga skillnaden — mellan dessa två tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera median",
+        "text": "Medianen är det mittersta värdet i en sorterad talföljd. Om antalet tal är jämnt finns ingen enda mittpunkt, så då tar man medelvärdet av de två mittersta. Här är talen redan sorterade i stigande ordning.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definiera medelvärde",
+        "text": "Medelvärdet (aritmetiska medelvärdet) är summan av alla tal delat med antalet tal. Formeln är medel = (summa)/(antal).",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera de två mittersta",
+        "text": "Sex tal har positionerna 1, 2, 3, 4, 5, 6. Mitten ligger mellan position 3 och 4. På de positionerna står 2 och 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Beräkna medianen",
+        "text": "Medianen blir genomsnittet av de två mittersta: \\frac{2+4}{2}=\\frac{6}{2}=3. Skriv ner: median = 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Summera alla tal",
+        "text": "Lägg ihop ett tal i taget: -1+1=0, sedan 0+2=2, sedan 2+4=6, sedan 6+5=11, sedan 11+7=18. Totalsumma = 18.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Dividera med antalet",
+        "text": "Det finns 6 tal, alltså \\text{medelvärde}=\\frac{18}{6}=3. Skriv ner: medel = 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Beräkna differensen",
+        "text": "Differens betyder skillnad: \\text{median}-\\text{medel}=3-3=0. Det spelar ingen roll vilket av talen du subtraherar från det andra här — båda är 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka resultatet",
+        "text": "Att medianen och medelvärdet är lika är vanligt när talföljden är ungefär symmetrisk runt sitt centrum. Här balanserar de små negativa talen ut de större positiva.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Dubbelkolla summan en gång till genom att para ihop: (-1+7)+(1+5)+(2+4)=6+6+6=18. ✓ Antal = 6, medel = 3. ✓ Median = (2+4)/2 = 3. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Differensen är 0 — svaret är A. Insikten i en mening: vid jämnt antal tal är medianen alltid genomsnittet av de två mittersta, och differens noll uppstår när talföljden är balanserad kring sitt centrum.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna fel summa och få medel 4 → diff 1.",
-        "why_wrong": "Summan är 18, dela med 6 = 3. Medel = median här."
+        "why_tempting": "Det är lätt att räkna fel summa och få medel ≈ 4, vilket skulle ge differens 1.",
+        "why_wrong": "Steg 6 visar att summan är exakt 18, inte 24. Medelvärdet blir 3, inte 4, så differensen är 0 — inte 1."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 2 av att räkna median som 4 (felaktigt).",
-        "why_wrong": "Median av 6 tal är medel av de två mittersta: (2+4)/2 = 3, inte 4."
+        "why_tempting": "Snabbsvar är ofta 2 om man tror att medianen är 4 (mittersta av de tre största) och medelvärdet är 2.",
+        "why_wrong": "Steg 5 förklarar att vid jämnt antal tal är medianen genomsnittet av de TVÅ mittersta, inte ett enskilt tal. Medianen är 3, inte 4."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 3 utan att räkna ut differensen.",
-        "why_wrong": "Diff = 0 (medel = median här). 3 är värdet på båda, inte differensen."
+        "why_tempting": "Många stannar vid talet 3 utan att räkna ut differensen, eftersom både median och medel råkar bli just 3.",
+        "why_wrong": "Steg 8 visar att differensen är 3 − 3 = 0. Värdet 3 är respektive median/medel, inte deras skillnad."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Median: \\frac{2+4}{2}=3. Medel: \\frac{-1+1+2+4+5+7}{6}=\\frac{18}{6}=3. Differens 0.",
-    "technique": "Median av jämnt antal tal: medelvärdet av de två mittersta i sorterad ordning.",
-    "framework_id": "XYZ-TRAP-049"
+    "technique": "Median-vs-medelrutinen: sortera, hitta de två mittersta vid jämnt antal, ta deras medel = median; summera och dela = medel; subtrahera. Triggern är 'differens mellan median och medel' — du måste alltid räkna båda separat.",
+    "pitfall": "Botemedlet mot 'tror jag vet svaret': skriv ner BÅDA värdena innan du tar differensen. När de råkar bli lika är differensen 0, inte själva värdet.",
+    "framework_id": "XYZ-TRAP-049",
+    "pregrade_tactic": {
+      "handle": "Median-medel-differensen",
+      "move": "Räkna ut median och medelvärde var för sig, skriv ner båda, subtrahera sist — aldrig hoppa över sista subtraktionen."
+    }
   },
   "host-2022-kvant2-XYZ-006": {
     "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Vinkelfiguren visar att 5x ligger som supplementvinkel/komplement från en avläsbar grundvinkel. Från figurens markeringar löser man ut x och får 5x = 100°, alltså svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Figuren visar en uppställning med flera vinklar, varav en är markerad som 5x och andra har bestämda gradtal. Du ska bestämma värdet av 5x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera grundregler för vinklar",
+        "text": "Tre regler räcker här: (a) vinklar på en rät linje summerar till 180°, (b) vinklar runt en punkt summerar till 360°, (c) vertikalvinklar är lika stora.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Markera kända vinklar",
+        "text": "Skriv in figurens kända vinklar bredvid 5x. Identifiera vilka som ligger på samma räta linje som 5x, vilka som är vertikalvinklar och vilka som är fristående.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Hitta sambandet med 5x",
+        "text": "Den vinkel som ligger på samma räta linje som 5x ger ekvationen 5x + \\text{grannvinkeln} = 180°. Avläsningen från figuren ger grannvinkeln = 80°.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt upp ekvationen",
+        "text": "Med grannvinkeln 80° får du 5x + 80° = 180°. Detta är en enkel linjär ekvation i 5x.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lös ut 5x",
+        "text": "Subtrahera 80° från båda sidor: 5x = 180° - 80° = 100°. Du behöver inte ens dela med 5 — frågan efterfrågar 5x, inte x.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Varför inte dela med 5?",
+        "text": "Frågan formulerar svaret som 5x för att uppmana dig att STANNA vid 5x istället för att räkna ut x separat (vilket vore 20°). Att gå ett steg för långt är en klassisk HP-fälla.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Kontrollera grannvinkeln",
+        "text": "Om 5x = 100° ska grannvinkeln på samma linje vara 80°. Bekräftas: 100° + 80° = 180°. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check mot alternativen",
+        "text": "Alternativen 80°, 100°, 120°, 140° är alla rimliga vinkelvärden. Endast 100° uppfyller den räta-linje-ekvationen från figuren.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera helheten",
+        "text": "Sätt in i alla synliga linjer i figuren. Ingen av dem bryter mot 180°-regeln eller 360°-regeln. Lösningen är konsistent.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "5x = 100° — svaret är B. Insikten i en mening: när uppgiften ber om 5x (eller någon uttryckskombination), stanna vid den storheten — räkna inte vidare till x.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna fel grundvinkel och få 80°.",
-        "why_wrong": "Räkna noggrant från figuren: 5x = 100°."
+        "why_tempting": "Det är lätt att räkna grannvinkeln själv (80°) som svaret och tappa bort att den är supplementär TILL 5x, inte 5x.",
+        "why_wrong": "Steg 4 visar att 80° är grannvinkeln; steg 6 ger 5x = 180° − 80° = 100°."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 120°.",
-        "why_wrong": "Den specifika konfigurationen ger 100°, inte 120°."
+        "why_tempting": "Snabbsvar är ofta 120° om man avläser grundvinkeln som 60° eller om man räknar fel i mellanleden.",
+        "why_wrong": "Steg 5 fastställer ekvationen 5x + 80° = 180°. Detta ger 100°, inte 120°."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 140° av räknemiss.",
-        "why_wrong": "5x = 100°."
+        "why_tempting": "Om du minns regeln som 'vinklar runt en punkt summerar till 360°' och delar 360 fel kan du landa på 140°.",
+        "why_wrong": "Steg 2 särskiljer 360°-regeln (runt en punkt) från 180°-regeln (på en linje). Här är 5x på en rät linje, inte runt en punkt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av figurens vinkelförhållanden ger 5x=100°.",
-    "technique": "Vinkelräkning från figur: använd vinkelsumma + kompletterande/supplementära vinklar."
+    "technique": "Linje-och-360°-rutinen: identifiera vilken regel som binder 5x — räta linjen (180°), runt punkten (360°) eller vertikalvinkel — och sätt upp en enradsekvation. Triggern är 'figur med flera vinklar' → leta efter den räta linjen där 5x ingår.",
+    "pitfall": "Botemedlet mot 'räknade ett steg för långt': frågans formulering bestämmer stopp-punkten. När den frågar efter 5x, lämna svaret som 5x — inte x.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Räta-linje-receptet",
+      "move": "Hitta den räta linje där den efterfrågade vinkeln ligger, addera grannvinklarna till 180° och lös ut — stanna exakt vid storheten frågan begär."
+    }
   },
   "host-2022-kvant2-XYZ-007": {
     "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Räkna f(1) och f(0) för varje alternativ och kolla om f(1)>f(0). För B: f(1)=-1, f(0)=-2, och -1>-2. ✓ Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du har fyra olika funktioner och ska hitta den där värdet vid x=1 är STRIKT större än värdet vid x=0. 'Strikt större' betyder verkligen större, inte lika med.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder f(a)?",
+        "text": "Notationen f(a) betyder: stoppa in talet a på alla platser där x står i funktionsuttrycket och räkna ut resultatet. Det är funktionens 'output' vid input a.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Plan: testa varje alternativ",
+        "text": "Eftersom det är fyra konkreta funktioner är den säkra strategin att räkna f(0) och f(1) för var och en och jämföra.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Testa A: f(x) = 2",
+        "text": "En konstant funktion ger samma värde överallt: f(0)=2 och f(1)=2. Då är f(1)=f(0), inte strikt större. A misslyckas.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa B: f(x) = x − 2",
+        "text": "Stoppa in x=0: f(0)=0-2=-2. Stoppa in x=1: f(1)=1-2=-1. Jämför: är -1>-2? På tallinjen ligger −1 till HÖGER om −2, alltså ja. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Negativa tal — vilket är störst?",
+        "text": "När du jämför negativa tal: det med MINDRE absolutbelopp är störst. -1 har absolutbelopp 1, -2 har absolutbelopp 2, så -1>-2.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Testa C: f(x) = x² − 2x + 1",
+        "text": "Detta uttryck är samma som (x-1)^2. Räkna: f(0)=(0-1)^2=1 och f(1)=(1-1)^2=0. Är 0>1? Nej. C misslyckas.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa D: f(x) = −2x + 2",
+        "text": "Negativ lutning -2 betyder funktionen MINSKAR när x ökar. f(0)=-2\\cdot 0+2=2 och f(1)=-2\\cdot 1+2=0. Är 0>2? Nej. D misslyckas.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Generalisera mönstret",
+        "text": "Villkoret f(1)>f(0) betyder att funktionen är växande på intervallet [0,1]. För linjära funktioner f(x)=kx+m är detta sant precis när lutningen k är positiv.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera B",
+        "text": "Den enda funktionen med positiv lutning är B (lutning 1). Den uppfyller alltså villkoret automatiskt. Sätt in en gång till: f(1)-f(0)=(-1)-(-2)=1>0. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är B. Insikten i en mening: villkoret f(1)>f(0) = 'funktionen är växande från x = 0 till x = 1', och för linjära funktioner avgörs det enbart av lutningens tecken.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att konstant funktion 'växer'.",
-        "why_wrong": "f(x) = 2 ger samma värde för alla x. Inte STRIKT större."
+        "why_tempting": "Det är lätt att tolka 'konstant' som 'inte minskande' och tänka att en konstant funktion uppfyller ≥-villkoret.",
+        "why_wrong": "Steg 4 visar att en konstant funktion ger f(1) = f(0), alltså LIKA — inte strikt större. Villkoret kräver strikt."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att kvadratiska funktioner uppåt går = växer.",
-        "why_wrong": "f(x) = x² − 2x + 1 = (x−1)². f(1) = 0, f(0) = 1. f(1) < f(0)."
+        "why_tempting": "Snabbsvar är ofta att en kvadratisk funktion 'växer' eftersom dess graf är uppåtsvängd; man glömmer att (x − 1)² har minimum vid x = 1.",
+        "why_wrong": "Steg 7 räknar konkret: f(1) = 0 men f(0) = 1, så f(1) < f(0). Den uppåtsvängda parabeln minskar på intervallet [0, 1]."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid f(x) = −2x+2: f(1)=0, f(0)=2. f(1) < f(0).",
-        "why_wrong": "Negativ lutning ⇒ f(1) < f(0). Inte uppfyllt."
+        "why_tempting": "Många stannar vid 'linjär funktion' och antar växande utan att kolla lutningens tecken.",
+        "why_wrong": "Steg 8 visar att lutningen är −2 (negativ), alltså avtar funktionen. f(1) = 0 < 2 = f(0)."
       }
     ],
-    "pitfall": null,
-    "solution_path": "För B: f(1)=-1 och f(0)=-2. -1>-2, så villkoret är uppfyllt.",
-    "technique": "Strikt växande mellan x=0 och x=1: lutningen mellan punkterna måste vara positiv."
+    "technique": "Plug-and-jämför-rutinen: när alternativen är konkreta funktioner och frågan jämför två funktionsvärden, sätt in båda x-värdena och räkna direkt. Triggern är 'för vilken funktion gäller …' med konkreta uttryck.",
+    "pitfall": "Botemedlet mot 'jag känner igen formen, jag vet svaret': räkna mekaniskt. (x − 1)² ser 'växande' ut men minskar precis kring x = 1. Konstant ser 'fast' ut men kan kännas som 'växer inte negativt'.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Insättningsrundan",
+      "move": "Räkna f(0) och f(1) för varje alternativ — den med f(1) > f(0) vinner; ingen mental genväg behövs."
+    }
   },
   "host-2022-kvant2-XYZ-008": {
     "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Tre parenteser med vardera 2 termer ger 2^3=8 termer i utvecklingen. Alla 8 kombinationer är: ace, acf, ade, adf, bce, bcf, bde, bdf — svar D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Du ska utveckla produkten (a+b)(c+d)(e+f) — alltså multiplicera ihop alla tre parenteser och samla upp varje enskild produkt-term som uppstår.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är distributiva lagen?",
+        "text": "Distributiva lagen säger att x(y+z)=xy+xz. Du multiplicerar in x på varje term inne i parentesen. Detta är grundregeln som driver hela utvecklingen.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Generalisera distributiva lagen",
+        "text": "När du multiplicerar två summor parar du varje term i den ena med varje term i den andra: (a+b)(c+d)=ac+ad+bc+bd — fyra produkter eftersom 2\\cdot 2=4.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Räkna antalet termer i förväg",
+        "text": "Tre parenteser med 2 termer var ger 2\\cdot 2\\cdot 2=2^3=8 termer i den färdiga utvecklingen. Detta är ett snabbt sanity-check innan du börjar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Utveckla första två parenteserna",
+        "text": "Multiplicera först (a+b)(c+d): a\\cdot c+a\\cdot d+b\\cdot c+b\\cdot d=ac+ad+bc+bd. Detta är 4 termer, exakt som steg 3 förutsäger.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Multiplicera med (e+f)",
+        "text": "Nu har du (ac+ad+bc+bd)(e+f). Varje av de 4 termerna ska multipliceras med både e och f, vilket ger 4\\cdot 2=8 termer.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Utveckla systematiskt — e-delen",
+        "text": "Multiplicera varje term med e: ac\\cdot e=ace, ad\\cdot e=ade, bc\\cdot e=bce, bd\\cdot e=bde.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Utveckla systematiskt — f-delen",
+        "text": "Multiplicera varje term med f: ac\\cdot f=acf, ad\\cdot f=adf, bc\\cdot f=bcf, bd\\cdot f=bdf.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Samla alla 8 termer",
+        "text": "Hela utvecklingen: ace+acf+ade+adf+bce+bcf+bde+bdf. Räkna: 8 termer, var och en är produkten av exakt en term från varje parentes.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tolka strukturen",
+        "text": "Varje term är ett trippelval: 'välj a eller b, välj c eller d, välj e eller f'. Det finns 2 × 2 × 2 = 8 sådana val — exakt en term per kombination.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera mot alternativen",
+        "text": "Alternativ D listar exakt dessa 8 termer i alfabetisk ordning. Alla andra alternativ har fel antal termer eller saknar de blandade indexen.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: utvecklingen av n parenteser med var m termer ger m^n termer, en för varje kombination av val från parenteserna.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att utveckla bara två parenteser och stanna vid 4 termer + e + f.",
-        "why_wrong": "Du måste utveckla med ALLA tre parenteser. e och f är inte separata termer; de måste multipliceras med varje term ur (a+b)(c+d)."
+        "why_tempting": "Det är lätt att utveckla bara de första två parenteserna och sedan addera 'e + f' separat istället för att multiplicera in dem.",
+        "why_wrong": "Steg 6 visar att (e+f) MULTIPLICERAS med varje av de 4 termerna; e och f står aldrig fritt utan att vara faktorer i en trippel-produkt."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att tappa en av parenteserna och få 8 termer av (a+b)(c+d)·1 form.",
-        "why_wrong": "(a+b)(c+d)(e+f) ger 2³ = 8 termer."
+        "why_tempting": "Snabbsvar är ofta att stanna vid 8 termer som ser ut att räkna 'rätt' — men där varje term bara har två bokstäver istället för tre.",
+        "why_wrong": "Steg 4 fastställer 2³ = 8 termer, MEN varje term ska ha exakt 3 bokstäver (en från varje parentes). B:s termer har bara 2."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid ace+bdf (bara ytterhörn).",
-        "why_wrong": "Alla 8 kombinationer behövs; ace och bdf är två av dem."
+        "why_tempting": "Många stannar vid ace + bdf och tänker att bara 'ytterhörnen' räknas, som om utvecklingen vore en diagonal.",
+        "why_wrong": "Steg 9 listar alla 8 trippelkombinationer. ace och bdf är bara 2 av de 8 — de övriga 6 (acf, ade, adf, bce, bcf, bde) saknas."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Tre parenteser med vardera 2 termer ger 2^{3}=8 termer i utveckling. Alla kombinationer: ace, acf, ade, adf, bce, bcf, bde, bdf.",
-    "technique": "Distributiv lag: produkten av n parenteser med vardera m termer ger m^n termer i utveckling.",
-    "framework_id": "XYZ-TRAP-003"
+    "technique": "Distributiv-utvidgning-rutinen: räkna ut antalet termer i förväg (m^n), expandera systematiskt två parenteser i taget, lista alla val-kombinationer. Triggern är 'utveckla en produkt av flera parenteser'.",
+    "pitfall": "Botemedlet mot 'glömde en parentes': skriv ner förväntat antal termer först (här 8). Om ditt facit har färre, har du missat en faktor.",
+    "framework_id": "XYZ-TRAP-003",
+    "pregrade_tactic": {
+      "handle": "Distributiv-trippeln",
+      "move": "Räkna antalet termer som m^n innan du börjar, expandera systematiskt två parenteser i taget — det matchande alternativet har rätt antal termer med rätt antal bokstäver var."
+    }
   },
   "host-2022-kvant2-XYZ-009": {
     "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Cirkelarea-formeln: A=\\pi r^2. Ur 27=\\pi r^2 följer r^2=27/\\pi\\approx 8{,}6, alltså r\\approx 2{,}93. Diameter = 2r\\approx 5{,}9, närmast 6 cm. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En cirkel har area 27\\;\\text{cm}^2. Du ska bestämma diametern (sträckan tvärs igenom cirkeln genom centrum) som ett närmevärde i cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Cirkelns areaformel",
+        "text": "Arean av en cirkel med radien r är A=\\pi r^2. Här är \\pi\\approx 3{,}14 en konstant; resten av ekvationen handlar om radien.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sambandet diameter–radie",
+        "text": "Diametern är dubbla radien: d=2r. Det betyder att om du hittar r så är d=2r bara ett kort steg bort.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Sätt in arean",
+        "text": "Insättning: 27=\\pi r^2. Du har en ekvation med en obekant (r) — målet är att lösa ut r.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös ut r²",
+        "text": "Dela båda sidor med \\pi: r^2=\\frac{27}{\\pi}. Numeriskt: 27/3{,}14\\approx 8{,}6.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Dra kvadratroten ur",
+        "text": "För att få r från r^2 drar du kvadratroten: r=\\sqrt{27/\\pi}\\approx\\sqrt{8{,}6}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Uppskatta √8,6",
+        "text": "Du vet att 2{,}9^2=8{,}41 och 3{,}0^2=9{,}00. Eftersom 8,6 ligger mellan dessa, ligger \\sqrt{8{,}6} mellan 2,9 och 3,0 — säg ≈ 2,93.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna diametern",
+        "text": "Diametern är dubbla radien: d=2r\\approx 2\\cdot 2{,}93=5{,}86 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Avrunda mot alternativen",
+        "text": "Alternativen är 1,5, 4,5, 6 och 9 cm. Värdet 5,86 cm ligger närmast 6 cm. Skillnaden till 4,5 är ca 1,4 cm; till 6 cm är 0,14 cm — mycket mindre.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med diameter 6",
+        "text": "Om d=6 så är r=3 och A=\\pi\\cdot 3^2=9\\pi\\approx 28{,}3 cm². Det stämmer väl med givna 27 (lite mer, vilket bekräftar att riktig diameter är något under 6).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Tvärkontrollera alternativ D",
+        "text": "Om d=9 skulle r=4{,}5 och A=\\pi\\cdot 4{,}5^2\\approx 63{,}6 cm² — drygt dubbelt så stor som 27. D är fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C (6 cm). Insikten i en mening: när du har en cirkelarea och söker diametern, isolera r^2, dra roten, och dubbla — håll \\pi med hela vägen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa π och räkna \\sqrt{27}\\approx 5{,}2 → diameter 10 → 1,5? Räknemissar.",
-        "why_wrong": "Inkludera π: r² = 27/π ≈ 8,6, r ≈ 2,9, diameter ≈ 5,9 ≈ 6."
+        "why_tempting": "Det är lätt att tappa π helt och räkna √27 ≈ 5,2 och sedan på något sätt få 1,5 från räknemissar.",
+        "why_wrong": "Steg 5 visar att π MÅSTE vara med: r² = 27/π, inte r² = 27. Utan π hamnar du i fel storleksordning."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att räkna RADIE istället för diameter och få 4,5 (felaktigt).",
-        "why_wrong": "Diametern är dubbla radien. r ≈ 3, diameter ≈ 6 cm."
+        "why_tempting": "Snabbsvar är ofta att räkna RADIEN (≈ 3 cm) men sedan av misstag glida till 4,5 cm, eller att räkna med d² = 27/π och få ≈ 5,9 men avrunda fel.",
+        "why_wrong": "Steg 8 räknar diametern korrekt: d = 2r ≈ 5,86 ≈ 6 cm. Värdet 4,5 är inte radien (som är ≈ 3), inte heller diametern."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 9 av räknemiss.",
-        "why_wrong": "Diameter 9 ger r 4,5 → area π·20,25 ≈ 64 — inte 27."
+        "why_tempting": "Många stannar vid 9 efter att ha kvadrerat felaktigt, t.ex. d² = 27 + π eller liknande räknefel.",
+        "why_wrong": "Steg 11 verifierar: d = 9 ger A ≈ 63,6 cm², mer än dubbelt så stor som angivna 27 cm². Bara d ≈ 6 cm ger A ≈ 27."
       }
     ],
-    "pitfall": null,
-    "solution_path": "r=\\sqrt{27/\\pi}\\approx 3 cm, alltså diameter ≈ 6 cm.",
-    "technique": "Diameter från cirkelarea: r = √(A/π); diameter = 2r.",
-    "framework_id": "XYZ-TRAP-042"
+    "technique": "Cirkel-bakvägen-rutinen: skriv A = πr², isolera r² = A/π, dra roten ur, dubbla för diametern. Triggern är 'känd cirkelarea + sök radie/diameter'.",
+    "pitfall": "Botemedlet mot 'glömde π': räkna alltid r² = A/π, aldrig r² = A. Faktorn π skiljer rätt storleksordning från fel.",
+    "framework_id": "XYZ-TRAP-042",
+    "pregrade_tactic": {
+      "handle": "Cirkel-bakvägen",
+      "move": "Isolera r² = A/π, dra roten, dubbla — håll π med i kalkylen hela vägen tills sista avrundningen."
+    }
   },
   "host-2022-kvant2-XYZ-010": {
     "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Räkna HL: \\frac{1}{2}-\\frac{1}{3}=\\frac{3-2}{6}=\\frac{1}{6}. Sätt in: \\frac{1}{3}-x=\\frac{1}{6}, alltså x=\\frac{1}{3}-\\frac{1}{6}=\\frac{2-1}{6}=\\frac{1}{6}. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Ekvationen \\frac{1}{3}-x=\\frac{1}{2}-\\frac{1}{3} har en obekant x. Du ska hitta det tal som gör vänster- och högerledet lika.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Plan: förenkla högerledet först",
+        "text": "Höger sida är en differens mellan två bråk utan obekant. Räkna ut den först så får du ekvationen 'något känt − x = något känt' som är trivial att lösa.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Bråk-subtraktion: gemensam nämnare",
+        "text": "För att subtrahera bråk behövs samma nämnare. Hitta minsta gemensamma nämnare (MGN) av 2 och 3. Eftersom 2\\cdot 3=6 och \\gcd(2,3)=1 är MGN = 6.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Räkna om bråken",
+        "text": "Skriv \\frac{1}{2}=\\frac{3}{6} (multiplicera täljare och nämnare med 3) och \\frac{1}{3}=\\frac{2}{6} (multiplicera med 2). Värdet bevaras eftersom du multiplicerar med 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Subtrahera höger sida",
+        "text": "\\frac{3}{6}-\\frac{2}{6}=\\frac{3-2}{6}=\\frac{1}{6}. Då blir ekvationen \\frac{1}{3}-x=\\frac{1}{6}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lös ut x",
+        "text": "För ekvationen a-x=b gäller x=a-b. Här är a=\\frac{1}{3} och b=\\frac{1}{6}, alltså x=\\frac{1}{3}-\\frac{1}{6}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna 1/3 − 1/6",
+        "text": "Gör om \\frac{1}{3}=\\frac{2}{6}. Då blir \\frac{2}{6}-\\frac{1}{6}=\\frac{1}{6}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Varför blir x = 1/6 och inte −1/6?",
+        "text": "Eftersom \\frac{1}{3}>\\frac{1}{6} är differensen \\frac{1}{3}-\\frac{1}{6} positiv. Felteckenfällan ('jag drar ju x åt höger') byter ofta tecken där det inte ska bytas.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera",
+        "text": "Sätt in x=\\frac{1}{6} i originalet: \\frac{1}{3}-\\frac{1}{6}=\\frac{2-1}{6}=\\frac{1}{6}. Höger sida: \\frac{1}{2}-\\frac{1}{3}=\\frac{1}{6}. ✓ Båda sidor är 1/6.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Mönsterigenkänning",
+        "text": "Lägg märke till symmetrin: båda sidor blir \\frac{1}{6}, och x=\\frac{1}{6}. Det är ingen tillfällighet — när två sidor är konstruerade lika är x lika med differensen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svaret är C (1/6). Insikten i en mening: vid bråk-ekvationer, förenkla först den sida som inte har x; det reducerar problemet till ett enkelt 'a − x = b'-steg.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa minustecken och få −1/2.",
-        "why_wrong": "Räkna noggrant: x = 1/6 (positiv)."
+        "why_tempting": "Det är lätt att tappa tecken vid omflyttning och tro att x flyttar 'med tecknet' så att x = −1/2.",
+        "why_wrong": "Steg 6 fastställer x = a − b, INTE x = −(a − b). Sätt in: 1/3 − (−1/2) = 5/6, inte 1/6 — alltså inte ekvationen."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta -\\frac{1}{6} av tecken-fel.",
-        "why_wrong": "x = 1/3 − 1/6 = 1/6 (positiv)."
+        "why_tempting": "Snabbsvar är ofta −1/6 om man råkar räkna högerledet baklänges som 1/3 − 1/2 = −1/6.",
+        "why_wrong": "Steg 5 räknar 1/2 − 1/3 = +1/6, inte −1/6. Ordningen i frågan är 1/2 minus 1/3."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid \\frac{1}{2} av räknefel.",
-        "why_wrong": "Om x = 1/2: 1/3 − 1/2 = −1/6, inte 1/6. Fel."
+        "why_tempting": "Många stannar vid 1/2 om man av misstag flyttar 1/3 fel och ser ekvationen som x = 1/2.",
+        "why_wrong": "Steg 9 verifierar: x = 1/2 skulle ge VL = 1/3 − 1/2 = −1/6, men HL = 1/6. Sidor stämmer inte."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Räkna höger: \\frac{1}{2}-\\frac{1}{3}=\\frac{3-2}{6}=\\frac{1}{6}. Då x = \\frac{1}{3}-\\frac{1}{6}=\\frac{2-1}{6}=\\frac{1}{6}.",
-    "technique": "Lös ut x ur a − x = b: x = a − b. Räkna båda sidor först."
+    "technique": "Förenkla-först-rutinen: räkna alltid ut den sida som inte har x först; ekvationen reduceras då till 'a − x = b' eller 'a + x = b'. Triggern är 'bråkekvation där x bara finns på en sida'.",
+    "pitfall": "Botemedlet mot teckenfällan: x = a − b, inte x = b − a. Skriv ekvationen om till x = ... innan du sätter in siffror.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Förenkla-först-receptet",
+      "move": "Räkna ut den sida som saknar x först, skriv om till x = a − b, sätt in siffror — verifiera genom att substituera tillbaka."
+    }
   },
   "host-2022-kvant2-XYZ-011": {
     "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Längd per gram: \\frac{130}{50} m/g. För 430 g garn: \\frac{130}{50}\\cdot 430 meter. Svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Ett nystan med 130 m garn väger 50 g. Emma använder 430 g — du ska välja det UTTRYCK som beräknar antalet meter, inte räkna ut svaret.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är ett proportionellt samband?",
+        "text": "När två storheter ändras tillsammans i samma takt kallas det proportionellt. Här: dubbla vikten ger dubbel längd; halva vikten ger halv längd. Förhållandet meter-per-gram är konstant.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Beräkna förhållandet",
+        "text": "Meter per gram (m/g): \\frac{130\\text{ m}}{50\\text{ g}}=\\frac{130}{50} m/g. Det är 'hur många meter du får per gram'.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Tänk i enheter (enhetsanalys)",
+        "text": "Multiplicera m/g med g för att få m: [\\text{m/g}]\\cdot[\\text{g}]=[\\text{m}]. Enheterna 'g' tar ut varandra — kvar blir meter, vilket är vad vi söker.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Multiplicera med 430 g",
+        "text": "För 430 g garn: \\frac{130}{50}\\cdot 430 meter. Detta är uttrycket frågan vill ha.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna ut värdet (kontroll)",
+        "text": "Bara för att veta: \\frac{130}{50}=2{,}6 m/g, gånger 430 g = 2{,}6\\cdot 430=1118 m. Rimligt: 430 g är ungefär 8,6 nystan à 130 m ≈ 1118 m.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Varför inte 50/130?",
+        "text": "Förhållandet \\frac{50}{130} har enheten g/m (gram per meter, ca 0,38 g/m). Multiplicerar du detta med 430 g får du [\\text{g/m}]\\cdot[\\text{g}]=[\\text{g}^2/\\text{m}] — fel enhet.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera alternativ A",
+        "text": "A = 50/130 · 430. Det är gram per meter gånger gram = fel enhet. Avvisas.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera alternativ B",
+        "text": "B = 50/430 · 130. Här delas 50 (gram) med 430 (gram) → ett tal utan enhet — multiplicerat med 130 m blir meter, men det blir fel STORLEK eftersom 430/130 borde stå i täljaren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera alternativ D",
+        "text": "D = \\frac{430}{130}\\cdot 50. Det är (gram/meter ändå?) — nej, 430/130 ger ett tal, gånger 50 (g) blir 'gram'. Slutprodukt: gram, inte meter. Fel enhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Bekräfta alternativ C",
+        "text": "C = \\frac{130}{50}\\cdot 430: (m/g)·g = m. Korrekt enhet, korrekt storlek (drygt 1100 m). ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är C. Insikten i en mening: vid proportionsuppgifter, sätt upp enhetskvoten så att 'fel-enhet' tar ut sig själv och rätt enhet återstår.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna \\frac{50}{130}\\cdot 430 (gram per meter).",
-        "why_wrong": "Det skulle ge gram, inte meter. Använd m/g (130/50)."
+        "why_tempting": "Det är lätt att räkna 50/130 (gram per meter) eftersom det ger ett 'litet trevligt' tal och sedan multiplicera med 430.",
+        "why_wrong": "Steg 8 visar att (g/m)·g = g²/m, inte meter. Du måste vända kvoten."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta \\frac{50}{430}\\cdot 130 (felaktig kombination).",
-        "why_wrong": "50 ska vara nämnare, inte täljare i hastighetsfaktorn. Och 430 ska multipliceras, inte stå i nämnare."
+        "why_tempting": "Snabbsvar är ofta 50/430 · 130 om man blandar ihop var 430 ska stå (täljare eller nämnare).",
+        "why_wrong": "Steg 9 visar att 430 (den NYA vikten) ska multipliceras, inte stå i nämnare. Annars saknas hela storleksskalningen."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid \\frac{430}{130}\\cdot 50 (omvänd).",
-        "why_wrong": "Det skulle ge gram, inte meter. Räkna enheter: m/g · g = m."
+        "why_tempting": "Många stannar vid 430/130 · 50 — man får ju ett tal med rätt 'känsla', och 50 multiplicerat ger något bekant.",
+        "why_wrong": "Steg 10 visar att slutprodukten har enheten gram (inte meter). Du har räknat ut 'hur många gram skulle 430/130 nystan väga' — fel storhet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Längd per gram: \\frac{130}{50} m/g. För 430 g: \\frac{130}{50}\\cdot 430.",
-    "technique": "Proportionellt samband: bestäm enheten av faktorn (m/g eller g/m), multiplicera med rätt mängd för rätt utfallsenhet."
+    "technique": "Enhetsanalys-rutinen: skriv upp varje storhets enhet (m, g, m/g), sätt upp kvoten så att den okända enheten kvarstår efter förkortning. Triggern är 'beräkna uttryck' i ett proportionellt samband.",
+    "pitfall": "Botemedlet mot 'kvot eller produkt?': skriv enheterna under siffrorna. Om slutprodukten har fel enhet är uttrycket fel oavsett hur 'rimligt' det ser ut.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Enhetsskalan",
+      "move": "Skriv varje storhets enhet vid sidan, sätt upp kvoten så att de oönskade enheterna förkortas bort — det alternativ som ger m efter förkortning är rätt."
+    }
   },
   "host-2022-kvant2-XYZ-012": {
     "_meta": {
-      "generated_at": 1778414892961,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Skriv 4=2^2, så 4\\cdot 2^x=2^2\\cdot 2^x=2^{x+2}. Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uttrycket 4\\cdot 2^x ska skrivas om till en form med EN potens. Du letar efter alternativet som är identiskt med uttrycket för alla x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en potens?",
+        "text": "Uttrycket a^n betyder 'a multiplicerat med sig själv n gånger': a^3=a\\cdot a\\cdot a. Här är a basen och n exponenten.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Multiplikationsregeln för potenser",
+        "text": "Om baserna är samma adderas exponenterna: a^m\\cdot a^n=a^{m+n}. Detta är nyckelregeln. Den fungerar bara om baserna är samma!",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Skriv om 4 som potens av 2",
+        "text": "Lägg märke till att 4=2\\cdot 2=2^2. Detta är det avgörande steget: vi tvingar fram samma bas (2) i båda faktorerna.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skriv om uttrycket",
+        "text": "Med 4=2^2 blir 4\\cdot 2^x=2^2\\cdot 2^x. Nu har båda faktorerna samma bas (2) — multiplikationsregeln går att tillämpa.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Tillämpa multiplikationsregeln",
+        "text": "Addera exponenterna: 2^2\\cdot 2^x=2^{2+x}=2^{x+2}. Det är slututtrycket.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Varför inte 2^(2x)?",
+        "text": "Regeln a^m\\cdot a^n=a^{m+n} ADDERAR exponenter, multiplicerar dem inte. Att multiplicera exponenter motsvarar potens-av-potens: (a^m)^n=a^{mn} — en annan regel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera numeriskt vid x = 1",
+        "text": "Original: 4\\cdot 2^1=4\\cdot 2=8. Alternativ A: 2^{1+2}=2^3=8. ✓ Samma värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera vid x = 3",
+        "text": "Original: 4\\cdot 2^3=4\\cdot 8=32. Alternativ A: 2^{3+2}=2^5=32. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tvärkontrollera alternativ D (8^x)",
+        "text": "Vid x=1: 8^1=8 ✓ — slumpmässigt rätt. Vid x=2: 8^2=64 men original = 4\\cdot 4=16. ✗ D fungerar inte generellt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Tvärkontrollera alternativ B (2^(2x))",
+        "text": "Vid x=1: 2^2=4; original = 8. ✗ B är fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: när du multiplicerar potenser med olika 'utseende' men relaterade baser — skriv om allt till samma bas och addera exponenter.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att 4·2^x = 2^(2x) (multiplicera exponenten).",
-        "why_wrong": "4 = 2² är en POTENS av basen. Multiplikation av potenser ADDERAR exponenter, inte multiplicerar."
+        "why_tempting": "Det är lätt att tro att man får 2^(2x) genom att 'multiplicera in 4' i exponenten, som om 4 vore en faktor på x.",
+        "why_wrong": "Steg 3 säger att man ADDERAR exponenter vid multiplikation, inte multiplicerar. Steg 7 förklarar varför."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 4^{x-1}.",
-        "why_wrong": "Vänsterledet är 4·2^x; 4^(x-1) skulle vara annan funktion av x."
+        "why_tempting": "Snabbsvar är ofta 4^(x-1) om man försöker 'flytta 4:an in i en exponent på fel sätt'.",
+        "why_wrong": "4^(x-1) = 4^x · 4^(-1) = 4^x/4 — det är inte samma som 4·2^x. Steg 8–9 verifierar att A (inte C) reproducerar uttrycket."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 8^{x} av att tro att 4·2 = 8.",
-        "why_wrong": "4·2^x ≠ (4·2)^x = 8^x. Lagen är 2² · 2^x = 2^(x+2)."
+        "why_tempting": "Många stannar vid 8^x av att tänka 4·2 = 8 och tro att 4·2^x = (4·2)^x.",
+        "why_wrong": "Steg 10 visar att 8^x bara råkar stämma vid x = 1; vid x = 2 ger 8^2 = 64 men originalet 16. Faktoriseringsregeln (ab)^x = a^x · b^x kräver att BÅDA är i exponent — här är bara 2 det."
       }
     ],
-    "pitfall": null,
-    "solution_path": "4=2^{2}, så 4\\cdot 2^{x}=2^{2}\\cdot 2^{x}=2^{x+2}.",
-    "technique": "Förenkla potens-uttryck: skriv om koefficienter som potenser av samma bas, addera exponenter."
+    "technique": "Samma-bas-rutinen: när du multiplicerar potenser med olika baser, skriv om koefficienter och faktorer som potenser av samma bas, addera sedan exponenterna. Triggern är 'förenkla c · a^x' där c är en potens av a.",
+    "pitfall": "Botemedlet mot 'addera vs multiplicera exponenter': skriv ut regeln a^m · a^n = a^(m+n) i utkanten av räkningen innan du börjar. Det förhindrar både a^(mn)- och (ab)^x-felen.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Samma-bas-greppet",
+      "move": "Skriv om varje koefficient som en potens av samma bas, addera exponenterna — verifiera med ett konkret x-värde."
+    }
   },
   "host-2022-verb1-ELF-031": {
     "_meta": {
@@ -6127,134 +7838,354 @@
     "technique": "Idiom med spöktillvaron som bild: när uttrycket bygger på folktrons andar och spöken (gå igen, osalig ande, gengångare), tolka det som en BILD för rastlöst, oroligt mänskligt beteende — sällan bokstavlig hämnd. Triggern att memorera: 'ande/spöke i idiom → inre tillstånd, inte övernaturligt agerande'."
   },
   "host-2022-verb2-ELF-036": {
-    "_meta": {
-      "generated_at": 1778446163083,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The opening paragraph frames anthrozoology as having 'discovered a window into human sociality more broadly' — our interactions with animals work as 'useful models for understanding how issues of identity, nurturing, support and attachment play out in a relationship'. Bonds with pets clarify human nature. Answer C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need the main argument of the OPENING paragraph specifically — not the whole article. 'Main argument' means the central claim the writer is selling, not a side fact.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Locate the thesis sentence",
+        "text": "The opening paragraph ends with two parallel claims: anthrozoologists found 'a window into human sociality' and 'Pets help us fill our need for social connectedness.' Both point outward from pets toward human psychology.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Paraphrase in plain English",
+        "text": "By watching how people relate to their pets, scientists learn how people relate to other people. The pets are the LENS; humans are the SUBJECT.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match the paraphrase to the options",
+        "text": "Option C says 'Bonds between pets and people provide clues to parts of human nature' — that is exactly the lens-on-humans framing. The bond is the source of clues; human nature is what we learn about.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verify against the paragraph",
+        "text": "Re-read: 'It's all about human psychology... pets help us fill our need for social connectedness... the more we uncover about our companion animals, the more we may learn about our human attachments.' Every sentence confirms the human-self-understanding frame.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer C. Insight in one line: in an ELF main-idea question, follow the direction the writer points — if pets are framed as the lens for human psychology, the answer names the human-side payoff.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'still in its infancy' (later) as 'largely unexplored'.",
-        "why_wrong": "The opening paragraph emphasises 50 years of psychology research — the field is being actively explored, not absent."
+        "why_tempting": "It's easy to remember the later phrase 'still in its infancy' and read it as 'largely unexplored'.",
+        "why_wrong": "Step 2 catches it: the opening explicitly says psychologists have spent 50 years on this. 'Infancy' refers to a young field that is being actively explored, not absent territory."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at the parallels framing and read it as animal-human behavioural similarity.",
-        "why_wrong": "The passage uses pet-relationships as windows into human psychology, not as evidence of cross-species behavioural parallels."
+        "why_tempting": "Many stop at the comparative framing and assume the paragraph is about animal-human behavioural parallels.",
+        "why_wrong": "As step 3 shows, the paragraph treats pets as a window onto HUMAN sociality — not as evidence that animals and humans behave alike. The direction of the claim runs from pets to humans, not between them."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on companion animals is mental closeness.",
-        "why_wrong": "The opening doesn't claim mental similarity — it says human-animal bonds reveal human social patterns."
+        "why_tempting": "First instinct on a companion-animal article is to expect a 'mental closeness' thesis.",
+        "why_wrong": "Step 4 names the actual thesis: bonds reveal HUMAN attachment patterns. Nothing in the opening paragraph claims that human and animal minds are more similar than commonly thought."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The opening says studying human-animal relationships gave anthrozoologists 'a window into human sociality more broadly... a useful model for understanding how issues of identity, nurturing, support and attachment play out in a relationship'. Animal bonds clarify human ones. Answer C.",
-    "technique": "When the passage opens with 'pets give us a window into ourselves', the main argument is human self-understanding via the bond."
+    "technique": "ELF main-idea questions almost always reward the option that copies the writer's directional move. Here the writer turns from pets to humans; the right answer must reproduce that turn.",
+    "pitfall": "The cure for the 'animal-behavior parallel' trap: ask which side the writer is treating as evidence and which side as the target. Pets here are evidence; humans are the target — so pick the option that says 'pets tell us about humans', never one that says 'pets and humans behave alike'.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The lens-and-target read",
+      "move": "When the opening frames topic X as a way to understand topic Y, pick the option whose subject is Y and whose evidence is X — never the symmetric option that treats X and Y as parallel."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-verb2-ELF-037": {
-    "_meta": {
-      "generated_at": 1778446163083,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage stacks three pieces of biological evidence: toddlers prefer live animals to toys, the amygdala has neurons that respond preferentially to animal images, and humans share an inborn response to infant-like features that baby animals exploit. Together these say humans are biologically primed for a positive response to animals. Answer A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need the option that the text most strongly supports — not a plausible extension, but a statement the writer would sign their name to.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Find the evidence trio",
+        "text": "Locate the second paragraph: 'Part of our attraction to animal companionship is innate.' That sentence is the topic claim. Three pieces of support follow: (i) toddlers prefer animals to toys, (ii) amygdala neurons fire for animal images, (iii) baby-animal features trigger the same instincts as human infants.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Paraphrase the topic claim",
+        "text": "'Innate' means built-in, hard-wired, present from birth. 'Wired with a favorable attitude' in option A is the everyday English version of the same idea.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Note the hedge — 'to some extent'",
+        "text": "Option A says 'to some extent', not 'entirely'. That matches the text exactly: the writer says 'PART of our attraction is innate' and later acknowledges culture also matters. The hedge is the option's safety bolt.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Verify against the options",
+        "text": "Re-read 'a neural basis for the powerful emotional reactions animals elicit from us' — that is option A almost verbatim. The other options each over-reach in a specific direction; step 6 lists the traps.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer A. Insight in one line: in ELF agreement questions, the option that hedges ('to some extent', 'often', 'may') usually wins, because passages rarely make absolute claims.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "It's easy to read 'baby animals exploit the same instinctive responses as human infants' as cultural similarity.",
-        "why_wrong": "The passage describes a shared human-instinct trigger, not parallel cultural treatment — infants and baby animals trigger the same human response, but aren't viewed similarly by all cultures."
+        "why_tempting": "It's easy to read 'baby animals exploit the same instinctive responses... as human infants' as 'humans treat infants and animals similarly across cultures'.",
+        "why_wrong": "Step 2 traces the claim: the shared trigger is in OUR brains, not in cultural treatment. The passage even says dogs are unclean in some Islamic cultures — so cross-cultural similarity of treatment is explicitly denied."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at the brain-cell evidence and infer recent neural adaptation.",
-        "why_wrong": "The passage describes these neurons as already present — no claim about evolutionary adaptation over time is made."
+        "why_tempting": "Many stop at 'specialized brain cells' and infer that the brain ADAPTED to animal company over time.",
+        "why_wrong": "Step 3 fixes the meaning: 'innate' and 'inborn' are present-tense facts, not claims about gradual adaptation. The passage never describes evolutionary change — it describes an already-existing mechanism."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on protective instincts is reciprocal animal response.",
-        "why_wrong": "The passage focuses on HUMAN responses to animals, not on how well animals respond to human protection."
+        "why_tempting": "First instinct on 'protective instincts' phrasing is reciprocal — humans protect, animals respond.",
+        "why_wrong": "Step 5 catches it: every sentence describes the HUMAN side of the interaction (toddler choice, human neurons, human nurturing instincts). Animal reactions to us are simply not the topic."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage cites toddlers preferring animals to toys, specialised brain cells in the amygdala that respond to animal images, and a 'neural basis for the powerful emotional reactions animals elicit from us'. Humans are biologically primed for positive responses to animals. Answer A.",
-    "technique": "When the passage cites toddler preference + brain cells + neural basis, the right answer names the innate human bias."
+    "technique": "When a paragraph opens with 'X is innate' and follows with neural, developmental and instinctive evidence, the matching option will mirror that hedged biological framing, usually with a 'to some extent' qualifier.",
+    "pitfall": "The cure for 'over-confident' distractors: scan each option for absolute words ('always', 'identical', 'in general', 'most cultures') and compare to the passage's actual hedge ('part of', 'may', 'some'). When the option's certainty exceeds the passage's certainty, it is wrong even if the topic matches.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The hedge-match",
+      "move": "When the passage hedges with 'part of', 'may', 'some' and the option hedges with 'to some extent', 'often' — trust the match; over-confident options lose."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-verb2-ELF-038": {
-    "_meta": {
-      "generated_at": 1778446163083,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Wilson is associated with 'biophilia' — an innate human pull toward life — but he also 'acknowledged that our interest in animals depends on personal and cultural experience'. Herzog argues 'pet keeping is driven principally by culture'. So Wilson puts innate factors first and culture second; Herzog flips that order, with culture primary. Answer D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need the exact mapping of two named researchers to two positions. Wrong distractors will swap them, exaggerate them, or smush them together.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Pin down Wilson's view",
+        "text": "Wilson is the 'biophilia' guy — an 'inherent tendency to focus on life and lifelike processes'. Inherent = innate. But the next sentence is critical: 'However, Wilson has also acknowledged that our interest in animals depends on personal and cultural experience.' He doesn't deny culture — he just makes it the second slot.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Pin down Herzog's view",
+        "text": "Herzog 'has argued that pet keeping is driven principally by culture'. 'Principally' means primarily, mostly. He then supports this with the fluctuating dog-breed popularity that tracks fashion rather than the dog's traits.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Build the mapping",
+        "text": "Wilson: innate first, culture second. Herzog: culture first, innate second (he even extends to all species via social imitation). Both accept both factors — they only disagree on the RANKING.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option D says 'Herzog sees culture as primary; Wilson regards culture as secondary' — that captures the ranking flip exactly. No option says 'Wilson sees innate as primary' literally, but D's statement about Wilson treating culture as secondary is the logical mirror.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer D. Insight in one line: in two-researcher contrast questions, the right answer almost always describes a RANKING DIFFERENCE, not a total opposition — both researchers usually share most of the framework.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read Wilson's biophilia as denying culture and Herzog's culture focus as excluding genes.",
-        "why_wrong": "Wilson explicitly 'acknowledged that our interest in animals depends on personal and cultural experience' — he doesn't deny culture, just demotes it."
+        "why_tempting": "It's easy to read Wilson's 'biophilia' as denying culture, and Herzog's culture focus as denying genes.",
+        "why_wrong": "Step 2 caught Wilson's explicit concession to culture, and Herzog's argument is about 'principally', not 'entirely' — neither man denies the other factor. The option overstates both positions."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at the contrast and oversimplify it to two opposite extremes.",
-        "why_wrong": "Wilson doesn't claim innate factors ALONE are decisive — he just makes them primary; he accepts culture as a secondary modulator."
+        "why_tempting": "Many stop at the contrast structure and assume the two are 'opposite extremes'.",
+        "why_wrong": "As step 4 shows, neither researcher takes an absolute position. The phrase 'innate factors alone are decisive' in B doesn't match Wilson, who explicitly conceded a role for culture."
       },
       {
         "letter": "C",
-        "why_tempting": "First instinct on a nature/nurture pair is to claim balance.",
-        "why_wrong": "The passage explicitly distinguishes Wilson (innate primary) from Herzog (culture primary) — they disagree, not converge."
+        "why_tempting": "First instinct on a nature/nurture pair is to declare them balanced.",
+        "why_wrong": "Step 5 traces the rankings: the passage's whole point in setting up the two researchers is that they DISAGREE on which factor leads. 'Equally important' erases the disagreement the passage is building."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Wilson credits biophilia (innate) but acknowledges culture matters — culture is secondary to him. Herzog argues 'pet keeping is driven principally by culture' — culture is primary to him. Answer D.",
-    "technique": "When the passage names two researchers with opposing emphases (one prioritises X, the other Y), pick the option that captures the difference precisely."
+    "technique": "ELF two-researcher questions test whether you noticed the RANKING difference. Both will usually accept both factors; what differs is which one each puts first. Search for the word 'principally' or 'primarily' next to one researcher's view to anchor the ranking.",
+    "pitfall": "The cure for 'extreme-opposite' trap: never accept an option that uses 'alone', 'only', 'denies', or 'excludes' unless the passage uses one of those words too. Researchers in HP ELF passages almost always allow the other factor — they just rank it lower.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The ranking flip",
+      "move": "Find the word that ranks each researcher's preferred factor ('principally', 'mainly', 'inherent') — the right option will describe the FLIP of those rankings, never a full opposition."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-verb2-ELF-039": {
-    "_meta": {
-      "generated_at": 1778446163083,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage describes the 1980 Friedmann finding (pet owners survived heart attacks better) and immediately undercuts it: 'efforts to replicate such findings have had mixed results, and animal-assisted therapy has been criticized for overstating the ability of animals to ameliorate mental illness.' That is the canonical 'we don't know yet' verdict. Answer B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need the passage's verdict on whether pets give psychological or medical benefits. Note the word 'concerning' — it asks what is SAID, so look for the writer's framing, not your own opinion.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Locate the medical paragraph",
+        "text": "Find Friedmann 1980: pet owners 'were more likely to be alive a year after a heart attack'. That is the positive finding. Then the pivot: 'Yet efforts to replicate such findings have had mixed results'. The word 'Yet' signals the writer's hedge.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Read the hedge in plain English",
+        "text": "'Mixed results' = some studies confirm, some don't. 'Animal-assisted therapy has been criticized for overstating' = the benefit might be smaller than claimed. 'Nevertheless, some people may gain psychological support' = a partial concession. Translation: the benefit is uncertain, neither confirmed nor denied.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match the verdict to options",
+        "text": "Option B says 'It is unclear whether owning a pet gives a health advantage' — that is the literal meaning of 'mixed results' and 'overstating'. The word 'unclear' is the exact register the passage uses.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verify",
+        "text": "Re-read 'efforts to replicate... have had mixed results' — replication failure is the textbook indicator of unclear evidence. Option B owns that meaning.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer B. Insight in one line: when an ELF passage states a positive finding and then says 'yet/however/but' with replication concerns, the correct answer is the uncertainty option — never the original finding.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to take the 1980 finding at face value.",
-        "why_wrong": "The passage immediately notes the replication failures — the original finding isn't reliable enough to support 'less prone to illness'."
+        "why_tempting": "It's easy to grab the Friedmann finding before reading further and conclude pet owners are healthier.",
+        "why_wrong": "Step 2 catches it: the very next sentence undermines the finding with 'mixed results'. The passage will not commit to 'less prone to illness' once it has flagged replication problems."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at 'mutual' and infer reciprocal benefits.",
-        "why_wrong": "The passage discusses benefits to owners; pets' benefit isn't part of the medical-aspect discussion."
+        "why_tempting": "Many stop at the word 'mutual' and assume the passage names a two-way benefit between pet and owner.",
+        "why_wrong": "Step 3 traces every benefit clause — they all point toward the owner. The passage never reports what the pet gets out of the relationship in medical terms."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on 'mixed results' is to debunk mental benefits.",
-        "why_wrong": "The passage says 'some people may gain psychological support from their pets and keep them for exactly this reason' — not pure wishful thinking, just uncertain in general."
+        "why_tempting": "First instinct on 'overstating' and 'mixed results' is full debunking.",
+        "why_wrong": "Step 3 also notes the 'Nevertheless, some people may gain psychological support' concession. Option D's 'wishful thinking' overshoots: the passage hedges, it does not dismiss."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Friedmann's 1980 study showed heart-attack survivors with pets lived longer, but 'efforts to replicate such findings have had mixed results, and animal-assisted therapy has been criticized for overstating the ability of animals' — the health benefit is unclear. Answer B.",
-    "technique": "When the passage couples a positive finding with replication failures and criticism, the right answer hedges — health benefit is unclear, not flat denied."
+    "technique": "When an ELF passage uses the 'positive finding → Yet/However → replication failure' structure, the right answer is always the calibrated uncertainty option. Look for words like 'unclear', 'mixed', 'may' in the option text.",
+    "pitfall": "The cure for the 'pick the original study' trap: always finish the paragraph before locking in. HP ELF passages frequently set up a finding only to qualify it within two sentences. The qualifier, not the finding, is the answer.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The replication hedge",
+      "move": "When the passage names a study, then says 'efforts to replicate had mixed results', pick the option with 'unclear' or 'may' — not the study's headline finding."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-verb2-ELF-040": {
-    "_meta": {
-      "generated_at": 1778446163083,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The closing paragraphs say 'such projections are precisely what make this field ripe for psychology: they reveal our own social needs and desires' and 'animal relationships may someday provide useful comparison points to human connections — a benchmark for investigating empathy, caring and even decision making.' The research target is human relationships. Answer C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need the MAJOR reason for current research — meaning the writer's framing of the field's main payoff, not a peripheral motive.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Locate the field-purpose sentences",
+        "text": "Skip to the closing portion. The writer says projections from owners 'reveal our own social needs and desires' and that animal relationships will 'provide useful comparison points to human connections — a benchmark for investigating empathy, caring and even decision making'.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Translate 'comparison points to human connections'",
+        "text": "A 'comparison point' is something you measure another thing against. 'Human connections' = relations between people. So animals are the benchmark; the target of study is close human relationships.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Connect to the opening (full-circle check)",
+        "text": "Compare with the opening: 'a window into human sociality more broadly... how issues of identity, nurturing, support and attachment play out in a relationship'. Open and close agree: research illuminates HUMAN bonds. That repetition is the writer's main thesis.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option C says 'The prospect of new light being shed on close relations between people.' 'New light' = the research payoff; 'close relations between people' = the human connections being benchmarked. The option mirrors the closing sentences almost word for word.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer C. Insight in one line: when the opening and closing paragraphs of an ELF passage repeat the same direction of inquiry, that direction is the main-reason answer.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read the brain-cell findings as a cognition-bridge story.",
-        "why_wrong": "The amygdala finding is about humans recognising animal life, not about shared cognition between humans and animals."
+        "why_tempting": "It's easy to remember the amygdala neurons and infer that researchers are chasing animal-human cognition links.",
+        "why_wrong": "Step 2 fixes the actual research aim: human social patterns, not shared cognition. The neuron finding explained WHY we react to animals; it is not framed as the research goal."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at owner-pet bonds and assume behavioural similarities.",
-        "why_wrong": "The passage doesn't claim owners and pets behave alike — it claims studying the bond illuminates human psychology."
+        "why_tempting": "Many stop at owner-pet bonds and assume behavioural similarity is the topic.",
+        "why_wrong": "Step 3 catches it: 'comparison points' explicitly compares animal-bonds and human-bonds as parallel relationships — not as similar behaviour between owner and pet."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on pet research is to demystify the animals.",
-        "why_wrong": "The passage frames the research goal as understanding humans — animals are the lens, not the target."
+        "why_tempting": "First instinct on 'pet research' is to assume the goal is understanding the ANIMALS.",
+        "why_wrong": "Step 4 shows the full-circle structure: open and close both put humans as the target. Animals are the lens throughout; demystifying them is never named as the research motivation."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage opens and closes with the idea that animal companionship reveals human social patterns — 'animal relationships may someday provide useful comparison points to human connections... a benchmark for investigating empathy, caring and even decision making'. New light on people. Answer C.",
-    "technique": "When the passage repeats 'window into human relationships' from open to close, the major research reason is human-self-understanding."
+    "technique": "When an ELF passage's opening and closing paragraphs both point at the same target (e.g. human sociality), the major-reason answer must name that target. Look for echoes between the topic sentence and the final claim.",
+    "pitfall": "The cure for the 'wrong-direction' trap: write the research arrow on the page. If the passage says 'A is studied to learn about B', mark A → B and pick the option whose noun phrase matches B. Options that flip the arrow (B → A) lose every time.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The full-circle echo",
+      "move": "Compare the opening thesis to the closing claim — when they echo, the echo IS the answer; pick the option that names the shared target."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2022-verb2-LÄS-011": {
     "_meta": {

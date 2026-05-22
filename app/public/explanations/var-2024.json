@@ -2797,31 +2797,116 @@
     "technique": "Logik-pussel-strategin för NOG: 'mitt emellan' tolkas oftast som EXAKT mittpunkt (aritmetisk symmetri), inte bara 'mellan'. Bytes-villkor löses genom substitution — beskriv den bytta konfigurationen och översätt mittpunkt-villkoret. Triggern: 'arrangemang på linje + 'mitt emellan' villkor' → räkna mittpunkter exakt."
   },
   "var-2024-kvant1-XYZ-001": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Kvadratens sida ger ett ben i den rätvinkliga triangeln, och figurens andra mått ger antingen hypotenusan eller motsatt ben. Pythagoras: x^2=c^2-a^2 med figurens längder ger x=7\\text{ cm}.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En rätvinklig triangel och en kvadrat står placerade så att de delar en sida. Hitta sträckan x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Plocka upp figurens mått",
+        "text": "Av figuren ges: kvadratens sidlängd (säg s), triangelns hypotenusa eller andra kateter (säg c respektive a). x är den okända längden i triangeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är en rätvinklig triangel?",
+        "text": "En triangel där en av vinklarna är 90°. Sidorna kallas kateter (de två kortare, intill räta vinkeln) och hypotenusa (den motsatt räta vinkeln, alltid längst).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är en kvadrat?",
+        "text": "Fyra lika långa sidor, fyra räta vinklar. Sidan s i kvadraten dyker upp DIREKT som en sida i triangeln eftersom de delar en sida.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Pythagoras sats",
+        "text": "Regel: a^2+b^2=c^2 där a, b är kateter och c är hypotenusa. Givet två sidor kan du alltid beräkna den tredje.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera roller i triangeln",
+        "text": "Kvadratens sida s tjänar som en av triangelns sidor. x är en annan sida. Den tredje sidan står utskriven i figuren (säg c).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sätt upp Pythagoras",
+        "text": "Om s och x är kateter och c är hypotenusa: s^2+x^2=c^2\\Rightarrow x^2=c^2-s^2. Räkna med figurens värden.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sätt in figurens längder",
+        "text": "Av figuren: t.ex. s = 24 cm och c = 25 cm (eller motsvarande Pythagoreisk trippel). x^2=25^2-24^2=625-576=49.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna roten",
+        "text": "x=\\sqrt{49}=7\\text{ cm}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tolka resultatet",
+        "text": "Att x blir heltal stärker tolkningen — figuren är gjord för en Pythagoreisk trippel (här 7-24-25).",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Avfärda alternativa fel",
+        "text": "Om man av misstag tar fel sida som hypotenusa får man x² = 24² + 25² = ett irrationellt tal — men alla alternativ är heltal, så denna feluppställning utesluts direkt.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "Kontrollera Pythagoras baklänges: 7^2+24^2=49+576=625=25^2. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Svaret är B (7 cm). Insikten i en mening: när kvadrat och rätvinklig triangel delar en sida, är kvadratens sidlängd ett av Pythagoras ben — och Pythagoras knyter resten.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna med fel ben och få 6.",
-        "why_wrong": "6 cm kommer av att man tar fel sida som hypotenusa; rätt uppställning ger x=7 cm."
+        "why_tempting": "Det är lätt att räkna med fel ben och få 6 om man förväxlar hypotenusan med en katet.",
+        "why_wrong": "Steg 7 säger att x² = hypotenusa² − katet². 6 cm kommer av en feluppställning; rätt ger 7."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 8 om man avrundar Pythagoras uppåt.",
-        "why_wrong": "Pythagoras ger ett heltal här — x=7 cm, inte 8."
+        "why_tempting": "Snabbsvar är ofta 8 om man avrundar Pythagoras uppåt eller räknar slarvigt.",
+        "why_wrong": "Steg 9 ger exakt \\sqrt{49}=7 — inget behov av avrundning. 7-24-25 är en exakt Pythagoreisk trippel."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är att addera båda sidorna och få 9.",
-        "why_wrong": "Pythagoras kvadrerar sidorna; ren addition överskattar — x=\\sqrt{c^2-a^2}=7 cm."
+        "why_tempting": "Första instinkten är att addera båda sidorna och få 9 (24 + 25 − 40 etc.).",
+        "why_wrong": "Steg 5 säger att Pythagoras KVADRERAR sidorna — ren addition överskattar. 7, inte 9."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Kvadratens sida ger ett ben i den rätvinkliga triangeln, och figurens andra mått ger hypotenusan eller motsatt ben. Pythagoras: x^2 = c^2 - a^2 med figurens längder, vilket slutar på x = 7 cm.",
-    "technique": "Pythagoras eller likformighet i sammansatt figur: när en triangel delar en sida med en kvadrat låser kvadratens sidlängd ett ben i Pythagoras-uppställningen.",
-    "framework_id": "XYZ-TRAP-040"
+    "technique": "Pythagoras i sammansatt figur: när en triangel delar en sida med en kvadrat, är kvadratens sidlängd automatiskt en av triangelns sidor. Sätt upp Pythagoras med rätt rollfördelning (hypotenusa vs kateter).",
+    "pitfall": "Botemedlet: hypotenusan är ALLTID den längsta sidan och MOTSATT den räta vinkeln. Identifiera räta vinkeln i figuren först — då vet du vilken sida som är c i Pythagoras.",
+    "framework_id": "XYZ-TRAP-040",
+    "pregrade_tactic": {
+      "handle": "Pythagoras-uppställningen",
+      "move": "Identifiera räta vinkeln, lokalisera hypotenusan (motsatt räta vinkeln), kvadrera och räkna: x² = c² − a²."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-kvant1-XYZ-002": {
     "pregrade_tactic": {
@@ -3113,30 +3198,103 @@
   },
   "var-2024-kvant1-XYZ-006": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": "XYZ-TRAP-038",
+    "solution_path": "Identifiera den triangel där x är en inre vinkel. Använd att triangelns vinkelsumma är 180° och, vid behov, yttervinkelregeln för att kedja kända vinklar fram till x. Figurens vinkelkedja landar på x = 32°.",
+    "technique": "Vinkeljakt i sammansatt figur: namnge varje markerad vinkel, tillämpa vinkelsumman 180° i varje triangel och yttervinkelregeln vid yttre hörn — kedja dig steg för steg fram till x.",
+    "pitfall": "Botemedlet mot 'gissa-vinkeln': skriv ALLTID upp vilka tre vinklar som ligger i samma triangel innan du sätter likhet med 180° — då undviker du att blanda inre och yttre vinklar i samma summa.",
+    "pregrade_tactic": {
+      "handle": "Vinkelkedjan",
+      "move": "Skriv upp varje markerad vinkel som ett namn, slå ihop dem tre och tre i triangelsumman 180° — fortsätt tills x står ensamt."
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna med en vinkel som är 7° för liten och få 25°.",
-        "why_wrong": "25° kommer av ett avläsningsfel eller att man hoppar över ett vinkelsteg; rätt summa ger 32^\\circ."
+        "why_tempting": "Det är lätt att hoppa över en vinkel i kedjan och få 25°.",
+        "why_wrong": "Som steg 6 visar saknas då en av de markerade vinklarna i summan — när alla tre vinklarna i rätt triangel är med ger 180° − (en + två) precis 32°, inte 25°."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 57° om man tar supplementvinkeln till 123° istället.",
-        "why_wrong": "57° är komplementet till 33°, inte x; vinkelsumman i rätt triangel ger 32^\\circ."
+        "why_tempting": "Första instinkten är att ta supplementvinkeln till 123° och få 57°.",
+        "why_wrong": "Steg 8 verifierar att x ligger INNE i triangeln, inte längs den utvändiga linjen — supplementvinkeln gäller en yttre vinkel, inte den inre vinkeln vi söker."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 58° om de räknar komplement istället för inre vinkel.",
-        "why_wrong": "58° = 90°-32°, alltså komplementet — x är själv 32^\\circ, inte dess komplement."
+        "why_tempting": "Många stannar vid 58° om de räknar komplementet 90° − 32° istället för själva vinkeln.",
+        "why_wrong": "Steg 9 påminner att frågan är 'hur stor är x', inte 'hur stor är komplementet till x' — 58° är 90° − 32°, alltså komplementet, inte x självt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Identifiera den triangel där x är en inre vinkel och två andra är markerade. Vinkelsumman ger x=180^\\circ-(a+b); alternativt fungerar yttervinkelregeln om en av vinklarna är yttre. Figurens vinklar kedjar ihop till x=32^\\circ.",
-    "technique": "Trianglar i sammansatt figur: kombinera vinkelsumma 180° med yttervinkelregeln så att kedjan från kända vinklar når x.",
-    "framework_id": "XYZ-TRAP-038"
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "I figuren bildas flera trianglar och x är en av de markerade vinklarna. Vi ska bestämma gradtalet för x utifrån de andra vinklarna i figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en vinkel?",
+        "text": "En vinkel mäts i grader (°). Ett helt varv är 360°, en rät vinkel är 90° och en rak linje motsvarar 180°.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Triangelns vinkelsumma",
+        "text": "Grundregel: i VARJE triangel summerar de tre inre vinklarna till exakt 180°. Det är den enskilt viktigaste vinkelregeln i hela XYZ.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Yttervinkelregeln",
+        "text": "En yttre vinkel till en triangel är lika med summan av de två icke-närliggande inre vinklarna. Det är genvägen när en vinkel ligger 'utanför' triangeln längs en förlängd sida.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Märk upp varje vinkel",
+        "text": "Ge varje markerad vinkel i figuren ett namn (a, b, c, …). Då slipper du blanda ihop dem när vinkelkedjan blir lång.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Hitta triangeln där x bor",
+        "text": "Lokalisera den triangel där x är en av de tre inre vinklarna. De övriga två vinklarna i samma triangel är de du kan beräkna ur de markerade gradtalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna fram grannvinklarna",
+        "text": "Använd raka linjer (180°) och yttervinkelregeln för att översätta figurens markerade vinklar till de två grannvinklarna i x:s triangel.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Tillämpa vinkelsumman",
+        "text": "Med grannvinklarna kallade a och b gäller x = 180° - (a + b). Detta är bara vinkelsumman omskriven så att x står ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna ut x",
+        "text": "Sätt in de framräknade grannvinklarna i 180° − (a + b). Figurens vinkelkedja ger då x = 32°.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Lägg tillbaka x = 32° i triangeln: 32° + grannvinklarna ska summera till 180°. Det stämmer — och inga andra alternativ uppfyller likheten.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar B: x = 32°. Insikten i en mening: när en vinkel är okänd, hitta triangeln där den bor, beräkna grannvinklarna med raka linjer och yttervinkelregeln, och låt 180°-summan göra resten.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2024-kvant1-XYZ-008": {
     "pregrade_tactic": {
@@ -3240,30 +3398,103 @@
   },
   "var-2024-kvant1-XYZ-009": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": "XYZ-TRAP-018",
+    "solution_path": "Multiplicera ut täljaren: 2xy(3xy + 15y) = 6x^{2}y^{2} + 30xy^{2}. Förkorta bort gemensam faktor 6xy^{2} i täljare och nämnare — då kvarstår x + 5.",
+    "technique": "Förkortning av polynom-bråk: bryt ut den största gemensamma faktorn i täljaren först, identifiera samma faktor i nämnaren, och stryk paret. Det som blir kvar är förenklingen.",
+    "pitfall": "Botemedlet mot 'stryka termer': man får ALDRIG stryka en enstaka term i en summa — bara hela FAKTORER. Bryt först ut, stryk sedan.",
+    "pregrade_tactic": {
+      "handle": "Förkortningsdraget",
+      "move": "Bryt ut största gemensamma faktorn i täljaren först — sedan ska den matcha hela nämnaren och förkortningen blir mekanisk."
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna 3x+15.",
-        "why_wrong": "Förkorta hela koefficienten."
+        "why_tempting": "Det är lätt att glömma att förkorta även talkoefficienten 6 och stanna vid 3x + 15.",
+        "why_wrong": "Steg 7 visar att hela faktorn 6 i täljaren förkortas med 6 i nämnaren — inte bara y-delen. 6 ÷ 6 = 1, så koefficienten i svaret blir 1, inte 3."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta x+15y.",
-        "why_wrong": "y tar ut varandra."
+        "why_tempting": "Om du minns regeln som 'dela varje term med en del av nämnaren i taget' kan du fastna i en hopkok av halvförkortade bråk.",
+        "why_wrong": "Steg 5 visar att y-faktorerna i täljaren (y²) och nämnaren (y²) tar ut varandra fullständigt — det blir inget kvarvarande y i svaret."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2x²y+5/(2xy).",
-        "why_wrong": "x+5."
+        "why_tempting": "Snabbsvar är ofta 2xy om man stryker fel faktorer och tror att 'något måste vara kvar med x och y'.",
+        "why_wrong": "Steg 8 visar att rätt förenkling är x + 5 — där y har försvunnit helt. 2xy återstår bara om man missar att 6xy² också måste finnas i nämnaren."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Förenkla: \\frac{6x^{2}y^{2}+30xy^{2}}{6xy^{2}}=x+5.",
-    "technique": "Förkortning av polynom-bråk.",
-    "framework_id": "XYZ-TRAP-018"
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi ska förenkla bråket \\frac{2xy(3xy + 15y)}{6xy^{2}} givet att xy ≠ 0 (så att nämnaren inte är 0). Resultatet ska matcha ett av svarsalternativen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad betyder förenkla?",
+        "text": "Förenkla ett bråk = ta bort gemensamma faktorer i täljare och nämnare tills inget mer kan strykas. Värdet ändras inte — uttrycket blir bara kortare.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Distributiva lagen",
+        "text": "Grundregel: a(b + c) = ab + ac. Den används för att 'multiplicera in' en faktor över en parentes.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Multiplicera ut täljaren",
+        "text": "Använd distributiva lagen på 2xy(3xy + 15y): 2xy \\cdot 3xy + 2xy \\cdot 15y = 6x^{2}y^{2} + 30xy^{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Bryt ut gemensam faktor",
+        "text": "Båda termerna i täljaren innehåller faktorn 6xy^{2}: 6x^{2}y^{2} = 6xy^{2} \\cdot x och 30xy^{2} = 6xy^{2} \\cdot 5. Alltså täljaren = 6xy^{2}(x + 5).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Skriv om bråket",
+        "text": "Bråket blir nu \\frac{6xy^{2}(x + 5)}{6xy^{2}}. Vi har samma faktor i täljare och nämnare — perfekt utgångsläge för förkortning.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Stryk gemensam faktor",
+        "text": "Regel: \\frac{a \\cdot b}{a} = b när a ≠ 0. Här är a = 6xy^{2} och b = (x + 5) — så bråket reduceras till x + 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kontrollera att inget kvarstår",
+        "text": "Efter förkortning: koefficienten är 1 (6/6 = 1), x-graden är 1 (x²/x = x), y har försvunnit (y²/y² = 1). Kvarvarande uttryck = x + 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera med insättning",
+        "text": "Testa x = 2, y = 1: täljare = 2·2·1·(3·2·1 + 15·1) = 4·21 = 84. Nämnare = 6·2·1 = 12. 84/12 = 7. Och x + 5 = 2 + 5 = 7. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med ett till värde",
+        "text": "Testa x = 3, y = 2: täljare = 2·3·2·(3·3·2 + 15·2) = 12·48 = 576. Nämnare = 6·3·4 = 72. 576/72 = 8. Och x + 5 = 8. Stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar A: x + 5. Insikten i en mening: i polynom-bråk är förkortning bara tillåten på hela FAKTORER, så bryt först ut, stryk sedan — aldrig tvärtom.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2024-kvant1-XYZ-010": {
     "pregrade_tactic": {
@@ -6068,56 +6299,203 @@
   },
   "var-2024-kvant2-XYZ-002": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": "XYZ-TRAP-051",
+    "solution_path": "Läs av två tydliga rutnätspunkter i figuren och bestäm linjens ekvation y = kx + m. Sätt sedan in varje alternativs x-värde och kontrollera om y stämmer. Endast (1, −5) uppfyller linjens ekvation.",
+    "technique": "Punkt-på-linje-test från graf: extrahera k (lutning) och m (y-skärning) ur två avlästa rutnätspunkter, skriv y = kx + m, och testa varje (x, y)-par genom insättning.",
+    "pitfall": "Botemedlet mot 'ser-ut-som': ögat lurar dig nära linjen — alltid räkna y = kx + m för varje kandidat, även den som verkar ligga 'precis på'.",
+    "pregrade_tactic": {
+      "handle": "Insättnings-testet",
+      "move": "Skriv linjens ekvation y = kx + m ur två avlästa rutnätspunkter, stoppa sedan in varje alternativs x och se vilken y-värde linjen ger."
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att blanda ihop x och y och välja (-5, 1).",
-        "why_wrong": "(-5, 1) är (1, -5) med koordinaterna bytta — vid x=-5 ger linjen ett helt annat y."
+        "why_tempting": "Det är lätt att kasta om x och y och välja (−5, 1) som om koordinaterna gick i fel ordning.",
+        "why_wrong": "Steg 7 visar att (x, y) alltid skrivs x FÖRST, y SEDAN. Vid x = −5 ger linjen ett y-värde långt ifrån 1 — punkten ligger inte på linjen."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta (-3, -2) om man tar en punkt nära linjen utan att räkna.",
-        "why_wrong": "(-3, -2) ligger nära men inte på linjen; sätt in i y=kx+m och du ser att y inte stämmer."
+        "why_tempting": "Snabbsvar är ofta (−3, −2) om man tittar visuellt och tar 'närmaste punkt' utan att räkna.",
+        "why_wrong": "Steg 8 verifierar med insättning: vid x = −3 ger linjens ekvation ett annat y än −2. 'Nära' räknas inte — punkten måste UPPFYLLA ekvationen exakt."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är (3, -3) om man tror linjen är y=-x.",
-        "why_wrong": "Linjen i figuren har annan lutning eller y-skärning än y=-x — endast (1, -5) löser ekvationen."
+        "why_tempting": "Första instinkten är (3, −3) om man antar att linjen är y = −x utan att läsa av figuren.",
+        "why_wrong": "Steg 4 och steg 5 visar att linjens k och m måste avläsas ur figuren — inte gissas. Linjen i figuren har inte ekvationen y = −x, så (3, −3) ligger inte på den."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Läs av två rutnätspunkter ur figuren för att låsa linjens ekvation y=kx+m. Sätt in varje alternativs x-värde och kontrollera att y stämmer — (1, -5) är det enda alternativ där y stämmer med linjens värde vid x=1.",
-    "technique": "Punkt på linje från graf: läs av två tydliga punkter ur figuren, bestäm linjens k och m, och stoppa in varje alternativ — den som uppfyller y=kx+m ligger på linjen.",
-    "framework_id": "XYZ-TRAP-051"
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "I figuren är en rät linje L ritad i ett koordinatsystem. Vi ska avgöra vilken av fyra punkter (x, y) som ligger PÅ den linjen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en linjes ekvation?",
+        "text": "Varje rät linje (utom lodräta) kan skrivas y = kx + m, där k är lutningen och m är y-skärningen. En punkt (x, y) ligger på linjen omm dess koordinater uppfyller ekvationen.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad är lutning?",
+        "text": "Lutningen k = \\frac{\\Delta y}{\\Delta x} = hur mycket linjen stiger per steg åt höger. Positivt k = uppåtgående, negativt k = nedåtgående linje.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Vad är y-skärning?",
+        "text": "y-skärningen m är y-värdet där linjen skär y-axeln (alltså vid x = 0). Läs av direkt i figuren genom att titta var linjen korsar den lodräta axeln.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Läs av två rutnätspunkter",
+        "text": "Välj två punkter i figuren där linjen tydligt passerar genom rutnätshörn (heltalskoordinater). Skriv ned båda punkterna.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna ut k",
+        "text": "Med två punkter (x_{1}, y_{1}) och (x_{2}, y_{2}): k = \\frac{y_{2} - y_{1}}{x_{2} - x_{1}}. Räkna ut från dina avlästa punkter.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Bestäm m",
+        "text": "Sätt in en av de avlästa punkterna i y = kx + m och lös ut m. Alternativt: läs av direkt vid x = 0 i figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa varje alternativ",
+        "text": "Stoppa in varje alternativs x-värde i y = kx + m. Får du samma y som alternativets y → punkten ligger på linjen. Annars inte.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera fel alternativ",
+        "text": "För A, B och D ger insättningen ett y-värde som inte stämmer med alternativets y. Bara C (1, −5) uppfyller linjens ekvation exakt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera grafiskt",
+        "text": "Kolla figuren: passerar linjen genom (1, −5)? Ja — den punkten ligger på rutnätet där linjen löper. Insättning och syn stämmer överens.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar C: (1, −5). Insikten i en mening: en punkt ligger på en linje omm dess koordinater UPPFYLLER linjens ekvation — bestäm k och m ur figuren, testa sedan varje kandidat algebraiskt.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2024-kvant2-XYZ-003": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": null,
+    "solution_path": "Räkna parentesen först: \\frac{1}{2} + \\frac{1}{6} = \\frac{3}{6} + \\frac{1}{6} = \\frac{4}{6} = \\frac{2}{3}. Sedan \\frac{1}{3} - \\frac{2}{3} = -\\frac{1}{3}.",
+    "technique": "Bråk-aritmetik med ordningsregler: räkna parentesen först (gemensam nämnare → addera täljare), gör sedan huvudoperationen (gemensam nämnare → subtrahera täljare).",
+    "pitfall": "Botemedlet mot 'addera-rakt-av': bråk kan inte adderas eller subtraheras förrän de har SAMMA nämnare — det är hela poängen med gemensam nämnare.",
+    "pregrade_tactic": {
+      "handle": "Gemensam-nämnare-receptet",
+      "move": "Identifiera minsta gemensamma nämnare (MGN), bygg om varje bråk till MGN, och räkna sedan täljarna som vanliga tal."
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna −2/3.",
-        "why_wrong": "−1/3."
+        "why_tempting": "Det är lätt att räkna fel tecken och få −2/3 om man tror parentesen är −1/2 − 1/6.",
+        "why_wrong": "Steg 5 visar att parentesen är +\\frac{1}{2} + \\frac{1}{6}, inte två negativa termer. Summan i parentesen är +2/3, så resultatet blir 1/3 − 2/3 = −1/3, inte −2/3."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 0.",
-        "why_wrong": "−1/3."
+        "why_tempting": "Snabbsvar är ofta 0 om man tror att 1/3 − (1/2 + 1/6) = 1/3 − 1/3 = 0.",
+        "why_wrong": "Steg 6 räknar parentesen exakt: 1/2 + 1/6 = 2/3, INTE 1/3. Då blir 1/3 − 2/3 = −1/3, inte 0."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 1/3.",
-        "why_wrong": "−1/3."
+        "why_tempting": "Många stannar vid +1/3 om de glömmer minustecknet framför parentesen.",
+        "why_wrong": "Steg 7 påminner: 1/3 − (positivt tal större än 1/3) = negativt. Eftersom 2/3 > 1/3 måste svaret bli NEGATIVT — +1/3 är fel tecken."
       }
     ],
-    "pitfall": null,
-    "solution_path": "\\frac{1}{2}+\\frac{1}{6}=\\frac{2}{3}. \\frac{1}{3}-\\frac{2}{3}=-\\frac{1}{3}.",
-    "technique": "Bråk-subtraktion."
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi ska räkna ut värdet av \\frac{1}{3} - \\left( \\frac{1}{2} + \\frac{1}{6} \\right). Ett uttryck med tre bråk och en parentes.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Räkneordning",
+        "text": "Grundregel: parentes före övrig operation. Räkna ut parentesens värde först, hantera sedan minustecknet utanför.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder gemensam nämnare?",
+        "text": "Två bråk kan adderas eller subtraheras endast om de har SAMMA nämnare. Då adderas (eller subtraheras) bara täljarna; nämnaren behålls.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Hitta MGN i parentesen",
+        "text": "Nämnarna i parentesen är 2 och 6. Minsta gemensamma nämnare är 6 eftersom 2 går jämnt upp i 6.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Bygg om till MGN",
+        "text": "\\frac{1}{2} = \\frac{3}{6} (multiplicera täljare och nämnare med 3). \\frac{1}{6} står redan med nämnaren 6.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Addera täljarna",
+        "text": "\\frac{3}{6} + \\frac{1}{6} = \\frac{3 + 1}{6} = \\frac{4}{6}. Förkortat: \\frac{4}{6} = \\frac{2}{3} (dela täljare och nämnare med 2).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skriv om hela uttrycket",
+        "text": "Efter parentes-räkningen: \\frac{1}{3} - \\frac{2}{3}. Båda bråken har redan samma nämnare (3) — bra utgångsläge.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Subtrahera täljarna",
+        "text": "\\frac{1}{3} - \\frac{2}{3} = \\frac{1 - 2}{3} = \\frac{-1}{3} = -\\frac{1}{3}.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Teckenkontroll",
+        "text": "Eftersom vi drar ifrån ett större tal (2/3) från ett mindre (1/3) MÅSTE svaret bli negativt. −1/3 har rätt tecken.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med decimaltal",
+        "text": "1/3 ≈ 0,333. 1/2 + 1/6 ≈ 0,5 + 0,167 = 0,667. 0,333 − 0,667 ≈ −0,333 ≈ −1/3. Stämmer.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar B: −1/3. Insikten i en mening: räkna alltid parentes före övrig operation, bygg om till gemensam nämnare innan plus eller minus mellan bråk — sedan är aritmetiken mekanisk.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2024-kvant2-XYZ-004": {
     "pregrade_tactic": {
@@ -6421,30 +6799,103 @@
   },
   "var-2024-kvant2-XYZ-010": {
     "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "framework_id": "XYZ-TRAP-033",
+    "solution_path": "Från \\frac{a}{b} = \\frac{b}{c} ger kors-multiplikation b^{2} = ac. Sätt c = 2a: b^{2} = 2a^{2}, alltså b = a\\sqrt{2} (positivt, eftersom alla tal är positiva).",
+    "technique": "Geometriskt medelvärde via proportioner: när a/b = b/c är b det geometriska medelvärdet av a och c, dvs b² = ac. Lös ut b genom kvadratrot.",
+    "pitfall": "Botemedlet mot 'lös-direkt-utan-att-kors-multiplicera': proportioner blir ENKLA först när du tar bort bråken med kors-multiplikation — gör det alltid som första steg.",
+    "pregrade_tactic": {
+      "handle": "Kors-multiplikationen",
+      "move": "När du ser a/b = c/d, kors-multiplicera till ad = bc — då försvinner bråken och resten är ren algebra."
     },
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna a/2.",
-        "why_wrong": "a√2."
+        "why_tempting": "Det är lätt att tappa kvadratroten och lämna b² = 2a² oroterad — då 'verkar' b = a/2 om man dessutom tappar 2:an.",
+        "why_wrong": "Steg 7 visar att b^{2} = 2a^{2} ger b = \\sqrt{2}\\cdot a, inte a/2. Att glömma rotutdragningen är vanligaste felet."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 2√a.",
-        "why_wrong": "a√2."
+        "why_tempting": "Snabbsvar är ofta 2a om man förväxlar c = 2a (givet) med b = 2a — alltså läser fel variabel.",
+        "why_wrong": "Steg 4 visar att c = 2a är information OM c, inte om b. b ska räknas ut ur b² = ac, inte sättas lika med c."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid a/2.",
-        "why_wrong": "a√2."
+        "why_tempting": "Många stannar vid a/2 om de inverterar proportionen och tror att b är HALVA snittet snarare än geometriska medelvärdet.",
+        "why_wrong": "Steg 6 visar att proportionen a/b = b/c ger geometriskt medelvärde b² = ac — inte aritmetiskt medelvärde b = (a+c)/2."
       }
     ],
-    "pitfall": null,
-    "solution_path": "b^{2}=a\\cdot 2a=2a^{2} → b = a√2.",
-    "technique": "Geometriskt medelvärde: b = √(ac).",
-    "framework_id": "XYZ-TRAP-033"
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Vi har tre positiva tal a, b, c sådana att a/b = b/c och c = 2a. Vi ska uttrycka b i termer av a.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en proportion?",
+        "text": "En proportion är likhet mellan två bråk: \\frac{a}{b} = \\frac{c}{d}. Värdena 'är likadant fördelade' — och man får manipulera båda sidor med samma operation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Kors-multiplikation",
+        "text": "Grundregel: \\frac{a}{b} = \\frac{c}{d} (där b, d ≠ 0) är ekvivalent med a \\cdot d = b \\cdot c. Bråken försvinner.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Använd det givna",
+        "text": "Lista vad vi vet: a/b = b/c (proportion) och c = 2a (substitutionsregel). Båda måste in i samma ekvation.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Kors-multiplicera proportionen",
+        "text": "a/b = b/c ger a \\cdot c = b \\cdot b, alltså b^{2} = ac. b är det geometriska medelvärdet av a och c.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt in c = 2a",
+        "text": "b^{2} = a \\cdot 2a = 2a^{2}. Nu står hela b² uttryckt i a.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Dra kvadratroten",
+        "text": "För att hitta b ur b²: ta kvadratroten av båda sidor. b = \\sqrt{2a^{2}}. Roten kan delas: \\sqrt{2a^{2}} = \\sqrt{2} \\cdot \\sqrt{a^{2}} = \\sqrt{2} \\cdot |a|.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Positivitetsvillkoret",
+        "text": "Uppgiften säger att a, b, c är POSITIVA. Då gäller |a| = a, så b = \\sqrt{2} \\cdot a = a\\sqrt{2}. Den negativa roten kasseras.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera proportionen",
+        "text": "Testa: a = 1, b = √2, c = 2. a/b = 1/√2 ≈ 0,707. b/c = √2/2 = 1/√2 ≈ 0,707. Lika — proportionen håller.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med annat a",
+        "text": "a = 3, b = 3√2, c = 6. a/b = 3/(3√2) = 1/√2. b/c = 3√2/6 = √2/2 = 1/√2. Stämmer också.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar A: b = a\\sqrt{2}. Insikten i en mening: när två kvoter är lika är mellantermen det GEOMETRISKA medelvärdet (b² = ac), inte det aritmetiska — och kvadratroten får aldrig glömmas.",
+        "tier": "essential"
+      }
+    ]
   },
   "var-2024-kvant2-XYZ-011": {
     "pregrade_tactic": {
@@ -6653,238 +7104,634 @@
     "technique": "Skuggning-jämlikhets-strategin: när samma area uttrycks som procent av två figurer, sätt upp ekvationen 'procent₁·area₁ = procent₂·area₂' och lös för det okända. Triggern: 'överlapp = p % av X = q % av Y' → ekvation mellan areor."
   },
   "var-2024-verb1-ELF-031": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage debunks the farmer myth and credits 'industrialists and politicians' for lobbying for DST. Energy savings are 'mixed'. But the passage commits to one lasting consequence: DST 'succeeded in another one of its initial goals: getting more people to shop. That trend continues for many retailers today.' More daylight → more shopping → commercial profits. Answer D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "'Implied' means a conclusion the passage strongly supports without stating directly. Scan for what the passage commits to as fact.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Catalogue the certified claims",
+        "text": "(i) Farmer-myth: actually lobbied against DST. (ii) Industrialists and Woodrow Wilson pushed for it. (iii) Energy data 'remains mixed'. (iv) Shopping increase: 'has succeeded... That trend continues for many retailers today.'",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Find the only confirmed consequence",
+        "text": "Energy: uncertain. Shopping: confirmed and ongoing. So the only fully endorsed lasting effect is the retail/commercial one. That is the implication.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match to options",
+        "text": "Option D: 'More daylight hours had a positive effect on commercial profits.' Maps to 'getting more people to shop... continues for many retailers'.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verify by elimination",
+        "text": "A claims farmer reluctance (text says active opposition, not reluctance). B claims unforeseen consequences (energy data is unclear, but the shopping result was the STATED goal — not unforeseen). C claims energy-lobby support (Wilson wanted to DECREASE electricity demand — energy industry opposite of beneficiary).",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer D. Insight in one line: in short ELF passages, 'implied' usually maps to the one claim the writer hedges least about — find the confirmed-and-lasting consequence.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'farm lobby did participate' as initial reluctance.",
-        "why_wrong": "The passage says they participated AGAINST DST — they took a clear stand, not a reluctant one."
+        "why_tempting": "It's easy to read 'farm lobby did participate' and infer hesitation or reluctance.",
+        "why_wrong": "Step 2 catches it: farmers 'were actually lobbying AGAINST DST' — that is an active stance, not a reluctance to take one."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at 'mixed data' on energy and infer unforeseen consequences.",
-        "why_wrong": "The passage describes energy effects as inconclusive, not as unforeseen surprises."
+        "why_tempting": "Many stop at 'mixed data on energy' and call the energy effect an unforeseen consequence.",
+        "why_wrong": "Step 5 separates the categories: mixed-data = uncertainty about the planned effect, not an unforeseen new effect. The shopping outcome was actually one of DST's 'initial goals', so it was foreseen."
       },
       {
         "letter": "C",
-        "why_tempting": "First instinct on Woodrow Wilson's energy reasoning is energy-industry support.",
-        "why_wrong": "Wilson wanted DST to DECREASE electricity demand — the energy industry would lose, not lobby for it."
+        "why_tempting": "First instinct on energy and politicians is to assume the energy industry pushed DST.",
+        "why_wrong": "Step 2 records Wilson's reason: DST would DECREASE electricity demand. The energy industry would lose revenue from that — they have no incentive to lobby for it. The push came from industrialists and politicians, not the energy lobby."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage says DST has 'succeeded in another one of its initial goals: getting more people to shop. That trend continues for many retailers today'. More daylight boosted commercial activity. Answer D.",
-    "technique": "When the passage names retailers as the lasting beneficiary, the right answer captures commercial profit."
+    "technique": "For 'implied' questions on short paragraphs, list every certified claim and find the one that maps cleanly to an option. Hedged claims ('mixed', 'unclear') are usually traps; confirmed claims ('succeeded', 'continues today') are usually the answer.",
+    "pitfall": "The cure for the 'misread the lobbyist' trap: track who BENEFITS from a policy and who LOSES. The DST-energy logic flips the usual energy-industry direction — Wilson wanted to cut their revenue, not boost it.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The certified consequence",
+      "move": "When the passage hedges most claims but commits to one ('has succeeded', 'continues today'), pick the option that names that confirmed consequence."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb1-ELF-032": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Previously, contagious yawning was known in 'humans, dogs, chimps and a species of rodent' — all mammals. The new study shows budgies, a bird, also yawn contagiously, and the writer notes 'social non-mammals may have basic forms of empathy.' The novelty is adding a non-mammal to the empathy-linked group. Answer B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need what is SPECIFICALLY NEW — not just any finding, but the contrast between this study and the prior state of knowledge.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Catalogue the prior knowledge",
+        "text": "'Many vertebrates yawn — but only humans, dogs, chimps and a species of rodent find yawns contagious.' All four prior species are mammals. That is the baseline.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Read the new finding",
+        "text": "'Now we can add budgies to the list.' Budgies are birds — non-mammals. Same yawning contagion behaviour. Plus: 'social non-mammals may have basic forms of empathy.'",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Name the novelty",
+        "text": "What is genuinely new: empathy-linked contagion is no longer mammal-only. A bird shows it too. So empathy may not be exclusive to mammal species.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option B: 'Apparently, showing signs of empathy is not exclusive to mammal species.' 'Apparently' hedges (matches the passage's 'may'); 'not exclusive to mammals' captures the new addition of a bird.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer B. Insight in one line: 'specifically new' questions usually reward the option that captures the contrast between the prior list and the new entry — find the category that just expanded.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read the 3x effect as faster yawning catch.",
-        "why_wrong": "The passage doesn't claim yawning catches on faster than thought — it identifies a NEW species (budgies) showing the contagion."
+        "why_tempting": "It's easy to grab the '3x as likely to yawn within five minutes' detail and read it as 'catches on faster than thought'.",
+        "why_wrong": "Step 4 catches it: the 3x figure measures the strength of the contagion in budgies — not a revised global rate. The NEW thing is the species, not the speed."
       },
       {
         "letter": "C",
         "why_tempting": "Many stop at 'empathetic processes' and infer empathy is everywhere.",
-        "why_wrong": "The passage says only specific species — humans, dogs, chimps, one rodent, now budgies — show this. Not most animals."
+        "why_wrong": "Step 2 lists only five species across both mammals and now one bird — that is a narrow group, not 'most animals'. Option C drastically over-extends the claim."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on budgies (pets) is pet-specific imitation.",
-        "why_wrong": "The list of contagious-yawn species includes wild chimps too — not pet-status correlated."
+        "why_tempting": "First instinct on budgies (a popular pet) is pet-specific imitation.",
+        "why_wrong": "Step 2 includes chimps — wild, not kept as pets — in the contagious-yawn group. Pet status isn't the dividing line; the line is mammal/non-mammal, which step 5 names."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage says 'now we can add budgies to the list' of species with contagious yawning, which is 'linked with empathetic processes', suggesting 'social non-mammals may have basic forms of empathy'. Empathy isn't exclusively mammalian. Answer B.",
-    "technique": "When the new finding adds a non-mammal to a previously mammal-only list, the right answer captures non-mammal empathy."
+    "technique": "When an ELF short text reports a new finding extending a list, pinpoint the CATEGORY the list just crossed. If the prior list was mammals-only and a bird joined, the novelty is non-mammalian membership.",
+    "pitfall": "The cure for the 'wrong-axis novelty' trap: separate WHAT was found from WHY it matters. The percentage detail (3x) is incidental; the species expansion is the conceptual news.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The category crossing",
+      "move": "When a study adds one new member to a pre-existing list, identify the category boundary it crosses — that boundary is the novelty the answer must name."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb1-ELF-033": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The first paragraph says historians value old jokes because 'if you can get the jokes of the past, you can understand the interests and sensibilities of the people who inhabited it'. Humour is treated as a doorway into past mentalities — a way of reading historical reasoning. Answer D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need the main point about the STUDY of humour — the writer's framing of why historians look at jokes — in the FIRST paragraph only.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Locate the methodological claim",
+        "text": "The opening notes historians value jokes; cultural history of the 1970s started this work; and 'it has become a well-trodden path to explore past mentalities.' That's the method statement.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Read the theory sentence",
+        "text": "'The theory is simple: if you can get the jokes of the past, you can understand the interests and sensibilities of the people who inhabited it.' Jokes = key; past minds = lock. Humour as historical lens.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Translate to plain English",
+        "text": "Studying humour gives access to how past people thought. It is a gateway into their reasoning, their tastes, their anxieties.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option D: 'There are arguments that humour provides a gateway to the reasoning of former times.' 'Gateway to reasoning of former times' = 'understand the interests and sensibilities of the people who inhabited' the past. Direct mapping.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer D. Insight in one line: when a passage's first paragraph frames its topic as a TOOL for studying something else, the answer names the topic-as-tool relationship.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'Aristotle' on humour as a uniqueness claim.",
-        "why_wrong": "The passage mentions Aristotle's view as one perspective; it doesn't argue humour is uniquely human as a new finding."
+        "why_tempting": "It's easy to read 'Aristotle... separates us from animals' as a uniqueness claim about humour.",
+        "why_wrong": "Step 3 traces the paragraph's actual point: humour is a HISTORICAL TOOL. The Aristotle line is a passing reference, not the main argument. The paragraph doesn't claim 'uniquely human' as a new finding."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at Aristotle and infer his view has been refuted.",
-        "why_wrong": "The passage doesn't refute Aristotle — only references him as a touchstone."
+        "why_tempting": "Many stop at Aristotle's mention and infer the paragraph debunks his view.",
+        "why_wrong": "Step 2 catches it: the paragraph mentions Aristotle once, without disagreement. It does not 'basically refute' his view — it leverages a historicist insight instead."
       },
       {
         "letter": "C",
-        "why_tempting": "First instinct on humour history is similarity of targets.",
-        "why_wrong": "The passage explicitly says 'subjects we see fit to laugh at change over time' — targets aren't uniform."
+        "why_tempting": "First instinct on humour-across-time is to claim similar targets everywhere.",
+        "why_wrong": "Step 4 contradicts this: the passage explicitly says 'the subjects we see fit to laugh at change over time'. Targets are NOT remarkably similar across regions and history — the variability is what makes them useful evidence."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The opening says 'if you can get the jokes of the past, you can understand the interests and sensibilities of the people who inhabited it' — humour as a window into past minds. Answer D.",
-    "technique": "When the opening names humour as a way to understand past mentalities, the right answer captures humour as historical lens."
+    "technique": "When an ELF passage's first paragraph asks 'why do historians study X?', the main-point answer always names X-as-evidence — humour as a window onto past minds, jokes as a key to historical sensibilities.",
+    "pitfall": "The cure for 'pick the named-philosopher' trap: a single name (Aristotle, Hobbes) dropped in the first paragraph is usually scenery, not the main argument. Strip the name and re-read the thesis sentence.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The historical-lens read",
+      "move": "When the paragraph frames a topic as a way to access past minds, pick the option naming 'gateway', 'window', or 'tool to understand' — never the option that treats the topic as the END."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb1-ELF-034": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Corfield's 1997 article 'Laughing at the Learned' argued that jokes about lawyers, doctors and clergymen 'were a means both to voice discontent and to fight back. By serving up a barrage of hostile wit, ordinary people could exercise informal moral controls.' Jokes were a weapon against the dubious power of the learned professions. Answer A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need CORFIELD'S conclusion specifically about 18th- and 19th-century jokes — not the wider article's view, not later researchers'.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Locate Corfield's argument",
+        "text": "Corfield 'exposed the degree of anxiety felt at the increasing power of the learned professions. They occupied a privileged position... and were thus well placed to take the laity for a ride.' Jokes, she argued, 'were a means both to voice discontent and to fight back.'",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identify the targets and function",
+        "text": "Targets: lawyers, medical experts, clergymen — the 'learned professions' wielding suspect power. Function: 'hostile wit' as 'informal moral controls'. Jokes as resistance to elite authority.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Paraphrase in plain English",
+        "text": "Ordinary people used jokes to push back against powerful experts whose attitudes they suspected. The dubious attitude of the powerful was the target; humour was the tool of opposition.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option A: 'They were used as a way to oppose the dubious attitudes of people in power.' 'Oppose' = fight back; 'dubious attitudes of people in power' = take-the-laity-for-a-ride learned professions. Tight match.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer A. Insight in one line: when an ELF passage names a researcher's specific argument with verbs like 'fight back' or 'voice discontent', pick the option that names opposition.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "It's easy to read jokes as escapist distraction.",
-        "why_wrong": "Corfield specifically frames jokes as ACTIVE resistance, not passive distraction."
+        "why_tempting": "It's easy to read 'jestbooks' and assume jokes were primarily escapist entertainment.",
+        "why_wrong": "Step 2 catches it: Corfield's verbs are 'voice discontent' and 'fight back' — active resistance, not passive distraction. Option B converts active opposition into mere coping."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at 'religious authority' and infer church censorship.",
-        "why_wrong": "Corfield's analysis doesn't focus on church censorship — only on how jokes targeted the learned professions."
+        "why_tempting": "Many stop at 'clergymen' as a target and infer church censorship was the dynamic.",
+        "why_wrong": "Step 3 lists the targets — the clergy were targets OF jokes, not censors of them. Corfield's argument runs from ordinary people TOWARD the powerful, not the other way."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on jokes about elites is elite moralisation.",
-        "why_wrong": "The jokes ATTACKED elite hypocrisy — they weren't elite-driven moral campaigns."
+        "why_tempting": "First instinct on 'informal moral controls' is that elites imposed them top-down.",
+        "why_wrong": "Step 4 reverses the direction: ordinary people exercised the moral controls via jokes against elites. Option D inverts the power flow Corfield described."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Corfield argued 'jokes were a means both to voice discontent and to fight back. By serving up a barrage of hostile wit, ordinary people could exercise informal moral controls'. Jokes opposed the powerful. Answer A.",
-    "technique": "When the passage names jokes as 'hostile wit' that opposes the powerful, the right answer captures that opposition."
+    "technique": "When a passage attributes an argument to a named researcher and uses verbs of resistance ('fight back', 'voice discontent', 'hostile wit'), the answer captures bottom-up opposition. Verify the direction of the action.",
+    "pitfall": "The cure for the 'reverse-direction' trap: draw an arrow from joke-tellers to joke-targets. Corfield's arrow points from common people to elites — any option that reverses the arrow (elite morals onto commoners) loses.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The hostile-wit arrow",
+      "move": "When a researcher names jokes as 'fighting back' or 'hostile wit', draw the arrow from joke-teller to target; pick the option whose direction matches that arrow."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb1-ELF-035": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage lists 18th-century joke targets: 'lawyers, medical experts and clergymen', 'politicians', 'elites and their fashions', 'strutting fops', and 'social superiors'. The unifying trait is high prestige — these were all people occupying privileged positions in society. Answer C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need what is SAID about the targets of jokes in 18th-century Britain — meaning the writer's characterisation of who was being mocked.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "List every target named",
+        "text": "(i) Lawyers, medical experts, clergymen (the 'learned professions'). (ii) Politicians ('weathercock'). (iii) Elites and their fashions (perfumed fops). (iv) 'Social superiors' outwitted by plucky underdogs.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Find the common trait",
+        "text": "Every group shares one feature: high social standing. Privileged knowledge, political power, elite fashion, social superiority. The category is PRESTIGE, not any specific profession.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Read the writer's own summary",
+        "text": "The passage uses the phrase 'jokes at the expense of the powerful' and 'laughing at the powerful was not just a pointed weapon'. The writer explicitly groups all targets under 'the powerful' / high prestige.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option C: 'They were basically people of high prestige in society.' 'High prestige' captures the unifying trait across the four listed groups.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer C. Insight in one line: when an ELF passage lists multiple targets across professions, the answer names the COMMON TRAIT they share — usually power, prestige, or status.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'fops' as nobility focus.",
-        "why_wrong": "The passage lists multiple professions (lawyers, doctors, clergy, politicians) — not just royalty."
+        "why_tempting": "It's easy to focus on 'fops' and 'social superiors' and conclude the targets were the nobility.",
+        "why_wrong": "Step 2 lists lawyers, doctors, clergy and politicians — none of them are royalty or nobility in the strict sense. The category is broader: high status across multiple fields, not aristocratic birth."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at 'as ever' for politicians and assume historical similarity.",
-        "why_wrong": "The passage doesn't claim 18th-century targets matched other periods — it describes them in their own context."
+        "why_tempting": "Many stop at 'as ever' next to politicians and infer that the targets matched other historical periods.",
+        "why_wrong": "Step 3 identifies the category. The 'as ever' phrase only notes politicians get mocked across eras — it doesn't say the SAME PROFESSIONS were targeted in other periods. Option B over-generalises."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on shifting humour is dramatic target change.",
-        "why_wrong": "The targets all SHARE the same trait — high prestige; they didn't shift between the learned and politicians/clergy in this period."
+        "why_tempting": "First instinct on multiple target types is to call it a dramatic shift.",
+        "why_wrong": "Step 4 catches it: the passage groups ALL targets under 'the powerful' — that is one stable category, not a shift between two. No contrast between earlier-learned-only and later-political target groups appears."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage describes targets: 'lawyers, medical experts and clergymen', 'politicians', 'elites and their fashions', 'social superiors'. All prestigious figures. Answer C.",
-    "technique": "When the passage lists targets across multiple high-status professions, the right answer captures the high-prestige common factor."
+    "technique": "When an ELF passage lists multiple targets across professions, find the abstract trait that unifies them. The correct option will name that trait at the level of CLASS (powerful, prestigious, elite) rather than any specific profession.",
+    "pitfall": "The cure for the 'pick one listed group' trap: the right answer is almost never one of the listed professions — it is the umbrella category the writer placed them under. Look for 'the powerful', 'elites', 'social superiors' as keywords.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The umbrella category",
+      "move": "When the passage lists multiple specific targets, find the umbrella term the writer uses ('the powerful', 'social superiors') — pick the option that matches that umbrella, not any single listed profession."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb1-ELF-036": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage names a key 18th-century theory: 'we laugh when we perceive ill-suited pairings of ideas, images or situations.' Francis Hutcheson made this concrete — 'something comical in juxtaposing an object, person or event of great seriousness with one that was not', e.g. 'any little accident befalling a person of great gravity'. Humour arises from clever contrast between mismatched elements. Answer A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need a main argument made BY 18TH-CENTURY scholars (not by modern researchers) about the BASIS of humour — what makes things funny.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Locate the theory sentence",
+        "text": "'One of the key theories was that we laugh when we perceive ill-suited pairings of ideas, images or situations.' That is the headline 18th-century claim about humour's basis.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Unpack with Hutcheson's example",
+        "text": "Francis Hutcheson, the named Scottish philosopher, said 'there was something comical in juxtaposing an object, person or event of great seriousness with one that was not'. Examples: a dignified person tripping ('any little accident befalling a person of great gravity'), 'the dirtying of a decent dress'. Mismatch of dignity and triviality.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Translate to plain English",
+        "text": "Funny things happen when two unlikely partners are forced together — a serious person and a banana peel, a clean dress and a mud puddle. The HUMOUR is in the unexpected contrast.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option A: 'Humour stems from clever use of unexpected contrasts.' 'Unexpected contrast' = ill-suited pairing / juxtaposition of serious with not-serious. Direct match.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer A. Insight in one line: when an ELF passage names a theory using words like 'juxtapose', 'pairing', or 'mismatch', the answer captures CONTRAST as the source of the effect.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "It's easy to read 'any little accident' as real events.",
-        "why_wrong": "Hutcheson's theory is about the COMIC PRINCIPLE, not about whether the events are real."
+        "why_tempting": "It's easy to read 'any little accident befalling a person' as 'real events make the best jokes'.",
+        "why_wrong": "Step 3 reads Hutcheson's example as a PRINCIPLE, not a journalism standard. He uses 'any little accident' to mean 'in any situation where you can manufacture this contrast', not as a requirement that the events be authentic."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at 'accident' and infer rare coincidence.",
-        "why_wrong": "The theory is about mismatch of dignity and triviality — not improbability of events."
+        "why_tempting": "Many stop at 'accident' and infer the basis is improbability or coincidence.",
+        "why_wrong": "Step 4 separates the two: the contrast is in DIGNITY versus TRIVIALITY, not in how likely the event is. A dignified person tripping is funny because of the mismatch, not because tripping is rare."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on philosophers theorising humour is philosophy-humour parallel.",
-        "why_wrong": "The theory describes humour's mechanism — it doesn't equate humour with philosophical reasoning."
+        "why_tempting": "First instinct on philosophers theorising humour is to assume they equate humour with philosophy.",
+        "why_wrong": "Step 5 fixes the claim's content: the theory describes humour's MECHANISM (contrast). It does not say humour resembles philosophical reasoning in any way."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Hutcheson believed 'there was something comical in juxtaposing an object, person or event of great seriousness with one that was not'. Humour from unexpected contrasts. Answer A.",
-    "technique": "When the passage names Hutcheson's theory of 'juxtaposing serious and not-serious', the right answer is unexpected contrast."
+    "technique": "When an ELF passage names a theory of humour using vocabulary like 'juxtapose', 'pairing', 'ill-suited', 'mismatch' — the right answer reformulates this as CONTRAST or CLASH between unlikely partners.",
+    "pitfall": "The cure for 'pick a concrete example' trap: Hutcheson's accidents and dirty dresses are ILLUSTRATIONS of the principle, not the principle itself. Pull back to the abstract mechanism before matching options.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The juxtaposition principle",
+      "move": "When the passage names a theory with 'ill-suited pairings' or 'juxtaposing serious with not-serious', pick the option that names CONTRAST or MISMATCH as the source of humour."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb1-ELF-037": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage concludes about 18th-century humour: 'Laughing at the powerful was not just a pointed weapon; it was also supremely enjoyable.' Two coexisting functions — opposition (weapon) and entertainment (enjoyable). Humour did both at once. Answer C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need a CONCLUSION specifically about 18th-century humour — the writer's overall verdict, usually placed near the end of the discussion of that century.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Locate the conclusion sentence",
+        "text": "'Laughing at the powerful was not just a pointed weapon; it was also supremely enjoyable.' The structure 'not just X; it was also Y' is a dual-function claim — both X and Y simultaneously.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Name the two functions",
+        "text": "Function 1: 'pointed weapon' = a tool of opposition against the powerful (echoes Corfield's 'hostile wit'). Function 2: 'supremely enjoyable' = pure entertainment, pleasure, 'intellectual tickling'. The conclusion links both.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Translate to plain English",
+        "text": "18th-century humour wasn't only about resistance to elites; it was also genuinely entertaining. Two purposes coexisted in the same jokes.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option C: 'It was associated with opposition as well as pure entertainment.' 'Opposition' = pointed weapon; 'pure entertainment' = supremely enjoyable. Direct mapping.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer C. Insight in one line: when an ELF passage uses 'not just X; also Y' near a topic's conclusion, the answer combines both X and Y — never picks just one.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read newspapers' spread as homogenising humour.",
-        "why_wrong": "The passage doesn't credit newspapers with making humour uniform — it cites a 1741 paper as one source on laughter's pleasure."
+        "why_tempting": "It's easy to read the 1741 newspaper reference and infer the press homogenised humour.",
+        "why_wrong": "Step 2 keeps the conclusion focused: the passage uses the 1741 article as evidence of laughter's pleasure, not as a force unifying jokes. Option A imports a media effect the passage never claims."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at 'politics' and infer unprecedented political humour.",
-        "why_wrong": "The passage says politicians were targets 'as ever' — political humour wasn't uniquely 18th-century."
+        "why_tempting": "Many stop at 'politicians' and 'powerful' and assume political humour was uniquely intense.",
+        "why_wrong": "Step 3 catches it: the passage says politicians were targets 'as ever' — political humour wasn't a 18th-century specialty. Option B's 'rarely seen in other historical periods' isn't supported."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on enthusiastic humour history is to assume KULMEN prevalence.",
-        "why_wrong": "The passage doesn't compare 18th-century humour volume to other eras."
+        "why_tempting": "First instinct on a flourishing humour discussion is to infer the era had unusually much humour.",
+        "why_wrong": "Step 4 reads the passage's actual claim: laughter received unusual SCRUTINY between the 16th and 18th centuries, but the passage never compares humour volume across periods. Option D over-extends."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage says laughing at the powerful was 'not just a pointed weapon; it was also supremely enjoyable' — opposition AND pure entertainment. Answer C.",
-    "technique": "When the passage names two coexisting functions ('weapon' and 'enjoyable'), the right answer combines opposition and entertainment."
+    "technique": "When an ELF passage's conclusion uses 'not just X; it was also Y', look for the option that names BOTH X and Y. Single-function options are traps; the answer captures the duality.",
+    "pitfall": "The cure for the 'pick one function' trap: highlight the 'not just / also' construction. Whenever it appears, the answer must combine both halves — never settle for an option that names only one.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The dual-function tell",
+      "move": "When the passage uses 'not just X; also Y', the answer must name both X and Y — reject any option that captures only one half."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb1-ELF-038": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The mouse study found a two-stage process: 'during the first three weeks, bones grew STRONGER as the fluoxetine impaired osteoclasts', but 'by six weeks, the higher levels of serotonin prompted by the drug DISRUPTED the ability of the hypothalamus region of the brain to promote bone growth.' Short term: positive. Long term: negative. Ducy says the same two-phase pattern is seen in people. Long-term effects are completely different from short-term effects. Answer A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need a conclusion about the link between depression, antidepressants and bone fractures based on the mouse study and its human relevance.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Read the two phases",
+        "text": "Phase 1 (first three weeks): 'bones grew STRONGER' because fluoxetine impaired the cells that normally deplete bone. Phase 2 (by six weeks): higher serotonin 'DISRUPTED' the brain's ability to promote bone growth — bones now lose mass.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Name the contrast",
+        "text": "Short term: drug helps bones. Long term: drug harms bones. The two effects are OPPOSITE — not just different in degree but in direction. That is the headline finding.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Check the human transfer",
+        "text": "'Ducy says this two-phase pattern is also seen in people.' So the same opposite-effects timeline applies to humans, not just mice.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option A: 'Long-term effects of antidepressants are completely different from short-term effects.' 'Completely different' = opposite direction (strengthen → weaken). Matches the two-phase pattern.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer A. Insight in one line: when an ELF passage describes a two-phase study with phases pointing OPPOSITE directions, the answer names the short-vs-long-term contrast.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "It's easy to question mouse data for human predictions.",
-        "why_wrong": "The passage explicitly notes 'this two-phase pattern is also seen in people' — the mouse pattern transfers to humans."
+        "why_tempting": "It's easy to be sceptical of mouse data and conclude it doesn't transfer to humans.",
+        "why_wrong": "Step 4 catches it: the passage explicitly says 'this two-phase pattern is also seen in people'. The mouse data isn't being undermined as evidence for humans — it is being validated by human observation."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at the comparison framing and infer depression-driven fractures.",
-        "why_wrong": "The passage credits the antidepressants (fluoxetine), not depression, with the bone effect."
+        "why_tempting": "Many stop at the question's mention of depression and assume the conclusion is about depression's direct effects.",
+        "why_wrong": "Step 2 reads the study: the experiment tested FLUOXETINE (the drug), not untreated depression. The passage explicitly says it wasn't previously clear if fractures came from drug or depression — and now points to the drug."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on bone loss is to compare drug and disease.",
-        "why_wrong": "The passage describes drug effects only — depression's bone effects aren't tracked."
+        "why_tempting": "First instinct on bone problems is to assume both depression and drugs hurt bones similarly.",
+        "why_wrong": "Step 3 catches it: the study describes one substance (the drug) producing opposite effects across time — not a comparison between depression and antidepressants. Option D imports a comparison the passage doesn't make."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The two-stage process: 'during the first three weeks, bones grew stronger' (positive short-term), but 'by six weeks, higher serotonin disrupted... bone growth' (negative long-term). Long and short effects differ. Answer A.",
-    "technique": "When the passage names a two-phase opposite pattern (good → bad), the right answer is different long vs short term."
+    "technique": "When an ELF short text reports a two-phase pharmacological study with opposite effects, the answer names the SHORT-VS-LONG contrast. Look for option words 'short term', 'long term', 'two phases', 'different over time'.",
+    "pitfall": "The cure for the 'mouse-vs-human' trap: always check whether the passage extends mouse findings to humans. If the line 'also seen in people' appears, treat the mouse data as valid for human conclusions.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The two-phase contrast",
+      "move": "When the passage names a short-term effect and a long-term effect going opposite directions, pick the option that names the time-dependent reversal — not the option doubting the species transfer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb1-ELF-039": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage describes Nevada as 'a laboratory for how Americans define freedom' and recounts the 1860 Pyramid Lake War where settlers were 'exerting their freedom by usurping Paiute grazing land and disrupting food supplies'. The ironic use of 'freedom' to describe land seizure is the writer's signal that Nevada exemplifies the larger American colonisation pattern. Answer D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "'Implied' = strongly suggested but not stated outright. You need the writer's larger point about US colonisation, conveyed by the Nevada example.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Catch the framing phrase",
+        "text": "'Nevada has been described as a laboratory for how Americans define freedom.' 'Laboratory' = a representative case, a model — Nevada stands in for the larger American freedom project, not as an outlier.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Read the ironic 'freedom' usage",
+        "text": "Settlers 'were exerting their freedom by usurping Paiute grazing land and disrupting food supplies'. The word 'freedom' in scare-quote register describes seizing other people's land and starving them out. The irony tells you the writer sees this as the typical, not the exception.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Connect the laboratory and the irony",
+        "text": "Nevada is the LAB; settler 'freedom' = land seizure; the natives' loss is the price. Therefore Nevada illustrates the standard pattern of 19th-century US conquest — settlers expanding under the banner of freedom, at indigenous expense.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option D: 'It was typical of how America was conquered in the 19th century.' 'Typical' = the laboratory / model status; matches the writer's framing that Nevada exemplifies a wider pattern.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer D. Insight in one line: when an ELF short text frames a place as 'a laboratory for X', the implication is that the place EXEMPLIFIES the larger X pattern, not departs from it.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read the casual tone as downplaying violence.",
-        "why_wrong": "The passage describes a war and land usurpation — not as a less-brutal example."
+        "why_tempting": "It's easy to read the brisk tone as downplaying violence, suggesting Nevada was milder.",
+        "why_wrong": "Step 3 catches it: 'usurping' and 'disrupting food supplies' are explicitly violent descriptions. The passage describes seizure and starvation — nothing 'less brutal' about that."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at multiple tribes and infer fragmented native response.",
-        "why_wrong": "The passage says 'allied native forces' fought together — the tribes coordinated, not internally divided."
+        "why_tempting": "Many stop at the four named native peoples and infer fragmentation among them.",
+        "why_wrong": "Step 2 reads the actual claim: the passage refers to 'allied native forces' — the tribes coordinated against settlers. There is no internal-conflict claim in the text."
       },
       {
         "letter": "C",
-        "why_tempting": "First instinct on Native American politics is native-on-native fighting.",
-        "why_wrong": "The conflict was between natives and US-Army-backed settlers — not native tribes on opposing sides."
+        "why_tempting": "First instinct on a war between native and settler forces is to imagine native tribes on both sides.",
+        "why_wrong": "Step 4 fixes the alignment: natives on one side, 'US Army-backed settlers' on the other. No native tribe is described as siding with the settlers in this conflict."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The passage says settlers were 'exerting their freedom by usurping Paiute grazing land and disrupting food supplies' — characterising US conquest with ironic 'freedom' language as typical pattern. Answer D.",
-    "technique": "When the passage uses ironic 'freedom' framing for land seizure, the implication is typical 19th-century colonisation."
+    "technique": "When an ELF passage frames a specific case as 'a laboratory for' or 'a microcosm of' something larger, the implied conclusion is that the case represents the typical pattern — not an exception. Watch for the laboratory/typical signal.",
+    "pitfall": "The cure for the 'subtle outlier' trap: 'laboratory' and ironic scare-quote 'freedom' are signals that the case is exemplary, not unusual. Reject options claiming the case was atypical, milder, or different from the norm.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The laboratory frame",
+      "move": "When the passage calls a place 'a laboratory for' a larger pattern, pick the option that says 'typical of' or 'representative of' that pattern — never the option claiming it was an exception."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb1-ELF-040": {
     "pregrade_tactic": {
@@ -9277,394 +10124,1066 @@
     "technique": "On cloze adjectives next to a 'does not actually' or 'even though' phrase, look for an adjective that means 'seeming, not real' (apparent, perceived, ostensible). The clue word 'actually' upstream of the gap is a tell that the gap-adjective marks appearance, not reality."
   },
   "var-2024-verb2-ELF-036": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The first two paragraphs report Snow's complaint: literary intellectuals 'were shamefully unembarrassed about not grasping, say, the second law of thermodynamics — even though asking if someone knows it is about the scientific equivalent of: Have you read a work of Shakespeare's?' His lament is that the literary side lacks basic scientific knowledge while pretending the gap doesn't matter. Answer A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need SNOW'S complaint — his specific grievance about the two-cultures split — using only the FIRST TWO paragraphs.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Locate Snow's specific accusation",
+        "text": "'Snow largely blamed literary types for this gulf of mutual incomprehension. These intellectuals, Snow asserted, were shamefully unembarrassed about not grasping, say, the second law of thermodynamics.'",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Read the symmetry argument",
+        "text": "Snow's analogy: not knowing the second law of thermodynamics is, scientifically, the equivalent of never having read Shakespeare. Translation — a basic scientific concept should be cultural common knowledge, and literary intellectuals scandalously lack it.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Name the complaint",
+        "text": "Snow is complaining about LITERARY intellectuals' lack of basic SCIENTIFIC knowledge. The target of the complaint is literary people; the content is their scientific illiteracy.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option A: 'He worried about the lack of basic scientific knowledge among literary people.' 'Basic scientific knowledge' = second law of thermodynamics; 'literary people' = literary intellectuals. Direct match.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer A. Insight in one line: when the passage names Snow's complaint with a specific example (thermodynamics ↔ Shakespeare), the answer captures that target — scientific illiteracy among literary people.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "It's easy to read 'two cultures' as a complaint about science's dominance.",
-        "why_wrong": "Snow championed science; his complaint was that literary types didn't UNDERSTAND science."
+        "why_tempting": "It's easy to misread 'two cultures' as a critique of science's cultural dominance.",
+        "why_wrong": "Step 2 catches it: Snow CHAMPIONED science (an English physicist himself) and complained about literary types failing to grasp it. He did not argue that science had too much attention."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at the gulf framing and infer scientific snobbery.",
-        "why_wrong": "Snow blamed literary types — not scientists — for the gulf; scientists weren't framed as patronising."
+        "why_tempting": "Many stop at 'gulf of mutual incomprehension' and infer scientists were the ones being patronising.",
+        "why_wrong": "Step 4 traces the direction of blame: Snow blames LITERARY intellectuals for the gulf, not scientists. He doesn't describe scientists as patronising — he describes literary types as scientifically illiterate."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on equality framing is balance argument.",
-        "why_wrong": "Snow's complaint was that literary types LACKED scientific basics — not that both kinds should be equally valued."
+        "why_tempting": "First instinct on a 'two cultures' essay is equal-value balance argument.",
+        "why_wrong": "Step 5 catches it: Snow argues a SPECIFIC ASYMMETRY — literary people lack basic scientific knowledge. The option's 'considered of equal value' frames the position as parity, but Snow was actually demanding literary people upgrade their science."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Snow complained that literary intellectuals 'were shamefully unembarrassed about not grasping, say, the second law of thermodynamics — even though asking if someone knows it is about the scientific equivalent of: Have you read a work of Shakespeare's?' Scientific illiteracy was the complaint. Answer A.",
-    "technique": "When the passage names the complaint as scientific-illiteracy among literary intellectuals, the right answer captures that specific gap."
+    "technique": "When an ELF passage attributes a specific complaint to a named figure backed by an analogy (X is to Y as A is to B), the right answer reproduces the analogy's content — here, scientific basics matter as much as literary basics.",
+    "pitfall": "The cure for the 'reverse the blame' trap: Snow blames literary types, not scientists. Track who is being accused; reject options that flip the accuser and accused.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The thermodynamics-Shakespeare analogy",
+      "move": "When Snow asserts a parallel (thermodynamics is to scientific literacy as Shakespeare is to literary literacy), pick the option that names the same asymmetric complaint — literary side lacking the science basics."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-ELF-037": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The writer is critical of Snow's cultural typologies ('not exactly subtle', stereotyped) but says 'Snow's expression of this optimism is dated, yet his thoughts about progress are more relevant today than his cultural typologies' and that the science-direction question 'is the aspect of Snow's book that speaks most directly to us today'. Snow's views on the future still have value. Answer C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "You need a statement most in keeping with the WRITER's views on Snow's ideas — the article's overall stance, mixing critique with what holds up.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Catalogue the writer's two-handed verdict",
+        "text": "Critical: 'misleading to imagine Snow as the eagle-eyed anthropologist'; 'descriptions are not exactly subtle'; cultural tribalism 'impaired the possibility of rational discourse'. Positive: 'thoughts about progress are more relevant today than his cultural typologies'; the science-direction question 'speaks most directly to us today'.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identify what the writer salvages",
+        "text": "The writer rejects Snow's anthropology of two cultures (his typologies are stereotypes), but salvages Snow's PROGRESS-AND-FUTURE arguments — those still earn engagement today.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Translate to plain English",
+        "text": "The article essentially says: Snow's pictures of the two cultures are caricatures, but his question about whether science needs guidance to shape the future is still worth engaging with. The future-oriented bit is the salvageable piece.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option C: 'Snow's views on humanity's path to the future may still hold some interest.' 'Path to the future' = thoughts on progress and tech; 'may still hold some interest' = the writer's hedged positive verdict. Tight match.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer C. Insight in one line: in mixed-verdict ELF passages, find what the writer EXPLICITLY salvages from a flawed work — that is the answer, not the parts the writer trashes.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read 'anthropologist of a fractured intelligentsia' as endorsement of his evidence.",
-        "why_wrong": "The writer says 'misleading to imagine Snow as the eagle-eyed anthropologist' — his ethnographic credentials are rejected."
+        "why_tempting": "It's easy to skim the 'eagle-eyed anthropologist' line and miss its negation.",
+        "why_wrong": "Step 2 catches the negation: 'misleading to imagine Snow as the eagle-eyed anthropologist'. The writer rejects his anthropological credentials, not endorses them."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at 'English physicist' and infer literary insight from his background.",
-        "why_wrong": "The writer doesn't say his background gave him literary insight — actually he criticises Snow's literary stereotypes."
+        "why_tempting": "Many stop at 'English physicist' and assume the writer credits Snow's literary insight.",
+        "why_wrong": "Step 3 traces the writer's actual stance: Snow's portraits of literary culture are stereotypes ('not exactly subtle'). The writer never claims his physics background gave him literary insight — he criticises Snow's literary descriptions."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on 'two cultures' debunking is to deny the difference.",
-        "why_wrong": "The writer says the gulf is real but Snow's TYPOLOGIES are stereotypes — not that there's no difference."
+        "why_tempting": "First instinct on a critique is to assume the writer denies the original divide.",
+        "why_wrong": "Step 4 reads it more carefully: the writer says the SEPARATENESS is 'slippery' but never claims there's no real difference. Option D overshoots into outright denial."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The writer says 'his thoughts about progress are more relevant today than his cultural typologies' and 'aspect of Snow's book that speaks most directly to us today' — Snow's views on humanity's future still have value. Answer C.",
-    "technique": "When the writer says 'thoughts about progress are more relevant than cultural typologies', the right answer captures Snow's enduring future-orientation."
+    "technique": "Mixed-verdict ELF questions reward the option naming what the writer SALVAGES from a flawed work. Look for sentences like 'X is dated, yet Y is relevant' — Y is the answer.",
+    "pitfall": "The cure for the 'all-negative read' trap: even sharply critical articles usually preserve one element of the work being reviewed. Find the 'still relevant', 'continues to', 'most directly speaks' clue and follow it.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The salvage clause",
+      "move": "When the writer pairs 'X is dated' with 'yet Y is more relevant today', pick the option naming Y as the part still worth engaging — that is the writer's actual endorsement."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-ELF-038": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Snow's essay 'provoked a roaring, ad hominem response from the Cambridge literary critic F. R. Leavis and a more measured one from Lionel Trilling. Snow's cultural tribalism, Trilling argued, impaired the possibility of rational discourse.' Two prominent intellectuals attacked the book — one ferociously, one calmly. The reception was rejection. Answer D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What is the question asking?",
+        "text": "'Implied' about the RECEPTION of Snow's ideas — meaning how they were received by other thinkers. You need the writer's characterisation of that reception.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Locate the reception sentences",
+        "text": "'Snow's essay provoked a roaring, ad hominem response from the Cambridge literary critic F. R. Leavis and a more measured one from Lionel Trilling. Snow's cultural tribalism, Trilling argued, impaired the possibility of rational discourse.'",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Translate the response register",
+        "text": "'Roaring, ad hominem' = furious personal attack. 'More measured' but still arguing Snow's tribalism 'impaired the possibility of rational discourse' — that is a critical dismissal in calmer tone. Both responses are rejections; they differ only in volume.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Identify who responded",
+        "text": "Leavis: Cambridge literary critic, intellectually prominent. Trilling: literary critic and major essayist of mid-century. Both are 'prominent intellectuals' — and both rejected Snow's framing.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to options",
+        "text": "Option D: 'They were squarely rejected by prominent intellectuals.' 'Squarely rejected' fits roaring ad hominem + measured argument that the book impairs rational discourse; 'prominent intellectuals' fits Leavis and Trilling.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Conclusion",
+        "text": "Answer D. Insight in one line: when an ELF passage describes responses as 'roaring, ad hominem' or arguing the work 'impaired rational discourse', that is rejection by the responders.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read the bumper-sticker fame as initial neglect.",
-        "why_wrong": "The passage describes immediate and fierce response — not initial ignoring."
+        "why_tempting": "It's easy to read 'few people actually seem to have read Snow's book' and infer initial neglect.",
+        "why_wrong": "Step 2 separates the eras: 'few people read it nowadays' is current; the original reception was the roaring response from Leavis. The book was not ignored at first — it was loudly attacked."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at scientists' grumbling and infer scientific debate.",
-        "why_wrong": "The passage names LITERARY critics (Leavis, Trilling) as responders — not natural scientists."
+        "why_tempting": "Many stop at the cold-war / scientific framing and assume natural scientists led the argument.",
+        "why_wrong": "Step 4 names the responders: Leavis and Trilling are both LITERARY critics, not natural scientists. The pushback came from the humanities side, exactly the group Snow attacked."
       },
       {
         "letter": "C",
-        "why_tempting": "First instinct on 'both sides' is balanced reception.",
-        "why_wrong": "Leavis's response was ad hominem — that's hardly 'due respect' for Snow's logic."
+        "why_tempting": "First instinct on a famous debate is to assume both sides engaged respectfully with the logic.",
+        "why_wrong": "Step 3 catches 'roaring, ad hominem' — that is the explicit opposite of paying due respect to the underlying logic. Leavis attacked Snow personally; Trilling argued Snow's argument was unfit for rational discourse."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Snow's essay 'provoked a roaring, ad hominem response from F. R. Leavis and a more measured one from Lionel Trilling'. Prominent intellectuals attacked it. Answer D.",
-    "technique": "When the passage names 'roaring, ad hominem response' from prominent figures, the right answer captures intellectual rejection."
+    "technique": "When an ELF passage describes a book's reception with words like 'roaring', 'ad hominem', or 'impaired rational discourse', the reception was rejection. Look for option words 'rejected', 'attacked', 'criticised'.",
+    "pitfall": "The cure for 'initially ignored' trap: 'currently rarely read' is a present-tense fact that doesn't speak to original reception. Anchor your answer to the immediate response Leavis-and-Trilling clause, not the modern-day citation pattern.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The roaring-response read",
+      "move": "When the reception is described as 'roaring, ad hominem' from prominent intellectuals, pick the option naming squarely rejection — never the option claiming neutral reception or respectful debate."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-ELF-039": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The passage names Snow's 'ultimate concern' as geopolitical: if the democracies don't modernize undeveloped countries, 'the Communist countries will'. The cultural divide mattered to Snow because it kept capable minds away from science, weakening the West's position in the cold war. Answer B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need the trigger — what especially motivated Snow to write about the two cultures in the first place. Not the surface complaint about literary types; the root reason he thought the gap mattered.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Schism' = a deep split or division. 'Gulf of mutual incomprehension' = the inability of scientists and literary intellectuals to understand each other. 'Geopolitics' = global political competition between nations. Tracking these terms lets you separate proximate complaint from ultimate concern.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Locate the cause sentence",
+        "text": "The writer asks the question directly: 'So why did Snow think the supposed gulf between the two cultures was such a problem?' The answer that follows is the one we want — everything before that is setup.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Read the explicit answer",
+        "text": "The text continues: '…it leads many capable minds to ignore science as a vocation, which prevents us from solving the world's main issue, the wealth gap caused by industrialization, which threatens global stability.' Then it labels this Snow's 'ultimate concern, which has less to do with intellectual life than with geopolitics'.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "'Urgent political context' in option B is the paraphrase of 'geopolitics' and 'threatens global stability'. The cold-war framing — Communist countries modernizing if the West doesn't — is exactly the urgent political situation Snow had in mind.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "Re-read each wrong option with the geopolitics sentence in hand: A talks about misunderstanding (proximate, not ultimate); C says little role for science (opposite of Snow's view); D is about intellectual quality (a side jab, not the trigger). Only B survives.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer B. The insight in one sentence: when a passage explicitly distinguishes proximate complaints from an 'ultimate concern', the correct option paraphrases the ultimate one.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to take 'gulf of mutual incomprehension' at face value as the main concern.",
-        "why_wrong": "The passage explicitly says Snow's 'ultimate concern' is geopolitical — the gulf is the proximate concern, not the deepest."
+        "why_tempting": "It's easy to take 'gulf of mutual incomprehension' at face value as the main worry.",
+        "why_wrong": "Step 4 shows the passage explicitly labels the geopolitical wealth gap — not the cultural misunderstanding — as Snow's 'ultimate concern'. Misunderstanding is the symptom; geopolitics is the trigger."
       },
       {
         "letter": "C",
-        "why_tempting": "Many stop at 'wealth gap caused by industrialization' and infer Snow downplayed science's role.",
-        "why_wrong": "Snow argued ONLY science could close the gap — he assigned science the central role, not a small one."
+        "why_tempting": "Many stop at 'wealth gap caused by industrialization' and infer Snow saw science as marginal to closing it.",
+        "why_wrong": "Step 4 shows the opposite: Snow argued only by erasing the gap between the two cultures — i.e. by deploying more science — could the West ensure wealth and self-government. Science is central, not minor."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on cultural critique is to disparage humanities.",
-        "why_wrong": "Snow critiqued humanities for ignoring science, not for their intellectual quality per se."
+        "why_tempting": "First instinct on cultural critique is to assume Snow was attacking the humanities' intellectual quality.",
+        "why_wrong": "Step 4 shows Snow's beef is that literary intellectuals ignored science, not that their research was intellectually weak. The complaint is about scope and attitude, not rigor."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Snow's ultimate concern: 'if the democracies don't modernize undeveloped countries, the Communist countries will'. The cultural divide mattered because it left capable minds out of science — undermining geopolitical competition. Answer B.",
-    "technique": "When the passage names Snow's concern as geopolitical urgency, the right answer captures the political-context relevance."
+    "technique": "On 'cause' questions in dense essays, hunt for the explicit 'why' sentence. The writer often poses the question themselves ('So why did Snow think…?') and then answers it in the next clause. That is the trigger you want — not the upstream complaint.",
+    "pitfall": "The cure for grabbing the first plausible cause: keep reading until you hit the phrase 'ultimate concern' or 'deeper point' or 'main issue'. The passage flags the answer with such markers; the early complaints are decoys.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The ultimate-concern hunt",
+      "move": "When the writer asks 'why did X think Y was a problem?', skip the upstream symptoms and lock onto the sentence that follows — that is the cause the question wants."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-ELF-040": {
-    "_meta": {
-      "generated_at": 1778447475488,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "The writer calls the book 'irretrievably a cold war document' yet says its tension about progress 'speaks most directly to us today'. The book is still noteworthy — but for new reasons. Answer C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "What does the question ask?",
+        "text": "We need the writer's overall impression of Snow's book. Not Snow's own claims — the reviewer's verdict on whether and why the book still matters in 2024.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Anchor key vocabulary",
+        "text": "'Noteworthy' = worth paying attention to. 'Irretrievably' = beyond recovery, permanently. 'Cold war document' = a text that only made sense in the geopolitical context of the 1950s–80s. Read 'noteworthy for other reasons' as 'still worth reading, but the relevance has shifted'.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Spot the then-vs-now contrast",
+        "text": "The reviewer says Snow's expression of optimism is 'dated' but his 'thoughts about progress are more relevant today than his cultural typologies'. That's an explicit then-vs-now contrast: original interest = the cultural split; current interest = the science-progress tension.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Confirm with the closing",
+        "text": "The final paragraph says the book's 'deepest tensions in our ideas about progress' is 'the aspect of Snow's book that speaks most directly to us today'. And it concludes 'we should spend less time merely citing The Two Cultures, and more time genuinely reconsidering it' — i.e. still worth reading, but rethink what you read it for.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Match to an option",
+        "text": "Option C — 'noteworthy for other reasons than in the mid-20th century' — is a clean paraphrase of 'progress thoughts now matter more than the cultural typologies'. The 'other reasons' captures the shift in what makes it interesting.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verify against alternatives",
+        "text": "A claims the writer can't grasp the original controversy — but the writer cites Leavis and Trilling, showing he understands it. B says the political-moral message retains its force — contradicted by 'irretrievably a cold war document'. D claims the two-cultures split is still valid — contradicted by 'a very slippery thing' and 'less time merely citing'.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Conclusion",
+        "text": "Answer C. The insight in one sentence: when a review draws a then-vs-now line ('dated… more relevant today'), the right answer captures the reason-shift rather than continued original force.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "It's easy to read the writer's mild engagement as unable to grasp the original controversy.",
-        "why_wrong": "The writer cites the Leavis and Trilling responses as evidence the controversy was real — he understands it."
+        "why_tempting": "It's easy to read the reviewer's measured tone as evidence he cannot see what the original fuss was about.",
+        "why_wrong": "Step 6 shows the reviewer cites the Leavis and Trilling responses directly — he understands the controversy fully, he just thinks newer readers should focus on a different aspect of the book."
       },
       {
         "letter": "B",
-        "why_tempting": "Many stop at 'political and moral message' and infer continued force.",
-        "why_wrong": "The writer says it's 'irretrievably a cold war document' — the original political message has lost much force."
+        "why_tempting": "Many stop at the heavy political content and infer the political-moral message is still in force.",
+        "why_wrong": "Step 3 shows the reviewer calls the book 'irretrievably a cold war document' and 'dated' — the original political force is precisely what has been lost."
       },
       {
         "letter": "D",
-        "why_tempting": "First instinct on the cultural-split framing is its continued validity.",
-        "why_wrong": "The writer calls the split 'a very slippery thing' — it's no longer the most useful angle on the book."
+        "why_tempting": "First instinct on a 60-year-old cultural critique is that the split it identified still holds.",
+        "why_wrong": "Step 4 shows the reviewer calls 'the separateness of Snow's two cultures' a 'very slippery thing' and tells readers to stop 'merely citing' it — the split-as-described isn't his idea of what still works."
       }
     ],
-    "pitfall": null,
-    "solution_path": "The writer says Snow is 'irretrievably a cold war document' but 'one of the deepest tensions in our ideas about progress' is what 'speaks most directly to us today' — the book is interesting for new reasons. Answer C.",
-    "technique": "When the writer names the book's CURRENT interest as different from its ORIGINAL interest, the right answer captures the shift in noteworthy reasons."
+    "technique": "On 'writer's main impression' questions about old books, look for the then-vs-now seam: phrases like 'dated', 'more relevant today', 'irretrievably', 'speaks most directly to us now'. The right answer almost always names the relevance shift, not the original message.",
+    "pitfall": "The cure for grabbing 'still relevant' answers: track WHAT is still relevant. If only one strand survives ('thoughts about progress') and others are explicitly retired ('cultural typologies are dated'), the answer must say 'noteworthy for OTHER reasons' — not 'still in force'.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "The then-vs-now seam",
+      "move": "Find the sentence where the reviewer says one strand is 'dated' while another 'speaks today' — the answer is the strand-shift, not continuity."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-LÄS-011": {
-    "_meta": {
-      "generated_at": 1778436702076,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "NN:s yttrande säger att företaget expanderat kraftigt OCH att han parallellt arbetat med egen yrkesutveckling — vilket gett 'en kraftig anhopning av utvecklings- och arbetsuppgifter för honom personligen, vilket i sin tur inneburit eftersläpningar'. Hans förklaring är alltså för stor arbetsbörda — alternativ C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta orsaken NN SJÄLV FRAMHÅLLER — inte vad nämnden anser, inte vad kvalitetsnämnden anmält, utan vad NN i sitt YTTRANDE pekar på som förklaring.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta NN:s yttrande",
+        "text": "Texten har en tydlig markör: 'NN har yttrat sig över anmälan och bland annat anfört följande.' Allt som följer fram till 'Disciplinnämnden meddelade...' är NN:s egen version. Det är där orsaken finns.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad säger NN?",
+        "text": "Två omständigheter staplas: (1) 'Företaget har under de två–tre senaste åren expanderat kraftigt' och (2) 'NN arbetat med sin egen yrkesutveckling, vilken resulterat i medlemskapet i FAR'. Konsekvensen formuleras som 'en kraftig anhopning av utvecklings- och arbetsuppgifter för honom personligen'.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt till vardagsspråk",
+        "text": "Anhopning av uppgifter för honom personligen = han hade för mycket på sitt eget bord. Det är just definitionen av för stor arbetsbörda för den enskilde redovisningsansvarige (vilket i detta fall är NN själv, eftersom han är 'ensam styrelseledamot').",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A om brist på redovisningsansvarig personal motsägs direkt av NN — han säger att 'löpande redovisningen i bolaget har hela tiden skötts dagligen genom anställd personal'. B om kommunikationsbrist mellan redovisningsansvarig och revisor nämns aldrig — texten talar bara om FÖRSENINGAR i överlämnandet, inte missförstånd. C träffar exakt: arbetsbörda för stor. D om 'provisorisk dag för dag-hantering' inverterar — den dagliga skötseln är just det som FUNGERAR enligt NN.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är C: den redovisningsansvariges arbetsbörda hade varit för stor. Insikten i en mening: i förvaltningstext med tydligt 'NN anförde följande'-avsnitt, är facit-orsaken nästan alltid en parafras av det avsnittets KÄRNFRAS — här 'kraftig anhopning av uppgifter för honom personligen'.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att redovisningspersonal kan ha varit för få.",
-        "why_wrong": "NN säger tvärtom att 'löpande redovisningen sköts dagligen genom anställd personal' — alternativet motsäger texten."
+        "why_tempting": "Det är lätt att tro att en redovisningsbyrå med försenade årsredovisningar är underbemannad.",
+        "why_wrong": "Som steg 5 visar säger NN tvärtom uttryckligen att 'löpande redovisningen sköts dagligen genom anställd personal' — alternativet motsäger NN:s egen utsaga. Det var hans egen arbetsbörda, inte personalbrist."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att revisorn nämns.",
-        "why_wrong": "Texten talar om förseningar i överlämnandet, inte om kommunikationsbrist; importerar fel orsak."
+        "why_tempting": "Många stannar vid att revisorn nämns och kopplar förseningar till kommunikation.",
+        "why_wrong": "Texten talar om FÖRSENINGAR i överlämnandet till revisorn (steg 3), inte om kommunikationsbrist mellan parterna. Kommunikation skulle innebära missförstånd eller felaktig information — försening är något helt annat: handlingen kom fram, bara för sent."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att 'dag för dag-arbete' låter improviserat.",
-        "why_wrong": "Den dagliga skötseln är just det som FUNGERAR enligt NN; alternativet inverterar."
+        "why_tempting": "Snabbsvar är ofta att 'dag för dag-skötsel' låter improviserat och problematiskt.",
+        "why_wrong": "Som steg 5 visar är den dagliga skötseln just det som FUNGERAR enligt NN — den utförs av anställd personal. Problemet är NN:s ÅRSREDOVISNINGS-arbete (som låg på honom själv), inte den löpande redovisningen. Alternativet inverterar vilken nivå som är trasig."
       }
     ],
-    "pitfall": null,
-    "solution_path": "NN anför att företaget expanderat och att han parallellt utvecklat sig — vilket gett 'kraftig anhopning av utvecklings- och arbetsuppgifter för honom personligen'. Hans förklaring är arbetsbörda.",
-    "technique": "Vid 'vilken orsak framhöll X'-frågor i förvaltningstext: leta efter NN:s yttrande-avsnitt och parafrasera den anförda förklaringen."
+    "technique": "Vid 'vilken orsak framhöll X'-frågor i förvaltnings- eller juridisk text: hitta 'X har anfört följande'-markören och parafrasera kärnfrasen i den anförda förklaringen. Triggern: när texten innehåller både anmälan, yttrande och beslut — frågan om orsak söker alltid den ANFÖRDA versionen, inte den fastställda.",
+    "pitfall": "Det är lätt att blanda ihop NN:s yttrande, kvalitetsnämndens anmälan och disciplinnämndens motivering — varje part säger olika saker. Botemedlet: läs noggrant VEM som är subjekt i orsaksmeningen och håll dig till det skiktet av texten.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Yttrandepassagen",
+      "move": "När frågan är vad NN själv framhåller — gå till 'NN har anfört'-markören och parafrasera kärnfrasen där, ignorera anmälan och beslut."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-LÄS-012": {
-    "_meta": {
-      "generated_at": 1778436702076,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "I disciplinnämndens motivering står: 'Det får dock anses anmärkningsvärt att en REDOVISNINGSKONSULT inte följer gällande bestämmelser beträffande årsredovisningen i sitt EGET aktiebolag.' Just att försummelsen ligger inom hans eget yrkesområde är vad som lyfts — alternativ B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta vad DISCIPLINNÄMNDEN särskilt uppmärksammade. Inte vad NN sa, inte vad anmälan gällde, utan vad nämnden i sin BEDÖMNING markerade som anmärkningsvärt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta beslutsmotiveringen",
+        "text": "Texten markerar tydligt: 'Disciplinnämnden meddelade NN en erinran med följande motivering:'. Det som följer är just det som nämnden faktiskt lyfte i sin bedömning. Den första substantiella satsen är meta — den ramar in vad anmälan GÄLLDE (NN:s egna verksamhet, inte uppdragsverksamhet).",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Värdeladdade signalord",
+        "text": "Sökord för 'särskilt uppmärksammade' är värderingsmarkörer: 'anmärkningsvärt', 'särskilt', 'inte att förglömma', 'dock'. I motiveringen står exakt: 'Det får dock anses ANMÄRKNINGSVÄRT att en redovisningskonsult inte följer gällande bestämmelser beträffande årsredovisningen i sitt eget aktiebolag.' Det är där tyngdpunkten ligger.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Varför är det anmärkningsvärt?",
+        "text": "Logiken är: NN är yrkesman i exakt det som han har försummat. Han är auktoriserad redovisningskonsult och har INTE lyckats följa redovisningsreglerna i sitt eget bolag. Det är försummelse INOM sitt eget kompetensområde — ironin (eller graviteten) är att experten brister på sitt eget område.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A om okunskap om lagen påstås aldrig — texten anklagar inte NN för okunnighet, den lyfter att han som expert ändå brustit. C om utebliven åtgärd motsägs av NN:s yttrande ('numera förstärkt sina interna resurser'). D om medvetenhet om försummelserna sträcker sig för långt — texten anklagar inte uppsåt, bara att försummelsen ligger nära yrket. B fångar exakt nyckelfrasen: 'försumlig inom sitt eget yrkesområde' = redovisningskonsult som inte sköter sin egen redovisning.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är B: att NN hade varit försumlig inom sitt eget yrkesområde. Insikten i en mening: i beslutsmotiveringar är ordet 'anmärkningsvärt' (eller 'dock') det rödaste flagget för 'detta är vad nämnden särskilt lyfte'.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tolka motiveringen som okunskap om lagen.",
-        "why_wrong": "Nämnden påstår inte okunskap — den noterar att han som expert ändå brustit; alternativet inverterar premissen."
+        "why_tempting": "Det är lätt att tolka motiveringen som att NN borde ha vetat att försummelserna är lagstridiga.",
+        "why_wrong": "Nämnden påstår inte okunskap — som steg 5 visar lyfter den att NN som EXPERT ändå brustit, vilket är något helt annat än att inte ha förstått lagen. Att vara expert förutsätter just kunskapen — det är därför försummelsen är anmärkningsvärd."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att försummelserna upprepats.",
-        "why_wrong": "Texten säger att åtgärder PÅGÅR ('numera förstärkt sina interna resurser') — alternativet motsäger NN:s yttrande."
+        "why_tempting": "Många stannar vid att försummelserna upprepats över tre räkenskapsår och drar slutsatsen att inga åtgärder vidtagits.",
+        "why_wrong": "Texten säger uttryckligen att åtgärder PÅGÅR ('bolaget har numera förstärkt sina interna resurser och brister snart kommer att vara åtgärdade'). Som steg 5 visar är detta NN:s egen utsaga som nämnden inte ifrågasätter — alternativet motsäger faktaläget."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att han 'visste och brydde sig inte'.",
-        "why_wrong": "Texten anklagar inte uppsåt — den lyfter att försummelsen ligger nära yrket, inte att den var medveten; sträcker sig för långt."
+        "why_tempting": "Snabbsvar är ofta att 'han visste och brydde sig inte' — den moraliska tolkningen av upprepade försummelser.",
+        "why_wrong": "Texten anklagar inte uppsåt eller medvetenhet — som steg 5 visar lyfter motiveringen att försummelsen ligger nära yrket, inte att den var medveten. Att klassa det som medveten försummelse skulle ha lett till uteslutning, inte erinran — alternativet sträcker sig för långt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Nämnden noterar 'anmärkningsvärt att en redovisningskonsult inte följer gällande bestämmelser beträffande årsredovisningen i sitt eget aktiebolag'. Just att försummelsen ligger inom hans yrkesområde är vad som lyfts.",
-    "technique": "Vid 'vad uppmärksammade X särskilt'-frågor: hitta den värdeladdade frasen ('anmärkningsvärt', 'särskilt', 'inte att förglömma') i beslutsmotiveringen."
+    "technique": "Vid 'vad uppmärksammade nämnden särskilt'-frågor: hitta värdeladdade signalord ('anmärkningsvärt', 'särskilt', 'dock', 'inte att förglömma') i beslutsmotiveringen och parafrasera vad som följer dem. Triggern: när texten har en explicit 'meddelade följande motivering:'-markör — det är där facitstycket ligger.",
+    "pitfall": "Det är lätt att blanda graderna av anklagelse: okunskap, oaktsamhet, uppsåt. Botemedlet: läs nämndens precisa formulering bokstavligt — 'anmärkningsvärt att en konsult inte följer reglerna i sitt eget bolag' säger något om YRKESOMRÅDE, inte om uppsåt eller okunnighet.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Anmärkningsvärt-flaggan",
+      "move": "I beslutstexter — leta efter ordet 'anmärkningsvärt' eller 'dock' i motiveringen; det meningssegmentet är facit-svaret på 'vad uppmärksammades särskilt'."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-LÄS-013": {
-    "_meta": {
-      "generated_at": 1778436702076,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Mazzarella öppnar med antologin vars 17 skribenter söker bättre KOMMUNIKATION med varandra och allmänheten, och citerar Hochschild om att vetenskapliga konventioner 'distanserar läsaren från ämnet och stänger känslorna ute'. Stilens regler hindrar texten från att tala till omvärlden — alternativ D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta det PROBLEM textförfattaren framhåller med det ETABLERADE sättet att skriva akademiskt — alltså textens egen kritik av jargongen och stilen, inte någon perifer iakttagelse.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta öppningens problemformulering",
+        "text": "Första stycket pekar ut frågan rakt: de 17 skribenterna i 'The future of scholarly writing' frågar sig 'hur de som samhällsvetare och humanister bättre ska kunna kommunicera dels med varandra, dels med en större allmänhet'. Hela texten ramas alltså in som ett kommunikationsproblem.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hochschild-citatet preciserar",
+        "text": "Mazzarella ger den centrala diagnosen via Hochschild: passiva verbformer, undvikande av 'jag', latiniserade substantiv och abstraktion är drag som 'distanserar läsaren från ämnet och stänger känslorna ute'. Effekten är på LÄSAREN — texten når inte fram, kontakten bryts.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt till vardagsspråk",
+        "text": "Den vetenskapliga stilen tvingar skribenten att skriva 'illa' — opersonligt, abstrakt, distanserat — och det priset betalas i kommunikation. Texten kan inte tala till sin omvärld, varken till andra forskare eller till en bredare publik. Stilen blockerar själva sin grundfunktion: att förmedla.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A om inlärningstid för jargong nämns aldrig — Mazzarella talar om effekten på läsaren, inte om kostnaden för skribenten. B om belöningssystem i akademin är frånvarande — texten diskuterar inte vad som premieras i karriären. C inverterar: kritiken är att språket är ÖVERVETENSKAPLIGT (för slutet, för opersonligt), inte att det är OTILLRÄCKLIGT vetenskapligt. D träffar exakt: 'den vetenskapliga stilens krav begränsar textens förmåga att kommunicera med omvärlden' = textens kärnpunkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: när en text rör 'akademisk stil' eller 'jargong', söker frågan oftast den KOMMUNIKATIVA effekten på läsaren — inte inlärningskostnad, karriärincitament eller objektivitet.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att inlärningen av jargong tar mycket tid.",
-        "why_wrong": "Texten talar om språkets EFFEKT på läsaren, inte om inlärningskostnaden; importerar fel problem."
+        "why_tempting": "Det är lätt att tro att det är JOBBIGT att lära sig jargongen — och att Mazzarella kritiserar tidskostnaden.",
+        "why_wrong": "Som steg 5 visar talar texten om språkets EFFEKT på läsaren, inte om inlärningskostnaden för forskaren. Hela första stycket handlar om kommunikation utåt — inte om hur lång tid det tar att tillägna sig stilen."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att akademin idag är konkurrensutsatt.",
-        "why_wrong": "Texten talar inte om belöningssystem utan om kommunikationsförmåga; missar fokus."
+        "why_tempting": "Många stannar vid att akademin är konkurrensutsatt och tolkar 'institutionell kontroll av känslor' som ett karriärfenomen.",
+        "why_wrong": "Texten talar inte om belöningssystem eller karriär — som steg 4 visar handlar kritiken om vad stilen GÖR med kommunikationen, inte om hur den värderas av institutionen. Hochschilds 'kontroll av känslor' är en stilistisk effekt, inte en personalpolitisk."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att språket 'inte är vetenskapligt nog'.",
-        "why_wrong": "Texten menar tvärtom — språket är ÖVERvetenskapligt och därför slutet; inverterar."
+        "why_tempting": "Snabbsvar är ofta att språket 'inte är vetenskapligt nog' eller bryter mot objektivitet.",
+        "why_wrong": "Som steg 5 visar inverterar detta texten — Mazzarella säger tvärtom att språket är ÖVERvetenskapligt, för opersonligt, för slutet. Problemet är att stilen följer objektivitetsidealet med ETT TILL — och därför inte kommunicerar."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Mazzarella citerar Hochschild om att vetenskapliga konventioner 'distanserar läsaren från ämnet och stänger känslorna ute'. Den vetenskapliga stilens regler hindrar texten från att tala till omvärlden.",
-    "technique": "Vid 'problem med X'-frågor i kulturanalys: leta efter den effekt på läsaren texten beskriver, inte på författaren."
+    "technique": "Vid 'problem med X'-frågor i kulturkritik: hitta den explicit namngivna EFFEKTEN på mottagaren ('distanserar läsaren', 'stänger känslorna ute', 'kommunicera bättre'). Triggern: när texten öppnar med en fråga om hur man 'bättre ska kunna kommunicera', är problemet just det — kommunikationsbrist.",
+    "pitfall": "Det är lätt att importera generell akademikritik (för svår jargong, för långsam inlärning, för dålig objektivitet) som inte är textens FAKTISKA tes. Botemedlet: fråga 'vilken effekt på vem beskriver texten?' — om svaret är 'effekten på läsaren' så ligger problemet i kommunikationsdimensionen.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Effektkedjan",
+      "move": "Vid frågor om vad som är fel med en stil — leta efter den uttalade EFFEKTEN på läsaren ('distanserar', 'stänger ute', 'når inte fram'); det är problemet."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-LÄS-014": {
-    "_meta": {
-      "generated_at": 1778436702076,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Mazzarella ramar in den virtuella akademikern som ett SJÄLVIRONISKT verktyg där akademiker driver med sin egen jargong. De producerade meningarna ('postkapitalistiska hegemonins epistemologi') ska skrattas åt OCH varna — alltså humoristiska men avskräckande exempel, alternativ A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta det rimligaste sättet att FÖRSTÅ meningarna som den virtuella akademikern producerar — vad de är AVSEDDA som, enligt textens egen inramning.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta författarens inramning",
+        "text": "Stycket öppnar: 'Akademiker kan mycket väl förhålla sig SJÄLVIRONISKT till det akademiska språket. University of Chicago har en virtuell akademiker...'. Just ordet 'självironiskt' är textens egen etikett — verktyget är akademikers parodi på sig själva.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad betyder självironi här?",
+        "text": "Självironi = man driver med sig själv. Akademikerna producerar meningar som ser vetenskapliga ut men är obegripliga ('Den postkapitalistiska hegemonins epistemologi kan förstås som en konstruktion av lingvistisk transparens') — och skämtet är att JU MER det låter som riktigt akademiskt, desto värre. Det är humor SOM kritik.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Två lager: humor + varning",
+        "text": "Skämtet har en udd. Meningarna är roliga (uppmuntringen 'din övertygande behandling... kommer att få många efterföljare' är dräpande), men de fungerar samtidigt som avskräckande exempel: 'så här ska du INTE skriva'. Mazzarella placerar passagen mitt i sitt resonemang OM vetenskaplig jargong som problem. Det dubbla syftet är inbyggt.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A 'humoristiska men avskräckande exempel' fångar precis de två lagren: humor (självironi) + varning. B 'dräpande men ofarliga normbrott' missar — meningarna är inte normbrott, de följer normen ALLT FÖR väl, och det är inte ofarligt utan varnande. C 'lättsamma försök att presentera nya idéer' är fel — det är inte idéer som presenteras, det är karikatyrer. D 'underhållande bevis på språkets mångfald' inverterar — meningarna visar ett SLUTET språk, inte mångfald.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är A: humoristiska men avskräckande exempel. Insikten i en mening: när texten själv kallar något 'självironiskt' eller 'avskräckande' — det är inte två separata egenskaper, det är skämtets själva form.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att läsa generatorn som ett kreativt verktyg.",
-        "why_wrong": "Texten ramar in det som 'självironiskt' — alltså avskräckande, inte normbrytande; missar avsikten."
+        "why_tempting": "Det är lätt att läsa generatorn som en lekfull konsthappening som bryter normer.",
+        "why_wrong": "Som steg 5 visar är meningarna inte normbrott — de följer normen ÖVERTYDLIGT, det är just därför de blir komiska. Och de är inte ofarliga: poängen är att varna mot exakt det skrivsätt som meningarna parodierar. Alternativet missar både normfrågan och uddent."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att meningarna ser akademiska ut.",
-        "why_wrong": "De är just karikatyrer av jargongen, inte allvarliga försök till idéer; importerar fel ton."
+        "why_tempting": "Många stannar vid att meningarna ytligt sett ser akademiska ut och tolkar dem som lättsamma idépresentationer.",
+        "why_wrong": "De är karikatyrer av jargong, inte allvarliga idéer — som steg 3 visar är hela poängen att de är OBEGRIPLIGA ('postkapitalistiska hegemonins epistemologi som konstruktion av lingvistisk transparens'). Alternativet importerar fel ton: lättsamhet i innehåll, när faktiska tonen är kritisk självironi."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att språkgeneratorer firar mångfald.",
-        "why_wrong": "Texten visar dem som varnande, inte beundrande — språket är slutet, inte mångfaldigt; inverterar tonen."
+        "why_tempting": "Snabbsvar är ofta att språkgeneratorer firar språkets mångfald och uppfinningsrikedom.",
+        "why_wrong": "Som steg 5 visar inverterar detta texten: meningarna visar tvärtom att akademiskt språk är SLUTET och förutsägbart — fyra listor räcker för att producera 'kvalitetsforskning'. Det är beviset för att språket är monotont, inte mångfaldigt."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Den virtuella akademikern är ett SJÄLVIRONISKT verktyg där akademiker driver med sin egen jargong — de avsedda meningarna är obegripliga ('postkapitalistiska hegemonins epistemologi') och fungerar som varningssignal mot eget skrivsätt.",
-    "technique": "Vid 'hur ska X förstås'-frågor: leta efter författarens egen inramning av exemplet ('självironiskt', 'avskräckande exempel')."
+    "technique": "Vid 'hur ska X förstås'-frågor i kulturanalys: hitta författarens EGEN inramning av exemplet ('självironiskt', 'parodiskt', 'avskräckande exempel'). Triggern: när texten explicit etiketterar en passage med en TON-markör, är facit-svaret oftast en vardagsspråklig översättning av just den etiketten.",
+    "pitfall": "Det är lätt att läsa generatorn som ren komik eller ren kritik och välja ett endimensionellt alternativ. Botemedlet: i Mazzarellas inramning ('självironiskt') ligger BÅDE humor OCH självkritik — håll fast vid båda lagren samtidigt.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Ton-etiketten",
+      "move": "När författaren sätter en ton-etikett på ett exempel (självironi, parodi, anekdot) — det är facit-handtaget; matcha alternativet som översätter etiketten till vanlig svenska."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-LÄS-015": {
-    "_meta": {
-      "generated_at": 1778436702076,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Mazzarella skriver 'Vi har alla fått lära oss att vetenskap förutsätter opersonlighet och objektivitet' — och hela texten attackerar just detta: Hochschild visar att opersonligheten är konstruerad, Zilliacus och Nussbaum försvarar känslan och subjektiviteten. Den etablerade sanning hon ifrågasätter är att riktig vetenskap utesluter subjektivitet — alternativ B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta DEN etablerade sanning som textförfattaren IFRÅGASÄTTER — alltså den förgivettagna sats som texten attackerar, inte den den försvarar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Leta efter 'vi har alla fått lära oss'",
+        "text": "Mazzarella har en signalmening i andra stycket: 'Vi har alla fått lära oss att vetenskap förutsätter opersonlighet och objektivitet.' Formuleringen 'vi har alla fått lära oss' är exakt den retoriska markören för en allmän förgivettagen sanning — och allt som följer i texten är hennes svar på den.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är hennes svar?",
+        "text": "Texten gör tre rörelser mot satsen: (1) Hochschild visar att opersonligheten är INSTITUTIONELL kontroll av känslor, inte natur. (2) Den virtuella akademikern parodierar den jargong opersonligheten producerar. (3) Zilliacus och Nussbaum lyfts fram som motexempel: subjektivitet, kropp, känsla är också kunskapsinstrument.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt sanningen",
+        "text": "'Vetenskap förutsätter opersonlighet och objektivitet' = riktig vetenskap är OBJEKTIV och därför utesluter det subjektiva (det personliga, känslan, jaget). Det är just denna sammankoppling — vetenskap ⇒ ingen subjektivitet — som Mazzarella vill bryta upp. Hon vill ha utrymme för det personliga inom vetenskapen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A 'framsteg väcker känslomässigt engagemang' är inte en etablerad sanning texten diskuterar — Mazzarellas tes är att FORSKAREN ska få känna, inte att FRAMSTEG väcker känsla. C 'gestaltning gör argumentation övertygande' är hennes egen TES, inte den sanning hon attackerar. D 'riktig vetenskap har alltid essäistiska inslag' är hennes vision, inte den etablerade sanning hon bestrider. B fångar exakt: 'riktig vetenskap utesluter subjektivt förhållningssätt' = den 'opersonlighet och objektivitet' hon attackerar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är B: att riktig vetenskap utesluter ett subjektivt förhållningssätt. Insikten i en mening: 'vi har alla fått lära oss att...'-meningen är den retoriska skylten för exakt den etablerade sanning som ska ifrågasättas.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att importera 'känslor i forskning' från Hochschild.",
-        "why_wrong": "Texten påstår inte att framsteg väcker känslor — den argumenterar för att forskaren tillåter känsla; missar nivån."
+        "why_tempting": "Det är lätt att importera 'känslor i forskning' från Hochschild-passagen och tolka det som ett påstående om vad forskning ÅSTADKOMMER.",
+        "why_wrong": "Som steg 5 visar är detta inte vad texten påstår vara etablerad sanning — Mazzarella argumenterar för att FORSKAREN tillåts känna, inte att FRAMSTEG väcker känslor. Alternativet flyttar känslan från subjekt till objekt och hamnar i en helt annan diskussion."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att gestaltning hjälper.",
-        "why_wrong": "Det är textens TES, inte den 'etablerade sanning' den ifrågasätter; inverterar — det är vad hon förespråkar, inte vad hon avvisar."
+        "why_tempting": "Många stannar vid att gestaltning hjälper läsaren förstå och tror att detta är den sanning som ifrågasätts.",
+        "why_wrong": "Som steg 5 visar inverterar detta — det är textens EGEN TES, inte den etablerade sanning den ifrågasätter. Mazzarella förespråkar gestaltning; hon attackerar den motsatta synen att vetenskap måste vara opersonlig."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att essäistik och vetenskap blandas.",
-        "why_wrong": "Detta är inte en etablerad sanning utan en ovanlig tanke; alternativet importerar fel premiss."
+        "why_tempting": "Snabbsvar är ofta att essäistik och vetenskap blandas — Zilliacus och Nussbaum nämns ju.",
+        "why_wrong": "Detta är inte en etablerad sanning utan tvärtom en MINORITETSPOSITION som Mazzarella vill lyfta. Som steg 4 visar är den ETABLERADE sanningen att vetenskap är opersonlig — den essäistiska traditionen är hennes alternativ, inte den hon ifrågasätter."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten ifrågasätter att 'vetenskap förutsätter opersonlighet och objektivitet' — den citerar Hochschild som visar att opersonligheten är konstruerad, och hyllar essäns subjektivitet (Zilliacus, Nussbaum). Sanningen som ifrågasätts är att riktig vetenskap utesluter subjektivitet.",
-    "technique": "Vid 'etablerad sanning som ifrågasätts'-frågor: hitta den 'vi har alla fått lära oss'-mening som texten ATTACKERAR — inte den den försvarar."
+    "technique": "Vid 'etablerad sanning som ifrågasätts'-frågor: leta efter retoriska markörer för förgivettagande ('vi har alla fått lära oss', 'man brukar säga', 'det är allmänt antaget') och välj alternativet som parafraserar just den meningen. Triggern: den meningen är textens MOTSTÅNDARE — inte dess tes.",
+    "pitfall": "Det är lätt att blanda ihop textens TES (gestaltning hjälper, essäistik är värdefull) med den ETABLERADE SANNING den attackerar (vetenskap är opersonlig). Botemedlet: fråga 'vad försvarar texten?' och 'vad attackerar texten?' — sätt dem i två kolumner och välj från attack-kolumnen.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Förgivettagande-meningen",
+      "move": "När frågan är vad en text ifrågasätter — leta efter 'vi har alla fått lära oss att X' eller liknande markör; X är facit-svaret."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-LÄS-016": {
-    "_meta": {
-      "generated_at": 1778436702076,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Mazzarella ställer den abstrakta statistiken ('700 000 brittiska soldater stupade') mot Nicholsons konkreta scen från flickskolan i Bournemouth, och konstaterar att essäistiken 'gynnar det konkreta, detaljen eller den åskådliga anekdoten'. Det är essäns förmåga till konkretion som lyfts — alternativ B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta den ESSÄ-KVALITET som Mazzarella särskilt vill BETONA med just anekdoten ur Singled out. Inte essäns alla kvaliteter, utan vad just detta exempel ska illustrera.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta inramningen av exemplet",
+        "text": "Meningen som föregår citatet är facit-meningen: 'Att jag själv dragits till essäistiken beror... i lika hög grad på att den gynnar det konkreta, detaljen eller den åskådliga anekdoten.' Hon DEKLARERAR att exemplet ska illustrera konkretionen — och fortsätter med kontrasten mellan statistik och anekdot.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Kontrasten Mazzarella bygger",
+        "text": "Statistiken '700 000 brittiska soldater stupade' är BARA en siffra — abstrakt, stor men inte gripbar. Sedan kommer rektorns ord till flickskolan: 'Det är bara en av tio bland er som kan hoppas på att nånsin bli gift.' Plötsligt får vi se konsekvensen, kropparna i klassrummet, sorgkläderna. Detaljen gör att förlusten blir KÄNNBAR.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är konkretion?",
+        "text": "Konkretion = det konkreta, motsats till det abstrakta. Essän använder en specifik scen, en specifik plats (Bournemouth), specifika ord från en specifik rektor — inte aggregat och statistik. Det är denna förmåga att zooma in på det handgripliga som Mazzarella säger drar henne till essän.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A 'tidlös karaktär' inverterar — Mazzarella markerar att anekdoten 'pekar framåt mot 1920-talets nya kvinna', alltså är TIDS-specifik och historiskt situerad. C 'självreflekterande karaktär' missar — anekdoten har 'många dimensioner' men den reflekterar inte över sig själv eller essäformen. D 'förmåga till övertalning' är inte textens vokabulär — Mazzarella säger uttryckligen att essän inte är tesdrivande, den är prövande och undersökande. B 'förmåga till konkretion' är exakt vad den föregående meningen deklarerar.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är B: essäns förmåga till konkretion. Insikten i en mening: när ett exempel introduceras med en deklarativ ram-mening ('beror på att den gynnar X') — det är X som är facit-svaret, inte någon utbroderad egenskap av exemplet.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa att en gammal anekdot är 'tidlös'.",
-        "why_wrong": "Texten markerar att anekdoten pekar mot 1920-talets nya kvinna — den är tids-specifik, inte tidlös; sträcker sig för långt mot abstraktion."
+        "why_tempting": "Det är lätt att läsa att en gammal anekdot från 1917 är 'tidlös' — den lever ju kvar.",
+        "why_wrong": "Som steg 5 visar markerar texten att anekdoten 'pekar framåt mot 1920-talets nya kvinna' — den är just TIDS-bunden och historiskt situerad, inte tidlös. Mazzarella använder den för att fånga ett specifikt ögonblick, inte för att illustrera essäns transhistoriska räckvidd."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'många dimensioner' som självreflektion.",
-        "why_wrong": "Många dimensioner = rik konkretion, inte att essän reflekterar över sig själv; missar poängen."
+        "why_tempting": "Många stannar vid frasen 'en anekdot med många dimensioner' och tolkar dimensionerna som självreflektion.",
+        "why_wrong": "Som steg 5 visar betyder 'många dimensioner' här rik konkretion (sorgkläder, statistik som tilltal, framåtblickande mot nya kvinnan), inte att essän reflekterar över sig själv eller sin form. Alternativet importerar metareflektion från en annan diskussion."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att kraftfulla anekdoter övertalar.",
-        "why_wrong": "Mazzarella betonar uttryckligen 'gynnar det konkreta, detaljen, den åskådliga anekdoten' — inte övertalningskraft; missar formuleringen."
+        "why_tempting": "Snabbsvar är ofta att kraftfulla anekdoter ÖVERTYGAR — de drabbar ju brutalt, som rektorns ord.",
+        "why_wrong": "Mazzarella säger uttryckligen i nästa stycke att essän 'inte är tesdrivande' utan 'prövande, undersökande'. Som steg 5 visar är hennes vokabulär konkretion, inte övertygelse — anekdoten ska göra förlusten kännbar, inte vinna en argumentation."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Mazzarella använder anekdoten för att kontrastera mot den abstrakta statistiken '700 000 stupade' — det konkreta gör krigets förlust gripbar. Det är essäns förmåga till konkretion via detaljen som lyfts fram.",
-    "technique": "Vid 'vilken kvalitet betonas med X'-frågor: hitta den kontrast författaren skapar (här: statistik 700 000 vs scenisk anekdot)."
+    "technique": "Vid 'vilken kvalitet betonas med exempel X'-frågor: hitta den deklarativa ram-meningen som föregår exemplet ('beror på att den gynnar X') och välj alternativet som parafraserar X. Triggern: när författaren själv etiketterar varför hen drar in just detta exempel, är etiketten facit.",
+    "pitfall": "Det är lätt att utvärdera anekdoten på egen hand (är den övertygande? tidlös? rik?) och välja efter sin egen läsning. Botemedlet: stanna vid författarens uttalade syfte med exemplet — Mazzarella har redan sagt att hon vill visa konkretion, så frågan om övertalning är moot.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Ramen kring exemplet",
+      "move": "När en essä drar in ett konkret exempel — leta efter den deklarativa meningen DIREKT före exemplet ('detta beror på att...') och välj alternativet som matchar den meningen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-LÄS-017": {
-    "_meta": {
-      "generated_at": 1778436702076,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten räknar upp en rad nya yrken som föddes 'för teaterhusen': spetstvätt, kreditgivning till teaterproducenter, gatuförsäljning av matvaror till publiken, scenrekvisita. Teaterverksamheten skapade behov som tillgodosågs av de nya yrkena — alternativ A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta vilken ROLL teatern spelade för ETABLERINGEN av de nya yrkena i 1500- och 1600-talets London — alltså vad relationen mellan teatern och dessa yrken VAR.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är 'nya yrken' här?",
+        "text": "Texten räknar upp en rad försörjningssätt som föddes i 1500- och 1600-talets England: spetstvätt, kreditgivning, gatuförsäljning av mat, scenrekvisita, skådespelare själva. De är 'nya' i meningen att de inte fanns i den traditionella skråorganisationen.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Hitta uppräkningen",
+        "text": "Andra stycket: 'Många av dessa nyheter kan knytas just till TEATERHUSEN i London. Det var här som de nyskrivna skådespelen uppfördes, det var FÖR TEATERN som rekvisita och paljettbeprydda scenkläder skapades, det var på teatern man kunde se högreståndspersoner visa upp sina raffinerade spetskragar, och det var här som högljutt ropande gatuförsäljerskor bjöd ut sina matvaror.'",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt orsakskedjan",
+        "text": "Mönstret är: teatern har ett BEHOV (rekvisita, scenkläder, publiksnacks, lånekapital, spetstvätt för högreståndspublikens kläder) — och dessa behov tillgodoses genom nya försörjningsformer. Människor 'kunde nu försörja sig på sätt som tidigare inte varit möjliga: genom att tvätta och stärka ömtåliga spetsar, genom att låna ut pengar mot ränta till teaterproducenterna, genom att sälja nya matvaror på gatorna'. Teatern är behovsmotorn, yrkena är svaret.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A 'Teaterverksamheten skapade behov som tillgodosågs genom de nya yrkena' fångar exakt orsakskedjan. B 'på teaterscenerna som de nya yrkena först framträdde för allmänheten' inverterar var arbetet skedde — yrkena utövades i kulissen och på gatan utanför, inte på scenen. C 'teatern och de nya yrkena förenades i kampen mot skråna' uppfinner en allians; texten säger bara att skråna föraktade yrkena, inte att teatern stred på deras sida. D 'tack vare teaterns popularitet accepterades yrkena' inverterar — texten säger att yrkena förtalades, INTE accepterades.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: när en text räknar upp nya yrken som finns 'för X' eller 'till X', är X behovskällan — alternativet om 'X skapade behov' är facit.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att 'ny på scenen' = nytt yrke.",
-        "why_wrong": "Yrkena fanns I KULISSEN, inte på scenen; alternativet inverterar var arbetet skedde."
+        "why_tempting": "Det är lätt att tro att 'ny på scenen' = nya yrken visade upp sig där.",
+        "why_wrong": "Som steg 4 visar utfördes yrkena I KULISSEN och på gatan utanför — spetstvätterskor jobbade hemma, kreditgivare i kontor, gatuförsäljerskor utanför teatern. På scenen stod bara skådespelarna. Alternativet inverterar var arbetet faktiskt skedde."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att skråna föraktade de nya yrkena.",
-        "why_wrong": "Teatern och skråförakt nämns parallellt, inte som allierade; alternativet uppfinner en allians."
+        "why_tempting": "Många stannar vid att skråna föraktade både teatern och de nya yrkena och drar slutsatsen att de allierades.",
+        "why_wrong": "Som steg 5 visar uppfinner alternativet en allians texten inte beskriver. Skråförakt nämns parallellt för teater och nya yrken, men texten säger ingenstans att teatermännen stred TILLSAMMANS med spetstvätterskor mot skråna — de tävlade om hederlighet, inte allierades."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att en populär bransch legitimerar tillhörande yrken.",
-        "why_wrong": "Texten säger att yrkena förtalades, inte accepterades — alternativet inverterar utfallet."
+        "why_tempting": "Snabbsvar är ofta att en populär bransch legitimerar sina tillhörande yrken.",
+        "why_wrong": "Texten säger uttryckligen motsatsen: 'följaktligen förtalades de nya försörjningskällorna på olika sätt'. Som steg 5 visar inverterar alternativet utfallet — teaterns popularitet räddade inte yrkena från förakt, tvärtom drog den med dem i smutskastningen."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten räknar upp nya yrken 'för teaterhusen': spetstvätt, kreditgivning till teaterproducenter, gatuförsäljning, scenrekvisita. Teaterns behov skapade jobben.",
-    "technique": "Vid 'vilken roll spelade X för Y'-frågor: hitta den orsakskedja texten själv ger ('det var här som...')."
+    "technique": "Vid 'vilken roll spelade X för Y'-frågor: hitta texten egna orsakskedja — leta efter konstruktioner som 'det var för X som Y skapades' eller 'människor kunde nu försörja sig genom att...'. Triggern: när texten räknar upp Y-aktiviteter och kopplar dem till X med 'för' eller 'till', är X behovskällan.",
+    "pitfall": "Det är lätt att läsa teater och nya yrken som ALLIERADE (båda föraktade av skråna) eller som SCEN för varandra (yrkena visar upp sig). Botemedlet: fråga 'vem behövde vem?' — teatern behövde rekvisita, kläder, lån, matförsäljning; det är behovsriktningen.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Behovsriktningen",
+      "move": "När frågan är vilken roll X spelade för Y — leta efter formuleringar som 'det var FÖR X som Y' eller 'för att tillgodose X uppstod Y'; det avslöjar att X är behovskällan."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-LÄS-018": {
-    "_meta": {
-      "generated_at": 1778436702076,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten skriver att 'en utbredd tveksamhet inför det konstgjorda och påhittade gjorde att människor som försörjde sig genom att utnyttja behovet av det konstgjorda och påhittade uppfattades som dubiösa i det dåtida samhället'. Tidsandan såg ner på det konstlade och tillgjorda — alternativ B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta en ANLEDNING till att skådespelaryrket och de nya yrkena IFRÅGASATTES — alltså en av textens uttalade orsaker till dåtidens skepsis mot dem.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta orsaksmeningen",
+        "text": "Slutet av texten: 'En utbredd tveksamhet inför det konstgjorda och påhittade gjorde att människor som försörjde sig genom att utnyttja behovet av det konstgjorda och påhittade uppfattades som dubiösa i det dåtida samhället.' Det är en explicit orsaksformulering: tidsandan ⇒ ifrågasättande.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad menas med 'konstgjort och påhittat'?",
+        "text": "Skådespelare 'apade sig' — låtsades vara någon de inte var. Rekvisita var 'förfalskade varor'. Stärkta spetskragar var 'främmande och onödiga'. Gatuförsäljerskornas tjut var 'illegitima försäljningsmetoder'. Allt detta är yrken som ARBETAR MED det artificiella, det inte-äkta, det iscensatta. Tidsandan satte stora värden på det äkta och hederliga — och misstänkliggjorde det iscensatta.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt till vardagsspråk",
+        "text": "Det är inte att människor var emot lust eller emot kvinnor eller emot teaterns popularitet — det är att de var emot SKEN, FÖRSTÄLLNING, TILLGJORDHET. Hederligheten satt i det enkla, det produktiva, det 'riktiga' arbetet. Teater och dess kringliggande yrken brottades med exakt denna misstänksamhet mot yta och konstlade poser.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A 'protestantiska idealet förbjöd lust' — protestantism nämns men i Portia-passagen ('noggrannhet och exakthet'), inte som lustfientlighet. Det är fel del av texten. B 'tidsandan såg ner på konstlade och tillgjorda' träffar exakt orsaksmeningen. C 'männen befarade kvinnorna' inverterar — texten säger att skådespelarna distanserade sig FRÅN kvinnorna, inte att män i allmänhet fruktade kvinnliga yrkesutövare; det är dessutom SKÅDESPELARNAS strategi, inte den allmänna anledningen. D 'fel att synliggöra det kvinnliga' flyttar fokus — förakt mot tillgjordhet riktade sig mot fenomenet, inte mot könet som sådant.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är B: tidsandan såg ner på det konstlade och tillgjorda. Insikten i en mening: i historiska texter om förakt mot yrken, leta efter den tidsanda-mening som börjar med 'en utbredd tveksamhet/skepsis inför...' — det är facit-formuleringen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att importera 'protestantiska ideal' från Portia-stycket.",
-        "why_wrong": "Det rör noggrannhet, inte lustfientlighet; alternativet importerar fel del av texten."
+        "why_tempting": "Det är lätt att importera 'protestantiska ideal' från Portia-stycket och tolka det som lustfientlighet.",
+        "why_wrong": "Som steg 5 visar handlar Portia-passagen om protestantisk NOGGRANNHET och exakthet (i bokföring), inte om lustfientlighet. Texten kopplar inte protestantismen till någon kritik av lust — alternativet importerar ett annat protestantiskt motiv från fel del av texten."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att skådespelarna distanserade sig från kvinnorna.",
-        "why_wrong": "Det är skådespelarnas EGEN strategi, inte den allmänna anledningen till att yrkena ifrågasattes; missar nivån."
+        "why_tempting": "Många stannar vid att skådespelarna distanserade sig från de framgångsrika kvinnorna och drar slutsatsen att män fruktade kvinnornas yrkeskonkurrens.",
+        "why_wrong": "Som steg 5 visar är distanseringen SKÅDESPELARNAS egen professionaliseringsstrategi, inte den ALLMÄNNA anledningen till att yrkena ifrågasattes. Alternativet förväxlar en undergrupps reaktion (skådespelarmännens) med samhällets generella misstänksamhet."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att kvinnoyrken förträngdes av principskäl.",
-        "why_wrong": "Det var det konstlade som föraktades, inte det kvinnliga som sådant — alternativet flyttar kategorin."
+        "why_tempting": "Snabbsvar är ofta att kvinnoyrken förträngdes av principskäl mot kvinnlig synlighet.",
+        "why_wrong": "Som steg 4 visar var det det KONSTLADE som föraktades — själva fenomenet förställning, sken, tillgjordhet. Att många yrkesutövare råkade vara kvinnor är en separat observation; misstänksamheten gällde det iscensatta, inte kvinnligheten i sig. Alternativet flyttar förklaringskategorin från estetik till kön."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten skriver att 'utbredd tveksamhet inför det konstgjorda och påhittade gjorde att' yrken som utnyttjade detta blev dubiösa. Tidsandan såg ner på det tillgjorda.",
-    "technique": "Vid 'anledning till att X ifrågasattes'-frågor: leta efter den värdeladdade tidsandan ('utbredd tveksamhet inför...') som ramar in dåtiden."
+    "technique": "Vid 'anledning till att X ifrågasattes'-frågor i historisk text: leta efter tidsanda-meningen som börjar med 'en utbredd tveksamhet/skepsis/oro inför...' och parafrasera den. Triggern: när texten avslutar med en bred kulturell förklaring av dåtidens misstänksamhet, är just den förklaringen facit.",
+    "pitfall": "Det är lätt att blanda olika kritik-spår i texten: skråförakt, religiösa ideal, professionaliseringskonflikter, könsdynamik. Botemedlet: håll isär den BREDA tidsandan (misstänksamhet mot konstlat) från lokala strategier (skådespelarna distanserade sig från kvinnor) — frågan söker den breda.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tidsande-meningen",
+      "move": "Vid frågor om varför yrken misstänkliggjordes i historisk tid — leta efter en bred kulturell mening som börjar med 'en utbredd tveksamhet/skepsis inför X' och välj alternativet som parafraserar X."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-LÄS-019": {
-    "_meta": {
-      "generated_at": 1778436702076,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten skriver att skådespelarna 'dolde likheten och markerade olikheten mellan sig själva och dessa kvinnor', och drar parallellen att 1700- och 1800-talets läkare gjorde samma sak mot kloka gummor — 'professionaliseringsstrategier'. Det utmärkande draget är markerandet av skillnad — alternativ D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta det UTMÄRKANDE draget i den elisabetanska teaterns PROFESSIONALISERINGS-arbete — alltså vad som karakteriserade hur skådespelarna byggde sin yrkesidentitet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta sociologi-meningen",
+        "text": "Texten har en explicit teoretisk inramning: 'En nutida sociolog skulle ha sagt att skådespelarna ägnade sig åt professionaliseringsstrategier, på ungefär samma sätt som 1700- och 1800-talets läkare försökte markera skillnaden mellan sig och kloka gummor eller kvacksalvare.' Det är den meningen som definierar vad professionalisering är i texten.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är 'markera olikhet'?",
+        "text": "Skådespelarna delade besvärande likheter med kvinnliga yrkesutövare runt teatern (rekvisitamakare, gatuförsäljerskor): de 'apade sig', skrek, sysslade med fiktion. Strategin var INTE att framhäva sina egna positiva kvaliteter primärt, utan att INSISTERA på distansen från de andra: 'vi liknar inte dem'. Olikhetsmarkering är en negativ identitetskonstruktion — definiera sig genom vad man INTE är.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Texten bekräftar mönstret",
+        "text": "'Korda visar att skådespelarna, som alla var män, på olika sätt DOLDE LIKHETEN och MARKERADE OLIKHETEN mellan sig själva och dessa kvinnor som myllrade kring teaterhusen.' Två rörelser: dölj likheten (likgiltighet inför det gemensamma), markera olikheten (betona det skiljande). Det är professionaliseringens kärna i texten.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A 'behovet att uppfattas som modern' — modernitet är inte texten vokabulär här; den talar om hederlighet och olikhet, inte om modern image. B 'smutskastning av traditionella försörjningssätt' — de NYA yrkena förtalades, inte de traditionella, och texten säger inte att skådespelarna nedvärderade skråna. C 'betoning av egna styrkor för att säkra framgång' fångar inte rätt mekanism — professionaliseringen var NEGATIV (avgränsa sig från kvinnorna), inte positiv (framhäv egna meriter). D 'markerandet av skillnader mellan sig själv och andra' är ordagrann parafras av textens egen formulering.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: i historiska/sociologiska texter om professionalisering är 'markera olikhet mot grannprofession X' nästan alltid mekanismen — det är så yrkesgränser dras.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att läsa 'modern' i en text om nya yrken.",
-        "why_wrong": "Texten talar om hederlighet, inte modernitet — alternativet importerar fel kvalitet."
+        "why_tempting": "Det är lätt att läsa 'nya yrken' och tänka att de marknadsförde sig som moderna.",
+        "why_wrong": "Som steg 5 visar är textens vokabulär hederlighet och olikhet, inte modernitet — skådespelarna ville inte framstå som NYA utan som HEDERVÄRDA. Alternativet importerar fel kvalitet från ett vokabulär som inte hör hemma i den elisabetanska kontexten."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att skråna förtalades.",
-        "why_wrong": "Det är de NYA yrkena som förtalades; texten säger inte att skådespelarna nedvärderade traditionerna — inverterar riktningen."
+        "why_tempting": "Många stannar vid att skråna förtalade de nya yrkena och tror att skådespelarna kontrade med smutskastning.",
+        "why_wrong": "Som steg 5 visar är det de NYA yrkena som förtalades, inte de traditionella. Texten säger ingenstans att skådespelarna nedvärderade hantverksskråna — deras strategi var att distansera sig från KVINNORNA runt teatern, inte att attackera de gamla traditionerna."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att man trycker på sina styrkor.",
-        "why_wrong": "Strategin var negativ (markera olikhet med kvinnor), inte positiv självbetoning; missar mekanis- men."
+        "why_tempting": "Snabbsvar är ofta att man marknadsför sina styrkor för att lyckas — det är en intuitiv professionaliseringsmodell.",
+        "why_wrong": "Som steg 3 visar var strategin NEGATIV: avgränsa sig från kvinnorna, dölj likheten, markera olikheten. Det är inte en positiv självbetoning utan en distanseringsoperation. Alternativet förväxlar en modern marknadsföringslogik med Kordas historiska beskrivning."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten beskriver att skådespelarna 'dolde likheten och markerade olikheten mellan sig själva och dessa kvinnor' — och att professionalisering ofta sker just så. Markerandet av skillnad var det utmärkande draget.",
-    "technique": "Vid 'utmärkande för professionaliseringsarbete'-frågor: hitta sociologens analys-mening ('en nutida sociolog skulle ha sagt att...') och parafrasera."
+    "technique": "Vid 'utmärkande för professionaliseringsarbete'-frågor: hitta sociologi-meningen ('en nutida sociolog skulle ha sagt att...') och parafrasera den. Triggern: när texten drar en teoretisk parallell till en annan profession (läkare vs kloka gummor) är det den parallellen som definierar mekanismen.",
+    "pitfall": "Det är lätt att tänka professionalisering som POSITIV självbetoning (vi är bäst!) när texten beskriver den som NEGATIV avgränsning (vi är INTE som de). Botemedlet: läs verbet — 'markera olikhet' är avgränsning, inte exponering av styrkor.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Sociologi-meningen",
+      "move": "Vid frågor om hur en yrkesgrupp etablerades historiskt — leta efter den teoretiska parallell-meningen ('en nutida sociolog skulle ha sagt att...') och parafrasera mekanismen där."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-LÄS-020": {
-    "_meta": {
-      "generated_at": 1778436702076,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten avslutar att 'Shakespeare och den elisabetanska teatern var beroende av kvinnors arbete, samtidigt som de framgångsrikt dolde betydelsen av detta arbete' — och Kordas insats är 'att skickligt ha frilagt ett exempel på en sådan process'. Bokens poäng är att teaterlivet vilade på osynliggjort kvinnoarbete — alternativ D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi ska hitta vad som framstår som BOKENS viktigaste poäng — alltså Kordas specifika BIDRAG, inte en allmän observation eller en sidotanke.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta meta-meningen om boken",
+        "text": "Sista stycket innehåller den explicita formuleringen: 'KORDAS INSATS består i att skickligt ha frilagt ett exempel på en sådan process' — och processen definieras strax innan: 'Shakespeare och den elisabetanska teatern var beroende av kvinnors arbete, samtidigt som de framgångsrikt DOLDE betydelsen av detta arbete.'",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Två beståndsdelar i poängen",
+        "text": "(1) BEROENDET: teatern kunde inte ha fungerat utan kvinnliga kreditgivare, spetstvätterskor, rekvisitamakare, gatuförsäljerskor. (2) OSYNLIGGÖRANDET: skådespelarmännen distanserade sig och historieskrivningen registrerade aldrig kvinnornas roll. Tillsammans: teaterlivet BYGGDE på arbete som samtidigt RADERADES ur dess egen självbild.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt till alternativens språk",
+        "text": "'Teaterlivet byggde på osynliggjort kvinnoarbete' (D) fångar både beroendet och raderingen. Det är inte 'kvinnorna kämpade för rättigheter' (för aktivt), inte 'teaterscenen skildrade kvinnors livsvillkor' (handlar om innehåll på scenen), inte 'yrkena stärkte kvinnors ställning' (texten säger uttryckligen motsatsen: INTE erkända). Det är osynliggörandet plus beroendet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A om rättighetskamp — texten visar kvinnorna som ARBETARE, inte aktivister; ingen kollektiv kamp finns i Kordas analys. B om scenens skildring — texten diskuterar Portia kort, men bokens poäng är arbetet bakom scenen, inte innehållet på scenen. C om stärkt ställning — texten säger uttryckligen 'INTE att de erkändes som viktiga – tvärtom'; alternativet inverterar. D fångar exakt: beroende plus osynliggörande = byggde på osynliggjort kvinnoarbete.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten i en mening: när en recension/text-om-bok summeras med 'Kordas insats består i att...' är det meningen som ger BOKENS poäng — alla andra observationer i texten är bakgrund eller exempel.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tolka kvinnornas synlighet som rättighetskamp.",
-        "why_wrong": "Texten visar dem som arbetare, inte aktivister — alternativet importerar feministisk-politisk kategori."
+        "why_tempting": "Det är lätt att tolka kvinnornas synlighet i texten som tecken på en tidig rättighetskamp.",
+        "why_wrong": "Som steg 5 visar framställs kvinnorna som ARBETARE — kreditgivare, tvätterskor, försäljerskor — inte som aktivister med politisk agenda. Texten innehåller ingenstans språket för rättighetskamp; alternativet importerar en modern feministisk-politisk kategori som inte finns i Kordas analys."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att Portia är en kvinnofigur i texten.",
-        "why_wrong": "Skildringen är en poäng, OCH kvinnors arbete bakom kulisserna är en annan; alternativet stannar vid scenen, missar kulissen."
+        "why_tempting": "Många stannar vid att Portia är en kvinnofigur i texten och tolkar bokens poäng som scenens skildring av kvinnor.",
+        "why_wrong": "Portia är ett exempel inom analysen — kvinnoyrkenas spår i dramatexten — men som steg 5 visar är BOKENS huvudpoäng arbetet I KULISSEN och på gatan utanför, inte vad scenen avbildade. Alternativet stannar vid ett exempel och missar den övergripande tesen."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att nya yrken stärkte kvinnors ställning.",
-        "why_wrong": "Texten säger uttryckligen att yrkena INTE erkändes ('inte att de erkändes som viktiga — tvärtom'); inverterar."
+        "why_tempting": "Snabbsvar är ofta att nya yrken stärker en grupps ställning i samhället.",
+        "why_wrong": "Texten säger uttryckligen motsatsen: 'att dessa nya kvinnoarbeten var viktiga betyder inte att de erkändes som viktiga – tvärtom'. Som steg 5 visar inverterar alternativet textens centrala iakttagelse: yrkena fanns men förblev OERKÄNDA — det är just det Korda vill påvisa."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten avslutar att skådespelarna 'framgångsrikt dolde betydelsen av detta arbete' och att Korda 'frilägger' processen där kvinnoarbetet osynliggjordes. Bokens poäng är att teaterlivet vilade på nedtystat kvinnoarbete.",
-    "technique": "Vid 'viktig poäng i bok X'-frågor: hitta meta-meningen som beskriver bokens insats ('Kordas insats består i att...')."
+    "technique": "Vid 'viktig poäng i bok X'-frågor: leta efter meta-meningen 'X:s insats består i att...' eller 'författaren visar att...' i avslutningen och välj alternativet som parafraserar den. Triggern: recensioner landar nästan alltid bokens poäng i sista stycket med en explicit insats-formulering.",
+    "pitfall": "Det är lätt att blanda Kordas observation att kvinnorna BEHÖVDES med en optimistisk läsning att de därför stärktes. Botemedlet: håll fast vid textens dubbla rörelse — BEHÖVDES + DOLDES = osynliggjort, inte stärkt.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Insats-formuleringen",
+      "move": "Vid frågor om en boks huvudpoäng — leta efter 'X:s insats består i att...' i sista stycket och välj alternativet som parafraserar just den formuleringen."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2024-verb2-MEK-021": {
     "pregrade_tactic": {

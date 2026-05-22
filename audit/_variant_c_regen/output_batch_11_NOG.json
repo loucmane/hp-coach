@@ -1,0 +1,743 @@
+{
+  "var-2022-1-kvant2-NOG-028": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "pregrade_tactic": {
+      "handle": "Nollpunkts-jakten",
+      "move": "När någon \"ställer sig sist\", anteckna direkt att efter-honom = 0 vid t=0 — det är den dolda nollpunkten som gör (2) avgörbar."
+    },
+    "framework_id": null,
+    "solution_path": "(2) räcker ensamt: vid t=0 var Bo SIST, alltså 0 personer efter. Nu är 36 efter, och kön är 100. Före Bo blir 100 − 1 − 36 = 63. (1) saknar starttal för \"före\" och räcker inte.",
+    "technique": "I köformuleringar är formuleringen \"sist i kön\" en absolut nollpunkt: efter-honom = 0 vid t=0. Använd alltid kön-identiteten före + 1 (Bo själv) + efter = totalt.",
+    "pitfall": "Botemedlet: läs hela frågan på jakt efter ord som \"sist\", \"först\", \"längst bak\" — de implicit gör en utgångsvariabel = 0 och förvandlar en oavgörbar (1) till en avgörbar (2).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Bo ställer sig sist i en kö. Efter 10 minuter är det 100 personer i kön totalt. Frågan: hur många står FÖRE Bo just nu? Vi söker ett enda heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera nyckelidentiteten",
+        "text": "I varje ögonblick gäller: före + 1 (Bo själv) + efter = totalt. Vid t=10 min är totalt = 100, så före + efter = 99. Det räcker att veta antingen \"före\" eller \"efter\" — det andra följer.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Läs ledtråd: \"ställer sig SIST\"",
+        "text": "Frasen \"ställer sig sist\" är inte fyllnadsord — den ger ett startvärde: vid t=0 var efter-Bo = 0 (ingen kom efter honom då, för han var längst bak). Detta är den dolda nollpunkten.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Sammanfatta vad vi vet utan påståenden",
+        "text": "Vid t=0: före0 + 1 + 0 = totalt0, alltså före0 = totalt0 − 1 (men totalt0 är okänt). Vid t=10: före + 1 + efter = 100. Vi har två obekanta (före, efter) och en ekvation — behöver en till.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definition: \"minska med\" vs absolutvärde",
+        "text": "Att en mängd \"minskat med 55\" betyder ny = gammal − 55. Det säger inget om gammal eller ny för sig — bara skillnaden. Detta är förstapunkten man måste hålla i minnet när påståendena läses.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt",
+        "text": "(1): före har minskat med 55 sedan Bo ställde sig. Alltså före = före0 − 55. Men före0 är okänt (vi vet bara att Bo var sist, vilket säger något om EFTER, inte om FÖRE). Slutsats: en obekant kvar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konsekvens — (1) är inte ensam tillräcklig",
+        "text": "Om före0 = 80, så före = 25; om före0 = 100, så före = 45. Båda är konsistenta med totalt = 100 vid t=10 (efter justeras). (1) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt — använd nollpunkten",
+        "text": "(2): efter har ÖKAT med 36 sedan Bo ställde sig. Alltså efter = efter0 + 36. Eftersom Bo var sist är efter0 = 0, så efter = 36. Det är ett fast tal — den dolda nollpunkten har bitit.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Lös ut \"före\" från identiteten",
+        "text": "Vid t=10: före + 1 + efter = 100. Sätt in efter = 36: före + 1 + 36 = 100, alltså före = 100 − 37 = 63. Ett unikt heltal — (2) räcker ENSAMT.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "63 + 1 (Bo) + 36 = 100. ✓ Vid t=0 var alla 63 redan där (eller färre, men det spelar ingen roll för frågan), och 36 har anslutit efter Bo. Allt konsistent.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: B — tillräcklig information finns i (2) men ej i (1). Insikten i en mening: när ett påstående antyder en extremposition (\"sist\", \"först\"), ger det en gratis-nollpunkt som kan göra ett relativt påstående till ett absolut.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en absolut minskning med 55 räcker för att fixera \"före\".",
+        "why_wrong": "Steg 6 visar att (1) bara ger differensen (före0 − 55), inte ett absolut tal — utgångsvärdet före0 förblir okänt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att man måste kombinera båda för säkerhet.",
+        "why_wrong": "Steg 9 visar att (2) ensamt redan ger före = 63. Att lägga till (1) är inte nödvändigt — och C anger att INGET av (1)/(2) ensamt räcker, vilket är fel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett räcker (efter att ha sett att (2) räcker) landar du här.",
+        "why_wrong": "Steg 7 visar att (1) saknar absolut nollpunkt — ensamt går det inte att låsa \"före\" till ett unikt tal."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två förändringspåståenden utan ursprungstal inte räcker.",
+        "why_wrong": "Steg 3 och 8 visar att (2) faktiskt har en implicit nollpunkt (Bo sist → efter0 = 0), så förändringspåståendet blir absolut."
+      }
+    ]
+  },
+  "var-2025-kvant2-NOG-023": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "pregrade_tactic": {
+      "handle": "Förhållande-plus-summa-receptet",
+      "move": "När (1) ger ett förhållande och (2) ger en summa — markera C direkt; två oberoende linjära ekvationer i två obekanta har alltid en lösning."
+    },
+    "framework_id": "NOG-TRAP-003",
+    "solution_path": "Båda krävs. (1): v = 2m ger v − m = m, men m är okänt. (2): v + m = 57 ger inte förhållandet. Tillsammans: m + 2m = 57 → m = 19, v = 38, skillnaden = 19. Svaret är C.",
+    "technique": "Förhållande + summa = två oberoende ekvationer i två obekanta — alltid exakt en lösning. Trigger: påstående (1) lyder \"X gånger så många\" eller \"X:Y\" och (2) lyder \"sammanlagt N\".",
+    "pitfall": "Botemedlet: när bara ett förhållande ges, fråga \"vad blir skillnaden för m = 1, 2, 10, 100?\" — om svaret skalar, är förhållandet ensamt aldrig nog.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "På ett fat ligger melonskivor (m) och vindruvor (v). Vi söker SKILLNADEN v − m, ett heltal ≥ 0. Vi behöver tillräcklig information för att låsa ett unikt värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Inför variabler",
+        "text": "Låt m = antal melonskivor, v = antal vindruvor, båda heltal ≥ 0. Målstorhet: D = v − m. Frågan är: räcker informationen för att fixera D?",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definition: vad är ett förhållande?",
+        "text": "Att \"v är dubbelt så många som m\" betyder v = 2m. Detta är en linjär relation, INTE ett absolut antal. Det säger att om m = 10 så är v = 20, om m = 7 så är v = 14.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt",
+        "text": "(1): v = 2m. Sätt in i D: D = v − m = 2m − m = m. Skillnaden är alltså LIKA STOR som m. Men m är fortfarande okänt.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna kandidater i (1)",
+        "text": "Om m = 1: v = 2, D = 1. Om m = 10: v = 20, D = 10. Om m = 19: v = 38, D = 19. Alla är konsistenta med (1). Slutsats: (1) räcker INTE ensamt — oändligt många D-värden möjliga.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (2) ensamt",
+        "text": "(2): v + m = 57. Det är en ekvation i två obekanta — ger en hel rät linje av lösningar. Om m = 19: v = 38, D = 19. Om m = 10: v = 47, D = 37. Om m = 28: v = 29, D = 1. Många D möjliga.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konsekvens — (2) räcker inte ensamt",
+        "text": "Bara summan låser inte fördelningen mellan v och m, alltså inte heller skillnaden. (2) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2) — sätt upp systemet",
+        "text": "Två ekvationer: v = 2m och v + m = 57. Substitution: ersätt v med 2m i den andra: 2m + m = 57, alltså 3m = 57.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Lös linjär ekvation",
+        "text": "Från 3m = 57: dividera båda sidor med 3 → m = 19. Sätt in i v = 2m: v = 38. Skillnaden D = v − m = 38 − 19 = 19.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Kontroll: v = 2m? 38 = 2·19 ✓. v + m = 57? 38 + 19 = 57 ✓. Båda villkoren uppfyllda, D = 19 är unik.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C — informationen räcker i (1) tillsammans med (2), men inte var för sig. Insikten i en mening: ett förhållande och en summa är två oberoende linjära villkor — exakt vad som behövs för två obekanta.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att förhållandet 2:1 ensamt ger skillnaden.",
+        "why_wrong": "Steg 4 och 5 visar att (1) reducerar D till m, men m kan vara vilket positivt heltal som helst — oändligt många D möjliga."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att totalsumman 57 räcker eftersom den är ett \"riktigt\" tal.",
+        "why_wrong": "Steg 6 visar att (2) ensamt tillåter (m, v) = (10, 47), (19, 38), (28, 29) m.fl. — D kan bli vad som helst från 1 till 55."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du läser båda som självständigt kompletta landar du här.",
+        "why_wrong": "Steg 5 och 7 visar att ingen av utsagorna ensamt fixerar D. Vart och ett påstående lämnar en hel mängd lösningar."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två villkor med blandade former (förhållande + summa) inte räcker.",
+        "why_wrong": "Steg 8–10 visar att systemet v = 2m, v + m = 57 har exakt en lösning (m = 19, v = 38) — perfekt avgörbart."
+      }
+    ]
+  },
+  "var-2025-kvant2-NOG-024": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "pregrade_tactic": {
+      "handle": "Tre-i-tre-låsningen",
+      "move": "Vid placering av 3 personer i 3 rum: så snart du har låst två platser (en bekräftelse + en negation räcker), följer den tredje automatiskt — kolla varje påstående var för sig."
+    },
+    "framework_id": "NOG-TRAP-014",
+    "solution_path": "Vart för sig räcker. (1): Alexandra i kök + Björn ej i hall → Björn i vardagsrum → Charlotte i hall. (2): Björn i vardagsrum + Charlotte ej i kök → Alexandra i kök → Charlotte i hall. Båda ger Charlotte = hallen. Svaret är D.",
+    "technique": "I bijektiva tilldelningsproblem (n personer i n rum, en var) räcker det med att fixera n−1 personers rum — den sista följer automatiskt. En negation som utesluter ett av två återstående rum är ekvivalent med en bekräftelse.",
+    "pitfall": "Botemedlet: skriv en 3×3-matris (person × rum) och stryk celler enligt varje villkor. Om en kolumn/rad bara har en återstående cell, är personen låst.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Alexandra (A), Björn (B), Charlotte (C) är var och en i exakt ett rum: hall (H), kök (K), vardagsrum (V). Vi söker var Charlotte är. NOG: räcker informationen för att låsa hennes rum?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp en bokföringsmatris",
+        "text": "Tänk en 3×3-tabell: rader = personer, kolumner = rum. Varje rad ska ha exakt ett kryss, varje kolumn ska ha exakt ett kryss (bijektion). Att stryka celler är samma sak som att eliminera möjligheter.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definition: bijektion",
+        "text": "En bijektion är en perfekt parning — varje person till exakt ett rum, inget rum delas. När n−1 platser är låsta så är den sista tvingad: pigeonhole-principen.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt: del 1",
+        "text": "(1a) \"Alexandra är i köket\" → A = K. Det utesluter K från B och C: alltså B ∈ {H, V} och C ∈ {H, V}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt: del 2",
+        "text": "(1b) \"Björn är inte i hallen\" → B ≠ H. Eftersom B ∈ {H, V} och B ≠ H så är B = V (vardagsrum). Det enda rum kvar för C är H (hallen).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konsekvens — (1) räcker",
+        "text": "Ur (1) ensamt: A = K, B = V, C = H. Charlotte är i hallen — unikt bestämt. (1) räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt: del 1",
+        "text": "(2a) \"Charlotte är inte i köket\" → C ≠ K. (2b) \"Björn är i vardagsrummet\" → B = V. Då gäller C ∈ {H, K} \\ {K} = {H} efter (2b) utesluter K för A och C-restriktionen utesluter K för C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt: del 2",
+        "text": "Steg för steg: B = V (givet). Återstående rum H och K ska fördelas på A och C. Men C ≠ K, alltså C = H. Då tvingas A = K. Allt är låst.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konsekvens — (2) räcker",
+        "text": "Ur (2) ensamt: A = K, B = V, C = H. Charlotte är i hallen — unikt bestämt. (2) räcker också.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera båda landar i samma svar",
+        "text": "Bägge påståendena ger identiskt resultat: Charlotte i hallen. De är konsistenta med varandra och båda räcker ENSAMMA. Inget extra behövs från det andra.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: D — tillräcklig information finns i (1) och (2) var för sig. Insikten i en mening: för 3 personer i 3 rum räcker det med att låsa två (varav en med negation) — den tredje följer av eliminering.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att fastna vid (1) eftersom köket pekas ut direkt och kännas mer \"informativt\".",
+        "why_wrong": "Steg 7–9 visar att (2) når exakt samma slutsats: Björn i vardagsrum + Charlotte ≠ kök tvingar Charlotte till hallen."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid (2) som mer detaljerat (en bekräftelse + en negation) och avfärdar (1).",
+        "why_wrong": "Steg 4–6 visar att (1) räcker lika bra: Alexandra i kök + Björn ej i hall → Björn = vardagsrum → Charlotte = hall."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda när tre rum och tre personer ska matchas.",
+        "why_wrong": "Steg 6 och 9 visar att vart och ett villkor ENSAMT räcker — kombinationen tillför ingen ny information."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att negationsvillkor (\"inte i hallen\") aldrig räcker för en unik tilldelning.",
+        "why_wrong": "Steg 5 visar att en negation som lämnar bara ett alternativ är logiskt ekvivalent med en bekräftelse — fullt avgörbar."
+      }
+    ]
+  },
+  "var-2025-kvant2-NOG-025": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "pregrade_tactic": {
+      "handle": "Procentdifferens-receptet",
+      "move": "När (1) säger \"skillnaden mellan p % och q % av x är k\", räkna direkt (p − q)/100 · x = k — det är en sluten ekvation i en obekant och avgör frågan ensam."
+    },
+    "framework_id": "NOG-TRAP-017",
+    "solution_path": "(1) räcker: 0,5x − 0,3x = 0,2x = 22, så x = 110. (2) ger x ∈ {110, 220, 330, …} — alla multiplum av 110 — inget unikt värde. Svaret är A.",
+    "technique": "En linjär procentdifferens (p% − q%) · x = k är en sluten ekvation med en obekant — alltid entydigt lösbar för x. Modulo-villkor utan övre gräns lämnar däremot alltid oändligt många heltalslösningar.",
+    "pitfall": "Botemedlet: när ett delbarhetspåstående ges utan ett \"x < N\"-tak, anteckna direkt att det INTE räcker — räkna minst två kandidater (t.ex. x = 110 och x = 220) för att fastställa det.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "x är ett positivt heltal. Vi söker dess EXAKTA värde. NOG: räcker informationen för att låsa x till ett enda tal?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: procent av ett tal",
+        "text": "p % av x betyder (p/100) · x. Så 50 % av x = 0,5x och 30 % av x = 0,3x. Procent är bara ett bekvämare sätt att skriva en decimal-multiplikator.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Översätt (1) till en ekvation",
+        "text": "\"Skillnaden mellan 50 % av x och 30 % av x är 22\" → 0,5x − 0,3x = 22. Eftersom 50 > 30 är differensen positiv och vi behöver inte absolutbelopp.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förenkla vänsterledet",
+        "text": "0,5x − 0,3x = (0,5 − 0,3)x = 0,2x. Detta är distributiv lag baklänges: a·x − b·x = (a − b)·x.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Lös ut x",
+        "text": "0,2x = 22 → x = 22 / 0,2 = 22 · 5 = 110. Ett unikt heltal — och det är positivt, som krävt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verifiera (1)",
+        "text": "50 % av 110 = 55. 30 % av 110 = 33. Skillnaden 55 − 33 = 22 ✓. (1) räcker ENSAMT.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: jämnt delbart",
+        "text": "Att \"x är jämnt delbart med n\" betyder att x/n är ett heltal, dvs n är en faktor i x. Att vara delbart med både 10 och 11 betyder att x är en multipel av minsta gemensamma multipeln MGM(10, 11).",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkna MGM(10, 11)",
+        "text": "10 = 2 · 5 och 11 är primtal. De har ingen gemensam faktor, så MGM(10, 11) = 10 · 11 = 110. Alltså är x en positiv multipel av 110: x ∈ {110, 220, 330, 440, …}.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna kandidater i (2)",
+        "text": "(2) ger oändligt många kandidater. Det finns inget tak — x kan vara hur stort som helst. (2) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Behöver vi kombinera?",
+        "text": "Nej — eftersom (1) redan ger ett unikt svar (x = 110) räcker det ensamt. Att lägga till (2) ger ingen ny information (110 är ju redan en multipel av 110).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A — tillräcklig information finns i (1) men ej i (2). Insikten i en mening: en sluten procentekvation låser x direkt; ett rent delbarhetsvillkor utan övre gräns lämnar alltid oändligt många heltalslösningar.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att delbarhetsvillkor med två specifika tal räcker.",
+        "why_wrong": "Steg 8 och 9 visar att x ∈ {110, 220, 330, …} — oändligt många multiplum av 110, inget unikt värde."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera för säkerhet när två villkor ges.",
+        "why_wrong": "Steg 5 och 6 visar att (1) redan ger x = 110 — (2) tillför inget. C kräver att (1) ENSAMT INTE räcker, vilket är fel."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du missar att (2) ger oändligt många kandidater landar du här.",
+        "why_wrong": "Steg 9 visar att (2) saknar tak — kandidatmängden är oändlig och kan inte ensamt smalna av till en lösning."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att avfärda procentdifferensen i (1) som otillräcklig.",
+        "why_wrong": "Steg 3–6 visar att 0,2x = 22 är en sluten ekvation i en obekant och löses entydigt till x = 110."
+      }
+    ]
+  },
+  "var-2025-kvant2-NOG-026": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "pregrade_tactic": {
+      "handle": "Venn-cellräkningen",
+      "move": "Rita en 2-mängds-Venn med cellerna {bara S, bara K, båda, varken} — för att räkna ut \"ketchup totalt\" behöver du både \"båda\" och \"bara ketchup\"; om bara en cell är låst behövs det andra påståendet."
+    },
+    "framework_id": "NOG-TRAP-018",
+    "solution_path": "Båda krävs. (1): \"båda\" = 27/9 = 3 och \"senap totalt\" = 5 (från 60 % · 5 = 3), men inte \"bara ketchup\". (2): senap = 5, varken = 15 → minst-ett = 12, men inte \"båda\". Tillsammans: bara-ketchup = 12 − 5 = 7, så ketchup totalt = 7 + 3 = 10. Svaret är C.",
+    "technique": "Tvåmängds-Venn har fyra disjunkta celler. För att lösa ut en MARGINAL-summa (t.ex. \"ketchup totalt\") behövs antingen den raden direkt, eller \"båda\" plus \"bara ena\" — alltså två oberoende celler.",
+    "pitfall": "Botemedlet: rita ALLTID en 2×2-tabell (eller Venn) med de fyra cellerna och markera vilka som ges av (1) respektive (2). Om någon cell saknas helt, räcker det inte.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "27 barn, varje med en korv. Senap och ketchup är valfria. Vi söker antalet barn med KETCHUP (oavsett om de också har senap). NOG: räcker informationen för ett unikt tal?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp variabler",
+        "text": "Låt S = antal med senap, K = antal med ketchup, B = antal med BÅDA (senap och ketchup), V = antal med VARKEN. Totalt 27. Målstorhet: K.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Inklusion-exklusion",
+        "text": "Antalet med minst ett tillbehör är S + K − B (eftersom \"båda\" räknas dubbelt om vi adderar S + K). Vidare gäller (S + K − B) + V = 27.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Definition: \"bara X\"",
+        "text": "Bara-senap = S − B (de med senap minus de med båda). Bara-ketchup = K − B. De fyra disjunkta cellerna {bara S, bara K, B, V} summerar alltid till 27.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt: del 1",
+        "text": "(1a) \"60 % av senap-barnen har också ketchup\" → B = 0,6 · S. (1b) \"1/9 av barnen har båda\" → B = 27/9 = 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (1) ensamt: del 2",
+        "text": "Ur B = 0,6 · S och B = 3: 0,6S = 3 → S = 5. Så S = 5 och B = 3. Men K? Inget i (1) säger något om bara-ketchup eller V — K är fri.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konsekvens — (1) räcker inte ensamt",
+        "text": "K = (bara K) + B = (bara K) + 3, men bara K kan vara 0, 1, 2, …, upp till 27 − S − V. Utan info om V eller bara-K är K obestämt. (1) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt",
+        "text": "(2a) S = 5. (2b) V = 15. Då har 27 − 15 = 12 barn minst ett tillbehör, dvs S + K − B = 12. Men B är okänt — om B = 0 är K = 7; om B = 5 är K = 12. Många K möjliga. (2) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kombinera (1) och (2)",
+        "text": "Från (1): B = 3, S = 5. Från (2): V = 15, så S + K − B = 12. Sätt in: 5 + K − 3 = 12 → K = 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera fyra celler",
+        "text": "Bara-S = S − B = 5 − 3 = 2. Bara-K = K − B = 10 − 3 = 7. B = 3. V = 15. Summan: 2 + 7 + 3 + 15 = 27 ✓. Konsekvent och unikt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C — informationen räcker i (1) tillsammans med (2). Insikten i en mening: för att lösa ut en marginal-summa i en 2-mängds-Venn behövs både \"båda\"-cellen och tillräckligt med kringinformation för \"bara den andra\".",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en procentsats inom senap-gruppen plus B-totalt räcker.",
+        "why_wrong": "Steg 6 och 7 visar att (1) ger B = 3 och S = 5, men säger inget om bara-ketchup eller V — K kan vara många olika tal."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att S = 5 och V = 15 räcker eftersom \"alla siffror är där\".",
+        "why_wrong": "Steg 8 visar att (2) ger S + K − B = 12, men utan B är K obestämt (kan vara 7, 10, 12, … beroende på B)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att varje påstående för sig låser en hel Venn-tabell landar du här.",
+        "why_wrong": "Steg 7 och 8 visar att ingen av (1) eller (2) ensamt ger alla fyra cellerna — minst en cell saknas i båda fallen."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att avfärda problemet när två villkor blandar procent och absolutvärden.",
+        "why_wrong": "Steg 9 och 10 visar att tillsammans låser de hela Venn-tabellen: K = 10 unikt."
+      }
+    ]
+  },
+  "var-2025-kvant2-NOG-027": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "pregrade_tactic": {
+      "handle": "Identitetsfällan",
+      "move": "Innan du börjar räkna: kolla om ett påstående reduceras till en känd identitet (typ x + y = 180° för bivinklar) — då bär det noll ny information och kan strykas direkt."
+    },
+    "framework_id": "NOG-TRAP-007",
+    "solution_path": "(1) räcker: x = z = 60° fixerar två vinklar i den givna triangelfiguren och tvingar AB > BC via sinussatsen / motstående-sida-regeln. (2) är en bivinkelidentitet (x + y = 180°), tautologi i figurens kontext — ingen ny information. Svaret är A.",
+    "technique": "I geometriska NOG-frågor: skilj substantiella vinkelvillkor från identiteter (180°-relationen för bivinklar längs en linje, 360° runt en punkt, 180° i en triangel). Identiteter är gratis-sanningar och bär ingen information.",
+    "pitfall": "Botemedlet: när du ser ett vinkelvillkor, fråga \"gäller detta automatiskt p.g.a. figurens uppbyggnad?\" — om ja, bär det noll info; om nej, är det en riktig restriktion.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Figuren visar en triangel ABC (med bivinkel y längs en linje). Vi söker: är AB > BC? Det är en ja/nej-fråga, men för NOG räcker det att ett villkor avgör frågan entydigt åt något håll.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: motstående-sida-regeln",
+        "text": "I en triangel ligger den STÖRRE sidan motstående den STÖRRE vinkeln. Konkret: om vinkel A > vinkel C, så är BC > AB (sidan motstående A är BC; sidan motstående C är AB).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera vinklarna i figuren",
+        "text": "Av kontexten (NOG-figur med beteckningar x, y, z): x och z är inre vinklar i triangeln vid hörn A respektive C, y är yttervinkel vid B (bivinkel mot inre vinkeln vid B). Då är inre vinkeln vid B = 180° − y.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Triangelns vinkelsumma",
+        "text": "I varje triangel: summan av inre vinklar = 180°. Alltså x + z + (180° − y) = 180°, vilket förenklas till x + z = y. Det är en identitet som FÖLJER av figurens uppbyggnad — inte ett extra villkor.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "(1): x = z = 60°. Då är x + z = 120°, så y = 120° och inre vinkeln vid B = 180° − 120° = 60°. Alla tre inre vinklar är 60° — triangeln är liksidig.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats av (1) — liksidig triangel",
+        "text": "I en liksidig triangel är alla sidor lika långa: AB = BC = CA. Alltså är AB INTE större än BC — svaret på frågan \"AB > BC?\" är NEJ, entydigt. (1) räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Anmärkning om \"räcker\"",
+        "text": "I NOG räknas ett ENTYDIGT svar (ja eller nej) som tillräcklig information. \"AB > BC?\" → NEJ är ett giltigt svar. (1) avgör alltså frågan.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt — identifiera identiteten",
+        "text": "(2): x = 180° − y. Men y är yttervinkel vid B, så inre vinkeln vid B = 180° − y = x. Då blir vinkelsumman x + z + x = 180°, dvs 2x + z = 180°. Detta är BARA en omformulering av (steg 4) plus antagandet att x = inre vinkel B.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Konsekvens — (2) är information-fri",
+        "text": "x = 180° − y säger bara att x och y är bivinklar — vilket är figurens uppbyggnad. Det ger ingen NY restriktion på sidlängderna AB och BC. Triangeln är fortfarande godtycklig (x kan vara 30°, 70°, 89°…), och AB kan vara större, lika med eller mindre än BC.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera (2) inte räcker",
+        "text": "Konkret exempel: om x = 30°, kan z = 120° (då är AB < BC), eller z = 30° (då är AB = BC), eller z = 10° (då är AB > BC). Alla konsistenta med (2). Olika svar — (2) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A — tillräcklig information finns i (1) men ej i (2). Insikten i en mening: ett påstående som är en geometrisk identitet (här bivinkel-relationen) bär noll information; bara substantiella vinkelvärden låser triangeln.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att en supplementär relation x = 180° − y signalerar en viktig restriktion.",
+        "why_wrong": "Steg 8 och 9 visar att (2) bara återger figurens bivinkel-uppbyggnad — ingen ny information om sidlängderna."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera båda när vinklar och sidor blandas.",
+        "why_wrong": "Steg 6 visar att (1) räcker ensamt (liksidig triangel ger AB = BC, alltså AB > BC är falskt). (2) tillför inget."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att vart och ett ensamt ger ett geometriskt svar landar du här.",
+        "why_wrong": "Steg 10 visar att (2) saknar geometrisk substans — den är bara en identitet och tillåter olika svar."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att vinkelvärden utan explicita sidlängder aldrig räcker.",
+        "why_wrong": "Steg 5 och 6 visar att (1) faktiskt bestämmer triangelns form (liksidig) helt — sidornas inbördes förhållande följer direkt."
+      }
+    ]
+  },
+  "var-2025-kvant2-NOG-028": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    },
+    "pregrade_tactic": {
+      "handle": "Kandidaträkningen",
+      "move": "Efter varje villkor: lista ALLA par som fortfarande passar — om listan har fler än ett element, är villkoret otillräckligt; även tillsammans måste kombinationen reducera till EXAKT ett par."
+    },
+    "framework_id": "NOG-TRAP-025",
+    "solution_path": "Inget villkor avgör paret entydigt — inte heller tillsammans. (1) ensamt: median 0 bevaras av fyra par. (2) ensamt: medel ändras för många par. Tillsammans utesluts bara (−8, 6) (summa −2, oförändrat medel), kvar tre par: {−10, 6}, {−10, 7}, {−8, 7}. Svaret är E.",
+    "technique": "I NOG-frågor med flera möjliga par: räkna kandidater efter varje villkor. Bevarad statistik (median, medel) tillåter alltid flera lösningar om de inblandade talen har symmetrier eller ekvivalenta summor.",
+    "pitfall": "Botemedlet: när villkoret är \"X förblir/ändras\" — beräkna gränsvärdet (originalmedianen, originalmedelvärdet) och testa systematiskt ALLA C(5,2) = 10 möjliga par.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Mätserien {−10, −8, 0, 6, 7} hade två tal borttagna. Vi söker EXAKT vilka två tal. Det finns C(5, 2) = 10 möjliga par. NOG: räcker informationen för att låsa ett unikt par?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Beräkna originalmedian",
+        "text": "Sortera: −10, −8, 0, 6, 7. Median av 5 tal = mittenvärdet = 0. Det är vårt referensvärde.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Beräkna originalmedelvärde",
+        "text": "Medelvärde = summa / antal = (−10 − 8 + 0 + 6 + 7) / 5 = −5 / 5 = −1.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Definition: median efter borttagning",
+        "text": "Efter borttagning av två tal återstår 3 tal. Median av 3 tal är mittenvärdet i sorterad ordning. \"Förblir densamma\" betyder att medianen fortfarande är 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Vilka par bevarar median 0?",
+        "text": "Det krävs att 0 finns kvar OCH att det fortfarande är mittenvärdet. Alltså måste 0 INTE tas bort, och de tre kvarvarande talen måste ha 0 som median (ett tal ≤ 0 och ett tal ≥ 0). Möjliga par att TA BORT: {−10, 6}, {−10, 7}, {−8, 6}, {−8, 7}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verifiera kandidater i (1)",
+        "text": "Ta bort {−10, 6}: kvar {−8, 0, 7}, median = 0 ✓. Ta bort {−10, 7}: kvar {−8, 0, 6}, median = 0 ✓. Ta bort {−8, 6}: kvar {−10, 0, 7}, median = 0 ✓. Ta bort {−8, 7}: kvar {−10, 0, 6}, median = 0 ✓. FYRA par bevarar median 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konsekvens — (1) räcker inte ensamt",
+        "text": "Fyra möjliga par — (1) räcker INTE för att låsa ett unikt par.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Definition: medelvärde efter borttagning",
+        "text": "Om vi tar bort talen a och b ur originalserien blir nya medelvärdet (−5 − (a + b)) / 3. Originalmedel var −1. Det \"ändras\" om nya ≠ −1, dvs om (−5 − (a + b))/3 ≠ −1, dvs om a + b ≠ −2.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vilka par har summa = −2?",
+        "text": "Bland alla C(5, 2) = 10 par: {−10, 7} har summa −3; {−8, 6} har summa −2; {−10, 6} har summa −4; {−8, 7} har summa −1; och så vidare. Endast {−8, 6} har summa −2. Alla ANDRA par ändrar medelvärdet — (2) eliminerar bara ett par och lämnar 9 kandidater.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Kombinera (1) och (2)",
+        "text": "Skärningen: par som bevarar median 0 OCH ändrar medelvärdet. Från (1): {−10, 6}, {−10, 7}, {−8, 6}, {−8, 7}. Från (2): alla par utom {−8, 6}. Skärning: {−10, 6}, {−10, 7}, {−8, 7} — TRE par kvarstår.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera att de tre paren ger olika utfall",
+        "text": "{−10, 6}: kvar {−8, 0, 7}, medel = −1/3. {−10, 7}: kvar {−8, 0, 6}, medel = −2/3. {−8, 7}: kvar {−10, 0, 6}, medel = −4/3. Alla tre ändrar medelvärdet (bra för (2)) och bevarar median 0 (bra för (1)) — men de är OLIKA par.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svar: E — ej genom de båda påståendena. Inget villkor, ensamt eller tillsammans, låser paret unikt — tre kandidater återstår. Insikten i en mening: bevarad/ändrad statistik (median, medel) lämnar flera lösningar närhelst talen har ekvivalenta strukturer.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att medianvillkoret i (1) ensamt räcker när 0 är ett tydligt center.",
+        "why_wrong": "Steg 6 visar att fyra par bevarar median 0 ({−10,6}, {−10,7}, {−8,6}, {−8,7}) — (1) räcker inte."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Snabbsvar är ofta att medelvärdesvillkoret i (2) ensamt räcker eftersom det känns restriktivare.",
+        "why_wrong": "Steg 9 visar att (2) eliminerar bara ett par (summa −2 = {−8, 6}) och lämnar 9 kandidater — långt från unikt."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att två statistiska villkor (median + medel) tillsammans måste låsa paret.",
+        "why_wrong": "Steg 10 och 11 visar att tre par fortfarande passar båda villkoren: {−10, 6}, {−10, 7}, {−8, 7}."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tolkar båda som var för sig tillräckliga och missar att fyra par passar (1) skulle du landa här.",
+        "why_wrong": "Steg 7 och 9 visar att vart och ett villkor lämnar många kandidater — INGEN är ensamt tillräcklig."
+      }
+    ]
+  }
+}

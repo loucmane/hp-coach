@@ -1,0 +1,1374 @@
+{
+  "batch_id": "batch_15_XYZ",
+  "section": "XYZ",
+  "count": 22,
+  "tasks": [
+    {
+      "exam": "host-ver1-2019",
+      "qid": "host-ver1-2019-kvant1-XYZ-006",
+      "question": {
+        "qid": "host-ver1-2019-kvant1-XYZ-006",
+        "exam_id": "host-ver1-2019",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "Hur stor är vinkeln v?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "50°"
+          },
+          {
+            "letter": "B",
+            "text": "63°"
+          },
+          {
+            "letter": "C",
+            "text": "67°"
+          },
+          {
+            "letter": "D",
+            "text": "77°"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/host-ver1-2019-kvant1-XYZ-006.svg",
+          "aspect_ratio": 2.237
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415638489,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att glömma yttervinkelsteget och få 50°.",
+            "why_wrong": "50° hoppar över ett mellansteg — yttervinkeln till en triangel = summan av de två icke-angränsande inre vinklarna, vilket leder till v = 67^\\circ."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 63° om man räknar med fel vinkelpar.",
+            "why_wrong": "63° kommer av att man tar fel triangel — rätt kedja genom yttervinkeln ger 67^\\circ."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten är att addera istället för subtrahera och få 77°.",
+            "why_wrong": "77° kommer av tecknet fel i vinkelsumman; rätt riktning ger v = 67^\\circ."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Sök en kedja från givna vinklar till v via triangelns vinkelsumma. Lös trianglarna: figurens kända vinklar ger v genom 180^\\circ - (a+b) där a och b läses direkt ur figuren — kedjan landar på v = 67^\\circ.",
+        "technique": "Vinkelräkning i sammansatt figur: använd vinkelsumma 180° i triangel plus yttervinkelregeln för att härleda vinkeln från det kända till det sökta.",
+        "framework_id": "XYZ-TRAP-038"
+      }
+    },
+    {
+      "exam": "host-ver1-2019",
+      "qid": "host-ver1-2019-kvant1-XYZ-009",
+      "question": {
+        "qid": "host-ver1-2019-kvant1-XYZ-009",
+        "exam_id": "host-ver1-2019",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 9,
+        "prompt": "Cirkeln A har radien 3 cm, och dess area är \\frac{1}{4} av arean av cirkeln B. Hur stor radie har cirkeln B?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "4 cm"
+          },
+          {
+            "letter": "B",
+            "text": "6 cm"
+          },
+          {
+            "letter": "C",
+            "text": "9 cm"
+          },
+          {
+            "letter": "D",
+            "text": "12 cm"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-ver1-2019-kvant1-XYZ-009.svg",
+          "aspect_ratio": 1.682
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415638489,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna r linjärt och få 4.",
+            "why_wrong": "Area skalar med r²; faktor 4 i area = faktor 2 i r. Här 9π → 36π betyder r går från 3 till 6, inte 4."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 9 (skala 3).",
+            "why_wrong": "Skalfaktorn för r är 2 (sqrt(4))."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 12 (skala 4 i r).",
+            "why_wrong": "r-skalfaktor = √(area-faktor) = √4 = 2."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Cirkel A: area = 9π. Cirkel B är 4× → 36π → r_B=\\sqrt{36}=6 cm.",
+        "technique": "Skalning av cirkelarea: A = πr² → A skalas med r²; r-skala = √(area-skala).",
+        "framework_id": "XYZ-TRAP-042"
+      }
+    },
+    {
+      "exam": "host-ver1-2019",
+      "qid": "host-ver1-2019-kvant1-XYZ-011",
+      "question": {
+        "qid": "host-ver1-2019-kvant1-XYZ-011",
+        "exam_id": "host-ver1-2019",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 11,
+        "prompt": "x och y är positiva tal. Vilket svarsalternativ motsvarar 32xy^{2} ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "2y 8xy"
+          },
+          {
+            "letter": "B",
+            "text": "4y 2x"
+          },
+          {
+            "letter": "C",
+            "text": "6y x"
+          },
+          {
+            "letter": "D",
+            "text": "8y x"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415638489,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna \\sqrt{32xy^{2}}=2y\\sqrt{8xy}.",
+            "why_wrong": "Förenkla rötter: 32 = 16·2, så √32 = 4√2."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 6y√x.",
+            "why_wrong": "4y, inte 6y."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 8y√x.",
+            "why_wrong": "4y√(2x), inte 8y√x."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av faktorisering: \\sqrt{32xy^{2}}=4y\\sqrt{2x}.",
+        "technique": "Förenkla rötter: bryt ut perfekta kvadrater under roten.",
+        "framework_id": "XYZ-TRAP-032"
+      }
+    },
+    {
+      "exam": "host-ver1-2019",
+      "qid": "host-ver1-2019-kvant2-XYZ-010",
+      "question": {
+        "qid": "host-ver1-2019-kvant2-XYZ-010",
+        "exam_id": "host-ver1-2019",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "10^{3} 100 = x x 10^{-1} = y y 0 0001, = z Vad är det största värde som z kan få om rutorna i ekvationerna var för sig ersätts med antingen multiplikation eller division?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "10^{0}"
+          },
+          {
+            "letter": "B",
+            "text": "10^{5}"
+          },
+          {
+            "letter": "C",
+            "text": "10^{10}"
+          },
+          {
+            "letter": "D",
+            "text": "10^{15} \\frac{1}{2} +3"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/host-ver1-2019-kvant2-XYZ-010.svg",
+          "aspect_ratio": 0.592
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778410520622,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Om du minimerar varje val (välj alltid det som minskar) hamnar du i 10^{0}=1.",
+            "why_wrong": "Frågan ber om STÖRSTA möjliga z — välj därför operationen som maximerar exponenten i varje steg."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Att maximera bara första steget och stanna där ger x=10^{5}, vilket kan locka som svar.",
+            "why_wrong": "Frågan handlar om z, inte x. Steg 2 och 3 fortsätter att förstora talet via division med små tal — exponenten växer hela vägen."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Om du missräknar och tar division med 10^{-1} och 10^{-4} som 'fördubblade' steg, kan 10^{15} kännas inom räckhåll.",
+            "why_wrong": "Räkna additionen av exponenterna: 5 + 1 + 4 = 10. Division med 10^{-n} ger ADDITION av n, inte multiplikation."
+          }
+        ],
+        "pitfall": "Identifiera bråktal som potenser av 10 innan du väljer operation: 100 = 10², 0,1 = 10⁻¹, 0,0001 = 10⁻⁴. Annars är det svårt att jämföra effekten av multiplikation kontra division.",
+        "solution_path": "Maximera z genom att välja operation per steg. Steg 1: 10^{3}\\,?\\,100=x — multiplikation ger 10^{3}\\cdot 10^{2}=10^{5}, vilket är största x. Steg 2: x\\,?\\,10^{-1}=y — division med liten exponent ger 10^{5}/10^{-1}=10^{6}. Steg 3: y\\,?\\,0{,}0001=z — division med 10^{-4} ger 10^{6}/10^{-4}=10^{10}.",
+        "technique": "Vid potenser av samma bas: division innebär subtraktion av exponenter, multiplikation innebär addition. Division med en NEGATIV exponent blir alltså addition av motsvarande positiv exponent — ett kraftigt 'förstoringsverktyg'.",
+        "framework_id": "XYZ-TRAP-031"
+      }
+    },
+    {
+      "exam": "host-ver2-2019",
+      "qid": "host-ver2-2019-kvant1-XYZ-005",
+      "question": {
+        "qid": "host-ver2-2019-kvant1-XYZ-005",
+        "exam_id": "host-ver2-2019",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 5,
+        "prompt": "Hur stor är vinkeln v?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "50°"
+          },
+          {
+            "letter": "B",
+            "text": "63°"
+          },
+          {
+            "letter": "C",
+            "text": "67°"
+          },
+          {
+            "letter": "D",
+            "text": "77°"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/host-ver2-2019-kvant1-XYZ-005.svg",
+          "aspect_ratio": 2.237
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415638489,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att avläsa fel sida av yttervinkeln och få 50°.",
+            "why_wrong": "50° är yttervinkelns komplement, inte yttervinkeln själv — rätt regel ger v = 67^\\circ."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 63° om man avrundar fel led i kedjan.",
+            "why_wrong": "63° kommer av att en delvinkel räknats utan yttervinkelregeln; rätt summering ger 67^\\circ."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten är att ta supplementvinkeln till 67° och hamna på 113°…men då fastnar man oftare på 77°.",
+            "why_wrong": "77° är 10° fel från 67° — typiskt om man räknar 180^\\circ - (a+b) med ett vinkelpar i fel triangel."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Identifiera den triangel där två vinklar är kända ur figuren. Vinkelsumman ger den tredje via 180^\\circ-(a+b), och en yttervinkel = summan av de två icke-angränsande inre vinklarna. Den kedjan landar på v = 67^\\circ.",
+        "technique": "Trianglar i samma figur: använd vinkelsumma 180° plus yttervinkelregeln för att slingra runt mellan de inre och yttre vinklarna.",
+        "framework_id": "XYZ-TRAP-038"
+      }
+    },
+    {
+      "exam": "host-ver2-2019",
+      "qid": "host-ver2-2019-kvant1-XYZ-010",
+      "question": {
+        "qid": "host-ver2-2019-kvant1-XYZ-010",
+        "exam_id": "host-ver2-2019",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "x, y och z är positiva tal. Vilket svarsalternativ motsvarar 12xy^{4} z^{3} ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "2yz 3xz"
+          },
+          {
+            "letter": "B",
+            "text": "2y^{2} z 3xz"
+          },
+          {
+            "letter": "C",
+            "text": "6yz 2xz"
+          },
+          {
+            "letter": "D",
+            "text": "6y^{2} z 2xz 1  av arean av cirkeln B. 4"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-ver2-2019-kvant1-XYZ-010.svg",
+          "aspect_ratio": 1.682
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415638489,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 2yz√(3xz) genom att tappa exponenten.",
+            "why_wrong": "y⁴ ger y² utanför roten (perfekt kvadrat)."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 6yz√(2xz).",
+            "why_wrong": "√12 = 2√3 (inte 6 eller 2√2)."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 6y²z√(2xz).",
+            "why_wrong": "√12 = 2√3."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Förenkla: \\sqrt{12xy^{4}z^{3}}=2y^{2}z\\sqrt{3xz}.",
+        "technique": "Förenkla rötter med variabler: bryt ut perfekta kvadrater för varje variabel.",
+        "framework_id": "XYZ-TRAP-032"
+      }
+    },
+    {
+      "exam": "host-ver2-2019",
+      "qid": "host-ver2-2019-kvant2-XYZ-002",
+      "question": {
+        "qid": "host-ver2-2019-kvant2-XYZ-002",
+        "exam_id": "host-ver2-2019",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 2,
+        "prompt": "Vilket svarsalternativ motsvarar ekvationen för linjen L?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "y =-1 5, x-3"
+          },
+          {
+            "letter": "B",
+            "text": "y =-1 5, x+3"
+          },
+          {
+            "letter": "C",
+            "text": "y = 1 5, x-3"
+          },
+          {
+            "letter": "D",
+            "text": "y = 1 5, x+3"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/host-ver2-2019-kvant2-XYZ-002.svg",
+          "aspect_ratio": 1.043
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415638489,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tappa tecken på m och skriva −3.",
+            "why_wrong": "Linjen skär y-axeln på den positiva sidan, alltså m = +3, inte −3."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta att tappa minustecknet på lutningen.",
+            "why_wrong": "En linje som faller åt höger har k<0; k=+1{,}5 ger en stigande linje, fel riktning."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten är att ta både k och m som positiva när man räknar belopp.",
+            "why_wrong": "Tecknen är k=-1{,}5 och m=+3 — D blandar fel tecken med fel y-skärning i båda leden."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Avläs skärningen med y-axeln — linjen skär y-axeln i 3, så m=3. Linjen lutar nedåt åt höger, alltså är k negativt; lutningens belopp läses som Δy/Δx mellan två rutnätspunkter och blir 1,5. Ekvationen är y = -1{,}5x + 3, alternativ B.",
+        "technique": "Linje från graf: läs av y-skärning m direkt på y-axeln, och bestäm tecknet på lutningen k från om linjen lutar uppåt eller nedåt åt höger.",
+        "framework_id": "XYZ-TRAP-051"
+      }
+    },
+    {
+      "exam": "var-2013",
+      "qid": "var-2013-kvant1-XYZ-010",
+      "question": {
+        "qid": "var-2013-kvant1-XYZ-010",
+        "exam_id": "var-2013",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 10,
+        "prompt": "x ≠ 0 x^{n} Vad är n om x – y = 0 och n är jämnt delbart med 2? y",
+        "options": [
+          {
+            "letter": "A",
+            "text": "–1"
+          },
+          {
+            "letter": "B",
+            "text": "0"
+          },
+          {
+            "letter": "C",
+            "text": "1"
+          },
+          {
+            "letter": "D",
+            "text": "2"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415733600,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna n = −1.",
+            "why_wrong": "n = 1."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 0.",
+            "why_wrong": "n = 1."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 2.",
+            "why_wrong": "n = 1."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Lös ut n: med villkoren och definitionen av x och y följer att n = 1.",
+        "technique": "Lös ut variabel utifrån givna villkor."
+      }
+    },
+    {
+      "exam": "var-2013",
+      "qid": "var-2013-kvant1-XYZ-012",
+      "question": {
+        "qid": "var-2013-kvant1-XYZ-012",
+        "exam_id": "var-2013",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 12,
+        "prompt": "Arean av en cirkel är 16 \\mathrm{cm}^{2} större än arean av en kvadrat med sidan 3 cm. Vad är cirkelns radie?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "\\frac{5}{π} cm"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{5}{π} cm"
+          },
+          {
+            "letter": "C",
+            "text": "\\frac{5}{π} cm"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{5}{π} cm"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415733600,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Alla alternativ ser identiska ut i parsningen (parsningsfel).",
+            "why_wrong": "Räkna direkt: r = 5/√π."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Det är lätt att kasta om täljare/nämnare.",
+            "why_wrong": "r = 5/√π."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid räkning av area utan kvadratrot.",
+            "why_wrong": "r = √(area/π) = 5/√π."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Cirkelarea = kvadratarea + 16 = 9 + 16 = 25. r=\\frac{5}{\\sqrt{\\pi}}.",
+        "technique": "Cirkelradie från area: r = √(A/π).",
+        "framework_id": "XYZ-TRAP-042"
+      }
+    },
+    {
+      "exam": "var-2013",
+      "qid": "var-2013-kvant2-XYZ-001",
+      "question": {
+        "qid": "var-2013-kvant2-XYZ-001",
+        "exam_id": "var-2013",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 1,
+        "prompt": "Hur stor är vinkeln v?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "92°"
+          },
+          {
+            "letter": "B",
+            "text": "97°"
+          },
+          {
+            "letter": "C",
+            "text": "103°"
+          },
+          {
+            "letter": "D",
+            "text": "105°"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2013-kvant2-XYZ-001.svg",
+          "aspect_ratio": 1.921
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415733600,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att hoppa över ett vinkelsteg och hamna på 92°.",
+            "why_wrong": "92° kommer av att man räknar en triangels inre vinkel istället för yttervinkeln — yttervinkelregeln ger 103^\\circ."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 97° om man avrundar de avlästa vinklarna.",
+            "why_wrong": "Skillnaden 97° vs 103° ryms inom en 5°-felavläsning; kontrollera summan med yttervinkelregeln för att slippa avrundningsfel."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten är att räkna in ett supplementsteg för mycket och få 105°.",
+            "why_wrong": "105° är 180° minus 75° — använder fel vinkelpar; rätt yttervinkel ger v=103^\\circ."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Identifiera trianglarna som möts vid v. Vinkelsumman 180^\\circ-(a+b) ger den interna grannvinkeln, och yttervinkelregeln säger att v = summan av de två icke-angränsande inre vinklarna i den triangeln. Kedjan från figurens kända vinklar ger v = 103^\\circ.",
+        "technique": "Trianglar i samma figur: använd vinkelsumma 180° plus yttervinkelregeln för att slingra mellan de inre vinklarna och den utåtriktade vinkeln v.",
+        "framework_id": "XYZ-TRAP-038"
+      }
+    },
+    {
+      "exam": "var-2014",
+      "qid": "var-2014-kvant1-XYZ-001",
+      "question": {
+        "qid": "var-2014-kvant1-XYZ-001",
+        "exam_id": "var-2014",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 1,
+        "prompt": "Vad är  ? 1 - \\frac{1}{10}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "\\frac{1}{10}"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{1}{9}"
+          },
+          {
+            "letter": "C",
+            "text": "1"
+          },
+          {
+            "letter": "D",
+            "text": "10 9"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415854589,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tappa subtraktion och svara 1/10.",
+            "why_wrong": "Resultatet är 9/10, närmast 1."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 1/9.",
+            "why_wrong": "9/10 ≈ 0,9, inte 1/9 ≈ 0,11."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 10/9 ≈ 1,11 (omvänt).",
+            "why_wrong": "Vi söker 9/10, inte 10/9."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "1-\\frac{1}{10}=\\frac{9}{10}=0{,}9, ungefär 1.",
+        "technique": "Bråk-approximation: 9/10 är närmare 1 än 1/9.",
+        "framework_id": "XYZ-TRAP-019"
+      }
+    },
+    {
+      "exam": "var-2014",
+      "qid": "var-2014-kvant1-XYZ-005",
+      "question": {
+        "qid": "var-2014-kvant1-XYZ-005",
+        "exam_id": "var-2014",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 5,
+        "prompt": "Vad är ^10 5h ? 2",
+        "options": [
+          {
+            "letter": "A",
+            "text": "50"
+          },
+          {
+            "letter": "B",
+            "text": "250"
+          },
+          {
+            "letter": "C",
+            "text": "500"
+          },
+          {
+            "letter": "D",
+            "text": "2 500"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415854589,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 50.",
+            "why_wrong": "Resultatet är 500."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 250.",
+            "why_wrong": "500."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 2500.",
+            "why_wrong": "500."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Av uttrycket: 10\\cdot 5\\cdot 10=500.",
+        "technique": "Beräkning av sammansatt uttryck: räkna multiplikation och kvadratur i rätt ordning."
+      }
+    },
+    {
+      "exam": "var-2014",
+      "qid": "var-2014-kvant1-XYZ-006",
+      "question": {
+        "qid": "var-2014-kvant1-XYZ-006",
+        "exam_id": "var-2014",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 6,
+        "prompt": "Vilket uttryck har samma värde som  för alla x > 0?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "2x^{3} + 4x"
+          },
+          {
+            "letter": "B",
+            "text": "2x^{4} + 4x"
+          },
+          {
+            "letter": "C",
+            "text": "2x^{3} + 4"
+          },
+          {
+            "letter": "D",
+            "text": "2x^{4} + 4 4x^{5} + 8x 2x"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415854589,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 2x³+4x av exponentslarv.",
+            "why_wrong": "x⁵/x = x⁴, inte x³."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 2x⁴+4x.",
+            "why_wrong": "8x/(2x) = 4 (konstant), inte 4x."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid 2x³+4.",
+            "why_wrong": "x⁴, inte x³."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "\\frac{4x^{5}+8x}{2x}=\\frac{4x^{5}}{2x}+\\frac{8x}{2x}=2x^{4}+4.",
+        "technique": "Polynom-bråk: dela varje term separat med nämnaren.",
+        "framework_id": "XYZ-TRAP-018"
+      }
+    },
+    {
+      "exam": "var-2014",
+      "qid": "var-2014-kvant1-XYZ-009",
+      "question": {
+        "qid": "var-2014-kvant1-XYZ-009",
+        "exam_id": "var-2014",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 9,
+        "prompt": "81^{m} = 9^{n} Vad är mn?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "1/2"
+          },
+          {
+            "letter": "B",
+            "text": "2"
+          },
+          {
+            "letter": "C",
+            "text": "3"
+          },
+          {
+            "letter": "D",
+            "text": "6"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415854589,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna n/m = 2 → mn = 1/2.",
+            "why_wrong": "mn = 2 vid m=1, n=2."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 3.",
+            "why_wrong": "2."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 6.",
+            "why_wrong": "2."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "81 = 3⁴, 9 = 3². 3^{4m}=3^{2n} → 4m=2n → n=2m. Med m = 1, n = 2: mn = 2.",
+        "technique": "Lika baser, lika exponenter: skriv om till samma bas, sätt exponenter lika.",
+        "framework_id": "XYZ-TRAP-027"
+      }
+    },
+    {
+      "exam": "var-2014",
+      "qid": "var-2014-kvant2-XYZ-002",
+      "question": {
+        "qid": "var-2014-kvant2-XYZ-002",
+        "exam_id": "var-2014",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 2,
+        "prompt": "Vad blir ? x^{5}",
+        "options": [
+          {
+            "letter": "A",
+            "text": "x^{–12}"
+          },
+          {
+            "letter": "B",
+            "text": "x"
+          },
+          {
+            "letter": "C",
+            "text": "x^{3}"
+          },
+          {
+            "letter": "D",
+            "text": "x^{11} Senare delen av april3. Senare delen av maj 6. Slutet av september Provtagningstillfällen:"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415854589,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna x⁻¹² av att tappa division.",
+            "why_wrong": "Subtrahera exponenter: 8 − 5 = 3."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta x.",
+            "why_wrong": "x³."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid x¹¹.",
+            "why_wrong": "x³."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "\\frac{(x^{2})^{4}}{x^{5}}=\\frac{x^{8}}{x^{5}}=x^{3}.",
+        "technique": "Potenslagar: (x^a)^b = x^(ab), och x^a / x^b = x^(a-b).",
+        "framework_id": "XYZ-TRAP-026"
+      }
+    },
+    {
+      "exam": "var-2014",
+      "qid": "var-2014-kvant2-XYZ-009",
+      "question": {
+        "qid": "var-2014-kvant2-XYZ-009",
+        "exam_id": "var-2014",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 9,
+        "prompt": "Vad är  100b\\frac{1 1}{10 1000}- l?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "0,9"
+          },
+          {
+            "letter": "B",
+            "text": "9"
+          },
+          {
+            "letter": "C",
+            "text": "9,9"
+          },
+          {
+            "letter": "D",
+            "text": "9,99"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415854589,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 0,9 (utan att multiplicera med 100).",
+            "why_wrong": "Multiplicera med 100 för att få 9,9."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 9 (utan tiondel).",
+            "why_wrong": "9,9 (med tiondel från 1/1000)."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 9,99.",
+            "why_wrong": "99/1000 · 100 = 99/10 = 9,9, exakt."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "100\\cdot\\left(\\frac{1}{10}-\\frac{1}{1000}\\right)=100\\cdot\\frac{99}{1000}=9{,}9.",
+        "technique": "Bråkaddition med multiplikator: gemensam nämnare först, multiplicera sist."
+      }
+    },
+    {
+      "exam": "var-2014",
+      "qid": "var-2014-kvant2-XYZ-011",
+      "question": {
+        "qid": "var-2014-kvant2-XYZ-011",
+        "exam_id": "var-2014",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 11,
+        "prompt": "\\frac{40,1·397·88,1}{39,8·8809·1,99} Vilket av alternativen är den bästa approximationen till uttrycket?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "2"
+          },
+          {
+            "letter": "B",
+            "text": "4"
+          },
+          {
+            "letter": "C",
+            "text": "10"
+          },
+          {
+            "letter": "D",
+            "text": "20"
+          }
+        ],
+        "answer": "A",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415854589,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "B",
+            "why_tempting": "Det är lätt att räkna fel kvot och få 4.",
+            "why_wrong": "≈ 2."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 10.",
+            "why_wrong": "2."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 20.",
+            "why_wrong": "2."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Approximera: \\frac{40\\cdot 400\\cdot 90}{40\\cdot 9000\\cdot 2}=\\frac{400\\cdot 90}{18000}=2.",
+        "technique": "Approximation: till lätträknade tal, räkna kvoten."
+      }
+    },
+    {
+      "exam": "var-2014",
+      "qid": "var-2014-kvant2-XYZ-012",
+      "question": {
+        "qid": "var-2014-kvant2-XYZ-012",
+        "exam_id": "var-2014",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 12,
+        "prompt": "Cirkelbågen DB är en halvcirkel med medelpunkten M och radien 1 cm.  Den rätvinkliga triangeln ABC är inritad så att punkterna B och C ligger på cirkelbågen och AB = AM. Hur lång är sträckan AC?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "6  cm 7"
+          },
+          {
+            "letter": "B",
+            "text": "\\frac{3}{2} cm"
+          },
+          {
+            "letter": "C",
+            "text": "1 cm"
+          },
+          {
+            "letter": "D",
+            "text": "\\frac{5}{2} cm , TABELLER OCH KARTOR"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2014-kvant2-XYZ-012.svg",
+          "aspect_ratio": 1.681
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415854589,
+          "model": "claude-opus-4-7",
+          "pedagogy_regenerated_at": 1778510870035,
+          "regen_source": "persona_pass_phase_e_2026_05_11"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro att svaret skulle vara större än diametern (2 cm) — men optionen är dessutom feltryckt.",
+            "why_wrong": "AC måste vara mindre än 2 cm (diametern) i den här konfigurationen; 3/2 cm stämmer."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Om du minns att radien är 1 cm är det frestande att gissa AC = 1 cm.",
+            "why_wrong": "AC är inte en radie utan en katet i triangel ABC — den behöver beräknas via Pythagoras, inte avläsas direkt."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Snabbsvar är ofta 5/2 cm om du adderar för många radier i Pythagoras-uppställningen.",
+            "why_wrong": "5/2 cm = 2,5 cm överstiger diametern; geometriskt omöjligt i denna figur."
+          }
+        ],
+        "pitfall": "Tolka AB = AM som ett LÄNGDVILLKOR, inte en parallellitet — det betyder att triangel ABM är likbent och att A ligger på mittpunktsnormalen till MB.",
+        "solution_path": "Eftersom M är medelpunkt och radien är 1 är MB = MC = 1. Villkoret AB = AM ger en likbent triangel ABM, vilket fixerar A:s läge på höjden över MB. I rätvinkliga triangeln ABC bestäms AC via Pythagoras: med given konfiguration ger detta AC = 3/2 cm.",
+        "technique": "Halvcirkel med inskriven rätvinklig triangel: använd Thales sats (vinkel mot diameter är 90°) plus Pythagoras i den rätvinkliga triangeln."
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant1-XYZ-003",
+      "question": {
+        "qid": "var-2015-kvant1-XYZ-003",
+        "exam_id": "var-2015",
+        "provpass": "kvant1",
+        "section": "XYZ",
+        "number": 3,
+        "prompt": "Vilket av svarsförslagen ligger närmast 84 - 10 ?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "4"
+          },
+          {
+            "letter": "B",
+            "text": "6"
+          },
+          {
+            "letter": "C",
+            "text": "8"
+          },
+          {
+            "letter": "D",
+            "text": "10"
+          }
+        ],
+        "answer": "B",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415987299,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna √(84-10) = √74 ≈ 8,6 → 4.",
+            "why_wrong": "Det är differensen av rötter — räkna varje rot separat."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Snabbsvar är ofta 8.",
+            "why_wrong": "≈ 6, inte 8."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Många stannar vid 10.",
+            "why_wrong": "≈ 6."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "\\sqrt{84}-\\sqrt{10}\\approx 9{,}17-3{,}16\\approx 6.",
+        "technique": "Differens av rötter: räkna varje rot separat (inte rot av differensen).",
+        "framework_id": "XYZ-TRAP-033"
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant2-XYZ-004",
+      "question": {
+        "qid": "var-2015-kvant2-XYZ-004",
+        "exam_id": "var-2015",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 4,
+        "prompt": "AB är parallell med CD. Vad är x?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "70°"
+          },
+          {
+            "letter": "B",
+            "text": "90°"
+          },
+          {
+            "letter": "C",
+            "text": "110°"
+          },
+          {
+            "letter": "D",
+            "text": "130°"
+          }
+        ],
+        "answer": "C",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2015-kvant2-XYZ-004.svg",
+          "aspect_ratio": 1.066
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415987299,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att ta likbelägen vinkel och svara 70° direkt.",
+            "why_wrong": "70° är likbelägen men x ligger på andra sidan av tvärgående — supplementregeln ger 110^\\circ."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 90° om man antar att linjerna är vinkelräta.",
+            "why_wrong": "Parallellt betyder inte vinkelrätt mot tvärgående — figuren har en sned tvärgående, alltså inte 90°."
+          },
+          {
+            "letter": "D",
+            "why_tempting": "Första instinkten är att addera istället för subtrahera och få 130°.",
+            "why_wrong": "Supplementsumman är 180^\\circ-70^\\circ=110^\\circ, inte 60°+70°."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Identifiera den vinkel på AB som ligger på samma sida av tvärgående som x på CD. Antingen är de likbelägna (samma värde) eller supplementära (summa 180°). Här ger figurens 70°-vinkel ett supplement-par mot x: x = 180^\\circ-70^\\circ = 110^\\circ.",
+        "technique": "Parallella linjer + tvärgående: likbelägna vinklar, alternatvinklar och samhörande vinklar låter dig flytta varje vinkel mellan linjerna utan att tappa bort.",
+        "framework_id": "XYZ-TRAP-037"
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant2-XYZ-007",
+      "question": {
+        "qid": "var-2015-kvant2-XYZ-007",
+        "exam_id": "var-2015",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 7,
+        "prompt": "Den regelbundna sexhörningen ABCDEF har omkretsen 84 cm. Hur lång är AD?",
+        "options": [
+          {
+            "letter": "A",
+            "text": "6π cm"
+          },
+          {
+            "letter": "B",
+            "text": "14 2  cm"
+          },
+          {
+            "letter": "C",
+            "text": "84/ π cm"
+          },
+          {
+            "letter": "D",
+            "text": "28 cm 4^{3}"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": {
+          "src": "figures/var-2015-kvant2-XYZ-007.svg",
+          "aspect_ratio": 0.889
+        },
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415987299,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att tro AD = π·radien.",
+            "why_wrong": "AD är linjär, inte cirkulär."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 14√2.",
+            "why_wrong": "Det är diagonalen i kvadrat, inte sexhörning."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid 84/π.",
+            "why_wrong": "AD = 2·sida = 28."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "Sida = 84/6 = 14 cm. I regelbunden sexhörning är diagonal AD = 2·sida = 28 cm.",
+        "technique": "Regelbunden sexhörning: längsta diagonalen = 2·sida."
+      }
+    },
+    {
+      "exam": "var-2015",
+      "qid": "var-2015-kvant2-XYZ-008",
+      "question": {
+        "qid": "var-2015-kvant2-XYZ-008",
+        "exam_id": "var-2015",
+        "provpass": "kvant2",
+        "section": "XYZ",
+        "number": 8,
+        "prompt": "Vad är 8·20- ? 4",
+        "options": [
+          {
+            "letter": "A",
+            "text": "2 41"
+          },
+          {
+            "letter": "B",
+            "text": "8"
+          },
+          {
+            "letter": "C",
+            "text": "156"
+          },
+          {
+            "letter": "D",
+            "text": "12"
+          }
+        ],
+        "answer": "D",
+        "context": null,
+        "figure": null,
+        "parsing_status": "complete"
+      },
+      "thin_entry": {
+        "_meta": {
+          "generated_at": 1778415987299,
+          "model": "claude-opus-4-7"
+        },
+        "distractors": [
+          {
+            "letter": "A",
+            "why_tempting": "Det är lätt att räkna 2·41 = 82 av annan tolkning.",
+            "why_wrong": "≈ 12."
+          },
+          {
+            "letter": "B",
+            "why_tempting": "Snabbsvar är ofta 8.",
+            "why_wrong": "12."
+          },
+          {
+            "letter": "C",
+            "why_tempting": "Många stannar vid 156 (utan rot).",
+            "why_wrong": "√156 ≈ 12."
+          }
+        ],
+        "pitfall": null,
+        "solution_path": "\\sqrt{8\\cdot 20-4}=\\sqrt{156}\\approx 12{,}5\\approx 12.",
+        "technique": "Approximativ rotutdragning: räkna värdet under roten, ta sqrt."
+      }
+    }
+  ]
+}

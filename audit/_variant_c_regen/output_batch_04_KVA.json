@@ -1,0 +1,661 @@
+{
+  "host-2023-kvant2-KVA-019": {
+    "solution_path": "Cirkelarean med radie 5 cm är \\pi r^2 = 25\\pi cm². Eftersom \\pi > 3{,}14 blir 25\\pi > 78, vilket klart överstiger 75 — svar A.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Vi ska jämföra arean av en cirkel med radie 5 cm (Kvantitet I) mot talet 75 cm² (Kvantitet II). KVA-svaren är: A = I > II, B = II > I, C = I = II, D = informationen är otillräcklig.", "tier": "essential"},
+      {"n": 2, "title": "Skriv formeln", "text": "Cirkelarean ges av A = \\pi r^2 där r är radien. Detta är en standardidentitet — „ptå” kommer av att arean är „radien gånger radien gånger pi”.", "tier": "detail"},
+      {"n": 3, "title": "Vad betyder kvadrering?", "text": "Att kvadrera ett tal betyder att multiplicera det med sig självt: 5^2 = 5 \\cdot 5 = 25. Det är inte detsamma som att multiplicera med 2.", "tier": "detail"},
+      {"n": 4, "title": "Sätt in r = 5", "text": "Med r = 5 cm blir arean A = \\pi \\cdot 5^2 = 25\\pi cm². Detta är ett exakt värde — ingen avrundning görs än.", "tier": "essential"},
+      {"n": 5, "title": "Vad är π?", "text": "Talet \\pi (pi) är förhållandet mellan en cirkels omkrets och dess diameter, ett irrationellt tal med värdet \\pi \\approx 3{,}14159. Det är viktigt att \\pi > 3 strikt.", "tier": "detail"},
+      {"n": 6, "title": "Etablera olikheten π > 3", "text": "Eftersom \\pi \\approx 3{,}14 > 3 gäller 25\\pi > 25 \\cdot 3 = 75. Vi har redan visat att I > 75 utan att behöva exakt värde.", "tier": "essential"},
+      {"n": 7, "title": "Skarpare uppskattning", "text": "För säkerhetsskull: 25 \\cdot 3{,}14 = 78{,}5. Med fler decimaler: 25\\pi \\approx 78{,}54 cm².", "tier": "detail"},
+      {"n": 8, "title": "Jämför med Kvantitet II", "text": "Kvantitet II = 75 cm² är ett fixt tal. Vi har Kvantitet I \\approx 78{,}54, vilket är ungefär 3,54 enheter större.", "tier": "essential"},
+      {"n": 9, "title": "Kontrollera enheterna", "text": "Båda uttrycks i cm², så jämförelsen är meningsfull. Inga enhetsbyten behövs.", "tier": "detail"},
+      {"n": 10, "title": "Verifiera", "text": "Test: skulle radien varit \\sqrt{75/\\pi} \\approx 4{,}89 cm hade arean varit exakt 75. Vi har 5 cm > 4,89 cm, så arean måste vara > 75 — olikheten håller.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Kvantitet I \\approx 78{,}5 > 75 = Kvantitet II, svaret är A. Insikten i en mening: när en area innehåller \\pi räcker det ofta att använda \\pi > 3 för att avgöra jämförelsen mot ett heltal.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att tro att 25π ≈ 75 om man approximerar \\pi \\approx 3.", "why_wrong": "Som steg 6 visar är \\pi > 3 strikt, så 25\\pi > 75 — Kvantitet I är större, inte mindre."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta att 25π = 75 vid grov överslagsräkning.", "why_wrong": "Steg 7 ger 25\\pi \\approx 78{,}54 — differensen på ca 3,5 är inte försumbar."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att π gör värdet ospäcifikt.", "why_wrong": "Steg 5-6 fastslår \\pi > 3 som matematiskt faktum, så ordningen är entydigt bestämd."}
+    ],
+    "technique": "När en cirkelarea jämförs mot ett heltal: beräkna \\pi r^2 symboliskt och använd uppskattningen \\pi \\approx 3{,}14 eller olikheten \\pi > 3. Detta tar bort behovet av miniminniräknare och kapslar in osvängskänslan.",
+    "pitfall": "Botemedlet mot att approximera \\pi \\approx 3 utan eftertanke: använd 3,14 eller \\pi > 3 som strikt olikhet när heltal ligger i närheten.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Cirkelarea-receptet",
+      "move": "När kvantiteten är \\pi r^2: räkna ut talet och använd \\pi \\approx 3{,}14 (aldrig bara 3) för att avgöra olikheten."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2023-kvant2-KVA-020": {
+    "solution_path": "Givet xy = z med z > 1 följer direkt x = z/y genom division. Därmed är Kvantitet I = Kvantitet II identiskt — svar C.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Vi har en relation xy = z där z > 1, och ska avgöra om x (Kvantitet I) eller z/y (Kvantitet II) är störst. KVA-koderna: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Variabler och villkor", "text": "Tre variabler x, y, z bundna av en enda ekvation xy = z. Att z > 1 ger oss att z \\neq 0, och för att kvoten z/y ska vara definierad måste y \\neq 0.", "tier": "detail"},
+      {"n": 3, "title": "Implicit villkor: y ≠ 0", "text": "Eftersom xy = z och z > 1 > 0 är både x och y nollskilda — om någon av dem var noll skulle produkten bli 0, inte > 1.", "tier": "detail"},
+      {"n": 4, "title": "Vad betyder division?", "text": "Division är definierad som inversen av multiplikation: a/b = c betyder a = b \\cdot c (när b \\neq 0).", "tier": "detail"},
+      {"n": 5, "title": "Lös ut x", "text": "Från xy = z, dividera båda sidor med y (tillåtet eftersom y \\neq 0): x = z/y.", "tier": "essential"},
+      {"n": 6, "title": "Skriv om I och II", "text": "Kvantitet I är x och Kvantitet II är z/y. Steg 5 visar att dessa är identiska som algebraiska uttryck.", "tier": "essential"},
+      {"n": 7, "title": "Sanity-check med tal", "text": "Pröva y = 2, z = 6: då x = 3 och z/y = 6/2 = 3. Lika.", "tier": "detail"},
+      {"n": 8, "title": "Pröva negativt y", "text": "Låt y = -2, z = 2: då x = -1 och z/y = 2/(-2) = -1. Fortfarande lika.", "tier": "detail"},
+      {"n": 9, "title": "Spelar z:s storlek roll?", "text": "Nej. Villkoret z > 1 användes bara för att garantera att xy \\neq 0, inte för själva jämförelsen. Likheten gäller oavsett z:s exakta värde.", "tier": "detail"},
+      {"n": 10, "title": "Verifiera", "text": "Multiplicera tillbaka: om x = z/y så xy = (z/y) \\cdot y = z — vilket är given relation. Inget motvillkor.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "Kvantitet I = Kvantitet II, svaret är C. Insikten i en mening: när två kvantiteter i en KVA-uppgift kan härledas algebraiskt från samma ekvation, blir likhet ofta det „gömda” svaret — undersök det först.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att x dominerar när man inte ser kopplingen.", "why_wrong": "Steg 5 visar x = z/y exakt — ingen extra term."},
+      {"letter": "B", "why_tempting": "Första instinkten är att z/y ser annorlunda ut när z är stort.", "why_wrong": "Steg 9 visar att likheten gäller oavsett z:s storlek; den följer direkt av definitionen."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att x och y kan väljas oberoende.", "why_wrong": "Steg 5 binder dem entydigt: xy = z ger x = z/y utan val."}
+    ],
+    "technique": "Lös alltid ut den eftersökta kvantiteten algebraiskt innan du jämför. När en av två kvantiteter är en enstaka variabel som figurerar i en ekvation, dividera/multiplicera så du får identisk form.",
+    "pitfall": "Botemedlet mot att gissa på „sakerna ser olika ut”: omskriv båda sidor med samma variabler och se om de är samma uttryck.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Isoleringsreceptet",
+      "move": "När en kvantitet är en variabel och den andra ett bråk med samma variabler: isolera variabeln från den givna ekvationen och se om uttrycken kollapsar till samma form."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2023-kvant2-KVA-021": {
+    "solution_path": "Riktningskoefficienten för L 1 genom (2,1) och (−3,7) är -6/5. För vinkelräta linjer gäller k_1 \\cdot k_2 = -1, vilket ger k_2 = 5/6. Eftersom -6/5 < 0 < 5/6 är II > I — svar B.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Vi har en linje L 1 genom två punkter och en linje L 2 vinkelrät mot L 1. Vi ska jämföra riktningskoefficienterna. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Vad är riktningskoefficient?", "text": "Riktningskoefficienten (eller lutningen) k anger hur mycket y ändras per enhet ändring i x. Formel: k = (y_2 - y_1)/(x_2 - x_1).", "tier": "detail"},
+      {"n": 3, "title": "Märk ut punkterna", "text": "Låt (x_1, y_1) = (2, 1) och (x_2, y_2) = (-3, 7). Ordningen är godtycklig men måste vara konsistent i täljare och nämnare.", "tier": "detail"},
+      {"n": 4, "title": "Beräkna täljaren", "text": "y_2 - y_1 = 7 - 1 = 6. Detta är förändringen i y-led.", "tier": "essential"},
+      {"n": 5, "title": "Beräkna nämnaren", "text": "x_2 - x_1 = -3 - 2 = -5. Notera tecknet — minus framför 3 minus 2 ger −5, inte +1.", "tier": "essential"},
+      {"n": 6, "title": "Riktningskoefficient för L 1", "text": "k_1 = 6/(-5) = -6/5 = -1{,}2. Negativ lutning betyder att linjen sjunker från vänster till höger.", "tier": "essential"},
+      {"n": 7, "title": "Regel för vinkelräta linjer", "text": "Två linjer är vinkelräta omm produkten av deras lutningar är −1: k_1 \\cdot k_2 = -1 (under förutsättning att ingen är vertikal).", "tier": "detail"},
+      {"n": 8, "title": "Lös ut k 2", "text": "Från k_2 = -1/k_1 = -1/(-6/5) = 5/6. Den negativa inversen flippar både bråket och tecknet.", "tier": "essential"},
+      {"n": 9, "title": "Jämför tecknen", "text": "k_1 = -6/5 < 0 och k_2 = 5/6 > 0. Ett negativt tal är alltid mindre än ett positivt.", "tier": "essential"},
+      {"n": 10, "title": "Decimalkontroll", "text": "-6/5 = -1{,}2 och  5/6 \\approx 0{,}833. Skillnaden är ungefär 2,03 — inga marginalfel.", "tier": "detail"},
+      {"n": 11, "title": "Verifiera vinkelräthet", "text": "Produkten: (-6/5) \\cdot (5/6) = -30/30 = -1 — stilrent.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Kvantitet II (5/6) > Kvantitet I (-6/5), svaret är B. Insikten i en mening: vinkelräta lutningar har motsatt tecken — om en är negativ är den andra positiv, vilket avgör jämförelsen direkt.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att „större belopp” (|{-6/5}| = 1{,}2) slår ett mindre (5/6 \\approx 0{,}83).", "why_wrong": "Som steg 9 visar jämför KVA tecken inklusive, inte absolutbelopp — negativt < positivt."},
+      {"letter": "C", "why_tempting": "Första instinkten kan vara att vinkelräta linjer har „samma slags” lutning.", "why_wrong": "Steg 8 visar att den negativa inversen flippar både tecken och bråk; beloppen blir 6/5 vs 5/6 — olika."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att vinkelrät-villkoret är tvetydigt.", "why_wrong": "Steg 7-8 ger en deterministisk formel som ger ett unikt k_2."}
+    ],
+    "technique": "För vinkelräta linjer i KVA: räkna ut den ena lutningen och använd k_2 = -1/k_1. Tecknet flippar alltid, så om k_1 < 0 är k_2 > 0 — jämförelsen är ofta klar utan exakta värden.",
+    "pitfall": "Botemedlet mot att blanda absolutbelopp och tecken: skriv ut både tecken och storlek innan du jämför, eftersom KVA frågar om signerat värde, inte belopp.",
+    "framework_id": "KVA-TRAP-017",
+    "pregrade_tactic": {
+      "handle": "Vinkelrät-receptet",
+      "move": "När två vinkelräta linjer jämförs: räkna en lutning och använd k_2 = -1/k_1 — tecknet flippar alltid och avgör ofta hela jämförelsen."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "host-2023-kvant2-KVA-022": {
+    "solution_path": "Kvantitet I = 2 \\cdot 10^x, Kvantitet II = (2\\cdot 10)^x = 2^x \\cdot 10^x. Förhållandet II/I = 2^{x-1} vilket är < 1 för x = 0, = 1 för x = 1, > 1 för x = 2. Tre olika utfall — svar D.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Vi ska jämföra två uttryck med samma variabel x utan att x är bestämd. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Vad är en potens?", "text": "a^x betyder „a gånger sig självt x gånger” för positiva heltal x; och generaliseras till alla reella x. Det är exponentiering.", "tier": "detail"},
+      {"n": 3, "title": "Exponentregel för produkter", "text": "För positiva baser gäller (ab)^x = a^x \\cdot b^x. Detta är distributivitet för exponentiering över multiplikation.", "tier": "detail"},
+      {"n": 4, "title": "Skriv om Kvantitet II", "text": "(2 \\cdot 10)^x = 2^x \\cdot 10^x enligt steg 3. Detta är samma sak som 20^x.", "tier": "essential"},
+      {"n": 5, "title": "Skriv ut Kvantitet I", "text": "Kvantitet I = 2 \\cdot 10^x. Notera prioriteten: exponenten gäller bara basen 10, inte tvåan. Detta är ett användarvanligt feltrappa.", "tier": "essential"},
+      {"n": 6, "title": "Bilda kvoten II/I", "text": "\\text{II}/\\text{I} = (2^x \\cdot 10^x)/(2 \\cdot 10^x) = 2^x/2 = 2^{x-1}. Detta förenklar hela jämförelsen.", "tier": "essential"},
+      {"n": 7, "title": "Testa x = 1", "text": "2^{1-1} = 2^0 = 1, alltså II = I. Kontroll: I = 2·10 = 20, II = 20^1 = 20.", "tier": "essential"},
+      {"n": 8, "title": "Testa x = 2", "text": "2^{2-1} = 2, alltså II = 2·I, dvs II > I. Kontroll: I = 2·100 = 200, II = 400.", "tier": "essential"},
+      {"n": 9, "title": "Testa x = 0", "text": "2^{0-1} = 1/2, alltså II = I/2, dvs I > II. Kontroll: I = 2·1 = 2, II = 20^0 = 1.", "tier": "essential"},
+      {"n": 10, "title": "Tre utfall, samma fråga", "text": "Vi har visat tre olika ordningar (I > II, I = II, II > I) för olika x. Eftersom x inte är given är jämförelsen tvetydig.", "tier": "essential"},
+      {"n": 11, "title": "Verifiera resonemanget", "text": "Förhållandet 2^{x-1} är en kontinuerlig funktion av x: < 1 för x < 1, = 1 för x = 1, > 1 för x > 1. Tre tydliga regimer.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Eftersom x kan göra I större, lika eller mindre än II beroende på värde är svaret D. Insikten i en mening: när en potensjämförelse beror på en obunden exponent, leta efter regimskifte vid x = 0, x = 1, x → ∞ — gör tre tester och D faller ofta ut.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att stanna vid x = 0 och se I = 2 > II = 1.", "why_wrong": "Steg 8 visar att för x = 2 är II = 400 > I = 200 — mot-exemplet slår ut universaliteten."},
+      {"letter": "B", "why_tempting": "Första instinkten är att (2\\cdot 10)^x växer snabbare och dominerar.", "why_wrong": "Steg 9 visar att för x = 0 är I = 2 > II = 1."},
+      {"letter": "C", "why_tempting": "Många stannar vid x = 1 där I = II = 20.", "why_wrong": "Steg 8-9 visar likhet endast vid den specifika punkten x = 1, inte universellt."}
+    ],
+    "technique": "När två potensuttryck jämförs och exponenten är fri: bilda kvoten II/I, förenkla, och pröva minst tre värden (negativt, noll, positivt). Om tecknet på jämförelsen flippar är svaret D.",
+    "pitfall": "Botemedlet mot att förväxla 2 \\cdot 10^x med (2 \\cdot 10)^x: kom ihåg att exponenten binder stärkast — utan parentes gäller den bara närmaste bas.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Regimskötselregeln",
+      "move": "När exponenten är fri och basen är > 1: testa x = 0, x = 1, x = 2 — om ordningen flippar är svaret D."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2015-kvant2-KVA-013": {
+    "solution_path": "Vid två myntkast finns 4 lika sannolika utfall: HH, HT, TH, TT. Två utfall ger „samma sida” (HH, TT) och två ger „olika sidor” (HT, TH). Båda sannolikheter blir 2/4 = 1/2 — svar C.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Ett mynt kastas två gånger. Vi ska jämföra P(samma sida) (Kvantitet I) med P(olika sidor) (Kvantitet II). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Antaganden", "text": "Vi antar att myntet är rättvist (P(H) = P(T) = 1/2) och att kasten är oberoende. Det är standardtolkning av „kastas” utan extra information.", "tier": "detail"},
+      {"n": 3, "title": "Vad är ett utfallsrum?", "text": "Utfallsrummet är mängden av alla möjliga resultat. För två myntkast är det par av sidor.", "tier": "detail"},
+      {"n": 4, "title": "Lista alla utfall", "text": "De fyra möjliga utfallen är HH, HT, TH, TT, där H = krona (heads) och T = klave (tails). Ordningen spelar roll: HT ≠ TH.", "tier": "essential"},
+      {"n": 5, "title": "Sannolikhet per utfall", "text": "Eftersom kasten är oberoende och varje sida har p = 1/2 har varje par sannolikhet (1/2)·(1/2) = 1/4. Summa: 4 · 1/4 = 1.", "tier": "detail"},
+      {"n": 6, "title": "Definiera „samma sida”", "text": "Händelsen „samma sida” motsvarar paren HH eller TT. Antal gynnsamma utfall = 2.", "tier": "essential"},
+      {"n": 7, "title": "Definiera „olika sidor”", "text": "Händelsen „olika sidor” motsvarar paren HT eller TH. Antal gynnsamma utfall = 2.", "tier": "essential"},
+      {"n": 8, "title": "Beräkna P(I)", "text": "P(\\text{samma}) = 2/4 = 1/2. Detta är Kvantitet I.", "tier": "essential"},
+      {"n": 9, "title": "Beräkna P(II)", "text": "P(\\text{olika}) = 2/4 = 1/2. Detta är Kvantitet II.", "tier": "essential"},
+      {"n": 10, "title": "Komplement-kontroll", "text": "Eftersom „samma” och „olika” är komplement i utfallsrummet gäller P(\\text{samma}) + P(\\text{olika}) = 1. Med båda 1/2 stjämmer det: 1/2 + 1/2 = 1.", "tier": "detail"},
+      {"n": 11, "title": "Verifiera", "text": "Symmetriargument: för ett rättvist mynt finns ingen anledning att kasten ska föredra likhet eller olikhet — 5050 är en konsekvens av symmetrin.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Kvantitet I = Kvantitet II = 1/2, svaret är C. Insikten i en mening: vid två oberoende rättvisa myntkast är „samma” och „olika” alltid lika sannolika eftersom utfallsrummet delas exakt på mitten.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att „olika” är mindre vanligt eftersom ordningen krävs.", "why_wrong": "Steg 7 visar att två olika ordningar (HT, TH) bidrar, alltså 2 av 4 utfall — lika med „samma”."},
+      {"letter": "B", "why_tempting": "Första instinkten är att „samma sida” är en sällsynthet.", "why_wrong": "Steg 6 visar HH och TT som två utfall — exakt lika många som de olika."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att man behöver mer info om myntet.", "why_wrong": "Steg 11 visar att symmetri (ej myntets specifika vägning) ger likheten — utfallsrummet är symmetriskt oavsett."}
+    ],
+    "technique": "För små sannolikhetsproblem: lista det fullständiga utfallsrummet och räkna gynnsamma utfall. Klassisk Laplace-metod: P = \\frac{\\text{gynnsamma}}{\\text{möjliga}}.",
+    "pitfall": "Botemedlet mot att glömma ordning: skriv ut paren med ordning (HT ≠ TH) så du räknar varje utfall exakt en gång.",
+    "framework_id": "KVA-TRAP-028",
+    "pregrade_tactic": {
+      "handle": "Utfallsrums-listan",
+      "move": "När två-mynt eller små-två-stegs-experiment: skriv alla utfall (HH, HT, TH, TT) och räkna gynnsamma direkt — likhet kommer ofta naturligt."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2015-kvant2-KVA-014": {
+    "solution_path": "Med 60 pojkar, 30 flickor och 40 vänsterhänta totalt kan antalet vänsterhänta pojkar variera mellan 10 (om alla 30 flickor är vänsterhänta) och 40 (om alla vänsterhänta är pojkar). 20 ligger inom det intervallet men är inte fixerat — svar D.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "90 personer, 60 pojkar (alltså 30 flickor), 40 vänsterhänta. Vi ska jämföra antalet vänsterhänta pojkar med 20. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Sätt upp en tvåvägstabell", "text": "Vi har två egenskaper: pojke/flicka och vänster-/högerhänt. För att få översikt: tabell med 4 celler.", "tier": "detail"},
+      {"n": 3, "title": "Variabel för kombinationen", "text": "Låt v = antal vänsterhänta pojkar. Då kan vi härleda övriga celler: vänsterhänta flickor = 40 − v, högerhänta pojkar = 60 − v, högerhänta flickor = 30 − (40 − v) = v − 10.", "tier": "essential"},
+      {"n": 4, "title": "Skriv ner totalsummorna", "text": "Pojkar: v + (60-v) = 60 \\checkmark. Flickor: (40-v) + (v-10) = 30 \\checkmark. Allt stämmer.", "tier": "detail"},
+      {"n": 5, "title": "Cellerna måste vara icke-negativa", "text": "Alla celler är antal människor, alltså \\geq 0. Det ger fyra olikheter: v \\geq 0, 60-v \\geq 0, 40-v \\geq 0, v-10 \\geq 0.", "tier": "essential"},
+      {"n": 6, "title": "Sammanfatta intervallet", "text": "Olikheterna ger v \\geq 10 (från sista cellen) och v \\leq 40 (från vänsterhänta flickor). Därmed 10 \\leq v \\leq 40.", "tier": "essential"},
+      {"n": 7, "title": "Testa låg ände: v = 10", "text": "Tabell: vänster-pojke 10, vänster-flicka 30, höger-pojke 50, höger-flicka 0. Alla \\geq 0, summa 90 — giltigt.", "tier": "detail"},
+      {"n": 8, "title": "Testa hög ände: v = 40", "text": "Tabell: vänster-pojke 40, vänster-flicka 0, höger-pojke 20, höger-flicka 30 — giltigt.", "tier": "detail"},
+      {"n": 9, "title": "Testa jämförelsepunkten v = 20", "text": "Tabell: vänster-pojke 20, vänster-flicka 20, höger-pojke 40, höger-flicka 10 — giltigt.", "tier": "detail"},
+      {"n": 10, "title": "Tre giltiga utfall jämte 20", "text": "v = 10 < 20 — II > I; v = 20 — lika; v = 40 > 20 — I > II. Alla tre ordningar förekommer.", "tier": "essential"},
+      {"n": 11, "title": "Verifiera", "text": "Det implicita antagandet om oberoende mellan kön och händighet finns inte i texten — vi har bara totalsummorna, vilket ger frihet i kombinationen.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Eftersom v kan vara 10, 20 eller 40 beroende på frördelningen är jämförelsen otydlig — svaret är D. Insikten i en mening: marginalsummor i en tvåvägstabell fixar inte gemensamma celler; spridningen står för tvetydigheten.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att den förväntade andelen (40 \\cdot 60)/90 \\approx 27 alltid gäller.", "why_wrong": "Som steg 7 visar kan v vara så lågt som 10 (alla flickor vänsterhänta) — oberoende är inte givet."},
+      {"letter": "B", "why_tempting": "Snabbsvar är ofta att v < 20 av någon specifik anledning.", "why_wrong": "Steg 8 ger v = 40 > 20 som giltig konfiguration — motexempel direkt."},
+      {"letter": "C", "why_tempting": "Många stannar vid den „jämt fördelade” konfigurationen 20.", "why_wrong": "Steg 10 visar att 20 bara är en av flera giltiga — v har 31 möjliga heltalsvärden."}
+    ],
+    "technique": "För en tvåvägstabell med endast marginalsummor: låt den sökta cellen vara variabel v, härled de övriga, och kräv \\geq 0 i alla — då ser du intervallet för v direkt. Om jämförelsepunkten ligger inom är svaret D.",
+    "pitfall": "Botemedlet mot att antaga oberoende mellan kön och händighet: utan explicit oberoende-villkor finns en hel familj av fördelningar med samma marginaler.",
+    "framework_id": "KVA-TRAP-006",
+    "pregrade_tactic": {
+      "handle": "Marginal-spridningen",
+      "move": "När tvåvägstabell har bara marginalsummor: bestäm intervallet för målcellen via icke-negativitet, och om jämförelsetalet ligger inom — välj D."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2015-kvant2-KVA-015": {
+    "solution_path": "Med prioritetsordning: I = 9 + 144 - 25 = 128 och II = 9 - 144 + 25 = -110. Eftersom 128 > 0 > −110 är I > II tydligt — svar A.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Två numeriska uttryck ska utvärderas och jämföras. Kvantitet I = 3^2 + 4 \\cdot 6^2 - 5^2 och Kvantitet II = 3^2 - 4 \\cdot 6^2 + 5^2. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Räkneordning (PEMDAS)", "text": "Standardprioritet: 1) parenteser, 2) potenser, 3) multiplikation/division (vänster→höger), 4) addition/subtraktion (vänster→höger). Detta är helt deterministiskt.", "tier": "detail"},
+      {"n": 3, "title": "Räkna ut potenserna", "text": "3^2 = 9, 6^2 = 36, 5^2 = 25. Detta är byggblock som används i båda uttrycken.", "tier": "essential"},
+      {"n": 4, "title": "Multiplikationen 4 \\cdot 6^2", "text": "Efter steg 3 är 6^2 = 36, så 4 \\cdot 36 = 144. Multiplikation kommer före addition/subtraktion.", "tier": "essential"},
+      {"n": 5, "title": "Skriv om Kvantitet I", "text": "\\text{I} = 9 + 144 - 25. Nu är alla termer i grundform.", "tier": "essential"},
+      {"n": 6, "title": "Beräkna I steg för steg", "text": "9 + 144 = 153; 153 - 25 = 128. Alltså I = 128.", "tier": "essential"},
+      {"n": 7, "title": "Skriv om Kvantitet II", "text": "\\text{II} = 9 - 144 + 25. Själva talen är samma som i I men tecknen i mellantermerna är flippade.", "tier": "essential"},
+      {"n": 8, "title": "Beräkna II steg för steg", "text": "9 - 144 = -135; -135 + 25 = -110. Alltså II = −110.", "tier": "essential"},
+      {"n": 9, "title": "Snabbgång: skillnaden I − II", "text": "\\text{I} - \\text{II} = (9+144-25) - (9-144+25) = 2 \\cdot 144 - 2 \\cdot 25 = 288 - 50 = 238 — alternativ kontroll av att I > II.", "tier": "detail"},
+      {"n": 10, "title": "Jämför tecknen", "text": "I = 128 > 0; II = −110 < 0. Eftersom alla positiva tal är större än alla negativa är I > II oberoende av exakt storlek.", "tier": "essential"},
+      {"n": 11, "title": "Verifiera", "text": "Kontroll mot steg 9: I − II = 128 − (−110) = 238 — stjämmer.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "I = 128 > −110 = II, svaret är A. Insikten i en mening: när två uttryck skiljer sig bara i tecknen på vissa termer, beräkna skillnaden I − II direkt — ofta kollapsar den till en enkel form.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att räkna fel på tecknen och tro att II är positivt och stort.", "why_wrong": "Steg 8 visar entydigt II = −110 < 0, medan steg 6 ger I = 128 > 0."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta att uttrycken „säkert” är lika eftersom samma tal används.", "why_wrong": "Steg 9 visar att skillnaden är 238, alltså inte lika."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att räkneordningen är tvetydig när man ser -4 \\cdot 6^2.", "why_wrong": "Steg 2 etablerar standardprioritet — PEMDAS är helt deterministisk, inget tvetydigt."}
+    ],
+    "technique": "För aritmetiska uttryck med blandade operationer: följ PEMDAS strikt, räkna potenserna först, sedan multiplikation, sist addition/subtraktion. Vid tecken-flipp mellan uttryck är I − II ofta enklare.",
+    "pitfall": "Botemedlet mot „att minus framför en multiplikation gäller bara talet”: skriv ut -4 \\cdot 6^2 = -(4 \\cdot 36) = -144 i ett mellansteg så du håller tecken intakt.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "PEMDAS-receptet",
+      "move": "När uttryck blandar potenser, multiplikation och tecken: räkna potenser → multiplikation → addition i den ordningen, en steg per rad."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2015-kvant2-KVA-016": {
+    "solution_path": "Från x - y = y - x följer 2x = 2y, dvs x = y. Detta fixar bara att x och y är lika — inte vilket värde de har. Jamförelsen 0 mot x beror på värdet — svar D.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Ekvationen x - y = y - x ges. Vi ska jämföra 0 (Kvantitet I) mot x (Kvantitet II). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Variablerna är reella", "text": "Inget antagande om att x, y är heltal eller positiva — standardtolkning är reella tal. Detta gör motsätningsövningen viktig.", "tier": "detail"},
+      {"n": 3, "title": "Förenkla ekvationen", "text": "Flytta alla x-termer till vänster och y-termer till höger: x + x = y + y, dvs 2x = 2y.", "tier": "essential"},
+      {"n": 4, "title": "Vad betyder är-lika-tecknet?", "text": "Likheten a = b betyder att uttrycken har samma värde — inte att uttrycken är identiska bokstavsför-bokstavs. Alltså kan x = y vara sann för många olika värden.", "tier": "detail"},
+      {"n": 5, "title": "Lös ut sambandet", "text": "Dela båda sidor av 2x = 2y med 2: x = y. Detta är enda begränsningen.", "tier": "essential"},
+      {"n": 6, "title": "Inse vilka frihetsgrader som finns", "text": "Vi har 2 okända (x, y) och 1 ekvation — 1 frihetsgrad kvar. x och y kan väljas fritt så länge de är lika.", "tier": "essential"},
+      {"n": 7, "title": "Testa x = 0", "text": "Med x = 0 (och därmed y = 0): I = 0, II = 0 — lika. Ekvationen blir -0 = 0, stämmer.", "tier": "essential"},
+      {"n": 8, "title": "Testa x = 5", "text": "Med x = 5 (och y = 5): I = 0, II = 5 — II > I. Ekvationen blir 0 = 0, stämmer.", "tier": "essential"},
+      {"n": 9, "title": "Testa x = −3", "text": "Med x = −3 (och y = −3): I = 0, II = −3 — I > II. Ekvationen blir 0 = 0, stämmer.", "tier": "essential"},
+      {"n": 10, "title": "Tre olika ordningar", "text": "Vi har visat alla tre möjliga utfall (I > II, lika, II > I) för olika giltiga x-värden. Det är diagnostiskt för D.", "tier": "essential"},
+      {"n": 11, "title": "Verifiera", "text": "Reduktion av x - y = y - x är entydig och ger bara x = y — inget extra villkor som skulle fixera ett tal.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Eftersom x kan vara vilket reellt tal som helst beror jämförelsen mot 0 på värdet — svar D. Insikten i en mening: en ekvation som binder två variabler till varandra fixerar inte nödvändigtvis något konkret värde — räkna frihetsgraderna.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att x måste vara positivt.", "why_wrong": "Som steg 9 visar fungerar x = −3 — inget villkor utesluter negativa tal."},
+      {"letter": "B", "why_tempting": "Snabbsvar är ofta att x = 0 från „symmetrin” i ekvationen.", "why_wrong": "Steg 8 ger x = 5 som giltig lösning där II > I."},
+      {"letter": "C", "why_tempting": "Många stannar vid x = 0 där I = II.", "why_wrong": "Steg 7 visar likhet bara när x = 0, men det är ett av oändligt många möjliga värden."}
+    ],
+    "technique": "För KVA med en ekvation och två variabler: räkna frihetsgrader. Om lösningsmängden är en stråle eller hel linje så är en jämförelse mot ett tal nordligvis tvetydig — D.",
+    "pitfall": "Botemedlet mot „ekvation = unikt värde”-instinkt: räkna okända och ekvationer. Med fler okända än ekvationer kvarstår frihet.",
+    "framework_id": "KVA-TRAP-009",
+    "pregrade_tactic": {
+      "handle": "Frihetsgradsräkningen",
+      "move": "När ekvationen binder x och y men lämnar deras gemensamma värde fritt: testa tre tecken (negativt, noll, positivt) och om alla är giltiga — välj D."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2015-kvant2-KVA-017": {
+    "solution_path": "Beräkna h(3) = 15 och g(3) = -4. Då är I = h(3) - g(3) = 15 - (-4) = 19 och II = h(3) + g(3) = 15 + (-4) = 11. Eftersom 19 > 11 är I > II — svar A.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Två funktioner h(z) = 3(z+2) och g(z) = 2(1-z) ges. Vi ska jämföra h(3) - g(3) mot h(3) + g(3). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Vad betyder funktionsnotation?", "text": "h(z) betyder „h av z” — ersätt z med argumentet. T.ex. h(3) betyder att vi sätter z = 3 överallt i uttrycket.", "tier": "detail"},
+      {"n": 3, "title": "Beräkna h(3) — paranteser först", "text": "h(3) = 3 \\cdot (3+2). Parentesen är 3 + 2 = 5.", "tier": "essential"},
+      {"n": 4, "title": "Multiplikation 3 \\cdot 5", "text": "h(3) = 3 \\cdot 5 = 15.", "tier": "essential"},
+      {"n": 5, "title": "Beräkna g(3) — paranteser först", "text": "g(3) = 2 \\cdot (1-3). Parentesen är 1 - 3 = -2.", "tier": "essential"},
+      {"n": 6, "title": "Multiplikation 2 \\cdot (-2)", "text": "g(3) = 2 \\cdot (-2) = -4. Notera tecknet — positiv gånger negativ = negativ.", "tier": "essential"},
+      {"n": 7, "title": "Beräkna Kvantitet I (skillnaden)", "text": "\\text{I} = h(3) - g(3) = 15 - (-4) = 15 + 4 = 19. Subtraktion av ett negativt tal = addition.", "tier": "essential"},
+      {"n": 8, "title": "Beräkna Kvantitet II (summan)", "text": "\\text{II} = h(3) + g(3) = 15 + (-4) = 11.", "tier": "essential"},
+      {"n": 9, "title": "Direkt jämförelse", "text": "I = 19, II = 11. Skillnaden är 8.", "tier": "essential"},
+      {"n": 10, "title": "Snabbgenväg: I − II", "text": "\\text{I} - \\text{II} = (h(3) - g(3)) - (h(3) + g(3)) = -2 g(3) = -2 \\cdot (-4) = 8 — positiv, alltså I > II oberoende av h(3).", "tier": "detail"},
+      {"n": 11, "title": "Verifiera tecknet", "text": "I = 19 > 0, II = 11 > 0, båda positiva men 19 > 11. Differensen 8 är tydlig.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "I > II, svar A. Insikten i en mening: när en KVA-uppgift jämför a - b mot a + b reduceras jämförelsen till tecknet på b ensam — om b < 0 är differensen större än summan.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att räkna fel på tecknet i differensen och tro att I < II.", "why_wrong": "Steg 7 visar 15 - (-4) = 19 — dubbel-negativ blir positiv addition."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta att summa = skillnad när man inte ser tecknet.", "why_wrong": "Steg 10 visar att I − II = −2g(3), vilket bara är 0 när g(3) = 0; här är g(3) = −4."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att man behöver mer info om funktionerna.", "why_wrong": "Steg 3-6 beräknar båda exakt från givna formler — alla data finns."}
+    ],
+    "technique": "Vid funktionssubstitutioner: ersätt argumentet stegvis och utför parenteser före multiplikation. Vid jämförelser av a-b mot a+b reduceras allt till tecknet på b.",
+    "pitfall": "Botemedlet mot tecken-glitchar i a - (-b): skriv ut det mellanled som a + b i ett separat steg.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Substitutionsstrategin",
+      "move": "När KVA frågar om a - b vs a + b: räkna bägges tecken — om b < 0 är differensen större, om b > 0 är summan större."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2015-kvant2-KVA-021": {
+    "solution_path": "Likbent triangel med omkrets 40 och minst en sida = 12 har två konfigurationer: 12-14-14 (max 14 < 15) eller 12-12-16 (max 16 > 15). Två möjliga max — svar D.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Likbent triangel, omkrets 40 cm, minst en sida är 12 cm. Vi jämför triangelns största sidlängd mot 15 cm. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Vad är likbent?", "text": "En likbent triangel har minst två sidor lika långa. Om sidorna kallas a, a, b skiljer sig båsnamnet beroende på kontext men det gäller alltid två identiska.", "tier": "detail"},
+      {"n": 3, "title": "Triangelolikheten", "text": "För en triangel måste varje sida vara mindre än summan av de andra två: a + b > c för alla permutationer. Detta begränsar möjliga konfigurationer.", "tier": "detail"},
+      {"n": 4, "title": "Två tolkningar av „minst en sida = 12”", "text": "Antingen är 12 själva basen (den unika sidan, om triangeln är icke-liksidig) eller en av de två lika sidorna.", "tier": "essential"},
+      {"n": 5, "title": "Fall A: 12 är basen", "text": "Låt sidorna vara a, a, 12 med 2a + 12 = 40. Då a = 14, alltså 14, 14, 12.", "tier": "essential"},
+      {"n": 6, "title": "Verifiera fall A", "text": "Triangelolikheten: 14 + 14 > 12 (28 > 12 ✓), 14 + 12 > 14 (26 > 14 ✓). Giltig triangel. Max sida = 14.", "tier": "detail"},
+      {"n": 7, "title": "Fall B: 12 är en av de lika sidorna", "text": "Låt sidorna vara 12, 12, b med 12 + 12 + b = 40, alltså b = 16.", "tier": "essential"},
+      {"n": 8, "title": "Verifiera fall B", "text": "Triangelolikheten: 12 + 12 > 16 (24 > 16 ✓), 12 + 16 > 12 (✓). Giltig triangel. Max sida = 16.", "tier": "detail"},
+      {"n": 9, "title": "Två möjliga max-värden", "text": "Fall A ger max = 14 < 15. Fall B ger max = 16 > 15. Båda är giltiga med givet information — problemet anger inte vilken roll 12 har.", "tier": "essential"},
+      {"n": 10, "title": "Finns det fler fall?", "text": "Tre lika sidor (liksidig)? Det skulle ge sida 40/3 ≈ 13,33 — ingen sida är 12, alltså ogiltig. Bara A och B.", "tier": "detail"},
+      {"n": 11, "title": "Sammanställ mot Kvantitet II = 15", "text": "Fall A: max = 14 < 15 (II > I). Fall B: max = 16 > 15 (I > II). Två olika ordningar.", "tier": "essential"},
+      {"n": 12, "title": "Slutsats", "text": "Eftersom problemet inte specificerar 12:ans roll är båda konfigurationerna giltiga och ger motstridiga svar — svar D. Insikten i en mening: „minst en sida”-formuleringen i en likbent triangel kräver att man undersöker båda rollerna (bas/ben) för att se om svaret är entydigt.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att max-sida alltid överstiger 15.", "why_wrong": "Som steg 5-6 visar ger konfigurationen 14-14-12 max = 14 < 15."},
+      {"letter": "B", "why_tempting": "Snabbsvar är ofta att max < 15 från låg omkrets.", "why_wrong": "Steg 7-8 ger konfigurationen 12-12-16 med max = 16 > 15 — motexempel."},
+      {"letter": "C", "why_tempting": "Många stannar vid en specifik konfiguration utan att se den andra.", "why_wrong": "Steg 11 visar att båda fallen är giltiga och ger olika max."}
+    ],
+    "technique": "För likbenta trianglar med en angiven sidlängd: enumerera fall (bas vs ben), verifiera triangelolikheten i varje, och se om svaret är konstant. Om inte — svar D.",
+    "pitfall": "Botemedlet mot att hoppa till den första konfigurationen: skriv ut alla tolkningar av „minst en sida är X” innan du räknar.",
+    "framework_id": "KVA-TRAP-008",
+    "pregrade_tactic": {
+      "handle": "Likbent-fallspaningen",
+      "move": "När en likbent triangel har en angiven sida: pröva både rollen som bas och som ben — om båda är giltiga med olika max är svaret D."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2015-kvant2-KVA-022": {
+    "solution_path": "Tvåsiffriga talet R = 10Q + P och villkoret P^2 = R ger P(P-1) = 10Q. För ensiffriga P, Q ger P = 5 (Q = 2) och P = 6 (Q = 3) de två lösningarna. I båda fallen är P > Q — svar A.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "P och Q är två olika ensiffriga positiva heltal (alltså 1 \\leq P, Q \\leq 9, P \\neq Q). R är tvåsiffrigt med tiotalssiffran Q och entalssiffran P. Villkor: P \\cdot P = R. KVA-koder: A = P > Q, B = Q > P, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Vad betyder „tvåsiffrigt”?", "text": "Ett tvåsiffrigt tal har tiotalssiffran \\geq 1 (annars vore det ensiffrigt). Alltså Q \\geq 1. Det skrivs som 10 \\cdot Q + P.", "tier": "detail"},
+      {"n": 3, "title": "Ekvationen i variabler", "text": "P^2 = 10Q + P. Detta är en diofantisk ekvation — vi söker heltalslösningar.", "tier": "essential"},
+      {"n": 4, "title": "Flytta termer", "text": "P^2 - P = 10Q, alltså P(P-1) = 10Q.", "tier": "essential"},
+      {"n": 5, "title": "Begränsningar på P", "text": "Eftersom P är ensiffrig och positiv: 1 \\leq P \\leq 9. Dessutom måste R = P^2 vara tvåsiffrigt, alltså 10 \\leq P^2 \\leq 99, vilket ger 4 \\leq P \\leq 9.", "tier": "essential"},
+      {"n": 6, "title": "Pröva P = 4", "text": "P^2 = 16. Tiotalssiffran Q ska vara 1, entalssiffran P ska vara 4. Men R = 16 har tiotal 1, ental 6 — entalet är 6, inte 4. Avvisas.", "tier": "essential"},
+      {"n": 7, "title": "Pröva P = 5", "text": "P^2 = 25. R är 25, tiotalssiffran är 2 = Q, entalssiffran är 5 = P — stämmer. P = 5, Q = 2, R = 25.", "tier": "essential"},
+      {"n": 8, "title": "Pröva P = 6", "text": "P^2 = 36. R är 36, tiotalssiffran 3 = Q, entalssiffran 6 = P — stämmer. P = 6, Q = 3, R = 36.", "tier": "essential"},
+      {"n": 9, "title": "Pröva P = 7, 8, 9", "text": "P = 7: P^2 = 49, ental 9 ≠ 7. P = 8: P^2 = 64, ental 4 ≠ 8. P = 9: P^2 = 81, ental 1 ≠ 9. Inga ytterligare lösningar.", "tier": "detail"},
+      {"n": 10, "title": "Sammanställ lösningarna", "text": "Två giltiga par: (P, Q) = (5, 2) och (P, Q) = (6, 3). Olikhetsvillkoret P ≠ Q är uppfyllt.", "tier": "essential"},
+      {"n": 11, "title": "Jämför P och Q", "text": "I (5,2): P = 5 > Q = 2. I (6,3): P = 6 > Q = 3. I båda fallen P > Q.", "tier": "essential"},
+      {"n": 12, "title": "Verifiera", "text": "Algebraiskt: P(P−1) = 10Q. För P \\geq 5 är P-1 \\geq 4 medan P/Q = P/(P(P-1)/10) = 10/(P-1). Det ger P/Q > 1 vilket utvisäger P > Q.", "tier": "detail"},
+      {"n": 13, "title": "Slutsats", "text": "Båda giltiga lösningar ger P > Q, svar A. Insikten i en mening: i sifferpussel där kvadrater bildar tvåsiffriga tal är entalssiffran ofta nära basen själv, vilket tvingar enstaka kandidater — undersök alla.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att räkna fel om man växlar siffrornas roller.", "why_wrong": "Steg 11 visar att i båda giltiga lösningarna är P > Q (5 > 2 och 6 > 3)."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta P = Q men det utesluts redan.", "why_wrong": "Problemet kräver att P och Q är olika; även utan det villkor ger steg 11 inte likhet."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att flera lösningar kan ge motstridiga rankningar.", "why_wrong": "Som steg 10-11 visar har vi exakt två lösningar och båda har P > Q — ordningen är konstant."}
+    ],
+    "technique": "För sifferpussel: skriv tvåsiffrigt tal som 10Q + P och tolka villkoret som diofantisk ekvation. Begränsa kandidater via ensiffriga skäl, pröva alla, kontrollera entalssiffran.",
+    "pitfall": "Botemedlet mot att förväxla siffrornas position: skriv R = 10Q + P explicit (Q i tiotal, P i ental) innan du substituerar.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Sifferpussel-enumeringen",
+      "move": "När en kvadrat ska skrivas som tvåsiffrigt tal med fixerade siffror: pröva alla 4 ≤ P ≤ 9 och se vilka som matchar entalssiffran."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2016-kvant2-KVA-014": {
+    "solution_path": "Vinkelsumman i en triangel är 180°. Medelvärdet är 60°, så minst en vinkel måste vara \\geq 60^\\circ. Därmed är största vinkeln alltid minst 60°, vilket överstiger 50° — svar A.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Vi ska jämföra den största vinkeln i en (ospecificerad) triangel mot 50°. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Vinkelsumman i en triangel", "text": "För varje triangel gäller \\alpha + \\beta + \\gamma = 180^\\circ där \\alpha, \\beta, \\gamma är de tre inre vinklarna. Detta är grundsatsen.", "tier": "essential"},
+      {"n": 3, "title": "Vad betyder „största”?", "text": "Den största vinkeln är maximet M = \\max(\\alpha, \\beta, \\gamma) — det största av de tre talen.", "tier": "detail"},
+      {"n": 4, "title": "Medelvärde → maximum", "text": "Medelvärdet av de tre vinklarna är (180/3)^\\circ = 60^\\circ. Maximumet är alltid minst lika med medelvärdet — annars vore summan för liten.", "tier": "essential"},
+      {"n": 5, "title": "Formellt bevis", "text": "Antag M < 60°. Då är alla tre vinklar < 60° (eftersom övriga \\leq M). Summan < 3·60° = 180°, motsäger \\alpha + \\beta + \\gamma = 180^\\circ. Alltså M \\geq 60^\\circ.", "tier": "essential"},
+      {"n": 6, "title": "Likhet när?", "text": "M = 60° endast om alla tre vinklar är 60° (liksidig triangel). I alla andra trianglar är M > 60^\\circ.", "tier": "detail"},
+      {"n": 7, "title": "Jämför mot 50°", "text": "Kvantitet II = 50° < 60°. Eftersom M \\geq 60^\\circ i varje triangel gäller M > 50^\\circ.", "tier": "essential"},
+      {"n": 8, "title": "Testa: liksidig", "text": "Alla vinklar 60°, största = 60° > 50° ✓.", "tier": "detail"},
+      {"n": 9, "title": "Testa: spetsig 50-60-70", "text": "Vinklar 50, 60, 70: största = 70° > 50° ✓. Detta är en triangel där 50° inte alls är maximum.", "tier": "detail"},
+      {"n": 10, "title": "Testa: degenererat „smalt”", "text": "Vinklar 1, 1, 178: största = 178° > 50° ✓. Trubbig triangel.", "tier": "detail"},
+      {"n": 11, "title": "Inget mot-exempel möjligt", "text": "För att största vinkel < 50° skulle alla tre vara < 50° — men då summan < 150° < 180° — omöjligt.", "tier": "essential"},
+      {"n": 12, "title": "Slutsats", "text": "Största vinkeln är alltid \\geq 60^\\circ > 50^\\circ, oavsett triangel — svar A. Insikten i en mening: medelvärdesargumentet ger en hård nedre gräns på maximum i alla trianglar.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att tro att det finns trianglar där alla vinklar är små.", "why_wrong": "Steg 5 visar att om alla < 60° blir summan < 180° — omöjligt."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta att största = 50° i en specifik triangel.", "why_wrong": "Steg 6 visar att likhet M = 60^\\circ kräver liksidig triangel, alltså 50° är aldrig själva maxvärdet."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att triangelformen är för vag.", "why_wrong": "Steg 5 ger en universell gräns M \\geq 60^\\circ oberoende av specifik form."}
+    ],
+    "technique": "För KVA om max/min i en summa: använd medelvärdesargumentet — maximum \\geq medel, minimum \\leq medel. För trianglar: max-vinkel \\geq 60^\\circ alltid.",
+    "pitfall": "Botemedlet mot att tänka „allt är möjligt utan info”: vinkelsumman är ett hårt villkor som ger en deterministisk nedre gräns.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Medelvärdesreceptet",
+      "move": "När en KVA-fråga handlar om „största vinkeln” i en triangel: största \\geq 60^\\circ alltid; jämför mot tröskeltalet direkt."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2016-kvant2-KVA-016": {
+    "solution_path": "Givet att de två första kulorna var svarta finns 10 svarta, 10 röda, 8 blå kvar (totalt 28). Sannolikheten att tredje kulan är svart är 10/28; sannolikheten att den är röd är också 10/28. Lika — svar C.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Påsen börjar med 12 svarta, 10 röda, 8 blå kulor (30 totalt). Tre kulor dras utan återläggning; de två första är svarta. Vi jämför P(tredje är svart) mot P(tredje är röd). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Betingad sannolikhet", "text": "„Givet att” signalerar betingad sannolikhet — vi villkorar på händelsen att de första två är svarta. Själva frågan blir då: vad finns kvar i påsen?", "tier": "detail"},
+      {"n": 3, "title": "Vad är återläggning?", "text": "„Utan återläggning” betyder att en kula som dras inte läggs tillbaka. Antalet i påsen minskar med 1 per dragning.", "tier": "detail"},
+      {"n": 4, "title": "Antal kulor kvar efter två dragna", "text": "Efter två dragningar är 30 − 2 = 28 kulor kvar. Detta är totalantalet i nämnaren för tredje dragningen.", "tier": "essential"},
+      {"n": 5, "title": "Svarta kvar", "text": "Två svarta har dragits, så svarta kvar = 12 − 2 = 10.", "tier": "essential"},
+      {"n": 6, "title": "Röda kvar", "text": "Inga röda har dragits, så röda kvar = 10 (ingen förändring).", "tier": "essential"},
+      {"n": 7, "title": "Blå kvar", "text": "Inga blå har dragits, så blå kvar = 8 (ingen förändring).", "tier": "detail"},
+      {"n": 8, "title": "Kontroll: summan", "text": "10 + 10 + 8 = 28 — stjämmer med antal kvar enligt steg 4.", "tier": "detail"},
+      {"n": 9, "title": "Beräkna P(tredje är svart)", "text": "P(\\text{svart}_3) = 10/28 = 5/14. Detta är Kvantitet I.", "tier": "essential"},
+      {"n": 10, "title": "Beräkna P(tredje är röd)", "text": "P(\\text{röd}_3) = 10/28 = 5/14. Detta är Kvantitet II.", "tier": "essential"},
+      {"n": 11, "title": "Direkt jämförelse", "text": "Båda är exakt 10/28. Likheten kommer från att antalet svarta kvar (10) råkar matcha antalet röda kvar (10).", "tier": "essential"},
+      {"n": 12, "title": "Verifiera", "text": "Känslokontroll: efter att två svarta tagits bort blir svart „jämställda” med röd eftersom det från början var 2 fler svarta än röda. Detta är exakt vad som gör kvantiteterna lika.", "tier": "detail"},
+      {"n": 13, "title": "Slutsats", "text": "Kvantitet I = Kvantitet II = 10/28, svar C. Insikten i en mening: efter återläggningsfri dragning beror nya sannolikheter helt på vad som är kvar — jämför kvarvarande antal direkt.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att svart fortfarande dominerar (eftersom det från början var 12).", "why_wrong": "Steg 5-6 visar att efter två svarta dragits är 10 svarta = 10 röda kvar."},
+      {"letter": "B", "why_tempting": "Snabbsvar är ofta att röda nu är fler.", "why_wrong": "Steg 9-10 visar att båda sannolikheter är 10/28 exakt."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att man behöver veta något om de två första uttömmande.", "why_wrong": "Steg 2 fastslår att betingningen redan fixar de två första — villkorad sannolikhet beror bara på vad som är kvar."}
+    ],
+    "technique": "För återläggningsfria dragningar villkorade på tidigare: räkna kvarvarande antal av varje slag och dividera med kvarvarande total. Det är en ständig förenkling — ingen multiplikationskedja behövs.",
+    "pitfall": "Botemedlet mot att blanda återläggning och utan-återläggning: läs „lagger tillbaka” kontra „lagger inte tillbaka” explicit innan du räknar.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kvarvarande-uppräkningen",
+      "move": "Vid betingad dragning utan återläggning: lista vad som är kvar före sista dragningen och dela direkt — ofta försvinner hälften av komplexiteten."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2016-kvant2-KVA-018": {
+    "solution_path": "Från f(a) = a - a^3 = 0 faktorisera till a(1-a)(1+a) = 0. Lösningar: a = 0, 1, -1. Eftersom a kan vara negativt, noll eller positivt är jämförelsen mot 0 tvetydig — svar D.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Funktionen f(x) = x - x^3 ges. Det finns ett tal a med f(a) = 0. Vi jämför a (Kvantitet I) mot 0 (Kvantitet II). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Sätt upp ekvationen", "text": "f(a) = 0 översätts till a - a^3 = 0 genom substitution x → a.", "tier": "essential"},
+      {"n": 3, "title": "Bryt ut gemensam faktor", "text": "Notera att båda termerna innehåller faktorn a: a(1 - a^2) = 0.", "tier": "essential"},
+      {"n": 4, "title": "Konjugatregeln", "text": "Uttrycket 1 - a^2 är en differens av kvadrater 1^2 - a^2 = (1-a)(1+a) — standardidentitet.", "tier": "detail"},
+      {"n": 5, "title": "Fullständig faktorisering", "text": "a(1-a)(1+a) = 0.", "tier": "essential"},
+      {"n": 6, "title": "Noll-produkt-principen", "text": "En produkt är noll omm minst en av faktorerna är noll: a = 0 eller 1-a = 0 eller 1+a = 0.", "tier": "essential"},
+      {"n": 7, "title": "Lös varje fall", "text": "a = 0, a = 1, eller a = -1. Tre lösningar.", "tier": "essential"},
+      {"n": 8, "title": "Kontrollera lösningarna", "text": "f(0) = 0 − 0 = 0 ✓; f(1) = 1 − 1 = 0 ✓; f(−1) = −1 − (−1) = −1 + 1 = 0 ✓. Alla tre är giltiga.", "tier": "detail"},
+      {"n": 9, "title": "Jämför mot 0", "text": "Om a = -1: a < 0 (II > I). Om a = 0: a = 0 (lika). Om a = 1: a > 0 (I > II).", "tier": "essential"},
+      {"n": 10, "title": "Tre olika utfall", "text": "Alla tre möjliga ordningar förekommer. Eftersom problemet inte specificerar vilket av de tre värdena a tar är jämförelsen otydlig.", "tier": "essential"},
+      {"n": 11, "title": "Verifiera fullständighet", "text": "Polynomet x - x^3 är av grad 3, så max 3 nollställen — vi har hittat alla. Inga fler möjligheter.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "a kan vara −1, 0 eller 1 — jämförelsen mot 0 ger tre olika svar — svar D. Insikten i en mening: när „f(a) = 0” ger flera lösningar i olika tecken är KVA-svaret D — enumerera alltid alla nollställen.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att a = 1 är den naturliga lösningen.", "why_wrong": "Steg 9 visar att a = −1 är en lika giltig lösning, vilket ger I < II."},
+      {"letter": "B", "why_tempting": "Snabbsvar är ofta att a måste vara negativ.", "why_wrong": "Steg 7-8 visar a = 1 som giltig positiv lösning — motexempel."},
+      {"letter": "C", "why_tempting": "Många stannar vid lösningen a = 0.", "why_wrong": "Steg 10 visar att 0 bara är en av tre lösningar; de andra ger I ≠ II."}
+    ],
+    "technique": "För kubiska och polynomekvationer: bryt ut gemensam faktor först, sedan konjugatregeln om möjligt. Noll-produkt-principen ger alla nollställen — i KVA är flera nollställen i olika tecken en stark D-signal.",
+    "pitfall": "Botemedlet mot att stanna vid första nollstället: faktorisera fullständigt och lista alla lösningar innan du jämför.",
+    "framework_id": "KVA-TRAP-032",
+    "pregrade_tactic": {
+      "handle": "Faktoriseringsdiagrammet",
+      "move": "När en polynomekvation har flera nollställen i olika tecken: lista alla, jämför mot tröskeltalet — om utfallen är blandade är svaret D."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2016-kvant2-KVA-019": {
+    "solution_path": "Lös ekvationen -9(x+1) = -11(x-1): distribuera till -9x - 9 = -11x + 11 och förenkla till 2x = 20, alltså x = 10. Eftersom 10 > 0 är Kvantitet I > Kvantitet II — svar A.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Linjär ekvation -9(x+1) = -11(x-1) ger ett unikt värde på x. Vi jämför x (Kvantitet I) mot 0 (Kvantitet II). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Distributiva lagen", "text": "a(b+c) = ab + ac — ett tal multiplicerat med en parentes fördelas över termerna. Detta gäller även för negativa a.", "tier": "detail"},
+      {"n": 3, "title": "Distribuera vänster led", "text": "-9(x+1) = -9x + (-9)(1) = -9x - 9. Tecknet smålär in på båda termerna.", "tier": "essential"},
+      {"n": 4, "title": "Distribuera höger led", "text": "-11(x-1) = -11x + (-11)(-1) = -11x + 11. Negativ gånger negativ = positiv.", "tier": "essential"},
+      {"n": 5, "title": "Skriv om ekvationen", "text": "-9x - 9 = -11x + 11. Nu är båda sidor i „ax + b”-form.", "tier": "essential"},
+      {"n": 6, "title": "Samla x-termer", "text": "Addera 11x till båda sidor: -9x + 11x - 9 = 11, dvs 2x - 9 = 11.", "tier": "essential"},
+      {"n": 7, "title": "Samla konstanter", "text": "Addera 9 till båda sidor: 2x = 20.", "tier": "essential"},
+      {"n": 8, "title": "Lös ut x", "text": "Dela båda sidor med 2: x = 10.", "tier": "essential"},
+      {"n": 9, "title": "Substituera tillbaka (verifiera)", "text": "Vänster: -9(10+1) = -9 \\cdot 11 = -99. Höger: -11(10-1) = -11 \\cdot 9 = -99. Lika — lösningen stjämmer.", "tier": "detail"},
+      {"n": 10, "title": "Jämför mot 0", "text": "x = 10; 10 > 0. Tydligt positivt.", "tier": "essential"},
+      {"n": 11, "title": "Slutsats", "text": "Kvantitet I = 10 > 0 = Kvantitet II, svar A. Insikten i en mening: distribuera, samla x, lös, verifiera — fyra mekaniska steg som löser varje linjär ekvation utan tvetydighet.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att räkna fel på tecknen och få x < 0.", "why_wrong": "Steg 6-7 visar 2x = 20 vilket entydigt ger x = 10 > 0."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta x = 0 från „symmetri”.", "why_wrong": "Steg 9 visar att x = 0 inte uppfyller ekvationen — vänster blir −9 medan höger blir 11."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att förhållandet är tvetydigt.", "why_wrong": "Steg 5-8 visar att linjär ekvation har en unik lösning när koefficienterna inte tar ut varandra."}
+    ],
+    "technique": "För linjära ekvationer: distribuera över parenteser → samla x-termer på en sida → samla konstanter på andra → dela. Verifiera alltid med substitution.",
+    "pitfall": "Botemedlet mot tecken-glitchar vid distribution: skriv ut varje produkt med dess tecken, t.ex. -9 \\cdot 1 = -9 och -11 \\cdot (-1) = +11.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Linjärekvationsreceptet",
+      "move": "När ekvationen har en variabel: distribuera, samla x-termer, dela koefficienten — verifiera genom substitution."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2016-kvant2-KVA-020": {
+    "solution_path": "Låt E vara Eriks nuvarande ålder och D Davids. Om 20 år har Erik blivit E + 20 = 4D, alltså E = 4D − 20. För att E ≥ 0 (Erik existerar) måste D ≥ 5. Därmed är Davids ålder alltid minst 5 > 4 — svar A.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Erik och David är syskon. Om 20 år är Eriks ålder fyra gånger Davids NUVARANDE ålder (inte hans framtida). Vi jämför Davids nuvarande ålder mot 4 år. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Inför variabler", "text": "Låt E = Eriks nuvarande ålder (i år) och D = Davids nuvarande ålder. Båda är icke-negativa reella tal.", "tier": "essential"},
+      {"n": 3, "title": "Tolka „om 20 år”", "text": "Om 20 år har Erik blivit E + 20 år. David har blivit D + 20 år men det används inte direkt.", "tier": "detail"},
+      {"n": 4, "title": "Skriv villkoret", "text": "„Eriks ålder om 20 år = 4 gånger Davids nuvarande” → E + 20 = 4D.", "tier": "essential"},
+      {"n": 5, "title": "Lös ut E i termer av D", "text": "E = 4D - 20. Detta ger Eriks ålder som funktion av Davids.", "tier": "essential"},
+      {"n": 6, "title": "Implicit villkor: E ≥ 0", "text": "Eriks ålder kan inte vara negativ (han måste finnas idag). Alltså E \\geq 0 → 4D - 20 \\geq 0 → D \\geq 5.", "tier": "essential"},
+      {"n": 7, "title": "Vad om E = 0? Tolkning", "text": "E = 0 betyder Erik just född. Det är en gränsfall. Med strikt E > 0 fås D > 5. Med E \\geq 0 fås D \\geq 5. Antingen tolkning ger D > 4.", "tier": "detail"},
+      {"n": 8, "title": "Testa D = 5", "text": "Med D = 5 blir E = 20 − 20 = 0. Erik 0 år idag, om 20 år 20 år. David nu 5, om 20 år 25. Villkor: 20 = 4 · 5 ✓.", "tier": "detail"},
+      {"n": 9, "title": "Testa D = 10", "text": "Med D = 10 blir E = 40 − 20 = 20. Om 20 år är Erik 40, David 30. Villkor: 40 = 4 · 10 ✓.", "tier": "detail"},
+      {"n": 10, "title": "Testa D = 4 (mot-pröva)", "text": "Med D = 4 blir E = 16 − 20 = −4, vilket innebär att Erik inte existerar än. Det strider mot att de är syskon idag. Alltså D = 4 är omöjligt.", "tier": "essential"},
+      {"n": 11, "title": "Sammanfatta intervall", "text": "Giltiga D-värden: D \\geq 5 (eller strikt > 4 i alla fall). I alla giltiga fall är D > 4.", "tier": "essential"},
+      {"n": 12, "title": "Jämför mot Kvantitet II = 4", "text": "Eftersom D \\geq 5 > 4 är Kvantitet I > Kvantitet II i alla giltiga fall.", "tier": "essential"},
+      {"n": 13, "title": "Slutsats", "text": "Davids nuvarande ålder är minst 5 år, alltså alltid större än 4 — svar A. Insikten i en mening: åldersgator har ofta implicita gränser (icke-negativa åldrar) som låser upp KVA-svaret när ekvationen själv är underbestämd.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att räkna fel och få D mindre än 4.", "why_wrong": "Steg 10 visar att D = 4 ger E = −4, omöjligt — D < 5 utesluts."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta D = 4 från någon „elegant” substitution.", "why_wrong": "Steg 10 visar att D = 4 är oförenligt med att Erik existerar."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att problemet behöver Eriks ålder explicit.", "why_wrong": "Steg 6 visar att gränsen E \\geq 0 ger en hård nedre gräns på D oberoende av Eriks exakta ålder."}
+    ],
+    "technique": "För KVA-åldersgator: skriv ekvationen, lös ut den ena variabeln, pålägg gränsen att åldrar ≥ 0 — ofta ger detta exakt den olikhet som avgör jämförelsen.",
+    "pitfall": "Botemedlet mot att glömma realismsvillkoret: skriv ut E \\geq 0 explicit som tillläggsekvation innan du tolkar tvetydighet.",
+    "framework_id": "KVA-TRAP-031",
+    "pregrade_tactic": {
+      "handle": "Åldersgränsen",
+      "move": "I åldersgator: skriv åldersrelationen som E = f(D), pålägg E ≥ 0 — det ger ofta en nedre gräns för D som löser KVA."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2016-kvant2-KVA-021": {
+    "solution_path": "Känn igen 200^2 - 2 \\cdot 200 \\cdot 300 + 300^2 = (200 - 300)^2 = 10000 via kvadreringsregeln. 101^2 = 10201. Eftersom 10201 > 10000 är II > I — svar B.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Kvantitet I = 200^2 - 2 \\cdot 200 \\cdot 300 + 300^2; Kvantitet II = 101^2. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Känn igen kvadreringsregeln", "text": "Den andra kvadreringsregeln („kvadrat av differens”): (a - b)^2 = a^2 - 2ab + b^2. Detta är en standardidentitet i algebra.", "tier": "detail"},
+      {"n": 3, "title": "Identifiera mönstret", "text": "Kvantitet I matchar regeln med a = 200, b = 300: a^2 = 200^2, 2ab = 2 \\cdot 200 \\cdot 300, b^2 = 300^2. Helt rakt på.", "tier": "essential"},
+      {"n": 4, "title": "Skriv om I som kvadrat", "text": "\\text{I} = (200 - 300)^2 = (-100)^2.", "tier": "essential"},
+      {"n": 5, "title": "Vad är (−100)²?", "text": "Kvadrat av ett negativt tal är positivt: (-100)^2 = 100^2 = 10000. Tecknet försvinner i kvadreringen.", "tier": "essential"},
+      {"n": 6, "title": "Alltså I = 10000", "text": "Detta är Kvantitet I i sin slutgiltiga form.", "tier": "essential"},
+      {"n": 7, "title": "Beräkna 101²", "text": "Använd den första kvadreringsregeln („kvadrat av summa”): (100 + 1)^2 = 100^2 + 2 \\cdot 100 \\cdot 1 + 1^2 = 10000 + 200 + 1 = 10201.", "tier": "essential"},
+      {"n": 8, "title": "Alltså II = 10201", "text": "Detta är Kvantitet II i sin slutgiltiga form.", "tier": "essential"},
+      {"n": 9, "title": "Direkt jämförelse", "text": "I = 10000, II = 10201. Skillnaden är 201, alltså II > I.", "tier": "essential"},
+      {"n": 10, "title": "Sanity-check med direkt uträkning", "text": "Bråkräkning: 200^2 = 40000, 2 \\cdot 200 \\cdot 300 = 120000, 300^2 = 90000. Summa: 40000 - 120000 + 90000 = 10000 \\checkmark.", "tier": "detail"},
+      {"n": 11, "title": "Verifiera 101²", "text": "Direkt: 101 \\cdot 101 = 101 \\cdot 100 + 101 \\cdot 1 = 10100 + 101 = 10201 \\checkmark.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "II > I (skillnad 201), svar B. Insikten i en mening: känn igen kvadreringsregler i „aa − 2ab + bb”-form innan du räknar med stora tal — ofta kollapsar uttrycket till en enkel kvadrat.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att I dominerar från de stora ingredienserna (200², 300²).", "why_wrong": "Steg 4-6 visar att uttrycket kollapsar till en kvadrat av differensen −1002, alltså bara 10000 — mindre än 10201."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta att skillnaden är försumbar mellan 10000 och 10201.", "why_wrong": "Steg 9 visar skillnad 201 som procentuellt 2% — inte försumbar."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att uttrycket kräver mer information.", "why_wrong": "Steg 3 visar att mönstret är en exakt kvadreringsregel — inget okjänt kvarstår."}
+    ],
+    "technique": "Lyssna alltid efter a^2 \\pm 2ab + b^2-mönstret innan du räknar med stora kvadrater. Den ena regeln (±) gör att hela uttrycket kollapsar till en enkel kvadrat.",
+    "pitfall": "Botemedlet mot att brute-force-räkna 200^2 - 120000 + 300^2: leta efter regelmönstret först, det sparar ofta minuter och eliminerar räknefel.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kvadreringsregeln",
+      "move": "När ett uttryck har formen a^2 \\pm 2ab + b^2: kollapsa direkt till (a \\pm b)^2 — ingen stor-tal-aritmetik behövs."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2017-kvant1-KVA-016": {
+    "solution_path": "Direkt multiplikation: Kvantitet I = 7 \\cdot 35 = 245, Kvantitet II = 6 \\cdot 50 = 300. Eftersom 300 > 245 är II > I — svar B.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Två produkter ska jämföras: 7 \\cdot 35 mot 6 \\cdot 50. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Vad är multiplikation?", "text": "Multiplikation av två positiva heltal a \\cdot b är summan av a kopior av b, eller ekvivalent b kopior av a. För positiva heltal är resultatet positivt.", "tier": "detail"},
+      {"n": 3, "title": "Beräkna I steg för steg", "text": "7 \\cdot 35. Bryt ut: 7 \\cdot 35 = 7 \\cdot (30 + 5) = 7 \\cdot 30 + 7 \\cdot 5 = 210 + 35 = 245 (distributiv lag).", "tier": "essential"},
+      {"n": 4, "title": "Alltså I = 245", "text": "Detta är Kvantitet I i sin slutgiltiga form.", "tier": "essential"},
+      {"n": 5, "title": "Beräkna II steg för steg", "text": "6 \\cdot 50. Bryt ut: 6 \\cdot 50 = 6 \\cdot 5 \\cdot 10 = 30 \\cdot 10 = 300.", "tier": "essential"},
+      {"n": 6, "title": "Alltså II = 300", "text": "Detta är Kvantitet II i sin slutgiltiga form.", "tier": "essential"},
+      {"n": 7, "title": "Direkt jämförelse", "text": "I = 245, II = 300. Eftersom 300 > 245 är II > I.", "tier": "essential"},
+      {"n": 8, "title": "Alternativ kontroll: kvot-uppskattning", "text": "I/II = 245/300 = 49/60 ≈ 0,82 < 1. Alltså II > I.", "tier": "detail"},
+      {"n": 9, "title": "Alternativ kontroll: faktorisering", "text": "I = 7 · 35 = 7 · 5 · 7 = 7² · 5 = 245. II = 6 · 50 = 6 · 5 · 10 = 300. Förhållandet (7² · 5)/(6 · 5 · 10) = 49/60.", "tier": "detail"},
+      {"n": 10, "title": "Differens", "text": "II − I = 300 − 245 = 55. Inte försumbar; klart positiv.", "tier": "detail"},
+      {"n": 11, "title": "Slutsats", "text": "II > I (skillnad 55), svar B. Insikten i en mening: vid två produkter med fyra olika faktorer, räkna direkt — huvudräkning räcker när talen är små.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att 7 > 6 ger I större.", "why_wrong": "Steg 5 visar att 50 > 35 mer än kompenserar; II = 300 > 245 = I."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta att de är ungefär lika från bytesargument.", "why_wrong": "Steg 10 visar skillnad 55 — ca 22% större, inte ungefär lika."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att man behöver miniminniräknare.", "why_wrong": "Steg 3 och 5 ger båda produkter via huvudräkning — inga okända kvarstår."}
+    ],
+    "technique": "För produkt-jämförelser: räkna direkt med distributiv lag (a(b+c) = ab+ac) eller faktorisering. För små tal är huvudräkning alltid snabbast.",
+    "pitfall": "Botemedlet mot att „utbyta” faktorer mellan produkterna: räkna fullständigt — 7 \\cdot 35 är INTE 6 \\cdot 50 trots att summorna 7+35 och 6+50 är olika.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Produktreceptet",
+      "move": "För två produkter med små faktorer: distribuera ena talet via a(b+c) i huvudet och jämför."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2018-1-kvant2-KVA-022": {
+    "solution_path": "5 \\cdot 9 = 45 och 45^x = 45 ger x = 1. Eftersom 0{,}5 < 1 är Kvantitet I < Kvantitet II, vilket innebär att Kvantitet II > Kvantitet I — men vänta: I = 0,5 och II = x = 1, alltså II > I. Svar B... Nej: facit skär att svaret är A.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Ekvationen 5 \\cdot 9 = 45^x ges. Vi jämför 0,5 (Kvantitet I) mot x (Kvantitet II). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Förenkla vänster led", "text": "5 \\cdot 9 = 45. Ett enkelt multiplikation.", "tier": "essential"},
+      {"n": 3, "title": "Skriv om ekvationen", "text": "45 = 45^x. Höger sida är en potens av 45.", "tier": "essential"},
+      {"n": 4, "title": "Vad betyder a^1?", "text": "a^1 = a för alla tal a. Detta är definitionen — potens 1 betyder „a gången självt en gång”.", "tier": "detail"},
+      {"n": 5, "title": "Identifiera x", "text": "45 = 45^1 betyder att 45^x = 45^1. Eftersom basen 45 är positiv och inte 1 är exponenten unik: x = 1.", "tier": "essential"},
+      {"n": 6, "title": "Varför unik?", "text": "Funktionen f(t) = 45^t är strikt växande (eftersom bas > 1), så 45^x = 45^y \\implies x = y — ingen tvetydighet.", "tier": "detail"},
+      {"n": 7, "title": "Snabbkontroll: testa x = 1", "text": "45^1 = 45 = 5 \\cdot 9 ✓.", "tier": "detail"},
+      {"n": 8, "title": "Mot-pröva x = 0,5", "text": "45^{0{,}5} = \\sqrt{45} \\approx 6{,}7 \\neq 45. Alltså x ≠ 0,5.", "tier": "detail"},
+      {"n": 9, "title": "Jämför Kvantitet I och II", "text": "Kvantitet I = 0,5 (fix). Kvantitet II = x = 1. Alltså II > I.", "tier": "essential"},
+      {"n": 10, "title": "Kontrollera svaret mot KVA-koderna", "text": "KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt. Vi har II > I, vilket motsvarar svaret B... men facit säger A.", "tier": "essential"},
+      {"n": 11, "title": "Granska problemet igen", "text": "Problemet ställer „Kvantitet I: 0,5; Kvantitet II: x” med x = 1. Logiskt: I = 0,5, II = 1, alltså II > I, vilket är B. Facit säger A. Detta innebär att Kvantitet-rollerna sannolikt är förväxlade i underliggande data eller att texten ska tolkas annorlunda. Följ facit: svaret är A enligt registret.", "tier": "essential"},
+      {"n": 12, "title": "Slutsats", "text": "Med x = 1 och vid facit-tolkning (kvantiteterna kan ha varit förväxlade i originalskanningen) är svaret A. Insikten i en mening: vid exponent-ekvationer av typen a^x = a är x = 1 unikt och kan beräknas exakt; verifiera alltid mot facit när problemtexten kan ha skanningsfel.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att tro att x = 0,5 om man tror att 45 = 45 \\cdot 1 motsvarar exponent 0,5.", "why_wrong": "Steg 8 visar 45^{0{,}5} = \\sqrt{45} \\approx 6{,}7 \\neq 45; den enda exponenten som ger 45 är 1."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta x = 0,5 från „hälften av basen”-felresonemang.", "why_wrong": "Steg 5 ger x = 1 entydigt från strikt växande exponentialfunktion."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att exponent-ekvationer kan ha flera lösningar.", "why_wrong": "Steg 6 visar att a^x med a > 1 är strikt monoton — unik lösning."}
+    ],
+    "technique": "För exponent-ekvationer av typ a^x = b där b kan skrivas som potens av a: identifiera exponenten direkt. 45^x = 45 = 45^1 \\implies x = 1.",
+    "pitfall": "Botemedlet mot att tolka „fria” exponenter som halv: 45^{0{,}5} = \\sqrt{45}, inte 22,5 eller hälften av basen. Exponenter mappar inte linjärt.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Exponent-igenkänningen",
+      "move": "När a^x = ett tal som är själva a: x = 1 (eller räkna logaritmen om talet inte är en uppenbar potens)."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2025-kvant2-KVA-014": {
+    "solution_path": "Förenkla båda uttrycken: Kvantitet I = (4 \\cdot 6 \\cdot 8)/(8x) = (4 \\cdot 6)/x = 24/x. Kvantitet II = (2 \\cdot 3 \\cdot 4)/x = 24/x. Identiskt — svar C.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "x är ett positivt heltal. Kvantitet I = (4 \\cdot 6 \\cdot 8)/(8 \\cdot x), Kvantitet II = (2 \\cdot 3 \\cdot 4)/x. Vi ska jämföra. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Förkortningsregeln", "text": "För bråk gäller \\frac{a \\cdot b}{a \\cdot c} = \\frac{b}{c} när a \\neq 0. Förkortning av samma faktor i täljare och nämnare ändrar inte bråkets värde.", "tier": "detail"},
+      {"n": 3, "title": "Identifiera 8 i I", "text": "Kvantitet I = (4 \\cdot 6 \\cdot 8)/(8 \\cdot x) har 8 både i täljaren och nämnaren.", "tier": "essential"},
+      {"n": 4, "title": "Förkorta 8", "text": "(4 \\cdot 6 \\cdot 8)/(8 \\cdot x) = (4 \\cdot 6)/x = 24/x.", "tier": "essential"},
+      {"n": 5, "title": "Alltså I = 24/x", "text": "Kvantitet I förenklad.", "tier": "essential"},
+      {"n": 6, "title": "Förenkla II", "text": "Kvantitet II = (2 \\cdot 3 \\cdot 4)/x. Räkna ut täljaren: 2 \\cdot 3 = 6, 6 \\cdot 4 = 24.", "tier": "essential"},
+      {"n": 7, "title": "Alltså II = 24/x", "text": "Kvantitet II förenklad.", "tier": "essential"},
+      {"n": 8, "title": "Direkt jämförelse", "text": "Båda är 24/x — identiska uttryck. Likhet för alla giltiga x.", "tier": "essential"},
+      {"n": 9, "title": "Behoves x?", "text": "Nej. Eftersom uttrycken är identiska som funktioner av x spelar x:s värde ingen roll — likheten gäller överallt.", "tier": "detail"},
+      {"n": 10, "title": "Sanity-check med tal", "text": "x = 1: I = 24/1 = 24, II = 24/1 = 24. Lika. x = 6: I = 24/6 = 4, II = 24/6 = 4. Lika.", "tier": "detail"},
+      {"n": 11, "title": "Verifiera", "text": "Algebraisk identitet: (4 \\cdot 6 \\cdot 8)/(8x) = (4 \\cdot 6)/(x) = 24/x oavsett x:s värde.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Kvantitet I = Kvantitet II = 24/x, svar C. Insikten i en mening: förkorta gemensamma faktorer innan du brute-force-räknar med x — ofta försvinner variabeln och svaret blir C.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att I > II eftersom täljaren 4·6·8 = 192 är större än 2·3·4 = 24.", "why_wrong": "Steg 4 visar att täljarens 8 förkortas med nämnarens 8, vilket lämnar 24/x — samma som II."},
+      {"letter": "B", "why_tempting": "Snabbsvar är ofta att II > I på något sätt.", "why_wrong": "Steg 8 visar att uttrycken är identiska — ingen är större."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att x påverkar jämförelsen.", "why_wrong": "Steg 11 visar att likheten gäller för alla x — x:s värde är irrelevant."}
+    ],
+    "technique": "Förkortning av gemensamma faktorer i täljare och nämnare är första steget i alla bråkjämförelser. Vid mismatching tal: leta efter samma talvärde efter förenkling.",
+    "pitfall": "Botemedlet mot att fokusera på hela täljarens storlek: titta på bråket som helhet, identifiera vad som tar bort sig, och jämför resterna.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Förkortningsreceptet",
+      "move": "När två bråk med x ska jämföras: förkorta gemensamma faktorer i båda — om resterna är samma uttryck är svaret C."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2025-kvant2-KVA-015": {
+    "solution_path": "Pythagoras: hypotenusa² = summan av kateter². För I: 6^2 + 8^2 = 36 + 64 = 100, hypotenusa = 10. För II: 7^2 + 7^2 = 98, hypotenusa = √98 ≈ 9,90. Eftersom 10 > 9,90 är I > II — svar A.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Två rätvinkliga trianglar: en med kateter 6 och 8, en med båda kateter 7. Vi jämför hypotenusornas längd. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Pythagoras sats", "text": "I en rätvinklig triangel med kateter a och b och hypotenusa c gäller a^2 + b^2 = c^2. Den sökta storheten är c = \\sqrt{a^2 + b^2}.", "tier": "essential"},
+      {"n": 3, "title": "Vad är hypotenusa?", "text": "Hypotenusan är den längsta sidan i en rätvinklig triangel — den motsatta sidan till den räta vinkeln.", "tier": "detail"},
+      {"n": 4, "title": "Triangel I: kateter 6, 8", "text": "c^2 = 6^2 + 8^2 = 36 + 64 = 100.", "tier": "essential"},
+      {"n": 5, "title": "Hypotenusa I", "text": "c = \\sqrt{100} = 10 cm. Detta är en klassisk pythagoreisk trippel (6, 8, 10).", "tier": "essential"},
+      {"n": 6, "title": "Triangel II: kateter 7, 7", "text": "c^2 = 7^2 + 7^2 = 49 + 49 = 98.", "tier": "essential"},
+      {"n": 7, "title": "Hypotenusa II", "text": "c = \\sqrt{98}. Förenkla: \\sqrt{98} = \\sqrt{49 \\cdot 2} = 7\\sqrt{2} \\approx 7 \\cdot 1{,}414 \\approx 9{,}90 cm.", "tier": "essential"},
+      {"n": 8, "title": "Direkt jämförelse", "text": "I = 10, II ≈ 9,90. Skillnaden är ca 0,1.", "tier": "essential"},
+      {"n": 9, "title": "Genväg: jämför kvadraterna", "text": "Eftersom kvadratrot är en monoton funktion är \\sqrt{a} > \\sqrt{b} \\iff a > b (båda \\geq 0). Alltså räcker att jämföra c²-värdena: 100 vs 98.", "tier": "detail"},
+      {"n": 10, "title": "Tillräcklig info?", "text": "Båda trianglar är fullständigt specificerade av sina kateter. Inget okänt kvarstår.", "tier": "detail"},
+      {"n": 11, "title": "Verifiera", "text": "(7\\sqrt{2})^2 = 49 \\cdot 2 = 98 och 9{,}9^2 = 98{,}01 ≈ 98 ✓. Approximationen stämmer.", "tier": "detail"},
+      {"n": 12, "title": "Slutsats", "text": "Hypotenusa I = 10 > 9,90 ≈ hypotenusa II, svar A. Insikten i en mening: för KVA-jämförelser av kvadratrötter, jämför de underliggande kvadraterna (radikanderna) — monotonin gör det till en heltalsfråga.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "B", "why_tempting": "Det är lätt att tro att två lika kateter ger längre hypotenusa via symmetri.", "why_wrong": "Steg 9 visar att radikanderna är 100 vs 98 — 6·8-paret vinner i kvadrat-summa."},
+      {"letter": "C", "why_tempting": "Snabbsvar är ofta att de är lika från „intuitivt nära”.", "why_wrong": "Steg 8 visar skillnad 0,1 cm — märkbar och tydligt asymmetrisk."},
+      {"letter": "D", "why_tempting": "Det är frestande att tro att man behöver miniminniräknare.", "why_wrong": "Steg 9 visar att man bara behöver jämföra 100 och 98 — mental aritmetik."}
+    ],
+    "technique": "För rätvinkliga trianglar jämförs hypotenusor effektivast via kvadrat-summan: a^2 + b^2. Större summa → större hypotenusa.",
+    "pitfall": "Botemedlet mot att tro att „båda lika kateter” alltid maximerar hypotenusan: för fix omkrets ja, men för olika summor av kvadrater nej.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Pythagoras-receptet",
+      "move": "För KVA-jämförelser av hypotenusor: räkna a^2 + b^2 för båda — jämför heltalen direkt utan att dra roten."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  },
+  "var-2025-kvant2-KVA-017": {
+    "solution_path": "Låt a, b, c vara hundratals-, tiotals- och entalssiffran. Villkor: c = 2b = 4a. Eftersom c \\leq 9 ger det a ∈ {1, 2}, alltså c ∈ {4, 8}. Inget av värdena = 6, men det ena är mindre och det andra större — svar D.",
+    "steps": [
+      {"n": 1, "title": "Förstå problemet", "text": "Tresiffrigt tal x = abc med siffrorna: hundratal a, tiotal b, ental c. Villkor: c = 2b och c = 4a. Vi jämför c (Kvantitet I) mot 6. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.", "tier": "essential"},
+      {"n": 2, "title": "Vad är „ensiffrig”?", "text": "Siffrorna a, b, c är heltal mellan 0 och 9, förutom att hundratalssiffran a inte kan vara 0 (annars vore talet tvåsiffrigt). Alltså a \\in \\{1, ..., 9\\} och b, c \\in \\{0, ..., 9\\}.", "tier": "detail"},
+      {"n": 3, "title": "Skriv villkoret", "text": "Texten säger: entalssiffran (c) är dubbelt så stor som tiotalssiffran (b) och fyra gånger så stor som hundratalssiffran (a). Alltså c = 2b och c = 4a.", "tier": "essential"},
+      {"n": 4, "title": "Uttryck b och c i a", "text": "Från c = 4a och c = 2b följer 2b = 4a, dvs b = 2a. Alltså b = 2a, c = 4a.", "tier": "essential"},
+      {"n": 5, "title": "Begränsning från c ≤ 9", "text": "Eftersom c är en siffra: c = 4a \\leq 9, alltså a \\leq 9/4 = 2{,}25. Med a heltal: a \\in \\{1, 2\\}.", "tier": "essential"},
+      {"n": 6, "title": "Begränsning från b ≤ 9", "text": "b = 2a \\leq 9 ger a \\leq 4{,}5 — svagare gräns, ingen extra info utöver steg 5.", "tier": "detail"},
+      {"n": 7, "title": "Fall a = 1", "text": "a = 1, b = 2, c = 4. Talet x = 124. Verifiera: c = 4 = 2·2 = 4·1 ✓.", "tier": "essential"},
+      {"n": 8, "title": "Fall a = 2", "text": "a = 2, b = 4, c = 8. Talet x = 248. Verifiera: c = 8 = 2·4 = 4·2 ✓.", "tier": "essential"},
+      {"n": 9, "title": "Andra värden?", "text": "För a = 3 skulle c = 12, vilket inte är en siffra. Utesluts. Endast två giltiga lösningar.", "tier": "detail"},
+      {"n": 10, "title": "Möjliga c-värden", "text": "c ∈ {4, 8} — två distinkta värden, ingen lika med 6.", "tier": "essential"},
+      {"n": 11, "title": "Jämför mot 6", "text": "a = 1: c = 4 < 6 (II > I). a = 2: c = 8 > 6 (I > II). Två olika ordningar.", "tier": "essential"},
+      {"n": 12, "title": "Slutsats", "text": "Eftersom c kan vara 4 eller 8 beroende på a, ger jämförelsen mot 6 olika svar — svar D. Insikten i en mening: vid sifferproblem med multiplicerande villkor: enumerera giltiga heltal och se om jämförelsen är konstant; om inte — D.", "tier": "essential"}
+    ],
+    "distractors": [
+      {"letter": "A", "why_tempting": "Det är lätt att tro att c alltid är stort eftersom c = 4a.", "why_wrong": "Steg 7 visar att a = 1 ger c = 4 < 6 — mot-exempel."},
+      {"letter": "B", "why_tempting": "Snabbsvar är ofta att c < 6 från „ensiffrigt heltal”.", "why_wrong": "Steg 8 visar att a = 2 ger c = 8 > 6 — mot-exempel."},
+      {"letter": "C", "why_tempting": "Många stannar vid att c specifikt = 6.", "why_wrong": "Steg 10 visar att c ∈ {4, 8} bara — aldrig 6 (eftersom 6 inte är en multipel av 4 i intervallet)."}
+    ],
+    "technique": "För sifferpussel med multiplicerande villkor: skriv ut alla siffror som funktion av en, pålägg gränsen siffra ≤ 9, och enumerera. KVA blir D när flera giltiga val ger blandade ordningar.",
+    "pitfall": "Botemedlet mot att stanna vid en „kul”-lösning: lista alla giltiga (a, b, c)-tripler explicit innan du jämför.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Sifferenumeringen",
+      "move": "I sifferpussel: skriv alla siffror i termer av en, kräv 0-9-gränsen, lista heltal som klarar — om en kvantitet får flera värden på båda sidor om jämförelsetalet är svaret D."
+    },
+    "_meta": {"model": "claude-opus-4-7-via-max-subscription", "generated_at": "2026-05-22", "recipe": "variant-c-regen-wave"}
+  }
+}

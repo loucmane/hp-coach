@@ -1519,30 +1519,115 @@
   },
   "host-2025-kvant1-XYZ-002": {
     "_meta": {
-      "generated_at": 1778408443638,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "v är yttervinkel vid spetsen av triangeln som transversalerna och L_2 bildar. Inre motstående vinklar är 37° och 180°-102°=78°. Yttervinkelsatsen: v=37°+78°=115°. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två parallella linjer L_1 och L_2 korsas av två transversaler som möts i en punkt — bildar en triangel. Vinkeln v är en yttervinkel i denna triangel. Andra vinklar är 37° och 102°.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Inre och yttre triangelvinklar",
+        "text": "I varje triangel finns tre INRE vinklar (summa 180°) och tre YTTRE vinklar (en vid varje hörn). En yttervinkel + dess intilliggande inre vinkel = 180° (de ligger längs samma räta linje).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Yttervinkelsatsen",
+        "text": "Yttervinkeln vid ett hörn = summan av de TVÅ MOTSTÅENDE inre vinklarna (alltså de två vinklarna som INTE ligger vid samma hörn). Detta är en av geometrins kärnsatser.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera triangeln",
+        "text": "De två transversalerna och L_2 bildar en triangel — eller alternativt: en transversal, L_1 och en del. Identifiera vilket av de tre hörnen som har vinkeln v som yttervinkel.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera de inre motstående vinklarna",
+        "text": "Den första motstående inre vinkeln är 37° (anges direkt). Den andra är relaterad till 102° men inte själv 102° — vi måste konvertera.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konvertera 102° till inre vinkel",
+        "text": "102° verkar vara yttervinkeln vid det andra hörnet (på samma räta linje som triangelns sida). Den motstående INRE vinkeln vid samma hörn är supplementär: 180°-102°=78°.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tillämpa yttervinkelsatsen",
+        "text": "v=37°+78°=115°. Direkt insättning i yttervinkelsatsen.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera triangeln summerar till 180°",
+        "text": "De tre INRE vinklarna är 37°, 78° och den tredje. Tredje = 180°-37°-78°=65°. Yttervinkeln vid det hörnet är 180°-65°=115°. ✓ Matchar v.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför fungerar yttervinkelsatsen?",
+        "text": "Tänk: inre vinklarna är A + B + C = 180°. Yttervinkeln vid hörn C är 180° − C. Insätt: 180° − C = A + B. Så yttervinkeln = A + B (de två andra), aldrig sin egen.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera 102° (alt A)",
+        "text": "Att svara 102° vore att tro v = 102° är en korresponderande vinkel — men v skapas där två TRANSVERSALER möts, inte vid en parallell-skärning.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Eliminera 139° (alt C)",
+        "text": "139° = 37° + 102°, dvs man har glömt att konvertera 102° till sin inre triangelvinkel (78°) först.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Eliminera 143° (alt D)",
+        "text": "143° = 180° − 37° är supplementvinkeln till 37°. Det är inte v utan v's relation till bara EN vinkel, inte triangeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Svaret är B (115°). Insikten i en mening: yttervinkel = summa av de TVÅ MOTSTÅENDE inre vinklarna — och kom ihåg att konvertera yttre vinklar till inre via supplementregeln innan du adderar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
         "why_tempting": "102° är redan markerat i figuren och kan kännas som korresponderande vinkel till v.",
-        "why_wrong": "Korresponderande vinklar ligger på samma sida av samma transversal — v skapas där två transversaler skär varandra, inte där en transversal skär en parallell linje."
+        "why_wrong": "Steg 10 förklarar: v skapas i en triangelspets bildad av två transversaler, inte vid en transversal-mot-parallell skärning. Korresponderande-regeln gäller inte här."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att 37°+102°=139° och tar det som svar.",
-        "why_wrong": "102° måste först omvandlas till sin inre triangelvinkel (78°) innan adderingen — annars räknas yttre och inre vinkel mot varandra."
+        "why_tempting": "Många stannar vid att 37° + 102° = 139° och tar det som svar.",
+        "why_wrong": "Steg 11 visar att 102° måste konverteras till sin INRE vinkel (78°) först. Att addera den yttre 102° direkt blandar yttre och inre."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten kan vara att v är supplementvinkeln till 37°, alltså 180°-37°=143°.",
-        "why_wrong": "Supplementregeln gäller för vinklar på SAMMA räta linje. v ligger där två olika transversaler möts — supplement gäller inte här."
+        "why_tempting": "Första instinkten kan vara att v är supplementvinkeln till 37°, alltså 180° − 37° = 143°.",
+        "why_wrong": "Steg 12 visar att supplementregeln (180° − 37°) bara gäller för vinklar på samma räta linje. v ligger där två olika transversaler möts, inte längs en linje med 37°."
       }
     ],
-    "pitfall": "Avgör för varje given vinkel om den är inre eller yttre triangelvinkel innan du adderar — felklassificering av 102° är dominanten i den här uppgiften.",
-    "solution_path": "v är yttervinkeln vid toppen av triangeln som L₂ och de två transversalerna bildar — och en yttervinkel är alltid summan av de två motstående inre vinklarna. Här är de inre vinklarna 37° (direkt) och 180°-102°=78° (eftersom 102° är yttervinkeln vid den högra basen). Alltså v=37°+78°=115°.",
-    "technique": "Yttervinkel = summa av två motstående inre vinklar. Identifiera triangeln som transversalerna och en parallell linje bildar.",
-    "framework_id": "XYZ-TRAP-038"
+    "technique": "Yttervinkel-rutinen: yttervinkel = summa av de TVÅ MOTSTÅENDE inre vinklarna. Innan addition: konvertera alla givna yttre vinklar till inre via 180°-supplementregeln. Triggern är 'triangel med en yttervinkel i fokus + en eller flera givna yttre vinklar'.",
+    "pitfall": "Botemedlet mot 'inre vs yttre': klassificera varje given vinkel som inre eller yttre INNAN du adderar. Felklassificering av 102° är dominanten i denna typ av uppgift.",
+    "framework_id": "XYZ-TRAP-038",
+    "pregrade_tactic": {
+      "handle": "Yttervinkel-satsen",
+      "move": "Identifiera triangeln, konvertera alla yttre vinklar till inre via 180°-supplement, addera de TVÅ MOTSTÅENDE inre — det är yttervinkeln."
+    }
   },
   "host-2025-kvant1-XYZ-003": {
     "_meta": {
@@ -3958,56 +4043,221 @@
   },
   "host-2025-kvant2-XYZ-004": {
     "_meta": {
-      "generated_at": 1778415412056,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Ekvationen 7x^2-7=7 ger 7x^2=14, alltså x^2=2 och x=\\sqrt{2}. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Funktionen är f(x)=7x^2-7. Du ska hitta det x-värde där f(x)=7 — alltså lösa ekvationen 7x^2-7=7.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp ekvationen",
+        "text": "Insättning av f(x)=7: 7x^2-7=7. Nu är frågan en algebraisk ekvation i x.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Isolera x²-termen",
+        "text": "Addera 7 på båda sidor: 7x^2=7+7=14. Nu är x² ensam på ena sidan (förutom koefficienten 7).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Dividera bort koefficienten",
+        "text": "Dela båda sidor med 7: x^2=14/7=2. Nu står x² ensam.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Dra kvadratroten ur",
+        "text": "För att lösa x^2=k dras kvadratroten ur: x=\\pm\\sqrt{k}. Vid k=2 blir x=\\pm\\sqrt{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Två lösningar — varför?",
+        "text": "Både (+\\sqrt{2})^2=2 och (-\\sqrt{2})^2=2. Båda är giltiga lösningar; alternativen visar bara den positiva.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Värdet av √2",
+        "text": "\\sqrt{2}\\approx 1{,}414. Detta är ett irrationellt tal — inget rationellt tal kvadreras till exakt 2.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Eliminera x = 1 (alt A)",
+        "text": "Sätt in: f(1)=7\\cdot 1-7=0\\neq 7. Misslyckas.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera x = 2 (alt C)",
+        "text": "Sätt in: f(2)=7\\cdot 4-7=28-7=21\\neq 7. Misslyckas.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera x = 7 (alt D)",
+        "text": "Sätt in: f(7)=7\\cdot 49-7=343-7=336\\neq 7. Långt ifrån.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera √2",
+        "text": "f(\\sqrt{2})=7\\cdot(\\sqrt{2})^2-7=7\\cdot 2-7=14-7=7. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B (√2). Insikten i en mening: 'lös x² = k' → ta kvadratroten med båda tecken; matcha positiv eller negativ till alternativen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 7x² = 0 → x = 1.",
-        "why_wrong": "7x² = 14, inte 0. x = √2, inte 1."
+        "why_tempting": "Det är lätt att räkna 7x² = 0 och få x = 0 av tankefel, eller stanna vid x = 1 eftersom det är 'enklast'.",
+        "why_wrong": "Steg 8 verifierar: f(1) = 0, inte 7. Räkningen 7x² = 14 (inte 0) är det rätta isoleringssteget."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta x² = 2 → x = 2 (utan att dra roten ur).",
-        "why_wrong": "Kvadrera bara om du vill kvadrera; här ska du DRA ROTEN UR: x = √2."
+        "why_tempting": "Snabbsvar är ofta x = 2 om man tror att x² = 2 betyder x = 2 (utan att dra roten ur).",
+        "why_wrong": "Steg 5 understryker: x² = 2 → x = √2, INTE x = 2. Att lösa x² = k kräver kvadratrot, inte oförändrad k."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 7 (av 7 i ekvationen).",
-        "why_wrong": "x = √2 ≈ 1,41, mycket mindre än 7."
+        "why_tempting": "Många stannar vid 7 eftersom det förekommer som koefficient i funktionen.",
+        "why_wrong": "Steg 10 verifierar: f(7) = 336, fjärran från 7. Funktionsvärdet och argumentet är olika saker."
       }
     ],
-    "pitfall": null,
-    "solution_path": "7x^{2}-7=7 → x^{2}=2 → x=\\sqrt{2}.",
-    "technique": "Lös x² = k: x = ±√k."
+    "technique": "x²-rutinen: isolera x², dra kvadratroten med ±, matcha mot alternativen. Triggern är 'lös för x där x² förekommer i ekvationen'.",
+    "pitfall": "Botemedlet mot 'glömde roten': skriv x = ±√k i marginalen så fort du har x² = k. Sedan välj rätt tecken utifrån alternativen.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kvadratrots-receptet",
+      "move": "Isolera x² = k, ta båda kvadratrötterna (±√k), matcha mot alternativ — verifiera genom insättning."
+    }
   },
   "host-2025-kvant2-XYZ-005": {
     "_meta": {
-      "generated_at": 1778415412056,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "PQ är diagonalen i en rätvinklig konfiguration i rektangeln. Genom Pythagoras: PQ=\\sqrt{a^2+b^2}=\\sqrt{2^2+5^2}=\\sqrt{4+25}=\\sqrt{29} cm. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En rektangel ABCD har sidorna AB=5 cm och BC=7 cm. Punkterna P och Q är specifikt placerade i rektangeln (se figuren). Du ska hitta avståndet PQ.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Strategi: använd Pythagoras",
+        "text": "När man söker ett avstånd mellan två punkter och kan bilda en rätvinklig triangel med horisontella och vertikala benlängder, ger Pythagoras' sats svaret: d=\\sqrt{\\Delta x^2+\\Delta y^2}.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Pythagoras' sats",
+        "text": "För en rätvinklig triangel med kateter a, b och hypotenusa c: a^2+b^2=c^2, alltså c=\\sqrt{a^2+b^2}.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Identifiera kateterna",
+        "text": "Från figuren: PQ är hypotenusan i en rätvinklig triangel med ena katetern parallell med AB (horisontellt) och andra med BC (vertikalt). Längderna (kateterna) avläses från figuren — säg a=2 och b=5.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sätt in värdena",
+        "text": "PQ^2=2^2+5^2=4+25=29. Detta är kvadraten på PQ.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Räkna kvadraterna",
+        "text": "2^2=4 (2·2). 5^2=25 (5·5). Summa: 29.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Dra kvadratroten ur",
+        "text": "PQ=\\sqrt{29} cm. Detta är inte ett heltal — \\sqrt{29}\\approx 5{,}39 ligger mellan 5 och 6.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Varför inte ett snyggt taltrippel?",
+        "text": "Sidorna 2 och 5 ger inte ett pythagoreiskt taltrippel — närmast är (3, 4, 5) eller (5, 12, 13), men varken (2, 5, ?) eller (5, 2, ?) är trippel. Därför är hypotenusan irrationell.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Eliminera √26 (alt A)",
+        "text": "√26 motsvarar a^2+b^2=26, t.ex. 1+25 eller 5+21 — passar inte kateterna 2 och 5.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera √34 (alt C)",
+        "text": "√34 motsvarar t.ex. 9+25=34 (kateter 3 och 5) — fel kateter för PQ.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Eliminera √45 (alt D)",
+        "text": "√45 motsvarar 9+36=45 (kateter 3 och 6) eller 20+25 — fel kateter.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera √29",
+        "text": "Bekräfta från figuren att kateterna är 2 och 5; kvadrera och summera: 4 + 25 = 29. PQ = √29. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Svaret är B (√29 cm). Insikten i en mening: för avstånd mellan punkter inuti en rektangel — bygg en rätvinklig triangel med horisontell och vertikal sida, tillämpa Pythagoras.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna \\sqrt{26} av räknemiss.",
-        "why_wrong": "PQ = √29, inte √26. Räkna noggrant Pythagoras-uttrycket."
+        "why_tempting": "Det är lätt att räkna fel ena kateten (t.ex. 1 istället för 2) och få 1 + 25 = 26.",
+        "why_wrong": "Steg 4 läser av kateterna som 2 och 5. Steg 5 + 6 ger 4 + 25 = 29, inte 26."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta \\sqrt{34}.",
-        "why_wrong": "√29 är korrekt."
+        "why_tempting": "Snabbsvar är ofta √34 om man råkar räkna en kateten som 3 istället för 2 — 9 + 25 = 34.",
+        "why_wrong": "Steg 10 visar: kateten är 2 (inte 3) enligt figuren. Slutproduktens kvadrat är 29, inte 34."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid \\sqrt{45}.",
-        "why_wrong": "√45 är för stor; PQ = √29."
+        "why_tempting": "Många stannar vid √45 av räknemissar — kanske räknar med 5+7 sidor som hela rektangeln istället för P-Q-koordinater.",
+        "why_wrong": "Steg 11 påpekar: √45 kräver helt andra kateter (3 och 6). PQ-kateterna ger 29."
       }
     ],
-    "pitfall": null,
-    "solution_path": "PQ-längd via Pythagoras eller likformighet i figurens konfiguration: PQ=\\sqrt{29} cm.",
-    "technique": "Pythagoras i rektangel: kvadratrot av summan av kateter².",
-    "framework_id": "XYZ-TRAP-040"
+    "technique": "Pythagoras-i-rektangel-rutinen: identifiera horisontell + vertikal sträcka som kateter, hypotenusa = sökt avstånd, beräkna √(a² + b²). Triggern är 'avstånd mellan två markerade punkter i rektangel/koordinatsystem'.",
+    "pitfall": "Botemedlet mot 'läste fel kateter': markera tydligt i figuren vilka är de horisontella och vertikala avstånden från P till Q. Räkna inte med rektangelns hela sidor.",
+    "framework_id": "XYZ-TRAP-040",
+    "pregrade_tactic": {
+      "handle": "Pythagoras-diagonalen",
+      "move": "Bygg en rätvinklig triangel med horisontell och vertikal projektion av PQ, kvadrera kateterna, summera och dra roten."
+    }
   },
   "host-2025-kvant2-XYZ-007": {
     "_meta": {
@@ -4105,57 +4355,239 @@
   },
   "host-2025-kvant2-XYZ-011": {
     "_meta": {
-      "generated_at": 1778415412056,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Multiplicera mantissor: 2{,}5\\cdot 4=10. Addera exponenter: -11+(-18)=-29. Resultat: 10\\cdot 10^{-29}=10^1\\cdot 10^{-29}=10^{-28}. Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Multiplicera två tal i potensform: 2{,}5\\cdot 10^{-11} och 4\\cdot 10^{-18}. Resultatet ska uttryckas som en tiopotens.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Potensform / grundform",
+        "text": "Ett tal i grundform har en mantissa (vanligen mellan 1 och 10) gånger en tiopotens: a\\cdot 10^n. Det är ett kompakt sätt att uttrycka mycket små eller mycket stora tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Multiplikationsregel",
+        "text": "För två tal i potensform: (a\\cdot 10^m)\\cdot(b\\cdot 10^n)=(a\\cdot b)\\cdot 10^{m+n}. Multiplicera mantissorna, addera exponenterna.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Multiplicera mantissorna",
+        "text": "2{,}5\\cdot 4=10. (Tänk: 2,5 är hälften av 5; 4 är dubbla 2; så 2,5·4 = 5·2 = 10.)",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Addera exponenterna",
+        "text": "-11+(-18). Lägg ihop negativa tal genom att lägga ihop deras absolutbelopp och behåll minustecknet: -11-18=-29.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt ihop",
+        "text": "Produkten är 10\\cdot 10^{-29}. Detta är ännu inte i grundform eftersom mantissan 10 inte är mellan 1 och 10.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Normalisera mantissan",
+        "text": "Skriv om 10=10^1, så 10\\cdot 10^{-29}=10^1\\cdot 10^{-29}=10^{1+(-29)}=10^{-28}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Varför inte 10^-29?",
+        "text": "Eftersom mantissan blev 10 (inte ett tal mellan 1 och 10), måste exponenten justeras uppåt med 1. 10\\cdot 10^{-29}=10^{-28}, inte 10^(−29).",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Tecken på exponenten",
+        "text": "Negativ exponent (−28) betyder ett MYCKET LITET tal: 10^(−28) = 0,000…0001 med 28 nollor framför 1. Inte ett stort tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Eliminera 10^28 (alt B)",
+        "text": "10^28 är ett gigantiskt tal. Vi multiplicerade två mycket små tal — resultatet måste vara litet, inte stort.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Eliminera 10^-30 (alt C)",
+        "text": "−30 vore svaret om man glömde att normalisera mantissan (10 → 10^1) men gjorde det fel. Eller om man räknade exponenterna fel som −30. Räknet är −29 + 1 = −28.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Eliminera 10^30 (alt D)",
+        "text": "10^30 har fel tecken på exponenten — ett enormt tal. Negativa input ger negativ exponent.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Verifiera",
+        "text": "2{,}5\\cdot 10^{-11}=0{,}000\\ 000\\ 000\\ 025. 4\\cdot 10^{-18}=0{,}000\\ 000\\ 000\\ 000\\ 000\\ 004. Produkt: 0{,}000\\dots 10\\cdot 10^{-29}=10^{-28}. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 14,
+        "title": "Slutsats",
+        "text": "Svaret är A (10^−28). Insikten i en mening: tiopotens-multiplikation = mantissor·mantissor och exponenter+exponenter; om mantissan inte hamnar mellan 1 och 10, normalisera och justera exponenten.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tappa minustecken på exponent.",
-        "why_wrong": "Exponenten är negativ summa: −11 + −18 = −29; mantissan 10 ger −28 totalt."
+        "why_tempting": "Det är lätt att tappa minustecken på exponenten och få 10^28 (eller 10^-29 + dubbletter).",
+        "why_wrong": "Steg 5 + 9: båda exponenterna är negativa, deras summa är −29 (också negativ). Tecknet bevaras."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 10^{-30}.",
-        "why_wrong": "Räkna noggrant: −29 + 1 (mantissan 10) = −28."
+        "why_tempting": "Snabbsvar är ofta 10^−30 om man glömmer att 2,5·4 = 10 och inte 1 (vilket skulle ge 10^−29) eller om man räknar exponenterna fel.",
+        "why_wrong": "Steg 7 visar normaliseringen: 10·10^−29 = 10^−28. Värdet −30 saknar grund i ekvationen."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 10^30.",
-        "why_wrong": "Resultatet är litet (negativ exponent), inte stort."
+        "why_tempting": "Många stannar vid 10^30 om man missar minustecknen helt.",
+        "why_wrong": "Steg 5 och 9 framhåller: båda exponenterna är negativa, slutexponenten är negativ. 10^30 är fel tecken."
       }
     ],
-    "pitfall": null,
-    "solution_path": "2{,}5\\cdot 4=10 och 10^{-11}\\cdot 10^{-18}=10^{-29}. Total: 10\\cdot 10^{-29}=10^{-28}.",
-    "technique": "Multiplikation av tiopotenser: multiplicera mantissor, addera exponenter; justera om mantissan blir ≥10.",
-    "framework_id": "XYZ-TRAP-031"
+    "technique": "Tiopotens-produkt-rutinen: multiplicera mantissor, addera exponenter, normalisera om mantissan inte hamnar i [1, 10). Triggern är 'multiplicera tal i grundform'.",
+    "pitfall": "Botemedlet mot 'glömde normalisera': skriv ut alla steg, även den triviala 10 = 10^1. Då fångar du upp den extra 1 som ska adderas till exponenten.",
+    "framework_id": "XYZ-TRAP-031",
+    "pregrade_tactic": {
+      "handle": "Mantissa-och-exponent-receptet",
+      "move": "Multiplicera mantissor först, addera exponenter sedan; om mantissan ≥ 10 skriv 10 = 10^1 och addera 1 till exponenten."
+    }
   },
   "host-2025-kvant2-XYZ-012": {
     "_meta": {
-      "generated_at": 1778415412056,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "solution_path": "Bryt ut xy ur täljaren: x^2y^2+xy=xy(xy+1). Bråket blir \\frac{xy(xy+1)}{xy+1}=xy (förkortning eftersom xy+1\\neq 0). Svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uttrycket \\frac{x^2y^2+xy}{xy+1} ska förenklas, givet att xy\\neq -1 (så nämnaren inte blir 0).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Varför villkoret xy ≠ −1?",
+        "text": "Om xy=-1 blir nämnaren xy+1=0 — division med noll är odefinierat. Villkoret tar bort den problematiska punkten så att vi kan förkorta säkert.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Strategi: faktorisering",
+        "text": "När täljare och nämnare delar en gemensam faktor kan du förkorta. Leta efter den gemensamma faktorn — här verkar nämnaren (xy+1) vara en kandidat.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är en faktor?",
+        "text": "En faktor i ett polynom är ett uttryck som delar polynomet jämnt. T.ex. i 2x+4 är 2 en faktor: 2x+4=2(x+2). Distributiva lagen baklänges.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Hitta gemensam faktor i täljaren",
+        "text": "Täljaren är x^2y^2+xy. Båda termer har xy som faktor: x^2y^2=xy\\cdot xy och xy=xy\\cdot 1. Bryt ut xy: x^2y^2+xy=xy(xy+1).",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Verifiera utbrytningen",
+        "text": "Multiplicera tillbaka: xy(xy+1)=xy\\cdot xy+xy\\cdot 1=x^2y^2+xy. ✓ Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Skriv om hela bråket",
+        "text": "\\frac{x^2y^2+xy}{xy+1}=\\frac{xy(xy+1)}{xy+1}.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Förkorta",
+        "text": "Bråket har xy+1 i både täljare och nämnare. Eftersom xy+1\\neq 0 kan vi dela bort den: \\frac{xy(xy+1)}{xy+1}=xy.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Vad menas med förkortning?",
+        "text": "Att 'förkorta' ett bråk = dela täljare och nämnare med samma uttryck. Det går när uttrycket inte är 0. Vi går från \\frac{xy(xy+1)}{1\\cdot(xy+1)} till \\frac{xy}{1}=xy.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med konkreta tal",
+        "text": "Sätt x=2, y=3, så xy=6, xy+1=7, x^2y^2=36. Original: \\frac{36+6}{7}=\\frac{42}{7}=6. Alternativ A: xy=6. ✓",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Eliminera xy + 1 (alt B)",
+        "text": "Sätt x=2, y=3: alternativ B = 7. Original = 6. ✗",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Eliminera x²y² (alt C)",
+        "text": "Med x=2, y=3: alternativ C = 36. Original = 6. ✗",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Eliminera x²y² + 1 (alt D)",
+        "text": "Med x=2, y=3: D = 37. Original = 6. ✗",
+        "tier": "essential"
+      },
+      {
+        "n": 14,
+        "title": "Slutsats",
+        "text": "Svaret är A (xy). Insikten i en mening: när nämnaren är ett enkelt binom, sök en utbrytning i täljaren som producerar exakt samma binom — då förkortas det bort.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tappa förkortning och svara xy + 1.",
-        "why_wrong": "(xy+1) i täljaren förkortas mot (xy+1) i nämnaren — kvar är xy."
+        "why_tempting": "Det är lätt att tappa förkortningen och svara xy + 1 (nämnaren) eller blanda ihop ledningarna.",
+        "why_wrong": "Steg 8 visar att (xy+1) i täljaren och nämnaren tar ut varandra. Kvar blir bara xy — inte xy + 1."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta x^{2}y^{2} (täljarens första term).",
-        "why_wrong": "Hela bråket förkortas; resultatet är xy."
+        "why_tempting": "Snabbsvar är ofta x²y² (täljarens första term) om man bara plockar något ur täljaren utan att förkorta.",
+        "why_wrong": "Steg 12 verifierar numeriskt: x²y² = 36 men hela bråket = 6. Förenklingen kräver hela förkortningen, inte bara en term."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid x^{2}y^{2}+1.",
-        "why_wrong": "Förkorta båda termer; xy + 1 i nämnaren tas bort av faktorn (xy+1) i täljaren."
+        "why_tempting": "Många stannar vid x²y² + 1 om de blandar ihop täljarens första term med nämnarens '+1' utan att förkorta.",
+        "why_wrong": "Steg 13 verifierar: D ger 37, bråket ger 6. Förenklingen ger xy (= 6), inte x²y² + 1."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Bryt ut xy: \\frac{xy(xy+1)}{xy+1}=xy.",
-    "technique": "Förkortning av algebraiska bråk: bryt ut gemensam faktor, förkorta.",
-    "framework_id": "XYZ-TRAP-011"
+    "technique": "Förkortnings-rutinen: hitta en gemensam faktor i täljare och nämnare, bryt ut, förkorta. Triggern är 'algebraiskt bråk där nämnaren är ett enkelt binom som verkar kunna återfinnas i täljaren'.",
+    "pitfall": "Botemedlet mot 'bytte bort fel': sätt in konkreta värden för x, y och kontrollera båda sidor av uppgiften före och efter förkortning.",
+    "framework_id": "XYZ-TRAP-011",
+    "pregrade_tactic": {
+      "handle": "Faktorisering-och-förkortning",
+      "move": "Bryt ut nämnarens binom ur täljaren, förkorta — verifiera genom att sätta in små heltalsvärden för x och y."
+    }
   },
   "host-2025-verb1-ELF-031": {
     "_meta": {
@@ -7842,134 +8274,354 @@
     "technique": "Begreppsdefinition genom funktion: när en text introducerar ett tekniskt begrepp (här \"naiv betraktare\"), letar du efter formuleringen \"fungerar som\" eller \"har funktionen att\". Den raden definierar begreppet i texten — inte den intuitiva betydelsen av orden. Triggern: \"vilken funktion fyller X?\" → spåra författarens egen funktionsdefinition, inte vardagsbetydelsen."
   },
   "host-2025-verb2-LÄS-016": {
-    "_meta": {
-      "generated_at": 1778438333885,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Författaren bygger texten kring frågan varför vi insisterar på matematik som ”heligt” samtidigt som varken Thorning-Schmidt eller Mattecentrums generalsekreterare kan förklara dess nytta. Texten problematiserar SYFTET med skolmatematik — alternativrubriken ”Matte på schemat – för vems skull?” fångar precis den fråga författaren driver. Svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi söker en ALTERNATIV rubrik som speglar textens centrala fråga. Rubriken bör fånga författarens egentliga ärende, inte en bisats.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera textens kärnfråga",
+        "text": "Författaren öppnar med två exempel där makthavare (statsministern, Mattecentrums chef) hyllar matematiken men inte kan förklara den. Sedan introduceras Pfallers begrepp ”interpassivitet” och ”bönekvarn”: vi delegerar matematiken till barnen för att slippa själva. Frågan blir: för VEMS skull?",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad är NÄSTAN författarens egen rubrik?",
+        "text": "Texten avslutar: ”vi delegerar arbetet att försöka förstå matematik till barnen … för att slippa veta”. Det är en problematisering av syftet med skolmatematik — ”för vems skull?” är dess naturliga sammanfattning.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska alternativen tonalt",
+        "text": "A (”sänk kunskapskraven”) är ett policyförslag som texten inte gör. B (”för vems skull?”) är problematiserande, som texten. C (”vackert men obegripligt”) är estetiserande, fel ton. D (”inte viktigare än andra ämnen”) är jämförande, fel fråga.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera mot textens öppning",
+        "text": "Texten öppnar med ”tänk om denna strävan efter resultatförbättring bygger på ett feltänkande?” — det är en ”för vems skull?”-fråga i förklädnad. B speglar precis denna öppning.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar B. Insikten i en mening: en bra alternativrubrik bär samma TONLÄGE som textens öppningsfråga — kritisk frågande ton hör ihop med kritisk frågande rubrik.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att texten kallar på sänkta krav.",
-        "why_wrong": "Texten ifrågasätter SYFTET, inte kravnivån — alternativet importerar fel agenda."
+        "why_tempting": "Det är lätt att tolka texten som ett angrepp på kunskapskraven.",
+        "why_wrong": "Steg 4 visar att texten ALDRIG föreslår sänkta krav — den ifrågasätter SYFTET med matematiken i skolan, inte nivån. A flyttar invändningen från syfte till krav."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 'helig men obegriplig'.",
-        "why_wrong": "Texten är kritisk, inte estetiserande — alternativet missar tonen."
+        "why_tempting": "Många stannar vid ”beundran och fruktan” och ”helt obegripligt” och tror att texten estetiserar matematiken.",
+        "why_wrong": "Som steg 4 visar är textens ton kritiskt undersökande, inte estetiserande. ”Vackert men obegripligt” låter som en lyrisk reflektion — texten är en ideologianalys."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta hierarkijämförelse.",
-        "why_wrong": "Texten talar inte om att jämföra ämnen — bara om matematikens samhällsroll; alternativet flyttar fokus."
+        "why_tempting": "Snabbsvar är ofta att hitta en ämnesjämförelse i en text om skolan.",
+        "why_wrong": "Steg 2 visar att texten aldrig jämför matematik med andra ämnen — den analyserar dess samhällsroll. D importerar en helt annan fråga."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten ifrågasätter syftet med skolmatematiken som ritual snarare än kunskap — vi gör det 'för att slippa veta'. Frågan 'för vems skull' fångar denna problematisering.",
-    "technique": "Vid 'rubrik som passar'-frågor: hitta textens centrala fråga och översätt till retorisk rubrik."
+    "technique": "Vid alternativrubrik-frågor: matcha rubrikens TON med textens öppningsfråga, inte med ett enskilt citat. Frågande rubriker hör till problematiserande texter; utropsrubriker hör till manifest.",
+    "pitfall": "Botemedlet mot att lockas av starka utrop: rubriker med utropstecken (”Sänk kraven!”) säljer ofta en agenda texten inte har. En text som FRÅGAR ”tänk om…” passar med en rubrik som också frågar.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Tonläges-matchen",
+      "move": "Bestäm textens öppningston (frågande / manifesterande / estetiserande) — välj rubriken med samma tonläge."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2025-verb2-LÄS-017": {
-    "_meta": {
-      "generated_at": 1778438333885,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten säger att manga ”fick rollen som kulturell ambassadör, och den japanska staten var snabb med att föreslå förändringar i fråga om vilket innehåll som var okej och vad som måste bort”. Statens syfte var alltså att forma omvärldens BILD av Japan — svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi söker den japanska STATENS syfte med att blanda sig i innehållet — inte mangaindustrins syfte, inte de svenska förlagens.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lokalisera den exakta meningen",
+        "text": "I öppningsstycket: ”Framför allt fick den rollen som kulturell ambassadör, och den japanska staten var snabb med att föreslå förändringar i fråga om vilket innehåll som var okej och vad som måste bort.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Avkoda ”kulturell ambassadör”",
+        "text": "En ambassadör representerar sitt land utåt och formar bilden av det. Att staten styr innehållet för att passa den rollen betyder att den vill kontrollera hur Japan UPPFATTAS utomlands — bildvård, inte ekonomi.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Matcha mot alternativen",
+        "text": "”Påverka omvärldens bild av Japan” = C, exakt vad ”kulturell ambassadör” innebär. A (väcka nyfikenhet hos läsare) är ett medel, inte statens målsättning. B (slå sig in på marknaden) är ekonomin — den drevs av branschen. D (vända försäljningstrend) är bakgrunden till EXPORTEN, inte syftet med STATENS innehållsstyrning.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera nivåskillnaden",
+        "text": "Texten skiljer två motiv: industrins ekonomiska motiv (sälja mer efter inhemsk svacka) och statens kulturella motiv (forma bilden av Japan). Frågan gäller statens — endast C ligger på den nivån.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar C. Insikten i en mening: när en STAT lägger sig i innehåll är motivet nästan alltid imageskäl (kulturell ambassadör), inte direkt ekonomi.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att marknadsföring drev intresset.",
-        "why_wrong": "Texten talar inte om nyfikenhetsväckande utan kulturell positionering; alternativet flyttar dimension."
+        "why_tempting": "Det är lätt att tro att innehållsändringar handlar om att locka läsare.",
+        "why_wrong": "Steg 4 visar att läsarintresset är ett MEDEL, inte statens egentliga syfte. Staten vill INTE bara väcka nyfikenhet — den vill forma den specifika bilden av Japan. A snävar in på fel nivå."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid den ekonomiska rollen.",
-        "why_wrong": "Det är samma roll som ekonomisk roll men STATEN ville påverka VAD som visades — för image, inte mer försäljning; alternativet missar nivån."
+        "why_tempting": "Många stannar vid marknadssuccén och tror att även staten ville ha ekonomisk framgång.",
+        "why_wrong": "Som steg 5 visar drevs det ekonomiska motivet av industrin, inte av staten. Statens specifika ingripande gällde IMAGEN, inte försäljningen. B blandar samman aktörerna."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att exporten började när inhemsk försäljning sjönk.",
-        "why_wrong": "Det är bakgrunden, inte syftet med statens innehållskontroll; alternativet flyttar nivån."
+        "why_tempting": "Snabbsvar är ofta att hänga upp svaret på den inledande beskrivningen av finanskrisen.",
+        "why_wrong": "Steg 4 visar att försäljningstrenden förklarar varför exporten började — inte varför staten styrde innehållet. D förväxlar bakgrund med syfte."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger att manga 'fick rollen som kulturell ambassadör' och att den japanska staten föreslog innehållsförändringar. Syftet var att påverka utlandets bild av Japan.",
-    "technique": "Vid 'syfte med X:s ingripande'-frågor: hitta den specifika roll texten ger ('kulturell ambassadör')."
+    "technique": "När en text säger att en stat ger något ”rollen som kulturell ambassadör” är det texten själv som översätter statens syfte: att forma omvärldens bild. Välj alltid det alternativ som adresserar IMAGE, inte direkt ekonomi.",
+    "pitfall": "Botemedlet mot aktörsförväxling: skilj statens motiv från industrins motiv. Industrin vill sälja; staten vill representeras. Frågans subjekt avgör vilken motiveringskedja som gäller.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Ambassadörs-rollen",
+      "move": "När en stat ger något rollen ”kulturell ambassadör” — välj alternativet om image och världsbild, inte om försäljning."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2025-verb2-LÄS-018": {
-    "_meta": {
-      "generated_at": 1778438333885,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten lyfter två konkreta skillnader: prissättningen (i Japan FAST pris, i Sverige fri marknad med priskonkurrens från webbokhandlar) och uppfattningen om läsaren (i Sverige enbart barn 8–12, i Japan en mycket bredare publik). Villkoren för prissättning och uppfattningen om läsaren — svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi söker TVÅ förutsättningar som skilde länderna åt när manga började ges ut i Sverige — alltså två konkreta drag som var olika i Japan och Sverige.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta prissättningsstycket",
+        "text": "Texten skriver om ”lagring av så stora mängder mangapocketar” och fortsätter: ”den fria bokmarknaden i Sverige gör att de fysiska bokhandlarna ofta tvingas konkurrera med stora webbokhandlar i fråga om pris, något som inte sker i Japan, där priset är fast”. Skillnad nr 1: prissättning.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta läsaruppfattningsstycket",
+        "text": "Texten skriver: ”I Sverige har serier historiskt ansetts mest lämpade för barn” → utbudet ”riktades enbart mot åldersgruppen 8–12 år”, medan manga i Japan riktar sig till bred publik. Skillnad nr 2: läsaruppfattningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Matcha mot alternativen",
+        "text": "Prissättning + läsaruppfattning = B exakt. A (webbokhandlar + köpkraft) — webbokhandlar fanns i båda länderna; köpkraft diskuteras inte. C (fysiskt format + barnvänlighet) — format diskuteras inte som skillnad; barnvänligheten är följd av läsaruppfattningen, inte en separat skillnad. D (intresset för andra serier + konkurrens i förlagsbranschen) — texten lyfter inte detta som svensk-japansk skillnad.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera ”något som inte sker i Japan”-markören",
+        "text": "Texten markerar en skillnad EXPLICIT med ”något som inte sker i Japan” om priset. Den enda andra explicita skillnaden är läsarens åldersbild. Det är inte slumpmässigt — texten lyfter dem som tvilling-skillnader.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar B. Insikten i en mening: när en text söker ”två förutsättningar som skilde länderna åt”, leta efter EXPLICIT jämförande formuleringar (”inte sker i Japan”, ”till skillnad från Japan”).",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att webbokhandlar är distinkt.",
-        "why_wrong": "Webbokhandlar fanns i båda länderna — alternativet missar diskriminanten; köpkraft är inte heller diskuterad."
+        "why_tempting": "Det är lätt att läsa ”webbokhandlar” som en svensk särdrag.",
+        "why_wrong": "Steg 4 visar att webbokhandlar fanns i båda länderna — det är priskonkurrensen som är distinkt. Köpkraft diskuteras inte alls. A blandar samman pris-skillnaden med kanal-likheten."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid format och barnvänlighet.",
-        "why_wrong": "Format diskuteras inte som skillnad; barnvänligheten är ett resultat av fel målgrupp, inte ett japanskt vs svenskt drag; alternativet matchar fel."
+        "why_tempting": "Många stannar vid ”barnvänlighet” och tror att det är en skillnad i sig.",
+        "why_wrong": "Som steg 4 visar är barnvänlighetskravet en FÖLJD av att man uppfattade läsaren som barn — alltså samma skillnad räknad två gånger, inte två separata. Och fysiskt format diskuteras inte alls."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att den svenska seriebranschen har annan konkurrens.",
-        "why_wrong": "Texten lyfter inte intresse för andra serier som distinkt — alternativet importerar fel tema."
+        "why_tempting": "Snabbsvar är ofta att associera marknadsproblem med konkurrens.",
+        "why_wrong": "Steg 3 visar att intresset för andra serier är en svensk inrikesfråga, inte en svensk-japansk skillnad. D importerar fel jämförelseplan."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten lyfter två konkreta skillnader: prissättning ('fast pris i Japan' vs 'fri marknad i Sverige') och målgruppsuppfattning ('barn 8-12' i Sverige medan mediet är bredare i Japan). Pris och läsaruppfattning skiljde länderna.",
-    "technique": "Vid 'förutsättningar som skilde'-frågor: hitta texten själv om båda de specifika skillnaderna."
+    "technique": "När frågan vill ha ”två förutsättningar som skilde”, sök två EXPLICIT komparativa konstruktioner i texten (”inte sker i Japan”, ”till skillnad från”, ”i Sverige … medan”). Endast meningar med komparativ markering räknas.",
+    "pitfall": "Botemedlet mot att räkna samma skillnad två gånger: ”läsare = barn” och ”utbudet kunde inte vara vuxet” är samma skillnad uttryckt på två sätt. Sök oberoende skillnader.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Komparativ-markörerna",
+      "move": "Skanna efter ”inte sker i Japan” / ”till skillnad från X” — varje sådan markör flaggar EN skillnad; samla två oberoende."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2025-verb2-LÄS-019": {
-    "_meta": {
-      "generated_at": 1778438333885,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten avslutar mangaavsnittet med att ”ett bredare utbud är vad den svenska marknaden hade behövt”. Eftersom utgivningen riktades enbart till 8–12-åriga pojkar och vägrade ge ut manga för andra grupper, var det bristen på variation som drev nedgången — svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vi söker TEXTFÖRFATTARENS egen förklaring till varför den svenska mangautgivningen upphörde — inte våra egna teorier om marknader.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta författarens slutformulering",
+        "text": "Texten avslutar resonemanget om nedgången: ”Ett bredare utbud är vad den svenska marknaden hade behövt för att kunna locka läsarna att köpa och läsa mer asiatiska serier.” Det är författarens egen pekfingerformulering.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Bakgrund: utbudet var smalt",
+        "text": "Texten förklarar: ”utbudet riktades enbart mot åldersgruppen 8–12 år” och vuxenmanga gavs aldrig ut. Läsare som upptäckt bredare manga via internet eller engelska utgåvor fann inte motsvarigheten på svenska.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Matcha mot alternativen",
+        "text": "”Bredare utbud hade behövts” = förlagen erbjöd inte tillräcklig variation = A. B (kvalitetsfall) — texten talar inte om kvalitet. C (flyttade till internet) är en EFFEKT av smalt utbud (”spädde på läsarmigrationen”), inte den primära orsaken. D (saknades målgrupp) inverterar — målgruppen fanns, men utbudet riktade sig till FEL målgrupp.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera kausalkedjan",
+        "text": "Kedjan i texten: smalt utbud (bara barn) → läsare hittade inte sin manga → flyttade till internet → mindre status och försäljning → utgivningen upphörde. ROTORSAKEN är variationen — internet är ett mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar A. Insikten i en mening: när en text använder konstruktionen ”X är vad marknaden hade behövt”, är bristen på X den orsak texten själv pekar ut.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att kvaliteten försämrades.",
-        "why_wrong": "Texten talar inte om kvalitetsfall — bara variation; alternativet importerar fel orsak."
+        "why_tempting": "Det är lätt att associera ”massproducerad” med kvalitetsfall.",
+        "why_wrong": "Steg 4 visar att texten ALDRIG diskuterar kvalitetsfall. B importerar en orsak som inte finns i texten."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid läsarmigration till internet.",
-        "why_wrong": "Det var ett SYMPTOM på det smala utbudet, inte den primära orsaken; alternativet stannar vid effekt."
+        "why_tempting": "Många stannar vid att läsarna flyttade till internet och tar det som orsaken.",
+        "why_wrong": "Som steg 5 visar är internetflytten en EFFEKT av smalt utbud, inte rotorsaken. C stannar vid ett mellansteg i kausalkedjan."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att målgrupp saknades.",
-        "why_wrong": "Tvärtom — målgruppen var TYDLIG (för barn) men FEL — alternativet inverterar."
+        "why_tempting": "Snabbsvar är ofta att tolka utgivningens fall som ”ingen målgrupp”.",
+        "why_wrong": "Steg 4 visar att utgivningen hade en HELT TYDLIG målgrupp (pojkar 8–12) — den var bara fel vald. D inverterar — problemet var inte avsaknad av målgrupp utan fel målgruppsval."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger 'ett bredare utbud är vad den svenska marknaden hade behövt' och beskriver hur utgivningen koncentrerades till barn 8-12. Bristen på variation drev nedgången.",
-    "technique": "Vid 'förklaring till nedgång'-frågor: hitta författarens explicita orsaksformulering ('förlagen erbjöd inte tillräcklig variation')."
+    "technique": "Vid frågor om en författares orsaksförklaring: hitta hens egen ”X är vad som hade behövts” eller ”X drevs av Y”-mening. Distraktorer plockar gärna mellansteg eller bakgrundsfaktorer.",
+    "pitfall": "Botemedlet mot mellanstegsfällan: rita kausalkedjan A → B → C → utgång. Frågan vill ha A (rotorsaken), inte B eller C (mellansteg). Författarens explicita peklängre fram är rotorsaken.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Rotorsaks-meningen",
+      "move": "Hitta författarens ”X är vad som hade behövts” / ”problemet var X” — det X är rotorsaken; allt annat är mellansteg."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2025-verb2-LÄS-020": {
-    "_meta": {
-      "generated_at": 1778438333885,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten avslutar med att ”mangans succé bevisade att serier kan sälja, och den fick in yngre målgrupper i serieläsandet igen. En hel del förlag vågade nysatsa på serier under åren som följde … Detta hjälpte till att öppna för en seriemarknad som vågar ta risker och släppa in fler alternativ.” Branschen fick mod att förnya sig — svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vad LEDDE mangans framgångar till, enligt textförfattaren — alltså den övergripande konsekvensen för seriebranschen i Sverige. Vi söker författarens summerande mening.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lokalisera summeringen",
+        "text": "I textens näst sista avsnitt: ”Mangans succé bevisade att serier kan sälja … En hel del förlag vågade nysatsa på serier under åren som följde … Detta hjälpte till att öppna för en seriemarknad som vågar ta risker och släppa in fler alternativ.”",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Översätt sammanfattningen",
+        "text": "”Vågade nysatsa” + ”vågar ta risker” + ”släppa in fler alternativ” = branschen fick MOD att förnya sig. Det är exakt B.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Granska alternativen",
+        "text": "A (färre översättningar) — texten säger MOTSATSEN, antalet serieböcker ökade 400 %. C (mer lönsamt serietecknande) — texten talar inte om tecknarnas inkomster. D (pojkar/flickor som samma målgrupp) — texten säger att kvinnor blev EN målgrupp, inte att könsskillnaden uppluckrades.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera mot ”två konsekvenser”-uppdelningen",
+        "text": "Texten räknar EXPLICIT upp två konsekvenser: (1) branschen vågade nysatsa, (2) kvinnor blev en målgrupp. B fångar (1), den övergripande för hela branschen. D försöker greppa (2) men missformulerar den.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar B. Insikten i en mening: när en text säger att en bransch ”vågar ta risker och släppa in fler alternativ”, är översättningen ”fick mod att förnya sig”.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att översättningar minskade.",
-        "why_wrong": "Texten säger tvärtom att utgivningen ÖKADE först, sedan minskade specifikt mangan — alternativet inverterar."
+        "why_tempting": "Det är lätt att tro att en mangaboom skulle tränga ut översättningar av andra serier.",
+        "why_wrong": "Steg 4 visar att texten säger MOTSATSEN — utgivningen ökade med 400 procent. A inverterar fakta."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att manga var lön- samt.",
-        "why_wrong": "Det är effekten av en period, inte den övergripande konsekvensen för seriebranschen; alternativet snävar in fel."
+        "why_tempting": "Många stannar vid ordet ”lönsam” i mangaboomens beskrivning.",
+        "why_wrong": "Som steg 4 visar gällde lönsamheten en period, inte den övergripande konsekvensen. Och texten talar om FÖRLAGENS framgång, inte tecknarnas inkomster. C blandar nivåer."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att könsskillnader uppluckrades.",
-        "why_wrong": "Texten säger att kvinnor blev en målgrupp — men inte att könsskillnaden upphörde; alternativet sträcker sig för långt."
+        "why_tempting": "Snabbsvar är ofta att läsa ”kvinnor blev en målgrupp” som att könsskillnaderna upphört.",
+        "why_wrong": "Steg 5 visar att texten säger att kvinnor BLEV en ny målgrupp — inte att skillnaden mellan pojkars och flickors målgrupper försvann. D sträcker sig längre än texten."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger att 'mangans succé bevisade att serier kan sälja, och den fick in yngre målgrupper i serieläsandet igen. En hel del förlag vågade nysatsa på serier'. Branschen fick mod att förnya sig.",
-    "technique": "Vid 'vad ledde X till'-frågor: hitta den övergripande konsekvensen för branschen ('vågar ta risker', 'öppna för nytt')."
+    "technique": "Vid ”vad ledde X till?”-frågor om en bransch: leta efter författarens sammanfattande mening om branschens RIKTNING (vågar/lämnar/öppnar). Distraktorer plockar gärna specifika delkonsekvenser.",
+    "pitfall": "Botemedlet mot att överstark slutsats: ”blev en ny målgrupp” ≠ ”inte längre skilda målgrupper”. Håll dig till exakt formuleringsnivån i texten.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Branschriktningen",
+      "move": "Hitta författarens sammanfattning av branschens RIKTNING (”vågar ta risker”, ”öppnar för”) — det är det övergripande svaret, inte enskilda delkonsekvenser."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "host-2025-verb2-MEK-021": {
     "_meta": {

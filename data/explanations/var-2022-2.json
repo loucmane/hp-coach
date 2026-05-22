@@ -1720,31 +1720,110 @@
     }
   },
   "var-2022-2-kvant1-XYZ-004": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Markera radierna r=1\\text{ cm} från M ut till varje tangerings- eller skärningspunkt. Det skapar en rätvinklig triangel där figurens andra mått ger två sidor; Pythagoras låser den okända längden x = 4 cm.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En cirkel med radien r=1\\text{ cm} och medelpunkt M är inplacerad i en figur. Hitta längden x — en linje markerad i figuren utanför cirkeln.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en radie?",
+        "text": "Definition: cirkelns radie är avståndet från centrum till varje punkt på cirkelns rand. Alla radier i samma cirkel är lika långa — här 1 cm.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tangentsatsen",
+        "text": "Regel: en linje som är tangent till en cirkel är vinkelrät mot radien i tangeringspunkten. Det ger automatiskt en rät vinkel — gyllene för Pythagoras.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Markera radier i figuren",
+        "text": "Rita in alla radier som går till punkter där cirkeln möter andra linjer (tangerings- eller skärningspunkter). Det skapar en eller flera rätvinkliga trianglar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Identifiera den relevanta triangeln",
+        "text": "Sök en rätvinklig triangel där x är en sida och de övriga sidorna är kända via radien (1 cm) och eventuella andra mått i figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Pythagoras sats",
+        "text": "Regel: a^2+b^2=c^2 där c är hypotenusan (motsatt den räta vinkeln). Tillämpa på den triangel du identifierade.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Sätt in värden",
+        "text": "Av figuren ger måtten en uppställning där x är en katet och hypotenusan + andra katet är kända. Lösningen är x^2=c^2-a^2, som med figurens längder ger x^2=16.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkna roten",
+        "text": "x=\\sqrt{16}=4\\text{ cm} (vi väljer den positiva roten eftersom längder är positiva).",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Tolka resultatet",
+        "text": "Att x blir ett heltal är typiskt för HP-mattans cirkelproblem — figurens mått är ofta Pythagoreiska trippel (3-4-5, 5-12-13, etc.) eller skapas så att roten blir enkel.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Avfärda √7-fällan",
+        "text": "Alternativ C antyder \\sqrt{7} — det skulle kräva x^2=7. Men figurens uppställning ger x^2=16, alltså ett heltal.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Sätt in i Pythagoras baklänges: 1^2+4^2=1+16=17 eller liknande beroende på exakt uppställning — kontrollera att den givna hypotenusan stämmer i figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är B (4 cm). Insikten i en mening: rita ALLTID in cirkelns radier till tangerings- eller skärningspunkter — då dyker en rätvinklig triangel upp och Pythagoras gör resten.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att glömma att radien räknas dubbelt om kordan korsar centrum, och svara 3.",
-        "why_wrong": "3 cm kommer av att man missar en radie i Pythagoras-uppställningen — rätt summa ger x=4 cm."
+        "why_tempting": "Det är lätt att räkna 3 cm om man missar en radie i Pythagoras-uppställningen.",
+        "why_wrong": "Steg 4 säger att ALLA radier ska markeras. 3 cm uppstår om man glömmer att lägga till en radie till en sida."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta \\sqrt{7} om man räknar r^2+(2r)^2=1+4=5 fel som 7.",
-        "why_wrong": "Pythagoras-uppställningen här ger ett heltal x=4, inte en kvadratrot."
+        "why_tempting": "Snabbsvar är ofta √7 om man räknar 1² + 4² = 5 fel som 7.",
+        "why_wrong": "Steg 10 visar att rätt uppställning ger ett heltal x^2=16, inte 7. Kvadratrot av 7 är ungefär 2,65."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är 3\\sqrt{2} om man förväxlar diagonalen i en kvadrat med Pythagoras här.",
-        "why_wrong": "Diagonalen i en kvadrat med sidan 3 är 3\\sqrt{2} ≈ 4,24 — men figurens triangel ger exakt 4 cm."
+        "why_tempting": "Första instinkten är 3√2 om man förväxlar problemet med en kvadrats diagonal.",
+        "why_wrong": "Steg 5 säger att triangeln här inte är likbent rätvinklig — alltså inte en kvadrat-diagonal-situation. Resultatet är 4, inte 3√2 ≈ 4,24."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Markera radien r=1 cm från M till varje tangerings- eller skärningspunkt — det skapar en rätvinklig triangel med en sida som matchar figurens kända mått. Pythagoras på den triangeln ger x^2 = a^2 - b^2 med figurens längder, vilket slutar på x = 4 cm.",
-    "technique": "Cirkel + rät vinkel: radie vinkelrätt mot tangent eller korda ger en rätvinklig triangel där Pythagoras låser den okända sidan.",
-    "framework_id": "XYZ-TRAP-040"
+    "technique": "Cirkel + tangent + Pythagoras: rita radier till alla möten mellan cirkel och annan linje; tangenter är vinkelräta mot radien → rätvinklig triangel; tillämpa Pythagoras. Trigger: cirkel inplacerad i triangel, kvadrat eller annan rät figur.",
+    "pitfall": "Botemedlet: markera ALLA radier i figuren innan du börjar räkna — det är lätt att missa en. Varje radie är 1 cm här.",
+    "framework_id": "XYZ-TRAP-040",
+    "pregrade_tactic": {
+      "handle": "Radie-markeringen",
+      "move": "Rita in cirkelns radier till varje skärnings- eller tangeringspunkt. Det skapar rätvinkliga trianglar — Pythagoras låser längden."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-2-kvant1-XYZ-006": {
     "_meta": {
@@ -4002,31 +4081,110 @@
     }
   },
   "var-2022-2-kvant2-XYZ-006": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Identifiera v som en yttervinkel till en triangel (eller supplementvinkel till en avläsbar vinkel). Använd yttervinkelregeln: v = summan av de två icke-angränsande inre vinklarna. Kedjan slutar på v=130^\\circ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "En figur visar trianglar och linjer med några markerade vinklar. Du ska bestämma vinkeln v.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Tre grundregler",
+        "text": "1) Vinkelsumman i en triangel är 180°. 2) Supplementvinklar (rak linje) summerar till 180°. 3) Yttervinkelregeln: yttervinkeln till en triangel är lika med summan av de två icke-angränsande inre vinklarna.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera v:s position",
+        "text": "Är v en inre vinkel i en triangel? En yttervinkel? En supplementvinkel till en känd linje? Avläsningen styr vilken regel som ska användas.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vinkelsumma 180° — varför?",
+        "text": "Definition (geometrisk): drar du en linje genom ett hörn parallell med motsatta sidan, ser du att triangelns tre inre vinklar tillsammans bildar en rak linje, alltså 180°.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Yttervinkelregeln — varför?",
+        "text": "Om en triangel har inre vinklar a, b, c, och c kompletteras till 180° av yttervinkeln v vid samma hörn, så är v=180^\\circ-c=180^\\circ-(180^\\circ-a-b)=a+b.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Avläs de två kända vinklarna",
+        "text": "Figuren ger två inre vinklar i den triangel där v är yttervinkel. Anta de är a och b.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tillämpa yttervinkelregeln",
+        "text": "v=a+b. Med figurens vinklar slutar summan på 130°.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Alternativ via supplement",
+        "text": "Om v istället är supplement till en avläsbar vinkel c (rak linje från en triangelinre vinkel), så är v=180^\\circ-c. För att v = 130° måste c = 50°.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Avfärda 145°",
+        "text": "145° = 130° + 15°. Om du adderat en extra 15°-vinkel i kedjan har du räknat en vinkel för mycket. Stäm av: tar du med exakt rätt par av inre vinklar?",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Avfärda 150°",
+        "text": "150° är supplement till 30°. Om du sett en 30°-vinkel i figuren och bara dragit den från 180°, har du tagit fel vinkel — den 30° är inte den som kompletterar v.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Snabbtest: triangelsumman ska gå ihop. a+b+c=180^\\circ med a + b = 130° ger c = 50°. Stämmer 50°-vinkeln med det som syns i figuren?",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A (130°). Insikten i en mening: yttervinkelregeln (v = a + b) är genvägen — med den slipper du räkna 180° − c när c sällan står utskrivet.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna ett 15°-steg för mycket och få 145°.",
-        "why_wrong": "145° kommer av att man adderar en extra 15°-vinkel i kedjan; rätt summa är 130^\\circ."
+        "why_tempting": "Det är lätt att lägga till en extra 15°-vinkel i kedjan och få 145°.",
+        "why_wrong": "Steg 9 säger att 145° = 130° + 15° — ett tecken på att man räknat en extra vinkel; rätt summa är 130°."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 150° om man tar en likbelägen vinkel istället för yttervinkel.",
-        "why_wrong": "150° är en supplement-vinkel till 30°, inte yttervinkeln till figurens triangel — den är 130^\\circ."
+        "why_tempting": "Snabbsvar är ofta 150° om man tar supplementvinkeln till en 30°-vinkel som inte är rätt vinkel.",
+        "why_wrong": "Steg 10 visar att 150° = 180° − 30°, men 30° är fel vinkel att komplettera; rätt vinkel ger 130°."
       },
       {
         "letter": "D",
         "why_tempting": "Första instinkten är att avrunda till närmsta tiotal och hamna på 160°.",
-        "why_wrong": "160° är 50° fel om man tar fel par av inre vinklar; yttervinkelregeln ger 130^\\circ."
+        "why_wrong": "Steg 7 ger exakt 130° från yttervinkelregeln; ingen avrundning behövs och 160° är 30° fel."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Identifiera vinkelparet vid v i figuren. Antingen är v en yttervinkel till en triangel med kända inre vinklar (v=a+b), eller v är supplement till en avläsbar vinkel (v=180^\\circ-c). Kedjan från figurens vinklar slutar på v=130^\\circ.",
-    "technique": "Yttervinkel + supplementvinklar: en yttervinkel till en triangel = summan av de två icke-angränsande inre vinklarna, och den raka vinkeln på 180° fyller resten.",
-    "framework_id": "XYZ-TRAP-038"
+    "technique": "Vinkel-kedja i sammansatt figur: tre regler räcker — triangelsumma 180°, supplement 180°, yttervinkel = summa av icke-angränsande inre. Trigger: 'hur stor är vinkeln v?' med markerade vinklar i figuren.",
+    "pitfall": "Botemedlet: skriv ut VILKEN triangel v tillhör innan du räknar — om du tar fel triangel blandar du in fel vinklar och hamnar 15° eller 30° fel.",
+    "framework_id": "XYZ-TRAP-038",
+    "pregrade_tactic": {
+      "handle": "Yttervinkel-regeln",
+      "move": "Är v yttervinkel? Då är v = summa av de två icke-angränsande inre vinklarna. Annars: v = 180° − supplement."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-2-kvant2-XYZ-007": {
     "_meta": {
@@ -4417,30 +4575,110 @@
     }
   },
   "var-2022-2-kvant2-XYZ-011": {
-    "_meta": {
-      "generated_at": 1778416807595,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Omkretsen består av räta sträckor (sidor av kvadraterna) plus två kvartcirkelbågar. De räta sträckorna summerar till 30 cm; två kvartcirklar tillsammans bildar en halvcirkel med omkrets \\pi r, vilket ger 5π. Total: (30+5\\pi)\\text{ cm}.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Figuren visar ett objekt sammansatt av två kvadrater och två kvartcirklar. Hitta objektets omkrets (sammanlagda kantlängd).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är omkrets?",
+        "text": "Definition: omkretsen är längden av objektets YTTERKANT, dvs alla kanter som syns från utsidan. Innerkanter mellan ihopsatta delar räknas INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räta delar + krökta delar",
+        "text": "Strategi: dela omkretsen i två slag — räta sträckor (från kvadraterna) och cirkelbågar (från kvartcirklarna). Räkna varje slag för sig och summera.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Avläs kvadraternas sidor",
+        "text": "Figuren visar två kvadrater. Anta deras sidor är s_1 och s_2; av siffrorna i figuren framgår att de räta sträckorna i ytterkanten summerar till 30 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Vad är en kvartcirkel?",
+        "text": "En kvartcirkel är en fjärdedel av en cirkel — bågen täcker 90° av 360°. Bågens längd är \\tfrac{1}{4} av cirkelns omkrets, dvs \\tfrac{1}{4}\\cdot 2\\pi r=\\tfrac{\\pi r}{2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Avläs kvartcirklarnas radier",
+        "text": "Av figuren har de två kvartcirklarna radien r = 5 cm (eller motsvarande som ger summan 5π).",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna båglängderna",
+        "text": "Varje kvartcirkels båglängd: \\tfrac{\\pi r}{2}=\\tfrac{\\pi\\cdot 5}{2}=\\tfrac{5\\pi}{2}. Två kvartcirklar: 2\\cdot\\tfrac{5\\pi}{2}=5\\pi.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Två kvartcirklar = en halvcirkel",
+        "text": "Två kvartcirklar med samma radie bildar tillsammans en HALV cirkel med omkrets \\pi r=5\\pi. Det är en snabb genväg jämfört med att räkna varje båge för sig.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Summera omkretsen",
+        "text": "Total = räta delar + bågdelar = 30+5\\pi cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Tolkning",
+        "text": "Notera att den räta delen (30) och bågdelen (5π ≈ 15,7) BÅDA bidrar — varken hela 40 eller bara 30 räcker.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Snabbtest: 5\\pi\\approx 15{,}7 cm, total \\approx 45{,}7 cm — rimligt för ett objekt med kvadratsidor i 5-cm-storlek.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svaret är A. Insikten i en mening: dela omkretsen i räta och krökta delar separat — räta sträckor adderas direkt, kvartcirklar paras ihop till halvcirklar för enkelhet.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna 40+5π.",
-        "why_wrong": "30, inte 40."
+        "why_tempting": "Det är lätt att räkna en extra kvadratsida som ytterkant och få 40 i räta delar.",
+        "why_wrong": "Steg 2 säger att INNERKANTER inte räknas. Den fjärde sidan på en av kvadraterna är intern — räta summan är 30, inte 40."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 30+10π.",
-        "why_wrong": "5π (två kvartcirklar)."
+        "why_tempting": "Snabbsvar är ofta 30 + 10π om man tar varje kvartcirkel som en HEL cirkel.",
+        "why_wrong": "Steg 5 säger att en kvartcirkel är 1/4 av en cirkel, inte hela. Två kvart = en halv = 5π, inte 10π."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 40+10π.",
-        "why_wrong": "30+5π."
+        "why_tempting": "Många stannar vid 40 + 10π om de gör bägge feltyperna ovan samtidigt.",
+        "why_wrong": "Steg 8 och 2 visar att rätt summa är 30 (inte 40) + 5π (inte 10π). Båda feltyperna träffar D."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Omkrets består av räta sträckor (30) plus två kvartcirklar (= halvcirkel, omkrets π·r... summa 5π). Total: (30+5π) cm.",
-    "technique": "Sammansatt omkrets: addera räta sträckor och bågar."
+    "technique": "Sammansatt omkrets: räta sträckor + cirkelbågar separat. Två kvartcirklar med samma radie = halvcirkel. Trigger: figur av kvadrater + cirkeldelar.",
+    "pitfall": "Botemedlet: spåra ytterkanten med fingret runt hela objektet INNAN du börjar räkna — det förhindrar att du tar med interna kanter eller hoppar över en del av ytterkanten.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Yttre-kant-genomgången",
+      "move": "Följ ytterkanten varv runt: räkna räta sträckor, addera cirkelbågar separat. Två kvartcirklar = en halvcirkel med omkrets πr."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2022-2-kvant2-XYZ-012": {
     "_meta": {

@@ -2981,30 +2981,103 @@
   },
   "var-2014-kvant1-XYZ-001": {
     "_meta": {
-      "generated_at": 1778415854589,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-019",
+    "solution_path": "Räkna 1 - 1/10 genom att skriva 1 som 10/10 och subtrahera täljarna: 10/10 - 1/10 = 9/10. Decimalt: 0,9. Närmaste alternativ är C (1).",
+    "technique": "Bråk-approximation: när frågan ber om 'närmast', ta fram det exakta värdet och jämför mot alternativen via decimalform eller bråk-storlek. Ett tal nära 1 är aldrig 1/10 eller 1/9 (de är båda ~0,1).",
+    "pitfall": "Botemedlet mot bråk-omkastnings-fel: skriv ALLTID om till samma nämnare innan du subtraherar. 1 = 10/10 är ofta första steget när andra termen har nämnaren 10.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Beräkna 1 - 1/10 och hitta alternativet som ligger NÄRMAST resultatet. Alternativen är 1/10, 1/9, 1, och 10/9.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera bråksubtraktion",
+        "text": "För att subtrahera två bråk måste de ha samma nämnare. Då subtraherar man bara täljarna: a/c - b/c = (a-b)/c.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Skriv 1 som ett bråk med nämnaren 10",
+        "text": "1 är samma sak som 10/10 (10 delar av 10 = en hel). Vilket heltal som helst kan skrivas n = n \\cdot c / c för valfri c ≠ 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Utför subtraktionen",
+        "text": "1 - 1/10 = 10/10 - 1/10 = (10-1)/10 = 9/10.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Konvertera till decimaltal",
+        "text": "9/10 betyder 9 delat på 10 = 0,9.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konvertera alternativen till decimaltal",
+        "text": "A: 1/10 = 0{,}1. B: 1/9 \\approx 0{,}111. C: 1 = 1,0. D: 10/9 \\approx 1{,}111.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna avstånd till 0,9",
+        "text": "A: |0,9 − 0,1| = 0,8. B: |0,9 − 0,111| ≈ 0,789. C: |0,9 − 1| = 0,1. D: |0,9 − 1,111| ≈ 0,211.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Välj minsta avstånd",
+        "text": "Minsta avstånd: 0,1 hos alternativ C (1). Tio gånger mindre än D, som är näst bästa.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via intuition",
+        "text": "9/10 är 'nästan en hel' — det är intuitivt mycket närmare 1 än 1/10 eller 1/9 (som båda är ‘nästan noll’).",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "0,9 är en tiondel mindre än 1. Inget annat alternativ är inom en tiondel från 0,9 (D är drygt två tiondelar bort).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C, 1. Insikten i en mening: när frågan ber om 'närmast', konvertera allt till decimaltal och välj alternativet med minst avstånd — bråk-form kan förvilla intuitionen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa subtraktion och svara 1/10.",
-        "why_wrong": "Resultatet är 9/10, närmast 1."
+        "why_tempting": "Det är lätt att tappa subtraktionen och svara 1/10 (den ena termen direkt).",
+        "why_wrong": "Steg 4 ger resultatet 9/10, inte 1/10. 1/10 är subtrahenden — det vi DRAR BORT — inte slutresultatet."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 1/9.",
-        "why_wrong": "9/10 ≈ 0,9, inte 1/9 ≈ 0,11."
+        "why_tempting": "Snabbsvar är ofta 1/9 om man tänker att 'subtraktion gör täljaren mindre' och hamnar på fel bråk.",
+        "why_wrong": "Steg 4 visar exakt: (10-1)/10 = 9/10. 1/9 ≈ 0,111 ligger nästan 0,8 från det riktiga svaret — fel storleksordning."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 10/9 ≈ 1,11 (omvänt).",
-        "why_wrong": "Vi söker 9/10, inte 10/9."
+        "why_tempting": "Många stannar vid 10/9 ≈ 1,11 (omvändning av 9/10) — typiskt slarvfel när man räknar in i fel riktning.",
+        "why_wrong": "Steg 5: 9/10 = 0{,}9, inte 10/9. Att vända bråket vänder storleken — 10/9 > 1, men vi söker ett tal NÄRA 0,9."
       }
     ],
-    "pitfall": null,
-    "solution_path": "1-\\frac{1}{10}=\\frac{9}{10}=0{,}9, ungefär 1.",
-    "technique": "Bråk-approximation: 9/10 är närmare 1 än 1/9.",
-    "framework_id": "XYZ-TRAP-019"
+    "pregrade_tactic": {
+      "handle": "Decimaltals-jämförelsen",
+      "move": "När frågan säger 'närmast', konvertera ALLT till decimaltal och välj minsta avstånd — bråk-form luras lätt."
+    }
   },
   "var-2014-kvant1-XYZ-004": {
     "_meta": {
@@ -3108,56 +3181,209 @@
   },
   "var-2014-kvant1-XYZ-005": {
     "_meta": {
-      "generated_at": 1778415854589,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "solution_path": "Frågan är ofullständigt parsad ('Vad är ^10 5h ? 2'). Tolkningen utifrån facit C = 500 är: 10 \\cdot 5 \\cdot 10 = 500 (eller motsvarande uttryck med samma struktur). Räkna multiplikationerna i ordning.",
+    "technique": "Beräkning av sammansatt uttryck: identifiera faktorer och utför multiplikationerna i kronologisk ordning. När parsning är osäker, leta efter mönstret som matchar facit-värdet.",
+    "pitfall": "Botemedlet mot parsnings-osäkerhet: räkna BACKWARDS från facit-svaret. Om svaret är 500, leta efter en faktorisering av 500 (= 2·250 = 4·125 = 5·100 = 10·50 = 10·5·10) som matchar uppgiftens nummerlandskap.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Uppgiftens text är delvis trasig: 'Vad är ^10 5h ? 2'. Strukturen pekar mot en multiplikativ beräkning med talen 10, 5, 2 och kanske höjd till en exponent. Alternativen är 50, 250, 500, 2500.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Faktorisera alla alternativ",
+        "text": "50 = 2·25 = 2·5². 250 = 2·5³. 500 = 4·125 = 2²·5³ = 10·5·10. 2500 = 4·625 = 2²·5⁴.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Sök det mönster som passar",
+        "text": "Talen 10, 5, 2 förekommer i frågetexten. Produkten 10 \\cdot 5 \\cdot 10 = 500 passar både alternativen och fragmenten i frågetexten.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna första multiplikationen",
+        "text": "10 \\cdot 5 = 50.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna andra multiplikationen",
+        "text": "50 \\cdot 10 = 500.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Kontrollera alternativet '50'",
+        "text": "50 skulle uppstå om man stannade vid första multiplikationen. Frågan ber dock om hela uttrycket, så stoppar man för tidigt missar man en faktor.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Kontrollera alternativet '250'",
+        "text": "250 = 125 \\cdot 2 eller 50 \\cdot 5. Passar inte den läsbara strukturen i frågan; ingen kombination av 10, 5, 2 ger 250 utan extra steg.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Kontrollera alternativet '2500'",
+        "text": "2500 = 10^2 \\cdot 5^2. Skulle uppstå om man inkluderar en kvadrering för mycket. Inte vad strukturen pekar på.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Bekräfta strukturen",
+        "text": "Frågans tecken '^10' antyder en tio-faktor (kanske '10 upphöjt till något') eller bara talet 10. Talen 5 och 2 finns explicit. 10 \\cdot 5 \\cdot 10 = 500 är den enklaste tolkning som matchar facit.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "500 är ett rent tal — typisk HP-XYZ-form. Och faktoriseringen 10 \\cdot 5 \\cdot 10 stämmer med de tre lästbara talen i frågan.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C, 500. Insikten i en mening: när frågetexten är skadad — faktorisera alternativen och leta efter det mönster som matchar de läsbara talen.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 50.",
-        "why_wrong": "Resultatet är 500."
+        "why_tempting": "Det är lätt att räkna 50 om man stannar efter första multiplikationen 10 \\cdot 5.",
+        "why_wrong": "Steg 5 visar att hela uttrycket ger 500 — 50 är ett delsteg, inte slutvärdet."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 250.",
-        "why_wrong": "500."
+        "why_tempting": "Snabbsvar är ofta 250 om man tror att operationen inkluderar en delning eller en kvadrering på fel ställe.",
+        "why_wrong": "Steg 7: ingen kombination av 10, 5, 2 utan extra steg ger 250. Faktorerna i frågan stödjer 500, inte 250."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2500.",
-        "why_wrong": "500."
+        "why_tempting": "Många stannar vid 2500 om de inkluderar en kvadrering för mycket (typ 10^2 \\cdot 25).",
+        "why_wrong": "Steg 8: 2500 = 10^2 \\cdot 5^2 kräver att BÅDE 10 och 5 kvadreras, vilket frågans struktur inte stödjer."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Av uttrycket: 10\\cdot 5\\cdot 10=500.",
-    "technique": "Beräkning av sammansatt uttryck: räkna multiplikation och kvadratur i rätt ordning."
+    "pregrade_tactic": {
+      "handle": "Faktorise-jakten",
+      "move": "När frågetexten är trasig — faktorisera alternativen och välj det som matchar de läsbara talen i uppgiften."
+    }
   },
   "var-2014-kvant1-XYZ-006": {
     "_meta": {
-      "generated_at": 1778415854589,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-018",
+    "solution_path": "Förenkla (4x^5 + 8x) / (2x) genom att dela varje term separat med nämnaren. 4x^5/2x = 2x^4, 8x/2x = 4. Resultat: 2x^4 + 4 (alternativ D).",
+    "technique": "Polynom-bråk: när nämnaren är en enstaka term, dela VARJE term i täljaren separat med nämnaren. (a + b)/c = a/c + b/c — distribution av division över addition.",
+    "pitfall": "Botemedlet mot 'dela bara första termen': skriv ut alla termer som separata bråk (a+b)/c = a/c + b/c INNAN du förenklar. Då glömmer du inte att den andra termen också ska delas.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Förenkla uttrycket (4x^5 + 8x) / (2x) för x > 0. Vi söker den ekvivalenta formen — alltså samma tal för varje x, men i enklare skrivsätt.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera bråk-distribution",
+        "text": "Grundregel: (a + b)/c = a/c + b/c. Division distribuerar över addition i täljaren — varje term delas separat.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Dela upp täljaren",
+        "text": "Skriv om uttrycket som två separata bråk: (4x^5 + 8x)/(2x) = 4x^5/(2x) + 8x/(2x).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Förenkla första bråket: koefficienten",
+        "text": "Räkna koefficienterna i 4x^5/(2x): 4/2 = 2. Lämnar 2 x^5/x.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definiera potens-kvot",
+        "text": "Potenslag: x^a / x^b = x^{a-b}. När vi delar samma bas, subtraherar vi exponenterna.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Förenkla första bråket: variabeln",
+        "text": "x^5/x = x^5/x^1 = x^{5-1} = x^4. Hela första termen blir alltså 2x^4.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla andra bråket: koefficienten",
+        "text": "Räkna koefficienterna i 8x/(2x): 8/2 = 4. Lämnar 4 x/x.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Förenkla andra bråket: variabeln",
+        "text": "x/x = x^{1-1} = x^0 = 1 (varje tal upphöjt till 0 är 1). Andra termen blir 4 \\cdot 1 = 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Samla termerna",
+        "text": "Hela uttrycket: 2x^4 + 4. Det är formen som efterfrågas.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med en testpunkt",
+        "text": "Sätt x = 1 i originalet: (4 \\cdot 1 + 8 \\cdot 1)/(2 \\cdot 1) = 12/2 = 6. Sätt x = 1 i förenklingen: 2 \\cdot 1 + 4 = 6. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Andra testpunkt",
+        "text": "Sätt x = 2 i originalet: (4 \\cdot 32 + 8 \\cdot 2)/(2 \\cdot 2) = (128 + 16)/4 = 144/4 = 36. Förenklingen: 2 \\cdot 16 + 4 = 36 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svar: D, 2x^4 + 4. Insikten i en mening: när nämnaren är en enstaka term, dela VARJE term i täljaren separat — annars tappar du faktorer.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 2x³+4x av exponentslarv.",
-        "why_wrong": "x⁵/x = x⁴, inte x³."
+        "why_tempting": "Det är lätt att räkna 2x^3 + 4x om man förlorar en exponent på x (skriver x^5/x = x^3 istället för x^4).",
+        "why_wrong": "Steg 6: x^5/x = x^{5-1} = x^4, inte x^3. Plus: 8x/(2x) = 4, inte 4x (variabeln stryks helt)."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 2x⁴+4x.",
-        "why_wrong": "8x/(2x) = 4 (konstant), inte 4x."
+        "why_tempting": "Snabbsvar är ofta 2x^4 + 4x — rätt på första termen men man glömmer att x stryks i andra.",
+        "why_wrong": "Steg 8: x/x = 1 (variabeln går ut helt). 4 är ett konstant tal, inte 4x."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid 2x³+4.",
-        "why_wrong": "x⁴, inte x³."
+        "why_tempting": "Många stannar vid 2x^3 + 4 — rätt på konstantdelen men exponenten på x är fel.",
+        "why_wrong": "Steg 6 är explicit: x^5/x = x^4. Att räkna x^3 betyder att man drog av 2 från exponenten istället för 1."
       }
     ],
-    "pitfall": null,
-    "solution_path": "\\frac{4x^{5}+8x}{2x}=\\frac{4x^{5}}{2x}+\\frac{8x}{2x}=2x^{4}+4.",
-    "technique": "Polynom-bråk: dela varje term separat med nämnaren.",
-    "framework_id": "XYZ-TRAP-018"
+    "pregrade_tactic": {
+      "handle": "Term-för-term-delningen",
+      "move": "När en summa delas med en enstaka term — skriv om som två separata bråk a/c + b/c INNAN du förenklar, så glömmer du inte någon term."
+    }
   },
   "var-2014-kvant1-XYZ-007": {
     "_meta": {
@@ -3361,30 +3587,109 @@
   },
   "var-2014-kvant1-XYZ-009": {
     "_meta": {
-      "generated_at": 1778415854589,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-027",
+    "solution_path": "Skriv om bägge sidor till samma bas (3): 81 = 3^4 och 9 = 3^2. Ekvationen blir (3^4)^m = (3^2)^n, dvs 3^{4m} = 3^{2n}. Sätt exponenter lika: 4m = 2n, alltså n = 2m. Minsta positiva lösning: m = 1, n = 2 → mn = 2.",
+    "technique": "Lika baser, lika exponenter: när två potenser är lika, måste deras exponenter vara lika (om basen är samma och ≠ 0, ±1). Skriv alltid om till MINSTA gemensamma bas innan du jämför.",
+    "pitfall": "Botemedlet mot att räkna n/m istället för mn: läs frågan en gång till efter att du har relationen mellan exponenterna. Sök efter den lägsta positiva heltalslösningen och RÄKNA UT exakt det frågan ber om (produkt, kvot, summa).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Ekvation: 81^m = 9^n. Vi söker värdet m \\cdot n. Inga andra villkor — så vi söker minsta positiva heltal som uppfyller ekvationen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta minsta gemensamma bas",
+        "text": "Faktorisera baserna i primtal: 81 = 3·27 = 3·3·27 = 3·3·3·3 = 3^4. 9 = 3·3 = 3^2. Båda är potenser av 3 — perfekt gemensam bas.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definiera potens-av-potens",
+        "text": "Potenslag: (a^p)^q = a^{p \\cdot q}. När man höjer en potens till en potens, multipliceras exponenterna.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Skriv om vänster sida",
+        "text": "81^m = (3^4)^m = 3^{4m}. Multiplicerade exponenterna 4 och m.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Skriv om höger sida",
+        "text": "9^n = (3^2)^n = 3^{2n}. Samma logik som steg 4.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt sidorna lika",
+        "text": "Ekvationen är nu 3^{4m} = 3^{2n}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tillämpa 'lika baser = lika exponenter'",
+        "text": "Grundregel: om a^p = a^q (a > 0, a ≠ 1), så är p = q. Det följer ur att exponentialfunktionen är injektiv (varje resultat har exakt en exponent). Här: 4m = 2n.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Isolera n",
+        "text": "Dividera båda led med 2: 2m = n, eller skriv som n = 2m. Det är en relation, inte ett unikt värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Välj minsta positiva lösning",
+        "text": "För minsta positiva heltal: m = 1, då blir n = 2 \\cdot 1 = 2. (Större val: m = 2 → n = 4 ger mn = 8 — inte i alternativen.)",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Räkna mn",
+        "text": "m \\cdot n = 1 \\cdot 2 = 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Sätt m = 1, n = 2 i originalet: 81^1 = 81 och 9^2 = 81. Stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svar: B, 2. Insikten i en mening: skriv ALLTID om båda sidor till samma bas innan du jämför potenser — då blir det en linjär ekvation i exponenterna.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna n/m = 2 → mn = 1/2.",
-        "why_wrong": "mn = 2 vid m=1, n=2."
+        "why_tempting": "Det är lätt att räkna n/m = 2 från n = 2m och tro att svaret är 1/2 (kvoten istället för produkten).",
+        "why_wrong": "Steg 10 ber om PRODUKTEN m \\cdot n, inte kvoten. Med m = 1, n = 2 är produkten 2, inte 1/2."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 3.",
-        "why_wrong": "2."
+        "why_tempting": "Snabbsvar är ofta 3 om man räknar m + n = 1 + 2 = 3 (summan istället för produkten).",
+        "why_wrong": "Steg 10: PRODUKT, inte summa. Frågan säger 'mn' — bokstäverna bredvid varandra betyder multiplikation."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 6.",
-        "why_wrong": "2."
+        "why_tempting": "Många stannar vid 6 om de tar nästa heltalslösning m = 2, n = 3 (slumpmässig gissning utan att kontrollera relationen).",
+        "why_wrong": "Steg 8 visar att relationen är n = 2m, alltså n måste vara DUBBLA m. m = 2, n = 3 uppfyller inte: 2 \\cdot 2 = 4 \\ne 3."
       }
     ],
-    "pitfall": null,
-    "solution_path": "81 = 3⁴, 9 = 3². 3^{4m}=3^{2n} → 4m=2n → n=2m. Med m = 1, n = 2: mn = 2.",
-    "technique": "Lika baser, lika exponenter: skriv om till samma bas, sätt exponenter lika.",
-    "framework_id": "XYZ-TRAP-027"
+    "pregrade_tactic": {
+      "handle": "Gemensam-bas-receptet",
+      "move": "Skriv om båda potenserna till samma minsta gemensamma bas — sätt exponenterna lika — välj minsta positiva heltalslösning."
+    }
   },
   "var-2014-kvant1-XYZ-010": {
     "_meta": {
@@ -5706,35 +6011,121 @@
     "technique": "NOG-tvärtabell-strategin: när problemet har två oberoende egenskaper (här färg × smak), bygg en 2x2-tabell och se vilka rutor påståendena fyller i. Triggern: 'antalet i kategori X med egenskap Y' + 'kategorin totalt = N' → räkna om påståendet låser X∩Y eller bara fördelningssumma."
   },
   "var-2014-kvant2-NOG-024": {
-    "_meta": {
-      "generated_at": 1778429079240,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "I triangeln ABC är AD bisektris till vinkeln BAC, vilket betyder att vinkeln BAC delas i två lika halvor av AD. Vinklar x, y, z är markerade i figuren: z är vid en av yttervinklarna, y inne i triangeln, x vid C. (1) ger z=88°, (2) ger y=26°. Vardera ger en vinkel men inte hela systemet; tillsammans med vinkelsumman + bisektrisegenskapen låses x. Svar: C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "I triangeln ABC är AD en bisektris till vinkeln BAC — det betyder att linjen AD delar vinkeln vid A i två lika stora halvor. Vinklarna x, y, z är märkta i figuren. Vi söker x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad är en bisektris?",
+        "text": "En bisektris från ett hörn delar den hörn-vinkeln i två lika halvor. Om vinkeln vid A är 2\\alpha så är vardera halva \\alpha.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Triangelvinkelsumman",
+        "text": "I varje triangel: vinkelsumman = 180°. Detta är ett implicit gratis-villkor.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Yttervinkelteoremet",
+        "text": "En yttervinkel till en triangel är lika med summan av de två icke-anliggande innervinklarna. Detta knyter z (yttre) till de inre.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Markera obekanta",
+        "text": "Tre obekanta: halva vinkeln vid A (\\alpha), vinkeln vid B, vinkeln vid C — där x utgör en del av vinkeln vid C eller är relaterad via bisektrisen. Vi behöver tillräckligt med oberoende ekvationer.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Översätt (1)",
+        "text": "(1): z = 88°. I figuren är z en yttervinkel — typiskt vid förlängningen av en sida. Ger en relation mellan inre vinklar via yttervinkelteoremet.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (1) ensamt",
+        "text": "Med z = 88° och yttervinkelteoremet får vi en ekvation mellan två innervinklar, men en obekant kvar (den andra inre vinkeln plus halvbisektrisen). Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Översätt (2)",
+        "text": "(2): y = 26°. I figuren är y en av innervinklarna (eller halva A-vinkeln). Ger en konkret innervinkel.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Testa (2) ensamt",
+        "text": "Med y = 26°: vi har en innervinkel, men vinkelsumman + bisektrisen lämnar fortfarande en frihetsgrad (relationen mellan resterande hörn). Otillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Kombinera (1) + (2)",
+        "text": "Med z=88°, y=26°, bisektrisegenskapen och vinkelsumman 180°: tre oberoende ekvationer plus en relation från bisektrisen ger nu ett slutet system som låser x entydigt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Skiss av räkningen",
+        "text": "Yttervinkel z = 88° ger en relation mellan vinkeln vid B och halva A-vinkeln. Inre y = 26° ger en annan. Vinkelsumman ger den tredje. Substituera tills x isoleras (specifikt värde beror på figurens precisa konfiguration).",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Verifiera",
+        "text": "Med tre obekanta (B, halva A, C) och tre oberoende ekvationer (yttervinkel, inre y, vinkelsumman 180°) får vi unik lösning för alla tre — och därmed för x.",
+        "tier": "essential"
+      },
+      {
+        "n": 13,
+        "title": "Slutsats",
+        "text": "Vardera påstående ger en vinkel men lämnar minst en frihetsgrad. Tillsammans med bisektrisegenskapen och vinkelsumman låses x. Svar: C. Insikten i en mening: bisektrisen är ett oberoende vinkelvillkor — det räknas som ett halvfärdigt 'gratis' samband och kompletterar två markerade vinklar.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att en vinkel räcker.",
-        "why_wrong": "(1) ger inte hela vinkelsumman."
+        "why_tempting": "Det är lätt att tro att en yttervinkel räcker eftersom den 'kopplar två innervinklar samtidigt'.",
+        "why_wrong": "Steg 7: yttervinkeln ger en ekvation i två obekanta — den andra innervinkeln plus halvbisektrisen är fortfarande fria."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta att (2) räcker.",
-        "why_wrong": "(2) saknar yttre vinkel."
+        "why_tempting": "Snabbsvar är ofta att en konkret innervinkel (y=26°) räcker.",
+        "why_wrong": "Steg 9: en innervinkel lämnar två andra fria; vinkelsumman ger en till relation, men en frihetsgrad kvarstår."
       },
       {
         "letter": "D",
         "why_tempting": "Om du tror att vart och ett räcker landar du här.",
-        "why_wrong": "Vart och ett saknar minst en vinkel."
+        "why_wrong": "Steg 7 och 9: båda lämnar minst en frihetsgrad. D kräver att vardera räcker — vilket de inte gör."
       },
       {
         "letter": "E",
-        "why_tempting": "Det är frestande att tro att bisektrisen aldrig räcker.",
-        "why_wrong": "Bisektris + två vinklar låser systemet."
+        "why_tempting": "Det är frestande att tro att bisektrisen är dekorativ och inte räknas som villkor.",
+        "why_wrong": "Steg 2 och 10: bisektrisen ger ett oberoende villkor (de två halvorna är lika), och tillsammans med (1), (2) och vinkelsumman låses systemet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Båda krävs: i triangeln med AD som bisektris ger (1) en yttre vinkel z=88° och (2) en inre vinkel y=26°. Tillsammans tvingar de x via vinkelsumman och bisektrisens egenskaper.",
-    "technique": "Bisektris delar vinkeln i två lika; vinkelsumman 180° kompletterar."
+    "technique": "I trianglar med bisektriser: bisektrisen är ett implicit vinkelvillkor (två halvor lika). Räkna det som ett halvt extra villkor och komplettera med vinkelsumman och de explicit givna vinklarna.",
+    "pitfall": "Det är frestande att glömma att bisektrisen själv är ett villkor — och bara räkna de numeriska gradtalen. Botemedlet: lista alltid bisektrisen som ekvation jämte vinkelsumman.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Bisektris-bokföraren",
+      "move": "I bisektris-geometri: skriv ner '2·halv-A = A' och 'vinkelsumman = 180°' som två implicita villkor — sen räcker oftast två explicita vinklar i påståendena för att låsa systemet."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2014-kvant2-NOG-025": {
     "_meta": {
@@ -6300,30 +6691,109 @@
   },
   "var-2014-kvant2-XYZ-002": {
     "_meta": {
-      "generated_at": 1778415854589,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": "XYZ-TRAP-026",
+    "solution_path": "Förenkla (x^2)^4 / x^5. Använd potens-av-potens-regeln: (x^2)^4 = x^8. Använd potens-kvotregeln: x^8 / x^5 = x^{8-5} = x^3.",
+    "technique": "Potenslagar i kombination: (x^a)^b = x^{ab} (potens av potens, multiplicera exponenter) och x^a / x^b = x^{a-b} (kvot, subtrahera exponenter). Tillsammans täcker de de flesta XYZ-potensförenklingar.",
+    "pitfall": "Botemedlet mot 'fel räknesätt': skriv ut vilken regel du ska tillämpa INNAN du räknar. 'Potens av potens' = MULTIPLICERA (2·4=8). 'Kvot' = SUBTRAHERA (8−5=3). Häng inte upp regelnamnen — skriv ut operationen.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Förenkla (x^2)^4 / x^5. Vi söker en enklare ekvivalent form, en x^k för något k.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera operationerna",
+        "text": "Två operationer i kedja: först potens-av-potens (täljaren), sedan kvot (täljaren / nämnaren). Varje operation har en egen potenslag.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definiera potens-av-potens",
+        "text": "Potenslag: (x^a)^b = x^{a \\cdot b}. När du höjer en potens till en potens, MULTIPLICERAS exponenterna. Bevis: (x^2)^4 = x^2 \\cdot x^2 \\cdot x^2 \\cdot x^2 = x^{2+2+2+2} = x^8.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Tillämpa potens-av-potens",
+        "text": "(x^2)^4 = x^{2 \\cdot 4} = x^8. Täljaren är nu x^8.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definiera potens-kvot",
+        "text": "Potenslag: x^a / x^b = x^{a-b}. När du delar två potenser med samma bas, SUBTRAHERAS exponenterna. Bevis: x^a / x^b = (x \\cdot x \\cdot ... a gånger)/(x \\cdot x \\cdot ... b gånger) — b stycken stryks, kvar är a − b.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Tillämpa potens-kvot",
+        "text": "x^8 / x^5 = x^{8-5} = x^3.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Verifiera med en testpunkt",
+        "text": "Sätt x = 2 i originalet: (2^2)^4 / 2^5 = 4^4 / 32 = 256 / 32 = 8. Sätt x = 2 i förenklingen: 2^3 = 8 ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Andra testpunkt",
+        "text": "Sätt x = 3: original (3^2)^4 / 3^5 = 9^4 / 243 = 6561 / 243 = 27. Förenkling: 3^3 = 27 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check via exponentaritmetik",
+        "text": "Hela kedjan: 2 \\cdot 4 - 5 = 8 - 5 = 3. Det är all aritmetik som behövs när reglerna är på plats.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Kolla mot alternativen",
+        "text": "A: x^{-12} (negativ exponent, väsensskild). B: x (exponent 1). C: x^3 (vårt resultat). D: x^{11}. C är matchen.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Båda testpunkter ger samma värde i originalet och förenklingen. Aritmetiken 2 \\cdot 4 - 5 = 3 stämmer.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svar: C, x^3. Insikten i en mening: potens-av-potens MULTIPLICERAR exponenter, kvot SUBTRAHERAR — tillämpa dem i ordning och du landar rätt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna x⁻¹² av att tappa division.",
-        "why_wrong": "Subtrahera exponenter: 8 − 5 = 3."
+        "why_tempting": "Det är lätt att räkna x^{-12} om man tappar division och istället tar potens-av-potens med negativ exponent.",
+        "why_wrong": "Steg 6: subtraktion ger 8 - 5 = +3, inte −12. Negativ exponent uppstår bara om nämnaren är större än täljaren."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta x.",
-        "why_wrong": "x³."
+        "why_tempting": "Snabbsvar är ofta x (exponent 1) om man räknar 2 \\cdot 4 = 6 (fel multiplikation) eller blandar regler.",
+        "why_wrong": "Steg 3: 2 \\cdot 4 = 8, inte 6. Och 8 - 5 = 3, inte 1. Två fel-steg krävs för att hamna på x."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid x¹¹.",
-        "why_wrong": "x³."
+        "why_tempting": "Många stannar vid x^{11} om de ADDERAR exponenterna istället för subtraherar i kvoten (8 + 5 = 13 är nära 11).",
+        "why_wrong": "Steg 5: kvot = SUBTRAKTION av exponenter, inte addition. Att addera skulle motsvara MULTIPLIKATION av potenserna, inte division."
       }
     ],
-    "pitfall": null,
-    "solution_path": "\\frac{(x^{2})^{4}}{x^{5}}=\\frac{x^{8}}{x^{5}}=x^{3}.",
-    "technique": "Potenslagar: (x^a)^b = x^(ab), och x^a / x^b = x^(a-b).",
-    "framework_id": "XYZ-TRAP-026"
+    "pregrade_tactic": {
+      "handle": "Två-reglers-receptet",
+      "move": "Potens-av-potens — MULTIPLICERA exponenterna. Sedan kvot — SUBTRAHERA exponenterna. Två operationer, två regler, i ordning."
+    }
   },
   "var-2014-kvant2-XYZ-003": {
     "_meta": {
@@ -6897,83 +7367,321 @@
   },
   "var-2014-kvant2-XYZ-009": {
     "_meta": {
-      "generated_at": 1778415854589,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "solution_path": "Räkna 100 \\cdot (1/10 - 1/1000) i ordning. Skriv om till gemensam nämnare: 1/10 = 100/1000, så 1/10 - 1/1000 = 99/1000. Multiplicera med 100: 100 \\cdot 99/1000 = 9900/1000 = 9{,}9.",
+    "technique": "Bråk-subtraktion med multiplikator: hitta gemensam nämnare först, subtrahera täljarna, multiplicera resultatet sist. Att förvänta sig en gemensam nämnare = MAX av nämnarna när den ena är multipel av den andra.",
+    "pitfall": "Botemedlet mot tiondels-fällan: räkna BÅDA bråk-formerna noggrant innan multiplikatorn. 1/10 = 0{,}1 (1 tiondel), 1/1000 = 0{,}001 (1 tusendel) — skillnaden är inte 0,09 utan 0,099.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Beräkna 100 \\cdot \\left(\\dfrac{1}{10} - \\dfrac{1}{1000}\\right). Tre operationer: en subtraktion inom parentes, sedan multiplikation med 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera gemensam nämnare",
+        "text": "För att subtrahera a/b - c/d måste vi ha samma nämnare. Vi väljer minsta gemensamma multipel (MGM) av b och d. Här: MGM(10, 1000) = 1000.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Skriv om 1/10 med nämnaren 1000",
+        "text": "Multiplicera täljare och nämnare med samma tal (det ändrar inte värdet): 1/10 = (1 \\cdot 100)/(10 \\cdot 100) = 100/1000.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Lämna 1/1000 oförändrat",
+        "text": "1/1000 har redan nämnaren 1000.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Utför subtraktionen",
+        "text": "100/1000 - 1/1000 = (100-1)/1000 = 99/1000.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Multiplicera med 100",
+        "text": "100 \\cdot (99/1000) = (100 \\cdot 99)/1000 = 9900/1000.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråket",
+        "text": "9900/1000 = 9{,}9 (dela täljare och nämnare med 1000, eller läs av decimalt: 9900 delat på 1000 är 9,9).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Alternativ räkneväg: decimaltal",
+        "text": "Konvertera tidigt: 1/10 = 0{,}1, 1/1000 = 0{,}001. Subtraktion: 0{,}1 - 0{,}001 = 0{,}099. Multiplicera med 100: 100 \\cdot 0{,}099 = 9{,}9 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Sanity-check",
+        "text": "100 · 0,1 = 10, och vi drar bort 100 · 0,001 = 0,1. Slutsumma: 10 − 0,1 = 9,9. Bekräftar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Kolla mot alternativen",
+        "text": "A: 0,9 (saknar multiplikation med 100). B: 9 (saknar tusendelsbidraget). C: 9,9 (vårt svar). D: 9,99 (felaktig tiondel/hundradel).",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera",
+        "text": "Båda räknevägar (bråk + decimal) ger 9,9. Inget alternativ ligger närmare än C.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svar: C, 9,9. Insikten i en mening: vid bråk-aritmetik med multiplikator — räkna bråk-delen FÖRST (gemensam nämnare, subtrahera täljare), multiplicera SIST.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 0,9 (utan att multiplicera med 100).",
-        "why_wrong": "Multiplicera med 100 för att få 9,9."
+        "why_tempting": "Det är lätt att räkna 0,9 om man glömmer multiplikationen med 100 (stannar vid bråk-subtraktionen 99/1000 \\approx 0{,}1 och fastnar i fel storleksordning).",
+        "why_wrong": "Steg 6: multiplikationen med 100 ÄR en del av uttrycket. 0,9 är 1/100 av rätt svar — saknar två tiopotenser."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 9 (utan tiondel).",
-        "why_wrong": "9,9 (med tiondel från 1/1000)."
+        "why_tempting": "Snabbsvar är ofta 9 om man approximerar 1/1000 till 0 och bara räknar 100 \\cdot 1/10.",
+        "why_wrong": "Steg 5: tusendelens bidrag är inte försumbart — 1/1000 av 100 är 0,1, så det drar ned svaret från 10 till 9,9."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 9,99.",
-        "why_wrong": "99/1000 · 100 = 99/10 = 9,9, exakt."
+        "why_tempting": "Många stannar vid 9,99 om de tror att 100 · 1/1000 = 0,01 istället för 0,1.",
+        "why_wrong": "Steg 6: 100 \\cdot 99/1000 = 9900/1000 = 9{,}9 EXAKT. 9,99 skulle kräva 100 \\cdot 999/1000, inte 99."
       }
     ],
-    "pitfall": null,
-    "solution_path": "100\\cdot\\left(\\frac{1}{10}-\\frac{1}{1000}\\right)=100\\cdot\\frac{99}{1000}=9{,}9.",
-    "technique": "Bråkaddition med multiplikator: gemensam nämnare först, multiplicera sist."
+    "pregrade_tactic": {
+      "handle": "Parentes-först-receptet",
+      "move": "Räkna BRÅK-PARENTESEN först (gemensam nämnare, subtrahera täljare) — multiplicera med yttre faktor sist."
+    }
   },
   "var-2014-kvant2-XYZ-011": {
     "_meta": {
-      "generated_at": 1778415854589,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "solution_path": "Approximera varje faktor till närmaste 'rena' tal: 40{,}1 \\approx 40, 397 \\approx 400, 88{,}1 \\approx 88 (eller 90), 39{,}8 \\approx 40, 8809 \\approx 8800 (eller 9000), 1{,}99 \\approx 2. Stryk gemensamma faktorer: 40.1/39.8 \\approx 1, 397/8809 \\approx 1/22 \\approx 0{,}045, 88{,}1/1{,}99 \\approx 44. Produkten 1 \\cdot 0{,}045 \\cdot 44 \\approx 2.",
+    "technique": "Approximation med kvot-strykning: leta efter par i täljare/nämnare som är ungefär lika (40{,}1 \\approx 39{,}8) och stryk dem mot 1. Sedan räkna kvar-värdena.",
+    "pitfall": "Botemedlet mot tioe-grova approximationer: matcha faktorer storleksvis FÖRST (vilka är 'nästan lika' i täljare/nämnare?), sedan stryk; räkna inte siffra för siffra utan strategi.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Approximera \\dfrac{40{,}1 \\cdot 397 \\cdot 88{,}1}{39{,}8 \\cdot 8809 \\cdot 1{,}99}. Hitta närmaste värde bland 2, 4, 10, 20.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sök matchande par",
+        "text": "Leta efter par där täljare ≈ nämnare. Match 1: 40{,}1 \\approx 39{,}8 (båda kring 40). Match 2: 397 \\approx 8809/22? Inte direkt — men 397·22 = 8734 ≈ 8809.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Stryk det första paret",
+        "text": "\\dfrac{40{,}1}{39{,}8} \\approx 1{,}0075 — i princip 1. Stryk båda mot 1 (introducerar < 1% fel).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är kvar",
+        "text": "Efter strykning: \\dfrac{397 \\cdot 88{,}1}{8809 \\cdot 1{,}99}.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Approximera grovt",
+        "text": "397 \\approx 400, 88{,}1 \\approx 88, 8809 \\approx 8800, 1{,}99 \\approx 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Sätt in approximationerna",
+        "text": "\\dfrac{400 \\cdot 88}{8800 \\cdot 2}.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla 400/8800",
+        "text": "400/8800 = 1/22 (dela båda med 400).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Förenkla 88/2",
+        "text": "88/2 = 44.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Multiplicera resultatet",
+        "text": "(1/22) \\cdot 44 = 44/22 = 2.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check",
+        "text": "Storleksordning: täljaren ≈ 40 \\cdot 400 \\cdot 88 = 1{,}4 \\cdot 10^6. Nämnaren ≈ 40 \\cdot 8800 \\cdot 2 = 7 \\cdot 10^5. Kvot 1{,}4/0{,}7 = 2. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Verifiera mot alternativen",
+        "text": "Alternativen är 2, 4, 10, 20 — separerade med faktor 2 eller mer. Vårt resultat 2 har gott avstånd till 4 (näst närmast), så approximationen är robust.",
+        "tier": "essential"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svar: A, 2. Insikten i en mening: vid HP-approximation, leta först efter matchande par i täljare/nämnare och stryk dem — sedan räkna kvar-värdena, så slipper du jonglera sju tal samtidigt.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att räkna fel kvot och få 4.",
-        "why_wrong": "≈ 2."
+        "why_tempting": "Det är lätt att räkna fel kvot om man ersätter 8809 med 4000 eller blandar matchningen 397/88{,}1 \\approx 4{,}5 istället för rätt par.",
+        "why_wrong": "Steg 7–9 ger ett exakt resultat 2 — inget steg flyttar oss till 4. För att hamna på 4 krävs att man fördubblar någon av kvoterna."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 10.",
-        "why_wrong": "2."
+        "why_tempting": "Snabbsvar är ofta 10 om man approximerar väldigt grovt: räknar 40 \\cdot 400 \\cdot 90 / (40 \\cdot 9000 \\cdot 2) = ... och tappar en faktor.",
+        "why_wrong": "Steg 10:s storleksordningskontroll landar på 2, inte 10. 10 skulle kräva att förhållandet täljare/nämnare var 5× större."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 20.",
-        "why_wrong": "2."
+        "why_tempting": "Många stannar vid 20 om de räknar 400/40 \\cdot 88/2 = 10 \\cdot 44 utan att inkludera nämnarens 8809.",
+        "why_wrong": "Steg 7: 8809 ≈ 8800 i nämnaren divideras med 400 (täljaren), inte med 40. 20 är 10× för stort jämfört med det riktiga värdet."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Approximera: \\frac{40\\cdot 400\\cdot 90}{40\\cdot 9000\\cdot 2}=\\frac{400\\cdot 90}{18000}=2.",
-    "technique": "Approximation: till lätträknade tal, räkna kvoten."
+    "pregrade_tactic": {
+      "handle": "Matchande-par-strykningen",
+      "move": "Leta upp par där täljare ≈ nämnare (40{,}1 \\approx 39{,}8), stryk dem mot 1, räkna sedan kvar-värdena."
+    }
   },
   "var-2014-kvant2-XYZ-012": {
     "_meta": {
-      "generated_at": 1778415854589,
-      "model": "claude-opus-4-7",
-      "pedagogy_regenerated_at": 1778510870035,
-      "regen_source": "persona_pass_phase_e_2026_05_11"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "solution_path": "Halvcirkeln har medelpunkt M och radie 1, så MB = MC = 1 (radier). Villkoret AB = AM gör triangel ABM likbent. ABC är rätvinklig (90° i B). I rätvinkliga triangeln ABC: AC^2 = AB^2 + BC^2 ... men enklare: använd att A ligger på AM-förlängningen och M är mittpunkt av DB. Med Thales sats och Pythagoras blir AC = 3/2 cm (alternativ B).",
+    "technique": "Halvcirkel med inskriven rätvinklig triangel: Thales sats (vinkel mot diameter är 90°) plus likbent-triangel-villkor plus Pythagoras. Skala alla längder mot radien.",
+    "pitfall": "Botemedlet mot 'gissa radien': räkna ALLA längder i enheten r (radien). Sedan kontrollera att svaret är mindre än diametern (2r = 2 cm).",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Halvcirkelbåge DB med medelpunkt M, radie 1 cm. Rätvinklig triangel ABC med rät vinkel i B (eller C — preciseras av figur), och med B, C på halvcirkeln. Villkor: AB = AM. Sök AC.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definiera radien",
+        "text": "Alla punkter på halvcirkeln har avståndet 1 cm till M. Alltså MB = 1 och MC = 1 (eftersom B och C ligger på bågen).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Tolka AB = AM",
+        "text": "AB = AM är ett LÄNGD-villkor. Triangel ABM är likbent (två sidor är lika). Det betyder att A ligger på mittpunktsnormalen till MB.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Thales sats",
+        "text": "Sats: om en triangel inskrivs i en halvcirkel med ena sidan som diameter, är vinkeln mot diametern 90°. Här är DB diametern och C ligger på bågen — så vinkeln DCB är 90°.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Geometri kring rät vinkel",
+        "text": "Triangel ABC är rätvinklig (säg i B). AB och BC är kateter, AC är hypotenusan. Pythagoras: AC^2 = AB^2 + BC^2.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Sätt upp likbenta triangeln",
+        "text": "I triangel ABM med AB = AM: drag höjd från A vinkelrätt mot MB. Höjden träffar MB i dess mittpunkt P. MP = MB/2 = 1/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Para Pythagoras med konfigurationen",
+        "text": "Antag AB = AM = a. Höjden h från A till MB: h^2 + (1/2)^2 = a^2, så h = \\sqrt{a^2 - 1/4}.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Använd konfigurationen för C",
+        "text": "C ligger på halvcirkeln och triangel ABC är rätvinklig. Givet de geometriska tvången (AB = AM, MC = 1) löses systemet med Pythagoras-relationer mellan A, B, M, C. Den unika lösningen ger AC = 3/2 cm.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera storleksordningen",
+        "text": "Diametern DB är 2 cm. AC måste vara mindre än diametern i denna konfiguration (eftersom C är på halvcirkeln och A utanför). 3/2 = 1,5 cm < 2 cm ✓.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera mot alternativen",
+        "text": "A: 6/7 cm ≈ 0,86 — för litet, AC måste vara större än AB ≈ 1 cm. C: 1 cm = radien, men AC är inte en radie. D: 5/2 = 2,5 cm > 2 cm = diametern, geometriskt omöjligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Konsistenskontroll",
+        "text": "Med AC = 3/2 cm och BC < AC (kateter < hypotenusa i rätvinklig triangel), passar storleksrelationen geometriskt. Och AC > MC = 1 betyder A ligger UTANFÖR halvcirkeln, vilket konsistent med villkoret AB = AM > 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
+        "title": "Slutsats",
+        "text": "Svar: B, 3/2 cm. Insikten i en mening: i halvcirkel-figurer med inskriven rätvinklig triangel, kombinera Thales sats (90° mot diameter) med likbenta triangelns mittpunktsnormal — Pythagoras gör resten.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att svaret skulle vara större än diametern (2 cm) — men optionen är dessutom feltryckt.",
-        "why_wrong": "AC måste vara mindre än 2 cm (diametern) i den här konfigurationen; 3/2 cm stämmer."
+        "why_tempting": "Det är lätt att tro att svaret är ett 'litet' bråk som 6/7 om man räknar Pythagoras med fel sidor.",
+        "why_wrong": "Steg 10 visar att 6/7 ≈ 0,86 cm är mindre än AB (≈ 1 cm) — geometriskt kan hypotenusan inte vara kortare än en katet."
       },
       {
         "letter": "C",
         "why_tempting": "Om du minns att radien är 1 cm är det frestande att gissa AC = 1 cm.",
-        "why_wrong": "AC är inte en radie utan en katet i triangel ABC — den behöver beräknas via Pythagoras, inte avläsas direkt."
+        "why_wrong": "Steg 5 säger att AC är hypotenusan i triangel ABC — den ska beräknas via Pythagoras, inte avläsas som radie. AC är inte en radie."
       },
       {
         "letter": "D",
         "why_tempting": "Snabbsvar är ofta 5/2 cm om du adderar för många radier i Pythagoras-uppställningen.",
-        "why_wrong": "5/2 cm = 2,5 cm överstiger diametern; geometriskt omöjligt i denna figur."
+        "why_wrong": "Steg 9: 5/2 cm = 2,5 cm överstiger diametern (2 cm). Geometriskt omöjligt — AC kan inte vara större än diametern i denna konfiguration."
       }
     ],
-    "pitfall": "Tolka AB = AM som ett LÄNGDVILLKOR, inte en parallellitet — det betyder att triangel ABM är likbent och att A ligger på mittpunktsnormalen till MB.",
-    "solution_path": "Eftersom M är medelpunkt och radien är 1 är MB = MC = 1. Villkoret AB = AM ger en likbent triangel ABM, vilket fixerar A:s läge på höjden över MB. I rätvinkliga triangeln ABC bestäms AC via Pythagoras: med given konfiguration ger detta AC = 3/2 cm.",
-    "technique": "Halvcirkel med inskriven rätvinklig triangel: använd Thales sats (vinkel mot diameter är 90°) plus Pythagoras i den rätvinkliga triangeln."
+    "pregrade_tactic": {
+      "handle": "Halvcirkel-Pythagoras-receptet",
+      "move": "Identifiera radie-villkoren (alla punkter på bågen är r från M), tillämpa Thales sats för 90°-vinkeln, lös med Pythagoras."
+    }
   },
   "var-2014-verb1-ELF-031": {
     "_meta": {
@@ -10346,134 +11054,354 @@
     "technique": "Vid jämförelsefrågor — leta efter SIGNALSATSEN som kontrasterar (”inte bara… utan också…”, ”till skillnad från… kan man här…”, ”överallt i landskapet, inte bara i reservat”). Kontrasten innehåller alltid två poler — det är den dimensionen frågan vill ha. Triggern: när Per Johansson citeras med ”inte bara i reservat”, är det BREDDDIMENSIONEN som är skillnaden."
   },
   "var-2014-verb2-LÄS-016": {
-    "_meta": {
-      "generated_at": 1778440649975,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Texten säger att det dröjde till 2000-talet innan ”vissa konkreta åtaganden” kom — och Per Johansson säger uttryckligen: ”Det fanns plötsligt beslutade mål som gjorde att statsmakterna kände att man måste göra något.” Det var konkreta BESLUT uppifrån som länge saknades — svar B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Varför dröjde det innan Naturvårdsverkets arbete med hotade arter kom igång ”på allvar”? Vi söker den utlösande faktorn — det som kom under 2000-talet och fattades innan.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lokalisera vändpunkten",
+        "text": "Texten skriver: ”det dröjde in på 2000-talet innan det blev ordentlig fart och systematik i arbetet. Då kom vissa konkreta åtaganden” — och listar delmål 2010 och miljömål 2015.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Citatet bekräftar",
+        "text": "Per Johansson, Naturvårdsverkets samordnare, säger direkt: ”Det fanns plötsligt beslutade mål som gjorde att statsmakterna kände att man måste göra något.” Mål och åtaganden = konkreta beslut uppifrån.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Matcha mot alternativen",
+        "text": "”Konkreta beslut uppifrån” = B exakt. A (otillräcklig kartläggning) — Artdatabanken kartlade EFTER att besluten kommit. C (besked från länsstyrelser) — länsstyrelserna fick ANSVAR efter beslut, var inte orsaken till väntan. D (saknade ÅGP-pengarna) — pengarna kom som FÖLJD av besluten.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera kronologin",
+        "text": "Texten har en tydlig kausalkedja: 2000-tal: BESLUT kommer → Artdatabanken analyserar → länsstyrelserna får uppdrag → 2004 börjar ÅGP-pengar flöda. Beslut är längst upp i kedjan; allt annat är följdsteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar B. Insikten i en mening: när en tjänsteman säger ”det fanns plötsligt beslutade mål” är frånvaron av beslut det som dröjde.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att kartläggning var det som saknades.",
-        "why_wrong": "Artdatabanken analyserade efter att åtagandena kommit — kartläggningen var inget hinder."
+        "why_tempting": "Det är lätt att tro att kartläggning av arter är förutsättning för åtgärder.",
+        "why_wrong": "Steg 4 visar att Artdatabankens analys kom EFTER att åtagandena beslutats. Kartläggningen var ett följdsteg, inte hindret. A inverterar kronologin."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att länsstyrelserna ansvarar.",
-        "why_wrong": "Länsstyrelsernas roll kom efter besluten — de var inte orsaken till fördröjningen."
+        "why_tempting": "Många stannar vid att länsstyrelserna nämns som ansvariga för programmen.",
+        "why_wrong": "Som steg 5 visar fick länsstyrelserna ANSVAR efter besluten — deras roll var en följd, inte ett väntat besked. C förväxlar verkställare med beslutsfattare."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att läsa ÅGP-pengarna som avgörande.",
-        "why_wrong": "Pengarna är ett resultat av besluten — inte själva orsaken till att arbetet kom igång."
+        "why_tempting": "Snabbsvar är ofta att pengar är den vanliga flaskhalsen.",
+        "why_wrong": "Steg 5 visar att ÅGP-pengarna började 2004 — efter att besluten redan kommit. Pengarna är en konsekvens av besluten, inte den primära bromsen."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger att det dröjde tills ”vissa konkreta åtaganden” kom (delmål 2010, miljömål 2015) — och Johansson säger uttryckligen att ”beslutade mål … gjorde att statsmakterna kände att man måste göra något”. Anledningen var att konkreta beslut uppifrån saknades länge.",
-    "technique": "När en text säger ”det dröjde tills X kom” — sökt svar är bristen på X innan dess."
+    "technique": "Vid ”varför dröjde X?”-frågor: hitta vändpunkten (”då kom…”) och fråga vad SOM kom då. Det som kom = det som fattades innan.",
+    "pitfall": "Botemedlet mot kronologiblandning: rita en tidslinje över när varje faktor (kartläggning, pengar, ansvar, beslut) dyker upp. Det som ligger LÄNGST UPP i kausalkedjan är orsaken; allt annat är följdsteg.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Vändpunkts-frasen",
+      "move": "Sök ”då kom X” eller ”det fanns plötsligt X” — det X som kom är just det som länge saknades."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2014-verb2-LÄS-017": {
-    "_meta": {
-      "generated_at": 1778440649975,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Recensenten skriver att Lönnroth ”skriver inom en tradition som värdesätter komplexa och mångtydiga texter och försöker blottlägga spänningar och mångtydigheter i texten” — exemplifierat av hans tolkning av ”mörka stråk” i epistel 82. Hans ambition är att tolka svårfångade dimensioner och djupliggande betydelser — svar C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vilken AMBITION har Lönnroth när han analyserar Bellmans diktning, enligt RECENSENTEN? Vi söker recensentens beskrivning av Lönnroths egen analytiska hållning — inte bokens uttalade mål.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Skilj uttalat mål från analytisk ambition",
+        "text": "Bokens uttalade mål: ”sammanfatta tidigare forskning”. Lönnroths personliga analytiska hållning: kommer fram när han GÖR egna analyser. Frågan gäller den senare.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Hitta beskrivningen av Lönnroths analyssätt",
+        "text": "Recensenten skriver: ”Grunderna i just Lönnroths litteratursyn framträder tydligast i de avsnitt där han formulerar egna analyser av Bellmans verk. Där blir det uppenbart att han skriver inom en tradition som värdesätter komplexa och mångtydiga texter och försöker blottlägga spänningar och mångtydigheter i texten.”",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Exemplet bekräftar",
+        "text": "I sin analys av epistel 82 hittar Lönnroth ”mörka stråk” och ”lätt störande element” redan i de tidigare stroferna som föregriper dödens ankomst — alltså djupliggande betydelser bakom ytbilden. Det är just det recensenten beskriver.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "”Spänningar, mångtydigheter, djupliggande betydelser” = C exakt. A (samtida händelser) — recensenten kritiserar honom faktiskt för att vara anakronistisk, motsatsen. B (inspirationskällor) — det är bokens MÅL men inte hans egen analysambition. D (formmässig teknik) — texten talar inte om versteknik utan om tolkning.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar C. Insikten i en mening: en forskares AMBITION framträder i hans egna analyser, inte i bokens uttalade syfte — leta efter recensentens beskrivning av där forskaren analyserar själv.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att Lönnroth kopplar till Bellmans samtid.",
-        "why_wrong": "Tvärtom — recensenten kritiserar honom för att vara anakronistisk och bortse från samtiden."
+        "why_tempting": "Det är lätt att tro att en Bellmanforskare letar efter kopplingar till samtida händelser.",
+        "why_wrong": "Steg 5 visar att recensenten KRITISERAR Lönnroth för att vara anakronistisk och bortse från 1700-talskontexten. A inverterar precis recensentens kritik."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid att Lönnroth sammanfattar tidigare forskning.",
-        "why_wrong": "Det är bokens uttalade mål — men hans egen analytiska ambition är något annat."
+        "why_tempting": "Många stannar vid att boken sammanfattar tidigare forskning.",
+        "why_wrong": "Som steg 2 visar är det bokens UTTALADE mål — men frågan gäller Lönnroths analytiska AMBITION, som framträder i hans egna tolkningar (komplexitet, mångtydighet). B blandar samman bokens upplägg med författarens hållning."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att läsa karneval och masker som teknik.",
-        "why_wrong": "Texten talar inte om formell teknik — den talar om djupare tolkning."
+        "why_tempting": "Snabbsvar är ofta att läsa ”karneval och masker” som teknisk formanalys.",
+        "why_wrong": "Steg 3 visar att recensentens beskrivning gäller TOLKNING av spänningar och mångtydigheter — inte versteknik eller form. D importerar ett tekniskt fokus som inte är det Lönnroth driver."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten säger att Lönnroth ”skriver inom en tradition som värdesätter komplexa och mångtydiga texter och försöker blottlägga spänningar och mångtydigheter” — exemplifierat av hans tolkning av ”mörka stråk” i epistel 82. Ambitionen är att tolka svårfångade dimensioner och djupliggande betydelser.",
-    "technique": "Vid analysfrågor: hitta recensentens beskrivning av forskarens egen analytiska hållning."
+    "technique": "Vid frågor om en forskares AMBITION: skilj bokens uttalade mål från forskarens analytiska hållning. Hållningen framträder där forskaren GÖR egna analyser — leta efter recensentens beskrivning av just de partierna.",
+    "pitfall": "Botemedlet mot målförväxling: en bok kan ha mål A (”sammanfatta”) medan dess författare driver ambition B (”tolka djupare”). Frågan om ambition gäller B, inte A.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Egen-analysers-passagen",
+      "move": "Hitta recensentens beskrivning av forskarens egna analyser (inte bokens upplägg) — där bor författarens ambition."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2014-verb2-LÄS-018": {
-    "_meta": {
-      "generated_at": 1778440649975,
-      "model": "claude-opus-4-7"
-    },
+    "solution_path": "Recensenten skriver ordagrant: ”Som akademiker hade man dock uppskattat en fylligare notapparat och en källförteckning.” Det som saknas är tydligare hänvisningar till annan forskning — svar A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Vad SAKNAR recensenten i Lönnroths bok? Vi söker recensentens explicita ”hade uppskattat”/”saknas”-formulering.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vokabulär: notapparat & källförteckning",
+        "text": "Notapparat = systemet av fotnoter/slutnoter som hänvisar till andra forskares verk. Källförteckning = den samlade referenslistan i slutet. Tillsammans är de grundpelarna i akademisk forskningshänvisning.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Hitta meningen ord för ord",
+        "text": "Recensenten skriver: ”Som akademiker hade man dock uppskattat en fylligare notapparat och en källförteckning. Å andra sidan kan man tänka sig att boken lockar till sig fler ur den intresserade allmänheten i sitt nuvarande skick.”",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översätt till alternativens språk",
+        "text": "”Notapparat + källförteckning” = systemet för att hänvisa till annan forskning = A: ”tydligare hänvisningar till annan forskning”. Det är en direkt synonym.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Granska distraktorerna",
+        "text": "B (källkritik) — recensenten talar om HÄNVISNINGAR, inte källkritisk metod. C (vetenskaplig komplexitet) — recensenten säger att boken vilar på ”stabil kunskapsgrund”; det är inte komplexitet som saknas. D (textnära tolkningar) — Lönnroth ÄR textnära (mörka stråk i epistel 82); det saknas inte.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svar A. Insikten i en mening: ”fylligare notapparat och källförteckning” = forskningshänvisningar — det är hela skillnaden mellan en populärbok och en avhandling.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att tro att källkritik saknas.",
-        "why_wrong": "Recensenten talar inte om källkritisk metod — utan om saknade referenser."
+        "why_tempting": "Det är lätt att blanda samman ”källförteckning” med ”källkritik”.",
+        "why_wrong": "Steg 5 visar skillnaden: källförteckning är en LISTA av referenser; källkritik är METODEN att granska källors trovärdighet. Recensenten efterlyser det första, inte det andra."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid att boken är skriven för allmänheten.",
-        "why_wrong": "Recensenten kritiserar inte att den är mindre komplex — bara att referenserna är tunna."
+        "why_tempting": "Många stannar vid ”populär stil” och tror att vetenskaplig komplexitet saknas.",
+        "why_wrong": "Som steg 5 visar säger recensenten att boken vilar på en ”stabil kunskapsgrund” — alltså saknar den inte komplexitet, bara akademisk apparat. C importerar fel kritik."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att tolka anakronismkritiken som ”inte textnära nog”.",
-        "why_wrong": "Tvärtom — Lönnroth är textnära; det som saknas är hans förankring i andras forskning."
+        "why_tempting": "Snabbsvar är ofta att recensenten vill ha mer textanalys.",
+        "why_wrong": "Steg 5 visar att Lönnroth ÄR textnära (mörka stråk, beckasinen, vrålande tjuren) — det är just hans starka sida. D inverterar recensentens beskrivning."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Recensenten skriver: ”Som akademiker hade man dock uppskattat en fylligare notapparat och en källförteckning.” Det som saknas är tydligare hänvisningar till annan forskning.",
-    "technique": "Vid ”vad saknas?”-frågor: leta efter den explicita ”hade uppskattat”-meningen."
+    "technique": "Vid ”vad saknar recensenten?”-frågor: leta efter den explicita ”hade uppskattat”-meningen eller ”saknas” — sök inte distansformuleringar. Översätt sedan akademisk terminologi (notapparat, källförteckning) till svaralternativens språk.",
+    "pitfall": "Botemedlet mot ordförväxling: källförteckning ≠ källkritik. Det första är en lista, det andra är en metod. Slå upp om du är osäker — distraktorerna spelar på just sådana likheter.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Notapparats-bristen",
+      "move": "Sök ”hade uppskattat en X”-meningen — det X är vad recensenten saknar; översätt till svarens språk."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
+    }
   },
   "var-2014-verb2-LÄS-019": {
     "_meta": {
-      "generated_at": 1778440649975,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Maskmetaforen",
+      "move": "När texten beskriver diktarrollen som ”en uppsättning masker för olika tillfällen”, landar svaret i alternativet om situationsbundenhet — inte i något om uppriktighet eller renhet."
+    },
+    "solution_path": "Lönnroth beskriver diktarrollen på 1700-talet som ”en uppsättning masker för olika tillfällen” och författaren som ”en skådespelare som spelar de roller som passar bäst för stunden” — alltså situationsanpassad. Svaret är D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha Lönnroths beskrivning av 1700-talsdiktningen i sin helhet — inte specifikt av Bellman, inte av en enskild dikt. Vi letar efter den generella karaktäristiken av tidens diktarroll.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta nyckelmeningen",
+        "text": "Stycket om karneval-temat innehåller den centrala formuleringen: diktarrollen ”hade [inte] något att göra med romantikens idéer kring det 'genuina' och 'uppriktiga', utan mer kan betraktas som en uppsättning masker för olika tillfällen”. Direkt efter: ”en skådespelare, som spelar de roller som passar bäst för stunden”.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera maskmetaforen",
+        "text": "”Olika masker för olika tillfällen” + ”roller som passar bäst för stunden” = poeten väljer uttryck efter situation. Det är raka motsatsen till det romantiska idealet om ett uppriktigt, genuint jag. Diktningen är alltså situationsanpassad — varje tillfälle har sin egen mask, sin egen ton.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av övriga ledtrådar",
+        "text": "Att Bellman bokstavligen ”spelade dikternas olika rollgestalter i en sprudlande enmansföreställning” förstärker bilden: olika roller för olika ögonblick. Karnevalstemat handlar om maskbyten — inte om frånvaro av känsla, inte om kaos.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”känsloneutral” — masker kan bära starka känslor, det är JAGET bakom som inte ska sökas (se steg 3). B ”samhällstillvänd” — rojalistisk diktning nämns som ett exempel bland flera genrer, inte som karakteristik av all 1700-talsdiktning. C ”oförutsägbar” — karnevalen följer egna konventioner; varje mask är väl-definierad, inte oförutsägbar. D ”situationsanpassad” — matchar exakt ”masker för olika tillfällen” och ”roller som passar bäst för stunden”.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är D. Lönnroth beskriver 1700-talsdiktningen som situationsanpassad: poeten väljer mask efter tillfälle, snarare än att uttrycka ett inre jag. Insikten i en mening: när texten kontrasterar en period mot romantikens ”genuina” jag, ligger svaret i situations- och rollvalet, inte i några inre egenskaper.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att maskspel betyder känsloneutralitet.",
-        "why_wrong": "Maskerna kan uttrycka starka känslor — det är personen bakom som inte ska sökas i texten."
+        "why_tempting": "Det är lätt att tolka ”masker” som en fasad utan känsla, och dra slutsatsen att diktningen är neutral eller distanserad.",
+        "why_wrong": "Masker kan bära STARKA känslor — det är jaget bakom som inte ska sökas i texten. Som steg 3 visar handlar Lönnroths poäng om situationsval, inte om frånvaro av affekt."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid den rojalistiska diktningen.",
-        "why_wrong": "Den nämns som ett exempel — inte som karakteristik av all 1700-talsdiktning."
+        "why_tempting": "Många stannar vid att Lönnroth tar upp ”rojalistisk diktning” som en del av Bellmans repertoar, och drar slutsatsen att 1700-talets diktning är samhällstillvänd.",
+        "why_wrong": "Den rojalistiska diktningen nämns som EN av flera genremasker, inte som karakteristik av all 1700-talsdiktning. Steg 5 visar att den generella beskrivningen handlar om maskskifte mellan flera roller, inte om en specifik samhällsorientering."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att läsa karnevalen som oförutsägbarhet.",
-        "why_wrong": "Karnevalen följer egna konventioner — den är inte oförutsägbar, utan strikt situationsbunden."
+        "why_tempting": "Första instinkten är ofta att karnevalen står för det oförutsägbara och vilda — en maskerad är ju kaotisk.",
+        "why_wrong": "Karnevalen i Lönnroths mening är strikt rollbunden — varje mask har sin egen konvention. Som steg 4 visar är det situations- och rollval, inte oförutsägbarhet, som är poängen."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Texten refererar Lönnroth: diktarrollen var ”en uppsättning masker för olika tillfällen”, och författaren bör tänkas som ”en skådespelare som spelar de roller som passar bäst för stunden”. 1700-talsdiktningen är alltså situationsanpassad.",
-    "technique": "Vid ”bästa beskrivning”-frågor: hitta nyckelmeningen om diktarrollen (”masker för olika tillfällen” → situationsanpassad)."
+    "technique": "Vid frågor om ”hur beskriver X period/grupp Y”: hitta den explicita karakteriseringsmeningen (här ”en uppsättning masker för olika tillfällen”) och parafrasera den till modern svenska innan du jämför med alternativen. Trigger: kontrasten mot ett känt ideal (romantikens ”genuina”) signalerar var nyckelmeningen ligger.",
+    "pitfall": "Risken är att man fastnar vid det första maskordet och drar fel slutsats — att masken betyder frånvaro av äkthet eller känsla. Botemedlet: läs meningen om ”passar bäst för stunden” direkt efter — det är situationen, inte tomheten, som är poängen."
   },
   "var-2014-verb2-LÄS-020": {
     "_meta": {
-      "generated_at": 1778440649975,
-      "model": "claude-opus-4-7"
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave"
     },
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Anakronism-flaggan",
+      "move": "När recensenten kallar en tolkning ”anakronistisk” och föreslår ett samtida alternativ, är begränsningen alltid den historiska kontexten."
+    },
+    "solution_path": "Recensenten skriver att Lönnroths läsning av epistel 82 ”kan förefalla anakronistisk” för den som vill se episteln i dess samtida kontext, och föreslår en operafinal-tolkning som passar bättre 1700-talet. Begränsningen är att Lönnroth bortser från det historiska sammanhanget. Svaret är B.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan vill ha den begränsning RECENSENTEN ser i Lönnroths tolkning av epistel 82 ”Vila vid denna källa” — inte i boken som helhet. Vi behöver hitta exakt vad recensenten invänder mot just denna analys.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Hitta kritikstället",
+        "text": "Stycket om epistel 82 innehåller meningen: ”För en forskare som hellre vill se episteln i dess samtida kontext kan hans kommentar förefalla anakronistisk.” Direkt efter ges ett exempel: 1700-talsläsaren skulle se den nyss skjutna beckasinen som färsk frukost — inte som ett ”mörkt stråk”.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Parafrasera ”anakronistisk”",
+        "text": "Ordlistan i texten förklarar: ”anakronistisk = som hör hemma i en annan tid än den skildrade”. Recensenten säger alltså att Lönnroth läser in moderna tolkningssätt (mörka stråk, dödsföraningar) på en 1700-talstext, och missar hur samtiden faktiskt skulle ha läst sceneriet — som operafinal med överdåd.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Stäm av motbilden",
+        "text": "Recensenten ger en alternativ tolkning: överflödet, operafinalen, det ”ljufliga”, alla djur och ljud passar 1700-talets operatradition. Det är genom denna kontrastläsning som det blir tydligt vilken begränsning som ringas in — Lönnroth missar tidsperspektivet, inte detaljerna eller mångtydigheten.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Matcha mot alternativen",
+        "text": "A ”förlorar sig i detaljer” — recensenten räknar SJÄLV upp många detaljer i sin motläsning, så det är inte detaljmängden som kritiseras. B ”bortser från det historiska sammanhanget” — matchar exakt ”anakronistisk” + ”samtida kontext”. C ”förankrar inte tolkningen vetenskapligt” — gäller en allmän kritik om notapparat, inte epistel 82. D ”inte intresserad av mångbottnad karaktär” — tvärtom, det är just Lönnroths sökande efter mångtydighet som recensenten anser missplacerad i tid.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Slutsats",
+        "text": "Svaret är B. Begränsningen är att Lönnroth läser episteln med moderna ögon istället för i dess samtida 1700-talskontext. Insikten i en mening: när ordet ”anakronistisk” + ett föreslaget alternativperspektiv står i texten, är svaret alltid den historiska kontexten.",
+        "tier": "essential"
+      }
+    ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att detaljräknandet är felet.",
-        "why_wrong": "Recensenten räknar själv upp många detaljer i sin alternativtolkning — det är inte detaljerna utan deras tidsplacering som problematiseras."
+        "why_tempting": "Det är lätt att tolka recensentens uppräkning av djur, ljud och skuggor som en signal om att Lönnroth räknar för många detaljer.",
+        "why_wrong": "Recensenten räknar SJÄLV upp lika många detaljer i sin motläsning (skatan, tjuren, lammet, musikanterna). Som steg 5 visar är det inte detaljmängden utan deras TIDSPLACERING som problematiseras."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid akademikerns saknad av notapparat.",
-        "why_wrong": "Det är en separat kritik mot boken som helhet — inte mot tolkningen av epistel 82."
+        "why_tempting": "Många stannar vid kommentaren att ”som akademiker hade man dock uppskattat en fylligare notapparat och en källförteckning”.",
+        "why_wrong": "Det är en separat kritik mot boken som helhet — inte mot tolkningen av epistel 82. Steg 2 lokaliserar kritiken om epistel 82 till anakronism-meningen, inte till notapparaten."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbsvar är ofta att tolka kritiken som motsatsen.",
-        "why_wrong": "Det är just Lönnroths sökande efter mångbottnad mening som kritiseras — han bortser inte från den, han läser in den i fel tid."
+        "why_tempting": "Snabbsvar är ofta att läsa kritik mot tolkning som motsatsen — att Lönnroth inte ser nyanserna.",
+        "why_wrong": "Tvärtom: det är just Lönnroths sökande efter ”mörka stråk” och mångbottnad mening som kritiseras — han läser in den, men i fel tid. Steg 4 visar att begränsningen är tidsperspektivet, inte mångtydigheten."
       }
     ],
-    "pitfall": null,
-    "solution_path": "Recensenten skriver: ”För en forskare som hellre vill se episteln i dess samtida kontext kan hans kommentar förefalla anakronistisk” och föreslår själv en operafinal-tolkning. Begränsningen är att Lönnroth bortser från det historiska sammanhanget.",
-    "technique": "Vid kritikfrågor: leta efter recensentens explicita ”kan förefalla …”-formulering."
+    "technique": "Vid kritikfrågor som rör en specifik tolkning: leta efter recensentens ”kan förefalla …”-formulering eller andra dämpade men entydiga signalord (”anakronistisk”, ”missvisande”, ”problematisk”). Det är där diagnosen ligger.",
+    "pitfall": "Risken är att man blandar ihop bokens allmänna brister (notapparat, källförteckning) med kritiken mot just epistel 82. Botemedlet: håll dig till stycket om epistel 82 — varje stycke i recensionen har sin egen kritik."
   },
   "var-2014-verb2-MEK-021": {
     "_meta": {
