@@ -169,6 +169,65 @@ describe('HomeMobile — diagnostic memory', () => {
   })
 })
 
+describe('HomeMobile — top traps', () => {
+  it('hides the traps card when no traps qualify', () => {
+    render(<HomeMobile forceLayout="phone" plan={makePlan()} topTraps={[]} />)
+    expect(screen.queryByTestId('home-top-traps')).not.toBeInTheDocument()
+  })
+
+  it('renders trap rows with id, headline, and miss count when present', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        topTraps={[
+          {
+            framework_id: 'NOG-TRAP-007',
+            section: 'NOG',
+            count: 4,
+            headline: 'Statement (2) ger ingen ny information.',
+          },
+          {
+            framework_id: 'KVA-TRAP-001',
+            section: 'KVA',
+            count: 2,
+            headline: 'Kvadratlikhet låser inte tecknet — x² = y² öppnar både x = y och x = −y.',
+          },
+        ]}
+      />,
+    )
+    const card = screen.getByTestId('home-top-traps')
+    expect(card).toHaveTextContent('NOG-TRAP-007')
+    expect(card).toHaveTextContent('4 ggr')
+    expect(card).toHaveTextContent('Statement (2) ger ingen ny information.')
+    expect(card).toHaveTextContent('KVA-TRAP-001')
+    expect(card).toHaveTextContent('2 ggr')
+  })
+
+  it('falls back to section-lektion text when headline is null', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        topTraps={[{ framework_id: 'XYZ-TRAP-040', section: 'XYZ', count: 3, headline: null }]}
+      />,
+    )
+    expect(screen.getByTestId('home-top-traps')).toHaveTextContent('Läs XYZ-lektionen')
+  })
+
+  it('row link points to the framework-deep-link URL', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        topTraps={[{ framework_id: 'NOG-TRAP-007', section: 'NOG', count: 4, headline: 'x' }]}
+      />,
+    )
+    const link = screen.getByTestId('top-trap-link') as HTMLAnchorElement
+    expect(link.getAttribute('href')).toBe('/lektion?section=NOG#NOG-TRAP-007')
+  })
+})
+
 describe('HomeMobile — greeting', () => {
   it('renders the time-of-day greeting', () => {
     // 09:00 local → "God morgon."
